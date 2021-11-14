@@ -1,5 +1,6 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#ab83da6d68a7168365ec414b95123af88":[1,0,2,23,10,1],
 "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#adda784998fb4d1e2284281f6b2d6e7aa":[1,0,2,23,10,0],
 "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#aebbffc4fe26f1653e7b5effe581adcff":[1,0,2,23,10,2],
 "struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html":[1,0,2,23,21,0],

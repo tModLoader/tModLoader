@@ -36,7 +36,8 @@ var NAVTREEINDEX84 =
 "class_terraria_1_1_minecart.html#af507675ff580f8a8846fde67f5ab190d":[1,0,2,47,25],
 "class_terraria_1_1_minecart.html#af7e96752115fd2e8f882b86743f162e1":[1,0,2,47,31],
 "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html":[1,0,2,13,8],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a069ca14fcbe651387a9196e46079566b":[1,0,2,13,8,18],
+"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a03f5de6394c5c69705691d6ee3dec034":[1,0,2,13,8,17],
+"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a069ca14fcbe651387a9196e46079566b":[1,0,2,13,8,19],
 "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a355fa3af75e4eca4cf6d5bc0f915e523":[1,0,2,13,8,11],
 "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a3d868f9f91322e56cde953885d4081fe":[1,0,2,13,8,8],
 "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a48c6f8acd36a335efd1e414d3c5f0d9a":[1,0,2,13,8,7],
@@ -53,7 +54,7 @@ var NAVTREEINDEX84 =
 "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#aa83f6da0564c1b217ff3baacabc2dd38":[1,0,2,13,8,6],
 "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#ae1123e6083f56cff9a4f7f8512d9820c":[1,0,2,13,8,9],
 "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#af70f6b611dfe624e149384e385c3c342":[1,0,2,13,8,13],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#afbec1aa8ff7e3433d400d52679518abe":[1,0,2,13,8,17],
+"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#afbec1aa8ff7e3433d400d52679518abe":[1,0,2,13,8,18],
 "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#afee7c7e57354010186bc9c73398d117a":[1,0,2,13,8,0],
 "class_terraria_1_1_mod_loader_1_1_assets_1_1_assembly_resources_content_source.html":[1,0,2,13,0,0],
 "class_terraria_1_1_mod_loader_1_1_assets_1_1_assembly_resources_content_source.html#a338d30f535e99a4b46c5cb1660647443":[1,0,2,13,0,0,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX84 =
 "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_dictionary_key_value_attribute.html":[1,0,2,13,1,13],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_dictionary_key_value_attribute.html#a008d479c1eb2c36d8eb223df450e852c":[1,0,2,13,1,13,0],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_dictionary_key_value_attribute.html#ac7d7cf55a875a125800e45fa0140bc94":[1,0,2,13,1,13,1],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_list_value_attribute.html":[1,0,2,13,1,14],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_list_value_attribute.html#a127d9096b62d5db4d11139f604880b5d":[1,0,2,13,1,14,1]
+"class_terraria_1_1_mod_loader_1_1_config_1_1_json_default_list_value_attribute.html":[1,0,2,13,1,14]
 };
