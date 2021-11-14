@@ -248,7 +248,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 
 		internal bool CsprojUpdateNeeded(string fileContents)
 		{
-			if (!fileContents.Contains("..\tModLoader.targets"))
+			if (!fileContents.Contains("..\\tModLoader.targets"))
 				return true;
 			if (!fileContents.Contains("<TargetFramework>net6.0</TargetFramework>"))
 				return true;
