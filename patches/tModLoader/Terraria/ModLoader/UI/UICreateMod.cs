@@ -233,7 +233,7 @@ namespace {modNameTrimmed}
 			return
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
-  <Import Project=""../tModLoader.targets"" />
+  <Import Project=""..\tModLoader.targets"" />
   <PropertyGroup>
     <AssemblyName>{modNameTrimmed}</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
@@ -248,7 +248,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 
 		internal bool CsprojUpdateNeeded(string fileContents)
 		{
-			if (!fileContents.Contains("../tModLoader.targets"))
+			if (!fileContents.Contains("..\tModLoader.targets"))
 				return true;
 			if (!fileContents.Contains("<TargetFramework>net6.0</TargetFramework>"))
 				return true;
