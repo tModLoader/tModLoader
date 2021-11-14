@@ -27,6 +27,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
+          fetch-depth: 10
 
       - name: Check out pull request code to separate folder
         uses: actions/checkout@v2
@@ -75,12 +76,18 @@ jobs:
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
 
+      # GitHub runners may have outdated .NET versions.
+      - name: Install .NET SDKs
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
       # Runs a set of commands using the runners shell
       - name: Build script
         if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
         shell: bash
         run: |
-          echo Downloading Terraraia Server zip
+          echo Downloading Terraria Server zip
           curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-1423.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
           echo Extracting Setup Secret Assets
@@ -135,6 +142,11 @@ jobs:
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
           echo ::endgroup::
           
+          echo ::group::Creating RecentGitHubCommits.txt
+          git log -10 --format=oneline
+          git log -10 --format=oneline > artifacts/Debug/RecentGitHubCommits.txt
+          git log -10 --format=oneline > artifacts/Release/RecentGitHubCommits.txt
+          echo ::endgroup::
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}

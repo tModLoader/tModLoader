@@ -27,6 +27,15 @@
  			snowTypes = new ushort[6];
  			snowTypes[0] = tileLookup[147];
  			snowTypes[1] = tileLookup[161];
+@@ -1555,7 +_,7 @@
+ 					int num4 = tile.liquidType();
+ 					num3 = liquidPosition + num4;
+ 				}
+-				else if (tile.wall > 0 && tile.wall < 316) {
++				else if (tile.wall > 0 && tile.wall < WallLoader.WallCount) {
+ 					int wall = tile.wall;
+ 					num3 = wallLookup[wall];
+ 					num = tile.wallColor();
 @@ -1626,7 +_,9 @@
  				}
  			}

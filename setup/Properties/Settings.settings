@@ -2,8 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Terraria.ModLoader.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SteamDir" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Program Files (x86)\Steam\steamapps\common\Terraria</Value>
+    <Setting Name="TerrariaSteamDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="TerrariaDiffCutoff" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)">2015-01-01</Value>

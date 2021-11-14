@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.Setup
 			Environment.Exit(1);
 #endif
 
-			return (bool) taskInterface.Invoke(new Func<bool>(SelectTerrariaDialog));
+			return (bool) taskInterface.Invoke(new Func<bool>(SelectAndSetTerrariaDirectoryDialog));
 		}
 
 		public override void Run()
