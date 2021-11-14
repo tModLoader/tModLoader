@@ -50,8 +50,6 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		private const string installedNetRefs = @"\dotnet\packs\Microsoft.NETCore.App.Ref\5.0.0\ref\net5.0";
-
 		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "Mod Sources");
 
 		internal static string[] FindModSources()
@@ -519,7 +517,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		}
 
 		private static IEnumerable<string> GetFrameworkReferences() {
-			var frameworkAssembliesPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) + installedNetRefs;
+			var frameworkAssembliesPath = Path.GetDirectoryName(typeof(File).Assembly.Location);
 			return FilterUnmanagedFrameworkDllsViaBlacklist(Directory.GetFiles(frameworkAssembliesPath, "*.dll", SearchOption.AllDirectories));
 		}
 

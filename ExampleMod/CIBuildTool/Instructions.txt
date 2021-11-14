@@ -9,12 +9,18 @@ Copy the following files from ExampleMod/CIBuildTool to YourModName/CIBuildTool
 2) SteamdCMD.exe
 3) PublishWorkshopItem.bat
 
+Modify your csproj:
+1) Remove "Import Project="../tmodloader.targets"
+2) Add lines
+  <Import Project="../tModLoader.targets" Condition="Exists('../tModLoader.targets')"/>
+  <Import Project="CIBuildTool/Mod Sources/tModLoader.targets" Condition="Exists('CIBuildTool/Mod Sources/tModLoader.targets')"/>
+
 Run SteamCMD, use the following commands, in order:
 1) login <username>
 2) set_steam_guard_code <code>
-This will generate two important files that you will than need to add to your CIBuildTool folder: 
+This will generate two important files that you will than need to add/verify/keep in your CIBuildTool folder: 
 1) <steam>\ssfn<HashOfNumbers> is the sentry file
-2) <steam>\config\config.vdf is the config
+2) <steam>\config is the config
 
 Finally, now that you have all the needed files, you can Invoke PublishWorkshopItem.bat in your CI to do Mod Building & Publishing, w/ parameters
 1)  Mandatory - Steam Account USERNAME 
