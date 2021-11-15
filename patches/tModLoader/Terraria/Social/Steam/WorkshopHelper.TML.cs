@@ -100,6 +100,7 @@ namespace Terraria.Social.Steam
 				}
 
 				if (GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0")) {
+					Utils.LogAndConsoleInfoMessage("Initializing Steam Game Server for Mod Browsing...");
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
 					SteamGameServer.LogOnAnonymous();

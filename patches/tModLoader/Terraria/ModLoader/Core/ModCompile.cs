@@ -181,10 +181,14 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 				// Check for if the mod version is increasing
 				Terraria.Social.Steam.WorkshopHelper.ModManager.Initialize();
+				Thread.Sleep(2000);
+
 				if (!Terraria.Social.Steam.WorkshopHelper.QueryHelper.FetchDownloadItems())
 					throw new Exception("Failed to create Steam Workshop Query Instance for checking version info");
 
-				if (properties.version <= new System.Version(Terraria.Social.Steam.WorkshopHelper.QueryHelper.FindModDownloadItem(modFolder).Version.Replace("v", "")))
+				var modOnline = Terraria.Social.Steam.WorkshopHelper.QueryHelper.FindModDownloadItem(Path.GetFileNameWithoutExtension(modFolder));
+
+				if (properties.version <= new System.Version(modOnline.Version.Replace("v", "")))
 					throw new Exception("Mod version not incremented. Publishing item blocked until mod version is incremented");
 
 				// Prep some common file paths
