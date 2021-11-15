@@ -29,6 +29,7 @@
 		"ModsModPacks": "Packs de Mods",
 		"ModsDisable": "Désactiver",
 		"ModsEnable": "Activer",
+		// "ModConfiguration": "Mod Configuration",
 		// "ModsOpenConfig": "Click to open config",
 		"ModOldWarning": "Mod obsolète, activer à vos risques et périls",
 		"ModDependencyClickTooltip": "Ce Mod dépend de : {0}\n (Cliquer pour activer)",

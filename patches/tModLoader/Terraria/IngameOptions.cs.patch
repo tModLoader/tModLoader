@@ -41,7 +41,7 @@
  			}
  
  			num10++;
-+			if (DrawLeftSide(sb, "Mod Configuration", num10, vector, vector2, leftScale, 0.7f, 0.8f, 0.01f)) {
++			if (DrawLeftSide(sb, Language.GetTextValue("tModLoader.ModConfiguration"), num10, vector, vector2, leftScale, 0.7f, 0.8f, 0.01f)) {
 +				leftHover = num10;
 +				if (flag4) {
 +					Close();
