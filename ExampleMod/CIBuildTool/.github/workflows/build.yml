@@ -1,0 +1,69 @@
+name: Build MusicSlot Mod
+
+# Controls when the action will run. 
+on:
+  # This workflow runs when a push to 1.4 or main branches happens
+  push:
+    branches: [1.4, main]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  setup:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check out base branch
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      # GitHub runners may have outdated .NET versions.
+      - name: Install .NET SDKs
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
+      # Runs a set of commands using the runners shell
+      - name: Build script
+        shell: bash
+        run: |
+          echo ::group::Prep Work
+          changeNotes=help
+          
+          ciToolDir="${{ github.workspace }}"/CIBuildTool
+          cd $ciToolDir
+          echo ::endgroup::
+          
+          echo ::group::Fetching tModLoader
+          echo off
+          #./steamcmd.exe +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +force_install_dir tMod "+app_update 1281930 -validate -beta public-1.4-alpha" +quit 
+          echo on
+          echo ::endgroup::
+          
+          echo ::group::Building Mod         
+          cd $ciToolDir/tMod
+          dotnet tmodloader.dll -server -build "${{ github.workspace }}" -tmlsavedirectory $ciToolDir -ciprep $changeNotes
+          cd ..
+          cd ..
+          echo ::endgroup::
+          
+          echo ::group::Publishing Mod
+          rm -r -f CIBuildTool/tMod
+          mkdir -p artifacts/Release
+          cp -r CIBuildTool/Mods/. artifacts/Release
+          
+          #./steamcmd.exe +login %username% +workshop_build_item publish.vdf +quit
+          echo ::endgroup::
+          
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Release Build
+          path: |
+            ./artifacts/Release
+            
+ 

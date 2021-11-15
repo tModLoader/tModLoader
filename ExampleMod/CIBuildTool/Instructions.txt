@@ -9,13 +9,17 @@ Copy the following files from ExampleMod/CIBuildTool to YourModName/CIBuildTool
 2) SteamdCMD.exe
 3) PublishWorkshopItem.bat
 
+FOR Github Actions Only:
+1) Copy the .github folder from ExampleMod/CIBuildTool to YourModName's root folder
+2) Configure you're github secrets
+
 Modify your csproj:
 1) Remove "Import Project="../tmodloader.targets"
 2) Add lines
   <Import Project="../tModLoader.targets" Condition="Exists('../tModLoader.targets')"/>
   <Import Project="CIBuildTool/Mod Sources/tModLoader.targets" Condition="Exists('CIBuildTool/Mod Sources/tModLoader.targets')"/>
 
-Run SteamCMD, use the following commands, in order:
+Run SteamCMD, use the following commands, in order, to get the Steam Sentry Files:
 1) login <username>
 2) set_steam_guard_code <code>
 This will generate two important files that you will than need to add/verify/keep in your CIBuildTool folder: 
