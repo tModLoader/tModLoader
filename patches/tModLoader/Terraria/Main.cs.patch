@@ -2711,7 +2711,7 @@
  
  					if (num39 == num37)
  						DrawDefenseCounter(num41, num42);
-+					*/
++					*/ 
  
  					Texture2D value4 = TextureAssets.InventoryTickOn.Value;
  					if (player[myPlayer].hideVisibleAccessory[num40])
@@ -4396,7 +4396,7 @@
 +				if (!Platform.IsWindows)
 -				PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
 +					PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
-+#endif
++#endif 
 +
  				if (!graphics.IsFullScreen) {
  					num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
