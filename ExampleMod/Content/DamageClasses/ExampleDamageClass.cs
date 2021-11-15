@@ -54,7 +54,7 @@ namespace ExampleMod.Content.DamageClasses
 			// You'll see these used all around in referencce to vanilla classes and our example class here.
 		}
 
-		// This method lets you decide whether or not your damage class can use standard critical strike calculations.
+		// This property lets you decide whether or not your damage class can use standard critical strike calculations.
 		// Note that setting it to false will also prevent the critical strike chance tooltip line from being shown.
 		// This prevention will overrule anything set by ShowStatTooltipLine, so be careful!
 		public override bool AllowStandardCrits => true;
