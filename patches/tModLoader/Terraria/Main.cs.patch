@@ -2210,7 +2210,7 @@
  
  				bool flag = false;
 -				if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9))
-+				if (GoreLoader.DrawBackGore(gore[i]))
++				if (GoreID.Sets.DrawBehind[gore[i].type] && (gore[i].type >= GoreID.Count || gore[i].frame is < 7 or > 9))
  					flag = true;
  
  				if (flag) {
@@ -2233,7 +2233,7 @@
  					continue;
  
 -				if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9)) {
-+				if (GoreLoader.DrawBackGore(gore[i])) {
++				if (GoreID.Sets.DrawBehind[gore[i].type] && (gore[i].type >= GoreID.Count || gore[i].frame is < 7 or > 9)) {
  					drawBackGore = true;
  					continue;
  				}

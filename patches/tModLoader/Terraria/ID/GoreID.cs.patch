@@ -5,9 +5,11 @@
 +
  namespace Terraria.ID
  {
- 	public static class GoreID
+-	public static class GoreID
++	public static partial class GoreID
  	{
- 		public static class Sets
+-		public static class Sets
++		public static partial class Sets
  		{
 -			public static SetFactory Factory = new SetFactory(1270);
 +			public static SetFactory Factory = new SetFactory(GoreLoader.GoreCount);
