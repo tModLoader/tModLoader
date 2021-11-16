@@ -3,11 +3,12 @@
   <Import Project="../../WorkspaceInfo.targets" />
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <Version>1.4.1.2</Version>
+    <Version>1.4.2.3</Version>
     <Company>Re-Logic</Company>
-    <Copyright>Copyright © 2020 Re-Logic</Copyright>
+    <Copyright>Copyright © 2021 Re-Logic</Copyright>
     <RootNamespace>Terraria</RootNamespace>
-    <OutputName>Terraria_LegacyNetFramework</OutputName>
+    <OutputName>Terraria</OutputName>
+    <AssemblyName>Terraria</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
     <OutputType>Exe</OutputType>
@@ -22,15 +23,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CsvHelper" />
-    <Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
+    <Reference Include="Libraries/net40/FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
     <Reference Include="Ionic.Zip.CF" />
-    <Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
+    <Reference Include="Libraries/net40/MP3Sharp.dll" />
     <Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
     <Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
     <Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
     <Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
     <Reference Include="Newtonsoft.Json" />
-    <Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
+    <Reference Include="NVorbis" />
     <Reference Include="RailSDK.Net" />
     <ProjectReference Include="../ReLogic/ReLogic_LegacyNetFramework.csproj" />
     <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">

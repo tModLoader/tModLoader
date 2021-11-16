@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Graphics/Capture/CaptureCamera.cs
 +++ src/Terraria/Terraria/Graphics/Capture/CaptureCamera.cs
-@@ -2,8 +_,13 @@
+@@ -2,18 +_,31 @@
  using Microsoft.Xna.Framework.Graphics;
  using System;
  using System.Collections.Generic;
@@ -14,7 +14,13 @@
  using System.IO;
  using System.Runtime.InteropServices;
  using System.Threading;
-@@ -14,6 +_,11 @@
+ using Terraria.Graphics.Effects;
+ using Terraria.Localization;
++#if !NETCORE && !XNA
++using Terraria.Utilities;
++#endif
+ 
+ namespace Terraria.Graphics.Capture
  {
  	internal class CaptureCamera
  	{
@@ -73,7 +79,7 @@
  
  				return true;
  			}
-@@ -217,25 +_,53 @@
+@@ -217,25 +_,54 @@
  			}
  		}
  
@@ -82,7 +88,7 @@
 +			using (FileStream fileStream = File.Create(filename)) {
 +#if !NETCORE
 +				PlatformUtilities.SavePng(fileStream, width, height, width, height, _outputData);
-+#endif
++#else
 +				if (!Main.dedServ) {
 +					//var tex = new Texture2D(Main.graphics.GraphicsDevice, width, height);
 +					//tex.SetData(_outputData);
@@ -90,6 +96,7 @@
 +					var image = Image.LoadPixelData<Rgba32>(_outputData, width, height);
 +					image.SaveAsPng(fileStream);
 +				}
++#endif
 +			}
 +		}
 +#endif
