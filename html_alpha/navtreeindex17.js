@@ -1,5 +1,8 @@
 var NAVTREEINDEX17 =
 {
+"class_terraria_1_1_game_content_1_1_tree_tops_info_1_1_area_id.html#ac14129c7b8f067230acf491989bea3b1":[1,0,2,5,67,0,14],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_helper.html":[1,0,2,5,21,0,0],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_helper.html#a48d6d880a97042dde184ab7836bec8f4":[1,0,2,5,21,0,0,2],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_helper.html#a86a983e693c05a77dee27fb857000f35":[1,0,2,5,21,0,0,1],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_helper.html#aa4c5639d5c4329c5d8c65ade9d030a32":[1,0,2,5,21,0,0,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_system.html":[1,0,2,5,21,0,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX17 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_character_name_button.html#a0e658fe0299f45c9b91237dc574832e4":[1,0,2,5,21,2,21,8],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_character_name_button.html#a0f304e71a2437f2220031ece8418b8c0":[1,0,2,5,21,2,21,4],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_character_name_button.html#a3fb47d1fb20d11198733d78168e2b348":[1,0,2,5,21,2,21,5],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_character_name_button.html#a4004205a277b17b8f0f06ca2b68d63fd":[1,0,2,5,21,2,21,7],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_character_name_button.html#a60c9be12d9fe3878c888c8a6a1ac86c9":[1,0,2,5,21,2,21,1],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_character_name_button.html#a759f3848da5332896d7ec4baaf414316":[1,0,2,5,21,2,21,3],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_character_name_button.html#a853f89fea3d0f8d46e6ef37b4bc822bb":[1,0,2,5,21,2,21,6]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_character_name_button.html#a4004205a277b17b8f0f06ca2b68d63fd":[1,0,2,5,21,2,21,7]
 };

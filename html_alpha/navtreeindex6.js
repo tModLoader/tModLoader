@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_flavor_text_bestiary_info_element.html#a9c6ab37110f6bf833c994712c842d5ae":[1,0,2,5,2,15,1],
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_gold_critter_u_i_collection_info_provider.html":[1,0,2,5,2,16],
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_gold_critter_u_i_collection_info_provider.html#a0897ebc790adcc633b62554bd0ea5164":[1,0,2,5,2,16,1],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_gold_critter_u_i_collection_info_provider.html#afb11ae26d5d494864c1590d8d4564fb8":[1,0,2,5,2,16,0],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_highest_of_multiple_u_i_collection_info_provider.html":[1,0,2,5,2,17],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_highest_of_multiple_u_i_collection_info_provider.html#a40abb8238dabb08e2fa156735a395bfc":[1,0,2,5,2,17,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html":[1,0,2,5,3,1,2],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a234633921201fb41c39415c1d6726670":[1,0,2,5,3,1,2,8],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a243220f796223c7452b678ca9517fd91":[1,0,2,5,3,1,2,7],
-"class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a4c740c25cee1c0d16dfd4c50b62022da":[1,0,2,5,3,1,2,0],
-"class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a58ee81eb790a6f16d2e5681d81cac6bf":[1,0,2,5,3,1,2,10],
-"class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a5ef4160b1ff3713f2d9e335f04803a73":[1,0,2,5,3,1,2,1],
-"class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a62517df0ef08faf980b05dcc4c12502d":[1,0,2,5,3,1,2,3]
+"class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a4c740c25cee1c0d16dfd4c50b62022da":[1,0,2,5,3,1,2,0]
 };

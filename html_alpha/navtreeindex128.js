@@ -1,5 +1,7 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#afbf2c9dfdb376ac34d2aa55ae426a1f4":[1,0,2,74,0,1],
+"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html":[1,0,2,23,10],
 "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#ab83da6d68a7168365ec414b95123af88":[1,0,2,23,10,1],
 "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#adda784998fb4d1e2284281f6b2d6e7aa":[1,0,2,23,10,0],
 "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#aebbffc4fe26f1653e7b5effe581adcff":[1,0,2,23,10,2],
@@ -22,5 +24,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ab4a41891b488a8e30e51e30da3da83e6":[1,0,2,77,1,4],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ac026067dd86556b03343af3accafb339":[1,0,2,77,1,9],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#af29be99c6e7eeb85d0fd385f07a3ebd6":[1,0,2,77,1,5],
-"structnativefiledialog_1_1nfdpathset__t.html":[1,0,32,0]
+"structnativefiledialog_1_1nfdpathset__t.html":[1,0,33,0]
 };

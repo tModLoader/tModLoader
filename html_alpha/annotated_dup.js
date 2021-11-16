@@ -1594,6 +1594,9 @@ var annotated_dup =
     [ "Exception", "class_exception.html", null ],
     [ "Game", "class_game.html", null ],
     [ "GlobalType", "class_global_type.html", null ],
+    [ "GoreID", "class_gore_i_d.html", [
+      [ "Sets", "class_gore_i_d_1_1_sets.html", "class_gore_i_d_1_1_sets" ]
+    ] ],
     [ "IAssetReader", "class_i_asset_reader.html", null ],
     [ "ICloneable", "class_i_cloneable.html", null ],
     [ "IComparable", "class_i_comparable.html", null ],

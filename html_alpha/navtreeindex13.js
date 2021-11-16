@@ -1,5 +1,8 @@
 var NAVTREEINDEX13 =
 {
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_plantera_shader.html":[1,0,2,5,17,32],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_plantera_shader.html#ada9fdd5a6727d67c6766fd2a8edd81b2":[1,0,2,5,17,32,0],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_queen_bee_shader.html":[1,0,2,5,17,33],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_queen_bee_shader.html#a822207922c70693658c601b1d77fa05f":[1,0,2,5,17,33,0],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_queen_slime_shader.html":[1,0,2,5,17,34],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_queen_slime_shader.html#a2d4588dbb334f2358443b6a48e542a6f":[1,0,2,5,17,34,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX13 =
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_emote_segment.html#ac1eebe688ff4719f7c11e9ad912f80f8":[1,0,2,5,19,0,5,1,0],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_localized_text_segment.html":[1,0,2,5,19,0,5,2],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_localized_text_segment.html#a2feb8c83f68562001ed1b49c363bd461":[1,0,2,5,19,0,5,2,0],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_localized_text_segment.html#a3f8f0117bd6e1fb19ef217761a3b6cd4":[1,0,2,5,19,0,5,2,2],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_localized_text_segment.html#a43537572ca46306c4c8533fa74e920b8":[1,0,2,5,19,0,5,2,1],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_localized_text_segment.html#a7b5c3f5dd4ab7f964476989ae6629303":[1,0,2,5,19,0,5,2,3],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_loose_sprite.html":[1,0,2,5,19,0,5,3]
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_localized_text_segment.html#a3f8f0117bd6e1fb19ef217761a3b6cd4":[1,0,2,5,19,0,5,2,2]
 };

@@ -1,5 +1,8 @@
 var NAVTREEINDEX5 =
 {
+"class_terraria_1_1_game_content_1_1_asset_source_controller.html#a71c04f607d1eab1934aa4bc95d38c3d6":[1,0,2,5,25,1],
+"class_terraria_1_1_game_content_1_1_asset_source_controller.html#a941d7f4cc2d3d62f4bd02ed71b60036a":[1,0,2,5,25,5],
+"class_terraria_1_1_game_content_1_1_asset_source_controller.html#ac0acece9aa69b2c2d30e2f4c6af0e0ad":[1,0,2,5,25,3],
 "class_terraria_1_1_game_content_1_1_asset_source_controller.html#aeb4e6e72e5ac4724032ebf16db3a7690":[1,0,2,5,25,2],
 "class_terraria_1_1_game_content_1_1_asset_source_controller.html#af0fe693613a93a1e0ff52d94e8147ddc":[1,0,2,5,25,0],
 "class_terraria_1_1_game_content_1_1_background_change_flash_info.html":[1,0,2,5,26],
@@ -246,8 +249,5 @@ var NAVTREEINDEX5 =
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_unlock_state.html#a64f39b87036f4938c8831ad9389d1c5d":[1,0,2,5,2,14,4,3],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters_1_1_by_unlock_state.html#afab230ae78560cf1a461ba2af737faf5":[1,0,2,5,2,14,4,0],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_flavor_text_bestiary_info_element.html":[1,0,2,5,2,15],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_flavor_text_bestiary_info_element.html#a788680407b557785ecf74f3e7e44c867":[1,0,2,5,2,15,0],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_flavor_text_bestiary_info_element.html#a9c6ab37110f6bf833c994712c842d5ae":[1,0,2,5,2,15,1],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_gold_critter_u_i_collection_info_provider.html":[1,0,2,5,2,16],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_gold_critter_u_i_collection_info_provider.html#a0897ebc790adcc633b62554bd0ea5164":[1,0,2,5,2,16,1]
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_flavor_text_bestiary_info_element.html#a788680407b557785ecf74f3e7e44c867":[1,0,2,5,2,15,0]
 };

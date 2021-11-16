@@ -1,5 +1,8 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken.html#a6abf23113f218fd57cce4b6d878f34d4":[1,0,2,5,10,5,51,1],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken.html#a6dca07084cbb59ca6263505bff7b4724":[1,0,2,5,10,5,51,2],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken.html#ad7f2fc812043d0316a29b0654000200d":[1,0,2,5,10,5,51,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_yelets.html":[1,0,2,5,10,5,52],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_yelets.html#a395f5fabeb6c1f2f27bb676fa1306d71":[1,0,2,5,10,5,52,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_yelets.html#a4ea3a8e2d9fd46b2958ee8a3a326be32":[1,0,2,5,10,5,52,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX11 =
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_liquid_module.html#aaec723d86b78ec88ebb8f95b79f3682b":[1,0,2,5,14,6,2],
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_liquid_module.html#abaa34c012047ccba2f86f6dcfacdfcd9":[1,0,2,5,14,6,1],
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_liquid_module.html#acb7217db634f7ba2388e706cb43180be":[1,0,2,5,14,6,3],
-"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_particles_module.html":[1,0,2,5,14,7],
-"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_particles_module.html#a8cff58538be67e94a73cb957202e199f":[1,0,2,5,14,7,0],
-"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_particles_module.html#abc25519a88c755eeee3b887349125ff5":[1,0,2,5,14,7,1],
-"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_ping_module.html":[1,0,2,5,14,8]
+"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_particles_module.html":[1,0,2,5,14,7]
 };

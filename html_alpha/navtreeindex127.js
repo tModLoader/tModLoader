@@ -1,5 +1,7 @@
 var NAVTREEINDEX127 =
 {
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a3ca2535d11081e71301b32f291329055":[1,0,2,13,120,13],
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a675f1ac3b085bb8785c7519121ab2c21":[1,0,2,13,120,1],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a6f106aed6cd8ea4fb3efa22960fa5500":[1,0,2,13,120,15],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a894868167c60f17bea09fba0aea811a8":[1,0,2,13,120,6],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8eb193778914243d9a2a00f08b1bcf67":[1,0,2,13,120,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html":[1,0,2,74,0],
 "struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#a3585492e96a7ea9e100fe283e21d3761":[1,0,2,74,0,0],
 "struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#aa6fbcb750bdd0bd7a7937f1d34692e33":[1,0,2,74,0,2],
-"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#af6ed87933efa40a3fc12f8313da4903f":[1,0,2,74,0,3],
-"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#afbf2c9dfdb376ac34d2aa55ae426a1f4":[1,0,2,74,0,1],
-"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html":[1,0,2,23,10]
+"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#af6ed87933efa40a3fc12f8313da4903f":[1,0,2,74,0,3]
 };

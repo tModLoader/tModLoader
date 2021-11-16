@@ -1,5 +1,8 @@
 var NAVTREEINDEX12 =
 {
+"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_particles_module.html#a8cff58538be67e94a73cb957202e199f":[1,0,2,5,14,7,0],
+"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_particles_module.html#abc25519a88c755eeee3b887349125ff5":[1,0,2,5,14,7,1],
+"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_ping_module.html":[1,0,2,5,14,8],
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_ping_module.html#a82eddccf4dad3018b1d4d080f97836fb":[1,0,2,5,14,8,1],
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_ping_module.html#acdee7256b697765e018d478649bdc49c":[1,0,2,5,14,8,0],
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_teleport_pylon_module.html":[1,0,2,5,14,9],
@@ -246,8 +249,5 @@ var NAVTREEINDEX12 =
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_pillar_shader.html":[1,0,2,5,17,30],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_pillar_shader.html#afd8747f65952ee778c122a5a84335154":[1,0,2,5,17,30,0],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_pirate_invasion_shader.html":[1,0,2,5,17,31],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_pirate_invasion_shader.html#a9ece8626d08e6a7ff32bb53790fee527":[1,0,2,5,17,31,0],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_plantera_shader.html":[1,0,2,5,17,32],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_plantera_shader.html#ada9fdd5a6727d67c6766fd2a8edd81b2":[1,0,2,5,17,32,0],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_queen_bee_shader.html":[1,0,2,5,17,33]
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_pirate_invasion_shader.html#a9ece8626d08e6a7ff32bb53790fee527":[1,0,2,5,17,31,0]
 };

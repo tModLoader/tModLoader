@@ -1,5 +1,8 @@
 var NAVTREEINDEX9 =
 {
+"class_terraria_1_1_game_content_1_1_dyes_1_1_legacy_hair_shader_data.html":[1,0,2,5,6,0],
+"class_terraria_1_1_game_content_1_1_dyes_1_1_legacy_hair_shader_data.html#a4852e8f66e562f5f4e396eb9c6ef1f73":[1,0,2,5,6,0,2],
+"class_terraria_1_1_game_content_1_1_dyes_1_1_legacy_hair_shader_data.html#a4f7fa26bd3a04106fd5985e61f7cbc42":[1,0,2,5,6,0,1],
 "class_terraria_1_1_game_content_1_1_dyes_1_1_legacy_hair_shader_data.html#a72e8aae4bfaea06b2a9d85db92029825":[1,0,2,5,6,0,3],
 "class_terraria_1_1_game_content_1_1_dyes_1_1_legacy_hair_shader_data.html#a88b9b1399ab180e83e08611190a7de57":[1,0,2,5,6,0,0],
 "class_terraria_1_1_game_content_1_1_dyes_1_1_reflective_armor_shader_data.html":[1,0,2,5,6,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX9 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_doesnt_fill_conditions.html#a821648c6bab4beb2db18e7d6c47399e0":[1,0,2,5,10,0,0,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_doesnt_fill_conditions.html#a852f874cc848a5e166c62c84c9783d0d":[1,0,2,5,10,0,0,4],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_doesnt_fill_conditions.html#ab09c21a6d03ee73890aefed9e00eba51":[1,0,2,5,10,0,0,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_doesnt_fill_conditions.html#af03545e58b13ef016a642d25432b95be":[1,0,2,5,10,0,0,0],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_failed_random_roll.html":[1,0,2,5,10,0,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_failed_random_roll.html#a35b0f7faeb20a845d5ce6f9de00654cc":[1,0,2,5,10,0,1,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_failed_random_roll.html#a5522788db5703c51c9a45cb425f6588e":[1,0,2,5,10,0,1,4]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_doesnt_fill_conditions.html#af03545e58b13ef016a642d25432b95be":[1,0,2,5,10,0,0,0]
 };

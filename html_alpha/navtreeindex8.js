@@ -1,5 +1,8 @@
 var NAVTREEINDEX8 =
 {
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_time_rate.html#a16ea19add3967712f783ca71fa25dabd":[1,0,2,5,4,2,12,7],
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_time_rate.html#a19d1c0d344d451120237289214c314f9":[1,0,2,5,4,2,12,4],
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_time_rate.html#a38d9954ead6615403a21df13a5a6e9a2":[1,0,2,5,4,2,12,2],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_time_rate.html#a6ad235fd4f07399b98b8693153648f1b":[1,0,2,5,4,2,12,0],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_time_rate.html#a7cf302c5291ffd3f172954af75864519":[1,0,2,5,4,2,12,1],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_time_rate.html#ab7686d6107da419f1d5c1c1bb288adf6":[1,0,2,5,4,2,12,6],
@@ -246,8 +249,5 @@ var NAVTREEINDEX8 =
 "class_terraria_1_1_game_content_1_1_drawing_1_1_wind_grid.html":[1,0,2,5,5,4],
 "class_terraria_1_1_game_content_1_1_drawing_1_1_wind_grid.html#a4e944989e334b7647ac0f394a85b1f11":[1,0,2,5,5,4,0],
 "class_terraria_1_1_game_content_1_1_drawing_1_1_wind_grid.html#a97e0726a1389449bfc18d149090773ad":[1,0,2,5,5,4,1],
-"class_terraria_1_1_game_content_1_1_drawing_1_1_wind_grid.html#acf4573ce3e76c5fb775307c183c50b3c":[1,0,2,5,5,4,2],
-"class_terraria_1_1_game_content_1_1_dyes_1_1_legacy_hair_shader_data.html":[1,0,2,5,6,0],
-"class_terraria_1_1_game_content_1_1_dyes_1_1_legacy_hair_shader_data.html#a4852e8f66e562f5f4e396eb9c6ef1f73":[1,0,2,5,6,0,2],
-"class_terraria_1_1_game_content_1_1_dyes_1_1_legacy_hair_shader_data.html#a4f7fa26bd3a04106fd5985e61f7cbc42":[1,0,2,5,6,0,1]
+"class_terraria_1_1_game_content_1_1_drawing_1_1_wind_grid.html#acf4573ce3e76c5fb775307c183c50b3c":[1,0,2,5,5,4,2]
 };

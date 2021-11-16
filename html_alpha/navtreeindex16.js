@@ -1,5 +1,8 @@
 var NAVTREEINDEX16 =
 {
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_food_platter.html#ab824c4ec25da97eb7b211ec27d652546":[1,0,2,5,20,3,2],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_food_platter.html#acdf021da1c7878c45f742ad1a15a6efe":[1,0,2,5,20,3,11],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_food_platter.html#ad75ce521d4d082c4de8f9c052dca9726":[1,0,2,5,20,3,23],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_food_platter.html#ae1c70c9ef7b5e9f05bd7e5a3db54e8be":[1,0,2,5,20,3,22],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_food_platter.html#aff611aa6ab6f82385240cc331d654c90":[1,0,2,5,20,3,6],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html":[1,0,2,5,20,4],
@@ -246,8 +249,5 @@ var NAVTREEINDEX16 =
 "class_terraria_1_1_game_content_1_1_tree_tops_info_1_1_area_id.html#a832910d743fe750a72b6442fe6b2f6ec":[1,0,2,5,67,0,8],
 "class_terraria_1_1_game_content_1_1_tree_tops_info_1_1_area_id.html#a965efe71692b40e68680634d0978e304":[1,0,2,5,67,0,4],
 "class_terraria_1_1_game_content_1_1_tree_tops_info_1_1_area_id.html#aa2c420e2b9ff550ee897b866e923cc95":[1,0,2,5,67,0,10],
-"class_terraria_1_1_game_content_1_1_tree_tops_info_1_1_area_id.html#aacc7532547f2578af21baeec0393a0f7":[1,0,2,5,67,0,3],
-"class_terraria_1_1_game_content_1_1_tree_tops_info_1_1_area_id.html#ac14129c7b8f067230acf491989bea3b1":[1,0,2,5,67,0,14],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_helper.html":[1,0,2,5,21,0,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_helper.html#a48d6d880a97042dde184ab7836bec8f4":[1,0,2,5,21,0,0,2]
+"class_terraria_1_1_game_content_1_1_tree_tops_info_1_1_area_id.html#aacc7532547f2578af21baeec0393a0f7":[1,0,2,5,67,0,3]
 };

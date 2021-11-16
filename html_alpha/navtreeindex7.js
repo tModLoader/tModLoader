@@ -1,5 +1,8 @@
 var NAVTREEINDEX7 =
 {
+"class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a58ee81eb790a6f16d2e5681d81cac6bf":[1,0,2,5,3,1,2,10],
+"class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a5ef4160b1ff3713f2d9e335f04803a73":[1,0,2,5,3,1,2,1],
+"class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a62517df0ef08faf980b05dcc4c12502d":[1,0,2,5,3,1,2,3],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a752e00a072e4b58b3e36ae70fbd9bd8a":[1,0,2,5,3,1,2,6],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#a875d6974650618111869c9116653cec7":[1,0,2,5,3,1,2,9],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html#aee50c39c3283e28217f4501adc9c6bbe":[1,0,2,5,3,1,2,5],
@@ -246,8 +249,5 @@ var NAVTREEINDEX7 =
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_rain_power.html#a290bcb47140d91c4747b64baa6cac70d":[1,0,2,5,4,2,11,2],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_rain_power.html#a98fa0f2e57a63b8c09e19098ec2de201":[1,0,2,5,4,2,11,1],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_rain_power.html#ae3d05a88e31f073f51a88bd8388f15c1":[1,0,2,5,4,2,11,0],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_time_rate.html":[1,0,2,5,4,2,12],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_time_rate.html#a16ea19add3967712f783ca71fa25dabd":[1,0,2,5,4,2,12,7],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_time_rate.html#a19d1c0d344d451120237289214c314f9":[1,0,2,5,4,2,12,4],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_time_rate.html#a38d9954ead6615403a21df13a5a6e9a2":[1,0,2,5,4,2,12,2]
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_modify_time_rate.html":[1,0,2,5,4,2,12]
 };

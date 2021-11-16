@@ -1,5 +1,8 @@
 var NAVTREEINDEX10 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_failed_random_roll.html":[1,0,2,5,10,0,1],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_failed_random_roll.html#a35b0f7faeb20a845d5ce6f9de00654cc":[1,0,2,5,10,0,1,2],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_failed_random_roll.html#a5522788db5703c51c9a45cb425f6588e":[1,0,2,5,10,0,1,4],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_failed_random_roll.html#a5fb89ed5addb8b572b2ba575c3d9cb32":[1,0,2,5,10,0,1,3],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_failed_random_roll.html#a75ecb97af7e4100952d4bd990cbf9237":[1,0,2,5,10,0,1,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains_1_1_try_if_failed_random_roll.html#aa12e46a00f41d2bce8bd8786060fee05":[1,0,2,5,10,0,1,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX10 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_hel_fire.html#a20ecd0a4dd102761a4eaf11795dfabc0":[1,0,2,5,10,5,50,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_hel_fire.html#a2d59cb829b58cc1dbfc065fa4ce1f2de":[1,0,2,5,10,5,50,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_hel_fire.html#a4014c8ca0f91ae84e0ecd1e628e2afbe":[1,0,2,5,10,5,50,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken.html":[1,0,2,5,10,5,51],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken.html#a6abf23113f218fd57cce4b6d878f34d4":[1,0,2,5,10,5,51,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken.html#a6dca07084cbb59ca6263505bff7b4724":[1,0,2,5,10,5,51,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken.html#ad7f2fc812043d0316a29b0654000200d":[1,0,2,5,10,5,51,0]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken.html":[1,0,2,5,10,5,51]
 };

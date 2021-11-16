@@ -1,5 +1,8 @@
 var NAVTREEINDEX21 =
 {
+"class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i_1_1_settings.html#a387f2c21e461f99c0c17986ca1f0edcd":[1,0,2,5,21,24,0,2],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i_1_1_settings.html#a5cac2efaa4647a50cc764269cbf7d1c9":[1,0,2,5,21,24,0,4],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i_1_1_settings.html#af4a958ef01be73752aeb72b5975264a2":[1,0,2,5,21,24,0,5],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i_1_1_wires_radial.html":[1,0,2,5,21,24,1],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i_1_1_wires_radial.html#a2519b17d781bc860583a0157f64f28d7":[1,0,2,5,21,24,1,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i_1_1_wires_radial.html#a2910f42c13013ea15ec681e584f4a241":[1,0,2,5,21,24,1,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX21 =
 "class_terraria_1_1_game_input_1_1_triggers_pack.html#a1f283d414fc3825b834e992c4ee61ca6":[1,0,2,6,6,3],
 "class_terraria_1_1_game_input_1_1_triggers_pack.html#a506441674d08735eb366dea477fa9aab":[1,0,2,6,6,2],
 "class_terraria_1_1_game_input_1_1_triggers_pack.html#a651d511b58f6832ae9fc41cdeb89adff":[1,0,2,6,6,5],
-"class_terraria_1_1_game_input_1_1_triggers_pack.html#a6ecc6491125c12535b0cbbd2a698bf97":[1,0,2,6,6,0],
-"class_terraria_1_1_game_input_1_1_triggers_pack.html#aa31bbb1c2805e045d258440cafe6405a":[1,0,2,6,6,4],
-"class_terraria_1_1_game_input_1_1_triggers_set.html":[1,0,2,6,7],
-"class_terraria_1_1_game_input_1_1_triggers_set.html#a057b00cfef1eb73bb65dbced2c7fb215":[1,0,2,6,7,29]
+"class_terraria_1_1_game_input_1_1_triggers_pack.html#a6ecc6491125c12535b0cbbd2a698bf97":[1,0,2,6,6,0]
 };

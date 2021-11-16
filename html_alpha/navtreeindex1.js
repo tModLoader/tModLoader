@@ -1,5 +1,8 @@
 var NAVTREEINDEX1 =
 {
+"class_terraria_1_1_audio_1_1_legacy_sound_player.html#a6fee64e9a5e8942de0a461062c93fd99":[1,0,2,1,8,17],
+"class_terraria_1_1_audio_1_1_legacy_sound_player.html#a74e74e6915368e3d60b029fdcc9bc9d6":[1,0,2,1,8,21],
+"class_terraria_1_1_audio_1_1_legacy_sound_player.html#a7cd6f67e51eea41c8b1b35c9c1e57e41":[1,0,2,1,8,72],
 "class_terraria_1_1_audio_1_1_legacy_sound_player.html#a7e9a13ec34e8b85beba8636d09429b9a":[1,0,2,1,8,53],
 "class_terraria_1_1_audio_1_1_legacy_sound_player.html#a8014169263ea012f043cf35caafce42c":[1,0,2,1,8,31],
 "class_terraria_1_1_audio_1_1_legacy_sound_player.html#a827a1a2b7c36681e565e90ede27c3924":[1,0,2,1,8,12],
@@ -246,8 +249,5 @@ var NAVTREEINDEX1 =
 "class_terraria_1_1_cinematics_1_1_film.html#a7702d4453b544d803224e0b076acd922":[1,0,2,3,2,4],
 "class_terraria_1_1_cinematics_1_1_film.html#a7f2f17a67ba64e923a5884b0ef9192af":[1,0,2,3,2,0],
 "class_terraria_1_1_cinematics_1_1_film.html#a9c5e6c42bf7a3d9f77ad40e71a1e1cd5":[1,0,2,3,2,3],
-"class_terraria_1_1_cinematics_1_1_film.html#aa0e04a37c15f98037daee56c7f0c55e8":[1,0,2,3,2,1],
-"class_terraria_1_1_cinematics_1_1_film.html#aa7b38c48e4374f94527ffdde7c95282f":[1,0,2,3,2,8],
-"class_terraria_1_1_cinematics_1_1_film.html#ace3067231b700bebec15864de0a14201":[1,0,2,3,2,14],
-"class_terraria_1_1_cinematics_1_1_film.html#addae08e726f7b3903241320d1222da39":[1,0,2,3,2,15]
+"class_terraria_1_1_cinematics_1_1_film.html#aa0e04a37c15f98037daee56c7f0c55e8":[1,0,2,3,2,1]
 };

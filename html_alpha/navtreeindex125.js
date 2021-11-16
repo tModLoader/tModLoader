@@ -1,5 +1,7 @@
 var NAVTREEINDEX125 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#adb252200069b371b8ed735d2f5248bf4":[1,0,2,4,36,18],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#adbbd979aecef4148a6dce344913075e7":[1,0,2,4,36,35],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#add2766a654055670067935fcad1b71b2":[1,0,2,4,36,50],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#adf35b5e517d033e64185230f1782d1d9":[1,0,2,4,36,6],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ae22fb747b903b3d76b3430ad70bafcd6":[1,0,2,4,36,110],
@@ -247,7 +249,5 @@ var NAVTREEINDEX125 =
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html#af5f5237c763f284c127b544212339446":[1,0,2,5,62,4,5],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html#afa195b742fa4e7be959e38df1ab8c864":[1,0,2,5,62,4,7],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html":[1,0,2,5,62,7],
-"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a0f84c6f28b1ccf50441712a85519bbae":[1,0,2,5,62,7,2],
-"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a111b90d756298e453c144c3d007ba83d":[1,0,2,5,62,7,1],
-"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a2ba671a399a0112cd84b43bd75fb9f40":[1,0,2,5,62,7,6]
+"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a0f84c6f28b1ccf50441712a85519bbae":[1,0,2,5,62,7,2]
 };
