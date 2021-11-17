@@ -416,13 +416,16 @@
  			if (Configuration.Save())
  				return PlayerInput.Save();
  
-@@ -3215,7 +_,12 @@
+@@ -3215,7 +_,15 @@
  					screenBorderlessPendingResizes = 1;
  
  				SetDisplayMode(currentValue2, currentValue3, fullscreen: false);
 -				TryPickingDefaultUIScale(currentValue3);
-+				TryPickingDefaultUIScale(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
 +			}
++			else {
++				FullscreenStartup();
++			}
++			TryPickingDefaultUIScale(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
 +
 +			if (Main.dedServ) {
 +				ModLoader.ModLoader.LoadConfiguration();
@@ -443,7 +446,7 @@
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue != 238)
-+			if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
++			if (true || currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
 +			}
@@ -3485,6 +3488,15 @@
  					array9[num24] = Lang.menu[5].Value;
  					if (selectedMenu == num24 || flag5) {
  						flag5 = false;
+@@ -37659,7 +_,7 @@
+ 
+ 						num31 = (num31 + 1) % numDisplayModes;
+ 						PendingResolutionWidth = displayWidth[num31];
+-						PendingResolutionHeight = displayHeight[num31];
++						PendingResolutionHeight = BorderedHeight(displayHeight[num31], graphics.IsFullScreen);
+ 					}
+ 
+ 					num30++;
 @@ -38363,7 +_,12 @@
  						}
  					}
@@ -4388,6 +4400,16 @@
  		}
  
  		public static int DamageVar(float dmg, float luck = 0f) {
+@@ -50393,7 +_,8 @@
+ 		}
+ 
+ 		public static void SetFullScreen(bool fullscreen) {
+-			SetDisplayMode(PendingResolutionWidth, PendingResolutionHeight, fullscreen);
++			// TML: Make the fullscreen reset to windowed display borders when downsizing
++			SetDisplayMode(PendingResolutionWidth, BorderedHeight(PendingResolutionHeight, fullscreen), fullscreen);
+ 		}
+ 
+ 		public static void SetResolution(int width, int height) {
 @@ -50438,7 +_,11 @@
  					width = (int)(num2 * (float)height);
  				}

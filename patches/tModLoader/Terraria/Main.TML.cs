@@ -37,6 +37,8 @@ namespace Terraria
 		public static Color MouseTextColorReal => new Color(mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f);
 		public static bool PlayerLoaded => CurrentFrameFlags.ActivePlayersCount > 0;
 
+		private static int BorderedHeight(int height, bool state) => (int)(height * (state ? 1 : 0.95625));
+
 
 		private static Player _currentPlayerOverride;
 
