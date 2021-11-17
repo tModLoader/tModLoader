@@ -179,30 +179,34 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				Program.LaunchParameters.TryGetValue("-ciprep", out string changeNotes);
 				var properties = BuildProperties.ReadBuildFile(modFolder);
 
-				// Check for if the mod version is increasing
-				Terraria.Social.Steam.WorkshopHelper.ModManager.Initialize();
-				Thread.Sleep(2000);
-
-				if (!Terraria.Social.Steam.WorkshopHelper.QueryHelper.FetchDownloadItems())
-					throw new Exception("Failed to create Steam Workshop Query Instance for checking version info");
-
-				var modOnline = Terraria.Social.Steam.WorkshopHelper.QueryHelper.FindModDownloadItem(Path.GetFileNameWithoutExtension(modFolder));
-
-				if (properties.version <= new System.Version(modOnline.Version.Replace("v", "")))
-					throw new Exception("Mod version not incremented. Publishing item blocked until mod version is incremented");
-
-				// Prep some common file paths
+				// Prep some common file paths & info
 				string publishFolder = Path.Combine(modFolder, "CIBuildTool", "Mods");
 				string vdf = Path.Combine(modFolder, "CIBuildTool", "publish.vdf");
 				string manifest = Path.Combine(modFolder, "workshop.json");
-
-				string descriptionFinal = "[quote=CI Autobuild (Don't Modify)]Version " + properties.version + " built for " + properties.buildVersion + "[/quote]" + properties.description;
-
-				File.Delete(Path.Combine(publishFolder, "enabled.json"));
-
-				// Migrate a copy of the workshop.json
 				Social.Base.AWorkshopEntry.TryReadingManifest(manifest, out var steamInfo);
+
+
+				// Check for if the mod version is increasing
+				var downloadWorkshopItem = new ProcessStartInfo() {
+					FileName = Path.Combine(modFolder, "CIBuildTool", "steamcmd.exe"),
+					UseShellExecute = false,
+					Arguments = "+login anonymous +force_install_dir tMod \"+workshop_download_item 1281930 " + steamInfo.workshopEntryId + "\" +quit",
+				};
+				var p = Process.Start(downloadWorkshopItem);
+				p.WaitForExit();
+
+				LocalMod mod;
+				var modFile = new TmodFile(Path.Combine(modFolder, "CIBuildTool", "tMod/steamapps/workshop/content/1281930", steamInfo.workshopEntryId.ToString(), Path.GetFileNameWithoutExtension(modFolder) + ".tmod"));
+				using (modFile.Open())
+					mod = new LocalMod(modFile);
+
+				if (properties.version <= mod.properties.version)
+					throw new Exception("Mod version not incremented. Publishing item blocked until mod version is incremented");
+
+				// Prep for the publishing folder
+				File.Delete(Path.Combine(publishFolder, "enabled.json"));
 				File.Copy(manifest, Path.Combine(publishFolder, "workshop.json"), true);
+				string descriptionFinal = "[quote=CI Autobuild (Don't Modify)]Version " + properties.version + " built for " + properties.buildVersion + "[/quote]" + properties.description;
 
 				// Make the publish.vdf file
 				string[] lines =
