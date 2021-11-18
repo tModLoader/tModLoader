@@ -3488,6 +3488,15 @@
  					array9[num24] = Lang.menu[5].Value;
  					if (selectedMenu == num24 || flag5) {
  						flag5 = false;
+@@ -37651,7 +_,7 @@
+ 						SoundEngine.PlaySound(12);
+ 						int num31 = 0;
+ 						for (int num32 = 0; num32 < numDisplayModes; num32++) {
+-							if (displayWidth[num32] == PendingResolutionWidth && displayHeight[num32] == PendingResolutionHeight) {
++							if (displayWidth[num32] == PendingResolutionWidth && BorderedHeight(displayHeight[num32], graphics.IsFullScreen) == PendingResolutionHeight) {
+ 								num31 = num32;
+ 								break;
+ 							}
 @@ -37659,7 +_,7 @@
  
  						num31 = (num31 + 1) % numDisplayModes;
