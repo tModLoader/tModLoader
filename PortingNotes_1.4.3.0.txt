@@ -4,6 +4,7 @@ Notes:
 - BossBarLoader.InsertMenu needs checking
 - Add 332, 333, 334 to BuffLoader.CanBeCleared's set
 - Ensure that 'master' field is reset correctly in PopupText.cs. Is it even from TML?
+- Replace the cast in 'timeLeft -= (int)Main.dayRate;' in NPC.AI_123_DeerClops.
 
 Failed Patches:
 

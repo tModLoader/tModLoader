@@ -313,13 +313,14 @@
  									int num34 = (!flag7) ? ((int)nPC.StrikeNPCNoInteraction(num20, num7, num33, flag6)) : ((int)nPC.StrikeNPC(num20, num7, num33, flag6));
  									if (flag7 && Main.player[owner].accDreamCatcher)
  										Main.player[owner].addDPS(num34);
-@@ -10160,6 +_,9 @@
+@@ -10160,6 +_,10 @@
  									if (type == 710)
  										BetsySharpnel(i);
  
-+									ProjectileLoader.OnHitNPC(this, Main.npc[i], num32, num7, flag6);
-+									NPCLoader.OnHitByProjectile(Main.npc[i], this, num32, num7, flag6);
-+									PlayerLoader.OnHitNPCWithProj(this, Main.npc[i], num32, num7, flag6);
++									// Patching: See ModifyHitX above for locals
++									ProjectileLoader.OnHitNPC(this, Main.npc[i], num20, num7, flag6);
++									NPCLoader.OnHitByProjectile(Main.npc[i], this, num20, num7, flag6);
++									PlayerLoader.OnHitNPCWithProj(this, Main.npc[i], num20, num7, flag6);
  									if (penetrate > 0 && type != 317 && type != 866) {
  										if (type == 357)
  											damage = (int)((double)damage * 0.8);
@@ -368,7 +369,7 @@
  				flag18 = true;
 +				
 +			if (ModProjectile != null)
-+				num51 = ModProjectile.CooldownSlot;
++				num53 = ModProjectile.CooldownSlot;
  
  			if (!flag18 || !Colliding(myRect, Main.player[myPlayer2].getRect()))
  				return;

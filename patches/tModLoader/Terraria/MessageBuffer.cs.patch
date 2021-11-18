@@ -129,7 +129,7 @@
  								int stack5 = array[num53].stack;
 +
 +								if (!ModNet.AllowVanillaClients) {
-+									array[num235] = ItemIO.Receive(reader, readStack: true);
++									array[num53] = ItemIO.Receive(reader, readStack: true);
 +									goto SkipVanillaRead;
 +								}
 +
@@ -328,7 +328,7 @@
 +										if (modType == 0)
 +											modType = TileID.Containers;
 +
-+										int num20 = WorldGen.PlaceChest(num26, num27, modType, notNearOtherChests: false, num18);
++										int num30 = WorldGen.PlaceChest(num26, num27, modType, notNearOtherChests: false, num28);
  										if (num30 == -1) {
 -											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num30);
 -											Item.NewItem(num26 * 16, num27 * 16, 32, 32, Chest.chestItemSpawn[num28], 1, noBroadcast: true);
@@ -361,7 +361,7 @@
 +										if (modType == 0)
 +											modType = TileID.Dressers;
 +
-+										int num31 = WorldGen.PlaceChest(num26, num27, modType, notNearOtherChests: false, num18);
++										int num31 = WorldGen.PlaceChest(num26, num27, modType, notNearOtherChests: false, num28);
  										if (num31 == -1) {
 -											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num31);
 -											Item.NewItem(num26 * 16, num27 * 16, 32, 32, Chest.dresserItemSpawn[num28], 1, noBroadcast: true);
@@ -379,7 +379,7 @@
  									}
 -								case 3:
 -									if (Main.tile[num26, num27].type == 88) {
-+								case byte _ when b3 % 100 == 3:
++								case byte _ when b4 % 100 == 3:
 +									if (Main.tile[num26, num27].type == 88 || b4 == 103 && TileID.Sets.BasicDresser[Main.tile[num26, num27].type]) {
  										Tile tile2 = Main.tile[num26, num27];
  										num26 -= tile2.frameX % 54 / 18;
@@ -559,7 +559,7 @@
 +							item.stack = reader.ReadVarInt();
 +						}
 +
-+						TEWeaponsRack.TryPlacing(x3, y3, item, item.stack);
++						TEWeaponsRack.TryPlacing(x5, y5, item, item.stack);
  					}
  					break;
  				case 134: {

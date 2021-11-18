@@ -171,6 +171,16 @@
  			if (aiStyle == 0) {
  				if (Main.netMode != 1) {
  					for (int i = 0; i < 255; i++) {
+@@ -30023,7 +_,8 @@
+ 				timeLeft = 259200;
+ 			}
+ 
++			//TODO: Replace this downcast.
+-			timeLeft -= Main.dayRate;
++			timeLeft -= (int)Main.dayRate;
+ 			if (timeLeft < 0)
+ 				timeLeft = 0;
+ 
 @@ -37238,6 +_,7 @@
  			if (type == 638 || type == 656)
  				num = 0;
@@ -607,15 +617,32 @@
  								flag6 = true;
  							}
  							else if (Main.invasionX >= (double)(Main.maxTilesX / 2 - 5) && Main.invasionX <= (double)(Main.maxTilesX / 2 + 5)) {
-@@ -60373,6 +_,7 @@
+@@ -60365,14 +_,17 @@
+ 						}
+ 
+ 						if (Main.player[num7].ZoneTowerSolar || Main.player[num7].ZoneTowerNebula || Main.player[num7].ZoneTowerVortex || Main.player[num7].ZoneTowerStardust)
++							// Patch note: flag6 - Invasion.
+ 							flag6 = true;
+ 
+ 						num9 = (int)(Main.player[num7].position.X + (float)(Main.player[num7].width / 2)) / 16;
+ 						num10 = (int)(Main.player[num7].position.Y + (float)(Main.player[num7].height / 2)) / 16;
+ 						if (Main.wallHouse[Main.tile[num9, num10].wall])
++							//Patch note: flag5 - playerSafe
  							flag5 = true;
  
  						if (Main.tile[num9, num10].wall == 87)
-+							//patch file: flag4
++							//Patch note: flag4 - Lihzahrd
  							flag4 = true;
  
  						flag2 = false;
-@@ -60650,6 +_,7 @@
+@@ -60644,12 +_,14 @@
+ 								}
+ 								else {
+ 									if (!Main.expertMode || Main.rand.Next(30) != 0)
++										// Patch note: flag12 - playerInTown??????????????? Pretty weird
+ 										flag12 = true;
+ 
+ 									maxSpawns = (int)((double)(float)maxSpawns * 0.6);
  								}
  							}
  						}
@@ -631,15 +658,30 @@
  							int num13 = (int)(Main.player[num7].position.X / 16f) - spawnRangeX;
  							int num14 = (int)(Main.player[num7].position.X / 16f) + spawnRangeX;
  							int num15 = (int)(Main.player[num7].position.Y / 16f) - spawnRangeY;
-@@ -60793,18 +_,23 @@
- 								flag2 = false;
+@@ -60708,6 +_,7 @@
+ 										num2 = num22;
+ 										flag2 = true;
+ 										flag3 = true;
++										// Patch note: flag3 - Sky
+ 									}
+ 									else if (!flag6 && (double)num22 < Main.worldSurface * 0.44999998807907104 && !flag12 && Main.hardMode && Main.rand.Next(10) == 0) {
+ 										num3 = Main.tile[num21, num22].type;
+@@ -60768,6 +_,7 @@
+ 										}
+ 
+ 										if (num >= num17 && num <= num18)
++											// Patch note: flag15 - safeRangeX
+ 											flag15 = true;
+ 									}
+ 								}
+@@ -60794,17 +_,23 @@
  
  							if (Main.tile[num, num2 - 1].liquid > 0 && Main.tile[num, num2 - 2].liquid > 0 && !Main.tile[num, num2 - 1].lava()) {
-+								//patch file: flag8
  								if (Main.tile[num, num2 - 1].honey())
++									// Patch note: flag8 - Honey
  									flag8 = true;
-+								//patch file: flag7
  								else
++									// Patch note: flag7 - Water
  									flag7 = true;
  							}
  
@@ -648,10 +690,11 @@
 +							spawnInfo.playerFloorX = num29;
 +							spawnInfo.playerFloorY = num30;
  							if (Main.tile[num, num2].type == 367) {
++								// Patch note: flag10 - marble
  								flag10 = true;
  							}
  							else if (Main.tile[num, num2].type == 368) {
-+								//patch file: flag9
++								// Patch note: flag9 - granite
  								flag9 = true;
  							}
  							else if (Main.tile[num29, num30].type == 367) {
@@ -659,7 +702,7 @@
  						for (int num40 = num - num39; num40 < num + num39; num40++) {
  							for (int num41 = num2 - num39; num41 < num2 + num39; num41++) {
  								if (Main.tile[num40, num41].wall == 62)
-+									//patch file: flag11
++									// Patch note: flag11 - Spider wall
  									flag11 = true;
  							}
  						}
@@ -667,30 +710,32 @@
  						for (int num45 = num - num44; num45 < num + num44; num45++) {
  							for (int num46 = num2 - num44; num46 < num2 + num44; num46++) {
  								if (WallID.Sets.Conversion.Sandstone[Main.tile[num45, num46].wall] || WallID.Sets.Conversion.HardenedSand[Main.tile[num45, num46].wall])
-+									//patch file: flag13
++									// Patch note: flag13 - Desert cave
  									flag13 = true;
  							}
  						}
-@@ -60934,9 +_,33 @@
+@@ -60934,9 +_,35 @@
  
  			bool flag18 = (float)new Point(num9 - num, num10 - num2).X * Main.windSpeedTarget > 0f;
  			spawnTileType = SpawnNPC_TryFindingProperGroundTileType(spawnTileType, num, num2);
++
 +			spawnInfo.spawnTileX = num;
 +			spawnInfo.spawnTileY = num2;
 +			spawnInfo.spawnTileType = num3;
 +			spawnInfo.player = Main.player[num7];
-+			spawnInfo.sky = flag4;
-+			spawnInfo.lihzahrd = flag5;
-+			spawnInfo.playerSafe = flag6;
-+			spawnInfo.invasion = flag7;
-+			spawnInfo.water = flag8;
-+			spawnInfo.granite = flag10;
-+			spawnInfo.marble = flag11;
-+			spawnInfo.spiderCave = flag12;
-+			spawnInfo.playerInTown = flag13;
-+			spawnInfo.desertCave = flag14;
-+			spawnInfo.planteraDefeated = flag15;
-+			spawnInfo.safeRangeX = flag16;
++			spawnInfo.sky = flag3;
++			spawnInfo.lihzahrd = flag4; 
++			spawnInfo.playerSafe = flag5;
++			spawnInfo.invasion = flag6;
++			spawnInfo.water = flag7;
++			spawnInfo.granite = flag9;
++			spawnInfo.marble = flag10;
++			spawnInfo.spiderCave = flag11;
++			spawnInfo.playerInTown = flag12;
++			spawnInfo.desertCave = flag13;
++			spawnInfo.planteraDefeated = flag14;
++			spawnInfo.safeRangeX = flag15;
++
  			int newNPC = 200;
  			int cattailX;
  			int cattailY;
