@@ -59,8 +59,7 @@
  		}
  
  		private static void InnerClientLoop() {
-@@ -478,7 +_,8 @@
- 							Cloud.resetClouds();
+@@ -479,6 +_,7 @@
  							Main.cloudAlpha = Main.maxRaining;
  							Main.ToggleGameplayUpdates(state: false);
  							WorldGen.clearWorld();

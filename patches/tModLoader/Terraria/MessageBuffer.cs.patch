@@ -563,7 +563,8 @@
  					}
  					break;
  				case 134: {
-@@ -3382,5 +_,26 @@
+@@ -3381,6 +_,27 @@
+ 
  						break;
  					}
 +				case MessageID.InGameChangeConfig:

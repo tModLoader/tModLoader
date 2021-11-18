@@ -8,7 +8,7 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria
-@@ -28,6 +_,6 @@
+@@ -28,7 +_,7 @@
  		public bool CanPlayCreditsRoll;
  		public bool[] NPCBannerBuff = new bool[289];
  		public bool hasBanner;
@@ -16,6 +16,7 @@
 +		internal int[] _tileCounts = new int[TileLoader.TileCount];
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
+ 
 @@ -59,47 +_,47 @@
  
  		public int SandTileCount {

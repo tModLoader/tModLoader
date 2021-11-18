@@ -71,9 +71,9 @@
  				case 0:
  					if (context == 6 && Main.mouseItem.type != 0)
  						inv[slot].SetDefaults();
--					if (context == 11 && !inv[slot].FitsAccessoryVanitySlot)
 +					if (new int[6] { -10, -11, -12, 10, 11, 12 }.Contains(context) && !ItemLoader.CanEquipAccessory(inv[slot], slot, context < 0))
 +						break;
+-					if (context == 11 && !inv[slot].FitsAccessoryVanitySlot)
 +					if (context == 11 && !Main.mouseItem.FitsAccessoryVanitySlot)
  						break;
 +					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, inv[slot], context))
@@ -427,9 +427,7 @@
  					Main.mouseItem.stack = 0;
  				}
  
-@@ -1334,8 +_,10 @@
- 				RefreshStackSplitCooldown();
- 				if (inv[slot].buyOnce && --inv[slot].stack <= 0)
+@@ -1336,6 +_,8 @@
  					inv[slot].SetDefaults();
  
  				AnnounceTransfer(new ItemTransferInfo(Main.mouseItem, 15, 21));
@@ -506,7 +504,7 @@
  			}
  
  			Vector2 vector = value.Size() * inventoryScale;
-@@ -1671,15 +_,20 @@
+@@ -1671,6 +_,9 @@
  				num11 *= inventoryScale;
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num11 / 2f;
  				Vector2 origin = rectangle2.Size() * (scale3 / 2f - 0.5f);
@@ -516,9 +514,7 @@
  				spriteBatch.Draw(value7, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num11 * scale3, SpriteEffects.None, 0f);
  				if (item.color != Color.Transparent) {
  					Color newColor = color;
- 					if (context == 13)
- 						newColor.A = byte.MaxValue;
- 
+@@ -1680,6 +_,8 @@
  					spriteBatch.Draw(value7, position2, rectangle2, item.GetColor(newColor), 0f, origin, num11 * scale3, SpriteEffects.None, 0f);
  				}
  

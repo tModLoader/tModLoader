@@ -9,7 +9,7 @@
  namespace Terraria.ID
  {
  	public class BuffID
-@@ -12,8 +_,8 @@
+@@ -12,7 +_,7 @@
  				public bool faceLeft;
  			}
  
@@ -18,4 +18,3 @@
  			public static bool[] IsWellFed = Factory.CreateBoolSet(26, 206, 207);
  			public static bool[] IsFedState = Factory.CreateBoolSet(26, 206, 207, 332, 333, 334);
  			public static bool[] IsAnNPCWhipDebuff = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326);
- 			public static bool[] TimeLeftDoesNotDecrease = Factory.CreateBoolSet(28, 334);

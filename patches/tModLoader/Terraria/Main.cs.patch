@@ -54,8 +54,7 @@
  #endif
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
-@@ -240,8 +_,8 @@
- 		public static NPCHeadRenderer BossNPCHeadRenderer = null;
+@@ -241,7 +_,7 @@
  		public static List<TitleLinkButton> TitleLinks = new List<TitleLinkButton>();
  		public static string versionNumber = "v1.4.3";
  		public static string versionNumber2 = "v1.4.3";
@@ -272,7 +271,7 @@
  		private static bool _settingsButtonIsPushedToSide;
  		private static bool _MouseOversCanClear;
  		private static Vector2 _itemIconCacheScreenPosition;
-@@ -2110,19 +_,19 @@
+@@ -2110,20 +_,20 @@
  		};
  		private static float backgroundLayerTransitionSpeed = 0.05f;
  		public static float atmo;
@@ -299,6 +298,7 @@
 +		public static double ladyBugRainBoost = 0;
  		private static bool _canShowMeteorFall;
  
+ 		public static bool CanUpdateGameplay {
 @@ -2280,7 +_,7 @@
  
  		public static int npcShop {
@@ -2950,11 +2950,7 @@
  					num -= 140;
  					num2 -= PlayerInput.UsingGamepad.ToInt() * 30;
  					_settingsButtonIsPushedToSide = true;
-@@ -34395,10 +_,15 @@
- 						if (type == 439 || type == 370)
- 							scale = 1.5f;
- 
- 						float num3 = 10f;
+@@ -34399,6 +_,11 @@
  						if (HealthBarDrawSettings == 2)
  							num3 -= 34f;
  
@@ -3993,8 +3989,7 @@
  					flag = true;
  				}
  			}
-@@ -48361,17 +_,27 @@
- 
+@@ -48362,16 +_,26 @@
  			instance.CameraModifiers.ApplyTo(ref screenPosition);
  			screenPosition.X = (int)screenPosition.X;
  			screenPosition.Y = (int)screenPosition.Y;

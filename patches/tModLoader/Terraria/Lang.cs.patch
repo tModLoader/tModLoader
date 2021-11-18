@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Lang.cs
 +++ src/tModLoader/Terraria/Lang.cs
-@@ -7,7 +_,8 @@
+@@ -7,6 +_,7 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Map;
@@ -8,7 +8,6 @@
  using Terraria.UI;
  using Terraria.Utilities;
  
- namespace Terraria
 @@ -33,14 +_,14 @@
  		[Old("Lang arrays have been replaced with the new Language.GetText system.")]
  		public static LocalizedText[] chestType2 = new LocalizedText[14];

@@ -378,7 +378,9 @@
  
  			int direction = base.direction;
  			direction = ((!(Main.player[myPlayer2].position.X + (float)(Main.player[myPlayer2].width / 2) < base.position.X + (float)(width / 2))) ? 1 : (-1));
-@@ -10506,5 +_,10 @@
+@@ -10504,7 +_,12 @@
+ 					}
+ 				}
  
 -				if (Main.player[myPlayer2].Hurt(PlayerDeathReason.ByProjectile(-1, whoAmI), num57, direction, pvp: false, quiet: false, Crit: false, num53) > 0.0 && !Main.player[myPlayer2].dead)
 +				bool crit = false;

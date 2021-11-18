@@ -1,6 +1,11 @@
 --- src/Terraria/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -5,79 +_,330 @@
+@@ -1,83 +_,335 @@
+ using Terraria.Utilities;
++using System;
+ 
+ namespace Terraria.ID
+ {
  	public class MessageID
  	{
  		public const byte NeverCalled = 0;

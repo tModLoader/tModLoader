@@ -935,7 +935,8 @@
  				if (ArmorIDs.Face.Sets.DrawInFaceHeadLayer[armorItem.faceSlot])
  					cFaceHead = dyeItem.dye;
  				else if (ArmorIDs.Face.Sets.DrawInFaceFlowerLayer[armorItem.faceSlot])
-@@ -6515,13 +_,13 @@
+@@ -6514,14 +_,14 @@
+ 			if (armorItem.beardSlot > 0 && armorItem.beardSlot < 5)
  				cBeard = dyeItem.dye;
  
 -			if (armorItem.balloonSlot > 0 && armorItem.balloonSlot < 19) {
@@ -951,10 +952,7 @@
  				cWings = dyeItem.dye;
  
  			if (armorItem.type == 934)
-@@ -6575,16 +_,17 @@
- 			if (soulDrain > 0 && whoAmI == Main.myPlayer)
- 				AddBuff(151, 2);
- 
+@@ -6578,13 +_,14 @@
  			if (Main.dontStarveWorld)
  				UpdateStarvingState(withEmote: true);
  
@@ -1627,7 +1625,7 @@
  			int type = currentItem.type;
  			if (currentItem.wingSlot > 0)
  				wings = currentItem.wingSlot;
-@@ -9787,31 +_,37 @@
+@@ -9787,6 +_,8 @@
  				ApplyMusicBox(currentItem);
  
  			UpdateBootVisualEffects(currentItem);
@@ -1636,23 +1634,7 @@
  		}
  
  		private void DoEyebrellaRainEffect() {
- 			if (Main.netMode == 2 || Main.dedServ || Main.rand.Next(4) != 0)
- 				return;
- 
- 			Vector2 position = MountedCenter - new Vector2(0f, (float)height * 0.5f) + new Vector2((-0.5f + Main.rand.NextFloat()) * (float)(width + 18), -30f);
- 			int num = (int)(position.X / 16f);
- 			int num2 = (int)(position.Y / 16f);
- 			if (WorldGen.InWorld(num, num2)) {
- 				Tile tile = Main.tile[num, num2];
- 				if (tile != null && !WorldGen.SolidTile3(tile) && tile.liquid <= 0)
- 					Rain.NewRainForced(Velocity: new Vector2(Main.windSpeedCurrent * 3f, 9f), Position: position);
- 			}
- 		}
- 
- 		public WingStats GetWingStats(int wingID) {
- 			if (wingID <= 0 || wingID >= ArmorIDs.Wing.Sets.Stats.Length)
- 				return default(WingStats);
- 
+@@ -9810,8 +_,12 @@
  			return ArmorIDs.Wing.Sets.Stats[wingID];
  		}
  
@@ -2738,11 +2720,7 @@
  				if ((specialHitSetter == -1 && immune) || (dash == 2 && i == eocHit && eocDash > 0) || npcTypeNoAggro[Main.npc[i].type])
  					continue;
  
-@@ -21656,10 +_,14 @@
- 					if (num5 > 0 && HasNPCBannerBuff(num5))
- 						num4 = ((!Main.expertMode) ? ((int)((float)num4 * ItemID.Sets.BannerStrength[Item.BannerToItem(num5)].NormalDamageReceived)) : ((int)((float)num4 * ItemID.Sets.BannerStrength[Item.BannerToItem(num5)].ExpertDamageReceived)));
- 
- 					bool flag3 = !immune;
+@@ -21660,6 +_,10 @@
  					if (specialHitSetter >= 0)
  						flag3 = (hurtCooldowns[specialHitSetter] == 0);
  
