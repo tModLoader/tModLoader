@@ -54,6 +54,7 @@ namespace Terraria.ModLoader
 			vanillaLongerExpertDebuff[BuffID.Ichor] = true;
 			vanillaLongerExpertDebuff[BuffID.Venom] = true;
 			vanillaLongerExpertDebuff[BuffID.Blackout] = true;
+			// TODO: ALL of this is horrendous. Move everything to Sets.
 			vanillaCanBeCleared[BuffID.PotionSickness] = false;
 			vanillaCanBeCleared[BuffID.Werewolf] = false;
 			vanillaCanBeCleared[BuffID.Merfolk] = false;
@@ -61,6 +62,9 @@ namespace Terraria.ModLoader
 			vanillaCanBeCleared[BuffID.Campfire] = false;
 			vanillaCanBeCleared[BuffID.HeartLamp] = false;
 			vanillaCanBeCleared[BuffID.NoBuilding] = false;
+			vanillaCanBeCleared[332] = false;
+			vanillaCanBeCleared[333] = false;
+			vanillaCanBeCleared[334] = false;
 		}
 
 		internal static int ReserveBuffID() {
