@@ -3488,20 +3488,22 @@
  					array9[num24] = Lang.menu[5].Value;
  					if (selectedMenu == num24 || flag5) {
  						flag5 = false;
-@@ -37651,7 +_,7 @@
+@@ -37651,7 +_,8 @@
  						SoundEngine.PlaySound(12);
  						int num31 = 0;
  						for (int num32 = 0; num32 < numDisplayModes; num32++) {
++							// TML: Match the changeto follow so that resolution options provided on this settings menu still can be cycled correctly
 -							if (displayWidth[num32] == PendingResolutionWidth && displayHeight[num32] == PendingResolutionHeight) {
 +							if (displayWidth[num32] == PendingResolutionWidth && BorderedHeight(displayHeight[num32], graphics.IsFullScreen) == PendingResolutionHeight) {
  								num31 = num32;
  								break;
  							}
-@@ -37659,7 +_,7 @@
+@@ -37659,7 +_,8 @@
  
  						num31 = (num31 + 1) % numDisplayModes;
  						PendingResolutionWidth = displayWidth[num31];
 -						PendingResolutionHeight = displayHeight[num31];
++						// TML: Limit the resolution when going from fullscreen to windowed to be less than the full monitor size so that the key window edges are accessible
 +						PendingResolutionHeight = BorderedHeight(displayHeight[num31], graphics.IsFullScreen);
  					}
  
