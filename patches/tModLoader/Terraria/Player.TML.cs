@@ -125,7 +125,7 @@ namespace Terraria
 		/// Gets the armor penetration modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
-		public ref int GetArmorPen<T>() where T : DamageClass => ref GetArmorPen(ModContent.GetInstance<T>());
+		public ref int GetArmorPenetration<T>() where T : DamageClass => ref GetArmorPenetration(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the attack speed modifier for this damage type on this player.
@@ -155,14 +155,26 @@ namespace Terraria
 		/// <summary>
 		/// Gets the armor penetration modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// Setting this to a negative value will throw an exception.
 		/// </summary>
-		public ref int GetArmorPen(DamageClass damageClass) => ref damageData[damageClass.Type].armorPen;
+		public ref int GetArmorPenetration(DamageClass damageClass) {
+			if (damageData[damageClass.Type].armorPen < 0)
+				throw new Exception("A class' armor penetration stat cannot be less than 0.");
+			else
+				return ref damageData[damageClass.Type].armorPen;
+		}
 
 		/// <summary>
 		/// Gets the attack speed modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// Setting this such that it results in zero or a negative value will throw an exception.
 		/// </summary>
-		public ref StatModifier GetAttackSpeed(DamageClass damageClass) => ref damageData[damageClass.Type].attackSpeed;
+		public ref StatModifier GetAttackSpeed(DamageClass damageClass) {
+			if (damageData[damageClass.Type].attackSpeed <= 0f)
+				throw new Exception("A class' attack speed stat must be greater than 0.");
+			else
+				return ref damageData[damageClass.Type].attackSpeed;
+		}
 
 		// TO-DO: potentially add ModifyWeaponXYZ hooks for the following?
 
@@ -174,7 +186,10 @@ namespace Terraria
 			var currentModifiers = damageData;
 			var scalings = sItem.DamageType.benefitsCache;
 			for (int i = 0; i < currentModifiers.Length; i++) {
-				armorPen += (int)(currentModifiers[i].armorPen * scalings[i]);
+				if (currentModifiers[i].armorPen < 0)
+					throw new Exception("A class' armor penetration stat cannot be less than 0.");
+				else
+					armorPen += (int)(currentModifiers[i].armorPen * scalings[i]);
 			}
 
 			return armorPen;
@@ -188,7 +203,10 @@ namespace Terraria
 			var currentModifiers = damageData;
 			var scalings = sItem.DamageType.benefitsCache;
 			for (int i = 0; i < currentModifiers.Length; i++) {
-				attackSpeed = attackSpeed.CombineWith(currentModifiers[i].attackSpeed.Scale(scalings[i]));
+				if (currentModifiers[i].attackSpeed <= 0f)
+					throw new Exception("A class' attack speed stat must be greater than 0.");
+				else
+					attackSpeed = attackSpeed.CombineWith(currentModifiers[i].attackSpeed.Scale(scalings[i]));
 			}
 
 			return attackSpeed;

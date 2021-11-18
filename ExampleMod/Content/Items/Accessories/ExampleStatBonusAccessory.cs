@@ -41,13 +41,13 @@ namespace ExampleMod.Content.Items.Accessories
 			// In this case, we're adding 100% knockback additively, but only for our custom example DamageClass (as such, only our example class weapons will receive this bonus).
 			player.GetKnockback<ExampleDamageClass>() += 1f;
 
-			// GetArmorPen is functionally identical to GetCritChance, but for the armor penetration stat instead.
+			// GetArmorPenetration is functionally identical to GetCritChance, but for the armor penetration stat instead.
 			// In this case, we'll add 5 armor penetration to magic weapons.
-			player.GetArmorPen(DamageClass.Magic) += 5;
+			player.GetArmorPenetration(DamageClass.Magic) += 5;
 
 			// GetAttackSpeed works similarly to GetCritChance and GetArmorPen, but uses a float instead of an int.
 			// In this case, we'll make ranged weapons 15% faster to use.
-			// NOTE: DO NOT SET TO ZERO OR NEGATIVE VALUES. DOING SO WILL CAUSE PROBLEMS.
+			// NOTE: SETTING THIS TO ZERO OR A NEGATIVE VALUE WILL THROW AN EXCEPTION, SO DON'T DO THAT.
 			player.GetAttackSpeed(DamageClass.Ranged) += 0.15f;
 		}
 	}

@@ -92,7 +92,7 @@
  		public int bartenderQuestLog;
  		public bool downedDD2EventAnyDifficulty;
 -		public int armorPenetration;
-+		internal ref int armorPenetration => ref GetArmorPen(DamageClass.Generic);
++		internal ref int armorPenetration => ref GetArmorPenetration(DamageClass.Generic);
  		public int statDefense;
  		public int statLifeMax = 100;
  		public int statLifeMax2 = 100;
@@ -995,7 +995,7 @@
  				}
 +				*/
 +				else if (buffType[j] == 159) {
-+					GetArmorPen(DamageClass.Melee) += 12;
++					GetArmorPenetration(DamageClass.Melee) += 12;
 +				}
  				else if (buffType[j] == 192) {
  					pickSpeed -= 0.2f;

@@ -49,7 +49,7 @@ namespace ExampleMod.Content.DamageClasses
 			// This method lets you set default statistical modifiers for your example damage class.
 			// Here, we'll make our example damage class have more critical strike chance and armor penetration than normal.
 			player.GetCritChance<ExampleDamageClass>() += 4;
-			player.GetArmorPen<ExampleDamageClass>() += 10;
+			player.GetArmorPenetration<ExampleDamageClass>() += 10;
 			// These sorts of modifiers also exist for damage (GetDamage), knockback (GetKnockback), and attack speed (GetAttackSpeed).
 			// You'll see these used all around in referencce to vanilla classes and our example class here.
 		}
