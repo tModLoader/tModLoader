@@ -37,6 +37,10 @@ namespace Terraria
 		public static Color MouseTextColorReal => new Color(mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f);
 		public static bool PlayerLoaded => CurrentFrameFlags.ActivePlayersCount > 0;
 
+		// Used to prevent situations where when going from borderless Fullscreen display to windowed display the width and height don't get resized to be able to access key window functions
+		// Does not effect resizing the window manually. May not be perfect, but will at least be sufficient to provide room to manually address this on the end user side
+		// Magic constant comes from default windows border settings: ~ 1377 / 1440 and 1033 / 1080.
+		private static int BorderedHeight(int height, bool state) => (int)(height * (state ? 1 : 0.95625));
 
 		private static Player _currentPlayerOverride;
 
