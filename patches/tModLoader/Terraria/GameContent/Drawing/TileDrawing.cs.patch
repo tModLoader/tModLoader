@@ -80,7 +80,7 @@
  			tileTop = 0;
  			tileWidth = 16;
  			tileHeight = 16;
-@@ -4371,6 +_,9 @@
+@@ -4378,6 +_,9 @@
  						break;
  					}
  			}
@@ -90,7 +90,7 @@
  		}
  
  		private bool IsWindBlocked(int x, int y) {
-@@ -4438,11 +_,14 @@
+@@ -4445,11 +_,14 @@
  			}
  		}
  
@@ -107,7 +107,7 @@
  			_specialTileX[_specialTilesCount] = x;
  			_specialTileY[_specialTilesCount] = y;
  			_specialTilesCount++;
-@@ -5416,6 +_,8 @@
+@@ -5423,6 +_,8 @@
  
  					Main.spriteBatch.Draw(value9, vector, value10, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  				}
