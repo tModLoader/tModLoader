@@ -183,7 +183,8 @@ var namespace_terraria_1_1_mod_loader =
       [ "Shield", "namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a970da5f1f2e32aeb9e488dd017160ab4", null ],
       [ "Neck", "namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a6833e5c3ce1911011c2bb97d48a0a24b", null ],
       [ "Face", "namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a8af5861002f3c157f9ba842bba10aa3f", null ],
-      [ "Balloon", "namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a502dd302b6d8d3c24b20ee49e2d51bd1", null ]
+      [ "Balloon", "namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a502dd302b6d8d3c24b20ee49e2d51bd1", null ],
+      [ "Beard", "namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282af593080cfde796c477bc6eb72c4f07c1", null ]
     ] ],
     [ "Framework", "namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666e", [
       [ "NetCore", "namespace_terraria_1_1_mod_loader.html#a70a14621c40b95e8b411943e6f18666eaad7251caca2dc1b82965767ae4cee0a1", null ],

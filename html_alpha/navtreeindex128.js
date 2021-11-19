@@ -1,5 +1,6 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_graphics_1_1_virtual_camera.html#abe9f0553be1ae1a8d9a03442ac7269f9":[1,0,2,7,17,3],
 "struct_terraria_1_1_graphics_1_1_virtual_camera.html#ac648fa491b3371e0f9f917af075e7dc4":[1,0,2,7,17,1],
 "struct_terraria_1_1_graphics_1_1_virtual_camera.html#ae96208efd687d818d5decc892cd3d53b":[1,0,2,7,17,0],
 "struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html":[1,0,2,8,3,3,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a3c4f20a5d2d5485e7894e0826244e3e5":[1,0,2,57,0,10],
 "struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a3ce79433c78a193f2258a8c0cbbcc266":[1,0,2,57,0,0],
 "struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a547ec74d7e741d95750153ca908c7e3a":[1,0,2,57,0,9],
-"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a85d0efbd4600806ad2ec4be1cc95da7e":[1,0,2,57,0,3],
-"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a89996d1d42a95d7d38c405dd18d0b6ad":[1,0,2,57,0,2]
+"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a85d0efbd4600806ad2ec4be1cc95da7e":[1,0,2,57,0,3]
 };

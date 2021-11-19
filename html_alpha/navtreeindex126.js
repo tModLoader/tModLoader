@@ -1,5 +1,6 @@
 var NAVTREEINDEX126 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a0707bd58b7586deb13dd1c1dde1949ee":[1,0,2,4,37,41],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a0870467760700e05e2e49b46aa6aa18c":[1,0,2,4,37,74],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a098d544c722cab8c57d586fabf250a2f":[1,0,2,4,37,38],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a15b40dc101e35c3ccf7e14db67edffc3":[1,0,2,4,37,120],
@@ -248,6 +249,5 @@ var NAVTREEINDEX126 =
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html#a5c994e1452e7f11afdc2f1b6b5db2a84":[1,0,2,5,9,2,0,3],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html#a70118a7349e763ca334767f5bc5c4de1":[1,0,2,5,9,2,0,2],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html#a720826626f9692752c63772946a180d4":[1,0,2,5,9,2,0,1],
-"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html":[1,0,2,5,9,2,2],
-"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#a0eec350a911d51e7d563dae024c02c01":[1,0,2,5,9,2,2,0]
+"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html":[1,0,2,5,9,2,2]
 };
