@@ -203,3 +203,12 @@
  				public static bool[] DrawInFrontOfBackArmLayer = Factory.CreateBoolSet(false, 18);
  				public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 18);
  			}
+@@ -1147,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(5);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Beard]);
+ 				public static bool[] UseHairColor = Factory.CreateBoolSet(false, 2, 3, 4);
+ 			}
+ 

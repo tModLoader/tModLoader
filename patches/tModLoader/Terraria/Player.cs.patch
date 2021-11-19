@@ -935,8 +935,12 @@
  				if (ArmorIDs.Face.Sets.DrawInFaceHeadLayer[armorItem.faceSlot])
  					cFaceHead = dyeItem.dye;
  				else if (ArmorIDs.Face.Sets.DrawInFaceFlowerLayer[armorItem.faceSlot])
-@@ -6514,14 +_,14 @@
- 			if (armorItem.beardSlot > 0 && armorItem.beardSlot < 5)
+@@ -6511,17 +_,17 @@
+ 					cFace = dyeItem.dye;
+ 			}
+ 
+-			if (armorItem.beardSlot > 0 && armorItem.beardSlot < 5)
++			if (armorItem.beardSlot > 0)
  				cBeard = dyeItem.dye;
  
 -			if (armorItem.balloonSlot > 0 && armorItem.balloonSlot < 19) {
