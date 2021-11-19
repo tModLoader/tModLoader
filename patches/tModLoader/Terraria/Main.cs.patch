@@ -1184,6 +1184,17 @@
  				CinematicManager.Instance.Update(gameTime);
  				if (netMode == 2) {
  					for (int i = 0; i < 256; i++) {
+@@ -12543,6 +_,10 @@
+ 			}
+ 
+ 			DoUpdate_AutoSave();
++
++			if (Main.OnTickForInternalCodeOnly != null)
++				Main.OnTickForInternalCodeOnly();
++
+ 			if (!dedServ) {
+ 				ChromaInitializer.UpdateEvents();
+ 				Chroma.Update(GlobalTimeWrappedHourly);
 @@ -12716,6 +_,9 @@
  
  					mouseLeftRelease = false;
@@ -1194,7 +1205,7 @@
  					if (gameMenu)
  						UpdateMenu();
  
-@@ -12774,6 +_,8 @@
+@@ -12774,13 +_,13 @@
  
  			if (CanPauseGame()) {
  				DoUpdate_WhilePaused();
@@ -1203,6 +1214,13 @@
  				gamePaused = true;
  				return;
  			}
+ 
+ 			gamePaused = false;
+-			if (Main.OnTickForInternalCodeOnly != null)
+-				Main.OnTickForInternalCodeOnly();
+ 
+ 			if ((dedServ || netMode != 1 && !gameMenu && !gamePaused) && AmbienceServer != null)
+ 				AmbienceServer.Update();
 @@ -12795,10 +_,16 @@
  			if (netMode != 1)
  				updateCloudLayer();
