@@ -6,7 +6,7 @@
    <PropertyGroup>
 -    <OutputType>WinExe</OutputType>
 +    <OutputType>Exe</OutputType>
-     <Version>1.4.2.3</Version>
+     <Version>1.4.3.0</Version>
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2021 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>

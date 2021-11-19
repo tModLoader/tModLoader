@@ -59,15 +59,15 @@
  		}
  
  		private static void InnerClientLoop() {
-@@ -478,6 +_,7 @@
- 							Cloud.resetClouds();
+@@ -479,6 +_,7 @@
  							Main.cloudAlpha = Main.maxRaining;
+ 							Main.ToggleGameplayUpdates(state: false);
  							WorldGen.clearWorld();
 +							SystemLoader.OnWorldLoad();
  							if (Main.mapEnabled)
  								Main.Map.Load();
  						}
-@@ -529,6 +_,11 @@
+@@ -530,6 +_,11 @@
  				}
  
  				if (!Main.gameMenu) {

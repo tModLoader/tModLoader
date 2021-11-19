@@ -17,49 +17,23 @@
  		public bool sonar;
  		public PopupTextContext context;
  		public int npcNetID;
-@@ -184,7 +_,6 @@
- 				Main.popupText[num2].position.X = newItem.position.X + (float)newItem.width * 0.5f - vector2.X * 0.5f;
- 				Main.popupText[num2].position.Y = newItem.position.Y + (float)newItem.height * 0.25f - vector2.Y * 0.5f;
- 				Main.popupText[num2].color = Color.White;
--				Main.popupText[num2].master = false;
- 				if (newItem.rare == 1)
- 					Main.popupText[num2].color = new Color(150, 150, 255);
- 				else if (newItem.rare == 2)
-@@ -195,8 +_,6 @@
- 					Main.popupText[num2].color = new Color(255, 150, 150);
- 				else if (newItem.rare == 5)
- 					Main.popupText[num2].color = new Color(255, 150, 255);
--				else if (newItem.rare == -13)
--					Main.popupText[num2].master = true;
- 				else if (newItem.rare == -11)
- 					Main.popupText[num2].color = new Color(255, 175, 0);
- 				else if (newItem.rare == -1)
-@@ -211,10 +_,14 @@
- 					Main.popupText[num2].color = new Color(5, 200, 255);
+@@ -250,10 +_,14 @@
+ 					popupText2.color = new Color(5, 200, 255);
  				else if (newItem.rare == 10)
- 					Main.popupText[num2].color = new Color(255, 40, 100);
+ 					popupText2.color = new Color(255, 40, 100);
 -				else if (newItem.rare >= 11)
 +				else if (newItem.rare == 11)
- 					Main.popupText[num2].color = new Color(180, 40, 255);
+ 					popupText2.color = new Color(180, 40, 255);
 +				else if (newItem.rare >= ItemRarityID.Count)
-+					Main.popupText[num2].color = RarityLoader.GetRarity(newItem.rare).RarityColor;
++					popupText2.color = RarityLoader.GetRarity(newItem.rare).RarityColor;
  
-+				Main.popupText[num2].rarity = newItem.rare;
- 				Main.popupText[num2].expert = newItem.expert;
-+				Main.popupText[num2].master = newItem.master;
- 				Main.popupText[num2].name = newItem.AffixName();
- 				Main.popupText[num2].stack = stack;
- 				Main.popupText[num2].velocity.Y = -7f;
-@@ -291,7 +_,7 @@
- 			return num;
- 		}
- 
--		private static string ValueToName(int coinValue) {
-+		public static string ValueToName(int coinValue) {
- 			int num = 0;
- 			int num2 = 0;
- 			int num3 = 0;
-@@ -398,6 +_,9 @@
++				popupText2.rarity = newItem.rare;
+ 				popupText2.expert = newItem.expert;
++				popupText2.master = newItem.master;
+ 				popupText2.name = newItem.AffixName();
+ 				popupText2.stack = stack;
+ 				popupText2.velocity.Y = -7f;
+@@ -441,6 +_,9 @@
  				color = new Color((byte)Main.DiscoR, (byte)Main.DiscoG, (byte)Main.DiscoB, Main.mouseTextColor);
  			else if (master)
  				color = new Color(255, (byte)(Main.masterColor * 200f), 0, Main.mouseTextColor);
@@ -68,4 +42,4 @@
 +				color = RarityLoader.GetRarity(rarity).RarityColor;
  
  			bool flag = false;
- 			string text = name;
+ 			Vector2 textHitbox = GetTextHitbox();

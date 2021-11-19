@@ -50,7 +50,7 @@
  			UIImageButton uIImageButton5 = new UIImageButton(_buttonRenameTexture);
  			uIImageButton5.VAlign = 1f;
  			uIImageButton5.Left.Set(num, 0f);
-@@ -136,6 +_,7 @@
+@@ -137,6 +_,7 @@
  			_buttonSeedTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonSeed");
  			_buttonRenameTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonRename");
  			_buttonDeleteTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
@@ -58,7 +58,7 @@
  		}
  
  		private void InitializeAppearance() {
-@@ -184,8 +_,16 @@
+@@ -199,8 +_,16 @@
  		private void CloudMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			if (_data.IsCloudSave)
  				_buttonLabel.SetText(Language.GetTextValue("UI.MoveOffCloud"));
@@ -77,7 +77,7 @@
  		}
  
  		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
-@@ -214,8 +_,12 @@
+@@ -229,8 +_,12 @@
  		private void CloudButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  			if (_data.IsCloudSave)
  				_data.MoveToLocal();
@@ -91,7 +91,7 @@
  
  			((UIImageButton)evt.Target).SetImage(_data.IsCloudSave ? _buttonCloudActiveTexture : _buttonCloudInactiveTexture);
  			if (_data.IsCloudSave)
-@@ -244,7 +_,7 @@
+@@ -259,7 +_,7 @@
  		}
  
  		private void PlayGame(UIMouseEvent evt, UIElement listeningElement) {
@@ -100,7 +100,7 @@
  				_data.SetAsActive();
  				SoundEngine.PlaySound(10);
  				Main.GetInputText("");
-@@ -255,9 +_,29 @@
+@@ -270,9 +_,29 @@
  				else
  					Main.menuMode = 10;
  
@@ -131,7 +131,7 @@
  		}
  
  		private bool TryMovingToRejectionMenuIfNeeded(int worldGameMode) {
-@@ -325,6 +_,9 @@
+@@ -340,6 +_,9 @@
  		private void SeedButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  			Platform.Get<IClipboard>().Value = _data.GetFullSeedText();
  			_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
