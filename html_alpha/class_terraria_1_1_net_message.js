@@ -13,7 +13,7 @@ var class_terraria_1_1_net_message =
     [ "ReceiveBytes", "class_terraria_1_1_net_message.html#a0a106e92bed14724f594673be80c618a", null ],
     [ "SendAnglerQuest", "class_terraria_1_1_net_message.html#a1078cb194a7a73de022e79b536e169e8", null ],
     [ "SendCoinLossRevengeMarker", "class_terraria_1_1_net_message.html#aeb07c3bbf2364d9c5fb07e5f027207da", null ],
-    [ "SendData", "class_terraria_1_1_net_message.html#a97828dab760a999334d6db4ad173646b", null ],
+    [ "SendData", "class_terraria_1_1_net_message.html#a0099400efdc729b71368da55adc01263", null ],
     [ "SendObjectPlacment", "class_terraria_1_1_net_message.html#a79279ec0db2b3c44cbb6eab029a1382b", null ],
     [ "SendPlayerDeath", "class_terraria_1_1_net_message.html#ac0ed28a6378729468897e5ba5b4e97f6", null ],
     [ "SendPlayerHurt", "class_terraria_1_1_net_message.html#a00c0d4ef73c14f81f6ca65144d784c76", null ],
