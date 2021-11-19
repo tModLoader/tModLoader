@@ -72,6 +72,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TextureAssets.AccShield, nextEquip[EquipType.Shield]);
 			Array.Resize(ref TextureAssets.AccNeck, nextEquip[EquipType.Neck]);
 			Array.Resize(ref TextureAssets.AccFace, nextEquip[EquipType.Face]);
+			Array.Resize(ref TextureAssets.AccBeard, nextEquip[EquipType.Beard]);
 			Array.Resize(ref TextureAssets.AccBalloon, nextEquip[EquipType.Balloon]);
 
 			//Sets
@@ -138,6 +139,7 @@ namespace Terraria.ModLoader
 				EquipType.Shield => Main.numAccShield,
 				EquipType.Neck => Main.numAccNeck,
 				EquipType.Face => Main.numAccFace,
+				EquipType.Beard => Main.numAccBeard,
 				EquipType.Balloon => Main.numAccBalloon,
 				_ => 0,
 			};
@@ -157,6 +159,7 @@ namespace Terraria.ModLoader
 				EquipType.Shield => TextureAssets.AccShield,
 				EquipType.Neck => TextureAssets.AccNeck,
 				EquipType.Face => TextureAssets.AccFace,
+				EquipType.Beard => TextureAssets.AccBeard,
 				EquipType.Balloon => TextureAssets.AccBalloon,
 				_ => null,
 			};
@@ -208,6 +211,9 @@ namespace Terraria.ModLoader
 					case EquipType.Face:
 						item.faceSlot = (sbyte)slot;
 						break;
+					case EquipType.Beard:
+						item.beardSlot = (sbyte)slot;
+						break;
 					case EquipType.Balloon:
 						item.balloonSlot = (sbyte)slot;
 						break;
@@ -230,6 +236,7 @@ namespace Terraria.ModLoader
 				EquipType.Shield => player.shield,
 				EquipType.Neck => player.neck,
 				EquipType.Face => player.face,
+				EquipType.Beard => player.beard,
 				EquipType.Balloon => player.balloon,
 				_ => 0,
 			};
