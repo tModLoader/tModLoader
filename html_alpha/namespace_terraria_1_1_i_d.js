@@ -9,6 +9,7 @@ var namespace_terraria_1_1_i_d =
     [ "ArmorIDs", "class_terraria_1_1_i_d_1_1_armor_i_ds.html", [
       [ "Back", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_back.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_back" ],
       [ "Balloon", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon" ],
+      [ "Beard", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard" ],
       [ "Body", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body" ],
       [ "Face", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_face.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_face" ],
       [ "Front", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_front.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_front" ],

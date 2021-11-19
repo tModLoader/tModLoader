@@ -482,6 +482,7 @@ var namespace_terraria =
     [ "UI", "namespace_terraria_1_1_u_i.html", "namespace_terraria_1_1_u_i" ],
     [ "Utilities", "namespace_terraria_1_1_utilities.html", "namespace_terraria_1_1_utilities" ],
     [ "WorldBuilding", "namespace_terraria_1_1_world_building.html", "namespace_terraria_1_1_world_building" ],
+    [ "AdvancedPopupRequest", "struct_terraria_1_1_advanced_popup_request.html", "struct_terraria_1_1_advanced_popup_request" ],
     [ "Animation", "class_terraria_1_1_animation.html", "class_terraria_1_1_animation" ],
     [ "BitsByte", "struct_terraria_1_1_bits_byte.html", "struct_terraria_1_1_bits_byte" ],
     [ "Chest", "class_terraria_1_1_chest.html", "class_terraria_1_1_chest" ],
@@ -534,7 +535,6 @@ var namespace_terraria =
     [ "Utils", "class_terraria_1_1_utils.html", "class_terraria_1_1_utils" ],
     [ "WaterfallManager", "class_terraria_1_1_waterfall_manager.html", "class_terraria_1_1_waterfall_manager" ],
     [ "Wiring", "class_terraria_1_1_wiring.html", "class_terraria_1_1_wiring" ],
-    [ "World", "class_terraria_1_1_world.html", "class_terraria_1_1_world" ],
     [ "WorldGen", "class_terraria_1_1_world_gen.html", "class_terraria_1_1_world_gen" ],
     [ "WorldSections", "class_terraria_1_1_world_sections.html", "class_terraria_1_1_world_sections" ],
     [ "ItemSerializationContext", "namespace_terraria.html#a6c68b38711d058960a9c91e72118381b", [
@@ -560,7 +560,8 @@ var namespace_terraria =
       [ "ItemPickupToVoidContainer", "namespace_terraria.html#a614884dfa7ad171cd327ec5eddd2ef17acbd34f890a090312327f942f937a850e", null ],
       [ "SonarAlert", "namespace_terraria.html#a614884dfa7ad171cd327ec5eddd2ef17a6a148fcb6a0a729b8b67a6f0fdaf9986", null ],
       [ "ItemReforge", "namespace_terraria.html#a614884dfa7ad171cd327ec5eddd2ef17a3341a33961807bfab2ccaa2dd69583a7", null ],
-      [ "ItemCraft", "namespace_terraria.html#a614884dfa7ad171cd327ec5eddd2ef17a489e82d8c9a89e313e16cc53cf9d704e", null ]
+      [ "ItemCraft", "namespace_terraria.html#a614884dfa7ad171cd327ec5eddd2ef17a489e82d8c9a89e313e16cc53cf9d704e", null ],
+      [ "Advanced", "namespace_terraria.html#a614884dfa7ad171cd327ec5eddd2ef17a9b6545e4cea9b4ad4979d41bb9170e2b", null ]
     ] ],
     [ "ZoomContext", "namespace_terraria.html#a7925d076a5f2eac3e53b58c8ff914b27", [
       [ "Unscaled", "namespace_terraria.html#a7925d076a5f2eac3e53b58c8ff914b27a6f1cb6155af5b5344be44b5731fe2fd1", null ],

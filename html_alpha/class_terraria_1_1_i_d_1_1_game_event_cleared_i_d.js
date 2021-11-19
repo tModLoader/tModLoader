@@ -2,6 +2,7 @@ var class_terraria_1_1_i_d_1_1_game_event_cleared_i_d =
 [
     [ "DefeatedAncientCultist", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#ac7e0bf9e9966d5424d87530c5ee9ab78", null ],
     [ "DefeatedChristmassTree", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a182efcb35058201789a9d8e50307e9be", null ],
+    [ "DefeatedDeerclops", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a6bfcf4b0ba7f3a53a68ada0d34fdfa4c", null ],
     [ "DefeatedDestroyer", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#adbd5845caded43db4c6aa3441f168c16", null ],
     [ "DefeatedEaterOfWorldsOrBrainOfChtulu", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#a148d5d2913f17200e93a58d155ea7c2f", null ],
     [ "DefeatedEmpressOfLight", "class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html#ad10ff4bfca3ff2c7a727747354ae7609", null ],

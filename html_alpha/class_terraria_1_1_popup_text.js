@@ -1,8 +1,11 @@
 var class_terraria_1_1_popup_text =
 [
+    [ "AssignAsSonarText", "class_terraria_1_1_popup_text.html#a8ae5d180279d89d4629dfc96c25e12cd", null ],
     [ "ClearSonarText", "class_terraria_1_1_popup_text.html#afc2444d4618787e6beb44cdd11f48c64", null ],
+    [ "NewText", "class_terraria_1_1_popup_text.html#a8468adb2d30550725db8a99cfe9924ab", null ],
     [ "NewText", "class_terraria_1_1_popup_text.html#a9ae6ea9e6f96a81faa63d66bfb61e241", null ],
     [ "NewText", "class_terraria_1_1_popup_text.html#a4ed0555f51735430404120cf4da36be6", null ],
+    [ "ResetText", "class_terraria_1_1_popup_text.html#a5622b2cfeea3ecd578e7cab0bcef93b8", null ],
     [ "Update", "class_terraria_1_1_popup_text.html#a917812f7bac6167d2dc91b8ba24e3d3b", null ],
     [ "UpdateItemText", "class_terraria_1_1_popup_text.html#a8d3c48f0136ffda690a1f4fbe151082a", null ],
     [ "ValueToName", "class_terraria_1_1_popup_text.html#aa55c78205f178d6e3a281128b13b6e4f", null ],
@@ -15,6 +18,7 @@ var class_terraria_1_1_popup_text =
     [ "color", "class_terraria_1_1_popup_text.html#a5b26cd64eb1be85c500ce364059ca5fa", null ],
     [ "context", "class_terraria_1_1_popup_text.html#aeb766313282685398660454bff8c3ff4", null ],
     [ "expert", "class_terraria_1_1_popup_text.html#a6e22c99eef5f604178a3d0c541b2fe45", null ],
+    [ "freeAdvanced", "class_terraria_1_1_popup_text.html#a5d6438f7bf96931fc0ee986746a6100b", null ],
     [ "lifeTime", "class_terraria_1_1_popup_text.html#ac9f53d9044ea2c4241f9fcd06baea7d2", null ],
     [ "master", "class_terraria_1_1_popup_text.html#a8e7d4b64c22cd0c485f20e1affb459ab", null ],
     [ "name", "class_terraria_1_1_popup_text.html#ae0e8000f62461c760e18289458c0c4d7", null ],

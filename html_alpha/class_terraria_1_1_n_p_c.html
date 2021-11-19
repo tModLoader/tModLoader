@@ -139,6 +139,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>BigMimicSpawnSmoke</b
 <tr class="memitem:ae744b3811869293caca33160e607e44d"><td class="memItemLeft" align="right" valign="top"><a id="ae744b3811869293caca33160e607e44d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>BloodNautilus_GetMouthPositionAndRotation</b> (out Vector2 mouthPosition, out Vector2 mouthDirection)</td></tr>
 <tr class="separator:ae744b3811869293caca33160e607e44d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b27cc13622a7a76c2d73b51f4dd15c0"><td class="memItemLeft" align="right" valign="top"><a id="a2b27cc13622a7a76c2d73b51f4dd15c0"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>Boss_CanShootExtraAt</b> (int playerIndex, int rotationIndexToAttack, int rotationSize, float attackScanDistance, bool alwaysSkipMainTarget=true)</td></tr>
+<tr class="separator:a2b27cc13622a7a76c2d73b51f4dd15c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88fb04cefeb3d121612538889bd56102"><td class="memItemLeft" align="right" valign="top"><a id="a88fb04cefeb3d121612538889bd56102"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeChasedBy</b> (object attacker=null, bool ignoreDontTakeDamage=false)</td></tr>
 <tr class="separator:a88fb04cefeb3d121612538889bd56102"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -358,9 +361,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>RequestBuffRemoval</b
 <tr class="memitem:adaf55f79044eabae626e61f5f8474d0b"><td class="memItemLeft" align="right" valign="top"><a id="adaf55f79044eabae626e61f5f8474d0b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ScaleStats</b> (int? activePlayersCount, <a class="el" href="class_terraria_1_1_data_structures_1_1_game_mode_data.html">GameModeData</a> gameModeData, float? strengthOverride)</td></tr>
 <tr class="separator:adaf55f79044eabae626e61f5f8474d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b61bf5a018369b33e5aff5c13d96cd3"><td class="memItemLeft" align="right" valign="top"><a id="a3b61bf5a018369b33e5aff5c13d96cd3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ScaleStats_Old</b> (int? activePlayersCount, <a class="el" href="class_terraria_1_1_data_structures_1_1_game_mode_data.html">GameModeData</a> gameModeData)</td></tr>
-<tr class="separator:a3b61bf5a018369b33e5aff5c13d96cd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae343b9a2208e44424d4a85d71da9970f"><td class="memItemLeft" align="right" valign="top"><a id="ae343b9a2208e44424d4a85d71da9970f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ScaleStats_UseStrengthMultiplier</b> (float strength)</td></tr>
 <tr class="separator:ae343b9a2208e44424d4a85d71da9970f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -590,6 +590,9 @@ static int[,,,]&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize
 <tr class="memitem:a951fa294d096b333964a5931135c97b0"><td class="memItemLeft" align="right" valign="top"><a id="a951fa294d096b333964a5931135c97b0"></a>
 static int[,]&#160;</td><td class="memItemRight" valign="bottom"><b>InitializeMoonLordAttacks2</b> ()</td></tr>
 <tr class="separator:a951fa294d096b333964a5931135c97b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a937d2c8d5365c7ce5f6a91c21b0be89f"><td class="memItemLeft" align="right" valign="top"><a id="a937d2c8d5365c7ce5f6a91c21b0be89f"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsADeerclopsNearScreen</b> ()</td></tr>
+<tr class="separator:a937d2c8d5365c7ce5f6a91c21b0be89f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ec1d6e0ec5883394fa37e7f32bf2674"><td class="memItemLeft" align="right" valign="top"><a id="a7ec1d6e0ec5883394fa37e7f32bf2674"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsValidSpawningGroundTile</b> (int x, int y)</td></tr>
 <tr class="separator:a7ec1d6e0ec5883394fa37e7f32bf2674"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1161,6 +1164,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>downedChristma
 <tr class="memitem:aa226407709e218ae9fd1cb19bbcf0b2f"><td class="memItemLeft" align="right" valign="top"><a id="aa226407709e218ae9fd1cb19bbcf0b2f"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>downedClown</b> = false</td></tr>
 <tr class="separator:aa226407709e218ae9fd1cb19bbcf0b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1840c7e6f748462a67020a65679e51b"><td class="memItemLeft" align="right" valign="top"><a id="af1840c7e6f748462a67020a65679e51b"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>downedDeerclops</b> = false</td></tr>
+<tr class="separator:af1840c7e6f748462a67020a65679e51b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4946a0e7f3f8efbced7d7fdc72fa5001"><td class="memItemLeft" align="right" valign="top"><a id="a4946a0e7f3f8efbced7d7fdc72fa5001"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>downedEmpressOfLight</b> = false</td></tr>
 <tr class="separator:a4946a0e7f3f8efbced7d7fdc72fa5001"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1252,7 +1258,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>golemBoss</b> =
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>immuneTime</b> = 20</td></tr>
 <tr class="separator:ae5d4ef17d54b9ce96ee00dbffdb97a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cb7f4731b91c847a9aa2a52f4a38b29"><td class="memItemLeft" align="right" valign="top"><a id="a3cb7f4731b91c847a9aa2a52f4a38b29"></a>
-static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>killCount</b> = new int[668]</td></tr>
+static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>killCount</b> = new int[670]</td></tr>
 <tr class="separator:a3cb7f4731b91c847a9aa2a52f4a38b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06ddb938d613d06c3ea654b533b7ba4d"><td class="memItemLeft" align="right" valign="top"><a id="a06ddb938d613d06c3ea654b533b7ba4d"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>ladyBugBadLuckTime</b> = -10800</td></tr>
@@ -1300,7 +1306,7 @@ const float&#160;</td><td class="memItemRight" valign="bottom"><b>nameOverDistan
 const float&#160;</td><td class="memItemRight" valign="bottom"><b>nameOverIncrement</b> = 0.025f</td></tr>
 <tr class="separator:aa1fd10219541728ac0c57aaed74e1cc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1617ef7a6ee87407f3bf4c92a46509d"><td class="memItemLeft" align="right" valign="top"><a id="ad1617ef7a6ee87407f3bf4c92a46509d"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>npcsFoundForCheckActive</b> = new bool[668]</td></tr>
+static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>npcsFoundForCheckActive</b> = new bool[670]</td></tr>
 <tr class="separator:ad1617ef7a6ee87407f3bf4c92a46509d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9a47a4b28aba79e105a717bb4bcab08"><td class="memItemLeft" align="right" valign="top"><a id="aa9a47a4b28aba79e105a717bb4bcab08"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>offSetDelayTime</b> = 60</td></tr>

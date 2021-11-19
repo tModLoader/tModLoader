@@ -4,6 +4,7 @@ var class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_neck =
     [ "Count", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_neck.html#a3bcf86e78ee3f509cfc18c428a8b7fd2", null ],
     [ "CrossNecklace", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_neck.html#a3c06d3638e7130b67dfe22ac5eeb826f", null ],
     [ "JellyfishNecklace", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_neck.html#a217d4678aaccc2d433e7172a82259765", null ],
+    [ "Magiluminescence", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_neck.html#aef0d2bb9c821f22189e9f1c4659a22c1", null ],
     [ "PanicNecklace", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_neck.html#a40358ac107fa8fe28f0e7c6f101ea23b", null ],
     [ "PygmyNecklace", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_neck.html#ad22ac12785322f2f9b92577e86c3f9cc", null ],
     [ "SharkToothNecklace", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_neck.html#a56273fe0a57aba010921007ac02f2164", null ],

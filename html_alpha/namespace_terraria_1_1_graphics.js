@@ -1,5 +1,6 @@
 var namespace_terraria_1_1_graphics =
 [
+    [ "CameraModifiers", "namespace_terraria_1_1_graphics_1_1_camera_modifiers.html", "namespace_terraria_1_1_graphics_1_1_camera_modifiers" ],
     [ "Capture", "namespace_terraria_1_1_graphics_1_1_capture.html", "namespace_terraria_1_1_graphics_1_1_capture" ],
     [ "Effects", "namespace_terraria_1_1_graphics_1_1_effects.html", "namespace_terraria_1_1_graphics_1_1_effects" ],
     [ "Light", "namespace_terraria_1_1_graphics_1_1_light.html", "namespace_terraria_1_1_graphics_1_1_light" ],

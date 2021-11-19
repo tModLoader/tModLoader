@@ -1,7 +1,7 @@
 var class_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting =
 [
     [ "RectArea", "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html", "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area" ],
-    [ "LegacyLighting", "class_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting.html#ab13cc0c0c73bcd800fdc9b8411f3e51d", null ],
+    [ "LegacyLighting", "class_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting.html#a96ff2a5f789bfdfd9143b455b9e3df89", null ],
     [ "AddLight", "class_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting.html#ab5ce2750f33156f50bc0c2dde99a9895", null ],
     [ "Clear", "class_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting.html#a93aafcfa2f0fdf51104f0fd96ba643c9", null ],
     [ "GetColor", "class_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting.html#a2bad8fee64a185d486fe6a38fec60ab2", null ],

@@ -86,9 +86,11 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_u_i_1_1_item_slot.h
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#events">Events</a> &#124;
 <a href="class_terraria_1_1_u_i_1_1_item_slot-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Terraria.UI.ItemSlot Class Reference</div>  </div>
@@ -99,11 +101,22 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_u_i_1_1_item_slot.h
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_u_i_1_1_item_slot_1_1_context.html">Context</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_u_i_1_1_item_slot_1_1_item_transfer_info.html">ItemTransferInfo</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_u_i_1_1_item_slot_1_1_options.html">Options</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a21e71c798892d565da265550bad4f022"><td class="memItemLeft" align="right" valign="top"><a id="a21e71c798892d565da265550bad4f022"></a>
+delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>ItemTransferEvent</b> (<a class="el" href="struct_terraria_1_1_u_i_1_1_item_slot_1_1_item_transfer_info.html">ItemTransferInfo</a> info)</td></tr>
+<tr class="separator:a21e71c798892d565da265550bad4f022"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a6ebc06178a6c437a4194f0ad390d51bf"><td class="memItemLeft" align="right" valign="top"><a id="a6ebc06178a6c437a4194f0ad390d51bf"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>AnnounceTransfer</b> (<a class="el" href="struct_terraria_1_1_u_i_1_1_item_slot_1_1_item_transfer_info.html">ItemTransferInfo</a> info)</td></tr>
+<tr class="separator:a6ebc06178a6c437a4194f0ad390d51bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae49add73648391a4adeed56639cee327"><td class="memItemLeft" align="right" valign="top"><a id="ae49add73648391a4adeed56639cee327"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> (SpriteBatch spriteBatch, <a class="el" href="class_terraria_1_1_item.html">Item</a>[] inv, int context, int slot, Vector2 position, Color lightColor=default(Color))</td></tr>
 <tr class="separator:ae49add73648391a4adeed56639cee327"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -239,6 +252,12 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NotUsingGamepa
 <tr class="memitem:a8bfd4bd045c7860b3770bdcb5a75f0c7"><td class="memItemLeft" align="right" valign="top"><a id="a8bfd4bd045c7860b3770bdcb5a75f0c7"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShiftInUse</b><code> [get]</code></td></tr>
 <tr class="separator:a8bfd4bd045c7860b3770bdcb5a75f0c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="events"></a>
+Events</h2></td></tr>
+<tr class="memitem:a2e4b10668c123494325aca2f427f458d"><td class="memItemLeft" align="right" valign="top"><a id="a2e4b10668c123494325aca2f427f458d"></a>
+static ItemTransferEvent&#160;</td><td class="memItemRight" valign="bottom"><b>OnItemTransferred</b></td></tr>
+<tr class="separator:a2e4b10668c123494325aca2f427f458d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

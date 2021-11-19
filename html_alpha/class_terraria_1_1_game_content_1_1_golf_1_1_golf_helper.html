@@ -96,6 +96,8 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_game_content_1_1_go
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html">ClubProperties</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_contact_listener.html">ContactListener</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html">ShotStrength</a></td></tr>
@@ -106,6 +108,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ab5e0ac4c337d82d7939ef99ee6335474"><td class="memItemLeft" align="right" valign="top"><a id="ab5e0ac4c337d82d7939ef99ee6335474"></a>
 static <a class="el" href="struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html">ShotStrength</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CalculateShotStrength</b> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> golfHelper, <a class="el" href="class_terraria_1_1_entity.html">Entity</a> golfBall)</td></tr>
 <tr class="separator:ab5e0ac4c337d82d7939ef99ee6335474"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39908f3b209f69421d1d1120a89c2175"><td class="memItemLeft" align="right" valign="top"><a id="a39908f3b209f69421d1d1120a89c2175"></a>
+static <a class="el" href="struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html">ShotStrength</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CalculateShotStrength</b> (Vector2 shotVector, <a class="el" href="struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html">ClubProperties</a> clubProperties)</td></tr>
+<tr class="separator:a39908f3b209f69421d1d1120a89c2175"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98e4ba6242e39eb2b188f54d0430a311"><td class="memItemLeft" align="right" valign="top"><a id="a98e4ba6242e39eb2b188f54d0430a311"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawPredictionLine</b> (<a class="el" href="class_terraria_1_1_entity.html">Entity</a> golfBall, Vector2 impactVelocity, float chargeProgress, float roughLandResistance)</td></tr>
 <tr class="separator:a98e4ba6242e39eb2b188f54d0430a311"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -115,6 +120,15 @@ static <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>&#1
 <tr class="memitem:a95c896d87cffc8236dc731bafbfbbf29"><td class="memItemLeft" align="right" valign="top"><a id="a95c896d87cffc8236dc731bafbfbbf29"></a>
 static <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FindHelperFromGolfBall</b> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> golfBall)</td></tr>
 <tr class="separator:a95c896d87cffc8236dc731bafbfbbf29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ee5ec46c0853d4ca22a93d1b9162356"><td class="memItemLeft" align="right" valign="top"><a id="a2ee5ec46c0853d4ca22a93d1b9162356"></a>
+static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>FindVectorOnOval</b> (Vector2 vector, Vector2 radius)</td></tr>
+<tr class="separator:a2ee5ec46c0853d4ca22a93d1b9162356"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adef5cf4d98c83781af0d0b339a5ee3eb"><td class="memItemLeft" align="right" valign="top"><a id="adef5cf4d98c83781af0d0b339a5ee3eb"></a>
+static <a class="el" href="struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html">ClubProperties</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetClubProperties</b> (short itemId)</td></tr>
+<tr class="separator:adef5cf4d98c83781af0d0b339a5ee3eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a597539314676c2a8986f9efcfe3da0eb"><td class="memItemLeft" align="right" valign="top"><a id="a597539314676c2a8986f9efcfe3da0eb"></a>
+static <a class="el" href="struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html">ClubProperties</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetClubPropertiesFromGolfHelper</b> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> golfHelper)</td></tr>
+<tr class="separator:a597539314676c2a8986f9efcfe3da0eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26e0a141a37a50fcd5788370a51c301c"><td class="memItemLeft" align="right" valign="top"><a id="a26e0a141a37a50fcd5788370a51c301c"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>HitGolfBall</b> (<a class="el" href="class_terraria_1_1_entity.html">Entity</a> entity, Vector2 velocity, float roughLandResistance)</td></tr>
 <tr class="separator:a26e0a141a37a50fcd5788370a51c301c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,6 +150,12 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>ValidateShot</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr class="memitem:a876719e20ac0b0b5d23f58c5a106fc74"><td class="memItemLeft" align="right" valign="top"><a id="a876719e20ac0b0b5d23f58c5a106fc74"></a>
+static readonly <a class="el" href="class_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_contact_listener.html">ContactListener</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Listener</b> = new <a class="el" href="class_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_contact_listener.html">ContactListener</a>()</td></tr>
+<tr class="separator:a876719e20ac0b0b5d23f58c5a106fc74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b2c867c64864a40634e0c0fce3c0a06"><td class="memItemLeft" align="right" valign="top"><a id="a1b2c867c64864a40634e0c0fce3c0a06"></a>
+static readonly <a class="el" href="class_terraria_1_1_physics_1_1_physics_properties.html">PhysicsProperties</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PhysicsProperties</b> = new <a class="el" href="class_terraria_1_1_physics_1_1_physics_properties.html">PhysicsProperties</a>(0.3f, 0.99f)</td></tr>
+<tr class="separator:a1b2c867c64864a40634e0c0fce3c0a06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d489053837defebffd3aea13c1fc2a8"><td class="memItemLeft" align="right" valign="top"><a id="a1d489053837defebffd3aea13c1fc2a8"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>PointsNeededForLevel1</b> = 500</td></tr>
 <tr class="separator:a1d489053837defebffd3aea13c1fc2a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,6 +165,9 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>PointsNeededForL
 <tr class="memitem:acd5e49d26854a6c6db364267c1396c72"><td class="memItemLeft" align="right" valign="top"><a id="acd5e49d26854a6c6db364267c1396c72"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>PointsNeededForLevel3</b> = 2000</td></tr>
 <tr class="separator:acd5e49d26854a6c6db364267c1396c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22a75b4d36317742c0f21fb38c7e77b9"><td class="memItemLeft" align="right" valign="top"><a id="a22a75b4d36317742c0f21fb38c7e77b9"></a>
+static <a class="el" href="class_terraria_1_1_game_content_1_1_golf_1_1_fancy_golf_prediction_line.html">FancyGolfPredictionLine</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PredictionLine</b></td></tr>
+<tr class="separator:a22a75b4d36317742c0f21fb38c7e77b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

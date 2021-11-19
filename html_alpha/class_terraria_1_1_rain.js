@@ -1,7 +1,9 @@
 var class_terraria_1_1_rain =
 [
     [ "ClearRain", "class_terraria_1_1_rain.html#a0f4d80ebc0c2cfb6cdf7080919503f93", null ],
+    [ "GetRainFallVelocity", "class_terraria_1_1_rain.html#ac7a1a4b6a97157348e9e9bd06a0c495b", null ],
     [ "MakeRain", "class_terraria_1_1_rain.html#a67e563714dd9d34bb693981eeae2be39", null ],
+    [ "NewRainForced", "class_terraria_1_1_rain.html#a6cbcbe5052bdef2a6b0443af991b327f", null ],
     [ "Update", "class_terraria_1_1_rain.html#a0e794f6279bc07f6186e4f947ca4bf10", null ],
     [ "active", "class_terraria_1_1_rain.html#ac2a138eacad53ba16d9166b8c6766d2a", null ],
     [ "alpha", "class_terraria_1_1_rain.html#a564c054947067d6c60a76ddac294c558", null ],

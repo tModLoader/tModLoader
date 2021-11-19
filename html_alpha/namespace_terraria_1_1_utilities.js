@@ -8,6 +8,7 @@ var namespace_terraria_1_1_utilities =
     [ "FileUtilities", "class_terraria_1_1_utilities_1_1_file_utilities.html", "class_terraria_1_1_utilities_1_1_file_utilities" ],
     [ "IntRange", "struct_terraria_1_1_utilities_1_1_int_range.html", "struct_terraria_1_1_utilities_1_1_int_range" ],
     [ "NPCUtils", "class_terraria_1_1_utilities_1_1_n_p_c_utils.html", "class_terraria_1_1_utilities_1_1_n_p_c_utils" ],
+    [ "OldAttribute", "class_terraria_1_1_utilities_1_1_old_attribute.html", "class_terraria_1_1_utilities_1_1_old_attribute" ],
     [ "PlatformUtilities", "class_terraria_1_1_utilities_1_1_platform_utilities.html", "class_terraria_1_1_utilities_1_1_platform_utilities" ],
     [ "UnifiedRandom", "class_terraria_1_1_utilities_1_1_unified_random.html", "class_terraria_1_1_utilities_1_1_unified_random" ],
     [ "WeightedRandom", "class_terraria_1_1_utilities_1_1_weighted_random.html", "class_terraria_1_1_utilities_1_1_weighted_random" ]

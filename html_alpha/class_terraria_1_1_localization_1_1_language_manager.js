@@ -1,5 +1,6 @@
 var class_terraria_1_1_localization_1_1_language_manager =
 [
+    [ "EstimateWordCount", "class_terraria_1_1_localization_1_1_language_manager.html#a2b923cb9e98624c263045f814a089678", null ],
     [ "Exists", "class_terraria_1_1_localization_1_1_language_manager.html#a3b275d30cf9d1766c79515af118e623c", null ],
     [ "FindAll", "class_terraria_1_1_localization_1_1_language_manager.html#ab9df520396a633eb8ba3050af3880b02", null ],
     [ "FindAll", "class_terraria_1_1_localization_1_1_language_manager.html#ad0ee3f46ac87ba19fc899784cb2dd808", null ],
@@ -10,6 +11,7 @@ var class_terraria_1_1_localization_1_1_language_manager =
     [ "GetTextValue", "class_terraria_1_1_localization_1_1_language_manager.html#a45df286d5da46bea3e5251bcb2e61cc4", null ],
     [ "GetTextValue", "class_terraria_1_1_localization_1_1_language_manager.html#a43c9fdc5d600e4cc566b0bcb87de2105", null ],
     [ "GetTextValue", "class_terraria_1_1_localization_1_1_language_manager.html#a9cfa72ace5f9dfbb6a12144070b4e815", null ],
+    [ "IndexedFromCategory", "class_terraria_1_1_localization_1_1_language_manager.html#ab745e7237585accf319c5ac4176ae33a", null ],
     [ "LoadLanguageFromFileTextCsv", "class_terraria_1_1_localization_1_1_language_manager.html#a55514f806594f1233c94927febe892b4", null ],
     [ "LoadLanguageFromFileTextJson", "class_terraria_1_1_localization_1_1_language_manager.html#a040943941cb27033021acfe0c2372f68", null ],
     [ "RandomFromCategory", "class_terraria_1_1_localization_1_1_language_manager.html#a6b23ac730ffed82fc9ec09af29262f17", null ],

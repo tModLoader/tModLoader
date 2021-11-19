@@ -30,6 +30,7 @@ var class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets =
     [ "CommonSapling", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a8ac4d23defba26a9be09a813beb236f2", null ],
     [ "ConveyorDirection", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#ac93187a249ee24744821d94121620d05", null ],
     [ "Corrupt", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#ad23a4925b09db6c35740c47b673e62e1", null ],
+    [ "CountsAsGemTree", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a34f46816bbe4bd14f5ca921a62894122", null ],
     [ "CountsAsHoneySource", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a6d7adf0e9f60098f45853f28883f433b", null ],
     [ "CountsAsLavaSource", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a824f5707ee42e05f88f08feb80cb7990", null ],
     [ "CountsAsWaterSource", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a399124aba65d6b176da722cc20b70ffc", null ],

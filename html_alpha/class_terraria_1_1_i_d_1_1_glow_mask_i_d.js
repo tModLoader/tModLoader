@@ -118,6 +118,7 @@ var class_terraria_1_1_i_d_1_1_glow_mask_i_d =
     [ "LunarTowerSolar", "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#ad212c34db5f5c03b3eb2d82c9fed8707", null ],
     [ "LunarTowerStardust", "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a01365258d57b75099a8d5386b93fac82", null ],
     [ "LunarTowerVortex", "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#ace76d2801eaadb98e9e45de419c3228e", null ],
+    [ "Magiluminescence", "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a2e40142ba3bf5f86a9135ae6e60223df", null ],
     [ "MagmaSnail", "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#ad3235acc929f472815f0bd144d12e114", null ],
     [ "MagmaSnailCage", "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#aad626ee350d71ce84cccf5a40590451c", null ],
     [ "MartianArmorDye", "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#ac84df2ec4185afe2bdf03c546af8c35e", null ],

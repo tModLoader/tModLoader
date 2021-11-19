@@ -6,6 +6,7 @@ var namespace_terraria_1_1_initializers =
     [ "ChromaInitializer", "class_terraria_1_1_initializers_1_1_chroma_initializer.html", "class_terraria_1_1_initializers_1_1_chroma_initializer" ],
     [ "DyeInitializer", "class_terraria_1_1_initializers_1_1_dye_initializer.html", "class_terraria_1_1_initializers_1_1_dye_initializer" ],
     [ "LaunchInitializer", "class_terraria_1_1_initializers_1_1_launch_initializer.html", "class_terraria_1_1_initializers_1_1_launch_initializer" ],
+    [ "LinkButtonsInitializer", "class_terraria_1_1_initializers_1_1_link_buttons_initializer.html", "class_terraria_1_1_initializers_1_1_link_buttons_initializer" ],
     [ "NetworkInitializer", "class_terraria_1_1_initializers_1_1_network_initializer.html", "class_terraria_1_1_initializers_1_1_network_initializer" ],
     [ "PlayerDataInitializer", "class_terraria_1_1_initializers_1_1_player_data_initializer.html", "class_terraria_1_1_initializers_1_1_player_data_initializer" ],
     [ "ScreenEffectInitializer", "class_terraria_1_1_initializers_1_1_screen_effect_initializer.html", "class_terraria_1_1_initializers_1_1_screen_effect_initializer" ],

@@ -187,6 +187,8 @@ var class_terraria_1_1_i_d_1_1_n_p_c_i_d =
     [ "DD2WyvernT2", "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a173e75cf2e818a38111e492d0f110384", null ],
     [ "DD2WyvernT3", "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#ae37732950e7c4a55e2eebabcf3ee3a8a", null ],
     [ "DeadlySphere", "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#aa9cf88d85a97e04f0ddac9f46460cd2e", null ],
+    [ "Deerclops", "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a566de302ed74b03ecf6c7e6cad32bcbc", null ],
+    [ "DeerclopsLeg", "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a5082cfb37c73f902528bce6518dc18fc", null ],
     [ "Demolitionist", "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a9995d200bd9782d40dfa6af63c899a5e", null ],
     [ "Demon", "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#acd5047a2fcbbd9ee9f10e11b08797eee", null ],
     [ "DemonEye", "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a3c7a6099642758a3985f963791423813", null ],

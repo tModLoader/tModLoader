@@ -1,7 +1,7 @@
 var class_terraria_1_1_i_d_1_1_projectile_i_d_1_1_sets =
 [
     [ "CanDistortWater", "class_terraria_1_1_i_d_1_1_projectile_i_d_1_1_sets.html#aa236b388222cf60d02ae76b04a6b03c7", null ],
-    [ "CountsAsHoming", "class_terraria_1_1_i_d_1_1_projectile_i_d_1_1_sets.html#a4ce34d3cad8c3838b02eaa75231b35b3", null ],
+    [ "CultistIsResistantTo", "class_terraria_1_1_i_d_1_1_projectile_i_d_1_1_sets.html#a2c9496169fa11bb2fbb84fe7439475e4", null ],
     [ "DismountsPlayersOnHit", "class_terraria_1_1_i_d_1_1_projectile_i_d_1_1_sets.html#a8df2a02a109302056f2e0773cd8a5ef8", null ],
     [ "DontApplyParryDamageBuff", "class_terraria_1_1_i_d_1_1_projectile_i_d_1_1_sets.html#a4a5a4179d64c5c828fedbe24fc0a68eb", null ],
     [ "DontAttachHideToAlpha", "class_terraria_1_1_i_d_1_1_projectile_i_d_1_1_sets.html#aa1000128375e8aafbecdafadbddb1ed0", null ],

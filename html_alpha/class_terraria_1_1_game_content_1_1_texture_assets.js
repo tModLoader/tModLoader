@@ -3,6 +3,7 @@ var class_terraria_1_1_game_content_1_1_texture_assets =
     [ "RenderTargets", "class_terraria_1_1_game_content_1_1_texture_assets_1_1_render_targets.html", "class_terraria_1_1_game_content_1_1_texture_assets_1_1_render_targets" ],
     [ "AccBack", "class_terraria_1_1_game_content_1_1_texture_assets.html#ad75b70a52ad75673fcf5a71caf4067c6", null ],
     [ "AccBalloon", "class_terraria_1_1_game_content_1_1_texture_assets.html#a41a9c2afb9e3712f288a7b0c3714daea", null ],
+    [ "AccBeard", "class_terraria_1_1_game_content_1_1_texture_assets.html#ab8b123ce883ff2e97c1cd4b25fab0716", null ],
     [ "AccFace", "class_terraria_1_1_game_content_1_1_texture_assets.html#aca7eed63c881cd91278bff411c7ef69f", null ],
     [ "AccFront", "class_terraria_1_1_game_content_1_1_texture_assets.html#a70832c86e75a98433033826943c290c1", null ],
     [ "AccHandsOff", "class_terraria_1_1_game_content_1_1_texture_assets.html#ab1da8ae8fdb17439287b497bf74bff92", null ],

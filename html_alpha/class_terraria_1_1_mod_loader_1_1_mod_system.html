@@ -220,7 +220,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aac3f396f35f5fae9282bcc1a8e1083a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before Dusts get updated.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#aac3f396f35f5fae9282bcc1a8e1083a8">More...</a><br /></td></tr>
 <tr class="separator:aac3f396f35f5fae9282bcc1a8e1083a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0719ddc5c076ba072a840c29ecb3b526"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a0719ddc5c076ba072a840c29ecb3b526">PreUpdateEntities</a> ()</td></tr>
-<tr class="memdesc:a0719ddc5c076ba072a840c29ecb3b526"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this if you want to do something before anything in the <a class="el" href="class_terraria_1_1_world.html">World</a> gets updated. Called after <a class="el" href="namespace_terraria_1_1_mod_loader_1_1_u_i.html">UI</a> updates, but before anything in the <a class="el" href="class_terraria_1_1_world.html">World</a> (Players, NPCs, Projectiles, Tiles) gets updated.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a0719ddc5c076ba072a840c29ecb3b526">More...</a><br /></td></tr>
+<tr class="memdesc:a0719ddc5c076ba072a840c29ecb3b526"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this if you want to do something before anything in the World gets updated. Called after <a class="el" href="namespace_terraria_1_1_mod_loader_1_1_u_i.html">UI</a> updates, but before anything in the World (Players, NPCs, Projectiles, Tiles) gets updated.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a0719ddc5c076ba072a840c29ecb3b526">More...</a><br /></td></tr>
 <tr class="separator:a0719ddc5c076ba072a840c29ecb3b526"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aacba367082f9aca911ab3150f3df779a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#aacba367082f9aca911ab3150f3df779a">PreUpdateGores</a> ()</td></tr>
 <tr class="memdesc:aacba367082f9aca911ab3150f3df779a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before Gores get updated.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#aacba367082f9aca911ab3150f3df779a">More...</a><br /></td></tr>
@@ -1537,8 +1537,8 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Use this if you want to do something before anything in the <a class="el" href="class_terraria_1_1_world.html">World</a> gets updated. Called after <a class="el" href="namespace_terraria_1_1_mod_loader_1_1_u_i.html">UI</a> updates, but before anything in the <a class="el" href="class_terraria_1_1_world.html">World</a> (Players, NPCs, Projectiles, Tiles) gets updated. </p>
-<p>When Main.autoPause is true or Main.FrameSkipMode is 0 or 2, the game may do a partial update. This means that it only updates menus and some animations, but not the <a class="el" href="class_terraria_1_1_world.html">World</a> or Entities. This hook - and every hook after it - only gets called on frames with a full update.</p>
+<p>Use this if you want to do something before anything in the World gets updated. Called after <a class="el" href="namespace_terraria_1_1_mod_loader_1_1_u_i.html">UI</a> updates, but before anything in the World (Players, NPCs, Projectiles, Tiles) gets updated. </p>
+<p>When Main.autoPause is true or Main.FrameSkipMode is 0 or 2, the game may do a partial update. This means that it only updates menus and some animations, but not the World or Entities. This hook - and every hook after it - only gets called on frames with a full update.</p>
 
 </div>
 </div>

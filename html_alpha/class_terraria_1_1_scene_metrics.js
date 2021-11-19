@@ -1,6 +1,6 @@
 var class_terraria_1_1_scene_metrics =
 [
-    [ "SceneMetrics", "class_terraria_1_1_scene_metrics.html#a01769d15f3e963dd12e562eb2e8a5d58", null ],
+    [ "SceneMetrics", "class_terraria_1_1_scene_metrics.html#a8f95ab6db3934601d54b112bedf6ce01", null ],
     [ "GetTileCount", "class_terraria_1_1_scene_metrics.html#ac81999ec1f083d1f8d6e76c019532a8e", null ],
     [ "IsValidForOreFinder", "class_terraria_1_1_scene_metrics.html#aca572613f7b6b1f849bb677c6dce8166", null ],
     [ "Reset", "class_terraria_1_1_scene_metrics.html#ad345470fc8b8dda4cf04d2e520a1f5ba", null ],

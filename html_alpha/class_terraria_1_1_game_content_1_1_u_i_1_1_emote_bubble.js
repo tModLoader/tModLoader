@@ -5,6 +5,7 @@ var class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble =
     [ "CheckForNPCsToReactToEmoteBubble", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a1a54a24883263fc72d72c5610f5a7451", null ],
     [ "DeserializeNetAnchor", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a5837ecb31f0bf0d1b0c71762b5812ca3", null ],
     [ "DrawAll", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#ab85f070d1edb9f8c5c9f21cc26640786", null ],
+    [ "MakeLocalPlayerEmote", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a19ae834a4e537b250080d0fea608ca38", null ],
     [ "NewBubble", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#ab03636f31b43bc0acea111154e1b5000", null ],
     [ "NewBubbleNPC", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#a1076e8e784c567f08a4c626c765aad38", null ],
     [ "OnBubbleChange", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html#ab9168a12857b24ff29d3f709675b267c", null ],

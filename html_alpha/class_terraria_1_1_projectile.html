@@ -154,15 +154,18 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CountsAsClass</b> (<a
 <tr class="memitem:adc7c36c39fceeca471393b517f1f9a8b"><td class="memItemLeft" align="right" valign="top"><a id="adc7c36c39fceeca471393b517f1f9a8b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Damage</b> ()</td></tr>
 <tr class="separator:adc7c36c39fceeca471393b517f1f9a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b4a24e61ca3b5ecf2e8290cf4c06747"><td class="memItemLeft" align="right" valign="top"><a id="a9b4a24e61ca3b5ecf2e8290cf4c06747"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultToWhip</b> ()</td></tr>
+<tr class="separator:a9b4a24e61ca3b5ecf2e8290cf4c06747"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55ec2b38e633831f1157e4b67d21323a"><td class="memItemLeft" align="right" valign="top"><a id="a55ec2b38e633831f1157e4b67d21323a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ExplodeCrackedTiles</b> (Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ)</td></tr>
 <tr class="separator:a55ec2b38e633831f1157e4b67d21323a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b6e7255d601650dff1a241cd8bd35b0"><td class="memItemLeft" align="right" valign="top"><a id="a9b6e7255d601650dff1a241cd8bd35b0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ExplodeTiles</b> (Vector2 compareSpot, int radius, int minI, int maxI, int minJ, int maxJ, bool wallSplode)</td></tr>
 <tr class="separator:a9b6e7255d601650dff1a241cd8bd35b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86ab9a356f494cebb81a605c095b401c"><td class="memItemLeft" align="right" valign="top"><a id="a86ab9a356f494cebb81a605c095b401c"></a>
-<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FindTargetWithinRange</b> (float maxRange)</td></tr>
-<tr class="separator:a86ab9a356f494cebb81a605c095b401c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54c881bb287a74596163bebab566bfb6"><td class="memItemLeft" align="right" valign="top"><a id="a54c881bb287a74596163bebab566bfb6"></a>
+<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FindTargetWithinRange</b> (float maxRange, bool checkCanHit=false)</td></tr>
+<tr class="separator:a54c881bb287a74596163bebab566bfb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a482530eaedf1939800352d0547a9684a"><td class="memItemLeft" align="right" valign="top"><a id="a482530eaedf1939800352d0547a9684a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>FindTargetWithLineOfSight</b> (float maxRange=800f)</td></tr>
 <tr class="separator:a482530eaedf1939800352d0547a9684a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -356,6 +359,9 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewProjectile</
 <tr class="memitem:a4e62ba426c37193f98b537b3eed9a076"><td class="memItemLeft" align="right" valign="top"><a id="a4e62ba426c37193f98b537b3eed9a076"></a>
 static <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NewProjectileDirect</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_projectile_source.html">IProjectileSource</a> spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner=255, float ai0=0f, float ai1=0f)</td></tr>
 <tr class="separator:a4e62ba426c37193f98b537b3eed9a076"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac57e57c6b388b80db4813c5df559d4a0"><td class="memItemLeft" align="right" valign="top"><a id="ac57e57c6b388b80db4813c5df559d4a0"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>RandomizeInsanityShadowFor</b> (<a class="el" href="class_terraria_1_1_entity.html">Entity</a> targetEntity, bool isHostile, out Vector2 spawnposition, out Vector2 spawnvelocity, out float ai0, out float ai1)</td></tr>
+<tr class="separator:ac57e57c6b388b80db4813c5df559d4a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af918a96e1c42f6446b390089cff4758e"><td class="memItemLeft" align="right" valign="top"><a id="af918a96e1c42f6446b390089cff4758e"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetImmunity</b> ()</td></tr>
 <tr class="separator:af918a96e1c42f6446b390089cff4758e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -619,7 +625,7 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>ArrowLifeTime</b
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>maxAI</b> = 2</td></tr>
 <tr class="separator:a90ce664f1050b2a22c135467788707c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef1d7fc4b05240ea3fb9693a3c5b3673"><td class="memItemLeft" align="right" valign="top"><a id="aef1d7fc4b05240ea3fb9693a3c5b3673"></a>
-static uint[][]&#160;</td><td class="memItemRight" valign="bottom"><b>perIDStaticNPCImmunity</b> = new uint[956][]</td></tr>
+static uint[][]&#160;</td><td class="memItemRight" valign="bottom"><b>perIDStaticNPCImmunity</b> = new uint[971][]</td></tr>
 <tr class="separator:aef1d7fc4b05240ea3fb9693a3c5b3673"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a45903751a9a00130b7547c1f3c2276"><td class="memItemLeft" align="right" valign="top"><a id="a6a45903751a9a00130b7547c1f3c2276"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>SentryLifeTime</b> = 7200</td></tr>

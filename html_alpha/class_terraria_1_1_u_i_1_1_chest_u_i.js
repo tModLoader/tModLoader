@@ -12,7 +12,7 @@ var class_terraria_1_1_u_i_1_1_chest_u_i =
     [ "RenameChestCancel", "class_terraria_1_1_u_i_1_1_chest_u_i.html#a2bbe0e7a291a4c22e56f998b72cdf11e", null ],
     [ "RenameChestSubmit", "class_terraria_1_1_u_i_1_1_chest_u_i.html#a6cde236224d2ef6b25763f13e9036ba7", null ],
     [ "Restock", "class_terraria_1_1_u_i_1_1_chest_u_i.html#af6490b2a042a10b7110b91d21b58db51", null ],
-    [ "TryPlacingInChest", "class_terraria_1_1_u_i_1_1_chest_u_i.html#ac72b6daed49ccebd0ca59a0157e11cc8", null ],
+    [ "TryPlacingInChest", "class_terraria_1_1_u_i_1_1_chest_u_i.html#ab722f1cf8f9a2c9699bfbf389e18fdb0", null ],
     [ "TryPlacingInPlayer", "class_terraria_1_1_u_i_1_1_chest_u_i.html#a0fb2ff57136223f353a98acb9627b658", null ],
     [ "UpdateHover", "class_terraria_1_1_u_i_1_1_chest_u_i.html#ad4bce9ad1de2e6ea1b5d074aee97aa23", null ],
     [ "ButtonHovered", "class_terraria_1_1_u_i_1_1_chest_u_i.html#a193beeb5deadfd8ae701a3054ca8d525", null ],

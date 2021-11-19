@@ -62,6 +62,7 @@ var annotated_dup =
       [ "Cinematics", "namespace_terraria_1_1_cinematics.html", [
         [ "CinematicManager", "class_terraria_1_1_cinematics_1_1_cinematic_manager.html", "class_terraria_1_1_cinematics_1_1_cinematic_manager" ],
         [ "DD2Film", "class_terraria_1_1_cinematics_1_1_d_d2_film.html", "class_terraria_1_1_cinematics_1_1_d_d2_film" ],
+        [ "DSTFilm", "class_terraria_1_1_cinematics_1_1_d_s_t_film.html", "class_terraria_1_1_cinematics_1_1_d_s_t_film" ],
         [ "Film", "class_terraria_1_1_cinematics_1_1_film.html", "class_terraria_1_1_cinematics_1_1_film" ],
         [ "FrameEventData", "struct_terraria_1_1_cinematics_1_1_frame_event_data.html", "struct_terraria_1_1_cinematics_1_1_frame_event_data" ]
       ] ],
@@ -86,6 +87,7 @@ var annotated_dup =
         [ "FlowerPacketInfo", "class_terraria_1_1_data_structures_1_1_flower_packet_info.html", "class_terraria_1_1_data_structures_1_1_flower_packet_info" ],
         [ "GameModeData", "class_terraria_1_1_data_structures_1_1_game_mode_data.html", "class_terraria_1_1_data_structures_1_1_game_mode_data" ],
         [ "GeneralIssueReporter", "class_terraria_1_1_data_structures_1_1_general_issue_reporter.html", "class_terraria_1_1_data_structures_1_1_general_issue_reporter" ],
+        [ "IConfigKeyHolder", "interface_terraria_1_1_data_structures_1_1_i_config_key_holder.html", "interface_terraria_1_1_data_structures_1_1_i_config_key_holder" ],
         [ "IEntryFilter", "interface_terraria_1_1_data_structures_1_1_i_entry_filter.html", "interface_terraria_1_1_data_structures_1_1_i_entry_filter" ],
         [ "IEntrySortStep", "interface_terraria_1_1_data_structures_1_1_i_entry_sort_step.html", "interface_terraria_1_1_data_structures_1_1_i_entry_sort_step" ],
         [ "IProjectileSource", "interface_terraria_1_1_data_structures_1_1_i_projectile_source.html", null ],
@@ -120,6 +122,7 @@ var annotated_dup =
         [ "ProjectileSource_TileInteraction", "class_terraria_1_1_data_structures_1_1_projectile_source___tile_interaction.html", "class_terraria_1_1_data_structures_1_1_projectile_source___tile_interaction" ],
         [ "ProjectileSource_Wiring", "class_terraria_1_1_data_structures_1_1_projectile_source___wiring.html", "class_terraria_1_1_data_structures_1_1_projectile_source___wiring" ],
         [ "RejectionMenuInfo", "class_terraria_1_1_data_structures_1_1_rejection_menu_info.html", "class_terraria_1_1_data_structures_1_1_rejection_menu_info" ],
+        [ "SelectionHolder", "class_terraria_1_1_data_structures_1_1_selection_holder.html", "class_terraria_1_1_data_structures_1_1_selection_holder" ],
         [ "SoundPlaySet", "class_terraria_1_1_data_structures_1_1_sound_play_set.html", "class_terraria_1_1_data_structures_1_1_sound_play_set" ],
         [ "SpriteFrame", "struct_terraria_1_1_data_structures_1_1_sprite_frame.html", "struct_terraria_1_1_data_structures_1_1_sprite_frame" ],
         [ "TileDrawInfo", "class_terraria_1_1_data_structures_1_1_tile_draw_info.html", "class_terraria_1_1_data_structures_1_1_tile_draw_info" ],
@@ -127,6 +130,8 @@ var annotated_dup =
         [ "TileEntitiesManager", "class_terraria_1_1_data_structures_1_1_tile_entities_manager.html", "class_terraria_1_1_data_structures_1_1_tile_entities_manager" ],
         [ "TileEntity", "class_terraria_1_1_data_structures_1_1_tile_entity.html", "class_terraria_1_1_data_structures_1_1_tile_entity" ],
         [ "TileObjectPreviewData", "class_terraria_1_1_data_structures_1_1_tile_object_preview_data.html", "class_terraria_1_1_data_structures_1_1_tile_object_preview_data" ],
+        [ "TitleLinkButton", "class_terraria_1_1_data_structures_1_1_title_link_button.html", "class_terraria_1_1_data_structures_1_1_title_link_button" ],
+        [ "TrackedProjectileReference", "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html", "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference" ],
         [ "WingStats", "struct_terraria_1_1_data_structures_1_1_wing_stats.html", "struct_terraria_1_1_data_structures_1_1_wing_stats" ]
       ] ],
       [ "GameContent", "namespace_terraria_1_1_game_content.html", [
@@ -495,6 +500,7 @@ var annotated_dup =
           [ "BloodMoonScreenShaderData", "class_terraria_1_1_game_content_1_1_shaders_1_1_blood_moon_screen_shader_data.html", "class_terraria_1_1_game_content_1_1_shaders_1_1_blood_moon_screen_shader_data" ],
           [ "MoonLordScreenShaderData", "class_terraria_1_1_game_content_1_1_shaders_1_1_moon_lord_screen_shader_data.html", "class_terraria_1_1_game_content_1_1_shaders_1_1_moon_lord_screen_shader_data" ],
           [ "SandstormShaderData", "class_terraria_1_1_game_content_1_1_shaders_1_1_sandstorm_shader_data.html", "class_terraria_1_1_game_content_1_1_shaders_1_1_sandstorm_shader_data" ],
+          [ "SepiaScreenShaderData", "class_terraria_1_1_game_content_1_1_shaders_1_1_sepia_screen_shader_data.html", "class_terraria_1_1_game_content_1_1_shaders_1_1_sepia_screen_shader_data" ],
           [ "WaterShaderData", "class_terraria_1_1_game_content_1_1_shaders_1_1_water_shader_data.html", "class_terraria_1_1_game_content_1_1_shaders_1_1_water_shader_data" ]
         ] ],
         [ "Skies", "namespace_terraria_1_1_game_content_1_1_skies.html", [
@@ -666,6 +672,22 @@ var annotated_dup =
             [ "UIWorldCreationPreview", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_creation_preview.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_creation_preview" ],
             [ "UIWorldListItem", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_list_item.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_list_item" ]
           ] ],
+          [ "Minimap", "namespace_terraria_1_1_game_content_1_1_u_i_1_1_minimap.html", [
+            [ "MinimapFrame", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame" ],
+            [ "MinimapFrameManager", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame_manager.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame_manager" ],
+            [ "MinimapFrameTemplate", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame_template.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame_template" ]
+          ] ],
+          [ "ResourceSets", "namespace_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets.html", [
+            [ "ClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_classic_player_resources_display_set.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_classic_player_resources_display_set" ],
+            [ "CommonResourceBarMethods", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_common_resource_bar_methods.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_common_resource_bar_methods" ],
+            [ "FancyClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_fancy_classic_player_resources_display_set.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_fancy_classic_player_resources_display_set" ],
+            [ "HorizontalBarsPlayerReosurcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_horizontal_bars_player_reosurces_display_set.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_horizontal_bars_player_reosurces_display_set" ],
+            [ "IPlayerResourcesDisplaySet", "interface_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_i_player_resources_display_set.html", "interface_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_i_player_resources_display_set" ],
+            [ "PlayerResourceSetsManager", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager" ],
+            [ "PlayerResourceSetsManager2", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager2.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager2" ],
+            [ "PlayerStatsSnapshot", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_stats_snapshot.html", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_stats_snapshot" ],
+            [ "ResourceDrawSettings", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_resource_draw_settings.html", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_resource_draw_settings" ]
+          ] ],
           [ "States", "namespace_terraria_1_1_game_content_1_1_u_i_1_1_states.html", [
             [ "AWorkshopPublishInfoState", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_a_workshop_publish_info_state" ],
             [ "UIAchievementsMenu", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_achievements_menu.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_achievements_menu" ],
@@ -693,25 +715,17 @@ var annotated_dup =
             [ "WorkshopPublishInfoStateForWorld", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_workshop_publish_info_state_for_world.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_workshop_publish_info_state_for_world" ]
           ] ],
           [ "BuilderAccTogglesUI", "class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i" ],
-          [ "ClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_classic_player_resources_display_set.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_classic_player_resources_display_set" ],
-          [ "CommonResourceBarMethods", "class_terraria_1_1_game_content_1_1_u_i_1_1_common_resource_bar_methods.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_common_resource_bar_methods" ],
           [ "CustomCurrencyManager", "class_terraria_1_1_game_content_1_1_u_i_1_1_custom_currency_manager.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_custom_currency_manager" ],
           [ "CustomCurrencySingleCoin", "class_terraria_1_1_game_content_1_1_u_i_1_1_custom_currency_single_coin.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_custom_currency_single_coin" ],
           [ "CustomCurrencySystem", "class_terraria_1_1_game_content_1_1_u_i_1_1_custom_currency_system.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_custom_currency_system" ],
           [ "EmoteBubble", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_bubble" ],
           [ "EmoteID", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_i_d.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_i_d" ],
-          [ "FancyClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_fancy_classic_player_resources_display_set.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_fancy_classic_player_resources_display_set" ],
           [ "GameTipsDisplay", "class_terraria_1_1_game_content_1_1_u_i_1_1_game_tips_display.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_game_tips_display" ],
-          [ "HorizontalBarsPlayerReosurcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_horizontal_bars_player_reosurces_display_set.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_horizontal_bars_player_reosurces_display_set" ],
           [ "IMultiplayerClosePlayersOverlay", "interface_terraria_1_1_game_content_1_1_u_i_1_1_i_multiplayer_close_players_overlay.html", "interface_terraria_1_1_game_content_1_1_u_i_1_1_i_multiplayer_close_players_overlay" ],
-          [ "IPlayerResourcesDisplaySet", "interface_terraria_1_1_game_content_1_1_u_i_1_1_i_player_resources_display_set.html", "interface_terraria_1_1_game_content_1_1_u_i_1_1_i_player_resources_display_set" ],
           [ "IssueReportsIndicator", "class_terraria_1_1_game_content_1_1_u_i_1_1_issue_reports_indicator.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_issue_reports_indicator" ],
           [ "ItemRarity", "class_terraria_1_1_game_content_1_1_u_i_1_1_item_rarity.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_item_rarity" ],
           [ "LegacyMultiplayerClosePlayersOverlay", "class_terraria_1_1_game_content_1_1_u_i_1_1_legacy_multiplayer_close_players_overlay.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_legacy_multiplayer_close_players_overlay" ],
-          [ "MinimapFrame", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_frame.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_frame" ],
           [ "NewMultiplayerClosePlayersOverlay", "class_terraria_1_1_game_content_1_1_u_i_1_1_new_multiplayer_close_players_overlay.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_new_multiplayer_close_players_overlay" ],
-          [ "PlayerStatsSnapshot", "struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html", "struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot" ],
-          [ "ResourceDrawSettings", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_draw_settings.html", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_draw_settings" ],
           [ "WiresUI", "class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i" ],
           [ "WorkshopPublishingIndicator", "class_terraria_1_1_game_content_1_1_u_i_1_1_workshop_publishing_indicator.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_workshop_publishing_indicator" ],
           [ "WorldUIAnchor", "class_terraria_1_1_game_content_1_1_u_i_1_1_world_u_i_anchor.html", "class_terraria_1_1_game_content_1_1_u_i_1_1_world_u_i_anchor" ]
@@ -726,6 +740,8 @@ var annotated_dup =
         [ "ChumBucketProjectileHelper", "class_terraria_1_1_game_content_1_1_chum_bucket_projectile_helper.html", "class_terraria_1_1_game_content_1_1_chum_bucket_projectile_helper" ],
         [ "CoinLossRevengeSystem", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system.html", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system" ],
         [ "ContentRejectionFromSize", "class_terraria_1_1_game_content_1_1_content_rejection_from_size.html", "class_terraria_1_1_game_content_1_1_content_rejection_from_size" ],
+        [ "DontStarveDarknessDamageDealer", "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html", "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer" ],
+        [ "DontStarveSeed", "class_terraria_1_1_game_content_1_1_dont_starve_seed.html", "class_terraria_1_1_game_content_1_1_dont_starve_seed" ],
         [ "DoorOpeningHelper", "class_terraria_1_1_game_content_1_1_door_opening_helper.html", "class_terraria_1_1_game_content_1_1_door_opening_helper" ],
         [ "FixExploitManEaters", "class_terraria_1_1_game_content_1_1_fix_exploit_man_eaters.html", "class_terraria_1_1_game_content_1_1_fix_exploit_man_eaters" ],
         [ "FontAssets", "class_terraria_1_1_game_content_1_1_font_assets.html", "class_terraria_1_1_game_content_1_1_font_assets" ],
@@ -736,6 +752,7 @@ var annotated_dup =
         [ "IPersistentPerWorldContent", "interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html", "interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content" ],
         [ "ItemShopSellbackHelper", "class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html", "class_terraria_1_1_game_content_1_1_item_shop_sellback_helper" ],
         [ "ITownNPCProfile", "interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html", "interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile" ],
+        [ "LucyAxeMessage", "class_terraria_1_1_game_content_1_1_lucy_axe_message.html", "class_terraria_1_1_game_content_1_1_lucy_axe_message" ],
         [ "MinecartDiggerHelper", "class_terraria_1_1_game_content_1_1_minecart_digger_helper.html", "class_terraria_1_1_game_content_1_1_minecart_digger_helper" ],
         [ "NPCHeadDrawRenderTargetContent", "class_terraria_1_1_game_content_1_1_n_p_c_head_draw_render_target_content.html", "class_terraria_1_1_game_content_1_1_n_p_c_head_draw_render_target_content" ],
         [ "PlayerEyeHelper", "struct_terraria_1_1_game_content_1_1_player_eye_helper.html", "struct_terraria_1_1_game_content_1_1_player_eye_helper" ],
@@ -781,6 +798,12 @@ var annotated_dup =
         [ "TriggersSet", "class_terraria_1_1_game_input_1_1_triggers_set.html", "class_terraria_1_1_game_input_1_1_triggers_set" ]
       ] ],
       [ "Graphics", "namespace_terraria_1_1_graphics.html", [
+        [ "CameraModifiers", "namespace_terraria_1_1_graphics_1_1_camera_modifiers.html", [
+          [ "CameraInfo", "struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html", "struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info" ],
+          [ "CameraModifierStack", "class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_modifier_stack.html", "class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_modifier_stack" ],
+          [ "ICameraModifier", "interface_terraria_1_1_graphics_1_1_camera_modifiers_1_1_i_camera_modifier.html", "interface_terraria_1_1_graphics_1_1_camera_modifiers_1_1_i_camera_modifier" ],
+          [ "PunchCameraModifier", "class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_punch_camera_modifier.html", "class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_punch_camera_modifier" ]
+        ] ],
         [ "Capture", "namespace_terraria_1_1_graphics_1_1_capture.html", [
           [ "CaptureBiome", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome" ],
           [ "CaptureInterface", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_interface.html", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_interface" ],
@@ -859,6 +882,7 @@ var annotated_dup =
         [ "ArmorIDs", "class_terraria_1_1_i_d_1_1_armor_i_ds.html", [
           [ "Back", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_back.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_back" ],
           [ "Balloon", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon" ],
+          [ "Beard", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard" ],
           [ "Body", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body" ],
           [ "Face", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_face.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_face" ],
           [ "Front", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_front.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_front" ],
@@ -929,6 +953,7 @@ var annotated_dup =
         [ "ChromaInitializer", "class_terraria_1_1_initializers_1_1_chroma_initializer.html", "class_terraria_1_1_initializers_1_1_chroma_initializer" ],
         [ "DyeInitializer", "class_terraria_1_1_initializers_1_1_dye_initializer.html", "class_terraria_1_1_initializers_1_1_dye_initializer" ],
         [ "LaunchInitializer", "class_terraria_1_1_initializers_1_1_launch_initializer.html", "class_terraria_1_1_initializers_1_1_launch_initializer" ],
+        [ "LinkButtonsInitializer", "class_terraria_1_1_initializers_1_1_link_buttons_initializer.html", "class_terraria_1_1_initializers_1_1_link_buttons_initializer" ],
         [ "NetworkInitializer", "class_terraria_1_1_initializers_1_1_network_initializer.html", "class_terraria_1_1_initializers_1_1_network_initializer" ],
         [ "PlayerDataInitializer", "class_terraria_1_1_initializers_1_1_player_data_initializer.html", "class_terraria_1_1_initializers_1_1_player_data_initializer" ],
         [ "ScreenEffectInitializer", "class_terraria_1_1_initializers_1_1_screen_effect_initializer.html", "class_terraria_1_1_initializers_1_1_screen_effect_initializer" ],
@@ -1447,6 +1472,7 @@ var annotated_dup =
         [ "FileUtilities", "class_terraria_1_1_utilities_1_1_file_utilities.html", "class_terraria_1_1_utilities_1_1_file_utilities" ],
         [ "IntRange", "struct_terraria_1_1_utilities_1_1_int_range.html", "struct_terraria_1_1_utilities_1_1_int_range" ],
         [ "NPCUtils", "class_terraria_1_1_utilities_1_1_n_p_c_utils.html", "class_terraria_1_1_utilities_1_1_n_p_c_utils" ],
+        [ "OldAttribute", "class_terraria_1_1_utilities_1_1_old_attribute.html", "class_terraria_1_1_utilities_1_1_old_attribute" ],
         [ "PlatformUtilities", "class_terraria_1_1_utilities_1_1_platform_utilities.html", "class_terraria_1_1_utilities_1_1_platform_utilities" ],
         [ "UnifiedRandom", "class_terraria_1_1_utilities_1_1_unified_random.html", "class_terraria_1_1_utilities_1_1_unified_random" ],
         [ "WeightedRandom", "class_terraria_1_1_utilities_1_1_weighted_random.html", "class_terraria_1_1_utilities_1_1_weighted_random" ]
@@ -1523,6 +1549,7 @@ var annotated_dup =
         [ "WorldGenRange", "class_terraria_1_1_world_building_1_1_world_gen_range.html", "class_terraria_1_1_world_building_1_1_world_gen_range" ],
         [ "WorldUtils", "class_terraria_1_1_world_building_1_1_world_utils.html", "class_terraria_1_1_world_building_1_1_world_utils" ]
       ] ],
+      [ "AdvancedPopupRequest", "struct_terraria_1_1_advanced_popup_request.html", "struct_terraria_1_1_advanced_popup_request" ],
       [ "Animation", "class_terraria_1_1_animation.html", "class_terraria_1_1_animation" ],
       [ "BitsByte", "struct_terraria_1_1_bits_byte.html", "struct_terraria_1_1_bits_byte" ],
       [ "Chest", "class_terraria_1_1_chest.html", "class_terraria_1_1_chest" ],
@@ -1575,7 +1602,6 @@ var annotated_dup =
       [ "Utils", "class_terraria_1_1_utils.html", "class_terraria_1_1_utils" ],
       [ "WaterfallManager", "class_terraria_1_1_waterfall_manager.html", "class_terraria_1_1_waterfall_manager" ],
       [ "Wiring", "class_terraria_1_1_wiring.html", "class_terraria_1_1_wiring" ],
-      [ "World", "class_terraria_1_1_world.html", "class_terraria_1_1_world" ],
       [ "WorldGen", "class_terraria_1_1_world_gen.html", "class_terraria_1_1_world_gen" ],
       [ "WorldSections", "class_terraria_1_1_world_sections.html", "class_terraria_1_1_world_sections" ]
     ] ],

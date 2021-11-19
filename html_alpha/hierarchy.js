@@ -45,6 +45,7 @@ var hierarchy =
     [ "Terraria.GameContent.Skies.CreditsRoll.Actions", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions.html", null ],
     [ "Terraria.WorldBuilding.Actions", "class_terraria_1_1_world_building_1_1_actions.html", null ],
     [ "Terraria.Audio.ActiveSound", "class_terraria_1_1_audio_1_1_active_sound.html", null ],
+    [ "Terraria.AdvancedPopupRequest", "struct_terraria_1_1_advanced_popup_request.html", null ],
     [ "Terraria.GameContent.ObjectInteractions.AHoverInteractionChecker", "class_terraria_1_1_game_content_1_1_object_interactions_1_1_a_hover_interaction_checker.html", [
       [ "Terraria.GameContent.ObjectInteractions.PotionOfReturnGateInteractionChecker", "class_terraria_1_1_game_content_1_1_object_interactions_1_1_potion_of_return_gate_interaction_checker.html", null ]
     ] ],
@@ -107,7 +108,8 @@ var hierarchy =
       [ "Terraria.ModLoader.Config.SliderAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_slider_attribute.html", null ],
       [ "Terraria.ModLoader.Config.SliderColorAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_slider_color_attribute.html", null ],
       [ "Terraria.ModLoader.Config.TooltipAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html", null ],
-      [ "Terraria.ModLoader.LegacyNameAttribute", "class_terraria_1_1_mod_loader_1_1_legacy_name_attribute.html", null ]
+      [ "Terraria.ModLoader.LegacyNameAttribute", "class_terraria_1_1_mod_loader_1_1_legacy_name_attribute.html", null ],
+      [ "Terraria.Utilities.OldAttribute", "class_terraria_1_1_utilities_1_1_old_attribute.html", null ]
     ] ],
     [ "Terraria.Social.Base.AWorkshopEntry", "class_terraria_1_1_social_1_1_base_1_1_a_workshop_entry.html", [
       [ "Terraria.Social.Base.ModWorkshopEntry", "class_terraria_1_1_social_1_1_base_1_1_mod_workshop_entry.html", null ],
@@ -137,6 +139,7 @@ var hierarchy =
     [ "Terraria.Physics.BallPassThroughEvent", "struct_terraria_1_1_physics_1_1_ball_pass_through_event.html", null ],
     [ "Terraria.Physics.BallStepResult", "struct_terraria_1_1_physics_1_1_ball_step_result.html", null ],
     [ "Terraria.ID.ItemID.BannerEffect", "struct_terraria_1_1_i_d_1_1_item_i_d_1_1_banner_effect.html", null ],
+    [ "Terraria.ID.ArmorIDs.Beard", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html", null ],
     [ "Terraria.GameContent.Bestiary.BestiaryDatabase", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database.html", null ],
     [ "Terraria.GameContent.Bestiary.BestiaryDatabaseNPCsPopulator", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator.html", null ],
     [ "Terraria.GameContent.Bestiary.BestiaryEntry", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_entry.html", null ],
@@ -166,6 +169,8 @@ var hierarchy =
     [ "Terraria.DataStructures.CachedBuffer", "class_terraria_1_1_data_structures_1_1_cached_buffer.html", null ],
     [ "Terraria.UI.CalculatedStyle", "struct_terraria_1_1_u_i_1_1_calculated_style.html", null ],
     [ "Terraria.Graphics.Camera", "class_terraria_1_1_graphics_1_1_camera.html", null ],
+    [ "Terraria.Graphics.CameraModifiers.CameraInfo", "struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html", null ],
+    [ "Terraria.Graphics.CameraModifiers.CameraModifierStack", "class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_modifier_stack.html", null ],
     [ "Terraria.Graphics.Capture.CaptureBiome", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html", null ],
     [ "Terraria.Graphics.Capture.CaptureInterface", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_interface.html", null ],
     [ "Terraria.Graphics.Capture.CaptureManager", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html", null ],
@@ -243,6 +248,7 @@ var hierarchy =
     [ "Terraria.Cinematics.CinematicManager", "class_terraria_1_1_cinematics_1_1_cinematic_manager.html", null ],
     [ "Terraria.Cloud", "class_terraria_1_1_cloud.html", null ],
     [ "Terraria.ID.CloudID", "class_terraria_1_1_i_d_1_1_cloud_i_d.html", null ],
+    [ "Terraria.GameContent.Golf.GolfHelper.ClubProperties", "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html", null ],
     [ "Terraria.GameContent.CoinLossRevengeSystem", "class_terraria_1_1_game_content_1_1_coin_loss_revenge_system.html", null ],
     [ "Terraria.Collision", "class_terraria_1_1_collision.html", null ],
     [ "Terraria.ID.Colors", "class_terraria_1_1_i_d_1_1_colors.html", null ],
@@ -254,7 +260,7 @@ var hierarchy =
     [ "Terraria.GameContent.ItemDropRules.CommonCode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_code.html", null ],
     [ "Terraria.GameContent.RGB.CommonConditions", "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions.html", null ],
     [ "Terraria.ID.ContentSamples.CommonlyUsedContentSamples", "class_terraria_1_1_i_d_1_1_content_samples_1_1_commonly_used_content_samples.html", null ],
-    [ "Terraria.GameContent.UI.CommonResourceBarMethods", "class_terraria_1_1_game_content_1_1_u_i_1_1_common_resource_bar_methods.html", null ],
+    [ "Terraria.GameContent.UI.ResourceSets.CommonResourceBarMethods", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_common_resource_bar_methods.html", null ],
     [ "Terraria.GameContent.Bestiary.BestiaryDatabaseNPCsPopulator.CommonTags", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_tags.html", null ],
     [ "Comparer", "class_comparer.html", [
       [ "Terraria.DataStructures.TileDrawSorter.CustomComparer", "class_terraria_1_1_data_structures_1_1_tile_draw_sorter_1_1_custom_comparer.html", null ]
@@ -341,6 +347,8 @@ var hierarchy =
     [ "Terraria.GameContent.Biomes.Desert.DesertHive", "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_hive.html", null ],
     [ "DeviceParam", "class_device_param.html", null ],
     [ "Terraria.GameContent.Tile_Entities.DisplayDollSlot", "class_terraria_1_1_game_content_1_1_tile___entities_1_1_display_doll_slot.html", null ],
+    [ "Terraria.GameContent.DontStarveDarknessDamageDealer", "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html", null ],
+    [ "Terraria.GameContent.DontStarveSeed", "class_terraria_1_1_game_content_1_1_dont_starve_seed.html", null ],
     [ "Terraria.GameContent.DoorOpeningHelper", "class_terraria_1_1_game_content_1_1_door_opening_helper.html", null ],
     [ "Terraria.DataStructures.DoubleStack< T1 >", "class_terraria_1_1_data_structures_1_1_double_stack.html", null ],
     [ "Terraria.Social.Steam.WorkshopHelper.UGCBased.Downloader", "class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_downloader.html", null ],
@@ -419,7 +427,8 @@ var hierarchy =
     [ "Terraria.IO.FileMetadata", "class_terraria_1_1_i_o_1_1_file_metadata.html", null ],
     [ "Terraria.Utilities.FileUtilities", "class_terraria_1_1_utilities_1_1_file_utilities.html", null ],
     [ "Terraria.Cinematics.Film", "class_terraria_1_1_cinematics_1_1_film.html", [
-      [ "Terraria.Cinematics.DD2Film", "class_terraria_1_1_cinematics_1_1_d_d2_film.html", null ]
+      [ "Terraria.Cinematics.DD2Film", "class_terraria_1_1_cinematics_1_1_d_d2_film.html", null ],
+      [ "Terraria.Cinematics.DSTFilm", "class_terraria_1_1_cinematics_1_1_d_s_t_film.html", null ]
     ] ],
     [ "Terraria.GameContent.Bestiary.Filters", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters.html", null ],
     [ "Terraria.Graphics.Effects.Filters", "class_terraria_1_1_graphics_1_1_effects_1_1_filters.html", null ],
@@ -726,6 +735,9 @@ var hierarchy =
       [ "Terraria.ModLoader.ModBossBar", "class_terraria_1_1_mod_loader_1_1_mod_boss_bar.html", null ]
     ] ],
     [ "Terraria.GameContent.UI.BuilderAccTogglesUI.IBuilderAccToggle", "interface_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i_1_1_i_builder_acc_toggle.html", null ],
+    [ "Terraria.Graphics.CameraModifiers.ICameraModifier", "interface_terraria_1_1_graphics_1_1_camera_modifiers_1_1_i_camera_modifier.html", [
+      [ "Terraria.Graphics.CameraModifiers.PunchCameraModifier", "class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_punch_camera_modifier.html", null ]
+    ] ],
     [ "Terraria.Chat.Commands.IChatCommand", "interface_terraria_1_1_chat_1_1_commands_1_1_i_chat_command.html", [
       [ "Terraria.Chat.Commands.EmojiCommand", "class_terraria_1_1_chat_1_1_commands_1_1_emoji_command.html", null ],
       [ "Terraria.Chat.Commands.EmoteCommand", "class_terraria_1_1_chat_1_1_commands_1_1_emote_command.html", null ],
@@ -899,6 +911,17 @@ var hierarchy =
     [ "IComparer< Tuple< int, float >>", "class_i_comparer_3_01_tuple_3_01int_00_01float_01_4_4.html", null ],
     [ "Terraria.Recipe.ICondition", "interface_terraria_1_1_recipe_1_1_i_condition.html", [
       [ "Terraria.Recipe.Condition", "class_terraria_1_1_recipe_1_1_condition.html", null ]
+    ] ],
+    [ "Terraria.DataStructures.IConfigKeyHolder", "interface_terraria_1_1_data_structures_1_1_i_config_key_holder.html", [
+      [ "Terraria.GameContent.UI.Minimap.MinimapFrame", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame.html", null ],
+      [ "Terraria.GameContent.UI.ResourceSets.ClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_classic_player_resources_display_set.html", null ],
+      [ "Terraria.GameContent.UI.ResourceSets.FancyClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_fancy_classic_player_resources_display_set.html", null ],
+      [ "Terraria.GameContent.UI.ResourceSets.HorizontalBarsPlayerReosurcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_horizontal_bars_player_reosurces_display_set.html", null ],
+      [ "Terraria.GameContent.UI.ResourceSets.IPlayerResourcesDisplaySet", "interface_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_i_player_resources_display_set.html", [
+        [ "Terraria.GameContent.UI.ResourceSets.ClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_classic_player_resources_display_set.html", null ],
+        [ "Terraria.GameContent.UI.ResourceSets.FancyClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_fancy_classic_player_resources_display_set.html", null ],
+        [ "Terraria.GameContent.UI.ResourceSets.HorizontalBarsPlayerReosurcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_horizontal_bars_player_reosurces_display_set.html", null ]
+      ] ]
     ] ],
     [ "IContentValidator", "class_i_content_validator.html", [
       [ "Terraria.GameContent.VanillaContentValidator", "class_terraria_1_1_game_content_1_1_vanilla_content_validator.html", null ]
@@ -1426,11 +1449,6 @@ var hierarchy =
     [ "Terraria.Graphics.Renderers.IPlayerRenderer", "interface_terraria_1_1_graphics_1_1_renderers_1_1_i_player_renderer.html", [
       [ "Terraria.Graphics.Renderers.LegacyPlayerRenderer", "class_terraria_1_1_graphics_1_1_renderers_1_1_legacy_player_renderer.html", null ]
     ] ],
-    [ "Terraria.GameContent.UI.IPlayerResourcesDisplaySet", "interface_terraria_1_1_game_content_1_1_u_i_1_1_i_player_resources_display_set.html", [
-      [ "Terraria.GameContent.UI.ClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_classic_player_resources_display_set.html", null ],
-      [ "Terraria.GameContent.UI.FancyClassicPlayerResourcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_fancy_classic_player_resources_display_set.html", null ],
-      [ "Terraria.GameContent.UI.HorizontalBarsPlayerReosurcesDisplaySet", "class_terraria_1_1_game_content_1_1_u_i_1_1_horizontal_bars_player_reosurces_display_set.html", null ]
-    ] ],
     [ "Terraria.GameContent.Creative.IPowerSubcategoryElement", "interface_terraria_1_1_game_content_1_1_creative_1_1_i_power_subcategory_element.html", [
       [ "Terraria.GameContent.Creative.CreativePowers.APerPlayerSliderPower", "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_per_player_slider_power.html", null ],
       [ "Terraria.GameContent.Creative.CreativePowers.ASharedSliderPower", "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_shared_slider_power.html", null ],
@@ -1460,6 +1478,8 @@ var hierarchy =
       [ "Terraria.GameContent.ItemDropRules.Conditions.CorruptKeyCondition", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_corrupt_key_condition.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.CrimsonKeyCondition", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_crimson_key_condition.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.DesertKeyCondition", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_desert_key_condition.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.Conditions.DontStarveIsNotUp", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_dont_starve_is_not_up.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.Conditions.DontStarveIsUp", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_dont_starve_is_up.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.DownedAllMechBosses", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_downed_all_mech_bosses.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.DownedPlantera", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_downed_plantera.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.EmpressOfLightIsGenuinelyEnraged", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_empress_of_light_is_genuinely_enraged.html", null ],
@@ -1514,6 +1534,8 @@ var hierarchy =
         [ "Terraria.GameContent.ItemDropRules.Conditions.CorruptKeyCondition", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_corrupt_key_condition.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.CrimsonKeyCondition", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_crimson_key_condition.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.DesertKeyCondition", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_desert_key_condition.html", null ],
+        [ "Terraria.GameContent.ItemDropRules.Conditions.DontStarveIsNotUp", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_dont_starve_is_not_up.html", null ],
+        [ "Terraria.GameContent.ItemDropRules.Conditions.DontStarveIsUp", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_dont_starve_is_up.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.DownedAllMechBosses", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_downed_all_mech_bosses.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.DownedPlantera", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_downed_plantera.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.EmpressOfLightIsGenuinelyEnraged", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_empress_of_light_is_genuinely_enraged.html", null ],
@@ -1685,6 +1707,7 @@ var hierarchy =
     [ "Terraria.Player.ItemSpaceStatus", "struct_terraria_1_1_player_1_1_item_space_status.html", null ],
     [ "Terraria.DataStructures.ItemSyncPersistentStats", "struct_terraria_1_1_data_structures_1_1_item_sync_persistent_stats.html", null ],
     [ "Terraria.UI.ItemTooltip", "class_terraria_1_1_u_i_1_1_item_tooltip.html", null ],
+    [ "Terraria.UI.ItemSlot.ItemTransferInfo", "struct_terraria_1_1_u_i_1_1_item_slot_1_1_item_transfer_info.html", null ],
     [ "Terraria.ID.ItemUseStyleID", "class_terraria_1_1_i_d_1_1_item_use_style_i_d.html", null ],
     [ "Terraria.GameContent.ITownNPCProfile", "interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html", [
       [ "Terraria.GameContent.Profiles.LegacyNPCProfile", "class_terraria_1_1_game_content_1_1_profiles_1_1_legacy_n_p_c_profile.html", null ],
@@ -1714,6 +1737,7 @@ var hierarchy =
     [ "Terraria.Lighting", "class_terraria_1_1_lighting.html", null ],
     [ "Terraria.Graphics.Light.LightMap", "class_terraria_1_1_graphics_1_1_light_1_1_light_map.html", null ],
     [ "Terraria.DataStructures.LineSegment", "struct_terraria_1_1_data_structures_1_1_line_segment.html", null ],
+    [ "Terraria.Initializers.LinkButtonsInitializer", "class_terraria_1_1_initializers_1_1_link_buttons_initializer.html", null ],
     [ "Terraria.Liquid", "class_terraria_1_1_liquid.html", null ],
     [ "Terraria.LiquidBuffer", "class_terraria_1_1_liquid_buffer.html", null ],
     [ "Terraria.Modules.LiquidDeathModule", "class_terraria_1_1_modules_1_1_liquid_death_module.html", null ],
@@ -1734,6 +1758,7 @@ var hierarchy =
     [ "Terraria.GameContent.Skies.CreditsRoll.Segments.LooseSprite", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_loose_sprite.html", null ],
     [ "Terraria.GameContent.LootSimulation.LootSimulationItemCounter", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulation_item_counter.html", null ],
     [ "Terraria.GameContent.LootSimulation.LootSimulator", "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator.html", null ],
+    [ "Terraria.GameContent.LucyAxeMessage", "class_terraria_1_1_game_content_1_1_lucy_axe_message.html", null ],
     [ "Terraria.Graphics.MagicMissileDrawer", "struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html", null ],
     [ "Terraria.Map.MapHelper", "class_terraria_1_1_map_1_1_map_helper.html", null ],
     [ "Terraria.Map.MapIconOverlay", "class_terraria_1_1_map_1_1_map_icon_overlay.html", null ],
@@ -1751,7 +1776,7 @@ var hierarchy =
     [ "Terraria.DelegateMethods.Minecart", "class_terraria_1_1_delegate_methods_1_1_minecart.html", null ],
     [ "Terraria.Minecart", "class_terraria_1_1_minecart.html", null ],
     [ "Terraria.GameContent.MinecartDiggerHelper", "class_terraria_1_1_game_content_1_1_minecart_digger_helper.html", null ],
-    [ "Terraria.GameContent.UI.MinimapFrame", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_frame.html", null ],
+    [ "Terraria.GameContent.UI.Minimap.MinimapFrameTemplate", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame_template.html", null ],
     [ "Terraria.GameContent.RGB.CommonConditions.MiscBiome", "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_misc_biome.html", null ],
     [ "Terraria.GameInput.PlayerInput.MiscSettingsTEMP", "class_terraria_1_1_game_input_1_1_player_input_1_1_misc_settings_t_e_m_p.html", null ],
     [ "Terraria.ModLoader.Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", null ],
@@ -1862,10 +1887,11 @@ var hierarchy =
     [ "Terraria.ID.PlayerItemSlotID", "class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html", null ],
     [ "Terraria.ModLoader.PlayerLoader", "class_terraria_1_1_mod_loader_1_1_player_loader.html", null ],
     [ "Terraria.DataStructures.PlayerMovementAccsCache", "struct_terraria_1_1_data_structures_1_1_player_movement_accs_cache.html", null ],
+    [ "Terraria.GameContent.UI.ResourceSets.PlayerResourceSetsManager", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager.html", null ],
     [ "Terraria.GameContent.Skies.CreditsRoll.Actions.Players", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_players.html", null ],
     [ "Terraria.GameContent.PlayerSittingHelper", "struct_terraria_1_1_game_content_1_1_player_sitting_helper.html", null ],
     [ "Terraria.GameContent.PlayerSleepingHelper", "struct_terraria_1_1_game_content_1_1_player_sleeping_helper.html", null ],
-    [ "Terraria.GameContent.UI.PlayerStatsSnapshot", "struct_terraria_1_1_game_content_1_1_u_i_1_1_player_stats_snapshot.html", null ],
+    [ "Terraria.GameContent.UI.ResourceSets.PlayerStatsSnapshot", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_stats_snapshot.html", null ],
     [ "Terraria.ID.PlayerTextureID", "class_terraria_1_1_i_d_1_1_player_texture_i_d.html", null ],
     [ "Terraria.ID.PlayerVariantID", "class_terraria_1_1_i_d_1_1_player_variant_i_d.html", null ],
     [ "Terraria.DataStructures.Point16", "struct_terraria_1_1_data_structures_1_1_point16.html", null ],
@@ -1928,7 +1954,7 @@ var hierarchy =
     [ "Terraria.RemoteServer", "class_terraria_1_1_remote_server.html", null ],
     [ "Terraria.GameContent.TextureAssets.RenderTargets", "class_terraria_1_1_game_content_1_1_texture_assets_1_1_render_targets.html", null ],
     [ "Terraria.Social.WeGame.ReportServerID", "class_terraria_1_1_social_1_1_we_game_1_1_report_server_i_d.html", null ],
-    [ "Terraria.GameContent.UI.ResourceDrawSettings", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_draw_settings.html", null ],
+    [ "Terraria.GameContent.UI.ResourceSets.ResourceDrawSettings", "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_resource_draw_settings.html", null ],
     [ "Terraria.IO.ResourcePack", "class_terraria_1_1_i_o_1_1_resource_pack.html", null ],
     [ "Terraria.IO.ResourcePackContentValidator", "class_terraria_1_1_i_o_1_1_resource_pack_content_validator.html", null ],
     [ "Terraria.IO.ResourcePackList", "class_terraria_1_1_i_o_1_1_resource_pack_list.html", null ],
@@ -1954,6 +1980,13 @@ var hierarchy =
     [ "Terraria.ModLoader.UI.ModBrowser.SearchFilterModesExtensions", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_mod_browser_1_1_search_filter_modes_extensions.html", null ],
     [ "Terraria.Utilities.NPCUtils.SearchFilters", "class_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_search_filters.html", null ],
     [ "Terraria.GameContent.Skies.CreditsRoll.Segments", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments.html", null ],
+    [ "Terraria.DataStructures.SelectionHolder< TCycleType >", "class_terraria_1_1_data_structures_1_1_selection_holder.html", null ],
+    [ "Terraria.DataStructures.SelectionHolder< IPlayerResourcesDisplaySet >", "class_terraria_1_1_data_structures_1_1_selection_holder.html", [
+      [ "Terraria.GameContent.UI.ResourceSets.PlayerResourceSetsManager2", "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager2.html", null ]
+    ] ],
+    [ "Terraria.DataStructures.SelectionHolder< MinimapFrame >", "class_terraria_1_1_data_structures_1_1_selection_holder.html", [
+      [ "Terraria.GameContent.UI.Minimap.MinimapFrameManager", "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame_manager.html", null ]
+    ] ],
     [ "Terraria.Player.SelectionRadial", "class_terraria_1_1_player_1_1_selection_radial.html", null ],
     [ "Terraria.Social.Base.ServerJoinRequestsManager", "class_terraria_1_1_social_1_1_base_1_1_server_join_requests_manager.html", null ],
     [ "Terraria.ID.SetFactory", "class_terraria_1_1_i_d_1_1_set_factory.html", null ],
@@ -1962,6 +1995,7 @@ var hierarchy =
     [ "Terraria.ID.AmmoID.Sets", "class_terraria_1_1_i_d_1_1_ammo_i_d_1_1_sets.html", null ],
     [ "Terraria.ID.ArmorIDs.Back.Sets", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_back_1_1_sets.html", null ],
     [ "Terraria.ID.ArmorIDs.Balloon.Sets", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon_1_1_sets.html", null ],
+    [ "Terraria.ID.ArmorIDs.Beard.Sets", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard_1_1_sets.html", null ],
     [ "Terraria.ID.ArmorIDs.Body.Sets", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets.html", null ],
     [ "Terraria.ID.ArmorIDs.Face.Sets", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_face_1_1_sets.html", null ],
     [ "Terraria.ID.ArmorIDs.Front.Sets", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_front_1_1_sets.html", null ],
@@ -2001,6 +2035,7 @@ var hierarchy =
         [ "Terraria.GameContent.Shaders.BloodMoonScreenShaderData", "class_terraria_1_1_game_content_1_1_shaders_1_1_blood_moon_screen_shader_data.html", null ],
         [ "Terraria.GameContent.Shaders.MoonLordScreenShaderData", "class_terraria_1_1_game_content_1_1_shaders_1_1_moon_lord_screen_shader_data.html", null ],
         [ "Terraria.GameContent.Shaders.SandstormShaderData", "class_terraria_1_1_game_content_1_1_shaders_1_1_sandstorm_shader_data.html", null ],
+        [ "Terraria.GameContent.Shaders.SepiaScreenShaderData", "class_terraria_1_1_game_content_1_1_shaders_1_1_sepia_screen_shader_data.html", null ],
         [ "Terraria.GameContent.Shaders.WaterShaderData", "class_terraria_1_1_game_content_1_1_shaders_1_1_water_shader_data.html", null ]
       ] ]
     ] ],
@@ -2128,6 +2163,7 @@ var hierarchy =
     [ "Terraria.GameContent.TilePaintSystemV2.TileVariationkey", "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tile_variationkey.html", null ],
     [ "Terraria.TimeLogger", "class_terraria_1_1_time_logger.html", null ],
     [ "Terraria.GameContent.Bestiary.BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Times", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_t29c90f6ca11f7eff7c481b9bdde48d69.html", null ],
+    [ "Terraria.DataStructures.TitleLinkButton", "class_terraria_1_1_data_structures_1_1_title_link_button.html", null ],
     [ "Terraria.ModLoader.TooltipLine", "class_terraria_1_1_mod_loader_1_1_tooltip_line.html", [
       [ "Terraria.ModLoader.DrawableTooltipLine", "class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html", null ]
     ] ],
@@ -2135,6 +2171,7 @@ var hierarchy =
     [ "Terraria.ID.TorchID", "class_terraria_1_1_i_d_1_1_torch_i_d.html", null ],
     [ "Terraria.GameContent.TownNPCProfiles", "class_terraria_1_1_game_content_1_1_town_n_p_c_profiles.html", null ],
     [ "Terraria.GameContent.TownRoomManager", "class_terraria_1_1_game_content_1_1_town_room_manager.html", null ],
+    [ "Terraria.DataStructures.TrackedProjectileReference", "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html", null ],
     [ "Terraria.GameContent.Generation.TrackGenerator", "class_terraria_1_1_game_content_1_1_generation_1_1_track_generator.html", null ],
     [ "Terraria.ModLoader.PlayerDrawLayer.Transformation", "class_terraria_1_1_mod_loader_1_1_player_draw_layer_1_1_transformation.html", null ],
     [ "Terraria.GameContent.TilePaintSystemV2.TreeFoliageVariantKey", "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html", null ],
@@ -2220,7 +2257,6 @@ var hierarchy =
     [ "Terraria.GameContent.UI.WorkshopPublishingIndicator", "class_terraria_1_1_game_content_1_1_u_i_1_1_workshop_publishing_indicator.html", null ],
     [ "Terraria.Social.Base.WorkshopTagOption", "class_terraria_1_1_social_1_1_base_1_1_workshop_tag_option.html", null ],
     [ "Terraria.ModLoader.BackupIO.World", "class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_world.html", null ],
-    [ "Terraria.World", "class_terraria_1_1_world.html", null ],
     [ "Terraria.IO.WorldFile", "class_terraria_1_1_i_o_1_1_world_file.html", null ],
     [ "Terraria.WorldGen", "class_terraria_1_1_world_gen.html", null ],
     [ "Terraria.WorldBuilding.WorldGenerator", "class_terraria_1_1_world_building_1_1_world_generator.html", null ],

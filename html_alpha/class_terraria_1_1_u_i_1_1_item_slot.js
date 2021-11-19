@@ -1,7 +1,9 @@
 var class_terraria_1_1_u_i_1_1_item_slot =
 [
     [ "Context", "class_terraria_1_1_u_i_1_1_item_slot_1_1_context.html", "class_terraria_1_1_u_i_1_1_item_slot_1_1_context" ],
+    [ "ItemTransferInfo", "struct_terraria_1_1_u_i_1_1_item_slot_1_1_item_transfer_info.html", "struct_terraria_1_1_u_i_1_1_item_slot_1_1_item_transfer_info" ],
     [ "Options", "class_terraria_1_1_u_i_1_1_item_slot_1_1_options.html", "class_terraria_1_1_u_i_1_1_item_slot_1_1_options" ],
+    [ "AnnounceTransfer", "class_terraria_1_1_u_i_1_1_item_slot.html#a6ebc06178a6c437a4194f0ad390d51bf", null ],
     [ "Draw", "class_terraria_1_1_u_i_1_1_item_slot.html#ae49add73648391a4adeed56639cee327", null ],
     [ "Draw", "class_terraria_1_1_u_i_1_1_item_slot.html#a06fdb45a7b6486da4fe2f86c30093231", null ],
     [ "DrawMoney", "class_terraria_1_1_u_i_1_1_item_slot.html#a39bd94ea3c4560e879a66e88faaa7454", null ],
@@ -22,6 +24,7 @@ var class_terraria_1_1_u_i_1_1_item_slot =
     [ "IsABuildingItem", "class_terraria_1_1_u_i_1_1_item_slot.html#a968a76cb65d155a8c655cfd36c9eb1b4", null ],
     [ "isEquipLocked", "class_terraria_1_1_u_i_1_1_item_slot.html#a12cf0e91764b6645a6b9644bfab9e1df", null ],
     [ "IsMiscEquipment", "class_terraria_1_1_u_i_1_1_item_slot.html#a617680afda0bd2f0ef0a7acbca3347a7", null ],
+    [ "ItemTransferEvent", "class_terraria_1_1_u_i_1_1_item_slot.html#a21e71c798892d565da265550bad4f022", null ],
     [ "LeftClick", "class_terraria_1_1_u_i_1_1_item_slot.html#a50cea2a4a8e7505857fa97ecd8b4b06c", null ],
     [ "LeftClick", "class_terraria_1_1_u_i_1_1_item_slot.html#a6cc22b713e54cb2a46c31f421b54a42e", null ],
     [ "MouseHover", "class_terraria_1_1_u_i_1_1_item_slot.html#aee05d117bf1cbe55926a9e89c7a2da56", null ],
@@ -44,5 +47,6 @@ var class_terraria_1_1_u_i_1_1_item_slot =
     [ "ShiftForcedOn", "class_terraria_1_1_u_i_1_1_item_slot.html#a4a8e9a77df1e780ba534ef9202c7b7cb", null ],
     [ "ControlInUse", "class_terraria_1_1_u_i_1_1_item_slot.html#aa7033809cb6ff3bb0deff5633c6af910", null ],
     [ "NotUsingGamepad", "class_terraria_1_1_u_i_1_1_item_slot.html#a5b454684e9628e7c82a86ac410eea67b", null ],
-    [ "ShiftInUse", "class_terraria_1_1_u_i_1_1_item_slot.html#a8bfd4bd045c7860b3770bdcb5a75f0c7", null ]
+    [ "ShiftInUse", "class_terraria_1_1_u_i_1_1_item_slot.html#a8bfd4bd045c7860b3770bdcb5a75f0c7", null ],
+    [ "OnItemTransferred", "class_terraria_1_1_u_i_1_1_item_slot.html#a2e4b10668c123494325aca2f427f458d", null ]
 ];

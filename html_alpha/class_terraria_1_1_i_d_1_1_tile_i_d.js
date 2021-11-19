@@ -1,6 +1,7 @@
 var class_terraria_1_1_i_d_1_1_tile_i_d =
 [
     [ "Sets", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets" ],
+    [ "AbigailsFlower", "class_terraria_1_1_i_d_1_1_tile_i_d.html#a55c55a3e5f782a15b63a27688ce5f73c", null ],
     [ "AccentSlab", "class_terraria_1_1_i_d_1_1_tile_i_d.html#a56816d15715395142a7c746a46dec165", null ],
     [ "ActiveStoneBlock", "class_terraria_1_1_i_d_1_1_tile_i_d.html#a1db811c51de4f97f8eeaa2a8d738cd74", null ],
     [ "Adamantite", "class_terraria_1_1_i_d_1_1_tile_i_d.html#a3c1fef1979e1d689a87ec6a2d89e8164", null ],
