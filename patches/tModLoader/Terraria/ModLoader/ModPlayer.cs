@@ -898,7 +898,7 @@ namespace Terraria.ModLoader
 		/// You can use this method to add items to the player's starting inventory, as well as their inventory when they respawn in mediumcore.
 		/// </summary>
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
-		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty<Item>().</returns>
+		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty&lt;Item&gt;().</returns>
 		public virtual IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			return Enumerable.Empty<Item>();
 		}
