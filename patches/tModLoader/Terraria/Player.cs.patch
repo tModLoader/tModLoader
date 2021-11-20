@@ -2714,6 +2714,47 @@
  			if (wings == 32)
  				num27 = 3;
  
+@@ -21325,11 +_,13 @@
+ 				if (chest != -5)
+ 					voidLensChest.Clear();
+ 
++				HandleBeingInChestRange_TMLCheckFields();
++
+ 				bool flag = false;
+ 				int projectileLocalIndex = piggyBankProjTracker.ProjectileLocalIndex;
+ 				if (projectileLocalIndex >= 0) {
+ 					flag = true;
+-					if (!Main.projectile[projectileLocalIndex].active || (Main.projectile[projectileLocalIndex].type != 525 && Main.projectile[projectileLocalIndex].type != 960)) {
++					if (!Main.projectile[projectileLocalIndex].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex].type] != -2) {
+ 						Main.PlayInteractiveProjectileOpenCloseSound(Main.projectile[projectileLocalIndex].type, open: false);
+ 						chest = -1;
+ 						Recipe.FindRecipes();
+@@ -21353,7 +_,7 @@
+ 				int projectileLocalIndex2 = voidLensChest.ProjectileLocalIndex;
+ 				if (projectileLocalIndex2 >= 0) {
+ 					flag = true;
+-					if (!Main.projectile[projectileLocalIndex2].active || Main.projectile[projectileLocalIndex2].type != 734) {
++					if (!Main.projectile[projectileLocalIndex2].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex2].type] != -5) {
+ 						SoundEngine.PlaySound(SoundID.Item130);
+ 						chest = -1;
+ 						Recipe.FindRecipes();
+@@ -21374,6 +_,8 @@
+ 					}
+ 				}
+ 
++				HandleBeingInChestRange_TMLBankLogic(ref flag);
++
+ 				if (flag)
+ 					return;
+ 
+@@ -21393,6 +_,7 @@
+ 			else {
+ 				piggyBankProjTracker.Clear();
+ 				voidLensChest.Clear();
++				TMLClearBankProjTrackers();
+ 			}
+ 		}
+ 
 @@ -21621,6 +_,9 @@
  						break;
  				}
@@ -2865,6 +2906,15 @@
  					flag2 = true;
  					if (WorldGen.CloseDoor(myX, myY))
  						NetMessage.SendData(19, -1, -1, null, 1, myX, myY, direction);
+@@ -22796,6 +_,8 @@
+ 						else {
+ 							piggyBankProjTracker.Clear();
+ 							voidLensChest.Clear();
++							TMLClearBankProjTrackers();
++							
+ 							int num47 = Chest.FindChest(num45, num46);
+ 							if (num47 != -1) {
+ 								Main.stackSplit = 600;
 @@ -22925,7 +_,7 @@
  					if (flag12)
  						NetMessage.SendTileSquare(-1, num62, num63, 2, 2);
@@ -4592,6 +4642,14 @@
  			player.extraAccessory = extraAccessory;
  			player.MinionRestTargetPoint = MinionRestTargetPoint;
  			player.MinionAttackTargetNPC = MinionAttackTargetNPC;
+@@ -37803,6 +_,7 @@
+ 			player.talkNPC = talkNPC;
+ 			player.piggyBankProjTracker = piggyBankProjTracker;
+ 			player.voidLensChest = voidLensChest;
++			clientClone_TMLCloneBankProjTrackers(player);
+ 			player.hideVisibleAccessory = hideVisibleAccessory;
+ 			player.hideMisc = hideMisc;
+ 			player.shieldRaised = shieldRaised;
 @@ -37834,13 +_,14 @@
  			}
  
@@ -4868,6 +4926,14 @@
  				adjTile[n] = false;
  				oldAdjTile[n] = false;
  			}
+@@ -38862,6 +_,7 @@
+ 			talkNPC = -1;
+ 			piggyBankProjTracker.Clear();
+ 			voidLensChest.Clear();
++			TMLClearBankProjTrackers();
+ 			creativeTracker = new CreativeUnlocksTracker();
+ 		}
+ 
 @@ -39081,6 +_,7 @@
  		}
  

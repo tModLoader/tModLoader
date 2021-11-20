@@ -314,7 +314,15 @@
  							break;
  						}
  					case 134: {
-@@ -1352,7 +_,10 @@
+@@ -1346,13 +_,18 @@
+ 							Player obj = Main.player[number];
+ 							obj.piggyBankProjTracker.Write(writer);
+ 							obj.voidLensChest.Write(writer);
++							obj.safeProjTracker.Write(writer);
++							obj.defendersForgeProjTracker.Write(writer);
+ 							break;
+ 						}
+ 				}
  
  				int num26 = (int)writer.BaseStream.Position;
  				writer.BaseStream.Position = position;

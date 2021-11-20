@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,6 +18,9 @@ namespace Terraria
 		public Item equippedWings = null;
 
 		public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
+
+		public TrackedProjectileReference safeProjTracker;
+		public TrackedProjectileReference defendersForgeProjTracker;
 
 		// Get
 
@@ -324,5 +329,88 @@ namespace Terraria
 			return false;
 
 		}
+
+		private void HandleBeingInChestRange_TMLCheckFields()
+        {
+			if (chest != -3)
+				safeProjTracker.Clear();
+
+			if (chest != -4)
+				defendersForgeProjTracker.Clear();
+        }
+
+		private void InteractiveProjectileOpenCloseSound2(Projectile projectile) {
+			if (projectile.type < ProjectileID.Count) // For vanilla projectiles
+				Main.PlayInteractiveProjectileOpenCloseSound(projectile.type, open: false);
+			else if (projectile.ModProjectile != null) // For modded projectiles
+				projectile.ModProjectile.PlayBankCloseSound();
+		}
+
+		private void HandleBeingInChestRange_TMLBankLogic(ref bool flag)
+        {
+			// Safe
+			int safeIndex = safeProjTracker.ProjectileLocalIndex;
+			if (safeIndex >= 0) {
+				flag = true;
+				if (!Main.projectile[safeIndex].active || ProjectileID.Sets.CountAsBank[Main.projectile[safeIndex].type] != BankID.Safe) {
+					InteractiveProjectileOpenCloseSound2(Main.projectile[safeIndex]);
+					chest = -1;
+					Recipe.FindRecipes();
+				}
+				else {
+					int num = (int)(((double)position.X + (double)width * 0.5) / 16.0);
+					int num2 = (int)(((double)position.Y + (double)height * 0.5) / 16.0);
+					Vector2 vector = Main.projectile[safeIndex].Hitbox.ClosestPointInRect(base.Center);
+					chestX = (int)vector.X / 16;
+					chestY = (int)vector.Y / 16;
+					if (num < chestX - tileRangeX || num > chestX + tileRangeX + 1 || num2 < chestY - tileRangeY || num2 > chestY + tileRangeY + 1)
+					{
+						if (chest != -1)
+							InteractiveProjectileOpenCloseSound2(Main.projectile[safeIndex]);
+
+						chest = -1;
+						Recipe.FindRecipes();
+					}
+				}
+			}
+
+			// Defenders Forge
+			int defendersForgeIndex = defendersForgeProjTracker.ProjectileLocalIndex;
+			if (defendersForgeIndex >= 0) {
+				flag = true;
+				if (!Main.projectile[defendersForgeIndex].active || ProjectileID.Sets.CountAsBank[Main.projectile[defendersForgeIndex].type] != BankID.DefendersForge) {
+					InteractiveProjectileOpenCloseSound2(Main.projectile[safeIndex]);
+					chest = -1;
+					Recipe.FindRecipes();
+				}
+				else {
+					int num = (int)(((double)position.X + (double)width * 0.5) / 16.0);
+					int num2 = (int)(((double)position.Y + (double)height * 0.5) / 16.0);
+					Vector2 vector = Main.projectile[defendersForgeIndex].Hitbox.ClosestPointInRect(base.Center);
+					chestX = (int)vector.X / 16;
+					chestY = (int)vector.Y / 16;
+					if (num < chestX - tileRangeX || num > chestX + tileRangeX + 1 || num2 < chestY - tileRangeY || num2 > chestY + tileRangeY + 1)
+					{
+						if (chest != -1)
+							InteractiveProjectileOpenCloseSound2(Main.projectile[safeIndex]);
+
+						chest = -1;
+						Recipe.FindRecipes();
+					}
+				}
+			}
+        }
+
+		private void TMLClearBankProjTrackers()
+        {
+			safeProjTracker.Clear();
+			defendersForgeProjTracker.Clear();
+        }
+
+		private void clientClone_TMLCloneBankProjTrackers(Player player)
+        {
+			player.safeProjTracker = safeProjTracker;
+			player.defendersForgeProjTracker = defendersForgeProjTracker;
+        }
 	}
 }

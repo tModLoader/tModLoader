@@ -563,7 +563,14 @@
  					}
  					break;
  				case 134: {
-@@ -3381,6 +_,27 @@
+@@ -3376,11 +_,34 @@
+ 						Player obj = Main.player[num2];
+ 						obj.piggyBankProjTracker.TryReading(reader);
+ 						obj.voidLensChest.TryReading(reader);
++						obj.safeProjTracker.TryReading(reader);
++						obj.defendersForgeProjTracker.TryReading(reader);
+ 						if (Main.netMode == 2)
+ 							NetMessage.TrySendData(142, -1, whoAmI, null, num2);
  
  						break;
  					}

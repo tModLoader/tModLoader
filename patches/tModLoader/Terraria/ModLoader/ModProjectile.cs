@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 
@@ -417,6 +418,12 @@ namespace Terraria.ModLoader
 		/// When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
 		/// </summary>
 		public virtual void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+		}
+
+		/// <summary>
+		/// If this projectile is a portable bank (like the Money Trough), this is called when the storage UI is closed. It is recommended that you play a sound here, as it is not done automatically.
+		/// </summary>
+		public virtual void PlayBankCloseSound() {
 		}
 	}
 }

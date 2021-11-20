@@ -1283,6 +1283,15 @@
  		}
  
  		private void DoDebugFunctions() {
+@@ -13063,7 +_,7 @@
+ 			if (Main.player[myPlayer].talkNPC != player.talkNPC)
+ 				NetMessage.SendData(40, -1, -1, null, myPlayer);
+ 
+-			if ((0 | ((Main.player[myPlayer].voidLensChest != player.voidLensChest) ? 1 : 0) | ((Main.player[myPlayer].piggyBankProjTracker != player.piggyBankProjTracker) ? 1 : 0)) != 0)
++			if ((0 | ((Main.player[myPlayer].voidLensChest != player.voidLensChest) ? 1 : 0) | ((Main.player[myPlayer].piggyBankProjTracker != player.piggyBankProjTracker) ? 1 : 0) | TrySyncingMyPlayer_TMLSyncBankFields(player)) != 0)
+ 				NetMessage.SendData(142, -1, -1, null, myPlayer);
+ 
+ 			if (LocalPlayer.tileEntityAnchor.interactEntityID != player.tileEntityAnchor.interactEntityID && LocalPlayer.tileEntityAnchor.interactEntityID < 0)
 @@ -13082,6 +_,9 @@
  			if ((byte)Main.player[myPlayer].zone4 != (byte)player.zone4)
  				flag2 = true;

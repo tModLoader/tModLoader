@@ -187,5 +187,9 @@ namespace Terraria
 
 			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
 		}
+
+		private static int TrySyncingMyPlayer_TMLSyncBankFields(Player player) {
+			return ((Main.player[myPlayer].safeProjTracker != player.safeProjTracker) ? 1 : 0) | ((Main.player[myPlayer].defendersForgeProjTracker != player.defendersForgeProjTracker) ? 1 : 0);
+		}
 	}
 }
