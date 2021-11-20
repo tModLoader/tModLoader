@@ -8,7 +8,7 @@
  using Terraria.Utilities;
  
  namespace Terraria.IO
-@@ -138,6 +_,7 @@
+@@ -142,6 +_,7 @@
  			if (!base.IsCloudSave) {
  				string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: true);
  				if (FileUtilities.MoveToCloud(base.Path, worldPathFromName)) {
@@ -16,7 +16,7 @@
  					Main.LocalFavoriteData.ClearEntry(this);
  					_isCloudSave = true;
  					_path = worldPathFromName;
-@@ -150,6 +_,7 @@
+@@ -154,6 +_,7 @@
  			if (base.IsCloudSave) {
  				string worldPathFromName = Main.GetWorldPathFromName(Name, cloudSave: false);
  				if (FileUtilities.MoveToLocal(base.Path, worldPathFromName)) {

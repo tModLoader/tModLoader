@@ -37,11 +37,11 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		public override TagCompound Save() {
-			return new TagCompound { ["items"] = items };
+		public override void SaveData(TagCompound tag) {
+			tag["items"] = items;
 		}
 
-		public override void Load(TagCompound tag) {
+		public override void LoadData(TagCompound tag) {
 			items = tag.Get<List<Item>>("items");
 		}
 	}

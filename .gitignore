@@ -31,7 +31,9 @@ solutions/**/*.tar.gz
 /test/Test Local/Mods
 /test/Test Local/Mod Configs
 /ExampleMod/Fonts/ExampleFont.xnb
-/1423
+/143
 /artifacts
 solutions/tModLoader v*
 solutions/Release/
+**/msbuild.binlog
+/steam_build

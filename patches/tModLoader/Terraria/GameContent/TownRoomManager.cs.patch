@@ -13,7 +13,7 @@
  		public static object EntityCreationLock = new object();
 -		private List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
 +		internal List<Tuple<int, Point>> _roomLocationPairs = new List<Tuple<int, Point>>();
--		private bool[] _hasRoom = new bool[668];
+-		private bool[] _hasRoom = new bool[670];
 +		internal bool[] _hasRoom = new bool[NPCLoader.NPCCount];
  
  		public void AddOccupantsToList(int x, int y, List<int> occupantsList) {

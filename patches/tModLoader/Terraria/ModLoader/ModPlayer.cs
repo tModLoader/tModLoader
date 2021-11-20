@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
-using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -75,19 +74,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to save custom data for this player. Returns null by default.
+		/// Allows you to save custom data for this player.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
-		/// <returns></returns>
-		public virtual TagCompound Save() {
-			return null;
-		}
+		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+		public virtual void SaveData(TagCompound tag) { }
 
 		/// <summary>
-		/// Allows you to load custom data you have saved for this player.
+		/// Allows you to load custom data that you have saved for this player.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
-		/// <param name="tag"></param>
-		public virtual void Load(TagCompound tag) {
-		}
+		/// <param name="tag"> The TagCompound to load data from. </param>
+		public virtual void LoadData(TagCompound tag) { }
 
 		/// <summary>
 		/// PreSavePlayer and PostSavePlayer wrap the vanilla player saving code (both are before the ModPlayer.Save). Useful for advanced situations where a save might be corrupted or rendered unusable by the values that normally would save.
@@ -202,6 +202,24 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Is called in Player.Frame() after vanilla functional slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateVisibleAccessories() {
+		}
+
+		/// <summary>
+		/// Is called in Player.Frame() after vanilla vanity slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateVisibleVanityAccessories() {
+		}
+
+		/// <summary>
+		/// Is called in Player.UpdateDyes(), including selection screen. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateDyes() {
+		}
+
+		/// <summary>
 		/// This is called after miscellaneous update code is called in Player.Update, which is sometime after PostUpdateEquips is called. This can be used for general update tasks.
 		/// </summary>
 		public virtual void PostUpdateMiscEffects() {
@@ -223,12 +241,6 @@ namespace Terraria.ModLoader
 		/// This is called at the very end of the Player.Update method. Final general update tasks can be placed here.
 		/// </summary>
 		public virtual void PostUpdate() {
-		}
-
-		/// <summary>
-		/// This is called after VanillaUpdateVanityAccessory() in player.UpdateEquips()
-		/// </summary>
-		public virtual void UpdateVanityAccessories() {
 		}
 
 		/// <summary>
@@ -425,21 +437,21 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Whether or not ammo will be consumed upon usage. Return false to stop the ammo from being depleted. Returns true by default.
-		/// If false is returned, the OnConsumeAmmo hook is never called.
+		/// <br>If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.</br>
 		/// </summary>
-		/// <param name="weapon"></param>
-		/// <param name="ammo"></param>
+		/// <param name="weapon">The item that is using this ammo</param>
+		/// <param name="ammo">The ammo item</param>
 		/// <returns></returns>
-		public virtual bool ConsumeAmmo(Item weapon, Item ammo) {
+		public virtual bool CanConsumeAmmo(Item weapon, Item ammo) {
 			return true;
 		}
 
 		/// <summary>
 		/// Allows you to make things happen when ammo is consumed.
-		/// Called before the ammo stack is reduced.
+		/// <br>Called before the ammo stack is reduced.</br>
 		/// </summary>
-		/// <param name="weapon"></param>
-		/// <param name="ammo"></param>
+		/// <param name="weapon">The item that is using this ammo</param>
+		/// <param name="ammo">The ammo item</param>
 		/// <returns></returns>
 		public virtual void OnConsumeAmmo(Item weapon, Item ammo) {
 		}
@@ -886,7 +898,7 @@ namespace Terraria.ModLoader
 		/// You can use this method to add items to the player's starting inventory, as well as their inventory when they respawn in mediumcore.
 		/// </summary>
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
-		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty<Item>().</returns>
+		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty&lt;Item&gt;().</returns>
 		public virtual IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			return Enumerable.Empty<Item>();
 		}

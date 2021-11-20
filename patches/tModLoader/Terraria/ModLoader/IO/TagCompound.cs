@@ -13,7 +13,11 @@ namespace Terraria.ModLoader.IO
 	//Additional conversions can be added using TagConverter
 	public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 	{
+		[ThreadStatic]
+		private static TagCompound emptyTagCache = new();
+
 		private Dictionary<string, object> dict = new Dictionary<string, object>();
+
 		public T Get<T>(string key) {
 			dict.TryGetValue(key, out object tag);
 			try {

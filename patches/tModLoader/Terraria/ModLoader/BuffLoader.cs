@@ -54,6 +54,7 @@ namespace Terraria.ModLoader
 			vanillaLongerExpertDebuff[BuffID.Ichor] = true;
 			vanillaLongerExpertDebuff[BuffID.Venom] = true;
 			vanillaLongerExpertDebuff[BuffID.Blackout] = true;
+			// TODO: ALL of this is horrendous. Move everything to Sets.
 			vanillaCanBeCleared[BuffID.PotionSickness] = false;
 			vanillaCanBeCleared[BuffID.Werewolf] = false;
 			vanillaCanBeCleared[BuffID.Merfolk] = false;
@@ -61,6 +62,9 @@ namespace Terraria.ModLoader
 			vanillaCanBeCleared[BuffID.Campfire] = false;
 			vanillaCanBeCleared[BuffID.HeartLamp] = false;
 			vanillaCanBeCleared[BuffID.NoBuilding] = false;
+			vanillaCanBeCleared[332] = false;
+			vanillaCanBeCleared[333] = false;
+			vanillaCanBeCleared[334] = false;
 		}
 
 		internal static int ReserveBuffID() {
@@ -107,11 +111,14 @@ namespace Terraria.ModLoader
 			extraPlayerBuffCount = ModLoader.Mods.Any() ? ModLoader.Mods.Max(m => (int)m.ExtraPlayerBuffSlots) : 0;
 
 			//Hooks
+
+			// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
+			// Remove generic arguments once fixed.
 			ModLoader.BuildGlobalHook(ref HookUpdatePlayer, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookUpdateNPC, globalBuffs, g => g.Update);
 			ModLoader.BuildGlobalHook(ref HookReApplyPlayer, globalBuffs, g => g.ReApply);
 			ModLoader.BuildGlobalHook(ref HookReApplyNPC, globalBuffs, g => g.ReApply);
-			ModLoader.BuildGlobalHook(ref HookModifyBuffTip, globalBuffs, g => g.ModifyBuffTip);
+			ModLoader.BuildGlobalHook<GlobalBuff, DelegateModifyBuffTip>(ref HookModifyBuffTip, globalBuffs, g => g.ModifyBuffTip);
 			ModLoader.BuildGlobalHook(ref HookCustomBuffTipSize, globalBuffs, g => g.CustomBuffTipSize);
 			ModLoader.BuildGlobalHook(ref HookDrawCustomBuffTip, globalBuffs, g => g.DrawCustomBuffTip);
 		}

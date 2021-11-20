@@ -3,9 +3,10 @@
 @@ -1,6 +_,10 @@
  <Project>
    <PropertyGroup>
-     <TargetFramework>net5.0</TargetFramework>
-+    <!-- Defines the Minimum patch version that is required to play. pre v5.0.5 has bugs in release for windows runtime-->
-+    <RuntimeFrameworkVersion>5.0.8</RuntimeFrameworkVersion>
+-    <TargetFramework>net5.0</TargetFramework>
++    <TargetFramework>net6.0</TargetFramework>
++    <!-- Defines the Minimum patch version that is required to play. -->
++    <RuntimeFrameworkVersion>6.0.0</RuntimeFrameworkVersion>
 +	<!-- Eliminates the Refs folder from output-->
 +	<ProduceReferenceAssembly>false</ProduceReferenceAssembly> 
      <Configurations>Debug;Release</Configurations>
