@@ -893,12 +893,13 @@
  			}
  
  			for (int n = 0; n < 1001; n++) {
-@@ -8391,11 +_,17 @@
+@@ -8391,11 +_,18 @@
  		public static void LoadTestLog(string logname) {
  		}
  
 -		private void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
 +		internal static void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
++			WorkshopHelper.SendCmdToTerraria("CheckUpdates");
 +			Logging.Terraria.Error($"Failed to load asset: \"{assetPath}\"", e);
  			FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);
  		}
@@ -3278,7 +3279,7 @@
  				num5 = 2;
  				array9[0] = statusText;
  				array[0] = true;
-@@ -36821,17 +_,22 @@
+@@ -36821,17 +_,23 @@
  					Netplay.ServerPassword = "";
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
@@ -3301,16 +3302,19 @@
 -					tServer.StartInfo.FileName = "TerrariaServer";
 +					var fileName = Process.GetCurrentProcess().MainModule.FileName;
 +					tServer.StartInfo.FileName = fileName.Remove(fileName.LastIndexOf("."));
++					tServer.StartInfo.UseShellExecute = true;
  #endif
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
-@@ -36839,8 +_,7 @@
+@@ -36839,8 +_,9 @@
  						startInfo.Arguments = startInfo.Arguments + " -loadlib " + libPath;
  					}
  
 -					tServer.StartInfo.UseShellExecute = false;
-+					tServer.StartInfo.UseShellExecute = showServerConsole;
 -					tServer.StartInfo.CreateNoWindow = true;
++					if (!showServerConsole)
++						tServer.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
++					
  					if (SocialAPI.Network != null)
  						SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
  					else

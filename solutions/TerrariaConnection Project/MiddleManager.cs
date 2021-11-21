@@ -16,7 +16,7 @@ namespace TerrariaTranslator
                 UseShellExecute = true,
                 FileName = Process.GetCurrentProcess().MainModule.FileName,
                 Arguments = "TerrariaTranslator.dll",
-                CreateNoWindow = false
+				WindowStyle = ProcessWindowStyle.Hidden
             };
 
             Process.Start(info);

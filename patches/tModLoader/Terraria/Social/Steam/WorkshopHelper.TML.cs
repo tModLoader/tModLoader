@@ -37,7 +37,13 @@ namespace Terraria.Social.Steam
 			protected override void PrepareContentForUpdate() { }
 		}
 
+		internal static void SendCmdToTerraria(string cmd) {
+			using (var ws = File.AppendText("Libraries/TerrariaConnection/io.txt"))
+				ws.WriteLine(cmd);
+		}
+
 		internal static void OnGameExitCleanup() {
+			SendCmdToTerraria("unload");
 			if (ModManager.SteamUser)
 				return;
 

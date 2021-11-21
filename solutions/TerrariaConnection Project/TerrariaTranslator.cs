@@ -20,24 +20,30 @@ namespace TerrariaTranslator
         {
             AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
 
-            Thread.Sleep(2000);
-            Console.WriteLine(Directory.GetCurrentDirectory());
+			File.WriteAllText("io.txt", "");
 
-            bool unloading = !SteamAPI.Init();
-
+			bool unloading = !SteamAPI.Init();
             while (!unloading) {
-                string nextCMD = Console.ReadLine();
+				Thread.Sleep(5000);
 
-                if (nextCMD.Contains("unload"))
-                    unloading = true;
+				string[] lines = File.ReadAllLines("io.txt");
+				File.WriteAllText("io.txt", "");
 
-                if (nextCMD.Contains("grant:")) {
-                    string achievement = nextCMD.Split(':')[1];
+				foreach  (string nextCMD in lines) {
+					if (nextCMD.Contains("unload"))
+						unloading = true;
 
-                    SteamUserStats.GetAchievement(achievement, out bool pbAchieved);
-                    if (!pbAchieved)
-                        SteamUserStats.SetAchievement(achievement);
-                }
+					if (nextCMD.Contains("grant:")) {
+						string achievement = nextCMD.Split(':')[1];
+
+						SteamUserStats.GetAchievement(achievement, out bool pbAchieved);
+						if (!pbAchieved)
+							SteamUserStats.SetAchievement(achievement);
+					}
+
+					if (nextCMD.Contains("CheckUpdates"))
+						SteamApps.MarkContentCorrupt(false);
+				}
             }
 
             Environment.Exit(0);
