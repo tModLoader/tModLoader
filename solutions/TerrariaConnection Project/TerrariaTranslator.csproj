@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+	<TargetFramework>net6.0</TargetFramework>
+	<UseAppHost>false</UseAppHost>
+	<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="MiddleManager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Steamworks.NET" />
+    <Content Include="steam_appid.txt" CopyToOutputDirectory="PreserveNewest"></Content>
+  </ItemGroup>
+
+	<Target Name="OverwriteDevRuntimeTargets" AfterTargets="GenerateBuildRuntimeConfigurationFiles" Condition="$(GenerateRuntimeConfigDevFile) == 'true'">
+		<PropertyGroup>
+			<DevRuntimeConfig>
+				{
+				"runtimeOptions": {
+				"additionalProbingPaths": [
+				"../"
+				]
+				}
+				}
+			</DevRuntimeConfig>
+		</PropertyGroup>
+		<WriteLinesToFile File="$(ProjectRuntimeConfigDevFilePath)" Lines="$(DevRuntimeConfig)" Overwrite="true" Encoding="UTF-8" />
+	</Target>
+
+	<Target Name="CopyToSteamDir" AfterTargets="Build">
+		<!-- copy files systematically to output folder -->
+		<ItemGroup>
+			<BinFiles Include="$(TargetDir)**" />
+		</ItemGroup>
+		<Message Text="Copying $(AssemblyName) to Libararies/TerrariaConnection Dir..." Importance="high" />
+		<Copy SourceFiles="@(BinFiles)" DestinationFolder="../../src/tModLoader/Terraria/Libraries/TerrariaConnection" SkipUnchangedFiles="True" />
+		<Delete Files="../../src/tModLoader/Terraria/Libraries/TerrariaConnection/Steamworks.NET.dll" />
+	</Target>
+</Project>

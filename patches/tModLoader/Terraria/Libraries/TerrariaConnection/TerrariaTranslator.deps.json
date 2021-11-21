@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "TerrariaTranslator/1.0.0": {
+        "dependencies": {
+          "Steamworks.NET": "15.0.1.0"
+        },
+        "runtime": {
+          "TerrariaTranslator.dll": {}
+        }
+      },
+      "Steamworks.NET/15.0.1.0": {
+        "runtime": {
+          "Steamworks.NET.dll": {
+            "assemblyVersion": "15.0.1.0",
+            "fileVersion": "15.0.1.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TerrariaTranslator/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Steamworks.NET/15.0.1.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

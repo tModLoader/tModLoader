@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,144 @@
+@@ -2,69 +_,145 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -85,6 +85,7 @@
      <None Remove="Libraries/net40/**" />
 -    <None Update="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
 +    <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
++    <Content Include="Libraries/TerrariaConnection/**" CopyToOutputDirectory="PreserveNewest" />
 +    <Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
 +  </ItemGroup>
 +  <ItemGroup>
