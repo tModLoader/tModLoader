@@ -7,6 +7,7 @@ launch_args="$*"
 . ./InstallNetFramework.sh
 
 if [ -d "$install_dir" ]; then
+  ./dotnet/$version/dotnet Libraries/TerrariaConnection/MiddleManager.dll
   ./dotnet/$version/dotnet tModLoader.dll $launch_args
 fi
 if [ ! -d "$install_dir" ]; then
@@ -18,5 +19,6 @@ if [ ! -d "$install_dir" ]; then
   fi
   exec 3>>"$runLogs" 2>&3
   echo "Attempting Launch.."
+  dotnet Libraries/TerrariaConnection/MiddleManager.dll
   dotnet tModLoader.dll $launch_args
 fi
