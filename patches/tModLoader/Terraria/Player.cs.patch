@@ -2747,11 +2747,13 @@
  				if (flag)
  					return;
  
-@@ -21393,6 +_,7 @@
+@@ -21391,8 +_,7 @@
+ 				}
+ 			}
  			else {
- 				piggyBankProjTracker.Clear();
- 				voidLensChest.Clear();
-+				TMLClearBankProjTrackers();
+-				piggyBankProjTracker.Clear();
+-				voidLensChest.Clear();
++				ClearPortableBankProjectileTrackers();
  			}
  		}
  
@@ -2906,11 +2908,13 @@
  					flag2 = true;
  					if (WorldGen.CloseDoor(myX, myY))
  						NetMessage.SendData(19, -1, -1, null, 1, myX, myY, direction);
-@@ -22796,6 +_,8 @@
+@@ -22794,8 +_,8 @@
+ 							}
+ 						}
  						else {
- 							piggyBankProjTracker.Clear();
- 							voidLensChest.Clear();
-+							TMLClearBankProjTrackers();
+-							piggyBankProjTracker.Clear();
+-							voidLensChest.Clear();
++							ClearPortableBankProjectileTrackers();
 +							
  							int num47 = Chest.FindChest(num45, num46);
  							if (num47 != -1) {
@@ -4926,11 +4930,13 @@
  				adjTile[n] = false;
  				oldAdjTile[n] = false;
  			}
-@@ -38862,6 +_,7 @@
+@@ -38860,8 +_,7 @@
+ 			hitReplace = new HitTile();
+ 			mount = new Mount();
  			talkNPC = -1;
- 			piggyBankProjTracker.Clear();
- 			voidLensChest.Clear();
-+			TMLClearBankProjTrackers();
+-			piggyBankProjTracker.Clear();
+-			voidLensChest.Clear();
++			ClearPortableBankProjectileTrackers();
  			creativeTracker = new CreativeUnlocksTracker();
  		}
  

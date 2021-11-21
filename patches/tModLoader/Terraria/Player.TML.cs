@@ -401,11 +401,12 @@ namespace Terraria
 			}
         }
 
-		private void TMLClearBankProjTrackers()
-        {
+		public void ClearPortableBankProjectileTrackers() {
+			piggyBankProjTracker.Clear();
+			voidLensChest.Clear();
 			safeProjTracker.Clear();
 			defendersForgeProjTracker.Clear();
-        }
+		}
 
 		private void clientClone_TMLCloneBankProjTrackers(Player player)
         {
