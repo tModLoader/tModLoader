@@ -58,6 +58,15 @@
  			if (type == 160) {
  				if ((double)roomY2 > Main.worldSurface)
  					return false;
+@@ -1813,7 +_,7 @@
+ 			int num = 0;
+ 			int num2 = 50;
+ 			Housing_GetTestedRoomBounds(out int startX, out int endX, out int startY, out int endY);
+-			int[] tileTypeCounts = new int[625];
++			int[] tileTypeCounts = new int[TileLoader.TileCount];
+ 			CountTileTypesInArea(tileTypeCounts, startX + 1, endX - 1, startY + 2, endY + 1);
+ 			int num3 = -GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.TotalGoodEvil);
+ 			if (num3 < 50)
 @@ -1964,7 +_,7 @@
  			roomY2 = y;
  			numRoomTiles = 0;

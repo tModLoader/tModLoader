@@ -27,15 +27,3 @@ Collision.cs:
  						if (vector.X + (float)Width - 2f >= vector2.X && vector.X + 2f <= vector2.X + 16f && vector.Y + (float)Height - 2f >= vector2.Y && vector.Y + 2f <= vector2.Y + (float)num6) {
  							int num8 = 1;
  							if (vector.X + (float)(Width / 2) < vector2.X + 8f)
- 
-WorldGen.cs:
- 
- @@ -1844,7 +1855,7 @@
- 			if (num7 >= Main.maxTilesY - 5)
- 				num7 = Main.maxTilesY - 6;
- 
--			int[] tileTypeCounts = new int[625];
-+			int[] tileTypeCounts = new int[TileLoader.TileCount];
- 			CountTileTypesInArea(tileTypeCounts, num4 + 1, num5 - 1, num6 + 2, num7 + 1);
- 			int num8 = -GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.TotalGoodEvil);
- 			if (num8 < 50)
