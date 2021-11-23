@@ -49,8 +49,8 @@
  			RegisterToNPC(476, ItemDropRule.Common(2272, 3));
  			RegisterToNPC(476, ItemDropRule.Common(4731, 3));
 +			//Removed to avoid an exception on load
--			RegisterToNPC(476, ItemDropRule.Common(4986, 3, 69));
-+			//RegisterToNPC(476, ItemDropRule.Common(4986, 3, 69));
+-			RegisterToNPC(476, ItemDropRule.Common(4986, 3, 69, 69));
++			//RegisterToNPC(476, ItemDropRule.Common(4986, 3, 69, 69));
  			int[] npcNetIds4 = new int[3] {
  				473,
  				474,

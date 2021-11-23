@@ -1,0 +1,41 @@
+Notes:
+
+- "//Removed to avoid an exception on load" patch in ItemDropDatabase.cs is probably no longer needed?
+
+Failed Patches:
+
+Collision.cs:
+
+@@ -2113,7 +2113,7 @@
+ 						num6 -= 8;
+ 					}
+ 
+-					if (type == 32 || type == 69 || type == 80 || type == 352 || (type == 80 && Main.dontStarveWorld)) {
++					if (TileID.Sets.TouchDamageVines[type] > 0 || (type == 80 && Main.dontStarveWorld)) {
+ 						if (!(vector.X + (float)Width > vector2.X) || !(vector.X < vector2.X + 16f) || !(vector.Y + (float)Height > vector2.Y) || !(vector.Y < vector2.Y + (float)num6 + 0.011f))
+ 							continue;
+							
+Collision.cs:
+
+@@ -2140,7 +2132,7 @@
+ 						return new Vector2(num7, num5);
+
+ 					}
+ 
+-					if (type == 53 || type == 112 || type == 116 || type == 123 || type == 224 || type == 234) {
++					else if (TileID.Sets.TouchDamageSands[type] == 15 && type != 57 && type != 69) {
+ 						if (vector.X + (float)Width - 2f >= vector2.X && vector.X + 2f <= vector2.X + 16f && vector.Y + (float)Height - 2f >= vector2.Y && vector.Y + 2f <= vector2.Y + (float)num6) {
+ 							int num8 = 1;
+ 							if (vector.X + (float)(Width / 2) < vector2.X + 8f)
+ 
+WorldGen.cs:
+ 
+ @@ -1844,7 +1855,7 @@
+ 			if (num7 >= Main.maxTilesY - 5)
+ 				num7 = Main.maxTilesY - 6;
+ 
+-			int[] tileTypeCounts = new int[625];
++			int[] tileTypeCounts = new int[TileLoader.TileCount];
+ 			CountTileTypesInArea(tileTypeCounts, num4 + 1, num5 - 1, num6 + 2, num7 + 1);
+ 			int num8 = -GetTileTypeCountByCategory(tileTypeCounts, TileScanGroup.TotalGoodEvil);
+ 			if (num8 < 50)

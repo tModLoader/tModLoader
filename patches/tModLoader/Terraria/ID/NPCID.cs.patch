@@ -25,7 +25,7 @@
  			public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  				{ 259, 0 },
  				{ 260, 0 },
-@@ -3477,16 +_,26 @@
+@@ -3482,16 +_,26 @@
  				Dictionary<int, NPCBestiaryDrawModifiers> leinforsEntries = GetLeinforsEntries();
  				Dictionary<int, NPCBestiaryDrawModifiers> groxEntries = GetGroxEntries();
  				Dictionary<int, NPCBestiaryDrawModifiers> dictionary = new Dictionary<int, NPCBestiaryDrawModifiers>();
