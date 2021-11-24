@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraria", "..\src\tModLoad
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReLogic", "..\src\tModLoader\ReLogic\ReLogic.csproj", "{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNA", "..\FNA\FNA.csproj", "{35253CE1-C864-4CD3-8249-4D1319748E8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FNA.Core", "..\FNA\FNA.Core.csproj", "{35253CE1-C864-4CD3-8249-4D1319748E8F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleMod", "..\ExampleMod\ExampleMod.csproj", "{F646F0CE-2C51-4610-B097-F16FB58CECC5}"
 EndProject

@@ -57,7 +57,7 @@
 -    </EmbeddedResource>
 +    <Reference Include="TerrariaHooks" />
 +    <ProjectReference Include="../ReLogic/ReLogic.csproj" />
-+    <ProjectReference Include="..\..\..\FNA\FNA.csproj" />
++    <ProjectReference Include="..\..\..\FNA\FNA.Core.csproj" />
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
 -    <Reference Update="@(Reference)">
