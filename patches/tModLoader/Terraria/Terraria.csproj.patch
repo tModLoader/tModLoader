@@ -6,7 +6,7 @@
    <PropertyGroup>
 -    <OutputType>WinExe</OutputType>
 +    <OutputType>Exe</OutputType>
-     <Version>1.4.3.0</Version>
+     <Version>1.4.3.1</Version>
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2021 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
@@ -57,7 +57,7 @@
 -    </EmbeddedResource>
 +    <Reference Include="TerrariaHooks" />
 +    <ProjectReference Include="../ReLogic/ReLogic.csproj" />
-+    <ProjectReference Include="..\..\..\FNA\FNA.csproj" />
++    <ProjectReference Include="..\..\..\FNA\FNA.Core.csproj" />
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
 -    <Reference Update="@(Reference)">

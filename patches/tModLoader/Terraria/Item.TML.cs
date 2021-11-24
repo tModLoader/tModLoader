@@ -109,13 +109,5 @@ namespace Terraria
 			if (Main.netMode == NetmodeID.Server)
 				NetMessage.SendData(21, -1, -1, null, droppedItemId);
 		}
-
-		// TML: These methods exist to fix the eye-jarring typo in the vanilla methods' name [
-		public void DefaultToPlaceableTile(int tileIDToPlace, int tileStyleToPlace = 0)
-			=> DefaultToPlacableTile(tileIDToPlace, tileStyleToPlace);
-
-		public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
-			=> DefaultToPlacableTile(tileIDToPlace, tileStyleToPlace);
-		//]
 	}
 }

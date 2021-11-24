@@ -24,16 +24,6 @@
  		private static NetSoundInfo _currentNetSoundInfo;
  		private static CoinLossRevengeSystem.RevengeMarker _currentRevengeMarker;
  
-@@ -65,7 +_,8 @@
- 			return true;
- 		}
- 
-+		//TML: number8 is unused and will be removed in 1.4.3.1; Is patched out here for now.
--		public static void SendData(int msgType, int remoteClient = -1, int ignoreClient = -1, NetworkText text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f, int number5 = 0, int number6 = 0, int number7 = 0, float number8 = 0f) {
-+		public static void SendData(int msgType, int remoteClient = -1, int ignoreClient = -1, NetworkText text = null, int number = 0, float number2 = 0f, float number3 = 0f, float number4 = 0f, int number5 = 0, int number6 = 0, int number7 = 0/*, float number8 = 0f*/) {
- 			if (Main.netMode == 0)
- 				return;
- 
 @@ -76,6 +_,9 @@
  			if (Main.netMode == 2 && remoteClient >= 0)
  				num = remoteClient;
@@ -48,7 +38,7 @@
  				writer.Write((byte)msgType);
  				switch (msgType) {
  					case 1:
--						writer.Write("Terraria" + 242);
+-						writer.Write("Terraria" + 243);
 +						writer.Write(BuildInfo.versionedName);
  						break;
  					case 2:

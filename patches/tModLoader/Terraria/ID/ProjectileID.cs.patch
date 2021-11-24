@@ -6,7 +6,7 @@
  using Terraria.WorldBuilding;
  
  namespace Terraria.ID
-@@ -6,7 +_,7 @@
+@@ -7,7 +_,7 @@
  	{
  		public static class Sets
  		{

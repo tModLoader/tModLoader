@@ -6,7 +6,7 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader.Default
 {
 	[LegacyName("MysteryItem")]
-	public class UnloadedItem : ModLoaderModItem
+	public sealed class UnloadedItem : ModLoaderModItem
 	{
 		private TagCompound data;
 
@@ -50,16 +50,22 @@ namespace Terraria.ModLoader.Default
 		public override void LoadData(TagCompound tag) {
 			Setup(tag);
 
-			if (ModContent.TryFind(ModName, ItemName, out ModItem modItem)) {
-				Item.SetDefaults(modItem.Type);
+			if (!ModContent.TryFind(ModName, ItemName, out ModItem modItem))
+				return;
 
-				if (data?.Count > 0) {
-					Item.ModItem.LoadData(data);
-				}
+			if (modItem is UnloadedItem) { // Some previous bugs have lead to unloaded items containing unloaded items recursively 
+				LoadData(tag.GetCompound("data"));
+				return;
+			}
 
-				if (tag.ContainsKey("globalData")) {
-					ItemIO.LoadGlobals(Item, tag.GetList<TagCompound>("globalData"));
-				}
+			Item.SetDefaults(modItem.Type);
+
+			if (data?.Count > 0) {
+				Item.ModItem.LoadData(data);
+			}
+
+			if (tag.ContainsKey("globalData")) {
+				ItemIO.LoadGlobals(Item, tag.GetList<TagCompound>("globalData"));
 			}
 		}
 
