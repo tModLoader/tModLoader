@@ -707,6 +707,16 @@
  			active = false;
  		}
  
+@@ -52684,6 +_,9 @@
+ 			if (Main.tileDungeon[Main.tile[x, y].type] || TileID.Sets.BasicChest[Main.tile[x, y].type])
+ 				return false;
+ 
++			if (!TileLoader.CanExplode(x, y))
++				return false;
++
+ 			switch (Main.tile[x, y].type) {
+ 				case 26:
+ 				case 88:
 @@ -52744,7 +_,7 @@
  
  					for (int k = i - 1; k <= i + 1; k++) {
