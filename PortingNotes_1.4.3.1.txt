@@ -4,15 +4,4 @@ Notes:
 
 Failed Patches:
 
-Collision.cs:
-
-@@ -2140,7 +2132,7 @@
- 						return new Vector2(num7, num5);
-
- 					}
- 
--					if (type == 53 || type == 112 || type == 116 || type == 123 || type == 224 || type == 234) {
-+					else if (TileID.Sets.TouchDamageSands[type] == 15 && type != 57 && type != 69) {
- 						if (vector.X + (float)Width - 2f >= vector2.X && vector.X + 2f <= vector2.X + 16f && vector.Y + (float)Height - 2f >= vector2.Y && vector.Y + 2f <= vector2.Y + (float)num6) {
- 							int num8 = 1;
- 							if (vector.X + (float)(Width / 2) < vector2.X + 8f)
+- None!

@@ -42,6 +42,22 @@
  
  								if (type == 32 || type == 69 || type == 352) {
  									WorldGen.KillTile(i, j);
+@@ -2143,12 +_,15 @@
+ 
+ 								return new Vector2(num8, num5);
+ 							}
++						/*
+ 						case 53:
+ 						case 112:
+ 						case 116:
+ 						case 123:
+ 						case 224:
+ 						case 234:
++						*/
++						case int _ when TileID.Sets.TouchDamageSands[type] > 0 && type != 57 && type != 69:
+ 							if (vector.X + (float)Width - 2f >= vector2.X && vector.X + 2f <= vector2.X + 16f && vector.Y + (float)Height - 2f >= vector2.Y && vector.Y + 2f <= vector2.Y + (float)num6) {
+ 								int num7 = 1;
+ 								if (vector.X + (float)(Width / 2) < vector2.X + 8f)
 @@ -2165,14 +_,11 @@
  						if (vector.X + (float)(Width / 2) < vector2.X + 8f)
  							num9 = -1;
