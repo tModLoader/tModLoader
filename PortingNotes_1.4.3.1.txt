@@ -1,7 +1,3 @@
-Notes:
-
-- "//Removed to avoid an exception on load" patch in ItemDropDatabase.cs is probably no longer needed?
-
 Failed Patches:
 
 Collision.cs:
