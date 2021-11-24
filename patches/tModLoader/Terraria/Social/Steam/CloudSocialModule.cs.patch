@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/Social/Steam/CloudSocialModule.cs
++++ src/tModLoader/Terraria/Social/Steam/CloudSocialModule.cs
+@@ -5,7 +_,7 @@
+ 
+ namespace Terraria.Social.Steam
+ {
+-	public class CloudSocialModule : Terraria.Social.Base.CloudSocialModule
++	public partial class CloudSocialModule : Terraria.Social.Base.CloudSocialModule
+ 	{
+ 		private const uint WRITE_CHUNK_SIZE = 1024u;
+ 		private object ioLock = new object();

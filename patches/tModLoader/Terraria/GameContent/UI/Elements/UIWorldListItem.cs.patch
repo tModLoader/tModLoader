@@ -77,14 +77,15 @@
  		}
  
  		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
-@@ -229,8 +_,12 @@
+@@ -229,8 +_,13 @@
  		private void CloudButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  			if (_data.IsCloudSave)
  				_data.MoveToLocal();
 -			else
 +			else {
 +				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage(); //Only recalculate when about to put the file to cloud
-+				if (!ModLoader.Engine.Steam.CheckSteamCloudStorageSufficient(_fileSize))
++				// Disable Putting on 105600 Cloud Temporarily Nov 23 2021 - Solxan
++				if (true || !ModLoader.Engine.Steam.CheckSteamCloudStorageSufficient(_fileSize))
 +					return; //Don't allow both the move to cloud, and the setting of the label
  				_data.MoveToCloud();
 +			}
