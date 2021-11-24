@@ -2718,7 +2718,50 @@
  			if (wings == 32)
  				num27 = 3;
  
-@@ -21622,6 +_,9 @@
+@@ -21325,11 +_,13 @@
+ 				if (chest != -5)
+ 					voidLensChest.Clear();
+ 
++				HandleBeingInChestRange_TMLCheckFields();
++
+ 				bool flag = false;
+ 				int projectileLocalIndex = piggyBankProjTracker.ProjectileLocalIndex;
+ 				if (projectileLocalIndex >= 0) {
+ 					flag = true;
+-					if (!Main.projectile[projectileLocalIndex].active || (Main.projectile[projectileLocalIndex].type != 525 && Main.projectile[projectileLocalIndex].type != 960)) {
++					if (!Main.projectile[projectileLocalIndex].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex].type] != -2) {
+ 						Main.PlayInteractiveProjectileOpenCloseSound(Main.projectile[projectileLocalIndex].type, open: false);
+ 						chest = -1;
+ 						Recipe.FindRecipes();
+@@ -21353,7 +_,7 @@
+ 				int projectileLocalIndex2 = voidLensChest.ProjectileLocalIndex;
+ 				if (projectileLocalIndex2 >= 0) {
+ 					flag = true;
+-					if (!Main.projectile[projectileLocalIndex2].active || Main.projectile[projectileLocalIndex2].type != 734) {
++					if (!Main.projectile[projectileLocalIndex2].active || ProjectileID.Sets.CountAsBank[Main.projectile[projectileLocalIndex2].type] != -5) {
+ 						SoundEngine.PlaySound(SoundID.Item130);
+ 						chest = -1;
+ 						Recipe.FindRecipes();
+@@ -21374,6 +_,8 @@
+ 					}
+ 				}
+ 
++				HandleBeingInChestRange_TMLBankLogic(ref flag);
++
+ 				if (flag)
+ 					return;
+ 
+@@ -21391,8 +_,7 @@
+ 				}
+ 			}
+ 			else {
+-				piggyBankProjTracker.Clear();
+-				voidLensChest.Clear();
++				ClearPortableBankProjectileTrackers();
+ 			}
+ 		}
+ 
+@@ -21621,6 +_,9 @@
  						break;
  				}
  
@@ -2869,7 +2912,7 @@
  					flag2 = true;
  					if (WorldGen.CloseDoor(myX, myY))
  						NetMessage.SendData(19, -1, -1, null, 1, myX, myY, direction);
-@@ -22941,7 +_,7 @@
+@@ -22925,7 +_,7 @@
  					if (flag12)
  						NetMessage.SendTileSquare(-1, num62, num63, 2, 2);
  				}
@@ -4596,7 +4639,7 @@
  			player.extraAccessory = extraAccessory;
  			player.MinionRestTargetPoint = MinionRestTargetPoint;
  			player.MinionAttackTargetNPC = MinionAttackTargetNPC;
-@@ -37852,13 +_,14 @@
+@@ -37834,13 +_,14 @@
  			}
  
  			player.trashItem = trashItem.Clone();
@@ -4872,7 +4915,7 @@
  				adjTile[n] = false;
  				oldAdjTile[n] = false;
  			}
-@@ -39099,6 +_,7 @@
+@@ -39081,6 +_,7 @@
  		}
  
  		public void GetAnglerReward() {
