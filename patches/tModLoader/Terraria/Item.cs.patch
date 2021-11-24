@@ -609,7 +609,7 @@
  
  		public bool IsTheSameAs(Item compareItem) {
  			if (netID == compareItem.netID)
-@@ -46488,6 +_,8 @@
+@@ -46489,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;
@@ -618,7 +618,7 @@
  		}
  
  		public void OnPurchase(Item item) {
-@@ -46508,7 +_,7 @@
+@@ -46509,7 +_,7 @@
  			if (context == ItemSerializationContext.SavingAndLoading) {
  				writer.Write(netID);
  				writer.Write(stack);
@@ -627,7 +627,7 @@
  			}
  		}
  
-@@ -46519,7 +_,7 @@
+@@ -46520,7 +_,7 @@
  				Prefix(reader.ReadByte());
  			}
  

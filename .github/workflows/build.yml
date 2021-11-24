@@ -59,7 +59,7 @@ jobs:
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
-          key: 143-A
+          key: 1431-A
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -88,11 +88,11 @@ jobs:
         shell: bash
         run: |
           echo Downloading Terraria Server zip
-          curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-143.zip -o terrariaserver.zip
+          curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-1431.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
           echo Extracting Setup Secret Assets
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./143/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./143/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1431/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1431/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
           
           echo Installing XNA
           curl -s -L https://github.com/JavidPack/tModLoaderPublishIntegration/raw/master/xnafx40_redist.msi -O
@@ -100,7 +100,7 @@ jobs:
           echo XNA Installed
           
           echo ::group::Running setup.bat
-          ./setup.bat auto ./143/Windows
+          ./setup.bat auto ./1431/Windows
           echo ::endgroup::
           
           echo ::group::WorkspaceInfo.targets
