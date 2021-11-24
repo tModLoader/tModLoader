@@ -9,6 +9,22 @@
  						continue;
  
  					vector2.X = i * 16;
+@@ -2113,11 +_,15 @@
+ 						num6 -= 8;
+ 					}
+ 
++
+ 					switch (type) {
++						/*
+ 						case 32:
+ 						case 69:
+ 						case 80:
+ 						case 352: {
++						*/
++						case int _ when TileID.Sets.TouchDamageVines[type] > 0: {
+ 								if (!(vector.X + (float)Width > vector2.X) || !(vector.X < vector2.X + 16f) || !(vector.Y + (float)Height > vector2.Y) || !(vector.Y < vector2.Y + (float)num6 + 0.011f))
+ 									continue;
+ 
 @@ -2125,6 +_,7 @@
  								if (vector.X + (float)(Width / 2) < vector2.X + 8f)
  									num8 = -1;
