@@ -1,5 +1,10 @@
 var NAVTREEINDEX12 =
 {
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html":[1,0,2,5,12,0,3],
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#a0fec900263fd4d6f167653fdd30f9fc1":[1,0,2,5,12,0,3,2],
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#a781424d703d96d9fd059dbe07051a9bd":[1,0,2,5,12,0,3,1],
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#aa676b37cfdb0460dc3f4ac737c8c106b":[1,0,2,5,12,0,3,3],
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#adb943542451ee0c57aaecdf0ef11e14c":[1,0,2,5,12,0,3,0],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_simulation_condition_setters.html":[1,0,2,5,12,4],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_simulation_condition_setters.html#a1538ac90fbd03426b15d3c44d03ec27a":[1,0,2,5,12,4,1],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_simulation_condition_setters.html#a1a607ace45ee728d6f5ae702de8e381e":[1,0,2,5,12,4,4],
@@ -244,10 +249,5 @@ var NAVTREEINDEX12 =
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#aab8cf9f0fd6ac2290495ac7651463c03":[1,0,2,5,17,3,7,3],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#abafc40417cbe56ea9572a70b65db3ed3":[1,0,2,5,17,3,7,0],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#aef9ac28a5b592cfca2f3b7bbfa9904b5":[1,0,2,5,17,3,7,5],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#af0bc77c9b414544a794976e3ea9c2dba":[1,0,2,5,17,3,7,7],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#afa27b21301c806f8b2140d469dc22674":[1,0,2,5,17,3,7,4],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_underground_biome.html":[1,0,2,5,17,3,8],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_underground_biome.html#a11ce880609b15a95c5f0ca572e55a943":[1,0,2,5,17,3,8,2],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_underground_biome.html#a20bc262398407fedb482d094036ef8b4":[1,0,2,5,17,3,8,8],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_underground_biome.html#a27c387910312e1e75f02e98c242f3e8f":[1,0,2,5,17,3,8,10]
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#af0bc77c9b414544a794976e3ea9c2dba":[1,0,2,5,17,3,7,7]
 };

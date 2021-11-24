@@ -29,8 +29,6 @@ var class_terraria_1_1_item =
     [ "DefaultToMagicWeapon", "class_terraria_1_1_item.html#a3bf4699313236ff7b3781e7a50aa06f5", null ],
     [ "DefaultToMount", "class_terraria_1_1_item.html#a871b1c0bb843db68473c2cc305c93595", null ],
     [ "DefaultToMusicBox", "class_terraria_1_1_item.html#abc4bb8d920856673be3908c9034a0dca", null ],
-    [ "DefaultToPlacableTile", "class_terraria_1_1_item.html#a4d70b7450e77629e35e14334aa206a11", null ],
-    [ "DefaultToPlacableTile", "class_terraria_1_1_item.html#ad69351017f26371695ade41f12882a16", null ],
     [ "DefaultToPlacableWall", "class_terraria_1_1_item.html#a75fe8acd0fb1da9a9f2b8a71b880e1c9", null ],
     [ "DefaultToPlaceableTile", "class_terraria_1_1_item.html#a8471a2bc95ee842e1e8902a7628de1e5", null ],
     [ "DefaultToPlaceableTile", "class_terraria_1_1_item.html#a01ed474a56761ad9e82cc39b3ffa8730", null ],

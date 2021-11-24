@@ -1,5 +1,10 @@
 var NAVTREEINDEX10 =
 {
+"class_terraria_1_1_game_content_1_1_golf_1_1_fancy_golf_prediction_line.html#a44b43d49e615aa199f20a18bb2badfb0":[1,0,2,5,9,0,1],
+"class_terraria_1_1_game_content_1_1_golf_1_1_fancy_golf_prediction_line.html#af38f60a9c7346d7fdbb98ebcf3cf566c":[1,0,2,5,9,0,0],
+"class_terraria_1_1_game_content_1_1_golf_1_1_golf_ball_track_record.html":[1,0,2,5,9,1],
+"class_terraria_1_1_game_content_1_1_golf_1_1_golf_ball_track_record.html#ab2e32aed98478db7fb597a9738c7199c":[1,0,2,5,9,1,1],
+"class_terraria_1_1_game_content_1_1_golf_1_1_golf_ball_track_record.html#aba4b8fadd025986be9c66b9597e78e9f":[1,0,2,5,9,1,0],
 "class_terraria_1_1_game_content_1_1_golf_1_1_golf_helper.html":[1,0,2,5,9,2],
 "class_terraria_1_1_game_content_1_1_golf_1_1_golf_helper.html#a1b2c867c64864a40634e0c0fce3c0a06":[1,0,2,5,9,2,18],
 "class_terraria_1_1_game_content_1_1_golf_1_1_golf_helper.html#a1d489053837defebffd3aea13c1fc2a8":[1,0,2,5,9,2,19],
@@ -244,10 +249,5 @@ var NAVTREEINDEX10 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_mechanical_bosses_dummy_condition.html#a8e239638a40dda0a9c211b33f0e01e86":[1,0,2,5,10,5,34,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html":[1,0,2,5,10,5,35],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html#a4eb1415022b53c9bca405ef0af5b05c3":[1,0,2,5,10,5,35,0],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html#ab1c0d9ad267a37a16e6acb2c80297cdc":[1,0,2,5,10,5,35,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html#ad856cf2455afff3422da1b77227dddc8":[1,0,2,5,10,5,35,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html":[1,0,2,5,10,5,36],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html#a1321c446d7668bc2a438aeb9d2571f59":[1,0,2,5,10,5,36,3],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html#a37063bddd6a2bece45928e905981d5d5":[1,0,2,5,10,5,36,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html#a40aa3325d6f350b9e2352d700e7de601":[1,0,2,5,10,5,36,4]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html#ab1c0d9ad267a37a16e6acb2c80297cdc":[1,0,2,5,10,5,35,1]
 };

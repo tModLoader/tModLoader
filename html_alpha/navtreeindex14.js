@@ -1,5 +1,10 @@
 var NAVTREEINDEX14 =
 {
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_wait.html#a042cc48a25f5e0992b636ea1f1ed6001":[1,0,2,5,19,0,0,0,12,0],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_wait.html#a297e027c6f5547351bddf1b8594c82cf":[1,0,2,5,19,0,0,0,12,4],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_wait.html#a6b3d7ed7d679c726682e8711579b3f74":[1,0,2,5,19,0,0,0,12,3],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_wait.html#ad24bbb80d2d902c50e962f646ff80698":[1,0,2,5,19,0,0,0,12,1],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_wait.html#afcde886ba6c2f0df9aa93a210fa7f069":[1,0,2,5,19,0,0,0,12,2],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_zombie_knock_on_door.html":[1,0,2,5,19,0,0,0,13],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_zombie_knock_on_door.html#a1ba3752cb77b0a7938476ea434e7040c":[1,0,2,5,19,0,0,0,13,1],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_zombie_knock_on_door.html#a957ef3041c071aad7735f9c5ce7985bc":[1,0,2,5,19,0,0,0,13,3],
@@ -244,10 +249,5 @@ var NAVTREEINDEX14 =
 "class_terraria_1_1_game_content_1_1_texture_assets.html#a04ede79f092a670c4b6220d5ef823008":[1,0,2,5,64,15],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#a072159a4fd97bace6d83b6638196a2d2":[1,0,2,5,64,139],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#a08babf3922d3a52551faf54ca1a82e4c":[1,0,2,5,64,207],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a09987f1b1437fffec2fe157191b13a74":[1,0,2,5,64,130],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a09d8d83e2e1f87c05dcbaa261c2f53db":[1,0,2,5,64,98],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a0a84c1630cbfd535e79e67d0fb9ecf94":[1,0,2,5,64,94],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a0acbc84e2ae01251085f21d78af0db11":[1,0,2,5,64,196],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a0b297acd4de372167031b5106828180d":[1,0,2,5,64,152],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a0b70d1c132dc9c5e874291a7f59652d3":[1,0,2,5,64,13]
+"class_terraria_1_1_game_content_1_1_texture_assets.html#a09987f1b1437fffec2fe157191b13a74":[1,0,2,5,64,130]
 };

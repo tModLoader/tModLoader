@@ -1,5 +1,10 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html#ad856cf2455afff3422da1b77227dddc8":[1,0,2,5,10,5,35,2],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html":[1,0,2,5,10,5,36],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html#a1321c446d7668bc2a438aeb9d2571f59":[1,0,2,5,10,5,36,3],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html#a37063bddd6a2bece45928e905981d5d5":[1,0,2,5,10,5,36,2],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html#a40aa3325d6f350b9e2352d700e7de601":[1,0,2,5,10,5,36,4],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html#a686466787217c0258bd2604c98af78e1":[1,0,2,5,10,5,36,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html#a9ae7967c2e228aee6f1befb4960d9ca9":[1,0,2,5,10,5,36,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_never_true.html":[1,0,2,5,10,5,37],
@@ -244,10 +249,5 @@ var NAVTREEINDEX11 =
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html#a59b71ca5f4e8ec1b8c751d7963d9c585":[1,0,2,5,12,0,2,3],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html#a7492edccd8d01a7e2b90546b5580f620":[1,0,2,5,12,0,2,0],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html#ab5b1c044294672479377dd1dee18e57f":[1,0,2,5,12,0,2,1],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html#ac33ea77eb5864f9344c66c49cffacad1":[1,0,2,5,12,0,2,2],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html":[1,0,2,5,12,0,3],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#a0fec900263fd4d6f167653fdd30f9fc1":[1,0,2,5,12,0,3,2],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#a781424d703d96d9fd059dbe07051a9bd":[1,0,2,5,12,0,3,1],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#aa676b37cfdb0460dc3f4ac737c8c106b":[1,0,2,5,12,0,3,3],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#adb943542451ee0c57aaecdf0ef11e14c":[1,0,2,5,12,0,3,0]
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html#ac33ea77eb5864f9344c66c49cffacad1":[1,0,2,5,12,0,2,2]
 };

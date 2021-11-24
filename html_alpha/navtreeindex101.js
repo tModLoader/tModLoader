@@ -1,5 +1,8 @@
 var NAVTREEINDEX101 =
 {
+"class_terraria_1_1_object_data_1_1_tile_object_data.html#afe0f3f5b8e0f0c00f26908f33d855565":[1,0,2,16,0,70],
+"class_terraria_1_1_object_data_1_1_tile_object_data.html#aff26d4c6f781e393c102ca30de4a7c40":[1,0,2,16,0,94],
+"class_terraria_1_1_physics_1_1_ball_collision.html":[1,0,2,17,0],
 "class_terraria_1_1_physics_1_1_ball_collision.html#a67333fdcb7938a55b0485a62f4aaeb56":[1,0,2,17,0,0],
 "class_terraria_1_1_physics_1_1_physics_properties.html":[1,0,2,17,5],
 "class_terraria_1_1_physics_1_1_physics_properties.html#a46e2e9d91ff2071dfc721319da6340a5":[1,0,2,17,5,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX101 =
 "class_terraria_1_1_player.html#a2d26cb0970f2b0c0548a7f17014feef5":[1,0,2,54,1180],
 "class_terraria_1_1_player.html#a2d376f5cec807970c5db2fdf148ac338":[1,0,2,54,36],
 "class_terraria_1_1_player.html#a2d6b77c4c76ef274d75651a40cc4582c":[1,0,2,54,907],
-"class_terraria_1_1_player.html#a2e0f806ec6bd376f2ab7e7ca0b58416c":[1,0,2,54,1281],
-"class_terraria_1_1_player.html#a2e6851d10b08a17f22b13f13ad373ec8":[1,0,2,54,275],
-"class_terraria_1_1_player.html#a2e6ebbe9b1ab89698f0e7cc3eac14cd5":[1,0,2,54,1053],
-"class_terraria_1_1_player.html#a2f084c177218f04c78d3d9d001392076":[1,0,2,54,1177]
+"class_terraria_1_1_player.html#a2e0f806ec6bd376f2ab7e7ca0b58416c":[1,0,2,54,1281]
 };

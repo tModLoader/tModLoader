@@ -1,5 +1,8 @@
 var NAVTREEINDEX108 =
 {
+"class_terraria_1_1_recipe_1_1_condition.html#a1f64f94e7f06737207881eabcb7cf87d":[1,0,2,59,0,5],
+"class_terraria_1_1_recipe_1_1_condition.html#a26b36211164908656f09b9e662c3fc78":[1,0,2,59,0,10],
+"class_terraria_1_1_recipe_1_1_condition.html#a2ca126fef076e211e5b496d219d473cf":[1,0,2,59,0,4],
 "class_terraria_1_1_recipe_1_1_condition.html#a436f54d518cf4d0ada0eef6eada9945e":[1,0,2,59,0,17],
 "class_terraria_1_1_recipe_1_1_condition.html#a443b7fc0950a6d89cf06b358a8f5d7ce":[1,0,2,59,0,1],
 "class_terraria_1_1_recipe_1_1_condition.html#a499a7ada61a78d12f2e7420738b6d12e":[1,0,2,59,0,32],
@@ -246,8 +249,5 @@ var NAVTREEINDEX108 =
 "class_terraria_1_1_social_1_1_base_1_1_achievements_social_module.html#ad132cb418175e8b458fa353ca345299a":[1,0,2,19,0,0,1],
 "class_terraria_1_1_social_1_1_base_1_1_achievements_social_module.html#ad6440f0f6958134ad7b2beac86e9f14f":[1,0,2,19,0,0,0],
 "class_terraria_1_1_social_1_1_base_1_1_achievements_social_module.html#aff4b7dcc644c1164de0fa2c4a370ec2b":[1,0,2,19,0,0,3],
-"class_terraria_1_1_social_1_1_base_1_1_cloud_social_module.html":[1,0,2,19,0,4],
-"class_terraria_1_1_social_1_1_base_1_1_cloud_social_module.html#a174b66b6dbfe9d6d88b20f4ba92cf094":[1,0,2,19,0,4,9],
-"class_terraria_1_1_social_1_1_base_1_1_cloud_social_module.html#a2e5b29d33cdc4f7ca6e9746a286a550e":[1,0,2,19,0,4,4],
-"class_terraria_1_1_social_1_1_base_1_1_cloud_social_module.html#a3d424156630e699930bc86ab14e9c9d8":[1,0,2,19,0,4,0]
+"class_terraria_1_1_social_1_1_base_1_1_cloud_social_module.html":[1,0,2,19,0,4]
 };

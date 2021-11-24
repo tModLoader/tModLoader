@@ -207,6 +207,7 @@ var class_terraria_1_1_world_gen =
     [ "HellFort", "class_terraria_1_1_world_gen.html#a7819a177d8ad6e04948c44e740e55b62", null ],
     [ "HellHouse", "class_terraria_1_1_world_gen.html#ac1cc81c52ff55505ee140275d2775876", null ],
     [ "HellRoom", "class_terraria_1_1_world_gen.html#a0ac73dc452350a4108a8944036256c5b", null ],
+    [ "Housing_GetTestedRoomBounds", "class_terraria_1_1_world_gen.html#ab0d9539580ad7e7b94eeb1cd570e4561", null ],
     [ "InAPlaceWithWind", "class_terraria_1_1_world_gen.html#a3307ea7a367946dc6f8f9d35a0deb543", null ],
     [ "InAPlaceWithWind", "class_terraria_1_1_world_gen.html#a714099c00289947fbf7d6fab564b6a17", null ],
     [ "InWorld", "class_terraria_1_1_world_gen.html#adf59bfc3a2909993f72f0c69a5eaf553", null ],

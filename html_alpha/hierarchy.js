@@ -708,6 +708,10 @@ var hierarchy =
       [ "Terraria.GameContent.Bestiary.SpawnConditionDecorativeOverlayInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_decorative_overlay_info_element.html", null ],
       [ "Terraria.GameContent.Bestiary.UnlockProgressDisplayBestiaryInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_unlock_progress_display_bestiary_info_element.html", null ]
     ] ],
+    [ "Terraria.GameContent.Bestiary.IBestiaryPrioritizedElement", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_prioritized_element.html", [
+      [ "Terraria.GameContent.Bestiary.SpawnConditionBestiaryInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_info_element.html", null ],
+      [ "Terraria.GameContent.Bestiary.SpawnConditionBestiaryOverlayInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_overlay_info_element.html", null ]
+    ] ],
     [ "Terraria.GameContent.Bestiary.IBestiaryUICollectionInfoProvider", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_u_i_collection_info_provider.html", [
       [ "Terraria.GameContent.Bestiary.CommonEnemyUICollectionInfoProvider", "class_terraria_1_1_game_content_1_1_bestiary_1_1_common_enemy_u_i_collection_info_provider.html", null ],
       [ "Terraria.GameContent.Bestiary.CritterUICollectionInfoProvider", "class_terraria_1_1_game_content_1_1_bestiary_1_1_critter_u_i_collection_info_provider.html", null ],

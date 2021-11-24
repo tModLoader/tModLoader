@@ -1,6 +1,11 @@
 var NAVTREEINDEX9 =
 {
-"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#ae570113668c45df5324adeca9271578d":[1,0,2,5,32,1],
+"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a1f66207dfdc9daa126052d5bc1f24f28":[1,0,2,5,32,5],
+"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a210112d90f289c806eca5a62673bd137":[1,0,2,5,32,1],
+"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a31da00070c40cec8d5daa390a27c5543":[1,0,2,5,32,0],
+"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a75e1b60bb21993a809db9fef704fc662":[1,0,2,5,32,6],
+"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a827bda6f93c6b926597c7fd7f286ada1":[1,0,2,5,32,7],
+"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#ac03cb0a52358dee8ef67648a971061e6":[1,0,2,5,32,4],
 "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#aea6eef8fde32a37a4a217128e412701c":[1,0,2,5,32,9],
 "class_terraria_1_1_game_content_1_1_dont_starve_seed.html":[1,0,2,5,33],
 "class_terraria_1_1_game_content_1_1_dont_starve_seed.html#a398a8c487199601971814b5f8e64347a":[1,0,2,5,33,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX9 =
 "class_terraria_1_1_game_content_1_1_generation_1_1_track_generator.html":[1,0,2,5,8,9],
 "class_terraria_1_1_game_content_1_1_generation_1_1_track_generator.html#a162f16e48c37c31ac5745e3c0464e9a6":[1,0,2,5,8,9,0],
 "class_terraria_1_1_game_content_1_1_golf_1_1_fancy_golf_prediction_line.html":[1,0,2,5,9,0],
-"class_terraria_1_1_game_content_1_1_golf_1_1_fancy_golf_prediction_line.html#a1084b2d2c632d63e59bf8e2624d115c3":[1,0,2,5,9,0,2],
-"class_terraria_1_1_game_content_1_1_golf_1_1_fancy_golf_prediction_line.html#a44b43d49e615aa199f20a18bb2badfb0":[1,0,2,5,9,0,1],
-"class_terraria_1_1_game_content_1_1_golf_1_1_fancy_golf_prediction_line.html#af38f60a9c7346d7fdbb98ebcf3cf566c":[1,0,2,5,9,0,0],
-"class_terraria_1_1_game_content_1_1_golf_1_1_golf_ball_track_record.html":[1,0,2,5,9,1],
-"class_terraria_1_1_game_content_1_1_golf_1_1_golf_ball_track_record.html#ab2e32aed98478db7fb597a9738c7199c":[1,0,2,5,9,1,1],
-"class_terraria_1_1_game_content_1_1_golf_1_1_golf_ball_track_record.html#aba4b8fadd025986be9c66b9597e78e9f":[1,0,2,5,9,1,0]
+"class_terraria_1_1_game_content_1_1_golf_1_1_fancy_golf_prediction_line.html#a1084b2d2c632d63e59bf8e2624d115c3":[1,0,2,5,9,0,2]
 };

@@ -180,6 +180,7 @@ var annotated_dup =
           [ "IBestiaryEntryDisplayIndex", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_display_index.html", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_display_index" ],
           [ "IBestiaryEntryFilter", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_filter.html", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_filter" ],
           [ "IBestiaryInfoElement", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_info_element.html", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_info_element" ],
+          [ "IBestiaryPrioritizedElement", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_prioritized_element.html", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_prioritized_element" ],
           [ "IBestiarySortStep", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_sort_step.html", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_sort_step" ],
           [ "IBestiaryUICollectionInfoProvider", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_u_i_collection_info_provider.html", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_u_i_collection_info_provider" ],
           [ "IEntryIcon", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_entry_icon.html", "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_entry_icon" ],

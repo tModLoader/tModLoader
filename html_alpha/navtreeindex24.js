@@ -1,5 +1,10 @@
 var NAVTREEINDEX24 =
 {
+"class_terraria_1_1_graphics_1_1_renderers_1_1_legacy_player_renderer.html":[1,0,2,7,4,7],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_legacy_player_renderer.html#a079be095611c894d8148919528421da4":[1,0,2,7,4,7,0],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_legacy_player_renderer.html#a39e011ebc373e09e7ddc467f0194d087":[1,0,2,7,4,7,3],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_legacy_player_renderer.html#a589e145d93da157a23d35afea5a17c13":[1,0,2,7,4,7,2],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_legacy_player_renderer.html#af1a2afd94645f561b007a1dcb8ab45ba":[1,0,2,7,4,7,1],
 "class_terraria_1_1_graphics_1_1_renderers_1_1_map_head_renderer.html":[1,0,2,7,4,8],
 "class_terraria_1_1_graphics_1_1_renderers_1_1_map_head_renderer.html#a4011d2ad8fedc27b6abc0cd6a54c11fa":[1,0,2,7,4,8,2],
 "class_terraria_1_1_graphics_1_1_renderers_1_1_map_head_renderer.html#a5c3c3e2a495e5de085c935fc6b7a1ab4":[1,0,2,7,4,8,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX24 =
 "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#adfc649be0ce5a61d5c458e3c3bdb687f":[1,0,2,8,0,1,1],
 "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae0f45aa1f8cb059d7ec44d7939775efc":[1,0,2,8,0,1,14],
 "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae3cdb0a865f63f94c10c50e2b395c648":[1,0,2,8,0,1,3],
-"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae4c13f1ef03641838edfbe727c1b2c5c":[1,0,2,8,0,1,6],
-"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#af1f207ca694b4d7c40c5823eee349628":[1,0,2,8,0,1,11],
-"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#afe010f46ddfdab076153784a0227b60a":[1,0,2,8,0,1,12],
-"class_terraria_1_1_i_d_1_1_ammo_i_d.html":[1,0,2,8,1],
-"class_terraria_1_1_i_d_1_1_ammo_i_d.html#a162aec96195cb5e0ae882e483b342ec6":[1,0,2,8,1,2],
-"class_terraria_1_1_i_d_1_1_ammo_i_d.html#a2046f407e22d93656229e8b850c7bb8e":[1,0,2,8,1,13]
+"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae4c13f1ef03641838edfbe727c1b2c5c":[1,0,2,8,0,1,6]
 };

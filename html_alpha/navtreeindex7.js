@@ -1,5 +1,10 @@
 var NAVTREEINDEX7 =
 {
+"class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_ice_house_builder.html#aa08a1da6f0179c8c05d29834b78f1be2":[1,0,2,5,3,0,5,1],
+"class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_ice_house_builder.html#ae00968524646191ed2c4e3f76cbf6896":[1,0,2,5,3,0,5,0],
+"class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_jungle_house_builder.html":[1,0,2,5,3,0,6],
+"class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_jungle_house_builder.html#a3d0281a13f079bfa2a3dbb81cf8d5d1f":[1,0,2,5,3,0,6,0],
+"class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_jungle_house_builder.html#ab6908b852904dee4483ee5d0b21da35a":[1,0,2,5,3,0,6,1],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_marble_house_builder.html":[1,0,2,5,3,0,7],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_marble_house_builder.html#a206f0ce4eab27c846f745b57a2414850":[1,0,2,5,3,0,7,1],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_marble_house_builder.html#ae8902cb658500e615d20858b858597b6":[1,0,2,5,3,0,7,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX7 =
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#a267f3056bd1317a9f6b7139d30d4a9b7":[1,0,2,5,4,2,5,4],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#a2f5d6e9741a138d8ef6e97714e9ca3f0":[1,0,2,5,4,2,5,6],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#a3e4e7e5e8ae593f763b4a5219c01ccac":[1,0,2,5,4,2,5,7],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#a682e3ce3b7e74f214321f1431c118004":[1,0,2,5,4,2,5,2],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#a6b3a6f7b997e74d02d17543549399ab1":[1,0,2,5,4,2,5,3],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#ab5a5138d86b8d5473e448654dd73bd2c":[1,0,2,5,4,2,5,5],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#ac603dac0f5463b1336fffe1ef09cd3db":[1,0,2,5,4,2,5,1],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#afce4f88a975c4581cd94c16c51da2d8a":[1,0,2,5,4,2,5,0],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_far_placement_range_power.html":[1,0,2,5,4,2,6]
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#a682e3ce3b7e74f214321f1431c118004":[1,0,2,5,4,2,5,2]
 };

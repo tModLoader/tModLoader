@@ -1,5 +1,10 @@
 var NAVTREEINDEX8 =
 {
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#a6b3a6f7b997e74d02d17543549399ab1":[1,0,2,5,4,2,5,3],
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#ab5a5138d86b8d5473e448654dd73bd2c":[1,0,2,5,4,2,5,5],
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#ac603dac0f5463b1336fffe1ef09cd3db":[1,0,2,5,4,2,5,1],
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_difficulty_slider_power.html#afce4f88a975c4581cd94c16c51da2d8a":[1,0,2,5,4,2,5,0],
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_far_placement_range_power.html":[1,0,2,5,4,2,6],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_far_placement_range_power.html#a0a775c4cebb01a40eadc6c6e78129ac2":[1,0,2,5,4,2,6,0],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_far_placement_range_power.html#a46f7c63fbf65fddb83d48e75eb35a999":[1,0,2,5,4,2,6,2],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_far_placement_range_power.html#a684f78ab5a5f00e73c532121753f3184":[1,0,2,5,4,2,6,5],
@@ -244,10 +249,5 @@ var NAVTREEINDEX8 =
 "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html":[1,0,2,5,32],
 "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a027185368eb13f611fecadd478bb599d":[1,0,2,5,32,2],
 "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a1bcdaec6fd5a17134843e5e55c237db2":[1,0,2,5,32,8],
-"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a1ccca18beb1742cf64fea4febdd2056a":[1,0,2,5,32,3],
-"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a1f66207dfdc9daa126052d5bc1f24f28":[1,0,2,5,32,5],
-"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a31da00070c40cec8d5daa390a27c5543":[1,0,2,5,32,0],
-"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a75e1b60bb21993a809db9fef704fc662":[1,0,2,5,32,6],
-"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a827bda6f93c6b926597c7fd7f286ada1":[1,0,2,5,32,7],
-"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#ac03cb0a52358dee8ef67648a971061e6":[1,0,2,5,32,4]
+"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a1ccca18beb1742cf64fea4febdd2056a":[1,0,2,5,32,3]
 };

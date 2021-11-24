@@ -1,7 +1,7 @@
 var class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer =
 [
     [ "Reset", "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a31da00070c40cec8d5daa390a27c5543", null ],
-    [ "UpdateDarknessDamage", "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#ae570113668c45df5324adeca9271578d", null ],
+    [ "Update", "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a210112d90f289c806eca5a62673bd137", null ],
     [ "DARKNESS_DAMAGE_PER_HIT", "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a027185368eb13f611fecadd478bb599d", null ],
     [ "DARKNESS_HIT_TIMER_MAX_BEFORE_HIT", "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a1ccca18beb1742cf64fea4febdd2056a", null ],
     [ "DARKNESS_MESSAGE_TIME", "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#ac03cb0a52358dee8ef67648a971061e6", null ],
