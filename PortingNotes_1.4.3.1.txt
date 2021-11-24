@@ -6,17 +6,6 @@ Failed Patches:
 
 Collision.cs:
 
-@@ -2113,7 +2113,7 @@
- 						num6 -= 8;
- 					}
- 
--					if (type == 32 || type == 69 || type == 80 || type == 352 || (type == 80 && Main.dontStarveWorld)) {
-+					if (TileID.Sets.TouchDamageVines[type] > 0 || (type == 80 && Main.dontStarveWorld)) {
- 						if (!(vector.X + (float)Width > vector2.X) || !(vector.X < vector2.X + 16f) || !(vector.Y + (float)Height > vector2.Y) || !(vector.Y < vector2.Y + (float)num6 + 0.011f))
- 							continue;
-							
-Collision.cs:
-
 @@ -2140,7 +2132,7 @@
  						return new Vector2(num7, num5);
 
