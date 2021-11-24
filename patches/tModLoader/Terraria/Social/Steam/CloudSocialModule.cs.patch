@@ -9,3 +9,11 @@
  	{
  		private const uint WRITE_CHUNK_SIZE = 1024u;
  		private object ioLock = new object();
+@@ -13,6 +_,7 @@
+ 
+ 		public override void Initialize() {
+ 			base.Initialize();
++			MigrateFrom105600();
+ 		}
+ 
+ 		public override void Shutdown() {
