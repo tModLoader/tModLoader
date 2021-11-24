@@ -401,6 +401,10 @@ namespace Terraria
 			}
         }
 
+		/// <summary>
+		/// Clears all the portable storage projectile trackers
+		/// (<see cref="Player.piggyBankProjTracker"/>, <see cref="Player.safeProjTracker"/>, <see cref="Player.defendersForgeProjTracker"/>, <see cref="Player.voidLensChest"/>)
+		/// </summary>
 		public void ClearPortableBankProjectileTrackers() {
 			piggyBankProjTracker.Clear();
 			voidLensChest.Clear();
