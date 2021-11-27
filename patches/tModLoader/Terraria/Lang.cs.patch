@@ -16,14 +16,14 @@
 +		public static MapLegend _mapLegendCache;
 -		private static LocalizedText[] _itemNameCache = new LocalizedText[5125];
 +		internal static LocalizedText[] _itemNameCache = new LocalizedText[ItemID.Count];
--		private static LocalizedText[] _projectileNameCache = new LocalizedText[971];
+-		private static LocalizedText[] _projectileNameCache = new LocalizedText[972];
 +		internal static LocalizedText[] _projectileNameCache = new LocalizedText[ProjectileID.Count];
 -		private static LocalizedText[] _npcNameCache = new LocalizedText[670];
 +		internal static LocalizedText[] _npcNameCache = new LocalizedText[NPCID.Count];
  		private static LocalizedText[] _negativeNpcNameCache = new LocalizedText[65];
--		private static LocalizedText[] _buffNameCache = new LocalizedText[336];
+-		private static LocalizedText[] _buffNameCache = new LocalizedText[338];
 +		internal static LocalizedText[] _buffNameCache = new LocalizedText[BuffID.Count];
--		private static LocalizedText[] _buffDescriptionCache = new LocalizedText[336];
+-		private static LocalizedText[] _buffDescriptionCache = new LocalizedText[338];
 +		internal static LocalizedText[] _buffDescriptionCache = new LocalizedText[BuffID.Count];
 -		private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[5125];
 +		internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];

@@ -1,0 +1,3 @@
+Notes:
+
+- BuffLoader.CanBeCleared to be cleaned up & modernized heavily. CanBeCleared method calls were removed, since vanilla added BuffID.Sets.NurseCannotRemoveDebuff.

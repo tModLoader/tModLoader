@@ -38,7 +38,7 @@
  				writer.Write((byte)msgType);
  				switch (msgType) {
  					case 1:
--						writer.Write("Terraria" + 243);
+-						writer.Write("Terraria" + 244);
 +						writer.Write(BuildInfo.versionedName);
  						break;
  					case 2:
@@ -145,7 +145,7 @@
  							if (projectile.knockBack != 0f)
  								bb22[5] = true;
  
--							if (projectile.type > 0 && projectile.type < 971 && ProjectileID.Sets.NeedsUUID[projectile.type])
+-							if (projectile.type > 0 && projectile.type < 972 && ProjectileID.Sets.NeedsUUID[projectile.type])
 +							if (projectile.type > 0 && ProjectileID.Sets.NeedsUUID[projectile.type])
  								bb22[7] = true;
  
