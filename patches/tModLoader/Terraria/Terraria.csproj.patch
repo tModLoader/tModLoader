@@ -1,19 +1,12 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -2,69 +_,144 @@
-   <Import Project="../Configuration.targets" />
-   <Import Project="../../WorkspaceInfo.targets" />
-   <PropertyGroup>
--    <OutputType>WinExe</OutputType>
-+    <OutputType>Exe</OutputType>
-     <Version>1.4.3.2</Version>
+@@ -7,21 +_,27 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2021 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
 -    <AssemblyName>Terraria</AssemblyName>
 -  </PropertyGroup>
 -  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
--    <OutputType>Exe</OutputType>
 -    <AssemblyName>$(AssemblyName)Server</AssemblyName>
 -  </PropertyGroup>
 -  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
@@ -39,30 +32,17 @@
    </PropertyGroup>
    <ItemGroup>
      <Reference Include="CsvHelper" />
--    <Reference Include="FNA" />
 -    <Reference Include="Ionic.Zip.CF" />
-     <Reference Include="MP3Sharp" />
 +    <Reference Include="Ionic.Zip.Reduced" />
-+    <Reference Include="log4net" />
-+    <Reference Include="NVorbis" />    
+     <ProjectReference Include="../../../FNA/FNA.Core.csproj" />
+     <Reference Include="MP3Sharp" />
      <Reference Include="Newtonsoft.Json" />
--    <Reference Include="NVorbis" />
-     <Reference Include="RailSDK.Net" />
--    <ProjectReference Include="../ReLogic/ReLogic.csproj">
--      <Private>false</Private>
--    </ProjectReference>
--    <EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
--      <Link>Libraries/ReLogic/ReLogic.dll</Link>
--      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
--    </EmbeddedResource>
-+    <Reference Include="TerrariaHooks" />
-+    <ProjectReference Include="../ReLogic/ReLogic.csproj" />
-+    <ProjectReference Include="..\..\..\FNA\FNA.Core.csproj" />
+@@ -30,31 +_,110 @@
+     <ProjectReference Include="../ReLogic/ReLogic.csproj" />
      <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
--    <Reference Update="@(Reference)">
--      <Private>False</Private>
--    </Reference>
++    <Reference Include="log4net" />
++    <Reference Include="TerrariaHooks" />
    </ItemGroup>
    <ItemGroup>
 +    <EmbeddedResource Include="**\*.png" />
@@ -83,8 +63,7 @@
      <None Remove="Libraries/Windows/**" />
      <None Remove="Libraries/XNA/**" />
      <None Remove="Libraries/net40/**" />
--    <None Update="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
-+    <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
+     <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
 +    <Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
 +  </ItemGroup>
 +  <ItemGroup>
@@ -104,8 +83,7 @@
        <BinFiles Include="$(TargetDir)**" />
      </ItemGroup>
      <Message Text="Copying $(AssemblyName) to Steam Dir..." Importance="high" />
--    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(TerrariaSteamPath)/%(RecursiveDir)" />
-+    <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" SkipUnchangedFiles="True" />
+     <Copy SourceFiles="@(BinFiles)" DestinationFolder="$(tModLoaderSteamPath)/%(RecursiveDir)" SkipUnchangedFiles="True" />
 +    <!-- todo, purge old libraries on other platforms -->
 +    <Exec Command="robocopy &quot;$(TargetDir)Libraries&quot; &quot;$(tModLoaderSteamPath)\Libraries&quot; /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
 +      <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode" />
