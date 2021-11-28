@@ -503,6 +503,7 @@ var class_terraria_1_1_world_gen =
     [ "dungeonLake", "class_terraria_1_1_world_gen.html#a25c5862b4d682b02d31c936282cbd269", null ],
     [ "dungeonX", "class_terraria_1_1_world_gen.html#ae2d1c966664a46f10cfa841c14352b68", null ],
     [ "dungeonY", "class_terraria_1_1_world_gen.html#a02105278275207c980647e79305d1f6e", null ],
+    [ "ExploitDestroyQueue", "class_terraria_1_1_world_gen.html#a74c172463cc38533ef5a488a4ce6426e", null ],
     [ "gem", "class_terraria_1_1_world_gen.html#ac7101de7677ed502b850909278922b42", null ],
     [ "gen", "class_terraria_1_1_world_gen.html#a1b67bc67f7997dea502c5082767af05a", null ],
     [ "generatingWorld", "class_terraria_1_1_world_gen.html#a90d3dcadb5b16580b89e0c216b4aef75", null ],

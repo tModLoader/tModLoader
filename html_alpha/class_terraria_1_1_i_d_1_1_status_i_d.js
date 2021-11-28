@@ -6,5 +6,6 @@ var class_terraria_1_1_i_d_1_1_status_i_d =
     [ "EmptyFile", "class_terraria_1_1_i_d_1_1_status_i_d.html#aa0117b9a44724fe81f2daa6254dd2254", null ],
     [ "LaterVersion", "class_terraria_1_1_i_d_1_1_status_i_d.html#a3f2dd07a4433e85c171a5d2a5342eb41", null ],
     [ "Ok", "class_terraria_1_1_i_d_1_1_status_i_d.html#a25e689b16a4cd041eff55c5112a17ee2", null ],
+    [ "Search", "class_terraria_1_1_i_d_1_1_status_i_d.html#ab0e76e099f59b18f576d71f00384b58b", null ],
     [ "UnknownError", "class_terraria_1_1_i_d_1_1_status_i_d.html#a6cb1d3340eb2d1a0b7ea049887bbf5aa", null ]
 ];

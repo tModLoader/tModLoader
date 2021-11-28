@@ -56,6 +56,7 @@ var class_terraria_1_1_projectile =
     [ "IsNPCIndexImmuneToProjectileType", "class_terraria_1_1_projectile.html#ab311af2a75ba7cd9a21e7ff2c3981633", null ],
     [ "Kill", "class_terraria_1_1_projectile.html#ad720c809bf9147dbd21e7fa78f88d861", null ],
     [ "Kill_DirtAndFluidProjectiles_RunDelegateMethodPushUpForHalfBricks", "class_terraria_1_1_projectile.html#a959887032da60da4f99e4f26d224739b", null ],
+    [ "KillOldestJavelin", "class_terraria_1_1_projectile.html#a1c81e4b2e714dc4ebf99be43ddb11c51", null ],
     [ "Minion_FindTargetInRange", "class_terraria_1_1_projectile.html#a51ca88e9597419435f13017f0a3af446", null ],
     [ "NewProjectile", "class_terraria_1_1_projectile.html#abfbe42f51e710ae9801b739605040248", null ],
     [ "NewProjectile", "class_terraria_1_1_projectile.html#ad48b6d6896c41fe682318382cc3fa36e", null ],

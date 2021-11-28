@@ -1845,6 +1845,7 @@ var hierarchy =
     [ "Terraria.ID.NPCHeadID", "class_terraria_1_1_i_d_1_1_n_p_c_head_i_d.html", null ],
     [ "Terraria.ModLoader.NPCHeadLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html", null ],
     [ "Terraria.ID.NPCID", "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html", null ],
+    [ "Terraria.DataStructures.NPCKillAttempt", "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html", null ],
     [ "Terraria.ModLoader.NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", null ],
     [ "Terraria.ModLoader.NPCLoot", "struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html", null ],
     [ "Terraria.GameContent.Skies.CreditsRoll.Actions.NPCs", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs.html", null ],

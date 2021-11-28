@@ -1,6 +1,7 @@
 var class_terraria_1_1_initializers_1_1_asset_initializer =
 [
     [ "CreateAssetServices", "class_terraria_1_1_initializers_1_1_asset_initializer.html#a00ac44795f087c7f933f430e969a3bb9", null ],
+    [ "CreatePublishableResourcePacksList", "class_terraria_1_1_initializers_1_1_asset_initializer.html#ae7b1ea487af2e0eb6e6d760ffbb518a9", null ],
     [ "CreateResourcePackList", "class_terraria_1_1_initializers_1_1_asset_initializer.html#a5ed3b1f434803bccc379b8f3565568d5", null ],
     [ "GetResourcePacksFolderPathAndConfirmItExists", "class_terraria_1_1_initializers_1_1_asset_initializer.html#a347d93f1830042edfad50d7aca8da662", null ],
     [ "Load", "class_terraria_1_1_initializers_1_1_asset_initializer.html#a6c73d810e28994b6b9b07a93bd713d68", null ],

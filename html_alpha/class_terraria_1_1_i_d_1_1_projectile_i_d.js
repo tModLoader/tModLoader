@@ -866,6 +866,7 @@ var class_terraria_1_1_i_d_1_1_projectile_i_d =
     [ "SwordWhip", "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a325c57b8b6786c0dbd18b3b2cc831767", null ],
     [ "Tempest", "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a8921fb19eb538319fdaa8d57965c614d", null ],
     [ "TendonHook", "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a9956ab03505a065d6ee6b3107da59fad", null ],
+    [ "TentacleSpike", "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a5571023eeec2a6cf763579d123d31962", null ],
     [ "TerraBeam", "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a7422f11f34fb61c361fb04372109a814", null ],
     [ "Terragrim", "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a69e6767097bddfdd2f1975d8c79d06dd", null ],
     [ "Terrarian", "class_terraria_1_1_i_d_1_1_projectile_i_d.html#add5f89bdd6fea1f550f031e76a26b9c5", null ],

@@ -8,5 +8,6 @@ var class_terraria_1_1_i_d_1_1_buff_i_d_1_1_sets =
     [ "IsAnNPCWhipDebuff", "class_terraria_1_1_i_d_1_1_buff_i_d_1_1_sets.html#a6a4213e5d89af6ac1898d9b4bbb33e5c", null ],
     [ "IsFedState", "class_terraria_1_1_i_d_1_1_buff_i_d_1_1_sets.html#ac826dc851085d63bbea4356a03dd5715", null ],
     [ "IsWellFed", "class_terraria_1_1_i_d_1_1_buff_i_d_1_1_sets.html#a1e1164eb7c3faa731b3e68238c44762b", null ],
+    [ "NurseCannotRemoveDebuff", "class_terraria_1_1_i_d_1_1_buff_i_d_1_1_sets.html#ae1517cd79286b48e617f1f07c9332b67", null ],
     [ "TimeLeftDoesNotDecrease", "class_terraria_1_1_i_d_1_1_buff_i_d_1_1_sets.html#ab7503137e37dd52c0352b165f5b1c2da", null ]
 ];

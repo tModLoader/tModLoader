@@ -99,6 +99,7 @@ var annotated_dup =
         [ "MethodSequenceListItem", "class_terraria_1_1_data_structures_1_1_method_sequence_list_item.html", "class_terraria_1_1_data_structures_1_1_method_sequence_list_item" ],
         [ "NPCAimedTarget", "struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html", "struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target" ],
         [ "NPCDebuffImmunityData", "class_terraria_1_1_data_structures_1_1_n_p_c_debuff_immunity_data.html", "class_terraria_1_1_data_structures_1_1_n_p_c_debuff_immunity_data" ],
+        [ "NPCKillAttempt", "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html", "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt" ],
         [ "NPCStrengthHelper", "struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html", "struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper" ],
         [ "PlacementHook", "struct_terraria_1_1_data_structures_1_1_placement_hook.html", "struct_terraria_1_1_data_structures_1_1_placement_hook" ],
         [ "PlayerDeathReason", "class_terraria_1_1_data_structures_1_1_player_death_reason.html", "class_terraria_1_1_data_structures_1_1_player_death_reason" ],

@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html#ac33ea77eb5864f9344c66c49cffacad1":[1,0,2,5,12,0,2,2],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html":[1,0,2,5,12,0,3],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#a0fec900263fd4d6f167653fdd30f9fc1":[1,0,2,5,12,0,3,2],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#a781424d703d96d9fd059dbe07051a9bd":[1,0,2,5,12,0,3,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#a925ad4bbcccaf21189987b4456a27de7":[1,0,2,5,17,3,7,1],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#aab8cf9f0fd6ac2290495ac7651463c03":[1,0,2,5,17,3,7,3],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#abafc40417cbe56ea9572a70b65db3ed3":[1,0,2,5,17,3,7,0],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#aef9ac28a5b592cfca2f3b7bbfa9904b5":[1,0,2,5,17,3,7,5],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#af0bc77c9b414544a794976e3ea9c2dba":[1,0,2,5,17,3,7,7]
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#aef9ac28a5b592cfca2f3b7bbfa9904b5":[1,0,2,5,17,3,7,5]
 };

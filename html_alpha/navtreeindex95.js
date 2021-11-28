@@ -1,5 +1,12 @@
 var NAVTREEINDEX95 =
 {
+"class_terraria_1_1_mod_loader_1_1_player_loader.html#a24bd5d5fc37c6da4253ab4a5f3152af2":[1,0,2,13,124,31],
+"class_terraria_1_1_mod_loader_1_1_player_loader.html#a2567b4ac769289a78016a9a4b22f49c2":[1,0,2,13,124,5],
+"class_terraria_1_1_mod_loader_1_1_player_loader.html#a26ecd6147708d5aa786575c66d74eca3":[1,0,2,13,124,56],
+"class_terraria_1_1_mod_loader_1_1_player_loader.html#a2731a9a2bb4dd5efdbbfd3342da6f07d":[1,0,2,13,124,55],
+"class_terraria_1_1_mod_loader_1_1_player_loader.html#a29becdda6037264dbc18f0aefecf639c":[1,0,2,13,124,39],
+"class_terraria_1_1_mod_loader_1_1_player_loader.html#a29f6bc5de78d1d252d5908b0774a34a6":[1,0,2,13,124,16],
+"class_terraria_1_1_mod_loader_1_1_player_loader.html#a2b24b733b418f596491344ccd8b35b24":[1,0,2,13,124,2],
 "class_terraria_1_1_mod_loader_1_1_player_loader.html#a2ce1c9fdd9bdfd488941ed3e6e5528e8":[1,0,2,13,124,83],
 "class_terraria_1_1_mod_loader_1_1_player_loader.html#a33c5a4491b4de5e9a79e784f45c843e6":[1,0,2,13,124,82],
 "class_terraria_1_1_mod_loader_1_1_player_loader.html#a35bb5a8dfd273f01f2de8fe32721f12d":[1,0,2,13,124,28],
@@ -242,12 +249,5 @@ var NAVTREEINDEX95 =
 "class_terraria_1_1_mod_loader_1_1_system_loader.html#af3e3e9443f8d0ca6f59e9891e76b4499":[1,0,2,13,142,20],
 "class_terraria_1_1_mod_loader_1_1_system_loader.html#af9a3f28fd77fda15a6c4cf224d00d403":[1,0,2,13,142,31],
 "class_terraria_1_1_mod_loader_1_1_system_loader.html#afebaaa2908ee8fcab14f6c13d5d8204c":[1,0,2,13,142,32],
-"class_terraria_1_1_mod_loader_1_1_tally_counter_info_display.html":[1,0,2,13,143],
-"class_terraria_1_1_mod_loader_1_1_tally_counter_info_display.html#aa9c2add194a1ce3a215c7dbf7f09a365":[1,0,2,13,143,0],
-"class_terraria_1_1_mod_loader_1_1_tally_counter_info_display.html#ac8bf8e1af542a5f93a8d42fcc8dec2ac":[1,0,2,13,143,1],
-"class_terraria_1_1_mod_loader_1_1_tally_counter_info_display.html#acaa9cdc977da45c9c90b2225acd5c4aa":[1,0,2,13,143,2],
-"class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html":[1,0,2,13,144],
-"class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html#acf343cdb304a7967fffe387c31ca8431":[1,0,2,13,144,1],
-"class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html#afc35c651ea70115b39ce31420c4962a4":[1,0,2,13,144,0],
-"class_terraria_1_1_mod_loader_1_1_tile_loader.html":[1,0,2,13,145]
+"class_terraria_1_1_mod_loader_1_1_tally_counter_info_display.html":[1,0,2,13,143]
 };

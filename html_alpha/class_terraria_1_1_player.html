@@ -757,6 +757,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>NinjaDodge</b> ()</td
 <tr class="memitem:ae780655b04ff42bd22abd7b10a3dd44d"><td class="memItemLeft" align="right" valign="top"><a id="ae780655b04ff42bd22abd7b10a3dd44d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OnHit</b> (float x, float y, <a class="el" href="class_terraria_1_1_entity.html">Entity</a> victim)</td></tr>
 <tr class="separator:ae780655b04ff42bd22abd7b10a3dd44d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add1ad3041771d08904f65e3920d685b6"><td class="memItemLeft" align="right" valign="top"><a id="add1ad3041771d08904f65e3920d685b6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>OnKillNPC</b> (ref <a class="el" href="struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html">NPCKillAttempt</a> attempt, object externalKillingBlowSource)</td></tr>
+<tr class="separator:add1ad3041771d08904f65e3920d685b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb0aed549e06d2b4c77007c996efa413"><td class="memItemLeft" align="right" valign="top"><a id="afb0aed549e06d2b4c77007c996efa413"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenBossBag</b> (int type)</td></tr>
 <tr class="separator:afb0aed549e06d2b4c77007c996efa413"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1078,6 +1081,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateForbiddenSetLoc
 <tr class="memitem:a03d3b9ed37784c5816043a4080d4a37d"><td class="memItemLeft" align="right" valign="top"><a id="a03d3b9ed37784c5816043a4080d4a37d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateHairDyeDust</b> ()</td></tr>
 <tr class="separator:a03d3b9ed37784c5816043a4080d4a37d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0095ab0def191c013ac67a4e76deded"><td class="memItemLeft" align="right" valign="top"><a id="ae0095ab0def191c013ac67a4e76deded"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateHungerBuffs</b> ()</td></tr>
+<tr class="separator:ae0095ab0def191c013ac67a4e76deded"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0282a873342e9ca478f6b9daca9e616e"><td class="memItemLeft" align="right" valign="top"><a id="a0282a873342e9ca478f6b9daca9e616e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateImmunity</b> ()</td></tr>
 <tr class="separator:a0282a873342e9ca478f6b9daca9e616e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1463,9 +1469,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>bartenderQuestLog</b><
 <tr class="memitem:abbd040863e850c1847a3a63312f6d632"><td class="memItemLeft" align="right" valign="top"><a id="abbd040863e850c1847a3a63312f6d632"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>basiliskCharge</b></td></tr>
 <tr class="separator:abbd040863e850c1847a3a63312f6d632"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5590ddaa7acf92a54328342d08af204a"><td class="memItemLeft" align="right" valign="top"><a id="a5590ddaa7acf92a54328342d08af204a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>batbatHealCounter</b></td></tr>
-<tr class="separator:a5590ddaa7acf92a54328342d08af204a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a985d9b29e65f30e81f94e0a0d11aca10"><td class="memItemLeft" align="right" valign="top"><a id="a985d9b29e65f30e81f94e0a0d11aca10"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>batsOfLight</b></td></tr>
 <tr class="separator:a985d9b29e65f30e81f94e0a0d11aca10"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1575,7 +1578,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>breathMax</b> = 200</t
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>brokenArmor</b></td></tr>
 <tr class="separator:a3b99047d05327b2913f397758335758f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a035751afd721cfc89d7adf8cbfd77366"><td class="memItemLeft" align="right" valign="top"><a id="a035751afd721cfc89d7adf8cbfd77366"></a>
-bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffImmune</b> = new bool[336]</td></tr>
+bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffImmune</b> = new bool[338]</td></tr>
 <tr class="separator:a035751afd721cfc89d7adf8cbfd77366"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a96747bc1f8725c45b617ca3aeadd6c3b"><td class="memItemLeft" align="right" valign="top"><a id="a96747bc1f8725c45b617ca3aeadd6c3b"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffTime</b> = new int[22]</td></tr>
@@ -2350,6 +2353,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>headRotation</b></td
 <tr class="memitem:a0431247926fdc101a55cc774ca52388b"><td class="memItemLeft" align="right" valign="top"><a id="a0431247926fdc101a55cc774ca52388b"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>headVelocity</b></td></tr>
 <tr class="separator:a0431247926fdc101a55cc774ca52388b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae075f83c7c83df02152eb49e15385255"><td class="memItemLeft" align="right" valign="top"><a id="ae075f83c7c83df02152eb49e15385255"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>heartyMeal</b></td></tr>
+<tr class="separator:ae075f83c7c83df02152eb49e15385255"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc31964db22d60b6dc3003cf3a671b37"><td class="memItemLeft" align="right" valign="top"><a id="abc31964db22d60b6dc3003cf3a671b37"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>heldProj</b> = -1</td></tr>
 <tr class="separator:abc31964db22d60b6dc3003cf3a671b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2984,7 +2990,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>outOfRange</b></td></
 <a class="el" href="struct_terraria_1_1_bits_byte.html">BitsByte</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ownedLargeGems</b></td></tr>
 <tr class="separator:a1c2c9dca8418049b768008418068e73f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9e092978d22445f0cdf5f46d7b8f705"><td class="memItemLeft" align="right" valign="top"><a id="ae9e092978d22445f0cdf5f46d7b8f705"></a>
-int[]&#160;</td><td class="memItemRight" valign="bottom"><b>ownedProjectileCounts</b> = new int[971]</td></tr>
+int[]&#160;</td><td class="memItemRight" valign="bottom"><b>ownedProjectileCounts</b> = new int[972]</td></tr>
 <tr class="separator:ae9e092978d22445f0cdf5f46d7b8f705"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a237479c8dec7676c91f6ac8740e14bec"><td class="memItemLeft" align="right" valign="top"><a id="a237479c8dec7676c91f6ac8740e14bec"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>palladiumRegen</b></td></tr>
@@ -3989,9 +3995,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a1a15c8ece9b45a7be3af873d5ba86826"><td class="memItemLeft" align="right" valign="top"><a id="a1a15c8ece9b45a7be3af873d5ba86826"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>batbatHealCounterConsumedPerHeal</b> = 360</td></tr>
-<tr class="separator:a1a15c8ece9b45a7be3af873d5ba86826"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab269e1bf0ef36c62e38f8d0c529c1127"><td class="memItemLeft" align="right" valign="top"><a id="ab269e1bf0ef36c62e38f8d0c529c1127"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>BlockInteractionWithProjectiles</b> = 3</td></tr>
 <tr class="separator:ab269e1bf0ef36c62e38f8d0c529c1127"><td class="memSeparator" colspan="2">&#160;</td></tr>

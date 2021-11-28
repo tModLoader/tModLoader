@@ -1,6 +1,7 @@
 var class_terraria_1_1_social_1_1_we_game_1_1_cloud_social_module =
 [
     [ "Delete", "class_terraria_1_1_social_1_1_we_game_1_1_cloud_social_module.html#ac560bb28c4f38c69f41a95684c152eea", null ],
+    [ "Forget", "class_terraria_1_1_social_1_1_we_game_1_1_cloud_social_module.html#a151ecab0f6482418ba4ae08d6730c581", null ],
     [ "GetFiles", "class_terraria_1_1_social_1_1_we_game_1_1_cloud_social_module.html#a4ae034dcd222f22796055e0e6ed1d96a", null ],
     [ "GetFileSize", "class_terraria_1_1_social_1_1_we_game_1_1_cloud_social_module.html#a8a34add6f0beedefbc3ddfa62f47d171", null ],
     [ "HasFile", "class_terraria_1_1_social_1_1_we_game_1_1_cloud_social_module.html#a9db02e6fdc0dc7e34ca5a9b3f7629764", null ],

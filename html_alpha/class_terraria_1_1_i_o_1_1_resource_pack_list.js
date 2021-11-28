@@ -2,8 +2,8 @@ var class_terraria_1_1_i_o_1_1_resource_pack_list =
 [
     [ "ResourcePackList", "class_terraria_1_1_i_o_1_1_resource_pack_list.html#a092ca42c9494b5d726cda12fa1169111", null ],
     [ "ResourcePackList", "class_terraria_1_1_i_o_1_1_resource_pack_list.html#a873d09b40798941f767e91a6d2ff28ff", null ],
-    [ "EverythingExceptWorkshopEntries", "class_terraria_1_1_i_o_1_1_resource_pack_list.html#a43b9e6067f36c513b6eba6fef201bd23", null ],
     [ "FromJson", "class_terraria_1_1_i_o_1_1_resource_pack_list.html#a501898863f836902f97515ef3878bd04", null ],
+    [ "Publishable", "class_terraria_1_1_i_o_1_1_resource_pack_list.html#a864de2c67a950a8d80a2edaf5005687b", null ],
     [ "ToJson", "class_terraria_1_1_i_o_1_1_resource_pack_list.html#a8e2464e462697052a58a5cce175608d2", null ],
     [ "AllPacks", "class_terraria_1_1_i_o_1_1_resource_pack_list.html#a7668f499bfb8e252321ff1f39025dd9d", null ],
     [ "DisabledPacks", "class_terraria_1_1_i_o_1_1_resource_pack_list.html#a55fc5801d8306f0c845f542a182e28e9", null ],

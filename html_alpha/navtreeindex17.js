@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"class_terraria_1_1_game_content_1_1_tile_paint_system_v2.html#a5fd27e2f22bb3551ffc57d6c60ff6291":[1,0,2,5,65,13],
 "class_terraria_1_1_game_content_1_1_tile_paint_system_v2.html#a608bdd8d0aa7b44d935925313a17399c":[1,0,2,5,65,10],
 "class_terraria_1_1_game_content_1_1_tile_paint_system_v2.html#a669cb8994d02e71aac009312aa9a1bec":[1,0,2,5,65,17],
 "class_terraria_1_1_game_content_1_1_tile_paint_system_v2.html#a7ca8cf9fe8171b8184cafd5abf272da8":[1,0,2,5,65,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_group_option_button.html#aa3040bd5601a9ed0e562c5e67a1e9499":[1,0,2,5,21,2,4,4],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_group_option_button.html#aa6e0959ffcfddf1e86c525472f90cf5c":[1,0,2,5,21,2,4,8],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_group_option_button.html#aa7c1a24f0319cf83c462b5c3436e6019":[1,0,2,5,21,2,4,5],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_group_option_button.html#aab84ce95d15e806b0a7b7d0f6c38af5c":[1,0,2,5,21,2,4,7],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_group_option_button.html#ae5c9ee4702714bf6d0375924978434a8":[1,0,2,5,21,2,4,6]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_group_option_button.html#aab84ce95d15e806b0a7b7d0f6c38af5c":[1,0,2,5,21,2,4,7]
 };

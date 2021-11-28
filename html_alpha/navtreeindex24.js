@@ -1,5 +1,6 @@
 var NAVTREEINDEX24 =
 {
+"class_terraria_1_1_graphics_1_1_renderers_1_1_flame_particle.html#ad247f756c8b92363b4dd403959527ea7":[1,0,2,7,4,3,3],
 "class_terraria_1_1_graphics_1_1_renderers_1_1_legacy_player_renderer.html":[1,0,2,7,4,7],
 "class_terraria_1_1_graphics_1_1_renderers_1_1_legacy_player_renderer.html#a079be095611c894d8148919528421da4":[1,0,2,7,4,7,0],
 "class_terraria_1_1_graphics_1_1_renderers_1_1_legacy_player_renderer.html#a39e011ebc373e09e7ddc467f0194d087":[1,0,2,7,4,7,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX24 =
 "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#adef0338218c224943d364990a749ba4e":[1,0,2,8,0,1,4],
 "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#adfc649be0ce5a61d5c458e3c3bdb687f":[1,0,2,8,0,1,1],
 "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae0f45aa1f8cb059d7ec44d7939775efc":[1,0,2,8,0,1,14],
-"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae3cdb0a865f63f94c10c50e2b395c648":[1,0,2,8,0,1,3],
-"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae4c13f1ef03641838edfbe727c1b2c5c":[1,0,2,8,0,1,6]
+"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae3cdb0a865f63f94c10c50e2b395c648":[1,0,2,8,0,1,3]
 };
