@@ -256,7 +256,7 @@
 +											*/
 +
 +											if (!(minion || ProjectileID.Sets.MinionShot[type]) && Main.rand.Next(100) < Main.player[owner].GetWeaponCrit(Main.player[owner].HeldItem))
-+												flag6 = true;
++												flag7 = true;
  
  											int num15 = type;
  											if ((uint)(num15 - 688) <= 2u) {
@@ -306,9 +306,9 @@
  												num7 *= 0.5f;
  										}
  
-+										ProjectileLoader.ModifyHitNPC(this, nPC, ref num21, ref num7, ref flag6, ref num34);
-+										NPCLoader.ModifyHitByProjectile(nPC, this, ref num21, ref num7, ref flag6, ref num34);
-+										PlayerLoader.ModifyHitNPCWithProj(this, nPC, ref num21, ref num7, ref flag6, ref num34);
++										ProjectileLoader.ModifyHitNPC(this, nPC, ref num21, ref num7, ref flag7, ref num34);
++										NPCLoader.ModifyHitByProjectile(nPC, this, ref num21, ref num7, ref flag7, ref num34);
++										PlayerLoader.ModifyHitNPCWithProj(this, nPC, ref num21, ref num7, ref flag7, ref num34);
 +
 +										goto VanillaOnHitEffectsStart;
 +
@@ -333,9 +333,9 @@
  											BetsySharpnel(i);
  
 +										// Patching: See ModifyHitX above for locals
-+										ProjectileLoader.OnHitNPC(this, Main.npc[i], num21, num7, flag6);
-+										NPCLoader.OnHitByProjectile(Main.npc[i], this, num21, num7, flag6);
-+										PlayerLoader.OnHitNPCWithProj(this, Main.npc[i], num21, num7, flag6);
++										ProjectileLoader.OnHitNPC(this, Main.npc[i], num21, num7, flag7);
++										NPCLoader.OnHitByProjectile(Main.npc[i], this, num21, num7, flag7);
++										PlayerLoader.OnHitNPCWithProj(this, Main.npc[i], num21, num7, flag7);
 +
  										if (penetrate > 0 && type != 317 && type != 866) {
  											if (type == 357)
