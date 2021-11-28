@@ -11,7 +11,7 @@
  	{
  		public static class Sets
  		{
--			public static SetFactory Factory = new SetFactory(971);
+-			public static SetFactory Factory = new SetFactory(972);
 +			public static SetFactory Factory = new SetFactory(ProjectileLoader.ProjectileCount);
  			public static bool[] DontApplyParryDamageBuff = Factory.CreateBoolSet(false, 524, 321, 181, 566);
  			public static bool[] IsAWhip = Factory.CreateBoolSet(false, 847, 841, 848, 849, 912, 913, 914, 915, 952);
