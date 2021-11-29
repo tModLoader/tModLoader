@@ -24,7 +24,7 @@ namespace Terraria.ModLoader.Default
 		public override bool CloneNewInstances => false;
 
 		public int SlotCount => slots.Count;
-		public int CorrectedSlotCount => SlotCount - UnloadedSlotCount;
+		public int LoadedSlotCount => SlotCount - UnloadedSlotCount;
 		public int UnloadedSlotCount { get; private set; } = 0;
 
 		public ModAccessorySlotPlayer() {
@@ -166,18 +166,18 @@ namespace Terraria.ModLoader.Default
 		// The following netcode is adapted from ChickenBone's UtilitySlots:
 		public override void clientClone(ModPlayer clientClone) {
 			var defaultInv = (ModAccessorySlotPlayer)clientClone;
-			for (int i = 0; i < CorrectedSlotCount; i++) {
+			for (int i = 0; i < LoadedSlotCount; i++) {
 				defaultInv.exAccessorySlot[i] = exAccessorySlot[i].Clone();
-				defaultInv.exAccessorySlot[i + CorrectedSlotCount] = exAccessorySlot[i + SlotCount].Clone();
+				defaultInv.exAccessorySlot[i + LoadedSlotCount] = exAccessorySlot[i + SlotCount].Clone();
 				defaultInv.exDyesAccessory[i] = exDyesAccessory[i].Clone();
 				defaultInv.exHideAccessory[i] = exHideAccessory[i];
 			}
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			for (int i = 0; i < CorrectedSlotCount; i++) {
+			for (int i = 0; i < LoadedSlotCount; i++) {
 				NetHandler.SendSlot(toWho, Player.whoAmI, i, exAccessorySlot[i]);
-				NetHandler.SendSlot(toWho, Player.whoAmI, i + CorrectedSlotCount, exAccessorySlot[i + SlotCount]);
+				NetHandler.SendSlot(toWho, Player.whoAmI, i + LoadedSlotCount, exAccessorySlot[i + SlotCount]);
 				NetHandler.SendSlot(toWho, Player.whoAmI, -i - 1, exDyesAccessory[i]);
 				NetHandler.SendVisualState(toWho, Player.whoAmI, i, exHideAccessory[i]);
 			}
@@ -185,12 +185,12 @@ namespace Terraria.ModLoader.Default
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
 			var clientInv = (ModAccessorySlotPlayer)clientPlayer;
-			for (int i = 0; i < CorrectedSlotCount; i++) {
+			for (int i = 0; i < LoadedSlotCount; i++) {
 				if (exAccessorySlot[i].IsNotTheSameAs(clientInv.exAccessorySlot[i]))
 					NetHandler.SendSlot(-1, Player.whoAmI, i, exAccessorySlot[i]);
 
-				if (exAccessorySlot[i + SlotCount].IsNotTheSameAs(clientInv.exAccessorySlot[i + CorrectedSlotCount]))
-					NetHandler.SendSlot(-1, Player.whoAmI, i + CorrectedSlotCount, exAccessorySlot[i + SlotCount]);
+				if (exAccessorySlot[i + SlotCount].IsNotTheSameAs(clientInv.exAccessorySlot[i + LoadedSlotCount]))
+					NetHandler.SendSlot(-1, Player.whoAmI, i + LoadedSlotCount, exAccessorySlot[i + SlotCount]);
 
 				if (exDyesAccessory[i].IsNotTheSameAs(clientInv.exDyesAccessory[i]))
 					NetHandler.SendSlot(-1, Player.whoAmI, -i - 1, exDyesAccessory[i]);
