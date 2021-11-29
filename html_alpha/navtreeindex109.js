@@ -1,5 +1,7 @@
 var NAVTREEINDEX109 =
 {
+"class_terraria_1_1_social_1_1_base_1_1_a_workshop_tags_collection.html#aa69d514f2821a9efd32fe32000da89b9":[1,0,2,19,0,3,1],
+"class_terraria_1_1_social_1_1_base_1_1_a_workshop_tags_collection.html#acd7d775efcbcf16172848a3a2fe6515d":[1,0,2,19,0,3,5],
 "class_terraria_1_1_social_1_1_base_1_1_achievements_social_module.html":[1,0,2,19,0,0],
 "class_terraria_1_1_social_1_1_base_1_1_achievements_social_module.html#a409ab4ab397980673e59a3afbef14e6b":[1,0,2,19,0,0,4],
 "class_terraria_1_1_social_1_1_base_1_1_achievements_social_module.html#a83990ac3cf81e31d290e1b9837062904":[1,0,2,19,0,0,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX109 =
 "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html#afb6e07583f5291770431cd52d7a4cdb4":[1,0,2,19,1,7,14],
 "class_terraria_1_1_social_1_1_steam_1_1_overlay_social_module.html":[1,0,2,19,1,8],
 "class_terraria_1_1_social_1_1_steam_1_1_overlay_social_module.html#a241524adf9ad41f560a8893617e540c6":[1,0,2,19,1,8,4],
-"class_terraria_1_1_social_1_1_steam_1_1_overlay_social_module.html#a39eadde142cab20a5af94f228f1519cc":[1,0,2,19,1,8,1],
-"class_terraria_1_1_social_1_1_steam_1_1_overlay_social_module.html#a656f221150e849c85aa3c99acbfefd10":[1,0,2,19,1,8,2],
-"class_terraria_1_1_social_1_1_steam_1_1_overlay_social_module.html#acfbb31a43b3794aa00aef7e055523e81":[1,0,2,19,1,8,3]
+"class_terraria_1_1_social_1_1_steam_1_1_overlay_social_module.html#a39eadde142cab20a5af94f228f1519cc":[1,0,2,19,1,8,1]
 };
