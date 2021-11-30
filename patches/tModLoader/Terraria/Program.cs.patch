@@ -87,14 +87,16 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,65 @@
+@@ -138,32 +_,66 @@
  			}
  		}
  
 +		//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +		// Moving all calls to Main to LaunchGame_() mitigates this risk
  		public static void LaunchGame(string[] args, bool monoArgs = false) {
- 			Thread.CurrentThread.Name = "Main Thread";
++			// It's not the Main Thread anymore, but it still is the base thread of FNA
+-			Thread.CurrentThread.Name = "Main Thread";
++			Thread.CurrentThread.Name = "First Thread";
  			if (monoArgs)
  				args = Utils.ConvertMonoArgsToDotNet(args);
  
