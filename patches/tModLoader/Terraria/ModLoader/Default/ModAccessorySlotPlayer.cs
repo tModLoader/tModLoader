@@ -24,13 +24,18 @@ namespace Terraria.ModLoader.Default
 		public override bool CloneNewInstances => false;
 
 		public int SlotCount => slots.Count;
+		public int LoadedSlotCount => SlotCount - UnloadedSlotCount;
+		public int UnloadedSlotCount { get; private set; } = 0;
 
 		public ModAccessorySlotPlayer() {
 			foreach (var slot in Loader.list) {
-				if (!slot.FullName.StartsWith("Terraria", StringComparison.OrdinalIgnoreCase))
+				if (!slot.FullName.StartsWith("Terraria", StringComparison.OrdinalIgnoreCase)) {
 					slots.Add(slot.FullName, slot.Type);
-				else
+				}
+				else {
+					UnloadedSlotCount++;
 					slots.Add(slot.Name, slot.Type);
+				}
 			}
 
 			ResizeAccesoryArrays(slots.Count);
@@ -77,6 +82,7 @@ namespace Terraria.ModLoader.Default
 					slots.Add(unloaded.Name, unloaded.Type);
 					Loader.list.Add(unloaded);
 					type = unloaded.Type;
+					UnloadedSlotCount++;
 				}
 
 				// Place loaded items in to the correct slot
@@ -160,19 +166,18 @@ namespace Terraria.ModLoader.Default
 		// The following netcode is adapted from ChickenBone's UtilitySlots:
 		public override void clientClone(ModPlayer clientClone) {
 			var defaultInv = (ModAccessorySlotPlayer)clientClone;
-			for (int i = 0; i < exAccessorySlot.Length; i++)
+			for (int i = 0; i < LoadedSlotCount; i++) {
 				defaultInv.exAccessorySlot[i] = exAccessorySlot[i].Clone();
-			for (int i = 0; i < exDyesAccessory.Length; i++) {
+				defaultInv.exAccessorySlot[i + LoadedSlotCount] = exAccessorySlot[i + SlotCount].Clone();
 				defaultInv.exDyesAccessory[i] = exDyesAccessory[i].Clone();
 				defaultInv.exHideAccessory[i] = exHideAccessory[i];
 			}
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
-			for (int i = 0; i < exAccessorySlot.Length; i++)
+			for (int i = 0; i < LoadedSlotCount; i++) {
 				NetHandler.SendSlot(toWho, Player.whoAmI, i, exAccessorySlot[i]);
-
-			for (int i = 0; i < exDyesAccessory.Length; i++) {
+				NetHandler.SendSlot(toWho, Player.whoAmI, i + LoadedSlotCount, exAccessorySlot[i + SlotCount]);
 				NetHandler.SendSlot(toWho, Player.whoAmI, -i - 1, exDyesAccessory[i]);
 				NetHandler.SendVisualState(toWho, Player.whoAmI, i, exHideAccessory[i]);
 			}
@@ -180,11 +185,13 @@ namespace Terraria.ModLoader.Default
 
 		public override void SendClientChanges(ModPlayer clientPlayer) {
 			var clientInv = (ModAccessorySlotPlayer)clientPlayer;
-			for (int i = 0; i < exAccessorySlot.Length; i++)
+			for (int i = 0; i < LoadedSlotCount; i++) {
 				if (exAccessorySlot[i].IsNotTheSameAs(clientInv.exAccessorySlot[i]))
 					NetHandler.SendSlot(-1, Player.whoAmI, i, exAccessorySlot[i]);
 
-			for (int i = 0; i < exDyesAccessory.Length; i++) {
+				if (exAccessorySlot[i + SlotCount].IsNotTheSameAs(clientInv.exAccessorySlot[i + LoadedSlotCount]))
+					NetHandler.SendSlot(-1, Player.whoAmI, i + LoadedSlotCount, exAccessorySlot[i + SlotCount]);
+
 				if (exDyesAccessory[i].IsNotTheSameAs(clientInv.exDyesAccessory[i]))
 					NetHandler.SendSlot(-1, Player.whoAmI, -i - 1, exDyesAccessory[i]);
 

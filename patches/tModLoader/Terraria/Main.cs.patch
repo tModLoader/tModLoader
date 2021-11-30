@@ -3295,13 +3295,16 @@
  #endif
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
-@@ -36854,8 +_,7 @@
+@@ -36852,8 +_,10 @@
  						startInfo.Arguments = startInfo.Arguments + " -loadlib " + libPath;
  					}
  
 -					tServer.StartInfo.UseShellExecute = false;
-+					tServer.StartInfo.UseShellExecute = showServerConsole;
 -					tServer.StartInfo.CreateNoWindow = true;
++					tServer.StartInfo.UseShellExecute = true;
++					if (!showServerConsole)
++						tServer.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
++
  					if (SocialAPI.Network != null)
  						SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
  					else
@@ -4093,7 +4096,7 @@
  
  				moonColor *= num13;
  				Vector2 position2 = new Vector2(num6, num7 + moonModY) + sceneArea.SceneLocalScreenPositionOffset;
-+				if (menu != null) {
++				if (Main.gameMenu && menu != null) {
 +					bool needsVanillaFraming = value2 == TextureAssets.Moon[num].Value;
 +					spriteBatch.Draw(value2, position2, new Rectangle(0, needsVanillaFraming ? TextureAssets.Moon[num].Width() * moonPhase : 0, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width), moonColor, num9, new Vector2(needsVanillaFraming ? TextureAssets.Moon[num].Width() / 2 : value2.Width / 2), num8, SpriteEffects.None, 0f);
 +				}
