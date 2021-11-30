@@ -3295,7 +3295,7 @@
  #endif
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
-@@ -36852,8 +_,10 @@
+@@ -36854,8 +_,10 @@
  						startInfo.Arguments = startInfo.Arguments + " -loadlib " + libPath;
  					}
  
