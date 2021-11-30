@@ -305,6 +305,15 @@
  		}
  
  		protected IEnumerator LoadContent_Deferred() {
+@@ -8431,6 +_,8 @@
+ 			numClouds = rand.Next(200);
+ 			Mount.Initialize();
+ 			Minecart.Initialize();
++			// move instance creation from class constructor to main thread to avoid deadlocks from content loading on JIT thread with FNA
++			CaptureManager.Instance = new CaptureManager();
+ 			CacheSupportedDisplaySizes();
+ 			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
+ 			ContentSamples.CommonlyUsedContentSamples.PrepareAfterEverythingElseLoaded();
 @@ -8539,7 +_,7 @@
  			if (!SoundEngine.IsAudioSupported || !_musicLoaded)
  				return;
