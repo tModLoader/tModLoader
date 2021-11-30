@@ -3304,13 +3304,16 @@
  #endif
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {
-@@ -36852,8 +_,7 @@
+@@ -36852,8 +_,10 @@
  						startInfo.Arguments = startInfo.Arguments + " -loadlib " + libPath;
  					}
  
 -					tServer.StartInfo.UseShellExecute = false;
-+					tServer.StartInfo.UseShellExecute = showServerConsole;
 -					tServer.StartInfo.CreateNoWindow = true;
++					tServer.StartInfo.UseShellExecute = true;
++					if (!showServerConsole)
++						tServer.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
++
  					if (SocialAPI.Network != null)
  						SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
  					else
