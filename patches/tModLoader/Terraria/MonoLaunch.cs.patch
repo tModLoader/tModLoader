@@ -8,14 +8,6 @@
  
  internal static class MonoLaunch
  {
-@@ -24,6 +_,7 @@
- 		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
- 			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
- 			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-+			
- 			if (text == null)
- 				return null;
- 
 @@ -58,16 +_,16 @@
  					return handle;
  				}
