@@ -29,7 +29,7 @@
 		"ModsModPacks": "Paquetes de mods",
 		"ModsDisable": "Desactivar",
 		"ModsEnable": "Activar",
-		// "ModConfiguration": "Mod Configuration",
+		"ModConfiguration": "Configuración de mods",
 		"ModsOpenConfig": "Haz clic para abrir la configuración",
 		"ModOldWarning": "Mod desactualizado, actívalo bajo tu propia responsabilidad",
 		"ModDependencyClickTooltip": "Este mod depende de {0}\n(Haz clic para activar)",
@@ -139,7 +139,7 @@
 
 		// Mod Info
 		"ModInfoHeader": "Info del mod: ",
-		"ModInfoVisitHomepage": "Visitar web del mod",
+		"ModInfoVisitHomepage": "Visitar sitio web del mod",
 		"ModInfoExtract": "Extraer",
 		"ModInfoNoDescriptionAvailable": "Sin descripción",
 		"ModInfoProblemTryAgain": "Ha habido un problema, inténtalo de nuevo",
@@ -301,7 +301,7 @@
 		"MSPublish": "Publicar",
 		"MSModSourcesCantHaveSpaces": "(Las carpetas de fuentes de mods no pueden contener espacios)",
 		"MSCreateMod": "Crear mod",
-		"VersionUpgrade": "Info. sobre la Migración de Mods tras actualizar",
+		"VersionUpgrade": "Haz clic para más info. sobre la Migración de Mods",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Se requieren librerías adicionales para construir mods (falta la carpeta ModCompile)",
