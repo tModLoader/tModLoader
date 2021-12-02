@@ -38,8 +38,10 @@ namespace Terraria.Social.Steam
 		}
 
 		internal static void OnGameExitCleanup() {
-			if (ModManager.SteamUser)
+			if (ModManager.SteamUser) {
+				SteamAPI.Shutdown();
 				return;
+			}
 
 			GameServer.Shutdown();
 		}
