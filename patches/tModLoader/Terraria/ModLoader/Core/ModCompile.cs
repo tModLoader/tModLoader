@@ -1,4 +1,5 @@
 #if NETCORE
+using Basic.Reference.Assemblies;
 using log4net.Core;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -359,7 +360,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 			// TODO: do we need to always compile against reference assemblies?
 			// add framework assemblies
-			refs.AddRange(GetFrameworkReferences());
+			//refs.AddRange(GetFrameworkReferences());
 
 			//libs added by the mod
 			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)));
@@ -456,6 +457,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
 			var refs = references.Select(s => MetadataReference.CreateFromFile(s));
+			refs = refs.Concat(Net60.All);
 
 			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
 
@@ -470,6 +472,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			return results.Diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
 		}
 
+		/*
 		private static IEnumerable<string> GetFrameworkReferences() {
 			var frameworkAssembliesPath = Path.GetDirectoryName(typeof(File).Assembly.Location);
 			return FilterUnmanagedFrameworkDllsViaBlacklist(Directory.GetFiles(frameworkAssembliesPath, "*.dll", SearchOption.AllDirectories));
@@ -518,6 +521,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			
 			return refs.Where(r => !unmanagedDLLs.Any(r.Contains));
 		}
+		*/
 	}
 }
 #endif
