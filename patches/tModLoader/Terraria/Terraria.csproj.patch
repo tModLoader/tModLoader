@@ -52,7 +52,7 @@
      <EmbeddedResource Include="GameContent/Creative/Content/*" />
      <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -47,16 +_,28 @@
+@@ -47,16 +_,29 @@
    <ItemGroup>
      <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
      <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
@@ -65,6 +65,7 @@
 +    <Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
 +  </ItemGroup>
 +  <ItemGroup>
++    <PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
 +    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.11.1.1" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.0-6.final" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.0.0-6.final" />
