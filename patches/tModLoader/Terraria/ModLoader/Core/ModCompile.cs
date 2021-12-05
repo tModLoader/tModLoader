@@ -358,10 +358,6 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			//everything used to compile the tModLoader for the target platform
 			refs.AddRange(GetTerrariaReferences());
 
-			// TODO: do we need to always compile against reference assemblies?
-			// add framework assemblies
-			//refs.AddRange(GetFrameworkReferences());
-
 			//libs added by the mod
 			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)));
 
@@ -471,57 +467,6 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			pdb = pdbStream.ToArray();
 			return results.Diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
 		}
-
-		/*
-		private static IEnumerable<string> GetFrameworkReferences() {
-			var frameworkAssembliesPath = Path.GetDirectoryName(typeof(File).Assembly.Location);
-			return FilterUnmanagedFrameworkDllsViaBlacklist(Directory.GetFiles(frameworkAssembliesPath, "*.dll", SearchOption.AllDirectories));
-		}
-
-		private static IEnumerable<string> FilterUnmanagedFrameworkDlls(IEnumerable<string> refs) {
-			var actualAssemblies = new List<string>();
-			var forwarderAssemblies = new List<string>();
-
-			// Separate assemblies into complete assemblies and assemblies that forward to an assembly, at a heavy toll on performance. Will generate the full list of forwarding assemblies to blacklist; Useful for maintenance.
-			foreach (string test in refs) {
-				try {
-					var a = Assembly.LoadFile(test);
-					actualAssemblies.Add(test);
-				}
-				catch (Exception) {
-					if (test.Contains("Private.CoreLib")) { // This assembly can't be loaded directly, but isn't a forwarding assembly and instead is the recipient of forwarding.
-						actualAssemblies.Add(test);
-					}
-					forwarderAssemblies.Add(test);
-				}
-			}
-
-			return actualAssemblies;
-		}
-
-		private static IEnumerable<string> FilterUnmanagedFrameworkDllsViaBlacklist(IEnumerable<string> refs) {
-			// Separate out known forward-only assemblies via string blacklisting.
-			string[] unmanagedDLLs = new string[] {
-				".Native",
-				"api-ms",
-				"clrcompression",
-				"clretwrc",
-				"clrjit",
-				"coreclr",
-				"dbgshim",
-				"Microsoft.DiaSymReader.Native.amd64",
-				"mscordaccore",
-				"mscordaccore_amd64_amd64",
-				"mscordbi",
-				"mscorrc",
-				"ucrtbase",
-				"hostpolicy",
-				"msquic"
-			};
-			
-			return refs.Where(r => !unmanagedDLLs.Any(r.Contains));
-		}
-		*/
 	}
 }
 #endif
