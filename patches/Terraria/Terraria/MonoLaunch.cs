@@ -57,15 +57,15 @@ internal static class MonoLaunch
 				if (assemblies.TryGetValue(name, out var handle)) {
 					return handle;
 				}
-				
+
 				Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
 
 				var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
 				var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
 				var match = files.FirstOrDefault();
-				
+
 				Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
-				
+
 				if (match != null && NativeLibrary.TryLoad(match, out handle)) {
 					Console.WriteLine("\tsuccess");
 					return assemblies[name] = handle;
