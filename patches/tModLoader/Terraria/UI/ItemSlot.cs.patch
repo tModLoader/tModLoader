@@ -23,6 +23,16 @@
  	{
  		public class Options
  		{
+@@ -25,6 +_,9 @@
+ 
+ 		public class Context
+ 		{
++			public const int ModdedAccessorySlot = -10;
++			public const int ModdedVanityAccessorySlot = -11;
++			public const int ModdedDyeSlot = -12;
+ 			public const int InventoryItem = 0;
+ 			public const int InventoryCoin = 1;
+ 			public const int InventoryAmmo = 2;
 @@ -81,7 +_,7 @@
  
  		public static bool DrawGoldBGForCraftingMaterial;
@@ -233,12 +243,12 @@
  					}
  				}
  			}
-@@ -900,7 +_,12 @@
+@@ -900,18 +_,24 @@
  						result = 1;
  					break;
  				case 10:
 -					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot, context)))
 +						result = 1;
 +					break;
 +				case -10:
@@ -247,12 +257,13 @@
  						result = 1;
  					break;
  				case 24:
-@@ -908,10 +_,11 @@
+-					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(inv, checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(inv, checkItem, slot, context)))
  						result = 1;
  					break;
  				case 11:
 -					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot, context)))
  						result = 1;
  					break;
  				case 12:
@@ -541,22 +552,28 @@
  				}
  			}
  
-@@ -1940,7 +_,9 @@
+@@ -1940,7 +_,18 @@
  			return true;
  		}
  
 -		private static bool AccCheck(Item[] itemCollection, Item item, int slot) {
-+		internal static bool AccCheck(Item[] itemCollection, Item item, int slot) {
-+			return AccCheck_Inner(itemCollection, item, slot);
-+			/*
++		internal static bool AccCheck(Item[] itemCollection, Item item, int slot, int context) {
++			switch (context) {
++				case Context.ModdedAccessorySlot:
++				case Context.ModdedVanityAccessorySlot:
++				case Context.ModdedDyeSlot:
++				case Context.EquipDye:
++				case Context.EquipAccessoryVanity:
++				case Context.EquipAccessory:
++					return AccCheck_Inner(itemCollection, item, slot);
++			}
++			
++			// Vanilla code for Display Dolls, etc.
  			if (isEquipLocked(item.type))
  				return true;
  
-@@ -1966,8 +_,10 @@
- 			}
- 
+@@ -1968,6 +_,7 @@
  			return false;
-+			*/
  		}
  
 +		//TML: I (Solxan), have not been able to get this to ever run in-game. I suspect this code path is deprecated.
