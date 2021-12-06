@@ -872,11 +872,11 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool? SpawnsWithCustomName(int type) {
-			return GetNPC(type)?.SpawnsWithCustomName();
+			return GetNPC(type)?.SpawnsWithCustomName;
 		}
 
 		public static bool ActsLikeATownNPC(NPC npc) {
-			return npc.ModNPC?.ActsLikeATownNPC() ?? false;
+			return npc.ModNPC?.ActsLikeATownNPC ?? false;
 		}
 
 		public static bool UsesPartyHat(NPC npc) {
