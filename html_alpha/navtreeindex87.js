@@ -1,5 +1,7 @@
 var NAVTREEINDEX87 =
 {
+"class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_range_element.html#a0203e2a7710c8e70f56d688791f7c2a0":[1,0,2,13,1,0,16,7],
+"class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_range_element.html#a072da31d2375f7d9c808fef1bba08566":[1,0,2,13,1,0,16,3],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_range_element.html#a0a9d8865a99f8a6bf394b12fcc802dda":[1,0,2,13,1,0,16,0],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_range_element.html#a116652d7ad3a345ea22a2428d900feb1":[1,0,2,13,1,0,16,2],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_range_element.html#a1bb9bf7fe33d78b7fbcec058cfbae4ad":[1,0,2,13,1,0,16,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX87 =
 "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html#a58f72520899fc173b258ff24c626ba6c":[1,0,2,13,4,5,0],
 "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html":[1,0,2,13,4,6],
 "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html#a465e643323a5cce0ffdb0396ff4f7ab2":[1,0,2,13,4,6,0],
-"class_terraria_1_1_mod_loader_1_1_fish_finder_info_display.html":[1,0,2,13,32],
-"class_terraria_1_1_mod_loader_1_1_fish_finder_info_display.html#a1d036c78dd2079c73a0790562c88a586":[1,0,2,13,32,2],
-"class_terraria_1_1_mod_loader_1_1_fish_finder_info_display.html#a35599586dcf3091c118c7d8618584712":[1,0,2,13,32,1]
+"class_terraria_1_1_mod_loader_1_1_fish_finder_info_display.html":[1,0,2,13,32]
 };

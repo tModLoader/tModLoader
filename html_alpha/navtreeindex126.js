@@ -1,5 +1,7 @@
 var NAVTREEINDEX126 =
 {
+"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a3d5a809d563f965fba299d813a9e854b":[1,0,2,4,32,4],
+"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a4baf470250dcd9bad267adbecb5b9d46":[1,0,2,4,32,3],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a86ab3dc84a692425f87ced1dbefe9ac6":[1,0,2,4,32,0],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#ad0c15e7f3bb576b2516f7ef49ed93be4":[1,0,2,4,32,5],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html":[1,0,2,4,33],
@@ -247,7 +249,5 @@ var NAVTREEINDEX126 =
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_u_i_collection_info.html":[1,0,2,5,2,5],
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_u_i_collection_info.html#a6303aa8cdd028db48b995d74f95e7878":[1,0,2,5,2,5,1],
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_u_i_collection_info.html#acf6d7c9a155471f03941e638bca0870e":[1,0,2,5,2,5,0],
-"struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlock_progress_report.html":[1,0,2,5,2,6],
-"struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlock_progress_report.html#a20154a833e4b087c6cbef15607b1aa13":[1,0,2,5,2,6,1],
-"struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlock_progress_report.html#aadb773aac92477d0f3baced8e1268f86":[1,0,2,5,2,6,2]
+"struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlock_progress_report.html":[1,0,2,5,2,6]
 };

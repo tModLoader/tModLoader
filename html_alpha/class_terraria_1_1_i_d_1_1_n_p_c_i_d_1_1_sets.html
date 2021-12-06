@@ -107,6 +107,9 @@ static Dictionary&lt; int, <a class="el" href="struct_terraria_1_1_i_d_1_1_n_p_c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr class="memitem:a0ce8bd6d411d2c6a4de6486b490f74d6"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a0ce8bd6d411d2c6a4de6486b490f74d6">ActsLikeTownNPC</a> = Factory.CreateBoolSet(453)</td></tr>
+<tr class="memdesc:a0ce8bd6d411d2c6a4de6486b490f74d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will act like a town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> in terms of AI, animations, and attacks, but not in other regards, such as having a happiness button or appearing on the minimap, like the bone merchant in vanilla.  <a href="class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a0ce8bd6d411d2c6a4de6486b490f74d6">More...</a><br /></td></tr>
+<tr class="separator:a0ce8bd6d411d2c6a4de6486b490f74d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a039692c149b0fa62ec4cf06d0cdf13a6"><td class="memItemLeft" align="right" valign="top"><a id="a039692c149b0fa62ec4cf06d0cdf13a6"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>AllNPCs</b> = Factory.CreateBoolSet(true)</td></tr>
 <tr class="separator:a039692c149b0fa62ec4cf06d0cdf13a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -239,6 +242,9 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Skeletons</b
 <tr class="memdesc:a879731020ef688a3964917b7de50e6c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the spawned <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will start looking for a suitable slot from the end of </p><dl class="section see"><dt>See also</dt><dd>Main.npc</dd></dl>
 <p>, ignoring the Start parameter of NPC.NewNPC. Useful if you have a multi-segmented boss and want its parts to draw over the main body (body will be in this set).  <a href="class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a879731020ef688a3964917b7de50e6c1">More...</a><br /></td></tr>
 <tr class="separator:a879731020ef688a3964917b7de50e6c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a050351cb963eeffa92b23c5d41a452ce"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a050351cb963eeffa92b23c5d41a452ce">SpawnsWithCustomName</a> = Factory.CreateBoolSet(453)</td></tr>
+<tr class="memdesc:a050351cb963eeffa92b23c5d41a452ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will spawn with a custom name like a town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. In order to determine what name will be selected, override the TownNPCName hook. True will force a name to be rolled regardless of vanilla behavior. False will have vanilla handle the naming.  <a href="class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a050351cb963eeffa92b23c5d41a452ce">More...</a><br /></td></tr>
+<tr class="separator:a050351cb963eeffa92b23c5d41a452ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3308ffb542ba9182226d933d50d02017"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>SpecialSpawningRules</b></td></tr>
 <tr class="separator:a3308ffb542ba9182226d933d50d02017"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a373a053e7f06cd205ba7b73db039ffe3"><td class="memItemLeft" align="right" valign="top"><a id="a373a053e7f06cd205ba7b73db039ffe3"></a>
@@ -273,6 +279,30 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Zombies</b> 
 <tr class="separator:ad1c987616c6928e3a77eb3322ccbeb8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a0ce8bd6d411d2c6a4de6486b490f74d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ce8bd6d411d2c6a4de6486b490f74d6">&#9670;&nbsp;</a></span>ActsLikeTownNPC</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.ID.NPCID.Sets.ActsLikeTownNPC = Factory.CreateBoolSet(453)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not a given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will act like a town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> in terms of AI, animations, and attacks, but not in other regards, such as having a happiness button or appearing on the minimap, like the bone merchant in vanilla. </p>
+
+</div>
+</div>
 <a id="a5dada2119623a83159b083da6fdd84c0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5dada2119623a83159b083da6fdd84c0">&#9670;&nbsp;</a></span>GoldCrittersCollection</h2>
 
@@ -333,6 +363,30 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Zombies</b> 
 
 <p>Whether or not the spawned <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will start looking for a suitable slot from the end of </p><dl class="section see"><dt>See also</dt><dd>Main.npc</dd></dl>
 <p>, ignoring the Start parameter of NPC.NewNPC. Useful if you have a multi-segmented boss and want its parts to draw over the main body (body will be in this set). </p>
+
+</div>
+</div>
+<a id="a050351cb963eeffa92b23c5d41a452ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a050351cb963eeffa92b23c5d41a452ce">&#9670;&nbsp;</a></span>SpawnsWithCustomName</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.ID.NPCID.Sets.SpawnsWithCustomName = Factory.CreateBoolSet(453)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not a given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will spawn with a custom name like a town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. In order to determine what name will be selected, override the TownNPCName hook. True will force a name to be rolled regardless of vanilla behavior. False will have vanilla handle the naming. </p>
 
 </div>
 </div>

@@ -2,6 +2,7 @@ var class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets =
 [
     [ "NPCBestiaryDrawModifiers", "struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html", "struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers" ],
     [ "NPCBestiaryDrawOffsetCreation", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a7d0864eb6b84322852ee42f86807d72e", null ],
+    [ "ActsLikeTownNPC", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a0ce8bd6d411d2c6a4de6486b490f74d6", null ],
     [ "AllNPCs", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a039692c149b0fa62ec4cf06d0cdf13a6", null ],
     [ "AttackAverageChance", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#ac3d3ad9c426721b88f4d2e68220ddf39", null ],
     [ "AttackFrameCount", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a37df31d8e67c1be5113157174d92eab6", null ],
@@ -46,6 +47,7 @@ var class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets =
     [ "ShouldBeCountedAsBoss", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#ae0993420dfb7274cc4d4e52dcf6f15ab", null ],
     [ "Skeletons", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a33dd8411a4a6843425c75d487c565836", null ],
     [ "SpawnFromLastEmptySlot", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a879731020ef688a3964917b7de50e6c1", null ],
+    [ "SpawnsWithCustomName", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a050351cb963eeffa92b23c5d41a452ce", null ],
     [ "SpecialSpawningRules", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a3308ffb542ba9182226d933d50d02017", null ],
     [ "StatueSpawnedDropRarity", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a373a053e7f06cd205ba7b73db039ffe3", null ],
     [ "TakesDamageFromHostilesWithoutBeingFriendly", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a363343cb6382ecaf4e66e21a8fa0dcd8", null ],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#ac4d3d362dc2f9dcdf633d2ea74a120aa":[1,0,2,7,3,1,0,3],
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#ac70d106579e16454e9e0d66a346653e6":[1,0,2,7,3,1,0,0],
 "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#af5965cf3be36f63b793098547da2c3f3":[1,0,2,7,3,1,0,2],
 "struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html":[1,0,2,7,10],
 "struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html#ad78d3c58251d7cfb17cb43040944587b":[1,0,2,7,10,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_player_1_1_composite_arm_data.html":[1,0,2,54,1],
 "struct_terraria_1_1_player_1_1_composite_arm_data.html#a48cceb3b2d532a9a19ddba07eea719bc":[1,0,2,54,1,0],
 "struct_terraria_1_1_player_1_1_composite_arm_data.html#a4d642c6175ca2a98dab8b6f30070f8d4":[1,0,2,54,1,2],
-"struct_terraria_1_1_player_1_1_composite_arm_data.html#a8c6c98b9c19d3d5ea487e34140fe19f4":[1,0,2,54,1,1],
-"struct_terraria_1_1_player_1_1_composite_arm_data.html#a8e4a040fda3776dd4432a25b314938c6":[1,0,2,54,1,3],
-"struct_terraria_1_1_player_1_1_item_space_status.html":[1,0,2,54,3]
+"struct_terraria_1_1_player_1_1_composite_arm_data.html#a8c6c98b9c19d3d5ea487e34140fe19f4":[1,0,2,54,1,1]
 };
