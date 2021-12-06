@@ -137,7 +137,7 @@ namespace Terraria.ModLoader.UI
 
 					Logging.tML.Info($"Extracting: {zipFilePath} -> {extractDir}");
 
-					using (var zip = ZipFile.Read(zipFilePath)) 
+					using (var zip = ZipFile.Read(zipFilePath))
 						zip.ExtractAll(extractDir);
 
 					File.Delete(zipFilePath);

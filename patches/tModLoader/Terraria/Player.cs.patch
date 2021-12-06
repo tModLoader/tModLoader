@@ -34,13 +34,13 @@
 +				Interface.ResetData();
  				if (Hooks.OnEnterWorld != null)
  					Hooks.OnEnterWorld(Main.player[playerIndex]);
-+				
-+				PlayerLoader.OnEnterWorld(playerIndex);
  
++				PlayerLoader.OnEnterWorld(playerIndex);
++
 -				if (playerIndex == Main.myPlayer)
 +				if (playerIndex == Main.myPlayer) {
  					Main.ToggleGameplayUpdates(state: true);
-+					
++
 +					// Added by TML.
 +					Social.Steam.WorkshopHelper.ModManager.BeginPlaytimeTracking(ModLoader.Core.ModOrganizer.FindMods());
 +				}
@@ -179,7 +179,7 @@
 +		public void ApplyItemTime(Item sItem, bool? callUseItem = null) {
 +			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
 +				return;
-+			
++
 +			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime, this, sItem));
  		}
  
@@ -188,7 +188,7 @@
 +		public void ApplyItemTime(Item sItem, float multiplier, bool? callUseItem = null) {
 +			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
 +				return;
-+			
++
 +			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * multiplier, this, sItem));
  		}
  
@@ -444,16 +444,14 @@
  			if (item.stack <= 0)
  				item.TurnToAir();
  
-@@ -2817,9 +_,12 @@
- 			for (int i = 0; i < 58; i++) {
- 				Item item = inventory[i];
+@@ -2819,7 +_,10 @@
  				if (item.stack <= 0 || item.type <= 0 || !item.potion || item.healLife <= 0)
-+					continue;				
-+				
-+				if(!CombinedHooks.CanUseItem(this, item))
  					continue;
  
 -				int num3 = item.healLife - num;
++				if(!CombinedHooks.CanUseItem(this, item))
++					continue;
++
 +				int num3 = GetHealLife(item, true) - num;
  				if (item.type == 227 && num3 < 0) {
  					num3 += 30;
@@ -1580,12 +1578,12 @@
 -					ApplyEquipFunctional(l, armor[l]);
 +					ApplyEquipFunctional(armor[l], hideVisibleAccessory[l]);
  			}
- 
++
 +			PlayerLoader.UpdateEquips(this);
 +
 +			if (kbGlove)
 +				GetKnockback(DamageClass.Melee) *= 2f;
-+			
+ 
  			if (skyStoneEffects) {
  				lifeRegen += 2;
  				statDefense += 4;
@@ -1864,7 +1862,7 @@
 +
 +			if (priority >= SceneEffectPriority.BiomeHigh)
 +				return modID;
-+			
++
  			if (ZoneDungeon)
  				return 8;
  
@@ -2157,15 +2155,6 @@
  			}
  			else {
  				if (jumpBoost) {
-@@ -14130,7 +_,7 @@
- 					velocity.X = maxRunSpeed;
- 				}
- 			}
--
-+			
- 			if (controlLeft && velocity.X > 0f - maxRunSpeed) {
- 				if (!mount.Active || !mount.Cart || velocity.Y == 0f) {
- 					if (velocity.X > runSlowdown)
 @@ -14235,7 +_,7 @@
  						direction = -1;
  				}
@@ -2695,7 +2684,7 @@
  
  			if (wingsLogic == 45 && (float)timeSinceLastDashStarted >= 60f)
  				runSlowdown *= 6f;
-+			
++
 +			ItemLoader.HorizontalWingSpeeds(this);
  		}
  
@@ -2735,7 +2724,7 @@
 +					bool crit = false;
 +					NPCLoader.ModifyHitPlayer(Main.npc[i], this, ref num4, ref crit);
 +					PlayerLoader.ModifyHitByNPC(this, Main.npc[i], ref num4, ref crit);
-+					
++
  					if (whoAmI == Main.myPlayer && num2 > 0f && flag3 && !Main.npc[i].dontTakeDamage) {
  						int num6 = (int)((float)num4 * num2);
  						if (num6 > 1000)
@@ -2747,10 +2736,10 @@
 -						StatusFromNPC(Main.npc[i]);
 +					if (flag) { //TODO, what is this flag?
 +						int realDamage = (int)Hurt(PlayerDeathReason.ByNPC(i), num4, num3, pvp: false, quiet: false, Crit: false, specialHitSetter);
-+						
++
 +						if (realDamage > 0 && !dead && !flag2)
 +							StatusFromNPC(Main.npc[i]);
-+							
++
 +						NPCLoader.OnHitPlayer(Main.npc[i], this, realDamage, crit);
 +						PlayerLoader.OnHitByNPC(this, Main.npc[i], realDamage, crit);
 +					}
@@ -4182,9 +4171,9 @@
  
 +			if (sItem.type != ItemID.MedusaHead /*3269*/ && !CheckMana(sItem, pay:!flag2))
 +				canUse = false;
-+			
++
 +			return canUse; //TODO: Explain this in a comment.
-+			
++
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
@@ -4196,8 +4185,8 @@
 +
  			if (sItem.autoReuse && !noItems) {
  				releaseUseItem = true;
-+				
-+				// The following lines of code have been removed because of the change in how remote players' items now work in multiplayer. 
++
++				// The following lines of code have been removed because of the change in how remote players' items now work in multiplayer.
 +				// Remote players used to simulate using the items by just playing pretty much guessed animations.
 +				// But now they instead run the logic the same way they would run locally, besides for authority-based exceptions.
 +				// -- Mirsario

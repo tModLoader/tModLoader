@@ -150,7 +150,7 @@ namespace Terraria.ModLoader.Engine
 
 			Logging.tML.Info($"No nearby installation location found. Presuming Steam");
 			return false;
-		} 
+		}
 
 		private static bool CheckForExe(string vanillaPath, out string exePath) {
 			exePath = Path.Combine(vanillaPath, CheckExe);

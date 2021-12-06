@@ -36,9 +36,9 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			TextureAssets.Buff[Type] = ModContent.Request<Texture2D>(Texture);
-			
+
 			SetStaticDefaults();
-			
+
 			BuffID.Search.Add(FullName, Type);
 		}
 

@@ -8,7 +8,7 @@
  
  namespace Terraria
  {
-@@ -192,11 +_,14 @@
+@@ -192,12 +_,15 @@
  			return list;
  		}
  
@@ -19,12 +19,13 @@
 +		public static bool IsLocked(int x, int y, Tile t) {
  			if (t == null)
  				return true;
-+				
+ 
 +			if (t.type >= TileID.Count)
 +				return TileLoader.IsLockedChest(x, y, t.type);
- 
++
  			if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  				return true;
+ 
 @@ -272,6 +_,17 @@
  			Tile tileSafely = Framing.GetTileSafely(X, Y);
  			int type2 = tileSafely.type;
@@ -83,7 +84,7 @@
 -		public void AddItemToShop(Item newItem) {
 +		public int AddItemToShop(Item newItem) { //tML: Now returns the item's index.
  			int num = Main.shopSellbackHelper.Remove(newItem);
-+			
++
  			if (num >= newItem.stack)
 -				return;
 +				return 0;

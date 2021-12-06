@@ -53,7 +53,7 @@ namespace Terraria.ModLoader.Default
 			if (!ModContent.TryFind(ModName, ItemName, out ModItem modItem))
 				return;
 
-			if (modItem is UnloadedItem) { // Some previous bugs have lead to unloaded items containing unloaded items recursively 
+			if (modItem is UnloadedItem) { // Some previous bugs have lead to unloaded items containing unloaded items recursively
 				LoadData(tag.GetCompound("data"));
 				return;
 			}
