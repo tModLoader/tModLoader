@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Terraria.Graphics;
 using Terraria.Localization;
 using Terraria.UI;
@@ -16,13 +15,24 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static partial class SystemLoader
 	{
-		internal static readonly List<ModSystem> Systems = new List<ModSystem>();
+		internal static readonly List<ModSystem> Systems = new();
+		internal static readonly Dictionary<Mod, List<ModSystem>> SystemsByMod = new();
 
 		internal static ModSystem[] NetSystems { get; private set; }
 
-		internal static void Add(ModSystem modSystem) => Systems.Add(modSystem);
+		internal static void Add(ModSystem modSystem) {
+			if (!SystemsByMod.TryGetValue(modSystem.Mod, out var modsSystems)) {
+				SystemsByMod[modSystem.Mod] = modsSystems = new();
+			}
 
-		internal static void Unload() => Systems.Clear();
+			Systems.Add(modSystem);
+			modsSystems.Add(modSystem);
+		}
+
+		internal static void Unload() {
+			Systems.Clear();
+			SystemsByMod.Clear();
+		}
 
 		internal static void ResizeArrays() {
 			NetSystems = ModLoader.BuildGlobalHook<ModSystem, Action<BinaryWriter>>(Systems, s => s.NetSend);
@@ -50,14 +60,42 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void OnModLoad(Mod mod) {
-			foreach (var system in Systems.Where(s => s.Mod == mod)) {
-				system.OnModLoad();
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.OnModLoad();
+				}
 			}
 		}
 
 		internal static void PostSetupContent(Mod mod) {
-			foreach (var system in Systems.Where(s => s.Mod == mod)) {
-				system.PostSetupContent();
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.PostSetupContent();
+				}
+			}
+		}
+
+		internal static void AddRecipes(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.AddRecipes();
+				}
+			}
+		}
+
+		internal static void PostAddRecipes(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.PostAddRecipes();
+				}
+			}
+		}
+
+		internal static void AddRecipeGroups(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.AddRecipeGroups();
+				}
 			}
 		}
 

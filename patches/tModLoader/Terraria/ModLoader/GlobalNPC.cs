@@ -36,7 +36,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns a clone of this GlobalNPC. 
 		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references. 
-		/// Only called if CloneNewInstances && InstancePerEntity
+		/// Only called if CloneNewInstances &amp;&amp; InstancePerEntity
 		/// </summary>
 		public virtual GlobalNPC Clone() => (GlobalNPC)MemberwiseClone();
 
@@ -120,7 +120,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life <= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="hitDirection"></param>

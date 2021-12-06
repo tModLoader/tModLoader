@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/UI/Elements/UICharacterListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacterListItem.cs
-@@ -8,6 +_,10 @@
+@@ -9,6 +_,10 @@
  using Terraria.Localization;
  using Terraria.Social;
  using Terraria.UI;
@@ -11,7 +11,7 @@
  
  namespace Terraria.GameContent.UI.Elements
  {
-@@ -26,6 +_,9 @@
+@@ -27,6 +_,9 @@
  		private Asset<Texture2D> _buttonPlayTexture;
  		private Asset<Texture2D> _buttonRenameTexture;
  		private Asset<Texture2D> _buttonDeleteTexture;
@@ -21,7 +21,7 @@
  		private UIImageButton _deleteButton;
  
  		public bool IsFavorite => _data.IsFavorite;
-@@ -41,6 +_,9 @@
+@@ -42,6 +_,9 @@
  			_buttonPlayTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonPlay");
  			_buttonRenameTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonRename");
  			_buttonDeleteTexture = Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete");
@@ -31,7 +31,7 @@
  			Height.Set(96f, 0f);
  			Width.Set(0f, 1f);
  			SetPadding(6f);
-@@ -101,6 +_,73 @@
+@@ -102,6 +_,73 @@
  			_deleteButton = uIImageButton5;
  			Append(uIImageButton5);
  			num += 4f;
@@ -105,7 +105,7 @@
  			_buttonLabel = new UIText("");
  			_buttonLabel.VAlign = 1f;
  			_buttonLabel.Left.Set(num, 0f);
-@@ -109,7 +_,7 @@
+@@ -110,7 +_,7 @@
  			_deleteButtonLabel = new UIText("");
  			_deleteButtonLabel.VAlign = 1f;
  			_deleteButtonLabel.HAlign = 1f;
@@ -114,7 +114,7 @@
  			_deleteButtonLabel.Top.Set(-3f, 0f);
  			Append(_deleteButtonLabel);
  			uIImageButton.SetSnapPoint("Play", snapPointIndex);
-@@ -132,8 +_,12 @@
+@@ -133,8 +_,12 @@
  		private void CloudMouseOver(UIMouseEvent evt, UIElement listeningElement) {
  			if (_data.IsCloudSave)
  				_buttonLabel.SetText(Language.GetTextValue("UI.MoveOffCloud"));
@@ -129,7 +129,7 @@
  		}
  
  		private void PlayMouseOver(UIMouseEvent evt, UIElement listeningElement) {
-@@ -147,6 +_,14 @@
+@@ -148,6 +_,14 @@
  				_deleteButtonLabel.SetText(Language.GetTextValue("UI.Delete"));
  		}
  
@@ -144,7 +144,7 @@
  		private void DeleteMouseOut(UIMouseEvent evt, UIElement listeningElement) {
  			_deleteButtonLabel.SetText("");
  		}
-@@ -178,8 +_,12 @@
+@@ -179,8 +_,12 @@
  		private void CloudButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  			if (_data.IsCloudSave)
  				_data.MoveToLocal();
@@ -158,7 +158,7 @@
  
  			((UIImageButton)evt.Target).SetImage(_data.IsCloudSave ? _buttonCloudActiveTexture : _buttonCloudInactiveTexture);
  			if (_data.IsCloudSave)
-@@ -228,6 +_,13 @@
+@@ -229,6 +_,13 @@
  			(base.Parent.Parent as UIList)?.UpdateOrder();
  		}
  
@@ -172,7 +172,7 @@
  		public override int CompareTo(object obj) {
  			UICharacterListItem uICharacterListItem = obj as UICharacterListItem;
  			if (uICharacterListItem != null) {
-@@ -279,11 +_,11 @@
+@@ -288,11 +_,11 @@
  			DrawPanel(spriteBatch, vector2, num2);
  			spriteBatch.Draw(TextureAssets.Heart.Value, vector2 + new Vector2(5f, 2f), Color.White);
  			vector2.X += 10f + (float)TextureAssets.Heart.Width();

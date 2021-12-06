@@ -1,6 +1,11 @@
 --- src/Terraria/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -5,79 +_,330 @@
+@@ -1,83 +_,335 @@
+ using Terraria.Utilities;
++using System;
+ 
+ namespace Terraria.ID
+ {
  	public class MessageID
  	{
  		public const byte NeverCalled = 0;
@@ -87,7 +92,7 @@
 +		//sets player[i].active
 +		//sent from NetMessage.syncPlayers
  		public const byte PlayerActive = 14;
- 		[Obsolete("Deprecated.")]
+ 		[Old("Deprecated.")]
 -		public const byte Unknown15 = 15;
 +		public const byte Unused15 = 15;
 +		//player's current and maximum life
@@ -143,12 +148,12 @@
  		public const byte UnusedMeleeStrike = 24;
 +		public const byte UnusedStrikeNPC = UnusedMeleeStrike;
 +		//a line of chat text, with sender and colour information
- 		[Obsolete("Deprecated. Use NetTextModule instead.")]
+ 		[Old("Deprecated. Use NetTextModule instead.")]
 -		public const byte Unused25 = 25;
 +		public const byte ChatText = 25;
 +		//damage, direction, pvp, deathText, crit, cooldown
 +		//forwarded to other clients
- 		[Obsolete("Deprecated.")]
+ 		[Old("Deprecated.")]
 -		public const byte Unused26 = 26;
 +		public const byte HurtPlayer = 26;
 +		//sends all info about a projectile, position, velocity, and AI
@@ -235,7 +240,7 @@
 +		public const byte ManaEffect = 43;
 +		//Player.KillMe
 +		//forwarded to other clients
- 		[Obsolete("Deprecated.")]
+ 		[Old("Deprecated.")]
 -		public const byte Unknown44 = 44;
 -		public const byte Unknown45 = 45;
 -		public const byte Unknown46 = 46;
@@ -252,7 +257,7 @@
 +		public const byte ReadSign = 47;
 +		//x, y, liquid, liquidType
 +		//if NetPlayer.spamCheck will kick the player if the placement position is more than 10 tiles from the player
- 		[Obsolete("Deprecated. Use NetLiquidModule instead.")]
+ 		[Old("Deprecated. Use NetLiquidModule instead.")]
  		public const byte LiquidUpdate = 48;
 -		public const byte Unknown49 = 49;
 -		public const byte Unknown50 = 50;
@@ -402,10 +407,10 @@
  		public const byte ShopOverride = 104;
  		public const byte GemLockToggle = 105;
  		public const byte PoofOfSmoke = 106;
-@@ -151,5 +_,28 @@
- 		public const byte SetCountsAsHostForGameplay = 139;
- 		public const byte SetMiscEventValues = 140;
- 		public const byte Count = 141;
+@@ -153,5 +_,28 @@
+ 		public const byte RequestLucyPopup = 141;
+ 		public const byte SyncProjectileTrackers = 142;
+ 		public const byte Count = 143;
 +		// Sent by Clients who wish to change ConfigScope.ServerSide ModConfigs. Clients send Modname, configname, and json string.
 +		// Server determines if ModConfig.ReloadRequired and ModConfig.ShouldAcceptClientChanges. Replies with ShouldAcceptClientChanges message if rejected.
 +		// Client receives bool success, message, if success, additionally modname, configname, json and applies them locally.

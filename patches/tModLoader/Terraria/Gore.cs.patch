@@ -36,13 +36,13 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
  			Main.gore[num].scale = Scale;
-+			
++
 +			var gore = Main.gore[num];
 +			gore.ResetNewFields();
-+			
++
 +			gore.ModGore = GoreLoader.GetModGore(gore.type);
 +			gore.ModGore?.OnSpawn(gore);
-+			
++
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  				Main.gore[num].type = Main.rand.Next(11, 14);
  				Main.gore[num].scale = Main.rand.NextFloat() * 0.5f + 0.5f;

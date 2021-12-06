@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/NPC.cs
 +++ src/Terraria/Terraria/NPC.cs
-@@ -24710,7 +_,8 @@
+@@ -24777,7 +_,8 @@
  						float num1181 = 1f + Main.rand.NextFloat();
  						float fadeIn = 0.4f + Main.rand.NextFloat();
  						int num1182 = Utils.SelectRandom<int>(Main.rand, 31, 229);

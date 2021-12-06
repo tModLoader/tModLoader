@@ -146,6 +146,9 @@ namespace Terraria.DataStructures
 		/// <summary> Draws the effects of Beetle Armor's Set buffs, if the player currently has any. </summary>
 		public static readonly PlayerDrawLayer BeetleBuff = new VanillaPlayerDrawLayer(nameof(BeetleBuff), DrawPlayer_37_BeetleBuff);
 
+		/// <summary> Draws the effects of Eyebrella Cloud, if the player currently has it. </summary>
+		public static readonly PlayerDrawLayer EyebrellaCloud = new VanillaPlayerDrawLayer(nameof(EyebrellaCloud), DrawPlayer_38_EyebrellaCloud);
+
 		// Mobile layers
 
 		/// <summary> Draws the front part of player's front accessory. </summary>

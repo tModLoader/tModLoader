@@ -109,7 +109,7 @@
  					if (!Disconnect && Main.gameMenu)
  						flag = true;
  				}
-@@ -617,17 +_,31 @@
+@@ -618,17 +_,31 @@
  		}
  
  		public static void Initialize() {
@@ -141,7 +141,7 @@
  		private static void BroadcastThread() {
  			BroadcastClient = new UdpClient();
  			new IPEndPoint(IPAddress.Any, 0);
-@@ -656,7 +_,7 @@
+@@ -657,7 +_,7 @@
  				}
  			}
  
@@ -150,7 +150,7 @@
  				int num = 0;
  				for (int i = 0; i < 255; i++) {
  					if (Main.player[i].active)
-@@ -678,19 +_,30 @@
+@@ -679,19 +_,30 @@
  			if (broadcastThread != null)
  				StopBroadCasting();
  

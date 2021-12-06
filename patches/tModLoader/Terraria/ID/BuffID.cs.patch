@@ -13,8 +13,8 @@
  				public bool faceLeft;
  			}
  
--			public static SetFactory Factory = new SetFactory(327);
+-			public static SetFactory Factory = new SetFactory(338);
 +			public static SetFactory Factory = new SetFactory(BuffLoader.BuffCount);
  			public static bool[] IsWellFed = Factory.CreateBoolSet(26, 206, 207);
+ 			public static bool[] IsFedState = Factory.CreateBoolSet(26, 206, 207, 332, 333, 334);
  			public static bool[] IsAnNPCWhipDebuff = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326);
- 			public static bool[] TimeLeftDoesNotDecrease = Factory.CreateBoolSet(28);

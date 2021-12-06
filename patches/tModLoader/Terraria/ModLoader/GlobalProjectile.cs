@@ -34,7 +34,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns a clone of this GlobalProjectile. 
 		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references. 
-		/// Only called if CloneNewInstances && InstancePerEntity
+		/// Only called if CloneNewInstances &amp;&amp; InstancePerEntity
 		/// </summary>
 		public virtual GlobalProjectile Clone() => (GlobalProjectile)MemberwiseClone();
 
