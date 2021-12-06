@@ -30,6 +30,15 @@
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
+@@ -458,7 +_,7 @@
+ 
+ 		public bool isLikeATownNPC {
+ 			get {
+-				if (type == 453)
++				if (NPCID.Sets.ActsLikeTownNPC[type])
+ 					return true;
+ 
+ 				return townNPC;
 @@ -696,7 +_,7 @@
  		public static void UpdateFoundActiveNPCs() {
  			for (int i = 0; i < 200; i++) {
@@ -772,13 +781,12 @@
  				for (int num2 = 199; num2 >= 0; num2--) {
  					if (!Main.npc[num2].active) {
  						num = num2;
-@@ -63675,7 +_,8 @@
+@@ -63675,7 +_,7 @@
  		}
  
  		private static void GiveTownUniqueDataToNPCsThatNeedIt(int Type, int nextNPC) {
 -			if (TypeToDefaultHeadIndex(Type) != -1 || Type == 453) {
-+			bool? spawnsWithCustomName = NPCLoader.SpawnsWithCustomName(Type);
-+			if ((TypeToDefaultHeadIndex(Type) != -1 || Type == 453 || spawnsWithCustomName.HasValue) && (!spawnsWithCustomName.HasValue || spawnsWithCustomName.Value)) {
++			if (TypeToDefaultHeadIndex(Type) != -1 || NPCID.Sets.SpawnsWithCustomName[Type]) {
  				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
  				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
  					Main.npc[nextNPC].townNpcVariationIndex = profile.RollVariation();

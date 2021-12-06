@@ -37,7 +37,7 @@
  		private bool IsNotReallyTownNPC(NPC npc) {
  			int type = npc.type;
 -			if (type == 37 || type == 368 || type == 453)
-+			if (type == 37 || type == 368 || type == 453 || NPCLoader.ActsLikeATownNPC(npc))
++			if (type == 37 || type == 368 || NPCID.Sets.ActsLikeTownNPC[type])
  				return true;
  
  			return false;
