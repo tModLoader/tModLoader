@@ -354,7 +354,7 @@
  		private int AddBuff_DetermineBuffTimeToAdd(int type, int time1) {
  			int num = time1;
 -			if (Main.expertMode && whoAmI == Main.myPlayer && (type == 20 || type == 22 || type == 23 || type == 24 || type == 30 || type == 31 || type == 32 || type == 33 || type == 35 || type == 36 || type == 39 || type == 44 || type == 46 || type == 47 || type == 69 || type == 70 || type == 80)) {
-+			if (Main.expertMode && whoAmI == Main.myPlayer && (type == 20 || type == 22 || type == 23 || type == 24 || type == 30 || type == 31 || type == 32 || type == 33 || type == 35 || type == 36 || type == 39 || type == 44 || type == 46 || type == 47 || type == 69 || type == 70 || type == 80 || BuffLoader.LongerExpertDebuff(type))) {
++			if (Main.expertMode && whoAmI == Main.myPlayer && BuffID.Sets.LongerExpertDebuff[type]) {
  				float debuffTimeMultiplier = Main.GameModeInfo.DebuffTimeMultiplier;
  				if (Main.GameModeInfo.IsJourneyMode) {
  					if (Main.masterMode)
