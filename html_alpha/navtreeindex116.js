@@ -1,5 +1,8 @@
 var NAVTREEINDEX116 =
 {
+"class_terraria_1_1_waterfall_manager.html":[1,0,2,75],
+"class_terraria_1_1_waterfall_manager.html#a1855498379667ef3367afc60efa74247":[1,0,2,75,6],
+"class_terraria_1_1_waterfall_manager.html#a4f1b4633eb081b743fd02f13ac13ee73":[1,0,2,75,3],
 "class_terraria_1_1_waterfall_manager.html#a596bd1629bc1a0bb199623b81f09f5c3":[1,0,2,75,4],
 "class_terraria_1_1_waterfall_manager.html#a6b3060a3a34064a304aa74fd52211c24":[1,0,2,75,5],
 "class_terraria_1_1_waterfall_manager.html#a943fca58240078b1ea294e500fc85d38":[1,0,2,75,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX116 =
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_offset.html#aefbfd6df5490e16856709cf53cc62583":[1,0,2,23,13,14,1],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_only_tiles.html":[1,0,2,23,13,15],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_only_tiles.html#a4f5faf7f6b03664b026e5f7ab31917eb":[1,0,2,23,13,15,1],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_only_tiles.html#a9a741af8f43edb37fa761f6245cae077":[1,0,2,23,13,15,0],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_only_walls.html":[1,0,2,23,13,16],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_only_walls.html#a0efe2bac3682aef0221ad9f5818473a7":[1,0,2,23,13,16,0],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_only_walls.html#afb6b0129761f70ae9fc5290b684c01e3":[1,0,2,23,13,16,1]
+"class_terraria_1_1_world_building_1_1_modifiers_1_1_only_tiles.html#a9a741af8f43edb37fa761f6245cae077":[1,0,2,23,13,15,0]
 };
