@@ -17,7 +17,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void SetDefaults() {
-			Projectile.CloneDefaults(ProjectileID.Spear); // Clone the default values for a vanilla spear. Spear specific values set for width, height, aiStyle, friendly, penetrate, tileCollide, scale, hide, ownerHitCheck, and melee.  
+			Projectile.CloneDefaults(ProjectileID.Spear); // Clone the default values for a vanilla spear. Spear specific values set for width, height, aiStyle, friendly, penetrate, tileCollide, scale, hide, ownerHitCheck, and melee.
 		}
 
 		public override bool PreAI() {
@@ -36,7 +36,7 @@ namespace ExampleMod.Content.Projectiles
 			float halfDuration = duration * 0.5f;
 			float progress;
 
-			// Here 'progress' is set to a value that goes from 0.0 to 1.0 and back during the item use animation. 
+			// Here 'progress' is set to a value that goes from 0.0 to 1.0 and back during the item use animation.
 			if (Projectile.timeLeft < halfDuration) {
 				progress = Projectile.timeLeft / halfDuration;
 			}
