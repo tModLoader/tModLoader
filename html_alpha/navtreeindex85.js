@@ -1,5 +1,8 @@
 var NAVTREEINDEX85 =
 {
+"class_terraria_1_1_map_1_1_world_map.html#a0564f2911c4971c85437edbe5cfa716a":[1,0,2,12,8,5],
+"class_terraria_1_1_map_1_1_world_map.html#a1b1b3656aff9537517db87fffe71d959":[1,0,2,12,8,1],
+"class_terraria_1_1_map_1_1_world_map.html#a2776e03b023a23d33e09396be685a71a":[1,0,2,12,8,13],
 "class_terraria_1_1_map_1_1_world_map.html#a3ea859e433eb524ef5649dac09a2da6a":[1,0,2,12,8,0],
 "class_terraria_1_1_map_1_1_world_map.html#a43bc02e46a565a20d399855920f4f58f":[1,0,2,12,8,14],
 "class_terraria_1_1_map_1_1_world_map.html#a5206518c40b75be1a5f640a8857f1f5d":[1,0,2,12,8,12],
@@ -140,17 +143,15 @@ var NAVTREEINDEX85 =
 "class_terraria_1_1_mod_loader_1_1_boss_bar_loader.html#a931ac21e289e366de25d62e0702cef95":[1,0,2,13,15,3],
 "class_terraria_1_1_mod_loader_1_1_boss_bar_loader.html#a994c2b8b15dbf81c80e2237e3f6ace09":[1,0,2,13,15,1],
 "class_terraria_1_1_mod_loader_1_1_buff_loader.html":[1,0,2,13,16],
-"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a2480c76a6a1b157f3f8c0da67461071f":[1,0,2,13,16,6],
-"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a4679d6417d1dfa2c0acb2beaa3665e64":[1,0,2,13,16,7],
-"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a67960ed7d30f7f4718bd7fab8f44af84":[1,0,2,13,16,1],
-"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019":[1,0,2,13,16,10],
-"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a79a721a0fafe68082890b026043ca538":[1,0,2,13,16,3],
-"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a7b020ccdc9dfce4b7504ba9a35c39750":[1,0,2,13,16,5],
-"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a85b00ac70ed77c211f28d9e832acc321":[1,0,2,13,16,2],
-"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a9273dd93983098b09e74fe0d289ecda0":[1,0,2,13,16,9],
-"class_terraria_1_1_mod_loader_1_1_buff_loader.html#ac7626b3ca2e3263deafd992bc2fdf7b4":[1,0,2,13,16,8],
-"class_terraria_1_1_mod_loader_1_1_buff_loader.html#ace548d3527815b65f8186106ea4f122f":[1,0,2,13,16,0],
-"class_terraria_1_1_mod_loader_1_1_buff_loader.html#af0b8606154d66c37a9ec015479eaca0c":[1,0,2,13,16,4],
+"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a2480c76a6a1b157f3f8c0da67461071f":[1,0,2,13,16,4],
+"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a4679d6417d1dfa2c0acb2beaa3665e64":[1,0,2,13,16,5],
+"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a67960ed7d30f7f4718bd7fab8f44af84":[1,0,2,13,16,0],
+"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a6abd801b6d315bf07c5a58018acc1019":[1,0,2,13,16,8],
+"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a79a721a0fafe68082890b026043ca538":[1,0,2,13,16,2],
+"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a7b020ccdc9dfce4b7504ba9a35c39750":[1,0,2,13,16,3],
+"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a85b00ac70ed77c211f28d9e832acc321":[1,0,2,13,16,1],
+"class_terraria_1_1_mod_loader_1_1_buff_loader.html#a9273dd93983098b09e74fe0d289ecda0":[1,0,2,13,16,7],
+"class_terraria_1_1_mod_loader_1_1_buff_loader.html#ac7626b3ca2e3263deafd992bc2fdf7b4":[1,0,2,13,16,6],
 "class_terraria_1_1_mod_loader_1_1_build_info.html":[1,0,2,13,17],
 "class_terraria_1_1_mod_loader_1_1_build_info.html#a09ce9ed15595b12181cdd9b6ee47a2ba":[1,0,2,13,17,9],
 "class_terraria_1_1_mod_loader_1_1_build_info.html#a0bc3a8197f171a2ef4f8b2182de4a50f":[1,0,2,13,17,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX85 =
 "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#aac3d0dbb69a090431aac273046d6bc42":[1,0,2,13,1,7,5],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#aca6cdedfa726dedc3e98ce2f8a01f788":[1,0,2,13,1,7,6],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ad171d40827711c618d22f9fb2232765f":[1,0,2,13,1,7,0],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ae49003138915cd64352786de3d2f5e09":[1,0,2,13,1,7,13],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#af6ae10a5681d47892ec2897c07215f5f":[1,0,2,13,1,7,9]
+"class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html#ae49003138915cd64352786de3d2f5e09":[1,0,2,13,1,7,13]
 };

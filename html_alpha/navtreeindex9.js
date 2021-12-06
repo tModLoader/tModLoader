@@ -1,5 +1,8 @@
 var NAVTREEINDEX9 =
 {
+"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a027185368eb13f611fecadd478bb599d":[1,0,2,5,32,2],
+"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a1bcdaec6fd5a17134843e5e55c237db2":[1,0,2,5,32,8],
+"class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a1ccca18beb1742cf64fea4febdd2056a":[1,0,2,5,32,3],
 "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a1f66207dfdc9daa126052d5bc1f24f28":[1,0,2,5,32,5],
 "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a210112d90f289c806eca5a62673bd137":[1,0,2,5,32,1],
 "class_terraria_1_1_game_content_1_1_dont_starve_darkness_damage_dealer.html#a31da00070c40cec8d5daa390a27c5543":[1,0,2,5,32,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX9 =
 "class_terraria_1_1_game_content_1_1_generation_1_1_shape_root.html#ac59b02c56fcd385cbcd69f4940a18035":[1,0,2,5,8,7,0],
 "class_terraria_1_1_game_content_1_1_generation_1_1_shape_runner.html":[1,0,2,5,8,8],
 "class_terraria_1_1_game_content_1_1_generation_1_1_shape_runner.html#a570102cbe76c5cecfeba9cb39f1fc350":[1,0,2,5,8,8,0],
-"class_terraria_1_1_game_content_1_1_generation_1_1_shape_runner.html#abb7be3bf530b2bb7b6bb3efa5c23b8a2":[1,0,2,5,8,8,1],
-"class_terraria_1_1_game_content_1_1_generation_1_1_track_generator.html":[1,0,2,5,8,9],
-"class_terraria_1_1_game_content_1_1_generation_1_1_track_generator.html#a162f16e48c37c31ac5745e3c0464e9a6":[1,0,2,5,8,9,0],
-"class_terraria_1_1_game_content_1_1_golf_1_1_fancy_golf_prediction_line.html":[1,0,2,5,9,0]
+"class_terraria_1_1_game_content_1_1_generation_1_1_shape_runner.html#abb7be3bf530b2bb7b6bb3efa5c23b8a2":[1,0,2,5,8,8,1]
 };

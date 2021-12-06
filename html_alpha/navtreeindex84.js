@@ -1,5 +1,8 @@
 var NAVTREEINDEX84 =
 {
+"class_terraria_1_1_main.html#adcf4e268b48d97702a65f6be9b481f86":[1,0,2,46,173],
+"class_terraria_1_1_main.html#adcffc2f1ab7014d55e3bfa18679a85ac":[1,0,2,46,566],
+"class_terraria_1_1_main.html#add09be7d3ca615477a0b95d693971ced":[1,0,2,46,799],
 "class_terraria_1_1_main.html#add2ce7990d82ae901bc977e6aa4e327f":[1,0,2,46,1247],
 "class_terraria_1_1_main.html#addb63ba39fabb3dc70e6532a99d62e23":[1,0,2,46,167],
 "class_terraria_1_1_main.html#addf198e4cb0c9a50159680967b434bf3":[1,0,2,46,360],
@@ -246,8 +249,5 @@ var NAVTREEINDEX84 =
 "class_terraria_1_1_map_1_1_spawn_map_layer.html#ab39054089808e486883f3449569ec298":[1,0,2,12,6,0],
 "class_terraria_1_1_map_1_1_teleport_pylons_map_layer.html":[1,0,2,12,7],
 "class_terraria_1_1_map_1_1_teleport_pylons_map_layer.html#a7143c53ff6e2908791e566727b5d233f":[1,0,2,12,7,0],
-"class_terraria_1_1_map_1_1_world_map.html":[1,0,2,12,8],
-"class_terraria_1_1_map_1_1_world_map.html#a0564f2911c4971c85437edbe5cfa716a":[1,0,2,12,8,5],
-"class_terraria_1_1_map_1_1_world_map.html#a1b1b3656aff9537517db87fffe71d959":[1,0,2,12,8,1],
-"class_terraria_1_1_map_1_1_world_map.html#a2776e03b023a23d33e09396be685a71a":[1,0,2,12,8,13]
+"class_terraria_1_1_map_1_1_world_map.html":[1,0,2,12,8]
 };

@@ -8,9 +8,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_buff =
     [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a7fed40b1987af470245e5be779c33667", null ],
     [ "Update", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a1f800c998911abec827d1fa11140ac16", null ],
     [ "Update", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a9b630ddf250d5fe2a1275824a78409dd", null ],
-    [ "CanBeCleared", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a3ae2f564b6dfbb708938180f1e00843c", null ],
     [ "Description", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a5905443567e9ba00bfe1eec3730bdf76", null ],
     [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#aa50943e2169144b4337a24b3ae74eb00", null ],
-    [ "LongerExpertDebuff", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a8ac865d3803a5b0b5f5a1459a451e632", null ],
     [ "Type", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a4d3d217d6a87207370895ac84603efd5", null ]
 ];

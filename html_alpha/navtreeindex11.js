@@ -1,5 +1,8 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_mechanical_bosses_dummy_condition.html#a8e239638a40dda0a9c211b33f0e01e86":[1,0,2,5,10,5,34,2],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html":[1,0,2,5,10,5,35],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html#a4eb1415022b53c9bca405ef0af5b05c3":[1,0,2,5,10,5,35,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html#ab1c0d9ad267a37a16e6acb2c80297cdc":[1,0,2,5,10,5,35,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html#ad856cf2455afff3422da1b77227dddc8":[1,0,2,5,10,5,35,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html":[1,0,2,5,10,5,36],
@@ -246,8 +249,5 @@ var NAVTREEINDEX11 =
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html#a0acccc601d2becb6f4300111ab7a66d3":[1,0,2,5,12,0,1,1],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html#a3211f503b22578d6f6105ad2699d4eba":[1,0,2,5,12,0,1,0],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html#abbe1410b16cdb51f2590c545cd912b99":[1,0,2,5,12,0,1,3],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html":[1,0,2,5,12,0,2],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html#a59b71ca5f4e8ec1b8c751d7963d9c585":[1,0,2,5,12,0,2,3],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html#a7492edccd8d01a7e2b90546b5580f620":[1,0,2,5,12,0,2,0],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html#ab5b1c044294672479377dd1dee18e57f":[1,0,2,5,12,0,2,1]
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html":[1,0,2,5,12,0,2]
 };

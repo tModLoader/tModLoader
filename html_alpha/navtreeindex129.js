@@ -1,6 +1,5 @@
 var NAVTREEINDEX129 =
 {
-"struct_terraria_1_1_player_1_1_item_space_status.html":[1,0,2,54,3],
 "struct_terraria_1_1_player_1_1_item_space_status.html#a3219af916975e2366d6259f67d324a21":[1,0,2,54,3,2],
 "struct_terraria_1_1_player_1_1_item_space_status.html#a89d81ee012b8231662d9d4b379a91399":[1,0,2,54,3,3],
 "struct_terraria_1_1_player_1_1_item_space_status.html#a921fb1a0ed7deb517896f9c71d418804":[1,0,2,54,3,0],
@@ -175,5 +174,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ab4a41891b488a8e30e51e30da3da83e6":[1,0,2,77,1,4],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ac026067dd86556b03343af3accafb339":[1,0,2,77,1,9],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#af29be99c6e7eeb85d0fd385f07a3ebd6":[1,0,2,77,1,5],
-"structnativefiledialog_1_1nfdpathset__t.html":[1,0,33,0]
+"structnativefiledialog_1_1nfdpathset__t.html":[1,0,34,0]
 };

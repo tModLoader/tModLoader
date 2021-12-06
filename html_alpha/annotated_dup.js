@@ -1611,6 +1611,9 @@ var annotated_dup =
       [ "UPnP", "class_uw_u_pn_p_1_1_u_pn_p.html", "class_uw_u_pn_p_1_1_u_pn_p" ]
     ] ],
     [ "Attribute", "class_attribute.html", null ],
+    [ "BuffID", "class_buff_i_d.html", [
+      [ "Sets", "class_buff_i_d_1_1_sets.html", "class_buff_i_d_1_1_sets" ]
+    ] ],
     [ "ChromaCondition", "class_chroma_condition.html", null ],
     [ "ChromaShader", "class_chroma_shader.html", null ],
     [ "Comparer", "class_comparer.html", null ],

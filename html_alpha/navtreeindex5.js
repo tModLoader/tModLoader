@@ -1,5 +1,8 @@
 var NAVTREEINDEX5 =
 {
+"class_terraria_1_1_game_content_1_1_achievements_1_1_item_craft_condition.html#a3817978f796323796ccc9a44c7cc88d6":[1,0,2,5,0,4,2],
+"class_terraria_1_1_game_content_1_1_achievements_1_1_item_pickup_condition.html":[1,0,2,5,0,5],
+"class_terraria_1_1_game_content_1_1_achievements_1_1_item_pickup_condition.html#aa37db6c03655aabcf7f0203960ebd70e":[1,0,2,5,0,5,0],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_item_pickup_condition.html#ab604729610b02a8b9d09247a2e4a3fbd":[1,0,2,5,0,5,2],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_item_pickup_condition.html#ae7dc21d557adc389811590f2aa565cdc":[1,0,2,5,0,5,1],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_n_p_c_killed_condition.html":[1,0,2,5,0,6],
@@ -246,8 +249,5 @@ var NAVTREEINDEX5 =
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_custom_entry_icon.html#a7adc9de536b862477dd3705b86d07719":[1,0,2,5,2,11,2],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_custom_entry_icon.html#abf54200215c067d7711706c216bbb956":[1,0,2,5,2,11,1],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_custom_entry_icon.html#ad329c8ddf4cebc116f6fa25971574c6a":[1,0,2,5,2,11,3],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_custom_entry_icon.html#ae8c67e8480893efbb093b47f1ccb02cb":[1,0,2,5,2,11,4],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_custom_entry_icon.html#af100e6c75900d7d2a231d182c849029f":[1,0,2,5,2,11,5],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_filter_provider_info_element.html":[1,0,2,5,2,13],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_filter_provider_info_element.html#a0faf5712e7c004072ba60b955ce39738":[1,0,2,5,2,13,1]
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_custom_entry_icon.html#ae8c67e8480893efbb093b47f1ccb02cb":[1,0,2,5,2,11,4]
 };

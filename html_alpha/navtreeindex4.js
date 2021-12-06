@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"class_terraria_1_1_data_structures_1_1_tile_entity.html#a7be5cea2f311deb9ca5ac61af46f367e":[1,0,2,4,62,23],
+"class_terraria_1_1_data_structures_1_1_tile_entity.html#a853901f4f0667a2cc278bd1094d1caab":[1,0,2,4,62,8],
+"class_terraria_1_1_data_structures_1_1_tile_entity.html#a88d046b909ed818f5d04bd36d8bba973":[1,0,2,4,62,6],
 "class_terraria_1_1_data_structures_1_1_tile_entity.html#a8a391e7caa7ce2f6ad4ce53b90bf3258":[1,0,2,4,62,3],
 "class_terraria_1_1_data_structures_1_1_tile_entity.html#a8f040d287cc899854f3e068b0b23d84a":[1,0,2,4,62,38],
 "class_terraria_1_1_data_structures_1_1_tile_entity.html#a93060e6ca0bebd8083a20a5b97e8215f":[1,0,2,4,62,9],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "class_terraria_1_1_game_content_1_1_achievements_1_1_custom_int_condition.html#ae272b948d5c05d41d75f24ad1d745f62":[1,0,2,5,0,3,1],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_item_craft_condition.html":[1,0,2,5,0,4],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_item_craft_condition.html#a0da6035dde81333abe39932db96c3c8e":[1,0,2,5,0,4,1],
-"class_terraria_1_1_game_content_1_1_achievements_1_1_item_craft_condition.html#a2bb2afb63e8254fc3c6880a9bb5fedea":[1,0,2,5,0,4,0],
-"class_terraria_1_1_game_content_1_1_achievements_1_1_item_craft_condition.html#a3817978f796323796ccc9a44c7cc88d6":[1,0,2,5,0,4,2],
-"class_terraria_1_1_game_content_1_1_achievements_1_1_item_pickup_condition.html":[1,0,2,5,0,5],
-"class_terraria_1_1_game_content_1_1_achievements_1_1_item_pickup_condition.html#aa37db6c03655aabcf7f0203960ebd70e":[1,0,2,5,0,5,0]
+"class_terraria_1_1_game_content_1_1_achievements_1_1_item_craft_condition.html#a2bb2afb63e8254fc3c6880a9bb5fedea":[1,0,2,5,0,4,0]
 };

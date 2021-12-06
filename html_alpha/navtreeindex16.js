@@ -1,5 +1,8 @@
 var NAVTREEINDEX16 =
 {
+"class_terraria_1_1_game_content_1_1_texture_assets.html#aeff281785aa29e44ec657700daa36102":[1,0,2,5,64,132],
+"class_terraria_1_1_game_content_1_1_texture_assets.html#af059760506a1b54f2c50d9eefa0b0513":[1,0,2,5,64,104],
+"class_terraria_1_1_game_content_1_1_texture_assets.html#af09e59b3e33be3ded93339ff371dd19d":[1,0,2,5,64,211],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#af0abeb80bdc1d21251b5e40211d9dc30":[1,0,2,5,64,64],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#af0b66228e1aa79f81befb12aae1f7939":[1,0,2,5,64,183],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#af14163263452f38de317a4a51f443478":[1,0,2,5,64,86],
@@ -246,8 +249,5 @@ var NAVTREEINDEX16 =
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_weapons_rack.html#acecb8b2886c31ee81dec32dc2451fd4a":[1,0,2,5,20,9,13],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_weapons_rack.html#ad94819462fb219d450ef0acd49a503e8":[1,0,2,5,20,9,16],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_weapons_rack.html#ae6deca284856b11b25421db89862930a":[1,0,2,5,20,9,12],
-"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_weapons_rack.html#af08ec70c6945706f1059257c599b7da2":[1,0,2,5,20,9,14],
-"class_terraria_1_1_game_content_1_1_tile_paint_system_v2.html":[1,0,2,5,65],
-"class_terraria_1_1_game_content_1_1_tile_paint_system_v2.html#a2b94d7f97cc24d778520d7844945d596":[1,0,2,5,65,14],
-"class_terraria_1_1_game_content_1_1_tile_paint_system_v2.html#a42f6cb84aa48df45d053ca6c0d563aac":[1,0,2,5,65,16]
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_weapons_rack.html#af08ec70c6945706f1059257c599b7da2":[1,0,2,5,20,9,14]
 };

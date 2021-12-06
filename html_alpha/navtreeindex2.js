@@ -1,5 +1,8 @@
 var NAVTREEINDEX2 =
 {
+"class_terraria_1_1_cinematics_1_1_film.html#a23a7129fa3a8c0f5b933d8f018d6032f":[1,0,2,3,3,6],
+"class_terraria_1_1_cinematics_1_1_film.html#a4564025598a62d5bc9047707f1cfd82a":[1,0,2,3,3,5],
+"class_terraria_1_1_cinematics_1_1_film.html#a6b3bcbc5ca7d68573045e66d9916e5d6":[1,0,2,3,3,7],
 "class_terraria_1_1_cinematics_1_1_film.html#a7702d4453b544d803224e0b076acd922":[1,0,2,3,3,4],
 "class_terraria_1_1_cinematics_1_1_film.html#a7f2f17a67ba64e923a5884b0ef9192af":[1,0,2,3,3,0],
 "class_terraria_1_1_cinematics_1_1_film.html#a9c5e6c42bf7a3d9f77ad40e71a1e1cd5":[1,0,2,3,3,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX2 =
 "class_terraria_1_1_data_structures_1_1_player_death_reason.html#a36503cb85e5cf102d4e87cff925efd70":[1,0,2,4,35,10],
 "class_terraria_1_1_data_structures_1_1_player_death_reason.html#a3e03c2846fd991c284bcba305a2d731e":[1,0,2,4,35,15],
 "class_terraria_1_1_data_structures_1_1_player_death_reason.html#a538130dfbff68f8765da8b5e0d7780ab":[1,0,2,4,35,6],
-"class_terraria_1_1_data_structures_1_1_player_death_reason.html#a6baad2fca174937116eb456dd1ab004f":[1,0,2,4,35,0],
-"class_terraria_1_1_data_structures_1_1_player_death_reason.html#a9a11a4d78c9a738cf999c507ee0bd7dc":[1,0,2,4,35,13],
-"class_terraria_1_1_data_structures_1_1_player_death_reason.html#a9b526c38a2136beee6ac5ae5a6e8faa7":[1,0,2,4,35,9],
-"class_terraria_1_1_data_structures_1_1_player_death_reason.html#aafb1b6e5857c38525bf58b729ce56dfe":[1,0,2,4,35,12]
+"class_terraria_1_1_data_structures_1_1_player_death_reason.html#a6baad2fca174937116eb456dd1ab004f":[1,0,2,4,35,0]
 };

@@ -1,5 +1,8 @@
 var NAVTREEINDEX13 =
 {
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#aab8cf9f0fd6ac2290495ac7651463c03":[1,0,2,5,17,3,7,3],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#abafc40417cbe56ea9572a70b65db3ed3":[1,0,2,5,17,3,7,0],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#aef9ac28a5b592cfca2f3b7bbfa9904b5":[1,0,2,5,17,3,7,5],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#af0bc77c9b414544a794976e3ea9c2dba":[1,0,2,5,17,3,7,7],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_surface_biome.html#afa27b21301c806f8b2140d469dc22674":[1,0,2,5,17,3,7,4],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_underground_biome.html":[1,0,2,5,17,3,8],
@@ -246,8 +249,5 @@ var NAVTREEINDEX13 =
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_show_item.html#ae2cbf5f73bca838ac0def93107651bf5":[1,0,2,5,19,0,0,0,10,0],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_variant.html":[1,0,2,5,19,0,0,0,11],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_variant.html#a3de2b8edb8bc0de232eadcec4eda1959":[1,0,2,5,19,0,0,0,11,3],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_variant.html#a9074452579a2ff656a0cf461db9c7a2b":[1,0,2,5,19,0,0,0,11,4],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_variant.html#aa2ae97ecf0ce94a947576df4a8a32f36":[1,0,2,5,19,0,0,0,11,1],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_variant.html#ab81f386fa6ac433493214808e66f1e65":[1,0,2,5,19,0,0,0,11,2],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_variant.html#ac7680277d15456858e4c30e3f07ab365":[1,0,2,5,19,0,0,0,11,0]
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_variant.html#a9074452579a2ff656a0cf461db9c7a2b":[1,0,2,5,19,0,0,0,11,4]
 };
