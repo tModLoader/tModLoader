@@ -18,12 +18,6 @@ namespace Terraria.ModLoader
 		/// <summary> The translations of this buff's description. </summary>
 		public ModTranslation Description { get; internal set; }
 
-		/// <summary> If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode. Defaults to false. </summary>
-		public bool LongerExpertDebuff { get; set; }
-
-		/// <summary> Whether or not it is always safe to call Player.DelBuff on this buff. Setting this to false will prevent the nurse from being able to remove this debuff. Defaults to true. </summary>
-		public bool CanBeCleared { get; set; } = true;
-
 		protected override sealed void Register() {
 			ModTypeLookup<ModBuff>.Register(this);
 
@@ -36,9 +30,9 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			TextureAssets.Buff[Type] = ModContent.Request<Texture2D>(Texture);
-			
+
 			SetStaticDefaults();
-			
+
 			BuffID.Search.Add(FullName, Type);
 		}
 
