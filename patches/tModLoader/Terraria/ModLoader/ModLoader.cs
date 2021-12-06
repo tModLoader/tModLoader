@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Steamworks;
 using Terraria.Localization;
-using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
@@ -25,6 +24,7 @@ using ReLogic.Content;
 using ReLogic.Graphics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Net.Http;
 #if NETCORE
 using System.Runtime.Loader;
 #endif
@@ -38,7 +38,10 @@ namespace Terraria.ModLoader
 	{
 		// Stores the most recent version of tModLoader launched. Can be used for migration.
 		public static Version LastLaunchedTModLoaderVersion;
-		// public static bool ShowWhatsNew;
+		// Stores the most recent sha for a launched official alpha build. Used for ShowWhatsNew
+		public static string LastLaunchedTModLoaderAlphaSha;
+		public static bool ShowWhatsNew;
+		public static bool AlphaWelcomed;
 		public static bool ShowFirstLaunchWelcomeMessage;
 
 		public static string versionedName => (ModCompile.DeveloperMode || !BuildInfo.IsRelease) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
@@ -69,27 +72,27 @@ namespace Terraria.ModLoader
 		internal static bool removeForcedMinimumZoom;
 		internal static bool showMemoryEstimates = true;
 		internal static bool notifyNewMainMenuThemes = true;
-
 		internal static bool skipLoad;
-
 		internal static Action OnSuccessfulLoad;
+		
+		private static bool isLoading;
 
 		public static Mod[] Mods { get; private set; } = new Mod[0];
 
 		internal static AssetRepository ManifestAssets { get; set; } //This is used for keeping track of assets that are loaded either from the application's resources, or created directly from a texture.
 		internal static AssemblyResourcesContentSource ManifestContentSource { get; set; }
 
-		// Get
-
 		/// <summary> Gets the instance of the Mod with the specified name. This will throw an exception if the mod cannot be found. </summary>
 		/// <exception cref="KeyNotFoundException"/>
 		public static Mod GetMod(string name) => modsByName[name];
 
-		// TryGet
-
 		/// <summary> Safely attempts to get the instance of the Mod with the specified name. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public static bool TryGetMod(string name, out Mod result) => modsByName.TryGetValue(name, out result);
+
+		/// <summary> Safely checks whether or not a mod with the specified internal name is currently loaded. </summary>
+		/// <returns> Whether or not a mod with the provided internal name has been found. </returns>
+		public static bool HasMod(string name) => modsByName.ContainsKey(name);
 
 		internal static void EngineInit()
 		{
@@ -110,7 +113,6 @@ namespace Terraria.ModLoader
 
 		internal static void BeginLoad(CancellationToken token) => Task.Run(() => Load(token));
 
-		private static bool isLoading = false;
 		private static void Load(CancellationToken token = default)
 		{
 			try {
@@ -195,7 +197,7 @@ namespace Terraria.ModLoader
 				Main.menuMode = Interface.loadModsID;
 		}
 
-		private static bool Unload()
+		internal static bool Unload()
 		{
 			try {
 				Mods_Unload();
@@ -344,6 +346,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
 
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
+			Main.Configuration.Put(nameof(AlphaWelcomed), AlphaWelcomed);
+			Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		}
 
 		internal static void LoadConfiguration()
@@ -366,13 +370,20 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
 
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get(nameof(LastLaunchedTModLoaderVersion), "0.0"));
+			Main.Configuration.Get(nameof(AlphaWelcomed), ref AlphaWelcomed);
+			Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		}
 
 		internal static void MigrateSettings()
 		{
 			if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
 				showMemoryEstimates = true;
-			
+
+			if (BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA) {
+				ShowWhatsNew = true;
+				// TODO: Start retrieving what's new data from github here.
+			}
+
 			/*
 			if (LastLaunchedTModLoaderVersion < version)
 				ShowWhatsNew = true;

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 using Terraria;
 
 internal static class MonoLaunch
@@ -12,8 +13,11 @@ internal static class MonoLaunch
 #if NETCORE
 	public static readonly object resolverLock = new object();
 #endif
-	
+
+	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
+
 	private static void Main(string[] args) {
+		/*
 		// FNA is requested by both Terraria and ReLogic.dll
 		var loaded = new Dictionary<string, Assembly>();
 
@@ -36,12 +40,18 @@ internal static class MonoLaunch
 				return assembly;
 			}
 		};
+		*/
+
+#if NETCORE
+		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
+#endif
+
 		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
 		Program.LaunchGame(args, monoArgs: true);
 	}
 
 #if NETCORE
-	private static IntPtr ResolveNativeLibrary(string name, Assembly assembly, DllImportSearchPath? searchPath) {
+	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name) {
 		lock (resolverLock) {
 			try {
 				if (assemblies.TryGetValue(name, out var handle)) {
@@ -60,15 +70,17 @@ internal static class MonoLaunch
 					Console.WriteLine("\tsuccess");
 					return assemblies[name] = handle;
 				}
-				
-				return assemblies[name] = IntPtr.Zero;
+				else {
+					// Toss an error when failed to load needed library file, instead of just waiting for later to toss - Solxan
+					assemblies[name] = IntPtr.Zero;
+					throw new FileLoadException("Failed to load Native Library at " + match);
+				}
 			}
 			catch (DirectoryNotFoundException e) {
 				throw new DirectoryNotFoundException("A needed library file was missing from the tModLoader directory. " + e.Message, e);
 			}
 		}
 	}
-	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
 
 	private static string getNativeDir(string name) {
 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))

@@ -227,10 +227,14 @@ namespace Terraria.ModLoader.Config.UI
 
 		// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
 		private void DoMenuModeState() {
-			if (Main.gameMenu)
+			if (Main.gameMenu) {
+				Main.MenuUI.SetState(null);
 				Main.menuMode = Interface.modConfigID;
-			else
+			}
+			else {
+				Main.InGameUI.SetState(null);
 				Main.InGameUI.SetState(Interface.modConfig);
+			}
 		}
 
 		private void SaveConfig(UIMouseEvent evt, UIElement listeningElement) {

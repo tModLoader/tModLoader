@@ -1,17 +1,6 @@
 --- src/Terraria/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -1,4 +_,5 @@
- using System;
-+using System.Collections.Concurrent;
- using System.IO;
- using System.Linq;
- using System.Net;
-@@ -7,19 +_,21 @@
- using System.Runtime.CompilerServices;
- #endif
- using System.Threading;
-+using System.Threading.Tasks;
- using Terraria.Audio;
+@@ -11,12 +_,14 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -25,10 +14,7 @@
 +using Terraria.ModLoader.IO;
  #endif
  using NATUPNPLib;
--
- namespace Terraria
- {
- 	public class Netplay
+ 
 @@ -78,6 +_,7 @@
  
  		private static void ResetNetDiag() {
@@ -37,27 +23,6 @@
  		}
  
  		public static void ResetSections() {
-@@ -117,6 +_,20 @@
- 			return false;
- 		}
- 
-+		private static readonly ConcurrentQueue<Task> mainThreadTasks = new ConcurrentQueue<Task>();
-+
-+		internal static void OnUpdate() {
-+			while (mainThreadTasks.TryDequeue(out Task t))
-+				t.RunSynchronously();
-+		}
-+
-+		//tML: Made internal.
-+		internal static void InvokeOnMainThread(Action action) {
-+			var t = new Task(action);
-+			mainThreadTasks.Enqueue(t);
-+			t.Wait();
-+		}
-+
- 		private static void OpenPort(int port) {
- 			if (!Main.dedServ)
- 				return;
 @@ -283,6 +_,8 @@
  				Main.netMode = 0;
  				Main.menuMode = 10;
@@ -67,15 +32,25 @@
  				Main.menuMode = 0;
  			}
  			else {
-@@ -421,6 +_,7 @@
+@@ -421,6 +_,12 @@
  		}
  
  		private static void ClientLoopSetup(RemoteAddress address) {
-+			Logging.Terraria.InfoFormat("Connecting to {0}", address.GetFriendlyName());
++			string friendlyName = address.GetFriendlyName();
++			if (string.IsNullOrEmpty(friendlyName))
++				Utils.ShowFancyErrorMessage("Unable to find Steam Hosted Multiplayer server.", 0);
++
++			Logging.Terraria.InfoFormat("Connecting to {0}", friendlyName);
++			
  			Connection.ResetSpecialFlags();
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
-@@ -441,9 +_,11 @@
+@@ -437,11 +_,11 @@
+ 			Main.netMode = 1;
+ 			Main.menuMode = 14;
+ 			if (!Main.autoPass)
+-				Main.statusText = Language.GetTextValue("Net.ConnectingTo", address.GetFriendlyName());
++				Main.statusText = Language.GetTextValue("Net.ConnectingTo", friendlyName);
  
  			Disconnect = false;
  			Connection = new RemoteServer();
@@ -83,36 +58,16 @@
 +			Connection.ReadBuffer = new byte[ushort.MaxValue];
  		}
  
-+
-+		internal static bool syncingWorld = false;
  		private static void InnerClientLoop() {
- 			try {
- 				NetMessage.buffer[256].Reset();
-@@ -478,6 +_,7 @@
- 							Cloud.resetClouds();
+@@ -479,6 +_,7 @@
  							Main.cloudAlpha = Main.maxRaining;
+ 							Main.ToggleGameplayUpdates(state: false);
  							WorldGen.clearWorld();
 +							SystemLoader.OnWorldLoad();
  							if (Main.mapEnabled)
  								Main.Map.Load();
  						}
-@@ -489,6 +_,7 @@
- 						else if (Connection.State == 5 && WorldGen.worldCleared) {
- 							Connection.State = 6;
- 							Main.player[Main.myPlayer].FindSpawn();
-+							syncingWorld = true;
- 							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, Main.player[Main.myPlayer].SpawnY);
- 						}
- 
-@@ -522,6 +_,7 @@
- 					num = Connection.State;
- 				}
- 
-+				syncingWorld = false;
- 				try {
- 					Connection.Socket.Close();
- 				}
-@@ -529,6 +_,11 @@
+@@ -530,6 +_,11 @@
  				}
  
  				if (!Main.gameMenu) {

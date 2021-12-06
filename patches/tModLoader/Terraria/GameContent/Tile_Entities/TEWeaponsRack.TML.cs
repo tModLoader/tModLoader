@@ -5,11 +5,11 @@ namespace Terraria.GameContent.Tile_Entities
 {
 	public partial class TEWeaponsRack
 	{
-		public override TagCompound Save() => new TagCompound {
-			{ "item", ItemIO.Save(item) }
-		};
+		public override void SaveData(TagCompound tag) {
+			tag["item"] = ItemIO.Save(item);
+		}
 
-		public override void Load(TagCompound tag) => item = ItemIO.Load(tag.GetCompound("item"));
+		public override void LoadData(TagCompound tag) => item = ItemIO.Load(tag.GetCompound("item"));
 
 		public override void NetSend(BinaryWriter writer) => ItemIO.Send(item, writer, true);
 

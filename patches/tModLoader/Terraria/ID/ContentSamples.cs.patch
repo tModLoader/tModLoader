@@ -19,16 +19,16 @@
  				}
  			}
  
-@@ -633,7 +_,7 @@
+@@ -634,7 +_,7 @@
  
  			public static void SetCreativeMenuOrder() {
  				List<Item> list = new List<Item>();
--				for (int i = 1; i < 5088; i++) {
+-				for (int i = 1; i < 5125; i++) {
 +				for (int i = 1; i < ItemLoader.ItemCount; i++) {
  					Item item = new Item();
  					item.SetDefaults(i);
  					list.Add(item);
-@@ -721,11 +_,13 @@
+@@ -722,11 +_,13 @@
  		public static Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup> ItemCreativeSortingId = new Dictionary<int, CreativeHelper.ItemGroupAndOrderInGroup>();
  
  		public static void Initialize() {
@@ -38,16 +38,16 @@
  			NpcNetIdsByPersistentIds.Clear();
  			NpcPersistentIdsByNetIds.Clear();
  			NpcBestiarySortingId.Clear();
--			for (int i = -65; i < 668; i++) {
+-			for (int i = -65; i < 670; i++) {
 +			for (int i = -65; i < NPCLoader.NPCCount; i++) {
  				NPC nPC = new NPC();
  				nPC.SetDefaults(i);
  				NpcsByNetId[i] = nPC;
-@@ -737,14 +_,14 @@
+@@ -738,14 +_,14 @@
  
  			ModifyNPCIds();
  			ProjectilesByType.Clear();
--			for (int j = 0; j < 956; j++) {
+-			for (int j = 0; j < 972; j++) {
 +			for (int j = 0; j < ProjectileLoader.ProjectileCount; j++) {
  				Projectile projectile = new Projectile();
  				projectile.SetDefaults(j);
@@ -55,16 +55,16 @@
  			}
  
  			ItemsByType.Clear();
--			for (int k = 0; k < 5088; k++) {
+-			for (int k = 0; k < 5125; k++) {
 +			for (int k = 0; k < ItemLoader.ItemCount; k++) {
  				Item item = new Item();
  				item.SetDefaults(k);
  				ItemsByType[k] = item;
-@@ -903,7 +_,7 @@
+@@ -904,7 +_,7 @@
  			NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
  			nPCSpawnParams.gameModeData = Main.RegisterdGameModes[0];
  			NPCSpawnParams spawnparams = nPCSpawnParams;
--			for (int i = -65; i < 668; i++) {
+-			for (int i = -65; i < 670; i++) {
 +			for (int i = -65; i < NPCLoader.NPCCount; i++) {
  				NPC nPC = new NPC();
  				nPC.SetDefaults(i, spawnparams);

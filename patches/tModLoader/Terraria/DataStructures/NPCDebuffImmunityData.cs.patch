@@ -10,7 +10,7 @@
  
  		public void ApplyToNPC(NPC npc) {
  			if (ImmuneToWhips || ImmuneToAllBuffsThatAreNotWhips) {
--				for (int i = 1; i < 327; i++) {
+-				for (int i = 1; i < 338; i++) {
 +				for (int i = 1; i < BuffLoader.BuffCount; i++) {
  					bool flag = BuffID.Sets.IsAnNPCWhipDebuff[i];
  					bool flag2 = false;

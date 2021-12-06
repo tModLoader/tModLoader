@@ -78,35 +78,31 @@
  					if (acceptedGroups[num] == -1)
  						break;
  
-@@ -66,13 +_,9 @@
- 			acceptedGroups[num] = id;
+@@ -67,12 +_,8 @@
  		}
  
--		public bool ProcessGroupsForText(int type, out string theText) {
+ 		public bool ProcessGroupsForText(int type, out string theText) {
 -			for (int i = 0; i < maxRequirements; i++) {
 -				int num = acceptedGroups[i];
 -				if (num == -1)
 -					break;
 -
 -				if (RecipeGroup.recipeGroups[num].ValidItems.Contains(type)) {
-+		internal bool ProcessGroupsForText(int type, out string theText) {
 +			foreach (int num in acceptedGroups) {
 +				if (RecipeGroup.recipeGroups[num].ContainsItem(type)) {
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -82,35 +_,35 @@
- 			return false;
+@@ -83,35 +_,32 @@
  		}
  
--		public bool AcceptedByItemGroups(int invType, int reqType) {
+ 		public bool AcceptedByItemGroups(int invType, int reqType) {
 -			for (int i = 0; i < maxRequirements; i++) {
 -				int num = acceptedGroups[i];
 -				if (num == -1)
 -					break;
 -
 -				if (RecipeGroup.recipeGroups[num].ValidItems.Contains(invType) && RecipeGroup.recipeGroups[num].ValidItems.Contains(reqType))
-+		internal bool AcceptedByItemGroups(int invType, int reqType) {
 +			foreach (int num in acceptedGroups) {
 +				if (RecipeGroup.recipeGroups[num].ContainsItem(invType) && RecipeGroup.recipeGroups[num].ContainsItem(reqType))
  					return true;
@@ -139,15 +135,16 @@
  		public void Create() {
  			Item[] array = null;
  			Item item = null;
- 			Item item2 = null;
+-			Item item2 = null;
 -			for (int i = 0; i < maxRequirements; i++) {
-+			for (int i = 0; i < requiredItem.Count; i++) {
- 				item2 = requiredItem[i];
+-				item2 = requiredItem[i];
 -				if (item2.type == 0)
 -					break;
- 
+-
++			foreach (Item item2 in requiredItem) {
  				int num = item2.stack;
  				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
+ 					if (num > 1) {
 @@ -128,6 +_,8 @@
  					}
  				}
@@ -259,7 +256,7 @@
  		}
  
  		public static void SetupRecipes() {
-@@ -13317,14 +_,18 @@
+@@ -13400,14 +_,18 @@
  			AddRecipe();
  			CreateReverseWallRecipes();
  			CreateReversePlatformRecipes();
@@ -280,16 +277,16 @@
  				}
  
  				Main.recipe[i].createItem.material = ItemID.Sets.IsAMaterial[Main.recipe[i].createItem.type];
-@@ -13332,7 +_,7 @@
+@@ -13415,7 +_,7 @@
  		}
  
  		public static void UpdateWhichItemsAreMaterials() {
--			for (int i = 0; i < 5088; i++) {
+-			for (int i = 0; i < 5125; i++) {
 +			for (int i = 0; i < ItemLoader.ItemCount; i++) {
  				Item item = new Item();
  				item.SetDefaults(i, noMatCheck: true);
  				item.checkMat();
-@@ -14185,22 +_,23 @@
+@@ -14268,22 +_,23 @@
  		private static void CreateReversePlatformRecipes() {
  			int num = numRecipes;
  			for (int i = 0; i < num; i++) {
@@ -318,7 +315,7 @@
  				}
  			}
  		}
-@@ -14208,27 +_,29 @@
+@@ -14291,27 +_,29 @@
  		private static void CreateReverseWallRecipes() {
  			int num = numRecipes;
  			for (int i = 0; i < num; i++) {
@@ -355,7 +352,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -14246,18 +_,59 @@
+@@ -14329,18 +_,59 @@
  			}
  		}
  

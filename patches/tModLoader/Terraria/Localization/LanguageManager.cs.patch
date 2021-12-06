@@ -17,7 +17,7 @@
  		private readonly Dictionary<string, List<string>> _categoryGroupedKeys = new Dictionary<string, List<string>>();
  		private GameCulture _fallbackCulture = GameCulture.DefaultCulture;
  
-@@ -71,6 +_,10 @@
+@@ -96,6 +_,10 @@
  				}
  
  				LoadLanguage(culture);
@@ -28,7 +28,7 @@
  				ActiveCulture = culture;
  				Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
  				Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
-@@ -112,10 +_,13 @@
+@@ -137,10 +_,13 @@
  			}
  		}
  

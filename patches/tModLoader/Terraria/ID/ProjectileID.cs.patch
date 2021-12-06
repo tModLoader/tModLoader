@@ -1,24 +1,18 @@
 --- src/Terraria/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
-@@ -1,3 +_,5 @@
+@@ -1,4 +_,6 @@
+ using ReLogic.Reflection;
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;
  using Terraria.WorldBuilding;
  
  namespace Terraria.ID
-@@ -6,7 +_,7 @@
+@@ -7,7 +_,7 @@
  	{
  		public static class Sets
  		{
--			public static SetFactory Factory = new SetFactory(956);
+-			public static SetFactory Factory = new SetFactory(972);
 +			public static SetFactory Factory = new SetFactory(ProjectileLoader.ProjectileCount);
  			public static bool[] DontApplyParryDamageBuff = Factory.CreateBoolSet(false, 524, 321, 181, 566);
  			public static bool[] IsAWhip = Factory.CreateBoolSet(false, 847, 841, 848, 849, 912, 913, 914, 915, 952);
  			public static bool[] ImmediatelyUpdatesNPCBuffFlags = Factory.CreateBoolSet(636);
-@@ -1218,5 +_,6 @@
- 		public const short WandOfSparkingSpark = 954;
- 		public const short StarCannonStar = 955;
- 		public const short Count = 956;
-+		public static readonly IdDictionary Search = IdDictionary.Create<ProjectileID, short>();
- 	}
- }
