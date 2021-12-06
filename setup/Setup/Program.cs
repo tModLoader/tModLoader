@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using Terraria.ModLoader.Properties;
-using Terraria.ModLoader.Setup.Utilities;
 
 namespace Terraria.ModLoader.Setup
 {
@@ -15,10 +15,10 @@ namespace Terraria.ModLoader.Setup
 		public static readonly string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 		public static readonly string logsDir = Path.Combine("setup", "logs");
 
-		public static string TerrariaSteamDir => Settings.Default.TerrariaSteamDir;
+		public static string SteamDir => Settings.Default.SteamDir;
 		public static string TMLDevSteamDir => Settings.Default.TMLDevSteamDir;
-		public static string TerrariaPath => Path.Combine(TerrariaSteamDir, "Terraria.exe");
-		public static string TerrariaServerPath => Path.Combine(TerrariaSteamDir, "TerrariaServer.exe");
+		public static string TerrariaPath => Path.Combine(SteamDir, "Terraria.exe");
+		public static string TerrariaServerPath => Path.Combine(SteamDir, "TerrariaServer.exe");
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -28,24 +28,32 @@ namespace Terraria.ModLoader.Setup
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
+			/*if (args.Length == 1 && args[0] == "--steamdir") {
+				Console.WriteLine(SteamDir);
+				return;
+			}*/
 #if AUTO
-			Settings.Default.TerrariaSteamDir = Path.GetFullPath(args[0]);
-			Settings.Default.TMLDevSteamDir = Path.GetFullPath("steam_build");
-
-			if (!Directory.Exists(TMLDevSteamDir))
-				Directory.CreateDirectory(TMLDevSteamDir);
+			Settings.Default.TMLDevSteamDir = Settings.Default.SteamDir = @".\1423\Windows";
 #else
-			FindTerrariaDirectoryIfNecessary();
 			CreateTMLSteamDirIfNecessary();
 #endif
-			UpdateTargetsFiles();
+
+			UpdateTargetsFile();
+
 #if AUTO
 			Console.WriteLine("Automatic setup start");
 			new AutoSetup().DoAuto();
 			Console.WriteLine("Automatic setup finished");
-#else
-			Application.Run(new MainForm());
+			return;
 #endif
+			Application.Run(new MainForm());
+		}
+
+		private static Assembly ResolveAssemblyFrom(string libDir, string name)
+		{
+			var path = Path.Combine(libDir, name);
+			path = new[] {".exe", ".dll"}.Select(ext => path+ext).SingleOrDefault(File.Exists);
+			return path != null ? Assembly.LoadFrom(path) : null;
 		}
 
 		public static int RunCmd(string dir, string cmd, string args, 
@@ -98,22 +106,10 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		public static bool SelectAndSetTerrariaDirectoryDialog() {
-			if (TrySelectTerrariaDirectoryDialog(out string path)) {
-				SetTerrariaDirectory(path);
-
-				return true;
-			}
-
-			return false;
-		}
-
-		public static bool TrySelectTerrariaDirectoryDialog(out string result) {
-			result = null;
-
+		 public static bool SelectTerrariaDialog() {
 			while (true) {
 				var dialog = new OpenFileDialog {
-					InitialDirectory = Path.GetFullPath(Directory.Exists(TerrariaSteamDir) ? TerrariaSteamDir : "."),
+					InitialDirectory = Path.GetFullPath(Directory.Exists(SteamDir) ? SteamDir : "."),
 					Filter = "Terraria|Terraria.exe",
 					Title = "Select Terraria.exe"
 				};
@@ -122,7 +118,6 @@ namespace Terraria.ModLoader.Setup
 					return false;
 
 				string err = null;
-
 				if (Path.GetFileName(dialog.FileName) != "Terraria.exe")
 					err = "File must be named Terraria.exe";
 				else if (!File.Exists(Path.Combine(Path.GetDirectoryName(dialog.FileName), "TerrariaServer.exe")))
@@ -133,26 +128,22 @@ namespace Terraria.ModLoader.Setup
 						return false;
 				}
 				else {
-					result = Path.GetDirectoryName(dialog.FileName);
+					Settings.Default.SteamDir = Path.GetDirectoryName(dialog.FileName);
+					Settings.Default.TMLDevSteamDir = "";
+					Settings.Default.Save();
+
+					CreateTMLSteamDirIfNecessary();
+					UpdateTargetsFile();
 
 					return true;
 				}
 			}
 		}
 
-		private static void SetTerrariaDirectory(string path) {
-			Settings.Default.TerrariaSteamDir = path;
-			Settings.Default.TMLDevSteamDir = string.Empty;
-			Settings.Default.Save();
-
-			CreateTMLSteamDirIfNecessary();
-			UpdateTargetsFiles();
-		}
-
 		public static bool SelectTmlDirectoryDialog() {
 			while (true) {
 				var dialog = new OpenFileDialog {
-					InitialDirectory = Path.GetFullPath(Directory.Exists(TerrariaSteamDir) ? TerrariaSteamDir : "."),
+					InitialDirectory = Path.GetFullPath(Directory.Exists(SteamDir) ? SteamDir : "."),
 					ValidateNames = false,
 					CheckFileExists = false,
 					CheckPathExists = true,
@@ -165,39 +156,17 @@ namespace Terraria.ModLoader.Setup
 				Settings.Default.TMLDevSteamDir = Path.GetDirectoryName(dialog.FileName);
 				Settings.Default.Save();
 
-				UpdateTargetsFiles();
+				UpdateTargetsFile();
 				
 				return true;
 			}
-		}
-
-		private static void FindTerrariaDirectoryIfNecessary() {
-			if (!Directory.Exists(TerrariaSteamDir))
-				FindTerrariaDirectory();
-		}
-
-		private static void FindTerrariaDirectory() {
-			if (!SteamUtils.TryFindTerrariaDirectory(out string terrariaFolderPath)) {
-				const string MessageText = "Unable to automatically find Terraria's installation path. Please select it manually.";
-
-				Console.WriteLine(MessageText);
-
-				var messageResult = MessageBox.Show(MessageText, "Error", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
-
-				if (messageResult != DialogResult.OK || !TrySelectTerrariaDirectoryDialog(out terrariaFolderPath)) {
-					Console.WriteLine("User chose to not retry. Exiting.");
-					Environment.Exit(-1);
-				}
-			}
-
-			SetTerrariaDirectory(terrariaFolderPath);
 		}
 
 		private static void CreateTMLSteamDirIfNecessary() {
 			if (Directory.Exists(TMLDevSteamDir))
 				return;
 			
-			Settings.Default.TMLDevSteamDir = Path.GetFullPath(Path.Combine(Settings.Default.TerrariaSteamDir, "..", "tModLoaderDev"));
+			Settings.Default.TMLDevSteamDir = Path.GetFullPath(Path.Combine(Settings.Default.SteamDir, "..", "tModLoaderDev"));
 			Settings.Default.Save();
 
 			try {
@@ -208,19 +177,11 @@ namespace Terraria.ModLoader.Setup
 			}
 		}
 
-		internal static void UpdateTargetsFiles() {
-			UpdateFileText("src/WorkspaceInfo.targets", GetWorkspaceInfoTargetsText());
-			UpdateFileText(Path.Combine(TMLDevSteamDir, "tMLMod.targets"), File.ReadAllText("patches/tModLoader/Terraria/release_extras/tMLMod.targets"));
-		}
+		private static readonly string targetsFilePath = Path.Combine("src", "WorkspaceInfo.targets");
 
-		private static void UpdateFileText(string path, string text) {
-			SetupOperation.CreateParentDirectory(path);
+		internal static void UpdateTargetsFile() {
+			SetupOperation.CreateParentDirectory(targetsFilePath);
 
-			if (!File.Exists(path) || text != File.ReadAllText(path))
-				File.WriteAllText(path, text);
-		}
-
-		private static string GetWorkspaceInfoTargetsText() {
 			string gitsha = "";
 			RunCmd("", "git", "rev-parse HEAD", s => gitsha = s.Trim());
 
@@ -238,17 +199,22 @@ namespace Terraria.ModLoader.Setup
 				gitsha = HEAD_SHA;
 			}
 
-			return
+			string targetsText =
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <!-- This file will always be overwritten, do not edit it manually. -->
   <PropertyGroup>
 	<BranchName>{branch}</BranchName>
 	<CommitSHA>{gitsha}</CommitSHA>
-	<TerrariaSteamPath>{TerrariaSteamDir}</TerrariaSteamPath>
+	<TerrariaSteamPath>{SteamDir}</TerrariaSteamPath>
     <tModLoaderSteamPath>{TMLDevSteamDir}</tModLoaderSteamPath>
   </PropertyGroup>
 </Project>";
+
+			if (File.Exists(targetsFilePath) && targetsText == File.ReadAllText(targetsFilePath))
+				return;
+
+			File.WriteAllText(targetsFilePath, targetsText);
 		}
 	}
 }

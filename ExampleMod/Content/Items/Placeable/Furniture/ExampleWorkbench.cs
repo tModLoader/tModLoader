@@ -7,7 +7,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	public class ExampleWorkbench : ModItem
 	{
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Work Bench");
 			Tooltip.SetDefault("This is a modded workbench.");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;

@@ -360,9 +360,9 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveModData() {
 			var list = new List<TagCompound>();
 
-			var saveData = new TagCompound();
-
 			foreach (var system in SystemLoader.Systems) {
+				var saveData = TagCompound.GetEmptyTag();
+
 				system.SaveWorldData(saveData);
 
 				if (saveData.Count == 0)
@@ -373,7 +373,6 @@ namespace Terraria.ModLoader.IO
 					["name"] = system.Name,
 					["data"] = saveData
 				});
-				saveData = new TagCompound();
 			}
 
 			return list;

@@ -63,7 +63,7 @@
  			_clickDisabledTimeRemaining = Math.Max(_clickDisabledTimeRemaining, 200.0);
  		}
  
-@@ -80,9 +_,14 @@
+@@ -80,6 +_,10 @@
  
  			GetMousePosition();
  			bool flag = Main.mouseLeft && Main.hasFocus;
@@ -74,11 +74,7 @@
  			UIElement uIElement = Main.hasFocus ? _currentState.GetElementAt(MousePosition) : null;
  			_clickDisabledTimeRemaining = Math.Max(0.0, _clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
  			bool flag2 = _clickDisabledTimeRemaining > 0.0;
-+			try { // tmodloader added try-catch-finally. Try not to indent to keep patch clean. 
- 			if (uIElement != _lastElementHover) {
- 				if (_lastElementHover != null)
- 					_lastElementHover.MouseOut(new UIMouseEvent(_lastElementHover, MousePosition));
-@@ -112,12 +_,106 @@
+@@ -112,12 +_,101 @@
  				_lastElementDown = null;
  			}
  
@@ -170,21 +166,14 @@
  			if (PlayerInput.ScrollWheelDeltaForUI != 0) {
  				uIElement?.ScrollWheel(new UIScrollWheelEvent(uIElement, MousePosition, PlayerInput.ScrollWheelDeltaForUI));
 -				PlayerInput.ScrollWheelDeltaForUI = 0;
--			}
--
 +				// PlayerInput.ScrollWheelDeltaForUI = 0; Moved after SystemHooks.UpdateUI(gameTime);
-+			}
-+			}
-+			catch {
-+				throw;
-+			}
-+			finally {
+ 			}
+ 
  			_wasMouseDown = flag;
 +			_wasMouseRightDown = mouseRightDown;
 +			_wasMouseMiddleDown = mouseMiddleDown;
 +			_wasMouseXButton1Down = mouseXButton1Down;
 +			_wasMouseXButton2Down = mouseXButton2Down;
-+			}
  			if (_currentState != null)
  				_currentState.Update(time);
  		}

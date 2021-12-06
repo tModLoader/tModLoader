@@ -24,7 +24,6 @@ using ReLogic.Content;
 using ReLogic.Graphics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Net.Http;
 #if NETCORE
 using System.Runtime.Loader;
 #endif
@@ -38,10 +37,7 @@ namespace Terraria.ModLoader
 	{
 		// Stores the most recent version of tModLoader launched. Can be used for migration.
 		public static Version LastLaunchedTModLoaderVersion;
-		// Stores the most recent sha for a launched official alpha build. Used for ShowWhatsNew
-		public static string LastLaunchedTModLoaderAlphaSha;
-		public static bool ShowWhatsNew;
-		public static bool AlphaWelcomed;
+		// public static bool ShowWhatsNew;
 		public static bool ShowFirstLaunchWelcomeMessage;
 
 		public static string versionedName => (ModCompile.DeveloperMode || !BuildInfo.IsRelease) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
@@ -346,8 +342,6 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
 
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
-			Main.Configuration.Put(nameof(AlphaWelcomed), AlphaWelcomed);
-			Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		}
 
 		internal static void LoadConfiguration()
@@ -370,20 +364,13 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
 
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get(nameof(LastLaunchedTModLoaderVersion), "0.0"));
-			Main.Configuration.Get(nameof(AlphaWelcomed), ref AlphaWelcomed);
-			Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		}
 
 		internal static void MigrateSettings()
 		{
 			if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
 				showMemoryEstimates = true;
-
-			if (BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA) {
-				ShowWhatsNew = true;
-				// TODO: Start retrieving what's new data from github here.
-			}
-
+			
 			/*
 			if (LastLaunchedTModLoaderVersion < version)
 				ShowWhatsNew = true;

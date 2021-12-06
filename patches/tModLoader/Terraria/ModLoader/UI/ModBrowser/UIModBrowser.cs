@@ -240,12 +240,6 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			return UpdateNeeded = true;
 		}
 
-		internal void ModifyUIModDownloadItemInstalled(string modName, Core.LocalMod installed) {
-			var modDownload = _items.Select(x => x.ModDownload).FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
-			if (modDownload != null)
-				modDownload.Installed = installed;
-		}
-
 		/// <summary>
 		///     Enqueues a list of mods, if found on the browser (also used for ModPacks)
 		/// </summary>

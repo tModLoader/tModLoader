@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		public readonly string PublishId;
 		public readonly bool HasUpdate;
 		public readonly bool UpdateIsDowngrade;
-		public LocalMod Installed { get; internal set; }
+		public readonly LocalMod Installed;
 		public readonly string Version;
 
 		internal readonly string Author;

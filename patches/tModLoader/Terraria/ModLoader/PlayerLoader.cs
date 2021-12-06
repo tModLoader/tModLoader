@@ -224,35 +224,19 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookUpdateVanityAccessories = AddHook<Action>(p => p.UpdateVanityAccessories);
+
+		public static void UpdateVanityAccessories(Player player) {
+			foreach (int index in HookUpdateVanityAccessories.arr) {
+				player.modPlayers[index].UpdateVanityAccessories();
+			}
+		}
+
 		private static HookList HookPostUpdateEquips = AddHook<Action>(p => p.PostUpdateEquips);
 
 		public static void PostUpdateEquips(Player player) {
 			foreach (int index in HookPostUpdateEquips.arr) {
 				player.modPlayers[index].PostUpdateEquips();
-			}
-		}
-
-		private static HookList HookUpdateVisibleAccessories = AddHook<Action>(p => p.UpdateVisibleAccessories);
-
-		public static void UpdateVisibleAccessories(Player player) {
-			foreach (int index in HookUpdateVisibleAccessories.arr) {
-				player.modPlayers[index].UpdateVisibleAccessories();
-			}
-		}
-
-		private static HookList HookUpdateVisibleVanityAccessories = AddHook<Action>(p => p.UpdateVisibleVanityAccessories);
-
-		public static void UpdateVisibleVanityAccessories(Player player) {
-			foreach (int index in HookUpdateVisibleVanityAccessories.arr) {
-				player.modPlayers[index].UpdateVisibleVanityAccessories();
-			}
-		}
-
-		private static HookList HookUpdateDyes = AddHook<Action>(p => p.UpdateDyes);
-
-		public static void UpdateDyes(Player player) {
-			foreach (int index in HookUpdateDyes.arr) {
-				player.modPlayers[index].UpdateDyes();
 			}
 		}
 

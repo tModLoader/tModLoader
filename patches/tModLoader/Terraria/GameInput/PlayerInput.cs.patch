@@ -88,15 +88,16 @@
  			bool flag4 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
  			int num3 = player.inventory[player.selectedItem].tileBoost + ItemID.Sets.GamepadExtraRange[player.inventory[player.selectedItem].type];
  			if (player.yoyoString && ItemID.Sets.Yoyo[player.inventory[player.selectedItem].type])
-@@ -993,6 +_,8 @@
- 		}
- 
- 		private static void FixDerpedRebinds() {
-+			//TML: These keys are specially setup to avoid creating a situation where the game might soft-lock due to binding issues. (IE stuck on a menu)
-+			//TML: This method has a side-effect that it also prevents binding multiple hotkeys to one virtual key if those keys are already bound to any of following
+@@ -996,6 +_,9 @@
  			List<string> list = new List<string> {
  				"MouseLeft",
  				"MouseRight",
++				"MouseMiddle",
++				"MouseXButton1",
++				"MouseXButton2",
+ 				"Inventory"
+ 			};
+ 
 @@ -1177,7 +_,7 @@
  					if (DpadSnapCooldown[i] == 0) {
  						int num = 6;

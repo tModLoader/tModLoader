@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -202,24 +203,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Is called in Player.Frame() after vanilla functional slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
-		/// </summary>
-		public virtual void UpdateVisibleAccessories() {
-		}
-
-		/// <summary>
-		/// Is called in Player.Frame() after vanilla vanity slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
-		/// </summary>
-		public virtual void UpdateVisibleVanityAccessories() {
-		}
-
-		/// <summary>
-		/// Is called in Player.UpdateDyes(), including selection screen. Player Instance sensitive.
-		/// </summary>
-		public virtual void UpdateDyes() {
-		}
-
-		/// <summary>
 		/// This is called after miscellaneous update code is called in Player.Update, which is sometime after PostUpdateEquips is called. This can be used for general update tasks.
 		/// </summary>
 		public virtual void PostUpdateMiscEffects() {
@@ -241,6 +224,12 @@ namespace Terraria.ModLoader
 		/// This is called at the very end of the Player.Update method. Final general update tasks can be placed here.
 		/// </summary>
 		public virtual void PostUpdate() {
+		}
+
+		/// <summary>
+		/// This is called after VanillaUpdateVanityAccessory() in player.UpdateEquips()
+		/// </summary>
+		public virtual void UpdateVanityAccessories() {
 		}
 
 		/// <summary>
@@ -898,7 +887,7 @@ namespace Terraria.ModLoader
 		/// You can use this method to add items to the player's starting inventory, as well as their inventory when they respawn in mediumcore.
 		/// </summary>
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
-		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty&lt;Item&gt;().</returns>
+		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty<Item>().</returns>
 		public virtual IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			return Enumerable.Empty<Item>();
 		}

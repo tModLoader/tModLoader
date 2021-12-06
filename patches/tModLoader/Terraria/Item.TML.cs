@@ -17,11 +17,11 @@ namespace Terraria
 
 		internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
 
-		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
+		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new RefReadOnlyArray<Instanced<GlobalItem>>(globalItems);
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
-		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or <see cref="ModContent.GetInstance"/> for custom damage types.
+		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or ModContent.GetInstance<T>() for custom damage types.
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;
@@ -98,7 +98,8 @@ namespace Terraria
 			currentUseAnimationCompensation = 0;
 		}
 
-		// Internal utility method. Move somewhere, if there's a better place.
+		// Internal utility methods below. Move somewhere, if there's a better place.
+
 		internal static void DropItem(Item item, Rectangle rectangle) {
 			int droppedItemId = NewItem(rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
 			var droppedItem = Main.item[droppedItemId];

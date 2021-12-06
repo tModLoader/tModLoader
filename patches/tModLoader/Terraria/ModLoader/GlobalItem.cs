@@ -439,30 +439,24 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set.
-		/// This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadows hooks, and will use items in the social slots if they exist.
+		/// This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadow hooks, and will use items in the social slots if they exist.
 		/// By default this will return the same value as the IsArmorSet hook, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets.
 		/// 
 		/// This method is not instanced.
 		/// </summary>
 		public virtual string IsVanitySet(int head, int body, int legs) {
-			int headItemType = 0;
-			if (head >= 0)
-				headItemType = Item.headType[head];
-
-			Item headItem = ContentSamples.ItemsByType[headItemType];
-
-			int bodyItemType = 0;
-			if (body >= 0)
-				bodyItemType = Item.bodyType[body];
-
-			Item bodyItem = ContentSamples.ItemsByType[bodyItemType];
-
-			int legsItemType = 0;
-			if (legs >= 0)
-				legsItemType = Item.legType[legs];
-
-			Item legItem = ContentSamples.ItemsByType[legsItemType];
-
+			Item headItem = new Item();
+			if (head >= 0) {
+				headItem.SetDefaults(Item.headType[head], true);
+			}
+			Item bodyItem = new Item();
+			if (body >= 0) {
+				bodyItem.SetDefaults(Item.bodyType[body], true);
+			}
+			Item legItem = new Item();
+			if (legs >= 0) {
+				legItem.SetDefaults(Item.legType[legs], true);
+			}
 			return IsArmorSet(headItem, bodyItem, legItem);
 		}
 
@@ -740,16 +734,7 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item that is attepting to equip.</param>
 		/// <param name="player">The player.</param>
 		/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
-		/// <param name="modded">If the inventory slot index is for modded slots.</param>
-		public virtual bool CanEquipAccessory(Item item, Player player, int slot, bool modded) {
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
-		/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
-		/// </summary>
-		public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
+		public virtual bool CanEquipAccessory(Item item, Player player, int slot) {
 			return true;
 		}
 

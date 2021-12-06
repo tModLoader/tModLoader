@@ -17,7 +17,8 @@ namespace Terraria.ModLoader
 	{
 		public static readonly int NumVanilla = Assembly.GetExecutingAssembly()
 			.GetTypes()
-			.Count(t => !t.IsAbstract && t.IsSubclassOf(typeof(TileEntity)) && !typeof(ModTileEntity).IsAssignableFrom(t));
+			.Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(TileEntity)) && !typeof(ModTileEntity).IsAssignableFrom(t))
+			.Count();
 
 		// TODO: public bool netUpdate;
 
@@ -44,7 +45,13 @@ namespace Terraria.ModLoader
 		/// Returns the number of modded tile entities that exist in the world currently being played.
 		/// </summary>
 		public static int CountInWorld() {
-			return ByID.Count(pair => pair.Value.type >= NumVanilla);
+			int count = 0;
+			foreach (KeyValuePair<int, TileEntity> pair in ByID) {
+				if (pair.Value.type >= NumVanilla) {
+					count++;
+				}
+			}
+			return count;
 		}
 
 		internal static void Initialize() {
@@ -53,13 +60,13 @@ namespace Terraria.ModLoader
 		}
 
 		private static void UpdateStartInternal() {
-			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Values.OfType<ModTileEntity>()) {
+			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().OfType<ModTileEntity>()) {
 				tileEntity.PreGlobalUpdate();
 			}
 		}
 
 		private static void UpdateEndInternal() {
-			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Values.OfType<ModTileEntity>()) {
+			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().OfType<ModTileEntity>()) {
 				tileEntity.PostGlobalUpdate();
 			}
 		}
@@ -68,7 +75,7 @@ namespace Terraria.ModLoader
 		/// You should never use this. It is only included here for completion's sake.
 		/// </summary>
 		public override void NetPlaceEntityAttempt(int i, int j) {
-			if (!manager.TryGetTileEntity(Type, out ModTileEntity modTileEntity)) {
+			if (!manager.TryGetTileEntity(type, out ModTileEntity modTileEntity) || !modTileEntity.ValidTile(i, j)) {
 				return;
 			}
 
@@ -107,11 +114,8 @@ namespace Terraria.ModLoader
 			newEntity.Position = new Point16(i, j);
 			newEntity.ID = AssignNewID();
 			newEntity.type = (byte)Type;
-			lock (EntityCreationLock) {
-				ByID[newEntity.ID] = newEntity;
-				ByPosition[newEntity.Position] = newEntity;
-			}
-
+			ByID[newEntity.ID] = newEntity;
+			ByPosition[newEntity.Position] = newEntity;
 			return newEntity.ID;
 		}
 
@@ -120,7 +124,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public void Kill(int i, int j) {
 			Point16 pos = new Point16(i, j);
-			if (ByPosition.TryGetValue(pos, out var tileEntity)) {
+			if (ByPosition.ContainsKey(pos)) {
+				TileEntity tileEntity = ByPosition[pos];
 				if (tileEntity.type == Type) {
 					((ModTileEntity)tileEntity).OnKill();
 					ByID.Remove(tileEntity.ID);
@@ -134,7 +139,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Find(int i, int j) {
 			Point16 pos = new Point16(i, j);
-			if (ByPosition.TryGetValue(pos, out var tileEntity)) {
+			if (ByPosition.ContainsKey(pos)) {
+				TileEntity tileEntity = ByPosition[pos];
 				if (tileEntity.type == Type) {
 					return tileEntity.ID;
 				}
@@ -187,6 +193,11 @@ namespace Terraria.ModLoader
 		public virtual void Unload(){}
 
 		/// <summary>
+		/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.
+		/// </summary>
+		public abstract bool ValidTile(int i, int j);
+
+		/// <summary>
 		/// This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of Mod.GetTileEntity.
 		/// </summary>
 		public virtual int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
@@ -216,10 +227,5 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void OnKill() {
 		}
-
-		/// <summary>
-		/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.
-		/// </summary>
-		public abstract override bool IsTileValidForEntity(int x, int y);
 	}
 }

@@ -6,7 +6,7 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader.Default
 {
 	[LegacyName("MysteryItem")]
-	public sealed class UnloadedItem : ModLoaderModItem
+	public class UnloadedItem : ModLoaderModItem
 	{
 		private TagCompound data;
 
@@ -27,7 +27,10 @@ namespace Terraria.ModLoader.Default
 		internal void Setup(TagCompound tag) {
 			ModName = tag.GetString("mod");
 			ItemName = tag.GetString("name");
-			data = tag;
+
+			if (tag.ContainsKey("data")) {
+				data = tag.GetCompound("data");
+			}
 		}
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
@@ -42,30 +45,27 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public override void SaveData(TagCompound tag) {
-			foreach ((string key, object value) in data) {
-				tag[key] = value;
+			tag["mod"] = ModName;
+			tag["name"] = ItemName;
+
+			if (data?.Count > 0) {
+				tag["data"] = data;
 			}
 		}
 
 		public override void LoadData(TagCompound tag) {
 			Setup(tag);
 
-			if (!ModContent.TryFind(ModName, ItemName, out ModItem modItem))
-				return;
+			if (ModContent.TryFind(ModName, ItemName, out ModItem modItem)) {
+				Item.SetDefaults(modItem.Type);
 
-			if (modItem is UnloadedItem) { // Some previous bugs have lead to unloaded items containing unloaded items recursively 
-				LoadData(tag.GetCompound("data"));
-				return;
-			}
+				if (data?.Count > 0) {
+					Item.ModItem.LoadData(data);
+				}
 
-			Item.SetDefaults(modItem.Type);
-
-			if (data?.Count > 0) {
-				Item.ModItem.LoadData(data);
-			}
-
-			if (tag.ContainsKey("globalData")) {
-				ItemIO.LoadGlobals(Item, tag.GetList<TagCompound>("globalData"));
+				if (tag.ContainsKey("globalData")) {
+					ItemIO.LoadGlobals(Item, tag.GetList<TagCompound>("globalData"));
+				}
 			}
 		}
 

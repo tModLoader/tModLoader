@@ -54,6 +54,9 @@ namespace Terraria.ModLoader.Setup
 				if (!task.ConfigurationDialog())
 					return;
 
+				if (!task.StartupWarning())
+					return;
+
 				try {
 					task.Run();
 

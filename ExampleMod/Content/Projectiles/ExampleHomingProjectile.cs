@@ -12,8 +12,7 @@ namespace ExampleMod.Content.Projectiles
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Homing Projectile"); // Name of the projectile. It can be appear in chat
-
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			ProjectileID.Sets.CountsAsHoming[Projectile.type] = true; // Tell the game that it is a homing projectile
 		}
 
 		// Setting the default parameters of the projectile

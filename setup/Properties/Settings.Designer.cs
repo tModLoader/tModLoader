@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.1.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,13 +25,13 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string TerrariaSteamDir {
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Terraria")]
+        public string SteamDir {
             get {
-                return ((string)(this["TerrariaSteamDir"]));
+                return ((string)(this["SteamDir"]));
             }
             set {
-                this["TerrariaSteamDir"] = value;
+                this["SteamDir"] = value;
             }
         }
         
@@ -61,7 +61,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.4.3.2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.4.2.2")]
         public string ClientVersion {
             get {
                 return ((string)(this["ClientVersion"]));
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.4.3.2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.4.2.2")]
         public string ServerVersion {
             get {
                 return ((string)(this["ServerVersion"]));
@@ -103,7 +103,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6352ded8d64d0f67fdf10ff2a6f9e51f")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00d7f0d6590efadeed6393d00e59f777")]
         public string GoGClientWinMD5 {
             get {
                 return ((string)(this["GoGClientWinMD5"]));
@@ -124,7 +124,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("201707bba92e27f09d05529e2f051c60")]
+        [global::System.Configuration.DefaultSettingValueAttribute("acfd53772989dbbd7231f98d38669651")]
         public string SteamClientWinMD5 {
             get {
                 return ((string)(this["SteamClientWinMD5"]));

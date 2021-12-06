@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.Localization;
@@ -56,25 +55,25 @@ namespace Terraria.ModLoader
 
 			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
 
+			IList<Type> modSounds = new List<Type>();
+
 			Type modType = GetType();
-
 			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
-				// Skip Mod, abstract, and generic classes.
-				if (type == modType || type.IsAbstract || type.ContainsGenericParameters)
-					continue;
+				if (type == modType) continue;
+				if (type.IsAbstract) continue;
+				if (type.ContainsGenericParameters) continue;
+				if (type.GetConstructor(new Type[0]) == null) continue;//don't autoload things with no default constructor
 
-				// Don't autoload things with no default constructor
-				if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) == null)
-					continue;
-
+				if (type.IsSubclassOf(typeof(ModSound))) {
+					modSounds.Add(type);
+				}
 				// Having the check here instead of enclosing the foreach statement is required for modSound autoloading to function properly
 				// In the case of a ModSound loading rework where it doesn't piggyback off content AutoLoading, the entire foreach statement
 				// can be enclosed in a ContentAutoloadingEnabled check. - pbone
-				if (ContentAutoloadingEnabled && typeof(ILoadable).IsAssignableFrom(type)) {
+				else if (ContentAutoloadingEnabled && typeof(ILoadable).IsAssignableFrom(type)) {
 					var autoload = AutoloadAttribute.GetValue(type);
-
 					if (autoload.NeedsAutoloading) {
-						AddContent((ILoadable)Activator.CreateInstance(type, true));
+						AddContent((ILoadable)Activator.CreateInstance(type));
 					}
 				}
 			}
@@ -87,7 +86,7 @@ namespace Terraria.ModLoader
 				GoreLoader.AutoloadGores(this);
 			
 			if (SoundAutoloadingEnabled)
-				SoundLoader.AutoloadSounds(this);
+				AutoloadSounds(modSounds);
 
 			if (MusicAutoloadingEnabled)
 				MusicLoader.AutoloadMusic(this);
@@ -103,6 +102,33 @@ namespace Terraria.ModLoader
 			Assets = new AssetRepository(Main.instance.Services.Get<AssetReaderCollection>(), new[] { RootContentSource }) {
 				AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
 			};
+		}
+
+		private void AutoloadSounds(IList<Type> modSounds) {
+			var modSoundNames = modSounds.ToDictionary(t => t.FullName);
+
+			const string SoundFolder = "Sounds/";
+
+			foreach (string soundPath in RootContentSource.EnumerateAssets().Where(t => t.Contains(SoundFolder))) {
+				string substring = soundPath.Substring(soundPath.IndexOf(SoundFolder) + SoundFolder.Length);
+				SoundType soundType = SoundType.Custom;
+
+				if (substring.StartsWith("Item/")) {
+					soundType = SoundType.Item;
+				}
+				else if (substring.StartsWith("NPCHit/")) {
+					soundType = SoundType.NPCHit;
+				}
+				else if (substring.StartsWith("NPCKilled/")) {
+					soundType = SoundType.NPCKilled;
+				}
+
+				ModSound modSound = null;
+				if (modSoundNames.TryGetValue($"{Name}/{soundPath}".Replace('/', '.'), out Type t))
+					modSound = (ModSound)Activator.CreateInstance(t);
+
+				AddSound(soundType, $"{Name}/{soundPath}", modSound);
+			}
 		}
 
 		internal void TransferAllAssets() {

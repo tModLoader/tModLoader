@@ -12,13 +12,10 @@
 		"MenuDevelopMods": "Desarrollar mods",
 		"MenuDevelopModsDescription": "Desarrolla y publica mods para que otros los usen, usando tu propio código de Fuentes de Mods.",
 		"MenuEnableDeveloperMode": "Activar modo desarrollador",
-		"WelcomeMessageBeta": "Bienvenido a tModLoader 1.4 Alfa.\n\nHas instalado correctamente una versión inestable de tModLoader, por lo que podría haber errores que causen problemas en el juego.\n\nUtiliza el menú de Steam Workshop para acceder a las funciones relacionadas con tModLoader.\n\nÚnete al Discord de tModLoader para saber más sobre los mods y/o herramientas de prueba disponibles para la versión 1.4 de tModLoader.",
+		"WelcomeMessageBeta": "Bienvenido a tModLoader 1.4 Alfa.\n\nHas instalado correctamente una versión inestable de tModLoader que puede contener errores que provoquen problemas en el juego.\n\nUtiliza el menú de Steam Workshop para acceder a las funciones relacionadas con tModLoader.\n\nÚnete al Discord de tModLoader para saber más sobre qué mods y/o herramientas de prueba están disponibles para tModLoader 1.4 como parte de la nueva versión.",
 		"FirstLaunchWelcomeMessage": "Bienvenido a tModLoader.\n\ntModLoader se ha instalado correctamente. Usa el menú del Navegador de Mods para buscar los mods que quieras descargar. Usa el menú de Mods para cambiar los mods que tengas activados. Después de cambiar de mods, asegúrate de pulsar el botón Recargar mods para poder usarlos.",
-		"WhatsNewMessage": "A continuación se mostrarán los cambios realizados desde la última vez que abriste tModLoader Alfa. Es posible que los mods relacionados con dichos cambios deban ser actualizados por el autor. Visita GitHub para ver más detalles:\n",
-		"ViewOnGitHub": "Ver en GitHub",
 		"tModLoaderSettings": "Configuración de tModLoader",
 		"ModMenuSwap": "Cambiar tema del menú",
-		"AudioNotSupported": "No se han detectado dispositivos de audio. Se desactivará el sonido.",
 
 		// Mods Menu
 		"ModsModsList": "Lista de mods",
@@ -29,7 +26,6 @@
 		"ModsModPacks": "Paquetes de mods",
 		"ModsDisable": "Desactivar",
 		"ModsEnable": "Activar",
-		"ModConfiguration": "Configuración de mods",
 		"ModsOpenConfig": "Haz clic para abrir la configuración",
 		"ModOldWarning": "Mod desactualizado, actívalo bajo tu propia responsabilidad",
 		"ModDependencyClickTooltip": "Este mod depende de {0}\n(Haz clic para activar)",
@@ -77,15 +73,6 @@
 		"NoWorkshopAccess": "Error: Error al acceder a Steam Workshop",
 		"ModAlreadyUploaded": "Error: ¡Este mod ya existe en Steam Workshop!",
 		"ModVersionInfoUnchanged": "Error: La versión del mod debe incrementarse para actualizar el mod.",
-		"ConsultSteamLogs": "Consulta Steam workshop_log.txt (Ubicación por defecto: {0}) para más información.",
-		"SteamRejectUpdate": "El elemento {0} ya está o estaba instalado. Si intentas reinstalarlo, cierra la instancia actual y vuelve a iniciarla.",
-		"BeginDownload": "Intentando descargar el elemento: {0}",
-		"EndDownload": "Descarga de elementos completada",
-		"CreateItem": "Creando el elemento {0}",
-		"UpdateItem": "Actualizando el elemento {0}",
-		"PublishItem": "Publicando el elemento {0}",
-		"SteamDownloader": "Poner en cola la descarga mediante el gestor de Steam...",
-		"DownloadProgress": "Progreso de descarga: {0}%",
 
 		// Mod Errors
 		"LoadError": "Se ha producido un error al cargar {0}",
@@ -139,7 +126,7 @@
 
 		// Mod Info
 		"ModInfoHeader": "Info del mod: ",
-		"ModInfoVisitHomepage": "Visitar sitio web del mod",
+		"ModInfoVisitHomepage": "Visita la página web del mod para más información",
 		"ModInfoExtract": "Extraer",
 		"ModInfoNoDescriptionAvailable": "Sin descripción",
 		"ModInfoProblemTryAgain": "Ha habido un problema, inténtalo de nuevo",
@@ -228,8 +215,6 @@
 		"XDaysAgo": "Hace {0} {^0:día;días}",
 		"XMonthsAgo": "Hace {0} {^0:mes;meses}",
 		"XYearsAgo": "Hace {0} {^0:año;años}",
-		"MBServerReturnToMenu": "Volver al menú de mundos",
-		"MBServerAskForModName": "Escribe el nombre exacto del mod a descargar: ",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "Introduce tu Código de Acceso",
@@ -295,13 +280,12 @@
 		"MSBuildAll": "Construir todo",
 		"MSBuildReloadAll": "Construir y recargar todo",
 		"MSUpgradeCSProj": "Actualizar archivo .csproj",
-		"MSUpgradeLangFiles": "Actualizar archivos .lang a .hjson (no destructivo)",
 		"MSOpenSources": "Abrir fuente",
 		"MSManagePublished": "Gestionar publicaciones",
 		"MSPublish": "Publicar",
 		"MSModSourcesCantHaveSpaces": "(Las carpetas de fuentes de mods no pueden contener espacios)",
 		"MSCreateMod": "Crear mod",
-		"VersionUpgrade": "Haz clic para más info. sobre la Migración de Mods",
+		"VersionUpgrade": "Info. sobre la Migración de Mods tras actualizar",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Se requieren librerías adicionales para construir mods (falta la carpeta ModCompile)",
@@ -372,10 +356,6 @@
 		"MouseMiddle": "Clic medio",
 		"MouseXButton1": "Botón 4",
 		"MouseXButton2": "Botón 5",
-
-		// In Game UI additions
-		"slotStack": "Apilar",
-		"slotScroll": "Deslizar",
 
 		// Misc
 		"OK": "OK",

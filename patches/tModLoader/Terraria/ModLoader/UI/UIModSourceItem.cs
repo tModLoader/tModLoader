@@ -72,23 +72,15 @@ namespace Terraria.ModLoader.UI
 			Append(buildReloadButton);
 
 			_builtMod = builtMod;
-			if (builtMod != null) {
+			if (builtMod != null && builtMod.Enabled) {
 				var publishButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"));
 				publishButton.CopyStyle(buildReloadButton);
 				publishButton.Width.Pixels = 100;
 				publishButton.Left.Pixels = 390;
 				publishButton.WithFadedMouseOver();
-
-				if (builtMod.properties.side == ModSide.Server) {
-					publishButton.OnClick += PublishServerSideMod;
-					Append(publishButton);
-				}
-				else if (builtMod.Enabled) {
-					publishButton.OnClick += PublishMod;
-					Append(publishButton);
-				}
+				publishButton.OnClick += PublishMod;
+				Append(publishButton);
 			}
-
 			OnDoubleClick += BuildAndReload;
 
 			string modFolderName = Path.GetFileName(_mod);
@@ -249,28 +241,6 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		private void PublishServerSideMod(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(10);
-			try {
-				if (!WorkshopHelper.ModManager.SteamUser) {
-					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamPublishingLimit"), Interface.modSourcesID);
-					return;
-				}
-				var p = new ProcessStartInfo() {
-					UseShellExecute = true,
-					FileName = Process.GetCurrentProcess().MainModule.FileName,
-					Arguments = "tModLoader.dll -server -steam -publish " + _builtMod.modFile.path.Remove(_builtMod.modFile.path.LastIndexOf(".tmod"))
-				};
-
-				var pending = Process.Start(p);
-				pending.WaitForExit();
-			}
-			catch (WebException e) {
-				UIModBrowser.LogModBrowserException(e);
-			}
-		}
-
-
 		internal static void PublishModCommandLine(string modName) {
 			try {
 				LocalMod localMod;
@@ -284,11 +254,9 @@ namespace Terraria.ModLoader.UI
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
 				Console.WriteLine(e.ToString());
-				Steamworks.SteamAPI.Shutdown();
 				Environment.Exit(1);
 			}
 			Console.WriteLine("exiting ");
-			Steamworks.SteamAPI.Shutdown();
 			Environment.Exit(0);
 		}
 

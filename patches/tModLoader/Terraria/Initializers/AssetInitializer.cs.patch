@@ -1,7 +1,7 @@
 --- src/Terraria/Terraria/Initializers/AssetInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/AssetInitializer.cs
-@@ -11,21 +_,30 @@
- using Terraria.GameContent;
+@@ -14,21 +_,30 @@
+ using Terraria.GameContent.UI;
  using Terraria.ID;
  using Terraria.IO;
 +using Terraria.ModLoader.Assets;
@@ -37,12 +37,12 @@
  			services.AddService(typeof(AssetReaderCollection), assetReaderCollection);
  			services.AddService(typeof(IAssetRepository), provider);
  		}
-@@ -597,6 +_,8 @@
- 			Main.ResourceSetsManager.LoadContent(mode);
- 			Main.MinimapFrameManagerInstance.LoadContent(mode);
+@@ -591,6 +_,8 @@
+ 			LoadMinimapFrames(mode);
+ 			LoadPlayerResourceSets(mode);
  			Main.AchievementAdvisor.LoadContent();
-+			
-+			UICommon.LoadTextures(); // Added by TML.
++
++			UICommon.LoadTextures();
  		}
  
- 		private static Asset<T> LoadAsset<T>(string assetName, AssetRequestMode mode) where T : class => Main.Assets.Request<T>(assetName, mode);
+ 		private static void LoadMinimapFrames(AssetRequestMode mode) {

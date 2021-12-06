@@ -64,7 +64,6 @@ namespace Terraria.ModLoader.Utilities
 			foreach (Mod mod in ModLoader.Mods) {
 				try {
 					mod.AddRecipeGroups();
-					SystemLoader.AddRecipeGroups(mod);
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;

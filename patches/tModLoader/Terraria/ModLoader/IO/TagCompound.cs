@@ -120,5 +120,17 @@ namespace Terraria.ModLoader.IO
 		public int Count => dict.Count;
 		public IEnumerator<KeyValuePair<string, object>> GetEnumerator() => dict.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		/// <summary>
+		/// Returns the same TagCompound instance until a previously returned instance is filled with data, which is when it'll get a new one.
+		/// <br/> A big optimization for passing TagCompounds into Save functions.
+		/// </summary>
+		public static TagCompound GetEmptyTag() {
+			if (emptyTagCache == null || emptyTagCache.Count > 0) {
+				emptyTagCache = new TagCompound();
+			}
+
+			return emptyTagCache;
+		}
 	}
 }

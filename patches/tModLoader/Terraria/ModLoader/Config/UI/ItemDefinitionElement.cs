@@ -38,7 +38,7 @@ namespace Terraria.ModLoader.Config.UI
 				if (Lang.GetItemNameValue(option.type).IndexOf(chooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
 				string modname = "Terraria";
-				if (option.type >= ItemID.Count) {
+				if (option.type > ItemID.Count) {
 					modname = ItemLoader.GetItem(option.type).Mod.DisplayName; // or internal name?
 				}
 				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)

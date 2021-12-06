@@ -16,18 +16,19 @@ namespace Terraria.GameContent.Tile_Entities
 			PlayerIO.LoadInventory(_dyes, tag.GetList<TagCompound>("dyes"));
 		}
 
-		//NOTE: _items length is 2, so we can compress it to one bitsbyte
 		public override void NetSend(BinaryWriter writer) {
 			BitsByte itemsBits = default;
+			BitsByte dyesBits = default;
 
-			for (int i = 0; i < _items.Length; i++) {
+			for (int i = 0; i < 8; i++) {
 				itemsBits[i] = !_items[i].IsAir;
-				itemsBits[i + _items.Length] = !_dyes[i].IsAir;
+				dyesBits[i] = !_dyes[i].IsAir;
 			}
 
 			writer.Write(itemsBits);
+			writer.Write(dyesBits);
 
-			for (int i = 0; i < _items.Length; i++) {
+			for (int i = 0; i < 8; i++) {
 				var item = _items[i];
 
 				if (!item.IsAir) {
@@ -35,7 +36,7 @@ namespace Terraria.GameContent.Tile_Entities
 				}
 			}
 
-			for (int i = 0; i < _dyes.Length; i++) {
+			for (int i = 0; i < 8; i++) {
 				var dye = _dyes[i];
 
 				if (!dye.IsAir) {
@@ -46,13 +47,14 @@ namespace Terraria.GameContent.Tile_Entities
 
 		public override void NetReceive(BinaryReader reader) {
 			BitsByte presentItems = reader.ReadByte();
+			BitsByte presentDyes = reader.ReadByte();
 
-			for (int i = 0; i < _items.Length; i++) {
+			for (int i = 0; i < 8; i++) {
 				_items[i] = presentItems[i] ? ItemIO.Receive(reader, true) : new Item();
 			}
 
-			for (int i = 0; i < _dyes.Length; i++) {
-				_dyes[i] = presentItems[i + _items.Length] ? ItemIO.Receive(reader, true) : new Item();
+			for (int i = 0; i < 8; i++) {
+				_dyes[i] = presentDyes[i] ? ItemIO.Receive(reader, true) : new Item();
 			}
 		}
 	}

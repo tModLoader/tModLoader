@@ -3,7 +3,6 @@ using ReLogic.Content;
 using ReLogic.Content.Sources;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria.ModLoader.Assets;
@@ -62,7 +61,5 @@ namespace Terraria.ModLoader.Default
 			}
 			return false;
 		}
-
-		public override void HandlePacket(BinaryReader reader, int whoAmI) => ModAccessorySlotPlayer.NetHandler.HandlePacket(reader, whoAmI);
 	}
 }

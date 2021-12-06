@@ -84,5 +84,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void OnLeave(Player player) {
 		}
+
+		/// <summary>
+		/// Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override Terraria.Graphics.Shaders.ScreenShaderData or Terraria.Graphics.Effects.CustomSky, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.
+		/// </summary>
+		public virtual void BiomeVisuals(Player player) {
+		}
 	}
 }

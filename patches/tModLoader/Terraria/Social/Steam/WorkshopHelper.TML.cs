@@ -6,7 +6,6 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Localization;
@@ -22,7 +21,6 @@ namespace Terraria.Social.Steam
 	public partial class WorkshopHelper
 	{
 		internal static string[] MetadataKeys = new string[7] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences" };
-		private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version (.*) built for (tModLoader v.*)\[/quote\]", RegexOptions.Compiled);
 
 		public struct ItemInstallInfo
 		{
@@ -38,10 +36,8 @@ namespace Terraria.Social.Steam
 		}
 
 		internal static void OnGameExitCleanup() {
-			if (ModManager.SteamUser) {
-				SteamAPI.Shutdown();
+			if (ModManager.SteamUser)
 				return;
-			}
 
 			GameServer.Shutdown();
 		}
@@ -345,7 +341,7 @@ namespace Terraria.Social.Steam
 			private const int PlaytimePagingConst = 100; //https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking
 
 			public static void BeginPlaytimeTracking(LocalMod[] localMods) {
-				if (localMods.Length == 0 || !SteamAvailable)
+				if (localMods.Length == 0)
 					return;
 
 				List<PublishedFileId_t> list = new List<PublishedFileId_t>();
@@ -376,7 +372,7 @@ namespace Terraria.Social.Steam
 				// Call the appropriate variant
 				if (SteamUser)
 					SteamUGC.StopPlaytimeTrackingForAllItems();
-				else if (SteamAvailable)
+				else
 					SteamGameServerUGC.StopPlaytimeTrackingForAllItems();
 			}
 		}
@@ -543,7 +539,6 @@ namespace Terraria.Social.Steam
 
 						// Item Tagged data
 						uint keyCount;
-						var metadata = new NameValueCollection();
 
 						if (ModManager.SteamUser)
 							keyCount = SteamUGC.GetQueryUGCNumKeyValueTags(_primaryUGCHandle, i);
@@ -555,6 +550,8 @@ namespace Terraria.Social.Steam
 							IncompleteModCount++;
 							continue;
 						}
+
+						var metadata = new NameValueCollection();
 
 						for (uint j = 0; j < keyCount; j++) {
 							string key, val;
@@ -575,24 +572,6 @@ namespace Terraria.Social.Steam
 							continue;
 						}
 
-						// Calculate the Mod Browser Version
-						System.Version cVersion = new System.Version(metadata["version"].Replace("v", ""));
-
-						string description = pDetails.m_rgchDescription;
-
-						// Handle Github Actions metadata from description
-						// Nominal string: [quote=GithubActions(Don't Modify)]Version #.#.#.# built for tModLoader v#.#.#.#[/quote]
-						Match match = MetadataInDescriptionFallbackRegex.Match(description);
-						if (match.Success) {
-							System.Version descriptionVersion = new System.Version(match.Groups[1].Value);
-							if (descriptionVersion > cVersion) {
-								cVersion = descriptionVersion;
-								metadata["version"] = "v" + match.Groups[1].Value;
-								metadata["modloaderversion"] = match.Groups[2].Value;
-							}
-						}
-
-						// Assign ModSide Enum
 						ModSide modside = ModSide.Both;
 
 						if (metadata["modside"] == "Client")
@@ -623,6 +602,9 @@ namespace Terraria.Social.Steam
 							SteamGameServerUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out downloads);
 							SteamGameServerUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumSecondsPlayedDuringTimePeriod, out hot); //Temp: based on how often being played lately?
 						}
+
+						// Calculate the Mod Browser Version
+						System.Version cVersion = new System.Version(metadata["version"].Replace("v", ""));
 
 						// Check against installed mods
 						bool update = false;

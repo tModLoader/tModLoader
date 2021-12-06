@@ -111,8 +111,6 @@ namespace Terraria.ModLoader
 					result.tileColorStyle = avfx.TileColorStyle;
 					avfxFields++;
 				}
-
-				avfx.SpecialVisuals(player);
 			}
 
 			player.CurrentSceneEffect = result;

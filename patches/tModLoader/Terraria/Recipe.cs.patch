@@ -93,7 +93,7 @@
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -83,35 +_,32 @@
+@@ -83,34 +_,34 @@
  		}
  
  		public bool AcceptedByItemGroups(int invType, int reqType) {
@@ -135,16 +135,15 @@
  		public void Create() {
  			Item[] array = null;
  			Item item = null;
--			Item item2 = null;
+ 			Item item2 = null;
 -			for (int i = 0; i < maxRequirements; i++) {
--				item2 = requiredItem[i];
++			for (int i = 0; i < requiredItem.Count; i++) {
+ 				item2 = requiredItem[i];
 -				if (item2.type == 0)
 -					break;
--
-+			foreach (Item item2 in requiredItem) {
+ 
  				int num = item2.stack;
  				if (alchemy && Main.player[Main.myPlayer].alchemyTable) {
- 					if (num > 1) {
 @@ -128,6 +_,8 @@
  					}
  				}
@@ -256,7 +255,7 @@
  		}
  
  		public static void SetupRecipes() {
-@@ -13400,14 +_,17 @@
+@@ -13317,14 +_,17 @@
  			AddRecipe();
  			CreateReverseWallRecipes();
  			CreateReversePlatformRecipes();
@@ -276,16 +275,16 @@
  				}
  
  				Main.recipe[i].createItem.material = ItemID.Sets.IsAMaterial[Main.recipe[i].createItem.type];
-@@ -13415,7 +_,7 @@
+@@ -13332,7 +_,7 @@
  		}
  
  		public static void UpdateWhichItemsAreMaterials() {
--			for (int i = 0; i < 5125; i++) {
+-			for (int i = 0; i < 5088; i++) {
 +			for (int i = 0; i < ItemLoader.ItemCount; i++) {
  				Item item = new Item();
  				item.SetDefaults(i, noMatCheck: true);
  				item.checkMat();
-@@ -14268,22 +_,23 @@
+@@ -14185,22 +_,23 @@
  		private static void CreateReversePlatformRecipes() {
  			int num = numRecipes;
  			for (int i = 0; i < num; i++) {
@@ -314,7 +313,7 @@
  				}
  			}
  		}
-@@ -14291,27 +_,29 @@
+@@ -14208,27 +_,29 @@
  		private static void CreateReverseWallRecipes() {
  			int num = numRecipes;
  			for (int i = 0; i < num; i++) {
@@ -351,7 +350,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -14329,18 +_,59 @@
+@@ -14246,18 +_,59 @@
  			}
  		}
  

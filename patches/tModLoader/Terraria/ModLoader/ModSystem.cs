@@ -48,25 +48,6 @@ namespace Terraria.ModLoader
 		public virtual void PostSetupContent() { }
 
 		/// <summary>
-		/// Override this method to add recipes to the game.
-		/// <br/> It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
-		/// </summary>
-		public virtual void AddRecipes() { }
-
-		/// <summary>
-		/// This provides a hook into the mod-loading process immediately after recipes have been added.
-		/// <br/> You can use this to edit recipes added by other mods.
-		/// </summary>
-		public virtual void PostAddRecipes() { }
-
-		/// <summary>
-		/// Override this method to add recipe groups to the game.
-		/// <br/> You must add recipe groups by calling the <see cref="RecipeGroup.RegisterGroup"/> method here.
-		/// <br/> A recipe group is a set of items that can be used interchangeably in the same recipe.
-		/// </summary>
-		public virtual void AddRecipeGroups() { }
-
-		/// <summary>
 		/// Called whenever a world is loaded. This can be used to initialize data structures, etc.
 		/// </summary>
 		public virtual void OnWorldLoad() { }
