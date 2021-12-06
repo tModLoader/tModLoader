@@ -4,8 +4,8 @@
  		private List<TeleportPylonInfo> _pylonsOld = new List<TeleportPylonInfo>();
  		private int _cooldownForUpdatingPylonsList;
  		private const int CooldownTimePerPylonsListUpdate = int.MaxValue;
--		private SceneMetrics _sceneMetrics = new SceneMetrics(Main.ActiveWorld);
-+		internal SceneMetrics _sceneMetrics = new SceneMetrics(Main.ActiveWorld);
+-		private SceneMetrics _sceneMetrics = new SceneMetrics();
++		internal SceneMetrics _sceneMetrics = new SceneMetrics();
  
  		public List<TeleportPylonInfo> Pylons => _pylons;
  

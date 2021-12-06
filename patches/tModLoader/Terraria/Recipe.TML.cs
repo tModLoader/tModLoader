@@ -150,7 +150,6 @@ namespace Terraria
 		/// <summary>
 		/// Adds an ingredient to this recipe of the given type of item and stack size.
 		/// </summary>
-		/// <param name="item">The item.</param>
 		/// <param name="stack">The stack.</param>
 		public Recipe AddIngredient<T>(int stack = 1) where T : ModItem
 			=> AddIngredient(ModContent.ItemType<T>(), stack);

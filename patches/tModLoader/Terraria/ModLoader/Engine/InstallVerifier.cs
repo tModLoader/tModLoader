@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Engine
 		public const string TmlContentDirectory = "Content";
 		public const string SteamAppIDPath = "steam_appid.txt";
 		private const string DefaultExe = "Terraria.exe";
-		private static string CheckExe = $"Terraria_1.4.2.3.exe"; // This should match the hashes. {Main.versionNumber}
+		private static string CheckExe = $"Terraria_1.4.3.2.exe"; // This should match the hashes. {Main.versionNumber}
 		public const bool RequireContentDirectory = false; // Not currently needed, due to tML matching vanilla's version.
 
 		private static bool? isValid;
@@ -42,22 +42,22 @@ namespace Terraria.ModLoader.Engine
 				}
 
 				vanillaSteamAPI = "steam_api.dll";
-				gogHash = ToByteArray("a198ff662df47b20ef1d1436c5d80f67"); // Don't forget to update CheckExe in CheckGoG
-				steamHash = ToByteArray("4fd8072ca82ded3d9da1be577a478788");
+				gogHash = ToByteArray("6352ded8d64d0f67fdf10ff2a6f9e51f"); // Don't forget to update CheckExe above
+				steamHash = ToByteArray("201707bba92e27f09d05529e2f051c60");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIPath = "Libraries/Native/OSX/libsteam_api64.dylib";
 				steamAPIHash = ToByteArray("69C98EC9C3179D52A7FE75BD8405D8FC");
 				vanillaSteamAPI = "libsteam_api.dylib";
-				gogHash = ToByteArray("2d877e9d74d0a382e45d75ff008969d3");
-				steamHash = ToByteArray("12c8d2ac5af6c8505bd1a9339dc75231");
+				gogHash = ToByteArray("7b8d96e0ef583164d565dc01be4b5627");
+				steamHash = ToByteArray("0b253fbe529ea3e2ac61a0658f43af94");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIPath = "Libraries/Native/Linux/libsteam_api64.so";
 				steamAPIHash = ToByteArray("25BF523623B5EE8E82B047327F9C1341");
 				vanillaSteamAPI = "libsteam_api.so";
-				gogHash = ToByteArray("a37d05f005181bd1bacaa5b82d6fab0d");
-				steamHash = ToByteArray("debcc318ca4e14295e3ac22e380e289b");
+				gogHash = ToByteArray("fa53f0a39be5698da7a15a1cc9e56689");
+				steamHash = ToByteArray("ab57cfd9076ab0c0eab9f46a412b8422");
 			}
 			else {
 				string message = Language.GetTextValue("tModLoader.UnknownVerificationOS");

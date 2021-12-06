@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Lang.cs
 +++ src/Terraria/Terraria/Lang.cs
-@@ -416,6 +_,8 @@
+@@ -417,6 +_,8 @@
  		}
  
  		public static void BuildMapAtlas() {
