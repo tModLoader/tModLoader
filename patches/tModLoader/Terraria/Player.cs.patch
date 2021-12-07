@@ -1970,21 +1970,31 @@
  				SmartSelect_PickToolForStrategy(tX, tY, toolStrategy, wetTile);
  				_lastSmartCursorToolStrategy = toolStrategy;
  			}
-@@ -12498,7 +_,7 @@
+@@ -12492,13 +_,15 @@
+ 		private void SmartSelect_PickToolForStrategy(int tX, int tY, int toolStrategy, bool wetTile) {
+ 			for (int i = 0; i < 50; i++) {
+ 				int type = inventory[i].type;
++				bool dryTorch = false, wetTorch = false, glowstick = false;
+ 				switch (toolStrategy) {
+ 					case 0:
+-						if (ItemID.Sets.Torches[type]) {
++						ItemLoader.GetItem(type)?.AutoLightSelect(ref dryTorch, ref wetTorch, ref glowstick);
++						if (ItemID.Sets.Torches[type] || dryTorch) {
  							SmartSelect_SelectItem(i);
  							return;
  						}
 -						if (type == 282 || type == 286 || type == 3002 || type == 3112 || type == 4776)
-+						if (ItemID.Sets.Glowsticks[type])
++						if (ItemID.Sets.Glowsticks[type] || glowstick)
  							SmartSelect_SelectItem(i);
  						break;
  					case 1:
-@@ -12520,16 +_,16 @@
+@@ -12520,16 +_,17 @@
  						}
  						break;
  					case 4:
 -						if (inventory[i].type != 282 && inventory[i].type != 286 && inventory[i].type != 3002 && inventory[i].type != 3112 && inventory[i].type != 4776 && inventory[i].type != 930 && ItemID.Sets.Torches[type] && !ItemID.Sets.WaterTorches[type]) {
-+						if (inventory[i].type != 930 && ItemID.Sets.Torches[type] && !ItemID.Sets.WaterTorches[type] && !ItemID.Sets.Glowsticks[type]) {
++						ItemLoader.GetItem(type)?.AutoLightSelect(ref dryTorch, ref wetTorch, ref glowstick);
++						if (inventory[i].type != 930 && (ItemID.Sets.Torches[type] || dryTorch) && !(ItemID.Sets.WaterTorches[type] || wetTorch) && !(ItemID.Sets.Glowsticks[type] || glowstick)) {
  							if (nonTorch == -1)
  								nonTorch = selectedItem;
  
@@ -1995,11 +2005,24 @@
  							break;
  						}
 -						if ((type == 282 || type == 286 || type == 3002 || type == 3112 || type == 4776) && wetTile) {
-+						if (ItemID.Sets.Glowsticks[type] && wetTile) {
++						if ((ItemID.Sets.Glowsticks[type] || glowstick) && wetTile) {
  							SmartSelect_SelectItem(i);
  							return;
  						}
-@@ -12557,7 +_,7 @@
+@@ -12547,45 +_,41 @@
+ 								return;
+ 							}
+ 						}
+-						else if (ItemID.Sets.WaterTorches[type]) {
++						else if (ItemID.Sets.WaterTorches[type] || wetTorch) {
+ 							SmartSelect_SelectItem(i);
+ 							return;
+ 						}
+ 						break;
+ 					case 5:
+-						if (ItemID.Sets.Torches[type]) {
++						ItemLoader.GetItem(type)?.AutoLightSelect(ref dryTorch, ref wetTorch, ref glowstick);
++						if (ItemID.Sets.Torches[type] || dryTorch) {
  							if (nonTorch == -1)
  								nonTorch = selectedItem;
  
@@ -2008,14 +2031,49 @@
  								selectedItem = i;
  
  							break;
-@@ -12584,6 +_,7 @@
- 							case 3002:
- 							case 3112:
- 							case 4776:
-+							case int thisType when ItemID.Sets.Glowsticks[thisType]:
+ 						}
+-						switch (type) {
+-							case 930: {
++						else if (type == 930) {
+-									bool flag = false;
++							bool flag = false;
+-									for (int num3 = 57; num3 >= 0; num3--) {
++							for (int num3 = 57; num3 >= 0; num3--) {
+-										if (inventory[num3].ammo == inventory[i].useAmmo && inventory[num3].stack > 0) {
++								if (inventory[num3].ammo == inventory[i].useAmmo && inventory[num3].stack > 0) {
+-											flag = true;
++									flag = true;
+-											break;
+-										}
+-									}
+-
+-									if (flag) {
+-										SmartSelect_SelectItem(i);
+-										return;
+-									}
+-
+ 									break;
+ 								}
+-							case 282:
+-							case 286:
+-							case 3002:
+-							case 3112:
+-							case 4776:
++							}
++
++							if (flag) {
  								SmartSelect_SelectItem(i);
  								return;
++							}
++
++							break;
++						}
++						else if (ItemID.Sets.Glowsticks[type] || glowstick) {
++							SmartSelect_SelectItem(i);
++							return;
  						}
+ 						break;
+ 					case 6: {
 @@ -12763,6 +_,13 @@
  					if (tile == null)
  						return;
