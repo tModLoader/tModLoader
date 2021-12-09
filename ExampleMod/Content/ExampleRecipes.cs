@@ -47,17 +47,17 @@ namespace ExampleMod.Content
 
 			// Start a new Recipe.
 			resultItem.CreateRecipe()
-				// Adds a Vanilla Ingredient. 
+				// Adds a Vanilla Ingredient.
 				// Look up ItemIDs: https://github.com/tModLoader/tModLoader/wiki/Vanilla-Item-IDs
 				// To specify more than one ingredient type, use multiple recipe.AddIngredient() calls.
 				.AddIngredient(ItemID.StoneBlock)
-				// An optional 2nd argument will specify a stack of the item. Any calls to any AddIngredient overload without a stack value at the end will have the stack default to 1. 
+				// An optional 2nd argument will specify a stack of the item. Any calls to any AddIngredient overload without a stack value at the end will have the stack default to 1.
 				.AddIngredient(ItemID.Acorn, 10)
 				// We can also specify the current item as an ingredient
 				.AddIngredient(resultItem)
 				// Adds a Mod Ingredient. Do not attempt ItemID.EquipMaterial, it's not how it works.
 				.AddIngredient<Items.Weapons.ExampleSword>()
-				// An alternate string-based approach to the above. Try to only use it for other mods' items, because it's slower. 
+				// An alternate string-based approach to the above. Try to only use it for other mods' items, because it's slower.
 				.AddIngredient(Mod, "ExampleSword")
 
 				// RecipeGroups allow you create a recipe that accepts items from a group of similar ingredients. For example, all varieties of Wood are in the vanilla "Wood" Group

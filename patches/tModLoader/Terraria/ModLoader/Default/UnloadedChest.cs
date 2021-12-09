@@ -24,7 +24,7 @@ namespace Terraria.ModLoader.Default
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2); // Disables hammering
 			TileObjectData.addTile(Type);
-				
+
 			Main.tileSpelunker[Type] = true;
 			Main.tileContainer[Type] = true;
 			Main.tileShine2[Type] = true;

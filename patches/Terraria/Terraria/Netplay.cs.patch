@@ -121,7 +121,7 @@
 +			for (int i = 0; i < 257; i++) {
 +				if (i < 256)
 +					Netplay.Clients[i] = new RemoteClient();
-+				
++
 +				NetMessage.buffer[i] = new MessageBuffer();
 +				NetMessage.buffer[i].whoAmI = i;
 +			}

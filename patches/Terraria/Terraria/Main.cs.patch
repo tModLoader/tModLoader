@@ -245,12 +245,12 @@
  			};
  
  			SceneMetrics = new SceneMetrics();
-+			
++
 +			if (dedServ) {
 +				Initialize_AlmostEverything();
 +				return;
 +			}
-+			
++
  			TimeLogger.Initialize();
  			LoadContent_TryEnteringHiDef();
  			ClientInitialize();
@@ -481,22 +481,22 @@
  			CreditsRollEvent.UpdateTime();
  			WorldGen.mysticLogsEvent.UpdateTime();
  			PylonSystem.Update();
-+			
++
 +			if (dedServ)
 +				goto SkipMoonLordEffects;
-+			
++
  			if (NPC.MoonLordCountdown > 0) {
  				float num5 = MathHelper.Clamp((float)Math.Sin((float)NPC.MoonLordCountdown / 60f * 0.5f) * 2f, 0f, 1f);
  				num5 *= 0.75f - 0.5f * ((float)NPC.MoonLordCountdown / 3600f);
-@@ -49869,6 +_,8 @@
- 			else if (Terraria.Graphics.Effects.Filters.Scene["MoonLordShake"].IsActive()) {
+@@ -49870,6 +_,8 @@
  				Terraria.Graphics.Effects.Filters.Scene.Deactivate("MoonLordShake");
  			}
-+			
-+			SkipMoonLordEffects:
  
++			SkipMoonLordEffects:
++
  			if (NPC.MoonLordCountdown > 0) {
  				NPC.MoonLordCountdown--;
+ 				if (NPC.MoonLordCountdown <= 0 && netMode != 1)
 @@ -50787,6 +_,7 @@
  		}
  

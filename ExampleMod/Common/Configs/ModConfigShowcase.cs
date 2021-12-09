@@ -17,7 +17,7 @@ using Terraria.ModLoader.Config.UI;
 using Terraria.UI;
 
 // This file contains several fake ModConfig classes that each
-// showcase various features of ModConfig. 
+// showcase various features of ModConfig.
 namespace ExampleMod.Common.Configs
 {
 	[BackgroundColor(144, 252, 249)]
@@ -321,9 +321,9 @@ namespace ExampleMod.Common.Configs
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
-		// Private and Internal fields and properties will not be shown. 
+		// Private and Internal fields and properties will not be shown.
 		// Note that private and internal values will not be replaced by the deserialization, so initializer and ctor work.
-		// You should avoid private and internal values in 
+		// You should avoid private and internal values in
 #pragma warning disable CS0414
 		private float Private = 144;
 #pragma warning restore CS0414
@@ -335,7 +335,7 @@ namespace ExampleMod.Common.Configs
 		// Will not show. Avoid static. Due to how ModConfig works, static fields will not work correctly. Use a static field named Instance in the manner used in ExampleConfigServer for accessing ModConfig fields in the rest of your mod.
 		public static float Static;
 
-		// Get only properties will show up, but will be grayed out to show that they can't be changed. 
+		// Get only properties will show up, but will be grayed out to show that they can't be changed.
 		public float Getter => Main.rand?.NextFloat(1f) ?? 0; // This is just an example, please don't do this.
 
 		// AutoProperies work the same as fields.

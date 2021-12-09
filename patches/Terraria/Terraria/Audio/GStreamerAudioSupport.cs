@@ -9,7 +9,7 @@ namespace Terraria.Audio
 	/// GStreamer replaces FFMPEG support in the latest FAudio releases.
 	/// Unfortunately GStreamer just ends up using FFMPEG as a backend to the gstlibav.dll plugin anyway
 	/// Slimming the FFMPEG for GStreamer would _probably_ require rebuilding the gstlibav plugin, or writing our own.
-	/// 
+	///
 	/// If we ever need GStreamer support for FAudio in the future... add the following directory structure to Libraries/Native/Windows
 	/// gstreamer
 	/// │   avcodec-58.dll
@@ -72,7 +72,7 @@ namespace Terraria.Audio
 					AddDllDirectory(gstreamer_dir);
 				}
 				catch {
-					// Pre-Windows 7, KB2533623 
+					// Pre-Windows 7, KB2533623
 					SetDllDirectory(gstreamer_dir);
 				}
 			}

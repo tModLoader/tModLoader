@@ -39,7 +39,7 @@ namespace Terraria.ModLoader.Core
 
 			// Prioritize loading Mods from Mods folder for Dev/Beta simplicitiy.
 			modRepos.Add(ModLoader.ModPath);
-			
+
 			// Load Mods from Workshop downloads
 			modRepos.AddRange(WorkshopFileFinder.ModPaths);
 
@@ -71,7 +71,7 @@ namespace Terraria.ModLoader.Core
 						modsDirCache[fileName] = mod;
 					}
 
-					// Ignore it from Workshop if it appeared in Mods folder/already exists. 
+					// Ignore it from Workshop if it appeared in Mods folder/already exists.
 					if (names.Add(mod.Name)) {
 						mods.Add(mod);
 					}
@@ -80,7 +80,7 @@ namespace Terraria.ModLoader.Core
 					}
 				}
 			}
-				
+
 			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
 		}
 
@@ -113,7 +113,7 @@ namespace Terraria.ModLoader.Core
 			//}
 			Interface.loadMods.SetLoadStage("tModLoader.MSFinding");
 			var modsToLoad = FindMods().Where(mod => ModLoader.IsEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
-			
+
 			// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.
 			if (Main.instance.IsActive && Main.oldKeyState.PressingShift() || ModLoader.skipLoad || token.IsCancellationRequested) {
 				ModLoader.skipLoad = false;

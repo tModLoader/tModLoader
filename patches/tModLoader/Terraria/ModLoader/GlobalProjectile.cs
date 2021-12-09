@@ -26,20 +26,20 @@ namespace Terraria.ModLoader
 		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
-		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
+		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()).
 		/// Defaults to false (using default constructor).
 		/// </summary>
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
-		/// Returns a clone of this GlobalProjectile. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references. 
+		/// Returns a clone of this GlobalProjectile.
+		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references.
 		/// Only called if CloneNewInstances &amp;&amp; InstancePerEntity
 		/// </summary>
 		public virtual GlobalProjectile Clone() => (GlobalProjectile)MemberwiseClone();
 
 		/// <summary>
-		/// Create a new instance of this GlobalProjectile for a Projectile instance. 
+		/// Create a new instance of this GlobalProjectile for a Projectile instance.
 		/// Called at the end of Projectile.SetDefaults.
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields

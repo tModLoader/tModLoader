@@ -29,7 +29,7 @@ namespace Terraria.ModLoader.UI
 
 		protected int DrawHeight => (int)Height.Pixels;
 		protected int DrawWidth => (int)Width.Pixels;
-		
+
 		public UICycleImage(Asset<Texture2D> texture, int states, int width, int height, int textureOffsetX, int textureOffsetY, int padding = 2) {
 			_texture = texture;
 			_textureOffsetX = textureOffsetX;
@@ -39,7 +39,7 @@ namespace Terraria.ModLoader.UI
 			_states = states;
 			_padding = padding;
 		}
-		
+
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			CalculatedStyle dimensions = GetDimensions();
 			Point point = new Point(_textureOffsetX, _textureOffsetY + (_padding + DrawHeight) * _currentState);

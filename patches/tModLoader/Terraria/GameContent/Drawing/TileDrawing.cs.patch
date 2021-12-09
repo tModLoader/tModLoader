@@ -28,14 +28,6 @@
  					}
  				}
  			}
-@@ -547,6 +_,7 @@
- 				return;
- 
- 			GetTileDrawData(tileX, tileY, drawData.tileCache, drawData.typeCache, ref drawData.tileFrameX, ref drawData.tileFrameY, out drawData.tileWidth, out drawData.tileHeight, out drawData.tileTop, out drawData.halfBrickHeight, out drawData.addFrX, out drawData.addFrY, out drawData.tileSpriteEffect, out drawData.glowTexture, out drawData.glowSourceRect, out drawData.glowColor);
-+			
- 			drawData.drawTexture = GetTileDrawTexture(drawData.tileCache, tileX, tileY);
- 			Texture2D highlightTexture = null;
- 			Rectangle empty = Rectangle.Empty;
 @@ -608,6 +_,7 @@
  
  			Rectangle normalTileRect = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
