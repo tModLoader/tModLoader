@@ -7,7 +7,7 @@ using ExampleMod.Common.ItemDropRules.Conditions;
 
 namespace ExampleMod.Common.GlobalNPCs
 {
-	// This file shows numerous examples of what you can do with the extensive NPC Loot lootable system. 
+	// This file shows numerous examples of what you can do with the extensive NPC Loot lootable system.
 	// Despite this file being GlobalNPC, everything here can be used with a ModNPC as well! See examples of this in the Content/NPCs folder.
 	public class ExampleNPCLoot : GlobalNPC
 	{
@@ -19,7 +19,7 @@ namespace ExampleMod.Common.GlobalNPCs
 			if (!NPCID.Sets.CountsAsCritter[npc.type]) { // If npc is not a critter
 				// Make it drop ExampleItem.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1));
-																						 
+
 				// ItemDropRule.Common is what you would use in most cases, it simply drops the item with a fractional chance specified.
 				// The chanceDenominator int is used for the denominator part of the fractional chance of dropping this item.
 
@@ -37,9 +37,9 @@ namespace ExampleMod.Common.GlobalNPCs
 					rule => rule is ItemDropWithConditionRule drop // If the rule is an ItemDropWithConditionRule instance
 						&& drop.itemId == ItemID.GreenCap // And that instance drops a green cap
 						&& drop.condition is Conditions.NamedNPC npcNameCondition // ..And if its condition is that an npc name must match some string
-						&& npcNameCondition.neededName == "Andrew" // And the condition's string is "Andrew". 
+						&& npcNameCondition.neededName == "Andrew" // And the condition's string is "Andrew".
 				);
-				
+
 				npcLoot.Add(ItemDropRule.Common(ItemID.GreenCap, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
@@ -61,7 +61,7 @@ namespace ExampleMod.Common.GlobalNPCs
 				npcLoot.Add(conditionalRule);
 				// It will result in the drop being shown in the bestiary, but only drop if the condition is true.
 			}
-      
+
 			//TODO: Add the rest of the vanilla drop rules!!
 		}
 

@@ -41,7 +41,7 @@
 +				Utils.ShowFancyErrorMessage("Unable to find Steam Hosted Multiplayer server.", 0);
 +
 +			Logging.Terraria.InfoFormat("Connecting to {0}", friendlyName);
-+			
++
  			Connection.ResetSpecialFlags();
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;

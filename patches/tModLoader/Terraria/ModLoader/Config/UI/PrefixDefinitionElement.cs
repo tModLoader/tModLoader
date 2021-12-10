@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected override List<DefinitionOptionElement<PrefixDefinition>> CreateDefinitionOptionElementList() {
 			optionScale = 0.8f;
-			
+
 			var options = new List<DefinitionOptionElement<PrefixDefinition>>();
 
 			for (int i = 0; i < PrefixLoader.PrefixCount; i++) {
@@ -31,13 +31,13 @@ namespace Terraria.ModLoader.Config.UI
 					optionElement = new PrefixDefinitionOptionElement(new PrefixDefinition("Terraria", "None"), optionScale);
 				else
 					optionElement = new PrefixDefinitionOptionElement(new PrefixDefinition(i), optionScale);
-				
+
 				optionElement.OnClick += (a, b) => {
 					Value = optionElement.definition;
 					updateNeeded = true;
 					selectionExpanded = false;
 				};
-				
+
 				options.Add(optionElement);
 			}
 

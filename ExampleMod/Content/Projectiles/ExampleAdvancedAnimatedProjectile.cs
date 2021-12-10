@@ -46,7 +46,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ai[0] += 1f;
 
 			FadeInAndOut();
-			
+
 			// Slow down
 			Projectile.velocity *= 0.98f;
 
@@ -67,7 +67,7 @@ namespace ExampleMod.Content.Projectiles
 			// Set both direction and spriteDirection to 1 or -1 (right and left respectively)
 			// Projectile.direction is automatically set correctly in Projectile.Update, but we need to set it here or the textures will draw incorrectly on the 1st frame.
 			Projectile.direction = Projectile.spriteDirection = (Projectile.velocity.X > 0f) ? 1 : -1;
-			
+
 			Projectile.rotation = Projectile.velocity.ToRotation();
 			// Since our sprite has an orientation, we need to adjust rotation to compensate for the draw flipping
 			if (Projectile.spriteDirection == -1) {
@@ -112,7 +112,7 @@ namespace ExampleMod.Content.Projectiles
 			// If texture without animation frameHeight is always texture.Height and startY is always 0
 			int frameHeight = texture.Height / Main.projFrames[Projectile.type];
 			int startY = frameHeight * Projectile.frame;
-			
+
 			// Get this frame on texture
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
 
@@ -122,7 +122,7 @@ namespace ExampleMod.Content.Projectiles
 			Vector2 origin = sourceRectangle.Size() / 2f;
 
 			// If image isn't centered or symmetrical you can specify origin of the sprite
-			// (0,0) for the upper-left corner 
+			// (0,0) for the upper-left corner
 			float offsetX = 20f;
 			origin.X = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX);
 

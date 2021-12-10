@@ -51,7 +51,7 @@ namespace ExampleMod.Common.Systems
 			List<PosData<byte>> list = new List<PosData<byte>>();
 			foreach (var entry in tag.GetList<TagCompound>("myMap")) {
 				list.Add(new PosData<byte>(
-					entry.GetInt("pos"), 
+					entry.GetInt("pos"),
 					entry.Get<byte>("data")
 				));
 			}
@@ -63,7 +63,7 @@ namespace ExampleMod.Common.Systems
 			myMap = null;
 		}
 
-		// We define what we want to generate as additional location data, for this example, in PostWorldGen. 
+		// We define what we want to generate as additional location data, for this example, in PostWorldGen.
 		// We will create a simple column of byte data going down the horizontal center of the world that we will later use in PreUpdateWorld.
 		public override void PostWorldGen() {
 			var builder = new PosData<byte>.OrderedSparseLookupBuilder(compressEqualValues: false);

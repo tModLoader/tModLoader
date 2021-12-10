@@ -359,7 +359,7 @@ namespace Terraria.ModLoader.UI
 						if(info == null)
 							Console.WriteLine($"No mod with the name {modname} found on the workshop.");
 						else
-							info.InnerDownloadWithDeps(); 
+							info.InnerDownloadWithDeps();
 					}
 					catch (Exception e) {
 						Console.WriteLine(Language.GetTextValue("tModLoader.MBServerDownloadError", modname, e.ToString()));

@@ -114,7 +114,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 			for (float i = 0f; i < 1f; i += 0.34f) {
 				float radians = (i + timer) * MathHelper.TwoPi;
-				
+
 				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(140, 120, 255, 77), rotation, frameOrigin, scale, SpriteEffects.None, 0);
 			}
 

@@ -63,10 +63,10 @@
  			else
  				missingArm = true;
 +			*/
- 
++
 +			armorHidesHands = drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesHands[drawPlayer.body];
 +			armorHidesArms = drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesArms[drawPlayer.body];
-+			
+ 
  			if (drawPlayer.heldProj >= 0 && shadow == 0f) {
  				int type = Main.projectile[drawPlayer.heldProj].type;
  				if (type == 460 || type == 535 || type == 600)

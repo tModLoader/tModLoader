@@ -62,7 +62,7 @@ namespace Terraria.ModLoader.Config.UI
 
 				int frameCounter = Interface.modConfig.updateCount / 8;
 				int frames = Main.npcFrameCount[type];
-				
+
 				if (unloaded) {
 					npcTexture = TextureAssets.Item[ItemID.Count].Value; //Will this always return the 'missing item' texture?
 					frames = 1;

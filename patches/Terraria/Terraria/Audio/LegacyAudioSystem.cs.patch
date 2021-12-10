@@ -8,7 +8,7 @@
 +					sources[i].HasAsset(assetPath);
 +					continue;
 +				}
-+				
++
  				IContentSource contentSource = sources[i];
  				if (!contentSource.HasAsset(assetPath))
  					continue;

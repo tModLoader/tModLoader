@@ -91,7 +91,7 @@ namespace Terraria.ModLoader
 				ModSlotPlayer(Player).scrollbarSlotPosition = 0;
 		}
 
-		public static string[] scrollStackLang = { Language.GetTextValue("tModLoader.slotStack"), Language.GetTextValue("tModLoader.slotScroll") }; 
+		public static string[] scrollStackLang = { Language.GetTextValue("tModLoader.slotStack"), Language.GetTextValue("tModLoader.slotScroll") };
 
 		internal void DrawScrollSwitch() {
 			Texture2D value4 = TextureAssets.InventoryTickOn.Value;
@@ -120,7 +120,7 @@ namespace Terraria.ModLoader
 			Main.hoverItemName = scrollStackLang[num45];
 		}
 
-		// This is a hacky solution to make it very vanilla-esque, at the cost of not actually using a UI proper. 
+		// This is a hacky solution to make it very vanilla-esque, at the cost of not actually using a UI proper.
 		internal void DrawScrollbar(int accessoryPerColumn, int slotsToRender, int scrollIncrement) {
 			int xLoc = Main.screenWidth - 64 - 28;
 
@@ -131,7 +131,7 @@ namespace Terraria.ModLoader
 
 			Rectangle rectangle = new Rectangle(xLoc + 47 + 6, chkMin, 5, chkMax - chkMin);
 			scrollbar.DrawBar(Main.spriteBatch, Main.Assets.Request<Texture2D>("Images/UI/Scrollbar").Value, rectangle, Color.White);
-			
+
 			int barSize = (chkMax - chkMin) / (scrollIncrement + 1);
 			rectangle = new Rectangle(xLoc + 47 + 5, chkMin + ModSlotPlayer(Player).scrollbarSlotPosition * barSize, 3, barSize);
 			scrollbar.DrawBar(Main.spriteBatch, Main.Assets.Request<Texture2D>("Images/UI/ScrollbarInner").Value, rectangle, Color.White);
@@ -231,7 +231,7 @@ namespace Terraria.ModLoader
 			int accessoryPerColumn = GetAccessorySlotPerColumn();
 			int xColumn = (int)(trueSlot / accessoryPerColumn);
 			int yRow = trueSlot % accessoryPerColumn;
-						
+
 			if (ModSlotPlayer(Player).scrollSlots) {
 				int row = yRow + (xColumn) * accessoryPerColumn - ModSlotPlayer(Player).scrollbarSlotPosition - skip;
 
@@ -262,12 +262,12 @@ namespace Terraria.ModLoader
 					xLoc = Main.screenWidth - 64 - 28 - 47 * 3 * col;
 				}
 			}
-			
+
 			return true;
 		}
 
 		/// <summary>
-		/// Is run in AccessorySlotLoader.Draw. 
+		/// Is run in AccessorySlotLoader.Draw.
 		/// Creates & sets up Hide Visibility Button.
 		/// </summary>
 		internal bool DrawVisibility(ref bool visbility, int context, int xLoc, int yLoc, out int xLoc2, out int yLoc2, out Texture2D value4) {
@@ -284,11 +284,11 @@ namespace Terraria.ModLoader
 			if (rectangle.Contains(new Point(Main.mouseX, Main.mouseY)) && !PlayerInput.IgnoreMouseInterface) {
 				skipCheck = true;
 				Player.mouseInterface = true;
-				
+
 				if (Main.mouseLeft && Main.mouseLeftRelease) {
 					visbility = !visbility;
 					SoundEngine.PlaySound(12);
-					
+
 					if (Main.netMode == 1 && context > 0)
 						NetMessage.SendData(4, -1, -1, null, Player.whoAmI);
 				}
@@ -305,7 +305,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Is run in AccessorySlotLoader.Draw. 
+		/// Is run in AccessorySlotLoader.Draw.
 		/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 		/// At the end, calls this.DrawRedirect to enable custom drawing
 		/// </summary>
@@ -339,7 +339,7 @@ namespace Terraria.ModLoader
 				}
 
 				ItemSlot.MouseHover(items, Math.Abs(context), slot);
-				
+
 				if (context < 0)
 					OnHover(slot, context);
 			}
@@ -378,7 +378,7 @@ namespace Terraria.ModLoader
 						return dyeTexture.Value;
 					return TextureAssets.InventoryBack12.Value;
 			}
-			
+
 			// Default to a functional slot
 			return TextureAssets.InventoryBack3.Value;
 		}
@@ -426,7 +426,7 @@ namespace Terraria.ModLoader
 		public void OnHover(int index, int context) => Get(index).OnMouseHover(ContextToEnum(context));
 
 		/// <summary>
-		/// Checks if the provided item can go in to the provided slot. 
+		/// Checks if the provided item can go in to the provided slot.
 		/// Includes checking if the item already exists in either of Player.Armor or ModSlotPlayer.exAccessorySlot
 		/// Invokes directly ItemSlot.AccCheck & ModSlot.CanAcceptItem
 		/// </summary>
@@ -450,7 +450,7 @@ namespace Terraria.ModLoader
 		//TODO: Look into if this should have an actual hook later, and which class to associate to (item or player). Not a priority to the Accessory Slot ModType PR
 		/// <summary>
 		/// Mirrors Player.GetPreferredGolfBallToUse.
-		/// Provides the golf ball projectile from an accessory slot. 
+		/// Provides the golf ball projectile from an accessory slot.
 		/// </summary>
 		public bool PreferredGolfBall(ref int projType) {
 			for (int num = ModSlotPlayer(Player).SlotCount * 2 - 1; num >= 0; num--) {

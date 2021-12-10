@@ -32,7 +32,7 @@ namespace ExampleMod.Content.NPCs
 			//What that means is: the NPC will have the AI of a town NPC, will attack like a town NPC, and have a shop (or any other additional functionality if you wish) like a town NPC.
 			//However, the NPC will not have their head displayed on the map, will de-spawn when no players are nearby or the world is closed, will spawn like any other NPC, and have no happiness button when chatting.
 			NPCID.Sets.ActsLikeTownNPC[Type] = true;
-			
+
 			//To reiterate, since this NPC isn't technically a town NPC, we need to tell the game that we still want this NPC to have a custom/randomized name when they spawn.
 			//In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
 			NPCID.Sets.SpawnsWithCustomName[Type] = true;

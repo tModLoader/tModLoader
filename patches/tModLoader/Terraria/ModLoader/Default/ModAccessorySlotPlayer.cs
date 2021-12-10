@@ -259,7 +259,7 @@ namespace Terraria.ModLoader.Default
 				var dPlayer = Main.player[fromWho].GetModPlayer<ModAccessorySlotPlayer>();
 
 				sbyte slot = r.ReadSByte();
-				
+
 				dPlayer.exHideAccessory[slot] = r.ReadBoolean();
 
 				if (Main.netMode == Server)

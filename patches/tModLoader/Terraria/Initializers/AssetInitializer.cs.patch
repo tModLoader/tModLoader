@@ -41,7 +41,7 @@
  			Main.ResourceSetsManager.LoadContent(mode);
  			Main.MinimapFrameManagerInstance.LoadContent(mode);
  			Main.AchievementAdvisor.LoadContent();
-+			
++
 +			UICommon.LoadTextures(); // Added by TML.
  		}
  

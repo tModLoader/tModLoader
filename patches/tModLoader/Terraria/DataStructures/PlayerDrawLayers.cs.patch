@@ -286,18 +286,17 @@
  					item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceFlower].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect, 0);
  					item.shader = drawinfo.cFaceFlower;
  					drawinfo.DrawDataCache.Add(item);
-@@ -1804,7 +_,11 @@
+@@ -1804,6 +_,10 @@
  					drawinfo.DrawDataCache.Add(item);
  				}
  			}
 +		}
- 
++
 +		public static void DrawPlayer_21_2_FinchNest(ref PlayerDrawSet drawinfo) {
 +			DrawData item;
-+			
+ 
  			if (drawinfo.drawPlayer.babyBird) {
  				Rectangle bodyFrame5 = drawinfo.drawPlayer.bodyFrame;
- 				bodyFrame5.Y = 0;
 @@ -1858,9 +_,11 @@
  		}
  
@@ -337,7 +336,7 @@
 +					ItemLoader.HoldoutOrigin(drawinfo.drawPlayer, ref origin5);
 +
  					item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + num11)), sourceRect, heldItem.GetAlpha(drawinfo.itemColor), num9, origin5, adjustedItemScale, drawinfo.itemEffect, 0);
-+					
++
  					drawinfo.DrawDataCache.Add(item);
  					if (num == 3870) {
  						item = new DrawData(TextureAssets.GlowMask[238].Value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + num11)), sourceRect, new Color(255, 255, 255, 127), num9, origin5, adjustedItemScale, drawinfo.itemEffect, 0);

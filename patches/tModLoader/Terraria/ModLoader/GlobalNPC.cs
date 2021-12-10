@@ -17,7 +17,7 @@ namespace Terraria.ModLoader
 			NPCLoader.VerifyGlobalNPC(this);
 
 			ModTypeLookup<GlobalNPC>.Register(this);
-			
+
 			index = (ushort)NPCLoader.globalNPCs.Count;
 
 			NPCLoader.globalNPCs.Add(this);
@@ -28,20 +28,20 @@ namespace Terraria.ModLoader
 		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
 		/// <summary>
-		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
+		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()).
 		/// Defaults to false (using default constructor).
 		/// </summary>
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
-		/// Returns a clone of this GlobalNPC. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references. 
+		/// Returns a clone of this GlobalNPC.
+		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references.
 		/// Only called if CloneNewInstances &amp;&amp; InstancePerEntity
 		/// </summary>
 		public virtual GlobalNPC Clone() => (GlobalNPC)MemberwiseClone();
 
 		/// <summary>
-		/// Create a new instance of this GlobalNPC for an NPC instance. 
+		/// Create a new instance of this GlobalNPC for an NPC instance.
 		/// Called at the end of NPC.SetDefaults.
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
@@ -178,13 +178,13 @@ namespace Terraria.ModLoader
 		public virtual void OnKill(NPC npc) {
 		}
 
-        /// <summary>
-        /// Allows you to make things happen when an NPC is caught. Ran Serverside.
-        /// </summary>
-        /// <param name="npc">The caught NPC</param>
-        /// <param name="player">The player catching the NPC</param>
-        /// <param name="item">The item that will be spawned</param>
-        public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
+		/// <summary>
+		/// Allows you to make things happen when an NPC is caught. Ran Serverside.
+		/// </summary>
+		/// <param name="npc">The caught NPC</param>
+		/// <param name="player">The player catching the NPC</param>
+		/// <param name="item">The item that will be spawned</param>
+		public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
 		}
 
 		/// <summary>

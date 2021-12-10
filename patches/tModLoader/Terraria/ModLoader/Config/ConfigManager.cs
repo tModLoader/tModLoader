@@ -302,8 +302,8 @@ namespace Terraria.ModLoader.Config
 			return Activator.CreateInstance(type);
 		}
 
-		// Gets an Attribute from a property or field. Attribute defined on Member has highest priority, 
-		// followed by the containing data structure, followed by attribute defined on the Class. 
+		// Gets an Attribute from a property or field. Attribute defined on Member has highest priority,
+		// followed by the containing data structure, followed by attribute defined on the Class.
 		public static T GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, object item, object array) where T : Attribute {
 			// Class
 			T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
@@ -329,7 +329,7 @@ namespace Terraria.ModLoader.Config
 			return attribute;
 		}
 
-		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1) 
+		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
 		{
 			// public api for modders.
 			return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
@@ -364,13 +364,13 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
-	/// Custom ContractResolver for facilitating refernce type defaults. 
-	/// The ShouldSerialize code enables unchanged-by-user reference type defaults to properly not serialize. 
-	/// The ValueProvider code helps during deserialization to not 
+	/// Custom ContractResolver for facilitating refernce type defaults.
+	/// The ShouldSerialize code enables unchanged-by-user reference type defaults to properly not serialize.
+	/// The ValueProvider code helps during deserialization to not
 	/// </summary>
 	class ReferenceDefaultsPreservingResolver : DefaultContractResolver
 	{
-		// This approach largely based on https://stackoverflow.com/a/52684798. 
+		// This approach largely based on https://stackoverflow.com/a/52684798.
 		public abstract class ValueProviderDecorator : IValueProvider
 		{
 			readonly IValueProvider baseProvider;
@@ -412,7 +412,7 @@ namespace Terraria.ModLoader.Config
 					object referenceInstance = ctor.Invoke(null);
 					foreach (JsonProperty prop in props.Where(p => p.Readable)) {
 						if (!prop.PropertyType.IsValueType) {
-							var a = type.GetMember(prop.PropertyName); 
+							var a = type.GetMember(prop.PropertyName);
 							if (prop.Writable) {
 								if (prop.PropertyType.GetConstructor(Type.EmptyTypes) != null) {
 									// defaultValueCreator will create new instance, then get the value from a field in that object. Prevents deserialized nulls from sharing with other instances.
