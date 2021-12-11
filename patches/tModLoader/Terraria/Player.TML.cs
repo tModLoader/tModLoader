@@ -174,9 +174,17 @@ namespace Terraria
 		}
 
 		// Convenience Zone properties for Modders
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneOverworldHeight</code></summary>
 		public bool ZoneForest => ZonePurity && ZoneOverworldHeight;
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneRockLayerHeight</code></summary>
 		public bool ZoneNormalCaverns => ZonePurity && ZoneRockLayerHeight;
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneDirtLayerHeight</code></summary>
 		public bool ZoneNormalUnderground => ZonePurity && ZoneDirtLayerHeight;
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneSkyHeight</code></summary>
 		public bool ZoneNormalSpace => ZonePurity && ZoneSkyHeight;
 
 		/// <summary>
