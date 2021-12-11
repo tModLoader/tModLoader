@@ -157,7 +157,8 @@ namespace Terraria
 		public bool InModBiome(ModBiome baseInstance) => modBiomeFlags[baseInstance.ZeroIndexType];
 
 		/// <summary>
-		/// The zone property storing if the player is in the purity/forest biome. Updated in <see cref="UpdateBiomes"/>
+		/// The zone property storing if the player is not in any particular biome. Updated in <see cref="UpdateBiomes"/>
+		/// Does NOT account for height. Please use ZoneForest / ZoneNormalX for height based derivatives.
 		/// </summary>
 		public bool ZonePurity { get; set; } = false;
 
@@ -171,6 +172,20 @@ namespace Terraria
 			bool four = modBiomeFlags.Cast<bool>().Contains(true);
 			return !(one || two || three || four);
 		}
+
+		// Convenience Zone properties for Modders
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneOverworldHeight</code></summary>
+		public bool ZoneForest => ZonePurity && ZoneOverworldHeight;
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneRockLayerHeight</code></summary>
+		public bool ZoneNormalCaverns => ZonePurity && ZoneRockLayerHeight;
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneDirtLayerHeight</code></summary>
+		public bool ZoneNormalUnderground => ZonePurity && ZoneDirtLayerHeight;
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneSkyHeight</code></summary>
+		public bool ZoneNormalSpace => ZonePurity && ZoneSkyHeight;
 
 		/// <summary>
 		/// Invoked at the end of loading vanilla player data from files to fix stuff that isn't initialized coming out of load.
