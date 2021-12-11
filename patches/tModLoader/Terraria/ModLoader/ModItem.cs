@@ -156,12 +156,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the autoswing (auto-reuse) behavior of any item without having to mess with Item.autoReuse.
+		/// Allows you to modify the autoswing (auto-reuse) behavior of this item without having to mess with Item.autoReuse.
 		/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
 		/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
 		/// </summary>
 		/// <param name="player"> The player. </param>
-		public virtual bool? CanAutoswing(Player player) => null;
+		public virtual bool? CanAutoReuseItem(Player player) => null;
 
 		/// <summary>
 		/// Allows you to modify the location and rotation of this item in its use animation.

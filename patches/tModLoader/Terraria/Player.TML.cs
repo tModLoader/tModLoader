@@ -328,10 +328,10 @@ namespace Terraria
 		/// <summary>
 		/// Helper method for modders to check if the player is able to autoswing (auto-reuse) an item.
 		/// <br>This checks item.autoReuse &amp;&amp; !player.noItems, and if Feral Claws effect applies to the item.</br>
-		/// <br>Additionally, any effects applied through the CanAutoswing hooks.</br>
+		/// <br>Additionally, any effects applied through the CanAutoReuseItem hooks.</br>
 		/// </summary>
 		/// <param name="item">The item currently in use</param>
 		/// <returns>true if player can autoswing using the item</returns>
-		public bool UsingAutoswingableItem(Item item) => TryAllowingItemReuse_Inner(item);
+		public bool UsingAutoReusableItem(Item item) => TryAllowingItemReuse_Inner(item);
 	}
 }

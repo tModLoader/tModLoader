@@ -4220,10 +4220,10 @@
 +		}
 +
 +		private bool TryAllowingItemReuse_Inner(Item sItem) {
-+			// Split into _Inner because it is used by UsingAutoswingableItem 
++			// Split into _Inner because it is used by UsingAutoReusableItem 
 +			bool flag = false;
 +
-+			bool? allow = CombinedHooks.CanAutoswing(this, sItem);
++			bool? allow = CombinedHooks.CanAutoReuseItem(this, sItem);
 +			if (allow.HasValue) {
 +				if (allow.Value) {
 +					return !noItems; // Even if forced to true, respect noItems (Cursed debuff)

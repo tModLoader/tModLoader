@@ -86,7 +86,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item"> The item. </param>
 		/// <param name="player"> The player. </param>
-		public virtual bool? CanAutoswing(Item item, Player player) => null;
+		public virtual bool? CanAutoReuseItem(Item item, Player player) => null;
 
 		/// <summary>
 		/// Allows you to modify the location and rotation of any item in its use animation.

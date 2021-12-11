@@ -51,7 +51,7 @@ namespace Terraria.ModLoader
 		}
 
 		// In Player.TryAllowingItemReuse_Inner
-		public static bool? CanAutoswing(Player player, Item item) {
+		public static bool? CanAutoReuseItem(Player player, Item item) {
 			bool? result = null;
 
 			bool ModifyResult(bool? nbool) {
@@ -62,11 +62,11 @@ namespace Terraria.ModLoader
 				return result != false;
 			}
 
-			if (!ModifyResult(PlayerLoader.CanAutoswing(player, item))) {
+			if (!ModifyResult(PlayerLoader.CanAutoReuseItem(player, item))) {
 				return false;
 			}
 
-			if (!ModifyResult(ItemLoader.CanAutoswing(item, player))) {
+			if (!ModifyResult(ItemLoader.CanAutoReuseItem(item, player))) {
 				return false;
 			}
 

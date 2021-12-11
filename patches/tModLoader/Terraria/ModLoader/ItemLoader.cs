@@ -251,13 +251,13 @@ namespace Terraria.ModLoader
 			return flag;
 		}
 
-		private static HookList HookCanAutoswing = AddHook<Func<Item, Player, bool?>>(g => g.CanAutoswing);
+		private static HookList HookCanAutoReuseItem = AddHook<Func<Item, Player, bool?>>(g => g.CanAutoReuseItem);
 
-		public static bool? CanAutoswing(Item item, Player player) {
+		public static bool? CanAutoReuseItem(Item item, Player player) {
 			bool? flag = null;
 
-			foreach (var g in HookCanAutoswing.Enumerate(item.globalItems)) {
-				bool? allow = g.CanAutoswing(item, player);
+			foreach (var g in HookCanAutoReuseItem.Enumerate(item.globalItems)) {
+				bool? allow = g.CanAutoReuseItem(item, player);
 
 				if (allow.HasValue) {
 					if (!allow.Value) {
@@ -269,7 +269,7 @@ namespace Terraria.ModLoader
 			}
 
 			if (item.ModItem != null) {
-				bool? allow = item.ModItem.CanAutoswing(player);
+				bool? allow = item.ModItem.CanAutoReuseItem(player);
 
 				if (allow.HasValue) {
 					if (!allow.Value) {
