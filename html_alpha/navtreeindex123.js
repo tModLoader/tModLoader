@@ -1,5 +1,9 @@
 var NAVTREEINDEX123 =
 {
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa7514ae7134e3ce7b4edbc9fbdbc63c80":[0,0,2,5,7,170],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa755f5d725cd152d64319ea171772b287":[0,0,2,5,7,329],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa75a09efcb82de21c7a0da51b297667f1":[0,0,2,5,7,172],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa75e06e3548719354f4cb6afc100c0607":[0,0,2,5,7,26],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa75f84788abc2db79d0ca26c42514dcd1":[0,0,2,5,7,85],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa762d0c79f4f479a232f6e48d0bbcf862":[0,0,2,5,7,312],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa77378df5a4606162b604f1aadad446f2":[0,0,2,5,7,271],
@@ -245,9 +249,5 @@ var NAVTREEINDEX123 =
 "namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba36337f6d3f47f8e059ae0df500286d44":[0,0,2,6,1,2,1],
 "namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba36bc465f7500c60e712b6cb877545483":[0,0,2,6,1,2,17],
 "namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba491f39d1385670cdf9954de0d03fd82c":[0,0,2,6,1,2,9],
-"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba4a6ab87ba13372eaa8808112921adef3":[0,0,2,6,1,2,18],
-"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba7e4c4b17af520c4aafc1d3096e6d9be2":[0,0,2,6,1,2,14],
-"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba8345f7373017ceffdb138195c7dd9282":[0,0,2,6,1,2,0],
-"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba84b52f3a2c9b2f5641c313ef50dc0f8f":[0,0,2,6,1,2,12],
-"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba8e944f7308ecae1e9cf8bb59c6283809":[0,0,2,6,1,2,11]
+"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba4a6ab87ba13372eaa8808112921adef3":[0,0,2,6,1,2,18]
 };

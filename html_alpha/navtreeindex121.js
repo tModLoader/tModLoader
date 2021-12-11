@@ -1,5 +1,9 @@
 var NAVTREEINDEX121 =
 {
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_entry_icon.html#abe6595550ff861f9b14de5efa02206a5":[1,0,2,5,2,26,1],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_entry_icon.html#ae24d6b0b38b7a5f9b2abe4ad24e00ad1":[1,0,2,5,2,26,3],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_entry_icon.html#ae41b35e3ea77623f78b09920a4909c17":[1,0,2,5,2,26,0],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_filter_info_provider.html":[1,0,2,5,2,27],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_filter_info_provider.html#a237fa82022c628427296fbe5647bb54b":[1,0,2,5,2,27,1],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_filter_info_provider.html#af5ce139fbe406e867f7929b61fe1642b":[1,0,2,5,2,27,0],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_item_bestiary_info_element.html":[1,0,2,5,2,28],
@@ -245,9 +249,5 @@ var NAVTREEINDEX121 =
 "namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5":[0,0,2,1,18],
 "namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5a47dcbd834e669233d7eb8a51456ed217":[0,0,2,1,18,2],
 "namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5a9d07e0e08af7f96cf45be0112b9ccfbe":[0,0,2,1,18,0],
-"namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5aed8e37bad13d76c6dbeb58152440b41e":[0,0,2,1,18,1],
-"namespace_terraria_1_1_chat.html":[0,0,2,2],
-"namespace_terraria_1_1_chat_1_1_commands.html":[0,0,2,2,0],
-"namespace_terraria_1_1_cinematics.html":[0,0,2,3],
-"namespace_terraria_1_1_cinematics.html#af72144be4165f4bd67533028b7364ef3":[0,0,2,3,5]
+"namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5aed8e37bad13d76c6dbeb58152440b41e":[0,0,2,1,18,1]
 };

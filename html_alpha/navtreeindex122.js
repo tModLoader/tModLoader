@@ -1,5 +1,9 @@
 var NAVTREEINDEX122 =
 {
+"namespace_terraria_1_1_chat.html":[0,0,2,2],
+"namespace_terraria_1_1_chat_1_1_commands.html":[0,0,2,2,0],
+"namespace_terraria_1_1_cinematics.html":[0,0,2,3],
+"namespace_terraria_1_1_cinematics.html#af72144be4165f4bd67533028b7364ef3":[0,0,2,3,5],
 "namespace_terraria_1_1_data_structures.html":[0,0,2,4],
 "namespace_terraria_1_1_data_structures.html#a001104398ce1c86710989c8eda4e0717":[0,0,2,4,69],
 "namespace_terraria_1_1_data_structures.html#a001104398ce1c86710989c8eda4e0717a075cdf5173ee7a149abad1346bf0226b":[0,0,2,4,69,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX122 =
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa721aa6993198c10397b650b04d396aa0":[0,0,2,5,7,232],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa72c3b479a33fedd3c9951a785a6f9bf7":[0,0,2,5,7,114],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa7313965abe24e0e83bd8ff34af309f47":[0,0,2,5,7,313],
-"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa74158fdc5793afc44c7959ee1b5d7d6a":[0,0,2,5,7,135],
-"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa7514ae7134e3ce7b4edbc9fbdbc63c80":[0,0,2,5,7,170],
-"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa755f5d725cd152d64319ea171772b287":[0,0,2,5,7,329],
-"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa75a09efcb82de21c7a0da51b297667f1":[0,0,2,5,7,172],
-"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa75e06e3548719354f4cb6afc100c0607":[0,0,2,5,7,26]
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa74158fdc5793afc44c7959ee1b5d7d6a":[0,0,2,5,7,135]
 };

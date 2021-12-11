@@ -1,5 +1,9 @@
 var NAVTREEINDEX124 =
 {
+"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba7e4c4b17af520c4aafc1d3096e6d9be2":[0,0,2,6,1,2,14],
+"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba8345f7373017ceffdb138195c7dd9282":[0,0,2,6,1,2,0],
+"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba84b52f3a2c9b2f5641c313ef50dc0f8f":[0,0,2,6,1,2,12],
+"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba8e944f7308ecae1e9cf8bb59c6283809":[0,0,2,6,1,2,11],
 "namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba9d74a1e01e9921765e2c836ab4069875":[0,0,2,6,1,2,4],
 "namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4babfc22e4b566020a59e27af4c3afbb99e":[0,0,2,6,1,2,3],
 "namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4bad1909449b5a6b5b275919a9512c8e7ef":[0,0,2,6,1,2,10],
@@ -245,9 +249,5 @@ var NAVTREEINDEX124 =
 "namespace_terraria_1_1_mod_loader_1_1_u_i.html#a70f722e401c4179cf08a638114820ebeae2ecc325f079352942b1c343bf5421a2":[0,0,2,14,7,11,2],
 "namespace_terraria_1_1_mod_loader_1_1_u_i.html#ab65e645e041dafdf45ce115e70ed4296":[0,0,2,14,7,12],
 "namespace_terraria_1_1_mod_loader_1_1_u_i.html#ab65e645e041dafdf45ce115e70ed4296a45afbc6a95cc628888b8858705502c29":[0,0,2,14,7,12,2],
-"namespace_terraria_1_1_mod_loader_1_1_u_i.html#ab65e645e041dafdf45ce115e70ed4296a90a13f6cb9915e2ffae4e7395a10d576":[0,0,2,14,7,12,1],
-"namespace_terraria_1_1_mod_loader_1_1_u_i.html#ab65e645e041dafdf45ce115e70ed4296a93a74ba93e83b5fc405a540dc8d5ef1e":[0,0,2,14,7,12,0],
-"namespace_terraria_1_1_mod_loader_1_1_u_i_1_1_download_manager.html":[0,0,2,14,7,0],
-"namespace_terraria_1_1_mod_loader_1_1_u_i_1_1_elements.html":[0,0,2,14,7,1],
-"namespace_terraria_1_1_mod_loader_1_1_u_i_1_1_mod_browser.html":[0,0,2,14,7,2]
+"namespace_terraria_1_1_mod_loader_1_1_u_i.html#ab65e645e041dafdf45ce115e70ed4296a90a13f6cb9915e2ffae4e7395a10d576":[0,0,2,14,7,12,1]
 };
