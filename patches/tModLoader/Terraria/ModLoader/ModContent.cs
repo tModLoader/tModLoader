@@ -405,6 +405,7 @@ namespace Terraria.ModLoader
 			Recipe.SetupRecipes();
 			ContentSamples.FixItemsAfterRecipesAreAdded();
 			RecipeLoader.setupRecipes = false;
+			RecipeLoader.PostSetupRecipes();
 		}
 
 		internal static void UnloadModContent() {

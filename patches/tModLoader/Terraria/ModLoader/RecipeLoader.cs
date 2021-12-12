@@ -57,6 +57,18 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static void PostSetupRecipes() {
+			foreach (Mod mod in ModLoader.Mods) {
+				try {
+					mod.PostSetupRecipes();
+				}
+				catch (Exception e) {
+					e.Data["mod"] = mod.Name;
+					throw;
+				}
+			}
+		}
+
 		/// <summary>
 		/// Deletes the recipes flagged for deletion
 		/// </summary>
