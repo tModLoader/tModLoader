@@ -60,6 +60,12 @@ namespace Terraria.ModLoader
 		public virtual void PostAddRecipes() { }
 
 		/// <summary>
+		/// Override this method to do treatment about recipes once they have been setup. You shouldn't edit any recipe here.
+		/// </summary>
+		public virtual void PostSetupRecipes() {
+		}
+
+		/// <summary>
 		/// Override this method to add recipe groups to the game.
 		/// <br/> You must add recipe groups by calling the <see cref="RecipeGroup.RegisterGroup"/> method here.
 		/// <br/> A recipe group is a set of items that can be used interchangeably in the same recipe.

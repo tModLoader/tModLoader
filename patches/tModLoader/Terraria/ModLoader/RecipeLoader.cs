@@ -60,7 +60,7 @@ namespace Terraria.ModLoader
 		internal static void PostSetupRecipes() {
 			foreach (Mod mod in ModLoader.Mods) {
 				try {
-					mod.PostSetupRecipes();
+					SystemLoader.PostAddRecipes(mod);
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;

@@ -53,12 +53,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Override this method to do treatment about recipes once they have been setup. You shouldn't edit any recipe here.
-		/// </summary>
-		public virtual void PostSetupRecipes() {
-		}
-
-		/// <summary>
 		/// Close is called before Unload, and may be called at any time when mod unloading is imminent (such as when downloading an update, or recompiling)
 		/// Use this to release any additional file handles, or stop streaming music. 
 		/// Make sure to call `base.Close()` at the end

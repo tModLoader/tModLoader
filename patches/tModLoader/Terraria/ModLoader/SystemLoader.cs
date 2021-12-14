@@ -91,6 +91,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static void PostSetupRecipes(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.PostSetupRecipes();
+				}
+			}
+		}
+
 		internal static void AddRecipeGroups(Mod mod) {
 			if (SystemsByMod.TryGetValue(mod, out var systems)) {
 				foreach (var system in systems) {
