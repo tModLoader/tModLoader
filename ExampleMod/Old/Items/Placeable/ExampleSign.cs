@@ -3,13 +3,15 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Placeable
 {
-	public class ExampleCommandSign : ModItem
+	public class ExampleSign : ModItem
 	{
-		public override void SetStaticDefaults() {
+		public override void SetStaticDefaults()
+		{
 			Tooltip.SetDefault("This is a modded sign.");
 		}
 
-		public override void SetDefaults() {
+		public override void SetDefaults()
+		{
 			item.width = 26;
 			item.height = 22;
 			item.maxStack = 99;
@@ -20,10 +22,11 @@ namespace ExampleMod.Items.Placeable
 			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.consumable = true;
 			item.value = 500;
-			item.createTile = mod.TileType("ExampleCommandSign");
+			item.createTile = mod.TileType("ExampleSign");
 		}
 
-		public override void AddRecipes() {
+		public override void AddRecipes()
+		{
 			ModRecipe recipe = new ModRecipe(mod);
 			recipe.AddIngredient(ItemID.Sign);
 			recipe.AddIngredient(mod.ItemType("ExampleBlock"), 6);
