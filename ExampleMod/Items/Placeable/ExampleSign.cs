@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Items.Placeable
 {
-	public class ExampleCommandSign : ModItem
+	public class ExampleSign : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -22,7 +22,7 @@ namespace ExampleMod.Items.Placeable
 			item.useStyle = ItemUseStyleID.SwingThrow;
 			item.consumable = true;
 			item.value = 500;
-			item.createTile = mod.TileType("ExampleCommandSign");
+			item.createTile = mod.TileType("ExampleSign");
 		}
 
 		public override void AddRecipes()

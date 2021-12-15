@@ -9,8 +9,7 @@ using Terraria.ObjectData;
 
 namespace ExampleMod.Tiles
 {
-	// This is an example mod for ExampleSign and ExampleCommandCaller combined into one
-	public class ExampleCommandSign : ModTile
+	public class ExampleSign : ModTile
 	{
 		public override void SetDefaults()
 		{
@@ -75,7 +74,7 @@ namespace ExampleMod.Tiles
 			TileObjectData.addTile(Type);
 
 			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Example Command Sign");
+			name.SetDefault("Example Sign");
 			AddMapEntry(new Color(200, 200, 200), name);
 			dustType = mod.DustType("Sparkle");
 			disableSmartCursor = true;
@@ -87,15 +86,18 @@ namespace ExampleMod.Tiles
 			return true;
 		}
 
-		public override void PlaceInWorld(int i, int j, Item item)
+		public override void PlaceInWorld(int i, int j, Terraria.Item item)
 		{
-			Main.sign[Sign.ReadSign(i, j, true)].text = "Type in a command, right-click sign to activate it!";
+			Main.sign[Sign.ReadSign(i, j, true)].text = "Hello, I am a sign!";
 		}
 
 		public override bool NewRightClick(int i, int j)
 		{
-			// Uses the text from the sign to run a command
-			Main.ExecuteCommand(Main.sign[Sign.ReadSign(i, j, true)].text, new ExampleCommandCaller());
+			var sign = Main.sign[Sign.ReadSign(i, j, true)];
+
+			Main.NewText("You right-clicked on a sign!", Color.Yellow);
+			Main.NewText($"Sign Position: X:{sign.x}, Y:{sign.y}", Color.Yellow);
+			Main.NewText(Main.sign[Sign.ReadSign(i, j, true)].text);
 			return true;
 		}
 
@@ -106,23 +108,8 @@ namespace ExampleMod.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			Item.NewItem(i * 16, j * 16, 32, 32, mod.ItemType("ExampleCommandSign"));
+			Terraria.Item.NewItem(i * 16, j * 16, 32, 32, mod.ItemType("ExampleSign"));
 			Sign.KillSign(i, j);
-		}
-
-		// When a command is finished executing, it will return the output of the command
-		// via the Reply method. Console commands do not return output, only ModCommands
-		public class ExampleCommandCaller : CommandCaller
-		{
-			public CommandType CommandType => CommandType.Console;
-
-			public Player Player => null;
-
-			public void Reply(string text, Color color = default(Color))
-			{
-				foreach (string value in text.Split(new char[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries))
-					Main.NewText(value);
-			}
 		}
 	}
 }
