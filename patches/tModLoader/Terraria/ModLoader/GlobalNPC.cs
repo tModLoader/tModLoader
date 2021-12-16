@@ -530,7 +530,7 @@ namespace Terraria.ModLoader
 		/// <param name="shopHelperInstance">The vanilla shop modifier instance to invoke methods such as LikeNPC and HateBiome on</param>
 		/// <param name="primaryPlayerBiome">The current biome the player is in for purposes of npc happiness, referred by PrimaryBiomeID </param>
 		/// <param name="nearbyNPCsByType">The boolean array of if each type of npc is nearby</param>
-		public virtual void NPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
+		public virtual void ModifyNPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
 		}
 
 		/// <summary>
