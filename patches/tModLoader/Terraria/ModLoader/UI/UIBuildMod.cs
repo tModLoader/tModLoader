@@ -63,7 +63,7 @@ namespace Terraria.ModLoader.UI
 
 			try {
 				// TODO propagate _cts and check for cancellation during build process:
-				// _cts.Token.ThrowIfCancellationRequested(); 
+				// _cts.Token.ThrowIfCancellationRequested();
 				buildAction(new ModCompile(this));
 				Main.menuMode = reload ? Interface.reloadModsID : Interface.modSourcesID;
 			}

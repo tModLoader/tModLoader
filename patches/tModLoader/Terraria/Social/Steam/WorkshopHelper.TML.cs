@@ -38,8 +38,10 @@ namespace Terraria.Social.Steam
 		}
 
 		internal static void OnGameExitCleanup() {
-			if (ModManager.SteamUser)
+			if (ModManager.SteamUser) {
+				SteamAPI.Shutdown();
 				return;
+			}
 
 			GameServer.Shutdown();
 		}
@@ -143,7 +145,7 @@ namespace Terraria.Social.Steam
 
 				if (enabledItems.Count > 0) {
 					ModLoader.ModLoader.Unload();
-				}	
+				}
 
 				if (!Main.dedServ) {
 					uiProgress = new UIWorkshopDownload(Interface.modBrowser);
@@ -158,7 +160,7 @@ namespace Terraria.Social.Steam
 			private static void TaskDownload(int counter, UIWorkshopDownload uiProgress, List<ModDownloadItem> items) {
 				var item = items[counter++];
 				var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
-				
+
 				uiProgress?.PrepUIForDownload(item.DisplayName);
 				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
 				mod.InnerDownload(uiProgress, item.HasUpdate);
@@ -326,7 +328,7 @@ namespace Terraria.Social.Steam
 
 			public bool IsInstalled() {
 				var currState = GetState();
-				
+
 				bool installed = (currState & (uint)(EItemState.k_EItemStateInstalled)) != 0;
 				bool downloading = (currState & ((uint)EItemState.k_EItemStateDownloading + (uint)EItemState.k_EItemStateDownloadPending)) != 0;
 				return installed && !downloading;
@@ -343,7 +345,7 @@ namespace Terraria.Social.Steam
 			private const int PlaytimePagingConst = 100; //https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking
 
 			public static void BeginPlaytimeTracking(LocalMod[] localMods) {
-				if (localMods.Length == 0)
+				if (localMods.Length == 0 || !SteamAvailable)
 					return;
 
 				List<PublishedFileId_t> list = new List<PublishedFileId_t>();
@@ -351,7 +353,7 @@ namespace Terraria.Social.Steam
 					if (item.Enabled && GetPublishIdLocal(item, out ulong publishId))
 						list.Add(new PublishedFileId_t(publishId));
 				}
-				
+
 				int count = list.Count;
 				if (count == 0)
 					return;
@@ -374,7 +376,7 @@ namespace Terraria.Social.Steam
 				// Call the appropriate variant
 				if (SteamUser)
 					SteamUGC.StopPlaytimeTrackingForAllItems();
-				else
+				else if (SteamAvailable)
 					SteamGameServerUGC.StopPlaytimeTrackingForAllItems();
 			}
 		}
@@ -457,7 +459,7 @@ namespace Terraria.Social.Steam
 						//	Disabling Long Description takes ~0.14 seconds per page of 50 items. Long Description not needed right now.
 						//TODO: Review an upgrade of ModBrowser to load only 1000 items at a time (ie paging Mod Browser).
 						QueryForPage();
-						
+
 						if (!HandleError(ErrorState))
 							return false;
 					} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount);
@@ -725,7 +727,7 @@ namespace Terraria.Social.Steam
 				if (Items.Count + TotalItemsQueried == 0)
 					return true;
 
-				// Otherwise, return the original condition. 
+				// Otherwise, return the original condition.
 				return Items.Count + IncompleteModCount != 0;
 			}
 		}

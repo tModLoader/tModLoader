@@ -54,7 +54,7 @@ namespace ExampleMod.Common.Systems
 			/*
 			Remember that Bytes/BitsByte only have up to 8 entries. If you have more than 8 flags you want to sync, use multiple BitsByte:
 				This is wrong:
-			flags[8] = downed9thBoss; // an index of 8 is nonsense. 
+			flags[8] = downed9thBoss; // an index of 8 is nonsense.
 				This is correct:
 			flags[7] = downed8thBoss;
 			writer.Write(flags);
@@ -104,7 +104,7 @@ namespace ExampleMod.Common.Systems
 
 			// As mentioned in NetSend, BitBytes can contain up to 8 values. If you have more, be sure to read the additional data:
 			// BitsByte flags2 = reader.ReadByte();
-			// downed9thBoss = flags[0];
+			// downed9thBoss = flags2[0];
 
 			// System.Collections.BitArray approach:
 			/*

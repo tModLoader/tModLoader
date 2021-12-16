@@ -4,7 +4,7 @@ using Terraria.Graphics.Capture;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// ModSceneEffect is an abstract class that your classes can derive from. It serves as a container for handling exclusive SceneEffect content such as backgrounds, music, and water styling. 
+	/// ModSceneEffect is an abstract class that your classes can derive from. It serves as a container for handling exclusive SceneEffect content such as backgrounds, music, and water styling.
 	/// </summary>
 	public abstract partial class ModSceneEffect : ModType
 	{
@@ -18,7 +18,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// The <see cref="SceneEffectPriority"/> of this SceneEffect layer. Determines the relative postion compared to vanilla SceneEffect.
-		/// Analogously, if SceneEffect were competing in a wrestling match, this would be the 'Weight Class' that this SceneEffect is competing in. 
+		/// Analogously, if SceneEffect were competing in a wrestling match, this would be the 'Weight Class' that this SceneEffect is competing in.
 		/// </summary>
 		public virtual SceneEffectPriority Priority => SceneEffectPriority.None;
 
@@ -51,8 +51,8 @@ namespace Terraria.ModLoader
 		public virtual float GetWeight(Player player) => 0.5f;
 
 		/// <summary>
-		/// Combines Priority and Weight to determine what SceneEffect should be active. 
-		/// Priority is used to do primary sorting with respect to vanilla SceneEffect. 
+		/// Combines Priority and Weight to determine what SceneEffect should be active.
+		/// Priority is used to do primary sorting with respect to vanilla SceneEffect.
 		/// Weight will be used if multiple SceneEffect have the same SceneEffectPriority so as to attempt to distinguish them based on their needs.
 		/// </summary>
 		internal float GetCorrWeight(Player player) {
@@ -60,5 +60,10 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual bool IsSceneEffectActive(Player player) => false;
+
+		/// <summary>
+		/// Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override Terraria.Graphics.Shaders.ScreenShaderData or Terraria.Graphics.Effects.CustomSky, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.
+		/// </summary>
+		public virtual void SpecialVisuals(Player player) { }
 	}
 }

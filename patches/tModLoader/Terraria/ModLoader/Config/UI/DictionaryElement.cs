@@ -185,7 +185,7 @@ namespace Terraria.ModLoader.Config.UI
 					IDictionaryElementWrapper proxy = (IDictionaryElementWrapper)Activator.CreateInstance(genericType,
 						new object[] { keysEnumerator.Current, valuesEnumerator.Current, (IDictionary)data });
 					dataWrapperList.Add(proxy);
-					//var v = new { Key = keysEnumerator.Current, Value = valuesEnumerator.Current };  
+					//var v = new { Key = keysEnumerator.Current, Value = valuesEnumerator.Current };
 
 					//dataWrapperList.Add(wrapper);
 					//}

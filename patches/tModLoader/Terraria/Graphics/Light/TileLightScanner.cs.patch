@@ -8,7 +8,7 @@
  
  namespace Terraria.Graphics.Light
  {
-@@ -178,6 +_,7 @@
+@@ -173,6 +_,7 @@
  					num2 = 0.3f;
  					break;
  			}
@@ -16,7 +16,7 @@
  
  			if (lightColor.X < num)
  				lightColor.X = num;
-@@ -1929,6 +_,7 @@
+@@ -1924,6 +_,7 @@
  						B = 0.15f;
  						break;
  				}

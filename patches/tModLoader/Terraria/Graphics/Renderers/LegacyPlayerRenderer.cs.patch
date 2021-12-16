@@ -54,10 +54,10 @@
  			PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
  			PlayerDrawLayers.DrawPlayer_01_2_JimsCloak(ref drawinfo);
  			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
-@@ -196,6 +_,15 @@
- 			PlayerDrawLayers.DrawPlayer_35_IceBarrier(ref drawinfo);
+@@ -198,6 +_,15 @@
  			PlayerDrawLayers.DrawPlayer_36_CTG(ref drawinfo);
  			PlayerDrawLayers.DrawPlayer_37_BeetleBuff(ref drawinfo);
+ 			PlayerDrawLayers.DrawPlayer_38_EyebrellaCloud(ref drawinfo);
 +			*/
 +			PlayerLoader.ModifyDrawInfo(ref drawinfo);
 +

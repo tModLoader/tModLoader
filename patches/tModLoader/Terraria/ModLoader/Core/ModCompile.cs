@@ -1,4 +1,5 @@
 #if NETCORE
+using Basic.Reference.Assemblies;
 using log4net.Core;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -63,8 +64,10 @@ namespace Terraria.ModLoader.Core
 
 		public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
+		private static readonly string tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 		private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
 		private static readonly string modTargetsPath = Path.Combine(ModSourcePath, "tModLoader.targets");
+		private static readonly string tMLModTargetsPath = Path.Combine(tMLDir, "tMLMod.targets");
 		private static bool referencesUpdated = false;
 		internal static void UpdateReferencesFolder()
 		{
@@ -78,36 +81,20 @@ namespace Terraria.ModLoader.Core
 				Logging.tML.Error("Failed to delete old /references dir", e);
 			}
 
-			var tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-			string tModLoaderTargets = $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
-	<PropertyGroup>
-		<TerrariaSteamPath>{SecurityElement.Escape(tMLDir)}</TerrariaSteamPath>
-		<tMLLibraryPath>$(TerrariaSteamPath)/Libraries</tMLLibraryPath>
-		<tMLName>tModLoader</tMLName>
-		<tMLPath>$(tMLName).dll</tMLPath>
-		<tMLServerPath>tModLoader.dll -server</tMLServerPath>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include=""$(TerrariaSteamPath)/$(tMLName).dll"" />
-		<Reference Include=""$(tMLLibraryPath)/**/*.dll"" />
-		<Reference Remove=""$(tMLLibraryPath)/Native/**"" />
-		<Reference Remove=""$(tMLLibraryPath)/**/runtime*/**"" />
-		<Reference Remove=""$(tMLLibraryPath)/**/*.resources.dll"" />
-	</ItemGroup>
-	<Target Name=""BuildMod"" AfterTargets=""Build"">
-		<Exec Command=""dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" WorkingDirectory=""$(TerrariaSteamPath)""/>
-	</Target>
-</Project>";
-
-			byte[] bytes = Encoding.UTF8.GetBytes(tModLoaderTargets);
-
-			Directory.CreateDirectory(Path.GetDirectoryName(modTargetsPath));
-
-			if (!File.Exists(modTargetsPath) || !Enumerable.SequenceEqual(bytes, File.ReadAllBytes(modTargetsPath)))
-				File.WriteAllBytes(modTargetsPath, bytes);
+			UpdateFileContents(modTargetsPath,
+$@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <Import Project=""{SecurityElement.Escape(tMLModTargetsPath)}"" />
+</Project>");
 
 			referencesUpdated = true;
+		}
+
+		private static void UpdateFileContents(string path, string contents) {
+			Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+			byte[] bytes = Encoding.UTF8.GetBytes(contents);
+			if (!File.Exists(path) || !Enumerable.SequenceEqual(bytes, File.ReadAllBytes(path)))
+				File.WriteAllBytes(path, bytes);
 		}
 
 		internal static IList<string> sourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
@@ -168,6 +155,8 @@ namespace Terraria.ModLoader.Core
 
 		internal static void BuildModCommandLine(string modFolder)
 		{
+			UpdateReferencesFolder();
+
 			// TODO: Build works even without build.txt or even a correct folder...
 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
 			Lang.InitializeLegacyLocalization();
@@ -369,10 +358,6 @@ namespace Terraria.ModLoader.Core
 			//everything used to compile the tModLoader for the target platform
 			refs.AddRange(GetTerrariaReferences());
 
-			// TODO: do we need to always compile against reference assemblies?
-			// add framework assemblies
-			refs.AddRange(GetFrameworkReferences());
-
 			//libs added by the mod
 			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)));
 
@@ -468,6 +453,7 @@ namespace Terraria.ModLoader.Core
 			var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
 			var refs = references.Select(s => MetadataReference.CreateFromFile(s));
+			refs = refs.Concat(Net60.All);
 
 			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
 
@@ -480,38 +466,6 @@ namespace Terraria.ModLoader.Core
 			code = peStream.ToArray();
 			pdb = pdbStream.ToArray();
 			return results.Diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
-		}
-
-		private static IEnumerable<string> GetFrameworkReferences() {
-			var frameworkAssembliesPath = Path.GetDirectoryName(typeof(File).Assembly.Location);
-			return FilterUnmanagedFrameworkDllsViaBlacklist(Directory.GetFiles(frameworkAssembliesPath, "*.dll", SearchOption.AllDirectories));
-		}
-
-		private static IEnumerable<string> FilterUnmanagedFrameworkDlls(IEnumerable<string> refs) {
-			var actualAssemblies = new List<string>();
-			var forwarderAssemblies = new List<string>();
-
-			// Separate assemblies into complete assemblies and assemblies that forward to an assembly, at a heavy toll on performance. Will generate the full list of forwarding assemblies to blacklist; Useful for maintenance.
-			foreach (string test in refs) {
-				try {
-					var a = Assembly.LoadFile(test);
-					actualAssemblies.Add(test);
-				}
-				catch (Exception) {
-					if (test.Contains("Private.CoreLib")) { // This assembly can't be loaded directly, but isn't a forwarding assembly and instead is the recipient of forwarding.
-						actualAssemblies.Add(test);
-					}
-					forwarderAssemblies.Add(test);
-				}
-			}
-
-			return actualAssemblies;
-		}
-
-		private static IEnumerable<string> FilterUnmanagedFrameworkDllsViaBlacklist(IEnumerable<string> refs) {
-			// Separate out known forward-only assemblies via string blacklisting.
-			string[] unmanagedDLLs = new string[] { "api-ms", "clrcompression", "clretwrc", "clrjit", "coreclr", "dbgshim", "Microsoft.DiaSymReader.Native.amd64", "mscordaccore", "mscordaccore_amd64_amd64", "mscordbi", "mscorrc", "ucrtbase", "hostpolicy" };
-			return refs.Where(r => !unmanagedDLLs.Any(r.Contains));
 		}
 	}
 }

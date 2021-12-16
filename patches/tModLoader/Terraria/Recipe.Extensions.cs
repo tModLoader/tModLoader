@@ -123,7 +123,7 @@ namespace Terraria
 		public bool RemoveTile(int tileID) => requiredTile.Remove(tileID);
 
 		public bool RemoveRecipeGroup(int groupID) => acceptedGroups.Remove(groupID);
-		
+
 		public bool RemoveCondition(Condition condition) => Conditions.Remove(condition);
 
 		public bool RemoveRecipe() {

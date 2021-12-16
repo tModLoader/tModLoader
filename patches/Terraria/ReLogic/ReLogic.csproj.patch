@@ -15,7 +15,7 @@
 -    <Reference Include="System.Drawing" />
 -    <Reference Include="System.Windows.Forms" />
 +    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
-+    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
++    <ProjectReference Include="../../../FNA/FNA.Core.csproj" />
 +    <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
 +    <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
    </ItemGroup>

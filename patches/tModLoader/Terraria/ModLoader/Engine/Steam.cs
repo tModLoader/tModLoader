@@ -14,7 +14,7 @@ namespace Terraria.ModLoader.Engine
 		public static AppId_t TerrariaAppId_t = new AppId_t(TerrariaAppID);
 
 		// SteamAPI.Init() will have been called if SocialAPI.Mode == SocialMode.Steam because of SocialAPI.Initialize()
-		public static bool IsSteamApp { 
+		public static bool IsSteamApp {
 			get => SocialAPI.Mode == SocialMode.Steam && SteamApps.BIsAppInstalled(new AppId_t(TMLAppID));
 		}
 

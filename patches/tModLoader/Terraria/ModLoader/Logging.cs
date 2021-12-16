@@ -87,7 +87,7 @@ namespace Terraria.ModLoader
 			layout.ActivateOptions();
 
 			var appenders = new List<IAppender>();
-			if (!dedServ) { 
+			if (!dedServ) {
 				appenders.Add(new ConsoleAppender {
 					Name = "ConsoleAppender",
 					Layout = layout

@@ -108,7 +108,7 @@ namespace Terraria.ModLoader.Config.UI
 			set => SetValue((uint)Math.Round((value * (max - min) + min) * (1f / increment)) * increment);
 		}
 
-		public UIntElement() { 
+		public UIntElement() {
 			min = 0;
 			max = 100;
 			increment = 1;

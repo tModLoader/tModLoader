@@ -412,7 +412,7 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookOnKill.Enumerate(npc.globalNPCs)) {
 				g.OnKill(npc);
 			}
-			
+
 			blockLoot.Clear();
 		}
 
@@ -528,7 +528,7 @@ namespace Terraria.ModLoader
 
 		public static void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit) {
 			npc.ModNPC?.OnHitNPC(target, damage, knockback, crit);
-			
+
 			foreach (GlobalNPC g in HookOnHitNPC.Enumerate(npc.globalNPCs)) {
 				g.OnHitNPC(npc, target, damage, knockback, crit);
 			}
@@ -853,7 +853,7 @@ namespace Terraria.ModLoader
 
 				if (npc.townNPC && NPC.TypeToDefaultHeadIndex(npc.type) >= 0 && !NPC.AnyNPCs(npc.type) &&
 					modNPC.CanTownNPCSpawn(numTownNPCs, money)) {
-					
+
 					Main.townNPCCanSpawn[npc.type] = true;
 
 					if (WorldGen.prioritizedTownNPCType == 0) {

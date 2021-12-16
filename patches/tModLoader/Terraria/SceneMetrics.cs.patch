@@ -12,12 +12,12 @@
  		public bool CanPlayCreditsRoll;
  		public bool[] NPCBannerBuff = new bool[289];
  		public bool hasBanner;
--		private readonly int[] _tileCounts = new int[624];
+-		private readonly int[] _tileCounts = new int[625];
 +		internal int[] _tileCounts = new int[TileLoader.TileCount];
- 		private readonly World _world;
  		private readonly List<Point> _oreFinderTileLocations = new List<Point>(512);
  		public int bestOre;
-@@ -60,47 +_,47 @@
+ 
+@@ -59,47 +_,47 @@
  
  		public int SandTileCount {
  			get;
@@ -74,7 +74,7 @@
  		}
  
  		public int DungeonTileCount {
-@@ -110,32 +_,32 @@
+@@ -109,32 +_,32 @@
  
  		public bool HasSunflower {
  			get;
@@ -113,7 +113,7 @@
  		}
  
  		public int ActiveFountainColor {
-@@ -160,12 +_,12 @@
+@@ -159,12 +_,12 @@
  
  		public bool HasCatBast {
  			get;
@@ -128,7 +128,7 @@
  		}
  
  		public bool EnoughTilesForJungle => JungleTileCount >= JungleTileThreshold;
-@@ -198,6 +_,8 @@
+@@ -196,6 +_,8 @@
  			if (settings.ScanOreFinderData)
  				_oreFinderTileLocations.Clear();
  
@@ -136,8 +136,8 @@
 +
  			if (settings.BiomeScanCenterPositionInWorld.HasValue) {
  				Point point = settings.BiomeScanCenterPositionInWorld.Value.ToTileCoordinates();
- 				Rectangle rectangle = WorldUtils.ClampToWorld(tileRectangle: new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight), world: _world);
-@@ -251,6 +_,8 @@
+ 				Rectangle tileRectangle = new Rectangle(point.X - Main.buffScanAreaWidth / 2, point.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
+@@ -250,6 +_,8 @@
  
  						if (settings.ScanOreFinderData && Main.tileOreFinderPriority[tile.type] != 0)
  							_oreFinderTileLocations.Add(new Point(i, j));
@@ -146,7 +146,7 @@
  					}
  				}
  			}
-@@ -263,7 +_,7 @@
+@@ -262,7 +_,7 @@
  						if (tile2 == null || !tile2.active())
  							continue;
  
@@ -155,7 +155,7 @@
  							HasClock = true;
  
  						switch (tile2.type) {
-@@ -324,6 +_,11 @@
+@@ -323,6 +_,11 @@
  									BloodMoonMonolith = true;
  								break;
  						}
@@ -167,7 +167,7 @@
  					}
  				}
  			}
-@@ -334,6 +_,8 @@
+@@ -333,6 +_,8 @@
  			CanPlayCreditsRoll = (ActiveMusicBox == 85);
  			if (settings.ScanOreFinderData)
  				UpdateOreFinderData();
@@ -176,7 +176,7 @@
  		}
  
  		private void ExportTileCountsToMain() {
-@@ -420,6 +_,8 @@
+@@ -419,6 +_,8 @@
  			Array.Clear(NPCBannerBuff, 0, NPCBannerBuff.Length);
  			hasBanner = false;
  			CanPlayCreditsRoll = false;

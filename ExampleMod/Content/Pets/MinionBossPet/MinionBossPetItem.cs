@@ -29,7 +29,7 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 
 		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			player.AddBuff(Item.buffType, 2); // The item applies the buff, the buff spawns the projectile
-	
+
 			return false;
 		}
 	}
