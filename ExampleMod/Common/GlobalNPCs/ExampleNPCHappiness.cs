@@ -7,9 +7,9 @@ namespace ExampleMod.Common.GlobalNPCs
 	{
 		public override void SetStaticDefaults() {
 			int examplePersonType = ModContent.NPCType<Content.NPCs.ExamplePerson>(); // Get ExamplePerson's type
-			var guideNpc = ContentSamples.NpcsByNetId[NPCID.Guide]; // Get The Guide's content sample
+			var guideHappiness = NPCHappiness.Get(NPCID.Guide); // Get the key into The Guide's happiness
 
-			guideNpc.Happiness.LikeNPC(examplePersonType); // Make the Guide like ExamplePerson!
+			guideHappiness.LoveNPC(examplePersonType); // Make the Guide love ExamplePerson!
 		}
 	}
 }

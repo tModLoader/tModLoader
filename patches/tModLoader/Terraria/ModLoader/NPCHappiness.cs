@@ -40,7 +40,7 @@ namespace Terraria.ModLoader
 		public IReadOnlyDictionary<int, Relationship> BiomeTypeRelationships
 			=> NpcToBiomeRelationship.TryGetValue(NpcType, out var result) ? result : emptyDictionaryDummy;
 
-		public NPCHappiness(int npcType) {
+		private NPCHappiness(int npcType) {
 			NpcType = npcType;
 		}
 
@@ -86,6 +86,8 @@ namespace Terraria.ModLoader
 
 			subDictionary[index] = relationship;
 		}
+
+		public static NPCHappiness Get(int npcType) => new(npcType);
 
 		internal static void ResetRelationships() {
 			NpcToNpcRelationship.Clear();
