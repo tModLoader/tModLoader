@@ -13,6 +13,9 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalNPC>> Globals => new RefReadOnlyArray<Instanced<GlobalNPC>>(globalNPCs);
 
+		/// <summary> Provides access to (static) happiness data associated with this NPC's type. </summary>
+		public NPCHappiness Happiness => new NPCHappiness(type);
+
 		/// <summary>
 		/// Assign a special boss bar, vanilla or modded. Not used by vanilla.
 		/// <para>To assign a modded boss bar, use NPC.BossBar = ModContent.GetInstance&lt;ExampleBossBar&gt;(); where ExampleBossBar is a ModBossBar</para>

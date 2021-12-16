@@ -106,6 +106,8 @@ namespace Terraria.ModLoader
 
 			//Sets
 			LoaderUtils.ResetStaticMembers(typeof(NPCID), true);
+			NPCHappiness.ResetRelationships();
+			NPCHappiness.RegisterVanillaNpcRelationships();
 
 			//Etc
 			Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
@@ -863,12 +865,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookNPCHappiness = AddHook<Action<NPC, int, ShopHelper, bool[]>>(g => g.NPCHappiness);
+		private static HookList HookModifyNPCHappiness = AddHook(g => g.NPCHappiness);
 
-		public static void NPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
-			npc.ModNPC?.NPCHappiness(primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
+		public static void ModifyNPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
+			npc.ModNPC?.ModifyNPCHappiness(primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
 
-			foreach (GlobalNPC g in HookNPCHappiness.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookModifyNPCHappiness.Enumerate(globalNPCsArray)) {
 				g.Instance(npc).NPCHappiness(npc, primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
 			}
 		}

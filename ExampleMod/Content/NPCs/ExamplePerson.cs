@@ -47,6 +47,18 @@ namespace ExampleMod.Content.NPCs
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+
+			// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
+
+			// Biomes
+			NPC.Happiness.LikeBiome(PrimaryBiomeID.Forest); // Example Person prefers the forest.
+			NPC.Happiness.DislikeBiome(PrimaryBiomeID.Snow); // Example Person dislikes the snow.
+			NPC.Happiness.LoveBiome(ModContent.GetInstance<ExampleSurfaceBiome>().Type); // Example Person likes the Example Surface Biome
+			// NPCs
+			NPC.Happiness.HateNPC(NPCID.Demolitionist); // Hates living near the demolitionist.
+			NPC.Happiness.DislikeNPC(NPCID.Merchant); // Dislikes living near the merchant.
+			NPC.Happiness.LikeNPC(NPCID.Guide); // Likes living near the guide.
+			NPC.Happiness.LoveNPC(NPCID.Dryad); // Loves living near the dryad.
 		}
 
 		public override void SetDefaults() {
@@ -138,33 +150,6 @@ namespace ExampleMod.Content.NPCs
 			}
 
 			return score >= ((right - left) * (bottom - top)) / 2;
-		}
-
-		//Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
-		public override void NPCHappiness(int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
-			if (primaryPlayerBiome == PrimaryBiomeID.Forest) {
-				shopHelperInstance.LikeBiome(PrimaryBiomeID.Forest); //Example Person prefers the forest.
-			}
-			if (primaryPlayerBiome == PrimaryBiomeID.Snow) {
-				shopHelperInstance.DislikeBiome(PrimaryBiomeID.Snow); //Example Person dislikes the snow.
-			}
-
-			if (primaryPlayerBiome == ModContent.GetInstance<ExampleSurfaceBiome>().Type) {
-				shopHelperInstance.LoveBiome(ModContent.GetInstance<ExampleSurfaceBiome>().Type); //Example Person likes the Example Surface Biome
-			}
-
-			if (nearbyNPCsByType[NPCID.Demolitionist]) {
-				shopHelperInstance.HateNPC(NPCID.Demolitionist); //Hates living near the demolitionist.
-			}
-			if (nearbyNPCsByType[NPCID.Merchant]) {
-				shopHelperInstance.DislikeNPC(NPCID.Merchant); //Dislikes living near the merchant.
-			}
-			if (nearbyNPCsByType[NPCID.Guide]) {
-				shopHelperInstance.LikeNPC(NPCID.Guide); //Likes living near the guide.
-			}
-			if (nearbyNPCsByType[NPCID.Dryad]) {
-				shopHelperInstance.LoveNPC(NPCID.Dryad); //Loves living near the dryad.
-			}
 		}
 
 		public override string TownNPCName() {

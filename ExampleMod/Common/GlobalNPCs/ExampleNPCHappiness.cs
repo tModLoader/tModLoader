@@ -1,23 +1,15 @@
-﻿using Terraria;
-using Terraria.GameContent;
-using Terraria.ID;
+﻿using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalNPCs
 {
 	public class ExampleNPCHappiness : GlobalNPC 
 	{
-		public override void NPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) 
-		{
-			int ExamplePersonType = ModContent.NPCType<Content.NPCs.ExamplePerson>(); //Get ExamplePerson's type
-			switch (npc.type) 
-			{
-				case NPCID.Guide: // If the NPC is the Guide
-					if (nearbyNPCsByType[ExamplePersonType]) { //If ExamplePerson is nearby
-						shopHelperInstance.LikeNPC(ExamplePersonType); //Make the Guide like ExamplePerson!
-					}
-					break;
-			}
+		public override void SetStaticDefaults() {
+			int examplePersonType = ModContent.NPCType<Content.NPCs.ExamplePerson>(); // Get ExamplePerson's type
+			var guideNpc = ContentSamples.NpcsByNetId[NPCID.Guide]; // Get The Guide's content sample
+
+			guideNpc.Happiness.LikeNPC(examplePersonType); // Make the Guide like ExamplePerson!
 		}
 	}
 }
