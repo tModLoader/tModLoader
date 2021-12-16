@@ -76,7 +76,7 @@ namespace ExampleMod.Content.Tiles
 		// Below is an example completely manually drawing a tile. It shows some interesting concepts that may be useful for more advanced things
 		/*public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
 			// Instead of SetSpriteEffects
-			// Flips the sprite if x coord is odd. Makes the tile more interesting 
+			// Flips the sprite if x coord is odd. Makes the tile more interesting
 			SpriteEffects effects = SpriteEffects.None;
 			if (i % 2 == 1)
 				effects = SpriteEffects.FlipHorizontally;

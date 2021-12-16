@@ -16,13 +16,13 @@
 -			public class Sets
 +			public partial class Sets
  			{
--				public static SetFactory Factory = new SetFactory(273);
+-				public static SetFactory Factory = new SetFactory(277);
 +				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Head]);
  				public static int[] FrontToBackID = Factory.CreateIntSet(-1, 242, 246, 243, 247, 244, 248, 245, 249, 133, 252, 224, 253);
- 				public static bool[] PreventBeardDraw = Factory.CreateBoolSet(false, 118, 119, 107, 129, 127, 125, 146, 136, 150, 162, 168, 210, 213, 28, 135, 31, 17, 261, 169, 186, 47, 22, 105, 148, 102, 120, 137, 165, 199, 207, 260, 132, 152, 155, 179, 108, 153, 164, 172, 208, 241, 271, 48, 154, 188, 187, 209, 46, 123, 269, 185, 236);
+ 				public static bool[] PreventBeardDraw = Factory.CreateBoolSet(false, 118, 119, 107, 129, 127, 125, 146, 136, 150, 162, 168, 210, 213, 28, 135, 31, 17, 261, 169, 186, 47, 22, 105, 148, 102, 120, 137, 165, 199, 207, 260, 132, 152, 155, 179, 108, 153, 164, 172, 208, 241, 271, 48, 154, 188, 187, 209, 46, 123, 269, 185, 236, 276);
  				public static bool[] UseAltFaceHeadDraw = Factory.CreateBoolSet(false, 3, 4, 6, 7, 9, 17, 22, 27, 28, 31, 32, 37, 38, 39, 40, 42, 43, 45, 46, 47, 48, 49, 50, 57, 58, 61, 66, 69, 70, 72, 74, 75, 76, 77, 78, 82, 83, 86, 89, 93, 98, 101, 103, 104, 105, 107, 108, 109, 110, 111, 115, 118, 120, 122, 123, 124, 127, 128, 129, 131, 132, 134, 135, 136, 137, 142, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 162, 164, 165, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 185, 186, 187, 188, 189, 192, 193, 194, 200, 201, 202, 204, 207, 208, 209, 210, 211, 213, 214, 230, 236, 237, 239, 240, 241, 251, 254, 255, 258, 260, 266, 268, 269, 270, 271, 261, 8, 12, 30, 35, 36, 73, 79, 80, 84, 85, 87, 88, 90, 91, 102, 112, 141, 160, 180, 196, 205, 257, 256);
-@@ -291,9 +_,9 @@
- 			public const int Count = 273;
+@@ -295,9 +_,9 @@
+ 			public const int Count = 277;
  		}
  
 -		public class Body
@@ -33,11 +33,11 @@
  			{
  				public struct IncludeCapeFrontAndBackInfo
  				{
-@@ -310,13 +_,14 @@
+@@ -314,13 +_,14 @@
  					}
  				}
  
--				public static SetFactory Factory = new SetFactory(244);
+-				public static SetFactory Factory = new SetFactory(246);
 +				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Body]);
  				public static bool[] NeedsToDrawArm = Factory.CreateBoolSet(false, 200, 202, 201, 203, 195, 205, 207, 206, 228, 242, 243);
  				public static int[] IncludedCapeBack = Factory.CreateIntSet(-1, 207, 13, 206, 12, 205, 11, 185, 17, 96, 18, 94, 19, 80, 21, 217, 22, 24, 29, 238, 32);
@@ -50,8 +50,8 @@
  				public static bool[] showsShouldersWhileJumping;
  				public static bool[] shouldersAreAlwaysInTheBack;
  				public static bool[] DisableHandOnAndOffAccDraw;
-@@ -557,11 +_,11 @@
- 			public const int Count = 244;
+@@ -563,11 +_,11 @@
+ 			public const int Count = 246;
  		}
  
 -		public class Legs
@@ -60,13 +60,13 @@
 -			public class Sets
 +			public partial class Sets
  			{
--				public static SetFactory Factory = new SetFactory(231);
+-				public static SetFactory Factory = new SetFactory(234);
 +				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Legs]);
  				public static List<int> MannequinIncompatible = new List<int>();
  				public static bool[] IncompatibleWithFrogLeg = Factory.CreateBoolSet(106, 143, 217, 222, 226, 228);
  			}
-@@ -776,12 +_,13 @@
- 			public const int Count = 231;
+@@ -785,12 +_,13 @@
+ 			public const int Count = 234;
  		}
  
 -		public class HandOn
@@ -83,7 +83,7 @@
  				public static bool[] UsesOldFramingTexturesForWalking = Factory.CreateBoolSet(false, 12, 8, 17);
  			}
  
-@@ -812,12 +_,13 @@
+@@ -821,12 +_,13 @@
  			public const int Count = 23;
  		}
  
@@ -101,7 +101,7 @@
  			}
  
  			public const sbyte FireGauntlet = 1;
-@@ -839,11 +_,11 @@
+@@ -848,11 +_,11 @@
  			public const int Count = 15;
  		}
  
@@ -116,7 +116,7 @@
  				public static bool[] DrawInBackpackLayer = Factory.CreateBoolSet(false, 7, 8, 9, 10, 15, 16, 32, 33);
  				public static bool[] DrawInTailLayer = Factory.CreateBoolSet(false, 18, 19, 21, 25, 26, 27, 28);
  			}
-@@ -885,11 +_,11 @@
+@@ -894,11 +_,11 @@
  			public const int Count = 35;
  		}
  
@@ -131,7 +131,7 @@
  				public static bool[] DrawsInNeckLayer = Factory.CreateBoolSet(false, 6);
  			}
  
-@@ -907,11 +_,11 @@
+@@ -916,11 +_,11 @@
  			public const int Count = 12;
  		}
  
@@ -146,7 +146,7 @@
  				public static int[] MaleToFemaleID = Factory.CreateIntSet(-1, 25, 26);
  			}
  
-@@ -945,11 +_,11 @@
+@@ -954,11 +_,11 @@
  			public const int Count = 27;
  		}
  
@@ -161,7 +161,7 @@
  				public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 5, 10, 10, 12);
  				public static bool[] IsABelt = Factory.CreateBoolSet(false, 5, 10, 10, 12);
  			}
-@@ -974,9 +_,9 @@
+@@ -983,9 +_,9 @@
  			public const int Count = 17;
  		}
  
@@ -173,8 +173,8 @@
  			{
  				public static WingStats[] Stats;
  			}
-@@ -1059,11 +_,11 @@
- 			public const int Count = 11;
+@@ -1069,11 +_,11 @@
+ 			public const int Count = 12;
  		}
  
 -		public class Face
@@ -183,13 +183,13 @@
 -			public class Sets
 +			public partial class Sets
  			{
--				public static SetFactory Factory = new SetFactory(19);
+-				public static SetFactory Factory = new SetFactory(20);
 +				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Face]);
- 				public static bool[] PreventHairDraw = Factory.CreateBoolSet(false, 2, 3, 4);
- 				public static bool[] OverrideHelmet = Factory.CreateBoolSet(false, 2, 3, 4);
+ 				public static bool[] PreventHairDraw = Factory.CreateBoolSet(false, 2, 3, 4, 19);
+ 				public static bool[] OverrideHelmet = Factory.CreateBoolSet(false, 2, 3, 4, 19);
  				public static bool[] DrawInFaceUnderHairLayer = Factory.CreateBoolSet(false, 5);
-@@ -1093,11 +_,11 @@
- 			public const sbyte Count = 19;
+@@ -1104,11 +_,11 @@
+ 			public const sbyte Count = 20;
  		}
  
 -		public class Balloon
@@ -203,3 +203,12 @@
  				public static bool[] DrawInFrontOfBackArmLayer = Factory.CreateBoolSet(false, 18);
  				public static bool[] UsesTorsoFraming = Factory.CreateBoolSet(false, 18);
  			}
+@@ -1147,7 +_,7 @@
+ 		{
+ 			public class Sets
+ 			{
+-				public static SetFactory Factory = new SetFactory(5);
++				public static SetFactory Factory = new SetFactory(EquipLoader.nextEquip[EquipType.Beard]);
+ 				public static bool[] UseHairColor = Factory.CreateBoolSet(false, 2, 3, 4);
+ 			}
+ 

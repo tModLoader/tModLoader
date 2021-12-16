@@ -41,9 +41,9 @@ namespace ExampleMod.Content.NPCs
 			SpawnModBiomes = new int[1] { ModContent.GetInstance<ExampleSurfaceBiome>().Type }; // Associates this NPC with the ExampleSurfaceBiome in Bestiary
 		}
 
-		public override void ModifyNPCLoot(NPCLoot npcLoot) { 
+		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 50)); // Drop shackles with a 1 out of 50 chance.
-			npcLoot.Add(ItemDropRule.Common(ItemID.ZombieArm, 250)); // Drop zombie arm with a 1 out of 250 chance.	
+			npcLoot.Add(ItemDropRule.Common(ItemID.ZombieArm, 250)); // Drop zombie arm with a 1 out of 250 chance.
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
@@ -69,7 +69,7 @@ namespace ExampleMod.Content.NPCs
 
 				dust.velocity.X += Main.rand.NextFloat(-0.05f, 0.05f);
 				dust.velocity.Y += Main.rand.NextFloat(-0.05f, 0.05f);
-				
+
 				dust.scale *= 1f + Main.rand.NextFloat(-0.03f, 0.03f);
 			}
 		}

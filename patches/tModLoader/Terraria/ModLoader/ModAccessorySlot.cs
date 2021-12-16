@@ -8,7 +8,7 @@ using Terraria.UI;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// A ModAccessorySlot instance represents a net new accessory slot instance. You can store fields in the ModAccessorySlot class. 
+	/// A ModAccessorySlot instance represents a net new accessory slot instance. You can store fields in the ModAccessorySlot class.
 	/// </summary>
 	public abstract class ModAccessorySlot : ModType
 	{
@@ -43,8 +43,8 @@ namespace Terraria.ModLoader
 		}
 
 		public Item VanityItem {
-			get => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount()];
-			set => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount()] = value;
+			get => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount];
+			set => ModSlotPlayer.exAccessorySlot[Type + ModSlotPlayer.SlotCount] = value;
 		}
 
 		public Item DyeItem {
@@ -65,8 +65,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows drawing prior to vanilla ItemSlot.Draw code. Return false to NOT call ItemSlot.Draw
 		/// </summary>
-		public virtual bool PreDraw(AccessorySlotType context, Item item, Vector2 position, bool isHovered) { 
-			return true; 
+		public virtual bool PreDraw(AccessorySlotType context, Item item, Vector2 position, bool isHovered) {
+			return true;
 		}
 
 		public virtual void PostDraw(AccessorySlotType context, Item item, Vector2 position, bool isHovered) { }
@@ -83,11 +83,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Override to set conditions on what can be placed in the slot. Return false to prevent the item going in slot. Return true for dyes, if you want dyes. Example: only wings can go in slot.
+		/// Override to set conditions on what can be placed in the slot. Default is to return false only when item property FitsAccessoryVanity says can't go in to a vanity slot.
+		/// Return false to prevent the item going in slot. Return true for dyes, if you want dyes. Example: only wings can go in slot.
 		/// Receives data:
 		/// <para><paramref name="checkItem"/> :: the item that is attempting to enter the slot </para>
 		/// </summary>
-		public virtual bool CanAcceptItem(Item checkItem, AccessorySlotType context) => true;
+		public virtual bool CanAcceptItem(Item checkItem, AccessorySlotType context) {
+			if (context == AccessorySlotType.VanitySlot) {
+				return checkItem.FitsAccessoryVanitySlot;
+			}
+
+			return true;
+		}
 
 		/// <summary>
 		/// After checking for empty slots in ItemSlot.AccessorySwap, this allows for changing what the default target slot (accSlotToSwapTo) will be.

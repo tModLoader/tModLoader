@@ -12,7 +12,7 @@
  					_currentPriceAdjustment *= 0.95f;
  				}
  
--				bool[] array = new bool[668];
+-				bool[] array = new bool[670];
 +				bool[] array = new bool[NPCLoader.NPCCount];
  				foreach (NPC item in nearbyResidentNPCs) {
  					array[item.type] = true;
@@ -44,3 +44,12 @@
  			if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
  				str += "Transformed";
  
+@@ -354,7 +_,7 @@
+ 
+ 		private bool IsNotReallyTownNPC(NPC npc) {
+ 			int type = npc.type;
+-			if (type == 37 || type == 368 || type == 453)
++			if (type == 37 || type == 368 || NPCID.Sets.ActsLikeTownNPC[type])
+ 				return true;
+ 
+ 			return false;

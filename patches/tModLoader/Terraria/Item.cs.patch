@@ -43,7 +43,7 @@
  		public byte paint;
  		public bool instanced;
  		public int ownIgnore = -1;
-@@ -146,11 +_,44 @@
+@@ -147,11 +_,44 @@
  		public bool DD2Summon;
  		public int netID;
  		public int crit;
@@ -93,7 +93,7 @@
  		public bool sentry;
  		public int reuseDelay;
  		public bool newAndShiny;
-@@ -158,6 +_,18 @@
+@@ -159,6 +_,18 @@
  		public const int WALL_PLACEMENT_USETIME = 7;
  		public static int numberOfNewItems = 0;
  
@@ -112,7 +112,7 @@
  		public string Name => _nameOverride ?? Lang.GetItemNameValue(type);
  
  		public string HoverName {
-@@ -179,11 +_,11 @@
+@@ -180,11 +_,11 @@
  			}
  		}
  
@@ -129,7 +129,7 @@
  
  		public bool IsACoin {
  			get {
-@@ -268,6 +_,10 @@
+@@ -269,6 +_,10 @@
  				return false;
  
  			UnifiedRandom unifiedRandom = WorldGen.gen ? WorldGen.genRand : Main.rand;
@@ -140,7 +140,7 @@
  			int num = pre;
  			float num2 = 1f;
  			float num3 = 1f;
-@@ -286,15 +_,19 @@
+@@ -287,15 +_,19 @@
  				num7 = 1f;
  				num8 = 0;
  				flag = false;
@@ -155,15 +155,15 @@
 +					int modPrefix = ItemLoader.ChoosePrefix(this, unifiedRandom);
 +					if (modPrefix >= 0) {
 +						num = modPrefix;
--					if (type == 1 || type == 4 || type == 6 || type == 7 || type == 10 || type == 24 || type == 45 || type == 46 || type == 65 || type == 103 || type == 104 || type == 121 || type == 122 || type == 155 || type == 190 || type == 196 || type == 198 || type == 199 || type == 200 || type == 201 || type == 202 || type == 203 || type == 4258 || type == 204 || type == 213 || type == 217 || type == 273 || type == 367 || type == 368 || type == 426 || type == 482 || type == 483 || type == 484 || type == 653 || type == 654 || type == 656 || type == 657 || type == 659 || type == 660 || type == 671 || type == 672 || type == 674 || type == 675 || type == 676 || type == 723 || type == 724 || type == 757 || type == 776 || type == 777 || type == 778 || type == 787 || type == 795 || type == 797 || type == 798 || type == 799 || type == 881 || type == 882 || type == 921 || type == 922 || type == 989 || type == 990 || type == 991 || type == 992 || type == 993 || type == 1123 || type == 1166 || type == 1185 || type == 1188 || type == 1192 || type == 1195 || type == 1199 || type == 1202 || type == 1222 || type == 1223 || type == 1224 || type == 1226 || type == 1227 || type == 1230 || type == 1233 || type == 1234 || type == 1294 || type == 1304 || type == 1305 || type == 1306 || type == 1320 || type == 1327 || type == 1506 || type == 1507 || type == 1786 || type == 1826 || type == 1827 || type == 1909 || type == 1917 || type == 1928 || type == 2176 || type == 2273 || type == 2608 || type == 2341 || type == 2330 || type == 2320 || type == 2516 || type == 2517 || type == 2746 || type == 2745 || type == 3063 || type == 3018 || type == 3211 || type == 3013 || type == 3258 || type == 3106 || type == 3065 || type == 2880 || type == 3481 || type == 3482 || type == 3483 || type == 3484 || type == 3485 || type == 3487 || type == 3488 || type == 3489 || type == 3490 || type == 3491 || type == 3493 || type == 3494 || type == 3495 || type == 3496 || type == 3497 || type == 3499 || type == 3500 || type == 3501 || type == 3502 || type == 3503 || type == 3505 || type == 3506 || type == 3507 || type == 3508 || type == 3509 || type == 3511 || type == 3512 || type == 3513 || type == 3514 || type == 3515 || type == 3517 || type == 3518 || type == 3519 || type == 3520 || type == 3521 || type == 3522 || type == 3523 || type == 3524 || type == 3525 || type == 3462 || type == 3465 || type == 3466 || type == 2772 || type == 2775 || type == 2776 || type == 2777 || type == 2780 || type == 2781 || type == 2782 || type == 2785 || type == 2786 || type == 3349 || type == 3352 || type == 3351 || (type >= 3764 && type <= 3769) || type == 4259 || type == 3772 || type == 3823 || type == 3827 || type == 186 || type == 946 || type == 4059 || type == 4317 || type == 4463 || type == 486 || type == 4707 || type == 4711 || type == 4956 || type == 4923 || type == 4672 || type == 4913 || type == 4912 || type == 4911 || type == 4678 || type == 4679 || type == 4680 || type == 4914 || type == 5074) {
-+					} else if (type == 1 || type == 4 || type == 6 || type == 7 || type == 10 || type == 24 || type == 45 || type == 46 || type == 65 || type == 103 || type == 104 || type == 121 || type == 122 || type == 155 || type == 190 || type == 196 || type == 198 || type == 199 || type == 200 || type == 201 || type == 202 || type == 203 || type == 4258 || type == 204 || type == 213 || type == 217 || type == 273 || type == 367 || type == 368 || type == 426 || type == 482 || type == 483 || type == 484 || type == 653 || type == 654 || type == 656 || type == 657 || type == 659 || type == 660 || type == 671 || type == 672 || type == 674 || type == 675 || type == 676 || type == 723 || type == 724 || type == 757 || type == 776 || type == 777 || type == 778 || type == 787 || type == 795 || type == 797 || type == 798 || type == 799 || type == 881 || type == 882 || type == 921 || type == 922 || type == 989 || type == 990 || type == 991 || type == 992 || type == 993 || type == 1123 || type == 1166 || type == 1185 || type == 1188 || type == 1192 || type == 1195 || type == 1199 || type == 1202 || type == 1222 || type == 1223 || type == 1224 || type == 1226 || type == 1227 || type == 1230 || type == 1233 || type == 1234 || type == 1294 || type == 1304 || type == 1305 || type == 1306 || type == 1320 || type == 1327 || type == 1506 || type == 1507 || type == 1786 || type == 1826 || type == 1827 || type == 1909 || type == 1917 || type == 1928 || type == 2176 || type == 2273 || type == 2608 || type == 2341 || type == 2330 || type == 2320 || type == 2516 || type == 2517 || type == 2746 || type == 2745 || type == 3063 || type == 3018 || type == 3211 || type == 3013 || type == 3258 || type == 3106 || type == 3065 || type == 2880 || type == 3481 || type == 3482 || type == 3483 || type == 3484 || type == 3485 || type == 3487 || type == 3488 || type == 3489 || type == 3490 || type == 3491 || type == 3493 || type == 3494 || type == 3495 || type == 3496 || type == 3497 || type == 3499 || type == 3500 || type == 3501 || type == 3502 || type == 3503 || type == 3505 || type == 3506 || type == 3507 || type == 3508 || type == 3509 || type == 3511 || type == 3512 || type == 3513 || type == 3514 || type == 3515 || type == 3517 || type == 3518 || type == 3519 || type == 3520 || type == 3521 || type == 3522 || type == 3523 || type == 3524 || type == 3525 || (type >= 3462 && type <= 3466) || (type >= 2772 && type <= 2786) || type == 3349 || type == 3352 || type == 3351 || (type >= 3764 && type <= 3769) || type == 4259 || type == 3772 || type == 3823 || type == 3827 || type == 186 || type == 946 || type == 4059 || type == 4317 || type == 4463 || type == 486 || type == 4707 || type == 4711 || type == 4956 || type == 4923 || type == 4788 || type == 4790 || type == 4789 || type == 4672 || type == 4913 || type == 4912 || type == 4911 || type == 4678 || type == 4679 || type == 4680 || type == 4914 || type == 5074 || ItemLoader.MeleePrefix(this)) {
+-					if (type == 1 || type == 4 || type == 6 || type == 7 || type == 10 || type == 24 || type == 45 || type == 46 || type == 65 || type == 103 || type == 104 || type == 121 || type == 122 || type == 155 || type == 190 || type == 196 || type == 198 || type == 199 || type == 200 || type == 201 || type == 202 || type == 203 || type == 4258 || type == 204 || type == 213 || type == 217 || type == 273 || type == 367 || type == 368 || type == 426 || type == 482 || type == 483 || type == 484 || type == 653 || type == 654 || type == 656 || type == 657 || type == 659 || type == 660 || type == 671 || type == 672 || type == 674 || type == 675 || type == 676 || type == 723 || type == 724 || type == 757 || type == 776 || type == 777 || type == 778 || type == 787 || type == 795 || type == 797 || type == 798 || type == 799 || type == 881 || type == 882 || type == 921 || type == 922 || type == 989 || type == 990 || type == 991 || type == 992 || type == 993 || type == 1123 || type == 1166 || type == 1185 || type == 1188 || type == 1192 || type == 1195 || type == 1199 || type == 1202 || type == 1222 || type == 1223 || type == 1224 || type == 1226 || type == 1227 || type == 1230 || type == 1233 || type == 1234 || type == 1294 || type == 1304 || type == 1305 || type == 1306 || type == 1320 || type == 1327 || type == 1506 || type == 1507 || type == 1786 || type == 1826 || type == 1827 || type == 1909 || type == 1917 || type == 1928 || type == 2176 || type == 2273 || type == 2608 || type == 2341 || type == 2330 || type == 2320 || type == 2516 || type == 2517 || type == 2746 || type == 2745 || type == 3063 || type == 3018 || type == 3211 || type == 3013 || type == 3258 || type == 3106 || type == 3065 || type == 2880 || type == 3481 || type == 3482 || type == 3483 || type == 3484 || type == 3485 || type == 3487 || type == 3488 || type == 3489 || type == 3490 || type == 3491 || type == 3493 || type == 3494 || type == 3495 || type == 3496 || type == 3497 || type == 3499 || type == 3500 || type == 3501 || type == 3502 || type == 3503 || type == 3505 || type == 3506 || type == 3507 || type == 3508 || type == 3509 || type == 3511 || type == 3512 || type == 3513 || type == 3514 || type == 3515 || type == 3517 || type == 3518 || type == 3519 || type == 3520 || type == 3521 || type == 3522 || type == 3523 || type == 3524 || type == 3525 || type == 3462 || type == 3465 || type == 3466 || type == 2772 || type == 2775 || type == 2776 || type == 2777 || type == 2780 || type == 2781 || type == 2782 || type == 2785 || type == 2786 || type == 3349 || type == 3352 || type == 3351 || (type >= 3764 && type <= 3769) || type == 4259 || type == 3772 || type == 3823 || type == 3827 || type == 186 || type == 946 || type == 4059 || type == 4317 || type == 4463 || type == 486 || type == 4707 || type == 4711 || type == 4956 || type == 4923 || type == 4672 || type == 4913 || type == 4912 || type == 4911 || type == 4678 || type == 4679 || type == 4680 || type == 4914 || type == 5074 || type == 5094 || type == 5095 || type == 5096 || type == 5097) {
++					} else if (type == 1 || type == 4 || type == 6 || type == 7 || type == 10 || type == 24 || type == 45 || type == 46 || type == 65 || type == 103 || type == 104 || type == 121 || type == 122 || type == 155 || type == 190 || type == 196 || type == 198 || type == 199 || type == 200 || type == 201 || type == 202 || type == 203 || type == 4258 || type == 204 || type == 213 || type == 217 || type == 273 || type == 367 || type == 368 || type == 426 || type == 482 || type == 483 || type == 484 || type == 653 || type == 654 || type == 656 || type == 657 || type == 659 || type == 660 || type == 671 || type == 672 || type == 674 || type == 675 || type == 676 || type == 723 || type == 724 || type == 757 || type == 776 || type == 777 || type == 778 || type == 787 || type == 795 || type == 797 || type == 798 || type == 799 || type == 881 || type == 882 || type == 921 || type == 922 || type == 989 || type == 990 || type == 991 || type == 992 || type == 993 || type == 1123 || type == 1166 || type == 1185 || type == 1188 || type == 1192 || type == 1195 || type == 1199 || type == 1202 || type == 1222 || type == 1223 || type == 1224 || type == 1226 || type == 1227 || type == 1230 || type == 1233 || type == 1234 || type == 1294 || type == 1304 || type == 1305 || type == 1306 || type == 1320 || type == 1327 || type == 1506 || type == 1507 || type == 1786 || type == 1826 || type == 1827 || type == 1909 || type == 1917 || type == 1928 || type == 2176 || type == 2273 || type == 2608 || type == 2341 || type == 2330 || type == 2320 || type == 2516 || type == 2517 || type == 2746 || type == 2745 || type == 3063 || type == 3018 || type == 3211 || type == 3013 || type == 3258 || type == 3106 || type == 3065 || type == 2880 || type == 3481 || type == 3482 || type == 3483 || type == 3484 || type == 3485 || type == 3487 || type == 3488 || type == 3489 || type == 3490 || type == 3491 || type == 3493 || type == 3494 || type == 3495 || type == 3496 || type == 3497 || type == 3499 || type == 3500 || type == 3501 || type == 3502 || type == 3503 || type == 3505 || type == 3506 || type == 3507 || type == 3508 || type == 3509 || type == 3511 || type == 3512 || type == 3513 || type == 3514 || type == 3515 || type == 3517 || type == 3518 || type == 3519 || type == 3520 || type == 3521 || type == 3522 || type == 3523 || type == 3524 || type == 3525 || (type >= 3462 && type <= 3466) || (type >= 2772 && type <= 2786) || type == 3349 || type == 3352 || type == 3351 || (type >= 3764 && type <= 3769) || type == 4259 || type == 3772 || type == 3823 || type == 3827 || type == 186 || type == 946 || type == 4059 || type == 4317 || type == 4463 || type == 486 || type == 4707 || type == 4711 || type == 4956 || type == 4923 || type == 4788 || type == 4790 || type == 4789 || type == 4672 || type == 4913 || type == 4912 || type == 4911 || type == 4678 || type == 4679 || type == 4680 || type == 4914 || type == 5074 || type == 5094 || type == 5095 || type == 5096 || type == 5097 || ItemLoader.MeleePrefix(this)) {
 +						const int numVanilla = 40;
 -						int num9 = unifiedRandom.Next(40);
 +						int num9 = unifiedRandom.Next(numVanilla);
  						if (num9 == 0)
  							num = 1;
  
-@@ -414,9 +_,12 @@
+@@ -415,9 +_,12 @@
  
  						if (num9 == 39)
  							num = 81;
@@ -178,37 +178,37 @@
  						if (num10 == 0)
  							num = 36;
  
-@@ -458,9 +_,12 @@
+@@ -459,9 +_,12 @@
  
  						if (num10 == 13)
  							num = 61;
 +
 +						PrefixLoader.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon);
  					}
--					else if (type == 39 || type == 44 || type == 95 || type == 96 || type == 98 || type == 99 || type == 120 || type == 164 || type == 197 || type == 219 || type == 266 || type == 281 || type == 434 || type == 435 || type == 436 || type == 481 || type == 506 || type == 533 || type == 534 || type == 578 || type == 655 || type == 658 || type == 661 || type == 679 || type == 682 || type == 725 || type == 758 || type == 759 || type == 760 || type == 796 || type == 800 || type == 905 || type == 923 || type == 964 || type == 986 || type == 1156 || type == 1187 || type == 1194 || type == 1201 || type == 1229 || type == 1254 || type == 1255 || type == 1258 || type == 1265 || type == 1319 || type == 1553 || type == 1782 || type == 1784 || type == 1835 || type == 1870 || type == 1910 || type == 1929 || type == 1946 || type == 2223 || type == 2269 || type == 2270 || type == 2624 || type == 2515 || type == 2747 || type == 2796 || type == 2797 || type == 3052 || type == 2888 || type == 3019 || type == 3029 || type == 3007 || type == 3008 || type == 3210 || type == 3107 || type == 3475 || type == 3540 || type == 3854 || type == 3859 || type == 3821 || type == 3930 || type == 3480 || type == 3486 || type == 3492 || type == 3498 || type == 3504 || type == 3510 || type == 3516 || type == 3350 || type == 3546 || type == 3788 || type == 4058 || type == 4060 || type == 4381 || type == 4703 || type == 4953) {
-+					else if (type == 39 || type == 44 || type == 95 || type == 96 || type == 98 || type == 99 || type == 120 || type == 164 || type == 197 || type == 219 || type == 266 || type == 281 || type == 434 || type == 435 || type == 436 || type == 481 || type == 506 || type == 533 || type == 534 || type == 578 || type == 655 || type == 658 || type == 661 || type == 679 || type == 682 || type == 725 || type == 758 || type == 759 || type == 760 || type == 796 || type == 800 || type == 905 || type == 923 || type == 964 || type == 986 || type == 1156 || type == 1187 || type == 1194 || type == 1201 || type == 1229 || type == 1254 || type == 1255 || type == 1258 || type == 1265 || type == 1319 || type == 1553 || type == 1782 || type == 1784 || type == 1835 || type == 1870 || type == 1910 || type == 1929 || type == 1946 || type == 2223 || type == 2269 || type == 2270 || type == 2624 || type == 2515 || type == 2747 || type == 2796 || type == 2797 || type == 3052 || type == 2888 || type == 3019 || type == 3029 || type == 3007 || type == 3008 || type == 3210 || type == 3107 || type == 3475 || type == 3540 || type == 3854 || type == 3859 || type == 3821 || type == 3930 || type == 3480 || type == 3486 || type == 3492 || type == 3498 || type == 3504 || type == 3510 || type == 3516 || type == 3350 || type == 3546 || type == 3788 || type == 4058 || type == 4060 || type == 4381 || type == 4703 || type == 4953 || ItemLoader.RangedPrefix(this)) {
+-					else if (type == 39 || type == 44 || type == 95 || type == 96 || type == 98 || type == 99 || type == 120 || type == 164 || type == 197 || type == 219 || type == 266 || type == 281 || type == 434 || type == 435 || type == 436 || type == 481 || type == 506 || type == 533 || type == 534 || type == 578 || type == 655 || type == 658 || type == 661 || type == 679 || type == 682 || type == 725 || type == 758 || type == 759 || type == 760 || type == 796 || type == 800 || type == 905 || type == 923 || type == 964 || type == 986 || type == 1156 || type == 1187 || type == 1194 || type == 1201 || type == 1229 || type == 1254 || type == 1255 || type == 1258 || type == 1265 || type == 1319 || type == 1553 || type == 1782 || type == 1784 || type == 1835 || type == 1870 || type == 1910 || type == 1929 || type == 1946 || type == 2223 || type == 2269 || type == 2270 || type == 2624 || type == 2515 || type == 2747 || type == 2796 || type == 2797 || type == 3052 || type == 2888 || type == 3019 || type == 3029 || type == 3007 || type == 3008 || type == 3210 || type == 3107 || type == 3475 || type == 3540 || type == 3854 || type == 3859 || type == 3821 || type == 3930 || type == 3480 || type == 3486 || type == 3492 || type == 3498 || type == 3504 || type == 3510 || type == 3516 || type == 3350 || type == 3546 || type == 3788 || type == 4058 || type == 4060 || type == 4381 || type == 4703 || type == 4953 || type == 5117) {
++					else if (type == 39 || type == 44 || type == 95 || type == 96 || type == 98 || type == 99 || type == 120 || type == 164 || type == 197 || type == 219 || type == 266 || type == 281 || type == 434 || type == 435 || type == 436 || type == 481 || type == 506 || type == 533 || type == 534 || type == 578 || type == 655 || type == 658 || type == 661 || type == 679 || type == 682 || type == 725 || type == 758 || type == 759 || type == 760 || type == 796 || type == 800 || type == 905 || type == 923 || type == 964 || type == 986 || type == 1156 || type == 1187 || type == 1194 || type == 1201 || type == 1229 || type == 1254 || type == 1255 || type == 1258 || type == 1265 || type == 1319 || type == 1553 || type == 1782 || type == 1784 || type == 1835 || type == 1870 || type == 1910 || type == 1929 || type == 1946 || type == 2223 || type == 2269 || type == 2270 || type == 2624 || type == 2515 || type == 2747 || type == 2796 || type == 2797 || type == 3052 || type == 2888 || type == 3019 || type == 3029 || type == 3007 || type == 3008 || type == 3210 || type == 3107 || type == 3475 || type == 3540 || type == 3854 || type == 3859 || type == 3821 || type == 3930 || type == 3480 || type == 3486 || type == 3492 || type == 3498 || type == 3504 || type == 3510 || type == 3516 || type == 3350 || type == 3546 || type == 3788 || type == 4058 || type == 4060 || type == 4381 || type == 4703 || type == 4953 || type == 5117 || ItemLoader.RangedPrefix(this)) {
 +						const int numVanilla = 35;
 -						int num11 = unifiedRandom.Next(35);
 +						int num11 = unifiedRandom.Next(numVanilla);
  						if (num11 == 0)
  							num = 16;
  
-@@ -565,9 +_,12 @@
+@@ -566,9 +_,12 @@
  
  						if (num11 == 34)
  							num = 82;
 +
 +						PrefixLoader.Roll(this, ref num, numVanilla, PrefixCategory.AnyWeapon, PrefixCategory.Ranged);
  					}
--					else if (type == 64 || type == 112 || type == 113 || type == 127 || type == 157 || type == 165 || type == 218 || type == 272 || type == 494 || type == 495 || type == 496 || type == 514 || type == 517 || type == 518 || type == 519 || type == 683 || type == 726 || type == 739 || type == 740 || type == 741 || type == 742 || type == 743 || type == 744 || type == 788 || type == 1121 || type == 1155 || type == 1157 || type == 1178 || type == 1244 || type == 1256 || type == 1260 || type == 1264 || type == 1266 || type == 1295 || type == 1296 || type == 1308 || type == 1309 || type == 1313 || type == 1336 || type == 1444 || type == 1445 || type == 1446 || type == 1572 || type == 1801 || type == 1802 || type == 1930 || type == 1931 || type == 2188 || type == 2622 || type == 2621 || type == 2584 || type == 2551 || type == 2366 || type == 2535 || type == 2365 || type == 2364 || type == 2623 || type == 2750 || type == 2795 || type == 3053 || type == 3051 || type == 3209 || type == 3014 || type == 3105 || type == 2882 || type == 3269 || type == 3006 || type == 3377 || type == 3069 || type == 2749 || type == 3249 || type == 3476 || type == 3474 || type == 3531 || type == 3541 || type == 3542 || type == 3569 || type == 3570 || type == 3571 || type == 3779 || type == 3787 || type == 3531 || type == 3852 || type == 3870 || type == 4269 || type == 4273 || type == 4281 || type == 4347 || type == 4348 || type == 4270 || type == 4758 || type == 4715 || type == 4952 || type == 4607 || type == 5005 || type == 5065 || type == 5069 || type == 3824 || type == 3818 || type == 3829 || type == 3832 || type == 3825 || type == 3819 || type == 3830 || type == 3833 || type == 3826 || type == 3820 || type == 3831 || type == 3834 || type == 4062) {
-+					else if (type == 64 || type == 112 || type == 113 || type == 127 || type == 157 || type == 165 || type == 218 || type == 272 || type == 494 || type == 495 || type == 496 || type == 514 || type == 517 || type == 518 || type == 519 || type == 683 || type == 726 || type == 739 || type == 740 || type == 741 || type == 742 || type == 743 || type == 744 || type == 788 || type == 1121 || type == 1155 || type == 1157 || type == 1178 || type == 1244 || type == 1256 || type == 1260 || type == 1264 || type == 1266 || type == 1295 || type == 1296 || type == 1308 || type == 1309 || type == 1313 || type == 1336 || type == 1444 || type == 1445 || type == 1446 || type == 1572 || type == 1801 || type == 1802 || type == 1930 || type == 1931 || type == 2188 || type == 2622 || type == 2621 || type == 2584 || type == 2551 || type == 2366 || type == 2535 || type == 2365 || type == 2364 || type == 2623 || type == 2750 || type == 2795 || type == 3053 || type == 3051 || type == 3209 || type == 3014 || type == 3105 || type == 2882 || type == 3269 || type == 3006 || type == 3377 || type == 3069 || type == 2749 || type == 3249 || type == 3476 || type == 3474 || type == 3531 || type == 3541 || type == 3542 || type == 3569 || type == 3570 || type == 3571 || type == 3779 || type == 3787 || type == 3531 || type == 3852 || type == 3870 || type == 4269 || type == 4273 || type == 4281 || type == 4347 || type == 4348 || type == 4270 || type == 4758 || type == 4715 || type == 4952 || type == 4607 || type == 5005 || type == 5065 || type == 5069 || type == 3824 || type == 3818 || type == 3829 || type == 3832 || type == 3825 || type == 3819 || type == 3830 || type == 3833 || type == 3826 || type == 3820 || type == 3831 || type == 3834 || type == 4062 || ItemLoader.MagicPrefix(this)) {
+-					else if (type == 64 || type == 112 || type == 113 || type == 127 || type == 157 || type == 165 || type == 218 || type == 272 || type == 494 || type == 495 || type == 496 || type == 514 || type == 517 || type == 518 || type == 519 || type == 683 || type == 726 || type == 739 || type == 740 || type == 741 || type == 742 || type == 743 || type == 744 || type == 788 || type == 1121 || type == 1155 || type == 1157 || type == 1178 || type == 1244 || type == 1256 || type == 1260 || type == 1264 || type == 1266 || type == 1295 || type == 1296 || type == 1308 || type == 1309 || type == 1313 || type == 1336 || type == 1444 || type == 1445 || type == 1446 || type == 1572 || type == 1801 || type == 1802 || type == 1930 || type == 1931 || type == 2188 || type == 2622 || type == 2621 || type == 2584 || type == 2551 || type == 2366 || type == 2535 || type == 2365 || type == 2364 || type == 2623 || type == 2750 || type == 2795 || type == 3053 || type == 3051 || type == 3209 || type == 3014 || type == 3105 || type == 2882 || type == 3269 || type == 3006 || type == 3377 || type == 3069 || type == 2749 || type == 3249 || type == 3476 || type == 3474 || type == 3531 || type == 3541 || type == 3542 || type == 3569 || type == 3570 || type == 3571 || type == 3779 || type == 3787 || type == 3531 || type == 3852 || type == 3870 || type == 4269 || type == 4273 || type == 4281 || type == 4347 || type == 4348 || type == 4270 || type == 4758 || type == 4715 || type == 4952 || type == 4607 || type == 5005 || type == 5065 || type == 5069 || type == 5114 || type == 5119 || type == 5118 || type == 3824 || type == 3818 || type == 3829 || type == 3832 || type == 3825 || type == 3819 || type == 3830 || type == 3833 || type == 3826 || type == 3820 || type == 3831 || type == 3834 || type == 4062) {
++					else if (type == 64 || type == 112 || type == 113 || type == 127 || type == 157 || type == 165 || type == 218 || type == 272 || type == 494 || type == 495 || type == 496 || type == 514 || type == 517 || type == 518 || type == 519 || type == 683 || type == 726 || type == 739 || type == 740 || type == 741 || type == 742 || type == 743 || type == 744 || type == 788 || type == 1121 || type == 1155 || type == 1157 || type == 1178 || type == 1244 || type == 1256 || type == 1260 || type == 1264 || type == 1266 || type == 1295 || type == 1296 || type == 1308 || type == 1309 || type == 1313 || type == 1336 || type == 1444 || type == 1445 || type == 1446 || type == 1572 || type == 1801 || type == 1802 || type == 1930 || type == 1931 || type == 2188 || type == 2622 || type == 2621 || type == 2584 || type == 2551 || type == 2366 || type == 2535 || type == 2365 || type == 2364 || type == 2623 || type == 2750 || type == 2795 || type == 3053 || type == 3051 || type == 3209 || type == 3014 || type == 3105 || type == 2882 || type == 3269 || type == 3006 || type == 3377 || type == 3069 || type == 2749 || type == 3249 || type == 3476 || type == 3474 || type == 3531 || type == 3541 || type == 3542 || type == 3569 || type == 3570 || type == 3571 || type == 3779 || type == 3787 || type == 3531 || type == 3852 || type == 3870 || type == 4269 || type == 4273 || type == 4281 || type == 4347 || type == 4348 || type == 4270 || type == 4758 || type == 4715 || type == 4952 || type == 4607 || type == 5005 || type == 5065 || type == 5069 || type == 5114 || type == 5119 || type == 5118 || type == 3824 || type == 3818 || type == 3829 || type == 3832 || type == 3825 || type == 3819 || type == 3830 || type == 3833 || type == 3826 || type == 3820 || type == 3831 || type == 3834 || type == 4062 || ItemLoader.MagicPrefix(this)) {
 +						const int numVanilla = 36;
 -						int num12 = unifiedRandom.Next(36);
 +						int num12 = unifiedRandom.Next(numVanilla);
  						if (num12 == 0)
  							num = 26;
  
-@@ -675,9 +_,12 @@
+@@ -676,9 +_,12 @@
  
  						if (num12 == 35)
  							num = 83;
@@ -223,7 +223,7 @@
  						if (type == 3389)
  							num13 = unifiedRandom.Next(15);
  
-@@ -725,12 +_,15 @@
+@@ -726,12 +_,15 @@
  
  						if (num13 == 14)
  							num = 84;
@@ -239,7 +239,7 @@
  					}
  				}
  
-@@ -738,7 +_,7 @@
+@@ -739,7 +_,7 @@
  					case -3:
  						return true;
  					case -1:
@@ -248,7 +248,7 @@
  							num = 0;
  						break;
  				}
-@@ -1017,6 +_,8 @@
+@@ -1018,6 +_,8 @@
  						num8 = 2;
  						break;
  				}
@@ -257,7 +257,7 @@
  
  				if (num2 != 1f && Math.Round((float)damage * num2) == (double)damage) {
  					flag = true;
-@@ -1038,11 +_,19 @@
+@@ -1039,11 +_,19 @@
  					num = -1;
  				}
  
@@ -277,7 +277,7 @@
  
  			damage = (int)Math.Round((float)damage * num2);
  			useAnimation = (int)Math.Round((float)useAnimation * num4);
-@@ -1053,6 +_,12 @@
+@@ -1054,6 +_,12 @@
  			scale *= num5;
  			shootSpeed *= num6;
  			crit += num8;
@@ -290,7 +290,7 @@
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
  				num14 *= 1.05f;
-@@ -1066,6 +_,10 @@
+@@ -1067,6 +_,10 @@
  			if (num == 65 || num == 72 || num == 76 || num == 80 || num == 68)
  				num14 *= 1.2f;
  
@@ -301,7 +301,7 @@
  			if ((double)num14 >= 1.2)
  				rare += 2;
  			else if ((double)num14 >= 1.05)
-@@ -1075,17 +_,20 @@
+@@ -1076,17 +_,20 @@
  			else if ((double)num14 <= 0.95)
  				rare--;
  
@@ -325,7 +325,7 @@
  			return true;
  		}
  
-@@ -1118,6 +_,8 @@
+@@ -1119,6 +_,8 @@
  		public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
  
  		public bool checkMat() {
@@ -334,7 +334,7 @@
  			if (type >= 71 && type <= 74) {
  				material = false;
  				return false;
-@@ -1317,6 +_,9 @@
+@@ -1318,6 +_,9 @@
  		}
  
  		public static int BannerToItem(int banner) {
@@ -344,7 +344,7 @@
  			int num = 0;
  			if (banner >= 276)
  				return 4965 + banner - 276;
-@@ -2082,9 +_,10 @@
+@@ -2083,9 +_,10 @@
  					return 287;
  				case 133:
  					return 288;
@@ -357,7 +357,7 @@
  		}
  
  		public static int BannerToNPC(int i) {
-@@ -2653,9 +_,10 @@
+@@ -2654,9 +_,10 @@
  					return 176;
  				case 288:
  					return 133;
@@ -370,7 +370,7 @@
  		}
  
  		public bool FitsAmmoSlot() {
-@@ -44090,7 +_,7 @@
+@@ -44383,7 +_,7 @@
  			return false;
  		}
  
@@ -379,92 +379,7 @@
  			useStyle = 1;
  			autoReuse = true;
  			useAnimation = 15;
-@@ -44123,7 +_,7 @@
- 			}
- 		}
- 
--		private void DefaultToCapturedCritter(short npcIdToSpawnOnUse) {
-+		public void DefaultToCapturedCritter(short npcIdToSpawnOnUse) {
- 			useStyle = 1;
- 			autoReuse = true;
- 			useTurn = true;
-@@ -44137,7 +_,7 @@
- 			makeNPC = npcIdToSpawnOnUse;
- 		}
- 
--		private void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot) {
-+		public void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot) {
- 			DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
- 			mana = manaPerShot;
- 			width = 40;
-@@ -44145,7 +_,7 @@
- 			UseSound = SoundID.Item43;
- 		}
- 
--		private void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime) {
-+		public void DefaultToSpear(int projType, float pushForwardSpeed, int animationTime) {
- 			useStyle = 5;
- 			useAnimation = 31;
- 			useTime = 31;
-@@ -44488,13 +_,13 @@
- 			rare = (int)(num / 4f);
- 		}
- 
--		private void DefaultToMount(int mount) {
-+		public void DefaultToMount(int mount) {
- 			width = 36;
- 			height = 26;
- 			mountType = mount;
- 		}
- 
--		private void DefaultToPlacableWall(ushort wallToPlace) {
-+		public void DefaultToPlacableWall(ushort wallToPlace) {
- 			useStyle = 1;
- 			useTurn = true;
- 			useAnimation = 15;
-@@ -44507,20 +_,20 @@
- 			height = 12;
- 		}
- 
--		private void SetWeaponValues(int dmg, float knockback, int bonusCritChance = 0) {
-+		public void SetWeaponValues(int dmg, float knockback, int bonusCritChance = 0) {
- 			damage = dmg;
- 			knockBack = knockback;
- 			crit = bonusCritChance;
- 		}
- 
--		private void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
-+		public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
- 			DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
- 			width = 14;
- 			height = 30;
- 			UseSound = SoundID.Item5;
- 		}
- 
--		private void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
-+		public void DefaultToMagicWeapon(int projType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
- 			autoReuse = hasAutoReuse;
- 			useStyle = 5;
- 			useAnimation = singleShotTime;
-@@ -44531,7 +_,7 @@
- 			magic = true;
- 		}
- 
--		private void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
-+		public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
- 			autoReuse = hasAutoReuse;
- 			useStyle = 5;
- 			useAnimation = singleShotTime;
-@@ -44543,7 +_,7 @@
- 			ranged = true;
- 		}
- 
--		private void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
-+		public void DefaultToThrownWeapon(int baseProjType, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
- 			autoReuse = hasAutoReuse;
- 			useStyle = 1;
- 			useAnimation = singleShotTime;
-@@ -44556,7 +_,7 @@
+@@ -44857,7 +_,7 @@
  			maxStack = 999;
  		}
  
@@ -473,99 +388,7 @@
  			flame = true;
  			noWet = !allowWaterPlacement;
  			holdStyle = 1;
-@@ -44574,11 +_,19 @@
- 			useTime = 10;
- 		}
- 
-+		// TML: These methods exist to fix the eye-jarring typo in the vanilla methods' name [
-+		public void DefaultToPlaceableTile(int tileIDToPlace, int tileStyleToPlace = 0)
-+			=> DefaultToPlacableTile(tileIDToPlace, tileStyleToPlace);
-+
-+		public void DefaultToPlaceableTile(ushort tileIDToPlace, int tileStyleToPlace = 0)
-+			=> DefaultToPlacableTile(tileIDToPlace, tileStyleToPlace);
-+		//]
-+
--		private void DefaultToPlacableTile(int tileIDToPlace, int tileStyleToPlace = 0) {
-+		internal void DefaultToPlacableTile(int tileIDToPlace, int tileStyleToPlace = 0) {
- 			DefaultToPlacableTile((ushort)tileIDToPlace, tileStyleToPlace);
- 		}
- 
--		private void DefaultToPlacableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
-+		internal void DefaultToPlacableTile(ushort tileIDToPlace, int tileStyleToPlace = 0) {
- 			createTile = tileIDToPlace;
- 			placeStyle = tileStyleToPlace;
- 			width = 14;
-@@ -44592,7 +_,7 @@
- 			consumable = true;
- 		}
- 
--		private void DefaultToGolfClub(int newwidth, int newheight) {
-+		public void DefaultToGolfClub(int newwidth, int newheight) {
- 			width = newwidth;
- 			height = newheight;
- 			channel = true;
-@@ -44605,7 +_,7 @@
- 			noMelee = true;
- 		}
- 
--		private void DefaultToLawnMower(int newwidth, int newheight) {
-+		public void DefaultToLawnMower(int newwidth, int newheight) {
- 			width = newwidth;
- 			height = newheight;
- 			holdStyle = 1;
-@@ -44616,7 +_,7 @@
- 			autoReuse = true;
- 		}
- 
--		private void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
-+		public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
- 			if (useGulpSound)
- 				UseSound = SoundID.Item3;
- 			else
-@@ -44639,7 +_,7 @@
- 			value = buyPrice(0, 0, 20);
- 		}
- 
--		private void DefaultToHealingPotion(int newwidth, int newheight, int healingAmount, int animationTime = 17) {
-+		public void DefaultToHealingPotion(int newwidth, int newheight, int healingAmount, int animationTime = 17) {
- 			UseSound = SoundID.Item3;
- 			useStyle = 9;
- 			useTurn = true;
-@@ -44654,7 +_,7 @@
- 			healLife = healingAmount;
- 		}
- 
--		private void SetShopValues(ItemRarityColor rarity, int coinValue) {
-+		public void SetShopValues(ItemRarityColor rarity, int coinValue) {
- 			rare = (int)rarity;
- 			value = coinValue;
- 		}
-@@ -44665,13 +_,13 @@
- 			headSlot = helmetArtID;
- 		}
- 
--		private void DefaultToAccessory(int newwidth = 24, int newheight = 24) {
-+		public void DefaultToAccessory(int newwidth = 24, int newheight = 24) {
- 			width = newwidth;
- 			height = newheight;
- 			accessory = true;
- 		}
- 
--		private void DefaultToGuitar(int newwidth = 24, int newheight = 24) {
-+		public void DefaultToGuitar(int newwidth = 24, int newheight = 24) {
- 			width = newwidth;
- 			height = newheight;
- 			autoReuse = true;
-@@ -44680,7 +_,7 @@
- 			useAnimation = (useTime = 12);
- 		}
- 
--		private void DefaultToMusicBox(int style) {
-+		public void DefaultToMusicBox(int style) {
- 			useStyle = 1;
- 			useTurn = true;
- 			useAnimation = 15;
-@@ -44701,6 +_,16 @@
+@@ -45002,6 +_,16 @@
  			SetDefaults(Type, noMatCheck: false);
  		}
  
@@ -582,17 +405,18 @@
  		public void SetDefaults(int Type, bool noMatCheck = false) {
  			if (Type < 0) {
  				netDefaults(Type);
-@@ -44713,9 +_,6 @@
+@@ -45014,8 +_,10 @@
  				playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  			ResetStats(Type);
--			if (type >= 5088)
--				type = 0;
--
++			/*
+ 			if (type >= 5125)
+ 				type = 0;
++			*/
+ 
  			if (type == 0) {
  				netID = 0;
- 				stack = 0;
-@@ -44739,7 +_,15 @@
+@@ -45040,7 +_,15 @@
  				SetDefaults5(type);
  			}
  
@@ -609,7 +433,7 @@
  			if (hairDye != 0)
  				hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -44888,11 +_,12 @@
+@@ -45189,11 +_,12 @@
  				maxStack = 999;
  
  			netID = type;
@@ -618,12 +442,12 @@
  				material = ItemID.Sets.IsAMaterial[type];
  
  			RebuildTooltip();
--			if (type > 0 && type < 5088 && ItemID.Sets.Deprecated[type]) {
+-			if (type > 0 && type < 5125 && ItemID.Sets.Deprecated[type]) {
 +			if (type > 0 && ItemID.Sets.Deprecated[type]) {
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -44902,14 +_,19 @@
+@@ -45203,14 +_,19 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
@@ -643,7 +467,7 @@
  			instanced = false;
  			questItem = false;
  			fishingPole = 0;
-@@ -44926,10 +_,12 @@
+@@ -45227,10 +_,12 @@
  			mech = false;
  			flame = false;
  			reuseDelay = 0;
@@ -656,7 +480,7 @@
  			placeStyle = 0;
  			buffTime = 0;
  			buffType = 0;
-@@ -45004,6 +_,10 @@
+@@ -45306,6 +_,10 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
@@ -667,7 +491,7 @@
  			switch (type) {
  				case 3318:
  				case 3319:
-@@ -45309,6 +_,7 @@
+@@ -45612,6 +_,7 @@
  				timeSinceItemSpawned += num3;
  			}
  
@@ -675,7 +499,7 @@
  			if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
  				timeSinceTheItemHasBeenReservedForSomeone++;
  				if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -45389,6 +_,7 @@
+@@ -45692,6 +_,7 @@
  		}
  
  		private void CheckLavaDeath(int i) {
@@ -683,7 +507,7 @@
  			if (type == 267) {
  				if (Main.netMode == 1)
  					return;
-@@ -45408,7 +_,9 @@
+@@ -45711,7 +_,9 @@
  
  				NetMessage.SendData(21, -1, -1, null, i);
  			}
@@ -694,7 +518,7 @@
  				active = false;
  				type = 0;
  				stack = 0;
-@@ -45418,6 +_,7 @@
+@@ -45721,6 +_,7 @@
  		}
  
  		private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity) {
@@ -702,7 +526,7 @@
  			if (ItemID.Sets.ItemNoGravity[type]) {
  				base.velocity.X *= 0.95f;
  				if ((double)base.velocity.X < 0.1 && (double)base.velocity.X > -0.1)
-@@ -45428,6 +_,7 @@
+@@ -45731,6 +_,7 @@
  					base.velocity.Y = 0f;
  			}
  			else {
@@ -710,7 +534,7 @@
  				base.velocity.Y += gravity;
  				if (base.velocity.Y > maxFallSpeed)
  					base.velocity.Y = maxFallSpeed;
-@@ -45627,6 +_,9 @@
+@@ -45930,6 +_,9 @@
  					num2 *= 2;
  
  				if (num < (float)num2) {
@@ -720,7 +544,7 @@
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
  					int num3 = item.stack;
-@@ -45987,6 +_,9 @@
+@@ -46290,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
  
@@ -730,7 +554,7 @@
  			if (Main.tenthAnniversaryWorld) {
  				if (Type == 58) {
  					Type = Main.rand.NextFromList(new short[3] {
-@@ -46127,14 +_,17 @@
+@@ -46430,14 +_,17 @@
  						continue;
  
  					Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
@@ -751,7 +575,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46153,8 +_,31 @@
+@@ -46456,8 +_,31 @@
  			}
  		}
  
@@ -785,7 +609,7 @@
  
  		public bool IsTheSameAs(Item compareItem) {
  			if (netID == compareItem.netID)
-@@ -46185,6 +_,8 @@
+@@ -46489,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;
@@ -794,7 +618,7 @@
  		}
  
  		public void OnPurchase(Item item) {
-@@ -46205,7 +_,7 @@
+@@ -46509,7 +_,7 @@
  			if (context == ItemSerializationContext.SavingAndLoading) {
  				writer.Write(netID);
  				writer.Write(stack);
@@ -803,11 +627,11 @@
  			}
  		}
  
-@@ -46216,7 +_,7 @@
+@@ -46520,7 +_,7 @@
  				Prefix(reader.ReadByte());
  			}
  
--			if (type >= 5088)
+-			if (type >= 5125)
 +			if (type >= ItemLoader.ItemCount)
  				TurnToAir();
  		}

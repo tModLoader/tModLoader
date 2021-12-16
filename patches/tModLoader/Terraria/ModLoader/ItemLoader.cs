@@ -385,7 +385,7 @@ namespace Terraria.ModLoader
 		public static void ModifyManaCost(Item item, Player player, ref float reduce, ref float mult) {
 			if (item.IsAir)
 				return;
-			
+
 			item.ModItem?.ModifyManaCost(player, ref reduce, ref mult);
 
 			foreach (var g in HookModifyManaCost.Enumerate(item.globalItems)) {
@@ -400,7 +400,7 @@ namespace Terraria.ModLoader
 		public static void OnMissingMana(Item item, Player player, int neededMana) {
 			if (item.IsAir)
 				return;
-			
+
 			item.ModItem?.OnMissingMana(player, neededMana);
 
 			foreach (var g in HookOnMissingMana.Enumerate(item.globalItems)) {
@@ -415,7 +415,7 @@ namespace Terraria.ModLoader
 		public static void OnConsumeMana(Item item, Player player, int manaConsumed) {
 			if (item.IsAir)
 				return;
-			
+
 			item.ModItem?.OnConsumeMana(player, manaConsumed);
 
 			foreach (var g in HookOnConsumeMana.Enumerate(item.globalItems)) {
@@ -622,9 +622,9 @@ namespace Terraria.ModLoader
 		//  if(modCanHit.HasValue && !modCanHit.Value) { continue; }
 		//in if statement afterwards add || (modCanHit.HasValue && modCanHit.Value)
 		/// <summary>
-		/// Gathers the results of ModItem.CanHitNPC and all GlobalItem.CanHitNPC hooks. 
-		/// If any of them returns false, this returns false. 
-		/// Otherwise, if any of them returns true then this returns true. 
+		/// Gathers the results of ModItem.CanHitNPC and all GlobalItem.CanHitNPC hooks.
+		/// If any of them returns false, this returns false.
+		/// Otherwise, if any of them returns true then this returns true.
 		/// If all of them return null, this returns null.
 		/// </summary>
 		public static bool? CanHitNPC(Item item, Player player, NPC target) {
@@ -689,7 +689,7 @@ namespace Terraria.ModLoader
 		private static HookList HookCanHitPvp = AddHook<Func<Item, Player, Player, bool>>(g => g.CanHitPvp);
 		//in Terraria.Player.ItemCheck add to beginning of pvp collision check
 		/// <summary>
-		/// Calls all GlobalItem.CanHitPvp hooks, then ModItem.CanHitPvp, until one of them returns false. 
+		/// Calls all GlobalItem.CanHitPvp hooks, then ModItem.CanHitPvp, until one of them returns false.
 		/// If all of them return true, this returns true.
 		/// </summary>
 		public static bool CanHitPvp(Item item, Player player, Player target) {
@@ -757,7 +757,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookUseAnimation = AddHook<Action<Item, Player>>(g => g.UseAnimation);
-		
+
 		public static void UseAnimation(Item item, Player player) {
 			foreach (var g in HookUseAnimation.Enumerate(item.globalItems)) {
 				g.Instance(item).UseAnimation(item, player);
@@ -1021,7 +1021,7 @@ namespace Terraria.ModLoader
 		private static HookList HookSetMatch = AddHook<DelegateSetMatch>(g => g.SetMatch);
 		/// <summary>
 		/// Calls EquipTexture.SetMatch, then all GlobalItem.SetMatch hooks.
-		/// </summary>   
+		/// </summary>
 		public static void SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) {
 			EquipTexture texture = EquipLoader.GetEquipTexture((EquipType)armorSlot, type);
 
@@ -1361,7 +1361,7 @@ namespace Terraria.ModLoader
 
 			return canBurnInLava ?? item.ModItem?.CanBurnInLava();
 		}
-		
+
 		private static HookList HookPostUpdate = AddHook<Action<Item>>(g => g.PostUpdate);
 		/// <summary>
 		/// Calls ModItem.PostUpdate and all GlobalItem.PostUpdate hooks.
@@ -1665,7 +1665,7 @@ namespace Terraria.ModLoader
 		public static bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
 			bool modItemPreDraw = item.ModItem?.PreDrawTooltip(lines, ref x, ref y) ?? true;
 			List<bool> globalItemPreDraw = new List<bool>();
-			
+
 			foreach (var g in HookPreDrawTooltip.Enumerate(item.globalItems)) {
 				globalItemPreDraw.Add(g.PreDrawTooltip(item, lines, ref x, ref y));
 			}
@@ -1692,7 +1692,7 @@ namespace Terraria.ModLoader
 			foreach (var g in HookPreDrawTooltipLine.Enumerate(item.globalItems)) {
 				globalItemPreDrawLine.Add(g.PreDrawTooltipLine(item, line, ref yOffset));
 			}
-			
+
 			return modItemPreDrawLine && globalItemPreDrawLine.All(x => x);
 		}
 
@@ -1719,7 +1719,7 @@ namespace Terraria.ModLoader
 				}
 				tooltips.Add(tooltip);
 			}
-			
+
 			item.ModItem?.ModifyTooltips(tooltips);
 
 			foreach (var g in HookModifyTooltips.Enumerate(item.globalItems)) {
