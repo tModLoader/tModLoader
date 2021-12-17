@@ -69,7 +69,7 @@ namespace Terraria.ModLoader
 					Mod.AddEquipTexture(this, equip, $"{Texture}_{equip}");
 				}
 			}
-			
+
 			OnCreate(new InitializationContext());
 		}
 
@@ -91,7 +91,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. 
+		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc.
 		/// For those that are familiar with tAPI, this has the same function as .json files.
 		/// </summary>
 		public virtual void SetDefaults() {
@@ -131,10 +131,10 @@ namespace Terraria.ModLoader
 		/// To prevent putting the item in the tinkerer slot, return false when pre is -3.
 		/// To prevent rolling of a prefix on spawn, return false when pre is -1.
 		/// To force rolling of a prefix on spawn, return true when pre is -1.
-		/// 
+		///
 		/// To reduce the probability of a prefix on spawn (pre == -1) to X%, return false 100-4X % of the time.
 		/// To increase the probability of a prefix on spawn (pre == -1) to X%, return true (4X-100)/3 % of the time.
-		/// 
+		///
 		/// To delete a prefix from an item when the item is loaded, return false when pre is the prefix you want to delete.
 		/// Use AllowPrefix to prevent rolling of a certain prefix.
 		/// </summary>
@@ -643,7 +643,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns if the normal reforge pricing is applied. 
+		/// Returns if the normal reforge pricing is applied.
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
 		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 		/// </summary>
@@ -654,7 +654,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
 		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
-		/// Reforging preserves modded data on the item. 
+		/// Reforging preserves modded data on the item.
 		/// </summary>
 		public virtual bool PreReforge() {
 			return true;
@@ -734,7 +734,7 @@ namespace Terraria.ModLoader
 		public virtual bool? CanBurnInLava() {
 			return null;
 		}
-		
+
 		/// <summary>
 		/// Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
 		/// </summary>

@@ -12,7 +12,7 @@
  		}
  
  		private void PlaceBoulderTrapSpot(Point position, int yPush) {
--			int[] array = new int[624];
+-			int[] array = new int[625];
 +			int[] array = new int[TileLoader.TileCount];
  			for (int i = position.X; i < position.X + 2; i++) {
  				for (int j = position.Y - 4; j <= position.Y; j++) {

@@ -23,15 +23,15 @@ namespace ExampleMod.Content.Items.Weapons
 			// the meowmere's SetDefault stats (such as Item.melee and Item.shoot) on to our item, so we don't have to
 			// go into the source and copy the stats ourselves. It saves a lot of time and looks much cleaner; if you're
 			// going to copy the stats of an item, use CloneDefaults().
-			
+
 			Item.CloneDefaults(ItemID.Meowmere);
 
 			// After CloneDefaults has been called, we can now modify the stats to our wishes, or keep them as they are.
 			// For the sake of example, let's swap the vanilla Meowmere projectile shot from our item for our own projectile by changing Item.shoot:
-			
+
 			Item.shoot = ModContent.ProjectileType<ExampleCloneProjectile>(); // Remember that we must use ProjectileType<>() since it is a modded projectile!
 			// Check out ExampleCloneProjectile to see how this projectile is different from the Vanilla Meowmere projectile.
-			
+
 			// While we're at it, let's make our weapon's stats a bit stronger than the Meowmere, which can be done
 			// by using math on each given stat.
 

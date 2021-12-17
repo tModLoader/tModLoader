@@ -40,7 +40,7 @@ namespace Terraria.ModLoader.Config.UI
 			base.OnBind();
 
 			if (list != null) {
-				// TODO: only do this if ToString is overriden. 
+				// TODO: only do this if ToString is overriden.
 
 				var listType = memberInfo.Type.GetGenericArguments()[0];
 				bool hasToString = listType.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);

@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 	public sealed class DrawableTooltipLine : TooltipLine
 	{
 		/// <summary>
-		/// The text of this tooltip. 
+		/// The text of this tooltip.
 		/// </summary>
 		public new readonly string text;
 		/// <summary>

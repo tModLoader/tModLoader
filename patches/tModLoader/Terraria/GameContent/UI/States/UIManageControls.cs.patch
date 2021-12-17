@@ -167,7 +167,7 @@
 +							string copyableProfileName = GetCopyableProfileName();
 +							PlayerInput.CurrentProfile.CopyIndividualModKeybindSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode, bind);
 +						};
-+		
++
 +						right.Left.Precent = 0.7f;
 +						right.Width.Precent = 0.3f;
 +						right.Height.Precent = 1f;

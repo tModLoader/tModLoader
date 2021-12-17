@@ -86,6 +86,7 @@ namespace Terraria.ModLoader.UI
 			_altText = altButtonText;
 			_altAction = altButtonAction;
 			Main.menuMode = Interface.infoMessageID;
+			Main.MenuUI.SetState(null); // New SetState code ignores setting to current state, so this is necessary to ensure OnActivate is called.
 		}
 
 		private void OKClick(UIMouseEvent evt, UIElement listeningElement) {

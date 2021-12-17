@@ -9,7 +9,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Slot { get; internal set; }
 	}
-	
+
 	/// <summary>
 	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds.
 	/// </summary>
@@ -31,7 +31,7 @@ namespace Terraria.ModLoader
 	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds.
 	/// </summary>
 	public abstract class ModSurfaceBackgroundStyle:ModBackgroundStyle
-	{ 
+	{
 		protected override sealed void Register() {
 			Slot = LoaderManager.Get<SurfaceBackgroundStylesLoader>().Register(this);
 		}

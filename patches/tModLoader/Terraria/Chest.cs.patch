@@ -1,10 +1,11 @@
 --- src/Terraria/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -7,6 +_,7 @@
+@@ -7,6 +_,8 @@
  using Terraria.GameContent.Events;
  using Terraria.ID;
  using Terraria.ObjectData;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Container;
  
  namespace Terraria
  {
@@ -13,7 +14,7 @@
  		public const int maxItems = 40;
  		public const int MaxNameLength = 20;
 -		public Item[] item;
-+		public Terraria.ModLoader.Container.TerrariaInventory item;
++		public TerrariaInventory item;
  		public int x;
  		public int y;
  		public bool bankChest;
@@ -22,11 +23,11 @@
  
  		public Chest(bool bank = false) {
 -			item = new Item[40];
-+			item = new ModLoader.Container.TerrariaInventory(40);
++			item = new TerrariaInventory(40); //item = new Item[40];
  			bankChest = bank;
  			name = string.Empty;
  		}
-@@ -192,11 +_,14 @@
+@@ -192,12 +_,15 @@
  			return list;
  		}
  
@@ -37,12 +38,13 @@
 +		public static bool IsLocked(int x, int y, Tile t) {
  			if (t == null)
  				return true;
-+				
+ 
 +			if (t.type >= TileID.Count)
 +				return TileLoader.IsLockedChest(x, y, t.type);
- 
++
  			if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  				return true;
+ 
 @@ -272,6 +_,17 @@
  			Tile tileSafely = Framing.GetTileSafely(X, Y);
  			int type2 = tileSafely.type;
@@ -101,7 +103,7 @@
 -		public void AddItemToShop(Item newItem) {
 +		public int AddItemToShop(Item newItem) { //tML: Now returns the item's index.
  			int num = Main.shopSellbackHelper.Remove(newItem);
-+			
++
  			if (num >= newItem.stack)
 -				return;
 +				return 0;
@@ -130,7 +132,7 @@
  		}
  
  		public static void SetupTravelShop() {
-@@ -877,9 +_,12 @@
+@@ -901,9 +_,12 @@
  							Main.travelShop[num2++] = 3636;
  							Main.travelShop[num2++] = 3641;
  							break;
@@ -143,7 +145,7 @@
  		}
  
  		public void SetupShop(int type) {
-@@ -2578,6 +_,7 @@
+@@ -2608,6 +_,7 @@
  					array[num++].SetDefaults(4921);
  			}
  

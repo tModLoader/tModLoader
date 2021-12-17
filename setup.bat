@@ -23,22 +23,22 @@ if NOT ["%errorlevel%"]==["0"] (
 
 If "%1"=="auto" (
 	echo building setupAuto.csproj
-	dotnet build setup/setupAuto.csproj --output "setup/bin/Debug/netcoreapp3.1"
+	dotnet build setup/setupAuto.csproj --output "setup/bin/Debug/net6.0-windows"
 
 	if NOT ["%errorlevel%"]==["0"] (
 		pause
 		exit /b %errorlevel%
 	)
 
-	"setup/bin/Debug/netcoreapp3.1/setupAuto.exe" %2
+	"setup/bin/Debug/net6.0-windows/setupAuto.exe" %2
 ) Else (
 	echo building setup.csproj
-	dotnet build setup/setup.csproj --output "setup/bin/Debug/netcoreapp3.1"
+	dotnet build setup/setup.csproj --output "setup/bin/Debug/net6.0-windows"
 
 	if NOT ["%errorlevel%"]==["0"] (
 		pause
 		exit /b %errorlevel%
 	)
 
-	start "" "setup/bin/Debug/netcoreapp3.1/setup.exe" %*
+	start "" "setup/bin/Debug/net6.0-windows/setup.exe" %*
 )

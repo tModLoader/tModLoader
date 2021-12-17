@@ -16,16 +16,16 @@
  		{
  			public struct NPCBestiaryDrawModifiers
  			{
-@@ -61,7 +_,7 @@
- 				public const int BoneJavelin = 169;
+@@ -62,7 +_,7 @@
+ 				public const int TentacleSpike = 337;
  			}
  
--			public static SetFactory Factory = new SetFactory(668);
+-			public static SetFactory Factory = new SetFactory(670);
 +			public static SetFactory Factory = new SetFactory(NPCLoader.NPCCount);
  			public static Dictionary<int, int> SpecialSpawningRules = new Dictionary<int, int> {
  				{ 259, 0 },
  				{ 260, 0 },
-@@ -3476,16 +_,26 @@
+@@ -3485,16 +_,26 @@
  				Dictionary<int, NPCBestiaryDrawModifiers> leinforsEntries = GetLeinforsEntries();
  				Dictionary<int, NPCBestiaryDrawModifiers> groxEntries = GetGroxEntries();
  				Dictionary<int, NPCBestiaryDrawModifiers> dictionary = new Dictionary<int, NPCBestiaryDrawModifiers>();
