@@ -6,40 +6,40 @@
  using Terraria.Map;
 +using Terraria.ModLoader;
  using Terraria.UI;
+ using Terraria.Utilities;
  
- namespace Terraria
-@@ -32,14 +_,14 @@
- 		[Obsolete("Lang arrays have been replaced with the new Language.GetText system.")]
+@@ -33,14 +_,14 @@
+ 		[Old("Lang arrays have been replaced with the new Language.GetText system.")]
  		public static LocalizedText[] chestType2 = new LocalizedText[14];
  		public static LocalizedText[] prefix = new LocalizedText[85];
 -		public static LocalizedText[] _mapLegendCache;
 +		public static MapLegend _mapLegendCache;
--		private static LocalizedText[] _itemNameCache = new LocalizedText[5088];
+-		private static LocalizedText[] _itemNameCache = new LocalizedText[5125];
 +		internal static LocalizedText[] _itemNameCache = new LocalizedText[ItemID.Count];
--		private static LocalizedText[] _projectileNameCache = new LocalizedText[956];
+-		private static LocalizedText[] _projectileNameCache = new LocalizedText[972];
 +		internal static LocalizedText[] _projectileNameCache = new LocalizedText[ProjectileID.Count];
--		private static LocalizedText[] _npcNameCache = new LocalizedText[668];
+-		private static LocalizedText[] _npcNameCache = new LocalizedText[670];
 +		internal static LocalizedText[] _npcNameCache = new LocalizedText[NPCID.Count];
  		private static LocalizedText[] _negativeNpcNameCache = new LocalizedText[65];
--		private static LocalizedText[] _buffNameCache = new LocalizedText[327];
+-		private static LocalizedText[] _buffNameCache = new LocalizedText[338];
 +		internal static LocalizedText[] _buffNameCache = new LocalizedText[BuffID.Count];
--		private static LocalizedText[] _buffDescriptionCache = new LocalizedText[327];
+-		private static LocalizedText[] _buffDescriptionCache = new LocalizedText[338];
 +		internal static LocalizedText[] _buffDescriptionCache = new LocalizedText[BuffID.Count];
--		private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[5088];
+-		private static ItemTooltip[] _itemTooltipCache = new ItemTooltip[5125];
 +		internal static ItemTooltip[] _itemTooltipCache = new ItemTooltip[ItemID.Count];
- 		private static LocalizedText[] _emojiNameCache = new LocalizedText[146];
+ 		private static LocalizedText[] _emojiNameCache = new LocalizedText[151];
  
  		public static string GetMapObjectName(int id) {
-@@ -114,7 +_,7 @@
+@@ -115,7 +_,7 @@
  		public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
  
  		public static LocalizedText GetNPCName(int netID) {
--			if (netID > 0 && netID < 668)
+-			if (netID > 0 && netID < 670)
 +			if (netID > 0 && netID < _npcNameCache.Length)
  				return _npcNameCache[netID];
  
  			if (netID < 0 && -netID - 1 < _negativeNpcNameCache.Length)
-@@ -126,8 +_,10 @@
+@@ -127,8 +_,10 @@
  		public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
  
  		public static LocalizedText GetItemName(int id) {
@@ -47,12 +47,12 @@
 -			id = ItemID.FromNetId((short)id);
 +				id = ItemID.FromNetId((short)id);
 +
--			if (id > 0 && id < 5088 && _itemNameCache[id] != null)
+-			if (id > 0 && id < 5125 && _itemNameCache[id] != null)
 +			if (id > 0 && id < _itemNameCache.Length && _itemNameCache[id] != null)
  				return _itemNameCache[id];
  
  			return LocalizedText.Empty;
-@@ -280,6 +_,10 @@
+@@ -281,6 +_,10 @@
  				return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_", obj)).FormatWith(obj);
  
  			int id = Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest];
@@ -63,7 +63,7 @@
  			return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(id), obj);
  		}
  
-@@ -418,7 +_,7 @@
+@@ -419,7 +_,7 @@
  		public static void BuildMapAtlas() {
  			if (Main.dedServ)
  				return;

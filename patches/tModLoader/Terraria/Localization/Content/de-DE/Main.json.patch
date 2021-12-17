@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Localization/Content/de-DE/Main.json
 +++ src/tModLoader/Terraria/Localization/Content/de-DE/Main.json
-@@ -74,7 +_,7 @@
+@@ -75,7 +_,7 @@
  		"BONED_Name": "Knochenbrecher",
  		"BUCKETS_OF_BOLTS_Description": "Besiege die drei nächtlichen mechanischen Bedrohungen: die Zwillinge, den Zerstörer und Skeletron Prime.",
  		"BUCKETS_OF_BOLTS_Name": "Eimer voller Bolzen",
@@ -9,7 +9,7 @@
  		"BULLDOZER_Name": "Bulldozer",
  		"ChallengerCategory": "Herausforderer",
  		"CHAMPION_OF_TERRARIA_Description": "Besiege den Mondherrn.",
-@@ -136,7 +_,7 @@
+@@ -137,7 +_,7 @@
  		"INTO_ORBIT_Description": "Von hier geht es nur noch runter!",
  		"INTO_ORBIT_Name": "In den Orbit",
  		"ITS_GETTING_HOT_IN_HERE_Description": "Geh tief genug auf Erkundungstour, um die geschmolzene Unterwelt zu erreichen.",
@@ -18,7 +18,7 @@
  		"ITS_HARD_Description": "Entfessle die alten Geister von Licht und Dunkelheit in deiner Welt, so dass noch stärkere Gegner erscheinen und die Welt mit glitzernden Schätzen (und Regenbogen!) überziehen.",
  		"ITS_HARD_Name": "Das ist nicht leicht!",
  		"IT_CAN_TALK_Name": "Kann es sprechen?!",
-@@ -154,7 +_,7 @@
+@@ -155,7 +_,7 @@
  		"LUCKY_BREAK_Name": "Glück gehabt",
  		"MARATHON_MEDALIST_Description": "Lege insgesamt 26.2 Meilen zu Fuß zurück.",
  		"MARATHON_MEDALIST_Name": "Marathon-Medaillengewinner",
@@ -27,7 +27,7 @@
  		"MASTERMIND_Name": "Superhirn",
  		"MATCHING_ATTIRE_Description": "Rüste in allen drei Rüstungsslots Rüstung aus: Kopf, Brust, Füße.",
  		"MATCHING_ATTIRE_Name": "Passende Kleidung",
-@@ -162,7 +_,7 @@
+@@ -163,7 +_,7 @@
  		"MECHA_MAYHEM_Name": "Mecha Mayhem",
  		"MINER_FOR_FIRE_Description": "Stelle eine geschmolzene Spitzhacke her, indem du nur die heißesten Materialien benutzt.",
  		"MINER_FOR_FIRE_Name": "Feuerbergarbeiter",
@@ -36,7 +36,7 @@
  		"NOT_THE_BEES_Description": "Feuere eine Bienenpistole ab, während du ein ganzes Set aus Bienenrüstung trägst.",
  		"NOT_THE_BEES_Name": "Nicht die Bienen!",
  		"NO_HOBO_Description": "Baue ein Haus, das richtig für deinen ersten Stadt-NPC ist, wie zum Beispiel den Fremdenführer, damit er einziehen kann.",
-@@ -176,12 +_,12 @@
+@@ -177,12 +_,12 @@
  		"PHOTOSYNTHESIS_Description": "Baue Grünalgen ab, ein organisches Erz, das du tief in der dichtesten Flora findest.",
  		"PHOTOSYNTHESIS_Name": "Photosynthese",
  		"PRETTY_IN_PINK_Description": "Töte Pinky.",
@@ -51,7 +51,7 @@
  		"RAINBOWS_AND_UNICORNS_Name": "Regenbogen und Einhörner",
  		"REAL_ESTATE_AGENT_Description": "Alle möglichen Stadt-NPCs leben in deiner Welt.",
  		"REAL_ESTATE_AGENT_Name": "Immobilienmakler",
-@@ -222,7 +_,7 @@
+@@ -223,7 +_,7 @@
  		"THE_CAVALRY_Name": "Die Kavallerie",
  		"THE_GREAT_SOUTHERN_PLANTKILL_Description": "Besiege Plantera, die überwachsene Monstrosität in den Tiefen des Dschungels.",
  		"THE_GREAT_SOUTHERN_PLANTKILL_Name": "Das große Pflanzenjäten im Süden",
@@ -60,7 +60,7 @@
  		"THROWING_LINES_Name": "Rund um die Welt",
  		"TIL_DEATH_Description": "Töte den Bräutigam.",
  		"TIL_DEATH_Name": "Für alle Zeit",
-@@ -247,7 +_,7 @@
+@@ -248,7 +_,7 @@
  		"YOU_AND_WHAT_ARMY_Description": "Befehlige neun beschworene Günstlinge gleichzeitig.",
  		"YOU_AND_WHAT_ARMY_Name": "Du und welche Armee?",
  		"YOU_CAN_DO_IT_Description": "Überlebe die erste ganze Nacht deines Charakters.",
@@ -69,7 +69,7 @@
  		"BENCHED_Description": "Stelle deine erste Werkbank her",
  		"BENCHED_Name": "Auf der Bank",
  		"TOPPED_OFF_Description": "Erreiche maximale Lebenspunkte und maximales Mana ohne Zubehör und Buffs.",
-@@ -304,7 +_,7 @@
+@@ -305,7 +_,7 @@
  		"Crimson": "Purpur",
  		"Dawn_Command": "Morgengrauen",
  		"Dawn_Description": "Ändere die Zeit zu Morgengrauen.",
@@ -78,7 +78,7 @@
  		"DeleteWorld_Command": "T",
  		"DeleteWorld_Description": "Welt löschen",
  		"DeleteWorld_Example": "T <number>",
-@@ -422,7 +_,7 @@
+@@ -423,7 +_,7 @@
  		"UnableToCapture": "Aufnahme nicht möglich.",
  		"UnableToLoadWorld": "Welt konnte nicht geladen werden:",
  		"UnableToWritePreferences": "Datei konnte nicht geschrieben werden unter: {0}",
@@ -87,7 +87,7 @@
  		"CaptureError": "Ein Fehler ist beim Speichern aufgetreten. Neuer Versuch ..."
  	},
  	"Game": {
-@@ -478,7 +_,7 @@
+@@ -481,7 +_,7 @@
  	},
  	"GameUI": {
  		"ActuationDeviceOff": "Aktuatoraparat AUS",
@@ -96,7 +96,7 @@
  		"BaitPower": "{0}% Köderkraft",
  		"BaitRequired": "Benötigt Köder, um Fische zu fangen",
  		"Bright": "Hell",
-@@ -516,7 +_,7 @@
+@@ -519,7 +_,7 @@
  		"LayerUnderworld": "Unterwelt",
  		"LightRain": "Nieselregen",
  		"MechanicalRulerOff": "Mechanisches Lineal AUS",
@@ -105,7 +105,7 @@
  		"MostlyCloudy": "Stark bewölkt",
  		"NewMoon": "Neumond",
  		"NoDPS": "K/A",
-@@ -530,13 +_,13 @@
+@@ -533,13 +_,13 @@
  		"OreDetected": "{0} in der Nähe gefunden",
  		"Overcast": "Bewölkt",
  		"PaintSprayerOff": "Farbensprüher AUS",
@@ -121,7 +121,7 @@
  		"SettingsMenu": "Einstellungsmenü",
  		"OpenFileFolder": "{$LegacyInterface.110}",
  		"Speed": "{0} mph",
-@@ -551,8 +_,8 @@
+@@ -554,8 +_,8 @@
  		"WireModeNormal": "Mechanische Anzeige: Normal",
  		"Gameplay": "Gameplay",
  		"GameZoom": "Zoom: {0}% ({1}%)",
@@ -132,7 +132,7 @@
  		"Misc": "Sonstiges",
  		"QualityHigh": "Hoch",
  		"QualityLow": "Niedrig",
-@@ -640,8 +_,8 @@
+@@ -643,8 +_,8 @@
  		"PlayerIsNotCreativeAndWorldIsCreative": "Nur Reisecharaktere können einen Reiseserver betreten."
  	},
  	"Social": {
@@ -143,7 +143,7 @@
  		"StatusInGame": "Online spielen.",
  		"StatusJoining": "Spiel beitreten."
  	},
-@@ -663,7 +_,7 @@
+@@ -666,7 +_,7 @@
  		"Mediumcore": "Mediumcore",
  		"More": "mehr",
  		"MoveOffCloud": "Aus Cloud entfernen",
@@ -152,7 +152,7 @@
  		"New": "Neue(r/s)",
  		"AvailableResourcePacksTitle": "Verfügbare Pakete ({Amount})",
  		"LightMode_White": "{$LegacyMenu.56}",
-@@ -676,7 +_,7 @@
+@@ -679,7 +_,7 @@
  		"Author": "von {0}",
  		"SpaceButton": "Weltraum",
  		"Submit": "Absenden",
@@ -161,7 +161,7 @@
  		"WorldCreatedFormat": "Erstellt: {0}",
  		"WorldSizeFormat": "{0} Welt",
  		"WorldSizeLarge": "Groß",
-@@ -685,7 +_,7 @@
+@@ -688,7 +_,7 @@
  		"WorldSizeUnknown": "Unbekannte(r/s)",
  		"BartenderHelp": "Eternia-Kristall",
  		"CopySeed": "Seed kopieren: {0}",
@@ -170,7 +170,7 @@
  		"LoadingCode": "Wird geladen:",
  		"SeedCopied": "Seed kopiert",
  		"ZoomIn": "{$LegacyMenu.168}",
-@@ -807,7 +_,7 @@
+@@ -810,7 +_,7 @@
  		"Drowned_2": "{0} schläft jetzt bei den Fischen.",
  		"Drowned_3": "{0} ist ertrunken.",
  		"Drowned_4": "{0} ist jetzt Haifischfutter.",
@@ -179,7 +179,7 @@
  		"Fell_1": "{0} ist zu Tode gestürzt.",
  		"Fell_2": "{0} ist nicht abgeprallt.",
  		"Lava_1": "{0} ist geschmolzen.",
-@@ -832,7 +_,7 @@
+@@ -837,7 +_,7 @@
  	"DeathTextGeneric": {
  		"ArmTornOff": "{0} wurden die Arme ausgerissen.",
  		"Chopped": "{0} wurde zerkleinert.",
@@ -188,7 +188,7 @@
  		"Decapitated": "{0} wurde geköpft.",
  		"Destroyed": "{0} wurde zerstört.",
  		"Dissected": "{0} wurde brutal seziert.",
-@@ -850,7 +_,7 @@
+@@ -855,7 +_,7 @@
  		"PileOfFlesh": "{0} hat sich in einen unansehnlichen Fleischhaufen verwandelt.",
  		"Removed": "{0} wurde aus {1} entfernt.",
  		"Ripped": "{0}s Fleisch wurde von den Knochen gerissen.",
@@ -197,7 +197,7 @@
  		"SkullCrushed": "{0}s Schädel wurde eingeschlagen",
  		"Slain": "{0} wurde ermordet.",
  		"Snapped": "{0} wurde in zwei Teile geteilt.",
-@@ -859,7 +_,7 @@
+@@ -864,7 +_,7 @@
  	},
  	"DungeonDefenders2": {
  		"BartenderWarning": "Der Eternia-Kristall sträubt sich gegen dieses Gebiet und teleportiert sich sofort weg. Der Tavernenwirt hatte erwähnt, dass er in einem großen, flachen und offenen Gebiet aufgestellt werden sollte ...",

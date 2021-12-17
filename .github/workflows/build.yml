@@ -59,7 +59,7 @@ jobs:
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
-          key: 1423-B
+          key: 1432-A
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -87,12 +87,13 @@ jobs:
         if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
         shell: bash
         run: |
+          echo CI setup for Terraria v$TERRARIA_VERSION
           echo Downloading Terraria Server zip
-          curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-1423.zip -o terrariaserver.zip
+          curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-$TERRARIA_VERSION.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
           echo Extracting Setup Secret Assets
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1423/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1423/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./$TERRARIA_VERSION/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
           
           echo Installing XNA
           curl -s -L https://github.com/JavidPack/tModLoaderPublishIntegration/raw/master/xnafx40_redist.msi -O
@@ -100,7 +101,7 @@ jobs:
           echo XNA Installed
           
           echo ::group::Running setup.bat
-          ./setup.bat auto ./1423/Windows
+          ./setup.bat auto ./$TERRARIA_VERSION/Windows
           echo ::endgroup::
           
           echo ::group::WorkspaceInfo.targets
@@ -151,6 +152,7 @@ jobs:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
+          TERRARIA_VERSION: 1432
           
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2

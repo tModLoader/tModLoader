@@ -466,7 +466,7 @@ namespace Terraria.ModLoader
 		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
 			if (item.IsAir)
 				return;
-			
+
 			foreach (int index in HookModifyManaCost.arr) {
 				player.modPlayers[index].ModifyManaCost(item, ref reduce, ref mult);
 			}
@@ -477,7 +477,7 @@ namespace Terraria.ModLoader
 		public static void OnMissingMana(Player player, Item item, int manaNeeded) {
 			if (item.IsAir)
 				return;
-			
+
 			foreach (int index in HookOnMissingMana.arr) {
 				player.modPlayers[index].OnMissingMana(item, manaNeeded);
 			}
@@ -488,7 +488,7 @@ namespace Terraria.ModLoader
 		public static void OnConsumeMana(Player player, Item item, int manaConsumed) {
 			if (item.IsAir)
 				return;
-			
+
 			foreach (int index in HookOnConsumeMana.arr) {
 				player.modPlayers[index].OnConsumeMana(item, manaConsumed);
 			}

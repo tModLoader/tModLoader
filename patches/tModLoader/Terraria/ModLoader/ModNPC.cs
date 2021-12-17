@@ -34,7 +34,7 @@ namespace Terraria.ModLoader
 
 		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
 		public int AIType { get; set; }
-		
+
 		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the animation (FindFrame) of. Leave as 0 to not copy any animation. Defaults to 0. </summary>
 		public int AnimationType { get; set; }
 
@@ -44,14 +44,14 @@ namespace Terraria.ModLoader
 		/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
 		/// Will be superceded by ModSceneEffect. Kept for legacy.
 		public int Music { get; set; } = -1;
-		
+
 		/// <summary> The priority of the music that plays when this NPC is on or near the screen. </summary>
 		/// Will be superceded by ModSceneEffect. Kept for legacy.
 		public SceneEffectPriority SceneEffectPriority { get; set; } = SceneEffectPriority.BossLow;
-		
+
 		/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
 		public float DrawOffsetY { get; set; }
-		
+
 		/// <summary> The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type. </summary>
 		public int Banner { get; set; }
 
@@ -107,15 +107,15 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
-		/// Returns a clone of this ModNPC. 
-		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created. 
-		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references. 
+		/// Returns a clone of this ModNPC.
+		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created.
+		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references.
 		/// Only called if CloneNewInstances is set to true.
 		/// </summary>
 		public virtual ModNPC Clone() => (ModNPC)MemberwiseClone();
 
 		/// <summary>
-		/// Create a new instance of this ModNPC for an NPC instance. 
+		/// Create a new instance of this ModNPC for an NPC instance.
 		/// Called at the end of NPC.SetDefaults.
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
@@ -235,7 +235,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life <= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
 		/// <param name="hitDirection"></param>
 		/// <param name="damage"></param>
@@ -287,12 +287,12 @@ namespace Terraria.ModLoader
 		public virtual void OnKill() {
 		}
 
-        /// <summary>
-        /// Allows you to make things happen when this NPC is caught. Ran Serverside
-        /// </summary>
-        /// <param name="player">The player catching this NPC</param>
-        /// <param name="item">The item that will be spawned</param>
-        public virtual void OnCatchNPC(Player player, Item item) {
+		/// <summary>
+		/// Allows you to make things happen when this NPC is caught. Ran Serverside
+		/// </summary>
+		/// <param name="player">The player catching this NPC</param>
+		/// <param name="item">The item that will be spawned</param>
+		public virtual void OnCatchNPC(Player player, Item item) {
 		}
 
 		/// <summary>

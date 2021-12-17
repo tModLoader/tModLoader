@@ -71,15 +71,15 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
-		/// Returns a clone of this ModProjectile. 
-		/// Allows you to decide which fields of your ModProjectile class are copied over when a new Projectile is created. 
-		/// By default this will return a memberwise clone; you will want to override this if your ModProjectile contains object references. 
+		/// Returns a clone of this ModProjectile.
+		/// Allows you to decide which fields of your ModProjectile class are copied over when a new Projectile is created.
+		/// By default this will return a memberwise clone; you will want to override this if your ModProjectile contains object references.
 		/// Only called if CloneNewInstances is set to true.
 		/// </summary>
 		public virtual ModProjectile Clone() => (ModProjectile)MemberwiseClone();
 
 		/// <summary>
-		/// Create a new instance of this ModProjectile for a Projectile instance. 
+		/// Create a new instance of this ModProjectile for a Projectile instance.
 		/// Called at the end of Projectile.SetDefaults.
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields

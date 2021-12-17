@@ -10,9 +10,9 @@
  {
  	public class LootSimulationItemCounter
  	{
--		private long[] _itemCountsObtained = new long[5088];
+-		private long[] _itemCountsObtained = new long[5125];
 +		private long[] _itemCountsObtained = new long[ItemLoader.ItemCount];
--		private long[] _itemCountsObtainedExpert = new long[5088];
+-		private long[] _itemCountsObtainedExpert = new long[5125];
 +		private long[] _itemCountsObtainedExpert = new long[ItemLoader.ItemCount];
  		private long _totalTimesAttempted;
  		private long _totalTimesAttemptedExpert;

@@ -36,7 +36,7 @@
  			TrimDuplicateRulesForNegativeIDs();
  		}
  
-@@ -593,6 +_,7 @@
+@@ -607,6 +_,7 @@
  			RegisterToGlobal(new ItemDropWithConditionRule(520, 5, 1, 1, new Conditions.SoulOfLight()));
  			RegisterToGlobal(new ItemDropWithConditionRule(521, 5, 1, 1, new Conditions.SoulOfNight()));
  			RegisterToGlobal(ItemDropRule.ByCondition(new Conditions.PirateMap(), 1315, 100));
@@ -44,13 +44,3 @@
  		}
  
  		private void RegisterFoodDrops() {
-@@ -897,7 +_,8 @@
- 			RegisterToNPC(476, ItemDropRule.Common(2676, 3, 2, 4));
- 			RegisterToNPC(476, ItemDropRule.Common(2272, 3));
- 			RegisterToNPC(476, ItemDropRule.Common(4731, 3));
-+			//Removed to avoid an exception on load
--			RegisterToNPC(476, ItemDropRule.Common(4986, 3, 69));
-+			//RegisterToNPC(476, ItemDropRule.Common(4986, 3, 69));
- 			int[] npcNetIds4 = new int[3] {
- 				473,
- 				474,

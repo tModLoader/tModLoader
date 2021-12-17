@@ -94,20 +94,20 @@ namespace Terraria
 				amount = amountUsed;
 			};
 		}
-		
+
 		public readonly Mod Mod;
 		public readonly List<Condition> Conditions = new List<Condition>();
 
 		public delegate void OnCraftCallback(Recipe recipe, Item item);
 		public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
-		
+
 		internal OnCraftCallback OnCraftHooks { get; private set; }
 		internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
 
 		private void AddGroup(int id) {
 			acceptedGroups.Add(id);
 		}
-		
+
 		/// <summary>
 		/// The index of the recipe in the Main.recipe array.
 		/// </summary>
@@ -120,7 +120,7 @@ namespace Terraria
 		/// <param name="stack">The stack.</param>
 		public Recipe AddIngredient(int itemID, int stack = 1) {
 			requiredItem.Add(new Item(itemID) { stack = stack });
-			
+
 			return this;
 		}
 
@@ -150,7 +150,6 @@ namespace Terraria
 		/// <summary>
 		/// Adds an ingredient to this recipe of the given type of item and stack size.
 		/// </summary>
-		/// <param name="item">The item.</param>
 		/// <param name="stack">The stack.</param>
 		public Recipe AddIngredient<T>(int stack = 1) where T : ModItem
 			=> AddIngredient(ModContent.ItemType<T>(), stack);
@@ -167,7 +166,7 @@ namespace Terraria
 
 			int id = RecipeGroup.recipeGroupIDs[name];
 			var group = RecipeGroup.recipeGroups[id];
-			
+
 			AddIngredient(group.IconicItemId, stack);
 			AddGroup(id);
 
@@ -183,9 +182,9 @@ namespace Terraria
 		public Recipe AddRecipeGroup(int recipeGroupId, int stack = 1) {
 			if (!RecipeGroup.recipeGroups.ContainsKey(recipeGroupId))
 				throw new RecipeException($"A recipe group with the ID {recipeGroupId} does not exist.");
-			
+
 			RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupId];
-			
+
 			AddIngredient(rec.IconicItemId, stack);
 			AddGroup(recipeGroupId);
 
@@ -202,7 +201,7 @@ namespace Terraria
 
 			return this;
 		}
-		
+
 		/// <summary>
 		/// Adds a required crafting station with the given tile type to this recipe. Ex: <c>recipe.AddTile(TileID.WorkBenches)</c>
 		/// </summary>
@@ -211,7 +210,7 @@ namespace Terraria
 		public Recipe AddTile(int tileID) {
 			if (tileID < 0 || tileID >= TileLoader.TileCount)
 				throw new RecipeException($"No tile has ID '{tileID}'.");
-			
+
 			requiredTile.Add(tileID);
 
 			return this;
@@ -225,7 +224,7 @@ namespace Terraria
 		/// <exception cref="RecipeException">The tile " + tileName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).</exception>
 		public Recipe AddTile(Mod mod, string tileName) {
 			mod ??= this.Mod;
-			
+
 			if (!ModContent.TryFind(mod.Name, tileName, out ModTile tile))
 				throw new RecipeException($"The tile {tileName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).");
 
@@ -308,8 +307,8 @@ namespace Terraria
 					Main.availableRecipeY[k] = 65f * k;
 				}
 			}
-			
-			Main.recipe[numRecipes] = this;			
+
+			Main.recipe[numRecipes] = this;
 			RecipeIndex = numRecipes;
 			numRecipes++;
 		}

@@ -46,7 +46,7 @@ namespace Terraria.ModLoader
 		public virtual string HighlightTexture => Texture + "_Highlight";
 
 		public bool IsDoor => OpenDoorID != -1 || CloseDoorID != -1;
-		
+
 		/// <summary>
 		/// A convenient method for adding this tile's Type to the given array. This can be used with the arrays in TileID.Sets.RoomNeeds.
 		/// </summary>
@@ -282,8 +282,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and frameYOffset should be used to specify an offset from the tiles frameX and frameY. "frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type];" will already be set before this hook is called, taking into account the TileID-wide animation set via AnimateTile. 
-		/// Use this hook for off-sync animations (lightning bug in a bottle), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via PreDraw. 
+		/// Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and frameYOffset should be used to specify an offset from the tiles frameX and frameY. "frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type];" will already be set before this hook is called, taking into account the TileID-wide animation set via AnimateTile.
+		/// Use this hook for off-sync animations (lightning bug in a bottle), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via PreDraw.
 		/// </summary>
 		/// <param name="type">The tile type.</param>
 		/// <param name="i">The x position in tile coordinates.</param>
@@ -421,7 +421,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows customization of how a chest unlock is accomplished. By default, frameXAdjustment will be -36, shifting the frameX over to the left
-		/// by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly. 
+		/// by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly.
 		/// This hook is called on the client, and if successful will be called on the server and other clients as the action is synced.
 		/// Make sure that the logic is consistent and not dependent on local player data.
 		/// </summary>

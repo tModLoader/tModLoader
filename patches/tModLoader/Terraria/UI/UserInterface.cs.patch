@@ -74,7 +74,7 @@
  			UIElement uIElement = Main.hasFocus ? _currentState.GetElementAt(MousePosition) : null;
  			_clickDisabledTimeRemaining = Math.Max(0.0, _clickDisabledTimeRemaining - time.ElapsedGameTime.TotalMilliseconds);
  			bool flag2 = _clickDisabledTimeRemaining > 0.0;
-+			try { // tmodloader added try-catch-finally. Try not to indent to keep patch clean. 
++			try { // tmodloader added try-catch-finally. Try not to indent to keep patch clean.
  			if (uIElement != _lastElementHover) {
  				if (_lastElementHover != null)
  					_lastElementHover.MouseOut(new UIMouseEvent(_lastElementHover, MousePosition));

@@ -65,7 +65,7 @@
 +					}
 +					else if (Main.dedServ) {
 +						// Try to load mods that are installed by Steam users when server launches without Steam. No guarantees if Steam not installed in standard location.
-+						var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory().ToString()).ToString()).ToString(), "workshop", "content", ModManager.thisApp.ToString());
++						var workshopLoc = Path.Combine( "../../../", "workshop", "content", ModManager.thisApp.ToString());
 +						if (Directory.Exists(workshopLoc)) {
 +							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
 +						}
@@ -84,7 +84,7 @@
  					string pchFolder = string.Empty;
  					uint punTimeStamp = 0u;
 -					List<string> list = new List<string>();
-+					
++
  					PublishedFileId_t[] array2 = array;
  					for (int i = 0; i < array2.Length; i++) {
  						if (SteamUGC.GetItemInstallInfo(array2[i], out punSizeOnDisk, out pchFolder, 1024u, out punTimeStamp))
@@ -219,7 +219,7 @@
 +						_endAction(this);
 +						return;
 +					}
-+					
++
 +					// On servers we want to control this more tightly due to threading constraints.
 +					if (!Main.dedServ)
 +						UpdateItem();
@@ -228,12 +228,10 @@
  					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  						_endAction(this);
-@@ -223,27 +_,26 @@
- 					else {
+@@ -224,26 +_,25 @@
  						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
  						_endAction(this);
--					}
-+					} 
+ 					}
 +					*/
  				}
  
@@ -308,7 +306,7 @@
 +
 +					if (!Main.dedServ || creatingItem)
 +						return;
-+					
++
 +					do {
 +						ForceCallbacks();
 +					} while (_updateCallback == EResult.k_EResultNone);

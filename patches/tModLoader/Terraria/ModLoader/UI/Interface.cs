@@ -114,16 +114,16 @@ namespace Terraria.ModLoader.UI
 							if (parts.Length == 2) {
 								string sha = parts[0];
 								string message = parts[1];
-								if(sha != ModLoader.LastLaunchedTModLoaderAlphaSha)
-								messages.Append("\n  " + message);
+								if (sha != ModLoader.LastLaunchedTModLoaderAlphaSha)
+									messages.Append("\n  " + message);
 								if (sha == ModLoader.LastLaunchedTModLoaderAlphaSha) {
 									LastLaunchedShaInRecentGitHubCommits = true;
 									break;
 								}
 							}
 						}
-						if(LastLaunchedShaInRecentGitHubCommits)
-							infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"), 
+						if (LastLaunchedShaInRecentGitHubCommits)
+							infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
 								() => {
 									SoundEngine.PlaySound(SoundID.MenuOpen);
 									Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4");
@@ -359,7 +359,7 @@ namespace Terraria.ModLoader.UI
 						if(info == null)
 							Console.WriteLine($"No mod with the name {modname} found on the workshop.");
 						else
-							info.InnerDownloadWithDeps(); 
+							info.InnerDownloadWithDeps();
 					}
 					catch (Exception e) {
 						Console.WriteLine(Language.GetTextValue("tModLoader.MBServerDownloadError", modname, e.ToString()));

@@ -248,7 +248,7 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 
 		internal bool CsprojUpdateNeeded(string fileContents)
 		{
-			if (!fileContents.Contains("../tModLoader.targets"))
+			if (!fileContents.Contains("..\\tModLoader.targets"))
 				return true;
 			if (!fileContents.Contains("<TargetFramework>net6.0</TargetFramework>"))
 				return true;
@@ -288,13 +288,13 @@ namespace {modNameTrimmed}.Items
 {{
 	public class {basicSwordName} : ModItem
 	{{
-		public override void SetStaticDefaults() 
+		public override void SetStaticDefaults()
 		{{
 			// DisplayName.SetDefault(""{basicSwordName}""); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 			Tooltip.SetDefault(""This is a basic modded sword."");
 		}}
 
-		public override void SetDefaults() 
+		public override void SetDefaults()
 		{{
 			Item.damage = 50;
 			Item.DamageType = DamageClass.Melee;
@@ -310,7 +310,7 @@ namespace {modNameTrimmed}.Items
 			Item.autoReuse = true;
 		}}
 
-		public override void AddRecipes() 
+		public override void AddRecipes()
 		{{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.DirtBlock, 10);

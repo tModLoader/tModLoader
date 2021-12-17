@@ -52,7 +52,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Etc
 			ModTranslation name = CreateMapEntryName();
-			
+
 			name.SetDefault("Torch");
 
 			AddMapEntry(new Color(200, 200, 200), name);
@@ -66,13 +66,13 @@ namespace ExampleMod.Content.Tiles
 		public override float GetTorchLuck(Player player) {
 			// GetTorchLuck is called when there is an ExampleTorch nearby the client player
 			// In most use-cases you should return 1f for a good luck torch, or -1f for a bad luck torch.
-			// You can also add a smaller amount (eg 0.5) for a smaller postive/negative luck impact. 
+			// You can also add a smaller amount (eg 0.5) for a smaller postive/negative luck impact.
 			// Remember that the overall torch luck is decided by every torch around the player, so it may be wise to have a smaller amount of luck impact.
 			// Multiple example torches on screen will have no additional effect.
 
 			// Positive and negative luck are accumulated separately and then compared to some fixed limits in vanilla to determine overall torch luck.
 			// Postive luck is capped at 1, any value higher won't make any difference and negative luck is capped at 2.
-			// A negative luck of 2 will cancel out all torch luck bonuses. 
+			// A negative luck of 2 will cancel out all torch luck bonuses.
 
 			// The influence positive torch luck can have overall is 0.1 (if positive luck is any number less than 1) or 0.2 (if positive luck is greater than or equal to 1)
 

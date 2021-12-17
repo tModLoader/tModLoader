@@ -12,10 +12,10 @@
 		"MenuDevelopMods": "Desarrollar mods",
 		"MenuDevelopModsDescription": "Desarrolla y publica mods para que otros los usen, usando tu propio código de Fuentes de Mods.",
 		"MenuEnableDeveloperMode": "Activar modo desarrollador",
-		"WelcomeMessageBeta": "Bienvenido a tModLoader 1.4 Alfa.\n\nHas instalado correctamente una versión inestable de tModLoader que puede contener errores que provoquen problemas en el juego.\n\nUtiliza el menú de Steam Workshop para acceder a las funciones relacionadas con tModLoader.\n\nÚnete al Discord de tModLoader para saber más sobre qué mods y/o herramientas de prueba están disponibles para tModLoader 1.4 como parte de la nueva versión.",
+		"WelcomeMessageBeta": "Bienvenido a tModLoader 1.4 Alfa.\n\nHas instalado correctamente una versión inestable de tModLoader, por lo que podría haber errores que causen problemas en el juego.\n\nUtiliza el menú de Steam Workshop para acceder a las funciones relacionadas con tModLoader.\n\nÚnete al Discord de tModLoader para saber más sobre los mods y/o herramientas de prueba disponibles para la versión 1.4 de tModLoader.",
 		"FirstLaunchWelcomeMessage": "Bienvenido a tModLoader.\n\ntModLoader se ha instalado correctamente. Usa el menú del Navegador de Mods para buscar los mods que quieras descargar. Usa el menú de Mods para cambiar los mods que tengas activados. Después de cambiar de mods, asegúrate de pulsar el botón Recargar mods para poder usarlos.",
-		// "WhatsNewMessage": "The following are basic change notes from the last time you launched the Alpha. You may find that mods that relate to these changes need to be rebuilt by the author. Visit GitHub to see more details:\n",
-		// "ViewOnGitHub": "View on GitHub",
+		"WhatsNewMessage": "A continuación se mostrarán los cambios realizados desde la última vez que abriste tModLoader Alfa. Es posible que los mods relacionados con dichos cambios deban ser actualizados por el autor. Visita GitHub para ver más detalles:\n",
+		"ViewOnGitHub": "Ver en GitHub",
 		"tModLoaderSettings": "Configuración de tModLoader",
 		"ModMenuSwap": "Cambiar tema del menú",
 		"AudioNotSupported": "No se han detectado dispositivos de audio. Se desactivará el sonido.",
@@ -29,6 +29,7 @@
 		"ModsModPacks": "Paquetes de mods",
 		"ModsDisable": "Desactivar",
 		"ModsEnable": "Activar",
+		"ModConfiguration": "Configuración de mods",
 		"ModsOpenConfig": "Haz clic para abrir la configuración",
 		"ModOldWarning": "Mod desactualizado, actívalo bajo tu propia responsabilidad",
 		"ModDependencyClickTooltip": "Este mod depende de {0}\n(Haz clic para activar)",
@@ -138,7 +139,7 @@
 
 		// Mod Info
 		"ModInfoHeader": "Info del mod: ",
-		"ModInfoVisitHomepage": "Visita la página web del mod para más información",
+		"ModInfoVisitHomepage": "Visitar sitio web del mod",
 		"ModInfoExtract": "Extraer",
 		"ModInfoNoDescriptionAvailable": "Sin descripción",
 		"ModInfoProblemTryAgain": "Ha habido un problema, inténtalo de nuevo",
@@ -300,7 +301,7 @@
 		"MSPublish": "Publicar",
 		"MSModSourcesCantHaveSpaces": "(Las carpetas de fuentes de mods no pueden contener espacios)",
 		"MSCreateMod": "Crear mod",
-		"VersionUpgrade": "Info. sobre la Migración de Mods tras actualizar",
+		"VersionUpgrade": "Haz clic para más info. sobre la Migración de Mods",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Se requieren librerías adicionales para construir mods (falta la carpeta ModCompile)",

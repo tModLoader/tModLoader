@@ -1,14 +1,11 @@
 --- src/Terraria/Configuration.targets
 +++ src/tModLoader/Configuration.targets
-@@ -1,6 +_,10 @@
- <Project>
-   <PropertyGroup>
--    <TargetFramework>net5.0</TargetFramework>
-+    <TargetFramework>net6.0</TargetFramework>
-+    <!-- Defines the Minimum patch version that is required to play. -->
-+    <RuntimeFrameworkVersion>6.0.0</RuntimeFrameworkVersion>
-+	<!-- Eliminates the Refs folder from output-->
-+	<ProduceReferenceAssembly>false</ProduceReferenceAssembly> 
+@@ -3,6 +_,8 @@
+     <TargetFramework>net6.0</TargetFramework>
+     <!-- Defines the Minimum patch version that is required to play. -->
+     <RuntimeFrameworkVersion>6.0.0</RuntimeFrameworkVersion>
++    <!-- Eliminates the Refs folder from output-->
++    <ProduceReferenceAssembly>false</ProduceReferenceAssembly> 
      <Configurations>Debug;Release</Configurations>
      <PlatformTarget>AnyCPU</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

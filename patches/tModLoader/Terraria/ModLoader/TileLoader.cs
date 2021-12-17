@@ -172,14 +172,14 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileOreFinderPriority, nextTile);
 			Array.Resize(ref Main.tileGlowMask, nextTile);
 			Array.Resize(ref Main.tileCracked, nextTile);
-			
+
 			Array.Resize(ref WorldGen.tileCounts, nextTile);
 			Array.Resize(ref WorldGen.houseTile, nextTile);
 			//Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
 			Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
-			Array.Resize(ref HouseUtils.BlacklistedTiles, nextTile);	
-			Array.Resize(ref HouseUtils.BeelistedTiles, nextTile);	
-		
+			Array.Resize(ref HouseUtils.BlacklistedTiles, nextTile);
+			Array.Resize(ref HouseUtils.BeelistedTiles, nextTile);
+
 			for (int i = 0; i < nextTile; i++) { //oh dear
 				Array.Resize(ref Main.tileMerge[i], nextTile);
 			}
@@ -253,7 +253,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTable, vanillaTableCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTorch, vanillaTorchCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsDoor, vanillaDoorCount);
-			
+
 			while (TileObjectData._data.Count > TileID.Count) {
 				TileObjectData._data.RemoveAt(TileObjectData._data.Count - 1);
 			}
@@ -641,7 +641,7 @@ namespace Terraria.ModLoader
 		//in Terraria.GameContent.Drawing.TileDrawing at the end of the loop in DrawSpecialTilesLegacy call
 		//  TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
 		/// <summary>
-		/// Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called at the end of the DrawSpecialTilesLegacy loop, allowing for basically another layer above tiles. Use DrawEffects hook to queue for SpecialDraw. 
+		/// Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called at the end of the DrawSpecialTilesLegacy loop, allowing for basically another layer above tiles. Use DrawEffects hook to queue for SpecialDraw.
 		/// </summary>
 		public static void SpecialDraw(int type, int specialTileX, int specialTileY, SpriteBatch spriteBatch) {
 			GetTile(type)?.SpecialDraw(specialTileX, specialTileY, spriteBatch);
@@ -669,7 +669,7 @@ namespace Terraria.ModLoader
 		public static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak) {
 			ModTile modTile = GetTile(type);
 			bool flag = true;
-			
+
 			if (modTile != null) {
 				flag = modTile.TileFrame(i, j, ref resetFrame, ref noBreak);
 			}
@@ -730,7 +730,7 @@ namespace Terraria.ModLoader
 		public static bool RightClick(int i, int j) {
 			bool returnValue = false;
 			int type = Main.tile[i, j].type;
-			
+
 			if (GetTile(type)?.RightClick(i, j) ?? false)
 				returnValue = true;
 

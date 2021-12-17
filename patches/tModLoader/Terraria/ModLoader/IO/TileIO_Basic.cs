@@ -122,7 +122,7 @@ namespace Terraria.ModLoader.IO
 
 			public byte[] SaveData(out bool[] hasObj) {
 				using var ms = new MemoryStream();
-				var writer = new BinaryWriter(ms); 
+				var writer = new BinaryWriter(ms);
 
 				var unloadedReader = new PosData<ushort>.OrderedSparseLookupReader(unloadedEntryLookup);
 				hasObj = new bool[entries.Length];

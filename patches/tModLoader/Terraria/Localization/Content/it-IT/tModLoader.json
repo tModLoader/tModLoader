@@ -31,6 +31,7 @@
 		// "ModsModPacks": "Mod Packs",
 		// "ModsDisable": "Click to disable",
 		// "ModsEnable": "Click to enable",
+		// "ModConfiguration": "Mod Configuration",
 		// "ModsOpenConfig": "Click to open config",
 		// "ModOldWarning": "Old mod, enable at own risk",
 		// "ModDependencyClickTooltip": "This mod depends on: {0}\n (click to enable)",
