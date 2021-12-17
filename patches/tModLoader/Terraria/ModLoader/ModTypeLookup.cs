@@ -58,7 +58,7 @@ namespace Terraria.ModLoader
 
 				return false;
 			}
-				
+
 			return subDictionary.TryGetValue(contentName, out value);
 		}
 	}

@@ -106,7 +106,7 @@ namespace Terraria
 		/// <summary>
 		/// Gets the crit modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
-		/// </summary> 
+		/// </summary>
 		public ref int GetCritChance<T>() where T : DamageClass => ref GetCritChance(ModContent.GetInstance<T>());
 
 		/// <summary>
@@ -149,15 +149,16 @@ namespace Terraria
 		/// </summary>
 		internal BitArray modBiomeFlags = new BitArray(0);
 
-		/// <summary> 
-		/// Determines if the player is in specified ModBiome. This will throw exceptions on failure. 
+		/// <summary>
+		/// Determines if the player is in specified ModBiome. This will throw exceptions on failure.
 		/// </summary>
 		/// <exception cref="IndexOutOfRangeException"/>
 		/// <exception cref="NullReferenceException"/>
 		public bool InModBiome(ModBiome baseInstance) => modBiomeFlags[baseInstance.ZeroIndexType];
 
 		/// <summary>
-		/// The zone property storing if the player is in the purity/forest biome. Updated in <see cref="UpdateBiomes"/>
+		/// The zone property storing if the player is not in any particular biome. Updated in <see cref="UpdateBiomes"/>
+		/// Does NOT account for height. Please use ZoneForest / ZoneNormalX for height based derivatives.
 		/// </summary>
 		public bool ZonePurity { get; set; } = false;
 
@@ -172,9 +173,23 @@ namespace Terraria
 			return !(one || two || three || four);
 		}
 
+		// Convenience Zone properties for Modders
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneOverworldHeight</code></summary>
+		public bool ZoneForest => ZonePurity && ZoneOverworldHeight;
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneRockLayerHeight</code></summary>
+		public bool ZoneNormalCaverns => ZonePurity && ZoneRockLayerHeight;
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneDirtLayerHeight</code></summary>
+		public bool ZoneNormalUnderground => ZonePurity && ZoneDirtLayerHeight;
+		
+		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneSkyHeight</code></summary>
+		public bool ZoneNormalSpace => ZonePurity && ZoneSkyHeight;
+
 		/// <summary>
 		/// Invoked at the end of loading vanilla player data from files to fix stuff that isn't initialized coming out of load.
-		/// Only run on the Player select screen during loading of data. 
+		/// Only run on the Player select screen during loading of data.
 		/// Primarily meant to prevent unwarranted first few frame fall damage/lava damage if load lagging
 		/// Corrects the player.lavaMax time, wingsLogic, and no fall dmg to be accurate for the provided items in accessory slots.
 		/// </summary>
@@ -266,7 +281,7 @@ namespace Terraria
 		public bool CanBuyItem(int price, int customCurrency = -1) {
 			if (customCurrency != -1)
 				return CustomCurrencyManager.BuyItem(this, price, customCurrency);
-			
+
 			long num = Utils.CoinsCount(out _, inventory, new[] { 58, 57, 56, 55, 54 });
 			long num2 = Utils.CoinsCount(out _, bank.item, Array.Empty<int>());
 			long num3 = Utils.CoinsCount(out _, bank2.item, Array.Empty<int>());

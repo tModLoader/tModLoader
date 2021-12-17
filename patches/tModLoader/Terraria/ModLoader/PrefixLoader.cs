@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			prefixes.Clear();
-			
+
 			PrefixCount = PrefixID.Count;
 
 			foreach (PrefixCategory category in Enum.GetValues(typeof(PrefixCategory))) {

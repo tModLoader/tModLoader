@@ -12,7 +12,7 @@
  			list.Add(ItemSortingLayers.LastTilesCommon);
  			list.Add(ItemSortingLayers.LastNotTrash);
  			list.Add(ItemSortingLayers.LastTrash);
--			for (int i = -48; i < 5088; i++) {
+-			for (int i = -48; i < 5125; i++) {
 +			for (int i = -48; i < ItemLoader.ItemCount; i++) {
  				Item item = new Item();
  				item.netDefaults(i);

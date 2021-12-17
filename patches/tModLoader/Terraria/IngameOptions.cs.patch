@@ -1,12 +1,11 @@
 --- src/Terraria/Terraria/IngameOptions.cs
 +++ src/tModLoader/Terraria/IngameOptions.cs
-@@ -4,13 +_,17 @@
+@@ -3,12 +_,16 @@
+ using System;
  using System.Collections.Generic;
- using System.Linq;
  using Terraria.Audio;
 +using Steamworks;
  using Terraria.GameContent;
- using Terraria.GameContent.UI;
  using Terraria.GameInput;
  using Terraria.Localization;
 +using Terraria.ModLoader.Engine;
@@ -18,7 +17,7 @@
  
  namespace Terraria
  {
-@@ -18,7 +_,8 @@
+@@ -16,7 +_,8 @@
  	{
  		public const int width = 670;
  		public const int height = 480;
@@ -28,7 +27,7 @@
  			0.7f,
  			0.7f,
  			0.7f,
-@@ -174,7 +_,7 @@
+@@ -172,7 +_,7 @@
  			noSound = false;
  			bool flag5 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();
  			int num7 = flag5 ? 1 : 0;
@@ -37,11 +36,11 @@
  			Vector2 vector = new Vector2(value3.X + value2.X / 4f, value3.Y + (float)(num3 * 5 / 2));
  			Vector2 vector2 = new Vector2(0f, value2.Y - (float)(num3 * 5)) / (num8 + 1);
  			if (flag)
-@@ -246,6 +_,20 @@
+@@ -244,6 +_,20 @@
  			}
  
  			num10++;
-+			if (DrawLeftSide(sb, "Mod Configuration", num10, vector, vector2, leftScale, 0.7f, 0.8f, 0.01f)) {
++			if (DrawLeftSide(sb, Language.GetTextValue("tModLoader.ModConfiguration"), num10, vector, vector2, leftScale, 0.7f, 0.8f, 0.01f)) {
 +				leftHover = num10;
 +				if (flag4) {
 +					Close();
@@ -58,7 +57,7 @@
  			if (flag5 && DrawLeftSide(sb, Lang.menu[147].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
  				if (flag4) {
-@@ -257,6 +_,7 @@
+@@ -255,6 +_,7 @@
  			if (flag5)
  				num10++;
  
@@ -66,7 +65,7 @@
  			if (DrawLeftSide(sb, Lang.menu[131].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
  				if (flag4) {
-@@ -264,8 +_,9 @@
+@@ -262,8 +_,9 @@
  					IngameFancyUI.OpenAchievements();
  				}
  			}
@@ -77,7 +76,7 @@
  			if (DrawLeftSide(sb, Lang.menu[118].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
  				if (flag4)
-@@ -276,6 +_,9 @@
+@@ -274,6 +_,9 @@
  			if (DrawLeftSide(sb, Lang.inter[35].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
  				if (flag4) {
@@ -87,7 +86,7 @@
  					Close();
  					Main.menuMode = 10;
  					Main.gameMenu = true;
-@@ -301,6 +_,7 @@
+@@ -299,6 +_,7 @@
  					break;
  				case 1:
  					num12 = 10;
@@ -95,10 +94,10 @@
  					num4 = 1f;
  					num5 = 1.001f;
  					num6 = 0.001f;
-@@ -730,6 +_,14 @@
+@@ -651,6 +_,14 @@
  					rightHover = num16;
  					if (flag4)
- 						Main.ActivePlayerResourcesSet = playerResourcesDisplaySet;
+ 						Main.GamepadDisableInstructionsDisplay = !Main.GamepadDisableInstructionsDisplay;
 +				}
 +
 +				num16++;

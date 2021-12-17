@@ -166,7 +166,7 @@ namespace Terraria
 				return -1;
 			}
 		}
-		
+
 		public bool IsTheSameAs(Tile other) {
 			if (other == null)
 				return false;

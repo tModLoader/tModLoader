@@ -33,7 +33,7 @@ namespace Terraria.ModLoader
 			var hook = new HookList(ModLoader.Method(func));
 
 			hooks.Add(hook);
-			
+
 			return hook;
 		}
 
@@ -44,11 +44,11 @@ namespace Terraria.ModLoader
 		}
 
 		//Delegates
-		
+
 		private delegate void DelegateModifyTransformMatrix(ref SpriteViewMatrix Transform);
-		
+
 		private delegate void DelegateModifySunLightColor(ref Color tileColor, ref Color backgroundColor);
-		
+
 		private delegate void DelegateModifyLightingBrightness(ref float scale);
 
 		private delegate void DelegatePostDrawFullscreenMap(ref string mouseText);

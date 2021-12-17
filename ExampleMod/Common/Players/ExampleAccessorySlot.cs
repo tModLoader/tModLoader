@@ -23,12 +23,12 @@ namespace ExampleMod.Common.Players
 		public override string VanityBackgroundTexture => "Terraria/Images/Inventory_Back14"; // yellow
 		public override string FunctionalBackgroundTexture => "Terraria/Images/Inventory_Back7"; // pale blue
 
-		// Icon textures. Expects 32x32 images if you want it to look proper. 
+		// Icon textures. Expects 32x32 images if you want it to look proper.
 		public override string VanityTexture => "Terraria/Images/Item_" + ItemID.PiggyBank; // The piggy bank is 16x24, so we expect it to look funny. Is a fun funny tho :)
 
 		// We will keep it hidden most of the time so that it isn't an intrusive example
 		public override bool IsHidden() {
-			return IsEmpty; // Only show when it contains an item, items can end up in functional slots via quick swap (right click accessory) 
+			return IsEmpty; // Only show when it contains an item, items can end up in functional slots via quick swap (right click accessory)
 		}
 	}
 
@@ -43,7 +43,7 @@ namespace ExampleMod.Common.Players
 
 		// Designates our slot to be a priority for putting wings in to. NOTE: use ItemLoader.CanEquipAccessory if aiming for restricting other slots from having wings!
 		public override bool ModifyDefaultSwapSlot(Item item, int accSlotToSwapTo) {
-			if (item.wingSlot > 0) // If is Wing, then we want to prioritize it to go in to our slot. 
+			if (item.wingSlot > 0) // If is Wing, then we want to prioritize it to go in to our slot.
 				return true;
 
 			return false;
@@ -61,7 +61,7 @@ namespace ExampleMod.Common.Players
 			return false; // We set to false to just not display if not Enabled. NOTE: this does not affect behavour when mod is unloaded!
 		}
 
-		// Icon textures. Expects 32x32 images if you want it to look proper. 
+		// Icon textures. Expects 32x32 images if you want it to look proper.
 		public override string FunctionalTexture => "Terraria/Images/Item_" + ItemID.CreativeWings;
 
 		// Can be used to modify stuff while the Mouse is hovering over the slot.

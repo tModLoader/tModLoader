@@ -9,7 +9,7 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader.Config
 {
 	/// <summary>
-	/// Classes implementing EntityDefinition serve to function as a way to save and load the identities of various Terraria objects. Only the identity is preserved, no other data such as stack size, damage, etc. These classes are well suited for ModConfig, but can be saved and loaded in a TagCompound as well. 
+	/// Classes implementing EntityDefinition serve to function as a way to save and load the identities of various Terraria objects. Only the identity is preserved, no other data such as stack size, damage, etc. These classes are well suited for ModConfig, but can be saved and loaded in a TagCompound as well.
 	/// </summary>
 	public abstract class EntityDefinition : TagSerializable
 	{

@@ -111,7 +111,7 @@ namespace Terraria.ModLoader
 					// Skip loading ClientSide on Main.dedServ?
 					if (mc.Mode == ConfigScope.ServerSide && (Side == ModSide.Client || Side == ModSide.NoSync)) // Client and NoSync mods can't have ServerSide ModConfigs. Server can, but won't be synced.
 						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ServerSide but this Mods ModSide isn't Both or Server");
-					if (mc.Mode == ConfigScope.ClientSide && Side == ModSide.Server) // Doesn't make sense. 
+					if (mc.Mode == ConfigScope.ClientSide && Side == ModSide.Server) // Doesn't make sense.
 						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ClientSide but this Mods ModSide is Server");
 					mc.Mod = this;
 					var name = type.Name;
@@ -148,10 +148,10 @@ namespace Terraria.ModLoader
 		public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
 
 		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod. 
-		/// (The item parameter may be null if you don't want to associate an item with the texture.) 
-		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property. 
-		/// If the EquipType is EquipType.Body, make sure that you also provide an armTexture and a femaleTexture. 
+		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.
+		/// (The item parameter may be null if you don't want to associate an item with the texture.)
+		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property.
+		/// If the EquipType is EquipType.Body, make sure that you also provide an armTexture and a femaleTexture.
 		/// Returns the ID / slot that is assigned to the equipment texture.
 		/// </summary>
 		/// <param name="item">The item.</param>
@@ -166,8 +166,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod. 
-		/// This method is different from the other AddEquipTexture in that you can specify the class of the equipment texture, thus allowing you to override EquipmentTexture's hooks. 
+		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.
+		/// This method is different from the other AddEquipTexture in that you can specify the class of the equipment texture, thus allowing you to override EquipmentTexture's hooks.
 		/// All other parameters are the same as the other AddEquipTexture.
 		/// </summary>
 		/// <param name="equipTexture">The equip texture.</param>
@@ -249,7 +249,7 @@ namespace Terraria.ModLoader
 			int slot = NPCHeadLoader.ReserveHeadSlot();
 
 			NPCHeadLoader.heads[texture] = slot;
-			
+
 			if (!Main.dedServ) {
 				ModContent.Request<Texture2D>(texture);
 			}

@@ -32,7 +32,7 @@ namespace Terraria.ModLoader.IO
 
 		// adding default param to Set overload is a breaking changefor now.
 		public void Set(string key, object value) => Set(key, value, false);
-		
+
 		//if value is null, calls RemoveTag, also performs type checking
 		public void Set(string key, object value, bool replace = false) {
 			if (value == null) {

@@ -19,7 +19,7 @@
  		private static ushort[] snowTypes;
  		private static ushort wallRangeStart;
  		private static ushort wallRangeEnd;
-@@ -1437,6 +_,7 @@
+@@ -1438,6 +_,7 @@
  
  			hellPosition = num12;
  			colorLookup[num12] = color9;
@@ -27,7 +27,7 @@
  			snowTypes = new ushort[6];
  			snowTypes[0] = tileLookup[147];
  			snowTypes[1] = tileLookup[161];
-@@ -1555,7 +_,7 @@
+@@ -1556,7 +_,7 @@
  					int num4 = tile.liquidType();
  					num3 = liquidPosition + num4;
  				}
@@ -36,7 +36,7 @@
  					int wall = tile.wall;
  					num3 = wallLookup[wall];
  					num = tile.wallColor();
-@@ -1626,7 +_,9 @@
+@@ -1627,7 +_,9 @@
  				}
  			}
  
@@ -47,7 +47,7 @@
  		}
  
  		public static void GetTileBaseOption(int y, Tile tileCache, ref int baseOption) {
-@@ -2259,7 +_,7 @@
+@@ -2261,7 +_,7 @@
  								byte b5 = 0;
  								int num7;
  								ushort num8;
@@ -56,7 +56,7 @@
  									flag2 = false;
  									flag = false;
  									num7 = 0;
-@@ -2403,7 +_,9 @@
+@@ -2405,7 +_,9 @@
  
  						deflateStream.Dispose();
  						FileUtilities.WriteAllBytes(text, memoryStream.ToArray(), isCloudSave);

@@ -19,7 +19,7 @@ namespace Terraria
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
-		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
+		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance&lt;T&gt;() for custom damage types.
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;

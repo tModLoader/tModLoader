@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30503.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraria", "..\src\tModLoader\Terraria\Terraria.csproj", "{4EFE2B31-D61A-4C07-BAD2-991D3633C237}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReLogic", "..\src\tModLoader\ReLogic\ReLogic.csproj", "{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNA", "..\FNA\FNA.csproj", "{35253CE1-C864-4CD3-8249-4D1319748E8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FNA.Core", "..\FNA\FNA.Core.csproj", "{1EED6B32-5FC7-41A8-91C3-08147C46DD4F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleMod", "..\ExampleMod\ExampleMod.csproj", "{F646F0CE-2C51-4610-B097-F16FB58CECC5}"
 EndProject
@@ -25,10 +25,10 @@ Global
 		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EED6B32-5FC7-41A8-91C3-08147C46DD4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EED6B32-5FC7-41A8-91C3-08147C46DD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EED6B32-5FC7-41A8-91C3-08147C46DD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EED6B32-5FC7-41A8-91C3-08147C46DD4F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F646F0CE-2C51-4610-B097-F16FB58CECC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F646F0CE-2C51-4610-B097-F16FB58CECC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F646F0CE-2C51-4610-B097-F16FB58CECC5}.Release|Any CPU.ActiveCfg = Release|Any CPU

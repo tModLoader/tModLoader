@@ -5,7 +5,7 @@ using System.ComponentModel;
 namespace Terraria.ModLoader.Config
 {
 	/// <summary>
-	/// Specifies a background color to be used for the property, field, or class in the ModConfig UI. 
+	/// Specifies a background color to be used for the property, field, or class in the ModConfig UI.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 	public class BackgroundColorAttribute : Attribute
@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
-	/// This attribute sets a label for the property, field, or class for use in the ModConfig UI. 
+	/// This attribute sets a label for the property, field, or class for use in the ModConfig UI.
 	/// Starting the label with $ means the label should be interpreted as a Localization key.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
@@ -79,7 +79,7 @@ namespace Terraria.ModLoader.Config
 	}
 
 	/// <summary>
-	/// Use this attribute to specify a custom UI element to be used for the annotated property, field, or class in the ModConfig UI. 
+	/// Use this attribute to specify a custom UI element to be used for the annotated property, field, or class in the ModConfig UI.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Enum)]
 	public class CustomModConfigItemAttribute : Attribute

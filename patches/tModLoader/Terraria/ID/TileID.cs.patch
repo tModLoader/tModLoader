@@ -18,12 +18,12 @@
  				};
  			}
  
--			public static SetFactory Factory = new SetFactory(624);
+-			public static SetFactory Factory = new SetFactory(625);
 +			public static SetFactory Factory = new SetFactory(TileLoader.TileCount);
  			public static bool[] AllowsSaveCompressionBatching = Factory.CreateBoolSet(true, 520, 423);
+ 			public static bool[] CountsAsGemTree = Factory.CreateBoolSet(false, 583, 584, 585, 586, 587, 588, 589);
  			public static bool[] IsATreeTrunk = Factory.CreateBoolSet(false, 5, 72, 583, 584, 585, 586, 587, 588, 589, 596, 616);
- 			public static bool[] IsShakeable = Factory.CreateBoolSet(false, 5, 72, 323, 583, 584, 585, 586, 587, 588, 589, 596, 616);
-@@ -185,7 +_,7 @@
+@@ -186,7 +_,7 @@
  			public static int[] TouchDamageVines = Factory.CreateIntSet(0, 32, 10, 69, 17, 80, 6, 352, 10);
  			public static int[] TouchDamageSands = Factory.CreateIntSet(0, 53, 15, 112, 15, 116, 15, 123, 15, 224, 15, 234, 15, 57, 15, 69, 15);
  			public static int[] TouchDamageHot = Factory.CreateIntSet(0, 37, 20, 58, 20, 76, 20);
