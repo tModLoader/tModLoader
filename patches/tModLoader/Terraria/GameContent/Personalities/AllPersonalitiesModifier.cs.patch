@@ -21,8 +21,8 @@
 +			var npcHappiness = npc.Happiness;
 +
 +			// Apply effects from the primary biome
-+			if (npcHappiness.BiomeTypeRelationships.TryGetValue(npc.type, out var biomeRelationship)) {
-+				shopHelperInstance.ApplyBiomeRelationshipEffect(npc.type, biomeRelationship);
++			if (npcHappiness.BiomeTypeRelationships.TryGetValue(primaryPlayerBiome, out var biomeRelationship)) {
++				shopHelperInstance.ApplyBiomeRelationshipEffect(primaryPlayerBiome, biomeRelationship);
 +			}
 +
 +			// Apply effects from nearby NPCs
