@@ -8,7 +8,7 @@
  
  namespace Terraria.GameContent.Bestiary
  {
-@@ -193,7 +_,11 @@
+@@ -212,7 +_,11 @@
  					SpawnConditions.Biomes.SolarPillar,
  					SpawnConditions.Biomes.VortexPillar,
  					SpawnConditions.Biomes.StardustPillar
@@ -21,7 +21,7 @@
  			}
  		}
  
-@@ -268,9 +_,10 @@
+@@ -287,9 +_,10 @@
  			public const int ItemSpawn = 61;
  		}
  
@@ -34,7 +34,7 @@
  		private BestiaryEntry Register(BestiaryEntry entry) => _currentDatabase.Register(entry);
  		private IBestiaryEntryFilter Register(IBestiaryEntryFilter filter) => _currentDatabase.Register(filter);
  
-@@ -543,6 +_,7 @@
+@@ -562,6 +_,7 @@
  		}
  
  		private void AddTownNPCs_Manual() {
@@ -42,7 +42,7 @@
  			Register(BestiaryEntry.TownNPC(22));
  			Register(BestiaryEntry.TownNPC(17));
  			Register(BestiaryEntry.TownNPC(18));
-@@ -582,13 +_,18 @@
+@@ -601,13 +_,18 @@
  		}
  
  		private void AddEmptyEntries_CrittersAndEnemies_Automated() {

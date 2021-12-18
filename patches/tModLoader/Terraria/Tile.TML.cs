@@ -211,7 +211,7 @@ namespace Terraria
 
 		public static bool operator ==(Tile tile, object obj)
 			=> tile.Equals(obj);
-		
+
 		public static bool operator !=(Tile tile, object obj)
 			=> !tile.Equals(obj);
 

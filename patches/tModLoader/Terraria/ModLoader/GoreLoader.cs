@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 
 			if (texture == null)
 				throw new ArgumentNullException(nameof(texture));
-			
+
 			if (!mod.loading)
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
@@ -76,13 +76,13 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			gores.Clear();
-			
+
 			GoreCount = GoreID.Count;
 		}
 
 		internal static ModGore GetModGore(int type) {
 			gores.TryGetValue(type, out var modGore);
-			
+
 			return modGore;
 		}
 
@@ -98,16 +98,6 @@ namespace Terraria.ModLoader
 				gore.type = gore.realType;
 				gore.realType = 0;
 			}
-		}
-
-		//in Terraria.Main.DrawGore and DrawGoreBehind replace type checks with this
-		internal static bool DrawBackGore(Gore gore) {
-			if (gore.ModGore != null) {
-				return gore.ModGore.DrawBehind(gore);
-			}
-
-			//TODO: Whatever calls this is a very bad patch. Don't move vanilla code, reuse it where it is instead.
-			return (((gore.type >= 706 && gore.type <= 717) || gore.type == 943 || gore.type == 1147 || (gore.type >= 1160 && gore.type <= 1162)) && (gore.frame < 7 || gore.frame > 9));
 		}
 	}
 }

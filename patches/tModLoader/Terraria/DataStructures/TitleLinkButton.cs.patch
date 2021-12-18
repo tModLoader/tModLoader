@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/DataStructures/TitleLinkButton.cs
++++ src/tModLoader/Terraria/DataStructures/TitleLinkButton.cs
+@@ -66,7 +_,7 @@
+ 
+ 		private void OpenLink() {
+ 			try {
+-				Process.Start(LinkUrl);
++				Utils.OpenToURL(LinkUrl);
+ 			}
+ 			catch {
+ 				Console.WriteLine("Failed to open link?!");

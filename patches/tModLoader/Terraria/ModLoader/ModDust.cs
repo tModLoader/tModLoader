@@ -8,6 +8,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class represents a type of dust that is added by a mod. Only one instance of this class will ever exist for each type of dust you add.
 	/// </summary>
+	[Autoload(Side = ModSide.Client)]
 	public abstract class ModDust : ModTexturedType
 	{
 		/// <summary> Allows you to choose a type of dust for this type of dust to copy the behavior of. Defaults to -1, which means that no behavior is copied. </summary>
@@ -68,7 +69,5 @@ namespace Terraria.ModLoader
 		/// Allows you to override the color this dust will draw in. Return null to draw it in the normal light color; returns null by default. Note that the dust.noLight field makes the dust ignore lighting and draw in full brightness, and can be set in OnSpawn instead of having to return Color.White here.
 		/// </summary>
 		public virtual Color? GetAlpha(Dust dust, Color lightColor) => null;
-
-		public override bool IsLoadingEnabled(Mod mod) => !Main.dedServ;
 	}
 }

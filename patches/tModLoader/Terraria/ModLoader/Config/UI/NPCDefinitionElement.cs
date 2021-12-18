@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.Config.UI
 				if (Lang.GetNPCName(option.type).Value.IndexOf(chooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
 				string modname = option.definition.mod;
-				if (option.type > NPCID.Count) {
+				if (option.type >= NPCID.Count) {
 					modname = NPCLoader.GetNPC(option.type).Mod.DisplayName; // or internal name?
 				}
 				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
@@ -62,7 +62,7 @@ namespace Terraria.ModLoader.Config.UI
 
 				int frameCounter = Interface.modConfig.updateCount / 8;
 				int frames = Main.npcFrameCount[type];
-				
+
 				if (unloaded) {
 					npcTexture = TextureAssets.Item[ItemID.Count].Value; //Will this always return the 'missing item' texture?
 					frames = 1;

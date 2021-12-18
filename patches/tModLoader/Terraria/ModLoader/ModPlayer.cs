@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 		/// Whether each player gets a ModPlayer by cloning the ModPlayer added to the Mod or by creating a new ModPlayer object with the same type as the ModPlayer added to the Mod. The accessor returns true by default. Return false if you want to assign fields through the constructor.
 		/// </summary>
 		public virtual bool CloneNewInstances => true;
-		
+
 		protected sealed override void Register() {
 			PlayerLoader.VerifyModPlayer(this);
 
@@ -190,7 +190,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called after Update Accessories. 
+		/// Called after Update Accessories.
 		/// </summary>
 		public virtual void UpdateEquips() {
 		}
@@ -746,7 +746,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to reorder the player draw layers. 
+		/// Allows you to reorder the player draw layers.
 		/// This is called once at the end of mod loading, not during the game.
 		/// Use with extreme caution, or risk breaking other mods.
 		/// </summary>
@@ -898,7 +898,7 @@ namespace Terraria.ModLoader
 		/// You can use this method to add items to the player's starting inventory, as well as their inventory when they respawn in mediumcore.
 		/// </summary>
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
-		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty<Item>().</returns>
+		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty&lt;Item&gt;().</returns>
 		public virtual IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			return Enumerable.Empty<Item>();
 		}

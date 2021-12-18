@@ -1,50 +1,64 @@
 --- src/Terraria/Terraria/Collision.cs
 +++ src/tModLoader/Terraria/Collision.cs
-@@ -2062,7 +_,7 @@
+@@ -2100,7 +_,7 @@
  			Vector2 vector2 = default(Vector2);
  			for (int i = num; i < num2; i++) {
  				for (int j = num3; j < num4; j++) {
--					if (Main.tile[i, j] == null || Main.tile[i, j].slope() != 0 || Main.tile[i, j].inActive() || !Main.tile[i, j].active() || (Main.tile[i, j].type != 32 && Main.tile[i, j].type != 37 && Main.tile[i, j].type != 48 && Main.tile[i, j].type != 232 && Main.tile[i, j].type != 53 && Main.tile[i, j].type != 57 && Main.tile[i, j].type != 58 && Main.tile[i, j].type != 69 && Main.tile[i, j].type != 76 && Main.tile[i, j].type != 112 && Main.tile[i, j].type != 116 && Main.tile[i, j].type != 123 && Main.tile[i, j].type != 224 && Main.tile[i, j].type != 234 && Main.tile[i, j].type != 352 && Main.tile[i, j].type != 484))
-+					if (Main.tile[i, j] == null || Main.tile[i, j].slope() != 0 || Main.tile[i, j].inActive() || !Main.tile[i, j].active() || (TileID.Sets.TouchDamageVines[Main.tile[i, j].type] <= 0 || Main.tile[i, j].type == 80) && TileID.Sets.TouchDamageHot[Main.tile[i, j].type] != 20 && TileID.Sets.TouchDamageOther[Main.tile[i, j].type] <= 0 && (TileID.Sets.TouchDamageSands[Main.tile[i, j].type] != 15 || Main.tile[i, j].type == 69) && Main.tile[i, j].type != 484)
+-					if (Main.tile[i, j] == null || Main.tile[i, j].slope() != 0 || Main.tile[i, j].inActive() || !Main.tile[i, j].active() || (Main.tile[i, j].type != 32 && Main.tile[i, j].type != 37 && Main.tile[i, j].type != 48 && Main.tile[i, j].type != 232 && Main.tile[i, j].type != 53 && Main.tile[i, j].type != 57 && Main.tile[i, j].type != 58 && Main.tile[i, j].type != 69 && Main.tile[i, j].type != 76 && Main.tile[i, j].type != 112 && Main.tile[i, j].type != 116 && Main.tile[i, j].type != 123 && Main.tile[i, j].type != 224 && Main.tile[i, j].type != 234 && Main.tile[i, j].type != 352 && Main.tile[i, j].type != 484 && (!Main.dontStarveWorld || Main.tile[i, j].type != 80)))
++					if (Main.tile[i, j] == null || Main.tile[i, j].slope() != 0 || Main.tile[i, j].inActive() || !Main.tile[i, j].active() || (TileID.Sets.TouchDamageVines[Main.tile[i, j].type] <= 0 || Main.tile[i, j].type == 80) && TileID.Sets.TouchDamageHot[Main.tile[i, j].type] != 20 && TileID.Sets.TouchDamageOther[Main.tile[i, j].type] <= 0 && (TileID.Sets.TouchDamageSands[Main.tile[i, j].type] != 15 || Main.tile[i, j].type == 69) && Main.tile[i, j].type != 484 && (!Main.dontStarveWorld || Main.tile[i, j].type != 80))
  						continue;
  
  					vector2.X = i * 16;
-@@ -2075,7 +_,7 @@
+@@ -2113,11 +_,15 @@
  						num6 -= 8;
  					}
  
--					if (type == 32 || type == 69 || type == 80 || type == 352 || (type == 80 && Main.expertMode)) {
-+					if (TileID.Sets.TouchDamageVines[type] > 0 || type == 80 && Main.expertMode) {
- 						if (!(vector.X + (float)Width > vector2.X) || !(vector.X < vector2.X + 16f) || !(vector.Y + (float)Height > vector2.Y) || !(vector.Y < vector2.Y + (float)num6 + 0.011f))
- 							continue;
++
+ 					switch (type) {
++						/*
+ 						case 32:
+ 						case 69:
+ 						case 80:
+ 						case 352: {
++						*/
++						case int _ when TileID.Sets.TouchDamageVines[type] > 0: {
+ 								if (!(vector.X + (float)Width > vector2.X) || !(vector.X < vector2.X + 16f) || !(vector.Y + (float)Height > vector2.Y) || !(vector.Y < vector2.Y + (float)num6 + 0.011f))
+ 									continue;
  
-@@ -2083,15 +_,7 @@
- 						if (vector.X + (float)(Width / 2) < vector2.X + 8f)
- 							num7 = -1;
+@@ -2125,6 +_,7 @@
+ 								if (vector.X + (float)(Width / 2) < vector2.X + 8f)
+ 									num8 = -1;
  
--						num5 = 10;
--						switch (type) {
--							case 69:
--								num5 = 17;
--								break;
--							case 80:
--								num5 = 6;
--								break;
--						}
-+						num5 = TileID.Sets.TouchDamageVines[type];
++								/*
+ 								num5 = 10;
+ 								switch (type) {
+ 									case 69:
+@@ -2134,6 +_,8 @@
+ 										num5 = 6;
+ 										break;
+ 								}
++								*/
++								num5 = TileID.Sets.TouchDamageVines[type];
  
- 						if (type == 32 || type == 69 || type == 352) {
- 							WorldGen.KillTile(i, j);
-@@ -2102,7 +_,7 @@
- 						return new Vector2(num7, num5);
- 					}
+ 								if (type == 32 || type == 69 || type == 352) {
+ 									WorldGen.KillTile(i, j);
+@@ -2143,12 +_,15 @@
  
--					if (type == 53 || type == 112 || type == 116 || type == 123 || type == 224 || type == 234) {
-+					else if (TileID.Sets.TouchDamageSands[type] == 15 && type != 57 && type != 69) {
- 						if (vector.X + (float)Width - 2f >= vector2.X && vector.X + 2f <= vector2.X + 16f && vector.Y + (float)Height - 2f >= vector2.Y && vector.Y + 2f <= vector2.Y + (float)num6) {
- 							int num8 = 1;
- 							if (vector.X + (float)(Width / 2) < vector2.X + 8f)
-@@ -2117,14 +_,11 @@
+ 								return new Vector2(num8, num5);
+ 							}
++						/*
+ 						case 53:
+ 						case 112:
+ 						case 116:
+ 						case 123:
+ 						case 224:
+ 						case 234:
++						*/
++						case int _ when TileID.Sets.TouchDamageSands[type] > 0 && type != 57 && type != 69:
+ 							if (vector.X + (float)Width - 2f >= vector2.X && vector.X + 2f <= vector2.X + 16f && vector.Y + (float)Height - 2f >= vector2.Y && vector.Y + 2f <= vector2.Y + (float)num6) {
+ 								int num7 = 1;
+ 								if (vector.X + (float)(Width / 2) < vector2.X + 8f)
+@@ -2165,14 +_,11 @@
  						if (vector.X + (float)(Width / 2) < vector2.X + 8f)
  							num9 = -1;
  
@@ -62,7 +76,7 @@
  
  						if (type == 484)
  							num5 = 25;
-@@ -2132,6 +_,7 @@
+@@ -2180,6 +_,7 @@
  						if (num5 > 0)
  							return new Vector2(num9, num5);
  					}
@@ -70,7 +84,7 @@
  				}
  			}
  
-@@ -2480,7 +_,8 @@
+@@ -2564,7 +_,8 @@
  				tile = Main.tile[num2, num3];
  				tile2 = Main.tile[num2, num3 - 1];
  				if (specialChecksMode == 1)
@@ -80,7 +94,7 @@
  
  				flag4 = (flag4 && ((tile.nactive() && (!tile.topSlope() || (tile.slope() == 1 && position.X + (float)(width / 2) < (float)(num2 * 16)) || (tile.slope() == 2 && position.X + (float)(width / 2) > (float)(num2 * 16 + 16))) && (!tile.topSlope() || position.Y + (float)height > (float)(num3 * 16)) && ((Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) || (holdsMatching && ((Main.tileSolidTop[tile.type] && tile.frameY == 0) || TileID.Sets.Platforms[tile.type]) && (!Main.tileSolid[tile2.type] || !tile2.nactive()) && flag5))) || (tile2.halfBrick() && tile2.nactive())));
  				flag4 &= (!Main.tileSolidTop[tile.type] || !Main.tileSolidTop[tile2.type]);
-@@ -2558,7 +_,7 @@
+@@ -2642,7 +_,7 @@
  				if (tile.active()) {
  					if (Main.tileSolid[tile.type]) {
  						int num5 = tile.blockType();

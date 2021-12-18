@@ -12,7 +12,7 @@
  				"name"
  			});
  
-+			/* AchievementTagHandler removed since achievements also removed 
++			/* AchievementTagHandler removed since achievements also removed
  			ChatManager.Register<AchievementTagHandler>(new string[2] {
  				"a",
  				"achievement"

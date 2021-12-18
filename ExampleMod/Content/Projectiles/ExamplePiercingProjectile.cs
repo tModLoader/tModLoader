@@ -14,8 +14,8 @@ namespace ExampleMod.Content.Projectiles
 	// Melee items set NPC.immune to player.itemAnimation, which starts at item.useAnimation and decrements towards 0
 	// Projectiles, however, provide mechanisms for custom immunity.
 	// 1. penetrate == 1: A projectile with penetrate set to 1 in SetDefaults will hit regardless of the npc's immunity counters (The penetrate from SetDefaults is remembered in maxPenetrate)
-	//	Ex: Wooden Arrow. 
-	// 2. No code and penetrate > 1 or -1: npc.immune[owner] will be set to 10. 
+	//	Ex: Wooden Arrow.
+	// 2. No code and penetrate > 1 or -1: npc.immune[owner] will be set to 10.
 	// 	The NPC will be hit if not immune and will become immune to all damage for 10 ticks
 	// 	Ex: Unholy Arrow
 	// 3. Override OnHitNPC: If not immune, when it hits it manually set an immune other than 10
@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Projectiles
 	// 	Ex: Ghastly Glaive is the only one who uses this.
 	// 5. Projectile.usesLocalNPCImmunity and Projectile.localNPCHitCooldown: Specifies the projectile manages it's own immunity timers for each npc
 	// 	Use this if you want the multiple projectiles of the same type to have a chance to attack rapidly, but don't want a single projectile to hit rapidly. A -1 value prevents the same projectile from ever hitting the npc again.
-	// 	Ex: Lightning Aura sentries use this. (localNPCHitCooldown = 3, but other code controls how fast the projectile itself hits) 
+	// 	Ex: Lightning Aura sentries use this. (localNPCHitCooldown = 3, but other code controls how fast the projectile itself hits)
 	// 		Overlapping Auras all have a chance to hit after each other even though they share the same ID.
 	// Try the above by uncommenting out the respective bits of code in the projectile below.
 
@@ -45,7 +45,7 @@ namespace ExampleMod.Content.Projectiles
 			// Ccopy the ai of any given projectile using AIType, since we want
 			// the projectile to essentially behave the same way as the vanilla projectile.
 			AIType = ProjectileID.Bullet;
-			
+
 			Projectile.friendly = true; // Can the projectile deal damage to enemies?
 			Projectile.DamageType = DamageClass.Melee; // Is the projectile shoot by a ranged weapon?
 			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
@@ -61,7 +61,7 @@ namespace ExampleMod.Content.Projectiles
 			// 5b: Projectile.localNPCHitCooldown = 20; // up to 20 hits
 		}
 
-		// See comments at the beginning of the class 
+		// See comments at the beginning of the class
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
 			// 3a: target.immune[Projectile.owner] = 20;
 			// 3b: target.immune[Projectile.owner] = 5;
