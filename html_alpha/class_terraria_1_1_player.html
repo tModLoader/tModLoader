@@ -1021,6 +1021,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleLight</b> ()</t
 <tr class="memitem:ad042c759f400a19cbd664cbbfb58303d"><td class="memItemLeft" align="right" valign="top"><a id="ad042c759f400a19cbd664cbbfb58303d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>TogglePet</b> ()</td></tr>
 <tr class="separator:ad042c759f400a19cbd664cbbfb58303d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca88704e73774f4fd62591ae800dd963"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#aca88704e73774f4fd62591ae800dd963">TryGetModPlayer&lt; T &gt;</a> (out T result)</td></tr>
+<tr class="memdesc:aca88704e73774f4fd62591ae800dd963"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the instance of the specified ModPlayer type.  <a href="class_terraria_1_1_player.html#aca88704e73774f4fd62591ae800dd963">More...</a><br /></td></tr>
+<tr class="separator:aca88704e73774f4fd62591ae800dd963"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af223e8edf2b8493d6198b1fb2482b731"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#af223e8edf2b8493d6198b1fb2482b731">TryGetModPlayer&lt; T &gt;</a> (T baseInstance, out T result)</td></tr>
+<tr class="memdesc:af223e8edf2b8493d6198b1fb2482b731"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely attempts to get the local instance of the type of the specified ModPlayer instance.  <a href="class_terraria_1_1_player.html#af223e8edf2b8493d6198b1fb2482b731">More...</a><br /></td></tr>
+<tr class="separator:af223e8edf2b8493d6198b1fb2482b731"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8dfd974460be9d7025adb464c1b5cb5"><td class="memItemLeft" align="right" valign="top"><a id="ab8dfd974460be9d7025adb464c1b5cb5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>TryGettingDevArmor</b> ()</td></tr>
 <tr class="separator:ab8dfd974460be9d7025adb464c1b5cb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4798,6 +4804,77 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aca88704e73774f4fd62591ae800dd963"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca88704e73774f4fd62591ae800dd963">&#9670;&nbsp;</a></span>TryGetModPlayer&lt; T &gt;() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Player.TryGetModPlayer&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramtype">out T&#160;</td>
+          <td class="paramname"><em>result</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the instance of the specified ModPlayer type. </p>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>ModPlayer</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>TryGetModPlayer</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>ModContent.GetInstance&lt;T&gt;()</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>out</em></td><td>&#160;</td></tr>
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>result</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
+
+</div>
+</div>
+<a id="af223e8edf2b8493d6198b1fb2482b731"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af223e8edf2b8493d6198b1fb2482b731">&#9670;&nbsp;</a></span>TryGetModPlayer&lt; T &gt;() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Player.TryGetModPlayer&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>baseInstance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out T&#160;</td>
+          <td class="paramname"><em>result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Safely attempts to get the local instance of the type of the specified ModPlayer instance. </p>
+<dl class="section return"><dt>Returns</dt><dd>Whether or not the requested instance has been found. </dd></dl>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>ModPlayer</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
 
 </div>
 </div>

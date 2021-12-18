@@ -330,6 +330,8 @@ var class_terraria_1_1_player =
     [ "ToggleInv", "class_terraria_1_1_player.html#a7418427df3cef5534d2c811fec4834f2", null ],
     [ "ToggleLight", "class_terraria_1_1_player.html#a5d621ad2268700c493812b188271bd0a", null ],
     [ "TogglePet", "class_terraria_1_1_player.html#ad042c759f400a19cbd664cbbfb58303d", null ],
+    [ "TryGetModPlayer< T >", "class_terraria_1_1_player.html#aca88704e73774f4fd62591ae800dd963", null ],
+    [ "TryGetModPlayer< T >", "class_terraria_1_1_player.html#af223e8edf2b8493d6198b1fb2482b731", null ],
     [ "TryGettingDevArmor", "class_terraria_1_1_player.html#ab8dfd974460be9d7025adb464c1b5cb5", null ],
     [ "TryInterruptingItemUsage", "class_terraria_1_1_player.html#a709f830fbc613292d7aa3857ee78be03", null ],
     [ "TryOpeningFullscreenMap", "class_terraria_1_1_player.html#acf7dff7400d5f728ddfad4b069e30862", null ],
