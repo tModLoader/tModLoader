@@ -52,6 +52,10 @@ namespace ExampleMod.Content.Tiles.Furniture
 			height = 18; // Set frame height independent of CoordinateHeights
 		}
 
+		public override void ModifySleepingOffset(int i, int j, ref Vector2 visualOffset) {
+			visualOffset.Y += 4f; // Move player down a notch because the bed is not as high as a regular bed 
+		}
+
 		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = 1;
 		}

@@ -213,6 +213,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Modify the visual player offset when sleeping on this tile with its type registered to <see cref="TileID.Sets.CanBeSleptIn"/>.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="visualOffset">The visual offset. Defaults to new Vector2(-9, 1)</param>
+		public virtual void ModifySleepingOffset(int i, int j, ref Vector2 visualOffset) {
+		}
+
+		/// <summary>
 		/// Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
