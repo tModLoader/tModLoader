@@ -176,9 +176,11 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.
 		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="settings">Use if you need special conditions, like settings.player.HasItem(ItemID.LihzahrdPowerCell)</param>
 		/// <returns></returns>
-		public virtual bool HasSmartInteract(SmartInteractScanSettings settings) {
+		public virtual bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
 			return false;
 		}
 

@@ -58,7 +58,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].frameX / 36);
 
-		public override bool HasSmartInteract(SmartInteractScanSettings settings) => true;
+		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) => true;
 
 		public override bool IsLockedChest(int i, int j) => Main.tile[i, j].frameX / 36 == 1;
 

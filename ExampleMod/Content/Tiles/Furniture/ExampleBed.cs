@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 
-		public override bool HasSmartInteract(SmartInteractScanSettings settings) {
+		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
 			return true;
 		}
 

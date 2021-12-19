@@ -382,8 +382,8 @@ namespace Terraria.ModLoader
 		}
 
 		//in TileSmartInteractCandidateProvider.FillPotentialTargetTiles after switch
-		public static bool HasSmartInteract(int type, SmartInteractScanSettings settings) {
-			return GetTile(type)?.HasSmartInteract(settings) ?? false;
+		public static bool HasSmartInteract(int i, int j, int type, SmartInteractScanSettings settings) {
+			return GetTile(type)?.HasSmartInteract(i, j, settings) ?? false;
 		}
 
 		//in TileSmartInteractCandidateProvider.ProvideCandidate after switch before return
