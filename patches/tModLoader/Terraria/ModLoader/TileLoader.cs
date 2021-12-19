@@ -401,6 +401,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		//in PlayerSittingHelper.GetSittingTargetInfo before assigning playerSittingPosition
+		public static void ModifySittingTargetInfo(int i, int j, int type, ref int sitX, ref int sitY, ref int directionOffset, ref int targetDirection, ref Vector2 seatDownOffset, ref Vector2 zero) {
+			GetTile(type)?.ModifySittingTargetInfo(i, j, ref sitX, ref sitY, ref directionOffset, ref targetDirection, ref seatDownOffset, ref zero);
+		}
+
 		//in Terraria.WorldGen.KillTile inside if (!effectOnly && !WorldGen.stopDrops) for playing sounds
 		//  add if(!TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
 		public static bool KillSound(int i, int j, int type) {

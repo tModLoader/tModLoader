@@ -190,6 +190,18 @@
  			if (timeLeft < 0)
  				timeLeft = 0;
  
+@@ -37200,7 +_,10 @@
+ 				return;
+ 
+ 			Tile tile2 = Main.tile[point2.X, point2.Y];
+-			if (tile2.type == 497 || tile2.type == 15) {
++			//if (tile2.type == 497 || tile2.type == 15) {
++			// Replaced with the set because those two tiles are the only things in the set, both are 1x2, and they are not checked by type in the above loop
++			// An alternative would be to implement hooks for non-vanilla tiles in both cases instead -- direwolf420
++			if (TileID.Sets.CanBeSatOnForNPCs[tile2.type]) {
+ 				if (tile2.frameY % 40 != 0)
+ 					point2.Y--;
+ 
 @@ -37246,6 +_,7 @@
  			if (type == 638 || type == 656)
  				num = 0;

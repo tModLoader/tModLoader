@@ -1,0 +1,17 @@
+--- src/Terraria/Terraria/GameContent/PlayerSittingHelper.cs
++++ src/tModLoader/Terraria/GameContent/PlayerSittingHelper.cs
+@@ -1,5 +_,6 @@
+ using Microsoft.Xna.Framework;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent
+ {
+@@ -231,6 +_,7 @@
+ 					}
+ 			}
+ 
++			TileLoader.ModifySittingTargetInfo(x, y, tileSafely.type, ref num, ref num2, ref num3, ref targetDirection, ref seatDownOffset, ref zero);
+ 			playerSittingPosition = new Point(num, num2 + 1).ToWorldCoordinates(8f, 16f);
+ 			playerSittingPosition.X += targetDirection * num3;
+ 			playerSittingPosition += zero;
