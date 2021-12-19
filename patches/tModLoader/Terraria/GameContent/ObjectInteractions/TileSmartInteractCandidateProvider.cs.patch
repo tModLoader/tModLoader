@@ -21,7 +21,7 @@
  								targets.Add(new Tuple<int, int>(i, j));
  							break;
  					}
-+					if (TileLoader.HasSmartInteract(tile.type))
++					if (TileLoader.HasSmartInteract(tile.type, settings))
 +						targets.Add(new Tuple<int, int>(i, j));
  				}
  			}

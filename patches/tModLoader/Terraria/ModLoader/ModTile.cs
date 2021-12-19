@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ObjectData;
@@ -175,8 +176,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.
 		/// </summary>
+		/// <param name="settings">Use if you need special conditions, like settings.player.HasItem(ItemID.LihzahrdPowerCell)</param>
 		/// <returns></returns>
-		public virtual bool HasSmartInteract() {
+		public virtual bool HasSmartInteract(SmartInteractScanSettings settings) {
 			return false;
 		}
 

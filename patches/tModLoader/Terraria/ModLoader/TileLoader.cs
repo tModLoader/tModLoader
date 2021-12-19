@@ -6,6 +6,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -381,8 +382,8 @@ namespace Terraria.ModLoader
 		}
 
 		//in TileSmartInteractCandidateProvider.FillPotentialTargetTiles after switch
-		public static bool HasSmartInteract(int type) {
-			return GetTile(type)?.HasSmartInteract() ?? false;
+		public static bool HasSmartInteract(int type, SmartInteractScanSettings settings) {
+			return GetTile(type)?.HasSmartInteract(settings) ?? false;
 		}
 
 		//in TileSmartInteractCandidateProvider.ProvideCandidate after switch before return
