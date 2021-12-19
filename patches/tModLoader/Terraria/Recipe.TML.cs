@@ -294,35 +294,80 @@ namespace Terraria
 		/// <summary>
 		/// Moves the recipe to a given index in the Main.recipe array. This recipe must already be registered.
 		/// </summary>
-		public Recipe MoveAt(int objective) {
+		internal Recipe MoveAt(int objective) {
 			if(Main.recipe[RecipeIndex] != this)
 				throw new RecipeException("This recipe is not registered.");
 			
 			int direction = objective > RecipeIndex ? 1 : -1;
+			
+			bool canBeBeatenAsFirstRecipe = (direction == 1) && RecipeLoader.FirstRecipeForItem[createItem.type] == this;
 
 			for (int index = RecipeIndex; index * direction < objective * direction; index += direction) {
 				Recipe movedRecipe = Main.recipe[index + direction];
 				movedRecipe.RecipeIndex = index;
 				Main.recipe[index] = movedRecipe;
+
+				if (canBeBeatenAsFirstRecipe && createItem.type == movedRecipe.createItem.type) {
+					RecipeLoader.FirstRecipeForItem[createItem.type] = movedRecipe;
+					canBeBeatenAsFirstRecipe = false;
+				}
 			}
 
 			Main.recipe[objective] = this;
 			RecipeIndex = objective;
 			
+			if (RecipeLoader.FirstRecipeForItem[createItem.type].RecipeIndex > RecipeIndex) {
+				RecipeLoader.FirstRecipeForItem[createItem.type] = this;
+			}
+			
+			return this;
+		}
+		
+		/// <summary>
+		/// Moves the recipe before the first one creating the item of the ID given as parameter.
+		/// </summary>
+		public Recipe MoveBeforeRecipesOf(int itemID) {
+			if (RecipeLoader.FirstRecipeForItem.TryGetValue(itemID, out Recipe recipe)) {
+				return MoveBefore(recipe);
+			}
+			else {
+				//Still throw an error to make sure the code is correct if a recipe making this item is added
+				if (Main.recipe[recipe.RecipeIndex] != recipe)
+					throw new RecipeException("The selected recipe is not registered.");
+			}
+
 			return this;
 		}
 
 		/// <summary>
-		/// Moves the recipe behind the one given as parameter. Both recipes must already be registered.
+		/// Moves the recipe before the one given as parameter. Both recipes must already be registered.
 		/// </summary>
 		public Recipe MoveBefore(Recipe recipe) {
 			if (Main.recipe[recipe.RecipeIndex] != recipe)
 				throw new RecipeException("The selected recipe is not registered.");
-			
-			if(RecipeIndex < recipe.RecipeIndex)
+
+			if (RecipeIndex < recipe.RecipeIndex) {
 				return MoveAt(recipe.RecipeIndex - 1);
-			else 
+			}
+			else {
 				return MoveAt(recipe.RecipeIndex);
+			}
+		}
+		
+		/// <summary>
+		/// Moves the recipe before the first one creating the item of the ID given as parameter.
+		/// </summary>
+		public Recipe MoveAfterRecipesOf(int itemID) {
+			if (RecipeLoader.FirstRecipeForItem.TryGetValue(itemID, out Recipe recipe)) {
+				return MoveAfter(recipe);
+			}
+			else {
+				//Still throw an error to make sure the code is correct if a recipe making this item is added
+				if (Main.recipe[recipe.RecipeIndex] != recipe)
+					throw new RecipeException("The selected recipe is not registered.");
+			}
+
+			return this;
 		}
 
 
@@ -332,11 +377,13 @@ namespace Terraria
 		public Recipe MoveAfter(Recipe recipe) {
 			if (Main.recipe[recipe.RecipeIndex] != recipe)
 				throw new RecipeException("The selected recipe is not registered.");
-			
-			if(RecipeIndex < recipe.RecipeIndex)
+
+			if (RecipeIndex < recipe.RecipeIndex) {
 				return MoveAt(recipe.RecipeIndex);
-			else 
+			}
+			else {
 				return MoveAt(recipe.RecipeIndex + 1);
+			}
 		}
 
 		#endregion
@@ -368,6 +415,10 @@ namespace Terraria
 			Main.recipe[numRecipes] = this;			
 			RecipeIndex = numRecipes;
 			numRecipes++;
+
+			if (!RecipeLoader.FirstRecipeForItem.ContainsKey(createItem.type)) {
+				RecipeLoader.FirstRecipeForItem.Add(createItem.type, this);
+			}
 			
 			return this;
 		}

@@ -10,6 +10,7 @@ namespace Terraria.ModLoader
 	public static class RecipeLoader
 	{
 		internal static readonly IList<GlobalRecipe> globalRecipes = new List<GlobalRecipe>();
+		internal static readonly Dictionary<int, Recipe> FirstRecipeForItem = new();
 
 		/// <summary>
 		/// Set when tML sets up modded recipes. Used to detect misuse of CreateRecipe
@@ -22,6 +23,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			globalRecipes.Clear();
+			FirstRecipeForItem.Clear();
 			setupRecipes = false;
 		}
 

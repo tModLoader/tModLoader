@@ -352,7 +352,7 @@
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
  					ingridients[0],
-@@ -14329,18 +_,59 @@
+@@ -14329,18 +_,63 @@
  			}
  		}
  
@@ -403,6 +403,10 @@
  			Main.recipe[numRecipes] = currentRecipe;
 -			currentRecipe = new Recipe();
 +			currentRecipe.RecipeIndex = numRecipes;
++
++			if (!RecipeLoader.FirstRecipeForItem.ContainsKey(currentRecipe.createItem.type)) {
++				RecipeLoader.FirstRecipeForItem.Add(currentRecipe.createItem.type, currentRecipe);
++			}
 +			
 +			// The following resets the currentRecipe field
 +			currentRecipe = new Recipe {
