@@ -380,11 +380,13 @@ namespace Terraria.ModLoader
 			&& MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
 		}
 
+		//in TileSmartInteractCandidateProvider.FillPotentialTargetTiles after switch
 		public static bool HasSmartInteract(int type) {
 			return GetTile(type)?.HasSmartInteract() ?? false;
 		}
 
-		public static void FixSmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraX, ref int extraY) {
+		//in TileSmartInteractCandidateProvider.ProvideCandidate after switch before return
+		public static void FixSmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
 				TileObjectData data = TileObjectData.GetTileData(type, 0);
@@ -395,6 +397,7 @@ namespace Terraria.ModLoader
 				extraY = data.CoordinateFullHeight % frameHeight;
 			}
 		}
+
 		//in Terraria.WorldGen.KillTile inside if (!effectOnly && !WorldGen.stopDrops) for playing sounds
 		//  add if(!TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
 		public static bool KillSound(int i, int j, int type) {

@@ -12,11 +12,8 @@
 		//Fishing submethods will need to use Item instead of values.
 
 	//Need reimplementing:
-		//TileLoader.HasSmartInteract
 		//NPCLoader.CanChat
 			//Add to NPCSmartInteractCandidateProvider.ProvideCandidate's npc loop checks.
-		//TileLoader.FixSmartInteractCoords
-			//Add to TileSmartInteractCandidateProvider.ProvideCandidate, right before the if with two Collision.InTileBounds calls.
 
 	//TileLoader
 		//Multiply item.axe by 1.2f before adding into the damage.
