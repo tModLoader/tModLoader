@@ -12,7 +12,7 @@
  						break;
  				}
  
-+				TileLoader.FixSmartInteractCoords(tile.type, ref num7, ref num8, ref num9, ref num10, ref num11);
++				TileLoader.ModifySmartInteractCoords(tile.type, ref num7, ref num8, ref num9, ref num10, ref num11);
 +
  				if (num7 == 0 || num8 == 0)
  					continue;

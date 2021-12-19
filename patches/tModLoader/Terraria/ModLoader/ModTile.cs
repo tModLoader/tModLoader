@@ -183,6 +183,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the smart interact parameters for the tile. Parameters already preset by deriving from TileObjectData defined for the tile.
+		/// <br>Example usage: Beds/Dressers which have separate interactions based on where to click.</br>
+		/// </summary>
+		/// <param name="width">Amount of tiles in x direction for which the smart interact should select for</param>
+		/// <param name="height">Amount of tiles in y direction for which the smart interact should select for</param>
+		/// <param name="frameWidth">Width of each tile, in pixels</param>
+		/// <param name="frameHeight">Height of each tile, in pixels</param>
+		/// <param name="extraY">Additional offset applied after calculations with frameHeight, in pixels</param>
+		public virtual void ModifySmartInteractCoords(ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
+		}
+
+		/// <summary>
 		/// Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>

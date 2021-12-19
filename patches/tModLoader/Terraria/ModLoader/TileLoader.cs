@@ -387,7 +387,7 @@ namespace Terraria.ModLoader
 		}
 
 		//in TileSmartInteractCandidateProvider.ProvideCandidate after switch before return
-		public static void FixSmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
+		public static void ModifySmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
 				TileObjectData data = TileObjectData.GetTileData(type, 0);
@@ -396,6 +396,8 @@ namespace Terraria.ModLoader
 				frameWidth = data.CoordinateWidth + data.CoordinatePadding;
 				frameHeight = data.CoordinateHeights[0] + data.CoordinatePadding;
 				extraY = data.CoordinateFullHeight % frameHeight;
+
+				modTile.ModifySmartInteractCoords(ref width, ref height, ref frameWidth, ref frameHeight, ref extraY);
 			}
 		}
 
