@@ -1,6 +1,7 @@
 using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
@@ -17,6 +18,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.CanBeSleptIn[Type] = true;
+			TileID.Sets.InteractibleByNPCs[Type] = true;
 			TileID.Sets.IsValidSpawnPoint[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
@@ -26,6 +28,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Placement
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style4x2); // this style already takes care of direction for us
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
+			TileObjectData.newTile.CoordinatePaddingFix = new Point16(0, -2);
 			TileObjectData.addTile(Type);
 
 			// Etc
@@ -34,11 +37,28 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 
-		public override bool HasSmartInteract(SmartInteractScanSettings settings) => true;
+		public override bool HasSmartInteract(SmartInteractScanSettings settings) {
+			return true;
+		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num) => num = 1;
+		public override void ModifySmartInteractCoords(ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
+			// Because beds have special smart interaction, this splits up the left and right side into the necessary 2x2 sections
+			width = 2; // Default to the Width defined for TileObjectData.newTile
+			height = 2; // Default to the Height [...]
+			extraY = 0; // Depends on how you set up frameHeight and CoordinateHeights and CoordinatePaddingFix.Y
+		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 64, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleBed>());
+		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
+			height = 18; // Set frame height independent of CoordinateHeights
+		}
+
+		public override void NumDust(int i, int j, bool fail, ref int num) {
+			num = 1;
+		}
+
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
+			Item.NewItem(i * 16, j * 16, 64, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleBed>());
+		}
 
 		public override bool RightClick(int i, int j) {
 			Player player = Main.LocalPlayer;
