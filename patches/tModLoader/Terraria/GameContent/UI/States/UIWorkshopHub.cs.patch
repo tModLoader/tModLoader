@@ -55,7 +55,7 @@
  			uIElement3 = MakeButton_OpenPublishWorldsMenu();
  			uIElement3.HAlign = 0f;
  			uIElement3.VAlign = 1f;
-@@ -98,6 +_,30 @@
+@@ -98,6 +_,25 @@
  			uIElement3.HAlign = 1f;
  			uIElement3.VAlign = 1f;
  			uIElement2.Append(uIElement3);
@@ -63,25 +63,20 @@
 +
 +			// Added by TML [
 +			var modsMenu = MakeButton_OpenModsMenu();
-+			modsMenu.HAlign = 0f;
++			modsMenu.Width.Set(-10f, 1f);
++			modsMenu.HAlign = 0.5f;
 +			modsMenu.VAlign = 0f;
 +			uIElement2.Append(modsMenu);
 +
 +			var modSources = MakeButton_OpenModSourcesMenu();
 +			modSources.HAlign = 1f;
-+			modSources.VAlign = 0f;
++			modSources.VAlign = 0.5f;
 +			uIElement2.Append(modSources);
 +
 +			var modBrowser = MakeButton_OpenModBrowserMenu();
 +			modBrowser.HAlign = 0f;
 +			modBrowser.VAlign = 0.5f;
 +			uIElement2.Append(modBrowser);
-+
-+			var tbd = MakeButton_TBD();
-+			tbd.HAlign = 1f;
-+			tbd.VAlign = 0.5f;
-+			uIElement2.Append(tbd);
-+			// ]
 +
  			AddHorizontalSeparator(uIPanel, num6 + 6 + 6);
  			AddDescriptionPanel(uIPanel, num6 + 8 + 6 + 6, num5 - num6 - 12 - 12 - 8, "desc");

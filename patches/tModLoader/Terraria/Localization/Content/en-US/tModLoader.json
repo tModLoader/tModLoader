@@ -139,6 +139,7 @@
 
 		// Mod Info
 		"ModInfoHeader": "Mod Info: ",
+		"ModInfoVisitSteampage": "Visit the Mod's Steam Workshop page for more info",
 		"ModInfoVisitHomepage": "Visit the Mod's Homepage for even more info",
 		"ModInfoExtract": "Extract",
 		"ModInfoNoDescriptionAvailable": "No description available",
