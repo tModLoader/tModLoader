@@ -112,7 +112,7 @@
 +						ModLoader.ModLoader.Reload();
 +						return;
 +					}
-+	
++
 +					ConfigManager.OnChangedAll();
  					WorldGen.playWorld();
 +				}

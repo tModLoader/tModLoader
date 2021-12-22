@@ -11,7 +11,7 @@ using Terraria.UI;
 namespace Terraria.ModLoader
 {
 	public static class LocalizationLoader
-    {
+	{
 		private static readonly Dictionary<string, ModTranslation> translations = new();
 
 		/// <summary>
@@ -190,7 +190,7 @@ namespace Terraria.ModLoader
 				}
 
 				string lastKey = splitKey.Last();
-				
+
 				if (curObj.ContainsKey(splitKey.Last()) && curObj[lastKey] is JObject) {
 					// this value has children - needs to go into object as a $parentValue entry
 					((JObject)curObj[lastKey]).Add("$parentValue", value);

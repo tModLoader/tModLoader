@@ -61,6 +61,7 @@ Mods: {
 		
 		Bestiary: {
 			ExamplePerson: Built of blocks with arms of steel. Pumps iron day and night.
+			ExampleBoneMerchant: Built with bone blocks and arms of steel. Throws bones day and night. 
 		}
 	}
 }

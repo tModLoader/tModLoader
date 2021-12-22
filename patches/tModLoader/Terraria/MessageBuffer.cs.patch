@@ -17,13 +17,12 @@
 +			/*
  			if (b >= 143)
  				return;
--
--			Main.ActiveNetDiagnosticsUI.CountReadMessage(b, length);
 +			*/
-+			
+ 
 +			if (b < LegacyNetDiagnosticsUI.maxMsg) // Check added by TML.
+-			Main.ActiveNetDiagnosticsUI.CountReadMessage(b, length);
 +				Main.ActiveNetDiagnosticsUI.CountReadMessage(b, length);
-+			
++
  			if (Main.netMode == 1 && Netplay.Connection.StatusMax > 0)
  				Netplay.Connection.StatusCount++;
  

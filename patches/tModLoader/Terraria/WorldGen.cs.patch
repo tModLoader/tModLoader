@@ -724,11 +724,11 @@
  			}
  
  			destroyObject = true;
-+			
++
 +			if (TileLoader.Drop(i, j, TileID.WeaponsRack))
 -			Item.NewItem(i * 16, j * 16, 48, 48, 2699);
 +				Item.NewItem(i * 16, j * 16, 48, 48, 2699);
-+			
++
  			TEWeaponsRack.Kill(num, num2);
  			for (int m = 0; m < 3; m++) {
  				for (int n = 0; n < 3; n++) {
@@ -736,11 +736,11 @@
  				return;
  
  			destroyObject = true;
-+			
++
 +			if (TileLoader.Drop(i, j, TileID.Mannequin))
 -			Item.NewItem(i * 16, j * 16, 32, 32, 498);
 +				Item.NewItem(i * 16, j * 16, 32, 32, 498);
-+			
++
  			for (int m = 0; m <= 1; m++) {
  				for (int n = 0; n <= 2; n++) {
  					int num7 = num + m;
@@ -748,7 +748,7 @@
  				return;
  
  			destroyObject = true;
-+			
++
 +			if (TileLoader.Drop(i, j, TileID.Womannequin))
 -			Item.NewItem(i * 16, j * 16, 32, 32, 1989);
 +				Item.NewItem(i * 16, j * 16, 32, 32, 1989);
@@ -907,7 +907,7 @@
  
 +			if (!TileLoader.Drop(i, j, type))
 +				goto skipDrop;
-+				
++
  			if (type == 14) {
  				int type2;
  				if (num6 >= 1 && num6 <= 3) {
@@ -1364,15 +1364,6 @@
  				Item.NewItem(i * 16, j * 16, 16, 16, num);
  		}
  
-@@ -38906,7 +_,7 @@
- 
- 						if (tileCache.wall >= 138 && tileCache.wall <= 141)
- 							result = 2210 + tileCache.wall - 138;
--
-+						
- 						return result;
- 					}
- 			}
 @@ -39467,6 +_,9 @@
  			if (tileCache.wall == 245)
  				num = 195;
@@ -1530,7 +1521,7 @@
  				return;
  
  			int type = tileCache.type;
-+			
++
 +			if(!TileLoader.KillSound(i,j,type))
 +				return;
 +

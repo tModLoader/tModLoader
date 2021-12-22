@@ -85,7 +85,7 @@ namespace Terraria.ModLoader
 
 			if (GoreAutoloadingEnabled)
 				GoreLoader.AutoloadGores(this);
-			
+
 			if (SoundAutoloadingEnabled)
 				SoundLoader.AutoloadSounds(this);
 

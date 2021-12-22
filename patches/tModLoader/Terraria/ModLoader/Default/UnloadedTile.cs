@@ -4,7 +4,7 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader.Default
 {
 	public abstract class UnloadedTile : ModTile
-	{ 
+	{
 		public override void MouseOver(int i, int j) {
 			if (Main.netMode != NetmodeID.SinglePlayer) {
 				return;

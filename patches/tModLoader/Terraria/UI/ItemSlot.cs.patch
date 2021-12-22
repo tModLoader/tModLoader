@@ -23,6 +23,16 @@
  	{
  		public class Options
  		{
+@@ -25,6 +_,9 @@
+ 
+ 		public class Context
+ 		{
++			public const int ModdedAccessorySlot = -10;
++			public const int ModdedVanityAccessorySlot = -11;
++			public const int ModdedDyeSlot = -12;
+ 			public const int InventoryItem = 0;
+ 			public const int InventoryCoin = 1;
+ 			public const int InventoryAmmo = 2;
 @@ -81,7 +_,7 @@
  
  		public static bool DrawGoldBGForCraftingMaterial;
@@ -60,11 +70,10 @@
  					return false;
  
  				item.favorited = !item.favorited;
-@@ -463,13 +_,20 @@
+@@ -463,13 +_,19 @@
  			int num = PickItemMovementAction(inv, context, slot, Main.mouseItem);
  			if (num != 3 && !flag)
  				return;
-+				
 +			// Extra context.
  
  			switch (num) {
@@ -164,12 +173,12 @@
  					break;
  				case 3:
  					HandleShopSlot(inv, slot, rightClickIsValid: false, leftClickIsValid: true);
-+						
++
  					break;
  				case 4: {
 +						if (!PlayerLoader.CanSellItem(player, Main.npc[player.talkNPC], inv, Main.mouseItem))
 +							break;
-+							
++
  						Chest chest = Main.instance.shop[Main.npcShop];
  						if (player.SellItem(Main.mouseItem)) {
 -							chest.AddItemToShop(Main.mouseItem);
@@ -212,7 +221,7 @@
  			if (Main.npcShop > 0 && !inv[slot].favorited) {
  				Chest chest = Main.instance.shop[Main.npcShop];
 -				if (inv[slot].type < 71 || inv[slot].type > 74) {
-+				if (inv[slot].type < 71 || inv[slot].type > 74 && PlayerLoader.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot])) {					
++				if (inv[slot].type < 71 || inv[slot].type > 74 && PlayerLoader.CanSellItem(player, Main.npc[player.talkNPC], chest.item, inv[slot])) {
  					if (player.SellItem(inv[slot])) {
 -						chest.AddItemToShop(inv[slot]);
  						AnnounceTransfer(new ItemTransferInfo(inv[slot], context, 15));
@@ -233,12 +242,12 @@
  					}
  				}
  			}
-@@ -900,7 +_,12 @@
+@@ -900,18 +_,24 @@
  						result = 1;
  					break;
  				case 10:
 -					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot, context)))
 +						result = 1;
 +					break;
 +				case -10:
@@ -247,12 +256,13 @@
  						result = 1;
  					break;
  				case 24:
-@@ -908,10 +_,11 @@
+-					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(inv, checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(inv, checkItem, slot, context)))
  						result = 1;
  					break;
  				case 11:
 -					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor, checkItem, slot)))
-+					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot)))
++					if (checkItem.type == 0 || (checkItem.accessory && !AccCheck(Main.LocalPlayer.armor.Concat(AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).exAccessorySlot).ToArray(), checkItem, slot, context)))
  						result = 1;
  					break;
  				case 12:
@@ -440,7 +450,7 @@
  						if (inv == player.miscDyes)
  							num = 185 + slot;
  						break;
-+					//TML Context: GamePad number magic aligned to match DemonHeart Accessory. 
++					//TML Context: GamePad number magic aligned to match DemonHeart Accessory.
 +					//TML Note: There is no Master Mode Accessory slot code here for Gamepads.
 +					case -10:
 +					case -11:
@@ -500,7 +510,7 @@
 +				else {
 -				spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
 +					spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
-+				}	
++				}
  			}
  
  			Vector2 vector = value.Size() * inventoryScale;
@@ -510,7 +520,7 @@
  				Vector2 origin = rectangle2.Size() * (scale3 / 2f - 0.5f);
 +				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3))
 +					goto skip;
-+				
++
  				spriteBatch.Draw(value7, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num11 * scale3, SpriteEffects.None, 0f);
  				if (item.color != Color.Transparent) {
  					Color newColor = color;
@@ -541,29 +551,35 @@
  				}
  			}
  
-@@ -1940,7 +_,9 @@
+@@ -1940,7 +_,18 @@
  			return true;
  		}
  
 -		private static bool AccCheck(Item[] itemCollection, Item item, int slot) {
-+		internal static bool AccCheck(Item[] itemCollection, Item item, int slot) {
-+			return AccCheck_Inner(itemCollection, item, slot);
-+			/*
++		internal static bool AccCheck(Item[] itemCollection, Item item, int slot, int context) {
++			switch (context) {
++				case Context.ModdedAccessorySlot:
++				case Context.ModdedVanityAccessorySlot:
++				case Context.ModdedDyeSlot:
++				case Context.EquipDye:
++				case Context.EquipAccessoryVanity:
++				case Context.EquipAccessory:
++					return AccCheck_Inner(itemCollection, item, slot);
++			}
++
++			// Vanilla code for Display Dolls, etc.
  			if (isEquipLocked(item.type))
  				return true;
  
-@@ -1966,8 +_,10 @@
- 			}
- 
+@@ -1968,6 +_,7 @@
  			return false;
-+			*/
  		}
  
 +		//TML: I (Solxan), have not been able to get this to ever run in-game. I suspect this code path is deprecated.
  		private static Item DyeSwap(Item item, out bool success) {
  			success = false;
  			if (item.dye <= 0)
-@@ -1982,9 +_,14 @@
+@@ -1982,8 +_,13 @@
  				}
  			}
  
@@ -574,12 +590,10 @@
 +					return item2;
 +
  				dyeSlotCount = 0;
--
 +			}
-+			
+ 
  			if (dyeSlotCount < 0)
  				dyeSlotCount = 9;
- 
 @@ -2022,6 +_,9 @@
  				player.armor[num + 2] = item.Clone();
  			}
@@ -595,7 +609,7 @@
  				player.armor[num3] = item.Clone();
  				accSlotToSwapTo = 0;
 +				*/
-+				
++
  			}
  
  			SoundEngine.PlaySound(7);

@@ -7,8 +7,8 @@ namespace Terraria.ModLoader
 		internal ushort index;
 
 		/// <summary>
-		/// Whether to create a new instance of this Global for every entity that exists. 
-		/// Useful for storing information on an entity. Defaults to false. 
+		/// Whether to create a new instance of this Global for every entity that exists.
+		/// Useful for storing information on an entity. Defaults to false.
 		/// Return true if you need to store information (have non-static fields).
 		/// </summary>
 		public virtual bool InstancePerEntity => false;

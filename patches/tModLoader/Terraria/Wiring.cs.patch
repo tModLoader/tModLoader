@@ -121,12 +121,12 @@
  										int num109 = 0;
  										for (int num110 = 0; num110 < 200; num110++) {
 +											bool vanillaCanGo = false;
-+											
++
  											if (Main.npc[num110].active && (Main.npc[num110].type == 17 || Main.npc[num110].type == 19 || Main.npc[num110].type == 22 || Main.npc[num110].type == 38 || Main.npc[num110].type == 54 || Main.npc[num110].type == 107 || Main.npc[num110].type == 108 || Main.npc[num110].type == 142 || Main.npc[num110].type == 160 || Main.npc[num110].type == 207 || Main.npc[num110].type == 209 || Main.npc[num110].type == 227 || Main.npc[num110].type == 228 || Main.npc[num110].type == 229 || Main.npc[num110].type == 368 || Main.npc[num110].type == 369 || Main.npc[num110].type == 550 || Main.npc[num110].type == 441 || Main.npc[num110].type == 588)) {
 -												array2[num109] = num110;
 +												vanillaCanGo = true;
 +											}
-+											
++
 +											if (Main.npc[num110].active && NPCLoader.CanGoToStatue(Main.npc[num110], true, vanillaCanGo)) {
 +												array2.Add(num110);
  												num109++;
@@ -152,12 +152,12 @@
  										int num105 = 0;
  										for (int num106 = 0; num106 < 200; num106++) {
 +											bool vanillaCanGo = false;
-+									
++
  											if (Main.npc[num106].active && (Main.npc[num106].type == 18 || Main.npc[num106].type == 20 || Main.npc[num106].type == 124 || Main.npc[num106].type == 178 || Main.npc[num106].type == 208 || Main.npc[num106].type == 353 || Main.npc[num106].type == 633 || Main.npc[num106].type == 663)) {
 -												array[num105] = num106;
 +												vanillaCanGo = true;
 +											}
-+											
++
 +											if (Main.npc[num106].active && NPCLoader.CanGoToStatue(Main.npc[num106], false, vanillaCanGo)) {
 +												array.Add(num106);
  												num105++;

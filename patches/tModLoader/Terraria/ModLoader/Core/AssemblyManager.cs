@@ -120,7 +120,7 @@ namespace Terraria.ModLoader.Core
 
 		internal static Assembly TmlCustomResolver(object sender, ResolveEventArgs args) {
 			//Legacy: With FNA and .Net5 changes, had aimed to eliminate the variants of tmodloader (tmodloaderdebug, tmodloaderserver) and Terraria as assembly names.
-			// However, due to uncertainty in that elimination, in particular for Terraria, have opted to retain the original check. - Solxan			
+			// However, due to uncertainty in that elimination, in particular for Terraria, have opted to retain the original check. - Solxan
 			var name = new AssemblyName(args.Name).Name;
 			if (name.Contains("tModLoader") || name == "Terraria")
 				return Assembly.GetExecutingAssembly();
@@ -156,7 +156,7 @@ namespace Terraria.ModLoader.Core
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
 
 			// at least one of the types must be in a namespace that starts with the mod name
-			if (!assembly.GetTypes().Any(t => t.Namespace?.StartsWith(modName) == true)) 
+			if (!assembly.GetTypes().Any(t => t.Namespace?.StartsWith(modName) == true))
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorNamespaceFolderDontMatch"));
 
 			var modTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Mod))).ToArray();

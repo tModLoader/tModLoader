@@ -67,7 +67,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Firstly we draw the original texture and then glow mask texture
 			spriteBatch.Draw(
-				texture, 
+				texture,
 				new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
 				new Rectangle(tile.frameX, tile.frameY + frameYOffset, 16, height),
 				Lighting.GetColor(i, j), 0f, default, 1f, SpriteEffects.None, 0f);

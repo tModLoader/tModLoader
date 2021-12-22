@@ -84,9 +84,9 @@ namespace Terraria.ModLoader
 					int slot = entry.Key;
 					EquipTexture equipTexture = entry.Value;
 					string texture = equipTexture.Texture;
-					
+
 					GetTextureArray(type)[slot] = ModContent.Request<Texture2D>(texture);
-					
+
 					if (type == EquipType.Body) {
 						ArmorIDs.Body.Sets.UsesNewFramingCode[slot] = true;
 					}

@@ -516,9 +516,9 @@
  			dedServ = true;
  			showSplash = false;
  			Initialize();
-+			
++
 +			bool reloadMods;
-+			
++
 +			do {
 +				ModLoader.ModLoader.Reload();
 +				DedServ_PostModLoad(out reloadMods);
@@ -528,7 +528,7 @@
 +		//The split and the boolean shenanigans are here to allow mods to hook into this method with MonoMod correctly. At any load-time.
 +		private void DedServ_PostModLoad(out bool reloadMods) {
 +			reloadMods = false;
-+			
++
  			while (worldPathName == null || worldPathName == "") {
  				bool flag = true;
  				while (flag) {
@@ -607,11 +607,11 @@
  					}
 +					else if (text2 == "m" || text2 == "M") {
 +						Interface.ServerModMenu(out reloadMods);
-+						
++
 +						if (reloadMods) {
 +							return;
 +						}
-+						
++
 +						continue;
 +					}
 +					else if (text2 == "b" || text2 == "b") {
@@ -2262,7 +2262,7 @@
  			}
  
 +			NPCLoader.DrawEffects(rCurrentNPC, ref npcColor); //TODO: Effects were previously done before drawing, here, but 1.4 moved them to updates in UpdateNPC_BuffApplyVFX(). Should this hook be moved and renamed? --Mirsario
-+			
++
 +			if (NPCLoader.PreDraw(rCurrentNPC, spriteBatch, screenPos, npcColor)) {
 +				DrawNPCDirect_Inner(spriteBatch, rCurrentNPC, behindTiles, screenPos, ref npcColor);
 +			}
@@ -2402,10 +2402,10 @@
  					}
  
 +					var modProjectile = projectile.ModProjectile;
-+					
++
 +					if (modProjectile != null && ModContent.RequestIfExists<Texture2D>(modProjectile.GlowTexture, out var glowTexture, AssetRequestMode.ImmediateLoad)) // todo: preload this!
 +						EntitySpriteDraw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num381 - 1), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
-+					
++
  					if (projectile.type == 335)
  						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num381 - 1), new Microsoft.Xna.Framework.Color(100, 100, 100, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
  
@@ -2446,7 +2446,7 @@
  				else if (npc[i].type == 548) {
  					DrawCacheNPCsBehindNonSolidTiles.Add(i);
  				}
-+				
++
 +				NPCLoader.DrawBehind(Main.npc[i], i);
  			}
  		}
@@ -2464,7 +2464,7 @@
  
  				if (flag)
  					DrawCacheProjsBehindProjectiles.Add(i);
-+				
++
 +				PostProjDrawCache:
 +				ProjectileLoader.DrawBehind(projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverPlayers, DrawCacheProjsOverWiresUI);
  			}
@@ -2506,7 +2506,7 @@
  						scale = 1f;
  
 +					ModDust modDust = DustLoader.GetDust(dust.type);
-+					
++
 +					if (modDust != null) {
 +						modDust.Draw(dust, newColor, scale);
 +						continue;
@@ -2545,19 +2545,18 @@
  				if (num15 < 0)
  					num15 = 0;
  
-@@ -29513,9 +_,12 @@
+@@ -29513,8 +_,11 @@
  				else {
  					text5 = text5.Substring(0, text5.Length - 1);
  					focusText = Lang.inter[54].Value + " (" + text5 + ")";
 +					//Patch context.
  				}
  			}
- 
++
 +			NPCLoader.SetChatButtons(ref focusText, ref focusText2);
-+			
+ 
  			if (!flag) {
  				DrawNPCChatButtons(num, textColor, amountOfLines, focusText, focusText2);
- 				if (text2 != null) {
 @@ -29550,11 +_,19 @@
  						SubmitSignText();
  					else
@@ -2573,7 +2572,7 @@
 +					return;
 +
 +				NPCLoader.OnChatButtonClicked(true);
-+				
++
 -				else if (npc[player[myPlayer].talkNPC].type == 369) {
 +				if (npc[player[myPlayer].talkNPC].type == 369) {
  					npcChatCornerItem = 0;
@@ -2587,7 +2586,7 @@
 +							npcChatText = reason;
 +							return;
 +						}
-+						
++
  						if (player[myPlayer].BuyItem(num4)) {
  							AchievementsHelper.HandleNurseService(num4);
  							SoundEngine.PlaySound(SoundID.Item4);
@@ -2603,10 +2602,10 @@
 -							player[myPlayer].statLife = player[myPlayer].statLifeMax2;
 -							for (int l = 0; l < 22; l++) {
 +							player[myPlayer].statLife += health;
-+							
++
 +							if (!removeDebuffs) // no indent for better patching
 +								goto SkipDebuffRemoval;
-+								
++
 +							for (int l = 0; l < Player.MaxBuffs; l++) {
  								int num24 = player[myPlayer].buffType[l];
 -								if (debuff[num24] && player[myPlayer].buffTime[l] > 0 && (num24 < 0 || num24 >= 338 || !BuffID.Sets.NurseCannotRemoveDebuff[num24])) {
@@ -2615,7 +2614,7 @@
  									l = -1;
  								}
  							}
-+							
++
 +							SkipDebuffRemoval:
 +							PlayerLoader.PostNurseHeal(LocalPlayer, npc[LocalPlayer.talkNPC], health, removeDebuffs, num4);
  						}
@@ -2686,11 +2685,11 @@
  
  					if (num39 == num37)
  						DrawDefenseCounter(num41, num42);
-+					*/ 
++					*/
  
  					Texture2D value4 = TextureAssets.InventoryTickOn.Value;
  					if (player[myPlayer].hideVisibleAccessory[num40])
-@@ -30638,10 +_,10 @@
+@@ -30638,7 +_,7 @@
  					player[myPlayer].mouseInterface = true;
  
  				num39 = -1;
@@ -2698,11 +2697,7 @@
 +				for (int num46 = 10; num46 < 13; num46++) {
  					if ((num46 == 18 && !flag4) || (num46 == 19 && !flag5))
  						continue;
--
-+					
- 					num39++;
- 					bool num47 = LocalPlayer.IsAValidEquipmentSlotForIteration(num46);
- 					flag3 = !num47;
+ 
 @@ -30679,7 +_,7 @@
  					player[myPlayer].mouseInterface = true;
  
@@ -2743,13 +2738,13 @@
 +						bool canApplyDiscount = true;
 +						if (!ItemLoader.ReforgePrice(reforgeItem, ref num58, ref canApplyDiscount))
 +							goto skipVanillaPricing;
-+						
++
 +						if (canApplyDiscount && LocalPlayer.discount)
  							num58 = (int)((double)num58 * 0.8);
  
  						num58 = (int)((double)num58 * player[myPlayer].currentShoppingSettings.PriceAdjustment);
  						num58 /= 3;
-+						
++
 +						skipVanillaPricing:
  						string text2 = "";
  						int num59 = 0;
@@ -2781,7 +2776,7 @@
  								PopupText.NewText(PopupTextContext.ItemReforge, reforgeItem, reforgeItem.stack, noStack: true);
  								SoundEngine.PlaySound(SoundID.Item37);
  							}
-@@ -30877,13 +_,15 @@
+@@ -30877,13 +_,14 @@
  						ItemSlot.MouseHover(ref guideItem, 7);
  					}
  
@@ -2790,7 +2785,6 @@
  				}
  			}
  
-+			hidePlayerCraftingMenu = false;
  			CreativeMenu.Draw(spriteBatch);
  			bool flag9 = CreativeMenu.Enabled && !CreativeMenu.Blocked;
 -			if (!InReforgeMenu && !LocalPlayer.tileEntityAnchor.InUse && !flag9) {
@@ -2817,6 +2811,14 @@
  						inventoryBack = color5;
  					}
  				}
+@@ -31043,6 +_,7 @@
+ 					}
+ 				}
+ 			}
++			hidePlayerCraftingMenu = false;
+ 
+ 			if (recBigList && !flag9) {
+ 				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
 @@ -31327,7 +_,7 @@
  				if (npc[j].active && !_npcTypesThatAlreadyDrewAHead.Contains(npc[j].type)) {
  					ITownNPCProfile profile;
@@ -3245,7 +3247,7 @@
 +						ModLoader.ModLoader.skipLoad = true;
 +					}
 +				}
-+				
++
 +				goto SkipMenuEnumeration; //Put the label somewhere after the following if-else chain.
 +			}
  
@@ -3583,7 +3585,7 @@
 +					Vector2 urlSize = font.MeasureString(patreonShortURL);
 +
 +					spriteBatch.DrawString(font, patreonShortURL, new Vector2(patreonOrigin.X + num + 10f, screenHeight - patreonOrigin.Y + num2 - 2f - (int)upBump), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-+					
++
 +					if (i == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)patreonOrigin.X + 10, screenHeight - (int)urlSize.Y - 2 - (int)upBump, (int)urlSize.X, (int)patreonOrigin.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && hasFocus) {
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
 +						Utils.OpenToURL("https://www.patreon.com/tModLoader");
@@ -3750,7 +3752,7 @@
  			}
  
  			DrawWater(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
-+			
++
 +		postWaterDraw:
 +			LoaderManager.Get<WaterStylesLoader>().DrawWatersToScreen(isBackground);
  		}
@@ -3926,9 +3928,9 @@
  			BackgroundViewMatrix.Effects = GameViewMatrix.Effects;
  			BackgroundViewMatrix.Zoom = new Vector2(ForcedMinimumZoom);
  			GameViewMatrix.Zoom = new Vector2(ForcedMinimumZoom * MathHelper.Clamp(GameZoomTarget, 1f, 2f));
-+			
++
 +			SystemLoader.ModifyTransformMatrix(ref GameViewMatrix);
-+			
++
  			if (gameMenu || player[myPlayer].gravDir == 1f)
  				Rasterizer = RasterizerState.CullCounterClockwise;
  			else
@@ -4324,7 +4326,7 @@
  						if (!NPC.downedSlimeKing)
  							num3 /= 2;
  
-@@ -50017,10 +_,15 @@
+@@ -50017,9 +_,14 @@
  						WorldGen.UnspawnTravelNPC();
  				}
  				else if (!fastForwardTime && dayTime && time < 27000.0) {
@@ -4332,15 +4334,13 @@
  					int num6 = dayRate;
  					if (num6 < 1)
  						num6 = 1;
--
 +					*/
 +					double num6 = dayRate;
 +					if (num6 < 0)
 +						num6 = 0;
-+					
+ 
  					int num7 = (int)(27000.0 / (double)num6);
  					num7 *= 4;
- 					if (rand.Next(num7) == 0) {
 @@ -50381,6 +_,11 @@
  		}
  
@@ -4415,7 +4415,7 @@
 +				if (!Platform.IsWindows)
 -				PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
 +					PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
-+#endif 
++#endif
 +
  				if (!graphics.IsFullScreen) {
  					num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
