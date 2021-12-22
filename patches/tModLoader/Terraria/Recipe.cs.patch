@@ -407,7 +407,7 @@
 +			if (!RecipeLoader.FirstRecipeForItem.ContainsKey(currentRecipe.createItem.type)) {
 +				RecipeLoader.FirstRecipeForItem.Add(currentRecipe.createItem.type, currentRecipe);
 +			}
-+			
++
 +			// The following resets the currentRecipe field
 +			currentRecipe = new Recipe {
 +				requiredItem = new List<Item>(),

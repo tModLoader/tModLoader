@@ -355,7 +355,7 @@ namespace Terraria
 		}
 		
 		/// <summary>
-		/// Moves the recipe before the first one creating the item of the ID given as parameter.
+		/// Moves the recipe after the first one creating the item of the ID given as parameter.
 		/// </summary>
 		public Recipe MoveAfterRecipesOf(int itemID) {
 			if (RecipeLoader.FirstRecipeForItem.TryGetValue(itemID, out Recipe recipe)) {
