@@ -16,7 +16,7 @@ namespace ExampleMod.NPCs
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Worm");
-	
+
 			var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { // Influences how the NPC looks in the Bestiary
 				CustomTexturePath = "ExampleMod/Content/NPCs/ExampleWorm_Bestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
 				Position = new Vector2(40f, 24f),

@@ -30,6 +30,15 @@
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
+@@ -458,7 +_,7 @@
+ 
+ 		public bool isLikeATownNPC {
+ 			get {
+-				if (type == 453)
++				if (NPCID.Sets.ActsLikeTownNPC[type])
+ 					return true;
+ 
+ 				return townNPC;
 @@ -696,7 +_,7 @@
  		public static void UpdateFoundActiveNPCs() {
  			for (int i = 0; i < 200; i++) {
@@ -133,13 +142,12 @@
  			setFrameSize = false;
  			netSkip = -2;
  			realLife = -1;
-@@ -10242,13 +_,18 @@
- 				noTileCollide = true;
+@@ -10243,13 +_,18 @@
  				dontTakeDamage = true;
  			}
-+			
-+			NPCLoader.SetDefaults(this);
  
++			NPCLoader.SetDefaults(this);
++
  			if (Main.dedServ)
  				frame = default(Rectangle);
 +			// Extra patch context.
@@ -147,11 +155,12 @@
  				frame = new Rectangle(0, 0, TextureAssets.Npc[type].Width(), TextureAssets.Npc[type].Height() / Main.npcFrameCount[type]);
  			else
  				setFrameSize = true;
-+			
-+			// Extra patch context.
  
++			// Extra patch context.
++
  			if (spawnparams.sizeScaleOverride.HasValue) {
  				int num2 = (int)((float)width * scale);
+ 				int num3 = (int)((float)height * scale);
 @@ -10832,6 +_,7 @@
  					break;
  			}
@@ -411,17 +420,17 @@
  									bool flag38 = WorldGen.OpenDoor(num64, num65 - 1, direction);
  									if (!flag38) {
  										ai[3] = num19;
-@@ -47236,6 +_,10 @@
- 		public bool UsesPartyHat() {
+@@ -47237,6 +_,10 @@
  			if (type == 441 || type == 37 || type == 633)
  				return false;
-+			
+ 
 +			if (!NPCLoader.UsesPartyHat(this)) {
 +				return false;
 +			}
- 
++
  			if (ForcePartyHatOn)
  				return true;
+ 
 @@ -47288,6 +_,10 @@
  				num = TextureAssets.Npc[type].Height() / Main.npcFrameCount[type];
  			}
@@ -724,7 +733,7 @@
 +			spawnInfo.spawnTileType = num3;
 +			spawnInfo.player = Main.player[num7];
 +			spawnInfo.sky = flag3;
-+			spawnInfo.lihzahrd = flag4; 
++			spawnInfo.lihzahrd = flag4;
 +			spawnInfo.playerSafe = flag5;
 +			spawnInfo.invasion = flag6;
 +			spawnInfo.water = flag7;
@@ -772,6 +781,15 @@
  				for (int num2 = 199; num2 >= 0; num2--) {
  					if (!Main.npc[num2].active) {
  						num = num2;
+@@ -63675,7 +_,7 @@
+ 		}
+ 
+ 		private static void GiveTownUniqueDataToNPCsThatNeedIt(int Type, int nextNPC) {
+-			if (TypeToDefaultHeadIndex(Type) != -1 || Type == 453) {
++			if (TypeToDefaultHeadIndex(Type) != -1 || (Type >= 0 && NPCID.Sets.SpawnsWithCustomName[Type])) {
+ 				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
+ 				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
+ 					Main.npc[nextNPC].townNpcVariationIndex = profile.RollVariation();
 @@ -63872,12 +_,14 @@
  			if (num2 < 0)
  				num2 = 0;

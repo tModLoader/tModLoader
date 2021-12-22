@@ -28,7 +28,7 @@
 -		public int[] requiredTile = new int[maxRequirements];
 +		public List<int> acceptedGroups = new List<int>();
 -		public int[] acceptedGroups = new int[maxRequirements];
-+		
++
 -		public bool needHoney;
 +		internal bool needHoney;
 -		public bool needWater;
@@ -107,8 +107,7 @@
 +				if (RecipeGroup.recipeGroups[num].ContainsItem(invType) && RecipeGroup.recipeGroups[num].ContainsItem(reqType))
  					return true;
  			}
--
-+			
+ 
  			return false;
  		}
  
@@ -344,10 +343,9 @@
  				}
  			}
  		}
--
--		public void SetIngridients(params int[] ingridients) {
-+		
+ 
 +		// meme man: i cn spek engrish
+-		public void SetIngridients(params int[] ingridients) {
 +		private void SetIngridients(params int[] ingridients) {
  			if (ingridients.Length == 1) {
  				ingridients = new int[2] {
@@ -366,7 +364,6 @@
  		private static void AddRecipe() {
 -			if (currentRecipe.requiredTile[0] == 13)
 -				currentRecipe.alchemy = true;
--
 +			if (currentRecipe.requiredTile.Count > 0 && currentRecipe.requiredTile[0] == TileID.Bottles)
 +				currentRecipe.AddConsumeItemCallback(ConsumptionRules.Alchemy);
 +
@@ -399,7 +396,7 @@
 +			currentRecipe.requiredItem.RemoveAll(item => item.IsAir);
 +			currentRecipe.requiredTile.RemoveAll(tile => tile == -1);
 +			currentRecipe.acceptedGroups.RemoveAll(group => group == -1);
-+			
+ 
  			Main.recipe[numRecipes] = currentRecipe;
 -			currentRecipe = new Recipe();
 +			currentRecipe.RecipeIndex = numRecipes;

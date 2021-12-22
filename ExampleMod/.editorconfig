@@ -21,6 +21,7 @@ root = true
 # New line preferences
 	end_of_line = crlf
 	insert_final_newline = false
+	trim_trailing_whitespace = true
 
 #### .NET Coding Conventions ####
 

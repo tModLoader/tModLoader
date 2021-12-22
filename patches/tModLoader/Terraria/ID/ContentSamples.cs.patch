@@ -33,7 +33,7 @@
  
  		public static void Initialize() {
 +			Main.rand ??= new UnifiedRandom((int)DateTime.Now.Ticks);
-+		
++
  			NpcsByNetId.Clear();
  			NpcNetIdsByPersistentIds.Clear();
  			NpcPersistentIdsByNetIds.Clear();

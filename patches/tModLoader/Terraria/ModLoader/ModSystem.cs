@@ -13,7 +13,7 @@ using Terraria.WorldBuilding;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// ModSystem is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike Mod, can have unlimited amounts of types deriving from it. 
+	/// ModSystem is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike Mod, can have unlimited amounts of types deriving from it.
 	/// </summary>
 	public abstract partial class ModSystem : ModType
 	{
@@ -212,7 +212,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.
-		/// 
+		///
 		/// Note: This hook should no longer be used. It is better to use the ModifyInterfaceLayers hook.
 		/// </summary>
 		/// <param name="spriteBatch">The sprite batch.</param>
@@ -230,7 +230,7 @@ namespace Terraria.ModLoader
 		public virtual void PostUpdateInput() { }
 
 		/// <summary>
-		/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.  
+		/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.
 		/// </summary>
 		public virtual void PreSaveAndQuit() { }
 
@@ -250,7 +250,7 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate) { }
 
 		/// <summary>
-		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. 
+		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags.
 		/// <br/>For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world.
 		/// <br/>
 		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.

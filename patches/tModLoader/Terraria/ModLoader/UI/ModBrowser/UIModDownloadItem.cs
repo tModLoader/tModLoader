@@ -23,7 +23,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 	{
 		private const float PADDING = 5f;
 		public readonly ModDownloadItem ModDownload;
-		
+
 		private readonly Asset<Texture2D> _dividerTexture;
 		private readonly Asset<Texture2D> _innerPanelTexture;
 		private readonly UIText _modName;

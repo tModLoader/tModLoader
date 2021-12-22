@@ -35,7 +35,7 @@ namespace Terraria.ModLoader
 
 					foreach (ModItem item in mod.GetContent<ModItem>())
 						item.AddRecipes();
-					
+
 					foreach (GlobalItem globalItem in mod.GetContent<GlobalItem>())
 						globalItem.AddRecipes();
 				}

@@ -90,7 +90,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets the asset with the specified name. Throws an Exception if the asset does not exist. 
+		/// Gets the asset with the specified name. Throws an Exception if the asset does not exist.
 		/// </summary>
 		/// <param name="name">The path to the asset without extension, including the mod name (or Terraria) for vanilla assets. Eg "ModName/Folder/FileNameWithoutExtension"</param>
 		public static Asset<T> Request<T>(string name, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class {
@@ -328,7 +328,7 @@ namespace Terraria.ModLoader
 
 			MapLoader.SetupModMap();
 			RarityLoader.Initialize();
-			
+
 			ContentSamples.Initialize();
 			PlayerInput.reinitialize = true;
 			SetupBestiary(token);
@@ -339,7 +339,7 @@ namespace Terraria.ModLoader
 			MenuLoader.GotoSavedModMenu();
 			BossBarLoader.GotoSavedStyle();
 		}
-		
+
 		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
 			DamageClassLoader.RegisterDefaultClasses();
@@ -374,20 +374,20 @@ namespace Terraria.ModLoader
 			new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
 			Main.BestiaryDB = bestiaryDatabase;
 			ContentSamples.RebuildBestiarySortingIDsByBestiaryDatabaseContents(bestiaryDatabase);
-			
+
 			//Drops DB
 			var itemDropDatabase = new ItemDropDatabase();
 			itemDropDatabase.Populate();
 			Main.ItemDropsDB = itemDropDatabase;
-			
+
 			//Update the bestiary DB with the drops DB.
 			bestiaryDatabase.Merge(Main.ItemDropsDB);
-			
+
 			//Etc
-			
+
 			if (!Main.dedServ)
 				Main.BestiaryUI = new UIBestiaryTest(Main.BestiaryDB);
-			
+
 			Main.ItemDropSolver = new ItemDropResolver(itemDropDatabase);
 			Main.BestiaryTracker = new BestiaryUnlocksTracker();
 		}
@@ -410,7 +410,7 @@ namespace Terraria.ModLoader
 
 		internal static void UnloadModContent() {
 			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
-			
+
 			int i = 0;
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				if (Main.dedServ)

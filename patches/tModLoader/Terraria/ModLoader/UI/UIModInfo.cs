@@ -38,7 +38,7 @@ namespace Terraria.ModLoader.UI
 		private bool _ready;
 
 		private CancellationTokenSource _cts;
-		
+
 		public override void OnInitialize() {
 			_uIElement = new UIElement {
 				Width = {Percent = 0.8f},
@@ -222,10 +222,10 @@ namespace Terraria.ModLoader.UI
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
-			
+
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 			UILinkPointNavigator.Shortcuts.BackButtonGoto = _gotoMenu;
-			
+
 			if (_modHomepageButton.IsMouseHovering) {
 				UICommon.DrawHoverStringInBounds(spriteBatch, _url);
 			}
@@ -261,7 +261,7 @@ namespace Terraria.ModLoader.UI
 		public override void Update(GameTime gameTime) {
 			if (!_loading && _ready) {
 				_modInfo.SetText(_info);
-				
+
 				if (!string.IsNullOrEmpty(_url)){
 					_uIElement.Append(_modHomepageButton);
 				}

@@ -51,7 +51,7 @@ namespace Terraria.UI
 				if (item.IsTheSameAs(accessories[j]) && accLoader.CanAcceptItem(j, item, j < accessories.Length / 2 ? (int)Context.ModdedAccessorySlot : (int)Context.ModdedVanityAccessorySlot) && ItemLoader.CanEquipAccessory(item, j, true))
 					accSlotToSwapTo = j + 20;
 
-				if (j < accLoader.list.Count && (item.wingSlot > 0 && accessories[j].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(accessories[j], item)) 
+				if (j < accLoader.list.Count && (item.wingSlot > 0 && accessories[j].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(accessories[j], item))
 					&& accLoader.CanAcceptItem(j, item, j < accessories.Length / 2 ? (int)Context.ModdedAccessorySlot : (int)Context.ModdedVanityAccessorySlot) && ItemLoader.CanEquipAccessory(item, j, true))
 					accSlotToSwapTo = j + 20;
 			}
@@ -67,7 +67,7 @@ namespace Terraria.UI
 					result =  item;
 					return false;
 				}
-				
+
 				result = accessories[num3].Clone();
 				accessories[num3] = item.Clone();
 			}
@@ -86,7 +86,7 @@ namespace Terraria.UI
 		}
 
 		/// <summary>
-		/// Alters the ItemSlot.DyeSwap method for modded slots; 
+		/// Alters the ItemSlot.DyeSwap method for modded slots;
 		/// Unfortunately, I (Solxan) couldn't ever get ItemSlot.DyeSwap invoked so pretty sure this and its vanilla code is defunct.
 		/// Here in case someone proves my statement wrong later.
 		/// </summary>

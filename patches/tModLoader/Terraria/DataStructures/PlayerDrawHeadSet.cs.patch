@@ -15,7 +15,7 @@
  		public List<int> Dust;
  		public List<int> Gore;
  		public Player drawPlayer;
-@@ -48,12 +_,15 @@
+@@ -48,30 +_,39 @@
  				result.Height--;
  				return result;
  			}
@@ -35,8 +35,16 @@
 +			GoreCache = gore;
  			drawPlayer = drawPlayer2;
  			Position = drawPlayer.position;
++			/*
  			cHead = 0;
-@@ -64,9 +_,9 @@
+ 			cFace = 0;
+ 			cUnicornHorn = 0;
+ 			cAngelHalo = 0;
+ 			cBeard = 0;
++			*/
++
++			CopyBasicPlayerFields();
++
  			drawUnicornHorn = false;
  			drawAngelHalo = false;
  			skinVar = drawPlayer.skinVariant;
@@ -48,7 +56,18 @@
  
  			skinDyePacked = drawPlayer.skinDyePacked;
  			if (drawPlayer.face > 0 && drawPlayer.face < 20)
-@@ -82,7 +_,7 @@
+ 				Main.instance.LoadAccFace(drawPlayer.face);
+ 
++			/*
+ 			cHead = drawPlayer.cHead;
+ 			cFace = drawPlayer.cFace;
+ 			cFaceHead = drawPlayer.cFaceHead;
+@@ -79,10 +_,12 @@
+ 			cUnicornHorn = drawPlayer.cUnicornHorn;
+ 			cAngelHalo = drawPlayer.cAngelHalo;
+ 			cBeard = drawPlayer.cBeard;
++			*/
++
  			drawUnicornHorn = drawPlayer.hasUnicornHorn;
  			drawAngelHalo = drawPlayer.hasAngelHalo;
  			Main.instance.LoadHair(drawPlayer.hair);
