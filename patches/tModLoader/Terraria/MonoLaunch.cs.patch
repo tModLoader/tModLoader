@@ -1,13 +1,46 @@
 --- src/Terraria/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -7,6 +_,7 @@
+@@ -6,7 +_,9 @@
+ using System.Reflection;
  using System.Runtime.InteropServices;
  using System.Runtime.Loader;
++using System.Threading;
  using Terraria;
 +using Terraria.ModLoader;
  
  internal static class MonoLaunch
  {
+@@ -17,6 +_,7 @@
+ 	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
+ 
+ 	private static void Main(string[] args) {
++		Thread.CurrentThread.Name = "Entry Thread";
+ 		/*
+ 		// FNA is requested by both Terraria and ReLogic.dll
+ 		var loaded = new Dictionary<string, Assembly>();
+@@ -47,7 +_,22 @@
+ #endif
+ 
+ 		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
++		// Spawn a thread to use configured default stack size instead of the one reported in the binary
++		// https://social.msdn.microsoft.com/Forums/office/en-US/7132b30d-9792-4bf3-87ec-7198052e4ed3/main-thread-stack-size?forum=csharpgeneral
++		// post processing the binary with `editbin /stack:400000 tModLoader.dll` should do it for the main thread but it's annoying
++		// and duplicates the size defined in the runtimeconfig
++		// @TODO: Temporary change, make it cross platform, linux crashes if FNA loop is not in the REAL Main thread
++		//        Atm linux and mac use for main also the env variable so it works
++		var LocalLaunchGame = () => {
+ 		Program.LaunchGame(args, monoArgs: true);
++		};
++		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
++			new Thread(new ThreadStart(LocalLaunchGame)).Start();
++			// Move the dummy entry thread to background
++			Thread.CurrentThread.IsBackground = true;
++		} else {
++			LocalLaunchGame();
++		}
+ 	}
+ 
+ #if NETCORE
 @@ -58,16 +_,16 @@
  					return handle;
  				}
