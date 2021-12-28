@@ -3676,7 +3676,7 @@
 -				if (whoAmI == Main.myPlayer) {
 +
 +				// TML attempts to make ApplyItemTime calls run on remote players, so this check is removed. #ItemTimeOnAllClients
-+				if (whoAmI == Main.myPlayer || true) {
++				if (true) {// previously: if (whoAmI == Main.myPlayer)
  					bool flag4 = true;
  					int type2 = item.type;
  					if ((type2 == 65 || type2 == 676 || type2 == 723 || type2 == 724 || type2 == 757 || type2 == 674 || type2 == 675 || type2 == 989 || type2 == 1226 || type2 == 1227) && itemAnimation != itemAnimationMax - 1)
