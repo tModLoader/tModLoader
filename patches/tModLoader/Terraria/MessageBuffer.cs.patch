@@ -233,7 +233,7 @@
  							nPC4.releaseOwner = reader.ReadByte();
  
 +						// Extra AI is read into a temporary buffer for parity with ProjectileLoader code, and to avoid exceptions causing underreads.
-+						if (ModNet.AllowVanillaClients)
++						if (!ModNet.AllowVanillaClients)
 +							NPCLoader.ReceiveExtraAI(nPC4, NPCLoader.ReadExtraAI(reader));
 +
  						break;
