@@ -39,6 +39,7 @@ var class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d =
     [ "EmpressOfLight", "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a7b5c75640b62e2908c14e9a3e3042f54", null ],
     [ "EnchantedSword", "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#aa81aaa5894e92d53042bb8a6f5f6c493", null ],
     [ "EyeOfCthulhu", "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a0e2b454799d9ea12884a0c231c7aa8bc", null ],
+    [ "FaceClosestPlayer", "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#aafd72d0664384eab6408af2e65fef830", null ],
     [ "Fairy", "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a6589b1ebd5e1e05533bfc214f076ba4b", null ],
     [ "Fighter", "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a58d2f8e623b01fc62ca87dd3178d3027", null ],
     [ "Firefly", "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#aaf1403be3cc6e8893ae06feab80269a8", null ],
