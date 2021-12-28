@@ -3659,7 +3659,7 @@
  			if (itemTime > 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
-@@ -30319,11 +_,19 @@
+@@ -30319,11 +_,20 @@
  				}
  			}
  
@@ -3673,14 +3673,15 @@
  				ItemCheck_EmitHeldItemLight(item);
  				ItemCheck_EmitFoodParticles(item);
  				ItemCheck_EmitDrinkParticles(item);
--				if (whoAmI == Main.myPlayer) {
 +
-+				// TML attempts to make ApplyItemTime calls run on remote players, so this check is removed.
-+				if (whoAmI == Main.myPlayer || true) {
++				// TML attempts to make ApplyItemTime calls run on remote players, so this check is removed. #ItemTimeOnAllClients
+-				if (whoAmI == Main.myPlayer) {
++				// if (whoAmI == Main.myPlayer) {
++				if (true) { 
  					bool flag4 = true;
  					int type2 = item.type;
  					if ((type2 == 65 || type2 == 676 || type2 == 723 || type2 == 724 || type2 == 757 || type2 == 674 || type2 == 675 || type2 == 989 || type2 == 1226 || type2 == 1227) && itemAnimation != itemAnimationMax - 1)
-@@ -30354,7 +_,7 @@
+@@ -30354,9 +_,13 @@
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
  					ItemCheck_MinionAltFeatureUse(item, flag4);
@@ -3688,7 +3689,21 @@
 +					if (item.shoot > 0 && itemAnimation > 0 && ItemTimeIsZero && flag4 && ItemLoader.CheckProjOnSwing(this, item))
  						ItemCheck_Shoot(i, item, weaponDamage);
  
++					// Added by TML. #ItemTimeOnAllClients - TODO: item time application with these item types
++					if (whoAmI != Main.myPlayer)
++						goto endItemChecks;
++
  					ItemCheck_UseWiringTools(item);
+ 					ItemCheck_UseLawnMower(item);
+ 					ItemCheck_PlayInstruments(item);
+@@ -30401,6 +_,7 @@
+ 						Vector2 vector = DirectionTo(ApplyRangeCompensation(0.2f, center, Main.MouseWorld)) * 10f;
+ 						Projectile.NewProjectile(GetProjectileSource_Accessory(boneGloveItem), center.X, center.Y, vector.X, vector.Y, 532, 25, 5f, whoAmI);
+ 					}
++					endItemChecks: {}
+ 				}
+ 
+ 				if (((item.damage >= 0 && item.type > 0 && !item.noMelee) || item.type == 1450 || item.type == 1991 || item.type == 3183 || item.type == 4821 || item.type == 3542 || item.type == 3779) && itemAnimation > 0) {
 @@ -30417,7 +_,8 @@
  
  						if (Main.myPlayer == i && item.damage > 0) {
@@ -4019,7 +4034,7 @@
  			int Damage = weaponDamage;
  			float KnockBack = sItem.knockBack;
 +
-+			// WhoAmI check added by TML.
++			// WhoAmI check added by TML. #ItemTimeOnAllClients
 -			if (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331) {
 +			if (whoAmI == Main.myPlayer && (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331)) {
  				grappling[0] = -1;
@@ -4029,7 +4044,7 @@
  			}
  
  			if (canShoot) {
-+				// Added by TML.
++				// Added by TML. #ItemTimeOnAllClients
 +				if (whoAmI != Main.myPlayer) {
 +					ApplyItemTime(sItem);
 +					return;
@@ -4077,7 +4092,7 @@
  				}
  			}
  			else if (sItem.useStyle == 5 || sItem.useStyle == 13) {
-+				// Added by TML.
++				// Added by TML. #ItemTimeOnAllClients
 +				if (whoAmI != Main.myPlayer)
 +					return;
 +
@@ -4099,7 +4114,7 @@
  			if (sItem.shoot > 0 && ProjectileID.Sets.MinionTargettingFeature[sItem.shoot] && altFunctionUse == 2 && cShoot && ItemTimeIsZero) {
  				ApplyItemTime(sItem);
 +
-+				// Added by TML.
++				// Added by TML. #ItemTimeOnAllClients
 +				if (whoAmI != Main.myPlayer)
 +					return;
 +
@@ -4111,8 +4126,8 @@
  
  			ApplyItemTime(sItem);
 +
-+			// Added by TML.
-+			if(whoAmI != Main.myPlayer)
++			// Added by TML. #ItemTimeOnAllClients
++			if (whoAmI != Main.myPlayer)
 +				return;
 +
  			for (int i = 0; i < 1000; i++) {
