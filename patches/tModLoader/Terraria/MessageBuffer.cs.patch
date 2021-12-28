@@ -216,12 +216,10 @@
  							obj6.playerIndexTheItemIsReservedFor = Main.myPlayer;
  							if (flag9) {
  								NetMessage.TrySendData(21, -1, -1, null, num181);
-@@ -1286,6 +_,9 @@
+@@ -1286,6 +_,7 @@
  							}
  						}
  
-+						// Reading and receiving has been separated for parity with ProjectileLoader code, and to avoid exceptions causing underreads.
-+						byte[] extraAI = !ModNet.AllowVanillaClients ? NPCLoader.ReadExtraAI(reader) : null;
 +
  						int num121 = -1;
  						NPC nPC4 = Main.npc[num116];
@@ -234,9 +232,9 @@
 +						if (nPC4.type >= 0 && nPC4.type < NPCLoader.NPCCount && Main.npcCatchable[nPC4.type])
  							nPC4.releaseOwner = reader.ReadByte();
  
-+						if (extraAI != null) {
-+							NPCLoader.ReceiveExtraAI(nPC4, extraAI);
-+						}
++						// Extra AI is read into a temporary buffer for parity with ProjectileLoader code, and to avoid exceptions causing underreads.
++						if (ModNet.AllowVanillaClients)
++							NPCLoader.ReceiveExtraAI(nPC4, NPCLoader.ReadExtraAI(reader));
 +
  						break;
  					}
