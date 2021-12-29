@@ -1,12 +1,47 @@
 --- src/Terraria/ReLogic/Content/Sources/IContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/IContentSource.cs
-@@ -23,5 +_,9 @@
- 		void ClearRejections();
+@@ -1,5 +_,6 @@
+ using System.Collections.Generic;
+ using System.IO;
++using System.Linq;
  
- 		bool TryGetRejections(List<string> rejectionReasons);
+ namespace ReLogic.Content.Sources
+ {
+@@ -10,18 +_,28 @@
+ 			set;
+ 		}
+ 
+-		bool HasAsset(string assetName);
++		RejectedAssetCollection Rejections { get; }
+ 
+-		List<string> GetAllAssetsStartingWith(string assetNameStart);
++		IEnumerable<string> EnumerateAssets();
+ 
++		/// <summary>
++		/// Must be threadsafe! 
++		/// </summary>
++		/// <returns>null if the asset does not exist</returns>
+ 		string GetExtension(string assetName);
+ 
+-		Stream OpenStream(string assetName);
+-
+-		void RejectAsset(string assetName, IRejectionReason reason);
+-
+-		void ClearRejections();
+-
+-		bool TryGetRejections(List<string> rejectionReasons);
++		/// <summary>
++		/// Must be threadsafe! 
++		/// </summary>
++		Stream OpenStream(string fullAssetName);
 +
-+		//tML Additions:
++		/// <summary>
++		/// Checks Rejections and GetExtension to determine if an asset exists
++		/// </summary>
++		/// <param name="assetName"></param>
++		/// <returns></returns>
++		public bool HasAsset(string assetName) => !Rejections.IsRejected(assetName) && GetExtension(assetName) != null;
 +
-+		IEnumerable<string> EnumerateFiles();
++		IEnumerable<string> GetAllAssetsStartingWith(string assetNameStart) => EnumerateAssets().Where(s => s.StartsWith(assetNameStart));
  	}
  }

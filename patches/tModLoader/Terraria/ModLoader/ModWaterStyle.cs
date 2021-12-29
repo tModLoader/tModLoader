@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 
@@ -7,6 +8,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Represents a style of water that gets drawn, based on factors such as the background. This is used to determine the color of the water, as well as other things as determined by the hooks below.
 	/// </summary>
+	[Autoload(Side = ModSide.Client)]
 	public abstract class ModWaterStyle : ModTexturedType
 	{
 		/// <summary>
@@ -17,12 +19,15 @@ namespace Terraria.ModLoader
 		public virtual string BlockTexture => Texture + "_Block";
 
 		protected sealed override void Register() {
-			Slot = Loaders.Waters.Register(this);
+			Slot = LoaderManager.Get<WaterStylesLoader>().Register(this);
 		}
 
 		public sealed override void SetupContent() {
-			LiquidRenderer.Instance._liquidTextures[Slot] = ModContent.GetTexture(Texture);
-			TextureAssets.Liquid[Slot] = ModContent.GetTexture(BlockTexture);
+			LiquidRenderer.Instance._liquidTextures[Slot] = ModContent.Request<Texture2D>(Texture);
+
+			SetStaticDefaults();
+
+			TextureAssets.Liquid[Slot] = ModContent.Request<Texture2D>(BlockTexture);
 		}
 
 		/// <summary>
@@ -60,6 +65,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Represents a style of waterfalls that gets drawn. This is mostly used to determine the color of the waterfall.
 	/// </summary>
+	[Autoload(Side = ModSide.Client)]
 	public abstract class ModWaterfallStyle : ModTexturedType
 	{
 		/// <summary>
@@ -68,11 +74,13 @@ namespace Terraria.ModLoader
 		public int Slot { get; internal set; }
 
 		protected sealed override void Register() {
-			Slot = Loaders.Waterfalls.Register(this);
+			Slot = LoaderManager.Get<WaterFallStylesLoader>().Register(this);
 		}
 
 		public sealed override void SetupContent() {
-			Main.instance.waterfallManager.waterfallTexture[Slot] = ModContent.GetTexture(Texture);
+			Main.instance.waterfallManager.waterfallTexture[Slot] = ModContent.Request<Texture2D>(Texture);
+
+			SetStaticDefaults();
 		}
 
 		/// <summary>

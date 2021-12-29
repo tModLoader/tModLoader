@@ -8,41 +8,47 @@ namespace Terraria.ModLoader.Core
 {
 	public class HookList<T> where T : GlobalType
 	{
-		// Don't change a single line without performance testing and checking the disassembly. As of NET 5.0.0, this is the fastest implementation achievable short of hand-coding
+		// Don't change a single line without performance testing and checking the disassembly. As of NET 5.0.0, this implementation is on par with hand-coding
+		// Disassembly checked using Relyze Desktop 3.3.0
 		public ref struct InstanceEnumerator
 		{
-			private readonly ReadOnlySpan<Instanced<T>> instances;
-			private readonly ReadOnlySpan<int> hookInds;
+			// These have to be arrays rather than ReadOnlySpan as the JIT won't unpack/promote 'struct in struct' (or span in struct either)
+			// Revisit with .NET 6 https://github.com/dotnet/runtime/issues/37924
+			private readonly Instanced<T>[] instances;
+			private readonly int[] hookInds;
 
+			// ideally this would be Instanced<T> and drop the need for the ii variable in the MoveNext function
+			// but again, struct in struct promotion (and also increasing the 'field count'
 			private T current;
-			private int i;
-			private int j;
+			// i and j are combined into a 64bit variable beacuse JIT currently won't unpack/promote structs with > 4 fields into registers
+			// See https://github.com/dotnet/runtime/issues/6534
+			private ulong ij;
+			//private int i;
+			//private int j;
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public InstanceEnumerator(ReadOnlySpan<Instanced<T>> instances, ReadOnlySpan<int> hookInds) {
+			public InstanceEnumerator(Instanced<T>[] instances, int[] hookInds) {
 				this.instances = instances;
 				this.hookInds = hookInds;
-
 				current = default;
-				i = 0;
-				j = 0;
+				ij = 0;
+				//i = 0;
+				//j = 0;
 			}
 
 			public T Current => current;
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public bool MoveNext() {
-				int ii = -1;
-
-				while (j < hookInds.Length) {
-					int hookIndex = hookInds[j++];
-
+				var ii = -1;
+				while ((int)(ij >> 32) < hookInds.Length) {
+					int hookIndex = hookInds[(int)(ij >> 32)];
+					ij += 1L << 32;
 					while (ii < hookIndex) {
-						if (i == instances.Length)
+						if ((int)ij == instances.Length)
 							return false;
 
-						var inst = instances[i++];
-
+						var inst = instances[(int)(ij++)];
 						ii = inst.index;
 						current = inst.instance;
 					}
@@ -66,9 +72,9 @@ namespace Terraria.ModLoader.Core
 			this.method = method;
 		}
 
-		public InstanceEnumerator Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals);
+		public InstanceEnumerator Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals.array);
 
-		public InstanceEnumerator Enumerate(ReadOnlySpan<Instanced<T>> instances) => new(instances, registeredGlobalIndices);
+		public InstanceEnumerator Enumerate(Instanced<T>[] instances) => new(instances, registeredGlobalIndices);
 
 		public void Update(IList<T> instances) {
 			registeredGlobalIndices = ModLoader.BuildGlobalHookNew(instances, method);

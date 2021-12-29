@@ -2,22 +2,24 @@
 
 namespace Terraria.ModLoader
 {
-	public abstract class ModBgStyle:ModType
+	public abstract class ModBackgroundStyle:ModType
 	{
 		/// <summary>
 		/// The ID of this underground background style.
 		/// </summary>
 		public int Slot { get; internal set; }
 	}
-	
+
 	/// <summary>
 	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds.
 	/// </summary>
-	public abstract class ModUgBgStyle:ModBgStyle
+	public abstract class ModUndergroundBackgroundStyle:ModBackgroundStyle
 	{
 		protected override sealed void Register() {
-			Slot = Loaders.UgBgs.Register(this);
+			Slot = LoaderManager.Get<UndergroundBackgroundStylesLoader>().Register(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Allows you to determine which textures make up the background by assigning their background slots/IDs to the given array. Mod.GetBackgroundSlot may be useful here. Index 0 is the texture on the border of the ground and sky layers. Index 1 is the texture drawn between rock and ground layers. Index 2 is the texture on the border of ground and rock layers. Index 3 is the texture drawn in the rock layer. The border images are 160x16 pixels, and the others are 160x96, but it seems like the right 32 pixels of each is a duplicate of the far left 32 pixels.
@@ -28,11 +30,13 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds.
 	/// </summary>
-	public abstract class ModSurfaceBgStyle:ModBgStyle
-	{ 
+	public abstract class ModSurfaceBackgroundStyle:ModBackgroundStyle
+	{
 		protected override sealed void Register() {
-			Slot = Loaders.SurfaceBgs.Register(this);
+			Slot = LoaderManager.Get<SurfaceBackgroundStylesLoader>().Register(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Allows you to modify the transparency of all background styles that exist. In general, you should move the index equal to this style's slot closer to 1, and all other indexes closer to 0. The transitionSpeed parameter is what you should add/subtract to each element of the fades parameter. See the ExampleMod for an example.
@@ -76,29 +80,31 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves to collect functions that operate on any kind of background style, without being specific to one single background style.
 	/// </summary>
-	public abstract class GlobalBgStyle : ModType
+	public abstract class GlobalBackgroundStyle : ModType
 	{
 		protected override sealed void Register() {
-			ModTypeLookup<GlobalBgStyle>.Register(this);
-			GlobalBgStyleLoader.globalBgStyles.Add(this);
+			ModTypeLookup<GlobalBackgroundStyle>.Register(this);
+			GlobalBackgroundStyleLoader.globalBackgroundStyles.Add(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Allows you to change which underground background style is being used.
 		/// </summary>
-		public virtual void ChooseUgBgStyle(ref int style) {
+		public virtual void ChooseUndergroundBackgroundStyle(ref int style) {
 		}
 
 		/// <summary>
 		/// Allows you to change which surface background style is being used.
 		/// </summary>
-		public virtual void ChooseSurfaceBgStyle(ref int style) {
+		public virtual void ChooseSurfaceBackgroundStyle(ref int style) {
 		}
 
 		/// <summary>
 		/// Allows you to change which textures make up the underground background by assigning their background slots/IDs to the given array. Index 0 is the texture on the border of the ground and sky layers. Index 1 is the texture drawn between rock and ground layers. Index 2 is the texture on the border of ground and rock layers. Index 3 is the texture drawn in the rock layer. The border images are 160x16 pixels, and the others are 160x96, but it seems like the right 32 pixels of each is a duplicate of the far left 32 pixels.
 		/// </summary>
-		public virtual void FillUgTextureArray(int style, int[] textureSlots) {
+		public virtual void FillUndergroundTextureArray(int style, int[] textureSlots) {
 		}
 
 		/// <summary>

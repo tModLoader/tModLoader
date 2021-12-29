@@ -1,22 +1,14 @@
-using System;
-using System.Collections.Specialized;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Security;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json.Linq;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 
@@ -28,6 +20,7 @@ namespace Terraria.ModLoader.UI
 		private UIMessageBox _modInfo;
 		private UITextPanel<string> _uITextPanel;
 		private UIAutoScaleTextTextPanel<string> _modHomepageButton;
+		private UIAutoScaleTextTextPanel<string> _modSteamButton;
 		private UIAutoScaleTextTextPanel<string> _extractButton;
 		private UIAutoScaleTextTextPanel<string> _deleteButton;
 		private UIAutoScaleTextTextPanel<string> _fakeDeleteButton; // easier than making new OnMouseOver code.
@@ -39,12 +32,13 @@ namespace Terraria.ModLoader.UI
 		private string _info = string.Empty;
 		private string _modName = string.Empty;
 		private string _modDisplayName = string.Empty;
+		private string _publishedFileId;
 		private bool _loadFromWeb;
 		private bool _loading;
 		private bool _ready;
 
 		private CancellationTokenSource _cts;
-		
+
 		public override void OnInitialize() {
 			_uIElement = new UIElement {
 				Width = {Percent = 0.8f},
@@ -83,12 +77,22 @@ namespace Terraria.ModLoader.UI
 			_uIElement.Append(_uITextPanel);
 
 			_modHomepageButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage")) {
-				Width = {Percent = 1f},
+				Width = {Percent = 0.5f},
 				Height = {Pixels = 40},
+				HAlign = 1f,
 				VAlign = 1f,
 				Top = {Pixels = -65}
 			}.WithFadedMouseOver();
 			_modHomepageButton.OnClick += VisitModHomePage;
+
+			_modSteamButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitSteampage")) {
+				Width = { Percent = 0.5f },
+				Height = { Pixels = 40 },
+				HAlign = 0f,
+				VAlign = 1f,
+				Top = { Pixels = -65 }
+			}.WithFadedMouseOver();
+			_modSteamButton.OnClick += VisitModSteamPage;
 
 			var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
 				Width = {Pixels = -10, Percent = 0.333f},
@@ -129,7 +133,7 @@ namespace Terraria.ModLoader.UI
 			Append(_uIElement);
 		}
 
-		internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false) {
+		internal void Show(string modName, string displayName, int gotoMenu, LocalMod localMod, string description = "", string url = "", bool loadFromWeb = false, string publishedFileId = "") {
 			_modName = modName;
 			_modDisplayName = displayName;
 			_gotoMenu = gotoMenu;
@@ -140,6 +144,10 @@ namespace Terraria.ModLoader.UI
 			}
 			_url = url;
 			_loadFromWeb = loadFromWeb;
+			if (localMod != null && string.IsNullOrEmpty(publishedFileId) && Social.Steam.WorkshopHelper.ModManager.GetPublishIdLocal(localMod, out ulong publishId))
+				_publishedFileId = publishId.ToString();
+			else
+				_publishedFileId = publishedFileId;
 
 			Main.gameMenu = true;
 			Main.menuMode = Interface.modInfoID;
@@ -148,7 +156,6 @@ namespace Terraria.ModLoader.UI
 		public override void OnDeactivate() {
 			base.OnDeactivate();
 
-			_cts?.Cancel(false);
 			_info = string.Empty;
 			_localMod = null;
 			_gotoMenu = 0;
@@ -156,6 +163,7 @@ namespace Terraria.ModLoader.UI
 			_modDisplayName = string.Empty;
 			_url = string.Empty;
 			_modHomepageButton.Remove();
+			_modSteamButton.Remove();
 			_deleteButton.Remove();
 			_fakeDeleteButton.Remove();
 			_extractButton.Remove();
@@ -173,21 +181,51 @@ namespace Terraria.ModLoader.UI
 
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuClose);
-			File.Delete(_localMod.modFile.path);
+
+			string tmodPath = _localMod.modFile.path;
+
+			if (tmodPath.Contains(Path.Combine("steamapps", "workshop"))) {
+				string parentDir = Directory.GetParent(tmodPath).ToString();
+				string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";
+
+				Social.Base.AWorkshopEntry.TryReadingManifest(manifest, out var info);
+
+				var modManager = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
+
+				modManager.Uninstall(parentDir);
+			}
+			else {
+				File.Delete(tmodPath);
+			}
+
+			Interface.modBrowser.ModifyUIModDownloadItemInstalled(_localMod.Name, null);
+
 			Main.menuMode = _gotoMenu;
 		}
 
 		private void VisitModHomePage(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
-			Process.Start(_url);
+			Utils.OpenToURL(_url);
 		}
+
+		private void VisitModSteamPage(UIMouseEvent evt, UIElement listeningElement) {
+			SoundEngine.PlaySound(10);
+
+			string url = $"http://steamcommunity.com/sharedfiles/filedetails/?id={_publishedFileId}";
+
+			if (Social.Steam.WorkshopHelper.ModManager.SteamUser && Steamworks.SteamUtils.IsOverlayEnabled())
+				Steamworks.SteamFriends.ActivateGameOverlayToWebPage(url, Steamworks.EActivateGameOverlayToWebPageMode.k_EActivateGameOverlayToWebPageMode_Modal);
+			else
+				Utils.OpenToURL(url);
+		}
+
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
-			
+
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 			UILinkPointNavigator.Shortcuts.BackButtonGoto = _gotoMenu;
-			
+
 			if (_modHomepageButton.IsMouseHovering) {
 				UICommon.DrawHoverStringInBounds(spriteBatch, _url);
 			}
@@ -199,30 +237,20 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate() {
 			_modInfo.SetText(_info);
 			_uITextPanel.SetText(Language.GetTextValue("tModLoader.ModInfoHeader") + _modDisplayName, 0.8f, true);
+
 			if (_loadFromWeb) {
 				_modInfo.Append(_loaderElement);
 				_loading = true;
 				_ready = false;
-				
-				_cts = new CancellationTokenSource();
-				
-				Task.Factory.StartNew(() => {
-					try {
-						ServicePointManager.Expect100Continue = false;
-						const string url = "http://javid.ddns.net/tModLoader/moddescription.php";
-						var values = new NameValueCollection {
-							{"modname", _modName}
-						};
-						using (WebClient client = new WebClient()) {
-							ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, policyErrors) => policyErrors == SslPolicyErrors.None;
-							client.UploadValuesCompleted += ReceiveModInfo;
-							client.UploadValuesAsync(new Uri(url), "POST", values);
-						}
-					}
-					catch (Exception e) {
-						UIModBrowser.LogModBrowserException(e);
-					}
-				}, _cts.Token);
+
+				_info = Social.Steam.WorkshopHelper.QueryHelper.GetDescription(ulong.Parse(_publishedFileId));
+
+				if (string.IsNullOrWhiteSpace(_info)) {
+					_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
+				}
+
+				_loading = false;
+				_ready = true;
 			}
 			else {
 				_loading = false;
@@ -233,9 +261,13 @@ namespace Terraria.ModLoader.UI
 		public override void Update(GameTime gameTime) {
 			if (!_loading && _ready) {
 				_modInfo.SetText(_info);
-				
+
 				if (!string.IsNullOrEmpty(_url)){
 					_uIElement.Append(_modHomepageButton);
+				}
+
+				if (!string.IsNullOrEmpty(_publishedFileId)) {
+					_uIElement.Append(_modSteamButton);
 				}
 
 				if (_localMod != null) {
@@ -248,37 +280,6 @@ namespace Terraria.ModLoader.UI
 				_modInfo.RemoveChild(_loaderElement);
 				_ready = false;
 			}
-		}
-
-		private void ReceiveModInfo(object sender, UploadValuesCompletedEventArgs e) {
-			_loading = false;
-			string description = Language.GetTextValue("tModLoader.ModInfoProblemTryAgain");
-			string homepage = "";
-			if (!e.Cancelled) {
-				try {
-					string response = Encoding.UTF8.GetString(e.Result);
-					if (!string.IsNullOrEmpty(response)) {
-						try {
-							JObject joResponse = JObject.Parse(response);
-							description = (string)joResponse["description"];
-							homepage = (string)joResponse["homepage"];
-						}
-						catch (Exception err) {
-							Logging.tML.Error($"Problem during JSON parse of mod info for {_modDisplayName}", err);
-						}
-					}
-				}
-				catch (Exception err) {
-					Logging.tML.Error($"There was a problem trying to receive the result of a mod info request for {_modDisplayName}", err);
-				}
-			}
-
-			_info = description;
-			if (_info.Equals("")) {
-				_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");
-			}
-			_url = homepage;
-			_ready = true;
 		}
 	}
 }

@@ -1,0 +1,67 @@
+Mods: {
+	ExampleMod: {
+		Config: {
+			ItemHeader: Items
+			
+			ExampleWingsToggle: {
+				Label: ExampleWings Toggle
+				Tooltip: Enables or disables the ExampleWings item
+			}
+		}
+		
+		Common: {
+			PaperAirplane: Paper Airplane
+			LocalizedLabel: This Label is from the localization files: {$Mods.ExampleMod.Common.PaperAirplane}
+			LocalizedTooltip: This tooltip is from the localization files.
+			LocalizedHeader: Headers can help organize
+		}
+		
+		Currencies: {
+			ExampleCustomCurrency: example items
+		}
+		
+		NPCName: {
+			FlutterSlime: Flutter Slime
+			Example_Person: Example Person
+		}
+		
+		MapObject: {
+			ExampleClock: Example Clock
+		}
+		
+		ItemTooltip: {
+			OctopusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
+			SarcophagusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}"
+			ExamplePet:
+				'''
+				Summons a {$Mods.ExampleMod.Common.PaperAirplane} to follow aimlessly behind you
+				Second Line!
+				'''
+		}
+		
+		ItemName: {
+			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+		}
+		
+		ProjectileName: {
+			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+		}
+		
+		BuffName: {
+			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+		}
+		
+		BuffDescription: {
+			ExamplePet: '''"Let this pet be an example to you!"'''
+		}
+		
+		RecipeConditions: {
+			Night: At Low Health
+		}
+		
+		Bestiary: {
+			ExamplePerson: Built of blocks with arms of steel. Pumps iron day and night.
+			ExampleBoneMerchant: Built with bone blocks and arms of steel. Throws bones day and night. 
+		}
+	}
+}

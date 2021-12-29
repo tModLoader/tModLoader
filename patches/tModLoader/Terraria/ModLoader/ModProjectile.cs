@@ -40,7 +40,7 @@ namespace Terraria.ModLoader
 		public bool DrawHeldProjInFrontOfHeldItemAndArms { get; set; }
 
 		/// <summary> The file name of this projectile's glow texture file in the mod loader's file space. If it does not exist it is ignored. </summary>
-		public virtual string GlowTexture => Texture + "_Glow";
+		public virtual string GlowTexture => Texture + "_Glow"; //TODO: this is wasteful. We should consider AutoStaticDefaults or something... requesting assets regularly is bad perf
 
 		/// <summary>  Shorthand for projectile.type; </summary>
 		public int Type => Projectile.type;
@@ -53,7 +53,7 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModProjectile>.Register(this);
 
 			Projectile.type = ProjectileLoader.ReserveProjectileID();
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ProjectileName.{Name}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ProjectileName.{Name}");
 
 			ProjectileLoader.projectiles.Add(this);
 		}
@@ -88,18 +88,12 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void OnSpawn(IProjectileSource source) {
 		}
-		
-		/// <summary>
-		/// Allows you to set all your projectile's static properties, such as names/translations and the arrays in ProjectileID.Sets.
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
 
 		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Projectile[Projectile.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Projectile[Projectile.type] = ModContent.Request<Texture2D>(Texture);
 			Main.projFrames[Projectile.type] = 1;
 			if (Projectile.hostile) {
 				Main.projHostile[Projectile.type] = true;
@@ -151,12 +145,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine how this projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.
+		/// Allows you to determine how this projectile interacts with tiles. Return false if you completely override or cancel this projectile's tile collision behavior. Returns true by default.
 		/// </summary>
-		/// <param name="width">Width of the hitbox.</param>
-		/// <param name="height">Height of the hitbox.</param>
-		/// <param name="fallThrough">If the projectile can fall through platforms etc.</param>
-		public virtual bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough) {
+		/// <param name="width"> The width of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to projectile.width. </param>
+		/// <param name="height"> The height of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to projectile.height. </param>
+		/// <param name="fallThrough"> Whether or not this projectile falls through platforms and similar tiles. </param>
+		/// <param name="hitboxCenterFrac"> Determines by how much the tile collision hitbox's position (top left corner) will be offset from this projectile's real center. If vanilla doesn't modify it, defaults to half the hitbox size (new Vector2(0.5f, 0.5f)). </param>
+		/// <returns></returns>
+		public virtual bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
 			return true;
 		}
 

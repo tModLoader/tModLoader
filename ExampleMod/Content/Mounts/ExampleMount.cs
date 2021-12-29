@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Mounts
 			}
 		}
 
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// Movement
 			MountData.jumpHeight = 5; // How high the mount can jump.
 			MountData.acceleration = 0.19f; // The rate at which the mount speeds up.
@@ -87,7 +87,7 @@ namespace ExampleMod.Content.Mounts
 		}
 
 		public override void UpdateEffects(Player player) {
-			// This code simulates some wind resistance for the balloons. 
+			// This code simulates some wind resistance for the balloons.
 			var balloons = (CarSpecificData)player.mount._mountSpecificData;
 			float ballonMovementScale = 0.05f;
 
@@ -129,7 +129,7 @@ namespace ExampleMod.Content.Mounts
 				// We draw some extra balloons before _Back texture
 				var balloons = (CarSpecificData)drawPlayer.mount._mountSpecificData;
 				int timer = DateTime.Now.Millisecond % 800 / 200;
-				Texture2D balloonTexture = Mod.GetTexture("Content/Items/Armor/SimpleAccessory_Balloon").Value;
+				Texture2D balloonTexture = Mod.Assets.Request<Texture2D>("Content/Items/Armor/SimpleAccessory_Balloon").Value;
 
 				for (int i = 0; i < balloons.count; i++) {
 					var position = drawPosition + new Vector2((-36 + CarSpecificData.offsets[i]) * drawPlayer.direction, 14);

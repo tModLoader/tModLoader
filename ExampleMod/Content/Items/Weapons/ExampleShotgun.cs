@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,6 +11,8 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded shotgun.");
+
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -38,7 +41,7 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			const int NumProjectiles = 8; //The humber of projectiles that this gun will shoot.
+			const int NumProjectiles = 8; // The humber of projectiles that this gun will shoot.
 
 			for (int i = 0; i < NumProjectiles; i++) {
 				// Rotate the velocity randomly by 30 degrees at max.
@@ -47,7 +50,7 @@ namespace ExampleMod.Content.Items.Weapons
 				// Decrease velocity randomly for nicer visuals.
 				newVelocity *= 1f - Main.rand.NextFloat(0.3f);
 
-				//Create a projectile.
+				// Create a projectile.
 				Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
 			}
 

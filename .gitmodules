@@ -1,3 +1,6 @@
 [submodule "setup/PatchReviewer"]
 	path = setup/PatchReviewer
 	url = https://github.com/Chicken-Bones/PatchReviewer.git
+[submodule "FNA"]
+	path = FNA
+	url = https://github.com/FNA-XNA/FNA.git

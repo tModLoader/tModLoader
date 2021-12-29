@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Dusts
 			dust.position += dust.velocity;
 			dust.scale -= 0.01f;
 
-			if (dust.scale < 0.75f) 
+			if (dust.scale < 0.75f)
 				dust.active = false;
 
 			return false;

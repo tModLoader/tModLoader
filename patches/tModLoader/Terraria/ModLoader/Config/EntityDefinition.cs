@@ -9,7 +9,7 @@ using Terraria.ModLoader.IO;
 namespace Terraria.ModLoader.Config
 {
 	/// <summary>
-	/// Classes implementing EntityDefinition serve to function as a way to save and load the identities of various Terraria objects. Only the identity is preserved, no other data such as stack size, damage, etc. These classes are well suited for ModConfig, but can be saved and loaded in a TagCompound as well. 
+	/// Classes implementing EntityDefinition serve to function as a way to save and load the identities of various Terraria objects. Only the identity is preserved, no other data such as stack size, damage, etc. These classes are well suited for ModConfig, but can be saved and loaded in a TagCompound as well.
 	/// </summary>
 	public abstract class EntityDefinition : TagSerializable
 	{
@@ -29,9 +29,9 @@ namespace Terraria.ModLoader.Config
 		}
 
 		public EntityDefinition(string key) {
-			this.mod = "";
-			this.name = "";
-			string[] parts = key.Split(new char[] { ' ' }, 2);
+			this.mod = "Terraria";
+			this.name = key;
+			string[] parts = key.Split('/', 2);
 			if (parts.Length == 2) {
 				mod = parts[0];
 				name = parts[1];
@@ -52,7 +52,8 @@ namespace Terraria.ModLoader.Config
 			return new { mod, name }.GetHashCode();
 		}
 
-		public bool IsUnloaded => Type == 0 && !(mod == "Terraria" && name == "None" || mod == "" && name == "");
+		//Check if the type is invalid and the mod/name pair is NOT vanilla
+		public bool IsUnloaded => Type <= 0 && !(mod == "Terraria" && name == "None" || mod == "" && name == "");
 
 		[JsonIgnore]
 		public abstract int Type { get; }
@@ -82,7 +83,7 @@ namespace Terraria.ModLoader.Config
 		public ItemDefinition(string mod, string name) : base(mod, name) {
 		}
 
-		public override int Type => ItemID.Search.TryGetId($"{mod}/{name}", out int id) ? id : -1;
+		public override int Type => ItemID.Search.TryGetId(mod != "Terraria" ? $"{mod}/{name}" : name, out int id) ? id : -1;
 
 		public static ItemDefinition FromString(string s) => new ItemDefinition(s);
 
@@ -98,7 +99,7 @@ namespace Terraria.ModLoader.Config
 		public ProjectileDefinition(string key) : base(key) { }
 		public ProjectileDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => ProjectileID.Search.GetId($"{mod}/{name}");
+		public override int Type => ProjectileID.Search.TryGetId(mod != "Terraria" ? $"{mod}/{name}" : name, out int id) ? id : -1;
 
 		public static ProjectileDefinition FromString(string s) => new ProjectileDefinition(s);
 
@@ -114,7 +115,7 @@ namespace Terraria.ModLoader.Config
 		public NPCDefinition(string key) : base(key) { }
 		public NPCDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => NPCID.Search.GetId($"{mod}/{name}");
+		public override int Type => NPCID.Search.TryGetId(mod != "Terraria" ? $"{mod}/{name}" : name, out int id) ? id : -1;
 
 		public static NPCDefinition FromString(string s) => new NPCDefinition(s);
 
@@ -130,7 +131,7 @@ namespace Terraria.ModLoader.Config
 		public PrefixDefinition(string key) : base(key) { }
 		public PrefixDefinition(string mod, string name) : base(mod, name) { }
 
-		public override int Type => PrefixID.Search.GetId($"{mod}/{name}");
+		public override int Type => PrefixID.Search.TryGetId(mod != "Terraria" ? $"{mod}/{name}" : name, out int id) ? id : -1;
 
 		public static PrefixDefinition FromString(string s) => new PrefixDefinition(s);
 

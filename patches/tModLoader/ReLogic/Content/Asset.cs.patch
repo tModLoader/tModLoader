@@ -1,0 +1,84 @@
+--- src/Terraria/ReLogic/Content/Asset.cs
++++ src/tModLoader/ReLogic/Content/Asset.cs
+@@ -1,5 +_,7 @@
+ using ReLogic.Content.Sources;
+ using System;
++using System.Threading;
++using System.Threading.Tasks;
+ 
+ namespace ReLogic.Content
+ {
+@@ -7,6 +_,10 @@
+ 	{
+ 		public static readonly Asset<T> Empty = new Asset<T>("");
+ 
++		public static T DefaultValue { get; set; }
++
++		private T ownValue;
++
+ 		public string Name {
+ 			get;
+ 			private set;
+@@ -29,10 +_,12 @@
+ 			private set;
+ 		}
+ 
+-		public T Value {
+-			get;
+-			private set;
+-		}
++		public T Value => IsLoaded ? ownValue : DefaultValue;
++
++		internal Action Continuation { get; set; }
++		Action IAsset.Continuation { set => Continuation = value; }
++
++		public Action Wait { get; internal set; }
+ 
+ 		internal Asset(string name) {
+ 			State = AssetState.NotLoaded;
+@@ -44,9 +_,9 @@
+ 		}
+ 
+ 		internal void Unload() {
+-			(Value as IDisposable)?.Dispose();
++			(ownValue as IDisposable)?.Dispose();
+ 			State = AssetState.NotLoaded;
+-			Value = null;
++			ownValue = null;
+ 			Source = null;
+ 		}
+ 
+@@ -54,13 +_,11 @@
+ 			if (value == null)
+ 				throw new ArgumentNullException("value");
+ 
+-			if (source == null)
+-				throw new ArgumentNullException("source");
+-
+-			(Value as IDisposable)?.Dispose();
++			(ownValue as IDisposable)?.Dispose();
+-			State = AssetState.Loaded;
+-			Value = value;
++			ownValue = value;
+ 			Source = source;
++			Thread.MemoryBarrier();
++			State = AssetState.Loaded;
+ 		}
+ 
+ 		internal void SetToLoadingState() {
+@@ -71,12 +_,12 @@
+ 			if (IsDisposed)
+ 				return;
+ 
+-			if (disposing && Value != null) {
++			if (disposing && ownValue != null) {
+-				IDisposable disposable = Value as IDisposable;
++				IDisposable disposable = ownValue as IDisposable;
+ 				if (IsLoaded)
+ 					disposable?.Dispose();
+ 
+-				Value = null;
++				ownValue = null;
+ 			}
+ 
+ 			IsDisposed = true;

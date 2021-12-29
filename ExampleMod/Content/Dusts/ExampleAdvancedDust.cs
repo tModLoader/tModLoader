@@ -9,7 +9,7 @@ namespace ExampleMod.Content.Dusts
 	internal class ExampleAdvancedDust : ModDust
 	{
 		/*
-			Spawning this dust is a little more involved because we need to assign a rotation, customData, and fix the position. 
+			Spawning this dust is a little more involved because we need to assign a rotation, customData, and fix the position.
 			Position must be fixed here because otherwise the first time the dust is drawn it'll draw in the incorrect place.
 			This dust is not used in ExampleMod yet, so you'll have to add some code somewhere. Try ExamplePlayer.DrawEffects.
 
@@ -46,9 +46,9 @@ namespace ExampleMod.Content.Dusts
 			}
 
 			// Here we make sure to kill any dust that get really small.
-			if (dust.scale < 0.25f) 
+			if (dust.scale < 0.25f)
 				dust.active = false;
-			
+
 			return false;
 		}
 	}

@@ -12,15 +12,17 @@ namespace Terraria
 	{
 		public static readonly Func<TagCompound, Item> DESERIALIZER = ItemIO.Load;
 
+		private int currentUseAnimationCompensation;
+
 		public ModItem ModItem { get; internal set; }
 
 		internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
 
-		public ReadOnlySpan<Instanced<GlobalItem>> Globals => globalItems;
+		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
-		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or ModContent.GetInstance<T>() for custom damage types.
+		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or <see cref="ModContent.GetInstance"/> for custom damage types.
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;
@@ -50,6 +52,12 @@ namespace Terraria
 
 		public TagCompound SerializeData() => ItemIO.Save(this);
 
+		public bool CountsAsClass<T>() where T : DamageClass
+			=> CountsAsClass(ModContent.GetInstance<T>());
+
+		public bool CountsAsClass(DamageClass damageClass)
+			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+
 		internal static void PopulateMaterialCache() {
 			for (int i = 0; i < Recipe.numRecipes; i++) {
 				foreach (Item item in Main.recipe[i].requiredItem) {
@@ -71,10 +79,36 @@ namespace Terraria
 
 		public static int NewItem(Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false, IItemSource source = null)
 			=> NewItem(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup, source);
-		
+
 		public static int NewItem(Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false, IItemSource source = null)
 			=> NewItem((int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup, source);
 
-		public bool CountsAsClass(DamageClass damageClass) => DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+		private void ApplyItemAnimationCompensations() {
+			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
+
+			currentUseAnimationCompensation = 0;
+
+			if (type < ItemID.Count && !noMelee) {
+				useAnimation--;
+				currentUseAnimationCompensation--;
+			}
+		}
+
+		private void UndoItemAnimationCompensations() {
+			useAnimation -= currentUseAnimationCompensation;
+			currentUseAnimationCompensation = 0;
+		}
+
+		// Internal utility method. Move somewhere, if there's a better place.
+		internal static void DropItem(Item item, Rectangle rectangle) {
+			int droppedItemId = NewItem(rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
+			var droppedItem = Main.item[droppedItemId];
+
+			droppedItem.ModItem = item.ModItem;
+			droppedItem.globalItems = item.globalItems;
+
+			if (Main.netMode == NetmodeID.Server)
+				NetMessage.SendData(21, -1, -1, null, droppedItemId);
+		}
 	}
 }

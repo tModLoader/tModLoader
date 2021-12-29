@@ -18,11 +18,13 @@ namespace Terraria.ModLoader
 			NPCLoader.VerifyGlobalNPC(this);
 
 			ModTypeLookup<GlobalNPC>.Register(this);
-			
+
 			index = (ushort)NPCLoader.globalNPCs.Count;
 
 			NPCLoader.globalNPCs.Add(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
@@ -36,7 +38,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to set the properties of any and every NPC that gets created.
 		/// </summary>
-		/// <param name="npc"></param>
 		public virtual void SetDefaults(NPC npc) {
 		}
 
@@ -103,7 +104,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life <= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="hitDirection"></param>
@@ -161,13 +162,13 @@ namespace Terraria.ModLoader
 		public virtual void OnKill(NPC npc) {
 		}
 
-        /// <summary>
-        /// Allows you to make things happen when an NPC is caught. Ran Serverside.
-        /// </summary>
-        /// <param name="npc">The caught NPC</param>
-        /// <param name="player">The player catching the NPC</param>
-        /// <param name="item">The item that will be spawned</param>
-        public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
+		/// <summary>
+		/// Allows you to make things happen when an NPC is caught. Ran Serverside.
+		/// </summary>
+		/// <param name="npc">The caught NPC</param>
+		/// <param name="player">The player catching the NPC</param>
+		/// <param name="item">The item that will be spawned</param>
+		public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
 		}
 
 		/// <summary>
@@ -373,23 +374,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind an NPC, or to modify the way the NPC is drawn. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
+		/// Allows you to draw things behind an NPC, or to modify the way the NPC is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
 		/// </summary>
-		/// <param name="npc"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="drawColor"></param>
+		/// <param name="npc">The NPC that is being drawn</param>
+		/// <param name="spriteBatch">The spritebatch to draw on</param>
+		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
+		/// <param name="drawColor">The color the NPC is drawn in</param>
 		/// <returns></returns>
-		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+		public virtual bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of this NPC. This method is called even if PreDraw returns false.
+		/// Allows you to draw things in front of this NPC. Substract screenPos from the draw position before drawing. This method is called even if PreDraw returns false.
 		/// </summary>
-		/// <param name="npc"></param>
-		/// <param name="spriteBatch"></param>
-		/// <param name="drawColor"></param>
-		public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+		/// <param name="npc">The NPC that is being drawn</param>
+		/// <param name="spriteBatch">The spritebatch to draw on</param>
+		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
+		/// <param name="drawColor">The color the NPC is drawn in</param>
+		public virtual void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		}
 
 		/// <summary>

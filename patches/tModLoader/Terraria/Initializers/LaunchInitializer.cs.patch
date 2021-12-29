@@ -57,7 +57,7 @@
  
 +			string publish;
 +			if ((publish = LaunchInitializer.TryParameter("-publish")) != null) {
-+				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish, TryParameter("-passphrase"), TryParameter("-steamid64"));
++				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish);
 +				// Application Exits
 +			}
 +

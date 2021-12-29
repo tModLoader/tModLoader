@@ -6,11 +6,11 @@ using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
 {
-	public class UnloadedChest : UnloadedTile {
-
+	public class UnloadedChest : UnloadedTile
+	{
 		public override string Texture => "ModLoader/UnloadedChest";
 
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			TileIO.Tiles.unloadedTypes.Add(Type);
 
 			//common
@@ -24,7 +24,7 @@ namespace Terraria.ModLoader.Default
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2); // Disables hammering
 			TileObjectData.addTile(Type);
-				
+
 			Main.tileSpelunker[Type] = true;
 			Main.tileContainer[Type] = true;
 			Main.tileShine2[Type] = true;

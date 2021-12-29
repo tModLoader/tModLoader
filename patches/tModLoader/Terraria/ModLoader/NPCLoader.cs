@@ -16,6 +16,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.GameContent.ItemDropRules;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalNPC>;
+using Terraria.ModLoader.Utilities;
 
 namespace Terraria.ModLoader
 {
@@ -76,6 +77,9 @@ namespace Terraria.ModLoader
 			shopToNPC[19] = NPCID.TravellingMerchant;
 			shopToNPC[20] = NPCID.SkeletonMerchant;
 			shopToNPC[21] = NPCID.DD2Bartender;
+			shopToNPC[22] = NPCID.Golfer;
+			shopToNPC[23] = NPCID.BestiaryGirl;
+			shopToNPC[24] = NPCID.Princess;
 		}
 
 		internal static int ReserveNPCID() {
@@ -202,7 +206,7 @@ namespace Terraria.ModLoader
 			if(IsModNPC(npc)) {
 				bestiaryEntry.Info.Add(npc.ModNPC.Mod.ModSourceBestiaryInfoElement);
 				foreach (var type in npc.ModNPC.SpawnModBiomes) {
-					bestiaryEntry.Info.Add(Loaders.Biomes.Get(type).ModBiomeBestiaryInfoElement);
+					bestiaryEntry.Info.Add(LoaderManager.Get<BiomeLoader>().Get(type).ModBiomeBestiaryInfoElement);
 				}
 			}
 
@@ -272,34 +276,41 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static void SendExtraAI(NPC npc, BinaryWriter writer) {
-			if (npc.ModNPC != null) {
-				byte[] data;
-				using (MemoryStream stream = new MemoryStream()) {
-					using (BinaryWriter modWriter = new BinaryWriter(stream)) {
-						npc.ModNPC.SendExtraAI(modWriter);
-						modWriter.Flush();
-						data = stream.ToArray();
-					}
-				}
-				writer.Write((byte)data.Length);
-				if (data.Length > 0) {
-					writer.Write(data);
-				}
+		public static void SendExtraAI(BinaryWriter writer, byte[] extraAI) {
+			writer.Write7BitEncodedInt(extraAI.Length);
+
+			if (extraAI.Length > 0) {
+				writer.Write(extraAI);
 			}
 		}
 
-		public static void ReceiveExtraAI(NPC npc, BinaryReader reader) {
-			if (npc.ModNPC != null) {
-				byte[] extraAI = reader.ReadBytes(reader.ReadByte());
-				if (extraAI.Length > 0) {
-					using (MemoryStream stream = new MemoryStream(extraAI)) {
-						using (BinaryReader modReader = new BinaryReader(stream)) {
-							npc.ModNPC.ReceiveExtraAI(modReader);
-						}
-					}
-				}
+		public static byte[] WriteExtraAI(NPC npc) {
+			if (npc.ModNPC == null) {
+				return Array.Empty<byte>();
 			}
+
+			using var stream = new MemoryStream();
+			using var modWriter = new BinaryWriter(stream);
+
+			npc.ModNPC.SendExtraAI(modWriter);
+			modWriter.Flush();
+
+			return stream.ToArray();
+		}
+
+		public static byte[] ReadExtraAI(BinaryReader reader) {
+			return reader.ReadBytes(reader.Read7BitEncodedInt());
+		}
+
+		public static void ReceiveExtraAI(NPC npc, byte[] extraAI) {
+			if (npc.ModNPC == null) {
+				return;
+			}
+
+			using var stream = new MemoryStream(extraAI);
+			using var modReader = new BinaryReader(stream);
+
+			npc.ModNPC.ReceiveExtraAI(modReader);
 		}
 
 		private static HookList HookFindFrame = AddHook<Action<NPC, int>>(g => g.FindFrame);
@@ -412,7 +423,7 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookOnKill.Enumerate(npc.globalNPCs)) {
 				g.OnKill(npc);
 			}
-			
+
 			blockLoot.Clear();
 		}
 
@@ -528,7 +539,7 @@ namespace Terraria.ModLoader
 
 		public static void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit) {
 			npc.ModNPC?.OnHitNPC(target, damage, knockback, crit);
-			
+
 			foreach (GlobalNPC g in HookOnHitNPC.Enumerate(npc.globalNPCs)) {
 				g.OnHitNPC(npc, target, damage, knockback, crit);
 			}
@@ -705,26 +716,28 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookPreDraw = AddHook<Func<NPC, SpriteBatch, Color, bool>>(g => g.PreDraw);
+		private delegate bool DelegatePreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+		private static HookList HookPreDraw = AddHook<DelegatePreDraw>(g => g.PreDraw);
 
-		public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
+		public static bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 			bool result = true;
 			foreach (GlobalNPC g in HookPreDraw.Enumerate(npc.globalNPCs)) {
-				result &= g.PreDraw(npc, spriteBatch, drawColor);
+				result &= g.PreDraw(npc, spriteBatch, screenPos, drawColor);
 			}
 			if (result && npc.ModNPC != null) {
-				return npc.ModNPC.PreDraw(spriteBatch, drawColor);
+				return npc.ModNPC.PreDraw(spriteBatch, screenPos, drawColor);
 			}
 			return result;
 		}
 
-		private static HookList HookPostDraw = AddHook<Action<NPC, SpriteBatch, Color>>(g => g.PostDraw);
+		private delegate void DelegatePostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+		private static HookList HookPostDraw = AddHook<DelegatePostDraw>(g => g.PostDraw);
 
-		public static void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
-			npc.ModNPC?.PostDraw(spriteBatch, drawColor);
+		public static void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+			npc.ModNPC?.PostDraw(spriteBatch, screenPos, drawColor);
 
 			foreach (GlobalNPC g in HookPostDraw.Enumerate(npc.globalNPCs)) {
-				g.PostDraw(npc, spriteBatch, drawColor);
+				g.PostDraw(npc, spriteBatch, screenPos, drawColor);
 			}
 		}
 
@@ -801,6 +814,7 @@ namespace Terraria.ModLoader
 		public static int? ChooseSpawn(NPCSpawnInfo spawnInfo) {
 			NPCSpawnHelper.Reset();
 			NPCSpawnHelper.DoChecks(spawnInfo);
+
 			IDictionary<int, float> pool = new Dictionary<int, float>();
 			pool[0] = 1f;
 			foreach (ModNPC npc in npcs) {
@@ -850,7 +864,7 @@ namespace Terraria.ModLoader
 
 				if (npc.townNPC && NPC.TypeToDefaultHeadIndex(npc.type) >= 0 && !NPC.AnyNPCs(npc.type) &&
 					modNPC.CanTownNPCSpawn(numTownNPCs, money)) {
-					
+
 					Main.townNPCCanSpawn[npc.type] = true;
 
 					if (WorldGen.prioritizedTownNPCType == 0) {
@@ -1129,10 +1143,6 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookDrawTownAttackSwing.Enumerate(npc.globalNPCs)) {
 				g.DrawTownAttackSwing(npc, ref item, ref itemSize, ref scale, ref offset);
 			}
-		}
-
-		private static bool HasMethod(Type t, string method, params Type[] args) {
-			return t.GetMethod(method, args).DeclaringType != typeof(GlobalNPC);
 		}
 
 		internal static void VerifyGlobalNPC(GlobalNPC npc) {
