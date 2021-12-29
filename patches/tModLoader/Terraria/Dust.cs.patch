@@ -13,16 +13,27 @@
  
  namespace Terraria
  {
-@@ -29,9 +_,10 @@
+@@ -29,9 +_,21 @@
  		public ArmorShaderData shader;
  		public object customData;
  		public bool firstFrame;
 +		internal int realType = -1;
++
++		// Source-less overloads for vanilla
++		internal static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
++			=> NewDustPerfect(null, Position, Type, Velocity, Alpha, newColor, Scale);
++
++		internal static Dust NewDustDirect(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
++			=> NewDustDirect(null, Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale);
++
++		internal static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
++			=> NewDust(null, Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale);
  
++		// Actual API methods
 -		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
-+		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f, IDustSource source = null) {
++		public static Dust NewDustPerfect(IDustSource source, Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
 -			Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
-+			Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale, source)];
++			Dust dust = Main.dust[NewDust(source, Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
  			dust.position = Position;
  			if (Velocity.HasValue)
  				dust.velocity = Velocity.Value;
@@ -31,9 +42,9 @@
  		}
  
 -		public static Dust NewDustDirect(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
-+		public static Dust NewDustDirect(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f, IDustSource source = null) {
++		public static Dust NewDustDirect(IDustSource source, Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
 -			Dust dust = Main.dust[NewDust(Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale)];
-+			Dust dust = Main.dust[NewDust(Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale, source)];
++			Dust dust = Main.dust[NewDust(source, Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale)];
  			if (dust.velocity.HasNaNs())
  				dust.velocity = Vector2.Zero;
  
@@ -41,7 +52,7 @@
  		}
  
 -		public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
-+		public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f, IDustSource source = null) {
++		public static int NewDust(IDustSource source, Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
  			if (Main.gameMenu)
  				return 6000;
  

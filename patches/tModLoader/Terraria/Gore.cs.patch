@@ -32,24 +32,36 @@
  		}
  
  		private void Gore_UpdateLeaf() {
-@@ -989,16 +_,16 @@
+@@ -989,16 +_,28 @@
  				alpha++;
  		}
  
++		// Source-less overloads for vanilla
++		internal static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++			=> NewGorePerfect(null, Position, Velocity, Type, Scale);
++
++		internal static Gore NewGoreDirect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++			=> NewGoreDirect(null, Position, Velocity, Type, Scale);
++
++		internal static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++			=> NewGore(null, Position, Velocity, Type, Scale);
++
++		// Actual API methods
 -		public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
-+		public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f, IGoreSource source = null) {
++		public static Gore NewGorePerfect(IGoreSource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
 -			Gore gore = NewGoreDirect(Position, Velocity, Type, Scale);
-+			Gore gore = NewGoreDirect(Position, Velocity, Type, Scale, source);
++			Gore gore = NewGoreDirect(source, Position, Velocity, Type, Scale);
  			gore.position = Position;
  			gore.velocity = Velocity;
  			return gore;
  		}
  
 -		public static Gore NewGoreDirect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) => Main.gore[NewGore(Position, Velocity, Type, Scale)];
-+		public static Gore NewGoreDirect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f, IGoreSource source = null) => Main.gore[NewGore(Position, Velocity, Type, Scale, source)];
++		public static Gore NewGoreDirect(IGoreSource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++			=> Main.gore[NewGore(source, Position, Velocity, Type, Scale)];
  
 -		public static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
-+		public static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f, IGoreSource source = null) {
++		public static int NewGore(IGoreSource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
  			if (Main.netMode == 2)
  				return 600;
  
