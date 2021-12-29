@@ -1,7 +1,6 @@
 using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -56,16 +55,12 @@ namespace ExampleMod.Content.Items.Weapons
 			return new Vector2(2f, -2f);
 		}
 
-		// Every 3rd projectile this gun shoots will be an ExampleInstancedProjectile
-		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			if (Main.rand.NextBool(3))
-			{
-				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ExampleInstancedProjectile>(), damage, knockback, player.whoAmI);
-
-				return false;
+		//TODO: Move this to a more specifically named example. Say, a paint gun?
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			// Every projectile shot from this gun has a 1/3 chance of being an ExampleInstancedProjectile
+			if (Main.rand.NextBool(3)) {
+				type = ModContent.ProjectileType<ExampleInstancedProjectile>();
 			}
-			
-			return true;
 		}
 
 		/*
