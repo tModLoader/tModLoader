@@ -45,7 +45,7 @@ namespace ExampleMod.Common.Players
 				}
 			}
 			/*In this example, we make sure that we got a Ladybug as bait, and later on use that to determine what we catch*/
-			if(attempt.playerFishingConditions.BaitItemType == ItemID.LadyBug) {
+			if (attempt.playerFishingConditions.BaitItemType == ItemID.LadyBug) {
 				fishingWithLadybug = true;
 			}
 		}
@@ -54,8 +54,12 @@ namespace ExampleMod.Common.Players
 			if (bait.type == ItemID.LadyBug) {
 				fishingWithLadybug = true;
 			}
+			//Player.GetFishingConditions() returns you the best fishing pole Item, type and power, the best bait Item, type and Power, and the total fishing level, including modded values
+			//These are the same Pole and Bait the game considers when calculating the obtained fish.
+			//during WillConsumeBait, Player.GetFishingConditions() == attempt.playerFishingConditions from CatchFish.
+			PlayerFishingConditions conditions = Player.GetFishingConditions();
 			//The golden fishing rod will never consume a ladybug
-			if((fishingWithLadybug || Player.GetFishingConditions().BaitItemType == ItemID.GoldLadyBug) && Player.GetFishingConditions().Pole.type == ItemID.GoldenFishingRod) {
+			if ((fishingWithLadybug || conditions.BaitItemType == ItemID.GoldLadyBug) && conditions.Pole.type == ItemID.GoldenFishingRod) {
 				return false;
 			}
 			return base.WillConsumeBait(bait);
@@ -66,8 +70,6 @@ namespace ExampleMod.Common.Players
 			if (fishingWithLadybug && fish.rare != ItemRarityID.Quest) {
 				fish.stack += Main.rand.Next(1, 4);
 			}
-			return;
 		}
-
 	}
 }
