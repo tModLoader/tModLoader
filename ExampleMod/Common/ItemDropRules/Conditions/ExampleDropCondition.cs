@@ -5,17 +5,17 @@ namespace ExampleMod.Common.ItemDropRules.Conditions
 {
 	// Drop condition where items drop only on Journey mode.
 	public class ExampleDropCondition : IItemDropRuleCondition
+	{
+		public bool CanDrop(DropAttemptInfo info)
 		{
-			public bool CanDrop(DropAttemptInfo info)
+			if (!info.IsInSimulation)
 			{
-				if (!info.IsInSimulation)
-				{
-					return Main.dayTime;
-				}
-				return false;
+				return Main.dayTime;
 			}
+			return false;
+		}
 
-			public bool CanShowItemDropInUI() {
+		public bool CanShowItemDropInUI() {
 			return true;
 		}
 
