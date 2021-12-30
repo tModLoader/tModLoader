@@ -26,6 +26,11 @@ namespace ExampleMod.Common.GlobalNPCs
 				// ItemDropRule.Common(...) does not let you specify the numerator, so you can use new CommonDrop(...) instead.
 				// (1 by default if using ItemDropRule.Common)
 				// For example, if you had a chanceDenominator as 7 and a chanceNumerator as 2, then the chance the item would drop is 2/7 or about 28%.
+				IItemDropRule rule = new CommonDrop(ModContent.ItemType<ExampleResearchPresent>(), 7, 1, chanceNumerator:2);
+				ExampleModeDropCondition exampleDropCondition = new ExampleModeDropCondition();
+				IItemDropRule conditionalRule = new LeadingConditionRule(exampleDropCondition);
+				conditionalRule.OnSuccess(rule);
+				npcLoot.Add(conditionalRule);
 			}
 
 			// We will now use the Guide to explain many of the other types of drop rules.

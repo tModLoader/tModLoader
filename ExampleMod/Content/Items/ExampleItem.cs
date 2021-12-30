@@ -1,6 +1,10 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ExampleMod.Content.Items.Placeable;
+using ExampleMod.Content.Items.Placeable.Furniture;
+using Terraria.Net;
+using Terraria.GameContent.NetModules;
 using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items
@@ -26,6 +30,16 @@ namespace ExampleMod.Content.Items
 				.AddIngredient(ItemID.DirtBlock, 10)
 				.AddTile(TileID.WorkBenches)
 				.Register();
+		}
+
+		/*Researching the Example item will give you immediate access to the torch, block, wall and workbench!*/
+		public override void OnResearched(bool fullyResearched) {
+			if (fullyResearched) {
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleTorch>());
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleBlock>());
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleWall>());
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleWorkbench>());
+			}
 		}
 	}
 }

@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/Creative/CreativeUI.cs
 +++ src/tModLoader/Terraria/GameContent/Creative/CreativeUI.cs
-@@ -8,6 +_,7 @@
+@@ -8,13 +_,14 @@
  using Terraria.GameContent.UI.Elements;
  using Terraria.GameContent.UI.States;
  using Terraria.Localization;
@@ -8,17 +8,42 @@
  using Terraria.Net;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
-@@ -197,15 +_,20 @@
+ 
+ namespace Terraria.GameContent.Creative
+ {
+-	public class CreativeUI
++	public partial class CreativeUI
+ 	{
+ 		public enum ItemSacrificeResult
+ 		{
+@@ -194,18 +_,36 @@
+ 		}
+ 
+ 		public ItemSacrificeResult SacrificeItem(out int amountWeSacrificed) {
++			ItemSacrificeResult res = SacrificeItem(_itemSlotsForUI[0], out amountWeSacrificed);
++			if (res == ItemSacrificeResult.CannotSacrifice)
++				return res;
++			if (_itemSlotsForUI[0].stack > 0) {
++				_itemSlotsForUI[0].position.X = Main.player[Main.myPlayer].Center.X - (float)(_itemSlotsForUI[0].width / 2);
++				_itemSlotsForUI[0].position.Y = Main.player[Main.myPlayer].Center.Y - (float)(_itemSlotsForUI[0].height / 2);
++				_itemSlotsForUI[0] = Main.LocalPlayer.GetItem(Main.myPlayer, _itemSlotsForUI[0], GetItemSettings.InventoryUIToInventorySettings);
++			}
++			return res;
++		}
++		//allows to sacrifice any item without needing to go through the ui
++		public ItemSacrificeResult SacrificeItem(Item toSacrifice, out int amountWeSacrificed){
  			int amountNeeded = 0;
  			amountWeSacrificed = 0;
- 			Item item = _itemSlotsForUI[0];
+-			Item item = _itemSlotsForUI[0];
 -			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded))
++			Item item = toSacrifice;
 +			bool? canSacrifice = ItemLoader.CanResearch(item);
 +			if (canSacrifice != null && canSacrifice.Value == false)
  				return ItemSacrificeResult.CannotSacrifice;
  
 +			int num = 0;
-+			if (canSacrifice == null && !CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded))
++			bool couldGetAmount = !CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded);
++			if(canSacrifice == null && couldGetAmount)
 +				return ItemSacrificeResult.CannotSacrifice;
 +		
  			int value = 0;
@@ -34,7 +59,7 @@
  			int num2 = Math.Min(num, item.stack);
  			if (!Main.ServerSideCharacter) {
  				Main.LocalPlayerCreativeTracker.ItemSacrifices.RegisterItemSacrifice(item.type, num2);
-@@ -216,6 +_,7 @@
+@@ -216,17 +_,13 @@
  			}
  
  			bool num3 = num2 == num;
@@ -42,3 +67,14 @@
  			item.stack -= num2;
  			if (item.stack <= 0)
  				item.TurnToAir();
+ 
+ 			amountWeSacrificed = num2;
+ 			RefreshAvailableInfiniteItemsList();
+-			if (item.stack > 0) {
+-				item.position.X = Main.player[Main.myPlayer].Center.X - (float)(item.width / 2);
+-				item.position.Y = Main.player[Main.myPlayer].Center.Y - (float)(item.height / 2);
+-				_itemSlotsForUI[0] = Main.LocalPlayer.GetItem(Main.myPlayer, item, GetItemSettings.InventoryUIToInventorySettings);
+-			}
+ 
+ 			if (!num3)
+ 				return ItemSacrificeResult.SacrificedButNotDone;
