@@ -9,6 +9,8 @@ using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.Social.Base;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader.Core
 {
@@ -23,33 +25,62 @@ namespace Terraria.ModLoader.Core
 		private static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
 		private static List<string> readFailures = new List<string>(); // TODO: Reflect these skipped Mods in the UI somehow.
 
+		private static WorkshopHelper.UGCBased.Downloader WorkshopFileFinder = new WorkshopHelper.UGCBased.Downloader();
+
 		internal static LocalMod[] FindMods() {
 			Directory.CreateDirectory(ModLoader.ModPath);
 			var mods = new List<LocalMod>();
+			var names = new HashSet<string>();
+			List<string> modRepos = new List<string>();
 
 			DeleteTemporaryFiles();
 
-			foreach (string fileName in Directory.GetFiles(ModLoader.ModPath, "*.tmod", SearchOption.TopDirectoryOnly)) {
-				var lastModified = File.GetLastWriteTime(fileName);
-				if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
-					try {
-						var modFile = new TmodFile(fileName);
-						using (modFile.Open())
-							mod = new LocalMod(modFile) { lastModified = lastModified };
-					}
-					catch (Exception e) {
-						if (!readFailures.Contains(fileName)) {
-							Logging.tML.Warn("Failed to read " + fileName, e);
+			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
+
+			// Prioritize loading Mods from Mods folder for Dev/Beta simplicitiy.
+			modRepos.Add(ModLoader.ModPath);
+
+			// Load Mods from Workshop downloads
+			modRepos.AddRange(WorkshopFileFinder.ModPaths);
+
+			foreach (string repo in modRepos) {
+				foreach (string fileName in Directory.GetFiles(repo, "*.tmod", SearchOption.TopDirectoryOnly)) {
+					var lastModified = File.GetLastWriteTime(fileName);
+
+					if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
+						try {
+							var modFile = new TmodFile(fileName);
+
+							using (modFile.Open()) {
+								mod = new LocalMod(modFile) {
+									lastModified = lastModified
+								};
+							}
 						}
-						else {
-							readFailures.Add(fileName);
+						catch (Exception e) {
+							if (!readFailures.Contains(fileName)) {
+								Logging.tML.Warn("Failed to read " + fileName, e);
+							}
+							else {
+								readFailures.Add(fileName);
+							}
+
+							continue;
 						}
-						continue;
+
+						modsDirCache[fileName] = mod;
 					}
-					modsDirCache[fileName] = mod;
+
+					// Ignore it from Workshop if it appeared in Mods folder/already exists.
+					if (names.Add(mod.Name)) {
+						mods.Add(mod);
+					}
+					else {
+						Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
+					}
 				}
-				mods.Add(mod);
 			}
+
 			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
 		}
 
@@ -82,7 +113,7 @@ namespace Terraria.ModLoader.Core
 			//}
 			Interface.loadMods.SetLoadStage("tModLoader.MSFinding");
 			var modsToLoad = FindMods().Where(mod => ModLoader.IsEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
-			
+
 			// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.
 			if (Main.instance.IsActive && Main.oldKeyState.PressingShift() || ModLoader.skipLoad || token.IsCancellationRequested) {
 				ModLoader.skipLoad = false;

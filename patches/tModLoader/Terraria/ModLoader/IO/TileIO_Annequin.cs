@@ -49,7 +49,6 @@ namespace Terraria.ModLoader.IO
 			ISet<int> headSlots = new HashSet<int>();
 			ISet<int> bodySlots = new HashSet<int>();
 			ISet<int> legSlots = new HashSet<int>();
-			IDictionary<int, int> itemFrames = new Dictionary<int, int>();
 			for (int i = 0; i < Main.maxTilesX; i++) {
 				for (int j = 0; j < Main.maxTilesY; j++) {
 					Tile tile = Main.tile[i, j];
@@ -72,17 +71,25 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 			}
+
 			int tileEntity = 0;
+			List<TagCompound> itemFrames = new List<TagCompound>();
 			foreach (KeyValuePair<int, TileEntity> entity in TileEntity.ByID) {
-				TEItemFrame itemFrame = entity.Value as TEItemFrame;
-				if (itemFrame != null && ItemLoader.NeedsModSaving(itemFrame.item)) {
-					itemFrames.Add(itemFrame.ID, tileEntity);
-					//flags[0] |= 2; legacy
-					numFlags = 1;
+				if (entity.Value is TEItemFrame itemFrame) {
+					var globalData = ItemIO.SaveGlobals(itemFrame.item);
+					if (globalData != null || ItemLoader.NeedsModSaving(itemFrame.item)) {
+						itemFrames.Add(new TagCompound {
+							["id"] = tileEntity,
+							["item"] = ItemIO.Save(itemFrame.item, globalData)
+						});
+						//flags[0] |= 2; legacy
+						numFlags = 1;
+					}
 				}
 				if(!(entity.Value is ModTileEntity))
 					tileEntity++;
 			}
+
 			if (numFlags == 0) {
 				return null;
 			}
@@ -116,12 +123,7 @@ namespace Terraria.ModLoader.IO
 			tag.Set("data", ms.ToArray());
 
 			if (itemFrames.Count > 0) {
-				tag.Set("itemFrames", itemFrames.Select(entry =>
-					new TagCompound {
-						["id"] = entry.Value,
-						["item"] = ItemIO.Save(((TEItemFrame)TileEntity.ByID[entry.Key]).item)
-					}
-				).ToList());
+				tag.Set("itemFrames", itemFrames);
 			}
 			return tag;
 		}

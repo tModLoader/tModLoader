@@ -3,7 +3,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Packaging;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -91,6 +90,8 @@ namespace Terraria.ModLoader.Core
 				return stream.ReadBytes(entry.Length);
 		}
 
+		public List<string> GetFileNames() => files.Keys.ToList();
+
 		public byte[] GetBytes(string fileName) => files.TryGetValue(Sanitize(fileName), out var entry) ? GetBytes(entry) : null;
 
 		public Stream GetStream(FileEntry entry, bool newFileStream = false) {
@@ -103,7 +104,9 @@ namespace Terraria.ModLoader.Core
 			}
 			else if (newFileStream) {
 				var ers = new EntryReadStream(this, entry, File.OpenRead(path), false);
-				independentEntryReadStreams.Add(ers);
+				lock (independentEntryReadStreams) { // todo, make this a set? maybe?
+					independentEntryReadStreams.Add(ers);
+				}
 				stream = ers;
 			}
 			else if (sharedEntryReadStream != null) {
@@ -120,10 +123,15 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal void OnStreamClosed(EntryReadStream stream) {
-			if (stream == sharedEntryReadStream)
+			if (stream == sharedEntryReadStream) {
 				sharedEntryReadStream = null;
-			else if (!independentEntryReadStreams.Remove(stream))
-				throw new IOException($"Closed EntryReadStream not associated with this file. {stream.Name} @ {path}");
+			}
+			else {
+				lock (independentEntryReadStreams) {
+					if (!independentEntryReadStreams.Remove(stream))
+						throw new IOException($"Closed EntryReadStream not associated with this file. {stream.Name} @ {path}");
+				}
+			}
 		}
 
 		public Stream GetStream(string fileName, bool newFileStream = false) {
@@ -184,6 +192,7 @@ namespace Terraria.ModLoader.Core
 			// signature
 			// data length
 			// signed data
+			Directory.CreateDirectory(Path.GetDirectoryName(path));
 			using (fileStream = File.Create(path))
 			using (var writer = new BinaryWriter(fileStream)) {
 				writer.Write(Encoding.ASCII.GetBytes("TMOD"));

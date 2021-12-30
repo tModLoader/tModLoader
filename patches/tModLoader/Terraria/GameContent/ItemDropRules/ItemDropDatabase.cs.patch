@@ -36,7 +36,7 @@
  			TrimDuplicateRulesForNegativeIDs();
  		}
  
-@@ -593,6 +_,7 @@
+@@ -607,6 +_,7 @@
  			RegisterToGlobal(new ItemDropWithConditionRule(520, 5, 1, 1, new Conditions.SoulOfLight()));
  			RegisterToGlobal(new ItemDropWithConditionRule(521, 5, 1, 1, new Conditions.SoulOfNight()));
  			RegisterToGlobal(ItemDropRule.ByCondition(new Conditions.PirateMap(), 1315, 100));

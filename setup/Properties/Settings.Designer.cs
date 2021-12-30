@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.1.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,13 +25,13 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Terraria")]
-        public string SteamDir {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TerrariaSteamDir {
             get {
-                return ((string)(this["SteamDir"]));
+                return ((string)(this["TerrariaSteamDir"]));
             }
             set {
-                this["SteamDir"] = value;
+                this["TerrariaSteamDir"] = value;
             }
         }
         
@@ -61,7 +61,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.4.2.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.4.3.2")]
         public string ClientVersion {
             get {
                 return ((string)(this["ClientVersion"]));
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.4.2.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.4.3.2")]
         public string ServerVersion {
             get {
                 return ((string)(this["ServerVersion"]));
@@ -103,7 +103,7 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ff61b96a07894a9e65f880fb9608fb37")]
+        [global::System.Configuration.DefaultSettingValueAttribute("6352ded8d64d0f67fdf10ff2a6f9e51f")]
         public string GoGClientWinMD5 {
             get {
                 return ((string)(this["GoGClientWinMD5"]));
@@ -112,19 +112,19 @@ namespace Terraria.ModLoader.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Steam\\steamapps\\common\\tModLoaderDev")]
-        public string TMLSteamDir {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TMLDevSteamDir {
             get {
-                return ((string)(this["TMLSteamDir"]));
+                return ((string)(this["TMLDevSteamDir"]));
             }
             set {
-                this["TMLSteamDir"] = value;
+                this["TMLDevSteamDir"] = value;
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6ebb2e222126aaae302d34a3a2c82cb9")]
+        [global::System.Configuration.DefaultSettingValueAttribute("201707bba92e27f09d05529e2f051c60")]
         public string SteamClientWinMD5 {
             get {
                 return ((string)(this["SteamClientWinMD5"]));

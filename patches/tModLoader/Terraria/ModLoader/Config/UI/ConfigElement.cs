@@ -59,7 +59,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		/// <summary>
-		/// Bind must always be called after the ctor and serves to facilitate a convenient inheritance workflow for custom ConfigElemets from mods. 
+		/// Bind must always be called after the ctor and serves to facilitate a convenient inheritance workflow for custom ConfigElemets from mods.
 		/// </summary>
 		public void Bind(PropertyFieldWrapper memberInfo, object item, IList array, int index) {
 			this.memberInfo = memberInfo;

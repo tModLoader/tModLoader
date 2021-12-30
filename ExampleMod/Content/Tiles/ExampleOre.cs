@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ExampleOre : ModTile
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			TileID.Sets.Ore[Type] = true;
 			Main.tileSpelunker[Type] = true; // The tile will be affected by spelunker highlighting
 			Main.tileOreFinderPriority[Type] = 410; // Metal Detector value, see https://terraria.gamepedia.com/Metal_Detector
@@ -28,8 +28,8 @@ namespace ExampleMod.Content.Tiles
 			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleOre>();
 			SoundType = SoundID.Tink;
 			SoundStyle = 1;
-			//mineResist = 4f;
-			//minPick = 200;
+			// mineResist = 4f;
+			// minPick = 200;
 		}
 	}
 
@@ -43,7 +43,7 @@ namespace ExampleMod.Content.Tiles
 			int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Shinies"));
 
 			if (ShiniesIndex != -1) {
-				// Next, we insert our pass directly after the original "Shinies" pass. 
+				// Next, we insert our pass directly after the original "Shinies" pass.
 				// ExampleOrePass is a class seen bellow
 				tasks.Insert(ShiniesIndex + 1, new ExampleOrePass("Example Mod Ores", 237.4298f));
 			}
@@ -57,7 +57,7 @@ namespace ExampleMod.Content.Tiles
 
 		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
 			// progress.Message is the message shown to the user while the following code is running.
-			// Try to make your message clear. You can be a little bit clever, but make sure it is descriptive enough for troubleshooting purposes. 
+			// Try to make your message clear. You can be a little bit clever, but make sure it is descriptive enough for troubleshooting purposes.
 			progress.Message = "Example Mod Ores";
 
 			// Ores are quite simple, we simply use a for loop and the WorldGen.TileRunner to place splotches of the specified Tile in the world.

@@ -12,8 +12,32 @@
  					_currentPriceAdjustment *= 0.95f;
  				}
  
--				bool[] array = new bool[667];
+-				bool[] array = new bool[670];
 +				bool[] array = new bool[NPCLoader.NPCCount];
  				foreach (NPC item in nearbyResidentNPCs) {
  					array[item.type] = true;
  				}
+@@ -182,7 +_,13 @@
+ 					break;
+ 			}
+ 
+-			return Language.GetTextValue("TownNPCMoodBiomes." + text);
++			string result = Language.GetTextValue("TownNPCMoodBiomes." + text);
++			if (biomeID >= BiomeLoader.VanillaPrimaryBiomeCount) {
++				string key = LoaderManager.Get<BiomeLoader>().Get(biomeID).DisplayName.Key;
++				result = Language.GetTextValue(key);
++			}
++
++			return result;
+ 		}
+ 
+ 		private void AddHappinessReportText(string textKeyInCategory, object substitutes = null) {
+@@ -354,7 +_,7 @@
+ 
+ 		private bool IsNotReallyTownNPC(NPC npc) {
+ 			int type = npc.type;
+-			if (type == 37 || type == 368 || type == 453)
++			if (type == 37 || type == 368 || NPCID.Sets.ActsLikeTownNPC[type])
+ 				return true;
+ 
+ 			return false;

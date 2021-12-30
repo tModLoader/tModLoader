@@ -12,13 +12,13 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleDoorOpen : ModTile
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// Properties
 			Main.tileFrameImportant[Type] = true;
 			Main.tileSolid[Type] = false;
 			Main.tileLavaDeath[Type] = true;
 			Main.tileNoSunLight[Type] = true;
-			TileID.Sets.HousingWalls[Type] = true; //needed for non-solid blocks to count as walls
+			TileID.Sets.HousingWalls[Type] = true; // needed for non-solid blocks to count as walls
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 

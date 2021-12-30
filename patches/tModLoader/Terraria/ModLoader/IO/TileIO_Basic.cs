@@ -5,7 +5,8 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.IO
 {
-	internal static partial class TileIO {
+	internal static partial class TileIO
+	{
 		public abstract class IOImpl<TBlock, TEntry> where TBlock : ModBlockType where TEntry : ModEntry
 		{
 			public readonly string entriesKey;
@@ -72,6 +73,10 @@ namespace Terraria.ModLoader.IO
 			protected abstract void ReadData(Tile tile, TEntry entry, BinaryReader reader);
 
 			public void LoadData(TagCompound tag, TEntry[] savedEntryLookup) {
+				if (!tag.ContainsKey(dataKey)) {
+					return;
+				}
+
 				using var reader = new BinaryReader(new MemoryStream(tag.GetByteArray(dataKey)));
 				var builder = new PosData<ushort>.OrderedSparseLookupBuilder();
 
@@ -117,7 +122,7 @@ namespace Terraria.ModLoader.IO
 
 			public byte[] SaveData(out bool[] hasObj) {
 				using var ms = new MemoryStream();
-				var writer = new BinaryWriter(ms); 
+				var writer = new BinaryWriter(ms);
 
 				var unloadedReader = new PosData<ushort>.OrderedSparseLookupReader(unloadedEntryLookup);
 				hasObj = new bool[entries.Length];

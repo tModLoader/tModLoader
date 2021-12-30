@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -11,14 +13,27 @@ using Terraria.WorldBuilding;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// ModSystem is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike Mod, can have unlimited amounts of types deriving from it. 
+	/// ModSystem is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike Mod, can have unlimited amounts of types deriving from it.
 	/// </summary>
 	public abstract partial class ModSystem : ModType
 	{
 		protected override void Register() {
-			SystemHooks.Add(this);
+			// @TODO: Remove on release
+			var type = GetType();
+
+			if (!LoaderUtils.HasMethod(type, typeof(ModSystem), nameof(SaveWorldData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModSystem), "SaveWorldData"))
+				throw new Exception($"{type} has old SaveData callback with no arguments but not new SaveData with TagCompound, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
+
+			SystemLoader.Add(this);
 			ModTypeLookup<ModSystem>.Register(this);
 		}
+
+		//ModSystem provides its own PostSetupContent hook which runs in a different context, closer to Mod
+		public sealed override void SetStaticDefaults() { }
+
+		//Per above comment, SetStaticDefaults is unused
+		public sealed override void SetupContent() { }
 
 		//Hooks
 
@@ -33,6 +48,25 @@ namespace Terraria.ModLoader
 		public virtual void PostSetupContent() { }
 
 		/// <summary>
+		/// Override this method to add recipes to the game.
+		/// <br/> It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
+		/// </summary>
+		public virtual void AddRecipes() { }
+
+		/// <summary>
+		/// This provides a hook into the mod-loading process immediately after recipes have been added.
+		/// <br/> You can use this to edit recipes added by other mods.
+		/// </summary>
+		public virtual void PostAddRecipes() { }
+
+		/// <summary>
+		/// Override this method to add recipe groups to the game.
+		/// <br/> You must add recipe groups by calling the <see cref="RecipeGroup.RegisterGroup"/> method here.
+		/// <br/> A recipe group is a set of items that can be used interchangeably in the same recipe.
+		/// </summary>
+		public virtual void AddRecipeGroups() { }
+
+		/// <summary>
 		/// Called whenever a world is loaded. This can be used to initialize data structures, etc.
 		/// </summary>
 		public virtual void OnWorldLoad() { }
@@ -41,13 +75,6 @@ namespace Terraria.ModLoader
 		/// Called whenever a world is unloaded. Use this to deinitialize world-related data structures, etc.
 		/// </summary>
 		public virtual void OnWorldUnload() { }
-
-		/// <summary>
-		/// Allows you to determine what music should currently play.
-		/// </summary>
-		/// <param name="music">The music.</param>
-		/// <param name="priority">The music priority.</param>
-		public virtual void UpdateMusic(ref int music, ref MusicPriority priority) { }
 
 		/// <summary>
 		/// Use this hook to modify Main.screenPosition after weapon zoom and camera lerp have taken place.
@@ -178,21 +205,8 @@ namespace Terraria.ModLoader
 		public virtual void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) { }
 
 		/// <summary>
-		/// Allows you to modify color of light the sun emits.
-		/// </summary>
-		/// <param name="tileColor">Tile lighting color</param>
-		/// <param name="backgroundColor">Background lighting color</param>
-		public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) { }
-
-		/// <summary>
-		/// Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
-		/// </summary>
-		/// <param name="scale">Brightness scale</param>
-		public virtual void ModifyLightingBrightness(ref float scale) { }
-
-		/// <summary>
 		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.
-		/// 
+		///
 		/// Note: This hook should no longer be used. It is better to use the ModifyInterfaceLayers hook.
 		/// </summary>
 		/// <param name="spriteBatch">The sprite batch.</param>
@@ -210,7 +224,7 @@ namespace Terraria.ModLoader
 		public virtual void PostUpdateInput() { }
 
 		/// <summary>
-		/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.  
+		/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.
 		/// </summary>
 		public virtual void PreSaveAndQuit() { }
 
@@ -220,19 +234,30 @@ namespace Terraria.ModLoader
 		public virtual void PostDrawTiles() { }
 
 		/// <summary>
-		/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the world should update with it.
-		/// You may want to consider Main.fastForwardTime and CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled here.
+		/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it.
+		/// All fields are measured in in-game minutes per real-life second (min/sec).
+		/// You may want to consider <see cref="Main.fastForwardTime"/> and <see cref="CreativePowerManager.Instance.GetPower{CreativePowers.FreezeTime}().Enabled"/> here.
 		/// </summary>
-		public virtual void ModifyTimeRate(ref int timeRate, ref int tileUpdateRate) { }
+		/// <param name="timeRate">The speed at which time flows in min/sec.</param>
+		/// <param name="tileUpdateRate">The speed at which tiles in the world update in min/sec.</param>
+		/// <param name="eventUpdateRate">The speed at which various events in the world (weather changes, fallen star/fairy spawns, etc.) update in min/sec.</param>
+		public virtual void ModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate) { }
 
 		/// <summary>
-		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world. Returns null by default.
+		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags.
+		/// <br/>For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
 		/// </summary>
-		public virtual TagCompound SaveWorldData() => null;
+		/// <param name="tag"> The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument only for the sake of convenience and optimization. </param>
+		public virtual void SaveWorldData(TagCompound tag) { }
 
 		/// <summary>
 		/// Allows you to load custom data you have saved for this system in the currently loading world.
+		/// <br/><b>Try to write defensive loading code that won't crash if something's missing.</b>
 		/// </summary>
+		/// <param name="tag"> The TagCompound to load data from. </param>
 		public virtual void LoadWorldData(TagCompound tag) { }
 
 		/// <summary>
@@ -282,18 +307,27 @@ namespace Terraria.ModLoader
 		public virtual void ResetNearbyTileEffects() { }
 
 		/// <summary>
-		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are. The tileCounts parameter stores the tile count indexed by tile type.
-		/// </summary>
-		public virtual void TileCountsAvailable(int[] tileCounts) { }
-
-		/// <summary>
-		/// Allows you to change the water style (determines water color) that is currently being used.
-		/// </summary>
-		public virtual void ChooseWaterStyle(ref int style) { }
-
-		/// <summary>
 		/// Similar to ModifyWorldGenTasks, but occurs in-game when Hardmode starts. Can be used to modify which tasks should be done and/or add custom tasks. By default the list will only contain 4 items, the vanilla hardmode tasks called "Hardmode Good", "Hardmode Evil", "Hardmode Walls", and "Hardmode Announcment"
 		/// </summary>
 		public virtual void ModifyHardmodeTasks(List<GenPass> list) { }
+
+		/// <summary>
+		/// Allows you to modify color of light the sun emits.
+		/// </summary>
+		/// <param name="tileColor">Tile lighting color</param>
+		/// <param name="backgroundColor">Background lighting color</param>
+		public virtual void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor) { }
+
+		/// <summary>
+		/// Allows you to modify overall brightness of lights. Can be used to create effects similiar to what night vision and darkness (de)buffs give you. Values too high or too low might result in glitches. For night vision effect use scale 1.03
+		/// </summary>
+		/// <param name="scale">Brightness scale</param>
+		public virtual void ModifyLightingBrightness(ref float scale) { }
+
+		/// <summary>
+		/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are.
+		/// <br/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
+		/// </summary>
+		public virtual void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { }
 	}
 }

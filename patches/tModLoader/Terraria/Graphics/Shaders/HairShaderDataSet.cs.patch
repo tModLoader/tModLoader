@@ -1,23 +1,48 @@
 --- src/Terraria/Terraria/Graphics/Shaders/HairShaderDataSet.cs
 +++ src/tModLoader/Terraria/Graphics/Shaders/HairShaderDataSet.cs
-@@ -7,15 +_,17 @@
+@@ -7,27 +_,31 @@
  {
  	public class HairShaderDataSet
  	{
 -		protected List<HairShaderData> _shaderData = new List<HairShaderData>();
 +		internal List<HairShaderData> _shaderData = new List<HairShaderData>();
 -		protected Dictionary<int, short> _shaderLookupDictionary = new Dictionary<int, short>();
-+		internal Dictionary<int, short> _shaderLookupDictionary = new Dictionary<int, short>();
-+		internal Dictionary<short, int> _reverseShaderLookupDictionary = new Dictionary<short, int>();
++		internal Dictionary<int, int> _shaderLookupDictionary = new Dictionary<int, int>();
 -		protected byte _shaderDataCount;
-+		internal byte _shaderDataCount;
++		internal Dictionary<int, int> _reverseShaderLookupDictionary = new Dictionary<int, int>();
++		internal int _shaderDataCount;
  
  		public T BindShader<T>(int itemId, T shaderData) where T : HairShaderData {
++			/*
  			if (_shaderDataCount == byte.MaxValue)
  				throw new Exception("Too many shaders bound.");
++			*/
  
  			_shaderLookupDictionary[itemId] = ++_shaderDataCount;
 +			_reverseShaderLookupDictionary[_shaderLookupDictionary[itemId]] = itemId;
  			_shaderData.Add(shaderData);
  			return shaderData;
  		}
+ 
+-		public void Apply(short shaderId, Player player, DrawData? drawData = null) {
++		public void Apply(int shaderId, Player player, DrawData? drawData = null) {
+ 			if (shaderId != 0 && shaderId <= _shaderDataCount)
+ 				_shaderData[shaderId - 1].Apply(player, drawData);
+ 			else
+ 				Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+ 		}
+ 
+-		public Color GetColor(short shaderId, Player player, Color lightColor) {
++		public Color GetColor(int shaderId, Player player, Color lightColor) {
+ 			if (shaderId != 0 && shaderId <= _shaderDataCount)
+ 				return _shaderData[shaderId - 1].GetColor(player, lightColor);
+ 
+@@ -41,7 +_,7 @@
+ 			return null;
+ 		}
+ 
+-		public short GetShaderIdFromItemId(int type) {
++		public int GetShaderIdFromItemId(int type) {
+ 			if (_shaderLookupDictionary.ContainsKey(type))
+ 				return _shaderLookupDictionary[type];
+ 

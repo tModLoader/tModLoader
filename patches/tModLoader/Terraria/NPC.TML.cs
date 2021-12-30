@@ -5,18 +5,27 @@ using Terraria.ModLoader;
 
 namespace Terraria
 {
-	public partial class NPC
+	public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	{
 		public ModNPC ModNPC { get; internal set; }
 
-		internal Instanced<GlobalNPC>[] globalNPCs = new Instanced<GlobalNPC>[0];
+		internal Instanced<GlobalNPC>[] globalNPCs = Array.Empty<Instanced<GlobalNPC>>();
+
+		public RefReadOnlyArray<Instanced<GlobalNPC>> Globals => new RefReadOnlyArray<Instanced<GlobalNPC>>(globalNPCs);
 
 		/// <summary>
 		/// Assign a special boss bar, vanilla or modded. Not used by vanilla.
-		/// <para>To assign a modded boss bar, use NPC.BossBar = ModContent.GetInstance<ExampleBossBar>(); where ExampleBossBar is a ModBossBar</para>
+		/// <para>To assign a modded boss bar, use NPC.BossBar = ModContent.GetInstance&lt;ExampleBossBar&gt;(); where ExampleBossBar is a ModBossBar</para>
 		/// <para>To assign a vanilla boss bar for whatever reason, fetch it first through the NPC type using Main.BigBossProgressBar.TryGetSpecialVanillaBossBar</para>
 		/// </summary>
 		public IBigProgressBar BossBar { get; set; }
+
+		/// <summary> Returns whether or not this NPC currently has a (de)buff of the provided type. </summary>
+		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
+
+		/// <inheritdoc cref="HasBuff(int)" />
+		public bool HasBuff<T>() where T : ModBuff
+			=> HasBuff(ModContent.BuffType<T>());
 
 		// Get
 

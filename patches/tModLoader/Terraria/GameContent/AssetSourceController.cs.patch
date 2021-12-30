@@ -1,0 +1,20 @@
+--- src/Terraria/Terraria/GameContent/AssetSourceController.cs
++++ src/tModLoader/Terraria/GameContent/AssetSourceController.cs
+@@ -11,6 +_,8 @@
+ {
+ 	public class AssetSourceController
+ 	{
++		internal IContentSource StaticSource => _staticSources.Single();
++
+ 		private readonly List<IContentSource> _staticSources;
+ 		private readonly IAssetRepository _assetRepository;
+ 
+@@ -46,7 +_,7 @@
+ 
+ 			list.AddRange(_staticSources);
+ 			foreach (IContentSource item in list) {
+-				item.ClearRejections();
++				item.Rejections.Clear();
+ 			}
+ 
+ 			List<IContentSource> list2 = new List<IContentSource>();

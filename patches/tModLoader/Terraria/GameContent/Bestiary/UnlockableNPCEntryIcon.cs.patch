@@ -13,7 +13,7 @@
  
  				if (value.CustomTexturePath != null)
 -					asset = Main.Assets.Request<Texture2D>(value.CustomTexturePath);
-+					asset = ModContent.GetTexture(value.CustomTexturePath);
++					asset = ModContent.Request<Texture2D>(value.CustomTexturePath);
  
  				if (asset != null && asset.IsLoaded)
  					_customTexture = asset;

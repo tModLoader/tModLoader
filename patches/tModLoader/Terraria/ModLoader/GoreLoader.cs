@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 
 			if (texture == null)
 				throw new ArgumentNullException(nameof(texture));
-			
+
 			if (!mod.loading)
 				throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
 
@@ -43,11 +43,15 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void AutoloadGores(Mod mod) {
-			foreach (string texturePath in mod.Assets.EnumeratePaths<Texture2D>().Where(t => t.StartsWith("Gores/"))) {
-				string textureKey = $"{mod.Name}/{texturePath}";
+			foreach (string fullTexturePath in mod.RootContentSource.EnumerateAssets().Where(t => t.Contains("Gores/"))) {
+				string texturePath = Path.ChangeExtension(fullTexturePath, null);
 
-				if (!mod.TryFind<ModGore>(Path.GetFileNameWithoutExtension(texturePath), out _)) //ModGore gores will already be loaded at this point.
+				// ModGore gores will already be loaded at this point.
+				if (!mod.TryFind<ModGore>(Path.GetFileName(texturePath), out _)) {
+					string textureKey = $"{mod.Name}/{texturePath}";
+
 					AddGoreFromTexture<SimpleModGore>(mod, textureKey);
+				}
 			}
 		}
 
@@ -66,19 +70,19 @@ namespace Terraria.ModLoader
 			}
 
 			foreach (var pair in gores) {
-				TextureAssets.Gore[pair.Key] = ModContent.GetTexture(pair.Value.Texture);
+				TextureAssets.Gore[pair.Key] = ModContent.Request<Texture2D>(pair.Value.Texture);
 			}
 		}
 
 		internal static void Unload() {
 			gores.Clear();
-			
+
 			GoreCount = GoreID.Count;
 		}
 
 		internal static ModGore GetModGore(int type) {
 			gores.TryGetValue(type, out var modGore);
-			
+
 			return modGore;
 		}
 
@@ -94,16 +98,6 @@ namespace Terraria.ModLoader
 				gore.type = gore.realType;
 				gore.realType = 0;
 			}
-		}
-
-		//in Terraria.Main.DrawGore and DrawGoreBehind replace type checks with this
-		internal static bool DrawBackGore(Gore gore) {
-			if (gore.ModGore != null) {
-				return gore.ModGore.DrawBehind(gore);
-			}
-
-			//TODO: Whatever calls this is a very bad patch. Don't move vanilla code, reuse it where it is instead.
-			return (((gore.type >= 706 && gore.type <= 717) || gore.type == 943 || gore.type == 1147 || (gore.type >= 1160 && gore.type <= 1162)) && (gore.frame < 7 || gore.frame > 9));
 		}
 	}
 }

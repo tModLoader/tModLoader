@@ -67,7 +67,7 @@
 +			// do not write other option, base64 holds all the info.
 +			if (I.ModItem != null || I.globalItems.Any()) {
 +				str = str + "/d" + ItemIO.ToBase64(I);
-+				
++
 +				goto End;
 +			}
 +

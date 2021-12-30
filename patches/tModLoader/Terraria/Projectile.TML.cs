@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Terraria
 {
-	public partial class Projectile
+	public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	{
 		public ModProjectile ModProjectile { get; internal set; }
 
-		internal Instanced<GlobalProjectile>[] globalProjectiles = new Instanced<GlobalProjectile>[0];
+		internal Instanced<GlobalProjectile>[] globalProjectiles = Array.Empty<Instanced<GlobalProjectile>>();
+
+		public RefReadOnlyArray<Instanced<GlobalProjectile>> Globals => new RefReadOnlyArray<Instanced<GlobalProjectile>>(globalProjectiles);
+
+		public static Projectile NewProjectileDirect(IProjectileSource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = 255, float ai0 = 0f, float ai1 = 0f)
+			=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1)];
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
-		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance<T>() for custom damage types.
+		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance&lt;T&gt;() for custom damage types.
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;

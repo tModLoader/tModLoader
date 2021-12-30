@@ -12,17 +12,27 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveTileEntities() {
 			var list = new List<TagCompound>();
 
+			var saveData = new TagCompound();
+
 			foreach (KeyValuePair<int, TileEntity> pair in TileEntity.ByID) {
 				var tileEntity = pair.Value;
 				var modTileEntity = tileEntity as ModTileEntity;
 
-				list.Add(new TagCompound {
+				tileEntity.SaveData(saveData);
+
+				var tag = new TagCompound {
 					["mod"] = modTileEntity?.Mod.Name ?? "Terraria",
 					["name"] = modTileEntity?.Name ?? tileEntity.GetType().Name,
 					["X"] = tileEntity.Position.X,
-					["Y"] = tileEntity.Position.Y,
-					["data"] = tileEntity.Save()
-				});
+					["Y"] = tileEntity.Position.Y
+				};
+
+				if (saveData.Count != 0) {
+					tag["data"] = saveData;
+					saveData = new TagCompound();
+				}
+
+				list.Add(tag);
 			}
 
 			return list;
@@ -59,7 +69,7 @@ namespace Terraria.ModLoader.IO
 				//Load TE data.
 				if (tag.ContainsKey("data")) {
 					try {
-						tileEntity.Load(tag.GetCompound("data"));
+						tileEntity.LoadData(tag.GetCompound("data"));
 
 						if (tileEntity is ModTileEntity modTileEntity) {
 							(tileEntity as UnloadedTileEntity)?.TryRestore(ref modTileEntity);
@@ -73,7 +83,7 @@ namespace Terraria.ModLoader.IO
 				}
 
 				//Check mods' TEs for being valid. If they are, register them to TE collections.
-				if (baseModTileEntity != null && baseModTileEntity.ValidTile(tileEntity.Position.X, tileEntity.Position.Y)) {
+				if (baseModTileEntity != null && baseModTileEntity.IsTileValidForEntity(tileEntity.Position.X, tileEntity.Position.Y)) {
 					tileEntity.ID = TileEntity.AssignNewID();
 					TileEntity.ByID[tileEntity.ID] = tileEntity;
 
