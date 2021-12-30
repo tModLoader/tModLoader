@@ -259,6 +259,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Choose if this item will be consumed or not when used as bait. return null for vanilla behaviour.
+		/// </summary>
+		/// <param name="player">The Player that owns the bait</param>
+		public virtual bool? WillConsumeBait(Player player) {
+			return null;
+		}
+
+		/// <summary>
 		/// Sets if an item can be researched, regardless of vanilla behaviour. If true, item will be researched no matter what, false will block it from being researched, null is vanilla behaviour.
 		/// </summary>
 		public virtual bool? CanResearch() {

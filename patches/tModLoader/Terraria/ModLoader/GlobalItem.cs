@@ -192,6 +192,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to choose if a given bait will be consumed by a given player
+		/// </summary>
+		/// <param name="bait">The bait being used</param>
+		/// <param name="player">The player using the item</param>
+		public virtual bool? WillConsumeBait(Player player, Item bait) {
+			return null;
+		}
+
+		/// <summary>
 		/// Sets if an item can be researched, regardless of vanilla behaviour. If true, item will be researched no matter what, false will block it from being researched, null is vanilla behaviour.
 		/// </summary>
 		/// <param name="item">The item being researched</param>

@@ -689,17 +689,30 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the item the player gains from catching a fish. The fishingRod and bait parameters refer to the said items in the player's inventory. The liquidType parameter is 0 if the player is fishing in water, 1 for lava, and 2 for honey. The poolSize parameter is the tile size of the pool the player is fishing in. The worldLayer parameter is 0 if the player is in the sky, 1 if the player is on the surface, 2 if the player is underground, 3 if the player is in the caverns, and 4 if the player is in the underworld. The questFish parameter is the item ID for the day's Angler quest. Modify the caughtType parameter to change the item the player catches. The junk parameter is whether the player catches junk; you can set this to true if you make the player catch a junk item, and is mostly used to pass information (has no effect on the game).
+		/// Allows you to change the item or enemy the player gets when sucessfully catching a "fish". The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+		/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 		/// </summary>
-		/// <param name="fishingRod"></param>
-		/// <param name="bait"></param>
-		/// <param name="power"></param>
-		/// <param name="liquidType"></param>
-		/// <param name="poolSize"></param>
-		/// <param name="worldLayer"></param>
-		/// <param name="questFish"></param>
-		/// <param name="caughtType"></param>
-		public virtual void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType) {
+		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
+		/// <param name="itemDrop">The item that will be created when this fishing attempt succeeds. leave <0 for no item</param>
+		/// <param name="npcSpawn">The enemy that will be spawned if there is no item caught. leave <0 for no NPC spawn</param>
+		/// <param name="sonar">Fill all of this structure's fields to override the sonar text, or make sonar.Text null to disable custom sonar</param>
+		/// <param name="sonarPosition">The position the Sonar text will spawn. Bobber location by default.</param>
+		public virtual void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the item caught by the fishing player, including stack
+		/// </summary>
+		/// <param name="fish">The item (Fish) to modify</param>
+		public virtual void ModifyCaughtFish(Item fish) {
+		}
+
+		/// <summary>
+		/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behaviour.
+		/// </summary>
+		/// <param name="bait">The item (bait) that would be consumed</param>
+		public virtual bool? WillConsumeBait(Item bait) {
+			return null;
 		}
 
 		/// <summary>

@@ -423,6 +423,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate bool? DelegateWillConsumeBait(Player baiter, Item bait);
+		private static HookList HookWillConsumeBait = AddHook<DelegateWillConsumeBait>(g => g.WillConsumeBait);
+
+		public static bool? WillConsumeBait(Player player, Item bait) {
+			bool? ans = bait.ModItem?.WillConsumeBait(player);
+			foreach (GlobalItem g in HookWillConsumeBait.Enumerate(bait)) {
+				bool? retVal = g.WillConsumeBait(player, bait);
+				if (retVal != null) {
+					if (ans == null)
+						ans = retVal;
+					ans = ans.Value && retVal.Value;
+				}
+			}
+			return ans;
+		}
+
 		private delegate void DelegateModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup);
 		private static HookList HookModifyResearchSorting = AddHook<DelegateModifyResearchSorting>(g => g.ModifyResearchSorting);
 		public static void ModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
@@ -451,7 +467,7 @@ namespace Terraria.ModLoader
 				return null;
 
 			bool? canResearch = null;
-			foreach (var g in HookCanResearch.arr) {
+			foreach (var g in HookCanResearch.Enumerate(item.globalItems)) {
 				bool? ans = g.Instance(item).CanResearch(item);
 
 				if (ans.HasValue) {
@@ -461,7 +477,7 @@ namespace Terraria.ModLoader
 						canResearch = ans.Value;
 				}
 			}
-			return canResearch ?? item.modItem?.CanResearch();
+			return canResearch ?? item.ModItem?.CanResearch();
 		}
 
 		private delegate void DelegateOnResearched(Item item, bool fullyResearched);
@@ -470,9 +486,9 @@ namespace Terraria.ModLoader
 			if (item.IsAir)
 				return;
 
-			item.modItem?.OnResearched(fullyResearched);
+			item.ModItem?.OnResearched(fullyResearched);
 
-			foreach (var g in HookOnResearched.arr)
+			foreach (var g in HookOnResearched.Enumerate(item.globalItems))
 				g.Instance(item).OnResearched(item, fullyResearched);
 		}
     
