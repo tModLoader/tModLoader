@@ -18,7 +18,7 @@ namespace ExampleMod.Common.ItemDropRules.Conditions
 		}
 
 		public string GetConditionDescription() {
-			return "Drops only on Journey Mode";
+			return "Drops during daytime";
 		}
 	}
 }
