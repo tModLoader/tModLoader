@@ -820,13 +820,13 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate bool? DelegateWillConsumeBait(Item bait);
-		private static HookList HookWillConsumeBait = AddHook<DelegateWillConsumeBait>(p => p.WillConsumeBait);
+		private delegate bool? DelegateCanConsumeBait(Item bait);
+		private static HookList HookCanConsumeBait = AddHook<DelegateCanConsumeBait>(p => p.CanConsumeBait);
 
-		public static bool? WillConsumeBait(Player player, Item bait) {
+		public static bool? CanConsumeBait(Player player, Item bait) {
 			bool? ans = null;
 			foreach (int index in HookCaughtFish.arr) {
-				bool? retVal = player.modPlayers[index].WillConsumeBait(bait);
+				bool? retVal = player.modPlayers[index].CanConsumeBait(bait);
 				if(retVal != null) {
 					if (ans == null)
 						ans = retVal;

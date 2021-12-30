@@ -24,41 +24,33 @@ namespace ExampleMod.Content.Items
 		}
 
 		/*this allows for the present to be researched even when you already have infinite of them*/
-        public override bool? CanResearch()
-        {
+        public override bool? CanResearch() {
 			return true;
         }
 
-        public override void OnResearched(bool fullyResearched)
-        {
+        public override void OnResearched(bool fullyResearched) {
 			/*If you managed to be lucky enough to get all presents, it will give you all
 			 accessories*/
-			if (fullyResearched)
-			{
-				for(int i = 1; i < ItemLoader.ItemCount; i++)
-                {
+			if (fullyResearched) {
+				for (int i = 1; i < ItemLoader.ItemCount; i++) {
 					Item tr = new Item(i);
-                    if (tr.accessory)
-                    {
+                    if (tr.accessory) {
 						CreativeUI.ResearchItem(tr);
 					}
                 }
 				Main.NewText("You got all accessories!");
 				return;
-			}
-			else
-			{
+			} else {
 				int j = this.Item.stack;
-				for (int i = 0 ; i < 1000; i++)
-				{
+				for (int i = 0 ; i < 1000; i++)	{
 					int tp = Main.rand.Next(1, ItemLoader.ItemCount);
 					Item toResearch = new Item(tp);
-					if (toResearch.accessory)
-					{
+					if (toResearch.accessory) {
 						CreativeUI.ResearchItem(toResearch);
 						j--;
-						if(j <= 0)
+						if (j <= 0) {
 							return;
+						}
 					}
 				}
 				Main.NewText("No new accessory was inside...");

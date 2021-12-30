@@ -4184,7 +4184,7 @@
  			if (baitTypeUsed == 2673)
  				flag = true;
  
-+			bool? forced = PlayerLoader.WillConsumeBait(this, item) ?? ItemLoader.WillConsumeBait(this, item);
++			bool? forced = PlayerLoader.CanConsumeBait(this, item) ?? ItemLoader.CanConsumeBait(this, item);
 +			flag = forced ?? flag;
  			if (flag) {
  				if (item.type == 4361 || item.type == 4362)

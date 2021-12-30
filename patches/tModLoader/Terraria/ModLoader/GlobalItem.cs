@@ -196,7 +196,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="bait">The bait being used</param>
 		/// <param name="player">The player using the item</param>
-		public virtual bool? WillConsumeBait(Player player, Item bait) {
+		public virtual bool? CanConsumeBait(Player player, Item bait) {
 			return null;
 		}
 

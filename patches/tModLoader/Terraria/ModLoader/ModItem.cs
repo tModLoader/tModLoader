@@ -262,7 +262,7 @@ namespace Terraria.ModLoader
 		/// Choose if this item will be consumed or not when used as bait. return null for vanilla behaviour.
 		/// </summary>
 		/// <param name="player">The Player that owns the bait</param>
-		public virtual bool? WillConsumeBait(Player player) {
+		public virtual bool? CanConsumeBait(Player player) {
 			return null;
 		}
 

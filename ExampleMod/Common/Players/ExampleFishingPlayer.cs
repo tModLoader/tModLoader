@@ -25,7 +25,7 @@ namespace ExampleMod.Common.Players
 		public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
 			/*In this example, we will fish up an Example person from the water in Example Surface Biome, as long as there isn't one in the world yet*/
 			if (attempt.playerFishingConditions.PoleItemType == ModContent.ItemType<ExampleFishingRod>() && !attempt.inLava && !attempt.inHoney &&
-				Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>())){
+				Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>())) {
 				int npc = ModContent.NPCType<ExamplePerson>();
 				if (!NPC.AnyNPCs(ModContent.NPCType<ExamplePerson>())) {
 					//Make sure itemDrop = -1 when summoning an NPC, as otherwise terraria will only spawn the item
@@ -50,19 +50,20 @@ namespace ExampleMod.Common.Players
 			}
 		}
 
-		public override bool? WillConsumeBait(Item bait) {
+		public override bool? CanConsumeBait(Item bait) {
 			if (bait.type == ItemID.LadyBug) {
 				fishingWithLadybug = true;
 			}
 			//Player.GetFishingConditions() returns you the best fishing pole Item, type and power, the best bait Item, type and Power, and the total fishing level, including modded values
 			//These are the same Pole and Bait the game considers when calculating the obtained fish.
-			//during WillConsumeBait, Player.GetFishingConditions() == attempt.playerFishingConditions from CatchFish.
+			//during CanConsumeBait, Player.GetFishingConditions() == attempt.playerFishingConditions from CatchFish.
 			PlayerFishingConditions conditions = Player.GetFishingConditions();
+
 			//The golden fishing rod will never consume a ladybug
 			if ((fishingWithLadybug || conditions.BaitItemType == ItemID.GoldLadyBug) && conditions.Pole.type == ItemID.GoldenFishingRod) {
 				return false;
 			}
-			return base.WillConsumeBait(bait);
+			return base.CanConsumeBait(bait);
 		}
 
 		//If fishing with ladybug, we will receive multiple "fish" per bobber. Does not apply to quest fish
