@@ -585,11 +585,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookShoot = AddHook<Func<Item, Player, EntitySource_Item_WithAmmo, Vector2, Vector2, int, int, float, bool>>(g => g.Shoot);
+		private static HookList HookShoot = AddHook<Func<Item, Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float, bool>>(g => g.Shoot);
 		/// <summary>
 		/// Calls each GlobalItem.Shoot hook then, if none of them returns false, calls the ModItem.Shoot hook and returns its value.
 		/// </summary>
-		public static bool Shoot(Item item, Player player, EntitySource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, bool defaultResult = true) {
+		public static bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback, bool defaultResult = true) {
 			foreach (var g in HookShoot.Enumerate(item.globalItems)) {
 				defaultResult &= g.Shoot(item, player, source, position, velocity, type, damage, knockback);
 			}

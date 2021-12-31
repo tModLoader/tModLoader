@@ -12,8 +12,8 @@
 +// Aliases for renames
 +using IProjectileSource = Terraria.DataStructures.IEntitySource;
 +using ProjectileSource_Buff = Terraria.DataStructures.EntitySource_Buff;
-+using ProjectileSource_Item = Terraria.DataStructures.EntitySource_Item;
-+using ProjectileSource_Item_WithAmmo = Terraria.DataStructures.EntitySource_Item_WithAmmo;
++using ProjectileSource_Item = Terraria.DataStructures.EntitySource_ItemUse;
++using ProjectileSource_Item_WithAmmo = Terraria.DataStructures.EntitySource_ItemUse_WithAmmo;
 +using ProjectileSource_BySourceId = Terraria.DataStructures.EntitySource_BySourceId;
 +using ProjectileSource_TileInteraction = Terraria.DataStructures.EntitySource_TileInteraction;
  
@@ -972,8 +972,8 @@
 +		// New
 +
 +		public IEntitySource GetEntitySource_Buff(int buffIndex) => GetProjectileSource_Buff(buffIndex);
-+		public IEntitySource GetEntitySource_Item(Item item) => GetProjectileSource_Item(item);
-+		public IEntitySource GetEntitySource_Item_WithPotentialAmmo(Item item, int ammoItemId) => GetProjectileSource_Item_WithPotentialAmmo(item, ammoItemId);
++		public IEntitySource GetEntitySource_ItemUse(Item item) => GetProjectileSource_Item(item);
++		public IEntitySource GetEntitySource_ItemUse_WithPotentialAmmo(Item item, int ammoItemId) => GetProjectileSource_Item_WithPotentialAmmo(item, ammoItemId);
 +		public IEntitySource GetEntitySource_SetBonus(int projectileSourceId) => GetProjectileSource_SetBonus(projectileSourceId);
 +		public IEntitySource GetEntitySource_Accessory(Item item) => GetProjectileSource_Accessory(item);
 +		public IEntitySource GetEntitySource_Misc(int projectileSourceId) => GetProjectileSource_Misc(projectileSourceId);

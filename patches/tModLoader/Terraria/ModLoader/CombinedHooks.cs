@@ -59,7 +59,7 @@ namespace Terraria.ModLoader
 			PlayerLoader.ModifyShootStats(player, item, ref position, ref velocity, ref type, ref damage, ref knockback);
 		}
 
-		public static bool Shoot(Player player, Item item, EntitySource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public static bool Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			bool defaultResult = PlayerLoader.Shoot(player, item, source, position, velocity, type, damage, knockback);
 			return ItemLoader.Shoot(item, player, source, position, velocity, type, damage, knockback, defaultResult);
 		}

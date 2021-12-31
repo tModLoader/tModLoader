@@ -3,15 +3,15 @@
 @@ -1,11 +_,12 @@
  namespace Terraria.DataStructures
  {
-+	// Renamed from ProjectileSource*
 -	public class ProjectileSource_Item : IProjectileSource
-+	public class EntitySource_Item : IEntitySource
++	// Renamed from ProjectileSource_Item
++	public class EntitySource_ItemUse : IEntitySource
  	{
  		public readonly Player Player;
  		public readonly Item Item;
  
 -		public ProjectileSource_Item(Player player, Item item) {
-+		public EntitySource_Item(Player player, Item item) {
++		public EntitySource_ItemUse(Player player, Item item) {
  			Player = player;
  			Item = item;
  		}
