@@ -453,31 +453,37 @@ namespace Terraria.ModLoader
 		}
 
 
-		private delegate bool? DelegateCanResearch(Item item);
-		private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
+		private delegate bool DelegatePreItemResearch(Item item, ref GameContent.Creative.CreativeUI.ItemSacrificeResult result);
+		private static HookList HookPreItemResearch = AddHook<DelegatePreItemResearch>(g => g.PreItemResearch);
 		/// <summary>
-		/// Hook that determines if an item will be consumed by the research function. 
+		/// Hook that determines if an item will be prevented from being consumed by the research function. 
 		/// </summary>
 		/// <param name="item">The item to be consumed or not</param>
-		/// <returns>True takes precedence, and will consume the item, even if vanilla would not allow it
-		/// False will stop the item from being consumed and the rest of the research code to run.
-		/// Null is the default vanilla behaviour</returns>
-		public static bool? CanResearch(Item item) {
-			if (item.IsAir)
-				return null;
-
-			bool? canResearch = null;
+		public static bool PreItemResearch(Item item, ref GameContent.Creative.CreativeUI.ItemSacrificeResult result) {
+			if (item.ModItem != null && !item.ModItem.PreItemResearch(ref result))
+				return false;
 			foreach (var g in HookCanResearch.Enumerate(item.globalItems)) {
-				bool? ans = g.Instance(item).CanResearch(item);
-
-				if (ans.HasValue) {
-					if (ans.Value)
-						return true;
-					else
-						canResearch = ans.Value;
-				}
+				if (!g.Instance(item).PreItemResearch(item, ref result))
+					return false;
 			}
-			return canResearch ?? item.ModItem?.CanResearch();
+			result = GameContent.Creative.CreativeUI.ItemSacrificeResult.CannotSacrifice;
+			return true;
+		}
+
+		private delegate bool DelegateCanResearch(Item item);
+		private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
+		/// <summary>
+		/// Hook that determines if an item will be prevented from being consumed by the research function. 
+		/// </summary>
+		/// <param name="item">The item to be consumed or not</param>
+		public static bool CanResearch(Item item) {
+			if (item.ModItem != null && !item.ModItem.CanResearch())
+				return false;
+			foreach (var g in HookCanResearch.Enumerate(item.globalItems)) {
+				if (!g.Instance(item).CanResearch(item))
+					return false;
+			}
+			return true;
 		}
 
 		private delegate void DelegateOnResearched(Item item, bool fullyResearched);

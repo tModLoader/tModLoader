@@ -13,6 +13,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
+using static Terraria.GameContent.Creative.CreativeUI;
 
 namespace Terraria.ModLoader
 {
@@ -267,10 +268,19 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Sets if an item can be researched, regardless of vanilla behaviour. If true, item will be researched no matter what, false will block it from being researched, null is vanilla behaviour.
+		/// Allows you to check an item entered into the research function before any of the default behaviour is run,before checking if an item is researcheable at all or was already fully researched
+		/// Return false to prevent vanilla item research from happening.
 		/// </summary>
-		public virtual bool? CanResearch() {
-			return null;
+		/// <param name="result"> the Result for what happens in the UI when this method return false. Pass CannotSacrifice for Bounce back, SacrificedAndDone for the same effect as if it was successfuly researched to completion</param>
+		public virtual bool PreItemResearch(ref ItemSacrificeResult result) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
+		/// </summary>
+		public virtual bool CanResearch() {
+			return true;
 		}
 
 		/// <summary>

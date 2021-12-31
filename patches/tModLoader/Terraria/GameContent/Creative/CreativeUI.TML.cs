@@ -7,6 +7,7 @@ using Terraria.Audio;
 using Terraria.GameContent.NetModules;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Net;
@@ -36,21 +37,22 @@ namespace Terraria.GameContent.Creative
 		public static ItemSacrificeResult ResearchItem(int type, out bool alreadyResearched) {
 			int amountNeeded = 0;
 			alreadyResearched = false;
-			Item item = new Item();
-			item.SetDefaults(type, false);
-			bool? canSacrifice = ItemLoader.CanResearch(item);
-			if (canSacrifice != null && canSacrifice.Value == false)
-				return ItemSacrificeResult.CannotSacrifice;
+			Item item = ContentSamples.ItemsByType[type].Clone();
 
-			int num = 0;
-			if (canSacrifice == null && !CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(type, out amountNeeded))
+			ItemSacrificeResult res = ItemSacrificeResult.CannotSacrifice;
+			if (!ItemLoader.PreItemResearch(item, ref res)) {
+				return res;
+			}
+			if (!ItemLoader.CanResearch(item))
 				return ItemSacrificeResult.CannotSacrifice;
-		
+			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(type, out amountNeeded))
+				return ItemSacrificeResult.CannotSacrifice;
+			
 			int value = 0;
 			Main.LocalPlayerCreativeTracker.ItemSacrifices.SacrificesCountByItemIdCache.TryGetValue(type, out value);
-			num = Utils.Clamp(amountNeeded - value, 0, amountNeeded);
+			int num = Utils.Clamp(amountNeeded - value, 0, amountNeeded);
 			alreadyResearched = num == 0;
-			if (canSacrifice == null && alreadyResearched)
+			if (alreadyResearched)
 					return ItemSacrificeResult.CannotSacrifice;
 			
 			if (!Main.ServerSideCharacter) {
@@ -63,6 +65,39 @@ namespace Terraria.GameContent.Creative
 
 			ItemLoader.OnResearched(item, true);
 			return ItemSacrificeResult.SacrificedAndDone;
+		}
+
+		/// <summary>
+		/// Method that allows you to easily get how many items of a type you have researched so far
+		/// </summary>
+		/// <param name="item">the item to check</param>
+		/// <param name="fullyResearched">true if it was already fully researched</param>
+		/// <returns></returns>
+		public static int GetAmountResearched(Item item, out bool fullyResearched) {
+			fullyResearched = false;
+			if (item == null || item.IsAir)
+				return 0;
+			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out int amountNeeded))
+				return 0;
+			Main.LocalPlayerCreativeTracker.ItemSacrifices.SacrificesCountByItemIdCache.TryGetValue(item.type, out int value);
+			fullyResearched = amountNeeded > 0 ? amountNeeded <= value : false;
+			return value;
+		}
+		/// <summary>
+		/// Method that allows you to easily get how many items of a type you need to fully research that item
+		/// </summary>
+		/// <param name="item">the item to check</param>
+		/// <param name="fullyResearched">true if it was already fully researched</param>
+		/// <returns></returns>
+		public static int GetAmountToResearch(Item item, out bool fullyResearched) {
+			fullyResearched = false;
+			if (item == null || item.IsAir)
+				return 0;
+			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out int amountNeeded))
+				return 0;
+			Main.LocalPlayerCreativeTracker.ItemSacrifices.SacrificesCountByItemIdCache.TryGetValue(item.type, out int value);
+			fullyResearched = amountNeeded > 0 ? amountNeeded <= value : false;
+			return Utils.Clamp(amountNeeded - value, 0, amountNeeded);
 		}
 	}
 }

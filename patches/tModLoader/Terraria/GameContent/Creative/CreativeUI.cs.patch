@@ -16,7 +16,7 @@
  	{
  		public enum ItemSacrificeResult
  		{
-@@ -194,18 +_,36 @@
+@@ -194,18 +_,38 @@
  		}
  
  		public ItemSacrificeResult SacrificeItem(out int amountWeSacrificed) {
@@ -37,23 +37,24 @@
 -			Item item = _itemSlotsForUI[0];
 -			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded))
 +			Item item = toSacrifice;
-+			bool? canSacrifice = ItemLoader.CanResearch(item);
-+			if (canSacrifice != null && canSacrifice.Value == false)
++			ItemSacrificeResult res = ItemSacrificeResult.CannotSacrifice;
++			if(!ItemLoader.PreItemResearch(item, ref res)) {
++				return res;
++			}
++			if (!ItemLoader.CanResearch(item))
  				return ItemSacrificeResult.CannotSacrifice;
  
 +			int num = 0;
-+			bool couldGetAmount = !CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded);
-+			if(canSacrifice == null && couldGetAmount)
++			if(!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded))
 +				return ItemSacrificeResult.CannotSacrifice;
 +		
  			int value = 0;
  			Main.LocalPlayerCreativeTracker.ItemSacrifices.SacrificesCountByItemIdCache.TryGetValue(item.type, out value);
 -			int num = Utils.Clamp(amountNeeded - value, 0, amountNeeded);
--			if (num == 0)
++			num = Utils.Clamp(amountNeeded - value, 0, amountNeeded);
+ 			if (num == 0)
 -				return ItemSacrificeResult.CannotSacrifice;
 -
-+			num = Utils.Clamp(amountNeeded - value, 0, amountNeeded);
-+			if (canSacrifice == null && num == 0)
 +					return ItemSacrificeResult.CannotSacrifice;
 +			
  			int num2 = Math.Min(num, item.stack);
