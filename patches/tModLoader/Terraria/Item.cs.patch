@@ -604,7 +604,7 @@
 +		internal static int NewItem(Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 +			=> NewItem(null, pos, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 +
-+		public static int NewItem(int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
++		internal static int NewItem(int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 +			=> NewItem(null, X, Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 +
 +		// Actual API methods
