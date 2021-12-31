@@ -27,7 +27,7 @@ namespace ExampleMod.Common.Players
 			if (attempt.playerFishingConditions.PoleItemType == ModContent.ItemType<ExampleFishingRod>() && !attempt.inLava && !attempt.inHoney &&
 				Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>())) {
 				int npc = ModContent.NPCType<ExamplePerson>();
-				if (!NPC.AnyNPCs(ModContent.NPCType<ExamplePerson>())) {
+				if (!NPC.AnyNPCs(npc)) {
 					//Make sure itemDrop = -1 when summoning an NPC, as otherwise terraria will only spawn the item
 					npcSpawn = npc;
 					itemDrop = -1;
