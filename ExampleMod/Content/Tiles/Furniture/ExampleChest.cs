@@ -97,7 +97,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override void NumDust(int i, int j, bool fail, ref int num) => num = 1;
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 32, 32, ChestDrop);
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ChestDrop);
 			Chest.DestroyChest(i, j);
 		}
 

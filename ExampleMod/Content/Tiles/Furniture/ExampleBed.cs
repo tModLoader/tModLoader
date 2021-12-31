@@ -1,6 +1,7 @@
 using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -33,11 +34,17 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AddMapEntry(new Color(200, 200, 200), name);
 		}
 
-		public override bool HasSmartInteract() => true;
+		public override bool HasSmartInteract() {
+			return true;
+		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num) => num = 1;
+		public override void NumDust(int i, int j, bool fail, ref int num) {
+			num = 1;
+		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) => Item.NewItem(i * 16, j * 16, 64, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleBed>());
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 64, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleBed>());
+		}
 
 		public override bool RightClick(int i, int j) {
 			Player player = Main.LocalPlayer;

@@ -33,7 +33,7 @@ namespace ExampleMod.Content.Projectiles
 			return false;
 		}
 
-		public override void OnSpawn(IProjectileSource data) {
+		public override void OnSpawn(IEntitySource data) {
 			trailColor = Main.hslToRgb(Main.rand.NextFloat(), 1f, 0.7f); // Assign a random color on spawn
 		}
 	}

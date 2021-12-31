@@ -493,6 +493,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			float timerMax = Utils.Clamp((float)NPC.life / NPC.lifeMax, 0.33f, 1f) * 90;
 
 			SecondStageTimer_SpawnEyes++;
+
 			if (SecondStageTimer_SpawnEyes > timerMax) {
 				SecondStageTimer_SpawnEyes = 0;
 			}
@@ -503,10 +504,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				float kitingOffsetX = Utils.Clamp(player.velocity.X * 16, -100, 100);
 				Vector2 position = player.Bottom + new Vector2(kitingOffsetX + Main.rand.Next(-100, 100), Main.rand.Next(50, 100));
-
 				int type = ModContent.ProjectileType<MinionBossEye>();
 				int damage = NPC.damage / 2;
-				Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
+
+				Projectile.NewProjectile(NPC.GetEntitySpawnSource(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
 			}
 		}
 	}

@@ -20,7 +20,7 @@ namespace ExampleMod.Common.GlobalItems
 			item.damage = 50; // Change damage to 50!
 		}
 
-		public override bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override bool Shoot(Item item, Player player, EntitySource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// Make it shoot grenades for no reason
 			Projectile.NewProjectileDirect(source, player.Center, velocity * 5f, ProjectileID.Grenade, damage, knockback, player.whoAmI);
 			// Returning false prevents vanilla's shooting behavior from running.
