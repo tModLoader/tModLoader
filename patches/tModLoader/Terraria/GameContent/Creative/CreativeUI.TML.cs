@@ -22,17 +22,20 @@ namespace Terraria.GameContent.Creative
 		/// Conveniance method that allows you to fully research an item without needing to have sufficent of that item
 		/// </summary>
 		/// <param name="toSacrifice"></param>
+		/// <param name="alreadyResearched"> true if it was already researched, false otherwise</param>
 		/// <returns></returns>
-		public static ItemSacrificeResult ResearchItem(Item toSacrifice) {
-			return ResearchItem(toSacrifice.type);
+		public static ItemSacrificeResult ResearchItem(Item toSacrifice, out bool alreadyResearched) {
+			return ResearchItem(toSacrifice.type, out alreadyResearched);
 		}
 		/// <summary>
 		/// Conveniance method that allows you to fully research an item without needing to have an item, just a type.
 		/// </summary>
 		/// <param name="type">Type of the item to reseach</param>
+		/// <param name="alreadyResearched"> true if it was already researched, false otherwise</param>
 		/// <returns></returns>
-		public static ItemSacrificeResult ResearchItem(int type){
+		public static ItemSacrificeResult ResearchItem(int type, out bool alreadyResearched) {
 			int amountNeeded = 0;
+			alreadyResearched = false;
 			Item item = new Item();
 			item.SetDefaults(type, false);
 			bool? canSacrifice = ItemLoader.CanResearch(item);
@@ -46,7 +49,8 @@ namespace Terraria.GameContent.Creative
 			int value = 0;
 			Main.LocalPlayerCreativeTracker.ItemSacrifices.SacrificesCountByItemIdCache.TryGetValue(type, out value);
 			num = Utils.Clamp(amountNeeded - value, 0, amountNeeded);
-			if (canSacrifice == null && num == 0)
+			alreadyResearched = num == 0;
+			if (canSacrifice == null && alreadyResearched)
 					return ItemSacrificeResult.CannotSacrifice;
 			
 			if (!Main.ServerSideCharacter) {

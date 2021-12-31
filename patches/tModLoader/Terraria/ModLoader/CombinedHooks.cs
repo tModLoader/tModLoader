@@ -123,5 +123,13 @@ namespace Terraria.ModLoader
 
 			return result;
 		}
+
+		public static bool? CanConsumeBait(Player player, Item item) {
+			bool? result = PlayerLoader.CanConsumeBait(player, item);
+			if (!(result is null) && !result.Value)
+				return false;
+			bool? result2 = ItemLoader.CanConsumeBait(player, item);
+			return result is null ? result2 : (result2 is null ? result : (result.Value && result2.Value));
+		}
 	}
 }

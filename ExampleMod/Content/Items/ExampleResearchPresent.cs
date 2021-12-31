@@ -33,29 +33,38 @@ namespace ExampleMod.Content.Items
 			 accessories*/
 			if (fullyResearched) {
 				for (int i = 1; i < ItemLoader.ItemCount; i++) {
-					Item tr = new Item(i);
-                    if (tr.accessory) {
-						CreativeUI.ResearchItem(tr);
+                    if (ContentSamples.ItemsByType[i].accessory) {
+						CreativeUI.ResearchItem(i, out bool researched);
 					}
                 }
 				Main.NewText("You got all accessories!");
 				return;
 			} else {
-				int j = this.Item.stack;
-				for (int i = 0 ; i < 1000; i++)	{
-					int tp = Main.rand.Next(1, ItemLoader.ItemCount);
-					Item toResearch = new Item(tp);
-					if (toResearch.accessory) {
-						CreativeUI.ResearchItem(toResearch);
-						j--;
-						if (j <= 0) {
-							return;
-						}
+				int count = 0;
+				for(int j = Item.stack; j > 0; j--) {
+					if (GetRandomAccessoryToLearn()){
+						count++;
 					}
 				}
-				Main.NewText("No new accessory was inside...");
+				if (count == 0){
+					Main.NewText("No new accessory...");
+				} else {
+					Main.NewText("Learned "+ count +" new accessor" + (count == 1? "y": "ies") + " !");
+				}
 			}
         }
 
+        private bool GetRandomAccessoryToLearn() {
+			for (int i = 0; i < 1000; i++) {
+				int tp = Main.rand.Next(1, ItemLoader.ItemCount);
+				if (ContentSamples.ItemsByType[tp].accessory) {
+					CreativeUI.ResearchItem(tp, out bool didResearch);
+					if (!didResearch){
+						return true;
+					}
+				}
+			}
+			return false;
+		}
     }
 }

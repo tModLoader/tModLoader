@@ -193,6 +193,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to choose if a given bait will be consumed by a given player
+		/// Not consuming will always take priority over forced consumption
 		/// </summary>
 		/// <param name="bait">The bait being used</param>
 		/// <param name="player">The player using the item</param>
