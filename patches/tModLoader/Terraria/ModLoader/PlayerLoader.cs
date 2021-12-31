@@ -824,16 +824,12 @@ namespace Terraria.ModLoader
 		private static HookList HookCanConsumeBait = AddHook<DelegateCanConsumeBait>(p => p.CanConsumeBait);
 
 		public static bool? CanConsumeBait(Player player, Item bait) {
-			bool? ans = null;
+			bool? ret = null;
 			foreach (int index in HookCaughtFish.arr) {
-				bool? retVal = player.modPlayers[index].CanConsumeBait(bait);
-				if(retVal != null) {
-					if (ans == null)
-						ans = retVal;
-					ans = ans.Value && retVal.Value;
-				}
+				if (player.modPlayers[index].CanConsumeBait(bait) is bool b)
+					ret = (ret ?? true) && b;
 			}
-			return ans;
+			return ret;
 		}
 
 		private delegate void DelegateGetFishingLevel(Item fishingRod, Item bait, ref float fishingLevel);

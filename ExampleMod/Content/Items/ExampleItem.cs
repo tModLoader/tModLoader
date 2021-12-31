@@ -35,11 +35,10 @@ namespace ExampleMod.Content.Items
 		/*Researching the Example item will give you immediate access to the torch, block, wall and workbench!*/
 		public override void OnResearched(bool fullyResearched) {
 			if (fullyResearched) {
-				bool wasAlreadyResearched;
-				CreativeUI.ResearchItem(ModContent.ItemType<ExampleTorch>(), out wasAlreadyResearched);
-				CreativeUI.ResearchItem(ModContent.ItemType<ExampleBlock>(), out wasAlreadyResearched);
-				CreativeUI.ResearchItem(ModContent.ItemType<ExampleWall>(), out wasAlreadyResearched);
-				CreativeUI.ResearchItem(ModContent.ItemType<ExampleWorkbench>(), out wasAlreadyResearched);
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleTorch>(), out _);
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleBlock>(), out _);
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleWall>(), out _);
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleWorkbench>(), out _);
 			}
 		}
 	}
