@@ -99,7 +99,7 @@ namespace ExampleMod.Content.NPCs
 			int num = NPC.life > 0 ? 1 : 5;
 
 			for (int k = 0; k < num; k++) {
-				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
+				Dust.NewDust(null, NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
 		}
 
@@ -298,7 +298,7 @@ namespace ExampleMod.Content.NPCs
 					position.Y = Math.Sign(position.Y) * 20;
 				}
 
-				Dust.NewDustPerfect(NPC.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
+				Dust.NewDustPerfect(null, NPC.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
 			}
 		}
 

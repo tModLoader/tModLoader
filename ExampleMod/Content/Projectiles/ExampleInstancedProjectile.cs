@@ -10,13 +10,11 @@ namespace ExampleMod.Content.Projectiles
 	{
 		private Color trailColor;
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Instanced Projectile"); //The English name of the projectile
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			Projectile.width = 16; //The width of projectile hitbox
 			Projectile.height = 16; //The height of projectile hitbox
 			Projectile.aiStyle = 1; //The ai style of the projectile, please reference the source code of Terraria
@@ -29,15 +27,13 @@ namespace ExampleMod.Content.Projectiles
 			AIType = ProjectileID.Bullet; //Act exactly like default Bullet
 		}
 
-		public override bool PreDraw(ref Color lightColor)
-		{
-			Dust.NewDustPerfect(Projectile.Center, DustID.TintableDust, newColor: trailColor);
+		public override bool PreDraw(ref Color lightColor) {
+			Dust.NewDustPerfect(null, Projectile.Center, DustID.TintableDust, newColor: trailColor);
 
 			return false;
 		}
 
-		public override void OnSpawn(IProjectileSource data)
-		{
+		public override void OnSpawn(IProjectileSource data) {
 			trailColor = Main.hslToRgb(Main.rand.NextFloat(), 1f, 0.7f); // Assign a random color on spawn
 		}
 	}

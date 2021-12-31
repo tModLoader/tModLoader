@@ -86,7 +86,7 @@ namespace ExampleMod.Content.NPCs
 			int num = NPC.life > 0 ? 1 : 5;
 
 			for (int k = 0; k < num; k++) {
-				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
+				Dust.NewDust(null, NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
 		}
 

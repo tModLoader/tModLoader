@@ -105,7 +105,7 @@ namespace ExampleMod.Content.Mounts
 			if (Math.Abs(player.velocity.X) > 4f) {
 				Rectangle rect = player.getRect();
 
-				Dust.NewDust(new Vector2(rect.X, rect.Y), rect.Width, rect.Height, ModContent.DustType<Dusts.Sparkle>());
+				Dust.NewDust(null, new Vector2(rect.X, rect.Y), rect.Width, rect.Height, ModContent.DustType<Dusts.Sparkle>());
 			}
 		}
 
@@ -116,7 +116,7 @@ namespace ExampleMod.Content.Mounts
 			// This code bypasses the normal mount spawning dust and replaces it with our own visual.
 			if (!Main.dedServ) {
 				for (int i = 0; i < 16; i++) {
-					Dust.NewDustPerfect(player.Center + new Vector2(80, 0).RotatedBy(i * Math.PI * 2 / 16f), MountData.spawnDust);
+					Dust.NewDustPerfect(null, player.Center + new Vector2(80, 0).RotatedBy(i * Math.PI * 2 / 16f), MountData.spawnDust);
 				}
 
 				skipDust = true;
