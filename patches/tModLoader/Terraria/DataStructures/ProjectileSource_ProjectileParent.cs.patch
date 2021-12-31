@@ -1,0 +1,16 @@
+--- src/Terraria/Terraria/DataStructures/ProjectileSource_ProjectileParent.cs
++++ src/tModLoader/Terraria/DataStructures/ProjectileSource_ProjectileParent.cs
+@@ -1,10 +_,11 @@
+ namespace Terraria.DataStructures
+ {
++	// Renamed from ProjectileSource*
+-	public class ProjectileSource_ProjectileParent : IProjectileSource
++	public class EntitySource_ProjectileParent : IEntitySource
+ 	{
+ 		public readonly Projectile ParentProjectile;
+ 
+-		public ProjectileSource_ProjectileParent(Projectile projectile) {
++		public EntitySource_ProjectileParent(Projectile projectile) {
+ 			ParentProjectile = projectile;
+ 		}
+ 	}

@@ -49,7 +49,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets called when any item spawns in world
 		/// </summary>
-		public virtual void OnSpawn(Item item, IItemSource source) {
+		public virtual void OnSpawn(Item item, IEntitySource source) {
 		}
 
 		/// <summary>
@@ -300,7 +300,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"> The ID of the projectile. </param>
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockback"> The knockback of the projectile. </param>
-		public virtual bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public virtual bool Shoot(Item item, Player player, EntitySource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			return true;
 		}
 

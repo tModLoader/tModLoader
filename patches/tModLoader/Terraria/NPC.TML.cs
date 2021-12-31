@@ -51,7 +51,7 @@ namespace Terraria
 		public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
 			=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, baseInstance, out result);
 
-		public static NPC NewNPCDirect(INPCSource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
+		public static NPC NewNPCDirect(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
 			=> Main.npc[NewNPC(source, X, Y, Type, Start, ai0, ai1, ai2, ai3, Target)];
 	}
 }

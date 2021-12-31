@@ -1,11 +1,18 @@
 --- src/Terraria/Terraria/WorldGen.cs
 +++ src/tModLoader/Terraria/WorldGen.cs
-@@ -24,6 +_,8 @@
+@@ -24,6 +_,15 @@
  using Terraria.ObjectData;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
++// Aliases for renames
++using IProjectileSource = Terraria.DataStructures.IEntitySource;
++using ProjectileSource_BySourceId = Terraria.DataStructures.EntitySource_BySourceId;
++using ProjectileSource_ShakeTree = Terraria.DataStructures.EntitySource_ShakeTree;
++using ProjectileSource_TileBreak = Terraria.DataStructures.EntitySource_TileBreak;
++using ProjectileSource_TileInteraction = Terraria.DataStructures.EntitySource_TileInteraction;
++using ProjectileSource_Wiring = Terraria.DataStructures.EntitySource_Wiring;
  
  namespace Terraria
  {

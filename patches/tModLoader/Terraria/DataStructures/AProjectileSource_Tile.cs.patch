@@ -1,0 +1,17 @@
+--- src/Terraria/Terraria/DataStructures/AProjectileSource_Tile.cs
++++ src/tModLoader/Terraria/DataStructures/AProjectileSource_Tile.cs
+@@ -2,11 +_,12 @@
+ 
+ namespace Terraria.DataStructures
+ {
++	// Renamed from AProjectileSource_Tile
+-	public abstract class AProjectileSource_Tile : IProjectileSource
++	public abstract class EntitySource_Tile : IEntitySource
+ 	{
+ 		public readonly Point TileCoords;
+ 
+-		public AProjectileSource_Tile(int tileCoordsX, int tileCoordsY) {
++		public EntitySource_Tile(int tileCoordsX, int tileCoordsY) {
+ 			TileCoords = new Point(tileCoordsX, tileCoordsY);
+ 		}
+ 	}

@@ -29,7 +29,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify a gore's fields when it is created.
 		/// </summary>
-		public virtual void OnSpawn(Gore gore, IGoreSource source) { }
+		public virtual void OnSpawn(Gore gore, IEntitySource source) { }
 
 		//in Terraria.Gore.Update at beginning of if block checking for active add
 		//  if(this.modGore != null && !this.modGore.Update(this)) { return; }

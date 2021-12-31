@@ -1,0 +1,16 @@
+--- src/Terraria/Terraria/DataStructures/ProjectileSource_TileInteraction.cs
++++ src/tModLoader/Terraria/DataStructures/ProjectileSource_TileInteraction.cs
+@@ -1,10 +_,11 @@
+ namespace Terraria.DataStructures
+ {
++	// Renamed from ProjectileSource*
+-	public class ProjectileSource_TileInteraction : AProjectileSource_Tile
++	public class EntitySource_TileInteraction : EntitySource_Tile
+ 	{
+ 		public readonly Player Player;
+ 
+-		public ProjectileSource_TileInteraction(Player player, int tileCoordsX, int tileCoordsY)
++		public EntitySource_TileInteraction(Player player, int tileCoordsX, int tileCoordsY)
+ 			: base(tileCoordsX, tileCoordsY) {
+ 			Player = player;
+ 		}

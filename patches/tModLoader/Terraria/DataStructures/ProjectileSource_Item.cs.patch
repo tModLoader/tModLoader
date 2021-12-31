@@ -1,0 +1,17 @@
+--- src/Terraria/Terraria/DataStructures/ProjectileSource_Item.cs
++++ src/tModLoader/Terraria/DataStructures/ProjectileSource_Item.cs
+@@ -1,11 +_,12 @@
+ namespace Terraria.DataStructures
+ {
++	// Renamed from ProjectileSource*
+-	public class ProjectileSource_Item : IProjectileSource
++	public class EntitySource_Item : IEntitySource
+ 	{
+ 		public readonly Player Player;
+ 		public readonly Item Item;
+ 
+-		public ProjectileSource_Item(Player player, Item item) {
++		public EntitySource_Item(Player player, Item item) {
+ 			Player = player;
+ 			Item = item;
+ 		}

@@ -1,0 +1,14 @@
+--- src/Terraria/Terraria/DataStructures/ProjectileSource_TileBreak.cs
++++ src/tModLoader/Terraria/DataStructures/ProjectileSource_TileBreak.cs
+@@ -1,8 +_,9 @@
+ namespace Terraria.DataStructures
+ {
++	// Renamed from ProjectileSource*
+-	public class ProjectileSource_TileBreak : AProjectileSource_Tile
++	public class EntitySource_TileBreak : EntitySource_Tile
+ 	{
+-		public ProjectileSource_TileBreak(int tileCoordsX, int tileCoordsY)
++		public EntitySource_TileBreak(int tileCoordsX, int tileCoordsY)
+ 			: base(tileCoordsX, tileCoordsY) {
+ 		}
+ 	}

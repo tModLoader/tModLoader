@@ -116,6 +116,18 @@
  			return num;
  		}
  
+@@ -2067,7 +_,10 @@
+ 			return true;
+ 		}
+ 
++		// New
++		public IEntitySource GetEntitySpawnSource(Player mountedPlayer) => GetProjectileSpawnSource(mountedPlayer);
++		// Old
+-		public IProjectileSource GetProjectileSpawnSource(Player mountedPlayer) => new ProjectileSource_Mount(mountedPlayer, Type);
++		internal IEntitySource GetProjectileSpawnSource(Player mountedPlayer) => new EntitySource_Mount(mountedPlayer, Type);
+ 
+ 		public void StartAbilityCharge(Player mountedPlayer) {
+ 			if (Main.myPlayer == mountedPlayer.whoAmI) {
 @@ -2482,6 +_,9 @@
  		private Vector2 GetWitchBroomTrinketOriginOffset(Player player) => new Vector2(27 * player.direction, 5f);
  

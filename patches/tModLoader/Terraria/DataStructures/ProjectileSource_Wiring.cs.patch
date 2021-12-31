@@ -1,0 +1,14 @@
+--- src/Terraria/Terraria/DataStructures/ProjectileSource_Wiring.cs
++++ src/tModLoader/Terraria/DataStructures/ProjectileSource_Wiring.cs
+@@ -1,8 +_,9 @@
+ namespace Terraria.DataStructures
+ {
++	// Renamed from ProjectileSource*
+-	public class ProjectileSource_Wiring : AProjectileSource_Tile
++	public class EntitySource_Wiring : EntitySource_Tile
+ 	{
+-		public ProjectileSource_Wiring(int tileCoordsX, int tileCoordsY)
++		public EntitySource_Wiring(int tileCoordsX, int tileCoordsY)
+ 			: base(tileCoordsX, tileCoordsY) {
+ 		}
+ 	}

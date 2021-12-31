@@ -68,6 +68,18 @@
  			if (Main.netMode == 1)
  				return;
  
+@@ -775,7 +_,10 @@
+ 			_toProcess.Clear();
+ 		}
+ 
++		// New
++		public static IEntitySource GetEntitySource(int sourceTileX, int sourceTileY) => GetProjectileSource(sourceTileX, sourceTileY);
++		// Old
+-		public static IProjectileSource GetProjectileSource(int sourceTileX, int sourceTileY) => new ProjectileSource_Wiring(sourceTileX, sourceTileY);
++		internal static IEntitySource GetProjectileSource(int sourceTileX, int sourceTileY) => new EntitySource_Wiring(sourceTileX, sourceTileY);
+ 
+ 		private static void HitWireSingle(int i, int j) {
+ 			Tile tile = Main.tile[i, j];
 @@ -788,6 +_,9 @@
  			if (!tile.active())
  				return;

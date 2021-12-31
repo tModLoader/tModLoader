@@ -1,10 +1,13 @@
 --- src/Terraria/Terraria/NPC.cs
 +++ src/tModLoader/Terraria/NPC.cs
-@@ -22,10 +_,11 @@
+@@ -22,10 +_,14 @@
  using Terraria.Localization;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
 +using Terraria.ModLoader;
++// Aliases for renames
++using IProjectileSource = Terraria.DataStructures.IEntitySource;
++using ProjectileSource_NPC = Terraria.DataStructures.EntitySource_NPC;
  
  namespace Terraria
  {
@@ -169,8 +172,15 @@
  			defDefense = defense;
  			defDamage = damage;
  			life = lifeMax;
-@@ -11046,6 +_,10 @@
- 		public IProjectileSource GetProjectileSpawnSource() => new ProjectileSource_NPC(this);
+@@ -11043,9 +_,16 @@
+ 			}
+ 		}
+ 
++		// New
++		public IProjectileSource GetEntitySpawnSource() => GetProjectileSpawnSource();
++		// Old
+-		public IProjectileSource GetProjectileSpawnSource() => new ProjectileSource_NPC(this);
++		internal IEntitySource GetProjectileSpawnSource() => new EntitySource_NPC(this);
  
  		public void AI() {
 +			NPCLoader.NPCAI(this);
@@ -778,7 +788,7 @@
 +		internal static int NewNPC(int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
 +			=> NewNPC(null, X, Y, Type, Start, ai0, ai1, ai2, ai3, Target);
 +
-+		public static int NewNPC(INPCSource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255) {
++		public static int NewNPC(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255) {
  			if (Main.getGoodWorld) {
  				if (Type == 46)
  					Type = 614;

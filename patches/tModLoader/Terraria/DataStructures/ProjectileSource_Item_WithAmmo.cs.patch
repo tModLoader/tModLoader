@@ -1,0 +1,16 @@
+--- src/Terraria/Terraria/DataStructures/ProjectileSource_Item_WithAmmo.cs
++++ src/tModLoader/Terraria/DataStructures/ProjectileSource_Item_WithAmmo.cs
+@@ -1,10 +_,11 @@
+ namespace Terraria.DataStructures
+ {
++	// Renamed from ProjectileSource*
+-	public class ProjectileSource_Item_WithAmmo : ProjectileSource_Item
++	public class EntitySource_Item_WithAmmo : EntitySource_Item
+ 	{
+ 		public readonly int AmmoItemIdUsed;
+ 
+-		public ProjectileSource_Item_WithAmmo(Player player, Item item, int ammoItemIdUsed)
++		public EntitySource_Item_WithAmmo(Player player, Item item, int ammoItemIdUsed)
+ 			: base(player, item) {
+ 			AmmoItemIdUsed = ammoItemIdUsed;
+ 		}

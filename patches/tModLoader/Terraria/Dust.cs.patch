@@ -31,7 +31,7 @@
  
 +		// Actual API methods
 -		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
-+		public static Dust NewDustPerfect(IDustSource source, Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
++		public static Dust NewDustPerfect(IEntitySource source, Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
 -			Dust dust = Main.dust[NewDust(Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
 +			Dust dust = Main.dust[NewDust(source, Position, 0, 0, Type, 0f, 0f, Alpha, newColor, Scale)];
  			dust.position = Position;
@@ -42,7 +42,7 @@
  		}
  
 -		public static Dust NewDustDirect(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
-+		public static Dust NewDustDirect(IDustSource source, Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
++		public static Dust NewDustDirect(IEntitySource source, Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
 -			Dust dust = Main.dust[NewDust(Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale)];
 +			Dust dust = Main.dust[NewDust(source, Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale)];
  			if (dust.velocity.HasNaNs())
@@ -52,7 +52,7 @@
  		}
  
 -		public static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
-+		public static int NewDust(IDustSource source, Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
++		public static int NewDust(IEntitySource source, Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
  			if (Main.gameMenu)
  				return 6000;
  

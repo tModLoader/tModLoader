@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
-@@ -34,10 +_,15 @@
+@@ -34,10 +_,22 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -9,6 +9,13 @@
 +using Terraria.ModLoader.IO;
 +using Terraria.ModLoader.UI;
 +using System.Linq;
++// Aliases for renames
++using IProjectileSource = Terraria.DataStructures.IEntitySource;
++using ProjectileSource_Buff = Terraria.DataStructures.EntitySource_Buff;
++using ProjectileSource_Item = Terraria.DataStructures.EntitySource_Item;
++using ProjectileSource_Item_WithAmmo = Terraria.DataStructures.EntitySource_Item_WithAmmo;
++using ProjectileSource_BySourceId = Terraria.DataStructures.EntitySource_BySourceId;
++using ProjectileSource_TileInteraction = Terraria.DataStructures.EntitySource_TileInteraction;
  
  namespace Terraria
  {
@@ -958,6 +965,43 @@
  				cWings = dyeItem.dye;
  
  			if (armorItem.type == 934)
+@@ -6562,17 +_,29 @@
+ 			}
+ 		}
+ 
++		// New
++
++		public IEntitySource GetEntitySource_Buff(int buffIndex) => GetProjectileSource_Buff(buffIndex);
++		public IEntitySource GetEntitySource_Item(Item item) => GetProjectileSource_Item(item);
++		public IEntitySource GetEntitySource_Item_WithPotentialAmmo(Item item, int ammoItemId) => GetProjectileSource_Item_WithPotentialAmmo(item, ammoItemId);
++		public IEntitySource GetEntitySource_SetBonus(int projectileSourceId) => GetProjectileSource_SetBonus(projectileSourceId);
++		public IEntitySource GetEntitySource_Accessory(Item item) => GetProjectileSource_Accessory(item);
++		public IEntitySource GetEntitySource_Misc(int projectileSourceId) => GetProjectileSource_Misc(projectileSourceId);
++		public IEntitySource GetEntitySource_TileInteraction(int tileCoordsX, int tileCoordsY) => GetProjectileSource_TileInteraction(tileCoordsX, tileCoordsY);
++
++		// Old
++
+-		public IProjectileSource GetProjectileSource_Buff(int buffIndex) {
++		internal IProjectileSource GetProjectileSource_Buff(int buffIndex) {
+ 			int buffId = buffType[buffIndex];
+ 			return new ProjectileSource_Buff(this, buffId, buffIndex);
+ 		}
+ 
+-		public IProjectileSource GetProjectileSource_Item(Item item) => new ProjectileSource_Item(this, item);
++		internal IProjectileSource GetProjectileSource_Item(Item item) => new ProjectileSource_Item(this, item);
+-		public IProjectileSource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => new ProjectileSource_Item_WithAmmo(this, item, ammoItemId);
++		internal IProjectileSource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => new ProjectileSource_Item_WithAmmo(this, item, ammoItemId);
+-		public IProjectileSource GetProjectileSource_SetBonus(int projectileSourceId) => new ProjectileSource_BySourceId(projectileSourceId);
++		internal IProjectileSource GetProjectileSource_SetBonus(int projectileSourceId) => new ProjectileSource_BySourceId(projectileSourceId);
+-		public IProjectileSource GetProjectileSource_Accessory(Item item) => new ProjectileSource_Item(this, item);
++		internal IProjectileSource GetProjectileSource_Accessory(Item item) => new ProjectileSource_Item(this, item);
+-		public IProjectileSource GetProjectileSource_Misc(int projectileSourceId) => new ProjectileSource_BySourceId(projectileSourceId);
++		internal IProjectileSource GetProjectileSource_Misc(int projectileSourceId) => new ProjectileSource_BySourceId(projectileSourceId);
+-		public IProjectileSource GetProjectileSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new ProjectileSource_TileInteraction(this, tileCoordsX, tileCoordsY);
++		internal IProjectileSource GetProjectileSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new ProjectileSource_TileInteraction(this, tileCoordsX, tileCoordsY);
+ 
+ 		public void UpdateBuffs(int i) {
+ 			if (soulDrain > 0 && whoAmI == Main.myPlayer)
 @@ -6581,13 +_,14 @@
  			if (Main.dontStarveWorld)
  				UpdateStarvingState(withEmote: true);

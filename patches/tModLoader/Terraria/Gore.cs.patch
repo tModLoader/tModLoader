@@ -48,7 +48,7 @@
 +
 +		// Actual API methods
 -		public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
-+		public static Gore NewGorePerfect(IGoreSource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
++		public static Gore NewGorePerfect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
 -			Gore gore = NewGoreDirect(Position, Velocity, Type, Scale);
 +			Gore gore = NewGoreDirect(source, Position, Velocity, Type, Scale);
  			gore.position = Position;
@@ -57,11 +57,11 @@
  		}
  
 -		public static Gore NewGoreDirect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) => Main.gore[NewGore(Position, Velocity, Type, Scale)];
-+		public static Gore NewGoreDirect(IGoreSource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++		public static Gore NewGoreDirect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
 +			=> Main.gore[NewGore(source, Position, Velocity, Type, Scale)];
  
 -		public static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
-+		public static int NewGore(IGoreSource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
++		public static int NewGore(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
  			if (Main.netMode == 2)
  				return 600;
  

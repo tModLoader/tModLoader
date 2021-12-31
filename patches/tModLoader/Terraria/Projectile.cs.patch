@@ -1,12 +1,16 @@
 --- src/Terraria/Terraria/Projectile.cs
 +++ src/tModLoader/Terraria/Projectile.cs
-@@ -20,12 +_,13 @@
+@@ -20,12 +_,17 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Physics;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
++// Aliases for renames
++using IProjectileSource = Terraria.DataStructures.IEntitySource;
++using ProjectileSource_NPC = Terraria.DataStructures.EntitySource_NPC;
++using ProjectileSource_ProjectileParent = Terraria.DataStructures.EntitySource_ProjectileParent;
  
  namespace Terraria
  {
@@ -594,6 +598,20 @@
  				}
  			}
  
+@@ -14454,7 +_,12 @@
+ 		}
+ 
+ 		public static IProjectileSource GetNoneSource() => null;
++
++		// New
++		public IEntitySource GetEntitySource_FromThis() => GetProjectileSource_FromThis();
++		// Old
+-		public IProjectileSource GetProjectileSource_FromThis() => new ProjectileSource_ProjectileParent(this);
++		internal IProjectileSource GetProjectileSource_FromThis() => new ProjectileSource_ProjectileParent(this);
++
+ 		public static IProjectileSource InheritSource(Projectile projectile) => projectile?.GetProjectileSource_FromThis();
+ 
+ 		private void AI_152_SuperStarSlash() {
 @@ -14480,6 +_,10 @@
  		}
  
