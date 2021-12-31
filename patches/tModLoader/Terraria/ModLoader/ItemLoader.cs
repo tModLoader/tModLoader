@@ -427,16 +427,14 @@ namespace Terraria.ModLoader
 		private static HookList HookCanConsumeBait = AddHook<DelegateCanConsumeBait>(g => g.CanConsumeBait);
 
 		public static bool? CanConsumeBait(Player player, Item bait) {
-			bool? ans = bait.ModItem?.CanConsumeBait(player);
+			bool? ret = bait.ModItem?.CanConsumeBait(player);
+
 			foreach (GlobalItem g in HookCanConsumeBait.Enumerate(bait)) {
-				bool? retVal = g.CanConsumeBait(player, bait);
-				if (retVal != null) {
-					if (ans == null)
-						ans = retVal;
-					ans = ans.Value && retVal.Value;
-				}
+				if (g.CanConsumeBait(player, bait) is bool b)
+					ret = (ret ?? true) && b;
 			}
-			return ans;
+			
+			return ret;
 		}
 
 		private delegate void DelegateModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup);

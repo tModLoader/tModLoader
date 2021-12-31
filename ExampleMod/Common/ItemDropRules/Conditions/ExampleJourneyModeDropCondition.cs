@@ -4,13 +4,13 @@ using Terraria.GameContent.ItemDropRules;
 namespace ExampleMod.Common.ItemDropRules.Conditions
 {
 	// Drop condition where items drop only on Journey mode.
-	public class ExampleModeDropCondition : IItemDropRuleCondition
+	public class ExampleJourneyModeDropCondition : IItemDropRuleCondition
 	{
 		public bool CanDrop(DropAttemptInfo info) {
-			if (!info.IsInSimulation) {
-				return Main.GameModeInfo.IsJourneyMode;
+			if (info.IsInSimulation) {
+				return false;
 			}
-			return false;
+			return Main.GameModeInfo.IsJourneyMode;
 		}
 
 		public bool CanShowItemDropInUI() {

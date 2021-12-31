@@ -2,11 +2,6 @@
 using ExampleMod.Content.Items.Tools;
 using ExampleMod.Content.NPCs;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -14,18 +9,13 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
 {
-	public class ExampleFishingPlayer: ModPlayer
+	public class ExampleFishingPlayer : ModPlayer
 	{
-		bool fishingWithLadybug = false;
-
-		public override void ResetEffects() {
-			fishingWithLadybug = false;
-		}
-
 		public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
 			/*In this example, we will fish up an Example person from the water in Example Surface Biome, as long as there isn't one in the world yet*/
 			if (attempt.playerFishingConditions.PoleItemType == ModContent.ItemType<ExampleFishingRod>() && !attempt.inLava && !attempt.inHoney &&
-				Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>())) {
+					Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>())) {
+
 				int npc = ModContent.NPCType<ExamplePerson>();
 				if (!NPC.AnyNPCs(npc)) {
 					//Make sure itemDrop = -1 when summoning an NPC, as otherwise terraria will only spawn the item
@@ -40,8 +30,6 @@ namespace ExampleMod.Common.Players
 
 					//And that text shows up on the player's head, not on the bobber location.
 					sonarPosition = new Vector2(Player.position.X, Player.position.Y - 64);
-
-					return;
 				}
 			}
 		}
@@ -56,7 +44,8 @@ namespace ExampleMod.Common.Players
 			if ((bait.type == ItemID.LadyBug || bait.type == ItemID.GoldLadyBug) && conditions.Pole.type == ItemID.GoldenFishingRod) {
 				return false;
 			}
-			return base.CanConsumeBait(bait);
+
+			return null; // Let the default logic run
 		}
 
 		//If fishing with ladybug, we will receive multiple "fish" per bobber. Does not apply to quest fish
