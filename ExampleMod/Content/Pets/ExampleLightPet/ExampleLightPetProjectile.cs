@@ -122,7 +122,8 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 				Projectile.alpha = 0;
 
 				if (Main.rand.NextBool(6)) {
-					var dust = Dust.NewDustDirect(null, Projectile.position, Projectile.width, Projectile.height, 73, 0f, 0f, 200, default, 0.8f);
+					var entitySource = Projectile.GetEntitySource();
+					var dust = Dust.NewDustDirect(entitySource, Projectile.position, Projectile.width, Projectile.height, 73, 0f, 0f, 200, default, 0.8f);
 
 					dust.velocity *= 0.3f;
 				}

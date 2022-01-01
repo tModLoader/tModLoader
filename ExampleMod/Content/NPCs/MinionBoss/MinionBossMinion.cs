@@ -108,9 +108,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				// If this NPC dies, spawn some visuals
 
 				int dustType = 59; // Some blue dust, read the dust guide on the wiki for how to find the perfect dust
+				var entitySource = NPC.GetEntitySource(); // Make sure to 'cache' sources before loops to avoid unnecessary allocations.
+
 				for (int i = 0; i < 20; i++) {
 					Vector2 velocity = NPC.velocity + new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-2f, 2f));
-					Dust dust = Dust.NewDustPerfect(null, NPC.Center, dustType, velocity, 26, Color.White, Main.rand.NextFloat(1.5f, 2.4f));
+					Dust dust = Dust.NewDustPerfect(entitySource, NPC.Center, dustType, velocity, 26, Color.White, Main.rand.NextFloat(1.5f, 2.4f));
 					dust.noLight = true;
 					dust.noGravity = true;
 					dust.fadeIn = Main.rand.NextFloat(0.3f, 0.8f);

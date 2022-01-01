@@ -28,7 +28,9 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override bool PreDraw(ref Color lightColor) {
-			Dust.NewDustPerfect(null, Projectile.Center, DustID.TintableDust, newColor: trailColor);
+			var entitySource = Projectile.GetEntitySource();
+
+			Dust.NewDustPerfect(entitySource, Projectile.Center, DustID.TintableDust, newColor: trailColor);
 
 			return false;
 		}

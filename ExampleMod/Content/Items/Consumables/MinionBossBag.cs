@@ -7,6 +7,7 @@ using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
+using Terraria.DataStructures;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -67,7 +68,7 @@ namespace ExampleMod.Content.Items.Consumables
 				float distance = 0.3f + Main.rand.NextFloat() * 0.5f;
 				Vector2 velocity = new Vector2(0f, -Main.rand.NextFloat() * 0.3f - 1.5f);
 
-				Dust dust = Dust.NewDustPerfect(null, center + direction * distance, DustID.SilverFlame, velocity);
+				Dust dust = Dust.NewDustPerfect(Item.GetEntitySource_FromThis(), center + direction * distance, DustID.SilverFlame, velocity);
 				dust.scale = 0.5f;
 				dust.fadeIn = 1.1f;
 				dust.noGravity = true;

@@ -70,7 +70,7 @@ namespace ExampleMod.NPCs
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-					int projectile = Projectile.NewProjectile(NPC.GetEntitySpawnSource(), NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
+					int projectile = Projectile.NewProjectile(NPC.GetEntitySource(), NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
 					Main.projectile[projectile].timeLeft = 300;
 					attackCounter = 500;
 					NPC.netUpdate = true;
@@ -178,18 +178,21 @@ namespace ExampleMod.NPCs
 			}
 			if (Main.netMode != NetmodeID.MultiplayerClient) {
 				if (!tail && NPC.ai[0] == 0f) {
+					var entitySource = NPC.GetEntitySource();
+
 					if (head) {
 						NPC.ai[3] = (float)NPC.whoAmI;
 						NPC.realLife = NPC.whoAmI;
 						NPC.ai[2] = (float)Main.rand.Next(minLength, maxLength + 1);
-						NPC.ai[0] = (float)NPC.NewNPC(null, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), bodyType, NPC.whoAmI);
+						NPC.ai[0] = (float)NPC.NewNPC(entitySource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), bodyType, NPC.whoAmI);
 					}
 					else if (NPC.ai[2] > 0f) {
-						NPC.ai[0] = (float)NPC.NewNPC(null, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), NPC.type, NPC.whoAmI);
+						NPC.ai[0] = (float)NPC.NewNPC(entitySource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), NPC.type, NPC.whoAmI);
 					}
 					else {
-						NPC.ai[0] = (float)NPC.NewNPC(null, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), tailType, NPC.whoAmI);
+						NPC.ai[0] = (float)NPC.NewNPC(entitySource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), tailType, NPC.whoAmI);
 					}
+
 					Main.npc[(int)NPC.ai[0]].ai[3] = NPC.ai[3];
 					Main.npc[(int)NPC.ai[0]].realLife = NPC.realLife;
 					Main.npc[(int)NPC.ai[0]].ai[1] = (float)NPC.whoAmI;

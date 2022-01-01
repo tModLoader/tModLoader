@@ -16,6 +16,8 @@ namespace Terraria
 
 		public ModItem ModItem { get; internal set; }
 
+		private IEntitySource entitySourceCache; // Skip a few thousands of reallocations.
+
 		internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
 
 		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
@@ -57,6 +59,8 @@ namespace Terraria
 
 		public bool CountsAsClass(DamageClass damageClass)
 			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+
+		public IEntitySource GetEntitySource_FromThis() => entitySourceCache ??= new EntitySource_Item(this);
 
 		internal static void PopulateMaterialCache() {
 			for (int i = 0; i < Recipe.numRecipes; i++) {

@@ -177,7 +177,7 @@
  		}
  
 +		// New
-+		public IProjectileSource GetEntitySpawnSource() => GetProjectileSpawnSource();
++		public IProjectileSource GetEntitySource() => GetProjectileSpawnSource();
 +		// Old
 -		public IProjectileSource GetProjectileSpawnSource() => new ProjectileSource_NPC(this);
 +		internal IEntitySource GetProjectileSpawnSource() => new EntitySource_NPC(this);

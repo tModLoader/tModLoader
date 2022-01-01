@@ -97,9 +97,10 @@ namespace ExampleMod.Content.NPCs
 
 		public override void HitEffect(int hitDirection, double damage) {
 			int num = NPC.life > 0 ? 1 : 5;
+			var entitySource = NPC.GetEntitySource(); // Make sure to 'cache' sources before loops to avoid unnecessary allocations.
 
 			for (int k = 0; k < num; k++) {
-				Dust.NewDust(null, NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
+				Dust.NewDust(entitySource, NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
 		}
 
@@ -289,6 +290,8 @@ namespace ExampleMod.Content.NPCs
 
 		// Create a square of pixels around the NPC on teleport.
 		public void StatueTeleport() {
+			var entitySource = NPC.GetEntitySource(); // Make sure to 'cache' sources before loops to avoid unnecessary allocations.
+
 			for (int i = 0; i < 30; i++) {
 				Vector2 position = Main.rand.NextVector2Square(-20, 21);
 				if (Math.Abs(position.X) > Math.Abs(position.Y)) {
@@ -298,7 +301,7 @@ namespace ExampleMod.Content.NPCs
 					position.Y = Math.Sign(position.Y) * 20;
 				}
 
-				Dust.NewDustPerfect(null, NPC.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
+				Dust.NewDustPerfect(entitySource, NPC.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
 			}
 		}
 

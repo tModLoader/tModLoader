@@ -121,7 +121,7 @@
  		}
  
 +		// New
-+		public IEntitySource GetEntitySpawnSource(Player mountedPlayer) => GetProjectileSpawnSource(mountedPlayer);
++		public IEntitySource GetEntitySource(Player mountedPlayer) => GetProjectileSpawnSource(mountedPlayer);
 +		// Old
 -		public IProjectileSource GetProjectileSpawnSource(Player mountedPlayer) => new ProjectileSource_Mount(mountedPlayer, Type);
 +		internal IEntitySource GetProjectileSpawnSource(Player mountedPlayer) => new EntitySource_Mount(mountedPlayer, Type);

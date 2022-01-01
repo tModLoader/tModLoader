@@ -604,7 +604,7 @@
  		public static IProjectileSource GetNoneSource() => null;
 +
 +		// New
-+		public IEntitySource GetEntitySource_FromThis() => GetProjectileSource_FromThis();
++		public IEntitySource GetEntitySource() => GetProjectileSource_FromThis();
 +		// Old
 -		public IProjectileSource GetProjectileSource_FromThis() => new ProjectileSource_ProjectileParent(this);
 +		internal IProjectileSource GetProjectileSource_FromThis() => new ProjectileSource_ProjectileParent(this);
