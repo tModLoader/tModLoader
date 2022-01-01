@@ -1,6 +1,5 @@
 var NAVTREEINDEX129 =
 {
-"struct_terraria_1_1_physics_1_1_ball_step_result.html#ad1d79260ada3ad7a82905933a9568759":[1,0,2,17,3,3],
 "struct_terraria_1_1_physics_1_1_ball_step_result.html#af7809926ed94e0f287a5a0bc83cf6447":[1,0,2,17,3,1],
 "struct_terraria_1_1_physics_1_1_ball_step_result.html#afcb24bc12f6b3229452788c4163293c8":[1,0,2,17,3,2],
 "struct_terraria_1_1_player_1_1_composite_arm_data.html":[1,0,2,54,1],

@@ -125,7 +125,6 @@ var class_terraria_1_1_n_p_c =
     [ "NewNPC", "class_terraria_1_1_n_p_c.html#a7720b27d8c6632cbb4f6674190e02e19", null ],
     [ "NPCCanStickToWalls", "class_terraria_1_1_n_p_c.html#ad52f69084690c2d0cca3a8dd11898d15", null ],
     [ "NPCLoot", "class_terraria_1_1_n_p_c.html#a1285ee63df9110af96b22f28bf4027fa", null ],
-    [ "NPCLootOld", "class_terraria_1_1_n_p_c.html#a6d4d0248d4f4fbfe7470a4184aca594e", null ],
     [ "OnGameEventClearedForTheFirstTime", "class_terraria_1_1_n_p_c.html#a1f81df735e1764013280e44cf0ecc411", null ],
     [ "PlayerInteraction", "class_terraria_1_1_n_p_c.html#ac5318bddfe0ee580c4091858c3146c6c", null ],
     [ "PopAllAttachedProjectilesAndTakeDamageForThem", "class_terraria_1_1_n_p_c.html#a5dfd27d54cec4713be5f8af19b7a82f4", null ],
