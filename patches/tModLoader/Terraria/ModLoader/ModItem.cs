@@ -42,6 +42,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public ModTranslation Tooltip { get; internal set; }
 
+		/// <summary>
+		/// Easy get/set for an item's Sacrifice Total Count
+		/// </summary>
+		public int SacrificeTotal {
+			get => Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type];
+			set => Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = value;
+		}
+
 		public ModItem() {
 			Item = new Item { ModItem = this };
 		}
