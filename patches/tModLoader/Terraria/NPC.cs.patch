@@ -504,6 +504,14 @@
  				killCount[i] = 0;
  			}
  		}
+@@ -56474,6 +_,7 @@
+ 			}
+ 		}
+ 
++		/*
+ 		public void NPCLootOld() {
+ 			if (Main.netMode == 1 || type >= 670)
+ 				return;
 @@ -56535,7 +_,7 @@
  
  			if (type == 1 && ai[1] > 0f) {
@@ -513,8 +521,11 @@
  					int stackForSlimeItemDrop = GetStackForSlimeItemDrop(num3);
  					Item.NewItem((int)position.X, (int)position.Y, width, height, num3, stackForSlimeItemDrop);
  				}
-@@ -59009,7 +_,7 @@
+@@ -59007,9 +_,10 @@
+ 			NPCLoot_DropCommonLifeAndMana(player);
+ 			NPCLoot_DropMoney(player);
  		}
++		*/
  
  		public void NPCLoot() {
 -			if (Main.netMode == 1 || type >= 670)
