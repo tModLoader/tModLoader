@@ -335,7 +335,42 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				status.SetStatus(Language.GetTextValue("tModLoader.EnabledEAC", mod.properties.eacPath));
 			}
 
-			CompileMod(mod, out code, out pdb, out references);
+			if (dllPath != null) {
+				if (!File.Exists(dllPath))
+					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorLoadingPrecompiled", dllPath));
+
+				status.SetStatus(Language.GetTextValue("tModLoader.LoadingPrecompiled", dllName, Path.GetFileName(dllPath)));
+				code = File.ReadAllBytes(dllPath);
+				pdb = File.Exists(pdbPath()) ? File.ReadAllBytes(pdbPath()) : null;
+
+
+				// Load the project in order to be able to get the paths to all the dlls (from nuget and other sources)
+				string csprojPath = Path.Combine(mod.path, mod.Name + ".csproj");
+
+				// Register the default MSBuild if it hasn't already been registered
+				// Note: will throw an error if it is registered multiple times
+				// Note: "You cannot reference any MSBuild types in the method that calls MSBuildLocator" (https://aka.ms/RegisterMSBuildLocator)
+				if (!MSBuildLocator.IsRegistered)
+					MSBuildLocator.RegisterDefaults();
+				var project = LoadProject(csprojPath, Array.Empty<string>(), false);
+
+				string[] terrariaRefs = GetTerrariaReferences().ToArray();
+				// Remove references to terraria and .NET sdk .DLLs
+				references = project.MetadataReferences
+					.Where(x => x.Display?.Contains("Microsoft.NETCore.App.Ref") == false)
+					.Where(x => !terrariaRefs.Contains(x.Display)).ToList();
+
+				foreach (var refMod in FindReferencedMods(mod.properties)) {
+					var matchingReference = references.FirstOrDefault(x => x.Display?.Contains(refMod.Name) == true);
+					// Only add the .dll of the referenced mod if it is not already included in the .csproj
+					if (matchingReference != null) {
+						references.Remove(matchingReference);
+					}
+				}
+			}
+			else {
+				CompileMod(mod, out code, out pdb, out references);
+			}
 		}
 
 		private void CompileMod(BuildingMod mod, out byte[] code, out byte[] pdb, out List<MetadataReference> references)
@@ -346,8 +381,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				Directory.Delete(tempDir, true);
 			Directory.CreateDirectory(tempDir);
 
-			string csprojName = mod.Name + ".csproj";
-			string csprojPath = Path.Combine(mod.path, csprojName);
+			string csprojPath = Path.Combine(mod.path, mod.Name + ".csproj");
 
 			bool allowUnsafe =
 				Program.LaunchParameters.TryGetValue("-unsafe", out var unsafeParam) &&
