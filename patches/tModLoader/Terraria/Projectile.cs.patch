@@ -546,13 +546,13 @@
 +			Vector2 sonarPosition = new Vector2(position.X, position.Y);
 +			PlayerLoader.CatchFish(Main.player[owner], fisher, ref fisher.rolledItemDrop, ref fisher.rolledEnemySpawn, ref sonar, ref sonarPosition);
 +
-+			if(sonar.Text != null) {
++			if(sonar.Text != null && Main.player[owner].sonarPotion) {
 +				PopupText.AssignAsSonarText(PopupText.NewText(sonar,sonarPosition));
 +			}
 +
  			if (fisher.rolledItemDrop > 0) {
 -				if (Main.player[owner].sonarPotion) {
-+				if (sonar.Text != null && Main.player[owner].sonarPotion) {
++				if (sonar.Text == null && Main.player[owner].sonarPotion) {
  					Item item = new Item();
  					item.SetDefaults(fisher.rolledItemDrop);
  					item.position = position;
@@ -561,7 +561,7 @@
  
  			if (fisher.rolledEnemySpawn > 0) {
 -				if (Main.player[owner].sonarPotion)
-+				if (sonar.Text != null && Main.player[owner].sonarPotion)
++				if (sonar.Text == null && Main.player[owner].sonarPotion)
  					PopupText.AssignAsSonarText(PopupText.NewText(PopupTextContext.SonarAlert, fisher.rolledEnemySpawn, base.Center, stay5TimesLonger: false));
  
  				float num4 = fisher.fishingLevel;
