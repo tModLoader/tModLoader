@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
 using Terraria.Localization;
+using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -335,7 +336,20 @@ namespace Terraria.ModLoader
 
 		public static void ModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight) {
 			foreach (var system in HookModifyWorldGenTasks.arr) {
-				system.ModifyWorldGenTasks(passes, ref totalWeight);
+				try {
+					system.ModifyWorldGenTasks(passes, ref totalWeight);
+				}
+				catch(Exception e) {
+					string message = string.Join(
+						"\n",
+						Language.GetTextValue("tModLoader.WorldGenError"),
+						e
+					);
+					Logging.tML.Error(message);
+					Interface.errorMessage.Show(message, 0);
+
+					throw;
+				}
 			}
 		}
 
