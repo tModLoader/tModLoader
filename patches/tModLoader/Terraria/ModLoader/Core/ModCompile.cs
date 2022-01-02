@@ -207,10 +207,18 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			try {
 				status.SetStatus(Language.GetTextValue("tModLoader.Building", mod.Name));
 
-				BuildMod(mod, out var code, out var pdb);
+				BuildMod(mod, out var code, out var pdb, out List<MetadataReference> references);
 				mod.modFile.AddFile(mod.Name+".dll", code);
 				if (pdb != null)
 					mod.modFile.AddFile(mod.Name + ".pdb", pdb);
+
+				foreach (MetadataReference reference in references) {
+					if (!File.Exists(reference.Display))
+						continue;
+
+					byte[] image = File.ReadAllBytes(reference.Display);
+					mod.modFile.AddFile("lib/" + Path.GetFileName(reference.Display), image);
+				}
 
 				PackageMod(mod);
 
@@ -240,12 +248,6 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 			status.SetProgress(packedResourceCount = 0, resources.Count);
 			Parallel.ForEach(resources, resource => AddResource(mod, resource));
-
-			// add dll references from the -eac bin folder
-			var libFolder = Path.Combine(mod.path, "lib");
-			foreach (var dllPath in mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)))
-				if (!dllPath.StartsWith(libFolder))
-					mod.modFile.AddFile("lib/" + Path.GetFileName(dllPath), File.ReadAllBytes(dllPath));
 		}
 
 		private bool IgnoreResource(BuildingMod mod, string resource)
@@ -317,7 +319,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			}
 		}
 
-		private void BuildMod(BuildingMod mod, out byte[] code, out byte[] pdb) {
+		private void BuildMod(BuildingMod mod, out byte[] code, out byte[] pdb, out List<MetadataReference> references) {
 			string dllName = mod.Name + ".dll";
 			string dllPath = null;
 			string pdbPath() => Path.ChangeExtension(dllPath, "pdb");
@@ -333,21 +335,10 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				status.SetStatus(Language.GetTextValue("tModLoader.EnabledEAC", mod.properties.eacPath));
 			}
 
-			// precompiled load, or fallback to Roslyn compile
-			if (dllPath != null) {
-				if (!File.Exists(dllPath))
-					throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorLoadingPrecompiled", dllPath));
-
-				status.SetStatus(Language.GetTextValue("tModLoader.LoadingPrecompiled", dllName, Path.GetFileName(dllPath)));
-				code = File.ReadAllBytes(dllPath);
-				pdb = File.Exists(pdbPath()) ? File.ReadAllBytes(pdbPath()) : null;
-			}
-			else {
-				CompileMod(mod, out code, out pdb, out IEnumerable<MetadataReference> references);
-			}
+			CompileMod(mod, out code, out pdb, out references);
 		}
 
-		private void CompileMod(BuildingMod mod, out byte[] code, out byte[] pdb, out IEnumerable<MetadataReference> references)
+		private void CompileMod(BuildingMod mod, out byte[] code, out byte[] pdb, out List<MetadataReference> references)
 		{
 			status.SetStatus(Language.GetTextValue("tModLoader.Compiling", mod.Name+".dll"));
 			var tempDir = Path.Combine(mod.path, "compile_temp");
@@ -377,19 +368,24 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			// Remove references to terraria and .NET sdk .DLLs
 			references = project.MetadataReferences
 				.Where(x => x.Display?.Contains("Microsoft.NETCore.App.Ref") == false)
-				.Where(x => !terrariaRefs.Contains(x.Display)).ToArray();
+				.Where(x => !terrariaRefs.Contains(x.Display)).ToList();
 
 			// Add the dlls of the referenced mods to the MetadataReferences of the project
 			List<MetadataReference> referencesToAdd = new();
 			foreach (var refMod in FindReferencedMods(mod.properties)) {
 				using (refMod.modFile.Open()) {
+					var matchingReference = references.FirstOrDefault(x => x.Display?.Contains(refMod.Name) == true);
 					// Only add the .dll of the referenced mod if it is not already included in the .csproj
-					if (references.All(x => x.Display?.Contains(refMod.Name) != true)) {
+					if (matchingReference == null) {
 						string path = Path.Combine(tempDir, refMod + ".dll");
 						File.WriteAllBytes(path, refMod.modFile.GetModAssembly());
 
 						MetadataReference metaRef = MetadataReference.CreateFromFile(path);
 						referencesToAdd.Add(metaRef);
+					}
+					else {
+						// Remove the mod from the references that will be added to the .tmod file
+						references.Remove(matchingReference);
 					}
 
 					foreach (var refDll in refMod.properties.dllReferences) {
@@ -422,23 +418,6 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				var firstError = results.First(e => e.Severity == DiagnosticSeverity.Error);
 				throw new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name+".dll", numErrors, numWarnings) + $"\nError: {firstError}");
 			}
-		}
-
-		private string DllRefPath(BuildingMod mod, string dllName)
-		{
-			string path = Path.Combine(mod.path, "lib", dllName) + ".dll";
-
-			if (File.Exists(path))
-				return path;
-
-			if (Program.LaunchParameters.TryGetValue("-eac", out var eacPath)) {
-				var outputCopiedPath = Path.Combine(Path.GetDirectoryName(eacPath), dllName + ".dll");
-
-				if (File.Exists(outputCopiedPath))
-					return outputCopiedPath;
-			}
-
-			throw new BuildException("Missing dll reference: " + path);
 		}
 
 		private static IEnumerable<string> GetTerrariaReferences() {
