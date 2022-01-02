@@ -1,9 +1,11 @@
 #if NETCORE
 using Basic.Reference.Assemblies;
 using log4net.Core;
+using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
+using Microsoft.CodeAnalysis.MSBuild;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -341,11 +343,11 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				pdb = File.Exists(pdbPath()) ? File.ReadAllBytes(pdbPath()) : null;
 			}
 			else {
-				CompileMod(mod, out code, out pdb);
+				CompileMod(mod, out code, out pdb, out IEnumerable<MetadataReference> references);
 			}
 		}
 
-		private void CompileMod(BuildingMod mod, out byte[] code, out byte[] pdb)
+		private void CompileMod(BuildingMod mod, out byte[] code, out byte[] pdb, out IEnumerable<MetadataReference> references)
 		{
 			status.SetStatus(Language.GetTextValue("tModLoader.Compiling", mod.Name+".dll"));
 			var tempDir = Path.Combine(mod.path, "compile_temp");
@@ -353,30 +355,8 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				Directory.Delete(tempDir, true);
 			Directory.CreateDirectory(tempDir);
 
-			var refs = new List<string>();
-
-			//everything used to compile the tModLoader for the target platform
-			refs.AddRange(GetTerrariaReferences());
-
-			//libs added by the mod
-			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)));
-
-			//all dlls included in all referenced mods
-			foreach (var refMod in FindReferencedMods(mod.properties)) {
-				using (refMod.modFile.Open()) {
-					var path = Path.Combine(tempDir, refMod + ".dll");
-					File.WriteAllBytes(path, refMod.modFile.GetModAssembly());
-					refs.Add(path);
-
-					foreach (var refDll in refMod.properties.dllReferences) {
-						path = Path.Combine(tempDir, refDll + ".dll");
-						File.WriteAllBytes(path, refMod.modFile.GetBytes("lib/" + refDll + ".dll"));
-						refs.Add(path);
-					}
-				}
-			}
-
-			var files = Directory.GetFiles(mod.path, "*.cs", SearchOption.AllDirectories).Where(file => !IgnoreCompletely(mod, file)).ToArray();
+			string csprojName = mod.Name + ".csproj";
+			string csprojPath = Path.Combine(mod.path, csprojName);
 
 			bool allowUnsafe =
 				Program.LaunchParameters.TryGetValue("-unsafe", out var unsafeParam) &&
@@ -386,7 +366,45 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
 				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
 
-			var results = RoslynCompile(mod.Name, refs, files, preprocessorSymbols.ToArray(), allowUnsafe, out code, out pdb);
+			// Register the default MSBuild if it hasn't already been registered
+			// Note: will throw an error if it is registered multiple times
+			// Note: "You cannot reference any MSBuild types in the method that calls MSBuildLocator" (https://aka.ms/RegisterMSBuildLocator)
+			if (!MSBuildLocator.IsRegistered)
+				MSBuildLocator.RegisterDefaults();
+			var project = LoadProject(csprojPath, preprocessorSymbols.ToArray(), allowUnsafe);
+
+			string[] terrariaRefs = GetTerrariaReferences().ToArray();
+			// Remove references to terraria and .NET sdk .DLLs
+			references = project.MetadataReferences
+				.Where(x => x.Display?.Contains("Microsoft.NETCore.App.Ref") == false)
+				.Where(x => !terrariaRefs.Contains(x.Display)).ToArray();
+
+			// Add the dlls of the referenced mods to the MetadataReferences of the project
+			List<MetadataReference> referencesToAdd = new();
+			foreach (var refMod in FindReferencedMods(mod.properties)) {
+				using (refMod.modFile.Open()) {
+					// Only add the .dll of the referenced mod if it is not already included in the .csproj
+					if (references.All(x => x.Display?.Contains(refMod.Name) != true)) {
+						string path = Path.Combine(tempDir, refMod + ".dll");
+						File.WriteAllBytes(path, refMod.modFile.GetModAssembly());
+
+						MetadataReference metaRef = MetadataReference.CreateFromFile(path);
+						referencesToAdd.Add(metaRef);
+					}
+
+					foreach (var refDll in refMod.properties.dllReferences) {
+						string path = Path.Combine(tempDir, refDll + ".dll");
+						File.WriteAllBytes(path, refMod.modFile.GetBytes("lib/" + refDll + ".dll"));
+
+						MetadataReference metaRef = MetadataReference.CreateFromFile(path);
+						referencesToAdd.Add(metaRef);
+					}
+				}
+			}
+			project = project.AddMetadataReferences(referencesToAdd);
+
+			// Compile the mod using MSBuild
+			var results = RoslynCompile(project, out code, out pdb);
 
 			int numWarnings = results.Count(e => e.Severity == DiagnosticSeverity.Warning);
 			int numErrors = results.Length - numWarnings;
@@ -439,29 +457,38 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		}
 
 		/// <summary>
+		/// Load a .csproj from csprojPath, using the <paramref name="preprocessorSymbols"/> to determine the optimization
+		/// level, and allowing unsafe code depending on <paramref name="allowUnsafe"/>
+		/// </summary>
+		private static Project LoadProject(string csprojPath, string[] preprocessorSymbols, bool allowUnsafe) {
+			using var workspace = MSBuildWorkspace.Create();
+			var project = workspace.OpenProjectAsync(csprojPath).Result;
+
+			if (project.CompilationOptions is not null) {
+				var newOptions = project.CompilationOptions
+					.WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default)
+					.WithOptimizationLevel(preprocessorSymbols.Contains("DEBUG") ? OptimizationLevel.Debug : OptimizationLevel.Release);
+
+				if (project.CompilationOptions is CSharpCompilationOptions csharpComp)
+					newOptions = csharpComp.WithAllowUnsafe(allowUnsafe);
+
+				project = project.WithCompilationOptions(newOptions);
+			}
+
+			return project;
+		}
+
+		/// <summary>
 		/// Compile a dll for the mod based on required includes.
 		/// </summary>
-		private static Diagnostic[] RoslynCompile(string name, List<string> references, string[] files, string[] preprocessorSymbols, bool allowUnsafe, out byte[] code, out byte[] pdb)
-		{
-			var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
-				assemblyIdentityComparer: DesktopAssemblyIdentityComparer.Default,
-				optimizationLevel: preprocessorSymbols.Contains("DEBUG") ? OptimizationLevel.Debug : OptimizationLevel.Release,
-				allowUnsafe: allowUnsafe);
-
-			var parseOptions = new CSharpParseOptions(LanguageVersion.Preview, preprocessorSymbols: preprocessorSymbols);
-
+		private static Diagnostic[] RoslynCompile(Project project, out byte[] code, out byte[] pdb) {
 			var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
-			var refs = references.Select(s => MetadataReference.CreateFromFile(s));
-			refs = refs.Concat(Net60.All);
-
-			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
-
-			var comp = CSharpCompilation.Create(name, src, refs, options);
+			var compilation = project.GetCompilationAsync().Result;
 
 			using var peStream = new MemoryStream();
 			using var pdbStream = new MemoryStream();
-			var results = comp.Emit(peStream, pdbStream, options: emitOptions);
+			var results = compilation!.Emit(peStream, pdbStream, options: emitOptions);
 
 			code = peStream.ToArray();
 			pdb = pdbStream.ToArray();
