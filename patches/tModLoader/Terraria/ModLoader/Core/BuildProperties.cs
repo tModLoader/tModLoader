@@ -40,7 +40,6 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		internal string[] dllReferences = new string[0];
 		internal ModReference[] modReferences = new ModReference[0];
 		internal ModReference[] weakReferences = new ModReference[0];
 		//this mod will load after any mods in this list
@@ -108,9 +107,6 @@ namespace Terraria.ModLoader.Core
 					continue;
 				}
 				switch (property) {
-					case "dllReferences":
-						properties.dllReferences = ReadList(value).ToArray();
-						break;
 					case "modReferences":
 						properties.modReferences = ReadList(value).Select(ModReference.Parse).ToArray();
 						break;
@@ -172,10 +168,6 @@ namespace Terraria.ModLoader.Core
 			byte[] data;
 			using (MemoryStream memoryStream = new MemoryStream()) {
 				using (BinaryWriter writer = new BinaryWriter(memoryStream)) {
-					if (dllReferences.Length > 0) {
-						writer.Write("dllReferences");
-						WriteList(dllReferences, writer);
-					}
 					if (modReferences.Length > 0) {
 						writer.Write("modReferences");
 						WriteList(modReferences, writer);
@@ -256,7 +248,8 @@ namespace Terraria.ModLoader.Core
 			using (var reader = new BinaryReader(stream)) {
 				for (string tag = reader.ReadString(); tag.Length > 0; tag = reader.ReadString()) {
 					if (tag == "dllReferences") {
-						properties.dllReferences = ReadList(reader).ToArray();
+						// Read the list but ignore the contents in order to support .tmod files created before dllReferences was removed
+						ReadList(reader).ToArray();
 					}
 					if (tag == "modReferences") {
 						properties.modReferences = ReadList(reader).Select(ModReference.Parse).ToArray();
@@ -324,8 +317,6 @@ namespace Terraria.ModLoader.Core
 			sb.AppendLine($"version = {properties.version}");
 			if (properties.homepage.Length > 0)
 				sb.AppendLine($"homepage = {properties.homepage}");
-			if (properties.dllReferences.Length > 0)
-				sb.AppendLine($"dllReferences = {string.Join(", ", properties.dllReferences)}");
 			if (properties.modReferences.Length > 0)
 				sb.AppendLine($"modReferences = {string.Join(", ", properties.modReferences)}");
 			if (properties.weakReferences.Length > 0)
