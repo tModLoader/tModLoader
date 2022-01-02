@@ -335,21 +335,21 @@ namespace Terraria.ModLoader
 		}
 
 		public static void ModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight) {
-			foreach (var system in HookModifyWorldGenTasks.arr) {
-				try {
+			try {
+				foreach (var system in HookModifyWorldGenTasks.arr) {
 					system.ModifyWorldGenTasks(passes, ref totalWeight);
 				}
-				catch(Exception e) {
-					string message = string.Join(
-						"\n",
-						Language.GetTextValue("tModLoader.WorldGenError"),
-						e
-					);
-					Logging.tML.Error(message);
-					Interface.errorMessage.Show(message, 0);
+			}
+			catch (Exception e) {
+				string message = string.Join(
+					"\n",
+					Language.GetTextValue("tModLoader.WorldGenError"),
+					e
+				);
+				Logging.tML.Error(message);
+				Interface.errorMessage.Show(message, 0);
 
-					throw;
-				}
+				throw;
 			}
 		}
 
