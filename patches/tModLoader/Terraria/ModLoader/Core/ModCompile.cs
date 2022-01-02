@@ -354,11 +354,14 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 					MSBuildLocator.RegisterDefaults();
 				var project = LoadProject(csprojPath, Array.Empty<string>(), false);
 
-				string[] terrariaRefs = GetTerrariaReferences().ToArray();
+				// We need to get the file names from the terraria references just in case a mod adds a nuget dependency to a dll already included in tModLoader
+				IEnumerable<string> terrariaRefs = GetTerrariaReferences();
+				string[] tRefFilenames = terrariaRefs.Select(Path.GetFileName).ToArray();
+
 				// Remove references to terraria and .NET sdk .DLLs
 				references = project.MetadataReferences
 					.Where(x => x.Display?.Contains("Microsoft.NETCore.App.Ref") == false)
-					.Where(x => !terrariaRefs.Contains(x.Display)).ToList();
+					.Where(x => !tRefFilenames.Contains(Path.GetFileName(x.Display))).ToList();
 
 				foreach (var refMod in FindReferencedMods(mod.properties)) {
 					var matchingReference = references.FirstOrDefault(x => x.Display?.Contains(refMod.Name) == true);
@@ -398,11 +401,14 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				MSBuildLocator.RegisterDefaults();
 			var project = LoadProject(csprojPath, preprocessorSymbols.ToArray(), allowUnsafe);
 
-			string[] terrariaRefs = GetTerrariaReferences().ToArray();
+			// We need to get the file names from the terraria references just in case a mod adds a nuget dependency to a dll already included in tModLoader
+			IEnumerable<string> terrariaRefs = GetTerrariaReferences();
+			string[] tRefFilenames = terrariaRefs.Select(Path.GetFileName).ToArray();
+
 			// Remove references to terraria and .NET sdk .DLLs
 			references = project.MetadataReferences
 				.Where(x => x.Display?.Contains("Microsoft.NETCore.App.Ref") == false)
-				.Where(x => !terrariaRefs.Contains(x.Display)).ToList();
+				.Where(x => !tRefFilenames.Contains(Path.GetFileName(x.Display))).ToList();
 
 			// Add the dlls of the referenced mods to the MetadataReferences of the project
 			List<MetadataReference> referencesToAdd = new();
@@ -422,15 +428,16 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 						references.Remove(matchingReference);
 					}
 
-					foreach (var refDll in refMod.properties.dllReferences) {
-						string path = Path.Combine(tempDir, refDll + ".dll");
-						File.WriteAllBytes(path, refMod.modFile.GetBytes("lib/" + refDll + ".dll"));
+					foreach (var refDll in refMod.modFile.GetFileNames().Where(x => x.StartsWith("lib/") && Path.GetExtension(x) == ".dll")) {
+						string path = Path.Combine(tempDir, Path.GetFileName(refDll));
+						File.WriteAllBytes(path, refMod.modFile.GetBytes(refDll));
 
 						MetadataReference metaRef = MetadataReference.CreateFromFile(path);
 						referencesToAdd.Add(metaRef);
 					}
 				}
 			}
+			Console.WriteLine(string.Join(" , ", references));
 			project = project.AddMetadataReferences(referencesToAdd);
 
 			// Compile the mod using MSBuild

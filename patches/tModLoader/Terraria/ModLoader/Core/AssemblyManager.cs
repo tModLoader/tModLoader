@@ -40,8 +40,8 @@ namespace Terraria.ModLoader.Core
 			public void LoadAssemblies() {
 				try {
 					using (modFile.Open()) {
-						foreach (var dll in properties.dllReferences) {
-							LoadAssembly(modFile.GetBytes("lib/" + dll + ".dll"));
+						foreach (var dll in modFile.GetFileNames().Where(x => x.StartsWith("lib/") && Path.GetExtension(x) == ".dll")) {
+							LoadAssembly(modFile.GetBytes(dll));
 						}
 
 						assembly = Debugger.IsAttached && File.Exists(properties.eacPath) ?
