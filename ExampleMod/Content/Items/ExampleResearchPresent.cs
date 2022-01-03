@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,65 +11,94 @@ namespace ExampleMod.Content.Items
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Present");
 			Tooltip.SetDefault("Contains a random accessory! Try researching it for infinite of it!");
+
+			// Must be researched as many times as there are items in the game.
+			// If fully researched, and a new mod is added, it will become un-researched and require that much more
+			// Research amount will never go down.
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = ItemLoader.ItemCount;
+
+			// Use a MonoMod hook to allow our presents to run through the 
+			On.Terraria.GameContent.Creative.CreativeUI.SacrificeItem_refItem_refInt32_bool += OnSacrificeItem;
 		}
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.GoodieBag);
 		}
 
-		/*this allows for the present to be researched even when you already have infinite of them*/
-        public override bool PreItemResearch(ref CreativeUI.ItemSacrificeResult result)
-        {
-			/*First, find out how many presents you would still need to research before having infinte of them.*/	
-			int toResearch = CreativeUI.GetAmountToResearch(Item, out bool fullyResearched);
-			/*If you managed to be lucky enough to get infinite presents, it will give you all accessories*/
-			if (fullyResearched || toResearch <= Item.stack) {
-				result = CreativeUI.ItemSacrificeResult.SacrificedAndDone;
-				for (int i = 1; i < ItemLoader.ItemCount; i++) {
-                    if (ContentSamples.ItemsByType[i].accessory) {
-						CreativeUI.ResearchItem(i, out bool researched);
-					}
-                }
-				Main.NewText("You got all accessories!");
-				/*In the fully researched case, we don't want for the items to go trought the research system again, but we still want to decrease the
-				item stack by one*/
-				if (fullyResearched) {
-					//We always lose a present when researching them, even if you already had infinite of them.
-					Item.stack -= 1;
-					// We return false to prevent the UI from running the research again
-					return false;
-                }
-				//otherwise, we want it to be researched by the system as normal
-				return true;
-			} else {
+		// This allows for the present to be researched even when you already have infinite of them.
+		// This is not a standard use of the research system, but allows for re-running a 'research complete' effect
+		private CreativeUI.ItemSacrificeResult OnSacrificeItem(On.Terraria.GameContent.Creative.CreativeUI.orig_SacrificeItem_refItem_refInt32_bool orig,
+				ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer) {
+
+			// If the item being sacrificed has the same type as us (is an ExampleResearchPresent) and is fully researched
+			if (item.type == Type && CreativeUI.GetSacrificesRemaining(Type) == 0) {
+
+				// Re-unlock all accessories, incase mods have changed
+				OnResearched(true);
+
+				// We always lose a present when researching them, even if you already had infinite of them. To show the user something happened
+				Item.stack -= 1;
+
+				// This code is copied from the end of SacrificeItem
+				if (item.stack > 0 && returnRemainderToPlayer) {
+					item.position.X = Main.player[Main.myPlayer].Center.X - item.width / 2;
+					item.position.Y = Main.player[Main.myPlayer].Center.Y - item.height / 2;
+					item = Main.LocalPlayer.GetItem(Main.myPlayer, item, GetItemSettings.InventoryUIToInventorySettings);
+				}
+
+				// This is the amount the sacrifice counter goes up by. We didn't actually change the total number of sacrifices, so this is 0
+				amountWeSacrificed = 0;
+
+				// Return SacrifiedAndDone, so the animation and effects happen
+				return CreativeUI.ItemSacrificeResult.SacrificedAndDone;
+			}
+
+			// Otherwise, call the original method to run the default behaviour
+			return orig(ref item, out amountWeSacrificed, returnRemainderToPlayer);
+		}
+
+		public override void OnResearched(bool fullyResearched) {
+			if (fullyResearched) {
+				LearnAllAccessories();
+			}
+			else {
+				// Attempt to learn a random accessory for each present sacrificed
 				int count = 0;
-				for(int j = Item.stack; j > 0; j--) {
-					if (GetRandomAccessoryToLearn()){
+				for (int j = Item.stack; j > 0; j--) {
+					if (LearnRandomAccessory()) {
 						count++;
 					}
 				}
-				if (count == 0){
+				if (count == 0) {
 					Main.NewText("No new accessory...");
-				} else {
-					Main.NewText("Learned "+ count +" new accessor" + (count == 1? "y": "ies") + " !");
+				}
+				else {
+					Main.NewText("Learned " + count + " new accessor" + (count == 1 ? "y" : "ies") + " !");
 				}
 			}
-			//We return true here because we want the presents to be added to the existing Sacrificed list when the full case did not occurr.
-			return true;
 		}
 
-        private bool GetRandomAccessoryToLearn() {
+		// try 1000 random item ids and if we randomly select an accessory, attempt learn it
+		private bool LearnRandomAccessory() {
 			for (int i = 0; i < 1000; i++) {
-				int tp = Main.rand.Next(1, ItemLoader.ItemCount);
-				if (ContentSamples.ItemsByType[tp].accessory) {
-					CreativeUI.ResearchItem(tp, out bool didResearch);
-					if (!didResearch){
+				int type = Main.rand.Next(1, ItemLoader.ItemCount);
+				if (ContentSamples.ItemsByType[type].accessory) {
+					if (CreativeUI.ResearchItem(type) == CreativeUI.ItemSacrificeResult.SacrificedAndDone) {
 						return true;
 					}
 				}
 			}
 			return false;
 		}
-    }
+
+		private void LearnAllAccessories() {
+			for (int i = 1; i < ItemLoader.ItemCount; i++) {
+				if (ContentSamples.ItemsByType[i].accessory) {
+					CreativeUI.ResearchItem(i);
+				}
+			}
+
+			Main.NewText("You got all accessories!");
+		}
+	}
 }

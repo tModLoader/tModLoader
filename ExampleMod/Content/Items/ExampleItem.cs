@@ -32,13 +32,13 @@ namespace ExampleMod.Content.Items
 				.Register();
 		}
 
-		/*Researching the Example item will give you immediate access to the torch, block, wall and workbench!*/
+		// Researching the Example item will give you immediate access to the torch, block, wall and workbench!
 		public override void OnResearched(bool fullyResearched) {
 			if (fullyResearched) {
-				CreativeUI.ResearchItem(ModContent.ItemType<ExampleTorch>(), out _);
-				CreativeUI.ResearchItem(ModContent.ItemType<ExampleBlock>(), out _);
-				CreativeUI.ResearchItem(ModContent.ItemType<ExampleWall>(), out _);
-				CreativeUI.ResearchItem(ModContent.ItemType<ExampleWorkbench>(), out _);
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleTorch>());
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleBlock>());
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleWall>());
+				CreativeUI.ResearchItem(ModContent.ItemType<ExampleWorkbench>());
 			}
 		}
 	}

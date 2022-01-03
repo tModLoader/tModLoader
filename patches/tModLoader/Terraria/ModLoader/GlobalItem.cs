@@ -203,16 +203,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to check an item entered into the research function before any of the default behaviour is run,before checking if an item is researcheable at all or was already fully researched
-		/// Return false to prevent vanilla item research from happening.
-		/// </summary>
-		/// <param name="item"> the item being prepared for research</param>
-		/// <param name="result"> the Result for what happens in the UI when this method return false. Pass CannotSacrifice for Bounce back, SacrificedAndDone for the same effect as if it was successfuly researched to completion</param>
-		public virtual bool PreItemResearch(Item item, ref ItemSacrificeResult result) {
-			return true;
-		}
-
-		/// <summary>
 		/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
 		/// </summary>
 		/// <param name="item">The item being researched</param>

@@ -450,24 +450,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-
-		private delegate bool DelegatePreItemResearch(Item item, ref GameContent.Creative.CreativeUI.ItemSacrificeResult result);
-		private static HookList HookPreItemResearch = AddHook<DelegatePreItemResearch>(g => g.PreItemResearch);
-		/// <summary>
-		/// Hook that determines if an item will be prevented from being consumed by the research function. 
-		/// </summary>
-		/// <param name="item">The item to be consumed or not</param>
-		public static bool PreItemResearch(Item item, ref GameContent.Creative.CreativeUI.ItemSacrificeResult result) {
-			if (item.ModItem != null && !item.ModItem.PreItemResearch(ref result))
-				return false;
-			foreach (var g in HookCanResearch.Enumerate(item.globalItems)) {
-				if (!g.Instance(item).PreItemResearch(item, ref result))
-					return false;
-			}
-			result = GameContent.Creative.CreativeUI.ItemSacrificeResult.CannotSacrifice;
-			return true;
-		}
-
 		private delegate bool DelegateCanResearch(Item item);
 		private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
 		/// <summary>

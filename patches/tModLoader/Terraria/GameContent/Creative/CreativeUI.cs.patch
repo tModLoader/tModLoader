@@ -16,7 +16,7 @@
  	{
  		public enum ItemSacrificeResult
  		{
-@@ -194,9 +_,25 @@
+@@ -194,9 +_,21 @@
  		}
  
  		public ItemSacrificeResult SacrificeItem(out int amountWeSacrificed) {
@@ -24,19 +24,15 @@
 +		}
 +
 +		// allows to sacrifice any item without needing to go through the ui
-+		public ItemSacrificeResult SacrificeItem(Item toSacrifice, out int amountWeSacrificed) {
++		public static ItemSacrificeResult SacrificeItem(Item toSacrifice, out int amountWeSacrificed) {
 +			return SacrificeItem(ref toSacrifice, out amountWeSacrificed);
 +		}
 +
 +		// allows to sacrifice any item without needing to go through the ui
-+		public ItemSacrificeResult SacrificeItem(ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer = false) {
++		public static ItemSacrificeResult SacrificeItem(ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer = false) {
  			int amountNeeded = 0;
  			amountWeSacrificed = 0;
 -			Item item = _itemSlotsForUI[0];
-+			ItemSacrificeResult res = ItemSacrificeResult.CannotSacrifice;
-+			if(!ItemLoader.PreItemResearch(item, ref res))
-+				return res;
-+
 +			if (!ItemLoader.CanResearch(item))
 +				return ItemSacrificeResult.CannotSacrifice;
 +
@@ -53,8 +49,9 @@
  				item.TurnToAir();
  
  			amountWeSacrificed = num2;
- 			RefreshAvailableInfiniteItemsList();
+-			RefreshAvailableInfiniteItemsList();
 -			if (item.stack > 0) {
++			Main.CreativeMenu.RefreshAvailableInfiniteItemsList();
 +			if (item.stack > 0 && returnRemainderToPlayer) {
  				item.position.X = Main.player[Main.myPlayer].Center.X - (float)(item.width / 2);
  				item.position.Y = Main.player[Main.myPlayer].Center.Y - (float)(item.height / 2);
