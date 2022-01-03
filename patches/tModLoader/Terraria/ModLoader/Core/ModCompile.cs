@@ -1,5 +1,4 @@
 #if NETCORE
-using Basic.Reference.Assemblies;
 using log4net.Core;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
@@ -437,7 +436,6 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 					}
 				}
 			}
-			Console.WriteLine(string.Join(" , ", references));
 			project = project.AddMetadataReferences(referencesToAdd);
 
 			// Compile the mod using MSBuild
