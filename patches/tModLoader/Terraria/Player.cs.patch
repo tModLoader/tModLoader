@@ -4180,6 +4180,15 @@
  			int whoAmI = base.whoAmI;
  			bool flag = true;
  			int num = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
+@@ -36421,7 +_,7 @@
+ 			if (baitTypeUsed == 2673)
+ 				flag = true;
+ 
+-			if (flag) {
++			if (CombinedHooks.CanConsumeBait(this, item) ?? flag) {
+ 				if (item.type == 4361 || item.type == 4362)
+ 					NPC.LadyBugKilled(base.Center, item.type == 4362);
+ 
 @@ -36463,6 +_,11 @@
  			if (sItem.type == 3006)
  				flag2 = true;
