@@ -16,51 +16,34 @@
  	{
  		public enum ItemSacrificeResult
  		{
-@@ -194,18 +_,38 @@
+@@ -194,9 +_,25 @@
  		}
  
  		public ItemSacrificeResult SacrificeItem(out int amountWeSacrificed) {
-+			ItemSacrificeResult res = SacrificeItem(_itemSlotsForUI[0], out amountWeSacrificed);
-+			if (res == ItemSacrificeResult.CannotSacrifice)
-+				return res;
-+			if (_itemSlotsForUI[0].stack > 0) {
-+				_itemSlotsForUI[0].position.X = Main.player[Main.myPlayer].Center.X - (float)(_itemSlotsForUI[0].width / 2);
-+				_itemSlotsForUI[0].position.Y = Main.player[Main.myPlayer].Center.Y - (float)(_itemSlotsForUI[0].height / 2);
-+				_itemSlotsForUI[0] = Main.LocalPlayer.GetItem(Main.myPlayer, _itemSlotsForUI[0], GetItemSettings.InventoryUIToInventorySettings);
-+			}
-+			return res;
++			return SacrificeItem(ref _itemSlotsForUI[0], out amountWeSacrificed);
 +		}
-+		//allows to sacrifice any item without needing to go through the ui
-+		public ItemSacrificeResult SacrificeItem(Item toSacrifice, out int amountWeSacrificed){
++
++		// allows to sacrifice any item without needing to go through the ui
++		public ItemSacrificeResult SacrificeItem(Item toSacrifice, out int amountWeSacrificed) {
++			return SacrificeItem(ref toSacrifice, out amountWeSacrificed);
++		}
++
++		// allows to sacrifice any item without needing to go through the ui
++		public ItemSacrificeResult SacrificeItem(ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer = false) {
  			int amountNeeded = 0;
  			amountWeSacrificed = 0;
 -			Item item = _itemSlotsForUI[0];
--			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded))
-+			Item item = toSacrifice;
 +			ItemSacrificeResult res = ItemSacrificeResult.CannotSacrifice;
-+			if(!ItemLoader.PreItemResearch(item, ref res)) {
++			if(!ItemLoader.PreItemResearch(item, ref res))
 +				return res;
-+			}
++
 +			if (!ItemLoader.CanResearch(item))
++				return ItemSacrificeResult.CannotSacrifice;
++
+ 			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded))
  				return ItemSacrificeResult.CannotSacrifice;
  
-+			int num = 0;
-+			if(!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded))
-+				return ItemSacrificeResult.CannotSacrifice;
-+		
- 			int value = 0;
- 			Main.LocalPlayerCreativeTracker.ItemSacrifices.SacrificesCountByItemIdCache.TryGetValue(item.type, out value);
--			int num = Utils.Clamp(amountNeeded - value, 0, amountNeeded);
-+			num = Utils.Clamp(amountNeeded - value, 0, amountNeeded);
- 			if (num == 0)
--				return ItemSacrificeResult.CannotSacrifice;
--
-+					return ItemSacrificeResult.CannotSacrifice;
-+			
- 			int num2 = Math.Min(num, item.stack);
- 			if (!Main.ServerSideCharacter) {
- 				Main.LocalPlayerCreativeTracker.ItemSacrifices.RegisterItemSacrifice(item.type, num2);
-@@ -216,17 +_,13 @@
+@@ -216,16 +_,17 @@
  			}
  
  			bool num3 = num2 == num;
@@ -72,10 +55,11 @@
  			amountWeSacrificed = num2;
  			RefreshAvailableInfiniteItemsList();
 -			if (item.stack > 0) {
--				item.position.X = Main.player[Main.myPlayer].Center.X - (float)(item.width / 2);
--				item.position.Y = Main.player[Main.myPlayer].Center.Y - (float)(item.height / 2);
++			if (item.stack > 0 && returnRemainderToPlayer) {
+ 				item.position.X = Main.player[Main.myPlayer].Center.X - (float)(item.width / 2);
+ 				item.position.Y = Main.player[Main.myPlayer].Center.Y - (float)(item.height / 2);
 -				_itemSlotsForUI[0] = Main.LocalPlayer.GetItem(Main.myPlayer, item, GetItemSettings.InventoryUIToInventorySettings);
--			}
++				item = Main.LocalPlayer.GetItem(Main.myPlayer, item, GetItemSettings.InventoryUIToInventorySettings);
+ 			}
  
  			if (!num3)
- 				return ItemSacrificeResult.SacrificedButNotDone;
