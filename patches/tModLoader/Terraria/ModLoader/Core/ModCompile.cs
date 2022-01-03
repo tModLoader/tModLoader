@@ -487,7 +487,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 					.WithAssemblyIdentityComparer(DesktopAssemblyIdentityComparer.Default)
 					.WithOptimizationLevel(preprocessorSymbols.Contains("DEBUG") ? OptimizationLevel.Debug : OptimizationLevel.Release);
 
-				if (project.CompilationOptions is CSharpCompilationOptions csharpComp)
+				if (newOptions is CSharpCompilationOptions csharpComp)
 					newOptions = csharpComp.WithAllowUnsafe(allowUnsafe);
 
 				project = project.WithCompilationOptions(newOptions);
