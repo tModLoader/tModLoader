@@ -14,10 +14,10 @@ namespace ExampleMod.Content.Items
 
 			// Must be researched as many times as there are items in the game.
 			// If fully researched, and a new mod is added, it will become un-researched and require that much more
-			// Research amount will never go down.
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = ItemLoader.ItemCount;
+			// Research amount will never go down or over the max limit of 9999.
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = Utils.Clamp(ItemLoader.ItemCount,1,9999);
 
-			// Use a MonoMod hook to allow our presents to run through the 
+			// Use a MonoMod hook to allow our presents to run through the Sacrifice system.
 			On.Terraria.GameContent.Creative.CreativeUI.SacrificeItem_refItem_refInt32_bool += OnSacrificeItem;
 		}
 
@@ -37,7 +37,7 @@ namespace ExampleMod.Content.Items
 				OnResearched(true);
 
 				// We always lose a present when researching them, even if you already had infinite of them. To show the user something happened
-				Item.stack -= 1;
+				item.stack -= 1;
 
 				// This code is copied from the end of SacrificeItem
 				if (item.stack > 0 && returnRemainderToPlayer) {
