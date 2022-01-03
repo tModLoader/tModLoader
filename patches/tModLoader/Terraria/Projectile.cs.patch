@@ -660,11 +660,10 @@
  						for (int l = 0; l < num4; l++) {
  							Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
  							obj.velocity.Y -= 3f + (float)num3 * 1.5f;
-@@ -34203,7 +_,8 @@
- 
+@@ -34204,6 +_,8 @@
  				int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
  			}
--
+ 
 +			PlayerLoader.ModifyCaughtFish(thePlayer, item);
 +			ItemLoader.CaughtFishStack(item);
  			item.newAndShiny = true;
