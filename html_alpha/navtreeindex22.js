@@ -1,5 +1,10 @@
 var NAVTREEINDEX22 =
 {
+"class_terraria_1_1_game_input_1_1_player_input.html#a9e232f875702055d5e793bd0d2a45475":[1,0,2,6,2,27],
+"class_terraria_1_1_game_input_1_1_player_input.html#a9f3bcab776d0930312e00590d51aac87":[1,0,2,6,2,40],
+"class_terraria_1_1_game_input_1_1_player_input.html#aa2490783b49b17eab85d634a0f5f0f83":[1,0,2,6,2,50],
+"class_terraria_1_1_game_input_1_1_player_input.html#aa286e2eede118b79b1fa5c082314c574":[1,0,2,6,2,2],
+"class_terraria_1_1_game_input_1_1_player_input.html#aa2b518fc5f3036c9f4560a85f6333257":[1,0,2,6,2,68],
 "class_terraria_1_1_game_input_1_1_player_input.html#aaac2828bc5c7b927796ad4af2c31575d":[1,0,2,6,2,77],
 "class_terraria_1_1_game_input_1_1_player_input.html#aad39cfa0f982fb9621d79fb91cbaeb79":[1,0,2,6,2,18],
 "class_terraria_1_1_game_input_1_1_player_input.html#ab16cb5ffbaa5bf89a87df80c3d593d78":[1,0,2,6,2,64],
@@ -244,10 +249,5 @@ var NAVTREEINDEX22 =
 "class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_punch_camera_modifier.html":[1,0,2,7,0,3],
 "class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_punch_camera_modifier.html#a8447cd378fe0ac3aa012ee6d1e1d4d9e":[1,0,2,7,0,3,1],
 "class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_punch_camera_modifier.html#a950792fd717cf4e80e33f08ed8084f69":[1,0,2,7,0,3,2],
-"class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_punch_camera_modifier.html#aab01a703255fad138f22ac7c5805852e":[1,0,2,7,0,3,3],
-"class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_punch_camera_modifier.html#ace13fa868e85f55a47a22e743ad721d2":[1,0,2,7,0,3,0],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html":[1,0,2,7,1,0],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a078f598c71ffc9a4e9ce1a146695fb07":[1,0,2,7,1,0,7],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a2c31b667d7fd1338de34eddfb8ccc3cf":[1,0,2,7,1,0,4],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a336289763a82226c4d3b2c9d66b9919b":[1,0,2,7,1,0,6]
+"class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_punch_camera_modifier.html#aab01a703255fad138f22ac7c5805852e":[1,0,2,7,0,3,3]
 };

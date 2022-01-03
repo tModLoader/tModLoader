@@ -1,5 +1,10 @@
 var NAVTREEINDEX20 =
 {
+"class_terraria_1_1_game_content_1_1_u_i_1_1_emote_i_d.html#a26fe3f35914bae34021b3ae16ea4b876":[1,0,2,5,21,11,48],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_emote_i_d.html#a27b33cd53c7b65a433c6a3233523f463":[1,0,2,5,21,11,110],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_emote_i_d.html#a29341c021ec54a9104d9e137e4fe3d78":[1,0,2,5,21,11,113],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_emote_i_d.html#a2af5211afc5706532e9284a0afe07df4":[1,0,2,5,21,11,107],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_emote_i_d.html#a2b281be0c877f1281666fdc4f51b4fe8":[1,0,2,5,21,11,15],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_i_d.html#a2e027caf415e96a44d14ce8d42506988":[1,0,2,5,21,11,118],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_i_d.html#a2e34e383fe4b12a48bae22f1885f4995":[1,0,2,5,21,11,124],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_emote_i_d.html#a2f43bc6a825c379ae7c228dd2e6855ed":[1,0,2,5,21,11,100],
@@ -244,10 +249,5 @@ var NAVTREEINDEX20 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_emotes_menu.html#a2ca395860c84d37bc47c52d513a6ec90":[1,0,2,5,21,5,6,1],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_emotes_menu.html#aad2a8af630ffe9cc286b5384c3fbd4fe":[1,0,2,5,21,5,6,2],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_emotes_menu.html#ac3c54cc07bd1371c2790b3a81dd68242":[1,0,2,5,21,5,6,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_manage_controls.html":[1,0,2,5,21,5,8],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_manage_controls.html#a017cba5ecc6e36d875754e2543470fb1":[1,0,2,5,21,5,8,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_manage_controls.html#a6a81f16abb5062883ae9a42473416e65":[1,0,2,5,21,5,8,4],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_manage_controls.html#acccf28d7190a05107cf952afe29ff331":[1,0,2,5,21,5,8,2],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_manage_controls.html#ad2a2c23065642229d76397acc800174a":[1,0,2,5,21,5,8,3],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_manage_controls.html#ae653d7f31dfb13e04a8aed824cb2d920":[1,0,2,5,21,5,8,1]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_manage_controls.html":[1,0,2,5,21,5,8]
 };

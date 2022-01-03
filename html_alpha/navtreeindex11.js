@@ -1,5 +1,10 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_living_flames.html#ab1b0b989dd6b7b6bb82da7976c881921":[1,0,2,5,10,5,33,2],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_living_flames.html#ae2af291769c7807fb481d116be362446":[1,0,2,5,10,5,33,0],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_mechanical_bosses_dummy_condition.html":[1,0,2,5,10,5,34],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_mechanical_bosses_dummy_condition.html#a467b140ca5f689b5ba8050e78bcee97b":[1,0,2,5,10,5,34,1],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_mechanical_bosses_dummy_condition.html#a4c9916e42aecac22c268a70de7941598":[1,0,2,5,10,5,34,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_mechanical_bosses_dummy_condition.html#a8e239638a40dda0a9c211b33f0e01e86":[1,0,2,5,10,5,34,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html":[1,0,2,5,10,5,35],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html#a4eb1415022b53c9bca405ef0af5b05c3":[1,0,2,5,10,5,35,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX11 =
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_fast_condition_setter.html#a6bf377e9953fc878554a764a623c2072":[1,0,2,5,12,0,0,0],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_fast_condition_setter.html#ad299f4b47ced968d2bf827bbb44c5419":[1,0,2,5,12,0,0,1],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_fast_condition_setter.html#ad8550440c384ea92551b223f327733c9":[1,0,2,5,12,0,0,2],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html":[1,0,2,5,12,0,1],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html#a06cf8ec42d82dba4451af07b152d74eb":[1,0,2,5,12,0,1,2],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html#a0acccc601d2becb6f4300111ab7a66d3":[1,0,2,5,12,0,1,1],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html#a3211f503b22578d6f6105ad2699d4eba":[1,0,2,5,12,0,1,0],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html#abbe1410b16cdb51f2590c545cd912b99":[1,0,2,5,12,0,1,3],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_slime_staff_condition_setter.html":[1,0,2,5,12,0,2]
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_lucky_coin_condition_setter.html":[1,0,2,5,12,0,1]
 };

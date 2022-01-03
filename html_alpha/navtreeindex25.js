@@ -1,5 +1,10 @@
 var NAVTREEINDEX25 =
 {
+"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#a97243989964ea38d1f6cd3e646785cbf":[1,0,2,8,0,1,7],
+"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#aba19d86d73a7f314dffac6c90e25606b":[1,0,2,8,0,1,17],
+"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ac1edfe89266f79000edef935fa635ff0":[1,0,2,8,0,1,5],
+"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ac9fecd16cf57beeb388209f5b3a76b46":[1,0,2,8,0,1,15],
+"class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#adef0338218c224943d364990a749ba4e":[1,0,2,8,0,1,4],
 "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#adfc649be0ce5a61d5c458e3c3bdb687f":[1,0,2,8,0,1,1],
 "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae0f45aa1f8cb059d7ec44d7939775efc":[1,0,2,8,0,1,14],
 "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html#ae3cdb0a865f63f94c10c50e2b395c648":[1,0,2,8,0,1,3],
@@ -244,10 +249,5 @@ var NAVTREEINDEX25 =
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#ab8654d5fa7a1e6935109f3fbb0e75069":[1,0,2,8,3,3,167],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#ab9a22de7ba724e3c9e69bddd015b1fc8":[1,0,2,8,3,3,26],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#aba67f1c6e858b3b64c467df777de271d":[1,0,2,8,3,3,12],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#aba824c402c2b1141795577d66573a925":[1,0,2,8,3,3,93],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#abb3ed4354c742019dc0ef3e82fb4a911":[1,0,2,8,3,3,51],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#abb95089ee4c13ec9fbd4a353169b94e9":[1,0,2,8,3,3,155],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#abba03935da0ddf13d30176f9a6c6d48f":[1,0,2,8,3,3,88],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#abcccd405d2604e5120d545d5e5d26bb1":[1,0,2,8,3,3,164],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#abd78e9a9c090216e82cd9e7ca13c350c":[1,0,2,8,3,3,187]
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#aba824c402c2b1141795577d66573a925":[1,0,2,8,3,3,93]
 };

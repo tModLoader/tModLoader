@@ -113,6 +113,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanBuyItem</b>
 <tr class="memitem:a64bd93acf0eae472426c5110d9ab7e49"><td class="memItemLeft" align="right" valign="top"><a id="a64bd93acf0eae472426c5110d9ab7e49"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanConsumeAmmo</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo)</td></tr>
 <tr class="separator:a64bd93acf0eae472426c5110d9ab7e49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3c8deb6859f672145ebe1b659882ef7"><td class="memItemLeft" align="right" valign="top"><a id="ab3c8deb6859f672145ebe1b659882ef7"></a>
+static ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanConsumeBait</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> bait)</td></tr>
+<tr class="separator:ab3c8deb6859f672145ebe1b659882ef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2567b4ac769289a78016a9a4b22f49c2"><td class="memItemLeft" align="right" valign="top"><a id="a2567b4ac769289a78016a9a4b22f49c2"></a>
 static ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanHitNPC</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> target)</td></tr>
 <tr class="separator:a2567b4ac769289a78016a9a4b22f49c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -134,9 +137,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanShoot</b> (
 <tr class="memitem:a866023133aed389d18b9377184f34cfe"><td class="memItemLeft" align="right" valign="top"><a id="a866023133aed389d18b9377184f34cfe"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanUseItem</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="separator:a866023133aed389d18b9377184f34cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c6cc2196cda44b1b5c470e6b0b4d2da"><td class="memItemLeft" align="right" valign="top"><a id="a4c6cc2196cda44b1b5c470e6b0b4d2da"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>CatchFish</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> fishingRod, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType)</td></tr>
-<tr class="separator:a4c6cc2196cda44b1b5c470e6b0b4d2da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d0de897cdf0409b81df720544357a90"><td class="memItemLeft" align="right" valign="top"><a id="a8d0de897cdf0409b81df720544357a90"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>CatchFish</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="struct_terraria_1_1_data_structures_1_1_fishing_attempt.html">FishingAttempt</a> attempt, ref int itemDrop, ref int enemySpawn, ref <a class="el" href="struct_terraria_1_1_advanced_popup_request.html">AdvancedPopupRequest</a> sonar, ref Vector2 sonarPosition)</td></tr>
+<tr class="separator:a8d0de897cdf0409b81df720544357a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb5cb209460e06c22dab0c6bd74b37df"><td class="memItemLeft" align="right" valign="top"><a id="abb5cb209460e06c22dab0c6bd74b37df"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>clientClone</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_player.html">Player</a> clientClone)</td></tr>
 <tr class="separator:abb5cb209460e06c22dab0c6bd74b37df"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,6 +179,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Kill</b> (<a c
 <tr class="memitem:ab710299d552e4975094cd755754aa5d7"><td class="memItemLeft" align="right" valign="top"><a id="ab710299d552e4975094cd755754aa5d7"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>MeleeEffects</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> item, Rectangle hitbox)</td></tr>
 <tr class="separator:ab710299d552e4975094cd755754aa5d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24e7a5c1872fa1c4756be5f09aad47cc"><td class="memItemLeft" align="right" valign="top"><a id="a24e7a5c1872fa1c4756be5f09aad47cc"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyCaughtFish</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> fish)</td></tr>
+<tr class="separator:a24e7a5c1872fa1c4756be5f09aad47cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6325d283b0301c46043544b10ab73852"><td class="memItemLeft" align="right" valign="top"><a id="a6325d283b0301c46043544b10ab73852"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyDrawInfo</b> (ref <a class="el" href="struct_terraria_1_1_data_structures_1_1_player_draw_set.html">PlayerDrawSet</a> drawInfo)</td></tr>
 <tr class="separator:a6325d283b0301c46043544b10ab73852"><td class="memSeparator" colspan="2">&#160;</td></tr>

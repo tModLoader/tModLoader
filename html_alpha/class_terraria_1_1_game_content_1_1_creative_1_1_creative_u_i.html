@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_game_content_1_1_cr
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
@@ -149,6 +150,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleMenu</b> ()</td
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> (GameTime gameTime)</td></tr>
 <tr class="separator:a4d9ec306e656b51fcb964776832b0779"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:aab393067dc4c42736b0d5e3b7cb89d1b"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i.html#aab393067dc4c42736b0d5e3b7cb89d1b">GetSacrificeCount</a> (int type, out bool fullyResearched)</td></tr>
+<tr class="memdesc:aab393067dc4c42736b0d5e3b7cb89d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method that allows you to easily get how many items of a type you have researched so far  <a href="class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i.html#aab393067dc4c42736b0d5e3b7cb89d1b">More...</a><br /></td></tr>
+<tr class="separator:aab393067dc4c42736b0d5e3b7cb89d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab84475156ba2bc631978a21c46e02746"><td class="memItemLeft" align="right" valign="top">static ? int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i.html#ab84475156ba2bc631978a21c46e02746">GetSacrificesRemaining</a> (int type)</td></tr>
+<tr class="memdesc:ab84475156ba2bc631978a21c46e02746"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method that allows you to easily get how many items of a type you need to fully research that item  <a href="class_terraria_1_1_game_content_1_1_creative_1_1_creative_u_i.html#ab84475156ba2bc631978a21c46e02746">More...</a><br /></td></tr>
+<tr class="separator:ab84475156ba2bc631978a21c46e02746"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf27ea2a27ea1cbc8c3aa653bf33a7a2"><td class="memItemLeft" align="right" valign="top"><a id="adf27ea2a27ea1cbc8c3aa653bf33a7a2"></a>
+static ItemSacrificeResult&#160;</td><td class="memItemRight" valign="bottom"><b>ResearchItem</b> (int type)</td></tr>
+<tr class="separator:adf27ea2a27ea1cbc8c3aa653bf33a7a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6ed6f1fd831671412fbe99a9d0cca7e"><td class="memItemLeft" align="right" valign="top"><a id="ae6ed6f1fd831671412fbe99a9d0cca7e"></a>
+static ItemSacrificeResult&#160;</td><td class="memItemRight" valign="bottom"><b>SacrificeItem</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> toSacrifice, out int amountWeSacrificed)</td></tr>
+<tr class="separator:ae6ed6f1fd831671412fbe99a9d0cca7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecb013144410d9e557e10c70eb91e2a8"><td class="memItemLeft" align="right" valign="top"><a id="aecb013144410d9e557e10c70eb91e2a8"></a>
+static ItemSacrificeResult&#160;</td><td class="memItemRight" valign="bottom"><b>SacrificeItem</b> (ref <a class="el" href="class_terraria_1_1_item.html">Item</a> item, out int amountWeSacrificed, bool returnRemainderToPlayer=false)</td></tr>
+<tr class="separator:aecb013144410d9e557e10c70eb91e2a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aeafef2209b28a08eb91a661844442c13"><td class="memItemLeft" align="right" valign="top"><a id="aeafef2209b28a08eb91a661844442c13"></a>
@@ -176,6 +195,88 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Blocked</b><code> [ge
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>Enabled</b><code> [get]</code></td></tr>
 <tr class="separator:aac49a267b6c4750cbf59ab8a1d66441c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aab393067dc4c42736b0d5e3b7cb89d1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab393067dc4c42736b0d5e3b7cb89d1b">&#9670;&nbsp;</a></span>GetSacrificeCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.GameContent.Creative.CreativeUI.GetSacrificeCount </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out bool&#160;</td>
+          <td class="paramname"><em>fullyResearched</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Method that allows you to easily get how many items of a type you have researched so far </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The item type to check.</td></tr>
+    <tr><td class="paramname">fullyResearched</td><td>True if it is fully researched.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ab84475156ba2bc631978a21c46e02746"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab84475156ba2bc631978a21c46e02746">&#9670;&nbsp;</a></span>GetSacrificesRemaining()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static ? int Terraria.GameContent.Creative.CreativeUI.GetSacrificesRemaining </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Method that allows you to easily get how many items of a type you need to fully research that item </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The item type to check.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of sacrifices remaining , or null if the item can never be unlocked.</dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

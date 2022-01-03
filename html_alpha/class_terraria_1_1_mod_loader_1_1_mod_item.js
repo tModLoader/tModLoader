@@ -14,10 +14,12 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "CanBeConsumedAsAmmo", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a1e631dcdb8f74c90e219db68da956391", null ],
     [ "CanBurnInLava", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a4ade56e1ccad98f196a937714fdbfbd2", null ],
     [ "CanConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a244e3514a9c4a69175419da96fbe35b6", null ],
+    [ "CanConsumeBait", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a3365a5770251bccc91b56a912cf42e23", null ],
     [ "CanEquipAccessory", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ae2c30c6bc273da2bd24e30fb393f2780", null ],
     [ "CanHitNPC", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a3bdcbd0bc7997c3fd8c8ec9dcbe2efb9", null ],
     [ "CanHitPvp", "class_terraria_1_1_mod_loader_1_1_mod_item.html#afc6b474a8fe5ac64453c3ecffbd538d1", null ],
     [ "CanPickup", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a18c67843a4f6b151c530c1165991ec87", null ],
+    [ "CanResearch", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac453f512e7d93b9b810238058b80c689", null ],
     [ "CanRightClick", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a45537fbcc95bff5e0855b183e178f524", null ],
     [ "CanShoot", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a9cfa4e9abb2c74c13a9eabf7192a43ea", null ],
     [ "CanStackInWorld", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a59eecaf5111ab06267eaeb72c16dd3a9", null ],
@@ -69,6 +71,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "OnHitPvp", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a63802f959b06e51f33c304f6843ea452", null ],
     [ "OnMissingMana", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a5ccfa0e1ded1e2d3e81d6a0fa8aaddd0", null ],
     [ "OnPickup", "class_terraria_1_1_mod_loader_1_1_mod_item.html#af4c3bac6bb5b2b23cb4818591699cc24", null ],
+    [ "OnResearched", "class_terraria_1_1_mod_loader_1_1_mod_item.html#abcaf765f0c67878271f8e4e69acb7de4", null ],
     [ "OpenBossBag", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53a548e1400eada55a6526d2f320d6c", null ],
     [ "PickAmmo", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a26d5d37fda0acaa0e3071b649c1a614e", null ],
     [ "PostDrawInInventory", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aeea295ae4ec512d2f6667019b044f8b4", null ],
@@ -113,6 +116,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aefeef1e7ba614411d9ce7f70fb961355", null ],
     [ "Item", "class_terraria_1_1_mod_loader_1_1_mod_item.html#abc96a407c86a78570037ef4318d9c112", null ],
     [ "OnlyShootOnSwing", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a6daba9133f6197cf30b1b9f628d27a62", null ],
+    [ "SacrificeTotal", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a05f73e5975ca43ca2b0f5785cad7ea4c", null ],
     [ "Tooltip", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a0fa62e240cf6cb00feb461f9f8dd9eb7", null ],
     [ "Type", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a97741bf0a58d7f9c516aca91e5cac9bc", null ]
 ];

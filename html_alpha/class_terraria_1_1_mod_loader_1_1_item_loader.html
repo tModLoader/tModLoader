@@ -125,6 +125,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAccessoryBe
 <tr class="memitem:ae874452bca5ff5158ac7ec0d6d3116a1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ae874452bca5ff5158ac7ec0d6d3116a1">CanConsumeAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:ae874452bca5ff5158ac7ec0d6d3116a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a244e3514a9c4a69175419da96fbe35b6" title="Whether or not ammo will be consumed upon usage. Called both by the weapon; if at least one of this a...">ModItem.CanConsumeAmmo</a> for the weapon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1e631dcdb8f74c90e219db68da956391" title="Whether or not ammo will be consumed upon usage. Called by the ammo; if at least one of this and CanC...">ModItem.CanBeConsumedAsAmmo</a> for the ammo, then each corresponding hook for the weapon and ammo, until one of them returns false. If all of them return true, returns true.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ae874452bca5ff5158ac7ec0d6d3116a1">More...</a><br /></td></tr>
 <tr class="separator:ae874452bca5ff5158ac7ec0d6d3116a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e8dcf2ba55001c6de7212da837e4e26"><td class="memItemLeft" align="right" valign="top"><a id="a0e8dcf2ba55001c6de7212da837e4e26"></a>
+static ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanConsumeBait</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> bait)</td></tr>
+<tr class="separator:a0e8dcf2ba55001c6de7212da837e4e26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff280c06919e1b8cadbea1b0fdcc1cf6"><td class="memItemLeft" align="right" valign="top"><a id="aff280c06919e1b8cadbea1b0fdcc1cf6"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanEquipAccessory</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, int slot, bool modded)</td></tr>
 <tr class="separator:aff280c06919e1b8cadbea1b0fdcc1cf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,6 +140,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanEquipAccess
 <tr class="memitem:a7aace9a1c9f7016db5b64a8e4cca459a"><td class="memItemLeft" align="right" valign="top"><a id="a7aace9a1c9f7016db5b64a8e4cca459a"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanPickup</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="separator:a7aace9a1c9f7016db5b64a8e4cca459a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad89d5417a8ebf8c5c1b12379dacbba27"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ad89d5417a8ebf8c5c1b12379dacbba27">CanResearch</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
+<tr class="memdesc:ad89d5417a8ebf8c5c1b12379dacbba27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hook that determines if an item will be prevented from being consumed by the research function.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ad89d5417a8ebf8c5c1b12379dacbba27">More...</a><br /></td></tr>
+<tr class="separator:ad89d5417a8ebf8c5c1b12379dacbba27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb29a5e0fa6ed446b2cc04fcc54c60f3"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#afb29a5e0fa6ed446b2cc04fcc54c60f3">CanRightClick</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:afb29a5e0fa6ed446b2cc04fcc54c60f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a45537fbcc95bff5e0855b183e178f524" title="Returns whether or not this item does something when it is right-clicked in the inventory....">ModItem.CanRightClick</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a9d80b70c38916f2421d9467db61b5dd0" title="Returns whether or not an item does something when right-clicked in the inventory....">GlobalItem.CanRightClick</a> hooks, until one of the returns true. If one of the returns true, returns Main.mouseRight. Otherwise, returns false.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#afb29a5e0fa6ed446b2cc04fcc54c60f3">More...</a><br /></td></tr>
 <tr class="separator:afb29a5e0fa6ed446b2cc04fcc54c60f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -267,6 +273,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCreate</b> (
 <tr class="memitem:a6cec4b71a6f2e057b5f83e5dd68be412"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a6cec4b71a6f2e057b5f83e5dd68be412">OnPickup</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a6cec4b71a6f2e057b5f83e5dd68be412"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a9afe15e7b9c359bee44dbdec1594d457" title="Allows you to make special things happen when the player picks up an item. Return false to stop the i...">GlobalItem.OnPickup</a> hooks then <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#af4c3bac6bb5b2b23cb4818591699cc24" title="Allows you to make special things happen when the player picks up this item. Return false to stop the...">ModItem.OnPickup</a>, until one of the returns false. Returns true if all of the hooks return true.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a6cec4b71a6f2e057b5f83e5dd68be412">More...</a><br /></td></tr>
 <tr class="separator:a6cec4b71a6f2e057b5f83e5dd68be412"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74b7e6b56d2c047bd44bf6048df298a6"><td class="memItemLeft" align="right" valign="top"><a id="a74b7e6b56d2c047bd44bf6048df298a6"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnResearched</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, bool fullyResearched)</td></tr>
+<tr class="separator:a74b7e6b56d2c047bd44bf6048df298a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26a04e0f6b5c69e8e50f020b6b83b5b6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a26a04e0f6b5c69e8e50f020b6b83b5b6">OpenBossBag</a> (int type, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref int npc)</td></tr>
 <tr class="memdesc:a26a04e0f6b5c69e8e50f020b6b83b5b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the item is a modded item and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a" title="The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains....">ModItem.BossBagNPC</a> is greater than 0, calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53a548e1400eada55a6526d2f320d6c" title="Allows you to give items to the given player when this item is right-clicked in the inventory if the ...">ModItem.OpenBossBag</a> and sets npc to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a" title="The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains....">ModItem.BossBagNPC</a>.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a26a04e0f6b5c69e8e50f020b6b83b5b6">More...</a><br /></td></tr>
 <tr class="separator:a26a04e0f6b5c69e8e50f020b6b83b5b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -670,6 +679,40 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </div><div class="memdoc">
 
 <p>Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aa61f8b08fb3fa63cc21b00e4e308da5e" title="Allows you to determine whether a melee weapon can hit the given opponent player when swung....">GlobalItem.CanHitPvp</a> hooks, then <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#afc6b474a8fe5ac64453c3ecffbd538d1" title="Allows you to determine whether this melee weapon can hit the given opponent player when swung....">ModItem.CanHitPvp</a>, until one of them returns false. If all of them return true, this returns true. </p>
+
+</div>
+</div>
+<a id="ad89d5417a8ebf8c5c1b12379dacbba27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad89d5417a8ebf8c5c1b12379dacbba27">&#9670;&nbsp;</a></span>CanResearch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Terraria.ModLoader.ItemLoader.CanResearch </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Hook that determines if an item will be prevented from being consumed by the research function. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item to be consumed or not</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

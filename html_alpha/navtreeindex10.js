@@ -1,5 +1,10 @@
 var NAVTREEINDEX10 =
 {
+"class_terraria_1_1_game_content_1_1_generation_1_1_shape_root.html#a166d8bf03f83c87a144cced24e199a7e":[1,0,2,5,8,7,1],
+"class_terraria_1_1_game_content_1_1_generation_1_1_shape_root.html#ac59b02c56fcd385cbcd69f4940a18035":[1,0,2,5,8,7,0],
+"class_terraria_1_1_game_content_1_1_generation_1_1_shape_runner.html":[1,0,2,5,8,8],
+"class_terraria_1_1_game_content_1_1_generation_1_1_shape_runner.html#a570102cbe76c5cecfeba9cb39f1fc350":[1,0,2,5,8,8,0],
+"class_terraria_1_1_game_content_1_1_generation_1_1_shape_runner.html#abb7be3bf530b2bb7b6bb3efa5c23b8a2":[1,0,2,5,8,8,1],
 "class_terraria_1_1_game_content_1_1_generation_1_1_track_generator.html":[1,0,2,5,8,9],
 "class_terraria_1_1_game_content_1_1_generation_1_1_track_generator.html#a162f16e48c37c31ac5745e3c0464e9a6":[1,0,2,5,8,9,0],
 "class_terraria_1_1_game_content_1_1_golf_1_1_fancy_golf_prediction_line.html":[1,0,2,5,9,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX10 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_boss_and_not_expert.html#a8d4f794fbf6dacc9635dc6b0bd74d06b":[1,0,2,5,10,5,32,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_boss_and_not_expert.html#aab1dc74961055bf05c39ea836e6d184b":[1,0,2,5,10,5,32,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_living_flames.html":[1,0,2,5,10,5,33],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_living_flames.html#a8adad08b30ce4099fca4cbb29b619523":[1,0,2,5,10,5,33,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_living_flames.html#ab1b0b989dd6b7b6bb82da7976c881921":[1,0,2,5,10,5,33,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_living_flames.html#ae2af291769c7807fb481d116be362446":[1,0,2,5,10,5,33,0],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_mechanical_bosses_dummy_condition.html":[1,0,2,5,10,5,34],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_mechanical_bosses_dummy_condition.html#a467b140ca5f689b5ba8050e78bcee97b":[1,0,2,5,10,5,34,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_mechanical_bosses_dummy_condition.html#a4c9916e42aecac22c268a70de7941598":[1,0,2,5,10,5,34,0]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_living_flames.html#a8adad08b30ce4099fca4cbb29b619523":[1,0,2,5,10,5,33,1]
 };
