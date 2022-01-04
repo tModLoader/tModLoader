@@ -423,6 +423,20 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate bool? DelegateCanConsumeBait(Player baiter, Item bait);
+		private static HookList HookCanConsumeBait = AddHook<DelegateCanConsumeBait>(g => g.CanConsumeBait);
+
+		public static bool? CanConsumeBait(Player player, Item bait) {
+			bool? ret = bait.ModItem?.CanConsumeBait(player);
+
+			foreach (GlobalItem g in HookCanConsumeBait.Enumerate(bait)) {
+				if (g.CanConsumeBait(player, bait) is bool b)
+					ret = (ret ?? true) && b;
+			}
+			
+			return ret;
+		}
+
 		private delegate void DelegateModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup);
 		private static HookList HookModifyResearchSorting = AddHook<DelegateModifyResearchSorting>(g => g.ModifyResearchSorting);
 		public static void ModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
@@ -436,7 +450,35 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat);
+		private delegate bool DelegateCanResearch(Item item);
+		private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
+		/// <summary>
+		/// Hook that determines if an item will be prevented from being consumed by the research function. 
+		/// </summary>
+		/// <param name="item">The item to be consumed or not</param>
+		public static bool CanResearch(Item item) {
+			if (item.ModItem != null && !item.ModItem.CanResearch())
+				return false;
+			foreach (var g in HookCanResearch.Enumerate(item.globalItems)) {
+				if (!g.Instance(item).CanResearch(item))
+					return false;
+			}
+			return true;
+		}
+
+		private delegate void DelegateOnResearched(Item item, bool fullyResearched);
+		private static HookList HookOnResearched = AddHook<DelegateOnResearched>(g => g.OnResearched);
+		public static void OnResearched(Item item, bool fullyResearched) {
+			if (item.IsAir)
+				return;
+
+			item.ModItem?.OnResearched(fullyResearched);
+
+			foreach (var g in HookOnResearched.Enumerate(item.globalItems))
+				g.Instance(item).OnResearched(item, fullyResearched);
+		}
+    
+    private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.

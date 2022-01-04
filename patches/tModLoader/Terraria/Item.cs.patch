@@ -379,6 +379,49 @@
  			useStyle = 1;
  			autoReuse = true;
  			useAnimation = 15;
+@@ -44795,6 +_,11 @@
+ 			mountType = mount;
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of common Item values common to placeable walls.<br/>
++		/// Specifically: useStyle = 1;	useTurn = true;	useAnimation = 15; useTime = 7; autoReuse = true; maxStack = 999; consumable = true; createWall = wallToPlace; width = 12; height = 12;<br/>
++		/// </summary>
++		/// <param name="wallToPlace"></param>
+ 		public void DefaultToPlacableWall(ushort wallToPlace) {
+ 			useStyle = 1;
+ 			useTurn = true;
+@@ -44814,6 +_,14 @@
+ 			crit = bonusCritChance;
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of common Item values common to bow weapons.<br/>
++		/// Specfically: width = 14; height = 30; UseSound = SoundID.Item5;<br/>
++		/// Addtionally: <inheritdoc cref="DefaultToRangedWeapon(int,int,int,float,bool)" />
++		/// </summary>
++		/// <param name="singleShotTime"></param>
++		/// <param name="shotVelocity"></param>
++		/// <param name="hasAutoReuse"></param>
+ 		public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
+ 			width = 14;
+@@ -44832,6 +_,15 @@
+ 			magic = true;
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of common Item values common to ranged weapons.<br/>
++		/// Specifically: autoReuse = hasAutoReuse; useStyle = 5; useAnimation = singleShotTime; useTime = singleShotTime; shoot = baseProjType; useAmmo = ammoID; shootSpeed = shotVelocity; noMelee = true; ranged = true;<br/>
++		/// </summary>
++		/// <param name="baseProjType"></param>
++		/// <param name="ammoID"></param>
++		/// <param name="singleShotTime"></param>
++		/// <param name="shotVelocity"></param>
++		/// <param name="hasAutoReuse"></param>
+ 		public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
+ 			autoReuse = hasAutoReuse;
+ 			useStyle = 5;
 @@ -44857,7 +_,7 @@
  			maxStack = 999;
  		}

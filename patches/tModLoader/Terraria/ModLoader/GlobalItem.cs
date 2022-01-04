@@ -8,6 +8,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using static Terraria.GameContent.Creative.CreativeUI;
 
 namespace Terraria.ModLoader
 {
@@ -189,6 +190,32 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item being used</param>
 		/// <param name="itemGroup">The item group this item is being assigned to</param>
 		public virtual void ModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
+		}
+
+		/// <summary>
+		/// Allows you to choose if a given bait will be consumed by a given player
+		/// Not consuming will always take priority over forced consumption
+		/// </summary>
+		/// <param name="bait">The bait being used</param>
+		/// <param name="player">The player using the item</param>
+		public virtual bool? CanConsumeBait(Player player, Item bait) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
+		/// </summary>
+		/// <param name="item">The item being researched</param>
+		public virtual bool CanResearch(Item item) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to create custom behaviour when an item is accepted by the Research function 
+		/// </summary>
+		/// <param name="item">The item being researched</param>
+		/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
+		public virtual void OnResearched(Item item, bool fullyResearched) {
 		}
 
 		/// <summary>
