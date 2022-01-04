@@ -99,6 +99,15 @@
  			_specialTileX[_specialTilesCount] = x;
  			_specialTileY[_specialTilesCount] = y;
  			_specialTilesCount++;
+@@ -5094,6 +_,8 @@
+ 
+ 			Vector2 position = new Vector2(i * 16, j * 16);
+ 			int type = 706;
++			if (Main.waterStyle >= Main.maxLiquidTypes)
++				type = LoaderManager.Get<WaterStylesLoader>().Get(Main.waterStyle).GetDropletGore();
+ 			if (Main.waterStyle == 12)
+ 				type = 1147;
+ 			else if (Main.waterStyle > 1)
 @@ -5423,6 +_,8 @@
  
  					Main.spriteBatch.Draw(value9, vector, value10, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
