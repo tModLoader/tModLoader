@@ -4220,7 +4220,7 @@
 +		}
 +
 +		private bool TryAllowingItemReuse_Inner(Item sItem) {
-+			// Split into _Inner because it is used by UsingAutoReusableItem 
++			// Split into _Inner because it is used by ShouldAutoReuseItem 
 +			bool flag = false;
 +
 +			bool? allow = CombinedHooks.CanAutoReuseItem(this, sItem);

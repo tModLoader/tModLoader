@@ -332,6 +332,6 @@ namespace Terraria
 		/// </summary>
 		/// <param name="item">The item currently in use</param>
 		/// <returns>true if player can autoswing using the item</returns>
-		public bool UsingAutoReusableItem(Item item) => TryAllowingItemReuse_Inner(item);
+		public bool ShouldAutoReuseItem(Item item) => TryAllowingItemReuse_Inner(item);
 	}
 }
