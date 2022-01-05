@@ -50,6 +50,29 @@ namespace Terraria.ModLoader
 			return PlayerLoader.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);
 		}
 
+		// In Player.TryAllowingItemReuse_Inner
+		public static bool? CanAutoReuseItem(Player player, Item item) {
+			bool? result = null;
+
+			bool ModifyResult(bool? nbool) {
+				if (nbool.HasValue) {
+					result = nbool.Value;
+				}
+
+				return result != false;
+			}
+
+			if (!ModifyResult(PlayerLoader.CanAutoReuseItem(player, item))) {
+				return false;
+			}
+
+			if (!ModifyResult(ItemLoader.CanAutoReuseItem(item, player))) {
+				return false;
+			}
+
+			return result;
+		}
+
 		public static bool CanShoot(Player player, Item item) {
 			return PlayerLoader.CanShoot(player, item) && ItemLoader.CanShoot(item, player);
 		}
