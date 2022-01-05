@@ -109,6 +109,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af58b9852f0aa053b294553324b0dcdf1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#af58b9852f0aa053b294553324b0dcdf1">AnglerQuestReward</a> (float rareMultiplier, <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_terraria_1_1_item.html">Item</a> &gt; rewardItems)</td></tr>
 <tr class="memdesc:af58b9852f0aa053b294553324b0dcdf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add to, change, or remove from the items the player earns when finishing an Angler quest. The rareMultiplier is a number between 0.15 and 1 inclusively; the lower it is the higher chance there should be for the player to earn rare items.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#af58b9852f0aa053b294553324b0dcdf1">More...</a><br /></td></tr>
 <tr class="separator:af58b9852f0aa053b294553324b0dcdf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff69da6064e1e86158c5996834998a97"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aff69da6064e1e86158c5996834998a97">CanAutoReuseItem</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
+<tr class="memdesc:aff69da6064e1e86158c5996834998a97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the autoswing (auto-reuse) behavior of any item without having to mess with Item.autoReuse. <br  />
+Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable. <br  />
+Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aff69da6064e1e86158c5996834998a97">More...</a><br /></td></tr>
+<tr class="separator:aff69da6064e1e86158c5996834998a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b4b3256f466d75ebb9c97f0c53b5045"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a1b4b3256f466d75ebb9c97f0c53b5045">CanBeHitByNPC</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, ref int cooldownSlot)</td></tr>
 <tr class="memdesc:a1b4b3256f466d75ebb9c97f0c53b5045"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can hit this player. Return false to block this player from being hit by the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. Returns true by default. CooldownSlot determines which of the player's cooldown counters to use (-1, 0, or 1), and defaults to -1.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a1b4b3256f466d75ebb9c97f0c53b5045">More...</a><br /></td></tr>
 <tr class="separator:a1b4b3256f466d75ebb9c97f0c53b5045"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -555,6 +560,42 @@ Properties</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">rareMultiplier</td><td></td></tr>
     <tr><td class="paramname">rewardItems</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aff69da6064e1e86158c5996834998a97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff69da6064e1e86158c5996834998a97">&#9670;&nbsp;</a></span>CanAutoReuseItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? bool Terraria.ModLoader.ModPlayer.CanAutoReuseItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to modify the autoswing (auto-reuse) behavior of any item without having to mess with Item.autoReuse. <br  />
+Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable. <br  />
+Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item. </td></tr>
   </table>
   </dd>
 </dl>

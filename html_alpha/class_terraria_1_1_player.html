@@ -949,6 +949,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetTalkNPC</b> (int n
 <tr class="memitem:a22a94f0c2dbe7f784a5b81133b625a5f"><td class="memItemLeft" align="right" valign="top"><a id="a22a94f0c2dbe7f784a5b81133b625a5f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ShadowDodge</b> ()</td></tr>
 <tr class="separator:a22a94f0c2dbe7f784a5b81133b625a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcd6c5e5edffd773aadbf294678641d9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#abcd6c5e5edffd773aadbf294678641d9">ShouldAutoReuseItem</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
+<tr class="memdesc:abcd6c5e5edffd773aadbf294678641d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper method for modders to check if the player is able to autoswing (auto-reuse) an item. <br  />
+This checks item.autoReuse &amp;&amp; !player.noItems, and if Feral Claws effect applies to the item. <br  />
+Additionally, any effects applied through the CanAutoReuseItem hooks.  <a href="class_terraria_1_1_player.html#abcd6c5e5edffd773aadbf294678641d9">More...</a><br /></td></tr>
+<tr class="separator:abcd6c5e5edffd773aadbf294678641d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a337e0f9d80121b45743659da67023210"><td class="memItemLeft" align="right" valign="top"><a id="a337e0f9d80121b45743659da67023210"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShouldDrawFootball</b> ()</td></tr>
 <tr class="separator:a337e0f9d80121b45743659da67023210"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4804,6 +4809,35 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="abcd6c5e5edffd773aadbf294678641d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcd6c5e5edffd773aadbf294678641d9">&#9670;&nbsp;</a></span>ShouldAutoReuseItem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Player.ShouldAutoReuseItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Helper method for modders to check if the player is able to autoswing (auto-reuse) an item. <br  />
+This checks item.autoReuse &amp;&amp; !player.noItems, and if Feral Claws effect applies to the item. <br  />
+Additionally, any effects applied through the CanAutoReuseItem hooks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item currently in use</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if player can autoswing using the item</dd></dl>
 
 </div>
 </div>

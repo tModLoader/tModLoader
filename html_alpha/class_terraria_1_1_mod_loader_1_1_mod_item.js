@@ -11,6 +11,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "AutoLightSelect", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a585772b09b6212477f3334acc95e14b5", null ],
     [ "AutoStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aae528c9f401b23845f68032e0e5514af", null ],
     [ "CanAccessoryBeEquippedWith", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a4703a2d4c113bfe53fd22920fadc5650", null ],
+    [ "CanAutoReuseItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ab2fa13a1dbb600ae766a40a468947b5f", null ],
     [ "CanBeConsumedAsAmmo", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a1e631dcdb8f74c90e219db68da956391", null ],
     [ "CanBurnInLava", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a4ade56e1ccad98f196a937714fdbfbd2", null ],
     [ "CanConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a244e3514a9c4a69175419da96fbe35b6", null ],

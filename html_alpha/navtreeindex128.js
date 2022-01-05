@@ -1,5 +1,12 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_get_item_settings.html#aa4fce49bc8b594005ee4954e07113f62":[1,0,2,37,8],
+"struct_terraria_1_1_get_item_settings.html#ab333c5c50af839f318f0d274a9245e7c":[1,0,2,37,4],
+"struct_terraria_1_1_get_item_settings.html#adcbc21751ff29fba94377f7f1813f1e6":[1,0,2,37,5],
+"struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html":[1,0,2,7,0,0],
+"struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html#a2038afc5416fdafe2210b31c3a004d86":[1,0,2,7,0,0,2],
+"struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html#a3df255a10f783238d89fb1f33c82903b":[1,0,2,7,0,0,3],
+"struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html#a7d7531d14b086a9ed405783045f5390a":[1,0,2,7,0,0,1],
 "struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html#ae68101e9b9fbf4e153d48dbf551e704a":[1,0,2,7,0,0,0],
 "struct_terraria_1_1_graphics_1_1_empress_blade_drawer.html":[1,0,2,7,7],
 "struct_terraria_1_1_graphics_1_1_empress_blade_drawer.html#a62019d89d009971148256fd871b3bb6b":[1,0,2,7,7,2],
@@ -242,12 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_net_1_1_net_packet.html#a22335ad9a27fdcda6d3c1952eeb6d308":[1,0,2,15,5,2],
 "struct_terraria_1_1_net_1_1_net_packet.html#a23229000d7f7e0ecf4169b01f6743eef":[1,0,2,15,5,0],
 "struct_terraria_1_1_net_1_1_net_packet.html#a52ce8d4acb50bab704347b939be7c9c4":[1,0,2,15,5,3],
-"struct_terraria_1_1_net_1_1_net_packet.html#a681595878921fb86ad626b9617ecd4e6":[1,0,2,15,5,7],
-"struct_terraria_1_1_net_1_1_net_packet.html#a8c7d9e2145efa58ad7752c6110d7409c":[1,0,2,15,5,5],
-"struct_terraria_1_1_net_1_1_net_packet.html#ac49113419626238926c208da7bfe43bf":[1,0,2,15,5,4],
-"struct_terraria_1_1_net_1_1_net_packet.html#af1ec0add8073741447b22422adbe3a3a":[1,0,2,15,5,1],
-"struct_terraria_1_1_net_message_1_1_net_sound_info.html":[1,0,2,50,0],
-"struct_terraria_1_1_net_message_1_1_net_sound_info.html#a0843093facfbd53c6abba1d0fa1b3346":[1,0,2,50,0,5],
-"struct_terraria_1_1_net_message_1_1_net_sound_info.html#a260b8617c2e1e26cb9ce3c485fb905c0":[1,0,2,50,0,2],
-"struct_terraria_1_1_net_message_1_1_net_sound_info.html#a53f81fe7f517340144536b7bf63844a7":[1,0,2,50,0,3]
+"struct_terraria_1_1_net_1_1_net_packet.html#a681595878921fb86ad626b9617ecd4e6":[1,0,2,15,5,7]
 };

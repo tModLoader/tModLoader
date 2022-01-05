@@ -1,5 +1,6 @@
 var class_terraria_1_1_mod_loader_1_1_combined_hooks =
 [
+    [ "CanAutoReuseItem", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ac503989233167ce7ff125a8206de6fd5", null ],
     [ "CanConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a759fe8877476c22221b4802ae1ae22e9", null ],
     [ "CanConsumeBait", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a09bfab2c40c669d43d3d7d9a35fbf38f", null ],
     [ "CanPlayerHitNPCWithItem", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a96eb359a92223716164e456d1ed13061", null ],

@@ -306,6 +306,7 @@ var class_terraria_1_1_player =
     [ "SetPlayerDataToOutOfClassFields", "class_terraria_1_1_player.html#a9eda69f292de5ab34bf9dd4e2f38d2c3", null ],
     [ "SetTalkNPC", "class_terraria_1_1_player.html#a06cb9b232ab2c9448baaffa92910f688", null ],
     [ "ShadowDodge", "class_terraria_1_1_player.html#a22a94f0c2dbe7f784a5b81133b625a5f", null ],
+    [ "ShouldAutoReuseItem", "class_terraria_1_1_player.html#abcd6c5e5edffd773aadbf294678641d9", null ],
     [ "ShouldDrawFootball", "class_terraria_1_1_player.html#a337e0f9d80121b45743659da67023210", null ],
     [ "ShouldDrawWingsThatAreAlwaysAnimated", "class_terraria_1_1_player.html#a901551392c44fcb200660b9085c6524d", null ],
     [ "SlopeDownMovement", "class_terraria_1_1_player.html#ab72864d892bcbcc23afb74b6eada98a2", null ],

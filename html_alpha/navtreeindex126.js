@@ -1,5 +1,12 @@
 var NAVTREEINDEX126 =
 {
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a4dada719ba3b71847358c6dca49d7019":[1,0,2,4,16,11],
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a617f5eab577c355854c8172fa55d61be":[1,0,2,4,16,21],
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a9ab1223aa577ad1d892d808dbc9e3930":[1,0,2,4,16,2],
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a9f6c415ed8b1787252afde33737ed029":[1,0,2,4,16,12],
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#aaff24a5f2548f7a25a9110df8fc4a1a3":[1,0,2,4,16,15],
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#ac190ff8470c2319c23bfc4cf9ea92828":[1,0,2,4,16,3],
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#ac63dd3d0c7970d4863dc0aa8f40286ca":[1,0,2,4,16,17],
 "struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#ac94d8d5060691662a6f3c308133c591a":[1,0,2,4,16,0],
 "struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#acbbc0fe7315d703bb0bbc58b30375c6b":[1,0,2,4,16,10],
 "struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#ad8e1499a95281e8d0e3f810c277413cb":[1,0,2,4,16,20],
@@ -242,12 +249,5 @@ var NAVTREEINDEX126 =
 "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a17a292bf399f507faa01bf187aee012d":[1,0,2,4,65,12],
 "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a249890fa79f7ee328b43454d3a15f093":[1,0,2,4,65,7],
 "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a27f844c8effc36d374817a9995553f86":[1,0,2,4,65,1],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a313434733b47c3b05cab6a6c7ba63f68":[1,0,2,4,65,6],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a3f06c75e660c79d329ee78d204534070":[1,0,2,4,65,11],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a4846963b0bd8e087ba898d1cdea34b60":[1,0,2,4,65,3],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a5af62aa21352aec94c22fbc9dcbdb33f":[1,0,2,4,65,9],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a6f578a8dc1c5188271535a1515189841":[1,0,2,4,65,2],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a8cf4adc761bfd463f81eab24742bcf5b":[1,0,2,4,65,4],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a931ce8284b7356d08208084c3d83532a":[1,0,2,4,65,14],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a9a69bbee047bc5bdad150d4462f29f63":[1,0,2,4,65,13]
+"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a313434733b47c3b05cab6a6c7ba63f68":[1,0,2,4,65,6]
 };

@@ -2,6 +2,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
 [
     [ "AddStartingItems", "class_terraria_1_1_mod_loader_1_1_mod_player.html#acb66492241c600ca3d59bce0681fba4b", null ],
     [ "AnglerQuestReward", "class_terraria_1_1_mod_loader_1_1_mod_player.html#af58b9852f0aa053b294553324b0dcdf1", null ],
+    [ "CanAutoReuseItem", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aff69da6064e1e86158c5996834998a97", null ],
     [ "CanBeHitByNPC", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a1b4b3256f466d75ebb9c97f0c53b5045", null ],
     [ "CanBeHitByProjectile", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aee2d81b9b20a2b470790837e47ae12ef", null ],
     [ "CanBuyItem", "class_terraria_1_1_mod_loader_1_1_mod_player.html#afe56f8028f1b08008b42cfb2ec63eaff", null ],
