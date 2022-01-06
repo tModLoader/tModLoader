@@ -23,6 +23,15 @@
  		public static int tLeft;
  		public static int tRight;
  		public static int tTop;
+@@ -883,6 +_,8 @@
+ 		private static int cactusWaterHeight = 25;
+ 		private static int cactusWaterLimit = 25;
+ 		private static int JungleX;
++		private static int topSandstoneChest;
++		private static int bottomSandstoneChest;
+ 		private static int hellChest;
+ 		private static int[] hellChestItem = new int[7];
+ 		private static bool roomTorch;
 @@ -928,6 +_,7 @@
  		public static Queue<Point> ExploitDestroyQueue = new Queue<Point>();
  		public const bool BUBBLES_SOLID_STATE_FOR_HOUSING = true;
@@ -177,6 +186,15 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
+@@ -3648,6 +_,8 @@
+ 			numOceanCaveTreasure = 0;
+ 			numOasis = 0;
+ 			mudWall = false;
++			topSandstoneChest = -1;
++			bottomSandstoneChest = -1;
+ 			hellChest = 0;
+ 			JungleX = 0;
+ 			numMCaves = 0;
 @@ -5595,6 +_,8 @@
  		}
  
@@ -526,6 +544,35 @@
  										flag2 = true;
  										break;
  									}
+@@ -22640,21 +_,13 @@
+ 					flag2 = true;
+ 					num8 = 10;
+ 					chestTileType = 467;
+-					int num9 = -1;
+-					int num10 = -1;
+-					for (int num11 = (int)Main.worldSurface - 100; num11 < Main.maxTilesY - 200; num11++) {
+-						for (int num12 = 100; num12 < Main.maxTilesX - 100; num12++) {
+-							if (Main.tile[num12, num11].wall == 216 || Main.tile[num12, num11].wall == 187) {
+-								if (num9 == -1)
+-									num9 = num11;
+-
+-								num10 = num11;
+-								break;
+-							}
+-						}
+-					}
+-
+-					contain = ((num6 <= (num9 * 3 + num10 * 4) / 7) ? Utils.SelectRandom(genRand, new short[4] {
++
++					if (topSandstoneChest == -1 || j < topSandstoneChest)
++                    	topSandstoneChest = j;
++					if (j > bottomSandstoneChest)
++						bottomSandstoneChest = j;
++
++					contain = ((num6 <= (topSandstoneChest * 3 + bottomSandstoneChest * 4) / 7) ? Utils.SelectRandom(genRand, new short[4] {
+ 						4056,
+ 						4055,
+ 						4262,
 @@ -23739,7 +_,7 @@
  				Main.tile[i, j] = new Tile();
  
