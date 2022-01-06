@@ -1,5 +1,16 @@
 --- src/Terraria/Terraria/GameContent/Biomes/Desert/DesertHive.cs
 +++ src/tModLoader/Terraria/GameContent/Biomes/Desert/DesertHive.cs
+@@ -187,6 +_,10 @@
+ 			Vector2 value = new Vector2(description.Hive.Width, description.Hive.Height);
+ 			Vector2 value2 = new Vector2(clusters.Width, clusters.Height);
+ 			Vector2 value3 = description.BlockScale / 2f;
++
++			WorldGen.desertTop = -1;
++			WorldGen.desertBottom = -1;
++
+ 			for (int i = area.Left; i < area.Right; i++) {
+ 				for (int j = area.Top; j < area.Bottom; j++) {
+ 					if (!WorldGen.InWorld(i, j, 1))
 @@ -228,6 +_,7 @@
  					Tile tile = Main.tile[i, j];
  					bool flag = ((new Vector2(num4, num5) - value3) / value * 2f - Vector2.One).Length() >= 0.8f;
