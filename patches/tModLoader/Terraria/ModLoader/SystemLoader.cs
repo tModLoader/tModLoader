@@ -345,8 +345,7 @@ namespace Terraria.ModLoader
 						system.FullName + " : " + Language.GetTextValue("tModLoader.WorldGenError"),
 						e
 					);
-					Logging.tML.Error(message);
-					Interface.errorMessage.Show(message, 0);
+					Utils.ShowFancyErrorMessage(message, 0);
 
 					throw;
 				}
