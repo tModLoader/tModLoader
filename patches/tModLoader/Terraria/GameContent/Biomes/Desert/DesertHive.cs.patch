@@ -1,0 +1,28 @@
+--- src/Terraria/Terraria/GameContent/Biomes/Desert/DesertHive.cs
++++ src/tModLoader/Terraria/GameContent/Biomes/Desert/DesertHive.cs
+@@ -228,6 +_,7 @@
+ 					Tile tile = Main.tile[i, j];
+ 					bool flag = ((new Vector2(num4, num5) - value3) / value * 2f - Vector2.One).Length() >= 0.8f;
+ 					PostPlacementEffect postPlacementEffect = PostPlacementEffect.None;
++					bool wallPlaced = true;
+ 					if (num7 > 3.5f) {
+ 						postPlacementEffect = PostPlacementEffect.Smooth;
+ 						tile.ClearEverything();
+@@ -270,6 +_,17 @@
+ 								postPlacementEffect = PostPlacementEffect.Smooth;
+ 							}
+ 						}
++					}
++					else {
++						wallPlaced = false;
++					}
++
++					// Caches the desert top an bottom for the sandstone loot table
++					if (wallPlaced) {
++						if (WorldGen.desertTop == -1 || j < WorldGen.desertTop)
++							WorldGen.desertTop = j;
++						if (j > WorldGen.desertBottom)
++							WorldGen.desertBottom = j;
+ 					}
+ 
+ 					postEffectMap[i - area.X + postEffectMapOffset.X, j - area.Y + postEffectMapOffset.Y] = postPlacementEffect;
