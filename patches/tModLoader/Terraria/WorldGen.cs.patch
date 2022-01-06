@@ -565,7 +565,7 @@
 -					contain = ((num6 <= (num9 * 3 + num10 * 4) / 7) ? Utils.SelectRandom(genRand, new short[4] {
 +
 +					if (topSandstoneChest == -1 || j < topSandstoneChest)
-+                    	topSandstoneChest = j;
++                    	topSandstoneChest = j - 1;
 +					if (j > bottomSandstoneChest)
 +						bottomSandstoneChest = j;
 +
