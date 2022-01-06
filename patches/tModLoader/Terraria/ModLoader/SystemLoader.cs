@@ -335,21 +335,21 @@ namespace Terraria.ModLoader
 		}
 
 		public static void ModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight) {
-			try {
-				foreach (var system in HookModifyWorldGenTasks.arr) {
+			foreach (var system in HookModifyWorldGenTasks.arr) {
+				try {
 					system.ModifyWorldGenTasks(passes, ref totalWeight);
 				}
-			}
-			catch (Exception e) {
-				string message = string.Join(
-					"\n",
-					Language.GetTextValue("tModLoader.WorldGenError"),
-					e
-				);
-				Logging.tML.Error(message);
-				Interface.errorMessage.Show(message, 0);
+				catch (Exception e) {
+					string message = string.Join(
+						"\n",
+						system.FullName + " : " + Language.GetTextValue("tModLoader.WorldGenError"),
+						e
+					);
+					Logging.tML.Error(message);
+					Interface.errorMessage.Show(message, 0);
 
-				throw;
+					throw;
+				}
 			}
 		}
 
@@ -398,11 +398,14 @@ namespace Terraria.ModLoader
 			return hijacked;
 		}
 
-		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7) {
+		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient,
+			NetworkText text, int number, float number2, float number3, float number4, int number5, int number6,
+			int number7) {
 			bool result = false;
 
 			foreach (var system in HookHijackSendData.arr) {
-				result |= system.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
+				result |= system.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2,
+					number3, number4, number5, number6, number7);
 			}
 
 			return result;
