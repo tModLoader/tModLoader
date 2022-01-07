@@ -177,6 +177,23 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
+@@ -2596,6 +_,16 @@
+ 		public static Task serverLoadWorld() => Task.Factory.StartNew(serverLoadWorldCallBack);
+ 
+ 		public static void clearWorld() {
++			//Large World Enabler stuff. I put this here since this is where the original Large World Enabler mod was hooked. There may be a better place to put it, need to look into
++			Main.Map = new WorldMap(Main.maxTilesX, Main.maxTilesY);
++			Main.tile = new Tile[Main.maxTilesX, Main.maxTilesY];
++
++			Main.mapTargetX = Math.Max(Main.maxTilesX / Main.textureMaxWidth + 1, Main.mapTargetX);
++			Main.mapTargetY = Math.Max(Main.maxTilesY / Main.textureMaxHeight + 1, Main.mapTargetY);
++			Main.instance.mapTarget = new Microsoft.Xna.Framework.Graphics.RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
++			Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
++			Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
++			
+ 			Main.ladyBugRainBoost = 0;
+ 			Main.getGoodWorld = false;
+ 			Main.drunkWorld = false;
 @@ -5595,6 +_,8 @@
  		}
  
