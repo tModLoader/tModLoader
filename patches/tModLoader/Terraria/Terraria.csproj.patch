@@ -66,7 +66,7 @@
 +  </ItemGroup>
 +  <ItemGroup>
 +    <PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
-+    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.11.1.1" />
++    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.12.13.1" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.0-6.final" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.0.0-6.final" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />

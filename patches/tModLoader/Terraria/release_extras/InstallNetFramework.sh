@@ -32,9 +32,6 @@ if [ -f "$unixSteamworks" ]; then
   mv "$unixSteamworks" "$defaultSteamworks"
 fi
 
-# Ensure sufficient stack size (4MB) on MacOS secondary threads, doesn't hurt for Linux. 16^5 = 1MB, value in hex 
-export COMPlus_DefaultStackSize=400000
-
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <tModLoader.runtimeconfig.json) #sed, go die plskthx
 version=${version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name

@@ -170,16 +170,25 @@
  						if (Netplay.Connection.State == 3) {
  							Main.windSpeedCurrent = Main.windSpeedTarget;
  							Netplay.Connection.State = 4;
-@@ -703,6 +_,9 @@
+@@ -703,12 +_,17 @@
  							NetMessage.TrySendData(83, whoAmI, -1, null, num180);
  						}
  
 +						for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++)
 +							NetMessage.SendData(MessageID.NPCKillCountDeathTally, whoAmI, -1, null, type, 0f, 0f, 0f, 0, 0, 0);
 +
- 						NetMessage.TrySendData(49, whoAmI);
++						// tML - move 49 (StartPlaying) to the end, so the player joins a more fully complete world. Should be compatible with vanilla
+-						NetMessage.TrySendData(49, whoAmI);
++						// NetMessage.TrySendData(49, whoAmI);
  						NetMessage.TrySendData(57, whoAmI);
  						NetMessage.TrySendData(7, whoAmI);
+ 						NetMessage.TrySendData(103, -1, -1, null, NPC.MoonLordCountdown);
+ 						NetMessage.TrySendData(101, whoAmI);
+ 						NetMessage.TrySendData(136, whoAmI);
++						NetMessage.TrySendData(49, whoAmI); // tML - moved from above
+ 						Main.BestiaryTracker.OnPlayerJoining(whoAmI);
+ 						CreativePowerManager.Instance.SyncThingsToJoiningPlayer(whoAmI);
+ 						Main.PylonSystem.OnPlayerJoining(whoAmI);
 @@ -1144,8 +_,8 @@
  						int num181 = reader.ReadInt16();
  						Vector2 position3 = reader.ReadVector2();
@@ -216,12 +225,10 @@
  							obj6.playerIndexTheItemIsReservedFor = Main.myPlayer;
  							if (flag9) {
  								NetMessage.TrySendData(21, -1, -1, null, num181);
-@@ -1286,6 +_,9 @@
+@@ -1286,6 +_,7 @@
  							}
  						}
  
-+						// Reading and receiving has been separated for parity with ProjectileLoader code, and to avoid exceptions causing underreads.
-+						byte[] extraAI = !ModNet.AllowVanillaClients ? NPCLoader.ReadExtraAI(reader) : null;
 +
  						int num121 = -1;
  						NPC nPC4 = Main.npc[num116];
@@ -234,9 +241,9 @@
 +						if (nPC4.type >= 0 && nPC4.type < NPCLoader.NPCCount && Main.npcCatchable[nPC4.type])
  							nPC4.releaseOwner = reader.ReadByte();
  
-+						if (extraAI != null) {
-+							NPCLoader.ReceiveExtraAI(nPC4, extraAI);
-+						}
++						// Extra AI is read into a temporary buffer for parity with ProjectileLoader code, and to avoid exceptions causing underreads.
++						if (!ModNet.AllowVanillaClients)
++							NPCLoader.ReceiveExtraAI(nPC4, NPCLoader.ReadExtraAI(reader));
 +
  						break;
  					}

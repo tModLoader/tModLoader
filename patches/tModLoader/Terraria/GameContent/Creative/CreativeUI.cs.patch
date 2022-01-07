@@ -1,0 +1,62 @@
+--- src/Terraria/Terraria/GameContent/Creative/CreativeUI.cs
++++ src/tModLoader/Terraria/GameContent/Creative/CreativeUI.cs
+@@ -8,13 +_,14 @@
+ using Terraria.GameContent.UI.Elements;
+ using Terraria.GameContent.UI.States;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Net;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
+ 
+ namespace Terraria.GameContent.Creative
+ {
+-	public class CreativeUI
++	public partial class CreativeUI
+ 	{
+ 		public enum ItemSacrificeResult
+ 		{
+@@ -194,9 +_,21 @@
+ 		}
+ 
+ 		public ItemSacrificeResult SacrificeItem(out int amountWeSacrificed) {
++			return SacrificeItem(ref _itemSlotsForUI[0], out amountWeSacrificed);
++		}
++
++		// allows to sacrifice any item without needing to go through the ui
++		public static ItemSacrificeResult SacrificeItem(Item toSacrifice, out int amountWeSacrificed) {
++			return SacrificeItem(ref toSacrifice, out amountWeSacrificed);
++		}
++
++		// allows to sacrifice any item without needing to go through the ui
++		public static ItemSacrificeResult SacrificeItem(ref Item item, out int amountWeSacrificed, bool returnRemainderToPlayer = false) {
+ 			int amountNeeded = 0;
+ 			amountWeSacrificed = 0;
+-			Item item = _itemSlotsForUI[0];
++			if (!ItemLoader.CanResearch(item))
++				return ItemSacrificeResult.CannotSacrifice;
++
+ 			if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(item.type, out amountNeeded))
+ 				return ItemSacrificeResult.CannotSacrifice;
+ 
+@@ -216,16 +_,17 @@
+ 			}
+ 
+ 			bool num3 = num2 == num;
++			ItemLoader.OnResearched(item, num3);
+ 			item.stack -= num2;
+ 			if (item.stack <= 0)
+ 				item.TurnToAir();
+ 
+ 			amountWeSacrificed = num2;
+-			RefreshAvailableInfiniteItemsList();
+-			if (item.stack > 0) {
++			Main.CreativeMenu.RefreshAvailableInfiniteItemsList();
++			if (item.stack > 0 && returnRemainderToPlayer) {
+ 				item.position.X = Main.player[Main.myPlayer].Center.X - (float)(item.width / 2);
+ 				item.position.Y = Main.player[Main.myPlayer].Center.Y - (float)(item.height / 2);
+-				_itemSlotsForUI[0] = Main.LocalPlayer.GetItem(Main.myPlayer, item, GetItemSettings.InventoryUIToInventorySettings);
++				item = Main.LocalPlayer.GetItem(Main.myPlayer, item, GetItemSettings.InventoryUIToInventorySettings);
+ 			}
+ 
+ 			if (!num3)
