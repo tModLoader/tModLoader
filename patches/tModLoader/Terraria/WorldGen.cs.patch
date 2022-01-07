@@ -536,14 +536,6 @@
  					int num9 = -1;
  					int num10 = -1;
  					for (int num11 = (int)Main.worldSurface - 100; num11 < Main.maxTilesY - 200; num11++) {
-@@ -22647,7 +_,6 @@
- 							if (Main.tile[num12, num11].wall == 216 || Main.tile[num12, num11].wall == 187) {
- 								if (num9 == -1)
- 									num9 = num11;
--
- 								num10 = num11;
- 								break;
- 							}
 @@ -22655,6 +_,10 @@
  					}
  
