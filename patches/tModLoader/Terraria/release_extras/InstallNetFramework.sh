@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #Author: covers1624
 # Provided for use in tModLoader deployment. 
 

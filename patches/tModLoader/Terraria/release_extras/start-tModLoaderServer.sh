@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 cd "$(dirname "$0")"
 script_dir="$(pwd -P)"
 launch_args="-server -config serverconfig.txt"
