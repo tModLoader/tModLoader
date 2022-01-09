@@ -101,9 +101,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:afc47c5f5ccd2a603cdb8d1a8bebbcd3c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_prefix.html">ModPrefix</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_prefix_loader.html#afc47c5f5ccd2a603cdb8d1a8bebbcd3c">GetPrefixesInCategory</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">PrefixCategory</a> category)</td></tr>
 <tr class="memdesc:afc47c5f5ccd2a603cdb8d1a8bebbcd3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a list of all modded prefixes of a certain category.  <a href="class_terraria_1_1_mod_loader_1_1_prefix_loader.html#afc47c5f5ccd2a603cdb8d1a8bebbcd3c">More...</a><br /></td></tr>
 <tr class="separator:afc47c5f5ccd2a603cdb8d1a8bebbcd3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3509bcd23c2cc6c4aaf522914f0161c1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_prefix_loader.html#a3509bcd23c2cc6c4aaf522914f0161c1">Roll</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref int prefix, int vanillaWeight, params <a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">PrefixCategory</a>[] categories)</td></tr>
-<tr class="memdesc:a3509bcd23c2cc6c4aaf522914f0161c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a mod prefix roll. If the vanillaWeight wins the roll, then prefix is unchanged.  <a href="class_terraria_1_1_mod_loader_1_1_prefix_loader.html#a3509bcd23c2cc6c4aaf522914f0161c1">More...</a><br /></td></tr>
-<tr class="separator:a3509bcd23c2cc6c4aaf522914f0161c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a492df17db80abf0865fd27022063f93d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_prefix_loader.html#a492df17db80abf0865fd27022063f93d">Roll</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref int prefix, int vanillaWeight, <a class="el" href="class_terraria_1_1_utilities_1_1_unified_random.html">UnifiedRandom</a> unifiedRandom, params <a class="el" href="namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4f">PrefixCategory</a>[] categories)</td></tr>
+<tr class="memdesc:a492df17db80abf0865fd27022063f93d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a mod prefix roll. If the vanillaWeight wins the roll, then prefix is unchanged.  <a href="class_terraria_1_1_mod_loader_1_1_prefix_loader.html#a492df17db80abf0865fd27022063f93d">More...</a><br /></td></tr>
+<tr class="separator:a492df17db80abf0865fd27022063f93d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -168,8 +168,8 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>PrefixCount</b>
 
 </div>
 </div>
-<a id="a3509bcd23c2cc6c4aaf522914f0161c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3509bcd23c2cc6c4aaf522914f0161c1">&#9670;&nbsp;</a></span>Roll()</h2>
+<a id="a492df17db80abf0865fd27022063f93d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a492df17db80abf0865fd27022063f93d">&#9670;&nbsp;</a></span>Roll()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -194,6 +194,12 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>PrefixCount</b>
           <td></td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>vanillaWeight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_utilities_1_1_unified_random.html">UnifiedRandom</a>&#160;</td>
+          <td class="paramname"><em>unifiedRandom</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

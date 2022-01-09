@@ -131,7 +131,7 @@ var NAVTREEINDEX95 =
 "class_terraria_1_1_mod_loader_1_1_pos_data_1_1_ordered_sparse_lookup_reader.html#a6434da56a2de2e42d01877a099890cc7":[1,0,2,13,125,1,1],
 "class_terraria_1_1_mod_loader_1_1_prefix_loader.html":[1,0,2,13,126],
 "class_terraria_1_1_mod_loader_1_1_prefix_loader.html#a01aac0b28e66afbe3928a5dfc094bc6a":[1,0,2,13,126,0],
-"class_terraria_1_1_mod_loader_1_1_prefix_loader.html#a3509bcd23c2cc6c4aaf522914f0161c1":[1,0,2,13,126,2],
+"class_terraria_1_1_mod_loader_1_1_prefix_loader.html#a492df17db80abf0865fd27022063f93d":[1,0,2,13,126,2],
 "class_terraria_1_1_mod_loader_1_1_prefix_loader.html#af7c877f742ec558b1231061bac31adde":[1,0,2,13,126,3],
 "class_terraria_1_1_mod_loader_1_1_prefix_loader.html#afc47c5f5ccd2a603cdb8d1a8bebbcd3c":[1,0,2,13,126,1],
 "class_terraria_1_1_mod_loader_1_1_projectile_loader.html":[1,0,2,13,127],

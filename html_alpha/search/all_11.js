@@ -86,7 +86,7 @@ var searchData=
   ['robe_2172',['Robe',['../class_terraria_1_1_data_structures_1_1_player_draw_layers.html#ad9e67f924d34eab835ef9032e1d69175',1,'Terraria::DataStructures::PlayerDrawLayers']]],
   ['rocketboots_2173',['RocketBoots',['../class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_rocket_boots.html',1,'Terraria::ID::ArmorIDs']]],
   ['rockpaperscissorscommand_2174',['RockPaperScissorsCommand',['../class_terraria_1_1_chat_1_1_commands_1_1_rock_paper_scissors_command.html',1,'Terraria::Chat::Commands']]],
-  ['roll_2175',['Roll',['../class_terraria_1_1_mod_loader_1_1_prefix_loader.html#a3509bcd23c2cc6c4aaf522914f0161c1',1,'Terraria::ModLoader::PrefixLoader']]],
+  ['roll_2175',['Roll',['../class_terraria_1_1_mod_loader_1_1_prefix_loader.html#a492df17db80abf0865fd27022063f93d',1,'Terraria::ModLoader::PrefixLoader']]],
   ['rollchance_2176',['RollChance',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#a81746b2b0f4ecf604ff2132f66c88764',1,'Terraria::ModLoader::ModPrefix']]],
   ['rollcommand_2177',['RollCommand',['../class_terraria_1_1_chat_1_1_commands_1_1_roll_command.html',1,'Terraria::Chat::Commands']]],
   ['roomneeds_2178',['RoomNeeds',['../class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets_1_1_room_needs.html',1,'Terraria::ID::TileID::Sets']]],
