@@ -588,17 +588,6 @@
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
  					int num3 = item.stack;
-@@ -46250,8 +_,8 @@
- 		}
- 
- 		public static Rectangle GetDrawHitbox(int type, Player user) {
--			if(Main.dedServ)
-+			if (Main.dedServ)
--			return Rectangle.Empty;
-+				return Rectangle.Empty;
- 
- 			Main.instance.LoadItem(type);
- 			if (ItemID.Sets.IsFood[type])
 @@ -46290,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
