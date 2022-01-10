@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
 +++ src/tModLoader/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
-@@ -1,12 +_,64 @@
+@@ -1,12 +_,66 @@
  using System.Collections.Generic;
 +using Terraria;
 +using Terraria.ModLoader;
@@ -40,7 +40,9 @@
 +
 +			ModifyShopPrice_Inner(info, shopHelperInstance, nearbyNPCsByType);
 +
++			/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
 +			NPCLoader.ModifyNPCHappiness(npc, primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
++			*/
 +		}
 +
 +		internal static void RegisterVanillaNpcRelationships(NPC npc) {

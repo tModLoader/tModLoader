@@ -523,6 +523,7 @@ namespace Terraria.ModLoader
 		public virtual void SetupTravelShop(int[] shop, ref int nextSlot) {
 		}
 
+		/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
 		/// <summary>
 		/// Allows you to set an NPC's biome preferences and nearby npc preferences for the NPC happiness system. Recommended to only be used with NPCs that have shops.
 		/// </summary>
@@ -532,6 +533,7 @@ namespace Terraria.ModLoader
 		/// <param name="nearbyNPCsByType">The boolean array of if each type of npc is nearby</param>
 		public virtual void ModifyNPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
 		}
+		*/
 
 		/// <summary>
 		/// Whether this NPC can be telported a King or Queen statue. Return true to allow the NPC to teleport to the statue, return false to block this NPC from teleporting to the statue, and return null to use the vanilla code for whether the NPC can teleport to the statue. Returns null by default.
