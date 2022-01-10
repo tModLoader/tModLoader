@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,66 @@
+@@ -138,32 +_,67 @@
  			}
  		}
  
@@ -120,6 +120,7 @@
 +				return;
 +			}
 +
++			AttemptSupportHighDPI(isServer);
 +			LaunchGame_(isServer);
 +		}
 +
