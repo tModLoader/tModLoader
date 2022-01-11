@@ -83,9 +83,9 @@
 		"EndDownload": "Download do item concluído",
 		"CreateItem": "Criando item {0}",
 		"UpdateItem": "Atualizando item {0}",
-		"PublishItem": "Attempting Publishing Item {0}",
+		"PublishItem": "Tentando publicar item {0}",
 		"SteamDownloader": "Enfileirando o download com o gerenciador de downloads do Steam...",
-		"DownloadProgress": "Download {0}% Complete",
+		"DownloadProgress": "Download {0}% concluído",
 
 		// Mod Errors
 		"LoadError": "Ocorreu um erro ao carregar {0}",
