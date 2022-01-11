@@ -78,7 +78,7 @@
 		"ModAlreadyUploaded": "Erro: O Mod já existe na Oficina!",
 		"ModVersionInfoUnchanged": "Erro: Informações da versão do mod devem ser incrementadas antes de atualizar.",
 		"ConsultSteamLogs": "Consulte Steam workshop_log.txt (Local padrão: {0}) para mais informações.",
-		"SteamRejectUpdate": "O item já está/foi instalado: {0}. Se você está tentando re-instalar, feche a instância atual e re-inicieIf attempting to re-install, close current instance and re-launch.",
+		"SteamRejectUpdate": "O item já está/foi instalado: {0}. Se você está tentando re-instalar, feche a instância atual e re-inicie.",
 		"BeginDownload": "Tentando fazer o download do item: {0}",
 		"EndDownload": "Download do item concluído",
 		"CreateItem": "Criando item {0}",
