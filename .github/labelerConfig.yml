@@ -1,6 +1,4 @@
 # Add/remove labels if issue matches the regex specified
-OS-Windows:
-    - 'OS.*Windows'
 OS-Linux:
     - 'OS.*Linux'
 OS-Mac:

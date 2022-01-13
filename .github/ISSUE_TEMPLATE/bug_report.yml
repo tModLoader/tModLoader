@@ -21,7 +21,6 @@ body:
 - type: dropdown
   attributes:
     label: Version
-    id: version
     description: What version are you running?
     multiple: false
     options:
@@ -34,7 +33,6 @@ body:
 - type: dropdown
   attributes:
     label: OS
-    id: os
     description: What OS are you on?
     multiple: false
     options:
@@ -46,7 +44,6 @@ body:
 - type: dropdown
   attributes:
     label: Platform
-    id: platform
     description: What store did you purchase Terraria from
     multiple: false
     options:
@@ -55,7 +52,6 @@ body:
   validations:
     required: true
 - type: dropdown
-  id: requestor
   attributes:
     label: This bug affects
     description: In order to help understand the issue, we would like to know if this is a player-facing bug, or a modder-facing bug
@@ -76,7 +72,6 @@ body:
 - type: textarea
   attributes:
     label: Log File
-    id: logs
     description: |
       Please attach the `client.log` file here. You'll find the log files in the logs folder. Look for the `client.log` file.
       Windows Logs: `C:\Documents\My Games\Terraria\ModLoader\Logs`
