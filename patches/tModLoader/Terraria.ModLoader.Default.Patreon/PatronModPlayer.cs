@@ -14,10 +14,12 @@ namespace Terraria.ModLoader.Default.Patreon
 
 		public bool OrianSet;
 		public bool GuildpackSet;
+		public bool SaetharSet;
 
 		public override void ResetEffects() {
 			OrianSet = false;
 			GuildpackSet = false;
+			SaetharSet = false;
 		}
 
 		public override void PostUpdate() {
@@ -64,6 +66,11 @@ namespace Terraria.ModLoader.Default.Patreon
 				int headLayerIndex = layers.FindIndex(x => x == PlayerLayer.Head);
 				if (headLayerIndex != -1)
 					layers.Insert(headLayerIndex + 1, Guildpack_Head.EyeGlow);
+			}
+			if (SaetharSet) {
+				int headLayerIndex = layers.FindIndex(x => x == PlayerLayer.Head);
+				if (headLayerIndex != -1)
+					layers.Insert(headLayerIndex + 1, Saethar_Head.EyeGlow);
 			}
 		}
 	}

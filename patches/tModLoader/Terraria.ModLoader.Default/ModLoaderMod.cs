@@ -74,6 +74,7 @@ namespace Terraria.ModLoader.Default
 				new PatreonItem[] { new Sailing_Squid_Head(), new Sailing_Squid_Body(), new Sailing_Squid_Legs(), new Sailing_Squid_Wings() },
 				new PatreonItem[] { new Coolmike5000_Head(), new Coolmike5000_Body(), new Coolmike5000_Legs(), new Coolmike5000_Wings() },
 				new PatreonItem[] { new Zeph_Head(), new Zeph_Body(), new Zeph_Legs(), new Zeph_Wings() },
+				new PatreonItem[] { new dschosen_Head(), new dschosen_Body(), new dschosen_Legs(), new dschosen_Wings() },
 			};
 
 			foreach (var patronItem in PatronSets.SelectMany(x => x)) {
@@ -83,6 +84,7 @@ namespace Terraria.ModLoader.Default
 			{
 				AddTexture($"Patreon.Guildpack_Aura", ReadTexture($"Patreon.Guildpack_Aura"));
 				AddTexture($"Patreon.Guildpack_Head_Glow", ReadTexture($"Patreon.Guildpack_Head_Glow"));
+				AddTexture($"Patreon.Saethar_Head_Glow", ReadTexture($"Patreon.Saethar_Head_Glow"));
 			}
 		}
 
