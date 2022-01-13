@@ -57,7 +57,7 @@ body:
 - type: dropdown
   id: requestor
   attributes:
-    label: This bug affects:
+    label: This bug affects
     description: In order to help understand the issue, we would like to know if this is a player-facing bug, or a modder-facing bug
     multiple: false
     options:

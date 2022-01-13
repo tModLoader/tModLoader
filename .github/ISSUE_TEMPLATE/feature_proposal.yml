@@ -28,7 +28,7 @@ body:
 - type: dropdown
   id: requestor
   attributes:
-    label: I would like to see this change made to improve my experience with:
+    label: I would like to see this change made to improve my experience with
     description: In order to help understand the issue, we would like to know if the primary use case for this change is to help you create mods, improve experience playing TML, or improve codebase of TML itself as a maintainer
     multiple: false
     options:
