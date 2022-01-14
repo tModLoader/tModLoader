@@ -75,6 +75,7 @@ namespace Terraria.ModLoader.Default
 				new PatreonItem[] { new Coolmike5000_Head(), new Coolmike5000_Body(), new Coolmike5000_Legs(), new Coolmike5000_Wings() },
 				new PatreonItem[] { new Zeph_Head(), new Zeph_Body(), new Zeph_Legs(), new Zeph_Wings() },
 				new PatreonItem[] { new dschosen_Head(), new dschosen_Body(), new dschosen_Legs(), new dschosen_Wings() },
+				new PatreonItem[] { new AlejandroAkbal_Head(), new AlejandroAkbal_Body(), new AlejandroAkbal_Legs(), new AlejandroAkbal_Back() },
 			};
 
 			foreach (var patronItem in PatronSets.SelectMany(x => x)) {
