@@ -12,6 +12,13 @@ namespace Terraria.ModLoader
 {
 	public static class LocalizationLoader
 	{
+		/// <summary>
+		/// UTF8 Byte-order-mask encoding used to load manually created localization files
+		/// </summary>
+		private static readonly Encoding UTF8BOMEncoding = new UTF8Encoding(true);
+
+		private static readonly byte[] UTF8BOMPreamble = new byte[] { 0xEF, 0xBB, 0xBF };
+
 		private static readonly Dictionary<string, ModTranslation> translations = new();
 
 		/// <summary>
@@ -210,7 +217,28 @@ namespace Terraria.ModLoader
 
 		private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary) {
 			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
-				string translationFileContents = Encoding.UTF8.GetString(mod.File.GetBytes(translationFile));
+				byte[] bytes = mod.File.GetBytes(translationFile);
+
+				// Read using suitable encoding
+				Encoding encoding = Encoding.UTF8;
+				int index = 0;
+
+				int preambleLength = UTF8BOMPreamble.Length;
+				if (bytes.Length >= preambleLength) {
+					// If the files are created manually by the user, they tend to be UTF-8-BOM encoded. tML uses UTF-8
+					bool canUseUTF8BOM = true;
+					for (int i = 0; i < preambleLength; i++) {
+						if (canUseUTF8BOM && bytes[i] != UTF8BOMPreamble[i])
+							canUseUTF8BOM = false;
+					}
+
+					if (canUseUTF8BOM) {
+						encoding = UTF8BOMEncoding;
+						index = preambleLength;
+					}
+				}
+
+				string translationFileContents = encoding.GetString(bytes, index, bytes.Length - index);
 				var culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
 
 				// Parse HJSON and convert to standard JSON
