@@ -9,15 +9,6 @@
  		}
  
  		public static void Load(IServiceProvider services) {
-@@ -73,7 +_,7 @@
- 			if (Main.dedServ)
- 				return null;
- 
--			if (!IsAudioSupported)
-+			if (!IsAudioSupported || LegacySoundPlayer == null)
- 				return null;
- 
- #if FNA
 @@ -324,7 +_,7 @@
  				}
  			}
