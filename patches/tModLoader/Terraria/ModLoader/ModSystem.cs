@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
 using Terraria.Localization;
+using Terraria.Map;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
@@ -211,6 +212,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="spriteBatch">The sprite batch.</param>
 		public virtual void PostDrawInterface(SpriteBatch spriteBatch) { }
+
+		/// <summary>
+		/// Called right before map icon overlays are drawn. Use this hook to selectively hide existing IMapLayer or ModMapLayer
+		/// </summary>
+		/// <param name="layers"></param>
+		/// <param name="mapOverlayDrawContext"></param>
+		public virtual void PreDrawMapIconOverlay(List<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext) { }
 
 		/// <summary>
 		/// Called while the fullscreen map is active. Allows custom drawing to the map.

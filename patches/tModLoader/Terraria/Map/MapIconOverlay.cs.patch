@@ -1,12 +1,22 @@
 --- src/Terraria/Terraria/Map/MapIconOverlay.cs
 +++ src/tModLoader/Terraria/Map/MapIconOverlay.cs
-@@ -18,5 +_,9 @@
- 				layer.Draw(ref context, ref text);
+@@ -14,9 +_,18 @@
+ 
+ 		public void Draw(Vector2 mapPosition, Vector2 mapOffset, Rectangle? clippingRect, float mapScale, float drawScale, ref string text) {
+ 			MapOverlayDrawContext context = new MapOverlayDrawContext(mapPosition, mapOffset, clippingRect, mapScale, drawScale);
++			foreach (var layer in _layers) {
++				layer.Visible = true;
++			}
++			ModLoader.SystemLoader.PreDrawMapIconOverlay(_layers, context);
+ 			foreach (IMapLayer layer in _layers) {
++				if(layer.Visible)
+-				layer.Draw(ref context, ref text);
++					layer.Draw(ref context, ref text);
  			}
- 		}
++		}
 +
 +		internal void ClearModded() {
 +			_layers.RemoveAll(x => x is ModLoader.ModMapLayer);
-+		}
+ 		}
  	}
  }

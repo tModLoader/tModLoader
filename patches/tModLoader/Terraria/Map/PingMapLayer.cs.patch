@@ -1,0 +1,20 @@
+--- src/Terraria/Terraria/Map/PingMapLayer.cs
++++ src/tModLoader/Terraria/Map/PingMapLayer.cs
+@@ -10,6 +_,9 @@
+ {
+ 	public class PingMapLayer : IMapLayer
+ 	{
++		public bool Visible { get; set; } = true;
++		public void Hide() => Visible = false;
++
+ 		private struct Ping
+ 		{
+ 			public readonly Vector2 Position;
+@@ -25,6 +_,7 @@
+ 		private const double PING_FRAME_RATE = 10.0;
+ 		private readonly SlotVector<Ping> _pings = new SlotVector<Ping>(100);
+ 
++		
+ 		public void Draw(ref MapOverlayDrawContext context, ref string text) {
+ 			SpriteFrame frame = new SpriteFrame(1, 5);
+ 			DateTime now = DateTime.Now;

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
 using Terraria.Localization;
+using Terraria.Map;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -151,6 +152,12 @@ namespace Terraria.ModLoader
 
 			negLight = Math.Max(negLight, 0.001f);
 			negLight2 = Math.Max(negLight2, 0.001f);
+		}
+
+		public static void PreDrawMapIconOverlay(List<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext) {
+			foreach (var system in HookPreDrawMapIconOverlay.arr) {
+				system.PreDrawMapIconOverlay(layers, mapOverlayDrawContext);
+			}
 		}
 
 		public static void PostDrawFullscreenMap(ref string mouseText) {

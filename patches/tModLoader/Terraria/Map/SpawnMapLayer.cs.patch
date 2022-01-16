@@ -1,0 +1,12 @@
+--- src/Terraria/Terraria/Map/SpawnMapLayer.cs
++++ src/tModLoader/Terraria/Map/SpawnMapLayer.cs
+@@ -7,6 +_,9 @@
+ {
+ 	public class SpawnMapLayer : IMapLayer
+ 	{
++		public bool Visible { get; set; } = true;
++		public void Hide() => Visible = false;
++
+ 		public void Draw(ref MapOverlayDrawContext context, ref string text) {
+ 			Player localPlayer = Main.LocalPlayer;
+ 			Vector2 position = new Vector2(localPlayer.SpawnX, localPlayer.SpawnY);

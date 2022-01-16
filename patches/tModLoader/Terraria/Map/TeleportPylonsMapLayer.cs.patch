@@ -1,0 +1,12 @@
+--- src/Terraria/Terraria/Map/TeleportPylonsMapLayer.cs
++++ src/tModLoader/Terraria/Map/TeleportPylonsMapLayer.cs
+@@ -11,6 +_,9 @@
+ {
+ 	public class TeleportPylonsMapLayer : IMapLayer
+ 	{
++		public bool Visible { get; set; } = true;
++		public void Hide() => Visible = false;
++
+ 		public void Draw(ref MapOverlayDrawContext context, ref string text) {
+ 			List<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
+ 			float num = 1f;

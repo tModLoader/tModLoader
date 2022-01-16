@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.Graphics;
 using Terraria.Localization;
+using Terraria.Map;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -51,6 +52,8 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateModifyLightingBrightness(ref float scale);
 
+		private delegate void DelegatePreDrawMapIconOverlay(List<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext);
+
 		private delegate void DelegatePostDrawFullscreenMap(ref string mouseText);
 
 		private delegate void DelegateModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate);
@@ -80,6 +83,8 @@ namespace Terraria.ModLoader
 		private static HookList HookModifySunLightColor = AddHook<DelegateModifySunLightColor>(s => s.ModifySunLightColor);
 
 		private static HookList HookModifyLightingBrightness = AddHook<DelegateModifyLightingBrightness>(s => s.ModifyLightingBrightness);
+
+		private static HookList HookPreDrawMapIconOverlay = AddHook<DelegatePreDrawMapIconOverlay>(s => s.PreDrawMapIconOverlay);
 
 		private static HookList HookPostDrawFullscreenMap = AddHook<DelegatePostDrawFullscreenMap>(s => s.PostDrawFullscreenMap);
 
