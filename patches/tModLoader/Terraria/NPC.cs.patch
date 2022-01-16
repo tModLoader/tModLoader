@@ -138,7 +138,7 @@
  				buffImmune[l] = false;
  			}
  
-+			aiStyle = 0; //Added by tML.
++			aiStyle = type < NPCID.Count ? 0 : -1; //Added by tML - use aiStyle -1 for modded NPCs by default so they don't always face the nearest player, and trigger net updates
  			setFrameSize = false;
  			netSkip = -2;
  			realLife = -1;
@@ -494,6 +494,14 @@
  				killCount[i] = 0;
  			}
  		}
+@@ -56474,6 +_,7 @@
+ 			}
+ 		}
+ 
++		/*
+ 		public void NPCLootOld() {
+ 			if (Main.netMode == 1 || type >= 670)
+ 				return;
 @@ -56535,7 +_,7 @@
  
  			if (type == 1 && ai[1] > 0f) {
@@ -503,8 +511,11 @@
  					int stackForSlimeItemDrop = GetStackForSlimeItemDrop(num3);
  					Item.NewItem((int)position.X, (int)position.Y, width, height, num3, stackForSlimeItemDrop);
  				}
-@@ -59009,7 +_,7 @@
+@@ -59007,9 +_,10 @@
+ 			NPCLoot_DropCommonLifeAndMana(player);
+ 			NPCLoot_DropMoney(player);
  		}
++		*/
  
  		public void NPCLoot() {
 -			if (Main.netMode == 1 || type >= 670)

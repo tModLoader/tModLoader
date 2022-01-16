@@ -35,15 +35,44 @@
  		public bool heldProjOverHand;
  		public int skinVar;
  		public bool fullHair;
-@@ -129,6 +_,8 @@
+@@ -128,7 +_,12 @@
+ 
  		public Vector2 Center => new Vector2(Position.X + (float)(drawPlayer.width / 2), Position.Y + (float)(drawPlayer.height / 2));
  
++		// All of this is an incomprehensible mess, and there's definitely still many things left uninitialized in HeadOnlySetup.
++		// But that's the entire codebase.
++
  		public void BoringSetup(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin) {
 +			headOnlyRender = false;
 +
  			DrawDataCache = drawData;
  			DustCache = dust;
  			GoreCache = gore;
+@@ -136,7 +_,13 @@
+ 			shadow = shadowOpacity;
+ 			this.rotation = rotation;
+ 			this.rotationOrigin = rotationOrigin;
++
++			CopyBasicPlayerFields();
++			BoringSetup_2(player, drawData, dust, gore, drawPosition, shadowOpacity, rotation, rotationOrigin);
++		}
++
++		private void CopyBasicPlayerFields() {
+-			heldItem = player.lastVisualizedSelectedItem;
++			heldItem = drawPlayer.lastVisualizedSelectedItem;
+ 			cHead = drawPlayer.cHead;
+ 			cBody = drawPlayer.cBody;
+ 			cLegs = drawPlayer.cLegs;
+@@ -167,6 +_,9 @@
+ 			cBalloonFront = drawPlayer.cBalloonFront;
+ 			cBeard = drawPlayer.cBeard;
+ 			isSitting = drawPlayer.sitting.isSitting;
++		}
++
++		private void BoringSetup_2(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin) {
+ 			seatYOffset = 0f;
+ 			sittingIndex = 0;
+ 			Vector2 posOffset = Vector2.Zero;
 @@ -209,10 +_,13 @@
  			projectileDrawPosition = -1;
  			ItemLocation = Position + (drawPlayer.itemLocation - drawPlayer.position);

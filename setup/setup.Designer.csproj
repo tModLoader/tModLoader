@@ -1,43 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <!-- Import common setup values -->
+  <Import Project="setup.Common.targets" />
+  
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <UseWindowsForms>True</UseWindowsForms>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Terraria.ModLoader</RootNamespace>
-    <ApplicationIcon>../patches/tModLoader/tModLoader.ico</ApplicationIcon>
   </PropertyGroup>
+  
   <ItemGroup>
-    <Compile Remove="PatchReviewer\**" />
-    <EmbeddedResource Remove="PatchReviewer\**" />
-    <None Remove="PatchReviewer\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Humanizer.Core" Version="2.7.9" />
-    <PackageReference Include="Microsoft.Build.Locator" Version="1.2.6" />
-    <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="20.5.7.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="PatchReviewer\PatchReviewer.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="ICSharpCode.Decompiler">
-      <HintPath>lib\ICSharpCode.Decompiler.dll</HintPath>
-    </Reference>
-    <Reference Include="XnaToFna">
-      <HintPath>lib\XnaToFna.exe</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
+    <Reference Include="XnaToFna" HintPath="lib\XnaToFna.exe" />
   </ItemGroup>
 </Project>

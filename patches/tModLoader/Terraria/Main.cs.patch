@@ -3280,7 +3280,7 @@
  				num5 = 2;
  				array9[0] = statusText;
  				array[0] = true;
-@@ -36836,17 +_,22 @@
+@@ -36836,17 +_,21 @@
  					Netplay.ServerPassword = "";
  				}
  				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
@@ -3301,8 +3301,7 @@
 +					tServer.StartInfo.FileName = "tModLoaderServer.exe";
  #else
 -					tServer.StartInfo.FileName = "TerrariaServer";
-+					var fileName = Process.GetCurrentProcess().MainModule.FileName;
-+					tServer.StartInfo.FileName = fileName.Remove(fileName.LastIndexOf("."));
++					tServer.StartInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
  #endif
  					tServer.StartInfo.Arguments = str;
  					if (libPath != "") {

@@ -8,6 +8,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using static Terraria.GameContent.Creative.CreativeUI;
 
 namespace Terraria.ModLoader
 {
@@ -78,6 +79,15 @@ namespace Terraria.ModLoader
 		public virtual bool CanUseItem(Item item, Player player) {
 			return true;
 		}
+
+		/// <summary>
+		/// Allows you to modify the autoswing (auto-reuse) behavior of any item without having to mess with Item.autoReuse.
+		/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
+		/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
+		/// </summary>
+		/// <param name="item"> The item. </param>
+		/// <param name="player"> The player. </param>
+		public virtual bool? CanAutoReuseItem(Item item, Player player) => null;
 
 		/// <summary>
 		/// Allows you to modify the location and rotation of any item in its use animation.
@@ -189,6 +199,32 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item being used</param>
 		/// <param name="itemGroup">The item group this item is being assigned to</param>
 		public virtual void ModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
+		}
+
+		/// <summary>
+		/// Allows you to choose if a given bait will be consumed by a given player
+		/// Not consuming will always take priority over forced consumption
+		/// </summary>
+		/// <param name="bait">The bait being used</param>
+		/// <param name="player">The player using the item</param>
+		public virtual bool? CanConsumeBait(Player player, Item bait) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
+		/// </summary>
+		/// <param name="item">The item being researched</param>
+		public virtual bool CanResearch(Item item) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to create custom behaviour when an item is accepted by the Research function 
+		/// </summary>
+		/// <param name="item">The item being researched</param>
+		/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
+		public virtual void OnResearched(Item item, bool fullyResearched) {
 		}
 
 		/// <summary>
