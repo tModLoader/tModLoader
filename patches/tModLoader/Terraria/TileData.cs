@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Terraria
 {
@@ -8,11 +10,9 @@ namespace Terraria
 
 	internal static class TileData
 	{
-		internal static Action<int, int> OnSetLength;
-		internal static Action<int, int> OnClearSingle;
-		internal static Action<int, int, int> OnClearMultiple;
-		internal static Action<int, int, int, int> OnCopySingle;
-		internal static Action<int, int, int, int, int> OnCopyMultiple;
+		internal static Action<uint, uint> OnSetLength;
+		internal static Action<uint, uint> OnClearSingle;
+		internal static Action<uint, uint, uint, uint> OnCopySingle;
 
 		static TileData() {
 			// Initialize vanilla types. Probably temporary implementation.
@@ -24,57 +24,54 @@ namespace Terraria
 				typeof(TileData<>).MakeGenericType(type).TypeInitializer.Invoke(null, null);
 			}
 		}
+		internal static void SetLength(uint tilemapId, uint len)
+			=> OnSetLength?.Invoke(tilemapId, len);
 
-		public static void SetLength(int tilemapId, int length)
-			=> OnSetLength?.Invoke(tilemapId, length);
-
-		public static void ClearSingle(int tilemapId, int index)
+		public static void ClearSingle(uint tilemapId, uint index)
 			=> OnClearSingle?.Invoke(tilemapId, index);
 
-		public static void ClearMultiple(int tilemapId, int index, int length)
-			=> OnClearMultiple?.Invoke(tilemapId, index, length);
-
-		public static void CopySingle(int sourceTilemapId, int sourceIndex, int destinationTilemapId, int destinationIndex)
+		public static void CopySingle(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex)
 			=> OnCopySingle?.Invoke(sourceTilemapId, sourceIndex, destinationTilemapId, destinationIndex);
-
-		public static void CopyMultiple(int sourceTilemapId, int sourceIndex, int destinationTilemapId, int destinationIndex, int length)
-			=> OnCopyMultiple?.Invoke(sourceTilemapId, sourceIndex, destinationTilemapId, destinationIndex, length);
 	}
 
-	internal static class TileData<T> where T : struct, ITileData
+	internal static unsafe class TileData<T> where T : unmanaged, ITileData
 	{
-		public static T[][] DataByTilemapId;
+		public const int MaxTilemaps = 16;
+		public static readonly T** DataByTilemapId = (T**) AllocGlobalAndInit(sizeof(T*) * MaxTilemaps);
 
 		static TileData() {
+			// incase anyone tries to use a 'default' Tile
+			DataByTilemapId[0] = (T*) AllocGlobalAndInit(sizeof(T));
+
 			TileData.OnSetLength += SetLength;
 			TileData.OnCopySingle += CopySingle;
-			TileData.OnCopyMultiple += CopyMultiple;
 			TileData.OnClearSingle += ClearSingle;
-			TileData.OnClearMultiple += ClearMultiple;
 		}
 
-		public static void SetLength(int tilemapId, int length) {
-			if (DataByTilemapId == null || DataByTilemapId.Length <= tilemapId) {
-				Array.Resize(ref DataByTilemapId, tilemapId + 1);
+		internal static unsafe void SetLength(uint tilemapId, uint len) {
+			ref T* tilemap = ref DataByTilemapId[tilemapId];
+			uint size = (uint)(sizeof(T) * len);
+			if (tilemap != null) {
+				tilemap = (T*)Marshal.ReAllocHGlobal(new IntPtr(tilemap), new IntPtr(size)).ToPointer();
 			}
-
-			Array.Resize(ref DataByTilemapId[tilemapId], length);
+			else {
+				tilemap = (T*)Marshal.AllocHGlobal(new IntPtr(size)).ToPointer();
+			}
+			Unsafe.InitBlock(tilemap, 0, size);
 		}
 
-		public static void ClearSingle(int tilemapId, int index) {
+		public static unsafe void ClearSingle(uint tilemapId, uint index) {
 			DataByTilemapId[tilemapId][index] = default;
 		}
 
-		public static void ClearMultiple(int tilemapId, int index, int length) {
-			Array.Clear(DataByTilemapId[tilemapId], index, length);
-		}
-
-		public static void CopySingle(int sourceTilemapId, int sourceIndex, int destinationTilemapId, int destinationIndex) {
+		public static unsafe void CopySingle(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex) {
 			DataByTilemapId[destinationTilemapId][destinationIndex] = DataByTilemapId[sourceTilemapId][sourceIndex];
 		}
 
-		public static void CopyMultiple(int sourceTilemapId, int sourceIndex, int destinationTilemapId, int destinationIndex, int length) {
-			Array.Copy(DataByTilemapId[sourceTilemapId], sourceIndex, DataByTilemapId[destinationTilemapId], destinationIndex, length);
+		private static void* AllocGlobalAndInit(int len) {
+			void* ptr = Marshal.AllocHGlobal(len).ToPointer();
+			Unsafe.InitBlock(ptr, 0, (uint)len);
+			return ptr;
 		}
 	}
 }

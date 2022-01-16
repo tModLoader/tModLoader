@@ -162,7 +162,7 @@ namespace Terraria
 			=> (int)(TileId ^ TilemapId);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public ref T Get<T>() where T : struct, ITileData
+		public unsafe ref T Get<T>() where T : unmanaged, ITileData
 			=> ref TileData<T>.DataByTilemapId[TilemapId][TileId];
 
 		public bool IsTheSameAs(Tile other) {

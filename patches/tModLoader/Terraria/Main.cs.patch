@@ -198,7 +198,7 @@
  		public static bool tilesLoaded = false;
  		public static WorldMap Map = new WorldMap(maxTilesX, maxTilesY);
 -		public static Tile[,] tile = new Tile[maxTilesX, maxTilesY];
-+		public static Tilemap tile = new Tilemap(maxTilesX, maxTilesY);
++		public static Tilemap tile = new Tilemap((uint)maxTilesX, (uint)maxTilesY);
  		public static Dust[] dust = new Dust[6001];
  		public static Star[] star = new Star[400];
  		public static Item[] item = new Item[401];

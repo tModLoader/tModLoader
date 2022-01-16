@@ -39,8 +39,8 @@
 -		public const int Liquid_Honey = 2;
 -
 -		public int collisionType {
-+		internal readonly int TileId;
-+		internal readonly int TilemapId;
++		internal readonly uint TileId;
++		internal readonly uint TilemapId;
 +
 +		internal ref ushort type => ref Get<TileTypeData>().Type;
 +		internal ref ushort wall => ref Get<WallTypeData>().Type;
@@ -72,7 +72,7 @@
  
 -		public Tile() {
 +		[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-+		internal Tile(int tilemapId, int tileId) {
++		internal Tile(uint tilemapId, uint tileId) {
 +			TilemapId = tilemapId;
 +			TileId = tileId;
 +
