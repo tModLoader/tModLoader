@@ -201,7 +201,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-					Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", itemID.ToString()));
+					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", itemID.ToString()), 0);
 				}
 
 				return downloadResult == EResult.k_EResultOK;
@@ -410,7 +410,11 @@ namespace Terraria.Social.Steam
 				AQueryInstance.InstalledMods = ModOrganizer.FindMods();
 
 				if (!ModManager.SteamAvailable) {
-					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop.\n\nCould not find steamclient.dll from a Steam install." , 0);
+					//TODO: Replace with a localization text
+					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop." +
+						"\n\nYou must have a valid Steam install on your system in order to use the in-game Mod Browser. " +
+						"\n\nNOTE: GoG users - once Steam is installed, you can use the ingame mod browser to download mods", 0);
+
 					return false;
 				}
 
