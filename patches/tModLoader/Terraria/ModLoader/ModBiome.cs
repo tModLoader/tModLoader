@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -15,7 +16,7 @@ namespace Terraria.ModLoader
 		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
 		public override int Music => 0;
 
-		internal int ZeroIndexType => Type - PrimaryBiomeID.Count; 
+		internal int ZeroIndexType => Type - BiomeID.Count; 
 
 		// Bestiary properties
 		/// <summary>

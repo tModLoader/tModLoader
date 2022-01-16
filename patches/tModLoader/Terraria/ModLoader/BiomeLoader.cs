@@ -5,12 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
 	public class BiomeLoader : Loader<ModBiome>
 	{
-		public BiomeLoader() => Initialize(PrimaryBiomeID.Count);
+		public BiomeLoader() => Initialize(BiomeID.Count);
 
 		// Internal boilerplate
 
@@ -70,21 +71,5 @@ namespace Terraria.ModLoader
 
 			return index;
 		}
-	}
-
-	public static class PrimaryBiomeID
-	{
-		public const int Forest = 0;
-		public const int NormalUnderground = 1;
-		public const int Snow = 2;
-		public const int Desert = 3;
-		public const int Jungle = 4;
-		public const int Ocean = 5;
-		public const int Hallow = 6;
-		public const int Mushroom = 7;
-		public const int Dungeon = 8;
-		public const int Corruption = 9;
-		public const int Crimson = 10;
-		public const int Count = 11;
 	}
 }
