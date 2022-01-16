@@ -5,8 +5,8 @@
  	{
  		void Draw(ref MapOverlayDrawContext context, ref string text);
 +
-+		bool Visible { get; set; }
++		bool Visible { get; internal set; }
 +
-+		void Hide();
++		void Hide() => Visible = false;
  	}
  }

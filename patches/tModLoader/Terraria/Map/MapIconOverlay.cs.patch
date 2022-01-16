@@ -17,7 +17,7 @@
 +			}
 +			ModLoader.SystemLoader.PreDrawMapIconOverlay(_layers, context);
  			foreach (IMapLayer layer in _layers) {
-+				if(layer.Visible)
++				if (layer.Visible)
 -				layer.Draw(ref context, ref text);
 +					layer.Draw(ref context, ref text);
  			}

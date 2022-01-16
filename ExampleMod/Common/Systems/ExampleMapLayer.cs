@@ -16,7 +16,7 @@ namespace ExampleMod.Common.Systems
 			const float scaleIfNotSelected = 1f;
 			const float scaleIfSelected = scaleIfNotSelected * 2f;
 			Main.instance.LoadItem(ItemID.BoneKey);
-			var dungeonTexture = TextureAssets.Item[ItemID.BoneKey].Value;
+			var dungeonTexture = TextureAssets.NpcHeadBoss[19].Value;
 			if (context.Draw(dungeonTexture, new Vector2(Main.dungeonX, Main.dungeonY), Color.White, new SpriteFrame(1, 1, 0, 0), scaleIfNotSelected, scaleIfSelected, Alignment.Center).IsMouseOver) {
 				text = Language.GetTextValue("Bestiary_Biomes.TheDungeon");
 			}
