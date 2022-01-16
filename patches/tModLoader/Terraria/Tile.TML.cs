@@ -158,18 +158,6 @@ namespace Terraria
 			}
 		}
 
-		public override bool Equals(object obj) {
-			if (obj is Tile otherTile && otherTile.TileId == TileId && otherTile.TilemapId == TilemapId) {
-				return true;
-			}
-
-			if (obj is null && TileId < 0) {
-				return true;
-			}
-
-			return false;
-		}
-
 		public override int GetHashCode()
 			=> (int)(TileId ^ TilemapId);
 
@@ -178,9 +166,6 @@ namespace Terraria
 			=> ref TileData<T>.DataByTilemapId[TilemapId][TileId];
 
 		public bool IsTheSameAs(Tile other) {
-			if (other == null)
-				return false;
-
 			if (sTileHeader != other.sTileHeader)
 				return false;
 
@@ -209,11 +194,19 @@ namespace Terraria
 			return true;
 		}
 
-		public static bool operator ==(Tile tile, object obj)
-			=> tile.Equals(obj);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool operator ==(Tile tile, Tile tile2)
+			=> tile.TilemapId == tile2.TilemapId && tile.TileId == tile2.TileId;
 
-		public static bool operator !=(Tile tile, object obj)
-			=> !tile.Equals(obj);
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool operator !=(Tile tile, Tile tile2)
+			=> tile.TilemapId != tile2.TilemapId || tile.TileId != tile2.TileId;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool operator ==(Tile tile, ArgumentException justSoYouCanCompareWithNull) => false;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool operator !=(Tile tile, ArgumentException justSoYouCanCompareWithNull) => true;
 
 		private static void SetBit(ref byte header, int position, bool value) {
 			if (value)
