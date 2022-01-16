@@ -474,6 +474,7 @@ namespace Terraria.ModLoader
 			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
+			Main.MapIcons.ClearModded();
 
 			// ItemID.Search = IdDictionary.Create<ItemID, short>();
 			// NPCID.Search = IdDictionary.Create<NPCID, short>();

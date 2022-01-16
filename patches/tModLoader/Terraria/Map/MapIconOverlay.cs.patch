@@ -1,0 +1,12 @@
+--- src/Terraria/Terraria/Map/MapIconOverlay.cs
++++ src/tModLoader/Terraria/Map/MapIconOverlay.cs
+@@ -18,5 +_,9 @@
+ 				layer.Draw(ref context, ref text);
+ 			}
+ 		}
++
++		internal void ClearModded() {
++			_layers.RemoveAll(x => x is ModLoader.ModMapLayer);
++		}
+ 	}
+ }
