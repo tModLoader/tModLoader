@@ -24,6 +24,7 @@ var namespace_terraria_1_1_i_d =
       [ "Waist", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_waist.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_waist" ],
       [ "Wing", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_wing.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_wing" ]
     ] ],
+    [ "BiomeID", "class_terraria_1_1_i_d_1_1_biome_i_d.html", "class_terraria_1_1_i_d_1_1_biome_i_d" ],
     [ "BuffID", "class_terraria_1_1_i_d_1_1_buff_i_d.html", "class_terraria_1_1_i_d_1_1_buff_i_d" ],
     [ "ChainID", "class_terraria_1_1_i_d_1_1_chain_i_d.html", "class_terraria_1_1_i_d_1_1_chain_i_d" ],
     [ "CloudID", "class_terraria_1_1_i_d_1_1_cloud_i_d.html", "class_terraria_1_1_i_d_1_1_cloud_i_d" ],

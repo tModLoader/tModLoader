@@ -415,6 +415,7 @@ var class_terraria_1_1_n_p_c =
     [ "GivenName", "class_terraria_1_1_n_p_c.html#a2dc42843901f82ac2ada274d1f49d9c3", null ],
     [ "GivenOrTypeName", "class_terraria_1_1_n_p_c.html#a57686ff9a7fdb56c7614672f97cfb64c", null ],
     [ "Globals", "class_terraria_1_1_n_p_c.html#a5ea51ad6be5d915dd43ec73869681999", null ],
+    [ "Happiness", "class_terraria_1_1_n_p_c.html#a2514457d08676d4aeece55f03fe695db", null ],
     [ "HasGivenName", "class_terraria_1_1_n_p_c.html#a004bf8e20aaaf999ce937270e62afd1f", null ],
     [ "HasNPCTarget", "class_terraria_1_1_n_p_c.html#af8addccb7d6d61577a044d22cf16ef19", null ],
     [ "HasPlayerTarget", "class_terraria_1_1_n_p_c.html#a69b12ffe0973bdee2bb623ea70a39e1a", null ],

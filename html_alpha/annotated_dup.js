@@ -899,6 +899,7 @@ var annotated_dup =
           [ "Waist", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_waist.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_waist" ],
           [ "Wing", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_wing.html", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_wing" ]
         ] ],
+        [ "BiomeID", "class_terraria_1_1_i_d_1_1_biome_i_d.html", "class_terraria_1_1_i_d_1_1_biome_i_d" ],
         [ "BuffID", "class_terraria_1_1_i_d_1_1_buff_i_d.html", "class_terraria_1_1_i_d_1_1_buff_i_d" ],
         [ "ChainID", "class_terraria_1_1_i_d_1_1_chain_i_d.html", "class_terraria_1_1_i_d_1_1_chain_i_d" ],
         [ "CloudID", "class_terraria_1_1_i_d_1_1_cloud_i_d.html", "class_terraria_1_1_i_d_1_1_cloud_i_d" ],
@@ -1247,6 +1248,7 @@ var annotated_dup =
         [ "MountLoader", "class_terraria_1_1_mod_loader_1_1_mount_loader.html", "class_terraria_1_1_mod_loader_1_1_mount_loader" ],
         [ "MusicLoader", "class_terraria_1_1_mod_loader_1_1_music_loader.html", "class_terraria_1_1_mod_loader_1_1_music_loader" ],
         [ "NoScalingDamageClass", "class_terraria_1_1_mod_loader_1_1_no_scaling_damage_class.html", "class_terraria_1_1_mod_loader_1_1_no_scaling_damage_class" ],
+        [ "NPCHappiness", "struct_terraria_1_1_mod_loader_1_1_n_p_c_happiness.html", "struct_terraria_1_1_mod_loader_1_1_n_p_c_happiness" ],
         [ "NPCHeadLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_head_loader" ],
         [ "NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader" ],
         [ "NPCLoot", "struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html", "struct_terraria_1_1_mod_loader_1_1_n_p_c_loot" ],

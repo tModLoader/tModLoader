@@ -1,5 +1,8 @@
 var NAVTREEINDEX126 =
 {
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a39dbc409da60fe7707311483a1f95e8f":[1,0,2,4,16,19],
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a3b70a11c0c3d2e3c8e905f0685ff1efa":[1,0,2,4,16,4],
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a4c97591b95b81ca462788b3a2d370e90":[1,0,2,4,16,14],
 "struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a4dada719ba3b71847358c6dca49d7019":[1,0,2,4,16,11],
 "struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a617f5eab577c355854c8172fa55d61be":[1,0,2,4,16,21],
 "struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a9ab1223aa577ad1d892d808dbc9e3930":[1,0,2,4,16,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX126 =
 "struct_terraria_1_1_data_structures_1_1_tile_draw_sorter_1_1_tile_tex_point.html#a9962b3f1983ed2a147b63c1e331c6d34":[1,0,2,4,60,1,1],
 "struct_terraria_1_1_data_structures_1_1_tile_draw_sorter_1_1_tile_tex_point.html#a9b6e6d4e1c7db2f6f0c5cfafa46e1ba4":[1,0,2,4,60,1,3],
 "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html":[1,0,2,4,65],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a17a292bf399f507faa01bf187aee012d":[1,0,2,4,65,12],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a249890fa79f7ee328b43454d3a15f093":[1,0,2,4,65,7],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a27f844c8effc36d374817a9995553f86":[1,0,2,4,65,1],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a313434733b47c3b05cab6a6c7ba63f68":[1,0,2,4,65,6]
+"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a17a292bf399f507faa01bf187aee012d":[1,0,2,4,65,12]
 };

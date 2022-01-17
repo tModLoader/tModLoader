@@ -1,15 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_punch_camera_modifier.html#ace13fa868e85f55a47a22e743ad721d2":[1,0,2,7,0,3,0],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html":[1,0,2,7,1,0],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a078f598c71ffc9a4e9ce1a146695fb07":[1,0,2,7,1,0,7],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a2c31b667d7fd1338de34eddfb8ccc3cf":[1,0,2,7,1,0,4],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a336289763a82226c4d3b2c9d66b9919b":[1,0,2,7,1,0,6],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a61bd164eea66a7e9462dc60c82f2d669":[1,0,2,7,1,0,8],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a722ce3ce462a65e9c636044857be382b":[1,0,2,7,1,0,9],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a9156fe78656cf00486998ba34444084e":[1,0,2,7,1,0,2],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a9156fe78656cf00486998ba34444084ea2e24b6a6dcc7ea9356fb274402296a06":[1,0,2,7,1,0,2,2],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a9156fe78656cf00486998ba34444084ea4ddf4cb005260f1c5b21adca4d27c4ab":[1,0,2,7,1,0,2,1],
 "class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a9156fe78656cf00486998ba34444084ea6e25aa27fcd893613fac13b0312fe36d":[1,0,2,7,1,0,2,3],
 "class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a9156fe78656cf00486998ba34444084ea960b44c579bc2f6818d2daaf9e4c16f0":[1,0,2,7,1,0,2,0],
 "class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html#a9156fe78656cf00486998ba34444084eab93c3d9029fa42815abf0551db0cec98":[1,0,2,7,1,0,2,4],
@@ -249,5 +239,15 @@ var NAVTREEINDEX23 =
 "class_terraria_1_1_graphics_1_1_renderers_1_1_fading_particle.html#a253aa400d378d7832cf7e7f75637d9aa":[1,0,2,7,4,2,2],
 "class_terraria_1_1_graphics_1_1_renderers_1_1_fading_particle.html#a8007674156d4609bb3f1382c0e105ba4":[1,0,2,7,4,2,3],
 "class_terraria_1_1_graphics_1_1_renderers_1_1_fading_particle.html#aabb4814da5fb842c959d74b54474ea34":[1,0,2,7,4,2,6],
-"class_terraria_1_1_graphics_1_1_renderers_1_1_fading_particle.html#ac8bb0216a5958092e68fa326f550d33b":[1,0,2,7,4,2,4]
+"class_terraria_1_1_graphics_1_1_renderers_1_1_fading_particle.html#ac8bb0216a5958092e68fa326f550d33b":[1,0,2,7,4,2,4],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_fading_particle.html#adad1983a1e8e5ed8702c67507de98645":[1,0,2,7,4,2,5],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_fading_particle.html#ae150de7c7cf27653f1d5a4465cc82151":[1,0,2,7,4,2,1],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_flame_particle.html":[1,0,2,7,4,3],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_flame_particle.html#a15eda78cfe5e57b0734c9c2bfcb28321":[1,0,2,7,4,3,4],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_flame_particle.html#a57ed35aabbc49fc955140ef8cb33bf3c":[1,0,2,7,4,3,2],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_flame_particle.html#a63309202eeda0e96eee4d52de4a18bd5":[1,0,2,7,4,3,0],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_flame_particle.html#a707f65093cd261d58bff5596fae13f30":[1,0,2,7,4,3,1],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_flame_particle.html#ab2e8d218b7f646a5ea5e51b8073230ca":[1,0,2,7,4,3,5],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_flame_particle.html#ad247f756c8b92363b4dd403959527ea7":[1,0,2,7,4,3,3],
+"class_terraria_1_1_graphics_1_1_renderers_1_1_legacy_player_renderer.html":[1,0,2,7,4,7]
 };
