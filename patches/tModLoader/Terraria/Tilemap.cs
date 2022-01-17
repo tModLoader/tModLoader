@@ -17,8 +17,12 @@ namespace Terraria
 		public Tile this[int x, int y] {
 			[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
 			get {
-				if ((uint)x >= Width || (uint)y >= Height)
-					throw new IndexOutOfRangeException($"({x}, {y}). Map size ({Width}, {Height})");
+				if ((uint)x >= Width || (uint)y >= Height) {
+					throw new IndexOutOfRangeException();
+
+					// The informative version is unfortunately terrible for performance (makes worldgen take 2.15x longer)
+					// throw new IndexOutOfRangeException($"({x}, {y}). Map size ({Width}, {Height})");
+				}
 
 				return new(Id, (uint)(y + (x * Height)));
 			}
