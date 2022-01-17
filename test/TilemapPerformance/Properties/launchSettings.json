@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TilesPerfTester": {
+      "commandName": "Project",
+      "workingDirectory": "$(tModLoaderSteamPath)"
+    }
+  }
+}
