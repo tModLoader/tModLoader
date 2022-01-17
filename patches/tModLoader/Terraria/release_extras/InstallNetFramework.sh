@@ -1,43 +1,32 @@
 #!/bin/bash
-#Author: covers1624
+#Authors: covers1624, DarioDaf, Solxanich
 # Provided for use in tModLoader deployment. 
 
 #chdir to path of the script and save it
 cd "$(dirname "$0")"
 script_dir="$(pwd -P)"
+root_dir="$(dirname "$script_dir")"
 
 echo "Verifying Net Framework...."
 echo "This may take a few moments."
 
-# The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.
-# Additionally, something in dotnet is requesting 'libSDL2.so' (instead of 'libSDL2-2.0.so.0' that is specified in dependencies)
-# without actually invoking managed NativeLibrary resolving events!
 _uname=$(uname)
-if [ "$_uname" = Darwin ]; then
-  library_dir="$script_dir/Libraries/Native/OSX"
-  export DYLD_LIBRARY_PATH="$library_dir"
-  export VK_ICD_FILENAMES="./Libraries/Native/OSX/MoltenVK_icd.json"
-  ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
-elif [ "$_uname" = Windows_NT ]; then
-  # Pass, nothing to do here
+if [ "$_uname" != Windows_NT ]; then
+	chmod +x UnixLinkerFix.sh
+	./UnixLinkerFix.sh
 else
-  library_dir="$script_dir/Libraries/Native/Linux"
-  export LD_LIBRARY_PATH="$library_dir"
-  ln -sf "$library_dir/libSDL2-2.0.so.0" "$library_dir/libSDL2.so"
+	./busybox64.exe UnixLinkerFix.sh true
 fi
 
 if [ "$_uname" != Windows_NT ]; then
-  # Ensure Unix builds have the right version of Steamworks.NET
-  unixSteamworks="PlatformVariantLibs/UNIX.Steamworks.NET.dll"
-  if [ -f "$unixSteamworks" ]; then
-    echo "Deploying Steamworks.NET for this platform..."
-    steamworksVersion=$(find ./Libraries/Steamworks.NET -maxdepth 1 -type d -name '*.*.*' -printf %f -quit)
-    defaultSteamworks="Libraries/Steamworks.NET/$steamworksVersion/Steamworks.NET.dll"
-    mv "$unixSteamworks" "$defaultSteamworks"
-  fi
+	chmod +x PlatformLibsDeploy.sh
+	./PlatformLibsDeploy.sh
+else
+	./busybox64.exe PlatformLibsDeploy.sh true
 fi
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
+echo "Parsing .NET version requirements from runtimeconfig.json"
 version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <tModLoader.runtimeconfig.json) #sed, go die plskthx
 version=${version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
 #echo $version
@@ -45,8 +34,9 @@ version=${version%$'\r'} # remove trailing carriage return that sed may leave in
 # echo $(hexdump -C <<< "$version")
 #Cut everything before the second dot
 channel=$(echo "$version" | cut -f1,2 -d'.')
-dotnet_dir="$script_dir/dotnet"
+dotnet_dir="$root_dir/dotnet"
 install_dir="$dotnet_dir/$version"
+echo "Success!"
 
 if [ ! -d "LaunchLogs" ]; then
   mkdir "LaunchLogs"
