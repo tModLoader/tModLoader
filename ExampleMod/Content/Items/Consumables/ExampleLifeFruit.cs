@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Consumables
 	// Making an item like Life Fruit (That goes above 500) involves a lot of code, as there are many things to consider.
 	// (An alternate that approaches 500 can simply follow vanilla code, however.):
 	// You can't make player.statLifeMax more than 500 (it won't save), so you'll have to maintain your extra life within your mod.
-	// Within your ModPlayer, you need to save/load a count of usages. You also need to sync the data to other players. 
+	// Within your ModPlayer, you need to save/load a count of usages. You also need to sync the data to other players.
 	internal class ExampleLifeFruit : ModItem
 	{
 		public const int MaxExampleLifeFruits = 10;

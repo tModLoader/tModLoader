@@ -52,9 +52,9 @@ namespace Terraria.ModLoader.UI
 		}
 
 		public static void AddOrRemoveChild(this UIElement elem, UIElement child, bool add) {
-			if (!add) 
+			if (!add)
 				elem.RemoveChild(child);
-			else if (!elem.HasChild(child)) 
+			else if (!elem.HasChild(child))
 				elem.Append(child);
 		}
 

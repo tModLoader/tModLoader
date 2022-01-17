@@ -26,7 +26,8 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useAnimation = 8; // The length of the item's use animation in ticks (60 ticks == 1 second.)
 			Item.useStyle = ItemUseStyleID.Shoot; // How you use the item (swinging, holding out, etc.)
 			Item.autoReuse = true; // Whether or not you can hold click to automatically use it again.
-			Item.UseSound = SoundID.Item11; // The sound that this item plays when used.
+			//Item.UseSound = SoundID.Item11;
+			Item.UseSound = SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/PlasmaFire"); // The sound that this item plays when used.
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged; // Sets the damage type to ranged.
@@ -65,8 +66,8 @@ namespace ExampleMod.Content.Items.Weapons
 			}
 		}*/
 
-		// What if I wanted multiple projectiles in a even spread? (Vampire Knives) 
-		// Even Arc style: Multiple Projectile, Even Spread 
+		// What if I wanted multiple projectiles in a even spread? (Vampire Knives)
+		// Even Arc style: Multiple Projectile, Even Spread
 		/*public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			float numberProjectiles = 3 + Main.rand.Next(3); // 3, 4, or 5 shots
 			float rotation = MathHelper.ToRadians(45);
@@ -85,7 +86,7 @@ namespace ExampleMod.Content.Items.Weapons
 		// Also, when I do this, how do I prevent shooting through tiles?
 		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			Vector2 muzzleOffset = Vector2.Normalize(velocity) * 25f;
-		
+
 			if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0)) {
 				position += muzzleOffset;
 			}
@@ -98,7 +99,7 @@ namespace ExampleMod.Content.Items.Weapons
 			item.useTime = 4; // one third of useAnimation
 			item.reuseDelay = 14;
 		public override bool ConsumeAmmo(Player player)	{
-			// Because of how the game works, player.itemAnimation will be 11, 7, and finally 3. (useAnimation - 1, then - useTime until less than 0.) 
+			// Because of how the game works, player.itemAnimation will be 11, 7, and finally 3. (useAnimation - 1, then - useTime until less than 0.)
 			// We can get the Clockwork Assault Riffle Effect by not consuming ammo when itemAnimation is lower than the first shot.
 			return !(player.itemAnimation < item.useAnimation - 2);
 		}*/
@@ -107,7 +108,7 @@ namespace ExampleMod.Content.Items.Weapons
 		/*public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// Here we manually spawn the 2nd projectile, manually specifying the projectile type that we wish to shoot.
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.GrenadeI, damage, knockback, player.whoAmI);
-			
+
 			// By returning true, the vanilla behavior will take place, which will shoot the 1st projectile, the one determined by the ammo.
 			return true;
 		}*/

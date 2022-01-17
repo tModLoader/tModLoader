@@ -20,12 +20,12 @@
 -		public class Sets
 +		public partial class Sets
  		{
--			public static SetFactory Factory = new SetFactory(5088);
+-			public static SetFactory Factory = new SetFactory(5125);
 +			public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
  			public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
  				1533,
  				1534,
-@@ -907,10 +_,14 @@
+@@ -918,10 +_,14 @@
  			public static bool[] CommonCoin = Factory.CreateBoolSet(71, 72, 73, 74);
  			public static bool[] ItemIconPulse = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3456, 3457, 3458, 3459, 3580, 3581);
  			public static bool[] ItemNoGravity = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3453, 3454, 3455, 3456, 3457, 3458, 3459, 3580, 3581, 4143);
@@ -40,4 +40,4 @@
 +			/// </summary>
  			public static bool[] AnimatesAsSoul = Factory.CreateBoolSet(575, 547, 520, 548, 521, 549, 3580, 3581);
  			public static bool[] gunProj = Factory.CreateBoolSet(3475, 3540, 3854, 3930);
- 			public static int[] SortingPriorityBossSpawns = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 1133, 5, 4988, 5, 544, 6, 556, 7, 557, 8, 2495, 9, 2673, 10, 602, 11, 1844, 12, 1958, 13, 1293, 14, 2767, 15, 4271, 15, 3601, 16, 1291, 17, 109, 18, 29, 19, 50, 20, 3199, 20, 3124, 21);
+ 			public static int[] SortingPriorityBossSpawns = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 5120, 5, 1133, 5, 4988, 6, 544, 7, 556, 8, 557, 9, 2495, 10, 2673, 11, 602, 12, 1844, 13, 1958, 14, 1293, 15, 2767, 16, 4271, 16, 3601, 17, 1291, 18, 109, 19, 29, 20, 50, 21, 3199, 21, 3124, 22);

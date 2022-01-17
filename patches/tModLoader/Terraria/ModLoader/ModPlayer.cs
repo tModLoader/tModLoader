@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
-using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -40,7 +39,7 @@ namespace Terraria.ModLoader
 		/// Whether each player gets a ModPlayer by cloning the ModPlayer added to the Mod or by creating a new ModPlayer object with the same type as the ModPlayer added to the Mod. The accessor returns true by default. Return false if you want to assign fields through the constructor.
 		/// </summary>
 		public virtual bool CloneNewInstances => true;
-		
+
 		protected sealed override void Register() {
 			PlayerLoader.VerifyModPlayer(this);
 
@@ -191,7 +190,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called after Update Accessories. 
+		/// Called after Update Accessories.
 		/// </summary>
 		public virtual void UpdateEquips() {
 		}
@@ -200,6 +199,24 @@ namespace Terraria.ModLoader
 		/// This is called right after all of this player's equipment and armor sets update on the player, which is sometime after PostUpdateBuffs is called. This can be used to modify the effects that the equipment had on this player, and can also be used for general update tasks.
 		/// </summary>
 		public virtual void PostUpdateEquips() {
+		}
+
+		/// <summary>
+		/// Is called in Player.Frame() after vanilla functional slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateVisibleAccessories() {
+		}
+
+		/// <summary>
+		/// Is called in Player.Frame() after vanilla vanity slots are evaluated, including selection screen to prepare and denote visible accessories. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateVisibleVanityAccessories() {
+		}
+
+		/// <summary>
+		/// Is called in Player.UpdateDyes(), including selection screen. Player Instance sensitive.
+		/// </summary>
+		public virtual void UpdateDyes() {
 		}
 
 		/// <summary>
@@ -224,12 +241,6 @@ namespace Terraria.ModLoader
 		/// This is called at the very end of the Player.Update method. Final general update tasks can be placed here.
 		/// </summary>
 		public virtual void PostUpdate() {
-		}
-
-		/// <summary>
-		/// This is called after VanillaUpdateVanityAccessory() in player.UpdateEquips()
-		/// </summary>
-		public virtual void UpdateVanityAccessories() {
 		}
 
 		/// <summary>
@@ -678,17 +689,31 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the item the player gains from catching a fish. The fishingRod and bait parameters refer to the said items in the player's inventory. The liquidType parameter is 0 if the player is fishing in water, 1 for lava, and 2 for honey. The poolSize parameter is the tile size of the pool the player is fishing in. The worldLayer parameter is 0 if the player is in the sky, 1 if the player is on the surface, 2 if the player is underground, 3 if the player is in the caverns, and 4 if the player is in the underworld. The questFish parameter is the item ID for the day's Angler quest. Modify the caughtType parameter to change the item the player catches. The junk parameter is whether the player catches junk; you can set this to true if you make the player catch a junk item, and is mostly used to pass information (has no effect on the game).
+		/// Allows you to change the item or enemy the player gets when sucessfully catching a "fish". The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+		/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 		/// </summary>
-		/// <param name="fishingRod"></param>
-		/// <param name="bait"></param>
-		/// <param name="power"></param>
-		/// <param name="liquidType"></param>
-		/// <param name="poolSize"></param>
-		/// <param name="worldLayer"></param>
-		/// <param name="questFish"></param>
-		/// <param name="caughtType"></param>
-		public virtual void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType) {
+		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
+		/// <param name="itemDrop">The item that will be created when this fishing attempt succeeds. leave <0 for no item</param>
+		/// <param name="npcSpawn">The enemy that will be spawned if there is no item caught. leave <0 for no NPC spawn</param>
+		/// <param name="sonar">Fill all of this structure's fields to override the sonar text, or make sonar.Text null to disable custom sonar</param>
+		/// <param name="sonarPosition">The position the Sonar text will spawn. Bobber location by default.</param>
+		public virtual void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the item caught by the fishing player, including stack
+		/// </summary>
+		/// <param name="fish">The item (Fish) to modify</param>
+		public virtual void ModifyCaughtFish(Item fish) {
+		}
+
+		/// <summary>
+		/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behaviour.
+		/// Not consuming will always take priority over forced consumption
+		/// </summary>
+		/// <param name="bait">The item (bait) that would be consumed</param>
+		public virtual bool? CanConsumeBait(Item bait) {
+			return null;
 		}
 
 		/// <summary>
@@ -735,7 +760,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to reorder the player draw layers. 
+		/// Allows you to reorder the player draw layers.
 		/// This is called once at the end of mod loading, not during the game.
 		/// Use with extreme caution, or risk breaking other mods.
 		/// </summary>
@@ -851,6 +876,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the autoswing (auto-reuse) behavior of any item without having to mess with Item.autoReuse.
+		/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
+		/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
+		/// </summary>
+		/// <param name="item"> The item. </param>
+		public virtual bool? CanAutoReuseItem(Item item) => null;
+
+		/// <summary>
 		/// Called on the Client while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal.
 		/// </summary>
 		/// <param name="nurse">The Nurse NPC instance.</param>
@@ -887,7 +920,7 @@ namespace Terraria.ModLoader
 		/// You can use this method to add items to the player's starting inventory, as well as their inventory when they respawn in mediumcore.
 		/// </summary>
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
-		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty<Item>().</returns>
+		/// <returns>An enumerable of the items you want to add. If you want to add nothing, return Enumerable.Empty&lt;Item&gt;().</returns>
 		public virtual IEnumerable<Item> AddStartingItems(bool mediumCoreDeath) {
 			return Enumerable.Empty<Item>();
 		}

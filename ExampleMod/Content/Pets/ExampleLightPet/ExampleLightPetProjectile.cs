@@ -82,7 +82,7 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 				return;
 			}
 
-			// Enumerate 
+			// Enumerate
 			for (int i = 0; i < Main.maxNPCs; i++) {
 				var npc = Main.npc[i];
 

@@ -4,6 +4,7 @@ using ExampleMod.Content.NPCs;
 using System.IO;
 using Terraria;
 using Terraria.GameContent.UI;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod
@@ -14,8 +15,6 @@ namespace ExampleMod
 		public static ModKeybind RandomBuffKeybind;
 		public static int ExampleCustomCurrencyId;
 
-		public override void AddRecipes() => ExampleRecipes.Load(this);
-
 		public override void Load() {
 			RandomBuffKeybind = KeybindLoader.RegisterKeybind(this, "Random Buff", "P");
 
@@ -24,7 +23,6 @@ namespace ExampleMod
 		}
 
 		public override void Unload() {
-			ExampleRecipes.Unload();
 			RandomBuffKeybind = null;
 		}
 

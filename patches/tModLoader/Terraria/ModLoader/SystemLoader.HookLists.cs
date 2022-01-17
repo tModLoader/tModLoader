@@ -33,7 +33,7 @@ namespace Terraria.ModLoader
 			var hook = new HookList(ModLoader.Method(func));
 
 			hooks.Add(hook);
-			
+
 			return hook;
 		}
 
@@ -44,11 +44,11 @@ namespace Terraria.ModLoader
 		}
 
 		//Delegates
-		
+
 		private delegate void DelegateModifyTransformMatrix(ref SpriteViewMatrix Transform);
-		
+
 		private delegate void DelegateModifySunLightColor(ref Color tileColor, ref Color backgroundColor);
-		
+
 		private delegate void DelegateModifyLightingBrightness(ref float scale);
 
 		private delegate void DelegatePostDrawFullscreenMap(ref string mouseText);
@@ -62,6 +62,12 @@ namespace Terraria.ModLoader
 		private delegate void DelegateTileCountsAvailable(ReadOnlySpan<int> tileCounts);
 
 		//HookLists
+
+		private static HookList HookAddRecipes = AddHook<Action>(s => s.AddRecipes);
+
+		private static HookList HookPostAddRecipes = AddHook<Action>(s => s.PostAddRecipes);
+
+		private static HookList HookAddRecipeGroups = AddHook<Action>(s => s.AddRecipeGroups);
 
 		private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
 

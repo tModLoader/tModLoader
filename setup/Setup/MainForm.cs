@@ -82,7 +82,7 @@ namespace Terraria.ModLoader.Setup
 
 		private void menuItemTerraria_Click(object sender, EventArgs e)
 		{
-			SelectTerrariaDialog();
+			SelectAndSetTerrariaDirectoryDialog();
 		}
 
 		private void menuItemResetTimeStampOptmizations_Click(object sender, EventArgs e)

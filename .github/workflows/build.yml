@@ -4,7 +4,7 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4, 1.4_mergedtesting]
+    branches: [1.4, 1.4_mergedtesting, gh_actions_test]
   pull_request_target:
     types: [labeled]
     branches: [1.4, 1.4_mergedtesting]
@@ -27,6 +27,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
+          fetch-depth: 10
 
       - name: Check out pull request code to separate folder
         uses: actions/checkout@v2
@@ -58,7 +59,7 @@ jobs:
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
-          key: 1423-B
+          key: 1432-A
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -75,62 +76,83 @@ jobs:
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
 
+      # GitHub runners may have outdated .NET versions.
+      - name: Install .NET SDKs
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+
       # Runs a set of commands using the runners shell
       - name: Build script
         if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
         shell: bash
         run: |
-          echo Downloading Terraraia Server zip
-          curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-1423.zip -o terrariaserver.zip
+          echo CI setup for Terraria v$TERRARIA_VERSION
+          echo Downloading Terraria Server zip
+          curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-$TERRARIA_VERSION.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
           echo Extracting Setup Secret Assets
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1423/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
-          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./1423/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
-          echo ls -l is:
-          ls -l
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./$TERRARIA_VERSION/Windows/Terraria.exe ./setup/SecretAssets/SetupAsset1.gpg
+          gpg --quiet --batch --yes --decrypt --passphrase="$SETUP_ASSETS_PASSPHRASE" --output ./$TERRARIA_VERSION/Windows/SteelSeriesEngineWrapper.dll ./setup/SecretAssets/SetupAsset2.gpg
+          
           echo Installing XNA
           curl -s -L https://github.com/JavidPack/tModLoaderPublishIntegration/raw/master/xnafx40_redist.msi -O
           msiexec //i xnafx40_redist.msi //quiet
           echo XNA Installed
-          echo Running setup.bat
-          ./setup.bat auto
-          echo setupcommandline Done
-          echo pwd is: ${PWD}
-          echo ls -l is:
-          ls -l
-          echo Creating tModLoader cache zip file
+          
+          echo ::group::Running setup.bat
+          ./setup.bat auto ./$TERRARIA_VERSION/Windows
+          echo ::endgroup::
+          
+          echo ::group::WorkspaceInfo.targets
+          cat src/WorkspaceInfo.targets; echo
+          echo ::endgroup::
+          
+          echo ::group::Creating tModLoader cache zip file
           7z a tModLoader.zip ./src/tModLoader/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
-          ls -l
-          cd solutions
-          echo pwd is: ${PWD}
-          echo ls -l is:
-          ls -l
-          echo Running CompleteLib.bat for Release
-          ./CompleteLib.bat Release skipzip
-          echo CompleteLib.bat Release Done
-          cd ..
+          echo ::endgroup::
+          
+          echo ::group::Building Release
+          dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
+          (
+            set +e;
+            dotnet build src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q -bl;
+            err=$?;
+            [[ $err -ne 0 ]] && echo Uploading msbuild.binlog && curl --upload-file ./msbuild.binlog http://transfer.sh/msbuild.binlog;
+            exit $err
+          )
+          
           mkdir -p artifacts/Release
-          cp -R ./solutions/Release/Shared/. ./artifacts/Release/
+          cp -r steam_build/. artifacts/Release
+          echo ::endgroup::
+          
           echo Cleaning up output directory in-between builds...
-          rm -r ./src/tModLoader/Terraria/1423/Windows
-          cd solutions
-          echo pwd is: ${PWD}
-          # export UPLOAD_MSBUILD_LOGS=1
-          echo Running CompleteLib.bat for Debug
-          ./CompleteLib.bat Debug skipzip
-          echo CompleteLib.bat Debug Done
-          cd ..
+          rm -rf steam_build
+          
+          echo ::group::Building Debug
+          dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
+          dotnet build src/tModLoader/Terraria/Terraria.csproj -c Debug --nologo -v q
+          
           mkdir -p artifacts/Debug
-          cp -R ./solutions/Debug/Shared/. ./artifacts/Debug/
-          echo Creating decompiled cache zip file
+          cp -r steam_build/. artifacts/Debug
+          echo ::endgroup::
+          
+          echo ::group::Creating decompiled cache zip file
           7z a decompiled.zip ./src/decompiled/
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" decompiled.zip
-          ls -l
+          echo ::endgroup::
+          
+          echo ::group::Creating RecentGitHubCommits.txt
+          git log -10 --format=oneline
+          git log -10 --format=oneline > artifacts/Debug/RecentGitHubCommits.txt
+          git log -10 --format=oneline > artifacts/Release/RecentGitHubCommits.txt
+          echo ::endgroup::
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
+          TERRARIA_VERSION: 1432
           
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2
@@ -158,14 +180,28 @@ jobs:
         run: |
           echo Adding build info to ExampleMod displayName
           echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
-          cd artifacts/Debug
-          mkdir -p ModLoader/Mods
-          echo pwd is: ${PWD}
-          echo Building ExampleMod
-          dotnet tModLoader.dll -server -build ../../ExampleMod -tmlsavedirectory ./ModLoader
-          cd ../..
+          
+          #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
+          ModloaderDir=$(pwd)/local/ModLoader
+          echo ModloaderDir is: $ModloaderDir
+          mkdir -p $ModloaderDir
+          
+          export ExtraBuildModFlags="-tmlsavedirectory \"$(cygpath -w $ModloaderDir)\"" #convert unix path to windows
+          echo ExtraBuildModFlags is: $ExtraBuildModFlags
+          
+          echo ::group::Building ExampleMod
+          dotnet build ExampleMod/ExampleMod.csproj --nologo
+          echo ::endgroup::
+          
           mkdir -p artifacts/Mods
-          mv ./artifacts/Debug/ModLoader/Mods/ExampleMod.tmod ./artifacts/Mods/ExampleMod.tmod
+          mv $ModloaderDir/Mods/ExampleMod.tmod artifacts/Mods/ExampleMod.tmod
+          
+          echo ::group::Testing Example Mod build from "Mod Sources" dir  
+          cp -r ExampleMod "$ModloaderDir/Mod Sources/ExampleMod"
+          cd "$ModloaderDir/Mod Sources/ExampleMod"
+          unset ExtraBuildModFlags
+          dotnet build ExampleMod.csproj --nologo
+          echo ::endgroup::
           
       - name: Upload ExampleMod Build Artifact
         uses: actions/upload-artifact@v2
@@ -173,6 +209,11 @@ jobs:
           name: ExampleMod Build
           path: |
             ./artifacts/Mods/ExampleMod.tmod
+            
+      - name: List final directory and file structure
+        if: always()
+        shell: pwsh
+        run: tree /f /a
         
       - name: Post push report to 1-4-nightly-builds on Discord
         uses: sarisia/actions-status-discord@v1
@@ -279,13 +320,14 @@ jobs:
       - name: Download build artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: Debug Build
-          path: artifacts/Debug
+          # Change this next line to switch between uploading Release and Debug if desired. 
+          name: Release Build
+          path: artifacts/Build
       - name: View build artifact files
         run: |
           echo pwd is: ${PWD}
           ls -alhR
-        working-directory: artifacts/Debug
+        working-directory: artifacts/Build
       - name: Setup steamcmd
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
@@ -310,8 +352,55 @@ jobs:
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
+      - name: Download ExampleMod build artifact from build job
+        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
+        uses: actions/download-artifact@v2
+        with:
+          name: ExampleMod Build
+          path: artifacts/ExampleMod
+      - name: View ExampleMod build artifact files
+        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        run: |
+          echo pwd is: ${PWD}
+          ls -alhR
+        working-directory: artifacts/ExampleMod
       - name: Attempt workshop_build_item 
         if: steps.changed-files-examplemod.outputs.any_changed == 'true'
         shell: bash
         run: |
-          echo If implemented, this would auto publish ExampleMod
+          echo Changes detected in ExampleMod folder, attempting to publish ExampleMod to workshop
+          echo "Warning: This manual publish approach bypasses version and other checks, so updating build.txt is not necessary currently and this approach shouldn't be used by modders"
+          echo pwd is: ${PWD}
+          echo Making files
+          cat << EOF > ./workshop.vdf
+          "workshopitem"
+          {
+           "appid" "1281930"
+           "publishedfileid"  "2615761271"
+           "contentfolder" "${GITHUB_WORKSPACE}/artifacts/ExampleMod/"
+           "title" "Example Mod"
+           "description" "Learn how to mod with tModLoader by exploring the source code for this mod.
+           
+           You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4/ExampleMod"
+           "changenote" "Automatic update from GitHub: ${{ github.event.commits[0].message}}"
+          }
+          EOF
+          cat << EOF > ./artifacts/ExampleMod/workshop.json
+          {
+            "WorkshopPublishedVersion": 1,
+            "ContentType": "Mod",
+            "SteamEntryId": 2615761271,
+            "Publicity": 1
+          }
+          EOF
+          ls -alh
+          echo "Attempting to publish ExampleMod.tmod"
+          echo workshop.vdf contents:
+          cat workshop.vdf
+          echo workshop.json contents:
+          cat artifacts/ExampleMod/workshop.json
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${GITHUB_WORKSPACE}/workshop.vdf" +quit
+          echo workshop.vdf contents:
+          cat workshop.vdf
+          echo Done

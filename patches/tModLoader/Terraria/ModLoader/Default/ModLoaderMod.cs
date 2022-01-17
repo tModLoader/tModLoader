@@ -3,6 +3,7 @@ using ReLogic.Content;
 using ReLogic.Content.Sources;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria.ModLoader.Assets;
@@ -29,7 +30,7 @@ namespace Terraria.ModLoader.Default
 
 		public override IContentSource CreateDefaultContentSource() => new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly(), "Terraria.ModLoader.Default.");
 
-		public override void Load() {			
+		public override void Load() {
 			PatronSets = GetContent<PatreonItem>().GroupBy(t => t.InternalSetName).Select(set => set.ToArray()).ToArray();
 			DeveloperSets = GetContent<DeveloperItem>().GroupBy(t => t.InternalSetName).Select(set => set.ToArray()).ToArray();
 		}
@@ -61,5 +62,7 @@ namespace Terraria.ModLoader.Default
 			}
 			return false;
 		}
+
+		public override void HandlePacket(BinaryReader reader, int whoAmI) => ModAccessorySlotPlayer.NetHandler.HandlePacket(reader, whoAmI);
 	}
 }
