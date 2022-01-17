@@ -5,14 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
 	public class BiomeLoader : Loader<ModBiome>
 	{
-		public const int VanillaPrimaryBiomeCount = 11;
-
-		public BiomeLoader() => Initialize(VanillaPrimaryBiomeCount);
+		public BiomeLoader() => Initialize(BiomeID.Count);
 
 		// Internal boilerplate
 

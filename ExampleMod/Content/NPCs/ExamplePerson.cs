@@ -1,3 +1,4 @@
+using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
@@ -16,6 +17,7 @@ using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -45,6 +47,18 @@ namespace ExampleMod.Content.NPCs
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+
+			// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
+
+			// Biomes
+			NPC.Happiness.LikeBiome(BiomeID.Forest); // Example Person prefers the forest.
+			NPC.Happiness.DislikeBiome(BiomeID.Snow); // Example Person dislikes the snow.
+			NPC.Happiness.LoveBiome(ModContent.GetInstance<ExampleSurfaceBiome>().Type); // Example Person likes the Example Surface Biome
+			// NPCs
+			NPC.Happiness.HateNPC(NPCID.Demolitionist); // Hates living near the demolitionist.
+			NPC.Happiness.DislikeNPC(NPCID.Merchant); // Dislikes living near the merchant.
+			NPC.Happiness.LikeNPC(NPCID.Guide); // Likes living near the guide.
+			NPC.Happiness.LoveNPC(NPCID.Dryad); // Loves living near the dryad.
 		}
 
 		public override void SetDefaults() {
