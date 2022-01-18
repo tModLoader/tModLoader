@@ -1,22 +1,15 @@
-#!/bin/sh
-
+#!/bin/bash
 cd "$(dirname "$0")"
 script_dir="$(pwd -P)"
 launch_args="$*"
 
-. ./InstallNetFramework.sh
+. ./LaunchUtils/ScriptCaller.sh false
 
-if [ -d "$install_dir" ]; then
+dotnetV="6.0.0"
+localNet="/dotnet/$dotnetV/dotnet"
+
+if [ -f "$localNet" ]; then
   ./dotnet/$version/dotnet tModLoader.dll $launch_args
-fi
-if [ ! -d "$install_dir" ]; then
-  runLogs="LaunchLogs/runtime.log"
-  echo "Portable install failed. Running manual .Net install"
-  echo "Logging to $runLogs"
-  if [ -f "$runLogs" ]; then
-    rm "$runLogs" 
-  fi
-  exec 3>>"$runLogs" 2>&3
-  echo "Attempting Launch.."
+else
   dotnet tModLoader.dll $launch_args
 fi

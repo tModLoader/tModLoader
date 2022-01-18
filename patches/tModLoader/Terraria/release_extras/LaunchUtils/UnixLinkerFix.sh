@@ -1,4 +1,6 @@
 #!/bin/bash
+#Authors: covers1624, DarioDaf, Solxanich
+# Provided for use in tModLoader deployment. 
 
 #chdir to path of the script and save it
 cd "$(dirname "$0")"

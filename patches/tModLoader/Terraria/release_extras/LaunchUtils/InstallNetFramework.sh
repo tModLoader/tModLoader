@@ -6,24 +6,8 @@
 cd "$(dirname "$0")"
 script_dir="$(pwd -P)"
 root_dir="$(dirname "$script_dir")"
-
-echo "Verifying Net Framework...."
-echo "This may take a few moments."
-
 _uname=$(uname)
-if [ "$_uname" != Windows_NT ]; then
-	chmod +x UnixLinkerFix.sh
-	./UnixLinkerFix.sh
-else
-	./busybox64.exe UnixLinkerFix.sh true
-fi
-
-if [ "$_uname" != Windows_NT ]; then
-	chmod +x PlatformLibsDeploy.sh
-	./PlatformLibsDeploy.sh
-else
-	./busybox64.exe PlatformLibsDeploy.sh true
-fi
+wnd="$1"
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 echo "Parsing .NET version requirements from runtimeconfig.json"
@@ -38,10 +22,7 @@ dotnet_dir="$root_dir/dotnet"
 install_dir="$dotnet_dir/$version"
 echo "Success!"
 
-if [ ! -d "LaunchLogs" ]; then
-  mkdir "LaunchLogs"
-fi
-
+echo "Checking for old .NET versions to remove from folder"
 #If the dotnet dir exists, we need to do some cleanup
 if [ -d "$dotnet_dir" ]; then
   # Find all folders inside the dotnet dir that don't match our target version and nuke it
@@ -53,6 +34,7 @@ if [ -d "$dotnet_dir" ]; then
     fi
   done
 fi
+echo "Cleanup Complete"
 
 # Sourced from dotnet-install.sh
 # Check if a program is present or not
@@ -76,17 +58,12 @@ file_download() {
 }
 
 #If the install directory for this specific dotnet version doesnt exist, grab the installer script and run it.
+echo "Checking for Updates to .NET"
 if [ ! -d "$install_dir" ]; then
   installLogs="LaunchLogs/install.log"
-  echo "Logging to $installLogs"
-  if [ -f "$installLogs" ]; then
-    rm "$installLogs" 
-  fi
-  exec 3<&1 4<&2 1>>$installLogs 2>&1
-  
   dotnet_runtime=dotnet
 
-  if [ "$_uname" = Windows_NT ]; then
+  if [ "$wnd" = true ]; then
     file_download dotnet-install.ps1 https://dot.net/v1/dotnet-install.ps1
     chmod +x dotnet-install.ps1
     
@@ -98,20 +75,14 @@ if [ ! -d "$install_dir" ]; then
     chmod +x dotnet-install.sh
     ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "$dotnet_runtime" --version "$version"
   fi
-
-  exec 1>&3 2>&4
 fi
+echo "Finished Checking for Updates"
 
 # Technically can happen on any system, but Windows_NT is the one expected to fail if powershell is not 4+
 # so it's treated differently with step-by-step manual install
-if [ "$_uname" = Windows_NT ]; then
+if [ "$wnd" = true ]; then
   # If the install failed, provide a link to get the portable directly, and instructions on where to do with it.
-  recidive_install=0
-  while [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; do
-    if [ $recidive_install = 1 ]; then
-      read -p "\"$install_dir/dotnet.exe\" not detected. Please ensure step is complete before continuing with Enter."
-      goto :loop
-    )
+  if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
     mkdir "$install_dir"
 
     echo "It has been detected that your system failed to install the dotnet portables automatically. Will now proceed manually."
@@ -122,5 +93,5 @@ if [ "$_uname" = Windows_NT ]; then
     read -p "Please press Enter when this step is complete."
 
     recidive_install=1
-  done
+  fi
 fi
