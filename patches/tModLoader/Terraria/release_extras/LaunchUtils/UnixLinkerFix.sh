@@ -20,7 +20,7 @@ if [ "$_uname" = Darwin ]; then
 	export VK_ICD_FILENAMES="$libary_dir/MoltenVK_icd.json"
 	ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
 elif [ "$wnd" = true ]; then
-	sleep 0.01
+	echo "I'm on Windows, no need to do anything"
 else
 	library_dir="$root_dir/Libraries/Native/Linux"
 	export LD_LIBRARY_PATH="$library_dir"

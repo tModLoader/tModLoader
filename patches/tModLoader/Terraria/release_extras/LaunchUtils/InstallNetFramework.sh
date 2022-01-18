@@ -48,7 +48,7 @@ machine_has() {
 file_download() {
   if machine_has "curl"; then
     curl -sLo "$1" "$2"
-  elif machine_has "wget" then
+  elif machine_has "wget"; then
     wget -q -O "$1" "$2"
   else
     echo "Missing dependency: neither curl nor wget was found."

@@ -10,8 +10,8 @@ wnd="$1"
 
 _uname=$(uname)
 echo "Verifying .NET platform specific libraries are correctly deployed"
-if [ "wnd" = true ]; then
-	sleep 0.01
+if [ "$wnd" = true ]; then
+	echo "I'm on Windows, no need to do anything"
 else
   # Ensure Unix builds have the right version of Steamworks.NET
   unixSteamworks="PlatformVariantLibs/UNIX.Steamworks.NET.dll"

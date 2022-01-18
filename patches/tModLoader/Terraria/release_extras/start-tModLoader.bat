@@ -2,10 +2,10 @@
 cd /D "%~dp0"
 set Args=%*
 
-call LaunchUtils/busybox64.exe LaunchUtils/ScriptCaller.sh true
+"LaunchUtils/busybox64.exe" bash "LaunchUtils/ScriptCaller.sh" true
 
-dotnetV=6.0.0
-localNet="/dotnet/%dotnetV%/dotnet.exe"
+set dotnetV=6.0.0
+set localNet="/dotnet/%dotnetV%/dotnet.exe"
 
 if exists %localNet% ( 
 	start %localNet% tModLoader.dll %Args% 
