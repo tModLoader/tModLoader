@@ -165,7 +165,7 @@ namespace Terraria.ModLoader.UI
 			// mag is 0 for bytes, 1 for KB, 2, for MB, etc.
 			int mag = (int)Math.Log(value, 1024);
 
-			// 1L << (mag * 10) == 2 ^ (10 * mag) 
+			// 1L << (mag * 10) == 2 ^ (10 * mag)
 			// [i.e. the number of bytes in the unit corresponding to mag]
 			decimal adjustedSize = (decimal)value / (1L << (mag * 10));
 

@@ -3,14 +3,18 @@
 		// Main Menu // Menu Główne
 		"PatreonSupport": "Wesprzyj nas: ",
 		"MenuModBrowser": "Przeglądarka Modów",
+		// "MenuDownloadMods": "Download Mods",
+		// "MenuDownloadModsDescription": "The in-game Mod Browser to find, download, and update your Mods.",
 		"MenuMods": "Mody",
+		// "MenuManageMods": "Manage Mods",
+		// "MenuManageModsDescription": "Manage which Mods are active, delete Mods, and configure your Modpacks.",
 		"MenuModSources": "Źródła",
 		"MenuEnableDeveloperMode": "Włącz Tryb Dewelopera",
 		"FirstLaunchWelcomeMessage": "Witaj w tModLoaderze.\n\nPomyślnie zainstalowałeś tModLoadera. Użyj Przeglądarki Modów, aby znaleźć mody, które chcesz pobrać. Użyj zakładki mody, aby zmienić, które mody są aktualnie aktywne. Po zmianie modów upewnij się, że klikniesz przycisk Przeładuj mody, aby je załadować.",
 		"tModLoaderSettings": "Ustawienia tModLoadera",
 		"ModMenuSwap": "Przełącz Motyw Menu",
-		
-		// Mods Menu // Menu Modów
+
+		// Mods Menu
 		"ModsModsList": "Lista modów",
 		"ModsEnableAll": "Włącz wszystkie",
 		"ModsDisableAll": "Wyłącz wszystkie",
@@ -19,6 +23,7 @@
 		"ModsModPacks": "Paczki modów",
 		"ModsDisable": "Wyłącz",
 		"ModsEnable": "Włącz",
+    // "ModConfiguration": "Mod Configuration",
 		"ModsOpenConfig": "Kliknij, aby otworzyć konfigurację",
 		"ModOldWarning": "Stary mod, aktywuj na własną odpowiedzialność",
 		"ModDependencyClickTooltip": "Ten mod wymaga moda: {0}\n (kliknij, by włączyć)",
@@ -60,7 +65,23 @@
 		"BossBarStyle": "Styl Paska Bossa: {0}",
 		"BossBarStyleNoOptions": "Bez Opcji",
 
-		// Mod Errors // Błędy Modów
+		// Workshop
+		// "WorkshopDisclaimer": "By submitting this item, you agree to the tModLoader Terms of Service",
+		// "SteamPublishingLimit": "Error: Only Steam tModLoader owners can publish to Workshop in-game.",
+		// "NoWorkshopAccess": "Error: Unable to access Steam Workshop",
+		// "ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
+		// "ModVersionInfoUnchanged": "Error: Mod Version information must be incremented prior to updating.",
+		// "ConsultSteamLogs": "Consult Steam workshop_log.txt (Default Location: {0}) for more information.",
+		// "SteamRejectUpdate": "Item is/was already installed: {0}. If attempting to re-install, close current instance and re-launch.",
+		// "BeginDownload": "Attempting Download Item: {0}",
+		// "EndDownload": "Item Download Completed",
+		// "CreateItem": "Creating Item {0}",
+		// "UpdateItem": "Updating Item {0}",
+		// "PublishItem": "Attempting Publishing Item {0}",
+		// "SteamDownloader": "Queuing download with Steam download manager...",
+		// "DownloadProgress": "Download {0}% Complete",
+
+		// Mod Errors
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
 		"LoadErrorDisabled": "Mod(y) zostały automatycznie wyłączone.",
 		"LoadErrorCulpritUnknown": "Mod odpowiedzialny jest nieznany i tModLoader musi zostać ponownie uruchomiony.",
@@ -201,6 +222,8 @@
 		"XDaysAgo": "{0} {^0:dzień;dni;dni} temu",
 		"XMonthsAgo": "{0} {^0:miesiąc;miesiące;miesięcy} temu",
 		"XYearsAgo": "{0} {^0:rok;lata;lat} temu",
+		// "MBServerReturnToMenu": "Return to world menu",
+		// "MBServerAskForModName": "Type an exact ModName to download: ",
 
 		// Mod Publishing // Publikowanie Modów
 		"MBPublishEnterPassphrase": "Wpisz kod",
@@ -271,6 +294,7 @@
 		"MSPublish": "Opublikuj",
 		"MSModSourcesCantHaveSpaces": "(Foldery źródłowe modów nie mogą zawierać znaków spacji)",
 		"MSCreateMod": "Stwórz Moda",
+		// "VersionUpgrade": "LINK: Learn about Mod Migration for Latest Update",
 
 		// Developer Mode UI
 		// "DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
@@ -342,7 +366,11 @@
 		"MouseXButton1": "Czwarty Przycisk",
 		"MouseXButton2": "Piąty Przycisk",
 
-		// Misc // Pozostałe
+		// In Game UI additions
+		// "slotStack": "Stack",
+		// "slotScroll": "Scroll",
+
+		// Misc
 		"OK": "OK",
 		"Continue": "Kontynuuj",
 		"DeleteModConfirm": "Czy na pewno chcesz usunąć ten mod na stałe?",
@@ -384,7 +412,7 @@
 		// "InDungeon": "Needs to be in Dungeon Biome",
 		// "InCorrupt": "Needs to be in Corruption Biome",
 		// "InHallow": "Needs to be in Hallow Biome",
-		// "InMeteor": "Needs to be in Meteor Biome",
+		// "InMeteor": "Needs to be in Meteorite Biome",
 		// "InJungle": "Needs to be in Jungle Biome",
 		// "InSnow": "Needs to be in Snow Biome",
 		// "InCrimson": "Needs to be in Crimson Biome",
@@ -398,14 +426,14 @@
 		// "InGlowshroom": "Needs to be in Mushroom Biome",
 		// "InUndergroundDesert": "Needs to be in Underground Desert",
 		// "InSkyHeight": "Needs to be in Sky",
-		// "InOverworldHeight": "Needs to be in above ground",
-		// "InDirtLayerHeight": "Needs to be in Dirt Layer",
-		// "InRockLayerHeight": "Needs to be in Rock Layer",
+		// "InOverworldHeight": "Needs to be in Surface Layer",
+		// "InDirtLayerHeight": "Needs to be in Underground Layer",
+		// "InRockLayerHeight": "Needs to be in Cavern Layer",
 		// "InUnderworldHeight": "Needs to be in Underworld",
-		// "InBeach": "Needs to be in Beach Biome",
+		// "InBeach": "Needs to be in Ocean Biome",
 		// "InRain": "Needs to be during rain",
 		// "InSandstorm": "Needs to be during Sandstorm",
-		// "InOldOneArmy": "Needs to be during Old One Army",
+		// "InOldOneArmy": "Needs to be during Old One's Army",
 		// "InGranite": "Needs to be in Granite Biome",
 		// "InMarble": "Needs to be in Marble Biome",
 		// "InHive": "Needs to be in Hive",

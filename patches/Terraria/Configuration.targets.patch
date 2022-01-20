@@ -1,13 +1,15 @@
 --- src/decompiled/Configuration.targets
 +++ src/Terraria/Configuration.targets
-@@ -1,17 +_,11 @@
+@@ -1,17 +_,13 @@
  <Project>
    <PropertyGroup>
 -    <TargetFramework>net40</TargetFramework>
 -    <Configurations>Debug;Release;ServerDebug;ServerRelease</Configurations>
 -    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
 -    <PlatformTarget>x86</PlatformTarget>
-+    <TargetFramework>net5.0</TargetFramework>
++    <TargetFramework>net6.0</TargetFramework>
++    <!-- Defines the Minimum patch version that is required to play. -->
++    <RuntimeFrameworkVersion>6.0.0</RuntimeFrameworkVersion>
 +    <Configurations>Debug;Release</Configurations>
 +    <PlatformTarget>AnyCPU</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

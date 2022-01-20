@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -33,8 +34,8 @@ namespace ExampleMod.Content.Projectiles
 		// Return null to use the default color (normally light and buff color)
 		// Returns null by default.
 		public override Color? GetAlpha(Color lightColor) {
-			//return Color.White;
-			return new Color(255, 255, 255, 0) * (1f - (float)Projectile.alpha / 255f);
+			// return Color.White;
+			return new Color(255, 255, 255, 0) * Projectile.Opacity;
 		}
 
 		public override void AI() {
@@ -45,7 +46,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ai[0] += 1f;
 
 			FadeInAndOut();
-			
+
 			// Slow down
 			Projectile.velocity *= 0.98f;
 
@@ -66,7 +67,7 @@ namespace ExampleMod.Content.Projectiles
 			// Set both direction and spriteDirection to 1 or -1 (right and left respectively)
 			// Projectile.direction is automatically set correctly in Projectile.Update, but we need to set it here or the textures will draw incorrectly on the 1st frame.
 			Projectile.direction = Projectile.spriteDirection = (Projectile.velocity.X > 0f) ? 1 : -1;
-			
+
 			Projectile.rotation = Projectile.velocity.ToRotation();
 			// Since our sprite has an orientation, we need to adjust rotation to compensate for the draw flipping
 			if (Projectile.spriteDirection == -1) {
@@ -105,19 +106,23 @@ namespace ExampleMod.Content.Projectiles
 				spriteEffects = SpriteEffects.FlipHorizontally;
 
 			// Getting texture of projectile
-			Texture2D texture = (Texture2D)ModContent.GetTexture(Texture);
+			Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
 
 			// Calculating frameHeight and current Y pos dependence of frame
-			// If texture without animation frameHeight = texture.Height is always and startY is always 0
+			// If texture without animation frameHeight is always texture.Height and startY is always 0
 			int frameHeight = texture.Height / Main.projFrames[Projectile.type];
 			int startY = frameHeight * Projectile.frame;
-			
+
 			// Get this frame on texture
 			Rectangle sourceRectangle = new Rectangle(0, startY, texture.Width, frameHeight);
+
+			// Alternatively, you can skip defining frameHeight and startY and use this:
+			// Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Projectile.type], frameY: Projectile.frame);
+
 			Vector2 origin = sourceRectangle.Size() / 2f;
 
-			// If image isn't centered or symetrical you can specify origin of the sprite
-			// (0,0) for the upper-left corner 
+			// If image isn't centered or symmetrical you can specify origin of the sprite
+			// (0,0) for the upper-left corner
 			float offsetX = 20f;
 			origin.X = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Width - offsetX : offsetX);
 
@@ -126,7 +131,7 @@ namespace ExampleMod.Content.Projectiles
 			// origin.Y = (float)(Projectile.spriteDirection == 1 ? sourceRectangle.Height - offsetY : offsetY);
 
 
-			// Appling lighting and draw current frame
+			// Applying lighting and draw current frame
 			Color drawColor = Projectile.GetAlpha(lightColor);
 			Main.EntitySpriteDraw(texture,
 				Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY),
@@ -141,6 +146,10 @@ namespace ExampleMod.Content.Projectiles
 	internal class ExampleAdvancedAnimatedProjectileItem : ModItem
 	{
 		public override string Texture => $"Terraria/Images/Item_{ItemID.NebulaBlaze}";
+
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
 
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.NebulaBlaze);

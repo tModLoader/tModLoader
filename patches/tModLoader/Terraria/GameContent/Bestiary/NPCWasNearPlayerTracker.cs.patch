@@ -1,0 +1,30 @@
+--- src/Terraria/Terraria/GameContent/Bestiary/NPCWasNearPlayerTracker.cs
++++ src/tModLoader/Terraria/GameContent/Bestiary/NPCWasNearPlayerTracker.cs
+@@ -1,3 +_,4 @@
++using System.Linq;
+ using Microsoft.Xna.Framework;
+ using System.Collections.Generic;
+ using System.IO;
+@@ -49,8 +_,9 @@
+ 
+ 		public void Save(BinaryWriter writer) {
+ 			lock (_entryCreationLock) {
++				var vanillaOnly = _wasNearPlayer.Where(persistentId => ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(persistentId, out int netId) && netId < NPCID.Count);
+-				writer.Write(_wasNearPlayer.Count);
++				writer.Write(vanillaOnly.Count());
+-				foreach (string item in _wasNearPlayer) {
++				foreach (string item in vanillaOnly) {
+ 					writer.Write(item);
+ 				}
+ 			}
+@@ -103,7 +_,9 @@
+ 
+ 		public void OnPlayerJoining(int playerIndex) {
+ 			foreach (string item in _wasNearPlayer) {
+-				int npcNetId = ContentSamples.NpcNetIdsByPersistentIds[item];
++				if (!ContentSamples.NpcNetIdsByPersistentIds.TryGetValue(item, out int npcNetId))
++					continue;
++
+ 				NetManager.Instance.SendToClient(NetBestiaryModule.SerializeSight(npcNetId), playerIndex);
+ 			}
+ 		}

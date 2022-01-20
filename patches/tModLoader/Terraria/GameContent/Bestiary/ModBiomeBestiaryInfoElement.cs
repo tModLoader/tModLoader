@@ -18,7 +18,7 @@ namespace Terraria.GameContent.Bestiary
 
 		public override UIElement GetFilterImage() {
 			Asset<Texture2D> asset;
-			if (_iconPath != null && _mod.Assets.HasAsset<Texture2D>(_iconPath)) {
+			if (_iconPath != null && _mod.HasAsset(_iconPath)) {
 				asset = _mod.Assets.Request<Texture2D>(_iconPath);
 				if (asset.Size() == new Vector2(30)) {
 					return new UIImage(asset) {

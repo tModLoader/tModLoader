@@ -3,11 +3,14 @@ using System.Reflection;
 
 namespace Terraria.ModLoader
 {
-	public static class BuildInfo {
+	public static class BuildInfo
+	{
 		public enum BuildPurpose
 		{
 			Unknown,
-			Dev,
+			Dev, // Personal Builds
+			Github_Commit, // CI builds for pull requests or non-main branches
+			Alpha, // Nightly CI builds on main branch that end up on Steam alpha channel
 			Beta,
 			Release
 		}

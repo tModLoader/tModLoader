@@ -20,12 +20,12 @@
 -		public class Sets
 +		public partial class Sets
  		{
--			public static SetFactory Factory = new SetFactory(5088);
+-			public static SetFactory Factory = new SetFactory(5125);
 +			public static SetFactory Factory = new SetFactory(ItemLoader.ItemCount);
  			public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
  				1533,
  				1534,
-@@ -907,7 +_,8 @@
+@@ -918,10 +_,14 @@
  			public static bool[] CommonCoin = Factory.CreateBoolSet(71, 72, 73, 74);
  			public static bool[] ItemIconPulse = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3456, 3457, 3458, 3459, 3580, 3581);
  			public static bool[] ItemNoGravity = Factory.CreateBoolSet(520, 521, 575, 549, 548, 547, 3453, 3454, 3455, 3456, 3457, 3458, 3459, 3580, 3581, 4143);
@@ -35,3 +35,9 @@
  			public static int[] StaffMinionSlotsRequired = Factory.CreateIntSet(1);
  			public static bool[] ExoticPlantsForDyeTrade = Factory.CreateBoolSet(3385, 3386, 3387, 3388);
  			public static bool[] NebulaPickup = Factory.CreateBoolSet(3453, 3454, 3455);
++			/// <summary>
++			/// Use in conjunction with Main.RegisterItemAnimation to enable its animation in the world
++			/// </summary>
+ 			public static bool[] AnimatesAsSoul = Factory.CreateBoolSet(575, 547, 520, 548, 521, 549, 3580, 3581);
+ 			public static bool[] gunProj = Factory.CreateBoolSet(3475, 3540, 3854, 3930);
+ 			public static int[] SortingPriorityBossSpawns = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 5120, 5, 1133, 5, 4988, 6, 544, 7, 556, 8, 557, 9, 2495, 10, 2673, 11, 602, 12, 1844, 13, 1958, 14, 1293, 15, 2767, 16, 4271, 16, 3601, 17, 1291, 18, 109, 19, 29, 20, 50, 21, 3199, 21, 3124, 22);

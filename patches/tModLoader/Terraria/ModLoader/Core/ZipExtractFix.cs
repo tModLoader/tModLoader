@@ -21,7 +21,7 @@ namespace Terraria.ModLoader.Core
 				c.Next = null; // move to end
 
 				// outFileName = outFileName.Replace("/", "\\")
-				c.GotoPrev(MoveType.Before, 
+				c.GotoPrev(MoveType.Before,
 					i => i.MatchLdstr("\\"),
 					i => i.MatchCallvirt<string>("Replace"));
 

@@ -7,9 +7,10 @@ namespace Terraria.ModLoader
 	/// This class represents a DrawLayer for the player, and uses PlayerDrawInfo as its InfoType. Drawing should be done by adding Terraria.DataStructures.DrawData objects to Main.playerDrawData.
 	/// </summary>
 	[Autoload]
-	public abstract partial class PlayerDrawLayer : ModType 
+	public abstract partial class PlayerDrawLayer : ModType
 	{
-		public abstract class Transformation {
+		public abstract class Transformation
+		{
 			public virtual Transformation Parent { get; }
 
 			/// <summary>
@@ -59,18 +60,19 @@ namespace Terraria.ModLoader
 
 		/// <summary> Returns the layer's default visibility. This is usually called as a layer is queued for drawing, but modders can call it too for information. </summary>
 		/// <returns> Whether or not this layer will be visible by default. Modders can hide layers later, if needed.</returns>
-		public virtual bool GetDefaultVisiblity(PlayerDrawSet drawInfo) => true;
+		public virtual bool GetDefaultVisibility(PlayerDrawSet drawInfo) => true;
 
+		/// <summary> Returns the layer's default position in regards to other layers. Make use of e.g <see cref="BeforeParent"/>/<see cref="AfterParent"/>, and provide a layer (usually a vanilla one from <see cref="PlayerDrawLayers"/>). </summary>
 		public abstract Position GetDefaultPosition();
 
-		internal void ResetVisiblity(PlayerDrawSet drawInfo) {
+		internal void ResetVisibility(PlayerDrawSet drawInfo) {
 			foreach (var child in ChildrenBefore)
-				child.ResetVisiblity(drawInfo);
+				child.ResetVisibility(drawInfo);
 
-			Visible = GetDefaultVisiblity(drawInfo);
+			Visible = GetDefaultVisibility(drawInfo);
 
 			foreach (var child in ChildrenAfter)
-				child.ResetVisiblity(drawInfo);
+				child.ResetVisibility(drawInfo);
 		}
 
 		/// <summary> Draws this layer. </summary>
@@ -93,10 +95,12 @@ namespace Terraria.ModLoader
 			Transform?.PostDrawRecursive(ref drawInfo);
 		}
 
-		protected override void Register() {
+		protected sealed override void Register() {
 			ModTypeLookup<PlayerDrawLayer>.Register(this);
 			PlayerDrawLayerLoader.Add(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		public override string ToString() => Name;
 	}

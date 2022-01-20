@@ -93,7 +93,7 @@ namespace Terraria.ModLoader
 			AddNoSyncDeps(syncMods);
 
 			p.Write(syncMods.Count);
-			foreach (Mod mod in syncMods) { // We only sync ServerSide configs for ModSide.Both. ModSide.Server can have 
+			foreach (Mod mod in syncMods) { // We only sync ServerSide configs for ModSide.Both. ModSide.Server can have
 				p.Write(mod.Name);
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.Hash);
@@ -286,7 +286,7 @@ namespace Terraria.ModLoader
 
 				if (downloadingFile.Position == downloadingLength) {
 					downloadingFile.Close();
-					
+
 					var mod = new TmodFile(downloadingMod.path);
 
 					using (mod.Open()) { }
@@ -377,7 +377,7 @@ namespace Terraria.ModLoader
 				p.Write(mod.Name);
 
 			ItemLoader.WriteNetGlobalOrder(p);
-			SystemHooks.WriteNetSystemOrder(p);
+			SystemLoader.WriteNetSystemOrder(p);
 			p.Write(Player.MaxBuffs);
 
 			p.Send(toClient);
@@ -402,7 +402,7 @@ namespace Terraria.ModLoader
 			SetupDiagnostics();
 
 			ItemLoader.ReadNetGlobalOrder(reader);
-			SystemHooks.ReadNetSystemOrder(reader);
+			SystemLoader.ReadNetSystemOrder(reader);
 
 			int serverMaxBuffs = reader.ReadInt32();
 
@@ -443,11 +443,11 @@ namespace Terraria.ModLoader
 				return false;
 			}
 
-			return SystemHooks.HijackGetData(ref messageType, ref reader, playerNumber);
+			return SystemLoader.HijackGetData(ref messageType, ref reader, playerNumber);
 		}
 
 		internal static bool HijackSendData(int whoAmI, int msgType, int remoteClient, int ignoreClient, NetworkText text, int number, float number2, float number3, float number4, int number5, int number6, int number7)
-			=> SystemHooks.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
+			=> SystemLoader.HijackSendData(whoAmI, msgType, remoteClient, ignoreClient, text, number, number2, number3, number4, number5, number6, number7);
 
 		// Mirror of Main class network diagnostic fields, but mod specific.
 		// Potential improvements: separate page from vanilla messageIDs, track automatic/ModSystem/etc sends per class or mod, sort by most active, moving average, NetStats console command in ModLoaderMod
@@ -486,12 +486,12 @@ namespace Terraria.ModLoader
 
 				x += xAdjust * 400;
 				y += (i - xAdjust * 50) * 13;
-				
+
 				if (j == -1) {
 					Main.spriteBatch.DrawString(FontAssets.MouseText.Value, "Mod          Received(#, Bytes)     Sent(#, Bytes)", new Vector2((float)x, (float)y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 					continue;
 				}
-				
+
 				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, netMods[j].Name, new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, rxMsgType[j].ToString(), new Vector2(x += 120, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, rxDataType[j].ToString(), new Vector2(x += 30, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);

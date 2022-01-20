@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleBed : ModTile
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// Properties
 			Main.tileFrameImportant[Type] = true;
 			Main.tileLavaDeath[Type] = true;
@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			AdjTiles = new int[] { TileID.Beds };
 
 			// Placement
-			TileObjectData.newTile.CopyFrom(TileObjectData.Style4x2); //this style already takes care of direction for us
+			TileObjectData.newTile.CopyFrom(TileObjectData.Style4x2); // this style already takes care of direction for us
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 18 };
 			TileObjectData.addTile(Type);
 
