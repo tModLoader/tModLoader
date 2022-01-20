@@ -1,28 +1,27 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #Authors: covers1624, DarioDaf, Solxanich
 # Provided for use in tModLoader deployment. 
 
 #chdir to path of the script and save it
 cd "$(dirname "$0")"
-script_dir="$(pwd -P)"
-root_dir="$(dirname "$script_dir")"
-_uname=$(uname)
-
-# Call a script setting its permission right for execution
-run_script() {
-  chmod +x $1
-  echo "'$*'"
-  $*
-}
+. BashUtils.sh
 
 echo "You are on platform: \"$_uname\""
-read -p "[DEBUG] Press enter to continue... "
 
-wnd="$1"
+# Try to prevent "misleading" execution inside WSL
+# Check from: https://stackoverflow.com/questions/38086185/how-to-check-if-a-program-is-run-in-bash-on-ubuntu-on-windows-and-not-just-plain
+if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
+  read -p "You seem to be running this script in WSL write y to continue anyway: " _answer
+  if [[ $_answer != "y" ]]; then
+    exit 1
+  fi
+fi
+
+read -p "[DEBUG] Press enter to continue... "
 
 if [ "$_uname" = Darwin ]; then
 	LaunchLogs="$HOME/Library/Application Support/Terraria/ModLoader/Beta/Logs"
-elif [ "$wnd" = true ]; then
+elif [ $_uname == *"_NT"* ]; then
 	LaunchLogs="$USERPROFILE/Documents/My Games"
 	if [ ! -d "$LaunchLogs" ]; then
 	  LaunchLogs="$USERPROFILE/OneDrive/Documents/My Games"
@@ -50,17 +49,26 @@ echo "Logging to $LogFile"
 
 read -p "[DEBUG] Press enter to continue... "
 
-if [ "$wnd" = true ]; then
+if [ $_uname == *"_NT"* ]; then
 	run_script ./Remove13_64Bit.sh 2>&1 | tee "$LogFile"
 	read -p "[DEBUG] Press enter to continue... "
 fi
 
-run_script ./UnixLinkerFix.sh $wnd 2>&1 | tee -a "$LogFile"
+run_script ./UnixLinkerFix.sh 2>&1 | tee -a "$LogFile"
 read -p "[DEBUG] Press enter to continue... "
-run_script ./PlatformLibsDeploy.sh $wnd 2>&1 | tee -a "$LogFile"
+run_script ./PlatformLibsDeploy.sh 2>&1 | tee -a "$LogFile"
 read -p "[DEBUG] Press enter to continue... "
-run_script ./InstallNetFramework.sh $wnd 2>&1 | tee -a "$LogFile"
+
+# Source InstallNetFramework so you bring in $install_dir containing the version and no guessing
+. ./InstallNetFramework.sh 2>&1 | tee -a "$LogFile"
 read -p "[DEBUG] Press enter to continue... "
 
 echo "Attempting Launch..."
 sleep 1
+
+# Actually run tML with the passed arguments
+if [ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]; then
+  "$install_dir/dotnet" tModLoader.dll $*
+else
+  dotnet tModLoader.dll $*
+fi

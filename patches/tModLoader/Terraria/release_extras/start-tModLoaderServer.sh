@@ -1,5 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 cd "$(dirname "$0")"
+
 script_dir="$(pwd -P)"
 launch_args="-server -config serverconfig.txt"
 
@@ -20,4 +21,4 @@ fi
 
 launch_args="$launch_args $*"
 
-. ./start-tModLoader.sh $launch_args
+./start-tModLoader.sh $launch_args

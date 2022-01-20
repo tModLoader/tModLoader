@@ -1,16 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #Authors: covers1624, DarioDaf, Solxanich
 # Provided for use in tModLoader deployment. 
 
 #chdir to path of the script and save it
 cd "$(dirname "$0")"
-script_dir="$(pwd -P)"
-root_dir="$(dirname "$script_dir")"
-wnd="$1"
+. BashUtils.sh
 
-_uname=$(uname)
 echo "Verifying .NET platform specific libraries are correctly deployed"
-if [ "$wnd" = true ]; then
+if [ $_uname == *"_NT"* ]; then
 	echo "I'm on Windows, no need to do anything"
 else
   # Ensure Unix builds have the right version of Steamworks.NET

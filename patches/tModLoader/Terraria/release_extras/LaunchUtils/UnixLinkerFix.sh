@@ -1,17 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #Authors: covers1624, DarioDaf, Solxanich
 # Provided for use in tModLoader deployment. 
 
 #chdir to path of the script and save it
 cd "$(dirname "$0")"
-script_dir="$(pwd -P)"
-root_dir="$(dirname "$script_dir")"
-wnd="$1"
+. BashUtils.sh
 
 # The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.
 # Additionally, something in dotnet is requesting 'libSDL2.so' (instead of 'libSDL2-2.0.so.0' that is specified in dependencies)
 # without actually invoking managed NativeLibrary resolving events!
-_uname=$(uname)
+
 echo "Fixing .NET SDL PATH issues"
 
 if [ "$_uname" = Darwin ]; then
@@ -19,7 +17,7 @@ if [ "$_uname" = Darwin ]; then
 	export DYLD_LIBRARY_PATH="$library_dir"
 	export VK_ICD_FILENAMES="$libary_dir/MoltenVK_icd.json"
 	ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
-elif [ "$wnd" = true ]; then
+elif [ $_uname == *"_NT"* ]; then
 	echo "I'm on Windows, no need to do anything"
 else
 	library_dir="$root_dir/Libraries/Native/Linux"
