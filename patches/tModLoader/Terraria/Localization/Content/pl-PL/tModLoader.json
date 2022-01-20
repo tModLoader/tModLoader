@@ -1,6 +1,6 @@
 {
 	"tModLoader": {
-		// Main Menu // Menu Główne
+		// Main Menu
 		"PatreonSupport": "Wesprzyj nas: ",
 		"MenuModBrowser": "Przeglądarka Modów",
 		// "MenuDownloadMods": "Download Mods",
@@ -10,18 +10,17 @@
 		// "MenuManageModsDescription": "Manage which Mods are active, delete Mods, and configure your Modpacks.",
 		"MenuModSources": "Źródła",
 		"MenuDevelopMods": "Twórz Mody",
-    "MenuDevelopModsDescription": "Rozwijaj i publikuj mody dla innych, używając swojego kodu źródłowego.",
-    "MenuEnableDeveloperMode": "Włącz Tryb Dewelopera",
-    "WelcomeMessageBeta": "Witamy w tModLoader 1.4 Alpha\n\nUdało Ci się zainstalować niestabilny tModLoader, który może zawierać błędy psujące rozgrywkę. \n\nSkorzystaj z menu Warsztatu, aby uzyskać dostęp do funkcji związanych z modem tModLoader.\n\nDołącz do Discorda tModLoader the tModLoader aby dowiedzieć się więcej o modach testowych i/lub narzędziach dostępnych dla tModLoader 1.4 w ramach jego reorganizacji do 1.4",
-    "FirstLaunchWelcomeMessage": "Witaj w tModLoaderze.\n\nPomyślnie zainstalowałeś tModLoadera. Użyj Przeglądarki Modów, aby znaleźć mody, które chcesz pobrać. Użyj zakładki mody, aby zmienić, które mody są aktualnie aktywne. Po zmianie modów upewnij się, że klikniesz przycisk Przeładuj mody, aby je załadować.",
-    "WhatsNewMessage": "Poniżej znajdują się podstawowe zmiany w stosunku do ostatniego uruchomienia Alphy. Może się okazać, że mody, które odnoszą się do tych zmian, wymagają przebudowy przez autora. Odwiedź GitHub, aby zobaczyć więcej szczegółów:\n",
-    "ViewOnGitHub": "Zobacz na GitHub",
-    "tModLoaderSettings": "Ustawienia tModLoadera",
-    "ModMenuSwap": "Przełącz Motyw Menu",
-    "AudioNotSupported": "Nie znaleziono sprzętu audio. Wyłączenie wszystkich urządzeń audio.",
+		"MenuDevelopModsDescription": "Rozwijaj i publikuj mody dla innych, używając swojego kodu źródłowego.",
+		"MenuEnableDeveloperMode": "Włącz Tryb Dewelopera",
+		"WelcomeMessageBeta": "Witamy w tModLoader 1.4 Alpha\n\nUdało Ci się zainstalować niestabilny tModLoader, który może zawierać błędy psujące rozgrywkę. \n\nSkorzystaj z menu Warsztatu, aby uzyskać dostęp do funkcji związanych z modem tModLoader.\n\nDołącz do Discorda tModLoader the tModLoader aby dowiedzieć się więcej o modach testowych i/lub narzędziach dostępnych dla tModLoader 1.4 w ramach jego reorganizacji do 1.4",
+		"FirstLaunchWelcomeMessage": "Witaj w tModLoaderze.\n\nPomyślnie zainstalowałeś tModLoadera. Użyj Przeglądarki Modów, aby znaleźć mody, które chcesz pobrać. Użyj zakładki mody, aby zmienić, które mody są aktualnie aktywne. Po zmianie modów upewnij się, że klikniesz przycisk Przeładuj mody, aby je załadować.",
+		"WhatsNewMessage": "Poniżej znajdują się podstawowe zmiany w stosunku do ostatniego uruchomienia Alphy. Może się okazać, że mody, które odnoszą się do tych zmian, wymagają przebudowy przez autora. Odwiedź GitHub, aby zobaczyć więcej szczegółów:\n",
+		"ViewOnGitHub": "Zobacz na GitHub",
+		"tModLoaderSettings": "Ustawienia tModLoadera",
+		"ModMenuSwap": "Przełącz Motyw Menu",
+		"AudioNotSupported": "Nie znaleziono sprzętu audio. Wyłączenie wszystkich urządzeń audio.",
 
 		// Mods Menu
-
 		"ModsModsList": "Lista modów",
 		"ModsEnableAll": "Włącz wszystkie",
 		"ModsDisableAll": "Wyłącz wszystkie",
@@ -30,9 +29,7 @@
 		"ModsModPacks": "Paczki modów",
 		"ModsDisable": "Wyłącz",
 		"ModsEnable": "Włącz",
-
 		// "ModConfiguration": "Mod Configuration",
-
 		"ModsOpenConfig": "Kliknij, aby otworzyć konfigurację",
 		"ModOldWarning": "Stary mod, aktywuj na własną odpowiedzialność",
 		"ModDependencyClickTooltip": "Ten mod wymaga moda: {0}\n (kliknij, by włączyć)",
@@ -66,7 +63,7 @@
 		"ModsXBuffs": "{0} {^0:Wzmocnienie;Wzmocnienia;Wzmocnień}",
 		"ModsXMounts": "{0} {^0:Wierzchowiec;Wierzchowce;Wierzchowców}",
 		"ModsReloadAndReturn": "Przeładuj i wróć do menu światów",
-		"ModsNotFoundServer": "Nie znaleziono modów w: "{0}"\nJeśli korzystasz z serwera dedykowanego, możesz chcieć skorzystać z 'modpath' w wierszu polecenia lub z konfiguracji serwera w celu określenia niestandardowego katalogu modów.\n",",
+		"ModsNotFoundServer": "Nie znaleziono modów w: \"{0}\"\nJeśli korzystasz z serwera dedykowanego, możesz chcieć skorzystać z 'modpath' w wierszu polecenia lub z konfiguracji serwera w celu określenia niestandardowego katalogu modów.\n",
 		"AskForModIndex": "Wpisz liczbę, aby przełączać między włączonymi/wyłączonymi modami",
 		"AskForCommand": "Wpisz komendę: ",
 
@@ -75,23 +72,22 @@
 		"BossBarStyleNoOptions": "Bez Opcji",
 
 		// Workshop
-    "WorkshopDisclaimer": "Wysyłając ten element, zgadzasz się z warunkami użytkowania tModLoader",
-    "SteamPublishingLimit": "Błąd: Tylko posiadacze tModLoadera na Steamie mogą publikować do warsztatu gry.",
-    "NoWorkshopAccess": "Błąd: Nie można uzyskać dostępu do Warsztatu Steam",
-    "ModAlreadyUploaded": "Błąd: Mod już istnieje w Warsztacie!",
-    "ModVersionInfoUnchanged": "Błąd: Informacja o wersji moda musi zostać zwiększona przed aktualizacją.",
-    "ConsultSteamLogs": "Więcej informacji można znaleźć w pliku Steam workshop_log.txt (Domyślna lokalizacja: {0}), aby uzyskać więcej informacji.",
-    "SteamRejectUpdate": "Element jest/był już zainstalowany: {0}. Jeśli próbujesz wykonać reinstalację, zamknij bieżącą instancję i uruchom ją ponownie.",
-    "BeginDownload": "Próba pobrania elementu: {0}",
-    "EndDownload": "Pozycja pobrana",
-    "CreateItem": "Utwórz pozycję {0}",
-    "UpdateItem": "Zaktualizuj pozycję {0}",
-    "PublishItem": "Próba opublikowania pozycji {0}",
-    "SteamDownloader": "Pobieranie jest w kolejce przez menedżera pobierania Steam...",
-    "DownloadProgress": "Pobrano {0}%",
+		"WorkshopDisclaimer": "Wysyłając ten element, zgadzasz się z warunkami użytkowania tModLoader",
+		"SteamPublishingLimit": "Błąd: Tylko posiadacze tModLoadera na Steamie mogą publikować do warsztatu gry.",
+		"NoWorkshopAccess": "Błąd: Nie można uzyskać dostępu do Warsztatu Steam",
+		"ModAlreadyUploaded": "Błąd: Mod już istnieje w Warsztacie!",
+		"ModVersionInfoUnchanged": "Błąd: Informacja o wersji moda musi zostać zwiększona przed aktualizacją.",
+		"ConsultSteamLogs": "Więcej informacji można znaleźć w pliku Steam workshop_log.txt (Domyślna lokalizacja: {0}), aby uzyskać więcej informacji.",
+		"SteamRejectUpdate": "Element jest/był już zainstalowany: {0}. Jeśli próbujesz wykonać reinstalację, zamknij bieżącą instancję i uruchom ją ponownie.",
+		"BeginDownload": "Próba pobrania elementu: {0}",
+		"EndDownload": "Pozycja pobrana",
+		"CreateItem": "Utwórz pozycję {0}",
+		"UpdateItem": "Zaktualizuj pozycję {0}",
+		"PublishItem": "Próba opublikowania pozycji {0}",
+		"SteamDownloader": "Pobieranie jest w kolejce przez menedżera pobierania Steam...",
+		"DownloadProgress": "Pobrano {0}%",
 
-
-		// Mod Errors // Błędy Modów
+		// Mod Errors
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
 		"LoadErrorDisabled": "Mod(y) zostały automatycznie wyłączone.",
 		"LoadErrorCulpritUnknown": "Mod odpowiedzialny jest nieznany i tModLoader musi zostać ponownie uruchomiony.",
@@ -112,30 +108,28 @@
 		"BuildErrorModNameHasPeriod": "Wewnętrzna nazwa moda nie może zawierać kropki.",
 		"BuildErrorTwoModsSameName": "Kilka modów używa tej samej wewnętrznej nazwy {0}.",
 		"BuildErrorModReference": "Nie udało się odczytać odwołania do modów {0}",
-
 		"BuildErrorMissingNoCompile": "Brakujące pliki dll dla noCompile: {0} lub {1}\n\nAll.dll plik nie może mieć żadnych odwołań do Microsoft.Xna.Framework lub FNA\nXNA.dll musi odwoływać się do odpowiedniego tModLoader.exe i frameworka",
-    "BuildErrorModNameDoesntMatchAssemblyName": "Nazwa moda {0} nie pasuje do assembly name {1}",
-    "BuildErrorNamespaceFolderDontMatch": "Przestrzeń nazw i nazwa folderu nie pasują do siebie. Przestrzeń nazw najwyższego poziomu musi być zgodna z nazwą folderu.",
-    "BuildErrorNoModClass": "Upewnij się, że masz dokładnie jedną klasę rozszerzającą Mod",
-    "BuildErrorLoadingPrecompiled": "Błąd ładowania prekompilowanego pliku: {0}",
-    "BuildErrorFailedLoadBuildTxt": "Nie można załadować {0}",
-    "BuildWarningEACWindowsOnly": "Edycja i kontynuacja jest obsługiwana tylko w systemie windows.",
-    "LoadErrorTextureFailedToLoad": "Tekstura {0}, nie mogła zostać załadowana.",
-    "LoadErrorWavSoundFailedToLoad": "Plik dźwiękowy waw {0}, nie mógł zostać załadowany.",
-    "LoadErrorMP3SoundFailedToLoad": "Plik dźwiękowy mp3 {0}, nie mógł zostać załadowany.",
-    "LoadErrorSoundFailedToLoadAudioDeviceHint": "(Spróbuj upewnić się, że komputer ma podłączone głośniki i włączone urządzenia audio)",
-    "LoadErrorFontFailedToLoad": "Plik czcionki {0}, nie mógł być załadowany.",
-    "LoadErrorEffectFailedToLoad": "Plik z efektem {0}, nie mógł być załadowany.",
-    "LoadErrorUnknownXNBFileHint": "Nieznany plik xnb {0}. Być może powinien znajdować się w Fonts/ lub Effects/",
-    "LoadErrorCannotLoadCompressedEffects": "Nie można załadować skompresowanych efektów",
+		"BuildErrorModNameDoesntMatchAssemblyName": "Nazwa moda {0} nie pasuje do assembly name {1}",
+		"BuildErrorNamespaceFolderDontMatch": "Przestrzeń nazw i nazwa folderu nie pasują do siebie. Przestrzeń nazw najwyższego poziomu musi być zgodna z nazwą folderu.",
+		"BuildErrorNoModClass": "Upewnij się, że masz dokładnie jedną klasę rozszerzającą Mod",
+		"BuildErrorLoadingPrecompiled": "Błąd ładowania prekompilowanego pliku: {0}",
+		"BuildErrorFailedLoadBuildTxt": "Nie można załadować {0}",
+		"BuildWarningEACWindowsOnly": "Edycja i kontynuacja jest obsługiwana tylko w systemie windows.",
+		"LoadErrorTextureFailedToLoad": "Tekstura {0}, nie mogła zostać załadowana.",
+		"LoadErrorWavSoundFailedToLoad": "Plik dźwiękowy waw {0}, nie mógł zostać załadowany.",
+		"LoadErrorMP3SoundFailedToLoad": "Plik dźwiękowy mp3 {0}, nie mógł zostać załadowany.",
+		"LoadErrorSoundFailedToLoadAudioDeviceHint": "(Spróbuj upewnić się, że komputer ma podłączone głośniki i włączone urządzenia audio)",
+		"LoadErrorFontFailedToLoad": "Plik czcionki {0}, nie mógł być załadowany.",
+		"LoadErrorEffectFailedToLoad": "Plik z efektem {0}, nie mógł być załadowany.",
+		"LoadErrorUnknownXNBFileHint": "Nieznany plik xnb {0}. Być może powinien znajdować się w Fonts/ lub Effects/",
+		"LoadErrorCannotLoadCompressedEffects": "Nie można załadować skompresowanych efektów",
 
+		"LoadErrorNotLoading": "Mod.AddContent może być wywołany tylko podczas ładowania",
+		"LoadErrorDuplicateName": "Nie można dodać dwóch {0} o tej samej nazwie: {1}. Być może 2 klasy dzielą nazwę klasy, ale znajdują się w różnych przestrzeniach nazw podczas autoloadingu lub ręcznie wywołałeś AddContent z 2 {0} o tej samej nazwie.",
 
-    "LoadErrorNotLoading": "Mod.AddContent może być wywołany tylko podczas ładowania",
-    "LoadErrorDuplicateName": "Nie można dodać dwóch {0} o tej samej nazwie: {1}. Być może 2 klasy dzielą nazwę klasy, ale znajdują się w różnych przestrzeniach nazw podczas autoloadingu lub ręcznie wywołałeś AddContent z 2 {0} o tej samej nazwie.",
-
-    "LoadErrorResourceNotFoundPathHint": "Oczekiwany zasób nie został odnaleziony:\n    {0}\nNajbliższe przypuszczenie: (Czy jest literówka lub błąd w rozmieszczeniu folderów??)\n    {1}",
-    "RuntimeErrorSilentlyCaughtException": "Złapano wyjątek: ",
-    "RuntimeErrorSeeLogsForFullTrace": "(zobacz {0}, aby uzyskać więcej informacji)",
+		"LoadErrorResourceNotFoundPathHint": "Oczekiwany zasób nie został odnaleziony:\n    {0}\nNajbliższe przypuszczenie: (Czy jest literówka lub błąd w rozmieszczeniu folderów??)\n    {1}",
+		"RuntimeErrorSilentlyCaughtException": "Złapano wyjątek: ",
+		"RuntimeErrorSeeLogsForFullTrace": "(zobacz {0}, aby uzyskać więcej informacji)",
 		"OpenLogs": "Otwórz logi",
 		"OpenWebHelp": "Otwórz pomoc",
 		"SkipToMainMenu": "Pomiń Ładowanie Modów",
@@ -143,7 +137,7 @@
 		"Exit": "Wyjdź",
 		"ExitAndDisableAll": "Wyjdź i wyłącz wszystkie",
 
-		// Mod Info // Informacje o modach
+		// Mod Info
 		"ModInfoHeader": "Informacje o modzie: ",
 		"ModInfoVisitHomepage": "Odwiedź stronę moda po więcej informacji",
 		"ModInfoExtract": "Wypakuj",
@@ -151,7 +145,7 @@
 		"ModInfoProblemTryAgain": "Wystąpił problem, spróbuj ponownie",
 		"ModInfoDisableModToDelete": "Wyłącz Moda, by usunąć",
 
-		// Mod Packs // Paczki Modów
+		// Mod Packs
 		"ModPacksHeader": "Paczki modów",
 		"ModPacksSaveEnabledAsNewPack": "Zapisz włączone jako nowa paczka",
 		"ModPacksEnterModPackName": "Wpisz nazwę paczki",
@@ -169,8 +163,7 @@
 		"ModPackDoesNotExist": "Paczka modów {0} nie istnieje.",
 		"ModPackMalformed": "{0} paczka modów nie została prawidłowo odczytana, może być zniekształcona.",
 
-		// ModNet/Multiplayer // Tryb Wieloosobowy
-
+		// ModNet/Multiplayer
 		"MPSyncingMods": "Synchronizowanie modów",
 		"MPServerModsCantDownload": "Następujące mody są zainstalowane na serwerze, ale nie mogą być pobrane",
 		"MPServerModsCantDownloadReasonSigned": "ponieważ akceptujesz tylko mody podpisane przez przeglądarkę modów",
@@ -183,7 +176,7 @@
 		"MPErrorModDownloadError": "Wystąpił błąd podczas pobierania {0}",
 		"MPPacketTooLarge": "Pakiet za duży {0} > {1}",
 
-		// Mod Browser // Przeglądarka Modów
+		// Mod Browser
 		"MBDownload": "Pobierz",
 		"MBDownloadAll": "Pobierz wszystkie",
 		"MBDownloadingMod": "Pobieranie: {0}",
@@ -220,14 +213,14 @@
 		"MBOfflineWithReason": "NIEDOSTĘPNY ({0})",
 		"MBBusy": "Zajęty",
 		"MBUnknown": "Nieznany status",
-	  "MBOfflineTroubleshooting": "Nie można uzyskać dostępu do Wyszukiwarki Modów, może to być spowodowane wieloma przyczynami.\n 1. Sprawdź swoje połączenie internetowe.\n 2. Wyszukiwarka Modów może być po prostu wyłączona. Jeśli wcześniej działała, poczekaj kilka godzin.\n 3. Kliknij dwukrotnie na tę wiadomość, aby otworzyć stronę Wyszukiwarki Modów. Możesz jej użyć do ręcznego pobrania modów. Jeśli to zadziała, powinieneś sprawdzić swoją zaporę sieciową, aby zezwolić Terraria.exe lub spróbować wyłączyć VPN, jeśli go używasz.\n 4. Jeśli ta strona nie działa, serwer Mod Browser może być zablokowany przez rząd, dostawcę usług internetowych, router lub filtr sieciowy. Jeśli tak jest, będziesz musiał to rozgryźć na własną rękę.",
-    "MBClickToViewDependencyMods": "Pokaż zależności:\n{0}",
-    "MBModsNotFoundOnline": "Następujące mody nie zostały znalezione w Wyszukiwarce Modów: {0}",
-    "MBFilterDependencies": "Zależności",
-    "MBFilterModlist": "Lista modów",
-    "MBExceededBandwidth": "Serwer Wyszukiwarki Modów przekroczył swój dzienny przydział przepustowości. Proszę sprawdzić stronę domową tego moda w celu znalezienia alternatywnego sposobu pobierania lub spróbować ponownie później.",
-    "MBUnknownMBError": "Nieznany Błąd Wyszukiwarki Modów. Spróbuj ponownie później.",
-    "MBNoModsFound": "Nie znaleziono żadnych modów",
+		"MBOfflineTroubleshooting": "Nie można uzyskać dostępu do Wyszukiwarki Modów, może to być spowodowane wieloma przyczynami.\n 1. Sprawdź swoje połączenie internetowe.\n 2. Wyszukiwarka Modów może być po prostu wyłączona. Jeśli wcześniej działała, poczekaj kilka godzin.\n 3. Kliknij dwukrotnie na tę wiadomość, aby otworzyć stronę Wyszukiwarki Modów. Możesz jej użyć do ręcznego pobrania modów. Jeśli to zadziała, powinieneś sprawdzić swoją zaporę sieciową, aby zezwolić Terraria.exe lub spróbować wyłączyć VPN, jeśli go używasz.\n 4. Jeśli ta strona nie działa, serwer Mod Browser może być zablokowany przez rząd, dostawcę usług internetowych, router lub filtr sieciowy. Jeśli tak jest, będziesz musiał to rozgryźć na własną rękę.",
+		"MBClickToViewDependencyMods": "Pokaż zależności:\n{0}",
+		"MBModsNotFoundOnline": "Następujące mody nie zostały znalezione w Wyszukiwarce Modów: {0}",
+		"MBFilterDependencies": "Zależności",
+		"MBFilterModlist": "Lista modów",
+		"MBExceededBandwidth": "Serwer Wyszukiwarki Modów przekroczył swój dzienny przydział przepustowości. Proszę sprawdzić stronę domową tego moda w celu znalezienia alternatywnego sposobu pobierania lub spróbować ponownie później.",
+		"MBUnknownMBError": "Nieznany Błąd Wyszukiwarki Modów. Spróbuj ponownie później.",
+		"MBNoModsFound": "Nie znaleziono żadnych modów",
 		"MBBrowserError": "Przeglądarka modów napotkała błąd.",
 		"XSecondsAgo": "{0} {^0:sekunda;sekundy;sekund} temu",
 		"XMinutesAgo": "{0} {^0:minuta;minuty;minut} temu",
@@ -235,12 +228,10 @@
 		"XDaysAgo": "{0} {^0:dzień;dni;dni} temu",
 		"XMonthsAgo": "{0} {^0:miesiąc;miesiące;miesięcy} temu",
 		"XYearsAgo": "{0} {^0:rok;lata;lat} temu",
-
 		"MBServerReturnToMenu": "Powrót do menu świata",
 		"MBServerAskForModName": "Wpisz dokładną nazwę moda, który chcesz pobrać: ",
 
-
-		// Mod Publishing // Publikowanie Modów
+		// Mod Publishing
 		"MBPublishEnterPassphrase": "Wpisz kod",
 		"MBPublishVisitWebsiteForPassphrase": "Odwiedź stronę by wygenerować kod",
 		"MBPublishPastePassphrase": "Wklej kod (Ctrl+V)",
@@ -251,7 +242,7 @@
 		"PasteSteamID": "Wklej SteamID (ctrl-v)",
 		"MBServerResponse": "Odpowiedź serwera Przeglądarki modów:\n\n{0}",
 
-		// TML Options // Ustawienia tModLoadera
+		// TML Options
 		"DownloadFromServersYes": "Pobieraj mody z serwerów: Tak",
 		"DownloadFromServersNo": "Pobieraj mody z serwerów: Nie",
 		"DownloadSignedYes": "Pobieraj tylko zaufane mody z serwerów: Tak",
@@ -280,7 +271,7 @@
 		"DontShowAgain": "Nie pokazuj więcej",
 		"ModControls": "Mody - sterowanie",
 
-		// Player and World Select // Wybór postaci i świata
+		// Player and World Select
 		"MigratePlayersMessage": "Nie masz żadnych postaci.\nJeśli chcesz zmigrować je z oficjalnej wersji do tModLoader,\nskopiuj ich pliki .plr z folderu /Terraria/Players do /Terraria/ModLoader/Players.\nKliknij, by otworzyć te foldery.\nPo skopiowaniu, kliknij Wróć.",
 		"MigratePlayersText": "Kliknij tutaj, aby migrować graczy...",
 		"MigratePlayersException": "Wystąpił problem podczas próby migracji plików graczy",
@@ -298,7 +289,7 @@
 		"PlayerLoadWorldFail": "Wystąpił problem podczas próby załadowania świata",
 		"CloudWarning": "Osiągnięto limit przestrzeni dyskowej w chmurze, nie można przenieść do chmury",
 
-		// Mod Sources // Żródła Modów
+		// Mod Sources
 		"MSBuild": "Zbuduj",
 		"MSBuildReload": "Zbuduj + Przeładuj",
 		"MSBuildAll": "Zbuduj wszystkie",
@@ -310,40 +301,43 @@
 		"MSPublish": "Opublikuj",
 		"MSModSourcesCantHaveSpaces": "(Foldery źródłowe modów nie mogą zawierać znaków spacji)",
 		"MSCreateMod": "Stwórz Moda",
+		// "VersionUpgrade": "LINK: Learn about Mod Migration for Latest Update",
 
 		// Developer Mode UI
-    "DMModCompileMissing": "Do budowania modów wymagane są dodatkowe biblioteki. (Brak folderu ModCompile)",
-    "DMModCompileUpdate": "Niedopasowanie wersji folderu ModCompile. Terraria: {0}, ModCompile: {1}",
-    "DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).\nOtherwise rebuild {0}",
-    "DMModCompileSatisfied": "Folder ModCompile jest aktualny.",
-    "DMDotNetSatisfied": "{0} jest zainstalowany",
-    "DMDotNetUpdateRequired": "Do kompilacji modów wymagany jest .NET Framework {0}. Proszę pobrać najnowszy .NET Framework.",
-    "DMMonoUpdateRequired": "Mono {0} lub nowsza wersja jest wymagana do budowania modów. Proszę zainstalować najnowsze Mono.",
-    "DMMonoRuntimeRequired": "Terraria musi być uruchomiona z Mono {0} lub nowszym, aby budować mody. Proszę zaktualizować swoje skrypty startowe.",
-    "DMReferenceAssembliesMissing": "Nie znaleziono .NET 4.5 Reference Assemblies. Proszę zainstalować Visual Studio z pakietem .NET 4.5 Targetting pack.",
-    "DMReferenceAssembliesMissingMono": "Nie znaleziono .NET 4.5 Reference Assemblies. Proszę upewnić się, że instalacja mono zawiera {0}",
-    "DMReferenceAssembliesSatisfied": "Gotowy do kompilacji dla .NET 4.5",
-    "DMReferenceAssembliesDownload": "Kliknij, aby pobrać tylko targetting pack (niezalecane)",
-    "DMVisualStudio": "Visual Studio",
-    "DMTutorialWelcome": "Witamy w modowaniu za pomocą tModLoader. Sprawdź Wiki, aby uzyskać więcej informacji i tutoriali.",
-    "DMTutorial": "Poradnik",
-    "DMUpdateScripts": "Zaktualizuj Skrypty",
-    "DMScriptsRequireRestart": "Skrypty startowe zostały zaktualizowane i wymagają ponownego uruchomienia tModLoadera.",
-    "DMUpdateMonoToDownloadModCompile": "Dodatkowe biblioteki mogą być pobrane z githuba, gdy działają na aktualnej wersji Mono.",
+		"DMModCompileMissing": "Do budowania modów wymagane są dodatkowe biblioteki. (Brak folderu ModCompile)",
+		"DMModCompileUpdate": "Niedopasowanie wersji folderu ModCompile. Terraria: {0}, ModCompile: {1}",
+		"DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).\nOtherwise rebuild {0}",
+		"DMModCompileSatisfied": "Folder ModCompile jest aktualny.",
+		"DMDotNetSatisfied": "{0} jest zainstalowany",
+		"DMDotNetUpdateRequired": "Do kompilacji modów wymagany jest .NET Framework {0}. Proszę pobrać najnowszy .NET Framework.",
+		"DMMonoUpdateRequired": "Mono {0} lub nowsza wersja jest wymagana do budowania modów. Proszę zainstalować najnowsze Mono.",
+		"DMMonoRuntimeRequired": "Terraria musi być uruchomiona z Mono {0} lub nowszym, aby budować mody. Proszę zaktualizować swoje skrypty startowe.",
+		"DMReferenceAssembliesMissing": "Nie znaleziono .NET 4.5 Reference Assemblies. Proszę zainstalować Visual Studio z pakietem .NET 4.5 Targetting pack.",
+		"DMReferenceAssembliesMissingMono": "Nie znaleziono .NET 4.5 Reference Assemblies. Proszę upewnić się, że instalacja mono zawiera {0}",
+		"DMReferenceAssembliesSatisfied": "Gotowy do kompilacji dla .NET 4.5",
+		"DMReferenceAssembliesDownload": "Kliknij, aby pobrać tylko targetting pack (niezalecane)",
+		"DMVisualStudio": "Visual Studio",
+		"DMTutorialWelcome": "Witamy w modowaniu za pomocą tModLoader. Sprawdź Wiki, aby uzyskać więcej informacji i tutoriali.",
+		"DMTutorial": "Poradnik",
+		"DMUpdateScripts": "Zaktualizuj Skrypty",
+		"DMScriptsRequireRestart": "Skrypty startowe zostały zaktualizowane i wymagają ponownego uruchomienia tModLoadera.",
+		"DMUpdateMonoToDownloadModCompile": "Dodatkowe biblioteki mogą być pobrane z githuba, gdy działają na aktualnej wersji Mono.",
 
-    "ExtractErrorWhileExtractingMod": "Wystąpił błąd podczas wypakowywania {0}",
-    "ExtractHideCodeMessage": "Modder zdecydował się ukryć kod źródłowy przed tModReader.",
-    "ExtractNoSourceCodeMessage": "Modder nie zdecydował się na dołączenie swojego kodu źródłowego.",
-    "ExtractHideResourcesMessage": "Modder zdecydował się ukryć zasoby (np. obrazy) przed tModReaderem.",
+		// Extract Mod
+		"ExtractErrorWhileExtractingMod": "Wystąpił błąd podczas wypakowywania {0}",
+		"ExtractHideCodeMessage": "Modder zdecydował się ukryć kod źródłowy przed tModReader.",
+		"ExtractNoSourceCodeMessage": "Modder nie zdecydował się na dołączenie swojego kodu źródłowego.",
+		"ExtractHideResourcesMessage": "Modder zdecydował się ukryć zasoby (np. obrazy) przed tModReaderem.",
 		"ExtractFileListing": "Pliki:",
 
-		// Mod Commands // Komendy Modów
-
+		// Mod Commands
 		"CommandModListDescription": "Wyświetla listę załadowanych modów.",
 		"CommandModListServerMods": "Mody Serwerowe:",
 		"CommandModListSyncedMods": "Synchronizowane Mody:",
 		"CommandModListClientMods": "Mody Klienta:",
 		"CommandModListModlist": "Lista Modów:",
+
+		// Mod Building
 		"Building": "Budowanie: {0}",
 		"ReadingProperties": "Czytanie właściwości: {0}",
 		"Compiling": "Kompilowanie {0}",
@@ -363,7 +357,7 @@
 		"MSAddingRecipes": "Dodawanie przepisów...",
 		"AddingModContent": "Dodawanie zawartości modów...",
 
-		// Mod Loader Mod // 
+		// Mod Loader Mod
 		"StartBagTooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",
 		"StartBagItemName": "Początkowy ekwipunek",
 		"UnloadedItemItemName": "Nieaktywny przedmiot",
@@ -371,11 +365,10 @@
 		"UnloadedItemItemNameTooltip": "Przedmiot: {0}",
 		"AprilFoolsJoke": "Prima Aprilis",
 		"DefaultTownNPCName": "Bez nazwy",
-    "DefaultTownNPCChat": "Mój modder zapomniał dać mi dialog.",
-    "DefaultNurseCantHealChat": "Nie wiem dlaczego, ale nie mogę cię wyleczyć. Najwyraźniej modder zapomniał dać mi dialog.",
+		"DefaultTownNPCChat": "Mój modder zapomniał dać mi dialog.",
+		"DefaultNurseCantHealChat": "Nie wiem dlaczego, ale nie mogę cię wyleczyć. Najwyraźniej modder zapomniał dać mi dialog.",
 
-
-		// Extra mouse buttons // Dodatkowe Przyciski Myszy
+		// Extra mouse buttons
 		"MouseMiddle": "Środkowy Przycisk",
 		"MouseXButton1": "Czwarty Przycisk",
 		"MouseXButton2": "Piąty Przycisk",
@@ -384,6 +377,7 @@
 		// "slotStack": "Stack",
 		// "slotScroll": "Scroll",
 
+		// Misc
 		"OK": "OK",
 		"Continue": "Kontynuuj",
 		"DeleteModConfirm": "Czy na pewno chcesz usunąć ten mod na stałe?",
@@ -392,66 +386,66 @@
 		"WorldIODataException": "Gra napotkała problem z danymi moda dla świata.",
 		"ServerCrash": "Awaria serwera: {0}\n{1}\n\nProszę sprawdź server.log aby ustalić, czy mod jest odpowiedzialny za tę awarię, w przeciwnym wypadku odwiedź #support na Discordzie tModLoadera",
 
-		// MessageBox // Okno Dialogowe
-  "ContentFolderNotFound": "Folder z zawartością Terrarii nie został znaleziony. Jeśli zainstalowałeś tModLoader przez Steam, upewnij się, że Terraria jest zainstalowana. Jeśli nie, upewnij się, że zainstalowałeś tModLoader w folderze wewnątrz katalogu instalacyjnego Terraria lub w folderze obok katalogu instalacyjnego Terraria.",
-  "MissingServerExecutable": "Wygląda na to, że masz niekompletną instalację. Brakuje pliku tModLoaderServer.exe. Sprawdź swój katalog instalacyjny i przeczytaj instrukcję instalacji.",
-  "GraphicsEngineFailure": "Błąd silnika graficznego",
-  "GraphicsEngineReportUnknown": "Nieznany",
-  "GraphicsEngineReportFailure": "Błąd",
-  "GraphicsEngineFailureMessage": "tML zawiesił się podczas testowania eksperymentalnych funkcji graficznych. Jeśli ten problem będzie się powtarzał, być może będziesz musiał edytować config.json i ustawić ustawienie Support4K na 'false'. \nProszę zrestartować grę.\nRaport o stanie gry: {0}",
-  "OutOfMemory": "Gra nie ma wystarczającej ilości pamięci. Musisz dowiedzieć się, który mod zużywa dużo pamięci i skontaktować się z jego twórcami lub usunąć go.",
-  "ContentFolderNotFoundInstallCheck": "{0} katalog nie został odnaleziony.\r\n\r\nCzy zapomniałeś rozpakować katalog z zawartością tModLoadera do folderu tmodLoader?\r\n\r\nZapewnij, że tModLoader jest zainstalowany w osobnym folderze niż Terraria.",
-  "VanillaSteamInstallationNotFound": "Instalacja Terraria Steam lub katalog instalacyjny Terraria nie został znaleziony.\r\n\r\nUpewnij się, że Terraria 1.4 jest zainstalowana przez Steam.",
-  "SteamAPIHashMismatch": "Niedopasowanie hash API Steam, założenie nielegalnej kopii gry.\n\ntModLoader wymaga legalnej instalacji Terrarii do działania.",
-  "VanillaGOGNotFound": "{0} nie można znaleźć.\r\n\r\nGOG instalacje wymagają niezmodyfikowanego pliku programu Terraria do pracy. Ta wersja tModLoadera oczekuje wersji {1} Terrarii, być może będziesz musiał przełączyć się na starszą lub nowszą wersję Terrarii poprzez GOG Galaxy, lub poczekać na aktualizację tModLoadera.",
-  "GOGHashMismatch": "{0} nie jest niezmodyfikowanym plikiem programu Terraria.\r\n\r\nInstalacje GOG wymagają niezmodyfikowanego pliku programu Terraria do działania.\r\n\r\nJeśli załatałeś .exe, możesz zrobić kopię oryginalnego exe i nazwać go \"Terraria_v<VERSION>.exe\"",
-  "DefaultExtraMessage": "Proszę przywrócić swoją instalację Terrarii, a następnie zainstalować tModLoader przez Steam lub postępować zgodnie z przewodnikiem README.txt, aby zainstalować go ręcznie.",
-  "ClientLogHint": "{0}\n\nPlik client.log zawierający informacje o błędach został wygenerowany w następującym folderze:\n{1}\n(Musisz udostępnić ten plik, gdy prosisz o pomoc)",
-  "OutOfMemoryHint": "\n\nWskazówka: Spróbuj grać z mniejszą ilością modów na raz, lub sprawdź czy jakiś mod nie zużywa zbyt dużo pamięci. Alternatywnie można zainstalować 64-bitowy tModLoader.",
-  "ModExceptionHint": "\n\nWskazówka: To pewnie wina modów. Wyłączaj moddy jeden po drugim, aby sprawdzić, czy problem nadal występuje.",
-  "OneDriveHint": "\n\nWskazówka: Spróbuj zainstalować/włączyć OneDrive. Naciśnij prawy przycisk myszy na folderze dokumentów i aktywuj opcję \"Zawsze zapisuj w tym urządzeniu\"",
-  "AntivirusHint": "\n\nWskazówka: Jeśli masz antywirusa, spróbuj dodać Terrarię do jego białej listy/listy wykluczeń.",
-  "TypeInitializationHint": "\n\nWskazówka: Uruchom ponownie grę. Jeśli problem nadal występuje, spróbuj całkowicie odinstalować Terrarię, zainstalować ją ponownie poprzez Steam, a następnie ponownie zainstalować tModLoader."
- },
+		// MessageBox
+		"ContentFolderNotFound": "Folder z zawartością Terrarii nie został znaleziony. Jeśli zainstalowałeś tModLoader przez Steam, upewnij się, że Terraria jest zainstalowana. Jeśli nie, upewnij się, że zainstalowałeś tModLoader w folderze wewnątrz katalogu instalacyjnego Terraria lub w folderze obok katalogu instalacyjnego Terraria.",
+		"MissingServerExecutable": "Wygląda na to, że masz niekompletną instalację. Brakuje pliku tModLoaderServer.exe. Sprawdź swój katalog instalacyjny i przeczytaj instrukcję instalacji.",
+		"GraphicsEngineFailure": "Błąd silnika graficznego",
+		"GraphicsEngineReportUnknown": "Nieznany",
+		"GraphicsEngineReportFailure": "Błąd",
+		"GraphicsEngineFailureMessage": "tML zawiesił się podczas testowania eksperymentalnych funkcji graficznych. Jeśli ten problem będzie się powtarzał, być może będziesz musiał edytować config.json i ustawić ustawienie Support4K na 'false'. \nProszę zrestartować grę.\nRaport o stanie gry: {0}",
+		"OutOfMemory": "Gra nie ma wystarczającej ilości pamięci. Musisz dowiedzieć się, który mod zużywa dużo pamięci i skontaktować się z jego twórcami lub usunąć go.",
+		"ContentFolderNotFoundInstallCheck": "{0} katalog nie został odnaleziony.\r\n\r\nCzy zapomniałeś rozpakować katalog z zawartością tModLoadera do folderu tmodLoader?\r\n\r\nZapewnij, że tModLoader jest zainstalowany w osobnym folderze niż Terraria.",
+		"VanillaSteamInstallationNotFound": "Instalacja Terraria Steam lub katalog instalacyjny Terraria nie został znaleziony.\r\n\r\nUpewnij się, że Terraria 1.4 jest zainstalowana przez Steam.",
+		"SteamAPIHashMismatch": "Niedopasowanie hash API Steam, założenie nielegalnej kopii gry.\n\ntModLoader wymaga legalnej instalacji Terrarii do działania.",
+		"VanillaGOGNotFound": "{0} nie można znaleźć.\r\n\r\nGOG instalacje wymagają niezmodyfikowanego pliku programu Terraria do pracy. Ta wersja tModLoadera oczekuje wersji {1} Terrarii, być może będziesz musiał przełączyć się na starszą lub nowszą wersję Terrarii poprzez GOG Galaxy, lub poczekać na aktualizację tModLoadera.",
+		"GOGHashMismatch": "{0} nie jest niezmodyfikowanym plikiem programu Terraria.\r\n\r\nInstalacje GOG wymagają niezmodyfikowanego pliku programu Terraria do działania.\r\n\r\nJeśli załatałeś .exe, możesz zrobić kopię oryginalnego exe i nazwać go \"Terraria_v<VERSION>.exe\"",
+		"DefaultExtraMessage": "Proszę przywrócić swoją instalację Terrarii, a następnie zainstalować tModLoader przez Steam lub postępować zgodnie z przewodnikiem README.txt, aby zainstalować go ręcznie.",
+		"ClientLogHint": "{0}\n\nPlik client.log zawierający informacje o błędach został wygenerowany w następującym folderze:\n{1}\n(Musisz udostępnić ten plik, gdy prosisz o pomoc)",
+		"OutOfMemoryHint": "\n\nWskazówka: Spróbuj grać z mniejszą ilością modów na raz, lub sprawdź czy jakiś mod nie zużywa zbyt dużo pamięci. Alternatywnie można zainstalować 64-bitowy tModLoader.",
+		"ModExceptionHint": "\n\nWskazówka: To pewnie wina modów. Wyłączaj moddy jeden po drugim, aby sprawdzić, czy problem nadal występuje.",
+		"OneDriveHint": "\n\nWskazówka: Spróbuj zainstalować/włączyć OneDrive. Naciśnij prawy przycisk myszy na folderze dokumentów i aktywuj opcję \"Zawsze zapisuj w tym urządzeniu\"",
+		"AntivirusHint": "\n\nWskazówka: Jeśli masz antywirusa, spróbuj dodać Terrarię do jego białej listy/listy wykluczeń.",
+		"TypeInitializationHint": "\n\nWskazówka: Uruchom ponownie grę. Jeśli problem nadal występuje, spróbuj całkowicie odinstalować Terrarię, zainstalować ją ponownie poprzez Steam, a następnie ponownie zainstalować tModLoader."
+	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "{0}% zwiększone obrażenia"
 	},
 	"RecipeConditions": {
-  "NearWater": "Wymaga Wody",
-  "NearLava": "Wymaga Lawy",
-  "NearHoney": "Miód jest niezbędny",
-  "TimeDay": "Wymaga dnia",
-  "TimeNight": "Wymaga nocy",
-  "InDungeon": "Musi być w biomie Lochy",
-  "InCorrupt": "Musi być w biomie zepsucia",
-  "InHallow": "Musi być w bajkowym biomie",
-  "InMeteor": "Musi być w meteorytowym biomie",
-  "InJungle": "Musi być w dżungli",
-  "InSnow": "Musi być w śnieżnym biomie",
-  "InCrimson": "Musi być w szkarłatnym biomie",
-  "InWaterCandle": "Musi być blisko wodnej świecy",
-  "InPeaceCandle": "Musi być blisko świecy pokoju",
-  "InTowerSolar": "Musi być blisko Wieży Słonecznej",
-  "InTowerVortex": "Musi być blisko Wieży Wiru",
-  "InTowerNebula": "Musi być blisko Wieży Mgławicy",
-  "InTowerStardust": "Musi być blisko Wieży Pyłu Gwiezdnego",
-  "InDesert": "Musi być na pustyni",
-  "InGlowshroom": "Musi być w grzybowym biomie",
-  "InUndergroundDesert": "Musi być w podziemnej pustyni",
-  "InSkyHeight": "Musi być w niebie",
-  "InOverworldHeight": "Musi znajdować się na poziomie powierzchni",
-  "InDirtLayerHeight": "Musi znajdować się na poziomie podziemi",
-  "InRockLayerHeight": "Musi znajdować się na poziomie jaskiń",
-  "InUnderworldHeight": "Musi być w Podziemiu",
-  "InBeach": "Musi być na plaży",
-  "InRain": "Musi być w trakcie deszczu",
-  "InSandstorm": "Musi być w trakcie burzy piaskowej",
-  "InOldOneArmy": "Musi być w trakcie Armii Starszego",
-  "InGranite": "Musi być w granitowym biomie",
-  "InMarble": "Musi być w marmurowym biomie",
-  "InHive": "Musi być w ulu",
-  "InGemCave": "Musi być w jaskini kamieni szlachetnych",
-  "InLihzardTemple": "Musi być w Świątyni Jaszczura",
-  "InGraveyardBiome": "Musi być na cmentarzu"
+		"NearWater": "Wymaga Wody",
+		"NearLava": "Wymaga Lawy",
+		"NearHoney": "Miód jest niezbędny",
+		"TimeDay": "Wymaga dnia",
+		"TimeNight": "Wymaga nocy",
+		"InDungeon": "Musi być w biomie Lochy",
+		"InCorrupt": "Musi być w biomie zepsucia",
+		"InHallow": "Musi być w bajkowym biomie",
+		"InMeteor": "Musi być w meteorytowym biomie",
+		"InJungle": "Musi być w dżungli",
+		"InSnow": "Musi być w śnieżnym biomie",
+		"InCrimson": "Musi być w szkarłatnym biomie",
+		"InWaterCandle": "Musi być blisko wodnej świecy",
+		"InPeaceCandle": "Musi być blisko świecy pokoju",
+		"InTowerSolar": "Musi być blisko Wieży Słonecznej",
+		"InTowerVortex": "Musi być blisko Wieży Wiru",
+		"InTowerNebula": "Musi być blisko Wieży Mgławicy",
+		"InTowerStardust": "Musi być blisko Wieży Pyłu Gwiezdnego",
+		"InDesert": "Musi być na pustyni",
+		"InGlowshroom": "Musi być w grzybowym biomie",
+		"InUndergroundDesert": "Musi być w podziemnej pustyni",
+		"InSkyHeight": "Musi być w niebie",
+		"InOverworldHeight": "Musi znajdować się na poziomie powierzchni",
+		"InDirtLayerHeight": "Musi znajdować się na poziomie podziemi",
+		"InRockLayerHeight": "Musi znajdować się na poziomie jaskiń",
+		"InUnderworldHeight": "Musi być w Podziemiu",
+		"InBeach": "Musi być na plaży",
+		"InRain": "Musi być w trakcie deszczu",
+		"InSandstorm": "Musi być w trakcie burzy piaskowej",
+		"InOldOneArmy": "Musi być w trakcie Armii Starszego",
+		"InGranite": "Musi być w granitowym biomie",
+		"InMarble": "Musi być w marmurowym biomie",
+		"InHive": "Musi być w ulu",
+		"InGemCave": "Musi być w jaskini kamieni szlachetnych",
+		"InLihzardTemple": "Musi być w Świątyni Jaszczura",
+		"InGraveyardBiome": "Musi być na cmentarzu"
 	}
 }
