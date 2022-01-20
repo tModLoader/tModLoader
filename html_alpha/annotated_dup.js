@@ -85,7 +85,7 @@ var annotated_dup =
         [ "EntrySorter", "class_terraria_1_1_data_structures_1_1_entry_sorter.html", "class_terraria_1_1_data_structures_1_1_entry_sorter" ],
         [ "FishingAttempt", "struct_terraria_1_1_data_structures_1_1_fishing_attempt.html", "struct_terraria_1_1_data_structures_1_1_fishing_attempt" ],
         [ "FlowerPacketInfo", "class_terraria_1_1_data_structures_1_1_flower_packet_info.html", "class_terraria_1_1_data_structures_1_1_flower_packet_info" ],
-        [ "GameModeData", "class_terraria_1_1_data_structures_1_1_game_mode_data.html", "class_terraria_1_1_data_structures_1_1_game_mode_data" ],
+        [ "GameModeData", "struct_terraria_1_1_data_structures_1_1_game_mode_data.html", "struct_terraria_1_1_data_structures_1_1_game_mode_data" ],
         [ "GeneralIssueReporter", "class_terraria_1_1_data_structures_1_1_general_issue_reporter.html", "class_terraria_1_1_data_structures_1_1_general_issue_reporter" ],
         [ "IConfigKeyHolder", "interface_terraria_1_1_data_structures_1_1_i_config_key_holder.html", "interface_terraria_1_1_data_structures_1_1_i_config_key_holder" ],
         [ "IEntryFilter", "interface_terraria_1_1_data_structures_1_1_i_entry_filter.html", "interface_terraria_1_1_data_structures_1_1_i_entry_filter" ],

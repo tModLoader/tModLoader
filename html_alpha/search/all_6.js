@@ -6,7 +6,7 @@ var searchData=
   ['gameeffect_855',['GameEffect',['../class_terraria_1_1_graphics_1_1_effects_1_1_game_effect.html',1,'Terraria::Graphics::Effects']]],
   ['gameeventclearedid_856',['GameEventClearedID',['../class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html',1,'Terraria::ID']]],
   ['gameinterfacelayer_857',['GameInterfaceLayer',['../class_terraria_1_1_u_i_1_1_game_interface_layer.html',1,'Terraria::UI']]],
-  ['gamemodedata_858',['GameModeData',['../class_terraria_1_1_data_structures_1_1_game_mode_data.html',1,'Terraria::DataStructures']]],
+  ['gamemodedata_858',['GameModeData',['../struct_terraria_1_1_data_structures_1_1_game_mode_data.html',1,'Terraria::DataStructures']]],
   ['gamemodeid_859',['GameModeID',['../class_terraria_1_1_i_d_1_1_game_mode_i_d.html',1,'Terraria::ID']]],
   ['gamepadmainmenuhandler_860',['GamepadMainMenuHandler',['../class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_main_menu_handler.html',1,'Terraria::UI::Gamepad']]],
   ['gamepadpageid_861',['GamepadPageID',['../class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_page_i_d.html',1,'Terraria::UI::Gamepad']]],

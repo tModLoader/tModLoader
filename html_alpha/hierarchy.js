@@ -482,7 +482,7 @@ var hierarchy =
     [ "Terraria.UI.GameInterfaceLayer", "class_terraria_1_1_u_i_1_1_game_interface_layer.html", [
       [ "Terraria.UI.LegacyGameInterfaceLayer", "class_terraria_1_1_u_i_1_1_legacy_game_interface_layer.html", null ]
     ] ],
-    [ "Terraria.DataStructures.GameModeData", "class_terraria_1_1_data_structures_1_1_game_mode_data.html", null ],
+    [ "Terraria.DataStructures.GameModeData", "struct_terraria_1_1_data_structures_1_1_game_mode_data.html", null ],
     [ "Terraria.ID.GameModeID", "class_terraria_1_1_i_d_1_1_game_mode_i_d.html", null ],
     [ "Terraria.UI.Gamepad.GamepadMainMenuHandler", "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_main_menu_handler.html", null ],
     [ "Terraria.UI.Gamepad.GamepadPageID", "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_page_i_d.html", null ],
