@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This file should only be called on WINDOWS!
 
-cd "$(dirname "$0")"
+cd "$(dirname $(realpath "$0"))"
 . ./BashUtils.sh
 
 echo "Verifying installation directory..."
@@ -13,7 +13,6 @@ ShownFileDeletionPrompt=false
 
 for file in $IllegalFiles
 do
-    echo "[DEBUG] Checking file: \"$file\"..."
     # We are in LaunchUtils so check the folder above!
 	if [ -f "../$file" ]; then
 		if [ $ShownFileDeletionPrompt = false ]; then

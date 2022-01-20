@@ -3,7 +3,7 @@
 # Provided for use in tModLoader deployment. 
 
 #chdir to path of the script and save it
-cd "$(dirname "$0")"
+cd "$(dirname $(realpath "$0"))"
 . ./BashUtils.sh
 
 # The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.
@@ -17,7 +17,7 @@ if [ "$_uname" = Darwin ]; then
 	export DYLD_LIBRARY_PATH="$library_dir"
 	export VK_ICD_FILENAMES="$libary_dir/MoltenVK_icd.json"
 	ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
-elif [ $_uname == *"_NT"* ]; then
+elif [[ "$_uname" == *"_NT"* ]]; then
 	echo "I'm on Windows, no need to do anything"
 else
 	library_dir="$root_dir/Libraries/Native/Linux"

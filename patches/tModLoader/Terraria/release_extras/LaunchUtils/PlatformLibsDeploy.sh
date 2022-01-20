@@ -3,11 +3,11 @@
 # Provided for use in tModLoader deployment. 
 
 #chdir to path of the script and save it
-cd "$(dirname "$0")"
+cd "$(dirname $(realpath "$0"))"
 . ./BashUtils.sh
 
 echo "Verifying .NET platform specific libraries are correctly deployed"
-if [ $_uname == *"_NT"* ]; then
+if [[ "$_uname" == *"_NT"* ]]; then
 	echo "I'm on Windows, no need to do anything"
 else
   # Ensure Unix builds have the right version of Steamworks.NET

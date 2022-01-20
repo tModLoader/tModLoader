@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
+# Get root folder
+root_dir="$(dirname $(pwd -P))"
+
 # Read uname into a variable used in various places
 _uname=$(uname)
-
-# Get root folder
-root_dir="$(dirname $(dirname "$0"))"
 
 # Sourced from dotnet-install.sh
 # Check if a program is present or not

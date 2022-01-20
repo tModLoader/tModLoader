@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-cd "$(dirname "$0")"
+cd "$(dirname $(realpath "$0"))"
 
-script_dir="$(pwd -P)"
 launch_args="-server -config serverconfig.txt"
 
 read -p "Use Steam Server (y)/(n) " steam

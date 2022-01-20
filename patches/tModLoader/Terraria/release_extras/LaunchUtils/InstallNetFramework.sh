@@ -2,8 +2,9 @@
 #Authors: covers1624, DarioDaf, Solxanich
 # Provided for use in tModLoader deployment. 
 
+# Source this file do not run it!
 #chdir to path of the script and save it
-cd "$(dirname "$0")"
+#cd "$(dirname $(realpath "$0"))"
 . ./BashUtils.sh
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
@@ -39,7 +40,7 @@ if [ ! -d "$install_dir" ]; then
   installLogs="LaunchLogs/install.log"
   dotnet_runtime=dotnet
 
-  if [ $_uname == *"_NT"* ]; then
+  if [[ "$_uname" == *"_NT"* ]]; then
     file_download dotnet-install.ps1 https://dot.net/v1/dotnet-install.ps1
     
     # @TODO: Should update powershell to 4+ because required by the script (and not present by default in win 7/8)
@@ -54,7 +55,7 @@ echo "Finished Checking for Updates"
 
 # Technically can happen on any system, but Windows_NT is the one expected to fail if powershell is not 4+
 # so it's treated differently with step-by-step manual install
-if [ $_uname == *"_NT"* ]; then
+if [[ "$_uname" == *"_NT"* ]]; then
   # If the install failed, provide a link to get the portable directly, and instructions on where to do with it.
   if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
     mkdir "$dotnet_dir"
@@ -62,7 +63,11 @@ if [ $_uname == *"_NT"* ]; then
     echo "It has been detected that your system failed to install the dotnet portables automatically. Will now proceed manually."
     file_download "$dotnet_dir/$version.zip" "https://dotnetcli.azureedge.net/dotnet/Runtime/$version/dotnet-runtime-$version-win-x64.zip"
     unzip "$dotnet_dir/$version.zip"
-    echo "Now downloading the x64 .NET portable for manual install. Please extract the zip file at $install_dir"
+    echo "Tryed to downlaod and extract x64 .NET portable. Please verify the extraction completed successfully to \"$install_dir\""
     read -p "Please press Enter when this step is complete."
   fi
 fi
+
+export install_dir
+
+echo "$install_dir/dotnet"
