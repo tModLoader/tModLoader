@@ -5,38 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
 	public class BiomeLoader : Loader<ModBiome>
 	{
-		public const int VanillaPrimaryBiomeCount = 11;
-
-		public BiomeLoader() => Initialize(VanillaPrimaryBiomeCount);
-
-		private class HookList
-		{
-			public int[] arr;
-			public readonly MethodInfo method;
-
-			public HookList(MethodInfo method) {
-				this.method = method;
-			}
-		}
-
-		private static List<HookList> hooks = new List<HookList>();
-
-		private static HookList AddHook<F>(Expression<Func<ModBiome, F>> func) {
-			var hook = new HookList(ModLoader.Method(func));
-			hooks.Add(hook);
-			return hook;
-		}
-
-		internal override void ResizeArrays() {
-			foreach (var hook in hooks) {
-				hook.arr = ModLoader.BuildGlobalHook(list, hook.method).Select(p => p.Type).ToArray();
-			}
-		}
+		public BiomeLoader() => Initialize(BiomeID.Count);
 
 		// Internal boilerplate
 
@@ -80,15 +55,6 @@ namespace Terraria.ModLoader
 		}
 
 		// Hooks
-
-		private HookList HookPostUpdateBiome = AddHook<Action<Player>>(b => b.BiomeVisuals);
-
-		public void PostUpdateBiome(Player player) {
-			foreach (int index in HookPostUpdateBiome.arr) {
-				list[index].BiomeVisuals(player);
-			}
-		}
-
 		public int GetPrimaryModBiome(Player player, out SceneEffectPriority priority) {
 			int index = 0; float weight = 0;
 			priority = SceneEffectPriority.None;

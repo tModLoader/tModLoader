@@ -3,14 +3,25 @@
 		// Main Menu // Menu Główne
 		"PatreonSupport": "Wesprzyj nas: ",
 		"MenuModBrowser": "Przeglądarka Modów",
+		// "MenuDownloadMods": "Download Mods",
+		// "MenuDownloadModsDescription": "The in-game Mod Browser to find, download, and update your Mods.",
 		"MenuMods": "Mody",
+		// "MenuManageMods": "Manage Mods",
+		// "MenuManageModsDescription": "Manage which Mods are active, delete Mods, and configure your Modpacks.",
 		"MenuModSources": "Źródła",
-		"MenuEnableDeveloperMode": "Włącz Tryb Dewelopera",
-		"FirstLaunchWelcomeMessage": "Witaj w tModLoaderze.\n\nPomyślnie zainstalowałeś tModLoadera. Użyj Przeglądarki Modów, aby znaleźć mody, które chcesz pobrać. Użyj zakładki mody, aby zmienić, które mody są aktualnie aktywne. Po zmianie modów upewnij się, że klikniesz przycisk Przeładuj mody aby je załadować.",
-		"tModLoaderSettings": "Ustawienia tModLoadera",
-		"ModMenuSwap": "Przełącz Motyw Menu",
-		
-		// Mods Menu // Menu Modów
+		"MenuDevelopMods": "Twórz Mody",
+    "MenuDevelopModsDescription": "Rozwijaj i publikuj mody dla innych, używając swojego kodu źródłowego.",
+    "MenuEnableDeveloperMode": "Włącz Tryb Dewelopera",
+    "WelcomeMessageBeta": "Witamy w tModLoader 1.4 Alpha\n\nUdało Ci się zainstalować niestabilny tModLoader, który może zawierać błędy psujące rozgrywkę. \n\nSkorzystaj z menu Warsztatu, aby uzyskać dostęp do funkcji związanych z modem tModLoader.\n\nDołącz do Discorda tModLoader the tModLoader aby dowiedzieć się więcej o modach testowych i/lub narzędziach dostępnych dla tModLoader 1.4 w ramach jego reorganizacji do 1.4",
+    "FirstLaunchWelcomeMessage": "Witaj w tModLoaderze.\n\nPomyślnie zainstalowałeś tModLoadera. Użyj Przeglądarki Modów, aby znaleźć mody, które chcesz pobrać. Użyj zakładki mody, aby zmienić, które mody są aktualnie aktywne. Po zmianie modów upewnij się, że klikniesz przycisk Przeładuj mody, aby je załadować.",
+    "WhatsNewMessage": "Poniżej znajdują się podstawowe zmiany w stosunku do ostatniego uruchomienia Alphy. Może się okazać, że mody, które odnoszą się do tych zmian, wymagają przebudowy przez autora. Odwiedź GitHub, aby zobaczyć więcej szczegółów:\n",
+    "ViewOnGitHub": "Zobacz na GitHub",
+    "tModLoaderSettings": "Ustawienia tModLoadera",
+    "ModMenuSwap": "Przełącz Motyw Menu",
+    "AudioNotSupported": "Nie znaleziono sprzętu audio. Wyłączenie wszystkich urządzeń audio.",
+
+		// Mods Menu
+
 		"ModsModsList": "Lista modów",
 		"ModsEnableAll": "Włącz wszystkie",
 		"ModsDisableAll": "Wyłącz wszystkie",
@@ -19,9 +30,12 @@
 		"ModsModPacks": "Paczki modów",
 		"ModsDisable": "Wyłącz",
 		"ModsEnable": "Włącz",
+
+		// "ModConfiguration": "Mod Configuration",
+
 		"ModsOpenConfig": "Kliknij, aby otworzyć konfigurację",
 		"ModOldWarning": "Stary mod, aktywuj na własną odpowiedzialność",
-		"ModDependencyClickTooltip": "Ten mod wymaga moda: {0}\n (kliknij by włączyć)",
+		"ModDependencyClickTooltip": "Ten mod wymaga moda: {0}\n (kliknij, by włączyć)",
 		"ModDependencyModsNotFound": "Nie znaleziono następujących modów: {0}",
 		"ModDidNotFullyUnloadWarning": "Ten mod nie został w pełni rozładowany podczas ostatniego rozładunku.\n(To jest wiadomość dla twórcy moda)",
 		"BetaModCantPublish": "Ten mod został zbudowany w wersji beta - nie może zostać upubliczniony.",
@@ -33,7 +47,7 @@
 		"ModsByline": "Autor: {0}",
 		"ModsMoreInfo": "Więcej informacji",
 		"ModsOriginatedFromModBrowser": "Ten mod został pobrany z Przeglądarki Modów",
-		"ModsTypeToSearch": "Zacznij pisać by wyszukać",
+		"ModsTypeToSearch": "Zacznij pisać, by wyszukać",
 		"ModsSearchByModName": "Szukaj po nazwie",
 		"ModsSearchByAuthor": "Szukaj po autorze",
 		"ModsSortRecently": "Sortuj po dacie aktualizacji",
@@ -56,9 +70,26 @@
 		"AskForModIndex": "Wpisz liczbę, aby przełączać między włączonymi/wyłączonymi modami",
 		"AskForCommand": "Wpisz komendę: ",
 
-		// Interface // Interfejs
+		// Interface
 		"BossBarStyle": "Styl Paska Bossa: {0}",
 		"BossBarStyleNoOptions": "Bez Opcji",
+
+		// Workshop
+    "WorkshopDisclaimer": "Wysyłając ten element, zgadzasz się z warunkami użytkowania tModLoader",
+    "SteamPublishingLimit": "Błąd: Tylko posiadacze tModLoadera na Steamie mogą publikować do warsztatu gry.",
+    "NoWorkshopAccess": "Błąd: Nie można uzyskać dostępu do Warsztatu Steam",
+    "ModAlreadyUploaded": "Błąd: Mod już istnieje w Warsztacie!",
+    "ModVersionInfoUnchanged": "Błąd: Informacja o wersji moda musi zostać zwiększona przed aktualizacją.",
+    "ConsultSteamLogs": "Więcej informacji można znaleźć w pliku Steam workshop_log.txt (Domyślna lokalizacja: {0}), aby uzyskać więcej informacji.",
+    "SteamRejectUpdate": "Element jest/był już zainstalowany: {0}. Jeśli próbujesz wykonać reinstalację, zamknij bieżącą instancję i uruchom ją ponownie.",
+    "BeginDownload": "Próba pobrania elementu: {0}",
+    "EndDownload": "Pozycja pobrana",
+    "CreateItem": "Utwórz pozycję {0}",
+    "UpdateItem": "Zaktualizuj pozycję {0}",
+    "PublishItem": "Próba opublikowania pozycji {0}",
+    "SteamDownloader": "Pobieranie jest w kolejce przez menedżera pobierania Steam...",
+    "DownloadProgress": "Pobrano {0}%",
+
 
 		// Mod Errors // Błędy Modów
 		"LoadError": "Wystąpił błąd podczas ładowania {0}",
@@ -81,28 +112,30 @@
 		"BuildErrorModNameHasPeriod": "Wewnętrzna nazwa moda nie może zawierać kropki.",
 		"BuildErrorTwoModsSameName": "Kilka modów używa tej samej wewnętrznej nazwy {0}.",
 		"BuildErrorModReference": "Nie udało się odczytać odwołania do modów {0}",
+
 		"BuildErrorMissingNoCompile": "Brakujące pliki dll dla noCompile: {0} lub {1}\n\nAll.dll plik nie może mieć żadnych odwołań do Microsoft.Xna.Framework lub FNA\nXNA.dll musi odwoływać się do odpowiedniego tModLoader.exe i frameworka",
-  "BuildErrorModNameDoesntMatchAssemblyName": "Nazwa moda {0} nie pasuje do assembly name {1}",
-  "BuildErrorNamespaceFolderDontMatch": "Przestrzeń nazw i nazwa folderu nie pasują do siebie. Przestrzeń nazw najwyższego poziomu musi być zgodna z nazwą folderu.",
-  "BuildErrorNoModClass": "Upewnij się, że masz dokładnie jedną klasę rozszerzającą Mod",
-  "BuildErrorLoadingPrecompiled": "Błąd ładowania prekompilowanego pliku: {0}",
-  "BuildErrorFailedLoadBuildTxt": "Nie można załadować {0}",
-  "BuildWarningEACWindowsOnly": "Edycja i kontynuacja jest obsługiwana tylko w systemie windows.",
-  "LoadErrorTextureFailedToLoad": "Tekstura {0}, nie mogła zostać załadowana.",
-  "LoadErrorWavSoundFailedToLoad": "Plik dźwiękowy waw {0}, nie mógł zostać załadowany.",
-  "LoadErrorMP3SoundFailedToLoad": "Plik dźwiękowy mp3 {0}, nie mógł zostać załadowany.",
-  "LoadErrorSoundFailedToLoadAudioDeviceHint": "(Spróbuj upewnić się, że komputer ma podłączone głośniki i włączone urządzenia audio)",
-  "LoadErrorFontFailedToLoad": "Plik czcionki {0}, nie mógł być załadowany.",
-  "LoadErrorEffectFailedToLoad": "Plik z efektem {0}, nie mógł być załadowany.",
-  "LoadErrorUnknownXNBFileHint": "Nieznany plik xnb {0}. Być może powinien znajdować się w Fonts/ lub Effects/",
-  "LoadErrorCannotLoadCompressedEffects": "Nie można załadować skompresowanych efektów",
+    "BuildErrorModNameDoesntMatchAssemblyName": "Nazwa moda {0} nie pasuje do assembly name {1}",
+    "BuildErrorNamespaceFolderDontMatch": "Przestrzeń nazw i nazwa folderu nie pasują do siebie. Przestrzeń nazw najwyższego poziomu musi być zgodna z nazwą folderu.",
+    "BuildErrorNoModClass": "Upewnij się, że masz dokładnie jedną klasę rozszerzającą Mod",
+    "BuildErrorLoadingPrecompiled": "Błąd ładowania prekompilowanego pliku: {0}",
+    "BuildErrorFailedLoadBuildTxt": "Nie można załadować {0}",
+    "BuildWarningEACWindowsOnly": "Edycja i kontynuacja jest obsługiwana tylko w systemie windows.",
+    "LoadErrorTextureFailedToLoad": "Tekstura {0}, nie mogła zostać załadowana.",
+    "LoadErrorWavSoundFailedToLoad": "Plik dźwiękowy waw {0}, nie mógł zostać załadowany.",
+    "LoadErrorMP3SoundFailedToLoad": "Plik dźwiękowy mp3 {0}, nie mógł zostać załadowany.",
+    "LoadErrorSoundFailedToLoadAudioDeviceHint": "(Spróbuj upewnić się, że komputer ma podłączone głośniki i włączone urządzenia audio)",
+    "LoadErrorFontFailedToLoad": "Plik czcionki {0}, nie mógł być załadowany.",
+    "LoadErrorEffectFailedToLoad": "Plik z efektem {0}, nie mógł być załadowany.",
+    "LoadErrorUnknownXNBFileHint": "Nieznany plik xnb {0}. Być może powinien znajdować się w Fonts/ lub Effects/",
+    "LoadErrorCannotLoadCompressedEffects": "Nie można załadować skompresowanych efektów",
 
-  "LoadErrorNotLoading": "Mod.AddContent może być wywołany tylko podczas ładowania",
-  "LoadErrorDuplicateName": "Nie można dodać dwóch {0} o tej samej nazwie: {1}. Być może 2 klasy dzielą nazwę klasy, ale znajdują się w różnych przestrzeniach nazw podczas autoloadingu lub ręcznie wywołałeś AddContent z 2 {0} o tej samej nazwie.",
 
-  "LoadErrorResourceNotFoundPathHint": "Oczekiwany zasób nie został odnaleziony:\n    {0}\nNajbliższe przypuszczenie: (Czy jest literówka lub błąd w rozmieszczeniu folderów??)\n    {1}",
-  "RuntimeErrorSilentlyCaughtException": "Złapano wyjątek: ",
-  "RuntimeErrorSeeLogsForFullTrace": "(zobacz {0}, aby uzyskać więcej informacji)",
+    "LoadErrorNotLoading": "Mod.AddContent może być wywołany tylko podczas ładowania",
+    "LoadErrorDuplicateName": "Nie można dodać dwóch {0} o tej samej nazwie: {1}. Być może 2 klasy dzielą nazwę klasy, ale znajdują się w różnych przestrzeniach nazw podczas autoloadingu lub ręcznie wywołałeś AddContent z 2 {0} o tej samej nazwie.",
+
+    "LoadErrorResourceNotFoundPathHint": "Oczekiwany zasób nie został odnaleziony:\n    {0}\nNajbliższe przypuszczenie: (Czy jest literówka lub błąd w rozmieszczeniu folderów??)\n    {1}",
+    "RuntimeErrorSilentlyCaughtException": "Złapano wyjątek: ",
+    "RuntimeErrorSeeLogsForFullTrace": "(zobacz {0}, aby uzyskać więcej informacji)",
 		"OpenLogs": "Otwórz logi",
 		"OpenWebHelp": "Otwórz pomoc",
 		"SkipToMainMenu": "Pomiń Ładowanie Modów",
@@ -137,6 +170,7 @@
 		"ModPackMalformed": "{0} paczka modów nie została prawidłowo odczytana, może być zniekształcona.",
 
 		// ModNet/Multiplayer // Tryb Wieloosobowy
+
 		"MPSyncingMods": "Synchronizowanie modów",
 		"MPServerModsCantDownload": "Następujące mody są zainstalowane na serwerze, ale nie mogą być pobrane",
 		"MPServerModsCantDownloadReasonSigned": "ponieważ akceptujesz tylko mody podpisane przez przeglądarkę modów",
@@ -186,14 +220,14 @@
 		"MBOfflineWithReason": "NIEDOSTĘPNY ({0})",
 		"MBBusy": "Zajęty",
 		"MBUnknown": "Nieznany status",
-		"MBOfflineTroubleshooting": "Nie można uzyskać dostępu do Wyszukiwarki Modów, może to być spowodowane wieloma przyczynami.\n 1. Sprawdź swoje połączenie internetowe.\n 2. Wyszukiwarka Modów może być po prostu wyłączona. Jeśli wcześniej działała, poczekaj kilka godzin.\n 3. Kliknij dwukrotnie na tę wiadomość, aby otworzyć stronę Wyszukiwarki Modów. Możesz jej użyć do ręcznego pobrania modów. Jeśli to zadziała, powinieneś sprawdzić swoją zaporę sieciową, aby zezwolić Terraria.exe lub spróbować wyłączyć VPN, jeśli go używasz.\n 4. Jeśli ta strona nie działa, serwer Mod Browser może być zablokowany przez rząd, dostawcę usług internetowych, router lub filtr sieciowy. Jeśli tak jest, będziesz musiał to rozgryźć na własną rękę.",
-  "MBClickToViewDependencyMods": "Pokaż zależności:\n{0}",
-  "MBModsNotFoundOnline": "Następujące mody nie zostały znalezione w Wyszukiwarce Modów: {0}",
-  "MBFilterDependencies": "Zależności",
-  "MBFilterModlist": "Lista modów",
-  "MBExceededBandwidth": "Serwer Wyszukiwarki Modów przekroczył swój dzienny przydział przepustowości. Proszę sprawdzić stronę domową tego moda w celu znalezienia alternatywnego sposobu pobierania lub spróbować ponownie później.",
-  "MBUnknownMBError": "Nieznany Błąd Wyszukiwarki Modów. Spróbuj ponownie później.",
-  "MBNoModsFound": "Nie znaleziono żadnych modów",
+	  "MBOfflineTroubleshooting": "Nie można uzyskać dostępu do Wyszukiwarki Modów, może to być spowodowane wieloma przyczynami.\n 1. Sprawdź swoje połączenie internetowe.\n 2. Wyszukiwarka Modów może być po prostu wyłączona. Jeśli wcześniej działała, poczekaj kilka godzin.\n 3. Kliknij dwukrotnie na tę wiadomość, aby otworzyć stronę Wyszukiwarki Modów. Możesz jej użyć do ręcznego pobrania modów. Jeśli to zadziała, powinieneś sprawdzić swoją zaporę sieciową, aby zezwolić Terraria.exe lub spróbować wyłączyć VPN, jeśli go używasz.\n 4. Jeśli ta strona nie działa, serwer Mod Browser może być zablokowany przez rząd, dostawcę usług internetowych, router lub filtr sieciowy. Jeśli tak jest, będziesz musiał to rozgryźć na własną rękę.",
+    "MBClickToViewDependencyMods": "Pokaż zależności:\n{0}",
+    "MBModsNotFoundOnline": "Następujące mody nie zostały znalezione w Wyszukiwarce Modów: {0}",
+    "MBFilterDependencies": "Zależności",
+    "MBFilterModlist": "Lista modów",
+    "MBExceededBandwidth": "Serwer Wyszukiwarki Modów przekroczył swój dzienny przydział przepustowości. Proszę sprawdzić stronę domową tego moda w celu znalezienia alternatywnego sposobu pobierania lub spróbować ponownie później.",
+    "MBUnknownMBError": "Nieznany Błąd Wyszukiwarki Modów. Spróbuj ponownie później.",
+    "MBNoModsFound": "Nie znaleziono żadnych modów",
 		"MBBrowserError": "Przeglądarka modów napotkała błąd.",
 		"XSecondsAgo": "{0} {^0:sekunda;sekundy;sekund} temu",
 		"XMinutesAgo": "{0} {^0:minuta;minuty;minut} temu",
@@ -201,6 +235,10 @@
 		"XDaysAgo": "{0} {^0:dzień;dni;dni} temu",
 		"XMonthsAgo": "{0} {^0:miesiąc;miesiące;miesięcy} temu",
 		"XYearsAgo": "{0} {^0:rok;lata;lat} temu",
+
+		"MBServerReturnToMenu": "Powrót do menu świata",
+		"MBServerAskForModName": "Wpisz dokładną nazwę moda, który chcesz pobrać: ",
+
 
 		// Mod Publishing // Publikowanie Modów
 		"MBPublishEnterPassphrase": "Wpisz kod",
@@ -266,6 +304,7 @@
 		"MSBuildAll": "Zbuduj wszystkie",
 		"MSBuildReloadAll": "Zbuduj + Przeładuj wszystkie",
 		"MSUpgradeCSProj": "Uaktualnij plik .csproj",
+		"MSUpgradeLangFiles": "Aktualizuj pliki .lang do .hjson (niedestrukcyjnie)",
 		"MSOpenSources": "Otwórz pliki źródłowe",
 		"MSManagePublished": "Zarządzaj opublikowanymi",
 		"MSPublish": "Opublikuj",
@@ -273,39 +312,38 @@
 		"MSCreateMod": "Stwórz Moda",
 
 		// Developer Mode UI
-  "DMModCompileMissing": "Do budowania modów wymagane są dodatkowe biblioteki. (Brak folderu ModCompile)",
-  "DMModCompileUpdate": "Niedopasowanie wersji folderu ModCompile. Terraria: {0}, ModCompile: {1}",
-  "DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).\nOtherwise rebuild {0}",
-  "DMModCompileSatisfied": "Folder ModCompile jest aktualny.",
-  "DMDotNetSatisfied": "{0} jest zainstalowany",
-  "DMDotNetUpdateRequired": "Do kompilacji modów wymagany jest .NET Framework {0}. Proszę pobrać najnowszy .NET Framework.",
-  "DMMonoUpdateRequired": "Mono {0} lub nowsza wersja jest wymagana do budowania modów. Proszę zainstalować najnowsze Mono.",
-  "DMMonoRuntimeRequired": "Terraria musi być uruchomiona z Mono {0} lub nowszym, aby budować mody. Proszę zaktualizować swoje skrypty startowe.",
-  "DMReferenceAssembliesMissing": "Nie znaleziono .NET 4.5 Reference Assemblies. Proszę zainstalować Visual Studio z pakietem .NET 4.5 Targetting pack.",
-  "DMReferenceAssembliesMissingMono": "Nie znaleziono .NET 4.5 Reference Assemblies. Proszę upewnić się, że instalacja mono zawiera {0}",
-  "DMReferenceAssembliesSatisfied": "Gotowy do kompilacji dla .NET 4.5",
-  "DMReferenceAssembliesDownload": "Kliknij, aby pobrać tylko targetting pack (niezalecane)",
-  "DMVisualStudio": "Visual Studio",
-  "DMTutorialWelcome": "Witamy w modowaniu za pomocą tModLoader. Sprawdź Wiki, aby uzyskać więcej informacji i tutoriali.",
-  "DMTutorial": "Poradnik",
-  "DMUpdateScripts": "Zaktualizuj Skrypty",
-  "DMScriptsRequireRestart": "Skrypty startowe zostały zaktualizowane i wymagają ponownego uruchomienia tModLoadera.",
-  "DMUpdateMonoToDownloadModCompile": "Dodatkowe biblioteki mogą być pobrane z githuba, gdy działają na aktualnej wersji Mono.",
+    "DMModCompileMissing": "Do budowania modów wymagane są dodatkowe biblioteki. (Brak folderu ModCompile)",
+    "DMModCompileUpdate": "Niedopasowanie wersji folderu ModCompile. Terraria: {0}, ModCompile: {1}",
+    "DMModCompileDev": "Use the tModLoader development setup tool to generate/update the ModCompile folder (SetupDebugging).\nOtherwise rebuild {0}",
+    "DMModCompileSatisfied": "Folder ModCompile jest aktualny.",
+    "DMDotNetSatisfied": "{0} jest zainstalowany",
+    "DMDotNetUpdateRequired": "Do kompilacji modów wymagany jest .NET Framework {0}. Proszę pobrać najnowszy .NET Framework.",
+    "DMMonoUpdateRequired": "Mono {0} lub nowsza wersja jest wymagana do budowania modów. Proszę zainstalować najnowsze Mono.",
+    "DMMonoRuntimeRequired": "Terraria musi być uruchomiona z Mono {0} lub nowszym, aby budować mody. Proszę zaktualizować swoje skrypty startowe.",
+    "DMReferenceAssembliesMissing": "Nie znaleziono .NET 4.5 Reference Assemblies. Proszę zainstalować Visual Studio z pakietem .NET 4.5 Targetting pack.",
+    "DMReferenceAssembliesMissingMono": "Nie znaleziono .NET 4.5 Reference Assemblies. Proszę upewnić się, że instalacja mono zawiera {0}",
+    "DMReferenceAssembliesSatisfied": "Gotowy do kompilacji dla .NET 4.5",
+    "DMReferenceAssembliesDownload": "Kliknij, aby pobrać tylko targetting pack (niezalecane)",
+    "DMVisualStudio": "Visual Studio",
+    "DMTutorialWelcome": "Witamy w modowaniu za pomocą tModLoader. Sprawdź Wiki, aby uzyskać więcej informacji i tutoriali.",
+    "DMTutorial": "Poradnik",
+    "DMUpdateScripts": "Zaktualizuj Skrypty",
+    "DMScriptsRequireRestart": "Skrypty startowe zostały zaktualizowane i wymagają ponownego uruchomienia tModLoadera.",
+    "DMUpdateMonoToDownloadModCompile": "Dodatkowe biblioteki mogą być pobrane z githuba, gdy działają na aktualnej wersji Mono.",
 
-  "ExtractErrorWhileExtractingMod": "Wystąpił błąd podczas wypakowywania {0}",
-  "ExtractHideCodeMessage": "Modder zdecydował się ukryć kod źródłowy przed tModReader.",
-  "ExtractNoSourceCodeMessage": "Modder nie zdecydował się na dołączenie swojego kodu źródłowego.",
-  "ExtractHideResourcesMessage": "Modder zdecydował się ukryć zasoby (np. obrazy) przed tModReaderem.",
+    "ExtractErrorWhileExtractingMod": "Wystąpił błąd podczas wypakowywania {0}",
+    "ExtractHideCodeMessage": "Modder zdecydował się ukryć kod źródłowy przed tModReader.",
+    "ExtractNoSourceCodeMessage": "Modder nie zdecydował się na dołączenie swojego kodu źródłowego.",
+    "ExtractHideResourcesMessage": "Modder zdecydował się ukryć zasoby (np. obrazy) przed tModReaderem.",
 		"ExtractFileListing": "Pliki:",
 
 		// Mod Commands // Komendy Modów
+
 		"CommandModListDescription": "Wyświetla listę załadowanych modów.",
 		"CommandModListServerMods": "Mody Serwerowe:",
 		"CommandModListSyncedMods": "Synchronizowane Mody:",
 		"CommandModListClientMods": "Mody Klienta:",
 		"CommandModListModlist": "Lista Modów:",
-
-		// Mod Building // Budowanie Modów
 		"Building": "Budowanie: {0}",
 		"ReadingProperties": "Czytanie właściwości: {0}",
 		"Compiling": "Kompilowanie {0}",
@@ -333,15 +371,19 @@
 		"UnloadedItemItemNameTooltip": "Przedmiot: {0}",
 		"AprilFoolsJoke": "Prima Aprilis",
 		"DefaultTownNPCName": "Bez nazwy",
-  "DefaultTownNPCChat": "Mój modder zapomniał dać mi dialog.",
-  "DefaultNurseCantHealChat": "Nie wiem dlaczego, ale nie mogę cię wyleczyć. Najwyraźniej modder zapomniał dać mi dialog.",
+    "DefaultTownNPCChat": "Mój modder zapomniał dać mi dialog.",
+    "DefaultNurseCantHealChat": "Nie wiem dlaczego, ale nie mogę cię wyleczyć. Najwyraźniej modder zapomniał dać mi dialog.",
+
 
 		// Extra mouse buttons // Dodatkowe Przyciski Myszy
 		"MouseMiddle": "Środkowy Przycisk",
 		"MouseXButton1": "Czwarty Przycisk",
 		"MouseXButton2": "Piąty Przycisk",
 
-		// Misc // Pozostałe
+		// In Game UI additions
+		// "slotStack": "Stack",
+		// "slotScroll": "Scroll",
+
 		"OK": "OK",
 		"Continue": "Kontynuuj",
 		"DeleteModConfirm": "Czy na pewno chcesz usunąć ten mod na stałe?",

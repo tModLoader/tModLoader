@@ -44,24 +44,26 @@ namespace Terraria.ModLoader
 
 		public float GetCachedBenefitFrom(DamageClass damageClass) => benefitsCache[damageClass.Type];
 
-		/// <summary> 
+		/// <summary>
 		/// This lets you define the classes that this DamageClass will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.
 		/// Returns false in all cases by default, which does not let any other classes' effects trigger on this DamageClass.
 		/// </summary>
 		/// <param name="damageClass">The DamageClass which you want this DamageClass to gain effects from.</param>
 		public virtual bool CountsAs(DamageClass damageClass) => false;
 
-		/// <summary> 
+		/// <summary>
 		/// This lets you define default buffs for all items of this class (eg, base crit)
 		/// </summary>
 		public virtual void SetDefaultStats(Player player) {}
 
-		protected override void Register() {
-			ClassName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.DamageClassName.{Name}");
+		protected sealed override void Register() {
+			ClassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"DamageClassName.{Name}");
 
 			ModTypeLookup<DamageClass>.Register(this);
 
 			Type = DamageClassLoader.Add(this);
 		}
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 	}
 }

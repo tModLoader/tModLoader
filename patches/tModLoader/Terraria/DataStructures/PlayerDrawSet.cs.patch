@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/DataStructures/PlayerDrawSet.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawSet.cs
-@@ -5,11 +_,21 @@
+@@ -5,10 +_,11 @@
  using Terraria.GameContent.Golf;
  using Terraria.Graphics.Shaders;
  using Terraria.ID;
@@ -8,33 +8,96 @@
  
  namespace Terraria.DataStructures
  {
- 	public struct PlayerDrawSet
+-	public struct PlayerDrawSet
++	public partial struct PlayerDrawSet
  	{
-+		//An absolutely utterly epic trick to avoid big patches for disabling lighting below.
-+		private class Lighting
-+		{
-+			public static bool enabled;
-+			public static Color GetColor(int x, int y) => enabled ? Terraria.Lighting.GetColor(x, y) : Color.White;
-+			public static Color GetColor(int x, int y, Color oldColor) => enabled ? Terraria.Lighting.GetColor(x, y, oldColor) : oldColor;
-+			public static Color GetColorClamped(int x, int y, Color oldColor) => enabled ? Terraria.Lighting.GetColorClamped(x, y, oldColor) : oldColor;
-+		}
-+
  		public List<DrawData> DrawDataCache;
  		public List<int> DustCache;
- 		public List<int> GoreCache;
-@@ -128,7 +_,9 @@
+@@ -19,8 +_,19 @@
+ 		public int projectileDrawPosition;
+ 		public Vector2 ItemLocation;
+ 		public int armorAdjust;
++		// Renames for less confusion [
+-		public bool missingHand;
++		public bool armorHidesHands;
+-		public bool missingArm;
++		public bool armorHidesArms;
++
++		internal bool missingHand {
++			get => !armorHidesHands;
++			set => armorHidesHands = !value;
++		}
++		internal bool missingArm {
++			get => !armorHidesArms;
++			set => armorHidesArms = !value;
++		}
++		// ]
+ 		public bool heldProjOverHand;
+ 		public int skinVar;
+ 		public bool fullHair;
+@@ -128,7 +_,12 @@
  
  		public Vector2 Center => new Vector2(Position.X + (float)(drawPlayer.width / 2), Position.Y + (float)(drawPlayer.height / 2));
  
--		public void BoringSetup(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin) {
-+		public void BoringSetup(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin, bool useLighting = true) {
-+			Lighting.enabled = useLighting;
++		// All of this is an incomprehensible mess, and there's definitely still many things left uninitialized in HeadOnlySetup.
++		// But that's the entire codebase.
++
+ 		public void BoringSetup(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin) {
++			headOnlyRender = false;
 +
  			DrawDataCache = drawData;
  			DustCache = dust;
  			GoreCache = gore;
-@@ -226,6 +_,8 @@
- 				type = Main.projectile[drawPlayer.heldProj].type;
+@@ -136,7 +_,13 @@
+ 			shadow = shadowOpacity;
+ 			this.rotation = rotation;
+ 			this.rotationOrigin = rotationOrigin;
++
++			CopyBasicPlayerFields();
++			BoringSetup_2(player, drawData, dust, gore, drawPosition, shadowOpacity, rotation, rotationOrigin);
++		}
++
++		private void CopyBasicPlayerFields() {
+-			heldItem = player.lastVisualizedSelectedItem;
++			heldItem = drawPlayer.lastVisualizedSelectedItem;
+ 			cHead = drawPlayer.cHead;
+ 			cBody = drawPlayer.cBody;
+ 			cLegs = drawPlayer.cLegs;
+@@ -167,6 +_,9 @@
+ 			cBalloonFront = drawPlayer.cBalloonFront;
+ 			cBeard = drawPlayer.cBeard;
+ 			isSitting = drawPlayer.sitting.isSitting;
++		}
++
++		private void BoringSetup_2(Player player, List<DrawData> drawData, List<int> dust, List<int> gore, Vector2 drawPosition, float shadowOpacity, float rotation, Vector2 rotationOrigin) {
+ 			seatYOffset = 0f;
+ 			sittingIndex = 0;
+ 			Vector2 posOffset = Vector2.Zero;
+@@ -209,10 +_,13 @@
+ 			projectileDrawPosition = -1;
+ 			ItemLocation = Position + (drawPlayer.itemLocation - drawPlayer.position);
+ 			armorAdjust = 0;
++			/*
+ 			missingHand = false;
+ 			missingArm = false;
++			*/
+ 			heldProjOverHand = false;
+ 			skinVar = drawPlayer.skinVariant;
++			/*
+ 			if (drawPlayer.body == 77 || drawPlayer.body == 103 || drawPlayer.body == 41 || drawPlayer.body == 100 || drawPlayer.body == 10 || drawPlayer.body == 11 || drawPlayer.body == 12 || drawPlayer.body == 13 || drawPlayer.body == 14 || drawPlayer.body == 43 || drawPlayer.body == 15 || drawPlayer.body == 16 || drawPlayer.body == 20 || drawPlayer.body == 39 || drawPlayer.body == 50 || drawPlayer.body == 38 || drawPlayer.body == 40 || drawPlayer.body == 57 || drawPlayer.body == 44 || drawPlayer.body == 52 || drawPlayer.body == 53 || drawPlayer.body == 68 || drawPlayer.body == 81 || drawPlayer.body == 85 || drawPlayer.body == 88 || drawPlayer.body == 98 || drawPlayer.body == 86 || drawPlayer.body == 87 || drawPlayer.body == 99 || drawPlayer.body == 165 || drawPlayer.body == 166 || drawPlayer.body == 167 || drawPlayer.body == 171 || drawPlayer.body == 45 || drawPlayer.body == 168 || drawPlayer.body == 169 || drawPlayer.body == 42 || drawPlayer.body == 180 || drawPlayer.body == 181 || drawPlayer.body == 183 || drawPlayer.body == 186 || drawPlayer.body == 187 || drawPlayer.body == 188 || drawPlayer.body == 64 || drawPlayer.body == 189 || drawPlayer.body == 191 || drawPlayer.body == 192 || drawPlayer.body == 198 || drawPlayer.body == 199 || drawPlayer.body == 202 || drawPlayer.body == 203 || drawPlayer.body == 58 || drawPlayer.body == 59 || drawPlayer.body == 60 || drawPlayer.body == 61 || drawPlayer.body == 62 || drawPlayer.body == 63 || drawPlayer.body == 36 || drawPlayer.body == 104 || drawPlayer.body == 184 || drawPlayer.body == 74 || drawPlayer.body == 78 || drawPlayer.body == 185 || drawPlayer.body == 196 || drawPlayer.body == 197 || drawPlayer.body == 182 || drawPlayer.body == 87 || drawPlayer.body == 76 || drawPlayer.body == 209 || drawPlayer.body == 168 || drawPlayer.body == 210 || drawPlayer.body == 211 || drawPlayer.body == 213)
+ 				missingHand = true;
+ 
+@@ -220,14 +_,21 @@
+ 				missingArm = false;
+ 			else
+ 				missingArm = true;
++			*/
++
++			armorHidesHands = drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesHands[drawPlayer.body];
++			armorHidesArms = drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesArms[drawPlayer.body];
+ 
+ 			if (drawPlayer.heldProj >= 0 && shadow == 0f) {
+ 				int type = Main.projectile[drawPlayer.heldProj].type;
  				if (type == 460 || type == 535 || type == 600)
  					heldProjOverHand = true;
 +
@@ -42,21 +105,77 @@
  			}
  
  			drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
-@@ -253,7 +_,7 @@
++
+ 			hairDyePacked = PlayerDrawHelper.PackShader(drawPlayer.hairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
+ 			if (drawPlayer.head == 0 && drawPlayer.hairDye == 0)
+ 				hairDyePacked = PlayerDrawHelper.PackShader(1, PlayerDrawHelper.ShaderConfiguration.HairShader);
+@@ -539,6 +_,11 @@
+ 				colorArmorLegs = drawPlayer.GetImmuneAlphaPure(new Color(b14, b14, b14, 255), shadow);
+ 			}
  
- 			playerEffect = SpriteEffects.None;
- 			itemEffect = SpriteEffects.FlipHorizontally;
--			colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(), shadow);
-+			colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting), shadow);
- 			colorEyeWhites = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), Color.White), shadow);
- 			colorEyes = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), drawPlayer.eyeColor), shadow);
- 			colorHead = drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)((double)Position.X + (double)drawPlayer.width * 0.5) / 16, (int)(((double)Position.Y + (double)drawPlayer.height * 0.25) / 16.0), drawPlayer.skinColor), shadow);
-@@ -1053,7 +_,7 @@
- 				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2) {
++			ItemLoader.DrawArmorColor(EquipType.Head, drawPlayer.head, drawPlayer, shadow, ref colorArmorHead, ref headGlowMask, ref headGlowColor);
++			ItemLoader.DrawArmorColor(EquipType.Body, drawPlayer.body, drawPlayer, shadow, ref colorArmorBody, ref bodyGlowMask, ref bodyGlowColor);
++			ItemLoader.ArmorArmGlowMask(drawPlayer.body, drawPlayer, shadow, ref armGlowMask, ref armGlowColor);
++			ItemLoader.DrawArmorColor(EquipType.Legs, drawPlayer.legs, drawPlayer, shadow, ref colorArmorLegs, ref legsGlowMask, ref legsGlowColor);
++
+ 			float alphaReduction = shadow;
+ 			headGlowColor = drawPlayer.GetImmuneAlphaPure(headGlowColor, alphaReduction);
+ 			bodyGlowColor = drawPlayer.GetImmuneAlphaPure(bodyGlowColor, alphaReduction);
+@@ -1054,8 +_,10 @@
+ 				DustCache.Add(dust21.dustIndex);
+ 			}
+ 
++			bool fullBright = false;
++			PlayerLoader.DrawEffects(this, ref num12, ref num13, ref num14, ref num15, ref fullBright);
+ 			if (num12 != 1f || num13 != 1f || num14 != 1f || num15 != 1f) {
+-				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2) {
++				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || drawPlayer.onFire3 || drawPlayer.onFrostBurn2 || fullBright) {
  					colorEyeWhites = drawPlayer.GetImmuneAlpha(Color.White, shadow);
  					colorEyes = drawPlayer.GetImmuneAlpha(drawPlayer.eyeColor, shadow);
--					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
-+					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting), shadow);
- 					colorHead = drawPlayer.GetImmuneAlpha(drawPlayer.skinColor, shadow);
- 					colorBodySkin = drawPlayer.GetImmuneAlpha(drawPlayer.skinColor, shadow);
- 					colorShirt = drawPlayer.GetImmuneAlpha(drawPlayer.shirtColor, shadow);
+ 					colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
+@@ -1306,8 +_,13 @@
+ 				drawPlayer.headRotation = 0f;
+ 			}
+ 
++			SetupHairFrames();
++			BoringSetup_End();
++		}
++
++		// A split to be used in HeadOnlySetup()
++		private void SetupHairFrames() {
+ 			Rectangle bodyFrame = drawPlayer.bodyFrame;
+-			bodyFrame = drawPlayer.bodyFrame;
+ 			bodyFrame.Y -= 336;
+ 			if (bodyFrame.Y < 0)
+ 				bodyFrame.Y = 0;
+@@ -1322,9 +_,17 @@
+ 				int height = 26;
+ 				hairFrontFrame.Height = height;
+ 			}
++		}
+ 
++		private void BoringSetup_End() {
++			/*
+ 			hidesTopSkin = (drawPlayer.body == 82 || drawPlayer.body == 83 || drawPlayer.body == 93 || drawPlayer.body == 21 || drawPlayer.body == 22);
+ 			hidesBottomSkin = (drawPlayer.body == 93 || drawPlayer.legs == 20 || drawPlayer.legs == 21);
++			*/
++			hidesTopSkin = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesTopSkin[drawPlayer.body]) || (drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.HidesTopSkin[drawPlayer.legs]);
++			hidesBottomSkin = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.HidesBottomSkin[drawPlayer.body]) || (drawPlayer.legs > 0 && ArmorIDs.Legs.Sets.HidesBottomSkin[drawPlayer.legs]);
++			isBottomOverriden = PlayerDrawLayers.IsBottomOverridden(ref this);
++
+ 			drawFloatingTube = drawPlayer.hasFloatingTube;
+ 			drawUnicornHorn = drawPlayer.hasUnicornHorn;
+ 			drawAngelHalo = drawPlayer.hasAngelHalo;
+@@ -1341,9 +_,9 @@
+ 		private void CreateCompositeData() {
+ 			frontShoulderOffset = Vector2.Zero;
+ 			backShoulderOffset = Vector2.Zero;
+-			usesCompositeTorso = (drawPlayer.body > 0 && drawPlayer.body < 246 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body]);
+-			usesCompositeFrontHandAcc = (drawPlayer.handon > 0 && drawPlayer.handon < 23 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon]);
+-			usesCompositeBackHandAcc = (drawPlayer.handoff > 0 && drawPlayer.handoff < 15 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff]);
++			usesCompositeTorso = (drawPlayer.body > 0 && ArmorIDs.Body.Sets.UsesNewFramingCode[drawPlayer.body]);
++			usesCompositeFrontHandAcc = (drawPlayer.handon > 0 && ArmorIDs.HandOn.Sets.UsesNewFramingCode[drawPlayer.handon]);
++			usesCompositeBackHandAcc = (drawPlayer.handoff > 0 && ArmorIDs.HandOff.Sets.UsesNewFramingCode[drawPlayer.handoff]);
+ 			if (drawPlayer.body < 1)
+ 				usesCompositeTorso = true;
+ 

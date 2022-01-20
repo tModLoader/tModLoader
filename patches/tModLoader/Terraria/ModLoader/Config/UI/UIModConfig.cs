@@ -17,7 +17,7 @@ using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	// TODO: Revert individual button.	
+	// TODO: Revert individual button.
 	// TODO: Collapse All button, or default to collapsed?
 	// TODO: Localization support
 	internal class UIModConfig : UIState
@@ -42,7 +42,7 @@ namespace Terraria.ModLoader.Config.UI
 		private List<ModConfig> modConfigs;
 		// This is from ConfigManager.Configs
 		private ModConfig modConfig;
-		// the clone we modify. 
+		// the clone we modify.
 		private ModConfig pendingConfig;
 		public int updateCount;
 
@@ -227,10 +227,14 @@ namespace Terraria.ModLoader.Config.UI
 
 		// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
 		private void DoMenuModeState() {
-			if (Main.gameMenu)
+			if (Main.gameMenu) {
+				Main.MenuUI.SetState(null);
 				Main.menuMode = Interface.modConfigID;
-			else
+			}
+			else {
+				Main.InGameUI.SetState(null);
 				Main.InGameUI.SetState(Interface.modConfig);
+			}
 		}
 
 		private void SaveConfig(UIMouseEvent evt, UIElement listeningElement) {
@@ -247,7 +251,7 @@ namespace Terraria.ModLoader.Config.UI
 			else {
 				// If we are in game...
 				if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
-					// TODO: Too 
+					// TODO: Too
 					SetMessage("Asking server to accept changes...", Color.Yellow);
 
 					var requestChanges = new ModPacket(MessageID.InGameChangeConfig);

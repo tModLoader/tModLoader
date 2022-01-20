@@ -23,6 +23,8 @@ namespace Terraria.ModLoader
 			GoreLoader.RegisterModGore(this);
 		}
 
+		public sealed override void SetupContent() => SetStaticDefaults();
+
 		/// <summary>
 		/// Allows you to modify a gore's fields when it is created.
 		/// </summary>
@@ -43,10 +45,5 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <returns></returns>
 		public virtual Color? GetAlpha(Gore gore, Color lightColor) => null;
-
-		/// <summary>
-		/// Allows you to determine whether or not this gore will draw behind tiles, etc. Returns false by default.
-		/// </summary>
-		public virtual bool DrawBehind(Gore gore) => false;
 	}
 }

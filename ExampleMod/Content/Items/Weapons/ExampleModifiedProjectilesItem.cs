@@ -4,12 +4,18 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using ExampleMod.Common.GlobalProjectiles;
+using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items.Weapons
 {
 	public class ExampleModifiedProjectilesItem : ModItem
 	{
 		public override string Texture => "ExampleMod/Content/Items/Weapons/ExampleShootingSword";
+
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.useTime = 20;
 			Item.useAnimation = 20;
@@ -19,7 +25,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 32;
 			Item.height = 32;
-			Item.shoot = 10;
+			Item.shoot = ProjectileID.PurificationPowder;
 			// This Ammo is nonspecific. I want to modify what it shoots, however.
 			Item.useAmmo = AmmoID.Bullet;
 		}

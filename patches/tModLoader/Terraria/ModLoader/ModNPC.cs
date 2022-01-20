@@ -34,7 +34,7 @@ namespace Terraria.ModLoader
 
 		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
 		public int AIType { get; set; }
-		
+
 		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the animation (FindFrame) of. Leave as 0 to not copy any animation. Defaults to 0. </summary>
 		public int AnimationType { get; set; }
 
@@ -44,14 +44,14 @@ namespace Terraria.ModLoader
 		/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
 		/// Will be superceded by ModSceneEffect. Kept for legacy.
 		public int Music { get; set; } = -1;
-		
+
 		/// <summary> The priority of the music that plays when this NPC is on or near the screen. </summary>
 		/// Will be superceded by ModSceneEffect. Kept for legacy.
 		public SceneEffectPriority SceneEffectPriority { get; set; } = SceneEffectPriority.BossLow;
-		
+
 		/// <summary> The vertical offset used for drawing this NPC. Defaults to 0. </summary>
 		public float DrawOffsetY { get; set; }
-		
+
 		/// <summary> The type of NPC that this NPC will be considered as when determining banner drops and banner bonuses. By default this will be 0, which means this NPC is not associated with any banner. To give your NPC its own banner, set this field to the NPC's type. </summary>
 		public int Banner { get; set; }
 
@@ -70,7 +70,7 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModNPC>.Register(this);
 
 			NPC.type = NPCLoader.ReserveNPCID();
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.NPCName.{Name}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"NPCName.{Name}");
 
 			NPCLoader.npcs.Add(this);
 
@@ -107,15 +107,15 @@ namespace Terraria.ModLoader
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
-		/// Returns a clone of this ModNPC. 
-		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created. 
-		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references. 
+		/// Returns a clone of this ModNPC.
+		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created.
+		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references.
 		/// Only called if CloneNewInstances is set to true.
 		/// </summary>
 		public virtual ModNPC Clone() => (ModNPC)MemberwiseClone();
 
 		/// <summary>
-		/// Create a new instance of this ModNPC for an NPC instance. 
+		/// Create a new instance of this ModNPC for an NPC instance.
 		/// Called at the end of NPC.SetDefaults.
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
@@ -147,16 +147,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set all your NPC's static properties, such as names/translations and the arrays in NPCID.Sets.
-		/// </summary>
-		public virtual void SetStaticDefaults() {
-		}
-
-		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Npc[NPC.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Npc[NPC.type] = ModContent.Request<Texture2D>(Texture);
 
 			if (Banner != 0 && BannerItem != 0) {
 				NPCLoader.bannerToItem[Banner] = BannerItem;
@@ -241,7 +235,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life <= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
 		/// <param name="hitDirection"></param>
 		/// <param name="damage"></param>
@@ -293,12 +287,12 @@ namespace Terraria.ModLoader
 		public virtual void OnKill() {
 		}
 
-        /// <summary>
-        /// Allows you to make things happen when this NPC is caught. Ran Serverside
-        /// </summary>
-        /// <param name="player">The player catching this NPC</param>
-        /// <param name="item">The item that will be spawned</param>
-        public virtual void OnCatchNPC(Player player, Item item) {
+		/// <summary>
+		/// Allows you to make things happen when this NPC is caught. Ran Serverside
+		/// </summary>
+		/// <param name="player">The player catching this NPC</param>
+		/// <param name="item">The item that will be spawned</param>
+		public virtual void OnCatchNPC(Player player, Item item) {
 		}
 
 		/// <summary>
@@ -486,21 +480,23 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to draw things behind this NPC, or to modify the way this NPC is drawn. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
+		/// Allows you to draw things behind this NPC, or to modify the way this NPC is drawn. Substract screenPos from the draw position before drawing. Return false to stop the game from drawing the NPC (useful if you're manually drawing the NPC). Returns true by default.
 		/// </summary>
-		/// <param name="spriteBatch"></param>
-		/// <param name="drawColor"></param>
+		/// <param name="spriteBatch">The spritebatch to draw on</param>
+		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
+		/// <param name="drawColor">The color the NPC is drawn in</param>
 		/// <returns></returns>
-		public virtual bool PreDraw(SpriteBatch spriteBatch, Color drawColor) {
+		public virtual bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to draw things in front of this NPC. This method is called even if PreDraw returns false.
+		/// Allows you to draw things in front of this NPC. Substract screenPos from the draw position before drawing. This method is called even if PreDraw returns false.
 		/// </summary>
-		/// <param name="spriteBatch"></param>
-		/// <param name="drawColor"></param>
-		public virtual void PostDraw(SpriteBatch spriteBatch, Color drawColor) {
+		/// <param name="spriteBatch">The spritebatch to draw on</param>
+		/// <param name="screenPos">The screen position used to translate world position into screen position</param>
+		/// <param name="drawColor">The color the NPC is drawn in</param>
+		public virtual void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		}
 
 		/// <summary>
@@ -551,6 +547,17 @@ namespace Terraria.ModLoader
 		public virtual bool CanTownNPCSpawn(int numTownNPCs, int money) {
 			return false;
 		}
+
+		/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
+		/// <summary>
+		/// Allows you to set an NPC's biome preferences and nearby npc preferences for the NPC happiness system. Recommended to only be used with NPCs that have shops.
+		/// </summary>
+		/// <param name="shopHelperInstance">The vanilla shop modifier instance to invoke methods such as LikeNPC and HateBiome on</param>
+		/// <param name="primaryPlayerBiome">The current biome the player is in for purposes of npc happiness, referred by PrimaryBiomeID </param>
+		/// <param name="nearbyNPCsByType">The boolean array of if each type of npc is nearby</param>
+		public virtual void ModifyNPCHappiness(int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
+		}
+		*/
 
 		/// <summary>
 		/// Allows you to define special conditions required for this town NPC's house. For example, Truffle requires the house to be in an aboveground mushroom biome.

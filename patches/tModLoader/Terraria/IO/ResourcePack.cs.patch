@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/IO/ResourcePack.cs
++++ src/tModLoader/Terraria/IO/ResourcePack.cs
+@@ -108,7 +_,7 @@
+ 				return _services.Get<IAssetRepository>().Request<Texture2D>("Images/UI/DefaultResourcePackIcon").Value;
+ 
+ 			using (Stream stream = OpenStream("icon.png")) {
+-				return _services.Get<AssetReaderCollection>().Read<Texture2D>(stream, ".png");
++				return _services.Get<IAssetRepository>().CreateUntracked<Texture2D>(stream, ".png").Value;
+ 			}
+ 		}
+ 
