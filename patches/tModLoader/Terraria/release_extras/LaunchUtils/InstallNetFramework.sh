@@ -11,7 +11,7 @@ wnd="$1"
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 echo "Parsing .NET version requirements from runtimeconfig.json"
-version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <tModLoader.runtimeconfig.json) #sed, go die plskthx
+version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <../tModLoader.runtimeconfig.json) #sed, go die plskthx
 version=${version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
 #echo $version
 # use this to check the output of sed. Expected output: "00000000 35 2e 30 2e 30 0a |5.0.0.| 00000006"
@@ -52,9 +52,9 @@ file_download() {
     wget -q -O "$1" "$2"
   else
     echo "Missing dependency: neither curl nor wget was found."
-    return false # @TODO: Should hard fail?
+    return 123 # @TODO: Should hard fail?
   fi
-  return true
+  return 0
 }
 
 #If the install directory for this specific dotnet version doesnt exist, grab the installer script and run it.
@@ -65,10 +65,9 @@ if [ ! -d "$install_dir" ]; then
 
   if [ "$wnd" = true ]; then
     file_download dotnet-install.ps1 https://dot.net/v1/dotnet-install.ps1
-    chmod +x dotnet-install.ps1
     
     # @TODO: Should update powershell to 4+ because required by the script (and not present by default in win 7/8)
-    powershell -NoProfile -ExecutionPolicy unrestricted dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "$dotnet_runtime" -Version "$version"
+    powershell.exe -NoProfile -ExecutionPolicy unrestricted -File dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "$dotnet_runtime" -Version "$version"
   else
     file_download dotnet-install.sh https://dot.net/v1/dotnet-install.sh
 
@@ -83,15 +82,11 @@ echo "Finished Checking for Updates"
 if [ "$wnd" = true ]; then
   # If the install failed, provide a link to get the portable directly, and instructions on where to do with it.
   if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
-    mkdir "$install_dir"
+    mkdir "$dotnet_dir"
 
     echo "It has been detected that your system failed to install the dotnet portables automatically. Will now proceed manually."
-    start "" "https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-"$version"-windows-x64-binaries"
-    echo "Now manually downloading the x64 .NET portable. Please find it in the opened browser."
-    read -p "Press 'ENTER' to proceed to the next step..."
-    echo "Please extract the downloaded Zip file contents in to \"$install_dir\""
+    file_download "../dotnet/$version.zip" "https://dotnetcli.azureedge.net/dotnet/Runtime/$version/dotnet-runtime-$version-win-x64.zip"
+    echo "Now downloading the x64 .NET portable for manual install. Please extract the zip file at $install_dir"
     read -p "Please press Enter when this step is complete."
-
-    recidive_install=1
   fi
 fi
