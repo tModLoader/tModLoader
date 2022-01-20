@@ -4,7 +4,7 @@
 
 #chdir to path of the script and save it
 cd "$(dirname "$0")"
-. BashUtils.sh
+. ./BashUtils.sh
 
 echo "You are on platform: \"$_uname\""
 

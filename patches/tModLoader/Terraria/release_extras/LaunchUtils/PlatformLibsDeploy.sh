@@ -4,7 +4,7 @@
 
 #chdir to path of the script and save it
 cd "$(dirname "$0")"
-. BashUtils.sh
+. ./BashUtils.sh
 
 echo "Verifying .NET platform specific libraries are correctly deployed"
 if [ $_uname == *"_NT"* ]; then

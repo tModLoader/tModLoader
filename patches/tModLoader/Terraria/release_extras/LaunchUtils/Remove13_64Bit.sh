@@ -2,7 +2,7 @@
 # This file should only be called on WINDOWS!
 
 cd "$(dirname "$0")"
-. BashUtils.sh
+. ./BashUtils.sh
 
 echo "Verifying installation directory..."
 

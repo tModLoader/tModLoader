@@ -4,7 +4,7 @@
 
 #chdir to path of the script and save it
 cd "$(dirname "$0")"
-. BashUtils.sh
+. ./BashUtils.sh
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 echo "Parsing .NET version requirements from runtimeconfig.json"

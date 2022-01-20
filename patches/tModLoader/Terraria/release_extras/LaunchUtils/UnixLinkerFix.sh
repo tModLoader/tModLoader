@@ -4,7 +4,7 @@
 
 #chdir to path of the script and save it
 cd "$(dirname "$0")"
-. BashUtils.sh
+. ./BashUtils.sh
 
 # The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.
 # Additionally, something in dotnet is requesting 'libSDL2.so' (instead of 'libSDL2-2.0.so.0' that is specified in dependencies)
