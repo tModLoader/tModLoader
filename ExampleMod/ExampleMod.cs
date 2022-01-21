@@ -42,7 +42,7 @@ namespace ExampleMod
 				throw new ArgumentException("Arguments cannot be empty!");
 			}
 
-			// Make sure that the argument is a string using pattern matching.
+			// This check makes sure that the argument is a string using pattern matching.
 			// Since we only need one parameter, we'll take only the first item in the array.
 			if (args[0] is string content) {
 				// Returns the value provided by downedMinionBoss, if the argument calls for it.
