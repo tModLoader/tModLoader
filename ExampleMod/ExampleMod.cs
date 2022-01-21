@@ -35,10 +35,11 @@ namespace ExampleMod
 
 			// Make sure the call doesn't include anything that could potentially cause exceptions.
 			if (args is null) {
-				throw new Exception("Arguments cannot be null!");
+				throw new ArgumentNullException(nameof(args), "Arguments cannot be null!");
 			}
-			if (args.Length <= 0) {
-				throw new Exception("Arguments cannot be empty!");
+
+			if (args.Length == 0) {
+				throw new ArgumentException("Arguments cannot be empty!");
 			}
 
 			// Make sure that the argument is a string using pattern matching.
