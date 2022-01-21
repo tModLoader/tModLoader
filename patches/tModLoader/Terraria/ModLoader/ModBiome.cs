@@ -49,7 +49,6 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			SetStaticDefaults();
-			BiomeID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>
