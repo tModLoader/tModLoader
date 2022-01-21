@@ -52,9 +52,21 @@ fi
 run_script ./UnixLinkerFix.sh 2>&1 | tee -a "$LogFile"
 run_script ./PlatformLibsDeploy.sh 2>&1 | tee -a "$LogFile"
 
-# Source InstallNetFramework so you bring in $install_dir containing the version and no guessing
-# Redirecting stream seems to spawn a different thing...
-. ./InstallNetFramework.sh #2>&1 | tee -a "$LogFile"
+#Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
+echo "Parsing .NET version requirements from runtimeconfig.json"
+dotnet_version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <../tModLoader.runtimeconfig.json) #sed, go die plskthx
+dotnet_version=${dotnet_version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
+#echo $version
+# use this to check the output of sed. Expected output: "00000000 35 2e 30 2e 30 0a |5.0.0.| 00000006"
+# echo $(hexdump -C <<< "$version")
+dotnet_dir="$root_dir/dotnet"
+install_dir="$dotnet_dir/$dotnet_version"
+echo "Success!"
+
+export install_dir
+export dotnet_dir
+export dotnet_version
+./InstallNetFramework.sh 2>&1 | tee -a "$LogFile"
 
 echo "Attempting Launch..."
 sleep 1

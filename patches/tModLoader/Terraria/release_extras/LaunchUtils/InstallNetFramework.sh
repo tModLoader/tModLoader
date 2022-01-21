@@ -2,30 +2,26 @@
 #Authors: covers1624, DarioDaf, Solxanich
 # Provided for use in tModLoader deployment. 
 
-# Source this file do not run it!
+#
+# THIS SCRIPT EXPECTS AS INPUTS:
+#   dotnet_dir     : Folder where the versions of dotnet will be extracted
+#   install_dir    : Target folder for the install (usually "$dotnet_dir/$version")
+#   dotnet_version : Version of dotnet to install
+#
+
 #chdir to path of the script and save it
-#cd "$(dirname "$(realpath "$0")")"
+cd "$(dirname "$(realpath "$0")")"
 . ./BashUtils.sh
 
-#Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
-echo "Parsing .NET version requirements from runtimeconfig.json"
-version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <../tModLoader.runtimeconfig.json) #sed, go die plskthx
-version=${version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
-#echo $version
-# use this to check the output of sed. Expected output: "00000000 35 2e 30 2e 30 0a |5.0.0.| 00000006"
-# echo $(hexdump -C <<< "$version")
 #Cut everything before the second dot
-channel=$(echo "$version" | cut -f1,2 -d'.')
-dotnet_dir="$root_dir/dotnet"
-install_dir="$dotnet_dir/$version"
-echo "Success!"
+channel=$(echo "$dotnet_version" | cut -f1,2 -d'.')
 
 echo "Checking for old .NET versions to remove from folder"
 #If the dotnet dir exists, we need to do some cleanup
 if [ -d "$dotnet_dir" ]; then
   # Find all folders inside the dotnet dir that don't match our target version and nuke it
   for folder in $(ls "$dotnet_dir"); do
-    if [ ! $version = "$folder" ]; then
+    if [ ! $dotnet_version = "$folder" ]; then
       old_version="$dotnet_dir/$folder"
       echo "Cleaning $old_version"
       rm -rf "$old_version"
@@ -44,11 +40,11 @@ if [ ! -d "$install_dir" ]; then
     file_download dotnet-install.ps1 https://dot.net/v1/dotnet-install.ps1
     
     # @TODO: Should update powershell to 4+ because required by the script (and not present by default in win 7/8)
-    powershell.exe -NoProfile -ExecutionPolicy unrestricted -File dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "$dotnet_runtime" -Version "$version"
+    powershell.exe -NoProfile -ExecutionPolicy unrestricted -File dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "$dotnet_runtime" -Version "$dotnet_version"
   else
     file_download dotnet-install.sh https://dot.net/v1/dotnet-install.sh
 
-    run_script ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "$dotnet_runtime" --version "$version"
+    run_script ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "$dotnet_runtime" --version "$dotnet_version"
   fi
 fi
 echo "Finished Checking for Updates"
@@ -61,13 +57,9 @@ if [[ "$_uname" == *"_NT"* ]]; then
     mkdir "$dotnet_dir"
 
     echo "It has been detected that your system failed to install the dotnet portables automatically. Will now proceed manually."
-    file_download "$dotnet_dir/$version.zip" "https://dotnetcli.azureedge.net/dotnet/Runtime/$version/dotnet-runtime-$version-win-x64.zip"
-    unzip "$dotnet_dir/$version.zip"
+    file_download "$dotnet_dir/$dotnet_version.zip" "https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-win-x64.zip"
+    unzip "$dotnet_dir/$dotnet_version.zip" -d "$install_dir"
     echo "Tryed to downlaod and extract x64 .NET portable. Please verify the extraction completed successfully to \"$install_dir\""
     read -p "Please press Enter when this step is complete."
   fi
 fi
-
-export install_dir
-
-echo "$install_dir/dotnet"
