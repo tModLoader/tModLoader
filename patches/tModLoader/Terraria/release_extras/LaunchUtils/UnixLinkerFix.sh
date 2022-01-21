@@ -3,7 +3,7 @@
 # Provided for use in tModLoader deployment. 
 
 #chdir to path of the script and save it
-cd "$(dirname $(realpath "$0"))"
+cd "$(dirname "$(realpath "$0")")"
 . ./BashUtils.sh
 
 # The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.

@@ -3,7 +3,7 @@
 # Provided for use in tModLoader deployment. 
 
 #chdir to path of the script and save it
-cd "$(dirname $(realpath "$0"))"
+cd "$(dirname "$(realpath "$0")")"
 . ./BashUtils.sh
 
 echo "Verifying .NET platform specific libraries are correctly deployed"

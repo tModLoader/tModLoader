@@ -4,7 +4,7 @@
 
 # Source this file do not run it!
 #chdir to path of the script and save it
-#cd "$(dirname $(realpath "$0"))"
+#cd "$(dirname "$(realpath "$0")")"
 . ./BashUtils.sh
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.

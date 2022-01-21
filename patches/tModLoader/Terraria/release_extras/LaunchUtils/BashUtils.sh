@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Get root folder
-root_dir="$(dirname $(pwd -P))"
+root_dir="$(dirname "$(pwd -P)")"
 
 # Read uname into a variable used in various places
 _uname=$(uname)

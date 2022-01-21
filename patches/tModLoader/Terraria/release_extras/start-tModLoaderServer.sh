@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-cd "$(dirname $(realpath "$0"))"
+cd "$(dirname "$(realpath "$0")")"
 
 launch_args="-server -config serverconfig.txt"
 
@@ -20,4 +20,5 @@ fi
 
 launch_args="$launch_args $*"
 
+chmod +x ./LaunchUtils/ScriptCaller.sh
 ./start-tModLoader.sh $launch_args
