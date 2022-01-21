@@ -1,6 +1,7 @@
 --- src/Terraria/Terraria/ID/BiomeID.cs
 +++ src/tModLoader/Terraria/ID/BiomeID.cs
-@@ -1,7 +_,15 @@
+@@ -1,7 +_,17 @@
++using ReLogic.Reflection;
 +using Terraria.GameContent;
 +
  namespace Terraria.ID
@@ -14,6 +15,7 @@
 +		/// <param name="biomeID"></param>
 +		/// <returns></returns>
 +		public static string GetLocalizedName(int biomeID) => ShopHelper.BiomeNameByKey(biomeID);
++		public static readonly IdDictionary Search = IdDictionary.Create<BiomeID, int>();
  		public const int Forest = 0;
  		public const int NormalUnderground = 1;
  		public const int Snow = 2;
