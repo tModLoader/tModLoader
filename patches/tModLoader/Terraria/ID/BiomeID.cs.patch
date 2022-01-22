@@ -18,7 +18,7 @@
 +		/// Equivalent to <see cref="ShopHelper.BiomeNameByKey"/>
 +		/// </summary>
 +		/// <param name="biomeID"></param>
-+		/// <returns></returns>
++		/// <returns>Localized name of the biome with <paramref name="biomeID"/></returns>
 +		public static string GetLocalizedName(int biomeID) => ShopHelper.BiomeNameByKey(biomeID);
 +		public static readonly IdDictionary Search = IdDictionary.Create<PrimaryBiomeID, int>();
  		public const int Forest = 0;
