@@ -1,5 +1,8 @@
 var NAVTREEINDEX125 =
 {
+"namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a98921133d10fbdb0fb6dbb7b2648befe":[0,0,2,14,161,0],
+"namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282aa60ba1a7a56c9e00252baebe89d62c12":[0,0,2,14,161,7],
+"namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282aac101b32dda4448cf13a93fe283dddd8":[0,0,2,14,161,1],
 "namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282ad96414f5cfbd621bb6368bb260d5240c":[0,0,2,14,161,8],
 "namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282af593080cfde796c477bc6eb72c4f07c1":[0,0,2,14,161,14],
 "namespace_terraria_1_1_mod_loader.html#af8828125cece1dd205f08c010e019ace":[0,0,2,14,159],
@@ -246,8 +249,5 @@ var NAVTREEINDEX125 =
 "struct_terraria_1_1_data_structures_1_1_entity_shadow_info.html#ab3c7d74c0d81f56141511afa6e84eb2e":[1,0,2,4,13,6],
 "struct_terraria_1_1_data_structures_1_1_entity_shadow_info.html#add354668024112cabe8a939ca4b67d7f":[1,0,2,4,13,4],
 "struct_terraria_1_1_data_structures_1_1_entity_shadow_info.html#aeca88949114a18184fd122575d3b67a5":[1,0,2,4,13,0],
-"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html":[1,0,2,4,16],
-"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a029127c1f278987c2b829b768fccddae":[1,0,2,4,16,6],
-"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a11e9b2743330cc5b72abd4fb69f1368a":[1,0,2,4,16,1],
-"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a171c3816312a6820a1a5e00a1e317b24":[1,0,2,4,16,22]
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html":[1,0,2,4,16]
 };

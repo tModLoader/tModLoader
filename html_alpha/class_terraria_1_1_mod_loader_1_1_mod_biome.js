@@ -6,7 +6,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_biome =
     [ "OnInBiome", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#afbebcd2ec710c59c4e19db33e961517c", null ],
     [ "OnLeave", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#ae4e088d3f801e15eb77617be0a64b2c6", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#a835be12d14ba4f09c4e7037b2adc9819", null ],
-    [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#a2b007c678bae8c46051689cd9067898f", null ],
+    [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#a9912a1f8c38e275b3b84943f3ebcad1b", null ],
     [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#a7bdabedcf0add5997f3719ae5e2ed403", null ],
     [ "BackgroundColor", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#a744cc521be3a648aca949e64a32e9745", null ],
     [ "BackgroundPath", "class_terraria_1_1_mod_loader_1_1_mod_biome.html#a550207005e5358197b9a0c6bf3f95efd", null ],

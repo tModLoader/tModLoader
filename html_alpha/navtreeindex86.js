@@ -1,5 +1,8 @@
 var NAVTREEINDEX86 =
 {
+"class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute.html#ab9dfc80b7a978bd6f865d397da5437fa":[1,0,2,13,1,6,1],
+"class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute.html#ad11045d633d5788519790442a7baf7ff":[1,0,2,13,1,6,13],
+"class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute.html#ae2fd625cc142deb9a6c1a1c1e40bcbdc":[1,0,2,13,1,6,11],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute.html#ae7dc9ce162f9fcbbc951f526ac09dec0":[1,0,2,13,1,6,7],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute.html#af0ee41c097256f73bb9ee69498528896":[1,0,2,13,1,6,10],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute.html#af1ea9b10ff544cb080eb5aa41c5df632":[1,0,2,13,1,6,4],
@@ -246,8 +249,5 @@ var NAVTREEINDEX86 =
 "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html#a12db902e2bf43fdde7e8ab0c936833a2":[1,0,2,13,1,0,13,3],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html#a2aa0e7533c58afdd829bd4abf33b125f":[1,0,2,13,1,0,13,4],
 "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html#a368d6c4a450b1f8a6ed43791dd53c17a":[1,0,2,13,1,0,13,0],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html#a6c4edd782fbb21c95be5f3da0328b933":[1,0,2,13,1,0,13,5],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html#aa04fc602610f3f95816cf60918ceedb8":[1,0,2,13,1,0,13,2],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html#aab6528b6cef41aad9f43c59792e27e33":[1,0,2,13,1,0,13,6],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html#ad05ead5db71b2225870cd2ca983c03f1":[1,0,2,13,1,0,13,1]
+"class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html#a6c4edd782fbb21c95be5f3da0328b933":[1,0,2,13,1,0,13,5]
 };

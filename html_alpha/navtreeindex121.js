@@ -1,5 +1,8 @@
 var NAVTREEINDEX121 =
 {
+"interface_terraria_1_1_chat_1_1_commands_1_1_i_chat_command.html#a0332f4bc49b418204d79909d496405bb":[1,0,2,2,0,4,0],
+"interface_terraria_1_1_chat_1_1_commands_1_1_i_chat_command.html#a1f37118223b311bcdd653487cd57276c":[1,0,2,2,0,4,1],
+"interface_terraria_1_1_chat_1_1_i_chat_processor.html":[1,0,2,2,5],
 "interface_terraria_1_1_chat_1_1_i_chat_processor.html#a4b5cef03afdd14a6b01f421cbaeb0ce1":[1,0,2,2,5,1],
 "interface_terraria_1_1_chat_1_1_i_chat_processor.html#a74c313628a8d45f6de37021c03616540":[1,0,2,2,5,0],
 "interface_terraria_1_1_data_structures_1_1_i_config_key_holder.html":[1,0,2,4,20],
@@ -246,8 +249,5 @@ var NAVTREEINDEX121 =
 "namespace_terraria.html":[0,0,2],
 "namespace_terraria.html#a36d93e4b0a046ee2a8bdacffa94670cb":[0,0,2,86],
 "namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913":[0,0,2,81],
-"namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913a023c239d2f2538f140a20e72c7b73f20":[0,0,2,81,3],
-"namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913a25a81701fbfa4a1efdf660a950c1d006":[0,0,2,81,5],
-"namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913a6adf97f83acf6453d4a6a4b1070f3754":[0,0,2,81,0],
-"namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913a8dc5344bc0746e1cc5abf896ca03bbdf":[0,0,2,81,2]
+"namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913a023c239d2f2538f140a20e72c7b73f20":[0,0,2,81,3]
 };
