@@ -292,7 +292,7 @@ namespace ExampleMod.Content.NPCs
 		public override void OnGoToStatue(bool toKingStatue) {
 			if (Main.netMode == NetmodeID.Server) {
 				ModPacket packet = Mod.GetPacket();
-				packet.Write((byte)ExampleModMessageType.ExampleTeleportToStatue);
+				packet.Write((byte)ExampleMod.MessageType.ExampleTeleportToStatue);
 				packet.Write((byte)NPC.whoAmI);
 				packet.Send();
 			}
