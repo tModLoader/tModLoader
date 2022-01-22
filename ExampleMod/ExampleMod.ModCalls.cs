@@ -23,8 +23,9 @@ namespace ExampleMod
 			}
 
 			// This check makes sure that the argument is a string using pattern matching.
-			// Since we only need one parameter, we'll take only the first item in the array.
+			// Since we only need one parameter, we'll take only the first item in the array..
 			if (args[0] is string content) {
+				// ..And treat it as a command type.
 				switch (content) {
 					case "downedMinionBoss":
 						// Returns the value provided by downedMinionBoss, if the argument calls for it.
@@ -45,7 +46,8 @@ namespace ExampleMod
 						// return true;
 						Main.LocalPlayer.GetModPlayer<ExampleInfoDisplayPlayer>().showMinionCount = minionSet;
 
-						break;
+						// Return a 'true' boolean as one of the many ways to tell that the operation succeeded.
+						return true;
 				}
 			}
 
@@ -54,9 +56,9 @@ namespace ExampleMod
 				return ModContent.GetInstance<ExampleBiomeTileCount>().exampleBlockCount;
 			}
 
-			// If the arguments provided don't match anything we wanted to return a value for, we'll return null.
+			// If the arguments provided don't match anything we wanted to return a value for, we'll return a 'false' boolean.
 			// This value can be anything you would like to provide as a default value.
-			return null;
+			return false;
 		}
 	}
 }
