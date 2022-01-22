@@ -16,7 +16,7 @@ namespace Terraria.ModLoader
 		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
 		public override int Music => 0;
 
-		internal int ZeroIndexType => Type - BiomeID.Count;
+		internal int ZeroIndexType => Type - PrimaryBiomeID.Count;
 
 		// Bestiary properties
 		/// <summary>
@@ -49,7 +49,7 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			SetStaticDefaults();
-			BiomeID.Search.Add(FullName, Type);
+			PrimaryBiomeID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>

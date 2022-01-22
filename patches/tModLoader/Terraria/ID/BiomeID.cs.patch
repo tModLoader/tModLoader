@@ -7,7 +7,7 @@
  namespace Terraria.ID
  {
 -	internal class BiomeID
-+	public class BiomeID
++	public class PrimaryBiomeID
  	{
 +		/// <summary>
 +		/// Equivalent to <see cref="ShopHelper.BiomeNameByKey"/>
@@ -15,7 +15,7 @@
 +		/// <param name="biomeID"></param>
 +		/// <returns></returns>
 +		public static string GetLocalizedName(int biomeID) => ShopHelper.BiomeNameByKey(biomeID);
-+		public static readonly IdDictionary Search = IdDictionary.Create<BiomeID, int>();
++		public static readonly IdDictionary Search = IdDictionary.Create<PrimaryBiomeID, int>();
  		public const int Forest = 0;
  		public const int NormalUnderground = 1;
  		public const int Snow = 2;

@@ -47,7 +47,7 @@
  
 -			return Language.GetTextValue("TownNPCMoodBiomes." + text);
 +			string result = Language.GetTextValue("TownNPCMoodBiomes." + text);
-+			if (biomeID >= BiomeID.Count) {
++			if (biomeID >= PrimaryBiomeID.Count) {
 +				string key = LoaderManager.Get<BiomeLoader>().Get(biomeID).DisplayName.Key;
 +				result = Language.GetTextValue(key);
 +			}

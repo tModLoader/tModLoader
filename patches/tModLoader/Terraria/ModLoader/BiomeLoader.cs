@@ -12,12 +12,12 @@ namespace Terraria.ModLoader
 {
 	public class BiomeLoader : Loader<ModBiome>
 	{
-		public BiomeLoader() => Initialize(BiomeID.Count);
+		public BiomeLoader() => Initialize(PrimaryBiomeID.Count);
 
 		internal override void ResizeArrays()
 		{
 			// IdDictionary
-			LoaderUtils.ResetStaticMembers(typeof(BiomeID), true);
+			LoaderUtils.ResetStaticMembers(typeof(PrimaryBiomeID), true);
 		}
 
 		// Internal boilerplate
