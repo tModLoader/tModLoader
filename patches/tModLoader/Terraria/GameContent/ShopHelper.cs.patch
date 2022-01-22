@@ -32,13 +32,22 @@
  				foreach (NPC item in nearbyResidentNPCs) {
  					array[item.type] = true;
  				}
+@@ -144,7 +_,7 @@
+ 			return priceAdjustment;
+ 		}
+ 
+-		private static string BiomeNameByKey(int biomeID) {
++		public static string BiomeNameByKey(int biomeID) {
+ 			string text = null;
+ 			switch (biomeID) {
+ 				case 1:
 @@ -182,11 +_,24 @@
  					break;
  			}
  
 -			return Language.GetTextValue("TownNPCMoodBiomes." + text);
 +			string result = Language.GetTextValue("TownNPCMoodBiomes." + text);
-+			if (biomeID >= BiomeID.Count) {
++			if (biomeID >= PrimaryBiomeID.Count) {
 +				string key = LoaderManager.Get<BiomeLoader>().Get(biomeID).DisplayName.Key;
 +				result = Language.GetTextValue(key);
 +			}

@@ -6,12 +6,19 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	public class BiomeLoader : Loader<ModBiome>
 	{
-		public BiomeLoader() => Initialize(BiomeID.Count);
+		public BiomeLoader() => Initialize(PrimaryBiomeID.Count);
+
+		internal override void ResizeArrays()
+		{
+			// IdDictionary
+			LoaderUtils.ResetStaticMembers(typeof(PrimaryBiomeID), true);
+		}
 
 		// Internal boilerplate
 
