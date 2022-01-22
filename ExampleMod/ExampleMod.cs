@@ -2,14 +2,17 @@ using ExampleMod.Content;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.NPCs;
 using System.IO;
+using System;
 using Terraria;
 using Terraria.GameContent.UI;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using ExampleMod.Common.Systems;
 
 namespace ExampleMod
 {
-	public class ExampleMod : Mod
+	// This is a partial class, meaning some of its parts were split into other files. See ExampleMod.*.cs for other portions.
+	public partial class ExampleMod : Mod
 	{
 		public const string AssetPath = "ExampleMod/Assets/";
 		public static ModKeybind RandomBuffKeybind;
