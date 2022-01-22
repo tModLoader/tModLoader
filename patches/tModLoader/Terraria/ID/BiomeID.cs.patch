@@ -9,7 +9,7 @@
 -	internal class BiomeID
 +	/// <summary>
 +	/// <b>WARNING:</b> This is not an exhaustive list of vanilla biomes.
-+	/// This class only covers the biomes used for NPC happines.
++	/// This class only covers the biomes used for NPC happiness.
 +	/// </summary>
 +	/// TODO: biomeFullName does not exist for vanilla biomes and scope of class only covers biomes that are used in npc happiness
 +	public class PrimaryBiomeID
