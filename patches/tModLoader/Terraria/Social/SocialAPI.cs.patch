@@ -6,24 +6,23 @@
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
-@@ -20,10 +_,15 @@
+@@ -20,16 +_,21 @@
  		public static SocialMode Mode => _mode;
  
  		public static void Initialize(SocialMode? mode = null) {
 +			_modules = new List<ISocialModule>();
  			if (!mode.HasValue) {
  				mode = SocialMode.None;
- #if CLIENT
+ 				if(!Main.dedServ)
 +#if DEBUG
-+				if (!Program.LaunchParameters.ContainsKey("-nosteam"))
++					if (!Program.LaunchParameters.ContainsKey("-nosteam"))
 +#endif
-+				if (InstallVerifier.IsValid && InstallVerifier.IsSteam)
++						if (InstallVerifier.IsValid && InstallVerifier.IsSteam)
 -				mode = SocialMode.Steam;
-+					mode = SocialMode.Steam;
- #else
- 				if (Program.LaunchParameters.ContainsKey("-steam"))
++							mode = SocialMode.Steam;
++
+ 				if (Main.dedServ && Program.LaunchParameters.ContainsKey("-steam"))
  					mode = SocialMode.Steam;
-@@ -31,7 +_,6 @@
  			}
  
  			_mode = mode.Value;
@@ -31,19 +30,20 @@
  			JoinRequests = new ServerJoinRequestsManager();
  			Main.OnTickForInternalCodeOnly += JoinRequests.Update;
  			switch (Mode) {
-@@ -42,10 +_,7 @@
+@@ -40,10 +_,9 @@
  					LoadWeGame();
  					break;
  			}
--
++			//TODO: Allow both APIs to be used at once. Currently, it would reinitiallize some of them.
+ 
 -			foreach (ISocialModule module in _modules) {
 -				module.Initialize();
 -			}
-+			//TODO: Allow both APIs to be used at once. Currently, it would reinitiallize some of them.
++			WorkshopHelper.ModManager.Initialize();
  		}
  
  		public static void Shutdown() {
-@@ -69,10 +_,15 @@
+@@ -67,10 +_,15 @@
  		private static void LoadDiscord() {
  		}
  
@@ -61,10 +61,10 @@
  			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
  			Workshop = LoadModule<Terraria.Social.Steam.WorkshopSocialModule>();
-@@ -82,9 +_,15 @@
- #else
+@@ -79,9 +_,15 @@
+ 			WeGameHelper.WriteDebugString("LoadSteam modules");
+ 			} else
  			Network = LoadModule<Terraria.Social.Steam.NetServerSocialModule>();
- #endif
 +			foreach (ISocialModule module in _modules) {
 +				module.Initialize();
 +			}
@@ -77,10 +77,10 @@
  			LoadModule<Terraria.Social.WeGame.CoreSocialModule>();
  			Cloud = LoadModule<Terraria.Social.WeGame.CloudSocialModule>();
  			Friends = LoadModule<Terraria.Social.WeGame.FriendsSocialModule>();
-@@ -95,6 +_,10 @@
- #else
+@@ -91,6 +_,10 @@
+ 			WeGameHelper.WriteDebugString("LoadWeGame modules");
+ 			} else
  			Network = LoadModule<Terraria.Social.WeGame.NetServerSocialModule>();
- #endif
 +			foreach (ISocialModule module in _modules) {
 +				module.Initialize();
 +			}

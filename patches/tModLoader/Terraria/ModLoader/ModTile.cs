@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -45,7 +46,7 @@ namespace Terraria.ModLoader
 		public virtual string HighlightTexture => Texture + "_Highlight";
 
 		public bool IsDoor => OpenDoorID != -1 || CloseDoorID != -1;
-		
+
 		/// <summary>
 		/// A convenient method for adding this tile's Type to the given array. This can be used with the arrays in TileID.Sets.RoomNeeds.
 		/// </summary>
@@ -131,7 +132,7 @@ namespace Terraria.ModLoader
 		}
 
 		protected sealed override void Register() {
-			ContainerName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.Containers.{Name}", true);
+			ContainerName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Containers.{Name}", true);
 
 			ModTypeLookup<ModTile>.Register(this);
 
@@ -141,9 +142,9 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
-			TextureAssets.Tile[Type] = ModContent.GetTexture(Texture);
+			TextureAssets.Tile[Type] = ModContent.Request<Texture2D>(Texture);
 
-			SetDefaults();
+			SetStaticDefaults();
 
 			//in Terraria.ObjectData.TileObject data make the following public:
 			//  newTile, newSubTile, newAlternate, addTile, addSubTile, addAlternate
@@ -160,7 +161,7 @@ namespace Terraria.ModLoader
 			PostSetDefaults();
 
 			if (TileID.Sets.HasOutlines[Type])
-				TextureAssets.HighlightMask[Type] = ModContent.GetTexture(HighlightTexture);
+				TextureAssets.HighlightMask[Type] = ModContent.Request<Texture2D>(HighlightTexture);
 
 			TileID.Search.Add(FullName, Type);
 		}
@@ -238,14 +239,6 @@ namespace Terraria.ModLoader
 		public virtual float GetTorchLuck(Player player) => 0f;
 
 		/// <summary>
-		/// Allows you to determine how much light this block emits. Make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
-		}
-
-		/// <summary>
 		/// Allows you to determine whether this block glows red when the given player has the Dangersense buff.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
@@ -263,11 +256,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to customize the position in which this tile is drawn. Width refers to the width of one frame of the tile, offsetY refers to how many pixels below its actual position the tile should be drawn, and height refers to the height of one frame of the tile. By default the values will be set to the values you give this tile's TileObjectData. If this tile has no TileObjectData then they will default to 16, 0, and 16, respectively.
+		/// Allows you to customize the position in which this tile is drawn. Width refers to the width of one frame of the tile, offsetY refers to how many pixels below its actual position the tile should be drawn, height refers to the height of one frame of the tile.
+		/// <para> By default the values will be set to the values you give this tile's TileObjectData. If this tile has no TileObjectData then they will default to 16, 0, and 16, respectively.</para>
+		/// <para> tileFrameX and tileFrameY allow you to change which frames are drawn, keeping tile.frameX/Y intact for other purposes.</para>
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) {
+		public virtual void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
 		}
 
 		/// <summary>
@@ -287,8 +282,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and frameYOffset should be used to specify an offset from the tiles frameX and frameY. "frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type];" will already be set before this hook is called, taking into account the TileID-wide animation set via AnimateTile. 
-		/// Use this hook for off-sync animations (lightning bug in a bottle), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via PreDraw. 
+		/// Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and frameYOffset should be used to specify an offset from the tiles frameX and frameY. "frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type];" will already be set before this hook is called, taking into account the TileID-wide animation set via AnimateTile.
+		/// Use this hook for off-sync animations (lightning bug in a bottle), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via PreDraw.
 		/// </summary>
 		/// <param name="type">The tile type.</param>
 		/// <param name="i">The x position in tile coordinates.</param>
@@ -300,18 +295,19 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in.
+		/// SpecialDraw will only be called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint here.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		/// <param name="nextSpecialDrawIndex">The special draw count. Use with Main.specX and Main.specY and then increment to draw special things after the main tile drawing loop is complete via DrawSpecial.</param>
-		public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
+		/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
+		public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 		}
 
 		/// <summary>
-		/// Special Draw. Only called if coordinates are placed in Main.specX/Y during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
+		/// Special Draw. Only called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 		/// </summary>
-		/// <param name="i">The i.</param>
-		/// <param name="j">The j.</param>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
 		public virtual void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
 		}
 
@@ -321,15 +317,6 @@ namespace Terraria.ModLoader
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		public virtual bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to stop this tile from being placed at the given coordinates. Return false to block the tile from being placed. Returns true by default.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool CanPlace(int i, int j) {
 			return true;
 		}
 
@@ -360,7 +347,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the given item can become selected when the cursor is hovering over this tile and the auto selection hotkey is pressed.
+		/// Allows you to determine whether the given item can become selected when the cursor is hovering over this tile and the auto selection keybind is pressed.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -434,7 +421,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows customization of how a chest unlock is accomplished. By default, frameXAdjustment will be -36, shifting the frameX over to the left
-		/// by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly. 
+		/// by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly.
 		/// This hook is called on the client, and if successful will be called on the server and other clients as the action is synced.
 		/// Make sure that the logic is consistent and not dependent on local player data.
 		/// </summary>

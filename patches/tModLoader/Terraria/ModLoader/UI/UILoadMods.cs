@@ -23,19 +23,12 @@ namespace Terraria.ModLoader.UI
 			};
 			gotoMenu = 888; // ModLoader will redirect to the mods menu if there are no errors during cancel
 			ModLoader.BeginLoad(_cts.Token);
-			GLCallLocker.ActionsAreSpeedrun = true;
 		}
 
 		public override void OnDeactivate() {
 			base.OnDeactivate();
 			_cts?.Dispose();
 			_cts = null;
-			GLCallLocker.ActionsAreSpeedrun = false;
-		}
-
-		public override void Update(GameTime gameTime) {
-			base.Update(gameTime);
-			GLCallLocker.SpeedrunActions();
 		}
 
 		public void SetLoadStage(string stageText, int modCount = -1) {

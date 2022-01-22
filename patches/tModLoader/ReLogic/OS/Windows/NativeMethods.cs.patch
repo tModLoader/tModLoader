@@ -1,0 +1,18 @@
+--- src/Terraria/ReLogic/OS/Windows/NativeMethods.cs
++++ src/tModLoader/ReLogic/OS/Windows/NativeMethods.cs
+@@ -113,5 +_,15 @@
+ 
+ 		[DllImport("user32.dll")]
+ 		public static extern IntPtr GetDC(IntPtr hWnd);
++
++		[DllImport("kernel32.dll")]
++		static extern IntPtr GetConsoleWindow();
++		[DllImport("user32.dll")]
++		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
++
++		public static void HideConsole() {
++			IntPtr hWnd = GetConsoleWindow();
++			ShowWindow(hWnd, 0);
++		}
+ 	}
+ }

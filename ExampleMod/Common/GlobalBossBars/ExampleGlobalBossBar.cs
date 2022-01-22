@@ -9,7 +9,7 @@ using Terraria.DataStructures;
 
 namespace ExampleMod.Common.GlobalBossBars
 {
-	//Shows things you can do around drawing boss bars
+	// Shows things you can do around drawing boss bars
 	public class ExampleGlobalBossBar : GlobalBossBar
 	{
 		public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams) {

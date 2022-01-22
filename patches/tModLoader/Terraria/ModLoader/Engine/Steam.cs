@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ReLogic.OS;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Steamworks;
 using Terraria.Social;
 
@@ -16,7 +12,11 @@ namespace Terraria.ModLoader.Engine
 
 		public static AppId_t TMLAppID_t = new AppId_t(TMLAppID);
 		public static AppId_t TerrariaAppId_t = new AppId_t(TerrariaAppID);
-		public static bool IsSteamApp => SocialAPI.Mode == SocialMode.Steam && SteamAPI.Init() && SteamApps.BIsAppInstalled(new AppId_t(TMLAppID));
+
+		// SteamAPI.Init() will have been called if SocialAPI.Mode == SocialMode.Steam because of SocialAPI.Initialize()
+		public static bool IsSteamApp {
+			get => SocialAPI.Mode == SocialMode.Steam && SteamApps.BIsAppInstalled(new AppId_t(TMLAppID));
+		}
 
 		public static ulong lastAvailableSteamCloudStorage = ulong.MaxValue;
 
@@ -34,9 +34,10 @@ namespace Terraria.ModLoader.Engine
 
 		public static string GetSteamTerrariaInstallDir() {
 			SteamApps.GetAppInstallDir(TerrariaAppId_t, out string terrariaInstallLocation, 1000);
-#if MAC
-			terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app/Contents/MacOS");
-#endif
+			if (Platform.IsOSX) {
+				terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app" + Path.DirectorySeparatorChar + "Contents" + Path.DirectorySeparatorChar + "Resources");
+			}
+
 			return terrariaInstallLocation;
 		}
 

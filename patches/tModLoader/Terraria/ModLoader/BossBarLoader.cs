@@ -74,8 +74,8 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModBossBar>.Register(bossBar);
 
 			//Texture is optional
-			if (ModContent.TextureExists(bossBar.Texture))
-				bossBarTextures[bossBar.index] = ModContent.GetTexture(bossBar.Texture);
+			if (ModContent.RequestIfExists<Texture2D>(bossBar.Texture, out var bossBarTexture))
+				bossBarTextures[bossBar.index] = bossBarTexture;
 		}
 
 		internal static void AddGlobalBossBar(GlobalBossBar globalBossBar) {
@@ -300,7 +300,7 @@ namespace Terraria.ModLoader
 			Vector2 iconOffset = new Vector2(4f, 20f);
 			Vector2 iconSize = new Vector2(26f, 28f);
 			//The vanilla method with the shieldPercent parameter, which is used only by the lunar pillars, uses iconSize = iconFrame.Size() instead, which have a size of 26x30,
-			//causing a slight vertical offset that is barely noticeable. Concidering that the non-shieldPercent method is the more general one, let's keep it like this 
+			//causing a slight vertical offset that is barely noticeable. Concidering that the non-shieldPercent method is the more general one, let's keep it like this
 			//(changing that using the lunar pillar code will cause many other icons to be offset instead) --direwolf420
 			Vector2 iconPos = iconOffset + iconSize / 2f;
 			//iconFrame Centered around iconPos

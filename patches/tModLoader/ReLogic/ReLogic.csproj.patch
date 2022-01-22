@@ -1,18 +1,24 @@
 --- src/Terraria/ReLogic/ReLogic.csproj
 +++ src/tModLoader/ReLogic/ReLogic.csproj
-@@ -9,13 +_,13 @@
+@@ -6,9 +_,10 @@
+     <Company>Re-Logic</Company>
+     <Copyright>Copyright © Re-Logic 2017</Copyright>
+     <RootNamespace>ReLogic</RootNamespace>
++    <GenerateDocumentationFile>true</GenerateDocumentationFile>
    </PropertyGroup>
    <ItemGroup>
-     <Reference Include="SteelSeriesEngineWrapper" />
--    <Reference Include="../Terraria/Libraries/DotNetZip/Ionic.Zip.CF.dll" />
-     <Reference Include="../Terraria/Libraries/SteelSeriesEngine/SteelSeriesEngineWrapper.dll" />
+-    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
 +    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.Reduced.dll" />
-     <Reference Include="../Terraria/Libraries/FNA/FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
-     <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />
-     <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Game.dll" Condition="$(DefineConstants.Contains('XNA'))" />
-     <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Graphics.dll" Condition="$(DefineConstants.Contains('XNA'))" />
--    <Reference Include="../Terraria/Libraries/JSON.NET/Newtonsoft.Json.dll" />
-+    <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
-     <Reference Include="System" />
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
+     <ProjectReference Include="../../../FNA/FNA.Core.csproj" />
+     <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
+     <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
+@@ -22,4 +_,9 @@
+   <ItemGroup>
+       <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+   </ItemGroup>
++  <ItemDefinitionGroup>
++    <ReferenceCopyLocalPaths>
++        <DestinationSubDirectory>Libraries\NuGet\</DestinationSubDirectory>
++    </ReferenceCopyLocalPaths>
++  </ItemDefinitionGroup>
+ </Project>

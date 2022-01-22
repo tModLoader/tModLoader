@@ -177,6 +177,9 @@ namespace Terraria.ModLoader.UI
 					// TODO: verbatim line endings, localization.
 					File.WriteAllText(Path.Combine(sourceFolder, "build.txt"), GetModBuild());
 					File.WriteAllText(Path.Combine(sourceFolder, "description.txt"), GetModDescription());
+					using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream($"Terraria.ModLoader.Default.iconTemplate.png"))
+					using (var fs = File.OpenWrite(Path.Combine(sourceFolder, $"icon.png")))
+						stream.CopyTo(fs);
 					File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.cs"), GetModClass(modNameTrimmed));
 					File.WriteAllText(Path.Combine(sourceFolder, $"{modNameTrimmed}.csproj"), GetModCsproj(modNameTrimmed));
 					string propertiesFolder = Path.Combine(sourceFolder, "Properties");
@@ -230,16 +233,13 @@ namespace {modNameTrimmed}
 			return
 $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
-  <Import Project=""..\..\references\tModLoader.targets"" />
+  <Import Project=""..\tModLoader.targets"" />
   <PropertyGroup>
     <AssemblyName>{modNameTrimmed}</AssemblyName>
-    <TargetFramework>net45</TargetFramework>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <Target Name=""BuildMod"" AfterTargets=""Build"">
-    <Exec Command=""&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks)"" />
-  </Target>
   <ItemGroup>
     <PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />
   </ItemGroup>
@@ -248,13 +248,9 @@ $@"<?xml version=""1.0"" encoding=""utf-8""?>
 
 		internal bool CsprojUpdateNeeded(string fileContents)
 		{
-			if (!fileContents.Contains("tModLoader.targets"))
+			if (!fileContents.Contains("..\\tModLoader.targets"))
 				return true;
-			if (fileContents.Contains("<LangVersion>latest</LangVersion>"))
-				return true;
-			if (!fileContents.Contains(@"<PackageReference Include=""tModLoader.CodeAssist"" Version=""0.1.*"" />"))
-				return true;
-			if (!fileContents.Contains(@"-define &quot;$(DefineConstants)&quot;") && !ReLogic.OS.Platform.IsWindows)
+			if (!fileContents.Contains("<TargetFramework>net6.0</TargetFramework>"))
 				return true;
 
 			return false;
@@ -267,13 +263,15 @@ $@"{{
   ""profiles"": {{
     ""Terraria"": {{
       ""commandName"": ""Executable"",
-      ""executablePath"": ""$(tMLPath)"",
-      ""workingDirectory"": ""$(TerrariaSteamPath)""
+      ""executablePath"": ""dotnet"",
+      ""commandLineArgs"": ""$(tMLPath)"",
+      ""workingDirectory"": ""$(tMLSteamPath)""
     }},
     ""TerrariaServer"": {{
       ""commandName"": ""Executable"",
-      ""executablePath"": ""$(tMLServerPath)"",
-      ""workingDirectory"": ""$(TerrariaSteamPath)""
+      ""executablePath"": ""dotnet"",
+      ""commandLineArgs"": ""$(tMLServerPath)"",
+      ""workingDirectory"": ""$(tMLSteamPath)""
     }}
   }}
 }}";
@@ -290,13 +288,13 @@ namespace {modNameTrimmed}.Items
 {{
 	public class {basicSwordName} : ModItem
 	{{
-		public override void SetStaticDefaults() 
+		public override void SetStaticDefaults()
 		{{
 			// DisplayName.SetDefault(""{basicSwordName}""); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
 			Tooltip.SetDefault(""This is a basic modded sword."");
 		}}
 
-		public override void SetDefaults() 
+		public override void SetDefaults()
 		{{
 			Item.damage = 50;
 			Item.DamageType = DamageClass.Melee;
@@ -312,7 +310,7 @@ namespace {modNameTrimmed}.Items
 			Item.autoReuse = true;
 		}}
 
-		public override void AddRecipes() 
+		public override void AddRecipes()
 		{{
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.DirtBlock, 10);

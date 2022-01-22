@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 		/// Efficient builder for <see cref="PosData{T}"/>[] lookups covering the whole world.
 		/// Must add elements in ascending pos order.
 		/// </summary>
-		public class OrderedSparseLookupBuilder 
+		public class OrderedSparseLookupBuilder
 		{
 			private readonly List<PosData<T>> list;
 			private readonly bool compressEqualValues;
@@ -40,7 +40,7 @@ namespace Terraria.ModLoader
 
 				if (compressEqualValues) {
 					if (insertDefaultEntries && pos >= last.pos + 2) {
-						// make sure the values between last.pos and pos are 'empty' by ensuring at two positions later than last. 
+						// make sure the values between last.pos and pos are 'empty' by ensuring at two positions later than last.
 						// note that this won't make a new entry if last.value is default, and will update last if it does make a new value
 						Add(last.pos + 1, default);
 					}
@@ -107,8 +107,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Gets a Position ID based on the x,y position. If using in an order sensitive case, see NextLocation.
 		/// </summary>
-		/// <param name="posX"></param>
-		/// <param name="posY"></param>
+		/// <param name="x"></param>
+		/// <param name="y"></param>
 		/// <returns></returns>
 		public static int CoordsToPos(int x, int y) => x * Main.maxTilesY + y;
 
@@ -122,8 +122,8 @@ namespace Terraria.ModLoader
 			int minimum = -1, maximum = posMap.Length;
 			while (maximum - minimum > 1) {
 				int split = (minimum + maximum) / 2;
-				
-				if (posMap[split].pos <= pos) { 
+
+				if (posMap[split].pos <= pos) {
 					minimum = split;
 				}
 				else {

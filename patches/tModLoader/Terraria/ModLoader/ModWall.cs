@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria.GameContent;
@@ -72,8 +73,10 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
-			TextureAssets.Wall[Type] = ModContent.GetTexture(Texture);
-			SetDefaults();
+			TextureAssets.Wall[Type] = ModContent.Request<Texture2D>(Texture);
+
+			SetStaticDefaults();
+
 			WallID.Search.Add(FullName, Type);
 		}
 
@@ -89,12 +92,6 @@ namespace Terraria.ModLoader
 		/// Allows you to determine what happens when the tile at the given coordinates is killed or hit with a hammer. Fail determines whether the tile is mined (whether it is killed).
 		/// </summary>
 		public virtual void KillWall(int i, int j, ref bool fail) {
-		}
-
-		/// <summary>
-		/// Allows you to determine how much light this wall emits. This can also let you light up the block in front of this wall.
-		/// </summary>
-		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 		}
 
 		/// <summary>

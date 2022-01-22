@@ -9,6 +9,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded door.");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 

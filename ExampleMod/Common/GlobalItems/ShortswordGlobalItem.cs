@@ -1,12 +1,13 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalItems
 {
-	// This file shows a very simple example of a GlobalItem class. GlobalItem hooks are called on all items in the game and are suitable for sweeping changes like 
-	// adding additional data to all items in the game. Here we simply adjust the damage of the Copper Shortsword item, as it is simple to understand. 
+	// This file shows a very simple example of a GlobalItem class. GlobalItem hooks are called on all items in the game and are suitable for sweeping changes like
+	// adding additional data to all items in the game. Here we simply adjust the damage of the Copper Shortsword item, as it is simple to understand.
 	// See other GlobalItem classes in ExampleMod to see other ways that GlobalItem can be used.
 	public class ExampleGlobalItem : GlobalItem
 	{
@@ -19,11 +20,12 @@ namespace ExampleMod.Common.GlobalItems
 			item.damage = 50; // Change damage to 50!
 		}
 
-		public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
+		public override bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// Make it shoot grenades for no reason
-			Projectile.NewProjectileDirect(player.GetProjectileSource_Item(item), player.Center, new Vector2(speedX, speedY) * 5f, ProjectileID.Grenade, damage, knockBack, player.whoAmI);
-
-			return true;
+			Projectile.NewProjectileDirect(source, player.Center, velocity * 5f, ProjectileID.Grenade, damage, knockback, player.whoAmI);
+			// Returning false prevents vanilla's shooting behavior from running.
+			// In this case it prevents the shortsword's blade stabbing animation, as the blade itself is a projectile.
+			return false;
 		}
 	}
 }

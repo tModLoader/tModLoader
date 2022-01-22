@@ -6,7 +6,7 @@ using ExampleMod.Common.GlobalNPCs;
 
 namespace ExampleMod.Common.GlobalProjectiles
 {
-	// Here is a class dedicated to showcasing projectile modifications 
+	// Here is a class dedicated to showcasing projectile modifications
 	public class ExampleProjectileModifications : GlobalProjectile
 	{
 		public override bool InstancePerEntity => true;

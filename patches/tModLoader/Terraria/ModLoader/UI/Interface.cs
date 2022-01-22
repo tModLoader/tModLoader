@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using Terraria.Audio;
 using Terraria.ID;
@@ -10,6 +11,8 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.GameContent.UI.States;
+using Terraria.Social.Steam;
 
 namespace Terraria.ModLoader.UI
 {
@@ -26,72 +29,42 @@ namespace Terraria.ModLoader.UI
 		internal const int modInfoID = 10008;
 		//internal const int downloadModID = 10009;
 		//internal const int modControlsID = 10010;
-		internal const int managePublishedID = 10011;
+		//internal const int managePublishedID = 10011;
 		internal const int updateMessageID = 10012;
 		internal const int infoMessageID = 10013;
-		internal const int enterPassphraseMenuID = 10015;
+		//internal const int enterPassphraseMenuID = 10015;
 		internal const int modPacksMenuID = 10016;
 		internal const int tModLoaderSettingsID = 10017;
-		internal const int enterSteamIDMenuID = 10018;
+		//internal const int enterSteamIDMenuID = 10018;
 		internal const int extractModID = 10019;
 		internal const int downloadProgressID = 10020;
-		internal const int developerModeHelpID = 10022;
 		internal const int progressID = 10023;
 		internal const int modConfigID = 10024;
 		internal const int createModID = 10025;
 		internal const int exitID = 10026;
 		internal static UIMods modsMenu = new UIMods();
 		internal static UILoadMods loadMods = new UILoadMods();
-		private static UIModSources modSources = new UIModSources();
+		internal static UIModSources modSources = new UIModSources();
 		internal static UIBuildMod buildMod = new UIBuildMod();
 		internal static UIErrorMessage errorMessage = new UIErrorMessage();
 		internal static UIModBrowser modBrowser = new UIModBrowser();
 		internal static UIModInfo modInfo = new UIModInfo();
-		internal static UIManagePublished managePublished = new UIManagePublished();
+		//internal static UIManagePublished managePublished = new UIManagePublished();
 		internal static UIUpdateMessage updateMessage = new UIUpdateMessage();
 		internal static UIInfoMessage infoMessage = new UIInfoMessage();
-		internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
+		//internal static UIEnterPassphraseMenu enterPassphraseMenu = new UIEnterPassphraseMenu();
 		internal static UIModPacks modPacksMenu = new UIModPacks();
-		internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
+		//internal static UIEnterSteamIDMenu enterSteamIDMenu = new UIEnterSteamIDMenu();
 		internal static UIExtractMod extractMod = new UIExtractMod();
-		internal static UIDeveloperModeHelp developerModeHelp = new UIDeveloperModeHelp();
 		internal static UIModConfig modConfig = new UIModConfig();
 		internal static UIModConfigList modConfigList = new UIModConfigList();
 		internal static UICreateMod createMod = new UICreateMod();
 		internal static UIProgress progress = new UIProgress();
 		internal static UIDownloadProgress downloadProgress = new UIDownloadProgress();
 
-		//add to Terraria.Main.DrawMenu in Main.menuMode == 0 after achievements
+		// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
-			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuMods");
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(10, -1, -1, 1);
-				Main.menuMode = modsMenuID;
-			}
-			buttonIndex++;
-			numButtons++;
-			if (ModCompile.DeveloperMode) {
-				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModSources");
-				if (selectedMenu == buttonIndex) {
-					SoundEngine.PlaySound(10, -1, -1, 1);
-					Main.menuMode = ModCompile.DeveloperModeReady(out var _) ? modSourcesID : developerModeHelpID;
-				}
-				buttonIndex++;
-				numButtons++;
-			}
-			buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.MenuModBrowser");
-			if (selectedMenu == buttonIndex) {
-				SoundEngine.PlaySound(10, -1, -1, 1);
-				Main.menuMode = modBrowserID;
-			}
-			buttonIndex++;
-			numButtons++;
-			offY = 220;
-			for (int k = 0; k < numButtons; k++) {
-				buttonScales[k] = 0.82f;
-			}
-			spacing = 45;
 		}
 
 		internal static void ResetData() {
@@ -125,11 +98,38 @@ namespace Terraria.ModLoader.UI
 					ModLoader.ShowFirstLaunchWelcomeMessage = false;
 					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 				}
-				//else if (ModLoader.ShowWhatsNew) {
-				//	// TODO: possibly pull from github
-				//	ModLoader.ShowWhatsNew = false;
-				//	infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage"), Main.menuMode);
-				//}
+				else if (!ModLoader.AlphaWelcomed) {
+					ModLoader.AlphaWelcomed = true;
+					infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
+					Main.SaveSettings();
+				}
+				else if (ModLoader.ShowWhatsNew) {
+					ModLoader.ShowWhatsNew = false;
+					if (File.Exists("RecentGitHubCommits.txt")) {
+						bool LastLaunchedShaInRecentGitHubCommits = false;
+						var messages = new System.Text.StringBuilder();
+						var recentcommitsfilecontents = File.ReadLines("RecentGitHubCommits.txt");
+						foreach (var commitEntry in recentcommitsfilecontents) {
+							string[] parts = commitEntry.Split(' ', 2);
+							if (parts.Length == 2) {
+								string sha = parts[0];
+								string message = parts[1];
+								if (sha != ModLoader.LastLaunchedTModLoaderAlphaSha)
+									messages.Append("\n  " + message);
+								if (sha == ModLoader.LastLaunchedTModLoaderAlphaSha) {
+									LastLaunchedShaInRecentGitHubCommits = true;
+									break;
+								}
+							}
+						}
+						if (LastLaunchedShaInRecentGitHubCommits)
+							infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
+								() => {
+									SoundEngine.PlaySound(SoundID.MenuOpen);
+									Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4");
+								});
+					}
+				}
 			}
 			if (Main.menuMode == modsMenuID) {
 				Main.MenuUI.SetState(modsMenu);
@@ -141,10 +141,6 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (Main.menuMode == createModID) {
 				Main.MenuUI.SetState(createMod);
-				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == developerModeHelpID) {
-				Main.MenuUI.SetState(developerModeHelp);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == loadModsID) {
@@ -170,10 +166,6 @@ namespace Terraria.ModLoader.UI
 				Main.MenuUI.SetState(modInfo);
 				Main.menuMode = 888;
 			}
-			else if (Main.menuMode == managePublishedID) {
-				Main.menuMode = 888;
-				Main.MenuUI.SetState(managePublished);
-			}
 			//else if (Main.menuMode == modControlsID)
 			//{
 			//	UIModControls.ModLoaderMenus(main, selectedMenu, buttonNames, buttonScales, buttonVerticalSpacing, ref offY, ref spacing, ref numButtons);
@@ -184,14 +176,6 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (Main.menuMode == infoMessageID) {
 				Main.MenuUI.SetState(infoMessage);
-				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == enterPassphraseMenuID) {
-				Main.MenuUI.SetState(enterPassphraseMenu);
-				Main.menuMode = 888;
-			}
-			else if (Main.menuMode == enterSteamIDMenuID) {
-				Main.MenuUI.SetState(enterSteamIDMenu);
 				Main.menuMode = 888;
 			}
 			else if (Main.menuMode == modPacksMenuID) {
@@ -213,7 +197,7 @@ namespace Terraria.ModLoader.UI
 			else if (Main.menuMode == tModLoaderSettingsID) {
 				offY = 210;
 				spacing = 42;
-				numButtons = 11;
+				numButtons = 7;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++) {
 					buttonScales[i] = 0.75f;
@@ -239,12 +223,14 @@ namespace Terraria.ModLoader.UI
 					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 				}
 
+				/*
 				buttonIndex++;
 				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? Language.GetTextValue("tModLoader.ExperimentalFeaturesYes") : Language.GetTextValue("tModLoader.ExperimentalFeaturesNo"));
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
 					Main.UseExperimentalFeatures = !Main.UseExperimentalFeatures;
 				}
+				*/
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.RemoveForcedMinimumZoom{(ModLoader.removeForcedMinimumZoom ? "Yes" : "No")}");
@@ -267,6 +253,7 @@ namespace Terraria.ModLoader.UI
 					ModLoader.notifyNewMainMenuThemes = !ModLoader.notifyNewMainMenuThemes;
 				}
 
+				/*
 				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.ClearMBCredentials");
 				if (selectedMenu == buttonIndex) {
@@ -274,6 +261,7 @@ namespace Terraria.ModLoader.UI
 					ModLoader.modBrowserPassphrase = "";
 					ModLoader.SteamID64 = "";
 				}
+				*/
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = Lang.menu[5].Value;
@@ -362,32 +350,23 @@ namespace Terraria.ModLoader.UI
 				else {
 					string modname = command;
 					try {
-						ServicePointManager.ServerCertificateValidationCallback = (o, certificate, chain, errors) => true;
-						using (WebClient client = new WebClient()) {
-							string downloadURL = client.DownloadString($"http://javid.ddns.net/tModLoader/tools/querymoddownloadurl.php?modname={modname}");
-							if (downloadURL.StartsWith("Failed")) {
-								Console.WriteLine(downloadURL);
-							}
-							else {
-								string tempFile = ModLoader.ModPath + Path.DirectorySeparatorChar + "temporaryDownload" + DownloadFile.TEMP_EXTENSION;
-								client.DownloadFile(downloadURL, tempFile);
-
-								if (ModLoader.TryGetMod(modname, out var mod))
-									mod.Close();
-
-								File.Copy(tempFile, ModLoader.ModPath + Path.DirectorySeparatorChar + downloadURL.Substring(downloadURL.LastIndexOf("/")), true);
-								File.Delete(tempFile);
-							}
-							while (Console.KeyAvailable)
-								Console.ReadKey(true);
+						if (!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
+							Console.WriteLine(Language.GetTextValue("NoWorkshopAccess"));
+							break;
 						}
+
+						var info = WorkshopHelper.QueryHelper.FindModDownloadItem(modname);
+						if(info == null)
+							Console.WriteLine($"No mod with the name {modname} found on the workshop.");
+						else
+							info.InnerDownloadWithDeps();
 					}
 					catch (Exception e) {
 						Console.WriteLine(Language.GetTextValue("tModLoader.MBServerDownloadError", modname, e.ToString()));
 					}
 				}
 			}
-			Console.Clear();
+			//Console.Clear();
 		}
 
 		internal static void MessageBoxShow(string text, string caption = null) {

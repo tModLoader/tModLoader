@@ -1,0 +1,17 @@
+--- src/Terraria/Terraria/ID/BiomeID.cs
++++ src/tModLoader/Terraria/ID/BiomeID.cs
+@@ -1,6 +_,6 @@
+ namespace Terraria.ID
+ {
+-	internal class BiomeID
++	public class BiomeID
+ 	{
+ 		public const int Forest = 0;
+ 		public const int NormalUnderground = 1;
+@@ -13,5 +_,6 @@
+ 		public const int Dungeon = 8;
+ 		public const int Corruption = 9;
+ 		public const int Crimson = 10;
++		public const int Count = 11;
+ 	}
+ }

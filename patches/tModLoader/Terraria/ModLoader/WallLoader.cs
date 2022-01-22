@@ -29,6 +29,7 @@ namespace Terraria.ModLoader
 		private static DelegateDrop[] HookDrop;
 		private delegate void DelegateKillWall(int i, int j, int type, ref bool fail);
 		private static DelegateKillWall[] HookKillWall;
+		private static Func<int, int, int, bool>[] HookCanPlace;
 		private static Func<int, int, int, bool>[] HookCanExplode;
 		private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 		private static DelegateModifyLight[] HookModifyLight;
@@ -82,13 +83,16 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.wallFrame, nextWall);
 			Array.Resize(ref Main.wallFrameCounter, nextWall);
 
+			// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
+			// Remove generic arguments once fixed.
 			ModLoader.BuildGlobalHook(ref HookKillSound, globalWalls, g => g.KillSound);
-			ModLoader.BuildGlobalHook(ref HookNumDust, globalWalls, g => g.NumDust);
-			ModLoader.BuildGlobalHook(ref HookCreateDust, globalWalls, g => g.CreateDust);
-			ModLoader.BuildGlobalHook(ref HookDrop, globalWalls, g => g.Drop);
-			ModLoader.BuildGlobalHook(ref HookKillWall, globalWalls, g => g.KillWall);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateNumDust>(ref HookNumDust, globalWalls, g => g.NumDust);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateCreateDust>(ref HookCreateDust, globalWalls, g => g.CreateDust);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateDrop>(ref HookDrop, globalWalls, g => g.Drop);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateKillWall>(ref HookKillWall, globalWalls, g => g.KillWall);
+			ModLoader.BuildGlobalHook(ref HookCanPlace, globalWalls, g => g.CanPlace);
 			ModLoader.BuildGlobalHook(ref HookCanExplode, globalWalls, g => g.CanExplode);
-			ModLoader.BuildGlobalHook(ref HookModifyLight, globalWalls, g => g.ModifyLight);
+			ModLoader.BuildGlobalHook<GlobalWall, DelegateModifyLight>(ref HookModifyLight, globalWalls, g => g.ModifyLight);
 			ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalWalls, g => g.RandomUpdate);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalWalls, g => g.PreDraw);
 			ModLoader.BuildGlobalHook(ref HookPostDraw, globalWalls, g => g.PostDraw);
@@ -185,6 +189,17 @@ namespace Terraria.ModLoader
 			foreach (var hook in HookKillWall) {
 				hook(i, j, type, ref fail);
 			}
+		}
+
+		//in Terraria.Player.PlaceThing_Walls after bool flag = true;, before PlaceThing_TryReplacingWalls
+		//  flag &= WallLoader.CanPlace(tileTargetX, tileTargetY, inventory[selectedItem].createWall);
+		public static bool CanPlace(int i, int j, int type) {
+			foreach (var hook in HookCanPlace) {
+				if (!hook(i, j, type)) {
+					return false;
+				}
+			}
+			return GetWall(type)?.CanPlace(i, j) ?? true;
 		}
 
 		public static bool CanExplode(int i, int j, int type) {

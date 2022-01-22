@@ -17,8 +17,9 @@ using Terraria.Audio;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIMods : UIState
+	internal class UIMods : UIState, IHaveBackButtonCommand
 	{
+		public UIState PreviousUIState { get; set; }
 		private UIElement uIElement;
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
@@ -229,15 +230,15 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
-		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(11, -1, -1, 1);
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			// To prevent entering the game with Configs that violate ReloadRequired
 			if (ConfigManager.AnyModNeedsReload()) {
 				Main.menuMode = Interface.reloadModsID;
 				return;
 			}
 			ConfigManager.OnChangedAll();
-			Main.menuMode = 0;
+
+			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 		}
 
 		private void ReloadMods(UIMouseEvent evt, UIElement listeningElement) {
@@ -379,7 +380,7 @@ namespace Terraria.ModLoader.UI
 					needToRemoveLoading = true;
 					updateNeeded = true;
 					loading = false;
-				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.Current);
 		}
 	}
 

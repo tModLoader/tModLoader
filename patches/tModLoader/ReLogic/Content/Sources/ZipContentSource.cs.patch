@@ -1,10 +1,114 @@
 --- src/Terraria/ReLogic/Content/Sources/ZipContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/ZipContentSource.cs
-@@ -132,5 +_,7 @@
+@@ -7,21 +_,15 @@
+ 
+ namespace ReLogic.Content.Sources
+ {
+-	public class ZipContentSource : IContentSource, IDisposable
++	public class ZipContentSource : ContentSource, IDisposable
+ 	{
+ 		private readonly ZipFile _zipFile;
+ 		private readonly Dictionary<string, ZipEntry> _entries = new Dictionary<string, ZipEntry>();
+ 		private readonly string _basePath;
+ 		private bool _isDisposed;
+-		private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
+ 
+ 		public int EntryCount => _entries.Count;
+ 
+-		public IContentValidator ContentValidator {
+-			get;
+-			set;
+-		}
+-
+ 		public ZipContentSource(string path)
+ 			: this(path, "") {
+ 		}
+@@ -32,7 +_,7 @@
+ 				throw new ArgumentException("Content directory cannot contain \"..\"", "contentDir");
+ 
+ 			_basePath = CleanZipPath(contentDir);
+-			BuildExtensionFreeEntryList();
++			BuildEntryList();
  		}
  
- 		public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
-+
-+		public IEnumerable<string> EnumerateFiles() => _entries.Keys;
+ 		public ZipContentSource(ZipFile zip, string contentDir) {
+@@ -41,55 +_,30 @@
+ 				throw new ArgumentException("Content directory cannot contain \"..\"", "contentDir");
+ 
+ 			_basePath = CleanZipPath(contentDir);
+-			BuildExtensionFreeEntryList();
++			BuildEntryList();
+ 		}
+ 
+-		public bool HasAsset(string assetName) {
++		public override Stream OpenStream(string assetName) {
+-			if (!_entries.TryGetValue(assetName, out ZipEntry _))
+-				return false;
+-
+-			if (_rejections.IsRejected(assetName))
+-				return false;
+-
+-			return true;
+-		}
+-
+-		public List<string> GetAllAssetsStartingWith(string assetNameStart) {
+-			List<string> list = new List<string>();
+-			foreach (string key in _entries.Keys) {
+-				if (key.ToLower().StartsWith(assetNameStart))
+-					list.Add(key);
+-			}
+-
+-			return list;
+-		}
+-
+-		public string GetExtension(string assetName) {
+-			if (!_entries.TryGetValue(assetName, out ZipEntry value))
+-				throw AssetLoadException.FromMissingAsset(assetName);
+-
+-			return Path.GetExtension(value.FileName) ?? "";
+-		}
+-
+-		public Stream OpenStream(string assetName) {
+ 			if (!_entries.TryGetValue(assetName, out ZipEntry value))
+ 				throw AssetLoadException.FromMissingAsset(assetName);
+ 
+ 			MemoryStream memoryStream = new MemoryStream((int)value.UncompressedSize);
++			lock (_zipFile) {
+-			value.Extract(memoryStream);
++				value.Extract(memoryStream);
++			}
+ 			memoryStream.Position = 0L;
+ 			return memoryStream;
+ 		}
+ 
+-		private void BuildExtensionFreeEntryList() {
++		private void BuildEntryList() {
+ 			_entries.Clear();
+ 			foreach (ZipEntry item in _zipFile.Entries.Where((ZipEntry entry) => !entry.IsDirectory && entry.FileName.StartsWith(_basePath))) {
+ 				string fileName = item.FileName;
+-				string text = Path.GetExtension(fileName) ?? "";
+-				string path = fileName.Substring(_basePath.Length, fileName.Length - text.Length - _basePath.Length);
++				string path = fileName.Substring(_basePath.Length, fileName.Length - _basePath.Length);
+ 				path = AssetPathHelper.CleanPath(path);
+ 				_entries[path] = item;
+ 			}
++			SetAssetNames(_entries.Keys);
+ 		}
+ 
+ 		private static bool ZipPathContainsInvalidCharacters(string path) {
+@@ -122,15 +_,5 @@
+ 		public void Dispose() {
+ 			Dispose(disposing: true);
+ 		}
+-
+-		public void RejectAsset(string assetName, IRejectionReason reason) {
+-			_rejections.Reject(assetName, reason);
+-		}
+-
+-		public void ClearRejections() {
+-			_rejections.Clear();
+-		}
+-
+-		public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
  	}
  }

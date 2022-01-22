@@ -1,5 +1,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,6 +11,8 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded shotgun.");
+
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -36,20 +40,18 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useAmmo = AmmoID.Bullet; // The "ammo Id" of the ammo item that this weapon uses. Ammo IDs are magic numbers that usually correspond to the item id of one item that most commonly represent the ammo type.
 		}
 
-		public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockback) {
-			const int NumProjectiles = 8; //The humber of projectiles that this gun will shoot.
+		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+			const int NumProjectiles = 8; // The humber of projectiles that this gun will shoot.
 
 			for (int i = 0; i < NumProjectiles; i++) {
-				Vector2 velocity = new Vector2(speedX, speedY);
-
 				// Rotate the velocity randomly by 30 degrees at max.
-				velocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
+				Vector2 newVelocity = velocity.RotatedByRandom(MathHelper.ToRadians(15));
 
 				// Decrease velocity randomly for nicer visuals.
-				velocity *= 1f - Main.rand.NextFloat(0.3f);
+				newVelocity *= 1f - Main.rand.NextFloat(0.3f);
 
-				//Create a projectile.
-				Projectile.NewProjectileDirect(player.GetProjectileSource_Item_WithPotentialAmmo(Item, AmmoID.Bullet), position, velocity, type, damage, knockback, player.whoAmI);
+				// Create a projectile.
+				Projectile.NewProjectileDirect(source, position, newVelocity, type, damage, knockback, player.whoAmI);
 			}
 
 			return false; // Return false because we don't want tModLoader to shoot projectile

@@ -1,34 +1,21 @@
 --- src/Terraria/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
-@@ -1,4 +_,5 @@
- using System;
-+using System.Collections.Concurrent;
- using System.IO;
- using System.Linq;
- using System.Net;
-@@ -7,10 +_,13 @@
- using System.Runtime.CompilerServices;
- #endif
- using System.Threading;
-+using System.Threading.Tasks;
- using Terraria.Audio;
+@@ -11,12 +_,14 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.IO;
  using Terraria.Net;
  using Terraria.Net.Sockets;
  using Terraria.Social;
-@@ -21,7 +_,6 @@
- #if SERVER && WINDOWS
- using NATUPNPLib;
+ using Terraria.Utilities;
+ #if !XNA
+ using Terraria.Social.Base;
++using Terraria.ModLoader.IO;
  #endif
--
- namespace Terraria
- {
- 	public class Netplay
-@@ -82,6 +_,7 @@
+ using NATUPNPLib;
+ 
+@@ -78,6 +_,7 @@
  
  		private static void ResetNetDiag() {
  			Main.ActiveNetDiagnosticsUI.Reset();
@@ -36,45 +23,34 @@
  		}
  
  		public static void ResetSections() {
-@@ -121,6 +_,20 @@
- 			return false;
- 		}
- 
-+		private static readonly ConcurrentQueue<Task> mainThreadTasks = new ConcurrentQueue<Task>();
-+
-+		internal static void OnUpdate() {
-+			while (mainThreadTasks.TryDequeue(out Task t))
-+				t.RunSynchronously();
-+		}
-+
-+		//tML: Made internal.
-+		internal static void InvokeOnMainThread(Action action) {
-+			var t = new Task(action);
-+			mainThreadTasks.Enqueue(t);
-+			t.Wait();
-+		}
-+
- 		private static void OpenPort(int port) {
- #if SERVER && WINDOWS
- 			string localIPAddress = GetLocalIPAddress();
-@@ -286,6 +_,8 @@
+@@ -283,6 +_,8 @@
  				Main.netMode = 0;
  				Main.menuMode = 10;
  				WorldFile.SaveWorld();
-+				SystemHooks.OnWorldUnload();
++				SystemLoader.OnWorldUnload();
 +				TileIO.PostExitWorldCleanup();
  				Main.menuMode = 0;
  			}
  			else {
-@@ -422,6 +_,7 @@
+@@ -421,6 +_,12 @@
  		}
  
  		private static void ClientLoopSetup(RemoteAddress address) {
-+			Logging.Terraria.InfoFormat("Connecting to {0}", address.GetFriendlyName());
++			string friendlyName = address.GetFriendlyName();
++			if (string.IsNullOrEmpty(friendlyName))
++				Utils.ShowFancyErrorMessage("Unable to find Steam Hosted Multiplayer server.", 0);
++
++			Logging.Terraria.InfoFormat("Connecting to {0}", friendlyName);
++
  			Connection.ResetSpecialFlags();
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;
-@@ -442,9 +_,11 @@
+@@ -437,11 +_,11 @@
+ 			Main.netMode = 1;
+ 			Main.menuMode = 14;
+ 			if (!Main.autoPass)
+-				Main.statusText = Language.GetTextValue("Net.ConnectingTo", address.GetFriendlyName());
++				Main.statusText = Language.GetTextValue("Net.ConnectingTo", friendlyName);
  
  			Disconnect = false;
  			Connection = new RemoteServer();
@@ -82,42 +58,22 @@
 +			Connection.ReadBuffer = new byte[ushort.MaxValue];
  		}
  
-+
-+		internal static bool syncingWorld = false;
  		private static void InnerClientLoop() {
- 			try {
- 				NetMessage.buffer[256].Reset();
 @@ -479,6 +_,7 @@
- 							Cloud.resetClouds();
  							Main.cloudAlpha = Main.maxRaining;
+ 							Main.ToggleGameplayUpdates(state: false);
  							WorldGen.clearWorld();
-+							SystemHooks.OnWorldLoad();
++							SystemLoader.OnWorldLoad();
  							if (Main.mapEnabled)
  								Main.Map.Load();
  						}
-@@ -490,6 +_,7 @@
- 						else if (Connection.State == 5 && WorldGen.worldCleared) {
- 							Connection.State = 6;
- 							Main.player[Main.myPlayer].FindSpawn();
-+							syncingWorld = true;
- 							NetMessage.SendData(8, -1, -1, null, Main.player[Main.myPlayer].SpawnX, Main.player[Main.myPlayer].SpawnY);
- 						}
- 
-@@ -523,6 +_,7 @@
- 					num = Connection.State;
- 				}
- 
-+				syncingWorld = false;
- 				try {
- 					Connection.Socket.Close();
- 				}
 @@ -530,6 +_,11 @@
  				}
  
  				if (!Main.gameMenu) {
 +					//This is only called in case of kicks and other sudden disconnects.
-+					//The more common (client) call to this is in WorldGen.SaveAndQuitCallback
-+					SystemHooks.OnWorldUnload();
++					//The more common (client) call to this is in Main.SaveAndQuitCallback
++					SystemLoader.OnWorldUnload();
 +					TileIO.PostExitWorldCleanup();
 +
  					Main.gameMenu = true;

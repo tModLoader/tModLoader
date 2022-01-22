@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +9,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
@@ -16,8 +19,9 @@ using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModSources : UIState
+	internal class UIModSources : UIState, IHaveBackButtonCommand
 	{
+		public UIState PreviousUIState { get; set; }
 		private readonly List<UIModSourceItem> _items = new List<UIModSourceItem>();
 		private UIList _modList;
 		private float modListViewPosition;
@@ -114,6 +118,7 @@ namespace Terraria.ModLoader.UI
 			var buttonCreateMod = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"));
 			buttonCreateMod.CopyStyle(buttonBA);
 			buttonCreateMod.HAlign = 1f;
+			buttonCreateMod.Top.Pixels = -20;
 			buttonCreateMod.WithFadedMouseOver();
 			buttonCreateMod.OnClick += ButtonCreateMod_OnClick;
 			_uIElement.Append(buttonCreateMod);
@@ -133,12 +138,6 @@ namespace Terraria.ModLoader.UI
 			buttonOS.OnClick += OpenSources;
 			_uIElement.Append(buttonOS);
 
-			var buttonMP = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSManagePublished"));
-			buttonMP.CopyStyle(buttonB);
-			buttonMP.HAlign = 1f;
-			buttonMP.WithFadedMouseOver();
-			buttonMP.OnClick += ManagePublished;
-			_uIElement.Append(buttonMP);
 			Append(_uIElement);
 		}
 
@@ -147,18 +146,8 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = Interface.createModID;
 		}
 
-		private void ManagePublished(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(11, -1, -1, 1);
-			Main.menuMode = Interface.managePublishedID;
-			if (ModLoader.modBrowserPassphrase == string.Empty) {
-				Main.menuMode = Interface.enterPassphraseMenuID;
-				Interface.enterPassphraseMenu.SetGotoMenu(Interface.managePublishedID, Interface.modSourcesID);
-			}
-		}
-
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(11, -1, -1, 1);
-			Main.menuMode = 0;
+			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 		}
 
 		private void OpenSources(UIMouseEvent evt, UIElement listeningElement) {
@@ -185,7 +174,32 @@ namespace Terraria.ModLoader.UI
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
+			DrawMigrationGuideLink();
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 1;
+		}
+
+		//TODO: simplify this method
+		private void DrawMigrationGuideLink() {
+			string versionUpgradeMessage = Language.GetTextValue("tModLoader.VersionUpgrade");
+
+			var font = FontAssets.MouseText.Value;
+			Vector2 sizes = font.MeasureString(versionUpgradeMessage);
+			Color color = Color.IndianRed;
+
+			int xLoc = (int)(Main.screenWidth / 2 + 134);
+			int yLoc = (int)(sizes.Y + 244f);
+
+			Main.spriteBatch.DrawString(font, versionUpgradeMessage, new Vector2(xLoc, yLoc), color, 0f, sizes, 1f, SpriteEffects.None, 0f);
+
+			var rect = new Rectangle(xLoc - (int)sizes.X, yLoc - (int)sizes.Y, (int)sizes.X, (int)sizes.Y);
+			if (!rect.Contains(new Point(Main.mouseX, Main.mouseY))) {
+				return;
+			}
+
+			if (Main.mouseLeftRelease && Main.mouseLeft) {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
+			}
 		}
 
 		public override void OnActivate() {
@@ -219,7 +233,7 @@ namespace Terraria.ModLoader.UI
 						_items.Add(new UIModSourceItem(sourcePath, builtMod));
 					}
 					_updateNeeded = true;
-				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());
+				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.Current);
 		}
 
 		public override void Update(GameTime gameTime) {

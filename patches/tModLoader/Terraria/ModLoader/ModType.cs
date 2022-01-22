@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Terraria.ModLoader
+﻿namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// The base type for most modded things.
@@ -17,6 +15,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string Name => GetType().Name;
 
+		/// <summary>
+		/// The internal name of this, including the mod it is from.
+		/// </summary>
 		public string FullName => $"{Mod?.Name ?? "Terraria"}/{Name}";
 
 		void ILoadable.Load(Mod mod) {
@@ -25,13 +26,36 @@ namespace Terraria.ModLoader
 			Register();
 		}
 
-		public virtual void Load(){}
+		/// <summary>
+		/// Allows you to perform one-time loading tasks. Beware that mod content has not finished loading here, things like ModContent lookup tables or ID Sets are not fully populated.
+		/// <para>Use <see cref="SetStaticDefaults"/> when you need to access content.</para>
+		/// </summary>
+		public virtual void Load() { }
 
+		/// <summary>
+		/// Allows you to stop <see cref="Mod.AddContent"/> from actually adding this content. Useful for items that can be disabled by a config.
+		/// </summary>
+		/// <param name="mod">The mod adding this content</param>
+		public virtual bool IsLoadingEnabled(Mod mod) => true;
+
+		/// <summary>
+		/// If you make a new ModType, seal this override.
+		/// </summary>
 		protected abstract void Register();
 
-		public virtual void SetupContent() {}
+		/// <summary>
+		/// If you make a new ModType, seal this override, and call <see cref="SetStaticDefaults"/> in it.
+		/// </summary>
+		public virtual void SetupContent() { }
 
-		public virtual void Unload(){}
+		/// <summary>
+		/// Allows you to modify the properties after initial loading has completed.
+		/// </summary>
+		public virtual void SetStaticDefaults() { }
+
+		/// <summary>
+		/// Allows you to safely unload things you added in <see cref="Load"/>.
+		/// </summary>
+		public virtual void Unload() { }
 	}
-
 }

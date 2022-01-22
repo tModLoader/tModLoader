@@ -1,0 +1,18 @@
+--- src/Terraria/Terraria/GameContent/ItemDropRules/CommonDrop.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonDrop.cs
+@@ -1,3 +_,4 @@
++using System;
+ using System.Collections.Generic;
+ 
+ namespace Terraria.GameContent.ItemDropRules
+@@ -16,6 +_,10 @@
+ 		}
+ 
+ 		public CommonDrop(int itemId, int chanceDenominator, int amountDroppedMinimum = 1, int amountDroppedMaximum = 1, int chanceNumerator = 1) {
++			if (amountDroppedMinimum > amountDroppedMaximum) {
++				throw new ArgumentOutOfRangeException(nameof(amountDroppedMinimum), $"{nameof(amountDroppedMinimum)} must be lesser or equal to {nameof(amountDroppedMaximum)}.");
++			}
++
+ 			this.itemId = itemId;
+ 			this.chanceDenominator = chanceDenominator;
+ 			this.amountDroppedMinimum = amountDroppedMinimum;
