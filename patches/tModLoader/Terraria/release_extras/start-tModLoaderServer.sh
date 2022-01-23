@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-cd "$(dirname "$(realpath "$0")")"
+cd "$(dirname "$0")"
 
 launch_args="-server -config serverconfig.txt"
 

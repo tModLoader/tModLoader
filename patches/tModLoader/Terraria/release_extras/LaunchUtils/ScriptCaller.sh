@@ -3,7 +3,7 @@
 # Provided for use in tModLoader deployment. 
 
 #chdir to path of the script and save it
-cd "$(dirname "$(realpath "$0")")"
+cd "$(dirname "$0")"
 . ./BashUtils.sh
 
 echo "You are on platform: \"$_uname\""
@@ -33,7 +33,7 @@ else
 	LaunchLogs="$LaunchLogs/Terraria/ModLoader/Beta/Logs"
 fi
 if [ ! -d "$LaunchLogs" ]; then
-	mkdir "$LaunchLogs"
+	mkdir -p "$LaunchLogs"
 fi
 
 LogFile="$LaunchLogs/Launch.log"
@@ -55,17 +55,14 @@ run_script ./PlatformLibsDeploy.sh 2>&1 | tee -a "$LogFile"
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 echo "Parsing .NET version requirements from runtimeconfig.json"
 dotnet_version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <../tModLoader.runtimeconfig.json) #sed, go die plskthx
-dotnet_version=${dotnet_version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
+export dotnet_version=${dotnet_version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
 #echo $version
 # use this to check the output of sed. Expected output: "00000000 35 2e 30 2e 30 0a |5.0.0.| 00000006"
 # echo $(hexdump -C <<< "$version")
-dotnet_dir="$root_dir/dotnet"
-install_dir="$dotnet_dir/$dotnet_version"
+export dotnet_dir="$root_dir/dotnet"
+export install_dir="$dotnet_dir/$dotnet_version"
 echo "Success!"
 
-export install_dir
-export dotnet_dir
-export dotnet_version
 ./InstallNetFramework.sh 2>&1 | tee -a "$LogFile"
 
 echo "Attempting Launch..."
@@ -82,7 +79,9 @@ if [[ "$_uname" == *"_NT"* ]]; then
 fi
 
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
+	echo "Launched Using Local Dotnet" 2>&1 | tee -a "$LogFile"
 	"$install_dir/dotnet" tModLoader.dll $*
 else
+	echo "Launched Using System Dotnet" 2>&1 | tee -a "$LogFile"
 	dotnet tModLoader.dll $*
 fi

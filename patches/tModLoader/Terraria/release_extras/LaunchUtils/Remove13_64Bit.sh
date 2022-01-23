@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # This file should only be called on WINDOWS!
 
-cd "$(dirname "$(realpath "$0")")"
+cd "$(dirname "$0")"
 . ./BashUtils.sh
 
 echo "Verifying installation directory..."

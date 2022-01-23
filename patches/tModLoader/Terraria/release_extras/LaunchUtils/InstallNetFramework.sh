@@ -10,7 +10,7 @@
 #
 
 #chdir to path of the script and save it
-cd "$(dirname "$(realpath "$0")")"
+cd "$(dirname "$0")"
 . ./BashUtils.sh
 
 #Cut everything before the second dot
