@@ -295,7 +295,7 @@
 		"MSBuildAll": "Скомпилировать всё",
 		"MSBuildReloadAll": "Скомпилировать и перезагрузить всё",
 		"MSUpgradeCSProj": "Обновить .csproj файл",
-		"MSUpgradeLangFiles": "Обновить .lang файлы до .hjson (это не сломает ничего)",
+		"MSUpgradeLangFiles": "Обновить .lang файлы до .hjson (будут сделаны резервные копии)",
 		"MSOpenSources": "Открыть исходники",
 		"MSManagePublished": "Опубликованное",
 		"MSPublish": "Опубликовать",
