@@ -43,8 +43,9 @@ if [ ! -d "$install_dir" ]; then
     powershell.exe -NoProfile -ExecutionPolicy unrestricted -File dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "$dotnet_runtime" -Version "$dotnet_version"
   else
     file_download dotnet-install.sh https://dot.net/v1/dotnet-install.sh
-
-    run_script ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "$dotnet_runtime" --version "$dotnet_version"
+	
+	chmod +x ./dotnet-install.sh
+    ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "$dotnet_runtime" --version "$dotnet_version"
   fi
 fi
 echo "Finished Checking for Updates"
