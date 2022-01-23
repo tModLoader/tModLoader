@@ -63,7 +63,7 @@ export dotnet_dir="$root_dir/dotnet"
 export install_dir="$dotnet_dir/$dotnet_version"
 echo "Success!"
 
-./InstallNetFramework.sh 2>&1 | tee -a "$LogFile"
+run_script ./InstallNetFramework.sh 2>&1 | tee -a "$LogFile"
 
 echo "Attempting Launch..."
 sleep 1
