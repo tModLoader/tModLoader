@@ -1,15 +1,18 @@
 --- src/Terraria/Terraria/Map/MapIconOverlay.cs
 +++ src/tModLoader/Terraria/Map/MapIconOverlay.cs
-@@ -6,16 +_,23 @@
+@@ -6,16 +_,26 @@
  	public class MapIconOverlay
  	{
  		private readonly List<IMapLayer> _layers = new List<IMapLayer>();
 +		private IReadOnlyList<IMapLayer> _readOnlyLayers;
++
++		public MapIconOverlay() {
++			_readOnlyLayers = _layers.AsReadOnly();
++		}
  
 -		public MapIconOverlay AddLayer(IMapLayer layer) {
 +		internal MapIconOverlay AddLayer(IMapLayer layer) {
  			_layers.Add(layer);
-+			_readOnlyLayers = _layers.AsReadOnly();
  			return this;
  		}
  
