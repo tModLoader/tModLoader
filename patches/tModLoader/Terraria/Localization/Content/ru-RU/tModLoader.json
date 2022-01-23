@@ -387,7 +387,7 @@
 		"ServerCrash": "Сбой сервера: {0}\n{1}\n\nПожалуйста, проверьте server.log чтобы понять если в этом виноват какой-либо мод. Иначе, идите в текстовый канал #support в Discord сервере tModLoader, и не забудьте отправить этот самый файл.",
 
 		// MessageBox
-		"ContentFolderNotFound": "Невозможно найти папку Content Террарии. Если Вы кустанавливали tModLoader через Steam, убедитесь что террария установлена. Если нет, поместите tModLoader в папку в папке с террарией, либо в папку рядом с папкой террарии. (ContentFolderNotFound)",
+		"ContentFolderNotFound": "Невозможно найти папку Content Террарии. Если Вы устанавливали tModLoader через Steam, убедитесь что террария установлена. Если нет, поместите tModLoader в папку в папке с террарией, либо в папку рядом с папкой террарии. (ContentFolderNotFound)",
 		"MissingServerExecutable": "Похоже вы не полностью установили tModLoader. Не хватает tModLoaderServer.exe. Проверьте папку установки и прочитайте инструкции по установке. (MissingServerExecutable)",
 		"GraphicsEngineFailure": "Ошибка графики. (GraphicsEngineFailure)",
 		"GraphicsEngineReportUnknown": "Неизвестно. (GraphicsEngineReportUnknown)",
