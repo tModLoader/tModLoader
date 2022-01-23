@@ -33,6 +33,7 @@ echo "Cleanup Complete"
 #If the install directory for this specific dotnet version doesnt exist, grab the installer script and run it.
 echo "Checking for Updates to .NET"
 if [ ! -d "$install_dir" ]; then
+  echo "Updated Required. Will now attempt downloading using official scripts. This can take up to 5 minutes"
   installLogs="LaunchLogs/install.log"
   dotnet_runtime=dotnet
 
@@ -58,9 +59,10 @@ if [[ "$_uname" == *"_NT"* ]]; then
     mkdir "$dotnet_dir"
 
     echo "It has been detected that your system failed to install the dotnet portables automatically. Will now proceed manually."
+	echo "Manual installation can take up to an additional 5 minutes"
     file_download "$dotnet_dir/$dotnet_version.zip" "https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-win-x64.zip"
     unzip "$dotnet_dir/$dotnet_version.zip" -d "$install_dir"
-    echo "Tryed to downlaod and extract x64 .NET portable. Please verify the extraction completed successfully to \"$install_dir\""
-    read -p "Please press Enter when this step is complete."
+    echo "Tried to download and extract x64 .NET portable. Please verify the extraction completed successfully to \"$install_dir\""
+    read -p "Please press Enter to acknowledge manual download has occurred."
   fi
 fi
