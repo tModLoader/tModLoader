@@ -218,7 +218,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="layers"></param>
 		/// <param name="mapOverlayDrawContext"></param>
-		public virtual void PreDrawMapIconOverlay(List<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext) { }
+		public virtual void PreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext) { }
 
 		/// <summary>
 		/// Called while the fullscreen map is active. Allows custom drawing to the map. Using <see cref="ModMapLayer"/> is more compatible and allows drawing on the minimap and fullscreen maps.

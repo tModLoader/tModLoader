@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateModifyLightingBrightness(ref float scale);
 
-		private delegate void DelegatePreDrawMapIconOverlay(List<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext);
+		private delegate void DelegatePreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext);
 
 		private delegate void DelegatePostDrawFullscreenMap(ref string mouseText);
 

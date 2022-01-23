@@ -154,7 +154,7 @@ namespace Terraria.ModLoader
 			negLight2 = Math.Max(negLight2, 0.001f);
 		}
 
-		public static void PreDrawMapIconOverlay(List<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext) {
+		public static void PreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext) {
 			foreach (var system in HookPreDrawMapIconOverlay.arr) {
 				system.PreDrawMapIconOverlay(layers, mapOverlayDrawContext);
 			}
