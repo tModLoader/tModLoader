@@ -88,6 +88,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "ModItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html", "class_terraria_1_1_mod_loader_1_1_mod_item" ],
     [ "ModKeybind", "class_terraria_1_1_mod_loader_1_1_mod_keybind.html", "class_terraria_1_1_mod_loader_1_1_mod_keybind" ],
     [ "ModLoader", "class_terraria_1_1_mod_loader_1_1_mod_loader.html", "class_terraria_1_1_mod_loader_1_1_mod_loader" ],
+    [ "ModMapLayer", "class_terraria_1_1_mod_loader_1_1_mod_map_layer.html", "class_terraria_1_1_mod_loader_1_1_mod_map_layer" ],
     [ "ModMenu", "class_terraria_1_1_mod_loader_1_1_mod_menu.html", "class_terraria_1_1_mod_loader_1_1_mod_menu" ],
     [ "ModMount", "class_terraria_1_1_mod_loader_1_1_mod_mount.html", "class_terraria_1_1_mod_loader_1_1_mod_mount" ],
     [ "ModNet", "class_terraria_1_1_mod_loader_1_1_mod_net.html", "class_terraria_1_1_mod_loader_1_1_mod_net" ],

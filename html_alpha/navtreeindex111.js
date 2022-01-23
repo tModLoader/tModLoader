@@ -1,5 +1,14 @@
 var NAVTREEINDEX111 =
 {
+"class_terraria_1_1_social_1_1_we_game_1_1_message_dispatcher_server.html#a45f3744b2a6954f965fbd87fe20e484c":[1,0,2,19,2,14,5],
+"class_terraria_1_1_social_1_1_we_game_1_1_message_dispatcher_server.html#a4894a3b0e82e47e7683bed5f9f45b4da":[1,0,2,19,2,14,4],
+"class_terraria_1_1_social_1_1_we_game_1_1_message_dispatcher_server.html#a4ffc36071e9195b6c61815fd2199be2e":[1,0,2,19,2,14,1],
+"class_terraria_1_1_social_1_1_we_game_1_1_message_dispatcher_server.html#a5428e932b1cbbf3ecb2a944735e5d99c":[1,0,2,19,2,14,3],
+"class_terraria_1_1_social_1_1_we_game_1_1_message_dispatcher_server.html#a5d3aed9f745634a28b89a1c0e738758e":[1,0,2,19,2,14,2],
+"class_terraria_1_1_social_1_1_we_game_1_1_message_dispatcher_server.html#ad1d4b6cb1e3f72c811c7ff627d7af349":[1,0,2,19,2,14,6],
+"class_terraria_1_1_social_1_1_we_game_1_1_message_dispatcher_server.html#af6f49c3fcbc90de9a56f476a4f11adeb":[1,0,2,19,2,14,0],
+"class_terraria_1_1_social_1_1_we_game_1_1_net_client_social_module.html":[1,0,2,19,2,15],
+"class_terraria_1_1_social_1_1_we_game_1_1_net_client_social_module.html#a1eb51c4d93f61e73cbe5a0349650fe69":[1,0,2,19,2,15,4],
 "class_terraria_1_1_social_1_1_we_game_1_1_net_client_social_module.html#a2d684d848a8a0f70ff76a07cb44b94a1":[1,0,2,19,2,15,0],
 "class_terraria_1_1_social_1_1_we_game_1_1_net_client_social_module.html#a30ee5ed00d7c7d3f8d307433be17762f":[1,0,2,19,2,15,9],
 "class_terraria_1_1_social_1_1_we_game_1_1_net_client_social_module.html#a43ac1999368469170b62c57d45088c2a":[1,0,2,19,2,15,7],
@@ -240,14 +249,5 @@ var NAVTREEINDEX111 =
 "class_terraria_1_1_u_i_1_1_chat_1_1_chat_manager.html#ad0daac781e8696c59955af964519db95":[1,0,2,21,0,1,10],
 "class_terraria_1_1_u_i_1_1_chat_1_1_chat_manager_1_1_regexes.html":[1,0,2,21,0,1,0],
 "class_terraria_1_1_u_i_1_1_chat_1_1_chat_manager_1_1_regexes.html#a09e40b6d1767c37af897cef7dd4d9da5":[1,0,2,21,0,1,0,0],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html":[1,0,2,21,0,2],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html#a32f6b4efbdc7ce0df96cdf405afd5355":[1,0,2,21,0,2,7],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html#a7366a66817f1325a521e87d50a7d0d9f":[1,0,2,21,0,2,1],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html#a7b5861c7e9775b7bd1bbec164d85b716":[1,0,2,21,0,2,3],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html#a882b6ab1fa0c8846a887d2138450e9f9":[1,0,2,21,0,2,6],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html#a9b157408302a20fc0c052448d5f0c7a7":[1,0,2,21,0,2,2],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html#aae094890622cd3b82a11e9d26fd9235d":[1,0,2,21,0,2,8],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html#ab761bc65858525da951811bb1253587e":[1,0,2,21,0,2,4],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html#acada67406ba0f64ea56f5e30d3dba521":[1,0,2,21,0,2,5],
-"class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html#accb2d70ffa3df86730006bafb8df2840":[1,0,2,21,0,2,0]
+"class_terraria_1_1_u_i_1_1_chat_1_1_chat_message_container.html":[1,0,2,21,0,2]
 };

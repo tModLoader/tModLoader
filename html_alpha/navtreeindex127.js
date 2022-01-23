@@ -1,5 +1,16 @@
 var NAVTREEINDEX127 =
 {
+"struct_terraria_1_1_data_structures_1_1_point16.html#a9e9f8ce96e1199b4c54131e70238c755":[1,0,2,4,42,20],
+"struct_terraria_1_1_data_structures_1_1_point16.html#ab671219eab5ed58a15e5d32d404e5f0a":[1,0,2,4,42,8],
+"struct_terraria_1_1_data_structures_1_1_point16.html#abacd369ffabd309b19f9a147a513c0a6":[1,0,2,4,42,6],
+"struct_terraria_1_1_data_structures_1_1_point16.html#abc44906bb428dbf8ee37cae1f65645f8":[1,0,2,4,42,13],
+"struct_terraria_1_1_data_structures_1_1_point16.html#ac28aa82860156ecf358796370173e420":[1,0,2,4,42,15],
+"struct_terraria_1_1_data_structures_1_1_point16.html#ac72e27e072caf88e3fd599ea010a2a63":[1,0,2,4,42,12],
+"struct_terraria_1_1_data_structures_1_1_point16.html#ad07a150edd9fbb910cc4a10d35d69206":[1,0,2,4,42,14],
+"struct_terraria_1_1_data_structures_1_1_point16.html#ad53be67331866a5761a5f34e31f62891":[1,0,2,4,42,1],
+"struct_terraria_1_1_data_structures_1_1_point16.html#ae018aa89f151554672a0436717ec5a39":[1,0,2,4,42,19],
+"struct_terraria_1_1_data_structures_1_1_point16.html#af9058f24179242b8ef4f3852dcf3d870":[1,0,2,4,42,7],
+"struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html":[1,0,2,4,43],
 "struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#a1e1a3102c8e82bd9921773051cf0f178":[1,0,2,4,43,3],
 "struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#a416d32f4ad4d1b79d4f247addd8834c7":[1,0,2,4,43,5],
 "struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#a512ad7343aed5788128904813ea1fcdf":[1,0,2,4,43,4],
@@ -238,16 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a168c6f0653a75b21c666625df1dbe56b":[1,0,2,5,21,5,7,18],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a1898593a231e4e58a8974d476cc42d3c":[1,0,2,5,21,5,7,3],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a1a0c9996e1eccb8994dd1361820e23b5":[1,0,2,5,21,5,7,19],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a1d1874deae2c2ef8f90defeb88987ad6":[1,0,2,5,21,5,7,2],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a2fd7081452fce444a24e521a50746e37":[1,0,2,5,21,5,7,17],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a4f20c4c6c9336ec52d30c3f81d03403d":[1,0,2,5,21,5,7,0],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a6997d730f4f696d04984c02adcc1be26":[1,0,2,5,21,5,7,15],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a6efb7e21505b11a5e8256831629f2518":[1,0,2,5,21,5,7,8],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a7b314cc46f76bc189d50b2fa0a925b57":[1,0,2,5,21,5,7,16],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a823e8ce594b06d63d35ba5b75f896e15":[1,0,2,5,21,5,7,9],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a834f78814c7b854086bbdbd533623c00":[1,0,2,5,21,5,7,10],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a95d82f5db62a67594d1bb04d320d3d6d":[1,0,2,5,21,5,7,4],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#ac743c1bbce4f01e8d586f61264980201":[1,0,2,5,21,5,7,6],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#ad30c1e1afbab79b4155145b0237f2857":[1,0,2,5,21,5,7,7],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#ade7febeefe8a852efe78cc1e5461b2c2":[1,0,2,5,21,5,7,12]
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a1d1874deae2c2ef8f90defeb88987ad6":[1,0,2,5,21,5,7,2]
 };

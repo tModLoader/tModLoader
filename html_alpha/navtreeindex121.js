@@ -1,5 +1,14 @@
 var NAVTREEINDEX121 =
 {
+"interface_terraria_1_1_audio_1_1_i_audio_track.html#a44651012b05019c0ab17dcc94eeaee9f":[1,0,2,1,6,2],
+"interface_terraria_1_1_audio_1_1_i_audio_track.html#a4c121d0e1cbfe38763b61bf57a487d85":[1,0,2,1,6,4],
+"interface_terraria_1_1_audio_1_1_i_audio_track.html#a51cfdee1ffc4bd52aa7ff5890ed8a3ce":[1,0,2,1,6,5],
+"interface_terraria_1_1_audio_1_1_i_audio_track.html#a70c3bc510585e23386e618ea303320db":[1,0,2,1,6,7],
+"interface_terraria_1_1_audio_1_1_i_audio_track.html#a8aa2fc7c994ebd8ef0d0ea1046fd5c87":[1,0,2,1,6,6],
+"interface_terraria_1_1_audio_1_1_i_audio_track.html#a96355f95acf27e06be73257333f86378":[1,0,2,1,6,1],
+"interface_terraria_1_1_audio_1_1_i_audio_track.html#acf6679ab03c2fa93649ab63fdd5300b9":[1,0,2,1,6,3],
+"interface_terraria_1_1_audio_1_1_i_audio_track.html#ad1dbebe6d55d8c928e69e48f17b9309d":[1,0,2,1,6,8],
+"interface_terraria_1_1_chat_1_1_commands_1_1_i_chat_command.html":[1,0,2,2,0,4],
 "interface_terraria_1_1_chat_1_1_commands_1_1_i_chat_command.html#a0332f4bc49b418204d79909d496405bb":[1,0,2,2,0,4,0],
 "interface_terraria_1_1_chat_1_1_commands_1_1_i_chat_command.html#a1f37118223b311bcdd653487cd57276c":[1,0,2,2,0,4,1],
 "interface_terraria_1_1_chat_1_1_i_chat_processor.html":[1,0,2,2,5],
@@ -185,7 +194,9 @@ var NAVTREEINDEX121 =
 "interface_terraria_1_1_graphics_1_1_renderers_1_1_i_pooled_particle.html#ada707b22ea1f7694d1c4f897bdf6dfa7":[1,0,2,7,4,6,1],
 "interface_terraria_1_1_graphics_1_1_renderers_1_1_i_pooled_particle.html#ae2ded843a5ce347df2cb8a9a8a5347e2":[1,0,2,7,4,6,2],
 "interface_terraria_1_1_map_1_1_i_map_layer.html":[1,0,2,12,0],
+"interface_terraria_1_1_map_1_1_i_map_layer.html#a7d0b3931fb4f25db6b1a910764dcdc07":[1,0,2,12,0,2],
 "interface_terraria_1_1_map_1_1_i_map_layer.html#aa38267931faac737a0e770f6a57e98a5":[1,0,2,12,0,0],
+"interface_terraria_1_1_map_1_1_i_map_layer.html#addac988461df343dcec7de6d6e7f6355":[1,0,2,12,0,1],
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html":[1,0,2,13,19],
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html#a50693f75a67148f3b5c02fa2235f9558":[1,0,2,13,19,1],
 "interface_terraria_1_1_mod_loader_1_1_command_caller.html#a6be9f02c2ce7c0adb64d427c52984527":[1,0,2,13,19,0],
@@ -238,16 +249,5 @@ var NAVTREEINDEX121 =
 "interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html":[1,0,2,21,12],
 "interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#a5edf1c74b93f079ff1eefd7a3fefa779":[1,0,2,21,12,1],
 "interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#a954375e5ed4dfa350b158d204b825c19":[1,0,2,21,12,0],
-"interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#a9f5e334ec1895e6c5d956d45f62a41eb":[1,0,2,21,12,2],
-"interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#aae025ec8daab65c166dbea897bf6de18":[1,0,2,21,12,3],
-"interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#ab580bcfc7dc62058566647ed0755a094":[1,0,2,21,12,4],
-"interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#ac160a9f18d8eefa5ef9df8f0d95a2e78":[1,0,2,21,12,5],
-"interface_terraria_1_1_utilities_1_1_file_browser_1_1_i_file_browser.html":[1,0,2,22,0,2],
-"interface_terraria_1_1_utilities_1_1_file_browser_1_1_i_file_browser.html#affb920faf65dde721e82a1f569892943":[1,0,2,22,0,2,0],
-"namespace_extensions.html":[0,0,0],
-"namespace_n_a_t_u_p_n_p_lib.html":[0,0,1],
-"namespace_terraria.html":[0,0,2],
-"namespace_terraria.html#a36d93e4b0a046ee2a8bdacffa94670cb":[0,0,2,86],
-"namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913":[0,0,2,81],
-"namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913a023c239d2f2538f140a20e72c7b73f20":[0,0,2,81,3]
+"interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#a9f5e334ec1895e6c5d956d45f62a41eb":[1,0,2,21,12,2]
 };

@@ -35,6 +35,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_system =
     [ "PostUpdateTime", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a0a6330b795ad8252cd002ae387bc1d86", null ],
     [ "PostUpdateWorld", "class_terraria_1_1_mod_loader_1_1_mod_system.html#ab07dd6ca2a74d5780f9e6bb7df2ec9b7", null ],
     [ "PostWorldGen", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a33f2e1fd9e81c929f491b1eda048b4a4", null ],
+    [ "PreDrawMapIconOverlay", "class_terraria_1_1_mod_loader_1_1_mod_system.html#ad2becb8ed008788aa5eca69cac2e02f1", null ],
     [ "PreSaveAndQuit", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a476bb8921d3d5d7a6186e9ab9d67aef5", null ],
     [ "PreUpdateDusts", "class_terraria_1_1_mod_loader_1_1_mod_system.html#aac3f396f35f5fae9282bcc1a8e1083a8", null ],
     [ "PreUpdateEntities", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a0719ddc5c076ba072a840c29ecb3b526", null ],

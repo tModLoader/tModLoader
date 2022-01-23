@@ -1,5 +1,16 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a1da714dc024676b4585afbca7befbb94":[1,0,2,23,21,0,2],
+"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a35bf379104318f6fdb58620195287f07":[1,0,2,23,21,0,4],
+"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a922e4d491ac0f7c5f62d5c9f6bc0b3b7":[1,0,2,23,21,0,3],
+"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#aec06f0daf512b69bab704c010957de1d":[1,0,2,23,21,0,0],
+"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#af26f829f761cd60ebc3684f43c4ecc9e":[1,0,2,23,21,0,1],
+"struct_terraria_1_1_world_gen_1_1_check_tree_settings.html":[1,0,2,77,0],
+"struct_terraria_1_1_world_gen_1_1_check_tree_settings.html#a4b5037db3784c05ed8f279c4e4eda97c":[1,0,2,77,0,1],
+"struct_terraria_1_1_world_gen_1_1_check_tree_settings.html#adad307582f149219ed0c6ede74ee71c7":[1,0,2,77,0,0],
+"struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html":[1,0,2,77,1],
+"struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#a0b09433a47460a6106d57ba3e7973b9a":[1,0,2,77,1,6],
+"struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#a1e0308cfe43ffd1bc267e4839e42ff8d":[1,0,2,77,1,8],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#a4549ad30c898e19e903faeb7c3d5a18c":[1,0,2,77,1,2],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#a5ea9ed98da4d99516fa204aab4b5b6f3":[1,0,2,77,1,3],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#a8e205d42b50fc6aa83e655194cd098a5":[1,0,2,77,1,1],
