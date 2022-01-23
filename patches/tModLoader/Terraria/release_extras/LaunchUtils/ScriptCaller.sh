@@ -37,9 +37,10 @@ if [ ! -d "$LaunchLogs" ]; then
 fi
 
 LogFile="$LaunchLogs/Launch.log"
-if [ ! -f "$LogFile" ]; then
-	touch "$LogFile"
+if [ -f "$LogFile" ]; then
+	rm "$LogFile"
 fi
+touch "$LogFile"
 
 echo "Verifying .NET...."
 echo "This may take a few moments."
@@ -49,7 +50,7 @@ if [[ "$_uname" == *"_NT"* ]]; then
 	run_script ./Remove13_64Bit.sh 2>&1 | tee "$LogFile"
 fi
 
-run_script ./UnixLinkerFix.sh 2>&1 | tee -a "$LogFile"
+. ./UnixLinkerFix.sh
 run_script ./PlatformLibsDeploy.sh 2>&1 | tee -a "$LogFile"
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.

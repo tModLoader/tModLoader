@@ -2,8 +2,8 @@
 #Authors: covers1624, DarioDaf, Solxanich
 # Provided for use in tModLoader deployment. 
 
-#chdir to path of the script and save it
-cd "$(dirname "$0")"
+#THIS FILE MUST BE SOURCED
+#cd "$(dirname "$0")"
 . ./BashUtils.sh
 
 # The following is a workaround for the system's SDL2 library being preferred by the linkers for some reason.
