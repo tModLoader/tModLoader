@@ -453,15 +453,21 @@
  						player9.channel = player9.inventory[player9.selectedItem].channel;
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(41, -1, whoAmI, null, num108);
-@@ -1955,7 +_,7 @@
+@@ -1955,12 +_,12 @@
  						if (Main.tile[num94, num95] == null)
  							Main.tile[num94, num95] = new Tile();
  
 -						lock (Main.tile[num94, num95]) {
-+						lock (Main.tile) {
++						//lock (Main.tile) {
  							Main.tile[num94, num95].liquid = liquid;
  							Main.tile[num94, num95].liquidType(liquidType);
  							if (Main.netMode == 2)
+ 								WorldGen.SquareTileFrame(num94, num95);
+-						}
++						//}
+ 
+ 						break;
+ 					}
 @@ -1980,7 +_,7 @@
  							break;
  

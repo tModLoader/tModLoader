@@ -10,9 +10,9 @@ namespace Terraria
 
 	internal static class TileData
 	{
-		internal static Action<uint, uint> OnSetLength;
-		internal static Action<uint, uint> OnClearSingle;
-		internal static Action<uint, uint, uint, uint> OnCopySingle;
+		internal static Action<uint> OnSetLength;
+		internal static Action<uint> OnClearSingle;
+		internal static Action<uint, uint> OnCopySingle;
 
 		static TileData() {
 			// Initialize vanilla types. Probably temporary implementation.
@@ -24,54 +24,44 @@ namespace Terraria
 				typeof(TileData<>).MakeGenericType(type).TypeInitializer.Invoke(null, null);
 			}
 		}
-		internal static void SetLength(uint tilemapId, uint len)
-			=> OnSetLength?.Invoke(tilemapId, len);
+		internal static void SetLength(uint len)
+			=> OnSetLength?.Invoke(len);
 
-		public static void ClearSingle(uint tilemapId, uint index)
-			=> OnClearSingle?.Invoke(tilemapId, index);
+		public static void ClearSingle(uint index)
+			=> OnClearSingle?.Invoke(index);
 
-		public static void CopySingle(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex)
-			=> OnCopySingle?.Invoke(sourceTilemapId, sourceIndex, destinationTilemapId, destinationIndex);
+		public static void CopySingle(uint sourceIndex, uint destinationIndex)
+			=> OnCopySingle?.Invoke(sourceIndex, destinationIndex);
 	}
 
 	internal static unsafe class TileData<T> where T : unmanaged, ITileData
 	{
-		public const int MaxTilemaps = 16;
-		public static readonly T** DataByTilemapId = (T**) AllocGlobalAndInit(sizeof(T*) * MaxTilemaps);
+		public static T[] data { get; private set; }
+		public static T* ptr { get; private set; }
+
+		private static GCHandle handle;
 
 		static TileData() {
-			// incase anyone tries to use a 'default' Tile
-			DataByTilemapId[0] = (T*) AllocGlobalAndInit(sizeof(T));
-
 			TileData.OnSetLength += SetLength;
 			TileData.OnCopySingle += CopySingle;
 			TileData.OnClearSingle += ClearSingle;
 		}
 
-		internal static unsafe void SetLength(uint tilemapId, uint len) {
-			ref T* tilemap = ref DataByTilemapId[tilemapId];
-			uint size = (uint)(sizeof(T) * len);
-			if (tilemap != null) {
-				tilemap = (T*)Marshal.ReAllocHGlobal(new IntPtr(tilemap), new IntPtr(size)).ToPointer();
-			}
-			else {
-				tilemap = (T*)Marshal.AllocHGlobal(new IntPtr(size)).ToPointer();
-			}
-			Unsafe.InitBlock(tilemap, 0, size);
+		internal static unsafe void SetLength(uint len) {
+			if (data != null)
+				handle.Free();
+
+			data = new T[len];
+			handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+			ptr = (T*)handle.AddrOfPinnedObject().ToPointer();
 		}
 
-		public static unsafe void ClearSingle(uint tilemapId, uint index) {
-			DataByTilemapId[tilemapId][index] = default;
+		public static unsafe void ClearSingle(uint index) {
+			ptr[index] = default;
 		}
 
-		public static unsafe void CopySingle(uint sourceTilemapId, uint sourceIndex, uint destinationTilemapId, uint destinationIndex) {
-			DataByTilemapId[destinationTilemapId][destinationIndex] = DataByTilemapId[sourceTilemapId][sourceIndex];
-		}
-
-		private static void* AllocGlobalAndInit(int len) {
-			void* ptr = Marshal.AllocHGlobal(len).ToPointer();
-			Unsafe.InitBlock(ptr, 0, (uint)len);
-			return ptr;
+		public static unsafe void CopySingle(uint sourceIndex, uint destinationIndex) {
+			ptr[destinationIndex] = ptr[sourceIndex];
 		}
 	}
 }

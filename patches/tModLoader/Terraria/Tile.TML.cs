@@ -159,11 +159,11 @@ namespace Terraria
 		}
 
 		public override int GetHashCode()
-			=> (int)(TileId ^ TilemapId);
+			=> (int)(TileId);
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public unsafe ref T Get<T>() where T : unmanaged, ITileData
-			=> ref TileData<T>.DataByTilemapId[TilemapId][TileId];
+			=> ref TileData<T>.ptr[TileId];
 
 		public bool IsTheSameAs(Tile other) {
 			if (sTileHeader != other.sTileHeader)
@@ -196,11 +196,11 @@ namespace Terraria
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool operator ==(Tile tile, Tile tile2)
-			=> tile.TilemapId == tile2.TilemapId && tile.TileId == tile2.TileId;
+			=> tile.TileId == tile2.TileId;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool operator !=(Tile tile, Tile tile2)
-			=> tile.TilemapId != tile2.TilemapId || tile.TileId != tile2.TileId;
+			=> tile.TileId != tile2.TileId;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool operator ==(Tile tile, ArgumentException justSoYouCanCompareWithNull) => false;

@@ -5,7 +5,7 @@
  		protected static UnifiedRandom _random => WorldGen.genRand;
  
 -		protected static Tile[,] _tiles => Main.tile;
-+		protected static Tilemap _tiles => Main.tile;
++		protected static ref Tilemap _tiles => ref Main.tile;
  
  		protected static int _worldWidth => Main.maxTilesX;
  

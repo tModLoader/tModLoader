@@ -204,6 +204,7 @@ TimeSpan GenWorld()
 	{
 		Console.Write($"\r{generationProgress.TotalProgress:0.0%}");
 	}
+	task.Wait();
 
 	return sw.Elapsed;
 }

@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Terraria
 {
-	public class Tilemap
+	public readonly struct Tilemap
 	{
-		private static readonly Queue<uint> FreeTilemapIndices = new();
-		private static uint NextId = 1; // Id 0 is invalid.
-
-		private readonly uint Id;
-
 		public readonly uint Width;
 		public readonly uint Height;
 
@@ -24,34 +18,17 @@ namespace Terraria
 					// throw new IndexOutOfRangeException($"({x}, {y}). Map size ({Width}, {Height})");
 				}
 
-				return new(Id, (uint)(y + (x * Height)));
+				return new((uint)(y + (x * Height)));
 			}
 
 			// Should have some function...
 			internal set { }
 		}
 
-		public Tilemap(uint width, uint height) {
+		internal Tilemap(uint width, uint height) {
 			Width = width;
 			Height = height;
-
-			lock (FreeTilemapIndices) {
-				if (FreeTilemapIndices.Count > 0) {
-					Id = FreeTilemapIndices.Dequeue();
-				}
-				else {
-					Id = NextId++;
-				}
-
-				TileData.SetLength(Id, width * height);
-			}
-		}
-
-		~Tilemap() {
-			lock (FreeTilemapIndices) {
-				FreeTilemapIndices.Enqueue(Id);
-				TileData.SetLength(Id, 0);
-			}
+			TileData.SetLength(width * height);
 		}
 	}
 }
