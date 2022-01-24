@@ -106,6 +106,8 @@ namespace Terraria.ModLoader
 
 			//Sets
 			LoaderUtils.ResetStaticMembers(typeof(NPCID), true);
+			NPCHappiness.ResetRelationships();
+			NPCHappiness.RegisterVanillaNpcRelationships();
 
 			//Etc
 			Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
@@ -862,6 +864,18 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
+		/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
+		private static HookList HookModifyNPCHappiness = AddHook(g => g.ModifyNPCHappiness);
+
+		public static void ModifyNPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
+			npc.ModNPC?.ModifyNPCHappiness(primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
+
+			foreach (GlobalNPC g in HookModifyNPCHappiness.Enumerate(globalNPCsArray)) {
+				g.Instance(npc).ModifyNPCHappiness(npc, primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
+			}
+		}
+		*/
 
 		public static bool CheckConditions(int type) {
 			return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;
