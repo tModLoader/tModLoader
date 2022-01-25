@@ -34,7 +34,6 @@ echo "Cleanup Complete"
 echo "Checking for Updates to .NET"
 if [ ! -d "$install_dir" ]; then
   echo "Updated Required. Will now attempt downloading using official scripts. This can take up to 5 minutes"
-  installLogs="LaunchLogs/install.log"
   dotnet_runtime=dotnet
 
   if [[ "$_uname" == *"_NT"* ]]; then

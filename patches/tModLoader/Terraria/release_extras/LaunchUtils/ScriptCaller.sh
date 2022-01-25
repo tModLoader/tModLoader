@@ -18,24 +18,23 @@ if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
 fi
 
 if [ "$_uname" = Darwin ]; then
-	LaunchLogs="$HOME/Library/Application Support/Terraria/ModLoader/Beta/Logs"
+	LaunchLogs="$HOME/Library/Application Support"
 elif [[ "$_uname" == *"_NT"* ]]; then
 	LaunchLogs="$USERPROFILE/Documents/My Games"
 	if [ ! -d "$LaunchLogs" ]; then
 	  LaunchLogs="$USERPROFILE/OneDrive/Documents/My Games"
 	fi
-	LaunchLogs="$LaunchLogs/Terraria/ModLoader/Beta/Logs"
 else
 	LaunchLogs="$XDG_DATA_HOME"
 	if [ "$LaunchLogs" = "" ]; then
 		LaunchLogs="$HOME/.local/share"
 	fi
-	LaunchLogs="$LaunchLogs/Terraria/ModLoader/Beta/Logs"
 fi
+LaunchLogs="$LaunchLogs/Terraria/ModLoader/Beta/Logs"
+
 if [ ! -d "$LaunchLogs" ]; then
 	mkdir -p "$LaunchLogs"
 fi
-
 LogFile="$LaunchLogs/Launch.log"
 if [ -f "$LogFile" ]; then
 	rm "$LogFile"
@@ -46,12 +45,14 @@ echo "Verifying .NET...."
 echo "This may take a few moments."
 echo "Logging to $LogFile"
 
+exec 3>&1 > >(tee "$LogFile") 2>&1
+
 if [[ "$_uname" == *"_NT"* ]]; then
-	run_script ./Remove13_64Bit.sh 2>&1 | tee "$LogFile"
+	run_script ./Remove13_64Bit.sh
 fi
 
 . ./UnixLinkerFix.sh
-run_script ./PlatformLibsDeploy.sh 2>&1 | tee -a "$LogFile"
+run_script ./PlatformLibsDeploy.sh
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 echo "Parsing .NET version requirements from runtimeconfig.json"
@@ -64,10 +65,10 @@ export dotnet_dir="$root_dir/dotnet"
 export install_dir="$dotnet_dir/$dotnet_version"
 echo "Success!"
 
-run_script ./InstallNetFramework.sh 2>&1 | tee -a "$LogFile"
+run_script ./InstallNetFramework.sh
 
 echo "Attempting Launch..."
-sleep 1
+exec 1>&3 3>&-
 
 # Actually run tML with the passed arguments
 # Move to the root folder
@@ -81,8 +82,8 @@ fi
 
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
 	echo "Launched Using Local Dotnet" 2>&1 | tee -a "$LogFile"
-	"$install_dir/dotnet" tModLoader.dll $*
+	exec "$install_dir/dotnet" tModLoader.dll "$@"
 else
 	echo "Launched Using System Dotnet" 2>&1 | tee -a "$LogFile"
-	dotnet tModLoader.dll $*
+	exec dotnet tModLoader.dll "$@"
 fi

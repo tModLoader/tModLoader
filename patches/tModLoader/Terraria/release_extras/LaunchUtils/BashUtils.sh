@@ -29,6 +29,6 @@ file_download() {
 
 # Call a script setting its permission right for execution
 run_script() {
-  chmod +x $1
-  $*
+  chmod +x "$1"
+  "$@"
 }

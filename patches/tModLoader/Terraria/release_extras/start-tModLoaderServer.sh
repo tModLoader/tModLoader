@@ -18,7 +18,7 @@ if [ $steam = "y" ]; then
 	fi
 fi
 
-launch_args="$launch_args $*"
+launch_args="$launch_args $@"
 
 chmod +x ./LaunchUtils/ScriptCaller.sh
 ./start-tModLoader.sh $launch_args
