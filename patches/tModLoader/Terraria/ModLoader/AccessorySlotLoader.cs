@@ -401,10 +401,13 @@ namespace Terraria.ModLoader
 					break;
 			}
 
-			if (texture == null)
+			if (texture == null) {
 				texture = value6;
-			else
-				rectangle = new Rectangle(0, 0, 32, 32);
+			}
+			else {
+				rectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+				origin = rectangle.Size() / 2;
+			}
 
 			Main.spriteBatch.Draw(texture, position, rectangle, color, rotation, origin, scale, effects, layerDepth);
 		}
