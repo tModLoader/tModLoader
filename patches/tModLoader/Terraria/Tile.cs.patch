@@ -44,12 +44,12 @@
 +		internal ref ushort type => ref Get<TileTypeData>().Type;
 +		internal ref ushort wall => ref Get<WallTypeData>().Type;
 +		internal ref byte liquid => ref Get<TileLiquidData>().Amount;
-+		internal ref ushort sTileHeader => ref Get<MiscellaneousTileData>().UShortHeader; // TML: Changed from 'short' for easier bitwise manipulations
-+		internal ref byte bTileHeader => ref Get<MiscellaneousTileData>().ByteHeader1;
-+		internal ref byte bTileHeader2 => ref Get<MiscellaneousTileData>().ByteHeader2;
-+		internal ref byte bTileHeader3 => ref Get<MiscellaneousTileData>().ByteHeader3;
 +		internal ref short frameX => ref Get<TileFramingData>().FrameX;
 +		internal ref short frameY => ref Get<TileFramingData>().FrameY;
++		private ref ushort sTileHeader => ref Get<MiscellaneousTileData>().UShortHeader; // TML: Changed from 'short' for easier bitwise manipulations
++		private ref byte bTileHeader => ref Get<MiscellaneousTileData>().ByteHeader1;
++		private ref byte bTileHeader2 => ref Get<MiscellaneousTileData>().ByteHeader2;
++		private ref byte bTileHeader3 => ref Get<MiscellaneousTileData>().ByteHeader3;
 +		
 +		internal const int Type_Solid = 0;
 +		internal const int Type_Halfbrick = 1;
