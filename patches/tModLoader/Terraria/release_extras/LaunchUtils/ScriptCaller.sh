@@ -82,7 +82,7 @@ fi
 
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
 	echo "Launched Using Local Dotnet" 2>&1 | tee -a "$LogFile"
-	chmod a+x "$install_dir/dotnet" 
+	chmod a+x "$install_dir/dotnet"
 	exec "$install_dir/dotnet" tModLoader.dll "$@"
 else
 	echo "Launched Using System Dotnet" 2>&1 | tee -a "$LogFile"

@@ -26,7 +26,7 @@ do
 			
 			ShownFileDeletionPrompt=true
 		fi
-		
+
 		rm "../$file"
 	fi
 done
