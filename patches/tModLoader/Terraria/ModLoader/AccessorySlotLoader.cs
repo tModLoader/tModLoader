@@ -220,6 +220,7 @@ namespace Terraria.ModLoader
 				DrawSlot(Player.armor, 11, slot + Player.dye.Length, flag3, xLoc, yLoc);
 				DrawSlot(Player.dye, 12, slot, flag3, xLoc, yLoc);
 			}
+			Main.inventoryBack = color;
 
 			return !customLoc;
 		}
