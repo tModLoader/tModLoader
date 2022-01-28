@@ -77,7 +77,7 @@ cd "$root_dir"
 if [[ "$_uname" == *"_NT"* ]]; then
 	# Replace / with \\ in WINDIR env var to not confuse MonoMod about the current platform
 	# somehow busybox-w64 replaces paths in envs with normalized paths (no clue why..., maybe open an issue there?)
-	WINDIR=${WINDIR////\\}
+	export WINDIR=${WINDIR////\\}
 fi
 
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
