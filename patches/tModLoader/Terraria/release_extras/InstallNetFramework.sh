@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #Author: covers1624
 # Provided for use in tModLoader deployment. 
 
@@ -31,9 +31,6 @@ if [ -f "$unixSteamworks" ]; then
   defaultSteamworks="Libraries/Steamworks.NET/$steamworksVersion/Steamworks.NET.dll"
   mv "$unixSteamworks" "$defaultSteamworks"
 fi
-
-# Ensure sufficient stack size (4MB) on MacOS secondary threads, doesn't hurt for Linux. 16^5 = 1MB, value in hex 
-export COMPlus_DefaultStackSize=400000
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <tModLoader.runtimeconfig.json) #sed, go die plskthx

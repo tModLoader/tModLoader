@@ -320,13 +320,14 @@ jobs:
       - name: Download build artifact from build job
         uses: actions/download-artifact@v2
         with:
-          name: Debug Build
-          path: artifacts/Debug
+          # Change this next line to switch between uploading Release and Debug if desired. 
+          name: Release Build
+          path: artifacts/Build
       - name: View build artifact files
         run: |
           echo pwd is: ${PWD}
           ls -alhR
-        working-directory: artifacts/Debug
+        working-directory: artifacts/Build
       - name: Setup steamcmd
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1

@@ -65,7 +65,7 @@
 +					}
 +					else if (Main.dedServ) {
 +						// Try to load mods that are installed by Steam users when server launches without Steam. No guarantees if Steam not installed in standard location.
-+						var workshopLoc = Path.Combine( "../../../", "workshop", "content", ModManager.thisApp.ToString());
++						var workshopLoc = Path.Combine( "../../", "workshop", "content", ModManager.thisApp.ToString());
 +						if (Directory.Exists(workshopLoc)) {
 +							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
 +						}

@@ -13,6 +13,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
+using static Terraria.GameContent.Creative.CreativeUI;
 
 namespace Terraria.ModLoader
 {
@@ -40,6 +41,14 @@ namespace Terraria.ModLoader
 		/// The translations for the display name of this tooltip.
 		/// </summary>
 		public ModTranslation Tooltip { get; internal set; }
+
+		/// <summary>
+		/// Easy get/set for an item's Sacrifice Total Count
+		/// </summary>
+		public int SacrificeTotal {
+			get => Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type];
+			set => Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = value;
+		}
 
 		public ModItem() {
 			Item = new Item { ModItem = this };
@@ -156,6 +165,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the autoswing (auto-reuse) behavior of this item without having to mess with Item.autoReuse.
+		/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
+		/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
+		/// </summary>
+		/// <param name="player"> The player. </param>
+		public virtual bool? CanAutoReuseItem(Player player) => null;
+
+		/// <summary>
 		/// Allows you to modify the location and rotation of this item in its use animation.
 		/// </summary>
 		/// <param name="player"> The player. </param>
@@ -256,6 +273,28 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="itemGroup">The item group this item is being assigned to</param>
 		public virtual void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
+		}
+
+		/// <summary>
+		/// Choose if this item will be consumed or not when used as bait. return null for vanilla behaviour.
+		/// </summary>
+		/// <param name="player">The Player that owns the bait</param>
+		public virtual bool? CanConsumeBait(Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
+		/// </summary>
+		public virtual bool CanResearch() {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to create custom behaviour when an item is accepted by the Research function 
+		/// </summary>
+		/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
+		public virtual void OnResearched(bool fullyResearched) {
 		}
 
 		/// <summary>
