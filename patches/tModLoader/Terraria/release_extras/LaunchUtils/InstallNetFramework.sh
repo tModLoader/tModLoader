@@ -13,6 +13,9 @@
 cd "$(dirname "$0")"
 . ./BashUtils.sh
 
+TXTCOLOR_RED='\033[31m'
+TXTCOLOR_NC='\033[0m'
+
 #Cut everything before the second dot
 channel=$(echo "$dotnet_version" | cut -f1,2 -d'.')
 
@@ -33,15 +36,34 @@ echo "Cleanup Complete"
 #If the install directory for this specific dotnet version doesnt exist, grab the installer script and run it.
 echo "Checking for Updates to .NET"
 if [ ! -d "$install_dir" ]; then
-	echo "Updated Required. Will now attempt downloading using official scripts. This can take up to 5 minutes"
+	echo "Updated Required. Will now attempt downloading. This can take up to 5 minutes"
 	dotnet_runtime=dotnet
 
 	if [[ "$_uname" == *"_NT"* ]]; then
-		file_download dotnet-install.ps1 https://dot.net/v1/dotnet-install.ps1
-		
-		# @TODO: Should update powershell to 4+ because required by the script (and not present by default in win 7/8)
-		powershell.exe -NoProfile -ExecutionPolicy unrestricted -File dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "$dotnet_runtime" -Version "$dotnet_version"
+		mkdir "$dotnet_dir"
+
+		# Allow for zip to be already delivered by steam win on system
+		# and placed in the root directory with this name convention:
+		dotnet_portable_archive="$root_dir/win-x64-$dotnet_version.zip"
+		if [ ! -f "$dotnet_portable_archive" ]; then
+			echo "Downloading win x64 portable dotnet runtime..."
+			file_download "$dotnet_portable_archive" "https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-win-x64.zip"
+		else
+			echo "Runtime archive already present"
+		fi
+		echo "Extracting..."
+		unzip "$dotnet_portable_archive" -d "$install_dir"
+		rm "$dotnet_portable_archive"
+
+		if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
+			echo -e "${TXTCOLOR_RED}Direct archive download and extraction failed, reverting to powershell script (will probably fail on old PS < 4)...${TXTCOLOR_NC}"
+			file_download dotnet-install.ps1 https://dot.net/v1/dotnet-install.ps1
+
+			# @TODO: Should update powershell to 4+ because required by the script (and not present by default in win 7/8)
+			powershell.exe -NoProfile -ExecutionPolicy unrestricted -File dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "$dotnet_runtime" -Version "$dotnet_version"
+		fi
 	else
+		# *nix binaries are various and not worth detecting the required one here, always use "on-the-fly" script install
 		file_download dotnet-install.sh https://dot.net/v1/dotnet-install.sh
 
 		run_script ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "$dotnet_runtime" --version "$dotnet_version"
@@ -49,19 +71,8 @@ if [ ! -d "$install_dir" ]; then
 fi
 echo "Finished Checking for Updates"
 
-# Technically can happen on any system, but Windows_NT is the one expected to fail if powershell is not 4+
-# so it's treated differently with step-by-step manual install
-if [[ "$_uname" == *"_NT"* ]]; then
-	# If the install failed, provide a link to get the portable directly, and instructions on where to do with it.
-	if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
-		mkdir "$dotnet_dir"
-
-		echo "It has been detected that your system failed to install the dotnet portables automatically. Will now proceed manually."
-	echo "Manual installation can take up to an additional 5 minutes"
-		file_download "$dotnet_dir/$dotnet_version.zip" "https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-win-x64.zip"
-		unzip "$dotnet_dir/$dotnet_version.zip" -d "$install_dir"
-		echo "Tried to download and extract x64 .NET portable. Please verify the extraction completed successfully to \"$install_dir\""
-		read -p "Please press Enter to acknowledge manual download has occurred."
-		rm "$dotnet_dir/$dotnet_version.zip"
-	fi
+if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
+	echo -e "${TXTCOLOR_RED}Download of portable dotnet runtime seems to have failed,${TXTCOLOR_NC}"
+	echo -e "${TXTCOLOR_RED}proceeding will probably use system wide installed runtime${TXTCOLOR_NC}"
+	read -p "Please press Enter to try to run the game anyway... "
 fi
