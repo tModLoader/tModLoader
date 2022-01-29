@@ -30,11 +30,10 @@ if [ -d "$dotnet_dir" ]; then
 			rm -rf "$old_version"
 		fi
 	done
+else
+	mkdir "$dotnet_dir"
 fi
 echo "Cleanup Complete"
-
-dotnet_runtime="dotnet"
-mkdir "$dotnet_dir"
 
 echo "Checking dotnet install..."
 if [[ ! -f "$install_dir/dotnet.exe" && "$_uname" == *"_NT"* && "$(uname -m)" == "x86_64" ]]; then
@@ -47,7 +46,7 @@ if [[ ! -f "$install_dir/dotnet.exe" && "$_uname" == *"_NT"* && "$(uname -m)" ==
 	if [ -f "$dotnet_portable_archive" ]; then
 		echo "Found \"$dotnet_portable_archive_name\""
 		echo "Extracting..."
-		unzip "$dotnet_portable_archive" -d "$install_dir"
+		unzip -qq "$dotnet_portable_archive" -d "$install_dir"
 		# Do not auto-delete if already present to avoid steam file checks to fail and redownload it
 	else
 		echo "None Found. Attempting downloading win x64 portable dotnet runtime directly..."
@@ -55,7 +54,7 @@ if [[ ! -f "$install_dir/dotnet.exe" && "$_uname" == *"_NT"* && "$(uname -m)" ==
 		file_download "$install_dir.zip" "https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-win-x64.zip"
 
 		echo "Extracting..."
-		unzip "install_dir.zip" -d "$install_dir"
+		unzip -qq "$install_dir" -d "$install_dir"
 		# Will get cleaned up in the Cleaning step on next run. We don't want to use more disk space than we need
 	fi
 fi
@@ -69,13 +68,12 @@ if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
 			# Neither of Win7_32 or Win7_Arm are expected, so we just keep this as is
 			file_download dotnet-install.ps1 https://dot.net/v1/dotnet-install.ps1
 			
-			powershell.exe -NoProfile -ExecutionPolicy unrestricted -File dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "$dotnet_runtime" -Version "$dotnet_version"
-		fi
+			powershell.exe -NoProfile -ExecutionPolicy unrestricted -File dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "dotnet" -Version "$dotnet_version"
 	else
 		# *nix binaries are various and not worth detecting the required one here, always use "on-the-fly" script install
 		file_download dotnet-install.sh https://dot.net/v1/dotnet-install.sh
 
-		run_script ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "$dotnet_runtime" --version "$dotnet_version"
+		run_script ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "dotnet" --version "$dotnet_version"
 	fi
 fi
 
