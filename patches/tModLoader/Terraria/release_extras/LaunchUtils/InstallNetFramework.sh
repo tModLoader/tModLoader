@@ -34,7 +34,7 @@ fi
 echo "Cleanup Complete"
 
 #If the install directory for this specific dotnet version doesnt exist, grab the installer script and run it.
-echo "Checking for Updates to .NET"
+echo "Checking dotnet install..."
 if [ ! -d "$install_dir" ]; then
 	echo "Updated Required. Will now attempt downloading. This can take up to 5 minutes"
 	dotnet_runtime=dotnet
@@ -44,16 +44,24 @@ if [ ! -d "$install_dir" ]; then
 
 		# Allow for zip to be already delivered by steam win on system
 		# and placed in the root directory with this name convention:
-		dotnet_portable_archive="$root_dir/win-x64-$dotnet_version.zip"
+		dotnet_portable_archive_name="dotnet-runtime-$dotnet_version-win-x64.zip"
+		dotnet_portable_archive="$root_dir/$dotnet_portable_archive_name"
+		dotnet_downloaded=0
 		if [ ! -f "$dotnet_portable_archive" ]; then
 			echo "Downloading win x64 portable dotnet runtime..."
 			file_download "$dotnet_portable_archive" "https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-win-x64.zip"
+			dotnet_downloaded=1
 		else
-			echo "Runtime archive already present"
+			echo "Found \"$dotnet_portable_archive_name\""
 		fi
 		echo "Extracting..."
 		unzip "$dotnet_portable_archive" -d "$install_dir"
-		rm "$dotnet_portable_archive"
+		if [ "$dotnet_downloaded" == 1 ]; then
+			# Do not auto-delete if already present to avoid
+			# steam file checks to fail and redownload it
+			echo "Removing temporary downloaded archive"
+			rm "$dotnet_portable_archive"
+		fi
 
 		if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
 			echo -e "${TXTCOLOR_RED}Direct archive download and extraction failed, reverting to powershell script (will probably fail on old PS < 4)...${TXTCOLOR_NC}"
@@ -69,7 +77,7 @@ if [ ! -d "$install_dir" ]; then
 		run_script ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "$dotnet_runtime" --version "$dotnet_version"
 	fi
 fi
-echo "Finished Checking for Updates"
+echo "Dotnet should be present in \"$install_dir\""
 
 if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
 	echo -e "${TXTCOLOR_RED}Download of portable dotnet runtime seems to have failed,${TXTCOLOR_NC}"
