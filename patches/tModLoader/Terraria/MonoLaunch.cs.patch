@@ -41,7 +41,7 @@
  	}
  
  #if NETCORE
-@@ -58,12 +_,24 @@
+@@ -58,11 +_,23 @@
  					return handle;
  				}
  
@@ -51,7 +51,7 @@
  				var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
  				var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
  				var match = files.FirstOrDefault();
- 
++
 +				if (match is null) {
 +					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(dir, name + ".dll")}");
 +				}
@@ -63,15 +63,6 @@
 +				Logging.tML.Debug("\tsuccess");
 +
 +				return assemblies[name] = handle;
-+				/*
+ 
  				Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
  
- 				if (match != null && NativeLibrary.TryLoad(match, out handle)) {
-@@ -75,6 +_,7 @@
- 					assemblies[name] = IntPtr.Zero;
- 					throw new FileLoadException("Failed to load Native Library at " + match);
- 				}
-+				*/
- 			}
- 			catch (DirectoryNotFoundException e) {
- 				throw new DirectoryNotFoundException("A needed library file was missing from the tModLoader directory. " + e.Message, e);
