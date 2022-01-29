@@ -18,7 +18,7 @@ if [ "$_uname" = Darwin ]; then
 	export VK_ICD_FILENAMES="$libary_dir/MoltenVK_icd.json"
 	ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
 elif [[ "$_uname" == *"_NT"* ]]; then
-	echo "I'm on Windows, no need to do anything"
+	export PATH="$PATH;$root_dir/Libraries/Native/Windows/"
 else
 	library_dir="$root_dir/Libraries/Native/Linux"
 	export LD_LIBRARY_PATH="$library_dir"
