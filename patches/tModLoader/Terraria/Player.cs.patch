@@ -3969,6 +3969,18 @@
  						if (tile.halfBrick()) {
  							WorldGen.PoundTile(x, y);
  							if (Main.netMode == 1)
+@@ -32713,6 +_,11 @@
+ 						NetMessage.sendWater(tileTargetX, tileTargetY);
+ 				}
+ 			}
++
++			if (sItem.stack <= 0) {
++				sItem.TurnToAir();
++				Main.blockMouse = true;
++			}
+ 		}
+ 
+ 		private void ItemCheck_PlayInstruments(Item sItem) {
 @@ -32922,7 +_,8 @@
  				}
  
