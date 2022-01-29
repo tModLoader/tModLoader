@@ -36,39 +36,51 @@ echo "Cleanup Complete"
 #If the install directory for this specific dotnet version doesnt exist, grab the installer script and run it.
 echo "Checking dotnet install..."
 if [ ! -d "$install_dir" ]; then
-	echo "Updated Required. Will now attempt downloading. This can take up to 5 minutes"
+	echo "Update Required. Will now attempt downloading. This can take up to 5 minutes"
 	dotnet_runtime=dotnet
 
-	if [[ "$_uname" == *"_NT"* ]]; then
-		mkdir "$dotnet_dir"
+	mkdir "$dotnet_dir"
 
+	if [[ "$_uname" == *"_NT"* ]]; then
 		# Allow for zip to be already delivered by steam win on system
 		# and placed in the root directory with this name convention:
 		dotnet_portable_archive_name="dotnet-runtime-$dotnet_version-win-x64.zip"
 		dotnet_portable_archive="$root_dir/$dotnet_portable_archive_name"
-		dotnet_downloaded=0
-		if [ ! -f "$dotnet_portable_archive" ]; then
-			echo "Downloading win x64 portable dotnet runtime..."
-			file_download "$dotnet_portable_archive" "https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-win-x64.zip"
-			dotnet_downloaded=1
-		else
-			echo "Found \"$dotnet_portable_archive_name\""
-		fi
-		echo "Extracting..."
-		unzip "$dotnet_portable_archive" -d "$install_dir"
-		if [ "$dotnet_downloaded" == 1 ]; then
-			# Do not auto-delete if already present to avoid
-			# steam file checks to fail and redownload it
-			echo "Removing temporary downloaded archive"
-			rm "$dotnet_portable_archive"
+
+		is_win_64=0
+		if [ "$(uname -m)" == "x86_64" ]; then
+			is_win_64=1
 		fi
 
+		# First check if zip is already delivered
+		if [[ "$is_win_64" == 1 && -f "$dotnet_portable_archive" ]]; then
+			echo "Found \"$dotnet_portable_archive_name\""
+			echo "Extracting..."
+			unzip "$dotnet_portable_archive" -d "$install_dir"
+			
+			# Do not auto-delete if already present to avoid
+			# steam file checks to fail and redownload it
+		fi
+
+		# If failed run powershell script to install
 		if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
-			echo -e "${TXTCOLOR_RED}Direct archive download and extraction failed, reverting to powershell script (will probably fail on old PS < 4)...${TXTCOLOR_NC}"
+			echo "Trying to install portable dotnet with powershell script (will probably fail on old PS < 4)..."
 			file_download dotnet-install.ps1 https://dot.net/v1/dotnet-install.ps1
 
 			# @TODO: Should update powershell to 4+ because required by the script (and not present by default in win 7/8)
 			powershell.exe -NoProfile -ExecutionPolicy unrestricted -File dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "$dotnet_runtime" -Version "$dotnet_version"
+		fi
+
+		# If failed download supposing x64
+		if [[ "$is_win_64" == 1 && ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
+			echo "Powershell script failed, downloading win x64 portable dotnet runtime manually..."
+			file_download "$dotnet_portable_archive" "https://dotnetcli.azureedge.net/dotnet/Runtime/$dotnet_version/dotnet-runtime-$dotnet_version-win-x64.zip"
+
+			echo "Extracting..."
+			unzip "$dotnet_portable_archive" -d "$install_dir"
+
+			echo "Removing temporary downloaded archive"
+			rm "$dotnet_portable_archive"
 		fi
 	else
 		# *nix binaries are various and not worth detecting the required one here, always use "on-the-fly" script install
