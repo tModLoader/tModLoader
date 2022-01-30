@@ -4132,6 +4132,17 @@
  		}
  
  		private static void UpdateAtmosphereTransparencyToSkyColor() {
+@@ -49322,6 +_,10 @@
+ 				preferredBGStyleForPlayer = bgStyle;
+ 				if (WorldGen.drunkWorldGen)
+ 					bgStyle = 9;
++
++				var menuBackgroundStyle = MenuLoader.CurrentMenu.MenuBackgroundStyle;
++				if (menuBackgroundStyle != null)
++					bgStyle = menuBackgroundStyle.Slot;
+ 			}
+ 
+ 			if (instantBGTransitionCounter > 0) {
 @@ -49332,6 +_,8 @@
  
  			UpdateBGVisibility_BackLayer(null, null);
