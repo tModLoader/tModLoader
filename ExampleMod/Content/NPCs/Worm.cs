@@ -231,7 +231,7 @@ namespace ExampleMod.NPCs
 			if (!flag18) {
 				for (int num184 = num180; num184 < num181; num184++) {
 					for (int num185 = num182; num185 < num183; num185++) {
-						if (Main.tile[num184, num185] != null && (Main.tile[num184, num185].IsActiveUnactuated && (Main.tileSolid[(int)Main.tile[num184, num185].type] || Main.tileSolidTop[(int)Main.tile[num184, num185].type] && Main.tile[num184, num185].frameY == 0) || Main.tile[num184, num185].LiquidAmount > 64)) {
+						if (Main.tile[num184, num185] != null && (Main.tile[num184, num185].IsActiveUnactuated && (Main.tileSolid[(int)Main.tile[num184, num185].TileType] || Main.tileSolidTop[(int)Main.tile[num184, num185].TileType] && Main.tile[num184, num185].TileFrameY == 0) || Main.tile[num184, num185].LiquidAmount > 64)) {
 							Vector2 vector17;
 							vector17.X = (float)(num184 * 16);
 							vector17.Y = (float)(num185 * 16);
@@ -240,8 +240,8 @@ namespace ExampleMod.NPCs
 								if (Main.rand.NextBool(100) && NPC.behindTiles && Main.tile[num184, num185].IsActiveUnactuated) {
 									WorldGen.KillTile(num184, num185, true, true, false);
 								}
-								if (Main.netMode != NetmodeID.MultiplayerClient && Main.tile[num184, num185].type == 2) {
-									ushort arg_BFCA_0 = Main.tile[num184, num185 - 1].type;
+								if (Main.netMode != NetmodeID.MultiplayerClient && Main.tile[num184, num185].TileType == 2) {
+									ushort arg_BFCA_0 = Main.tile[num184, num185 - 1].TileType;
 								}
 							}
 						}

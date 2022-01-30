@@ -112,19 +112,19 @@ namespace ExampleMod.Content.Items.Ammo
 			for (int k = i - size; k <= i + size; k++) {
 				for (int l = j - size; l <= j + size; l++) {
 					if (WorldGen.InWorld(k, l, 1) && Math.Abs(k - i) + Math.Abs(l - j) < Math.Sqrt((size * size) + (size * size))) {
-						int type = Main.tile[k, l].type;
-						int wall = Main.tile[k, l].wall;
+						int type = Main.tile[k, l].TileType;
+						int wall = Main.tile[k, l].WallType;
 
 						// Convert all walls to ExampleWall
 						if (wall != 0) {
-							Main.tile[k, l].wall = (ushort)ModContent.WallType<ExampleWall>();
+							Main.tile[k, l].WallType = (ushort)ModContent.WallType<ExampleWall>();
 							WorldGen.SquareWallFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
 
 						// If the tile is stone, convert to ExampleBlock
 						if (TileID.Sets.Conversion.Stone[type]) {
-							Main.tile[k, l].type = (ushort)ModContent.TileType<ExampleBlock>();
+							Main.tile[k, l].TileType = (ushort)ModContent.TileType<ExampleBlock>();
 							WorldGen.SquareTileFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
@@ -135,16 +135,16 @@ namespace ExampleMod.Content.Items.Ammo
 						// 	NetMessage.SendTileSquare(-1, k, l, 1);
 						// }
 						// If the tile is a chair, convert to ExampleChair
-						else if (type == TileID.Chairs && Main.tile[k, l - 1].type == TileID.Chairs) {
-							Main.tile[k, l].type = (ushort)ModContent.TileType<ExampleChair>();
-							Main.tile[k, l - 1].type = (ushort)ModContent.TileType<ExampleChair>();
+						else if (type == TileID.Chairs && Main.tile[k, l - 1].TileType == TileID.Chairs) {
+							Main.tile[k, l].TileType = (ushort)ModContent.TileType<ExampleChair>();
+							Main.tile[k, l - 1].TileType = (ushort)ModContent.TileType<ExampleChair>();
 							WorldGen.SquareTileFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
 						// If the tile is a workbench, convert to ExampleWorkBench
-						else if (type == TileID.WorkBenches && Main.tile[k - 1, l].type == TileID.WorkBenches) {
-							Main.tile[k, l].type = (ushort)ModContent.TileType<ExampleWorkbench>();
-							Main.tile[k - 1, l].type = (ushort)ModContent.TileType<ExampleWorkbench>();
+						else if (type == TileID.WorkBenches && Main.tile[k - 1, l].TileType == TileID.WorkBenches) {
+							Main.tile[k, l].TileType = (ushort)ModContent.TileType<ExampleWorkbench>();
+							Main.tile[k - 1, l].TileType = (ushort)ModContent.TileType<ExampleWorkbench>();
 							WorldGen.SquareTileFrame(k, l);
 							NetMessage.SendTileSquare(-1, k, l, 1);
 						}
