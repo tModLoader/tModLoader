@@ -1022,7 +1022,7 @@
 -					}
 -					else if (!audioSystem.IsTrackPlaying(50)) {
 +					else {
-+						newMusic = MenuLoader.CurrentMenu.Music; // TODO: Music loader to make music function properly.
++						newMusic = MenuLoader.CurrentMenu.Music;
 +					}
 +
 +					if (_isAsyncLoadComplete && newMusic == 50 && !audioSystem.IsTrackPlaying(50)) {
