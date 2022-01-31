@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,7 +17,6 @@ namespace ExampleMod.Content.Projectiles
 			new Color(0, 191, 255) // A blue color
 		};
 
-		private bool initialized;
 		// This holds the index of the fishing line color in the PossibleLineColors array.
 		private int fishingLineColorIndex;
 
@@ -39,16 +39,15 @@ namespace ExampleMod.Content.Projectiles
 			DrawOriginOffsetY = -8; // Adjusts the draw position
 		}
 
+		public override void OnSpawn(IEntitySource source) {
+			// Decide color of the pole by getting the index of a random entry from the PossibleLineColors array.
+			fishingLineColorIndex = (byte)Main.rand.Next(PossibleLineColors.Length);
+			// Tell the game to sync this projectile in multiplayer, so the line color is synced.
+			Projectile.netUpdate = true;
+		}
+
 		// What if we want to randomize the line color
 		public override void AI() {
-			if (!initialized) {
-				initialized = true;
-				// Decide color of the pole by getting the index of a random entry from the PossibleLineColors array.
-				fishingLineColorIndex = (byte)Main.rand.Next(PossibleLineColors.Length);
-				// Tell the game to sync this projectile in multiplayer, so the line color is synced.
-				Projectile.netUpdate = true;
-			}
-
 			// Always ensure that graphics-related code doesn't run on dedicated servers via this check.
 			if (!Main.dedServ) {
 				// Create some light based on the color of the line.
