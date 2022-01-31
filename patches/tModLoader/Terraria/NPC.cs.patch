@@ -103,10 +103,16 @@
  			return result;
  		}
  
-@@ -1874,6 +_,16 @@
+@@ -1869,9 +_,19 @@
+ 			defDamage = damage;
+ 			defDefense = defense;
+ 			if (flag) {
+-				ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData, spawnparams.strengthMultiplierOverride);
++				ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData ?? Main.GameModeInfo, spawnparams.strengthMultiplierOverride);
+ 				life = lifeMax;
  			}
- 		}
- 
++		}
++
 +		public void CloneDefaults(int Type) {
 +			int originalType = type;
 +			int originalNetID = netID;
@@ -115,11 +121,9 @@
 +			type = originalType;
 +			netID = originalNetID;
 +			ModNPC = originalModEntity;
-+		}
-+
+ 		}
+ 
  		public void SetDefaultsKeepPlayerInteraction(int Type) {
- 			bool[] array = new bool[playerInteraction.Length];
- 			for (int i = 0; i < playerInteraction.Length; i++) {
 @@ -1910,6 +_,8 @@
  				return;
  			}
@@ -164,6 +168,15 @@
  			if (spawnparams.sizeScaleOverride.HasValue) {
  				int num2 = (int)((float)width * scale);
  				int num3 = (int)((float)height * scale);
+@@ -10288,7 +_,7 @@
+ 			if (Main.tenthAnniversaryWorld)
+ 				getTenthAnniversaryAdjustments();
+ 
+-			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData, spawnparams.strengthMultiplierOverride);
++			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData.Value, spawnparams.strengthMultiplierOverride);
+ 			life = lifeMax;
+ 		}
+ 
 @@ -10832,6 +_,7 @@
  					break;
  			}

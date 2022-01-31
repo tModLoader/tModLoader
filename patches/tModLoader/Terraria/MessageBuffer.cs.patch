@@ -225,14 +225,6 @@
  							obj6.playerIndexTheItemIsReservedFor = Main.myPlayer;
  							if (flag9) {
  								NetMessage.TrySendData(21, -1, -1, null, num181);
-@@ -1286,6 +_,7 @@
- 							}
- 						}
- 
-+
- 						int num121 = -1;
- 						NPC nPC4 = Main.npc[num116];
- 						if (nPC4.active && Main.multiplayerNPCSmoothingRange > 0 && Vector2.DistanceSquared(nPC4.position, vector4) < 640000f)
 @@ -1336,9 +_,13 @@
  						if (num119 == 245)
  							NPC.golemBoss = num116;

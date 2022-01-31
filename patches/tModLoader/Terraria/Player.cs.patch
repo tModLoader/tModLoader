@@ -4224,6 +4224,15 @@
  			int whoAmI = base.whoAmI;
  			bool flag = true;
  			int num = (int)((float)Main.mouseX + Main.screenPosition.X) / 16;
+@@ -36421,7 +_,7 @@
+ 			if (baitTypeUsed == 2673)
+ 				flag = true;
+ 
+-			if (flag) {
++			if (CombinedHooks.CanConsumeBait(this, item) ?? flag) {
+ 				if (item.type == 4361 || item.type == 4362)
+ 					NPC.LadyBugKilled(base.Center, item.type == 4362);
+ 
 @@ -36463,6 +_,11 @@
  			if (sItem.type == 3006)
  				flag2 = true;
@@ -4243,7 +4252,8 @@
 +			//return;
 +
  			if (sItem.autoReuse && !noItems) {
- 				releaseUseItem = true;
+-				releaseUseItem = true;
++				//releaseUseItem = true; // Now useless as per TryAllowingItemReuse -- direwolf420
 +
 +				// The following lines of code have been removed because of the change in how remote players' items now work in multiplayer.
 +				// Remote players used to simulate using the items by just playing pretty much guessed animations.
@@ -4264,7 +4274,45 @@
  			}
  
  			TryAllowingItemReuse(sItem);
-@@ -36660,6 +_,7 @@
+@@ -36647,19 +_,43 @@
+ 
+ 		private void TryAllowingItemReuse(Item sItem) {
+ 			bool flag = false;
++
++			flag = TryAllowingItemReuse_Inner(sItem);
++
++			// _Inner code changed to utilize conditions from ItemCheck_HandleMPItemAnimation.
++			// Now the previous assignment inside that method is useless and thus commented out
++			if (flag)
++				releaseUseItem = true;
++		}
++
++		private bool TryAllowingItemReuse_Inner(Item sItem) {
++			// Split into _Inner because it is used by ShouldAutoReuseItem 
++			bool flag = false;
++
++			bool? allow = CombinedHooks.CanAutoReuseItem(this, sItem);
++			if (allow.HasValue) {
++				if (allow.Value) {
++					return !noItems; // Even if forced to true, respect noItems (Cursed debuff)
++				}
++
++				return false;
++			}
++
++			flag |= sItem.autoReuse && !noItems; // Conditions taken from ItemCheck_HandleMPItemAnimation
++
+ 			if (autoReuseGlove) {
+ 				flag |= sItem.melee;
+ 				flag |= (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]);
+ 			}
+ 
+-			if (flag)
+-				releaseUseItem = true;
++			return flag;
+ 		}
+ 
+ 		private void ItemCheck_HandleMount() {
  			if (!mount.Active)
  				return;
  

@@ -566,16 +566,34 @@
  			if (wet)
  				position += wetVelocity;
  			else
-@@ -13476,6 +_,9 @@
+@@ -13476,8 +_,17 @@
  			FishingCheck_RollEnemySpawns(ref fisher);
  			FishingCheck_RollItemDrop(ref fisher);
  			bool flag = false;
-+			PlayerLoader.CatchFish(Main.player[owner], Main.player[owner].inventory[Main.player[owner].selectedItem],
-+				fisher.waterNeededToFish, fisher.inLava ? 1 : fisher.inHoney ? 2 : 0, fisher.fishingLevel, fisher.heightLevel, fisher.questFish, ref fisher.rolledItemDrop);
++			AdvancedPopupRequest sonar = new AdvancedPopupRequest();
++			//Bobber position as default
++			Vector2 sonarPosition = new Vector2(position.X, position.Y);
++			PlayerLoader.CatchFish(Main.player[owner], fisher, ref fisher.rolledItemDrop, ref fisher.rolledEnemySpawn, ref sonar, ref sonarPosition);
++
++			if(sonar.Text != null && Main.player[owner].sonarPotion) {
++				PopupText.AssignAsSonarText(PopupText.NewText(sonar,sonarPosition));
++			}
 +
  			if (fisher.rolledItemDrop > 0) {
- 				if (Main.player[owner].sonarPotion) {
+-				if (Main.player[owner].sonarPotion) {
++				if (sonar.Text == null && Main.player[owner].sonarPotion) {
  					Item item = new Item();
+ 					item.SetDefaults(fisher.rolledItemDrop);
+ 					item.position = position;
+@@ -13492,7 +_,7 @@
+ 			}
+ 
+ 			if (fisher.rolledEnemySpawn > 0) {
+-				if (Main.player[owner].sonarPotion)
++				if (sonar.Text == null && Main.player[owner].sonarPotion)
+ 					PopupText.AssignAsSonarText(PopupText.NewText(PopupTextContext.SonarAlert, fisher.rolledEnemySpawn, base.Center, stay5TimesLonger: false));
+ 
+ 				float num4 = fisher.fishingLevel;
 @@ -13966,9 +_,11 @@
  				while (Main.tile[i, num].liquid > 0 && !WorldGen.SolidTile(i, num) && num < Main.maxTilesY - 10) {
  					numWaters++;
@@ -685,10 +703,11 @@
  						for (int l = 0; l < num4; l++) {
  							Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(j, k, tileSafely)];
  							obj.velocity.Y -= 3f + (float)num3 * 1.5f;
-@@ -34204,6 +_,7 @@
+@@ -34204,6 +_,8 @@
  				int num4 = item.stack = Main.rand.Next(minValue2, num3 + 1);
  			}
  
++			PlayerLoader.ModifyCaughtFish(thePlayer, item);
 +			ItemLoader.CaughtFishStack(item);
  			item.newAndShiny = true;
  			Item item2 = thePlayer.GetItem(owner, item, default(GetItemSettings));
