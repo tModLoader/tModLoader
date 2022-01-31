@@ -42,8 +42,6 @@ namespace ExampleMod.Content.Projectiles
 		public override void OnSpawn(IEntitySource source) {
 			// Decide color of the pole by getting the index of a random entry from the PossibleLineColors array.
 			fishingLineColorIndex = (byte)Main.rand.Next(PossibleLineColors.Length);
-			// Tell the game to sync this projectile in multiplayer, so the line color is synced.
-			Projectile.netUpdate = true;
 		}
 
 		// What if we want to randomize the line color
