@@ -5,7 +5,7 @@
  {
 +	// Renamed from ProjectileSource*
 -	public class ProjectileSource_TileBreak : AProjectileSource_Tile
-+	public class EntitySource_TileBreak : EntitySource_Tile
++	public class EntitySource_TileBreak : AEntitySource_Tile
  	{
 -		public ProjectileSource_TileBreak(int tileCoordsX, int tileCoordsY)
 +		public EntitySource_TileBreak(int tileCoordsX, int tileCoordsY)

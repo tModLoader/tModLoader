@@ -6,12 +6,12 @@
  {
 +	// Renamed from AProjectileSource_Tile
 -	public abstract class AProjectileSource_Tile : IProjectileSource
-+	public abstract class EntitySource_Tile : IEntitySource
++	public abstract class AEntitySource_Tile : IEntitySource
  	{
  		public readonly Point TileCoords;
  
 -		public AProjectileSource_Tile(int tileCoordsX, int tileCoordsY) {
-+		public EntitySource_Tile(int tileCoordsX, int tileCoordsY) {
++		public AEntitySource_Tile(int tileCoordsX, int tileCoordsY) {
  			TileCoords = new Point(tileCoordsX, tileCoordsY);
  		}
  	}

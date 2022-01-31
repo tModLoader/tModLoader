@@ -5,7 +5,7 @@
  {
 +	// Renamed from ProjectileSource*
 -	public class ProjectileSource_ShakeTree : AProjectileSource_Tile
-+	public class EntitySource_ShakeTree : EntitySource_Tile
++	public class EntitySource_ShakeTree : AEntitySource_Tile
  	{
 -		public ProjectileSource_ShakeTree(int tileCoordsX, int tileCoordsY)
 +		public EntitySource_ShakeTree(int tileCoordsX, int tileCoordsY)

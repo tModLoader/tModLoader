@@ -5,7 +5,7 @@
  {
 +	// Renamed from ProjectileSource*
 -	public class ProjectileSource_TileInteraction : AProjectileSource_Tile
-+	public class EntitySource_TileInteraction : EntitySource_Tile
++	public class EntitySource_TileInteraction : AEntitySource_Tile
  	{
  		public readonly Player Player;
  
