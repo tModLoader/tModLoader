@@ -123,7 +123,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Take the tile, check if it actually exists
 			Point p = new Point(i, j);
 			Tile tile = Main.tile[p.X, p.Y];
-			if (tile == null || !tile.IsActive) {
+			if (tile == null || !tile.HasTile) {
 				return;
 			}
 

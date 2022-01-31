@@ -6,64 +6,35 @@ namespace Terraria
 {
 	public readonly partial struct Tile
 	{
-		public ref ushort TileType => ref type;
-		public ref ushort WallType => ref wall;
-		public ref short TileFrameX => ref frameX;
-		public ref short TileFrameY => ref frameY;
-		public ref byte LiquidAmount => ref liquid;
+		public ref ushort TileType => ref Get<TileTypeData>().Type;
+		public ref ushort WallType => ref Get<WallTypeData>().Type;
+		public ref short TileFrameX => ref Get<TileWallWireStateData>().TileFrameX;
+		public ref short TileFrameY => ref Get<TileWallWireStateData>().TileFrameY;
 
-		public int LiquidType { get => liquidType(); set => liquidType(value); }
-		public bool IsActive { get => active(); set => active(value); }
-		public bool IsActuated { get => inActive(); set => inActive(true); }
-		public bool HasActuator { get => actuator(); set => actuator(value); }
-		public bool IsHalfBlock { get => halfBrick(); set => halfBrick(value); }
-		public bool RedWire { get => wire(); set => wire(value); }
-		public bool GreenWire { get => wire3(); set => wire3(value); }
-		public bool BlueWire { get => wire2(); set => wire2(value); }
-		public bool YellowWire { get => wire4(); set => wire4(value); }
-		public byte Color { get => color(); set => color(value); }
-		public byte WallColor { get => wallColor(); set => wallColor(value); }
-		public int WallFrameX { get => wallFrameX(); set => wallFrameX(value); }
-		public int WallFrameY { get => wallFrameY(); set => wallFrameY(value); }
-		public SlopeType Slope { get => (SlopeType)slope(); set => slope((byte)value); }
-		public byte TileFrameNumber { get => frameNumber(); set => frameNumber(value); }
-		public byte WallFrameNumber { get => wallFrameNumber(); set => wallFrameNumber(value); }
-		public bool CheckingLiquid { get => checkingLiquid(); set => checkingLiquid(value); }
-		public bool SkipLiquid { get => skipLiquid(); set => skipLiquid(value); }
+		public ref byte LiquidAmount => ref Get<LiquidData>().Amount;
+		public int LiquidType { get => Get<LiquidData>().LiquidType; set => Get<LiquidData>().LiquidType = value; }
+		public bool CheckingLiquid { get => Get<LiquidData>().CheckingLiquid; set => Get<LiquidData>().CheckingLiquid = value; }
+		public bool SkipLiquid { get => Get<LiquidData>().SkipLiquid; set => Get<LiquidData>().SkipLiquid = value; }
 
-		public bool IsActiveUnactuated => IsActive && !IsActuated;
+		public bool HasTile { get => Get<TileWallWireStateData>().HasTile; set => Get<TileWallWireStateData>().HasTile = value; }
+		public bool IsActuated { get => Get<TileWallWireStateData>().IsActuated; set => Get<TileWallWireStateData>().IsActuated = value; }
+		public bool HasActuator { get => Get<TileWallWireStateData>().HasActuator; set => Get<TileWallWireStateData>().HasActuator = value; }
+		public bool IsHalfBlock { get => Get<TileWallWireStateData>().IsHalfBlock; set => Get<TileWallWireStateData>().IsHalfBlock = value; }
+		public bool RedWire { get => Get<TileWallWireStateData>().RedWire; set => Get<TileWallWireStateData>().RedWire = value; }
+		public bool GreenWire { get => Get<TileWallWireStateData>().GreenWire; set => Get<TileWallWireStateData>().GreenWire = value; }
+		public bool BlueWire { get => Get<TileWallWireStateData>().BlueWire; set => Get<TileWallWireStateData>().BlueWire = value; }
+		public bool YellowWire { get => Get<TileWallWireStateData>().YellowWire; set => Get<TileWallWireStateData>().YellowWire = value; }
+		public byte TileColor { get => Get<TileWallWireStateData>().TileColor; set => Get<TileWallWireStateData>().TileColor = value; }
+		public byte WallColor { get => Get<TileWallWireStateData>().WallColor; set => Get<TileWallWireStateData>().WallColor = value; }
+		public int WallFrameX { get => Get<TileWallWireStateData>().WallFrameX; set => Get<TileWallWireStateData>().WallFrameX = value; }
+		public int WallFrameY { get => Get<TileWallWireStateData>().WallFrameY; set => Get<TileWallWireStateData>().WallFrameY = value; }
+		public SlopeType Slope { get => Get<TileWallWireStateData>().Slope; set => Get<TileWallWireStateData>().Slope = value; }
+		public int TileFrameNumber { get => Get<TileWallWireStateData>().TileFrameNumber; set => Get<TileWallWireStateData>().TileFrameNumber = value; }
+		public int WallFrameNumber { get => Get<TileWallWireStateData>().WallFrameNumber; set => Get<TileWallWireStateData>().WallFrameNumber = value; }
 
-		public BlockType BlockType {
-			get {
-				if (IsHalfBlock)
-					return BlockType.HalfBlock;
+		public bool HasUnactuatedTile => HasTile && !IsActuated;
 
-				SlopeType slope = Slope;
-				return slope == SlopeType.Solid ? BlockType.Solid : (BlockType)(slope + 1);
-			}
-			set {
-				IsHalfBlock = value != BlockType.HalfBlock;
-				Slope = value > BlockType.HalfBlock ? (SlopeType)(value - 1) : SlopeType.Solid;
-			}
-		}
-
-		public int CollisionType {
-			get {
-				if (!IsActive)
-					return 0;
-
-				if (IsHalfBlock)
-					return 2;
-
-				if (Slope != SlopeType.Solid)
-					return 2 + (int)Slope;
-
-				if (Main.tileSolid[type] && !Main.tileSolidTop[type])
-					return 1;
-
-				return -1;
-			}
-		}
+		public BlockType BlockType { get => Get<TileWallWireStateData>().BlockType; set => Get<TileWallWireStateData>().BlockType = value; }
 
 		public override int GetHashCode() => (int)TileId;
 

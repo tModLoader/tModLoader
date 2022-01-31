@@ -231,13 +231,13 @@ namespace ExampleMod.NPCs
 			if (!flag18) {
 				for (int num184 = num180; num184 < num181; num184++) {
 					for (int num185 = num182; num185 < num183; num185++) {
-						if (Main.tile[num184, num185] != null && (Main.tile[num184, num185].IsActiveUnactuated && (Main.tileSolid[(int)Main.tile[num184, num185].TileType] || Main.tileSolidTop[(int)Main.tile[num184, num185].TileType] && Main.tile[num184, num185].TileFrameY == 0) || Main.tile[num184, num185].LiquidAmount > 64)) {
+						if (Main.tile[num184, num185] != null && (Main.tile[num184, num185].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[num184, num185].TileType] || Main.tileSolidTop[(int)Main.tile[num184, num185].TileType] && Main.tile[num184, num185].TileFrameY == 0) || Main.tile[num184, num185].LiquidAmount > 64)) {
 							Vector2 vector17;
 							vector17.X = (float)(num184 * 16);
 							vector17.Y = (float)(num185 * 16);
 							if (NPC.position.X + (float)NPC.width > vector17.X && NPC.position.X < vector17.X + 16f && NPC.position.Y + (float)NPC.height > vector17.Y && NPC.position.Y < vector17.Y + 16f) {
 								flag18 = true;
-								if (Main.rand.NextBool(100) && NPC.behindTiles && Main.tile[num184, num185].IsActiveUnactuated) {
+								if (Main.rand.NextBool(100) && NPC.behindTiles && Main.tile[num184, num185].HasUnactuatedTile) {
 									WorldGen.KillTile(num184, num185, true, true, false);
 								}
 								if (Main.netMode != NetmodeID.MultiplayerClient && Main.tile[num184, num185].TileType == 2) {
