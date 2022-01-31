@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Terraria
@@ -10,6 +9,7 @@ namespace Terraria
 
 	internal static class TileData
 	{
+		internal static Action OnClearEverything;
 		internal static Action<uint> OnSetLength;
 		internal static Action<uint> OnClearSingle;
 		internal static Action<uint, uint> OnCopySingle;
@@ -24,14 +24,10 @@ namespace Terraria
 				typeof(TileData<>).MakeGenericType(type).TypeInitializer.Invoke(null, null);
 			}
 		}
-		internal static void SetLength(uint len)
-			=> OnSetLength?.Invoke(len);
-
-		public static void ClearSingle(uint index)
-			=> OnClearSingle?.Invoke(index);
-
-		public static void CopySingle(uint sourceIndex, uint destinationIndex)
-			=> OnCopySingle?.Invoke(sourceIndex, destinationIndex);
+		internal static void ClearEverything() => OnClearEverything();
+		internal static void SetLength(uint len) => OnSetLength(len);
+		internal static void ClearSingle(uint index) => OnClearSingle(index);
+		internal static void CopySingle(uint sourceIndex, uint destinationIndex) => OnCopySingle(sourceIndex, destinationIndex);
 	}
 
 	internal static unsafe class TileData<T> where T : unmanaged, ITileData
@@ -42,12 +38,17 @@ namespace Terraria
 		private static GCHandle handle;
 
 		static TileData() {
+			TileData.OnClearEverything += ClearEverything;
 			TileData.OnSetLength += SetLength;
 			TileData.OnCopySingle += CopySingle;
 			TileData.OnClearSingle += ClearSingle;
 		}
 
-		internal static unsafe void SetLength(uint len) {
+		public static void ClearEverything() {
+			Array.Clear(data);
+		}
+
+		private static unsafe void SetLength(uint len) {
 			if (data != null)
 				handle.Free();
 
@@ -56,11 +57,11 @@ namespace Terraria
 			ptr = (T*)handle.AddrOfPinnedObject().ToPointer();
 		}
 
-		public static unsafe void ClearSingle(uint index) {
+		private static unsafe void ClearSingle(uint index) {
 			ptr[index] = default;
 		}
 
-		public static unsafe void CopySingle(uint sourceIndex, uint destinationIndex) {
+		private static unsafe void CopySingle(uint sourceIndex, uint destinationIndex) {
 			ptr[destinationIndex] = ptr[sourceIndex];
 		}
 	}

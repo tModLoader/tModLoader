@@ -30,5 +30,7 @@ namespace Terraria
 			Height = height;
 			TileData.SetLength(width * height);
 		}
+
+		public void ClearEverything() => TileData.ClearEverything();
 	}
 }
