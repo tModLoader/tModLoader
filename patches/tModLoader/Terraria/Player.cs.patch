@@ -3315,6 +3315,36 @@
  			int num = 50;
  			if (newItem.IsACoin)
  				num = 54;
+@@ -27807,7 +_,8 @@
+ 			if (theSlot.type == 0)
+ 				return true;
+ 
+-			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot))
++			//if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot))
++			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot) && theSlot.prefix != theItemToAccept.prefix) // TML: #StackablePrefixWeapons
+ 				return true;
+ 
+ 			return false;
+@@ -27973,7 +_,8 @@
+ 		}
+ 
+ 		private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i) {
+-			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
++			//if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
++			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i]) && returnItem.prefix == inv[i].prefix) { // TML: #StackablePrefixWeapons
+ 				if (newItem.IsACoin)
+ 					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
+ 				else
+@@ -28002,7 +_,8 @@
+ 		}
+ 
+ 		private bool GetItem_FillIntoOccupiedSlot(int plr, Item newItem, GetItemSettings settings, Item returnItem, int i) {
+-			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
++			//if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
++			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i]) && returnItem.prefix == inventory[i].prefix) { // TML: #StackablePrefixWeapons
+ 				if (newItem.IsACoin)
+ 					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
+ 				else
 @@ -28110,6 +_,8 @@
  				return;
  

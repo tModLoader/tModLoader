@@ -2759,7 +2759,7 @@
  								bool favorited = reforgeItem.favorited;
 -								reforgeItem.netDefaults(reforgeItem.netID);
 -								reforgeItem.Prefix(-2);
-+								int stack = reforgeItem.stack;	//keep the stack, stacked weps support (i.e. light discs)
++								int stack = reforgeItem.stack;  //#StackablePrefixWeapons: keep the stack, (i.e. light discs)
 +																//vanilla doesn't have a good way of resetting prefixes, so it creates a new item entirely
 +																//before we roll the prefix, we simply copy over the old mod data before doing so
 +								Item r = new Item();

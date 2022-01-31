@@ -18,3 +18,83 @@
  				}
  			}
  			else if (player.chest == -2) {
+@@ -399,6 +_,9 @@
+ 								if (chest.item[i].stack >= chest.item[i].maxStack || !player.inventory[num].IsTheSameAs(chest.item[i]))
+ 									continue;
+ 
++								if (player.inventory[num].prefix != chest.item[i].prefix) // TML: #StackablePrefixWeapons
++									continue;
++
+ 								int num2 = player.inventory[num].stack;
+ 								if (player.inventory[num].stack + chest.item[i].stack > chest.item[i].maxStack)
+ 									num2 = chest.item[i].maxStack - chest.item[i].stack;
+@@ -423,7 +_,8 @@
+ 									NetMessage.SendData(32, -1, -1, null, player.chest, i);
+ 							}
+ 							else if (player.chest == -3) {
+-								if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
++								//if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
++								if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i]) && player.inventory[num].prefix == player.bank2.item[i].prefix) { // TML: #StackablePrefixWeapons
+ 									int num3 = player.inventory[num].stack;
+ 									if (player.inventory[num].stack + player.bank2.item[i].stack > player.bank2.item[i].maxStack)
+ 										num3 = player.bank2.item[i].maxStack - player.bank2.item[i].stack;
+@@ -443,7 +_,8 @@
+ 								}
+ 							}
+ 							else if (player.chest == -4) {
+-								if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
++								//if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
++								if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i]) && player.inventory[num].prefix == player.bank3.item[i].prefix) { // TML: #StackablePrefixWeapons
+ 									int num4 = player.inventory[num].stack;
+ 									if (player.inventory[num].stack + player.bank3.item[i].stack > player.bank3.item[i].maxStack)
+ 										num4 = player.bank3.item[i].maxStack - player.bank3.item[i].stack;
+@@ -463,7 +_,8 @@
+ 								}
+ 							}
+ 							else if (player.chest == -5) {
+-								if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
++								//if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
++								if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i]) && player.inventory[num].prefix == player.bank4.item[i].prefix) { // TML: #StackablePrefixWeapons
+ 									int num5 = player.inventory[num].stack;
+ 									if (player.inventory[num].stack + player.bank4.item[i].stack > player.bank4.item[i].maxStack)
+ 										num5 = player.bank4.item[i].maxStack - player.bank4.item[i].stack;
+@@ -482,7 +_,8 @@
+ 									}
+ 								}
+ 							}
+-							else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
++							//else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
++							else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i]) && player.inventory[num].prefix == player.bank.item[i].prefix) { // TML: #StackablePrefixWeapons
+ 								int num6 = player.inventory[num].stack;
+ 								if (player.inventory[num].stack + player.bank.item[i].stack > player.bank.item[i].maxStack)
+ 									num6 = player.bank.item[i].maxStack - player.bank.item[i].stack;
+@@ -615,7 +_,8 @@
+ 				int num2 = list2[k];
+ 				int netID = item[num2].netID;
+ 				foreach (KeyValuePair<int, int> item2 in dictionary) {
+-					if (item2.Value == netID && inventory[item2.Key].netID == netID) {
++					//if (item2.Value == netID && inventory[item2.Key].netID == netID) {
++					if (item2.Value == netID && inventory[item2.Key].netID == netID && item[num2].prefix == inventory[item2.Key].prefix) { // TML: #StackablePrefixWeapons
+ 						int num3 = inventory[item2.Key].stack;
+ 						int num4 = item[num2].maxStack - item[num2].stack;
+ 						if (num4 == 0)
+@@ -655,6 +_,9 @@
+ 					if ((item5.Value != num6 || inventory[item5.Key].netID != num6) && (!flag || inventory[item5.Key].stack <= 0))
+ 						continue;
+ 
++					if (item[num5].prefix != inventory[item5.Key].prefix) // TML: #StackablePrefixWeapons
++						continue;
++
+ 					SoundEngine.PlaySound(7);
+ 					if (flag) {
+ 						num6 = item5.Value;
+@@ -1000,6 +_,9 @@
+ 			if (I.maxStack > 1) {
+ 				for (int i = 0; i < 40; i++) {
+ 					if (chestinv[i].stack >= chestinv[i].maxStack || !I.IsTheSameAs(chestinv[i]))
++						continue;
++
++					if (I.prefix != chestinv[i].prefix) // TML: #StackablePrefixWeapons
+ 						continue;
+ 
+ 					int num = I.stack;

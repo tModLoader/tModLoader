@@ -101,6 +101,16 @@
  							case 10:
  							case 11:
  							case 12:
+@@ -495,7 +_,8 @@
+ 					}
+ 					if (inv[slot].type == 0 || inv[slot].stack < 1)
+ 						inv[slot] = new Item();
+-					if (Main.mouseItem.IsTheSameAs(inv[slot])) {
++					//if (Main.mouseItem.IsTheSameAs(inv[slot])) {
++					if (Main.mouseItem.IsTheSameAs(inv[slot]) && Main.mouseItem.prefix == inv[slot].prefix) { // TML: #StackablePrefixWeapons
+ 						Utils.Swap(ref inv[slot].favorited, ref Main.mouseItem.favorited);
+ 						if (inv[slot].stack != inv[slot].maxStack && Main.mouseItem.stack != Main.mouseItem.maxStack) {
+ 							if (Main.mouseItem.stack + inv[slot].stack <= Main.mouseItem.maxStack) {
 @@ -522,6 +_,13 @@
  					break;
  				case 1:
@@ -270,6 +280,16 @@
  				case 25:
  				case 27:
  					result = 2;
+@@ -982,7 +_,8 @@
+ 				if (context == 4 && inv[slot].maxStack <= 1)
+ 					flag = false;
+ 
+-				if (flag && (Main.mouseItem.IsTheSameAs(inv[slot]) || Main.mouseItem.type == 0) && (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0)) {
++				//if (flag && (Main.mouseItem.IsTheSameAs(inv[slot]) || Main.mouseItem.type == 0) && (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0)) {
++				if (flag && (Main.mouseItem.IsTheSameAs(inv[slot]) && Main.mouseItem.prefix == inv[slot].prefix || Main.mouseItem.type == 0) && (Main.mouseItem.stack < Main.mouseItem.maxStack || Main.mouseItem.type == 0)) { // TML: #StackablePrefixWeapons
+ 					PickupItemIntoMouse(inv, context, slot, player);
+ 					SoundEngine.PlaySound(12);
+ 					RefreshStackSplitCooldown();
 @@ -1041,10 +_,12 @@
  			switch (context) {
  				case 0:
@@ -411,7 +431,15 @@
  				case 12:
  				case 25:
  				case 27: {
-@@ -1305,6 +_,8 @@
+@@ -1299,12 +_,15 @@
+ 
+ 			_ = Main.instance.shop[Main.npcShop];
+ 			bool flag = (Main.mouseRight && rightClickIsValid) || (Main.mouseLeft && leftClickIsValid);
+-			if (!(Main.stackSplit <= 1 && flag) || inv[slot].type <= 0 || (!Main.mouseItem.IsTheSameAs(inv[slot]) && Main.mouseItem.type != 0))
++			//if (!(Main.stackSplit <= 1 && flag) || inv[slot].type <= 0 || (!Main.mouseItem.IsTheSameAs(inv[slot]) && Main.mouseItem.type != 0))
++			if (!(Main.stackSplit <= 1 && flag) || inv[slot].type <= 0 || (!(Main.mouseItem.IsTheSameAs(inv[slot]) && Main.mouseItem.prefix == inv[slot].prefix) && Main.mouseItem.type != 0)) // TML: #StackablePrefixWeapons
+ 				return;
+ 
  			int num = Main.superFastStack + 1;
  			Player localPlayer = Main.LocalPlayer;
  			for (int i = 0; i < num; i++) {
