@@ -7,14 +7,10 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
-   
     public class ExampleFlamethrower : ModItem
 	{
 		public override string Texture => "Terraria/Images/Item_" + ItemID.Flamethrower;
-		int speedX;
-		int speedY;
 		
-
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("This is a modded FlameThrower\nShoots a jet of cursed flames\nHas a 50% chance to not consume gel.");
@@ -43,21 +39,18 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.shootSpeed = 11f; // How fast the flames will travel. Vanilla Flamethrower uses 7f and consequentially has less reach. item.shootSpeed and projectile.timeLeft together control the range.
 			Item.useAmmo = AmmoID.Gel; // Makes the weapon use up Gel as ammo
 		}
-
+		
 		// Vanilla Flamethrower uses the commented out code below to prevent shooting while underwater, but this weapon can shoot underwater, so we don't use this code. The projectile also is specifically programmed to survive underwater.
 		/*public override bool CanUseItem(Player player)
 		{
 			return !player.wet;
 		}*/
-
+		
 		public override bool CanConsumeAmmo(Player player)
 		{
 			return Main.rand.NextFloat() >= 0.50f; 
 		}
-
-
-
-
+		
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
 			Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 54f;
