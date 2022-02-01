@@ -68,7 +68,6 @@ echo "Success!"
 run_script ./InstallNetFramework.sh
 
 echo "Attempting Launch..."
-exec 1>&3 3>&-
 
 # Actually run tML with the passed arguments
 # Move to the root folder
@@ -81,10 +80,10 @@ if [[ "$_uname" == *"_NT"* ]]; then
 fi
 
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
-	echo "Launched Using Local Dotnet" | tee -a "$LogFile"
+	echo "Launched Using Local Dotnet"
 	chmod a+x "$install_dir/dotnet"
 	exec "$install_dir/dotnet" tModLoader.dll "$@"
 else
-	echo "Launched Using System Dotnet" | tee -a "$LogFile"
+	echo "Launched Using System Dotnet"
 	exec dotnet tModLoader.dll "$@"
 fi
