@@ -68,7 +68,12 @@ if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
 			# Neither of Win7_32 or Win7_Arm are expected, so we just keep this as is
 			file_download dotnet-install.ps1 https://dot.net/v1/dotnet-install.ps1
 			
-			powershell.exe -NoProfile -ExecutionPolicy unrestricted -File dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "dotnet" -Version "$dotnet_version"
+			if [ ! -f dotnet-install.ps1 ]; then
+				echo "Failed to download dotnet-install.ps1. Relying on Powershell to work"
+				powershell.exe -NoProfile -ExecutionPolicy unrestricted -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel $channel -InstallDir \"$install_dir\" -Version $dotnet_version -Runtime dotnet"
+			else
+				powershell.exe -NoProfile -ExecutionPolicy unrestricted -File dotnet-install.ps1 -Channel "$channel" -InstallDir "$install_dir" -Runtime "dotnet" -Version "$dotnet_version"
+			fi
 	else
 		# *nix binaries are various and not worth detecting the required one here, always use "on-the-fly" script install
 		file_download dotnet-install.sh https://dot.net/v1/dotnet-install.sh
