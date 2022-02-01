@@ -88,6 +88,36 @@
  					SoundEngine.PlaySound(7);
  					if (flag) {
  						num6 = item5.Value;
+@@ -746,7 +_,8 @@
+ 			List<int> list2 = new List<int>();
+ 			for (int num = 57; num >= 0; num--) {
+ 				if ((num < 50 || num >= 54) && (inventory[num].type < 71 || inventory[num].type > 74)) {
+-					if (inventory[num].stack > 0 && inventory[num].maxStack > 1 && inventory[num].prefix == 0) {
++					//if (inventory[num].stack > 0 && inventory[num].maxStack > 1 && inventory[num].prefix == 0) {
++					if (inventory[num].stack > 0 && inventory[num].maxStack > 1) { // TML: #StackablePrefixWeapons, checked moved down
+ 						hashSet.Add(inventory[num].netID);
+ 						if (inventory[num].stack < inventory[num].maxStack)
+ 							list.Add(num);
+@@ -759,7 +_,8 @@
+ 
+ 			bool flag = false;
+ 			for (int i = 0; i < item.Length; i++) {
+-				if (item[i].stack < 1 || item[i].prefix != 0 || !hashSet.Contains(item[i].netID))
++				//if (item[i].stack < 1 || item[i].prefix != 0 || !hashSet.Contains(item[i].netID))
++				if (item[i].stack < 1 || !hashSet.Contains(item[i].netID)) // TML: #StackablePrefixWeapons, checked moved down
+ 					continue;
+ 
+ 				bool flag2 = false;
+@@ -772,6 +_,9 @@
+ 					if (inventory[num2].netID != item[i].netID || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
+ 						continue;
+ 
++					if (inventory[num2].prefix != item[i].prefix) // TML: #StackablePrefixWeapons, check moved here
++						continue;
++
+ 					int num3 = item[i].stack;
+ 					if (inventory[num2].maxStack - inventory[num2].stack < num3)
+ 						num3 = inventory[num2].maxStack - inventory[num2].stack;
 @@ -1000,6 +_,9 @@
  			if (I.maxStack > 1) {
  				for (int i = 0; i < 40; i++) {
