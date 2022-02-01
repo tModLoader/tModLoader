@@ -46,14 +46,5 @@ namespace ExampleMod.Content.Items.Weapons
 			return !player.wet;
 		}*/
 		
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-		{
-			Vector2 muzzleOffset = Vector2.Normalize(new Vector2(velocity.X, velocity.Y)) * 54f;
-			if (Collision.CanHit(position, 6, 6, position + muzzleOffset, 6, 6))
-			{
-				position += muzzleOffset;
-			}
-		}
-
 	}
 }
