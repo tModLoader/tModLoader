@@ -13,7 +13,7 @@ namespace ExampleMod.Content.Items.Weapons
 		
 		public override void SetStaticDefaults()
 		{
-			Tooltip.SetDefault("This is a modded FlameThrower\nShoots a jet of cursed flames\nHas a 50% chance to not consume gel.");
+			Tooltip.SetDefault("This is a modded FlameThrower\nShoots a jet of cursed flames.");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
@@ -45,11 +45,6 @@ namespace ExampleMod.Content.Items.Weapons
 		{
 			return !player.wet;
 		}*/
-		
-		public override bool CanConsumeAmmo(Player player)
-		{
-			return Main.rand.NextFloat() >= 0.50f; 
-		}
 		
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
