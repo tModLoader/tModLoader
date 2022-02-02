@@ -2886,7 +2886,7 @@
  			mouseItem.stack += stack;
 -			if (stack <= 0)
 +			//if (stack <= 0)
-+			if (stack <= 0 && !(mouseItem.maxStack > 1 && mouseItem.allowReforgeForStackableItem)) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items that can receive prefixes will not get one on craft
++			if (stack <= 0 && mouseItem.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
  				mouseItem.Prefix(-1);
  
  			mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
