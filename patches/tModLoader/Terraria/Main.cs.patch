@@ -2730,11 +2730,14 @@
  			int num54 = (screenHeight - 600) / 2;
  			int num55 = (int)((float)screenHeight / 600f * 250f);
  			if (screenHeight < 700) {
-@@ -30760,11 +_,17 @@
+@@ -30759,12 +_,19 @@
+ 					int num57 = 270;
  					string text = Lang.inter[46].Value + ": ";
  					if (reforgeItem.type > 0) {
- 						int num58 = reforgeItem.value;
+-						int num58 = reforgeItem.value;
 -						if (player[myPlayer].discount)
++						//int num58 = reforgeItem.value;
++						int num58 = reforgeItem.value * reforgeItem.stack; // TML: #StackablePrefixWeapons: scale with current stack size
 +						bool canApplyDiscount = true;
 +						if (!ItemLoader.ReforgePrice(reforgeItem, ref num58, ref canApplyDiscount))
 +							goto skipVanillaPricing;
@@ -2855,6 +2858,16 @@
  					int num5 = (i + 1) * 26;
  					if (recipe[availableRecipe[num3]].requiredTile[i] == -1) {
  						if (i == 0 && !recipe[availableRecipe[num3]].needWater && !recipe[availableRecipe[num3]].needHoney && !recipe[availableRecipe[num3]].needLava && !recipe[availableRecipe[num3]].needSnowBiome && !recipe[availableRecipe[num3]].needGraveyardBiome)
+@@ -31593,6 +_,9 @@
+ 			if (mouseItem.IsAir)
+ 				return true;
+ 
++			if (mouseItem.maxStack > 1 && mouseItem.allowReforgeForStackableItem && mouseItem.prefix > 0) // TML: #StackablePrefixWeapons: Gameplay impact: Prevent crafted prefix application by blocking crafting if mouse item is prefixed
++				return false;
++
+ 			if (mouseItem.IsTheSameAs(currentRecipe.createItem) && mouseItem.stack + currentRecipe.createItem.stack <= mouseItem.maxStack)
+ 				return true;
+ 
 @@ -31621,6 +_,11 @@
  				inventoryScale = 0.755f;
  				num += 5;
@@ -2867,7 +2880,16 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31857,8 +_,11 @@
+@@ -31850,15 +_,19 @@
+ 			int stack = mouseItem.stack;
+ 			mouseItem = r.createItem.Clone();
+ 			mouseItem.stack += stack;
+-			if (stack <= 0)
++			//if (stack <= 0)
++			if (stack <= 0 && !(mouseItem.maxStack > 1 && mouseItem.allowReforgeForStackableItem)) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items that can receive prefixes will not get one on craft
+ 				mouseItem.Prefix(-1);
+ 
+ 			mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
  			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
  			r.Create();

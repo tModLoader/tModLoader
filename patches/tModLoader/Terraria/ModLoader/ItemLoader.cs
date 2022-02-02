@@ -141,7 +141,7 @@ namespace Terraria.ModLoader
 
 		internal static bool IsModItem(int index) => index >= ItemID.Count;
 
-		private static bool GeneralPrefix(Item item) => item.maxStack == 1 && item.damage > 0 && item.ammo == 0 && !item.accessory;
+		private static bool GeneralPrefix(Item item) => item.IsCandidateForReforge && item.damage > 0 && item.ammo == 0 && !item.accessory;
 
 		//Add all these to Terraria.Item.Prefix
 		internal static bool MeleePrefix(Item item) => item.ModItem != null && GeneralPrefix(item) && item.melee && !item.noUseGraphic;

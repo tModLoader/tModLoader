@@ -217,7 +217,7 @@
 +						PrefixLoader.Roll(this, ref num, numVanilla, unifiedRandom, PrefixCategory.AnyWeapon, PrefixCategory.Magic);
  					}
 -					else if (type == 55 || type == 119 || type == 191 || type == 284 || type == 670 || type == 1122 || type == 1513 || type == 1569 || type == 1571 || type == 1825 || type == 1918 || type == 3054 || type == 3262 || (type >= 3278 && type <= 3292) || (type >= 3315 && type <= 3317) || type == 3389 || type == 3030 || type == 3543 || type == 4764 || type == 4818 || type == 4760) {
-+					else if (type == 55 || type == 119 || type == 191 || type == 284 || type == 670 || type == 1122 || type == 1513 || type == 1569 || type == 1571 || type == 1825 || type == 1918 || type == 3054 || type == 3262 || (type >= 3278 && type <= 3292) || (type >= 3315 && type <= 3317) || type == 3389 || type == 3030 || type == 3543 || type == 4764 || type == 4818 || type == 4760 || ItemLoader.WeaponPrefix(this)) {
++					else if (type == 55 || type == 119 || type == 191 || type == 284 || type == 670 || type == 1122 || type == 1513 || type == 1569 || type == 1571 || type == 1825 || type == 1918 || type == 3054 || type == 3262 || (type >= 3278 && type <= 3292) || (type >= 3315 && type <= 3317) || type == 3389 || type == 3030 || type == 3543 || type == 4764 || type == 4818 || type == 4760 || (IsCandidateForReforge && (type == ItemID.Bananarang || type == ItemID.LightDisc)) || ItemLoader.WeaponPrefix(this)) {
 +						const int numVanilla = 14;
 -						int num13 = unifiedRandom.Next(14);
 +						int num13 = unifiedRandom.Next(numVanilla);
@@ -493,12 +493,13 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -45203,14 +_,19 @@
+@@ -45203,14 +_,20 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			ModItem = null;
 +			globalItems = new Instanced<GlobalItem>[0];
++			allowReforgeForStackableItem = false;
 +			DamageType = DamageClass.Generic;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;

@@ -19,6 +19,17 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
 
+		/// <summary>
+		/// Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1.
+		/// <br>This prevents it from receiving a prefix on craft.</br>
+		/// </summary>
+		public bool allowReforgeForStackableItem = false;
+
+		/// <summary>
+		/// Used to make stackable items reforgeable
+		/// </summary>
+		public bool IsCandidateForReforge => maxStack == 1 || allowReforgeForStackableItem;
+
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
 		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or <see cref="ModContent.GetInstance"/> for custom damage types.

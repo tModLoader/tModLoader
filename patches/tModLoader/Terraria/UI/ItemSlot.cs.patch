@@ -42,6 +42,26 @@
  		private static bool[] canFavoriteAt;
  		private static bool[] canShareAt;
  		private static float[] inventoryGlowHue;
+@@ -260,7 +_,8 @@
+ 							case 1:
+ 							case 2:
+ 								if (context == 0 && Main.InReforgeMenu) {
+-									if (item.maxStack == 1 && item.Prefix(-3))
++									//if (item.maxStack == 1 && item.Prefix(-3))
++									if (item.IsCandidateForReforge && item.Prefix(-3)) // TML: #StackablePrefixWeapons
+ 										Main.cursorOverride = 9;
+ 								}
+ 								else if (context == 0 && Main.InGuideCraftMenu) {
+@@ -318,7 +_,8 @@
+ 								Main.cursorOverride = 9;
+ 							}
+ 							else if (context == 0 && Main.InReforgeMenu) {
+-								if (item.maxStack == 1 && item.Prefix(-3))
++								//if (item.maxStack == 1 && item.Prefix(-3))
++								if (item.IsCandidateForReforge && item.Prefix(-3)) // TML: #StackablePrefixWeapons
+ 									Main.cursorOverride = 9;
+ 							}
+ 							else if (context == 0 && Main.InGuideCraftMenu) {
 @@ -372,13 +_,17 @@
  		}
  
