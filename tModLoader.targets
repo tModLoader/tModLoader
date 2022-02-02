@@ -8,7 +8,7 @@
     <Reference Remove="$(tMLSteamPath)**/FNA.dll"/>
     <Reference Remove="$(tMLSteamPath)**/ReLogic.dll"/>
     <Reference Remove="$(tMLSteamPath)**/tModLoader.dll"/>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)FNA/FNA.csproj" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)FNA/FNA.Core.csproj" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/ReLogic/ReLogic.csproj" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/Terraria/Terraria.csproj" />
   </ItemGroup>

@@ -5,7 +5,7 @@ OS-Mac:
     - 'OS.*Mac'
 Requestor-Player:
     - 'Gameplay as a Player'
-Requestor-Modder:
+Requestor-Modders:
     - 'Mod capability as a Modder'
 Requestor-TML Maintainers:
     - 'tModLoader code as a Contributor/Maintainer'

@@ -302,12 +302,14 @@
  			if ((double)num14 >= 1.2)
  				rare += 2;
  			else if ((double)num14 >= 1.05)
-@@ -1076,17 +_,20 @@
+@@ -1076,17 +_,22 @@
  			else if ((double)num14 <= 0.95)
  				rare--;
  
 +			if (baseRarity >= ItemRarityID.Count)
 +				rare = RarityLoader.GetRarity(baseRarity).GetPrefixedRarity(rare - baseRarity, num14);
++			else if (rare > ItemRarityID.Purple)
++				rare = ItemRarityID.Purple;
 +
  			if (rare > -11) {
  				if (rare < -1)
