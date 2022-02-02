@@ -51,10 +51,8 @@ namespace ExampleMod.Content.Projectile
 					{
 						dust.noGravity = true;
 						dust.scale *= 3f;
-						Dust dust2 = dust;
-						dust2.velocity.X = dust2.velocity.X * 2f;
-						Dust dust3 = dust;
-						dust3.velocity.Y = dust3.velocity.Y * 2f;
+						dust.velocity.X = dust.velocity.X * 2f;
+						dust.velocity.Y = dust.velocity.Y * 2f;
 					}
 					dust.scale *= 2.5f;
 					dust.velocity *= 1.5f;
