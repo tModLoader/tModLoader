@@ -6,7 +6,6 @@ namespace ExampleMod.Content.Projectile
 {
     public class ExampleFlame : ModProjectile
     {
-		public override string Texture => "Terraria/Projectile_" + ProjectileID.Flames;
 		public override void SetDefaults()
 		{
 			Projectile.width = 6;
