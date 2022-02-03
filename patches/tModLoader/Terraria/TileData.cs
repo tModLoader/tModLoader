@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 
 namespace Terraria
 {
@@ -14,18 +15,13 @@ namespace Terraria
 		internal static Action<uint> OnClearSingle;
 		internal static Action<uint, uint> OnCopySingle;
 
-		static TileData() {
-			// Initialize vanilla types. Probably temporary implementation.
-			foreach (var type in Assembly.GetExecutingAssembly().GetTypes()) {
-				if (type.IsAbstract || !type.IsValueType || !type.GetInterfaces().Contains(typeof(ITileData))) {
-					continue;
-				}
-
-				typeof(TileData<>).MakeGenericType(type).TypeInitializer.Invoke(null, null);
-			}
+		internal static uint Length { get; private set; }
+		internal static void SetLength(uint len) {
+			Length = len;
+			OnSetLength?.Invoke(len);
 		}
+
 		internal static void ClearEverything() => OnClearEverything();
-		internal static void SetLength(uint len) => OnSetLength(len);
 		internal static void ClearSingle(uint index) => OnClearSingle(index);
 		internal static void CopySingle(uint sourceIndex, uint destinationIndex) => OnCopySingle(sourceIndex, destinationIndex);
 	}
@@ -38,10 +34,24 @@ namespace Terraria
 		private static GCHandle handle;
 
 		static TileData() {
-			TileData.OnClearEverything += ClearEverything;
 			TileData.OnSetLength += SetLength;
+			TileData.OnClearEverything += ClearEverything;
 			TileData.OnCopySingle += CopySingle;
 			TileData.OnClearSingle += ClearSingle;
+			AssemblyLoadContext.GetLoadContext(typeof(T).Assembly).Unloading += _ => Unload();
+
+			SetLength(TileData.Length);
+		}
+
+		private static void Unload() {
+			TileData.OnSetLength -= SetLength;
+			TileData.OnClearEverything -= ClearEverything;
+			TileData.OnCopySingle -= CopySingle;
+			TileData.OnClearSingle -= ClearSingle;
+			if (data != null) {
+				handle.Free();
+				data = null;
+			}
 		}
 
 		public static void ClearEverything() {
