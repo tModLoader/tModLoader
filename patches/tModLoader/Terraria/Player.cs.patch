@@ -4013,6 +4013,17 @@
  						if (tile.halfBrick()) {
  							WorldGen.PoundTile(x, y);
  							if (Main.netMode == 1)
+@@ -32594,8 +_,8 @@
+ 				cursorItemIconEnabled = true;
+ 				Main.ItemIconCacheUpdate(sItem.type);
+ 			}
+-
+-			if (!ItemTimeIsZero || itemAnimation <= 0 || !controlUseItem)
++			// Stack size check added by TML. Works by coincidence in vanilla.
++			if (!ItemTimeIsZero || itemAnimation <= 0 || !controlUseItem || sItem.stack <= 0)
+ 				return;
+ 
+ 			if (sItem.type == 205 || (sItem.type == 3032 && Main.tile[tileTargetX, tileTargetY].liquidType() == 0) || (sItem.type == 4872 && Main.tile[tileTargetX, tileTargetY].lava())) {
 @@ -32922,7 +_,8 @@
  				}
  
@@ -4218,7 +4229,7 @@
  		}
  
  		private bool ItemCheck_CheckCanUse(Item sItem) {
-+			if(!CombinedHooks.CanUseItem(this, sItem))
++			if(sItem.IsAir || !CombinedHooks.CanUseItem(this, sItem))
 +				return false;
 +
  			int whoAmI = base.whoAmI;
