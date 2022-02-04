@@ -1,0 +1,33 @@
+--- src/Terraria/Terraria/ID/BiomeID.cs
++++ src/tModLoader/Terraria/ID/BiomeID.cs
+@@ -1,7 +_,22 @@
++using ReLogic.Reflection;
++using Terraria.GameContent;
++
+ namespace Terraria.ID
+ {
+-	internal class BiomeID
++	/// <summary>
++	/// <b>WARNING:</b> This is not an exhaustive list of vanilla biomes.
++	/// This class only covers the biomes used for NPC happiness.
++	/// </summary>
++	/// TODO: biomeFullName does not exist for vanilla biomes and scope of class only covers biomes that are used in npc happiness
++	public class PrimaryBiomeID
+ 	{
++		/// <summary>
++		/// Equivalent to <see cref="ShopHelper.BiomeNameByKey"/>
++		/// </summary>
++		/// <param name="biomeID"></param>
++		/// <returns>Localized name of the biome with <paramref name="biomeID"/></returns>
++		public static string GetLocalizedName(int biomeID) => ShopHelper.BiomeNameByKey(biomeID);
++		public static readonly IdDictionary Search = IdDictionary.Create<PrimaryBiomeID, int>();
+ 		public const int Forest = 0;
+ 		public const int NormalUnderground = 1;
+ 		public const int Snow = 2;
+@@ -13,5 +_,6 @@
+ 		public const int Dungeon = 8;
+ 		public const int Corruption = 9;
+ 		public const int Crimson = 10;
++		public const int Count = 11;
+ 	}
+ }

@@ -62,10 +62,11 @@ namespace ExampleMod.NPCs
 		public override void CustomBehavior() {
 			if (Main.netMode != NetmodeID.MultiplayerClient) {
 				if (attackCounter > 0) {
-					attackCounter--;
+					attackCounter--; // tick down the attack counter.
 				}
 
 				Player target = Main.player[NPC.target];
+				// If the attack counter is 0, this NPC is less than 12.5 tiles away from its target, and has a path to the target unobstructed by blocks, summon a projectile.
 				if (attackCounter <= 0 && Vector2.Distance(NPC.Center, target.Center) < 200 && Collision.CanHit(NPC.Center, 1, 1, target.Center, 1, 1)) {
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
