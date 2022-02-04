@@ -20,10 +20,10 @@
 -  <PropertyGroup Condition="!$(Configuration.Contains('Debug'))">
 -    <AssemblyName>$(AssemblyName)Release</AssemblyName>
 +  <PropertyGroup>
-+    <tMLVersion>0.12</tMLVersion>
++    <tMLVersion Condition="'$(TmlVersion)' == ''">9999.0</tMLVersion>
 +    <BuildPurpose Condition="'$(BuildPurpose)' == ''">dev</BuildPurpose>
 +    <BranchName Condition="'$(BranchName)' == ''">unknown</BranchName>
-+  <BranchName>$(BranchName.Replace("-",""))</BranchName>
++    <BranchName>$(BranchName.Replace("-",""))</BranchName>
 +    <CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
 +    <BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
 +    <SourceRevisionId>$(tMLVersion)-$(BranchName)-$(BuildPurpose)-$(CommitSHA)-$(BuildDate)</SourceRevisionId>

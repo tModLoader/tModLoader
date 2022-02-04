@@ -28,6 +28,7 @@ namespace Terraria.ModLoader
 		public static readonly DateTime BuildDate;
 
 		public static bool IsRelease => Purpose == BuildPurpose.Release;
+		public static bool IsBeta => Purpose == BuildPurpose.Beta;
 
 
 		// SteamApps.GetCurrentBetaName(out string betaName, 100) ? betaName :
@@ -57,17 +58,20 @@ namespace Terraria.ModLoader
 				BuildDate = DateTime.FromBinary(long.Parse(parts[4])).ToLocalTime();
 			}
 
-
+			// Version name for players
 			versionedName = $"tModLoader v{tMLVersion}";
 
-			if (!string.IsNullOrEmpty(BranchName) && BranchName != "master" && BranchName != "unknown")
+			if (!string.IsNullOrEmpty(BranchName) && BranchName != "unknown"
+				&& BranchName != "1.4-stable" && BranchName != "1.4-preview" && BranchName != "1.4-dev")
 				versionedName += $" {BranchName}";
 
 			if (Purpose != BuildPurpose.Release)
 				versionedName += $" {Purpose}";
 
+			// Version Tag for ???
 			versionTag = versionedName.Substring("tModLoader ".Length).Replace(' ', '-').ToLower();
 
+			// Version name for modders
 			versionedNameDevFriendly = versionedName;
 
 			if (CommitSHA != "unknown")

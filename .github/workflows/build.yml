@@ -4,16 +4,16 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4, 1.4_mergedtesting, gh_actions_test]
+    branches: [1.4-dev, 1.4_mergedtesting, gh_actions_test, 1.4-preview, 1.4-stable, 1.4]
   pull_request_target:
     types: [labeled]
-    branches: [1.4, 1.4_mergedtesting]
+    branches: [1.4-preview, 1.4-stable, 1.4-dev, 1.4_mergedtesting, 1.4]
   # Allows you to run this workflow manually from the Actions tab
   # workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+  # This workflow contains a primary job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: windows-latest
@@ -29,6 +29,45 @@ jobs:
           persist-credentials: false
           fetch-depth: 10
 
+      - name: Update Versioning
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
+        shell: bash
+        run: |
+          read -r version<.\version.txt
+          regex="^([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
+          if [[ $version =~ $regex ]]; then
+            year="${BASH_REMATCH[1]}"
+            month="${BASH_REMATCH[2]}"
+            feature="${BASH_REMATCH[3]}"
+            patch="${BASH_REMATCH[4]}"
+            oldate="$year.$month"
+          else
+            echo "previous version '$version' is not a semantic version"
+            exit 1
+          fi
+          if [[ "refs/heads/1.4-stable" = $branch ]] ; then
+             ((++patch))   
+          fi
+          if [[ "refs/heads/1.4-preview" = $branch ]] ; then
+             ((++feature))
+             newdt="$(date +%Y.%m)"
+             if [[ ! "$oldate" = "$newdt" ]] ; then
+                oldate="$newdt"
+                feature=0
+                patch=0
+             fi
+          fi
+          echo "$oldate.$feature.$patch">.\version.txt
+        env:
+          branch: github.ref
+        
+      - name: Commit Versioning Changes
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+            commit_message: Version Updated!
+            branch: github.ref
+        
       - name: Check out pull request code to separate folder
         uses: actions/checkout@v2
         if: github.event_name == 'pull_request_target'
@@ -113,6 +152,11 @@ jobs:
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
           echo ::endgroup::
           
+          echo ::group::Applying Version
+          read -r version<.\version.txt
+          export TmlVersion="$version"
+          echo ::endgroup::
+          
           echo ::group::Building Release
           dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
           (
@@ -151,8 +195,14 @@ jobs:
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
           TERRARIA_VERSION: 1432
+          BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
+          IF: github.event_name == 'push' && github.ref == 'refs/heads/1.4-dev'
+            BUILDPURPOSE: Dev
+          IF: github.event_name == 'push' && github.ref == 'refs/heads/1.4-preview'
+            BUILDPURPOSE: Beta
+          IF: github.event_name == 'push' && github.ref == 'refs/heads/1.4-stable'
+            BUILDPURPOSE: Release
           
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2
