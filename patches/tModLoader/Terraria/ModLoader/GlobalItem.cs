@@ -584,6 +584,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to prevent items from stacking.
 		/// <br>This is only called when two items of the same type attempt to stack.</br>
+		/// <br>This is usually not called for coins and ammo in the inventory/UI.</br>
 		/// <br>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/></br>
 		/// </summary>
 		/// <param name="item1">The item that is attempting to increase its stack</param>

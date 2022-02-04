@@ -674,6 +674,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to decide if this item is allowed to stack with another of its type.
 		/// <br>This is only called when attempting to stack with an item of the same type.</br>
+		/// <br>This is usually not called for coins and ammo in the inventory/UI.</br>
 		/// <br>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/></br>
 		/// </summary>
 		/// <param name="item2">The item this is trying to stack with</param>
