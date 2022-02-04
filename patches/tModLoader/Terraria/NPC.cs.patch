@@ -100,10 +100,16 @@
  			return result;
  		}
  
-@@ -1874,6 +_,16 @@
+@@ -1869,9 +_,19 @@
+ 			defDamage = damage;
+ 			defDefense = defense;
+ 			if (flag) {
+-				ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData, spawnparams.strengthMultiplierOverride);
++				ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData ?? Main.GameModeInfo, spawnparams.strengthMultiplierOverride);
+ 				life = lifeMax;
  			}
- 		}
- 
++		}
++
 +		public void CloneDefaults(int Type) {
 +			int originalType = type;
 +			int originalNetID = netID;
@@ -112,11 +118,9 @@
 +			type = originalType;
 +			netID = originalNetID;
 +			ModNPC = originalModEntity;
-+		}
-+
+ 		}
+ 
  		public void SetDefaultsKeepPlayerInteraction(int Type) {
- 			bool[] array = new bool[playerInteraction.Length];
- 			for (int i = 0; i < playerInteraction.Length; i++) {
 @@ -1910,6 +_,8 @@
  				return;
  			}
@@ -138,7 +142,7 @@
  				buffImmune[l] = false;
  			}
  
-+			aiStyle = 0; //Added by tML.
++			aiStyle = type < NPCID.Count ? 0 : -1; //Added by tML - use aiStyle -1 for modded NPCs by default so they don't always face the nearest player, and trigger net updates
  			setFrameSize = false;
  			netSkip = -2;
  			realLife = -1;
@@ -161,6 +165,15 @@
  			if (spawnparams.sizeScaleOverride.HasValue) {
  				int num2 = (int)((float)width * scale);
  				int num3 = (int)((float)height * scale);
+@@ -10288,7 +_,7 @@
+ 			if (Main.tenthAnniversaryWorld)
+ 				getTenthAnniversaryAdjustments();
+ 
+-			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData, spawnparams.strengthMultiplierOverride);
++			ScaleStats(spawnparams.playerCountForMultiplayerDifficultyOverride, spawnparams.gameModeData.Value, spawnparams.strengthMultiplierOverride);
+ 			life = lifeMax;
+ 		}
+ 
 @@ -10832,6 +_,7 @@
  					break;
  			}
@@ -494,6 +507,14 @@
  				killCount[i] = 0;
  			}
  		}
+@@ -56474,6 +_,7 @@
+ 			}
+ 		}
+ 
++		/*
+ 		public void NPCLootOld() {
+ 			if (Main.netMode == 1 || type >= 670)
+ 				return;
 @@ -56535,7 +_,7 @@
  
  			if (type == 1 && ai[1] > 0f) {
@@ -503,8 +524,11 @@
  					int stackForSlimeItemDrop = GetStackForSlimeItemDrop(num3);
  					Item.NewItem((int)position.X, (int)position.Y, width, height, num3, stackForSlimeItemDrop);
  				}
-@@ -59009,7 +_,7 @@
+@@ -59007,9 +_,10 @@
+ 			NPCLoot_DropCommonLifeAndMana(player);
+ 			NPCLoot_DropMoney(player);
  		}
++		*/
  
  		public void NPCLoot() {
 -			if (Main.netMode == 1 || type >= 670)
@@ -786,7 +810,7 @@
  
  		private static void GiveTownUniqueDataToNPCsThatNeedIt(int Type, int nextNPC) {
 -			if (TypeToDefaultHeadIndex(Type) != -1 || Type == 453) {
-+			if (TypeToDefaultHeadIndex(Type) != -1 || NPCID.Sets.SpawnsWithCustomName[Type]) {
++			if (TypeToDefaultHeadIndex(Type) != -1 || (Type >= 0 && NPCID.Sets.SpawnsWithCustomName[Type])) {
  				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
  				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
  					Main.npc[nextNPC].townNpcVariationIndex = profile.RollVariation();

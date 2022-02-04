@@ -1,21 +1,18 @@
-using ExampleMod.Content;
-using ExampleMod.Content.Items.Consumables;
-using ExampleMod.Content.NPCs;
-using System.IO;
-using Terraria;
 using Terraria.GameContent.UI;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod
 {
-	public class ExampleMod : Mod
+	// This is a partial class, meaning some of its parts were split into other files. See ExampleMod.*.cs for other portions.
+	public partial class ExampleMod : Mod
 	{
-		public const string AssetPath = "ExampleMod/Assets/";
+		public const string AssetPath = $"{nameof(ExampleMod)}/Assets/";
+
 		public static ModKeybind RandomBuffKeybind;
 		public static int ExampleCustomCurrencyId;
 
 		public override void Load() {
+			// Registers a new keybind
 			RandomBuffKeybind = KeybindLoader.RegisterKeybind(this, "Random Buff", "P");
 
 			// Registers a new custom currency
@@ -23,37 +20,16 @@ namespace ExampleMod
 		}
 
 		public override void Unload() {
+			// The Unload() methods can be used for unloading/disposing/clearing special objects, unsubscribing from events, or for undoing some of your mod's actions.
+			// Be sure to always write unloading code when there is a chance of some of your mod's objects being kept present inside the vanilla assembly.
+			// The most common reason for that to happen comes from using events, NOT counting On.* and IL.* code-injection namespaces.
+			// If you subscribe to an event - be sure to eventually unsubscribe from it.
+
+			// NOTE: When writing unload code - be sure use 'defensive programming'. Or, in other words, you should always assume that everything in the mod you're unloading might've not even been initialized yet.
+			// NOTE: There is rarely a need to null-out values of static fields, since TML aims to completely dispose mod assemblies in-between mod reloads.
+
+			// Not required if your AssemblyLoadContext is unloading properly, but nulling out static fields can help you figure out what's keeping it loaded.
 			RandomBuffKeybind = null;
 		}
-
-		//TODO: Introduce OOP packets into tML, to avoid this god-class level hardcode.
-		public override void HandlePacket(BinaryReader reader, int whoAmI) {
-			ExampleModMessageType msgType = (ExampleModMessageType)reader.ReadByte();
-
-			switch (msgType) {
-				// This message syncs ExamplePlayer.exampleLifeFruits
-				case ExampleModMessageType.ExamplePlayerSyncPlayer:
-					byte playernumber = reader.ReadByte();
-					ExampleLifeFruitPlayer examplePlayer = Main.player[playernumber].GetModPlayer<ExampleLifeFruitPlayer>();
-					examplePlayer.exampleLifeFruits = reader.ReadInt32();
-					// SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
-					break;
-				case ExampleModMessageType.ExampleTeleportToStatue:
-					if (Main.npc[reader.ReadByte()].ModNPC is ExamplePerson person && person.NPC.active) {
-						person.StatueTeleport();
-					}
-
-					break;
-				default:
-					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
-					break;
-			}
-		}
-	}
-
-	internal enum ExampleModMessageType : byte
-	{
-		ExamplePlayerSyncPlayer,
-		ExampleTeleportToStatue
 	}
 }

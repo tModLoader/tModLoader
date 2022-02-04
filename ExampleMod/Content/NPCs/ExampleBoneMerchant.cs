@@ -83,6 +83,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {
+			// Causes dust to spawn when the NPC takes damage.
 			int num = NPC.life > 0 ? 1 : 5;
 
 			for (int k = 0; k < num; k++) {
