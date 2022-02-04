@@ -22,7 +22,7 @@
  								if (chest.item[i].stack >= chest.item[i].maxStack || !player.inventory[num].IsTheSameAs(chest.item[i]))
  									continue;
  
-+								if (player.inventory[num].prefix != chest.item[i].prefix) // TML: #StackablePrefixWeapons
++								if (!ItemLoader.CanStack(chest.item[i], player.inventory[num]))
 +									continue;
 +
  								int num2 = player.inventory[num].stack;
@@ -34,7 +34,7 @@
  							else if (player.chest == -3) {
 -								if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
 +								//if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
-+								if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i]) && player.inventory[num].prefix == player.bank2.item[i].prefix) { // TML: #StackablePrefixWeapons
++								if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i]) && ItemLoader.CanStack(player.bank2.item[i], player.inventory[num])) {
  									int num3 = player.inventory[num].stack;
  									if (player.inventory[num].stack + player.bank2.item[i].stack > player.bank2.item[i].maxStack)
  										num3 = player.bank2.item[i].maxStack - player.bank2.item[i].stack;
@@ -44,7 +44,7 @@
  							else if (player.chest == -4) {
 -								if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
 +								//if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
-+								if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i]) && player.inventory[num].prefix == player.bank3.item[i].prefix) { // TML: #StackablePrefixWeapons
++								if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i]) && ItemLoader.CanStack(player.bank3.item[i], player.inventory[num])) {
  									int num4 = player.inventory[num].stack;
  									if (player.inventory[num].stack + player.bank3.item[i].stack > player.bank3.item[i].maxStack)
  										num4 = player.bank3.item[i].maxStack - player.bank3.item[i].stack;
@@ -54,7 +54,7 @@
  							else if (player.chest == -5) {
 -								if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
 +								//if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
-+								if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i]) && player.inventory[num].prefix == player.bank4.item[i].prefix) { // TML: #StackablePrefixWeapons
++								if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i]) && ItemLoader.CanStack(player.bank4.item[i], player.inventory[num])) {
  									int num5 = player.inventory[num].stack;
  									if (player.inventory[num].stack + player.bank4.item[i].stack > player.bank4.item[i].maxStack)
  										num5 = player.bank4.item[i].maxStack - player.bank4.item[i].stack;
@@ -64,7 +64,7 @@
  							}
 -							else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
 +							//else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
-+							else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i]) && player.inventory[num].prefix == player.bank.item[i].prefix) { // TML: #StackablePrefixWeapons
++							else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i]) && ItemLoader.CanStack(player.bank.item[i], player.inventory[num])) {
  								int num6 = player.inventory[num].stack;
  								if (player.inventory[num].stack + player.bank.item[i].stack > player.bank.item[i].maxStack)
  									num6 = player.bank.item[i].maxStack - player.bank.item[i].stack;
@@ -74,7 +74,7 @@
  				foreach (KeyValuePair<int, int> item2 in dictionary) {
 -					if (item2.Value == netID && inventory[item2.Key].netID == netID) {
 +					//if (item2.Value == netID && inventory[item2.Key].netID == netID) {
-+					if (item2.Value == netID && inventory[item2.Key].netID == netID && item[num2].prefix == inventory[item2.Key].prefix) { // TML: #StackablePrefixWeapons
++					if (item2.Value == netID && inventory[item2.Key].netID == netID && ItemLoader.CanStack(item[num2], inventory[item2.Key])) {
  						int num3 = inventory[item2.Key].stack;
  						int num4 = item[num2].maxStack - item[num2].stack;
  						if (num4 == 0)
@@ -82,7 +82,7 @@
  					if ((item5.Value != num6 || inventory[item5.Key].netID != num6) && (!flag || inventory[item5.Key].stack <= 0))
  						continue;
  
-+					if (item[num5].prefix != inventory[item5.Key].prefix) // TML: #StackablePrefixWeapons
++					if (!ItemLoader.CanStack(item[num5], inventory[item5.Key]))
 +						continue;
 +
  					SoundEngine.PlaySound(7);
@@ -112,7 +112,7 @@
  					if (inventory[num2].netID != item[i].netID || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
  						continue;
  
-+					if (inventory[num2].prefix != item[i].prefix) // TML: #StackablePrefixWeapons, check moved here
++					if (!ItemLoader.CanStack(inventory[num2], item[i])) // TML: #StackablePrefixWeapons, check moved here
 +						continue;
 +
  					int num3 = item[i].stack;
@@ -124,7 +124,7 @@
  					if (chestinv[i].stack >= chestinv[i].maxStack || !I.IsTheSameAs(chestinv[i]))
 +						continue;
 +
-+					if (I.prefix != chestinv[i].prefix) // TML: #StackablePrefixWeapons
++					if (!ItemLoader.CanStack(chestinv[i], I))
  						continue;
  
  					int num = I.stack;

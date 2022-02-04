@@ -30,7 +30,7 @@
  						if (!item.IsTheSameAs(Main.chest[i].item[j]))
  							continue;
  
-+						if (item.prefix != Main.chest[i].item[j].prefix) // TML: #StackablePrefixWeapons
++						if (!ItemLoader.CanStack(item, Main.chest[i].item[j]))
 +							continue;
 +
  						flag = true;

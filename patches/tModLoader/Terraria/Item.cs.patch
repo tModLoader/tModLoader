@@ -585,7 +585,7 @@
  				if (!item.active || item.type != type || item.stack <= 0 || item.playerIndexTheItemIsReservedFor != playerIndexTheItemIsReservedFor)
  					continue;
  
-+				if (item.prefix != prefix) // TML: #StackablePrefixWeapons
++				if (!ItemLoader.CanStack(this, item))
 +					continue;
 +
 +				if (!ItemLoader.CanStackInWorld(this, item))

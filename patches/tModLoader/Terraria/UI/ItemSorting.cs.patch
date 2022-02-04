@@ -40,7 +40,7 @@
  					Item item3 = inv[list[k]];
 -					if (item2.type == item3.type && item3.stack != item3.maxStack) {
 +					//if (item2.type == item3.type && item3.stack != item3.maxStack) {
-+					if (item2.type == item3.type && item3.stack != item3.maxStack && item2.prefix == item3.prefix) { // TML: #StackablePrefixWeapons
++					if (item2.type == item3.type && item3.stack != item3.maxStack && ItemLoader.CanStack(item2, item3)) {
  						int num2 = item3.stack;
  						if (num < num2)
  							num2 = num;

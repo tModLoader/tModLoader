@@ -3321,7 +3321,7 @@
  
 -			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot))
 +			//if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot))
-+			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot) && theSlot.prefix != theItemToAccept.prefix) // TML: #StackablePrefixWeapons
++			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot) && !ItemLoader.CanStack(theSlot, theItemToAccept))
  				return true;
  
  			return false;
@@ -3331,7 +3331,7 @@
  		private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i) {
 -			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
 +			//if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
-+			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i]) && returnItem.prefix == inv[i].prefix) { // TML: #StackablePrefixWeapons
++			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i]) && ItemLoader.CanStack(inv[i], returnItem)) {
  				if (newItem.IsACoin)
  					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
  				else
@@ -3341,7 +3341,7 @@
  		private bool GetItem_FillIntoOccupiedSlot(int plr, Item newItem, GetItemSettings settings, Item returnItem, int i) {
 -			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
 +			//if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
-+			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i]) && returnItem.prefix == inventory[i].prefix) { // TML: #StackablePrefixWeapons
++			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i]) && ItemLoader.CanStack(inventory[i], newItem)) {
  				if (newItem.IsACoin)
  					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
  				else
