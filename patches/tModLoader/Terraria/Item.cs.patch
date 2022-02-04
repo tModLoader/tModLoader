@@ -581,26 +581,19 @@
  				base.velocity.Y += gravity;
  				if (base.velocity.Y > maxFallSpeed)
  					base.velocity.Y = maxFallSpeed;
-@@ -45909,6 +_,9 @@
+@@ -45909,6 +_,12 @@
  				if (!item.active || item.type != type || item.stack <= 0 || item.playerIndexTheItemIsReservedFor != playerIndexTheItemIsReservedFor)
  					continue;
  
 +				if (item.prefix != prefix) // TML: #StackablePrefixWeapons
 +					continue;
 +
++				if (!ItemLoader.CanStackInWorld(this, item))
++					continue;
++
  				float num = Math.Abs(position.X + (float)(width / 2) - (item.position.X + (float)(item.width / 2))) + Math.Abs(position.Y + (float)(height / 2) - (item.position.Y + (float)(item.height / 2)));
  				int num2 = 30;
  				if ((double)numberOfNewItems > 40.0)
-@@ -45930,6 +_,9 @@
- 					num2 *= 2;
- 
- 				if (num < (float)num2) {
-+					if (!ItemLoader.CanStackInWorld(this, item))
-+						continue;
-+
- 					position = (position + item.position) / 2f;
- 					velocity = (velocity + item.velocity) / 2f;
- 					int num3 = item.stack;
 @@ -46290,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
