@@ -35,7 +35,7 @@
 
 	<!-- Settings Generation -->
 	<ItemGroup>
-	<None Update="Properties\Settings.settings" Generator="SettingsSingleFileGenerator" LastGenOutput="Settings.Designer.cs" />
+		<None Update="Properties\Settings.settings" Generator="SettingsSingleFileGenerator" LastGenOutput="Settings.Designer.cs" />
 		<Compile Update="Properties\Settings.Designer.cs" AutoGen="True" DependentUpon="Settings.settings" DesignTimeSharedInput="True" />
 	</ItemGroup>
 </Project>
