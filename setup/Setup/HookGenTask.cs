@@ -11,8 +11,8 @@ namespace Terraria.ModLoader.Setup
 	internal class HookGenTask : SetupOperation
 	{
 		private const string libsPath = "src/tModLoader/Terraria/Libraries";
-		private const string binLibsPath = "src/tModLoader/Terraria/bin/Debug/net6.0/Libraries";
-		private const string tmlAssemblyPath = @"src/tModLoader/Terraria/bin/Debug/net6.0/tModLoader.dll";
+		private const string binLibsPath = "src/tModLoader/Terraria/bin/Release/net6.0/Libraries";
+		private const string tmlAssemblyPath = @"src/tModLoader/Terraria/bin/Release/net6.0/tModLoader.dll";
 		private const string installedNetRefs = @"\dotnet\packs\Microsoft.NETCore.App.Ref\6.0.0\ref\net6.0";
 
 		public HookGenTask(ITaskInterface taskInterface) : base(taskInterface)
