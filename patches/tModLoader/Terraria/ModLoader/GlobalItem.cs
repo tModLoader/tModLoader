@@ -582,10 +582,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to prevent vanilla items from stacking in the world.
-		/// This is only called when two items of the same type attempt to stack.
+		/// Allows you to prevent items from stacking.
+		/// <br>This is only called when two items of the same type attempt to stack.</br>
+		/// <br>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/></br>
 		/// </summary>
-		/// <param name="item1">The item that is attempting to stack</param>
+		/// <param name="item1">The item that is attempting to increase its stack</param>
+		/// <param name="item2">The item that the other item is attempting to stack with</param>
+		/// <returns>Whether or not the items are allowed to stack</returns>
+		public virtual bool CanStack(Item item1, Item item2) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to prevent items from stacking in the world.
+		/// <br>This is only called when two items of the same type attempt to stack.</br>
+		/// </summary>
+		/// <param name="item1">The item that is attempting to increase its stack</param>
 		/// <param name="item2">The item that the other item is attempting to stack with</param>
 		/// <returns>Whether or not the items are allowed to stack</returns>
 		public virtual bool CanStackInWorld(Item item1, Item item2) {
