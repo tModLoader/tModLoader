@@ -4,10 +4,10 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4-dev, 1.4_mergedtesting, gh_actions_test, 1.4-preview1, 1.4-stable]
+    branches: [1.4-dev, 1.4_mergedtesting, gh_actions_test, 1.4-preview, 1.4-stable, 1.4]
   pull_request_target:
     types: [labeled]
-    branches: [1.4-preview, 1.4-stable, 1.4-dev, 1.4_mergedtesting]
+    branches: [1.4-preview, 1.4-stable, 1.4-dev, 1.4, 1.4_mergedtesting]
   # Allows you to run this workflow manually from the Actions tab
   # workflow_dispatch:
 
@@ -153,7 +153,7 @@ jobs:
           echo ::endgroup::
           
           echo ::group::Applying Version & Purpose
-          read -r version<.\version.txt
+          read -r version<./version.txt
           export TmlVersion="$version"
           
           if [ $BranchName = '1.4-stable' ] ; then

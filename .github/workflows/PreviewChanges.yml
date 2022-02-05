@@ -20,7 +20,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
         - name: Get current day
-          id:date
+          id: date
           run: echo "::set-output name=date::$(date +'%d')"
         
         - name: Check out base branch
