@@ -40,6 +40,7 @@ jobs:
     needs: MergeToStable
     # The type of runner that the job will run on
     runs-on: windows-latest
+    if: github.event_name == 'push'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
