@@ -44,40 +44,39 @@ namespace Terraria.ModLoader.Core
 			modRepos.AddRange(WorkshopFileFinder.ModPaths);
 
 			foreach (string repo in modRepos) {
-				foreach (string fileName in Directory.GetFiles(repo, "*.tmod", SearchOption.TopDirectoryOnly)) {
-					var lastModified = File.GetLastWriteTime(fileName);
+				var fileName = GetActiveTmodInRepo(repo);
+				var lastModified = File.GetLastWriteTime(fileName);
 
-					if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
-						try {
-							var modFile = new TmodFile(fileName);
+				if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
+					try {
+						var modFile = new TmodFile(fileName);
 
-							using (modFile.Open()) {
-								mod = new LocalMod(modFile) {
-									lastModified = lastModified
-								};
-							}
+						using (modFile.Open()) {
+							mod = new LocalMod(modFile) {
+								lastModified = lastModified
+							};
 						}
-						catch (Exception e) {
-							if (!readFailures.Contains(fileName)) {
-								Logging.tML.Warn("Failed to read " + fileName, e);
-							}
-							else {
-								readFailures.Add(fileName);
-							}
-
-							continue;
+					}
+					catch (Exception e) {
+						if (!readFailures.Contains(fileName)) {
+							Logging.tML.Warn("Failed to read " + fileName, e);
+						}
+						else {
+							readFailures.Add(fileName);
 						}
 
-						modsDirCache[fileName] = mod;
+						continue;
 					}
 
-					// Ignore it from Workshop if it appeared in Mods folder/already exists.
-					if (names.Add(mod.Name)) {
-						mods.Add(mod);
-					}
-					else {
-						Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
-					}
+					modsDirCache[fileName] = mod;
+				}
+
+				// Ignore it from Workshop if it appeared in Mods folder/already exists.
+				if (names.Add(mod.Name)) {
+					mods.Add(mod);
+				}
+				else {
+					Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
 				}
 			}
 
@@ -318,6 +317,39 @@ namespace Terraria.ModLoader.Core
 				Logging.tML.Warn("Unknown error occurred when trying to read enabled.json", e);
 				return new HashSet<string>();
 			}
+		}
+
+		internal static string GetActiveTmodInRepo(string repo) {
+			Version tmodVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
+			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
+			if (tmods.Length == 1)
+				return tmods[0];
+
+			string val = null;
+			Version currVersion = null;
+			foreach (string fileName in tmods) {
+				//IF IN FOLDER
+				if (false) {
+					//GET FOLDER VERSION 
+					Version testVers = null;
+					if (testVers > tmodVersion) {
+						continue;
+					}
+					else if (testVers == currVersion) {
+						val = fileName;
+						break;
+					}
+					else if (testVers > currVersion) {
+						currVersion = testVers;
+						val = fileName;
+					}
+				}
+				else if (val == null) {
+					val = fileName;
+					currVersion = new Version(0, 12);
+				}
+			}
+			return val;
 		}
 	}
 }

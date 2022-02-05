@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI;
-using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 
 namespace Terraria.Social.Steam
@@ -89,10 +88,18 @@ namespace Terraria.Social.Steam
 
 			buildData["workshopdeps"] = workshopDeps;
 
-			string contentFolderPath = GetTemporaryFolderPath() + modFile.Name;
+			if (!BuildInfo.IsRelease && !BuildInfo.IsBeta) {
+				//TODO: Need to find the existing translation for this.
+				IssueReporter.ReportInstantUploadProblem("tModLoader.CantPublishOnDevBuilds");
+				return false;
+			}
+
+			string contentFolderPath = GetTemporaryFolderPath() + modFile.Name + "/" + BuildInfo.tMLVersion.Major + "." + BuildInfo.tMLVersion.Minor;
 
 			if (MakeTemporaryFolder(contentFolderPath)) {
-				File.Copy(modFile.path, Path.Combine(contentFolderPath, modFile.Name + ".tmod"), true);
+				string modPath = Path.Combine(contentFolderPath, modFile.Name + ".tmod");
+
+				File.Copy(modFile.path, modPath, true);
 
 				// If the manifest doesn't exist, try copying it from the Mod Source folder
 				string targetManifest = contentFolderPath + Path.DirectorySeparatorChar + "workshop.json";
@@ -100,6 +107,11 @@ namespace Terraria.Social.Steam
 				if (!File.Exists(targetManifest))
 					if (File.Exists(sourceManifest))
 						File.Copy(sourceManifest, targetManifest);
+
+				// Cleanup Old Folders
+				if (true) {
+					throw new Exception("Missing Cleanup Feature");
+				}
 
 				var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
