@@ -1,10 +1,10 @@
-name: Preview tModLoader
+name: Monthly Update tModLoader
 
 # Controls when the action will run. 
 on:
   # This workflow runs on the first of every month at 1:23 AM UTC. The random time selection is to minimize getting delayed by similar concurrent monthly actions 
   schedule:
-    - cron: '23 1 1 * *
+    - cron: '23 1 1 * *'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -20,20 +20,20 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
         - name: Check out base branch
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-          fetch-depth: 10
+            uses: actions/checkout@v2
+            with:
+              persist-credentials: false
+              fetch-depth: 10
           
         - name: Merge
-        uses: robotology/gh-action-nightly-merge@v1.3.1
-        with:
-            stable_branch: '1.4-preview'
-            development_branch: '1.4-stable'
-            allow_ff: true
-            ff_only: true
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            uses: robotology/gh-action-nightly-merge@v1.3.1
+            with:
+                stable_branch: '1.4-preview'
+                development_branch: '1.4-stable'
+                allow_ff: true
+                ff_only: true
+            env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             
   # This workflow contains a single job called "build"
   MergeToPreview:
@@ -44,20 +44,20 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
         - name: Check out base branch
-        if: ${{ steps.date.outputs.date }}<20
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-          fetch-depth: 10
-          
+            if: ${{ steps.date.outputs.date }}<20
+            uses: actions/checkout@v2
+            with:
+              persist-credentials: false
+              fetch-depth: 10
+              
         - name: Merge
-        if: ${{ steps.date.outputs.date }}<20
-        uses: robotology/gh-action-nightly-merge@v1.3.1
-        with:
-            stable_branch: '1.4-dev'
-            development_branch: '1.4-preview'
-            allow_ff: true
-            ff_only: true
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            if: ${{ steps.date.outputs.date }}<20
+            uses: robotology/gh-action-nightly-merge@v1.3.1
+            with:
+                stable_branch: '1.4-dev'
+                development_branch: '1.4-preview'
+                allow_ff: true
+                ff_only: true
+            env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       

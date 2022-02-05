@@ -4,7 +4,7 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4-dev, 1.4_mergedtesting, gh_actions_test, 1.4-preview, 1.4-stable]
+    branches: [1.4-dev, 1.4_mergedtesting, gh_actions_test, 1.4-preview1, 1.4-stable]
   pull_request_target:
     types: [labeled]
     branches: [1.4-preview, 1.4-stable, 1.4-dev, 1.4_mergedtesting]
@@ -33,7 +33,7 @@ jobs:
         if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
         shell: bash
         run: |
-          read -r version<.\version.txt
+          read -r version<./version.txt
           regex="^([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]]; then
             year="${BASH_REMATCH[1]}"
@@ -57,7 +57,7 @@ jobs:
                 patch=0
              fi
           fi
-          echo "$oldate.$feature.$patch">.\version.txt
+          echo "$oldate.$feature.$patch">./version.txt
         env:
           branch: github.ref
         
