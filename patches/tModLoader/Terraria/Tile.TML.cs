@@ -36,23 +36,22 @@ namespace Terraria
 
 		public BlockType BlockType { get => Get<TileWallWireStateData>().BlockType; set => Get<TileWallWireStateData>().BlockType = value; }
 
-		public override int GetHashCode() => (int)TileId;
-
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public unsafe ref T Get<T>() where T : unmanaged, ITileData
 			=> ref TileData<T>.ptr[TileId];
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator ==(Tile tile, Tile tile2)
-			=> tile.TileId == tile2.TileId;
+		public override int GetHashCode() => (int)TileId;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator !=(Tile tile, Tile tile2)
-			=> tile.TileId != tile2.TileId;
+		public static bool operator ==(Tile tile, Tile tile2) => tile.TileId == tile2.TileId;
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool operator !=(Tile tile, Tile tile2) => tile.TileId != tile2.TileId;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool operator ==(Tile tile, ArgumentException justSoYouCanCompareWithNull) => false;
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool operator !=(Tile tile, ArgumentException justSoYouCanCompareWithNull) => true; }
+		public static bool operator !=(Tile tile, ArgumentException justSoYouCanCompareWithNull) => true;
+	}
 }
