@@ -370,13 +370,14 @@
 		"DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
 		// Memory bar
-		"LastLoadRamUsage": "Estimated last load RAM usage",
-		"AvailableMemory": "Available Memory",
-		"Managed": "Managed",
-		"Code": "Code",
-		"Sounds": "Sounds",
-		"Textures": "Textures",
-		"Total": "Total",
+		"LastLoadRamUsage": "Estimated last load RAM usage: {0}",
+		"AvailableMemory": "Available Memory: {0}",
+		"TerrariaMemory": "Terraria + misc: {0}",
+		"ManagedMemory": "Managed: {0}",
+		"CodeMemory": "Code: {0}",
+		"SoundMemory": "Sounds: {0}",
+		"TextureMemory": "Textures: {0}",
+		"TotalMemory": "Total: {0}",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Middle Mouse",

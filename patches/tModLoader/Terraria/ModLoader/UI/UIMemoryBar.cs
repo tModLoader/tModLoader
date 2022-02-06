@@ -128,27 +128,27 @@ namespace Terraria.ModLoader.UI
 				totalModMemory += usage.total;
 				var sb = new StringBuilder();
 				sb.Append(ModLoader.GetMod(modName).DisplayName);
-				sb.Append($"\n{Language.GetTextValue("tModLoader.LastLoadRamUsage")}: {SizeSuffix(usage.total)}");
+				sb.Append($"\n{Language.GetTextValue("tModLoader.LastLoadRamUsage", SizeSuffix(usage.total))}");
 				if (usage.managed > 0)
-					sb.Append($"\n {Language.GetTextValue("tModLoader.Managed")}: {SizeSuffix(usage.managed)}");
+					sb.Append($"\n {Language.GetTextValue("tModLoader.ManagedMemory", SizeSuffix(usage.managed))}");
 				if (usage.managed > 0)
-					sb.Append($"\n {Language.GetTextValue("tModLoader.Code")}: {SizeSuffix(usage.code)}");
+					sb.Append($"\n {Language.GetTextValue("tModLoader.CodeMemory", SizeSuffix(usage.code))}");
 				if (usage.sounds > 0)
-					sb.Append($"\n {Language.GetTextValue("tModLoader.Sounds")}: {SizeSuffix(usage.sounds)}");
+					sb.Append($"\n {Language.GetTextValue("tModLoader.SoundMemory", SizeSuffix(usage.sounds))}");
 				if (usage.textures > 0)
-					sb.Append($"\n {Language.GetTextValue("tModLoader.Textures")}: {SizeSuffix(usage.textures)}");
+					sb.Append($"\n {Language.GetTextValue("tModLoader.TextureMemory", SizeSuffix(usage.textures))}");
 				_memoryBarItems.Add(new MemoryBarItem(sb.ToString(), usage.total, _colors[i++ % _colors.Length]));
 			}
 
 			long allocatedMemory = Process.GetCurrentProcess().WorkingSet64;
 			var nonModMemory = allocatedMemory - totalModMemory;
 			_memoryBarItems.Add(new MemoryBarItem(
-				$"Terraria + misc: {SizeSuffix(nonModMemory)}\n {Language.GetTextValue("tModLoader.Total")}: {SizeSuffix(allocatedMemory)}",
+				$"{Language.GetTextValue("tModLoader.TerrariaMemory", SizeSuffix(nonModMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffix(allocatedMemory))}",
 				nonModMemory, Color.DeepSkyBlue));
 
 			var remainingMemory = availableMemory - allocatedMemory;
 			_memoryBarItems.Add(new MemoryBarItem(
-				$"{Language.GetTextValue("tModLoader.AvailableMemory")}: {SizeSuffix(remainingMemory)}\n {Language.GetTextValue("tModLoader.Total")}: {SizeSuffix(availableMemory)}",
+				$"{Language.GetTextValue("tModLoader.AvailableMemory", SizeSuffix(remainingMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffix(availableMemory))}",
 				remainingMemory, Color.Gray));
 
 			//portion = (maxMemory - availableMemory - meminuse) / (float)maxMemory;

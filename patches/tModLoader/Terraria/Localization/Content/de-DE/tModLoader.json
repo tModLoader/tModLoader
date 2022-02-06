@@ -370,13 +370,14 @@
 		"DefaultNurseCantHealChat": "Ich weiß nicht warum, aber ich kann dich nicht Heilen. Anscheinend hat der Modder vergessen, mir einen Dialog zu geben.",
 
 		// Memory bar
-		"LastLoadRamUsage": "Geschätzte RAM-Nutzung beim letzten Laden",
-		"AvailableMemory": "Verfügbarer Arbeitsspeicher",
-		"Managed": "Verwaltet",
-		"Code": "Code",
-		"Sounds": "Geräusche",
-		"Textures": "Texturen",
-		"Total": "Gesamt",
+		"LastLoadRamUsage": "Geschätzte RAM-Nutzung beim letzten Laden: {0}",
+		"AvailableMemory": "Verfügbarer Arbeitsspeicher: {0}",
+		"TerrariaMemory": "Terraria + Verschiedenes: {0}",
+		"ManagedMemory": "Verwaltet: {0}",
+		"CodeMemory": "Code: {0}",
+		"SoundMemory": "Geräusche: {0}",
+		"TextureMemory": "Texturen: {0}",
+		"TotalMemory": "Gesamt: {0}",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Mittlere Maus",
