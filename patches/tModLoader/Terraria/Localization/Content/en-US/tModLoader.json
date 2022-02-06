@@ -144,6 +144,7 @@
 		"ModInfoNoDescriptionAvailable": "No description available",
 		"ModInfoProblemTryAgain": "There was a problem, try again",
 		"ModInfoDisableModToDelete": "Disable Mod to Delete",
+		"ModInfoVisitSteampage": "Visit the Mod's Steam Workshop page",
 
 		// Mod Packs
 		"ModPacksHeader": "Mod Packs",
