@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 
@@ -21,7 +19,7 @@ namespace Terraria
 			OnSetLength?.Invoke(len);
 		}
 
-		internal static void ClearEverything() => OnClearEverything();
+		internal static void ClearEverything() => OnClearEverything?.Invoke();
 		internal static void ClearSingle(uint index) => OnClearSingle(index);
 		internal static void CopySingle(uint sourceIndex, uint destinationIndex) => OnCopySingle(sourceIndex, destinationIndex);
 	}
