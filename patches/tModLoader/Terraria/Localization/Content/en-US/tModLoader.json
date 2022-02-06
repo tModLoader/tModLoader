@@ -369,6 +369,15 @@
 		"DefaultTownNPCChat": "My modder forgot to give me a chat message.",
 		"DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
+		// Memory bar
+		"LastLoadRamUsage": "Estimated last load RAM usage",
+		"AvailableMemory": "Available Memory",
+		"Managed": "Managed",
+		"Code": "Code",
+		"Sounds": "Sounds",
+		"Textures": "Textures",
+		"Total": "Total",
+
 		// Extra mouse buttons
 		"MouseMiddle": "Middle Mouse",
 		"MouseXButton1": "Mouse 4",
