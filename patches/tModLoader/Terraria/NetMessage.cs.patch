@@ -316,6 +316,15 @@
  				writer.BaseStream.Position = num26;
  				if (Main.netMode == 1) {
  					if (Netplay.Connection.Socket.IsConnected()) {
+@@ -1620,7 +_,7 @@
+ 			int num6 = 0;
+ 			byte b = 0;
+ 			byte[] array4 = new byte[15];
+-			Tile tile = null;
++			Tile tile = default;
+ 			for (int i = yStart; i < yStart + height; i++) {
+ 				for (int j = xStart; j < xStart + width; j++) {
+ 					Tile tile2 = Main.tile[j, i];
 @@ -1670,7 +_,7 @@
  							}
  						}
@@ -353,6 +362,28 @@
  			}
  		}
  
+@@ -1892,16 +_,20 @@
+ 		}
+ 
+ 		public static void DecompressTileBlock_Inner(BinaryReader reader, int xStart, int yStart, int width, int height) {
+-			Tile tile = null;
++			Tile tile = default;
+ 			int num = 0;
+ 			for (int i = yStart; i < yStart + height; i++) {
+ 				for (int j = xStart; j < xStart + width; j++) {
+ 					if (num != 0) {
+ 						num--;
++						/*
+ 						if (Main.tile[j, i] == null)
+ 							Main.tile[j, i] = new Tile(tile);
+ 						else
+ 							Main.tile[j, i].CopyFrom(tile);
++						*/
++
++						Main.tile[j, i].CopyFrom(tile);
+ 
+ 						continue;
+ 					}
 @@ -2053,7 +_,7 @@
  
  			num3 = reader.ReadInt16();
