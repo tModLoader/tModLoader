@@ -35,5 +35,7 @@ namespace Terraria
 		}
 
 		public void ClearEverything() => TileData.ClearEverything();
+
+		public T[] GetData<T>() where T : unmanaged, ITileData => TileData<T>.data;
 	}
 }
