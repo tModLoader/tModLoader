@@ -1,12 +1,13 @@
 --- src/Terraria/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
-@@ -1,16 +_,24 @@
+@@ -1,16 +_,32 @@
  using Microsoft.Xna.Framework;
-+using System.Runtime.CompilerServices;
- using Terraria.DataStructures;
+-using Terraria.DataStructures;
 -#if !WINDOWS
--using System.Runtime.InteropServices;
++using System.Runtime.CompilerServices;
+ using System.Runtime.InteropServices;
 -#endif
++using Terraria.DataStructures;
 +using Terraria.ID;
 +
 +#pragma warning disable IDE1006 // Naming Styles
@@ -15,12 +16,18 @@
  {
 -#if !WINDOWS
 -	[StructLayout(LayoutKind.Sequential, Pack = 1)]
--#endif
--	public class Tile
 +	// In TML 1.4, Tile has been changed from a class with data, to a structure that acts as an index to data located elsewhere. Alike Entities in the ECS game architecture design.
++#if TILE_X_Y
++	[StructLayout(LayoutKind.Sequential, Pack = 2)]
+ #endif
+-	public class Tile
 +	public readonly partial struct Tile
  	{
 +		internal readonly uint TileId;
++#if TILE_X_Y
++		public readonly ushort X;
++		public readonly ushort Y;
++#endif
 +
 +		internal ref ushort type => ref TileType;
 +		internal ref ushort wall => ref WallType;
@@ -32,7 +39,7 @@
  		public ushort type;
  		public ushort wall;
  		public byte liquid;
-@@ -47,8 +_,13 @@
+@@ -47,8 +_,19 @@
  				return -1;
  			}
  		}
@@ -41,7 +48,13 @@
 +		*/
 +
 +		[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
++#if TILE_X_Y
++		internal Tile(ushort x, ushort y, uint tileId) {
++			X = x;
++			Y = y;
++#else
 +		internal Tile(uint tileId) {
++#endif
 +			TileId = tileId;
 +
 +			/*

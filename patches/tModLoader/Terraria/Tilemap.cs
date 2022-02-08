@@ -5,8 +5,8 @@ namespace Terraria
 {
 	public readonly struct Tilemap
 	{
-		public readonly uint Width;
-		public readonly uint Height;
+		public readonly ushort Width;
+		public readonly ushort Height;
 
 		public Tile this[int x, int y] {
 			[MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -17,18 +17,21 @@ namespace Terraria
 					// The informative version is unfortunately terrible for performance (makes worldgen take 2.15x longer)
 					// throw new IndexOutOfRangeException($"({x}, {y}). Map size ({Width}, {Height})");
 				}
-
+#if TILE_X_Y
+				return new((ushort)x, (ushort)y, (uint)(y + (x * Height)));
+#else
 				return new((uint)(y + (x * Height)));
+#endif
 			}
-
-			// Should have some function...
-			internal set { }
+			internal set {
+				throw new InvalidOperationException("Cannot set Tilemap tiles. Only used to init null tiles in Vanilla (which don't exist anymore)");
+			}
 		}
 
-		internal Tilemap(uint width, uint height) {
+		internal Tilemap(ushort width, ushort height) {
 			Width = width;
 			Height = height;
-			TileData.SetLength(width * height);
+			TileData.SetLength((uint)width * height);
 		}
 
 		public void ClearEverything() => TileData.ClearEverything();
