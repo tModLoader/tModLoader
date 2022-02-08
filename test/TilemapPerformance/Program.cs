@@ -15,29 +15,33 @@ using Terraria.Graphics.Light;
 using Terraria.IO;
 using Terraria.WorldBuilding;
 
-foreach (var f in Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "tModLoader*.*"))
-	File.Delete(f);
-foreach (var f in Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "FNA*.*"))
-	File.Delete(f);
-foreach (var f in Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "ReLogic*.*"))
-	File.Delete(f);
+foreach (var f in Directory.GetFiles(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location))) {
+	if ((f.EndsWith(".pdb") || f.EndsWith(".dll") || f.EndsWith(".xml")) && Path.GetFileNameWithoutExtension(f) != "TilemapPerformance")
+		File.Delete(f);
+}
 
 AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
 {
-	var lib = Directory.GetFiles(Directory.GetCurrentDirectory(), new AssemblyName(args.Name).Name + ".dll", SearchOption.AllDirectories).Single();
-	return AssemblyLoadContext.Default.LoadFromAssemblyPath(lib);
+	var asmName = new AssemblyName(args.Name);
+	var dir = Path.Combine("Libraries", asmName.Name);
+	var path = Directory.GetFiles(dir, asmName.Name + ".dll", SearchOption.AllDirectories).Single();
+	return AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.GetFullPath(path));
 };
 
-var asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(Directory.GetCurrentDirectory(), "tModLoader.dll"));
-var hookMethod = asm.GetType("Terraria.Main").GetMethod("DedServ_PostModLoad", BindingFlags.Instance | BindingFlags.NonPublic);
-new ILHook(hookMethod, il =>
-{
-    new ILCursor(il).EmitDelegate<Action>(ServerLoaded);
-});
+var asm = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.Combine(Directory.GetCurrentDirectory(), args[0]));
+Launch();
 
-ApplyHooks();
-asm.GetType("MonoLaunch").GetMethod("Main", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new[] { new [] { "-server" } });
+void Launch() {
+	var types = asm.GetTypes();
+	var hookMethod = asm.GetType("Terraria.Main").GetMethod("DedServ_PostModLoad", BindingFlags.Instance | BindingFlags.NonPublic);
+	new ILHook(hookMethod, il =>
+	{
+		new ILCursor(il).EmitDelegate<Action>(ServerLoaded);
+	});
 
+	ApplyHooks();
+	asm.GetType("MonoLaunch").GetMethod("Main", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new[] { new[] { "-server" } });
+}
 
 void ApplyHooks()
 {
@@ -63,53 +67,54 @@ void ApplyHooks()
 	});
 }
 
-void ServerLoaded()
-{
+void ServerLoaded() {
+	Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
+
+	List<(List<TimeSpan> results, string name, Func<TimeSpan> run)> tests = new();
+	tests.Add((new(), nameof(GenWorld), GenWorld));
+	tests.Add((new(), nameof(SaveWorld), Median(SaveWorld, 5)));
+	tests.Add((new(), nameof(LoadWorld), Median(LoadWorld, 5)));
+	tests.Add((new(), nameof(DrawWorld), Median(DrawWorld, 5)));
+
 	Console.Clear();
 	Main.worldName = "1";
 	Main.ActiveWorldFileData = new WorldFileData(Path.Combine(Main.WorldPath, Main.worldName + ".wld"), false);
-	GenWorld();
-	SaveWorld();
-	LoadWorld();
-	DrawWorld();
-	//ExportLightmap();
 
-	List<TimeSpan> gen = new();
-	List<TimeSpan> save = new();
-	List<TimeSpan> load = new();
-	List<TimeSpan> draw = new();
-	List<TimeSpan> light = new();
+	// warmup
+	for (int i = 0; i < 3; i++) {
+		foreach (var test in tests) {
+			test.run();
+		}
+	}
 
 
-	foreach (var seed in new[] { "1", "2", "3" })
-	{
+	foreach (var seed in new[] { "3", "2", "1" }) {
 		Main.worldName = seed;
 		Main.ActiveWorldFileData = new WorldFileData(Path.Combine(Main.WorldPath, Main.worldName + ".wld"), false);
-		gen.Add(GenWorld());
-		save.Add(SaveWorld());
-		load.Add(LoadWorld());
-		DrawWorld(); // reduces profiling jitter, sometimes a DrawWorld call takes a long time, maybe the JIT is a bit slower to warmup?
-		draw.Add(DrawWorld());
-		//light.Add(ExportLightmap());
+
+		foreach (var test in tests) {
+			test.results.Add(test.run());
+		}
 	}
 
 	Console.Clear();
-	Console.WriteLine(Result(nameof(GenWorld), gen));
-	Console.WriteLine(Result(nameof(SaveWorld), save));
-	Console.WriteLine(Result(nameof(LoadWorld), load));
-	Console.WriteLine(Result(nameof(DrawWorld), draw));
-	//Console.WriteLine(Result(nameof(ExportLightmap), light));
+	foreach (var test in tests) {
+		Console.WriteLine($"{test.name}: \t{string.Join('\t', test.results.Select(t => $"{(long)t.TotalSeconds}.{t.Milliseconds / 100:0}s"))}");
+	}
 
-	while (true)
-	{
+	Debugger.Break();
+	LoadWorld();
+	DrawWorld();
+	while (true) {
 		Console.ReadLine();
 	}
 }
 
-string Result(string name, List<TimeSpan> times)
-{
-	return $"{name}: \t{string.Join('\t', times.Select(t => $"{(long)t.TotalSeconds}.{t.Milliseconds / 100:0}s"))}";
-}
+Func<TimeSpan> Median(Func<TimeSpan> run, int attempts) =>
+	() => {
+		var list = Enumerable.Range(0, attempts).Select(_ => run()).OrderBy(t => t).ToList();
+		return list[attempts / 2];
+	};
 
 TimeSpan ExportLightmap()
 {
@@ -156,6 +161,7 @@ TimeSpan DrawWorld()
 
 	TimeLogger.Initialize();
 	Main.sectionManager = new WorldSections(Main.maxTilesX / 200, Main.maxTilesY / 150);
+	Main.TileFrameSeed = 0;
 
 	var sw = new Stopwatch();
 	sw.Start();
