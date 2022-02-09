@@ -8,18 +8,6 @@
  using Terraria.ObjectData;
  using Terraria.UI;
  using Terraria.Utilities;
-@@ -338,8 +_,9 @@
- 			byte b = (byte)(100f + 150f * Main.martianLight);
- 			_martianGlow = new Color(b, b, b, 0);
- 			TileDrawInfo value = _currentTileDrawInfo.Value;
--			for (int i = firstTileY; i < lastTileY + 4; i++) {
--				for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
-+			// tModLoader - Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
-+			for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
-+				for (int i = firstTileY; i < lastTileY + 4; i++) {
- 					Tile tile = Main.tile[j, i];
- 					if (tile == null) {
- 						tile = new Tile();
 @@ -356,6 +_,9 @@
  						if (!TextureAssets.Tile[type].IsLoaded)
  							Main.instance.LoadTiles(type);

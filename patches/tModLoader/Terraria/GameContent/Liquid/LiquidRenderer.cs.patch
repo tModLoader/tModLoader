@@ -18,15 +18,7 @@
  
  		public event Action<Color[], Rectangle> WaveFilters;
  
-@@ -116,14 +_,14 @@
- 			if (_waveMask.Length < drawArea.Width * drawArea.Height)
- 				_waveMask = new Color[drawArea.Width * drawArea.Height];
- 
--			Tile tile = null;
-+			Tile tile = default;
- 			fixed (LiquidCache* ptr = &_cache[1]) {
- 				LiquidCache* ptr2 = ptr;
- 				int num = rectangle.Height * 2 + 2;
+@@ -123,7 +_,7 @@
  				ptr2 = ptr;
  				for (int i = rectangle.X; i < rectangle.X + rectangle.Width; i++) {
  					for (int j = rectangle.Y; j < rectangle.Y + rectangle.Height; j++) {

@@ -189,15 +189,6 @@
  						Main.BestiaryTracker.OnPlayerJoining(whoAmI);
  						CreativePowerManager.Instance.SyncThingsToJoiningPlayer(whoAmI);
  						Main.PylonSystem.OnPlayerJoining(whoAmI);
-@@ -1069,7 +_,7 @@
- 
- 						BitsByte bitsByte4 = (byte)0;
- 						BitsByte bitsByte5 = (byte)0;
--						Tile tile4 = null;
-+						Tile tile4 = default;
- 						for (int num63 = num59; num63 < num59 + num61; num63++) {
- 							for (int num64 = num60; num64 < num60 + num62; num64++) {
- 								if (Main.tile[num63, num64] == null)
 @@ -1144,8 +_,8 @@
  						int num181 = reader.ReadInt16();
  						Vector2 position3 = reader.ReadVector2();
@@ -453,21 +444,6 @@
  						player9.channel = player9.inventory[player9.selectedItem].channel;
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(41, -1, whoAmI, null, num108);
-@@ -1955,12 +_,12 @@
- 						if (Main.tile[num94, num95] == null)
- 							Main.tile[num94, num95] = new Tile();
- 
--						lock (Main.tile[num94, num95]) {
-+						//lock (Main.tile) {
- 							Main.tile[num94, num95].liquid = liquid;
- 							Main.tile[num94, num95].liquidType(liquidType);
- 							if (Main.netMode == 2)
- 								WorldGen.SquareTileFrame(num94, num95);
--						}
-+						//}
- 
- 						break;
- 					}
 @@ -1980,7 +_,7 @@
  							break;
  
