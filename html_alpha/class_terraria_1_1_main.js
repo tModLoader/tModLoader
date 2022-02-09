@@ -1165,7 +1165,7 @@ var class_terraria_1_1_main =
     [ "textureMaxHeight", "class_terraria_1_1_main.html#aa463e441e6beed4636744185c36f3c52", null ],
     [ "textureMaxWidth", "class_terraria_1_1_main.html#aa84d324a303db5ba8332df9bb008c320", null ],
     [ "thunderDistance", "class_terraria_1_1_main.html#a5166d5bfb61efe9b3a15a9baed950344", null ],
-    [ "tile", "class_terraria_1_1_main.html#a8d9b64d5cfb1f943fc5e76c8b1ae4245", null ],
+    [ "tile", "class_terraria_1_1_main.html#ae2f5802eb9960ecfe6fd5956aae15117", null ],
     [ "tile2Target", "class_terraria_1_1_main.html#a0bcc50e3da2229a71bd44016a30b4996", null ],
     [ "tileAlch", "class_terraria_1_1_main.html#a84d66f1c457a6997d3f7b1710bd23eda", null ],
     [ "tileAxe", "class_terraria_1_1_main.html#afdaab6d1e7779217685e8f67c82fadf6", null ],

@@ -1717,6 +1717,12 @@ var hierarchy =
     [ "Terraria.UI.ItemTooltip", "class_terraria_1_1_u_i_1_1_item_tooltip.html", null ],
     [ "Terraria.UI.ItemSlot.ItemTransferInfo", "struct_terraria_1_1_u_i_1_1_item_slot_1_1_item_transfer_info.html", null ],
     [ "Terraria.ID.ItemUseStyleID", "class_terraria_1_1_i_d_1_1_item_use_style_i_d.html", null ],
+    [ "Terraria.ITileData", "interface_terraria_1_1_i_tile_data.html", [
+      [ "Terraria.LiquidData", "struct_terraria_1_1_liquid_data.html", null ],
+      [ "Terraria.TileTypeData", "struct_terraria_1_1_tile_type_data.html", null ],
+      [ "Terraria.TileWallWireStateData", "struct_terraria_1_1_tile_wall_wire_state_data.html", null ],
+      [ "Terraria.WallTypeData", "struct_terraria_1_1_wall_type_data.html", null ]
+    ] ],
     [ "Terraria.GameContent.ITownNPCProfile", "interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html", [
       [ "Terraria.GameContent.Profiles.LegacyNPCProfile", "class_terraria_1_1_game_content_1_1_profiles_1_1_legacy_n_p_c_profile.html", null ],
       [ "Terraria.GameContent.Profiles.TransformableNPCProfile", "class_terraria_1_1_game_content_1_1_profiles_1_1_transformable_n_p_c_profile.html", null ],
@@ -2135,7 +2141,8 @@ var hierarchy =
       [ "Terraria.GameContent.UI.Chat.PlainTagHandler.PlainSnippet", "class_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_plain_tag_handler_1_1_plain_snippet.html", null ]
     ] ],
     [ "Terraria.GameContent.TextureAssets", "class_terraria_1_1_game_content_1_1_texture_assets.html", null ],
-    [ "Terraria.Tile", "class_terraria_1_1_tile.html", null ],
+    [ "Terraria.Tile", "struct_terraria_1_1_tile.html", null ],
+    [ "Terraria.TileDataPacking", "class_terraria_1_1_tile_data_packing.html", null ],
     [ "Terraria.DataStructures.TileDrawInfo", "class_terraria_1_1_data_structures_1_1_tile_draw_info.html", null ],
     [ "Terraria.GameContent.Drawing.TileDrawing", "class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html", null ],
     [ "Terraria.DataStructures.TileDrawSorter", "class_terraria_1_1_data_structures_1_1_tile_draw_sorter.html", null ],
@@ -2159,6 +2166,7 @@ var hierarchy =
     [ "Terraria.ID.TileID", "class_terraria_1_1_i_d_1_1_tile_i_d.html", null ],
     [ "Terraria.Graphics.Light.TileLightScanner", "class_terraria_1_1_graphics_1_1_light_1_1_tile_light_scanner.html", null ],
     [ "Terraria.ModLoader.TileLoader", "class_terraria_1_1_mod_loader_1_1_tile_loader.html", null ],
+    [ "Terraria.Tilemap", "struct_terraria_1_1_tilemap.html", null ],
     [ "Terraria.GameContent.Metadata.TileMaterial", "class_terraria_1_1_game_content_1_1_metadata_1_1_tile_material.html", null ],
     [ "Terraria.GameContent.Metadata.TileMaterials", "class_terraria_1_1_game_content_1_1_metadata_1_1_tile_materials.html", null ],
     [ "Terraria.TileObject", "struct_terraria_1_1_tile_object.html", null ],
