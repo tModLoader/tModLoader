@@ -20,8 +20,8 @@ namespace Terraria
 		}
 
 		internal static void ClearEverything() => OnClearEverything?.Invoke();
-		internal static void ClearSingle(uint index) => OnClearSingle(index);
-		internal static void CopySingle(uint sourceIndex, uint destinationIndex) => OnCopySingle(sourceIndex, destinationIndex);
+		internal static void ClearSingle(uint index) => OnClearSingle?.Invoke(index);
+		internal static void CopySingle(uint sourceIndex, uint destinationIndex) => OnCopySingle?.Invoke(sourceIndex, destinationIndex);
 	}
 
 	internal static unsafe class TileData<T> where T : unmanaged, ITileData
