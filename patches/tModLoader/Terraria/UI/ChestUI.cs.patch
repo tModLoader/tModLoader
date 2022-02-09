@@ -18,7 +18,7 @@
  				}
  			}
  			else if (player.chest == -2) {
-@@ -1078,10 +_,10 @@
+@@ -1079,10 +_,10 @@
  		}
  
  		public static bool IsBlockedFromTransferIntoChest(Item item, Item[] container) {
