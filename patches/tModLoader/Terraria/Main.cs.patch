@@ -193,6 +193,15 @@
  		public static bool allChestStackHover;
  		public static bool inventorySortMouseOver;
  		public static float GraveyardVisualIntensity;
+@@ -971,7 +_,7 @@
+ 		public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
+ 		public static bool tilesLoaded = false;
+ 		public static WorldMap Map = new WorldMap(maxTilesX, maxTilesY);
+-		public static Tile[,] tile = new Tile[maxTilesX, maxTilesY];
++		public static Tilemap tile = new Tilemap((ushort)maxTilesX, (ushort)maxTilesY);
+ 		public static Dust[] dust = new Dust[6001];
+ 		public static Star[] star = new Star[400];
+ 		public static Item[] item = new Item[401];
 @@ -1161,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();

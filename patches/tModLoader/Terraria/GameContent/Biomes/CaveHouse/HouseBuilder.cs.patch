@@ -1,0 +1,11 @@
+--- src/Terraria/Terraria/GameContent/Biomes/CaveHouse/HouseBuilder.cs
++++ src/tModLoader/Terraria/GameContent/Biomes/CaveHouse/HouseBuilder.cs
+@@ -98,7 +_,7 @@
+ 
+ 		private UnifiedRandom _random => WorldGen.genRand;
+ 
+-		private Tile[,] _tiles => Main.tile;
++		private Tilemap _tiles => Main.tile;
+ 
+ 		private HouseBuilder() {
+ 			IsValid = false;

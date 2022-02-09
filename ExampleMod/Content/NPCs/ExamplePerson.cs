@@ -139,12 +139,12 @@ namespace ExampleMod.Content.NPCs
 			int score = 0;
 			for (int x = left; x <= right; x++) {
 				for (int y = top; y <= bottom; y++) {
-					int type = Main.tile[x, y].type;
+					int type = Main.tile[x, y].TileType;
 					if (type == ModContent.TileType<ExampleBlock>() || type == ModContent.TileType<ExampleChair>() || type == ModContent.TileType<ExampleWorkbench>() || type == ModContent.TileType<ExampleBed>() || type == ModContent.TileType<ExampleDoorOpen>() || type == ModContent.TileType<ExampleDoorClosed>()) {
 						score++;
 					}
 
-					if (Main.tile[x, y].wall == ModContent.WallType<ExampleWall>()) {
+					if (Main.tile[x, y].WallType == ModContent.WallType<ExampleWall>()) {
 						score++;
 					}
 				}

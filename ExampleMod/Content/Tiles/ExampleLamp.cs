@@ -48,12 +48,12 @@ namespace ExampleMod.Content.Tiles
 
 		public override void HitWire(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			int topY = j - tile.frameY / 18 % 3;
-			short frameAdjustment = (short)(tile.frameX > 0 ? -18 : 18);
+			int topY = j - tile.TileFrameY / 18 % 3;
+			short frameAdjustment = (short)(tile.TileFrameX > 0 ? -18 : 18);
 
-			Main.tile[i, topY].frameX += frameAdjustment;
-			Main.tile[i, topY + 1].frameX += frameAdjustment;
-			Main.tile[i, topY + 2].frameX += frameAdjustment;
+			Main.tile[i, topY].TileFrameX += frameAdjustment;
+			Main.tile[i, topY + 1].TileFrameX += frameAdjustment;
+			Main.tile[i, topY + 2].TileFrameX += frameAdjustment;
 
 			Wiring.SkipWire(i, topY);
 			Wiring.SkipWire(i, topY + 1);
@@ -73,7 +73,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 			Tile tile = Main.tile[i, j];
-			if (tile.frameX == 0) {
+			if (tile.TileFrameX == 0) {
 				// We can support different light colors for different styles here: switch (tile.frameY / 54)
 				r = 1f;
 				g = 0.75f;
@@ -88,8 +88,8 @@ namespace ExampleMod.Content.Tiles
 
 			Tile tile = Main.tile[i, j];
 
-			short frameX = tile.frameX;
-			short frameY = tile.frameY;
+			short frameX = tile.TileFrameX;
+			short frameY = tile.TileFrameY;
 
 			// Return if the lamp is off (when frameX is 0), or if a random check failed.
 			if (frameX != 0 || !Main.rand.NextBool(40)) {
@@ -137,8 +137,8 @@ namespace ExampleMod.Content.Tiles
 			int width = 16;
 			int offsetY = 0;
 			int height = 16;
-			short frameX = tile.frameX;
-			short frameY = tile.frameY;
+			short frameX = tile.TileFrameX;
+			short frameY = tile.TileFrameY;
 
 			TileLoader.SetDrawPositions(i, j, ref width, ref offsetY, ref height, ref frameX, ref frameY);
 
