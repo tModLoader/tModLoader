@@ -102,9 +102,6 @@ void ServerLoaded() {
 		Console.WriteLine($"{test.name}: \t{string.Join('\t', test.results.Select(t => $"{(long)t.TotalSeconds}.{t.Milliseconds / 100:0}s"))}");
 	}
 
-	Debugger.Break();
-	LoadWorld();
-	DrawWorld();
 	while (true) {
 		Console.ReadLine();
 	}

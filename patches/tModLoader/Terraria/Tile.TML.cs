@@ -36,6 +36,11 @@ namespace Terraria
 
 		public BlockType BlockType { get => Get<TileWallWireStateData>().BlockType; set => Get<TileWallWireStateData>().BlockType = value; }
 
+		public bool TopSlope => Slope == SlopeType.SlopeDownLeft || Slope == SlopeType.SlopeDownRight;
+		public bool BottomSlope => Slope == SlopeType.SlopeUpLeft || Slope == SlopeType.SlopeUpRight;
+		public bool LeftSlope => Slope == SlopeType.SlopeDownRight || Slope == SlopeType.SlopeUpRight;
+		public bool RightSlope => Slope == SlopeType.SlopeDownLeft || Slope == SlopeType.SlopeUpLeft;
+
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public unsafe ref T Get<T>() where T : unmanaged, ITileData
 			=> ref TileData<T>.ptr[TileId];
