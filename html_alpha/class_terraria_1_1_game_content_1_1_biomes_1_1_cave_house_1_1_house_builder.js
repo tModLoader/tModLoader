@@ -8,7 +8,7 @@ var class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder 
     [ "SkipTilesDuringWallAging", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a0f3893b126182050f7b897939762a230", null ],
     [ "Type", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a4aa414b20b49d653bb66966ea71db24c", null ],
     [ "_random", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a5b4656efdff3dda6256c5ef0aff735ac", null ],
-    [ "_tiles", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a04d443f8f5418db3caaac1f6d946e536", null ],
+    [ "_tiles", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a72ad6d0adb7b5654e05bd24cfdf663b2", null ],
     [ "BeamType", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a398e811e334c20f1dc34b603c6786d75", null ],
     [ "BookcaseStyle", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a9f1403a6b6a80f3f7f827061a9fdf327", null ],
     [ "BottomRoom", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a43915efa01e599fd2424f6108cde0283", null ],
