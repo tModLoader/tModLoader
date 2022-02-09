@@ -177,6 +177,39 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
+@@ -2596,6 +_,32 @@
+ 		public static Task serverLoadWorld() => Task.Factory.StartNew(serverLoadWorldCallBack);
+ 
+ 		public static void clearWorld() {
++
++			//Large World Enabler stuff.
++			if (lastMaxTilesX < Main.maxTilesX || lastMaxTilesY < Main.maxTilesY) {
++
++				int newSizeX = Math.Max(Main.maxTilesX, 8400) + 1;
++				int newSizeY = Math.Max(Main.maxTilesY, 2400) + 1;
++
++				if (Main.tile != null) {
++					Main.tile = null;
++					GC.Collect();
++				}
++
++				Main.tile = new Tile[newSizeX, newSizeY];
++				Main.Map = new WorldMap(newSizeX, newSizeY);
++			}
++
++			int newWidth = (int)Math.Max(Math.Round((double)(Main.maxTilesX / 840)), 5);
++			int newHeight = (int)Math.Max(Math.Round((double)(Main.maxTilesY / 600)), 2);
++			if (newWidth > Main.mapTargetX || newHeight > Main.mapTargetY) {
++				Main.mapTargetX = Math.Max(newWidth, Main.mapTargetX);
++				Main.mapTargetY = Math.Max(newHeight, Main.mapTargetY);
++				Main.instance.mapTarget = new Microsoft.Xna.Framework.Graphics.RenderTarget2D[Main.mapTargetX, Main.mapTargetY];
++				Main.initMap = new bool[Main.mapTargetX, Main.mapTargetY];
++				Main.mapWasContentLost = new bool[Main.mapTargetX, Main.mapTargetY];
++			}
++
+ 			Main.ladyBugRainBoost = 0;
+ 			Main.getGoodWorld = false;
+ 			Main.drunkWorld = false;
 @@ -5595,6 +_,8 @@
  		}
  
