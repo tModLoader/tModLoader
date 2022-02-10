@@ -65,7 +65,7 @@
 +    <Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
 +  </ItemGroup>
 +  <ItemGroup>
-+    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.12.13.1" />
++    <PackageReference Include="MonoMod.RuntimeDetour" Version="22.1.29.1" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.0-6.final" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.0.0-6.final" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.0.0-6.final" PrivateAssets="all" />

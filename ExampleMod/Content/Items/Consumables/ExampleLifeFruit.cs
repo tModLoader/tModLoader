@@ -74,7 +74,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();
-			packet.Write((byte)ExampleModMessageType.ExamplePlayerSyncPlayer);
+			packet.Write((byte)ExampleMod.MessageType.ExamplePlayerSyncPlayer);
 			packet.Write((byte)Player.whoAmI);
 			packet.Write(exampleLifeFruits);
 			packet.Send(toWho, fromWho);

@@ -210,7 +210,11 @@ namespace Terraria.ModLoader
 
 		private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary) {
 			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
-				string translationFileContents = Encoding.UTF8.GetString(mod.File.GetBytes(translationFile));
+				using var stream = mod.File.GetStream(translationFile);
+				using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+
+				string translationFileContents = streamReader.ReadToEnd();
+
 				var culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
 
 				// Parse HJSON and convert to standard JSON
