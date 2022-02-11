@@ -667,7 +667,7 @@
  			return false;
  		}
  
-+		// TML: Made internal + renamed in Item.TML.cs with more descriptive name
++		// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
 +		//TODO change to !IsNetSyncEquivalent ?
 -		public bool IsNotTheSameAs(Item compareItem) {
 +		internal bool IsNotTheSameAs(Item compareItem) {

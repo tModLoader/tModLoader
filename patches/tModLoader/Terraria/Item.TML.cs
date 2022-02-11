@@ -72,7 +72,7 @@ namespace Terraria
 		/// <summary>
 		/// returns false if and only if netID (deprecated, equivalent to type), stack and prefix match
 		/// </summary>
-		internal bool IsNotSameTypePrefixAndStack(Item compareItem) {
+		public bool IsNotSameTypePrefixAndStack(Item compareItem) {
 			if (netID == compareItem.netID && stack == compareItem.stack)
 				return prefix != compareItem.prefix;
 
