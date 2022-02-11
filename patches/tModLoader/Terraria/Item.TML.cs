@@ -68,6 +68,17 @@ namespace Terraria
 		public bool CountsAsClass(DamageClass damageClass)
 			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 
+		// public version of IsNotTheSameAs for modders
+		/// <summary>
+		/// returns false if and only if netID (deprecated, equivalent to type), stack and prefix match
+		/// </summary>
+		internal bool IsNotSameTypePrefixAndStack(Item compareItem) {
+			if (netID == compareItem.netID && stack == compareItem.stack)
+				return prefix != compareItem.prefix;
+
+			return true;
+		}
+
 		internal static void PopulateMaterialCache() {
 			for (int i = 0; i < Recipe.numRecipes; i++) {
 				foreach (Item item in Main.recipe[i].requiredItem) {
