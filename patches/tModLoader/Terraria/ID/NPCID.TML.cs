@@ -1,4 +1,6 @@
-﻿namespace Terraria.ID
+﻿using Terraria.ModLoader;
+
+namespace Terraria.ID
 {
 	public partial class NPCID
 	{

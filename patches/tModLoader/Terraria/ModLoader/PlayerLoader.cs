@@ -1045,6 +1045,26 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
+		private static HookList HookCanAutoReuseItem = AddHook<Func<Item, bool?>>(p => p.CanAutoReuseItem);
+
+		public static bool? CanAutoReuseItem(Player player, Item item) {
+			bool? flag = null;
+
+			foreach (int index in HookCanAutoReuseItem.arr) {
+				bool? allow = player.modPlayers[index].CanAutoReuseItem(item);
+
+				if (allow.HasValue) {
+					if (!allow.Value) {
+						return false;
+					}
+
+					flag = true;
+				}
+			}
+
+			return flag;
+		}
+
 		private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);
 		private static HookList HookModifyNurseHeal = AddHook<DelegateModifyNurseHeal>(p => p.ModifyNurseHeal);
 

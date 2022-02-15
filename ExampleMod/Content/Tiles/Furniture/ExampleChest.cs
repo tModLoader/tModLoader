@@ -56,11 +56,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 		}
 
-		public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].frameX / 36);
+		public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].TileFrameX / 36);
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) => true;
 
-		public override bool IsLockedChest(int i, int j) => Main.tile[i, j].frameX / 36 == 1;
+		public override bool IsLockedChest(int i, int j) => Main.tile[i, j].TileFrameX / 36 == 1;
 
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) {
 			if (Main.dayTime) {
@@ -75,11 +75,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			int left = i;
 			int top = j;
 			Tile tile = Main.tile[i, j];
-			if (tile.frameX % 36 != 0) {
+			if (tile.TileFrameX % 36 != 0) {
 				left--;
 			}
 
-			if (tile.frameY != 0) {
+			if (tile.TileFrameY != 0) {
 				top--;
 			}
 
@@ -108,11 +108,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.mouseRightRelease = false;
 			int left = i;
 			int top = j;
-			if (tile.frameX % 36 != 0) {
+			if (tile.TileFrameX % 36 != 0) {
 				left--;
 			}
 
-			if (tile.frameY != 0) {
+			if (tile.TileFrameY != 0) {
 				top--;
 			}
 
@@ -185,11 +185,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Tile tile = Main.tile[i, j];
 			int left = i;
 			int top = j;
-			if (tile.frameX % 36 != 0) {
+			if (tile.TileFrameX % 36 != 0) {
 				left--;
 			}
 
-			if (tile.frameY != 0) {
+			if (tile.TileFrameY != 0) {
 				top--;
 			}
 
@@ -201,7 +201,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Example Chest";
 				if (player.cursorItemIconText == "Example Chest") {
 					player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
-					if (Main.tile[left, top].frameX / 36 == 1) {
+					if (Main.tile[left, top].TileFrameX / 36 == 1) {
 						player.cursorItemIconID = ModContent.ItemType<ExampleChestKey>();
 					}
 
