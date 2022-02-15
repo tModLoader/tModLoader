@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Default
 
 		public override bool IsTileValidForEntity(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			return tile.active() && TileLoader.GetTile(type) is UnloadedTile;
+			return tile.HasTile && TileLoader.GetTile(tile.TileType) is UnloadedTile;
 		}
 
 		public override void SaveData(TagCompound tag) {
@@ -35,7 +35,9 @@ namespace Terraria.ModLoader.Default
 			SetData(tag);
 		}
 
-		internal void TryRestore(ref ModTileEntity newEntity) {
+		internal bool TryRestore(out ModTileEntity newEntity) {
+			newEntity = null;
+
 			if (ModContent.TryFind(modName, tileEntityName, out ModTileEntity tileEntity)) {
 				newEntity = ModTileEntity.ConstructFromBase(tileEntity);
 				newEntity.type = (byte)tileEntity.Type;
@@ -45,6 +47,8 @@ namespace Terraria.ModLoader.Default
 					newEntity.LoadData(data);
 				}
 			}
+
+			return newEntity != null;
 		}
 	}
 }
