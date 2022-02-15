@@ -2,6 +2,7 @@ using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
@@ -46,7 +47,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override void ModifySmartInteractCoords(ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
 			// Because beds have special smart interaction, this splits up the left and right side into the necessary 2x2 sections
 			width = 2; // Default to the Width defined for TileObjectData.newTile
-			height = 2; // Default to the Height [...]
+			height = 2; // Default to the Height defined for TileObjectData.newTile
 			extraY = 0; // Depends on how you set up frameHeight and CoordinateHeights and CoordinatePaddingFix.Y
 		}
 
@@ -54,8 +55,10 @@ namespace ExampleMod.Content.Tiles.Furniture
 			height = 18; // Set frame height independent of CoordinateHeights
 		}
 
-		public override void ModifySleepingOffset(int i, int j, ref Vector2 visualOffset) {
-			visualOffset.Y += 4f; // Move player down a notch because the bed is not as high as a regular bed 
+		public override void ModifySleepingTargetInfo(int i, int j, ref TileRestingInfo info) {
+			// Default values match the regular vanilla bed
+			// You might need to mess with the info here if your bed is not a typical 4x2 tile
+			info.visualOffset.Y += 4f; // Move player down a notch because the bed is not as high as a regular bed
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
@@ -76,8 +79,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 				spawnY--;
 			}
 
-			if (!Player.IsHoveringOverABottomSideOfABed(i, j)) {
-				if (player.IsWithinSnappngRangeToTile(i, j, 96)) {
+			if (!Player.IsHoveringOverABottomSideOfABed(i, j)) { // This assumes your bed is 4x2 with 2x2 sections. You have to write your own code here otherwise
+				if (player.IsWithinSnappngRangeToTile(i, j, PlayerSleepingHelper.BedSleepingMaxDistance)) {
 					player.GamepadEnableGrappleCooldown();
 					player.sleeping.StartSleeping(player, i, j);
 				}
@@ -101,7 +104,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Player player = Main.LocalPlayer;
 
 			if (!Player.IsHoveringOverABottomSideOfABed(i, j)) {
-				if (player.IsWithinSnappngRangeToTile(i, j, 96)) { // Match condition in RightClick. Interaction should only show if clicking it does something
+				if (player.IsWithinSnappngRangeToTile(i, j, PlayerSleepingHelper.BedSleepingMaxDistance)) { // Match condition in RightClick. Interaction should only show if clicking it does something
 					player.noThrow = 2;
 					player.cursorItemIconEnabled = true;
 					player.cursorItemIconID = 5013;

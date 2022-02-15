@@ -402,17 +402,17 @@ namespace Terraria.ModLoader
 		}
 
 		//in PlayerSittingHelper.GetSittingTargetInfo before assigning playerSittingPosition
-		public static void ModifySittingTargetInfo(int i, int j, int type, ref int sitX, ref int sitY, ref int directionOffset, ref int targetDirection, ref Vector2 seatDownOffset, ref Vector2 zero) {
-			GetTile(type)?.ModifySittingTargetInfo(i, j, ref sitX, ref sitY, ref directionOffset, ref targetDirection, ref seatDownOffset, ref zero);
+		public static void ModifySittingTargetInfo(int i, int j, int type, ref TileRestingInfo info) {
+			GetTile(type)?.ModifySittingTargetInfo(i, j, ref info);
 		}
 
 		//in PlayerSleepingHelper.GetSleepingTargetInfo before returning true
-		public static void ModifySleepingOffset(int i, int j, int type, ref Vector2 visualOffset) {
+		public static void ModifySleepingTargetInfo(int i, int j, int type, ref TileRestingInfo info) {
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
 				// Because vanilla sets its own offset based on frameY, ignoring tile type, which might not be set to an expected default, reassign it
-				visualOffset = new Vector2(-9f, 1f); // Taken from default case of vanilla beds 
-				modTile.ModifySleepingOffset(i, j, ref visualOffset);
+				info.visualOffset = new Vector2(-9f, 1f); // Taken from default case of vanilla beds 
+				modTile.ModifySleepingTargetInfo(i, j, ref info);
 			}
 		}
 

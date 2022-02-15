@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
+using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
@@ -59,7 +60,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
-			return settings.player.IsWithinSnappngRangeToTile(i, j, 40); // Avoid being able to trigger it from long range
+			return settings.player.IsWithinSnappngRangeToTile(i, j, PlayerSittingHelper.ChairSittingMaxDistance); // Avoid being able to trigger it from long range
 		}
 
 		public override void ModifySmartInteractCoords(ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
@@ -73,26 +74,26 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 		}
 
-		public override void ModifySittingTargetInfo(int i, int j, ref int sitX, ref int sitY, ref int directionOffset, ref int targetDirection, ref Vector2 seatDownOffset, ref Vector2 zero) {
+		public override void ModifySittingTargetInfo(int i, int j, ref TileRestingInfo info) {
 			Tile tile = Framing.GetTileSafely(i, j);
 
-			directionOffset = 6; // Default to 6
-			seatDownOffset = Vector2.Zero; // Defaults to (0,0)
+			info.directionOffset = 6; // Default to 6
+			info.visualOffset = Vector2.Zero; // Defaults to (0,0)
 
-			targetDirection = -1;
+			info.targetDirection = -1;
 			if (tile.TileFrameX != 0) {
-				targetDirection = 1; // Facing right if sat down on the right alternate (added through addAlternate earlier)
+				info.targetDirection = 1; // Facing right if sat down on the right alternate (added through addAlternate earlier)
 			}
 
 			if (tile.TileFrameY % NextStyleHeight != 0) {
-				sitY--; // If clicked on anything but the top tile of the frame, move a tile up
+				info.anchorTilePosition.Y--; // If clicked on anything but the top tile of the frame, move a tile up
 			}
 		}
 
 		public override bool RightClick(int i, int j) {
 			Player player = Main.LocalPlayer;
 
-			if (player.IsWithinSnappngRangeToTile(i, j, 40)) { // Avoid being able to trigger it from long range
+			if (player.IsWithinSnappngRangeToTile(i, j, PlayerSittingHelper.ChairSittingMaxDistance)) { // Avoid being able to trigger it from long range
 				player.GamepadEnableGrappleCooldown();
 				player.sitting.SitDown(player, i, j);
 			}
@@ -102,7 +103,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
-			if (!player.IsWithinSnappngRangeToTile(i, j, 40)) { // Match condition in RightClick. Interaction should only show if clicking it does something
+			if (!player.IsWithinSnappngRangeToTile(i, j, PlayerSittingHelper.ChairSittingMaxDistance)) { // Match condition in RightClick. Interaction should only show if clicking it does something
 				return;
 			}
 

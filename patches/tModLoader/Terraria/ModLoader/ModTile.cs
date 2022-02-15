@@ -199,26 +199,23 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Modify the parameters for the player sitting on this furniture tile with its type registered to <see cref="TileID.Sets.CanBeSatOnForPlayers"/>.
 		/// <br>This gets called when calling <see cref="PlayerSittingHelper.SitDown"/>, and each tick while the player is sitting on a suitable furniture, i and j derived from "(player.Bottom + new Vector2(0f, -2f)).ToTileCoordinates()".</br>
-		/// <br>Formula: new Point(sitX, sitY + 1).ToWorldCoordinates(8f, 16f) + zero + new Vector2(0, targetDirection * directionOffset).</br>
+		/// <br>Formula: new Point(anchorPosition.X, anchorPosition.Y + 1).ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).</br>
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		/// <param name="sitX">The x position of the sitting location in tile coordinates. Defaults to i.</param>
-		/// <param name="sitY">The y position of the sitting location in tile coordinates. Defaults to j.</param>
-		/// <param name="directionOffset">Length of the player position offset applied in the X direction based on targetDirection. Defaults to 6.</param>
-		/// <param name="targetDirection">Direction the player is facing while sitting. Defaults to 1.</param>
-		/// <param name="seatDownOffset">Used for offsetting player drawing. Defaults to Vector2.Zero</param>
-		/// <param name="zero">Allows additional player position offset. Defaults to Vector2.Zero</param>
-		public virtual void ModifySittingTargetInfo(int i, int j, ref int sitX, ref int sitY, ref int directionOffset, ref int targetDirection, ref Vector2 seatDownOffset, ref Vector2 zero) {
+		/// <param name="info">The parameters for setting the anchor and offsets. You need to edit this</param>
+		public virtual void ModifySittingTargetInfo(int i, int j, ref TileRestingInfo info) {
 		}
 
 		/// <summary>
 		/// Modify the visual player offset when sleeping on this tile with its type registered to <see cref="TileID.Sets.CanBeSleptIn"/>.
+		/// <br>This gets called when calling <see cref="PlayerSleepingHelper.SetIsSleepingAndAdjustPlayerRotation"/>, and each tick while the player is resting in the bed, i and j derived from "(player.Bottom + new Vector2(0f, -2f)).ToTileCoordinates()".</br>
+		/// <br>Formula: new Point(anchorPosition.X, anchorPosition.Y + 1).ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).</br>
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		/// <param name="visualOffset">The visual offset. Defaults to new Vector2(-9, 1)</param>
-		public virtual void ModifySleepingOffset(int i, int j, ref Vector2 visualOffset) {
+		/// <param name="info">The parameters for setting the anchor and offsets. Default values match the regular vanilla bed.</param>
+		public virtual void ModifySleepingTargetInfo(int i, int j, ref TileRestingInfo info) {
 		}
 
 		/// <summary>
