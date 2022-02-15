@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override bool CanRightClick() {
 			// The bag can't be opened if it wasn't crafted
-			if (craftedPlayerName != string.Empty) {
+			if (craftedPlayerName == string.Empty) {
 				return false;
 			}
 
