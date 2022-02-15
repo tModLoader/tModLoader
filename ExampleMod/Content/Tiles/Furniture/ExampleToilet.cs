@@ -102,6 +102,9 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
+			if (!player.IsWithinSnappngRangeToTile(i, j, 40)) { // Match condition in RightClick. Interaction should only show if clicking it does something
+				return;
+			}
 
 			player.noThrow = 2;
 			player.cursorItemIconEnabled = true;

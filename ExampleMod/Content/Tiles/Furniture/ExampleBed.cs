@@ -101,7 +101,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Player player = Main.LocalPlayer;
 
 			if (!Player.IsHoveringOverABottomSideOfABed(i, j)) {
-				if (player.IsWithinSnappngRangeToTile(i, j, 96)) {
+				if (player.IsWithinSnappngRangeToTile(i, j, 96)) { // Match condition in RightClick. Interaction should only show if clicking it does something
 					player.noThrow = 2;
 					player.cursorItemIconEnabled = true;
 					player.cursorItemIconID = 5013;
