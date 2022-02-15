@@ -79,11 +79,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			seatDownOffset = Vector2.Zero; // Defaults to (0,0)
 
 			targetDirection = -1;
-			if (tile.frameX != 0) {
+			if (tile.TileFrameX != 0) {
 				targetDirection = 1; // Facing right if sat down on the right alternate (added through addAlternate earlier)
 			}
 
-			if (tile.frameY % NextStyleHeight != 0) {
+			if (tile.TileFrameY % NextStyleHeight != 0) {
 				sitY--; // If clicked on anything but the top tile of the frame, move a tile up
 			}
 		}
@@ -106,7 +106,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			player.cursorItemIconEnabled = true;
 			player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleChair>();
 
-			if (Main.tile[i, j].frameX / 18 < 1) {
+			if (Main.tile[i, j].TileFrameX / 18 < 1) {
 				player.cursorItemIconReversed = true;
 			}
 		}
