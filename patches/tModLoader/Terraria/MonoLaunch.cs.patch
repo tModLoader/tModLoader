@@ -41,7 +41,7 @@
  	}
  
  #if NETCORE
-@@ -58,16 +_,16 @@
+@@ -58,11 +_,23 @@
  					return handle;
  				}
  
@@ -51,13 +51,18 @@
  				var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
  				var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
  				var match = files.FirstOrDefault();
++
++				if (match is null) {
++					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(dir, name + ".dll")}");
++				}
++
++				Logging.tML.Debug($"\tattempting load {match}");
++
++				handle = NativeLibrary.Load(match);
++
++				Logging.tML.Debug("\tsuccess");
++
++				return assemblies[name] = handle;
  
--				Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
-+				Logging.tML.Debug(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
+ 				Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
  
- 				if (match != null && NativeLibrary.TryLoad(match, out handle)) {
--					Console.WriteLine("\tsuccess");
-+					Logging.tML.Debug("\tsuccess");
- 					return assemblies[name] = handle;
- 				}
- 				else {

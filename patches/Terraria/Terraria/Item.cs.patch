@@ -4,8 +4,8 @@
  		}
  
  		public static Rectangle GetDrawHitbox(int type, Player user) {
-+			if(Main.dedServ)
-+			return Rectangle.Empty;
++			if (Main.dedServ)
++				return Rectangle.Empty;
 +
  			Main.instance.LoadItem(type);
  			if (ItemID.Sets.IsFood[type])

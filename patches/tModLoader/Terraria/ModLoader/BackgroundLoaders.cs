@@ -139,6 +139,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal override void Unload() {
+			base.Unload();
 			loaded = false;
 		}
 

@@ -192,6 +192,21 @@
  					writer.Write(nPC2.active);
  					writer.Write(nPC2.netID);
  					writer.WriteVector2(nPC2.position);
+@@ -1809,8 +_,13 @@
+ 
+ 					while (num3 > 0) {
+ 						j++;
+-						Main.tile[i, j].CopyFrom(tile);
+ 						num3--;
++						// tML - significantly improve performance by directly accessing the relevant blocking data to copy. No need to copy mod data in this method.
++						var tile2 = Main.tile[i, j];
++						tile2.Get<LiquidData>() = tile.Get<LiquidData>();
++						tile2.Get<WallTypeData>() = tile.Get<WallTypeData>();
++						tile2.Get<TileTypeData>() = tile.Get<TileTypeData>();
++						tile2.Get<TileWallWireStateData>() = tile.Get<TileWallWireStateData>();
+ 					}
+ 				}
+ 			}
 @@ -1896,7 +_,7 @@
  				int num3 = reader.ReadInt32();
  				Tile tile = Main.tile[num2, num3];

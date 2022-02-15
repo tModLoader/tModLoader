@@ -52,6 +52,15 @@
  
  			SoundEngine.PlaySound(22, X * 16, Y * 16);
  			for (int i = X; i <= X + 1; i++) {
+@@ -324,7 +_,7 @@
+ 					Tile tileSafely2 = Framing.GetTileSafely(i, j);
+ 					if (tileSafely2.type == type2) {
+ 						tileSafely2.frameX -= num;
+-						Main.tile[i, j] = tileSafely2;
++						// Main.tile[i, j] = tileSafely2;
+ 						for (int k = 0; k < 4; k++) {
+ 							Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
+ 						}
 @@ -411,15 +_,21 @@
  			}
  			else {

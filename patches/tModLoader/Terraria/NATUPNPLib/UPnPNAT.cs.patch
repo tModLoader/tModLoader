@@ -1,0 +1,15 @@
+--- src/Terraria/Terraria/NATUPNPLib/UPnPNAT.cs
++++ src/tModLoader/Terraria/NATUPNPLib/UPnPNAT.cs
+@@ -47,6 +_,12 @@
+ 					StaticPortMapping ret;
+ 					try {
+ 						var args = UPnP.GetGenericPortMappingEntry(i);
++
++						//TML: Added to avoid unnecessary exceptions.
++						if (args == null)  {
++							yield break;
++                        }
++
+ 						ret = new StaticPortMapping
+ 						(
+ 							InternalPort: int.Parse(args["NewInternalPort"]),
