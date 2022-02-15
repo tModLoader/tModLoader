@@ -199,7 +199,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Modify the parameters for the player sitting on this furniture tile with its type registered to <see cref="TileID.Sets.CanBeSatOnForPlayers"/>.
 		/// <br>This gets called when calling <see cref="PlayerSittingHelper.SitDown"/>, and each tick while the player is sitting on a suitable furniture, i and j derived from "(player.Bottom + new Vector2(0f, -2f)).ToTileCoordinates()".</br>
-		/// <br>Formula: new Point(anchorPosition.X, anchorPosition.Y + 1).ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).</br>
+		/// <br>Formula: new Point(anchorTilePosition.X, anchorTilePosition.Y + 1).ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).</br>
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -210,7 +210,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Modify the visual player offset when sleeping on this tile with its type registered to <see cref="TileID.Sets.CanBeSleptIn"/>.
 		/// <br>This gets called when calling <see cref="PlayerSleepingHelper.SetIsSleepingAndAdjustPlayerRotation"/>, and each tick while the player is resting in the bed, i and j derived from "(player.Bottom + new Vector2(0f, -2f)).ToTileCoordinates()".</br>
-		/// <br>Formula: new Point(anchorPosition.X, anchorPosition.Y + 1).ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).</br>
+		/// <br>Formula: new Point(anchorTilePosition.X, anchorTilePosition.Y + 1).ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).</br>
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
