@@ -332,7 +332,7 @@ namespace Terraria.ModLoader
 
 			ContentSamples.Initialize();
 			PlayerInput.reinitialize = true;
-			SetupBestiary(token);
+			SetupBestiary();
 			SetupRecipes(token);
 			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 			ItemSorting.SetupWhiteLists();
@@ -369,7 +369,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void SetupBestiary(CancellationToken token) {
+		private static void SetupBestiary() {
 			//Beastiary DB
 			var bestiaryDatabase = new BestiaryDatabase();
 			new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
@@ -485,6 +485,7 @@ namespace Terraria.ModLoader
 			// BuffID.Search = IdDictionary.Create<BuffID, int>();
 
 			ContentSamples.Initialize();
+			SetupBestiary();
 
 			CleanupModReferences();
 		}
