@@ -1216,6 +1216,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 		//in all places where stack modification between two items takes place
+		//For organizational consistency, item1 *should* be the item that is attempting to increase its stack (Unclear in Player.ItemSpace yet)
 		/// <summary>
 		/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
 		/// </summary>
@@ -1233,7 +1234,6 @@ namespace Terraria.ModLoader
 
 		private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
 		//in Terraria.Item.CombineWithNearbyItems before num calculation
-		//For organizational consistency, item1 *should* be the item that is attempting to increase its stack (Unclear in Player.ItemSpace yet)
 		// if(!ItemLoader.CanStackInWorld(this, item)) { continue; }
 		/// <summary>
 		/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
