@@ -234,9 +234,13 @@
  
  			floorX = point2.X;
  			floorY = point2.Y;
-@@ -37215,7 +_,8 @@
+@@ -37213,9 +_,11 @@
+ 
+ 		private void AI_007_TryForcingSitting(int homeFloorX, int homeFloorY) {
  			Tile tile = Main.tile[homeFloorX, homeFloorY - 1];
- 			bool flag = type != 638 && type != 656 && ai[0] != 5f;
+-			bool flag = type != 638 && type != 656 && ai[0] != 5f;
++			//bool flag = type != 638 && type != 656 && ai[0] != 5f;
++			bool flag = !NPCID.Sets.CannotSitOnFurniture[type] && ai[0] != 5f;
  			if (flag)
 -				flag &= (tile != null && tile.active() && (tile.type == 15 || tile.type == 497));
 +				//flag &= (tile != null && tile.active() && (tile.type == 15 || tile.type == 497));

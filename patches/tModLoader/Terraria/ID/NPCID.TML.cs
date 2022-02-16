@@ -26,6 +26,12 @@ namespace Terraria.ID
 			/// True will force a name to be rolled regardless of vanilla behavior. False will have vanilla handle the naming.
 			/// </summary>
 			public static bool[] SpawnsWithCustomName = Factory.CreateBoolSet(453);
+
+			// IDs taken NPC.AI_007_TryForcingSitting
+			/// <summary>
+			/// Whether or not a given NPC can sit on suitable furniture (<see cref="TileID.Sets.CanBeSatOnForNPCs"/>)
+			/// </summary>
+			public static bool[] CannotSitOnFurniture = Factory.CreateBoolSet(638, 656);
 		}
 	}
 }
