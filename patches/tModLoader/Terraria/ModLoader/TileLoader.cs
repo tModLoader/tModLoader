@@ -389,16 +389,20 @@ namespace Terraria.ModLoader
 		//in TileSmartInteractCandidateProvider.ProvideCandidate after switch before return
 		public static void ModifySmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
 			ModTile modTile = GetTile(type);
-			if (modTile != null) {
-				TileObjectData data = TileObjectData.GetTileData(type, 0);
-				width = data.Width;
-				height = data.Height;
-				frameWidth = data.CoordinateWidth + data.CoordinatePadding;
-				frameHeight = data.CoordinateHeights[0] + data.CoordinatePadding;
-				extraY = data.CoordinateFullHeight % frameHeight;
+			if (modTile == null)
+				return;
 
-				modTile.ModifySmartInteractCoords(ref width, ref height, ref frameWidth, ref frameHeight, ref extraY);
-			}
+			TileObjectData data = TileObjectData.GetTileData(type, 0);
+			if (data == null)
+				return;
+
+			width = data.Width;
+			height = data.Height;
+			frameWidth = data.CoordinateWidth + data.CoordinatePadding;
+			frameHeight = data.CoordinateHeights[0] + data.CoordinatePadding;
+			extraY = data.CoordinateFullHeight % frameHeight;
+
+			modTile.ModifySmartInteractCoords(ref width, ref height, ref frameWidth, ref frameHeight, ref extraY);
 		}
 
 		//in PlayerSittingHelper.GetSittingTargetInfo before assigning playerSittingPosition
