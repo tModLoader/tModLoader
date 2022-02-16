@@ -103,7 +103,7 @@
 +			var previewFolder =
 +				BuildInfo.IsRelease ? "tModLoaderStable" :
 +				BuildInfo.IsBeta ? "tModLoaderPreview" :
-+				Path.DirectorySeparatorChar + "tModLoaderDev";
++				"tModLoaderDev";
 +
 +			SavePath =
 +				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :

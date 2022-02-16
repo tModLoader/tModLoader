@@ -46,6 +46,9 @@ namespace Terraria.ModLoader.Core
 
 			foreach (string repo in modRepos) {
 				var fileName = GetActiveTmodInRepo(repo);
+				if (fileName == null)
+					continue;
+
 				var lastModified = File.GetLastWriteTime(fileName);
 
 				if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
