@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,87 @@
+@@ -138,32 +_,90 @@
  			}
  		}
  
@@ -121,7 +121,10 @@
 +				foreach (var subDir in subDirsToMove) {
 +					if (Directory.Exists(Path.Combine(newPath, subDir)))
 +						Directory.Move(Path.Combine(newPath, subDir), Path.Combine(newPath, subDir.Replace(" ","")));
-+				}				
++				}
++
++				if (Directory.Exists(Path.Combine(newPath, "Workshop")))
++					Directory.Move(Path.Combine(newPath, "Workshop"), Path.Combine(SavePath, "Workshop"));
 +			}
 +
 +			SavePath = Path.Combine(SavePath, previewFolder);
