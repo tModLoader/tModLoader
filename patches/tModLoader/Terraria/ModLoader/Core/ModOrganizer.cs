@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Terraria.Localization;
 using Terraria.ModLoader.Exceptions;
@@ -328,10 +329,11 @@ namespace Terraria.ModLoader.Core
 			string val = null;
 			Version currVersion = null;
 			foreach (string fileName in tmods) {
-				//IF IN FOLDER
-				if (false) {
-					//GET FOLDER VERSION 
-					Version testVers = null;
+				var regex = new Regex(@"(\d\d\d\d.\d\d)");
+				var match = regex.Match(fileName);
+
+				if (match.Success) {
+					Version testVers = new Version(match.Groups[1].Value);
 					if (testVers > tmodVersion) {
 						continue;
 					}
@@ -350,6 +352,37 @@ namespace Terraria.ModLoader.Core
 				}
 			}
 			return val;
+		}
+
+		internal static void CleanupOldPublish(string repo) {
+			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
+			if (tmods.Length <= 2)
+				return;
+
+			string val = null;
+			Version currVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
+			foreach (string fileName in tmods) {
+				var regex = new Regex(@"(\d\d\d\d.\d\d)");
+				var match = regex.Match(fileName);
+
+				if (match.Success) {
+					//GET FOLDER VERSION 
+					Version testVers = new Version(match.Groups[1].Value);
+					if (testVers >= currVersion) {
+						continue;
+					}
+					else {
+						val = Directory.GetParent(fileName).ToString();
+						break;
+					}
+				}
+				else {
+					val = fileName;
+					break;
+				}
+			}
+
+			File.Delete(val);
 		}
 	}
 }

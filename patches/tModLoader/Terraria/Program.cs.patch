@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,68 @@
+@@ -138,32 +_,87 @@
  			}
  		}
  
@@ -100,15 +100,34 @@
  				args = Utils.ConvertMonoArgsToDotNet(args);
  
 +			LaunchParameters = Utils.ParseArguements(args);
++			var previewFolder =
++				BuildInfo.IsRelease ? "tModLoaderStable" :
++				BuildInfo.IsBeta ? "tModLoaderPreview" :
++				Path.DirectorySeparatorChar + "tModLoaderDev";
++
 +			SavePath =
 +				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
-+				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
-+				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader{(!BuildInfo.IsRelease ? Path.DirectorySeparatorChar + "Beta" : "")}");
++				LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] :
++				Platform.Get<IPathService>().GetStoragePath($"Terraria");
++
++			// Port old file format users
++			var oldBetas = Path.Combine(SavePath, "ModLoader/Beta");
++			
++			if (Directory.Exists(oldBetas)) {
++				var newPath = Path.Combine(SavePath, "tModLoaderPreview");
++				Directory.Move(oldBetas, newPath);
++
++				string[] subDirsToMove = { "Mod Reader", "Mod Sources", "Mod Configs" };
++				foreach (var subDir in subDirsToMove) {
++					if (Directory.Exists(Path.Combine(newPath, subDir)))
++						Directory.Move(Path.Combine(newPath, subDir), Path.Combine(newPath, subDir.Replace(" ","")));
++				}				
++			}
++
++			SavePath = Path.Combine(SavePath, previewFolder);
 +
 +			if (File.Exists("savehere.txt"))
 +				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
-+
-+			//EnsureMinimumStackSizeOnThreads();
 +
 +			bool isServer = LaunchParameters.ContainsKey("-server");
 +			try {

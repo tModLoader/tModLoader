@@ -109,9 +109,7 @@ namespace Terraria.Social.Steam
 						File.Copy(sourceManifest, targetManifest);
 
 				// Cleanup Old Folders
-				if (true) {
-					throw new Exception("Missing Cleanup Feature");
-				}
+				ModOrganizer.CleanupOldPublish(contentFolderPath);
 
 				var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
