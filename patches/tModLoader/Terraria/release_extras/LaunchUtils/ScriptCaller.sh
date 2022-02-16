@@ -30,7 +30,8 @@ else
 		LaunchLogs="$HOME/.local/share"
 	fi
 fi
-LaunchLogs="$LaunchLogs/Terraria/ModLoader/Beta/Logs"
+# This should reflect build purpose somehow???
+LaunchLogs="$LaunchLogs/Terraria/tModLoaderPreview"
 
 if [ ! -d "$LaunchLogs" ]; then
 	mkdir -p "$LaunchLogs"
