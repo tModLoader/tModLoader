@@ -499,7 +499,7 @@
  			BestiaryNotes = null;
 +			ModItem = null;
 +			globalItems = new Instanced<GlobalItem>[0];
-+			allowReforgeForStackableItem = false;
++			AllowReforgeForStackableItem = false;
 +			DamageType = DamageClass.Generic;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;

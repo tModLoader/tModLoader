@@ -23,12 +23,12 @@ namespace Terraria
 		/// Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1.
 		/// <br>This prevents it from receiving a prefix on craft.</br>
 		/// </summary>
-		public bool allowReforgeForStackableItem = false;
+		public bool AllowReforgeForStackableItem { get; set; }
 
 		/// <summary>
 		/// Used to make stackable items reforgeable
 		/// </summary>
-		public bool IsCandidateForReforge => maxStack == 1 || allowReforgeForStackableItem;
+		public bool IsCandidateForReforge => maxStack == 1 || AllowReforgeForStackableItem;
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>

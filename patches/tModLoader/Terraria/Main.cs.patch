@@ -2862,7 +2862,7 @@
  			if (mouseItem.IsAir)
  				return true;
  
-+			if (mouseItem.maxStack > 1 && mouseItem.allowReforgeForStackableItem && mouseItem.prefix > 0) // TML: #StackablePrefixWeapons: Gameplay impact: Prevent crafted prefix application by blocking crafting if mouse item is prefixed
++			if (mouseItem.maxStack > 1 && mouseItem.AllowReforgeForStackableItem && mouseItem.prefix > 0) // TML: #StackablePrefixWeapons: Gameplay impact: Prevent crafted prefix application by blocking crafting if mouse item is prefixed
 +				return false;
 +
  			if (mouseItem.IsTheSameAs(currentRecipe.createItem) && mouseItem.stack + currentRecipe.createItem.stack <= mouseItem.maxStack)
