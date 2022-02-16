@@ -403,7 +403,13 @@ namespace Terraria.ModLoader
 
 		//in PlayerSittingHelper.GetSittingTargetInfo before assigning playerSittingPosition
 		public static void ModifySittingTargetInfo(int i, int j, int type, ref TileRestingInfo info) {
-			GetTile(type)?.ModifySittingTargetInfo(i, j, ref info);
+			ModTile modTile = GetTile(type);
+			if (modTile != null) {
+				modTile.ModifySittingTargetInfo(i, j, ref info);
+			}
+			else {
+				info.anchorTilePosition.Y += 1; // Hardcoded vanilla offset from the bottom tile moved here (all chairs have height-1 offset)
+			}
 		}
 
 		//in PlayerSleepingHelper.GetSleepingTargetInfo before returning true

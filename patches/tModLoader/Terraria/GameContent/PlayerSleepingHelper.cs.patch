@@ -16,7 +16,7 @@
 -			anchorPosition = new Point(num4, num + 1).ToWorldCoordinates(8f, 16f);
  			visualoffset = SetOffsetbyBed(tileSafely.frameY / 36);
 +
-+			TileRestingInfo info = new TileRestingInfo(new Point(num4, num), visualoffset, targetDirection);
++			TileRestingInfo info = new TileRestingInfo(null, new Point(num4, num), visualoffset, targetDirection);
 +			TileLoader.ModifySleepingTargetInfo(x, y, tileSafely.type, ref info);
 +			num4 = info.anchorTilePosition.X;
 +			num = info.anchorTilePosition.Y;

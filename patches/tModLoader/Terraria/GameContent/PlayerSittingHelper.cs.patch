@@ -8,12 +8,14 @@
  
  namespace Terraria.GameContent
  {
-@@ -230,6 +_,15 @@
- 						break;
+@@ -231,7 +_,18 @@
  					}
  			}
-+
-+			TileRestingInfo info = new TileRestingInfo(new Point(num, num2), seatDownOffset, targetDirection, num3, zero);
+ 
+-			playerSittingPosition = new Point(num, num2 + 1).ToWorldCoordinates(8f, 16f);
++			// At this point, vanilla tile num/num2 represent the bottom-most tile coordinate of the tile (no vanilla tile for sitting is higher than 2),
++			// Modded ones are arbitrary, modder responsibility to find the bottom-post tile
++			TileRestingInfo info = new TileRestingInfo(player, new Point(num, num2), seatDownOffset, targetDirection, num3, zero);
 +			TileLoader.ModifySittingTargetInfo(x, y, tileSafely.type, ref info);
 +			num = info.anchorTilePosition.X;
 +			num2 = info.anchorTilePosition.Y;
@@ -21,6 +23,8 @@
 +			targetDirection = info.targetDirection;
 +			seatDownOffset = info.visualOffset;
 +			zero = info.finalOffset;
- 
- 			playerSittingPosition = new Point(num, num2 + 1).ToWorldCoordinates(8f, 16f);
++
++			playerSittingPosition = new Point(num, num2).ToWorldCoordinates(8f, 16f); // Moved +1 hardcode into ModifySittingTargetInfo
  			playerSittingPosition.X += targetDirection * num3;
+ 			playerSittingPosition += zero;
+ 			return true;

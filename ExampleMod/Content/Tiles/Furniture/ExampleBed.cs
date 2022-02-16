@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileFrameImportant[Type] = true;
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.HasOutlines[Type] = true;
-			TileID.Sets.CanBeSleptIn[Type] = true;
+			TileID.Sets.CanBeSleptIn[Type] = true; // Facilitates calling ModifySleepingTargetInfo
 			TileID.Sets.InteractibleByNPCs[Type] = true;
 			TileID.Sets.IsValidSpawnPoint[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
@@ -107,7 +107,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				if (player.IsWithinSnappngRangeToTile(i, j, PlayerSleepingHelper.BedSleepingMaxDistance)) { // Match condition in RightClick. Interaction should only show if clicking it does something
 					player.noThrow = 2;
 					player.cursorItemIconEnabled = true;
-					player.cursorItemIconID = 5013;
+					player.cursorItemIconID = ItemID.SleepingIcon;
 				}
 			}
 			else {

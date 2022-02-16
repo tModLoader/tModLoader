@@ -8,8 +8,12 @@ namespace Terraria.DataStructures
 	public struct TileRestingInfo
 	{
 		/// <summary>
-		/// The anchor position in tile coordinates, affecting logic for resetting (invalid) resting state.
-		/// <br>After it's set, vanilla offsets Y by +1.</br>
+		/// The resting entity (Player or NPC). Can be null if not available from the context.
+		/// </summary>
+		public Entity restingEntity;
+
+		/// <summary>
+		/// The bottom-most position of the resting tile in tile coordinates, affecting logic for resetting (invalid) resting state and used to align the hitbox.
 		/// </summary>
 		public Point anchorTilePosition;
 
@@ -33,7 +37,8 @@ namespace Terraria.DataStructures
 		/// </summary>
 		public Vector2 finalOffset;
 
-		public TileRestingInfo(Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset = 0, Vector2 finalOffset = default) {
+		public TileRestingInfo(Entity restingEntity, Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset = 0, Vector2 finalOffset = default) {
+			this.restingEntity = restingEntity;
 			this.anchorTilePosition = anchorTilePosition;
 			this.visualOffset = visualOffset;
 			this.targetDirection = targetDirection;
@@ -41,7 +46,8 @@ namespace Terraria.DataStructures
 			this.finalOffset = finalOffset;
 		}
 
-		public void Deconstruct(out Point anchorTilePosition, out Vector2 visualOffset, out int targetDirection, out int directionOffset, out Vector2 finalOffset) {
+		public void Deconstruct(out Entity restingEntity, out Point anchorTilePosition, out Vector2 visualOffset, out int targetDirection, out int directionOffset, out Vector2 finalOffset) {
+			restingEntity = this.restingEntity;
 			anchorTilePosition = this.anchorTilePosition;
 			visualOffset = this.visualOffset;
 			targetDirection = this.targetDirection;
