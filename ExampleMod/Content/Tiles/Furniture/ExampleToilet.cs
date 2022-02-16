@@ -79,7 +79,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Tile tile = Framing.GetTileSafely(i, j);
 
 			//info.directionOffset = info.restingEntity is Player ? 6 : 2; // Default to 6 for players, 2 for NPCs
-			//info.visualOffset = Vector2.Zero; // Defaults to (0,0), use with caution
+			//info.visualOffset = Vector2.Zero; // Defaults to (0,0)
 
 			info.targetDirection = -1;
 			if (tile.TileFrameX != 0) {
