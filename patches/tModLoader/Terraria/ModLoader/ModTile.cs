@@ -186,7 +186,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to modify the smart interact parameters for the tile. Parameters already preset by deriving from TileObjectData defined for the tile.
-		/// <br>Example usage: Beds/Dressers which have separate interactions based on where to click.</br>
+		/// <br/>Example usage: Beds/Dressers which have separate interactions based on where to click.
 		/// </summary>
 		/// <param name="width">Amount of tiles in x direction for which the smart interact should select for</param>
 		/// <param name="height">Amount of tiles in y direction for which the smart interact should select for</param>
@@ -198,9 +198,9 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Modify the parameters for the entity sitting on this furniture tile with its type registered to <see cref="TileID.Sets.CanBeSatOnForPlayers"/>.
-		/// <br>This is also called on NPCs sitting on this tile! To access the entity (player or NPC), use info.restingEntity.</br>
-		/// <br>This gets called when calling <see cref="PlayerSittingHelper.SitDown"/>, when the town NPC decides to sit, and each tick while the player is sitting on a suitable furniture. i and j derived from "(entity.Bottom + new Vector2(0f, -2f)).ToTileCoordinates()" or from the tile coordinates the player clicked on.</br>
-		/// <br>Formula: anchorTilePosition.ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).</br>
+		/// <br/>This is also called on NPCs sitting on this tile! To access the entity (player or NPC), use info.restingEntity.
+		/// <br/>This gets called when calling <see cref="PlayerSittingHelper.SitDown"/>, when the town NPC decides to sit, and each tick while the player is sitting on a suitable furniture. i and j derived from "(entity.Bottom + new Vector2(0f, -2f)).ToTileCoordinates()" or from the tile coordinates the player clicked on.
+		/// <br/>Formula: anchorTilePosition.ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
@@ -210,8 +210,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Modify the visual player offset when sleeping on this tile with its type registered to <see cref="TileID.Sets.CanBeSleptIn"/>.
-		/// <br>This gets called when calling <see cref="PlayerSleepingHelper.SetIsSleepingAndAdjustPlayerRotation"/>, and each tick while the player is resting in the bed, i and j derived from "(player.Bottom + new Vector2(0f, -2f)).ToTileCoordinates()" or from the tile coordinates the player clicked on..</br>
-		/// <br>Formula: new Point(anchorTilePosition.X, anchorTilePosition.Y + 1).ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).</br>
+		/// <br/>This gets called when calling <see cref="PlayerSleepingHelper.SetIsSleepingAndAdjustPlayerRotation"/>, and each tick while the player is resting in the bed, i and j derived from "(player.Bottom + new Vector2(0f, -2f)).ToTileCoordinates()" or from the tile coordinates the player clicked on.
+		/// <br/>Formula: new Point(anchorTilePosition.X, anchorTilePosition.Y + 1).ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
