@@ -1,5 +1,9 @@
 var NAVTREEINDEX121 =
 {
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_display_index.html":[1,0,2,5,2,20],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_display_index.html#af6c0cb26524b94b827e07203812f1d72":[1,0,2,5,2,20,0],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_filter.html":[1,0,2,5,2,21],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_filter.html#af030498c3c0c82e56e489f39d348e47f":[1,0,2,5,2,21,0],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_info_element.html":[1,0,2,5,2,22],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_info_element.html#af49ac912143ac240caac6a8684b62ed2":[1,0,2,5,2,22,0],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_prioritized_element.html":[1,0,2,5,2,23],
@@ -245,9 +249,5 @@ var NAVTREEINDEX121 =
 "namespace_terraria.html#a7925d076a5f2eac3e53b58c8ff914b27ae06d26940b3dab9e54a85b567f2ed5c1":[0,0,2,91,2],
 "namespace_terraria.html#a7925d076a5f2eac3e53b58c8ff914b27af5a7924e621e84c9280a9a27e1bcb7f6":[0,0,2,91,1],
 "namespace_terraria.html#aae2b711dde04c3469e06d546d8ea2c9c":[0,0,2,92],
-"namespace_terraria.html#ad94af700497b54286669cf696aa7af54":[0,0,2,89],
-"namespace_terraria.html#ad94af700497b54286669cf696aa7af54a06ff9b7d295af3610d674649a4673666":[0,0,2,89,2],
-"namespace_terraria.html#ad94af700497b54286669cf696aa7af54a614236d1d209287da16efeb9c742c7de":[0,0,2,89,1],
-"namespace_terraria.html#ad94af700497b54286669cf696aa7af54a627ab04c392cf8734c7534cec3dbe9b5":[0,0,2,89,0],
-"namespace_terraria_1_1_achievements.html":[0,0,2,0]
+"namespace_terraria.html#ad94af700497b54286669cf696aa7af54":[0,0,2,89]
 };

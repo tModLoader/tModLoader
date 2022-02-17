@@ -161,8 +161,15 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="memitem:a2d0e39065e8c254b3bb303f178a15679"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a2d0e39065e8c254b3bb303f178a15679">CanShoot</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a2d0e39065e8c254b3bb303f178a15679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent an item from shooting a projectile on use. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a2d0e39065e8c254b3bb303f178a15679">More...</a><br /></td></tr>
 <tr class="separator:a2d0e39065e8c254b3bb303f178a15679"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc0c73d7f601d2da892e7a11782905c2"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#acc0c73d7f601d2da892e7a11782905c2">CanStack</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item1, <a class="el" href="class_terraria_1_1_item.html">Item</a> item2)</td></tr>
+<tr class="memdesc:acc0c73d7f601d2da892e7a11782905c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent items from stacking. <br  />
+This is only called when two items of the same type attempt to stack. <br  />
+This is usually not called for coins and ammo in the inventory/UI. <br  />
+This covers all scenarios, if you just need to change in-world stacking behavior, use <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921" title="Allows you to prevent items from stacking in the world.  This is only called when two items of the sa...">CanStackInWorld</a>.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#acc0c73d7f601d2da892e7a11782905c2">More...</a><br /></td></tr>
+<tr class="separator:acc0c73d7f601d2da892e7a11782905c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab63fbe3ee6a8ecbd4662a08aa4435921"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921">CanStackInWorld</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item1, <a class="el" href="class_terraria_1_1_item.html">Item</a> item2)</td></tr>
-<tr class="memdesc:ab63fbe3ee6a8ecbd4662a08aa4435921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent vanilla items from stacking in the world. This is only called when two items of the same type attempt to stack.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921">More...</a><br /></td></tr>
+<tr class="memdesc:ab63fbe3ee6a8ecbd4662a08aa4435921"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to prevent items from stacking in the world. <br  />
+This is only called when two items of the same type attempt to stack.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921">More...</a><br /></td></tr>
 <tr class="separator:ab63fbe3ee6a8ecbd4662a08aa4435921"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42e845e6a67b6c2ae993157ad7bbce20"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a42e845e6a67b6c2ae993157ad7bbce20">CanUseItem</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a42e845e6a67b6c2ae993157ad7bbce20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not any item can be used. Returns true by default. The inability to use a specific item overrides this, so use this to stop an item from being used.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a42e845e6a67b6c2ae993157ad7bbce20">More...</a><br /></td></tr>
@@ -1295,6 +1302,48 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 
 </div>
 </div>
+<a id="acc0c73d7f601d2da892e7a11782905c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc0c73d7f601d2da892e7a11782905c2">&#9670;&nbsp;</a></span>CanStack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.GlobalItem.CanStack </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to prevent items from stacking. <br  />
+This is only called when two items of the same type attempt to stack. <br  />
+This is usually not called for coins and ammo in the inventory/UI. <br  />
+This covers all scenarios, if you just need to change in-world stacking behavior, use <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921" title="Allows you to prevent items from stacking in the world.  This is only called when two items of the sa...">CanStackInWorld</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>Whether or not the items are allowed to stack</dd></dl>
+
+</div>
+</div>
 <a id="ab63fbe3ee6a8ecbd4662a08aa4435921"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab63fbe3ee6a8ecbd4662a08aa4435921">&#9670;&nbsp;</a></span>CanStackInWorld()</h2>
 
@@ -1329,14 +1378,8 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to prevent vanilla items from stacking in the world. This is only called when two items of the same type attempt to stack. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">item1</td><td>The item that is attempting to stack</td></tr>
-    <tr><td class="paramname">item2</td><td>The item that the other item is attempting to stack with</td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Allows you to prevent items from stacking in the world. <br  />
+This is only called when two items of the same type attempt to stack. </p>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not the items are allowed to stack</dd></dl>
 
 </div>

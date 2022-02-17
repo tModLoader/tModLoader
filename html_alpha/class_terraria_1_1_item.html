@@ -244,12 +244,9 @@ Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>getRect</b> ()</
 <tr class="memitem:a2f3212be82df432b9e39100ee695e81c"><td class="memItemLeft" align="right" valign="top"><a id="a2f3212be82df432b9e39100ee695e81c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetStoreValue</b> ()</td></tr>
 <tr class="separator:a2f3212be82df432b9e39100ee695e81c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a052f5c2cf81d3222abf7d3399f6176c9"><td class="memItemLeft" align="right" valign="top"><a id="a052f5c2cf81d3222abf7d3399f6176c9"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNotTheSameAs</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> compareItem)</td></tr>
-<tr class="separator:a052f5c2cf81d3222abf7d3399f6176c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cbdcbd7e1256eee0e1a3c7b9fd2541f"><td class="memItemLeft" align="right" valign="top"><a id="a4cbdcbd7e1256eee0e1a3c7b9fd2541f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTheSameAs</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> compareItem)</td></tr>
-<tr class="separator:a4cbdcbd7e1256eee0e1a3c7b9fd2541f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ca29661b18506f4e1268e97f33b7934"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a5ca29661b18506f4e1268e97f33b7934">IsNotSameTypePrefixAndStack</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> compareItem)</td></tr>
+<tr class="memdesc:a5ca29661b18506f4e1268e97f33b7934"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns false if and only if netID (deprecated, equivalent to type), stack and prefix match  <a href="class_terraria_1_1_item.html#a5ca29661b18506f4e1268e97f33b7934">More...</a><br /></td></tr>
+<tr class="separator:a5ca29661b18506f4e1268e97f33b7934"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2498a0b49e340b1c4c8729318b73b82c"><td class="memItemLeft" align="right" valign="top"><a id="a2498a0b49e340b1c4c8729318b73b82c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>netDefaults</b> (int type)</td></tr>
 <tr class="separator:a2498a0b49e340b1c4c8729318b73b82c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -846,6 +843,10 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>WALL_PLACEMENT_U
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a0ca15ed1c8357bde27c6f15657a1ee59"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a0ca15ed1c8357bde27c6f15657a1ee59">AllowReforgeForStackableItem</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a0ca15ed1c8357bde27c6f15657a1ee59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1. <br  />
+This prevents it from receiving a prefix on craft.  <a href="class_terraria_1_1_item.html#a0ca15ed1c8357bde27c6f15657a1ee59">More...</a><br /></td></tr>
+<tr class="separator:a0ca15ed1c8357bde27c6f15657a1ee59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06f1c88e31d44fed2b5abcdb1dcc2176"><td class="memItemLeft" align="right" valign="top"><a id="a06f1c88e31d44fed2b5abcdb1dcc2176"></a>
 bool?&#160;</td><td class="memItemRight" valign="bottom"><b>CanBeQuickUsed</b><code> [get]</code></td></tr>
 <tr class="separator:a06f1c88e31d44fed2b5abcdb1dcc2176"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -867,6 +868,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsACoin</b><code> [ge
 <tr class="memitem:a6092d6f80443cfc07335ec274665656d"><td class="memItemLeft" align="right" valign="top"><a id="a6092d6f80443cfc07335ec274665656d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsAir</b><code> [get]</code></td></tr>
 <tr class="separator:a6092d6f80443cfc07335ec274665656d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a121a8acd82baa2bdf0c3cbc700a04aa3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a121a8acd82baa2bdf0c3cbc700a04aa3">IsCandidateForReforge</a><code> [get]</code></td></tr>
+<tr class="memdesc:a121a8acd82baa2bdf0c3cbc700a04aa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to make stackable items reforgeable  <a href="class_terraria_1_1_item.html#a121a8acd82baa2bdf0c3cbc700a04aa3">More...</a><br /></td></tr>
+<tr class="separator:a121a8acd82baa2bdf0c3cbc700a04aa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10f9ba0581368a23aff822a388c8cc14"><td class="memItemLeft" align="right" valign="top"><a id="a10f9ba0581368a23aff822a388c8cc14"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsCurrency</b><code> [get]</code></td></tr>
 <tr class="separator:a10f9ba0581368a23aff822a388c8cc14"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1154,6 +1158,26 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
+<a id="a5ca29661b18506f4e1268e97f33b7934"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ca29661b18506f4e1268e97f33b7934">&#9670;&nbsp;</a></span>IsNotSameTypePrefixAndStack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.IsNotSameTypePrefixAndStack </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>compareItem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>returns false if and only if netID (deprecated, equivalent to type), stack and prefix match </p>
+
+</div>
+</div>
 <a id="af5c82004ac2230b6d097772f19ee4bb6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af5c82004ac2230b6d097772f19ee4bb6">&#9670;&nbsp;</a></span>TryGetGlobalItem&lt; T &gt;() <span class="overload">[1/2]</span></h2>
 
@@ -1246,6 +1270,31 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a0ca15ed1c8357bde27c6f15657a1ee59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ca15ed1c8357bde27c6f15657a1ee59">&#9670;&nbsp;</a></span>AllowReforgeForStackableItem</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.AllowReforgeForStackableItem</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1. <br  />
+This prevents it from receiving a prefix on craft. </p>
+
+</div>
+</div>
 <a id="ae08f7b55586fe6e9237b09b41845893d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae08f7b55586fe6e9237b09b41845893d">&#9670;&nbsp;</a></span>DamageType</h2>
 
@@ -1267,6 +1316,30 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </div><div class="memdoc">
 
 <p>The damage type of this <a class="el" href="class_terraria_1_1_item.html">Item</a>. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or ModContent.GetInstance for custom damage types. </p>
+
+</div>
+</div>
+<a id="a121a8acd82baa2bdf0c3cbc700a04aa3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a121a8acd82baa2bdf0c3cbc700a04aa3">&#9670;&nbsp;</a></span>IsCandidateForReforge</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.IsCandidateForReforge</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Used to make stackable items reforgeable </p>
 
 </div>
 </div>

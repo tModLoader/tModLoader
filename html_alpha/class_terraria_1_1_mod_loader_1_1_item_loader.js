@@ -18,6 +18,7 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
     [ "CanResearch", "class_terraria_1_1_mod_loader_1_1_item_loader.html#ad89d5417a8ebf8c5c1b12379dacbba27", null ],
     [ "CanRightClick", "class_terraria_1_1_mod_loader_1_1_item_loader.html#afb29a5e0fa6ed446b2cc04fcc54c60f3", null ],
     [ "CanShoot", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a3737158d011ffed113dd32239a891060", null ],
+    [ "CanStack", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a078a569b6373c2a2194229ad61a5f48e", null ],
     [ "CanStackInWorld", "class_terraria_1_1_mod_loader_1_1_item_loader.html#aade975b7b33c1f712389e5249d2b2f37", null ],
     [ "CanUseItem", "class_terraria_1_1_mod_loader_1_1_item_loader.html#aa9b5a5023d1cdb7e235c11c30cb3423b", null ],
     [ "CaughtFishStack", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a837a41d46678a4c6764a9264d272809f", null ],

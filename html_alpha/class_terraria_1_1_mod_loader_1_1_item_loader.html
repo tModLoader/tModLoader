@@ -152,8 +152,11 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanPickup</b> 
 <tr class="memitem:a3737158d011ffed113dd32239a891060"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a3737158d011ffed113dd32239a891060">CanShoot</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a3737158d011ffed113dd32239a891060"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls each <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a2d0e39065e8c254b3bb303f178a15679" title="Allows you to prevent an item from shooting a projectile on use. Returns true by default.">GlobalItem.CanShoot</a> hook, then <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9cfa4e9abb2c74c13a9eabf7192a43ea" title="Allows you to prevent this item from shooting a projectile on use. Returns true by default.">ModItem.CanShoot</a>, until one of them returns false. If all of them return true, returns true.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a3737158d011ffed113dd32239a891060">More...</a><br /></td></tr>
 <tr class="separator:a3737158d011ffed113dd32239a891060"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a078a569b6373c2a2194229ad61a5f48e"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a078a569b6373c2a2194229ad61a5f48e">CanStack</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item1, <a class="el" href="class_terraria_1_1_item.html">Item</a> item2)</td></tr>
+<tr class="memdesc:a078a569b6373c2a2194229ad61a5f48e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns false if item prefixes don't match. Then calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#acc0c73d7f601d2da892e7a11782905c2" title="Allows you to prevent items from stacking.  This is only called when two items of the same type attem...">GlobalItem.CanStack</a> hooks until one returns false then <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9e5968c8c3de2b9374396a2908a946a2" title="Allows you to decide if this item is allowed to stack with another of its type.  This is only called ...">ModItem.CanStack</a>. Returns whether any of the hooks returned false.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a078a569b6373c2a2194229ad61a5f48e">More...</a><br /></td></tr>
+<tr class="separator:a078a569b6373c2a2194229ad61a5f48e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aade975b7b33c1f712389e5249d2b2f37"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#aade975b7b33c1f712389e5249d2b2f37">CanStackInWorld</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item1, <a class="el" href="class_terraria_1_1_item.html">Item</a> item2)</td></tr>
-<tr class="memdesc:aade975b7b33c1f712389e5249d2b2f37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921" title="Allows you to prevent vanilla items from stacking in the world. This is only called when two items of...">GlobalItem.CanStackInWorld</a> hooks until one returns false then <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a59eecaf5111ab06267eaeb72c16dd3a9" title="Allows you to decide if this item is allowed to stack with another of its type in the world....">ModItem.CanStackInWorld</a>. Returns whether any of the hooks returned false.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#aade975b7b33c1f712389e5249d2b2f37">More...</a><br /></td></tr>
+<tr class="memdesc:aade975b7b33c1f712389e5249d2b2f37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921" title="Allows you to prevent items from stacking in the world.  This is only called when two items of the sa...">GlobalItem.CanStackInWorld</a> hooks until one returns false then <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a59eecaf5111ab06267eaeb72c16dd3a9" title="Allows you to decide if this item is allowed to stack with another of its type in the world....">ModItem.CanStackInWorld</a>. Returns whether any of the hooks returned false.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#aade975b7b33c1f712389e5249d2b2f37">More...</a><br /></td></tr>
 <tr class="separator:aade975b7b33c1f712389e5249d2b2f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa9b5a5023d1cdb7e235c11c30cb3423b"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#aa9b5a5023d1cdb7e235c11c30cb3423b">CanUseItem</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:aa9b5a5023d1cdb7e235c11c30cb3423b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the "and" operation on the results of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#af19bcb03073673df4d45192e7fcbf7da" title="Returns whether or not this item can be used. By default returns true.">ModItem.CanUseItem</a> and all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a42e845e6a67b6c2ae993157ad7bbce20" title="Returns whether or not any item can be used. Returns true by default. The inability to use a specific...">GlobalItem.CanUseItem</a> hooks. Does not fail fast (every hook is called).  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#aa9b5a5023d1cdb7e235c11c30cb3423b">More...</a><br /></td></tr>
@@ -785,6 +788,44 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 
 </div>
 </div>
+<a id="a078a569b6373c2a2194229ad61a5f48e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a078a569b6373c2a2194229ad61a5f48e">&#9670;&nbsp;</a></span>CanStack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Terraria.ModLoader.ItemLoader.CanStack </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns false if item prefixes don't match. Then calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#acc0c73d7f601d2da892e7a11782905c2" title="Allows you to prevent items from stacking.  This is only called when two items of the same type attem...">GlobalItem.CanStack</a> hooks until one returns false then <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a9e5968c8c3de2b9374396a2908a946a2" title="Allows you to decide if this item is allowed to stack with another of its type.  This is only called ...">ModItem.CanStack</a>. Returns whether any of the hooks returned false. </p>
+
+</div>
+</div>
 <a id="aade975b7b33c1f712389e5249d2b2f37"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aade975b7b33c1f712389e5249d2b2f37">&#9670;&nbsp;</a></span>CanStackInWorld()</h2>
 
@@ -819,7 +860,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </table>
 </div><div class="memdoc">
 
-<p>Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921" title="Allows you to prevent vanilla items from stacking in the world. This is only called when two items of...">GlobalItem.CanStackInWorld</a> hooks until one returns false then <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a59eecaf5111ab06267eaeb72c16dd3a9" title="Allows you to decide if this item is allowed to stack with another of its type in the world....">ModItem.CanStackInWorld</a>. Returns whether any of the hooks returned false. </p>
+<p>Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921" title="Allows you to prevent items from stacking in the world.  This is only called when two items of the sa...">GlobalItem.CanStackInWorld</a> hooks until one returns false then <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a59eecaf5111ab06267eaeb72c16dd3a9" title="Allows you to decide if this item is allowed to stack with another of its type in the world....">ModItem.CanStackInWorld</a>. Returns whether any of the hooks returned false. </p>
 
 </div>
 </div>
