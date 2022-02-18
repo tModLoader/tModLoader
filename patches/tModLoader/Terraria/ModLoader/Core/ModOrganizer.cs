@@ -332,7 +332,7 @@ namespace Terraria.ModLoader.Core
 			string val = null;
 			Version currVersion = null;
 			foreach (string fileName in tmods) {
-				var regex = new Regex(@"(\d\d\d\d.\d\d)");
+				var regex = new Regex(@"(\d\d\d\d[.]\d\d)");
 				var match = regex.Match(fileName);
 
 				if (match.Success) {
@@ -365,7 +365,7 @@ namespace Terraria.ModLoader.Core
 			string val = null;
 			Version currVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
 			foreach (string fileName in tmods) {
-				var regex = new Regex(@"(\d\d\d\d.\d\d)");
+				var regex = new Regex(@"(\d\d\d\d[.]\d\d)");
 				var match = regex.Match(fileName);
 
 				if (match.Success) {

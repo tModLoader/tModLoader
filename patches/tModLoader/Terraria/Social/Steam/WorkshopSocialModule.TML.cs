@@ -32,6 +32,12 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
+			if (false && !BuildInfo.IsRelease && !BuildInfo.IsBeta) {
+				//TODO: Need to find the existing translation for this.
+				IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
+				return false;
+			}
+
 			if (!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
 				base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
 				return false;
@@ -87,12 +93,6 @@ namespace Terraria.Social.Steam
 			}
 
 			buildData["workshopdeps"] = workshopDeps;
-
-			if (!BuildInfo.IsRelease && !BuildInfo.IsBeta) {
-				//TODO: Need to find the existing translation for this.
-				IssueReporter.ReportInstantUploadProblem("tModLoader.CantPublishOnDevBuilds");
-				return false;
-			}
 
 			string contentFolderPath = GetTemporaryFolderPath() + modFile.Name + "/" + BuildInfo.tMLVersion.Major + "." + BuildInfo.tMLVersion.Minor;
 

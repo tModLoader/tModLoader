@@ -31,7 +31,7 @@ else
 	fi
 fi
 # This should reflect build purpose somehow???
-LaunchLogs="$LaunchLogs/Terraria/tModLoaderPreview"
+LaunchLogs="$LaunchLogs/Terraria/tModLoader-Preview/Logs"
 
 if [ ! -d "$LaunchLogs" ]; then
 	mkdir -p "$LaunchLogs"
