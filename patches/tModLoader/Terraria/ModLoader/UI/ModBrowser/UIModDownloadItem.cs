@@ -81,7 +81,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_moreInfoButton.OnClick += ViewModInfo;
 			Append(_moreInfoButton);
 
-			if ((BuildInfo.IsRelease || BuildInfo.IsBeta) && !!ModLoader.versionedName.Contains(ModDownload.ModloaderVersion)) {
+			if ((BuildInfo.IsRelease || BuildInfo.IsBeta) && !ModLoader.versionedName.Contains(ModDownload.ModloaderVersion)) {
 				tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", ModDownload.ModloaderVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
 				tMLUpdateRequired.BackgroundColor = Color.Orange * 0.7f;
 				tMLUpdateRequired.CopyStyle(_moreInfoButton);
