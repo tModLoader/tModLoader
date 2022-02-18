@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -15,7 +16,7 @@ namespace Terraria.ModLoader
 		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
 		public override int Music => 0;
 
-		internal int ZeroIndexType => Type - BiomeLoader.VanillaPrimaryBiomeCount;
+		internal int ZeroIndexType => Type - PrimaryBiomeID.Count;
 
 		// Bestiary properties
 		/// <summary>
@@ -48,6 +49,7 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			SetStaticDefaults();
+			PrimaryBiomeID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>
@@ -59,7 +61,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// This is where you can set values for DisplayName.
 		/// </summary>
-		public virtual void SetStaticDefaults() {
+		public override void SetStaticDefaults() {
 		}
 
 		/// <summary>

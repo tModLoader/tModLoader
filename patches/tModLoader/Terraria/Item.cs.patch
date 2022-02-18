@@ -302,12 +302,14 @@
  			if ((double)num14 >= 1.2)
  				rare += 2;
  			else if ((double)num14 >= 1.05)
-@@ -1076,17 +_,20 @@
+@@ -1076,17 +_,22 @@
  			else if ((double)num14 <= 0.95)
  				rare--;
  
 +			if (baseRarity >= ItemRarityID.Count)
 +				rare = RarityLoader.GetRarity(baseRarity).GetPrefixedRarity(rare - baseRarity, num14);
++			else if (rare > ItemRarityID.Purple)
++				rare = ItemRarityID.Purple;
 +
  			if (rare > -11) {
  				if (rare < -1)
@@ -491,12 +493,13 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -45203,14 +_,19 @@
+@@ -45203,14 +_,20 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			ModItem = null;
 +			globalItems = new Instanced<GlobalItem>[0];
++			AllowReforgeForStackableItem = false;
 +			DamageType = DamageClass.Generic;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
@@ -578,10 +581,13 @@
  				base.velocity.Y += gravity;
  				if (base.velocity.Y > maxFallSpeed)
  					base.velocity.Y = maxFallSpeed;
-@@ -45930,6 +_,9 @@
+@@ -45930,6 +_,12 @@
  					num2 *= 2;
  
  				if (num < (float)num2) {
++					if (!ItemLoader.CanStack(this, item))
++						continue;
++
 +					if (!ItemLoader.CanStackInWorld(this, item))
 +						continue;
 +
@@ -619,12 +625,14 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46456,8 +_,31 @@
+@@ -46456,17 +_,43 @@
  			}
  		}
  
 -		public Item Clone() => (Item)MemberwiseClone();
 -		public Item DeepClone() => (Item)MemberwiseClone();
+-
+-		public bool IsTheSameAs(Item compareItem) {
 +		public Item Clone() {
 +			Item newItem = (Item)MemberwiseClone();
 +
@@ -650,9 +658,22 @@
 +		}
 +
 +		internal Item DeepClone() => Clone();
- 
- 		public bool IsTheSameAs(Item compareItem) {
++
++		// TML: Made internal so that modders will have to replace it with a more straightforward item.type == compareItem.type
++		internal bool IsTheSameAs(Item compareItem) {
  			if (netID == compareItem.netID)
+ 				return type == compareItem.type;
+ 
+ 			return false;
+ 		}
+ 
++		// TML: Made internal + renamed in Item.TML.cs with more descriptive name (IsNotSameTypePrefixAndStack)
++		//TODO change to !IsNetSyncEquivalent ?
+-		public bool IsNotTheSameAs(Item compareItem) {
++		internal bool IsNotTheSameAs(Item compareItem) {
+ 			if (netID == compareItem.netID && stack == compareItem.stack)
+ 				return prefix != compareItem.prefix;
+ 
 @@ -46489,6 +_,8 @@
  			dye = 0;
  			shoot = 0;

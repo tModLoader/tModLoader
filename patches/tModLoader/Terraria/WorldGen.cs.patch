@@ -177,6 +177,41 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
+@@ -2746,21 +_,24 @@
+ 			noLiquidCheck = false;
+ 			Liquid.numLiquid = 0;
+ 			LiquidBuffer.numLiquidBuffer = 0;
++			/*
+ 			if (Main.netMode == 1 || lastMaxTilesX > Main.maxTilesX || lastMaxTilesY > Main.maxTilesY) {
+ 				for (int j = 0; j < lastMaxTilesX; j++) {
+ 					float num = (float)j / (float)lastMaxTilesX;
+ 					Main.statusText = Lang.gen[46].Value + " " + (int)(num * 100f + 1f) + "%";
+ 					for (int k = 0; k < lastMaxTilesY; k++) {
+-						Main.tile[j, k] = null;
++						Main.tile[j, k] = default;
+ 					}
+ 				}
+ 			}
++			*/
+ 
+ 			lastMaxTilesX = Main.maxTilesX;
+ 			lastMaxTilesY = Main.maxTilesY;
+ 			if (Main.netMode != 2)
+ 				Main.sectionManager = new WorldSections(Main.maxTilesX / 200, Main.maxTilesY / 150);
+ 
++			/*
+ 			if (Main.netMode != 1) {
+ 				for (int l = 0; l < Main.maxTilesX; l++) {
+ 					float num2 = (float)l / (float)Main.maxTilesX;
+@@ -2773,6 +_,8 @@
+ 					}
+ 				}
+ 			}
++			*/
++			Main.tile.ClearEverything();
+ 
+ 			for (int n = 0; n < Main.countsAsHostForGameplay.Length; n++) {
+ 				Main.countsAsHostForGameplay[n] = false;
 @@ -5595,6 +_,8 @@
  		}
  
@@ -379,6 +414,15 @@
  						flag4 = true;
  
  					if (!flag3) {
+@@ -15168,7 +_,7 @@
+ 		public static void TreeGrowFXCheck(int x, int y) {
+ 			int treeHeight = 1;
+ 			int passStyle = -1;
+-			Tile topTile = null;
++			Tile topTile = default;
+ 			for (int num = -1; num > -100; num--) {
+ 				Tile tile = Main.tile[x, y + num];
+ 				if (!tile.active() || !TileID.Sets.GetsCheckedForLeaves[tile.type])
 @@ -15185,6 +_,14 @@
  					continue;
  				}
@@ -1374,16 +1418,22 @@
  			if (tileCache.wall == 44) {
  				int num2 = Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, 66, 0f, 0f, 100, new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB), 0.75f);
  				Main.dust[num2].noGravity = true;
-@@ -39547,6 +_,9 @@
- 			if (!tile.active())
+@@ -39540,11 +_,14 @@
  				return false;
  
-+			if (!TileLoader.CanKillTile(i, j, tile.type, ref blockDamaged))
+ 			Tile tile = Main.tile[i, j];
+-			Tile tile2 = null;
++			Tile tile2 = default;
+ 			if (tile == null)
+ 				return false;
+ 
+ 			if (!tile.active())
 +				return false;
 +
- 			if (j >= 1)
- 				tile2 = Main.tile[i, j - 1];
++			if (!TileLoader.CanKillTile(i, j, tile.type, ref blockDamaged))
+ 				return false;
  
+ 			if (j >= 1)
 @@ -39560,7 +_,9 @@
  						if (tile.type != type && (tile2.frameX == 66 || tile2.frameX == 220))
  							return false;

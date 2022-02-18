@@ -3315,6 +3315,36 @@
  			int num = 50;
  			if (newItem.IsACoin)
  				num = 54;
+@@ -27807,7 +_,8 @@
+ 			if (theSlot.type == 0)
+ 				return true;
+ 
+-			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot))
++			//if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot))
++			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot) && !ItemLoader.CanStack(theSlot, theItemToAccept))
+ 				return true;
+ 
+ 			return false;
+@@ -27973,7 +_,8 @@
+ 		}
+ 
+ 		private bool GetItem_FillIntoOccupiedSlot_VoidBag(int plr, Item[] inv, Item newItem, GetItemSettings settings, Item returnItem, int i) {
+-			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
++			//if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i])) {
++			if (inv[i].type > 0 && inv[i].stack < inv[i].maxStack && returnItem.IsTheSameAs(inv[i]) && ItemLoader.CanStack(inv[i], returnItem)) {
+ 				if (newItem.IsACoin)
+ 					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
+ 				else
+@@ -28002,7 +_,8 @@
+ 		}
+ 
+ 		private bool GetItem_FillIntoOccupiedSlot(int plr, Item newItem, GetItemSettings settings, Item returnItem, int i) {
+-			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
++			//if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i])) {
++			if (inventory[i].type > 0 && inventory[i].stack < inventory[i].maxStack && returnItem.IsTheSameAs(inventory[i]) && ItemLoader.CanStack(inventory[i], newItem)) {
+ 				if (newItem.IsACoin)
+ 					SoundEngine.PlaySound(38, (int)position.X, (int)position.Y);
+ 				else
 @@ -28110,6 +_,8 @@
  				return;
  
@@ -3969,6 +3999,17 @@
  						if (tile.halfBrick()) {
  							WorldGen.PoundTile(x, y);
  							if (Main.netMode == 1)
+@@ -32594,8 +_,8 @@
+ 				cursorItemIconEnabled = true;
+ 				Main.ItemIconCacheUpdate(sItem.type);
+ 			}
+-
+-			if (!ItemTimeIsZero || itemAnimation <= 0 || !controlUseItem)
++			// Stack size check added by TML. Works by coincidence in vanilla.
++			if (!ItemTimeIsZero || itemAnimation <= 0 || !controlUseItem || sItem.stack <= 0)
+ 				return;
+ 
+ 			if (sItem.type == 205 || (sItem.type == 3032 && Main.tile[tileTargetX, tileTargetY].liquidType() == 0) || (sItem.type == 4872 && Main.tile[tileTargetX, tileTargetY].lava())) {
 @@ -32922,7 +_,8 @@
  				}
  
@@ -4174,7 +4215,7 @@
  		}
  
  		private bool ItemCheck_CheckCanUse(Item sItem) {
-+			if(!CombinedHooks.CanUseItem(this, sItem))
++			if(sItem.IsAir || !CombinedHooks.CanUseItem(this, sItem))
 +				return false;
 +
  			int whoAmI = base.whoAmI;

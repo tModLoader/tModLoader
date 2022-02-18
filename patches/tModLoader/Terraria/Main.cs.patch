@@ -193,6 +193,15 @@
  		public static bool allChestStackHover;
  		public static bool inventorySortMouseOver;
  		public static float GraveyardVisualIntensity;
+@@ -971,7 +_,7 @@
+ 		public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
+ 		public static bool tilesLoaded = false;
+ 		public static WorldMap Map = new WorldMap(maxTilesX, maxTilesY);
+-		public static Tile[,] tile = new Tile[maxTilesX, maxTilesY];
++		public static Tilemap tile = new Tilemap((ushort)maxTilesX, (ushort)maxTilesY);
+ 		public static Dust[] dust = new Dust[6001];
+ 		public static Star[] star = new Star[400];
+ 		public static Item[] item = new Item[401];
 @@ -1161,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
@@ -1022,7 +1031,7 @@
 -					}
 -					else if (!audioSystem.IsTrackPlaying(50)) {
 +					else {
-+						newMusic = MenuLoader.CurrentMenu.Music; // TODO: Music loader to make music function properly.
++						newMusic = MenuLoader.CurrentMenu.Music;
 +					}
 +
 +					if (_isAsyncLoadComplete && newMusic == 50 && !audioSystem.IsTrackPlaying(50)) {
@@ -1527,7 +1536,7 @@
  			int num12 = 0;
  			for (int j = 0; j < numLines; j++) {
  				Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, array[j], Vector2.One);
-@@ -15120,11 +_,17 @@
+@@ -15120,14 +_,20 @@
  				Utils.DrawInvBG(spriteBatch, new Microsoft.Xna.Framework.Rectangle(X - num17, Y - num18, (int)zero.X + num17 * 2, (int)zero.Y + num18 + num18 / 2), new Microsoft.Xna.Framework.Color(23, 25, 81, 255) * 0.925f);
  			}
  
@@ -1538,7 +1547,7 @@
 -					int num20 = (int)((float)(int)mouseTextColor * num19);
 -					Microsoft.Xna.Framework.Color color2 = Microsoft.Xna.Framework.Color.Black;
 +				drawableLines[k].OriginalX = X;
-+				drawableLines[k].OriginalY = Y;
++				drawableLines[k].OriginalY = Y + num16;
 +				if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "OneDropLogo") {
 +					int num20 = (int)((float)(int)mouseTextColor * 1f);
 +					Color color2 = Color.Black;
@@ -1547,8 +1556,13 @@
 +						goto PostDraw;
 +
  					for (int l = 0; l < 5; l++) {
- 						int num21 = X;
- 						int num22 = Y + num16;
+-						int num21 = X;
+-						int num22 = Y + num16;
++						int num21 = drawableLines[k].X;
++						int num22 = drawableLines[k].Y;
+ 						if (l == 4)
+ 							color2 = new Microsoft.Xna.Framework.Color(num20, num20, num20, num20);
+ 
 @@ -15145,17 +_,14 @@
  								num22++;
  								break;
@@ -1604,6 +1618,7 @@
 +					if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")
  						black = Colors.JourneyMode;
  
+-					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), black, 0f, Vector2.Zero, Vector2.One);
 +					drawableLines[k].Color = black;
 +					Color realLineColor = black;
 +
@@ -1615,14 +1630,14 @@
 +					if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref num12) || !globalCanDraw)
 +						goto PostDraw;
 +
--					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), black, 0f, Vector2.Zero, Vector2.One);
-+					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), realLineColor, 0f, Vector2.Zero, Vector2.One);
++					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[k].font, drawableLines[k].text, new Vector2(drawableLines[k].X, drawableLines[k].Y), realLineColor, drawableLines[k].rotation, drawableLines[k].origin, drawableLines[k].baseScale, drawableLines[k].maxWidth, drawableLines[k].spread);
  				}
-+
+ 
 +				PostDraw:
 +				ItemLoader.PostDrawTooltipLine(HoverItem, drawableLines[k]);
- 
- 				num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
++
+-				num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
++				num16 += (int)(FontAssets.MouseText.Value.MeasureString(drawableLines[k].text).Y + (float)num12);
  			}
 +
 +			ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
@@ -2730,11 +2745,14 @@
  			int num54 = (screenHeight - 600) / 2;
  			int num55 = (int)((float)screenHeight / 600f * 250f);
  			if (screenHeight < 700) {
-@@ -30760,11 +_,17 @@
+@@ -30759,12 +_,19 @@
+ 					int num57 = 270;
  					string text = Lang.inter[46].Value + ": ";
  					if (reforgeItem.type > 0) {
- 						int num58 = reforgeItem.value;
+-						int num58 = reforgeItem.value;
 -						if (player[myPlayer].discount)
++						//int num58 = reforgeItem.value;
++						int num58 = reforgeItem.value * reforgeItem.stack; // TML: #StackablePrefixWeapons: scale with current stack size
 +						bool canApplyDiscount = true;
 +						if (!ItemLoader.ReforgePrice(reforgeItem, ref num58, ref canApplyDiscount))
 +							goto skipVanillaPricing;
@@ -2759,7 +2777,7 @@
  								bool favorited = reforgeItem.favorited;
 -								reforgeItem.netDefaults(reforgeItem.netID);
 -								reforgeItem.Prefix(-2);
-+								int stack = reforgeItem.stack;	//keep the stack, stacked weps support (i.e. light discs)
++								int stack = reforgeItem.stack;  //#StackablePrefixWeapons: keep the stack, (i.e. light discs)
 +																//vanilla doesn't have a good way of resetting prefixes, so it creates a new item entirely
 +																//before we roll the prefix, we simply copy over the old mod data before doing so
 +								Item r = new Item();
@@ -2855,6 +2873,16 @@
  					int num5 = (i + 1) * 26;
  					if (recipe[availableRecipe[num3]].requiredTile[i] == -1) {
  						if (i == 0 && !recipe[availableRecipe[num3]].needWater && !recipe[availableRecipe[num3]].needHoney && !recipe[availableRecipe[num3]].needLava && !recipe[availableRecipe[num3]].needSnowBiome && !recipe[availableRecipe[num3]].needGraveyardBiome)
+@@ -31593,6 +_,9 @@
+ 			if (mouseItem.IsAir)
+ 				return true;
+ 
++			if (mouseItem.maxStack > 1 && mouseItem.AllowReforgeForStackableItem && mouseItem.prefix > 0) // TML: #StackablePrefixWeapons: Gameplay impact: Prevent crafted prefix application by blocking crafting if mouse item is prefixed
++				return false;
++
+ 			if (mouseItem.IsTheSameAs(currentRecipe.createItem) && mouseItem.stack + currentRecipe.createItem.stack <= mouseItem.maxStack)
+ 				return true;
+ 
 @@ -31621,6 +_,11 @@
  				inventoryScale = 0.755f;
  				num += 5;
@@ -2867,7 +2895,16 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31857,8 +_,11 @@
+@@ -31850,15 +_,19 @@
+ 			int stack = mouseItem.stack;
+ 			mouseItem = r.createItem.Clone();
+ 			mouseItem.stack += stack;
+-			if (stack <= 0)
++			//if (stack <= 0)
++			if (stack <= 0 && mouseItem.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
+ 				mouseItem.Prefix(-1);
+ 
+ 			mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
  			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
  			r.Create();
@@ -4132,6 +4169,17 @@
  		}
  
  		private static void UpdateAtmosphereTransparencyToSkyColor() {
+@@ -49322,6 +_,10 @@
+ 				preferredBGStyleForPlayer = bgStyle;
+ 				if (WorldGen.drunkWorldGen)
+ 					bgStyle = 9;
++
++				var menuBackgroundStyle = MenuLoader.CurrentMenu.MenuBackgroundStyle;
++				if (menuBackgroundStyle != null)
++					bgStyle = menuBackgroundStyle.Slot;
+ 			}
+ 
+ 			if (instantBGTransitionCounter > 0) {
 @@ -49332,6 +_,8 @@
  
  			UpdateBGVisibility_BackLayer(null, null);
