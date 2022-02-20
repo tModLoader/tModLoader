@@ -32,59 +32,62 @@ namespace Terraria.ModLoader.Core
 			Directory.CreateDirectory(ModLoader.ModPath);
 			var mods = new List<LocalMod>();
 			var names = new HashSet<string>();
-			List<string> modRepos = new List<string>();
 
 			DeleteTemporaryFiles();
 
 			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
 
 			// Prioritize loading Mods from Mods folder for Dev/Beta simplicitiy.
-			modRepos.Add(ModLoader.ModPath);
+			foreach (string mod in Directory.GetFiles(ModLoader.ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
+				AttemptLoadMod(mod, ref mods, ref names);
 
 			// Load Mods from Workshop downloads
-			modRepos.AddRange(WorkshopFileFinder.ModPaths);
-
-			foreach (string repo in modRepos) {
+			foreach (string repo in WorkshopFileFinder.ModPaths) {
 				var fileName = GetActiveTmodInRepo(repo);
 				if (fileName == null)
 					continue;
 
-				var lastModified = File.GetLastWriteTime(fileName);
-
-				if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
-					try {
-						var modFile = new TmodFile(fileName);
-
-						using (modFile.Open()) {
-							mod = new LocalMod(modFile) {
-								lastModified = lastModified
-							};
-						}
-					}
-					catch (Exception e) {
-						if (!readFailures.Contains(fileName)) {
-							Logging.tML.Warn("Failed to read " + fileName, e);
-						}
-						else {
-							readFailures.Add(fileName);
-						}
-
-						continue;
-					}
-
-					modsDirCache[fileName] = mod;
-				}
-
-				// Ignore it from Workshop if it appeared in Mods folder/already exists.
-				if (names.Add(mod.Name)) {
-					mods.Add(mod);
-				}
-				else {
-					Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
-				}
+				AttemptLoadMod(fileName, ref mods, ref names);
 			}
 
 			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
+		}
+
+		private static bool AttemptLoadMod(string fileName, ref List<LocalMod> mods, ref HashSet<string> names) {
+			var lastModified = File.GetLastWriteTime(fileName);
+
+			if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
+				try {
+					var modFile = new TmodFile(fileName);
+
+					using (modFile.Open()) {
+						mod = new LocalMod(modFile) {
+							lastModified = lastModified
+						};
+					}
+				}
+				catch (Exception e) {
+					if (!readFailures.Contains(fileName)) {
+						Logging.tML.Warn("Failed to read " + fileName, e);
+					}
+					else {
+						readFailures.Add(fileName);
+					}
+
+					return false;
+				}
+
+				modsDirCache[fileName] = mod;
+			}
+
+			// Ignore it from Workshop if it appeared in Mods folder/already exists.
+			if (names.Add(mod.Name)) {
+				mods.Add(mod);
+			}
+			else {
+				Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
+			}
+			return true;
 		}
 
 		private static void DeleteTemporaryFiles() {

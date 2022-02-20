@@ -32,7 +32,7 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-			if (!BuildInfo.IsRelease && !BuildInfo.IsBeta) {
+			if (false && !BuildInfo.IsRelease && !BuildInfo.IsBeta) {
 				//TODO: Need to find the existing translation for this.
 				IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 				return false;
@@ -59,7 +59,7 @@ namespace Terraria.Social.Steam
 					return false;
 				}
 
-				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
+				if (false && new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
 					return false;
 				}
@@ -94,7 +94,7 @@ namespace Terraria.Social.Steam
 
 			buildData["workshopdeps"] = workshopDeps;
 
-			string contentFolderPath = GetTemporaryFolderPath() + modFile.Name + "/" + BuildInfo.tMLVersion.Major + "." + BuildInfo.tMLVersion.Minor;
+			string contentFolderPath = $"{GetTemporaryFolderPath()}{modFile.Name}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
 			if (MakeTemporaryFolder(contentFolderPath)) {
 				string modPath = Path.Combine(contentFolderPath, modFile.Name + ".tmod");

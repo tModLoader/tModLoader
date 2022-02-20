@@ -14,7 +14,7 @@ jobs:
   MergeToStable:
     # The type of runner that the job will run on
     runs-on: windows-latest
-    # Make sure not to run this job on other labels
+    #TODO: Need to replace below Line with a check against some sort of 'Dont merge' flag. Wont run for now
     if: github.event_name == 'push'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -40,19 +40,18 @@ jobs:
     needs: MergeToStable
     # The type of runner that the job will run on
     runs-on: windows-latest
+    #TODO: Need to replace below Line with a check against some sort of 'Dont merge' flag. Wont run for now
     if: github.event_name == 'push'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
         - name: Check out base branch
-          if: ${{ steps.date.outputs.date }}<20
           uses: actions/checkout@v2
           with:
             persist-credentials: false
             fetch-depth: 10
               
         - name: Merge
-          if: ${{ steps.date.outputs.date }}<20
           uses: robotology/gh-action-nightly-merge@v1.3.1
           with:
               stable_branch: '1.4-dev'

@@ -14,7 +14,7 @@
  			base.ProgressReporter = new WorkshopProgressReporter(_publisherInstances);
  			base.SupportedTags = new SupportedWorkshopTags();
 -			_contentBaseFolder = Main.SavePath + Path.DirectorySeparatorChar + "Workshop";
-+			_contentBaseFolder = Directory.GetParent(Main.SavePath).ToString() + Path.DirectorySeparatorChar + "Workshop";
++			_contentBaseFolder = Path.Combine(Directory.GetParent(Main.SavePath).ToString(), "Workshop");
  			_downloader = WorkshopHelper.UGCBased.Downloader.Create();
  			_publishedItems = WorkshopHelper.UGCBased.PublishedItemsFinder.Create();
  			WorkshopIssueReporter workshopIssueReporter = new WorkshopIssueReporter();

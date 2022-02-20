@@ -17,21 +17,8 @@ if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
 	fi
 fi
 
-if [ "$_uname" = Darwin ]; then
-	LaunchLogs="$HOME/Library/Application Support"
-elif [[ "$_uname" == *"_NT"* ]]; then
-	LaunchLogs="$USERPROFILE/Documents/My Games"
-	if [ ! -d "$LaunchLogs" ]; then
-	  LaunchLogs="$USERPROFILE/OneDrive/Documents/My Games"
-	fi
-else
-	LaunchLogs="$XDG_DATA_HOME"
-	if [ "$LaunchLogs" = "" ]; then
-		LaunchLogs="$HOME/.local/share"
-	fi
-fi
 # This should reflect build purpose somehow???
-LaunchLogs="$LaunchLogs/Terraria/tModLoader-Preview/Logs"
+LaunchLogs="tModLoader-Logs"
 
 if [ ! -d "$LaunchLogs" ]; then
 	mkdir -p "$LaunchLogs"
