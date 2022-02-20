@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-namespace ExampleMod.Content.Projectile
+namespace ExampleMod.Content.Projectiles
 {
     public class ExampleFlame : ModProjectile
     {

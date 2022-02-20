@@ -1,4 +1,4 @@
-using ExampleMod.Content.Projectile;
+using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
