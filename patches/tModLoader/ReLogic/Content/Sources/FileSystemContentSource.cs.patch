@@ -1,10 +1,80 @@
 --- src/Terraria/ReLogic/Content/Sources/FileSystemContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/FileSystemContentSource.cs
-@@ -86,5 +_,7 @@
+@@ -4,16 +_,10 @@
+ 
+ namespace ReLogic.Content.Sources
+ {
+-	public class FileSystemContentSource : IContentSource
++	public class FileSystemContentSource : ContentSource
+ 	{
+ 		private readonly string _basePath;
+ 		private readonly Dictionary<string, string> _nameToAbsolutePath = new Dictionary<string, string>();
+-		private readonly RejectedAssetCollection _rejections = new RejectedAssetCollection();
+-
+-		public IContentValidator ContentValidator {
+-			get;
+-			set;
+-		}
+ 
+ 		public int FileCount => _nameToAbsolutePath.Count;
+ 
+@@ -23,33 +_,10 @@
+ 				_basePath += Path.DirectorySeparatorChar;
+ 
+ 			BuildNameToAbsolutePathDictionary();
+-		}
+-
+-		public bool HasAsset(string assetName) {
+-			if (_rejections.IsRejected(assetName))
+-				return false;
+-
+-			return _nameToAbsolutePath.ContainsKey(assetName);
+-		}
+-
+-		public List<string> GetAllAssetsStartingWith(string assetNameStart) {
+-			List<string> list = new List<string>();
+-			foreach (string key in _nameToAbsolutePath.Keys) {
+-				if (key.ToLower().StartsWith(assetNameStart))
+-					list.Add(key);
+-			}
+-
+-			return list;
+-		}
+-
+-		public string GetExtension(string assetName) {
+-			if (!_nameToAbsolutePath.TryGetValue(assetName, out string value))
+-				throw AssetLoadException.FromMissingAsset(assetName);
+-
+-			return Path.GetExtension(value) ?? "";
++			SetAssetNames(_nameToAbsolutePath.Keys);
  		}
  
- 		public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
-+
-+		public IEnumerable<string> EnumerateFiles() => _nameToAbsolutePath.Keys;
+-		public Stream OpenStream(string assetName) {
++		public override Stream OpenStream(string assetName) {
+ 			if (!_nameToAbsolutePath.TryGetValue(assetName, out string value))
+ 				throw AssetLoadException.FromMissingAsset(assetName);
+ 
+@@ -69,22 +_,11 @@
+ 				string[] files = Directory.GetFiles(_basePath, "*", SearchOption.AllDirectories);
+ 				for (int i = 0; i < files.Length; i++) {
+ 					string fullPath = Path.GetFullPath(files[i]);
+-					string text = Path.GetExtension(fullPath) ?? "";
+-					string path = fullPath.Substring(_basePath.Length, fullPath.Length - text.Length - _basePath.Length);
++					string path = fullPath.Substring(_basePath.Length);
+ 					path = AssetPathHelper.CleanPath(path);
+ 					_nameToAbsolutePath[path] = fullPath;
+ 				}
+ 			}
+ 		}
+-
+-		public void RejectAsset(string assetName, IRejectionReason reason) {
+-			_rejections.Reject(assetName, reason);
+-		}
+-
+-		public void ClearRejections() {
+-			_rejections.Clear();
+-		}
+-
+-		public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
  	}
  }

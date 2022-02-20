@@ -1,7 +1,8 @@
 @echo off
-
-dotnet clean tModLoader.sln -c Debug --nologo -v q
-
-echo Building Debug (1/1)
-dotnet build tModLoader.sln -c Debug --nologo -v q /clp:ErrorsOnly
-@IF %ERRORLEVEL% NEQ 0 (pause && EXIT /B %ERRORLEVEL%)
+echo Cleaning up output folders...
+dotnet clean "../src/tModLoader/Terraria/Terraria.csproj" -c Debug --nologo -v q
+echo Building Debug...
+dotnet build "../src/tModLoader/Terraria/Terraria.csproj" -c Debug --nologo -v q /clp:ErrorsOnly
+echo Building ExampleMod...
+dotnet build "../ExampleMod/ExampleMod.csproj" -c Debug --nologo -v q /clp:ErrorsOnly
+pause

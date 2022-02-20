@@ -1,11 +1,12 @@
 --- src/decompiled/Terraria/Graphics/Capture/CaptureManager.cs
 +++ src/Terraria/Terraria/Graphics/Capture/CaptureManager.cs
-@@ -5,11 +_,16 @@
+@@ -5,11 +_,17 @@
  {
  	public class CaptureManager
  	{
 -		public static CaptureManager Instance = new CaptureManager();
-+		private static CaptureManager _instance = new CaptureManager();
++		// client initialization has been moved to LoadContent to prevent FNA deadlocks
++		private static CaptureManager _instance;
  		private CaptureInterface _interface;
  		private CaptureCamera _camera;
  

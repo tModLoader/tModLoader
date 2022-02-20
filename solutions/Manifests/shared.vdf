@@ -1,0 +1,11 @@
+"DepotBuildConfig"
+{
+  "DepotID" "1281931"
+  "ContentRoot" "../artifacts/shared"
+  "FileMapping"
+  {
+    "LocalPath" "*"
+    "DepotPath" "."
+    "recursive" "1"
+  }
+}

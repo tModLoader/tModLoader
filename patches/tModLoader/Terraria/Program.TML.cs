@@ -1,25 +1,18 @@
-using ReLogic.IO;
-using ReLogic.OS;
+using MonoMod.RuntimeDetour;
+using MonoMod.Cil;
+using Mono.Cecil.Cil;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
-using Terraria.Initializers;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using Terraria.ModLoader.Exceptions;
-using Terraria.Social;
-using Terraria.Utilities;
 
 namespace Terraria
 {
 	public static partial class Program
 	{
-		public static string SavePath { get; private set; } // moved from Main to avoid triggering the Main static constructor before logging initializes
+		public static string SavePath { get; private set; } // Moved from Main to avoid triggering the Main static constructor before logging initializes
 
 		private static IEnumerable<MethodInfo> GetAllMethods(Type type) {
 			return type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);

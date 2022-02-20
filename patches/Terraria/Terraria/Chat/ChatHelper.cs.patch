@@ -23,7 +23,7 @@
 +				NetPacket packet = NetTextModule.SerializeServerMessage(text, color, messageAuthor);
 +				NetManager.Instance.SendToClient(packet, playerId);
 +			}
-+			
++
  			if (playerId == Main.myPlayer)
  				DisplayMessage(text, color, messageAuthor);
  		}

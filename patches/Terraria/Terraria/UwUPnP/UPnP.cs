@@ -23,19 +23,21 @@ namespace UwUPnP
 	/// </summary>
 	public static class UPnP
 	{
-		private static bool searching = true;
+		private static bool gatewayNotYetRequested = true;
+		private static bool searching = false;
 		private static Gateway defaultGateway = null;
-
-		static UPnP()
-		{
-			if(Main.dedServ)
-				FindGateway();
-		}
 
 		private static Gateway Gateway
 		{
 			get
 			{
+				if (gatewayNotYetRequested) {
+					gatewayNotYetRequested = false;
+					FindGateway();
+				}
+
+				// bool is expected to be atomic, strangely not optimized out...
+				// probably a locking mechanism might work better?
 				while(searching)
 				{
 					Thread.Sleep(1);
@@ -58,6 +60,7 @@ namespace UwUPnP
 
 		private static void FindGateway()
 		{
+			searching = true;
 			List<Task> listeners = new List<Task>();
 
 			foreach(var ip in GetLocalIPs())

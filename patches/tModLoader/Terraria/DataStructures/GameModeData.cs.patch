@@ -1,0 +1,79 @@
+--- src/Terraria/Terraria/DataStructures/GameModeData.cs
++++ src/tModLoader/Terraria/DataStructures/GameModeData.cs
+@@ -1,6 +_,6 @@
+ namespace Terraria.DataStructures
+ {
+-	public class GameModeData
++	public record struct GameModeData
+ 	{
+ 		public static readonly GameModeData NormalMode = new GameModeData {
+ 			Id = 0,
+@@ -49,57 +_,57 @@
+ 
+ 		public int Id {
+ 			get;
+-			private set;
++			init;
+ 		}
+ 
+ 		public bool IsExpertMode {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool IsMasterMode {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public bool IsJourneyMode {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public float EnemyMaxLifeMultiplier {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public float EnemyDamageMultiplier {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public float DebuffTimeMultiplier {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public float KnockbackToEnemiesMultiplier {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public float TownNPCDamageMultiplier {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public float EnemyDefenseMultiplier {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 
+ 		public float EnemyMoneyDropMultiplier {
+ 			get;
+-			private set;
++			set;
+ 		}
+ 	}
+ }

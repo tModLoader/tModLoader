@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
@@ -16,7 +17,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		private Asset<Texture2D> flameTexture;
 
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// Properties
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
@@ -37,7 +38,7 @@ namespace ExampleMod.Content.Tiles
 
 			// Assets
 			if (!Main.dedServ) {
-				flameTexture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
+				flameTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleLamp_Flame"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
 			}
 		}
 
@@ -47,12 +48,12 @@ namespace ExampleMod.Content.Tiles
 
 		public override void HitWire(int i, int j) {
 			Tile tile = Main.tile[i, j];
-			int topY = j - tile.frameY / 18 % 3;
-			short frameAdjustment = (short)(tile.frameX > 0 ? -18 : 18);
+			int topY = j - tile.TileFrameY / 18 % 3;
+			short frameAdjustment = (short)(tile.TileFrameX > 0 ? -18 : 18);
 
-			Main.tile[i, topY].frameX += frameAdjustment;
-			Main.tile[i, topY + 1].frameX += frameAdjustment;
-			Main.tile[i, topY + 2].frameX += frameAdjustment;
+			Main.tile[i, topY].TileFrameX += frameAdjustment;
+			Main.tile[i, topY + 1].TileFrameX += frameAdjustment;
+			Main.tile[i, topY + 2].TileFrameX += frameAdjustment;
 
 			Wiring.SkipWire(i, topY);
 			Wiring.SkipWire(i, topY + 1);
@@ -72,7 +73,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 			Tile tile = Main.tile[i, j];
-			if (tile.frameX == 0) {
+			if (tile.TileFrameX == 0) {
 				// We can support different light colors for different styles here: switch (tile.frameY / 54)
 				r = 1f;
 				g = 0.75f;
@@ -80,15 +81,15 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
+		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 			if (Main.gamePaused || !Main.instance.IsActive || Lighting.UpdateEveryFrame && !Main.rand.NextBool(4)) {
 				return;
 			}
 
 			Tile tile = Main.tile[i, j];
 
-			short frameX = tile.frameX;
-			short frameY = tile.frameY;
+			short frameX = tile.TileFrameX;
+			short frameY = tile.TileFrameY;
 
 			// Return if the lamp is off (when frameX is 0), or if a random check failed.
 			if (frameX != 0 || !Main.rand.NextBool(40)) {
@@ -135,17 +136,19 @@ namespace ExampleMod.Content.Tiles
 			int width = 16;
 			int offsetY = 0;
 			int height = 16;
+			short frameX = tile.TileFrameX;
+			short frameY = tile.TileFrameY;
 
-			TileLoader.SetDrawPositions(i, j, ref width, ref offsetY, ref height);
+			TileLoader.SetDrawPositions(i, j, ref width, ref offsetY, ref height, ref frameX, ref frameY);
 
-			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); //Don't remove any casts.
+			ulong randSeed = Main.TileFrameSeed ^ (ulong)((long)j << 32 | (long)(uint)i); // Don't remove any casts.
 
 			// We can support different flames for different styles here: int style = Main.tile[j, i].frameY / 54;
 			for (int c = 0; c < 7; c++) {
 				float shakeX = Utils.RandomInt(ref randSeed, -10, 11) * 0.15f;
 				float shakeY = Utils.RandomInt(ref randSeed, -10, 1) * 0.35f;
 
-				spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + shakeX, j * 16 - (int)Main.screenPosition.Y + offsetY + shakeY) + zero, new Rectangle(tile.frameX, tile.frameY, width, height), new Color(100, 100, 100, 0), 0f, default, 1f, effects, 0f);
+				spriteBatch.Draw(flameTexture.Value, new Vector2(i * 16 - (int)Main.screenPosition.X - (width - 16f) / 2f + shakeX, j * 16 - (int)Main.screenPosition.Y + offsetY + shakeY) + zero, new Rectangle(frameX, frameY, width, height), new Color(100, 100, 100, 0), 0f, default, 1f, effects, 0f);
 			}
 		}
 	}

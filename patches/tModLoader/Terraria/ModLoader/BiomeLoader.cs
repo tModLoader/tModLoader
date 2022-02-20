@@ -5,37 +5,19 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.ID;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	public class BiomeLoader : Loader<ModBiome>
 	{
-		public const int VanillaPrimaryBiomeCount = 11;
+		public BiomeLoader() => Initialize(PrimaryBiomeID.Count);
 
-		public BiomeLoader(int vanillaCount = VanillaPrimaryBiomeCount) : base(vanillaCount) { }
-
-		private class HookList
+		internal override void ResizeArrays()
 		{
-			public int[] arr;
-			public readonly MethodInfo method;
-
-			public HookList(MethodInfo method) {
-				this.method = method;
-			}
-		}
-
-		private static List<HookList> hooks = new List<HookList>();
-
-		private static HookList AddHook<F>(Expression<Func<ModBiome, F>> func) {
-			var hook = new HookList(ModLoader.Method(func));
-			hooks.Add(hook);
-			return hook;
-		}
-
-		internal void RebuildHooks() {
-			foreach (var hook in hooks) {
-				hook.arr = ModLoader.BuildGlobalHook(list, hook.method).Select(p => p.Type).ToArray();
-			}
+			// IdDictionary
+			LoaderUtils.ResetStaticMembers(typeof(PrimaryBiomeID), true);
 		}
 
 		// Internal boilerplate
@@ -80,24 +62,15 @@ namespace Terraria.ModLoader
 		}
 
 		// Hooks
-
-		private HookList HookPostUpdateBiome = AddHook<Action<Player>>(b => b.BiomeVisuals);
-
-		public void PostUpdateBiome(Player player) {
-			foreach (int index in HookPostUpdateBiome.arr) {
-				list[index].BiomeVisuals(player);
-			}
-		}
-
-		public int GetPrimaryModBiome(Player player, out AVFXPriority priority) {
+		public int GetPrimaryModBiome(Player player, out SceneEffectPriority priority) {
 			int index = 0; float weight = 0;
-			priority = AVFXPriority.None;
+			priority = SceneEffectPriority.None;
 
 			for (int i = 0; i < list.Count; i++) {
 				bool active = player.modBiomeFlags[i] && list[i].IsPrimaryBiome;
 				float tst = list[i].GetCorrWeight(player);
 				if (active && tst > weight) {
-					index = i + vanillaCount;
+					index = i + VanillaCount;
 					priority = list[i].Priority;
 					weight = tst;
 				}
