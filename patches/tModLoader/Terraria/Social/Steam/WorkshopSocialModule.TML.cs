@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Diagnostics;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
@@ -94,33 +95,93 @@ namespace Terraria.Social.Steam
 
 			buildData["workshopdeps"] = workshopDeps;
 
-			string contentFolderPath = $"{GetTemporaryFolderPath()}{modFile.Name}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
+			string modSourceFolder = buildData["sourcesfolder"];
+
+			string contentFolderPath = $"{modSourceFolder}/Workshop/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
+			string workshopFolderPath = $"{modSourceFolder}/Workshop";
 
 			if (MakeTemporaryFolder(contentFolderPath)) {
 				string modPath = Path.Combine(contentFolderPath, modFile.Name + ".tmod");
-
 				File.Copy(modFile.path, modPath, true);
 
-				// If the manifest doesn't exist, try copying it from the Mod Source folder
-				string targetManifest = contentFolderPath + Path.DirectorySeparatorChar + "workshop.json";
-				string sourceManifest = buildData["manifestfolder"] + Path.DirectorySeparatorChar + "workshop.json";
-				if (!File.Exists(targetManifest))
-					if (File.Exists(sourceManifest))
-						File.Copy(sourceManifest, targetManifest);
-
 				// Cleanup Old Folders
-				ModOrganizer.CleanupOldPublish(contentFolderPath);
+				ModOrganizer.CleanupOldPublish(workshopFolderPath);
 
 				var modPublisherInstance = new WorkshopHelper.ModPublisherInstance();
 
 				_publisherInstances.Add(modPublisherInstance);
 
-				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, contentFolderPath, settings.PreviewImagePath, settings.Publicity, usedTagsInternalNames, buildData, currPublishID);
+				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, usedTagsInternalNames, buildData, currPublishID);
 
 				return true;
 			}
 
 			return false;
+		}
+
+		public static void CiPublish(string modFolder) {
+			if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-steamCmdFolder"))
+				return;
+
+			Console.WriteLine("Preparing Files for CI...");
+			Program.LaunchParameters.TryGetValue("-ciprep", out string changeNotes);
+			Program.LaunchParameters.TryGetValue("-steamCmdFolder", out string steamCmdFolder);
+			var properties = BuildProperties.ReadBuildFile(modFolder);
+
+			// Prep some common file paths & info
+			string publishFolder = $"{modFolder}/Workshop";
+			string vdf = Path.Combine(steamCmdFolder, "publish.vdf");
+
+			string manifest = Path.Combine(modFolder, "workshop.json");
+			AWorkshopEntry.TryReadingManifest(manifest, out var steamInfo);
+
+			string modName = Path.GetFileNameWithoutExtension(modFolder);
+
+			// Check for if the mod version is increasing
+			//TODO: Finish Implementing, after getting example mod working with using version data
+			/* var downloadWorkshopItem = new ProcessStartInfo() {
+				FileName = Path.Combine(modFolder, steamCmdFolder, "steamCMD.exe"),
+				UseShellExecute = false,
+				Arguments = "+login anonymous +force_install_dir tMod \"+workshop_download_item 1281930 " + steamInfo.workshopEntryId + "\" +quit",
+			};
+			var p = Process.Start(downloadWorkshopItem);
+			p.WaitForExit();
+
+			LocalMod mod;
+			var modFile = new TmodFile(Path.Combine(steamCmdFolder, "tMod/steamapps/workshop/content/1281930", steamInfo.workshopEntryId.ToString(), modName + ".tmod"));
+			using (modFile.Open())
+				mod = new LocalMod(modFile);
+
+			if (properties.version <= mod.properties.version)
+				throw new Exception("Mod version not incremented. Publishing item blocked until mod version is incremented");
+			*/
+
+			// Prep for the publishing folder
+			string contentFolder = $"{publishFolder}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
+
+			File.Copy(Path.Combine(ModOrganizer.modPath, $"{modName}.tmod"), Path.Combine(contentFolder, $"{modName}.tmod"), true);
+			File.Copy(manifest, Path.Combine(publishFolder, "workshop.json"), true);
+
+			string descriptionFinal = "[quote=CI Autobuild (Don't Modify)]Version " + properties.version + " built for " + properties.buildVersion + "[/quote]" + properties.description;
+
+			// Make the publish.vdf file
+			string[] lines =
+			{
+					"\"workshopitem\"",
+					"{",
+					"\"appid\" \"" + "1281930"  + "\"",
+					"\"publishedfileid\" \"" + steamInfo.workshopEntryId + "\"",
+					"\"contentfolder\" \"" + publishFolder + "\"",
+					"\"changenote\" \"" + changeNotes + "\"",
+					"\"description\" \"" + descriptionFinal + "\"",
+					"}"
+				};
+
+			if (File.Exists(vdf))
+				File.Delete(vdf);
+			File.WriteAllLines(vdf, lines);
+
+			Console.WriteLine("CI Files Prepared");
 		}
 	}
 }

@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,87 @@
+@@ -138,32 +_,89 @@
  			}
  		}
  
@@ -106,7 +106,6 @@
 +			LaunchParameters = Utils.ParseArguements(args);
 +			
 +			SavePath =
-+				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
 +				LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] :
 +				Platform.Get<IPathService>().GetStoragePath($"Terraria");
 +
@@ -119,6 +118,9 @@
 +
 +			if (File.Exists("savehere.txt"))
 +				SavePath = fileFolder; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
++
++			if (LaunchParameters.ContainsKey("-tmlsavedirectory"))
++				SavePath = LaunchParameters["-tmlsavedirectory"];
 +
 +			bool isServer = LaunchParameters.ContainsKey("-server");
 +			try {
