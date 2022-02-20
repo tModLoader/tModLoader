@@ -141,7 +141,7 @@ namespace Terraria.ModLoader
 
 		internal static bool IsModItem(int index) => index >= ItemID.Count;
 
-		private static bool GeneralPrefix(Item item) => item.maxStack == 1 && item.damage > 0 && item.ammo == 0 && !item.accessory;
+		private static bool GeneralPrefix(Item item) => item.IsCandidateForReforge && item.damage > 0 && item.ammo == 0 && !item.accessory;
 
 		//Add all these to Terraria.Item.Prefix
 		internal static bool MeleePrefix(Item item) => item.ModItem != null && GeneralPrefix(item) && item.melee && !item.noUseGraphic;
@@ -1214,8 +1214,26 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
+		//in all places where stack modification between two items takes place
+		//For organizational consistency, item1 *should* be the item that is attempting to increase its stack (Unclear in Player.ItemSpace yet)
+		/// <summary>
+		/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
+		/// </summary>
+		public static bool CanStack(Item item1, Item item2) {
+			if (item1.prefix != item2.prefix) // TML: #StackablePrefixWeapons
+				return false;
+
+			foreach (var g in HookCanStack.Enumerate(globalItemsArray)) {
+				if (!g.CanStack(item1, item2))
+					return false;
+			}
+
+			return item1.ModItem?.CanStack(item2) ?? true;
+		}
+
 		private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
-		//in Terraria.Item.CombineWithNearbyItems after num comparison
+		//in Terraria.Item.CombineWithNearbyItems before num calculation
 		// if(!ItemLoader.CanStackInWorld(this, item)) { continue; }
 		/// <summary>
 		/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
