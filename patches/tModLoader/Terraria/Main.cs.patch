@@ -2198,11 +2198,11 @@
  		}
  
 -		public static bool IsTileSpelunkable(Tile t) => IsTileSpelunkable(t.type, t.frameX, t.frameY);
-+		//TML: Added x/y to IsTileSpelunkable methods for hook compatibility
-+		public static bool IsTileSpelunkable(int tileX, int tileY, Tile t) => IsTileSpelunkable(tileX, tileY, t.type, t.frameX, t.frameY);
++		//TML: Added x/y to IsTileSpelunkable methods for hook compatibility, made internal. Public variant in partial TML class
++		internal static bool IsTileSpelunkable(int tileX, int tileY, Tile t) => IsTileSpelunkable(tileX, tileY, t.type, t.frameX, t.frameY);
  
 -		public static bool IsTileSpelunkable(ushort typeCache, short tileFrameX, short tileFrameY) {
-+		public static bool IsTileSpelunkable(int tileX, int tileY, ushort typeCache, short tileFrameX, short tileFrameY) {
++		internal static bool IsTileSpelunkable(int tileX, int tileY, ushort typeCache, short tileFrameX, short tileFrameY) {
  			if (tileSpelunker[typeCache])
  				return true;
  

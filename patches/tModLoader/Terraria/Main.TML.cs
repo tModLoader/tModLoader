@@ -50,6 +50,11 @@ namespace Terraria
 		/// </summary>
 		public static Player CurrentPlayer => _currentPlayerOverride ?? LocalPlayer;
 
+		public static bool IsTileSpelunkable(int tileX, int tileY) {
+			Tile tile = Main.tile[tileX, tileY];
+			return IsTileSpelunkable(tileX, tileY, tile.type, tile.frameX, tile.frameY);
+		}
+
 		public static void InfoDisplayPageHandler(int startX, ref string mouseText, out int startingDisplay, out int endingDisplay) {
 			startingDisplay = 0;
 			endingDisplay = InfoDisplayLoader.InfoDisplayCount;

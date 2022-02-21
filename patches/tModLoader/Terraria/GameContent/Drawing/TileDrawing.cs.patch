@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -9,6 +_,7 @@
+@@ -9,13 +_,14 @@
  using Terraria.GameContent.Tile_Entities;
  using Terraria.Graphics.Capture;
  using Terraria.ID;
@@ -8,6 +8,14 @@
  using Terraria.ObjectData;
  using Terraria.UI;
  using Terraria.Utilities;
+ 
+ namespace Terraria.GameContent.Drawing
+ {
+-	public class TileDrawing
++	public partial class TileDrawing
+ 	{
+ 		private enum TileCounterType
+ 		{
 @@ -338,8 +_,9 @@
  			byte b = (byte)(100f + 150f * Main.martianLight);
  			_martianGlow = new Color(b, b, b, 0);
@@ -89,8 +97,8 @@
  		}
  
 -		private static bool IsTileDangerous(Player localPlayer, Tile tileCache, ushort typeCache) {
-+		//TML: Added x/y for hook compatibility, made public as it's API-like and matches Main.IsTileSpelunkable that way
-+		public static bool IsTileDangerous(int tileX, int tileY, Player localPlayer, Tile tileCache, ushort typeCache) {
++		//TML: Added x/y for hook compatibility, made internal. Public variant in partial TML class
++		internal static bool IsTileDangerous(int tileX, int tileY, Player localPlayer, Tile tileCache, ushort typeCache) {
  			bool flag = false || typeCache == 135 || typeCache == 137 || typeCache == 138 || typeCache == 484 || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85;
  			if (tileCache.slope() == 0 && !tileCache.inActive()) {
  				flag = (flag || typeCache == 32 || typeCache == 69 || typeCache == 48 || typeCache == 232 || typeCache == 352 || typeCache == 483 || typeCache == 482 || typeCache == 481 || typeCache == 51 || typeCache == 229);
