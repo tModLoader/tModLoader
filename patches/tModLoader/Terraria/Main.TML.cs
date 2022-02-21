@@ -50,6 +50,9 @@ namespace Terraria
 		/// </summary>
 		public static Player CurrentPlayer => _currentPlayerOverride ?? LocalPlayer;
 
+		/// <summary>
+		/// Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff, and is detected by various pets.
+		/// </summary>
 		public static bool IsTileSpelunkable(int tileX, int tileY) {
 			Tile tile = Main.tile[tileX, tileY];
 			return IsTileSpelunkable(tileX, tileY, tile.type, tile.frameX, tile.frameY);
