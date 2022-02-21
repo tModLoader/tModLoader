@@ -598,6 +598,24 @@
  			if (aiStyle == 1) {
  				AI_001();
  			}
+@@ -22370,7 +_,7 @@
+ 						int num785 = (int)base.Center.Y / 16;
+ 						for (int num786 = num784 - num783; num786 <= num784 + num783; num786++) {
+ 							for (int num787 = num785 - num783; num787 <= num785 + num783; num787++) {
+-								if (Main.rand.Next(4) == 0 && new Vector2(num784 - num786, num785 - num787).Length() < (float)num783 && num786 > 0 && num786 < Main.maxTilesX - 1 && num787 > 0 && num787 < Main.maxTilesY - 1 && Main.tile[num786, num787] != null && Main.tile[num786, num787].active() && Main.IsTileSpelunkable(Main.tile[num786, num787])) {
++								if (Main.rand.Next(4) == 0 && new Vector2(num784 - num786, num785 - num787).Length() < (float)num783 && num786 > 0 && num786 < Main.maxTilesX - 1 && num787 > 0 && num787 < Main.maxTilesY - 1 && Main.tile[num786, num787] != null && Main.tile[num786, num787].active() && Main.IsTileSpelunkable(num786, num787, Main.tile[num786, num787])) {
+ 									int num788 = Dust.NewDust(new Vector2(num786 * 16, num787 * 16), 16, 16, 204, 0f, 0f, 150, default(Color), 0.3f);
+ 									Main.dust[num788].fadeIn = 0.75f;
+ 									Dust dust2 = Main.dust[num788];
+@@ -25268,7 +_,7 @@
+ 						for (int num972 = num970 - num969; num972 <= num970 + num969; num972++) {
+ 							for (int num973 = num971 - num969; num973 <= num971 + num969; num973++) {
+ 								int num974 = Main.rand.Next(8);
+-								if (num974 < 4 && new Vector2(num970 - num972, num971 - num973).Length() < (float)num969 && Main.tile[num972, num973] != null && Main.tile[num972, num973].active() && Main.IsTileSpelunkable(Main.tile[num972, num973])) {
++								if (num974 < 4 && new Vector2(num970 - num972, num971 - num973).Length() < (float)num969 && Main.tile[num972, num973] != null && Main.tile[num972, num973].active() && Main.IsTileSpelunkable(num972, num973, Main.tile[num972, num973])) {
+ 									float num975 = Distance(new Vector2(num972 * 16 + 8, num973 * 16 + 8));
+ 									if (num975 < num968 || num968 == -1f) {
+ 										num968 = num975;
 @@ -26416,7 +_,7 @@
  			}
  

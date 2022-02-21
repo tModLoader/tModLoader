@@ -40,6 +40,24 @@
  					}
  				}
  			}
+@@ -554,7 +_,7 @@
+ 			if (TileID.Sets.HasOutlines[drawData.typeCache])
+ 				GetTileOutlineInfo(tileX, tileY, drawData.typeCache, ref drawData.tileLight, ref highlightTexture, ref highlightColor);
+ 
+-			if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, drawData.tileCache, drawData.typeCache)) {
++			if (_localPlayer.dangerSense && IsTileDangerous(tileX, tileY, _localPlayer, drawData.tileCache, drawData.typeCache)) {
+ 				if (drawData.tileLight.R < byte.MaxValue)
+ 					drawData.tileLight.R = byte.MaxValue;
+ 
+@@ -573,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY)) {
++			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(tileX, tileY, drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY)) {
+ 				if (drawData.tileLight.R < 200)
+ 					drawData.tileLight.R = 200;
+ 
 @@ -608,6 +_,7 @@
  
  			Rectangle normalTileRect = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
@@ -66,6 +84,25 @@
  			Texture2D result = TextureAssets.Tile[tile.type].Value;
  			int tileStyle = 0;
  			int num = tile.type;
+@@ -2799,7 +_,8 @@
+ 			}
+ 		}
+ 
+-		private static bool IsTileDangerous(Player localPlayer, Tile tileCache, ushort typeCache) {
++		//TML: Added x/y for hook compatibility, made public as it's API-like and matches Main.IsTileSpelunkable that way
++		public static bool IsTileDangerous(int tileX, int tileY, Player localPlayer, Tile tileCache, ushort typeCache) {
+ 			bool flag = false || typeCache == 135 || typeCache == 137 || typeCache == 138 || typeCache == 484 || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85;
+ 			if (tileCache.slope() == 0 && !tileCache.inActive()) {
+ 				flag = (flag || typeCache == 32 || typeCache == 69 || typeCache == 48 || typeCache == 232 || typeCache == 352 || typeCache == 483 || typeCache == 482 || typeCache == 481 || typeCache == 51 || typeCache == 229);
+@@ -2810,6 +_,8 @@
+ 					flag = (flag || typeCache == 162);
+ 			}
+ 
++			flag |= TileLoader.IsTileDangerous(tileX, tileY, typeCache, localPlayer);
++
+ 			return flag;
+ 		}
+ 
 @@ -2820,7 +_,7 @@
  			return _tileSolid[typeCache];
  		}
@@ -128,4 +165,22 @@
 +				TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
  			}
  		}
+ 
+@@ -5720,7 +_,7 @@
+ 		}
+ 
+ 		private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust) {
+-			if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, tileCache, typeCache)) {
++			if (_localPlayer.dangerSense && IsTileDangerous(i, j, _localPlayer, tileCache, typeCache)) {
+ 				if (tileLight.R < byte.MaxValue)
+ 					tileLight.R = byte.MaxValue;
+ 
+@@ -5739,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(typeCache, tileFrameX, tileFrameY)) {
++			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(i, j, typeCache, tileFrameX, tileFrameY)) {
+ 				if (tileLight.R < 200)
+ 					tileLight.R = 200;
  

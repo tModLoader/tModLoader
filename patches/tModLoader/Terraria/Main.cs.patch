@@ -2193,6 +2193,29 @@
  		}
  
  		protected void DrawFPS() {
+@@ -16096,9 +_,10 @@
+ 			TilesRenderer.ClearCachedTileDraws(solidLayer: true);
+ 		}
+ 
+-		public static bool IsTileSpelunkable(Tile t) => IsTileSpelunkable(t.type, t.frameX, t.frameY);
++		//TML: Added x/y to IsTileSpelunkable methods for hook compatibility
++		public static bool IsTileSpelunkable(int tileX, int tileY, Tile t) => IsTileSpelunkable(tileX, tileY, t.type, t.frameX, t.frameY);
+ 
+-		public static bool IsTileSpelunkable(ushort typeCache, short tileFrameX, short tileFrameY) {
++		public static bool IsTileSpelunkable(int tileX, int tileY, ushort typeCache, short tileFrameX, short tileFrameY) {
+ 			if (tileSpelunker[typeCache])
+ 				return true;
+ 
+@@ -16108,6 +_,9 @@
+ 			if (typeCache == 186 && tileFrameX >= 864 && tileFrameX <= 1170)
+ 				return true;
+ 
++			if (TileLoader.IsTileSpelunkable(tileX, tileY, typeCache))
++				return true;
++
+ 			return false;
+ 		}
+ 
 @@ -16121,7 +_,7 @@
  					continue;
  
