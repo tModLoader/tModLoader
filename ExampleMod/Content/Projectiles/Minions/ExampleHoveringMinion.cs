@@ -16,7 +16,6 @@ namespace ExampleMod.Content.Projectiles.Minions
 			Main.projFrames[Projectile.type] = 3; // Sets the number of frams in ExampleHoveringMinion's animation
 			Main.projPet[Projectile.type] = true;
 			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
-			ProjectileID.Sets.CountsAsHoming[Projectile.type] = true;
 			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true; //This is necessary for right-click targeting
 		}
 

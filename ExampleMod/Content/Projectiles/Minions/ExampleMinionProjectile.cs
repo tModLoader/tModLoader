@@ -9,7 +9,6 @@ namespace ExampleMod.Content.Projectiles.Minions
 	public class ExampleMinionProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults() {
-			ProjectileID.Sets.CountsAsHoming[Projectile.type] = true;
 			ProjectileID.Sets.MinionShot[Projectile.type] = true;
 		}
 

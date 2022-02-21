@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Buffs
 {
 	public class ExampleHoveringMinionBuff : ModBuff
 	{
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Purity Wisp"); // Sets the English name of the buff
 			Description.SetDefault("The purity wisp will fight for you"); // Sets the English description of the buff
 			
