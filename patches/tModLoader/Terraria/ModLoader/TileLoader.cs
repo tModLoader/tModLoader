@@ -63,8 +63,8 @@ namespace Terraria.ModLoader
 		private static Action<int, int, int, bool>[] HookNearbyEffects;
 		private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 		private static DelegateModifyLight[] HookModifyLight;
-		private static Func<int, int, int, Player, bool>[] HookIsTileDangerous;
-		private static Func<int, int, int, bool>[] HookIsTileSpelunkable;
+		private static Func<int, int, int, Player, bool?>[] HookIsTileDangerous;
+		private static Func<int, int, int, bool?>[] HookIsTileSpelunkable;
 		private delegate void DelegateSetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects);
 		private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
 		private static Action[] HookAnimateTile;
@@ -536,41 +536,54 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//in TileDrawing.IsTileDangerous before return flag do |= with the return of this
-		public static bool IsTileDangerous(int i, int j, int type, Player player) {
+		//in TileDrawing.IsTileDangerous before return flag
+		public static bool? IsTileDangerous(int i, int j, int type, Player player) {
+			bool? retVal = null;
+
 			ModTile modTile = GetTile(type);
 
 			if (modTile != null && modTile.IsTileDangerous(i, j, player)) {
-				return true;
+				retVal = true;
 			}
 
 			foreach (var hook in HookIsTileDangerous) {
-				if (hook(i, j, type, player)) {
-					return true;
+				bool? globalRetVal = hook(i, j, type, player);
+				if (globalRetVal.HasValue) {
+					if (globalRetVal.Value) {
+						retVal = true;
+					}
+					else {
+						return false;
+					}
 				}
 			}
 
-			return false;
+			return retVal;
 		}
 
-		//in Main.IsTileSpelunkable before return false check if this returns true, then return true
-		public static bool IsTileSpelunkable(int i, int j, int type) {
-			if (Main.tileSpelunker[type])
-				return true;
+		//in Main.IsTileSpelunkable at the start
+		public static bool? IsTileSpelunkable(int i, int j, int type) {
+			bool? retVal = null;
 
 			ModTile modTile = GetTile(type);
 
-			if (modTile != null && modTile.IsTileSpelunkable(i, j)) {
-				return true;
+			if (!Main.tileSpelunker[type] && modTile != null && modTile.IsTileSpelunkable(i, j)) {
+				retVal = true;
 			}
 
 			foreach (var hook in HookIsTileSpelunkable) {
-				if (hook(i, j, type)) {
-					return true;
+				bool? globalRetVal = hook(i, j, type);
+				if (globalRetVal.HasValue) {
+					if (globalRetVal.Value) {
+						retVal = true;
+					}
+					else {
+						return false;
+					}
 				}
 			}
 
-			return false;
+			return retVal;
 		}
 
 		//in Terraria.Main.DrawTiles after if statement setting effects call

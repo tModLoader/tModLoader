@@ -109,25 +109,26 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to determine whether this tile glows red when the given player has the Dangersense buff.
+		/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default.
 		/// <br/>This is only called on the local client.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type">The tile type</param>
 		/// <param name="player">Main.LocalPlayer</param>
-		public virtual bool IsTileDangerous(int i, int j, int type, Player player) {
-			return false;
+		public virtual bool? IsTileDangerous(int i, int j, int type, Player player) {
+			return null;
 		}
 
 		/// <summary>
 		/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
-		/// <br/>This is only called if Main.tileSpelunker[type] is false.
+		/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type">The tile type</param>
-		public virtual bool IsTileSpelunkable(int i, int j, int type) {
-			return false;
+		public virtual bool? IsTileSpelunkable(int i, int j, int type) {
+			return null;
 		}
 
 		/// <summary>

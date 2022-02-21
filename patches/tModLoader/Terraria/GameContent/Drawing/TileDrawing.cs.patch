@@ -102,11 +102,13 @@
  			bool flag = false || typeCache == 135 || typeCache == 137 || typeCache == 138 || typeCache == 484 || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85;
  			if (tileCache.slope() == 0 && !tileCache.inActive()) {
  				flag = (flag || typeCache == 32 || typeCache == 69 || typeCache == 48 || typeCache == 232 || typeCache == 352 || typeCache == 483 || typeCache == 482 || typeCache == 481 || typeCache == 51 || typeCache == 229);
-@@ -2810,6 +_,8 @@
+@@ -2810,6 +_,10 @@
  					flag = (flag || typeCache == 162);
  			}
  
-+			flag |= TileLoader.IsTileDangerous(tileX, tileY, typeCache, localPlayer);
++			bool? modded = TileLoader.IsTileDangerous(tileX, tileY, typeCache, localPlayer);
++			if (modded.HasValue)
++				return modded.Value;
 +
  			return flag;
  		}
