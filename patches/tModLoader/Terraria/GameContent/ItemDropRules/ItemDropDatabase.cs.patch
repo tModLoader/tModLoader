@@ -24,10 +24,12 @@
  			if (!_entriesByNpcNetId.ContainsKey(npcNetId))
  				_entriesByNpcNetId[npcNetId] = new List<IItemDropRule>();
  
-@@ -114,6 +_,11 @@
+@@ -114,6 +_,13 @@
  			RegisterMimic();
  			RegisterEclipse();
  			RegisterBloodMoonFishing();
++
++			NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
 +
 +			foreach (KeyValuePair<int, NPC> pair in ContentSamples.NpcsByNetId) {
 +				NPCLoader.ModifyNPCLoot(pair.Value, new NPCLoot(pair.Key, this));
@@ -36,11 +38,3 @@
  			TrimDuplicateRulesForNegativeIDs();
  		}
  
-@@ -607,6 +_,7 @@
- 			RegisterToGlobal(new ItemDropWithConditionRule(520, 5, 1, 1, new Conditions.SoulOfLight()));
- 			RegisterToGlobal(new ItemDropWithConditionRule(521, 5, 1, 1, new Conditions.SoulOfNight()));
- 			RegisterToGlobal(ItemDropRule.ByCondition(new Conditions.PirateMap(), 1315, 100));
-+			NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
- 		}
- 
- 		private void RegisterFoodDrops() {
