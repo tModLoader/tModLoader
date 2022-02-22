@@ -2193,6 +2193,23 @@
  		}
  
  		protected void DrawFPS() {
+@@ -16096,9 +_,14 @@
+ 			TilesRenderer.ClearCachedTileDraws(solidLayer: true);
+ 		}
+ 
++		//TML: Added x/y to IsTileSpelunkable methods for hook compatibility, made internal. Public variant in partial TML class
+-		public static bool IsTileSpelunkable(Tile t) => IsTileSpelunkable(t.type, t.frameX, t.frameY);
++		internal static bool IsTileSpelunkable(int tileX, int tileY, Tile t) => IsTileSpelunkable(tileX, tileY, t.type, t.frameX, t.frameY);
+ 
+-		public static bool IsTileSpelunkable(ushort typeCache, short tileFrameX, short tileFrameY) {
++		internal static bool IsTileSpelunkable(int tileX, int tileY, ushort typeCache, short tileFrameX, short tileFrameY) {
++			bool? modded = TileLoader.IsTileSpelunkable(tileX, tileY, typeCache);
++			if (modded.HasValue)
++				return modded.Value;
++
+ 			if (tileSpelunker[typeCache])
+ 				return true;
+ 
 @@ -16121,7 +_,7 @@
  					continue;
  
