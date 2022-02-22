@@ -157,10 +157,10 @@ jobs:
           export TmlVersion="$version"
           
           if [ $BranchName = '1.4-stable' ] ; then
-            export BUILDPURPOSE="Release"
+            export BUILDPURPOSE="Stable"
           fi
           if [ $BranchName = '1.4-preview' ] ; then
-            export BUILDPURPOSE="Beta"
+            export BUILDPURPOSE="Preview"
           fi
           if [ $BranchName = '1.4-dev' ] ; then
             export BUILDPURPOSE="Dev"

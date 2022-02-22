@@ -33,7 +33,7 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-			if (false && !BuildInfo.IsRelease && !BuildInfo.IsBeta) {
+			if (false && !BuildInfo.IsStable && !BuildInfo.IsPreview) {
 				//TODO: Need to find the existing translation for this.
 				IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 				return false;

@@ -110,8 +110,8 @@
 +				Platform.Get<IPathService>().GetStoragePath($"Terraria");
 +
 +			var fileFolder =
-+				BuildInfo.IsRelease ? ReleaseFolder :
-+				BuildInfo.IsBeta ? PreviewFolder :
++				BuildInfo.IsStable ? ReleaseFolder :
++				BuildInfo.IsPreview ? PreviewFolder :
 +				DevFolder;
 +
 +			SavePath = Path.Combine(SavePath, fileFolder);

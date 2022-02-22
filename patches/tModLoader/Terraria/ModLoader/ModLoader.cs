@@ -36,7 +36,7 @@ namespace Terraria.ModLoader
 		public static bool AlphaWelcomed;
 		public static bool ShowFirstLaunchWelcomeMessage;
 
-		public static string versionedName => (ModCompile.DeveloperMode || !BuildInfo.IsRelease && !BuildInfo.IsBeta) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
+		public static string versionedName => (ModCompile.DeveloperMode || !BuildInfo.IsStable && !BuildInfo.IsPreview) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
 
 #if NETCORE
 		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (InstallVerifier.IsGoG ? "g" : "s") + "c";

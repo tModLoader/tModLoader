@@ -230,7 +230,7 @@ namespace Terraria.ModLoader.Core
 						writer.Write("side");
 						writer.Write((byte)side);
 					}
-					if (!BuildInfo.IsRelease) {
+					if (!BuildInfo.IsStable) {
 						writer.Write("beta");
 					}
 
