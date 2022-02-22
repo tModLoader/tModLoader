@@ -365,6 +365,15 @@ namespace Terraria.ModLoader
 
 			return -1;
 		}
+
+		//DoorOpeningHelper.CommonDoorOpeningInfo.TryCloseDoor, tile.active() || IsCloseDoor
+		//HitTile.DrawFreshAnimations, before tileSolid check, set flag2 to false if IscloseDoor is true
+		//Main.DrawTileCracks, same as DrawFreshAnimations
+		//NPC.AI_003_Fighters
+		//NPC.AI_107_Improvedwalkers, if (flag8 && tileSafely4.nactive() && (TileLoader.IsClosedDoor(tileSafely4) || tileSafely4.type == 388))
+		//NPC.AI_107_Improvedwalkers,
+		//if (TileLoader.IsClosedDoor(tileSafely4)) {
+		//   bool flag38 = WorldGen.OpenDoor(num64, num65 - 1, direction);
 		public static bool IsClosedDoor(Tile tile) {
 			ModTile modTile = GetTile(tile.type);
 
