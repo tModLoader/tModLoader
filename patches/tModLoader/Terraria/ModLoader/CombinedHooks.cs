@@ -47,7 +47,7 @@ namespace Terraria.ModLoader
 
 		//TODO: Fix various inconsistencies with calls of UseItem
 		public static bool CanUseItem(Player player, Item item) {
-			return PlayerLoader.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);
+			return PlayerLoader.CanUseItem(player, item) && ItemLoader.CanUseItem(item, player);
 		}
 
 		// In Player.TryAllowingItemReuse_Inner
