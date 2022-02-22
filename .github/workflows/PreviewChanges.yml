@@ -22,23 +22,16 @@ jobs:
           shell: bash
           run: echo "::set-output name=date::$(date +'%d')"
         
-        - name: Update Versioning
-          shell: bash
-          run: |
-            echo "$date"
-          env:
-            date: ${{ steps.date.outputs.date }}
-        
         - name: Check out base branch
-          if: ${{ steps.date.outputs.date }}<20
+          if: steps.date.outputs.date < 20
           uses: actions/checkout@v2
           with:
-            ref: 'refs/heads/1.4-preview'
+            ref: 'refs/heads/1.3'
             persist-credentials: false
-            fetch-depth: 10
+            fetch-depth: 1
           
         - name: Merge
-          if: ${{ steps.date.outputs.date }}<20
+          if: steps.date.outputs.date < 20
           uses: robotology/gh-action-nightly-merge@v1.3.1
           with:
               stable_branch: '1.4'
