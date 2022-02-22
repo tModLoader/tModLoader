@@ -1,5 +1,8 @@
 var NAVTREEINDEX106 =
 {
+"class_terraria_1_1_player.html#add534cd0327c6d869bd49888c1114353":[1,0,2,56,689],
+"class_terraria_1_1_player.html#add8257bb226b7d8ac1e9c910ef8234cc":[1,0,2,56,757],
+"class_terraria_1_1_player.html#add8c389b64fbcb8766f72b115d83a7f1":[1,0,2,56,96],
 "class_terraria_1_1_player.html#adddc9944e284e6681fb911cc9503a978":[1,0,2,56,883],
 "class_terraria_1_1_player.html#ade33ba66d45170e42fee9dd23e07a378":[1,0,2,56,776],
 "class_terraria_1_1_player.html#ade8c341103a100665b97765b7493945b":[1,0,2,56,1061],
@@ -246,8 +249,5 @@ var NAVTREEINDEX106 =
 "class_terraria_1_1_player_1_1_random_teleportation_attempt_settings.html#aa65e8d7e7f7ea67f330a984b0b16b81b":[1,0,2,56,6,2],
 "class_terraria_1_1_player_1_1_saved_player_data_with_annoying_rules.html":[1,0,2,56,7],
 "class_terraria_1_1_player_1_1_saved_player_data_with_annoying_rules.html#a7bf5cd85dc932c474622db138c9e03e8":[1,0,2,56,7,0],
-"class_terraria_1_1_player_1_1_saved_player_data_with_annoying_rules.html#ae5378e305a166fe7af4450505d057c08":[1,0,2,56,7,1],
-"class_terraria_1_1_player_1_1_saved_player_data_with_annoying_rules.html#aee2d8fadda1129198daf263e9fd80e91":[1,0,2,56,7,2],
-"class_terraria_1_1_player_1_1_selection_radial.html":[1,0,2,56,8],
-"class_terraria_1_1_player_1_1_selection_radial.html#a017f394052fbde7de034ddbd0d580043":[1,0,2,56,8,11]
+"class_terraria_1_1_player_1_1_saved_player_data_with_annoying_rules.html#ae5378e305a166fe7af4450505d057c08":[1,0,2,56,7,1]
 };

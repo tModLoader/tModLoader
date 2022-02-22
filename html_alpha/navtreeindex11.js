@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html#a9ae7967c2e228aee6f1befb4960d9ca9":[1,0,2,5,10,5,36,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_never_true.html":[1,0,2,5,10,5,37],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_never_true.html#a139d0bdbf1fd305ec8b965f1522c5d7f":[1,0,2,5,10,5,37,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_never_true.html#aa0a5eb9f8495a990fe742cac6246ce07":[1,0,2,5,10,5,37,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#a781424d703d96d9fd059dbe07051a9bd":[1,0,2,5,12,0,3,1],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#aa676b37cfdb0460dc3f4ac737c8c106b":[1,0,2,5,12,0,3,3],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types_1_1_stacked_condition_setter.html#adb943542451ee0c57aaecdf0ef11e14c":[1,0,2,5,12,0,3,0],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_simulation_condition_setters.html":[1,0,2,5,12,4],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_simulation_condition_setters.html#a1538ac90fbd03426b15d3c44d03ec27a":[1,0,2,5,12,4,1]
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_simulation_condition_setters.html":[1,0,2,5,12,4]
 };

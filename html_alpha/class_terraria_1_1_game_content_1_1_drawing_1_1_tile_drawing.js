@@ -10,6 +10,7 @@ var class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing =
     [ "GetTileDrawTexture", "class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a0ccf4a556a79af4fdc6ed1869c54cd0d", null ],
     [ "GetTileOutlineInfo", "class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#aed5cc01678bb1c0f54dcf48a0b3ef7dc", null ],
     [ "GetTreeVariant", "class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a2d004064c507751fa95d0558663a07c6", null ],
+    [ "IsTileDangerous", "class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#afed98c14ea9335053404fe2dd5a88130", null ],
     [ "PostDrawTiles", "class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a195bc3275a5fbd6fe52452a5a2251e49", null ],
     [ "PreDrawTiles", "class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#af0556ab218bb967065d3fad7b2b1bca8", null ],
     [ "PrepareForAreaDrawing", "class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#ab611bbbea07a35d09eb2ec0a6ea1a6ca", null ],

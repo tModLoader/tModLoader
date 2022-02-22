@@ -612,12 +612,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLiquidStyleW
 <tr class="memitem:aa7e0e3ea583de9e047477d747fa22dc3"><td class="memItemLeft" align="right" valign="top"><a id="aa7e0e3ea583de9e047477d747fa22dc3"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNPCActiveAndOneOfTypes</b> (int npcIndex, params int[] types)</td></tr>
 <tr class="separator:aa7e0e3ea583de9e047477d747fa22dc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa5533632751b278c05531f221540103"><td class="memItemLeft" align="right" valign="top"><a id="afa5533632751b278c05531f221540103"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTileSpelunkable</b> (<a class="el" href="struct_terraria_1_1_tile.html">Tile</a> t)</td></tr>
-<tr class="separator:afa5533632751b278c05531f221540103"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af23e28c6f3cdd23464d4cfc15a022b27"><td class="memItemLeft" align="right" valign="top"><a id="af23e28c6f3cdd23464d4cfc15a022b27"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTileSpelunkable</b> (ushort typeCache, short tileFrameX, short tileFrameY)</td></tr>
-<tr class="separator:af23e28c6f3cdd23464d4cfc15a022b27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4d188e9f004f6f6126b586cc525e6be"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#af4d188e9f004f6f6126b586cc525e6be">IsTileSpelunkable</a> (int tileX, int tileY)</td></tr>
+<tr class="memdesc:af4d188e9f004f6f6126b586cc525e6be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff, and is detected by various pets.  <a href="class_terraria_1_1_main.html#af4d188e9f004f6f6126b586cc525e6be">More...</a><br /></td></tr>
+<tr class="separator:af4d188e9f004f6f6126b586cc525e6be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addb63ba39fabb3dc70e6532a99d62e23"><td class="memItemLeft" align="right" valign="top"><a id="addb63ba39fabb3dc70e6532a99d62e23"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ItemIconCacheUpdate</b> (int selectedItemID)</td></tr>
 <tr class="separator:addb63ba39fabb3dc70e6532a99d62e23"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4211,6 +4208,44 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>OnTickForThi
 <tr class="separator:a99446785dd19054f3fc6da425bcdd9ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="af4d188e9f004f6f6126b586cc525e6be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4d188e9f004f6f6126b586cc525e6be">&#9670;&nbsp;</a></span>IsTileSpelunkable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Terraria.Main.IsTileSpelunkable </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tileX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tileY</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if a tile at the given coordinates counts towards tile coloring from the Spelunker buff, and is detected by various pets. </p>
+
+</div>
+</div>
 <a id="a2a5ed109be191ee512ce99ff1ee51141"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2a5ed109be191ee512ce99ff1ee51141">&#9670;&nbsp;</a></span>RegisterItemAnimation()</h2>
 

@@ -1,5 +1,6 @@
 var NAVTREEINDEX65 =
 {
+"class_terraria_1_1_i_d_1_1_primary_biome_i_d.html#a58a87c0764dd119d7a92b8c986c46a81":[1,0,2,8,39,12],
 "class_terraria_1_1_i_d_1_1_primary_biome_i_d.html#a606d12e17aeabb811e23c3384d0d6608":[1,0,2,8,39,9],
 "class_terraria_1_1_i_d_1_1_primary_biome_i_d.html#a697422094ed61cc7aa07990b7a500cc3":[1,0,2,8,39,2],
 "class_terraria_1_1_i_d_1_1_primary_biome_i_d.html#a7a8de7b819bdc17b937a21a5a9e8a2b4":[1,0,2,8,39,13],
@@ -248,6 +249,5 @@ var NAVTREEINDEX65 =
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a0d85ab112128e49f66cfaaa2f0455c52":[1,0,2,8,41,846],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a0d867d60e1c19bb3a51c4b0a73a1ae11":[1,0,2,8,41,956],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a0d8f78f1199ea6c6587569b1b430c8b0":[1,0,2,8,41,202],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a0e3291f14ca6c84c3c6ce6f8da16d9d4":[1,0,2,8,41,32],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a0e8bb2397241decc92249e1235c11a12":[1,0,2,8,41,403]
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a0e3291f14ca6c84c3c6ce6f8da16d9d4":[1,0,2,8,41,32]
 };

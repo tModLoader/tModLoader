@@ -127,9 +127,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a64bfa928daa2b265e3fbd586f3352301"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a64bfa928daa2b265e3fbd586f3352301">ChangeWaterfallStyle</a> (int type, ref int style)</td></tr>
 <tr class="memdesc:a64bfa928daa2b265e3fbd586f3352301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the style of waterfall that passes through or over any tile.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a64bfa928daa2b265e3fbd586f3352301">More...</a><br /></td></tr>
 <tr class="separator:a64bfa928daa2b265e3fbd586f3352301"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19db5c50626b6ecafb866674bee6e029"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a19db5c50626b6ecafb866674bee6e029">Dangersense</a> (int i, int j, int type, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:a19db5c50626b6ecafb866674bee6e029"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether the block glows red when the given player has the Dangersense buff.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a19db5c50626b6ecafb866674bee6e029">More...</a><br /></td></tr>
-<tr class="separator:a19db5c50626b6ecafb866674bee6e029"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2940574e3cbe0c5ea3639986c4d68cbf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a2940574e3cbe0c5ea3639986c4d68cbf">DrawEffects</a> (int i, int j, int type, SpriteBatch spriteBatch, ref <a class="el" href="class_terraria_1_1_data_structures_1_1_tile_draw_info.html">TileDrawInfo</a> drawData)</td></tr>
 <tr class="memdesc:a2940574e3cbe0c5ea3639986c4d68cbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make stuff happen whenever the tile at the given coordinates is drawn. For example, creating dust or changing the color the tile is drawn in. SpecialDraw will only be called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint here.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a2940574e3cbe0c5ea3639986c4d68cbf">More...</a><br /></td></tr>
 <tr class="separator:a2940574e3cbe0c5ea3639986c4d68cbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,6 +142,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1425f575127b73aafa5e251d970fc28f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a1425f575127b73aafa5e251d970fc28f">HitWire</a> (int i, int j, int type)</td></tr>
 <tr class="memdesc:a1425f575127b73aafa5e251d970fc28f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when a wire current passes through any tile.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a1425f575127b73aafa5e251d970fc28f">More...</a><br /></td></tr>
 <tr class="separator:a1425f575127b73aafa5e251d970fc28f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9095b93259d7281f00195030a72313bc"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a9095b93259d7281f00195030a72313bc">IsTileDangerous</a> (int i, int j, int type, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:a9095b93259d7281f00195030a72313bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this tile glows red when the given player has the Dangersense buff. <br  />
+Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default. <br  />
+This is only called on the local client.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a9095b93259d7281f00195030a72313bc">More...</a><br /></td></tr>
+<tr class="separator:a9095b93259d7281f00195030a72313bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c0f990e3f36a0e016061c150d51cf30"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a8c0f990e3f36a0e016061c150d51cf30">IsTileSpelunkable</a> (int i, int j, int type)</td></tr>
+<tr class="memdesc:a8c0f990e3f36a0e016061c150d51cf30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets. <br  />
+Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a8c0f990e3f36a0e016061c150d51cf30">More...</a><br /></td></tr>
+<tr class="separator:a8c0f990e3f36a0e016061c150d51cf30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cbb601483a9e85671e507b9fe9b6191"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a7cbb601483a9e85671e507b9fe9b6191">KillTile</a> (int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem)</td></tr>
 <tr class="memdesc:a7cbb601483a9e85671e507b9fe9b6191"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. If <em>fail</em>  is true, the tile will not be mined; <em>effectOnly</em>  makes it so that only dust is created; <em>noItem</em>  stops items from dropping.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a7cbb601483a9e85671e507b9fe9b6191">More...</a><br /></td></tr>
 <tr class="separator:a7cbb601483a9e85671e507b9fe9b6191"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -636,66 +642,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a19db5c50626b6ecafb866674bee6e029"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19db5c50626b6ecafb866674bee6e029">&#9670;&nbsp;</a></span>Dangersense()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool Terraria.ModLoader.GlobalTile.Dangersense </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>j</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
-          <td class="paramname"><em>player</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to determine whether the block glows red when the given player has the Dangersense buff. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
-    <tr><td class="paramname">type</td><td></td></tr>
-    <tr><td class="paramname">player</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
 <a id="a2940574e3cbe0c5ea3639986c4d68cbf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2940574e3cbe0c5ea3639986c4d68cbf">&#9670;&nbsp;</a></span>DrawEffects()</h2>
 
@@ -968,6 +914,120 @@ Additional Inherited Members</h2></td></tr>
     <tr><td class="paramname">i</td><td></td></tr>
     <tr><td class="paramname">j</td><td></td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9095b93259d7281f00195030a72313bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9095b93259d7281f00195030a72313bc">&#9670;&nbsp;</a></span>IsTileDangerous()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? bool Terraria.ModLoader.GlobalTile.IsTileDangerous </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to determine whether this tile glows red when the given player has the Dangersense buff. <br  />
+Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default. <br  />
+This is only called on the local client. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The tile type</td></tr>
+    <tr><td class="paramname">player</td><td>Main.LocalPlayer</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8c0f990e3f36a0e016061c150d51cf30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c0f990e3f36a0e016061c150d51cf30">&#9670;&nbsp;</a></span>IsTileSpelunkable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? bool Terraria.ModLoader.GlobalTile.IsTileSpelunkable </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets. <br  />
+Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The tile type</td></tr>
   </table>
   </dd>
 </dl>
