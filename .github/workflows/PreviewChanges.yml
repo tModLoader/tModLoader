@@ -4,9 +4,9 @@ name: Preview tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4]
+    branches: [1.4-preview]
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  #workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
