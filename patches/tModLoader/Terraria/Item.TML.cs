@@ -19,6 +19,17 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
 
+		/// <summary>
+		/// Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1.
+		/// <br>This prevents it from receiving a prefix on craft.</br>
+		/// </summary>
+		public bool AllowReforgeForStackableItem { get; set; }
+
+		/// <summary>
+		/// Used to make stackable items reforgeable
+		/// </summary>
+		public bool IsCandidateForReforge => maxStack == 1 || AllowReforgeForStackableItem;
+
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
 		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or <see cref="ModContent.GetInstance"/> for custom damage types.
@@ -56,6 +67,17 @@ namespace Terraria
 
 		public bool CountsAsClass(DamageClass damageClass)
 			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+
+		// public version of IsNotTheSameAs for modders
+		/// <summary>
+		/// returns false if and only if netID (deprecated, equivalent to type), stack and prefix match
+		/// </summary>
+		public bool IsNotSameTypePrefixAndStack(Item compareItem) {
+			if (netID == compareItem.netID && stack == compareItem.stack)
+				return prefix != compareItem.prefix;
+
+			return true;
+		}
 
 		internal static void PopulateMaterialCache() {
 			for (int i = 0; i < Recipe.numRecipes; i++) {

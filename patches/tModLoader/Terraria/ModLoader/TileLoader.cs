@@ -64,7 +64,8 @@ namespace Terraria.ModLoader
 		private static Action<int, int, int, bool>[] HookNearbyEffects;
 		private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 		private static DelegateModifyLight[] HookModifyLight;
-		private static Func<int, int, int, Player, bool>[] HookDangersense;
+		private static Func<int, int, int, Player, bool?>[] HookIsTileDangerous;
+		private static Func<int, int, int, bool?>[] HookIsTileSpelunkable;
 		private delegate void DelegateSetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects);
 		private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
 		private static Action[] HookAnimateTile;
@@ -207,7 +208,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookCanExplode, globalTiles, g => g.CanExplode);
 			ModLoader.BuildGlobalHook(ref HookNearbyEffects, globalTiles, g => g.NearbyEffects);
 			ModLoader.BuildGlobalHook<GlobalTile, DelegateModifyLight>(ref HookModifyLight, globalTiles, g => g.ModifyLight);
-			ModLoader.BuildGlobalHook(ref HookDangersense, globalTiles, g => g.Dangersense);
+			ModLoader.BuildGlobalHook(ref HookIsTileDangerous, globalTiles, g => g.IsTileDangerous);
+			ModLoader.BuildGlobalHook(ref HookIsTileSpelunkable, globalTiles, g => g.IsTileSpelunkable);
 			ModLoader.BuildGlobalHook<GlobalTile, DelegateSetSpriteEffects>(ref HookSetSpriteEffects, globalTiles, g => g.SetSpriteEffects);
 			ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalTiles, g => g.PreDraw);
@@ -565,18 +567,56 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static bool Dangersense(int i, int j, int type, Player player) {
+		//in TileDrawing.IsTileDangerous before return flag
+		public static bool? IsTileDangerous(int i, int j, int type, Player player) {
+			bool? retVal = null;
+
 			ModTile modTile = GetTile(type);
-			if (modTile != null && modTile.Dangersense(i, j, player)) {
-				return true;
+
+			if (modTile != null && modTile.IsTileDangerous(i, j, player)) {
+				retVal = true;
 			}
-			foreach (var hook in HookDangersense) {
-				if (hook(i, j, type, player)) {
-					return true;
+
+			foreach (var hook in HookIsTileDangerous) {
+				bool? globalRetVal = hook(i, j, type, player);
+				if (globalRetVal.HasValue) {
+					if (globalRetVal.Value) {
+						retVal = true;
+					}
+					else {
+						return false;
+					}
 				}
 			}
-			return false;
+
+			return retVal;
 		}
+
+		//in Main.IsTileSpelunkable at the start
+		public static bool? IsTileSpelunkable(int i, int j, int type) {
+			bool? retVal = null;
+
+			ModTile modTile = GetTile(type);
+
+			if (!Main.tileSpelunker[type] && modTile != null && modTile.IsTileSpelunkable(i, j)) {
+				retVal = true;
+			}
+
+			foreach (var hook in HookIsTileSpelunkable) {
+				bool? globalRetVal = hook(i, j, type);
+				if (globalRetVal.HasValue) {
+					if (globalRetVal.Value) {
+						retVal = true;
+					}
+					else {
+						return false;
+					}
+				}
+			}
+
+			return retVal;
+		}
+
 		//in Terraria.Main.DrawTiles after if statement setting effects call
 		//  TileLoader.SetSpriteEffects(j, i, type, ref effects);
 		public static void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects) {
