@@ -19,17 +19,8 @@
 	
 	//Main
 		//Add IsAValidEquipmentSlotForIteration to VanillaUpdateAccessory check.
-		//Move to Main.ApplyMusicBox
-+				if (SoundLoader.itemToMusic.ContainsKey(armor[l].type))
-+					Main.musicBox2 = SoundLoader.itemToMusic[armor[l].type];
-+			}
 
 //Mirsario:
-	//Lighting:
-		//Re-add this MusicBox logic, to somewhere in SceneMetrics:
-			if (TileLoader.IsModMusicBox(tile) && tile.frameX >= 36)
-				Main.musicBox = SoundLoader.tileToMusic[tile.type][tile.frameY / 36 * 36];
-
 	//WorldGen:
 		//Test drops.
 		

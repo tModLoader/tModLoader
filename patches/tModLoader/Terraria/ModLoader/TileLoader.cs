@@ -377,6 +377,12 @@ namespace Terraria.ModLoader
 
 		public static string ContainerName(int type) => GetTile(type)?.ContainerName?.GetTranslation(Language.ActiveCulture) ?? string.Empty;
 
+		// Player.TileInteractionUse, type == 139
+		// Wiring.HitWireSingle, case 139:
+		// WorldGen.SwitchMB, type == 139 || 35
+		// SceneMetrics.ScanAndExport:
+		//if(TileLoader.IsModMusicBox(tile2) && tile2.frameX == 36)
+		//	ActiveMusicBox = SoundLoader.tileToMusic[tile2.type][tile2.frameY / 36 * 36];
 		public static bool IsModMusicBox(Tile tile) {
 			return MusicLoader.tileToMusic.ContainsKey(tile.type)
 			&& MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
