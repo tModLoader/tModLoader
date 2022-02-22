@@ -601,8 +601,6 @@ namespace Terraria.ModLoader
 			return retVal;
 		}
 
-		//in Terraria.GameContent.Drawing.TileDrawing.GetTileDrawData at the end
-		//  TileLoader.SetSpriteEffects(x, y, typeCache, ref tileSpriteEffect);
 		public static void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects) {
 			GetTile(type)?.SetSpriteEffects(i, j, ref spriteEffects);
 
@@ -610,8 +608,7 @@ namespace Terraria.ModLoader
 				hook(i, j, type, ref spriteEffects);
 			}
 		}
-		//in Terraria.GameContent.Drawing.TileDrawing.GetTileDrawData at the end
-		//  TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight, ref tileFrameX, ref tileFrameY);
+
 		public static void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
 			Tile tile = Main.tile[i, j];
 			if (tile.type >= TileID.Count) {
@@ -643,8 +640,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//in Terraria.GameContent.Drawing.TileDrawing.GetTileDrawData at the end
-		//  TileLoader.SetAnimationFrame(typeCache, x, y, ref addFrX, ref addFrY);
 		/// <summary>
 		/// Sets the animation frame. Sets frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type]; and then calls ModTile.AnimateIndividualTile
 		/// </summary>
