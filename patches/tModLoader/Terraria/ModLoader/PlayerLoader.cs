@@ -1036,13 +1036,12 @@ namespace Terraria.ModLoader
 		private static HookList HookCanUseItem = AddHook<Func<Item, bool>>(p => p.CanUseItem);
 
 		public static bool CanUseItem(Player player, Item item) {
-			bool result = true;
-
 			foreach (int index in HookCanUseItem.arr) {
-				result &= player.modPlayers[index].CanUseItem(item);
+				if (!player.modPlayers[index].CanUseItem(item))
+					return false;
 			}
 
-			return result;
+			return true;
 		}
 
 		private static HookList HookCanAutoReuseItem = AddHook<Func<Item, bool?>>(p => p.CanAutoReuseItem);

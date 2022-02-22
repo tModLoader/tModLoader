@@ -45,7 +45,7 @@ namespace Terraria.ModLoader
 			ItemLoader.OnConsumeAmmo(weapon, ammo, player);
 		}
 
-		//TODO: Fix various inconsistencies with calls of UseItem, and then make this and its inner methods use short-circuiting.
+		//TODO: Fix various inconsistencies with calls of UseItem
 		public static bool CanUseItem(Player player, Item item) {
 			return PlayerLoader.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);
 		}

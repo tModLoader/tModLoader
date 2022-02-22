@@ -230,25 +230,16 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookCanUseItem = AddHook<Func<Item, Player, bool>>(g => g.CanUseItem);
-		//in Terraria.Player.ItemCheck
-		//  inside block if (this.controlUseItem && this.itemAnimation == 0 && this.releaseUseItem && item.useStyle > 0)
-		//  set initial flag2 to ItemLoader.CanUseItem(item, this)
-		/// <summary>
-		/// Returns the "and" operation on the results of ModItem.CanUseItem and all GlobalItem.CanUseItem hooks.
-		/// Does not fail fast (every hook is called).
-		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <param name="player">The player holding the item.</param>
 		public static bool CanUseItem(Item item, Player player) {
-			bool flag = true;
-			if (item.ModItem != null)
-				flag &= item.ModItem.CanUseItem(player);
+			if (item.ModItem != null && !item.ModItem.CanUseItem(player))
+				return false;
 
 			foreach (var g in HookCanUseItem.Enumerate(item.globalItems)) {
-				flag &= g.CanUseItem(item, player);
+				if (!g.CanUseItem(item, player))
+					return false;
 			}
 
-			return flag;
+			return true;
 		}
 
 		private static HookList HookCanAutoReuseItem = AddHook<Func<Item, Player, bool?>>(g => g.CanAutoReuseItem);
