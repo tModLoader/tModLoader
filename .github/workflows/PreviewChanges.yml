@@ -23,11 +23,11 @@ jobs:
           run: echo "::set-output name=date::$(date +'%d')"
         
         - name: Update Versioning
-            shell: bash
-            run: |
-                echo "$date"
-            env:
-                date: ${{ steps.date.outputs.date }}
+          shell: bash
+          run: |
+            echo "$date"
+          env:
+            date: ${{ steps.date.outputs.date }}
         
         - name: Check out base branch
           if: ${{ steps.date.outputs.date }}<20
