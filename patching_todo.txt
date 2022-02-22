@@ -73,15 +73,6 @@
 			ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms(projectile[drawPlayer.heldProj], ref flag3); //(multiple of these)
 			
 			ItemLoader.DrawBody(drawPlayer) // ('if' check)
-			
-		//Reimplement the following broken patches:
-// {
-+			bool fullBright = false;
-+			PlayerHooks.DrawEffects(drawInfo, ref num18, ref num19, ref num20, ref num21, ref fullBright);
- 			if (num18 != 1f || num19 != 1f || num20 != 1f || num21 != 1f) {
--				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn) {
-+				if (drawPlayer.onFire || drawPlayer.onFire2 || drawPlayer.onFrostBurn || fullBright) {
-// }
 
 // {
 +						Vector2 holdoutOrigin = Vector2.Zero;
