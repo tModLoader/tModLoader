@@ -4,9 +4,9 @@ name: Preview tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4-dev]
+    branches: [1.4]
   # Allows you to run this workflow manually from the Actions tab
-  # workflow_dispatch:
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -14,8 +14,6 @@ jobs:
   MergeToPreview:
     # The type of runner that the job will run on
     runs-on: windows-latest
-    # Make sure not to run this job on other labels
-    if: github.event_name == 'push' && github.ref == 'refs/heads/1.4-dev'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -27,6 +25,7 @@ jobs:
           if: ${{ steps.date.outputs.date }}<20
           uses: actions/checkout@v2
           with:
+            ref: 'refs/heads/1.4'
             persist-credentials: false
             fetch-depth: 10
           
@@ -34,7 +33,7 @@ jobs:
           if: ${{ steps.date.outputs.date }}<20
           uses: robotology/gh-action-nightly-merge@v1.3.1
           with:
-              stable_branch: '1.4-dev'
+              stable_branch: '1.4'
               development_branch: '1.4-preview'
               allow_ff: true
               ff_only: true
