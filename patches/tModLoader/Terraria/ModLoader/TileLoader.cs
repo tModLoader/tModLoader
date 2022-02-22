@@ -366,14 +366,6 @@ namespace Terraria.ModLoader
 			return -1;
 		}
 
-		//DoorOpeningHelper.CommonDoorOpeningInfo.TryCloseDoor, tile.active() || IsCloseDoor
-		//HitTile.DrawFreshAnimations, before tileSolid check, set flag2 to false if IscloseDoor is true
-		//Main.DrawTileCracks, same as DrawFreshAnimations
-		//NPC.AI_003_Fighters
-		//NPC.AI_107_Improvedwalkers, if (flag8 && tileSafely4.nactive() && (TileLoader.IsClosedDoor(tileSafely4) || tileSafely4.type == 388))
-		//NPC.AI_107_Improvedwalkers,
-		//if (TileLoader.IsClosedDoor(tileSafely4)) {
-		//   bool flag38 = WorldGen.OpenDoor(num64, num65 - 1, direction);
 		public static bool IsClosedDoor(Tile tile) {
 			ModTile modTile = GetTile(tile.type);
 
@@ -386,12 +378,6 @@ namespace Terraria.ModLoader
 
 		public static string ContainerName(int type) => GetTile(type)?.ContainerName?.GetTranslation(Language.ActiveCulture) ?? string.Empty;
 
-		// Player.TileInteractionUse, type == 139
-		// Wiring.HitWireSingle, case 139:
-		// WorldGen.SwitchMB, type == 139 || 35
-		// SceneMetrics.ScanAndExport:
-		//if(TileLoader.IsModMusicBox(tile2) && tile2.frameX == 36)
-		//	ActiveMusicBox = SoundLoader.tileToMusic[tile2.type][tile2.frameY / 36 * 36];
 		public static bool IsModMusicBox(Tile tile) {
 			return MusicLoader.tileToMusic.ContainsKey(tile.type)
 			&& MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
