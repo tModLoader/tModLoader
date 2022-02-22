@@ -1,7 +1,4 @@
 //Rartrin:
-	//Terraria.GameContent.UI.States.UICharacterCreation.SetupPlayerStatsAndInventoryBasedOnDifficulty
-		//Add call to PlayerHooks.SetStartInventory here. Moved from Player constructor.
-
 	//Player
 		//Make sure "22" replaced with "MaxBuffs" in 'for' and CountBuffs() == and !=.
 		//Ensure all blockLists are cleared everywhere that they need to be.
@@ -44,9 +41,6 @@
 		//Reimplement cactus drawing. Search for modCactus in Main.cs 1.3.5.3 tML diffs.
 		
 		//Reimplement tree drawing. Search for modTree in Main.cs 1.3.5.3 tML diffs.
-		
-		//Reimplement these calls:
-			TileLoader.PostDraw(x, y, type, spriteBatch);
 			
 	//Item:
 		//In Item.GetDrawHitbox, return the following size if it's not null.
