@@ -5,8 +5,6 @@
 
 	//Need reimplementing:
 		//TileLoader.HasSmartInteract
-		//NPCLoader.CanChat
-			//Add to NPCSmartInteractCandidateProvider.ProvideCandidate's npc loop checks.
 		//TileLoader.FixSmartInteractCoords
 			//Add to TileSmartInteractCandidateProvider.ProvideCandidate, right before the if with two Collision.InTileBounds calls.
 
