@@ -6,10 +6,6 @@ namespace ExampleMod.Content.Items.Placeable
 	public class ExampleHerbSeeds : ModItem
 	{
 		public override void SetDefaults() {
-			Item.maxStack = 999;
-			Item.width = 12;
-			Item.height = 14;
-			Item.value = 100;
 			Item.autoReuse = true;
 			Item.useTurn = true;
 			Item.useStyle = ItemUseStyleID.Swing;
