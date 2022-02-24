@@ -239,11 +239,23 @@ namespace Terraria.ModLoader
 		public virtual float GetTorchLuck(Player player) => 0f;
 
 		/// <summary>
-		/// Allows you to determine whether this block glows red when the given player has the Dangersense buff.
+		/// Allows you to determine whether this tile glows red when the given player has the Dangersense buff.
+		/// <br/>This is only called on the local client.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool Dangersense(int i, int j, Player player) {
+		/// <param name="player">Main.LocalPlayer</param>
+		public virtual bool IsTileDangerous(int i, int j, Player player) {
+			return false;
+		}
+
+		/// <summary>
+		/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
+		/// <br/>This is only called if Main.tileSpelunker[type] is false.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		public virtual bool IsTileSpelunkable(int i, int j) {
 			return false;
 		}
 

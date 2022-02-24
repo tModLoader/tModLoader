@@ -102,7 +102,7 @@ namespace Terraria.DataStructures
 		public static readonly PlayerDrawLayer FinchNest = new VanillaPlayerDrawLayer(nameof(FinchNest), DrawPlayer_21_2_FinchNest, TorsoGroup, isHeadLayer: false);
 
 		/// <summary> Draws the player's face accessory. </summary>
-		public static readonly PlayerDrawLayer FaceAcc = new VanillaPlayerDrawLayer(nameof(FaceAcc), DrawPlayer_22_FaceAcc, TorsoGroup);
+		public static readonly PlayerDrawLayer FaceAcc = new VanillaPlayerDrawLayer(nameof(FaceAcc), DrawPlayer_22_FaceAcc, TorsoGroup, isHeadLayer: true);
 
 		/// <summary> Draws the front textures of the player's mount. </summary>
 		public static readonly PlayerDrawLayer MountFront = new VanillaPlayerDrawLayer(nameof(MountFront), DrawPlayer_23_MountFront, TorsoGroup);

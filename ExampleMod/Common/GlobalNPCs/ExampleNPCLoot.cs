@@ -48,6 +48,31 @@ namespace ExampleMod.Common.GlobalNPCs
 				npcLoot.Add(ItemDropRule.Common(ItemID.GreenCap, 1)); // In conjunction with the above removal, this makes it so a guide with any name will drop the Green Cap.
 			}
 
+			// Editing an existing drop rule
+			if (npc.type == NPCID.BloodNautilus) {
+				// Dreadnautilus, known as BloodNautilus in the code, drops SanguineStaff. The drop rate is 100% in Expert mode and 50% in Normal mode. This example will change that rate.
+				// The vanilla code responsible for this drop is: ItemDropRule.NormalvsExpert(4269, 2, 1)
+				// The NormalvsExpert method creates a DropBasedOnExpertMode rule, and that rule is made up of 2 CommonDrop rules. We'll need to use this information in our casting to properly identify the recipe to edit.
+
+				// There are 2 options. One option is remove the original rule and then add back a similar rule. The other option is to modify the existing rule.
+				// It is preferred to modify the existing rule to preserve compatibility with other mods.
+
+				// Adjust the existing rule: Change the Normal mode drop rate from 50% to 33.3%
+				foreach (var rule in npcLoot.Get()) {
+					// You must study the vanilla code to know what to objects to cast to.
+					if (rule is DropBasedOnExpertMode drop && drop.ruleForNormalMode is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.SanguineStaff)
+						normalDropRule.chanceDenominator = 3;
+				}
+
+				// Remove the rule, then add another rule: Change the Normal mode drop rate from 50% to 16.6%
+				/*
+				npcLoot.RemoveWhere(
+					rule => rule is DropBasedOnExpertMode drop && drop.ruleForNormalMode is CommonDrop normalDropRule && normalDropRule.itemId == ItemID.SanguineStaff
+				);
+				npcLoot.Add(ItemDropRule.NormalvsExpert(4269, 6, 1));
+				*/
+			}
+
 			if (npc.type == NPCID.Crimera || npc.type == NPCID.Corruptor) {
 				// Here we make use of our own special rule we created: drop during daytime
 				ExampleDropCondition exampleDropCondition = new ExampleDropCondition();
