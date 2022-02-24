@@ -1,0 +1,15 @@
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- special targets file for ExampleMod. Fits in place of the one in /Mod Sources -->  
+  <Import Project="src/WorkspaceInfo.targets" />
+  <Import Project="$(tModLoaderSteamPath)/tMLMod.targets" />
+  
+  <ItemGroup>
+    <!-- unfortunately VS Goto Defintion doesn't work on pdb source paths, only direct project references -->
+    <Reference Remove="$(tMLSteamPath)**/FNA.dll"/>
+    <Reference Remove="$(tMLSteamPath)**/ReLogic.dll"/>
+    <Reference Remove="$(tMLSteamPath)**/tModLoader.dll"/>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)FNA/FNA.Core.csproj" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/ReLogic/ReLogic.csproj" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/Terraria/Terraria.csproj" />
+  </ItemGroup>
+</Project>

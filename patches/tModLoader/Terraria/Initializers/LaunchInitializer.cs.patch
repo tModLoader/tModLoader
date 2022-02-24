@@ -59,7 +59,7 @@
 +			if ((publish = LaunchInitializer.TryParameter("-publish")) != null) {
 +				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish);
 +				// Application Exits
-+			} 
++			}
 +
 +			string install;
 +			if ((install = TryParameter("-install")) != null)

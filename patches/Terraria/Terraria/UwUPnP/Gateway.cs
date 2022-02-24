@@ -230,7 +230,7 @@ namespace UwUPnP
 			return ret;
 		}
 
-		
+
 
 		public IPAddress ExternalIPAddress => RunCommand("GetExternalIPAddress").TryGetValue("NewExternalIPAddress", out string ret) ? IPAddress.Parse(ret) : null;
 

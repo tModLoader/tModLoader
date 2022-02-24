@@ -106,6 +106,8 @@ namespace Terraria.ModLoader
 
 			//Sets
 			LoaderUtils.ResetStaticMembers(typeof(NPCID), true);
+			NPCHappiness.ResetRelationships();
+			NPCHappiness.RegisterVanillaNpcRelationships();
 
 			//Etc
 			Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
@@ -412,7 +414,7 @@ namespace Terraria.ModLoader
 			foreach (GlobalNPC g in HookOnKill.Enumerate(npc.globalNPCs)) {
 				g.OnKill(npc);
 			}
-			
+
 			blockLoot.Clear();
 		}
 
@@ -528,7 +530,7 @@ namespace Terraria.ModLoader
 
 		public static void OnHitNPC(NPC npc, NPC target, int damage, float knockback, bool crit) {
 			npc.ModNPC?.OnHitNPC(target, damage, knockback, crit);
-			
+
 			foreach (GlobalNPC g in HookOnHitNPC.Enumerate(npc.globalNPCs)) {
 				g.OnHitNPC(npc, target, damage, knockback, crit);
 			}
@@ -853,7 +855,7 @@ namespace Terraria.ModLoader
 
 				if (npc.townNPC && NPC.TypeToDefaultHeadIndex(npc.type) >= 0 && !NPC.AnyNPCs(npc.type) &&
 					modNPC.CanTownNPCSpawn(numTownNPCs, money)) {
-					
+
 					Main.townNPCCanSpawn[npc.type] = true;
 
 					if (WorldGen.prioritizedTownNPCType == 0) {
@@ -862,6 +864,18 @@ namespace Terraria.ModLoader
 				}
 			}
 		}
+
+		/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
+		private static HookList HookModifyNPCHappiness = AddHook(g => g.ModifyNPCHappiness);
+
+		public static void ModifyNPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
+			npc.ModNPC?.ModifyNPCHappiness(primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
+
+			foreach (GlobalNPC g in HookModifyNPCHappiness.Enumerate(globalNPCsArray)) {
+				g.Instance(npc).ModifyNPCHappiness(npc, primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
+			}
+		}
+		*/
 
 		public static bool CheckConditions(int type) {
 			return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;

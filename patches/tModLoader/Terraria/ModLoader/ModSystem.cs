@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
 using Terraria.Localization;
+using Terraria.Map;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
@@ -13,7 +14,7 @@ using Terraria.WorldBuilding;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// ModSystem is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike Mod, can have unlimited amounts of types deriving from it. 
+	/// ModSystem is an abstract class that your classes can derive from. It contains general-use hooks, and, unlike Mod, can have unlimited amounts of types deriving from it.
 	/// </summary>
 	public abstract partial class ModSystem : ModType
 	{
@@ -46,6 +47,25 @@ namespace Terraria.ModLoader
 		/// Allows you to load things in your system after the mod's content has been setup (arrays have been resized to fit the content, etc).
 		/// </summary>
 		public virtual void PostSetupContent() { }
+
+		/// <summary>
+		/// Override this method to add recipes to the game.
+		/// <br/> It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
+		/// </summary>
+		public virtual void AddRecipes() { }
+
+		/// <summary>
+		/// This provides a hook into the mod-loading process immediately after recipes have been added.
+		/// <br/> You can use this to edit recipes added by other mods.
+		/// </summary>
+		public virtual void PostAddRecipes() { }
+
+		/// <summary>
+		/// Override this method to add recipe groups to the game.
+		/// <br/> You must add recipe groups by calling the <see cref="RecipeGroup.RegisterGroup"/> method here.
+		/// <br/> A recipe group is a set of items that can be used interchangeably in the same recipe.
+		/// </summary>
+		public virtual void AddRecipeGroups() { }
 
 		/// <summary>
 		/// Called whenever a world is loaded. This can be used to initialize data structures, etc.
@@ -187,14 +207,21 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Called after interface is drawn but right before mouse and mouse hover text is drawn. Allows for drawing interface.
-		/// 
+		///
 		/// Note: This hook should no longer be used. It is better to use the ModifyInterfaceLayers hook.
 		/// </summary>
 		/// <param name="spriteBatch">The sprite batch.</param>
 		public virtual void PostDrawInterface(SpriteBatch spriteBatch) { }
 
 		/// <summary>
-		/// Called while the fullscreen map is active. Allows custom drawing to the map.
+		/// Called right before map icon overlays are drawn. Use this hook to selectively hide existing <see cref="IMapLayer"/> or <see cref="ModMapLayer"/>
+		/// </summary>
+		/// <param name="layers"></param>
+		/// <param name="mapOverlayDrawContext"></param>
+		public virtual void PreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext) { }
+
+		/// <summary>
+		/// Called while the fullscreen map is active. Allows custom drawing to the map. Using <see cref="ModMapLayer"/> is more compatible and allows drawing on the minimap and fullscreen maps.
 		/// </summary>
 		/// <param name="mouseText">The mouse text.</param>
 		public virtual void PostDrawFullscreenMap(ref string mouseText) { }
@@ -205,7 +232,7 @@ namespace Terraria.ModLoader
 		public virtual void PostUpdateInput() { }
 
 		/// <summary>
-		/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.  
+		/// Called in SP or Client when the Save and Quit button is pressed. One use for this hook is clearing out custom UI slots to return items to the player.
 		/// </summary>
 		public virtual void PreSaveAndQuit() { }
 
@@ -225,7 +252,7 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate) { }
 
 		/// <summary>
-		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags. 
+		/// Allows you to save custom data for this system in the current world. Useful for things like saving world specific flags.
 		/// <br/>For example, if your mod adds a boss and you want certain NPC to only spawn once it has been defeated, this is where you would store the information that that boss has been defeated in this world.
 		/// <br/>
 		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.

@@ -13,6 +13,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
+using static Terraria.GameContent.Creative.CreativeUI;
 
 namespace Terraria.ModLoader
 {
@@ -40,6 +41,14 @@ namespace Terraria.ModLoader
 		/// The translations for the display name of this tooltip.
 		/// </summary>
 		public ModTranslation Tooltip { get; internal set; }
+
+		/// <summary>
+		/// Easy get/set for an item's Sacrifice Total Count
+		/// </summary>
+		public int SacrificeTotal {
+			get => Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type];
+			set => Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = value;
+		}
 
 		public ModItem() {
 			Item = new Item { ModItem = this };
@@ -69,7 +78,7 @@ namespace Terraria.ModLoader
 					Mod.AddEquipTexture(this, equip, $"{Texture}_{equip}");
 				}
 			}
-			
+
 			OnCreate(new InitializationContext());
 		}
 
@@ -91,7 +100,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc. 
+		/// This is where you set all your item's properties, such as width, damage, shootSpeed, defense, etc.
 		/// For those that are familiar with tAPI, this has the same function as .json files.
 		/// </summary>
 		public virtual void SetDefaults() {
@@ -131,10 +140,10 @@ namespace Terraria.ModLoader
 		/// To prevent putting the item in the tinkerer slot, return false when pre is -3.
 		/// To prevent rolling of a prefix on spawn, return false when pre is -1.
 		/// To force rolling of a prefix on spawn, return true when pre is -1.
-		/// 
+		///
 		/// To reduce the probability of a prefix on spawn (pre == -1) to X%, return false 100-4X % of the time.
 		/// To increase the probability of a prefix on spawn (pre == -1) to X%, return true (4X-100)/3 % of the time.
-		/// 
+		///
 		/// To delete a prefix from an item when the item is loaded, return false when pre is the prefix you want to delete.
 		/// Use AllowPrefix to prevent rolling of a certain prefix.
 		/// </summary>
@@ -154,6 +163,14 @@ namespace Terraria.ModLoader
 		public virtual bool CanUseItem(Player player) {
 			return true;
 		}
+
+		/// <summary>
+		/// Allows you to modify the autoswing (auto-reuse) behavior of this item without having to mess with Item.autoReuse.
+		/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
+		/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
+		/// </summary>
+		/// <param name="player"> The player. </param>
+		public virtual bool? CanAutoReuseItem(Player player) => null;
 
 		/// <summary>
 		/// Allows you to modify the location and rotation of this item in its use animation.
@@ -256,6 +273,28 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="itemGroup">The item group this item is being assigned to</param>
 		public virtual void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
+		}
+
+		/// <summary>
+		/// Choose if this item will be consumed or not when used as bait. return null for vanilla behaviour.
+		/// </summary>
+		/// <param name="player">The Player that owns the bait</param>
+		public virtual bool? CanConsumeBait(Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
+		/// </summary>
+		public virtual bool CanResearch() {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to create custom behaviour when an item is accepted by the Research function 
+		/// </summary>
+		/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
+		public virtual void OnResearched(bool fullyResearched) {
 		}
 
 		/// <summary>
@@ -551,24 +590,30 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadow hooks. By default, this will return the same value as the IsArmorSet hook (passing the equipment textures' associated items as parameters), so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
+		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadows hooks. By default, this will return the same value as the IsArmorSet hook (passing the equipment textures' associated items as parameters), so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
 		/// </summary>
 		/// <param name="head">The head.</param>
 		/// <param name="body">The body.</param>
 		/// <param name="legs">The legs.</param>
 		public virtual bool IsVanitySet(int head, int body, int legs) {
-			Item headItem = new Item();
-			if (head >= 0) {
-				headItem.SetDefaults(Item.headType[head], true);
-			}
-			Item bodyItem = new Item();
-			if (body >= 0) {
-				bodyItem.SetDefaults(Item.bodyType[body], true);
-			}
-			Item legItem = new Item();
-			if (legs >= 0) {
-				legItem.SetDefaults(Item.legType[legs], true);
-			}
+			int headItemType = 0;
+			if (head >= 0)
+				headItemType = Item.headType[head];
+
+			Item headItem = ContentSamples.ItemsByType[headItemType];
+
+			int bodyItemType = 0;
+			if (body >= 0)
+				bodyItemType = Item.bodyType[body];
+
+			Item bodyItem = ContentSamples.ItemsByType[bodyItemType];
+
+			int legsItemType = 0;
+			if (legs >= 0)
+				legsItemType = Item.legType[legs];
+
+			Item legItem = ContentSamples.ItemsByType[legsItemType];
+
 			return IsArmorSet(headItem, bodyItem, legItem);
 		}
 
@@ -627,17 +672,27 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to decide if this item is allowed to stack with another of its type in the world.
-		/// This is only called when attempting to stack with an item of the same type.
+		/// Allows you to decide if this item is allowed to stack with another of its type.
+		/// <br/>This is only called when attempting to stack with an item of the same type.
+		/// <br/>This is usually not called for coins and ammo in the inventory/UI.
+		/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 		/// </summary>
-		/// <param name="item2">The item this is trying to stack with</param>
+		/// <returns>Whether or not the item is allowed to stack</returns>
+		public virtual bool CanStack(Item item2) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to decide if this item is allowed to stack with another of its type in the world.
+		/// <br/>This is only called when attempting to stack with an item of the same type.
+		/// </summary>
 		/// <returns>Whether or not the item is allowed to stack</returns>
 		public virtual bool CanStackInWorld(Item item2) {
 			return true;
 		}
 
 		/// <summary>
-		/// Returns if the normal reforge pricing is applied. 
+		/// Returns if the normal reforge pricing is applied.
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
 		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 		/// </summary>
@@ -648,7 +703,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// This hook gets called when the player clicks on the reforge button and can afford the reforge.
 		/// Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called.
-		/// Reforging preserves modded data on the item. 
+		/// Reforging preserves modded data on the item.
 		/// </summary>
 		public virtual bool PreReforge() {
 			return true;
@@ -728,7 +783,7 @@ namespace Terraria.ModLoader
 		public virtual bool? CanBurnInLava() {
 			return null;
 		}
-		
+
 		/// <summary>
 		/// Allows you to make things happen when this item is lying in the world. This will always be called, even when it is being grabbed by a player. This hook should be used for adding light, or for increasing the age of less valuable items.
 		/// </summary>
@@ -864,7 +919,16 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player.</param>
 		/// <param name="slot">The inventory slot that the item is attempting to occupy.</param>
-		public virtual bool CanEquipAccessory(Player player, int slot) {
+		/// <param name="modded">If the inventory slot index is for modded slots.</param>
+		public virtual bool CanEquipAccessory(Player player, int slot, bool modded) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to prevent similar accessories from being equipped multiple times. For example, vanilla Wings.
+		/// Return false to have the currently equipped item swapped with the incoming item - ie both can't be equipped at same time.
+		/// </summary>
+		public virtual bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
 			return true;
 		}
 

@@ -83,10 +83,10 @@ namespace Terraria.ModLoader.UI
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			if (float.IsNaN(TextScale))
 				Recalculate();
-			
+
 			if (DrawPanel)
 				base.DrawSelf(spriteBatch);
-			
+
 			var innerDimensions = GetDimensions().ToRectangle();
 			innerDimensions.Inflate(-4, 0);
 			innerDimensions.Y += 8;

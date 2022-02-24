@@ -1,5 +1,3 @@
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.OS;
 using System;
 using System.Collections.Generic;
@@ -10,8 +8,6 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using Steamworks;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
@@ -21,11 +17,8 @@ using Version = System.Version;
 using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
 using ReLogic.Content;
-using ReLogic.Graphics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 #if NETCORE
-using System.Runtime.Loader;
 #endif
 
 namespace Terraria.ModLoader
@@ -37,7 +30,10 @@ namespace Terraria.ModLoader
 	{
 		// Stores the most recent version of tModLoader launched. Can be used for migration.
 		public static Version LastLaunchedTModLoaderVersion;
-		// public static bool ShowWhatsNew;
+		// Stores the most recent sha for a launched official alpha build. Used for ShowWhatsNew
+		public static string LastLaunchedTModLoaderAlphaSha;
+		public static bool ShowWhatsNew;
+		public static bool AlphaWelcomed;
 		public static bool ShowFirstLaunchWelcomeMessage;
 
 		public static string versionedName => (ModCompile.DeveloperMode || !BuildInfo.IsRelease) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
@@ -51,7 +47,6 @@ namespace Terraria.ModLoader
 		public static string ModPath => ModOrganizer.modPath;
 
 		private static readonly IDictionary<string, Mod> modsByName = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
-		private static List<WeakReference<Mod>> weakModReferences = new();
 
 		internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 		internal static string modBrowserPassphrase = "";
@@ -70,7 +65,7 @@ namespace Terraria.ModLoader
 		internal static bool notifyNewMainMenuThemes = true;
 		internal static bool skipLoad;
 		internal static Action OnSuccessfulLoad;
-		
+
 		private static bool isLoading;
 
 		public static Mod[] Mods { get; private set; } = new Mod[0];
@@ -120,8 +115,6 @@ namespace Terraria.ModLoader
 					return;
 
 				var modInstances = ModOrganizer.LoadMods(token);
-
-				weakModReferences.AddRange(modInstances.Select(x => new WeakReference<Mod>(x)));
 				modInstances.Insert(0, new ModLoaderMod());
 				Mods = modInstances.ToArray();
 				foreach (var mod in Mods)
@@ -196,9 +189,9 @@ namespace Terraria.ModLoader
 		internal static bool Unload()
 		{
 			try {
+				var weakModRefs = GetWeakModRefs();
 				Mods_Unload();
-				// TODO: figure out when the best place to do this is - CB
-				// WarnModsStillLoaded();
+				WarnModsStillLoaded(weakModRefs);
 				return true;
 			}
 			catch (Exception e) {
@@ -214,6 +207,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static bool IsUnloadedModStillAlive(string name) => AssemblyManager.OldLoadContexts().Contains(name);
+
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static WeakReference<Mod>[] GetWeakModRefs() => Mods.Select(x => new WeakReference<Mod>(x)).ToArray();
+
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private static void Mods_Unload()
 		{
@@ -226,25 +224,26 @@ namespace Terraria.ModLoader
 			}
 
 			ModContent.UnloadModContent();
+
 			Mods = new Mod[0];
 			modsByName.Clear();
 			ModContent.Unload();
 			MemoryTracking.Clear();
 			Thread.MemoryBarrier();
-
 			AssemblyManager.Unload();
 		}
 
-		internal static bool IsUnloadedModStillAlive(string name) =>
-			weakModReferences.Any(modRef => modRef.TryGetTarget(out var mod) && mod.Name == name && !Mods.Contains(mod));
-
-		/*internal static List<string> badUnloaders = new List<string>();
-		private static void WarnModsStillLoaded()
-		{
-			badUnloaders = weakModReferences.Where(r => r.IsAlive).Select(r => ((Mod)r.Target).Name).ToList();
-			foreach (var modName in badUnloaders)
-				Logging.tML.WarnFormat("{0} not fully unloaded during unload.", modName);
-		}*/
+		[MethodImpl(MethodImplOptions.NoInlining)]
+		private static void WarnModsStillLoaded(IReadOnlyList<WeakReference<Mod>> weakModRefs) {
+			foreach (var alcName in AssemblyManager.OldLoadContexts().Distinct()) {
+				if (weakModRefs.Any(modRef => modRef.TryGetTarget(out var mod) && mod.Name == alcName)) {
+					Logging.tML.WarnFormat($"{alcName} mod class still using memory. Some content references have probably not been cleared. Use a heap dump to figure out why.");
+				}
+				else {
+					Logging.tML.WarnFormat($"{alcName} AssemblyLoadContext still using memory. Some classes are being held by Terraria or another mod. Use a heap dump to figure out why.");
+				}
+			}
+		}
 
 		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)
 		{
@@ -342,6 +341,8 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
 
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
+			Main.Configuration.Put(nameof(AlphaWelcomed), AlphaWelcomed);
+			Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		}
 
 		internal static void LoadConfiguration()
@@ -364,13 +365,20 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
 
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get(nameof(LastLaunchedTModLoaderVersion), "0.0"));
+			Main.Configuration.Get(nameof(AlphaWelcomed), ref AlphaWelcomed);
+			Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
 		}
 
 		internal static void MigrateSettings()
 		{
 			if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
 				showMemoryEstimates = true;
-			
+
+			if (BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA) {
+				ShowWhatsNew = true;
+				// TODO: Start retrieving what's new data from github here.
+			}
+
 			/*
 			if (LastLaunchedTModLoaderVersion < version)
 				ShowWhatsNew = true;

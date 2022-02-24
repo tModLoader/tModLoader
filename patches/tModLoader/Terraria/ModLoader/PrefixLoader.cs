@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			prefixes.Clear();
-			
+
 			PrefixCount = PrefixID.Count;
 
 			foreach (PrefixCategory category in Enum.GetValues(typeof(PrefixCategory))) {
@@ -63,8 +63,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Performs a mod prefix roll. If the vanillaWeight wins the roll, then prefix is unchanged.
 		/// </summary>
-		public static void Roll(Item item, ref int prefix, int vanillaWeight, params PrefixCategory[] categories) {
-			var wr = new WeightedRandom<int>();
+		public static void Roll(Item item, ref int prefix, int vanillaWeight, UnifiedRandom unifiedRandom, params PrefixCategory[] categories) {
+			var wr = new WeightedRandom<int>(unifiedRandom);
 
 			foreach (PrefixCategory category in categories) {
 				foreach (ModPrefix modPrefix in categoryPrefixes[category].Where(x => x.CanRoll(item))) {

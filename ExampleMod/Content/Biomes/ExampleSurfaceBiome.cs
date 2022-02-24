@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.Content.Biomes
 {
 	// Shows setting up two basic biomes. For a more complicated example, please request.
-	public class ExampleSurfaceBiome : ModBiome	
+	public class ExampleSurfaceBiome : ModBiome
 	{
 		public override bool IsPrimaryBiome => true; // Allows this biome to impact NPC prices
 
@@ -38,7 +38,7 @@ namespace ExampleMod.Content.Biomes
 			// Second, we will limit this biome to the inner horizontal third of the map as our second custom condition
 			bool b2 = Math.Abs(player.position.ToTileCoordinates().X - Main.maxTilesX / 2) < Main.maxTilesX / 6;
 
-			// Finally, we will limit the height at which this biome can be active to above ground (ie sky and surface). Most (if not all) surface biomes will use this condition. 
+			// Finally, we will limit the height at which this biome can be active to above ground (ie sky and surface). Most (if not all) surface biomes will use this condition.
 			bool b3 = player.ZoneSkyHeight || player.ZoneOverworldHeight;
 			return b1 && b2 && b3;
 		}

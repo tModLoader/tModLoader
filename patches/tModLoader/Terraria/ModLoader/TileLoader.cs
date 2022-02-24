@@ -63,7 +63,8 @@ namespace Terraria.ModLoader
 		private static Action<int, int, int, bool>[] HookNearbyEffects;
 		private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
 		private static DelegateModifyLight[] HookModifyLight;
-		private static Func<int, int, int, Player, bool>[] HookDangersense;
+		private static Func<int, int, int, Player, bool?>[] HookIsTileDangerous;
+		private static Func<int, int, int, bool?>[] HookIsTileSpelunkable;
 		private delegate void DelegateSetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects);
 		private static DelegateSetSpriteEffects[] HookSetSpriteEffects;
 		private static Action[] HookAnimateTile;
@@ -172,14 +173,14 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Main.tileOreFinderPriority, nextTile);
 			Array.Resize(ref Main.tileGlowMask, nextTile);
 			Array.Resize(ref Main.tileCracked, nextTile);
-			
+
 			Array.Resize(ref WorldGen.tileCounts, nextTile);
 			Array.Resize(ref WorldGen.houseTile, nextTile);
 			//Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
 			Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
-			Array.Resize(ref HouseUtils.BlacklistedTiles, nextTile);	
-			Array.Resize(ref HouseUtils.BeelistedTiles, nextTile);	
-		
+			Array.Resize(ref HouseUtils.BlacklistedTiles, nextTile);
+			Array.Resize(ref HouseUtils.BeelistedTiles, nextTile);
+
 			for (int i = 0; i < nextTile; i++) { //oh dear
 				Array.Resize(ref Main.tileMerge[i], nextTile);
 			}
@@ -193,25 +194,29 @@ namespace Terraria.ModLoader
 			}
 
 			//Hooks
+
+			// .NET 6 SDK bug: https://github.com/dotnet/roslyn/issues/57517
+			// Remove generic arguments once fixed.
 			ModLoader.BuildGlobalHook(ref HookKillSound, globalTiles, g => g.KillSound);
-			ModLoader.BuildGlobalHook(ref HookNumDust, globalTiles, g => g.NumDust);
-			ModLoader.BuildGlobalHook(ref HookCreateDust, globalTiles, g => g.CreateDust);
-			ModLoader.BuildGlobalHook(ref HookDropCritterChance, globalTiles, g => g.DropCritterChance);
+			ModLoader.BuildGlobalHook<GlobalTile, DelegateNumDust>(ref HookNumDust, globalTiles, g => g.NumDust);
+			ModLoader.BuildGlobalHook<GlobalTile, DelegateCreateDust>(ref HookCreateDust, globalTiles, g => g.CreateDust);
+			ModLoader.BuildGlobalHook<GlobalTile, DelegateDropCritterChance>(ref HookDropCritterChance, globalTiles, g => g.DropCritterChance);
 			ModLoader.BuildGlobalHook(ref HookDrop, globalTiles, g => g.Drop);
-			ModLoader.BuildGlobalHook(ref HookCanKillTile, globalTiles, g => g.CanKillTile);
-			ModLoader.BuildGlobalHook(ref HookKillTile, globalTiles, g => g.KillTile);
+			ModLoader.BuildGlobalHook<GlobalTile, DelegateCanKillTile>(ref HookCanKillTile, globalTiles, g => g.CanKillTile);
+			ModLoader.BuildGlobalHook<GlobalTile, DelegateKillTile>(ref HookKillTile, globalTiles, g => g.KillTile);
 			ModLoader.BuildGlobalHook(ref HookCanExplode, globalTiles, g => g.CanExplode);
 			ModLoader.BuildGlobalHook(ref HookNearbyEffects, globalTiles, g => g.NearbyEffects);
-			ModLoader.BuildGlobalHook(ref HookModifyLight, globalTiles, g => g.ModifyLight);
-			ModLoader.BuildGlobalHook(ref HookDangersense, globalTiles, g => g.Dangersense);
-			ModLoader.BuildGlobalHook(ref HookSetSpriteEffects, globalTiles, g => g.SetSpriteEffects);
+			ModLoader.BuildGlobalHook<GlobalTile, DelegateModifyLight>(ref HookModifyLight, globalTiles, g => g.ModifyLight);
+			ModLoader.BuildGlobalHook(ref HookIsTileDangerous, globalTiles, g => g.IsTileDangerous);
+			ModLoader.BuildGlobalHook(ref HookIsTileSpelunkable, globalTiles, g => g.IsTileSpelunkable);
+			ModLoader.BuildGlobalHook<GlobalTile, DelegateSetSpriteEffects>(ref HookSetSpriteEffects, globalTiles, g => g.SetSpriteEffects);
 			ModLoader.BuildGlobalHook(ref HookAnimateTile, globalTiles, g => g.AnimateTile);
 			ModLoader.BuildGlobalHook(ref HookPreDraw, globalTiles, g => g.PreDraw);
-			ModLoader.BuildGlobalHook(ref HookDrawEffects, globalTiles, g => g.DrawEffects);
+			ModLoader.BuildGlobalHook<GlobalTile, DelegateDrawEffects>(ref HookDrawEffects, globalTiles, g => g.DrawEffects);
 			ModLoader.BuildGlobalHook(ref HookPostDraw, globalTiles, g => g.PostDraw);
 			ModLoader.BuildGlobalHook(ref HookSpecialDraw, globalTiles, g => g.SpecialDraw);
 			ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
-			ModLoader.BuildGlobalHook(ref HookTileFrame, globalTiles, g => g.TileFrame);
+			ModLoader.BuildGlobalHook<GlobalTile, DelegateTileFrame>(ref HookTileFrame, globalTiles, g => g.TileFrame);
 			ModLoader.BuildGlobalHook(ref HookCanPlace, globalTiles, g => g.CanPlace);
 			ModLoader.BuildGlobalHook(ref HookAdjTiles, globalTiles, g => g.AdjTiles);
 			ModLoader.BuildGlobalHook(ref HookRightClick, globalTiles, g => g.RightClick);
@@ -222,8 +227,8 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookHitWire, globalTiles, g => g.HitWire);
 			ModLoader.BuildGlobalHook(ref HookSlope, globalTiles, g => g.Slope);
 			ModLoader.BuildGlobalHook(ref HookFloorVisuals, globalTiles, g => g.FloorVisuals);
-			ModLoader.BuildGlobalHook(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
-			ModLoader.BuildGlobalHook(ref HookSaplingGrowthType, globalTiles, g => g.SaplingGrowthType);
+			ModLoader.BuildGlobalHook<GlobalTile, DelegateChangeWaterfallStyle>(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
+			ModLoader.BuildGlobalHook<GlobalTile, DelegateSaplingGrowthType>(ref HookSaplingGrowthType, globalTiles, g => g.SaplingGrowthType);
 			ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
 
 			if (!unloading) {
@@ -250,7 +255,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTable, vanillaTableCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsTorch, vanillaTorchCount);
 			Array.Resize(ref TileID.Sets.RoomNeeds.CountsAsDoor, vanillaDoorCount);
-			
+
 			while (TileObjectData._data.Count > TileID.Count) {
 				TileObjectData._data.RemoveAt(TileObjectData._data.Count - 1);
 			}
@@ -531,18 +536,56 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static bool Dangersense(int i, int j, int type, Player player) {
+		//in TileDrawing.IsTileDangerous before return flag
+		public static bool? IsTileDangerous(int i, int j, int type, Player player) {
+			bool? retVal = null;
+
 			ModTile modTile = GetTile(type);
-			if (modTile != null && modTile.Dangersense(i, j, player)) {
-				return true;
+
+			if (modTile != null && modTile.IsTileDangerous(i, j, player)) {
+				retVal = true;
 			}
-			foreach (var hook in HookDangersense) {
-				if (hook(i, j, type, player)) {
-					return true;
+
+			foreach (var hook in HookIsTileDangerous) {
+				bool? globalRetVal = hook(i, j, type, player);
+				if (globalRetVal.HasValue) {
+					if (globalRetVal.Value) {
+						retVal = true;
+					}
+					else {
+						return false;
+					}
 				}
 			}
-			return false;
+
+			return retVal;
 		}
+
+		//in Main.IsTileSpelunkable at the start
+		public static bool? IsTileSpelunkable(int i, int j, int type) {
+			bool? retVal = null;
+
+			ModTile modTile = GetTile(type);
+
+			if (!Main.tileSpelunker[type] && modTile != null && modTile.IsTileSpelunkable(i, j)) {
+				retVal = true;
+			}
+
+			foreach (var hook in HookIsTileSpelunkable) {
+				bool? globalRetVal = hook(i, j, type);
+				if (globalRetVal.HasValue) {
+					if (globalRetVal.Value) {
+						retVal = true;
+					}
+					else {
+						return false;
+					}
+				}
+			}
+
+			return retVal;
+		}
+
 		//in Terraria.Main.DrawTiles after if statement setting effects call
 		//  TileLoader.SetSpriteEffects(j, i, type, ref effects);
 		public static void SetSpriteEffects(int i, int j, int type, ref SpriteEffects spriteEffects) {
@@ -638,7 +681,7 @@ namespace Terraria.ModLoader
 		//in Terraria.GameContent.Drawing.TileDrawing at the end of the loop in DrawSpecialTilesLegacy call
 		//  TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
 		/// <summary>
-		/// Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called at the end of the DrawSpecialTilesLegacy loop, allowing for basically another layer above tiles. Use DrawEffects hook to queue for SpecialDraw. 
+		/// Special Draw calls ModTile and GlobalTile SpecialDraw methods. Special Draw is called at the end of the DrawSpecialTilesLegacy loop, allowing for basically another layer above tiles. Use DrawEffects hook to queue for SpecialDraw.
 		/// </summary>
 		public static void SpecialDraw(int type, int specialTileX, int specialTileY, SpriteBatch spriteBatch) {
 			GetTile(type)?.SpecialDraw(specialTileX, specialTileY, spriteBatch);
@@ -666,7 +709,7 @@ namespace Terraria.ModLoader
 		public static bool TileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak) {
 			ModTile modTile = GetTile(type);
 			bool flag = true;
-			
+
 			if (modTile != null) {
 				flag = modTile.TileFrame(i, j, ref resetFrame, ref noBreak);
 			}
@@ -727,7 +770,7 @@ namespace Terraria.ModLoader
 		public static bool RightClick(int i, int j) {
 			bool returnValue = false;
 			int type = Main.tile[i, j].type;
-			
+
 			if (GetTile(type)?.RightClick(i, j) ?? false)
 				returnValue = true;
 

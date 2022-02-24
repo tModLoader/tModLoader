@@ -141,7 +141,7 @@ namespace Terraria.ModLoader
 
 		internal static bool IsModItem(int index) => index >= ItemID.Count;
 
-		private static bool GeneralPrefix(Item item) => item.maxStack == 1 && item.damage > 0 && item.ammo == 0 && !item.accessory;
+		private static bool GeneralPrefix(Item item) => item.IsCandidateForReforge && item.damage > 0 && item.ammo == 0 && !item.accessory;
 
 		//Add all these to Terraria.Item.Prefix
 		internal static bool MeleePrefix(Item item) => item.ModItem != null && GeneralPrefix(item) && item.melee && !item.noUseGraphic;
@@ -246,6 +246,38 @@ namespace Terraria.ModLoader
 
 			foreach (var g in HookCanUseItem.Enumerate(item.globalItems)) {
 				flag &= g.CanUseItem(item, player);
+			}
+
+			return flag;
+		}
+
+		private static HookList HookCanAutoReuseItem = AddHook<Func<Item, Player, bool?>>(g => g.CanAutoReuseItem);
+
+		public static bool? CanAutoReuseItem(Item item, Player player) {
+			bool? flag = null;
+
+			foreach (var g in HookCanAutoReuseItem.Enumerate(item.globalItems)) {
+				bool? allow = g.CanAutoReuseItem(item, player);
+
+				if (allow.HasValue) {
+					if (!allow.Value) {
+						return false;
+					}
+
+					flag = true;
+				}
+			}
+
+			if (item.ModItem != null) {
+				bool? allow = item.ModItem.CanAutoReuseItem(player);
+
+				if (allow.HasValue) {
+					if (!allow.Value) {
+						return false;
+					}
+
+					flag = true;
+				}
 			}
 
 			return flag;
@@ -385,7 +417,7 @@ namespace Terraria.ModLoader
 		public static void ModifyManaCost(Item item, Player player, ref float reduce, ref float mult) {
 			if (item.IsAir)
 				return;
-			
+
 			item.ModItem?.ModifyManaCost(player, ref reduce, ref mult);
 
 			foreach (var g in HookModifyManaCost.Enumerate(item.globalItems)) {
@@ -400,7 +432,7 @@ namespace Terraria.ModLoader
 		public static void OnMissingMana(Item item, Player player, int neededMana) {
 			if (item.IsAir)
 				return;
-			
+
 			item.ModItem?.OnMissingMana(player, neededMana);
 
 			foreach (var g in HookOnMissingMana.Enumerate(item.globalItems)) {
@@ -415,12 +447,26 @@ namespace Terraria.ModLoader
 		public static void OnConsumeMana(Item item, Player player, int manaConsumed) {
 			if (item.IsAir)
 				return;
-			
+
 			item.ModItem?.OnConsumeMana(player, manaConsumed);
 
 			foreach (var g in HookOnConsumeMana.Enumerate(item.globalItems)) {
 				g.OnConsumeMana(item, player, manaConsumed);
 			}
+		}
+
+		private delegate bool? DelegateCanConsumeBait(Player baiter, Item bait);
+		private static HookList HookCanConsumeBait = AddHook<DelegateCanConsumeBait>(g => g.CanConsumeBait);
+
+		public static bool? CanConsumeBait(Player player, Item bait) {
+			bool? ret = bait.ModItem?.CanConsumeBait(player);
+
+			foreach (GlobalItem g in HookCanConsumeBait.Enumerate(bait)) {
+				if (g.CanConsumeBait(player, bait) is bool b)
+					ret = (ret ?? true) && b;
+			}
+			
+			return ret;
 		}
 
 		private delegate void DelegateModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup);
@@ -436,7 +482,35 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat);
+		private delegate bool DelegateCanResearch(Item item);
+		private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
+		/// <summary>
+		/// Hook that determines if an item will be prevented from being consumed by the research function. 
+		/// </summary>
+		/// <param name="item">The item to be consumed or not</param>
+		public static bool CanResearch(Item item) {
+			if (item.ModItem != null && !item.ModItem.CanResearch())
+				return false;
+			foreach (var g in HookCanResearch.Enumerate(item.globalItems)) {
+				if (!g.Instance(item).CanResearch(item))
+					return false;
+			}
+			return true;
+		}
+
+		private delegate void DelegateOnResearched(Item item, bool fullyResearched);
+		private static HookList HookOnResearched = AddHook<DelegateOnResearched>(g => g.OnResearched);
+		public static void OnResearched(Item item, bool fullyResearched) {
+			if (item.IsAir)
+				return;
+
+			item.ModItem?.OnResearched(fullyResearched);
+
+			foreach (var g in HookOnResearched.Enumerate(item.globalItems))
+				g.Instance(item).OnResearched(item, fullyResearched);
+		}
+    
+    private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
@@ -622,9 +696,9 @@ namespace Terraria.ModLoader
 		//  if(modCanHit.HasValue && !modCanHit.Value) { continue; }
 		//in if statement afterwards add || (modCanHit.HasValue && modCanHit.Value)
 		/// <summary>
-		/// Gathers the results of ModItem.CanHitNPC and all GlobalItem.CanHitNPC hooks. 
-		/// If any of them returns false, this returns false. 
-		/// Otherwise, if any of them returns true then this returns true. 
+		/// Gathers the results of ModItem.CanHitNPC and all GlobalItem.CanHitNPC hooks.
+		/// If any of them returns false, this returns false.
+		/// Otherwise, if any of them returns true then this returns true.
 		/// If all of them return null, this returns null.
 		/// </summary>
 		public static bool? CanHitNPC(Item item, Player player, NPC target) {
@@ -689,7 +763,7 @@ namespace Terraria.ModLoader
 		private static HookList HookCanHitPvp = AddHook<Func<Item, Player, Player, bool>>(g => g.CanHitPvp);
 		//in Terraria.Player.ItemCheck add to beginning of pvp collision check
 		/// <summary>
-		/// Calls all GlobalItem.CanHitPvp hooks, then ModItem.CanHitPvp, until one of them returns false. 
+		/// Calls all GlobalItem.CanHitPvp hooks, then ModItem.CanHitPvp, until one of them returns false.
 		/// If all of them return true, this returns true.
 		/// </summary>
 		public static bool CanHitPvp(Item item, Player player, Player target) {
@@ -757,7 +831,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookUseAnimation = AddHook<Action<Item, Player>>(g => g.UseAnimation);
-		
+
 		public static void UseAnimation(Item item, Player player) {
 			foreach (var g in HookUseAnimation.Enumerate(item.globalItems)) {
 				g.Instance(item).UseAnimation(item, player);
@@ -873,7 +947,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookUpdateEquip = AddHook<Action<Item, Player>>(g => g.UpdateEquip);
 		/// <summary>
-		/// Hook at the end of Player.VanillaUpdateEquip can be called from modded slots for modded equipments
+		/// Hook at the end of Player.VanillaUpdateEquip can be called to apply additional code related to accessory slots for a particular item
 		/// </summary>
 		public static void UpdateEquip(Item item, Player player) {
 			if (item.IsAir)
@@ -888,7 +962,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookUpdateAccessory = AddHook<Action<Item, Player, bool>>(g => g.UpdateAccessory);
 		/// <summary>
-		/// Hook at the end of Player.ApplyEquipFunctional can be called from modded slots for modded equipments
+		/// Hook at the end of Player.ApplyEquipFunctional can be called to apply additional code related to accessory slots for a particular item.
 		/// </summary>
 		public static void UpdateAccessory(Item item, Player player, bool hideVisual) {
 			if (item.IsAir)
@@ -903,7 +977,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookUpdateVanity = AddHook<Action<Item, Player>>(g => g.UpdateVanity);
 		/// <summary>
-		/// Hook at the end of Player.ApplyEquipVanity can be called from modded slots for modded equipments
+		/// Hook at the end of Player.ApplyEquipVanity can be called to apply additional code related to accessory slots for a particular item
 		/// </summary>
 		public static void UpdateVanity(Item item, Player player) {
 			if (item.IsAir)
@@ -1021,7 +1095,7 @@ namespace Terraria.ModLoader
 		private static HookList HookSetMatch = AddHook<DelegateSetMatch>(g => g.SetMatch);
 		/// <summary>
 		/// Calls EquipTexture.SetMatch, then all GlobalItem.SetMatch hooks.
-		/// </summary>   
+		/// </summary>
 		public static void SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) {
 			EquipTexture texture = EquipLoader.GetEquipTexture((EquipType)armorSlot, type);
 
@@ -1140,8 +1214,26 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
+		//in all places where stack modification between two items takes place
+		//For organizational consistency, item1 *should* be the item that is attempting to increase its stack (Unclear in Player.ItemSpace yet)
+		/// <summary>
+		/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
+		/// </summary>
+		public static bool CanStack(Item item1, Item item2) {
+			if (item1.prefix != item2.prefix) // TML: #StackablePrefixWeapons
+				return false;
+
+			foreach (var g in HookCanStack.Enumerate(globalItemsArray)) {
+				if (!g.CanStack(item1, item2))
+					return false;
+			}
+
+			return item1.ModItem?.CanStack(item2) ?? true;
+		}
+
 		private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
-		//in Terraria.Item.CombineWithNearbyItems after num comparison
+		//in Terraria.Item.CombineWithNearbyItems before num calculation
 		// if(!ItemLoader.CanStackInWorld(this, item)) { continue; }
 		/// <summary>
 		/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
@@ -1229,6 +1321,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		/*
 		/// <summary>s
 		/// Returns the wing item that the player is functionally using. If player.wingsLogic has been modified, so no equipped wing can be found to match what the player is using, this creates a new Item object to return.
 		/// </summary>
@@ -1255,6 +1348,7 @@ namespace Terraria.ModLoader
 			}
 			return null;
 		}
+		*/
 
 		private delegate void DelegateVerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
 		private static HookList HookVerticalWingSpeeds = AddHook<DelegateVerticalWingSpeeds>(g => g.VerticalWingSpeeds);
@@ -1265,7 +1359,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
-			Item item = GetWing(player);
+			Item item = player.equippedWings;
 			if (item == null) {
 				EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wingsLogic);
 				texture?.VerticalWingSpeeds(
@@ -1291,13 +1385,13 @@ namespace Terraria.ModLoader
 		/// If the player is using wings, this uses the result of GetWing, and calls ModItem.HorizontalWingSpeeds then all GlobalItem.HorizontalWingSpeeds hooks.
 		/// </summary>
 		public static void HorizontalWingSpeeds(Player player) {
-			Item item = GetWing(player);
+			Item item = player.equippedWings;
 			if (item == null) {
 				EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wingsLogic);
 				texture?.HorizontalWingSpeeds(player, ref player.accRunSpeed, ref player.runAcceleration);
 				return;
 			}
-			
+
 			item.ModItem?.HorizontalWingSpeeds(player, ref player.accRunSpeed, ref player.runAcceleration);
 
 			foreach (var g in HookHorizontalWingSpeeds.Enumerate(item.globalItems)) {
@@ -1359,7 +1453,7 @@ namespace Terraria.ModLoader
 
 			return canBurnInLava ?? item.ModItem?.CanBurnInLava();
 		}
-		
+
 		private static HookList HookPostUpdate = AddHook<Action<Item>>(g => g.PostUpdate);
 		/// <summary>
 		/// Calls ModItem.PostUpdate and all GlobalItem.PostUpdate hooks.
@@ -1574,16 +1668,36 @@ namespace Terraria.ModLoader
 			origin += modOrigin;
 		}
 
-		private static HookList HookCanEquipAccessory = AddHook<Func<Item, Player, int, bool>>(g => g.CanEquipAccessory);
+		private static HookList HookCanEquipAccessory = AddHook<Func<Item, Player, int, bool, bool>>(g => g.CanEquipAccessory);
 		//in Terraria.UI.ItemSlot.AccCheck replace 2nd and 3rd return false with
 		//  return !ItemLoader.CanEquipAccessory(item, slot)
-		public static bool CanEquipAccessory(Item item, int slot) {
+		public static bool CanEquipAccessory(Item item, int slot, bool modded) {
 			Player player = Main.player[Main.myPlayer];
-			if (item.ModItem != null && !item.ModItem.CanEquipAccessory(player, slot))
+			if (item.ModItem != null && !item.ModItem.CanEquipAccessory(player, slot, modded))
 				return false;
 
 			foreach (var g in HookCanEquipAccessory.Enumerate(item.globalItems)) {
-				if (!g.CanEquipAccessory(item, player, slot))
+				if (!g.CanEquipAccessory(item, player, slot, modded))
+					return false;
+			}
+
+			return true;
+		}
+
+		private static HookList HookCanAccessoryBeEquippedWith = AddHook<Func<Item, Item, Player, bool>>(g => g.CanAccessoryBeEquippedWith);
+		public static bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem) {
+			Player player = Main.player[Main.myPlayer];
+			return CanAccessoryBeEquippedWith(equippedItem, incomingItem, player) && CanAccessoryBeEquippedWith(incomingItem, equippedItem, player);
+		}
+		private static bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player) {
+			if (equippedItem.ModItem != null && !equippedItem.ModItem.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player))
+				return false;
+
+			if (incomingItem.ModItem != null && !incomingItem.ModItem.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player))
+				return false;
+
+			foreach (var g in HookCanAccessoryBeEquippedWith.Enumerate(incomingItem.globalItems)) {
+				if (!g.CanAccessoryBeEquippedWith(equippedItem, incomingItem, player))
 					return false;
 			}
 
@@ -1643,7 +1757,7 @@ namespace Terraria.ModLoader
 		public static bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y) {
 			bool modItemPreDraw = item.ModItem?.PreDrawTooltip(lines, ref x, ref y) ?? true;
 			List<bool> globalItemPreDraw = new List<bool>();
-			
+
 			foreach (var g in HookPreDrawTooltip.Enumerate(item.globalItems)) {
 				globalItemPreDraw.Add(g.PreDrawTooltip(item, lines, ref x, ref y));
 			}
@@ -1670,7 +1784,7 @@ namespace Terraria.ModLoader
 			foreach (var g in HookPreDrawTooltipLine.Enumerate(item.globalItems)) {
 				globalItemPreDrawLine.Add(g.PreDrawTooltipLine(item, line, ref yOffset));
 			}
-			
+
 			return modItemPreDrawLine && globalItemPreDrawLine.All(x => x);
 		}
 
@@ -1697,7 +1811,7 @@ namespace Terraria.ModLoader
 				}
 				tooltips.Add(tooltip);
 			}
-			
+
 			item.ModItem?.ModifyTooltips(tooltips);
 
 			foreach (var g in HookModifyTooltips.Enumerate(item.globalItems)) {
@@ -1722,7 +1836,7 @@ namespace Terraria.ModLoader
 
 			return tooltips;
 		}
-		
+
 		internal static bool NeedsModSaving(Item item) {
 			if (item.type <= ItemID.None)
 				return false;

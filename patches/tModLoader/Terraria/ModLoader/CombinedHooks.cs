@@ -50,6 +50,29 @@ namespace Terraria.ModLoader
 			return PlayerLoader.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);
 		}
 
+		// In Player.TryAllowingItemReuse_Inner
+		public static bool? CanAutoReuseItem(Player player, Item item) {
+			bool? result = null;
+
+			bool ModifyResult(bool? nbool) {
+				if (nbool.HasValue) {
+					result = nbool.Value;
+				}
+
+				return result != false;
+			}
+
+			if (!ModifyResult(PlayerLoader.CanAutoReuseItem(player, item))) {
+				return false;
+			}
+
+			if (!ModifyResult(ItemLoader.CanAutoReuseItem(item, player))) {
+				return false;
+			}
+
+			return result;
+		}
+
 		public static bool CanShoot(Player player, Item item) {
 			return PlayerLoader.CanShoot(player, item) && ItemLoader.CanShoot(item, player);
 		}
@@ -61,7 +84,7 @@ namespace Terraria.ModLoader
 
 		public static bool Shoot(Player player, Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			bool defaultResult = PlayerLoader.Shoot(player, item, source, position, velocity, type, damage, knockback);
-			return ItemLoader.Shoot(item, player, source, position, velocity, type, damage, knockback, defaultResult); 
+			return ItemLoader.Shoot(item, player, source, position, velocity, type, damage, knockback, defaultResult);
 		}
 
 		public static bool? CanPlayerHitNPCWithItem(Player player, Item item, NPC npc) {
@@ -122,6 +145,14 @@ namespace Terraria.ModLoader
 			int result = Math.Max(1, (int)(useAnimation * TotalUseAnimationMultiplier(player, item)));
 
 			return result;
+		}
+
+		public static bool? CanConsumeBait(Player player, Item item) {
+			bool? ret = PlayerLoader.CanConsumeBait(player, item);
+			if (ItemLoader.CanConsumeBait(player, item) is bool b) {
+				ret = (ret ?? true) && b;
+			}
+			return ret;
 		}
 	}
 }

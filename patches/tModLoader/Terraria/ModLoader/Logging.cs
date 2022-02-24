@@ -87,7 +87,7 @@ namespace Terraria.ModLoader
 			layout.ActivateOptions();
 
 			var appenders = new List<IAppender>();
-			if (!dedServ) { 
+			if (!dedServ) {
 				appenders.Add(new ConsoleAppender {
 					Name = "ConsoleAppender",
 					Layout = layout
@@ -286,8 +286,7 @@ namespace Terraria.ModLoader
 			// In case of OOM, unload the Main.tile array and do immediate garbage collection.
 			// If we don't do this, there will be a big chance that this method will fail to even quit the game, due to another OOM exception being thrown.
 
-			Main.tile = null;
-
+			Main.tile = new Tilemap(0, 0);
 			GC.Collect();
 		}
 

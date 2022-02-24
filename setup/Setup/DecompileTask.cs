@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.Setup
 			Environment.Exit(1);
 #endif
 
-			return (bool) taskInterface.Invoke(new Func<bool>(SelectTerrariaDialog));
+			return (bool) taskInterface.Invoke(new Func<bool>(SelectAndSetTerrariaDirectoryDialog));
 		}
 
 		public override void Run()
@@ -137,9 +137,9 @@ namespace Terraria.ModLoader.Setup
 
 #if AUTO
 			ExecuteParallel(items, true, 1);
-			return;
-#endif
+#else
 			ExecuteParallel(items);
+#endif
 		}
 
 		private void AddEmbeddedLibrary(Resource res, IAssemblyResolver resolver, List<WorkItem> items)

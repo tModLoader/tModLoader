@@ -30,7 +30,7 @@
  		}
  
  		public void Merge(ItemDropDatabase dropsDatabase) {
--			for (int i = -65; i < 668; i++) {
+-			for (int i = -65; i < 670; i++) {
 +			for (int i = -65; i < NPCLoader.NPCCount; i++) {
  				ExtractDropsForNPC(dropsDatabase, i);
  			}
