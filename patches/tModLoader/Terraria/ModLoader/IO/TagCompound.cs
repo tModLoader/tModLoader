@@ -13,9 +13,6 @@ namespace Terraria.ModLoader.IO
 	//Additional conversions can be added using TagConverter
 	public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 	{
-		[ThreadStatic]
-		private static TagCompound emptyTagCache = new();
-
 		private Dictionary<string, object> dict = new Dictionary<string, object>();
 
 		public T Get<T>(string key) {
@@ -42,7 +39,7 @@ namespace Terraria.ModLoader.IO
 					$"entry={TagPrinter.Print(new KeyValuePair<string, object>(key, tag))})", e);
 			}
 		}
-		
+
 		//if value is null, calls RemoveTag, also performs type checking
 		public void Set(string key, object value, bool replace = false) {
 			if (value == null) {
