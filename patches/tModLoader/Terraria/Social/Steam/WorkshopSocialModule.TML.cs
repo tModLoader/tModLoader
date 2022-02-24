@@ -139,28 +139,37 @@ namespace Terraria.Social.Steam
 
 			// Check for if the mod version is increasing
 			//TODO: Finish Implementing, after getting example mod working with using version data
-			/* var downloadWorkshopItem = new ProcessStartInfo() {
+			var downloadWorkshopItem = new ProcessStartInfo() {
 				FileName = Path.Combine(modFolder, steamCmdFolder, "steamCMD.exe"),
 				UseShellExecute = false,
-				Arguments = "+login anonymous +force_install_dir tMod \"+workshop_download_item 1281930 " + steamInfo.workshopEntryId + "\" +quit",
+				Arguments = "+login anonymous \"+workshop_download_item 1281930 " + steamInfo.workshopEntryId + "\" +quit",
 			};
 			var p = Process.Start(downloadWorkshopItem);
 			p.WaitForExit();
 
 			LocalMod mod;
-			var modFile = new TmodFile(Path.Combine(steamCmdFolder, "tMod/steamapps/workshop/content/1281930", steamInfo.workshopEntryId.ToString(), modName + ".tmod"));
+			var publishedFolder = Path.Combine(steamCmdFolder, "steamapps/workshop/content/1281930", steamInfo.workshopEntryId.ToString());
+
+			//TODO: some missing code for getting the right version to compare against
+
+			var modFile = new TmodFile(publishedFolder);
+
 			using (modFile.Open())
 				mod = new LocalMod(modFile);
 
 			if (properties.version <= mod.properties.version)
 				throw new Exception("Mod version not incremented. Publishing item blocked until mod version is incremented");
-			*/
 
 			// Prep for the publishing folder
 			string contentFolder = $"{publishFolder}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
+			// Ensure the publish folder has all published information needed.
+			Utilities.FileUtilities.CopyFolder(publishedFolder, publishFolder);
 			File.Copy(Path.Combine(ModOrganizer.modPath, $"{modName}.tmod"), Path.Combine(contentFolder, $"{modName}.tmod"), true);
 			File.Copy(manifest, Path.Combine(publishFolder, "workshop.json"), true);
+
+			// Cleanup Old Folders
+			ModOrganizer.CleanupOldPublish(publishFolder);
 
 			string descriptionFinal = "[quote=CI Autobuild (Don't Modify)]Version " + properties.version + " built for " + properties.buildVersion + "[/quote]" + properties.description;
 

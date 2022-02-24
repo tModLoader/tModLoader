@@ -17,7 +17,7 @@ if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
 	fi
 fi
 
-LaunchLogs="./tModLoader-Logs"
+LaunchLogs="$root_dir/tModLoader-Logs"
 
 if [ ! -d "$LaunchLogs" ]; then
 	mkdir -p "$LaunchLogs"
