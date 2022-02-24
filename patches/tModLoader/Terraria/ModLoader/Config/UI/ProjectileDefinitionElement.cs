@@ -35,7 +35,7 @@ namespace Terraria.ModLoader.Config.UI
 				if (Lang.GetProjectileName(option.type).Value.IndexOf(chooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
 				string modname = option.definition.mod;
-				if (option.type > ProjectileID.Count) {
+				if (option.type >= ProjectileID.Count) {
 					modname = ProjectileLoader.GetProjectile(option.type).Mod.DisplayName; // or internal name?
 				}
 				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
@@ -55,7 +55,7 @@ namespace Terraria.ModLoader.Config.UI
 			CalculatedStyle dimensions = GetInnerDimensions();
 
 			spriteBatch.Draw(backgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-			
+
 			if (definition != null) {
 				int type = unloaded ? ProjectileID.Count : this.type;
 				Main.instance.LoadProjectile(type);
@@ -63,7 +63,7 @@ namespace Terraria.ModLoader.Config.UI
 
 				int frameCounter = Interface.modConfig.updateCount / 4;
 				int frames = Main.projFrames[type];
-				
+
 				if (unloaded) {
 					projectileTexture = TextureAssets.Item[ItemID.Count].Value;
 					frames = 1;
@@ -77,7 +77,7 @@ namespace Terraria.ModLoader.Config.UI
 
 				float drawScale = 1f;
 				float availableWidth = (float)defaultBackgroundTexture.Width() * scale;
-				
+
 				if (width > availableWidth || height > availableWidth) {
 					if (width > height) {
 						drawScale = availableWidth / width;
@@ -88,7 +88,7 @@ namespace Terraria.ModLoader.Config.UI
 				}
 
 				drawScale *= scale;
-				
+
 				Vector2 vector = backgroundTexture.Size() * scale;
 				Vector2 position2 = dimensions.Position() + vector / 2f - rectangle2.Size() * drawScale / 2f;
 				Vector2 origin = rectangle2.Size() * 0/* * (pulseScale / 2f - 0.5f)*/;

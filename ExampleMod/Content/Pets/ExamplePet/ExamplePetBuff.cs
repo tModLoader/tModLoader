@@ -19,7 +19,7 @@ namespace ExampleMod.Content.Pets.ExamplePet
 
 			int projType = ModContent.ProjectileType<ExamplePetProjectile>();
 
-			//If the player is local, and there hasn't been a pet projectile spawned yet - spawn it.
+			// If the player is local, and there hasn't been a pet projectile spawned yet - spawn it.
 			if (player.whoAmI == Main.myPlayer && player.ownedProjectileCounts[projType] <= 0) {
 				Projectile.NewProjectile(player.GetProjectileSource_Buff(buffIndex), player.Center, Vector2.Zero, projType, 0, 0f, player.whoAmI);
 			}

@@ -37,6 +37,7 @@ namespace Terraria.ModLoader.UI
 		private UIImage _blockInput;
 		private UIPanel _deleteModDialog;
 		private readonly LocalMod _mod;
+		private bool modFromLocalModFolder;
 
 		private bool _configChangesRequireReload;
 		private bool _loaded;
@@ -137,6 +138,7 @@ namespace Terraria.ModLoader.UI
 				Append(_modReferenceIcon);
 			}
 
+			/*
 			if (_mod.modFile.ValidModBrowserSignature) {
 				_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.GoldenKey].Name), Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
 					Left = { Pixels = -20, Percent = 1f }
@@ -144,8 +146,9 @@ namespace Terraria.ModLoader.UI
 
 				Append(_keyImage);
 			}
+			*/
 
-			if (ModCompile.DeveloperMode && ModLoader.badUnloaders.Contains(ModName)) {
+			if (ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
 				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {
 					Left = { Pixels = _modIconAdjust + PADDING },
 					Top = { Pixels = 3 }
@@ -156,12 +159,25 @@ namespace Terraria.ModLoader.UI
 				_modName.Left.Pixels += _keyImage.Width.Pixels + PADDING * 2f;
 			}
 
+			/*
 			if (_mod.properties.beta) {
 				_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.ShadowKey].Name), Language.GetTextValue("tModLoader.BetaModCantPublish")) {
 					Left = { Pixels = -10, Percent = 1f }
 				};
 
 				Append(_keyImage);
+			}
+			*/
+
+			if (_mod.modFile.path.StartsWith(ModLoader.ModPath)){
+				BackgroundColor = Color.MediumPurple * 0.7f;
+				modFromLocalModFolder = true;
+			}
+			else {
+				var steamIcon = new UIImage(TextureAssets.Extra[243]) {
+					Left = { Pixels = -22, Percent = 1f }
+				};
+				Append(steamIcon);
 			}
 
 			if (loadedMod != null) {
@@ -276,12 +292,16 @@ namespace Terraria.ModLoader.UI
 			base.MouseOver(evt);
 			BackgroundColor = UICommon.DefaultUIBlue;
 			BorderColor = new Color(89, 116, 213);
+			if(modFromLocalModFolder)
+				BackgroundColor = Color.MediumPurple;
 		}
 
 		public override void MouseOut(UIMouseEvent evt) {
 			base.MouseOut(evt);
 			BackgroundColor = new Color(63, 82, 151) * 0.7f;
 			BorderColor = new Color(89, 116, 213) * 0.7f;
+			if (modFromLocalModFolder)
+				BackgroundColor = Color.MediumPurple * 0.7f;
 		}
 
 		private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement) {
@@ -479,6 +499,8 @@ namespace Terraria.ModLoader.UI
 			else {
 				File.Delete(tmodPath);
 			}
+
+			Interface.modBrowser.ModifyUIModDownloadItemInstalled(_mod.Name, null);
 
 			CloseDialog(evt, listeningElement);
 			Interface.modsMenu.Activate();

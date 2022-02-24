@@ -16,9 +16,9 @@ namespace ExampleMod.NPCs
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Worm");
-	
-			var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
-				CustomTexturePath = "ExampleMod/Content/NPCs/ExampleWorm_Bestiary", //If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+
+			var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { // Influences how the NPC looks in the Bestiary
+				CustomTexturePath = "ExampleMod/Content/NPCs/ExampleWorm_Bestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
 				Position = new Vector2(40f, 24f),
 				PortraitPositionXOverride = 0f,
 				PortraitPositionYOverride = 12f
@@ -62,10 +62,11 @@ namespace ExampleMod.NPCs
 		public override void CustomBehavior() {
 			if (Main.netMode != NetmodeID.MultiplayerClient) {
 				if (attackCounter > 0) {
-					attackCounter--;
+					attackCounter--; // tick down the attack counter.
 				}
 
 				Player target = Main.player[NPC.target];
+				// If the attack counter is 0, this NPC is less than 12.5 tiles away from its target, and has a path to the target unobstructed by blocks, summon a projectile.
 				if (attackCounter <= 0 && Vector2.Distance(NPC.Center, target.Center) < 200 && Collision.CanHit(NPC.Center, 1, 1, target.Center, 1, 1)) {
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
@@ -87,7 +88,7 @@ namespace ExampleMod.NPCs
 
 		public override void SetStaticDefaults() {
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
-				Hide = true //Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
+				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
 		}
@@ -105,7 +106,7 @@ namespace ExampleMod.NPCs
 
 		public override void SetStaticDefaults() {
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
-				Hide = true //Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
+				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
 		}
@@ -140,7 +141,7 @@ namespace ExampleMod.NPCs
 		}
 	}
 
-	//ported from my tAPI mod because I'm lazy
+	// ported from my tAPI mod because I'm lazy
 	// This abstract class can be used for non splitting worm type NPC.
 	public abstract class Worm : ModNPC
 	{
@@ -232,17 +233,17 @@ namespace ExampleMod.NPCs
 			if (!flag18) {
 				for (int num184 = num180; num184 < num181; num184++) {
 					for (int num185 = num182; num185 < num183; num185++) {
-						if (Main.tile[num184, num185] != null && (Main.tile[num184, num185].IsActiveUnactuated && (Main.tileSolid[(int)Main.tile[num184, num185].type] || Main.tileSolidTop[(int)Main.tile[num184, num185].type] && Main.tile[num184, num185].frameY == 0) || Main.tile[num184, num185].LiquidAmount > 64)) {
+						if (Main.tile[num184, num185] != null && (Main.tile[num184, num185].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[num184, num185].TileType] || Main.tileSolidTop[(int)Main.tile[num184, num185].TileType] && Main.tile[num184, num185].TileFrameY == 0) || Main.tile[num184, num185].LiquidAmount > 64)) {
 							Vector2 vector17;
 							vector17.X = (float)(num184 * 16);
 							vector17.Y = (float)(num185 * 16);
 							if (NPC.position.X + (float)NPC.width > vector17.X && NPC.position.X < vector17.X + 16f && NPC.position.Y + (float)NPC.height > vector17.Y && NPC.position.Y < vector17.Y + 16f) {
 								flag18 = true;
-								if (Main.rand.NextBool(100) && NPC.behindTiles && Main.tile[num184, num185].IsActiveUnactuated) {
+								if (Main.rand.NextBool(100) && NPC.behindTiles && Main.tile[num184, num185].HasUnactuatedTile) {
 									WorldGen.KillTile(num184, num185, true, true, false);
 								}
-								if (Main.netMode != NetmodeID.MultiplayerClient && Main.tile[num184, num185].type == 2) {
-									ushort arg_BFCA_0 = Main.tile[num184, num185 - 1].type;
+								if (Main.netMode != NetmodeID.MultiplayerClient && Main.tile[num184, num185].TileType == 2) {
+									ushort arg_BFCA_0 = Main.tile[num184, num185 - 1].TileType;
 								}
 							}
 						}

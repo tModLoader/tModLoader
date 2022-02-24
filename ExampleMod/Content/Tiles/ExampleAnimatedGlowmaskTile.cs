@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -59,23 +60,23 @@ namespace ExampleMod.Content.Tiles
 			Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 			// Because height of third tile is different we change it
-			int height = tile.frameY % AnimationFrameHeight == 36 ? 18 : 16;
+			int height = tile.TileFrameY % AnimationFrameHeight == 36 ? 18 : 16;
 
 			// Offset along the Y axis depending on the current frame
 			int frameYOffset = Main.tileFrame[Type] * AnimationFrameHeight;
 
 			// Firstly we draw the original texture and then glow mask texture
-			Main.spriteBatch.Draw(
-				texture, 
+			spriteBatch.Draw(
+				texture,
 				new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
-				new Rectangle(tile.frameX, tile.frameY + frameYOffset, 16, height),
+				new Rectangle(tile.TileFrameX, tile.TileFrameY + frameYOffset, 16, height),
 				Lighting.GetColor(i, j), 0f, default, 1f, SpriteEffects.None, 0f);
 			// Make sure to draw with Color.White or at least a color that is fully opaque
 			// Achieve opaqueness by increasing the alpha channel closer to 255. (lowering closer to 0 will achieve transparency)
-			Main.spriteBatch.Draw(
+			spriteBatch.Draw(
 				glowTexture,
 				new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
-				new Rectangle(tile.frameX, tile.frameY + frameYOffset, 16, height),
+				new Rectangle(tile.TileFrameX, tile.TileFrameY + frameYOffset, 16, height),
 				Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
 			// Return false to stop vanilla draw
@@ -85,6 +86,10 @@ namespace ExampleMod.Content.Tiles
 
 	internal class ExampleAnimatedGlowmaskTileItem : ModItem
 	{
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.VoidMonolith);
 			Item.createTile = ModContent.TileType<ExampleAnimatedGlowmaskTile>();

@@ -168,7 +168,7 @@
  			newAlternate.Calculate();
  			if (!newTile._hasOwnAlternates)
  				newTile.Alternates = new List<TileObjectData>();
-@@ -4187,7 +_,6 @@
+@@ -4189,7 +_,6 @@
  			newTile.StyleMultiplier = 3;
  			newTile.StyleHorizontal = true;
  			addTile(615);
@@ -176,7 +176,7 @@
  		}
  
  		public static bool CustomPlace(int type, int style) {
-@@ -4341,6 +_,68 @@
+@@ -4343,6 +_,68 @@
  			TileObjectData tileData = GetTileData(type, style);
  			if (tileData != null)
  				baseCoords = new Point16(baseCoords.X - tileData.Origin.X, baseCoords.Y - tileData.Origin.Y);

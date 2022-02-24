@@ -8,7 +8,7 @@
  
  namespace Terraria
  {
-@@ -192,11 +_,14 @@
+@@ -192,12 +_,15 @@
  			return list;
  		}
  
@@ -19,12 +19,23 @@
 +		public static bool IsLocked(int x, int y, Tile t) {
  			if (t == null)
  				return true;
-+				
+ 
 +			if (t.type >= TileID.Count)
 +				return TileLoader.IsLockedChest(x, y, t.type);
- 
++
  			if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  				return true;
+ 
+@@ -227,6 +_,9 @@
+ 						if (!item.IsTheSameAs(Main.chest[i].item[j]))
+ 							continue;
+ 
++						if (!ItemLoader.CanStack(item, Main.chest[i].item[j]))
++							continue;
++
+ 						flag = true;
+ 						int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
+ 						if (num > 0) {
 @@ -272,6 +_,17 @@
  			Tile tileSafely = Framing.GetTileSafely(X, Y);
  			int type2 = tileSafely.type;
@@ -51,6 +62,15 @@
  
  			SoundEngine.PlaySound(22, X * 16, Y * 16);
  			for (int i = X; i <= X + 1; i++) {
+@@ -324,7 +_,7 @@
+ 					Tile tileSafely2 = Framing.GetTileSafely(i, j);
+ 					if (tileSafely2.type == type2) {
+ 						tileSafely2.frameX -= num;
+-						Main.tile[i, j] = tileSafely2;
++						// Main.tile[i, j] = tileSafely2;
+ 						for (int k = 0; k < 4; k++) {
+ 							Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
+ 						}
 @@ -411,15 +_,21 @@
  			}
  			else {
@@ -83,7 +103,7 @@
 -		public void AddItemToShop(Item newItem) {
 +		public int AddItemToShop(Item newItem) { //tML: Now returns the item's index.
  			int num = Main.shopSellbackHelper.Remove(newItem);
-+			
++
  			if (num >= newItem.stack)
 -				return;
 +				return 0;
@@ -112,7 +132,7 @@
  		}
  
  		public static void SetupTravelShop() {
-@@ -877,9 +_,12 @@
+@@ -901,9 +_,12 @@
  							Main.travelShop[num2++] = 3636;
  							Main.travelShop[num2++] = 3641;
  							break;
@@ -125,7 +145,7 @@
  		}
  
  		public void SetupShop(int type) {
-@@ -2578,6 +_,7 @@
+@@ -2608,6 +_,7 @@
  					array[num++].SetDefaults(4921);
  			}
  

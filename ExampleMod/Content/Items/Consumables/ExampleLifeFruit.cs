@@ -10,7 +10,7 @@ namespace ExampleMod.Content.Items.Consumables
 	// Making an item like Life Fruit (That goes above 500) involves a lot of code, as there are many things to consider.
 	// (An alternate that approaches 500 can simply follow vanilla code, however.):
 	// You can't make player.statLifeMax more than 500 (it won't save), so you'll have to maintain your extra life within your mod.
-	// Within your ModPlayer, you need to save/load a count of usages. You also need to sync the data to other players. 
+	// Within your ModPlayer, you need to save/load a count of usages. You also need to sync the data to other players.
 	internal class ExampleLifeFruit : ModItem
 	{
 		public const int MaxExampleLifeFruits = 10;
@@ -20,6 +20,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault($"Permanently increases maximum life by {LifePerFruit}\nUp to {MaxExampleLifeFruits} can be used");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 10;
 		}
 
@@ -48,6 +49,7 @@ namespace ExampleMod.Content.Items.Consumables
 			// This handles the 2 achievements related to using any life increasing item or getting to exactly 500 hp and 200 mp.
 			// Ignored since our item is only useable after this achievement is reached
 			// AchievementsHelper.HandleSpecialEvent(player, 2);
+			//TODO re-add this when ModAchievement is merged?
 			return true;
 		}
 
@@ -65,24 +67,27 @@ namespace ExampleMod.Content.Items.Consumables
 		public int exampleLifeFruits;
 
 		public override void ResetEffects() {
+			// Increasing health in the ResetEffects hook in particular is important so it shows up properly in the player select menu
+			// and so that life regeneration properly scales with the bonus health
 			Player.statLifeMax2 += exampleLifeFruits * ExampleLifeFruit.LifePerFruit;
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			ModPacket packet = Mod.GetPacket();
-			packet.Write((byte)ExampleModMessageType.ExamplePlayerSyncPlayer);
+			packet.Write((byte)ExampleMod.MessageType.ExamplePlayerSyncPlayer);
 			packet.Write((byte)Player.whoAmI);
 			packet.Write(exampleLifeFruits);
 			packet.Send(toWho, fromWho);
 		}
 
-		public override TagCompound Save() {
-			// Read https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound to better understand Saving and Loading data.
-			return new TagCompound { ["exampleLifeFruits"] = exampleLifeFruits };
+		// NOTE: The tag instance provided here is always empty by default.
+		// Read https://github.com/tModLoader/tModLoader/wiki/Saving-and-loading-using-TagCompound to better understand Saving and Loading data.
+		public override void SaveData(TagCompound tag) {
+			tag["exampleLifeFruits"] = exampleLifeFruits;
 		}
 
-		public override void Load(TagCompound tag) {
-			exampleLifeFruits = tag.GetInt("exampleLifeFruits");
+		public override void LoadData(TagCompound tag) {
+			exampleLifeFruits = (int) tag["exampleLifeFruits"];
 		}
 	}
 }

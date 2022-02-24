@@ -12,15 +12,15 @@ namespace ExampleMod.Content.Items
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Soul of Exampleness");
 			Tooltip.SetDefault("'The essence of example creatures'");
-			
+
 			// Registers a vertical animation with 4 frames and each one will last 5 ticks (1/12 second)
 			// Reminder, (4, 6) is an example of an item that draws a new frame every 6 ticks
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 4));
-			
-			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have a 4-frame animation while in world (not held.)
+			ItemID.Sets.AnimatesAsSoul[Item.type] = true; // Makes the item have an animation while in world (not held.). Use in combination with RegisterItemAnimation
+
 			ItemID.Sets.ItemIconPulse[Item.type] = true; // The item pulses while in the player's inventory
 			ItemID.Sets.ItemNoGravity[Item.type] = true; // Makes the item have no gravity
-			
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25; // Configure the amount of this item that's needed to research it in Journey mode.
 		}
 

@@ -16,8 +16,8 @@ namespace ExampleMod.Content.NPCs
 
 			Main.npcFrameCount[Type] = Main.npcFrameCount[NPCID.Zombie];
 
-			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
-				Velocity = 1f //Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
+			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { // Influences how the NPC looks in the Bestiary
+				Velocity = 1f // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, value);
 		}
@@ -41,13 +41,13 @@ namespace ExampleMod.Content.NPCs
 			SpawnModBiomes = new int[1] { ModContent.GetInstance<ExampleSurfaceBiome>().Type }; // Associates this NPC with the ExampleSurfaceBiome in Bestiary
 		}
 
-		public override void ModifyNPCLoot(NPCLoot npcLoot) { 
-			npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 50)); //Drop shackles with a 1 out of 50 chance.
-			npcLoot.Add(ItemDropRule.Common(ItemID.ZombieArm, 250)); //Drop zombie arm with a 1 out of 250 chance.	
+		public override void ModifyNPCLoot(NPCLoot npcLoot) {
+			npcLoot.Add(ItemDropRule.Common(ItemID.Shackle, 50)); // Drop shackles with a 1 out of 50 chance.
+			npcLoot.Add(ItemDropRule.Common(ItemID.ZombieArm, 250)); // Drop zombie arm with a 1 out of 250 chance.
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
-			return SpawnCondition.OverworldNightMonster.Chance * 0.2f;
+			return SpawnCondition.OverworldNightMonster.Chance * 0.2f; // Spawn with 1/5th the chance of a regular zombie.
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
@@ -69,7 +69,7 @@ namespace ExampleMod.Content.NPCs
 
 				dust.velocity.X += Main.rand.NextFloat(-0.05f, 0.05f);
 				dust.velocity.Y += Main.rand.NextFloat(-0.05f, 0.05f);
-				
+
 				dust.scale *= 1f + Main.rand.NextFloat(-0.03f, 0.03f);
 			}
 		}

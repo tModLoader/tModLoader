@@ -50,7 +50,7 @@ namespace ExampleMod.Content.Items.Consumables
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<ExampleItem>()
-				.AddTile(TileID.Bottles) //Making this recipe be crafted at bottles will automatically make Alchemy Table's effect apply to its ingredients.
+				.AddTile(TileID.Bottles) // Making this recipe be crafted at bottles will automatically make Alchemy Table's effect apply to its ingredients.
 				.Register();
 		}
 	}

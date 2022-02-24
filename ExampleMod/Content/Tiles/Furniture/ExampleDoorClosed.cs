@@ -10,7 +10,7 @@ using Terraria.ObjectData;
 
 namespace ExampleMod.Content.Tiles.Furniture
 {
-	// TODO: Smart Cursor Outlines and tModLoader support
+	//TODO: Smart Cursor Outlines and tModLoader support
 	public class ExampleDoorClosed : ModTile
 	{
 		public override void SetStaticDefaults() {

@@ -9,7 +9,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Slot { get; internal set; }
 	}
-	
+
 	/// <summary>
 	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for underground backgrounds.
 	/// </summary>
@@ -22,7 +22,7 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
-		/// Allows you to determine which textures make up the background by assigning their background slots/IDs to the given array. Mod.GetBackgroundSlot may be useful here. Index 0 is the texture on the border of the ground and sky layers. Index 1 is the texture drawn between rock and ground layers. Index 2 is the texture on the border of ground and rock layers. Index 3 is the texture drawn in the rock layer. The border images are 160x16 pixels, and the others are 160x96, but it seems like the right 32 pixels of each is a duplicate of the far left 32 pixels.
+		/// Allows you to determine which textures make up the background by assigning their background slots/IDs to the given array. BackgroundTextureLoader.GetBackgroundSlot may be useful here. Index 0 is the texture on the border of the ground and sky layers. Index 1 is the texture drawn between rock and ground layers. Index 2 is the texture on the border of ground and rock layers. Index 3 is the texture drawn in the rock layer. The border images are 160x16 pixels, and the others are 160x96, but it seems like the right 32 pixels of each is a duplicate of the far left 32 pixels.
 		/// </summary>
 		public abstract void FillTextureArray(int[] textureSlots);
 	}
@@ -31,7 +31,7 @@ namespace Terraria.ModLoader
 	/// Each background style determines in its own way how exactly the background is drawn. This class serves as a collection of functions for above-ground backgrounds.
 	/// </summary>
 	public abstract class ModSurfaceBackgroundStyle:ModBackgroundStyle
-	{ 
+	{
 		protected override sealed void Register() {
 			Slot = LoaderManager.Get<SurfaceBackgroundStylesLoader>().Register(this);
 		}
@@ -44,7 +44,7 @@ namespace Terraria.ModLoader
 		public abstract void ModifyFarFades(float[] fades, float transitionSpeed);
 
 		/// <summary>
-		/// Allows you to determine which texture is drawn in the very back of the background. Mod.GetBackgroundSlot may be useful here, as well as for the other texture-choosing hooks.
+		/// Allows you to determine which texture is drawn in the very back of the background. BackgroundTextureLoader.GetBackgroundSlot may be useful here, as well as for the other texture-choosing hooks.
 		/// </summary>
 		public virtual int ChooseFarTexture() {
 			return -1;

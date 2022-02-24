@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.States;
@@ -14,7 +15,6 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Audio;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.Exceptions;
@@ -23,6 +23,7 @@ using Terraria.ModLoader.UI;
 using Terraria.UI;
 using Terraria.ModLoader.Utilities;
 using Terraria.Initializers;
+using Terraria.Map;
 
 namespace Terraria.ModLoader
 {
@@ -90,7 +91,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Gets the asset with the specified name. Throws an Exception if the asset does not exist. 
+		/// Gets the asset with the specified name. Throws an Exception if the asset does not exist.
 		/// </summary>
 		/// <param name="name">The path to the asset without extension, including the mod name (or Terraria) for vanilla assets. Eg "ModName/Folder/FileNameWithoutExtension"</param>
 		public static Asset<T> Request<T>(string name, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class {
@@ -133,34 +134,6 @@ namespace Terraria.ModLoader
 
 			asset = Request<T>(name, mode);
 			return true;
-		}
-
-		/// <summary>
-		/// Gets the music with the specified name. The name is in the same format as for texture names. Throws an ArgumentException if the music does not exist. Note: SoundMP3 is in the Terraria.ModLoader namespace.
-		/// </summary>
-		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static Music GetMusic(string name) {
-			if (Main.dedServ)
-				return null;
-
-			SplitName(name, out string modName, out string subName);
-
-			if (!ModLoader.TryGetMod(modName, out var mod))
-				throw new MissingResourceException("Missing mod: " + name);
-
-			return mod.GetMusic(subName);
-		}
-
-		/// <summary>
-		/// Returns whether or not a sound with the specified name exists.
-		/// </summary>
-		public static bool MusicExists(string name) {
-			if (!name.Contains('/'))
-				return false;
-
-			SplitName(name, out string modName, out string subName);
-
-			return ModLoader.TryGetMod(modName, out var mod) && mod.MusicExists(subName);
 		}
 
 		/// <summary>
@@ -356,10 +329,10 @@ namespace Terraria.ModLoader
 
 			MapLoader.SetupModMap();
 			RarityLoader.Initialize();
-			
+
 			ContentSamples.Initialize();
 			PlayerInput.reinitialize = true;
-			SetupBestiary(token);
+			SetupBestiary();
 			SetupRecipes(token);
 			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
 			ItemSorting.SetupWhiteLists();
@@ -367,7 +340,7 @@ namespace Terraria.ModLoader
 			MenuLoader.GotoSavedModMenu();
 			BossBarLoader.GotoSavedStyle();
 		}
-		
+
 		private static void CacheVanillaState() {
 			EffectsTracker.CacheVanillaState();
 			DamageClassLoader.RegisterDefaultClasses();
@@ -380,7 +353,7 @@ namespace Terraria.ModLoader
 			int num = 0;
 			foreach (var mod in ModLoader.Mods) {
 				token.ThrowIfCancellationRequested();
-				Interface.loadMods.SetCurrentMod(num++, $"{mod.Name} v{mod.Version}");
+				Interface.loadMods.SetCurrentMod(num++, $"{mod.Name} ({mod.DisplayName}) v{mod.Version}");
 				try {
 					LoadingMod = mod;
 					loadAction(mod);
@@ -396,26 +369,26 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static void SetupBestiary(CancellationToken token) {
+		private static void SetupBestiary() {
 			//Beastiary DB
 			var bestiaryDatabase = new BestiaryDatabase();
 			new BestiaryDatabaseNPCsPopulator().Populate(bestiaryDatabase);
 			Main.BestiaryDB = bestiaryDatabase;
 			ContentSamples.RebuildBestiarySortingIDsByBestiaryDatabaseContents(bestiaryDatabase);
-			
+
 			//Drops DB
 			var itemDropDatabase = new ItemDropDatabase();
 			itemDropDatabase.Populate();
 			Main.ItemDropsDB = itemDropDatabase;
-			
+
 			//Update the bestiary DB with the drops DB.
 			bestiaryDatabase.Merge(Main.ItemDropsDB);
-			
+
 			//Etc
-			
+
 			if (!Main.dedServ)
 				Main.BestiaryUI = new UIBestiaryTest(Main.BestiaryDB);
-			
+
 			Main.ItemDropSolver = new ItemDropResolver(itemDropDatabase);
 			Main.BestiaryTracker = new BestiaryUnlocksTracker();
 		}
@@ -431,23 +404,22 @@ namespace Terraria.ModLoader
 			RecipeGroupHelper.ResetRecipeGroups();
 			RecipeLoader.setupRecipes = true;
 			Recipe.SetupRecipes();
+			ContentSamples.FixItemsAfterRecipesAreAdded();
 			RecipeLoader.setupRecipes = false;
 		}
 
 		internal static void UnloadModContent() {
 			MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
-			
+
 			int i = 0;
-			
 			foreach (var mod in ModLoader.Mods.Reverse()) {
 				if (Main.dedServ)
 					Console.WriteLine($"Unloading {mod.DisplayName}...");
 				else
-					Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
-				
-				MonoModHooks.RemoveAll(mod);
-				
+					Interface.loadMods.SetCurrentMod(i++, $"{mod.Name} ({mod.DisplayName}) v{mod.Version}");
+
 				try {
+					MonoModHooks.RemoveAll(mod);
 					mod.Close();
 					mod.UnloadContent();
 				}
@@ -480,7 +452,6 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			SoundLoader.Unload();
-			DisposeMusic();
 
 			LoaderManager.Unload();
 
@@ -504,6 +475,7 @@ namespace Terraria.ModLoader
 			Config.ConfigManager.Unload();
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
+			Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
 
 			// ItemID.Search = IdDictionary.Create<ItemID, short>();
 			// NPCID.Search = IdDictionary.Create<NPCID, short>();
@@ -513,6 +485,7 @@ namespace Terraria.ModLoader
 			// BuffID.Search = IdDictionary.Create<BuffID, int>();
 
 			ContentSamples.Initialize();
+			SetupBestiary();
 
 			CleanupModReferences();
 		}
@@ -547,11 +520,6 @@ namespace Terraria.ModLoader
 			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;
 			}
-		}
-
-		private static void DisposeMusic() {
-			//foreach (var music in Main.audioSystem.OfType<MusicStreaming>())
-			//	music.Dispose();
 		}
 
 		/// <summary>

@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using Hjson;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Terraria.Localization;
+using Terraria.ModLoader.Utilities;
 using Terraria.UI;
 
 namespace Terraria.ModLoader
 {
 	public static class LocalizationLoader
-    {
+	{
 		private static readonly Dictionary<string, ModTranslation> translations = new();
 
 		/// <summary>
@@ -51,37 +54,7 @@ namespace Terraria.ModLoader
 
 			var modTranslationDictionary = new Dictionary<string, ModTranslation>();
 
-			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".lang")) {
-				// .lang files need to be UTF8 encoded.
-				string translationFileContents = Encoding.UTF8.GetString(mod.File.GetBytes(translationFile));
-				var culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
-
-				using StringReader reader = new StringReader(translationFileContents);
-
-				string line;
-				
-				while ((line = reader.ReadLine()) != null) {
-					int split = line.IndexOf('=');
-					if (split < 0)
-						continue; // lines witout a = are ignored
-
-					string key = line.Substring(0, split).Trim().Replace(" ", "_");
-					string value = line.Substring(split + 1); // removed .Trim() since sometimes it is desired.
-					
-					if (value.Length == 0) {
-						continue;
-					}
-
-					value = value.Replace("\\n", "\n");
-
-					// TODO: Maybe prepend key with filename: en.US.ItemName.lang would automatically assume "ItemName." for all entries.
-					//string key = key;
-					if (!modTranslationDictionary.TryGetValue(key, out ModTranslation mt))
-						modTranslationDictionary[key] = mt = CreateTranslation(mod, key);
-
-					mt.AddTranslation(culture, value);
-				}
-			}
+			AutoloadTranslations(mod, modTranslationDictionary);
 
 			foreach (var value in modTranslationDictionary.Values) {
 				AddTranslation(value);
@@ -161,6 +134,111 @@ namespace Terraria.ModLoader
 			}
 
 			LanguageManager.Instance.ProcessCopyCommandsInTexts();
+		}
+
+		internal static void UpgradeLangFile(string langFile, string modName) {
+			string[] contents = File.ReadAllLines(langFile, Encoding.UTF8);
+
+			// Legacy .lang files had 'Mods.ModName.' prefixed to every key.
+			// Modern .hjson localization does not have that.
+			var modObject = new JObject();
+			var modsObject = new JObject{
+				{ modName, modObject }
+			};
+			var rootObject = new JObject {
+				{ "Mods", modsObject }
+			};
+
+			foreach (string line in contents) {
+				if (line.Trim().StartsWith("#"))
+					continue;
+
+				int split = line.IndexOf('=');
+
+				if (split < 0)
+					continue; // lines without an '=' are ignored
+
+				string key = line.Substring(0, split).Trim().Replace(" ", "_");
+				string value = line.Substring(split + 1); // removed .Trim() since sometimes it is desired.
+
+				if (value.Length == 0) {
+					continue;
+				}
+
+				value = value.Replace("\\n", "\n");
+
+				string[] splitKey = key.Split(".");
+				var curObj = modObject;
+
+				foreach (string k in splitKey.SkipLast(1)) {
+					if (!curObj.ContainsKey(k)) {
+						curObj.Add(k, new JObject());
+					}
+
+					var existingVal = curObj.GetValue(k);
+
+					if (existingVal.Type == JTokenType.Object) {
+						curObj = (JObject)existingVal;
+					}
+					else {
+						// Someone assigned a value to this key - move this value to special
+						//  "$parentVal" key in newly created object
+						curObj[k] = new JObject();
+						curObj = (JObject)curObj.GetValue(k);
+						curObj["$parentVal"] = existingVal;
+					}
+				}
+
+				string lastKey = splitKey.Last();
+
+				if (curObj.ContainsKey(splitKey.Last()) && curObj[lastKey] is JObject) {
+					// this value has children - needs to go into object as a $parentValue entry
+					((JObject)curObj[lastKey]).Add("$parentValue", value);
+				}
+
+				curObj.Add(splitKey.Last(), value);
+			}
+
+			// Convert JSON to HJSON and dump to new file
+			// Don't delete old .lang file - let the user do this when they are happy
+			string newFile = Path.ChangeExtension(langFile, "hjson");
+			string hjsonContents = JsonValue.Parse(rootObject.ToString()).ToFancyHjsonString();
+
+			File.WriteAllText(newFile, hjsonContents);
+			File.Move(langFile, $"{langFile}.legacy", true);
+		}
+
+		private static void AutoloadTranslations(Mod mod, Dictionary<string, ModTranslation> modTranslationDictionary) {
+			foreach (var translationFile in mod.File.Where(entry => Path.GetExtension(entry.Name) == ".hjson")) {
+				using var stream = mod.File.GetStream(translationFile);
+				using var streamReader = new StreamReader(stream, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+
+				string translationFileContents = streamReader.ReadToEnd();
+
+				var culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
+
+				// Parse HJSON and convert to standard JSON
+				string jsonString = HjsonValue.Parse(translationFileContents).ToString();
+
+				// Parse JSON
+				var jsonObject = JObject.Parse(jsonString);
+				// Flatten JSON into dot seperated key and value
+				var flattened = jsonObject
+					.SelectTokens("$..*")
+					.Where(t => !t.HasValues)
+					.ToDictionary(t => t.Path, t => t.ToString());
+
+				foreach (var (key, value) in flattened) {
+					string effectiveKey = key.Replace(".$parentVal", "");
+					if (!modTranslationDictionary.TryGetValue(effectiveKey, out ModTranslation mt)) {
+						// removing instances of .$parentVal is an easy way to make this special key assign its value
+						//  to the parent key instead (needed for some cases of .lang -> .hjson auto-conversion)
+						modTranslationDictionary[effectiveKey] = mt = CreateTranslation(effectiveKey);
+					}
+
+					mt.AddTranslation(culture, value);
+				}
+			}
 		}
 
 		private static LocalizedText SetLocalizedText(Dictionary<string, LocalizedText> dict, LocalizedText value) {

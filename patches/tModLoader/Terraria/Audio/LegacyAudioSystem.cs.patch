@@ -45,14 +45,23 @@
 -			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb"); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
 +			WaveBank = new WaveBank(Engine, contentManager.GetPath("Wave Bank.xwb")); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
  			Engine.Update();
- 			AudioTracks = new IAudioTrack[90];
+ 			AudioTracks = new IAudioTrack[91];
  			TrackNamesByIndex = new Dictionary<int, string>();
-@@ -114,6 +_,8 @@
- 				yield return null;
+@@ -115,6 +_,8 @@
  			}
  		}
-+
-+		internal Cue GetCueInternal(string cueName) => SoundBank.GetCue(cueName);
  
++		internal Cue GetCueInternal(string cueName) => SoundBank.GetCue(cueName);
++
  		public void LoadCue(int cueIndex, string cueName) {
  			CueAudioTrack cueAudioTrack = new CueAudioTrack(SoundBank, cueName);
+ 			TrackNamesByIndex[cueIndex] = cueName;
+@@ -244,7 +_,7 @@
+ 		}
+ 
+ 		public void UpdateCommonTrackTowardStopping(int i, float totalVolume, ref float tempFade, bool isMainTrackAudible) {
+-			if (!WaveBank.IsPrepared)
++			if (!WaveBank.IsPrepared || AudioTracks[i] is null) // should never really be null, save for some in-between loading if music is forced to play before mod loading is complete
+ 				return;
+ 
+ 			if (AudioTracks[i].IsPlaying || !AudioTracks[i].IsStopped) {

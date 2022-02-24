@@ -49,7 +49,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadow hooks. By default this will return the same thing as the associated ModItem's IsVanitySet, or false if no ModItem is associated.
+		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadows hooks. By default this will return the same thing as the associated ModItem's IsVanitySet, or false if no ModItem is associated.
 		/// </summary>
 		/// <param name="head"></param>
 		/// <param name="body"></param>
@@ -104,52 +104,6 @@ namespace Terraria.ModLoader
 			if (Item != null) {
 				Item.SetMatch(male, ref equipSlot, ref robes);
 			}
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the skin/shirt on the player's arms and hands are drawn when this body equipment texture is worn. By default both flags will be false. Note that if drawHands is false, the arms will not be drawn either. If there is an associated ModItem, by default this will call that ModItem's DrawHands.
-		/// </summary>
-		/// <param name="drawHands"></param>
-		/// <param name="drawArms"></param>
-		public virtual void DrawHands(ref bool drawHands, ref bool drawArms) {
-			if (Item != null) {
-				Item.DrawHands(ref drawHands, ref drawArms);
-			}
-		}
-
-		/// <summary>
-		/// Allows you to determine whether the player's hair or alt (hat) hair draws when this head equipment texture is worn. By default both flags will be false. If there is an associated ModItem, by default this will call that ModItem's DrawHair.
-		/// </summary>
-		/// <param name="drawHair"></param>
-		/// <param name="drawAltHair"></param>
-		public virtual void DrawHair(ref bool drawHair, ref bool drawAltHair) {
-			if (Item != null) {
-				Item.DrawHair(ref drawHair, ref drawAltHair);
-			}
-		}
-
-		/// <summary>
-		/// Return false to hide the player's head when this head equipment texture is worn. By default this will return the associated ModItem's DrawHead, or true if there is no associated ModItem.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawHead() {
-			return Item == null || Item.DrawHead();
-		}
-
-		/// <summary>
-		/// Return false to hide the player's body when this body equipment texture is worn. By default this will return the associated ModItem's DrawBody, or true if there is no associated ModItem.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawBody() {
-			return Item == null || Item.DrawBody();
-		}
-
-		/// <summary>
-		/// Return false to hide the player's legs when this leg or shoe equipment texture is worn. By default this will return the associated ModItem's DrawLegs, or true if there is no associated ModItem.
-		/// </summary>
-		/// <returns></returns>
-		public virtual bool DrawLegs() {
-			return Item == null || Item.DrawLegs();
 		}
 
 		/// <summary>

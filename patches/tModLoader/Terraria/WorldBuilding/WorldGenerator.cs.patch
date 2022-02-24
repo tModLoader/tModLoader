@@ -22,7 +22,7 @@
  		private readonly WorldGenConfiguration _configuration;
  		public static GenerationProgress CurrentGenerationProgress;
  
-@@ -39,7 +_,23 @@
+@@ -39,7 +_,22 @@
  				Main.rand = new UnifiedRandom(_seed);
  				stopwatch.Start();
  				progress.Start(pass2.Weight);
@@ -37,8 +37,7 @@
 +						pass2.Name,
 +						e
 +					);
-+					Logging.tML.Error(message);
-+					Interface.errorMessage.Show(message, 0);
++					Utils.ShowFancyErrorMessage(message, 0);
 +
 +					//We need to shutdown the thread without it saving.
 +					//TODO: Allow returning a bool to signify if it should save or not.

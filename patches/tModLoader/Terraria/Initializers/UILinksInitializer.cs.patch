@@ -28,6 +28,21 @@
  					cp14.LinkMap[600 + num57].Up = ((num57 % num56 == 0) ? (-1) : (600 + num57 - 1));
  					if (cp14.LinkMap[600 + num57].Up == -1) {
  						if (num57 >= num56 * 2)
+@@ -867,10 +_,12 @@
+ 				}
+ 
+ 				bool flag4 = Main.mouseItem.stack <= 0;
+-				if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack))
++				//if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack))
++				if (flag4 || (Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem)))
+ 					str2 = ((!flag4) ? (str2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"])) : (str2 + PlayerInput.BuildCommand(Lang.misc[72].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseLeft"], PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"])));
+ 
+-				if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack)
++				//if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack)
++				if (!flag4 && Main.mouseItem.type == createItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack && ItemLoader.CanStack(Main.mouseItem, createItem))
+ 					str2 += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
+ 
+ 				if (flag3)
 @@ -1584,6 +_,13 @@
  					break;
  				case 7:

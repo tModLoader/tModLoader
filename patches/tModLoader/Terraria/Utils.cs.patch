@@ -17,7 +17,17 @@
  	{
  		public delegate bool TileActionAttempt(int x, int y);
  
-@@ -253,6 +_,12 @@
+@@ -200,7 +_,8 @@
+ 			ArrayList arrayList = new ArrayList();
+ 			string text = "";
+ 			for (int i = 0; i < brokenArgs.Length; i++) {
+-				if (brokenArgs[i].StartsWith("-")) {
++				//TML: Steam uses +connect_lobby as an argument, so had to add == "+" so this wouldn't break that argument.
++				if (brokenArgs[i].StartsWith("-") || brokenArgs[i].StartsWith("+")) {
+ 					if (text != "") {
+ 						arrayList.Add(text);
+ 						text = "";
+@@ -263,6 +_,12 @@
  								num2 -= 16;
  
  							int num3 = Math.Min(list3[l].Text.Length, num2 / 8);
@@ -30,7 +40,7 @@
  							if (num3 < 0)
  								num3 = 0;
  
-@@ -260,7 +_,8 @@
+@@ -270,7 +_,8 @@
  							int num4 = num3;
  							if (array3.Length > 1) {
  								num4 = 0;
@@ -40,7 +50,7 @@
  									num4 += array3[m].Length + 1;
  								}
  
-@@ -515,18 +_,22 @@
+@@ -525,18 +_,22 @@
  
  		public static void OpenFolder(string folderPath) {
  			if (TryCreatingDirectory(folderPath)) {
@@ -74,7 +84,7 @@
  #endif
  			}
  		}
-@@ -1125,14 +_,17 @@
+@@ -1136,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  
  			DynamicSpriteFont value = FontAssets.DeathText.Value;

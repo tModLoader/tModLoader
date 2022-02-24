@@ -1,5 +1,7 @@
+using Hjson;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using System;
 using System.Collections.Specialized;
@@ -14,6 +16,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
+using Terraria.Social;
+using Terraria.Social.Base;
 using Terraria.Social.Steam;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -68,16 +72,41 @@ namespace Terraria.ModLoader.UI
 			Append(buildReloadButton);
 
 			_builtMod = builtMod;
-			if (builtMod != null && builtMod.Enabled) {
+			if (builtMod != null) {
 				var publishButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"));
 				publishButton.CopyStyle(buildReloadButton);
 				publishButton.Width.Pixels = 100;
 				publishButton.Left.Pixels = 390;
 				publishButton.WithFadedMouseOver();
-				publishButton.OnClick += PublishMod;
-				Append(publishButton);
+
+				if (builtMod.properties.side == ModSide.Server) {
+					publishButton.OnClick += PublishServerSideMod;
+					Append(publishButton);
+				}
+				else if (builtMod.Enabled) {
+					publishButton.OnClick += PublishMod;
+					Append(publishButton);
+				}
 			}
+
 			OnDoubleClick += BuildAndReload;
+
+			string modFolderName = Path.GetFileName(_mod);
+			string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
+			if (File.Exists(csprojFile)) {
+				var openCSProjButton = new UIHoverImage(UICommon.CopyCodeButtonTexture, "Open .csproj") {
+					Left = { Pixels = -52, Percent = 1f },
+					Top = { Pixels = 4 }
+				};
+				openCSProjButton.OnClick += (a, b) => {
+					Process.Start(
+						new ProcessStartInfo(csprojFile) {
+							UseShellExecute = true
+						}
+					);
+				};
+				Append(openCSProjButton);
+			}
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
@@ -91,10 +120,13 @@ namespace Terraria.ModLoader.UI
 				_upgradePotentialChecked = true;
 				string modFolderName = Path.GetFileName(_mod);
 				string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
+
+				int leftPixels = -26;
+
 				if (!File.Exists(csprojFile) || Interface.createMod.CsprojUpdateNeeded(File.ReadAllText(csprojFile))) {
 					var icon = UICommon.ButtonExclamationTexture;
 					var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
-						Left = { Pixels = -26, Percent = 1f },
+						Left = { Pixels = leftPixels, Percent = 1f },
 						Top = { Pixels = 4 }
 					};
 					upgradeCSProjButton.OnClick += (s, e) => {
@@ -123,6 +155,30 @@ namespace Terraria.ModLoader.UI
 						upgradeCSProjButton.Remove();
 					};
 					Append(upgradeCSProjButton);
+
+					leftPixels -= 26;
+				}
+
+				// Display upgrade .lang files button if any .lang files present
+				//TODO: Make this asynchronous, as this can be quite expensive
+				string[] files = Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories);
+
+				if (files.Length > 0) {
+					var icon = UICommon.ButtonExclamationTexture;
+					var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
+						Left = { Pixels = leftPixels, Percent = 1f },
+						Top = { Pixels = 4 }
+					};
+
+					upgradeLangFilesButton.OnClick += (s, e) => {
+						foreach (string file in files) {
+							LocalizationLoader.UpgradeLangFile(file, modName);
+						}
+
+						upgradeLangFilesButton.Remove();
+					};
+
+					Append(upgradeLangFilesButton);
 				}
 			}
 		}
@@ -187,13 +243,35 @@ namespace Terraria.ModLoader.UI
 				var bp = _builtMod.properties;
 
 				PublishModInner(modFile, bp, Path.Combine(_mod, "icon.png"));
-			} catch (WebException e) {
+			}
+			catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);
 			}
 		}
 
+		private void PublishServerSideMod(UIMouseEvent evt, UIElement listeningElement) {
+			SoundEngine.PlaySound(10);
+			try {
+				if (!WorkshopHelper.ModManager.SteamUser) {
+					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamPublishingLimit"), Interface.modSourcesID);
+					return;
+				}
+				var p = new ProcessStartInfo() {
+					UseShellExecute = true,
+					FileName = Process.GetCurrentProcess().MainModule.FileName,
+					Arguments = "tModLoader.dll -server -steam -publish " + _builtMod.modFile.path.Remove(_builtMod.modFile.path.LastIndexOf(".tmod"))
+				};
+
+				var pending = Process.Start(p);
+				pending.WaitForExit();
+			}
+			catch (WebException e) {
+				UIModBrowser.LogModBrowserException(e);
+			}
+		}
+
+
 		internal static void PublishModCommandLine(string modName) {
-			/*TODO: Re-implement. Main missing issue is iconPath.
 			try {
 				LocalMod localMod;
 				var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
@@ -201,15 +279,17 @@ namespace Terraria.ModLoader.UI
 				using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
 					localMod = new LocalMod(modFile);
 
-				PublishModInner(modFile, localMod.properties, Path.Combine("ModSourcePath", "icon.png"), true);
+				PublishModInner(modFile, localMod.properties, Path.Combine(ModCompile.ModSourcePath, modName, "icon.png"), true);
 			}
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
 				Console.WriteLine(e.ToString());
+				Steamworks.SteamAPI.Shutdown();
 				Environment.Exit(1);
 			}
+			Console.WriteLine("exiting ");
+			Steamworks.SteamAPI.Shutdown();
 			Environment.Exit(0);
-			*/
 		}
 
 		private static void PublishModInner(TmodFile modFile, BuildProperties bp, string iconPath, bool commandLine = false) {
@@ -226,6 +306,7 @@ namespace Terraria.ModLoader.UI
 				{ "homepage", bp.homepage },
 				{ "description", bp.description },
 				{ "iconpath", iconPath },
+				{ "manifestfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
 				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
 				{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
 				{ "modside", bp.side.ToFriendlyString() },
@@ -237,7 +318,22 @@ namespace Terraria.ModLoader.UI
 			if (string.IsNullOrWhiteSpace(values["version"]))
 				throw new WebException($"You need to specify a version in build.txt");
 
-			Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
+			if (!Main.dedServ) {
+				Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
+			}
+			else {
+				SocialAPI.LoadSteam();
+
+				if ( /*SocialAPI.Workshop != null && */ modFile != null) {
+					var publishSetttings = new WorkshopItemPublishSettings {
+						Publicity = WorkshopItemPublicSettingId.Public,
+						UsedTags = Array.Empty<WorkshopTagOption>(),
+						PreviewImagePath = iconPath
+					};
+					WorkshopHelper.ModManager.SteamUser = true;
+					SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
+				}
+			}
 		}
 	}
 }

@@ -90,8 +90,6 @@ namespace Terraria.ModLoader.UI
 		//	virticalSpacing[numButtons - 1] = 8;
 		//}
 
-		private static bool betaWelcomed = false;
-
 		//add to end of if else chain of Main.menuMode in Terraria.Main.DrawMenu
 		//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
 		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown) {
@@ -100,19 +98,38 @@ namespace Terraria.ModLoader.UI
 					ModLoader.ShowFirstLaunchWelcomeMessage = false;
 					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 				}
-				//else if (ModLoader.ShowWhatsNew) {
-				//	// TODO: possibly pull from github
-				//	ModLoader.ShowWhatsNew = false;
-				//	infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage"), Main.menuMode);
-				//}
-
-#if RELEASE
-				// Temporary display for the alpha/beta version.
-				if (!betaWelcomed) {
-					betaWelcomed = true;
+				else if (!ModLoader.AlphaWelcomed) {
+					ModLoader.AlphaWelcomed = true;
 					infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
+					Main.SaveSettings();
 				}
-#endif
+				else if (ModLoader.ShowWhatsNew) {
+					ModLoader.ShowWhatsNew = false;
+					if (File.Exists("RecentGitHubCommits.txt")) {
+						bool LastLaunchedShaInRecentGitHubCommits = false;
+						var messages = new System.Text.StringBuilder();
+						var recentcommitsfilecontents = File.ReadLines("RecentGitHubCommits.txt");
+						foreach (var commitEntry in recentcommitsfilecontents) {
+							string[] parts = commitEntry.Split(' ', 2);
+							if (parts.Length == 2) {
+								string sha = parts[0];
+								string message = parts[1];
+								if (sha != ModLoader.LastLaunchedTModLoaderAlphaSha)
+									messages.Append("\n  " + message);
+								if (sha == ModLoader.LastLaunchedTModLoaderAlphaSha) {
+									LastLaunchedShaInRecentGitHubCommits = true;
+									break;
+								}
+							}
+						}
+						if (LastLaunchedShaInRecentGitHubCommits)
+							infoMessage.Show(Language.GetTextValue("tModLoader.WhatsNewMessage") + messages.ToString(), Main.menuMode, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
+								() => {
+									SoundEngine.PlaySound(SoundID.MenuOpen);
+									Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/compare/{ModLoader.LastLaunchedTModLoaderAlphaSha}...1.4");
+								});
+					}
+				}
 			}
 			if (Main.menuMode == modsMenuID) {
 				Main.MenuUI.SetState(modsMenu);
@@ -180,7 +197,7 @@ namespace Terraria.ModLoader.UI
 			else if (Main.menuMode == tModLoaderSettingsID) {
 				offY = 210;
 				spacing = 42;
-				numButtons = 11;
+				numButtons = 7;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++) {
 					buttonScales[i] = 0.75f;
@@ -206,12 +223,14 @@ namespace Terraria.ModLoader.UI
 					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 				}
 
+				/*
 				buttonIndex++;
 				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? Language.GetTextValue("tModLoader.ExperimentalFeaturesYes") : Language.GetTextValue("tModLoader.ExperimentalFeaturesNo"));
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
 					Main.UseExperimentalFeatures = !Main.UseExperimentalFeatures;
 				}
+				*/
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.RemoveForcedMinimumZoom{(ModLoader.removeForcedMinimumZoom ? "Yes" : "No")}");
@@ -234,6 +253,7 @@ namespace Terraria.ModLoader.UI
 					ModLoader.notifyNewMainMenuThemes = !ModLoader.notifyNewMainMenuThemes;
 				}
 
+				/*
 				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.ClearMBCredentials");
 				if (selectedMenu == buttonIndex) {
@@ -241,6 +261,7 @@ namespace Terraria.ModLoader.UI
 					ModLoader.modBrowserPassphrase = "";
 					ModLoader.SteamID64 = "";
 				}
+				*/
 
 				buttonIndex++;
 				buttonNames[buttonIndex] = Lang.menu[5].Value;
@@ -334,15 +355,18 @@ namespace Terraria.ModLoader.UI
 							break;
 						}
 
-						var info = modBrowser.Items.FirstOrDefault(x => x.ModName.Equals(modname));
-						info.InnerDownloadWithDeps();
+						var info = WorkshopHelper.QueryHelper.FindModDownloadItem(modname);
+						if(info == null)
+							Console.WriteLine($"No mod with the name {modname} found on the workshop.");
+						else
+							info.InnerDownloadWithDeps();
 					}
 					catch (Exception e) {
 						Console.WriteLine(Language.GetTextValue("tModLoader.MBServerDownloadError", modname, e.ToString()));
 					}
 				}
 			}
-			Console.Clear();
+			//Console.Clear();
 		}
 
 		internal static void MessageBoxShow(string text, string caption = null) {

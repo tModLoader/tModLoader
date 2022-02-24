@@ -31,7 +31,7 @@
  		}
  
  		public static void PlaceEntityNet(int x, int y, int type) {
-@@ -53,34 +_,61 @@
+@@ -53,34 +_,58 @@
  		public virtual void Update() {
  		}
  
@@ -54,9 +54,6 @@
 +
  			byte id = reader.ReadByte();
  			TileEntity tileEntity = manager.GenerateInstance(id);
-+ 			if(tileEntity is null) {
-+				ModTileEntity.ConstructFromType(id);
-+			}
  			tileEntity.type = id;
 -			tileEntity.ReadInner(reader, networkSend);
 +			tileEntity.ReadInner(reader, networkSend, lightSend);

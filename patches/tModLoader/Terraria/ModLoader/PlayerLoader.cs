@@ -9,6 +9,7 @@ using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.IO;
 
@@ -77,8 +78,11 @@ namespace Terraria.ModLoader
 
 		public static void SetStartInventory(Player player, IList<Item> items) {
 			if (items.Count <= 50) {
-				for (int k = 0; k < items.Count && k < 49; k++)
-					player.inventory[k] = items[k];
+				for (int k = 0; k < 50; k++)
+					if (k < items.Count)
+						player.inventory[k] = items[k];
+					else
+						player.inventory[k].SetDefaults();
 			}
 			else {
 				for (int k = 0; k < 49; k++) {
@@ -220,19 +224,35 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookUpdateVanityAccessories = AddHook<Action>(p => p.UpdateVanityAccessories);
-
-		public static void UpdateVanityAccessories(Player player) {
-			foreach (int index in HookUpdateVanityAccessories.arr) {
-				player.modPlayers[index].UpdateVanityAccessories();
-			}
-		}
-
 		private static HookList HookPostUpdateEquips = AddHook<Action>(p => p.PostUpdateEquips);
 
 		public static void PostUpdateEquips(Player player) {
 			foreach (int index in HookPostUpdateEquips.arr) {
 				player.modPlayers[index].PostUpdateEquips();
+			}
+		}
+
+		private static HookList HookUpdateVisibleAccessories = AddHook<Action>(p => p.UpdateVisibleAccessories);
+
+		public static void UpdateVisibleAccessories(Player player) {
+			foreach (int index in HookUpdateVisibleAccessories.arr) {
+				player.modPlayers[index].UpdateVisibleAccessories();
+			}
+		}
+
+		private static HookList HookUpdateVisibleVanityAccessories = AddHook<Action>(p => p.UpdateVisibleVanityAccessories);
+
+		public static void UpdateVisibleVanityAccessories(Player player) {
+			foreach (int index in HookUpdateVisibleVanityAccessories.arr) {
+				player.modPlayers[index].UpdateVisibleVanityAccessories();
+			}
+		}
+
+		private static HookList HookUpdateDyes = AddHook<Action>(p => p.UpdateDyes);
+
+		public static void UpdateDyes(Player player) {
+			foreach (int index in HookUpdateDyes.arr) {
+				player.modPlayers[index].UpdateDyes();
 			}
 		}
 
@@ -446,7 +466,7 @@ namespace Terraria.ModLoader
 		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
 			if (item.IsAir)
 				return;
-			
+
 			foreach (int index in HookModifyManaCost.arr) {
 				player.modPlayers[index].ModifyManaCost(item, ref reduce, ref mult);
 			}
@@ -457,7 +477,7 @@ namespace Terraria.ModLoader
 		public static void OnMissingMana(Player player, Item item, int manaNeeded) {
 			if (item.IsAir)
 				return;
-			
+
 			foreach (int index in HookOnMissingMana.arr) {
 				player.modPlayers[index].OnMissingMana(item, manaNeeded);
 			}
@@ -468,7 +488,7 @@ namespace Terraria.ModLoader
 		public static void OnConsumeMana(Player player, Item item, int manaConsumed) {
 			if (item.IsAir)
 				return;
-			
+
 			foreach (int index in HookOnConsumeMana.arr) {
 				player.modPlayers[index].OnConsumeMana(item, manaConsumed);
 			}
@@ -518,11 +538,11 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookConsumeAmmo = AddHook<Func<Item, Item, bool>>(p => p.ConsumeAmmo);
+		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Item, bool>>(p => p.CanConsumeAmmo);
 
-		public static bool ConsumeAmmo(Player player, Item weapon, Item ammo) {
-			foreach (int index in HookConsumeAmmo.arr) {
-				if (!player.modPlayers[index].ConsumeAmmo(weapon, ammo)) {
+		public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo) {
+			foreach (int index in HookCanConsumeAmmo.arr) {
+				if (!player.modPlayers[index].CanConsumeAmmo(weapon, ammo)) {
 					return false;
 				}
 			}
@@ -782,20 +802,34 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateCatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType);
+		private delegate void DelegateCatchFish(FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
 		private static HookList HookCatchFish = AddHook<DelegateCatchFish>(p => p.CatchFish);
 
-		public static void CatchFish(Player player, Item fishingRod, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType) {
-			int i = 0;
-			while (i < 58) {
-				if (player.inventory[i].stack > 0 && player.inventory[i].bait > 0) {
-					break;
-				}
-				i++;
-			}
+		public static void CatchFish(Player player, FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
 			foreach (int index in HookCatchFish.arr) {
-				player.modPlayers[index].CatchFish(fishingRod, player.inventory[i], power, liquidType, poolSize, worldLayer, questFish, ref caughtType);
+				player.modPlayers[index].CatchFish(attempt, ref itemDrop, ref enemySpawn, ref sonar, ref sonarPosition);
 			}
+		}
+
+		private delegate void DelegateModifyCaughtFish(Item fish);
+		private static HookList HookCaughtFish = AddHook<DelegateModifyCaughtFish>(p => p.ModifyCaughtFish);
+
+		public static void ModifyCaughtFish(Player player, Item fish) {
+			foreach (int index in HookCaughtFish.arr) {
+				player.modPlayers[index].ModifyCaughtFish(fish);
+			}
+		}
+
+		private delegate bool? DelegateCanConsumeBait(Item bait);
+		private static HookList HookCanConsumeBait = AddHook<DelegateCanConsumeBait>(p => p.CanConsumeBait);
+
+		public static bool? CanConsumeBait(Player player, Item bait) {
+			bool? ret = null;
+			foreach (int index in HookCaughtFish.arr) {
+				if (player.modPlayers[index].CanConsumeBait(bait) is bool b)
+					ret = (ret ?? true) && b;
+			}
+			return ret;
 		}
 
 		private delegate void DelegateGetFishingLevel(Item fishingRod, Item bait, ref float fishingLevel);
@@ -923,31 +957,43 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		private static bool HasMethod(Type t, string method, params Type[] args) {
-			return t.GetMethod(method, args).DeclaringType != typeof(ModPlayer);
-		}
-
-		internal static void VerifyGlobalItem(ModPlayer player) {
+		internal static void VerifyModPlayer(ModPlayer player) {
 			var type = player.GetType();
 
+			// Shortcut
+			static bool HasMethod(Type type, string method, params Type[] parameters) => LoaderUtils.HasMethod(type, typeof(ModPlayer), method, parameters);
+
+			/*
 			int netClientMethods = 0;
-			if (HasMethod(type, "clientClone", typeof(ModPlayer))) netClientMethods++;
-			if (HasMethod(type, "SyncPlayer", typeof(int), typeof(int), typeof(bool))) netClientMethods++;
-			if (HasMethod(type, "SendClientChanges", typeof(ModPlayer))) netClientMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.clientClone), typeof(ModPlayer)))
+				netClientMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.SyncPlayer), typeof(int), typeof(int), typeof(bool)))
+				netClientMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.SendClientChanges), typeof(ModPlayer)))
+				netClientMethods++;
+
 			if (netClientMethods > 0 && netClientMethods < 3)
-				throw new Exception(type + " must override all of (clientClone/SyncPlayer/SendClientChanges) or none");
+				throw new Exception($"{type} must override all of ({nameof(ModPlayer.clientClone)}/{nameof(ModPlayer.SyncPlayer)}/{nameof(ModPlayer.SendClientChanges)}) or none");
+			*/
 
 			int saveMethods = 0;
-			if (HasMethod(type, "Save")) saveMethods++;
-			if (HasMethod(type, "Load", typeof(TagCompound))) saveMethods++;
-			if (saveMethods == 1)
-				throw new Exception(type + " must override all of (Save/Load) or none");
 
-			int netMethods = 0;
-			if (HasMethod(type, "NetSend", typeof(BinaryWriter))) netMethods++;
-			if (HasMethod(type, "NetReceive", typeof(BinaryReader))) netMethods++;
-			if (netMethods == 1)
-				throw new Exception(type + " must override both of (NetSend/NetReceive) or none");
+			if (HasMethod(type, nameof(ModPlayer.SaveData), typeof(TagCompound)))
+				saveMethods++;
+
+			if (HasMethod(type, nameof(ModPlayer.LoadData), typeof(TagCompound)))
+				saveMethods++;
+
+			if (saveMethods == 1)
+				throw new Exception($"{type} must override both of ({nameof(ModPlayer.SaveData)}/{nameof(ModPlayer.LoadData)}) or none");
+
+			// @TODO: Remove on release
+			if ((saveMethods == 0) && HasMethod(type, "Save"))
+				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
 		}
 
 		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);
@@ -997,6 +1043,26 @@ namespace Terraria.ModLoader
 			}
 
 			return result;
+		}
+
+		private static HookList HookCanAutoReuseItem = AddHook<Func<Item, bool?>>(p => p.CanAutoReuseItem);
+
+		public static bool? CanAutoReuseItem(Player player, Item item) {
+			bool? flag = null;
+
+			foreach (int index in HookCanAutoReuseItem.arr) {
+				bool? allow = player.modPlayers[index].CanAutoReuseItem(item);
+
+				if (allow.HasValue) {
+					if (!allow.Value) {
+						return false;
+					}
+
+					flag = true;
+				}
+			}
+
+			return flag;
 		}
 
 		private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);

@@ -53,18 +53,19 @@ namespace Terraria.ModLoader.Config.UI
 
 			modList.SetScrollbar(uIScrollbar);
 
-			UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsModsList"), 0.8f, true);
+			UITextPanel<string> uIHeaderTexTPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfiguration"), 0.8f, true);
 			uIHeaderTexTPanel.HAlign = 0.5f;
 			uIHeaderTexTPanel.Top.Set(-35f, 0f);
 			uIHeaderTexTPanel.SetPadding(15f);
 			uIHeaderTexTPanel.BackgroundColor = UICommon.DefaultUIBlue;
 			uIElement.Append(uIHeaderTexTPanel);
 
-			buttonB = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 1f, false);
-			buttonB.Width.Set(-10f, 1f / 3f);
-			buttonB.Height.Set(25f, 0f);
+			buttonB = new UITextPanel<string>(Language.GetTextValue("UI.Back"), 0.7f, large: true);
+			buttonB.Width.Set(-10f, 0.5f);
+			buttonB.Height.Set(50f, 0f);
 			buttonB.VAlign = 1f;
-			buttonB.Top.Set(-20f, 0f);
+			buttonB.HAlign = 0.5f;
+			buttonB.Top.Set(-45f, 0f);
 			buttonB.WithFadedMouseOver();
 			buttonB.OnClick += BackClick;
 			uIElement.Append(buttonB);
