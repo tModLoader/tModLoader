@@ -12,10 +12,10 @@
       <Value Profile="(Default)">2015-01-01</Value>
     </Setting>
     <Setting Name="ClientVersion" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">1.4.3.2</Value>
+      <Value Profile="(Default)">1.4.3.4</Value>
     </Setting>
     <Setting Name="ServerVersion" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">1.4.3.2</Value>
+      <Value Profile="(Default)">1.4.3.4</Value>
     </Setting>
     <Setting Name="PatchMode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -24,13 +24,13 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="GoGClientWinMD5" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">6352ded8d64d0f67fdf10ff2a6f9e51f</Value>
+      <Value Profile="(Default)">d160208f7848ae2ff5c327c6e10d63d7</Value>
     </Setting>
     <Setting Name="TMLDevSteamDir" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="SteamClientWinMD5" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">201707bba92e27f09d05529e2f051c60</Value>
+      <Value Profile="(Default)">7e00029a1fccc25fabe78d293a04257f</Value>
     </Setting>
   </Settings>
 </SettingsFile>
