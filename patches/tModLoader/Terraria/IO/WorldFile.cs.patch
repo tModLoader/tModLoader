@@ -216,7 +216,7 @@
  					sign = new Sign();
  					sign.text = text;
  					sign.x = num2;
-@@ -2186,6 +_,7 @@
+@@ -2183,6 +_,7 @@
  				return result;
  			}
  			catch (Exception value) {
@@ -224,7 +224,7 @@
  				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
  					streamWriter.WriteLine(DateTime.Now);
  					streamWriter.WriteLine(value);
-@@ -2236,8 +_,8 @@
+@@ -2233,8 +_,8 @@
  
  		public static int SaveTileEntities(BinaryWriter writer) {
  			lock (TileEntity.EntityCreationLock) {

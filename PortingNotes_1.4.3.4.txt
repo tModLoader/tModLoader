@@ -1,3 +1,9 @@
+Notes:
+
+- Add '(float)player.meleeAddDamage' to Player.GetWeaponDamage(Item)
+
+Failed Patches:
+
 // ShopHelper.cs:
 @@ -16,10 +17,10 @@
  		private float _currentPriceAdjustment;

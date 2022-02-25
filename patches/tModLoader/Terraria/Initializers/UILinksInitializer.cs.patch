@@ -10,7 +10,7 @@
  using Terraria.UI;
  using Terraria.UI.Gamepad;
  
-@@ -632,7 +_,7 @@
+@@ -640,7 +_,7 @@
  				return PlayerInput.BuildCommand(Lang.misc[56].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Inventory"]) + PlayerInput.BuildCommand(Lang.misc[64].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["HotbarMinus"], PlayerInput.ProfileGamepadUI.KeyStatus["HotbarPlus"]) + PlayerInput.BuildCommand(Lang.misc[70].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["Grapple"]) + PlayerInput.BuildCommand(Lang.misc[69].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["SmartSelect"]) + (flag6 ? PlayerInput.BuildCommand("Evict", false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]) : "");
  			};
  
@@ -19,7 +19,7 @@
  				UILinkPoint value13 = new UILinkPoint(num12, enabled: true, num12 + 10, num12 - 10, num12 - 1, num12 + 1);
  				cp14.LinkMap.Add(num12, value13);
  			}
-@@ -642,7 +_,7 @@
+@@ -650,7 +_,7 @@
  				if (num56 == 0)
  					num56 = 100;
  
@@ -28,7 +28,7 @@
  					cp14.LinkMap[600 + num57].Up = ((num57 % num56 == 0) ? (-1) : (600 + num57 - 1));
  					if (cp14.LinkMap[600 + num57].Up == -1) {
  						if (num57 >= num56 * 2)
-@@ -867,10 +_,12 @@
+@@ -878,10 +_,12 @@
  				}
  
  				bool flag4 = Main.mouseItem.stack <= 0;
@@ -43,7 +43,7 @@
  					str2 += PlayerInput.BuildCommand(Lang.misc[93].Value, false, PlayerInput.ProfileGamepadUI.KeyStatus["MouseRight"]);
  
  				if (flag3)
-@@ -1584,6 +_,13 @@
+@@ -1594,6 +_,13 @@
  					break;
  				case 7:
  					(Main.MenuUI.CurrentState as IHaveBackButtonCommand)?.HandleBackButtonUsage();

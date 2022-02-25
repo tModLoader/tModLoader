@@ -1,14 +1,15 @@
 --- src/TerrariaNetCore/Terraria/Item.cs
 +++ src/tModLoader/Terraria/Item.cs
-@@ -1,6 +_,7 @@
+@@ -1,7 +_,8 @@
  using Microsoft.Xna.Framework;
  using System;
  using System.IO;
 +using System.Linq;
  using Terraria.Audio;
+ using Terraria.DataStructures;
  using Terraria.Enums;
  using Terraria.GameContent;
-@@ -10,10 +_,12 @@
+@@ -11,10 +_,12 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
@@ -22,7 +23,7 @@
  	{
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
-@@ -50,7 +_,7 @@
+@@ -51,7 +_,7 @@
  		public int tileWand = -1;
  		public bool wornArmor;
  		public int tooltipContext = -1;
@@ -31,7 +32,7 @@
  		public int fishingPole = 1;
  		public int bait;
  		public static int coinGrabRange = 350;
-@@ -60,8 +_,10 @@
+@@ -61,8 +_,10 @@
  		public short makeNPC;
  		public bool expertOnly;
  		public bool expert;
@@ -43,7 +44,7 @@
  		public byte paint;
  		public bool instanced;
  		public int ownIgnore = -1;
-@@ -147,11 +_,44 @@
+@@ -148,11 +_,44 @@
  		public bool DD2Summon;
  		public int netID;
  		public int crit;
@@ -93,7 +94,7 @@
  		public bool sentry;
  		public int reuseDelay;
  		public bool newAndShiny;
-@@ -159,6 +_,18 @@
+@@ -160,6 +_,18 @@
  		public const int WALL_PLACEMENT_USETIME = 7;
  		public static int numberOfNewItems = 0;
  
@@ -112,7 +113,7 @@
  		public string Name => _nameOverride ?? Lang.GetItemNameValue(type);
  
  		public string HoverName {
-@@ -180,11 +_,11 @@
+@@ -181,11 +_,11 @@
  			}
  		}
  
@@ -129,7 +130,7 @@
  
  		public bool IsACoin {
  			get {
-@@ -269,6 +_,10 @@
+@@ -270,6 +_,10 @@
  				return false;
  
  			UnifiedRandom unifiedRandom = WorldGen.gen ? WorldGen.genRand : Main.rand;
@@ -140,7 +141,7 @@
  			int num = pre;
  			float num2 = 1f;
  			float num3 = 1f;
-@@ -287,15 +_,20 @@
+@@ -288,15 +_,20 @@
  				num7 = 1f;
  				num8 = 0;
  				flag = false;
@@ -164,7 +165,7 @@
  						if (num9 == 0)
  							num = 1;
  
-@@ -415,9 +_,12 @@
+@@ -416,9 +_,12 @@
  
  						if (num9 == 39)
  							num = 81;
@@ -179,7 +180,7 @@
  						if (num10 == 0)
  							num = 36;
  
-@@ -459,9 +_,12 @@
+@@ -460,9 +_,12 @@
  
  						if (num10 == 13)
  							num = 61;
@@ -194,7 +195,7 @@
  						if (num11 == 0)
  							num = 16;
  
-@@ -566,9 +_,12 @@
+@@ -567,9 +_,12 @@
  
  						if (num11 == 34)
  							num = 82;
@@ -209,7 +210,7 @@
  						if (num12 == 0)
  							num = 26;
  
-@@ -676,9 +_,12 @@
+@@ -677,9 +_,12 @@
  
  						if (num12 == 35)
  							num = 83;
@@ -224,7 +225,7 @@
  						if (type == 3389)
  							num13 = unifiedRandom.Next(15);
  
-@@ -726,12 +_,15 @@
+@@ -727,12 +_,15 @@
  
  						if (num13 == 14)
  							num = 84;
@@ -240,7 +241,7 @@
  					}
  				}
  
-@@ -739,7 +_,7 @@
+@@ -740,7 +_,7 @@
  					case -3:
  						return true;
  					case -1:
@@ -249,7 +250,7 @@
  							num = 0;
  						break;
  				}
-@@ -1018,6 +_,8 @@
+@@ -1019,6 +_,8 @@
  						num8 = 2;
  						break;
  				}
@@ -258,7 +259,7 @@
  
  				if (num2 != 1f && Math.Round((float)damage * num2) == (double)damage) {
  					flag = true;
-@@ -1039,11 +_,19 @@
+@@ -1040,11 +_,19 @@
  					num = -1;
  				}
  
@@ -278,7 +279,7 @@
  
  			damage = (int)Math.Round((float)damage * num2);
  			useAnimation = (int)Math.Round((float)useAnimation * num4);
-@@ -1054,6 +_,12 @@
+@@ -1055,6 +_,12 @@
  			scale *= num5;
  			shootSpeed *= num6;
  			crit += num8;
@@ -291,7 +292,7 @@
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
  				num14 *= 1.05f;
-@@ -1067,6 +_,10 @@
+@@ -1068,6 +_,10 @@
  			if (num == 65 || num == 72 || num == 76 || num == 80 || num == 68)
  				num14 *= 1.2f;
  
@@ -302,7 +303,7 @@
  			if ((double)num14 >= 1.2)
  				rare += 2;
  			else if ((double)num14 >= 1.05)
-@@ -1076,17 +_,22 @@
+@@ -1077,17 +_,22 @@
  			else if ((double)num14 <= 0.95)
  				rare--;
  
@@ -328,7 +329,7 @@
  			return true;
  		}
  
-@@ -1119,6 +_,8 @@
+@@ -1120,6 +_,8 @@
  		public Rectangle getRect() => new Rectangle((int)position.X, (int)position.Y, width, height);
  
  		public bool checkMat() {
@@ -337,7 +338,7 @@
  			if (type >= 71 && type <= 74) {
  				material = false;
  				return false;
-@@ -1318,6 +_,9 @@
+@@ -1319,6 +_,9 @@
  		}
  
  		public static int BannerToItem(int banner) {
@@ -347,7 +348,7 @@
  			int num = 0;
  			if (banner >= 276)
  				return 4965 + banner - 276;
-@@ -2083,9 +_,10 @@
+@@ -2084,9 +_,10 @@
  					return 287;
  				case 133:
  					return 288;
@@ -360,7 +361,7 @@
  		}
  
  		public static int BannerToNPC(int i) {
-@@ -2654,9 +_,10 @@
+@@ -2655,9 +_,10 @@
  					return 176;
  				case 288:
  					return 133;
@@ -373,7 +374,7 @@
  		}
  
  		public bool FitsAmmoSlot() {
-@@ -44383,7 +_,7 @@
+@@ -44387,7 +_,7 @@
  			return false;
  		}
  
@@ -382,7 +383,7 @@
  			useStyle = 1;
  			autoReuse = true;
  			useAnimation = 15;
-@@ -44795,6 +_,11 @@
+@@ -44799,6 +_,11 @@
  			mountType = mount;
  		}
  
@@ -394,7 +395,7 @@
  		public void DefaultToPlacableWall(ushort wallToPlace) {
  			useStyle = 1;
  			useTurn = true;
-@@ -44814,6 +_,14 @@
+@@ -44818,6 +_,14 @@
  			crit = bonusCritChance;
  		}
  
@@ -409,7 +410,7 @@
  		public void DefaultToBow(int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
  			DefaultToRangedWeapon(1, AmmoID.Arrow, singleShotTime, shotVelocity, hasAutoReuse);
  			width = 14;
-@@ -44832,6 +_,15 @@
+@@ -44836,6 +_,15 @@
  			magic = true;
  		}
  
@@ -425,7 +426,7 @@
  		public void DefaultToRangedWeapon(int baseProjType, int ammoID, int singleShotTime, float shotVelocity, bool hasAutoReuse = false) {
  			autoReuse = hasAutoReuse;
  			useStyle = 5;
-@@ -44857,7 +_,7 @@
+@@ -44861,7 +_,7 @@
  			maxStack = 999;
  		}
  
@@ -434,7 +435,7 @@
  			flame = true;
  			noWet = !allowWaterPlacement;
  			holdStyle = 1;
-@@ -45002,6 +_,16 @@
+@@ -45006,6 +_,16 @@
  			SetDefaults(Type, noMatCheck: false);
  		}
  
@@ -451,7 +452,7 @@
  		public void SetDefaults(int Type, bool noMatCheck = false) {
  			if (Type < 0) {
  				netDefaults(Type);
-@@ -45014,8 +_,10 @@
+@@ -45018,8 +_,10 @@
  				playerIndexTheItemIsReservedFor = Main.myPlayer;
  
  			ResetStats(Type);
@@ -462,7 +463,7 @@
  
  			if (type == 0) {
  				netID = 0;
-@@ -45040,7 +_,15 @@
+@@ -45044,7 +_,15 @@
  				SetDefaults5(type);
  			}
  
@@ -479,7 +480,7 @@
  			if (hairDye != 0)
  				hairDye = GameShaders.Hair.GetShaderIdFromItemId(type);
  
-@@ -45189,11 +_,12 @@
+@@ -45193,11 +_,12 @@
  				maxStack = 999;
  
  			netID = type;
@@ -493,7 +494,7 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -45203,14 +_,20 @@
+@@ -45207,14 +_,20 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
@@ -514,7 +515,7 @@
  			instanced = false;
  			questItem = false;
  			fishingPole = 0;
-@@ -45227,10 +_,12 @@
+@@ -45231,10 +_,12 @@
  			mech = false;
  			flame = false;
  			reuseDelay = 0;
@@ -527,7 +528,7 @@
  			placeStyle = 0;
  			buffTime = 0;
  			buffType = 0;
-@@ -45306,6 +_,10 @@
+@@ -45310,6 +_,10 @@
  		}
  
  		public Color GetAlpha(Color newColor) {
@@ -538,7 +539,7 @@
  			switch (type) {
  				case 3318:
  				case 3319:
-@@ -45612,6 +_,7 @@
+@@ -45616,6 +_,7 @@
  				timeSinceItemSpawned += num3;
  			}
  
@@ -546,7 +547,7 @@
  			if (Main.netMode == 2 && playerIndexTheItemIsReservedFor != Main.myPlayer) {
  				timeSinceTheItemHasBeenReservedForSomeone++;
  				if (timeSinceTheItemHasBeenReservedForSomeone >= 300) {
-@@ -45692,6 +_,7 @@
+@@ -45696,6 +_,7 @@
  		}
  
  		private void CheckLavaDeath(int i) {
@@ -554,7 +555,7 @@
  			if (type == 267) {
  				if (Main.netMode == 1)
  					return;
-@@ -45711,7 +_,9 @@
+@@ -45715,7 +_,9 @@
  
  				NetMessage.SendData(21, -1, -1, null, i);
  			}
@@ -565,7 +566,7 @@
  				active = false;
  				type = 0;
  				stack = 0;
-@@ -45721,6 +_,7 @@
+@@ -45725,6 +_,7 @@
  		}
  
  		private void MoveInWorld(float gravity, float maxFallSpeed, ref Vector2 wetVelocity) {
@@ -573,7 +574,7 @@
  			if (ItemID.Sets.ItemNoGravity[type]) {
  				base.velocity.X *= 0.95f;
  				if ((double)base.velocity.X < 0.1 && (double)base.velocity.X > -0.1)
-@@ -45731,6 +_,7 @@
+@@ -45735,6 +_,7 @@
  					base.velocity.Y = 0f;
  			}
  			else {
@@ -581,7 +582,7 @@
  				base.velocity.Y += gravity;
  				if (base.velocity.Y > maxFallSpeed)
  					base.velocity.Y = maxFallSpeed;
-@@ -45930,6 +_,12 @@
+@@ -45934,6 +_,12 @@
  					num2 *= 2;
  
  				if (num < (float)num2) {
@@ -594,7 +595,7 @@
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
  					int num3 = item.stack;
-@@ -46290,6 +_,9 @@
+@@ -46294,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
  
@@ -604,7 +605,7 @@
  			if (Main.tenthAnniversaryWorld) {
  				if (Type == 58) {
  					Type = Main.rand.NextFromList(new short[3] {
-@@ -46430,14 +_,17 @@
+@@ -46434,14 +_,17 @@
  						continue;
  
  					Player.ItemSpaceStatus status = player.ItemSpace(Main.item[whoAmI]);
@@ -625,7 +626,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46456,17 +_,43 @@
+@@ -46460,17 +_,43 @@
  			}
  		}
  
@@ -674,7 +675,7 @@
  			if (netID == compareItem.netID && stack == compareItem.stack)
  				return prefix != compareItem.prefix;
  
-@@ -46489,6 +_,8 @@
+@@ -46493,6 +_,8 @@
  			dye = 0;
  			shoot = 0;
  			mountType = -1;
@@ -683,7 +684,7 @@
  		}
  
  		public void OnPurchase(Item item) {
-@@ -46509,7 +_,7 @@
+@@ -46513,7 +_,7 @@
  			if (context == ItemSerializationContext.SavingAndLoading) {
  				writer.Write(netID);
  				writer.Write(stack);
@@ -692,7 +693,7 @@
  			}
  		}
  
-@@ -46520,7 +_,7 @@
+@@ -46524,7 +_,7 @@
  				Prefix(reader.ReadByte());
  			}
  

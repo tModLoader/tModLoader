@@ -13,8 +13,8 @@
  	{
  		private IBigProgressBar _currentBar;
  		private CommonBossBigProgressBar _bossBar = new CommonBossBigProgressBar();
-@@ -48,16 +_,30 @@
- 			{ 68, _neverValid }		};
+@@ -50,16 +_,30 @@
+ 			{ 668, _deerclopsBar }		};
  
  		public void Update() {
 +			if (BossBarLoader.CurrentStyle.PreventUpdate)
@@ -45,7 +45,7 @@
  		}
  
  		private void TryFindingNPCToTrack() {
-@@ -86,7 +_,12 @@
+@@ -88,7 +_,12 @@
  			bigProgressBarInfo.npcIndexToAimAt = npcIndex;
  			BigProgressBarInfo info = bigProgressBarInfo;
  			IBigProgressBar bigProgressBar = _bossBar;

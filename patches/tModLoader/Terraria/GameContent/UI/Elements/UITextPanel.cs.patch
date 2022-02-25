@@ -9,7 +9,7 @@
  
  namespace Terraria.GameContent.UI.Elements
  {
-@@ -68,7 +_,9 @@
+@@ -70,7 +_,9 @@
  		}
  
  		public virtual void SetText(T text, float textScale, bool large) {
