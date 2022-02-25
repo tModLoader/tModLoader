@@ -192,103 +192,107 @@
  			}
  			else {
  				Console.Title = "Terraria Server " + versionNumber2;
-@@ -4791,9 +_,11 @@
+@@ -4791,6 +_,11 @@
  			instance = this;
  			UnpausedUpdateSeed = (ulong)Guid.NewGuid().GetHashCode();
  			base.Exiting += Main_Exiting;
-+#if CLIENT
++
++			if (Main.dedServ) {
++				return;
++			}
++
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
  			base.Content.RootDirectory = "Content";
-+#endif
- 		}
- 
- 		private void Main_Exiting(object sender, EventArgs e) {
-@@ -4821,8 +_,10 @@
+@@ -4821,6 +_,9 @@
  		}
  
  		protected void SetTitle() {
-+#if CLIENT
++			if (Main.dedServ)
++				return;
++
  			_cachedTitle = Lang.GetRandomGameTitle();
  			Platform.Get<IWindowService>().SetUnicodeTitle(base.Window, _cachedTitle);
-+#endif
  		}
- 
- 		private static void SetTileValue() {
-@@ -4862,6 +_,11 @@
+@@ -4862,6 +_,10 @@
  
  		protected override void Initialize() {
  			musicFade[50] = 1f;
 +
-+#if SERVER
-+			netMode = 2;
-+#endif
++			if (Main.dedServ)
++				netMode = 2;
 +
  			for (int i = 0; i < 10; i++) {
  				recentWorld[i] = "";
  				recentIP[i] = "";
-@@ -4887,7 +_,9 @@
+@@ -4887,7 +_,10 @@
  			WorldGen.Hooks.OnWorldLoad += delegate {
  				AmbienceServer = new AmbienceServer();
  				LocalGolfState = new GolfState();
-+#if CLIENT
- 				Lighting.Clear();
-+#endif
++
++				if (!dedServ) {
+-				Lighting.Clear();
++					Lighting.Clear();
++				}
  			};
  
  			DontStarveSeed.Initialize();
-@@ -4901,10 +_,15 @@
+@@ -4901,6 +_,12 @@
  			};
  
  			SceneMetrics = new SceneMetrics();
 +
-+#if SERVER
-+			Initialize_AlmostEverything();
-+#else
++			if (Main.dedServ) {
++				Initialize_AlmostEverything();
++				return;
++			}
++
  			TimeLogger.Initialize();
  			LoadContent_TryEnteringHiDef();
  			ClientInitialize();
- 			base.Initialize();
-+#endif
- 		}
- 
- 		private void Initialize_AlmostEverything() {
-@@ -4941,10 +_,15 @@
+@@ -4941,10 +_,24 @@
  			ItemDropSolver = new ItemDropResolver(itemDropDatabase);
  			ShopHelper = new ShopHelper();
  			CreativeItemSacrificesCatalog.Instance.Initialize();
-+#if CLIENT
++
++			if (dedServ)
++				goto ServerCode1;
++
  			BestiaryUI = new UIBestiaryTest(BestiaryDB);
  			ContentThatNeedsRenderTargets.Add(MapPlayerRenderer);
  			Lighting.Initialize();
  			MapHelper.Initialize();
-+#else
++
++			goto PostServerCode1;
++
++			ServerCode1:
++
 +			Mount.Initialize();
 +			Minecart.Initialize();
-+#endif
++
++			PostServerCode1:
++
  			WorldGen.RandomizeBackgrounds(rand);
  			if (treeBGSet1[0] == 173)
  				WorldGen.RandomizeBackgrounds(rand);
-@@ -5018,15 +_,19 @@
+@@ -5018,11 +_,16 @@
  				ActivePlayerFileData.StartPlayTimer();
  				Player.Hooks.EnterWorld(myPlayer);
  			}
-+#if CLIENT
+-			else {
 +#if WINDOWS
- 			else {
++			else if (!Main.dedServ) {
  				IntPtr systemMenu = GetSystemMenu(base.Window.Handle, bRevert: false);
  				int menuItemCount = GetMenuItemCount(systemMenu);
  				RemoveMenu(systemMenu, menuItemCount - 1, 1024);
  			}
 +#endif
++
++			if (Main.dedServ)
++				return;
  
  			SoundID.FillAccessMap();
  			Star.SpawnStars();
- 			ItemSorting.SetupWhiteLists();
-+#endif
- 		}
- 
- 		private void Initialize_Entities() {
 @@ -8349,12 +_,16 @@
  			Configuration.Load();
  			Configuration.Get("UseExperimentalFeatures", ref UseExperimentalFeatures);
@@ -315,50 +319,52 @@
  			CacheSupportedDisplaySizes();
  			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
  			ContentSamples.CommonlyUsedContentSamples.PrepareAfterEverythingElseLoaded();
-@@ -8516,8 +_,10 @@
+@@ -8516,7 +_,7 @@
  			if (!SoundEngine.IsAudioSupported || !_musicLoaded)
  				return;
  
-+#if CLIENT
- 			if (!showSplash)
+-			if (!showSplash)
++			if (!dedServ && !showSplash) // if (!showSplash)
  				SoundEngine.Update();
-+#endif
  
  			if (musicVolume == 0f)
- 				curMusic = 0;
-@@ -12341,11 +_,13 @@
+@@ -12341,6 +_,9 @@
  		}
  
  		public static void NotifyOfEvent(GameNotificationType type) {
-+#if CLIENT
++			if (Main.dedServ)
++				return;
++
  			if (!instance.IsActive && _flashNotificationType.HasFlag(type)) {
  				QueueMainThreadAction(delegate {
  					Platform.Get<IWindowService>().StartFlashingIcon(instance.Window);
- 				});
- 			}
-+#endif
- 		}
- 
- 		protected void DoUpdate(ref GameTime gameTime) {
-@@ -12394,12 +_,18 @@
+@@ -12394,13 +_,26 @@
  				InGameUI.SetState(null);
  
  			CurrentInputTextTakerOverride = null;
-+#if CLIENT
++
++			if (dedServ)
++				goto SkipAchievemntAdvisorUpdate;
++
  			AchievementAdvisor.Update();
-+#endif
++
++			SkipAchievemntAdvisorUpdate:
 +
  			PlayerInput.SetZoom_Unscaled();
  			MouseOversTryToClear();
  			PlayerInput.ResetInputsOnActiveStateChange();
 +
-+#if CLIENT
++			if (Main.dedServ)
++				goto SkipSpecialOnTick;
++
  			if (Main.OnTickForThirdPartySoftwareOnly != null)
  				Main.OnTickForThirdPartySoftwareOnly();
-+#endif
  
++			SkipSpecialOnTick:
++
  			if (_hasPendingNetmodeChange) {
  				netMode = _targetNetMode;
+ 				_hasPendingNetmodeChange = false;
 @@ -12603,12 +_,14 @@
  
  				UpdateOldNPCShop();
@@ -374,43 +380,40 @@
  
  				if (!hasFocus && netMode == 0) {
  					if (!Platform.IsOSX)
-@@ -12685,7 +_,11 @@
+@@ -12685,7 +_,9 @@
  			if (Main.OnTickForInternalCodeOnly != null)
  				Main.OnTickForInternalCodeOnly();
  
-+#if CLIENT
- 			if (netMode != 1 && !gameMenu && !gamePaused && AmbienceServer != null)
-+#else
-+			if (AmbienceServer != null)
-+#endif
+-			if (netMode != 1 && !gameMenu && !gamePaused && AmbienceServer != null)
++			// Client - if (netMode != 1 && !gameMenu && !gamePaused && AmbienceServer != null)
++			// Server - if (AmbienceServer != null)
++			if ((dedServ || (netMode != 1 && !gameMenu && !gamePaused)) && AmbienceServer != null)
  				AmbienceServer.Update();
  
  			WorldGen.BackgroundsCache.UpdateFlashValues();
-@@ -14615,6 +_,9 @@
+@@ -14615,6 +_,10 @@
  		public static extern short GetKeyState(int keyCode);
  
  		public static string GetInputText(string oldString, bool allowMultiLine = false) {
-+#if SERVER
-+			return "";
-+#else
++			if (Main.dedServ) {
++				return "";
++			}
++
  			if (!hasFocus)
  				return oldString;
  
-@@ -14701,6 +_,7 @@
- 			}
- 
- 			return text;
-+#endif
- 		}
- 
- 		private static string PasteTextIn(bool allowMultiLine, string newKeys) {
-@@ -36040,9 +_,14 @@
+@@ -36040,9 +_,19 @@
  
  		protected void QuitGame() {
  			SaveSettings();
-+#if CLIENT
++
++			if (dedServ)
++				goto PostClientThings;
++
  			SocialAPI.Shutdown();
-+#endif
++
++			PostClientThings:
++
  			Assets.TransferCompletedAssets();
  			Exit();
 +#if MAC
@@ -467,34 +470,26 @@
  			try {
  				DrawWaters(isBackground: true);
  			}
-@@ -43497,9 +_,11 @@
+@@ -43497,6 +_,9 @@
  		}
  
  		public static void TriggerPing(Vector2 position) {
-+#if CLIENT
++			if (dedServ)
++				return;
++
  			Pings.Add(position);
  			if (netMode == 1)
  				NetManager.Instance.SendToServer(NetPingModule.Serialize(position));
-+#endif
- 		}
- 
- 		private static void DrawNPCHeadFriendly(Entity theNPC, byte alpha, float headScale, SpriteEffects dir, int npcID, float x, float y) {
-@@ -47341,6 +_,7 @@
+@@ -47341,6 +_,9 @@
  		}
  
  		private static void CheckMonoliths() {
-+#if CLIENT
++			if (dedServ)
++				return;
++
  			bool flag = player[myPlayer].ZoneTowerVortex || player[myPlayer].ZoneTowerNebula || player[myPlayer].ZoneTowerStardust || player[myPlayer].ZoneTowerSolar;
  			for (int i = 0; i < MonolithFilterNames.Length; i++) {
  				if (!flag && i == SceneMetrics.ActiveMonolithType) {
-@@ -47358,6 +_,7 @@
- 						SkyManager.Instance.Deactivate(MonolithSkyNames[i]);
- 				}
- 			}
-+#endif
- 		}
- 
- 		private void GraphicsDeviceLost(object sender, EventArgs evt) {
 @@ -47426,10 +_,15 @@
  			if (!base.IsActive)
  				maxQ = true;
