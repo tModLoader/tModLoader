@@ -22,4 +22,4 @@
 +			set => _sourceProjectileType = value??-1;
  		}
  
- 		public static PlayerDeathReason LegacyEmpty() {
+ 		public bool TryGetCausingEntity(out Entity entity) {

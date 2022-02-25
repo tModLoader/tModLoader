@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
 +++ src/tModLoader/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
-@@ -1,12 +_,66 @@
+@@ -1,7 +_,63 @@
  using System.Collections.Generic;
 +using Terraria;
 +using Terraria.ModLoader;
@@ -15,8 +15,8 @@
 +		}
 +
  		public void ModifyShopPrice(HelperInfo info, ShopHelper shopHelperInstance) {
- 			int primaryPlayerBiome = info.PrimaryPlayerBiome;
- 			bool[] nearbyNPCsByType = info.nearbyNPCsByType;
++			int primaryPlayerBiome = info.PrimaryPlayerBiome;
++ 			bool[] nearbyNPCsByType = info.nearbyNPCsByType;
 +			var npc = info.npc;
 +			var npcHappiness = npc.Happiness;
 +
@@ -64,20 +64,7 @@
 +		}
 +
 +		private static void RegisterNpcToBiomeRelationships_Inner(HelperInfo info, NPCHappiness shopHelperInstance, int primaryPlayerBiome) {
- 			switch (info.npc.type) {
- 				case 17:
- 				case 22:
-@@ -112,7 +_,9 @@
- 						shopHelperInstance.DislikeBiome(primaryPlayerBiome);
- 					break;
- 			}
-+		}
- 
-+		private static void ModifyShopPrice_Inner(HelperInfo info, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
- 			if (info.npc.type == 663) {
- 				List<int> list = new List<int>();
- 				for (int i = 0; i < nearbyNPCsByType.Length; i++) {
-@@ -133,6 +_,10 @@
+@@ -30,6 +_,10 @@
  
  			if (info.npc.type != 663 && nearbyNPCsByType[663])
  				shopHelperInstance.LikePrincess();
