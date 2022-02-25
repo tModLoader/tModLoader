@@ -68,7 +68,7 @@
  			if (Main.netMode == 1)
  				return;
  
-@@ -788,6 +_,9 @@
+@@ -790,6 +_,9 @@
  			if (!tile.active())
  				return;
  
@@ -78,7 +78,7 @@
  			switch (type) {
  				case 144:
  					HitSwitch(i, j);
-@@ -1117,14 +_,14 @@
+@@ -1119,14 +_,14 @@
  				return;
  			}
  
@@ -95,7 +95,7 @@
  				int num55 = 1;
  				if (Main.rand.Next(2) == 0)
  					num55 = -1;
-@@ -1212,7 +_,7 @@
+@@ -1214,7 +_,7 @@
  
  						break;
  					}
@@ -104,7 +104,7 @@
  					ToggleTorch(i, j, tile, forcedStateWhereTrueIsOn);
  					break;
  				case 429: {
-@@ -1595,6 +_,7 @@
+@@ -1597,6 +_,7 @@
  					}
  				case 35:
  				case 139:
@@ -112,7 +112,7 @@
  					WorldGen.SwitchMB(i, j);
  					break;
  				case 207:
-@@ -1983,14 +_,18 @@
+@@ -1985,14 +_,18 @@
  											break;
  
  										int num108 = 50;
@@ -135,7 +135,7 @@
  											}
  										}
  
-@@ -1999,6 +_,7 @@
+@@ -2001,6 +_,7 @@
  											Main.npc[num111].position.X = num100 - Main.npc[num111].width / 2;
  											Main.npc[num111].position.Y = num101 - Main.npc[num111].height - 1;
  											NetMessage.SendData(23, -1, -1, null, num111);
@@ -143,7 +143,7 @@
  										}
  
  										break;
-@@ -2008,14 +_,18 @@
+@@ -2010,14 +_,18 @@
  											break;
  
  										int num104 = 50;
@@ -166,7 +166,7 @@
  											}
  										}
  
-@@ -2024,6 +_,7 @@
+@@ -2026,6 +_,7 @@
  											Main.npc[num107].position.X = num100 - Main.npc[num107].width / 2;
  											Main.npc[num107].position.Y = num101 - Main.npc[num107].height - 1;
  											NetMessage.SendData(23, -1, -1, null, num107);
@@ -174,7 +174,7 @@
  										}
  
  										break;
-@@ -2105,6 +_,8 @@
+@@ -2107,6 +_,8 @@
  					NetMessage.SendTileSquare(-1, i, j);
  					break;
  			}
@@ -183,7 +183,7 @@
  		}
  
  		public static void ToggleHolidayLight(int i, int j, Tile tileCache, bool? forcedStateWhereTrueIsOn) {
-@@ -2409,7 +_,7 @@
+@@ -2411,7 +_,7 @@
  			return false;
  		}
  
@@ -192,7 +192,7 @@
  			if (!Main.tile[i, j].active() || (Main.tile[i, j].type == 226 && (double)j > Main.worldSurface && !NPC.downedPlantBoss))
  				return;
  
-@@ -2426,7 +_,7 @@
+@@ -2428,7 +_,7 @@
  			}
  		}
  

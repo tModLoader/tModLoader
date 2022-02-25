@@ -1,6 +1,16 @@
 Notes:
 
 - Add '(float)player.meleeAddDamage' to Player.GetWeaponDamage(Item)
+- Improve Terraria.Social.SocialAPI server-client conditionals on non-tml steps.
+- Some 'Id > 0 && Id < Count' things may need to be adjusted
+- Above, around NPCLoot
+
+Weird removed patches:
+
+// Utils.cs
+- OLD		for (int m = 0; m < array3.Length && num4 + array3[m].Length <= num3; m++) {
+- NEW		for (int m = 0; m < array3.Length; m++) {
++ PATCH	for (int m = 0; num4 == 0 || m < array3.Length && num4 + array3[m].Length <= num3; m++) {
 
 Failed Patches:
 
@@ -41,4 +51,15 @@ Failed Patches:
 +			}
 +
 +			return result;
+
+//NPC.cs:
+@@ -59968,6 +60068,7 @@
+ 			if (type == 551)
+ 				itemType = 3860;
+
+ 
++			NPCLoader.BossBag(this, ref itemType);
+ 			DropItemInstanced(position, base.Size, itemType);
+
+ 		}
  
