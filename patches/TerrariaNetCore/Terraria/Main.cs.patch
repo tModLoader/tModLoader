@@ -246,7 +246,7 @@
  		public static extern short GetKeyState(int keyCode);
  
  		public static string GetInputText(string oldString, bool allowMultiLine = false) {
--			if (Main.dedServ) {
+-			if (dedServ) {
 -				return "";
 -			}
 +			if(dedServ)

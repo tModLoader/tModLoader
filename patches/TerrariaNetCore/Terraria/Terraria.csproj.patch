@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/TerrariaNetCore/Terraria/Terraria.csproj
-@@ -2,89 +_,131 @@
+@@ -2,89 +_,130 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -88,7 +88,6 @@
 +    <None Remove="Libraries/Mono/**" />
 +    <None Remove="Libraries/Windows/**" />
 +    <None Remove="Libraries/XNA/**" />
-+    <None Remove="Libraries/net40/**" />
 +    <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
 +  </ItemGroup>
 +  <PropertyGroup>
