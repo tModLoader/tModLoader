@@ -22,13 +22,18 @@ namespace Terraria.ModLoader.Setup
 			InitializeComponent();
 
 			taskButtons[buttonDecompile] = () => new DecompileTask(this, "src/decompiled");
+			// Terraria
 			taskButtons[buttonDiffTerraria] = () => new DiffTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
 			taskButtons[buttonPatchTerraria] = () => new PatchTask(this, "src/decompiled", "src/Terraria", "patches/Terraria", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
-			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
-			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/Terraria", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
+			// Terraria .NET Core
+			taskButtons[buttonDiffTerrariaNetCore] = () => new DiffTask(this, "src/Terraria", "src/TerrariaNetCore", "patches/TerrariaNetCore", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
+			taskButtons[buttonPatchTerrariaNetCore] = () => new PatchTask(this, "src/Terraria", "src/TerrariaNetCore", "patches/TerrariaNetCore", new ProgramSetting<DateTime>("TerrariaDiffCutoff"));
+			// tModLoader
+			taskButtons[buttonDiffModLoader] = () => new DiffTask(this, "src/TerrariaNetCore", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
+			taskButtons[buttonPatchModLoader] = () => new PatchTask(this, "src/TerrariaNetCore", "src/tModLoader", "patches/tModLoader", new ProgramSetting<DateTime>("tModLoaderDiffCutoff"));
 
 			taskButtons[buttonRegenSource] = () =>
-				new RegenSourceTask(this, new[] { buttonPatchTerraria, buttonPatchModLoader }
+				new RegenSourceTask(this, new[] { buttonPatchTerraria, buttonPatchTerrariaNetCore, buttonPatchModLoader }
 					.Select(b => taskButtons[b]()).ToArray());
 
 			taskButtons[buttonSetup] = () =>
