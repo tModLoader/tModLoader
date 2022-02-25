@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/Peripherals/RGB/SteelSeries/GameSenseConnection.cs
+--- src/TerrariaNetCore/ReLogic/Peripherals/RGB/SteelSeries/GameSenseConnection.cs
 +++ src/tModLoader/ReLogic/Peripherals/RGB/SteelSeries/GameSenseConnection.cs
 @@ -235,7 +_,7 @@
  						throw new ServerDownException(ex.Message);

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/WorldGen.cs
+--- src/TerrariaNetCore/Terraria/WorldGen.cs
 +++ src/tModLoader/Terraria/WorldGen.cs
 @@ -24,6 +_,8 @@
  using Terraria.ObjectData;

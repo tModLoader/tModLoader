@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/ContentSamples.cs
+--- src/TerrariaNetCore/Terraria/ID/ContentSamples.cs
 +++ src/tModLoader/Terraria/ID/ContentSamples.cs
 @@ -1,7 +_,10 @@
 +using System;

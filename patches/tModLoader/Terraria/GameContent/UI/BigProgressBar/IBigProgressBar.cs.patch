@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/BigProgressBar/IBigProgressBar.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/BigProgressBar/IBigProgressBar.cs
 +++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/IBigProgressBar.cs
 @@ -2,7 +_,7 @@
  

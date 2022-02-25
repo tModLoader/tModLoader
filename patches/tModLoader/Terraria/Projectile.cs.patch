@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Projectile.cs
+--- src/TerrariaNetCore/Terraria/Projectile.cs
 +++ src/tModLoader/Terraria/Projectile.cs
 @@ -20,12 +_,13 @@
  using Terraria.ID;

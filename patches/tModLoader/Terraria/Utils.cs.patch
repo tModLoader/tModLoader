@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Utils.cs
+--- src/TerrariaNetCore/Terraria/Utils.cs
 +++ src/tModLoader/Terraria/Utils.cs
 @@ -4,7 +_,6 @@
  using Microsoft.Xna.Framework.Input;

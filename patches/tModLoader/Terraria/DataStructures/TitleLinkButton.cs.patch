@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/DataStructures/TitleLinkButton.cs
+--- src/TerrariaNetCore/Terraria/DataStructures/TitleLinkButton.cs
 +++ src/tModLoader/Terraria/DataStructures/TitleLinkButton.cs
 @@ -66,7 +_,7 @@
  

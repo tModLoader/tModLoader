@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEItemFrame.cs
 @@ -1,9 +_,12 @@
  using System.IO;

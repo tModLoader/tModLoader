@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/IO/WorldFile.cs
+--- src/TerrariaNetCore/Terraria/IO/WorldFile.cs
 +++ src/tModLoader/Terraria/IO/WorldFile.cs
 @@ -15,6 +_,9 @@
  using Terraria.Social;

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/ProjectileSourceID.cs
+--- src/TerrariaNetCore/Terraria/ID/ProjectileSourceID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileSourceID.cs
 @@ -1,6 +_,6 @@
  namespace Terraria.ID

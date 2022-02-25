@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/NPC.cs
+--- src/TerrariaNetCore/Terraria/NPC.cs
 +++ src/tModLoader/Terraria/NPC.cs
 @@ -22,10 +_,11 @@
  using Terraria.Localization;

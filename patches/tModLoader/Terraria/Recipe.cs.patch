@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Recipe.cs
+--- src/TerrariaNetCore/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
 @@ -1,41 +_,45 @@
  using System;

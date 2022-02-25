@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/UI/UIElement.cs
+--- src/TerrariaNetCore/Terraria/UI/UIElement.cs
 +++ src/tModLoader/Terraria/UI/UIElement.cs
 @@ -75,6 +_,22 @@
  		public event MouseEvent OnMouseOver;

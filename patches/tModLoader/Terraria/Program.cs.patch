@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Program.cs
+--- src/TerrariaNetCore/Terraria/Program.cs
 +++ src/tModLoader/Terraria/Program.cs
 @@ -4,6 +_,7 @@
  using System.Collections.Generic;

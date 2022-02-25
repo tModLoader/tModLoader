@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameInput/PlayerInput.cs
+--- src/TerrariaNetCore/Terraria/GameInput/PlayerInput.cs
 +++ src/tModLoader/Terraria/GameInput/PlayerInput.cs
 @@ -8,13 +_,14 @@
  using Terraria.GameContent.UI.Chat;

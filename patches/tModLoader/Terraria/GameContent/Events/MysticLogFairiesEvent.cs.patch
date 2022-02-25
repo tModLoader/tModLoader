@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Events/MysticLogFairiesEvent.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Events/MysticLogFairiesEvent.cs
 +++ src/tModLoader/Terraria/GameContent/Events/MysticLogFairiesEvent.cs
 @@ -8,14 +_,16 @@
  	public class MysticLogFairiesEvent

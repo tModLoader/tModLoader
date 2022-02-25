@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/UI/GameInterfaceLayer.cs
+--- src/TerrariaNetCore/Terraria/UI/GameInterfaceLayer.cs
 +++ src/tModLoader/Terraria/UI/GameInterfaceLayer.cs
 @@ -9,13 +_,18 @@
  	{

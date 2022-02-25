@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Terraria.csproj
+--- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
 @@ -7,26 +_,27 @@
      <Company>Re-Logic</Company>

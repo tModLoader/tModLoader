@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
 +++ src/tModLoader/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
 @@ -1,12 +_,66 @@
  using System.Collections.Generic;

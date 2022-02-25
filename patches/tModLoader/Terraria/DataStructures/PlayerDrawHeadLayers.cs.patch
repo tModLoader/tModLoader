@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/DataStructures/PlayerDrawHeadLayers.cs
+--- src/TerrariaNetCore/Terraria/DataStructures/PlayerDrawHeadLayers.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerDrawHeadLayers.cs
 @@ -8,6 +_,11 @@
  

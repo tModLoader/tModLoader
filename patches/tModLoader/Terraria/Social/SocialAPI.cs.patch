@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Social/SocialAPI.cs
+--- src/TerrariaNetCore/Terraria/Social/SocialAPI.cs
 +++ src/tModLoader/Terraria/Social/SocialAPI.cs
 @@ -1,4 +_,5 @@
  using System.Collections.Generic;

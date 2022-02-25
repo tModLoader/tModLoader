@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/MessageBuffer.cs
+--- src/TerrariaNetCore/Terraria/MessageBuffer.cs
 +++ src/tModLoader/Terraria/MessageBuffer.cs
 @@ -19,6 +_,9 @@
  using Terraria.Net;

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameInput/KeyConfiguration.cs
+--- src/TerrariaNetCore/Terraria/GameInput/KeyConfiguration.cs
 +++ src/tModLoader/Terraria/GameInput/KeyConfiguration.cs
 @@ -1,11 +_,14 @@
  using System.Collections.Generic;

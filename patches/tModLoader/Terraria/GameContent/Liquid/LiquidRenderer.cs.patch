@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Liquid/LiquidRenderer.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Liquid/LiquidRenderer.cs
 +++ src/tModLoader/Terraria/GameContent/Liquid/LiquidRenderer.cs
 @@ -77,7 +_,7 @@
  		};
