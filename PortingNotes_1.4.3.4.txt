@@ -4,6 +4,8 @@ Notes:
 - Improve Terraria.Social.SocialAPI server-client conditionals on non-tml steps.
 - Some 'Id > 0 && Id < Count' things may need to be adjusted
 - Above, around NPCLoot
+- Test the flamethrower ammo consumption again, its offsets in PickAmmo have been changed.
+- GetAnglerReward need repairing/reorganization.
 
 Weird removed patches:
 
@@ -13,6 +15,38 @@ Weird removed patches:
 + PATCH	for (int m = 0; num4 == 0 || m < array3.Length && num4 + array3[m].Length <= num3; m++) {
 
 Failed Patches:
+
+//Player.cs:
+@@ -11725,6 +12086,11 @@
+ 		}
+ 
+ 		public int GetPrimaryBiome() {
++			int modID = LoaderManager.Get<BiomeLoader>().GetPrimaryModBiome(this, out var priority);
++
++			if (priority >= SceneEffectPriority.BiomeHigh)
++				return modID;
++
+ 			if (ZoneDungeon)
+ 				return 8;
+@@ -11734,6 +12100,9 @@
+ 			if (ZoneCrimson)
+ 				return 10;
+
+ 
++			if (priority >= SceneEffectPriority.BiomeMedium)
++				return modID;
++
+ 			if (ZoneGlowshroom)
+ 				return 7;
+@@ -11746,6 +12115,9 @@
+ 			if (ZoneSnow)
+ 				return 2;
+ 
++			if (priority >= SceneEffectPriority.BiomeLow)
++				return modID;
++
+ 			if (ZoneBeach)
+ 				return 5;
 
 // ShopHelper.cs:
 @@ -16,10 +17,10 @@
@@ -63,3 +97,28 @@ Failed Patches:
 
  		}
  
+//ItemSlot.cs:
+ @@ -1385,6 +1484,23 @@
+ 						if (inv == player.miscDyes)
+ 							num = 185 + slot;
+ 						break;
++					//TML Context: GamePad number magic aligned to match DemonHeart Accessory.
++					//TML Note: There is no Master Mode Accessory slot code here for Gamepads.
++					case -10:
++					case -11:
++						int num3M = slot;
++						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot, player))
++							num3M--;
++
++						num = 100 + num3M;
++						break;
++					case -12:
++						int num4M = slot;
++						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot, player))
++							num4M--;
++
++						num = 120 + num4M;
++						break;
+ 					case 19:
+ 						num = 180;
+ 						break;

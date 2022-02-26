@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ShopHelper.cs
 +++ src/tModLoader/Terraria/GameContent/ShopHelper.cs
-@@ -3,29 +_,30 @@
+@@ -3,6 +_,7 @@
  using System.Collections.Generic;
  using Terraria.GameContent.Personalities;
  using Terraria.ID;
@@ -8,29 +8,17 @@
  using Terraria.Localization;
  
  namespace Terraria.GameContent
- {
- 	public class ShopHelper
- 	{
- 		public const float LowestPossiblePriceMultiplier = 0.75f;
- 		public const float MaxHappinessAchievementPriceMultiplier = 0.82f;
- 		public const float HighestPossiblePriceMultiplier = 1.5f;
- 		private string _currentHappiness;
- 		private float _currentPriceAdjustment;
- 		private NPC _currentNPCBeingTalkedTo;
- 		private Player _currentPlayerTalking;
- 		private PersonalityDatabase _database;
- 		private AShoppingBiome[] _dangerousBiomes = new AShoppingBiome[3] {
- 			new CorruptionBiome(),
+@@ -22,10 +_,10 @@
  			new CrimsonBiome(),
  			new DungeonBiome()
  		};
 -		private const float likeValue = 0.94f;
--		private const float dislikeValue = 1.06f;
--		private const float loveValue = 0.88f;
--		private const float hateValue = 1.12f;
 +		internal const float likeValue = 0.94f;
+-		private const float dislikeValue = 1.06f;
 +		internal const float dislikeValue = 1.06f;
+-		private const float loveValue = 0.88f;
 +		internal const float loveValue = 0.88f;
+-		private const float hateValue = 1.12f;
 +		internal const float hateValue = 1.12f;
  
  		public ShopHelper() {
@@ -48,9 +36,9 @@
  		private static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue("TownNPCMoodBiomes." + biomeNameKey);
  
  		private void AddHappinessReportText(string textKeyInCategory, object substitutes = null) {
--			string str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +			string str;
 +			if (_currentNPCBeingTalkedTo.type < NPCID.Count)
+-			string str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +				str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +			else {
 +				var modNpc = _currentNPCBeingTalkedTo.ModNPC;

@@ -42,17 +42,18 @@
  		private static bool[] canFavoriteAt;
  		private static bool[] canShareAt;
  		private static float[] inventoryGlowHue;
-@@ -260,7 +_,8 @@
+@@ -264,7 +_,10 @@
  							case 1:
  							case 2:
  								if (context == 0 && Main.InReforgeMenu) {
--									if (item.maxStack == 1 && item.Prefix(-3))
-+									//if (item.maxStack == 1 && item.Prefix(-3))
++									/*
+ 									if (item.maxStack == 1 && item.Prefix(-3))
++									*/
 +									if (item.IsCandidateForReforge && item.Prefix(-3)) // TML: #StackablePrefixWeapons
  										Main.cursorOverride = 9;
  								}
  								else if (context == 0 && Main.InGuideCraftMenu) {
-@@ -318,7 +_,8 @@
+@@ -322,7 +_,8 @@
  								Main.cursorOverride = 9;
  							}
  							else if (context == 0 && Main.InReforgeMenu) {
@@ -62,7 +63,7 @@
  									Main.cursorOverride = 9;
  							}
  							else if (context == 0 && Main.InGuideCraftMenu) {
-@@ -372,13 +_,17 @@
+@@ -376,13 +_,17 @@
  		}
  
  		private static bool OverrideLeftClick(Item[] inv, int context = 0, int slot = 0) {
@@ -81,7 +82,7 @@
  			if (Main.cursorOverride == 2) {
  				if (ChatManager.AddChatText(FontAssets.MouseText.Value, ItemTagHandler.GenerateTag(item), Vector2.One))
  					SoundEngine.PlaySound(12);
-@@ -387,7 +_,7 @@
+@@ -391,7 +_,7 @@
  			}
  
  			if (Main.cursorOverride == 3) {
@@ -90,7 +91,7 @@
  					return false;
  
  				item.favorited = !item.favorited;
-@@ -463,13 +_,19 @@
+@@ -467,13 +_,19 @@
  			int num = PickItemMovementAction(inv, context, slot, Main.mouseItem);
  			if (num != 3 && !flag)
  				return;
@@ -111,7 +112,7 @@
  					Utils.Swap(ref inv[slot], ref Main.mouseItem);
  					if (inv[slot].stack > 0)
  						AnnounceTransfer(new ItemTransferInfo(inv[slot], 21, context, inv[slot].stack));
-@@ -482,6 +_,9 @@
+@@ -486,6 +_,9 @@
  								break;
  							case 8:
  							case 9:
@@ -121,7 +122,7 @@
  							case 10:
  							case 11:
  							case 12:
-@@ -495,7 +_,8 @@
+@@ -499,7 +_,8 @@
  					}
  					if (inv[slot].type == 0 || inv[slot].stack < 1)
  						inv[slot] = new Item();
@@ -131,7 +132,7 @@
  						Utils.Swap(ref inv[slot].favorited, ref Main.mouseItem.favorited);
  						if (inv[slot].stack != inv[slot].maxStack && Main.mouseItem.stack != Main.mouseItem.maxStack) {
  							if (Main.mouseItem.stack + inv[slot].stack <= Main.mouseItem.maxStack) {
-@@ -522,6 +_,13 @@
+@@ -526,6 +_,13 @@
  					break;
  				case 1:
  					if (Main.mouseItem.stack == 1 && Main.mouseItem.type > 0 && inv[slot].type > 0 && inv[slot].IsNotTheSameAs(Main.mouseItem) && (context != 11 || Main.mouseItem.FitsAccessoryVanitySlot)) {
@@ -145,7 +146,7 @@
  						Utils.Swap(ref inv[slot], ref Main.mouseItem);
  						SoundEngine.PlaySound(7);
  						if (inv[slot].stack > 0) {
-@@ -531,6 +_,9 @@
+@@ -535,6 +_,9 @@
  									break;
  								case 8:
  								case 9:
@@ -155,7 +156,7 @@
  								case 10:
  								case 11:
  								case 12:
-@@ -557,6 +_,13 @@
+@@ -561,6 +_,13 @@
  						}
  					}
  					else if (Main.mouseItem.type > 0 && inv[slot].type == 0 && (context != 11 || Main.mouseItem.FitsAccessoryVanitySlot)) {
@@ -169,7 +170,7 @@
  						if (Main.mouseItem.stack == 1) {
  							Utils.Swap(ref inv[slot], ref Main.mouseItem);
  							if (inv[slot].type == 0 || inv[slot].stack < 1)
-@@ -584,6 +_,9 @@
+@@ -588,6 +_,9 @@
  									break;
  								case 8:
  								case 9:
@@ -179,7 +180,7 @@
  								case 10:
  								case 11:
  								case 12:
-@@ -612,6 +_,9 @@
+@@ -616,6 +_,9 @@
  									break;
  								case 8:
  								case 9:
@@ -189,7 +190,7 @@
  								case 10:
  								case 11:
  								case 12:
-@@ -665,6 +_,9 @@
+@@ -669,6 +_,9 @@
  									break;
  								case 8:
  								case 9:
@@ -199,7 +200,7 @@
  								case 10:
  								case 11:
  								case 12:
-@@ -684,20 +_,26 @@
+@@ -688,20 +_,26 @@
  					break;
  				case 3:
  					HandleShopSlot(inv, slot, rightClickIsValid: false, leftClickIsValid: true);
@@ -228,25 +229,29 @@
  						}
  
  						Recipe.FindRecipes();
-@@ -722,7 +_,7 @@
+@@ -733,7 +_,10 @@
  			bool flag = false;
  			bool result = false;
  			if (NotUsingGamepad && Options.DisableLeftShiftTrashCan) {
--				if ((uint)context <= 4u || context == 7)
++				/*
+ 				if ((uint)context <= 4u || context == 7)
++				*/
 +				if ((uint)context <= 4u && context >= 0 || context == 7)
  					flag = true;
  
  				if (ControlInUse && flag) {
-@@ -731,7 +_,7 @@
+@@ -742,7 +_,10 @@
  				}
  			}
  			else {
--				if ((uint)context <= 4u)
++				/*
+ 				if ((uint)context <= 4u)
++				*/
 +				if ((uint)context <= 4u && context >= 0)
  					flag = (Main.player[Main.myPlayer].chest == -1);
  
  				if (ShiftInUse && flag) {
-@@ -750,20 +_,22 @@
+@@ -761,20 +_,22 @@
  
  			if (Main.npcShop > 0 && !inv[slot].favorited) {
  				Chest chest = Main.instance.shop[Main.npcShop];
@@ -272,7 +277,7 @@
  					}
  				}
  			}
-@@ -900,18 +_,24 @@
+@@ -911,18 +_,24 @@
  						result = 1;
  					break;
  				case 10:
@@ -300,7 +305,7 @@
  				case 25:
  				case 27:
  					result = 2;
-@@ -982,7 +_,8 @@
+@@ -993,7 +_,8 @@
  				if (context == 4 && inv[slot].maxStack <= 1)
  					flag = false;
  
@@ -310,7 +315,7 @@
  					PickupItemIntoMouse(inv, context, slot, player);
  					SoundEngine.PlaySound(12);
  					RefreshStackSplitCooldown();
-@@ -1041,10 +_,12 @@
+@@ -1052,10 +_,12 @@
  			switch (context) {
  				case 0:
  					result = true;
@@ -325,7 +330,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1054,10 +_,12 @@
+@@ -1065,10 +_,12 @@
  							Recipe.FindRecipes();
  						}
  					}
@@ -340,10 +345,11 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1070,7 +_,9 @@
+@@ -1081,7 +_,10 @@
  					else if (Main.mouseRight && inv[slot].type == 3093) {
  						if (Main.mouseRightRelease) {
- 							player.OpenHerbBag();
+ 							player.OpenHerbBag(3093);
++
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 -							inv[slot].stack--;
 +								inv[slot].stack--;
@@ -351,7 +357,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1134,7 +_,9 @@
+@@ -1145,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1774) {
  						if (Main.mouseRightRelease) {
@@ -362,7 +368,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1147,7 +_,9 @@
+@@ -1158,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 3085) {
  						if (Main.mouseRightRelease && player.ConsumeItem(327)) {
@@ -373,7 +379,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1160,7 +_,9 @@
+@@ -1171,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 4879) {
  						if (Main.mouseRightRelease && player.HasItem(329)) {
@@ -384,7 +390,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1173,7 +_,9 @@
+@@ -1184,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1869) {
  						if (Main.mouseRightRelease) {
@@ -395,7 +401,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1203,11 +_,15 @@
+@@ -1214,11 +_,15 @@
  
  						Recipe.FindRecipes();
  					}
@@ -411,7 +417,7 @@
  				case 11: {
  						result = true;
  						if (!Main.mouseRight || !Main.mouseRightRelease)
-@@ -1216,22 +_,25 @@
+@@ -1227,22 +_,25 @@
  						if (Main.npcShop > 0)
  							return true;
  
@@ -443,7 +449,7 @@
  						SoundEngine.PlaySound(7);
  						Recipe.FindRecipes();
  						if (inv[slot].stack > 0) {
-@@ -1255,6 +_,7 @@
+@@ -1266,6 +_,7 @@
  
  						break;
  					}
@@ -451,7 +457,7 @@
  				case 12:
  				case 25:
  				case 27: {
-@@ -1299,12 +_,15 @@
+@@ -1310,12 +_,15 @@
  
  			_ = Main.instance.shop[Main.npcShop];
  			bool flag = (Main.mouseRight && rightClickIsValid) || (Main.mouseLeft && leftClickIsValid);
@@ -468,7 +474,7 @@
  				if (Main.mouseItem.stack >= Main.mouseItem.maxStack && Main.mouseItem.type != 0)
  					continue;
  
-@@ -1317,13 +_,12 @@
+@@ -1328,13 +_,12 @@
  						SoundEngine.PlaySound(18);
  					else
  						SoundEngine.PlaySound(7);
@@ -485,7 +491,7 @@
  					Main.mouseItem.stack = 0;
  				}
  
-@@ -1336,6 +_,8 @@
+@@ -1347,6 +_,8 @@
  					inv[slot].SetDefaults();
  
  				AnnounceTransfer(new ItemTransferInfo(Main.mouseItem, 15, 21));
@@ -494,34 +500,11 @@
  			}
  		}
  
-@@ -1385,6 +_,23 @@
- 						if (inv == player.miscDyes)
- 							num = 185 + slot;
- 						break;
-+					//TML Context: GamePad number magic aligned to match DemonHeart Accessory.
-+					//TML Note: There is no Master Mode Accessory slot code here for Gamepads.
-+					case -10:
-+					case -11:
-+						int num3M = slot;
-+						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot, player))
-+							num3M--;
-+
-+						num = 100 + num3M;
-+						break;
-+					case -12:
-+						int num4M = slot;
-+						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot, player))
-+							num4M--;
-+
-+						num = 120 + num4M;
-+						break;
- 					case 19:
- 						num = 180;
- 						break;
-@@ -1511,6 +_,11 @@
+@@ -1436,6 +_,12 @@
  					case 27:
  						value = TextureAssets.InventoryBack12.Value;
  						break;
++					// These are added by TML.
 +					case -10:
 +					case -11:
 +					case -12:
@@ -530,10 +513,11 @@
  					case 3:
  						value = TextureAssets.InventoryBack5.Value;
  						break;
-@@ -1631,6 +_,15 @@
+@@ -1556,6 +_,17 @@
  				case 27:
- 					num10 = 1;
+ 					num7 = 1;
  					break;
++				// Added by TML: [[
 +				case -10:
 +					num10 = 11;
 +					break;
@@ -543,54 +527,72 @@
 +				case -12:
 +					num10 = 1;
 +					break;
++				// ]]
  				case 16:
- 					num10 = 4;
+ 					num7 = 4;
  					break;
-@@ -1653,7 +_,14 @@
- 				Rectangle rectangle = value6.Frame(3, 6, num10 % 3, num10 / 3);
+@@ -1578,7 +_,16 @@
+ 				Rectangle rectangle = value6.Frame(3, 6, num7 % 3, num7 / 3);
  				rectangle.Width -= 2;
  				rectangle.Height -= 2;
 +
 +				// Modded Accessory Slots
 +				if (context == -10 || context == -11 || context == -12) {
 +					LoaderManager.Get<AccessorySlotLoader>().DrawSlotTexture(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f, slot, context);
++					goto SkipVanillaDraw;
 +				}
-+				else {
--				spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
-+					spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
-+				}
++
+ 				spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
++				
++				SkipVanillaDraw:
  			}
  
  			Vector2 vector = value.Size() * inventoryScale;
-@@ -1671,6 +_,9 @@
- 				num11 *= inventoryScale;
- 				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num11 / 2f;
+@@ -1596,15 +_,24 @@
+ 				num8 *= inventoryScale;
+ 				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num8 / 2f;
  				Vector2 origin = rectangle2.Size() * (scale3 / 2f - 0.5f);
-+				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3))
-+					goto skip;
 +
- 				spriteBatch.Draw(value7, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num11 * scale3, SpriteEffects.None, 0f);
++				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3))
++					goto SkipVanillaItemDraw;
++
+ 				spriteBatch.Draw(value7, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num8 * scale3, SpriteEffects.None, 0f);
  				if (item.color != Color.Transparent) {
  					Color newColor = color;
-@@ -1680,6 +_,8 @@
- 					spriteBatch.Draw(value7, position2, rectangle2, item.GetColor(newColor), 0f, origin, num11 * scale3, SpriteEffects.None, 0f);
+ 					if (context == 13)
+ 						newColor.A = byte.MaxValue;
+ 
++					// Extra context.
++
+ 					spriteBatch.Draw(value7, position2, rectangle2, item.GetColor(newColor), 0f, origin, num8 * scale3, SpriteEffects.None, 0f);
  				}
  
-+				skip:
++				SkipVanillaItemDraw:
 +				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3);
++
  				if (ItemID.Sets.TrapSigned[item.type])
  					spriteBatch.Draw(TextureAssets.Wire.Value, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle(4, 58, 8, 8), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
  
-@@ -1750,7 +_,7 @@
- 					spriteBatch.Draw(TextureAssets.Cd.Value, position3, null, color3, 0f, default(Vector2), num11, SpriteEffects.None, 0f);
+@@ -1673,13 +_,17 @@
+ 					Vector2 position3 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
+ 					Color color3 = item.GetAlpha(color) * ((float)player.potionDelay / (float)player.potionDelayTime);
+ 					spriteBatch.Draw(TextureAssets.Cd.Value, position3, null, color3, 0f, default(Vector2), num8, SpriteEffects.None, 0f);
++
++					// Extra context.
  				}
  
 -				if ((context == 10 || context == 18) && item.expertOnly && !Main.expertMode) {
 +				if ((context == 10 || context == 18) && ((item.expertOnly && !Main.expertMode) || (item.masterOnly && !Main.masterMode))) {
  					Vector2 position4 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  					Color white = Color.White;
- 					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num11, SpriteEffects.None, 0f);
-@@ -1909,7 +_,7 @@
+ 					spriteBatch.Draw(TextureAssets.Cd.Value, position4, null, white, 0f, default(Vector2), num8, SpriteEffects.None, 0f);
+ 				}
++
++				// Extra context.
+ 			}
+ 			else if (context == 6) {
+ 				Texture2D value8 = TextureAssets.Trash.Value;
+@@ -1930,7 +_,7 @@
  				inv[slot] = ArmorSwap(inv[slot], out success);
  				if (success) {
  					Main.EquipPageSelected = 0;
@@ -599,7 +601,7 @@
  				}
  			}
  
-@@ -1940,7 +_,18 @@
+@@ -1961,7 +_,18 @@
  			return true;
  		}
  
@@ -619,7 +621,7 @@
  			if (isEquipLocked(item.type))
  				return true;
  
-@@ -1968,6 +_,7 @@
+@@ -1989,6 +_,7 @@
  			return false;
  		}
  
@@ -627,7 +629,7 @@
  		private static Item DyeSwap(Item item, out bool success) {
  			success = false;
  			if (item.dye <= 0)
-@@ -1982,8 +_,13 @@
+@@ -2003,8 +_,13 @@
  				}
  			}
  
@@ -642,7 +644,7 @@
  
  			if (dyeSlotCount < 0)
  				dyeSlotCount = 9;
-@@ -2022,6 +_,9 @@
+@@ -2043,6 +_,9 @@
  				player.armor[num + 2] = item.Clone();
  			}
  			else if (item.accessory) {
@@ -652,7 +654,7 @@
  				int num2 = 3;
  				for (int i = 3; i < 10; i++) {
  					if (player.IsAValidEquipmentSlotForIteration(i)) {
-@@ -2059,6 +_,8 @@
+@@ -2080,6 +_,8 @@
  				result = player.armor[num3].Clone();
  				player.armor[num3] = item.Clone();
  				accSlotToSwapTo = 0;
@@ -661,7 +663,7 @@
  			}
  
  			SoundEngine.PlaySound(7);
-@@ -2153,7 +_,7 @@
+@@ -2174,7 +_,7 @@
  		}
  
  		public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false) {

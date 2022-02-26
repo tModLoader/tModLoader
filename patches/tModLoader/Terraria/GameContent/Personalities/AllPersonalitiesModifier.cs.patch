@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
 +++ src/tModLoader/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
-@@ -1,7 +_,63 @@
+@@ -1,10 +_,66 @@
  using System.Collections.Generic;
 +using Terraria;
 +using Terraria.ModLoader;
@@ -64,6 +64,9 @@
 +		}
 +
 +		private static void RegisterNpcToBiomeRelationships_Inner(HelperInfo info, NPCHappiness shopHelperInstance, int primaryPlayerBiome) {
+ 			ModifyShopPrice_Relationships(info, shopHelperInstance);
+ 		}
+ 
 @@ -30,6 +_,10 @@
  
  			if (info.npc.type != 663 && nearbyNPCsByType[663])
