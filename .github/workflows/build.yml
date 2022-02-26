@@ -67,7 +67,7 @@ jobs:
         env:
           branch: ${{github.ref}}
           
-      - uses: anothrNick/github-tag-action@1.36.0
+      - uses: mathieudutour/github-tag-action@v6.0
         if: ${{ steps.version.outputs.new_version != null}}
         with:
            custom_tag: ${{ steps.version.outputs.new_version }}
