@@ -64,13 +64,16 @@ jobs:
           fi
           version="$oldate.$feature.$patch"
           echo "::set-output name=new_version::$version"
+          git tag $version
+          git push origin $version
         env:
           branch: ${{github.ref}}
           
-      - uses: actions-ecosystem/action-push-tag@v1
-        if: ${{ steps.version.outputs.new_version != null}}
-        with:
-            tag: ${{ steps.version.outputs.new_version }}
+      #- uses: anothrNick/github-tag-action@1.36.0
+      #  if: ${{ steps.version.outputs.new_version != null}}
+       # with:
+        #    custom_tag: ${{ steps.version.outputs.new_version }}
+         #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Check out pull request code to separate folder
         uses: actions/checkout@v2
