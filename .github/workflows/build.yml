@@ -255,8 +255,8 @@ jobs:
           mv $ModloaderDir/Mods/ExampleMod.tmod artifacts/Mods/ExampleMod.tmod
           
           echo ::group::Testing Example Mod build from "Mod Sources" dir  
-          cp -r ExampleMod "$ModloaderDir/Mod Sources/ExampleMod"
-          cd "$ModloaderDir/Mod Sources/ExampleMod"
+          cp -r ExampleMod "$ModloaderDir/ModSources/ExampleMod"
+          cd "$ModloaderDir/ModSources/ExampleMod"
           unset ExtraBuildModFlags
           dotnet build ExampleMod.csproj --nologo
           echo ::endgroup::
