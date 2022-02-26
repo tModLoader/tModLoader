@@ -531,7 +531,7 @@
  				case 16:
  					num7 = 4;
  					break;
-@@ -1578,7 +_,16 @@
+@@ -1578,7 +_,17 @@
  				Rectangle rectangle = value6.Frame(3, 6, num7 % 3, num7 / 3);
  				rectangle.Width -= 2;
  				rectangle.Height -= 2;
@@ -539,12 +539,13 @@
 +				// Modded Accessory Slots
 +				if (context == -10 || context == -11 || context == -12) {
 +					LoaderManager.Get<AccessorySlotLoader>().DrawSlotTexture(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f, slot, context);
++
 +					goto SkipVanillaDraw;
 +				}
 +
  				spriteBatch.Draw(value6, position + value.Size() / 2f * inventoryScale, rectangle, Color.White * 0.35f, 0f, rectangle.Size() / 2f, inventoryScale, SpriteEffects.None, 0f);
-+				
-+				SkipVanillaDraw:
++
++				SkipVanillaDraw:;
  			}
  
  			Vector2 vector = value.Size() * inventoryScale;

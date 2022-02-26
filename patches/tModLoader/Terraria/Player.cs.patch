@@ -738,7 +738,7 @@
  
 +		// Return value added by TML.
 -		public void QuickSpawnItem(IEntitySource source, int item, int stack = 1) {
-+		public int QuickSpawnItem(int item, int stack = 1) {
++		public int QuickSpawnItem(IEntitySource source, int item, int stack = 1) {
  			int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item, stack, noBroadcast: false, -1);
  			if (Main.netMode == 1)
  				NetMessage.SendData(21, -1, -1, null, number, 1f);
@@ -760,13 +760,22 @@
 +
 +			// In the following switch, some TryGettingDevArmor lines have been made useless in favor of expanding the TML-added ItemID.BossBag & ItemID.PreHardmodeLikeBossBag sets.
 +
-+			static void TryGettingDevArmor() {
++			static void TryGettingDevArmor(IEntitySource source) {
 +				// A whole lot of nothing!
 +			}
 +
  			switch (type) {
  				case 3318: {
  						if (Main.tenthAnniversaryWorld)
+@@ -4094,7 +_,7 @@
+ 						if (Main.rand.Next(7) == 0)
+ 							QuickSpawnItem(itemSource_OpenItem, 2111);
+ 
+-						QuickSpawnItem(itemSource_OpenItem, 3224);
++						QuickSpawnItem(i+temSource_OpenItem, 3224);
+ 						break;
+ 					}
+ 				case 3321: {
 @@ -4518,8 +_,12 @@
  			if (type == 5111)
  				num11 = 668;
@@ -790,7 +799,7 @@
  		}
  
 -		private void TryGettingDevArmor(IEntitySource source) {
-+		public void TryGettingDevArmor() {
++		public void TryGettingDevArmor(IEntitySource source) {
 +			ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(this);
 +
  			if (Main.rand.Next(Main.tenthAnniversaryWorld ? 10 : 20) == 0) {
