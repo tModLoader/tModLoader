@@ -4,7 +4,7 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4-dev, 1.4_mergedtesting, gh_actions_test, 1.4-preview1, 1.4-stable, 1.4]
+    branches: [1.4-dev, 1.4_mergedtesting, gh_actions_test, 1.4-preview, 1.4-stable, 1.4]
   pull_request_target:
     types: [labeled]
     branches: [1.4-preview, 1.4-stable, 1.4-dev, 1.4, 1.4_mergedtesting]
@@ -30,11 +30,12 @@ jobs:
           fetch-depth: 10
 
       - name: Update Versioning
+        id: version
         if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
         shell: bash
         run: |
-          read -r version<./version.txt
-          regex="^([0-9]+).([0-9]+).([0-9]+).([0-9]+).+?$"
+          version=$(git describe --tags --abbrev=0)
+          regex="^([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]] ; then
             year="${BASH_REMATCH[1]}"
             month="${BASH_REMATCH[2]}"
@@ -42,7 +43,7 @@ jobs:
             patch="${BASH_REMATCH[4]}"
             oldate="$year.$month"
           else
-            echo "previous version '$version' is not a semantic version"
+            echo "previous version '$version' is not a valid version"
             exit 1
           fi
           if [[ "refs/heads/1.4-stable" = $branch ]] ; then
@@ -57,16 +58,11 @@ jobs:
                 patch=0
              fi
           fi
-          echo "$oldate.$feature.$patch">./version.txt
+          version="$oldate.$feature.$patch"
+          echo "::set-output name=version::$version"
+          git push origin $version
         env:
-          branch: github.ref
-        
-      - name: Commit Versioning Changes
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-            commit_message: Version Updated!
-            branch: github.ref
+          branch: ${{github.ref}}
         
       - name: Check out pull request code to separate folder
         uses: actions/checkout@v2
@@ -152,10 +148,7 @@ jobs:
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
           echo ::endgroup::
           
-          echo ::group::Applying Version & Purpose
-          read -r version<./version.txt
-          export TmlVersion="$version"
-          
+          echo ::group::Giving Purpose         
           if [ $BranchName = '1.4-stable' ] ; then
             export BUILDPURPOSE="Stable"
           fi
@@ -206,6 +199,7 @@ jobs:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           TERRARIA_VERSION: 1432
+          TMLVERSION: ${{ steps.version.outputs.version }}
           BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
           
       - name: Upload Debug Build Artifact
@@ -234,6 +228,7 @@ jobs:
         run: |
           echo Adding build info to ExampleMod displayName
           echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
+          echo "version = ${{ steps.version.outputs.version }}" >> ./ExampleMod/build.txt
           
           #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
           ModloaderDir=$(pwd)/local/ModLoader
