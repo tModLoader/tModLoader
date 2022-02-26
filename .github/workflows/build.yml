@@ -38,7 +38,7 @@ jobs:
           echo "Attempting get previous version id"
           version=$(git describe --tags --abbrev=0)
           echo "Previous Version is: $version"
-          regex="^([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
+          regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]] ; then
             year="${BASH_REMATCH[1]}"
             month="${BASH_REMATCH[2]}"
