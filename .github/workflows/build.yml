@@ -28,7 +28,7 @@ jobs:
         with:
           ref: ${{github.ref}}
           persist-credentials: false
-          fetch-depth: 10
+          fetch-depth: 0
 
       - name: Update Versioning
         id: version
