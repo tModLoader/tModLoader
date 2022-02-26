@@ -35,7 +35,9 @@ jobs:
         if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
         shell: bash
         run: |
+          echo "attempting get previous version"
           version=$(git describe --tags --abbrev=0)
+          echo "attempting regex extract"
           regex="^([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]] ; then
             year="${BASH_REMATCH[1]}"
@@ -47,6 +49,7 @@ jobs:
             echo "previous version '$version' is not a valid version"
             exit 1
           fi
+          echo "checking fir verion updates"
           if [[ "refs/heads/1.4-stable" = $branch ]] ; then
              ((++patch))   
           fi
