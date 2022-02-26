@@ -35,9 +35,9 @@ jobs:
         if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
         shell: bash
         run: |
-          echo "attempting get previous version"
+          echo "Attempting get previous version id"
           version=$(git describe --tags --abbrev=0)
-          echo "attempting regex extract"
+          echo "Previous Version is: $version"
           regex="^([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
           if [[ $version =~ $regex ]] ; then
             year="${BASH_REMATCH[1]}"
@@ -46,10 +46,10 @@ jobs:
             patch="${BASH_REMATCH[4]}"
             oldate="$year.$month"
           else
-            echo "previous version '$version' is not a valid version"
+            echo "Previous version '$version' is not a valid version"
             exit 1
           fi
-          echo "checking fir verion updates"
+          echo "Applying verison updates"
           if [[ "refs/heads/1.4-stable" = $branch ]] ; then
              ((++patch))   
           fi
@@ -63,10 +63,14 @@ jobs:
              fi
           fi
           version="$oldate.$feature.$patch"
-          echo "::set-output name=version::$version"
-          git push origin $version
+          echo "::set-output name=new_version::$version"
         env:
           branch: ${{github.ref}}
+          
+      - uses: actions-ecosystem/action-push-tag@v1
+        if: ${{ steps.version.outputs.new_version != null}}
+        with:
+            tag: ${{ steps.version.outputs.new_version }}
         
       - name: Check out pull request code to separate folder
         uses: actions/checkout@v2
@@ -203,7 +207,7 @@ jobs:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           TERRARIA_VERSION: 1432
-          TMLVERSION: ${{ steps.version.outputs.version }}
+          TMLVERSION: ${{ steps.version.outputs.new_version }}
           BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
           
       - name: Upload Debug Build Artifact
@@ -232,7 +236,7 @@ jobs:
         run: |
           echo Adding build info to ExampleMod displayName
           echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
-          echo "version = ${{ steps.version.outputs.version }}" >> ./ExampleMod/build.txt
+          echo "version = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
           
           #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
           ModloaderDir=$(pwd)/local/ModLoader
