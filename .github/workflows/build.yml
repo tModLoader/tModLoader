@@ -26,6 +26,7 @@ jobs:
       - name: Check out base branch
         uses: actions/checkout@v2
         with:
+          ref: ${{github.ref}}
           persist-credentials: false
           fetch-depth: 10
 
