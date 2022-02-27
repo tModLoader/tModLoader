@@ -1,8 +1,7 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
 +++ src/tModLoader/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
-@@ -1,10 +_,66 @@
+@@ -1,15 +_,68 @@
  using System.Collections.Generic;
-+using Terraria;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.Personalities
@@ -15,30 +14,30 @@
 +		}
 +
  		public void ModifyShopPrice(HelperInfo info, ShopHelper shopHelperInstance) {
-+			int primaryPlayerBiome = info.PrimaryPlayerBiome;
-+ 			bool[] nearbyNPCsByType = info.nearbyNPCsByType;
 +			var npc = info.npc;
 +			var npcHappiness = npc.Happiness;
 +
 +			// Apply effects from the primary biome
++			/*
 +			if (npcHappiness.BiomeTypeRelationships.TryGetValue(primaryPlayerBiome, out var biomeRelationship)) {
 +				shopHelperInstance.ApplyBiomeRelationshipEffect(primaryPlayerBiome, biomeRelationship);
 +			}
++			*/
 +
 +			// Apply effects from nearby NPCs
-+			for (int i = 0; i < nearbyNPCsByType.Length; i++) {
-+				if (!nearbyNPCsByType[i]) {
++			for (int i = 0; i < info.nearbyNPCsByType.Length; i++) {
++				if (!info.nearbyNPCsByType[i]) {
 +					continue;
 +				}
 +
-+				if (!npcHappiness.NpcTypeRelationships.TryGetValue(i, out var npcRelationship)) {
++				if (!npcHappiness.NpcTypeAffectionLevels.TryGetValue(i, out var npcRelationship)) {
 +					continue;
 +				}
 +
 +				shopHelperInstance.ApplyNpcRelationshipEffect(i, npcRelationship);
 +			}
 +
-+			ModifyShopPrice_Inner(info, shopHelperInstance, nearbyNPCsByType);
+ 			ModifyShopPrice_Relationships(info, shopHelperInstance);
 +
 +			/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
 +			NPCLoader.ModifyNPCHappiness(npc, primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
@@ -59,22 +58,26 @@
 +			int biomeCount = LoaderManager.Get<BiomeLoader>().TotalCount;
 +
 +			for (int biomeId = 0; biomeId < biomeCount; biomeId++) {
-+				RegisterNpcToBiomeRelationships_Inner(info, npcHappiness, biomeId);
++				//RegisterNpcToBiomeRelationships_Inner(info, npcHappiness, biomeId);
 +			}
-+		}
-+
-+		private static void RegisterNpcToBiomeRelationships_Inner(HelperInfo info, NPCHappiness shopHelperInstance, int primaryPlayerBiome) {
- 			ModifyShopPrice_Relationships(info, shopHelperInstance);
  		}
  
-@@ -30,6 +_,10 @@
+ 		private static void ModifyShopPrice_Relationships(HelperInfo info, ShopHelper shopHelperInstance) {
+ 			bool[] nearbyNPCsByType = info.nearbyNPCsByType;
++
++			// Princess code
+ 			if (info.npc.type == 663) {
+ 				List<int> list = new List<int>();
+ 				for (int i = 0; i < nearbyNPCsByType.Length; i++) {
+@@ -30,6 +_,11 @@
  
  			if (info.npc.type != 663 && nearbyNPCsByType[663])
  				shopHelperInstance.LikePrincess();
 +		}
 +
-+		private static void RegisterNpcToNpcRelationships(HelperInfo info, NPCHappiness shopHelperInstance) {
-+			NearbyNpcsDummy nearbyNPCsByType = default;
++		private static void RegisterNpcToNpcRelationships(HelperInfo info, NPCHappiness npcHappiness) {
++			NearbyNpcsDummy nearbyNPCsByType = default; // Lies!
++			var shopHelperInstance = npcHappiness; // LIIIEEESS!!!
  
  			switch (info.npc.type) {
  				case 17:

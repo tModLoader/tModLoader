@@ -1,0 +1,21 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Personalities/BiomePreferenceListTrait.cs
++++ src/tModLoader/Terraria/GameContent/Personalities/BiomePreferenceListTrait.cs
+@@ -44,6 +_,10 @@
+ 
+ 		private void ApplyPreference(BiomePreference preference, HelperInfo info, ShopHelper shopHelperInstance) {
+ 			string nameKey = preference.Biome.NameKey;
++
++			shopHelperInstance.ApplyBiomeRelationshipEffect(nameKey, preference.Affection);
++
++			/*
+ 			switch (preference.Affection) {
+ 				case AffectionLevel.Love:
+ 					shopHelperInstance.LoveBiome(nameKey);
+@@ -58,6 +_,7 @@
+ 					shopHelperInstance.HateBiome(nameKey);
+ 					break;
+ 			}
++			*/
+ 		}
+ 
+ 		public IEnumerator<BiomePreference> GetEnumerator() => _preferences.GetEnumerator();

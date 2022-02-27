@@ -9,66 +9,60 @@ namespace Terraria.ModLoader
 	/// <summary> This struct provides access to an NPC type's NPC &amp; Biome relationships. </summary>
 	public readonly struct NPCHappiness
 	{
-		public enum Relationship : sbyte
-		{
-			Neutral,
-			Hate,
-			Dislike,
-			Like,
-			Love
-		}
+		private static readonly IReadOnlyDictionary<int, AffectionLevel> emptyDictionaryDummy = new ReadOnlyDictionary<int, AffectionLevel>(new Dictionary<int, AffectionLevel>());
 
-		private static readonly IReadOnlyDictionary<int, Relationship> emptyDictionaryDummy = new ReadOnlyDictionary<int, Relationship>(new Dictionary<int, Relationship>());
-
-		internal static readonly Dictionary<int, Dictionary<int, Relationship>> NpcToNpcRelationship = new();
-		internal static readonly Dictionary<int, Dictionary<int, Relationship>> NpcToBiomeRelationship = new();
+		internal static readonly Dictionary<int, Dictionary<int, AffectionLevel>> NpcToNpcAffection = new();
+		//internal static readonly Dictionary<int, Dictionary<int, AffectionLevel>> NpcToBiomeRelationship = new();
 
 		/// <summary> Allows you to modify the shop price multipliers associated with a (biome/npc type) relationship level. </summary>
-		public static readonly Dictionary<Relationship, float> RelationshipToPriceMultiplier = new() {
-			{ Relationship.Neutral, 1f },
-			{ Relationship.Hate, ShopHelper.hateValue },
-			{ Relationship.Dislike, ShopHelper.dislikeValue },
-			{ Relationship.Like, ShopHelper.likeValue },
-			{ Relationship.Love, ShopHelper.loveValue },
+		public static readonly Dictionary<AffectionLevel, float> AffectionLevelToPriceMultiplier = new() {
+			{ AffectionLevel.Hate, ShopHelper.hateValue },
+			{ AffectionLevel.Dislike, ShopHelper.dislikeValue },
+			{ AffectionLevel.Like, ShopHelper.likeValue },
+			{ AffectionLevel.Love, ShopHelper.loveValue },
 		};
 
 		public readonly int NpcType;
 
-		public IReadOnlyDictionary<int, Relationship> NpcTypeRelationships
-			=> NpcToNpcRelationship.TryGetValue(NpcType, out var result) ? result : emptyDictionaryDummy;
+		public IReadOnlyDictionary<int, AffectionLevel> NpcTypeAffectionLevels
+			=> NpcToNpcAffection.TryGetValue(NpcType, out var result) ? result : emptyDictionaryDummy;
 
-		public IReadOnlyDictionary<int, Relationship> BiomeTypeRelationships
+		/*
+		public IReadOnlyDictionary<int, AffectionLevel> BiomeTypeRelationships
 			=> NpcToBiomeRelationship.TryGetValue(NpcType, out var result) ? result : emptyDictionaryDummy;
+		*/
 
 		private NPCHappiness(int npcType) {
 			NpcType = npcType;
 		}
 
 		public void LoveNPC(int npcId)
-			=> SetRelationship(npcId, Relationship.Love, NpcToNpcRelationship);
+			=> SetRelationship(npcId, AffectionLevel.Love, NpcToNpcAffection);
 
 		public void LikeNPC(int npcId)
-			=> SetRelationship(npcId, Relationship.Like, NpcToNpcRelationship);
+			=> SetRelationship(npcId, AffectionLevel.Like, NpcToNpcAffection);
 
 		public void DislikeNPC(int npcId)
-			=> SetRelationship(npcId, Relationship.Dislike, NpcToNpcRelationship);
+			=> SetRelationship(npcId, AffectionLevel.Dislike, NpcToNpcAffection);
 
 		public void HateNPC(int npcId)
-			=> SetRelationship(npcId, Relationship.Hate, NpcToNpcRelationship);
+			=> SetRelationship(npcId, AffectionLevel.Hate, NpcToNpcAffection);
 
+		/*
 		public void LoveBiome(int biomeId)
-			=> SetRelationship(biomeId, Relationship.Love, NpcToBiomeRelationship);
+			=> SetRelationship(biomeId, AffectionLevel.Love, NpcToBiomeRelationship);
 
 		public void LikeBiome(int biomeId)
-			=> SetRelationship(biomeId, Relationship.Like, NpcToBiomeRelationship);
+			=> SetRelationship(biomeId, AffectionLevel.Like, NpcToBiomeRelationship);
 
 		public void DislikeBiome(int biomeId)
-			=> SetRelationship(biomeId, Relationship.Dislike, NpcToBiomeRelationship);
+			=> SetRelationship(biomeId, AffectionLevel.Dislike, NpcToBiomeRelationship);
 
 		public void HateBiome(int biomeId)
-			=> SetRelationship(biomeId, Relationship.Hate, NpcToBiomeRelationship);
+			=> SetRelationship(biomeId, AffectionLevel.Hate, NpcToBiomeRelationship);
+		*/
 
-		private void SetRelationship(int index, Relationship relationship, Dictionary<int, Dictionary<int, Relationship>> dictionaries) {
+		private void SetRelationship(int index, AffectionLevel relationship, Dictionary<int, Dictionary<int, AffectionLevel>> dictionaries) {
 			bool removal = relationship == 0;
 
 			if (!dictionaries.TryGetValue(NpcType, out var subDictionary)) {
@@ -90,8 +84,8 @@ namespace Terraria.ModLoader
 		public static NPCHappiness Get(int npcType) => new(npcType);
 
 		internal static void ResetRelationships() {
-			NpcToNpcRelationship.Clear();
-			NpcToBiomeRelationship.Clear();
+			NpcToNpcAffection.Clear();
+			//NpcToBiomeRelationship.Clear();
 		}
 
 		internal static void RegisterVanillaNpcRelationships() {

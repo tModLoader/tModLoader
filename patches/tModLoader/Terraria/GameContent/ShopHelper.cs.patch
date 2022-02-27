@@ -1,17 +1,18 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ShopHelper.cs
 +++ src/tModLoader/Terraria/GameContent/ShopHelper.cs
-@@ -3,6 +_,7 @@
- using System.Collections.Generic;
+@@ -4,6 +_,7 @@
  using Terraria.GameContent.Personalities;
  using Terraria.ID;
-+using Terraria.ModLoader;
  using Terraria.Localization;
++using Terraria.ModLoader;
  
  namespace Terraria.GameContent
-@@ -22,10 +_,10 @@
+ {
+@@ -22,10 +_,11 @@
  			new CrimsonBiome(),
  			new DungeonBiome()
  		};
++		// Turned from private to internal.
 -		private const float likeValue = 0.94f;
 +		internal const float likeValue = 0.94f;
 -		private const float dislikeValue = 1.06f;
@@ -32,16 +33,24 @@
  				foreach (NPC item in nearbyResidentNPCs) {
  					array[item.type] = true;
  				}
-@@ -161,7 +_,14 @@
- 		private static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue("TownNPCMoodBiomes." + biomeNameKey);
+@@ -158,10 +_,21 @@
+ 			return priceAdjustment;
+ 		}
+ 
++		//TML: Turned public.
++		//TODO: Anything else?
+-		private static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue("TownNPCMoodBiomes." + biomeNameKey);
++		public static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue("TownNPCMoodBiomes." + biomeNameKey);
  
  		private void AddHappinessReportText(string textKeyInCategory, object substitutes = null) {
 +			string str;
++
 +			if (_currentNPCBeingTalkedTo.type < NPCID.Count)
 -			string str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +				str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +			else {
 +				var modNpc = _currentNPCBeingTalkedTo.ModNPC;
++
 +				str = $"Mods.{modNpc.Mod.Name}.TownNPCMood.{modNpc.Name}";
 +			}
 +
@@ -53,29 +62,29 @@
  		}
  
 +		// Added by TML.
-+		internal void ApplyNpcRelationshipEffect(int npcType, NPCHappiness.Relationship relationship) {
-+			if (relationship == NPCHappiness.Relationship.Neutral || !Enum.IsDefined(relationship)) {
++		internal void ApplyNpcRelationshipEffect(int npcType, AffectionLevel affectionLevel) {
++			if (affectionLevel == 0 || !Enum.IsDefined(affectionLevel)) {
 +				return;
 +			}
 +
-+			AddHappinessReportText($"{relationship}NPC", new {
++			AddHappinessReportText($"{affectionLevel}NPC", new {
 +				NPCName = NPC.GetFullnameByID(npcType)
 +			});
 +
-+			_currentPriceAdjustment *= NPCHappiness.RelationshipToPriceMultiplier[relationship];
++			_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[affectionLevel];
 +		}
 +
 +		// Added by TML.
-+		internal void ApplyBiomeRelationshipEffect(int biomeType, NPCHappiness.Relationship relationship) {
-+			if (relationship == NPCHappiness.Relationship.Neutral || !Enum.IsDefined(relationship)) {
++		internal void ApplyBiomeRelationshipEffect(string biomeNameKey, AffectionLevel affectionLevel) {
++			if (affectionLevel == 0 || !Enum.IsDefined(affectionLevel)) {
 +				return;
 +			}
 +
-+			AddHappinessReportText($"{relationship}Biome", new {
-+				BiomeName = BiomeNameByKey(biomeType)
++			AddHappinessReportText($"{affectionLevel}Biome", new {
++				BiomeName = BiomeNameByKey(biomeNameKey)
 +			});
 +
-+			_currentPriceAdjustment *= NPCHappiness.RelationshipToPriceMultiplier[relationship];
++			_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[affectionLevel];
 +		}
 +
 +		/*
@@ -95,17 +104,17 @@
  			});
  
 -			_currentPriceAdjustment *= 0.88f;
-+			_currentPriceAdjustment *= NPCHappiness.RelationshipToPriceMultiplier[NPCHappiness.Relationship.Love];
++			_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[AffectionLevel.Love];
  		}
  
 -		public void LikePrincess() {
-+		internal void LikePrincess() {
++		internal  void LikePrincess() {
  			AddHappinessReportText("LikeNPC_Princess", new {
  				NPCName = NPC.GetFullnameByID(663)
  			});
  
 -			_currentPriceAdjustment *= 0.94f;
-+			_currentPriceAdjustment *= NPCHappiness.RelationshipToPriceMultiplier[NPCHappiness.Relationship.Like];
++			_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[AffectionLevel.Like];
  		}
  
 +		/*
@@ -120,11 +129,13 @@
  
  		private List<NPC> GetNearbyResidentNPCs(NPC npc, out int npcsWithinHouse, out int npcsWithinVillage) {
  			List<NPC> list = new List<NPC>();
-@@ -316,7 +_,7 @@
+@@ -316,7 +_,10 @@
  
  		private bool IsNotReallyTownNPC(NPC npc) {
  			int type = npc.type;
--			if (type == 37 || type == 368 || type == 453)
++			/*
+ 			if (type == 37 || type == 368 || type == 453)
++			*/
 +			if (type == 37 || type == 368 || NPCID.Sets.ActsLikeTownNPC[type])
  				return true;
  
