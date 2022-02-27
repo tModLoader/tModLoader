@@ -64,7 +64,16 @@ namespace Terraria.ModLoader.UI.DownloadManager
 		}
 
 		private DownloadFile HandleResponse(WebResponse response, CancellationToken token) {
-			var contentLength = response.ContentLength;
+			bool isChunked = response.Headers["Transfer-Encoding"] == "chunked";
+			long contentLength = 100000000;
+			if (isChunked) {
+				string DropboxContentLengthHeader = response.Headers["X-Dropbox-Content-Length"];
+				if (DropboxContentLengthHeader != null)
+					contentLength = int.Parse(DropboxContentLengthHeader);
+			}
+			else {
+				contentLength = response.ContentLength;
+			}
 			if (contentLength < 0) {
 				var txt = $"Could not get a proper content length for DownloadFile[{DisplayText}]";
 				Logging.tML.Error(txt);
