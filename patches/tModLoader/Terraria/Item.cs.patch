@@ -594,6 +594,15 @@
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
  					int num3 = item.stack;
+@@ -46276,6 +_,8 @@
+ 				case 4070:
+ 					return TextureAssets.Item[type].Frame(1, 4);
+ 				default:
++					if (Main.itemAnimationsRegistered.Contains(type))
++					return TextureAssets.Item[type].Frame(verticalFrames: Main.itemAnimations[type].FrameCount);
+ 					return TextureAssets.Item[type].Frame();
+ 			}
+ 		}
 @@ -46290,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
