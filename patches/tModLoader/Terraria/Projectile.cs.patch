@@ -384,7 +384,7 @@
  				case 919:
  				case 923:
  				case 924:
-+					// Extra patch context.
++					// This is the cooldown slot variable.
  					num48 = 1;
  					break;
  			}
@@ -398,7 +398,7 @@
  				flag19 = true;
  
 +			if (ModProjectile != null)
-+				num49 = ModProjectile.CooldownSlot;
++				num48 = ModProjectile.CooldownSlot;
 +
  			if (!flag19 || !Colliding(myRect, Main.player[myPlayer2].getRect()))
  				return;

@@ -754,11 +754,12 @@
  			if (Main.player[num7].ZoneTowerNebula) {
  				bool flag19 = true;
  				int num50 = 0;
-@@ -60370,6 +_,10 @@
+@@ -60370,6 +_,11 @@
  				}
  			}
  
-+			endVanillaSpawn: //this ugly code is just to minimize the diff file
++			endVanillaSpawn:
++
 +			if (spawn != 0)
 +				newNPC = NPCLoader.SpawnNPC(spawn, num, num2);
 +

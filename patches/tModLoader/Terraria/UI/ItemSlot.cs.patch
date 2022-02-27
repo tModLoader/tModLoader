@@ -519,13 +519,13 @@
  					break;
 +				// Added by TML: [[
 +				case -10:
-+					num10 = 11;
++					num7 = 11;
 +					break;
 +				case -11:
-+					num10 = 2;
++					num7 = 2;
 +					break;
 +				case -12:
-+					num10 = 1;
++					num7 = 1;
 +					break;
 +				// ]]
  				case 16:
@@ -554,7 +554,7 @@
  				Vector2 position2 = position + vector / 2f - rectangle2.Size() * num8 / 2f;
  				Vector2 origin = rectangle2.Size() * (scale3 / 2f - 0.5f);
 +
-+				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3))
++				if (!ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num8 * scale3))
 +					goto SkipVanillaItemDraw;
 +
  				spriteBatch.Draw(value7, position2, rectangle2, item.GetAlpha(currentColor), 0f, origin, num8 * scale3, SpriteEffects.None, 0f);
@@ -569,7 +569,7 @@
  				}
  
 +				SkipVanillaItemDraw:
-+				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num11 * scale3);
++				ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(currentColor), item.GetColor(color), origin, num8 * scale3);
 +
  				if (ItemID.Sets.TrapSigned[item.type])
  					spriteBatch.Draw(TextureAssets.Wire.Value, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle(4, 58, 8, 8), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);

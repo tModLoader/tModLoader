@@ -726,7 +726,7 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 602);
  				if (Main.netMode == 1)
-@@ -4015,16 +_,39 @@
+@@ -4015,16 +_,40 @@
  						break;
  					}
  			}
@@ -740,6 +740,7 @@
 -		public void QuickSpawnItem(IEntitySource source, int item, int stack = 1) {
 +		public int QuickSpawnItem(IEntitySource source, int item, int stack = 1) {
  			int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item, stack, noBroadcast: false, -1);
++
  			if (Main.netMode == 1)
  				NetMessage.SendData(21, -1, -1, null, number, 1f);
 +
@@ -755,7 +756,7 @@
 +			ItemLoader.OpenVanillaBag("bossBag", this, type);
 +
 +			if (ItemID.Sets.BossBag[type] && (!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
-+				this.TryGettingDevArmor();
++				this.TryGettingDevArmor(itemSource_OpenItem);
 +			}
 +
 +			// In the following switch, some TryGettingDevArmor lines have been made useless in favor of expanding the TML-added ItemID.BossBag & ItemID.PreHardmodeLikeBossBag sets.
@@ -767,15 +768,6 @@
  			switch (type) {
  				case 3318: {
  						if (Main.tenthAnniversaryWorld)
-@@ -4094,7 +_,7 @@
- 						if (Main.rand.Next(7) == 0)
- 							QuickSpawnItem(itemSource_OpenItem, 2111);
- 
--						QuickSpawnItem(itemSource_OpenItem, 3224);
-+						QuickSpawnItem(i+temSource_OpenItem, 3224);
- 						break;
- 					}
- 				case 3321: {
 @@ -4518,8 +_,12 @@
  			if (type == 5111)
  				num11 = 668;
@@ -800,7 +792,7 @@
  
 -		private void TryGettingDevArmor(IEntitySource source) {
 +		public void TryGettingDevArmor(IEntitySource source) {
-+			ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(this);
++			ModLoader.Default.ModLoaderMod.TryGettingPatreonOrDevArmor(source, this);
 +
  			if (Main.rand.Next(Main.tenthAnniversaryWorld ? 10 : 20) == 0) {
  				switch (Main.rand.Next(18)) {
@@ -4163,7 +4155,7 @@
  					NetMessage.SendData(41, -1, -1, null, whoAmI);
  				}
  
-+				if (!CombinedHooks.Shoot(this, sItem, (ProjectileSource_Item_WithAmmo)projectileSource_Item_WithPotentialAmmo, pointPoisition, velocity, projToShoot, Damage, KnockBack))
++				if (!CombinedHooks.Shoot(this, sItem, (EntitySource_ItemUse_WithAmmo)projectileSource_Item_WithPotentialAmmo, pointPoisition, velocity, projToShoot, Damage, KnockBack))
 +					return;
 +
 +				goto ShootProj;
@@ -4637,7 +4629,7 @@
 +			}
 +
 +			//TML: Drop code for modded accessory Slots, should run prior to dropping other items in case conditions are used based on player's current equips
-+			AccessorySlotLoader.ModSlotPlayer(this).DropItems();
++			AccessorySlotLoader.ModSlotPlayer(this).DropItems(itemSource_Death);
 +
 +			startCounts[ModContent.ItemType<ModLoader.Default.StartBag>()] = 1;
 +
@@ -5032,7 +5024,7 @@
  				adjTile[n] = false;
  				oldAdjTile[n] = false;
  			}
-@@ -39162,10 +_,28 @@
+@@ -39162,13 +_,31 @@
  			num2 = ((num <= 50) ? (num2 - (float)num * 0.01f) : ((num <= 100) ? (0.5f - (float)(num - 50) * 0.005f) : ((num > 150) ? 0.15f : (0.25f - (float)(num - 100) * 0.002f))));
  			num2 *= 0.9f;
  			num2 *= (float)(currentShoppingSettings.PriceAdjustment + 1.0) / 2f;
@@ -5040,9 +5032,12 @@
 +			List<Item> rewardItems = new List<Item>();
 +			
  			GetItemSettings anglerRewardSettings = GetItemSettings.NPCEntityToPlayerInventorySettings;
- 			GetAnglerReward_MainReward(source, num, num2, ref anglerRewardSettings);
- 			GetAnglerReward_Money(source, num, num2, ref anglerRewardSettings);
- 			GetAnglerReward_Bait(source, num, num2, ref anglerRewardSettings);
+-			GetAnglerReward_MainReward(source, num, num2, ref anglerRewardSettings);
++			GetAnglerReward_MainReward(rewardItems, source, num, num2, ref anglerRewardSettings);
+-			GetAnglerReward_Money(source, num, num2, ref anglerRewardSettings);
++			GetAnglerReward_Money(rewardItems, source, num, num2, ref anglerRewardSettings);
+-			GetAnglerReward_Bait(source, num, num2, ref anglerRewardSettings);
++			GetAnglerReward_Bait(rewardItems, source, num, num2, ref anglerRewardSettings);
 +			
 +			PlayerLoader.AnglerQuestReward(this, num2, rewardItems);
 +
@@ -5052,7 +5047,7 @@
 +				Item getItem = GetItem(whoAmI, rewardItem, GetItemSettings.NPCEntityToPlayerInventorySettings);
 +				
 +				if (getItem.stack > 0) {
-+					int number = Item.NewItem((int)position.X, (int)position.Y, width, height, getItem.type, getItem.stack, noBroadcast: false, 0, noGrabDelay: true);
++					int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, getItem.type, getItem.stack, noBroadcast: false, 0, noGrabDelay: true);
 +					
 +					if (Main.netMode == 1)
 +						NetMessage.SendData(21, -1, -1, null, number, 1f);
@@ -5060,104 +5055,160 @@
 +			}
  		}
  
- 		private void GetAnglerReward_MainReward(IEntitySource source, int questsDone, float rarityReduction, ref GetItemSettings anglerRewardSettings) {
-@@ -39349,6 +_,7 @@
+-		private void GetAnglerReward_MainReward(IEntitySource source, int questsDone, float rarityReduction, ref GetItemSettings anglerRewardSettings) {
++		private void GetAnglerReward_MainReward(List<Item> rewardItems, IEntitySource source, int questsDone, float rarityReduction, ref GetItemSettings anglerRewardSettings) {
+ 			Item item = new Item();
+ 			item.type = 0;
+ 			switch (questsDone) {
+@@ -39349,34 +_,68 @@
  					}
  			}
  
++			if (!item.IsAir) {
++				rewardItems.Add(item);
++			}
++
 +			/*
  			item.position = base.Center;
- 			Item item2 = GetItem(whoAmI, item, anglerRewardSettings);
- 			if (item2.stack > 0) {
-@@ -39356,11 +_,15 @@
- 				if (Main.netMode == 1)
- 					NetMessage.SendData(21, -1, -1, null, number, 1f);
- 			}
 +			*/
 +
-+			rewardItems.Add(item);
+ 			Item item2 = GetItem(whoAmI, item, anglerRewardSettings);
++
+ 			if (item2.stack > 0) {
++				/*
+ 				int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, number, 1f);
++				*/
++
++				rewardItems.Add(item2);
+ 			}
  
  			if (item.type == 2417) {
  				Item item3 = new Item();
  				Item item4 = new Item();
  				item3.SetDefaults(2418);
++
 +				/*
  				item3.position = base.Center;
++				*/
++
  				item2 = GetItem(whoAmI, item3, anglerRewardSettings);
++
  				if (item2.stack > 0) {
-@@ -39368,8 +_,12 @@
++					/*
+ 					int number2 = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number2, 1f);
++					*/
++
++					rewardItems.Add(item2);
  				}
-+				*/		
 +
 +				rewardItems.Add(item3);
  
  				item4.SetDefaults(2419);
++
 +				/*
  				item4.position = base.Center;
++				*/
++
  				item2 = GetItem(whoAmI, item4, anglerRewardSettings);
++
  				if (item2.stack > 0) {
-@@ -39377,6 +_,9 @@
++					/*
+ 					int number3 = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number3, 1f);
++					*/
++
++					rewardItems.Add(item2);
  				}
-+				*/
 +				
 +				rewardItems.Add(item4);
  			}
  			else {
  				if (item.type != 2498)
-@@ -39385,6 +_,7 @@
+@@ -39385,26 +_,48 @@
  				Item item5 = new Item();
  				Item item6 = new Item();
  				item5.SetDefaults(2499);
++
 +				/*
  				item5.position = base.Center;
++				*/
++
  				item2 = GetItem(whoAmI, item5, anglerRewardSettings);
++
  				if (item2.stack > 0) {
-@@ -39392,8 +_,12 @@
++					/*
+ 					int number4 = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number4, 1f);
++					*/
++
++					rewardItems.Add(item2);
  				}
-+				*/
 +
 +				rewardItems.Add(item5);
  
  				item6.SetDefaults(2500);
++
 +				/*
  				item6.position = base.Center;
++				*/
++
  				item2 = GetItem(whoAmI, item6, anglerRewardSettings);
++
  				if (item2.stack > 0) {
-@@ -39401,6 +_,9 @@
++					/*
+ 					int number5 = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number5, 1f);
++					*/
++
++					rewardItems.Add(item2);
  				}
-+				*/
 +
 +				rewardItems.Add(item6);
  			}
  		}
  
-@@ -39434,6 +_,7 @@
+-		private void GetAnglerReward_Bait(IEntitySource source, int questsDone, float rarityReduction, ref GetItemSettings anglerRewardSettings) {
++		private void GetAnglerReward_Bait(List<Item> rewardItems, IEntitySource source, int questsDone, float rarityReduction, ref GetItemSettings anglerRewardSettings) {
+ 			if (Main.rand.Next((int)(100f * rarityReduction)) > 50)
+ 				return;
+ 
+@@ -39434,16 +_,28 @@
  			if (Main.rand.Next(250) <= questsDone)
  				item.stack++;
  
++
++			if (item.stack > 0)
++				rewardItems.Add(item);
++
 +			/*
  			item.position = base.Center;
++			*/
++
  			Item item2 = GetItem(whoAmI, item, GetItemSettings.NPCEntityToPlayerInventorySettings);
++
  			if (item2.stack > 0) {
-@@ -39441,6 +_,10 @@
++				/*
+ 				int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
++				*/
++
++				rewardItems.Add(item2);
  			}
-+			*/
-+			
-+			if (item.stack > 0)
-+				rewardItems.Add(item8);
  		}
  
- 		private void GetAnglerReward_Money(IEntitySource source, int questsDone, float rarityReduction, ref GetItemSettings anglerRewardSettings) {
+-		private void GetAnglerReward_Money(IEntitySource source, int questsDone, float rarityReduction, ref GetItemSettings anglerRewardSettings) {
++		private void GetAnglerReward_Money(List<Item> rewardItems, IEntitySource source, int questsDone, float rarityReduction, ref GetItemSettings anglerRewardSettings) {
+ 			Item item = new Item();
+ 			int num = (questsDone + 50) / 2;
+ 			num = (int)((float)(num * Main.rand.Next(50, 201)) * 0.015f);
 @@ -39476,9 +_,13 @@
  			item.position = base.Center;
  			Item item2 = GetItem(whoAmI, item, anglerRewardSettings);

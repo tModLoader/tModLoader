@@ -49,7 +49,7 @@
  				Main.item[num2].stack = stack;
  				NetMessage.SendData(21, -1, -1, null, num2);
 +				*/
-+				Item.DropItem(item, new Rectangle(x * 16, y * 16, 16, 16));
++				Item.DropItem(new EntitySource_TileBreak(x, y), item, new Rectangle(x * 16, y * 16, 16, 16));
  				return;
  			}
  

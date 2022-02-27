@@ -576,7 +576,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookShoot = AddHook<Func<Item, ProjectileSource_Item_WithAmmo, Vector2, Vector2, int, int, float, bool>>(p => p.Shoot);
+		private static HookList HookShoot = AddHook<Func<Item, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float, bool>>(p => p.Shoot);
 
 		public static bool Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			bool defaultResult = true;

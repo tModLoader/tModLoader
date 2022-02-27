@@ -122,8 +122,8 @@ namespace Terraria
 		}
 
 		// Internal utility method. Move somewhere, if there's a better place.
-		internal static void DropItem(Item item, Rectangle rectangle) {
-			int droppedItemId = NewItem(rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
+		internal static void DropItem(IEntitySource source, Item item, Rectangle rectangle) {
+			int droppedItemId = NewItem(source, rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
 			var droppedItem = Main.item[droppedItemId];
 
 			droppedItem.ModItem = item.ModItem;

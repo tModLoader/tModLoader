@@ -838,9 +838,9 @@ namespace Terraria.ModLoader
 		private static HookList HookSpawnNPC = AddHook<Action<int, int, int>>(g => g.SpawnNPC);
 
 		public static int SpawnNPC(int type, int tileX, int tileY) {
-			var npc = type >= NPCID.Count ?
-				GetNPC(type).SpawnNPC(tileX, tileY) :
-				NPC.NewNPC(tileX * 16 + 8, tileY * 16, type);
+			var npc = type >= NPCID.Count
+				? GetNPC(type).SpawnNPC(tileX, tileY)
+				: NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), tileX * 16 + 8, tileY * 16, type);
 
 			foreach (GlobalNPC g in HookSpawnNPC.Enumerate(Main.npc[npc].globalNPCs)) {
 				g.SpawnNPC(npc, tileX, tileY);

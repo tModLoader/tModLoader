@@ -535,7 +535,8 @@ namespace Terraria.ModLoader
 		/// <param name="tileY"></param>
 		/// <returns></returns>
 		public virtual int SpawnNPC(int tileX, int tileY) {
-			return NPC.NewNPC(tileX * 16 + 8, tileY * 16, NPC.type);
+			//TODO: Add IEntitySource in '1.4_onspawn'.
+			return NPC.NewNPC(null, tileX * 16 + 8, tileY * 16, NPC.type);
 		}
 
 		/// <summary>
