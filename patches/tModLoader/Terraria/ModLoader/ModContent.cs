@@ -24,6 +24,7 @@ using Terraria.UI;
 using Terraria.ModLoader.Utilities;
 using Terraria.Initializers;
 using Terraria.Map;
+using Terraria.GameContent.Creative;
 
 namespace Terraria.ModLoader
 {
@@ -484,6 +485,7 @@ namespace Terraria.ModLoader
 			// WallID.Search = IdDictionary.Create<WallID, ushort>();
 			// BuffID.Search = IdDictionary.Create<BuffID, int>();
 
+			CreativeItemSacrificesCatalog.Instance.Initialize();
 			ContentSamples.Initialize();
 			SetupBestiary();
 
