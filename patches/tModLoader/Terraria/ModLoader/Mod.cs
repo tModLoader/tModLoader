@@ -82,6 +82,7 @@ namespace Terraria.ModLoader
 		public IContentSource RootContentSource { get; private set; }
 
 		internal short netID = -1;
+		public short NetID => netID;
 		public bool IsNetSynced => netID >= 0;
 
 		private IDisposable fileHandle;
