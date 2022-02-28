@@ -8,7 +8,14 @@
  
  namespace Terraria.GameContent
  {
-@@ -22,10 +_,11 @@
+@@ -16,16 +_,17 @@
+ 		private float _currentPriceAdjustment;
+ 		private NPC _currentNPCBeingTalkedTo;
+ 		private Player _currentPlayerTalking;
+-		private PersonalityDatabase _database;
++		internal PersonalityDatabase _database; //TML: Turned from private to internal.
+ 		private AShoppingBiome[] _dangerousBiomes = new AShoppingBiome[3] {
+ 			new CorruptionBiome(),
  			new CrimsonBiome(),
  			new DungeonBiome()
  		};
@@ -33,6 +40,25 @@
  				foreach (NPC item in nearbyResidentNPCs) {
  					array[item.type] = true;
  				}
+@@ -140,10 +_,17 @@
+ 				helperInfo.NearbyNPCs = nearbyResidentNPCs;
+ 				helperInfo.nearbyNPCsByType = array;
+ 				HelperInfo info = helperInfo;
+-				foreach (IShopPersonalityTrait shopModifier in _database.GetByNPCID(npc.type).ShopModifiers) {
++
++				if (!_database.TryGetProfileByNPCID(npc.type, out var personalityProfile)) {
++					goto SkipModifierEnumeration;
++				}
++
++				foreach (IShopPersonalityTrait shopModifier in personalityProfile.ShopModifiers) {
+ 					shopModifier.ModifyShopPrice(info, this);
+ 				}
+ 
++				SkipModifierEnumeration:
++
+ 				new AllPersonalitiesModifier().ModifyShopPrice(info, this);
+ 				if (_currentHappiness == "")
+ 					AddHappinessReportText("Content");
 @@ -158,10 +_,21 @@
  			return priceAdjustment;
  		}

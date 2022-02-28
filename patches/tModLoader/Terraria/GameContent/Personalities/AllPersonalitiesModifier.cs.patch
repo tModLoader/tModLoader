@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
 +++ src/tModLoader/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
-@@ -1,15 +_,68 @@
+@@ -1,15 +_,70 @@
  using System.Collections.Generic;
 +using Terraria.ModLoader;
  
@@ -8,34 +8,36 @@
  {
  	public class AllPersonalitiesModifier : IShopPersonalityTrait
  	{
++		// TML-added dummy, used to trick vanilla code into acting like every npc is currently around
 +		private struct NearbyNpcsDummy
 +		{
 +			public bool this[int index] => true;
++		}
++		// TML-added dummy, used to redirect old immediate-time shop price modification code into load-time registration of affections.
++		private readonly struct ShopHelperDummy
++		{
++			public readonly NPCHappiness Happiness;
++
++			public ShopHelperDummy(NPCHappiness happiness) {
++				Happiness = happiness;
++			}
++
++			public void LoveNPC(int npcId)
++				=> Happiness.SetNpcAffection(npcId, AffectionLevel.Love);
++
++			public void LikeNPC(int npcId)
++				=> Happiness.SetNpcAffection(npcId, AffectionLevel.Like);
++
++			public void DislikeNPC(int npcId)
++				=> Happiness.SetNpcAffection(npcId, AffectionLevel.Dislike);
++
++			public void HateNPC(int npcId)
++				=> Happiness.SetNpcAffection(npcId, AffectionLevel.Hate);
 +		}
 +
  		public void ModifyShopPrice(HelperInfo info, ShopHelper shopHelperInstance) {
 +			var npc = info.npc;
 +			var npcHappiness = npc.Happiness;
-+
-+			// Apply effects from the primary biome
-+			/*
-+			if (npcHappiness.BiomeTypeRelationships.TryGetValue(primaryPlayerBiome, out var biomeRelationship)) {
-+				shopHelperInstance.ApplyBiomeRelationshipEffect(primaryPlayerBiome, biomeRelationship);
-+			}
-+			*/
-+
-+			// Apply effects from nearby NPCs
-+			for (int i = 0; i < info.nearbyNPCsByType.Length; i++) {
-+				if (!info.nearbyNPCsByType[i]) {
-+					continue;
-+				}
-+
-+				if (!npcHappiness.NpcTypeAffectionLevels.TryGetValue(i, out var npcRelationship)) {
-+					continue;
-+				}
-+
-+				shopHelperInstance.ApplyNpcRelationshipEffect(i, npcRelationship);
-+			}
 +
  			ModifyShopPrice_Relationships(info, shopHelperInstance);
 +
@@ -69,15 +71,17 @@
  			if (info.npc.type == 663) {
  				List<int> list = new List<int>();
  				for (int i = 0; i < nearbyNPCsByType.Length; i++) {
-@@ -30,6 +_,11 @@
+@@ -30,6 +_,13 @@
  
  			if (info.npc.type != 663 && nearbyNPCsByType[663])
  				shopHelperInstance.LikePrincess();
 +		}
 +
++		// [[ Split of the previous method ]]
++
 +		private static void RegisterNpcToNpcRelationships(HelperInfo info, NPCHappiness npcHappiness) {
 +			NearbyNpcsDummy nearbyNPCsByType = default; // Lies!
-+			var shopHelperInstance = npcHappiness; // LIIIEEESS!!!
++			ShopHelperDummy shopHelperInstance = new(npcHappiness); // LIIIEEESS!!!
  
  			switch (info.npc.type) {
  				case 17:

@@ -9,10 +9,12 @@ namespace Terraria.ModLoader
 	/// <summary> This struct provides access to an NPC type's NPC &amp; Biome relationships. </summary>
 	public readonly struct NPCHappiness
 	{
+		/*
 		private static readonly IReadOnlyDictionary<int, AffectionLevel> emptyDictionaryDummy = new ReadOnlyDictionary<int, AffectionLevel>(new Dictionary<int, AffectionLevel>());
 
 		internal static readonly Dictionary<int, Dictionary<int, AffectionLevel>> NpcToNpcAffection = new();
-		//internal static readonly Dictionary<int, Dictionary<int, AffectionLevel>> NpcToBiomeRelationship = new();
+		internal static readonly Dictionary<int, Dictionary<int, AffectionLevel>> NpcToBiomeRelationship = new();
+		*/
 
 		/// <summary> Allows you to modify the shop price multipliers associated with a (biome/npc type) relationship level. </summary>
 		public static readonly Dictionary<AffectionLevel, float> AffectionLevelToPriceMultiplier = new() {
@@ -24,10 +26,10 @@ namespace Terraria.ModLoader
 
 		public readonly int NpcType;
 
+		/*
 		public IReadOnlyDictionary<int, AffectionLevel> NpcTypeAffectionLevels
 			=> NpcToNpcAffection.TryGetValue(NpcType, out var result) ? result : emptyDictionaryDummy;
 
-		/*
 		public IReadOnlyDictionary<int, AffectionLevel> BiomeTypeRelationships
 			=> NpcToBiomeRelationship.TryGetValue(NpcType, out var result) ? result : emptyDictionaryDummy;
 		*/
@@ -36,19 +38,19 @@ namespace Terraria.ModLoader
 			NpcType = npcType;
 		}
 
+		/*
 		public void LoveNPC(int npcId)
-			=> SetRelationship(npcId, AffectionLevel.Love, NpcToNpcAffection);
+			=> SetAffection(npcId, AffectionLevel.Love, NpcToNpcAffection);
 
 		public void LikeNPC(int npcId)
-			=> SetRelationship(npcId, AffectionLevel.Like, NpcToNpcAffection);
+			=> SetAffection(npcId, AffectionLevel.Like, NpcToNpcAffection);
 
 		public void DislikeNPC(int npcId)
-			=> SetRelationship(npcId, AffectionLevel.Dislike, NpcToNpcAffection);
+			=> SetAffection(npcId, AffectionLevel.Dislike, NpcToNpcAffection);
 
 		public void HateNPC(int npcId)
-			=> SetRelationship(npcId, AffectionLevel.Hate, NpcToNpcAffection);
+			=> SetAffection(npcId, AffectionLevel.Hate, NpcToNpcAffection);
 
-		/*
 		public void LoveBiome(int biomeId)
 			=> SetRelationship(biomeId, AffectionLevel.Love, NpcToBiomeRelationship);
 
@@ -62,30 +64,45 @@ namespace Terraria.ModLoader
 			=> SetRelationship(biomeId, AffectionLevel.Hate, NpcToBiomeRelationship);
 		*/
 
-		private void SetRelationship(int index, AffectionLevel relationship, Dictionary<int, Dictionary<int, AffectionLevel>> dictionaries) {
-			bool removal = relationship == 0;
+		public void SetNpcAffection(int npcId, AffectionLevel affectionLevel) {
+			var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(npcId);
+			bool removal = affectionLevel == 0;
 
-			if (!dictionaries.TryGetValue(NpcType, out var subDictionary)) {
-				if (removal) {
-					return;
+			for (int i = 0; i < profile.ShopModifiers.Count; i++) {
+				var personalityTrait = profile.ShopModifiers[i];
+
+				if (personalityTrait is not NPCPreferenceTrait npcPreference) {
+					continue;
 				}
 
-				dictionaries[NpcType] = subDictionary = new();
+				if (npcPreference.NpcId != npcId) {
+					continue;
+				}
+
+				if (removal) {
+					profile.ShopModifiers.RemoveAt(i--);
+				} else {
+					npcPreference.Level = affectionLevel;
+					removal = true; // Remove every repeating match after this.
+				}
 			}
 
-			if (removal) {
-				subDictionary.Remove(index);
-				return;
+			// If this affection level isn't neutral, and an existing personality trait hasn't been found.
+			if (!removal) {
+				profile.ShopModifiers.Add(new NPCPreferenceTrait {
+					NpcId = npcId,
+					Level = affectionLevel,
+				});
 			}
-
-			subDictionary[index] = relationship;
 		}
 
 		public static NPCHappiness Get(int npcType) => new(npcType);
 
 		internal static void ResetRelationships() {
+			/*
 			NpcToNpcAffection.Clear();
-			//NpcToBiomeRelationship.Clear();
+			NpcToBiomeRelationship.Clear();
+			*/
 		}
 
 		internal static void RegisterVanillaNpcRelationships() {

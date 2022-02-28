@@ -4,7 +4,7 @@
  
  		public void ModifyShopPrice(HelperInfo info, ShopHelper shopHelperInstance) {
  			if (info.nearbyNPCsByType[NpcId]) {
-+				shopHelperInstance.ApplyNpcRelationshipEffect(NpcId, shopHelperInstance);
++				shopHelperInstance.ApplyNpcRelationshipEffect(NpcId, Level);
 +
 +				/*
  				switch (Level) {
