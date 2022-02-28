@@ -1,5 +1,6 @@
 var NAVTREEINDEX118 =
 {
+"class_terraria_1_1_world_gen.html#a236e2315e0a7d9244cbaef306da41f22":[1,0,2,84,287],
 "class_terraria_1_1_world_gen.html#a23c3bf098f8a674dcc0b3525a945a815":[1,0,2,84,356],
 "class_terraria_1_1_world_gen.html#a2404eac6d0eb03bde459f83c69cbee18":[1,0,2,84,387],
 "class_terraria_1_1_world_gen.html#a24919b0cab2b9339d42400c387e4cbbe":[1,0,2,84,605],
@@ -248,6 +249,5 @@ var NAVTREEINDEX118 =
 "class_terraria_1_1_world_gen.html#a8a6704559c91ea74b6ec99a70546e904":[1,0,2,84,54],
 "class_terraria_1_1_world_gen.html#a8a9f3d640d9a59716879c7a1befb4ac9":[1,0,2,84,48],
 "class_terraria_1_1_world_gen.html#a8c2ff84dffc989cf7d0e46c77ec2ad89":[1,0,2,84,308],
-"class_terraria_1_1_world_gen.html#a8c59b35eae1fe8706f1b6ed1d24ce435":[1,0,2,84,527],
-"class_terraria_1_1_world_gen.html#a8c9fb0a7e36d5372ca9f748a2898d41a":[1,0,2,84,150]
+"class_terraria_1_1_world_gen.html#a8c59b35eae1fe8706f1b6ed1d24ce435":[1,0,2,84,527]
 };

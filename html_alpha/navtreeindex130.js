@@ -1,5 +1,6 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_utilities_1_1_fast_random.html#a5ad72e94640139e91f4c00476108be6e":[1,0,2,22,4,1],
 "struct_terraria_1_1_utilities_1_1_fast_random.html#a614828b8cc182ca7ed3cecbf5fd51f49":[1,0,2,22,4,8],
 "struct_terraria_1_1_utilities_1_1_fast_random.html#a68b799f2e8458c219067a5b5458ad1f2":[1,0,2,22,4,6],
 "struct_terraria_1_1_utilities_1_1_fast_random.html#a9b186ec02eb7143f86ff9b84bb96be82":[1,0,2,22,4,7],

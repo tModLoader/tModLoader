@@ -46,6 +46,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "Logger", "class_terraria_1_1_mod_loader_1_1_mod.html#a11dcfe653c0cdc73bd692f80bb2b8916", null ],
     [ "MusicAutoloadingEnabled", "class_terraria_1_1_mod_loader_1_1_mod.html#a2cbad6538cab18716820b4ba42749c8e", null ],
     [ "Name", "class_terraria_1_1_mod_loader_1_1_mod.html#a8206e4bf920a7562a972dcb7c9e2ef09", null ],
+    [ "NetID", "class_terraria_1_1_mod_loader_1_1_mod.html#a3fae5b0aa5a1e105dc6c708af13274f2", null ],
     [ "RootContentSource", "class_terraria_1_1_mod_loader_1_1_mod.html#a1f72ff1a6b7d389d20e3215b867e1f72", null ],
     [ "Side", "class_terraria_1_1_mod_loader_1_1_mod.html#ad921b4895d8db73a6139987c4c456777", null ],
     [ "SoundAutoloadingEnabled", "class_terraria_1_1_mod_loader_1_1_mod.html#adc70a1662799e620716c519dfb824d73", null ],

@@ -1,5 +1,6 @@
 var NAVTREEINDEX108 =
 {
+"class_terraria_1_1_recipe.html":[1,0,2,61],
 "class_terraria_1_1_recipe.html#a00f7049351c4f3fd864d2208b7ab1699":[1,0,2,61,35],
 "class_terraria_1_1_recipe.html#a10eeb8b1fe63aaa570b90eee38a3b3b6":[1,0,2,61,16],
 "class_terraria_1_1_recipe.html#a1632046c69022e066c74424609552cf8":[1,0,2,61,38],
@@ -248,6 +249,5 @@ var NAVTREEINDEX108 =
 "class_terraria_1_1_server_1_1_game.html#a09267ab8e2373ef6ee279c62708fdb89":[1,0,2,18,0,32],
 "class_terraria_1_1_server_1_1_game.html#a106c49a9cd6e80c131c1ecf84c548627":[1,0,2,18,0,7],
 "class_terraria_1_1_server_1_1_game.html#a14ea299b86ada593326cd5b11cb59ca0":[1,0,2,18,0,26],
-"class_terraria_1_1_server_1_1_game.html#a1dc33497010024cea955a1229e52153d":[1,0,2,18,0,28],
-"class_terraria_1_1_server_1_1_game.html#a1e9954bd1255c2dd9016f6885e3c2a5a":[1,0,2,18,0,24]
+"class_terraria_1_1_server_1_1_game.html#a1dc33497010024cea955a1229e52153d":[1,0,2,18,0,28]
 };

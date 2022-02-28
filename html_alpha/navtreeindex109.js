@@ -1,5 +1,6 @@
 var NAVTREEINDEX109 =
 {
+"class_terraria_1_1_server_1_1_game.html#a1e9954bd1255c2dd9016f6885e3c2a5a":[1,0,2,18,0,24],
 "class_terraria_1_1_server_1_1_game.html#a1e9e1e34d859cdd0ef0cb32f5328329d":[1,0,2,18,0,6],
 "class_terraria_1_1_server_1_1_game.html#a236f0e5edfe6b28f3a149dac6780c065":[1,0,2,18,0,13],
 "class_terraria_1_1_server_1_1_game.html#a258cb396127e3676c4ab779feb65eee1":[1,0,2,18,0,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX109 =
 "class_terraria_1_1_social_1_1_steam_1_1_lobby.html#a6cbd957eeabf7899d4ab04c494b058a3":[1,0,2,19,1,4,3],
 "class_terraria_1_1_social_1_1_steam_1_1_lobby.html#a70421d58fac9424764549d589d73bd25":[1,0,2,19,1,4,9],
 "class_terraria_1_1_social_1_1_steam_1_1_lobby.html#a801abb54b982a6e7ff5e78cf94723d3e":[1,0,2,19,1,4,13],
-"class_terraria_1_1_social_1_1_steam_1_1_lobby.html#a9d3fa8720ed60567120f6dfa403a0a10":[1,0,2,19,1,4,10],
-"class_terraria_1_1_social_1_1_steam_1_1_lobby.html#aae3b02f822905b1187a32c1125bb4c7e":[1,0,2,19,1,4,2]
+"class_terraria_1_1_social_1_1_steam_1_1_lobby.html#a9d3fa8720ed60567120f6dfa403a0a10":[1,0,2,19,1,4,10]
 };
