@@ -438,12 +438,6 @@ namespace Terraria.ModLoader
 			npc.ModNPC?.BossLoot(ref name, ref potionType);
 		}
 
-		public static void BossBag(NPC npc, ref int bagType) {
-			if (npc.ModNPC != null) {
-				bagType = npc.ModNPC.BossBag;
-			}
-		}
-
 		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Player, Item>>(g => g.OnCatchNPC);
 
 		public static void OnCatchNPC(NPC npc, Player player, Item item) {

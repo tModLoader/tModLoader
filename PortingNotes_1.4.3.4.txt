@@ -1,5 +1,6 @@
 Notes:
 
+- Add '(float)player.meleeAddDamage' to Player.GetWeaponDamage(Item)
 - Improve Terraria.Social.SocialAPI server-client conditionals on non-tml steps.
 - Some 'Id > 0 && Id < Count' things may need to be adjusted
 - Above, around NPCLoot
@@ -60,17 +61,6 @@ Failed Patches:
 +			}
 +
 +			return result;
-
-//NPC.cs:
-@@ -59968,6 +60068,7 @@
- 			if (type == 551)
- 				itemType = 3860;
-
- 
-+			NPCLoader.BossBag(this, ref itemType);
- 			DropItemInstanced(position, base.Size, itemType);
-
- 		}
  
 //ItemSlot.cs:
  @@ -1385,6 +1484,23 @@

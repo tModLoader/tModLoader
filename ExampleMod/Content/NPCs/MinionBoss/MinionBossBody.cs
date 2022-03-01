@@ -154,9 +154,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Custom boss bar
 			NPC.BossBar = ModContent.GetInstance<MinionBossBossBar>();
 
-			// Important if this boss has a treasure bag
-			BossBag = ModContent.ItemType<MinionBossBag>();
-
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ) {
 				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Ropocalypse2");
@@ -175,8 +172,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
 			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-			// This requires you to set BossBag in SetDefaults accordingly
-			npcLoot.Add(ItemDropRule.BossBag(BossBag));
+			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
 
 			// Trophies are spawned with 1/10 chance
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Placeable.Furniture.MinionBossTrophy>(), 10));
