@@ -31,6 +31,7 @@ namespace Terraria.ModLoader
 				if (player.modBiomeFlags[i] != other.modBiomeFlags[i])
 					return false;
 			}
+			
 			return true;
 		}
 
