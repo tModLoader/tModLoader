@@ -120,40 +120,26 @@ namespace Terraria.Social.Steam
 		}
 
 		public static void CiPublish(string modFolder) {
-			if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-steamCmdFolder"))
+			if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-publishedModFiles"))
 				return;
 
 			Console.WriteLine("Preparing Files for CI...");
 			Program.LaunchParameters.TryGetValue("-ciprep", out string changeNotes);
-			Program.LaunchParameters.TryGetValue("-steamCmdFolder", out string steamCmdFolder);
+			Program.LaunchParameters.TryGetValue("-publishedModFiles", out string publishedModFiles);
 			var properties = BuildProperties.ReadBuildFile(modFolder);
 
 			// Prep some common file paths & info
-			string publishFolder = $"{modFolder}/Workshop";
-			string vdf = Path.Combine(steamCmdFolder, "publish.vdf");
+			string publishFolder = $"{ModOrganizer.modPath}/Workshop";
+			string vdf = $"{ModOrganizer.modPath}/publish.vdf";
 
-			string manifest = Path.Combine(modFolder, "workshop.json");
+			string manifest = Path.Combine(publishedModFiles, "workshop.json");
 			AWorkshopEntry.TryReadingManifest(manifest, out var steamInfo);
 
 			string modName = Path.GetFileNameWithoutExtension(modFolder);
-
-			// Check for if the mod version is increasing
-			//TODO: Finish Implementing, after getting example mod working with using version data
-			var downloadWorkshopItem = new ProcessStartInfo() {
-				FileName = Path.Combine(modFolder, steamCmdFolder, "steamCMD.exe"),
-				UseShellExecute = false,
-				Arguments = "+login anonymous \"+workshop_download_item 1281930 " + steamInfo.workshopEntryId + "\" +quit",
-			};
-			var p = Process.Start(downloadWorkshopItem);
-			p.WaitForExit();
+				
+			var modFile = new TmodFile(ModOrganizer.GetActiveTmodInRepo(publishedModFiles));
 
 			LocalMod mod;
-			var publishedFolder = Path.Combine(steamCmdFolder, "steamapps/workshop/content/1281930", steamInfo.workshopEntryId.ToString());
-
-			//TODO: some missing code for getting the right version to compare against
-
-			var modFile = new TmodFile(publishedFolder);
-
 			using (modFile.Open())
 				mod = new LocalMod(modFile);
 
@@ -164,9 +150,8 @@ namespace Terraria.Social.Steam
 			string contentFolder = $"{publishFolder}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
 			// Ensure the publish folder has all published information needed.
-			Utilities.FileUtilities.CopyFolder(publishedFolder, publishFolder);
+			Utilities.FileUtilities.CopyFolder(publishedModFiles, publishFolder);
 			File.Copy(Path.Combine(ModOrganizer.modPath, $"{modName}.tmod"), Path.Combine(contentFolder, $"{modName}.tmod"), true);
-			File.Copy(manifest, Path.Combine(publishFolder, "workshop.json"), true);
 
 			// Cleanup Old Folders
 			ModOrganizer.CleanupOldPublish(publishFolder);
@@ -180,7 +165,7 @@ namespace Terraria.Social.Steam
 					"{",
 					"\"appid\" \"" + "1281930"  + "\"",
 					"\"publishedfileid\" \"" + steamInfo.workshopEntryId + "\"",
-					"\"contentfolder\" \"" + publishFolder + "\"",
+					"\"contentfolder\" \"" + $"artifacts/{modName}/Workshop" + "\"",
 					"\"changenote\" \"" + changeNotes + "\"",
 					"\"description\" \"" + descriptionFinal + "\"",
 					"}"

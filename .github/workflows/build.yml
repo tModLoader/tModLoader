@@ -228,10 +228,21 @@ jobs:
         with:
           name: temporary-src
           path: tModLoader.zip.gpg
-            
+          
+      - name: Setup steamcmd
+        id: setupsteam
+        uses: CyberAndrii/setup-steamcmd@v1
+        
       - name: Build ExampleMod
         shell: bash
         run: |
+          echo ::group::Getting current published ExampleMod
+          publishid = "2615761271"
+          ${{ steps.setupsteam.outputs.executable }} "+login anonymous \"+workshop_download_item 1281930 $publishid \" +quit"
+          
+          publishedfolder = ${{ steps.setupsteam.outputs.directory }}steamapps/workshop/content/1281930/$publishid
+          echo ::endgroup::
+          
           echo Adding build info to ExampleMod displayName
           echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
           echo "version = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
@@ -241,7 +252,7 @@ jobs:
           echo ModloaderDir is: $ModloaderDir
           mkdir -p $ModloaderDir
           
-          export ExtraBuildModFlags="-tmlsavedirectory \"$(cygpath -w $ModloaderDir)\"" #convert unix path to windows
+          export ExtraBuildModFlags="-ciprep \"Automatic update from GitHub: ${{ github.event.commits[0].message}}\"-publishedModFiles \"$(cygpath -w $publishedfolder)\" -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\"" #convert unix path to windows
           echo ExtraBuildModFlags is: $ExtraBuildModFlags
           
           echo ::group::Building ExampleMod
@@ -249,7 +260,7 @@ jobs:
           echo ::endgroup::
           
           mkdir -p artifacts/Mods
-          mv $ModloaderDir/Mods/ExampleMod.tmod artifacts/Mods/ExampleMod.tmod
+          cp -r $ModloaderDir/Mods artifacts/Mods
           
           echo ::group::Testing Example Mod build from "Mod Sources" dir  
           cp -r ExampleMod "$ModloaderDir/ModSources/ExampleMod"
@@ -263,7 +274,7 @@ jobs:
         with:
           name: ExampleMod Build
           path: |
-            ./artifacts/Mods/ExampleMod.tmod
+            ./artifacts/Mods/
             
       - name: List final directory and file structure
         if: always()
@@ -350,42 +361,50 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 2
+          
       - name: Detect ExampleMod Changed Files
         id: changed-files-examplemod
         uses: tj-actions/changed-files@v9.1
         with:
           files: |
             ExampleMod
+            
       - name: List all changed ExampleMod files
         run: |
           for file in "${{ steps.changed-files-examplemod.outputs.all_modified_files }}"; do
             echo "$file was modified"
           done
+          
       - name: Detect patches Changed Files
         id: changed-files-patches
         uses: tj-actions/changed-files@v9.1
         with:
           files: |
             patches
+            
       - name: List all changed patches
         run: |
           for file in "${{ steps.changed-files-patches.outputs.all_modified_files }}"; do
             echo "$file was modified"
           done
+          
       - name: Download build artifact from build job
         uses: actions/download-artifact@v2
         with:
           # Change this next line to switch between uploading Release and Debug if desired. 
           name: Release Build
           path: artifacts/Build
+          
       - name: View build artifact files
         run: |
           echo pwd is: ${PWD}
           ls -alhR
         working-directory: artifacts/Build
+        
       - name: Setup steamcmd
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
+        
       - name: Setup Authentication Files
         shell: bash
         run: |
@@ -394,19 +413,21 @@ jobs:
         env:
           STEAM_SENTRY_PASSPHRASE: ${{ secrets.STEAM_SENTRY_PASSPHRASE }}
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
+          
       - name: Attempt run_app_build_http 
-        if: steps.changed-files-patches.outputs.any_changed == 'true'
+        if: steps.changed-files-patches.outputs.any_changed == 'true' && github.ref == 'refs/heads/1.4'
         shell: bash
         run: |
           mkdir artifacts/shared
           echo pwd is: ${PWD}
           echo "Listing manifests directory"
           ls -alhR ./solutions/Manifests
-          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http ${GITHUB_WORKSPACE}/solutions/Manifests/app.vdf +quit
+          #steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http ${GITHUB_WORKSPACE}/solutions/Manifests/app.vdf +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
+          
       - name: Download ExampleMod build artifact from build job
         if: steps.changed-files-examplemod.outputs.any_changed == 'true'
         # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
@@ -414,12 +435,14 @@ jobs:
         with:
           name: ExampleMod Build
           path: artifacts/ExampleMod
+          
       - name: View ExampleMod build artifact files
         if: steps.changed-files-examplemod.outputs.any_changed == 'true'
         run: |
           echo pwd is: ${PWD}
           ls -alhR
         working-directory: artifacts/ExampleMod
+        
       - name: Attempt workshop_build_item 
         if: steps.changed-files-examplemod.outputs.any_changed == 'true'
         shell: bash
@@ -427,35 +450,13 @@ jobs:
           echo Changes detected in ExampleMod folder, attempting to publish ExampleMod to workshop
           echo "Warning: This manual publish approach bypasses version and other checks, so updating build.txt is not necessary currently and this approach shouldn't be used by modders"
           echo pwd is: ${PWD}
-          echo Making files
-          cat << EOF > ./workshop.vdf
-          "workshopitem"
-          {
-           "appid" "1281930"
-           "publishedfileid"  "2615761271"
-           "contentfolder" "${GITHUB_WORKSPACE}/artifacts/ExampleMod/"
-           "title" "Example Mod"
-           "description" "Learn how to mod with tModLoader by exploring the source code for this mod.
-           
-           You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4/ExampleMod"
-           "changenote" "Automatic update from GitHub: ${{ github.event.commits[0].message}}"
-          }
-          EOF
-          cat << EOF > ./artifacts/ExampleMod/workshop.json
-          {
-            "WorkshopPublishedVersion": 1,
-            "ContentType": "Mod",
-            "SteamEntryId": 2615761271,
-            "Publicity": 1
-          }
-          EOF
-          ls -alh
+                 
           echo "Attempting to publish ExampleMod.tmod"
-          echo workshop.vdf contents:
-          cat workshop.vdf
+          echo publish.vdf contents:
+          cat publish.vdf
           echo workshop.json contents:
-          cat artifacts/ExampleMod/workshop.json
-          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${GITHUB_WORKSPACE}/workshop.vdf" +quit
-          echo workshop.vdf contents:
-          cat workshop.vdf
+          cat artifacts/ExampleMod/Workshop/workshop.json
+          #steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${GITHUB_WORKSPACE}/publish.vdf" +quit
+          echo publish.vdf contents:
+          cat publish.vdf
           echo Done
