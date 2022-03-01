@@ -1,6 +1,6 @@
---- src/Terraria/Terraria/Chest.cs
+--- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -7,6 +_,7 @@
+@@ -8,6 +_,7 @@
  using Terraria.GameContent.Events;
  using Terraria.ID;
  using Terraria.ObjectData;
@@ -8,7 +8,7 @@
  
  namespace Terraria
  {
-@@ -192,12 +_,15 @@
+@@ -193,12 +_,15 @@
  			return list;
  		}
  
@@ -26,7 +26,7 @@
  			if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  				return true;
  
-@@ -227,6 +_,9 @@
+@@ -228,6 +_,9 @@
  						if (!item.IsTheSameAs(Main.chest[i].item[j]))
  							continue;
  
@@ -36,7 +36,7 @@
  						flag = true;
  						int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
  						if (num > 0) {
-@@ -272,6 +_,17 @@
+@@ -273,6 +_,17 @@
  			Tile tileSafely = Framing.GetTileSafely(X, Y);
  			int type2 = tileSafely.type;
  			int num2 = tileSafely.frameX / 36;
@@ -54,7 +54,7 @@
  			switch (type2) {
  				case 21:
  					switch (num2) {
-@@ -317,6 +_,7 @@
+@@ -318,6 +_,7 @@
  					}
  					return false;
  			}
@@ -62,7 +62,7 @@
  
  			SoundEngine.PlaySound(22, X * 16, Y * 16);
  			for (int i = X; i <= X + 1; i++) {
-@@ -324,7 +_,7 @@
+@@ -325,7 +_,7 @@
  					Tile tileSafely2 = Framing.GetTileSafely(i, j);
  					if (tileSafely2.type == type2) {
  						tileSafely2.frameX -= num;
@@ -71,7 +71,7 @@
  						for (int k = 0; k < 4; k++) {
  							Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, type);
  						}
-@@ -411,15 +_,21 @@
+@@ -412,15 +_,21 @@
  			}
  			else {
  				switch (type) {
@@ -96,7 +96,7 @@
  				}
  			}
  
-@@ -504,14 +_,15 @@
+@@ -505,14 +_,15 @@
  			}
  		}
  
@@ -115,7 +115,7 @@
  					if (item[num2] == null || item[num2].type == 0)
  						break;
  
-@@ -519,7 +_,7 @@
+@@ -520,7 +_,7 @@
  					continue;
  				}
  
@@ -124,7 +124,7 @@
  			}
  
  			item[num2] = newItem.Clone();
-@@ -528,6 +_,7 @@
+@@ -529,6 +_,7 @@
  			item[num2].stack -= num;
  			_ = item[num2].value;
  			_ = 0;
@@ -132,7 +132,7 @@
  		}
  
  		public static void SetupTravelShop() {
-@@ -901,9 +_,12 @@
+@@ -902,9 +_,12 @@
  							Main.travelShop[num2++] = 3636;
  							Main.travelShop[num2++] = 3641;
  							break;
@@ -145,11 +145,11 @@
  		}
  
  		public void SetupShop(int type) {
-@@ -2608,6 +_,7 @@
+@@ -2611,6 +_,7 @@
  					array[num++].SetDefaults(4921);
  			}
  
 +			NPCLoader.SetupShop(type, this, ref num);
- 			for (int num12 = 0; num12 < num; num12++) {
- 				array[num12].isAShopItem = true;
+ 			for (int num13 = 0; num13 < num; num13++) {
+ 				array[num13].isAShopItem = true;
  			}

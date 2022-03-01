@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Social/Steam/WorkshopHelper.cs
+--- src/TerrariaNetCore/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
 @@ -1,15 +_,21 @@
  using Steamworks;

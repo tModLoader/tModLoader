@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Bestiary/UnlockableNPCEntryIcon.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Bestiary/UnlockableNPCEntryIcon.cs
 +++ src/tModLoader/Terraria/GameContent/Bestiary/UnlockableNPCEntryIcon.cs
 @@ -3,6 +_,7 @@
  using ReLogic.Content;

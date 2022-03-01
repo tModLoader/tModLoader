@@ -10,8 +10,6 @@ namespace ExampleMod.Content.Biomes
 	// Shows setting up two basic biomes. For a more complicated example, please request.
 	public class ExampleSurfaceBiome : ModBiome
 	{
-		public override bool IsPrimaryBiome => true; // Allows this biome to impact NPC prices
-
 		// Select all the scenery
 		public override ModWaterStyle WaterStyle => ModContent.Find<ModWaterStyle>("ExampleMod/ExampleWaterStyle"); // Sets a water style for when inside this biome
 		public override ModSurfaceBackgroundStyle SurfaceBackgroundStyle => ModContent.Find<ModSurfaceBackgroundStyle>("ExampleMod/ExampleSurfaceBackgroundStyle");

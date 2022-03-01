@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/LootSimulation/LootSimulationItemCounter.cs
+--- src/TerrariaNetCore/Terraria/GameContent/LootSimulation/LootSimulationItemCounter.cs
 +++ src/tModLoader/Terraria/GameContent/LootSimulation/LootSimulationItemCounter.cs
 @@ -1,13 +_,14 @@
  using System.Collections.Generic;

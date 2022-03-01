@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/Elements/UICharacter.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UICharacter.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UICharacter.cs
 @@ -30,6 +_,8 @@
  		}

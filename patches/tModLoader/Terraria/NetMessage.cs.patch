@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/NetMessage.cs
+--- src/TerrariaNetCore/Terraria/NetMessage.cs
 +++ src/tModLoader/Terraria/NetMessage.cs
 @@ -1,4 +_,5 @@
  using Ionic.Zlib;
@@ -38,7 +38,7 @@
  				writer.Write((byte)msgType);
  				switch (msgType) {
  					case 1:
--						writer.Write("Terraria" + 244);
+-						writer.Write("Terraria" + 246);
 +						writer.Write(BuildInfo.versionedName);
  						break;
  					case 2:

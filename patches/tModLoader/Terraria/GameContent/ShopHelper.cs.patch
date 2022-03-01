@@ -1,17 +1,27 @@
---- src/Terraria/Terraria/GameContent/ShopHelper.cs
+--- src/TerrariaNetCore/Terraria/GameContent/ShopHelper.cs
 +++ src/tModLoader/Terraria/GameContent/ShopHelper.cs
-@@ -3,6 +_,7 @@
- using System.Collections.Generic;
+@@ -4,6 +_,7 @@
  using Terraria.GameContent.Personalities;
  using Terraria.ID;
-+using Terraria.ModLoader;
  using Terraria.Localization;
++using Terraria.ModLoader;
  
  namespace Terraria.GameContent
-@@ -16,10 +_,10 @@
+ {
+@@ -16,18 +_,25 @@
  		private float _currentPriceAdjustment;
  		private NPC _currentNPCBeingTalkedTo;
  		private Player _currentPlayerTalking;
+-		private PersonalityDatabase _database;
+-		private AShoppingBiome[] _dangerousBiomes = new AShoppingBiome[3] {
++		internal PersonalityDatabase _database; //TML: Turned from private to internal.
++		
++		private IShoppingBiome[] _dangerousBiomes = new IShoppingBiome[3] { //TML: Changed from AShoppingBiome to IShoppingBiome
+ 			new CorruptionBiome(),
+ 			new CrimsonBiome(),
+ 			new DungeonBiome()
+ 		};
++		// Turned from private to internal.
 -		private const float likeValue = 0.94f;
 +		internal const float likeValue = 0.94f;
 -		private const float dislikeValue = 1.06f;
@@ -21,9 +31,16 @@
 -		private const float hateValue = 1.12f;
 +		internal const float hateValue = 1.12f;
  
- 		public ShoppingSettings GetShoppingSettings(Player player, NPC npc) {
- 			ShoppingSettings shoppingSettings = default(ShoppingSettings);
-@@ -118,7 +_,7 @@
+ 		public ShopHelper() {
++			// Nothing! The below method will be called in NPCLoader.
++		}
++
++		// Split from the constructor.
++		internal void ReinitializePersonalityDatabase() {
+ 			_database = new PersonalityDatabase();
+ 			new PersonalityDatabasePopulator().Populate(_database);
+ 		}
+@@ -129,7 +_,7 @@
  					_currentPriceAdjustment *= 0.95f;
  				}
  
@@ -32,77 +49,84 @@
  				foreach (NPC item in nearbyResidentNPCs) {
  					array[item.type] = true;
  				}
-@@ -144,7 +_,7 @@
+@@ -140,10 +_,17 @@
+ 				helperInfo.NearbyNPCs = nearbyResidentNPCs;
+ 				helperInfo.nearbyNPCsByType = array;
+ 				HelperInfo info = helperInfo;
+-				foreach (IShopPersonalityTrait shopModifier in _database.GetByNPCID(npc.type).ShopModifiers) {
++
++				if (!_database.TryGetProfileByNPCID(npc.type, out var personalityProfile)) {
++					goto SkipModifierEnumeration;
++				}
++
++				foreach (IShopPersonalityTrait shopModifier in personalityProfile.ShopModifiers) {
+ 					shopModifier.ModifyShopPrice(info, this);
+ 				}
+ 
++				SkipModifierEnumeration:
++
+ 				new AllPersonalitiesModifier().ModifyShopPrice(info, this);
+ 				if (_currentHappiness == "")
+ 					AddHappinessReportText("Content");
+@@ -158,10 +_,21 @@
  			return priceAdjustment;
  		}
  
--		private static string BiomeNameByKey(int biomeID) {
-+		public static string BiomeNameByKey(int biomeID) {
- 			string text = null;
- 			switch (biomeID) {
- 				case 1:
-@@ -182,11 +_,24 @@
- 					break;
- 			}
- 
--			return Language.GetTextValue("TownNPCMoodBiomes." + text);
-+			string result = Language.GetTextValue("TownNPCMoodBiomes." + text);
-+			if (biomeID >= PrimaryBiomeID.Count) {
-+				string key = LoaderManager.Get<BiomeLoader>().Get(biomeID).DisplayName.Key;
-+				result = Language.GetTextValue(key);
-+			}
-+
-+			return result;
- 		}
++		//TML: Turned public.
++		//TODO: Anything else?
+-		private static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue("TownNPCMoodBiomes." + biomeNameKey);
++		public static string BiomeNameByKey(string biomeNameKey) => Language.GetTextValue("TownNPCMoodBiomes." + biomeNameKey);
  
  		private void AddHappinessReportText(string textKeyInCategory, object substitutes = null) {
 +			string str;
++
 +			if (_currentNPCBeingTalkedTo.type < NPCID.Count)
 -			string str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +				str = "TownNPCMood_" + NPCID.Search.GetName(_currentNPCBeingTalkedTo.netID);
 +			else {
 +				var modNpc = _currentNPCBeingTalkedTo.ModNPC;
++
 +				str = $"Mods.{modNpc.Mod.Name}.TownNPCMood.{modNpc.Name}";
 +			}
 +
  			if (_currentNPCBeingTalkedTo.type == 633 && _currentNPCBeingTalkedTo.altTexture == 2)
  				str += "Transformed";
  
-@@ -194,6 +_,33 @@
+@@ -169,6 +_,33 @@
  			_currentHappiness = _currentHappiness + textValueWith + " ";
  		}
  
 +		// Added by TML.
-+		internal void ApplyNpcRelationshipEffect(int npcType, NPCHappiness.Relationship relationship) {
-+			if (relationship == NPCHappiness.Relationship.Neutral || !Enum.IsDefined(relationship)) {
++		internal void ApplyNpcRelationshipEffect(int npcType, AffectionLevel affectionLevel) {
++			if (affectionLevel == 0 || !Enum.IsDefined(affectionLevel)) {
 +				return;
 +			}
 +
-+			AddHappinessReportText($"{relationship}NPC", new {
++			AddHappinessReportText($"{affectionLevel}NPC", new {
 +				NPCName = NPC.GetFullnameByID(npcType)
 +			});
 +
-+			_currentPriceAdjustment *= NPCHappiness.RelationshipToPriceMultiplier[relationship];
++			_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[affectionLevel];
 +		}
 +
 +		// Added by TML.
-+		internal void ApplyBiomeRelationshipEffect(int biomeType, NPCHappiness.Relationship relationship) {
-+			if (relationship == NPCHappiness.Relationship.Neutral || !Enum.IsDefined(relationship)) {
++		internal void ApplyBiomeRelationshipEffect(string biomeNameKey, AffectionLevel affectionLevel) {
++			if (affectionLevel == 0 || !Enum.IsDefined(affectionLevel)) {
 +				return;
 +			}
 +
-+			AddHappinessReportText($"{relationship}Biome", new {
-+				BiomeName = BiomeNameByKey(biomeType)
++			AddHappinessReportText($"{affectionLevel}Biome", new {
++				BiomeName = BiomeNameByKey(biomeNameKey)
 +			});
 +
-+			_currentPriceAdjustment *= NPCHappiness.RelationshipToPriceMultiplier[relationship];
++			_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[affectionLevel];
 +		}
 +
 +		/*
- 		public void LikeBiome(int biomeID) {
+ 		public void LikeBiome(string nameKey) {
  			AddHappinessReportText("LikeBiome", new {
- 				BiomeName = BiomeNameByKey(biomeID)
-@@ -233,23 +_,25 @@
+ 				BiomeName = nameKey
+@@ -208,23 +_,25 @@
  
  			_currentPriceAdjustment *= 0.94f;
  		}
@@ -115,24 +139,24 @@
  			});
  
 -			_currentPriceAdjustment *= 0.88f;
-+			_currentPriceAdjustment *= NPCHappiness.RelationshipToPriceMultiplier[NPCHappiness.Relationship.Love];
++			_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[AffectionLevel.Love];
  		}
  
 -		public void LikePrincess() {
-+		internal void LikePrincess() {
++		internal  void LikePrincess() {
  			AddHappinessReportText("LikeNPC_Princess", new {
  				NPCName = NPC.GetFullnameByID(663)
  			});
  
 -			_currentPriceAdjustment *= 0.94f;
-+			_currentPriceAdjustment *= NPCHappiness.RelationshipToPriceMultiplier[NPCHappiness.Relationship.Like];
++			_currentPriceAdjustment *= NPCHappiness.AffectionLevelToPriceMultiplier[AffectionLevel.Like];
  		}
  
 +		/*
  		public void LoveNPC(int npcType) {
  			AddHappinessReportText("LoveNPC", new {
  				NPCName = NPC.GetFullnameByID(npcType)
-@@ -273,6 +_,7 @@
+@@ -248,6 +_,7 @@
  
  			_currentPriceAdjustment *= 1.12f;
  		}
@@ -140,11 +164,23 @@
  
  		private List<NPC> GetNearbyResidentNPCs(NPC npc, out int npcsWithinHouse, out int npcsWithinVillage) {
  			List<NPC> list = new List<NPC>();
-@@ -354,7 +_,7 @@
+@@ -301,7 +_,8 @@
+ 
+ 		private bool IsPlayerInEvilBiomes(Player player) {
+ 			for (int i = 0; i < _dangerousBiomes.Length; i++) {
+-				AShoppingBiome aShoppingBiome = _dangerousBiomes[i];
++				IShoppingBiome aShoppingBiome = _dangerousBiomes[i];
++
+ 				if (aShoppingBiome.IsInBiome(player)) {
+ 					AddHappinessReportText("HateBiome", new {
+ 						BiomeName = BiomeNameByKey(aShoppingBiome.NameKey)
+@@ -316,7 +_,10 @@
  
  		private bool IsNotReallyTownNPC(NPC npc) {
  			int type = npc.type;
--			if (type == 37 || type == 368 || type == 453)
++			/*
+ 			if (type == 37 || type == 368 || type == 453)
++			*/
 +			if (type == 37 || type == 368 || NPCID.Sets.ActsLikeTownNPC[type])
  				return true;
  

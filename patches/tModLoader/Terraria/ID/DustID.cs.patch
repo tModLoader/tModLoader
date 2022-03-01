@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/DustID.cs
+--- src/TerrariaNetCore/Terraria/ID/DustID.cs
 +++ src/tModLoader/Terraria/ID/DustID.cs
 @@ -1,6 +_,6 @@
  namespace Terraria.ID

@@ -1,0 +1,33 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Personalities/PersonalityDatabasePopulator.cs
++++ src/tModLoader/Terraria/GameContent/Personalities/PersonalityDatabasePopulator.cs
+@@ -1,3 +_,5 @@
++using Terraria.ModLoader;
++
+ namespace Terraria.GameContent.Personalities
+ {
+ 	public class PersonalityDatabasePopulator
+@@ -10,6 +_,7 @@
+ 		}
+ 
+ 		private void Populate_BiomePreferences(PersonalityDatabase database) {
++			/*
+ 			OceanBiome biome = new OceanBiome();
+ 			ForestBiome biome2 = new ForestBiome();
+ 			SnowBiome biome3 = new SnowBiome();
+@@ -18,6 +_,16 @@
+ 			UndergroundBiome biome6 = new UndergroundBiome();
+ 			HallowBiome biome7 = new HallowBiome();
+ 			MushroomBiome biome8 = new MushroomBiome();
++			*/
++			OceanBiome biome = ModContent.GetInstance<OceanBiome>();
++			ForestBiome biome2 = ModContent.GetInstance<ForestBiome>();
++			SnowBiome biome3 = ModContent.GetInstance<SnowBiome>();
++			DesertBiome biome4 = ModContent.GetInstance<DesertBiome>();
++			JungleBiome biome5 = ModContent.GetInstance<JungleBiome>();
++			UndergroundBiome biome6 = ModContent.GetInstance<UndergroundBiome>();
++			HallowBiome biome7 = ModContent.GetInstance<HallowBiome>();
++			MushroomBiome biome8 = ModContent.GetInstance<MushroomBiome>();
++
+ 			AffectionLevel level = AffectionLevel.Love;
+ 			AffectionLevel level2 = AffectionLevel.Like;
+ 			AffectionLevel level3 = AffectionLevel.Dislike;

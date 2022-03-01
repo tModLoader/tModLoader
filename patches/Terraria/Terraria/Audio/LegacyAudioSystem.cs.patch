@@ -12,12 +12,15 @@
  				IContentSource contentSource = sources[i];
  				if (!contentSource.HasAsset(assetPath))
  					continue;
-@@ -96,7 +_,7 @@
+@@ -96,7 +_,11 @@
  			Engine = new AudioEngine("Content\\TerrariaMusic.xgs");
  			SoundBank = new SoundBank(Engine, "Content\\Sound Bank.xsb");
  			Engine.Update();
--			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512);
-+			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb"); //, 0, 512); // Removing those 2 parameters fixes music not looping on FNA.
++#if XNA
+ 			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb", 0, 512);
++#else
++			WaveBank = new WaveBank(Engine, "Content\\Wave Bank.xwb");
++#endif
  			Engine.Update();
  			AudioTracks = new IAudioTrack[91];
  			TrackNamesByIndex = new Dictionary<int, string>();

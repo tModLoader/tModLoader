@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/UI/ItemSorting.cs
+--- src/TerrariaNetCore/Terraria/UI/ItemSorting.cs
 +++ src/tModLoader/Terraria/UI/ItemSorting.cs
 @@ -2,6 +_,7 @@
  using System.Collections.Generic;

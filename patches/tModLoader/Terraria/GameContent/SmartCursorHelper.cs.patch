@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/SmartCursorHelper.cs
+--- src/TerrariaNetCore/Terraria/GameContent/SmartCursorHelper.cs
 +++ src/tModLoader/Terraria/GameContent/SmartCursorHelper.cs
 @@ -201,7 +_,8 @@
  					case 511:

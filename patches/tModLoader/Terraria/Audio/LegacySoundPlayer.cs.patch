@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Audio/LegacySoundPlayer.cs
+--- src/TerrariaNetCore/Terraria/Audio/LegacySoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundPlayer.cs
 @@ -6,6 +_,7 @@
  using System.Collections.Generic;

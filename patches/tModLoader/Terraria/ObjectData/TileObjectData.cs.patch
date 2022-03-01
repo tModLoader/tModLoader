@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ObjectData/TileObjectData.cs
+--- src/TerrariaNetCore/Terraria/ObjectData/TileObjectData.cs
 +++ src/tModLoader/Terraria/ObjectData/TileObjectData.cs
 @@ -3,13 +_,14 @@
  using Terraria.DataStructures;

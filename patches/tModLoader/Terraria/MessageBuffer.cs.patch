@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/MessageBuffer.cs
+--- src/TerrariaNetCore/Terraria/MessageBuffer.cs
 +++ src/tModLoader/Terraria/MessageBuffer.cs
 @@ -19,6 +_,9 @@
  using Terraria.Net;
@@ -49,7 +49,7 @@
  						if (Netplay.Clients[whoAmI].State != 0)
  							break;
  
--						if (reader.ReadString() == "Terraria" + 244) {
+-						if (reader.ReadString() == "Terraria" + 246) {
 +						string clientVersion = reader.ReadString();
 +						ModNet.isModdedClient[whoAmI] = clientVersion == BuildInfo.versionedName;
 +						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + Main.curRelease && ModNet.AllowVanillaClients) {
@@ -318,7 +318,7 @@
  						byte b4 = reader.ReadByte();
  						int num26 = reader.ReadInt16();
  						int num27 = reader.ReadInt16();
-@@ -1623,22 +_,32 @@
+@@ -1623,22 +_,39 @@
  						if (Main.netMode == 2)
  							num29 = 0;
  
@@ -337,12 +337,17 @@
 +
 +										int num30 = WorldGen.PlaceChest(num26, num27, modType, notNearOtherChests: false, num28);
  										if (num30 == -1) {
--											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num30);
--											Item.NewItem(num26 * 16, num27 * 16, 32, 32, Chest.chestItemSpawn[num28], 1, noBroadcast: true);
++											/*
+ 											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num30);
+ 											Item.NewItem(new EntitySource_TileBreak(num26, num27), num26 * 16, num27 * 16, 32, 32, Chest.chestItemSpawn[num28], 1, noBroadcast: true);
++											*/
++											
 +											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num30, modType);
++											
 +											int itemSpawn = b4 < 100 ? Chest.chestItemSpawn[num28] : TileLoader.GetTile(modType).ChestDrop;
++											
 +											if (itemSpawn > 0)
-+												Item.NewItem(num26 * 16, num27 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
++												Item.NewItem(new EntitySource_TileBreak(num26, num27), num26 * 16, num27 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
  										else {
 -											NetMessage.TrySendData(34, -1, -1, null, b4, num26, num27, num28, num30);
@@ -358,7 +363,7 @@
  										Tile tile = Main.tile[num26, num27];
  										if (tile.frameX % 36 != 0)
  											num26--;
-@@ -1657,20 +_,25 @@
+@@ -1657,20 +_,32 @@
  							}
  
  							switch (b4) {
@@ -370,12 +375,17 @@
 +
 +										int num31 = WorldGen.PlaceChest(num26, num27, modType, notNearOtherChests: false, num28);
  										if (num31 == -1) {
--											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num31);
--											Item.NewItem(num26 * 16, num27 * 16, 32, 32, Chest.dresserItemSpawn[num28], 1, noBroadcast: true);
++											/*
+ 											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num31);
+ 											Item.NewItem(new EntitySource_TileBreak(num26, num27), num26 * 16, num27 * 16, 32, 32, Chest.dresserItemSpawn[num28], 1, noBroadcast: true);
++											*/
++
 +											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num31, modType);
++											
 +											int itemSpawn = b4 < 100 ? Chest.dresserItemSpawn[num28] : TileLoader.GetTile(modType).DresserDrop;
++											
 +											if (itemSpawn > 0)
-+												Item.NewItem(num26 * 16, num27 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
++												Item.NewItem(new EntitySource_TileBreak(num26, num27), num26 * 16, num27 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
  										else {
 -											NetMessage.TrySendData(34, -1, -1, null, b4, num26, num27, num28, num31);
@@ -504,21 +514,23 @@
  							tileEntity.ID = num54;
  							TileEntity.ByID[tileEntity.ID] = tileEntity;
  							TileEntity.ByPosition[tileEntity.Position] = tileEntity;
-@@ -2676,10 +_,22 @@
+@@ -2676,10 +_,28 @@
  					if (Main.netMode == 2) {
- 						short x13 = reader.ReadInt16();
+ 						short x12 = reader.ReadInt16();
  						int y12 = reader.ReadInt16();
++						/*
+ 						int netid3 = reader.ReadInt16();
+ 						int prefix3 = reader.ReadByte();
+ 						int stack8 = reader.ReadInt16();
+ 						TEItemFrame.TryPlacing(x12, y12, netid3, prefix3, stack8);
++						*/
 +
 +						Item item;
 +
 +						if (ModNet.AllowVanillaClients) {
--						int netid3 = reader.ReadInt16();
 +							int netId = reader.ReadInt16();
--						int prefix3 = reader.ReadByte();
 +							int prefix = reader.ReadByte();
--						int stack8 = reader.ReadInt16();
 +							int stack = reader.ReadInt16();
--						TEItemFrame.TryPlacing(x13, y12, netid3, prefix3, stack8);
 +
 +							item = new Item(netId, prefix, stack);
 +						}
@@ -527,25 +539,27 @@
 +							item.stack = reader.ReadVarInt();
 +						}
 +
-+						TEItemFrame.TryPlacing(x13, y12, item, item.stack);
++						TEItemFrame.TryPlacing(x12, y12, item, item.stack);
  					}
  					break;
  				case 91: {
-@@ -3155,10 +_,22 @@
+@@ -3155,10 +_,28 @@
  					if (Main.netMode == 2) {
- 						short x10 = reader.ReadInt16();
+ 						short x9 = reader.ReadInt16();
  						int y9 = reader.ReadInt16();
-+
++						/*
+ 						int netid2 = reader.ReadInt16();
+ 						int prefix2 = reader.ReadByte();
+ 						int stack6 = reader.ReadInt16();
+ 						TEWeaponsRack.TryPlacing(x9, y9, netid2, prefix2, stack6);
++						*/
++						
 +						Item item;
 +
 +						if (ModNet.AllowVanillaClients) {
--						int netid2 = reader.ReadInt16();
 +							int netId = reader.ReadInt16();
--						int prefix2 = reader.ReadByte();
 +							int prefix = reader.ReadByte();
--						int stack6 = reader.ReadInt16();
 +							int stack = reader.ReadInt16();
--						TEWeaponsRack.TryPlacing(x10, y9, netid2, prefix2, stack6);
 +
 +							item = new Item(netId, stack, prefix);
 +						}
@@ -554,7 +568,7 @@
 +							item.stack = reader.ReadVarInt();
 +						}
 +
-+						TEWeaponsRack.TryPlacing(x10, y9, item, item.stack);
++						TEWeaponsRack.TryPlacing(x9, y9, item, item.stack);
  					}
  					break;
  				case 124: {
