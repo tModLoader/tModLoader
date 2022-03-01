@@ -507,6 +507,15 @@
  				killCount[i] = 0;
  			}
  		}
+@@ -56491,7 +_,7 @@
+ 		}
+ 
+ 		public void NPCLoot() {
+-			if (Main.netMode == 1 || type >= 670)
++			if (Main.netMode == 1 || type >= NPCLoader.NPCCount)
+ 				return;
+ 
+ 			Player closestPlayer = Main.player[Player.FindClosest(position, width, height)];
 @@ -56508,9 +_,13 @@
  			if ((type == 23 && Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.NoEarlymodeLootWhenSpawnedFromStatue[type] && !Main.hardMode) || (SpawnedFromStatue && NPCID.Sets.StatueSpawnedDropRarity[type] != -1f && (Main.rand.NextFloat() >= NPCID.Sets.StatueSpawnedDropRarity[type] || !AnyInteractions())))
  				return;
