@@ -329,9 +329,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 
 			int count = MinionCount();
+			var source = NPC.GetSpawnSourceForNPCFromNPCAI();
 
 			for (int i = 0; i < count; i++) {
-				int index = NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
+				int index = NPC.NewNPC(source, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
 				NPC minionNPC = Main.npc[index];
 
 				// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
@@ -506,7 +507,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				int type = ModContent.ProjectileType<MinionBossEye>();
 				int damage = NPC.damage / 2;
-				Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
+				Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
 			}
 		}
 	}

@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria.GameContent.Personalities;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalNPCs
@@ -9,7 +10,7 @@ namespace ExampleMod.Common.GlobalNPCs
 			int examplePersonType = ModContent.NPCType<Content.NPCs.ExamplePerson>(); // Get ExamplePerson's type
 			var guideHappiness = NPCHappiness.Get(NPCID.Guide); // Get the key into The Guide's happiness
 
-			guideHappiness.LoveNPC(examplePersonType); // Make the Guide love ExamplePerson!
+			guideHappiness.SetNpcAffection(examplePersonType, AffectionLevel.Love); // Make the Guide love ExamplePerson!
 		}
 	}
 }
