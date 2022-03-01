@@ -11,29 +11,5 @@ Weird removed patches:
 + PATCH	for (int m = 0; num4 == 0 || m < array3.Length && num4 + array3[m].Length <= num3; m++) {
 
 Failed Patches:
- 
-//ItemSlot.cs:
- @@ -1385,6 +1484,23 @@
- 						if (inv == player.miscDyes)
- 							num = 185 + slot;
- 						break;
-+					//TML Context: GamePad number magic aligned to match DemonHeart Accessory.
-+					//TML Note: There is no Master Mode Accessory slot code here for Gamepads.
-+					case -10:
-+					case -11:
-+						int num3M = slot;
-+						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot, player))
-+							num3M--;
-+
-+						num = 100 + num3M;
-+						break;
-+					case -12:
-+						int num4M = slot;
-+						if (!LoaderManager.Get<AccessorySlotLoader>().ModdedIsAValidEquipmentSlotForIteration(slot, player))
-+							num4M--;
-+
-+						num = 120 + num4M;
-+						break;
- 					case 19:
- 						num = 180;
- 						break;
+
+- None left!
