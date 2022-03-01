@@ -2,7 +2,6 @@ Notes:
 
 - Improve Terraria.Social.SocialAPI server-client conditionals on non-tml steps.
 - Some 'Id > 0 && Id < Count' things may need to be adjusted
-- Test the flamethrower ammo consumption again, its offsets in PickAmmo have been changed.
 
 Weird removed patches:
 

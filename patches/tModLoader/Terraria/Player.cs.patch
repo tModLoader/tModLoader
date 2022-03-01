@@ -4539,18 +4539,14 @@
  				flag2 = true;
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
-@@ -37226,13 +_,23 @@
+@@ -37226,13 +_,20 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
 +			// Flamethrower.
-+			// Unlike with Clockwork Assault Rifle, here we want to keep the feature-bug of Unreal modifier flamethrowers consuming 2 gel instead of 1 per click (less when holding.)
-+			// So we just adjust the offset to be in-line with itemAnim changes.
-+			// EDIT: Ok, so, 1.4.3.4 changed the value from -6 to -2, change to -5 is undone, needs testing and stuff.
-+			//if (projToShoot == 85 && itemAnimation < itemAnimationMax - 6) - Pre 1.4.3.4
-+			//if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2) - Post 1.4.3.4
--			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2)
-+			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 6)
++			// Pre 1.4.3.4: -6 -> -5
++			// Post 1.4.3.4: -2 -> -2
+ 			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2)
  				flag2 = true;
  
  			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
