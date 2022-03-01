@@ -49,30 +49,6 @@ Failed Patches:
  				return 5;
 
 // ShopHelper.cs:
-@@ -16,10 +17,10 @@
- 		private float _currentPriceAdjustment;
- 		private NPC _currentNPCBeingTalkedTo;
- 		private Player _currentPlayerTalking;
--		private const float likeValue = 0.94f;
-+		internal const float likeValue = 0.94f;
--		private const float dislikeValue = 1.06f;
-+		internal const float dislikeValue = 1.06f;
--		private const float loveValue = 0.88f;
-+		internal const float loveValue = 0.88f;
--		private const float hateValue = 1.12f;
-+		internal const float hateValue = 1.12f;
- 
- 		public ShoppingSettings GetShoppingSettings(Player player, NPC npc) {
- 			ShoppingSettings shoppingSettings = default(ShoppingSettings);
-@@ -144,7 +156,7 @@
- 			return priceAdjustment;
- 		}
- 
--		private static string BiomeNameByKey(int biomeID) {
-+		public static string BiomeNameByKey(int biomeID) {
- 			string text = null;
- 			switch (biomeID) {
- 				case 1:
 @@ -158,10 +159,24 @@
  			return priceAdjustment;
  		}
