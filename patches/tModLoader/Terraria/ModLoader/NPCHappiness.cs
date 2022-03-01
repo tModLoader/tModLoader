@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
 using Terraria.ID;
@@ -65,35 +66,55 @@ namespace Terraria.ModLoader
 		*/
 
 		public void SetNpcAffection(int npcId, AffectionLevel affectionLevel) {
-			var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(npcId);
-			bool removal = affectionLevel == 0;
+			var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(NpcType);
+			var shopModifiers = profile.ShopModifiers;
 
-			for (int i = 0; i < profile.ShopModifiers.Count; i++) {
-				var personalityTrait = profile.ShopModifiers[i];
+			var existingEntry = (NPCPreferenceTrait)shopModifiers.SingleOrDefault(t => t is NPCPreferenceTrait npcPreference && npcPreference.NpcId == npcId);
 
-				if (personalityTrait is not NPCPreferenceTrait npcPreference) {
-					continue;
+			if (existingEntry != null) {
+				if (affectionLevel == 0) {
+					shopModifiers.Remove(existingEntry);
+					return;
 				}
 
-				if (npcPreference.NpcId != npcId) {
-					continue;
-				}
+				existingEntry.Level = affectionLevel;
+				return;
+			}
 
+			shopModifiers.Add(new NPCPreferenceTrait {
+				NpcId = npcId,
+				Level = affectionLevel,
+			});
+		}
+
+		public void SetBiomeAffection(IShoppingBiome biome, AffectionLevel affectionLevel) {
+			var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(NpcType);
+			var shopModifiers = profile.ShopModifiers;
+			bool removal = affectionLevel != 0;
+
+			var biomePreferenceList = (BiomePreferenceListTrait)shopModifiers.SingleOrDefault(t => t is BiomePreferenceListTrait);
+
+			if (biomePreferenceList == null) {
+				if (removal)
+					return;
+
+				shopModifiers.Add(biomePreferenceList = new BiomePreferenceListTrait());
+			}
+
+			var biomePreferences = biomePreferenceList.Preferences;
+			var existingEntry = biomePreferenceList.SingleOrDefault(p => p.Biome == biome);
+
+			if (existingEntry != null) {
 				if (removal) {
-					profile.ShopModifiers.RemoveAt(i--);
-				} else {
-					npcPreference.Level = affectionLevel;
-					removal = true; // Remove every repeating match after this.
+					biomePreferences.Remove(existingEntry);
+					return;
 				}
+
+				existingEntry.Affection = affectionLevel;
+				return;
 			}
 
-			// If this affection level isn't neutral, and an existing personality trait hasn't been found.
-			if (!removal) {
-				profile.ShopModifiers.Add(new NPCPreferenceTrait {
-					NpcId = npcId,
-					Level = affectionLevel,
-				});
-			}
+			biomePreferenceList.Add(affectionLevel, biome);
 		}
 
 		public static NPCHappiness Get(int npcType) => new(npcType);

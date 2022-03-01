@@ -1,12 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria.ID;
+using Terraria.GameContent.Personalities;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate.
 	/// </summary>
-	public abstract class ModBiome : ModSceneEffect
+	public abstract class ModBiome : ModSceneEffect, IShoppingBiome
 	{
 		// Basic Biome information
 		/// <summary>
@@ -37,6 +37,8 @@ namespace Terraria.ModLoader
 		public virtual Color? BackgroundColor => null;
 
 		public GameContent.Bestiary.ModBiomeBestiaryInfoElement ModBiomeBestiaryInfoElement { get; internal set; }
+
+		string IShoppingBiome.NameKey => Name;
 
 		protected sealed override void Register() {
 			Type = LoaderManager.Get<BiomeLoader>().Register(this);
@@ -85,5 +87,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void OnLeave(Player player) {
 		}
+
+		bool IShoppingBiome.IsInBiome(Player player) => IsBiomeActive(player);
 	}
 }

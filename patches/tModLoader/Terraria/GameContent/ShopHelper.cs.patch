@@ -8,13 +8,15 @@
  
  namespace Terraria.GameContent
  {
-@@ -16,16 +_,17 @@
+@@ -16,16 +_,18 @@
  		private float _currentPriceAdjustment;
  		private NPC _currentNPCBeingTalkedTo;
  		private Player _currentPlayerTalking;
 -		private PersonalityDatabase _database;
+-		private AShoppingBiome[] _dangerousBiomes = new AShoppingBiome[3] {
 +		internal PersonalityDatabase _database; //TML: Turned from private to internal.
- 		private AShoppingBiome[] _dangerousBiomes = new AShoppingBiome[3] {
++		
++		private IShoppingBiome[] _dangerousBiomes = new IShoppingBiome[3] { //TML: Changed from AShoppingBiome to IShoppingBiome
  			new CorruptionBiome(),
  			new CrimsonBiome(),
  			new DungeonBiome()
@@ -155,6 +157,16 @@
  
  		private List<NPC> GetNearbyResidentNPCs(NPC npc, out int npcsWithinHouse, out int npcsWithinVillage) {
  			List<NPC> list = new List<NPC>();
+@@ -301,7 +_,8 @@
+ 
+ 		private bool IsPlayerInEvilBiomes(Player player) {
+ 			for (int i = 0; i < _dangerousBiomes.Length; i++) {
+-				AShoppingBiome aShoppingBiome = _dangerousBiomes[i];
++				IShoppingBiome aShoppingBiome = _dangerousBiomes[i];
++
+ 				if (aShoppingBiome.IsInBiome(player)) {
+ 					AddHappinessReportText("HateBiome", new {
+ 						BiomeName = BiomeNameByKey(aShoppingBiome.NameKey)
 @@ -316,7 +_,10 @@
  
  		private bool IsNotReallyTownNPC(NPC npc) {
