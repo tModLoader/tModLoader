@@ -18,7 +18,7 @@ var class_terraria_1_1_mount =
     [ "GetHeightBoost", "class_terraria_1_1_mount.html#aab8dd7a157121bf9af5b662058182be8", null ],
     [ "GetIntendedGroundedFrame", "class_terraria_1_1_mount.html#a3f1d801a3ca982fec6ba94b6c6c3f987", null ],
     [ "GetMinecartMechPoint", "class_terraria_1_1_mount.html#aa186f85dea3d1b8ebd9971338a3e125b", null ],
-    [ "GetProjectileSpawnSource", "class_terraria_1_1_mount.html#ac9d6f40c03cc283eb3c4547e742ffb03", null ],
+    [ "GetProjectileSpawnSource", "class_terraria_1_1_mount.html#afb5861c87a4b3114e3f15d0e04a24b48", null ],
     [ "Hover", "class_terraria_1_1_mount.html#a5e29df1dfd685cf181d854d86e41ef05", null ],
     [ "Initialize", "class_terraria_1_1_mount.html#ab19a9c8130b3752bac67d8f14ffc4af1", null ],
     [ "JumpHeight", "class_terraria_1_1_mount.html#ac62b0d971f576b3027d8306d396378e9", null ],

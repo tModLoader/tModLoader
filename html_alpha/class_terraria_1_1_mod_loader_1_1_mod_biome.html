@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <p>This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate.  
  <a href="class_terraria_1_1_mod_loader_1_1_mod_biome.html#details">More...</a></p>
 
-<p>Inherits <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html">Terraria.ModLoader.ModSceneEffect</a>.</p>
+<p>Inherits <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html">Terraria.ModLoader.ModSceneEffect</a>, and <a class="el" href="interface_terraria_1_1_game_content_1_1_personalities_1_1_i_shopping_biome.html">Terraria.GameContent.Personalities.IShoppingBiome</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -164,9 +164,6 @@ Properties</h2></td></tr>
 <tr class="memitem:a63f5bf7b1abd02473758b40b4ffda635"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html">ModTranslation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_biome.html#a63f5bf7b1abd02473758b40b4ffda635">DisplayName</a><code> [get]</code></td></tr>
 <tr class="memdesc:a63f5bf7b1abd02473758b40b4ffda635"><td class="mdescLeft">&#160;</td><td class="mdescRight">The display name for this biome in the bestiary.  <a href="class_terraria_1_1_mod_loader_1_1_mod_biome.html#a63f5bf7b1abd02473758b40b4ffda635">More...</a><br /></td></tr>
 <tr class="separator:a63f5bf7b1abd02473758b40b4ffda635"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af75a5a9efa286109c702edbd3c49c748"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_biome.html#af75a5a9efa286109c702edbd3c49c748">IsPrimaryBiome</a><code> [get]</code></td></tr>
-<tr class="memdesc:af75a5a9efa286109c702edbd3c49c748"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this biome impacts <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> shop prices.  <a href="class_terraria_1_1_mod_loader_1_1_mod_biome.html#af75a5a9efa286109c702edbd3c49c748">More...</a><br /></td></tr>
-<tr class="separator:af75a5a9efa286109c702edbd3c49c748"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30190edf4e19905769f8aa59bfcc6b94"><td class="memItemLeft" align="right" valign="top"><a id="a30190edf4e19905769f8aa59bfcc6b94"></a>
 <a class="el" href="class_terraria_1_1_game_content_1_1_bestiary_1_1_mod_biome_bestiary_info_element.html">GameContent.Bestiary.ModBiomeBestiaryInfoElement</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ModBiomeBestiaryInfoElement</b><code> [get, set]</code></td></tr>
 <tr class="separator:a30190edf4e19905769f8aa59bfcc6b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,6 +215,10 @@ virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.ht
 <tr class="memitem:a70f7612ca9aebec3149b51789f1b54c6 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a70f7612ca9aebec3149b51789f1b54c6">Name</a><code> [get]</code></td></tr>
 <tr class="memdesc:a70f7612ca9aebec3149b51789f1b54c6 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this instance.  <a href="interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a70f7612ca9aebec3149b51789f1b54c6">More...</a><br /></td></tr>
 <tr class="separator:a70f7612ca9aebec3149b51789f1b54c6 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interface_terraria_1_1_game_content_1_1_personalities_1_1_i_shopping_biome"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_terraria_1_1_game_content_1_1_personalities_1_1_i_shopping_biome')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_terraria_1_1_game_content_1_1_personalities_1_1_i_shopping_biome.html">Terraria.GameContent.Personalities.IShoppingBiome</a></td></tr>
+<tr class="memitem:a721999b98e5246b17e6d8d6e7ba7191a inherit properties_interface_terraria_1_1_game_content_1_1_personalities_1_1_i_shopping_biome"><td class="memItemLeft" align="right" valign="top"><a id="a721999b98e5246b17e6d8d6e7ba7191a"></a>
+string&#160;</td><td class="memItemRight" valign="bottom"><b>NameKey</b><code> [get]</code></td></tr>
+<tr class="separator:a721999b98e5246b17e6d8d6e7ba7191a inherit properties_interface_terraria_1_1_game_content_1_1_personalities_1_1_i_shopping_biome"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate. </p>
@@ -546,30 +547,6 @@ virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.ht
 </div><div class="memdoc">
 
 <p>The display name for this biome in the bestiary. </p>
-
-</div>
-</div>
-<a id="af75a5a9efa286109c702edbd3c49c748"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af75a5a9efa286109c702edbd3c49c748">&#9670;&nbsp;</a></span>IsPrimaryBiome</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool Terraria.ModLoader.ModBiome.IsPrimaryBiome</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Whether or not this biome impacts <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> shop prices. </p>
 
 </div>
 </div>

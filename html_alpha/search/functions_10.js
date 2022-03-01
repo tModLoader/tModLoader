@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['quickspawncloneditem_5369',['QuickSpawnClonedItem',['../class_terraria_1_1_player.html#a04b78e7534676fb4ade74ef7e250d208',1,'Terraria::Player']]],
-  ['quickspawncloneditemdirect_5370',['QuickSpawnClonedItemDirect',['../class_terraria_1_1_player.html#a9017ac44b09b506568f400c55eb49f3b',1,'Terraria::Player']]]
+  ['quickspawncloneditem_5438',['QuickSpawnClonedItem',['../class_terraria_1_1_player.html#ac8e5c39660c6e962f59e3c43d6a60b3d',1,'Terraria::Player']]],
+  ['quickspawncloneditemdirect_5439',['QuickSpawnClonedItemDirect',['../class_terraria_1_1_player.html#a5ed1223475e699eadfd5f32afc4bd915',1,'Terraria::Player']]],
+  ['quickspawnitemdirect_5440',['QuickSpawnItemDirect',['../class_terraria_1_1_player.html#a17d2abd5c4b7970f1d2cd2e54644ad4d',1,'Terraria.Player.QuickSpawnItemDirect(IEntitySource source, Item item, int stack=1)'],['../class_terraria_1_1_player.html#afea62f497a7c045d77f74f037fd96333',1,'Terraria.Player.QuickSpawnItemDirect(IEntitySource source, int type, int stack=1)']]]
 ];

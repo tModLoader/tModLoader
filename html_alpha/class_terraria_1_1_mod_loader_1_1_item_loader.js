@@ -81,7 +81,7 @@ var class_terraria_1_1_mod_loader_1_1_item_loader =
     [ "ReforgePrice", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a32c7bdb4941cb57ac2c5ba5ed350f73a", null ],
     [ "RightClick", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a508388ddb358692ca0702ebe6df1af76", null ],
     [ "SetMatch", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a3ec5963739590edef9dcdde9e3a3e024", null ],
-    [ "Shoot", "class_terraria_1_1_mod_loader_1_1_item_loader.html#aef9c9117bead6c163d6881ce9b88a576", null ],
+    [ "Shoot", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a9c242964e92b4b63c9f89eb580db1d04", null ],
     [ "Update", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a3c17fdcfa48a4f389304e9bd791478b0", null ],
     [ "UpdateAccessory", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a0fc77af5656a71c7c73c852c24b4f016", null ],
     [ "UpdateArmorSet", "class_terraria_1_1_mod_loader_1_1_item_loader.html#a1dfd88cf7a9a2a68a501db9414fa4f3e", null ],

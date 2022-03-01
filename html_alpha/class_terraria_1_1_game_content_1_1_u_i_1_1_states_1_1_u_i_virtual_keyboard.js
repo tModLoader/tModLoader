@@ -21,9 +21,13 @@ var class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard 
     [ "SetMaxInputLength", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#af7562981eafc11a71669bfb98a4792d4", null ],
     [ "Submit", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#a8542ae6a8213bfb00e886cb566d07a34", null ],
     [ "Write", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#a9e809a7bccea9a0a22ea7e39f0755047", null ],
+    [ "CustomEscapeAttempt", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#a543f2bd3a22015b16450679900e8a430", null ],
+    [ "CustomTextValidationForSubmit", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#a26d5a31bacb43a3297f2474ab1293c8b", null ],
+    [ "CustomTextValidationForUpdate", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#a268dd81b33d86902771409ae8bdeffe7", null ],
     [ "OffsetDown", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#a5afb25bf5438e5b263e778dc05876445", null ],
     [ "ShouldHideText", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#ab95744d768256db0377476b779bce20f", null ],
     [ "CanSubmit", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#aaae512eeb1ebf9c228ff1c91643c1b82", null ],
+    [ "HideContents", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#aebf15d3eb26212231c2471f9a88f3ec1", null ],
     [ "KeyboardContext", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#a86be5a5ebaff134f02b34a34712c2443", null ],
     [ "Text", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_virtual_keyboard.html#abf6d54d7c70cc47adb28e7202492d5a2", null ]
 ];

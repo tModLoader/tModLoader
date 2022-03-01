@@ -2,6 +2,7 @@ var class_terraria_1_1_i_d_1_1_wall_i_d_1_1_sets =
 [
     [ "Conversion", "class_terraria_1_1_i_d_1_1_wall_i_d_1_1_sets_1_1_conversion.html", "class_terraria_1_1_i_d_1_1_wall_i_d_1_1_sets_1_1_conversion" ],
     [ "AllowsWind", "class_terraria_1_1_i_d_1_1_wall_i_d_1_1_sets.html#a8e3cb1f07b306a555fba1c4d06cef6ab", null ],
+    [ "BlendType", "class_terraria_1_1_i_d_1_1_wall_i_d_1_1_sets.html#a947e5fd56765b2bf7a864123430874d4", null ],
     [ "CanBeConvertedToGlowingMushroom", "class_terraria_1_1_i_d_1_1_wall_i_d_1_1_sets.html#ab7f17922ed25397964ada4f97c037403", null ],
     [ "Corrupt", "class_terraria_1_1_i_d_1_1_wall_i_d_1_1_sets.html#a223314341955972cb549f72fd50ca65c", null ],
     [ "Crimson", "class_terraria_1_1_i_d_1_1_wall_i_d_1_1_sets.html#a404e2d60f85e63ae84547b8edb9e5a86", null ],

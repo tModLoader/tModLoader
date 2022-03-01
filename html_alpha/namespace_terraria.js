@@ -490,7 +490,6 @@ var namespace_terraria =
     [ "Collision", "class_terraria_1_1_collision.html", "class_terraria_1_1_collision" ],
     [ "CombatText", "class_terraria_1_1_combat_text.html", "class_terraria_1_1_combat_text" ],
     [ "DelegateMethods", "class_terraria_1_1_delegate_methods.html", "class_terraria_1_1_delegate_methods" ],
-    [ "DeprecatedClassLeftInForLoading", "class_terraria_1_1_deprecated_class_left_in_for_loading.html", "class_terraria_1_1_deprecated_class_left_in_for_loading" ],
     [ "Dust", "class_terraria_1_1_dust.html", "class_terraria_1_1_dust" ],
     [ "Entity", "class_terraria_1_1_entity.html", "class_terraria_1_1_entity" ],
     [ "FrameSkipTest", "class_terraria_1_1_frame_skip_test.html", "class_terraria_1_1_frame_skip_test" ],

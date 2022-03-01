@@ -100,6 +100,8 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_game_input_1_1_play
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_game_input_1_1_player_input_1_1_misc_settings_t_e_m_p.html">MiscSettingsTEMP</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_game_input_1_1_player_input_1_1_settings_for_u_i.html">SettingsForUI</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -145,12 +147,18 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Hook_OnEnterWo
 <tr class="memitem:a6b14f82f15831108aac73154f1cf8228"><td class="memItemLeft" align="right" valign="top"><a id="a6b14f82f15831108aac73154f1cf8228"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b> ()</td></tr>
 <tr class="separator:a6b14f82f15831108aac73154f1cf8228"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5edafefed17753fc071def109a184954"><td class="memItemLeft" align="right" valign="top"><a id="a5edafefed17753fc071def109a184954"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsGamepadButtonLockedFromUse</b> (string keyName)</td></tr>
+<tr class="separator:a5edafefed17753fc071def109a184954"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbd3127afd2558012bab0d2f013c520d"><td class="memItemLeft" align="right" valign="top"><a id="afbd3127afd2558012bab0d2f013c520d"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ListenFor</b> (string triggerName, InputMode inputmode)</td></tr>
 <tr class="separator:afbd3127afd2558012bab0d2f013c520d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c9256459251f65e12f627454ef84316"><td class="memItemLeft" align="right" valign="top"><a id="a8c9256459251f65e12f627454ef84316"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Load</b> ()</td></tr>
 <tr class="separator:a8c9256459251f65e12f627454ef84316"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdb9ab41a1cab6e71097994670fa6d0b"><td class="memItemLeft" align="right" valign="top"><a id="acdb9ab41a1cab6e71097994670fa6d0b"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>LockGamepadButtons</b> (string TriggerName)</td></tr>
+<tr class="separator:acdb9ab41a1cab6e71097994670fa6d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add4fa8dad8417d911d7ff4a37c7292a6"><td class="memItemLeft" align="right" valign="top"><a id="add4fa8dad8417d911d7ff4a37c7292a6"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>LockOnCachePosition</b> ()</td></tr>
 <tr class="separator:add4fa8dad8417d911d7ff4a37c7292a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,6 +237,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>VerifyBuilding
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
+<tr class="memitem:ace22c9033878f5620bff1367b90d43f4"><td class="memItemLeft" align="right" valign="top"><a id="ace22c9033878f5620bff1367b90d43f4"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>AllowExecutionOfGamepadInstructions</b> = true</td></tr>
+<tr class="separator:ace22c9033878f5620bff1367b90d43f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecff31928932a96d1ba9ce7bf13535b1"><td class="memItemLeft" align="right" valign="top"><a id="aecff31928932a96d1ba9ce7bf13535b1"></a>
 static string&#160;</td><td class="memItemRight" valign="bottom"><b>BlockedKey</b> = &quot;&quot;</td></tr>
 <tr class="separator:aecff31928932a96d1ba9ce7bf13535b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -289,6 +300,12 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>PreUIX</b></td>
 <tr class="memitem:a10e2db83774170543e847613f2975e61"><td class="memItemLeft" align="right" valign="top"><a id="a10e2db83774170543e847613f2975e61"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>PreUIY</b></td></tr>
 <tr class="separator:a10e2db83774170543e847613f2975e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94e46e61ab28ee3897d72b4674c0e52c"><td class="memItemLeft" align="right" valign="top"><a id="a94e46e61ab28ee3897d72b4674c0e52c"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>PreventCursorModeSwappingToGamepad</b> = false</td></tr>
+<tr class="separator:a94e46e61ab28ee3897d72b4674c0e52c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e3482360b80bd894a26b688bca3993c"><td class="memItemLeft" align="right" valign="top"><a id="a5e3482360b80bd894a26b688bca3993c"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>PreventFirstMousePositionGrab</b> = false</td></tr>
+<tr class="separator:a5e3482360b80bd894a26b688bca3993c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace0f5c9d731a171df7a95c4d16b16aa8"><td class="memItemLeft" align="right" valign="top"><a id="ace0f5c9d731a171df7a95c4d16b16aa8"></a>
 static Dictionary&lt; string, <a class="el" href="class_terraria_1_1_game_input_1_1_player_input_profile.html">PlayerInputProfile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Profiles</b> = new Dictionary&lt;string, <a class="el" href="class_terraria_1_1_game_input_1_1_player_input_profile.html">PlayerInputProfile</a>&gt;()</td></tr>
 <tr class="separator:ace0f5c9d731a171df7a95c4d16b16aa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -313,6 +330,9 @@ static <a class="el" href="class_terraria_1_1_game_input_1_1_smart_select_gamepa
 <tr class="memitem:a39e4f57afe57960b4c39c37ab10b2945"><td class="memItemLeft" align="right" valign="top"><a id="a39e4f57afe57960b4c39c37ab10b2945"></a>
 static <a class="el" href="class_terraria_1_1_game_input_1_1_triggers_pack.html">TriggersPack</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Triggers</b> = new <a class="el" href="class_terraria_1_1_game_input_1_1_triggers_pack.html">TriggersPack</a>()</td></tr>
 <tr class="separator:a39e4f57afe57960b4c39c37ab10b2945"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a402d4dc150ed801cae0fb28d7c92100f"><td class="memItemLeft" align="right" valign="top"><a id="a402d4dc150ed801cae0fb28d7c92100f"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>UseSteamDeckIfPossible</b></td></tr>
+<tr class="separator:a402d4dc150ed801cae0fb28d7c92100f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2801b2c87edc635ba7af4c1f579490d1"><td class="memItemLeft" align="right" valign="top"><a id="a2801b2c87edc635ba7af4c1f579490d1"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>WritingText</b></td></tr>
 <tr class="separator:a2801b2c87edc635ba7af4c1f579490d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -355,6 +375,9 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>RealScreenWidth
 <tr class="memitem:a940cc4ab5d04f6dd8e7532c61e868260"><td class="memItemLeft" align="right" valign="top"><a id="a940cc4ab5d04f6dd8e7532c61e868260"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>ShouldFastUseItem</b><code> [get]</code></td></tr>
 <tr class="separator:a940cc4ab5d04f6dd8e7532c61e868260"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a081bfacaf4505dc34383736bc950c847"><td class="memItemLeft" align="right" valign="top"><a id="a081bfacaf4505dc34383736bc950c847"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SteamDeckIsUsed</b><code> [get]</code></td></tr>
+<tr class="separator:a081bfacaf4505dc34383736bc950c847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addc6320b79fba238ede21516480229fa"><td class="memItemLeft" align="right" valign="top"><a id="addc6320b79fba238ede21516480229fa"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>UsingGamepad</b><code> [get]</code></td></tr>
 <tr class="separator:addc6320b79fba238ede21516480229fa"><td class="memSeparator" colspan="2">&#160;</td></tr>

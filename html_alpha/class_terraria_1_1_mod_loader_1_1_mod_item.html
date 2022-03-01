@@ -399,9 +399,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCreate</b> 
 <tr class="memitem:aeb2a844b3be46608e728b22d1bb9bcea"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aeb2a844b3be46608e728b22d1bb9bcea">SetupContent</a> ()</td></tr>
 <tr class="memdesc:aeb2a844b3be46608e728b22d1bb9bcea"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aa2daf87c887ac0d98f00543a41e8e87f" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aeb2a844b3be46608e728b22d1bb9bcea">More...</a><br /></td></tr>
 <tr class="separator:aeb2a844b3be46608e728b22d1bb9bcea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88c5da1ffbdbdcf77697ee6e9dc329ae"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a88c5da1ffbdbdcf77697ee6e9dc329ae">Shoot</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_data_structures_1_1_projectile_source___item___with_ammo.html">ProjectileSource_Item_WithAmmo</a> source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)</td></tr>
-<tr class="memdesc:a88c5da1ffbdbdcf77697ee6e9dc329ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a88c5da1ffbdbdcf77697ee6e9dc329ae">More...</a><br /></td></tr>
-<tr class="separator:a88c5da1ffbdbdcf77697ee6e9dc329ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37f46e318cbaa6413a6786646d15736e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a37f46e318cbaa6413a6786646d15736e">Shoot</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_data_structures_1_1_entity_source___item_use___with_ammo.html">EntitySource_ItemUse_WithAmmo</a> source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)</td></tr>
+<tr class="memdesc:a37f46e318cbaa6413a6786646d15736e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a37f46e318cbaa6413a6786646d15736e">More...</a><br /></td></tr>
+<tr class="separator:a37f46e318cbaa6413a6786646d15736e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74f7c560dc57b27176ff8e679293af9c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a74f7c560dc57b27176ff8e679293af9c">Update</a> (ref float gravity, ref float maxFallSpeed)</td></tr>
 <tr class="memdesc:a74f7c560dc57b27176ff8e679293af9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize this item's movement when lying in the world. Note that this will not be called if this item is currently being grabbed by a player.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a74f7c560dc57b27176ff8e679293af9c">More...</a><br /></td></tr>
 <tr class="separator:a74f7c560dc57b27176ff8e679293af9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4408,8 +4408,8 @@ Called before the ammo stack is reduced. </p>
 
 </div>
 </div>
-<a id="a88c5da1ffbdbdcf77697ee6e9dc329ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a88c5da1ffbdbdcf77697ee6e9dc329ae">&#9670;&nbsp;</a></span>Shoot()</h2>
+<a id="a37f46e318cbaa6413a6786646d15736e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37f46e318cbaa6413a6786646d15736e">&#9670;&nbsp;</a></span>Shoot()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4426,7 +4426,7 @@ Called before the ammo stack is reduced. </p>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_data_structures_1_1_projectile_source___item___with_ammo.html">ProjectileSource_Item_WithAmmo</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_data_structures_1_1_entity_source___item_use___with_ammo.html">EntitySource_ItemUse_WithAmmo</a>&#160;</td>
           <td class="paramname"><em>source</em>, </td>
         </tr>
         <tr>

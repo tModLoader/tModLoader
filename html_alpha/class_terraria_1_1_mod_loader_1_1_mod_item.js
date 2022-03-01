@@ -96,7 +96,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "SetDefaults", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a6d9fbbb1dec7e25959a345a9e4f78428", null ],
     [ "SetMatch", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a05ebe3f228b20fd0e1fb0c0f019103e1", null ],
     [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aeb2a844b3be46608e728b22d1bb9bcea", null ],
-    [ "Shoot", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a88c5da1ffbdbdcf77697ee6e9dc329ae", null ],
+    [ "Shoot", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a37f46e318cbaa6413a6786646d15736e", null ],
     [ "Update", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a74f7c560dc57b27176ff8e679293af9c", null ],
     [ "UpdateAccessory", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a27451213353309352f573c65bd04bb92", null ],
     [ "UpdateArmorSet", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ad494945eb650e562db4ff0cfd2febff7", null ],

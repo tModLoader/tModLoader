@@ -9,6 +9,7 @@ var namespace_terraria_1_1_social_1_1_steam =
     [ "NetServerSocialModule", "class_terraria_1_1_social_1_1_steam_1_1_net_server_social_module.html", "class_terraria_1_1_social_1_1_steam_1_1_net_server_social_module" ],
     [ "NetSocialModule", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module.html", "class_terraria_1_1_social_1_1_steam_1_1_net_social_module" ],
     [ "OverlaySocialModule", "class_terraria_1_1_social_1_1_steam_1_1_overlay_social_module.html", "class_terraria_1_1_social_1_1_steam_1_1_overlay_social_module" ],
+    [ "PlatformSocialModule", "class_terraria_1_1_social_1_1_steam_1_1_platform_social_module.html", "class_terraria_1_1_social_1_1_steam_1_1_platform_social_module" ],
     [ "SteamP2PReader", "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader.html", "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader" ],
     [ "SteamP2PWriter", "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer.html", "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer" ],
     [ "SupportedWorkshopTags", "class_terraria_1_1_social_1_1_steam_1_1_supported_workshop_tags.html", "class_terraria_1_1_social_1_1_steam_1_1_supported_workshop_tags" ],

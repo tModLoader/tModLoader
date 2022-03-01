@@ -8,6 +8,7 @@ var class_terraria_1_1_social_1_1_social_a_p_i =
     [ "JoinRequests", "class_terraria_1_1_social_1_1_social_a_p_i.html#a93e9f8c2fa3ef81860df74dab871126a", null ],
     [ "Network", "class_terraria_1_1_social_1_1_social_a_p_i.html#a8e66ae54d393430d84076468baaa80d7", null ],
     [ "Overlay", "class_terraria_1_1_social_1_1_social_a_p_i.html#a9a07168ff122acd14d4891ef5aacae8a", null ],
-    [ "Workshop", "class_terraria_1_1_social_1_1_social_a_p_i.html#a585fce52971bca50630d2f296bf1485f", null ],
+    [ "Platform", "class_terraria_1_1_social_1_1_social_a_p_i.html#a5dbc185802876b2e423af12e3bbf0baa", null ],
+    [ "Workshop", "class_terraria_1_1_social_1_1_social_a_p_i.html#adf5001d56d9271790dd3282c7c155377", null ],
     [ "Mode", "class_terraria_1_1_social_1_1_social_a_p_i.html#a1aab11dd6182e4ed340af26fdd1b906f", null ]
 ];

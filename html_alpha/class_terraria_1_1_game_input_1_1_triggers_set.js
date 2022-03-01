@@ -9,6 +9,7 @@ var class_terraria_1_1_game_input_1_1_triggers_set =
     [ "HotbarHoldTime", "class_terraria_1_1_game_input_1_1_triggers_set.html#ade7b03891d17e20b29dffef62876c440", null ],
     [ "HotbarScrollCD", "class_terraria_1_1_game_input_1_1_triggers_set.html#a28de0997fdafac30421fa14c95118e7d", null ],
     [ "KeyStatus", "class_terraria_1_1_game_input_1_1_triggers_set.html#a12a7dfd85432db1b258b04539ffa285e", null ],
+    [ "LatestInputMode", "class_terraria_1_1_game_input_1_1_triggers_set.html#a30bc3b92146117f567e17d4168d8bcfe", null ],
     [ "UsedMovementKey", "class_terraria_1_1_game_input_1_1_triggers_set.html#a556aad3544acaa4a0fa777fe4e08bd9e", null ],
     [ "DirectionsRaw", "class_terraria_1_1_game_input_1_1_triggers_set.html#ab5061f9eae3dc2ccc9999b4777b9f005", null ],
     [ "Down", "class_terraria_1_1_game_input_1_1_triggers_set.html#a90431d4b29096a813a0192dc67cdd4d7", null ],

@@ -12,6 +12,7 @@ var class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel =
     [ "_text", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#a369b94a00d32b62da5b7c459e847c689", null ],
     [ "_textScale", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#addc6a4846c88aef22e882ea19f084c94", null ],
     [ "_textSize", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#af36f81d4779a7fe182df81eb5ce59b11", null ],
+    [ "HideContents", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#ab31ca61645c42aad0b63a87b8cbd0ff2", null ],
     [ "TextHAlign", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#a93789c0b6b5b5f14f7a9ea828dbb8d8e", null ],
     [ "DrawPanel", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#a983e5874ad74019246960dc9b603579b", null ],
     [ "IsLarge", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#ac222f6b51a3f344297c8c8386724a290", null ],

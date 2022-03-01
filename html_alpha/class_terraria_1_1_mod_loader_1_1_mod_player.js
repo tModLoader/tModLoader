@@ -93,7 +93,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "SetControls", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a55006662c2517897f94909aeba3ec0f6", null ],
     [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a7667239537b4a2c8a45369e088420bd9", null ],
     [ "ShiftClickSlot", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a26549f10f21d323affac563dda8cfe11", null ],
-    [ "Shoot", "class_terraria_1_1_mod_loader_1_1_mod_player.html#afa8f99089f8cf6a4f14e8cb9fafd03e5", null ],
+    [ "Shoot", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a442e0a82beae8b6c08bb40598c89521b", null ],
     [ "SyncPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a3905e96a9c70d498528df9121380fb1c", null ],
     [ "TypeEquals", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aa828f70b3df43d4c6def055d2455238e", null ],
     [ "UpdateAutopause", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ae6c6092775f1ae08e6afad833da166eb", null ],

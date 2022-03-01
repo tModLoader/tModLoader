@@ -2,7 +2,6 @@ var class_terraria_1_1_mod_loader_1_1_n_p_c_loader =
 [
     [ "AddModHook< T >", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#abce531998c0392d91147b13d3c8e276b", null ],
     [ "AI", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a2bb9e4d7da1b0a8fa9ba4b67333464b6", null ],
-    [ "BossBag", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a05417aa6dbb2d0e3a95c1eb7c540e976", null ],
     [ "BossHeadRotation", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa1da2988491c15c050483597e984bd7a", null ],
     [ "BossHeadSlot", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aa16baedc558a8f7156d20f4cefaf283d", null ],
     [ "BossHeadSpriteEffects", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#af39b1056d061ac83ee853534333cd326", null ],

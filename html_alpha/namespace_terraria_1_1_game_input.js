@@ -8,6 +8,10 @@ var namespace_terraria_1_1_game_input =
     [ "TriggerNames", "class_terraria_1_1_game_input_1_1_trigger_names.html", "class_terraria_1_1_game_input_1_1_trigger_names" ],
     [ "TriggersPack", "class_terraria_1_1_game_input_1_1_triggers_pack.html", "class_terraria_1_1_game_input_1_1_triggers_pack" ],
     [ "TriggersSet", "class_terraria_1_1_game_input_1_1_triggers_set.html", "class_terraria_1_1_game_input_1_1_triggers_set" ],
+    [ "CursorMode", "namespace_terraria_1_1_game_input.html#a0fd6604c8409abe0923ed2e4498c2a70", [
+      [ "Mouse", "namespace_terraria_1_1_game_input.html#a0fd6604c8409abe0923ed2e4498c2a70af2a47c6809d88e175dade0ef7b16aa13", null ],
+      [ "Gamepad", "namespace_terraria_1_1_game_input.html#a0fd6604c8409abe0923ed2e4498c2a70a221f6781b4faa2d321ca0d928f518d6e", null ]
+    ] ],
     [ "InputMode", "namespace_terraria_1_1_game_input.html#af1143be20d08c306f1145dafff9be582", [
       [ "Keyboard", "namespace_terraria_1_1_game_input.html#af1143be20d08c306f1145dafff9be582a6ce4d85a628a88bbdb3ac24a8e5a9c2e", null ],
       [ "KeyboardUI", "namespace_terraria_1_1_game_input.html#af1143be20d08c306f1145dafff9be582add893876ac48507214bf3ba85fc4bf7b", null ],

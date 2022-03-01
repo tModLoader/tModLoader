@@ -10,6 +10,7 @@ var namespace_terraria_1_1_social_1_1_base =
     [ "ModWorkshopEntry", "class_terraria_1_1_social_1_1_base_1_1_mod_workshop_entry.html", "class_terraria_1_1_social_1_1_base_1_1_mod_workshop_entry" ],
     [ "NetSocialModule", "class_terraria_1_1_social_1_1_base_1_1_net_social_module.html", "class_terraria_1_1_social_1_1_base_1_1_net_social_module" ],
     [ "OverlaySocialModule", "class_terraria_1_1_social_1_1_base_1_1_overlay_social_module.html", "class_terraria_1_1_social_1_1_base_1_1_overlay_social_module" ],
+    [ "PlatformSocialModule", "class_terraria_1_1_social_1_1_base_1_1_platform_social_module.html", "class_terraria_1_1_social_1_1_base_1_1_platform_social_module" ],
     [ "RichPresenceState", "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html", "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state" ],
     [ "ServerJoinRequestsManager", "class_terraria_1_1_social_1_1_base_1_1_server_join_requests_manager.html", "class_terraria_1_1_social_1_1_base_1_1_server_join_requests_manager" ],
     [ "TexturePackWorkshopEntry", "class_terraria_1_1_social_1_1_base_1_1_texture_pack_workshop_entry.html", "class_terraria_1_1_social_1_1_base_1_1_texture_pack_workshop_entry" ],

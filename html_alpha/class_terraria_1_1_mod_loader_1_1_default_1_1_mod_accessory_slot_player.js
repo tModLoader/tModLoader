@@ -2,7 +2,7 @@ var class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player =
 [
     [ "ModAccessorySlotPlayer", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#a5585b801f95ad8859dd241aee7c3743c", null ],
     [ "clientClone", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#a27da34858bb494c6105f5d00660b2a89", null ],
-    [ "DropItems", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#a6dc6ad71d9afabbe75f612aedfabfe1a", null ],
+    [ "DropItems", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#aed44abe4691c2a7f40e24ec795bbf262", null ],
     [ "LoadData", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#a2fcd30d32c8211ca731aef4518963d1c", null ],
     [ "SaveData", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#a5b263b1dec5b3608d930be5bdd8409da", null ],
     [ "SendClientChanges", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html#aa3cfed2c3063e2e92d436994377c4a24", null ],

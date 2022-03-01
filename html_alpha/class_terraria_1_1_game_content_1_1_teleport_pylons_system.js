@@ -1,6 +1,7 @@
 var class_terraria_1_1_game_content_1_1_teleport_pylons_system =
 [
     [ "AddForClient", "class_terraria_1_1_game_content_1_1_teleport_pylons_system.html#a99572a7cb4931c761dffce0eb6a07786", null ],
+    [ "DoesPositionHaveEnoughNPCs", "class_terraria_1_1_game_content_1_1_teleport_pylons_system.html#a49e5bbd658cb0f5a854d248a224efea3", null ],
     [ "HandleTeleportRequest", "class_terraria_1_1_game_content_1_1_teleport_pylons_system.html#a1eaf25bb8db51787f9e2614918a39104", null ],
     [ "HasAnyPylon", "class_terraria_1_1_game_content_1_1_teleport_pylons_system.html#a65354e0267d8fd4822880dd6d22d36b0", null ],
     [ "HasPylonOfType", "class_terraria_1_1_game_content_1_1_teleport_pylons_system.html#ac7a12317e311c5d6f1cb8d1022578c65", null ],

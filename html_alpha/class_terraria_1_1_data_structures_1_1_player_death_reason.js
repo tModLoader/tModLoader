@@ -9,6 +9,7 @@ var class_terraria_1_1_data_structures_1_1_player_death_reason =
     [ "GetDeathText", "class_terraria_1_1_data_structures_1_1_player_death_reason.html#a538130dfbff68f8765da8b5e0d7780ab", null ],
     [ "LegacyDefault", "class_terraria_1_1_data_structures_1_1_player_death_reason.html#ac3550427fe6e2d85e7b32fd3535455eb", null ],
     [ "LegacyEmpty", "class_terraria_1_1_data_structures_1_1_player_death_reason.html#adf4169808b063794c5e957130a55192c", null ],
+    [ "TryGetCausingEntity", "class_terraria_1_1_data_structures_1_1_player_death_reason.html#ac9d6a3601a55c66048ce5b75fb786a84", null ],
     [ "WriteSelfTo", "class_terraria_1_1_data_structures_1_1_player_death_reason.html#a9b526c38a2136beee6ac5ae5a6e8faa7", null ],
     [ "SourceCustomReason", "class_terraria_1_1_data_structures_1_1_player_death_reason.html#a36503cb85e5cf102d4e87cff925efd70", null ],
     [ "SourceItemPrefix", "class_terraria_1_1_data_structures_1_1_player_death_reason.html#a2f7526c51f41982021c5953c49ad9f1c", null ],

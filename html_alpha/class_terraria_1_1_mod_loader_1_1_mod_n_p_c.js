@@ -74,7 +74,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "AnimationType", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ae06eeb7b7916de1a8ce79c786e56b0dc", null ],
     [ "Banner", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a20d0fe9d9b03835faf524b3da4f2efe8", null ],
     [ "BannerItem", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a6c1921d11dde906f01caf82dba90ead6", null ],
-    [ "BossBag", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a9434d86f59b605aca93f6e40174a8fd5", null ],
     [ "BossHeadTexture", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#abb940e3a94773201ef20922939157528", null ],
     [ "CloneNewInstances", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a5a48b2626b19632afea505112f712c50", null ],
     [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab3571f511237283f0d54765c5e485448", null ],

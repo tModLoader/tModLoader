@@ -1,6 +1,7 @@
 var class_terraria_1_1_initializers_1_1_u_i_links_initializer =
 [
     [ "SomeVarsForUILinkers", "class_terraria_1_1_initializers_1_1_u_i_links_initializer_1_1_some_vars_for_u_i_linkers.html", "class_terraria_1_1_initializers_1_1_u_i_links_initializer_1_1_some_vars_for_u_i_linkers" ],
+    [ "CanExecuteInputCommand", "class_terraria_1_1_initializers_1_1_u_i_links_initializer.html#aea1d1ccfa5e6ebbf2d43b9f18b29a6fb", null ],
     [ "FancyExit", "class_terraria_1_1_initializers_1_1_u_i_links_initializer.html#a8cf1714aee2a1bf6e0162514c3acd926", null ],
     [ "FancyUISpecialInstructions", "class_terraria_1_1_initializers_1_1_u_i_links_initializer.html#a4d16d5519ca3e8ba0c66fb3408a7187f", null ],
     [ "HandleOptionsSpecials", "class_terraria_1_1_initializers_1_1_u_i_links_initializer.html#a94c4081ee0746bb0fa2b92555bc4c246", null ],

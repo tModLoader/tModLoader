@@ -14,7 +14,7 @@ var class_terraria_1_1_mod_loader_1_1_combined_hooks =
     [ "OnConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a0811c07716932f81c97893e974542297", null ],
     [ "OnConsumeMana", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a66ebe7169a134de5a8d45e4fe74559df", null ],
     [ "OnMissingMana", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a489c14486111f61f07bcfd17cab039e2", null ],
-    [ "Shoot", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a6a2e8d6b90069bb8c3d3f82cfb6d80ff", null ],
+    [ "Shoot", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ad20dd90ccb41c714cdadf19e6c3ab80e", null ],
     [ "TotalAnimationTime", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#aada59dfb1a89f08f0f0350a4b8e8734b", null ],
     [ "TotalUseAnimationMultiplier", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#aed08c96b21424f0c63b222f9d80db16f", null ],
     [ "TotalUseSpeedMultiplier", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a7f501af01589528f52a9afc730ee30ae", null ],

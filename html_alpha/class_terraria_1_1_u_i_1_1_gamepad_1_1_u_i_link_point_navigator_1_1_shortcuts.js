@@ -7,7 +7,7 @@ var class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcut
     [ "BUFFS_DRAWN", "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#a416771b80e053ac66f008f9f5e50088c", null ],
     [ "BUFFS_PER_COLUMN", "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#a99eb2af4bab3d1de6c6a805507c833ab", null ],
     [ "BUILDERACCCOUNT", "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#a15015370922984bee362de321dccce03", null ],
-    [ "CRAFT_CurrentIngridientsCount", "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#ac1a97ff9e8324f6344c39bd4867aaa82", null ],
+    [ "CRAFT_CurrentIngredientsCount", "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#a404f0a9bbad91f6986967df7b11bdd5d", null ],
     [ "CRAFT_CurrentRecipeBig", "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#a96bec92717db7fdcaf0dfd4e9f10ac4a", null ],
     [ "CRAFT_CurrentRecipeSmall", "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#af292e610cf52a6f3ed3ec37f5846bca7", null ],
     [ "CRAFT_IconsPerColumn", "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#ab92ffe8db89e87245eea7c62a46816e9", null ],
