@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
 +++ src/tModLoader/Terraria/GameContent/Personalities/AllPersonalitiesModifier.cs
-@@ -1,15 +_,70 @@
+@@ -1,15 +_,62 @@
  using System.Collections.Generic;
 +using Terraria.ModLoader;
  
@@ -52,16 +52,8 @@
 +				npc = npc
 +			};
 +
-+			RegisterNpcToBiomeRelationships(helperInfo, npcHappiness);
++			//RegisterNpcToBiomeRelationships(helperInfo, npcHappiness);
 +			RegisterNpcToNpcRelationships(helperInfo, npcHappiness);
-+		}
-+
-+		private static void RegisterNpcToBiomeRelationships(HelperInfo info, NPCHappiness npcHappiness) {
-+			int biomeCount = LoaderManager.Get<BiomeLoader>().TotalCount;
-+
-+			for (int biomeId = 0; biomeId < biomeCount; biomeId++) {
-+				//RegisterNpcToBiomeRelationships_Inner(info, npcHappiness, biomeId);
-+			}
  		}
  
  		private static void ModifyShopPrice_Relationships(HelperInfo info, ShopHelper shopHelperInstance) {

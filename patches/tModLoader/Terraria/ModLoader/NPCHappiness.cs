@@ -87,13 +87,6 @@ namespace Terraria.ModLoader
 
 		public static NPCHappiness Get(int npcType) => new(npcType);
 
-		internal static void ResetRelationships() {
-			/*
-			NpcToNpcAffection.Clear();
-			NpcToBiomeRelationship.Clear();
-			*/
-		}
-
 		internal static void RegisterVanillaNpcRelationships() {
 			for (int i = 0; i < NPCID.Count; i++) {
 				var npc = ContentSamples.NpcsByNetId[i];

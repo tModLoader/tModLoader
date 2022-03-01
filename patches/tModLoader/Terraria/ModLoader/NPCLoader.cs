@@ -101,15 +101,15 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeArrays(bool unloading) {
-			//Textures
+			// Textures
 			Array.Resize(ref TextureAssets.Npc, nextNPC);
 
-			//Sets
+			// Sets
 			LoaderUtils.ResetStaticMembers(typeof(NPCID), true);
-			NPCHappiness.ResetRelationships();
+			Main.ShopHelper.ReinitializePersonalityDatabase();
 			NPCHappiness.RegisterVanillaNpcRelationships();
 
-			//Etc
+			// Etc
 			Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
 			Array.Resize(ref Main.slimeRainNPC, nextNPC);
 			Array.Resize(ref Main.npcCatchable, nextNPC);

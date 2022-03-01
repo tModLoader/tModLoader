@@ -8,7 +8,7 @@
  
  namespace Terraria.GameContent
  {
-@@ -16,16 +_,18 @@
+@@ -16,18 +_,25 @@
  		private float _currentPriceAdjustment;
  		private NPC _currentNPCBeingTalkedTo;
  		private Player _currentPlayerTalking;
@@ -32,7 +32,14 @@
 +		internal const float hateValue = 1.12f;
  
  		public ShopHelper() {
++			// Nothing! The below method will be called in NPCLoader.
++		}
++
++		// Split from the constructor.
++		internal void ReinitializePersonalityDatabase() {
  			_database = new PersonalityDatabase();
+ 			new PersonalityDatabasePopulator().Populate(_database);
+ 		}
 @@ -129,7 +_,7 @@
  					_currentPriceAdjustment *= 0.95f;
  				}
