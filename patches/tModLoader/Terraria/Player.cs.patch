@@ -768,7 +768,7 @@
  			switch (type) {
  				case 3318: {
  						if (Main.tenthAnniversaryWorld)
-@@ -4518,8 +_,12 @@
+@@ -4518,12 +_,22 @@
  			if (type == 5111)
  				num11 = 668;
  
@@ -780,8 +780,18 @@
  				return;
 +			}
  
++			/*
  			NPC nPC = new NPC();
  			nPC.SetDefaults(num11);
++			*/
++			// Slight optimization patch, since we're nearby anyway.
++			NPC nPC = ContentSamples.NpcsByNetId[num11];
++
+ 			float value = nPC.value;
++
+ 			value *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
+ 			if (Main.rand.Next(5) == 0)
+ 				value *= 1f + (float)Main.rand.Next(5, 11) * 0.01f;
 @@ -4566,9 +_,13 @@
  				value -= (float)num15;
  				QuickSpawnItem(itemSource_OpenItem, 71, num15);
