@@ -4,7 +4,7 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4, 1.4_mergedtesting, gh_actions_test]
+    branches: [1.4, 1.4_mergedtesting, gh_actions_test, 1.4.3.4]
   pull_request_target:
     types: [labeled]
     branches: [1.4, 1.4_mergedtesting]
@@ -152,7 +152,7 @@ jobs:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
-          TERRARIA_VERSION: 1432
+          TERRARIA_VERSION: 1434
           
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2
