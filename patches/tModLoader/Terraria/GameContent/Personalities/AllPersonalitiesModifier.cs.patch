@@ -23,16 +23,16 @@
 +			}
 +
 +			public void LoveNPC(int npcId)
-+				=> Happiness.SetNpcAffection(npcId, AffectionLevel.Love);
++				=> Happiness.SetNPCAffection(npcId, AffectionLevel.Love);
 +
 +			public void LikeNPC(int npcId)
-+				=> Happiness.SetNpcAffection(npcId, AffectionLevel.Like);
++				=> Happiness.SetNPCAffection(npcId, AffectionLevel.Like);
 +
 +			public void DislikeNPC(int npcId)
-+				=> Happiness.SetNpcAffection(npcId, AffectionLevel.Dislike);
++				=> Happiness.SetNPCAffection(npcId, AffectionLevel.Dislike);
 +
 +			public void HateNPC(int npcId)
-+				=> Happiness.SetNpcAffection(npcId, AffectionLevel.Hate);
++				=> Happiness.SetNPCAffection(npcId, AffectionLevel.Hate);
 +		}
 +
  		public void ModifyShopPrice(HelperInfo info, ShopHelper shopHelperInstance) {

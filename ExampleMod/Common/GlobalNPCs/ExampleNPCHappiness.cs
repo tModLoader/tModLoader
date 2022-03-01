@@ -10,7 +10,7 @@ namespace ExampleMod.Common.GlobalNPCs
 			int examplePersonType = ModContent.NPCType<Content.NPCs.ExamplePerson>(); // Get ExamplePerson's type
 			var guideHappiness = NPCHappiness.Get(NPCID.Guide); // Get the key into The Guide's happiness
 
-			guideHappiness.SetNpcAffection(examplePersonType, AffectionLevel.Love); // Make the Guide love ExamplePerson!
+			guideHappiness.SetNPCAffection(examplePersonType, AffectionLevel.Love); // Make the Guide love ExamplePerson!
 		}
 	}
 }

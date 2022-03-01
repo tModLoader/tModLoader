@@ -59,10 +59,10 @@ namespace ExampleMod.Content.NPCs
 				.SetBiomeAffection<ExampleSurfaceBiome>(AffectionLevel.Love) // Example Person likes the Example Surface Biome
 
 				// NPCs
-				.SetNpcAffection(NPCID.Dryad, AffectionLevel.Love) // Loves living near the dryad.
-				.SetNpcAffection(NPCID.Guide, AffectionLevel.Like) // Likes living near the guide.
-				.SetNpcAffection(NPCID.Merchant, AffectionLevel.Dislike) // Dislikes living near the merchant.
-				.SetNpcAffection(NPCID.Demolitionist, AffectionLevel.Hate) // Hates living near the demolitionist.
+				.SetNPCAffection(NPCID.Dryad, AffectionLevel.Love) // Loves living near the dryad.
+				.SetNPCAffection(NPCID.Guide, AffectionLevel.Like) // Likes living near the guide.
+				.SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike) // Dislikes living near the merchant.
+				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate) // Hates living near the demolitionist.
 			;
 		}
 

@@ -9,13 +9,6 @@ namespace Terraria.ModLoader
 	/// <summary> This struct provides access to an NPC type's NPC &amp; Biome relationships. </summary>
 	public readonly struct NPCHappiness
 	{
-		/*
-		private static readonly IReadOnlyDictionary<int, AffectionLevel> emptyDictionaryDummy = new ReadOnlyDictionary<int, AffectionLevel>(new Dictionary<int, AffectionLevel>());
-
-		internal static readonly Dictionary<int, Dictionary<int, AffectionLevel>> NpcToNpcAffection = new();
-		internal static readonly Dictionary<int, Dictionary<int, AffectionLevel>> NpcToBiomeRelationship = new();
-		*/
-
 		/// <summary> Allows you to modify the shop price multipliers associated with a (biome/npc type) relationship level. </summary>
 		public static readonly Dictionary<AffectionLevel, float> AffectionLevelToPriceMultiplier = new() {
 			{ AffectionLevel.Hate, ShopHelper.hateValue },
@@ -26,48 +19,14 @@ namespace Terraria.ModLoader
 
 		public readonly int NpcType;
 
-		/*
-		public IReadOnlyDictionary<int, AffectionLevel> NpcTypeAffectionLevels
-			=> NpcToNpcAffection.TryGetValue(NpcType, out var result) ? result : emptyDictionaryDummy;
-
-		public IReadOnlyDictionary<int, AffectionLevel> BiomeTypeRelationships
-			=> NpcToBiomeRelationship.TryGetValue(NpcType, out var result) ? result : emptyDictionaryDummy;
-		*/
-
 		private NPCHappiness(int npcType) {
 			NpcType = npcType;
 		}
 
-		/*
-		public void LoveNPC(int npcId)
-			=> SetAffection(npcId, AffectionLevel.Love, NpcToNpcAffection);
+		public NPCHappiness SetNPCAffection<T>(AffectionLevel affectionLevel) where T : ModNPC
+			=> SetNPCAffection(ModContent.GetInstance<T>().Type, affectionLevel);
 
-		public void LikeNPC(int npcId)
-			=> SetAffection(npcId, AffectionLevel.Like, NpcToNpcAffection);
-
-		public void DislikeNPC(int npcId)
-			=> SetAffection(npcId, AffectionLevel.Dislike, NpcToNpcAffection);
-
-		public void HateNPC(int npcId)
-			=> SetAffection(npcId, AffectionLevel.Hate, NpcToNpcAffection);
-
-		public void LoveBiome(int biomeId)
-			=> SetRelationship(biomeId, AffectionLevel.Love, NpcToBiomeRelationship);
-
-		public void LikeBiome(int biomeId)
-			=> SetRelationship(biomeId, AffectionLevel.Like, NpcToBiomeRelationship);
-
-		public void DislikeBiome(int biomeId)
-			=> SetRelationship(biomeId, AffectionLevel.Dislike, NpcToBiomeRelationship);
-
-		public void HateBiome(int biomeId)
-			=> SetRelationship(biomeId, AffectionLevel.Hate, NpcToBiomeRelationship);
-		*/
-
-		public NPCHappiness SetNpcAffection<T>(AffectionLevel affectionLevel) where T : ModNPC
-			=> SetNpcAffection(ModContent.GetInstance<T>().Type, affectionLevel);
-
-		public NPCHappiness SetNpcAffection(int npcId, AffectionLevel affectionLevel) {
+		public NPCHappiness SetNPCAffection(int npcId, AffectionLevel affectionLevel) {
 			var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(NpcType);
 			var shopModifiers = profile.ShopModifiers;
 
