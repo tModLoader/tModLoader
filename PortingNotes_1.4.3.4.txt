@@ -14,38 +14,6 @@ Weird removed patches:
 
 Failed Patches:
 
-//Player.cs:
-@@ -11725,6 +12086,11 @@
- 		}
- 
- 		public int GetPrimaryBiome() {
-+			int modID = LoaderManager.Get<BiomeLoader>().GetPrimaryModBiome(this, out var priority);
-+
-+			if (priority >= SceneEffectPriority.BiomeHigh)
-+				return modID;
-+
- 			if (ZoneDungeon)
- 				return 8;
-@@ -11734,6 +12100,9 @@
- 			if (ZoneCrimson)
- 				return 10;
-
- 
-+			if (priority >= SceneEffectPriority.BiomeMedium)
-+				return modID;
-+
- 			if (ZoneGlowshroom)
- 				return 7;
-@@ -11746,6 +12115,9 @@
- 			if (ZoneSnow)
- 				return 2;
- 
-+			if (priority >= SceneEffectPriority.BiomeLow)
-+				return modID;
-+
- 			if (ZoneBeach)
- 				return 5;
-
 // ShopHelper.cs:
 @@ -158,10 +159,24 @@
  			return priceAdjustment;

@@ -9,10 +9,7 @@ namespace Terraria.ModLoader
 	public abstract class ModBiome : ModSceneEffect, IShoppingBiome
 	{
 		// Basic Biome information
-		/// <summary>
-		/// Whether or not this biome impacts NPC shop prices.
-		/// </summary>
-		public virtual bool IsPrimaryBiome => false;
+
 		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
 		public override int Music => 0;
 

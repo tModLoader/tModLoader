@@ -45,23 +45,5 @@ namespace Terraria.ModLoader
 		public static void ReceiveCustomBiomes(Player player, BinaryReader reader) {
 			player.modBiomeFlags = Utils.ReceiveBitArray(player.modBiomeFlags.Length, reader);
 		}
-
-		// Hooks
-		public int GetPrimaryModBiome(Player player, out SceneEffectPriority priority) {
-			int index = 0; float weight = 0;
-			priority = SceneEffectPriority.None;
-
-			for (int i = 0; i < list.Count; i++) {
-				bool active = player.modBiomeFlags[i] && list[i].IsPrimaryBiome;
-				float tst = list[i].GetCorrWeight(player);
-				if (active && tst > weight) {
-					index = i + VanillaCount;
-					priority = list[i].Priority;
-					weight = tst;
-				}
-			}
-
-			return index;
-		}
 	}
 }
