@@ -56,7 +56,7 @@ namespace Terraria.ModLoader
 		public NPCHappiness SetBiomeAffection(IShoppingBiome biome, AffectionLevel affectionLevel) {
 			var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(NpcType);
 			var shopModifiers = profile.ShopModifiers;
-			bool removal = affectionLevel != 0;
+			bool removal = affectionLevel == 0;
 
 			var biomePreferenceList = (BiomePreferenceListTrait)shopModifiers.SingleOrDefault(t => t is BiomePreferenceListTrait);
 
