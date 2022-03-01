@@ -238,9 +238,13 @@ jobs:
         run: |
           echo ::group::Getting current published ExampleMod
           publishid="2615761271"
-          ${{ steps.setupsteam.outputs.executable }} "+login anonymous \"+workshop_download_item 1281930 $publishid \" +quit"
+          echo "attempting download ExampleMod"
+          ${{ steps.setupsteam.outputs.executable }} +login anonymous \"+workshop_download_item 1281930 $publishid \" +quit
+          echo "downloaded ExampleMod"
           
           publishedfolder=${{ steps.setupsteam.outputs.directory }}steamapps/workshop/content/1281930/$publishid
+          echo "publishedModFiles are at:"
+          echo $publishedfolder
           echo ::endgroup::
           
           echo Adding build info to ExampleMod displayName
