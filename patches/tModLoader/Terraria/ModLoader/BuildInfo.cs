@@ -7,10 +7,7 @@ namespace Terraria.ModLoader
 	{
 		public enum BuildPurpose
 		{
-			Unknown,
 			Dev, // Personal Builds
-			Github_Commit, // CI builds for pull requests or non-main branches
-			Alpha, // Nightly CI builds on main branch that end up on Steam alpha channel
 			Preview, // Monthly preview builds from CI that modders develop against for compatibility
 			Stable // The 'stable' builds from CI that players are expected to play on. 
 		}

@@ -158,14 +158,11 @@ jobs:
           echo ::endgroup::
           
           echo ::group::Giving Purpose         
-          if [ $BranchName = '1.4-stable' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/1.4-stable' ] ; then
             export BUILDPURPOSE="Stable"
           fi
-          if [ $BranchName = '1.4-preview' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
             export BUILDPURPOSE="Preview"
-          fi
-          if [ $BranchName = '1.4-dev' ] ; then
-            export BUILDPURPOSE="Dev"
           fi
           echo ::endgroup::
           

@@ -342,7 +342,7 @@ namespace Terraria.ModLoader
 
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
 			Main.Configuration.Put(nameof(AlphaWelcomed), AlphaWelcomed);
-			Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
+			Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 		}
 
 		internal static void LoadConfiguration()
@@ -374,15 +374,10 @@ namespace Terraria.ModLoader
 			if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
 				showMemoryEstimates = true;
 
-			if (BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA) {
+			if (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA || LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 				ShowWhatsNew = true;
 				// TODO: Start retrieving what's new data from github here.
 			}
-
-			/*
-			if (LastLaunchedTModLoaderVersion < version)
-				ShowWhatsNew = true;
-			*/
 
 			if (LastLaunchedTModLoaderVersion == new Version(0, 0))
 				ShowFirstLaunchWelcomeMessage = true;
