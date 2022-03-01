@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
@@ -65,7 +64,10 @@ namespace Terraria.ModLoader
 			=> SetRelationship(biomeId, AffectionLevel.Hate, NpcToBiomeRelationship);
 		*/
 
-		public void SetNpcAffection(int npcId, AffectionLevel affectionLevel) {
+		public NPCHappiness SetNpcAffection<T>(AffectionLevel affectionLevel) where T : ModNPC
+			=> SetNpcAffection(ModContent.GetInstance<T>().Type, affectionLevel);
+
+		public NPCHappiness SetNpcAffection(int npcId, AffectionLevel affectionLevel) {
 			var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(NpcType);
 			var shopModifiers = profile.ShopModifiers;
 
@@ -74,20 +76,25 @@ namespace Terraria.ModLoader
 			if (existingEntry != null) {
 				if (affectionLevel == 0) {
 					shopModifiers.Remove(existingEntry);
-					return;
+					return this;
 				}
 
 				existingEntry.Level = affectionLevel;
-				return;
+				return this;
 			}
 
 			shopModifiers.Add(new NPCPreferenceTrait {
 				NpcId = npcId,
 				Level = affectionLevel,
 			});
+
+			return this;
 		}
 
-		public void SetBiomeAffection(IShoppingBiome biome, AffectionLevel affectionLevel) {
+		public NPCHappiness SetBiomeAffection<T>(AffectionLevel affectionLevel) where T : class, ILoadable, IShoppingBiome
+			=> SetBiomeAffection(ModContent.GetInstance<T>(), affectionLevel);
+
+		public NPCHappiness SetBiomeAffection(IShoppingBiome biome, AffectionLevel affectionLevel) {
 			var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(NpcType);
 			var shopModifiers = profile.ShopModifiers;
 			bool removal = affectionLevel != 0;
@@ -96,7 +103,7 @@ namespace Terraria.ModLoader
 
 			if (biomePreferenceList == null) {
 				if (removal)
-					return;
+					return this;
 
 				shopModifiers.Add(biomePreferenceList = new BiomePreferenceListTrait());
 			}
@@ -107,14 +114,16 @@ namespace Terraria.ModLoader
 			if (existingEntry != null) {
 				if (removal) {
 					biomePreferences.Remove(existingEntry);
-					return;
+					return this;
 				}
 
 				existingEntry.Affection = affectionLevel;
-				return;
+				return this;
 			}
 
 			biomePreferenceList.Add(affectionLevel, biome);
+
+			return this;
 		}
 
 		public static NPCHappiness Get(int npcType) => new(npcType);
