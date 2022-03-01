@@ -4428,7 +4428,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,6 +_,29 @@
+@@ -37031,6 +_,37 @@
  			}
  
  			return num;
@@ -4436,7 +4436,8 @@
 +
 +			StatModifier damage = StatModifier.One;
 +			var currentModifiers = damageData;
-+			var scalings = sItem.DamageType.benefitsCache;
++			float[] scalings = sItem.DamageType.benefitsCache;
++
 +			for (int i = 0; i < currentModifiers.Length; i++) {
 +				damage = damage.CombineWith(currentModifiers[i].damage.Scale(scalings[i]));
 +			}
@@ -4452,6 +4453,13 @@
 +				damage = damage.CombineWith(rocketDamage);
 +
 +			float flat = 0f;
++
++			//TODO: Add flat damage to StatModifier?
++			flat += meleeAddDamage * sItem.DamageType.benefitsCache[DamageClass.Melee.Type];
++			flat += rangedAddDamage * sItem.DamageType.benefitsCache[DamageClass.Ranged.Type];
++			flat += magicAddDamage * sItem.DamageType.benefitsCache[DamageClass.Magic.Type];
++			flat += minionAddDamage * sItem.DamageType.benefitsCache[DamageClass.Summon.Type];
++
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage, ref flat);
 +			int damageNum = (int)((sItem.damage * (float)damage) + flat);
 +			return Math.Max(0, damageNum);

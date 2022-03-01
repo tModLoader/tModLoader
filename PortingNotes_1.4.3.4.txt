@@ -1,6 +1,5 @@
 Notes:
 
-- Add '(float)player.meleeAddDamage' to Player.GetWeaponDamage(Item)
 - Improve Terraria.Social.SocialAPI server-client conditionals on non-tml steps.
 - Some 'Id > 0 && Id < Count' things may need to be adjusted
 - Above, around NPCLoot
