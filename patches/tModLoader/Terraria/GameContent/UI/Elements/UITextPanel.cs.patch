@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/Elements/UITextPanel.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UITextPanel.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UITextPanel.cs
 @@ -1,6 +_,8 @@
  using Microsoft.Xna.Framework;
@@ -9,7 +9,7 @@
  
  namespace Terraria.GameContent.UI.Elements
  {
-@@ -68,7 +_,9 @@
+@@ -70,7 +_,9 @@
  		}
  
  		public virtual void SetText(T text, float textScale, bool large) {

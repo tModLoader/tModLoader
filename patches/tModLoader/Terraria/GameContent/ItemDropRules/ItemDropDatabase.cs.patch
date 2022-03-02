@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
 @@ -1,12 +_,13 @@
  using System.Collections.Generic;

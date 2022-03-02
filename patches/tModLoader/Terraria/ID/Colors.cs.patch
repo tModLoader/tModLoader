@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/Colors.cs
+--- src/TerrariaNetCore/Terraria/ID/Colors.cs
 +++ src/tModLoader/Terraria/ID/Colors.cs
 @@ -2,7 +_,7 @@
  

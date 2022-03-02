@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Localization/Content/de-DE/Main.json
+--- src/TerrariaNetCore/Terraria/Localization/Content/de-DE/Main.json
 +++ src/tModLoader/Terraria/Localization/Content/de-DE/Main.json
 @@ -75,7 +_,7 @@
  		"BONED_Name": "Knochenbrecher",

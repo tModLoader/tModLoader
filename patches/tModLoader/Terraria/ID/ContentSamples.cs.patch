@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/ContentSamples.cs
+--- src/TerrariaNetCore/Terraria/ID/ContentSamples.cs
 +++ src/tModLoader/Terraria/ID/ContentSamples.cs
 @@ -1,7 +_,10 @@
 +using System;
@@ -62,7 +62,7 @@
  				ItemsByType[k] = item;
 @@ -904,7 +_,7 @@
  			NPCSpawnParams nPCSpawnParams = default(NPCSpawnParams);
- 			nPCSpawnParams.gameModeData = Main.RegisterdGameModes[0];
+ 			nPCSpawnParams.gameModeData = Main.RegisteredGameModes[0];
  			NPCSpawnParams spawnparams = nPCSpawnParams;
 -			for (int i = -65; i < 670; i++) {
 +			for (int i = -65; i < NPCLoader.NPCCount; i++) {

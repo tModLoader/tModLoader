@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/BigProgressBar/BigProgressBarHelper.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/BigProgressBar/BigProgressBarHelper.cs
 +++ src/tModLoader/Terraria/GameContent/UI/BigProgressBar/BigProgressBarHelper.cs
 @@ -1,5 +_,7 @@
  using Microsoft.Xna.Framework;

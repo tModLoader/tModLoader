@@ -1,22 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria.ID;
+using Terraria.GameContent.Personalities;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class represents a biome added by a mod. It exists to centralize various biome related hooks, handling a lot of biome boilerplate.
 	/// </summary>
-	public abstract class ModBiome : ModSceneEffect
+	public abstract class ModBiome : ModSceneEffect, IShoppingBiome
 	{
 		// Basic Biome information
-		/// <summary>
-		/// Whether or not this biome impacts NPC shop prices.
-		/// </summary>
-		public virtual bool IsPrimaryBiome => false;
+
 		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
 		public override int Music => 0;
 
-		internal int ZeroIndexType => Type - PrimaryBiomeID.Count;
+		internal int ZeroIndexType => Type; // - PrimaryBiomeID.Count;
 
 		// Bestiary properties
 		/// <summary>
@@ -38,6 +35,8 @@ namespace Terraria.ModLoader
 
 		public GameContent.Bestiary.ModBiomeBestiaryInfoElement ModBiomeBestiaryInfoElement { get; internal set; }
 
+		string IShoppingBiome.NameKey => Name;
+
 		protected sealed override void Register() {
 			Type = LoaderManager.Get<BiomeLoader>().Register(this);
 			RegisterSceneEffect(this);
@@ -49,7 +48,6 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			SetStaticDefaults();
-			PrimaryBiomeID.Search.Add(FullName, Type);
 		}
 
 		/// <summary>
@@ -86,5 +84,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void OnLeave(Player player) {
 		}
+
+		bool IShoppingBiome.IsInBiome(Player player) => IsBiomeActive(player);
 	}
 }

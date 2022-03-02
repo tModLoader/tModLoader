@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Social/Base/WorkshopIssueReporter.cs
+--- src/TerrariaNetCore/Terraria/Social/Base/WorkshopIssueReporter.cs
 +++ src/tModLoader/Terraria/Social/Base/WorkshopIssueReporter.cs
 @@ -35,17 +_,30 @@
  

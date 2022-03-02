@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/ChildSafety.cs
+--- src/TerrariaNetCore/Terraria/GameContent/ChildSafety.cs
 +++ src/tModLoader/Terraria/GameContent/ChildSafety.cs
 @@ -6,8 +_,8 @@
  	{

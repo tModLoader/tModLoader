@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/Elements/UITextBox.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UITextBox.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UITextBox.cs
 @@ -5,7 +_,7 @@
  

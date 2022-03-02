@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/OS/Linux/WindowService.cs
+--- src/TerrariaNetCore/ReLogic/OS/Linux/WindowService.cs
 +++ src/tModLoader/ReLogic/OS/Linux/WindowService.cs
 @@ -18,5 +_,8 @@
  
