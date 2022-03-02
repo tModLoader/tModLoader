@@ -203,7 +203,7 @@
  			if (timeLeft < 0)
  				timeLeft = 0;
  
-@@ -37179,13 +_,14 @@
+@@ -37185,13 +_,14 @@
  			int num = -1;
  			int num2 = 7;
  			int num3 = 6;
@@ -221,7 +221,7 @@
  						int num8 = Math.Abs(i - point.X) + Math.Abs(num7 - point.Y);
  						if (num == -1 || num8 < num) {
  							num = num8;
-@@ -37206,6 +_,12 @@
+@@ -37212,6 +_,12 @@
  
  				point2.Y += 2;
  			}
@@ -234,7 +234,7 @@
  
  			floorX = point2.X;
  			floorY = point2.Y;
-@@ -37213,9 +_,11 @@
+@@ -37219,9 +_,11 @@
  
  		private void AI_007_TryForcingSitting(int homeFloorX, int homeFloorY) {
  			Tile tile = Main.tile[homeFloorX, homeFloorY - 1];
@@ -248,7 +248,7 @@
  
  			if (flag)
  				flag &= (tile.type != 15 || tile.frameY < 1080 || tile.frameY > 1098);
-@@ -37233,8 +_,10 @@
+@@ -37239,8 +_,10 @@
  			if (flag) {
  				ai[0] = 5f;
  				ai[1] = 900 + Main.rand.Next(10800);
@@ -261,7 +261,7 @@
  				velocity = Vector2.Zero;
  				localAI[3] = 0f;
  				netUpdate = true;
-@@ -37246,6 +_,7 @@
+@@ -37252,6 +_,7 @@
  			if (type == 638 || type == 656)
  				num = 0;
  
@@ -321,7 +321,7 @@
  							if (Main.netMode != 1) {
  								if (WorldGen.OpenDoor(num18, num19 - 2, base.direction)) {
  									closeDoor = true;
-@@ -38103,7 +_,8 @@
+@@ -38109,7 +_,8 @@
  				if (ai[0] == 5f) {
  					Point coords = (base.Bottom + Vector2.UnitY * -2f).ToTileCoordinates();
  					Tile tile = Main.tile[coords.X, coords.Y];
@@ -331,7 +331,7 @@
  						ai[1] = 0f;
  					else
  						Main.sittingManager.AddNPC(whoAmI, coords);
-@@ -38275,13 +_,19 @@
+@@ -38281,13 +_,19 @@
  					num28 = 589;
  					num30 = 7f;
  					num29 = 22;
@@ -456,7 +456,7 @@
  				if (Main.expertMode)
  					num67 = (int)((float)num67 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
-@@ -39048,15 +_,18 @@
+@@ -39054,15 +_,18 @@
  
  				if (flag27) {
  					Tile tile2 = Main.tile[b.X, b.Y];
@@ -478,7 +478,7 @@
  						velocity = Vector2.Zero;
  						localAI[3] = 0f;
  						netUpdate = true;
-@@ -42410,7 +_,7 @@
+@@ -42416,7 +_,7 @@
  					Main.tile[num177 - direction, num178 + 1] = new Tile();
  
  				Main.tile[num177, num178 + 1].halfBrick();

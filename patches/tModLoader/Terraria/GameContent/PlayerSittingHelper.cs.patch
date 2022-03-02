@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/PlayerSittingHelper.cs
+--- src/TerrariaNetCore/Terraria/GameContent/PlayerSittingHelper.cs
 +++ src/tModLoader/Terraria/GameContent/PlayerSittingHelper.cs
 @@ -1,5 +_,7 @@
  using Microsoft.Xna.Framework;

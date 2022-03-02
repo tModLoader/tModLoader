@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/ObjectInteractions/TileSmartInteractCandidateProvider.cs
+--- src/TerrariaNetCore/Terraria/GameContent/ObjectInteractions/TileSmartInteractCandidateProvider.cs
 +++ src/tModLoader/Terraria/GameContent/ObjectInteractions/TileSmartInteractCandidateProvider.cs
 @@ -1,6 +_,7 @@
  using Microsoft.Xna.Framework;
