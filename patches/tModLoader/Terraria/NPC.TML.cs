@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ModLoader;
@@ -54,7 +55,12 @@ namespace Terraria
 		public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
 			=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, baseInstance, out result);
 
-		public static NPC NewNPCDirect(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255)
-			=> Main.npc[NewNPC(source, X, Y, Type, Start, ai0, ai1, ai2, ai3, Target)];
+		/// <summary> A short-hand for <code> Main.npc[Main.NewNPC(...)] </code> </summary>
+		public static NPC NewNPCDirect(IEntitySource source, int x, int y, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
+			=> Main.npc[NewNPC(source, x, y, type, start, ai0, ai1, ai2, ai3, target)];
+
+		/// <inheritdoc cref="NewNPCDirect(IEntitySource, int, int, int, int, float, float, float, float, int)"/>
+		public static NPC NewNPCDirect(IEntitySource source, Vector2 position, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
+			=> NewNPCDirect(source, (int)position.X, (int)position.Y, type, start, ai0, ai1, ai2, ai3, target);
 	}
 }
