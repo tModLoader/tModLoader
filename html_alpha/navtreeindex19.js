@@ -1,5 +1,7 @@
 var NAVTREEINDEX19 =
 {
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_icon_text_button.html":[1,0,2,5,21,2,35],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_icon_text_button.html#a3218e5e1f1a070d8a32bc7dbe4d06a68":[1,0,2,5,21,2,35,8],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_icon_text_button.html#a381a6ffb9236425fba457c2ad7cfe50e":[1,0,2,5,21,2,35,6],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_icon_text_button.html#a59fe62540bffc399496832a98b37b989":[1,0,2,5,21,2,35,2],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_icon_text_button.html#a98d300bc1ad84269722a84c43235d10d":[1,0,2,5,21,2,35,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX19 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_creation_preview.html":[1,0,2,5,21,2,66],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_creation_preview.html#a004f612a2fbe2922540f3a33aeb346bd":[1,0,2,5,21,2,66,2],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_creation_preview.html#a181b0cdf466eeffde6d67f1953005bec":[1,0,2,5,21,2,66,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_creation_preview.html#ac61c04a8f6c3eb0a76f59974b2812b0f":[1,0,2,5,21,2,66,1],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_list_item.html":[1,0,2,5,21,2,67],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_list_item.html#a295369ef88aa65f076615cafdb5c8cc7":[1,0,2,5,21,2,67,5]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_creation_preview.html#ac61c04a8f6c3eb0a76f59974b2812b0f":[1,0,2,5,21,2,66,1]
 };

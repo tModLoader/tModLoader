@@ -3,6 +3,7 @@ var class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager =
     [ "CaptureManager", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#a072dd786394e06326ac21da16aa56f56", null ],
     [ "Capture", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#aea66ae91f13d19398a46202ca7fff627", null ],
     [ "Capture", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#adbcee71952a4d29dce2680367b205a8e", null ],
+    [ "Dispose", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#a4a8bcc0c6759ea61358e6a6b2c1761f0", null ],
     [ "Draw", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#aca46584c2647f306ca4beaab24746b88", null ],
     [ "DrawTick", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#a692c32176bdf72053b0217a48bc49dd5", null ],
     [ "GetProgress", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html#adecae0df79f87909b4d825410af4633f", null ],

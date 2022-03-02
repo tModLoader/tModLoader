@@ -1,5 +1,7 @@
 var NAVTREEINDEX13 =
 {
+"class_terraria_1_1_game_content_1_1_profiles_1_1_transformable_n_p_c_profile.html":[1,0,2,5,57,1],
+"class_terraria_1_1_game_content_1_1_profiles_1_1_transformable_n_p_c_profile.html#a06d8da1eb096514d9793fa36e0f9711b":[1,0,2,5,57,1,4],
 "class_terraria_1_1_game_content_1_1_profiles_1_1_transformable_n_p_c_profile.html#a2fdf545bfa8368bf64f346de32adacec":[1,0,2,5,57,1,0],
 "class_terraria_1_1_game_content_1_1_profiles_1_1_transformable_n_p_c_profile.html#a3ab0c0ab9000c4855eec5a8b7f4ded57":[1,0,2,5,57,1,3],
 "class_terraria_1_1_game_content_1_1_profiles_1_1_transformable_n_p_c_profile.html#a61fed32449757451879a6515dfbf14d5":[1,0,2,5,57,1,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX13 =
 "class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html":[1,0,2,5,19,2],
 "class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#a0c9d165f5a382e016f18c73e93803e34":[1,0,2,5,19,2,6],
 "class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#a18a789d923a1c79edc086085685fb79c":[1,0,2,5,19,2,1],
-"class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#a458c2f632e2eb9737dd4d32664e8640a":[1,0,2,5,19,2,0],
-"class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#a4e639294d9d377c385bf736d493bfb12":[1,0,2,5,19,2,2],
-"class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#a90008bd1d8725005e9bd2243c7e52c5a":[1,0,2,5,19,2,3]
+"class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#a458c2f632e2eb9737dd4d32664e8640a":[1,0,2,5,19,2,0]
 };

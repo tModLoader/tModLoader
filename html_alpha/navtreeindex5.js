@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"class_terraria_1_1_game_content_1_1_achievements_1_1_custom_float_condition.html#aeac31cedcbbdea2ea4bf2b9368971d21":[1,0,2,5,0,2,3],
+"class_terraria_1_1_game_content_1_1_achievements_1_1_custom_float_condition.html#aff89cbc39dc35e9be0ba0bdfc9811252":[1,0,2,5,0,2,0],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_custom_int_condition.html":[1,0,2,5,0,3],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_custom_int_condition.html#a6cef5f740f8edf11c4097bc8011f4ea5":[1,0,2,5,0,3,3],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_custom_int_condition.html#a7131115ab19cc0865008838993054c6f":[1,0,2,5,0,3,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_boss_bestiary_info_element.html#af1ecbf97888229b22ba12be4b6e20c86":[1,0,2,5,2,8,0],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_common_enemy_u_i_collection_info_provider.html":[1,0,2,5,2,9],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_common_enemy_u_i_collection_info_provider.html#a12a1a5964483a816b2c0ed397c0d5790":[1,0,2,5,2,9,2],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_common_enemy_u_i_collection_info_provider.html#a42a5d70f24204534382c3976556cb88b":[1,0,2,5,2,9,1],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_common_enemy_u_i_collection_info_provider.html#a4d5b999dd4e21abee311007729fc21c2":[1,0,2,5,2,9,3],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_common_enemy_u_i_collection_info_provider.html#a5ce3c0c527f5115fbf3a01fa86c52e7a":[1,0,2,5,2,9,0]
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_common_enemy_u_i_collection_info_provider.html#a42a5d70f24204534382c3976556cb88b":[1,0,2,5,2,9,1]
 };

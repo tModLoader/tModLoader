@@ -1,5 +1,7 @@
 var NAVTREEINDEX12 =
 {
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulation_item_counter.html#a15565d2bc904d392ac9670f0f0e97e2f":[1,0,2,5,12,2,0],
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulation_item_counter.html#aa6e390534001326f6e87dbfe974dffe1":[1,0,2,5,12,2,3],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulation_item_counter.html#ad2a34535a540195920c77974521bf535":[1,0,2,5,12,2,1],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulation_item_counter.html#adbb3ac179d3fe9db6ee51de5c89afff3":[1,0,2,5,12,2,2],
 "class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator.html":[1,0,2,5,12,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX12 =
 "class_terraria_1_1_game_content_1_1_profiles_1_1_legacy_n_p_c_profile.html#a7278151fa401dc44c6338cce96235063":[1,0,2,5,57,0,1],
 "class_terraria_1_1_game_content_1_1_profiles_1_1_legacy_n_p_c_profile.html#a9851de393b663abfb226e14d863b747f":[1,0,2,5,57,0,3],
 "class_terraria_1_1_game_content_1_1_profiles_1_1_legacy_n_p_c_profile.html#abfd5e8c13209eaad126c7d60f890a264":[1,0,2,5,57,0,4],
-"class_terraria_1_1_game_content_1_1_profiles_1_1_legacy_n_p_c_profile.html#adc9bd24e7ee7733a10f0ae7581a0c2a8":[1,0,2,5,57,0,0],
-"class_terraria_1_1_game_content_1_1_profiles_1_1_transformable_n_p_c_profile.html":[1,0,2,5,57,1],
-"class_terraria_1_1_game_content_1_1_profiles_1_1_transformable_n_p_c_profile.html#a06d8da1eb096514d9793fa36e0f9711b":[1,0,2,5,57,1,4]
+"class_terraria_1_1_game_content_1_1_profiles_1_1_legacy_n_p_c_profile.html#adc9bd24e7ee7733a10f0ae7581a0c2a8":[1,0,2,5,57,0,0]
 };

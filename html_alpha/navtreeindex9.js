@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"class_terraria_1_1_game_content_1_1_creative_1_1_sorting_steps_1_1_a_step_by_fitting_filter.html#afcab1ea3d1b0a2cfa34dbb807e5c7923":[1,0,2,5,4,15,2,2],
+"class_terraria_1_1_game_content_1_1_creative_1_1_sorting_steps_1_1_alphabetical.html":[1,0,2,5,4,15,1],
 "class_terraria_1_1_game_content_1_1_creative_1_1_sorting_steps_1_1_alphabetical.html#a0b5ec6e72511c36b4b95e7248240631a":[1,0,2,5,4,15,1,0],
 "class_terraria_1_1_game_content_1_1_creative_1_1_sorting_steps_1_1_alphabetical.html#a7d31264aeffa6e1e2b77f6ddf31fd801":[1,0,2,5,4,15,1,1],
 "class_terraria_1_1_game_content_1_1_creative_1_1_sorting_steps_1_1_blocks.html":[1,0,2,5,4,15,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "class_terraria_1_1_game_content_1_1_generation_1_1_action_vines.html":[1,0,2,5,8,3],
 "class_terraria_1_1_game_content_1_1_generation_1_1_action_vines.html#ad35cd86dbf45bfdb4fc67b1d33078047":[1,0,2,5,8,3,1],
 "class_terraria_1_1_game_content_1_1_generation_1_1_action_vines.html#af4ffbc653fad85173e51ebda7e326f31":[1,0,2,5,8,3,0],
-"class_terraria_1_1_game_content_1_1_generation_1_1_pass_legacy.html":[1,0,2,5,8,4],
-"class_terraria_1_1_game_content_1_1_generation_1_1_pass_legacy.html#a19220424c69f24ab34ae45ace83a8056":[1,0,2,5,8,4,0],
-"class_terraria_1_1_game_content_1_1_generation_1_1_pass_legacy.html#a674316b4accff9dd4ca9b903a109919e":[1,0,2,5,8,4,2]
+"class_terraria_1_1_game_content_1_1_generation_1_1_pass_legacy.html":[1,0,2,5,8,4]
 };

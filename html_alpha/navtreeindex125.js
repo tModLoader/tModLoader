@@ -1,5 +1,13 @@
 var NAVTREEINDEX125 =
 {
+"namespace_terraria_1_1_game_content_1_1_golf.html":[0,0,2,6,9],
+"namespace_terraria_1_1_game_content_1_1_item_drop_rules.html":[0,0,2,6,10],
+"namespace_terraria_1_1_game_content_1_1_item_drop_rules.html#aa54270ad1a4581d6ee6ca2e5117a9425":[0,0,2,6,10,32],
+"namespace_terraria_1_1_game_content_1_1_item_drop_rules.html#afaef0fc3a9ff13cfe6a3447c9dbf6b48":[0,0,2,6,10,31],
+"namespace_terraria_1_1_game_content_1_1_item_drop_rules.html#afaef0fc3a9ff13cfe6a3447c9dbf6b48a2571bc12858654282f56d428575faaf0":[0,0,2,6,10,31,3],
+"namespace_terraria_1_1_game_content_1_1_item_drop_rules.html#afaef0fc3a9ff13cfe6a3447c9dbf6b48a389bf59b7aa912c5b3d6ede9bb5ad216":[0,0,2,6,10,31,1],
+"namespace_terraria_1_1_game_content_1_1_item_drop_rules.html#afaef0fc3a9ff13cfe6a3447c9dbf6b48a505a83f220c02df2f85c3810cd9ceb38":[0,0,2,6,10,31,2],
+"namespace_terraria_1_1_game_content_1_1_item_drop_rules.html#afaef0fc3a9ff13cfe6a3447c9dbf6b48ac11a4f5a87b7a1160493edaad0f87403":[0,0,2,6,10,31,0],
 "namespace_terraria_1_1_game_content_1_1_liquid.html":[0,0,2,6,11],
 "namespace_terraria_1_1_game_content_1_1_loot_simulation.html":[0,0,2,6,12],
 "namespace_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types.html":[0,0,2,6,12,0],
@@ -241,13 +249,5 @@ var NAVTREEINDEX125 =
 "namespace_terraria_1_1_net.html#a8632cb2317a7d13885b046ebaf710034aa23f10c8f86d4b8ba5eb8d22617936b4":[0,0,2,16,11,3],
 "namespace_terraria_1_1_net.html#a9f34075c5a5004f4be821b1395f7e08a":[0,0,2,16,10],
 "namespace_terraria_1_1_net.html#a9f34075c5a5004f4be821b1395f7e08aa30b7fdeebc36988717d0e274cc2e7520":[0,0,2,16,10,0],
-"namespace_terraria_1_1_net.html#a9f34075c5a5004f4be821b1395f7e08aa4db4563826bad0eb2f60ee6e42d0ea4b":[0,0,2,16,10,1],
-"namespace_terraria_1_1_net.html#a9f34075c5a5004f4be821b1395f7e08aa69b4cc6897c381da5d64c9bff7c19c85":[0,0,2,16,10,2],
-"namespace_terraria_1_1_net_1_1_sockets.html":[0,0,2,16,0],
-"namespace_terraria_1_1_net_1_1_sockets.html#a0aff16ba3bc24ff965c7bf4c083b6a43":[0,0,2,16,0,4],
-"namespace_terraria_1_1_net_1_1_sockets.html#a5fe7c604b7d9264be93d7d92b1046aa3":[0,0,2,16,0,5],
-"namespace_terraria_1_1_net_1_1_sockets.html#a84f79dd856d0d35432df3e97ce89334d":[0,0,2,16,0,3],
-"namespace_terraria_1_1_object_data.html":[0,0,2,17],
-"namespace_terraria_1_1_physics.html":[0,0,2,18],
-"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dd":[0,0,2,18,6]
+"namespace_terraria_1_1_net.html#a9f34075c5a5004f4be821b1395f7e08aa4db4563826bad0eb2f60ee6e42d0ea4b":[0,0,2,16,10,1]
 };

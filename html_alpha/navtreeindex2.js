@@ -1,5 +1,7 @@
 var NAVTREEINDEX2 =
 {
+"class_terraria_1_1_cinematics_1_1_film.html#a09344e1c53de707a994ed46356beb25d":[1,0,2,3,3,10],
+"class_terraria_1_1_cinematics_1_1_film.html#a1e9c35930b4c624e3412cb809f704d2f":[1,0,2,3,3,9],
 "class_terraria_1_1_cinematics_1_1_film.html#a23a7129fa3a8c0f5b933d8f018d6032f":[1,0,2,3,3,6],
 "class_terraria_1_1_cinematics_1_1_film.html#a4564025598a62d5bc9047707f1cfd82a":[1,0,2,3,3,5],
 "class_terraria_1_1_cinematics_1_1_film.html#a6b3bcbc5ca7d68573045e66d9916e5d6":[1,0,2,3,3,7],
@@ -247,7 +249,5 @@ var NAVTREEINDEX2 =
 "class_terraria_1_1_data_structures_1_1_entity_source___spawn_n_p_c.html":[1,0,2,4,35],
 "class_terraria_1_1_data_structures_1_1_entity_source___sync.html":[1,0,2,4,36],
 "class_terraria_1_1_data_structures_1_1_entity_source___tile_break.html":[1,0,2,4,37],
-"class_terraria_1_1_data_structures_1_1_entity_source___tile_break.html#aa8e75f899da1cda000e587661dfd248e":[1,0,2,4,37,0],
-"class_terraria_1_1_data_structures_1_1_entity_source___tile_entity.html":[1,0,2,4,38],
-"class_terraria_1_1_data_structures_1_1_entity_source___tile_entity.html#a5354a3c2a9cca14d7718e03408f09f68":[1,0,2,4,38,1]
+"class_terraria_1_1_data_structures_1_1_entity_source___tile_break.html#aa8e75f899da1cda000e587661dfd248e":[1,0,2,4,37,0]
 };

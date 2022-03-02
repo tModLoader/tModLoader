@@ -1,5 +1,9 @@
 var NAVTREEINDEX111 =
 {
+"class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_mod_publisher_instance.html#afb5d1622bacc658345f2f11a6f290c57":[1,0,2,19,1,13,1,0],
+"class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based.html":[1,0,2,19,1,13,2],
+"class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based.html#a0975a0af769bf84373ed9c29564a3e35":[1,0,2,19,1,13,2,6],
+"class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_a_publisher_instance.html":[1,0,2,19,1,13,2,0],
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_a_publisher_instance.html#a063421977eed50435a4e2b823ef4ef14":[1,0,2,19,1,13,2,0,4],
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_a_publisher_instance.html#a08bf3d240d1bce56ba9e7801ed79a427":[1,0,2,19,1,13,2,0,3],
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_a_publisher_instance.html#a114b96ba63841ead3142243480fa64f2":[1,0,2,19,1,13,2,0,7],
@@ -245,9 +249,5 @@ var NAVTREEINDEX111 =
 "class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer.html":[1,0,2,19,2,23],
 "class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer.html#a169b3cc618ab017b07a3a70e8cdc1a62":[1,0,2,19,2,23,1],
 "class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer.html#a5ee5d98273ceefada6f94fd2a471823e":[1,0,2,19,2,23,2],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer.html#a6ae695109ade2987f453a1689a07177b":[1,0,2,19,2,23,3],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer.html#ad8cbf1203e47c1ef766321879963c21c":[1,0,2,19,2,23,4],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer_1_1_write_information.html":[1,0,2,19,2,23,0],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer_1_1_write_information.html#a37bb2fa048c9d0ca4402ba2f3d33c49b":[1,0,2,19,2,23,0,3],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer_1_1_write_information.html#a3d02a92d9050674aa432d794f0c64aec":[1,0,2,19,2,23,0,1]
+"class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer.html#a6ae695109ade2987f453a1689a07177b":[1,0,2,19,2,23,3]
 };

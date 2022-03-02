@@ -1,5 +1,9 @@
 var NAVTREEINDEX121 =
 {
+"class_terraria_1_1_world_sections.html#af0e7e7f994d30a5cb36b2899f7ece6d3":[1,0,2,84,12],
+"class_terraria_1_1_world_sections.html#aff556edfd0f3f55c2631226b5e6e9fbb":[1,0,2,84,10],
+"class_tile_entity.html":[1,0,40],
+"class_type_converter.html":[1,0,41],
 "class_uw_u_pn_p_1_1_u_pn_p.html":[1,0,3,0],
 "class_uw_u_pn_p_1_1_u_pn_p.html#a25501f30eb581861e4c3c6dd9d71bdcf":[1,0,3,0,5],
 "class_uw_u_pn_p_1_1_u_pn_p.html#a317ca03773710a33bdae0605eae3101d":[1,0,3,0,0],
@@ -23,8 +27,8 @@ var NAVTREEINDEX121 =
 "classnativefiledialog.html#ad015f810ae97b11cebc345376a7dc842":[1,0,34,9],
 "classnativefiledialog.html#aeadaef3670dc3de9281eb92c4df871e7":[1,0,34,3],
 "classnativefiledialog.html#af0422ad594b56553df0ff318fd9a3ac0":[1,0,34,2],
-"functions.html":[1,3,0],
 "functions.html":[1,3,0,0],
+"functions.html":[1,3,0],
 "functions_b.html":[1,3,0,1],
 "functions_c.html":[1,3,0,2],
 "functions_d.html":[1,3,0,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX121 =
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule_condition.html":[1,0,2,5,10,17],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule_condition.html#a3d04c605f1dc740581402883a2307886":[1,0,2,5,10,17,1],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule_condition.html#a596a0eadc683da2d65d7ceff77e8a1c8":[1,0,2,5,10,17,0],
-"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_nested_item_drop_rule.html":[1,0,2,5,10,18],
-"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_nested_item_drop_rule.html#a7a78df29061260b114fa63b8f474dd36":[1,0,2,5,10,18,0],
-"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_provide_item_condition_description.html":[1,0,2,5,10,19],
-"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_provide_item_condition_description.html#ad14c6b1f4671fc1b09bc6790c89110cb":[1,0,2,5,10,19,0],
-"interface_terraria_1_1_game_content_1_1_loot_simulation_1_1_i_simulation_condition_setter.html":[1,0,2,5,12,1]
+"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_nested_item_drop_rule.html":[1,0,2,5,10,18]
 };

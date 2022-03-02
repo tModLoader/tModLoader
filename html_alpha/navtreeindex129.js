@@ -1,5 +1,13 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_graphics_1_1_virtual_camera.html#a72fc4fa8b4f8ed9eff5e89ff36a2ef51":[1,0,2,7,17,4],
+"struct_terraria_1_1_graphics_1_1_virtual_camera.html#abe9f0553be1ae1a8d9a03442ac7269f9":[1,0,2,7,17,3],
+"struct_terraria_1_1_graphics_1_1_virtual_camera.html#ac648fa491b3371e0f9f917af075e7dc4":[1,0,2,7,17,1],
+"struct_terraria_1_1_graphics_1_1_virtual_camera.html#ae96208efd687d818d5decc892cd3d53b":[1,0,2,7,17,0],
+"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html":[1,0,2,8,3,3,0,0],
+"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a0b6fcd43aea825a77a83cb1178e34aec":[1,0,2,8,3,3,0,0,2],
+"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a1f3b08c27fa6756de1b8fa460c61c095":[1,0,2,8,3,3,0,0,1],
+"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a29b95b6c45a894e9fad75f4098947e60":[1,0,2,8,3,3,0,0,0],
 "struct_terraria_1_1_i_d_1_1_content_samples_1_1_creative_helper_1_1_item_group_and_order_in_group.html":[1,0,2,8,8,2,0],
 "struct_terraria_1_1_i_d_1_1_content_samples_1_1_creative_helper_1_1_item_group_and_order_in_group.html#a4333b0f30cd6b0890eb149dc5c8f7027":[1,0,2,8,8,2,0,2],
 "struct_terraria_1_1_i_d_1_1_content_samples_1_1_creative_helper_1_1_item_group_and_order_in_group.html#a45ead7f447769afc097cdd6911ef945f":[1,0,2,8,8,2,0,3],
@@ -241,13 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_player_1_1_overhead_message.html":[1,0,2,55,4],
 "struct_terraria_1_1_player_1_1_overhead_message.html#a1fc31c3d0639503a0c472c5ca7026039":[1,0,2,55,4,0],
 "struct_terraria_1_1_player_1_1_overhead_message.html#a6d2ccb4faf328e5ac80c6379d17bf757":[1,0,2,55,4,3],
-"struct_terraria_1_1_player_1_1_overhead_message.html#a70f5d4275b9e77a1810958da4140c7fe":[1,0,2,55,4,4],
-"struct_terraria_1_1_player_1_1_overhead_message.html#a9a1f307a4c0747486fd767e9c5ed70bd":[1,0,2,55,4,2],
-"struct_terraria_1_1_player_1_1_overhead_message.html#a9d9d158adf1da5bff57e3caf4dbadb6d":[1,0,2,55,4,5],
-"struct_terraria_1_1_player_1_1_overhead_message.html#ae38514d84ef705c5e6689379a04e1aae":[1,0,2,55,4,1],
-"struct_terraria_1_1_player_1_1_rabbit_order_frame_helper.html":[1,0,2,55,5],
-"struct_terraria_1_1_player_1_1_rabbit_order_frame_helper.html#a5be3741c2f639c6f81456121e26544d6":[1,0,2,55,5,0],
-"struct_terraria_1_1_player_1_1_rabbit_order_frame_helper.html#a9f6b2bfda5a6fbd03d35099f012dd64b":[1,0,2,55,5,1],
-"struct_terraria_1_1_player_1_1_rabbit_order_frame_helper.html#ac92cc97b3bd76073dd890887f291a0d3":[1,0,2,55,5,2],
-"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html":[1,0,2,58,0]
+"struct_terraria_1_1_player_1_1_overhead_message.html#a70f5d4275b9e77a1810958da4140c7fe":[1,0,2,55,4,4]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_a_boss.html#a22b4e2f9708f8cacf13aa678091630ce":[1,0,2,5,10,5,30,0],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_a_boss.html#ad019f2e2b0724e2282d4e8d376108701":[1,0,2,5,10,5,30,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_a_boss.html#adb24b57b0e76ea1766f92e36a4b851eb":[1,0,2,5,10,5,30,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_boss_and_expert.html":[1,0,2,5,10,5,31],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_boss_and_expert.html#a63778b9724538e87f95e7376129d4888":[1,0,2,5,10,5,31,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#ab4c8b0a44df6ede40cd7c33e926b480e":[1,0,2,5,11,0,8],
 "class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#adde78c35b86ffb9e0bd2f5a2e9bf84f5":[1,0,2,5,11,0,2],
 "class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#afc82123e35f5f4af976938c779454c49":[1,0,2,5,11,0,1],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulation_item_counter.html":[1,0,2,5,12,2],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulation_item_counter.html#a15565d2bc904d392ac9670f0f0e97e2f":[1,0,2,5,12,2,0],
-"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulation_item_counter.html#aa6e390534001326f6e87dbfe974dffe1":[1,0,2,5,12,2,3]
+"class_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulation_item_counter.html":[1,0,2,5,12,2]
 };

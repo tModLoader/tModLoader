@@ -1,6 +1,7 @@
 var class_terraria_1_1_audio_1_1_legacy_audio_system =
 [
     [ "LegacyAudioSystem", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a736bc3a06b576df1e829b4eac84560b2", null ],
+    [ "Dispose", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#ac0694d50412acd977499bb38e4a07a0d", null ],
     [ "IsTrackPlaying", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a3e04b94a454a6a1239ada70180d8f776", null ],
     [ "LoadCue", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#afaf0f8b118c0a576a2c99bbf922bfa2f", null ],
     [ "LoadFromSources", "class_terraria_1_1_audio_1_1_legacy_audio_system.html#a5dccf8db6a66231fd5325d6777850e2a", null ],

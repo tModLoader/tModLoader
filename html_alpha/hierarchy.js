@@ -175,7 +175,6 @@ var hierarchy =
     [ "Terraria.Graphics.CameraModifiers.CameraModifierStack", "class_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_modifier_stack.html", null ],
     [ "Terraria.Graphics.Capture.CaptureBiome", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome.html", null ],
     [ "Terraria.Graphics.Capture.CaptureInterface", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_interface.html", null ],
-    [ "Terraria.Graphics.Capture.CaptureManager", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html", null ],
     [ "Terraria.Graphics.Capture.CaptureSettings", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_settings.html", null ],
     [ "Terraria.ID.ChainID", "class_terraria_1_1_i_d_1_1_chain_i_d.html", null ],
     [ "Terraria.GameContent.ItemDropRules.Chains", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains.html", null ],
@@ -657,10 +656,6 @@ var hierarchy =
       [ "Terraria.ModLoader.Assets.OggReader", "class_terraria_1_1_mod_loader_1_1_assets_1_1_ogg_reader.html", null ],
       [ "Terraria.ModLoader.Assets.RawImgReader", "class_terraria_1_1_mod_loader_1_1_assets_1_1_raw_img_reader.html", null ],
       [ "Terraria.ModLoader.Assets.WavReader", "class_terraria_1_1_mod_loader_1_1_assets_1_1_wav_reader.html", null ]
-    ] ],
-    [ "Terraria.Audio.IAudioSystem", "interface_terraria_1_1_audio_1_1_i_audio_system.html", [
-      [ "Terraria.Audio.DisabledAudioSystem", "class_terraria_1_1_audio_1_1_disabled_audio_system.html", null ],
-      [ "Terraria.Audio.LegacyAudioSystem", "class_terraria_1_1_audio_1_1_legacy_audio_system.html", null ]
     ] ],
     [ "Terraria.Physics.IBallContactListener", "interface_terraria_1_1_physics_1_1_i_ball_contact_listener.html", [
       [ "Terraria.GameContent.Golf.GolfHelper.ContactListener", "class_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_contact_listener.html", null ]
@@ -2349,10 +2344,17 @@ var hierarchy =
         [ "Terraria.Audio.WAVAudioTrack", "class_terraria_1_1_audio_1_1_w_a_v_audio_track.html", null ]
       ] ],
       [ "Terraria.Audio.CueAudioTrack", "class_terraria_1_1_audio_1_1_cue_audio_track.html", null ],
+      [ "Terraria.Audio.DisabledAudioSystem", "class_terraria_1_1_audio_1_1_disabled_audio_system.html", null ],
+      [ "Terraria.Audio.IAudioSystem", "interface_terraria_1_1_audio_1_1_i_audio_system.html", [
+        [ "Terraria.Audio.DisabledAudioSystem", "class_terraria_1_1_audio_1_1_disabled_audio_system.html", null ],
+        [ "Terraria.Audio.LegacyAudioSystem", "class_terraria_1_1_audio_1_1_legacy_audio_system.html", null ]
+      ] ],
       [ "Terraria.Audio.IAudioTrack", "interface_terraria_1_1_audio_1_1_i_audio_track.html", [
         [ "Terraria.Audio.ASoundEffectBasedAudioTrack", "class_terraria_1_1_audio_1_1_a_sound_effect_based_audio_track.html", null ],
         [ "Terraria.Audio.CueAudioTrack", "class_terraria_1_1_audio_1_1_cue_audio_track.html", null ]
       ] ],
+      [ "Terraria.Audio.LegacyAudioSystem", "class_terraria_1_1_audio_1_1_legacy_audio_system.html", null ],
+      [ "Terraria.Graphics.Capture.CaptureManager", "class_terraria_1_1_graphics_1_1_capture_1_1_capture_manager.html", null ],
       [ "Terraria.Graphics.TileBatch", "class_terraria_1_1_graphics_1_1_tile_batch.html", null ],
       [ "Terraria.Server.Game", "class_terraria_1_1_server_1_1_game.html", null ]
     ] ]

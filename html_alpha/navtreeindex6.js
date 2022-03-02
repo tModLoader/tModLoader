@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_common_enemy_u_i_collection_info_provider.html#a4d5b999dd4e21abee311007729fc21c2":[1,0,2,5,2,9,3],
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_common_enemy_u_i_collection_info_provider.html#a5ce3c0c527f5115fbf3a01fa86c52e7a":[1,0,2,5,2,9,0],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_critter_u_i_collection_info_provider.html":[1,0,2,5,2,10],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_critter_u_i_collection_info_provider.html#a0a3c0625e478d56049dd7db3ae92f4ba":[1,0,2,5,2,10,2],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_critter_u_i_collection_info_provider.html#a4704dcc85d4fb4738c27321decc96a33":[1,0,2,5,2,10,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a3605afe14cb121b0cdd2841a8e8876a1":[1,0,2,5,3,0,2,0],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a398e811e334c20f1dc34b603c6786d75":[1,0,2,5,3,0,2,9],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a3da4e09cb684de31b295bddacc2444cb":[1,0,2,5,3,0,2,15],
-"class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a40624f1f5c3cfdbbef77cf862345420f":[1,0,2,5,3,0,2,1],
-"class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a43915efa01e599fd2424f6108cde0283":[1,0,2,5,3,0,2,11],
-"class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a4aa414b20b49d653bb66966ea71db24c":[1,0,2,5,3,0,2,6]
+"class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a40624f1f5c3cfdbbef77cf862345420f":[1,0,2,5,3,0,2,1]
 };

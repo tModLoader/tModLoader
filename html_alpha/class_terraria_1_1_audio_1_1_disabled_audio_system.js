@@ -1,5 +1,6 @@
 var class_terraria_1_1_audio_1_1_disabled_audio_system =
 [
+    [ "Dispose", "class_terraria_1_1_audio_1_1_disabled_audio_system.html#ac3929e3b11182812989868e34fb17140", null ],
     [ "IsTrackPlaying", "class_terraria_1_1_audio_1_1_disabled_audio_system.html#a551270cdbc0638c4ea17f8394088dd96", null ],
     [ "LoadCue", "class_terraria_1_1_audio_1_1_disabled_audio_system.html#a7ca30ef18ff59729d4b7f1d9e412ffe5", null ],
     [ "LoadFromSources", "class_terraria_1_1_audio_1_1_disabled_audio_system.html#aa3691b5d96a78c36bb254a5fd2bdd4a4", null ],

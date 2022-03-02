@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"class_terraria_1_1_game_content_1_1_generation_1_1_pass_legacy.html#a19220424c69f24ab34ae45ace83a8056":[1,0,2,5,8,4,0],
+"class_terraria_1_1_game_content_1_1_generation_1_1_pass_legacy.html#a674316b4accff9dd4ca9b903a109919e":[1,0,2,5,8,4,2],
 "class_terraria_1_1_game_content_1_1_generation_1_1_pass_legacy.html#a959b110f1a8f0a3c0a522f78eec99f80":[1,0,2,5,8,4,1],
 "class_terraria_1_1_game_content_1_1_generation_1_1_shape_branch.html":[1,0,2,5,8,5],
 "class_terraria_1_1_game_content_1_1_generation_1_1_shape_branch.html#a0fec230829fe93071b85365a6a1dca09":[1,0,2,5,8,5,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX10 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_k_o_cannon.html#a669116c9676a6f594384ccd0f0201c41":[1,0,2,5,10,5,29,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_k_o_cannon.html#abf8b3db640a865b3477d0ff3f95e867d":[1,0,2,5,10,5,29,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_k_o_cannon.html#ad70d7929b0ed18fad92cfd409f710701":[1,0,2,5,10,5,29,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_a_boss.html":[1,0,2,5,10,5,30],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_a_boss.html#a22b4e2f9708f8cacf13aa678091630ce":[1,0,2,5,10,5,30,0],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_a_boss.html#ad019f2e2b0724e2282d4e8d376108701":[1,0,2,5,10,5,30,1]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_legacy_hack___is_a_boss.html":[1,0,2,5,10,5,30]
 };

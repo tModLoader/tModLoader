@@ -17,6 +17,11 @@ var namespace_terraria =
         [ "EmptyTile", "namespace_terraria_1_1_enums.html#a204aa8cb535489f0ef22f6ea25eda014afb18ca10ea6d998b1f915e859d7a1671", null ],
         [ "SolidBottom", "namespace_terraria_1_1_enums.html#a204aa8cb535489f0ef22f6ea25eda014a4d15e3af5cb35e0d0d60655bbf69211e", null ]
       ] ],
+      [ "FrameSkipMode", "namespace_terraria_1_1_enums.html#a68973e0f05001ece31badf5157c8aba4", [
+        [ "Off", "namespace_terraria_1_1_enums.html#a68973e0f05001ece31badf5157c8aba4ad15305d7a4e34e02489c74a5ef542f36", null ],
+        [ "On", "namespace_terraria_1_1_enums.html#a68973e0f05001ece31badf5157c8aba4a521c36a31c2762741cf0f8890cbe05e3", null ],
+        [ "Subtle", "namespace_terraria_1_1_enums.html#a68973e0f05001ece31badf5157c8aba4ae908aba1ffaa47bfbdde3c4bae46d7bd", null ]
+      ] ],
       [ "ItemRarityColor", "namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372", [
         [ "AmberMinus11", "namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372a3634a34218faeadd59af95c76e540f0d", null ],
         [ "TrashMinus1", "namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372a7b009e598ace58314e9920810edab7d7", null ],

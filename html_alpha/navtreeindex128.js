@@ -1,5 +1,13 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html#a720826626f9692752c63772946a180d4":[1,0,2,5,9,2,0,1],
+"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html":[1,0,2,5,9,2,2],
+"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#a0eec350a911d51e7d563dae024c02c01":[1,0,2,5,9,2,2,0],
+"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#a1be4823872f852fdec5b6108af3373cc":[1,0,2,5,9,2,2,2],
+"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#ab0cb8fb42333a5c2611c19c8b67aadb4":[1,0,2,5,9,2,2,1],
+"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#ad535f808e5d40414e8d2fa8c85fc2ff9":[1,0,2,5,9,2,2,3],
+"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html":[1,0,2,5,10,6],
+"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a0dcf58a01d6fd892a09071cf8afee764":[1,0,2,5,10,6,1],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a2ed878405b39e349be29d4f67a0d2579":[1,0,2,5,10,6,0],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a308e004a77e1c0e43ddcbbdc19243375":[1,0,2,5,10,6,3],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a408a500da6688510524fdf2aed2eff9a":[1,0,2,5,10,6,4],
@@ -241,13 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html#af64a523cbc656807ce62fde4c3bbaf62":[1,0,2,7,15,0],
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html#afc8d06edfaf2d92c3150f361bf083207":[1,0,2,7,15,5],
 "struct_terraria_1_1_graphics_1_1_virtual_camera.html":[1,0,2,7,17],
-"struct_terraria_1_1_graphics_1_1_virtual_camera.html#a653da2aae8122319a3a77203b813ff75":[1,0,2,7,17,2],
-"struct_terraria_1_1_graphics_1_1_virtual_camera.html#a72fc4fa8b4f8ed9eff5e89ff36a2ef51":[1,0,2,7,17,4],
-"struct_terraria_1_1_graphics_1_1_virtual_camera.html#abe9f0553be1ae1a8d9a03442ac7269f9":[1,0,2,7,17,3],
-"struct_terraria_1_1_graphics_1_1_virtual_camera.html#ac648fa491b3371e0f9f917af075e7dc4":[1,0,2,7,17,1],
-"struct_terraria_1_1_graphics_1_1_virtual_camera.html#ae96208efd687d818d5decc892cd3d53b":[1,0,2,7,17,0],
-"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html":[1,0,2,8,3,3,0,0],
-"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a0b6fcd43aea825a77a83cb1178e34aec":[1,0,2,8,3,3,0,0,2],
-"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a1f3b08c27fa6756de1b8fa460c61c095":[1,0,2,8,3,3,0,0,1],
-"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a29b95b6c45a894e9fad75f4098947e60":[1,0,2,8,3,3,0,0,0]
+"struct_terraria_1_1_graphics_1_1_virtual_camera.html#a653da2aae8122319a3a77203b813ff75":[1,0,2,7,17,2]
 };
