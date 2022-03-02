@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/ObjectInteractions/NPCSmartInteractCandidateProvider.cs
+--- src/TerrariaNetCore/Terraria/GameContent/ObjectInteractions/NPCSmartInteractCandidateProvider.cs
 +++ src/tModLoader/Terraria/GameContent/ObjectInteractions/NPCSmartInteractCandidateProvider.cs
 @@ -1,4 +_,5 @@
  using Microsoft.Xna.Framework;
