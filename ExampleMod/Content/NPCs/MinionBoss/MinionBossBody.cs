@@ -154,9 +154,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Custom boss bar
 			NPC.BossBar = ModContent.GetInstance<MinionBossBossBar>();
 
-			// Important if this boss has a treasure bag
-			BossBag = ModContent.ItemType<MinionBossBag>();
-
 			// The following code assigns a music track to the boss in a simple way.
 			if (!Main.dedServ) {
 				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Ropocalypse2");
@@ -175,8 +172,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			// Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
 			// Add the treasure bag using ItemDropRule.BossBag (automatically checks for expert mode)
-			// This requires you to set BossBag in SetDefaults accordingly
-			npcLoot.Add(ItemDropRule.BossBag(BossBag));
+			npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<MinionBossBag>()));
 
 			// Trophies are spawned with 1/10 chance
 			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Items.Placeable.Furniture.MinionBossTrophy>(), 10));
@@ -274,11 +270,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				int backGoreType = Mod.Find<ModGore>("MinionBossBody_Back").Type;
 				int frontGoreType = Mod.Find<ModGore>("MinionBossBody_Front").Type;
 
-				var entitySource = NPC.GetEntitySource(); // Make sure to 'cache' sources before loops to avoid unnecessary allocations.
-
 				for (int i = 0; i < 2; i++) {
-					Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
-					Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
+					Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
+					Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
 				}
 
 				SoundEngine.PlaySound(SoundID.Roar, NPC.Center, 0);
@@ -331,10 +325,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 
 			int count = MinionCount();
-			var entitySource = NPC.GetEntitySource(); // Make sure to 'cache' sources before loops to avoid unnecessary allocations.
+			var source = NPC.GetSpawnSourceForNPCFromNPCAI();
 
 			for (int i = 0; i < count; i++) {
-				int index = NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
+				int index = NPC.NewNPC(source, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
 				NPC minionNPC = Main.npc[index];
 
 				// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
@@ -496,7 +490,6 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			float timerMax = Utils.Clamp((float)NPC.life / NPC.lifeMax, 0.33f, 1f) * 90;
 
 			SecondStageTimer_SpawnEyes++;
-
 			if (SecondStageTimer_SpawnEyes > timerMax) {
 				SecondStageTimer_SpawnEyes = 0;
 			}
@@ -507,10 +500,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				float kitingOffsetX = Utils.Clamp(player.velocity.X * 16, -100, 100);
 				Vector2 position = player.Bottom + new Vector2(kitingOffsetX + Main.rand.Next(-100, 100), Main.rand.Next(50, 100));
+
 				int type = ModContent.ProjectileType<MinionBossEye>();
 				int damage = NPC.damage / 2;
-
-				Projectile.NewProjectile(NPC.GetEntitySource(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
+				Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
 			}
 		}
 	}

@@ -16,11 +16,20 @@ namespace Terraria
 
 		public ModItem ModItem { get; internal set; }
 
-		private IEntitySource entitySourceCache; // Skip a few thousands of reallocations.
-
 		internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
 
 		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
+
+		/// <summary>
+		/// Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1.
+		/// <br>This prevents it from receiving a prefix on craft.</br>
+		/// </summary>
+		public bool AllowReforgeForStackableItem { get; set; }
+
+		/// <summary>
+		/// Used to make stackable items reforgeable
+		/// </summary>
+		public bool IsCandidateForReforge => maxStack == 1 || AllowReforgeForStackableItem;
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
@@ -60,7 +69,16 @@ namespace Terraria
 		public bool CountsAsClass(DamageClass damageClass)
 			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 
-		public IEntitySource GetEntitySource_FromThis() => entitySourceCache ??= new EntitySource_Item(this);
+		// public version of IsNotTheSameAs for modders
+		/// <summary>
+		/// returns false if and only if netID (deprecated, equivalent to type), stack and prefix match
+		/// </summary>
+		public bool IsNotSameTypePrefixAndStack(Item compareItem) {
+			if (netID == compareItem.netID && stack == compareItem.stack)
+				return prefix != compareItem.prefix;
+
+			return true;
+		}
 
 		internal static void PopulateMaterialCache() {
 			for (int i = 0; i < Recipe.numRecipes; i++) {
@@ -104,8 +122,8 @@ namespace Terraria
 		}
 
 		// Internal utility method. Move somewhere, if there's a better place.
-		internal static void DropItem(Item item, Rectangle rectangle) {
-			int droppedItemId = NewItem(null, rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
+		internal static void DropItem(IEntitySource source, Item item, Rectangle rectangle) {
+			int droppedItemId = NewItem(source, rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
 			var droppedItem = Main.item[droppedItemId];
 
 			droppedItem.ModItem = item.ModItem;

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Graphics/Shaders/HairShaderDataSet.cs
+--- src/TerrariaNetCore/Terraria/Graphics/Shaders/HairShaderDataSet.cs
 +++ src/tModLoader/Terraria/Graphics/Shaders/HairShaderDataSet.cs
 @@ -7,27 +_,31 @@
  {

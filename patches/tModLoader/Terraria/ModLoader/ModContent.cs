@@ -24,6 +24,7 @@ using Terraria.UI;
 using Terraria.ModLoader.Utilities;
 using Terraria.Initializers;
 using Terraria.Map;
+using Terraria.GameContent.Creative;
 
 namespace Terraria.ModLoader
 {
@@ -353,7 +354,7 @@ namespace Terraria.ModLoader
 			int num = 0;
 			foreach (var mod in ModLoader.Mods) {
 				token.ThrowIfCancellationRequested();
-				Interface.loadMods.SetCurrentMod(num++, $"{mod.Name} v{mod.Version}");
+				Interface.loadMods.SetCurrentMod(num++, $"{mod.Name} ({mod.DisplayName}) v{mod.Version}");
 				try {
 					LoadingMod = mod;
 					loadAction(mod);
@@ -416,7 +417,7 @@ namespace Terraria.ModLoader
 				if (Main.dedServ)
 					Console.WriteLine($"Unloading {mod.DisplayName}...");
 				else
-					Interface.loadMods.SetCurrentMod(i++, mod.DisplayName);
+					Interface.loadMods.SetCurrentMod(i++, $"{mod.Name} ({mod.DisplayName}) v{mod.Version}");
 
 				try {
 					MonoModHooks.RemoveAll(mod);
@@ -484,6 +485,7 @@ namespace Terraria.ModLoader
 			// WallID.Search = IdDictionary.Create<WallID, ushort>();
 			// BuffID.Search = IdDictionary.Create<BuffID, int>();
 
+			CreativeItemSacrificesCatalog.Instance.Initialize();
 			ContentSamples.Initialize();
 			SetupBestiary();
 

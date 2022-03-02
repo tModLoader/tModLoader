@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameInput/KeyConfiguration.cs
+--- src/TerrariaNetCore/Terraria/GameInput/KeyConfiguration.cs
 +++ src/tModLoader/Terraria/GameInput/KeyConfiguration.cs
 @@ -1,11 +_,14 @@
  using System.Collections.Generic;
@@ -26,8 +26,8 @@
 +			}
  		}
  
- 		public void Processkey(TriggersSet set, string newKey) {
-@@ -41,22 +_,24 @@
+ 		public void Processkey(TriggersSet set, string newKey, InputMode mode) {
+@@ -43,22 +_,24 @@
  		}
  
  		public void ReadPreferences(Dictionary<string, List<string>> dict) {

@@ -102,15 +102,15 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void ResizeArrays(bool unloading) {
-			//Textures
+			// Textures
 			Array.Resize(ref TextureAssets.Npc, nextNPC);
 
-			//Sets
+			// Sets
 			LoaderUtils.ResetStaticMembers(typeof(NPCID), true);
-			NPCHappiness.ResetRelationships();
+			Main.ShopHelper.ReinitializePersonalityDatabase();
 			NPCHappiness.RegisterVanillaNpcRelationships();
 
-			//Etc
+			// Etc
 			Array.Resize(ref Main.townNPCCanSpawn, nextNPC);
 			Array.Resize(ref Main.slimeRainNPC, nextNPC);
 			Array.Resize(ref Main.npcCatchable, nextNPC);
@@ -447,12 +447,6 @@ namespace Terraria.ModLoader
 
 		public static void BossLoot(NPC npc, ref string name, ref int potionType) {
 			npc.ModNPC?.BossLoot(ref name, ref potionType);
-		}
-
-		public static void BossBag(NPC npc, ref int bagType) {
-			if (npc.ModNPC != null) {
-				bagType = npc.ModNPC.BossBag;
-			}
 		}
 
 		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Player, Item>>(g => g.OnCatchNPC);
@@ -849,9 +843,9 @@ namespace Terraria.ModLoader
 		private static HookList HookSpawnNPC = AddHook<Action<int, int, int>>(g => g.SpawnNPC);
 
 		public static int SpawnNPC(int type, int tileX, int tileY) {
-			var npc = type >= NPCID.Count ?
-				GetNPC(type).SpawnNPC(tileX, tileY) :
-				NPC.NewNPC(tileX * 16 + 8, tileY * 16, type);
+			var npc = type >= NPCID.Count
+				? GetNPC(type).SpawnNPC(tileX, tileY)
+				: NPC.NewNPC(NPC.GetSpawnSourceForNaturalSpawn(), tileX * 16 + 8, tileY * 16, type);
 
 			foreach (GlobalNPC g in HookSpawnNPC.Enumerate(Main.npc[npc].globalNPCs)) {
 				g.SpawnNPC(npc, tileX, tileY);

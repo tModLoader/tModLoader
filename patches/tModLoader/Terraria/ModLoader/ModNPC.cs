@@ -39,9 +39,6 @@ namespace Terraria.ModLoader
 		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the animation (FindFrame) of. Leave as 0 to not copy any animation. Defaults to 0. </summary>
 		public int AnimationType { get; set; }
 
-		/// <summary> The item type of the boss bag that is dropped when DropBossBags is called for this NPC. </summary>
-		public int BossBag { get; set; } = -1;
-
 		/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
 		/// Will be superceded by ModSceneEffect. Kept for legacy.
 		public int Music { get; set; } = -1;
@@ -108,14 +105,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to set all your NPC's properties, such as width, damage, aiStyle, lifeMax, etc.
 		/// </summary>
-		public virtual void SetDefaults() {
-		}
+		public virtual void SetDefaults() { }
 
 		/// <summary>
 		/// Gets called when your NPC spawns in world
 		/// </summary>
-		public virtual void OnSpawn(IEntitySource source) {
-		}
+		public virtual void OnSpawn(IEntitySource source) { }
 
 		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
@@ -506,7 +501,8 @@ namespace Terraria.ModLoader
 		/// <param name="tileY"></param>
 		/// <returns></returns>
 		public virtual int SpawnNPC(int tileX, int tileY) {
-			return NPC.NewNPC(tileX * 16 + 8, tileY * 16, NPC.type);
+			//TODO: Add IEntitySource in '1.4_onspawn'.
+			return NPC.NewNPC(null, tileX * 16 + 8, tileY * 16, NPC.type);
 		}
 
 		/// <summary>

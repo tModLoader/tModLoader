@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Gore.cs
+--- src/TerrariaNetCore/Terraria/Gore.cs
 +++ src/tModLoader/Terraria/Gore.cs
 @@ -7,10 +_,11 @@
  using Terraria.Graphics.Effects;

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Creative/CreativeUI.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Creative/CreativeUI.cs
 +++ src/tModLoader/Terraria/GameContent/Creative/CreativeUI.cs
 @@ -8,13 +_,14 @@
  using Terraria.GameContent.UI.Elements;
