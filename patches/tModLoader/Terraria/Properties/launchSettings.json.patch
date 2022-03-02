@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Properties/launchSettings.json
+--- src/TerrariaNetCore/Terraria/Properties/launchSettings.json
 +++ src/tModLoader/Terraria/Properties/launchSettings.json
 @@ -2,14 +_,27 @@
    "profiles": {

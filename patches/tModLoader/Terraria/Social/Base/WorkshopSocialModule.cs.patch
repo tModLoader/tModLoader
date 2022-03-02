@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Social/Base/WorkshopSocialModule.cs
+--- src/TerrariaNetCore/Terraria/Social/Base/WorkshopSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Base/WorkshopSocialModule.cs
 @@ -3,7 +_,7 @@
  

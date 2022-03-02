@@ -54,26 +54,32 @@ namespace ExampleMod.Content.Tiles.Furniture
 			num = fail ? 1 : 3;
 		}
 
-		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 16, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleChair>());
+		public override void KillMultiTile(int i, int j, int frameX, int frameY)
+		{
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 32, ModContent.ItemType<Items.Placeable.Furniture.ExampleChair>());
 		}
 
-		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
+		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings)
+		{
 			return settings.player.IsWithinSnappngRangeToTile(i, j, PlayerSittingHelper.ChairSittingMaxDistance); // Avoid being able to trigger it from long range
 		}
 
-		public override void ModifySmartInteractCoords(ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
+		public override void ModifySmartInteractCoords(ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY)
+		{
 			// See ExampleBed tile for explanation
 			extraY = 4;
 		}
 
-		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
-			if (tileFrameY % NextStyleHeight == 18) {
+		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY)
+		{
+			if (tileFrameY % NextStyleHeight == 18)
+			{
 				height = 18;
 			}
 		}
 
-		public override void ModifySittingTargetInfo(int i, int j, ref TileRestingInfo info) {
+		public override void ModifySittingTargetInfo(int i, int j, ref TileRestingInfo info)
+		{
 			// It is very important to know that this is called on both players and NPCs, so do not use Main.LocalPlayer for example, use info.restingEntity
 			Tile tile = Framing.GetTileSafely(i, j);
 
@@ -81,7 +87,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			//info.visualOffset = Vector2.Zero; // Defaults to (0,0)
 
 			info.targetDirection = -1;
-			if (tile.TileFrameX != 0) {
+			if (tile.TileFrameX != 0)
+			{
 				info.targetDirection = 1; // Facing right if sat down on the right alternate (added through addAlternate in SetStaticDefaults earlier)
 			}
 
@@ -89,15 +96,18 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Since i and j may be from any coordinate of the chair, we need to adjust the anchor based on that
 			info.anchorTilePosition.X = i; // Our chair is only 1 wide, so nothing special required
 			info.anchorTilePosition.Y = j;
-			if (tile.TileFrameY % NextStyleHeight == 0) {
+			if (tile.TileFrameY % NextStyleHeight == 0)
+			{
 				info.anchorTilePosition.Y++; // Here, since our chair is only 2 tiles high, we can just check if the tile is the top-most one, then move it 1 down
 			}
 		}
 
-		public override bool RightClick(int i, int j) {
+		public override bool RightClick(int i, int j)
+		{
 			Player player = Main.LocalPlayer;
 
-			if (player.IsWithinSnappngRangeToTile(i, j, PlayerSittingHelper.ChairSittingMaxDistance)) { // Avoid being able to trigger it from long range
+			if (player.IsWithinSnappngRangeToTile(i, j, PlayerSittingHelper.ChairSittingMaxDistance))
+			{ // Avoid being able to trigger it from long range
 				player.GamepadEnableGrappleCooldown();
 				player.sitting.SitDown(player, i, j);
 			}
@@ -105,9 +115,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			return true;
 		}
 
-		public override void MouseOver(int i, int j) {
+		public override void MouseOver(int i, int j)
+		{
 			Player player = Main.LocalPlayer;
-			if (!player.IsWithinSnappngRangeToTile(i, j, PlayerSittingHelper.ChairSittingMaxDistance)) { // Match condition in RightClick. Interaction should only show if clicking it does something
+			if (!player.IsWithinSnappngRangeToTile(i, j, PlayerSittingHelper.ChairSittingMaxDistance))
+			{ // Match condition in RightClick. Interaction should only show if clicking it does something
 				return;
 			}
 
@@ -115,7 +127,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			player.cursorItemIconEnabled = true;
 			player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleChair>();
 
-			if (Main.tile[i, j].TileFrameX / 18 < 1) {
+			if (Main.tile[i, j].TileFrameX / 18 < 1)
+			{
 				player.cursorItemIconReversed = true;
 			}
 		}

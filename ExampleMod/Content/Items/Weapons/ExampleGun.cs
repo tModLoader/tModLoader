@@ -116,7 +116,7 @@ namespace ExampleMod.Content.Items.Weapons
 		// How can I choose between several projectiles randomly?
 		/*public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			// Here we randomly set type to either the original (as defined by the ammo), a vanilla projectile, or a mod projectile.
-			type = Main.rand.Next(new int[] { type, ProjectileID.GoldenBullet, ProjectileType<Projectiles.ExampleBullet>() });
+			type = Main.rand.Next(new int[] { type, ProjectileID.GoldenBullet, ModContent.ProjectileType<Projectiles.ExampleBullet>() });
 		}*/
 	}
 }

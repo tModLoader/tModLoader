@@ -19,16 +19,3 @@
  				_onOverlayActivated = Callback<GameOverlayActivated_t>.Create(OnOverlayActivated);
  		}
  
-@@ -100,7 +_,12 @@
- 		}
- 
- 		public void Shutdown() {
-+#if WINDOWS
- 			Application.ApplicationExit += delegate {
-+#else
-+			IsSteamValid = false;
-+			AppDomain.CurrentDomain.ProcessExit += delegate {
-+#endif
- 				IsSteamValid = false;
- 			};
- 		}

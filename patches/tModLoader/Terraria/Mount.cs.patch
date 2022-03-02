@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Mount.cs
+--- src/TerrariaNetCore/Terraria/Mount.cs
 +++ src/tModLoader/Terraria/Mount.cs
 @@ -10,6 +_,7 @@
  using Terraria.GameContent.Drawing;

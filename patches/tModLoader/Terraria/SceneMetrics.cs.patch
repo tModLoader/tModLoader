@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/SceneMetrics.cs
+--- src/TerrariaNetCore/Terraria/SceneMetrics.cs
 +++ src/tModLoader/Terraria/SceneMetrics.cs
 @@ -2,6 +_,7 @@
  using System;

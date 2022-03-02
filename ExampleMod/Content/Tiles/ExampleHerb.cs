@@ -3,6 +3,7 @@ using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -138,12 +139,14 @@ namespace ExampleMod.Content.Tiles
 				seedItemStack = Main.rand.Next(1, 4);
 			}
 
+			var source = new EntitySource_TileBreak(i, j);
+
 			if (herbItemType > 0 && herbItemStack > 0) {
-				Item.NewItem(worldPosition, herbItemType, herbItemStack);
+				Item.NewItem(source, worldPosition, herbItemType, herbItemStack);
 			}
 
 			if (seedItemType > 0 && seedItemStack > 0) {
-				Item.NewItem(worldPosition, seedItemType, seedItemStack);
+				Item.NewItem(source, worldPosition, seedItemType, seedItemStack);
 			}
 
 			// Custom drop code, so return false

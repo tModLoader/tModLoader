@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Terraria.DataStructures;
 using Terraria.ModLoader.Assets;
 using Terraria.ModLoader.Default.Developer;
 using Terraria.ModLoader.Default.Patreon;
@@ -40,12 +41,12 @@ namespace Terraria.ModLoader.Default
 			DeveloperSets = null;
 		}
 
-		internal static bool TryGettingPatreonOrDevArmor(Player player) {
+		internal static bool TryGettingPatreonOrDevArmor(IEntitySource source, Player player) {
 			if (Main.rand.NextBool(ChanceToGetPatreonArmor)) {
 				int randomIndex = Main.rand.Next(PatronSets.Length);
 
 				foreach (var patreonItem in PatronSets[randomIndex]) {
-					player.QuickSpawnItem(patreonItem.Type);
+					player.QuickSpawnItem(source, patreonItem.Type);
 				}
 
 				return true;
@@ -55,7 +56,7 @@ namespace Terraria.ModLoader.Default
 				int randomIndex = Main.rand.Next(DeveloperSets.Length);
 
 				foreach (var developerItem in DeveloperSets[randomIndex]) {
-					player.QuickSpawnItem(developerItem.Type);
+					player.QuickSpawnItem(source, developerItem.Type);
 				}
 
 				return true;

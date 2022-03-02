@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/Content/IAssetRepository.cs
+--- src/TerrariaNetCore/ReLogic/Content/IAssetRepository.cs
 +++ src/tModLoader/ReLogic/Content/IAssetRepository.cs
 @@ -1,6 +_,7 @@
  using ReLogic.Content.Sources;

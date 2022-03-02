@@ -1,10 +1,10 @@
---- src/Terraria/Terraria/DataStructures/TitleLinkButton.cs
+--- src/TerrariaNetCore/Terraria/DataStructures/TitleLinkButton.cs
 +++ src/tModLoader/Terraria/DataStructures/TitleLinkButton.cs
 @@ -66,7 +_,7 @@
  
  		private void OpenLink() {
  			try {
--				Process.Start(LinkUrl);
+-				Process.Start("explorer", LinkUrl);
 +				Utils.OpenToURL(LinkUrl);
  			}
  			catch {

@@ -1,0 +1,56 @@
+--- src/Terraria/ReLogic/Content/Readers/PngReader.cs
++++ src/TerrariaNetCore/ReLogic/Content/Readers/PngReader.cs
+@@ -1,8 +_,8 @@
+-using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
+ using System;
+ using System.IO;
+ using System.Threading;
++using Color = Microsoft.Xna.Framework.Color;
+ 
+ namespace ReLogic.Content.Readers
+ {
+@@ -21,6 +_,7 @@
+ 			if (typeof(T) != typeof(Texture2D))
+ 				throw AssetLoadException.FromInvalidReader<PngReader, T>();
+ 
++			/*
+ 			Texture2D texture2D = Texture2D.FromStream(_graphicsDevice, stream);
+ 			int num = texture2D.Width * texture2D.Height;
+ 			if (!_colorProcessingCache.IsValueCreated || _colorProcessingCache.Value.Length < num)
+@@ -34,6 +_,16 @@
+ 
+ 			texture2D.SetData(value, 0, num);
+ 			return texture2D as T;
++			*/
++
++			IntPtr img = FNA3D.ReadImageStream(stream, out int width, out int height, out int len);
++			PreMultiplyAlpha(img, len);
++			
++			var texture2D = new Texture2D(_graphicsDevice, width, height);
++			texture2D.SetDataPointerEXT(0, null, img, len);
++			FNA3D.FNA3D_Image_Free(img);
++
++			return texture2D as T;
+ 		}
+ 
+ 		protected virtual void Dispose(bool disposing) {
+@@ -48,5 +_,18 @@
+ 		public void Dispose() {
+ 			Dispose(disposing: true);
+ 		}
++
++		public Type[] GetAssociatedTypes() => new[] { typeof(Texture2D) };
++
++		private static unsafe void PreMultiplyAlpha(IntPtr img, int len) {
++			byte* colors = (byte*)img.ToPointer();
++
++			for (int i = 0; i < len; i += 4) {
++				int a = colors[i + 3];
++				colors[i] = (byte)(colors[i] * a / byte.MaxValue);
++				colors[i + 1] = (byte)(colors[i + 1] * a / byte.MaxValue);
++				colors[i + 2] = (byte)(colors[i + 2] * a / byte.MaxValue);
++ 			}
++ 		}
+ 	}
+ }

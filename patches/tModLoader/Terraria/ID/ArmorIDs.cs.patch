@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/ArmorIDs.cs
+--- src/TerrariaNetCore/Terraria/ID/ArmorIDs.cs
 +++ src/tModLoader/Terraria/ID/ArmorIDs.cs
 @@ -1,15 +_,16 @@
  using System.Collections.Generic;
