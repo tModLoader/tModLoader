@@ -59,7 +59,7 @@
  			Dictionary<string, PlayerInputProfile> dictionary = new Dictionary<string, PlayerInputProfile>();
  			string currentValue = null;
  			Main.InputProfiles.Get("Selected Profile", ref currentValue);
-@@ -591,6 +_,10 @@
+@@ -592,6 +_,10 @@
  		public static bool IsGamepadButtonLockedFromUse(string keyName) => _buttonsLocked.Contains(keyName);
  
  		public static void UpdateInput() {
@@ -70,7 +70,7 @@
  			SettingsForUI.UpdateCounters();
  			Triggers.Reset();
  			ScrollWheelValueOld = ScrollWheelValue;
-@@ -622,6 +_,9 @@
+@@ -623,6 +_,9 @@
  			UpdateMainMouse();
  			Main.mouseLeft = Triggers.Current.MouseLeft;
  			Main.mouseRight = Triggers.Current.MouseRight;
@@ -80,7 +80,7 @@
  			CacheZoomableValues();
  			if (num != 0 && PlayerInput.OnActionableInput != null)
  				PlayerInput.OnActionableInput();
-@@ -828,6 +_,10 @@
+@@ -829,6 +_,10 @@
  				}
  			}
  
@@ -91,7 +91,7 @@
  			bool flag5 = ItemID.Sets.GamepadWholeScreenUseRange[player.inventory[player.selectedItem].type] || player.scope;
  			int num3 = player.inventory[player.selectedItem].tileBoost + ItemID.Sets.GamepadExtraRange[player.inventory[player.selectedItem].type];
  			if (player.yoyoString && ItemID.Sets.Yoyo[player.inventory[player.selectedItem].type])
-@@ -1123,6 +_,8 @@
+@@ -1124,6 +_,8 @@
  		}
  
  		private static void FixDerpedRebinds() {
@@ -100,7 +100,7 @@
  			List<string> list = new List<string> {
  				"MouseLeft",
  				"MouseRight",
-@@ -1307,7 +_,7 @@
+@@ -1308,7 +_,7 @@
  					if (DpadSnapCooldown[i] == 0) {
  						int num = 6;
  						if (ItemSlot.IsABuildingItem(player.inventory[player.selectedItem]))
@@ -109,7 +109,7 @@
  
  						DpadSnapCooldown[i] = num;
  						zero += vector;
-@@ -1554,6 +_,9 @@
+@@ -1555,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -119,7 +119,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1591,6 +_,9 @@
+@@ -1592,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -129,7 +129,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1662,6 +_,9 @@
+@@ -1663,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -139,7 +139,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1699,6 +_,9 @@
+@@ -1700,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -149,7 +149,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1769,6 +_,9 @@
+@@ -1770,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -159,7 +159,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1806,6 +_,9 @@
+@@ -1807,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -169,7 +169,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Up"].Add("Up");
  							c.KeyStatus["Down"].Add("S");
-@@ -1876,6 +_,9 @@
+@@ -1877,6 +_,9 @@
  						case InputMode.Keyboard:
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseRight"].Add("Mouse2");
@@ -179,7 +179,7 @@
  							c.KeyStatus["Up"].Add("W");
  							c.KeyStatus["Down"].Add("S");
  							c.KeyStatus["Left"].Add("A");
-@@ -1913,6 +_,9 @@
+@@ -1914,6 +_,9 @@
  							c.KeyStatus["MouseLeft"].Add("Mouse1");
  							c.KeyStatus["MouseLeft"].Add("Space");
  							c.KeyStatus["MouseRight"].Add("Mouse2");

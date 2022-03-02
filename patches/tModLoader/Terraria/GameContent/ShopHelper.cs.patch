@@ -125,7 +125,7 @@
 +		/*
  		public void LikeBiome(string nameKey) {
  			AddHappinessReportText("LikeBiome", new {
- 				BiomeName = nameKey
+ 				BiomeName = BiomeNameByKey(nameKey)
 @@ -208,23 +_,25 @@
  
  			_currentPriceAdjustment *= 0.94f;
