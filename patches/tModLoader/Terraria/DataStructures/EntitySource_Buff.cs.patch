@@ -1,0 +1,14 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_Buff.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_Buff.cs
+@@ -11,5 +_,11 @@
+ 			BuffId = buffId;
+ 			BuffIndex = buffIndex;
+ 		}
++
++		// Added by TML.
++		public EntitySource_Buff(Player player, int buffIndex) : this(player, player.buffType[buffIndex], buffIndex) { }
++
++		// Added by TML.
++		public EntitySource_Buff(NPC npc, int buffIndex) : this(npc, npc.buffType[buffIndex], buffIndex) { }
+ 	}
+ }

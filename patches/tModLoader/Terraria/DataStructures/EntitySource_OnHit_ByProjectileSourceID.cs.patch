@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_OnHit_ByProjectileSourceID.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_OnHit_ByProjectileSourceID.cs
+@@ -4,7 +_,8 @@
+ 	{
+ 		public readonly int SourceId;
+ 
++		//TML: Last parameter turned optional
+-		public EntitySource_OnHit_ByProjectileSourceID(Entity entityStriking, Entity entityStruck, int projectileSourceId)
++		public EntitySource_OnHit_ByProjectileSourceID(Entity entityStriking, Entity entityStruck, int projectileSourceId = 0)
+ 			: base(entityStriking, entityStruck) {
+ 			SourceId = projectileSourceId;
+ 		}
