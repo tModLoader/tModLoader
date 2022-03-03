@@ -38,13 +38,13 @@
  
 +		// Source-less overloads for vanilla
 +		internal static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
-+			=> NewGorePerfect(null, Position, Velocity, Type, Scale);
++			=> NewGorePerfect(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
 +
 +		internal static Gore NewGoreDirect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
-+			=> NewGoreDirect(null, Position, Velocity, Type, Scale);
++			=> NewGoreDirect(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
 +
 +		internal static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
-+			=> NewGore(null, Position, Velocity, Type, Scale);
++			=> NewGore(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
 +
 +		// Actual API methods
 -		public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {

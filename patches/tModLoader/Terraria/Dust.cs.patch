@@ -21,13 +21,13 @@
 +
 +		// Source-less overloads for vanilla
 +		internal static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
-+			=> NewDustPerfect(null, Position, Type, Velocity, Alpha, newColor, Scale);
++			=> NewDustPerfect(IEntitySource.GetFallback(), Position, Type, Velocity, Alpha, newColor, Scale);
 +
 +		internal static Dust NewDustDirect(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
-+			=> NewDustDirect(null, Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale);
++			=> NewDustDirect(IEntitySource.GetFallback(), Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale);
 +
 +		internal static int NewDust(Vector2 Position, int Width, int Height, int Type, float SpeedX = 0f, float SpeedY = 0f, int Alpha = 0, Color newColor = default(Color), float Scale = 1f)
-+			=> NewDust(null, Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale);
++			=> NewDust(IEntitySource.GetFallback(), Position, Width, Height, Type, SpeedX, SpeedY, Alpha, newColor, Scale);
  
 +		// Actual API methods
 -		public static Dust NewDustPerfect(Vector2 Position, int Type, Vector2? Velocity = null, int Alpha = 0, Color newColor = default(Color), float Scale = 1f) {
