@@ -10,7 +10,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class PrefixDefinitionElement : DefinitionElement<PrefixDefinition>
+	public class PrefixDefinitionElement : DefinitionElement<PrefixDefinition>
 	{
 		protected override DefinitionOptionElement<PrefixDefinition> CreateDefinitionOptionElement() => new PrefixDefinitionOptionElement(Value, .8f);
 
@@ -56,7 +56,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	internal class PrefixDefinitionOptionElement : DefinitionOptionElement<PrefixDefinition>
+	public class PrefixDefinitionOptionElement : DefinitionOptionElement<PrefixDefinition>
 	{
 		UIAutoScaleTextTextPanel<string> text;
 		public PrefixDefinitionOptionElement(PrefixDefinition definition, float scale = .75f) : base(definition, scale) {
