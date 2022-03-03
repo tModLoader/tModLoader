@@ -10,7 +10,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class ItemDefinitionElement : DefinitionElement<ItemDefinition>
+	public class ItemDefinitionElement : DefinitionElement<ItemDefinition>
 	{
 		protected override DefinitionOptionElement<ItemDefinition> CreateDefinitionOptionElement() => new ItemDefinitionOptionElement(Value, 0.5f);
 
@@ -48,7 +48,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	internal class ItemDefinitionOptionElement : DefinitionOptionElement<ItemDefinition>
+	public class ItemDefinitionOptionElement : DefinitionOptionElement<ItemDefinition>
 	{
 		public Item item;
 
