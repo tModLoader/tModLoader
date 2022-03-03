@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 
 namespace ExampleMod.Content.Items.Weapons
 {
@@ -36,8 +37,10 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(3)) {
+				var entitySource = new EntitySource_ItemUse(player, player.HeldItem);
+
 				// Emit dusts when the sword is swung
-				Dust.NewDust(player.GetEntitySource_ItemUse(Item), new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Dusts.Sparkle>());
+				Dust.NewDust(entitySource, new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Dusts.Sparkle>());
 			}
 		}
 

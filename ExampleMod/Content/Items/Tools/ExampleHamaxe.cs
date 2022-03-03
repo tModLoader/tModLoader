@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 
 namespace ExampleMod.Content.Items.Tools
 {
@@ -35,7 +36,10 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(10)) { // This creates a 1/10 chance that a dust will spawn every frame that this item is in its 'Swinging' animation.
-				Dust.NewDust(player.GetEntitySource_ItemUse(Item), new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Sparkle>()); // Creates a dust at the hitbox rectangle, following the rules of our 'if' conditional.
+				var entitySource = new EntitySource_ItemUse(player, player.HeldItem);
+
+				// Creates a dust at the hitbox rectangle, following the rules of our 'if' conditional.
+				Dust.NewDust(entitySource, new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Sparkle>());
 			}
 		}
 

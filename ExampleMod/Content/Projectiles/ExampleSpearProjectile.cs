@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -60,7 +61,7 @@ namespace ExampleMod.Content.Projectiles
 			// Avoid spawning dusts on dedicated servers
 			if (!Main.dedServ) {
 				// These dusts are added later, for the 'ExampleMod' effect
-				var entitySource = Projectile.GetEntitySource();
+				var entitySource = new EntitySource_Parent(Projectile);
 
 				if (Main.rand.NextBool(3)) {
 					Dust.NewDustDirect(entitySource, Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>(), Projectile.velocity.X * 2f, Projectile.velocity.Y * 2f, Alpha: 128, Scale: 1.2f);

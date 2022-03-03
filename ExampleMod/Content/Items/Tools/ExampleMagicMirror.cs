@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 
 namespace ExampleMod.Content.Items.Tools
 {
@@ -11,6 +12,13 @@ namespace ExampleMod.Content.Items.Tools
 	// It may prove a useful guide for ModItems with similar behaviors.
 	internal class ExampleMagicMirror : ExampleItem
 	{
+		private static readonly Color[] itemNameCycleColors = {
+			new Color(254, 105, 47),
+			new Color(190, 30, 209),
+			new Color(34, 221, 151),
+			new Color(0, 106, 185),
+		};
+
 		public override string Texture => $"Terraria/Images/Item_{ItemID.IceMirror}"; // Copies the texture for the Ice Mirror, make your own texture if need be.
 
 		public override void SetStaticDefaults() {
@@ -24,9 +32,11 @@ namespace ExampleMod.Content.Items.Tools
 
 		// UseStyle is called each frame that the item is being actively used.
 		public override void UseStyle(Player player, Rectangle heldItemFrame) {
+			var entitySource = new EntitySource_ItemUse(player, player.HeldItem);
+
 			// Each frame, make some dust
 			if (Main.rand.NextBool()) {
-				Dust.NewDust(player.GetEntitySource_ItemUse(Item), player.position, player.width, player.height, 15, 0f, 0f, 150, Color.White, 1.1f); // Makes dust from the player's position and copies the hitbox of which the dust may spawn. Change these arguments if needed.
+				Dust.NewDust(entitySource, player.position, player.width, player.height, 15, 0f, 0f, 150, Color.White, 1.1f); // Makes dust from the player's position and copies the hitbox of which the dust may spawn. Change these arguments if needed.
 			}
 
 			// This sets up the itemTime correctly.
@@ -36,10 +46,7 @@ namespace ExampleMod.Content.Items.Tools
 			else if (player.itemTime == player.itemTimeMax / 2) {
 				// This code runs once halfway through the useTime of the Item. You'll notice with magic mirrors you are still holding the item for a little bit after you've teleported.
 
-				var entitySource = player.GetEntitySource_ItemUse(Item); // Make sure to 'cache' sources before loops to avoid unnecessary allocations.
-
 				// Make dust 70 times for a cool effect.
-
 				for (int d = 0; d < 70; d++) {
 					Dust.NewDust(entitySource, player.position, player.width, player.height, 15, player.velocity.X * 0.5f, player.velocity.Y * 0.5f, 150, default, 1.5f);
 				}
@@ -64,15 +71,13 @@ namespace ExampleMod.Content.Items.Tools
 			}
 		}
 
-		private Color[] itemNameCycleColors = { new Color(254, 105, 47), new Color(190, 30, 209), new Color(34, 221, 151), new Color(0, 106, 185) };
-
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// This code shows using Color.Lerp,  Main.GameUpdateCount, and the modulo operator (%) to do a neat effect cycling between 4 custom colors.
 			foreach (TooltipLine line2 in tooltips) {
 				if (line2.mod == "Terraria" && line2.Name == "ItemName") {
 					float fade = (Main.GameUpdateCount % 60) / 60f;
 					int index = (int)((Main.GameUpdateCount / 60) % 4);
-					line2.overrideColor = Color.Lerp(itemNameCycleColors[index], itemNameCycleColors[(index + 1) % 4], fade);
+					line2.overrideColor = Color.Lerp(itemNameCycleColors[index], itemNameCycleColors[(index + 1) % itemNameCycleColors.Length], fade);
 				}
 			}
 		}

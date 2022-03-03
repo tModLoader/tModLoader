@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 
 namespace ExampleMod.Content.Items.Ammo
 {
@@ -93,8 +94,10 @@ namespace ExampleMod.Content.Items.Ammo
 
 				Progress += 1f;
 
-				int dustIndex = Dust.NewDust(Projectile.GetEntitySource(), new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, dustType, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100);
-				Dust dust = Main.dust[dustIndex];
+
+				var entitySource = new EntitySource_Parent(Projectile);
+				var dust = Dust.NewDustDirect(entitySource, new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, dustType, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100);
+
 				dust.noGravity = true;
 				dust.scale *= 1.75f;
 				dust.velocity.X *= 2f;

@@ -5,6 +5,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ModLoader.IO;
 using System.IO;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -52,13 +53,13 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void RightClick(Player player) {
-			var source = player.GetItemSource_OpenItem(Type);
+			var entitySource = new EntitySource_ItemOpen(player, Type);
 
 			if (Main.hardMode) {
-				player.QuickSpawnItem(source, ItemID.ChocolateChipCookie);
+				player.QuickSpawnItem(entitySource, ItemID.ChocolateChipCookie);
 			}
 			else {
-				player.QuickSpawnItem(source, ItemID.Coconut);
+				player.QuickSpawnItem(entitySource, ItemID.Coconut);
 			}
 		}
 

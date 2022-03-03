@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -71,7 +72,9 @@ namespace ExampleMod.NPCs
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-					int projectile = Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
+					var entitySource = new EntitySource_Parent(NPC);
+
+					int projectile = Projectile.NewProjectile(entitySource, NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
 					Main.projectile[projectile].timeLeft = 300;
 					attackCounter = 500;
 					NPC.netUpdate = true;
@@ -183,20 +186,22 @@ namespace ExampleMod.NPCs
 			}
 
 			if (Main.netMode != NetmodeID.MultiplayerClient) {
-				if (!tail && NPC.ai[0] == 0f) {
-					var source = NPC.GetSpawnSourceForNPCFromNPCAI();
+				var entitySource = new EntitySource_Parent(NPC);
+				var npcSpawnSource = entitySource;
+				var deathSource = entitySource;
 
+				if (!tail && NPC.ai[0] == 0f) {
 					if (head) {
 						NPC.ai[3] = NPC.whoAmI;
 						NPC.realLife = NPC.whoAmI;
 						NPC.ai[2] = Main.rand.Next(minLength, maxLength + 1);
-						NPC.ai[0] = NPC.NewNPC(source, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), bodyType, NPC.whoAmI);
+						NPC.ai[0] = NPC.NewNPC(npcSpawnSource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), bodyType, NPC.whoAmI);
 					}
 					else if (NPC.ai[2] > 0f) {
-						NPC.ai[0] = NPC.NewNPC(source, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), NPC.type, NPC.whoAmI);
+						NPC.ai[0] = NPC.NewNPC(npcSpawnSource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), NPC.type, NPC.whoAmI);
 					}
 					else {
-						NPC.ai[0] = NPC.NewNPC(source, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), tailType, NPC.whoAmI);
+						NPC.ai[0] = NPC.NewNPC(npcSpawnSource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), tailType, NPC.whoAmI);
 					}
 
 					Main.npc[(int)NPC.ai[0]].ai[3] = NPC.ai[3];
@@ -207,12 +212,12 @@ namespace ExampleMod.NPCs
 				}
 				if (!head && (!Main.npc[(int)NPC.ai[1]].active || Main.npc[(int)NPC.ai[1]].type != headType && Main.npc[(int)NPC.ai[1]].type != bodyType)) {
 					NPC.life = 0;
-					NPC.HitEffect(0, 10.0);
+					NPC.HitEffect(deathSource, 0, 10.0);
 					NPC.active = false;
 				}
 				if (!tail && (!Main.npc[(int)NPC.ai[0]].active || Main.npc[(int)NPC.ai[0]].type != bodyType && Main.npc[(int)NPC.ai[0]].type != tailType)) {
 					NPC.life = 0;
-					NPC.HitEffect(0, 10.0);
+					NPC.HitEffect(deathSource, 0, 10.0);
 					NPC.active = false;
 				}
 				if (!NPC.active && Main.netMode == NetmodeID.Server) {

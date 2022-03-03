@@ -2,6 +2,7 @@ using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items;
 using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -82,13 +83,12 @@ namespace ExampleMod.Content.NPCs
 			});
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(IEntitySource hitSource, int hitDirection, double damage) {
 			// Causes dust to spawn when the NPC takes damage.
 			int num = NPC.life > 0 ? 1 : 5;
-			var entitySource = NPC.GetSpawnSource_NPCHurt(); // Make sure to 'cache' sources before loops to avoid unnecessary allocations.
 
 			for (int k = 0; k < num; k++) {
-				Dust.NewDust(entitySource, NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
+				Dust.NewDust(hitSource, NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
 		}
 

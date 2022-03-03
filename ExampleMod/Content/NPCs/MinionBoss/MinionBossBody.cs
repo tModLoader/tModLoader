@@ -258,7 +258,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(IEntitySource hitSource, int hitDirection, double damage) {
 			// If the NPC dies, spawn gore and play a sound
 			if (Main.netMode == NetmodeID.Server) {
 				// We don't want Mod.Find<ModGore> to run on servers as it will crash because gores are not loaded on servers
@@ -271,8 +271,8 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				int frontGoreType = Mod.Find<ModGore>("MinionBossBody_Front").Type;
 
 				for (int i = 0; i < 2; i++) {
-					Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
-					Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
+					Gore.NewGore(hitSource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
+					Gore.NewGore(hitSource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
 				}
 
 				SoundEngine.PlaySound(SoundID.Roar, NPC.Center, 0);
@@ -325,7 +325,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 
 			int count = MinionCount();
-			var source = NPC.GetSpawnSourceForNPCFromNPCAI();
+			var source = new EntitySource_Parent(NPC);
 
 			for (int i = 0; i < count; i++) {
 				int index = NPC.NewNPC(source, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
@@ -503,7 +503,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				int type = ModContent.ProjectileType<MinionBossEye>();
 				int damage = NPC.damage / 2;
-				Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
+				var entitySource = new EntitySource_Parent(NPC);
+
+				Projectile.NewProjectile(entitySource, position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
 			}
 		}
 	}

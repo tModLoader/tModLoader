@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using ExampleMod.Common.GlobalNPCs;
+using Terraria.DataStructures;
 
 namespace ExampleMod.Common.GlobalProjectiles
 {
@@ -38,7 +39,9 @@ namespace ExampleMod.Common.GlobalProjectiles
 
 		public override void PostAI(Projectile projectile) {
 			if (trailActive) {
-				Dust.NewDustDirect(projectile.GetEntitySource(), projectile.position, projectile.width, projectile.height, DustID.TintableDustLighted, default, default, default, trailColor);
+				var entitySource = new EntitySource_Parent(projectile);
+
+				Dust.NewDustDirect(entitySource, projectile.position, projectile.width, projectile.height, DustID.TintableDustLighted, default, default, default, trailColor);
 			}
 		}
 	}

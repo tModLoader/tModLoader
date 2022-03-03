@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
 
 namespace ExampleMod.Content.Items.Tools
 {
@@ -34,7 +35,9 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(10)) {
-				Dust.NewDust(player.GetEntitySource_ItemUse(Item), new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Sparkle>());
+				var entitySource = new EntitySource_ItemUse(player, player.HeldItem);
+
+				Dust.NewDust(entitySource, new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Sparkle>());
 			}
 		}
 

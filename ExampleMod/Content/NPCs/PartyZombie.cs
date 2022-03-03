@@ -5,6 +5,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using ExampleMod.Content.Biomes;
 using Terraria.ModLoader.Utilities;
+using Terraria.DataStructures;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -61,13 +62,12 @@ namespace ExampleMod.Content.NPCs
 			});
 		}
 
-		public override void HitEffect(int hitDirection, double damage) {
+		public override void HitEffect(IEntitySource hitSource, int hitDirection, double damage) {
 			// Spawn confetti when this zombie is hit.
-			var entitySource = NPC.GetEntitySource(); // Make sure to 'cache' sources before loops to avoid unnecessary allocations.
 
 			for (int i = 0; i < 10; i++) {
 				int dustType = Main.rand.Next(139, 143);
-				var dust = Dust.NewDustDirect(entitySource, NPC.position, NPC.width, NPC.height, dustType);
+				var dust = Dust.NewDustDirect(hitSource, NPC.position, NPC.width, NPC.height, dustType);
 
 				dust.velocity.X += Main.rand.NextFloat(-0.05f, 0.05f);
 				dust.velocity.Y += Main.rand.NextFloat(-0.05f, 0.05f);
