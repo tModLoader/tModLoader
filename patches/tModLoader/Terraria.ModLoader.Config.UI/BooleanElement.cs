@@ -8,7 +8,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	internal class BooleanElement : ConfigElement<bool>
+	public class BooleanElement : ConfigElement<bool>
 	{
 		private Texture2D _toggleTexture;
 
