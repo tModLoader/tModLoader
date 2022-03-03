@@ -49,7 +49,7 @@ namespace Terraria.ModLoader.Config.UI
 	{
 		protected Color sliderColor = Color.White;
 		protected Utils.ColorLerpMethod colorMethod;
-		internal bool drawTicks;
+		protected internal bool drawTicks;
 		public abstract int NumberTicks { get; }
 		public abstract float TickIncrement { get; }
 
@@ -128,8 +128,8 @@ namespace Terraria.ModLoader.Config.UI
 			return 1f;
 		}
 
-		private static RangeElement rightLock;
-		private static RangeElement rightHover;
+		protected static RangeElement rightLock;
+		protected static RangeElement rightHover;
 		protected override void DrawSelf(SpriteBatch spriteBatch)
 		{
 			base.DrawSelf(spriteBatch);
