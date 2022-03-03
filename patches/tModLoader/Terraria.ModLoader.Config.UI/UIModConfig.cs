@@ -18,7 +18,7 @@ namespace Terraria.ModLoader.Config.UI
 	// TODO: Revert individual button.	
 	// TODO: Collapse All button, or default to collapsed?
 	// TODO: Localization support
-	internal class UIModConfig : UIState
+	public class UIModConfig : UIState
 	{
 		private UIElement uIElement;
 		private UITextPanel<string> headerTextPanel;
@@ -581,7 +581,7 @@ namespace Terraria.ModLoader.Config.UI
 			return null;
 		}
 
-		internal static UIElement GetContainer(UIElement containee, int sortid) {
+		public static UIElement GetContainer(UIElement containee, int sortid) {
 			UIElement container = new UISortableElement(sortid);
 			container.Width.Set(0f, 1f);
 			container.Height.Set(30f, 0f);
@@ -707,7 +707,7 @@ namespace Terraria.ModLoader.Config.UI
 			return uIPanel;
 		}
 
-		internal static void SwitchToSubConfig(UIPanel separateListPanel) {
+		public static void SwitchToSubConfig(UIPanel separateListPanel) {
 			Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
 			Interface.modConfig.uIElement.Append(separateListPanel);
 			Interface.modConfig.configPanelStack.Push(separateListPanel);
