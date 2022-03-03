@@ -1,11 +1,9 @@
 using log4net;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -13,17 +11,14 @@ using Terraria.ModLoader.Exceptions;
 using System.Linq;
 using Terraria.ModLoader.Config;
 using ReLogic.Content;
-using Terraria.GameContent;
-using Terraria.ModLoader.Assets;
 using ReLogic.Content.Sources;
-using ReLogic.Graphics;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// Mod is an abstract class that you will override. It serves as a central place from which the mod's contents are stored. It provides methods for you to use or override.
 	/// </summary>
-	public abstract partial class Mod
+	public partial class Mod
 	{
 		/// <summary>
 		/// The TmodFile object created when tModLoader reads this mod.
@@ -87,6 +82,7 @@ namespace Terraria.ModLoader
 		public IContentSource RootContentSource { get; private set; }
 
 		internal short netID = -1;
+		public short NetID => netID;
 		public bool IsNetSynced => netID >= 0;
 
 		private IDisposable fileHandle;

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Terraria.DataStructures;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -57,8 +58,8 @@ namespace Terraria
 		/// </summary>
 		/// <param name="item">The item you want to be cloned</param>
 		/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
-		public int QuickSpawnClonedItem(Item item, int stack = 1) {
-			int index = Item.NewItem((int)position.X, (int)position.Y, width, height, item.type, stack, false, -1, false, false);
+		public int QuickSpawnClonedItem(IEntitySource source, Item item, int stack = 1) {
+			int index = Item.NewItem(source, getRect(), item.type, stack, false, -1, false, false);
 			Item clone = Main.item[index] = item.Clone();
 			clone.whoAmI = index;
 			clone.position = position;
@@ -71,14 +72,20 @@ namespace Terraria
 			return index;
 		}
 
-		public int QuickSpawnItem(Item item, int stack = 1) => QuickSpawnItem(item.type, stack);
+		public int QuickSpawnItem(IEntitySource source, Item item, int stack = 1)
+			=> QuickSpawnItem(source, item.type, stack);
 
 		/// <inheritdoc cref="QuickSpawnClonedItem"/>
-		public Item QuickSpawnClonedItemDirect(Item item, int stack = 1) => Main.item[QuickSpawnClonedItem(item, stack)];
+		public Item QuickSpawnClonedItemDirect(IEntitySource source, Item item, int stack = 1)
+			=> Main.item[QuickSpawnClonedItem(source, item, stack)];
 
-		public Item QuickSpawnItemDirect(Item item, int stack = 1) => Main.item[QuickSpawnItem(item.type, stack)];
+		/// <inheritdoc cref="QuickSpawnClonedItem"/>
+		public Item QuickSpawnItemDirect(IEntitySource source, Item item, int stack = 1)
+			=> Main.item[QuickSpawnItem(source, item.type, stack)];
 
-		public Item QuickSpawnItemDirect(int type, int stack = 1) => Main.item[QuickSpawnItem(type, stack)];
+		/// <inheritdoc cref="QuickSpawnClonedItem"/>
+		public Item QuickSpawnItemDirect(IEntitySource source, int type, int stack = 1)
+			=> Main.item[QuickSpawnItem(source, type, stack)];
 
 		/// <summary> Returns whether or not this Player currently has a (de)buff of the provided type. </summary>
 		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
@@ -243,20 +250,23 @@ namespace Terraria
 		/// <summary>
 		/// Drops the ref'd item from the player at the position, and than turns the ref'd Item to air.
 		/// </summary>
-		public void DropItem(Vector2 position, ref Item item) {
+		public void DropItem(IEntitySource source, Vector2 position, ref Item item) {
 			if (item.stack > 0) {
-				int num3 = Item.NewItem((int)position.X, (int)position.Y, width, height, item.type);
-				Main.item[num3].netDefaults(item.netID);
-				Main.item[num3].Prefix(item.prefix);
-				Main.item[num3].stack = item.stack;
-				Main.item[num3].velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
-				Main.item[num3].velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
-				Main.item[num3].noGrabDelay = 100;
-				Main.item[num3].newAndShiny = false;
-				Main.item[num3].ModItem = item.ModItem;
-				Main.item[num3].globalItems = item.globalItems;
+				int itemDropId = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item.type);
+				var itemDrop = Main.item[itemDropId];
+
+				itemDrop.netDefaults(item.netID);
+				itemDrop.Prefix(item.prefix);
+				itemDrop.stack = item.stack;
+				itemDrop.velocity.Y = (float)Main.rand.Next(-20, 1) * 0.2f;
+				itemDrop.velocity.X = (float)Main.rand.Next(-20, 21) * 0.2f;
+				itemDrop.noGrabDelay = 100;
+				itemDrop.newAndShiny = false;
+				itemDrop.ModItem = item.ModItem;
+				itemDrop.globalItems = item.globalItems;
+
 				if (Main.netMode == 1)
-					NetMessage.SendData(21, -1, -1, null, num3);
+					NetMessage.SendData(21, -1, -1, null, itemDropId);
 			}
 
 			item.TurnToAir();
@@ -337,5 +347,14 @@ namespace Terraria
 			return false;
 
 		}
+
+		/// <summary>
+		/// Helper method for modders to check if the player is able to autoswing (auto-reuse) an item.
+		/// <br>This checks item.autoReuse &amp;&amp; !player.noItems, and if Feral Claws effect applies to the item.</br>
+		/// <br>Additionally, any effects applied through the CanAutoReuseItem hooks.</br>
+		/// </summary>
+		/// <param name="item">The item currently in use</param>
+		/// <returns>true if player can autoswing using the item</returns>
+		public bool ShouldAutoReuseItem(Item item) => TryAllowingItemReuse_Inner(item);
 	}
 }

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Events/Sandstorm.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Events/Sandstorm.cs
 +++ src/tModLoader/Terraria/GameContent/Events/Sandstorm.cs
 @@ -10,15 +_,17 @@
  		private const int SANDSTORM_DURATION_MINIMUM = 28800;

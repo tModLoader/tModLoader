@@ -62,15 +62,16 @@ namespace ExampleMod.NPCs
 		public override void CustomBehavior() {
 			if (Main.netMode != NetmodeID.MultiplayerClient) {
 				if (attackCounter > 0) {
-					attackCounter--;
+					attackCounter--; // tick down the attack counter.
 				}
 
 				Player target = Main.player[NPC.target];
+				// If the attack counter is 0, this NPC is less than 12.5 tiles away from its target, and has a path to the target unobstructed by blocks, summon a projectile.
 				if (attackCounter <= 0 && Vector2.Distance(NPC.Center, target.Center) < 200 && Collision.CanHit(NPC.Center, 1, 1, target.Center, 1, 1)) {
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-					int projectile = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
+					int projectile = Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
 					Main.projectile[projectile].timeLeft = 300;
 					attackCounter = 500;
 					NPC.netUpdate = true;
@@ -164,32 +165,40 @@ namespace ExampleMod.NPCs
 				NPC.localAI[1] = 1f;
 				Init();
 			}
+
 			if (NPC.ai[3] > 0f) {
 				NPC.realLife = (int)NPC.ai[3];
 			}
+
 			if (!head && NPC.timeLeft < 300) {
 				NPC.timeLeft = 300;
 			}
+
 			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead) {
 				NPC.TargetClosest(true);
 			}
+
 			if (Main.player[NPC.target].dead && NPC.timeLeft > 300) {
 				NPC.timeLeft = 300;
 			}
+
 			if (Main.netMode != NetmodeID.MultiplayerClient) {
 				if (!tail && NPC.ai[0] == 0f) {
+					var source = NPC.GetSpawnSourceForNPCFromNPCAI();
+
 					if (head) {
-						NPC.ai[3] = (float)NPC.whoAmI;
+						NPC.ai[3] = NPC.whoAmI;
 						NPC.realLife = NPC.whoAmI;
-						NPC.ai[2] = (float)Main.rand.Next(minLength, maxLength + 1);
-						NPC.ai[0] = (float)NPC.NewNPC((int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), bodyType, NPC.whoAmI);
+						NPC.ai[2] = Main.rand.Next(minLength, maxLength + 1);
+						NPC.ai[0] = NPC.NewNPC(source, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), bodyType, NPC.whoAmI);
 					}
 					else if (NPC.ai[2] > 0f) {
-						NPC.ai[0] = (float)NPC.NewNPC((int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), NPC.type, NPC.whoAmI);
+						NPC.ai[0] = NPC.NewNPC(source, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), NPC.type, NPC.whoAmI);
 					}
 					else {
-						NPC.ai[0] = (float)NPC.NewNPC((int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), tailType, NPC.whoAmI);
+						NPC.ai[0] = NPC.NewNPC(source, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), tailType, NPC.whoAmI);
 					}
+
 					Main.npc[(int)NPC.ai[0]].ai[3] = NPC.ai[3];
 					Main.npc[(int)NPC.ai[0]].realLife = NPC.realLife;
 					Main.npc[(int)NPC.ai[0]].ai[1] = (float)NPC.whoAmI;
@@ -230,17 +239,17 @@ namespace ExampleMod.NPCs
 			if (!flag18) {
 				for (int num184 = num180; num184 < num181; num184++) {
 					for (int num185 = num182; num185 < num183; num185++) {
-						if (Main.tile[num184, num185] != null && (Main.tile[num184, num185].IsActiveUnactuated && (Main.tileSolid[(int)Main.tile[num184, num185].type] || Main.tileSolidTop[(int)Main.tile[num184, num185].type] && Main.tile[num184, num185].frameY == 0) || Main.tile[num184, num185].LiquidAmount > 64)) {
+						if (Main.tile[num184, num185] != null && (Main.tile[num184, num185].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[num184, num185].TileType] || Main.tileSolidTop[(int)Main.tile[num184, num185].TileType] && Main.tile[num184, num185].TileFrameY == 0) || Main.tile[num184, num185].LiquidAmount > 64)) {
 							Vector2 vector17;
 							vector17.X = (float)(num184 * 16);
 							vector17.Y = (float)(num185 * 16);
 							if (NPC.position.X + (float)NPC.width > vector17.X && NPC.position.X < vector17.X + 16f && NPC.position.Y + (float)NPC.height > vector17.Y && NPC.position.Y < vector17.Y + 16f) {
 								flag18 = true;
-								if (Main.rand.NextBool(100) && NPC.behindTiles && Main.tile[num184, num185].IsActiveUnactuated) {
+								if (Main.rand.NextBool(100) && NPC.behindTiles && Main.tile[num184, num185].HasUnactuatedTile) {
 									WorldGen.KillTile(num184, num185, true, true, false);
 								}
-								if (Main.netMode != NetmodeID.MultiplayerClient && Main.tile[num184, num185].type == 2) {
-									ushort arg_BFCA_0 = Main.tile[num184, num185 - 1].type;
+								if (Main.netMode != NetmodeID.MultiplayerClient && Main.tile[num184, num185].TileType == 2) {
+									ushort arg_BFCA_0 = Main.tile[num184, num185 - 1].TileType;
 								}
 							}
 						}

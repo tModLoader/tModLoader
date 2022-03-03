@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/DoorOpeningHelper.cs
+--- src/TerrariaNetCore/Terraria/GameContent/DoorOpeningHelper.cs
 +++ src/tModLoader/Terraria/GameContent/DoorOpeningHelper.cs
 @@ -2,6 +_,8 @@
  using System;

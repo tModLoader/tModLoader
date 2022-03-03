@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/NPCSpawnParams.cs
++++ src/tModLoader/Terraria/NPCSpawnParams.cs
+@@ -6,7 +_,7 @@
+ 	{
+ 		public float? sizeScaleOverride;
+ 		public int? playerCountForMultiplayerDifficultyOverride;
+-		public GameModeData gameModeData;
++		public GameModeData? gameModeData;
+ 		public float? strengthMultiplierOverride;
+ 
+ 		public NPCSpawnParams WithScale(float scaleOverride) {

@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/ID/GameModeID.cs
++++ src/tModLoader/Terraria/ID/GameModeID.cs
+@@ -1,6 +_,6 @@
+ namespace Terraria.ID
+ {
+-	internal class GameModeID
++	public static class GameModeID
+ 	{
+ 		public const short Normal = 0;
+ 		public const short Expert = 1;

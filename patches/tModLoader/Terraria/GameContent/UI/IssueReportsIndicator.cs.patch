@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/IssueReportsIndicator.cs
++++ src/tModLoader/Terraria/GameContent/UI/IssueReportsIndicator.cs
+@@ -17,7 +_,9 @@
+ 		public void AttemptLettingPlayerKnow() {
+ 			Setup();
+ 			_shouldBeShowing = true;
++
++			if (SoundEngine.LegacySoundPlayer != null)
+-			SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
++				SoundEngine.PlaySound(SoundID.DD2_ExplosiveTrapExplode);
+ 		}
+ 
+ 		public void Hide() {

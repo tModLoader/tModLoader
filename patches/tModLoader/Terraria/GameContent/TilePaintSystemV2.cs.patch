@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/TilePaintSystemV2.cs
+--- src/TerrariaNetCore/Terraria/GameContent/TilePaintSystemV2.cs
 +++ src/tModLoader/Terraria/GameContent/TilePaintSystemV2.cs
 @@ -74,7 +_,7 @@
  			public TreeFoliageVariantKey Key;

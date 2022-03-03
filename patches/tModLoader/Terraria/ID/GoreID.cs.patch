@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/GoreID.cs
+--- src/TerrariaNetCore/Terraria/ID/GoreID.cs
 +++ src/tModLoader/Terraria/ID/GoreID.cs
 @@ -1,10 +_,12 @@
 +using Terraria.ModLoader;
