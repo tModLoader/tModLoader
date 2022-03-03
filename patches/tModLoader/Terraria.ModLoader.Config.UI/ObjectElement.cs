@@ -10,7 +10,7 @@ using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class ObjectElement : ConfigElement<object>
+	public class ObjectElement : ConfigElement<object>
 	{
 		protected Func<string> AbridgedTextDisplayFunction;
 
@@ -265,9 +265,9 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	internal class UIModConfigHoverImage : UIImage
+	public class UIModConfigHoverImage : UIImage
 	{
-		internal string HoverText;
+		protected internal string HoverText;
 
 		public UIModConfigHoverImage(Texture2D texture, string hoverText) : base(texture) {
 			HoverText = hoverText;
@@ -281,10 +281,10 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	internal class UIModConfigHoverImageSplit : UIImage
+	public class UIModConfigHoverImageSplit : UIImage
 	{
-		internal string HoverTextUp;
-		internal string HoverTextDown;
+		protected internal string HoverTextUp;
+		protected internal string HoverTextDown;
 
 		public UIModConfigHoverImageSplit(Texture2D texture, string hoverTextUp, string hoverTextDown) : base(texture) {
 			HoverTextUp = hoverTextUp;
@@ -305,7 +305,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	class FuncStringWrapper {
+	public class FuncStringWrapper {
 		public Func<string> func;
 		public override string ToString() {
 			return func();
