@@ -8,11 +8,11 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class Vector2Element : ConfigElement
+	public class Vector2Element : ConfigElement
 	{
-		class Vector2Object
+		public class Vector2Object
 		{
-			internal Vector2 current;
+			protected internal Vector2 current;
 			PropertyFieldWrapper memberInfo;
 			object item;
 			IList<Vector2> array;
@@ -34,7 +34,7 @@ namespace Terraria.ModLoader.Config.UI
 					Update();
 				}
 			}
-			private void Update() {
+			protected void Update() {
 				if (array == null)
 					memberInfo.SetValue(item, current);
 				else
