@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Drawing/TileDrawing.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
 @@ -9,13 +_,14 @@
  using Terraria.GameContent.Tile_Entities;

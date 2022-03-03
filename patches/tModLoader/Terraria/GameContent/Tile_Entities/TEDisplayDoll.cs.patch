@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEDisplayDoll.cs
 @@ -4,11 +_,13 @@
  using Terraria.Audio;

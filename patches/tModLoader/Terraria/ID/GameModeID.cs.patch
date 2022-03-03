@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/GameModeID.cs
+--- src/TerrariaNetCore/Terraria/ID/GameModeID.cs
 +++ src/tModLoader/Terraria/ID/GameModeID.cs
 @@ -1,6 +_,6 @@
  namespace Terraria.ID

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Localization/Content/fr-FR/Main.json
+--- src/TerrariaNetCore/Terraria/Localization/Content/fr-FR/Main.json
 +++ src/tModLoader/Terraria/Localization/Content/fr-FR/Main.json
 @@ -499,7 +_,7 @@
  		"Disabled": "Désactivé",

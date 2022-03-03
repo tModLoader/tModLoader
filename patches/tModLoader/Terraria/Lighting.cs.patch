@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Lighting.cs
+--- src/TerrariaNetCore/Terraria/Lighting.cs
 +++ src/tModLoader/Terraria/Lighting.cs
 @@ -14,8 +_,8 @@
  		[Old]

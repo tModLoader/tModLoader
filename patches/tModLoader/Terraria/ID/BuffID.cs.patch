@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/BuffID.cs
+--- src/TerrariaNetCore/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
 @@ -1,10 +_,13 @@
  using ReLogic.Reflection;

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Initializers/ChatInitializer.cs
+--- src/TerrariaNetCore/Terraria/Initializers/ChatInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/ChatInitializer.cs
 @@ -6,6 +_,7 @@
  

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/CustomCurrencyManager.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/CustomCurrencyManager.cs
 +++ src/tModLoader/Terraria/GameContent/UI/CustomCurrencyManager.cs
 @@ -12,6 +_,7 @@
  

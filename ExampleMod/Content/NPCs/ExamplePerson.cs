@@ -18,6 +18,8 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
+using Terraria.GameContent.Personalities;
+using Terraria.DataStructures;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -49,16 +51,16 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 
 			// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
-
-			// Biomes
-			NPC.Happiness.LikeBiome(PrimaryBiomeID.Forest); // Example Person prefers the forest.
-			NPC.Happiness.DislikeBiome(PrimaryBiomeID.Snow); // Example Person dislikes the snow.
-			NPC.Happiness.LoveBiome(ModContent.GetInstance<ExampleSurfaceBiome>().Type); // Example Person likes the Example Surface Biome
-			// NPCs
-			NPC.Happiness.HateNPC(NPCID.Demolitionist); // Hates living near the demolitionist.
-			NPC.Happiness.DislikeNPC(NPCID.Merchant); // Dislikes living near the merchant.
-			NPC.Happiness.LikeNPC(NPCID.Guide); // Likes living near the guide.
-			NPC.Happiness.LoveNPC(NPCID.Dryad); // Loves living near the dryad.
+			// NOTE: The following code uses chaining - a style that works due to the fact that the SetXAffection methods return the same NPCHappiness instance they're called on.
+			NPC.Happiness
+				.SetBiomeAffection<ForestBiome>(AffectionLevel.Like) // Example Person prefers the forest.
+				.SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike) // Example Person dislikes the snow.
+				.SetBiomeAffection<ExampleSurfaceBiome>(AffectionLevel.Love) // Example Person likes the Example Surface Biome
+				.SetNPCAffection(NPCID.Dryad, AffectionLevel.Love) // Loves living near the dryad.
+				.SetNPCAffection(NPCID.Guide, AffectionLevel.Like) // Likes living near the guide.
+				.SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike) // Dislikes living near the merchant.
+				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate) // Hates living near the demolitionist.
+			; // < Mind the semicolon!
 		}
 
 		public override void SetDefaults() {
@@ -216,7 +218,7 @@ namespace ExampleMod.Content.NPCs
 					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
 
 					Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(ModContent.ItemType<WaspNest>());
+					Main.LocalPlayer.QuickSpawnItem(new EntitySource_Gift(NPC), ModContent.ItemType<WaspNest>());
 
 					return;
 				}
