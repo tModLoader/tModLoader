@@ -6,7 +6,7 @@ using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	internal class StringInputElement : ConfigElement<string>
+	public class StringInputElement : ConfigElement<string>
 	{
 		public override void OnBind() {
 			base.OnBind();
