@@ -8,9 +8,9 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	internal class ListElement : CollectionElement
+	public class ListElement : CollectionElement
 	{
-		private Type listType;
+		protected Type listType;
 
 		protected override void PrepareTypes() {
 			listType = memberInfo.Type.GetGenericArguments()[0];
@@ -51,7 +51,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	class NestedUIList : UIList
+	public class NestedUIList : UIList
 	{
 		public NestedUIList() {
 			//OverflowHidden = false;
