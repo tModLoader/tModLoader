@@ -182,7 +182,7 @@
  			defDefense = defense;
  			defDamage = damage;
  			life = lifeMax;
-@@ -11049,6 +_,10 @@
+@@ -11049,6 +_,18 @@
  		}
  
  		public void AI() {
@@ -190,6 +190,14 @@
 +		}
 +
 +		public void VanillaAI() {
++			IEntitySource.PushFallback(thisEntitySourceCache);
++
++			VanillaAI_Inner();
++
++			IEntitySource.PopFallback();
++		}
++
++		private void VanillaAI_Inner() {
  			if (aiStyle == 0) {
  				if (Main.netMode != 1) {
  					for (int i = 0; i < 255; i++) {
@@ -824,7 +832,7 @@
  
  			if ((takenDamageMultiplier > 1f || Damage != 9999) && lifeMax > 1) {
  				if (friendly) {
-@@ -61453,7 +_,10 @@
+@@ -61453,7 +_,20 @@
  			}
  		}
  
@@ -833,6 +841,16 @@
 +			=> NPCLoader.HitEffect(this, effectSpawnSourceOverride ?? new EntitySource_HitEffect(this), hitDirection, dmg);
 +
 +		public void VanillaHitEffect(int hitDirection = 0, double dmg = 10.0, IEntitySource effectSpawnSourceOverride = null) {
++			var usedSource = effectSpawnSourceOverride ?? new EntitySource_HitEffect(this);
++
++			IEntitySource.PushFallback(thisEntitySourceCache);
++
++			VanillaHitEffect_Inner(hitDirection, dmg);
++
++			IEntitySource.PopFallback();
++		}
++
++		private void VanillaHitEffect_Inner(int hitDirection, double dmg) {
  			if (!active)
  				return;
  
@@ -854,6 +872,25 @@
  				return;
  
  			int num = FindBuffIndex(buffTypeToRemove);
+@@ -68775,9 +_,18 @@
+ 
+ 		public void UpdateNPC(int i) {
+ 			whoAmI = i;
++
+ 			if (!active)
+ 				return;
+ 
++			IEntitySource.PushFallback(thisEntitySourceCache);
++
++			UpdateNPC_Inner(i);
++
++			IEntitySource.PopFallback();
++		}
++
++		private void UpdateNPC_Inner(int i) {
+ 			if (offSetDelayTime > 0) {
+ 				netOffset *= 0f;
+ 			}
 @@ -68791,7 +_,7 @@
  				if (NPCID.Sets.NoMultiplayerSmoothingByType[type]) {
  					netOffset *= 0f;
