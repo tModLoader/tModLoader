@@ -9,7 +9,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class NPCDefinitionElement : DefinitionElement<NPCDefinition>
+	public class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 	{
 		protected override DefinitionOptionElement<NPCDefinition> CreateDefinitionOptionElement() => new NPCDefinitionOptionElement(Value, 0.5f);
 
@@ -46,7 +46,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinition>
+	public class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinition>
 	{
 		public NPCDefinitionOptionElement(NPCDefinition definition, float scale = .75f) : base(definition, scale) {
 		}
