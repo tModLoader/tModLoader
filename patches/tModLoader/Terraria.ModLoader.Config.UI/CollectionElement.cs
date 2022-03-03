@@ -11,7 +11,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	abstract class CollectionElement : ConfigElement
+	public abstract class CollectionElement : ConfigElement
 	{
 		protected object data;
 		protected UIElement dataListElement;
