@@ -824,14 +824,26 @@
  
  			if ((takenDamageMultiplier > 1f || Damage != 9999) && lifeMax > 1) {
  				if (friendly) {
-@@ -61454,6 +_,10 @@
+@@ -61453,7 +_,21 @@
+ 			}
  		}
  
- 		public void HitEffect(int hitDirection = 0, double dmg = 10.0) {
-+			NPCLoader.HitEffect(this, hitDirection, dmg);
++		//TML: Added a required hit IEntitySource parameter, vanilla uses fallback code.
++
+-		public void HitEffect(int hitDirection = 0, double dmg = 10.0) {
++		internal void HitEffect(int hitDirection = 0, double dmg = 10.0)
++			=> HitEffect(null, hitDirection, dmg);
++
++		public void HitEffect(IEntitySource hitSource, int hitDirection = 0, double dmg = 10.0) {
++			NPCLoader.HitEffect(this, hitSource ?? new EntitySource_Parent(this), hitDirection, dmg);
 +		}
 +
-+		public void VanillaHitEffect(int hitDirection = 0, double dmg = 10.0) {
++		internal void VanillaHitEffect(int hitDirection = 0, double dmg = 10.0)
++			=> VanillaHitEffect(null, hitDirection, dmg);
++
++		public void VanillaHitEffect(IEntitySource hitSource, int hitDirection = 0, double dmg = 10.0) {
++			hitSource ??= new EntitySource_Parent(this);
++
  			if (!active)
  				return;
  

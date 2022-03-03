@@ -205,7 +205,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="hitDirection"></param>
 		/// <param name="damage"></param>
-		public virtual void HitEffect(int hitDirection, double damage) {
+		public virtual void HitEffect(IEntitySource hitSource, int hitDirection, double damage) {
 		}
 
 		/// <summary>
