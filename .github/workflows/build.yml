@@ -255,7 +255,7 @@ jobs:
           echo ModloaderDir is: $ModloaderDir
           mkdir -p $ModloaderDir
           
-          export ExtraBuildModFlags="-ciprep \"Automatic update from GitHub: ${{ github.event.commits[0].message}}\"-publishedModFiles \"$(cygpath -w $publishedfolder)\" -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\"" #convert unix path to windows
+          export ExtraBuildModFlags="-ciprep \"Automatic update from GitHub: ${{ github.event.commits[0].message}}\" -publishedModFiles \"$(cygpath -w $publishedfolder)\" -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\"" #convert unix path to windows
           echo ExtraBuildModFlags is: $ExtraBuildModFlags
           
           echo ::group::Building ExampleMod
@@ -263,7 +263,7 @@ jobs:
           echo ::endgroup::
           
           mkdir -p artifacts/Mods
-          cp -r $ModloaderDir/Mods artifacts/Mods
+          cp -r $ModloaderDir/Mods/. artifacts/Mods
           
           echo ::group::Testing Example Mod build from "Mod Sources" dir  
           cp -r ExampleMod "$ModloaderDir/ModSources/ExampleMod"
