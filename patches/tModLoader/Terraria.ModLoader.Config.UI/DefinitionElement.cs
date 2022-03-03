@@ -11,7 +11,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	abstract class DefinitionElement<T> : ConfigElement<T> where T : EntityDefinition
+	public abstract class DefinitionElement<T> : ConfigElement<T> where T : EntityDefinition
 	{
 		protected bool updateNeeded;
 		protected bool selectionExpanded;
@@ -139,12 +139,12 @@ namespace Terraria.ModLoader.Config.UI
 		protected virtual void TweakDefinitionOptionElement(DefinitionOptionElement<T> optionElement) { }
 	}
 
-	class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
+	public class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
 	{
 		public static Texture2D defaultBackgroundTexture = Main.inventoryBack9Texture;
 		public Texture2D backgroundTexture = defaultBackgroundTexture;
 		public string tooltip;
-		internal float scale = .75f;
+		protected internal float scale = .75f;
 		protected bool unloaded;
 		public int type;
 		public T definition;
