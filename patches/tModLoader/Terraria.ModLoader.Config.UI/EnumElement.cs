@@ -4,12 +4,12 @@ using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class EnumElement : RangeElement
+	public class EnumElement : RangeElement
 	{
-		private Func<object> _GetValue;
-		private Func<object> _GetValueString;
-		private Func<int> _GetIndex;
-		private Action<int> _SetValue;
+		protected Func<object> _GetValue;
+		protected Func<object> _GetValueString;
+		protected Func<int> _GetIndex;
+		protected Action<int> _SetValue;
 		int max;
 		string[] valueStrings;
 
