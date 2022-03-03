@@ -9,7 +9,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class ProjectileDefinitionElement : DefinitionElement<ProjectileDefinition>
+	public class ProjectileDefinitionElement : DefinitionElement<ProjectileDefinition>
 	{
 		protected override DefinitionOptionElement<ProjectileDefinition> CreateDefinitionOptionElement() => new ProjectileDefinitionOptionElement(Value, 0.5f);
 
@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	internal class ProjectileDefinitionOptionElement : DefinitionOptionElement<ProjectileDefinition>
+	public class ProjectileDefinitionOptionElement : DefinitionOptionElement<ProjectileDefinition>
 	{
 		public ProjectileDefinitionOptionElement(ProjectileDefinition definition, float scale = .75f) : base(definition, scale) {
 		}
