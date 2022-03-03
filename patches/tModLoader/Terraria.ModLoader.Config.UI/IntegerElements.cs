@@ -9,7 +9,7 @@ using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	internal class IntInputElement : ConfigElement
+	public class IntInputElement : ConfigElement
 	{
 		public IList<int> intList;
 		public int min = 0;
@@ -81,7 +81,7 @@ namespace Terraria.ModLoader.Config.UI
 		protected virtual void SetValue(int value) => SetObject(Utils.Clamp(value, min, max));
 	}
 
-	internal class IntRangeElement : PrimitiveRangeElement<int>
+	public class IntRangeElement : PrimitiveRangeElement<int>
 	{
 		public override int NumberTicks => ((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
@@ -98,7 +98,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	internal class UIntElement : PrimitiveRangeElement<uint>
+	public class UIntElement : PrimitiveRangeElement<uint>
 	{
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
@@ -115,7 +115,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	internal class ByteElement : PrimitiveRangeElement<byte>
+	public class ByteElement : PrimitiveRangeElement<byte>
 	{
 		public override int NumberTicks => (int)((max - min) / increment) + 1;
 		public override float TickIncrement => (float)(increment) / (max - min);
