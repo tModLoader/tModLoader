@@ -9,7 +9,7 @@ using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	internal abstract class IDictionaryElementWrapper
+	public abstract class IDictionaryElementWrapper
 	{
 		//public UIModConfigDictionaryElementWrapper() { }
 		internal virtual object Key => null;
@@ -23,7 +23,7 @@ namespace Terraria.ModLoader.Config.UI
 		//}
 	}
 
-	internal class DictionaryElementWrapper<K, V> : IDictionaryElementWrapper
+	public class DictionaryElementWrapper<K, V> : IDictionaryElementWrapper
 	{
 		private IDictionary dictionary;
 		//private object _key;
@@ -63,8 +63,8 @@ namespace Terraria.ModLoader.Config.UI
 
 		//public K key;
 		//public V value;
-		internal override object Key => key;
-		internal override object Value => value;
+		public override object Key => key;
+		public override object Value => value;
 		//internal UIModConfigDictionaryItem parent;
 		public DictionaryElementWrapper(K key, V value, IDictionary dictionary) //, UIModConfigDictionaryItem parent)
 		{
@@ -84,11 +84,11 @@ namespace Terraria.ModLoader.Config.UI
 	//	}
 	//}
 
-	internal class DictionaryElement : CollectionElement
+	public class DictionaryElement : CollectionElement
 	{
-		internal Type keyType;
-		internal Type valueType;
-		internal UIText save;
+		protected internal Type keyType;
+		protected internal Type valueType;
+		protected internal UIText save;
 		public List<IDictionaryElementWrapper> dataWrapperList;
 
 		// These 2 hold the default value of the dictionary value, hence ValueValue
