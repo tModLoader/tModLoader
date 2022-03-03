@@ -2,7 +2,7 @@
 
 namespace Terraria.ModLoader.Config.UI
 {
-	internal class ArrayElement : CollectionElement
+	public class ArrayElement : CollectionElement
 	{
 		Type itemType;
 
