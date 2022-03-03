@@ -186,9 +186,7 @@ namespace ExampleMod.NPCs
 			}
 
 			if (Main.netMode != NetmodeID.MultiplayerClient) {
-				var entitySource = new EntitySource_Parent(NPC);
-				var npcSpawnSource = entitySource;
-				var deathSource = entitySource;
+				var npcSpawnSource = new EntitySource_Parent(NPC);
 
 				if (!tail && NPC.ai[0] == 0f) {
 					if (head) {
@@ -212,12 +210,12 @@ namespace ExampleMod.NPCs
 				}
 				if (!head && (!Main.npc[(int)NPC.ai[1]].active || Main.npc[(int)NPC.ai[1]].type != headType && Main.npc[(int)NPC.ai[1]].type != bodyType)) {
 					NPC.life = 0;
-					NPC.HitEffect(deathSource, 0, 10.0);
+					NPC.HitEffect(0, 10.0);
 					NPC.active = false;
 				}
 				if (!tail && (!Main.npc[(int)NPC.ai[0]].active || Main.npc[(int)NPC.ai[0]].type != bodyType && Main.npc[(int)NPC.ai[0]].type != tailType)) {
 					NPC.life = 0;
-					NPC.HitEffect(deathSource, 0, 10.0);
+					NPC.HitEffect(0, 10.0);
 					NPC.active = false;
 				}
 				if (!NPC.active && Main.netMode == NetmodeID.Server) {

@@ -333,12 +333,12 @@ namespace Terraria.ModLoader
 
 		private static HookList HookHitEffect = AddHook<Action<NPC, IEntitySource, int, double>>(g => g.HitEffect);
 
-		public static void HitEffect(NPC npc, IEntitySource hitSource, int hitDirection, double damage) {
-			npc.VanillaHitEffect(hitSource, hitDirection, damage);
-			npc.ModNPC?.HitEffect(hitSource, hitDirection, damage);
+		public static void HitEffect(NPC npc, IEntitySource effectSpawnSource, int hitDirection, double damage) {
+			npc.VanillaHitEffect(hitDirection, damage);
+			npc.ModNPC?.HitEffect(effectSpawnSource, hitDirection, damage);
 
 			foreach (GlobalNPC g in HookHitEffect.Enumerate(npc.globalNPCs)) {
-				g.HitEffect(npc, hitSource, hitDirection, damage);
+				g.HitEffect(npc, effectSpawnSource, hitDirection, damage);
 			}
 		}
 
