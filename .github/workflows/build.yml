@@ -242,7 +242,7 @@ jobs:
           steamapps=$(pwd)/ee
           steamapps=$(cygpath -w $steamapps)
           
-          ${{ steps.setupsteam.outputs.executable }} +force_install_dir \"$steamapps\" +login anonymous  \"+workshop_download_item 1281930 $publishid \" +quit
+          ${{ steps.setupsteam.outputs.executable }} +force_install_dir $steamapps +login anonymous +workshop_download_item 1281930 $publishid +quit
           echo "downloaded ExampleMod"
           
           publishedfolder=$steamapps/steamapps/workshop/content/1281930/$publishid
