@@ -1019,6 +1019,50 @@
  				cWings = dyeItem.dye;
  
  			if (armorItem.type == 934)
+@@ -6598,25 +_,27 @@
+ 			}
+ 		}
+ 
++		// TML:
++		// All turned internal to suggest getting familiar with source types instead.
++		// Some source types can have extra constructors added to simplify scenarios like some of these methods used to.
+-		public IEntitySource GetProjectileSource_Buff(int buffIndex) {
++		internal IEntitySource GetProjectileSource_Buff(int buffIndex) {
+ 			int buffId = buffType[buffIndex];
+ 			return new EntitySource_Buff(this, buffId, buffIndex);
+ 		}
+-
+-		public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
++		internal IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
+-		public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
++		internal IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
+-		public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
++		internal IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
+-		public IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_ByItemSourceId(this, itemSourceId);
++		internal IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_ByItemSourceId(this, itemSourceId);
+-		public IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => new EntitySource_ItemUse_WithAmmo(this, item, ammoItemId);
++		internal IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => new EntitySource_ItemUse_WithAmmo(this, item, ammoItemId);
+-		public IEntitySource GetProjectileSource_SetBonus(int projectileSourceId) => new EntitySource_ByProjectileSourceId(projectileSourceId);
++		internal IEntitySource GetProjectileSource_SetBonus(int projectileSourceId) => new EntitySource_ByProjectileSourceId(projectileSourceId);
+-		public IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => new EntitySource_OnHit_ByProjectileSourceID(this, victim, projectileSourceId);
++		internal IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => new EntitySource_OnHit_ByProjectileSourceID(this, victim, projectileSourceId);
+-		public IEntitySource GetProjectileSource_OnHurt(Entity attacker, int projectileSourceId) => new EntitySource_OnHit_ByProjectileSourceID(attacker, this, projectileSourceId);
++		internal IEntitySource GetProjectileSource_OnHurt(Entity attacker, int projectileSourceId) => new EntitySource_OnHit_ByProjectileSourceID(attacker, this, projectileSourceId);
+-		public IEntitySource GetProjectileSource_Accessory(Item item) => new EntitySource_ItemUse(this, item);
++		internal IEntitySource GetProjectileSource_Accessory(Item item) => new EntitySource_ItemUse(this, item);
+-		public IEntitySource GetProjectileSource_Misc(int projectileSourceId) => new EntitySource_ByProjectileSourceId(projectileSourceId);
++		internal IEntitySource GetProjectileSource_Misc(int projectileSourceId) => new EntitySource_ByProjectileSourceId(projectileSourceId);
+-		public IEntitySource GetProjectileSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
++		internal IEntitySource GetProjectileSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
+-		public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
++		internal IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
+-		public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
++		internal IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
+-		public IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
++		internal IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
+ 
+ 		public void UpdateBuffs(int i) {
+ 			if (soulDrain > 0 && whoAmI == Main.myPlayer)
 @@ -6625,13 +_,15 @@
  			if (Main.dontStarveWorld)
  				UpdateStarvingState(withEmote: true);

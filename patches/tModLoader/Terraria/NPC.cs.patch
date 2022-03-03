@@ -882,6 +882,32 @@
  			UpdateNPC_BuffSetFlags();
  			UpdateNPC_SoulDrainDebuff();
  			UpdateNPC_BuffClearExpiredBuffs();
+@@ -69075,15 +_,16 @@
+ 			}
+ 		}
+ 
++		//TML: All turned internal to suggest getting familiar with source types instead.
+-		public static IEntitySource GetSpawnSource_NPCRelease(int whoReleasedIt) => new EntitySource_Parent(Main.player[whoReleasedIt]);
++		internal static IEntitySource GetSpawnSource_NPCRelease(int whoReleasedIt) => new EntitySource_Parent(Main.player[whoReleasedIt]);
+-		public static IEntitySource GetSpawnSource_NPCCatch(int whoCatchedIt) => new EntitySource_Parent(Main.player[whoCatchedIt]);
++		internal static IEntitySource GetSpawnSource_NPCCatch(int whoCatchedIt) => new EntitySource_Parent(Main.player[whoCatchedIt]);
+-		public IEntitySource GetSpawnSource_NPCHurt() => new EntitySource_Parent(this);
++		internal IEntitySource GetSpawnSource_NPCHurt() => new EntitySource_Parent(this);
+-		public IEntitySource GetSpawnSource_ForProjectile() => new EntitySource_Parent(this);
++		internal IEntitySource GetSpawnSource_ForProjectile() => new EntitySource_Parent(this);
+-		public IEntitySource GetSpawnSourceForProjectileNPC() => new EntitySource_Parent(this);
++		internal IEntitySource GetSpawnSourceForProjectileNPC() => new EntitySource_Parent(this);
+-		public static IEntitySource GetSpawnSourceForNaturalSpawn() => new EntitySource_SpawnNPC();
++		internal static IEntitySource GetSpawnSourceForNaturalSpawn() => new EntitySource_SpawnNPC();
+-		public static IEntitySource GetSpawnSourceForTownSpawn() => new EntitySource_SpawnNPC();
++		internal static IEntitySource GetSpawnSourceForTownSpawn() => new EntitySource_SpawnNPC();
+-		public IEntitySource GetSpawnSourceForNPCFromNPCAI() => new EntitySource_Parent(this);
++		internal IEntitySource GetSpawnSourceForNPCFromNPCAI() => new EntitySource_Parent(this);
+-		public IEntitySource GetItemSource_Loot() => new EntitySource_Loot(this);
++		internal IEntitySource GetItemSource_Loot() => new EntitySource_Loot(this);
+ 
+ 		private void UpdateNPC_UpdateTrails() {
+ 			int num = NPCID.Sets.TrailingMode[type];
 @@ -69822,6 +_,7 @@
  					num = 5;
  			}
