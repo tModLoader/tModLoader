@@ -120,12 +120,12 @@ namespace Terraria.Social.Steam
 		}
 
 		public static void CiPublish(string modFolder) {
-			if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-publishedModFiles"))
+			if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-publishedmodfiles"))
 				return;
 
 			Console.WriteLine("Preparing Files for CI...");
 			Program.LaunchParameters.TryGetValue("-ciprep", out string changeNotes);
-			Program.LaunchParameters.TryGetValue("-publishedModFiles", out string publishedModFiles);
+			Program.LaunchParameters.TryGetValue("-publishedmodfiles", out string publishedModFiles);
 			var properties = BuildProperties.ReadBuildFile(modFolder);
 
 			// Prep some common file paths & info
@@ -135,7 +135,7 @@ namespace Terraria.Social.Steam
 			string manifest = Path.Combine(publishedModFiles, "workshop.json");
 			AWorkshopEntry.TryReadingManifest(manifest, out var steamInfo);
 
-			string modName = Path.GetFileNameWithoutExtension(modFolder);
+			string modName = Directory.GetParent(modFolder).Name;
 				
 			var modFile = new TmodFile(ModOrganizer.GetActiveTmodInRepo(publishedModFiles));
 
@@ -148,6 +148,8 @@ namespace Terraria.Social.Steam
 
 			// Prep for the publishing folder
 			string contentFolder = $"{publishFolder}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
+			if (!Directory.Exists(contentFolder))
+				Directory.CreateDirectory(contentFolder);
 
 			// Ensure the publish folder has all published information needed.
 			Utilities.FileUtilities.CopyFolder(publishedModFiles, publishFolder);
