@@ -5,11 +5,11 @@ using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class StringOptionElement : RangeElement
+	public class StringOptionElement : RangeElement
 	{
-		private Func<string> _GetValue;
-		private Func<int> _GetIndex;
-		private Action<int> _SetValue;
+		protected Func<string> _GetValue;
+		protected Func<int> _GetIndex;
+		protected Action<int> _SetValue;
 		string[] options;
 		public IList<string> stringList;
 
