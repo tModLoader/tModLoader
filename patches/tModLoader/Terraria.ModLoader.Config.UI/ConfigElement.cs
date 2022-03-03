@@ -164,7 +164,7 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	internal class HeaderElement : UIElement
+	public class HeaderElement : UIElement
 	{
 		string header;
 		public HeaderElement(string header) {
