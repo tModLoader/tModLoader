@@ -6,13 +6,13 @@ using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	internal abstract class ISetElementWrapper
+	public abstract class ISetElementWrapper
 	{
-		internal virtual object Value => null;
+		protected internal virtual object Value => null;
 	}
 
 	// TODO: Somehow prevent this class from displaying?
-	internal class SetElementWrapper<V> : ISetElementWrapper
+	public class SetElementWrapper<V> : ISetElementWrapper
 	{
 		private object set;
 
@@ -43,7 +43,7 @@ namespace Terraria.ModLoader.Config.UI
 				//}
 			}
 		}
-		internal override object Value => value;
+		protected internal override object Value => value;
 
 		public SetElementWrapper(V value, object set) {
 			this.set = set;
@@ -51,9 +51,9 @@ namespace Terraria.ModLoader.Config.UI
 		}
 	}
 
-	internal class SetElement : CollectionElement
+	public class SetElement : CollectionElement
 	{
-		private Type setType;
+		protected Type setType;
 		public List<ISetElementWrapper> dataWrapperList;
 
 		protected override void PrepareTypes() {
