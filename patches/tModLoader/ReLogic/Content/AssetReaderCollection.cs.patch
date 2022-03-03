@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/Content/AssetReaderCollection.cs
+--- src/TerrariaNetCore/ReLogic/Content/AssetReaderCollection.cs
 +++ src/tModLoader/ReLogic/Content/AssetReaderCollection.cs
 @@ -1,26 +_,23 @@
  using ReLogic.Content.Readers;

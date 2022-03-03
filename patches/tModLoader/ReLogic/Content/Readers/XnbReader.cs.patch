@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/Content/Readers/XnbReader.cs
+--- src/TerrariaNetCore/ReLogic/Content/Readers/XnbReader.cs
 +++ src/tModLoader/ReLogic/Content/Readers/XnbReader.cs
 @@ -1,12 +_,20 @@
  using Microsoft.Xna.Framework.Content;

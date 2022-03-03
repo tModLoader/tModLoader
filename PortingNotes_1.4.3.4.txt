@@ -1,0 +1,15 @@
+Notes:
+
+- Improve Terraria.Social.SocialAPI server-client conditionals on non-tml steps.
+- Some 'Id > 0 && Id < Count' things may need to be adjusted
+
+Weird removed patches:
+
+// Utils.cs
+- OLD		for (int m = 0; m < array3.Length && num4 + array3[m].Length <= num3; m++) {
+- NEW		for (int m = 0; m < array3.Length; m++) {
++ PATCH	for (int m = 0; num4 == 0 || m < array3.Length && num4 + array3[m].Length <= num3; m++) {
+
+Failed Patches:
+
+- None left!
