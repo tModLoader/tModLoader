@@ -357,7 +357,7 @@ jobs:
   deploy:
     needs: build
     # We push an alpha release only on push events to the 1.4 branch that build correctly
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4' || github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/1.4-stable)
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4' || github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/1.4-stable')
     name: Deploy to Steam Alpha Branch
     runs-on: ubuntu-latest
     strategy:
