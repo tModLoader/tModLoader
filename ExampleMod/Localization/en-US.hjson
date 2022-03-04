@@ -29,7 +29,7 @@ Mods: {
 		}
 		
 		NPCName: {
-			FlutterSlime: Flutter Slime
+			ExampleCustomAISlimeNPC: Flutter Slime
 			# Here we see that spaces in translation keys are not allowed. Any space will be replaced with an underscore.
 			Example_Person: Example Person
 		}
