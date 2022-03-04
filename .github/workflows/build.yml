@@ -274,6 +274,8 @@ jobs:
           unset ExtraBuildModFlags
           dotnet build ExampleMod.csproj --nologo
           echo ::endgroup::
+        env:
+          TMLVERSION: ${{ steps.version.outputs.new_version }}
           
       - name: Upload ExampleMod Build Artifact
         uses: actions/upload-artifact@v2
