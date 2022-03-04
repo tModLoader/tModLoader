@@ -1,4 +1,5 @@
 author = TML Team
+displayName = Example Mod
 homepage = https://tmodloader.net/
 hideCode = false
 hideResources = false

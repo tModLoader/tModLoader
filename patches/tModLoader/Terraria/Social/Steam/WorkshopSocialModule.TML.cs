@@ -126,8 +126,7 @@ namespace Terraria.Social.Steam
 			Console.WriteLine("Preparing Files for CI...");
 			Program.LaunchParameters.TryGetValue("-ciprep", out string changeNotes);
 			Program.LaunchParameters.TryGetValue("-publishedmodfiles", out string publishedModFiles);
-			var properties = BuildProperties.ReadBuildFile(modFolder);
-
+			
 			// Prep some common file paths & info
 			string publishFolder = $"{ModOrganizer.modPath}/Workshop";
 			string vdf = $"{ModOrganizer.modPath}/publish.vdf";
@@ -136,14 +135,21 @@ namespace Terraria.Social.Steam
 			AWorkshopEntry.TryReadingManifest(manifest, out var steamInfo);
 
 			string modName = Directory.GetParent(modFolder).Name;
-				
+
+			string newModPath = Path.Combine(ModOrganizer.modPath, $"{modName}.tmod");
+			var newModFile = new TmodFile(newModPath);
+
+			LocalMod newMod;
+			using (newModFile.Open())
+				newMod = new LocalMod(newModFile);
+
 			var modFile = new TmodFile(ModOrganizer.GetActiveTmodInRepo(publishedModFiles));
 
 			LocalMod mod;
 			using (modFile.Open())
 				mod = new LocalMod(modFile);
 
-			if (properties.version <= mod.properties.version)
+			if (newMod.properties.version <= mod.properties.version)
 				throw new Exception("Mod version not incremented. Publishing item blocked until mod version is incremented");
 
 			// Prep for the publishing folder
@@ -153,12 +159,13 @@ namespace Terraria.Social.Steam
 
 			// Ensure the publish folder has all published information needed.
 			Utilities.FileUtilities.CopyFolder(publishedModFiles, publishFolder);
-			File.Copy(Path.Combine(ModOrganizer.modPath, $"{modName}.tmod"), Path.Combine(contentFolder, $"{modName}.tmod"), true);
+			File.Copy(newModPath, Path.Combine(contentFolder, $"{modName}.tmod"), true);
 
 			// Cleanup Old Folders
 			ModOrganizer.CleanupOldPublish(publishFolder);
 
-			string descriptionFinal = "[quote=CI Autobuild (Don't Modify)]Version " + properties.version + " built for " + properties.buildVersion + "[/quote]" + properties.description;
+			string descriptionFinal = $"[quote=CI Autobuild (Don't Modify)]Version {newMod.properties.version} built for {newMod.properties.buildVersion} [/quote] {newMod.properties.description}";
+			Console.WriteLine($"Mod Version is: {newMod.properties.version}. tMod Version is: {BuildInfo.tMLVersion}");
 
 			// Make the publish.vdf file
 			string[] lines =

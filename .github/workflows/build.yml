@@ -250,8 +250,7 @@ jobs:
           echo $publishedfolder
           echo ::endgroup::
           
-          echo Adding build info to ExampleMod displayName
-          echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
+          echo Adding version info to ExampleMod
           echo "version = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
           
           #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
@@ -358,7 +357,7 @@ jobs:
   deploy:
     needs: build
     # We push an alpha release only on push events to the 1.4 branch that build correctly
-    if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4' || github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/1.4-stable)
     name: Deploy to Steam Alpha Branch
     runs-on: ubuntu-latest
     strategy:
@@ -422,14 +421,25 @@ jobs:
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
           
       - name: Attempt run_app_build_http 
-        if: steps.changed-files-patches.outputs.any_changed == 'true' && github.ref == 'refs/heads/1.4'
+        if: steps.changed-files-patches.outputs.any_changed == 'true'
         shell: bash
         run: |
           mkdir artifacts/shared
           echo pwd is: ${PWD}
           echo "Listing manifests directory"
           ls -alhR ./solutions/Manifests
-          #steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http ${GITHUB_WORKSPACE}/solutions/Manifests/app.vdf +quit
+          manifesto=${GITHUB_WORKSPACE}/solutions/Manifests
+          if [ ${{github.ref}} = 'refs/heads/1.4-stable' ] ; then
+            manifesto=$manifesto/stable.vdf
+          fi
+          if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
+            manifesto=$manifesto/preview.vdf
+          fi
+          if [ ${{github.ref}} = 'refs/heads/1.4' ] ; then
+            manifesto=$manifesto/app.vdf
+          fi
+          
+          #steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http $manifesto +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
