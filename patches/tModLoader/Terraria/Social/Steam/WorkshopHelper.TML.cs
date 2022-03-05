@@ -22,7 +22,7 @@ namespace Terraria.Social.Steam
 	public partial class WorkshopHelper
 	{
 		internal static string[] MetadataKeys = new string[7] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences" };
-		private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version (.*) built for (tModLoader v.*)\[/quote\]", RegexOptions.Compiled);
+		private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\] Version (.*) built for (tModLoader v.*)\[/quote\]", RegexOptions.Compiled);
 
 		public struct ItemInstallInfo
 		{

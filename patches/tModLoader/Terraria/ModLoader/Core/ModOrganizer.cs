@@ -26,7 +26,7 @@ namespace Terraria.ModLoader.Core
 		private static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
 		private static List<string> readFailures = new List<string>(); // TODO: Reflect these skipped Mods in the UI somehow.
 
-		private static WorkshopHelper.UGCBased.Downloader WorkshopFileFinder = new WorkshopHelper.UGCBased.Downloader();
+		internal static WorkshopHelper.UGCBased.Downloader WorkshopFileFinder = new WorkshopHelper.UGCBased.Downloader();
 
 		internal static LocalMod[] FindMods() {
 			Directory.CreateDirectory(ModLoader.ModPath);
@@ -326,6 +326,8 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
+		private static readonly Regex PublishFolderMetadata = new Regex(@"([0-9][0-9][0-9][0-9]*[.][0-9]*)");
+
 		internal static string GetActiveTmodInRepo(string repo) {
 			Version tmodVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
 			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
@@ -335,8 +337,7 @@ namespace Terraria.ModLoader.Core
 			string val = null;
 			Version currVersion = null;
 			foreach (string fileName in tmods) {
-				var regex = new Regex("([0-9][0-9][0-9][0-9]*[.][0-9]*)");
-				var match = regex.Match(fileName);
+				var match = PublishFolderMetadata.Match(fileName);
 
 				if (match.Success) {
 					Version testVers = new Version(match.Groups[1].Value);
@@ -365,14 +366,20 @@ namespace Terraria.ModLoader.Core
 			if (tmods.Length <= 2)
 				return;
 
+			File.Delete(FindOldest(repo));
+		}
+
+		internal static string FindOldest(string repo) {
+			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
+			if (tmods.Length == 1)
+				return tmods[0];
+
 			string val = null;
 			Version currVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
 			foreach (string fileName in tmods) {
-				var regex = new Regex(@"([/|\\][0-9][0-9][0-9][0-9]*[.][0-9]*[/|\\])");
-				var match = regex.Match(fileName);
+				var match = PublishFolderMetadata.Match(fileName);
 
 				if (match.Success) {
-					//GET FOLDER VERSION 
 					Version testVers = new Version(match.Groups[1].Value);
 					if (testVers >= currVersion) {
 						continue;
@@ -388,7 +395,7 @@ namespace Terraria.ModLoader.Core
 				}
 			}
 
-			File.Delete(val);
+			return val;
 		}
 	}
 }

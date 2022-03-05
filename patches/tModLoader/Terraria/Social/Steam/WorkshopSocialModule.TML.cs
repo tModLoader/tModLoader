@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
-using System.Diagnostics;
+using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
@@ -33,8 +33,7 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-			if (false && !BuildInfo.IsStable && !BuildInfo.IsPreview) {
-				//TODO: Need to find the existing translation for this.
+			if (!BuildInfo.IsStable && !BuildInfo.IsPreview) {
 				IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 				return false;
 			}
@@ -51,6 +50,9 @@ namespace Terraria.Social.Steam
 			var existing = WorkshopHelper.QueryHelper.FindModDownloadItem(buildData["name"]);
 			ulong currPublishID = 0;
 
+			string modSourceFolder = buildData["sourcesfolder"];
+			string workshopFolderPath = $"{modSourceFolder}/Workshop";
+
 			if (existing != null) {
 				ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(ulong.Parse(existing.PublishId));
 				var currID = Steamworks.SteamUser.GetSteamID();
@@ -60,7 +62,26 @@ namespace Terraria.Social.Steam
 					return false;
 				}
 
-				if (false && new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
+				workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(),$"{existing.PublishId}");
+
+				// Use the stable version of the mod for publishing metadata, not the preview version!
+				if (BuildInfo.IsPreview) {
+					string stable = ModOrganizer.FindOldest(workshopFolderPath);
+					if (!stable.Contains(".tmod"))
+						stable = Directory.GetFiles(stable, "*.tmod")[0];
+
+					LocalMod sMod;
+					var sModFile = new TmodFile(stable);
+					using (sModFile.Open())
+						sMod = new LocalMod(sModFile);
+
+					buildData["modloaderversion"] = $"tModLoader v{sMod.properties.buildVersion}";
+					buildData["version"] = sMod.properties.version.ToString();
+					buildData["modreferences"] = string.Join(", ", sMod.properties.modReferences.Select(x => x.mod));
+					buildData["modside"] = sMod.properties.side.ToFriendlyString();
+				}	
+
+				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
 					return false;
 				}
@@ -80,7 +101,6 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-
 			string[] usedTagsInternalNames = settings.GetUsedTagsInternalNames();
 			string workshopDeps = "";
 
@@ -94,11 +114,7 @@ namespace Terraria.Social.Steam
 			}
 
 			buildData["workshopdeps"] = workshopDeps;
-
-			string modSourceFolder = buildData["sourcesfolder"];
-
-			string contentFolderPath = $"{modSourceFolder}/Workshop/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
-			string workshopFolderPath = $"{modSourceFolder}/Workshop";
+			string contentFolderPath = $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
 			if (MakeTemporaryFolder(contentFolderPath)) {
 				string modPath = Path.Combine(contentFolderPath, modFile.Name + ".tmod");
@@ -126,7 +142,7 @@ namespace Terraria.Social.Steam
 			Console.WriteLine("Preparing Files for CI...");
 			Program.LaunchParameters.TryGetValue("-ciprep", out string changeNotes);
 			Program.LaunchParameters.TryGetValue("-publishedmodfiles", out string publishedModFiles);
-			
+
 			// Prep some common file paths & info
 			string publishFolder = $"{ModOrganizer.modPath}/Workshop";
 			string vdf = $"{ModOrganizer.modPath}/publish.vdf";
@@ -164,8 +180,18 @@ namespace Terraria.Social.Steam
 			// Cleanup Old Folders
 			ModOrganizer.CleanupOldPublish(publishFolder);
 
-			string descriptionFinal = $"[quote=CI Autobuild (Don't Modify)]Version {newMod.properties.version} built for {newMod.properties.buildVersion} [/quote] {newMod.properties.description}";
-			Console.WriteLine($"Mod Version is: {newMod.properties.version}. tMod Version is: {BuildInfo.tMLVersion}");
+			string stable = ModOrganizer.FindOldest(publishFolder);
+			if (!stable.Contains(".tmod"))
+				stable = Directory.GetFiles(stable, "*.tmod")[0];
+
+			LocalMod sMod;
+			var sModFile = new TmodFile(stable);
+			using (sModFile.Open())
+				sMod = new LocalMod(sModFile);
+
+			string descriptionFinal = $"[quote=CI Autobuild (Don't Modify)] Version {sMod.properties.version} built for {sMod.properties.buildVersion} " +
+				$"{sMod.properties.description}";
+			Console.WriteLine($"Built Mod Version is: {newMod.properties.version}. tMod Version is: {BuildInfo.tMLVersion}");
 
 			// Make the publish.vdf file
 			string[] lines =
