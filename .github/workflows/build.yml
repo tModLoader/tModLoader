@@ -441,7 +441,7 @@ jobs:
             manifesto=$manifesto/app.vdf
           fi
           
-          #steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http $manifesto +quit
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http $manifesto +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
@@ -475,7 +475,7 @@ jobs:
           cat publish.vdf
           echo workshop.json contents:
           cat artifacts/ExampleMod/Workshop/workshop.json
-          #steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${GITHUB_WORKSPACE}/publish.vdf" +quit
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${GITHUB_WORKSPACE}/publish.vdf" +quit
           echo publish.vdf contents:
           cat publish.vdf
           echo Done

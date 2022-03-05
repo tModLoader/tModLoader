@@ -189,7 +189,7 @@ namespace Terraria.Social.Steam
 			using (sModFile.Open())
 				sMod = new LocalMod(sModFile);
 
-			string descriptionFinal = $"[quote=CI Autobuild (Don't Modify)] Version {sMod.properties.version} built for {sMod.properties.buildVersion} " +
+			string descriptionFinal = $"[quote=CI Autobuild (Don't Modify)] Version {sMod.properties.version} built for tModLoader v{sMod.properties.buildVersion} " +
 				$"{sMod.properties.description}";
 			Console.WriteLine($"Built Mod Version is: {newMod.properties.version}. tMod Version is: {BuildInfo.tMLVersion}");
 
