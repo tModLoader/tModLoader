@@ -1,0 +1,23 @@
+--- src/TerrariaNetCore/Terraria/Localization/GameCulture.cs
++++ src/tModLoader/Terraria/Localization/GameCulture.cs
+@@ -53,6 +_,20 @@
+ 
+ 		public static GameCulture FromName(string name) => _legacyCultures.Values.SingleOrDefault((GameCulture culture) => culture.Name == name) ?? DefaultCulture;
+ 
++		public static GameCulture FromPath(string path) {
++			int dotIndex = path.LastIndexOf('.');
++			if (dotIndex >= 0)
++				path = path[..dotIndex];
++
++			foreach (string pathPart in path.Split("/")) {
++				GameCulture culture = _legacyCultures.Values.FirstOrDefault(culture => culture.Name == pathPart);
++				if (culture != null)
++					return culture;
++			}
++
++			return DefaultCulture;
++		}
++
+ 		static GameCulture() {
+ 			_NamedCultures = new Dictionary<CultureName, GameCulture> {
+ 				{ CultureName.English, new GameCulture("en-US", 1) },

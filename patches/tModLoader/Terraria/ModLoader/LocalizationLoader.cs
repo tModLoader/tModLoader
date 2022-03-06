@@ -215,7 +215,7 @@ namespace Terraria.ModLoader
 
 				string translationFileContents = streamReader.ReadToEnd();
 
-				var culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
+				var culture = GameCulture.FromPath(translationFile.Name);
 
 				// Parse HJSON and convert to standard JSON
 				string jsonString = HjsonValue.Parse(translationFileContents).ToString();
