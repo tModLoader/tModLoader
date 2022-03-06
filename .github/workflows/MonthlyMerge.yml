@@ -3,10 +3,11 @@ name: Monthly Update tModLoader
 # Controls when the action will run. 
 on:
   # This workflow runs on the first of every month at 1:23 AM UTC. The random time selection is to minimize getting delayed by similar concurrent monthly actions 
-  schedule:
-    - cron: '23 1 1 * *'
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  #schedule:
+  #  - cron: '23 1 1 * *'
+  # Runs when a release is made
+  release:
+    types: [published]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -14,17 +15,40 @@ jobs:
   MergeToStable:
     # The type of runner that the job will run on
     runs-on: windows-latest
-    #TODO: Need to replace below Line with a check against some sort of 'Dont merge' flag. Wont run for now
-    if: github.event_name == 'push'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+        - name: Check Versioning
+        id: version
+        shell: bash
+        run: |
+          echo "Attempting get version id"
+          version=$tags
+          echo "Version is: $version"
+          regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
+          if [[ $version =~ $regex ]] ; then
+            year="${BASH_REMATCH[1]}"
+            month="${BASH_REMATCH[2]}"
+            feature="${BASH_REMATCH[3]}"
+            patch="${BASH_REMATCH[4]}"
+          else
+            echo "Previous version '$version' is not a valid version"
+            exit 1
+          fi
+          echo "Checking if is a valid 1.4 release"
+          if [[ $year < 2022 ]] ; then
+             echo "Not a valid 1.4 version. Skipping"
+             exit 2
+          fi
+        env:
+          tags: ${{github.ref}}       
+        
         - name: Check out repo
           uses: actions/checkout@v2
           with:
             ref: 'refs/heads/1.3'
             persist-credentials: false
-            fetch-depth: 1
+            fetch-depth: 1        
         
         # There is a bug with this that requires the previous step to checkout a different branch then either of two specified
         # The below merger for sure won't work while this branch is ahead of 1.4, so can't fast forward to test.
@@ -40,11 +64,10 @@ jobs:
             
   # This workflow contains a single job called "build"
   MergeToPreview:
+    # Needs should be ensuring this doesn't run if the last job failed.
     needs: MergeToStable
     # The type of runner that the job will run on
     runs-on: windows-latest
-    #TODO: Need to replace below Line with a check against some sort of 'Dont merge' flag. Wont run for now
-    if: github.event_name == 'push'
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
