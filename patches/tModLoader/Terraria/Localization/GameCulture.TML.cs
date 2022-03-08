@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 
 namespace Terraria.Localization;
@@ -5,11 +6,11 @@ namespace Terraria.Localization;
 public partial class GameCulture
 {
 	public static GameCulture FromPath(string path) {
-		int dotIndex = path.LastIndexOf('.');
-		if (dotIndex >= 0)
-			path = path[..dotIndex];
+		path = Path.ChangeExtension(path, null);
 
-		foreach (string pathPart in path.Split("/")) {
+		string[] split = path.Split("/");
+		for (int index = split.Length - 1; index >= 0; index--) {
+			string pathPart = split[index];
 			GameCulture culture = _legacyCultures.Values.FirstOrDefault(culture => culture.Name == pathPart);
 			if (culture != null)
 				return culture;
