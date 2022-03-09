@@ -36,7 +36,7 @@ namespace Terraria.ModLoader
 		public static bool AlphaWelcomed;
 		public static bool ShowFirstLaunchWelcomeMessage;
 
-		public static string versionedName => (ModCompile.DeveloperMode || !BuildInfo.IsStable && !BuildInfo.IsPreview) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
+		public static string versionedName => (BuildInfo.Purpose != BuildInfo.BuildPurpose.Stable) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
 
 #if NETCORE
 		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (InstallVerifier.IsGoG ? "g" : "s") + "c";
@@ -374,7 +374,7 @@ namespace Terraria.ModLoader
 			if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
 				showMemoryEstimates = true;
 
-			if (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA || LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
+			if (LastLaunchedTModLoaderVersion < new Version(2020, 0, 0, 0)) {
 				ShowWhatsNew = true;
 				// TODO: Start retrieving what's new data from github here.
 			}

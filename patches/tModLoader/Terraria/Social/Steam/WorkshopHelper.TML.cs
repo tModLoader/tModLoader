@@ -22,7 +22,7 @@ namespace Terraria.Social.Steam
 	public partial class WorkshopHelper
 	{
 		internal static string[] MetadataKeys = new string[7] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences" };
-		private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\] Version (.*) built for (tModLoader v.*)\[/quote\]", RegexOptions.Compiled);
+		private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version (.*) built for (tModLoader v.*)\[/quote\]", RegexOptions.Compiled);
 
 		public struct ItemInstallInfo
 		{
@@ -588,8 +588,9 @@ namespace Terraria.Social.Steam
 						// Nominal string: [quote=GithubActions(Don't Modify)]Version #.#.#.# built for tModLoader v#.#.#.#[/quote]
 						Match match = MetadataInDescriptionFallbackRegex.Match(description);
 						if (match.Success) {
+							//TODO: This is tossing an exception and I have zero clue why
 							System.Version descriptionVersion = new System.Version(match.Groups[1].Value);
-							if (descriptionVersion > cVersion) {
+							if (false && descriptionVersion > cVersion) {
 								cVersion = descriptionVersion;
 								metadata["version"] = "v" + match.Groups[1].Value;
 								metadata["modloaderversion"] = match.Groups[2].Value;

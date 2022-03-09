@@ -230,9 +230,6 @@ namespace Terraria.ModLoader.Core
 						writer.Write("side");
 						writer.Write((byte)side);
 					}
-					if (!BuildInfo.IsStable) {
-						writer.Write("beta");
-					}
 
 					writer.Write("buildVersion");
 					writer.Write(buildVersion.ToString());
@@ -302,9 +299,6 @@ namespace Terraria.ModLoader.Core
 					}
 					if (tag == "side") {
 						properties.side = (ModSide)reader.ReadByte();
-					}
-					if (tag == "beta") {
-						properties.beta = true;
 					}
 					if (tag == "buildVersion") {
 						properties.buildVersion = new Version(reader.ReadString());

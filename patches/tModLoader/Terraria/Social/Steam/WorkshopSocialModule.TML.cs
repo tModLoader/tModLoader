@@ -33,7 +33,7 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-			if (!BuildInfo.IsStable && !BuildInfo.IsPreview) {
+			if (BuildInfo.IsDev) {
 				IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 				return false;
 			}
@@ -189,7 +189,7 @@ namespace Terraria.Social.Steam
 			using (sModFile.Open())
 				sMod = new LocalMod(sModFile);
 
-			string descriptionFinal = $"[quote=CI Autobuild (Don't Modify)] Version {sMod.properties.version} built for tModLoader v{sMod.properties.buildVersion} " +
+			string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version {sMod.properties.version} built for tModLoader v{sMod.properties.buildVersion}[/quote]" +
 				$"{sMod.properties.description}";
 			Console.WriteLine($"Built Mod Version is: {newMod.properties.version}. tMod Version is: {BuildInfo.tMLVersion}");
 

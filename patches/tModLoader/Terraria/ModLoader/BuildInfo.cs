@@ -26,6 +26,7 @@ namespace Terraria.ModLoader
 
 		public static bool IsStable => Purpose == BuildPurpose.Stable;
 		public static bool IsPreview => Purpose == BuildPurpose.Preview;
+		public static bool IsDev => Purpose == BuildPurpose.Dev;
 
 
 		// SteamApps.GetCurrentBetaName(out string betaName, 100) ? betaName :
