@@ -35,7 +35,7 @@ namespace Terraria.ModLoader
 		public static readonly string versionedNameDevFriendly;
 
 		static BuildInfo() {
-			var parts = BuildIdentifier.Substring(BuildIdentifier.IndexOf('+')+1).Split('-');
+			var parts = BuildIdentifier.Substring(BuildIdentifier.IndexOf('+')+1).Split('|');
 			tMLVersion = new Version(parts[0]);
 			if (parts.Length>=2) {
 				BranchName = parts[1];

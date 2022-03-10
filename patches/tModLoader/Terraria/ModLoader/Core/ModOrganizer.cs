@@ -326,7 +326,7 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		private static readonly Regex PublishFolderMetadata = new Regex(@"[/|\\]([0-9][0-9][0-9][0-9][.][0-9][0-9]*)[/|\\]");
+		private static readonly Regex PublishFolderMetadata = new Regex(@"[/|\\]([0-9]{4}[.][0-9]{1,2})[/|\\]");
 
 		internal static string GetActiveTmodInRepo(string repo) {
 			Version tmodVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
