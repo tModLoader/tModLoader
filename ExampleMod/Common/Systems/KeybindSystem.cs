@@ -6,7 +6,7 @@ namespace ExampleMod.Common.Systems
 	// See Common/Players/ExampleKeybindPlayer for usage.
 	public class KeybindSystem : ModSystem
 	{
-		public static ModKeybind RandomBuffKeybind;
+		public static ModKeybind RandomBuffKeybind { get; private set; }
 
 		public override void Load() {
 			// Registers a new keybind
