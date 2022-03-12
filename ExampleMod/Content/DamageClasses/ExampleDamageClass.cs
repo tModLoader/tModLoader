@@ -10,7 +10,7 @@ namespace ExampleMod.Content.DamageClasses
 		public override void SetStaticDefaults() {
 			// This makes weapons with this damage type have a tooltip of 'X example damage'.
 			// For examples of how localization works in this fashion, look in the Localization folder.
-			ClassName.SetDefault(Language.GetTextValue("Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
+			ClassName.SetDefault(Language.GetTextValue("Mods.ExampleMod.DamageClasses.ExampleDamageClass"));
 		}
 
 		protected override float CheckClassStatInheritance(DamageClass damageClass) {
