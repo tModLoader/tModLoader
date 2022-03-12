@@ -7,12 +7,6 @@ namespace ExampleMod.Content.DamageClasses
 {
 	public class ExampleDamageClass : DamageClass
 	{
-		public override void SetStaticDefaults() {
-			// This makes weapons with this damage type have a tooltip of 'X example damage'.
-			// For examples of how localization works in this fashion, look in the Localization folder.
-			ClassName.SetDefault(Language.GetTextValue("Mods.ExampleMod.DamageClasses.ExampleDamageClass"));
-		}
-
 		protected override float CheckClassStatInheritance(DamageClass damageClass) {
 			// This method lets you make your damage class benefit from other classes' stat bonuses by default, as well as universal stat bonuses.
 			// To briefly summarize the two nonstandard damage class names used by DamageClass:
