@@ -10,8 +10,8 @@ namespace Terraria.ModLoader
 		internal static bool[,] countsAs;
 
 		internal static readonly List<DamageClass> DamageClasses = new List<DamageClass>() {
+			DamageClass.Default,
 			DamageClass.Generic,
-			DamageClass.NoScaling,
 			DamageClass.Melee,
 			DamageClass.Ranged,
 			DamageClass.Magic,

@@ -6,9 +6,9 @@ namespace Terraria.ModLoader
 {
 	public static class CombinedHooks
 	{
-		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage, ref float flat) {
-			ItemLoader.ModifyWeaponDamage(item, player, ref damage, ref flat);
-			PlayerLoader.ModifyWeaponDamage(player, item, ref damage, ref flat);
+		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage) {
+			ItemLoader.ModifyWeaponDamage(item, player, ref damage);
+			PlayerLoader.ModifyWeaponDamage(player, item, ref damage);
 		}
 
 		public static void ModifyWeaponCrit(Player player, Item item, ref int crit) {
@@ -16,9 +16,9 @@ namespace Terraria.ModLoader
 			PlayerLoader.ModifyWeaponCrit(player, item, ref crit);
 		}
 
-		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback, ref float flat) {
-			ItemLoader.ModifyWeaponKnockback(item, player, ref knockback, ref flat);
-			PlayerLoader.ModifyWeaponKnockback(player, item, ref knockback, ref flat);
+		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback) {
+			ItemLoader.ModifyWeaponKnockback(item, player, ref knockback);
+			PlayerLoader.ModifyWeaponKnockback(player, item, ref knockback);
 		}
 
 		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {

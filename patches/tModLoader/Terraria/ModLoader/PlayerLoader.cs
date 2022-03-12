@@ -494,17 +494,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat);
+		private delegate void DelegateModifyWeaponDamage(Item item, ref StatModifier damage);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage, ref float flat) {
+		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage) {
 			if (item.IsAir)
 				return;
 
 			foreach (int index in HookModifyWeaponDamage.arr) {
-				player.modPlayers[index].ModifyWeaponDamage(item, ref damage, ref flat);
+				player.modPlayers[index].ModifyWeaponDamage(item, ref damage);
 			}
 		}
 
@@ -516,15 +516,15 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponKnockback(Item item, ref StatModifier knockback, ref float flat);
+		private delegate void DelegateModifyWeaponKnockback(Item item, ref StatModifier knockback);
 		private static HookList HookModifyWeaponKnockback = AddHook<DelegateModifyWeaponKnockback>(p => p.ModifyWeaponKnockback);
 
-		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback, ref float flat) {
+		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback) {
 			if (item.IsAir)
 				return;
 
 			foreach (int index in HookModifyWeaponKnockback.arr) {
-				player.modPlayers[index].ModifyWeaponKnockback(item, ref knockback, ref flat);
+				player.modPlayers[index].ModifyWeaponKnockback(item, ref knockback);
 			}
 		}
 

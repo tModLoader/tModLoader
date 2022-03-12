@@ -1663,9 +1663,10 @@
  				numLines++;
  			}
  			else {
- 				if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905))) {
+-				if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905))) {
 -					float num = 5E-06f;
 -					int damage = item.damage;
++				if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905)) && item.DamageType.ShowStatTooltipLine(player[myPlayer], "Damage")) {
 +					LocalizedText tip;
 +					if (item.DamageType != null) {
 +						tip = new LocalizedText("", " "+item.DamageType.DisplayName);
@@ -1692,28 +1693,33 @@
  					if (item.melee) {
  						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
  						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
-@@ -15264,6 +_,14 @@
+@@ -15264,8 +_,15 @@
  						toolTipLine[numLines] = num5 + Lang.tip[5].Value;
  						numLines++;
  					}
 +					*/
-+					// TODO: make this not inherently exclude summons. minions should be allowed to crit in the right circumstances, too
-+					if (!item.summon) {
++					if (item.DamageType.AllowStandardCrits && item.DamageType.ShowStatTooltipLine(player[myPlayer], "CritChance")) {
 +						int crit = player[myPlayer].GetWeaponCrit(item);
 +						toolTipLine[numLines] = crit + Lang.tip[5].Value;
 +						toolTipNames[numLines] = "CritChance";
 +						numLines++;
 +					}
  
- 					if (item.useStyle != 0 && !item.summon) {
+-					if (item.useStyle != 0 && !item.summon) {
++					if (item.useStyle != 0 && item.DamageType.ShowStatTooltipLine(player[myPlayer], "Speed")) {
  						if (item.useAnimation <= 8)
-@@ -15283,10 +_,13 @@
+ 							toolTipLine[numLines] = Lang.tip[6].Value;
+ 						else if (item.useAnimation <= 20)
+@@ -15283,10 +_,16 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
  
 +						toolTipNames[numLines] = "Speed";
  						numLines++;
  					}
++
++					if (!item.DamageType.ShowStatTooltipLine(player[myPlayer], "Knockback"))
++						goto noKnockbackLine;
  
  					float num6 = item.knockBack;
 +					num6 = player[myPlayer].GetWeaponKnockback(item, num6);
@@ -1731,7 +1737,7 @@
  					if (num6 == 0f)
  						toolTipLine[numLines] = Lang.tip[14].Value;
  					else if ((double)num6 <= 1.5)
-@@ -15315,67 +_,80 @@
+@@ -15315,67 +_,81 @@
  					else
  						toolTipLine[numLines] = Lang.tip[22].Value;
  
@@ -1739,6 +1745,7 @@
  					numLines++;
  				}
  
++				noKnockbackLine:
  				if (item.fishingPole > 0) {
  					toolTipLine[numLines] = Language.GetTextValue("GameUI.PrecentFishingPower", item.fishingPole);
 +					toolTipNames[numLines] = "FishingPower";

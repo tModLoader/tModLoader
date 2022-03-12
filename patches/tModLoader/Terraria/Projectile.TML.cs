@@ -14,16 +14,84 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalProjectile>> Globals => new RefReadOnlyArray<Instanced<GlobalProjectile>>(globalProjectiles);
 
+		/// <summary>
+		/// Spawns a projectile based on the supplied parameters.
+		/// </summary>
+		/// <param name="spawnSource"></param>
+		/// <param name="position"></param>
+		/// <param name="velocity"></param>
+		/// <param name="type"></param>
+		/// <param name="damage"></param>
+		/// <param name="knockback"></param>
+		/// <param name="owner"></param>
+		/// <param name="ai0"></param>
+		/// <param name="ai1"></param>
+		/// <returns>The projectile spawned as a result of the method.</returns>
+		// TO-DO: properly document what the hell spawnSource actually means both here and next to the actual methods so that the average modder can understand the parameter
 		public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = 255, float ai0 = 0f, float ai1 = 0f)
 			=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1)];
 
-		private DamageClass _damageClass = DamageClass.Generic;
+		private DamageClass _damageClass = DamageClass.Default;
 		/// <summary>
-		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance&lt;T&gt;() for custom damage types.
+		/// The damage type assigned to this projectile, represented as a DamageClass.
+		/// Leave blank or use DamageClass.Default to prevent damage type scaling of any kind for this projectile.
+		/// Use DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing for vanilla damage types.
+		/// Refer to ExampleMod for more information on how to create and use your own damage types.
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;
 			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
+		}
+
+		private int _armorPenetration = 0;
+		/// <summary>
+		/// The number of defense points that this projectile can ignore on its own. Cannot be set to negative values. Defaults to 0.
+		/// On spawn, if this projectile was fired frrom a weapon, this value has the total armor penetration of the weapon that made the projectile added to itself.
+		/// </summary>
+		public int ArmorPenetration {
+			get => _armorPenetration;
+			set {
+				if (value < 0)
+					throw new Exception("A projectile's armor penetration value cannot be set below 0.");
+				else
+					_armorPenetration = value;
+			}
+		}
+
+		private int _crit = 0;
+		/// <summary>
+		/// The critical strike chance modifier of this projectile. Cannot be set to negative values. Defaults to 0.
+		/// On spawn, if this projectile was fired frrom a weapon, this value has the total critical strike chance of the weapon that made the projectile added to itself.
+		/// </summary>
+		public int CritChance {
+			get => _crit;
+			set {
+				if (value < 0)
+					throw new Exception("A projectile's critical strike chance cannot be set below 0.");
+				else
+					_crit = value;
+			}
+		}
+
+		private static void HandlePlayerStatModifiers(IEntitySource spawnSource, Projectile projectile) {
+			if (spawnSource is null || (!(spawnSource is EntitySource_ItemUse) && !(spawnSource is EntitySource_ItemUse_WithAmmo)))
+				return;
+
+			if (spawnSource is EntitySource_ItemUse) {
+				EntitySource_ItemUse actualSpawnSource = spawnSource as EntitySource_ItemUse;
+				if (actualSpawnSource.Entity is not Player)
+					return;
+				projectile.CritChance += (actualSpawnSource.Entity as Player).GetWeaponCrit(actualSpawnSource.Item);
+				projectile.ArmorPenetration += (actualSpawnSource.Entity as Player).GetWeaponArmorPenetration(actualSpawnSource.Item);
+			}
+			else
+			{
+				EntitySource_ItemUse_WithAmmo actualSpawnSource = spawnSource as EntitySource_ItemUse_WithAmmo;
+				if (actualSpawnSource.Entity is not Player)
+					return;
+				projectile.CritChance += (actualSpawnSource.Entity as Player).GetWeaponCrit(actualSpawnSource.Item);
+				projectile.ArmorPenetration += (actualSpawnSource.Entity as Player).GetWeaponArmorPenetration(actualSpawnSource.Item);
+			}
 		}
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
@@ -47,6 +115,10 @@ namespace Terraria
 		public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
 			=> GlobalType.TryGetGlobal<GlobalProjectile, T>(globalProjectiles, baseInstance, out result);
 
-		public bool CountsAsClass(DamageClass damageClass) => DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+		public bool CountsAsClass<T>() where T : DamageClass
+			=> CountsAsClass(ModContent.GetInstance<T>());
+
+		public bool CountsAsClass(DamageClass damageClass)
+			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 	}
 }

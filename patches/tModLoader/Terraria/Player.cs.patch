@@ -85,7 +85,16 @@
  		public int[] buffType = new int[22];
  		public int[] buffTime = new int[22];
  		public bool[] buffImmune = new bool[338];
-@@ -1080,22 +_,25 @@
+@@ -872,7 +_,7 @@
+ 		public int golferScoreAccumulated;
+ 		public int bartenderQuestLog;
+ 		public bool downedDD2EventAnyDifficulty;
+-		public int armorPenetration;
++		internal ref int armorPenetration => ref GetArmorPenetration(DamageClass.Generic);
+ 		public int statDefense;
+ 		public int statLifeMax = 100;
+ 		public int statLifeMax2 = 100;
+@@ -1080,22 +_,27 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
  		public bool JustDroppedAnItem;
@@ -95,6 +104,7 @@
 -		public float meleeDamage = 1f;
 -		public float magicDamage = 1f;
 -		public float rangedDamage = 1f;
++		/*
  		public int meleeAddDamage;
  		public int rangedAddDamage;
  		public int magicAddDamage;
@@ -103,6 +113,7 @@
 -		public float arrowDamage = 1f;
 -		public float rocketDamage = 1f;
 -		public float minionDamage = 1f;
++		*/
 +		internal ref int allCrit => ref GetCritChance(DamageClass.Generic);
 +		internal ref int meleeCrit => ref GetCritChance(DamageClass.Melee);
 +		internal ref int magicCrit => ref GetCritChance(DamageClass.Magic);
@@ -111,14 +122,14 @@
 +		internal ref StatModifier meleeDamage => ref GetDamage(DamageClass.Melee);
 +		internal ref StatModifier magicDamage => ref GetDamage(DamageClass.Magic);
 +		internal ref StatModifier rangedDamage => ref GetDamage(DamageClass.Ranged);
-+		public StatModifier bulletDamage = StatModifier.One;
-+		public StatModifier arrowDamage = StatModifier.One;
-+		public StatModifier rocketDamage = StatModifier.One;
++		public StatModifier bulletDamage = StatModifier.Default;
++		public StatModifier arrowDamage = StatModifier.Default;
++		public StatModifier rocketDamage = StatModifier.Default;
 +		internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +		internal ref StatModifier allKB => ref GetKnockback(DamageClass.Generic);
  		public float minionKB;
 -		public float meleeSpeed = 1f;
-+		public float meleeSpeed;
++		internal ref StatModifier meleeSpeed => ref GetAttackSpeed(DamageClass.Melee);
  		public float moveSpeed = 1f;
  		public float pickSpeed = 1f;
  		public float wallSpeed = 1f;
@@ -196,7 +207,7 @@
  		}
  
  		public void SetDummyItemTime(int frames) {
-@@ -2114,39 +_,41 @@
+@@ -2114,39 +_,43 @@
  			itemTimeMax = frames + 1;
  		}
  
@@ -219,6 +230,7 @@
  
 -		private void ApplyItemAnimation(Item sItem) {
 +		public void ApplyItemAnimation(Item sItem) {
++			/*
  			if (sItem.melee) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * meleeSpeed));
 +				ApplyItemAnimation(sItem, meleeSpeed);
@@ -230,6 +242,7 @@
 +				ApplyItemAnimation(sItem, meleeSpeed * whipUseTimeMultiplier);
  				return;
  			}
++			*/
  
  			if (sItem.createTile >= 0) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * tileSpeed));
@@ -245,7 +258,7 @@
  
 -			SetItemAnimation(sItem.useAnimation);
 -			reuseDelay = sItem.reuseDelay;
-+			ApplyItemAnimation(sItem, 1f);
++			ApplyItemAnimation(sItem, 1f / GetWeaponAttackSpeed(sItem));
  		}
  
  		public bool InOpposingTeam(Player otherPlayer) {
@@ -1036,6 +1049,15 @@
  				if (buffType[j] == 1) {
  					lavaImmune = true;
  					fireWalk = true;
+@@ -6646,7 +_,7 @@
+ 					manaRegenBonus += 2;
+ 				}
+ 				else if (buffType[j] == 159 && inventory[selectedItem].melee) {
+-					armorPenetration = 12;
++					GetArmorPenetration(DamageClass.Melee) += 12;
+ 				}
+ 				else if (buffType[j] == 192) {
+ 					pickSpeed -= 0.2f;
 @@ -6654,9 +_,12 @@
  				}
  				else if (buffType[j] == 321) {
@@ -1283,8 +1305,12 @@
  					continue;
  
  				int type2 = armor[k].type;
-@@ -8888,6 +_,9 @@
- 					armorPenetration += 5;
+@@ -8885,9 +_,12 @@
+ 				}
+ 
+ 				if (armor[k].type == 3212)
+-					armorPenetration += 5;
++					GetArmorPenetration(DamageClass.Generic) += 5;
  
  				if (armor[k].type == 2277) {
 +					allDamage += 0.05f;
@@ -1717,6 +1743,15 @@
  				return;
  
  			if (currentItem.type == 3810 || currentItem.type == 3809 || currentItem.type == 3812 || currentItem.type == 3811)
+@@ -9974,7 +_,7 @@
+ 					break;
+ 				case 4007:
+ 					honeyCombItem = currentItem;
+-					armorPenetration += 5;
++					GetArmorPenetration(DamageClass.Generic) += 5;
+ 					break;
+ 				case 4341:
+ 					portableStoolInfo.SetStats(26, 26, 26);
 @@ -9999,6 +_,9 @@
  
  			if (currentItem.type == 3015) {
@@ -1907,7 +1942,16 @@
  							if (buffType[num10] >= 170 && buffType[num10] <= 171)
  								DelBuff(num10);
  						}
-@@ -11672,6 +_,8 @@
+@@ -11666,12 +_,15 @@
+ 				setBonus = Language.GetTextValue("ArmorSetBonus.ObsidianOutlaw");
+ 				minionDamage += 0.15f;
+ 				whipRangeMultiplier += 0.5f;
+-				float num17 = 1.35f;
++				// float num17 = 1.35f;
+-				float num18 = 1f / num17;
++				// float num18 = 1f / num17;
++				float num18 = 1.35f;
+ 				whipUseTimeMultiplier *= num18;
  			}
  
  			ApplyArmorSoundAndDustChanges();
@@ -2087,11 +2131,22 @@
  
  			if (torchLuck < 0f)
  				torchLuck = 0f;
-@@ -13063,6 +_,9 @@
+@@ -13052,7 +_,7 @@
+ 			arcticDivingGear = false;
+ 			noBuilding = false;
+ 			strongBees = false;
+-			armorPenetration = 0;
++			// armorPenetration = 0;
+ 			shroomiteStealth = false;
+ 			statDefense = 0;
+ 			accWatch = 0;
+@@ -13062,7 +_,10 @@
+ 			canFloatInWater = false;
  			lifeRegen = 0;
  			manaCost = 1f;
- 			meleeSpeed = 1f;
-+			allDamage = StatModifier.One;
+-			meleeSpeed = 1f;
++			// meleeSpeed = 1f;
++			allDamage = StatModifier.Default;
 +			allCrit = 4;
 +			/* individual class damage handled by ResetDamageClassData
  			meleeDamage = 1f;
@@ -2104,7 +2159,7 @@
 +			*/
  			hasFootball = false;
  			drawingFootball = false;
-+			allKB = StatModifier.One;
++			allKB = StatModifier.Default;
  			minionKB = 0f;
  			moveSpeed = 1f;
  			boneArmor = false;
@@ -2112,9 +2167,9 @@
  			ammoCost75 = false;
  			manaRegenBuff = false;
  			hasCreditsSceneMusicBox = false;
-+			arrowDamage = StatModifier.One;
-+			bulletDamage = StatModifier.One;
-+			rocketDamage = StatModifier.One;
++			arrowDamage = StatModifier.Default;
++			bulletDamage = StatModifier.Default;
++			rocketDamage = StatModifier.Default;
 +			/*
  			arrowDamage = 1f;
  			bulletDamage = 1f;
@@ -2556,10 +2611,35 @@
  					aggro -= (int)((1f - stealth) * 1200f);
  					accRunSpeed *= 0.3f;
  					maxRunSpeed *= 0.3f;
-@@ -18508,6 +_,7 @@
+@@ -18455,15 +_,19 @@
+ 			if (manaSick)
+ 				magicDamage *= 1f - manaSickReduction;
+ 
++			/*
+ 			float num32 = meleeSpeed - 1f;
+ 			num32 *= ItemID.Sets.BonusMeleeSpeedMultiplier[inventory[selectedItem].type];
+ 			meleeSpeed = 1f + num32;
++			*/
++			meleeSpeed = new StatModifier(1 + ((meleeSpeed.Additive - 1) * ItemID.Sets.BonusMeleeSpeedMultiplier[inventory[selectedItem].type]), meleeSpeed.Multiplicative);
+ 			if ((double)pickSpeed < 0.3)
+ 				pickSpeed = 0.3f;
+-
++			// tML: no longer capped for consistency with other attack speed modifiers
++			/*
+ 			if (meleeSpeed > 3f)
+ 				meleeSpeed = 3f;
+-
++			*/
+ 			if (tileSpeed > 3f)
+ 				tileSpeed = 3f;
+ 
+@@ -18507,7 +_,9 @@
+ 				}
  			}
  
- 			meleeSpeed = 1f / meleeSpeed;
++			// tML: no longer set to reciprocal for consistency with other attack speed modifiers
+-			meleeSpeed = 1f / meleeSpeed;
++			// meleeSpeed = 1f / meleeSpeed;
 +			PlayerLoader.PostUpdateMiscEffects(this);
  			UpdateLifeRegen();
  			soulDrain = 0;
@@ -3977,7 +4057,7 @@
  							int num = originalDamage;
  							bool flag = false;
  							int weaponCrit = GetWeaponCrit(sItem);
-@@ -31194,6 +_,11 @@
+@@ -31194,15 +_,25 @@
  							}
  
  							int num6 = Main.DamageVar(num, luck);
@@ -3989,7 +4069,11 @@
  							StatusToNPC(sItem.type, i);
  							if (Main.npc[i].life > 5)
  								OnHit(Main.npc[i].Center.X, Main.npc[i].Center.Y, Main.npc[i]);
-@@ -31203,6 +_,11 @@
+ 
+-							if (armorPenetration > 0)
++							if (GetWeaponArmorPenetration(sItem) > 0)
+-								num6 += Main.npc[i].checkArmorPenetration(armorPenetration);
++								num6 += Main.npc[i].checkArmorPenetration(GetWeaponArmorPenetration(sItem));
  
  							NPCKillAttempt attempt = new NPCKillAttempt(Main.npc[i]);
  							int dmgDone = (int)Main.npc[i].StrikeNPC(num6, knockBack, direction, flag);
@@ -4113,7 +4197,7 @@
  				if (sItem.stack <= 0)
  					sItem.SetDefaults();
  			}
-@@ -33081,6 +_,9 @@
+@@ -33081,16 +_,21 @@
  		}
  
  		private void ItemCheck_Shoot(int i, Item sItem, int weaponDamage) {
@@ -4123,7 +4207,10 @@
  			int projToShoot = sItem.shoot;
  			float speed = sItem.shootSpeed;
  			int damage = sItem.damage;
-@@ -33090,7 +_,9 @@
+ 			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
+-				speed /= meleeSpeed;
++				speed *= meleeSpeed; // tML: changed from division to multiplication since meleeSpeed is no longer set to reciprocal
+ 
  			bool canShoot = false;
  			int Damage = weaponDamage;
  			float KnockBack = sItem.knockBack;
@@ -4397,11 +4484,11 @@
 +			*/
 +
 +			// implement minionKB as 'base damage'
-+			KnockBack += minionKB * sItem.DamageType.GetCachedBenefitFrom(DamageClass.Summon);
++			KnockBack += minionKB * sItem.DamageType.CheckCachedClassStatInheritance(DamageClass.Summon);
 +
-+			StatModifier kbModifier = StatModifier.One;
++			StatModifier kbModifier = StatModifier.Default;
 +			var currentModifiers = damageData;
-+			var scalings = sItem.DamageType.benefitsCache;
++			var scalings = sItem.DamageType.statInheritanceCache;
 +			for (int i = 0; i < currentModifiers.Length; i++) {
 +				kbModifier = kbModifier.CombineWith(currentModifiers[i].knockback.Scale(scalings[i]));
 +			}
@@ -4424,7 +4511,7 @@
 +
 +			int crit = sItem.crit;
 +			var currentModifiers = damageData;
-+			var scalings = sItem.DamageType.benefitsCache;
++			var scalings = sItem.DamageType.statInheritanceCache;
 +			for (int i = 0; i < currentModifiers.Length; i++) {
 +				crit += (int)(currentModifiers[i].critChance * scalings[i]);
 +			}
@@ -4444,9 +4531,9 @@
  			return num;
 +			*/
 +
-+			StatModifier damage = StatModifier.One;
++			StatModifier damage = StatModifier.Default;
 +			var currentModifiers = damageData;
-+			float[] scalings = sItem.DamageType.benefitsCache;
++			float[] scalings = sItem.DamageType.statInheritanceCache;
 +
 +			for (int i = 0; i < currentModifiers.Length; i++) {
 +				damage = damage.CombineWith(currentModifiers[i].damage.Scale(scalings[i]));
@@ -4462,16 +4549,16 @@
 +			if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
 +				damage = damage.CombineWith(rocketDamage);
 +
-+			float flat = 0f;
-+
 +			//TODO: Add flat damage to StatModifier?
++			/*
 +			flat += meleeAddDamage * sItem.DamageType.benefitsCache[DamageClass.Melee.Type];
 +			flat += rangedAddDamage * sItem.DamageType.benefitsCache[DamageClass.Ranged.Type];
 +			flat += magicAddDamage * sItem.DamageType.benefitsCache[DamageClass.Magic.Type];
 +			flat += minionAddDamage * sItem.DamageType.benefitsCache[DamageClass.Summon.Type];
++			*/
 +
-+			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage, ref flat);
-+			int damageNum = (int)((sItem.damage * (float)damage) + flat);
++			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage);
++			int damageNum = (int)(sItem.damage * (float)damage);
 +			return Math.Max(0, damageNum);
  		}
  
