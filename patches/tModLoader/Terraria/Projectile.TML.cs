@@ -59,6 +59,13 @@ namespace Terraria
 			}
 		}
 
+		/* tML:
+		this method is used to set the critical strike chance of a projectile based on the environment in which it was fired
+		this critical strike chance is then stored on the projectile and checked against for all critical strike calculations
+		this, alongside a number of other changes, is part of a massive list of fixes to critical strike chance made by tML
+
+		- thomas
+		*/
 		private static void HandlePlayerStatModifiers(IEntitySource spawnSource, Projectile projectile) {
 			if (spawnSource is null || (!(spawnSource is EntitySource_ItemUse) && !(spawnSource is EntitySource_ItemUse_WithAmmo)))
 				return;
