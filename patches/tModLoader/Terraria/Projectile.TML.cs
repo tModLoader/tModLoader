@@ -14,20 +14,6 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalProjectile>> Globals => new RefReadOnlyArray<Instanced<GlobalProjectile>>(globalProjectiles);
 
-		/// <summary>
-		/// Spawns a projectile based on the supplied parameters.
-		/// </summary>
-		/// <param name="spawnSource"></param>
-		/// <param name="position"></param>
-		/// <param name="velocity"></param>
-		/// <param name="type"></param>
-		/// <param name="damage"></param>
-		/// <param name="knockback"></param>
-		/// <param name="owner"></param>
-		/// <param name="ai0"></param>
-		/// <param name="ai1"></param>
-		/// <returns>The projectile spawned as a result of the method.</returns>
-		// TO-DO: properly document what the hell spawnSource actually means both here and next to the actual methods so that the average modder can understand the parameter
 		public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = 255, float ai0 = 0f, float ai1 = 0f)
 			=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1)];
 

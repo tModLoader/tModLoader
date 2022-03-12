@@ -185,8 +185,6 @@ namespace Terraria
 				return ref damageData[damageClass.Type].attackSpeed;
 		}
 
-		// TO-DO: potentially add ModifyWeaponXYZ hooks for the following?
-
 		/// <summary>
 		/// Calculates the armor penetration value of the item in question for this player.
 		/// </summary>

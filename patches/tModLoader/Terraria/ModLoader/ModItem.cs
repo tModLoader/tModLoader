@@ -264,7 +264,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="player">The player using the item</param>
 		/// <param name="damage">Use to directly multiply the player's effective damage.</param>
-		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
 		public virtual void ModifyWeaponDamage(Player player, ref StatModifier damage) {
 		}
 

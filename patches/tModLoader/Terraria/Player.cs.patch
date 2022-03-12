@@ -1049,16 +1049,27 @@
  				if (buffType[j] == 1) {
  					lavaImmune = true;
  					fireWalk = true;
-@@ -6646,7 +_,7 @@
+@@ -6645,18 +_,32 @@
+ 				else if (buffType[j] == 158) {
  					manaRegenBonus += 2;
  				}
++				/*
  				else if (buffType[j] == 159 && inventory[selectedItem].melee) {
--					armorPenetration = 12;
-+					GetArmorPenetration(DamageClass.Melee) += 12;
+ 					armorPenetration = 12;
  				}
++
++				tML:
++				commented out in favor of the below check for solely the Sharpening Station buff
++				this fixes the Sharpening Station's armor penetration bonus bein' able to be applied to non-melee weapons (most notably summons) by holdin' a melee weapon
++				- thomas
++				*/
++				else if (buffType[j] == 159)
++				{
++					GetArmorPenetration(DamageClass.Melee) += 12;
++				}
  				else if (buffType[j] == 192) {
  					pickSpeed -= 0.2f;
-@@ -6654,9 +_,12 @@
+ 					moveSpeed += 0.2f;
  				}
  				else if (buffType[j] == 321) {
  					int num = 10;
@@ -1305,12 +1316,8 @@
  					continue;
  
  				int type2 = armor[k].type;
-@@ -8885,9 +_,12 @@
- 				}
- 
- 				if (armor[k].type == 3212)
--					armorPenetration += 5;
-+					GetArmorPenetration(DamageClass.Generic) += 5;
+@@ -8888,6 +_,9 @@
+ 					armorPenetration += 5;
  
  				if (armor[k].type == 2277) {
 +					allDamage += 0.05f;
@@ -1743,15 +1750,6 @@
  				return;
  
  			if (currentItem.type == 3810 || currentItem.type == 3809 || currentItem.type == 3812 || currentItem.type == 3811)
-@@ -9974,7 +_,7 @@
- 					break;
- 				case 4007:
- 					honeyCombItem = currentItem;
--					armorPenetration += 5;
-+					GetArmorPenetration(DamageClass.Generic) += 5;
- 					break;
- 				case 4341:
- 					portableStoolInfo.SetStats(26, 26, 26);
 @@ -9999,6 +_,9 @@
  
  			if (currentItem.type == 3015) {
