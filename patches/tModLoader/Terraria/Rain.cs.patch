@@ -1,0 +1,41 @@
+--- src/TerrariaNetCore/Terraria/Rain.cs
++++ src/tModLoader/Terraria/Rain.cs
+@@ -13,6 +_,8 @@
+ 		public int alpha;
+ 		public bool active;
+ 		public byte type;
++		// tML: Store the water style so that type can be used for modded rain.
++		public byte waterStyle;
+ 
+ 		public static void ClearRain() {
+ 			for (int i = 0; i < Main.maxRain; i++) {
+@@ -117,6 +_,14 @@
+ 			rain.scale = 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
+ 			rain.velocity = Velocity * rain.scale;
+ 			rain.rotation = (float)Math.Atan2(rain.velocity.X, 0f - rain.velocity.Y);
++
++			// tML: Get rain type from custom water style.
++			rain.waterStyle = (byte)Main.waterStyle;
++			if (Main.waterStyle >= Main.maxLiquidTypes) {
++				rain.type = ModLoader.LoaderManager.Get<ModLoader.WaterStylesLoader>().Get(Main.waterStyle).GetRainType();
++				return num;
++			}
++
+ 			rain.type = (byte)(Main.waterStyle * 3 + Main.rand.Next(3));
+ 			return num;
+ 		}
+@@ -159,6 +_,14 @@
+ 			rain.scale = 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
+ 			rain.velocity = Velocity * rain.scale;
+ 			rain.rotation = (float)Math.Atan2(rain.velocity.X, 0f - rain.velocity.Y);
++
++			// tML: Get rain type from custom water style.
++			rain.waterStyle = (byte)Main.waterStyle;
++			if (Main.waterStyle >= Main.maxLiquidTypes) {
++				rain.type = ModLoader.LoaderManager.Get<ModLoader.WaterStylesLoader>().Get(Main.waterStyle).GetRainType();
++				return num;
++			}
++
+ 			rain.type = (byte)(Main.waterStyle * 3 + Main.rand.Next(3));
+ 			return num;
+ 		}
