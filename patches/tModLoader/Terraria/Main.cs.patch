@@ -3403,7 +3403,7 @@
  				playerDrawData.Add(value);
  			}
 -			else if (drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 114 || drawPlayer.head == 158 || drawPlayer.head == 69 || drawPlayer.head == 180) {
-+			else if (drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 114 || drawPlayer.head == 158 || drawPlayer.head == 69 || drawPlayer.head == 180 || drawPlayer.head == ModLoader.Default.ModLoaderMod.Instance.GetEquipSlot("WitchDaggah_Head", EquipType.Head) || drawPlayer.head == ModLoader.Default.ModLoaderMod.Instance.GetEquipSlot("Elfinlocks_Head", EquipType.Head)) { // TODO: This probably needs a field or hook
++			else if (drawPlayer.head == 14 || drawPlayer.head == 56 || drawPlayer.head == 114 || drawPlayer.head == 158 || drawPlayer.head == 69 || drawPlayer.head == 180 || drawPlayer.head == ModLoader.Default.ModLoaderMod.Instance.GetEquipSlot("WitchDaggah_Head", EquipType.Head) || drawPlayer.head == ModLoader.Default.ModLoaderMod.Instance.GetEquipSlot("Elfinlocks_Head", EquipType.Head) || drawPlayer.head == ModLoader.Default.ModLoaderMod.Instance.GetEquipSlot("Tantamount_Head", EquipType.Head)) { // TODO: This probably needs a field or hook
  				Microsoft.Xna.Framework.Rectangle bodyFrame3 = drawPlayer.bodyFrame;
  				Vector2 origin2 = vector3;
  				if (drawPlayer.gravDir == 1f) {

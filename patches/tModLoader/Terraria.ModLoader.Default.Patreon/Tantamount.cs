@@ -41,4 +41,22 @@ namespace Terraria.ModLoader.Default.Patreon
 			item.height = 18;
 		}
 	}
+	
+	internal class Tantamount_Wings : PatreonItem
+	{
+		public override string SetName => "Tantamount";
+		public override EquipType ItemEquipType => EquipType.Wings;
+
+		public override void SetDefaults() {
+			base.SetDefaults();
+			item.vanity = false;
+			item.width = 24;
+			item.height = 8;
+			item.accessory = true;
+		}
+
+		public override void UpdateAccessory(Player player, bool hideVisual) {
+			player.wingTimeMax = 150;
+		}
+	}
 }
