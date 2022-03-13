@@ -17,3 +17,12 @@
  			for (int i = position.X; i < position.X + 2; i++) {
  				for (int j = position.Y - 4; j <= position.Y; j++) {
  					Tile tile = Main.tile[i, j];
+@@ -399,7 +_,7 @@
+ 
+ 			item[1] = new Item();
+ 			item[1].SetDefaults(5007);
+-			Main.chest[num3].item = item;
++			Main.chest[num3].item.GetItemArray() = item;
+ 		}
+ 
+ 		private void ActuallyPlaceDartTrap(Point position, int directionX, int x, int y, int xPush, Tile t) {

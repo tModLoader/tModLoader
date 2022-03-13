@@ -1,13 +1,32 @@
 --- src/TerrariaNetCore/Terraria/Chest.cs
 +++ src/tModLoader/Terraria/Chest.cs
-@@ -8,6 +_,7 @@
+@@ -8,6 +_,8 @@
  using Terraria.GameContent.Events;
  using Terraria.ID;
  using Terraria.ObjectData;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Container;
  
  namespace Terraria
  {
+@@ -25,7 +_,7 @@
+ 		public static int[] dresserItemSpawn = new int[40];
+ 		public const int maxItems = 40;
+ 		public const int MaxNameLength = 20;
+-		public Item[] item;
++		public TerrariaInventory item;
+ 		public int x;
+ 		public int y;
+ 		public bool bankChest;
+@@ -35,7 +_,7 @@
+ 		private static HashSet<int> _chestInUse = new HashSet<int>();
+ 
+ 		public Chest(bool bank = false) {
+-			item = new Item[40];
++			item = new TerrariaInventory(40); //item = new Item[40];
+ 			bankChest = bank;
+ 			name = string.Empty;
+ 		}
 @@ -193,12 +_,15 @@
  			return list;
  		}
