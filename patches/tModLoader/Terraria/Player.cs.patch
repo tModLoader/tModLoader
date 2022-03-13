@@ -94,7 +94,7 @@
  		public int statDefense;
  		public int statLifeMax = 100;
  		public int statLifeMax2 = 100;
-@@ -1080,22 +_,27 @@
+@@ -1080,22 +_,31 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
  		public bool JustDroppedAnItem;
@@ -113,6 +113,10 @@
 -		public float arrowDamage = 1f;
 -		public float rocketDamage = 1f;
 -		public float minionDamage = 1f;
++
++		tML:
++		these are now available as part of StatModifier. go nuts
++		- thomas
 +		*/
 +		internal ref int allCrit => ref GetCritChance(DamageClass.Generic);
 +		internal ref int meleeCrit => ref GetCritChance(DamageClass.Melee);
@@ -1032,7 +1036,19 @@
  				cWings = dyeItem.dye;
  
  			if (armorItem.type == 934)
-@@ -6625,13 +_,15 @@
+@@ -6619,19 +_,27 @@
+ 		public IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
+ 
+ 		public void UpdateBuffs(int i) {
++			/*
++			tML:
++			all accessories that previously used each class-specific crit field individually now use allCrit instead where appropriate
++			this allows them to automagically account for new classes, preventin' modders from havin' to do extra work for no reason
++			- thomas
++			*/
+ 			if (soulDrain > 0 && whoAmI == Main.myPlayer)
+ 				AddBuff(151, 2);
+ 
  			if (Main.dontStarveWorld)
  				UpdateStarvingState(withEmote: true);
  
@@ -1262,6 +1278,47 @@
  					minionKB += 1f;
  					moveSpeed += 0.4f;
  					pickSpeed -= 0.15f;
+@@ -8175,28 +_,40 @@
+ 				else if (buffType[j] == 333) {
+ 					hungry = true;
+ 					statDefense -= 2;
++					allCrit -= 2;
++					allDamage -= 0.05f;
++					/*
+ 					meleeCrit -= 2;
+ 					meleeDamage -= 0.05f;
++					*/
+ 					meleeSpeed -= 0.05f;
++					/*
+ 					magicCrit -= 2;
+ 					magicDamage -= 0.05f;
+ 					rangedCrit -= 2;
+ 					rangedDamage -= 0.05f;
+ 					minionDamage -= 0.05f;
++					*/
+ 					minionKB -= 0.5f;
+ 					pickSpeed += 0.05f;
+ 				}
+ 				else if (buffType[j] == 334) {
+ 					starving = true;
+ 					statDefense -= 4;
++					allCrit -= 4;
++					allDamage -= 0.1f;
++					/*
+ 					meleeCrit -= 4;
+ 					meleeDamage -= 0.1f;
++					*/
+ 					meleeSpeed -= 0.1f;
++					/*
+ 					magicCrit -= 4;
+ 					magicDamage -= 0.1f;
+ 					rangedCrit -= 4;
+ 					rangedDamage -= 0.1f;
+ 					minionDamage -= 0.1f;
++					*/
+ 					minionKB -= 1f;
+ 					pickSpeed += 0.15f;
+ 				}
 @@ -8227,6 +_,8 @@
  				else if (buffType[j] == 79) {
  					meleeEnchant = 8;
@@ -2138,29 +2195,22 @@
  			shroomiteStealth = false;
  			statDefense = 0;
  			accWatch = 0;
-@@ -13062,7 +_,10 @@
+@@ -13062,6 +_,7 @@
  			canFloatInWater = false;
  			lifeRegen = 0;
  			manaCost = 1f;
--			meleeSpeed = 1f;
-+			// meleeSpeed = 1f;
-+			allDamage = StatModifier.Default;
-+			allCrit = 4;
-+			/* individual class damage handled by ResetDamageClassData
++			/* individual class stats handled by ResetDamageClassData
+ 			meleeSpeed = 1f;
  			meleeDamage = 1f;
  			rangedDamage = 1f;
- 			magicDamage = 1f;
-@@ -13074,8 +_,10 @@
+@@ -13074,6 +_,7 @@
  			meleeCrit = 4;
  			rangedCrit = 4;
  			magicCrit = 4;
 +			*/
  			hasFootball = false;
  			drawingFootball = false;
-+			allKB = StatModifier.Default;
  			minionKB = 0f;
- 			moveSpeed = 1f;
- 			boneArmor = false;
 @@ -13118,9 +_,14 @@
  			ammoCost75 = false;
  			manaRegenBuff = false;
@@ -2525,7 +2575,7 @@
  						immune = false;
  						int num25 = (int)((float)num18 * gravDir - (float)num17) * 10;
  						if (mount.Active)
-@@ -18174,9 +_,11 @@
+@@ -18174,9 +_,17 @@
  			else
  				afkCounter = 0;
  
@@ -2533,6 +2583,12 @@
  			meleeCrit += inventory[selectedItem].crit;
  			magicCrit += inventory[selectedItem].crit;
  			rangedCrit += inventory[selectedItem].crit;
++
++			tML:
++			this, right here, is the principal cause of crit chance bein' a massive pain in the ass
++			by commentin' this out, your critical strike chance for the vanilla "three" classes capable of crits will no longer be modified based on your current weapon
++			this fixes a number of issues related to tooltip crit displays, and while it isn't the primary fix for crit swap, it definitely contributes to it
++			- thomas
 +			*/
  			if (whoAmI == Main.myPlayer) {
  				Main.musicBox2 = -1;
@@ -2713,7 +2769,7 @@
  						if (buffType[num79] == 38)
  							DelBuff(num79);
  					}
-@@ -19677,15 +_,17 @@
+@@ -19677,6 +_,7 @@
  					Rectangle rectangle2 = new Rectangle((int)base.position.X, (int)base.position.Y, width, height);
  					for (int num80 = 0; num80 < 200; num80++) {
  						if (Main.npc[num80].active && !Main.npc[num80].dontTakeDamage && !Main.npc[num80].friendly && Main.npc[num80].immune[i] == 0 && CanNPCBeHitByPlayerOrPlayerProjectile(Main.npc[num80]) && rectangle2.Intersects(new Rectangle((int)Main.npc[num80].position.X, (int)Main.npc[num80].position.Y, Main.npc[num80].width, Main.npc[num80].height))) {
@@ -2721,15 +2777,23 @@
  							float num81 = meleeCrit;
  							if (num81 < (float)rangedCrit)
  								num81 = rangedCrit;
- 
+@@ -19684,8 +_,18 @@
  							if (num81 < (float)magicCrit)
  								num81 = magicCrit;
--
+ 
++							tML:
++							the below accomplishes what this was tryin' to, and while accountin' for every damage type currently available
++							- thomas
 +							*/
-+							// congrats, minecarts now crit based on generic crit (which is probably what the above logic was trying to emulate)
  							bool crit = false;
 -							if ((float)Main.rand.Next(1, 101) <= num81)
-+							if ((float)Main.rand.Next(1, 101) <= allCrit)
++							int highestClassSpecificCrit = 0;
++							foreach (DamageClass damageType in DamageClassLoader.DamageClasses)
++							{
++								if (GetCritChance(damageType) > highestClassSpecificCrit)
++									highestClassSpecificCrit = GetCritChance(damageType);
++							}
++							if (Main.rand.Next(100) < allCrit + highestClassSpecificCrit)
  								crit = true;
  
  							float currentSpeed = Math.Abs(base.velocity.X) / maxRunSpeed;

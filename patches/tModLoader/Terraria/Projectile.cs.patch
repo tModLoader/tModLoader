@@ -362,7 +362,7 @@
  											float value2 = (scale - 1f) * 100f;
  											value2 = Utils.Clamp(value2, 0f, 50f);
  											num9 = (int)((float)num9 * (1f + value2 * 0.23f));
-@@ -9431,14 +_,21 @@
+@@ -9431,15 +_,30 @@
  										}
  
  										if (flag8) {
@@ -377,13 +377,22 @@
  
  											if (magic && Main.rand.Next(1, 101) <= Main.player[owner].magicCrit)
  												flag7 = true;
+ 
++											tML:
++											the above code only accounts for the "three" vanilla classes that are capable of crits, and doesn't account for throwin'
++											it also doesn't account for any modded damage types, and so a change was needed in order to allow it to work with new classes
++											on top of this, the change from usin' the player's class crit to usin' the projectile's crit chance is important
++											it's part of the fix for the infamous "crit swap" exploit, as well as a larger overall fix to crit chance
++
++											- thomas
 +											*/
 +
 +											if (DamageType.AllowStandardCrits && Main.rand.Next(100) < CritChance)
 +												flag7 = true;
- 
++
  											int num15 = type;
  											if ((uint)(num15 - 688) <= 2u) {
+ 												if (Main.player[owner].setMonkT3) {
 @@ -9748,7 +_,7 @@
  												num21 = (int)((double)num21 * 0.75);
  										}

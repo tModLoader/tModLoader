@@ -36,6 +36,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
 		/// Returns 0 in all cases by default, which does not let any other classes boost this DamageClass.
+		/// The return value works like a percentage; for example, 1f will allow your DamageClass to benefit from another class' stat bonuses at 100% effectiveness, while 0.5f will only allow that benefit at 50% effectiveness.
+		/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
 		/// </summary>
 		/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>
 		protected virtual float CheckClassStatInheritance(DamageClass damageClass) => 0;
@@ -51,6 +53,7 @@ namespace Terraria.ModLoader
 		/// <summary> 
 		/// This lets you define the classes that this DamageClass will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.
 		/// Returns false in all cases by default, which does not let any other classes' effects trigger on this DamageClass.
+		/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
 		/// </summary>
 		/// <param name="damageClass">The DamageClass which you want this DamageClass to gain effects from.</param>
 		public virtual bool CheckClassEffectInheritance(DamageClass damageClass) => false;

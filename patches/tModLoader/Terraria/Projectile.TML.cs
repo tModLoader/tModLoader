@@ -32,7 +32,7 @@ namespace Terraria
 		private int _armorPenetration = 0;
 		/// <summary>
 		/// The number of defense points that this projectile can ignore on its own. Cannot be set to negative values. Defaults to 0.
-		/// On spawn, if this projectile was fired frrom a weapon, this value has the total armor penetration of the weapon that made the projectile added to itself.
+		/// On spawn, if this projectile was fired from a weapon, this value has the total armor penetration of the weapon that made the projectile added to itself.
 		/// </summary>
 		public int ArmorPenetration {
 			get => _armorPenetration;
@@ -47,7 +47,7 @@ namespace Terraria
 		private int _crit = 0;
 		/// <summary>
 		/// The critical strike chance modifier of this projectile. Cannot be set to negative values. Defaults to 0.
-		/// On spawn, if this projectile was fired frrom a weapon, this value has the total critical strike chance of the weapon that made the projectile added to itself.
+		/// On spawn, if this projectile was fired from a weapon, this value has the total critical strike chance of the weapon that made the projectile added to itself.
 		/// </summary>
 		public int CritChance {
 			get => _crit;
