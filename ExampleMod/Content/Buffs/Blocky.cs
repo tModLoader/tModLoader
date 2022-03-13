@@ -1,6 +1,8 @@
 using ExampleMod.Common.Players;
 using ExampleMod.Content.Items.Placeable;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Buffs
@@ -13,7 +15,7 @@ namespace ExampleMod.Content.Buffs
 			Main.debuff[Type] = true;
 			Main.buffNoSave[Type] = true;
 			Main.buffNoTimeDisplay[Type] = true;
-			CanBeCleared = false;
+			BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
@@ -23,7 +25,7 @@ namespace ExampleMod.Content.Buffs
 			if (player.townNPCs >= 1 && p.BlockyAccessoryPrevious) {
 				p.BlockyPower = true;
 				if (Main.myPlayer == player.whoAmI && Main.time % 1000 == 0) {
-					player.QuickSpawnItem(ModContent.ItemType<ExampleBlock>());
+					player.QuickSpawnItem(new EntitySource_Buff(player, Type, buffIndex), ModContent.ItemType<ExampleBlock>());
 				}
 				player.jumpSpeedBoost += 4.8f;
 				player.extraFall += 45;

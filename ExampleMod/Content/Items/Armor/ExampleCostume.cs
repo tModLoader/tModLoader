@@ -60,6 +60,7 @@ namespace ExampleMod.Content.Items.Armor
 			Item.accessory = true;
 			Item.value = Item.buyPrice(gold: 15);
 			Item.rare = ItemRarityID.Pink;
+			Item.canBePlacedInVanityRegardlessOfConditions = true;
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
@@ -68,6 +69,7 @@ namespace ExampleMod.Content.Items.Armor
 			p.BlockyHideVanity = hideVisual;
 		}
 
+		// TODO: Fix this once new hook prior to FrameEffects added.
 		// Required so UpdateVanitySet gets called in EquipTextures
 		public override bool IsVanitySet(int head, int body, int legs) => true;
 	}

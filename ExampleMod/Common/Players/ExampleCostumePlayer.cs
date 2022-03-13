@@ -41,6 +41,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override void FrameEffects() {
+			// TODO: Need new hook, FrameEffects doesn't run while paused.
 			if ((BlockyPower || BlockyForceVanity) && !BlockyHideVanity) {
 				var exampleCostume = ModContent.GetInstance<ExampleCostume>();
 				Player.head = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Head);
