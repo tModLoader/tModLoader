@@ -1,15 +1,10 @@
 //Rartrin:
-	//Projectile.FishingCheck
-		//Make PlayerHooks.CatchFish and other related hooks use the new FishingAttempt struct.
-		//Move PlayerHooks.CatchFish and fishing related hooks to be each of the FishingCheck submethods.
-
 	//Terraria.GameContent.UI.States.UICharacterCreation.SetupPlayerStatsAndInventoryBasedOnDifficulty
 		//Add call to PlayerHooks.SetStartInventory here. Moved from Player constructor.
 
 	//Player
 		//Make sure "22" replaced with "MaxBuffs" in 'for' and CountBuffs() == and !=.
 		//Ensure all blockLists are cleared everywhere that they need to be.
-		//Fishing submethods will need to use Item instead of values.
 
 	//Need reimplementing:
 		//TileLoader.HasSmartInteract

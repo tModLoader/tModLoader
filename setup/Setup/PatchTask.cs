@@ -40,9 +40,6 @@ namespace Terraria.ModLoader.Setup
 
 		public override bool StartupWarning()
 		{
-#if AUTO
-			return true;
-#endif
 			return MessageBox.Show(
 					"Any changes in /" + patchedDir + " that have not been converted to patches will be lost.",
 					"Possible loss of data", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning)
@@ -51,7 +48,7 @@ namespace Terraria.ModLoader.Setup
 
 		public override void Run()
 		{
-			Program.UpdateTargetsFile(); //Update branch information
+			Program.UpdateTargetsFiles(); //Update branch information
 
 			mode = (Patcher.Mode) Settings.Default.PatchMode;
 

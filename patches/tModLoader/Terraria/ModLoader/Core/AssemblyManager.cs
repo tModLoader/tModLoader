@@ -25,12 +25,21 @@ namespace Terraria.ModLoader.Core
 			public List<ModLoadContext> dependencies = new List<ModLoadContext>();
 
 			public Assembly assembly;
-			public IDictionary<string, (Assembly assembly, byte[] bytes)> assemblies = new Dictionary<string, (Assembly assembly, byte[] bytes)>();
+			public IDictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
 			public long bytesLoaded = 0;
 
 			public ModLoadContext(LocalMod mod) : base(mod.Name, true) {
 				modFile = mod.modFile;
 				properties = mod.properties;
+
+				Unloading += ModLoadContext_Unloading;
+			}
+
+			private void ModLoadContext_Unloading(AssemblyLoadContext obj) {
+				// required for this to actually unload
+				dependencies = null;
+				assembly = null;
+				assemblies = null;
 			}
 
 			public void AddDependency(ModLoadContext dep) {
@@ -60,7 +69,7 @@ namespace Terraria.ModLoader.Core
 				using var pdbStrm = pdb == null ? null : new MemoryStream(pdb, false);
 				var asm = LoadFromStream(codeStrm, pdbStrm);
 
-				assemblies[asm.GetName().Name] = (asm, code);
+				assemblies[asm.GetName().Name] = asm;
 				hostContextForAssembly[asm] = this;
 
 				bytesLoaded += code.LongLength + (pdb?.LongLength ?? 0);
@@ -77,32 +86,36 @@ namespace Terraria.ModLoader.Core
 			}
 
 			protected override Assembly Load(AssemblyName assemblyName) {
-				if (assemblies.TryGetValue(assemblyName.Name, out var entry))
-					return entry.assembly;
+				if (assemblies.TryGetValue(assemblyName.Name, out var asm))
+					return asm;
 
 				return dependencies.Select(dep => dep.Load(assemblyName)).FirstOrDefault(a => a != null);
 			}
 		}
 
-
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		internal static void Unload() {
-			var alcRefs = loadedModContexts.Values.Select(alc => new WeakReference<AssemblyLoadContext>(alc)).ToArray();
 			foreach (var alc in loadedModContexts.Values) {
+				oldLoadContexts.Add(new WeakReference<AssemblyLoadContext>(alc));
 				alc.Unload();
 			}
 
 			hostContextForAssembly.Clear();
 			loadedModContexts.Clear();
 
-			GC.Collect();
-			GC.WaitForPendingFinalizers();
-
-			foreach (var alcRef in alcRefs) {
-				if (alcRef.TryGetTarget(out var alc))
-					Logging.tML.Warn($"{alc} refused to finalize");
+			for (int i = 0; i < 10; i++) {
+				GC.Collect();
+				GC.WaitForPendingFinalizers();
 			}
 		}
+
+		internal static IEnumerable<string> OldLoadContexts() {
+			foreach (var alcRef in oldLoadContexts)
+				if (alcRef.TryGetTarget(out var alc))
+					yield return alc.Name;
+		}
+
+		private static readonly List<WeakReference<AssemblyLoadContext>> oldLoadContexts = new();
 
 		private static readonly Dictionary<string, ModLoadContext> loadedModContexts = new();
 		private static readonly Dictionary<Assembly, ModLoadContext> hostContextForAssembly = new();
@@ -120,7 +133,7 @@ namespace Terraria.ModLoader.Core
 
 		internal static Assembly TmlCustomResolver(object sender, ResolveEventArgs args) {
 			//Legacy: With FNA and .Net5 changes, had aimed to eliminate the variants of tmodloader (tmodloaderdebug, tmodloaderserver) and Terraria as assembly names.
-			// However, due to uncertainty in that elimination, in particular for Terraria, have opted to retain the original check. - Solxan			
+			// However, due to uncertainty in that elimination, in particular for Terraria, have opted to retain the original check. - Solxan
 			var name = new AssemblyName(args.Name).Name;
 			if (name.Contains("tModLoader") || name == "Terraria")
 				return Assembly.GetExecutingAssembly();
@@ -156,7 +169,7 @@ namespace Terraria.ModLoader.Core
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
 
 			// at least one of the types must be in a namespace that starts with the mod name
-			if (!assembly.GetTypes().Any(t => t.Namespace?.StartsWith(modName) == true)) 
+			if (!assembly.GetTypes().Any(t => t.Namespace?.StartsWith(modName) == true))
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorNamespaceFolderDontMatch"));
 
 			var modTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Mod))).ToArray();
@@ -217,7 +230,7 @@ namespace Terraria.ModLoader.Core
 
 		private static ModLoadContext GetLoadContext(string name) => loadedModContexts.TryGetValue(name, out var value) ? value : throw new KeyNotFoundException(name);
 
-		internal static IEnumerable<Assembly> GetModAssemblies(string name) => GetLoadContext(name).assemblies.Values.Select(v => v.assembly);
+		internal static IEnumerable<Assembly> GetModAssemblies(string name) => GetLoadContext(name).assemblies.Values;
 
 		internal static bool GetAssemblyOwner(Assembly assembly, out string modName) {
 			if (hostContextForAssembly.TryGetValue(assembly, out var mod)) {

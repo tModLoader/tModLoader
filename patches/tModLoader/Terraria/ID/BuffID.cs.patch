@@ -1,6 +1,6 @@
---- src/Terraria/Terraria/ID/BuffID.cs
+--- src/TerrariaNetCore/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
-@@ -1,5 +_,8 @@
+@@ -1,10 +_,13 @@
  using ReLogic.Reflection;
  
 +using ReLogic.Reflection;
@@ -8,13 +8,20 @@
 +
  namespace Terraria.ID
  {
- 	public class BuffID
+-	public class BuffID
++	public partial class BuffID
+ 	{
+-		public class Sets
++		public partial class Sets
+ 		{
+ 			public class BuffMountData
+ 			{
 @@ -12,7 +_,7 @@
  				public bool faceLeft;
  			}
  
--			public static SetFactory Factory = new SetFactory(327);
+-			public static SetFactory Factory = new SetFactory(338);
 +			public static SetFactory Factory = new SetFactory(BuffLoader.BuffCount);
  			public static bool[] IsWellFed = Factory.CreateBoolSet(26, 206, 207);
+ 			public static bool[] IsFedState = Factory.CreateBoolSet(26, 206, 207, 332, 333, 334);
  			public static bool[] IsAnNPCWhipDebuff = Factory.CreateBoolSet(307, 313, 319, 316, 310, 309, 315, 326);
- 			public static bool[] TimeLeftDoesNotDecrease = Factory.CreateBoolSet(28);

@@ -26,7 +26,7 @@ namespace Terraria.UI
 			if (accSlotToSwapTo < 0) {
 				for (int i = 0; i < accessories.Length / 2; i++) {
 					if (accLoader.ModdedIsAValidEquipmentSlotForIteration(i, player)) {
-						if (accessories[i].type == 0 && accLoader.CanAcceptItem(i, item, (int)ItemSlotContext.ModdedAccessorySlot) && ItemLoader.CanEquipAccessory(item, i, true)) {
+						if (accessories[i].type == 0 && accLoader.CanAcceptItem(i, item, (int)Context.ModdedAccessorySlot) && ItemLoader.CanEquipAccessory(item, i, true)) {
 							accSlotToSwapTo = i + 20;
 							break;
 						}
@@ -35,8 +35,6 @@ namespace Terraria.UI
 			}
 
 			accLoader.ModifyDefaultSwapSlot(item, ref accSlotToSwapTo);
-
-			accSlotToSwapTo = Math.Max(accSlotToSwapTo, 0);
 
 			//TML: Check if there is an existing copy of the item in any slot (including vanity)
 			// Will also replace wings with wings
@@ -50,21 +48,25 @@ namespace Terraria.UI
 
 			//TML: Do the same check for our modded slots
 			for (int j = 0; j < accessories.Length; j++) {
-				if (item.IsTheSameAs(accessories[j]) && accLoader.CanAcceptItem(j, item, j < accessories.Length / 2 ? (int)ItemSlotContext.ModdedAccessorySlot : (int)ItemSlotContext.ModdedVanityAccessorySlot) && ItemLoader.CanEquipAccessory(item, j, true))
+				if (item.IsTheSameAs(accessories[j]) && accLoader.CanAcceptItem(j, item, j < accessories.Length / 2 ? (int)Context.ModdedAccessorySlot : (int)Context.ModdedVanityAccessorySlot) && ItemLoader.CanEquipAccessory(item, j, true))
 					accSlotToSwapTo = j + 20;
 
-				if (j < accLoader.list.Count && (item.wingSlot > 0 && accessories[j].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(accessories[j], item)) 
-					&& accLoader.CanAcceptItem(j, item, j < accessories.Length / 2 ? (int)ItemSlotContext.ModdedAccessorySlot : (int)ItemSlotContext.ModdedVanityAccessorySlot) && ItemLoader.CanEquipAccessory(item, j, true))
+				if (j < accLoader.list.Count && (item.wingSlot > 0 && accessories[j].wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(accessories[j], item))
+					&& accLoader.CanAcceptItem(j, item, j < accessories.Length / 2 ? (int)Context.ModdedAccessorySlot : (int)Context.ModdedVanityAccessorySlot) && ItemLoader.CanEquipAccessory(item, j, true))
 					accSlotToSwapTo = j + 20;
 			}
 
+			// No slot found, and it can't go in slot zero, than return
+			if (accSlotToSwapTo == -1 && !ItemLoader.CanEquipAccessory(item, 0, false))
+				return false;
+
+			accSlotToSwapTo = Math.Max(accSlotToSwapTo, 0);
 			if (accSlotToSwapTo >= 20) {
 				int num3 = accSlotToSwapTo - 20;
 				if (isEquipLocked(accessories[num3].type)) {
 					result =  item;
 					return false;
 				}
-					
 
 				result = accessories[num3].Clone();
 				accessories[num3] = item.Clone();
@@ -84,7 +86,7 @@ namespace Terraria.UI
 		}
 
 		/// <summary>
-		/// Alters the ItemSlot.DyeSwap method for modded slots; 
+		/// Alters the ItemSlot.DyeSwap method for modded slots;
 		/// Unfortunately, I (Solxan) couldn't ever get ItemSlot.DyeSwap invoked so pretty sure this and its vanilla code is defunct.
 		/// Here in case someone proves my statement wrong later.
 		/// </summary>
@@ -101,7 +103,7 @@ namespace Terraria.UI
 				}
 			}
 
-			if (dyeSlotCount >= msPlayer.SlotCount()) {
+			if (dyeSlotCount >= msPlayer.SlotCount) {
 				success = false;
 				return item2;
 			}
@@ -127,11 +129,11 @@ namespace Terraria.UI
 					return false;
 
 				if (itemCollection[slot].wingSlot > 0 && item.wingSlot > 0 || !ItemLoader.CanAccessoryBeEquippedWith(itemCollection[slot], item))
-					return !ItemLoader.CanEquipAccessory(item, slot, slot >= 20);
+					return !ItemLoader.CanEquipAccessory(item, slot % 20, slot >= 20);
 			}
 
 			var modSlotPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
-			var modCount = modSlotPlayer.SlotCount();
+			var modCount = modSlotPlayer.SlotCount;
 			bool targetVanity = slot >= 20 && (slot >= modCount + 20) || slot < 20 && slot >= 10;
 
 			for (int i = targetVanity ? 13 : 3; i < (targetVanity ? 20 : 10); i++) {
@@ -149,21 +151,7 @@ namespace Terraria.UI
 					return true;
 			}
 
-			return !ItemLoader.CanEquipAccessory(item, slot, slot >= 20);
+			return !ItemLoader.CanEquipAccessory(item, slot % 20, slot >= 20);
 		}
-	}
-
-	//TODO: This is a work in progress enumerable table for Item Slot context variable. Mostly for sanity for anyone wondering. Added to as figured out.
-	public enum ItemSlotContext
-	{
-		ModdedAccessorySlot = -10,
-		ModdedVanityAccessorySlot = -11,
-		ModdedDyeSlot = -12,
-		Mouse = 0,
-		ArmorSlot = 8,
-		VanitySlot = 9,
-		AccessorySlot = 10,
-		VanityAccessorySlot = 11,
-		DyeSlot = 12
 	}
 }

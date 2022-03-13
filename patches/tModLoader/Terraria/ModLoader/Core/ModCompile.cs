@@ -1,4 +1,5 @@
 #if NETCORE
+using Basic.Reference.Assemblies;
 using log4net.Core;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -83,29 +84,6 @@ namespace Terraria.ModLoader.Core
 			UpdateFileContents(modTargetsPath,
 $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
   <Import Project=""{SecurityElement.Escape(tMLModTargetsPath)}"" />
-</Project>");
-
-			UpdateFileContents(tMLModTargetsPath, 
-$@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
-	<PropertyGroup>
-		<!-- legacy property -->
-		<TerrariaSteamPath>$(MSBuildThisFileDirectory)</TerrariaSteamPath>
-		<tMLSteamPath>$(MSBuildThisFileDirectory)</tMLSteamPath>
-		<tMLLibraryPath>$(tMLSteamPath)Libraries</tMLLibraryPath>
-		<tMLName>tModLoader</tMLName>
-		<tMLPath>$(tMLName).dll</tMLPath>
-		<tMLServerPath>$(tMLPath) -server</tMLServerPath>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include=""$(tMLSteamPath)$(tMLPath)"" />
-		<Reference Include=""$(tMLLibraryPath)/**/*.dll"" />
-		<Reference Remove=""$(tMLLibraryPath)/Native/**"" />
-		<Reference Remove=""$(tMLLibraryPath)/**/runtime*/**"" />
-		<Reference Remove=""$(tMLLibraryPath)/**/*.resources.dll"" />
-	</ItemGroup>
-	<Target Name=""BuildMod"" AfterTargets=""Build"">
-		<Exec Command=""dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)"" WorkingDirectory=""$(tMLSteamPath)""/>
-	</Target>
 </Project>");
 
 			referencesUpdated = true;
@@ -380,10 +358,6 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			//everything used to compile the tModLoader for the target platform
 			refs.AddRange(GetTerrariaReferences());
 
-			// TODO: do we need to always compile against reference assemblies?
-			// add framework assemblies
-			refs.AddRange(GetFrameworkReferences());
-
 			//libs added by the mod
 			refs.AddRange(mod.properties.dllReferences.Select(dllName => DllRefPath(mod, dllName)));
 
@@ -479,6 +453,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			var emitOptions = new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb);
 
 			var refs = references.Select(s => MetadataReference.CreateFromFile(s));
+			refs = refs.Concat(Net60.All);
 
 			var src = files.Select(f => SyntaxFactory.ParseSyntaxTree(File.ReadAllText(f), parseOptions, f, Encoding.UTF8));
 
@@ -491,38 +466,6 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			code = peStream.ToArray();
 			pdb = pdbStream.ToArray();
 			return results.Diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).ToArray();
-		}
-
-		private static IEnumerable<string> GetFrameworkReferences() {
-			var frameworkAssembliesPath = Path.GetDirectoryName(typeof(File).Assembly.Location);
-			return FilterUnmanagedFrameworkDllsViaBlacklist(Directory.GetFiles(frameworkAssembliesPath, "*.dll", SearchOption.AllDirectories));
-		}
-
-		private static IEnumerable<string> FilterUnmanagedFrameworkDlls(IEnumerable<string> refs) {
-			var actualAssemblies = new List<string>();
-			var forwarderAssemblies = new List<string>();
-
-			// Separate assemblies into complete assemblies and assemblies that forward to an assembly, at a heavy toll on performance. Will generate the full list of forwarding assemblies to blacklist; Useful for maintenance.
-			foreach (string test in refs) {
-				try {
-					var a = Assembly.LoadFile(test);
-					actualAssemblies.Add(test);
-				}
-				catch (Exception) {
-					if (test.Contains("Private.CoreLib")) { // This assembly can't be loaded directly, but isn't a forwarding assembly and instead is the recipient of forwarding.
-						actualAssemblies.Add(test);
-					}
-					forwarderAssemblies.Add(test);
-				}
-			}
-
-			return actualAssemblies;
-		}
-
-		private static IEnumerable<string> FilterUnmanagedFrameworkDllsViaBlacklist(IEnumerable<string> refs) {
-			// Separate out known forward-only assemblies via string blacklisting.
-			string[] unmanagedDLLs = new string[] { "api-ms", "clrcompression", "clretwrc", "clrjit", "coreclr", "dbgshim", "Microsoft.DiaSymReader.Native.amd64", "mscordaccore", "mscordaccore_amd64_amd64", "mscordbi", "mscorrc", "ucrtbase", "hostpolicy" };
-			return refs.Where(r => !unmanagedDLLs.Any(r.Contains));
 		}
 	}
 }

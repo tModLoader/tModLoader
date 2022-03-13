@@ -41,11 +41,14 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void OpenBossBag(Player player) {
 			// We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
+
+			var source = player.GetItemSource_OpenItem(Type);
+
 			if (Main.rand.NextBool(7)) {
-				player.QuickSpawnItem(ModContent.ItemType<MinionBossMask>());
+				player.QuickSpawnItem(source, ModContent.ItemType<MinionBossMask>());
 			}
 
-			player.QuickSpawnItem(ModContent.ItemType<ExampleItem>(), Main.rand.Next(12, 16));
+			player.QuickSpawnItem(source, ModContent.ItemType<ExampleItem>(), Main.rand.Next(12, 16));
 		}
 
 		// Below is code for the visuals
@@ -114,7 +117,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 			for (float i = 0f; i < 1f; i += 0.34f) {
 				float radians = (i + timer) * MathHelper.TwoPi;
-				
+
 				spriteBatch.Draw(texture, drawPos + new Vector2(0f, 4f).RotatedBy(radians) * time, frame, new Color(140, 120, 255, 77), rotation, frameOrigin, scale, SpriteEffects.None, 0);
 			}
 

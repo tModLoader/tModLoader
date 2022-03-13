@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -76,7 +77,7 @@ namespace ExampleMod.Content.Tiles
 		// Below is an example completely manually drawing a tile. It shows some interesting concepts that may be useful for more advanced things
 		/*public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
 			// Instead of SetSpriteEffects
-			// Flips the sprite if x coord is odd. Makes the tile more interesting 
+			// Flips the sprite if x coord is odd. Makes the tile more interesting
 			SpriteEffects effects = SpriteEffects.None;
 			if (i % 2 == 1)
 				effects = SpriteEffects.FlipHorizontally;
@@ -134,7 +135,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 16, 32, ModContent.ItemType<ExampleAnimatedTileItem>());
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 32, ModContent.ItemType<ExampleAnimatedTileItem>());
 		}
 	}
 

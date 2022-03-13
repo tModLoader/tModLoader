@@ -1,6 +1,6 @@
---- src/Terraria/Terraria/GameContent/Drawing/WallDrawing.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Drawing/WallDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/WallDrawing.cs
-@@ -3,6 +_,7 @@
+@@ -3,13 +_,14 @@
  using System.Diagnostics;
  using Terraria.Graphics;
  using Terraria.ID;
@@ -8,6 +8,26 @@
  
  namespace Terraria.GameContent.Drawing
  {
+ 	public class WallDrawing
+ 	{
+ 		private static VertexColors _glowPaintColors = new VertexColors(Color.White);
+-		private Tile[,] _tileArray;
++		private Tilemap _tileArray;
+ 		private TilePaintSystemV2 _paintSystem;
+ 
+ 		public WallDrawing(TilePaintSystemV2 paintSystem) {
+@@ -61,8 +_,9 @@
+ 			Rectangle value2 = new Rectangle(0, 0, 32, 32);
+ 			int underworldLayer = Main.UnderworldLayer;
+ 			Point screenOverdrawOffset = Main.GetScreenOverdrawOffset();
++			// tModLoader - Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
+-			for (int i = num7 - num10 + screenOverdrawOffset.Y; i < num8 + num10 - screenOverdrawOffset.Y; i++) {
++			for (int j = num5 - num9 + screenOverdrawOffset.X; j < num6 + num9 - screenOverdrawOffset.X; j++) {
+-				for (int j = num5 - num9 + screenOverdrawOffset.X; j < num6 + num9 - screenOverdrawOffset.X; j++) {
++				for (int i = num7 - num10 + screenOverdrawOffset.Y; i < num8 + num10 - screenOverdrawOffset.Y; i++) {
+ 					Tile tile = _tileArray[j, i];
+ 					if (tile == null) {
+ 						tile = new Tile();
 @@ -73,6 +_,10 @@
  					if (wall <= 0 || FullTile(j, i))
  						continue;

@@ -11,7 +11,7 @@ namespace Terraria.DataStructures
 
 		/// <summary> Adds <see cref="PlayerDrawSet.torsoOffset"/> to <see cref="PlayerDrawSet.Position"/> and <see cref="PlayerDrawSet.ItemLocation"/> vectors' Y axes. </summary>
 		public static readonly Transformation TorsoGroup = new VanillaPlayerDrawTransform(DrawPlayer_extra_TorsoPlus, DrawPlayer_extra_TorsoMinus);
-		
+
 		/// <summary> Adds <see cref="PlayerDrawSet.mountOffSet"/>/2 to <see cref="PlayerDrawSet.Position"/> vector's Y axis. </summary>
 		public static readonly Transformation MountGroup = new VanillaPlayerDrawTransform(DrawPlayer_extra_MountPlus, DrawPlayer_extra_MountMinus, TorsoGroup);
 
@@ -22,25 +22,25 @@ namespace Terraria.DataStructures
 
 		/// <summary> Draws the back textures of the player's mount. </summary>
 		public static readonly PlayerDrawLayer MountBack = new VanillaPlayerDrawLayer(nameof(MountBack), DrawPlayer_02_MountBehindPlayer);
-		
+
 		/// <summary> Draws the Flying Carpet accessory, if the player has it equipped and is using it. </summary>
 		public static readonly PlayerDrawLayer Carpet = new VanillaPlayerDrawLayer(nameof(Carpet), DrawPlayer_03_Carpet);
-		
+
 		/// <summary> Draws the Step Stool accessory, if the player has it equipped and is using it. </summary>
 		public static readonly PlayerDrawLayer PortableStool = new VanillaPlayerDrawLayer(nameof(PortableStool), DrawPlayer_03_PortableStool);
-		
+
 		/// <summary> Draws the back textures of the Electrified debuff, if the player has it. </summary>
 		public static readonly PlayerDrawLayer ElectrifiedDebuffBack = new VanillaPlayerDrawLayer(nameof(ElectrifiedDebuffBack), DrawPlayer_04_ElectrifiedDebuffBack, TorsoGroup);
-		
+
 		/// <summary> Draws the 'Forbidden Sign' if the player has a full 'Forbidden Armor' set equipped. </summary>
 		public static readonly PlayerDrawLayer ForbiddenSetRing = new VanillaPlayerDrawLayer(nameof(ForbiddenSetRing), DrawPlayer_05_ForbiddenSetRing, TorsoGroup);
-		
+
 		/// <summary> Draws a sun above the player's head if they have "Safeman's Sunny Day" headgear equipped. </summary>
 		public static readonly PlayerDrawLayer SafemanSun = new VanillaPlayerDrawLayer(nameof(SafemanSun), DrawPlayer_05_2_SafemanSun, TorsoGroup);
 
 		/// <summary> Draws the back textures of the Webbed debuff, if the player has it. </summary>
 		public static readonly PlayerDrawLayer WebbedDebuffBack = new VanillaPlayerDrawLayer(nameof(WebbedDebuffBack), DrawPlayer_06_WebbedDebuffBack, TorsoGroup);
-		
+
 		/// <summary> Draws effects of "Leinfors' Luxury Shampoo", if the player has it equipped. </summary>
 		public static readonly PlayerDrawLayer LeinforsHairShampoo = new VanillaPlayerDrawLayer(nameof(LeinforsHairShampoo), DrawPlayer_07_LeinforsHairShampoo, TorsoGroup, isHeadLayer: true);
 
@@ -79,7 +79,7 @@ namespace Terraria.DataStructures
 
 		/// <summary> Draws the longcoat default clothing style, if the player has it. </summary>
 		public static readonly PlayerDrawLayer SkinLongCoat = new VanillaPlayerDrawLayer(nameof(SkinLongCoat), DrawPlayer_15_SkinLongCoat, TorsoGroup);
-		
+
 		/// <summary> Draws the currently equipped armor's longcoat, if it has one. </summary>
 		public static readonly PlayerDrawLayer ArmorLongCoat = new VanillaPlayerDrawLayer(nameof(ArmorLongCoat), DrawPlayer_16_ArmorLongCoat, TorsoGroup);
 
@@ -102,7 +102,7 @@ namespace Terraria.DataStructures
 		public static readonly PlayerDrawLayer FinchNest = new VanillaPlayerDrawLayer(nameof(FinchNest), DrawPlayer_21_2_FinchNest, TorsoGroup, isHeadLayer: false);
 
 		/// <summary> Draws the player's face accessory. </summary>
-		public static readonly PlayerDrawLayer FaceAcc = new VanillaPlayerDrawLayer(nameof(FaceAcc), DrawPlayer_22_FaceAcc, TorsoGroup);
+		public static readonly PlayerDrawLayer FaceAcc = new VanillaPlayerDrawLayer(nameof(FaceAcc), DrawPlayer_22_FaceAcc, TorsoGroup, isHeadLayer: true);
 
 		/// <summary> Draws the front textures of the player's mount. </summary>
 		public static readonly PlayerDrawLayer MountFront = new VanillaPlayerDrawLayer(nameof(MountFront), DrawPlayer_23_MountFront, TorsoGroup);
@@ -124,7 +124,7 @@ namespace Terraria.DataStructures
 
 		/// <summary> Draws the player's hand on accessory. </summary>
 		public static readonly PlayerDrawLayer HandOnAcc = new VanillaPlayerDrawLayer(nameof(HandOnAcc), DrawPlayer_29_OnhandAcc, TorsoGroup);
-		
+
 		/// <summary> Draws the Bladed Glove item, if the player is currently using it. </summary>
 		public static readonly PlayerDrawLayer BladedGlove = new VanillaPlayerDrawLayer(nameof(BladedGlove), DrawPlayer_30_BladedGlove, TorsoGroup);
 
@@ -133,18 +133,21 @@ namespace Terraria.DataStructures
 
 		/// <summary> Draws the front textures of either Frozen or Webbed debuffs, if the player has one of them. </summary>
 		public static readonly PlayerDrawLayer FrozenOrWebbedDebuff = new VanillaPlayerDrawLayer(nameof(FrozenOrWebbedDebuff), DrawPlayer_33_FrozenOrWebbedDebuff);
-		
+
 		/// <summary> Draws the front textures of the Electrified debuff, if the player has it. </summary>
 		public static readonly PlayerDrawLayer ElectrifiedDebuffFront = new VanillaPlayerDrawLayer(nameof(ElectrifiedDebuffFront), DrawPlayer_34_ElectrifiedDebuffFront);
-		
+
 		/// <summary> Draws the textures of the Ice Barrier buff, if the player has it. </summary>
 		public static readonly PlayerDrawLayer IceBarrier = new VanillaPlayerDrawLayer(nameof(IceBarrier), DrawPlayer_35_IceBarrier);
-		
+
 		/// <summary> Draws a big gem above the player, if the player is currently in possession of a 'Capture The Gem' gem item. </summary>
 		public static readonly PlayerDrawLayer CaptureTheGem = new VanillaPlayerDrawLayer(nameof(CaptureTheGem), DrawPlayer_36_CTG);
-		
+
 		/// <summary> Draws the effects of Beetle Armor's Set buffs, if the player currently has any. </summary>
 		public static readonly PlayerDrawLayer BeetleBuff = new VanillaPlayerDrawLayer(nameof(BeetleBuff), DrawPlayer_37_BeetleBuff);
+
+		/// <summary> Draws the effects of Eyebrella Cloud, if the player currently has it. </summary>
+		public static readonly PlayerDrawLayer EyebrellaCloud = new VanillaPlayerDrawLayer(nameof(EyebrellaCloud), DrawPlayer_38_EyebrellaCloud);
 
 		// Mobile layers
 

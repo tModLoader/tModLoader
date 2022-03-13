@@ -1,0 +1,35 @@
+--- src/Terraria/ReLogic/ReLogic.csproj
++++ src/TerrariaNetCore/ReLogic/ReLogic.csproj
+@@ -6,23 +_,20 @@
+     <Company>Re-Logic</Company>
+     <Copyright>Copyright © Re-Logic 2017</Copyright>
+     <RootNamespace>ReLogic</RootNamespace>
+-	<!-- because project name is "ReLogic_LegacyNetFramework" -->
+-    <AssemblyName>ReLogic</AssemblyName>
+   </PropertyGroup>
+   <ItemGroup>
+-    <Reference Include="../Terraria/Libraries/DotNetZip/Ionic.Zip.CF.dll" />
+-    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
+-    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />
+-    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Game.dll" Condition="$(DefineConstants.Contains('XNA'))" />
+-    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Graphics.dll" Condition="$(DefineConstants.Contains('XNA'))" />
+-    <Reference Include="../Terraria/Libraries/JSON.NET/Newtonsoft.Json.dll" />
++    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
++    <ProjectReference Include="../../../FNA/FNA.Core.csproj" />
++    <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
+     <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
+-    <Reference Include="System" />
+-    <Reference Include="System.Core" />
+-    <Reference Include="System.Drawing" />
+-    <Reference Include="System.Windows.Forms" />
+   </ItemGroup>
+   <ItemGroup>
++    <Compile Remove="Localization/IME/Windows/*" />
++    <Compile Remove="Localization/IME/WindowsIme.cs" />
++    <Compile Remove="OS/Windows/WindowsMessageHook.cs" />
+     <EmbeddedResource Include="Microsoft/**" />
++  </ItemGroup>
++  <ItemGroup>
++      <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+   </ItemGroup>
+ </Project>

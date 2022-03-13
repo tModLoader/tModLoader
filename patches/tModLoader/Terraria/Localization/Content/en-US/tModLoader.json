@@ -14,6 +14,8 @@
 		"MenuEnableDeveloperMode": "Enable Developer Mode",
 		"WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
 		"FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
+		"WhatsNewMessage": "The following are basic change notes from the last time you launched the Alpha. You may find that mods that relate to these changes need to be rebuilt by the author. Visit GitHub to see more details:\n",
+		"ViewOnGitHub": "View on GitHub",
 		"tModLoaderSettings": "tModLoader Settings",
 		"ModMenuSwap": "Switch Menu Theme",
 		"AudioNotSupported": "No audio hardware found. Disabling all audio.",
@@ -27,6 +29,7 @@
 		"ModsModPacks": "Mod Packs",
 		"ModsDisable": "Click to disable",
 		"ModsEnable": "Click to enable",
+		"ModConfiguration": "Mod Configuration",
 		"ModsOpenConfig": "Click to open config",
 		"ModOldWarning": "Old mod, enable at own risk",
 		"ModDependencyClickTooltip": "This mod depends on: {0}\n (click to enable)",
@@ -98,7 +101,7 @@
 		"LoadWarningBannerOrBannerItemNotSet": "{0}: {1}. You have set ModNPC.banner or ModNPC.bannerItem, but not the other. Make sure you set both, check your spelling, and that the item exists if you are using mod.ItemType(). Report this to the {0} developers.",
 		"UnloadError": "One or more errors occured while unloading and tModLoader must be restarted to prevent further issues.",
 		"DefensiveUnload": "{0} was unable to unload properly. Modders must use defensive programming to ensure unloading completes regardless of any errors during loading.",
-		"BuildError": "An error ocurred while building {0}",
+		"BuildError": "An error occurred while building {0}",
 		"CompileError": "Compiling {0} failed with {1} errors and {2} warnings",
 		"BuildErrorModNameEmpty": "Mods must actually have stuff in their names",
 		"BuildErrorModNamedTerraria": "Mods names cannot be named Terraria",
@@ -141,6 +144,7 @@
 		"ModInfoNoDescriptionAvailable": "No description available",
 		"ModInfoProblemTryAgain": "There was a problem, try again",
 		"ModInfoDisableModToDelete": "Disable Mod to Delete",
+		"ModInfoVisitSteampage": "Visit the Mod's Steam Workshop page",
 
 		// Mod Packs
 		"ModPacksHeader": "Mod Packs",
@@ -364,6 +368,16 @@
 		"DefaultTownNPCName": "No-Name",
 		"DefaultTownNPCChat": "My modder forgot to give me a chat message.",
 		"DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
+
+		// Memory bar
+		"LastLoadRamUsage": "Estimated last load RAM usage: {0}",
+		"AvailableMemory": "Available Memory: {0}",
+		"TerrariaMemory": "Terraria + misc: {0}",
+		"ManagedMemory": "Managed: {0}",
+		"CodeMemory": "Code: {0}",
+		"SoundMemory": "Sounds: {0}",
+		"TextureMemory": "Textures: {0}",
+		"TotalMemory": "Total: {0}",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Middle Mouse",

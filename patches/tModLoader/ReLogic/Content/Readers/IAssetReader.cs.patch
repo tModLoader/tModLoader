@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/Content/Readers/IAssetReader.cs
+--- src/TerrariaNetCore/ReLogic/Content/Readers/IAssetReader.cs
 +++ src/tModLoader/ReLogic/Content/Readers/IAssetReader.cs
 @@ -1,9 +_,13 @@
 +using System;

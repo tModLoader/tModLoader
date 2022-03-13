@@ -1,11 +1,9 @@
 using log4net;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -13,17 +11,14 @@ using Terraria.ModLoader.Exceptions;
 using System.Linq;
 using Terraria.ModLoader.Config;
 using ReLogic.Content;
-using Terraria.GameContent;
-using Terraria.ModLoader.Assets;
 using ReLogic.Content.Sources;
-using ReLogic.Graphics;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// Mod is an abstract class that you will override. It serves as a central place from which the mod's contents are stored. It provides methods for you to use or override.
 	/// </summary>
-	public abstract partial class Mod
+	public partial class Mod
 	{
 		/// <summary>
 		/// The TmodFile object created when tModLoader reads this mod.
@@ -87,6 +82,7 @@ namespace Terraria.ModLoader
 		public IContentSource RootContentSource { get; private set; }
 
 		internal short netID = -1;
+		public short NetID => netID;
 		public bool IsNetSynced => netID >= 0;
 
 		private IDisposable fileHandle;
@@ -111,7 +107,7 @@ namespace Terraria.ModLoader
 					// Skip loading ClientSide on Main.dedServ?
 					if (mc.Mode == ConfigScope.ServerSide && (Side == ModSide.Client || Side == ModSide.NoSync)) // Client and NoSync mods can't have ServerSide ModConfigs. Server can, but won't be synced.
 						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ServerSide but this Mods ModSide isn't Both or Server");
-					if (mc.Mode == ConfigScope.ClientSide && Side == ModSide.Server) // Doesn't make sense. 
+					if (mc.Mode == ConfigScope.ClientSide && Side == ModSide.Server) // Doesn't make sense.
 						throw new Exception($"The ModConfig {mc.Name} can't be loaded because the config is ClientSide but this Mods ModSide is Server");
 					mc.Mod = this;
 					var name = type.Name;
@@ -148,10 +144,10 @@ namespace Terraria.ModLoader
 		public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
 
 		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod. 
-		/// (The item parameter may be null if you don't want to associate an item with the texture.) 
-		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property. 
-		/// If the EquipType is EquipType.Body, make sure that you also provide an armTexture and a femaleTexture. 
+		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.
+		/// (The item parameter may be null if you don't want to associate an item with the texture.)
+		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property.
+		/// If the EquipType is EquipType.Body, make sure that you also provide an armTexture and a femaleTexture.
 		/// Returns the ID / slot that is assigned to the equipment texture.
 		/// </summary>
 		/// <param name="item">The item.</param>
@@ -166,8 +162,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod. 
-		/// This method is different from the other AddEquipTexture in that you can specify the class of the equipment texture, thus allowing you to override EquipmentTexture's hooks. 
+		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.
+		/// This method is different from the other AddEquipTexture in that you can specify the class of the equipment texture, thus allowing you to override EquipmentTexture's hooks.
 		/// All other parameters are the same as the other AddEquipTexture.
 		/// </summary>
 		/// <param name="equipTexture">The equip texture.</param>
@@ -249,7 +245,7 @@ namespace Terraria.ModLoader
 			int slot = NPCHeadLoader.ReserveHeadSlot();
 
 			NPCHeadLoader.heads[texture] = slot;
-			
+
 			if (!Main.dedServ) {
 				ModContent.Request<Texture2D>(texture);
 			}
@@ -281,43 +277,6 @@ namespace Terraria.ModLoader
 			}
 			return slot;
 		}
-
-		/// <summary>
-		/// Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no ModSound instance is provided, the custom sound will play in a similar manner as the default vanilla ones.
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="soundPath">The sound path.</param>
-		/// <param name="modSound">The mod sound.</param>
-		public void AddSound(SoundType type, string soundPath, ModSound modSound = null) {
-			if (!loading)
-				throw new Exception("AddSound can only be called from Mod.Load or Mod.Autoload");
-
-			int id = SoundLoader.ReserveSoundID(type);
-
-			soundPath = soundPath[..^Path.GetExtension(soundPath).Length];
-			SoundLoader.sounds[type][soundPath] = id;
-
-			if (modSound != null) {
-				SoundLoader.modSounds[type][id] = modSound;
-				modSound.Sound = ModContent.Request<SoundEffect>(soundPath);
-			}
-		}
-
-		/// <summary>
-		/// Shorthand for calling SoundLoader.GetSoundSlot(type, this.Name + '/' + name).
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public int GetSoundSlot(SoundType type, string name) => SoundLoader.GetSoundSlot(type, Name + '/' + name);
-
-		/// <summary>
-		/// Shorthand for calling SoundLoader.GetLegacySoundSlot(type, this.Name + '/' + name).
-		/// </summary>
-		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
-		/// <returns></returns>
-		public LegacySoundStyle GetLegacySoundSlot(SoundType type, string name) => SoundLoader.GetLegacySoundSlot(type, Name + '/' + name);
 
 		/// <summary>
 		/// Retrieves the names of every file packaged into this mod.

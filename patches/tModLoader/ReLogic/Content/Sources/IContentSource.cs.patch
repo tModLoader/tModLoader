@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/Content/Sources/IContentSource.cs
+--- src/TerrariaNetCore/ReLogic/Content/Sources/IContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/IContentSource.cs
 @@ -1,5 +_,6 @@
  using System.Collections.Generic;

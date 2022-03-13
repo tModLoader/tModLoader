@@ -1,3 +1,4 @@
+using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
@@ -17,6 +18,9 @@ using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
+using Terraria.GameContent.Personalities;
+using Terraria.DataStructures;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -46,6 +50,18 @@ namespace ExampleMod.Content.NPCs
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+
+			// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
+			// NOTE: The following code uses chaining - a style that works due to the fact that the SetXAffection methods return the same NPCHappiness instance they're called on.
+			NPC.Happiness
+				.SetBiomeAffection<ForestBiome>(AffectionLevel.Like) // Example Person prefers the forest.
+				.SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike) // Example Person dislikes the snow.
+				.SetBiomeAffection<ExampleSurfaceBiome>(AffectionLevel.Love) // Example Person likes the Example Surface Biome
+				.SetNPCAffection(NPCID.Dryad, AffectionLevel.Love) // Loves living near the dryad.
+				.SetNPCAffection(NPCID.Guide, AffectionLevel.Like) // Likes living near the guide.
+				.SetNPCAffection(NPCID.Merchant, AffectionLevel.Dislike) // Dislikes living near the merchant.
+				.SetNPCAffection(NPCID.Demolitionist, AffectionLevel.Hate) // Hates living near the demolitionist.
+			; // < Mind the semicolon!
 		}
 
 		public override void SetDefaults() {
@@ -125,12 +141,12 @@ namespace ExampleMod.Content.NPCs
 			int score = 0;
 			for (int x = left; x <= right; x++) {
 				for (int y = top; y <= bottom; y++) {
-					int type = Main.tile[x, y].type;
+					int type = Main.tile[x, y].TileType;
 					if (type == ModContent.TileType<ExampleBlock>() || type == ModContent.TileType<ExampleChair>() || type == ModContent.TileType<ExampleWorkbench>() || type == ModContent.TileType<ExampleBed>() || type == ModContent.TileType<ExampleDoorOpen>() || type == ModContent.TileType<ExampleDoorClosed>()) {
 						score++;
 					}
 
-					if (Main.tile[x, y].wall == ModContent.WallType<ExampleWall>()) {
+					if (Main.tile[x, y].WallType == ModContent.WallType<ExampleWall>()) {
 						score++;
 					}
 				}
@@ -203,7 +219,7 @@ namespace ExampleMod.Content.NPCs
 					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
 
 					Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(ModContent.ItemType<WaspNest>());
+					Main.LocalPlayer.QuickSpawnItem(new EntitySource_Gift(NPC), ModContent.ItemType<WaspNest>());
 
 					return;
 				}
@@ -278,7 +294,7 @@ namespace ExampleMod.Content.NPCs
 		public override void OnGoToStatue(bool toKingStatue) {
 			if (Main.netMode == NetmodeID.Server) {
 				ModPacket packet = Mod.GetPacket();
-				packet.Write((byte)ExampleModMessageType.ExampleTeleportToStatue);
+				packet.Write((byte)ExampleMod.MessageType.ExampleTeleportToStatue);
 				packet.Write((byte)NPC.whoAmI);
 				packet.Send();
 			}

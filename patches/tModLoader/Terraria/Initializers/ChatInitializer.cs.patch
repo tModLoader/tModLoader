@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Initializers/ChatInitializer.cs
+--- src/TerrariaNetCore/Terraria/Initializers/ChatInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/ChatInitializer.cs
 @@ -6,6 +_,7 @@
  
@@ -12,7 +12,7 @@
  				"name"
  			});
  
-+			/* AchievementTagHandler removed since achievements also removed 
++			/* AchievementTagHandler removed since achievements also removed
  			ChatManager.Register<AchievementTagHandler>(new string[2] {
  				"a",
  				"achievement"

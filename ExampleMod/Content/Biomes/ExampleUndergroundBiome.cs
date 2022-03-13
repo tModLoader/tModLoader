@@ -30,14 +30,14 @@ namespace ExampleMod.Content.Biomes
 		// Calculate when the biome is active.
 		public override bool IsBiomeActive(Player player) {
 			// Limit the biome height to be underground in either rock layer or dirt layer
-			return (player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight) && 
+			return (player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight) &&
 				// Check how many tiles of our biome are present, such that biome should be active
-				ModContent.GetInstance<ExampleBiomeTileCount>().exampleBlockCount >= 40 && 
+				ModContent.GetInstance<ExampleBiomeTileCount>().exampleBlockCount >= 40 &&
 				// Limit our biome to be in only the horizontal center third of the world.
 				Math.Abs(player.position.ToTileCoordinates().X - Main.maxTilesX / 2) < Main.maxTilesX / 6;
 		}
 
-		// In the event that both our biome AND one or more modded AVFX layers are active with the same AVFXPriority, this can decide which one. 
+		// In the event that both our biome AND one or more modded AVFX layers are active with the same AVFXPriority, this can decide which one.
 		// It's uncommon that need to assign a weight - you'd have to specifically believe that you don't need higher AVFXPriority, but do need to be the active AVFX within the priority you designated
 		// In this case, we don't need it, so this inclusion is purely to demonstrate this is available.
 		// See the GetWeight documentation for more information.
