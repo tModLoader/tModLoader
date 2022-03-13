@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TEFoodPlatter.cs
 @@ -1,10 +_,12 @@
  using System.IO;
@@ -25,12 +25,14 @@
  			writer.Write((short)item.stack);
  		}
  
-@@ -93,20 +_,16 @@
+@@ -93,20 +_,26 @@
  
  		public void DropItem() {
  			if (Main.netMode != 1)
--				Item.NewItem(Position.X * 16, Position.Y * 16, 16, 16, item.netID, 1, noBroadcast: false, item.prefix);
-+				Item.DropItem(item, new Rectangle(Position.X * 16, Position.Y * 16, 16, 16));
++				/*
+ 				Item.NewItem(new EntitySource_TileBreak(Position.X, Position.Y), Position.X * 16, Position.Y * 16, 16, 16, item.netID, 1, noBroadcast: false, item.prefix);
++				*/
++				Item.DropItem(new EntitySource_TileBreak(Position.X, Position.Y), item, new Rectangle(Position.X * 16, Position.Y * 16, 16, 16));
  
  			item = new Item();
  		}
@@ -40,12 +42,14 @@
  			WorldGen.RangeFrame(x, y, x + 1, y + 1);
  			int num = Find(x, y);
  			if (num == -1) {
--				int num2 = Item.NewItem(x * 16, y * 16, 16, 16, 1);
--				Main.item[num2].netDefaults(netid);
--				Main.item[num2].Prefix(prefix);
--				Main.item[num2].stack = stack;
--				NetMessage.SendData(21, -1, -1, null, num2);
-+				Item.DropItem(item, new Rectangle(x * 16, y * 16, 16, 16));
++				/*
+ 				int num2 = Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 16, 16, 1);
+ 				Main.item[num2].netDefaults(netid);
+ 				Main.item[num2].Prefix(prefix);
+ 				Main.item[num2].stack = stack;
+ 				NetMessage.SendData(21, -1, -1, null, num2);
++				*/
++				Item.DropItem(new EntitySource_TileBreak(x, y), item, new Rectangle(x * 16, y * 16, 16, 16));
  				return;
  			}
  

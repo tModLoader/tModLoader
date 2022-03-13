@@ -8,6 +8,7 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using static Terraria.GameContent.Creative.CreativeUI;
 
 namespace Terraria.ModLoader
 {
@@ -78,6 +79,15 @@ namespace Terraria.ModLoader
 		public virtual bool CanUseItem(Item item, Player player) {
 			return true;
 		}
+
+		/// <summary>
+		/// Allows you to modify the autoswing (auto-reuse) behavior of any item without having to mess with Item.autoReuse.
+		/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
+		/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
+		/// </summary>
+		/// <param name="item"> The item. </param>
+		/// <param name="player"> The player. </param>
+		public virtual bool? CanAutoReuseItem(Item item, Player player) => null;
 
 		/// <summary>
 		/// Allows you to modify the location and rotation of any item in its use animation.
@@ -173,13 +183,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts). 
 		/// </summary>
 		/// <param name="item">The item being used</param>
 		/// <param name="player">The player using the item</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05f`</param>
-		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
+		/// <param name="damage">The StatModifier object corresponding to the combination of the damage multipliers currently set to apply to this weapon</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
+		///
 		public virtual void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat) {
 		}
 
@@ -192,11 +202,38 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to choose if a given bait will be consumed by a given player
+		/// Not consuming will always take priority over forced consumption
+		/// </summary>
+		/// <param name="bait">The bait being used</param>
+		/// <param name="player">The player using the item</param>
+		public virtual bool? CanConsumeBait(Player player, Item bait) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to prevent an item from being researched by returning false. True is the default behaviour.
+		/// </summary>
+		/// <param name="item">The item being researched</param>
+		public virtual bool CanResearch(Item item) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to create custom behaviour when an item is accepted by the Research function 
+		/// </summary>
+		/// <param name="item">The item being researched</param>
+		/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
+		public virtual void OnResearched(Item item, bool fullyResearched) {
+		}
+
+		/// <summary>
 		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
 		/// </summary>
 		/// <param name="item">The item being used</param>
 		/// <param name="player">The player using the item</param>
-		/// <param name="knockback">The knockback</param>
+		/// <param name="knockback">The StatModifier object representing the totality of the additive and multiplicative bonuses to be applied to the knockback</param>
+		/// <param name="flat">This is a flat knockback bonus that will be added after additive and multiplicative bonuses are applied.</param>
 		public virtual void ModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat) {
 		}
 
@@ -294,7 +331,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"> The ID of the projectile. </param>
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockback"> The knockback of the projectile. </param>
-		public virtual bool Shoot(Item item, Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public virtual bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			return true;
 		}
 
@@ -502,6 +539,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="armorSlot">head armor (0), body armor (1) or leg armor (2).</param>
 		/// <param name="type">The equipment texture ID of the item that the player is wearing.</param>
+		/// <param name="male">True if the player is male.</param>
 		/// <param name="equipSlot">The altered equipment texture ID for the legs (armorSlot 1 and 2) or head (armorSlot 0)</param>
 		/// <param name="robes">Set to true if you modify equipSlot when armorSlot == 1 to set Player.wearsRobe, otherwise ignore it</param>
 		public virtual void SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) {
@@ -546,11 +584,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to prevent vanilla items from stacking in the world.
-		/// This is only called when two items of the same type attempt to stack.
+		/// Allows you to prevent items from stacking.
+		/// <br/>This is only called when two items of the same type attempt to stack.
+		/// <br/>This is usually not called for coins and ammo in the inventory/UI.
+		/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 		/// </summary>
-		/// <param name="item1">The item that is attempting to stack</param>
-		/// <param name="item2">The item that the other item is attempting to stack with</param>
+		/// <returns>Whether or not the items are allowed to stack</returns>
+		public virtual bool CanStack(Item item1, Item item2) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to prevent items from stacking in the world.
+		/// <br/>This is only called when two items of the same type attempt to stack.
+		/// </summary>
 		/// <returns>Whether or not the items are allowed to stack</returns>
 		public virtual bool CanStackInWorld(Item item1, Item item2) {
 			return true;

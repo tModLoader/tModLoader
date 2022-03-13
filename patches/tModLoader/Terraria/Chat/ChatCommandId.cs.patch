@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Chat/ChatCommandId.cs
+--- src/TerrariaNetCore/Terraria/Chat/ChatCommandId.cs
 +++ src/tModLoader/Terraria/Chat/ChatCommandId.cs
 @@ -7,7 +_,7 @@
  {

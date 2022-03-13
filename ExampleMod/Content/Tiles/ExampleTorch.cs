@@ -86,7 +86,7 @@ namespace ExampleMod.Content.Tiles
 			Tile tile = Main.tile[i, j];
 
 			// If the torch is on
-			if (tile.frameX < 66) {
+			if (tile.TileFrameX < 66) {
 				// Make it emit the following light.
 				r = 0.9f;
 				g = 0.9f;
@@ -130,8 +130,8 @@ namespace ExampleMod.Content.Tiles
 			int width = 20;
 			int height = 20;
 			var tile = Main.tile[i, j];
-			int frameX = tile.frameX;
-			int frameY = tile.frameY;
+			int frameX = tile.TileFrameX;
+			int frameY = tile.TileFrameY;
 
 			for (int k = 0; k < 7; k++) {
 				float xx = Utils.RandomInt(ref randSeed, -10, 11) * 0.15f;

@@ -1,8 +1,8 @@
---- src/Terraria/Terraria/Terraria.csproj
+--- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
 @@ -7,26 +_,27 @@
      <Company>Re-Logic</Company>
-     <Copyright>Copyright © 2021 Re-Logic</Copyright>
+     <Copyright>Copyright © 2022 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
 -    <AssemblyName>Terraria</AssemblyName>
 +    <AssemblyName>tModLoader</AssemblyName>
@@ -52,7 +52,7 @@
      <EmbeddedResource Include="GameContent/Creative/Content/*" />
      <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -47,16 +_,29 @@
+@@ -47,15 +_,28 @@
    <ItemGroup>
      <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
      <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
@@ -60,13 +60,12 @@
 +    <Compile Remove="Libraries/Common/TerrariaHooks.dll" />
      <None Remove="Libraries/Windows/**" />
      <None Remove="Libraries/XNA/**" />
-     <None Remove="Libraries/net40/**" />
      <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
 +    <Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
 +  </ItemGroup>
 +  <ItemGroup>
 +    <PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
-+    <PackageReference Include="MonoMod.RuntimeDetour" Version="21.11.1.1" />
++    <PackageReference Include="MonoMod.RuntimeDetour" Version="22.1.29.1" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.0.0-6.final" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.0.0-6.final" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />

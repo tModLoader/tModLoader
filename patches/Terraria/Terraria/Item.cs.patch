@@ -1,11 +1,11 @@
 --- src/decompiled/Terraria/Item.cs
 +++ src/Terraria/Terraria/Item.cs
-@@ -46250,6 +_,9 @@
+@@ -46254,6 +_,9 @@
  		}
  
  		public static Rectangle GetDrawHitbox(int type, Player user) {
-+			if(Main.dedServ)
-+			return Rectangle.Empty;
++			if (Main.dedServ)
++				return Rectangle.Empty;
 +
  			Main.instance.LoadItem(type);
  			if (ItemID.Sets.IsFood[type])

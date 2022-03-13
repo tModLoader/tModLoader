@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/UI/ItemSorting.cs
+--- src/TerrariaNetCore/Terraria/UI/ItemSorting.cs
 +++ src/tModLoader/Terraria/UI/ItemSorting.cs
 @@ -2,6 +_,7 @@
  using System.Collections.Generic;
@@ -34,3 +34,13 @@
  			for (int i = 0; i < 5; i++) {
  				if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
  					list.RemoveAt(0);
+@@ -919,7 +_,8 @@
+ 						continue;
+ 
+ 					Item item3 = inv[list[k]];
+-					if (item2.type == item3.type && item3.stack != item3.maxStack) {
++					//if (item2.type == item3.type && item3.stack != item3.maxStack) {
++					if (item2.type == item3.type && item3.stack != item3.maxStack && ItemLoader.CanStack(item2, item3)) {
+ 						int num2 = item3.stack;
+ 						if (num < num2)
+ 							num2 = num;

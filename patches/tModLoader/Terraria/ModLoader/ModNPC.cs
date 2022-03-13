@@ -38,9 +38,6 @@ namespace Terraria.ModLoader
 		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the animation (FindFrame) of. Leave as 0 to not copy any animation. Defaults to 0. </summary>
 		public int AnimationType { get; set; }
 
-		/// <summary> The item type of the boss bag that is dropped when DropBossBags is called for this NPC. </summary>
-		public int BossBag { get; set; } = -1;
-
 		/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
 		/// Will be superceded by ModSceneEffect. Kept for legacy.
 		public int Music { get; set; } = -1;
@@ -132,7 +129,6 @@ namespace Terraria.ModLoader
 			copy.Mod = Mod;
 			copy.AIType = AIType;
 			copy.AnimationType = AnimationType;
-			copy.BossBag = BossBag;
 			copy.Music = Music;
 			copy.DrawOffsetY = DrawOffsetY;
 			copy.Banner = Banner;
@@ -502,7 +498,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// When used in conjunction with "npc.hide = true", allows you to specify that this npc should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
 		/// </summary>
-		/// <param name="npc"></param>
 		/// <param name="index"></param>
 		public virtual void DrawBehind(int index)
 		{
@@ -535,7 +530,8 @@ namespace Terraria.ModLoader
 		/// <param name="tileY"></param>
 		/// <returns></returns>
 		public virtual int SpawnNPC(int tileX, int tileY) {
-			return NPC.NewNPC(tileX * 16 + 8, tileY * 16, NPC.type);
+			//TODO: Add IEntitySource in '1.4_onspawn'.
+			return NPC.NewNPC(null, tileX * 16 + 8, tileY * 16, NPC.type);
 		}
 
 		/// <summary>
@@ -547,6 +543,17 @@ namespace Terraria.ModLoader
 		public virtual bool CanTownNPCSpawn(int numTownNPCs, int money) {
 			return false;
 		}
+
+		/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
+		/// <summary>
+		/// Allows you to set an NPC's biome preferences and nearby npc preferences for the NPC happiness system. Recommended to only be used with NPCs that have shops.
+		/// </summary>
+		/// <param name="shopHelperInstance">The vanilla shop modifier instance to invoke methods such as LikeNPC and HateBiome on</param>
+		/// <param name="primaryPlayerBiome">The current biome the player is in for purposes of npc happiness, referred by PrimaryBiomeID </param>
+		/// <param name="nearbyNPCsByType">The boolean array of if each type of npc is nearby</param>
+		public virtual void ModifyNPCHappiness(int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
+		}
+		*/
 
 		/// <summary>
 		/// Allows you to define special conditions required for this town NPC's house. For example, Truffle requires the house to be in an aboveground mushroom biome.

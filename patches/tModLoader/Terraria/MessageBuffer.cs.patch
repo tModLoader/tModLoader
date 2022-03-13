@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/MessageBuffer.cs
+--- src/TerrariaNetCore/Terraria/MessageBuffer.cs
 +++ src/tModLoader/Terraria/MessageBuffer.cs
 @@ -19,6 +_,9 @@
  using Terraria.Net;
@@ -49,7 +49,7 @@
  						if (Netplay.Clients[whoAmI].State != 0)
  							break;
  
--						if (reader.ReadString() == "Terraria" + 244) {
+-						if (reader.ReadString() == "Terraria" + 248) {
 +						string clientVersion = reader.ReadString();
 +						ModNet.isModdedClient[whoAmI] = clientVersion == BuildInfo.versionedName;
 +						if (ModNet.isModdedClient[whoAmI] || clientVersion == "Terraria" + Main.curRelease && ModNet.AllowVanillaClients) {
@@ -170,16 +170,34 @@
  						if (Netplay.Connection.State == 3) {
  							Main.windSpeedCurrent = Main.windSpeedTarget;
  							Netplay.Connection.State = 4;
-@@ -703,6 +_,9 @@
+@@ -703,12 +_,17 @@
  							NetMessage.TrySendData(83, whoAmI, -1, null, num180);
  						}
  
 +						for (int type = NPCID.Count; type < NPCLoader.NPCCount; type++)
 +							NetMessage.SendData(MessageID.NPCKillCountDeathTally, whoAmI, -1, null, type, 0f, 0f, 0f, 0, 0, 0);
 +
- 						NetMessage.TrySendData(49, whoAmI);
++						// tML - move 49 (StartPlaying) to the end, so the player joins a more fully complete world. Should be compatible with vanilla
+-						NetMessage.TrySendData(49, whoAmI);
++						// NetMessage.TrySendData(49, whoAmI);
  						NetMessage.TrySendData(57, whoAmI);
  						NetMessage.TrySendData(7, whoAmI);
+ 						NetMessage.TrySendData(103, -1, -1, null, NPC.MoonLordCountdown);
+ 						NetMessage.TrySendData(101, whoAmI);
+ 						NetMessage.TrySendData(136, whoAmI);
++						NetMessage.TrySendData(49, whoAmI); // tML - moved from above
+ 						Main.BestiaryTracker.OnPlayerJoining(whoAmI);
+ 						CreativePowerManager.Instance.SyncThingsToJoiningPlayer(whoAmI);
+ 						Main.PylonSystem.OnPlayerJoining(whoAmI);
+@@ -1069,7 +_,7 @@
+ 
+ 						BitsByte bitsByte4 = (byte)0;
+ 						BitsByte bitsByte5 = (byte)0;
+-						Tile tile4 = null;
++						Tile tile4 = default;
+ 						for (int num63 = num59; num63 < num59 + num61; num63++) {
+ 							for (int num64 = num60; num64 < num60 + num62; num64++) {
+ 								if (Main.tile[num63, num64] == null)
 @@ -1144,8 +_,8 @@
  						int num181 = reader.ReadInt16();
  						Vector2 position3 = reader.ReadVector2();
@@ -216,16 +234,6 @@
  							obj6.playerIndexTheItemIsReservedFor = Main.myPlayer;
  							if (flag9) {
  								NetMessage.TrySendData(21, -1, -1, null, num181);
-@@ -1286,6 +_,9 @@
- 							}
- 						}
- 
-+						// Reading and receiving has been separated for parity with ProjectileLoader code, and to avoid exceptions causing underreads.
-+						byte[] extraAI = !ModNet.AllowVanillaClients ? NPCLoader.ReadExtraAI(reader) : null;
-+
- 						int num121 = -1;
- 						NPC nPC4 = Main.npc[num116];
- 						if (nPC4.active && Main.multiplayerNPCSmoothingRange > 0 && Vector2.DistanceSquared(nPC4.position, vector4) < 640000f)
 @@ -1336,9 +_,13 @@
  						if (num119 == 245)
  							NPC.golemBoss = num116;
@@ -234,9 +242,9 @@
 +						if (nPC4.type >= 0 && nPC4.type < NPCLoader.NPCCount && Main.npcCatchable[nPC4.type])
  							nPC4.releaseOwner = reader.ReadByte();
  
-+						if (extraAI != null) {
-+							NPCLoader.ReceiveExtraAI(nPC4, extraAI);
-+						}
++						// Extra AI is read into a temporary buffer for parity with ProjectileLoader code, and to avoid exceptions causing underreads.
++						if (!ModNet.AllowVanillaClients)
++							NPCLoader.ReceiveExtraAI(nPC4, NPCLoader.ReadExtraAI(reader));
 +
  						break;
  					}
@@ -310,7 +318,7 @@
  						byte b4 = reader.ReadByte();
  						int num26 = reader.ReadInt16();
  						int num27 = reader.ReadInt16();
-@@ -1623,22 +_,32 @@
+@@ -1623,22 +_,39 @@
  						if (Main.netMode == 2)
  							num29 = 0;
  
@@ -329,12 +337,17 @@
 +
 +										int num30 = WorldGen.PlaceChest(num26, num27, modType, notNearOtherChests: false, num28);
  										if (num30 == -1) {
--											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num30);
--											Item.NewItem(num26 * 16, num27 * 16, 32, 32, Chest.chestItemSpawn[num28], 1, noBroadcast: true);
++											/*
+ 											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num30);
+ 											Item.NewItem(new EntitySource_TileBreak(num26, num27), num26 * 16, num27 * 16, 32, 32, Chest.chestItemSpawn[num28], 1, noBroadcast: true);
++											*/
++											
 +											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num30, modType);
++											
 +											int itemSpawn = b4 < 100 ? Chest.chestItemSpawn[num28] : TileLoader.GetTile(modType).ChestDrop;
++											
 +											if (itemSpawn > 0)
-+												Item.NewItem(num26 * 16, num27 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
++												Item.NewItem(new EntitySource_TileBreak(num26, num27), num26 * 16, num27 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
  										else {
 -											NetMessage.TrySendData(34, -1, -1, null, b4, num26, num27, num28, num30);
@@ -350,7 +363,7 @@
  										Tile tile = Main.tile[num26, num27];
  										if (tile.frameX % 36 != 0)
  											num26--;
-@@ -1657,20 +_,25 @@
+@@ -1657,20 +_,32 @@
  							}
  
  							switch (b4) {
@@ -362,12 +375,17 @@
 +
 +										int num31 = WorldGen.PlaceChest(num26, num27, modType, notNearOtherChests: false, num28);
  										if (num31 == -1) {
--											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num31);
--											Item.NewItem(num26 * 16, num27 * 16, 32, 32, Chest.dresserItemSpawn[num28], 1, noBroadcast: true);
++											/*
+ 											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num31);
+ 											Item.NewItem(new EntitySource_TileBreak(num26, num27), num26 * 16, num27 * 16, 32, 32, Chest.dresserItemSpawn[num28], 1, noBroadcast: true);
++											*/
++
 +											NetMessage.TrySendData(34, whoAmI, -1, null, b4, num26, num27, num28, num31, modType);
++											
 +											int itemSpawn = b4 < 100 ? Chest.dresserItemSpawn[num28] : TileLoader.GetTile(modType).DresserDrop;
++											
 +											if (itemSpawn > 0)
-+												Item.NewItem(num26 * 16, num27 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
++												Item.NewItem(new EntitySource_TileBreak(num26, num27), num26 * 16, num27 * 16, 32, 32, itemSpawn, 1, noBroadcast: true);
  										}
  										else {
 -											NetMessage.TrySendData(34, -1, -1, null, b4, num26, num27, num28, num31);
@@ -445,6 +463,21 @@
  						player9.channel = player9.inventory[player9.selectedItem].channel;
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(41, -1, whoAmI, null, num108);
+@@ -1955,12 +_,12 @@
+ 						if (Main.tile[num94, num95] == null)
+ 							Main.tile[num94, num95] = new Tile();
+ 
+-						lock (Main.tile[num94, num95]) {
++						//lock (Main.tile) {
+ 							Main.tile[num94, num95].liquid = liquid;
+ 							Main.tile[num94, num95].liquidType(liquidType);
+ 							if (Main.netMode == 2)
+ 								WorldGen.SquareTileFrame(num94, num95);
+-						}
++						//}
+ 
+ 						break;
+ 					}
 @@ -1980,7 +_,7 @@
  							break;
  
@@ -481,21 +514,23 @@
  							tileEntity.ID = num54;
  							TileEntity.ByID[tileEntity.ID] = tileEntity;
  							TileEntity.ByPosition[tileEntity.Position] = tileEntity;
-@@ -2676,10 +_,22 @@
+@@ -2676,10 +_,28 @@
  					if (Main.netMode == 2) {
- 						short x13 = reader.ReadInt16();
+ 						short x12 = reader.ReadInt16();
  						int y12 = reader.ReadInt16();
++						/*
+ 						int netid3 = reader.ReadInt16();
+ 						int prefix3 = reader.ReadByte();
+ 						int stack8 = reader.ReadInt16();
+ 						TEItemFrame.TryPlacing(x12, y12, netid3, prefix3, stack8);
++						*/
 +
 +						Item item;
 +
 +						if (ModNet.AllowVanillaClients) {
--						int netid3 = reader.ReadInt16();
 +							int netId = reader.ReadInt16();
--						int prefix3 = reader.ReadByte();
 +							int prefix = reader.ReadByte();
--						int stack8 = reader.ReadInt16();
 +							int stack = reader.ReadInt16();
--						TEItemFrame.TryPlacing(x13, y12, netid3, prefix3, stack8);
 +
 +							item = new Item(netId, prefix, stack);
 +						}
@@ -504,25 +539,27 @@
 +							item.stack = reader.ReadVarInt();
 +						}
 +
-+						TEItemFrame.TryPlacing(x13, y12, item, item.stack);
++						TEItemFrame.TryPlacing(x12, y12, item, item.stack);
  					}
  					break;
  				case 91: {
-@@ -3155,10 +_,22 @@
+@@ -3155,10 +_,28 @@
  					if (Main.netMode == 2) {
- 						short x10 = reader.ReadInt16();
+ 						short x9 = reader.ReadInt16();
  						int y9 = reader.ReadInt16();
-+
++						/*
+ 						int netid2 = reader.ReadInt16();
+ 						int prefix2 = reader.ReadByte();
+ 						int stack6 = reader.ReadInt16();
+ 						TEWeaponsRack.TryPlacing(x9, y9, netid2, prefix2, stack6);
++						*/
++						
 +						Item item;
 +
 +						if (ModNet.AllowVanillaClients) {
--						int netid2 = reader.ReadInt16();
 +							int netId = reader.ReadInt16();
--						int prefix2 = reader.ReadByte();
 +							int prefix = reader.ReadByte();
--						int stack6 = reader.ReadInt16();
 +							int stack = reader.ReadInt16();
--						TEWeaponsRack.TryPlacing(x10, y9, netid2, prefix2, stack6);
 +
 +							item = new Item(netId, stack, prefix);
 +						}
@@ -531,7 +568,7 @@
 +							item.stack = reader.ReadVarInt();
 +						}
 +
-+						TEWeaponsRack.TryPlacing(x10, y9, item, item.stack);
++						TEWeaponsRack.TryPlacing(x9, y9, item, item.stack);
  					}
  					break;
  				case 124: {

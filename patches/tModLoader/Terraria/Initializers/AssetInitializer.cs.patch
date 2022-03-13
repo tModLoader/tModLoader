@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Initializers/AssetInitializer.cs
+--- src/TerrariaNetCore/Terraria/Initializers/AssetInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/AssetInitializer.cs
 @@ -11,21 +_,30 @@
  using Terraria.GameContent;

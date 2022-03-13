@@ -185,6 +185,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="wormChance">Chance for a worm to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-400, Plants-200, Various Piles-6</param>
+		/// <param name="grassHopperChance">Chance for a grass hopper to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-100, Plants-50</param>
+		/// <param name="jungleGrubChance">Chance for a jungle grub to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: JungleVines-250, JunglePlants2-40, PlantDetritus-10</param>
 		public virtual void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
 		}
 
@@ -239,11 +242,23 @@ namespace Terraria.ModLoader
 		public virtual float GetTorchLuck(Player player) => 0f;
 
 		/// <summary>
-		/// Allows you to determine whether this block glows red when the given player has the Dangersense buff.
+		/// Allows you to determine whether this tile glows red when the given player has the Dangersense buff.
+		/// <br/>This is only called on the local client.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool Dangersense(int i, int j, Player player) {
+		/// <param name="player">Main.LocalPlayer</param>
+		public virtual bool IsTileDangerous(int i, int j, Player player) {
+			return false;
+		}
+
+		/// <summary>
+		/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
+		/// <br/>This is only called if Main.tileSpelunker[type] is false.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		public virtual bool IsTileSpelunkable(int i, int j) {
 			return false;
 		}
 

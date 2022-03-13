@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Social/SocialAPI.cs
 +++ src/Terraria/Terraria/Social/SocialAPI.cs
-@@ -22,7 +_,10 @@
+@@ -23,7 +_,10 @@
  		public static void Initialize(SocialMode? mode = null) {
  			if (!mode.HasValue) {
  				mode = SocialMode.None;
@@ -11,19 +11,20 @@
  			}
  
  			_mode = mode.Value;
-@@ -71,8 +_,11 @@
- 			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
+@@ -73,6 +_,12 @@
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
  			Workshop = LoadModule<Terraria.Social.Steam.WorkshopSocialModule>();
-+			if (!Main.dedServ) {
+ 			Platform = LoadModule<Terraria.Social.Steam.PlatformSocialModule>();
++			
++			if (Main.dedServ) {
++				Network = LoadModule<Terraria.Social.Steam.NetServerSocialModule>();
++				return;
++			}
++			
  			Network = LoadModule<Terraria.Social.Steam.NetClientSocialModule>();
  			WeGameHelper.WriteDebugString("LoadSteam modules");
-+			} else
-+			Network = LoadModule<Terraria.Social.Steam.NetServerSocialModule>();
  		}
- 
- 		private static void LoadWeGame() {
-@@ -80,8 +_,11 @@
+@@ -82,8 +_,11 @@
  			Cloud = LoadModule<Terraria.Social.WeGame.CloudSocialModule>();
  			Friends = LoadModule<Terraria.Social.WeGame.FriendsSocialModule>();
  			Overlay = LoadModule<Terraria.Social.WeGame.OverlaySocialModule>();

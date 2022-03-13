@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -18,6 +19,17 @@ namespace Terraria
 		internal Instanced<GlobalItem>[] globalItems = Array.Empty<Instanced<GlobalItem>>();
 
 		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
+
+		/// <summary>
+		/// Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1.
+		/// <br>This prevents it from receiving a prefix on craft.</br>
+		/// </summary>
+		public bool AllowReforgeForStackableItem { get; set; }
+
+		/// <summary>
+		/// Used to make stackable items reforgeable
+		/// </summary>
+		public bool IsCandidateForReforge => maxStack == 1 || AllowReforgeForStackableItem;
 
 		private DamageClass _damageClass = DamageClass.Generic;
 		/// <summary>
@@ -57,6 +69,17 @@ namespace Terraria
 		public bool CountsAsClass(DamageClass damageClass)
 			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
 
+		// public version of IsNotTheSameAs for modders
+		/// <summary>
+		/// returns false if and only if netID (deprecated, equivalent to type), stack and prefix match
+		/// </summary>
+		public bool IsNotSameTypePrefixAndStack(Item compareItem) {
+			if (netID == compareItem.netID && stack == compareItem.stack)
+				return prefix != compareItem.prefix;
+
+			return true;
+		}
+
 		internal static void PopulateMaterialCache() {
 			for (int i = 0; i < Recipe.numRecipes; i++) {
 				foreach (Item item in Main.recipe[i].requiredItem) {
@@ -76,11 +99,11 @@ namespace Terraria
 			ItemID.Sets.IsAMaterial[74] = false;
 		}
 
-		public static int NewItem(Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
-			=> NewItem(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+		public static int NewItem(IEntitySource source, Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
+			=> NewItem(source, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
-		public static int NewItem(Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
-			=> NewItem((int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+		public static int NewItem(IEntitySource source, Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
+			=> NewItem(source, (int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
 		private void ApplyItemAnimationCompensations() {
 			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
@@ -99,8 +122,8 @@ namespace Terraria
 		}
 
 		// Internal utility method. Move somewhere, if there's a better place.
-		internal static void DropItem(Item item, Rectangle rectangle) {
-			int droppedItemId = NewItem(rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
+		internal static void DropItem(IEntitySource source, Item item, Rectangle rectangle) {
+			int droppedItemId = NewItem(source, rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
 			var droppedItem = Main.item[droppedItemId];
 
 			droppedItem.ModItem = item.ModItem;

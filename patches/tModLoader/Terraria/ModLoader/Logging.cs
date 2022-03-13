@@ -49,7 +49,7 @@ namespace Terraria.ModLoader
 
 			ConfigureAppenders(dedServ);
 
-			tML.InfoFormat("Starting tModLoader {0} {1}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier);
+			tML.InfoFormat("Starting tModLoader {0} {1} built {2}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier, $"{BuildInfo.BuildDate:g}");
 			tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 			tML.InfoFormat("Running on {0} {1} {2} {3}", ReLogic.OS.Platform.Current.Type, System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture, FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
@@ -286,8 +286,7 @@ namespace Terraria.ModLoader
 			// In case of OOM, unload the Main.tile array and do immediate garbage collection.
 			// If we don't do this, there will be a big chance that this method will fail to even quit the game, due to another OOM exception being thrown.
 
-			Main.tile = null;
-
+			Main.tile = new Tilemap(0, 0);
 			GC.Collect();
 		}
 

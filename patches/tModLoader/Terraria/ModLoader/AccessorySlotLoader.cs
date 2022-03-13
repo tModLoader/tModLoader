@@ -220,6 +220,7 @@ namespace Terraria.ModLoader
 				DrawSlot(Player.armor, 11, slot + Player.dye.Length, flag3, xLoc, yLoc);
 				DrawSlot(Player.dye, 12, slot, flag3, xLoc, yLoc);
 			}
+			Main.inventoryBack = color;
 
 			return !customLoc;
 		}
@@ -268,7 +269,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Is run in AccessorySlotLoader.Draw.
-		/// Creates & sets up Hide Visibility Button.
+		/// Creates &amp; sets up Hide Visibility Button.
 		/// </summary>
 		internal bool DrawVisibility(ref bool visbility, int context, int xLoc, int yLoc, out int xLoc2, out int yLoc2, out Texture2D value4) {
 			yLoc2 = yLoc - 2;
@@ -401,10 +402,13 @@ namespace Terraria.ModLoader
 					break;
 			}
 
-			if (texture == null)
+			if (texture == null) {
 				texture = value6;
-			else
-				rectangle = new Rectangle(0, 0, 32, 32);
+			}
+			else {
+				rectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+				origin = rectangle.Size() / 2;
+			}
 
 			Main.spriteBatch.Draw(texture, position, rectangle, color, rotation, origin, scale, effects, layerDepth);
 		}
@@ -428,7 +432,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Checks if the provided item can go in to the provided slot.
 		/// Includes checking if the item already exists in either of Player.Armor or ModSlotPlayer.exAccessorySlot
-		/// Invokes directly ItemSlot.AccCheck & ModSlot.CanAcceptItem
+		/// Invokes directly ItemSlot.AccCheck &amp; ModSlot.CanAcceptItem
 		/// </summary>
 		public bool ModSlotCheck(Item checkItem, int slot, int context) => CanAcceptItem(slot, checkItem, context) &&
 			!ItemSlot.AccCheck(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length, context);

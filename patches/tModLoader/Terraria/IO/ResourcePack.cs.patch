@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/IO/ResourcePack.cs
+--- src/TerrariaNetCore/Terraria/IO/ResourcePack.cs
 +++ src/tModLoader/Terraria/IO/ResourcePack.cs
 @@ -108,7 +_,7 @@
  				return _services.Get<IAssetRepository>().Request<Texture2D>("Images/UI/DefaultResourcePackIcon").Value;
