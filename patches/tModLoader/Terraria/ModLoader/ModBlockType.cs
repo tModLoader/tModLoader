@@ -73,6 +73,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="fail">If true, the tile is spawning dust for reasons other than the tile actually being destroyed. Worms, projectiles, and other effects cause dust to spawn aside from the usual case of the tile breaking.</param>
+		/// <param name="num">The number of dust that will be spawned by the calling code</param>
 		public virtual void NumDust(int i, int j, bool fail, ref int num) {
 		}
 

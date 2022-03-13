@@ -55,6 +55,8 @@ namespace Terraria.ModLoader.Setup
             this.exactToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.offsetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fuzzyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonDiffTerrariaNetCore = new System.Windows.Forms.Button();
+            this.buttonPatchTerrariaNetCore = new System.Windows.Forms.Button();
             this.mainMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,9 +65,10 @@ namespace Terraria.ModLoader.Setup
             this.buttonCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.Enabled = false;
-            this.buttonCancel.Location = new System.Drawing.Point(135, 336);
+            this.buttonCancel.Location = new System.Drawing.Point(158, 388);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(82, 23);
+            this.buttonCancel.Size = new System.Drawing.Size(96, 27);
             this.buttonCancel.TabIndex = 6;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -75,27 +78,30 @@ namespace Terraria.ModLoader.Setup
             // 
             this.progressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar.Location = new System.Drawing.Point(12, 307);
+            this.progressBar.Location = new System.Drawing.Point(14, 354);
+            this.progressBar.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(325, 23);
+            this.progressBar.Size = new System.Drawing.Size(379, 27);
             this.progressBar.TabIndex = 1;
             // 
             // labelStatus
             // 
             this.labelStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelStatus.Location = new System.Drawing.Point(12, 184);
+            this.labelStatus.Location = new System.Drawing.Point(14, 212);
+            this.labelStatus.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(323, 120);
+            this.labelStatus.Size = new System.Drawing.Size(377, 138);
             this.labelStatus.TabIndex = 3;
             this.labelStatus.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // buttonSetup
             // 
             this.buttonSetup.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.buttonSetup.Location = new System.Drawing.Point(45, 42);
+            this.buttonSetup.Location = new System.Drawing.Point(52, 48);
+            this.buttonSetup.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonSetup.Name = "buttonSetup";
-            this.buttonSetup.Size = new System.Drawing.Size(129, 23);
+            this.buttonSetup.Size = new System.Drawing.Size(150, 27);
             this.buttonSetup.TabIndex = 0;
             this.buttonSetup.Text = "Setup";
             this.toolTipButtons.SetToolTip(this.buttonSetup, "Complete environment setup for working on tModLoader source\r\nEquivalent to Decomp" +
@@ -108,9 +114,10 @@ namespace Terraria.ModLoader.Setup
             // 
             this.buttonDecompile.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.buttonDecompile.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonDecompile.Location = new System.Drawing.Point(180, 42);
+            this.buttonDecompile.Location = new System.Drawing.Point(210, 48);
+            this.buttonDecompile.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonDecompile.Name = "buttonDecompile";
-            this.buttonDecompile.Size = new System.Drawing.Size(129, 23);
+            this.buttonDecompile.Size = new System.Drawing.Size(150, 27);
             this.buttonDecompile.TabIndex = 1;
             this.buttonDecompile.Text = "Decompile";
             this.toolTipButtons.SetToolTip(this.buttonDecompile, "Uses ILSpy to decompile Terraria\r\nAlso decompiles server classes not included in " +
@@ -122,9 +129,10 @@ namespace Terraria.ModLoader.Setup
             // 
             this.buttonDiffTerraria.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.buttonDiffTerraria.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonDiffTerraria.Location = new System.Drawing.Point(45, 71);
+            this.buttonDiffTerraria.Location = new System.Drawing.Point(52, 82);
+            this.buttonDiffTerraria.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonDiffTerraria.Name = "buttonDiffTerraria";
-            this.buttonDiffTerraria.Size = new System.Drawing.Size(129, 23);
+            this.buttonDiffTerraria.Size = new System.Drawing.Size(150, 27);
             this.buttonDiffTerraria.TabIndex = 4;
             this.buttonDiffTerraria.Text = "Diff Terraria";
             this.toolTipButtons.SetToolTip(this.buttonDiffTerraria, "Recalculates the Terraria patches\r\nDiffs the src/Terraria directory\r\nUsed for fix" +
@@ -136,9 +144,10 @@ namespace Terraria.ModLoader.Setup
             // 
             this.buttonPatchTerraria.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.buttonPatchTerraria.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonPatchTerraria.Location = new System.Drawing.Point(180, 71);
+            this.buttonPatchTerraria.Location = new System.Drawing.Point(210, 82);
+            this.buttonPatchTerraria.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonPatchTerraria.Name = "buttonPatchTerraria";
-            this.buttonPatchTerraria.Size = new System.Drawing.Size(129, 23);
+            this.buttonPatchTerraria.Size = new System.Drawing.Size(150, 27);
             this.buttonPatchTerraria.TabIndex = 2;
             this.buttonPatchTerraria.Text = "Patch Terraria";
             this.toolTipButtons.SetToolTip(this.buttonPatchTerraria, "Applies patches to fix decompile errors\r\nLeaves functionality unchanged\r\nPatched " +
@@ -150,9 +159,10 @@ namespace Terraria.ModLoader.Setup
             // 
             this.buttonPatchModLoader.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.buttonPatchModLoader.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonPatchModLoader.Location = new System.Drawing.Point(180, 100);
+            this.buttonPatchModLoader.Location = new System.Drawing.Point(210, 149);
+            this.buttonPatchModLoader.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonPatchModLoader.Name = "buttonPatchModLoader";
-            this.buttonPatchModLoader.Size = new System.Drawing.Size(129, 23);
+            this.buttonPatchModLoader.Size = new System.Drawing.Size(150, 27);
             this.buttonPatchModLoader.TabIndex = 3;
             this.buttonPatchModLoader.Text = "Patch tModLoader";
             this.toolTipButtons.SetToolTip(this.buttonPatchModLoader, "Applies tModLoader patches to Terraria\r\nEdit the source code in src/tModLoader af" +
@@ -164,9 +174,10 @@ namespace Terraria.ModLoader.Setup
             // 
             this.buttonDiffModLoader.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.buttonDiffModLoader.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonDiffModLoader.Location = new System.Drawing.Point(45, 100);
+            this.buttonDiffModLoader.Location = new System.Drawing.Point(52, 149);
+            this.buttonDiffModLoader.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonDiffModLoader.Name = "buttonDiffModLoader";
-            this.buttonDiffModLoader.Size = new System.Drawing.Size(129, 23);
+            this.buttonDiffModLoader.Size = new System.Drawing.Size(150, 27);
             this.buttonDiffModLoader.TabIndex = 5;
             this.buttonDiffModLoader.Text = "Diff tModLoader";
             this.toolTipButtons.SetToolTip(this.buttonDiffModLoader, resources.GetString("buttonDiffModLoader.ToolTip"));
@@ -185,9 +196,10 @@ namespace Terraria.ModLoader.Setup
             // 
             this.buttonRegenSource.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.buttonRegenSource.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonRegenSource.Location = new System.Drawing.Point(45, 129);
+            this.buttonRegenSource.Location = new System.Drawing.Point(52, 182);
+            this.buttonRegenSource.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonRegenSource.Name = "buttonRegenSource";
-            this.buttonRegenSource.Size = new System.Drawing.Size(264, 23);
+            this.buttonRegenSource.Size = new System.Drawing.Size(308, 27);
             this.buttonRegenSource.TabIndex = 3;
             this.buttonRegenSource.Text = "Regenerate Source";
             this.toolTipButtons.SetToolTip(this.buttonRegenSource, "Regenerates all the source files\r\nUse this after pulling from the repo\r\nEquivalen" +
@@ -203,7 +215,8 @@ namespace Terraria.ModLoader.Setup
             this.patchToolStripMenuItem});
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenuStrip.Name = "mainMenuStrip";
-            this.mainMenuStrip.Size = new System.Drawing.Size(349, 24);
+            this.mainMenuStrip.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.mainMenuStrip.Size = new System.Drawing.Size(407, 24);
             this.mainMenuStrip.TabIndex = 9;
             this.mainMenuStrip.Text = "menuStrip1";
             this.mainMenuStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.mainMenuStrip_ItemClicked);
@@ -317,11 +330,43 @@ namespace Terraria.ModLoader.Setup
             this.fuzzyToolStripMenuItem.Text = "Fuzzy";
             this.fuzzyToolStripMenuItem.Click += new System.EventHandler(this.fuzzyToolStripMenuItem_Click);
             // 
+            // buttonDiffTerrariaNetCore
+            // 
+            this.buttonDiffTerrariaNetCore.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.buttonDiffTerrariaNetCore.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonDiffTerrariaNetCore.Location = new System.Drawing.Point(52, 116);
+            this.buttonDiffTerrariaNetCore.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.buttonDiffTerrariaNetCore.Name = "buttonDiffTerrariaNetCore";
+            this.buttonDiffTerrariaNetCore.Size = new System.Drawing.Size(150, 27);
+            this.buttonDiffTerrariaNetCore.TabIndex = 10;
+            this.buttonDiffTerrariaNetCore.Text = "Diff TerrariaNetCore";
+            this.toolTipButtons.SetToolTip(this.buttonDiffTerrariaNetCore, "Recalculates the Terraria patches\r\nDiffs the src/Terraria directory\r\nUsed for fix" +
+        "ing decompilation errors\r\n");
+            this.buttonDiffTerrariaNetCore.UseVisualStyleBackColor = true;
+            this.buttonDiffTerrariaNetCore.Click += new System.EventHandler(this.buttonTask_Click);
+            // 
+            // buttonPatchTerrariaNetCore
+            // 
+            this.buttonPatchTerrariaNetCore.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.buttonPatchTerrariaNetCore.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonPatchTerrariaNetCore.Location = new System.Drawing.Point(210, 116);
+            this.buttonPatchTerrariaNetCore.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.buttonPatchTerrariaNetCore.Name = "buttonPatchTerrariaNetCore";
+            this.buttonPatchTerrariaNetCore.Size = new System.Drawing.Size(150, 27);
+            this.buttonPatchTerrariaNetCore.TabIndex = 11;
+            this.buttonPatchTerrariaNetCore.Text = "Patch TerrariaNetCore";
+            this.toolTipButtons.SetToolTip(this.buttonPatchTerrariaNetCore, "Applies patches to fix decompile errors\r\nLeaves functionality unchanged\r\nPatched " +
+        "source is located in src/Terraria");
+            this.buttonPatchTerrariaNetCore.UseVisualStyleBackColor = true;
+            this.buttonPatchTerrariaNetCore.Click += new System.EventHandler(this.buttonTask_Click);
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(349, 371);
+            this.ClientSize = new System.Drawing.Size(407, 428);
+            this.Controls.Add(this.buttonPatchTerrariaNetCore);
+            this.Controls.Add(this.buttonDiffTerrariaNetCore);
             this.Controls.Add(this.buttonDiffModLoader);
             this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.buttonDiffTerraria);
@@ -335,6 +380,7 @@ namespace Terraria.ModLoader.Setup
             this.Controls.Add(this.mainMenuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.mainMenuStrip;
+            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "MainForm";
             this.Text = "tModLoader Dev Setup";
             this.mainMenuStrip.ResumeLayout(false);
@@ -372,6 +418,8 @@ namespace Terraria.ModLoader.Setup
 		private System.Windows.Forms.ToolStripMenuItem simplifierToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem formatDecompiledOutputToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem menuItemTmlPath;
+		private System.Windows.Forms.Button buttonDiffTerrariaNetCore;
+		private System.Windows.Forms.Button buttonPatchTerrariaNetCore;
 	}
 }
 

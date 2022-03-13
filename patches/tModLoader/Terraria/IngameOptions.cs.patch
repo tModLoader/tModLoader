@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/IngameOptions.cs
+--- src/TerrariaNetCore/Terraria/IngameOptions.cs
 +++ src/tModLoader/Terraria/IngameOptions.cs
 @@ -3,12 +_,16 @@
  using System;

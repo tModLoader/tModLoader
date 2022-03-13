@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/States/UIBestiaryTest.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIBestiaryTest.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIBestiaryTest.cs
 @@ -34,7 +_,7 @@
  		private string _searchString;

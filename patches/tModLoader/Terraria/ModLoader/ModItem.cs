@@ -148,6 +148,7 @@ namespace Terraria.ModLoader
 		/// Use AllowPrefix to prevent rolling of a certain prefix.
 		/// </summary>
 		/// <param name="pre">The prefix being applied to the item, or the roll mode. -1 is when the item is naturally generated in a chest, crafted, purchased from an NPC, looted from a grab bag (excluding presents), or dropped by a slain enemy (if it's spawned with prefixGiven: -1). -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</param>
+		/// <param name="rand">The random number generator class to be used in random choices</param>
 		/// <returns></returns>
 		public virtual bool? PrefixChance(int pre, UnifiedRandom rand) => null;
 
@@ -263,7 +264,7 @@ namespace Terraria.ModLoader
 		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
 		/// <param name="player">The player using the item</param>
-		/// <param name="damage">Use to directly multiply the player's effective damage.</param>
+		/// <param name="damage">The StatModifier object representing the totality of the additive and multiplicative bonuses to be applied to the player's effective damage.</param>
 		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
 		public virtual void ModifyWeaponDamage(Player player, ref StatModifier damage, ref float flat) {
 		}
@@ -301,7 +302,8 @@ namespace Terraria.ModLoader
 		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
 		/// </summary>
 		/// <param name="player">The player using the item</param>
-		/// <param name="knockback">The knockback</param>
+		/// <param name="knockback">The StatModifier object representing the totality of the additive and multiplicative bonuses to be applied to the knockback</param>
+		/// <param name="flat">This is a flat knockback bonus that will be added after additive and multiplicative bonuses are applied.</param>
 		public virtual void ModifyWeaponKnockback(Player player, ref StatModifier knockback, ref float flat) {
 		}
 
@@ -393,7 +395,7 @@ namespace Terraria.ModLoader
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockback"> The knockback of the projectile. </param>
 		/// <returns></returns>
-		public virtual bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public virtual bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			return true;
 		}
 
@@ -672,10 +674,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to decide if this item is allowed to stack with another of its type in the world.
-		/// This is only called when attempting to stack with an item of the same type.
+		/// Allows you to decide if this item is allowed to stack with another of its type.
+		/// <br/>This is only called when attempting to stack with an item of the same type.
+		/// <br/>This is usually not called for coins and ammo in the inventory/UI.
+		/// <br/>This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
 		/// </summary>
-		/// <param name="item2">The item this is trying to stack with</param>
+		/// <returns>Whether or not the item is allowed to stack</returns>
+		public virtual bool CanStack(Item item2) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to decide if this item is allowed to stack with another of its type in the world.
+		/// <br/>This is only called when attempting to stack with an item of the same type.
+		/// </summary>
 		/// <returns>Whether or not the item is allowed to stack</returns>
 		public virtual bool CanStackInWorld(Item item2) {
 			return true;

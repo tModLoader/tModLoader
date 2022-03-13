@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Audio/ActiveSound.cs
+--- src/TerrariaNetCore/Terraria/Audio/ActiveSound.cs
 +++ src/tModLoader/Terraria/Audio/ActiveSound.cs
 @@ -17,14 +_,14 @@
  			private set;

@@ -125,7 +125,7 @@
 		"LoadErrorCannotLoadCompressedEffects": "Não é possível carregar efeitos compactados.",
 
 		"LoadErrorNotLoading": "Mod.AddContent só pode ser chamado durante o carregamento",
-		"LoadErrorDuplicateName": "Não é possível adicionar dois {0} com o mesmo nome: {1}. Talvez 2 classes compartilhem um nome de classe, mas em namespaces diferentes durante o carregamento automático ou você chamou manualmente AddContent com 2 {0} do mesmo nome.",
+		"LoadErrorDuplicateName": "Não é possível adicionar dois {0} com o mesmo nome: {1}. Talvez 2 classes compartilham um nome de classe, mas em namespaces diferentes durante o carregamento automático, ou você chamou manualmente AddContent com 2 {0} do mesmo nome.",
 
 		"LoadErrorResourceNotFoundPathHint": "Recurso esperado não encontrado:\n    {0}\nEstimativa mais próxima: (Há um erro de ortografia ou de posicionamento da pasta?)\n    {1}",
 		"RuntimeErrorSilentlyCaughtException": "Exceção Detectada Silenciosamente: ",
@@ -144,6 +144,7 @@
 		"ModInfoNoDescriptionAvailable": "Descrição não disponível",
 		"ModInfoProblemTryAgain": "Ocorreu um problema, tente novamente",
 		"ModInfoDisableModToDelete": "Desabilite o Mod para Excluir",
+		"ModInfoVisitSteampage": "Visite a página do Mod na Oficina Steam",
 
 		// Mod Packs
 		"ModPacksHeader": "Pacotes de Mods",
@@ -367,6 +368,16 @@
 		"DefaultTownNPCName": "Sem Nome",
 		"DefaultTownNPCChat": "Meu desenvolvedor de mod se esqueceu de me dar uma mensagem de bate-papo.",
 		"DefaultNurseCantHealChat": "Não sei por que não posso curar você, o meu desenvolvedor de mod se esqueceu de me dar uma mensagem de bate-papo.",
+		
+		// Memory bar
+		"LastLoadRamUsage": "Uso estimado de RAM no último carregamento: {0}",
+		"AvailableMemory": "Memória Disponível: {0}",
+		"TerrariaMemory": "Terraria + outros: {0}",
+		"ManagedMemory": "Gerenciado: {0}",
+		"CodeMemory": "Código: {0}",
+		"SoundMemory": "Sons: {0}",
+		"TextureMemory": "Texturas: {0}",
+		"TotalMemory": "Total: {0}",
 
 		// Extra mouse buttons
 		"MouseMiddle": "Meio do Mouse",

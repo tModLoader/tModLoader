@@ -8,13 +8,9 @@ namespace ExampleMod
 	{
 		public const string AssetPath = $"{nameof(ExampleMod)}/Assets/";
 
-		public static ModKeybind RandomBuffKeybind;
 		public static int ExampleCustomCurrencyId;
 
 		public override void Load() {
-			// Registers a new keybind
-			RandomBuffKeybind = KeybindLoader.RegisterKeybind(this, "Random Buff", "P");
-
 			// Registers a new custom currency
 			ExampleCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Currencies.ExampleCustomCurrency(ModContent.ItemType<Content.Items.ExampleItem>(), 999L, "Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
 		}
@@ -27,9 +23,6 @@ namespace ExampleMod
 
 			// NOTE: When writing unload code - be sure use 'defensive programming'. Or, in other words, you should always assume that everything in the mod you're unloading might've not even been initialized yet.
 			// NOTE: There is rarely a need to null-out values of static fields, since TML aims to completely dispose mod assemblies in-between mod reloads.
-
-			// Not required if your AssemblyLoadContext is unloading properly, but nulling out static fields can help you figure out what's keeping it loaded.
-			RandomBuffKeybind = null;
 		}
 	}
 }

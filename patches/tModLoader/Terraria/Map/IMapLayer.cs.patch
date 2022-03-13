@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Map/IMapLayer.cs
+--- src/TerrariaNetCore/Terraria/Map/IMapLayer.cs
 +++ src/tModLoader/Terraria/Map/IMapLayer.cs
 @@ -3,5 +_,9 @@
  	public interface IMapLayer
