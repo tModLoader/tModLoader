@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Biomes
 			return Color.White;
 		}
 
-		public override byte GetRainType() {
+		public override byte GetRainVariant() {
 			return (byte)Main.rand.Next(3);
 		}
 

@@ -71,11 +71,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Return the type of rain used. Equal to the offset in the rain texture divided by four.
-		/// <br/>Vanilla rain has three types per biome, and so vanilla types range from 0 to 3 * Main.maxLiquidTextures.
+		/// Return the variant of rain used. Equal to the offset in the rain texture divided by four.
+		/// <br/>Vanilla rain has three variants per biome, and so vanilla variants range from 0 to 3 * Main.maxLiquidTextures.
 		/// <br/>Default is a random number from 0 to 2, which creates normal vanilla forest biome rain.
 		/// </summary>
-		public virtual byte GetRainType() {
+		public virtual byte GetRainVariant() {
 			return (byte)Main.rand.Next(3);
 		}
 	}

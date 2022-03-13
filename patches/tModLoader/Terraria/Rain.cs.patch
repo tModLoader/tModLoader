@@ -14,10 +14,10 @@
  			rain.velocity = Velocity * rain.scale;
  			rain.rotation = (float)Math.Atan2(rain.velocity.X, 0f - rain.velocity.Y);
 +
-+			// tML: Get rain type from custom water style.
++			// tML: Get rain variant from custom water style.
 +			rain.waterStyle = (byte)Main.waterStyle;
 +			if (Main.waterStyle >= Main.maxLiquidTypes) {
-+				rain.type = ModLoader.LoaderManager.Get<ModLoader.WaterStylesLoader>().Get(Main.waterStyle).GetRainType();
++				rain.type = ModLoader.LoaderManager.Get<ModLoader.WaterStylesLoader>().Get(Main.waterStyle).GetRainVariant();
 +				return num;
 +			}
 +
@@ -29,10 +29,10 @@
  			rain.velocity = Velocity * rain.scale;
  			rain.rotation = (float)Math.Atan2(rain.velocity.X, 0f - rain.velocity.Y);
 +
-+			// tML: Get rain type from custom water style.
++			// tML: Get rain variant from custom water style.
 +			rain.waterStyle = (byte)Main.waterStyle;
 +			if (Main.waterStyle >= Main.maxLiquidTypes) {
-+				rain.type = ModLoader.LoaderManager.Get<ModLoader.WaterStylesLoader>().Get(Main.waterStyle).GetRainType();
++				rain.type = ModLoader.LoaderManager.Get<ModLoader.WaterStylesLoader>().Get(Main.waterStyle).GetRainVariant();
 +				return num;
 +			}
 +
