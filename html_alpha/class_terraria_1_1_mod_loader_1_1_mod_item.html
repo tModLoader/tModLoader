@@ -2859,7 +2859,7 @@ This is only called when attempting to stack with an item of the same type. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player using the item</td></tr>
-    <tr><td class="paramname">damage</td><td>Use to directly multiply the player's effective damage.</td></tr>
+    <tr><td class="paramname">damage</td><td>The <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> object representing the totality of the additive and multiplicative bonuses to be applied to the player's effective damage.</td></tr>
     <tr><td class="paramname">flat</td><td>This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</td></tr>
   </table>
   </dd>
@@ -2911,7 +2911,8 @@ This is only called when attempting to stack with an item of the same type. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player using the item</td></tr>
-    <tr><td class="paramname">knockback</td><td>The knockback</td></tr>
+    <tr><td class="paramname">knockback</td><td>The <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> object representing the totality of the additive and multiplicative bonuses to be applied to the knockback</td></tr>
+    <tr><td class="paramname">flat</td><td>This is a flat knockback bonus that will be added after additive and multiplicative bonuses are applied.</td></tr>
   </table>
   </dd>
 </dl>
@@ -4088,6 +4089,7 @@ Called before the ammo stack is reduced. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pre</td><td>The prefix being applied to the item, or the roll mode. -1 is when the item is naturally generated in a chest, crafted, purchased from an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>, looted from a grab bag (excluding presents), or dropped by a slain enemy (if it's spawned with prefixGiven: -1). -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</td></tr>
+    <tr><td class="paramname">rand</td><td>The random number generator class to be used in random choices</td></tr>
   </table>
   </dd>
 </dl>

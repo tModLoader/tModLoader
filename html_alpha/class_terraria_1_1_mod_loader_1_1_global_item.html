@@ -2865,8 +2865,7 @@ This is only called when two items of the same type attempt to stack. </p>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item being used</td></tr>
     <tr><td class="paramname">player</td><td>The player using the item</td></tr>
-    <tr><td class="paramname">add</td><td>Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: <code>add += 0.05f</code></td></tr>
-    <tr><td class="paramname">mult</td><td>Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</td></tr>
+    <tr><td class="paramname">damage</td><td>The <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> object corresponding to the combination of the damage multipliers currently set to apply to this weapon</td></tr>
     <tr><td class="paramname">flat</td><td>This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</td></tr>
   </table>
   </dd>
@@ -2925,7 +2924,8 @@ This is only called when two items of the same type attempt to stack. </p>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item being used</td></tr>
     <tr><td class="paramname">player</td><td>The player using the item</td></tr>
-    <tr><td class="paramname">knockback</td><td>The knockback</td></tr>
+    <tr><td class="paramname">knockback</td><td>The <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> object representing the totality of the additive and multiplicative bonuses to be applied to the knockback</td></tr>
+    <tr><td class="paramname">flat</td><td>This is a flat knockback bonus that will be added after additive and multiplicative bonuses are applied.</td></tr>
   </table>
   </dd>
 </dl>
@@ -4524,6 +4524,7 @@ Called before the ammo stack is reduced. </p>
   <table class="params">
     <tr><td class="paramname">armorSlot</td><td>head armor (0), body armor (1) or leg armor (2).</td></tr>
     <tr><td class="paramname">type</td><td>The equipment texture <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the item that the player is wearing.</td></tr>
+    <tr><td class="paramname">male</td><td>True if the player is male.</td></tr>
     <tr><td class="paramname">equipSlot</td><td>The altered equipment texture <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> for the legs (armorSlot 1 and 2) or head (armorSlot 0)</td></tr>
     <tr><td class="paramname">robes</td><td>Set to true if you modify equipSlot when armorSlot == 1 to set Player.wearsRobe, otherwise ignore it</td></tr>
   </table>

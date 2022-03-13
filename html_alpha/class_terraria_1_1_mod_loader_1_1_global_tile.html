@@ -526,8 +526,8 @@ Additional Inherited Members</h2></td></tr>
 <p>Allows you to determine whether the given item can become selected when the cursor is hovering over a tile and the auto selection keybind is pressed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
     <tr><td class="paramname">item</td><td></td></tr>
   </table>
@@ -586,9 +586,9 @@ Additional Inherited Members</h2></td></tr>
 <p>Allows you to determine whether or not the tile at the given coordinates can be hit by anything. Returns true by default. blockDamaged currently has no use. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
-    <tr><td class="paramname">type</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The tile type</td></tr>
     <tr><td class="paramname">blockDamaged</td><td></td></tr>
   </table>
   </dd>
@@ -699,6 +699,8 @@ Additional Inherited Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
     <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The <a class="el" href="struct_terraria_1_1_tile.html">Tile</a> type of the tile being drawn</td></tr>
+    <tr><td class="paramname">spriteBatch</td><td>The SpriteBatch that should be used for all draw calls</td></tr>
     <tr><td class="paramname">drawData</td><td>Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</td></tr>
   </table>
   </dd>
@@ -811,12 +813,12 @@ Additional Inherited Members</h2></td></tr>
 <p>Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
-    <tr><td class="paramname">type</td><td></td></tr>
-    <tr><td class="paramname">wormChance</td><td></td></tr>
-    <tr><td class="paramname">grassHopperChance</td><td></td></tr>
-    <tr><td class="paramname">jungleGrubChance</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The tile type</td></tr>
+    <tr><td class="paramname">wormChance</td><td>Chance for a worm to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-400, Plants-200, Various Piles-6</td></tr>
+    <tr><td class="paramname">grassHopperChance</td><td>Chance for a grass hopper to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-100, Plants-50</td></tr>
+    <tr><td class="paramname">jungleGrubChance</td><td>Chance for a jungle grub to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: JungleVines-250, JunglePlants2-40, PlantDetritus-10</td></tr>
   </table>
   </dd>
 </dl>
@@ -911,8 +913,8 @@ Additional Inherited Members</h2></td></tr>
 <p>Allows you to make something happen when a wire current passes through any tile. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
   </table>
   </dd>
@@ -1095,9 +1097,9 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <p>Allows you to determine what happens when the tile at the given coordinates is killed or hit with a pickaxe. If <em>fail</em>  is true, the tile will not be mined; <em>effectOnly</em>  makes it so that only dust is created; <em>noItem</em>  stops items from dropping. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
-    <tr><td class="paramname">type</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The tile type</td></tr>
     <tr><td class="paramname">fail</td><td></td></tr>
     <tr><td class="paramname">effectOnly</td><td></td></tr>
     <tr><td class="paramname">noItem</td><td></td></tr>
@@ -1150,8 +1152,8 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <p>Allows you to make something happen when the mouse hovers over any tile. Useful for showing item icons or text on the mouse. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
   </table>
   </dd>
@@ -1202,8 +1204,8 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <p>Allows you to make something happen when the mouse hovers over any tile, even when the player is far away. Useful for showing what's written on signs, etc. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
   </table>
   </dd>
@@ -1260,9 +1262,9 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <p>Allows you to make things happen when the tile is within a certain range of the player (around the same range water fountains and music boxes work). The closer parameter is whether or not the tile is within the range at which things like campfires and banners work. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
-    <tr><td class="paramname">type</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The tile type</td></tr>
     <tr><td class="paramname">closer</td><td></td></tr>
   </table>
   </dd>
@@ -1313,8 +1315,8 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <p>Whether or not the vanilla HitWire code and the HitWire hook is allowed to run. Useful for overriding vanilla behavior by returning false. Returns true by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
   </table>
   </dd>
@@ -1395,8 +1397,8 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <p>Allows you to make something happen when any tile is right-clicked by the player. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
   </table>
   </dd>
@@ -1499,9 +1501,9 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <p>Allows you to determine whether or not a tile will draw itself flipped in the world. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
-    <tr><td class="paramname">type</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The tile type</td></tr>
     <tr><td class="paramname">spriteEffects</td><td></td></tr>
   </table>
   </dd>
@@ -1581,8 +1583,8 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <p>Allows you to control how hammers slope any tile. Return true to allow the tile to slope normally. Returns true by default. Called on the local Client and Single <a class="el" href="class_terraria_1_1_player.html">Player</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
   </table>
   </dd>
@@ -1703,8 +1705,8 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <p>Called for every tile that updates due to being placed or being next to a tile that is changed. Return false to stop the game from carrying out its default TileFrame operations. Returns true by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">i</td><td></td></tr>
-    <tr><td class="paramname">j</td><td></td></tr>
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td></td></tr>
     <tr><td class="paramname">resetFrame</td><td></td></tr>
     <tr><td class="paramname">noBreak</td><td></td></tr>
