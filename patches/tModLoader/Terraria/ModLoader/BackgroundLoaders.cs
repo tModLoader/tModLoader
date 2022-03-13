@@ -36,6 +36,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Adds a texture to the list of background textures and assigns it a background texture slot.
 		/// </summary>
+		/// <param name="mod">The mod that owns this background.</param>
 		/// <param name="texture">The texture.</param>
 		public static void AddBackgroundTexture(Mod mod, string texture) {
 			if (mod == null)

@@ -3026,6 +3026,22 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
+@@ -35120,6 +_,7 @@
+ 			if (!CanShowInfoAccs)
+ 				return;
+ 
++#pragma warning disable CS0219
+ 			bool flag = false;
+ 			bool flag2 = false;
+ 			bool flag3 = false;
+@@ -35132,6 +_,7 @@
+ 			bool flag10 = false;
+ 			bool flag11 = false;
+ 			bool flag12 = false;
++#pragma warning restore CS0219
+ 			int num = -1;
+ 			int num2 = -10;
+ 			int num3 = 0;
 @@ -35143,10 +_,18 @@
  				num4 += 50f;
  			}
