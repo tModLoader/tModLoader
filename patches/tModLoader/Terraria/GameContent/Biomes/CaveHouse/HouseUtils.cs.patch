@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Biomes/CaveHouse/HouseUtils.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Biomes/CaveHouse/HouseUtils.cs
 +++ src/tModLoader/Terraria/GameContent/Biomes/CaveHouse/HouseUtils.cs
 @@ -8,8 +_,8 @@
  {

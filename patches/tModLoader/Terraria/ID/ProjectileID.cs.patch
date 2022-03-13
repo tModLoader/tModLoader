@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/ProjectileID.cs
+--- src/TerrariaNetCore/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
 @@ -1,4 +_,6 @@
  using ReLogic.Reflection;

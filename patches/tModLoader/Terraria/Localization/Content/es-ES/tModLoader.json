@@ -144,6 +144,7 @@
 		"ModInfoNoDescriptionAvailable": "Sin descripción",
 		"ModInfoProblemTryAgain": "Ha habido un problema, inténtalo de nuevo",
 		"ModInfoDisableModToDelete": "Desactiva el mod para borrarlo",
+		"ModInfoVisitSteampage": "Visita la página del mod en Steam Workshop",
 
 		// Mod Packs
 		"ModPacksHeader": "Paquetes de mods",
@@ -368,6 +369,16 @@
 		"DefaultTownNPCChat": "A mi modder se le olvidó darme un mensaje que decir.",
 		"DefaultNurseCantHealChat": "No sé por qué no puedo curarte, a mi modder se le olvidó darme un mensaje que decir.",
 
+		// Memory bar
+		"LastLoadRamUsage": "Uso de RAM estimado en la última carga: {0}",
+		"AvailableMemory": "Memoria disponible: {0}",
+		"TerrariaMemory": "Terraria + misc.: {0}",
+		"ManagedMemory": "Administrado: {0}",
+		"CodeMemory": "Código: {0}",
+		"SoundMemory": "Sonidos: {0}",
+		"TextureMemory": "Texturas: {0}",
+		"TotalMemory": "Total: {0}",
+		
 		// Extra mouse buttons
 		"MouseMiddle": "Clic medio",
 		"MouseXButton1": "Botón 4",

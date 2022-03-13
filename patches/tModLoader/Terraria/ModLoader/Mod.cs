@@ -82,6 +82,7 @@ namespace Terraria.ModLoader
 		public IContentSource RootContentSource { get; private set; }
 
 		internal short netID = -1;
+		public short NetID => netID;
 		public bool IsNetSynced => netID >= 0;
 
 		private IDisposable fileHandle;
@@ -153,8 +154,6 @@ namespace Terraria.ModLoader
 		/// <param name="type">The type.</param>
 		/// <param name="name">The name.</param>
 		/// <param name="texture">The texture.</param>
-		/// <param name="armTexture">The arm texture (for body slots).</param>
-		/// <param name="femaleTexture">The female texture (for body slots), if missing the regular body texture is used.</param>
 		/// <returns></returns>
 		public int AddEquipTexture(ModItem item, EquipType type, string texture) {
 			return AddEquipTexture(new EquipTexture(), item, type, texture);
@@ -295,6 +294,7 @@ namespace Terraria.ModLoader
 		/// Retrieve contents of files within the tmod file
 		/// </summary>
 		/// <param name="name">The name.</param>
+		/// <param name="newFileStream"></param>
 		/// <returns></returns>
 		public Stream GetFileStream(string name, bool newFileStream = false) => File?.GetStream(name, newFileStream);
 

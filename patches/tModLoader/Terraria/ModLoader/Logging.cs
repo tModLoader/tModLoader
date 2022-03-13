@@ -49,7 +49,7 @@ namespace Terraria.ModLoader
 
 			ConfigureAppenders(dedServ);
 
-			tML.InfoFormat("Starting tModLoader {0} {1}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier);
+			tML.InfoFormat("Starting tModLoader {0} {1} built {2}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier, $"{BuildInfo.BuildDate:g}");
 			tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 			tML.InfoFormat("Running on {0} {1} {2} {3}", ReLogic.OS.Platform.Current.Type, System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture, FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);

@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/Content/RejectedAssetCollection.cs
+--- src/TerrariaNetCore/ReLogic/Content/RejectedAssetCollection.cs
 +++ src/tModLoader/ReLogic/Content/RejectedAssetCollection.cs
 @@ -7,18 +_,28 @@
  		private Dictionary<string, IRejectionReason> _rejectedAssetsAndReasons = new Dictionary<string, IRejectionReason>();

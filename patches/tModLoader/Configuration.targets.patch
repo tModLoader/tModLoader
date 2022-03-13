@@ -1,4 +1,4 @@
---- src/Terraria/Configuration.targets
+--- src/TerrariaNetCore/Configuration.targets
 +++ src/tModLoader/Configuration.targets
 @@ -3,6 +_,8 @@
      <TargetFramework>net6.0</TargetFramework>

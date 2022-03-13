@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/TeleportPylonsSystem.cs
+--- src/TerrariaNetCore/Terraria/GameContent/TeleportPylonsSystem.cs
 +++ src/tModLoader/Terraria/GameContent/TeleportPylonsSystem.cs
 @@ -16,7 +_,7 @@
  		private List<TeleportPylonInfo> _pylonsOld = new List<TeleportPylonInfo>();

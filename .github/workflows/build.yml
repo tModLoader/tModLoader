@@ -59,7 +59,7 @@ jobs:
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
-          key: 1432-A
+          key: 1436-A
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -152,7 +152,7 @@ jobs:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
           BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
-          TERRARIA_VERSION: 1432
+          TERRARIA_VERSION: 1436
           
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2

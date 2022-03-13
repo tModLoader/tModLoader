@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Netplay.cs
+--- src/TerrariaNetCore/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
 @@ -11,12 +_,14 @@
  using Terraria.IO;

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/LootSimulation/LootSimulator.cs
+--- src/TerrariaNetCore/Terraria/GameContent/LootSimulation/LootSimulator.cs
 +++ src/tModLoader/Terraria/GameContent/LootSimulation/LootSimulator.cs
 @@ -3,6 +_,7 @@
  using System.Diagnostics;
