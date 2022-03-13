@@ -498,7 +498,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// When used in conjunction with "npc.hide = true", allows you to specify that this npc should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
 		/// </summary>
-		/// <param name="npc"></param>
 		/// <param name="index"></param>
 		public virtual void DrawBehind(int index)
 		{
