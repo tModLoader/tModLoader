@@ -118,13 +118,26 @@
  					int num3 = item[i].stack;
  					if (inventory[num2].maxStack - inventory[num2].stack < num3)
  						num3 = inventory[num2].maxStack - inventory[num2].stack;
-@@ -1000,6 +_,9 @@
- 			if (I.maxStack > 1) {
- 				for (int i = 0; i < 40; i++) {
+@@ -1002,6 +_,9 @@
  					if (chestinv[i].stack >= chestinv[i].maxStack || !I.IsTheSameAs(chestinv[i]))
-+						continue;
-+
-+					if (!ItemLoader.CanStack(chestinv[i], I))
  						continue;
  
++					if (!ItemLoader.CanStack(chestinv[i], I))
++						continue;
++
  					int num = I.stack;
+ 					if (I.stack + chestinv[i].stack > chestinv[i].maxStack)
+ 						num = chestinv[i].maxStack - chestinv[i].stack;
+@@ -1079,10 +_,10 @@
+ 		}
+ 
+ 		public static bool IsBlockedFromTransferIntoChest(Item item, Item[] container) {
+-			if (item.type == 3213 && item.favorited && container == Main.LocalPlayer.bank.item)
++			if (item.type == 3213 && item.favorited && container == Main.LocalPlayer.bank.item.GetItemArray()) //container == Main.LocalPlayer.bank.item
+ 				return true;
+ 
+-			if (item.type == 4131 && item.favorited && container == Main.LocalPlayer.bank4.item)
++			if (item.type == 4131 && item.favorited && container == Main.LocalPlayer.bank4.item.GetItemArray()) //container == Main.LocalPlayer.bank4.item
+ 				return true;
+ 
+ 			return false;

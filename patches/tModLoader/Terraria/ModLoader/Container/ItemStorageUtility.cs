@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 #nullable enable
+
 namespace Terraria.ModLoader.Container
 {
 	public static partial class ItemStorageUtility
@@ -39,10 +41,16 @@ namespace Terraria.ModLoader.Container
 		/// Drops items from the storage into the rectangle specified.
 		/// </summary>
 		public static void DropItems(this ItemStorage storage, object? user, Rectangle hitbox) {
+			IEntitySource? source = null;
+
+			if (user is Entity entity) {
+				source = new EntitySource_Parent(entity);
+			}
+
 			for (int i = 0; i < storage.Count; i++) {
 				Item item = storage[i];
 				if (!item.IsAir) {
-					Item.NewItem(hitbox, item.type, item.stack, prefixGiven: item.prefix);
+					Item.NewItem(source, hitbox, item.type, item.stack, prefixGiven: item.prefix);
 					storage.RemoveItem(user, i);
 				}
 			}
