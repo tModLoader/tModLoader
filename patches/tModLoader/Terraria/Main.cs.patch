@@ -2525,6 +2525,26 @@
  		}
  
  		public void DrawItems() {
+@@ -28356,6 +_,19 @@
+ 				Rain rain = Main.rain[i];
+ 				if (rain.active) {
+ 					value.X = rain.type * 4;
++
++					if (rain.waterStyle >= maxLiquidTypes) {
++						value2 = LoaderManager.Get<WaterStylesLoader>().Get(rain.waterStyle).GetRainTexture().Value;
++						if (value2 == null) {
++							if (flag)
++								rain.Update();
++							continue;
++						}
++					}
++					else {
++						value2 = TextureAssets.Rain.Value;
++					}
++
+ 					spriteBatch.Draw(value2, rain.position - screenPosition, value, Lighting.GetColor((int)(rain.position.X + 4f) >> 4, (int)(rain.position.Y + 4f) >> 4) * 0.85f, rain.rotation, zero, rain.scale, SpriteEffects.None, 0f);
+ 					if (flag)
+ 						rain.Update();
 @@ -28484,6 +_,13 @@
  					if (dust.type == 213)
  						scale = 1f;
