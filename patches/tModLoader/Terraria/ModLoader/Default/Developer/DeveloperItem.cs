@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.Default.Developer
 
 		public override void SetStaticDefaults() {
 			string displayName = Name.Replace('_', ' ');
-			displayName.Insert(displayName.IndexOf(' '), SetSuffix);
+			displayName = displayName.Insert(displayName.IndexOf(' '), SetSuffix);
 			DisplayName.SetDefault(displayName);
 		}
 
