@@ -1,5 +1,8 @@
 var NAVTREEINDEX110 =
 {
+"class_terraria_1_1_social_1_1_base_1_1_friends_social_module.html#af0df83f3e31f96d444945f442aadf4bc":[1,0,2,19,0,6,0],
+"class_terraria_1_1_social_1_1_base_1_1_mod_workshop_entry.html":[1,0,2,19,0,7],
+"class_terraria_1_1_social_1_1_base_1_1_mod_workshop_entry.html#adb1838f01dbafbbf4e1c615565703611":[1,0,2,19,0,7,0],
 "class_terraria_1_1_social_1_1_base_1_1_net_social_module.html":[1,0,2,19,0,8],
 "class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#a07fa63ca759f0f7e72d61edffbcf04d1":[1,0,2,19,0,8,6],
 "class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#a1c072cad6761eed37afb4030a2206225":[1,0,2,19,0,8,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX110 =
 "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer_1_1_write_information.html#a7a50f6158abacda330255adb6fbf948f":[1,0,2,19,1,11,0,2],
 "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer_1_1_write_information.html#a988730b721acd7d55c21a94998b5d396":[1,0,2,19,1,11,0,3],
 "class_terraria_1_1_social_1_1_steam_1_1_supported_workshop_tags.html":[1,0,2,19,1,12],
-"class_terraria_1_1_social_1_1_steam_1_1_supported_workshop_tags.html#ae41add51572f8722881144e53a21f088":[1,0,2,19,1,12,0],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_helper.html":[1,0,2,19,1,13],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_mod_publisher_instance.html":[1,0,2,19,1,13,1],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_mod_publisher_instance.html#a90f4ae2f3f5278e53249fc97f622ba4e":[1,0,2,19,1,13,1,1]
+"class_terraria_1_1_social_1_1_steam_1_1_supported_workshop_tags.html#ae41add51572f8722881144e53a21f088":[1,0,2,19,1,12,0]
 };

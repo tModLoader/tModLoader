@@ -110,6 +110,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a51592d920537ede237a9ea791255dda1"><td class="memItemLeft" align="right" valign="top">abstract int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a51592d920537ede237a9ea791255dda1">GetDropletGore</a> ()</td></tr>
 <tr class="memdesc:a51592d920537ede237a9ea791255dda1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the gore that represents droplets of water falling down from a block.  <a href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a51592d920537ede237a9ea791255dda1">More...</a><br /></td></tr>
 <tr class="separator:a51592d920537ede237a9ea791255dda1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6442e8299dd68d77fe2044d158865689"><td class="memItemLeft" align="right" valign="top">virtual Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a6442e8299dd68d77fe2044d158865689">GetRainTexture</a> ()</td></tr>
+<tr class="memdesc:a6442e8299dd68d77fe2044d158865689"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the texture to be used when drawing rain of this water type. <br  />
+<a class="el" href="namespace_terraria_1_1_mod_loader_1_1_default.html">Default</a> uses the vanilla rain texture.  <a href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a6442e8299dd68d77fe2044d158865689">More...</a><br /></td></tr>
+<tr class="separator:a6442e8299dd68d77fe2044d158865689"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1ef757f5bb691cfb385cd33cd06d26d"><td class="memItemLeft" align="right" valign="top">virtual byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#af1ef757f5bb691cfb385cd33cd06d26d">GetRainVariant</a> ()</td></tr>
+<tr class="memdesc:af1ef757f5bb691cfb385cd33cd06d26d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the variant of rain used. Equal to the offset in the rain texture divided by four. <br  />
+Vanilla rain has three variants per biome, and so vanilla variants range from 0 to 3 * Main.maxLiquidTextures. <br  />
+<a class="el" href="namespace_terraria_1_1_mod_loader_1_1_default.html">Default</a> is a random number from 0 to 2, which creates normal vanilla forest biome rain.  <a href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#af1ef757f5bb691cfb385cd33cd06d26d">More...</a><br /></td></tr>
+<tr class="separator:af1ef757f5bb691cfb385cd33cd06d26d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56033539d5b322f615f675a80527214a"><td class="memItemLeft" align="right" valign="top">abstract int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a56033539d5b322f615f675a80527214a">GetSplashDust</a> ()</td></tr>
 <tr class="memdesc:a56033539d5b322f615f675a80527214a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the dust that is created when anything splashes in water.  <a href="class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a56033539d5b322f615f675a80527214a">More...</a><br /></td></tr>
 <tr class="separator:a56033539d5b322f615f675a80527214a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -253,6 +262,63 @@ virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>BlockTextur
 </div><div class="memdoc">
 
 <p>The <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the gore that represents droplets of water falling down from a block. </p>
+
+</div>
+</div>
+<a id="a6442e8299dd68d77fe2044d158865689"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6442e8299dd68d77fe2044d158865689">&#9670;&nbsp;</a></span>GetRainTexture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual Asset&lt;Texture2D&gt; Terraria.ModLoader.ModWaterStyle.GetRainTexture </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the texture to be used when drawing rain of this water type. <br  />
+<a class="el" href="namespace_terraria_1_1_mod_loader_1_1_default.html">Default</a> uses the vanilla rain texture. </p>
+
+</div>
+</div>
+<a id="af1ef757f5bb691cfb385cd33cd06d26d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1ef757f5bb691cfb385cd33cd06d26d">&#9670;&nbsp;</a></span>GetRainVariant()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual byte Terraria.ModLoader.ModWaterStyle.GetRainVariant </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the variant of rain used. Equal to the offset in the rain texture divided by four. <br  />
+Vanilla rain has three variants per biome, and so vanilla variants range from 0 to 3 * Main.maxLiquidTextures. <br  />
+<a class="el" href="namespace_terraria_1_1_mod_loader_1_1_default.html">Default</a> is a random number from 0 to 2, which creates normal vanilla forest biome rain. </p>
 
 </div>
 </div>

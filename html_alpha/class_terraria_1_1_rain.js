@@ -11,5 +11,6 @@ var class_terraria_1_1_rain =
     [ "rotation", "class_terraria_1_1_rain.html#a4337379cd561b84b8d9a61020c901e78", null ],
     [ "scale", "class_terraria_1_1_rain.html#ad28815cd53230ce3cec1c8c00c36226c", null ],
     [ "type", "class_terraria_1_1_rain.html#a83c017558eec99e8e29546ea363f978f", null ],
-    [ "velocity", "class_terraria_1_1_rain.html#abb2b474c16c291a3d4f9ecb13c261bc1", null ]
+    [ "velocity", "class_terraria_1_1_rain.html#abb2b474c16c291a3d4f9ecb13c261bc1", null ],
+    [ "waterStyle", "class_terraria_1_1_rain.html#a37a98c6324d30bca9f8db7bf81cbf677", null ]
 ];

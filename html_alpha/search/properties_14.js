@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['zoneforest_6156',['ZoneForest',['../class_terraria_1_1_player.html#a9b0b27dcacde440ada026d0283efa701',1,'Terraria::Player']]],
-  ['zonenormalcaverns_6157',['ZoneNormalCaverns',['../class_terraria_1_1_player.html#a5b499563f41712ba99be78a06fa443e9',1,'Terraria::Player']]],
-  ['zonenormalspace_6158',['ZoneNormalSpace',['../class_terraria_1_1_player.html#a43d50d17a3103ca1dce09ee268347d36',1,'Terraria::Player']]],
-  ['zonenormalunderground_6159',['ZoneNormalUnderground',['../class_terraria_1_1_player.html#aacdaa543d2fd44e80323c667f38617ce',1,'Terraria::Player']]],
-  ['zonepurity_6160',['ZonePurity',['../class_terraria_1_1_player.html#a1d4a244573ad6fbcd513891e416e18ad',1,'Terraria::Player']]]
+  ['zoneforest_6161',['ZoneForest',['../class_terraria_1_1_player.html#a9b0b27dcacde440ada026d0283efa701',1,'Terraria::Player']]],
+  ['zonenormalcaverns_6162',['ZoneNormalCaverns',['../class_terraria_1_1_player.html#a5b499563f41712ba99be78a06fa443e9',1,'Terraria::Player']]],
+  ['zonenormalspace_6163',['ZoneNormalSpace',['../class_terraria_1_1_player.html#a43d50d17a3103ca1dce09ee268347d36',1,'Terraria::Player']]],
+  ['zonenormalunderground_6164',['ZoneNormalUnderground',['../class_terraria_1_1_player.html#aacdaa543d2fd44e80323c667f38617ce',1,'Terraria::Player']]],
+  ['zonepurity_6165',['ZonePurity',['../class_terraria_1_1_player.html#a1d4a244573ad6fbcd513891e416e18ad',1,'Terraria::Player']]]
 ];
