@@ -1827,8 +1827,10 @@ namespace Terraria.ModLoader
 
 			item.ModItem?.ModifyTooltips(tooltips);
 
-			foreach (var g in HookModifyTooltips.Enumerate(item.globalItems)) {
-				g.ModifyTooltips(item, tooltips);
+			if (!item.IsAir) { // Prevents dummy items used in Main.HoverItem from getting unrelated tooltips
+				foreach (var g in HookModifyTooltips.Enumerate(item.globalItems)) {
+					g.ModifyTooltips(item, tooltips);
+				}
 			}
 
 			numTooltips = tooltips.Count;
