@@ -30,20 +30,20 @@ namespace Terraria.ModLoader.Engine
 			if (Platform.IsWindows) {
 				steamAPIPath = "steam_api.dll";
 				steamAPIHash = ToByteArray("7B857C897BC69313E4936DC3DCCE5193");
-				gogHash = ToByteArray("d05cf700a90fc12d7f9ef40f1d303b3a"); // Don't forget to update CheckExe in CheckGoG
-				steamHash = ToByteArray("22e41c9960f3db473a036e93bbaec671");
+				gogHash = ToByteArray("0d4005c39a12a334d9bfd42dd5b656cc"); // Don't forget to update CheckExe in CheckGoG
+				steamHash = ToByteArray("5f321196521790a18a19d44fd066044e");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIPath = "osx/libsteam_api.dylib";
 				steamAPIHash = ToByteArray("4EECD26A0CDF89F90D4FF26ECAD37BE0");
-				gogHash = ToByteArray("4946b4e30e40c3a238a1aaecf0829bd6");
-				steamHash = ToByteArray("6b9b97670cc7cc922db77288d6ff0e88");
+				gogHash = ToByteArray("f483f6f795e5c045b73c330015e852a6");
+				steamHash = ToByteArray("c3b967ddc50f400dc1575de05979ee47");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIPath = "lib/libsteam_api.so";
 				steamAPIHash = ToByteArray("7B74FD4C207D22DB91B4B649A44467F6");
-				gogHash = ToByteArray("2bb44d560a3799caa34310a4d9ee8f89");
-				steamHash = ToByteArray("c8112696dcdf53fe5a1a2810089f992b");
+				gogHash = ToByteArray("56794421993db33b7607d1be233b586d");
+				steamHash = ToByteArray("b08ed3b4fe5417e7cd56e06ad99f2ab7");
 			}
 			else {
 				string message = Language.GetTextValue("tModLoader.UnknownVerificationOS");
@@ -122,7 +122,7 @@ namespace Terraria.ModLoader.Engine
 			IsGoG = true;
 
 			const string DefaultExe = "Terraria.exe";
-			string CheckExe = $"Terraria_1.4.3.6.exe"; // This should match the hashes. {Main.versionNumber}
+			string CheckExe = $"Terraria_1.4.3.6_B.exe"; // This should match the hashes. {Main.versionNumber}
 			string vanillaPath = File.Exists(CheckExe) ? CheckExe : DefaultExe;
 
 			// If .exe not present, check Terraria directory (Side-by-Side Manual Install)
