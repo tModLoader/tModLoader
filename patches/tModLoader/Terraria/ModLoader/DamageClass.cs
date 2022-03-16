@@ -54,6 +54,7 @@ namespace Terraria.ModLoader
 		/// This lets you define the classes that this DamageClass will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.
 		/// Returns false in all cases by default, which does not let any other classes' effects trigger on this DamageClass.
 		/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
+		/// DO NOT USE THIS TO CHECK IF AN ITEM OR PROJECTILE'S DAMAGE TYPE MATCHES THE INPUT DAMAGE CLASS. For that purpose, use (Item/Projectile).CountsAsClass(DamageClass damageClass) instead.
 		/// </summary>
 		/// <param name="damageClass">The DamageClass which you want this DamageClass to gain effects from.</param>
 		public virtual bool CheckClassEffectInheritance(DamageClass damageClass) => false;
