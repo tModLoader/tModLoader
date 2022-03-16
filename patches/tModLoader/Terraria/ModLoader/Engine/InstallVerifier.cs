@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Engine
 		public const string TmlContentDirectory = "Content";
 		public const string SteamAppIDPath = "steam_appid.txt";
 		private const string DefaultExe = "Terraria.exe";
-		private static string CheckExe = $"Terraria_1.4.3.6.exe"; // This should match the hashes. {Main.versionNumber}
+		private static string CheckExe = $"Terraria_1.4.3.6_B.exe"; // This should match the hashes. {Main.versionNumber}
 		public const bool RequireContentDirectory = false; // Not currently needed, due to tML matching vanilla's version.
 
 		private static bool? isValid;
