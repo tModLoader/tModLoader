@@ -98,13 +98,11 @@ namespace Terraria
 
 		private DamageClassData[] damageData;
 
-		internal void ResetDamageClassData()
-		{
+		internal void ResetDamageClassData() {
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
-			for (int i = 0; i < damageData.Length; i++)
-			{
-				damageData[i] = new DamageClassData(StatModifier.Default, StatModifier.Default, 0, StatModifier.Default, 0);
+			for (int i = 0; i < damageData.Length; i++) {
+				damageData[i] = new DamageClassData(StatModifier.Default, new ItemSpeedMultipliers(StatModifier.Default, StatModifier.Default, StatModifier.Default), 0, StatModifier.Default, 0);
 				DamageClassLoader.DamageClasses[i].SetDefaultStats(this);
 			}
 		}
@@ -135,11 +133,12 @@ namespace Terraria
 		public ref int GetArmorPenetration<T>() where T : DamageClass => ref GetArmorPenetration(ModContent.GetInstance<T>());
 
 		/// <summary>
-		/// Gets the attack speed modifier for this damage type on this player.
-		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
-		/// SETTING THIS TO ZERO WILL BRICK THE GAME, AND NEGATIVE VALUES, WHILE VALID, MAY INVOKE UNINTENDED BEHAVIOR.
+		/// Gets the attack speed modifiers for this damage type on this player, split into UseTime, UseAnimation, and UseSpeed.
+		/// UseTime only affects how long an item's function takes, UseAnimation only affects how long an item's animation takes, and UseSpeed affects both equally.
+		/// This returns a reference, and as such, you can freely modify this method's return values with operators.
+		/// Setting this such that it results in zero or a negative value will throw an exception.
 		/// </summary>
-		public ref StatModifier GetAttackSpeed<T>() where T : DamageClass => ref GetAttackSpeed(ModContent.GetInstance<T>());
+		public ref ItemSpeedMultipliers GetAttackSpeed<T>() where T : DamageClass => ref GetAttackSpeed(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the crit modifier for this damage type on this player.
@@ -164,8 +163,7 @@ namespace Terraria
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// Setting this to a negative value will throw an exception.
 		/// </summary>
-		public ref int GetArmorPenetration(DamageClass damageClass)
-		{
+		public ref int GetArmorPenetration(DamageClass damageClass) {
 			if (damageData[damageClass.Type].armorPen < 0)
 				throw new Exception("A class' armor penetration stat cannot be less than 0.");
 			else
@@ -173,14 +171,14 @@ namespace Terraria
 		}
 
 		/// <summary>
-		/// Gets the attack speed modifier for this damage type on this player.
-		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// Gets the attack speed modifiers for this damage type on this player, split into UseTime, UseAnimation, and UseSpeed.
+		/// UseTime only affects how long an item's function takes, UseAnimation only affects how long an item's animation takes, and UseSpeed affects both equally.
+		/// This returns a reference, and as such, you can freely modify this method's return values with operators.
 		/// Setting this such that it results in zero or a negative value will throw an exception.
 		/// </summary>
-		public ref StatModifier GetAttackSpeed(DamageClass damageClass)
-		{
-			if (damageData[damageClass.Type].attackSpeed <= 0f)
-				throw new Exception("A class' attack speed stat must be greater than 0.");
+		public ref ItemSpeedMultipliers GetAttackSpeed(DamageClass damageClass) {
+			if (damageData[damageClass.Type].attackSpeed.useTime <= 0f || damageData[damageClass.Type].attackSpeed.useAnimation <= 0f || damageData[damageClass.Type].attackSpeed.useSpeed <= 0f)
+				throw new Exception("All of a class' attack speed-related stats must be greater than 0.");
 			else
 				return ref damageData[damageClass.Type].attackSpeed;
 		}
@@ -188,17 +186,15 @@ namespace Terraria
 		/// <summary>
 		/// Calculates the armor penetration value of the item in question for this player.
 		/// </summary>
-		public int GetWeaponArmorPenetration(Item sItem)
-		{
+		public int GetWeaponArmorPenetration(Item sItem) {
 			int armorPen = sItem.ArmorPenetration;
-			var currentModifiers = damageData;
-			var scalings = sItem.DamageType.statInheritanceCache;
-			for (int i = 0; i < currentModifiers.Length; i++)
-			{
-				if (currentModifiers[i].armorPen < 0)
+			for (int i = 0; i < damageData.Length; i++) {
+				if (damageData[i].armorPen < 0)
 					throw new Exception("A class' armor penetration stat cannot be less than 0.");
-				else
-					armorPen += (int)(currentModifiers[i].armorPen * scalings[i]);
+				else {
+					StatInheritanceData inheritanceData = sItem.DamageType.DoubleCheckStatInheritanceData(DamageClassLoader.DamageClasses[i], this, sItem);
+					armorPen += (int)(damageData[i].armorPen * inheritanceData.armorPenInheritance);
+				}
 			}
 
 			return armorPen;
@@ -206,18 +202,16 @@ namespace Terraria
 
 		/// <summary>
 		/// Calculates the attack speed value of the item in question for this player.
+		/// NOTE: Only uses the UseSpeed value of the trio given by GetAttackSpeed. UseTime and UseAnimation are handled separately.
 		/// </summary>
 		public float GetWeaponAttackSpeed(Item sItem) {
 			StatModifier attackSpeed = StatModifier.Default;
-			var currentModifiers = damageData;
-			var scalings = sItem.DamageType.statInheritanceCache;
-			for (int i = 0; i < currentModifiers.Length; i++) {
-				if (currentModifiers[i].attackSpeed <= 0f)
-					throw new Exception("A class' attack speed stat must be greater than 0.");
+			for (int i = 0; i < damageData.Length; i++) {
+				if (damageData[i].attackSpeed.useSpeed <= 0f)
+					throw new Exception("All of a class' attack speed stats must be greater than 0.");
 				else {
-					attackSpeed = attackSpeed.CombineWith(currentModifiers[i].attackSpeed.Scale(scalings[i]));
-					if (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type])
-						attackSpeed *= whipUseTimeMultiplier;
+					StatInheritanceData inheritanceData = sItem.DamageType.DoubleCheckStatInheritanceData(DamageClassLoader.DamageClasses[i], this, sItem);
+					attackSpeed = attackSpeed.CombineWith(damageData[i].attackSpeed.useSpeed.Scale(inheritanceData.useSpeedInheritance));
 				}
 			}
 

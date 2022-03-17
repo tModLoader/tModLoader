@@ -13,8 +13,6 @@ namespace Terraria.ModLoader
 		public static DamageClass Summon { get; private set; } = new SummonDamageClass();
 		public static DamageClass Throwing { get; private set; } = new ThrowingDamageClass();
 
-		internal float[] statInheritanceCache;
-
 		/// <summary>
 		/// This is the internal ID of this DamageClass.
 		/// </summary>
@@ -33,22 +31,31 @@ namespace Terraria.ModLoader
 
 		internal protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
 
-		/// <summary>
-		/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
-		/// Returns 0 in all cases by default, which does not let any other classes boost this DamageClass.
-		/// The return value works like a percentage; for example, 1f will allow your DamageClass to benefit from another class' stat bonuses at 100% effectiveness, while 0.5f will only allow that benefit at 50% effectiveness.
-		/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
-		/// </summary>
-		/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>
-		protected virtual float CheckClassStatInheritance(DamageClass damageClass) => 0;
-
-		internal void RebuildBenefitCache()
-		{
-			statInheritanceCache = DamageClassLoader.DamageClasses.Select(GetBenefitFrom).ToArray();
-			statInheritanceCache[Type] = 1f;
+		public StatInheritanceData DoubleCheckStatInheritanceData(DamageClass damageClass, Player player, Item item) {
+			StatInheritanceData inheritanceData = CheckBaseClassStatInheritance(damageClass);
+			StatInheritanceData? dynamicInheritanceData = CheckDynamicClassStatInheritance(damageClass, player, item);
+			return dynamicInheritanceData.HasValue ? dynamicInheritanceData : inheritanceData;
 		}
 
-		public float CheckCachedClassStatInheritance(DamageClass damageClass) => statInheritanceCache[damageClass.Type];
+		/// <summary>
+		/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
+		/// This returns a struct called StatInheritanceData. This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes.
+		/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
+		/// THIS METHOD SHOULD ONLY BE USED FOR THE BASE SETUP OF STAT INHERITANCES. For dynamic stat inheritance changes based on player and item conditions, use CheckDynamicClassStatInheritance instead.
+		/// </summary>
+		/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>
+		public virtual StatInheritanceData CheckBaseClassStatInheritance(DamageClass damageClass) => new StatInheritanceData(0f, 0f, 0f, 0f, 0f, 0f, 0f);
+
+		/// <summary>
+		/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
+		/// This returns a struct called StatInheritanceData. This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes.
+		/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
+		/// THIS METHOD SHOULD ONLY BE USED FOR STAT INHERITANCES GRANTED BY ARMOR, ACCESSORIES, OR OTHER EFFECTS. For base stat inheritances, use CheckBaseClassStatInheritance instead.
+		/// </summary>
+		/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>
+		/// <param name="player">The player being referenced for dynamic calculations.</param>
+		/// <param name="item">The item being referenced for dynamic calculations.</param>
+		public virtual StatInheritanceData? CheckDynamicClassStatInheritance(DamageClass damageClass, Player player, Item item) => null;
 
 		/// <summary> 
 		/// This lets you define the classes that this DamageClass will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.
@@ -81,8 +88,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual bool ShowStatTooltipLine(Player player, string lineName) => true;
 
-		protected sealed override void Register()
-		{
+		protected sealed override void Register() {
 			ClassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"DamageClassName.{Name}");
 
 			ModTypeLookup<DamageClass>.Register(this);

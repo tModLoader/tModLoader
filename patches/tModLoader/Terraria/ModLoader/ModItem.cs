@@ -148,7 +148,6 @@ namespace Terraria.ModLoader
 		/// Use AllowPrefix to prevent rolling of a certain prefix.
 		/// </summary>
 		/// <param name="pre">The prefix being applied to the item, or the roll mode. -1 is when the item is naturally generated in a chest, crafted, purchased from an NPC, looted from a grab bag (excluding presents), or dropped by a slain enemy (if it's spawned with prefixGiven: -1). -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</param>
-		/// <param name="rand">The random number generator class to be used in random choices</param>
 		/// <returns></returns>
 		public virtual bool? PrefixChance(int pre, UnifiedRandom rand) => null;
 
@@ -300,8 +299,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
 		/// </summary>
-		/// <param name="player">The player using the item</param>
-		/// <param name="knockback">The knockback</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="knockback">The StatModifier object representing the totality of the additive and multiplicative bonuses to be applied to the knockback.</param>
 		public virtual void ModifyWeaponKnockback(Player player, ref StatModifier knockback) {
 		}
 

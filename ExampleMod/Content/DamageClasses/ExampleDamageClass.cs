@@ -7,7 +7,7 @@ namespace ExampleMod.Content.DamageClasses
 {
 	public class ExampleDamageClass : DamageClass
 	{
-		protected override float CheckClassStatInheritance(DamageClass damageClass) {
+		protected override float CheckBaseClassStatInheritance(DamageClass damageClass) {
 			// This method lets you make your damage class benefit from other classes' stat bonuses by default, as well as universal stat bonuses.
 			// To briefly summarize the two nonstandard damage class names used by DamageClass:
 			// Default is, you guessed it, the default damage class. It doesn't scale off of any class-specific stat bonuses or universal stat bonuses.

@@ -763,12 +763,13 @@
  				localAI[0] = 1f;
  			}
  		}
-@@ -27419,8 +_,8 @@
+@@ -27419,8 +_,9 @@
  					break;
  			}
  
 -			float meleeSpeed = player.meleeSpeed;
 -			float num15 = 1f / meleeSpeed;
++			// tML: changed since meleeSpeed is no longer set to reciprocal
 +			//float meleeSpeed = player.meleeSpeed;
 +			float num15 = player.meleeSpeed;
  			num2 *= num15;
@@ -779,7 +780,7 @@
  			}
  			else if (ai[0] == 1f) {
 -				float meleeSpeed = Main.player[owner].meleeSpeed;
-+				float meleeSpeed = 1f / Main.player[owner].meleeSpeed;
++				float meleeSpeed = 1f / Main.player[owner].meleeSpeed; // tML: changed since meleeSpeed is no longer set to reciprocal
  				float num5 = 14f / meleeSpeed;
  				float num6 = 0.9f / meleeSpeed;
  				float num7 = 300f / meleeSpeed;
@@ -877,7 +878,7 @@
  
  				float num = localAI[0] / 60f;
 -				num /= (1f + Main.player[owner].meleeSpeed) / 2f;
-+				num /= (1f + (1f / Main.player[owner].meleeSpeed)) / 2f;
++				num /= (1f + (1f / Main.player[owner].meleeSpeed)) / 2f; // tML: changed since meleeSpeed is no longer set to reciprocal
  				float num2 = ProjectileID.Sets.YoyosLifeTimeMultiplier[type];
  				if (num2 != -1f && num > num2)
  					ai[0] = -1f;
@@ -887,8 +888,8 @@
  
 -			num10 /= (1f + Main.player[owner].meleeSpeed * 3f) / 4f;
 -			num8 /= (1f + Main.player[owner].meleeSpeed * 3f) / 4f;
-+			num10 /= (1f + (3f / Main.player[owner].meleeSpeed)) / 4f;
-+			num8 /= (1f + (3f / Main.player[owner].meleeSpeed)) / 4f;
++			num10 /= (1f + (3f / Main.player[owner].meleeSpeed)) / 4f; // tML: changed since meleeSpeed is no longer set to reciprocal
++			num8 /= (1f + (3f / Main.player[owner].meleeSpeed)) / 4f; // tML: changed since meleeSpeed is no longer set to reciprocal
  			num7 = 14f - num8 / 2f;
  			if (num7 < 1f)
  				num7 = 1f;

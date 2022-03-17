@@ -1,4 +1,5 @@
-﻿using Terraria.Localization;
+﻿using Terraria.ID;
+using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -16,17 +17,16 @@ namespace Terraria.ModLoader
 	{
 		protected override string LangKey => "LegacyTooltip.55";
 
-		protected override float CheckClassStatInheritance(DamageClass damageClass) => 0;
+		public override StatInheritanceData CheckBaseClassStatInheritance(DamageClass damageClass) => new StatInheritanceData(0f);
 	}
 
 	public class GenericDamageClass : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.55";
 
-		protected override float CheckClassStatInheritance(DamageClass damageClass) => 0;
+		public override StatInheritanceData CheckBaseClassStatInheritance(DamageClass damageClass) => new StatInheritanceData(0f);
 
-		public override void SetDefaultStats(Player player)
-		{
+		public override void SetDefaultStats(Player player) {
 			player.GetCritChance(this) = 4;
 		}
 	}
@@ -35,28 +35,35 @@ namespace Terraria.ModLoader
 	{
 		protected override string LangKey => "LegacyTooltip.2";
 
-		protected override float CheckClassStatInheritance(DamageClass damageClass) => damageClass == Generic ? 1f : 0f;
+		public override StatInheritanceData CheckBaseClassStatInheritance(DamageClass damageClass) => damageClass == Generic ? new StatInheritanceData() : new StatInheritanceData(0f);
 	}
 
 	public class RangedDamageClass : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.3";
 
-		protected override float CheckClassStatInheritance(DamageClass damageClass) => damageClass == Generic ? 1f : 0f;
+		public override StatInheritanceData CheckBaseClassStatInheritance(DamageClass damageClass) => damageClass == Generic ? new StatInheritanceData() : new StatInheritanceData(0f);
 	}
 
 	public class MagicDamageClass : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.4";
 
-		protected override float CheckClassStatInheritance(DamageClass damageClass) => damageClass == Generic ? 1f : 0f;
+		public override StatInheritanceData CheckBaseClassStatInheritance(DamageClass damageClass) => damageClass == Generic ? new StatInheritanceData() : new StatInheritanceData(0f);
 	}
 
 	public class SummonDamageClass : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.53";
 
-		protected override float CheckClassStatInheritance(DamageClass damageClass) => damageClass == Generic ? 1f : 0f;
+		public override StatInheritanceData CheckBaseClassStatInheritance(DamageClass damageClass) => damageClass == Generic ? new StatInheritanceData() : new StatInheritanceData(0f);
+
+		public override StatInheritanceData? CheckDynamicClassStatInheritance(DamageClass damageClass, Player player, Item item) {
+			if (ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[item.type] && damageClass == Melee) {
+				return new StatInheritanceData(0f, 0f, player.whipUseTimeMultiplier, player.whipUseTimeMultiplier, 0f, 0f, 0f);
+			}
+			return null;
+		}
 
 		public override bool AllowStandardCrits => false;
 
@@ -67,6 +74,6 @@ namespace Terraria.ModLoader
 	{
 		protected override string LangKey => "LegacyTooltip.58";
 
-		protected override float CheckClassStatInheritance(DamageClass damageClass) => damageClass == Generic ? 1f : 0f;
+		public override StatInheritanceData CheckBaseClassStatInheritance(DamageClass damageClass) => damageClass == Generic ? new StatInheritanceData() : new StatInheritanceData(0f);
 	}
 }

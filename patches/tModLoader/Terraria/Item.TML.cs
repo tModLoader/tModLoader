@@ -81,7 +81,7 @@ namespace Terraria
 			=> CountsAsClass(ModContent.GetInstance<T>());
 
 		public bool CountsAsClass(DamageClass damageClass)
-			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+			=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 
 		// public version of IsNotTheSameAs for modders
 		/// <summary>

@@ -45,10 +45,14 @@ namespace ExampleMod.Content.Items.Accessories
 			// In this case, we'll add 5 armor penetration to magic weapons.
 			player.GetArmorPenetration(DamageClass.Magic) += 5;
 
-			// GetAttackSpeed works similarly to GetCritChance and GetArmorPen, but uses a float instead of an int.
-			// In this case, we'll make ranged weapons 15% faster to use.
-			// NOTE: SETTING THIS TO ZERO OR A NEGATIVE VALUE WILL THROW AN EXCEPTION, SO DON'T DO THAT.
-			player.GetAttackSpeed(DamageClass.Ranged) += 0.15f;
+			// GetAttackSpeed works pretty uniquely. It has within itself three StatModifiers: UseTime, UseAnimation, and UseSpeed.
+			// If you've studied up on basic item fields, you probably already know how these work. If you haven't, here's a quick rundown:
+			// 1] UseTime affects only the amount of time the item takes to FUNCTION.
+			// 2] UseAnimation affects only the amount of time the item takes to PLAY ITS ANIMATION.
+			// 3] UseSpeed affects both.
+			// In this case, we'll make ranged weapons 15% faster to use overall.
+			// NOTE: SETTING ANY OF THE VALUES TO ZERO OR A NEGATIVE VALUE WILL THROW AN EXCEPTION, SO DON'T DO THAT.
+			player.GetAttackSpeed(DamageClass.Ranged).useSpeed += 0.15f;
 		}
 	}
 }

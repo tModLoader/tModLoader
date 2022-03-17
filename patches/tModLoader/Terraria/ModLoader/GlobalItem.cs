@@ -183,11 +183,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts). 
+		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
 		/// </summary>
-		/// <param name="item">The item being used</param>
-		/// <param name="player">The player using the item</param>
-		/// <param name="damage">The StatModifier object corresponding to the combination of the damage multipliers currently set to apply to this weapon</param>
+		/// <param name="item">The item being used.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="damage">The StatModifier object corresponding to the combination of the damage multipliers currently set to apply to this weapon.</param>
 		public virtual void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
 		}
 
@@ -228,9 +228,9 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
 		/// </summary>
-		/// <param name="item">The item being used</param>
-		/// <param name="player">The player using the item</param>
-		/// <param name="knockback">The knockback</param>
+		/// <param name="item">The item being used.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="knockback">The StatModifier object representing the totality of the additive and multiplicative bonuses to be applied to this weapon's knockback.</param>
 		public virtual void ModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback) {
 		}
 
@@ -536,7 +536,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="armorSlot">head armor (0), body armor (1) or leg armor (2).</param>
 		/// <param name="type">The equipment texture ID of the item that the player is wearing.</param>
-		/// <param name="male">True if the player is male.</param>
 		/// <param name="equipSlot">The altered equipment texture ID for the legs (armorSlot 1 and 2) or head (armorSlot 0)</param>
 		/// <param name="robes">Set to true if you modify equipSlot when armorSlot == 1 to set Player.wearsRobe, otherwise ignore it</param>
 		public virtual void SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) {

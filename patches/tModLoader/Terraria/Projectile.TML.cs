@@ -77,8 +77,7 @@ namespace Terraria
 				projectile.CritChance += (actualSpawnSource.Entity as Player).GetWeaponCrit(actualSpawnSource.Item);
 				projectile.ArmorPenetration += (actualSpawnSource.Entity as Player).GetWeaponArmorPenetration(actualSpawnSource.Item);
 			}
-			else
-			{
+			else {
 				EntitySource_ItemUse_WithAmmo actualSpawnSource = spawnSource as EntitySource_ItemUse_WithAmmo;
 				if (actualSpawnSource.Entity is not Player)
 					return;
@@ -112,6 +111,6 @@ namespace Terraria
 			=> CountsAsClass(ModContent.GetInstance<T>());
 
 		public bool CountsAsClass(DamageClass damageClass)
-			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+			=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 	}
 }
