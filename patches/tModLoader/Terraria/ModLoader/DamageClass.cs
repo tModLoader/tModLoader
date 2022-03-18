@@ -39,7 +39,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
-		/// This returns a struct called StatInheritanceData. This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes.
+		/// This returns a struct called StatInheritanceData.
+		/// This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes.
 		/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
 		/// THIS METHOD SHOULD ONLY BE USED FOR THE BASE SETUP OF STAT INHERITANCES. For dynamic stat inheritance changes based on player and item conditions, use CheckDynamicClassStatInheritance instead.
 		/// </summary>
@@ -48,7 +49,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
-		/// This returns a struct called StatInheritanceData. This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes.
+		/// This returns either null (no dynamic effect) or a struct called StatInheritanceData.
+		/// This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes.
 		/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
 		/// THIS METHOD SHOULD ONLY BE USED FOR STAT INHERITANCES GRANTED BY ARMOR, ACCESSORIES, OR OTHER EFFECTS. For base stat inheritances, use CheckBaseClassStatInheritance instead.
 		/// </summary>

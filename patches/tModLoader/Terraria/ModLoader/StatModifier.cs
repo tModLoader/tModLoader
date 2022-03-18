@@ -74,7 +74,7 @@
 			=> m1.Additive != m2.Additive || m1.Multiplicative != m2.Multiplicative || m1.Flat != m2.Flat;
 
 		public static implicit operator float(StatModifier m)
-			=> (m.Additive * m.Multiplicative) + m.Flat;
+			=> m.Additive * m.Multiplicative;
 
 		public static explicit operator int(StatModifier m)
 			=> (int)(float)m;

@@ -148,6 +148,7 @@ namespace Terraria.ModLoader
 		/// Use AllowPrefix to prevent rolling of a certain prefix.
 		/// </summary>
 		/// <param name="pre">The prefix being applied to the item, or the roll mode. -1 is when the item is naturally generated in a chest, crafted, purchased from an NPC, looted from a grab bag (excluding presents), or dropped by a slain enemy (if it's spawned with prefixGiven: -1). -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</param>
+		/// <param name="rand">The random number generator class to be used in random choices</param>
 		/// <returns></returns>
 		public virtual bool? PrefixChance(int pre, UnifiedRandom rand) => null;
 

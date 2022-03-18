@@ -536,6 +536,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="armorSlot">head armor (0), body armor (1) or leg armor (2).</param>
 		/// <param name="type">The equipment texture ID of the item that the player is wearing.</param>
+		/// <param name="male">True if the player is male.</param>
 		/// <param name="equipSlot">The altered equipment texture ID for the legs (armorSlot 1 and 2) or head (armorSlot 0)</param>
 		/// <param name="robes">Set to true if you modify equipSlot when armorSlot == 1 to set Player.wearsRobe, otherwise ignore it</param>
 		public virtual void SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) {

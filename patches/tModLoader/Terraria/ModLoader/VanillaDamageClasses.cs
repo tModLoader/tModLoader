@@ -59,9 +59,9 @@ namespace Terraria.ModLoader
 		public override StatInheritanceData CheckBaseClassStatInheritance(DamageClass damageClass) => damageClass == Generic ? new StatInheritanceData() : new StatInheritanceData(0f);
 
 		public override StatInheritanceData? CheckDynamicClassStatInheritance(DamageClass damageClass, Player player, Item item) {
-			if (ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[item.type] && damageClass == Melee) {
-				return new StatInheritanceData(0f, 0f, player.whipUseTimeMultiplier, player.whipUseTimeMultiplier, 0f, 0f, 0f);
-			}
+			if (ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[item.type] && damageClass == Melee)
+				return new StatInheritanceData(0f, 0f, 1f, 1f, 0f, 0f, 0f);
+
 			return null;
 		}
 

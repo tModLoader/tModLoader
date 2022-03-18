@@ -7,30 +7,67 @@ namespace ExampleMod.Content.DamageClasses
 {
 	public class ExampleDamageClass : DamageClass
 	{
-		protected override float CheckBaseClassStatInheritance(DamageClass damageClass) {
+		public override StatInheritanceData CheckBaseClassStatInheritance(DamageClass damageClass) {
 			// This method lets you make your damage class benefit from other classes' stat bonuses by default, as well as universal stat bonuses.
 			// To briefly summarize the two nonstandard damage class names used by DamageClass:
 			// Default is, you guessed it, the default damage class. It doesn't scale off of any class-specific stat bonuses or universal stat bonuses.
 			// There are a number of items and projectiles that use this, such as thrown waters and the Bone Glove's bones.
 			// Generic, on the other hand, scales off of all universal stat bonuses and nothing else; it's the base damage class upon which all others that aren't Default are built.
 			if (damageClass == DamageClass.Generic)
-				return 1f;
+				return new StatInheritanceData();
 
-			return 0f;
+			return new StatInheritanceData(
+				damageInheritance: 0f,
+				useTimeInheritance: 0f,
+				useAnimationInheritance: 0f,
+				useSpeedInheritance: 0f,
+				critChanceInheritance: 0f,
+				knockbackInheritance: 0f,
+				armorPenInheritance: 0f
+			);
+			// Now, what exactly did we just do, you might ask? Well, let's see here...
+			// StatInheritanceData is a struct which you'll need to return one of for any given outcome this method.
+			// For the sake of clarity, we've labeled each parameter in order; they should be self-explanatory.
 			// To explain how these return values work, each one behaves like a percentage, with 0f being 0%, 1f being 100%, and so on.
-			// The return value indicates how much your class will scale off of any given damage class.
-			// For example, if I were to return 0.5f (50%) for DamageClass.Ranged, this custom class would receive all ranged stat bonuses at 50% effectiveness.
-			// There is no hardcap on what you can set this to.You can make it scale very heavily or barely at all...
-			// ...and you can even invert the scaling effect if you choose by returning a negative value.
+			// The return value indicates how much your class will scale off of the stat in question for whatever damage class(es) you've returned it for.
+			// If you create a StatInheritanceData without any parameters, all of them will be set to 1f.
+			// For example, if we propose a hypothetical alternate return for DamageClass.Ranged...
+			/*
+			if (damageClass == DamageClass.Ranged)
+				return new StatInheritanceData(
+					damageInheritance: 1f,
+					useTimeInheritance: 0f,
+					useAnimationInheritance: 0f,
+					useSpeedInheritance: 0.4f,
+					critChanceInheritance: -1f,
+					knockbackInheritance: 0f,
+					armorPenInheritance: 2.5f
+				);
+			*/
+			// This would allow our custom class to benefit from the following ranged stat bonuses:
+			// - Damage, at 100% effectiveness
+			// - Usage speed, at 40% effectiveness
+			// - Crit chance, at -100% effectiveness (this means anything that raises ranged crit chance specifically will lower the crit chance of our custom class by the same amount)
+			// - Armor penetration, at 250% effectiveness
+
+			// CAUTION: There is no hardcap on what you can set these to. Please be aware and advised that whatever you set them to may have unintended consequences,
+			// and that we are NOT responsible for any temporary or permanent damage caused to you, your character, or your world as a result of your morbid curiosity.
 
 			// BONUS INFO:
-			// To refer to a non-vanilla damage class for these sorts of things, use "ModContent.GetInstance<YourDamageClassHere>()" instead of "DamageClass.XYZ".
+			// To refer to a non-vanilla damage class for these sorts of things, use "ModContent.GetInstance<TargetDamageClassHere>()" instead of "DamageClass.XYZ".
+		}
+
+		public override StatInheritanceData? CheckDynamicClassStatInheritance(DamageClass damageClass, Player player, Item item) {
+			// This method works a lot like CheckBaseClassStatInheritance, but can be affected by --- and requires, should you call it yourself --- a Player and Item as additional parameters.
+			// You can modify stat inheritances based on accessories, environmental effects, the specific item type, and more here.
+			// For simplicity's sake, we won't do anything special here, but it's good to keep this in mind --- you might need it sometime.
+			return null;
 		}
 
 		public override bool CheckClassEffectInheritance(DamageClass damageClass) {
-			// This method allows you to make your damage class benefit from otherclass effects (e.g. Spectre bolts, Magma Stone) based on what returns true.
-			// Note that unlike GetBenefitFrom, you do not need to account for universal bonuses in this method.
-			// For this example, we'll make our class count as melee and magic for the purpose of class-specific effects.
+			// This method allows you to make your damage class benefit from and be able to activate otherclass effects (e.g. Spectre bolts, Magma Stone) based on what returns true.
+			// Note that unlike our stat inheritance methods up above, you do not need to account for universal bonuses in this method.
+			// For this example, we'll make our class able to activate melee- and magic-specifically effects.
 			if (damageClass == DamageClass.Melee)
 				return true;
 			if (damageClass == DamageClass.Magic)
@@ -55,10 +92,13 @@ namespace ExampleMod.Content.DamageClasses
 
 		public override bool ShowStatTooltipLine(Player player, string lineName) {
 			// This method lets you prevent certain common statistical tooltip lines from appearing on items associated with this DamageClass.
-			// The four line names you can use are "Damage", "CritChance", "Speed", and "Knockback". All four cases default to true.
+			// The four line names you can use are "Damage", "CritChance", "Speed", and "Knockback". All four cases default to true. For example...
+			if (lineName == "Speed")
+				return false;
+
+			return true;
 			// PLEASE BE AWARE that this hook will NOT be here forever; only until an upcoming revamp to tooltips as a whole comes around.
 			// Once this happens, a better, more versatile explanation of how to pull this off will be showcased, and this hook will be removed.
-			return true;
 		}
 	}
 }

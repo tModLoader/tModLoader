@@ -4564,7 +4564,7 @@
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36988,11 +_,24 @@
+@@ -36988,11 +_,23 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
@@ -4578,12 +4578,11 @@
 +			StatModifier kbModifier = StatModifier.Default;
 +			for (int i = 0; i < damageData.Length; i++) {
 +				StatInheritanceData inheritanceData = sItem.DamageType.DoubleCheckStatInheritanceData(DamageClassLoader.DamageClasses[i], this, sItem);
-+				kbModifier = kbModifier.CombineWith(damageData[i].knockback.Scale(sItem.DamageType.CheckClassStatInheritance(sItem.DamageType, this, sItem).knockbackInheritance));
++				kbModifier = kbModifier.CombineWith(damageData[i].knockback.Scale(inheritanceData.knockbackInheritance));
 +			}
 +
-+			float flat = 0;
-+			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref kbModifier, ref flat);
-+			return Math.Max(0f, KnockBack * kbModifier + flat);
++			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref kbModifier);
++			return Math.Max(0f, (KnockBack * kbModifier) + kbModifier.Flat);
  		}
  
  		public int GetWeaponCrit(Item sItem) {
@@ -4591,7 +4590,7 @@
  			if (sItem.melee)
  				return meleeCrit;
  
-@@ -37003,9 +_,19 @@
+@@ -37003,9 +_,20 @@
  				return magicCrit;
  
  			return 0;
@@ -4599,7 +4598,8 @@
 +
 +			int crit = sItem.crit;
 +			for (int i = 0; i < damageData.Length; i++) {
-+				crit += (int)(damageData[i].critChance * DamageClassLoader.statInheritanceCache[sItem.DamageType.Type, i].critChanceInheritance);
++				StatInheritanceData inheritanceData = sItem.DamageType.DoubleCheckStatInheritanceData(DamageClassLoader.DamageClasses[i], this, sItem);
++				crit += (int)(damageData[i].critChance * inheritanceData.critChanceInheritance);
 +			}
 +
 +			CombinedHooks.ModifyWeaponCrit(this, sItem, ref crit);
@@ -4611,7 +4611,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,6 +_,26 @@
+@@ -37031,6 +_,27 @@
  			}
  
  			return num;
@@ -4619,7 +4619,8 @@
 +
 +			StatModifier damage = StatModifier.Default;
 +			for (int i = 0; i < damageData.Length; i++) {
-+				damage = damage.CombineWith(damageData[i].damage.Scale(DamageClassLoader.statInheritanceCache[sItem.DamageType.Type, i].damageInheritance));
++				StatInheritanceData inheritanceData = sItem.DamageType.DoubleCheckStatInheritanceData(DamageClassLoader.DamageClasses[i], this, sItem);
++				damage = damage.CombineWith(damageData[i].damage.Scale(inheritanceData.damageInheritance));
 +			}
 +
 +			// TODO: use an ItemID.Sets for arrow/bullet/rocket
@@ -4633,7 +4634,7 @@
 +				damage = damage.CombineWith(rocketDamage);
 +
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage);
-+			int damageNum = (int)(sItem.damage * (float)damage);
++			int damageNum = (int)((sItem.damage * damage) + (float)damage.Flat);
 +			return Math.Max(0, damageNum);
  		}
  

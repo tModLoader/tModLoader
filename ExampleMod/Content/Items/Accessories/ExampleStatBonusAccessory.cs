@@ -12,7 +12,8 @@ namespace ExampleMod.Content.Items.Accessories
 							 + "10% increased melee crit chance\n"
 							 + "100% increased example knockback\n"
 							 + "Magic attacks ignore an additional 5 defense points\n"
-							 + "Increases ranged firing speed by 15%");
+							 + "Increases ranged firing speed by 15%\n"
+							 + "Increases summon damage by 8");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
@@ -53,6 +54,11 @@ namespace ExampleMod.Content.Items.Accessories
 			// In this case, we'll make ranged weapons 15% faster to use overall.
 			// NOTE: SETTING ANY OF THE VALUES TO ZERO OR A NEGATIVE VALUE WILL THROW AN EXCEPTION, SO DON'T DO THAT.
 			player.GetAttackSpeed(DamageClass.Ranged).useSpeed += 0.15f;
+
+			// And lastly, we'll use our last example effect to showcase how flat bonuses work with StatModifier.
+			// They're largely the same as additive or multiplicative bonuses, but require that you specify you want to address the flat bonus provided to said class.
+			// NOTE: Flat requires an int, not a float, and you cannot guarantee that any multiplicative action performed applies to all other flat bonuses. Plan accordingly.
+			player.GetDamage(DamageClass.Summon).Flat += 8;
 		}
 	}
 }

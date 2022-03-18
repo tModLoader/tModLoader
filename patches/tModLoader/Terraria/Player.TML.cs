@@ -111,7 +111,7 @@ namespace Terraria
 		/// <summary>
 		/// Gets the crit chance modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
-		/// </summary> 
+		/// </summary>
 		public ref int GetCritChance<T>() where T : DamageClass => ref GetCritChance(ModContent.GetInstance<T>());
 
 		/// <summary>
@@ -214,6 +214,9 @@ namespace Terraria
 					attackSpeed = attackSpeed.CombineWith(damageData[i].attackSpeed.useSpeed.Scale(inheritanceData.useSpeedInheritance));
 				}
 			}
+
+			if (ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type])
+				attackSpeed *= player.whipUseTimeMultiplier;
 
 			return attackSpeed;
 		}
