@@ -410,10 +410,12 @@ jobs:
         working-directory: artifacts/Build
         
       - name: Setup steamcmd
+        if: steps.changed-files-examplemod.outputs.any_changed == 'true' || steps.changed-files-patches.outputs.any_changed == 'true'
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
         
       - name: Setup Authentication Files
+        if: steps.changed-files-examplemod.outputs.any_changed == 'true' || steps.changed-files-patches.outputs.any_changed == 'true'
         shell: bash
         run: |
           echo Decrypting Authentication Files
