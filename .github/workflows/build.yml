@@ -470,12 +470,13 @@ jobs:
           echo "Warning: This manual publish approach bypasses version and other checks, so updating build.txt is not necessary currently and this approach shouldn't be used by modders"
           echo pwd is: ${PWD}
                  
-          echo "Attempting to publish ExampleMod.tmod"
+          echo "Attempting to publish ExampleMod"
           echo publish.vdf contents:
           cat publish.vdf
           echo workshop.json contents:
-          cat artifacts/ExampleMod/Workshop/workshop.json
-          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${GITHUB_WORKSPACE}/publish.vdf" +quit
+          cat Workshop/workshop.json
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${PWD}/publish.vdf" +quit
           echo publish.vdf contents:
           cat publish.vdf
           echo Done
+        working-directory: artifacts/ExampleMod
