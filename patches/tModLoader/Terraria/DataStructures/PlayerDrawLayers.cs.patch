@@ -329,6 +329,21 @@
  				return;
  
  			Vector2 zero = Vector2.Zero;
+@@ -2191,7 +_,13 @@
+ 			Main.instance.LoadItem(num);
+ 			Texture2D value = TextureAssets.Item[num].Value;
+ 			Vector2 position = new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y));
+-			Rectangle? sourceRect = new Rectangle(0, 0, value.Width, value.Height);
++			// Vanilla:  Rectangle? sourceRect = new Rectangle(0, 0, value.Width, value.Height);
++			// Notes:
++			//   If the item doesn't have an animation, "Main.itemAnimations[num]" is just null, so the code will default to Texture2D.Frame(), which will just be what vanilla does.
++			//   However, if it does have an animation, then the source rect will be obtained from the animation instance, which is also what's used for displaying the animation
++			//   source rect for items in the inventory and dropped items in the world.
++			//     - absoluteAquarian
++			Rectangle? sourceRect = Main.itemAnimations[num]?.GetFrame(value) ?? value.Frame();
+ 			if (num == 75)
+ 				sourceRect = value.Frame(1, 8);
+ 
 @@ -2385,7 +_,10 @@
  						num10 -= (float)value.Width;
  					}

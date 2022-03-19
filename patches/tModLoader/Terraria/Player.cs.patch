@@ -1813,16 +1813,15 @@
  				SoundEngine.PlaySound(SoundID.Item166, base.Center);
  				int num3 = -1;
  				if (Main.curMusic == 1)
-@@ -10917,10 +_,14 @@
+@@ -10917,10 +_,12 @@
  					currentItem.SetDefaults(5044);
  				else if (Main.curMusic == 90)
  					currentItem.SetDefaults(5112);
 -				else if (Main.curMusic > 13)
 +				else if (Main.curMusic > 13 && Main.curMusic < Main.maxMusic)
  					currentItem.SetDefaults(1596 + Main.curMusic - 14);
- 				else if (num3 != -1)
-+					; // Silence.
-+				else if (Main.curMusic < Main.maxMusic)
+-				else if (num3 != -1)
++				else if (num3 != -1 && Main.curMusic < Main.maxMusic)
  					currentItem.SetDefaults(num3 + 562);
 +				else if (MusicLoader.musicToItem.TryGetValue(Main.curMusic, out int modMusicBoxType))
 +					currentItem.SetDefaults(modMusicBoxType);

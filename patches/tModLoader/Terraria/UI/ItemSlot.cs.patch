@@ -593,13 +593,14 @@
  			}
  			else if (context == 6) {
  				Texture2D value8 = TextureAssets.Trash.Value;
-@@ -1740,6 +_,25 @@
+@@ -1740,6 +_,27 @@
  					if (inv == localPlayer.miscDyes)
  						result = 185 + slot;
  					break;
 +				//TML Context: GamePad number magic aligned to match DemonHeart Accessory.
 +				//TML Note: There is no Master Mode Accessory slot code here for Gamepads.
 +				//TML-added [[
++				/*TODO: Fix later because gamepads are trashing all
 +				case -10:
 +				case -11:
 +					int num3M = slot;
@@ -616,6 +617,7 @@
 +					result = 120 + num4M;
 +					break;
 +				// ]]
++				*/
  				case 19:
  					result = 180;
  					break;

@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.Default.Patreon
 
 		public override void SetStaticDefaults() {
 			var displayName = Name.Replace('_', ' ');
-			displayName.Insert(displayName.IndexOf(' '), SetSuffix);
+			displayName = displayName.Insert(displayName.IndexOf(' '), SetSuffix);
 			DisplayName.SetDefault(displayName);
 		}
 
