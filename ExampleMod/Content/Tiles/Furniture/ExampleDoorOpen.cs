@@ -78,7 +78,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
 			return true;
-        }
+		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
 			num = 1;
