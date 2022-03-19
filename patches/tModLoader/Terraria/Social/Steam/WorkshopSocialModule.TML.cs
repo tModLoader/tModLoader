@@ -142,6 +142,7 @@ namespace Terraria.Social.Steam
 			Console.WriteLine("Preparing Files for CI...");
 			Program.LaunchParameters.TryGetValue("-ciprep", out string changeNotes);
 			Program.LaunchParameters.TryGetValue("-publishedmodfiles", out string publishedModFiles);
+			Program.LaunchParameters.TryGetValue("-uploadfolder", out string uploadFolder);
 
 			// Prep some common file paths & info
 			string publishFolder = $"{ModOrganizer.modPath}/Workshop";
@@ -200,7 +201,7 @@ namespace Terraria.Social.Steam
 					"{",
 					"\"appid\" \"" + "1281930"  + "\"",
 					"\"publishedfileid\" \"" + steamInfo.workshopEntryId + "\"",
-					"\"contentfolder\" \"" + $"artifacts/{modName}/Workshop" + "\"",
+					"\"contentfolder\" \"" + $"{uploadFolder}/Workshop" + "\"",
 					"\"changenote\" \"" + changeNotes + "\"",
 					"\"description\" \"" + descriptionFinal + "\"",
 					"}"
