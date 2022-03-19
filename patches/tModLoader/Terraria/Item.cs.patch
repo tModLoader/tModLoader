@@ -594,11 +594,18 @@
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
  					int num3 = item.stack;
-@@ -46280,7 +_,7 @@
+@@ -46280,7 +_,14 @@
  				case 4070:
  					return TextureAssets.Item[type].Frame(1, 4);
  				default:
 -					return TextureAssets.Item[type].Frame();
++					// Vanila:  return TextureAssets.Item[type].Frame();
++					// Notes:
++					//   If the item doesn't have an animation, "Main.itemAnimations[type]" is just null, so the code will default to Asset<Texture2D>.Frame(), which will just be what vanilla does.
++					//   However, if it does have an animation, then the source rect will be obtained from the animation instance, which is also what's used for displaying the animation
++					//   source rect for items in the inventory and dropped items in the world.  This source rect will then be the basis for the use item's hitbox, rather than the entire
++					//   spritesheet's size.
++					//     - absoluteAquarian
 +					return Main.itemAnimations[type]?.GetFrame(TextureAssets.Item[type].Value) ?? TextureAssets.Item[type].Frame();
  			}
  		}
