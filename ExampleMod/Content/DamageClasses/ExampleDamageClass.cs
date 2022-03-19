@@ -7,6 +7,8 @@ namespace ExampleMod.Content.DamageClasses
 {
 	public class ExampleDamageClass : DamageClass
 	{
+		// This is an example damage class designed to demonstrate all the current functionality of the feature and explain how to create one of your own, should you need one.
+		// For information about how to apply stat bonuses to specific damage classes, please instead refer to ExampleMod/Content/Items/Accessories/ExampleStatBonusAccessory.
 		public override StatInheritanceData CheckBaseClassStatInheritance(DamageClass damageClass) {
 			// This method lets you make your damage class benefit from other classes' stat bonuses by default, as well as universal stat bonuses.
 			// To briefly summarize the two nonstandard damage class names used by DamageClass:
