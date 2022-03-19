@@ -329,6 +329,15 @@
  				return;
  
  			Vector2 zero = Vector2.Zero;
+@@ -2191,7 +_,7 @@
+ 			Main.instance.LoadItem(num);
+ 			Texture2D value = TextureAssets.Item[num].Value;
+ 			Vector2 position = new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y));
+-			Rectangle? sourceRect = new Rectangle(0, 0, value.Width, value.Height);
++			Rectangle? sourceRect = Main.itemAnimations[num]?.GetFrame(value) ?? value.Frame();
+ 			if (num == 75)
+ 				sourceRect = value.Frame(1, 8);
+ 
 @@ -2385,7 +_,10 @@
  						num10 -= (float)value.Width;
  					}
