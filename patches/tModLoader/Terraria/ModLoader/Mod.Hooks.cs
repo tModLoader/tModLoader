@@ -1,5 +1,6 @@
 using ReLogic.Content.Sources;
 using System.IO;
+using System.Linq;
 using Terraria.ModLoader.Assets;
 
 namespace Terraria.ModLoader
@@ -53,11 +54,13 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Close is called before Unload, and may be called at any time when mod unloading is imminent (such as when downloading an update, or recompiling)
-		/// Use this to release any additional file handles, or stop streaming music. 
+		/// Use this to release any additional file handles, or stop streaming music.
 		/// Make sure to call `base.Close()` at the end
 		/// May be called multiple times before Unload
 		/// </summary>
 		public virtual void Close() {
+			MusicLoader.CloseModStreams(this);
+
 			fileHandle?.Dispose();
 
 			if (File != null && File.IsOpen)

@@ -4,19 +4,22 @@
 		// Main Menu
 		"PatreonSupport": "欢迎表示您的支持: ",
 		"MenuModBrowser": "模组浏览器",
-		// "MenuDownloadMods": "Download Mods",
-		// "MenuDownloadModsDescription": "The in-game Mod Browser to find, download, and update your Mods.",
+		"MenuDownloadMods": "下载模组",
+		"MenuDownloadModsDescription": "这是游戏内的模组浏览器，你可以在此搜索、下载和更新模组。",
 		"MenuMods": "模组管理",
-		// "MenuManageMods": "Manage Mods",
-		// "MenuManageModsDescription": "Manage which Mods are active, delete Mods, and configure your Modpacks.",
+		"MenuManageMods": "管理模组",
+		"MenuManageModsDescription": "启用、禁用或删除模组，管理模组整合包。",
 		"MenuModSources": "模组源码",
-		// "MenuDevelopMods": "Develop Mods",
-		// "MenuDevelopModsDescription": "Develop and publish Mods for others to use, using your Mod Source code",
+		"MenuDevelopMods": "开发模组",
+		"MenuDevelopModsDescription": "用你的模组源代码来开发模组以供其他玩家游玩。",
 		"MenuEnableDeveloperMode": "启用开发者模式",
-		// "WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
+		"WelcomeMessageBeta": "欢迎使用tModLoader 1.4 Alpha测试版.\n\n你已经成功安装了最新不稳定版本的tModLoader（它随时都可能会更新、遇到Bug或崩溃！）\n\n进入创意工坊界面以访问tModLoader的模组相关功能。\n\n加入tModLoader的Discord群交流和tModLoader 1.4相关的模组、测试、工具和更新等内容。",
 		"FirstLaunchWelcomeMessage": "欢迎使用tModLoader.\n\n你已成功安装tModLoader.使用模组浏览器可以找到你想要下载的模组.在模组管理中可以更改已安装的模组.更改模组后,请确保你点击了“重新加载模组”以使它们生效.",
+		"WhatsNewMessage": "以下是自您上次启动 Alpha 版本后更新的更改基本说明。与这些更改相关的模组也许需要由其作者重新构建。访问 GitHub 以查看更多细节：\n",
+		"ViewOnGitHub": "在 GitHub 上查看",
 		"tModLoaderSettings": "tModLoader设置",
 		"ModMenuSwap": "切换背景主题",
+		"AudioNotSupported": "没有找到音频设备。正在关闭所有音频。",
 
 		// Mods Menu
 		"ModsModsList": "模组列表",
@@ -27,6 +30,7 @@
 		"ModsModPacks": "模组整合包",
 		"ModsDisable": "禁用",
 		"ModsEnable": "启用",
+		"ModConfiguration": "模组配置",
 		"ModsOpenConfig": "点击打开配置",
 		"ModOldWarning": "旧模组,有风险",
 		"ModDependencyClickTooltip": "该模组依赖于: {0}\n(点击启用)",
@@ -69,11 +73,20 @@
 		"BossBarStyleNoOptions": "无",
 
 		// Workshop
-		// "WorkshopDisclaimer": "By submitting this item, you agree to the tModLoader Terms of Service",
-		// "SteamPublishingLimit": "Error: Only Steam tModLoader owners can publish to Workshop in-game.",
-		// "NoWorkshopAccess": "Error: Unable to access Steam Workshop",
-		// "ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
-		// "ModVersionInfoUnchanged": "Error: Mod Version information must be incremented prior to updating.",
+		"WorkshopDisclaimer": "在提交之前，你需要同意tModLoader的服务条款",
+		"SteamPublishingLimit": "只有Steam版的tModLoader才可以在游戏里上传内容到Steam创意工坊。",
+		"NoWorkshopAccess": "无法访问Steam创意工坊。",
+		"ModAlreadyUploaded": "这个模组已经存在于创意工坊中。",
+		"ModVersionInfoUnchanged": "模组的版本号在更新时应当增加。",
+		"ConsultSteamLogs": "查看 Steam 的 workshop_log.txt （默认位置在: {0}）以获得更多细节。",
+		"SteamRejectUpdate": "模组已被安装：{0}。若要重新安装，请关闭当前游戏后重启。",
+		"BeginDownload": "正在尝试下载模组：{0}",
+		"EndDownload": "项目下载完成",
+		"CreateItem": "正在创建模组 {0}",
+		"UpdateItem": "正在更新模组 {0}",
+		"PublishItem": "尝试发布模组 {0}",
+		"SteamDownloader": "正在使用 Steam 下载管理器排队下载...",
+		"DownloadProgress": "下载完成 {0}%",
 
 		// Mod Errors
 		"LoadError": "该模组加载时发生错误 {0}",
@@ -110,7 +123,7 @@
 		"LoadErrorFontFailedToLoad": "在 {0} 的字体文件加载失败",
 		"LoadErrorEffectFailedToLoad": "在 {0} 的效果文件加载失败",
 		"LoadErrorUnknownXNBFileHint": "发现不明[xnb]文件 {0}.它可能应被放置于Fonts（字体）或Effects（效果）文件夹里",
-		"LoadErrorCannotLoadCompressedEffects": "无法加载已压缩的效果.",
+		"LoadErrorCannotLoadCompressedEffects": "无法加载已压缩的Effects（效果）.",
 
 		"LoadErrorNotLoading": "Mod.AddContent在加载时只能被调用一次",
 		"LoadErrorDuplicateName": "无法添加两个具有相同名称{1}的{0}。也许有两个类名相同但在不同的命名空间的类自动加载, 或者你手动调用AddContent添加了两次同名的{0}。",
@@ -216,6 +229,8 @@
 		"XDaysAgo": "{0} {^0:天}前",
 		"XMonthsAgo": "{0} {^0:月}前",
 		"XYearsAgo": "{0} {^0:年}前",
+		"MBServerReturnToMenu": "返回至世界菜单",
+		"MBServerAskForModName": "输入要下载的模组完整全名：",
 
 		// Mod Publishing
 		"MBPublishEnterPassphrase": "请输入你的密码",
@@ -281,12 +296,13 @@
 		"MSBuildAll": "生成全部",
 		"MSBuildReloadAll": "生成并重新加载全部模组",
 		"MSUpgradeCSProj": "更新[.csproj]文件",
+		"MSUpgradeLangFiles": "升级 .lang 文件至 .hjson （您将不会丢失任何数据）",
 		"MSOpenSources": "打开源码文件夹",
 		"MSManagePublished": "管理已发布模组",
 		"MSPublish": "发布",
 		"MSModSourcesCantHaveSpaces": "(Mod Sources文件夹不能含有空格)",
 		"MSCreateMod": "创建模组",
-		// "VersionUpgrade": "LINK: Learn about Mod Migration for Latest Update",
+		"VersionUpgrade": "链接: 了解如何迁移到tModLoader 1.4",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "生成模组需要额外的库. (缺少[ModCompile]文件夹)",
@@ -358,6 +374,10 @@
 		"MouseXButton1": "鼠标#4",
 		"MouseXButton2": "鼠标#5",
 
+		// In Game UI additions
+		"slotStack": "平铺式",
+		"slotScroll": "滚动式",
+
 		// Misc
 		"OK": "好的",
 		"Continue": "继续",
@@ -378,7 +398,7 @@
 		"ContentFolderNotFoundInstallCheck": "无法检测到{0}文件夹。\r\n\r\n请确保tModLoader安装在单独的文件夹里，或从Steam中直接安装。",
 		"VanillaSteamInstallationNotFound": "无法检测到原版Terraria的Content资源文件夹。\r\n\r\n请确保已经从Steam安装了原版Terraria且位于同一个Steam目录。",
 		"SteamAPIHashMismatch": "SteamAPI校验失败，检测为盗版。\n\ntModLoader需要购买安装正版Terraria。",
-		"VanillaGOGNotFound": "无法检测到{0}。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。This version of tModLoader expects the {1} version of Terraria, you may need to downgrade or upgrade Terraria via GOG Galaxy, or wait for tModLoader to update.",
+		"VanillaGOGNotFound": "无法检测到{0}。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。此版本的tModLoader需要安装Terraria {1}, 请使用GOG Galaxy升级或降级你的Terraria, 或等待tModLoader更新。",
 		"GOGHashMismatch": "{0}校验失败。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。\r\n\r\n如果你打了自定义补丁，请将未补丁的原版复制并命名为\"Terraria_v<版本>.exe\"（如Terraria_v4.3.2.1.exe）",
 		"DefaultExtraMessage": "请校验Terraria的游戏完整性，然后从Steam安装tModLoader。如果你希望手动安装，请仔细阅读README.txt中的教程。",
 		"ClientLogHint": "{0}\n\n你可以在{0}中找到一个名为client.log的日志文件。\n（如果你需要寻求帮助，请附带上这个日志文件。）",

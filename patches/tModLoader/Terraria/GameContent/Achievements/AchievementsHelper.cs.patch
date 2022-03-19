@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Achievements/AchievementsHelper.cs
++++ src/tModLoader/Terraria/GameContent/Achievements/AchievementsHelper.cs
+@@ -1,3 +_,5 @@
++using System.Linq;
++
+ namespace Terraria.GameContent.Achievements
+ {
+ 	public class AchievementsHelper
+@@ -164,7 +_,7 @@
+ 			if (context == 17)
+ 				Main.Achievements.GetCondition("THE_CAVALRY", "Equip").Complete();
+ 
+-			if ((context == 10 || context == 11) && item.wingSlot > 0)
++			if (new int[4] { 10, 11, -10, 11 }.Contains(context) && item.wingSlot > 0)
+ 				Main.Achievements.GetCondition("HEAD_IN_THE_CLOUDS", "Equip").Complete();
+ 
+ 			if (context == 8 && player.armor[0].stack > 0 && player.armor[1].stack > 0 && player.armor[2].stack > 0)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 
@@ -24,9 +25,9 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			LiquidRenderer.Instance._liquidTextures[Slot] = ModContent.Request<Texture2D>(Texture);
-			
+
 			SetStaticDefaults();
-			
+
 			TextureAssets.Liquid[Slot] = ModContent.Request<Texture2D>(BlockTexture);
 		}
 
@@ -60,6 +61,23 @@ namespace Terraria.ModLoader
 		public virtual Color BiomeHairColor() {
 			return new Color(28, 216, 94);
 		}
+
+		/// <summary>
+		/// Returns the texture to be used when drawing rain of this water type.
+		/// <br/>Default uses the vanilla rain texture.
+		/// </summary>
+		public virtual Asset<Texture2D> GetRainTexture() {
+			return TextureAssets.Rain;
+		}
+
+		/// <summary>
+		/// Return the variant of rain used. Equal to the offset in the rain texture divided by four.
+		/// <br/>Vanilla rain has three variants per biome, and so vanilla variants range from 0 to 3 * Main.maxLiquidTextures.
+		/// <br/>Default is a random number from 0 to 2, which creates normal vanilla forest biome rain.
+		/// </summary>
+		public virtual byte GetRainVariant() {
+			return (byte)Main.rand.Next(3);
+		}
 	}
 
 	/// <summary>
@@ -79,7 +97,7 @@ namespace Terraria.ModLoader
 
 		public sealed override void SetupContent() {
 			Main.instance.waterfallManager.waterfallTexture[Slot] = ModContent.Request<Texture2D>(Texture);
-			
+
 			SetStaticDefaults();
 		}
 

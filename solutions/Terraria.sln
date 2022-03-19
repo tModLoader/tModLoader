@@ -1,26 +1,56 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReLogic", "..\src\Terraria\ReLogic\ReLogic.csproj", "{359B7CB0-9706-4008-8CF9-EB81F8021D59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraria", "..\src\Terraria\Terraria\Terraria.csproj", "{4EFE2B31-D61A-4C07-BAD2-991D3633C237}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraria", "..\src\Terraria\Terraria\Terraria.csproj", "{630BE316-5EDD-4F27-9983-B3B07662A34E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReLogic", "..\src\Terraria\ReLogic\ReLogic.csproj", "{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		LinuxRelease|Auto = LinuxRelease|Auto
+		LinuxServerRelease|Auto = LinuxServerRelease|Auto
+		MacRelease|Auto = MacRelease|Auto
+		MacServerRelease|Auto = MacServerRelease|Auto
+		WindowsDebug|Auto = WindowsDebug|Auto
+		WindowsRelease|Auto = WindowsRelease|Auto
+		WindowsServerDebug|Auto = WindowsServerDebug|Auto
+		WindowsServerRelease|Auto = WindowsServerRelease|Auto
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{359B7CB0-9706-4008-8CF9-EB81F8021D59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{359B7CB0-9706-4008-8CF9-EB81F8021D59}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{359B7CB0-9706-4008-8CF9-EB81F8021D59}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{359B7CB0-9706-4008-8CF9-EB81F8021D59}.Release|Any CPU.Build.0 = Release|Any CPU
-		{630BE316-5EDD-4F27-9983-B3B07662A34E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{630BE316-5EDD-4F27-9983-B3B07662A34E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{630BE316-5EDD-4F27-9983-B3B07662A34E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{630BE316-5EDD-4F27-9983-B3B07662A34E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.LinuxRelease|Auto.ActiveCfg = LinuxRelease|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.LinuxRelease|Auto.Build.0 = LinuxRelease|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.LinuxServerRelease|Auto.ActiveCfg = LinuxServerRelease|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.LinuxServerRelease|Auto.Build.0 = LinuxServerRelease|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.MacRelease|Auto.ActiveCfg = MacRelease|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.MacRelease|Auto.Build.0 = MacRelease|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.MacServerRelease|Auto.ActiveCfg = MacServerRelease|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.MacServerRelease|Auto.Build.0 = MacServerRelease|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.WindowsDebug|Auto.ActiveCfg = WindowsDebug|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.WindowsDebug|Auto.Build.0 = WindowsDebug|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.WindowsRelease|Auto.ActiveCfg = WindowsRelease|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.WindowsRelease|Auto.Build.0 = WindowsRelease|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.WindowsServerDebug|Auto.ActiveCfg = WindowsServerDebug|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.WindowsServerDebug|Auto.Build.0 = WindowsServerDebug|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.WindowsServerRelease|Auto.ActiveCfg = WindowsServerRelease|Any CPU
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237}.WindowsServerRelease|Auto.Build.0 = WindowsServerRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.LinuxRelease|Auto.ActiveCfg = LinuxRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.LinuxRelease|Auto.Build.0 = LinuxRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.LinuxServerRelease|Auto.ActiveCfg = LinuxServerRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.LinuxServerRelease|Auto.Build.0 = LinuxServerRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.MacRelease|Auto.ActiveCfg = MacRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.MacRelease|Auto.Build.0 = MacRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.MacServerRelease|Auto.ActiveCfg = MacServerRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.MacServerRelease|Auto.Build.0 = MacServerRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.WindowsDebug|Auto.ActiveCfg = WindowsDebug|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.WindowsDebug|Auto.Build.0 = WindowsDebug|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.WindowsRelease|Auto.ActiveCfg = WindowsRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.WindowsRelease|Auto.Build.0 = WindowsRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.WindowsServerDebug|Auto.ActiveCfg = WindowsServerDebug|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.WindowsServerDebug|Auto.Build.0 = WindowsServerDebug|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.WindowsServerRelease|Auto.ActiveCfg = WindowsServerRelease|Any CPU
+		{FD2AC3B2-3EA4-4331-ABC5-D3AA05035242}.WindowsServerRelease|Auto.Build.0 = WindowsServerRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

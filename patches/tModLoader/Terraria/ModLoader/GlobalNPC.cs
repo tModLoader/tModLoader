@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader.Core;
@@ -17,7 +18,7 @@ namespace Terraria.ModLoader
 			NPCLoader.VerifyGlobalNPC(this);
 
 			ModTypeLookup<GlobalNPC>.Register(this);
-			
+
 			index = (ushort)NPCLoader.globalNPCs.Count;
 
 			NPCLoader.globalNPCs.Add(this);
@@ -28,20 +29,20 @@ namespace Terraria.ModLoader
 		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
 		/// <summary>
-		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
+		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()).
 		/// Defaults to false (using default constructor).
 		/// </summary>
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
-		/// Returns a clone of this GlobalNPC. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references. 
-		/// Only called if CloneNewInstances && InstancePerEntity
+		/// Returns a clone of this GlobalNPC.
+		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references.
+		/// Only called if CloneNewInstances &amp;&amp; InstancePerEntity
 		/// </summary>
 		public virtual GlobalNPC Clone() => (GlobalNPC)MemberwiseClone();
 
 		/// <summary>
-		/// Create a new instance of this GlobalNPC for an NPC instance. 
+		/// Create a new instance of this GlobalNPC for an NPC instance.
 		/// Called at the end of NPC.SetDefaults.
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
@@ -120,7 +121,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life <= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="hitDirection"></param>
@@ -178,13 +179,13 @@ namespace Terraria.ModLoader
 		public virtual void OnKill(NPC npc) {
 		}
 
-        /// <summary>
-        /// Allows you to make things happen when an NPC is caught. Ran Serverside.
-        /// </summary>
-        /// <param name="npc">The caught NPC</param>
-        /// <param name="player">The player catching the NPC</param>
-        /// <param name="item">The item that will be spawned</param>
-        public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
+		/// <summary>
+		/// Allows you to make things happen when an NPC is caught. Ran Serverside.
+		/// </summary>
+		/// <param name="npc">The caught NPC</param>
+		/// <param name="player">The player catching the NPC</param>
+		/// <param name="item">The item that will be spawned</param>
+		public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
 		}
 
 		/// <summary>
@@ -521,6 +522,18 @@ namespace Terraria.ModLoader
 		/// <param name="nextSlot"></param>
 		public virtual void SetupTravelShop(int[] shop, ref int nextSlot) {
 		}
+
+		/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
+		/// <summary>
+		/// Allows you to set an NPC's biome preferences and nearby npc preferences for the NPC happiness system. Recommended to only be used with NPCs that have shops.
+		/// </summary>
+		/// <param name="npc">The current npc being talked to</param>
+		/// <param name="shopHelperInstance">The vanilla shop modifier instance to invoke methods such as LikeNPC and HateBiome on</param>
+		/// <param name="primaryPlayerBiome">The current biome the player is in for purposes of npc happiness, referred by PrimaryBiomeID </param>
+		/// <param name="nearbyNPCsByType">The boolean array of if each type of npc is nearby</param>
+		public virtual void ModifyNPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
+		}
+		*/
 
 		/// <summary>
 		/// Whether this NPC can be telported a King or Queen statue. Return true to allow the NPC to teleport to the statue, return false to block this NPC from teleporting to the statue, and return null to use the vanilla code for whether the NPC can teleport to the statue. Returns null by default.

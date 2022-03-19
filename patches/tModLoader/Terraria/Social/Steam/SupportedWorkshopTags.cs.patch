@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Social/Steam/SupportedWorkshopTags.cs
+--- src/TerrariaNetCore/Terraria/Social/Steam/SupportedWorkshopTags.cs
 +++ src/tModLoader/Terraria/Social/Steam/SupportedWorkshopTags.cs
 @@ -29,6 +_,10 @@
  			AddResourcePackTag("WorkshopTags.Overhaul", "Overhaul");

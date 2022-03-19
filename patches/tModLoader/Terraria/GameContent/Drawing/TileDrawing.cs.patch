@@ -1,6 +1,6 @@
---- src/Terraria/Terraria/GameContent/Drawing/TileDrawing.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
-@@ -9,6 +_,7 @@
+@@ -9,13 +_,14 @@
  using Terraria.GameContent.Tile_Entities;
  using Terraria.Graphics.Capture;
  using Terraria.ID;
@@ -8,6 +8,26 @@
  using Terraria.ObjectData;
  using Terraria.UI;
  using Terraria.Utilities;
+ 
+ namespace Terraria.GameContent.Drawing
+ {
+-	public class TileDrawing
++	public partial class TileDrawing
+ 	{
+ 		private enum TileCounterType
+ 		{
+@@ -338,8 +_,9 @@
+ 			byte b = (byte)(100f + 150f * Main.martianLight);
+ 			_martianGlow = new Color(b, b, b, 0);
+ 			TileDrawInfo value = _currentTileDrawInfo.Value;
+-			for (int i = firstTileY; i < lastTileY + 4; i++) {
+-				for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
++			// tModLoader - Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
++			for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
++				for (int i = firstTileY; i < lastTileY + 4; i++) {
+ 					Tile tile = Main.tile[j, i];
+ 					if (tile == null) {
+ 						tile = new Tile();
 @@ -356,6 +_,9 @@
  						if (!TextureAssets.Tile[type].IsLoaded)
  							Main.instance.LoadTiles(type);
@@ -28,14 +48,24 @@
  					}
  				}
  			}
-@@ -547,6 +_,7 @@
- 				return;
+@@ -554,7 +_,7 @@
+ 			if (TileID.Sets.HasOutlines[drawData.typeCache])
+ 				GetTileOutlineInfo(tileX, tileY, drawData.typeCache, ref drawData.tileLight, ref highlightTexture, ref highlightColor);
  
- 			GetTileDrawData(tileX, tileY, drawData.tileCache, drawData.typeCache, ref drawData.tileFrameX, ref drawData.tileFrameY, out drawData.tileWidth, out drawData.tileHeight, out drawData.tileTop, out drawData.halfBrickHeight, out drawData.addFrX, out drawData.addFrY, out drawData.tileSpriteEffect, out drawData.glowTexture, out drawData.glowSourceRect, out drawData.glowColor);
-+			
- 			drawData.drawTexture = GetTileDrawTexture(drawData.tileCache, tileX, tileY);
- 			Texture2D highlightTexture = null;
- 			Rectangle empty = Rectangle.Empty;
+-			if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, drawData.tileCache, drawData.typeCache)) {
++			if (_localPlayer.dangerSense && IsTileDangerous(tileX, tileY, _localPlayer, drawData.tileCache, drawData.typeCache)) {
+ 				if (drawData.tileLight.R < byte.MaxValue)
+ 					drawData.tileLight.R = byte.MaxValue;
+ 
+@@ -573,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY)) {
++			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(tileX, tileY, drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY)) {
+ 				if (drawData.tileLight.R < 200)
+ 					drawData.tileLight.R = 200;
+ 
 @@ -608,6 +_,7 @@
  
  			Rectangle normalTileRect = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
@@ -62,6 +92,27 @@
  			Texture2D result = TextureAssets.Tile[tile.type].Value;
  			int tileStyle = 0;
  			int num = tile.type;
+@@ -2799,7 +_,8 @@
+ 			}
+ 		}
+ 
+-		private static bool IsTileDangerous(Player localPlayer, Tile tileCache, ushort typeCache) {
++		//TML: Added x/y for hook compatibility, made internal. Public variant in partial TML class
++		internal static bool IsTileDangerous(int tileX, int tileY, Player localPlayer, Tile tileCache, ushort typeCache) {
+ 			bool flag = false || typeCache == 135 || typeCache == 137 || typeCache == 138 || typeCache == 484 || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85;
+ 			if (tileCache.slope() == 0 && !tileCache.inActive()) {
+ 				flag = (flag || typeCache == 32 || typeCache == 69 || typeCache == 48 || typeCache == 232 || typeCache == 352 || typeCache == 483 || typeCache == 482 || typeCache == 481 || typeCache == 51 || typeCache == 229);
+@@ -2810,6 +_,10 @@
+ 					flag = (flag || typeCache == 162);
+ 			}
+ 
++			bool? modded = TileLoader.IsTileDangerous(tileX, tileY, typeCache, localPlayer);
++			if (modded.HasValue)
++				return modded.Value;
++
+ 			return flag;
+ 		}
+ 
 @@ -2820,7 +_,7 @@
  			return _tileSolid[typeCache];
  		}
@@ -80,17 +131,18 @@
  			tileTop = 0;
  			tileWidth = 16;
  			tileHeight = 16;
-@@ -4371,6 +_,9 @@
+@@ -4378,6 +_,10 @@
  						break;
  					}
  			}
 +
-+			TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight);
++			TileLoader.SetSpriteEffects(x, y, typeCache, ref tileSpriteEffect);
++			TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight, ref tileFrameX, ref tileFrameY);
 +			TileLoader.SetAnimationFrame(typeCache, x, y, ref addFrX, ref addFrY);
  		}
  
  		private bool IsWindBlocked(int x, int y) {
-@@ -4438,11 +_,11 @@
+@@ -4445,11 +_,14 @@
  			}
  		}
  
@@ -101,10 +153,22 @@
  
 -		private void AddSpecialLegacyPoint(int x, int y) {
 +		public void AddSpecialLegacyPoint(int x, int y) {
++			if (_specialTilesCount >= _specialTileX.Length)
++				return; //Protection against too many special tiles
++
  			_specialTileX[_specialTilesCount] = x;
  			_specialTileY[_specialTilesCount] = y;
  			_specialTilesCount++;
-@@ -5416,6 +_,8 @@
+@@ -5096,6 +_,8 @@
+ 			int type = 706;
+ 			if (Main.waterStyle == 12)
+ 				type = 1147;
++			else if (Main.waterStyle >= Main.maxLiquidTypes)
++				type = LoaderManager.Get<WaterStylesLoader>().Get(Main.waterStyle).GetDropletGore();
+ 			else if (Main.waterStyle > 1)
+ 				type = 706 + Main.waterStyle - 1;
+ 
+@@ -5423,6 +_,8 @@
  
  					Main.spriteBatch.Draw(value9, vector, value10, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
  				}
@@ -112,4 +176,22 @@
 +				TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
  			}
  		}
+ 
+@@ -5720,7 +_,7 @@
+ 		}
+ 
+ 		private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust) {
+-			if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, tileCache, typeCache)) {
++			if (_localPlayer.dangerSense && IsTileDangerous(i, j, _localPlayer, tileCache, typeCache)) {
+ 				if (tileLight.R < byte.MaxValue)
+ 					tileLight.R = byte.MaxValue;
+ 
+@@ -5739,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(typeCache, tileFrameX, tileFrameY)) {
++			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(i, j, typeCache, tileFrameX, tileFrameY)) {
+ 				if (tileLight.R < 200)
+ 					tileLight.R = 200;
  

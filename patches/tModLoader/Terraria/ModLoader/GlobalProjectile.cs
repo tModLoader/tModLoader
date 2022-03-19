@@ -26,20 +26,20 @@ namespace Terraria.ModLoader
 		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
-		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
+		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()).
 		/// Defaults to false (using default constructor).
 		/// </summary>
 		public virtual bool CloneNewInstances => false;
 
 		/// <summary>
-		/// Returns a clone of this GlobalProjectile. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references. 
-		/// Only called if CloneNewInstances && InstancePerEntity
+		/// Returns a clone of this GlobalProjectile.
+		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references.
+		/// Only called if CloneNewInstances &amp;&amp; InstancePerEntity
 		/// </summary>
 		public virtual GlobalProjectile Clone() => (GlobalProjectile)MemberwiseClone();
 
 		/// <summary>
-		/// Create a new instance of this GlobalProjectile for a Projectile instance. 
+		/// Create a new instance of this GlobalProjectile for a Projectile instance.
 		/// Called at the end of Projectile.SetDefaults.
 		/// If CloneNewInstances is true, just calls Clone()
 		/// Otherwise calls the default constructor and copies fields
@@ -96,14 +96,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine how a projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.
+		/// Allows you to determine how a projectile interacts with tiles. Return false if you completely override or cancel a projectile's tile collision behavior. Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
-		/// <param name="fallThrough"></param>
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="width"> The width of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to projectile.width. </param>
+		/// <param name="height"> The height of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to projectile.height. </param>
+		/// <param name="fallThrough"> Whether or not the projectile falls through platforms and similar tiles. </param>
+		/// <param name="hitboxCenterFrac"> Determines by how much the tile collision hitbox's position (top left corner) will be offset from the projectile's real center. If vanilla or a mod don't modify it, defaults to half the hitbox size (new Vector2(0.5f, 0.5f)). </param>
 		/// <returns></returns>
-		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough) {
+		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
 			return true;
 		}
 

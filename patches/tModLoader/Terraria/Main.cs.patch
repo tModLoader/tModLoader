@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Main.cs
+--- src/TerrariaNetCore/Terraria/Main.cs
 +++ src/tModLoader/Terraria/Main.cs
 @@ -3,6 +_,7 @@
  using Microsoft.Xna.Framework.Content;
@@ -25,12 +25,11 @@
  using Terraria.Achievements;
  using Terraria.Audio;
  using Terraria.Chat;
-@@ -69,9 +_,17 @@
+@@ -72,9 +_,16 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.Audio;
 +using Terraria.ModLoader.Core;
 +using Terraria.ModLoader.Default;
 +using Terraria.ModLoader.Engine;
@@ -43,7 +42,7 @@
  using Terraria.UI;
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
-@@ -84,9 +_,9 @@
+@@ -87,9 +_,9 @@
  namespace Terraria
  {
  #if SERVER
@@ -55,25 +54,25 @@
  #endif
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
-@@ -242,7 +_,7 @@
- 		public static NPCHeadRenderer BossNPCHeadRenderer = null;
- 		public static string versionNumber = "v1.4.2.3";
- 		public static string versionNumber2 = "v1.4.2.3";
+@@ -241,7 +_,7 @@
+ 		public static List<TitleLinkButton> TitleLinks = new List<TitleLinkButton>();
+ 		public static string versionNumber = "v1.4.3.6";
+ 		public static string versionNumber2 = "v1.4.3.6";
 -		public static string SavePath = Program.LaunchParameters.ContainsKey("-savedirectory") ? Program.LaunchParameters["-savedirectory"] : Platform.Get<IPathService>().GetStoragePath("Terraria");
 +		public static string SavePath = Program.SavePath;
  		public static bool AnnouncementBoxDisabled;
  		public static int AnnouncementBoxRange = -1;
  		public static string AutogenSeedName;
-@@ -259,7 +_,7 @@
- 		public static bool tenthAnniversaryWorld = false;
+@@ -260,7 +_,7 @@
+ 		public static bool notTheBeesWorld = false;
  		public static Vector2 destroyerHB = new Vector2(0f, 0f);
  		public static FavoritesFile LocalFavoriteData = new FavoritesFile(SavePath + "/favorites.json", isCloud: false);
--		public static FavoritesFile CloudFavoritesData = new FavoritesFile("/favorites.json", isCloud: true);
-+		public static FavoritesFile CloudFavoritesData = new FavoritesFile("/ModLoader/favorites.json", true);
+-		public static FavoritesFile CloudFavoritesData = new FavoritesFile("favorites.json", isCloud: true);
++		public static FavoritesFile CloudFavoritesData = new FavoritesFile("ModLoader/favorites.json", true);
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
-@@ -511,12 +_,12 @@
+@@ -513,12 +_,12 @@
  		public static bool showSplash = true;
  		public static bool ignoreErrors = true;
  		public static string defaultIP = "";
@@ -89,7 +88,7 @@
  		public static float iS = 1f;
  		public static bool render;
  		public static int qaStyle;
-@@ -543,7 +_,7 @@
+@@ -545,7 +_,7 @@
  		public static int instantBGTransitionCounter = 2;
  		public static int bgDelay;
  		public static int bgStyle;
@@ -98,7 +97,7 @@
  		public static float[] bgAlphaFrontLayer = new float[14];
  		public static float[] bgAlphaFarBackLayer = new float[14];
  		public static int[] bgFrame = new int[14];
-@@ -557,13 +_,13 @@
+@@ -559,13 +_,13 @@
  		public static int wofDrawAreaBottom;
  		public static int wofDrawFrameIndex;
  		public static int offScreenRange = 200;
@@ -118,7 +117,7 @@
  		public static RenderTarget2D screenTarget;
  		public static RenderTarget2D screenTargetSwap;
  		public static int maxMapUpdates = 250000;
-@@ -584,8 +_,8 @@
+@@ -586,8 +_,8 @@
  		public static bool clearMap;
  		public static int mapTargetX = 5;
  		public static int mapTargetY = 2;
@@ -129,7 +128,7 @@
  		public static bool[,] initMap = new bool[mapTargetX, mapTargetY];
  		public static bool[,] mapWasContentLost = new bool[mapTargetX, mapTargetY];
  		public const int numInfoIcons = 13;
-@@ -616,12 +_,12 @@
+@@ -618,12 +_,12 @@
  		private int lastTileX;
  		private int firstTileY;
  		private int lastTileY;
@@ -146,7 +145,7 @@
  		public static int renderCount = 99;
  		private const int MF_BYPOSITION = 1024;
  		public static GraphicsDeviceManager graphics;
-@@ -706,7 +_,7 @@
+@@ -708,7 +_,7 @@
  		public const int maxItems = 400;
  		public const int maxProjectiles = 1000;
  		public const int maxNPCs = 200;
@@ -155,7 +154,7 @@
  		private static UIWorldSelect _worldSelectMenu = new UIWorldSelect();
  		public static UIManageControls ManageControlsMenu = new UIManageControls();
  		public static UIAchievementsMenu AchievementsMenu = new UIAchievementsMenu();
-@@ -761,7 +_,15 @@
+@@ -763,7 +_,15 @@
  		public static int LogoA = 255;
  		public static int LogoB;
  		public static bool LogoT;
@@ -172,7 +171,7 @@
  		public static string worldName = "";
  		public static int worldID;
  		public static int background;
-@@ -786,7 +_,7 @@
+@@ -788,7 +_,7 @@
  		public static float cloudAlpha;
  		public static float maxRaining;
  		public static float oldMaxRaining;
@@ -181,7 +180,7 @@
  		public static bool raining;
  		public static bool eclipse;
  		public static float eclipseLight;
-@@ -827,7 +_,11 @@
+@@ -829,7 +_,11 @@
  		public static float invAlpha = 1f;
  		public static float invDir = 1f;
  		[ThreadStatic]
@@ -194,7 +193,16 @@
  		public static bool allChestStackHover;
  		public static bool inventorySortMouseOver;
  		public static float GraveyardVisualIntensity;
-@@ -1159,9 +_,9 @@
+@@ -971,7 +_,7 @@
+ 		public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
+ 		public static bool tilesLoaded = false;
+ 		public static WorldMap Map = new WorldMap(maxTilesX, maxTilesY);
+-		public static Tile[,] tile = new Tile[maxTilesX, maxTilesY];
++		public static Tilemap tile = new Tilemap((ushort)maxTilesX, (ushort)maxTilesY);
+ 		public static Dust[] dust = new Dust[6001];
+ 		public static Star[] star = new Star[400];
+ 		public static Item[] item = new Item[401];
+@@ -1161,9 +_,9 @@
  		public static List<WorldFileData> WorldList = new List<WorldFileData>();
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
  		public static string WorldPath = Path.Combine(SavePath, "Worlds");
@@ -206,7 +214,7 @@
  		public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  		public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  		public static KeyboardState inputText;
-@@ -1860,7 +_,7 @@
+@@ -1864,7 +_,7 @@
  		public static float exitScale = 0.8f;
  		public static bool mouseReforge;
  		public static float reforgeScale = 0.8f;
@@ -215,7 +223,7 @@
  		public static string getIP = defaultIP;
  		public static string getPort = Convert.ToString(Netplay.ListenPort);
  		public static bool menuMultiplayer;
-@@ -1963,7 +_,7 @@
+@@ -1972,7 +_,7 @@
  		public static bool _shouldUseWindyDayMusic = false;
  		public static bool _shouldUseStormMusic = false;
  		private int lastMusicPlayed = -1;
@@ -224,7 +232,7 @@
  		private static float _minWind = 0.34f;
  		private static float _maxWind = 0.4f;
  		private static float _minRain = 0.4f;
-@@ -2000,16 +_,16 @@
+@@ -2009,16 +_,16 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
  		public static int selectedWorld;
@@ -245,7 +253,7 @@
  		public TilePaintSystemV2 TilePaintSystem;
  		public TileDrawing TilesRenderer;
  		public WallDrawing WallsRenderer;
-@@ -2024,7 +_,7 @@
+@@ -2033,7 +_,7 @@
  		private List<int> _npcsWithBannersToDraw = new List<int>();
  		private bool _imeToggle;
  		private List<int> _npcTypesThatAlreadyDrewAHead = new List<int>();
@@ -254,7 +262,7 @@
  		private static List<string> _requiredObjecsForCraftingText = new List<string>();
  		private static bool _preventCraftingBecauseClickWasUsedToChangeFocusedRecipe;
  		private static int _currentRecipeBeingCrafted = -1;
-@@ -2034,7 +_,7 @@
+@@ -2043,7 +_,7 @@
  		public static Microsoft.Xna.Framework.Color inventoryBack = new Microsoft.Xna.Framework.Color(220, 220, 220, 220);
  		public static bool mouseText;
  		private static int mH;
@@ -263,7 +271,7 @@
  		public static int hairStart;
  		private static int oldHairStyle;
  		private static Microsoft.Xna.Framework.Color oldHairColor;
-@@ -2046,7 +_,7 @@
+@@ -2055,7 +_,7 @@
  		public static Player dresserInterfaceDummy;
  		private bool _needToSetupDrawInterfaceLayers = true;
  		private List<GameInterfaceLayer> _gameInterfaceLayers;
@@ -272,7 +280,7 @@
  		private static bool _settingsButtonIsPushedToSide;
  		private static bool _MouseOversCanClear;
  		private static Vector2 _itemIconCacheScreenPosition;
-@@ -2102,19 +_,19 @@
+@@ -2112,20 +_,20 @@
  		};
  		private static float backgroundLayerTransitionSpeed = 0.05f;
  		public static float atmo;
@@ -292,14 +300,15 @@
  		private float cTop;
  		private bool _isDrawingOrUpdating;
  		public static List<INeedRenderTargetContent> ContentThatNeedsRenderTargets = new List<INeedRenderTargetContent>();
+ 		public CameraModifierStack CameraModifiers = new CameraModifierStack();
  		private static string _oldNetplayStatusText;
  		private static TextSnippet[] _netplayStatusTextSnippets;
 -		public static int ladyBugRainBoost = 0;
 +		public static double ladyBugRainBoost = 0;
  		private static bool _canShowMeteorFall;
+ 		private static bool _isResizingAndRemakingTargets = false;
  
- 		public static Vector2 ViewPosition => screenPosition + GameViewMatrix.Translation;
-@@ -2266,7 +_,7 @@
+@@ -2283,7 +_,7 @@
  
  		public static int npcShop {
  			get;
@@ -308,7 +317,7 @@
  		}
  
  		public static string playerPathName => ActivePlayerFileData.Path;
-@@ -2742,6 +_,7 @@
+@@ -2775,6 +_,7 @@
  			}
  
  			result.X = num;
@@ -316,7 +325,20 @@
  			return result;
  		}
  
-@@ -2804,11 +_,13 @@
+@@ -2791,6 +_,12 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// Registers an animation for an item type to draw inside UI (not world or held item on player).
++		/// To enable its animation in the world, use ItemID.Sets.AnimatesAsSoul in conjunction with this
++		/// </summary>
++		/// <param name="index">Item type</param>
++		/// <param name="animation">Draw animation</param>
+ 		public static void RegisterItemAnimation(int index, DrawAnimation animation) {
+ 			if (!itemAnimationsRegistered.Contains(index))
+ 				itemAnimationsRegistered.Add(index);
+@@ -2837,11 +_,13 @@
  			}
  		}
  
@@ -331,7 +353,7 @@
  		}
  
  		private static void SetGraphicsProfileInternal() {
-@@ -2816,10 +_,14 @@
+@@ -2849,10 +_,14 @@
  			graphics.GraphicsProfile = _selectedGraphicsProfile;
  			switch (_selectedGraphicsProfile) {
  				case GraphicsProfile.HiDef:
@@ -350,7 +372,7 @@
  					break;
  				case GraphicsProfile.Reach:
  					maxScreenW = 1920;
-@@ -2837,8 +_,8 @@
+@@ -2870,8 +_,8 @@
  					SetGraphicsProfileInternal();
  				}
  			}
@@ -361,7 +383,7 @@
  		}
  
  		private static void TrySupporting8K() {
-@@ -2867,6 +_,7 @@
+@@ -2900,6 +_,7 @@
  				flag2 = false;
  				anglerQuest = rand.Next(anglerQuestItemNetIDs.Length);
  				int num = anglerQuestItemNetIDs[anglerQuest];
@@ -369,7 +391,7 @@
  				if (num == 2454 && (!hardMode || WorldGen.crimson))
  					flag2 = true;
  
-@@ -2908,6 +_,8 @@
+@@ -2941,6 +_,8 @@
  
  				if ((num == 2476 || num == 2453 || num == 2473) && !flag)
  					flag2 = true;
@@ -378,7 +400,7 @@
  			}
  
  			NetMessage.SendAnglerQuest(-1);
-@@ -3035,7 +_,8 @@
+@@ -3079,7 +_,8 @@
  		public static void SaveRecent() {
  			Utils.TryCreatingDirectory(SavePath);
  			try {
@@ -388,7 +410,7 @@
  			}
  			catch {
  			}
-@@ -3109,6 +_,7 @@
+@@ -3164,6 +_,7 @@
  			Configuration.Put("UseHeatDistortion", UseHeatDistortion);
  			Configuration.Put("WaveQuality", WaveQuality);
  			Configuration.Put("Support4K", Support4K);
@@ -396,7 +418,7 @@
  			Configuration.Put("MouseColor", new Dictionary<string, byte> {
  				{ "R", mouseColor.R },
  				{ "G", mouseColor.G },
-@@ -3135,6 +_,7 @@
+@@ -3190,6 +_,7 @@
  			Configuration.Put("HoverControlMode", Player.Settings.HoverControl);
  			Configuration.Put("WaterfallDrawLimit", instance.waterfallManager.maxWaterfallCount);
  			Configuration.Put("DisableIntenseVisualEffects", DisableIntenseVisualEffects);
@@ -404,19 +426,24 @@
  			if (Configuration.Save())
  				return PlayerInput.Save();
  
-@@ -3218,6 +_,11 @@
- 				TryPickingDefaultUIScale(currentValue3);
- 			}
+@@ -3272,7 +_,15 @@
+ 					screenBorderlessPendingResizes = 1;
  
+ 				SetDisplayMode(currentValue2, currentValue3, fullscreen: false);
+-				TryPickingDefaultUIScale(currentValue3);
++			}
++			else {
++				FullscreenStartup();
++			}
++			TryPickingDefaultUIScale(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
++
 +			if (Main.dedServ) {
 +				ModLoader.ModLoader.LoadConfiguration();
 +				return;
-+			}
-+
+ 			}
+ 
  			Configuration.Get("SmartCursorToggle", ref cSmartCursorModeIsToggleAndNotHold);
- 			Configuration.Get("MapEnabled", ref mapEnabled);
- 			Configuration.Get("InvasionBarMode", ref invasionProgressMode);
-@@ -3502,6 +_,7 @@
+@@ -3562,6 +_,7 @@
  				};
  			}
  
@@ -424,19 +451,19 @@
  			PlayerInput.Load();
  			if (currentValue < 165) {
  				try {
-@@ -3514,8 +_,10 @@
+@@ -3574,8 +_,10 @@
  			mouseColorSlider.SetHSL(mouseColor);
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
--			if (currentValue != 238)
-+			if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
+-			if (currentValue != 248)
++			if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
 +			}
- 		}
  
- 		protected void OpenLegacySettings() {
-@@ -3641,9 +_,11 @@
+ 			IsInTheMiddleOfLoadingSettings = false;
+ 		}
+@@ -3703,9 +_,11 @@
  				FileUtilities.Delete(PlayerList[i].Path, PlayerList[i].IsCloudSave);
  				FileUtilities.Delete(PlayerList[i].Path + ".bak", PlayerList[i].IsCloudSave);
  			}
@@ -448,7 +475,7 @@
  			try {
  				string text = PlayerList[i].Path.Substring(0, PlayerList[i].Path.Length - 4);
  				if (text.Substring(text.Length - 1) != "." && text.Substring(text.Length - 1) != "\\" && Directory.Exists(text))
-@@ -3673,6 +_,7 @@
+@@ -3735,6 +_,7 @@
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
  				}
  
@@ -456,7 +483,7 @@
  				LoadWorlds();
  			}
  			catch {
-@@ -3861,6 +_,12 @@
+@@ -3923,6 +_,12 @@
  						if (text.Length >= 10 && text.Substring(0, 10).ToLower() == "worldname=")
  							worldName = text.Substring(10);
  
@@ -469,7 +496,7 @@
  						if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							AutogenSeedName = text.Substring(5);
  
-@@ -3970,6 +_,8 @@
+@@ -4032,6 +_,8 @@
  		}
  
  		public void YouCanSleepNow() {
@@ -478,7 +505,7 @@
  #if WINDOWS
  			if (previousExecutionState != 0)
  				NativeMethods.SetThreadExecutionState(previousExecutionState);
-@@ -3980,7 +_,7 @@
+@@ -4042,7 +_,7 @@
  		public void DedServ() {
  			NeverSleep();
  			rand = new UnifiedRandom();
@@ -487,7 +514,7 @@
  				string lpWindowName = Console.Title = "terraria" + rand.Next(int.MaxValue);
  #if WINDOWS
  				IntPtr intPtr = FindWindow(null, lpWindowName);
-@@ -3989,17 +_,30 @@
+@@ -4051,17 +_,30 @@
  #endif
  			}
  			else {
@@ -498,9 +525,9 @@
  			dedServ = true;
  			showSplash = false;
  			Initialize();
-+			
++
 +			bool reloadMods;
-+			
++
 +			do {
 +				ModLoader.ModLoader.Reload();
 +				DedServ_PostModLoad(out reloadMods);
@@ -510,7 +537,7 @@
 +		//The split and the boolean shenanigans are here to allow mods to hook into this method with MonoMod correctly. At any load-time.
 +		private void DedServ_PostModLoad(out bool reloadMods) {
 +			reloadMods = false;
-+			
++
  			while (worldPathName == null || worldPathName == "") {
  				bool flag = true;
  				while (flag) {
@@ -520,7 +547,7 @@
  					Console.WriteLine("");
  					for (int i = 0; i < WorldList.Count; i++) {
  						Console.WriteLine(i + 1 + "\t\t" + WorldList[i].Name);
-@@ -4012,6 +_,8 @@
+@@ -4074,6 +_,8 @@
  					textValue2 = textValue2 + new string('\t', num - textValue2.Length / 8) + Language.GetTextValue("CLI.DeleteWorld_Description");
  					Console.WriteLine(textValue);
  					Console.WriteLine(textValue2);
@@ -529,7 +556,7 @@
  					Console.WriteLine("");
  					Console.Write(Language.GetTextValue("CLI.ChooseWorld"));
  					string text2 = Console.ReadLine();
-@@ -4029,7 +_,7 @@
+@@ -4091,7 +_,7 @@
  							int length = Language.GetTextValue("CLI.DeleteWorld_Command").Length;
  							int num2 = Convert.ToInt32(text2.Substring(length + 1)) - 1;
  							if (num2 < WorldList.Count) {
@@ -538,7 +565,7 @@
  								Console.WriteLine("");
  								Console.WriteLine(Language.GetTextValue("CLI.DeleteConfirmation", WorldList[num2].Name));
  								Console.Write("({0}/{1}): ", Language.GetTextValue("CLI.ShortYes"), Language.GetTextValue("CLI.ShortNo"));
-@@ -4052,7 +_,7 @@
+@@ -4114,7 +_,7 @@
  					if (text2 == "n" || text2 == "N") {
  						bool flag2 = true;
  						while (flag2) {
@@ -547,7 +574,7 @@
  							Console.WriteLine("");
  							Console.WriteLine("1\t" + Language.GetTextValue("UI.WorldSizeSmall"));
  							Console.WriteLine("2\t" + Language.GetTextValue("UI.WorldSizeMedium"));
-@@ -4091,7 +_,7 @@
+@@ -4153,7 +_,7 @@
  
  						flag2 = true;
  						while (flag2) {
@@ -556,7 +583,7 @@
  							Console.WriteLine("");
  							Console.WriteLine("1\t" + Language.GetTextValue("UI.Normal"));
  							Console.WriteLine("2\t" + Language.GetTextValue("UI.Expert"));
-@@ -4133,7 +_,7 @@
+@@ -4195,7 +_,7 @@
  						if (SettingsUnlock_WorldEvil) {
  							flag2 = true;
  							while (flag2) {
@@ -565,7 +592,7 @@
  								Console.WriteLine("");
  								Console.WriteLine("1\t" + Language.GetTextValue("CLI.Random"));
  								Console.WriteLine("2\t" + Language.GetTextValue("CLI.Corrupt"));
-@@ -4169,7 +_,7 @@
+@@ -4231,7 +_,7 @@
  						}
  
  						flag2 = true;
@@ -574,7 +601,7 @@
  						while (flag2) {
  							Console.WriteLine("");
  							Console.Write(Language.GetTextValue("CLI.EnterWorldName"));
-@@ -4201,7 +_,7 @@
+@@ -4263,7 +_,7 @@
  
  						string text3 = "";
  						flag2 = true;
@@ -583,17 +610,17 @@
  						while (flag2) {
  							Console.WriteLine("");
  							Console.Write(Language.GetTextValue("CLI.EnterSeed"));
-@@ -4265,6 +_,19 @@
+@@ -4327,6 +_,19 @@
  
  						continue;
  					}
 +					else if (text2 == "m" || text2 == "M") {
 +						Interface.ServerModMenu(out reloadMods);
-+						
++
 +						if (reloadMods) {
 +							return;
 +						}
-+						
++
 +						continue;
 +					}
 +					else if (text2 == "b" || text2 == "b") {
@@ -603,7 +630,7 @@
  
  					try {
  						int num3 = Convert.ToInt32(text2);
-@@ -4274,7 +_,7 @@
+@@ -4336,7 +_,7 @@
  
  						bool flag3 = true;
  						while (flag3) {
@@ -612,7 +639,7 @@
  							Console.WriteLine("");
  							Console.Write(Language.GetTextValue("CLI.SetInitialMaxPlayers"));
  							string text4 = Console.ReadLine();
-@@ -4302,7 +_,7 @@
+@@ -4364,7 +_,7 @@
  
  						flag3 = true;
  						while (flag3) {
@@ -621,7 +648,7 @@
  							Console.WriteLine("");
  							Console.Write(Language.GetTextValue("CLI.SetInitialPort"));
  							string text5 = Console.ReadLine();
-@@ -4328,7 +_,7 @@
+@@ -4390,7 +_,7 @@
  
  						flag3 = true;
  						while (flag3) {
@@ -630,7 +657,7 @@
  							Console.WriteLine("");
  							Console.Write(Language.GetTextValue("CLI.AutomaticPortForward", Language.GetTextValue("CLI.ShortYes"), Language.GetTextValue("CLI.ShortNo")));
  							string text6 = Console.ReadLine();
-@@ -4352,7 +_,7 @@
+@@ -4414,7 +_,7 @@
  							}
  						}
  
@@ -639,7 +666,7 @@
  						Console.WriteLine("");
  						Console.Write(Language.GetTextValue("CLI.EnterServerPassword"));
  						Netplay.ServerPassword = Console.ReadLine();
-@@ -4375,6 +_,7 @@
+@@ -4437,6 +_,7 @@
  			catch {
  			}
  
@@ -647,7 +674,7 @@
  			Task task2 = WorldGen.serverLoadWorld();
  			Console.WriteLine(Language.GetTextValue("CLI.Server", versionNumber));
  			Console.WriteLine("");
-@@ -4397,39 +_,38 @@
+@@ -4459,39 +_,38 @@
  			catch {
  			}
  
@@ -698,13 +725,7 @@
  					if (oldStatusText != statusText) {
  						oldStatusText = statusText;
  						Console.WriteLine(statusText);
-@@ -4439,24 +_,20 @@
- 						Update(new GameTime());
- 					else if (saveTime.IsRunning)
- 						saveTime.Stop();
-+					else
-+						Netplay.OnUpdate();
- 
+@@ -4505,20 +_,14 @@
  					if (Main.OnTickForThirdPartySoftwareOnly != null)
  						Main.OnTickForThirdPartySoftwareOnly();
  
@@ -732,7 +753,7 @@
  			}
  
  			YouCanSleepNow();
-@@ -4476,8 +_,14 @@
+@@ -4538,8 +_,14 @@
  
  		public static void startDedInputCallBack() {
  			while (!Netplay.Disconnect) {
@@ -748,7 +769,7 @@
  				string text2 = text;
  				text = text.ToLower();
  				try {
-@@ -4517,12 +_,21 @@
+@@ -4579,12 +_,21 @@
  								num = text3.Length;
  						}
  
@@ -770,7 +791,7 @@
  					else if (text == Language.GetTextValue("CLI.Settle_Command")) {
  						if (!Liquid.panicMode)
  							Liquid.StartPanic();
-@@ -4554,6 +_,8 @@
+@@ -4616,6 +_,8 @@
  					}
  					else if (text == Language.GetTextValue("CLI.Exit_Command")) {
  						WorldFile.SaveWorld();
@@ -779,7 +800,7 @@
  						Netplay.Disconnect = true;
  						SocialAPI.Shutdown();
  					}
-@@ -4608,11 +_,12 @@
+@@ -4670,11 +_,12 @@
  						Console.WriteLine(Language.GetTextValue("CLI.Port", Netplay.ListenPort));
  					}
  					else if (text == Language.GetTextValue("CLI.Version_Command")) {
@@ -793,7 +814,7 @@
  						}
  						catch {
  						}
-@@ -4734,7 +_,7 @@
+@@ -4796,7 +_,7 @@
  				catch {
  					Console.WriteLine(Language.GetTextValue("CLI.InvalidCommand"));
  				}
@@ -802,7 +823,7 @@
  		}
  
  		public static void Sundialing() {
-@@ -4754,7 +_,8 @@
+@@ -4816,7 +_,8 @@
  			if (fastForwardTime) {
  				dayRate = 60;
  				desiredWorldTilesUpdateRate = 1;
@@ -812,7 +833,7 @@
  			}
  
  			bool enabled = CreativePowerManager.Instance.GetPower<CreativePowers.FreezeTime>().Enabled;
-@@ -4769,10 +_,17 @@
+@@ -4831,10 +_,17 @@
  
  			dayRate = num;
  			desiredWorldTilesUpdateRate = num;
@@ -829,68 +850,17 @@
 +				dayRate = 86400;
  		}
  
- 		public Main() {
-@@ -4784,7 +_,50 @@
+ 		public Main() : base(dedServ) {
+@@ -4846,7 +_,7 @@
  
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
 +			GraphicsChangeTracker.Init();
-+		}
-+
-+		internal void PostSocialInitialize() {
-+			if (dedServ) {
-+				return;
-+			}
-+			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
-+
-+			if (!Directory.Exists(vanillaContentFolder)) {
-+				vanillaContentFolder = "../Content"; // Nested Manual Install
-+			}
-+
-+#if MAC
-+			vanillaContentFolder = "../../../../Terraria/Terraria.app/Contents/Resources/Content";
-+#endif
-+
-+			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
-+				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
-+				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
-+
-+				if (appInstalled) {
-+					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
-+					Logging.Terraria.Info("Found Terraria steamapp install at: " + steamInstallFolder);
-+
-+					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
-+
-+					if (!Directory.Exists(vanillaContentFolder))
-+						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/Resources/Content");
-+				}
-+
-+				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
-+				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)ModLoader.Engine.Steam.lastAvailableSteamCloudStorage)} available");
-+			}
-+
-+			if (!Directory.Exists(vanillaContentFolder)) {
-+				Interface.MessageBoxShow(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
-+				Environment.Exit(1);
-+			}
-+
-+			if (Directory.Exists(Path.Combine(InstallVerifier.TmlContentDirectory, "Images")))
-+				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, InstallVerifier.TmlContentDirectory, null);
-+
-+			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
  		}
  
- 		private void Main_Exiting(object sender, EventArgs e) {
-@@ -4793,6 +_,7 @@
- 
- 		private static void TryDisposingEverything() {
- 			ChromaInitializer.DisableAllDeviceGroups();
-+			WorkshopHelper.OnGameExitCleanup();
- 			if (Assets != null) {
- 				Assets.TransferCompletedAssets();
- 				Assets.Dispose();
-@@ -4820,6 +_,7 @@
+ 		private static void SetDisplayMonitor() {
+@@ -4870,6 +_,7 @@
  
  			_cachedTitle = Lang.GetRandomGameTitle();
  			Platform.Get<IWindowService>().SetUnicodeTitle(base.Window, _cachedTitle);
@@ -898,7 +868,7 @@
  		}
  
  		private static void SetTileValue() {
-@@ -4858,8 +_,15 @@
+@@ -4908,8 +_,15 @@
  		}
  
  		protected override void Initialize() {
@@ -915,38 +885,7 @@
  
  			musicFade[50] = 1f;
  			for (int i = 0; i < 10; i++) {
-@@ -4887,8 +_,9 @@
- 			WorldGen.Hooks.OnWorldLoad += delegate {
- 				AmbienceServer = new AmbienceServer();
- 				LocalGolfState = new GolfState();
-+
- 				if(!dedServ)
--				Lighting.Clear();
-+					Lighting.Clear();
- 			};
- 
- 			PlayerInput.OnActionableInput += delegate {
-@@ -4897,13 +_,16 @@
- 			};
- 
- 			SceneMetrics = new SceneMetrics(ActiveWorld);
-+
--			if (!dedServ) {
-+			if (dedServ) {
-+				Initialize_AlmostEverything();
-+				return;
-+			}
-+
- 			TimeLogger.Initialize();
- 			LoadContent_TryEnteringHiDef();
- 			ClientInitialize();
- 			base.Initialize();
--			} else 
--			Initialize_AlmostEverything();
- 		}
- 
- 		private void Initialize_AlmostEverything() {
-@@ -5058,7 +_,7 @@
+@@ -5117,7 +_,7 @@
  			}
  
  			for (int m = 0; m < 256; m++) {
@@ -955,7 +894,7 @@
  			}
  
  			for (int n = 0; n < 1001; n++) {
-@@ -8303,11 +_,17 @@
+@@ -8372,11 +_,17 @@
  		public static void LoadTestLog(string logname) {
  		}
  
@@ -974,7 +913,7 @@
  			SoundEngine.Initialize();
  			if (base.Services.Get<IAssetRepository>() == null)
  				AssetInitializer.CreateAssetServices(base.Services);
-@@ -8331,7 +_,7 @@
+@@ -8400,7 +_,7 @@
  				audioSystem = new DisabledAudioSystem();
  
  			AssetSourceController = new AssetSourceController(Assets, new IContentSource[1] {
@@ -983,7 +922,7 @@
  			});
  
  			VanillaContentValidator.Instance = new VanillaContentValidator("Terraria.IO.Data.ResourcePacksDefaultInfo.tsv");
-@@ -8342,6 +_,8 @@
+@@ -8411,6 +_,8 @@
  			AssetInitializer.LoadSplashAssets(asyncLoadForSounds: true);
  			ChromaInitializer.Load();
  			_gameContentLoadProcess = LoadContent_Deferred();
@@ -992,40 +931,31 @@
  		}
  
  		private void LoadContent_TryEnteringHiDef() {
-@@ -8410,6 +_,8 @@
- 			numClouds = rand.Next(200);
- 			Mount.Initialize();
- 			Minecart.Initialize();
-+			// move instance creation from class constructor to main thread to avoid deadlocks from content loading on JIT thread with FNA
-+			CaptureManager.Instance = new CaptureManager();
- 			CacheSupportedDisplaySizes();
- 			ContentSamples.RebuildItemCreativeSortingIDsAfterRecipesAreSetUp();
- 			ContentSamples.CommonlyUsedContentSamples.PrepareAfterEverythingElseLoaded();
-@@ -8817,6 +_,8 @@
+@@ -8892,6 +_,8 @@
  
- 					if (SceneMetrics.ActiveMusicBox == 85)
- 						newMusic = 89;
+ 					if (SceneMetrics.ActiveMusicBox == 86)
+ 						newMusic = 90;
 +					if (SceneMetrics.ActiveMusicBox >= maxMusic)
 +						newMusic = SceneMetrics.ActiveMusicBox;
  				}
  
  				if (gameMenu || musicVolume == 0f) {
-@@ -8842,12 +_,12 @@
+@@ -8917,12 +_,12 @@
  						curMusic = 0;
  					}
  
--					if (NPC.MoonLordCountdown == 1 && curMusic >= 1 && curMusic < 90)
+-					if (NPC.MoonLordCountdown == 1 && curMusic >= 1 && curMusic < 91)
 +					if (NPC.MoonLordCountdown == 1 && curMusic >= 1 && curMusic < musicFade.Length)
  						musicFade[curMusic] = 0f;
  				}
  
  				bool isMainTrackAudible = musicFade[curMusic] > 0.25f;
--				for (int i = 1; i < 90; i++) {
+-				for (int i = 1; i < 91; i++) {
 +				for (int i = 1; i < musicFade.Length; i++) {
  					float num2 = musicFade[i] * musicVolume * num;
  					if (i >= 62 && i <= 88) {
  						num2 *= 0.9f;
-@@ -9050,17 +_,22 @@
+@@ -9129,17 +_,22 @@
  							break;
  					}
  
@@ -1050,7 +980,7 @@
  						switch (num2) {
  							case 1:
  								flag = true;
-@@ -9311,6 +_,9 @@
+@@ -9397,6 +_,9 @@
  			if (lastMusicPlayed == 50)
  				musicNoCrossFade[51] = true;
  
@@ -1060,7 +990,7 @@
  			if (!showSplash) {
  				Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X, (int)screenPosition.Y, screenWidth, screenHeight);
  				int num2 = 5000;
-@@ -9419,6 +_,11 @@
+@@ -9508,6 +_,11 @@
  
  					Microsoft.Xna.Framework.Rectangle value = new Microsoft.Xna.Framework.Rectangle((int)(npc[j].position.X + (float)(npc[j].width / 2)) - num2, (int)(npc[j].position.Y + (float)(npc[j].height / 2)) - num2, num2 * 2, num2 * 2);
  					if (rectangle.Intersects(value)) {
@@ -1072,7 +1002,7 @@
  						switch (num3) {
  							case 1:
  								flag = true;
-@@ -9470,6 +_,8 @@
+@@ -9562,6 +_,8 @@
  						break;
  					}
  				}
@@ -1081,7 +1011,7 @@
  			}
  
  			_ = (screenPosition.X + (float)(screenWidth / 2)) / 16f;
-@@ -9486,13 +_,11 @@
+@@ -9578,13 +_,11 @@
  					else if (menuMode == 3000) {
  						newMusic = 89;
  					}
@@ -1093,14 +1023,14 @@
 -					}
 -					else if (!audioSystem.IsTrackPlaying(50)) {
 +					else {
-+						newMusic = MenuLoader.CurrentMenu.Music; // TODO: Music loader to make music function properly.
++						newMusic = MenuLoader.CurrentMenu.Music;
 +					}
 +
 +					if (_isAsyncLoadComplete && newMusic == 50 && !audioSystem.IsTrackPlaying(50)) {
  						newMusic = 51;
  						if (musicNoCrossFade[51])
  							musicFade[51] = 1f;
-@@ -9511,12 +_,18 @@
+@@ -9603,12 +_,18 @@
  			if (CreditsRollEvent.IsEventOngoing) {
  				newMusic = 89;
  			}
@@ -1110,37 +1040,37 @@
  			else if (player[myPlayer].happyFunTorchTime) {
  				newMusic = 13;
  			}
- 			else if (flag7) {
+ 			else if (flag8) {
  				newMusic = 38;
  			}
 +			else if (modPriority >= SceneEffectPriority.BossMedium) {
 +				newMusic = modMusic;
 +			}
- 			else if (flag9) {
+ 			else if (flag10) {
  				newMusic = 37;
  			}
-@@ -9526,6 +_,9 @@
- 			else if (flag6) {
+@@ -9618,6 +_,9 @@
+ 			else if (flag7) {
  				newMusic = 24;
  			}
 +			else if (modPriority >= SceneEffectPriority.BossLow) {
 +				newMusic = modMusic;
 +			}
- 			else if (flag14) {
+ 			else if (flag15) {
  				newMusic = 57;
  			}
-@@ -9547,6 +_,9 @@
- 			else if (flag5) {
+@@ -9639,6 +_,9 @@
+ 			else if (flag6) {
  				newMusic = 25;
  			}
 +			else if (modPriority >= SceneEffectPriority.Event) {
 +				newMusic = modMusic;
 +			}
- 			else if (flag13) {
+ 			else if (flag14) {
  				newMusic = 56;
  			}
-@@ -9559,6 +_,9 @@
- 			else if (flag12) {
+@@ -9654,6 +_,9 @@
+ 			else if (flag13) {
  				newMusic = 41;
  			}
 +			else if (modPriority >= SceneEffectPriority.Environment) {
@@ -1149,7 +1079,7 @@
  			else if (eclipse && (double)player[myPlayer].position.Y < worldSurface * 16.0 + (double)(screenHeight / 2)) {
  				newMusic = 27;
  			}
-@@ -9580,6 +_,9 @@
+@@ -9675,6 +_,9 @@
  			else if (num5 < 1f) {
  				newMusic = (dayTime ? 42 : 15);
  			}
@@ -1159,7 +1089,7 @@
  			else if (tile[(int)(player[myPlayer].Center.X / 16f), (int)(player[myPlayer].Center.Y / 16f)].wall == 87) {
  				newMusic = 26;
  			}
-@@ -9609,6 +_,9 @@
+@@ -9704,6 +_,9 @@
  				else
  					newMusic = 16;
  			}
@@ -1169,7 +1099,7 @@
  			else if (player[myPlayer].ZoneMeteor) {
  				newMusic = 2;
  			}
-@@ -9633,6 +_,9 @@
+@@ -9728,6 +_,9 @@
  				else
  					newMusic = 14;
  			}
@@ -1179,7 +1109,7 @@
  			else if ((double)player[myPlayer].position.Y >= worldSurface * 16.0 + (double)(screenHeight / 2) && !WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenWidth / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				if (player[myPlayer].ZoneHallow) {
  					newMusic = 11;
-@@ -9875,12 +_,12 @@
+@@ -9979,12 +_,12 @@
  			float num3 = Math.Max(1f, 1f + 4f * cloudAlpha);
  			if (cloudBGActive > 0f) {
  				if (cloudBGActive > 1f)
@@ -1194,7 +1124,7 @@
  					cloudBGActive = -rand.Next(num2 * 4, num * 4);
  					if (netMode == 2)
  						NetMessage.SendData(7);
-@@ -9890,15 +_,15 @@
+@@ -9994,15 +_,15 @@
  			}
  
  			if (cloudBGActive < 0f) {
@@ -1213,7 +1143,7 @@
  				cloudBGActive = rand.Next(num2 * 3, num * 2);
  				if (netMode == 2)
  					NetMessage.SendData(7);
-@@ -12251,11 +_,16 @@
+@@ -12355,11 +_,16 @@
  		}
  
  		public static void DoUpdate_AnimateItemIcons() {
@@ -1230,7 +1160,7 @@
  		}
  
  		public static void QueueMainThreadAction(Action action) {
-@@ -12278,7 +_,14 @@
+@@ -12382,7 +_,14 @@
  
  			if (!_isDrawingOrUpdating) {
  				_isDrawingOrUpdating = true;
@@ -1246,15 +1176,18 @@
  				CinematicManager.Instance.Update(gameTime);
  				if (netMode == 2) {
  					for (int i = 0; i < 256; i++) {
-@@ -12378,6 +_,7 @@
- 				_hasPendingNetmodeChange = false;
+@@ -12526,6 +_,10 @@
  			}
  
-+			Netplay.OnUpdate(); // TODO, why do we add this?
- 			if (CaptureManager.Instance.IsCapturing)
- 				return;
- 
-@@ -12595,6 +_,9 @@
+ 			DoUpdate_AutoSave();
++
++			if (Main.OnTickForInternalCodeOnly != null)
++				Main.OnTickForInternalCodeOnly();
++
+ 			if (!dedServ) {
+ 				ChromaInitializer.UpdateEvents();
+ 				Chroma.Update(GlobalTimeWrappedHourly);
+@@ -12700,6 +_,9 @@
  
  					mouseLeftRelease = false;
  					mouseRightRelease = false;
@@ -1264,7 +1197,7 @@
  					if (gameMenu)
  						UpdateMenu();
  
-@@ -12650,6 +_,8 @@
+@@ -12758,13 +_,13 @@
  
  			if (CanPauseGame()) {
  				DoUpdate_WhilePaused();
@@ -1273,7 +1206,14 @@
  				gamePaused = true;
  				return;
  			}
-@@ -12671,10 +_,16 @@
+ 
+ 			gamePaused = false;
+-			if (Main.OnTickForInternalCodeOnly != null)
+-				Main.OnTickForInternalCodeOnly();
+ 
+ 			if ((dedServ || netMode != 1 && !gameMenu && !gamePaused) && AmbienceServer != null)
+ 				AmbienceServer.Update();
+@@ -12779,10 +_,16 @@
  			if (netMode != 1)
  				updateCloudLayer();
  
@@ -1291,7 +1231,7 @@
  			if ((timeForVisualEffects += 1.0) >= 216000.0)
  				timeForVisualEffects = 0.0;
  
-@@ -12692,6 +_,7 @@
+@@ -12800,6 +_,7 @@
  				Sandstorm.EmitDust();
  			}
  
@@ -1299,7 +1239,28 @@
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
-@@ -12836,7 +_,13 @@
+@@ -12862,6 +_,10 @@
+ 
+ 			if (playerInventory) {
+ 				Recipe.GetThroughDelayedFindRecipes();
++
++				if (PlayerInput.MouseInModdedUI.Count != 0)
++					goto noScrollOnLocked;
++
+ 				int num = PlayerInput.ScrollWheelDelta / 120;
+ 				bool flag = true;
+ 				if (recBigList) {
+@@ -12902,6 +_,9 @@
+ 						focusRecipe = 0;
+ 				}
+ 
++			noScrollOnLocked:
++				PlayerInput.MouseInModdedUI.Clear();
++
+ 				Main.player[myPlayer].dropItemCheck();
+ 			}
+ 
+@@ -12945,7 +_,13 @@
  				InGameUI.Update(gameTime);
  
  			CreativeMenu.Update(gameTime);
@@ -1314,7 +1275,7 @@
  		}
  
  		private void DoDebugFunctions() {
-@@ -12954,6 +_,9 @@
+@@ -13066,6 +_,9 @@
  			if ((byte)Main.player[myPlayer].zone4 != (byte)player.zone4)
  				flag2 = true;
  
@@ -1324,7 +1285,7 @@
  			if (flag2)
  				NetMessage.SendData(36, -1, -1, null, myPlayer);
  
-@@ -12982,7 +_,7 @@
+@@ -13094,7 +_,7 @@
  			}
  
  			bool flag3 = false;
@@ -1333,7 +1294,7 @@
  				if (Main.player[myPlayer].buffType[num4] != player.buffType[num4])
  					flag3 = true;
  			}
-@@ -13012,6 +_,8 @@
+@@ -13124,6 +_,8 @@
  			if (flag)
  				NetMessage.SendData(138);
  
@@ -1342,7 +1303,7 @@
  			clientPlayer = (Player)Main.player[myPlayer].clientClone();
  		}
  
-@@ -13020,6 +_,9 @@
+@@ -13132,6 +_,9 @@
  		private void DoUpdateInWorld(Stopwatch sw) {
  			UpdateParticleSystems();
  			tileSolid[379] = false;
@@ -1352,7 +1313,7 @@
  			int num = 0;
  			int num2 = 0;
  			sittingManager.ClearPlayerAnchors();
-@@ -13053,7 +_,12 @@
+@@ -13165,7 +_,12 @@
  				}
  			}
  
@@ -1365,7 +1326,7 @@
  			NPC.RevengeManager.Update();
  			if (netMode != 1) {
  				try {
-@@ -13102,6 +_,10 @@
+@@ -13214,6 +_,10 @@
  			}
  
  			CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
@@ -1376,7 +1337,7 @@
  			for (int l = 0; l < 600; l++) {
  				if (ignoreErrors) {
  					try {
-@@ -13116,6 +_,9 @@
+@@ -13228,6 +_,9 @@
  				}
  			}
  
@@ -1386,7 +1347,7 @@
  			LockOnHelper.SetUP();
  			CurrentFrameFlags.HadAnActiveInteractibleProjectile = false;
  			PreUpdateAllProjectiles();
-@@ -13137,6 +_,10 @@
+@@ -13249,6 +_,10 @@
  			ProjectileUpdateLoopIndex = -1;
  			PostUpdateAllProjectiles();
  			LockOnHelper.SetDOWN();
@@ -1397,7 +1358,7 @@
  			Item.numberOfNewItems = 0;
  			for (int n = 0; n < 400; n++) {
  				if (ignoreErrors) {
-@@ -13152,6 +_,9 @@
+@@ -13264,6 +_,9 @@
  				}
  			}
  
@@ -1407,7 +1368,7 @@
  			if (ignoreErrors) {
  				try {
  					Dust.UpdateDust();
-@@ -13167,11 +_,15 @@
+@@ -13279,11 +_,15 @@
  				Dust.UpdateDust();
  			}
  
@@ -1423,7 +1384,7 @@
  			if (ignoreErrors) {
  				try {
  					UpdateTime();
-@@ -13184,6 +_,8 @@
+@@ -13296,6 +_,8 @@
  				UpdateTime();
  			}
  
@@ -1432,7 +1393,7 @@
  			tileSolid[379] = true;
  			if (gameMenu && netMode != 2)
  				return;
-@@ -13224,6 +_,7 @@
+@@ -13336,6 +_,7 @@
  					UpdateClient();
  			}
  
@@ -1440,16 +1401,7 @@
  			chatMonitor.Update();
  			upTimer = (float)sw.Elapsed.TotalMilliseconds;
  			if (upTimerMaxDelay > 0f)
-@@ -13263,7 +_,7 @@
- 				NPC.crimsonBoss = -1;
- 		}
- 
--		private static bool IsNPCActiveAndOneOfTypes(int npcIndex, params int[] types) {
-+		public static bool IsNPCActiveAndOneOfTypes(int npcIndex, params int[] types) {
- 			if (npcIndex < 0)
- 				return false;
- 
-@@ -13404,7 +_,8 @@
+@@ -13516,7 +_,8 @@
  			if (!inputTextEnter || !chatRelease)
  				return;
  
@@ -1459,7 +1411,7 @@
  				ChatMessage message = ChatManager.Commands.CreateOutgoingMessage(chatText);
  				if (netMode == 1)
  					ChatHelper.SendChatMessageFromClient(message);
-@@ -13420,6 +_,7 @@
+@@ -13532,6 +_,7 @@
  
  		private void DoUpdate_HandleInput() {
  			PlayerInput.UpdateInput();
@@ -1467,7 +1419,7 @@
  			UpdateViewZoomKeys();
  			PlayerInput.SetZoom_Unscaled();
  			UILinkPointNavigator.Update();
-@@ -14068,6 +_,7 @@
+@@ -14180,6 +_,7 @@
  			if (tileFrameCounter[493] < 0)
  				tileFrameCounter[493] += 120;
  
@@ -1475,16 +1427,16 @@
  			AnimateTiles_CritterCages();
  		}
  
-@@ -14252,6 +_,8 @@
- 			wallFrame[144] = 0;
- 			if (wallFrameCounter[144] > num3 * (16 + num4 * 2))
- 				wallFrameCounter[144] = 0;
-+
-+			WallLoader.AnimateWalls();
- 		}
+@@ -14278,6 +_,8 @@
+ 			if (++wallFrameCounter[243] >= num2 * 8)
+ 				wallFrameCounter[243] = 0;
  
- 		private void DoUpdate_AnimateWaterfalls() {
-@@ -14740,15 +_,15 @@
++			WallLoader.AnimateWalls();
++
+ 			wallFrameCounter[144]++;
+ 			int num3 = 5;
+ 			int num4 = 10;
+@@ -14852,15 +_,15 @@
  				X += 34;
  
  			new Microsoft.Xna.Framework.Color(mouseTextColor, mouseTextColor, mouseTextColor, mouseTextColor);
@@ -1502,7 +1454,7 @@
  			if (hackedScreenHeight != -1 && hackedScreenWidth != -1) {
  				if ((float)X + vector.X + 4f > (float)hackedScreenWidth)
  					X = (int)((float)hackedScreenWidth - vector.X - 4f);
-@@ -14766,9 +_,6 @@
+@@ -14878,9 +_,6 @@
  
  			float num2 = (float)(int)mouseTextColor / 255f;
  			Microsoft.Xna.Framework.Color baseColor = new Microsoft.Xna.Framework.Color(mouseTextColor, mouseTextColor, mouseTextColor, mouseTextColor);
@@ -1512,7 +1464,7 @@
  			if (num == -11)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num2), (byte)(175f * num2), (byte)(0f * num2), mouseTextColor);
  
-@@ -14808,12 +_,18 @@
+@@ -14920,12 +_,18 @@
  			if (num == 10)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num2), (byte)(40f * num2), (byte)(100f * num2), mouseTextColor);
  
@@ -1533,7 +1485,7 @@
  			if (diff == 1)
  				baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num2), (byte)((float)(int)mcColor.G * num2), (byte)((float)(int)mcColor.B * num2), mouseTextColor);
  
-@@ -14853,8 +_,9 @@
+@@ -14965,8 +_,9 @@
  				array2[i] = false;
  				array3[i] = false;
  			}
@@ -1544,7 +1496,7 @@
  			float num3 = (float)(int)mouseTextColor / 255f;
  			float num4 = num3;
  			int a = mouseTextColor;
-@@ -14862,6 +_,7 @@
+@@ -14974,6 +_,7 @@
  				LocalPlayer.GetItemExpectedPrice(hoverItem, out int calcForSelling, out int calcForBuying);
  				int num5 = (hoverItem.isAShopItem || hoverItem.buyOnce) ? calcForBuying : calcForSelling;
  				if (hoverItem.shopSpecialCurrency != -1) {
@@ -1552,7 +1504,7 @@
  					CustomCurrencyManager.GetPriceText(hoverItem.shopSpecialCurrency, array, ref numLines, num5);
  					color = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(255f * num4), (byte)(255f * num4), a);
  				}
-@@ -14922,6 +_,7 @@
+@@ -15034,6 +_,7 @@
  					else
  						array[numLines] = Lang.tip[50].Value + " " + text;
  
@@ -1560,7 +1512,7 @@
  					numLines++;
  					if (num6 > 0)
  						color = new Microsoft.Xna.Framework.Color((byte)(220f * num4), (byte)(220f * num4), (byte)(198f * num4), a);
-@@ -14934,12 +_,15 @@
+@@ -15046,12 +_,15 @@
  				}
  				else if (hoverItem.type != 3817) {
  					array[numLines] = Lang.tip[51].Value;
@@ -1576,7 +1528,7 @@
  			int num12 = 0;
  			for (int j = 0; j < numLines; j++) {
  				Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, array[j], Vector2.One);
-@@ -14978,11 +_,17 @@
+@@ -15090,14 +_,20 @@
  				Utils.DrawInvBG(spriteBatch, new Microsoft.Xna.Framework.Rectangle(X - num17, Y - num18, (int)zero.X + num17 * 2, (int)zero.Y + num18 + num18 / 2), new Microsoft.Xna.Framework.Color(23, 25, 81, 255) * 0.925f);
  			}
  
@@ -1587,7 +1539,7 @@
 -					int num20 = (int)((float)(int)mouseTextColor * num19);
 -					Microsoft.Xna.Framework.Color color2 = Microsoft.Xna.Framework.Color.Black;
 +				drawableLines[k].OriginalX = X;
-+				drawableLines[k].OriginalY = Y;
++				drawableLines[k].OriginalY = Y + num16;
 +				if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "OneDropLogo") {
 +					int num20 = (int)((float)(int)mouseTextColor * 1f);
 +					Color color2 = Color.Black;
@@ -1596,9 +1548,14 @@
 +						goto PostDraw;
 +
  					for (int l = 0; l < 5; l++) {
- 						int num21 = X;
- 						int num22 = Y + num16;
-@@ -15003,17 +_,14 @@
+-						int num21 = X;
+-						int num22 = Y + num16;
++						int num21 = drawableLines[k].X;
++						int num22 = drawableLines[k].Y;
+ 						if (l == 4)
+ 							color2 = new Microsoft.Xna.Framework.Color(num20, num20, num20, num20);
+ 
+@@ -15115,17 +_,14 @@
  								num22++;
  								break;
  						}
@@ -1619,7 +1576,7 @@
  						if (rare == -11)
  							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(175f * num4), (byte)(0f * num4), a);
  
-@@ -15050,9 +_,12 @@
+@@ -15162,9 +_,12 @@
  						if (rare == 10)
  							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(40f * num4), (byte)(100f * num4), a);
  
@@ -1633,7 +1590,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15061,82 +_,82 @@
+@@ -15173,47 +_,80 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1653,6 +1610,7 @@
 +					if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")
  						black = Colors.JourneyMode;
  
+-					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), black, 0f, Vector2.Zero, Vector2.One);
 +					drawableLines[k].Color = black;
 +					Color realLineColor = black;
 +
@@ -1664,15 +1622,17 @@
 +					if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref num12) || !globalCanDraw)
 +						goto PostDraw;
 +
--					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), black, 0f, Vector2.Zero, Vector2.One);
-+					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), realLineColor, 0f, Vector2.Zero, Vector2.One);
++					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[k].font, drawableLines[k].text, new Vector2(drawableLines[k].X, drawableLines[k].Y), realLineColor, drawableLines[k].rotation, drawableLines[k].origin, drawableLines[k].baseScale, drawableLines[k].maxWidth, drawableLines[k].spread);
  				}
-+
+ 
 +				PostDraw:
 +				ItemLoader.PostDrawTooltipLine(HoverItem, drawableLines[k]);
- 
- 				num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
++
+-				num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
++				num16 += (int)(FontAssets.MouseText.Value.MeasureString(drawableLines[k].text).Y + (float)num12);
  			}
++
++			ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
  		}
  
 -		public static void MouseText_DrawItemTooltip_GetLinesInfo(Item item, ref int yoyoLogo, ref int researchLine, float oldKB, ref int numLines, string[] toolTipLine, bool[] preFixLine, bool[] badPreFixLine) {
@@ -1715,39 +1675,15 @@
 +					}
 +					int damage = player[myPlayer].GetWeaponDamage(item);
  					damage = (int)((float)damage * ItemID.Sets.ToolTipDamageMultiplier[item.type]);
--					if (item.melee) {
--						toolTipLine[numLines] = (((int)(player[myPlayer].meleeDamage * (float)damage + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[2].Value;
--					}
--					else if (item.ranged) {
--						float num2 = (float)damage * player[myPlayer].rangedDamage;
--						if (item.useAmmo == AmmoID.Arrow || item.useAmmo == AmmoID.Stake) {
--							num2 *= player[myPlayer].arrowDamage;
--							if (player[myPlayer].archery)
--								num2 *= 1.2f;
--						}
--
--						if (item.useAmmo == AmmoID.Bullet || item.useAmmo == AmmoID.CandyCorn)
--							num2 *= player[myPlayer].bulletDamage;
--
--						if (item.useAmmo == AmmoID.Rocket || item.useAmmo == AmmoID.StyngerBolt || item.useAmmo == AmmoID.JackOLantern || item.useAmmo == AmmoID.NailFriendly)
--							num2 *= player[myPlayer].rocketDamage;
--
--						toolTipLine[numLines] = (((int)(num2 + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[3].Value;
--					}
--					else if (item.magic) {
--						toolTipLine[numLines] = (((int)(player[myPlayer].magicDamage * (float)damage + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[4].Value;
--					}
--					else if (item.summon) {
--						toolTipLine[numLines] = (((int)(player[myPlayer].minionDamage * (float)damage + num)).ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[53].Value;
--					}
--					else {
--						toolTipLine[numLines] = (damage.ToString() ?? "");
--						toolTipLine[numLines] += Lang.tip[55].Value;
--					}
++					/*
+ 					if (item.melee) {
+ 						toolTipLine[numLines] = (((int)(player[myPlayer].meleeDamage * (float)damage + (float)player[myPlayer].meleeAddDamage + num)).ToString() ?? "");
+ 						toolTipLine[numLines] += Lang.tip[2].Value;
+@@ -15247,8 +_,12 @@
+ 						toolTipLine[numLines] = (damage.ToString() ?? "");
+ 						toolTipLine[numLines] += Lang.tip[55].Value;
+ 					}
++					*/
 +					toolTipLine[numLines] = damage + tip.Value;
 +					toolTipNames[numLines] = "Damage";
  
@@ -1756,7 +1692,7 @@
  					if (item.melee) {
  						int num3 = player[myPlayer].meleeCrit - player[myPlayer].inventory[player[myPlayer].selectedItem].crit + item.crit;
  						toolTipLine[numLines] = num3 + Lang.tip[5].Value;
-@@ -15152,6 +_,14 @@
+@@ -15264,6 +_,14 @@
  						toolTipLine[numLines] = num5 + Lang.tip[5].Value;
  						numLines++;
  					}
@@ -1771,7 +1707,7 @@
  
  					if (item.useStyle != 0 && !item.summon) {
  						if (item.useAnimation <= 8)
-@@ -15171,10 +_,13 @@
+@@ -15283,10 +_,13 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
  
@@ -1785,7 +1721,7 @@
  					if (item.summon)
  						num6 += player[myPlayer].minionKB;
  
-@@ -15184,6 +_,9 @@
+@@ -15296,6 +_,9 @@
  					if (player[myPlayer].inventory[player[myPlayer].selectedItem].type == 3106 && item.type == 3106)
  						num6 += num6 * (1f - player[myPlayer].stealth);
  
@@ -1795,7 +1731,7 @@
  					if (num6 == 0f)
  						toolTipLine[numLines] = Lang.tip[14].Value;
  					else if ((double)num6 <= 1.5)
-@@ -15203,67 +_,80 @@
+@@ -15315,67 +_,80 @@
  					else
  						toolTipLine[numLines] = Lang.tip[22].Value;
  
@@ -1878,7 +1814,7 @@
  					numLines++;
  				}
  
-@@ -15274,41 +_,49 @@
+@@ -15386,41 +_,49 @@
  					else
  						toolTipLine[numLines] = tileBoost + Lang.tip[54].Value;
  
@@ -1928,7 +1864,7 @@
  					numLines++;
  				}
  
-@@ -15316,10 +_,12 @@
+@@ -15428,10 +_,12 @@
  					for (int i = 0; i < item.ToolTip.Lines; i++) {
  						if (i == 0 && ItemID.Sets.UsesCursedByPlanteraTooltip[item.type] && !NPC.downedPlantBoss) {
  							toolTipLine[numLines] = Lang.tip[59].Value;
@@ -1941,7 +1877,7 @@
  							numLines++;
  						}
  					}
-@@ -15332,16 +_,19 @@
+@@ -15444,16 +_,19 @@
  
  				if ((item.type == 3818 || item.type == 3819 || item.type == 3820 || item.type == 3824 || item.type == 3825 || item.type == 3826 || item.type == 3829 || item.type == 3830 || item.type == 3831 || item.type == 3832 || item.type == 3833 || item.type == 3834) && !player[myPlayer].downedDD2EventAnyDifficulty) {
  					toolTipLine[numLines] = Lang.misc[104].Value;
@@ -1961,7 +1897,7 @@
  					toolTipLine[numLines] = text;
  					numLines++;
  				}
-@@ -15349,6 +_,7 @@
+@@ -15461,6 +_,7 @@
  				if (item.type == 3262 || item.type == 3282 || item.type == 3283 || item.type == 3284 || item.type == 3285 || item.type == 3286 || item.type == 3316 || item.type == 3315 || item.type == 3317 || item.type == 3291 || item.type == 3389) {
  					toolTipLine[numLines] = " ";
  					yoyoLogo = numLines;
@@ -1969,7 +1905,7 @@
  					numLines++;
  				}
  
-@@ -15372,6 +_,7 @@
+@@ -15484,6 +_,7 @@
  							badPreFixLine[numLines] = true;
  
  						preFixLine[numLines] = true;
@@ -1977,7 +1913,7 @@
  						numLines++;
  					}
  
-@@ -15389,6 +_,7 @@
+@@ -15501,6 +_,7 @@
  							badPreFixLine[numLines] = true;
  
  						preFixLine[numLines] = true;
@@ -1985,7 +1921,7 @@
  						numLines++;
  					}
  
-@@ -15403,6 +_,7 @@
+@@ -15515,6 +_,7 @@
  							badPreFixLine[numLines] = true;
  
  						preFixLine[numLines] = true;
@@ -1993,7 +1929,7 @@
  						numLines++;
  					}
  
-@@ -15419,6 +_,7 @@
+@@ -15531,6 +_,7 @@
  							badPreFixLine[numLines] = true;
  
  						preFixLine[numLines] = true;
@@ -2001,7 +1937,7 @@
  						numLines++;
  					}
  
-@@ -15435,6 +_,7 @@
+@@ -15547,6 +_,7 @@
  							badPreFixLine[numLines] = true;
  
  						preFixLine[numLines] = true;
@@ -2009,7 +1945,7 @@
  						numLines++;
  					}
  
-@@ -15451,6 +_,7 @@
+@@ -15563,6 +_,7 @@
  							badPreFixLine[numLines] = true;
  
  						preFixLine[numLines] = true;
@@ -2017,7 +1953,7 @@
  						numLines++;
  					}
  
-@@ -15467,137 +_,160 @@
+@@ -15579,137 +_,160 @@
  							badPreFixLine[numLines] = true;
  
  						preFixLine[numLines] = true;
@@ -2179,7 +2115,7 @@
  				numLines++;
  			}
  
-@@ -15606,6 +_,7 @@
+@@ -15718,6 +_,7 @@
  				if (amountNeeded - sacrificeCount > 0) {
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.CreativeSacrificeNeeded", amountNeeded - sacrificeCount);
  					researchLine = numLines;
@@ -2187,7 +2123,7 @@
  					numLines++;
  				}
  			}
-@@ -15615,11 +_,12 @@
+@@ -15727,11 +_,12 @@
  				string[] array = bestiaryNotes.Split('\n');
  				foreach (string text2 in array) {
  					toolTipLine[numLines++] = text2;
@@ -2201,7 +2137,7 @@
  			Microsoft.Xna.Framework.Point p = new Microsoft.Xna.Framework.Point(X, Y);
  			int num = 220;
  			int num2 = 72;
-@@ -15634,7 +_,7 @@
+@@ -15746,7 +_,7 @@
  
  			if (bannerMouseOver) {
  				int num6 = 0;
@@ -2210,7 +2146,7 @@
  					if (Item.BannerToNPC(i) != 0 && player[myPlayer].HasNPCBannerBuff(i)) {
  						num6++;
  						string nPCNameValue = Lang.GetNPCNameValue(Item.BannerToNPC(i));
-@@ -15659,6 +_,7 @@
+@@ -15771,6 +_,7 @@
  				}
  			}
  
@@ -2218,7 +2154,7 @@
  			Vector2 zero = Vector2.Zero;
  			foreach (Vector2 item2 in list) {
  				if (zero.X < item2.X)
-@@ -15676,7 +_,7 @@
+@@ -15788,7 +_,7 @@
  
  			for (int k = 0; k < 5; k++) {
  				int num11 = X;
@@ -2227,7 +2163,7 @@
  				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.Black;
  				switch (k) {
  					case 0:
-@@ -15703,7 +_,7 @@
+@@ -15815,7 +_,7 @@
  				return;
  
  			int num13 = 0;
@@ -2236,7 +2172,7 @@
  				if (Item.BannerToNPC(l) == 0 || !player[myPlayer].HasNPCBannerBuff(l))
  					continue;
  
-@@ -15745,9 +_,12 @@
+@@ -15857,9 +_,12 @@
  					spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(num14, num15), color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  				}
  
@@ -2249,16 +2185,33 @@
  		}
  
  		protected void DrawFPS() {
-@@ -15979,7 +_,7 @@
+@@ -16070,9 +_,14 @@
+ 			TilesRenderer.ClearCachedTileDraws(solidLayer: true);
+ 		}
+ 
++		//TML: Added x/y to IsTileSpelunkable methods for hook compatibility, made internal. Public variant in partial TML class
+-		public static bool IsTileSpelunkable(Tile t) => IsTileSpelunkable(t.type, t.frameX, t.frameY);
++		internal static bool IsTileSpelunkable(int tileX, int tileY, Tile t) => IsTileSpelunkable(tileX, tileY, t.type, t.frameX, t.frameY);
+ 
+-		public static bool IsTileSpelunkable(ushort typeCache, short tileFrameX, short tileFrameY) {
++		internal static bool IsTileSpelunkable(int tileX, int tileY, ushort typeCache, short tileFrameX, short tileFrameY) {
++			bool? modded = TileLoader.IsTileSpelunkable(tileX, tileY, typeCache);
++			if (modded.HasValue)
++				return modded.Value;
++
+ 			if (tileSpelunker[typeCache])
+ 				return true;
+ 
+@@ -16095,7 +_,7 @@
  					continue;
  
  				bool flag = false;
 -				if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9))
-+				if (GoreLoader.DrawBackGore(gore[i]))
++				if (GoreID.Sets.DrawBehind[gore[i].type] && (gore[i].type >= GoreID.Count || gore[i].frame is < 7 or > 9))
  					flag = true;
  
  				if (flag) {
-@@ -15987,11 +_,11 @@
+@@ -16103,11 +_,11 @@
  					if (gore[i].Frame.ColumnCount > 1 || gore[i].Frame.RowCount > 1) {
  						Microsoft.Xna.Framework.Rectangle sourceRectangle = gore[i].Frame.GetSourceRectangle(TextureAssets.Gore[gore[i].type].Value);
  						Microsoft.Xna.Framework.Color alpha = gore[i].GetAlpha(Lighting.GetColor((int)((double)gore[i].position.X + (double)sourceRectangle.Width * 0.5) / 16, (int)(((double)gore[i].position.Y + (double)sourceRectangle.Height * 0.5) / 16.0)));
@@ -2272,16 +2225,16 @@
  					}
  				}
  			}
-@@ -16003,7 +_,7 @@
+@@ -16119,7 +_,7 @@
  				if (!gore[i].active || gore[i].type <= 0)
  					continue;
  
 -				if (((gore[i].type >= 706 && gore[i].type <= 717) || gore[i].type == 943 || gore[i].type == 1147 || (gore[i].type >= 1160 && gore[i].type <= 1162)) && (gore[i].frame < 7 || gore[i].frame > 9)) {
-+				if (GoreLoader.DrawBackGore(gore[i])) {
++				if (GoreID.Sets.DrawBehind[gore[i].type] && (gore[i].type >= GoreID.Count || gore[i].frame is < 7 or > 9)) {
  					drawBackGore = true;
  					continue;
  				}
-@@ -16016,11 +_,11 @@
+@@ -16132,11 +_,11 @@
  						value.Y += 4f;
  
  					Microsoft.Xna.Framework.Color alpha = gore[i].GetAlpha(Lighting.GetColor((int)((double)gore[i].position.X + (double)sourceRectangle.Width * 0.5) / 16, (int)(((double)gore[i].position.Y + (double)sourceRectangle.Height * 0.5) / 16.0)));
@@ -2295,7 +2248,7 @@
  				}
  			}
  
-@@ -16107,6 +_,8 @@
+@@ -16223,6 +_,8 @@
  			float num = 0f;
  			if (theNPC.type == 125)
  				num = 30f;
@@ -2304,16 +2257,16 @@
  			else if (theNPC.type == 54)
  				num = 2f;
  			else if (theNPC.type == 205)
-@@ -16307,7 +_,7 @@
+@@ -16423,7 +_,7 @@
  			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle((int)screenPosition.X - 800, (int)screenPosition.Y - 800, screenWidth + 1600, screenHeight + 1600);
  			for (int num = 199; num >= 0; num--) {
  				try {
--					if (npc[num].active && npc[num].type > 0 && npc[num].type < 668 && !npc[num].hide) {
+-					if (npc[num].active && npc[num].type > 0 && npc[num].type < 670 && !npc[num].hide) {
 +					if (npc[num].active && npc[num].type > 0 && !npc[num].hide) {
  						npc[num].position += npc[num].netOffset;
  						if (npc[num].behindTiles == behindTiles) {
  							if (npc[num].type == 125 || npc[num].type == 126) {
-@@ -16424,12 +_,12 @@
+@@ -16540,12 +_,12 @@
  			}
  		}
  
@@ -2328,12 +2281,12 @@
  			NPC rCurrentNPC = npc[iNPCIndex];
  			Vector2 screenPos = screenPosition;
  			DrawNPCDirect(spriteBatch, rCurrentNPC, behindTiles, screenPos);
-@@ -16825,6 +_,17 @@
+@@ -16941,6 +_,17 @@
  				}
  			}
  
 +			NPCLoader.DrawEffects(rCurrentNPC, ref npcColor); //TODO: Effects were previously done before drawing, here, but 1.4 moved them to updates in UpdateNPC_BuffApplyVFX(). Should this hook be moved and renamed? --Mirsario
-+			
++
 +			if (NPCLoader.PreDraw(rCurrentNPC, spriteBatch, screenPos, npcColor)) {
 +				DrawNPCDirect_Inner(spriteBatch, rCurrentNPC, behindTiles, screenPos, ref npcColor);
 +			}
@@ -2346,7 +2299,7 @@
  			npcColor = rCurrentNPC.GetNPCColorTintedByBuffs(npcColor);
  			if (type == 50) {
  				Vector2 zero = Vector2.Zero;
-@@ -20149,12 +_,14 @@
+@@ -20357,12 +_,14 @@
  				}
  
  				instance.LoadItem(num8);
@@ -2361,7 +2314,7 @@
  				spriteBatch.Draw(value3, new Vector2((int)(vector2.X - screenPosition.X), (int)(vector2.Y - screenPosition.Y)), null, npcColor, rotation, origin2, n.scale * num7, npcSpriteEffect ^ SpriteEffects.FlipHorizontally, 0f);
  				if (n.type == 22 && n.frame.Y / (TextureAssets.Npc[n.type].Height() / npcFrameCount[n.type]) >= 21) {
  					Texture2D value4 = TextureAssets.Extra[52].Value;
-@@ -20214,6 +_,7 @@
+@@ -20422,6 +_,7 @@
  						zero.Y = 12f;
  				}
  
@@ -2369,7 +2322,7 @@
  				Tuple<Vector2, float> swingStats = n.GetSwingStats(NPCID.Sets.AttackTime[n.type] * 2, (int)n.ai[1], n.spriteDirection, num11, num11);
  				Vector2 vector4 = swingStats.Item1 + (swingStats.Item1 - n.Center) * scaleFactor + zero;
  				Vector2 origin4 = value9.Size() * new Vector2((n.spriteDirection != 1) ? 1 : 0, 1f);
-@@ -20317,6 +_,9 @@
+@@ -20525,6 +_,9 @@
  				return;
  
  			Projectile projectile = Main.projectile[i];
@@ -2379,7 +2332,7 @@
  			if (projectile.type == 734) {
  				VoidLensHelper voidLensHelper = new VoidLensHelper(projectile);
  				_voidLensData.Clear();
-@@ -20329,10 +_,20 @@
+@@ -20537,10 +_,20 @@
  				return;
  			}
  
@@ -2400,7 +2353,7 @@
  			if (projectile.aiStyle == 99) {
  				Vector2 vector = mountedCenter;
  				vector.Y += Main.player[projectile.owner].gfxOffY;
-@@ -20431,7 +_,9 @@
+@@ -20639,7 +_,9 @@
  					EntitySpriteDraw(color: new Microsoft.Xna.Framework.Color((byte)((float)(int)white.R * num12), (byte)((float)(int)white.G * num12), (byte)((float)(int)white.B * num12), (byte)((float)(int)white.A * num12)), texture: TextureAssets.FishingLine.Value, position: new Vector2(vector.X - screenPosition.X + (float)TextureAssets.FishingLine.Width() * 0.5f, vector.Y - screenPosition.Y + (float)TextureAssets.FishingLine.Height() * 0.5f) - new Vector2(6f, 0f), sourceRectangle: new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.FishingLine.Width(), (int)num7), rotation: num4, origin: new Vector2((float)TextureAssets.FishingLine.Width() * 0.5f, 0f), scale: 1f, effects: SpriteEffects.None, worthless: 0);
  				}
  			}
@@ -2411,7 +2364,7 @@
  				if (projectile.aiStyle == 160) {
  					DrawKite(projectile);
  					return;
-@@ -20600,6 +_,9 @@
+@@ -20808,6 +_,9 @@
  				return;
  			}
  
@@ -2421,7 +2374,7 @@
  			if (projectile.bobber && Main.player[projectile.owner].inventory[Main.player[projectile.owner].selectedItem].holdStyle != 0) {
  				DrawProj_FishingLine(projectile, ref polePosX, ref polePosY, mountedCenter);
  			}
-@@ -21671,6 +_,8 @@
+@@ -21879,6 +_,8 @@
  				DrawProj_FlailChains(projectile, mountedCenter);
  			}
  
@@ -2430,7 +2383,7 @@
  			Microsoft.Xna.Framework.Color color31 = Lighting.GetColor((int)((double)projectile.position.X + (double)projectile.width * 0.5) / 16, (int)(((double)projectile.position.Y + (double)projectile.height * 0.5) / 16.0));
  			if (projectile.hide && !ProjectileID.Sets.DontAttachHideToAlpha[projectile.type])
  				color31 = Lighting.GetColor((int)mountedCenter.X / 16, (int)(mountedCenter.Y / 16f));
-@@ -21678,6 +_,21 @@
+@@ -21886,6 +_,21 @@
  			if (projectile.type == 14)
  				color31 = Microsoft.Xna.Framework.Color.White;
  
@@ -2452,7 +2405,7 @@
  			int num136 = 0;
  			int num137 = 0;
  			if (projectile.type == 175)
-@@ -22019,6 +_,7 @@
+@@ -22257,6 +_,7 @@
  				num137 = 3;
  			}
  
@@ -2460,7 +2413,7 @@
  			if (projectile.type == 397) {
  				num138 -= 1f;
  				num136 = -2;
-@@ -22028,6 +_,7 @@
+@@ -22266,6 +_,7 @@
  			if (projectile.type == 398)
  				num136 = 8;
  
@@ -2468,26 +2421,28 @@
  			SpriteEffects spriteEffects = SpriteEffects.None;
  			if (projectile.spriteDirection == -1)
  				spriteEffects = SpriteEffects.FlipHorizontally;
-@@ -25027,6 +_,9 @@
- 						alpha12.A = 127;
+@@ -25433,6 +_,11 @@
+ 						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY) + value157 + value158, new Microsoft.Xna.Framework.Rectangle(0, num381 * 2, TextureAssets.Projectile[projectile.type].Width(), num381 - 1), alpha13, projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
+ 					}
  
- 					EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), alpha12, projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
-+					ModProjectile modProjectile = projectile.ModProjectile;
++					var modProjectile = projectile.ModProjectile;
++
 +					if (modProjectile != null && ModContent.RequestIfExists<Texture2D>(modProjectile.GlowTexture, out var glowTexture, AssetRequestMode.ImmediateLoad)) // todo: preload this!
-+						EntitySpriteDraw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
++						EntitySpriteDraw(glowTexture.Value, new Vector2(projectile.position.X - screenPosition.X + num138 + num137, projectile.position.Y - screenPosition.Y + projectile.height / 2 + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num381 - 1), new Microsoft.Xna.Framework.Color(250, 250, 250, projectile.alpha), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
++
  					if (projectile.type == 335)
- 						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num363 - 1), new Microsoft.Xna.Framework.Color(100, 100, 100, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
+ 						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, y27, TextureAssets.Projectile[projectile.type].Width(), num381 - 1), new Microsoft.Xna.Framework.Color(100, 100, 100, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
  
-@@ -25237,7 +_,7 @@
+@@ -25648,7 +_,7 @@
  				}
  
  				if (projectile.bobber) {
--					if (projectile.ai[1] > 0f && projectile.ai[1] < 5088f && projectile.ai[0] == 1f) {
+-					if (projectile.ai[1] > 0f && projectile.ai[1] < 5125f && projectile.ai[0] == 1f) {
 +					if (projectile.ai[1] > 0f && projectile.ai[0] == 1f) {
- 						int num386 = (int)projectile.ai[1];
+ 						int num406 = (int)projectile.ai[1];
  						Vector2 center5 = projectile.Center;
  						float rotation30 = projectile.rotation;
-@@ -25282,6 +_,10 @@
+@@ -25693,6 +_,10 @@
  					if (projectile.type == 473)
  						EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, new Vector2(projectile.position.X - screenPosition.X + num138 + (float)num137, projectile.position.Y - screenPosition.Y + (float)(projectile.height / 2) + projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Projectile[projectile.type].Width(), TextureAssets.Projectile[projectile.type].Height()), new Microsoft.Xna.Framework.Color(255, 255, 0, 0), projectile.rotation, new Vector2(num138, projectile.height / 2 + num136), projectile.scale, spriteEffects, 0);
  
@@ -2497,8 +2452,8 @@
 +
  					if (projectile.type == 312) {
  						ulong seed3 = TileFrameSeed;
- 						for (int num389 = 0; num389 < 4; num389++) {
-@@ -25620,6 +_,7 @@
+ 						for (int num409 = 0; num409 < 4; num409++) {
+@@ -26031,6 +_,7 @@
  			if (type == 4442)
  				stringColor = new Microsoft.Xna.Framework.Color(100, 100, 200, 100);
  
@@ -2506,7 +2461,7 @@
  			stringColor = TryApplyingPlayerStringColor(player[proj.owner].stringColor, stringColor);
  			float gravDir = player[proj.owner].gravDir;
  			switch (type) {
-@@ -27399,10 +_,13 @@
+@@ -27823,10 +_,13 @@
  				}
  				else if (npc[i].type == 516 || npc[i].type == 519) {
  					DrawCacheNPCProjectiles.Add(i);
@@ -2515,31 +2470,31 @@
  				else if (npc[i].type == 548) {
  					DrawCacheNPCsBehindNonSolidTiles.Add(i);
  				}
-+				
++
 +				NPCLoader.DrawBehind(Main.npc[i], i);
  			}
  		}
  
-@@ -27436,7 +_,7 @@
+@@ -27860,7 +_,7 @@
  					DrawCacheProjsBehindNPCs.Add(i);
  
- 				if (projectile[i].type != 636 && projectile[i].type != 598)
+ 				if (projectile[i].type != 636 && projectile[i].type != 598 && projectile[i].type != 971)
 -					continue;
 +					goto PostProjDrawCache;
  
  				bool flag = true;
  				if (projectile[i].ai[0] == 1f) {
-@@ -27453,6 +_,9 @@
+@@ -27877,6 +_,9 @@
  
  				if (flag)
  					DrawCacheProjsBehindProjectiles.Add(i);
-+				
++
 +				PostProjDrawCache:
 +				ProjectileLoader.DrawBehind(projectile[i], i, DrawCacheProjsBehindNPCsAndTiles, DrawCacheProjsBehindNPCs, DrawCacheProjsBehindProjectiles, DrawCacheProjsOverPlayers, DrawCacheProjsOverWiresUI);
  			}
  		}
  
-@@ -27806,10 +_,14 @@
+@@ -28230,10 +_,14 @@
  			Vector2 value = new Vector2((float)(item.width / 2) - vector.X, item.height - frame.Height);
  			Vector2 vector2 = item.position - screenPosition + vector + value;
  			float num = item.velocity.X * 0.2f;
@@ -2554,7 +2509,7 @@
  			int num2 = item.glowMask;
  			if (!gamePaused && base.IsActive && (item.IsACoin || item.type == 58 || item.type == 109) && color.R > 60 && (float)rand.Next(500) - (Math.Abs(item.velocity.X) + Math.Abs(item.velocity.Y)) * 10f < (float)((int)color.R / 50)) {
  				int type = 43;
-@@ -27910,11 +_,15 @@
+@@ -28334,11 +_,15 @@
  			if (num2 != -1)
  				spriteBatch.Draw(TextureAssets.GlowMask[num2].Value, vector2, frame, new Microsoft.Xna.Framework.Color(250, 250, 250, item.alpha), num, vector, scale, SpriteEffects.None, 0f);
  
@@ -2570,12 +2525,32 @@
  		}
  
  		public void DrawItems() {
-@@ -28060,6 +_,13 @@
+@@ -28356,6 +_,19 @@
+ 				Rain rain = Main.rain[i];
+ 				if (rain.active) {
+ 					value.X = rain.type * 4;
++
++					if (rain.waterStyle >= maxLiquidTypes) {
++						value2 = LoaderManager.Get<WaterStylesLoader>().Get(rain.waterStyle).GetRainTexture().Value;
++						if (value2 == null) {
++							if (flag)
++								rain.Update();
++							continue;
++						}
++					}
++					else {
++						value2 = TextureAssets.Rain.Value;
++					}
++
+ 					spriteBatch.Draw(value2, rain.position - screenPosition, value, Lighting.GetColor((int)(rain.position.X + 4f) >> 4, (int)(rain.position.Y + 4f) >> 4) * 0.85f, rain.rotation, zero, rain.scale, SpriteEffects.None, 0f);
+ 					if (flag)
+ 						rain.Update();
+@@ -28484,6 +_,13 @@
  					if (dust.type == 213)
  						scale = 1f;
  
 +					ModDust modDust = DustLoader.GetDust(dust.type);
-+					
++
 +					if (modDust != null) {
 +						modDust.Draw(dust, newColor, scale);
 +						continue;
@@ -2584,15 +2559,15 @@
  					spriteBatch.Draw(TextureAssets.Dust.Value, dust.position - screenPosition, dust.frame, newColor, dust.GetVisualRotation(), new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
  					if (dust.color.PackedValue != 0) {
  						Microsoft.Xna.Framework.Color color6 = dust.GetColor(newColor);
-@@ -28843,12 +_,16 @@
+@@ -29272,12 +_,16 @@
  			string focusText = "";
  			string focusText2 = "";
  			int num4 = player[myPlayer].statLifeMax2 - player[myPlayer].statLife;
 -			for (int j = 0; j < 22; j++) {
 +			for (int j = 0; j < Player.MaxBuffs; j++) {
  				int num5 = player[myPlayer].buffType[j];
--				if (debuff[num5] && player[myPlayer].buffTime[j] > 60 && num5 != 28 && num5 != 34 && num5 != 87 && num5 != 89 && num5 != 21 && num5 != 86 && num5 != 199)
-+				if (debuff[num5] && player[myPlayer].buffTime[j] > 60 && BuffLoader.CanBeCleared(num5))
+-				if (debuff[num5] && player[myPlayer].buffTime[j] > 60 && (num5 < 0 || num5 >= 338 || !BuffID.Sets.NurseCannotRemoveDebuff[num5]))
++				if (debuff[num5] && player[myPlayer].buffTime[j] > 60 && (num5 < 0 || !BuffID.Sets.NurseCannotRemoveDebuff[num5]))
  					num4 += 100;
  			}
  
@@ -2603,7 +2578,7 @@
  			if (NPC.downedGolemBoss)
  				num4 *= 200;
  			else if (NPC.downedPlantBoss)
-@@ -29013,6 +_,10 @@
+@@ -29442,6 +_,10 @@
  				if (num15 > 0 && num15 < 1)
  					num15 = 1;
  
@@ -2614,20 +2589,19 @@
  				if (num15 < 0)
  					num15 = 0;
  
-@@ -29063,9 +_,12 @@
+@@ -29492,8 +_,11 @@
  				else {
  					text5 = text5.Substring(0, text5.Length - 1);
  					focusText = Lang.inter[54].Value + " (" + text5 + ")";
 +					//Patch context.
  				}
  			}
- 
++
 +			NPCLoader.SetChatButtons(ref focusText, ref focusText2);
-+			
+ 
  			if (!flag) {
  				DrawNPCChatButtons(num, textColor, amountOfLines, focusText, focusText2);
- 				if (text2 != null) {
-@@ -29100,11 +_,19 @@
+@@ -29529,11 +_,19 @@
  						SubmitSignText();
  					else
  						IngameFancyUI.OpenVirtualKeyboard(1);
@@ -2642,13 +2616,13 @@
 +					return;
 +
 +				NPCLoader.OnChatButtonClicked(true);
-+				
++
 -				else if (npc[player[myPlayer].talkNPC].type == 369) {
 +				if (npc[player[myPlayer].talkNPC].type == 369) {
  					npcChatCornerItem = 0;
  					SoundEngine.PlaySound(12);
  					bool flag3 = false;
-@@ -29275,10 +_,15 @@
+@@ -29705,10 +_,15 @@
  
  					SoundEngine.PlaySound(12);
  					if (num4 > 0) {
@@ -2656,7 +2630,7 @@
 +							npcChatText = reason;
 +							return;
 +						}
-+						
++
  						if (player[myPlayer].BuyItem(num4)) {
  							AchievementsHelper.HandleNurseService(num4);
  							SoundEngine.PlaySound(SoundID.Item4);
@@ -2665,32 +2639,32 @@
  							if ((double)player[myPlayer].statLife < (double)player[myPlayer].statLifeMax2 * 0.25)
  								npcChatText = Lang.dialog(227);
  							else if ((double)player[myPlayer].statLife < (double)player[myPlayer].statLifeMax2 * 0.5)
-@@ -29288,14 +_,21 @@
+@@ -29718,14 +_,21 @@
  							else
  								npcChatText = Lang.dialog(230);
  
 -							player[myPlayer].statLife = player[myPlayer].statLifeMax2;
 -							for (int l = 0; l < 22; l++) {
 +							player[myPlayer].statLife += health;
-+							
++
 +							if (!removeDebuffs) // no indent for better patching
 +								goto SkipDebuffRemoval;
-+								
++
 +							for (int l = 0; l < Player.MaxBuffs; l++) {
  								int num24 = player[myPlayer].buffType[l];
--								if (debuff[num24] && player[myPlayer].buffTime[l] > 0 && num24 != 28 && num24 != 34 && num24 != 87 && num24 != 89 && num24 != 21 && num24 != 86 && num24 != 199) {
-+								if (debuff[num24] && player[myPlayer].buffTime[l] > 0 && BuffLoader.CanBeCleared(num24)) {
+-								if (debuff[num24] && player[myPlayer].buffTime[l] > 0 && (num24 < 0 || num24 >= 338 || !BuffID.Sets.NurseCannotRemoveDebuff[num24])) {
++								if (debuff[num24] && player[myPlayer].buffTime[l] > 0 && (num24 < 0 || !BuffID.Sets.NurseCannotRemoveDebuff[num24])) {
  									player[myPlayer].DelBuff(l);
  									l = -1;
  								}
  							}
-+							
++
 +							SkipDebuffRemoval:
 +							PlayerLoader.PostNurseHeal(LocalPlayer, npc[LocalPlayer.talkNPC], health, removeDebuffs, num4);
  						}
  						else {
  							int num25 = rand.Next(3);
-@@ -29337,6 +_,10 @@
+@@ -29767,6 +_,10 @@
  				if (!npcChatFocus3 || player[myPlayer].talkNPC < 0)
  					return;
  
@@ -2701,7 +2675,7 @@
  				if (npc[player[myPlayer].talkNPC].type == 20) {
  					SoundEngine.PlaySound(12);
  					npcChatText = Lang.GetDryadWorldStatusDialog();
-@@ -30063,7 +_,7 @@
+@@ -30494,7 +_,7 @@
  					num29++;
  
  				int num31 = 46;
@@ -2710,7 +2684,7 @@
  					if (player[myPlayer].buffType[n] != 0) {
  						int num32 = num28 / num29;
  						int num33 = num28 % num29;
-@@ -30086,10 +_,12 @@
+@@ -30517,17 +_,19 @@
  						if (num34 == 147)
  							bannerMouseOver = true;
  
@@ -2726,26 +2700,103 @@
  					}
  				}
  			}
-@@ -30309,11 +_,17 @@
+ 			else if (EquipPage == 1) {
+ 				DrawNPCHousesInUI();
+ 			}
+-			else {
++			else if (EquipPage == 0) {// allow mods to add custom equip pages
+ 				int num35 = 4;
+ 				if (mouseX > screenWidth - 64 - 28 && mouseX < (int)((float)(screenWidth - 64 - 28) + 56f * inventoryScale) && mouseY > num20 && mouseY < (int)((float)num20 + 448f * inventoryScale) && !PlayerInput.IgnoreMouseInterface)
+ 					player[myPlayer].mouseInterface = true;
+@@ -30544,7 +_,7 @@
+ 				Microsoft.Xna.Framework.Color color = inventoryBack;
+ 				Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(80, 80, 80, 80);
+ 				int num39 = -1;
+-				for (int num40 = 0; num40 < 10; num40++) {
++				for (int num40 = 0; num40 < 3; num40++) {
+ 					if ((num40 == 8 && !flag4) || (num40 == 9 && !flag5))
+ 						continue;
+ 
+@@ -30565,6 +_,7 @@
+ 						context2 = 10;
+ 					}
+ 
++					/*
+ 					if (num39 == num38 && !_achievementAdvisor.CanDrawAboveCoins) {
+ 						_achievementAdvisor.DrawOneAchievement(spriteBatch, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8), large: false);
+ 						UILinkPointNavigator.SetPosition(1570, new Vector2(num41 - 10 - 47 - 47 - 14 - 14, num42 + 8) + new Vector2(20f) * inventoryScale);
+@@ -30572,6 +_,7 @@
+ 
+ 					if (num39 == num37)
+ 						DrawDefenseCounter(num41, num42);
++					*/
+ 
+ 					Texture2D value4 = TextureAssets.InventoryTickOn.Value;
+ 					if (player[myPlayer].hideVisibleAccessory[num40])
+@@ -30618,7 +_,7 @@
+ 					player[myPlayer].mouseInterface = true;
+ 
+ 				num39 = -1;
+-				for (int num46 = 10; num46 < 20; num46++) {
++				for (int num46 = 10; num46 < 13; num46++) {
+ 					if ((num46 == 18 && !flag4) || (num46 == 19 && !flag5))
+ 						continue;
+ 
+@@ -30659,7 +_,7 @@
+ 					player[myPlayer].mouseInterface = true;
+ 
+ 				num39 = -1;
+-				for (int num50 = 0; num50 < 10; num50++) {
++				for (int num50 = 0; num50 < 3; num50++) {
+ 					if ((num50 == 8 && !flag4) || (num50 == 9 && !flag5))
+ 						continue;
+ 
+@@ -30694,9 +_,22 @@
+ 				}
+ 
+ 				inventoryBack = color;
++
++				var defPos = AccessorySlotLoader.DefenseIconPosition;
++				DrawDefenseCounter((int)defPos.X, (int)defPos.Y);
++
++				if (!_achievementAdvisor.CanDrawAboveCoins) {
++					var achievePos = new Vector2(defPos.X - 10 - 47 - 47 - 14 - 14, defPos.Y - 56 * inventoryScale * 0.5f);
++					_achievementAdvisor.DrawOneAchievement(spriteBatch, achievePos , large: false);
++					UILinkPointNavigator.SetPosition(1570, achievePos + new Vector2(20f) * inventoryScale);
++				}
++
++				inventoryBack = color;
+ 				inventoryScale = num36;
+ 			}
+ 
++			LoaderManager.Get<AccessorySlotLoader>().DrawAccSlots(num20);
++
+ 			int num54 = (screenHeight - 600) / 2;
+ 			int num55 = (int)((float)screenHeight / 600f * 250f);
+ 			if (screenHeight < 700) {
+@@ -30739,12 +_,19 @@
+ 					int num57 = 270;
  					string text = Lang.inter[46].Value + ": ";
  					if (reforgeItem.type > 0) {
- 						int num58 = reforgeItem.value;
+-						int num58 = reforgeItem.value;
 -						if (player[myPlayer].discount)
++						//int num58 = reforgeItem.value;
++						int num58 = reforgeItem.value * reforgeItem.stack; // TML: #StackablePrefixWeapons: scale with current stack size
 +						bool canApplyDiscount = true;
 +						if (!ItemLoader.ReforgePrice(reforgeItem, ref num58, ref canApplyDiscount))
 +							goto skipVanillaPricing;
-+						
++
 +						if (canApplyDiscount && LocalPlayer.discount)
  							num58 = (int)((double)num58 * 0.8);
  
  						num58 = (int)((double)num58 * player[myPlayer].currentShoppingSettings.PriceAdjustment);
  						num58 /= 3;
-+						
++
 +						skipVanillaPricing:
  						string text2 = "";
  						int num59 = 0;
  						int num60 = 0;
-@@ -30371,13 +_,23 @@
+@@ -30802,13 +_,23 @@
  
  							mouseReforge = true;
  							player[myPlayer].mouseInterface = true;
@@ -2755,7 +2806,7 @@
  								bool favorited = reforgeItem.favorited;
 -								reforgeItem.netDefaults(reforgeItem.netID);
 -								reforgeItem.Prefix(-2);
-+								int stack = reforgeItem.stack;	//keep the stack, stacked weps support (i.e. light discs)
++								int stack = reforgeItem.stack;  //#StackablePrefixWeapons: keep the stack, (i.e. light discs)
 +																//vanilla doesn't have a good way of resetting prefixes, so it creates a new item entirely
 +																//before we roll the prefix, we simply copy over the old mod data before doing so
 +								Item r = new Item();
@@ -2772,7 +2823,7 @@
  								PopupText.NewText(PopupTextContext.ItemReforge, reforgeItem, reforgeItem.stack, noStack: true);
  								SoundEngine.PlaySound(SoundID.Item37);
  							}
-@@ -30426,13 +_,15 @@
+@@ -30857,13 +_,14 @@
  						ItemSlot.MouseHover(ref guideItem, 7);
  					}
  
@@ -2781,7 +2832,6 @@
  				}
  			}
  
-+			hidePlayerCraftingMenu = false;
  			CreativeMenu.Draw(spriteBatch);
  			bool flag9 = CreativeMenu.Enabled && !CreativeMenu.Blocked;
 -			if (!InReforgeMenu && !LocalPlayer.tileEntityAnchor.InUse && !flag9) {
@@ -2789,16 +2839,16 @@
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
  				if (numAvailableRecipes > 0)
-@@ -30514,7 +_,7 @@
+@@ -30945,7 +_,7 @@
  				if (numAvailableRecipes > 0) {
  					UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
  					UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = -1;
 -					for (int num72 = 0; num72 < Recipe.maxRequirements; num72++) {
 +					for (int num72 = 0; num72 < recipe[availableRecipe[focusRecipe]].requiredItem.Count; num72++) {
  						if (recipe[availableRecipe[focusRecipe]].requiredItem[num72].type == 0) {
- 							UILinkPointNavigator.Shortcuts.CRAFT_CurrentIngridientsCount = num72 + 1;
+ 							UILinkPointNavigator.Shortcuts.CRAFT_CurrentIngredientsCount = num72 + 1;
  							break;
-@@ -30559,7 +_,8 @@
+@@ -30990,7 +_,8 @@
  						UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeSmall = 1 + num72;
  						Microsoft.Xna.Framework.Color color5 = inventoryBack;
  						inventoryBack = new Microsoft.Xna.Framework.Color((byte)num75, (byte)num75, (byte)num75, (byte)num75);
@@ -2808,7 +2858,15 @@
  						inventoryBack = color5;
  					}
  				}
-@@ -30876,7 +_,7 @@
+@@ -31023,6 +_,7 @@
+ 					}
+ 				}
+ 			}
++			hidePlayerCraftingMenu = false;
+ 
+ 			if (recBigList && !flag9) {
+ 				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
+@@ -31307,7 +_,7 @@
  				if (npc[j].active && !_npcTypesThatAlreadyDrewAHead.Contains(npc[j].type)) {
  					ITownNPCProfile profile;
  					int num4 = (!TownNPCProfiles.Instance.GetProfile(npc[j].type, out profile)) ? NPC.TypeToDefaultHeadIndex(npc[j].type) : profile.GetHeadTextureIndex(npc[j]);
@@ -2817,7 +2875,7 @@
  						_npcIndexWhoHoldsHeadIndex[num4] = j;
  						_npcTypesThatAlreadyDrewAHead.Add(npc[j].type);
  					}
-@@ -30980,7 +_,7 @@
+@@ -31411,7 +_,7 @@
  			else {
  				text = Lang.inter[21].Value + " " + guideItem.Name;
  				Recipe recipe = Main.recipe[availableRecipe[focusRecipe]];
@@ -2826,7 +2884,7 @@
  					int num = recipe.requiredTile[i];
  					if (num == -1)
  						break;
-@@ -31005,6 +_,8 @@
+@@ -31436,6 +_,8 @@
  				if (recipe.needGraveyardBiome)
  					_requiredObjecsForCraftingText.Add(Lang.inter[124].Value);
  
@@ -2835,7 +2893,7 @@
  				if (_requiredObjecsForCraftingText.Count == 0) {
  					string value = Lang.inter[23].Value;
  					_requiredObjecsForCraftingText.Add(value);
-@@ -31041,7 +_,7 @@
+@@ -31472,7 +_,7 @@
  				spriteBatch.DrawString(FontAssets.MouseText.Value, Lang.inter[22].Value, new Vector2(inventoryX, inventoryY + 118), craftingTipColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  				int num3 = focusRecipe;
  				int num4 = 0;
@@ -2844,7 +2902,17 @@
  					int num5 = (i + 1) * 26;
  					if (recipe[availableRecipe[num3]].requiredTile[i] == -1) {
  						if (i == 0 && !recipe[availableRecipe[num3]].needWater && !recipe[availableRecipe[num3]].needHoney && !recipe[availableRecipe[num3]].needLava && !recipe[availableRecipe[num3]].needSnowBiome && !recipe[availableRecipe[num3]].needGraveyardBiome)
-@@ -31170,6 +_,11 @@
+@@ -31573,6 +_,9 @@
+ 			if (mouseItem.IsAir)
+ 				return true;
+ 
++			if (mouseItem.maxStack > 1 && mouseItem.AllowReforgeForStackableItem && mouseItem.prefix > 0) // TML: #StackablePrefixWeapons: Gameplay impact: Prevent crafted prefix application by blocking crafting if mouse item is prefixed
++				return false;
++
+ 			if (mouseItem.IsTheSameAs(currentRecipe.createItem) && mouseItem.stack + currentRecipe.createItem.stack <= mouseItem.maxStack)
+ 				return true;
+ 
+@@ -31601,6 +_,11 @@
  				inventoryScale = 0.755f;
  				num += 5;
  			}
@@ -2856,7 +2924,16 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31406,8 +_,11 @@
+@@ -31830,15 +_,19 @@
+ 			int stack = mouseItem.stack;
+ 			mouseItem = r.createItem.Clone();
+ 			mouseItem.stack += stack;
+-			if (stack <= 0)
++			//if (stack <= 0)
++			if (stack <= 0 && mouseItem.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
+ 				mouseItem.Prefix(-1);
+ 
+ 			mouseItem.position.X = player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(mouseItem.width / 2);
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
  			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
  			r.Create();
@@ -2869,7 +2946,7 @@
  		}
  
  		private static void DrawPVPIcons() {
-@@ -31585,6 +_,8 @@
+@@ -32016,6 +_,8 @@
  						rare = item[i].rare;
  						if (item[i].expert)
  							rare = -12;
@@ -2878,7 +2955,7 @@
  
  						MouseTextHackZoom(text, rare, 0);
  						mouseText = true;
-@@ -31630,7 +_,7 @@
+@@ -32061,7 +_,7 @@
  					bool flag2 = flag || (SmartInteractShowingGenuine && SmartInteractNPC == k);
  					if (flag2 && ((npc[k].type != 85 && npc[k].type != 341 && npc[k].type != 629 && npc[k].aiStyle != 87) || npc[k].ai[0] != 0f) && npc[k].type != 488) {
  						bool flag3 = SmartInteractShowingGenuine && SmartInteractNPC == k;
@@ -2887,7 +2964,7 @@
  							Microsoft.Xna.Framework.Rectangle rectangle2 = new Microsoft.Xna.Framework.Rectangle((int)(player[myPlayer].position.X + (float)(player[myPlayer].width / 2) - (float)(Player.tileRangeX * 16)), (int)(player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(Player.tileRangeY * 16)), Player.tileRangeX * 16 * 2, Player.tileRangeY * 16 * 2);
  							Microsoft.Xna.Framework.Rectangle value4 = new Microsoft.Xna.Framework.Rectangle((int)npc[k].position.X, (int)npc[k].position.Y, npc[k].width, npc[k].height);
  							if (rectangle2.Intersects(value4))
-@@ -31806,14 +_,14 @@
+@@ -32237,14 +_,14 @@
  			recBigList = false;
  			int num = -1;
  			int num2 = 11;
@@ -2905,7 +2982,7 @@
  					}
  
  					num = DrawBuffIcon(num, i, x, num3);
-@@ -31833,10 +_,11 @@
+@@ -32264,10 +_,11 @@
  				if (num4 == 147)
  					bannerMouseOver = true;
  
@@ -2920,7 +2997,7 @@
  			}
  		}
  
-@@ -33172,7 +_,9 @@
+@@ -33604,7 +_,9 @@
  				SetupDrawInterfaceLayers();
  
  			PlayerInput.SetZoom_UI();
@@ -2931,7 +3008,7 @@
  				while (enumerator.MoveNext() && enumerator.Current.Draw()) {
  				}
  			}
-@@ -33477,6 +_,8 @@
+@@ -33909,6 +_,8 @@
  		}
  
  		private void DrawInterface_33_MouseText() {
@@ -2940,9 +3017,19 @@
  			if (mouseItem.stack <= 0)
  				mouseItem.type = 0;
  
-@@ -33958,6 +_,11 @@
- 						if (type == 439 || type == 370)
- 							scale = 1.5f;
+@@ -33955,7 +_,8 @@
+ 					num4 += num5;
+ 				}
+ 
++				//TML: Remove the Setting button being moved when player has too many slots. The ModAccessorySlot rework fixed this in a better fashion.
+-				if (amountOfExtraAccessorySlotsToShow >= 1 && (screenHeight < num3 || (screenHeight < num4 && mapStyle == 1))) {
++				if (false && amountOfExtraAccessorySlotsToShow >= 1 && (screenHeight < num3 || (screenHeight < num4 && mapStyle == 1))) {
+ 					num -= 140;
+ 					num2 -= PlayerInput.SettingsForUI.PushEquipmentAreaUp.ToInt() * 30;
+ 					_settingsButtonIsPushedToSide = true;
+@@ -34402,6 +_,11 @@
+ 						if (HealthBarDrawSettings == 2)
+ 							num3 -= 34f;
  
 +						if (!NPCLoader.DrawHealthBar(npc[num2], ref scale)) {
 +							npc[num2].position -= npc[num2].netOffset;
@@ -2952,7 +3039,23 @@
  						if ((!expertMode || type != 266) && ((type != 439 && type != 440) || npc[num2].ai[0] != 5f)) {
  							if (type >= 134 && type <= 136) {
  								scale = 1.5f;
-@@ -34701,10 +_,18 @@
+@@ -35120,6 +_,7 @@
+ 			if (!CanShowInfoAccs)
+ 				return;
+ 
++#pragma warning disable CS0219
+ 			bool flag = false;
+ 			bool flag2 = false;
+ 			bool flag3 = false;
+@@ -35132,6 +_,7 @@
+ 			bool flag10 = false;
+ 			bool flag11 = false;
+ 			bool flag12 = false;
++#pragma warning restore CS0219
+ 			int num = -1;
+ 			int num2 = -10;
+ 			int num3 = 0;
+@@ -35143,10 +_,18 @@
  				num4 += 50f;
  			}
  
@@ -2973,7 +3076,7 @@
  					num = 0;
  					text3 = Lang.inter[95].Value;
  					string textValue = Language.GetTextValue("GameUI.TimeAtMorning");
-@@ -34742,7 +_,8 @@
+@@ -35184,7 +_,8 @@
  					text2 = num7 + ":" + text4 + " " + textValue;
  					flag = true;
  				}
@@ -2983,7 +3086,7 @@
  					num = 1;
  					text3 = Lang.inter[96].Value;
  					string text5 = "";
-@@ -34756,7 +_,8 @@
+@@ -35198,7 +_,8 @@
  
  					flag5 = true;
  				}
@@ -2993,7 +3096,7 @@
  					num = ((bloodMoon && !dayTime) ? 8 : ((!eclipse || !dayTime) ? 7 : 8));
  					text3 = Lang.inter[102].Value;
  					if (moonPhase == 0)
-@@ -34778,7 +_,8 @@
+@@ -35220,7 +_,8 @@
  
  					flag8 = true;
  				}
@@ -3003,7 +3106,7 @@
  					bool flag13 = false;
  					num = 2;
  					text3 = Lang.inter[97].Value;
-@@ -34799,7 +_,8 @@
+@@ -35241,7 +_,8 @@
  
  					flag4 = true;
  				}
@@ -3013,7 +3116,7 @@
  					num = 10;
  					text3 = Lang.inter[104].Value;
  					if (SceneMetrics.bestOre <= 0) {
-@@ -34824,7 +_,8 @@
+@@ -35266,7 +_,8 @@
  
  					flag10 = true;
  				}
@@ -3023,7 +3126,7 @@
  					flag11 = true;
  					num = 11;
  					text3 = Lang.inter[105].Value;
-@@ -34849,7 +_,8 @@
+@@ -35291,7 +_,8 @@
  
  					text2 = ((num13 < 0 || num13 >= 200 || !npc[num13].active || npc[num13].rarity <= 0) ? Language.GetTextValue("GameUI.NoRareCreatures") : npc[num13].GivenOrTypeName);
  				}
@@ -3033,7 +3136,7 @@
  					flag6 = true;
  					num = 5;
  					text3 = Lang.inter[100].Value;
-@@ -34868,14 +_,16 @@
+@@ -35310,14 +_,16 @@
  
  					text2 = ((player[myPlayer].accThirdEyeNumber == 0) ? Language.GetTextValue("GameUI.NoEnemiesNearby") : ((player[myPlayer].accThirdEyeNumber != 1) ? Language.GetTextValue("GameUI.EnemiesNearby", player[myPlayer].accThirdEyeNumber) : Language.GetTextValue("GameUI.OneEnemyNearby")));
  				}
@@ -3052,7 +3155,7 @@
  					num = 12;
  					text3 = Lang.inter[106].Value;
  					player[myPlayer].checkDPSTime();
-@@ -34883,7 +_,8 @@
+@@ -35325,7 +_,8 @@
  					flag12 = true;
  					text2 = ((dPS != 0) ? Language.GetTextValue("GameUI.DPS", player[myPlayer].getDPS()) : Language.GetTextValue("GameUI.NoDPS"));
  				}
@@ -3062,7 +3165,7 @@
  					num = 9;
  					text3 = Lang.inter[103].Value;
  					Vector2 vector = player[myPlayer].velocity + player[myPlayer].instantMovementAccumulatedThisFrame;
-@@ -34921,15 +_,17 @@
+@@ -35363,15 +_,17 @@
  					text2 = Language.GetTextValue("GameUI.Speed", Math.Round(num20));
  					flag9 = true;
  				}
@@ -3083,7 +3186,7 @@
  					text3 = Lang.inter[99].Value;
  					int num22 = (int)((double)((player[myPlayer].position.Y + (float)player[myPlayer].height) * 2f / 16f) - worldSurface * 2.0);
  					string text6 = "";
-@@ -34944,27 +_,33 @@
+@@ -35386,27 +_,33 @@
  					text2 = text7 + " " + text6;
  					flag2 = true;
  				}
@@ -3123,7 +3226,7 @@
  							flag14 = true;
  							player[myPlayer].mouseInterface = true;
  							if (mouseLeft && mouseLeftRelease) {
-@@ -34982,14 +_,17 @@
+@@ -35424,14 +_,17 @@
  						if (player[myPlayer].hideInfo[num27])
  							color = new Microsoft.Xna.Framework.Color(80, 80, 80, 70);
  					}
@@ -3145,7 +3248,7 @@
  					if (flag14)
  						spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  
-@@ -34997,8 +_,9 @@
+@@ -35439,8 +_,9 @@
  				}
  
  				UILinkPointNavigator.Shortcuts.INFOACCCOUNT = num3;
@@ -3156,7 +3259,7 @@
  
  				Vector2 scale = new Vector2(1f);
  				Vector2 vector3 = FontAssets.MouseText.Value.MeasureString(text2);
-@@ -35034,8 +_,11 @@
+@@ -35476,8 +_,11 @@
  					if (screenHeight < 650)
  						num30 = 20;
  
@@ -3169,7 +3272,7 @@
  			}
  
  			if (!string.IsNullOrEmpty(text)) {
-@@ -35054,8 +_,8 @@
+@@ -35496,8 +_,8 @@
  					Y += 261;
  			}
  			else if (ShouldDrawInfoIconsHorizontally) {
@@ -3180,7 +3283,17 @@
  				if (mapStyle == 1 && mapEnabled)
  					Y += 261;
  			}
-@@ -35992,8 +_,10 @@
+@@ -36142,6 +_,9 @@
+ 
+ 		private static void TryDisposingEverything() {
+ 			ChromaInitializer.DisableAllDeviceGroups();
++			
++			WorkshopHelper.OnGameExitCleanup(); // Added by TML.
++			
+ 			CaptureManager.Instance.Dispose();
+ 			audioSystem.Dispose();
+ 		}
+@@ -36445,8 +_,10 @@
  			screenLastPosition = screenPosition;
  			screenPosition.Y = (float)(worldSurface * 16.0 - (double)screenHeight);
  			MenuXMovement = 4f;
@@ -3192,7 +3305,7 @@
  
  			screenPosition.X += MenuXMovement;
  			if (screenPosition.X > 2.1474835E+09f)
-@@ -36043,13 +_,14 @@
+@@ -36496,13 +_,14 @@
  					logoScaleSpeed -= 1f;
  			}
  
@@ -3209,7 +3322,7 @@
  				spriteBatch.Draw(TextureAssets.Logo.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color2, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
  				spriteBatch.Draw(TextureAssets.Logo2.Value, new Vector2(screenWidth / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Logo.Width(), TextureAssets.Logo.Height()), color3, logoRotation, new Vector2(TextureAssets.Logo.Width() / 2, TextureAssets.Logo.Height() / 2), logoScale, SpriteEffects.None, 0f);
  			}
-@@ -36108,8 +_,21 @@
+@@ -36561,8 +_,21 @@
  			if (menuMode == -1)
  				menuMode = 0;
  
@@ -3226,13 +3339,13 @@
 +						ModLoader.ModLoader.skipLoad = true;
 +					}
 +				}
-+				
++
 +				goto SkipMenuEnumeration; //Put the label somewhere after the following if-else chain.
 +			}
  
  			if (menuMode == 1212) {
  				array9[0] = Lang.menu[102].Value;
-@@ -36146,7 +_,7 @@
+@@ -36599,7 +_,7 @@
  				if (selectedMenu >= 1) {
  					changeTheTitle = true;
  					LanguageManager.Instance.SetLanguage(selectedMenu);
@@ -3241,52 +3354,16 @@
  					SoundEngine.PlaySound(10);
  					SaveSettings();
  				}
-@@ -36284,7 +_,7 @@
- 					menuMode = 14;
+@@ -36740,7 +_,7 @@
+ 					OnSubmitServerPasswordFromRequest();
  				}
  			}
--			else if (netMode == 1 || menuMode == 14) {
+-			else if ((netMode == 1 && menuMode != 888) || menuMode == 14) {
 +			else if (netMode == 1 && menuMode < 10000 && menuMode != 888 || menuMode == 14) {
  				num5 = 2;
  				array9[0] = statusText;
  				array[0] = true;
-@@ -36382,17 +_,22 @@
- 					Netplay.ServerPassword = "";
- 				}
- 				else if (selectedMenu == 2 || inputTextEnter || autoPass) {
--					string str = "-autoshutdown -password \"" + ConvertToSafeArgument(Netplay.ServerPassword) + "\" -lang " + Language.ActiveCulture.LegacyId;
-+					string str = "tModLoader.dll -server " + "-autoshutdown -password \"" + ConvertToSafeArgument(Netplay.ServerPassword) + "\" -lang " + Language.ActiveCulture.LegacyId;
- #if LINUX
- 					str += IntPtr.Size == 8 ? " -x64": " -x86";
- #endif
- 					str = ((!ActiveWorldFileData.IsCloudSave) ? (str + SanitizePathArgument("world", worldPathName)) : (str + SanitizePathArgument("cloudworld", worldPathName)));
- 					str = str + " -worldrollbackstokeep " + WorldRollingBackupsCountToKeep;
-+					str += $@" -modpath ""{ModOrganizer.modPath}""";
-+					if (showServerConsole)
-+						str += " -showserverconsole";
-+
- 					tServer = new Process();
- #if WINDOWS
--					tServer.StartInfo.FileName = "TerrariaServer.exe";
-+					tServer.StartInfo.FileName = "tModLoaderServer.exe";
- #else
--					tServer.StartInfo.FileName = "TerrariaServer";
-+					var fileName = Process.GetCurrentProcess().MainModule.FileName;
-+					tServer.StartInfo.FileName = fileName.Remove(fileName.LastIndexOf("."));
- #endif
- 					tServer.StartInfo.Arguments = str;
- 					if (libPath != "") {
-@@ -36400,8 +_,7 @@
- 						startInfo.Arguments = startInfo.Arguments + " -loadlib " + libPath;
- 					}
- 
--					tServer.StartInfo.UseShellExecute = false;
-+					tServer.StartInfo.UseShellExecute = showServerConsole;
--					tServer.StartInfo.CreateNoWindow = true;
- 					if (SocialAPI.Network != null)
- 						SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
- 					else
-@@ -36422,7 +_,10 @@
+@@ -36851,7 +_,10 @@
  				array4[3] = 30;
  				array4[4] = 70;
  				array4[5] = 70;
@@ -3298,7 +3375,7 @@
  				array9[0] = Lang.menu[135].Value;
  				array9[4] = Lang.menu[144].Value;
  				array9[5] = Lang.menu[5].Value;
-@@ -36483,6 +_,10 @@
+@@ -36912,6 +_,10 @@
  						menuMode = 6;
  						SoundEngine.PlaySound(11);
  						break;
@@ -3309,7 +3386,7 @@
  				}
  			}
  			else if (menuMode == 15) {
-@@ -36503,16 +_,23 @@
+@@ -36932,16 +_,23 @@
  			else if (menuMode == 200) {
  				num5 = 3;
  				array9[0] = Lang.menu[9].Value;
@@ -3333,7 +3410,7 @@
  						SoundEngine.PlaySound(10);
  						WorldGen.playWorld();
  						menuMode = 10;
-@@ -36527,13 +_,23 @@
+@@ -36956,13 +_,23 @@
  				if (selectedMenu == 2 || flag5) {
  					flag5 = false;
  					SoundEngine.PlaySound(11);
@@ -3358,7 +3435,7 @@
  				array[0] = true;
  				array[1] = true;
  				num2 -= 30;
-@@ -36541,9 +_,21 @@
+@@ -36970,9 +_,21 @@
  				array4[2] = 50;
  				array9[1] = Lang.menu[11].Value;
  				array9[2] = Lang.menu[5].Value;
@@ -3380,7 +3457,7 @@
  					menuMode = 0;
  					netMode = 0;
  				}
-@@ -36601,7 +_,9 @@
+@@ -37030,7 +_,9 @@
  				}
  
  				num11++;
@@ -3391,7 +3468,7 @@
  					array9[num11] = Language.GetText("UI.Workshop").Value;
  					if (selectedMenu == num11) {
  						SoundEngine.PlaySound(10);
-@@ -36620,6 +_,7 @@
+@@ -37049,6 +_,7 @@
  				}
  
  				num11++;
@@ -3399,7 +3476,7 @@
  				array9[num11] = Lang.menu[14].Value;
  				if (selectedMenu == num11) {
  					SoundEngine.PlaySound(10);
-@@ -37248,6 +_,7 @@
+@@ -37677,6 +_,7 @@
  					num2 = 210;
  					num4 = 37;
  					num5 = 8;
@@ -3407,7 +3484,7 @@
  					array4[num5 - 1] = 8;
  					for (int num19 = 0; num19 < num5; num19++) {
  						array7[num19] = 0.75f;
-@@ -37303,6 +_,13 @@
+@@ -37732,6 +_,13 @@
  					}
  
  					num20++;
@@ -3421,7 +3498,7 @@
  					array9[num20] = Lang.menu[5].Value;
  					if (selectedMenu == num20 || flag5) {
  						flag5 = false;
-@@ -37381,6 +_,7 @@
+@@ -37810,6 +_,7 @@
  					num2 = 210;
  					num4 = 36;
  					num5 = 9;
@@ -3429,8 +3506,8 @@
  					array4[num5 - 1] = 18;
  					for (int num23 = 0; num23 < num5; num23++) {
  						array7[num23] = 0.75f;
-@@ -37478,6 +_,11 @@
- 						ActivePlayerResourcesSet = playerResourcesDisplaySet;
+@@ -37880,6 +_,11 @@
+ 						ResourceSetsManager.CycleResourceSet();
  
  					num24++;
 +					array9[num24] = BossBarLoader.InsertMenu(out Action onClick);
@@ -3441,7 +3518,27 @@
  					array9[num24] = Lang.menu[5].Value;
  					if (selectedMenu == num24 || flag5) {
  						flag5 = false;
-@@ -38363,7 +_,12 @@
+@@ -38051,7 +_,8 @@
+ 						SoundEngine.PlaySound(12);
+ 						int num31 = 0;
+ 						for (int num32 = 0; num32 < numDisplayModes; num32++) {
++							// TML: Match the changeto follow so that resolution options provided on this settings menu still can be cycled correctly
+-							if (displayWidth[num32] == PendingResolutionWidth && displayHeight[num32] == PendingResolutionHeight) {
++							if (displayWidth[num32] == PendingResolutionWidth && BorderedHeight(displayHeight[num32], graphics.IsFullScreen) == PendingResolutionHeight) {
+ 								num31 = num32;
+ 								break;
+ 							}
+@@ -38059,7 +_,8 @@
+ 
+ 						num31 = (num31 + 1) % numDisplayModes;
+ 						PendingResolutionWidth = displayWidth[num31];
+-						PendingResolutionHeight = displayHeight[num31];
++						// TML: Limit the resolution when going from fullscreen to windowed to be less than the full monitor size so that the key window edges are accessible
++						PendingResolutionHeight = BorderedHeight(displayHeight[num31], graphics.IsFullScreen);
+ 					}
+ 
+ 					num30++;
+@@ -38813,7 +_,12 @@
  						}
  					}
  				}
@@ -3454,73 +3551,7 @@
  
  			if (menuMode == 888) {
  				if (!_blockFancyUIWhileLoading)
-@@ -38886,6 +_,7 @@
- 
- 			bool flag11 = false;
- 			for (int num95 = 0; num95 < num5; num95++) {
-+				//patch file: num5, array9, num95
- 				if (array9[num95] == null)
- 					continue;
- 
-@@ -38983,6 +_,7 @@
- 
- 					num104 *= array7[num95];
- 					if (!array8[num95])
-+						//patch file: array9, array7, array4, num2, num4
- 						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, origin, num104, SpriteEffects.None, 0f);
- 					else
- 						spriteBatch.DrawString(FontAssets.DeathText.Value, array9[num95], new Vector2(num3 + num102 + array5[num95], (float)(num2 + num4 * num95 + num103) + origin.Y * array7[num95] + (float)array4[num95]), color11, 0f, new Vector2(0f, origin.Y), num104, SpriteEffects.None, 0f);
-@@ -39094,10 +_,47 @@
- 					if (num107 == 3)
- 						num109 = 2;
- 
-+					string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
-+					string patreonShortURL = @"patreon.com/tModLoader";
-+					bool showPatreon = !Steam.IsSteamApp;
-+					string drawVersion = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
--					Vector2 origin2 = FontAssets.MouseText.Value.MeasureString(versionNumber);
-+					Vector2 origin2 = FontAssets.MouseText.Value.MeasureString(drawVersion);
- 					origin2.X *= 0.5f;
- 					origin2.Y *= 0.5f;
-+
-+					if (menuMode == 0 && !ModCompile.DeveloperMode) {
-+						const string text = "Enable Developer Mode";
-+						// measure and draw text from bottom right
-+						var textSize = FontAssets.MouseText.Value.MeasureString(text);
-+						var pos = new Vector2(screenWidth - 10f + num108, screenHeight - 2f + num109);
-+						var d_color = color12;
-+						if (num107 == 4) // final draw
-+						{
-+							var rect = new Rectangle((int)(pos.X - textSize.X), (int)(pos.Y - textSize.Y), (int)textSize.X, (int)textSize.Y);
-+							bool mouseover = rect.Contains(mouseX, mouseY);
-+							d_color = mouseover ? highVersionColor : new Color(120, 120, 120, 76);
-+							if (mouseover && mouseLeftRelease && mouseLeft) {
-+								SoundEngine.PlaySound(SoundID.MenuOpen);
-+								menuMode = Interface.modSourcesID;
-+							}
-+						}
-+						spriteBatch.DrawString(FontAssets.MouseText.Value, text, pos, d_color, 0f, textSize, 1f, SpriteEffects.None, 0f);
-+					}
-+
--					spriteBatch.DrawString(FontAssets.MouseText.Value, versionNumber, new Vector2(origin2.X + (float)num108 + 10f, (float)screenHeight - origin2.Y + (float)num109 - 2f), color12, 0f, origin2, 1f, SpriteEffects.None, 0f);
-+					spriteBatch.DrawString(FontAssets.MouseText.Value, drawVersion, new Vector2(origin2.X + num108 + 10f, screenHeight - origin2.Y + num109 - 2f), color12, 0f, origin2, 1f, SpriteEffects.None, 0f);
-+					if (num107 == 4)
-+						color12 = new Microsoft.Xna.Framework.Color(127, 191, 191, 76);
-+
-+					if (showPatreon) {
-+						var font = FontAssets.MouseText.Value;
-+						origin2 = font.MeasureString(supportMessage);
-+						Vector2 urlSize = font.MeasureString(patreonShortURL);
-+						spriteBatch.DrawString(font, patreonShortURL, new Vector2(origin2.X + num108 + 10f, screenHeight - origin2.Y + num109 - 2f), color12, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-+						if (num107 == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)origin2.X + 10, screenHeight - (int)urlSize.Y - 2, (int)urlSize.X, (int)origin2.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && hasFocus) {
-+							SoundEngine.PlaySound(SoundID.MenuOpen);
-+							Utils.OpenToURL("https://www.patreon.com/tModLoader");
-+						}
-+					}
- 				}
- 			}
- 
-@@ -39131,6 +_,21 @@
+@@ -39560,6 +_,21 @@
  			else
  				mouseRightRelease = true;
  
@@ -3542,7 +3573,108 @@
  			if (menuMode == num)
  				GamepadMainMenuHandler.LastDrew = num;
  		}
-@@ -39226,6 +_,10 @@
+@@ -39596,17 +_,21 @@
+ 		}
+ 
+ 		private void OnSubmitServerPassword() {
+-			string str = "-autoshutdown -password \"" + ConvertToSafeArgument(Netplay.ServerPassword) + "\" -lang " + Language.ActiveCulture.LegacyId;
++			string str = "tModLoader.dll -server " + "-autoshutdown -password \"" + ConvertToSafeArgument(Netplay.ServerPassword) + "\" -lang " + Language.ActiveCulture.LegacyId;
+ #if LINUX
+ 			str += IntPtr.Size == 8 ? " -x64": " -x86";
+ #endif
+ 			str = ((!ActiveWorldFileData.IsCloudSave) ? (str + SanitizePathArgument("world", worldPathName)) : (str + SanitizePathArgument("cloudworld", worldPathName)));
+ 			str = str + " -worldrollbackstokeep " + WorldRollingBackupsCountToKeep;
++			str += $@" -modpath ""{ModOrganizer.modPath}""";
++			if (showServerConsole)
++			str += " -showserverconsole";
++
+ 			tServer = new Process();
+ #if WINDOWS
+-			tServer.StartInfo.FileName = "TerrariaServer.exe";
++			tServer.StartInfo.FileName = "tModLoaderServer.exe";
+ #else
+-			tServer.StartInfo.FileName = "TerrariaServer";
++			tServer.StartInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
+ #endif
+ 			tServer.StartInfo.Arguments = str;
+ 			if (libPath != "") {
+@@ -39614,8 +_,14 @@
+ 				startInfo.Arguments = startInfo.Arguments + " -loadlib " + libPath;
+ 			}
+ 
++			/*
+ 			tServer.StartInfo.UseShellExecute = false;
+ 			tServer.StartInfo.CreateNoWindow = true;
++			*/
++			tServer.StartInfo.UseShellExecute = true;
++			if (!showServerConsole)
++				tServer.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
++
+ 			if (SocialAPI.Network != null)
+ 				SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
+ 			else
+@@ -39673,7 +_,11 @@
+ 		}
+ 
+ 		private static void DrawVersionNumber(Microsoft.Xna.Framework.Color menuColor, float upBump) {
+-			string text = versionNumber;
++			string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
++			string patreonShortURL = @"patreon.com/tModLoader";
++			bool showPatreon = !Steam.IsSteamApp;
++			string text = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
++
+ 			Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);
+ 			origin.X *= 0.5f;
+ 			origin.Y *= 0.5f;
+@@ -39702,7 +_,47 @@
+ 					num2 = 2;
+ 
+ 				spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(origin.X + (float)num + 10f, (float)screenHeight - origin.Y + (float)num2 - 2f - upBump), color, 0f, origin, 1f, SpriteEffects.None, 0f);
++
++				// Developer mode button.
++				if (menuMode == 0 && !ModCompile.DeveloperMode) {
++					const string DeveloperModeText = "Enable Developer Mode";
++
++					// measure and draw text from bottom right
++					var textSize = FontAssets.MouseText.Value.MeasureString(DeveloperModeText);
++					var pos = new Vector2(screenWidth - 10f + num, screenHeight - 2f + num2);
++					var d_color = color;
++
++					// final draw
++					if (i == 4) {
++						var rect = new Rectangle((int)(pos.X - textSize.X), (int)(pos.Y - textSize.Y), (int)textSize.X, (int)textSize.Y);
++						bool mouseover = rect.Contains(mouseX, mouseY);
++						d_color = mouseover ? highVersionColor : new Color(120, 120, 120, 76);
++
++						if (mouseover && mouseLeftRelease && mouseLeft) {
++							SoundEngine.PlaySound(SoundID.MenuOpen);
++							menuMode = Interface.modSourcesID;
++						}
++					}
++
++					spriteBatch.DrawString(FontAssets.MouseText.Value, DeveloperModeText, pos, d_color, 0f, textSize, 1f, SpriteEffects.None, 0f);
++				}
++
++				// TML Patreon.
++				if (showPatreon) {
++					var font = FontAssets.MouseText.Value;
++					var patreonOrigin = font.MeasureString(supportMessage);
++					Vector2 urlSize = font.MeasureString(patreonShortURL);
++
++					spriteBatch.DrawString(font, patreonShortURL, new Vector2(patreonOrigin.X + num + 10f, screenHeight - patreonOrigin.Y + num2 - 2f - (int)upBump), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
++
++					if (i == 4 && mouseLeftRelease && mouseLeft && new Microsoft.Xna.Framework.Rectangle((int)patreonOrigin.X + 10, screenHeight - (int)urlSize.Y - 2 - (int)upBump, (int)urlSize.X, (int)patreonOrigin.Y).Contains(new Microsoft.Xna.Framework.Point(mouseX, mouseY)) && hasFocus) {
++						SoundEngine.PlaySound(SoundID.MenuOpen);
++						Utils.OpenToURL("https://www.patreon.com/tModLoader");
++					}
++				}
+ 			}
++
++			// End of DrawVersionNumber
+ 		}
+ 
+ 		private static void ClearVisualPostProcessEffects() {
+@@ -39799,6 +_,10 @@
  			CreditsRollEvent.Reset();
  			maxRaining = 0f;
  			raining = false;
@@ -3553,7 +3685,7 @@
  		}
  
  		private static void PostDrawMenu(Microsoft.Xna.Framework.Point screenSizeCache, Microsoft.Xna.Framework.Point screenSizeCacheAfterScaling) {
-@@ -39695,9 +_,16 @@
+@@ -40268,9 +_,16 @@
  			float value3 = (float)((double)(screenPosition.Y - (float)(screenHeight / 2) + 200f) - rockLayer * 16.0) / 300f;
  			value3 = MathHelper.Clamp(value3, 0f, 1f);
  			int num7 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
@@ -3570,7 +3702,7 @@
  			if (SceneMetrics.SnowTileCount > SceneMetrics.SnowTileThreshold && (screenPosition.Y + (float)screenHeight + 1200f) / 16f < (float)(maxTilesY - 250))
  				num8 = 1;
  
-@@ -39711,6 +_,10 @@
+@@ -40284,6 +_,10 @@
  				}
  			}
  
@@ -3581,7 +3713,7 @@
  			if (WorldGen.oceanDepths((int)(screenPosition.X + (float)(screenHeight / 2)) / 16, (int)(screenPosition.Y + (float)(screenHeight / 2)) / 16)) {
  				num8 = (player[myPlayer].ZoneCorrupt ? 19 : (player[myPlayer].ZoneCrimson ? 21 : ((!player[myPlayer].ZoneHallow) ? 18 : 20)));
  			}
-@@ -39737,6 +_,16 @@
+@@ -40310,6 +_,16 @@
  			if (SceneMetrics.MushroomTileCount > SceneMetrics.MushroomTileMax)
  				num8 = 2;
  
@@ -3598,7 +3730,7 @@
  			if (num8 != undergroundBackground) {
  				oldUndergroundBackground = undergroundBackground;
  				undergroundBackground = num8;
-@@ -39942,6 +_,7 @@
+@@ -40515,6 +_,7 @@
  					array3[5] = 127;
  
  				array3[6] = 185 + hellBackStyle;
@@ -3606,7 +3738,7 @@
  				LoadBackground(array3[0]);
  				LoadBackground(array3[1]);
  				LoadBackground(array3[2]);
-@@ -42163,8 +_,22 @@
+@@ -42736,8 +_,22 @@
  				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise);
  				flag = true;
  				DrawMapFullscreenBackground(screenPosition, screenWidth, screenHeight);
@@ -3629,7 +3761,7 @@
  				if (mouseLeft && mouseLeftRelease) {
  					double totalSeconds = gameTime.TotalGameTime.TotalSeconds;
  					if (totalSeconds - _lastPingMouseDownTime < 0.5 && Vector2.Distance(MouseScreen, _lastPingMousePosition) < 2f)
-@@ -42278,7 +_,7 @@
+@@ -42849,7 +_,7 @@
  			float num40 = (float)textureMaxHeight * num5;
  			float num41 = num;
  			float num42 = 0f;
@@ -3638,7 +3770,7 @@
  				if (!((float)((k + 1) * textureMaxWidth) > num7) || !((float)(k * textureMaxWidth) < num7 + num9))
  					continue;
  
-@@ -42667,6 +_,7 @@
+@@ -43238,6 +_,7 @@
  						}
  					}
  					else if (type >= num99 && type < num99 + num100) {
@@ -3646,7 +3778,7 @@
  						Tile tile5 = Main.tile[num91, num92];
  						if (tile5 != null) {
  							int num109 = num92;
-@@ -42680,6 +_,7 @@
+@@ -43251,6 +_,7 @@
  					}
  					else {
  						text = Lang.GetMapObjectName(type);
@@ -3654,7 +3786,7 @@
  					}
  				}
  
-@@ -42845,6 +_,7 @@
+@@ -43416,6 +_,7 @@
  				}
  
  				spriteBatch.Draw(TextureAssets.MapIcon[num138].Value, new Vector2(num136, num137), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.MapIcon[num138].Width(), TextureAssets.MapIcon[num138].Height()), new Microsoft.Xna.Framework.Color(num139, num139, num139, num139), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
@@ -3662,7 +3794,7 @@
  				DrawCursor(DrawThickCursor());
  			}
  
-@@ -42877,6 +_,11 @@
+@@ -43448,6 +_,11 @@
  		}
  
  		private static void DrawMapFullscreenBackground(Vector2 screenPosition, int screenWidth, int screenHeight) {
@@ -3674,7 +3806,7 @@
  			Asset<Texture2D> asset = TextureAssets.MapBGs[0];
  			int num = -1;
  			Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
-@@ -43581,6 +_,10 @@
+@@ -44152,6 +_,10 @@
  						return 12;
  					return 6;
  				default:
@@ -3685,7 +3817,7 @@
  					if ((double)(screenPosition.Y / 16f) > rockLayer + 40.0) {
  						if (player[myPlayer].ZoneGlowshroom)
  							return 7;
-@@ -43612,6 +_,7 @@
+@@ -44183,6 +_,7 @@
  							liquidAlpha[i] = Math.Min(liquidAlpha[i] + 0.2f, 1f);
  					}
  				}
@@ -3693,11 +3825,11 @@
  			}
  
  			if (!drawToScreen && !isBackground) {
-@@ -43637,9 +_,12 @@
+@@ -44208,9 +_,12 @@
  			}
  
  			DrawWater(isBackground, waterStyle, flag ? liquidAlpha[waterStyle] : 1f);
-+			
++
 +		postWaterDraw:
 +			LoaderManager.Get<WaterStylesLoader>().DrawWatersToScreen(isBackground);
  		}
@@ -3707,7 +3839,7 @@
  			if (!Lighting.NotRetro) {
  				oldDrawWater(bg, Style, Alpha);
  				return;
-@@ -44801,8 +_,8 @@
+@@ -45374,8 +_,8 @@
  						float num5 = rand.Next((int)num3, (int)num4);
  						num5 *= (1f - maxRaining + 1f) / 2f;
  						num5 *= (1f - windSpeedTarget + 1f) / 2f;
@@ -3718,7 +3850,7 @@
  							NewLightning();
  					}
  					else if ((double)GraveyardVisualIntensity >= 0.9 && rand.Next(7200) == 0) {
-@@ -44954,7 +_,9 @@
+@@ -45527,7 +_,9 @@
  		}
  
  		public void LoadBackground(int i) {
@@ -3729,7 +3861,7 @@
  				Assets.Request<Texture2D>(TextureAssets.Background[i].Name);
  				backgroundWidth[i] = TextureAssets.Background[i].Width();
  				backgroundHeight[i] = TextureAssets.Background[i].Height();
-@@ -45167,12 +_,12 @@
+@@ -45745,12 +_,12 @@
  			if (!WorldGen.drunkWorldGen && !mapFullscreen && (double)(screenPosition.Y / 16f) <= worldSurface + 10.0) {
  				if (BackgroundEnabled) {
  					if (cloudBGActive > 0f) {
@@ -3744,7 +3876,7 @@
  						if (cloudBGAlpha < 0f)
  							cloudBGAlpha = 0f;
  					}
-@@ -45187,7 +_,7 @@
+@@ -45765,7 +_,7 @@
  						bgScale = 1.65f;
  						bgParallax = 0.09000000357627869;
  						if (base.IsActive && !gamePaused)
@@ -3753,7 +3885,7 @@
  
  						if (cloudBGX[0] > (float)backgroundWidth[cloudBG[0]] * bgScale)
  							cloudBGX[0] -= (float)backgroundWidth[cloudBG[0]] * bgScale;
-@@ -45217,7 +_,7 @@
+@@ -45795,7 +_,7 @@
  						bgScale = 1.85f;
  						bgParallax = 0.12;
  						if (base.IsActive && !gamePaused)
@@ -3762,7 +3894,7 @@
  
  						if (cloudBGX[1] > (float)backgroundWidth[cloudBG[1]] * bgScale)
  							cloudBGX[1] -= (float)backgroundWidth[cloudBG[1]] * bgScale;
-@@ -45424,6 +_,10 @@
+@@ -46002,6 +_,10 @@
  							DrawSurfaceBG_Mushroom(num4, num5, num6, bgTexIndexes7);
  							DrawSurfaceBG_DrawChangeOverlay(11);
  						}
@@ -3773,7 +3905,7 @@
  					}
  				}
  			}
-@@ -45588,6 +_,7 @@
+@@ -46166,6 +_,7 @@
  				DrawSurfaceBG_DrawBackMountainsLayer(246);
  			}
  
@@ -3781,7 +3913,7 @@
  			SkyManager.Instance.DrawToDepth(spriteBatch, 5f);
  		}
  
-@@ -45658,6 +_,8 @@
+@@ -46236,6 +_,8 @@
  				if (treeMntBGSet4[1] > -1)
  					DrawSurfaceBG_DrawBackMountainsLayer(treeMntBGSet4[1]);
  			}
@@ -3790,7 +3922,7 @@
  		}
  
  		private void UpdateOceanWaterLineForAmbience() {
-@@ -46848,7 +_,7 @@
+@@ -47426,7 +_,7 @@
  
  				bool flag2 = false;
  				bool flag3 = false;
@@ -3799,7 +3931,7 @@
  					flag2 = false;
  				}
  				else if (tileSolid[tile[x, y].type] && !tileSolidTop[tile[x, y].type]) {
-@@ -46913,6 +_,7 @@
+@@ -47491,6 +_,7 @@
  		}
  
  		protected override void Draw(GameTime gameTime) {
@@ -3807,7 +3939,7 @@
  			if (!_isDrawingOrUpdating && IsGraphicsDeviceAvailable) {
  				_isDrawingOrUpdating = true;
  				EnsureRenderTargetContent();
-@@ -46921,7 +_,13 @@
+@@ -47499,7 +_,13 @@
  					Main.OnPostDraw(gameTime);
  
  				Assets.TransferCompletedAssets();
@@ -3821,7 +3953,32 @@
  			}
  		}
  
-@@ -47157,10 +_,13 @@
+@@ -47628,19 +_,22 @@
+ 					renderCount = 99;
+ 				}
+ 				else {
++					//TML: RenderTiles() is quite slow. ~30ms at peak; doesn't change with lighting modes
+ 					if (renderCount == 3) {
+ 						RenderTiles();
+ 						sceneTilePos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneTilePos.Y = screenPosition.Y - (float)offScreenRange;
+ 					}
+ 
+-					if (renderCount == 3) {
++					//TML: Remapped from 3 to 2 to flatten per frame load for colour lighting ( ~5ms peak).
++					if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 2 : 3)) {
+ 						RenderTiles2();
+ 						sceneTile2Pos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneTile2Pos.Y = screenPosition.Y - (float)offScreenRange;
+ 					}
+ 
+-					if (renderCount == 3) {
++					//TML: Remapped from 3 to 0 to flatten per frame load for colour lighting ( ~15ms peak).
++					if (renderCount == (Lighting.LegacyEngine.Mode == 0 ? 0 : 3)) {
+ 						RenderWalls();
+ 						sceneWallPos.X = screenPosition.X - (float)offScreenRange;
+ 						sceneWallPos.Y = screenPosition.Y - (float)offScreenRange;
+@@ -47735,10 +_,13 @@
  			if (gameMenu || netMode == 2)
  				bgTopY = -200;
  
@@ -3835,26 +3992,26 @@
  			float num4 = 0.0005f * (float)num3;
  			if (gameMenu)
  				num4 *= 20f;
-@@ -47227,8 +_,8 @@
+@@ -47805,13 +_,16 @@
  			UpdateAtmosphereTransparencyToSkyColor();
  			base.GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
  			base.Draw(gameTime);
 -			float val = (float)screenWidth / MinimumZoomComparerX;
 -			float val2 = (float)screenHeight / MinimumZoomComparerY;
-+			float val = screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerX : 8192f);
-+			float val2 = screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? MinimumZoomComparerY : 8192f);
++			float val = screenWidth / (ModLoader.ModLoader.removeForcedMinimumZoom ? 8192f : MinimumZoomComparerX);
++			float val2 = screenHeight / (ModLoader.ModLoader.removeForcedMinimumZoom ? 8192f : MinimumZoomComparerY);
  			ForcedMinimumZoom = Math.Max(Math.Max(1f, val), val2);
  			GameViewMatrix.Effects = ((!gameMenu && player[myPlayer].gravDir != 1f) ? SpriteEffects.FlipVertically : SpriteEffects.None);
  			BackgroundViewMatrix.Effects = GameViewMatrix.Effects;
-@@ -47239,6 +_,7 @@
- 			else
- 				Rasterizer = RasterizerState.CullClockwise;
- 
+ 			BackgroundViewMatrix.Zoom = new Vector2(ForcedMinimumZoom);
+ 			GameViewMatrix.Zoom = new Vector2(ForcedMinimumZoom * MathHelper.Clamp(GameZoomTarget, 1f, 2f));
++
 +			SystemLoader.ModifyTransformMatrix(ref GameViewMatrix);
- 			bool flag = !drawToScreen && netMode != 2 && !gameMenu && !mapFullscreen && Lighting.NotRetro && Terraria.Graphics.Effects.Filters.Scene.CanCapture();
- 			if (flag)
- 				Terraria.Graphics.Effects.Filters.Scene.BeginCapture(screenTarget, Microsoft.Xna.Framework.Color.Black);
-@@ -47298,7 +_,7 @@
++
+ 			if (gameMenu || player[myPlayer].gravDir == 1f)
+ 				Rasterizer = RasterizerState.CullCounterClockwise;
+ 			else
+@@ -47898,7 +_,7 @@
  			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, GameViewMatrix.TransformationMatrix);
  			DrawBackgroundBlackFill();
  			spriteBatch.End();
@@ -3863,7 +4020,7 @@
  			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Rasterizer, null, UIScaleMatrix);
  			if (gameMenu || netMode == 2) {
  				spriteBatch.End();
-@@ -47394,6 +_,7 @@
+@@ -47997,6 +_,7 @@
  
  			TimeLogger.DetailedDrawReset();
  			spriteBatch.End();
@@ -3871,16 +4028,16 @@
  			TimeLogger.DetailedDrawTime(35);
  			HasInteractibleObjectThatIsNotATile = false;
  			SortDrawCacheWorms();
-@@ -47465,7 +_,7 @@
+@@ -48068,7 +_,7 @@
  			ScreenObstruction.Draw(spriteBatch);
  			TimeLogger.DetailedDrawReset();
  			spriteBatch.End();
 -			Overlays.Scene.Draw(spriteBatch, RenderLayers.All);
 +			Overlays.Scene.Draw(spriteBatch, RenderLayers.All, true);
- 			if (flag)
+ 			if (flag2)
  				Terraria.Graphics.Effects.Filters.Scene.EndCapture(null, screenTarget, screenTargetSwap, Microsoft.Xna.Framework.Color.Black);
  
-@@ -47688,6 +_,21 @@
+@@ -48193,6 +_,21 @@
  			else
  				mouseRightRelease = true;
  
@@ -3902,7 +4059,7 @@
  			if (!PlayerInput.Triggers.Current.MouseRight && !PlayerInput.Triggers.Current.MouseLeft && !preventStackSplitReset)
  				stackSplit = 0;
  
-@@ -47764,6 +_,7 @@
+@@ -48371,6 +_,7 @@
  						else if (player.scope)
  							num5 = 0.5f;
  
@@ -3910,7 +4067,7 @@
  						Vector2 vector3 = (MouseScreen - new Vector2(screenWidth, screenHeight) / 2f) / (new Vector2(screenWidth, screenHeight) / 2f);
  						num4 = 48f;
  						if (vector3 != Vector2.Zero && num5 != -1f) {
-@@ -47789,8 +_,10 @@
+@@ -48396,8 +_,10 @@
  					if (num7 < 0)
  						num7 = 0;
  
@@ -3923,7 +4080,7 @@
  					flag = true;
  				}
  				else if (Main.player[myPlayer].inventory[Main.player[myPlayer].selectedItem].type == 1254 && mouseRight) {
-@@ -47808,8 +_,10 @@
+@@ -48415,8 +_,10 @@
  					if (num9 < 0)
  						num9 = 0;
  
@@ -3936,7 +4093,7 @@
  					flag = true;
  				}
  				else if (Main.player[myPlayer].inventory[Main.player[myPlayer].selectedItem].type == 1299 && Main.player[myPlayer].selectedItem != 58) {
-@@ -47827,8 +_,10 @@
+@@ -48434,8 +_,10 @@
  					if (num11 < 0)
  						num11 = 0;
  
@@ -3949,7 +4106,7 @@
  					flag = true;
  				}
  				else if (Main.player[myPlayer].scope && mouseRight) {
-@@ -47846,8 +_,32 @@
+@@ -48453,8 +_,32 @@
  					if (num13 < 0)
  						num13 = 0;
  
@@ -3984,8 +4141,8 @@
  					flag = true;
  				}
  			}
-@@ -47893,16 +_,26 @@
- 
+@@ -48501,16 +_,26 @@
+ 			instance.CameraModifiers.ApplyTo(ref screenPosition);
  			screenPosition.X = (int)screenPosition.X;
  			screenPosition.Y = (int)screenPosition.Y;
 +			PlayerLoader.ModifyScreenPosition(LocalPlayer);
@@ -4014,11 +4171,11 @@
  			int num2 = sceneArea.bgTopY;
  			int num3 = (int)(time / 54000.0 * (double)(sceneArea.totalWidth + (float)(value.Width * 2))) - value.Width;
  			int num4 = 0;
-@@ -47976,7 +_,11 @@
+@@ -48584,7 +_,11 @@
  
  				moonColor *= num13;
  				Vector2 position2 = new Vector2(num6, num7 + moonModY) + sceneArea.SceneLocalScreenPositionOffset;
-+				if (menu != null) {
++				if (Main.gameMenu && menu != null) {
 +					bool needsVanillaFraming = value2 == TextureAssets.Moon[num].Value;
 +					spriteBatch.Draw(value2, position2, new Rectangle(0, needsVanillaFraming ? TextureAssets.Moon[num].Width() * moonPhase : 0, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width, needsVanillaFraming ? TextureAssets.Moon[num].Width() : value2.Width), moonColor, num9, new Vector2(needsVanillaFraming ? TextureAssets.Moon[num].Width() / 2 : value2.Width / 2), num8, SpriteEffects.None, 0f);
 +				}
@@ -4027,7 +4184,7 @@
  					spriteBatch.Draw(TextureAssets.SmileyMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.SmileyMoon.Width(), TextureAssets.SmileyMoon.Height()), moonColor, num9 / 2f + (float)Math.PI, new Vector2(TextureAssets.SmileyMoon.Width() / 2, TextureAssets.SmileyMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  				else if (pumpkinMoon)
  					spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
-@@ -47985,7 +_,6 @@
+@@ -48593,7 +_,6 @@
  				else
  					spriteBatch.Draw(TextureAssets.Moon[num].Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.Moon[num].Width() * moonPhase, TextureAssets.Moon[num].Width(), TextureAssets.Moon[num].Width()), moonColor, num9, new Vector2(TextureAssets.Moon[num].Width() / 2, TextureAssets.Moon[num].Width() / 2), num8, SpriteEffects.None, 0f);
  			}
@@ -4035,7 +4192,7 @@
  			Microsoft.Xna.Framework.Rectangle value3 = dayTime ? new Microsoft.Xna.Framework.Rectangle((int)((double)num3 - (double)TextureAssets.Sun.Width() * 0.5 * (double)num5), (int)((double)num4 - (double)TextureAssets.Sun.Height() * 0.5 * (double)num5 + (double)sunModY), (int)((float)TextureAssets.Sun.Width() * num5), (int)((float)TextureAssets.Sun.Width() * num5)) : new Microsoft.Xna.Framework.Rectangle((int)((double)num6 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8), (int)((double)num7 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8 + (double)moonModY), (int)((float)TextureAssets.Moon[num].Width() * num8), (int)((float)TextureAssets.Moon[num].Width() * num8));
  			value3.Offset((int)sceneArea.SceneLocalScreenPositionOffset.X, (int)sceneArea.SceneLocalScreenPositionOffset.Y);
  			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(mouseX, mouseY, 1, 1);
-@@ -48070,7 +_,7 @@
+@@ -48678,7 +_,7 @@
  				Vector2 origin = value.Size() / 2f;
  				if (star.falling) {
  					star.fadeIn = 0f;
@@ -4044,7 +4201,7 @@
  					float num8 = 30f;
  					if ((float)num7 > num8)
  						num7 = (int)num8;
-@@ -48096,6 +_,8 @@
+@@ -48704,6 +_,8 @@
  			tileColor.G = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.G * 7) / 10);
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);
  			tileColor = SkyManager.Instance.ProcessTileColor(tileColor);
@@ -4053,7 +4210,18 @@
  		}
  
  		private static void UpdateAtmosphereTransparencyToSkyColor() {
-@@ -48838,6 +_,8 @@
+@@ -49446,6 +_,10 @@
+ 				preferredBGStyleForPlayer = bgStyle;
+ 				if (WorldGen.drunkWorldGen)
+ 					bgStyle = 9;
++
++				var menuBackgroundStyle = MenuLoader.CurrentMenu.MenuBackgroundStyle;
++				if (menuBackgroundStyle != null)
++					bgStyle = menuBackgroundStyle.Slot;
+ 			}
+ 
+ 			if (instantBGTransitionCounter > 0) {
+@@ -49456,6 +_,8 @@
  
  			UpdateBGVisibility_BackLayer(null, null);
  			UpdateBGVisibility_FrontLayer(null, null);
@@ -4062,7 +4230,7 @@
  			try {
  				DrawSurfaceBG();
  				if (BackgroundEnabled)
-@@ -48923,6 +_,10 @@
+@@ -49541,6 +_,10 @@
  					DrawBG_ModifyBGFarBackLayerAlpha(value, null, transitionAmountOverride);
  					break;
  				default:
@@ -4073,7 +4241,7 @@
  					DrawBG_ModifyBGFarBackLayerAlpha(0, null, transitionAmountOverride);
  					break;
  			}
-@@ -48931,7 +_,12 @@
+@@ -49549,7 +_,12 @@
  		public static int GetPreferredBGStyleForPlayer() {
  			int num = bgStyle;
  			int num2 = (int)((screenPosition.X + (float)(screenWidth / 2)) / 16f);
@@ -4087,7 +4255,7 @@
  				num = (player[myPlayer].ZoneHallow ? 6 : (player[myPlayer].ZoneCorrupt ? ((SceneMetrics.BloodTileCount <= SceneMetrics.EvilTileCount) ? 1 : 8) : (player[myPlayer].ZoneCrimson ? 8 : ((SceneMetrics.HoneyBlockCount <= 400) ? 4 : 3))));
  			}
  			else if (player[myPlayer].ZoneGlowshroom) {
-@@ -48949,12 +_,18 @@
+@@ -49567,12 +_,18 @@
  			else if (player[myPlayer].ZoneCrimson) {
  				num = 8;
  			}
@@ -4106,7 +4274,7 @@
  			else {
  				num = 0;
  				if (num2 >= treeX[0]) {
-@@ -48964,6 +_,12 @@
+@@ -49582,6 +_,12 @@
  						num = 11;
  					else if (WorldGen.treeBG1 != WorldGen.treeBG4)
  						num = 12;
@@ -4119,7 +4287,7 @@
  				}
  			}
  
-@@ -49023,6 +_,13 @@
+@@ -49641,6 +_,13 @@
  		}
  
  		private static void UpdateInvasion() {
@@ -4133,7 +4301,7 @@
  			if (invasionType <= 0)
  				return;
  
-@@ -49055,9 +_,14 @@
+@@ -49673,9 +_,14 @@
  			if (invasionX == (double)spawnTileX)
  				return;
  
@@ -4148,7 +4316,7 @@
  
  			if (invasionX > (double)spawnTileX) {
  				invasionX -= num;
-@@ -49263,6 +_,11 @@
+@@ -49881,6 +_,11 @@
  			}
  		}
  
@@ -4160,7 +4328,28 @@
  		public static void NewText(string newText, byte R = byte.MaxValue, byte G = byte.MaxValue, byte B = byte.MaxValue) {
  			chatMonitor.NewText(newText, R, G, B);
  			SoundEngine.PlaySound(12);
-@@ -49390,7 +_,7 @@
+@@ -49891,12 +_,20 @@
+ 			SoundEngine.PlaySound(12);
+ 		}
+ 
++		/// <summary>
++		/// Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
++		/// <br>You can also call this on the client to update visuals immediately, assuming it was called serverside aswell (Journey Mode rain slider does this).</br>
++		/// </summary>
+ 		public static void StopRain() {
+ 			rainTime = 0;
+ 			raining = false;
+ 			maxRaining = 0f;
+ 		}
+ 
++		/// <summary>
++		/// Starts rain for a random amount of time. Should be called on the server (netMode != client) - vanilla syncs it using <see cref="SyncRain"/>.
++		/// <br>You can also call this on the client to update visuals immediately, assuming it was/will be called serverside aswell (Journey Mode rain slider does this).</br>
++		/// </summary>
+ 		public static void StartRain() {
+ 			int num = 86400;
+ 			int num2 = num / 24;
+@@ -50008,7 +_,7 @@
  			}
  
  			if (ladyBugRainBoost > 0)
@@ -4169,7 +4358,7 @@
  
  			if (pumpkinMoon) {
  				bloodMoon = false;
-@@ -49402,12 +_,12 @@
+@@ -50020,12 +_,12 @@
  
  			if ((netMode != 1 && !gameMenu) || netMode == 2) {
  				if (slimeRainTime > 0.0) {
@@ -4184,7 +4373,7 @@
  					if (slimeRainTime > 0.0)
  						slimeRainTime = 0.0;
  				}
-@@ -49418,31 +_,30 @@
+@@ -50036,31 +_,30 @@
  							StopRain();
  						}
  						else {
@@ -4225,24 +4414,22 @@
  						if (!NPC.downedSlimeKing)
  							num3 /= 2;
  
-@@ -49522,10 +_,15 @@
+@@ -50141,9 +_,14 @@
  						WorldGen.UnspawnTravelNPC();
  				}
  				else if (!fastForwardTime && dayTime && time < 27000.0) {
 +					/*
- 					int num5 = dayRate;
- 					if (num5 < 1)
- 						num5 = 1;
--
+ 					int num6 = dayRate;
+ 					if (num6 < 1)
+ 						num6 = 1;
 +					*/
-+					double num5 = dayRate;
-+					if (num5 < 0)
-+						num5 = 0;
-+					
- 					int num6 = (int)(27000.0 / (double)num5);
- 					num6 *= 4;
- 					if (rand.Next(num6) == 0) {
-@@ -49871,6 +_,11 @@
++					double num6 = dayRate;
++					if (num6 < 0)
++						num6 = 0;
+ 
+ 					int num7 = (int)(27000.0 / (double)num6);
+ 					num7 *= 4;
+@@ -50505,6 +_,11 @@
  		}
  
  		public static BestiaryUnlockProgressReport GetBestiaryProgressReport() {
@@ -4254,7 +4441,7 @@
  			float num = 0f;
  			int num2 = 0;
  			List<BestiaryEntry> entries = BestiaryDB.Entries;
-@@ -49887,7 +_,7 @@
+@@ -50521,7 +_,7 @@
  		}
  
  		private static void UpdateTime_SpawnTownNPCs() {
@@ -4263,16 +4450,16 @@
  			if (netMode == 1 || worldUpdateRate <= 0)
  				return;
  
-@@ -49902,7 +_,7 @@
+@@ -50536,7 +_,7 @@
  					num++;
  			}
  
--			for (int j = 0; j < 668; j++) {
+-			for (int j = 0; j < 670; j++) {
 +			for (int j = 0; j < townNPCCanSpawn.Length; j++) {
  				townNPCCanSpawn[j] = false;
  			}
  
-@@ -50033,6 +_,7 @@
+@@ -50667,6 +_,7 @@
  					if (npc[k].type == 663)
  						num31++;
  
@@ -4280,7 +4467,7 @@
  					num32++;
  				}
  			}
-@@ -50056,6 +_,7 @@
+@@ -50690,6 +_,7 @@
  						continue;
  
  					if (num33 < 2000000000) {
@@ -4288,7 +4475,7 @@
  						if (player[l].inventory[m].type == 71)
  							num33 += player[l].inventory[m].stack;
  
-@@ -50284,6 +_,9 @@
+@@ -50918,6 +_,9 @@
  				num37 = 663;
  
  			WorldGen.prioritizedTownNPCType = num37;
@@ -4298,7 +4485,17 @@
  		}
  
  		public static int DamageVar(float dmg, float luck = 0f) {
-@@ -50438,7 +_,11 @@
+@@ -51027,7 +_,8 @@
+ 		}
+ 
+ 		public static void SetFullScreen(bool fullscreen) {
+-			SetDisplayMode(PendingResolutionWidth, PendingResolutionHeight, fullscreen);
++			// TML: Make the fullscreen reset to windowed display borders when downsizing
++			SetDisplayMode(PendingResolutionWidth, BorderedHeight(PendingResolutionHeight, fullscreen), fullscreen);
+ 		}
+ 
+ 		public static void SetResolution(int width, int height) {
+@@ -51082,7 +_,11 @@
  					width = (int)(num2 * (float)height);
  				}
  
@@ -4306,12 +4503,12 @@
 +				if (!Platform.IsWindows)
 -				PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
 +					PlayerInput.RawMouseScale = new Vector2((float)width / (float)instance.Window.ClientBounds.Width, (float)height / (float)instance.Window.ClientBounds.Height);
-+#endif 
++#endif
 +
  				if (!graphics.IsFullScreen) {
  					num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
  					num4 = Math.Max(graphics.PreferredBackBufferHeight, graphics.GraphicsDevice.Viewport.Height);
-@@ -50492,6 +_,7 @@
+@@ -51136,6 +_,7 @@
  				graphics.ToggleFullScreen();
  			}
  
@@ -4319,7 +4516,7 @@
  			if (width != num3 || height != num4 || flag2) {
  				mapTime = 0;
  				if (gamePaused)
-@@ -50501,7 +_,9 @@
+@@ -51145,7 +_,9 @@
  				screenHeight = height;
  				graphics.PreferredBackBufferWidth = screenWidth;
  				graphics.PreferredBackBufferHeight = screenHeight;

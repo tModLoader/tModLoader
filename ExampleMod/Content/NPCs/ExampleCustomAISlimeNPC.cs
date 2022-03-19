@@ -32,7 +32,7 @@ namespace ExampleMod.Content.NPCs
 			Flutter2,
 			Flutter3
 		}
-		
+
 		// These are reference properties. One, for example, lets us write AI_State as if it's NPC.ai[0], essentially giving the index zero our own name.
 		// Here they help to keep our AI code clear of clutter. Without them, every instance of "AI_State" in the AI code below would be "npc.ai[0]", which is quite hard to read.
 		// This is all to just make beautiful, manageable, and clean code.
@@ -44,7 +44,7 @@ namespace ExampleMod.Content.NPCs
 			// DisplayName.SetDefault("Flutter Slime"); // Automatic from .lang files
 			Main.npcFrameCount[NPC.type] = 6; // make sure to set this for your modnpcs.
 
-			//Specify the debuffs it is immune to
+			// Specify the debuffs it is immune to
 			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {
 				SpecificallyImmuneTo = new int[] {
 					BuffID.Poisoned // This NPC will be immune to the Poisoned debuff.
@@ -91,7 +91,7 @@ namespace ExampleMod.Content.NPCs
 						AI_State = (float)ActionState.Asleep;
 						AI_Timer = 0;
 					}
-					
+
 					break;
 			}
 		}
@@ -164,7 +164,7 @@ namespace ExampleMod.Content.NPCs
 			if (Main.player[NPC.target].Distance(NPC.Center) < 250f) {
 				// Here we use our Timer to wait .33 seconds before actually jumping. In FindFrame you'll notice AI_Timer also being used to animate the pre-jump crouch
 				AI_Timer++;
-				
+
 				if (AI_Timer >= 20) {
 					AI_State = (float)ActionState.Jump;
 					AI_Timer = 0;
@@ -172,7 +172,7 @@ namespace ExampleMod.Content.NPCs
 			}
 			else {
 				NPC.TargetClosest(true);
-				
+
 				if (!NPC.HasValidTarget || Main.player[NPC.target].Distance(NPC.Center) > 500f) {
 					// Out targeted player seems to have left our range, so we'll go back to sleep.
 					AI_State = (float)ActionState.Asleep;
@@ -183,13 +183,13 @@ namespace ExampleMod.Content.NPCs
 
 		private void Jump() {
 			AI_Timer++;
-			
+
 			if (AI_Timer == 1) {
-				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up. 
+				// We apply an initial velocity the first tick we are in the Jump frame. Remember that -Y is up.
 				NPC.velocity = new Vector2(NPC.direction * 2, -10f);
 			}
 			else if (AI_Timer > 40) {
-				// after .66 seconds, we go to the hover state. // TODO, gravity?
+				// after .66 seconds, we go to the hover state. //TODO, gravity?
 				AI_State = (float)ActionState.Hover;
 				AI_Timer = 0;
 			}
@@ -197,9 +197,9 @@ namespace ExampleMod.Content.NPCs
 
 		private void Hover() {
 			AI_Timer++;
-			
+
 			// Here we make a decision on how long this flutter will last. We check netmode != 1 to prevent Multiplayer Clients from running this code. (similarly, spawning projectiles should also be wrapped like this)
-			// netMode == 0 is SP, netMode == 1 is MP Client, netMode == 2 is MP Server. 
+			// netMode == 0 is SP, netMode == 1 is MP Client, netMode == 2 is MP Server.
 			// Typically in MP, Client and Server maintain the same state by running deterministic code individually. When we want to do something random, we must do that on the server and then inform MP Clients.
 			if (AI_Timer == 1 && Main.netMode != NetmodeID.MultiplayerClient) {
 				// For reference: without proper syncing: https://gfycat.com/BackAnxiousFerret and with proper syncing: https://gfycat.com/TatteredKindlyDalmatian
@@ -212,7 +212,7 @@ namespace ExampleMod.Content.NPCs
 
 			// Here we add a tiny bit of upward velocity to our npc.
 			NPC.velocity += new Vector2(0, -.35f);
-			
+
 			// ... and some additional X velocity when traveling slow.
 			if (Math.Abs(NPC.velocity.X) < 2) {
 				NPC.velocity += new Vector2(NPC.direction * .05f, 0);

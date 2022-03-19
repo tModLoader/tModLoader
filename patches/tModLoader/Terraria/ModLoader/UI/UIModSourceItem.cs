@@ -1,5 +1,7 @@
+using Hjson;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using System;
 using System.Collections.Specialized;
@@ -70,15 +72,23 @@ namespace Terraria.ModLoader.UI
 			Append(buildReloadButton);
 
 			_builtMod = builtMod;
-			if (builtMod != null && builtMod.Enabled) {
+			if (builtMod != null) {
 				var publishButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSPublish"));
 				publishButton.CopyStyle(buildReloadButton);
 				publishButton.Width.Pixels = 100;
 				publishButton.Left.Pixels = 390;
 				publishButton.WithFadedMouseOver();
-				publishButton.OnClick += PublishMod;
-				Append(publishButton);
+
+				if (builtMod.properties.side == ModSide.Server) {
+					publishButton.OnClick += PublishServerSideMod;
+					Append(publishButton);
+				}
+				else if (builtMod.Enabled) {
+					publishButton.OnClick += PublishMod;
+					Append(publishButton);
+				}
 			}
+
 			OnDoubleClick += BuildAndReload;
 
 			string modFolderName = Path.GetFileName(_mod);
@@ -110,10 +120,13 @@ namespace Terraria.ModLoader.UI
 				_upgradePotentialChecked = true;
 				string modFolderName = Path.GetFileName(_mod);
 				string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
+
+				int leftPixels = -26;
+
 				if (!File.Exists(csprojFile) || Interface.createMod.CsprojUpdateNeeded(File.ReadAllText(csprojFile))) {
 					var icon = UICommon.ButtonExclamationTexture;
 					var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
-						Left = { Pixels = -26, Percent = 1f },
+						Left = { Pixels = leftPixels, Percent = 1f },
 						Top = { Pixels = 4 }
 					};
 					upgradeCSProjButton.OnClick += (s, e) => {
@@ -142,6 +155,30 @@ namespace Terraria.ModLoader.UI
 						upgradeCSProjButton.Remove();
 					};
 					Append(upgradeCSProjButton);
+
+					leftPixels -= 26;
+				}
+
+				// Display upgrade .lang files button if any .lang files present
+				//TODO: Make this asynchronous, as this can be quite expensive
+				string[] files = Directory.GetFiles(_mod, "*.lang", SearchOption.AllDirectories);
+
+				if (files.Length > 0) {
+					var icon = UICommon.ButtonExclamationTexture;
+					var upgradeLangFilesButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeLangFiles")) {
+						Left = { Pixels = leftPixels, Percent = 1f },
+						Top = { Pixels = 4 }
+					};
+
+					upgradeLangFilesButton.OnClick += (s, e) => {
+						foreach (string file in files) {
+							LocalizationLoader.UpgradeLangFile(file, modName);
+						}
+
+						upgradeLangFilesButton.Remove();
+					};
+
+					Append(upgradeLangFilesButton);
 				}
 			}
 		}
@@ -212,6 +249,28 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
+		private void PublishServerSideMod(UIMouseEvent evt, UIElement listeningElement) {
+			SoundEngine.PlaySound(10);
+			try {
+				if (!WorkshopHelper.ModManager.SteamUser) {
+					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamPublishingLimit"), Interface.modSourcesID);
+					return;
+				}
+				var p = new ProcessStartInfo() {
+					UseShellExecute = true,
+					FileName = Process.GetCurrentProcess().MainModule.FileName,
+					Arguments = "tModLoader.dll -server -steam -publish " + _builtMod.modFile.path.Remove(_builtMod.modFile.path.LastIndexOf(".tmod"))
+				};
+
+				var pending = Process.Start(p);
+				pending.WaitForExit();
+			}
+			catch (WebException e) {
+				UIModBrowser.LogModBrowserException(e);
+			}
+		}
+
+
 		internal static void PublishModCommandLine(string modName) {
 			try {
 				LocalMod localMod;
@@ -225,9 +284,11 @@ namespace Terraria.ModLoader.UI
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
 				Console.WriteLine(e.ToString());
+				Steamworks.SteamAPI.Shutdown();
 				Environment.Exit(1);
 			}
 			Console.WriteLine("exiting ");
+			Steamworks.SteamAPI.Shutdown();
 			Environment.Exit(0);
 		}
 

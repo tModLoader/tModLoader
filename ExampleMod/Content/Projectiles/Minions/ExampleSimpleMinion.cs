@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -46,6 +47,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			DisplayName.SetDefault("Example Minion Item");
 			Tooltip.SetDefault("Summons an example minion to fight for you");
 
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 		}
@@ -76,15 +78,15 @@ namespace ExampleMod.Content.Projectiles.Minions
 			position = Main.MouseWorld;
 		}
 
-		public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
 			player.AddBuff(Item.buffType, 2);
 
-			//Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
+			// Minions have to be spawned manually, then have originalDamage assigned to the damage of the summon item
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, Main.myPlayer);
 			projectile.originalDamage = Item.damage;
 
-			//Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
+			// Since we spawned the projectile manually already, we do not need the game to spawn it for ourselves anymore, so return false
 			return false;
 		}
 
@@ -97,7 +99,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 		}
 	}
 
-	// This minion shows a few mandatory things that make it behave properly. 
+	// This minion shows a few mandatory things that make it behave properly.
 	// Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
 	// If the player targets a certain NPC with right-click, it will fly through tiles to it
 	// If it isn't attacking, it will float near the player with minimal movement
@@ -110,13 +112,10 @@ namespace ExampleMod.Content.Projectiles.Minions
 			// This is necessary for right-click targeting
 			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
 
-			// These below are needed for a minion
-			// Denotes that this projectile is a pet or minion
-			Main.projPet[Projectile.type] = true;
-			// This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
-			// Don't mistake this with "if this is true, then it will automatically home". It is just for damage reduction for certain NPCs
-			ProjectileID.Sets.CountsAsHoming[Projectile.type] = true;
+			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
+
+			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
+			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
 		}
 
 		public sealed override void SetDefaults() {
@@ -127,7 +126,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 			// These below are needed for a minion weapon
 			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
 			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Summon; //Declares the damage type (needed for it to deal damage)
+			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
 			Projectile.minionSlots = 1f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 		}

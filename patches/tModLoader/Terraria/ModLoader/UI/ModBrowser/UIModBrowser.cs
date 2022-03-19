@@ -13,14 +13,12 @@ using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI.ModBrowser
 {
-	internal partial class UIModBrowser : UIState, IHaveBackButtonCommand 
+	internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		public static bool AvoidGithub;
 		public static bool AvoidImgur;
 		public static bool EarlyAutoUpdate;
 		public static bool PlatformSupportsTls12 => true;
-
-		internal static WorkshopHelper.QueryHelper SteamWorkshop { get; set; }
 
 		public UIModDownloadItem SelectedItem;
 
@@ -38,8 +36,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		private List<string> _specialModPackFilter;
 		private readonly List<string> _missingMods = new List<string>();
 
-		internal readonly List<UIModDownloadItem> Items = new List<UIModDownloadItem>();
-		
+		private readonly List<UIModDownloadItem> _items = new List<UIModDownloadItem>();
 
 		internal bool UpdateNeeded;
 		internal string Filter => FilterTextBox.Text;
@@ -94,7 +91,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private void UpdateAllMods(UIMouseEvent @event, UIElement element) {
 			if (Loading) return;
-			var relevantMods = Items.Where(x => x.HasUpdate && !x.UpdateIsDowngrade).Select(x => x.ModName).ToList();
+			var relevantMods = _items.Where(x => x.ModDownload.HasUpdate && !x.ModDownload.UpdateIsDowngrade).Select(x => x.ModDownload.ModName).ToList();
 			DownloadMods(relevantMods);
 		}
 
@@ -193,26 +190,22 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			UpdateNeeded = false;
 			if (!Loading) _backgroundElement.RemoveChild(_loaderElement);
 			ModList.Clear();
-			ModList.AddRange(Items.Where(item => item.PassFilters()));
+			ModList.AddRange(_items.Where(item => item.PassFilters()));
 			bool hasNoModsFoundNotif = ModList.HasChild(NoModsFoundText);
 			if (ModList.Count <= 0 && !hasNoModsFoundNotif)
 				ModList.Add(NoModsFoundText);
 			else if (hasNoModsFoundNotif)
 				ModList.RemoveChild(NoModsFoundText);
 			_rootElement.RemoveChild(_updateAllButton);
-			if (SpecialModPackFilter == null && Items.Count(x => x.HasUpdate && !x.UpdateIsDowngrade) > 0) _rootElement.Append(_updateAllButton);
+			if (SpecialModPackFilter == null && _items.Count(x => x.ModDownload.HasUpdate && !x.ModDownload.UpdateIsDowngrade) > 0) _rootElement.Append(_updateAllButton);
 		}
 
 		public override void OnActivate() {
 			Main.clrInput();
-			if (!Loading && Items.Count <= 0) {
+			if (!Loading && _items.Count <= 0) {
 				PopulateModBrowser();
 			}
 		}
-
-		internal bool RemoveItem(UIModDownloadItem item) => Items.Remove(item);
-
-		internal void ClearItems() => Items.Clear();
 
 		internal void PopulateModBrowser() {
 			// Initialize
@@ -223,12 +216,9 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			_backgroundElement.Append(_loaderElement);
 			SetHeading(Language.GetTextValue("tModLoader.MenuModBrowser"));
 
-			// Remove old resources
-			if (SteamWorkshop != null)
-				SteamWorkshop = null;
-
+			// Remove old data
 			ModList.Clear();
-			Items.Clear();
+			_items.Clear();
 			ModList.Deactivate();
 
 			// Asynchronous load the Mod Browser
@@ -240,24 +230,30 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		}
 
 		internal bool InnerPopulateModBrowser() {
-			// Populate
-			SteamWorkshop = new WorkshopHelper.QueryHelper();
-
-			if (!SteamWorkshop.QueryWorkshop(out var items))
+			if (!WorkshopHelper.QueryHelper.FetchDownloadItems())
 				return false;
 
-			Items.AddRange(items);
+			foreach (var item in WorkshopHelper.QueryHelper.Items) {
+				_items.Add(new UIModDownloadItem(item));
+			}
+
 			return UpdateNeeded = true;
+		}
+
+		internal void ModifyUIModDownloadItemInstalled(string modName, Core.LocalMod installed) {
+			var modDownload = _items.Select(x => x.ModDownload).FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
+			if (modDownload != null)
+				modDownload.Installed = installed;
 		}
 
 		/// <summary>
 		///     Enqueues a list of mods, if found on the browser (also used for ModPacks)
 		/// </summary>
 		internal void DownloadMods(IEnumerable<string> modNames) {
-			var downloads = new List<UIModDownloadItem>();
+			var downloads = new List<ModDownloadItem>();
 
 			foreach (string desiredMod in modNames) {
-				var mod = Items.FirstOrDefault(x => x.ModName == desiredMod);
+				var mod = WorkshopHelper.QueryHelper.Items.FirstOrDefault(x => x.ModName == desiredMod);
 
 				if (mod == null) { // Not found on the browser
 					_missingMods.Add(desiredMod);
@@ -271,20 +267,13 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			if (downloads.Count <= 0)
 				return;
 
-			WorkshopHelper.ModManager.Download(downloads, out var enabledItems);
+			WorkshopHelper.ModManager.Download(downloads);
 
 			if (_missingMods.Count > 0) {
 				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);
 				_missingMods.Clear();
 			}
-
-			if (enabledItems.Count > 0) {
-				Interface.infoMessage.Show(Language.GetTextValue("Unable to update Enabled Mods. Please unload the following mods prior to updating: ", string.Join(",", enabledItems)), Interface.modBrowserID);
-			}
 		}
-
-		internal UIModDownloadItem FindModDownloadItem(string modName)
-			=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
 		private void SetHeading(string heading) {
 			HeaderTextPanel.SetText(heading, 0.8f, true);

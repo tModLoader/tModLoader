@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Core
 		private TmodFile.FileEntry entry;
 		private Stream stream;
 		private bool leaveOpen;
-		
+
 		private int Start => entry.Offset;
 
 		public string Name => entry.Name;

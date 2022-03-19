@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Star.cs
+--- src/TerrariaNetCore/Terraria/Star.cs
 +++ src/tModLoader/Terraria/Star.cs
 @@ -16,7 +_,7 @@
  		public bool falling;

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/DataStructures/Point16.cs
+--- src/TerrariaNetCore/Terraria/DataStructures/Point16.cs
 +++ src/tModLoader/Terraria/DataStructures/Point16.cs
 @@ -24,9 +_,38 @@
  			this.Y = Y;
