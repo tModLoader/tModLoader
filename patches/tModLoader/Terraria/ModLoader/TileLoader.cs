@@ -384,12 +384,10 @@ namespace Terraria.ModLoader
 			&& MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
 		}
 
-		//in TileSmartInteractCandidateProvider.FillPotentialTargetTiles after switch
 		public static bool HasSmartInteract(int i, int j, int type, SmartInteractScanSettings settings) {
 			return GetTile(type)?.HasSmartInteract(i, j, settings) ?? false;
 		}
 
-		//in TileSmartInteractCandidateProvider.ProvideCandidate after switch before return
 		public static void ModifySmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
 			ModTile modTile = GetTile(type);
 			if (modTile == null)
@@ -408,7 +406,6 @@ namespace Terraria.ModLoader
 			modTile.ModifySmartInteractCoords(ref width, ref height, ref frameWidth, ref frameHeight, ref extraY);
 		}
 
-		//in PlayerSittingHelper.GetSittingTargetInfo before assigning playerSittingPosition
 		public static void ModifySittingTargetInfo(int i, int j, int type, ref TileRestingInfo info) {
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
@@ -419,7 +416,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//in PlayerSleepingHelper.GetSleepingTargetInfo before returning true
 		public static void ModifySleepingTargetInfo(int i, int j, int type, ref TileRestingInfo info) {
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
