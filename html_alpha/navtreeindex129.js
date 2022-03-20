@@ -1,5 +1,8 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_graphics_1_1_vertex_colors.html#a83bcb02bdb2530454492e35e1e5ac476":[1,0,2,7,15,4],
+"struct_terraria_1_1_graphics_1_1_vertex_colors.html#a9e11e7085d979fd7dfedf1006727a911":[1,0,2,7,15,2],
+"struct_terraria_1_1_graphics_1_1_vertex_colors.html#af64a523cbc656807ce62fde4c3bbaf62":[1,0,2,7,15,0],
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html#afc8d06edfaf2d92c3150f361bf083207":[1,0,2,7,15,5],
 "struct_terraria_1_1_graphics_1_1_virtual_camera.html":[1,0,2,7,17],
 "struct_terraria_1_1_graphics_1_1_virtual_camera.html#a653da2aae8122319a3a77203b813ff75":[1,0,2,7,17,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_player_1_1_composite_arm_data.html#a8e4a040fda3776dd4432a25b314938c6":[1,0,2,55,1,3],
 "struct_terraria_1_1_player_1_1_item_space_status.html":[1,0,2,55,3],
 "struct_terraria_1_1_player_1_1_item_space_status.html#a3219af916975e2366d6259f67d324a21":[1,0,2,55,3,2],
-"struct_terraria_1_1_player_1_1_item_space_status.html#a89d81ee012b8231662d9d4b379a91399":[1,0,2,55,3,3],
-"struct_terraria_1_1_player_1_1_item_space_status.html#a921fb1a0ed7deb517896f9c71d418804":[1,0,2,55,3,0],
-"struct_terraria_1_1_player_1_1_item_space_status.html#a94d89105eb14ae35a61f12f297395b47":[1,0,2,55,3,1],
-"struct_terraria_1_1_player_1_1_overhead_message.html":[1,0,2,55,4]
+"struct_terraria_1_1_player_1_1_item_space_status.html#a89d81ee012b8231662d9d4b379a91399":[1,0,2,55,3,3]
 };

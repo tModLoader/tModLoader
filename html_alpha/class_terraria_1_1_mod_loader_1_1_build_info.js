@@ -1,12 +1,9 @@
 var class_terraria_1_1_mod_loader_1_1_build_info =
 [
     [ "BuildPurpose", "class_terraria_1_1_mod_loader_1_1_build_info.html#a670bfb6b3d51daa294a341805340433d", [
-      [ "Unknown", "class_terraria_1_1_mod_loader_1_1_build_info.html#a670bfb6b3d51daa294a341805340433da88183b946cc5f0e8c96b2e66e1c74a7e", null ],
       [ "Dev", "class_terraria_1_1_mod_loader_1_1_build_info.html#a670bfb6b3d51daa294a341805340433da55f37d1fd483f6a85379640fe51aafa8", null ],
-      [ "Github_Commit", "class_terraria_1_1_mod_loader_1_1_build_info.html#a670bfb6b3d51daa294a341805340433daac90975337828b3255301b5655d04382", null ],
-      [ "Alpha", "class_terraria_1_1_mod_loader_1_1_build_info.html#a670bfb6b3d51daa294a341805340433da6132295fcf5570fb8b0a944ef322a598", null ],
-      [ "Beta", "class_terraria_1_1_mod_loader_1_1_build_info.html#a670bfb6b3d51daa294a341805340433da0b87d66b88c72957dfea8c9605016442", null ],
-      [ "Release", "class_terraria_1_1_mod_loader_1_1_build_info.html#a670bfb6b3d51daa294a341805340433dab8e7b465df7c5979dc731d06e84ce2cf", null ]
+      [ "Preview", "class_terraria_1_1_mod_loader_1_1_build_info.html#a670bfb6b3d51daa294a341805340433da31fde7b05ac8952dacf4af8a704074ec", null ],
+      [ "Stable", "class_terraria_1_1_mod_loader_1_1_build_info.html#a670bfb6b3d51daa294a341805340433dafa3aff3c185c6dc7754235f397c2099a", null ]
     ] ],
     [ "BranchName", "class_terraria_1_1_mod_loader_1_1_build_info.html#a7e6a59e65473eba3007756818fd987bf", null ],
     [ "BuildDate", "class_terraria_1_1_mod_loader_1_1_build_info.html#abc99ed8916aaaf64fa127aa85dc0bd5a", null ],
@@ -17,5 +14,7 @@ var class_terraria_1_1_mod_loader_1_1_build_info =
     [ "versionedName", "class_terraria_1_1_mod_loader_1_1_build_info.html#a6db0446bb44102e454e0d79e1fcf70ac", null ],
     [ "versionedNameDevFriendly", "class_terraria_1_1_mod_loader_1_1_build_info.html#aa7d8414c97587a0929abb5eeeb56b097", null ],
     [ "versionTag", "class_terraria_1_1_mod_loader_1_1_build_info.html#a09ce9ed15595b12181cdd9b6ee47a2ba", null ],
-    [ "IsRelease", "class_terraria_1_1_mod_loader_1_1_build_info.html#a7b80f40cb9ecd46a2111cbbab43b4ef6", null ]
+    [ "IsDev", "class_terraria_1_1_mod_loader_1_1_build_info.html#a39572ec07c441789ec1211d8593ce680", null ],
+    [ "IsPreview", "class_terraria_1_1_mod_loader_1_1_build_info.html#af4d356e0f7a8f45b1d431b6d56d808a4", null ],
+    [ "IsStable", "class_terraria_1_1_mod_loader_1_1_build_info.html#a68e9176e7663c9e0fbbdacb9456bb51c", null ]
 ];

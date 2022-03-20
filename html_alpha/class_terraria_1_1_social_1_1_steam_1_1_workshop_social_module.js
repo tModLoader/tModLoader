@@ -1,5 +1,6 @@
 var class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module =
 [
+    [ "CiPublish", "class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#a9e3dc6936edecca82b8fe3c79a355f11", null ],
     [ "GetListOfMods", "class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#a37a1195a671c909f0995b63880392f64", null ],
     [ "GetListOfSubscribedResourcePackPaths", "class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#ab02ab6379bdc98d5e1b76436149e5fa3", null ],
     [ "GetListOfSubscribedWorldPaths", "class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#a06574627bfc7093228991ca1dbc6fb8f", null ],
