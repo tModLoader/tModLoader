@@ -33,7 +33,8 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-			if (BuildInfo.IsDev) {
+			// TEMP: Disable this check untill the 1.4-stable branch is fully implemented. For now, this doesn't break stuff.
+			if (false && BuildInfo.IsDev) {
 				IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 				return false;
 			}
@@ -114,7 +115,8 @@ namespace Terraria.Social.Steam
 			}
 
 			buildData["workshopdeps"] = workshopDeps;
-			string contentFolderPath = $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
+			// TEMP: Allow IsDev publishing to root (legacy style) until 1.4-stable is fully implemented
+			string contentFolderPath = BuildInfo.IsDev ? workshopFolderPath : $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
 			if (MakeTemporaryFolder(contentFolderPath)) {
 				string modPath = Path.Combine(contentFolderPath, modFile.Name + ".tmod");
