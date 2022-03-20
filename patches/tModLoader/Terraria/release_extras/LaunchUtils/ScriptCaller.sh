@@ -60,15 +60,50 @@ run_script ./PlatformLibsDeploy.sh 2>&1 | tee -a "$LogFile"
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 echo "Parsing .NET version requirements from runtimeconfig.json"  2>&1 | tee -a "$LogFile"
 dotnet_version=$(sed -n 's/^.*"version": "\(.*\)"/\1/p' <../tModLoader.runtimeconfig.json) #sed, go die plskthx
-export dotnet_version=${dotnet_version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
-#echo $version
-# use this to check the output of sed. Expected output: "00000000 35 2e 30 2e 30 0a |5.0.0.| 00000006"
-# echo $(hexdump -C <<< "$version")
-export dotnet_dir="$root_dir/dotnet"
-export install_dir="$dotnet_dir/$dotnet_version"
+dotnet_version=${dotnet_version%$'\r'} # remove trailing carriage return that sed may leave in variable, producing a bad folder name
 echo "Success!"  2>&1 | tee -a "$LogFile"
 
-run_script ./InstallNetFramework.sh 2>&1 | tee -a "$LogFile"
+compareversions() {
+	echo sysver is $1 neededver is $2
+	if [[ $1 == $2 ]]
+	then
+		return 1
+	else
+		if [[ `printf "$1\n$2" | sort -V | head -n1` == $2 ]]
+		then
+			return 0
+		else
+			return 1
+		fi
+	fi
+}
+
+installdotnet() {
+	export dotnet_version=$dotnet_version
+	#echo $version
+	# use this to check the output of sed. Expected output: "00000000 35 2e 30 2e 30 0a |5.0.0.| 00000006"
+	# echo $(hexdump -C <<< "$version")
+	export dotnet_dir="$root_dir/dotnet"
+	export install_dir="$dotnet_dir/$dotnet_version"
+
+	run_script ./InstallNetFramework.sh 2>&1 | tee -a "$LogFile"
+}
+
+# Actually check for a system install of dotnet that is a higher version than in
+# runtimeconfig.json instead of always running InstallNetFramework.sh 😃
+if command -v dotnet &< /dev/null
+then
+	if compareversions `dotnet --version` $dotnet_version
+	then
+		echo Found system dotnet
+	else
+		installdotnet
+	fi
+else
+	installdotnet
+fi
+
+installdotnet
 
 echo "Attempting Launch..."
 
