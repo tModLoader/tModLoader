@@ -3518,7 +3518,12 @@
  					array9[num24] = Lang.menu[5].Value;
  					if (selectedMenu == num24 || flag5) {
  						flag5 = false;
-@@ -38051,7 +_,8 @@
+@@ -38047,19 +_,21 @@
+ 					num4 = 55;
+ 					int num30 = 0;
+ 					array9[num30] = Lang.menu[73].Value + ": " + PendingResolutionWidth + "x" + PendingResolutionHeight;
+-					if (selectedMenu == num30) {
++					if (selectedMenu == num30 || selectedMenu2 == num30) {
  						SoundEngine.PlaySound(12);
  						int num31 = 0;
  						for (int num32 = 0; num32 < numDisplayModes; num32++) {
@@ -3528,9 +3533,10 @@
  								num31 = num32;
  								break;
  							}
-@@ -38059,7 +_,8 @@
+ 						}
  
- 						num31 = (num31 + 1) % numDisplayModes;
+-						num31 = (num31 + 1) % numDisplayModes;
++						num31 = Utils.Repeat(num31 + ((selectedMenu == num30) ? 1 : -1), Main.numDisplayModes);
  						PendingResolutionWidth = displayWidth[num31];
 -						PendingResolutionHeight = displayHeight[num31];
 +						// TML: Limit the resolution when going from fullscreen to windowed to be less than the full monitor size so that the key window edges are accessible
