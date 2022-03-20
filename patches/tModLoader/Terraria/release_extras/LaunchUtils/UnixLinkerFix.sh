@@ -16,7 +16,6 @@ if [ "$_uname" = Darwin ]; then
 	library_dir="$root_dir/Libraries/Native/OSX"
 	export DYLD_LIBRARY_PATH="$library_dir"
 	export VK_ICD_FILENAMES="$libary_dir/MoltenVK_icd.json"
-	export FNA3D_FORCE_DRIVER=Vulkan
 	ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
 elif [[ "$_uname" == *"_NT"* ]]; then
 	export PATH="$root_dir/Libraries/Native/Windows;$PATH"
