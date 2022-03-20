@@ -5,9 +5,8 @@ on:
   # This workflow runs on the first of every month at 1:23 AM UTC. The random time selection is to minimize getting delayed by similar concurrent monthly actions 
   #schedule:
   #  - cron: '23 1 1 * *'
-  # Runs when a release is made
-  release:
-    types: [published]
+  # Allows you to manually run the workflow
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -18,31 +17,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-        - name: Check Versioning
-          id: version
-          shell: bash
-          run: |
-            echo "Attempting get version id"
-            version=$tags
-            echo "Version is: $version"
-            regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
-            if [[ $version =~ $regex ]] ; then
-              year="${BASH_REMATCH[1]}"
-              month="${BASH_REMATCH[2]}"
-              feature="${BASH_REMATCH[3]}"
-              patch="${BASH_REMATCH[4]}"
-            else
-              echo "Previous version '$version' is not a valid version"
-              exit 1
-            fi
-            echo "Checking if is a valid 1.4 release"
-            if [[ $year < 2022 ]] ; then
-              echo "Not a valid 1.4 version. Skipping"
-              exit 2
-            fi
-          env:
-            tags: ${{github.ref}}       
-        
         - name: Check out repo
           uses: actions/checkout@v2
           with:
