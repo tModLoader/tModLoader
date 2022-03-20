@@ -64,7 +64,6 @@ dotnet_version=${dotnet_version%$'\r'} # remove trailing carriage return that se
 echo "Success!"  2>&1 | tee -a "$LogFile"
 
 compareversions() {
-	echo sysver is $1 neededver is $2
 	if [[ $1 == $2 ]]
 	then
 		return 1
@@ -102,8 +101,6 @@ then
 else
 	installdotnet
 fi
-
-installdotnet
 
 echo "Attempting Launch..."
 
