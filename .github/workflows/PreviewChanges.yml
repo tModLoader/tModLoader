@@ -1,0 +1,44 @@
+name: Preview tModLoader
+
+# Controls when the action will run. 
+on:
+  # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
+  push:
+    branches: [1.4]
+  # Allows you to run this workflow manually from the Actions tab
+  #workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  MergeToPreview:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+        - name: Get current day
+          id: date
+          shell: bash
+          run: echo "::set-output name=date::$(date +'%d')"
+        
+        - name: Check out repo
+          if: steps.date.outputs.date < 21
+          uses: actions/checkout@v2
+          with:
+            ref: 'refs/heads/1.3'
+            persist-credentials: false
+            fetch-depth: 1
+        
+        # There is a bug with this that requires the previous step to checkout a different branch then either of two specified
+        # The below merger for sure won't work while this branch is ahead of 1.4, so can't fast forward to test.
+        - name: Merge
+          if: steps.date.outputs.date < 21
+          uses: robotology/gh-action-nightly-merge@v1.3.1
+          with:
+              stable_branch: '1.4'
+              development_branch: '1.4-preview'
+              allow_ff: true
+              ff_only: true
+          env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
