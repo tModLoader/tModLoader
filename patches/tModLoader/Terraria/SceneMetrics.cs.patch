@@ -155,12 +155,13 @@
  							HasClock = true;
  
  						switch (tile2.type) {
-@@ -323,6 +_,11 @@
+@@ -323,6 +_,12 @@
  									BloodMoonMonolith = true;
  								break;
  						}
 +
-+						if (TileLoader.IsModMusicBox(tile2) && tile2.frameX == 36)
++						// This does not use TileLoader.IsModMusicBox because it needs the *exact* frameY for the second dict lookup
++						if (MusicLoader.tileToMusic.ContainsKey(tile2.type) && MusicLoader.tileToMusic[tile2.type].ContainsKey(tile2.frameY) && tile2.frameX == 36)
 +							ActiveMusicBox = MusicLoader.tileToMusic[tile2.type][tile2.frameY];
 +
 +						TileLoader.NearbyEffects(k, l, tile2.type, true);
