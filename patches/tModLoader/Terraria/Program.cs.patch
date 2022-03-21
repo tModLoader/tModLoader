@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,73 @@
+@@ -138,32 +_,72 @@
  			}
  		}
  
@@ -107,7 +107,6 @@
 +
 +			try {
 +				SetSavePath(); // Needs to run before Logging.Init due to DeveloperMode check in ModCompile
-+				PortOldSaveDirectories();
 +			}
 +			catch (Exception e) {
 +				Logging.Terraria.Fatal("Failed to Handle Save Data", e);

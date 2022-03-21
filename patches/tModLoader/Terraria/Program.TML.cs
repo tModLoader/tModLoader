@@ -74,6 +74,8 @@ namespace Terraria
 				LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] :
 				Platform.Get<IPathService>().GetStoragePath($"Terraria");
 
+			PortOldSaveDirectories();
+
 			var fileFolder =
 				BuildInfo.IsStable ? ReleaseFolder :
 				BuildInfo.IsPreview ? PreviewFolder :
