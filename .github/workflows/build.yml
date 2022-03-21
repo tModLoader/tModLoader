@@ -59,7 +59,7 @@ jobs:
              ((++feature))
              newdt="$(date +%Y.%m)"
              if [[ ! "$oldate" = "$newdt" ]] ; then
-                echo "Rolling Forward the Month..."
+                echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
                 oldate="$newdt"
                 feature=0
                 patch=0
