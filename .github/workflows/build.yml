@@ -51,18 +51,22 @@ jobs:
           fi
           echo "Applying verison updates"
           if [[ "refs/heads/1.4-stable" = $branch ]] ; then
+             echo "Rolling Forward the Patch #..."
              ((++patch))   
           fi
           if [[ "refs/heads/1.4-preview" = $branch ]] ; then
+            echo "Rolling Forward the Feature #..."
              ((++feature))
              newdt="$(date +%Y.%m)"
              if [[ ! "$oldate" = "$newdt" ]] ; then
+                echo "Rolling Forward the Month..."
                 oldate="$newdt"
                 feature=0
                 patch=0
              fi
           fi
           version="$oldate.$feature.$patch"
+          echo "New version is '$version'"
           echo "::set-output name=new_version::$version"
         env:
           branch: ${{github.ref}}
