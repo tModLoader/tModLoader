@@ -41,4 +41,4 @@ jobs:
               allow_ff: true
               ff_only: true
           env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              GITHUB_TOKEN: ${{ secrets.TMODLOADERBOT_TOKEN }}
