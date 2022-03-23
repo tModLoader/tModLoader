@@ -54,16 +54,8 @@ namespace Terraria
 					Directory.Move(Path.Combine(newPath, subDir), Path.Combine(newPath, subDir.Replace(" ", "")));
 			}
 
-			if (Directory.Exists(Path.Combine(newPath, "Workshop"))) {
-				string workshopPath = Path.Combine(newPath, "Workshop", Steamworks.SteamUser.GetSteamID().m_SteamID.ToString());
-				foreach (var repo in Directory.GetDirectories(workshopPath)) {
-					var msNew = Path.Combine(ModLoader.Core.ModCompile.ModSourcePath, Path.GetDirectoryName(repo), "Workshop");
-
-					foreach (var file in Directory.GetFiles(repo)) {
-						File.Copy(file, Path.Combine(msNew, Path.GetFileName(file)));
-					}
-				}
-			}
+			if (Directory.Exists(Path.Combine(newPath, "Workshop")))
+				Directory.Move(Path.Combine(newPath, "Workshop"), Path.Combine(SavePath, "Workshop"));
 				
 			FileUtilities.CopyFolder(newPath, Path.Combine(SavePath, DevFolder));
 			FileUtilities.CopyFolder(newPath, Path.Combine(SavePath, ReleaseFolder));

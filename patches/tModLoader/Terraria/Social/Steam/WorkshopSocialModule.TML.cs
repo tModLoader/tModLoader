@@ -6,6 +6,7 @@ using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
+using Terraria.Utilities;
 
 namespace Terraria.Social.Steam
 {
@@ -50,8 +51,7 @@ namespace Terraria.Social.Steam
 			var existing = WorkshopHelper.QueryHelper.FindModDownloadItem(buildData["name"]);
 			ulong currPublishID = 0;
 
-			string modSourceFolder = buildData["sourcesfolder"];
-			string workshopFolderPath = $"{modSourceFolder}/Workshop";
+			string workshopFolderPath = GetTemporaryFolderPath() + modFile.Name;
 
 			if (existing != null) {
 				ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(ulong.Parse(existing.PublishId));
@@ -62,10 +62,13 @@ namespace Terraria.Social.Steam
 					return false;
 				}
 
-				workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(),$"{existing.PublishId}");
+				// Publish by updating the files available on the current published version
+				string subscribedFolder = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{existing.PublishId}");
+				if (Directory.Exists(subscribedFolder))
+					FileUtilities.CopyFolder(subscribedFolder, workshopFolderPath);
 
 				// Use the stable version of the mod for publishing metadata, not the preview version!
-				if (BuildInfo.IsPreview) {
+				if (BuildInfo.IsPreview && Directory.Exists(workshopFolderPath)) {
 					string stable = ModOrganizer.FindOldest(workshopFolderPath);
 					if (!stable.Contains(".tmod"))
 						stable = Directory.GetFiles(stable, "*.tmod")[0];
@@ -175,7 +178,7 @@ namespace Terraria.Social.Steam
 				Directory.CreateDirectory(contentFolder);
 
 			// Ensure the publish folder has all published information needed.
-			Utilities.FileUtilities.CopyFolder(publishedModFiles, publishFolder);
+			FileUtilities.CopyFolder(publishedModFiles, publishFolder);
 			File.Copy(newModPath, Path.Combine(contentFolder, $"{modName}.tmod"), true);
 
 			// Cleanup Old Folders
