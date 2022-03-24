@@ -53,9 +53,6 @@ namespace Terraria
 				if (Directory.Exists(Path.Combine(newPath, subDir)))
 					Directory.Move(Path.Combine(newPath, subDir), Path.Combine(newPath, subDir.Replace(" ", "")));
 			}
-
-			if (Directory.Exists(Path.Combine(newPath, "Workshop")))
-				Directory.Move(Path.Combine(newPath, "Workshop"), Path.Combine(SavePath, "Workshop"));
 				
 			FileUtilities.CopyFolder(newPath, Path.Combine(SavePath, DevFolder));
 			FileUtilities.CopyFolder(newPath, Path.Combine(SavePath, ReleaseFolder));
