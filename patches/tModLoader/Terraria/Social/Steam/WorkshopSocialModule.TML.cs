@@ -6,6 +6,7 @@ using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 using Terraria.Social.Base;
+using Terraria.Utilities;
 
 namespace Terraria.Social.Steam
 {
@@ -50,11 +51,12 @@ namespace Terraria.Social.Steam
 			var existing = WorkshopHelper.QueryHelper.FindModDownloadItem(buildData["name"]);
 			ulong currPublishID = 0;
 
-			string modSourceFolder = buildData["sourcesfolder"];
-			string workshopFolderPath = $"{modSourceFolder}/Workshop";
+			string workshopFolderPath = GetTemporaryFolderPath() + modFile.Name;
 
 			if (existing != null) {
-				ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(ulong.Parse(existing.PublishId));
+				currPublishID = ulong.Parse(existing.PublishId);
+
+				ulong existingID = WorkshopHelper.QueryHelper.GetSteamOwner(currPublishID);
 				var currID = Steamworks.SteamUser.GetSteamID();
 
 				if (existingID != currID.m_SteamID) {
@@ -62,10 +64,19 @@ namespace Terraria.Social.Steam
 					return false;
 				}
 
-				workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(),$"{existing.PublishId}");
+				// Update the subscribed mod to be the latest version published
+				new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(currPublishID)).InnerDownload(null, true);
+
+				// Publish by updating the files available on the current published version
+				workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{existing.PublishId}");
+
+				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
+					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
+					return false;
+				}
 
 				// Use the stable version of the mod for publishing metadata, not the preview version!
-				if (BuildInfo.IsPreview) {
+				if (!BuildInfo.IsStable) {
 					string stable = ModOrganizer.FindOldest(workshopFolderPath);
 					if (!stable.Contains(".tmod"))
 						stable = Directory.GetFiles(stable, "*.tmod")[0];
@@ -79,14 +90,7 @@ namespace Terraria.Social.Steam
 					buildData["version"] = sMod.properties.version.ToString();
 					buildData["modreferences"] = string.Join(", ", sMod.properties.modReferences.Select(x => x.mod));
 					buildData["modside"] = sMod.properties.side.ToFriendlyString();
-				}	
-
-				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
-					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
-					return false;
 				}
-
-				currPublishID = uint.Parse(existing.PublishId);
 			}
 
 			string name = buildData["displaynameclean"];
@@ -175,7 +179,7 @@ namespace Terraria.Social.Steam
 				Directory.CreateDirectory(contentFolder);
 
 			// Ensure the publish folder has all published information needed.
-			Utilities.FileUtilities.CopyFolder(publishedModFiles, publishFolder);
+			FileUtilities.CopyFolder(publishedModFiles, publishFolder);
 			File.Copy(newModPath, Path.Combine(contentFolder, $"{modName}.tmod"), true);
 
 			// Cleanup Old Folders
