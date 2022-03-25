@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
@@ -58,6 +59,38 @@ namespace Terraria.ModLoader
 		/// Allows you to draw whatever you want when a buff tooltip is drawn. The originX and originY parameters are the top-left corner of everything that's drawn; you should add these to the position argument passed to SpriteBatch.Draw.
 		/// </summary>
 		public virtual void DrawCustomBuffTip(string buffTip, SpriteBatch spriteBatch, int originX, int originY) {
+		}
+
+		/// <summary>
+		/// Allows you to draw things before the default draw code is ran. Return false to prevent drawing the buff. Returns true by default.
+		/// </summary>
+		/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
+		/// <param name="type">The buff type</param>
+		/// <param name="buffIndex">The index in Main.LocalPlayer.buffType and .buffTime of the buff</param>
+		/// <param name="drawParams">The draw parameters for the buff</param>
+		/// <returns><see langword="true"/> for allowing drawing, <see langword="false"/> for preventing drawing</returns>
+		public virtual bool PreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to draw things after the buff has been drawn. skipped is true if you or another mod has skipped drawing the buff (possibly hiding it or in favor of new visuals).
+		/// </summary>
+		/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
+		/// <param name="type">The buff type</param>
+		/// <param name="buffIndex">The index in Main.LocalPlayer.buffType and .buffTime of the buff</param>
+		/// <param name="drawParams">The draw parameters for the buff</param>
+		public virtual void PostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams) {
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the buff icon is right-clicked. Return false to prevent the buff from being cancelled.
+		/// </summary>
+		/// <param name="type">The buff type</param>
+		/// <param name="buffIndex">The index in Main.LocalPlayer.buffType and .buffTime of the buff</param>
+		/// <returns><see langword="true"/> for allowing the buff to be cancelled, <see langword="false"/> to prevent the buff from being cancelled</returns>
+		public virtual bool RightClick(int type, int buffIndex) {
+			return true;
 		}
 	}
 }
