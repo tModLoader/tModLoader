@@ -6,439 +6,502 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Audio;
 using ExampleMod.Content.Dusts;
+using Terraria.GameContent;
+using ReLogic.Content;
 
-namespace ExampleMod.Content.Projectiles     //We need this to basically indicate the folder where it is to be read from, so you the texture will load correctly
+namespace ExampleMod.Content.Projectiles
 {
-    public class ExampleFlailProjectile : ModProjectile
-    {
-        bool alreadyHitATile = false; //checks if the projectile already hit a tile, used for the afterimage trail
-        int shootTimer = 12; //how much time the projectile can go before retracting (speed and shootTimer will set the flail's range)
-        int tilecounter = 0; //how much tiles this projectile has hit when not in line of sight
-        // The folder path to the flail chain sprite
-        private const string ChainTexturePath = "ExampleMod/Content/Projectiles/ExampleFlailProjectileChain";
+	// Example Flail is a complete adaption of Ball O' Hurt projectile. The code has been rewritten a bit to make it easier to follow. Compare this code against the decompiled Terraria code for an example of adapting vanilla code. A few comments and extra code snippets show features from other vanilla flails as well.
+	// Example Flail shows a plethora of advanced AI and collision topics.
+	public class ExampleFlailProjectile : ModProjectile
+	{
+		private const string ChainTexturePath = "ExampleMod/Content/Projectiles/ExampleFlailProjectileChain"; // The folder path to the flail chain sprite
+		private const string ChainTextureExtraPath = "ExampleMod/Content/Projectiles/ExampleFlailProjectileChainExtra";  // This texture and related code is optional and used for a unique effect
 
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Example Flail");
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;    //The length of old position to be recorded
+		private enum AIState
+		{
+			Spinning,
+			LaunchingForward,
+			Retracting,
+			UnusedState,
+			ForcedRetracting,
+			Ricochet,
+			Dropping
+		}
+
+		// These properties wrap the usual ai and localAI arrays for cleaner and easier to understand code.
+		private AIState CurrentAIState {
+			get => (AIState)Projectile.ai[0];
+			set => Projectile.ai[0] = (float)value;
+		}
+		public ref float StateTimer => ref Projectile.ai[1];
+		public ref float CollisionCounter => ref Projectile.localAI[0];
+		public ref float SpinningStateTimer => ref Projectile.localAI[1];
+
+		public override void SetStaticDefaults() {
+			DisplayName.SetDefault("Example Flail");
+
+			// These lines facilitate the trail drawing
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 6;
 			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-        }
-        public override void SetDefaults()
-        {
-            Projectile.width = 24; //the width of your projectile
-            Projectile.height = 24; //the height of your projectile
-            Projectile.friendly = true; //deals damage to enemies
-            Projectile.penetrate = -1; //infinite pierce
-            Projectile.tileCollide = true; //collides with tiles and thus calls OnTileCollide
-            Projectile.ignoreWater = true; //does not get slowed down in water
-            Projectile.DamageType = DamageClass.Melee; //deals melee damage
-            Projectile.usesLocalNPCImmunity = true; //used for hit cooldown changes in the ai hook
-        }
-        public override void AI()
-        {
-            Player player = Main.player[Projectile.owner];
-            //kill the projectile if the player dies or gets crowd controlled
-            if (!player.active || player.dead || player.noItems || player.CCed || Vector2.Distance(Projectile.Center, player.Center) > 900f)
-            {
-                Projectile.Kill();
-                return;
-            }
-            if (Main.myPlayer == Projectile.owner && Main.mapFullscreen)
-            {
-                Projectile.Kill();
-                return;
-            }
-            if (tilecounter >= 3) //forces the flail to retract once it hits three bounces that are not in line of sight, to deal with the flail being stuck behind a wall
-            {
-                Projectile.tileCollide = false;
-                Projectile.ai[0] = 4;
-            }
-            //dusts
-            Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>(), Projectile.velocity.X, Projectile.velocity.Y, 0, default, 1f);
-            dust.noGravity = true;
-            dust.velocity.X = MathHelper.Lerp(-0.5f, 0.5f, (float)Main.rand.NextDouble());
-            dust.velocity.Y = MathHelper.Lerp(-0.5f, 0.5f, (float)Main.rand.NextDouble());
+		}
 
-            Vector2 mountedCenter = player.MountedCenter;
-            bool shouldOwnerHitCheck = false;
-            float speed = 18f; //how fast the projectile can move
-            float maxStretchLength = 600f; //how far the projectile's chain can stretch before being forced to retract
-            float deceleration = 3f;
-            float retractSpeed = 12f; //how fast the projectile comes back to you
-            float alsoSuperRetractSpeed = 6f;
-            float superRetractSpeed = 16f; //how fast the projectile comes back to you when being forced to retract
-            float retractSpeedMult = 1f;
-            float alsoRetractSpeed = 10f;
-            int restingChainLength = 60;
-            int hitspeedResting = 8; //how often your flail hits when resting on the ground, or retracting
-            int hitspeedSpinning = 15; //how often your flail hits when spinning
-            int hitspeed = 10; //how often your flail hits when moving
-            int fallingTimer = shootTimer + 5;
-            float meleeSpeed = player.meleeSpeed;
-            float mSpeedMult = 1f / meleeSpeed;
-            speed *= mSpeedMult;
-            retractSpeedMult *= mSpeedMult;
-            alsoRetractSpeed *= mSpeedMult;
-            deceleration *= mSpeedMult;
-            retractSpeed *= mSpeedMult;
-            alsoSuperRetractSpeed *= mSpeedMult;
-            superRetractSpeed *= mSpeedMult;
-            float rangeMult = speed * (float)shootTimer;
-            float range = rangeMult + 160f;
-            Projectile.localNPCHitCooldown = hitspeedResting;
-            switch ((int)Projectile.ai[0])
-            {
-                case 0: //Projectile.ai[0] = 0; (Spinning mode)
-                    {
-                        shouldOwnerHitCheck = true;
-                        if (Projectile.owner == Main.myPlayer)
-                        {
-                            Vector2 origin = mountedCenter;
-                            Vector2 mouseWorld = Main.MouseWorld;
-                            Vector2 value3 = origin.DirectionTo(mouseWorld).SafeNormalize(Vector2.UnitX * player.direction);
-                            player.ChangeDir((value3.X > 0f) ? 1 : (-1));
-                            if (!player.channel) //If the player releases then change to moving forward mode
-                            {
-                                Projectile.tileCollide = true;
-                                Projectile.ai[0] = 1f;
-                                Projectile.ai[1] = 0f;
-                                Projectile.velocity = value3 * speed + player.velocity;
-                                Projectile.Center = mountedCenter;
-                                Projectile.netUpdate = true;
-                                Projectile.localNPCHitCooldown = hitspeed;
-                                break;
-                            }
-                        }
-                        Projectile.localAI[1] += 1f;
-                        Vector2 value4 = new Vector2(player.direction).RotatedBy((float)Math.PI * 10f * (Projectile.localAI[1] / 60f) * (float)player.direction);
-                        value4.Y *= 0.8f;
-                        if (value4.Y * player.gravDir > 0f)
-                        {
-                            value4.Y *= 0.5f;
-                        }
-                        Projectile.Center = mountedCenter + value4 * 30f;
-                        Projectile.velocity = Vector2.Zero;
-                        Projectile.localNPCHitCooldown = hitspeedSpinning; //set the hit speed to the spinning hit speed
-                        Projectile.tileCollide = false;
-                        break;
-                    }
-                case 1: //Projectile.ai[0] = 1; (Moving forward)
-                    {
-                        bool surpassedShootTimer = Projectile.ai[1]++ >= (float)shootTimer;
-                        surpassedShootTimer |= Projectile.Distance(mountedCenter) >= maxStretchLength;
-                        if (player.controlUseItem) //if tap again then move to fall to the ground mode
-                        {
-                            Projectile.ai[0] = 6f;
-                            Projectile.ai[1] = 0f;
-                            Projectile.netUpdate = true;
-                            Projectile.velocity *= 0.2f;
-                            break;
-                        }
-                        if (surpassedShootTimer) //if shootTimer is surpassed then move to transition mode
-                        {
-                            Projectile.ai[0] = 2f;
-                            Projectile.ai[1] = 0f;
-                            Projectile.netUpdate = true;
-                            Projectile.velocity *= 0.3f;
-                        }
-                        player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
-                        Projectile.localNPCHitCooldown = hitspeed;
-                        break;
-                    }
-                case 2: //Projectile.ai[0] = 2; (Forward to backward transition)
-                    {
-                        Vector2 value2 = Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero);
-                        if (Projectile.Distance(mountedCenter) <= retractSpeed)
-                        {
-                            Projectile.Kill();
-                            return;
-                        }
-                        if (player.controlUseItem) //if tap again then move to fall to the ground mode
-                        {
-                            Projectile.ai[0] = 6f;
-                            Projectile.ai[1] = 0f;
-                            Projectile.netUpdate = true;
-                            Projectile.velocity *= 0.2f;
-                        }
-                        else
-                        {
-                            Projectile.velocity *= 0.98f;
-                            Projectile.velocity = Projectile.velocity.MoveTowards(value2 * retractSpeed, deceleration);
-                            player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
-                        }
-                        break;
-                    }
-                case 3: //Projectile.ai[0] = 3; (Retracting mode)
-                    {
-                        if (!player.controlUseItem)
-                        {
-                            Projectile.ai[0] = 4f; //Move to super retracting mode if the player taps
-                            Projectile.ai[1] = 0f;
-                            Projectile.netUpdate = true;
-                            break;
-                        }
-                        float currentChainLength = Projectile.Distance(mountedCenter);
-                        Projectile.tileCollide = Projectile.ai[1] == 1f;
-                        bool flag3 = currentChainLength <= rangeMult;
-                        if (flag3 != Projectile.tileCollide)
-                        {
-                            Projectile.tileCollide = flag3;
-                            Projectile.ai[1] = (Projectile.tileCollide ? 1 : 0);
-                            Projectile.netUpdate = true;
-                        }
-                        if (currentChainLength > (float)restingChainLength)
-                        {
+		public override void SetDefaults() {
+			Projectile.netImportant = true; // TODO: Test this, explain this?
+			Projectile.width = 24; // The width of your projectile
+			Projectile.height = 24; // The height of your projectile
+			Projectile.friendly = true; // Deals damage to enemies
+			Projectile.penetrate = -1; // Infinite pierce
+			Projectile.DamageType = DamageClass.Melee; // Deals melee damage
+			Projectile.usesLocalNPCImmunity = true; // Used for hit cooldown changes in the ai hook
+			Projectile.localNPCHitCooldown = 10; // This facilitates custom hit cooldown logic
 
-                            if (currentChainLength >= rangeMult)
-                            {
-                                Projectile.velocity *= 0.5f;
-                                Projectile.velocity = Projectile.velocity.MoveTowards(Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero) * alsoRetractSpeed, alsoRetractSpeed);
-                            }
-                            Projectile.velocity *= 0.98f;
-                            Projectile.velocity = Projectile.velocity.MoveTowards(Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero) * alsoRetractSpeed, retractSpeedMult);
-                        }
-                        else
-                        {
-                            if (Projectile.velocity.Length() < 6f)
-                            {
-                                Projectile.velocity.X *= 0.96f;
-                                Projectile.velocity.Y += 0.2f;
-                            }
-                            if (player.velocity.X == 0f)
-                            {
-                                Projectile.velocity.X *= 0.96f;
-                            }
-                        }
-                        player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
-                        break;
-                    }
-                case 4: //Projectile.ai[0] = 4; (Super retracting mode)
-                    {
-                        Projectile.tileCollide = false;
-                        Vector2 vector = Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero);
-                        if (Projectile.Distance(mountedCenter) <= superRetractSpeed)
-                        {
-                            Projectile.Kill(); //kill the projectile if too far away
-                            return;
-                        }
-                        Projectile.velocity *= 0.98f;
+			// Vanilla flails all use aiStyle 15, but the code isn't customizable so an adaption of that aiStyle is used in the AI method
+		}
 
-                        Projectile.velocity = Projectile.velocity.MoveTowards(vector * superRetractSpeed, alsoSuperRetractSpeed);
-                        Vector2 target = Projectile.Center + Projectile.velocity;
-                        Vector2 value = mountedCenter.DirectionFrom(target).SafeNormalize(Vector2.Zero);
-                        if (Vector2.Dot(vector, value) < 0f)
-                        {
-                            Projectile.Kill(); //kill the projectile if too far away
-                            return;
-                        }
-                        player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
-                        break;
-                    }
-                case 5: //Projectile.ai[0] = 5; (Fall to the ground mode part 1)
-                    if (Projectile.ai[1]++ >= (float)fallingTimer)
-                    {
-                        Projectile.ai[0] = 6f; //If fallingTimer is surpassed then move to part 2 falling mode
-                        Projectile.ai[1] = 0f;
-                        Projectile.netUpdate = true;
-                    }
-                    else
-                    {
-                        Projectile.localNPCHitCooldown = hitspeed;
-                        Projectile.velocity.Y += 0.6f;
-                        Projectile.velocity.X *= 0.95f;
-                        player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
-                    }
-                    break;
-                case 6: //Projectile.ai[0] = 6; (Fall to the ground mode part 2)
-                    if (!player.controlUseItem || Projectile.Distance(mountedCenter) > range)
-                    {
-                        Projectile.ai[0] = 4f; //If the player releases, move to super retracting mode
-                        Projectile.ai[1] = 0f;
-                        Projectile.netUpdate = true;
-                    }
-                    else
-                    {
-                        Projectile.velocity.Y += 0.8f;
-                        Projectile.velocity.X *= 0.95f;
-                        player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
-                    }
-                    break;
-            }
-            Projectile.direction = ((Projectile.velocity.X > 0f) ? 1 : (-1));
-            Projectile.spriteDirection = Projectile.direction;
-            Projectile.ownerHitCheck = shouldOwnerHitCheck;
-                if (Projectile.velocity.Length() > 1f)
-                {
-                    //This check is used if your flail's projectile is shaped like it points one direction
-                    if(player.direction == 1)
-					{
-					    if (Projectile.velocity.X > 0f)
-					    {
-						Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.ToRadians(90f);
-					    }
-					    else if (Projectile.velocity.X < 0f)
-					    {
-						Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90f);
-					    }
+		// This AI code was adapted from vanilla code: Terraria.Projectile.AI_015_Flails() 
+		public override void AI() {
+			Player player = Main.player[Projectile.owner];
+			// Kill the projectile if the player dies or gets crowd controlled
+			if (!player.active || player.dead || player.noItems || player.CCed || Vector2.Distance(Projectile.Center, player.Center) > 900f) {
+				Projectile.Kill();
+				return;
+			}
+			if (Main.myPlayer == Projectile.owner && Main.mapFullscreen) {
+				Projectile.Kill();
+				return;
+			}
+
+			Vector2 mountedCenter = player.MountedCenter;
+			bool doFastThrowDust = false;
+			bool shouldOwnerHitCheck = false;
+			int launchTimeLimit = 15;  // How much time the projectile can go before retracting (speed and shootTimer will set the flail's range)
+			float launchSpeed = 14f; // How fast the projectile can move
+			float maxLaunchLength = 800f; // How far the projectile's chain can stretch before being forced to retract when in launched state
+			float retractAcceleration = 3f; // How quickly the projectile will accelerate back towards the player while retracting
+			float maxRetractSpeed = 10f; // The max speed the projectile will have while retracting
+			float forcedRetractAcceleration = 6f; // How quickly the projectile will accelerate back towards the player while being forced to retract
+			float maxForcedRetractSpeed = 15f; // The max speed the projectile will have while being forced to retract
+			float unusedRetractAcceleration = 1f;
+			float unusedMaxRetractSpeed = 14f;
+			int unusedChainLength = 60;
+			int defaultHitCooldown = 10; // How often your flail hits when resting on the ground, or retracting
+			int spinHitCooldown = 20; // How often your flail hits when spinning
+			int movingHitCooldown = 10; // How often your flail hits when moving
+			int ricochetTimeLimit = launchTimeLimit + 5;
+
+			// Scaling these speeds and accelerations by the players meleeSpeed make the weapon more responsive if the player boosts their meleeSpeed
+			float meleeSpeed = player.meleeSpeed;
+			float meleeSpeedMultiplier = 1f / meleeSpeed;
+			launchSpeed *= meleeSpeedMultiplier;
+			unusedRetractAcceleration *= meleeSpeedMultiplier;
+			unusedMaxRetractSpeed *= meleeSpeedMultiplier;
+			retractAcceleration *= meleeSpeedMultiplier;
+			maxRetractSpeed *= meleeSpeedMultiplier;
+			forcedRetractAcceleration *= meleeSpeedMultiplier;
+			maxForcedRetractSpeed *= meleeSpeedMultiplier;
+			float launchRange = launchSpeed * launchTimeLimit;
+			float maxDroppedRange = launchRange + 160f;
+			Projectile.localNPCHitCooldown = defaultHitCooldown;
+
+			switch (CurrentAIState) {
+				case AIState.Spinning: {
+						shouldOwnerHitCheck = true;
+						if (Projectile.owner == Main.myPlayer) {
+							Vector2 unitVectorTowardsMouse = mountedCenter.DirectionTo(Main.MouseWorld).SafeNormalize(Vector2.UnitX * player.direction);
+							player.ChangeDir((unitVectorTowardsMouse.X > 0f) ? 1 : (-1));
+							if (!player.channel) // If the player releases then change to moving forward mode
+							{
+								CurrentAIState = AIState.LaunchingForward;
+								StateTimer = 0f;
+								Projectile.velocity = unitVectorTowardsMouse * launchSpeed + player.velocity;
+								Projectile.Center = mountedCenter;
+								Projectile.netUpdate = true;
+								Projectile.ResetLocalNPCHitImmunity();
+								Projectile.localNPCHitCooldown = movingHitCooldown;
+								break;
+							}
+						}
+						SpinningStateTimer += 1f;
+						// This line creates a unit vector that is constantly rotated around the player. 10f controls how fast the projectile visually spins around the player
+						Vector2 offsetFromPlayer = new Vector2(player.direction).RotatedBy((float)Math.PI * 10f * (SpinningStateTimer / 60f) * player.direction);
+
+						offsetFromPlayer.Y *= 0.8f;
+						if (offsetFromPlayer.Y * player.gravDir > 0f) {
+							offsetFromPlayer.Y *= 0.5f;
+						}
+						Projectile.Center = mountedCenter + offsetFromPlayer * 30f;
+						Projectile.velocity = Vector2.Zero;
+						Projectile.localNPCHitCooldown = spinHitCooldown; // set the hit speed to the spinning hit speed
+						break;
 					}
-					else
-					{
-						if (Projectile.velocity.X > 0f)
-					    {
-						Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(90f);
-					    }
-					    else if (Projectile.velocity.X < 0f)
-					    {
-						Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.ToRadians(90f);
-					    }
+				case AIState.LaunchingForward: {
+						doFastThrowDust = true;
+						bool shouldSwitchToRetracting = StateTimer++ >= launchTimeLimit;
+						shouldSwitchToRetracting |= Projectile.Distance(mountedCenter) >= maxLaunchLength;
+						if (player.controlUseItem) // If the player clicks, transition to the Dropping state
+						{
+							CurrentAIState = AIState.Dropping;
+							StateTimer = 0f;
+							Projectile.netUpdate = true;
+							Projectile.velocity *= 0.2f;
+							// This is where Drippler Crippler spawns its projectile
+							/*
+							if (Main.myPlayer == Projectile.owner)
+								Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.Center, Projectile.velocity, 928, Projectile.damage, Projectile.knockBack, Main.myPlayer);
+							*/
+							break;
+						}
+						if (shouldSwitchToRetracting)
+						{
+							CurrentAIState = AIState.Retracting;
+							StateTimer = 0f;
+							Projectile.netUpdate = true;
+							Projectile.velocity *= 0.3f;
+							// This is also where Drippler Crippler spawns its projectile, see above code.
+						}
+						player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+						Projectile.localNPCHitCooldown = movingHitCooldown;
+						break;
 					}
-                    //Use this instead of the other one if your flail's projectile does not point in a direction (ball shaped)
-                    //Projectile.rotation = Projectile.velocity.ToRotation() + Projectile.velocity.X * 0.1f;
-                }
-                else
-                {
-                    Projectile.rotation += Projectile.velocity.X * 0.1f;
-                }
-            Projectile.timeLeft = 2; //Makes sure the flail doesn't die (good when the flail is resting on the ground)
-            player.heldProj = Projectile.whoAmI;
-            player.SetDummyItemTime(2); //Add a delay so the player can't button mash the flail
-            player.itemRotation = Projectile.DirectionFrom(mountedCenter).ToRotation();
-            if (Projectile.Center.X < mountedCenter.X)
-            {
-                player.itemRotation += (float)Math.PI;
-            }
-            player.itemRotation = MathHelper.WrapAngle(player.itemRotation);
+				case AIState.Retracting: {
+						Vector2 unitVectorTowardsPlayer = Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero);
+						if (Projectile.Distance(mountedCenter) <= maxRetractSpeed) {
+							Projectile.Kill(); // Kill the projectile once it is close enough to the player
+							return;
+						}
+						if (player.controlUseItem) // If the player clicks, transition to the Dropping state
+						{
+							CurrentAIState = AIState.Dropping;
+							StateTimer = 0f;
+							Projectile.netUpdate = true;
+							Projectile.velocity *= 0.2f;
+						}
+						else {
+							Projectile.velocity *= 0.98f;
+							Projectile.velocity = Projectile.velocity.MoveTowards(unitVectorTowardsPlayer * maxRetractSpeed, retractAcceleration);
+							player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+						}
+						break;
+					}
+				case AIState.UnusedState: // Projectile.ai[0] == 3; This case is actually unused, but maybe a Terraria update will add it back in, or maybe it is useless, so I left it here.
+					{
+						if (!player.controlUseItem) {
+							CurrentAIState = AIState.ForcedRetracting; // Move to super retracting mode if the player taps
+							StateTimer = 0f;
+							Projectile.netUpdate = true;
+							break;
+						}
+						float currentChainLength = Projectile.Distance(mountedCenter);
+						Projectile.tileCollide = StateTimer == 1f;
+						bool flag3 = currentChainLength <= launchRange;
+						if (flag3 != Projectile.tileCollide) {
+							Projectile.tileCollide = flag3;
+							StateTimer = Projectile.tileCollide ? 1 : 0;
+							Projectile.netUpdate = true;
+						}
+						if (currentChainLength > unusedChainLength) {
 
-            //Put your extra stuff here (shooting projectiles like flower pow)
+							if (currentChainLength >= launchRange) {
+								Projectile.velocity *= 0.5f;
+								Projectile.velocity = Projectile.velocity.MoveTowards(Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero) * unusedMaxRetractSpeed, unusedMaxRetractSpeed);
+							}
+							Projectile.velocity *= 0.98f;
+							Projectile.velocity = Projectile.velocity.MoveTowards(Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero) * unusedMaxRetractSpeed, unusedRetractAcceleration);
+						}
+						else {
+							if (Projectile.velocity.Length() < 6f) {
+								Projectile.velocity.X *= 0.96f;
+								Projectile.velocity.Y += 0.2f;
+							}
+							if (player.velocity.X == 0f) {
+								Projectile.velocity.X *= 0.96f;
+							}
+						}
+						player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+						break;
+					}
+				case AIState.ForcedRetracting:
+					{
+						Projectile.tileCollide = false;
+						Vector2 unitVectorTowardsPlayer = Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero);
+						if (Projectile.Distance(mountedCenter) <= maxForcedRetractSpeed) {
+							Projectile.Kill(); // Kill the projectile once it is close enough to the player
+							return;
+						}
+						Projectile.velocity *= 0.98f;
+						Projectile.velocity = Projectile.velocity.MoveTowards(unitVectorTowardsPlayer * maxForcedRetractSpeed, forcedRetractAcceleration);
+						Vector2 target = Projectile.Center + Projectile.velocity;
+						Vector2 value = mountedCenter.DirectionFrom(target).SafeNormalize(Vector2.Zero);
+						if (Vector2.Dot(unitVectorTowardsPlayer, value) < 0f) {
+							Projectile.Kill(); // Kill projectile if it will pass the player
+							return;
+						}
+						player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+						break;
+					}
+				case AIState.Ricochet:
+					if (StateTimer++ >= ricochetTimeLimit) {
+						CurrentAIState = AIState.Dropping;
+						StateTimer = 0f;
+						Projectile.netUpdate = true;
+					}
+					else {
+						Projectile.localNPCHitCooldown = movingHitCooldown;
+						Projectile.velocity.Y += 0.6f;
+						Projectile.velocity.X *= 0.95f;
+						player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+					}
+					break;
+				case AIState.Dropping:
+					if (!player.controlUseItem || Projectile.Distance(mountedCenter) > maxDroppedRange) {
+						CurrentAIState = AIState.ForcedRetracting;
+						StateTimer = 0f;
+						Projectile.netUpdate = true;
+					}
+					else {
+						Projectile.velocity.Y += 0.8f;
+						Projectile.velocity.X *= 0.95f;
+						player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+					}
+					break;
+			}
 
-        }
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            Player player = Main.player[Projectile.owner];
-            // This custom OnTileCollide code makes the projectile bounce off tiles at 1/5th the original speed, and plays sound and spawns dust if the projectile was going fast enough.
-            bool shouldMakeSound = false;
-            if (!Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, player.position, player.width, player.height) && Projectile.ai[0] != 6f) //if projectile isn't in line of sight or in falling on the ground mode then start desperate retraction
-            {
-                if (oldVelocity.X != Projectile.velocity.X)
-                {
-                    if (Math.Abs(oldVelocity.X) > 4f)
-                    {
-                        shouldMakeSound = true;
-                    }
+			// This is where Flower Pow launches projectiles. Decompile Terraria to view that code.
 
-                    Projectile.position.X += Projectile.velocity.X;
-                    Projectile.velocity.X = -oldVelocity.X * 0.05f;
-                }
+			Projectile.direction = (Projectile.velocity.X > 0f) ? 1 : -1;
+			Projectile.spriteDirection = Projectile.direction;
+			Projectile.ownerHitCheck = shouldOwnerHitCheck; // This prevents attempting to damage enemies without line of sight to the player. The custom Colliding code for spinning makes this necessary.
 
-                if (oldVelocity.Y != Projectile.velocity.Y)
-                {
-                    if (Math.Abs(oldVelocity.Y) > 4f)
-                    {
-                        shouldMakeSound = true;
-                    }
+			// This rotation code is unique to this flail, since the sprite isn't rotationally symmetric and has tip.
+			bool freeRotation = CurrentAIState == AIState.Ricochet || CurrentAIState == AIState.Dropping;
+			if (freeRotation) {
+				if (Projectile.velocity.Length() > 1f)
+					Projectile.rotation = Projectile.velocity.ToRotation() + Projectile.velocity.X * 0.1f; // skid
+				else
+					Projectile.rotation += Projectile.velocity.X * 0.1f; // roll
+			}
+			else {
+				Vector2 vectorTowardsPlayer = Projectile.DirectionTo(mountedCenter).SafeNormalize(Vector2.Zero);
+				Projectile.rotation = vectorTowardsPlayer.ToRotation() + MathHelper.PiOver2;
+			}
 
-                    Projectile.position.Y += Projectile.velocity.Y;
-                    Projectile.velocity.Y = -oldVelocity.Y * 0.05f;
-                }
-                tilecounter++;
-            }
-            else //if projectile is in line of sight, do normal bouncing
-            {
-                if (oldVelocity.X != Projectile.velocity.X)
-                {
-                    if (Math.Abs(oldVelocity.X) > 4f)
-                    {
-                        shouldMakeSound = true;
-                    }
+			// If you have a ball shaped flail, you can use this simplified rotation code instead
+			/*
+			if (Projectile.velocity.Length() > 1f)
+				Projectile.rotation = Projectile.velocity.ToRotation() + Projectile.velocity.X * 0.1f; // skid
+			else
+				Projectile.rotation += Projectile.velocity.X * 0.1f; // roll
+			*/
 
-                    Projectile.position.X += Projectile.velocity.X;
-                    Projectile.velocity.X = -oldVelocity.X * 0.2f;
-                }
+			Projectile.timeLeft = 2; // Makes sure the flail doesn't die (good when the flail is resting on the ground)
+			player.heldProj = Projectile.whoAmI;
+			player.SetDummyItemTime(2); //Add a delay so the player can't button mash the flail
+			player.itemRotation = Projectile.DirectionFrom(mountedCenter).ToRotation();
+			if (Projectile.Center.X < mountedCenter.X) {
+				player.itemRotation += (float)Math.PI;
+			}
+			player.itemRotation = MathHelper.WrapAngle(player.itemRotation);
 
-                if (oldVelocity.Y != Projectile.velocity.Y)
-                {
-                    if (Math.Abs(oldVelocity.Y) > 4f)
-                    {
-                        shouldMakeSound = true;
-                    }
+			// Spawning dust. We spawn dust more often when in the LaunchingForward state
+			int dustRate = 15;
+			if (doFastThrowDust)
+				dustRate = 1;
 
-                    Projectile.position.Y += Projectile.velocity.Y;
-                    Projectile.velocity.Y = -oldVelocity.Y * 0.2f;
-                }
-            }
-            alreadyHitATile = true; //the projectile hit a tile, so set bool to true
+			if (Main.rand.NextBool(dustRate))
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<Sparkle>(), 0f, 0f, 150, default(Color), 1.3f);
+		}
 
-            if (shouldMakeSound)
-            {
-                // if we should play the sound..
-                Projectile.netUpdate = true;
-                for (int k = 0; k < 8; k++) //emit dusts
-                {
-                    int dustint = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), 4, 4, ModContent.DustType<Sparkle>());
-                    Main.dust[dustint].noGravity = true;
-                    Dust dust = Main.dust[dustint];
-                    dust.velocity *= 1.5f;
-                    dust = Main.dust[dustint];
-                    dust.scale *= 1.5f;
-                }
-                // Play the sound
-                SoundEngine.PlaySound(SoundID.Dig, (int)Projectile.position.X, (int)Projectile.position.Y);
-            }
-            return false;
-        }
+		public override bool OnTileCollide(Vector2 oldVelocity) {
+			int defaultLocalNPCHitCooldown = 10;
+			int impactIntensity = 0;
+			Vector2 velocity = Projectile.velocity;
+			float bounceFactor = 0.2f;
+			if (CurrentAIState == AIState.LaunchingForward || CurrentAIState == AIState.Ricochet)
+				bounceFactor = 0.4f;
 
-        public override bool PreDraw(ref Color lightColor)
-        {
-            var player = Main.player[Projectile.owner];
+			if (CurrentAIState == AIState.Dropping)
+				bounceFactor = 0f;
 
-            Vector2 mountedCenter = player.MountedCenter;
-            Texture2D chainTexture = (Texture2D)ModContent.Request<Texture2D>(ChainTexturePath);
+			if (oldVelocity.X != Projectile.velocity.X) {
+				if (Math.Abs(oldVelocity.X) > 4f)
+					impactIntensity = 1;
 
-            var drawPosition = Projectile.Center;
-            var remainingVectorToPlayer = mountedCenter - drawPosition;
+				Projectile.velocity.X = (0f - oldVelocity.X) * bounceFactor;
+				CollisionCounter += 1f;
+			}
 
-            float rotation = remainingVectorToPlayer.ToRotation() - MathHelper.PiOver2;
+			if (oldVelocity.Y != Projectile.velocity.Y) {
+				if (Math.Abs(oldVelocity.Y) > 4f)
+					impactIntensity = 1;
 
-            if (Projectile.alpha == 0)
-            {
-                int direction = -1;
+				Projectile.velocity.Y = (0f - oldVelocity.Y) * bounceFactor;
+				CollisionCounter += 1f;
+			}
 
-                if (Projectile.Center.X < mountedCenter.X)
-                    direction = 1;
+			// If in the Launched state, spawn sparks
+			if (CurrentAIState == AIState.LaunchingForward) {
+				CurrentAIState = AIState.Ricochet;
+				Projectile.localNPCHitCooldown = defaultLocalNPCHitCooldown;
+				Projectile.netUpdate = true;
+				Point scanAreaStart = Projectile.TopLeft.ToTileCoordinates();
+				Point scanAreaEnd = Projectile.BottomRight.ToTileCoordinates();
+				impactIntensity = 2;
+				Projectile.CreateImpactExplosion(2, Projectile.Center, ref scanAreaStart, ref scanAreaEnd, Projectile.width, out bool causedShockwaves);
+				Projectile.CreateImpactExplosion2_FlailTileCollision(Projectile.Center, causedShockwaves, velocity);
+				Projectile.position -= velocity;
+			}
 
-                player.itemRotation = (float)Math.Atan2(remainingVectorToPlayer.Y * direction, remainingVectorToPlayer.X * direction);
-            }
+			// Here the tiles spawn dust indicating they've been hit
+			if (impactIntensity > 0) {
+				Projectile.netUpdate = true;
+				for (int i = 0; i < impactIntensity; i++) {
+					Collision.HitTiles(Projectile.position, velocity, Projectile.width, Projectile.height);
+				}
 
-            // This while loop draws the chain texture from the projectile to the player, looping to draw the chain texture along the path
-            while (true)
-            {
-                float length = remainingVectorToPlayer.Length();
+				SoundEngine.PlaySound(SoundID.Dig, (int)Projectile.position.X, (int)Projectile.position.Y);
+			}
 
-                // Once the remaining length is small enough, we terminate the loop
-                if (length < 25f || float.IsNaN(length))
-                    break;
+			// Force retraction if stuck on tiles while retracting
+			if (CurrentAIState != AIState.UnusedState && CurrentAIState != AIState.Spinning && CurrentAIState != AIState.Ricochet && CurrentAIState != AIState.Dropping && CollisionCounter >= 10f) {
+				CurrentAIState = AIState.ForcedRetracting;
+				Projectile.netUpdate = true;
+			}
 
-                // drawPosition is advanced along the vector back to the player by 16 pixels
-                // 16 comes from the height of ExampleFlailProjectileChain.png and the spacing that we desired between links
-                drawPosition += remainingVectorToPlayer * 16 / length;
-                remainingVectorToPlayer = mountedCenter - drawPosition;
+			// tModLoader currently does not provide the wetVelocity parameter, this code should make the flail bounce back faster when colliding with tiles underwater.
+			//if (Projectile.wet)
+			//	wetVelocity = Projectile.velocity;
 
-                // Finally, we draw the texture at the coordinates using the lighting information of the tile coordinates of the chain section
-                Color color = Lighting.GetColor((int)drawPosition.X / 16, (int)(drawPosition.Y / 16f));
-                Main.spriteBatch.Draw(chainTexture, drawPosition - Main.screenPosition, null, color, rotation, chainTexture.Size() * 0.5f, 1f, SpriteEffects.None, 0f);
-            }
-            if (Projectile.ai[0] == 1 && Projectile.ai[1] > 5 && !alreadyHitATile) //add a trail when moving forward, like most flails do (don't add trail if already hit a tile)
-            {
-                Vector2 drawOrigin = new Vector2(Terraria.GameContent.TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
-                for (int k = 0; k < Projectile.oldPos.Length; k++)
-                {
-                    Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                    Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                    Main.spriteBatch.Draw(Terraria.GameContent.TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k / (float)Projectile.oldPos.Length / 3, SpriteEffects.None, 0f);
-                }
-            }
+			return false;
+		}
 
-            return true;
-        }
-    }
+		public override bool? CanDamage() {
+			// Flails in spin mode won't damage enemies within the first 12 ticks. Visually this delays the first hit until the player swings the flail around for a full spin before damaging anything.
+			if (CurrentAIState == AIState.Spinning && SpinningStateTimer <= 12f)
+				return false;
+			return base.CanDamage();
+		}
+
+		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
+			// Flails do special collision logic that serves to hit anything within an ellipse centered on the player when the flail is spinning around the player. For example, the projectile rotating around the player won't actually hit a bee if it is directly on the player usually, but this code ensures that the bee is hit. This code makes hitting enemies while spinning more consistant and not reliant of the actual position of the flail projectile.
+			if (CurrentAIState == AIState.Spinning) {
+				Vector2 mountedCenter = Main.player[Projectile.owner].MountedCenter;
+				Vector2 shortestVectorFromPlayerToTarget = targetHitbox.ClosestPointInRect(mountedCenter) - mountedCenter;
+				shortestVectorFromPlayerToTarget.Y /= 0.8f; // Makes the hit area an ellipse. Vertical hit distance is smaller due to this math.
+				float hitRadius = 55f; // The length of the semi-major radius of the ellipse (the long end)
+				return shortestVectorFromPlayerToTarget.Length() <= hitRadius;
+			}
+			// Regular collision logic happens otherwise.
+			return base.Colliding(projHitbox, targetHitbox);
+		}
+
+		public override void ModifyDamageScaling(ref float damageScale) {
+			// Flails do 20% more damage while spinning
+			if (CurrentAIState == AIState.Spinning)
+				damageScale *= 1.2f;
+
+			// Flails do 100% more damage while launched or retracting. This is the damage the item tooltip for flails aim to match, as this is the most common mode of attack. This is why the item has ItemID.Sets.ToolTipDamageMultiplier[Type] = 2f;
+			if (CurrentAIState == AIState.LaunchingForward || CurrentAIState == AIState.Retracting)
+				damageScale *= 2f;
+		}
+
+		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
+			// Flails do a few custom things, you'll want to keep these to have the same feel as vanilla flails.
+
+			// The hitDirection is always set to hit away from the player, even if the flail damages the npc while returning
+			hitDirection = (Main.player[Projectile.owner].Center.X < target.Center.X) ? 1 : (-1);
+
+			// Knockback is only 25% as powerful when in spin mode
+			if (CurrentAIState == AIState.Spinning)
+				knockback *= 0.25f;
+			// Knockback is only 50% as powerful when in drop down mode
+			if (CurrentAIState == AIState.Dropping)
+				knockback *= 0.5f;
+
+			base.ModifyHitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
+		}
+
+		// PreDraw is used to draw a chain and trail before the projectile is drawn normally.
+		public override bool PreDraw(ref Color lightColor) {
+			Vector2 playerArmPosition = Main.GetPlayerArmPosition(Projectile);
+
+			// This fixes a vanilla GetPlayerArmPosition bug causing the chain to draw incorrectly when stepping up slopes. The flail itself still draws incorrectly due to another similar bug. This should be removed once the vanilla bug is fixed.
+			playerArmPosition.Y -= Main.player[Projectile.owner].gfxOffY;
+
+			Asset<Texture2D> chainTexture = ModContent.Request<Texture2D>(ChainTexturePath);
+			Asset<Texture2D> chainTextureExtra = ModContent.Request<Texture2D>(ChainTextureExtraPath); // This texture and related code is optional and used for a unique effect
+
+			Rectangle? chainSourceRectangle = null;
+			// Drippler Crippler customizes sourceRectangle to cycle through sprite frames: sourceRectangle = asset.Frame(1, 6);
+			float chainHeightAdjustment = 0f; // Use this to adjust the chain overlap. 
+
+			Vector2 chainOrigin = chainSourceRectangle.HasValue ? (chainSourceRectangle.Value.Size() / 2f) : (chainTexture.Size() / 2f);
+			Vector2 chainDrawPosition = Projectile.Center;
+			Vector2 vectorFromProjectileToPlayerArms = playerArmPosition.MoveTowards(chainDrawPosition, 4f) - chainDrawPosition;
+			Vector2 unitVectorFromProjectileToPlayerArms = vectorFromProjectileToPlayerArms.SafeNormalize(Vector2.Zero);
+			float chainSegmentLength = (chainSourceRectangle.HasValue ? chainSourceRectangle.Value.Height : chainTexture.Height()) + chainHeightAdjustment;
+			if (chainSegmentLength == 0)
+				chainSegmentLength = 10; // When the chain texture is being loaded, the height is 0 which would cause infinite loops.
+			float chainRotation = unitVectorFromProjectileToPlayerArms.ToRotation() + MathHelper.PiOver2;
+			int chainCount = 0;
+			float chainLengthRemainingToDraw = vectorFromProjectileToPlayerArms.Length() + chainSegmentLength / 2f;
+
+			// This while loop draws the chain texture from the projectile to the player, looping to draw the chain texture along the path
+			while (chainLengthRemainingToDraw > 0f) {
+				// This code gets the lighting at the current tile coordinates
+				Color chainDrawColor = Lighting.GetColor((int)chainDrawPosition.X / 16, (int)(chainDrawPosition.Y / 16f));
+
+				// Flaming Mace and Drippler Crippler use code here to draw custom sprite frames with custom lighting.
+				// Cycling through frames: sourceRectangle = asset.Frame(1, 6, 0, chainCount % 6);
+				// This example shows how Flaming Mace works. It checks chainCount and changes chainTexture and draw color at different values
+
+				var chainTextureToDraw = chainTexture;
+				if (chainCount >= 4) {
+					// Use normal chainTexture and lighting, no changes
+				}
+				else if (chainCount >= 2) {
+					// Near to the ball, we draw a custom chain texture and slightly make it glow if unlit.
+					chainTextureToDraw = chainTextureExtra;
+					byte minValue = 140;
+					if (chainDrawColor.R < minValue)
+						chainDrawColor.R = minValue;
+
+					if (chainDrawColor.G < minValue)
+						chainDrawColor.G = minValue;
+
+					if (chainDrawColor.B < minValue)
+						chainDrawColor.B = minValue;
+				}
+				else {
+					// Close to the ball, we draw a custom chain texture and draw it at full brightness glow.
+					chainTextureToDraw = chainTextureExtra;
+					chainDrawColor = Color.White;
+				}
+
+				// Here, we draw the chain texture at the coordinates
+				Main.spriteBatch.Draw(chainTextureToDraw.Value, chainDrawPosition - Main.screenPosition, chainSourceRectangle, chainDrawColor, chainRotation, chainOrigin, 1f, SpriteEffects.None, 0f);
+
+				// chainDrawPosition is advanced along the vector back to the player by the chainSegmentLength
+				chainDrawPosition += unitVectorFromProjectileToPlayerArms * chainSegmentLength;
+				chainCount++;
+				chainLengthRemainingToDraw -= chainSegmentLength;
+			}
+
+			// Add a motion trail when moving forward, like most flails do (don't add trail if already hit a tile)
+			if (CurrentAIState == AIState.LaunchingForward)
+			{
+				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+				Vector2 drawOrigin = new Vector2(projectileTexture.Width * 0.5f, Projectile.height * 0.5f);
+				SpriteEffects spriteEffects = SpriteEffects.None;
+				if (Projectile.spriteDirection == -1)
+					spriteEffects = SpriteEffects.FlipHorizontally;
+				for (int k = 0; k < Projectile.oldPos.Length && k < StateTimer; k++) {
+					Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+					Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+					Main.spriteBatch.Draw(projectileTexture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k / (float)Projectile.oldPos.Length / 3, spriteEffects, 0f);
+				}
+			}
+			return true;
+		}
+	}
 }

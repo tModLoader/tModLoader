@@ -363,6 +363,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateModifyDamageScaling(Projectile projectile, ref float damageScale);
+		private static HookList HookModifyDamageScaling = AddHook<DelegateModifyDamageScaling>(g => g.ModifyDamageScaling);
+
+		public static void ModifyDamageScaling(Projectile projectile, ref float damageScale) {
+			projectile.ModProjectile?.ModifyDamageScaling(ref damageScale);
+
+			foreach (GlobalProjectile g in HookModifyDamageScaling.Enumerate(projectile.globalProjectiles)) {
+				g.ModifyDamageScaling(projectile, ref damageScale);
+			}
+		}
+
 		private static HookList HookCanHitNPC = AddHook<Func<Projectile, NPC, bool?>>(g => g.CanHitNPC);
 
 		public static bool? CanHitNPC(Projectile projectile, NPC target) {

@@ -235,6 +235,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.
+		/// </summary>
+		/// <param name="damageScale">The damage scaling</param>
+		public virtual void ModifyDamageScaling(ref float damageScale) {
+		}
+
+		/// <summary>
 		/// Allows you to determine whether this projectile can hit the given NPC. Return true to allow hitting the target, return false to block this projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 		/// </summary>
 		/// <param name="target">The target.</param>

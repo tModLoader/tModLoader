@@ -177,6 +177,16 @@
  			if (friendly && owner == Main.myPlayer && !npcProj) {
  				if ((aiStyle == 16 && !ProjectileID.Sets.RocketsSkipDamageForPlayers[type] && (timeLeft <= 1 || type == 108 || type == 164)) || (type == 286 && localAI[1] == -1f)) {
  					int myPlayer = Main.myPlayer;
+@@ -9211,7 +_,9 @@
+ 							num5 = 1.9f;
+ 							break;
+ 					}
++
+ 				}
++				ProjectileLoader.ModifyDamageScaling(this, ref num5);
+ 
+ 				if (damage > 0) {
+ 					int[] array = localNPCImmunity;
 @@ -9221,11 +_,26 @@
  							array = projectile.localNPCImmunity;
  					}
@@ -627,6 +637,15 @@
  				localAI[0] = 1f;
  			}
  		}
+@@ -27325,7 +_,7 @@
+ 				wetVelocity = base.velocity;
+ 		}
+ 
+-		private void ResetLocalNPCHitImmunity() {
++		public void ResetLocalNPCHitImmunity() {
+ 			for (int i = 0; i < 200; i++) {
+ 				localNPCImmunity[i] = 0;
+ 			}
 @@ -27977,7 +_,7 @@
  
  						if (flag3) {
@@ -737,6 +756,15 @@
  					for (int k = 0; k < num5; k++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num4 * 1.5f;
+@@ -45576,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private void CreateImpactExplosion(int dustAmountMultiplier, Vector2 explosionOrigin, ref Point scanAreaStart, ref Point scanAreaEnd, int explosionRange, out bool causedShockwaves) {
++		public void CreateImpactExplosion(int dustAmountMultiplier, Vector2 explosionOrigin, ref Point scanAreaStart, ref Point scanAreaEnd, int explosionRange, out bool causedShockwaves) {
+ 			causedShockwaves = false;
+ 			int num = 4;
+ 			for (int i = scanAreaStart.X; i <= scanAreaEnd.X; i++) {
 @@ -45592,7 +_,7 @@
  					if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
  						continue;
@@ -746,6 +774,15 @@
  					for (int k = 0; k < num2; k++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num * 1.5f;
+@@ -45648,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private void CreateImpactExplosion2_FlailTileCollision(Vector2 explosionOrigin, bool causedShockwaves, Vector2 velocityBeforeCollision) {
++		public void CreateImpactExplosion2_FlailTileCollision(Vector2 explosionOrigin, bool causedShockwaves, Vector2 velocityBeforeCollision) {
+ 			Vector2 spinningpoint = new Vector2(7f, 0f);
+ 			Vector2 value = new Vector2(1f, 0.7f);
+ 			Color color = Color.White * 0.5f;
 @@ -46241,6 +_,11 @@
  			int num = timeLeft;
  			timeLeft = 0;
