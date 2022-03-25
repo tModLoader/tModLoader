@@ -177,7 +177,7 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
-@@ -2753,21 +_,24 @@
+@@ -2753,21 +_,26 @@
  			noLiquidCheck = false;
  			Liquid.numLiquid = 0;
  			LiquidBuffer.numLiquidBuffer = 0;
@@ -196,8 +196,12 @@
  
  			lastMaxTilesX = Main.maxTilesX;
  			lastMaxTilesY = Main.maxTilesY;
- 			if (Main.netMode != 2)
- 				Main.sectionManager = new WorldSections(Main.maxTilesX / 200, Main.maxTilesY / 150);
+-			if (Main.netMode != 2)
++			if (Main.netMode != 2) {
+-				Main.sectionManager = new WorldSections(Main.maxTilesX / 200, Main.maxTilesY / 150);
++				// Main.sectionManager = new WorldSections(Main.maxTilesX / 200, Main.maxTilesY / 150);
++				Main.sectionManager = new WorldSections((Main.maxTilesX - 1) / Main.sectionWidth + 1, (Main.maxTilesY - 1) / Main.sectionHeight + 1);
++			}
  
 +			/*
  			if (Main.netMode != 1) {
