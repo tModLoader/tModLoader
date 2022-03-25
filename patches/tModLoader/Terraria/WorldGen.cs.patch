@@ -85,7 +85,16 @@
  			}
  
  			if (x < roomX1)
-@@ -2314,10 +_,20 @@
+@@ -2309,15 +_,29 @@
+ 		public static void setWorldSize() {
+ 			Main.bottomWorld = Main.maxTilesY * 16;
+ 			Main.rightWorld = Main.maxTilesX * 16;
++			/*
+ 			Main.maxSectionsX = Main.maxTilesX / 200;
+ 			Main.maxSectionsY = Main.maxTilesY / 150;
++			*/
++			Main.maxSectionsX = (Main.maxTilesX - 1) / Main.sectionWidth + 1;
++			Main.maxSectionsY = (Main.maxTilesY - 1) / Main.sectionHeight + 1;
  		}
  
  		public static void worldGenCallback(object threadContext) {
