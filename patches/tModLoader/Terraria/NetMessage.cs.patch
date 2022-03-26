@@ -233,21 +233,17 @@
  								writer.Write((ushort)Main.player[number].buffType[n]);
  							}
  
-@@ -812,9 +_,11 @@
+@@ -812,7 +_,9 @@
  						break;
  					case 54: {
  							writer.Write((short)number);
-+							NPC buffNPC = Main.npc[number];
-+							writer.Write((ushort)buffNPC.BuffCount);
++							if (!ModNet.AllowVanillaClients)
++								writer.Write((ushort)Main.npc[number].BuffCount);
 -							for (int k = 0; k < 5; k++) {
 +							for (int k = 0; k < buffNPC.BuffCount; k++) {
--								writer.Write((ushort)Main.npc[number].buffType[k]);
-+								writer.Write((ushort)buffNPC.buffType[k]);
--								writer.Write((short)Main.npc[number].buffTime[k]);
-+								writer.Write((short)buffNPC.buffTime[k]);
+ 								writer.Write((ushort)Main.npc[number].buffType[k]);
+ 								writer.Write((short)Main.npc[number].buffTime[k]);
  							}
- 
- 							break;
 @@ -997,7 +_,7 @@
  							bool flag3 = TileEntity.ByID.ContainsKey(number);
  							writer.Write(flag3);

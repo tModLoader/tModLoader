@@ -494,7 +494,7 @@
 -						for (int num264 = 0; num264 < 5; num264++) {
 -							nPC6.buffType[num264] = reader.ReadUInt16();
 -							nPC6.buffTime[num264] = reader.ReadInt16();
-+						int buffCount = reader.ReadUInt16();
++						int buffCount = ModNet.AllowVanillaClients ? NPC.maxBuffs : reader.ReadUInt16();
 +						nPC6.buffType = new();
 +						nPC6.buffTime = new();
 +						for (int num264 = 0; num264 < buffCount; num264++) {

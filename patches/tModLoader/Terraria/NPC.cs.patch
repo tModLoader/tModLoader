@@ -136,7 +136,7 @@
  			waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  			honeyMovementSpeed = 0.25f;
  			netOffset *= 0f;
-@@ -1949,15 +_,24 @@
+@@ -1949,15 +_,30 @@
  				oldPos[j].Y = 0f;
  			}
  
@@ -147,8 +147,14 @@
  			}
 +			*/
 +
-+			buffTime = new();
-+			buffType = new();
++			if (ModNet.AllowVanillaClients) {
++				//Vanilla behavior:  a constant size of 5 buff slots
++				buffTime = new(new int[5]);
++				buffType = new(new int[5]);
++			} else {
++				buffTime = new();
++				buffType = new();
++			}
 +
 +			if (buffImmune.Length != BuffLoader.BuffCount)
 +				Array.Resize(ref buffImmune, BuffLoader.BuffCount);
@@ -893,15 +899,17 @@
  					if (buffTime[i] < time)
  						buffTime[i] = time;
  
-@@ -68568,6 +_,7 @@
+@@ -68568,6 +_,9 @@
  				}
  			}
  
-+			/*
++			if (!ModNet.AllowVanillaClients)
++				goto skipVanilla;
++
  			while (num == -1) {
  				int num2 = -1;
  				for (int j = 0; j < 5; j++) {
-@@ -68588,25 +_,28 @@
+@@ -68588,26 +_,38 @@
  				}
  
  				if (num == -1)
@@ -911,7 +919,9 @@
 -
  			buffType[num] = type;
  			buffTime[num] = time;
-+			*/
++			return;
++
++			skipVanilla:
 +			buffType.Add(type);
 +			buffTime.Add(time);
  		}
@@ -929,24 +939,34 @@
  					NetMessage.SendData(137, -1, -1, null, whoAmI, buffTypeToRemove);
  			}
  		}
- 
+-
++		
++		//Changed from "int buffIndex" to "ref int buffIndex" due to the arrays being changed to lists
++		//Added "quiet" parameter for use in netcode optimizations
++		public void DelBuff(ref int buffIndex, bool quiet = false) {
 +		/*
  		public void DelBuff(int buffIndex) {
++		*/
++			if (!ModNet.AllowVanillaClients)
++				goto skipVanilla;
++
  			buffTime[buffIndex] = 0;
  			buffType[buffIndex] = 0;
+ 			for (int i = 0; i < 4; i++) {
 @@ -68620,8 +_,15 @@
  					}
  				}
  			}
-+		*/
-+		//Changed from "int buffIndex" to "ref int buffIndex" due to the arrays being changed to lists
-+		//Added "quiet" parameter for use in netcode optimizations
-+		public void DelBuff(ref int buffIndex, bool quiet = false) {
+-
+-			if (Main.netMode == 2)
++			goto sendMessage;
++
++			skipVanilla:
 +			buffType.RemoveAt(buffIndex);
 +			buffTime.RemoveAt(buffIndex);
 +			buffIndex--;
- 
--			if (Main.netMode == 2)
++
++			sendMessage:
 +			if (!quiet && Main.netMode == 2)
  				NetMessage.SendData(54, -1, -1, null, whoAmI);
  		}
