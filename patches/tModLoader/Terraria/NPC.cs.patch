@@ -141,8 +141,7 @@
  			}
  
 +			/*
--			for (int k = 0; k < 5; k++) {
-+			for (int k = 0; k < BuffCount; k++) {
+ 			for (int k = 0; k < 5; k++) {
  				buffTime[k] = 0;
  				buffType[k] = 0;
  			}
@@ -902,7 +901,7 @@
  			while (num == -1) {
  				int num2 = -1;
  				for (int j = 0; j < 5; j++) {
-@@ -68588,40 +_,35 @@
+@@ -68588,25 +_,28 @@
  				}
  
  				if (num == -1)
@@ -931,19 +930,15 @@
  			}
  		}
  
--		public void DelBuff(int buffIndex) {
--			buffTime[buffIndex] = 0;
--			buffType[buffIndex] = 0;
--			for (int i = 0; i < 4; i++) {
--				if (buffTime[i] == 0 || buffType[i] == 0) {
--					for (int j = i + 1; j < 5; j++) {
--						buffTime[j - 1] = buffTime[j];
--						buffType[j - 1] = buffType[j];
--						buffTime[j] = 0;
--						buffType[j] = 0;
--					}
--				}
--			}
++		/*
+ 		public void DelBuff(int buffIndex) {
+ 			buffTime[buffIndex] = 0;
+ 			buffType[buffIndex] = 0;
+@@ -68620,8 +_,15 @@
+ 					}
+ 				}
+ 			}
++		*/
 +		//Changed from "int buffIndex" to "ref int buffIndex" due to the arrays being changed to lists
 +		//Added "quiet" parameter for use in netcode optimizations
 +		public void DelBuff(ref int buffIndex, bool quiet = false) {
