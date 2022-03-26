@@ -13,7 +13,7 @@
  	{
  		private const int NPC_TARGETS_START = 300;
  		public bool IsABestiaryIconDummy;
-@@ -104,14 +_,14 @@
+@@ -104,14 +_,20 @@
  		private static int townRangeY = sHeight;
  		public float npcSlots = 1f;
  		private static bool noSpawnCycle = false;
@@ -22,9 +22,15 @@
  		private static int defaultSpawnRate = 600;
  		private static int defaultMaxSpawns = 5;
  		public bool dontCountMe;
++		[Obsolete("Use NPC.BuffCount on an NPC instance instead")]
  		public const int maxBuffs = 5;
++		/*
  		public int[] buffType = new int[5];
  		public int[] buffTime = new int[5];
++		*/
++		public List<int> buffType = new List<int>();
++		public List<int> buffTime = new List<int>();
++		public int BuffCount => buffType.Count;
 -		public bool[] buffImmune = new bool[338];
 +		public bool[] buffImmune = new bool[BuffLoader.BuffCount];
  		public bool midas;
@@ -130,13 +136,24 @@
  			waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  			honeyMovementSpeed = 0.25f;
  			netOffset *= 0f;
-@@ -1954,10 +_,14 @@
- 				buffType[k] = 0;
+@@ -1949,15 +_,24 @@
+ 				oldPos[j].Y = 0f;
  			}
  
++			/*
+-			for (int k = 0; k < 5; k++) {
++			for (int k = 0; k < BuffCount; k++) {
+ 				buffTime[k] = 0;
+ 				buffType[k] = 0;
+ 			}
++			*/
++
++			buffTime = new();
++			buffType = new();
++
 +			if (buffImmune.Length != BuffLoader.BuffCount)
 +				Array.Resize(ref buffImmune, BuffLoader.BuffCount);
-+
+ 
 -			for (int l = 0; l < 338; l++) {
 +			for (int l = 0; l < buffImmune.Length; l++) {
  				buffImmune[l] = false;
@@ -795,6 +812,36 @@
  				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
  				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
  					Main.npc[nextNPC].townNpcVariationIndex = profile.RollVariation();
+@@ -61077,11 +_,19 @@
+ 				if (value == 0f)
+ 					flag = true;
+ 
++				/*
+ 				int[] array = new int[5];
+ 				int[] array2 = new int[5];
++				*/
++				List<int> array = new();
++				List<int> array2 = new();
+-				for (int i = 0; i < 5; i++) {
++				for (int i = 0; i < BuffCount; i++) {
++					/*
+ 					array[i] = buffType[i];
+ 					array2[i] = buffTime[i];
++					*/
++					array.Add(buffType[i]);
++					array2.Add(buffTime[i]);
+ 				}
+ 
+ 				_ = height;
+@@ -61098,7 +_,7 @@
+ 				TargetClosest();
+ 				base.velocity = velocity;
+ 				position.Y -= height;
+-				for (int j = 0; j < 5; j++) {
++				for (int j = 0; j < array.Count; j++) {
+ 					buffType[j] = array[j];
+ 					buffTime[j] = array2[j];
+ 				}
 @@ -61171,12 +_,14 @@
  			if (num2 < 0)
  				num2 = 0;
@@ -826,16 +873,48 @@
  			if (!active)
  				return;
  
-@@ -68561,6 +_,8 @@
+@@ -68539,7 +_,7 @@
+ 			if (buffImmune[type])
+ 				return -1;
+ 
+-			for (int i = 0; i < 5; i++) {
++			for (int i = 0; i < BuffCount; i++) {
+ 				if (buffTime[i] >= 1 && buffType[i] == type)
+ 					return i;
+ 			}
+@@ -68559,8 +_,10 @@
+ 			}
+ 
  			int num = -1;
- 			for (int i = 0; i < 5; i++) {
+-			for (int i = 0; i < 5; i++) {
++			for (int i = 0; i < BuffCount; i++) {
  				if (buffType[i] == type) {
 +					if (BuffLoader.ReApply(type, this, time, i))
 +						return;
  					if (buffTime[i] < time)
  						buffTime[i] = time;
  
-@@ -68596,7 +_,7 @@
+@@ -68568,6 +_,7 @@
+ 				}
+ 			}
+ 
++			/*
+ 			while (num == -1) {
+ 				int num2 = -1;
+ 				for (int j = 0; j < 5; j++) {
+@@ -68588,40 +_,35 @@
+ 				}
+ 
+ 				if (num == -1)
+-					DelBuff(num2);
++					DelBuff(ref num2);
+ 			}
+-
+ 			buffType[num] = type;
+ 			buffTime[num] = time;
++			*/
++			buffType.Add(type);
++			buffTime.Add(time);
  		}
  
  		public void RequestBuffRemoval(int buffTypeToRemove) {
@@ -844,6 +923,39 @@
  				return;
  
  			int num = FindBuffIndex(buffTypeToRemove);
+ 			if (num != -1) {
+-				DelBuff(num);
++				DelBuff(ref num);
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(137, -1, -1, null, whoAmI, buffTypeToRemove);
+ 			}
+ 		}
+ 
+-		public void DelBuff(int buffIndex) {
+-			buffTime[buffIndex] = 0;
+-			buffType[buffIndex] = 0;
+-			for (int i = 0; i < 4; i++) {
+-				if (buffTime[i] == 0 || buffType[i] == 0) {
+-					for (int j = i + 1; j < 5; j++) {
+-						buffTime[j - 1] = buffTime[j];
+-						buffType[j - 1] = buffType[j];
+-						buffTime[j] = 0;
+-						buffType[j] = 0;
+-					}
+-				}
+-			}
++		//Changed from "int buffIndex" to "ref int buffIndex" due to the arrays being changed to lists
++		//Added "quiet" parameter for use in netcode optimizations
++		public void DelBuff(ref int buffIndex, bool quiet = false) {
++			buffType.RemoveAt(buffIndex);
++			buffTime.RemoveAt(buffIndex);
++			buffIndex--;
+ 
+-			if (Main.netMode == 2)
++			if (!quiet && Main.netMode == 2)
+ 				NetMessage.SendData(54, -1, -1, null, whoAmI);
+ 		}
+ 
 @@ -68791,7 +_,7 @@
  				if (NPCID.Sets.NoMultiplayerSmoothingByType[type]) {
  					netOffset *= 0f;
@@ -861,6 +973,18 @@
  			UpdateNPC_BuffSetFlags();
  			UpdateNPC_SoulDrainDebuff();
  			UpdateNPC_BuffClearExpiredBuffs();
+@@ -68969,9 +_,9 @@
+ 				oldDirection = direction;
+ 				position += velocity;
+ 				if (onFire && boss && Main.netMode != 1 && Collision.WetCollision(position, width, height)) {
+-					for (int k = 0; k < 5; k++) {
++					for (int k = 0; k < BuffCount; k++) {
+ 						if (buffType[k] == 24)
+-							DelBuff(k);
++							DelBuff(ref k);
+ 					}
+ 				}
+ 			}
 @@ -69822,6 +_,7 @@
  					num = 5;
  			}
@@ -869,6 +993,37 @@
  			if (lifeRegen <= -240 && num < 2)
  				num = 2;
  
+@@ -69888,13 +_,17 @@
+ 			if (Main.netMode == 1)
+ 				return;
+ 
++			//Optimized: sending a netmessage only once
++			bool hasBuffRemoved = false;
+-			for (int i = 0; i < 5; i++) {
++			for (int i = 0; i < BuffCount; i++) {
+ 				if (buffType[i] > 0 && buffTime[i] <= 0) {
+-					DelBuff(i);
+-					if (Main.netMode == 2)
+-						NetMessage.SendData(54, -1, -1, null, whoAmI);
++					DelBuff(ref i, quiet: true);
++					hasBuffRemoved = true;
+ 				}
+ 			}
++
++			if (hasBuffRemoved && Main.netMode == 2)
++				NetMessage.SendData(54, -1, -1, null, whoAmI);
+ 		}
+ 
+ 		private void UpdateNPC_BloodMoonTransformations() {
+@@ -69931,7 +_,7 @@
+ 		}
+ 
+ 		public void UpdateNPC_BuffSetFlags(bool lowerBuffTime = true) {
+-			for (int i = 0; i < 5; i++) {
++			for (int i = 0; i < BuffCount; i++) {
+ 				if (buffType[i] > 0 && buffTime[i] > 0) {
+ 					if (lowerBuffTime)
+ 						buffTime[i]--;
 @@ -70013,6 +_,7 @@
  
  					if (buffType[i] == 324)
@@ -911,6 +1066,18 @@
  			if (dryadWard) {
  				num2 = (int)num5 / 3;
  				num3 = 6;
+@@ -70702,9 +_,9 @@
+ 
+ 			if (flag) {
+ 				if (onFire && !lavaWet && Main.netMode != 1) {
+-					for (int i = 0; i < 5; i++) {
++					for (int i = 0; i < BuffCount; i++) {
+ 						if (buffType[i] == 24)
+-							DelBuff(i);
++							DelBuff(ref i);
+ 					}
+ 				}
+ 
 @@ -70871,6 +_,10 @@
  			if (IsABestiaryIconDummy)
  				newColor = Color.White;

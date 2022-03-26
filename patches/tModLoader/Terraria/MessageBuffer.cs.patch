@@ -487,6 +487,22 @@
  							player5.buffType[num56] = reader.ReadUInt16();
  							if (player5.buffType[num56] > 0)
  								player5.buffTime[num56] = 60;
+@@ -2061,9 +_,12 @@
+ 					if (Main.netMode == 1) {
+ 						int num263 = reader.ReadInt16();
+ 						NPC nPC6 = Main.npc[num263];
+-						for (int num264 = 0; num264 < 5; num264++) {
+-							nPC6.buffType[num264] = reader.ReadUInt16();
+-							nPC6.buffTime[num264] = reader.ReadInt16();
++						int buffCount = reader.ReadUInt16();
++						nPC6.buffType = new();
++						nPC6.buffTime = new();
++						for (int num264 = 0; num264 < buffCount; num264++) {
++							nPC6.buffType.Add(reader.ReadUInt16());
++							nPC6.buffTime.Add(reader.ReadInt16());
+ 						}
+ 					}
+ 					break;
 @@ -2188,7 +_,7 @@
  						if (Main.netMode != 2)
  							break;

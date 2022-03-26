@@ -259,6 +259,15 @@
  
  											int num15 = type;
  											if ((uint)(num15 - 688) <= 2u) {
+@@ -9462,7 +_,7 @@
+ 											bool flag14 = false;
+ 											bool flag15 = false;
+ 											bool flag16 = false;
+-											for (int j = 0; j < 5; j++) {
++											for (int j = 0; j < nPC.BuffCount; j++) {
+ 												if (nPC.buffTime[j] >= 1) {
+ 													switch (nPC.buffType[j]) {
+ 														case 307:
 @@ -9748,7 +_,7 @@
  												num21 = (int)((double)num21 * 0.75);
  										}
