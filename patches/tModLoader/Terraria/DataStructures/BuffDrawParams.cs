@@ -57,6 +57,6 @@ namespace Terraria.DataStructures
 			drawColor = this.drawColor;
 		}
 
-		//If new fields get added post-release, add new con/deconstructors instead of expanding the current ones to maintain backwards compatibility
+		// If new fields get added post-release, add new con/deconstructors instead of expanding the current ones to maintain backwards compatibility
 	}
 }

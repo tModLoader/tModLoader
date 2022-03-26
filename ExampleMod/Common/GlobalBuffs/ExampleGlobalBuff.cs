@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Common.GlobalBuffs
 {
-	//Showcases how to work with all buffs
+	// Showcases how to work with all buffs
 	public class ExampleGlobalBuff : GlobalBuff
 	{
 		public override void Update(int type, Player player, ref int buffIndex) {
@@ -38,7 +38,7 @@ namespace ExampleMod.Common.GlobalBuffs
 
 				int offset = (int)(6 * time);
 
-				ref Vector2 textPos = ref drawParams.textPosition; //You can use ref locals to keep modifying the same variable
+				ref Vector2 textPos = ref drawParams.textPosition; // You can use ref locals to keep modifying the same variable
 				textPos.Y += offset;
 			}
 
