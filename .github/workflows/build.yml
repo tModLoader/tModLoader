@@ -372,11 +372,11 @@ jobs:
       - name: Check out base branch
         uses: actions/checkout@v2
         with:
-          fetch-depth: 2
+          fetch-depth: 0
           
       - name: Detect ExampleMod Changed Files
         id: changed-files-examplemod
-        uses: tj-actions/changed-files@v9.1
+        uses: tj-actions/changed-files@v18.4
         with:
           files: |
             ExampleMod
@@ -389,7 +389,7 @@ jobs:
           
       - name: Detect patches Changed Files
         id: changed-files-patches
-        uses: tj-actions/changed-files@v9.1
+        uses: tj-actions/changed-files@v18.4
         with:
           files: |
             patches
@@ -414,12 +414,12 @@ jobs:
         working-directory: artifacts/Build
         
       - name: Setup steamcmd
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true' || steps.changed-files-patches.outputs.any_changed == 'true'
+        if: steps.changed-files-examplemod.outputs.any_modified == 'true' || steps.changed-files-patches.outputs.any_modified == 'true'
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
         
       - name: Setup Authentication Files
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true' || steps.changed-files-patches.outputs.any_changed == 'true'
+        if: steps.changed-files-examplemod.outputs.any_modified == 'true' || steps.changed-files-patches.outputs.any_modified == 'true'
         shell: bash
         run: |
           echo Decrypting Authentication Files
@@ -429,7 +429,7 @@ jobs:
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
           
       - name: Attempt run_app_build_http 
-        if: steps.changed-files-patches.outputs.any_changed == 'true'
+        if: steps.changed-files-patches.outputs.any_modified == 'true'
         shell: bash
         run: |
           mkdir artifacts/shared
@@ -451,7 +451,7 @@ jobs:
           cat BuildOutput/*.log
           
       - name: Download ExampleMod build artifact from build job
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        if: steps.changed-files-examplemod.outputs.any_modified == 'true'
         # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
         uses: actions/download-artifact@v2
         with:
@@ -459,14 +459,14 @@ jobs:
           path: artifacts/ExampleMod
           
       - name: View ExampleMod build artifact files
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        if: steps.changed-files-examplemod.outputs.any_modified == 'true'
         run: |
           echo pwd is: ${PWD}
           ls -alhR
         working-directory: artifacts/ExampleMod
         
       - name: Attempt workshop_build_item 
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        if: steps.changed-files-examplemod.outputs.any_modified == 'true'
         shell: bash
         run: |
           echo Changes detected in ExampleMod folder, attempting to publish ExampleMod to workshop
