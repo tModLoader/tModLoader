@@ -4,16 +4,16 @@ name: Build tModLoader
 on:
   # This workflow runs when a push to 1.4 branch happens, or when a label is added to a pull request targetting 1.4 branch.
   push:
-    branches: [1.4, 1.4_mergedtesting, gh_actions_test]
+    branches: [1.4_mergedtesting, gh_actions_test, 1.4-preview, 1.4-stable, 1.4]
   pull_request_target:
     types: [labeled]
-    branches: [1.4, 1.4_mergedtesting]
+    branches: [1.4-preview, 1.4-stable, 1.4, 1.4_mergedtesting]
   # Allows you to run this workflow manually from the Actions tab
   # workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+  # This workflow contains a primary job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: windows-latest
@@ -26,9 +26,57 @@ jobs:
       - name: Check out base branch
         uses: actions/checkout@v2
         with:
+          ref: ${{github.ref}}
           persist-credentials: false
-          fetch-depth: 10
+          fetch-depth: 0
 
+      - name: Update Versioning
+        id: version
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
+        shell: bash
+        run: |
+          echo "Attempting get previous version id"
+          version=$(git describe --tags --abbrev=0)
+          echo "Previous Version is: $version"
+          regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
+          if [[ $version =~ $regex ]] ; then
+            year="${BASH_REMATCH[1]}"
+            month="${BASH_REMATCH[2]}"
+            feature="${BASH_REMATCH[3]}"
+            patch="${BASH_REMATCH[4]}"
+            oldate="$year.$month"
+          else
+            echo "Previous version '$version' is not a valid version"
+            exit 1
+          fi
+          echo "Applying verison updates"
+          if [[ "refs/heads/1.4-stable" = $branch ]] ; then
+             echo "Rolling Forward the Patch #..."
+             ((++patch))   
+          fi
+          if [[ "refs/heads/1.4-preview" = $branch ]] ; then
+            echo "Rolling Forward the Feature #..."
+             ((++feature))
+             newdt="$(date +%Y.%m)"
+             if [[ ! "$oldate" = "$newdt" ]] ; then
+                echo "Rolling Forward the Month... from '$oldate' to '$newdt'"
+                oldate="$newdt"
+                feature=0
+                patch=0
+             fi
+          fi
+          version="$oldate.$feature.$patch"
+          echo "New version is '$version'"
+          echo "::set-output name=new_version::$version"
+        env:
+          branch: ${{github.ref}}
+          
+      - uses: mathieudutour/github-tag-action@v6.0
+        if: ${{ steps.version.outputs.new_version != null}}
+        with:
+           custom_tag: ${{ steps.version.outputs.new_version }}
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
       - name: Check out pull request code to separate folder
         uses: actions/checkout@v2
         if: github.event_name == 'pull_request_target'
@@ -113,6 +161,15 @@ jobs:
           gpg --quiet --batch --yes --symmetric --cipher-algo AES256 --passphrase="$SETUP_ASSETS_PASSPHRASE" tModLoader.zip
           echo ::endgroup::
           
+          echo ::group::Giving Purpose         
+          if [ ${{github.ref}} = 'refs/heads/1.4-stable' ] ; then
+            export BUILDPURPOSE="Stable"
+          fi
+          if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
+            export BUILDPURPOSE="Preview"
+          fi
+          echo ::endgroup::
+          
           echo ::group::Building Release
           dotnet clean src/tModLoader/Terraria/Terraria.csproj -c Release --nologo -v q
           (
@@ -151,9 +208,9 @@ jobs:
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-          BUILDPURPOSE:  ${{ fromJSON('["Github_Commit", "Alpha"]')[github.event_name == 'push' && github.ref == 'refs/heads/1.4'] }}
           TERRARIA_VERSION: 1436
-          
+          TMLVERSION: ${{ steps.version.outputs.new_version }}
+                    
       - name: Upload Debug Build Artifact
         uses: actions/upload-artifact@v2
         with:
@@ -174,19 +231,38 @@ jobs:
         with:
           name: temporary-src
           path: tModLoader.zip.gpg
-            
+          
+      - name: Setup steamcmd
+        id: setupsteam
+        uses: CyberAndrii/setup-steamcmd@v1
+        
       - name: Build ExampleMod
         shell: bash
         run: |
-          echo Adding build info to ExampleMod displayName
-          echo "displayName = Example Mod (${GITHUB_REF##*/}-${{ github.sha }})" >> ./ExampleMod/build.txt
+          echo ::group::Getting current published ExampleMod
+          publishid="2615761271"
+          echo "attempting download ExampleMod"
+          
+          steamapps=$(pwd)/ee
+          steamapps=$(cygpath -w $steamapps)
+          
+          ${{ steps.setupsteam.outputs.executable }} +force_install_dir $steamapps +login anonymous +workshop_download_item 1281930 $publishid +quit
+          echo "downloaded ExampleMod"
+          
+          publishedfolder=$steamapps/steamapps/workshop/content/1281930/$publishid
+          echo "publishedModFiles are at:"
+          echo $publishedfolder
+          echo ::endgroup::
+          
+          echo Adding version info to ExampleMod
+          echo "version = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
           
           #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
           ModloaderDir=$(pwd)/local/ModLoader
           echo ModloaderDir is: $ModloaderDir
           mkdir -p $ModloaderDir
           
-          export ExtraBuildModFlags="-tmlsavedirectory \"$(cygpath -w $ModloaderDir)\"" #convert unix path to windows
+          export ExtraBuildModFlags="-ciprep \"Automatic update from GitHub: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
           echo ExtraBuildModFlags is: $ExtraBuildModFlags
           
           echo ::group::Building ExampleMod
@@ -194,21 +270,23 @@ jobs:
           echo ::endgroup::
           
           mkdir -p artifacts/Mods
-          mv $ModloaderDir/Mods/ExampleMod.tmod artifacts/Mods/ExampleMod.tmod
+          cp -r $ModloaderDir/Mods/. artifacts/Mods
           
           echo ::group::Testing Example Mod build from "Mod Sources" dir  
-          cp -r ExampleMod "$ModloaderDir/Mod Sources/ExampleMod"
-          cd "$ModloaderDir/Mod Sources/ExampleMod"
+          cp -r ExampleMod "$ModloaderDir/ModSources/ExampleMod"
+          cd "$ModloaderDir/ModSources/ExampleMod"
           unset ExtraBuildModFlags
           dotnet build ExampleMod.csproj --nologo
           echo ::endgroup::
+        env:
+          TMLVERSION: ${{ steps.version.outputs.new_version }}
           
       - name: Upload ExampleMod Build Artifact
         uses: actions/upload-artifact@v2
         with:
           name: ExampleMod Build
           path: |
-            ./artifacts/Mods/ExampleMod.tmod
+            ./artifacts/Mods/
             
       - name: List final directory and file structure
         if: always()
@@ -285,7 +363,7 @@ jobs:
   deploy:
     needs: build
     # We push an alpha release only on push events to the 1.4 branch that build correctly
-    if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-preview' || github.ref == 'refs/heads/1.4-stable')
     name: Deploy to Steam Alpha Branch
     runs-on: ubuntu-latest
     strategy:
@@ -294,44 +372,54 @@ jobs:
       - name: Check out base branch
         uses: actions/checkout@v2
         with:
-          fetch-depth: 2
+          fetch-depth: 0
+          
       - name: Detect ExampleMod Changed Files
         id: changed-files-examplemod
-        uses: tj-actions/changed-files@v9.1
+        uses: tj-actions/changed-files@v18.4
         with:
           files: |
             ExampleMod
+            
       - name: List all changed ExampleMod files
         run: |
           for file in "${{ steps.changed-files-examplemod.outputs.all_modified_files }}"; do
             echo "$file was modified"
           done
+          
       - name: Detect patches Changed Files
         id: changed-files-patches
-        uses: tj-actions/changed-files@v9.1
+        uses: tj-actions/changed-files@v18.4
         with:
           files: |
             patches
+            
       - name: List all changed patches
         run: |
           for file in "${{ steps.changed-files-patches.outputs.all_modified_files }}"; do
             echo "$file was modified"
           done
+          
       - name: Download build artifact from build job
         uses: actions/download-artifact@v2
         with:
           # Change this next line to switch between uploading Release and Debug if desired. 
           name: Release Build
           path: artifacts/Build
+          
       - name: View build artifact files
         run: |
           echo pwd is: ${PWD}
           ls -alhR
         working-directory: artifacts/Build
+        
       - name: Setup steamcmd
+        if: steps.changed-files-examplemod.outputs.any_modified == 'true' || steps.changed-files-patches.outputs.any_modified == 'true'
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
+        
       - name: Setup Authentication Files
+        if: steps.changed-files-examplemod.outputs.any_modified == 'true' || steps.changed-files-patches.outputs.any_modified == 'true'
         shell: bash
         run: |
           echo Decrypting Authentication Files
@@ -339,68 +427,59 @@ jobs:
         env:
           STEAM_SENTRY_PASSPHRASE: ${{ secrets.STEAM_SENTRY_PASSPHRASE }}
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
+          
       - name: Attempt run_app_build_http 
-        if: steps.changed-files-patches.outputs.any_changed == 'true'
+        if: steps.changed-files-patches.outputs.any_modified == 'true'
         shell: bash
         run: |
           mkdir artifacts/shared
           echo pwd is: ${PWD}
           echo "Listing manifests directory"
           ls -alhR ./solutions/Manifests
-          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http ${GITHUB_WORKSPACE}/solutions/Manifests/app.vdf +quit
+          manifesto=${GITHUB_WORKSPACE}/solutions/Manifests
+          if [ ${{github.ref}} = 'refs/heads/1.4-stable' ] ; then
+            manifesto=$manifesto/app.vdf
+          fi
+          if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
+            manifesto=$manifesto/preview.vdf
+          fi
+          
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http $manifesto +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
+          
       - name: Download ExampleMod build artifact from build job
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        if: steps.changed-files-examplemod.outputs.any_modified == 'true'
         # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
         uses: actions/download-artifact@v2
         with:
           name: ExampleMod Build
           path: artifacts/ExampleMod
+          
       - name: View ExampleMod build artifact files
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        if: steps.changed-files-examplemod.outputs.any_modified == 'true'
         run: |
           echo pwd is: ${PWD}
           ls -alhR
         working-directory: artifacts/ExampleMod
+        
       - name: Attempt workshop_build_item 
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
+        if: steps.changed-files-examplemod.outputs.any_modified == 'true'
         shell: bash
         run: |
           echo Changes detected in ExampleMod folder, attempting to publish ExampleMod to workshop
           echo "Warning: This manual publish approach bypasses version and other checks, so updating build.txt is not necessary currently and this approach shouldn't be used by modders"
           echo pwd is: ${PWD}
-          echo Making files
-          cat << EOF > ./workshop.vdf
-          "workshopitem"
-          {
-           "appid" "1281930"
-           "publishedfileid"  "2615761271"
-           "contentfolder" "${GITHUB_WORKSPACE}/artifacts/ExampleMod/"
-           "title" "Example Mod"
-           "description" "Learn how to mod with tModLoader by exploring the source code for this mod.
-           
-           You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4/ExampleMod"
-           "changenote" "Automatic update from GitHub: ${{ github.event.commits[0].message}}"
-          }
-          EOF
-          cat << EOF > ./artifacts/ExampleMod/workshop.json
-          {
-            "WorkshopPublishedVersion": 1,
-            "ContentType": "Mod",
-            "SteamEntryId": 2615761271,
-            "Publicity": 1
-          }
-          EOF
-          ls -alh
-          echo "Attempting to publish ExampleMod.tmod"
-          echo workshop.vdf contents:
-          cat workshop.vdf
+                 
+          echo "Attempting to publish ExampleMod"
+          echo publish.vdf contents:
+          cat publish.vdf
           echo workshop.json contents:
-          cat artifacts/ExampleMod/workshop.json
-          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${GITHUB_WORKSPACE}/workshop.vdf" +quit
-          echo workshop.vdf contents:
-          cat workshop.vdf
+          cat Workshop/workshop.json
+          steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +workshop_build_item "${PWD}/publish.vdf" +quit
+          echo publish.vdf contents:
+          cat publish.vdf
           echo Done
+        working-directory: artifacts/ExampleMod

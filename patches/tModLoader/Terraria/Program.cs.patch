@@ -87,10 +87,14 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,68 @@
+@@ -138,32 +_,72 @@
  			}
  		}
  
++		public const string PreviewFolder = "tModLoader-preview";
++		public const string ReleaseFolder = "tModLoader";
++		public const string DevFolder = "tModLoader-dev";
++
 +		//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +		// Moving all calls to Main to LaunchGame_() mitigates this risk
  		public static void LaunchGame(string[] args, bool monoArgs = false) {
@@ -100,15 +104,15 @@
  				args = Utils.ConvertMonoArgsToDotNet(args);
  
 +			LaunchParameters = Utils.ParseArguements(args);
-+			SavePath =
-+				LaunchParameters.ContainsKey("-tmlsavedirectory") ? LaunchParameters["-tmlsavedirectory"] :
-+				LaunchParameters.ContainsKey("-savedirectory") ? Path.Combine(LaunchParameters["-savedirectory"], "ModLoader") :
-+				Platform.Get<IPathService>().GetStoragePath($"Terraria{Path.DirectorySeparatorChar}ModLoader{(!BuildInfo.IsRelease ? Path.DirectorySeparatorChar + "Beta" : "")}");
 +
-+			if (File.Exists("savehere.txt"))
-+				SavePath = "ModLoader"; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
-+
-+			//EnsureMinimumStackSizeOnThreads();
++			try {
++				SetSavePath(); // Needs to run before Logging.Init due to DeveloperMode check in ModCompile
++			}
++			catch (Exception e) {
++				Logging.Terraria.Fatal("Failed to Handle Save Data", e);
++				DisplayException(e);
++				return;
++			}
 +
 +			bool isServer = LaunchParameters.ContainsKey("-server");
 +			try {

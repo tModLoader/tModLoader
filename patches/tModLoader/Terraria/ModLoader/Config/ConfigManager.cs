@@ -50,8 +50,8 @@ namespace Terraria.ModLoader.Config
 			//new ColorJsonConverter(),
 		};
 
-		public static readonly string ModConfigPath = Path.Combine(Main.SavePath, "Mod Configs");
-		public static readonly string ServerModConfigPath = Path.Combine(Main.SavePath, "Mod Configs", "Server");
+		public static readonly string ModConfigPath = Path.Combine(Main.SavePath, "ModConfigs");
+		public static readonly string ServerModConfigPath = Path.Combine(Main.SavePath, "ModConfigs", "Server");
 
 		internal static void Add(ModConfig config)
 		{
