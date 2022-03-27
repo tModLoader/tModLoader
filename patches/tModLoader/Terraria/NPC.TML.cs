@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.BigProgressBar;
+using Terraria.ID;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Terraria
@@ -52,5 +55,26 @@ namespace Terraria
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
 			=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, baseInstance, out result);
+
+		/// <summary>
+		/// Helper method for getting the parameters for seating a town NPC. Assumes the tile at <paramref name="anchorTilePosition"/> is a valid tile for sitting
+		/// </summary>
+		public void SitDown(Point anchorTilePosition, out int direction, out Vector2 bottom) {
+			Tile tile = Main.tile[anchorTilePosition.X, anchorTilePosition.Y];
+			if (tile.type < TileID.Count)
+				anchorTilePosition.Y -= 1; // Vanilla compatibility with new hook
+
+			TileRestingInfo info = new TileRestingInfo(this, anchorTilePosition, Vector2.Zero, ((tile.frameX != 0) ? 1 : (-1)), 2);
+			TileLoader.ModifySittingTargetInfo(anchorTilePosition.X, anchorTilePosition.Y, tile.type, ref info);
+			int anchorX = info.anchorTilePosition.X;
+			int anchorY = info.anchorTilePosition.Y;
+			int directionOffset = info.directionOffset;
+			direction = info.targetDirection;
+			Vector2 finalOffset = info.finalOffset;
+
+			bottom = new Point(anchorX, anchorY).ToWorldCoordinates(8f, 16f);
+			bottom.X += direction * directionOffset; // Added to match PlayerSittingHelper
+			bottom += finalOffset; // Added to match PlayerSittingHelper
+		}
 	}
 }
