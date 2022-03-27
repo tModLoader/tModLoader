@@ -228,7 +228,7 @@
 +			else if (tile2.type >= TileID.Count) { // Check necessary as in this case vanilla changes (to vanilla tiles that aren't sittable by default) by the hook should not take effect
 +				TileRestingInfo info = new TileRestingInfo(this, point2, Vector2.Zero, base.direction);
 +				TileLoader.ModifySittingTargetInfo(point2.X, point2.Y, tile2.type, ref info);
-+				point2 = info.anchorTilePosition;
++				point2 = info.AnchorTilePosition;
 +				point2.Y += 1; // Set to tile *below* chair
 +			}
  
@@ -790,8 +790,8 @@
  
  							int num29 = (int)Main.player[num7].Center.X / 16;
  							int num30 = (int)(Main.player[num7].Bottom.Y + 8f) / 16;
-+							spawnInfo.playerFloorX = num29;
-+							spawnInfo.playerFloorY = num30;
++							spawnInfo.PlayerFloorX = num29;
++							spawnInfo.PlayerFloorY = num30;
  							if (Main.tile[num, num2].type == 367) {
 +								// Patch note: flag10 - marble
  								flag10 = true;
@@ -822,22 +822,22 @@
  			bool flag18 = (float)new Point(num9 - num, num10 - num2).X * Main.windSpeedTarget > 0f;
  			spawnTileType = SpawnNPC_TryFindingProperGroundTileType(spawnTileType, num, num2);
 +
-+			spawnInfo.spawnTileX = num;
-+			spawnInfo.spawnTileY = num2;
-+			spawnInfo.spawnTileType = num3;
-+			spawnInfo.player = Main.player[num7];
-+			spawnInfo.sky = flag3;
-+			spawnInfo.lihzahrd = flag4;
-+			spawnInfo.playerSafe = flag5;
-+			spawnInfo.invasion = flag6;
-+			spawnInfo.water = flag7;
-+			spawnInfo.granite = flag9;
-+			spawnInfo.marble = flag10;
-+			spawnInfo.spiderCave = flag11;
-+			spawnInfo.playerInTown = flag12;
-+			spawnInfo.desertCave = flag13;
-+			spawnInfo.planteraDefeated = flag14;
-+			spawnInfo.safeRangeX = flag15;
++			spawnInfo.SpawnTileX = num;
++			spawnInfo.SpawnTileY = num2;
++			spawnInfo.SpawnTileType = num3;
++			spawnInfo.Player = Main.player[num7];
++			spawnInfo.Sky = flag3;
++			spawnInfo.Lihzahrd = flag4;
++			spawnInfo.PlayerSafe = flag5;
++			spawnInfo.Invasion = flag6;
++			spawnInfo.Water = flag7;
++			spawnInfo.Granite = flag9;
++			spawnInfo.Marble = flag10;
++			spawnInfo.SpiderCave = flag11;
++			spawnInfo.PlayerInTown = flag12;
++			spawnInfo.DesertCave = flag13;
++			spawnInfo.PlanteraDefeated = flag14;
++			spawnInfo.SafeRangeX = flag15;
 +
  			int newNPC = 200;
  			int cattailX;

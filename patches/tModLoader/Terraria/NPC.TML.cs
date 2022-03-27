@@ -66,11 +66,11 @@ namespace Terraria
 
 			TileRestingInfo info = new TileRestingInfo(this, anchorTilePosition, Vector2.Zero, ((tile.frameX != 0) ? 1 : (-1)), 2);
 			TileLoader.ModifySittingTargetInfo(anchorTilePosition.X, anchorTilePosition.Y, tile.type, ref info);
-			int anchorX = info.anchorTilePosition.X;
-			int anchorY = info.anchorTilePosition.Y;
-			int directionOffset = info.directionOffset;
-			direction = info.targetDirection;
-			Vector2 finalOffset = info.finalOffset;
+			int anchorX = info.AnchorTilePosition.X;
+			int anchorY = info.AnchorTilePosition.Y;
+			int directionOffset = info.DirectionOffset;
+			direction = info.TargetDirection;
+			Vector2 finalOffset = info.FinalOffset;
 
 			bottom = new Point(anchorX, anchorY).ToWorldCoordinates(8f, 16f);
 			bottom.X += direction * directionOffset; // Added to match PlayerSittingHelper

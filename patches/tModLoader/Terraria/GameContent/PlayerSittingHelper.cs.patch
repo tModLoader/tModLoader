@@ -17,12 +17,12 @@
 +			// Modded ones are arbitrary, modder responsibility to find the bottom-post tile
 +			TileRestingInfo info = new TileRestingInfo(player, new Point(num, num2), seatDownOffset, targetDirection, num3, zero);
 +			TileLoader.ModifySittingTargetInfo(x, y, tileSafely.type, ref info);
-+			num = info.anchorTilePosition.X;
-+			num2 = info.anchorTilePosition.Y;
-+			num3 = info.directionOffset;
-+			targetDirection = info.targetDirection;
-+			seatDownOffset = info.visualOffset;
-+			zero = info.finalOffset;
++			num = info.AnchorTilePosition.X;
++			num2 = info.AnchorTilePosition.Y;
++			num3 = info.DirectionOffset;
++			targetDirection = info.TargetDirection;
++			seatDownOffset = info.VisualOffset;
++			zero = info.FinalOffset;
 +
 +			playerSittingPosition = new Point(num, num2).ToWorldCoordinates(8f, 16f); // Moved +1 hardcode into ModifySittingTargetInfo
  			playerSittingPosition.X += targetDirection * num3;

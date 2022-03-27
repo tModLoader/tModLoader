@@ -412,7 +412,7 @@ namespace Terraria.ModLoader
 				modTile.ModifySittingTargetInfo(i, j, ref info);
 			}
 			else {
-				info.anchorTilePosition.Y += 1; // Hardcoded vanilla offset from the bottom tile moved here (all chairs have height-1 offset)
+				info.AnchorTilePosition.Y += 1; // Hardcoded vanilla offset from the bottom tile moved here (all chairs have height-1 offset)
 			}
 		}
 
@@ -420,7 +420,7 @@ namespace Terraria.ModLoader
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
 				// Because vanilla sets its own offset based on frameY, ignoring tile type, which might not be set to an expected default, reassign it
-				info.visualOffset = new Vector2(-9f, 1f); // Taken from default case of vanilla beds 
+				info.VisualOffset = new Vector2(-9f, 1f); // Taken from default case of vanilla beds 
 				modTile.ModifySleepingTargetInfo(i, j, ref info);
 			}
 		}

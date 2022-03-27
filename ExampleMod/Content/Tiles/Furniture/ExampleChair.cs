@@ -69,17 +69,18 @@ namespace ExampleMod.Content.Tiles.Furniture
 			//info.directionOffset = info.restingEntity is Player ? 6 : 2; // Default to 6 for players, 2 for NPCs
 			//info.visualOffset = Vector2.Zero; // Defaults to (0,0)
 
-			info.targetDirection = -1;
+			info.TargetDirection = -1;
 			if (tile.TileFrameX != 0) {
-				info.targetDirection = 1; // Facing right if sat down on the right alternate (added through addAlternate in SetStaticDefaults earlier)
+				info.TargetDirection = 1; // Facing right if sat down on the right alternate (added through addAlternate in SetStaticDefaults earlier)
 			}
 
 			// The anchor represents the bottom-most tile of the chair. This is used to align the entity hitbox
 			// Since i and j may be from any coordinate of the chair, we need to adjust the anchor based on that
-			info.anchorTilePosition.X = i; // Our chair is only 1 wide, so nothing special required
-			info.anchorTilePosition.Y = j;
+			info.AnchorTilePosition.X = i; // Our chair is only 1 wide, so nothing special required
+			info.AnchorTilePosition.Y = j;
+
 			if (tile.TileFrameY % NextStyleHeight == 0) {
-				info.anchorTilePosition.Y++; // Here, since our chair is only 2 tiles high, we can just check if the tile is the top-most one, then move it 1 down
+				info.AnchorTilePosition.Y++; // Here, since our chair is only 2 tiles high, we can just check if the tile is the top-most one, then move it 1 down
 			}
 		}
 
@@ -96,6 +97,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override void MouseOver(int i, int j) {
 			Player player = Main.LocalPlayer;
+
 			if (!player.IsWithinSnappngRangeToTile(i, j, PlayerSittingHelper.ChairSittingMaxDistance)) { // Match condition in RightClick. Interaction should only show if clicking it does something
 				return;
 			}

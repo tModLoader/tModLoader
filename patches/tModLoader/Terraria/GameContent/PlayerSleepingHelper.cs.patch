@@ -18,12 +18,12 @@
 +
 +			TileRestingInfo info = new TileRestingInfo(null, new Point(num4, num), visualoffset, targetDirection);
 +			TileLoader.ModifySleepingTargetInfo(x, y, tileSafely.type, ref info);
-+			num4 = info.anchorTilePosition.X;
-+			num = info.anchorTilePosition.Y;
-+			int directionOffset = info.directionOffset;
-+			targetDirection = info.targetDirection;
-+			visualoffset = info.visualOffset;
-+			Vector2 finalOffset = info.finalOffset;
++			num4 = info.AnchorTilePosition.X;
++			num = info.AnchorTilePosition.Y;
++			int directionOffset = info.DirectionOffset;
++			targetDirection = info.TargetDirection;
++			visualoffset = info.VisualOffset;
++			Vector2 finalOffset = info.FinalOffset;
 +
 +			anchorPosition = new Point(num4, num + 1).ToWorldCoordinates(8f, 16f); // Reordered so that anchorPosition is modifiable
 +			anchorPosition.X += targetDirection * directionOffset; // Added to match PlayerSittingHelper

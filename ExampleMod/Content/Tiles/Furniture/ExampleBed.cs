@@ -54,7 +54,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override void ModifySleepingTargetInfo(int i, int j, ref TileRestingInfo info) {
 			// Default values match the regular vanilla bed
 			// You might need to mess with the info here if your bed is not a typical 4x2 tile
-			info.visualOffset.Y += 4f; // Move player down a notch because the bed is not as high as a regular bed
+			info.VisualOffset.Y += 4f; // Move player down a notch because the bed is not as high as a regular bed
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
@@ -67,10 +67,10 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override bool RightClick(int i, int j) {
 			Player player = Main.LocalPlayer;
-
 			Tile tile = Main.tile[i, j];
 			int spawnX = (i - (tile.TileFrameX / 18)) + (tile.TileFrameX >= 72 ? 5 : 2);
 			int spawnY = j + 2;
+
 			if (tile.TileFrameY % 38 != 0) {
 				spawnY--;
 			}
@@ -83,6 +83,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 			else {
 				player.FindSpawn();
+
 				if (player.SpawnX == spawnX && player.SpawnY == spawnY) {
 					player.RemoveSpawn();
 					Main.NewText(Language.GetTextValue("Game.SpawnPointRemoved"), byte.MaxValue, 240, 20);
