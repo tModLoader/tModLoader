@@ -82,6 +82,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			if (tile.TileFrameY % NextStyleHeight == 0) {
 				info.anchorTilePosition.Y++; // Here, since our chair is only 2 tiles high, we can just check if the tile is the top-most one, then move it 1 down
 			}
+
+			// Here we add a custom fun effect to this tile that vanilla toilets do not have. This shows how you can type cast the restingEntity to Player and use visualOffset as well.
+			if (info.restingEntity is Player player && player.HasBuff(BuffID.Stinky)) {
+				info.visualOffset = Main.rand.NextVector2Circular(2, 2);
+			}
 		}
 
 		public override bool RightClick(int i, int j) {
