@@ -1,70 +1,69 @@
 ﻿using System;
-using System.Collections;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class EnumElement : RangeElement
+	internal class EnumElement : RangeElement
 	{
-		private Func<object> _GetValue;
-		private Func<object> _GetValueString;
-		private Func<int> _GetIndex;
-		private Action<int> _SetValue;
-		int max;
-		string[] valueStrings;
+		private Func<object> _getValue;
+		private Func<object> _getValueString;
+		private Func<int> _getIndex;
+		private Action<int> _setValue;
+		private int max;
+		private string[] valueStrings;
 
 		public override int NumberTicks => valueStrings.Length;
 		public override float TickIncrement => 1f / (valueStrings.Length - 1);
 
 		protected override float Proportion {
-			get => _GetIndex() / (float)(max - 1);
-			set => _SetValue((int)(Math.Round(value * (max - 1))));
+			get => _getIndex() / (float)(max - 1);
+			set => _setValue((int)(Math.Round(value * (max - 1))));
 		}
 
 		public override void OnBind() {
 			base.OnBind();
-			valueStrings = Enum.GetNames(memberInfo.Type);
+			valueStrings = Enum.GetNames(MemberInfo.Type);
 			max = valueStrings.Length;
 
 			//valueEnums = Enum.GetValues(variable.Type);
 
-			TextDisplayFunction = () => memberInfo.Name + ": " + _GetValueString();
-			_GetValue = () => DefaultGetValue();
-			_GetValueString = () => DefaultGetStringValue();
-			_GetIndex = () => DefaultGetIndex();
-			_SetValue = (int value) => DefaultSetValue(value);
+			TextDisplayFunction = () => MemberInfo.Name + ": " + _getValueString();
+			_getValue = () => DefaultGetValue();
+			_getValueString = () => DefaultGetStringValue();
+			_getIndex = () => DefaultGetIndex();
+			_setValue = (int value) => DefaultSetValue(value);
 
-			//if (array != null)
-			//{
-			//	_GetValue = () => array[index];
-			//	_SetValue = (int valueIndex) => { array[index] = (Enum)Enum.GetValues(memberInfo.Type).GetValue(valueIndex); Interface.modConfig.SetPendingChanges(); };
-			//	_TextDisplayFunction = () => index + 1 + ": " + _GetValueString();
-			//}
+			/*
+			if (array != null) {
+				_GetValue = () => array[index];
+				_SetValue = (int valueIndex) => { array[index] = (Enum)Enum.GetValues(memberInfo.Type).GetValue(valueIndex); Interface.modConfig.SetPendingChanges(); };
+				_TextDisplayFunction = () => index + 1 + ": " + _GetValueString();
+			}
+			*/
 
-			if (labelAttribute != null)
-			{
-				TextDisplayFunction = () => labelAttribute.Label + ": " + _GetValueString();
+			if (LabelAttribute != null) {
+				TextDisplayFunction = () => LabelAttribute.Label + ": " + _getValueString();
 			}
 		}
 
-		void DefaultSetValue(int index)
-		{
-			if (!memberInfo.CanWrite) return;
-			memberInfo.SetValue(item, Enum.GetValues(memberInfo.Type).GetValue(index));
+		private void DefaultSetValue(int index) {
+			if (!MemberInfo.CanWrite)
+				return;
+
+			MemberInfo.SetValue(Item, Enum.GetValues(MemberInfo.Type).GetValue(index));
 			Interface.modConfig.SetPendingChanges();
 		}
 
-		object DefaultGetValue()
-		{
-			return memberInfo.GetValue(item);
+		private object DefaultGetValue() {
+			return MemberInfo.GetValue(Item);
 		}
-		int DefaultGetIndex()
-		{
-			return Array.IndexOf(Enum.GetValues(memberInfo.Type), _GetValue());
+
+		private int DefaultGetIndex() {
+			return Array.IndexOf(Enum.GetValues(MemberInfo.Type), _getValue());
 		}
-		string DefaultGetStringValue()
-		{
-			return valueStrings[_GetIndex()];
+
+		private string DefaultGetStringValue() {
+			return valueStrings[_getIndex()];
 		}
 	}
 }

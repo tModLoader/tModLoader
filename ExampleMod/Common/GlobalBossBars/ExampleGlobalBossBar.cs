@@ -14,7 +14,7 @@ namespace ExampleMod.Common.GlobalBossBars
 	{
 		public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams) {
 			if (npc.type == NPCID.EyeofCthulhu) {
-				drawParams.iconColor = Main.DiscoColor;
+				drawParams.IconColor = Main.DiscoColor;
 			}
 
 			return true;
@@ -25,7 +25,7 @@ namespace ExampleMod.Common.GlobalBossBars
 				string text = "GlobalBossBar Showcase";
 				var font = FontAssets.MouseText.Value;
 				Vector2 size = font.MeasureString(text);
-				spriteBatch.DrawString(font, text, drawParams.barCenter - size / 2, Color.White);
+				spriteBatch.DrawString(font, text, drawParams.BarCenter - size / 2, Color.White);
 			}
 		}
 	}

@@ -24,10 +24,12 @@ namespace ExampleMod.Common.GlobalBuffs
 		public override bool PreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams) {
 			// Make the campfire buff have a different color and shake slightly
 			if (type == BuffID.Campfire) {
-				drawParams.drawColor = Main.DiscoColor * Main.buffAlpha[buffIndex];
+				drawParams.DrawColor = Main.DiscoColor * Main.buffAlpha[buffIndex];
+
 				Vector2 shake = new Vector2(Main.rand.Next(-2, 3), Main.rand.Next(-2, 3));
-				drawParams.position += shake;
-				drawParams.textPosition += shake;
+
+				drawParams.Position += shake;
+				drawParams.TextPosition += shake;
 			}
 
 			// If the buff is not drawn in the hook/mount/pet equip page, and the buff is one of the three specified:
@@ -38,7 +40,7 @@ namespace ExampleMod.Common.GlobalBuffs
 
 				int offset = (int)(6 * time);
 
-				ref Vector2 textPos = ref drawParams.textPosition; // You can use ref locals to keep modifying the same variable
+				ref Vector2 textPos = ref drawParams.TextPosition; // You can use ref locals to keep modifying the same variable
 				textPos.Y += offset;
 			}
 

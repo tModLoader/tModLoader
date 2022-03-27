@@ -40,7 +40,7 @@ namespace Terraria
 
 		private static void PortOldSaveDirectories() {
 			// Port old file format users
-			var oldBetas = Path.Combine(SavePath, "ModLoader/Beta");
+			var oldBetas = Path.Combine(SavePath, "ModLoader", "Beta");
 
 			if (!Directory.Exists(oldBetas))
 				return;

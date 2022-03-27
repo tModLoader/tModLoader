@@ -60,8 +60,8 @@ namespace ExampleMod.Content.Buffs
 			// For demonstration, both options' codes are written down, but the latter is commented out using /* and */.
 
 			// OPTION 1 - Let the game draw it for us. Therefore we have to assign our variables to drawParams:
-			drawParams.texture = ourTexture;
-			drawParams.sourceRectangle = ourSourceRectangle;
+			drawParams.Texture = ourTexture;
+			drawParams.SourceRectangle = ourSourceRectangle;
 			// Return true to let the game draw the buff icon.
 			return true;
 
