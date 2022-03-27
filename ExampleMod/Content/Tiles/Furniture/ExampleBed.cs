@@ -19,11 +19,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.tileLavaDeath[Type] = true;
 			TileID.Sets.HasOutlines[Type] = true;
 			TileID.Sets.CanBeSleptIn[Type] = true; // Facilitates calling ModifySleepingTargetInfo
-			TileID.Sets.InteractibleByNPCs[Type] = true;
+			TileID.Sets.InteractibleByNPCs[Type] = true; // Town NPCs will palm their hand at this tile
 			TileID.Sets.IsValidSpawnPoint[Type] = true;
 			TileID.Sets.DisableSmartCursor[Type] = true;
 
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair);
+			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsChair); // Beds count as chairs for the purpose of suitable room creation
 
 			DustType = ModContent.DustType<Sparkle>();
 			AdjTiles = new int[] { TileID.Beds };
@@ -48,11 +48,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Because beds have special smart interaction, this splits up the left and right side into the necessary 2x2 sections
 			width = 2; // Default to the Width defined for TileObjectData.newTile
 			height = 2; // Default to the Height defined for TileObjectData.newTile
-			extraY = 0; // Depends on how you set up frameHeight and CoordinateHeights and CoordinatePaddingFix.Y
-		}
-
-		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
-			height = 18; // Set frame height independent of CoordinateHeights
+			//extraY = 0; // Depends on how you set up frameHeight and CoordinateHeights and CoordinatePaddingFix.Y
 		}
 
 		public override void ModifySleepingTargetInfo(int i, int j, ref TileRestingInfo info) {

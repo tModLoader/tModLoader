@@ -107,8 +107,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
-			height = 20;
-			offsetY = -2;
+			offsetY = -2; // This is -1 for tiles using StyleAlch, but it causes a slight visual offset between the placement preview and the placed tile. -2 undos it
 		}
 
 		public override bool Drop(int i, int j) {

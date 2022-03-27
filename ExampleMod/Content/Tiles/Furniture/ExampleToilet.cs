@@ -63,17 +63,6 @@ namespace ExampleMod.Content.Tiles.Furniture
 			return settings.player.IsWithinSnappngRangeToTile(i, j, PlayerSittingHelper.ChairSittingMaxDistance); // Avoid being able to trigger it from long range
 		}
 
-		public override void ModifySmartInteractCoords(ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
-			// See ExampleBed tile for explanation
-			extraY = 4;
-		}
-
-		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
-			if (tileFrameY % NextStyleHeight == 18) {
-				height = 18;
-			}
-		}
-
 		public override void ModifySittingTargetInfo(int i, int j, ref TileRestingInfo info) {
 			// It is very important to know that this is called on both players and NPCs, so do not use Main.LocalPlayer for example, use info.restingEntity
 			Tile tile = Framing.GetTileSafely(i, j);

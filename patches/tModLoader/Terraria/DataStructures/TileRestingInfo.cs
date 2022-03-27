@@ -18,7 +18,7 @@ namespace Terraria.DataStructures
 		public Point anchorTilePosition;
 
 		/// <summary>
-		/// The visual offset, not affecting any logic.
+		/// The visual offset of the entity, not affecting any logic.
 		/// </summary>
 		public Vector2 visualOffset;
 

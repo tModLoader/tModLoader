@@ -27,7 +27,7 @@ namespace Terraria.ID
 			/// </summary>
 			public static bool[] SpawnsWithCustomName = Factory.CreateBoolSet(453);
 
-			// IDs taken NPC.AI_007_TryForcingSitting
+			// IDs taken from NPC.AI_007_TryForcingSitting
 			/// <summary>
 			/// Whether or not a given NPC can sit on suitable furniture (<see cref="TileID.Sets.CanBeSatOnForNPCs"/>)
 			/// </summary>
