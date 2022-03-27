@@ -456,8 +456,8 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>DamageVar</b> (
 <tr class="memitem:a1701ddae46aab87112e08040775f889e"><td class="memItemLeft" align="right" valign="top"><a id="a1701ddae46aab87112e08040775f889e"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>DoUpdate_AnimateItemIcons</b> ()</td></tr>
 <tr class="separator:a1701ddae46aab87112e08040775f889e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb8c2a517ea169e08ba1672de2dc8973"><td class="memItemLeft" align="right" valign="top"><a id="abb8c2a517ea169e08ba1672de2dc8973"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>DrawBuffIcon</b> (int drawBuffText, int buffSlotOnPlayer, int x, int y)</td></tr>
+<tr class="memitem:abb8c2a517ea169e08ba1672de2dc8973"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#abb8c2a517ea169e08ba1672de2dc8973">DrawBuffIcon</a> (int drawBuffText, int buffSlotOnPlayer, int x, int y)</td></tr>
+<tr class="memdesc:abb8c2a517ea169e08ba1672de2dc8973"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the buff icon corresponding to the buff in Main.LocalPlayer.buffType[<em>buffSlotOnPlayer</em> ].  <a href="class_terraria_1_1_main.html#abb8c2a517ea169e08ba1672de2dc8973">More...</a><br /></td></tr>
 <tr class="separator:abb8c2a517ea169e08ba1672de2dc8973"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ebefc3f8e5713a1d1f97a22c6ddc201"><td class="memItemLeft" align="right" valign="top"><a id="a6ebefc3f8e5713a1d1f97a22c6ddc201"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>DrawCursor</b> (Vector2 bonus, bool smart=false)</td></tr>
@@ -838,11 +838,11 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>ToggleGameplay
 <tr class="memitem:a093f3885c712d3d529ddd9e893c02803"><td class="memItemLeft" align="right" valign="top"><a id="a093f3885c712d3d529ddd9e893c02803"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>TriggerPing</b> (Vector2 position)</td></tr>
 <tr class="separator:a093f3885c712d3d529ddd9e893c02803"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab691f95842bf8419e83e458fe0e03a73"><td class="memItemLeft" align="right" valign="top"><a id="ab691f95842bf8419e83e458fe0e03a73"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetBuffTime</b> (int buffSlotOnPlayer, out int buffTimeValue)</td></tr>
+<tr class="memitem:ab691f95842bf8419e83e458fe0e03a73"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#ab691f95842bf8419e83e458fe0e03a73">TryGetBuffTime</a> (int buffSlotOnPlayer, out int buffTimeValue)</td></tr>
+<tr class="memdesc:ab691f95842bf8419e83e458fe0e03a73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the buff at index <em>buffSlotOnPlayer</em>  is allowed to draw a "remaining time" text, and sets <em>buffTimeValue</em>  to it.  <a href="class_terraria_1_1_main.html#ab691f95842bf8419e83e458fe0e03a73">More...</a><br /></td></tr>
 <tr class="separator:ab691f95842bf8419e83e458fe0e03a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="memItemLeft" align="right" valign="top"><a id="a904f4ba4002225d9e9b0d6ca46ea3059"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>TryRemovingBuff</b> (int i, int b)</td></tr>
+<tr class="memitem:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a904f4ba4002225d9e9b0d6ca46ea3059">TryRemovingBuff</a> (int i, int b)</td></tr>
+<tr class="memdesc:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls Player.DelBuff with index i after checking Main.debuff of buff type b. Will toggle Player.hideMisc for pet and light pet.  <a href="class_terraria_1_1_main.html#a904f4ba4002225d9e9b0d6ca46ea3059">More...</a><br /></td></tr>
 <tr class="separator:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74038da99ec7caea4a91e67885320432"><td class="memItemLeft" align="right" valign="top"><a id="a74038da99ec7caea4a91e67885320432"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>TryRemovingBuff_CheckBuffHideMisc</b> (int slot, int buffID)</td></tr>
@@ -4226,6 +4226,68 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>OnTickForThi
 <tr class="separator:a99446785dd19054f3fc6da425bcdd9ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="abb8c2a517ea169e08ba1672de2dc8973"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb8c2a517ea169e08ba1672de2dc8973">&#9670;&nbsp;</a></span>DrawBuffIcon()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.Main.DrawBuffIcon </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>drawBuffText</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>buffSlotOnPlayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Draws the buff icon corresponding to the buff in Main.LocalPlayer.buffType[<em>buffSlotOnPlayer</em> ]. </p>
+<p>Calls TML hooks related to drawing and clicking.</p>
+<p>Has two exclusive contexts: Below the accessory slots (Main.EquipPage == 2), and regular under-the-inventory.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">drawBuffText</td><td>The return from a previous DrawBuffIcon call, -1 if first drawn buff</td></tr>
+    <tr><td class="paramname">buffSlotOnPlayer</td><td>The index for buffType and buffTime</td></tr>
+    <tr><td class="paramname">x</td><td>Top-left draw position on the x-axis</td></tr>
+    <tr><td class="paramname">y</td><td>Top-left draw position on the y-axis</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The index of the currently mouseovered buff icon, equal to <em>buffSlotOnPlayer</em>  if it's currently mouseovered, -1 otherwise</dd></dl>
+
+</div>
+</div>
 <a id="af4d188e9f004f6f6126b586cc525e6be"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af4d188e9f004f6f6126b586cc525e6be">&#9670;&nbsp;</a></span>IsTileSpelunkable()</h2>
 
@@ -4391,6 +4453,98 @@ You can also call this on the client to update visuals immediately, assuming it 
 <p>Syncs rain state if <a class="el" href="class_terraria_1_1_main.html#ac34a460d1246197d8fdbf972d67cd5a9" title="Starts rain for a random amount of time. Should be called on the server (netMode !...">StartRain</a> or <a class="el" href="class_terraria_1_1_main.html#afef51e2488f13c070388fb05c0c7a40d" title="Stops rain. Should be called on the server (netMode != client) - vanilla syncs it using SyncRain....">StopRain</a> were called in the same tick and caused a change to </p><dl class="section see"><dt>See also</dt><dd>maxRaining</dd></dl>
 <p>. <br  />
 Can be called on any side, but only the server will actually sync it. </p>
+
+</div>
+</div>
+<a id="ab691f95842bf8419e83e458fe0e03a73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab691f95842bf8419e83e458fe0e03a73">&#9670;&nbsp;</a></span>TryGetBuffTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Terraria.Main.TryGetBuffTime </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>buffSlotOnPlayer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out int&#160;</td>
+          <td class="paramname"><em>buffTimeValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if the buff at index <em>buffSlotOnPlayer</em>  is allowed to draw a "remaining time" text, and sets <em>buffTimeValue</em>  to it. </p>
+<p>Check <em>buffTimeValue</em>  &gt; 2 afterwards if you want to mirror text draw logic.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffSlotOnPlayer</td><td>The index for buffType and buffTime</td></tr>
+    <tr><td class="paramname">buffTimeValue</td><td>The "remaining time" in ticks</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if <em>buffTimeValue</em>  is set, otherwise <code>false</code></dd></dl>
+
+</div>
+</div>
+<a id="a904f4ba4002225d9e9b0d6ca46ea3059"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a904f4ba4002225d9e9b0d6ca46ea3059">&#9670;&nbsp;</a></span>TryRemovingBuff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.Main.TryRemovingBuff </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls Player.DelBuff with index i after checking Main.debuff of buff type b. Will toggle Player.hideMisc for pet and light pet. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The index for buffType and buffTime</td></tr>
+    <tr><td class="paramname">b</td><td>The buff type</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

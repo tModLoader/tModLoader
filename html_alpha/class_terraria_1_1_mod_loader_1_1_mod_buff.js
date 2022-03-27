@@ -1,9 +1,12 @@
 var class_terraria_1_1_mod_loader_1_1_mod_buff =
 [
     [ "ModifyBuffTip", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a23e45ce794e3dbe3af3c55eb7e396583", null ],
+    [ "PostDraw", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a823053b4c8a841d4330d22ebb7231d68", null ],
+    [ "PreDraw", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#af16b947033d9361c7ea04e10873db864", null ],
     [ "ReApply", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a89e918dc2fb97b897d3fdb396c4a1d71", null ],
     [ "ReApply", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a57b7b53ef4d85b6f87f784d1184b02f6", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a6968041b62285237461d27b0f74597b6", null ],
+    [ "RightClick", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a5d15571f12de68b196d18d69194c4431", null ],
     [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a253ef0e56523b745fb9b17a83ccc4429", null ],
     [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a7fed40b1987af470245e5be779c33667", null ],
     [ "Update", "class_terraria_1_1_mod_loader_1_1_mod_buff.html#a1f800c998911abec827d1fa11140ac16", null ],

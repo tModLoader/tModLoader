@@ -159,6 +159,7 @@ var hierarchy =
     [ "Terraria.GameContent.RGB.CommonConditions.Boss", "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_boss.html", null ],
     [ "Terraria.DataStructures.BossBarDrawParams", "struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html", null ],
     [ "Terraria.ModLoader.BossBarLoader", "class_terraria_1_1_mod_loader_1_1_boss_bar_loader.html", null ],
+    [ "Terraria.DataStructures.BuffDrawParams", "struct_terraria_1_1_data_structures_1_1_buff_draw_params.html", null ],
     [ "Terraria.DataStructures.BufferPool", "class_terraria_1_1_data_structures_1_1_buffer_pool.html", null ],
     [ "BuffID", "class_buff_i_d.html", null ],
     [ "Terraria.ID.BuffID", "class_terraria_1_1_i_d_1_1_buff_i_d.html", null ],

@@ -1,5 +1,14 @@
 var NAVTREEINDEX98 =
 {
+"class_terraria_1_1_mod_loader_1_1_vanilla_damage_class.html#a13f369d34c07d2382ec106f6f00c5ec4":[1,0,2,13,152,0],
+"class_terraria_1_1_mod_loader_1_1_vanilla_damage_class.html#a3d844510f18e12026c84e0b25a222a66":[1,0,2,13,152,1],
+"class_terraria_1_1_mod_loader_1_1_vanilla_damage_class.html#a4d59e95ed20c137857e3a22970d71981":[1,0,2,13,152,2],
+"class_terraria_1_1_mod_loader_1_1_vanilla_info_display.html":[1,0,2,13,153],
+"class_terraria_1_1_mod_loader_1_1_vanilla_info_display.html#a2f11df12a288d8fc178878b8bfc30dad":[1,0,2,13,153,2],
+"class_terraria_1_1_mod_loader_1_1_vanilla_info_display.html#a38447de2ad3c17503fd178f11a5cd593":[1,0,2,13,153,0],
+"class_terraria_1_1_mod_loader_1_1_vanilla_info_display.html#ae554a3329495eab31c399092a879d682":[1,0,2,13,153,1],
+"class_terraria_1_1_mod_loader_1_1_wall_loader.html":[1,0,2,13,154],
+"class_terraria_1_1_mod_loader_1_1_wall_loader.html#a12d788b1db996536fbcab46206dbb0aa":[1,0,2,13,154,12],
 "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a1acf233cc635924ba44924c5007d2b90":[1,0,2,13,154,3],
 "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a1d943c9304cd81a5857a14cce2f9c5de":[1,0,2,13,154,0],
 "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a2449af1537aa29e3c43c39cdf00c0daf":[1,0,2,13,154,10],
@@ -240,14 +249,5 @@ var NAVTREEINDEX98 =
 "class_terraria_1_1_mount_1_1_mount_data.html#a795e7e5660f145e43afb00bbfc7f578b":[1,0,2,50,0,49],
 "class_terraria_1_1_mount_1_1_mount_data.html#a7d203a30e942e08b0b9266310566cde4":[1,0,2,50,0,34],
 "class_terraria_1_1_mount_1_1_mount_data.html#a83a5f568e6ddadf2a69145f47519ec6e":[1,0,2,50,0,55],
-"class_terraria_1_1_mount_1_1_mount_data.html#a8483fe92818b7694894c641fe73d57d0":[1,0,2,50,0,56],
-"class_terraria_1_1_mount_1_1_mount_data.html#a905693602646a288e9e35dfe79a96958":[1,0,2,50,0,23],
-"class_terraria_1_1_mount_1_1_mount_data.html#a92adb4ddd1693415f8d3737a1a801c59":[1,0,2,50,0,16],
-"class_terraria_1_1_mount_1_1_mount_data.html#a92b7cbf911692e47e8c8ea82111fafdf":[1,0,2,50,0,15],
-"class_terraria_1_1_mount_1_1_mount_data.html#a93d17e123dc33e7cfeb291c2a8cbe291":[1,0,2,50,0,18],
-"class_terraria_1_1_mount_1_1_mount_data.html#a9aa058cb75097c9fe8e75d04fad1e66c":[1,0,2,50,0,31],
-"class_terraria_1_1_mount_1_1_mount_data.html#aa46576592bf06dc2d89d931ad298d26a":[1,0,2,50,0,25],
-"class_terraria_1_1_mount_1_1_mount_data.html#aa4800b1ad2848ce9ec08855e18e5f4e7":[1,0,2,50,0,45],
-"class_terraria_1_1_mount_1_1_mount_data.html#aa632b5519c2b1c0fd8ef7a3abd393559":[1,0,2,50,0,51],
-"class_terraria_1_1_mount_1_1_mount_data.html#aaf9b67e4fb729db3ee881c98376ba64d":[1,0,2,50,0,26]
+"class_terraria_1_1_mount_1_1_mount_data.html#a8483fe92818b7694894c641fe73d57d0":[1,0,2,50,0,56]
 };

@@ -6,6 +6,7 @@ var namespace_terraria_1_1_data_structures =
     [ "AnchoredEntitiesCollection", "class_terraria_1_1_data_structures_1_1_anchored_entities_collection.html", "class_terraria_1_1_data_structures_1_1_anchored_entities_collection" ],
     [ "BinaryWriterHelper", "struct_terraria_1_1_data_structures_1_1_binary_writer_helper.html", "struct_terraria_1_1_data_structures_1_1_binary_writer_helper" ],
     [ "BossBarDrawParams", "struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html", "struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params" ],
+    [ "BuffDrawParams", "struct_terraria_1_1_data_structures_1_1_buff_draw_params.html", "struct_terraria_1_1_data_structures_1_1_buff_draw_params" ],
     [ "BufferPool", "class_terraria_1_1_data_structures_1_1_buffer_pool.html", "class_terraria_1_1_data_structures_1_1_buffer_pool" ],
     [ "CachedBuffer", "class_terraria_1_1_data_structures_1_1_cached_buffer.html", "class_terraria_1_1_data_structures_1_1_cached_buffer" ],
     [ "ColorSlidersSet", "class_terraria_1_1_data_structures_1_1_color_sliders_set.html", "class_terraria_1_1_data_structures_1_1_color_sliders_set" ],

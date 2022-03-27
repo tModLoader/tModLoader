@@ -109,12 +109,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4bf055e5f49877e07a1b93894bc5f396"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_buff.html#a4bf055e5f49877e07a1b93894bc5f396">ModifyBuffTip</a> (int type, ref string tip, ref int rare)</td></tr>
 <tr class="memdesc:a4bf055e5f49877e07a1b93894bc5f396"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the tooltip that displays when the mouse hovers over the buff icon, as well as the color the buff's name is drawn in.  <a href="class_terraria_1_1_mod_loader_1_1_global_buff.html#a4bf055e5f49877e07a1b93894bc5f396">More...</a><br /></td></tr>
 <tr class="separator:a4bf055e5f49877e07a1b93894bc5f396"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e4d89df1015d3faa8dc95388c96e091"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_buff.html#a1e4d89df1015d3faa8dc95388c96e091">PostDraw</a> (SpriteBatch spriteBatch, int type, int buffIndex, <a class="el" href="struct_terraria_1_1_data_structures_1_1_buff_draw_params.html">BuffDrawParams</a> drawParams)</td></tr>
+<tr class="memdesc:a1e4d89df1015d3faa8dc95388c96e091"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things after the buff has been drawn. skipped is true if you or another mod has skipped drawing the buff (possibly hiding it or in favor of new visuals).  <a href="class_terraria_1_1_mod_loader_1_1_global_buff.html#a1e4d89df1015d3faa8dc95388c96e091">More...</a><br /></td></tr>
+<tr class="separator:a1e4d89df1015d3faa8dc95388c96e091"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1bd0cbd9a19610cfd835fadac2a40cb"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_buff.html#af1bd0cbd9a19610cfd835fadac2a40cb">PreDraw</a> (SpriteBatch spriteBatch, int type, int buffIndex, ref <a class="el" href="struct_terraria_1_1_data_structures_1_1_buff_draw_params.html">BuffDrawParams</a> drawParams)</td></tr>
+<tr class="memdesc:af1bd0cbd9a19610cfd835fadac2a40cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to draw things before the default draw code is ran. Return false to prevent drawing the buff. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_buff.html#af1bd0cbd9a19610cfd835fadac2a40cb">More...</a><br /></td></tr>
+<tr class="separator:af1bd0cbd9a19610cfd835fadac2a40cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a527738f8e552b5bdf9aabeaedc2fc818"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_buff.html#a527738f8e552b5bdf9aabeaedc2fc818">ReApply</a> (int type, <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, int time, int buffIndex)</td></tr>
 <tr class="memdesc:a527738f8e552b5bdf9aabeaedc2fc818"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows to you make special things happen when adding the given buff type to an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> when the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> already has that buff. Return true to block the vanilla re-apply code from being called; returns false by default. The vanilla re-apply code sets the buff time to the "time" argument if that argument is larger than the current buff time.  <a href="class_terraria_1_1_mod_loader_1_1_global_buff.html#a527738f8e552b5bdf9aabeaedc2fc818">More...</a><br /></td></tr>
 <tr class="separator:a527738f8e552b5bdf9aabeaedc2fc818"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af47c4255767ca57443545b1067d1b54d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_buff.html#af47c4255767ca57443545b1067d1b54d">ReApply</a> (int type, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, int time, int buffIndex)</td></tr>
 <tr class="memdesc:af47c4255767ca57443545b1067d1b54d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows to you make special things happen when adding the given type of buff to a player when the player already has that buff. Return true to block the vanilla re-apply code from being called; returns false by default. The vanilla re-apply code sets the buff time to the "time" argument if that argument is larger than the current buff time. (For Mana Sickness, the vanilla re-apply code adds the "time" argument to the current buff time.)  <a href="class_terraria_1_1_mod_loader_1_1_global_buff.html#af47c4255767ca57443545b1067d1b54d">More...</a><br /></td></tr>
 <tr class="separator:af47c4255767ca57443545b1067d1b54d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93518155040b3b5ef97957d7a2feea2a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_buff.html#a93518155040b3b5ef97957d7a2feea2a">RightClick</a> (int type, int buffIndex)</td></tr>
+<tr class="memdesc:a93518155040b3b5ef97957d7a2feea2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when the buff icon is right-clicked. Return false to prevent the buff from being cancelled.  <a href="class_terraria_1_1_mod_loader_1_1_global_buff.html#a93518155040b3b5ef97957d7a2feea2a">More...</a><br /></td></tr>
+<tr class="separator:a93518155040b3b5ef97957d7a2feea2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f76b6ff2233ddffefe70ff331a9cc82"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_buff.html#a6f76b6ff2233ddffefe70ff331a9cc82">SetupContent</a> ()</td></tr>
 <tr class="memdesc:a6f76b6ff2233ddffefe70ff331a9cc82"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aa2daf87c887ac0d98f00543a41e8e87f" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_terraria_1_1_mod_loader_1_1_global_buff.html#a6f76b6ff2233ddffefe70ff331a9cc82">More...</a><br /></td></tr>
 <tr class="separator:a6f76b6ff2233ddffefe70ff331a9cc82"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -302,6 +311,125 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a1e4d89df1015d3faa8dc95388c96e091"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e4d89df1015d3faa8dc95388c96e091">&#9670;&nbsp;</a></span>PostDraw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalBuff.PostDraw </td>
+          <td>(</td>
+          <td class="paramtype">SpriteBatch&#160;</td>
+          <td class="paramname"><em>spriteBatch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>buffIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_terraria_1_1_data_structures_1_1_buff_draw_params.html">BuffDrawParams</a>&#160;</td>
+          <td class="paramname"><em>drawParams</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to draw things after the buff has been drawn. skipped is true if you or another mod has skipped drawing the buff (possibly hiding it or in favor of new visuals). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spriteBatch</td><td>The spriteBatch that is drawn on</td></tr>
+    <tr><td class="paramname">type</td><td>The buff type</td></tr>
+    <tr><td class="paramname">buffIndex</td><td>The index in Main.LocalPlayer.buffType and .buffTime of the buff</td></tr>
+    <tr><td class="paramname">drawParams</td><td>The draw parameters for the buff</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af1bd0cbd9a19610cfd835fadac2a40cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1bd0cbd9a19610cfd835fadac2a40cb">&#9670;&nbsp;</a></span>PreDraw()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.GlobalBuff.PreDraw </td>
+          <td>(</td>
+          <td class="paramtype">SpriteBatch&#160;</td>
+          <td class="paramname"><em>spriteBatch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>buffIndex</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref <a class="el" href="struct_terraria_1_1_data_structures_1_1_buff_draw_params.html">BuffDrawParams</a>&#160;</td>
+          <td class="paramname"><em>drawParams</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to draw things before the default draw code is ran. Return false to prevent drawing the buff. Returns true by default. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spriteBatch</td><td>The spriteBatch that is drawn on</td></tr>
+    <tr><td class="paramname">type</td><td>The buff type</td></tr>
+    <tr><td class="paramname">buffIndex</td><td>The index in Main.LocalPlayer.buffType and .buffTime of the buff</td></tr>
+    <tr><td class="paramname">drawParams</td><td>The draw parameters for the buff</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> for allowing drawing, <code>false</code> for preventing drawing</dd></dl>
+
+</div>
+</div>
 <a id="a527738f8e552b5bdf9aabeaedc2fc818"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a527738f8e552b5bdf9aabeaedc2fc818">&#9670;&nbsp;</a></span>ReApply() <span class="overload">[1/2]</span></h2>
 
@@ -428,6 +556,52 @@ Additional Inherited Members</h2></td></tr>
 <p>If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override. </p>
 
 <p>Implements <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a88a7f706233a3abc436089ec25a8b203">Terraria.ModLoader.ModType</a>.</p>
+
+</div>
+</div>
+<a id="a93518155040b3b5ef97957d7a2feea2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93518155040b3b5ef97957d7a2feea2a">&#9670;&nbsp;</a></span>RightClick()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.GlobalBuff.RightClick </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>buffIndex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to make things happen when the buff icon is right-clicked. Return false to prevent the buff from being cancelled. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The buff type</td></tr>
+    <tr><td class="paramname">buffIndex</td><td>The index in Main.LocalPlayer.buffType and .buffTime of the buff</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> for allowing the buff to be cancelled, <code>false</code> to prevent the buff from being cancelled</dd></dl>
 
 </div>
 </div>
