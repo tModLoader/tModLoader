@@ -107,8 +107,8 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
-			offsetY = -2; // This is -1 for tiles using StyleAlch, but it causes a slight visual offset between the placement preview and the placed tile. -2 undos it
-		}
+			offsetY = -2; // This is -1 for tiles using StyleAlch, but vanilla sets to -2 for herbs, which causes a slight visual offset between the placement preview and the placed tile. 
+		} 
 
 		public override bool Drop(int i, int j) {
 			PlantStage stage = GetStage(i, j);
