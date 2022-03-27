@@ -3287,6 +3287,20 @@
  					}
  					else {
  						statLife = 0;
+@@ -27556,6 +_,13 @@
+ 				if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
+ 					FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);
+ 
++				string moddedPlayerPathName = Path.ChangeExtension(Main.playerPathName, ".tplr");
++				if (FileUtilities.Exists(moddedPlayerPathName, isCloudSave))
++					FileUtilities.Delete(moddedPlayerPathName, isCloudSave);
++
++				if (FileUtilities.Exists(moddedPlayerPathName + ".bak", isCloudSave))
++					FileUtilities.Delete(moddedPlayerPathName + ".bak", isCloudSave);
++
+ 				Main.ActivePlayerFileData = new PlayerFileData();
+ 			}
+ 		}
 @@ -27565,6 +_,11 @@
  				return;
  
