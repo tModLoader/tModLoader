@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 {
 	public static class Logging
 	{
-		public static readonly string LogDir = Path.Combine(Program.SavePath, "Logs");
+		public static readonly string LogDir = "tModLoader-Logs";
 		public static readonly string LogArchiveDir = Path.Combine(LogDir, "Old");
 
 		// BOM-less UTF8 encoding. Unfortunately, silly Discord, the application we send and get sent logs through 100 times a day,

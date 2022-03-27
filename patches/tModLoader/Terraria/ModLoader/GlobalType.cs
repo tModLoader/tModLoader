@@ -19,8 +19,8 @@ namespace Terraria.ModLoader
 			for (int i = 0; i < globals.Length; i++) {
 				var g = globals[i];
 
-				if (g.index == index) {
-					return g.instance;
+				if (g.Index == index) {
+					return g.Instance;
 				}
 			}
 
@@ -36,7 +36,7 @@ namespace Terraria.ModLoader
 			}
 
 			for (int i = 0; i < globals.Length; i++) {
-				if (globals[i].instance is TResult result) {
+				if (globals[i].Instance is TResult result) {
 					return result;
 				}
 			}
@@ -62,7 +62,7 @@ namespace Terraria.ModLoader
 			}
 
 			for (int i = 0; i < globals.Length; i++) {
-				if (globals[i].instance is TResult t) {
+				if (globals[i].Instance is TResult t) {
 					result = t;
 
 					return true;

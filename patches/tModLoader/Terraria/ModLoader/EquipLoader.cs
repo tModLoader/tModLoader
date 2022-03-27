@@ -15,7 +15,7 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class EquipLoader
 	{
-		internal static readonly Dictionary<EquipType, int> nextEquip = new Dictionary<EquipType, int>();
+		internal static readonly Dictionary<EquipType, int> nextEquip = new();
 
 		internal static readonly Dictionary<EquipType, Dictionary<int, EquipTexture>> equipTextures = new();
 

@@ -1,0 +1,33 @@
+--- src/TerrariaNetCore/Terraria/GameContent/PlayerSleepingHelper.cs
++++ src/tModLoader/Terraria/GameContent/PlayerSleepingHelper.cs
+@@ -1,6 +_,8 @@
+ using Microsoft.Xna.Framework;
+ using System;
++using Terraria.DataStructures;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent
+ {
+@@ -173,8 +_,20 @@
+ 					break;
+ 			}
+ 
+-			anchorPosition = new Point(num4, num + 1).ToWorldCoordinates(8f, 16f);
+ 			visualoffset = SetOffsetbyBed(tileSafely.frameY / 36);
++
++			TileRestingInfo info = new TileRestingInfo(null, new Point(num4, num), visualoffset, targetDirection);
++			TileLoader.ModifySleepingTargetInfo(x, y, tileSafely.type, ref info);
++			num4 = info.anchorTilePosition.X;
++			num = info.anchorTilePosition.Y;
++			int directionOffset = info.directionOffset;
++			targetDirection = info.targetDirection;
++			visualoffset = info.visualOffset;
++			Vector2 finalOffset = info.finalOffset;
++
++			anchorPosition = new Point(num4, num + 1).ToWorldCoordinates(8f, 16f); // Reordered so that anchorPosition is modifiable
++			anchorPosition.X += targetDirection * directionOffset; // Added to match PlayerSittingHelper
++			anchorPosition += finalOffset; // Added to match PlayerSittingHelper
+ 			return true;
+ 		}
+ 

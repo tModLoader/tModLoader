@@ -20,8 +20,10 @@ namespace ExampleMod.Content.Tiles
 
 	// A plant with 3 stages, planted, growing and grown
 	// Sadly, modded plants are unable to be grown by the flower boots
-	//TODO smart select functionality after PR #2051 is merged
 	//TODO smart cursor support for herbs, see SmartCursorHelper.Step_AlchemySeeds
+	//TODO Staff of Regrowth:
+	//- Player.PlaceThing_Tiles_BlockPlacementForAssortedThings: check where type == 84 (grown herb)
+	//- Player.ItemCheck_GetTileCutIgnoreList: maybe generalize?
 	//TODO vanilla seeds to replace fully grown herb
 	public class ExampleHerb : ModTile
 	{
@@ -34,6 +36,7 @@ namespace ExampleMod.Content.Tiles
 			Main.tileNoFail[Type] = true;
 			TileID.Sets.ReplaceTileBreakUp[Type] = true;
 			TileID.Sets.IgnoredInHouseScore[Type] = true;
+			TileID.Sets.IgnoredByGrowingSaplings[Type] = true;
 
 			// We do not use this because our tile should only be spelunkable when it's fully grown. That's why we use the IsTileSpelunkable hook instead
 			//Main.tileSpelunker[Type] = true;
@@ -41,7 +44,9 @@ namespace ExampleMod.Content.Tiles
 			// Do NOT use this, it causes many unintended side effects
 			//Main.tileAlch[Type] = true;
 
-			AddMapEntry(new Color(128, 128, 128));
+			ModTranslation name = CreateMapEntryName();
+			name.SetDefault("Example Herb");
+			AddMapEntry(new Color(128, 128, 128), name);
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.StyleAlch);
 			TileObjectData.newTile.AnchorValidTiles = new int[] {
@@ -96,10 +101,14 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) {
-			if (i % 2 == 1) {
+			if (i % 2 == 0) {
 				spriteEffects = SpriteEffects.FlipHorizontally;
 			}
 		}
+
+		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
+			offsetY = -2; // This is -1 for tiles using StyleAlch, but vanilla sets to -2 for herbs, which causes a slight visual offset between the placement preview and the placed tile. 
+		} 
 
 		public override bool Drop(int i, int j) {
 			PlantStage stage = GetStage(i, j);

@@ -33,7 +33,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Adds the given sound file to the game as the given type of sound and with the given custom sound playing. If no ModSound instance is provided, the custom sound will play in a similar manner as the default vanilla ones.
 		/// </summary>
-		/// <param name="Mod">The mod.</param>
+		/// <param name="mod">The mod.</param>
 		/// <param name="soundPath">The sound path.</param>
 		/// <param name="modSound">The mod sound.</param>
 		public static void AddSound(Mod mod, string soundPath, ModSound modSound = null) {

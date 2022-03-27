@@ -456,7 +456,7 @@
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue != 248)
-+			if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Alpha && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
++			if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
 +			}
@@ -1540,7 +1540,7 @@
 -					Microsoft.Xna.Framework.Color color2 = Microsoft.Xna.Framework.Color.Black;
 +				drawableLines[k].OriginalX = X;
 +				drawableLines[k].OriginalY = Y + num16;
-+				if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "OneDropLogo") {
++				if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "OneDropLogo") {
 +					int num20 = (int)((float)(int)mouseTextColor * 1f);
 +					Color color2 = Color.Black;
 +					drawableLines[k].Color = new Color(num20, num20, num20, num20);
@@ -1561,8 +1561,8 @@
  						}
 -
 -						spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, color2, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
-+						Color drawColor2 = drawableLines[k].overrideColor ?? drawableLines[k].Color;
-+						spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, (l != 4) ? color2 : drawColor2, drawableLines[k].rotation, drawableLines[k].origin, (drawableLines[k].baseScale.X + drawableLines[k].baseScale.Y) / 2f, SpriteEffects.None, 0f);
++						Color drawColor2 = drawableLines[k].OverrideColor ?? drawableLines[k].Color;
++						spriteBatch.Draw(TextureAssets.OneDropLogo.Value, new Vector2(num21, num22), null, (l != 4) ? color2 : drawColor2, drawableLines[k].Rotation, drawableLines[k].Origin, (drawableLines[k].BaseScale.X + drawableLines[k].BaseScale.Y) / 2f, SpriteEffects.None, 0f);
  					}
  				}
  				else {
@@ -1572,7 +1572,7 @@
 -						if (rare == -13)
 -							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(masterColor * 200f * num4), 0, a);
 -
-+					if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "ItemName") {
++					if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "ItemName") {
  						if (rare == -11)
  							black = new Microsoft.Xna.Framework.Color((byte)(255f * num4), (byte)(175f * num4), (byte)(0f * num4), a);
  
@@ -1602,12 +1602,12 @@
  						black = (array3[k] ? new Microsoft.Xna.Framework.Color((byte)(190f * num4), (byte)(120f * num4), (byte)(120f * num4), a) : new Microsoft.Xna.Framework.Color((byte)(120f * num4), (byte)(190f * num4), (byte)(120f * num4), a));
  					}
 -					else if (k == numLines - 1) {
-+					else if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "Price") {
++					else if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "Price") {
  						black = color;
  					}
  
 -					if (k == researchLine)
-+					if (drawableLines[k].mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")
++					if (drawableLines[k].Mod == "Terraria" && drawableLines[k].Name == "JourneyResearch")
  						black = Colors.JourneyMode;
  
 -					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, array[k], new Vector2(X, Y + num16), black, 0f, Vector2.Zero, Vector2.One);
@@ -1616,20 +1616,20 @@
 +
 +					if (overrideColor[k].HasValue) {
 +						realLineColor = overrideColor[k].Value * num4;
-+						drawableLines[k].overrideColor = realLineColor;
++						drawableLines[k].OverrideColor = realLineColor;
 +					}
 +
 +					if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[k], ref num12) || !globalCanDraw)
 +						goto PostDraw;
 +
-+					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[k].font, drawableLines[k].text, new Vector2(drawableLines[k].X, drawableLines[k].Y), realLineColor, drawableLines[k].rotation, drawableLines[k].origin, drawableLines[k].baseScale, drawableLines[k].maxWidth, drawableLines[k].spread);
++					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[k].Font, drawableLines[k].Text, new Vector2(drawableLines[k].X, drawableLines[k].Y), realLineColor, drawableLines[k].Rotation, drawableLines[k].Origin, drawableLines[k].BaseScale, drawableLines[k].MaxWidth, drawableLines[k].Spread);
  				}
  
 +				PostDraw:
 +				ItemLoader.PostDrawTooltipLine(HoverItem, drawableLines[k]);
 +
 -				num16 += (int)(FontAssets.MouseText.Value.MeasureString(array[k]).Y + (float)num12);
-+				num16 += (int)(FontAssets.MouseText.Value.MeasureString(drawableLines[k].text).Y + (float)num12);
++				num16 += (int)(FontAssets.MouseText.Value.MeasureString(drawableLines[k].Text).Y + (float)num12);
  			}
 +
 +			ItemLoader.PostDrawTooltip(HoverItem, drawableLines.AsReadOnly());
@@ -2532,6 +2532,26 @@
  		}
  
  		public void DrawItems() {
+@@ -28356,6 +_,19 @@
+ 				Rain rain = Main.rain[i];
+ 				if (rain.active) {
+ 					value.X = rain.type * 4;
++
++					if (rain.waterStyle >= maxLiquidTypes) {
++						value2 = LoaderManager.Get<WaterStylesLoader>().Get(rain.waterStyle).GetRainTexture().Value;
++						if (value2 == null) {
++							if (flag)
++								rain.Update();
++							continue;
++						}
++					}
++					else {
++						value2 = TextureAssets.Rain.Value;
++					}
++
+ 					spriteBatch.Draw(value2, rain.position - screenPosition, value, Lighting.GetColor((int)(rain.position.X + 4f) >> 4, (int)(rain.position.Y + 4f) >> 4) * 0.85f, rain.rotation, zero, rain.scale, SpriteEffects.None, 0f);
+ 					if (flag)
+ 						rain.Update();
 @@ -28484,6 +_,13 @@
  					if (dust.type == 213)
  						scale = 1f;
@@ -2984,6 +3004,102 @@
  			}
  		}
  
+@@ -32294,6 +_,13 @@
+ 			return text;
+ 		}
+ 
++		/// <summary>
++		/// Checks if the buff at index <paramref name="buffSlotOnPlayer"/> is allowed to draw a "remaining time" text, and sets <paramref name="buffTimeValue"/> to it.
++		/// <para>Check <paramref name="buffTimeValue"/> > 2 afterwards if you want to mirror text draw logic.</para>
++		/// </summary>
++		/// <param name="buffSlotOnPlayer">The index for buffType and buffTime</param>
++		/// <param name="buffTimeValue">The "remaining time" in ticks</param>
++		/// <returns><see langword="true"/> if <paramref name="buffTimeValue"/> is set, otherwise <see langword="false"/></returns>
+ 		public static bool TryGetBuffTime(int buffSlotOnPlayer, out int buffTimeValue) {
+ 			int num = player[myPlayer].buffType[buffSlotOnPlayer];
+ 			buffTimeValue = 0;
+@@ -32305,19 +_,57 @@
+ 			return false;
+ 		}
+ 
++		/// <summary>
++		/// Draws the buff icon corresponding to the buff in Main.LocalPlayer.buffType[<paramref name="buffSlotOnPlayer"/>].
++		/// <para>Calls TML hooks related to drawing and clicking.</para>
++		/// <para>Has two exclusive contexts: Below the accessory slots (Main.EquipPage == 2), and regular under-the-inventory.</para>
++		/// </summary>
++		/// <param name="drawBuffText">The return from a previous DrawBuffIcon call, -1 if first drawn buff</param>
++		/// <param name="buffSlotOnPlayer">The index for buffType and buffTime</param>
++		/// <param name="x">Top-left draw position on the x-axis</param>
++		/// <param name="y">Top-left draw position on the y-axis</param>
++		/// <returns>The index of the currently mouseovered buff icon, equal to <paramref name="buffSlotOnPlayer"/> if it's currently mouseovered, -1 otherwise</returns>
+ 		public static int DrawBuffIcon(int drawBuffText, int buffSlotOnPlayer, int x, int y) {
+ 			int num = player[myPlayer].buffType[buffSlotOnPlayer];
+ 			if (num == 0)
+ 				return drawBuffText;
+ 
+ 			Microsoft.Xna.Framework.Color color = new Microsoft.Xna.Framework.Color(buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer], buffAlpha[buffSlotOnPlayer]);
++
++			/*
+ 			spriteBatch.Draw(TextureAssets.Buff[num].Value, new Vector2(x, y), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.Buff[num].Width(), TextureAssets.Buff[num].Height()), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++			*/
++
++			// Drawing made customizable through tML hooks
++			Asset<Texture2D> buffAsset = TextureAssets.Buff[num];
++			Texture2D texture = buffAsset.Value;
++			Vector2 drawPosition = new Vector2(x, y);
++			int width = buffAsset.Width();
++			int height = buffAsset.Height();
++			Vector2 textPosition = new Vector2(x, y + height);
++			Rectangle sourceRectangle = new Rectangle(0, 0, width, height);
++			Rectangle mouseRectangle = new Rectangle(x, y, width, height);
++			Color drawColor = color;
++			
++			BuffDrawParams drawParams = new BuffDrawParams(texture, drawPosition, textPosition, sourceRectangle, mouseRectangle, drawColor);
++
++			bool skipped = !BuffLoader.PreDraw(spriteBatch, num, buffSlotOnPlayer, ref drawParams);
++
++			(texture, drawPosition, textPosition, sourceRectangle, mouseRectangle, drawColor) = drawParams;
++		
++			if (!skipped)
++				spriteBatch.Draw(texture, drawPosition, sourceRectangle, drawColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++		
++			BuffLoader.PostDraw(spriteBatch, num, buffSlotOnPlayer, drawParams);
++
+ 			if (TryGetBuffTime(buffSlotOnPlayer, out int buffTimeValue) && buffTimeValue > 2) {
+ 				string text = Lang.LocalizedDuration(new TimeSpan(0, 0, buffTimeValue / 60), abbreviated: true, showAllAvailableUnits: false);
+-				spriteBatch.DrawString(FontAssets.ItemStack.Value, text, new Vector2(x, y + TextureAssets.Buff[num].Height()), color, 0f, default(Vector2), 0.8f, SpriteEffects.None, 0f);
++				//spriteBatch.DrawString(FontAssets.ItemStack.Value, text, new Vector2(x, y + TextureAssets.Buff[num].Height()), color, 0f, default(Vector2), 0.8f, SpriteEffects.None, 0f);
++				spriteBatch.DrawString(FontAssets.ItemStack.Value, text, textPosition, color, 0f, default(Vector2), 0.8f, SpriteEffects.None, 0f);
+ 			}
+ 
+-			if (mouseX < x + TextureAssets.Buff[num].Width() && mouseY < y + TextureAssets.Buff[num].Height() && mouseX > x && mouseY > y) {
++			//if (mouseX < x + TextureAssets.Buff[num].Width() && mouseY < y + TextureAssets.Buff[num].Height() && mouseX > x && mouseY > y) {
++			if (mouseRectangle.Contains(new Point(mouseX, mouseY))) {
+ 				drawBuffText = buffSlotOnPlayer;
+ 				buffAlpha[buffSlotOnPlayer] += 0.1f;
+ 				bool flag = mouseRight && mouseRightRelease;
+@@ -32331,6 +_,9 @@
+ 				}
+ 
+ 				if (flag)
++					flag &= BuffLoader.RightClick(num, buffSlotOnPlayer);
++
++				if (flag)
+ 					TryRemovingBuff(buffSlotOnPlayer, num);
+ 			}
+ 			else {
+@@ -32348,6 +_,11 @@
+ 			return drawBuffText;
+ 		}
+ 
++		/// <summary>
++		/// Calls Player.DelBuff with index i after checking Main.debuff of buff type b. Will toggle Player.hideMisc for pet and light pet.
++		/// </summary>
++		/// <param name="i">The index for buffType and buffTime</param>
++		/// <param name="b">The buff type</param>
+ 		public static void TryRemovingBuff(int i, int b) {
+ 			bool flag = false;
+ 			if (!debuff[b] && b != 60 && b != 151) {
 @@ -33604,7 +_,9 @@
  				SetupDrawInterfaceLayers();
  
@@ -3505,7 +3621,12 @@
  					array9[num24] = Lang.menu[5].Value;
  					if (selectedMenu == num24 || flag5) {
  						flag5 = false;
-@@ -38051,7 +_,8 @@
+@@ -38047,19 +_,21 @@
+ 					num4 = 55;
+ 					int num30 = 0;
+ 					array9[num30] = Lang.menu[73].Value + ": " + PendingResolutionWidth + "x" + PendingResolutionHeight;
+-					if (selectedMenu == num30) {
++					if (selectedMenu == num30 || selectedMenu2 == num30) {
  						SoundEngine.PlaySound(12);
  						int num31 = 0;
  						for (int num32 = 0; num32 < numDisplayModes; num32++) {
@@ -3515,9 +3636,10 @@
  								num31 = num32;
  								break;
  							}
-@@ -38059,7 +_,8 @@
+ 						}
  
- 						num31 = (num31 + 1) % numDisplayModes;
+-						num31 = (num31 + 1) % numDisplayModes;
++						num31 = Utils.Repeat(num31 + ((selectedMenu == num30) ? 1 : -1), Main.numDisplayModes);
  						PendingResolutionWidth = displayWidth[num31];
 -						PendingResolutionHeight = displayHeight[num31];
 +						// TML: Limit the resolution when going from fullscreen to windowed to be less than the full monitor size so that the key window edges are accessible
