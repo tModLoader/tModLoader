@@ -1,5 +1,12 @@
 var NAVTREEINDEX124 =
 {
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa8c5d696b337ef423af11cf021c260b7e":[0,0,2,5,8,275],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa8e093db8e17c32ef52b6e9d2a1981f37":[0,0,2,5,8,119],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa8f7671185d590914ac21c7511767b699":[0,0,2,5,8,68],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa90a6cee34a855d468c6f65781d5b09b1":[0,0,2,5,8,330],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa9100506dc851c990325962f9c96077cf":[0,0,2,5,8,249],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa92003a51e2f0b07e8faee87acb955c0e":[0,0,2,5,8,254],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa925da645e3286e25705fa4b775b41bdf":[0,0,2,5,8,161],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa92c06e6493c2749f7a75128822c770a6":[0,0,2,5,8,185],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa92dd35cc61ffc41d02defdcef071856d":[0,0,2,5,8,144],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa931ee806e12926def8fd3d60b726ac32":[0,0,2,5,8,142],
@@ -242,12 +249,5 @@ var NAVTREEINDEX124 =
 "namespace_terraria_1_1_game_content_1_1_biomes_1_1_cave_house.html#a39b434b217f9d58e885788c98610525ca583d6a9fe10d672474e2cdca476113b7":[0,0,2,6,3,0,10,1],
 "namespace_terraria_1_1_game_content_1_1_biomes_1_1_cave_house.html#a39b434b217f9d58e885788c98610525ca6e4dd7ce4ea3c1d4a90edb289e22da98":[0,0,2,6,3,0,10,0],
 "namespace_terraria_1_1_game_content_1_1_biomes_1_1_cave_house.html#a39b434b217f9d58e885788c98610525ca7562201f32b70cc000ea79f053e45cf0":[0,0,2,6,3,0,10,5],
-"namespace_terraria_1_1_game_content_1_1_biomes_1_1_cave_house.html#a39b434b217f9d58e885788c98610525ca7fb26875c639817a59912a87be6f7386":[0,0,2,6,3,0,10,6],
-"namespace_terraria_1_1_game_content_1_1_biomes_1_1_cave_house.html#a39b434b217f9d58e885788c98610525cab93c3d9029fa42815abf0551db0cec98":[0,0,2,6,3,0,10,4],
-"namespace_terraria_1_1_game_content_1_1_biomes_1_1_desert.html":[0,0,2,6,3,1],
-"namespace_terraria_1_1_game_content_1_1_creative.html":[0,0,2,6,4],
-"namespace_terraria_1_1_game_content_1_1_creative.html#a59ebd6cf4317324177da52e65dd8f59b":[0,0,2,6,4,16],
-"namespace_terraria_1_1_game_content_1_1_creative.html#a59ebd6cf4317324177da52e65dd8f59ba152f646c89eb9845d6ab917784e71e25":[0,0,2,6,4,16,2],
-"namespace_terraria_1_1_game_content_1_1_creative.html#a59ebd6cf4317324177da52e65dd8f59ba67d896261686f8aee2e50910af4c9694":[0,0,2,6,4,16,1],
-"namespace_terraria_1_1_game_content_1_1_creative.html#a59ebd6cf4317324177da52e65dd8f59baa1c8d4f481fcc0375261284a6ac3841c":[0,0,2,6,4,16,0]
+"namespace_terraria_1_1_game_content_1_1_biomes_1_1_cave_house.html#a39b434b217f9d58e885788c98610525ca7fb26875c639817a59912a87be6f7386":[0,0,2,6,3,0,10,6]
 };

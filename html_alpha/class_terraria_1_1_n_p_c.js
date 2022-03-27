@@ -160,6 +160,7 @@ var class_terraria_1_1_n_p_c =
     [ "ShouldEmpressBeEnraged", "class_terraria_1_1_n_p_c.html#a4318f01a3a3785f12bee8787f86749d0", null ],
     [ "ShouldFaceTarget", "class_terraria_1_1_n_p_c.html#a13efaf5b9e6049eb1730140bf9a90f57", null ],
     [ "SimpleFlyMovement", "class_terraria_1_1_n_p_c.html#aeb5e6c168264abdfcb4d742f0ae30575", null ],
+    [ "SitDown", "class_terraria_1_1_n_p_c.html#a71c2f6e28cf396d8e3cdee4104740d29", null ],
     [ "SlimeRainSpawns", "class_terraria_1_1_n_p_c.html#a7ca37ebe834c0aac35f2ac8bd22e8c76", null ],
     [ "SpawnBoss", "class_terraria_1_1_n_p_c.html#a2adf1003f4f193a96bcb1da4c861ab22", null ],
     [ "Spawning_FlyingAntlionCheck", "class_terraria_1_1_n_p_c.html#a00f67576a1fe0555552c4e6256bd2212", null ],

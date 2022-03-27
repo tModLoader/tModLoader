@@ -1,17 +1,18 @@
 var searchData=
 [
-  ['rainbow_5907',['Rainbow',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a63fa4149457627689cee0d6f944de447',1,'Terraria::ID::ProjAIStyleID']]],
-  ['rainbowrod_5908',['RainbowRod',['../class_terraria_1_1_i_d_1_1_dust_i_d.html#a07b4af48b2ca633fc72426d3b64299f2',1,'Terraria::ID::DustID']]],
-  ['raincloud_5909',['RainCloud',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a3e985b33b429f49b82d0eaf2c4372fc4',1,'Terraria::ID::ProjAIStyleID']]],
-  ['raven_5910',['Raven',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a2dd3233fb646316a698523d5def64c9e',1,'Terraria::ID::ProjAIStyleID']]],
-  ['ray_5911',['Ray',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a6f3639d86f8d8643ddb85f3fb79563e7',1,'Terraria::ID::ProjAIStyleID']]],
-  ['reaping_5912',['Reaping',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a4e5fdc06403d0484dcdaee674db20ebc',1,'Terraria::ID::ProjAIStyleID']]],
-  ['red_5913',['Red',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#aac4d7493674f533eb07ecd4dc8ce5c5b',1,'Terraria::ID::ItemRarityID']]],
-  ['releasedenergy_5914',['ReleasedEnergy',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#af71f09f281db8cd17aed2a47392c9010',1,'Terraria::ID::ProjAIStyleID']]],
-  ['releasedprojectile_5915',['ReleasedProjectile',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ae70d69b12f81f2a21a9d80b6f344c9f1',1,'Terraria::ID::ProjAIStyleID']]],
-  ['retinazer_5916',['Retinazer',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a71a2d1ed1a3fe0d266c05e998f4e3040',1,'Terraria::ID::NPCAIStyleID']]],
-  ['rider_5917',['Rider',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a0984732af78d4d44a04a0ef0174fce3c',1,'Terraria::ID::NPCAIStyleID']]],
-  ['robe_5918',['Robe',['../class_terraria_1_1_data_structures_1_1_player_draw_layers.html#ad9e67f924d34eab835ef9032e1d69175',1,'Terraria::DataStructures::PlayerDrawLayers']]],
-  ['ropecoil_5919',['RopeCoil',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a5a0a9147209a240e1ce0fe524894935d',1,'Terraria::ID::ProjAIStyleID']]],
-  ['rotation_5920',['rotation',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ac0bc2d7ee58f4ff4683d1422bc12aafc',1,'Terraria::ModLoader::DrawableTooltipLine']]]
+  ['rainbow_5927',['Rainbow',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a63fa4149457627689cee0d6f944de447',1,'Terraria::ID::ProjAIStyleID']]],
+  ['rainbowrod_5928',['RainbowRod',['../class_terraria_1_1_i_d_1_1_dust_i_d.html#a07b4af48b2ca633fc72426d3b64299f2',1,'Terraria::ID::DustID']]],
+  ['raincloud_5929',['RainCloud',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a3e985b33b429f49b82d0eaf2c4372fc4',1,'Terraria::ID::ProjAIStyleID']]],
+  ['raven_5930',['Raven',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a2dd3233fb646316a698523d5def64c9e',1,'Terraria::ID::ProjAIStyleID']]],
+  ['ray_5931',['Ray',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a6f3639d86f8d8643ddb85f3fb79563e7',1,'Terraria::ID::ProjAIStyleID']]],
+  ['reaping_5932',['Reaping',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a4e5fdc06403d0484dcdaee674db20ebc',1,'Terraria::ID::ProjAIStyleID']]],
+  ['red_5933',['Red',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#aac4d7493674f533eb07ecd4dc8ce5c5b',1,'Terraria::ID::ItemRarityID']]],
+  ['releasedenergy_5934',['ReleasedEnergy',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#af71f09f281db8cd17aed2a47392c9010',1,'Terraria::ID::ProjAIStyleID']]],
+  ['releasedprojectile_5935',['ReleasedProjectile',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#ae70d69b12f81f2a21a9d80b6f344c9f1',1,'Terraria::ID::ProjAIStyleID']]],
+  ['restingentity_5936',['restingEntity',['../struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a3cfba78982cb75e0effa6e1d94af5b2b',1,'Terraria::DataStructures::TileRestingInfo']]],
+  ['retinazer_5937',['Retinazer',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a71a2d1ed1a3fe0d266c05e998f4e3040',1,'Terraria::ID::NPCAIStyleID']]],
+  ['rider_5938',['Rider',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a0984732af78d4d44a04a0ef0174fce3c',1,'Terraria::ID::NPCAIStyleID']]],
+  ['robe_5939',['Robe',['../class_terraria_1_1_data_structures_1_1_player_draw_layers.html#ad9e67f924d34eab835ef9032e1d69175',1,'Terraria::DataStructures::PlayerDrawLayers']]],
+  ['ropecoil_5940',['RopeCoil',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a5a0a9147209a240e1ce0fe524894935d',1,'Terraria::ID::ProjAIStyleID']]],
+  ['rotation_5941',['rotation',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#ac0bc2d7ee58f4ff4683d1422bc12aafc',1,'Terraria::ModLoader::DrawableTooltipLine']]]
 ];

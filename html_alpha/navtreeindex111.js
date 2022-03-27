@@ -1,5 +1,12 @@
 var NAVTREEINDEX111 =
 {
+"class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader.html#ae971742aea0b3a1d55d753c4ed80d458":[1,0,2,19,1,10,1],
+"class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader_1_1_read_result.html":[1,0,2,19,1,10,0],
+"class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader_1_1_read_result.html#a040de2a031fb1c4369cb20b59f2fe4b1":[1,0,2,19,1,10,0,0],
+"class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader_1_1_read_result.html#a8807d30dea51d76c6bcea7f45a672c5c":[1,0,2,19,1,10,0,3],
+"class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader_1_1_read_result.html#a9c3a41c15c8de3d3f64ea48efd5ca253":[1,0,2,19,1,10,0,1],
+"class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader_1_1_read_result.html#aed23a2ddfb54bff180400468f2e82d78":[1,0,2,19,1,10,0,2],
+"class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer.html":[1,0,2,19,1,11],
 "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer.html#a0b6a6eef9489f9ef1f4dbfeee4da98b7":[1,0,2,19,1,11,3],
 "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer.html#a237bd9feb27f74436359b3145d6ac22e":[1,0,2,19,1,11,1],
 "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_writer.html#a45a04e8012bf98e3f3e8f246a0aa4cff":[1,0,2,19,1,11,4],
@@ -242,12 +249,5 @@ var NAVTREEINDEX111 =
 "class_terraria_1_1_social_1_1_we_game_1_1_report_server_i_d.html":[1,0,2,19,2,19],
 "class_terraria_1_1_social_1_1_we_game_1_1_report_server_i_d.html#a5717589869a7c2d75d3ce98f7a37e3eb":[1,0,2,19,2,19,0],
 "class_terraria_1_1_social_1_1_we_game_1_1_we_game_friend_list_info.html":[1,0,2,19,2,20],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_friend_list_info.html#a1f3caeff292b619b5ec34e43b13b7f7a":[1,0,2,19,2,20,0],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_helper.html":[1,0,2,19,2,21],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_helper.html#a67a3b77b9430515e11c98575c19b8e7e":[1,0,2,19,2,21,2],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_helper.html#aa602dc54692ae4783d1b7628ab84d10b":[1,0,2,19,2,21,1],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_helper.html#abdaf5ca1c774c0f82666a49679e04f86":[1,0,2,19,2,21,0],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_reader.html":[1,0,2,19,2,22],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_reader.html#a2a08298e94ce954f6b85e619fa727604":[1,0,2,19,2,22,8],
-"class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_reader.html#a466b1202ee69dd5844890b50549dcc7c":[1,0,2,19,2,22,3]
+"class_terraria_1_1_social_1_1_we_game_1_1_we_game_friend_list_info.html#a1f3caeff292b619b5ec34e43b13b7f7a":[1,0,2,19,2,20,0]
 };

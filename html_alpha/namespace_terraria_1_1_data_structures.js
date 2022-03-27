@@ -83,6 +83,7 @@ var namespace_terraria_1_1_data_structures =
     [ "TileEntitiesManager", "class_terraria_1_1_data_structures_1_1_tile_entities_manager.html", "class_terraria_1_1_data_structures_1_1_tile_entities_manager" ],
     [ "TileEntity", "class_terraria_1_1_data_structures_1_1_tile_entity.html", "class_terraria_1_1_data_structures_1_1_tile_entity" ],
     [ "TileObjectPreviewData", "class_terraria_1_1_data_structures_1_1_tile_object_preview_data.html", "class_terraria_1_1_data_structures_1_1_tile_object_preview_data" ],
+    [ "TileRestingInfo", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html", "struct_terraria_1_1_data_structures_1_1_tile_resting_info" ],
     [ "TitleLinkButton", "class_terraria_1_1_data_structures_1_1_title_link_button.html", "class_terraria_1_1_data_structures_1_1_title_link_button" ],
     [ "TrackedProjectileReference", "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html", "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference" ],
     [ "WingStats", "struct_terraria_1_1_data_structures_1_1_wing_stats.html", "struct_terraria_1_1_data_structures_1_1_wing_stats" ],

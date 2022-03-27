@@ -1,5 +1,12 @@
 var NAVTREEINDEX121 =
 {
+"class_terraria_1_1_world_gen_1_1_spread.html#acf8406b1283cbe69817773413ede19ab":[1,0,2,83,4,0],
+"class_terraria_1_1_world_gen_1_1_spread.html#aed32861af2b3474ab020b24782d55b0e":[1,0,2,83,4,5],
+"class_terraria_1_1_world_gen_1_1_tenth_anniversary_world_info.html":[1,0,2,83,5],
+"class_terraria_1_1_world_gen_1_1_tenth_anniversary_world_info.html#a28574d5b6ced34a0604ff2e633105c3e":[1,0,2,83,5,2],
+"class_terraria_1_1_world_gen_1_1_tenth_anniversary_world_info.html#a4a1d9225e508c42ee1a9c8a465503a23":[1,0,2,83,5,0],
+"class_terraria_1_1_world_gen_1_1_tenth_anniversary_world_info.html#a5185dddd29d3187dd409509dbbc54b3d":[1,0,2,83,5,3],
+"class_terraria_1_1_world_gen_1_1_tenth_anniversary_world_info.html#aacd62fa6977f938fd0104e93977c1f51":[1,0,2,83,5,1],
 "class_terraria_1_1_world_gen_1_1_tenth_anniversary_world_info.html#af4c837963e089c936e9088c7971f95fd":[1,0,2,83,5,4],
 "class_terraria_1_1_world_sections.html":[1,0,2,84],
 "class_terraria_1_1_world_sections.html#a067d3eefd53ea33dd35bd3c9303dc8a2":[1,0,2,84,11],
@@ -242,12 +249,5 @@ var NAVTREEINDEX121 =
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_player_content.html#a55126d7c01f999547f51a4969bc6c5d4":[1,0,2,5,40,1],
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_player_content.html#a99d2dbbba6f6c5fdab9556751d92457c":[1,0,2,5,40,2],
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_player_content.html#add1d366f86017f6d2be282a7da320f85":[1,0,2,5,40,3],
-"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html":[1,0,2,5,41],
-"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html#a4e87664614431793fb2ee6001b57e9fd":[1,0,2,5,41,0],
-"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html#a7a8dc6266c17c9273d95dabe08094b05":[1,0,2,5,41,2],
-"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html#ad439b155cb1c0fb50b26f1f390733806":[1,0,2,5,41,1],
-"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html#afe40c01c2b44dcf33787bb7a775a74f1":[1,0,2,5,41,3],
-"interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html":[1,0,2,5,43],
-"interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html#a062a0f884cf3fd73e8fdcce24658f0f4":[1,0,2,5,43,1],
-"interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html#a21ed82cc406dc4c54cb94fa47089ac2c":[1,0,2,5,43,2]
+"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html":[1,0,2,5,41]
 };

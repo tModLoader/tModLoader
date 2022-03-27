@@ -2222,6 +2222,7 @@ var hierarchy =
     [ "Terraria.Modules.TileObjectSubTilesModule", "class_terraria_1_1_modules_1_1_tile_object_sub_tiles_module.html", null ],
     [ "Terraria.GameContent.TilePaintSystemV2", "class_terraria_1_1_game_content_1_1_tile_paint_system_v2.html", null ],
     [ "Terraria.Modules.TilePlacementHooksModule", "class_terraria_1_1_modules_1_1_tile_placement_hooks_module.html", null ],
+    [ "Terraria.DataStructures.TileRestingInfo", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html", null ],
     [ "Terraria.DataStructures.TileDrawSorter.TileTexPoint", "struct_terraria_1_1_data_structures_1_1_tile_draw_sorter_1_1_tile_tex_point.html", null ],
     [ "Terraria.GameContent.TilePaintSystemV2.TileVariationkey", "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tile_variationkey.html", null ],
     [ "Terraria.TimeLogger", "class_terraria_1_1_time_logger.html", null ],

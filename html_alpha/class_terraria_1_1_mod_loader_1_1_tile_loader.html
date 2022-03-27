@@ -158,9 +158,6 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>DropPalmTreeWo
 <tr class="memitem:a0c67fc49a30290353a4a2e569a52d92e"><td class="memItemLeft" align="right" valign="top"><a id="a0c67fc49a30290353a4a2e569a52d92e"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>DropTreeWood</b> (int type, ref int wood)</td></tr>
 <tr class="separator:a0c67fc49a30290353a4a2e569a52d92e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7af6b404a5f8d38e51110b3013b22274"><td class="memItemLeft" align="right" valign="top"><a id="a7af6b404a5f8d38e51110b3013b22274"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>FixSmartInteractCoords</b> (int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraX, ref int extraY)</td></tr>
-<tr class="separator:a7af6b404a5f8d38e51110b3013b22274"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c90725d01e5b2030ae9ad98243c1018"><td class="memItemLeft" align="right" valign="top"><a id="a5c90725d01e5b2030ae9ad98243c1018"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>FloorVisuals</b> (int type, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="separator:a5c90725d01e5b2030ae9ad98243c1018"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,9 +182,9 @@ static Texture2D&#160;</td><td class="memItemRight" valign="bottom"><b>GetTreeTe
 <tr class="memitem:a48fe19a6acc7c25dedd482eb6a743684"><td class="memItemLeft" align="right" valign="top"><a id="a48fe19a6acc7c25dedd482eb6a743684"></a>
 static Texture2D&#160;</td><td class="memItemRight" valign="bottom"><b>GetTreeTopTextures</b> (int type, int i, int j, ref int frame, ref int frameWidth, ref int frameHeight, ref int xOffsetLeft, ref int yOffset)</td></tr>
 <tr class="separator:a48fe19a6acc7c25dedd482eb6a743684"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaa3a318ef08b6d87c69071c20a187c8"><td class="memItemLeft" align="right" valign="top"><a id="acaa3a318ef08b6d87c69071c20a187c8"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasSmartInteract</b> (int type)</td></tr>
-<tr class="separator:acaa3a318ef08b6d87c69071c20a187c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4525cc4648c58e85367e04b628428ce5"><td class="memItemLeft" align="right" valign="top"><a id="a4525cc4648c58e85367e04b628428ce5"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasSmartInteract</b> (int i, int j, int type, <a class="el" href="struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html">SmartInteractScanSettings</a> settings)</td></tr>
+<tr class="separator:a4525cc4648c58e85367e04b628428ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a890469c4bfe8e079953ff37b06bc8106"><td class="memItemLeft" align="right" valign="top"><a id="a890469c4bfe8e079953ff37b06bc8106"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasWalkDust</b> (int type)</td></tr>
 <tr class="separator:a890469c4bfe8e079953ff37b06bc8106"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -224,6 +221,15 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>MineDamage</b>
 <tr class="memitem:ac94a9d7d01ee07e0f66d2d455106dc15"><td class="memItemLeft" align="right" valign="top"><a id="ac94a9d7d01ee07e0f66d2d455106dc15"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyLight</b> (int i, int j, int type, ref float r, ref float g, ref float b)</td></tr>
 <tr class="separator:ac94a9d7d01ee07e0f66d2d455106dc15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a270aa07d3c5a052391488d9c6c13e67f"><td class="memItemLeft" align="right" valign="top"><a id="a270aa07d3c5a052391488d9c6c13e67f"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifySittingTargetInfo</b> (int i, int j, int type, ref <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html">TileRestingInfo</a> info)</td></tr>
+<tr class="separator:a270aa07d3c5a052391488d9c6c13e67f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61a9ec2e189b8822a23ef05bfe111060"><td class="memItemLeft" align="right" valign="top"><a id="a61a9ec2e189b8822a23ef05bfe111060"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifySleepingTargetInfo</b> (int i, int j, int type, ref <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html">TileRestingInfo</a> info)</td></tr>
+<tr class="separator:a61a9ec2e189b8822a23ef05bfe111060"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ba98df803bad2c8ded9fd24d62dc07d"><td class="memItemLeft" align="right" valign="top"><a id="a1ba98df803bad2c8ded9fd24d62dc07d"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifySmartInteractCoords</b> (int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY)</td></tr>
+<tr class="separator:a1ba98df803bad2c8ded9fd24d62dc07d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fabd549120660a721ee323fcd7e211b"><td class="memItemLeft" align="right" valign="top"><a id="a9fabd549120660a721ee323fcd7e211b"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyTorchLuck</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref float positiveLuck, ref float negativeLuck)</td></tr>
 <tr class="separator:a9fabd549120660a721ee323fcd7e211b"><td class="memSeparator" colspan="2">&#160;</td></tr>

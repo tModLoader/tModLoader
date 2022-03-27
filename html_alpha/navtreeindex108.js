@@ -1,5 +1,12 @@
 var NAVTREEINDEX108 =
 {
+"class_terraria_1_1_projectile.html#a14933a607b87ea45dd7e469a637a48e3":[1,0,2,58,134],
+"class_terraria_1_1_projectile.html#a1522f2696ba582e63b61044aff49ab20":[1,0,2,58,130],
+"class_terraria_1_1_projectile.html#a16fa3dc9029c4c454b14d0c3150427e7":[1,0,2,58,136],
+"class_terraria_1_1_projectile.html#a181a68b4a04c7bed1477ae9d54a0ec25":[1,0,2,58,148],
+"class_terraria_1_1_projectile.html#a18f97ad1d6b16a5eeb5b00d6576086c1":[1,0,2,58,56],
+"class_terraria_1_1_projectile.html#a1c81e4b2e714dc4ebf99be43ddb11c51":[1,0,2,58,61],
+"class_terraria_1_1_projectile.html#a1cc80bff99143cb4be83f4375cb8726d":[1,0,2,58,86],
 "class_terraria_1_1_projectile.html#a209c7e12a8fc9c68c3b26515a4b293b4":[1,0,2,58,94],
 "class_terraria_1_1_projectile.html#a21670bb22462aebdb9bb66d247ea743e":[1,0,2,58,32],
 "class_terraria_1_1_projectile.html#a2812b28695edc6d2e89a6058104c11d3":[1,0,2,58,85],
@@ -242,12 +249,5 @@ var NAVTREEINDEX108 =
 "class_terraria_1_1_recipe_1_1_condition.html#a26b36211164908656f09b9e662c3fc78":[1,0,2,60,0,10],
 "class_terraria_1_1_recipe_1_1_condition.html#a2ca126fef076e211e5b496d219d473cf":[1,0,2,60,0,4],
 "class_terraria_1_1_recipe_1_1_condition.html#a436f54d518cf4d0ada0eef6eada9945e":[1,0,2,60,0,17],
-"class_terraria_1_1_recipe_1_1_condition.html#a443b7fc0950a6d89cf06b358a8f5d7ce":[1,0,2,60,0,1],
-"class_terraria_1_1_recipe_1_1_condition.html#a499a7ada61a78d12f2e7420738b6d12e":[1,0,2,60,0,32],
-"class_terraria_1_1_recipe_1_1_condition.html#a4c4154db1254076d0bb862268005b4f1":[1,0,2,60,0,9],
-"class_terraria_1_1_recipe_1_1_condition.html#a4e509bfd57471e8992f3127a57f7c114":[1,0,2,60,0,25],
-"class_terraria_1_1_recipe_1_1_condition.html#a55e361d492626bdcffcab1fc14a7c196":[1,0,2,60,0,27],
-"class_terraria_1_1_recipe_1_1_condition.html#a5e9f40e86ffd8ce099c8079c9e172db8":[1,0,2,60,0,33],
-"class_terraria_1_1_recipe_1_1_condition.html#a5ed024aec3e553b2bdadcc7bf636ab27":[1,0,2,60,0,24],
-"class_terraria_1_1_recipe_1_1_condition.html#a780971c20bb57a2eeb300d9c46fb0edf":[1,0,2,60,0,37]
+"class_terraria_1_1_recipe_1_1_condition.html#a443b7fc0950a6d89cf06b358a8f5d7ce":[1,0,2,60,0,1]
 };

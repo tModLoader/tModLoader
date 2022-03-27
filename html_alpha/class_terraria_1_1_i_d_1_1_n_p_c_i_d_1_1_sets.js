@@ -11,6 +11,7 @@ var class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets =
     [ "BelongsToInvasionOldOnesArmy", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a431c1c8a03cbf07203eb37589c33d370", null ],
     [ "BossBestiaryPriority", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#aac2715e01f5cc7402287f674047c5e10", null ],
     [ "BossHeadTextures", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#ab159cd814a4c8fbdff1085d6a20460a6", null ],
+    [ "CannotSitOnFurniture", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#ad65c7424adfc3660af4248b38cb4e74a", null ],
     [ "CantTakeLunchMoney", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a2648274429446ffc5fab084561a29073", null ],
     [ "CountsAsCritter", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a0d873c8746ea7d107dd5fcb746adfc83", null ],
     [ "DangerDetectRange", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#adc84894bc7ba3884d7c05870cb789aee", null ],

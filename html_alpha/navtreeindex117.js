@@ -1,5 +1,12 @@
 var NAVTREEINDEX117 =
 {
+"class_terraria_1_1_wiring.html#ac9c9335c783f99edfb020e1b8499c4d4":[1,0,2,82,7],
+"class_terraria_1_1_wiring.html#acba1619200fbd831f3a71a48bdec2668":[1,0,2,82,11],
+"class_terraria_1_1_wiring.html#ad0f6a95633105226bdb4945013c7b209":[1,0,2,82,28],
+"class_terraria_1_1_wiring.html#ad307584fc144222b9aa6b3e59dc574a9":[1,0,2,82,33],
+"class_terraria_1_1_wiring.html#adedbc52b36e9ed90621bdb6e427ab759":[1,0,2,82,27],
+"class_terraria_1_1_wiring.html#ae464a0c54797e0cc7fe9a123520d4bf3":[1,0,2,82,35],
+"class_terraria_1_1_wiring.html#aeae02fb123d109fcd27605821fbd89a5":[1,0,2,82,40],
 "class_terraria_1_1_wiring.html#af023bc29d31f46180a6a5fdf3e40df6b":[1,0,2,82,5],
 "class_terraria_1_1_world_building_1_1_actions.html":[1,0,2,23,0],
 "class_terraria_1_1_world_building_1_1_actions.html#a6e2572a22feedf1430087e99ddf6e6d6":[1,0,2,23,0,24],
@@ -242,12 +249,5 @@ var NAVTREEINDEX117 =
 "class_terraria_1_1_world_building_1_1_searches_1_1_right.html":[1,0,2,23,16,3],
 "class_terraria_1_1_world_building_1_1_searches_1_1_right.html#a33bd6535a3d1db0e2f25e6a51dff507b":[1,0,2,23,16,3,1],
 "class_terraria_1_1_world_building_1_1_searches_1_1_right.html#a4f22fe19e089a306a2447f9c7ed84b7e":[1,0,2,23,16,3,0],
-"class_terraria_1_1_world_building_1_1_searches_1_1_up.html":[1,0,2,23,16,4],
-"class_terraria_1_1_world_building_1_1_searches_1_1_up.html#a8f8809a208b89694e6c642d4986939d2":[1,0,2,23,16,4,1],
-"class_terraria_1_1_world_building_1_1_searches_1_1_up.html#ac2416b40a3efc1f0493533711412592e":[1,0,2,23,16,4,0],
-"class_terraria_1_1_world_building_1_1_shape_data.html":[1,0,2,23,17],
-"class_terraria_1_1_world_building_1_1_shape_data.html#a27b1ae4476ce52a04c5d7874e8b11c7d":[1,0,2,23,17,8],
-"class_terraria_1_1_world_building_1_1_shape_data.html#a29cf531b37ea23e8d2f1bd2c04afcfb0":[1,0,2,23,17,9],
-"class_terraria_1_1_world_building_1_1_shape_data.html#a3d2ea7a3ea8bef9b14abd13c8b926839":[1,0,2,23,17,0],
-"class_terraria_1_1_world_building_1_1_shape_data.html#a4e4944b437e1b7472f9ae8479d22116d":[1,0,2,23,17,4]
+"class_terraria_1_1_world_building_1_1_searches_1_1_up.html":[1,0,2,23,16,4]
 };
