@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['adjtiles_6101',['AdjTiles',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6ecd25c874167182e9a6677738f7bdd5',1,'Terraria::ModLoader::ModTile']]],
-  ['aitype_6102',['AIType',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1a0d34280fcaea525789bf4341632b8b',1,'Terraria.ModLoader.ModNPC.AIType()'],['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#abdaf9a51f148087f4b9b22753b9af49f',1,'Terraria.ModLoader.ModProjectile.AIType()']]],
-  ['allowreforgeforstackableitem_6103',['AllowReforgeForStackableItem',['../class_terraria_1_1_item.html#a0ca15ed1c8357bde27c6f15657a1ee59',1,'Terraria::Item']]],
-  ['animationframeheight_6104',['AnimationFrameHeight',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a8843e949e7fd0b473a10f2385c3a540d',1,'Terraria::ModLoader::ModTile']]],
-  ['animationtype_6105',['AnimationType',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ae06eeb7b7916de1a8ce79c786e56b0dc',1,'Terraria::ModLoader::ModNPC']]]
+  ['adjtiles_6051',['AdjTiles',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a6ecd25c874167182e9a6677738f7bdd5',1,'Terraria::ModLoader::ModTile']]],
+  ['aitype_6052',['AIType',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1a0d34280fcaea525789bf4341632b8b',1,'Terraria.ModLoader.ModNPC.AIType()'],['../class_terraria_1_1_mod_loader_1_1_mod_projectile.html#abdaf9a51f148087f4b9b22753b9af49f',1,'Terraria.ModLoader.ModProjectile.AIType()']]],
+  ['allowreforgeforstackableitem_6053',['AllowReforgeForStackableItem',['../class_terraria_1_1_item.html#a0ca15ed1c8357bde27c6f15657a1ee59',1,'Terraria::Item']]],
+  ['animationframeheight_6054',['AnimationFrameHeight',['../class_terraria_1_1_mod_loader_1_1_mod_tile.html#a8843e949e7fd0b473a10f2385c3a540d',1,'Terraria::ModLoader::ModTile']]],
+  ['animationtype_6055',['AnimationType',['../class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ae06eeb7b7916de1a8ce79c786e56b0dc',1,'Terraria::ModLoader::ModNPC']]]
 ];

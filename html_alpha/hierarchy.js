@@ -273,15 +273,9 @@ var hierarchy =
     [ "Terraria.WorldBuilding.Conditions", "class_terraria_1_1_world_building_1_1_conditions.html", null ],
     [ "ConfigElement", "class_config_element.html", [
       [ "Terraria.ModLoader.Config.UI.ConfigElement< T >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html", [
-        [ "Terraria.ModLoader.Config.UI.CollectionElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_collection_element.html", null ],
-        [ "Terraria.ModLoader.Config.UI.ColorElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_color_element.html", null ],
-        [ "Terraria.ModLoader.Config.UI.DefinitionElement< T >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_definition_element.html", null ],
         [ "Terraria.ModLoader.Config.UI.RangeElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_range_element.html", [
-          [ "Terraria.ModLoader.Config.UI.EnumElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_enum_element.html", null ],
-          [ "Terraria.ModLoader.Config.UI.PrimitiveRangeElement< T >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html", null ],
-          [ "Terraria.ModLoader.Config.UI.StringOptionElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_string_option_element.html", null ]
-        ] ],
-        [ "Terraria.ModLoader.Config.UI.Vector2Element", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_vector2_element.html", null ]
+          [ "Terraria.ModLoader.Config.UI.PrimitiveRangeElement< T >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html", null ]
+        ] ]
       ] ]
     ] ],
     [ "Terraria.ModLoader.Config.ConfigManager", "class_terraria_1_1_mod_loader_1_1_config_1_1_config_manager.html", null ],
@@ -323,25 +317,7 @@ var hierarchy =
     ] ],
     [ "Terraria.ModLoader.DamageClassLoader", "class_terraria_1_1_mod_loader_1_1_damage_class_loader.html", null ],
     [ "Terraria.GameContent.Events.DD2Event", "class_terraria_1_1_game_content_1_1_events_1_1_d_d2_event.html", null ],
-    [ "DefaultContractResolver", "class_default_contract_resolver.html", [
-      [ "Terraria.ModLoader.Config.ReferenceDefaultsPreservingResolver", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.Config.UI.DefinitionElement< ItemDefinition >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_definition_element.html", [
-      [ "Terraria.ModLoader.Config.UI.ItemDefinitionElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_item_definition_element.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.Config.UI.DefinitionElement< NPCDefinition >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_definition_element.html", [
-      [ "Terraria.ModLoader.Config.UI.NPCDefinitionElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_n_p_c_definition_element.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.Config.UI.DefinitionElement< PrefixDefinition >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_definition_element.html", [
-      [ "Terraria.ModLoader.Config.UI.PrefixDefinitionElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_prefix_definition_element.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.Config.UI.DefinitionElement< ProjectileDefinition >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_definition_element.html", [
-      [ "Terraria.ModLoader.Config.UI.ProjectileDefinitionElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_projectile_definition_element.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.Config.UI.DefinitionOptionElement< ItemDefinition >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_definition_option_element.html", null ],
-    [ "Terraria.ModLoader.Config.UI.DefinitionOptionElement< NPCDefinition >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_definition_option_element.html", null ],
-    [ "Terraria.ModLoader.Config.UI.DefinitionOptionElement< PrefixDefinition >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_definition_option_element.html", null ],
-    [ "Terraria.ModLoader.Config.UI.DefinitionOptionElement< ProjectileDefinition >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_definition_option_element.html", null ],
+    [ "DefaultContractResolver", "class_default_contract_resolver.html", null ],
     [ "Terraria.DelegateMethods", "class_terraria_1_1_delegate_methods.html", null ],
     [ "Terraria.GameContent.RGB.CommonConditions.Depth", "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_depth.html", null ],
     [ "Terraria.GameContent.Biomes.Desert.DesertDescription", "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_desert_description.html", null ],
@@ -448,7 +424,6 @@ var hierarchy =
     [ "Terraria.ModLoader.FrameworkVersion", "class_terraria_1_1_mod_loader_1_1_framework_version.html", null ],
     [ "Terraria.Framing", "class_terraria_1_1_framing.html", null ],
     [ "Terraria.ID.ArmorIDs.Front", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_front.html", null ],
-    [ "Terraria.ModLoader.Config.UI.FuncStringWrapper", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_func_string_wrapper.html", null ],
     [ "Game", "class_game.html", [
       [ "Terraria.Main", "class_terraria_1_1_main.html", null ]
     ] ],
@@ -804,9 +779,7 @@ var hierarchy =
         [ "Terraria.GameContent.UI.Elements.UIKeybindingSimpleListItem", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_keybinding_simple_list_item.html", null ],
         [ "Terraria.GameContent.UI.Elements.UIKeybindingSliderItem", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_keybinding_slider_item.html", null ],
         [ "Terraria.GameContent.UI.Elements.UIKeybindingToggleListItem", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_keybinding_toggle_list_item.html", null ],
-        [ "Terraria.GameContent.UI.Elements.UIList", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_list.html", [
-          [ "Terraria.ModLoader.Config.UI.NestedUIList", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_nested_u_i_list.html", null ]
-        ] ],
+        [ "Terraria.GameContent.UI.Elements.UIList", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_list.html", null ],
         [ "Terraria.GameContent.UI.Elements.UIList", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_list.html", null ],
         [ "Terraria.GameContent.UI.Elements.UIPanel", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_panel.html", [
           [ "Terraria.GameContent.UI.Elements.UIAchievementListItem", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_achievement_list_item.html", null ],
@@ -845,7 +818,6 @@ var hierarchy =
         [ "Terraria.GameContent.UI.Elements.UIWorldCreationPreview", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_world_creation_preview.html", null ],
         [ "Terraria.GameContent.UI.States.UISortableElement", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_sortable_element.html", null ],
         [ "Terraria.ModLoader.Config.UI.ConfigElement< T >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html", null ],
-        [ "Terraria.ModLoader.Config.UI.DefinitionOptionElement< T >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_definition_option_element.html", null ],
         [ "Terraria.ModLoader.UI.Elements.UIGrid", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_elements_1_1_u_i_grid.html", [
           [ "Terraria.ModLoader.UI.Elements.NestedUIGrid", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_elements_1_1_nested_u_i_grid.html", null ]
         ] ],
@@ -2254,9 +2226,7 @@ var hierarchy =
     [ "Terraria.ModLoader.UI.UIAutoScaleTextTextPanel< string >", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_auto_scale_text_text_panel.html", null ],
     [ "Terraria.ModLoader.UI.UICommon", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html", null ],
     [ "UIElement", null, [
-      [ "Terraria.ModLoader.Config.UI.ConfigElement< object >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html", [
-        [ "Terraria.ModLoader.Config.UI.ObjectElement", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_object_element.html", null ]
-      ] ],
+      [ "Terraria.ModLoader.Config.UI.ConfigElement< object >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html", null ],
       [ "Terraria.ModLoader.Config.UI.ConfigElement< string >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html", null ],
       [ "Terraria.ModLoader.Config.UI.ConfigElement< bool >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_config_element.html", null ]
     ] ],
@@ -2271,12 +2241,12 @@ var hierarchy =
     [ "Terraria.UI.Gamepad.UILinkPointNavigator", "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator.html", null ],
     [ "Terraria.Initializers.UILinksInitializer", "class_terraria_1_1_initializers_1_1_u_i_links_initializer.html", null ],
     [ "Terraria.ModLoader.UI.UIModsFilterResults", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_mods_filter_results.html", null ],
+    [ "Terraria.GameContent.UI.Elements.UITextPanel< FuncStringWrapper >", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html", null ],
     [ "Terraria.GameContent.UI.Elements.UITextPanel< LocalizedText >", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html", null ],
     [ "Terraria.GameContent.UI.Elements.UITextPanel< object >", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html", null ],
     [ "Terraria.GameContent.UI.Elements.UITextPanel< string >", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html", [
       [ "Terraria.GameContent.UI.Elements.UITextBox", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_box.html", null ]
     ] ],
-    [ "Terraria.GameContent.UI.Elements.UITextPanel< Terraria.ModLoader.Config.UI.FuncStringWrapper >", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html", null ],
     [ "Terraria.GameContent.RGB.CommonConditions.UndergroundBiome", "class_terraria_1_1_game_content_1_1_r_g_b_1_1_common_conditions_1_1_underground_biome.html", null ],
     [ "Terraria.GameContent.Ambience.AmbientSkyDrawCache.UnderworldCache", "struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_underworld_cache.html", null ],
     [ "Terraria.Utilities.UnifiedRandom", "class_terraria_1_1_utilities_1_1_unified_random.html", null ],

@@ -24,7 +24,6 @@ var namespace_terraria_1_1_mod_loader_1_1_config =
     [ "PrefixDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_prefix_definition.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_prefix_definition" ],
     [ "ProjectileDefinition", "class_terraria_1_1_mod_loader_1_1_config_1_1_projectile_definition.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_projectile_definition" ],
     [ "RangeAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_range_attribute.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_range_attribute" ],
-    [ "ReferenceDefaultsPreservingResolver", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver.html", "class_terraria_1_1_mod_loader_1_1_config_1_1_reference_defaults_preserving_resolver" ],
     [ "ReloadRequiredAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_reload_required_attribute.html", null ],
     [ "SeparatePageAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_separate_page_attribute.html", null ],
     [ "SliderAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_slider_attribute.html", null ],
