@@ -1590,7 +1590,7 @@
  						if (diff == 1)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num4), (byte)((float)(int)mcColor.G * num4), (byte)((float)(int)mcColor.B * num4), a);
  
-@@ -15173,47 +_,80 @@
+@@ -15173,46 +_,79 @@
  
  						if (hoverItem.expert || rare == -12)
  							black = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num4), (byte)((float)DiscoG * num4), (byte)((float)DiscoB * num4), a);
@@ -1669,17 +1669,16 @@
 +				if (item.damage > 0 && (!item.notAmmo || item.useStyle != 0) && (item.type < 71 || item.type > 74 || player[myPlayer].HasItem(905)) && item.DamageType.ShowStatTooltipLine(player[myPlayer], "Damage")) {
 +					LocalizedText tip;
 +					if (item.DamageType != null) {
-+						tip = new LocalizedText("", " "+item.DamageType.DisplayName);
++						tip = new LocalizedText("", " " + item.DamageType.DisplayName);
 +					}
 +					else {
 +						tip = Lang.tip[55]; // No damage class
 +					}
-+					int damage = player[myPlayer].GetWeaponDamage(item);
- 					damage = (int)((float)damage * ItemID.Sets.ToolTipDamageMultiplier[item.type]);
++					int damage = player[myPlayer].GetWeaponDamage(item, true);
 +					/*
+ 					damage = (int)((float)damage * ItemID.Sets.ToolTipDamageMultiplier[item.type]);
  					if (item.melee) {
  						toolTipLine[numLines] = (((int)(player[myPlayer].meleeDamage * (float)damage + (float)player[myPlayer].meleeAddDamage + num)).ToString() ?? "");
- 						toolTipLine[numLines] += Lang.tip[2].Value;
 @@ -15247,8 +_,12 @@
  						toolTipLine[numLines] = (damage.ToString() ?? "");
  						toolTipLine[numLines] += Lang.tip[55].Value;
