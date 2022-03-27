@@ -110,7 +110,7 @@ var searchData=
   ['instanceenumerator_1232',['InstanceEnumerator',['../struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html',1,'Terraria::ModLoader::Core::HookList']]],
   ['instanceperentity_1233',['InstancePerEntity',['../class_terraria_1_1_mod_loader_1_1_global_type.html#aefee6bbda59e6c2119accbd942226516',1,'Terraria::ModLoader::GlobalType']]],
   ['intrange_1234',['IntRange',['../struct_terraria_1_1_utilities_1_1_int_range.html',1,'Terraria::Utilities']]],
-  ['invasion_1235',['invasion',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8eb193778914243d9a2a00f08b1bcf67',1,'Terraria::ModLoader::NPCSpawnInfo']]],
+  ['invasion_1235',['Invasion',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a82bb7b68e499f6c1b7f9d81fda49a0b1',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['invasionid_1236',['InvasionID',['../class_terraria_1_1_i_d_1_1_invasion_i_d.html',1,'Terraria::ID']]],
   ['invasions_1237',['Invasions',['../class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_te88d9ec051cbe968cdce0d7ccd2a60c1.html',1,'Terraria::GameContent::Bestiary::BestiaryDatabaseNPCsPopulator::CommonTags::SpawnConditions']]],
   ['inzonepurity_1238',['InZonePurity',['../class_terraria_1_1_player.html#afca10a763a513895301070f8e6a66c60',1,'Terraria::Player']]],

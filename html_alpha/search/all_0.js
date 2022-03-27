@@ -88,7 +88,7 @@ var searchData=
   ['anchordata_85',['AnchorData',['../struct_terraria_1_1_data_structures_1_1_anchor_data.html',1,'Terraria::DataStructures']]],
   ['anchordatamodule_86',['AnchorDataModule',['../class_terraria_1_1_modules_1_1_anchor_data_module.html',1,'Terraria::Modules']]],
   ['anchoredentitiescollection_87',['AnchoredEntitiesCollection',['../class_terraria_1_1_data_structures_1_1_anchored_entities_collection.html',1,'Terraria::DataStructures']]],
-  ['anchortileposition_88',['anchorTilePosition',['../struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a81f42d46c906e5e2c77a58edbfaec614',1,'Terraria::DataStructures::TileRestingInfo']]],
+  ['anchortileposition_88',['AnchorTilePosition',['../struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a4e2b337e66f3690fae13131f83a4baa2',1,'Terraria::DataStructures::TileRestingInfo']]],
   ['anchortypesmodule_89',['AnchorTypesModule',['../class_terraria_1_1_modules_1_1_anchor_types_module.html',1,'Terraria::Modules']]],
   ['ancientdoom_90',['AncientDoom',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#af8aabf5a0dc8a150f73f3c0b0372450c',1,'Terraria::ID::NPCAIStyleID']]],
   ['ancientlight_91',['AncientLight',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#af035e5fba148a2895ad98ef20479753d',1,'Terraria::ID::NPCAIStyleID']]],

@@ -46,7 +46,7 @@ var searchData=
   ['lightningritual_1432',['LightningRitual',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a2d0438d4a1387c64cc63488de526ccf8',1,'Terraria::ID::ProjAIStyleID']]],
   ['lightpurple_1433',['LightPurple',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#ac46ec3224ea45deb6baf2aa914f7f5da',1,'Terraria::ID::ItemRarityID']]],
   ['lightred_1434',['LightRed',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#ace070370e5eced247f735ef5b2e12776',1,'Terraria::ID::ItemRarityID']]],
-  ['lihzahrd_1435',['lihzahrd',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a00b4eea484a4f5a84bb8ba3dfea86cb0',1,'Terraria::ModLoader::NPCSpawnInfo']]],
+  ['lihzahrd_1435',['Lihzahrd',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#ad7c874472c31dd12a0854ffc92f6db23',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['lime_1436',['Lime',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#a3c3c9b5e62f4e4bdd175fe32910e02e3',1,'Terraria::ID::ItemRarityID']]],
   ['linesegment_1437',['LineSegment',['../struct_terraria_1_1_data_structures_1_1_line_segment.html',1,'Terraria::DataStructures']]],
   ['linkbuttonsinitializer_1438',['LinkButtonsInitializer',['../class_terraria_1_1_initializers_1_1_link_buttons_initializer.html',1,'Terraria::Initializers']]],

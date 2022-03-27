@@ -33,7 +33,7 @@ var searchData=
   ['filters_804',['Filters',['../class_terraria_1_1_game_content_1_1_bestiary_1_1_filters.html',1,'Terraria.GameContent.Bestiary.Filters'],['../class_terraria_1_1_graphics_1_1_effects_1_1_filters.html',1,'Terraria.Graphics.Effects.Filters']]],
   ['finalfractalhelper_805',['FinalFractalHelper',['../struct_terraria_1_1_graphics_1_1_final_fractal_helper.html',1,'Terraria::Graphics']]],
   ['finalfractalprofile_806',['FinalFractalProfile',['../struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html',1,'Terraria::Graphics::FinalFractalHelper']]],
-  ['finaloffset_807',['finalOffset',['../struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#af023f2452d618c0ef630fcfae8c6d690',1,'Terraria::DataStructures::TileRestingInfo']]],
+  ['finaloffset_807',['FinalOffset',['../struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a21eb9f5ff48281e8e01284422ff72627',1,'Terraria::DataStructures::TileRestingInfo']]],
   ['finch_808',['Finch',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a440d91241257f0a0b026f7cd48e40f2f',1,'Terraria::ID::ProjAIStyleID']]],
   ['finchnest_809',['FinchNest',['../class_terraria_1_1_data_structures_1_1_player_draw_layers.html#ad42d13aa7f53d319a5f358955974f904',1,'Terraria::DataStructures::PlayerDrawLayers']]],
   ['find_810',['Find',['../class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html#ac0d39d082f95d385270f7e9dac364ade',1,'Terraria::ModLoader::ModTileEntity']]],

@@ -15,7 +15,7 @@ var searchData=
   ['maplegend_1496',['MapLegend',['../class_terraria_1_1_mod_loader_1_1_map_legend.html',1,'Terraria::ModLoader']]],
   ['mapoverlaydrawcontext_1497',['MapOverlayDrawContext',['../struct_terraria_1_1_map_1_1_map_overlay_draw_context.html',1,'Terraria::Map']]],
   ['maptile_1498',['MapTile',['../struct_terraria_1_1_map_1_1_map_tile.html',1,'Terraria::Map']]],
-  ['marble_1499',['marble',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aeebca0ff9127c8bf8cc866d3ad6b27dc',1,'Terraria::ModLoader::NPCSpawnInfo']]],
+  ['marble_1499',['Marble',['../struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8cd4ff1fecc53c227dfa485a30cf6189',1,'Terraria::ModLoader::NPCSpawnInfo']]],
   ['marblebiome_1500',['MarbleBiome',['../class_terraria_1_1_game_content_1_1_biomes_1_1_marble_biome.html',1,'Terraria::GameContent::Biomes']]],
   ['marblehousebuilder_1501',['MarbleHouseBuilder',['../class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_marble_house_builder.html',1,'Terraria::GameContent::Biomes::CaveHouse']]],
   ['martiandeathray_1502',['MartianDeathRay',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a2aafa1d0fa24966da5bb032b53ffc10e',1,'Terraria::ID::ProjAIStyleID']]],

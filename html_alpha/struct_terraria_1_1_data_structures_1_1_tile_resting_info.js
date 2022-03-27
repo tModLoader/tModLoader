@@ -2,10 +2,10 @@ var struct_terraria_1_1_data_structures_1_1_tile_resting_info =
 [
     [ "TileRestingInfo", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a0c2728eab6ae45968597f750ad3b4278", null ],
     [ "Deconstruct", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#adb394bf022ccd023bd48b3e1b0115a09", null ],
-    [ "anchorTilePosition", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a81f42d46c906e5e2c77a58edbfaec614", null ],
-    [ "directionOffset", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a46222374e6f50ffb38acf68375a3e540", null ],
-    [ "finalOffset", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#af023f2452d618c0ef630fcfae8c6d690", null ],
-    [ "restingEntity", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a3cfba78982cb75e0effa6e1d94af5b2b", null ],
-    [ "targetDirection", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#ad2eca16ada8a50b9c255b624b7540cf3", null ],
-    [ "visualOffset", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a8ebd04559c4358e9749c9426855f70b8", null ]
+    [ "AnchorTilePosition", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a4e2b337e66f3690fae13131f83a4baa2", null ],
+    [ "DirectionOffset", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#af3f848fbe8a29fdebf22a3817f0a51c7", null ],
+    [ "FinalOffset", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a21eb9f5ff48281e8e01284422ff72627", null ],
+    [ "RestingEntity", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#aa916925edbdcf56c69865df2efb896fc", null ],
+    [ "TargetDirection", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a5afcfb7ead03c4c3dbe0cf6b899794ea", null ],
+    [ "VisualOffset", "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a61a128dc04bf670ebb1cb4be78d17a95", null ]
 ];

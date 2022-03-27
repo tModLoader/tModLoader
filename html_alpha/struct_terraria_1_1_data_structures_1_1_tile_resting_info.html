@@ -99,44 +99,44 @@ $(document).ready(function(){initNavTree('struct_terraria_1_1_data_structures_1_
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0c2728eab6ae45968597f750ad3b4278"><td class="memItemLeft" align="right" valign="top"><a id="a0c2728eab6ae45968597f750ad3b4278"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TileRestingInfo</b> (<a class="el" href="class_terraria_1_1_entity.html">Entity</a> <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a3cfba78982cb75e0effa6e1d94af5b2b">restingEntity</a>, Point <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a81f42d46c906e5e2c77a58edbfaec614">anchorTilePosition</a>, Vector2 <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a8ebd04559c4358e9749c9426855f70b8">visualOffset</a>, int <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#ad2eca16ada8a50b9c255b624b7540cf3">targetDirection</a>, int <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a46222374e6f50ffb38acf68375a3e540">directionOffset</a>=0, Vector2 <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#af023f2452d618c0ef630fcfae8c6d690">finalOffset</a>=default)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TileRestingInfo</b> (<a class="el" href="class_terraria_1_1_entity.html">Entity</a> restingEntity, Point anchorTilePosition, Vector2 visualOffset, int targetDirection, int directionOffset=0, Vector2 finalOffset=default)</td></tr>
 <tr class="separator:a0c2728eab6ae45968597f750ad3b4278"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb394bf022ccd023bd48b3e1b0115a09"><td class="memItemLeft" align="right" valign="top"><a id="adb394bf022ccd023bd48b3e1b0115a09"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Deconstruct</b> (out <a class="el" href="class_terraria_1_1_entity.html">Entity</a> <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a3cfba78982cb75e0effa6e1d94af5b2b">restingEntity</a>, out Point <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a81f42d46c906e5e2c77a58edbfaec614">anchorTilePosition</a>, out Vector2 <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a8ebd04559c4358e9749c9426855f70b8">visualOffset</a>, out int <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#ad2eca16ada8a50b9c255b624b7540cf3">targetDirection</a>, out int <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a46222374e6f50ffb38acf68375a3e540">directionOffset</a>, out Vector2 <a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#af023f2452d618c0ef630fcfae8c6d690">finalOffset</a>)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Deconstruct</b> (out <a class="el" href="class_terraria_1_1_entity.html">Entity</a> restingEntity, out Point anchorTilePosition, out Vector2 visualOffset, out int targetDirection, out int directionOffset, out Vector2 finalOffset)</td></tr>
 <tr class="separator:adb394bf022ccd023bd48b3e1b0115a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a81f42d46c906e5e2c77a58edbfaec614"><td class="memItemLeft" align="right" valign="top">Point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a81f42d46c906e5e2c77a58edbfaec614">anchorTilePosition</a></td></tr>
-<tr class="memdesc:a81f42d46c906e5e2c77a58edbfaec614"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bottom-most position of the resting tile in tile coordinates, affecting logic for resetting (invalid) resting state and used to align the hitbox.  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a81f42d46c906e5e2c77a58edbfaec614">More...</a><br /></td></tr>
-<tr class="separator:a81f42d46c906e5e2c77a58edbfaec614"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46222374e6f50ffb38acf68375a3e540"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a46222374e6f50ffb38acf68375a3e540">directionOffset</a></td></tr>
-<tr class="memdesc:a46222374e6f50ffb38acf68375a3e540"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of the entity position offset applied in the X direction based on targetDirection.  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a46222374e6f50ffb38acf68375a3e540">More...</a><br /></td></tr>
-<tr class="separator:a46222374e6f50ffb38acf68375a3e540"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af023f2452d618c0ef630fcfae8c6d690"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#af023f2452d618c0ef630fcfae8c6d690">finalOffset</a></td></tr>
-<tr class="memdesc:af023f2452d618c0ef630fcfae8c6d690"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset applied to the final anchor position. Use with caution, vanilla does not utilize it!  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#af023f2452d618c0ef630fcfae8c6d690">More...</a><br /></td></tr>
-<tr class="separator:af023f2452d618c0ef630fcfae8c6d690"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3cfba78982cb75e0effa6e1d94af5b2b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a3cfba78982cb75e0effa6e1d94af5b2b">restingEntity</a></td></tr>
-<tr class="memdesc:a3cfba78982cb75e0effa6e1d94af5b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The resting entity (<a class="el" href="class_terraria_1_1_player.html">Player</a> or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>). Can be null if not available from the context.  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a3cfba78982cb75e0effa6e1d94af5b2b">More...</a><br /></td></tr>
-<tr class="separator:a3cfba78982cb75e0effa6e1d94af5b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2eca16ada8a50b9c255b624b7540cf3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#ad2eca16ada8a50b9c255b624b7540cf3">targetDirection</a></td></tr>
-<tr class="memdesc:ad2eca16ada8a50b9c255b624b7540cf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direction the entity is facing while resting.  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#ad2eca16ada8a50b9c255b624b7540cf3">More...</a><br /></td></tr>
-<tr class="separator:ad2eca16ada8a50b9c255b624b7540cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ebd04559c4358e9749c9426855f70b8"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a8ebd04559c4358e9749c9426855f70b8">visualOffset</a></td></tr>
-<tr class="memdesc:a8ebd04559c4358e9749c9426855f70b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visual offset of the entity, not affecting any logic.  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a8ebd04559c4358e9749c9426855f70b8">More...</a><br /></td></tr>
-<tr class="separator:a8ebd04559c4358e9749c9426855f70b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e2b337e66f3690fae13131f83a4baa2"><td class="memItemLeft" align="right" valign="top">Point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a4e2b337e66f3690fae13131f83a4baa2">AnchorTilePosition</a></td></tr>
+<tr class="memdesc:a4e2b337e66f3690fae13131f83a4baa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The bottom-most position of the resting tile in tile coordinates, affecting logic for resetting (invalid) resting state and used to align the hitbox.  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a4e2b337e66f3690fae13131f83a4baa2">More...</a><br /></td></tr>
+<tr class="separator:a4e2b337e66f3690fae13131f83a4baa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3f848fbe8a29fdebf22a3817f0a51c7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#af3f848fbe8a29fdebf22a3817f0a51c7">DirectionOffset</a></td></tr>
+<tr class="memdesc:af3f848fbe8a29fdebf22a3817f0a51c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of the entity position offset applied in the X direction based on targetDirection.  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#af3f848fbe8a29fdebf22a3817f0a51c7">More...</a><br /></td></tr>
+<tr class="separator:af3f848fbe8a29fdebf22a3817f0a51c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21eb9f5ff48281e8e01284422ff72627"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a21eb9f5ff48281e8e01284422ff72627">FinalOffset</a></td></tr>
+<tr class="memdesc:a21eb9f5ff48281e8e01284422ff72627"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset applied to the final anchor position. Use with caution, vanilla does not utilize it!  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a21eb9f5ff48281e8e01284422ff72627">More...</a><br /></td></tr>
+<tr class="separator:a21eb9f5ff48281e8e01284422ff72627"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa916925edbdcf56c69865df2efb896fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#aa916925edbdcf56c69865df2efb896fc">RestingEntity</a></td></tr>
+<tr class="memdesc:aa916925edbdcf56c69865df2efb896fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The resting entity (<a class="el" href="class_terraria_1_1_player.html">Player</a> or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>). Can be null if not available from the context.  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#aa916925edbdcf56c69865df2efb896fc">More...</a><br /></td></tr>
+<tr class="separator:aa916925edbdcf56c69865df2efb896fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5afcfb7ead03c4c3dbe0cf6b899794ea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a5afcfb7ead03c4c3dbe0cf6b899794ea">TargetDirection</a></td></tr>
+<tr class="memdesc:a5afcfb7ead03c4c3dbe0cf6b899794ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direction the entity is facing while resting.  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a5afcfb7ead03c4c3dbe0cf6b899794ea">More...</a><br /></td></tr>
+<tr class="separator:a5afcfb7ead03c4c3dbe0cf6b899794ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61a128dc04bf670ebb1cb4be78d17a95"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a61a128dc04bf670ebb1cb4be78d17a95">VisualOffset</a></td></tr>
+<tr class="memdesc:a61a128dc04bf670ebb1cb4be78d17a95"><td class="mdescLeft">&#160;</td><td class="mdescRight">The visual offset of the entity, not affecting any logic.  <a href="struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a61a128dc04bf670ebb1cb4be78d17a95">More...</a><br /></td></tr>
+<tr class="separator:a61a128dc04bf670ebb1cb4be78d17a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Holds data required for offsetting an entity when it rests on a tile (sitting/sleeping). </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
-<a id="a81f42d46c906e5e2c77a58edbfaec614"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81f42d46c906e5e2c77a58edbfaec614">&#9670;&nbsp;</a></span>anchorTilePosition</h2>
+<a id="a4e2b337e66f3690fae13131f83a4baa2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e2b337e66f3690fae13131f83a4baa2">&#9670;&nbsp;</a></span>AnchorTilePosition</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Point Terraria.DataStructures.TileRestingInfo.anchorTilePosition</td>
+          <td class="memname">Point Terraria.DataStructures.TileRestingInfo.AnchorTilePosition</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -145,14 +145,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a46222374e6f50ffb38acf68375a3e540"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46222374e6f50ffb38acf68375a3e540">&#9670;&nbsp;</a></span>directionOffset</h2>
+<a id="af3f848fbe8a29fdebf22a3817f0a51c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3f848fbe8a29fdebf22a3817f0a51c7">&#9670;&nbsp;</a></span>DirectionOffset</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Terraria.DataStructures.TileRestingInfo.directionOffset</td>
+          <td class="memname">int Terraria.DataStructures.TileRestingInfo.DirectionOffset</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -161,14 +161,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="af023f2452d618c0ef630fcfae8c6d690"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af023f2452d618c0ef630fcfae8c6d690">&#9670;&nbsp;</a></span>finalOffset</h2>
+<a id="a21eb9f5ff48281e8e01284422ff72627"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21eb9f5ff48281e8e01284422ff72627">&#9670;&nbsp;</a></span>FinalOffset</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Vector2 Terraria.DataStructures.TileRestingInfo.finalOffset</td>
+          <td class="memname">Vector2 Terraria.DataStructures.TileRestingInfo.FinalOffset</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -177,14 +177,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a3cfba78982cb75e0effa6e1d94af5b2b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3cfba78982cb75e0effa6e1d94af5b2b">&#9670;&nbsp;</a></span>restingEntity</h2>
+<a id="aa916925edbdcf56c69865df2efb896fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa916925edbdcf56c69865df2efb896fc">&#9670;&nbsp;</a></span>RestingEntity</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_terraria_1_1_entity.html">Entity</a> Terraria.DataStructures.TileRestingInfo.restingEntity</td>
+          <td class="memname"><a class="el" href="class_terraria_1_1_entity.html">Entity</a> Terraria.DataStructures.TileRestingInfo.RestingEntity</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -193,14 +193,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad2eca16ada8a50b9c255b624b7540cf3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2eca16ada8a50b9c255b624b7540cf3">&#9670;&nbsp;</a></span>targetDirection</h2>
+<a id="a5afcfb7ead03c4c3dbe0cf6b899794ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5afcfb7ead03c4c3dbe0cf6b899794ea">&#9670;&nbsp;</a></span>TargetDirection</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Terraria.DataStructures.TileRestingInfo.targetDirection</td>
+          <td class="memname">int Terraria.DataStructures.TileRestingInfo.TargetDirection</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -209,14 +209,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a8ebd04559c4358e9749c9426855f70b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ebd04559c4358e9749c9426855f70b8">&#9670;&nbsp;</a></span>visualOffset</h2>
+<a id="a61a128dc04bf670ebb1cb4be78d17a95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61a128dc04bf670ebb1cb4be78d17a95">&#9670;&nbsp;</a></span>VisualOffset</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Vector2 Terraria.DataStructures.TileRestingInfo.visualOffset</td>
+          <td class="memname">Vector2 Terraria.DataStructures.TileRestingInfo.VisualOffset</td>
         </tr>
       </table>
 </div><div class="memdoc">
