@@ -76,6 +76,15 @@
  		public static int crystalLeafDamage = 100;
  		public static int crystalLeafKB = 10;
  		public float basiliskCharge;
+@@ -564,7 +_,7 @@
+ 		public byte oldLuckPotion;
+ 		public float endurance;
+ 		public float whipRangeMultiplier;
+-		public float whipUseTimeMultiplier;
++		internal ref StatModifier whipUseTimeMultiplier => GetAttackSpeed(DamageClass.SummonMeleeSpeed).useSpeed;
+ 		public bool loveStruck;
+ 		public bool stinky;
+ 		public bool resistCold;
 @@ -702,7 +_,7 @@
  		public bool poundRelease;
  		public float ghostFade;
@@ -2023,16 +2032,12 @@
  							if (buffType[num10] >= 170 && buffType[num10] <= 171)
  								DelBuff(num10);
  						}
-@@ -11666,12 +_,15 @@
- 				setBonus = Language.GetTextValue("ArmorSetBonus.ObsidianOutlaw");
- 				minionDamage += 0.15f;
+@@ -11668,10 +_,12 @@
  				whipRangeMultiplier += 0.5f;
--				float num17 = 1.35f;
-+				// float num17 = 1.35f;
--				float num18 = 1f / num17;
-+				// float num18 = 1f / num17;
-+				float num18 = 1.35f;
- 				whipUseTimeMultiplier *= num18;
+ 				float num17 = 1.35f;
+ 				float num18 = 1f / num17;
+-				whipUseTimeMultiplier *= num18;
++				whipUseTimeMultiplier *= num17;
  			}
  
  			ApplyArmorSoundAndDustChanges();
@@ -2252,6 +2257,15 @@
  			coolWhipBuff = false;
  			yoraiz0rEye = 0;
  			yoraiz0rDarkness = false;
+@@ -13189,7 +_,7 @@
+ 
+ 			endurance = 0f;
+ 			whipRangeMultiplier = 1f;
+-			whipUseTimeMultiplier = 1f;
++			whipUseTimeMultiplier = StatModifier.Default;
+ 			calmed = false;
+ 			beetleOrbs = 0;
+ 			beetleBuff = false;
 @@ -13356,6 +_,7 @@
  			slowOgreSpit = false;
  			wings = 0;
@@ -4514,7 +4528,7 @@
  			}
  
  			TryAllowingItemReuse(sItem);
-@@ -36640,19 +_,43 @@
+@@ -36640,19 +_,44 @@
  
  		private void TryAllowingItemReuse(Item sItem) {
  			bool flag = false;
@@ -4544,7 +4558,9 @@
 +
  			if (autoReuseGlove) {
  				flag |= sItem.melee;
- 				flag |= (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]);
+-				flag |= (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]);
++				//flag |= (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]);
++				flag |= sItem.DamageType == DamageClass.SummonMeleeSpeed;
  			}
  
 -			if (flag)

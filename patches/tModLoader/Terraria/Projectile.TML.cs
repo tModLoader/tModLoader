@@ -26,7 +26,7 @@ namespace Terraria
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;
-			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
+			set => _damageClass = value ?? throw new ArgumentException($"{nameof(Projectile)}.{nameof(DamageType)} cannot be null.");
 		}
 
 		private int _armorPenetration = 0;
@@ -38,7 +38,7 @@ namespace Terraria
 			get => _armorPenetration;
 			set {
 				if (value < 0)
-					throw new Exception("A projectile's armor penetration value cannot be set below 0.");
+					throw new ArgumentException($"{nameof(Projectile)}.{nameof(ArmorPenetration)} must be >= 0.");
 				else
 					_armorPenetration = value;
 			}
@@ -53,7 +53,7 @@ namespace Terraria
 			get => _crit;
 			set {
 				if (value < 0)
-					throw new Exception("A projectile's critical strike chance cannot be set below 0.");
+					throw new ArgumentException($"{nameof(Projectile)}.{nameof(CritChance)} must be >= 0.");
 				else
 					_crit = value;
 			}
@@ -70,20 +70,11 @@ namespace Terraria
 			if (spawnSource is null || (!(spawnSource is EntitySource_ItemUse) && !(spawnSource is EntitySource_ItemUse_WithAmmo)))
 				return;
 
-			if (spawnSource is EntitySource_ItemUse) {
-				EntitySource_ItemUse actualSpawnSource = spawnSource as EntitySource_ItemUse;
-				if (actualSpawnSource.Entity is not Player)
-					return;
-				projectile.CritChance += (actualSpawnSource.Entity as Player).GetWeaponCrit(actualSpawnSource.Item);
-				projectile.ArmorPenetration += (actualSpawnSource.Entity as Player).GetWeaponArmorPenetration(actualSpawnSource.Item);
-			}
-			else {
-				EntitySource_ItemUse_WithAmmo actualSpawnSource = spawnSource as EntitySource_ItemUse_WithAmmo;
-				if (actualSpawnSource.Entity is not Player)
-					return;
-				projectile.CritChance += (actualSpawnSource.Entity as Player).GetWeaponCrit(actualSpawnSource.Item);
-				projectile.ArmorPenetration += (actualSpawnSource.Entity as Player).GetWeaponArmorPenetration(actualSpawnSource.Item);
-			}
+			EntitySource_ItemUse actualSpawnSource = spawnSource as EntitySource_ItemUse;
+			if (actualSpawnSource.Entity is not Player)
+				return;
+			projectile.CritChance += (actualSpawnSource.Entity as Player).GetWeaponCrit(actualSpawnSource.Item);
+			projectile.ArmorPenetration += (actualSpawnSource.Entity as Player).GetWeaponArmorPenetration(actualSpawnSource.Item);
 		}
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>

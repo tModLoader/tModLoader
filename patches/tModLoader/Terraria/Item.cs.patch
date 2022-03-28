@@ -373,6 +373,16 @@
  		}
  
  		public bool FitsAmmoSlot() {
+@@ -44343,7 +_,8 @@
+ 			shoot = projectileId;
+ 			UseSound = SoundID.Item152;
+ 			noMelee = true;
+-			summon = true;
++			//summon = true;
++			DamageType = DamageClass.SummonMeleeSpeed;
+ 			noUseGraphic = true;
+ 			damage = dmg;
+ 			knockBack = kb;
 @@ -44387,7 +_,7 @@
  			return false;
  		}

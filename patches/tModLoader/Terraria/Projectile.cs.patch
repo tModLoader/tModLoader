@@ -215,7 +215,7 @@
  				width = 56;
  				height = 64;
  				aiStyle = 177;
-@@ -8088,9 +_,17 @@
+@@ -8088,9 +_,18 @@
  				alpha = 255;
  				hide = true;
  			}
@@ -225,14 +225,23 @@
  			}
 +			*/
 +
-+			// tML: Tell all vanilla summon class projectiles to actually use the corresponding DamageClass.
-+			if (type < ProjectileID.Count && (minion || sentry || ProjectileID.Sets.MinionShot[type] || ProjectileID.Sets.SentryShot[type] || ProjectileID.Sets.IsAWhip[type]))
++			// tML:
++			// this tells all vanilla summon class projectiles THAT AREN'T WHIPS to actually use the corresponding DamageClass
++			if (type < ProjectileID.Count && (minion || sentry || ProjectileID.Sets.MinionShot[type] || ProjectileID.Sets.SentryShot[type]))
 +				DamageType = DamageClass.Summon;
 +
 +			ProjectileLoader.SetDefaults(this);
  
  			width = (int)((float)width * scale);
  			height = (int)((float)height * scale);
+@@ -8102,6 +_,7 @@
+ 			height = 18;
+ 			aiStyle = 165;
+ 			friendly = true;
++			DamageType = DamageClass.SummonMeleeSpeed;
+ 			penetrate = -1;
+ 			tileCollide = false;
+ 			scale = 1f;
 @@ -8169,6 +_,7 @@
  			projectile.honeyWet = Collision.honey;
  			Main.projectileIdentity[Owner, num] = num;

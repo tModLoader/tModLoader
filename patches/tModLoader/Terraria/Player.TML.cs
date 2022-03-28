@@ -215,9 +215,6 @@ namespace Terraria
 				}
 			}
 
-			if (ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type])
-				attackSpeed *= player.whipUseTimeMultiplier;
-
 			return attackSpeed;
 		}
 
