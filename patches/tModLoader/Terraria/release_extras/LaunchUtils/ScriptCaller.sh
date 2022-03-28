@@ -59,11 +59,42 @@ echo "Success!"  2>&1 | tee -a "$LogFile"
 
 run_script ./InstallNetFramework.sh  2>&1 | tee -a "$LogFile"
 
-echo "Attempting Launch..."
-
 # Actually run tML with the passed arguments
 # Move to the root folder
 cd "$root_dir"
+
+# Move to new Preview System file saves
+if [ "$_uname" = Darwin ]; then
+	BaseDir="$HOME/Library/Application Support"
+elif [[ "$_uname" == *"_NT"* ]]; then
+	BaseDir="$USERPROFILE/Documents/My Games"
+	if [ ! -d "$BaseDir" ]; then
+	  BaseDir="$USERPROFILE/OneDrive/Documents/My Games"
+	fi
+else
+	BaseDir="$XDG_DATA_HOME"
+	if [ "$BaseDir" = "" ]; then
+		BaseDir="$HOME/.local/share"
+	fi
+fi
+OldDir="$BaseDir/Terraria/ModLoader/Beta"
+if [ -d "$OldDir" ]; then
+	echo "Migrating Terraria/ModLoader/Beta to Terraria/tModLoader-preview" 2>&1 | tee -a "$LogFile"
+	NewDir="$BaseDir/Terraria/tModLoader-preview"
+	mv "$OldDir" "$NewDir"
+
+	echo "Renaming Mod Sources, Mod Config, Mod Reader folders to remove spaces" 2>&1 | tee -a "$LogFile"
+	mv "$NewDir/Mod Sources" "$NewDir/ModSources"  
+	mv "$NewDir/Mod Config" "$NewDir/ModConfig"  
+	mv "$NewDir/Mod Reader" "$NewDir/ModReader"
+
+	echo "Copying files to tModLoader-dev directory for Contributors" 2>&1 | tee -a "$LogFile"
+	cp -r "$NewDir" "$BaseDir/Terraria/tModLoader-dev" 
+	echo "Copying files to tModLoader-dev directory for Players" 2>&1 | tee -a "$LogFile"
+	cp -r "$NewDir" "$BaseDir/Terraria/tModLoader" 
+fi
+
+echo "Attempting Launch..." 2>&1 | tee -a "$LogFile"
 
 if [[ "$_uname" == *"_NT"* ]]; then
 	# Replace / with \\ in WINDIR env var to not confuse MonoMod about the current platform
