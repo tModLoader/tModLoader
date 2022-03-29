@@ -129,7 +129,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AddContent&lt; T &gt;
 <tr class="memdesc:adbfe825532c8fffbac263bf8732b93b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override this method to add recipes to the game. It is recommended that you do so through instances of <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a>, since it provides methods that simplify recipe creation.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#adbfe825532c8fffbac263bf8732b93b6">More...</a><br /></td></tr>
 <tr class="separator:adbfe825532c8fffbac263bf8732b93b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a199022a7eb27307c41db97847fb4cef8"><td class="memItemLeft" align="right" valign="top">virtual object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#a199022a7eb27307c41db97847fb4cef8">Call</a> (params object[] args)</td></tr>
-<tr class="memdesc:a199022a7eb27307c41db97847fb4cef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a199022a7eb27307c41db97847fb4cef8">More...</a><br /></td></tr>
+<tr class="memdesc:a199022a7eb27307c41db97847fb4cef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.<br  />
+ The Expert Cross <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> Content Guideexplains how to use this hook to implement and utilize cross-mod capabilities.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a199022a7eb27307c41db97847fb4cef8">More...</a><br /></td></tr>
 <tr class="separator:a199022a7eb27307c41db97847fb4cef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1a3af8f2577a21c6efbc60103bf3089"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ac1a3af8f2577a21c6efbc60103bf3089">Close</a> ()</td></tr>
 <tr class="memdesc:ac1a3af8f2577a21c6efbc60103bf3089"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close is called before Unload, and may be called at any time when mod unloading is imminent (such as when downloading an update, or recompiling) Use this to release any additional file handles, or stop streaming music. Make sure to call <code>base.Close()</code> at the end May be called multiple times before Unload  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#ac1a3af8f2577a21c6efbc60103bf3089">More...</a><br /></td></tr>
@@ -522,7 +523,8 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 </table>
 </div><div class="memdoc">
 
-<p>Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method. </p>
+<p>Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.<br  />
+ The Expert Cross <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a> Content Guideexplains how to use this hook to implement and utilize cross-mod capabilities. </p>
 
 </div>
 </div>
