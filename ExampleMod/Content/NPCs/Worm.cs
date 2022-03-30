@@ -40,7 +40,7 @@ namespace ExampleMod.NPCs
 		 *  ai[1] = "following" segment, the segment that this segment is following
 		 *  
 		 *  localAI[0] = used when syncing changes to collision detection
-		 *  loalAI[1] = checking if Init() was called
+		 *  localAI[1] = checking if Init() was called
 		 */
 
 		/// <summary>
