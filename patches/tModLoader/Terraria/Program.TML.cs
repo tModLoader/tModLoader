@@ -39,23 +39,50 @@ namespace Terraria
 		}
 
 		private static void PortOldSaveDirectories() {
+			// PortOldSaveDirectories should only run once no matter which branch is run first.
+
 			// Port old file format users
 			var oldBetas = Path.Combine(SavePath, "ModLoader", "Beta");
 
 			if (!Directory.Exists(oldBetas))
 				return;
 
-			var newPath = Path.Combine(SavePath, PreviewFolder);
+			Logging.tML.Info($"Old tModLoader alpha folder \"{oldBetas}\" found, attempting folder migration");
+
+			var newPath = Path.Combine(SavePath, ReleaseFolder);
+			if (Directory.Exists(newPath)){
+				Logging.tML.Warn($"Both \"{oldBetas}\" and \"{newPath}\" exist, assuming user launched old tModLoader alpha, aborting migration");
+				return;
+			}
+			Logging.tML.Info($"Migrating from \"{oldBetas}\" to \"{newPath}\"");
 			Directory.Move(oldBetas, newPath);
+			Logging.tML.Info($"Old alpha folder to new location migration success");
 
 			string[] subDirsToMove = { "Mod Reader", "Mod Sources", "Mod Configs" };
 			foreach (var subDir in subDirsToMove) {
-				if (Directory.Exists(Path.Combine(newPath, subDir)))
-					Directory.Move(Path.Combine(newPath, subDir), Path.Combine(newPath, subDir.Replace(" ", "")));
+				string newSaveOriginalSubDirPath = Path.Combine(newPath, subDir);
+				if (Directory.Exists(newSaveOriginalSubDirPath)) {
+					string newSaveNewSubDirPath = Path.Combine(newPath, subDir.Replace(" ", ""));
+					Logging.tML.Info($"Renaming from \"{newSaveOriginalSubDirPath}\" to \"{newSaveNewSubDirPath}\"");
+					Directory.Move(newSaveOriginalSubDirPath, newSaveNewSubDirPath);
+				}
 			}
-				
-			FileUtilities.CopyFolder(newPath, Path.Combine(SavePath, DevFolder));
-			FileUtilities.CopyFolder(newPath, Path.Combine(SavePath, ReleaseFolder));
+			Logging.tML.Info($"Folder Renames Success");
+		}
+
+		private static void PortCommonFiles() {
+			// Only create and port config files from stable if needed.
+			if(BuildInfo.IsDev || BuildInfo.IsPreview) {
+				var releasePath = Path.Combine(SavePath, ReleaseFolder);
+				var newPath = Path.Combine(SavePath, BuildInfo.IsPreview ? PreviewFolder : DevFolder);
+				if (Directory.Exists(releasePath) && !Directory.Exists(newPath)) {
+					Directory.CreateDirectory(newPath);
+					if (File.Exists(Path.Combine(releasePath, "config.json")))
+						File.Copy(Path.Combine(releasePath, "config.json"), Path.Combine(newPath, "config.json"));
+					if (File.Exists(Path.Combine(releasePath, "input profiles.json")))
+						File.Copy(Path.Combine(releasePath, "input profiles.json"), Path.Combine(newPath, "input profiles.json"));
+				}
+			}
 		}
 
 		private static void SetSavePath() {
@@ -64,6 +91,7 @@ namespace Terraria
 				Platform.Get<IPathService>().GetStoragePath($"Terraria");
 
 			PortOldSaveDirectories();
+			PortCommonFiles();
 
 			var fileFolder =
 				BuildInfo.IsStable ? ReleaseFolder :
