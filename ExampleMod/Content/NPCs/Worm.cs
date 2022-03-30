@@ -221,7 +221,7 @@ namespace ExampleMod.NPCs
 				// Since this is the first update, we can safely assume we need to spawn the rest of the worm (bodies + tail).
 				bool hasFollower = NPC.ai[0] > 0;
 				if (!hasFollower) {
-					// So, here we assigning the NPC.realLife value.
+					// So, here we assign the NPC.realLife value.
 					// The NPC.realLife value is mainly used to determine which NPC loses life when we hit this NPC.
 					// We don't want every single piece of the worm to have its own HP pool, so this is a neat way to fix that.
 					NPC.realLife = NPC.whoAmI;
