@@ -11,10 +11,6 @@ namespace ExampleMod.Content.NPCs
 	// These three class showcase usage of the WormHead, WormBody and WormTail classes from Worm.cs
 	internal class ExampleWormHead : WormHead
 	{
-		// This NPC uses a vanilla texture for its sprite.
-		// If you don't want to use a vanilla sprite, remove the following line:
-		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerHead;
-
 		public override int BodyType => ModContent.NPCType<ExampleWormBody>();
 
 		public override int TailType => ModContent.NPCType<ExampleWormTail>();
@@ -98,10 +94,6 @@ namespace ExampleMod.Content.NPCs
 
 	internal class ExampleWormBody : WormBody
 	{
-		// This NPC uses a vanilla texture for its sprite.
-		// If you don't want to use a vanilla sprite, remove the following line:
-		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerBody;
-
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Worm");
 
@@ -124,10 +116,6 @@ namespace ExampleMod.Content.NPCs
 
 	internal class ExampleWormTail : WormTail
 	{
-		// This NPC uses a vanilla texture for its sprite.
-		// If you don't want to use a vanilla sprite, remove the following line:
-		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerTail;
-
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Worm");
 
