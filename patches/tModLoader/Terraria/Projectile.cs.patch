@@ -620,7 +620,7 @@
  				if (numUpdates == -1 && (minion || sentry)) {
  					Player player = Main.player[owner];
 -					damage = (int)((float)originalDamage * player.minionDamage + (float)player.minionAddDamage + 5E-06f);
-+					damage = (int)((float)originalDamage * (float)(player.allDamage.CombineWith(player.minionDamage)) + (float)player.minionAddDamage + 5E-06f);
++					damage = (int)((float)originalDamage * (float)(player.allDamage.CombineWith(player.minionDamage)) + (float)player.minionDamage.Flat + 5E-06f);
  				}
  
  				if (minion && numUpdates == -1 && type != 625 && type != 628) {

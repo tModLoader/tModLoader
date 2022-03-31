@@ -21,7 +21,7 @@
 			var m = (StatModifier)obj;
 			return Additive == m.Additive &&
 				   Multiplicative == m.Multiplicative &&
-				   Flat = m.Flat;
+				   Flat == m.Flat;
 		}
 
 		public override int GetHashCode() {

@@ -81,7 +81,7 @@
  		public float endurance;
  		public float whipRangeMultiplier;
 -		public float whipUseTimeMultiplier;
-+		internal ref StatModifier whipUseTimeMultiplier => GetAttackSpeed(DamageClass.SummonMeleeSpeed).useSpeed;
++		internal ref StatModifier whipUseTimeMultiplier => ref GetAttackSpeed(DamageClass.SummonMeleeSpeed).useSpeed;
  		public bool loveStruck;
  		public bool stinky;
  		public bool resistCold;
@@ -4602,7 +4602,7 @@
 +			*/
 +
 +			// implement minionKB as 'base damage'
-+			KnockBack += minionKB * sItem.DamageType.DoubleCheckClassStatInheritance(DamageClass.Summon, this, sItem).knockbackInheritance;
++			KnockBack += minionKB * sItem.DamageType.GetModifierInheritance(DamageClass.Summon).knockbackInheritance;
 +
 +			StatModifier kbModifier = StatModifier.Default;
 +			for (int i = 0; i < damageData.Length; i++) {
