@@ -8,6 +8,21 @@
  
  namespace Terraria.Graphics.Light
  {
+@@ -156,6 +_,14 @@
+ 					break;
+ 			}
+ 
++			float factor = 0.91f;
++			// Default values taken from the LightMap contructor, matching the virtual default of the hook
++			float throughWaterR = 0.88f;
++			float throughWaterG = 0.96f;
++			float throughWaterB = 1.015f;
++			LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier(Main.waterStyle, factor, ref throughWaterR, ref throughWaterG, ref throughWaterB);
++			workingLightMap.LightDecayThroughWater = new Vector3(throughWaterR, throughWaterG, throughWaterB);
++
+ 			if (Main.player[Main.myPlayer].nightVision) {
+ 				workingLightMap.LightDecayThroughAir *= 1.03f;
+ 				workingLightMap.LightDecayThroughSolid *= 1.03f;
 @@ -175,6 +_,12 @@
  				workingLightMap.LightDecayThroughAir *= 0.85f;
  				workingLightMap.LightDecayThroughSolid *= 0.85f;
