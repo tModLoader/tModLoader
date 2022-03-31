@@ -51,7 +51,7 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "ModSources");
+		public static readonly string ModSourcePath = Path.Combine(Program.SavePathShared, "ModSources");
 
 		internal static string[] FindModSources()
 		{
