@@ -31,7 +31,6 @@ namespace ExampleMod.Content.NPCs
 			// Head is 10 defence, body 20, tail 30.
 			NPC.CloneDefaults(NPCID.DiggerHead);
 			NPC.aiStyle = -1;
-			NPC.color = Color.Aqua;
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
@@ -106,7 +105,6 @@ namespace ExampleMod.Content.NPCs
 		public override void SetDefaults() {
 			NPC.CloneDefaults(NPCID.DiggerBody);
 			NPC.aiStyle = -1;
-			NPC.color = Color.Aqua;
 		}
 
 		public override void Init() {
@@ -128,7 +126,6 @@ namespace ExampleMod.Content.NPCs
 		public override void SetDefaults() {
 			NPC.CloneDefaults(NPCID.DiggerTail);
 			NPC.aiStyle = -1;
-			NPC.color = Color.Aqua;
 		}
 
 		public override void Init() {
