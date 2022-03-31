@@ -36,40 +36,14 @@ namespace Terraria.ModLoader
 		internal protected virtual string DisplayNameInternal => ClassName.GetTranslation(Language.ActiveCulture);
 
 		/// <summary>
-		/// This method is used to double-check against all statistical inheritances that the input DamageClass should have, given the Player and Item used as additional parameters.
-		/// </summary>
-		/// <param name="damageClass"></param>
-		/// <param name="player"></param>
-		/// <param name="item"></param>
-		/// <returns></returns>
-		public StatInheritanceData DoubleCheckStatInheritanceData(DamageClass damageClass, Player player, Item item) {
-			StatInheritanceData inheritanceData = GetStaticModifierInheritance(damageClass);
-			StatInheritanceData? dynamicInheritanceData = GetDynamicModifierInheritance(damageClass, player, item);
-			return dynamicInheritanceData.HasValue ? dynamicInheritanceData : inheritanceData;
-		}
-
-		/// <summary>
 		/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
 		/// This returns a struct called StatInheritanceData.
-		/// This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes.
+		/// This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes' stat bonuses.
 		/// By default, this will return StatInheritanceData.Full for DamageClass.Generic, and StatInheritanceData.None for any other.
 		/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
-		/// THIS METHOD SHOULD ONLY BE USED FOR THE BASE SETUP OF STAT INHERITANCES. For dynamic stat inheritance changes based on player and item conditions, use GetDynamicModifierInheritance instead.
 		/// </summary>
 		/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>
-		public virtual StatInheritanceData GetStaticModifierInheritance(DamageClass damageClass) => damageClass == Generic ? StatInheritanceData.Full : StatInheritanceData.None;
-
-		/// <summary>
-		/// This lets you define the classes that this DamageClass will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance.
-		/// This returns either null (no dynamic effect, default) or a struct called StatInheritanceData.
-		/// This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes.
-		/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
-		/// THIS METHOD SHOULD ONLY BE USED FOR STAT INHERITANCES GRANTED BY ARMOR, ACCESSORIES, OR OTHER EFFECTS. For base stat inheritances, use GetStaticModifierInheritance instead.
-		/// </summary>
-		/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>
-		/// <param name="player">The player being referenced for dynamic calculations.</param>
-		/// <param name="item">The item being referenced for dynamic calculations.</param>
-		public virtual StatInheritanceData? GetDynamicModifierInheritance(DamageClass damageClass, Player player, Item item) => null;
+		public virtual StatInheritanceData GetModifierInheritance(DamageClass damageClass) => damageClass == Generic ? StatInheritanceData.Full : StatInheritanceData.None;
 
 		/// <summary> 
 		/// This lets you define the classes that this DamageClass will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks.

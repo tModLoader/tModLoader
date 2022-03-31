@@ -192,7 +192,7 @@ namespace Terraria
 				if (damageData[i].armorPen < 0)
 					throw new Exception("A class' armor penetration stat cannot be less than 0.");
 				else {
-					StatInheritanceData inheritanceData = sItem.DamageType.DoubleCheckStatInheritanceData(DamageClassLoader.DamageClasses[i], this, sItem);
+					StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
 					armorPen += (int)(damageData[i].armorPen * inheritanceData.armorPenInheritance);
 				}
 			}
@@ -210,7 +210,7 @@ namespace Terraria
 				if (damageData[i].attackSpeed.useSpeed <= 0f)
 					throw new Exception("All of a class' attack speed stats must be greater than 0.");
 				else {
-					StatInheritanceData inheritanceData = sItem.DamageType.DoubleCheckStatInheritanceData(DamageClassLoader.DamageClasses[i], this, sItem);
+					StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
 					attackSpeed = attackSpeed.CombineWith(damageData[i].attackSpeed.useSpeed.Scale(inheritanceData.useSpeedInheritance));
 				}
 			}

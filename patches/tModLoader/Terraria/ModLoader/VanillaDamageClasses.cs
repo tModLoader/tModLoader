@@ -15,14 +15,14 @@ namespace Terraria.ModLoader
 	{
 		protected override string LangKey => "LegacyTooltip.55";
 
-		public override StatInheritanceData GetStaticModifierInheritance(DamageClass damageClass) => StatInheritanceData.None;
+		public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) => StatInheritanceData.None;
 	}
 
 	public class GenericDamageClass : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.55";
 
-		public override StatInheritanceData GetStaticModifierInheritance(DamageClass damageClass) => StatInheritanceData.None;
+		public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) => StatInheritanceData.None;
 
 		public override void SetDefaultStats(Player player) {
 			player.GetCritChance(this) = 4;
@@ -57,7 +57,7 @@ namespace Terraria.ModLoader
 	{
 		protected override string LangKey => "LegacyTooltip.53";
 
-		public override StatInheritanceData GetStaticModifierInheritance(DamageClass damageClass) {
+		public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
 			return damageClass == Melee
 				? new StatInheritanceData(0f, 0f, 1f, 1f, 0f, 0f, 0f)
 				: damageClass == Summon

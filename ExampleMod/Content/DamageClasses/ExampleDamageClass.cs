@@ -9,7 +9,7 @@ namespace ExampleMod.Content.DamageClasses
 	{
 		// This is an example damage class designed to demonstrate all the current functionality of the feature and explain how to create one of your own, should you need one.
 		// For information about how to apply stat bonuses to specific damage classes, please instead refer to ExampleMod/Content/Items/Accessories/ExampleStatBonusAccessory.
-		public override StatInheritanceData GetStaticModifierInheritance(DamageClass damageClass) {
+		public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
 			// This method lets you make your damage class benefit from other classes' stat bonuses by default, as well as universal stat bonuses.
 			// To briefly summarize the two nonstandard damage class names used by DamageClass:
 			// Default is, you guessed it, the default damage class. It doesn't scale off of any class-specific stat bonuses or universal stat bonuses.
@@ -60,13 +60,6 @@ namespace ExampleMod.Content.DamageClasses
 			// To refer to a non-vanilla damage class for these sorts of things, use "ModContent.GetInstance<TargetDamageClassHere>()" instead of "DamageClass.XYZ".
 		}
 
-		public override StatInheritanceData? GetDynamicModifierInheritance(DamageClass damageClass, Player player, Item item) {
-			// This method works a lot like CheckBaseClassStatInheritance, but can be affected by --- and requires, should you call it yourself --- a Player and Item as additional parameters.
-			// You can modify stat inheritances based on accessories, environmental effects, the specific item type, and more here.
-			// For simplicity's sake, we won't do anything special here, but it's good to keep this in mind --- you might need it sometime.
-			return null;
-		}
-
 		public override bool GetEffectInheritance(DamageClass damageClass) {
 			// This method allows you to make your damage class benefit from and be able to activate otherclass effects (e.g. Spectre bolts, Magma Stone) based on what returns true.
 			// Note that unlike our stat inheritance methods up above, you do not need to account for universal bonuses in this method.
@@ -95,7 +88,7 @@ namespace ExampleMod.Content.DamageClasses
 
 		public override bool ShowStatTooltipLine(Player player, string lineName) {
 			// This method lets you prevent certain common statistical tooltip lines from appearing on items associated with this DamageClass.
-			// The four line names you can use are "Damage", "CritChance", "Speed", and "Knockback". All four cases default to true. For example...
+			// The four line names you can use are "Damage", "CritChance", "Speed", and "Knockback". All four cases default to true, and thus will be shown. For example...
 			if (lineName == "Speed")
 				return false;
 
