@@ -273,11 +273,12 @@
 		"ModControls": "Mod Controls",
 
 		// Player and World Select
-		"MigratePlayersMessage": "You have no players.\nIf you'd like to migrate your players from vanilla to tModLoader,\nplease copy them from /Terraria/Players to /Terraria/ModLoader/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.",
-		"MigratePlayersText": "Click here to migrate players...",
+		"MigratePlayersMessage": "You have no players.\nIf you'd like to manually migrate your players from vanilla to tModLoader,\nplease copy them from\n/Terraria/Players\nto\n/Terraria/{0}/Players.\nCopy the .plr file and the similarly named folder over.\nClick me to open those folders.\nAfter copying over the players you want, press back.",
+		"MigratePlayersText": "Click here to automatically migrate players from Terraria...",
 		"MigratePlayersException": "There was a problem while trying to migrate Player files",
-		"MigrateWorldsMessage": "You have no worlds.\nIf you'd like to migrate your worlds from vanilla to tModLoader,\nyou can press the migrate button below to do so automatically.\nAlternatively, you can copy them from\n /Terraria/Worlds\nto\n/Terraria/ModLoader/Worlds manually.\nCopy the .wld files over.\nClick this text to open those folders.\nAfter copying over the worlds you want, press back.",
-		"MigrateWorldsText": "Click here to migrate worlds...",
+		"MigrateWorldsMessage": "You have no worlds.\nIf you'd like to manually migrate your worlds from vanilla to tModLoader,\nyou can press the migrate button below to do so automatically.\nAlternatively, you can copy them from\n/Terraria/Worlds\nto\n/Terraria/{0}/Worlds manually.\nCopy the .wld files over.\nClick this text to open those folders.\nAfter copying over the worlds you want, press back.",
+		"MigrateWorldsText": "Click here to automatically migrate worlds from Terraria...",
+		"MigrateWorldsException": "There was a problem while trying to migrate World files",		
 		"MigratingWorldsText": "Migrating...",
 		"ModsDifferentSinceLastPlay": "The following mods are different since last time you played: ",
 		"Missing1Mod": "Missing 1 mod.",

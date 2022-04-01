@@ -131,13 +131,20 @@
  		}
  
  		private bool TryMovingToRejectionMenuIfNeeded(int worldGameMode) {
-@@ -340,6 +_,9 @@
- 		private void SeedButtonClick(UIMouseEvent evt, UIElement listeningElement) {
- 			Platform.Get<IClipboard>().Value = _data.GetFullSeedText();
+@@ -342,10 +_,16 @@
  			_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
-+		}
-+
-+		private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement) {
  		}
  
++		private void ConfigButtonClick(UIMouseEvent evt, UIElement listeningElement) {
++		}
++
  		public override int CompareTo(object obj) {
+ 			UIWorldListItem uIWorldListItem = obj as UIWorldListItem;
+ 			if (uIWorldListItem != null)
+ 				return _orderInList.CompareTo(uIWorldListItem._orderInList);
++
++			if (obj is UIPanel)
++				return -1;
+ 
+ 			return base.CompareTo(obj);
+ 		}
