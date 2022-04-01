@@ -435,7 +435,7 @@ jobs:
           ls -alhR ./solutions/Manifests
           manifesto=${GITHUB_WORKSPACE}/solutions/Manifests
           if [ ${{github.ref}} = 'refs/heads/1.4-stable' ] ; then
-            manifesto=$manifesto/app.vdf
+            manifesto=$manifesto/stable.vdf
           fi
           if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
             manifesto=$manifesto/preview.vdf
