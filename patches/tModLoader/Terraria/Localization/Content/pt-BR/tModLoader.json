@@ -273,10 +273,10 @@
 		"ModControls": "Controles de Mod",
 
 		// Player and World Select
-		"MigratePlayersMessage": "Você não tem jogadores.\nSe você deseja migrar seus jogadores do vanilla para o tModLoader,\ncopie-os de /Terraria/Players para /Terraria/ModLoader/Players.\nCopie o arquivo .plr e a pasta com o mesmo nome.\nClique em mim para abrir essas pastas.\nDepois de copiar os jogadores que deseja, pressione voltar.",
+		"MigratePlayersMessage": "Você não tem jogadores.\nSe você deseja migrar seus jogadores do vanilla para o tModLoader,\ncopie-os de /Terraria/Players para /Terraria/{0}/Players.\nCopie o arquivo .plr e a pasta com o mesmo nome.\nClique em mim para abrir essas pastas.\nDepois de copiar os jogadores que deseja, pressione voltar.",
 		"MigratePlayersText": "Clique aqui para migrar jogadores...",
 		"MigratePlayersException": "Ocorreu um problema ao tentar migrar os arquivos de Jogador",
-		"MigrateWorldsMessage": "Você não tem mundos.\nSe você deseja migrar seus mundos do vanilla para o tModLoader,\nvocê pode apertar o botão migrar para fazer isso automaticamente.\nAlternativamente, você pode copiar eles de\n /Terraria/Worlds\npara\n/Terraria/ModLoader/Worlds manualmente.\nCopie o arquivo .wld.\nClique neste texto para abrir essas pastas.\nDepois de copiar os mundos que você deseja, pressione voltar.",
+		"MigrateWorldsMessage": "Você não tem mundos.\nSe você deseja migrar seus mundos do vanilla para o tModLoader,\nvocê pode apertar o botão migrar para fazer isso automaticamente.\nAlternativamente, você pode copiar eles de\n /Terraria/Worlds\npara\n/Terraria/{0}/Worlds manualmente.\nCopie o arquivo .wld.\nClique neste texto para abrir essas pastas.\nDepois de copiar os mundos que você deseja, pressione voltar.",
 		"MigrateWorldsText": "Clique aqui para migrar mundos...",
 		"MigratingWorldsText": "Migrando...",
 		"ModsDifferentSinceLastPlay": "Os seguintes mods são diferentes desde a última vez que você jogou: ",
@@ -368,7 +368,7 @@
 		"DefaultTownNPCName": "Sem Nome",
 		"DefaultTownNPCChat": "Meu desenvolvedor de mod se esqueceu de me dar uma mensagem de bate-papo.",
 		"DefaultNurseCantHealChat": "Eu não sei por que não posso curar você, o meu desenvolvedor de mod esqueceu de me dar uma mensagem de bate-papo.",
-		
+
 		// Memory bar
 		"LastLoadRamUsage": "Uso estimado de RAM no último carregamento: {0}",
 		"AvailableMemory": "Memória Disponível: {0}",
