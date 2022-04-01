@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Xml.Linq;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
@@ -91,8 +92,14 @@ namespace Terraria
 				LaunchParameters.ContainsKey("-savedirectory") ? LaunchParameters["-savedirectory"] :
 				Platform.Get<IPathService>().GetStoragePath($"Terraria");
 
-			PortOldSaveDirectories();
-			PortCommonFiles();
+			bool saveHere = File.Exists("savehere.txt");
+			bool tmlSaveDirectoryParameterSet = LaunchParameters.ContainsKey("-tmlsavedirectory");
+
+			// File migration is only attempted for the default save folder
+			if (!saveHere && !tmlSaveDirectoryParameterSet) {
+				PortOldSaveDirectories();
+				PortCommonFiles();
+			}
 
 			var fileFolder =
 				BuildInfo.IsStable ? ReleaseFolder :
@@ -101,13 +108,16 @@ namespace Terraria
 
 			SavePath = Path.Combine(SavePath, fileFolder);
 
-			if (File.Exists("savehere.txt"))
+			if (saveHere)
 				SavePath = fileFolder; // Fallback for unresolveable antivirus/onedrive issues. Also makes the game portable I guess.
 
-			if (LaunchParameters.ContainsKey("-tmlsavedirectory"))
-				SavePath = LaunchParameters["-tmlsavedirectory"];
-
 			SavePathShared = Path.Combine(SavePath, "..", ReleaseFolder);
+
+			// With a custom tmlsavedirectory, the shared saves are assumed to be in the same folder
+			if (tmlSaveDirectoryParameterSet) {
+				SavePath = LaunchParameters["-tmlsavedirectory"];
+				SavePathShared = SavePath;
+			}
 			
 			Logging.tML.Info($"Save Are Located At: {Path.GetFullPath(SavePath)}");
 		}
