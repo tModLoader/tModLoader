@@ -484,5 +484,4 @@ jobs:
         with:
           artifacts: "artifacts/ExampleMod,artifacts/Build"
           token: ${{ secrets.GITHUB_TOKEN }}
-          body: "Monthly Github Auto-release for 1.4-stable"
-            
+          body: "Monthly Github Auto-release for 1.4-stable"  
