@@ -8,24 +8,6 @@
  
  namespace Terraria.Graphics.Light
  {
-@@ -106,7 +_,7 @@
- 		private int _expandedRectTop;
- 		private int _expandedRectRight;
- 		private int _expandedRectBottom;
--		private float _negLight = 0.04f;
-+		internal float _negLight = 0.04f;
- 		private float _negLight2 = 0.16f;
- 		private float _wetLightR = 0.16f;
- 		private float _wetLightG = 0.16f;
-@@ -114,7 +_,7 @@
- 		private float _honeyLightR = 0.16f;
- 		private float _honeyLightG = 0.16f;
- 		private float _honeyLightB = 0.16f;
--		private float _blueWave = 1f;
-+		internal float _blueWave = 1f;
- 		private int _blueDir = 1;
- 		private RectArea _minBoundArea;
- 		private RectArea _requestedArea;
 @@ -575,6 +_,7 @@
  			_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap);
  			for (int m = num; m < num2; m++) {
@@ -39,7 +21,7 @@
  							break;
  					}
 +
-+					LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier(Main.waterStyle, ref _wetLightR, ref _wetLightG, ref _wetLightB);
++					LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier(Main.waterStyle, _negLight * _blueWave, ref _wetLightR, ref _wetLightG, ref _wetLightB);
  				}
  				else {
  					_negLight = 0.9f;
