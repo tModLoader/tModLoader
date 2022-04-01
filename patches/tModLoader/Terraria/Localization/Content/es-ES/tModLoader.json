@@ -273,10 +273,10 @@
 		"ModControls": "Controles de mods",
 
 		// Player and World Select
-		"MigratePlayersMessage": "No tienes jugadores.\nSi quieres transferir tus jugadores de la versión clásica a tModLoader,\npor favor cópialos de /Terraria/Players a /Terraria/ModLoader/Players.\nCopia el archivo .plr y la carpeta de nombre similar.\nPulsa aquí para abrir esas carpetas.\nCuando hayas copiado los jugadores que querías, pulsa atrás.",
+		"MigratePlayersMessage": "No tienes jugadores.\nSi quieres transferir tus jugadores de la versión clásica a tModLoader,\npor favor cópialos de /Terraria/Players a /Terraria/{0}/Players.\nCopia el archivo .plr y la carpeta de nombre similar.\nPulsa aquí para abrir esas carpetas.\nCuando hayas copiado los jugadores que querías, pulsa atrás.",
 		"MigratePlayersText": "Haz clic aquí para transferir tus jugadores",
 		"MigratePlayersException": "Ha habido un problema al intentar migrar los archivos del jugador",
-		"MigrateWorldsMessage": "No tienes mundos.\nSi quieres migrar tus mundos de la versión clásica a tModLoader,\npuedes hacer clic en el botón de abajo para hacerlo automáticamente.\nAlternativamente, puedes copiarlos de\n/Terraria/Worlds\na /Terraria/ModLoader/Worlds manualmente.\nCopia los archivos .wld.\nHaz clic en este texto para abrir esas carpetas.\nCuando hayas copiado los mundos que querías, pulsa atrás.",
+		"MigrateWorldsMessage": "No tienes mundos.\nSi quieres migrar tus mundos de la versión clásica a tModLoader,\npuedes hacer clic en el botón de abajo para hacerlo automáticamente.\nAlternativamente, puedes copiarlos de\n/Terraria/Worlds\na /Terraria/{0}/Worlds manualmente.\nCopia los archivos .wld.\nHaz clic en este texto para abrir esas carpetas.\nCuando hayas copiado los mundos que querías, pulsa atrás.",
 		"MigrateWorldsText": "Haz clic aquí para transferir tus mundos",
 		"MigratingWorldsText": "Transfiriendo...",
 		"ModsDifferentSinceLastPlay": "Los siguientes mods han cambiado desde la última vez que jugaste: ",
@@ -378,7 +378,7 @@
 		"SoundMemory": "Sonidos: {0}",
 		"TextureMemory": "Texturas: {0}",
 		"TotalMemory": "Total: {0}",
-		
+
 		// Extra mouse buttons
 		"MouseMiddle": "Clic medio",
 		"MouseXButton1": "Botón 4",

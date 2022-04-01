@@ -6,25 +6,25 @@ using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	internal abstract class ISetElementWrapper
+	internal interface ISetElementWrapper
 	{
-		internal virtual object Value => null;
+		object Value { get; }
 	}
 
 	// TODO: Somehow prevent this class from displaying?
 	internal class SetElementWrapper<V> : ISetElementWrapper
 	{
-		private object set;
-
-		//TODO: C# 9.0: Use covariant returns here.
+		private readonly object set;
 
 		private V _value;
-		public V value {
-			get { return _value; }
+
+		public V Value {
+			get => _value;
 			set {
 				var removeMethod = set.GetType().GetMethods().FirstOrDefault(m => m.Name == "Remove");
 				var addMethod = set.GetType().GetMethods().FirstOrDefault(m => m.Name == "Add");
 				var containsMethod = set.GetType().GetMethods().FirstOrDefault(m => m.Name == "Contains");
+
 				if ((bool)containsMethod.Invoke(set, new object[] { value })) {
 				}
 				else {
@@ -33,82 +33,85 @@ namespace Terraria.ModLoader.Config.UI
 					addMethod.Invoke(set, new object[] { _value });
 				}
 
-				//if (set.Contains(value))
-				//{
+				/*
+				if (set.Contains(value)) {
 
-				//}
-				//else
-				//{
-				//	set.Remove(_value);
-				//	_value = value;
-				//	set.Add(_value, _value);
-				//}
+				}
+				else {
+					set.Remove(_value);
+					_value = value;
+					set.Add(_value, _value);
+				}
+				*/
 			}
 		}
-		internal override object Value => value;
+
+		object ISetElementWrapper.Value => Value;
 
 		public SetElementWrapper(V value, object set) {
 			this.set = set;
-			this._value = value;
+			_value = value;
 		}
 	}
 
 	internal class SetElement : CollectionElement
 	{
 		private Type setType;
-		public List<ISetElementWrapper> dataWrapperList;
+
+		public List<ISetElementWrapper> DataWrapperList { get; set; }
 
 		protected override void PrepareTypes() {
-			setType = memberInfo.Type.GetGenericArguments()[0];
-			jsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(memberInfo, setType);
+			setType = MemberInfo.Type.GetGenericArguments()[0];
+			JsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(MemberInfo, setType);
 		}
 
 		protected override void AddItem() {
-			var addMethod = data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Add");
-			addMethod.Invoke(data, new object[] { CreateCollectionElementInstance(setType) });
+			var addMethod = Data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Add");
+			addMethod.Invoke(Data, new object[] { CreateCollectionElementInstance(setType) });
 		}
 
 		protected override void InitializeCollection() {
-			data = Activator.CreateInstance(typeof(HashSet<>).MakeGenericType(setType));
-			SetObject(data);
+			Data = Activator.CreateInstance(typeof(HashSet<>).MakeGenericType(setType));
+			SetObject(Data);
 		}
 
 		protected override void ClearCollection() {
-			var clearMethod = data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Clear");
-			clearMethod.Invoke(data, new object[] { });
+			var clearMethod = Data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Clear");
+			clearMethod.Invoke(Data, new object[] { });
 		}
 
 		protected override void SetupList() {
-			dataList.Clear();
+			DataList.Clear();
+
 			int top = 0;
-			dataWrapperList = new List<ISetElementWrapper>();
+			var genericType = typeof(SetElementWrapper<>).MakeGenericType(setType);
 
-			Type genericType = typeof(SetElementWrapper<>).MakeGenericType(setType);
+			DataWrapperList = new List<ISetElementWrapper>();
 
-			if (data != null) {
-				var valuesEnumerator = ((IEnumerable)data).GetEnumerator();
-
+			if (Data != null) {
+				var valuesEnumerator = ((IEnumerable)Data).GetEnumerator();
 				int i = 0;
+
 				while (valuesEnumerator.MoveNext()) {
 					ISetElementWrapper proxy = (ISetElementWrapper)Activator.CreateInstance(genericType,
-						new object[] { valuesEnumerator.Current, (object)data });
-					dataWrapperList.Add(proxy);
+						new object[] { valuesEnumerator.Current, (object)Data });
+					DataWrapperList.Add(proxy);
 
 					var wrappermemberInfo = ConfigManager.GetFieldsAndProperties(this).ToList()[0];
 					int index = i;
-					var wrapped = UIModConfig.WrapIt(dataList, ref top, wrappermemberInfo, this, 0, dataWrapperList, genericType, i);
+					var wrapped = UIModConfig.WrapIt(DataList, ref top, wrappermemberInfo, this, 0, DataWrapperList, genericType, i);
 					wrapped.Item2.Left.Pixels += 24;
 					wrapped.Item2.Width.Pixels -= 24;
 
 					// Add delete button.
-					UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(deleteTexture, "Remove");
+					UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(DeleteTexture, "Remove");
 					deleteButton.VAlign = 0.5f;
 
 					// fix delete.
 					object o = valuesEnumerator.Current; // needed for closure?
 					deleteButton.OnClick += (a, b) => {
-						var removeMethod = data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Remove");
-						removeMethod.Invoke(data, new object[] { o });
+						var removeMethod = Data.GetType().GetMethods().FirstOrDefault(m => m.Name == "Remove");
+						removeMethod.Invoke(Data, new object[] { o });
 						SetupList();
 						Interface.modConfig.SetPendingChanges();
 					};

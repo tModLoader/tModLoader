@@ -4,9 +4,7 @@
 		//Ensure all blockLists are cleared everywhere that they need to be.
 
 	//Need reimplementing:
-		//TileLoader.HasSmartInteract
-		//TileLoader.FixSmartInteractCoords
-			//Add to TileSmartInteractCandidateProvider.ProvideCandidate, right before the if with two Collision.InTileBounds calls.
+		
 
 	//TileLoader
 		//Multiply item.axe by 1.2f before adding into the damage.

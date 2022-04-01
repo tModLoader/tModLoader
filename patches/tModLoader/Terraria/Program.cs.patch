@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,72 @@
+@@ -138,32 +_,73 @@
  			}
  		}
  
@@ -105,15 +105,6 @@
  
 +			LaunchParameters = Utils.ParseArguements(args);
 +
-+			try {
-+				SetSavePath(); // Needs to run before Logging.Init due to DeveloperMode check in ModCompile
-+			}
-+			catch (Exception e) {
-+				Logging.Terraria.Fatal("Failed to Handle Save Data", e);
-+				DisplayException(e);
-+				return;
-+			}
-+
 +			bool isServer = LaunchParameters.ContainsKey("-server");
 +			try {
 +				Logging.Init(isServer);
@@ -122,6 +113,16 @@
 +			}
 +			catch (Exception e) {
 +				Logging.Terraria.Fatal("Main engine crash", e);
++				DisplayException(e);
++				return;
++			}
++
++			try {
++				SetSavePath(); // Needs to run before Logging.LogStartup due to DeveloperMode check in ModCompile
++				Logging.LogStartup(isServer);
++			}
++			catch (Exception e) {
++				Logging.Terraria.Fatal("Failed to Handle Save Data", e);
 +				DisplayException(e);
 +				return;
 +			}

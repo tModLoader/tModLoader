@@ -654,7 +654,7 @@
 +
 +			newItem.ModItem = ModItem?.Clone(newItem);
 +			newItem.globalItems = globalItems
-+				.Select(g => new Instanced<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))
++				.Select(g => new Instanced<GlobalItem>(g.Index, g.Instance?.Clone(this, newItem)))
 +				.ToArray();
 +
 +			return newItem;
@@ -667,7 +667,7 @@
 +
 +			newItem.ModItem = dataSource.ModItem?.Clone(newItem);
 +			newItem.globalItems = dataSource.globalItems
-+				.Select(g => new Instanced<GlobalItem>(g.index, g.instance?.Clone(dataSource, newItem)))
++				.Select(g => new Instanced<GlobalItem>(g.Index, g.Instance?.Clone(dataSource, newItem)))
 +				.ToArray();
 +
 +			return newItem;

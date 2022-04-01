@@ -171,7 +171,7 @@
  						UpdateItem();
  					}
  					else {
-@@ -205,13 +_,57 @@
+@@ -205,13 +_,56 @@
  				}
  
  				private void CreateItem() {
@@ -213,7 +213,6 @@
 +
 +					_publishedFileID = param.m_nPublishedFileId;
 +					WrappedWriteManifest();
-+					SteamUGC.SubscribeItem(_publishedFileID);
 +
 +					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
 +						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
@@ -329,6 +328,15 @@
  						case EResult.k_EResultOK:
  							SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  							break;
+@@ -291,6 +_,8 @@
+ 							break;
+ 					}
+ 
++					SteamUGC.SubscribeItem(_publishedFileID);
++
+ 					_endAction(this);
+ 				}
+ 
 @@ -305,6 +_,16 @@
  						_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
  						return false;

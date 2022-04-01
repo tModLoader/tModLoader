@@ -6,6 +6,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -383,22 +384,49 @@ namespace Terraria.ModLoader
 			&& MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
 		}
 
-		public static bool HasSmartInteract(int type) {
-			return GetTile(type)?.HasSmartInteract() ?? false;
+		public static bool HasSmartInteract(int i, int j, int type, SmartInteractScanSettings settings) {
+			return GetTile(type)?.HasSmartInteract(i, j, settings) ?? false;
 		}
 
-		public static void FixSmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraX, ref int extraY) {
+		public static void ModifySmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
+			ModTile modTile = GetTile(type);
+			if (modTile == null)
+				return;
+
+			TileObjectData data = TileObjectData.GetTileData(type, 0);
+			if (data == null)
+				return;
+
+			width = data.Width;
+			height = data.Height;
+			frameWidth = data.CoordinateWidth + data.CoordinatePadding;
+			frameHeight = data.CoordinateHeights[0] + data.CoordinatePadding;
+			extraY = data.CoordinateFullHeight % frameHeight;
+
+			modTile.ModifySmartInteractCoords(ref width, ref height, ref frameWidth, ref frameHeight, ref extraY);
+		}
+
+		public static void ModifySittingTargetInfo(int i, int j, int type, ref TileRestingInfo info) {
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
-				TileObjectData data = TileObjectData.GetTileData(type, 0);
-				width = data.Width;
-				height = data.Height;
-				frameWidth = data.CoordinateWidth + data.CoordinatePadding;
-				frameHeight = data.CoordinateHeights[0] + data.CoordinatePadding;
-				extraY = data.CoordinateFullHeight % frameHeight;
+				modTile.ModifySittingTargetInfo(i, j, ref info);
+			}
+			else {
+				info.AnchorTilePosition.Y += 1; // Hardcoded vanilla offset from the bottom tile moved here (all chairs have height-1 offset)
 			}
 		}
-		
+
+		public static void ModifySleepingTargetInfo(int i, int j, int type, ref TileRestingInfo info) {
+			ModTile modTile = GetTile(type);
+			if (modTile != null) {
+				// Because vanilla sets its own offset based on frameY, ignoring tile type, which might not be set to an expected default, reassign it
+				info.VisualOffset = new Vector2(-9f, 1f); // Taken from default case of vanilla beds 
+				modTile.ModifySleepingTargetInfo(i, j, ref info);
+			}
+		}
+
+		//in Terraria.WorldGen.KillTile inside if (!effectOnly && !WorldGen.stopDrops) for playing sounds
+		//  add if(!TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
 		public static bool KillSound(int i, int j, int type) {
 			foreach (var hook in HookKillSound) {
 				if (!hook(i, j, type)) {

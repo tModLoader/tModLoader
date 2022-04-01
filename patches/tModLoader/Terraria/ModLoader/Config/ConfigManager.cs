@@ -23,10 +23,9 @@ namespace Terraria.ModLoader.Config
 		// Menu save should force reload
 
 		// This copy of Configs stores instances present during load. Its only use in detecting if a reload is needed.
-		private static readonly IDictionary<Mod, List<ModConfig>> LoadTimeConfigs = new Dictionary<Mod, List<ModConfig>>();
+		private static readonly IDictionary<Mod, List<ModConfig>> loadTimeConfigs = new Dictionary<Mod, List<ModConfig>>();
 
-		public static readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
-		{
+		public static readonly JsonSerializerSettings serializerSettings = new() {
 			Formatting = Formatting.Indented,
 			DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
 			ObjectCreationHandling = ObjectCreationHandling.Replace,
@@ -35,8 +34,7 @@ namespace Terraria.ModLoader.Config
 			ContractResolver = new ReferenceDefaultsPreservingResolver()
 		};
 
-		internal static readonly JsonSerializerSettings serializerSettingsCompact = new JsonSerializerSettings
-		{
+		internal static readonly JsonSerializerSettings serializerSettingsCompact = new() {
 			Formatting = Formatting.None,
 			DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
 			ObjectCreationHandling = ObjectCreationHandling.Replace,
@@ -53,9 +51,8 @@ namespace Terraria.ModLoader.Config
 		public static readonly string ModConfigPath = Path.Combine(Main.SavePath, "ModConfigs");
 		public static readonly string ServerModConfigPath = Path.Combine(Main.SavePath, "ModConfigs", "Server");
 
-		internal static void Add(ModConfig config)
-		{
-			ConfigManager.Load(config);
+		internal static void Add(ModConfig config) {
+			Load(config);
 
 			if (!Configs.TryGetValue(config.Mod, out List<ModConfig> configList))
 				Configs.Add(config.Mod, configList = new List<ModConfig>());
@@ -69,18 +66,15 @@ namespace Terraria.ModLoader.Config
 			config.OnChanged();
 
 			// Maintain a backup of LoadTime Configs.
-			if (!LoadTimeConfigs.TryGetValue(config.Mod, out List<ModConfig> configList2))
-				LoadTimeConfigs.Add(config.Mod, configList2 = new List<ModConfig>());
+			if (!loadTimeConfigs.TryGetValue(config.Mod, out List<ModConfig> configList2))
+				loadTimeConfigs.Add(config.Mod, configList2 = new List<ModConfig>());
 			configList2.Add(GeneratePopulatedClone(config));
 		}
 
 		// This method for refreshing configs (ServerSide mostly) after events that could change configs: Multiplayer play.
-		internal static void LoadAll()
-		{
-			foreach (var activeConfigs in ConfigManager.Configs)
-			{
-				foreach (var activeConfig in activeConfigs.Value)
-				{
+		internal static void LoadAll() {
+			foreach (var activeConfigs in ConfigManager.Configs) {
+				foreach (var activeConfig in activeConfigs.Value) {
 					Load(activeConfig);
 				}
 			}
@@ -94,18 +88,19 @@ namespace Terraria.ModLoader.Config
 			}
 		}
 
-		internal static void Load(ModConfig config)
-		{
+		internal static void Load(ModConfig config) {
 			string filename = config.Mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ModConfigPath, filename);
-			if (config.Mode == ConfigScope.ServerSide && ModNet.NetReloadActive) // #999: Main.netMode isn't 1 at this point due to #770 fix.
-			{
+
+			if (config.Mode == ConfigScope.ServerSide && ModNet.NetReloadActive) { // #999: Main.netMode isn't 1 at this point due to #770 fix.
 				string netJson = ModNet.pendingConfigs.Single(x => x.modname == config.Mod.Name && x.configname == config.Name).json;
 				JsonConvert.PopulateObject(netJson, config, serializerSettingsCompact);
 				return;
 			}
+
 			bool jsonFileExists = File.Exists(path);
 			string json = jsonFileExists ? File.ReadAllText(path) : "{}";
+
 			try {
 				JsonConvert.PopulateObject(json, config, serializerSettings);
 			}
@@ -116,14 +111,12 @@ namespace Terraria.ModLoader.Config
 			}
 		}
 
-		internal static void Reset(ModConfig pendingConfig)
-		{
+		internal static void Reset(ModConfig pendingConfig) {
 			string json = "{}";
 			JsonConvert.PopulateObject(json, pendingConfig, serializerSettings);
 		}
 
-		internal static void Save(ModConfig config)
-		{
+		internal static void Save(ModConfig config) {
 			Directory.CreateDirectory(ModConfigPath);
 			string filename = config.Mod.Name + "_" + config.Name + ".json";
 			string path = Path.Combine(ModConfigPath, filename);
@@ -131,8 +124,7 @@ namespace Terraria.ModLoader.Config
 			File.WriteAllText(path, json);
 		}
 
-		internal static void Unload()
-		{
+		internal static void Unload() {
 			serializerSettings.ContractResolver = new ReferenceDefaultsPreservingResolver();
 			serializerSettingsCompact.ContractResolver = serializerSettings.ContractResolver;
 
@@ -143,7 +135,7 @@ namespace Terraria.ModLoader.Config
 				}
 			});
 			Configs.Clear();
-			LoadTimeConfigs.Clear();
+			loadTimeConfigs.Clear();
 
 			Interface.modConfig.Unload();
 			Interface.modConfigList.Unload();
@@ -151,16 +143,12 @@ namespace Terraria.ModLoader.Config
 
 		internal static bool AnyModNeedsReload() => ModLoader.Mods.Any(ModNeedsReload);
 
-		internal static bool ModNeedsReload(Mod mod)
-		{
-			if (Configs.ContainsKey(mod))
-			{
+		internal static bool ModNeedsReload(Mod mod) {
+			if (Configs.ContainsKey(mod)) {
 				var configs = Configs[mod];
-				var loadTimeConfigs = LoadTimeConfigs[mod];
-				for (int i = 0; i < configs.Count; i++)
-				{
-					if (loadTimeConfigs[i].NeedsReload(configs[i]))
-					{
+				var loadTimeConfigs = ConfigManager.loadTimeConfigs[mod];
+				for (int i = 0; i < configs.Count; i++) {
+					if (loadTimeConfigs[i].NeedsReload(configs[i])) {
 						return true;
 					}
 				}
@@ -170,8 +158,7 @@ namespace Terraria.ModLoader.Config
 
 		// GetConfig...returns the config instance
 		internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
-		internal static ModConfig GetConfig(Mod mod, string config)
-		{
+		internal static ModConfig GetConfig(Mod mod, string config) {
 			if (Configs.TryGetValue(mod, out List<ModConfig> configs)) {
 				return configs.Single(x => x.Name == config);
 			}
@@ -179,20 +166,17 @@ namespace Terraria.ModLoader.Config
 		}
 
 		internal static ModConfig GetLoadTimeConfig(Mod mod, string config) {
-			if (LoadTimeConfigs.TryGetValue(mod, out List<ModConfig> configs)) {
+			if (loadTimeConfigs.TryGetValue(mod, out List<ModConfig> configs)) {
 				return configs.Single(x => x.Name == config);
 			}
 			throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
 		}
 
-		internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
-		{
-			if (Main.netMode == NetmodeID.MultiplayerClient)
-			{
+		internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI) {
+			if (Main.netMode == NetmodeID.MultiplayerClient) {
 				bool success = reader.ReadBoolean();
 				string message = reader.ReadString();
-				if (success)
-				{
+				if (success) {
 					string modname = reader.ReadString();
 					string configname = reader.ReadString();
 					string json = reader.ReadString();
@@ -201,28 +185,24 @@ namespace Terraria.ModLoader.Config
 					activeConfig.OnChanged();
 
 					Main.NewText($"Shared config changed: Message: {message}, Mod: {modname}, Config: {configname}");
-					if (Main.InGameUI.CurrentState == Interface.modConfig)
-					{
+					if (Main.InGameUI.CurrentState == Interface.modConfig) {
 						Main.InGameUI.SetState(Interface.modConfig);
 						Interface.modConfig.SetMessage("Server response: " + message, Color.Green);
 					}
 				}
-				else
-				{
+				else {
 					// rejection only sent back to requester.
 					// Update UI with message
 
 					Main.NewText("Changes Rejected: " + message);
-					if (Main.InGameUI.CurrentState == Interface.modConfig)
-					{
+					if (Main.InGameUI.CurrentState == Interface.modConfig) {
 						Interface.modConfig.SetMessage("Server rejected changes: " + message, Color.Red);
 						//Main.InGameUI.SetState(Interface.modConfig);
 					}
 
 				}
 			}
-			else
-			{
+			else {
 				// no bool in request.
 				string modname = reader.ReadString();
 				string configname = reader.ReadString();
@@ -236,17 +216,14 @@ namespace Terraria.ModLoader.Config
 				JsonConvert.PopulateObject(json, pendingConfig, serializerSettingsCompact);
 				bool success = true;
 				string message = "Accepted";
-				if (loadTimeConfig.NeedsReload(pendingConfig))
-				{
+				if (loadTimeConfig.NeedsReload(pendingConfig)) {
 					success = false;
 					message = "Can't save because changes would require a reload.";
 				}
-				if (!config.AcceptClientChanges(pendingConfig, whoAmI, ref message))
-				{
+				if (!config.AcceptClientChanges(pendingConfig, whoAmI, ref message)) {
 					success = false;
 				}
-				if (success)
-				{
+				if (success) {
 					// Apply to Servers Config
 					ConfigManager.Save(pendingConfig);
 					JsonConvert.PopulateObject(json, config, ConfigManager.serializerSettingsCompact);
@@ -260,8 +237,7 @@ namespace Terraria.ModLoader.Config
 					p.Write(json);
 					p.Send();
 				}
-				else
-				{
+				else {
 					// Send rejections message back to client who requested change
 					var p = new ModPacket(MessageID.InGameChangeConfig);
 					p.Write(false);
@@ -273,8 +249,7 @@ namespace Terraria.ModLoader.Config
 			return;
 		}
 
-		public static IEnumerable<PropertyFieldWrapper> GetFieldsAndProperties(object item)
-		{
+		public static IEnumerable<PropertyFieldWrapper> GetFieldsAndProperties(object item) {
 			PropertyInfo[] properties = item.GetType().GetProperties(
 				//BindingFlags.DeclaredOnly |
 				BindingFlags.Public |
@@ -295,8 +270,7 @@ namespace Terraria.ModLoader.Config
 			return properClone;
 		}
 
-		public static object AlternateCreateInstance(Type type)
-		{
+		public static object AlternateCreateInstance(Type type) {
 			if (type == typeof(string))
 				return "";
 			return Activator.CreateInstance(type);
@@ -307,10 +281,9 @@ namespace Terraria.ModLoader.Config
 		public static T GetCustomAttribute<T>(PropertyFieldWrapper memberInfo, object item, object array) where T : Attribute {
 			// Class
 			T attribute = (T)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true);
-			if (array != null)
-			{
+			if (array != null) {
 				// item null?
-			//	attribute = (T)Attribute.GetCustomAttribute(item.GetType(), typeof(T), true) ?? attribute; // TODO: is this wrong?
+				//	attribute = (T)Attribute.GetCustomAttribute(item.GetType(), typeof(T), true) ?? attribute; // TODO: is this wrong?
 			}
 			// Member
 			attribute = (T)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? attribute;
@@ -329,8 +302,7 @@ namespace Terraria.ModLoader.Config
 			return attribute;
 		}
 
-		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
-		{
+		public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1) {
 			// public api for modders.
 			return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
 		}
@@ -342,8 +314,10 @@ namespace Terraria.ModLoader.Config
 
 		// TODO: better home?
 		public static bool ObjectEquals(object a, object b) {
-			if (ReferenceEquals(a, b)) return true;
-			if (a == null || b == null) return false;
+			if (ReferenceEquals(a, b))
+				return true;
+			if (a == null || b == null)
+				return false;
 			if (a is IEnumerable && b is IEnumerable && !(a is string) && !(b is string))
 				return EnumerableEquals((IEnumerable)a, (IEnumerable)b);
 			return a.Equals(b);
@@ -355,7 +329,8 @@ namespace Terraria.ModLoader.Config
 			bool hasNextA = enumeratorA.MoveNext();
 			bool hasNextB = enumeratorB.MoveNext();
 			while (hasNextA && hasNextB) {
-				if (!ObjectEquals(enumeratorA.Current, enumeratorB.Current)) return false;
+				if (!ObjectEquals(enumeratorA.Current, enumeratorB.Current))
+					return false;
 				hasNextA = enumeratorA.MoveNext();
 				hasNextB = enumeratorB.MoveNext();
 			}
@@ -368,7 +343,7 @@ namespace Terraria.ModLoader.Config
 	/// The ShouldSerialize code enables unchanged-by-user reference type defaults to properly not serialize.
 	/// The ValueProvider code helps during deserialization to not
 	/// </summary>
-	class ReferenceDefaultsPreservingResolver : DefaultContractResolver
+	internal class ReferenceDefaultsPreservingResolver : DefaultContractResolver
 	{
 		// This approach largely based on https://stackoverflow.com/a/52684798.
 		public abstract class ValueProviderDecorator : IValueProvider
@@ -376,16 +351,17 @@ namespace Terraria.ModLoader.Config
 			readonly IValueProvider baseProvider;
 
 			public ValueProviderDecorator(IValueProvider baseProvider) {
-				if (baseProvider == null)
-					throw new ArgumentNullException();
-				this.baseProvider = baseProvider;
+				this.baseProvider = baseProvider ?? throw new ArgumentNullException();
 			}
 
-			public virtual object GetValue(object target) { return baseProvider.GetValue(target); }
+			public virtual object GetValue(object target)
+				=> baseProvider.GetValue(target);
 
-			public virtual void SetValue(object target, object value) { baseProvider.SetValue(target, value); }
+			public virtual void SetValue(object target, object value)
+				=> baseProvider.SetValue(target, value);
 		}
-		class NullToDefaultValueProvider : ValueProviderDecorator
+
+		private class NullToDefaultValueProvider : ValueProviderDecorator
 		{
 			//readonly object defaultValue;
 			readonly Func<object> defaultValueGenerator;
@@ -406,35 +382,46 @@ namespace Terraria.ModLoader.Config
 
 		protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
 			IList<JsonProperty> props = base.CreateProperties(type, memberSerialization);
-			if (type.IsClass) {
-				ConstructorInfo ctor = type.GetConstructor(Type.EmptyTypes);
-				if (ctor != null) {
-					object referenceInstance = ctor.Invoke(null);
-					foreach (JsonProperty prop in props.Where(p => p.Readable)) {
-						if (!prop.PropertyType.IsValueType) {
-							var a = type.GetMember(prop.PropertyName);
-							if (prop.Writable) {
-								if (prop.PropertyType.GetConstructor(Type.EmptyTypes) != null) {
-									// defaultValueCreator will create new instance, then get the value from a field in that object. Prevents deserialized nulls from sharing with other instances.
-									Func<object> defaultValueCreator = () => prop.ValueProvider.GetValue(ctor.Invoke(null));
-									prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider, defaultValueCreator);
-								}
-								else if (prop.PropertyType.IsArray) {
-									Func<object> defaultValueCreator = () => (prop.ValueProvider.GetValue(referenceInstance) as Array).Clone();
-									prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider, defaultValueCreator);
-								}
-							}
-							if (prop.ShouldSerialize == null)
-								prop.ShouldSerialize = instance =>
-								{
-									object val = prop.ValueProvider.GetValue(instance);
-									object refVal = prop.ValueProvider.GetValue(referenceInstance);
-									return !ConfigManager.ObjectEquals(val, refVal);
-								};
-						}
+
+			if (!type.IsClass) {
+				return props;
+			}
+
+			ConstructorInfo ctor = type.GetConstructor(Type.EmptyTypes);
+
+			if (ctor == null) {
+				return props;
+			}
+
+			object referenceInstance = ctor.Invoke(null);
+
+			foreach (JsonProperty prop in props.Where(p => p.Readable)) {
+				if (prop.PropertyType.IsValueType) {
+					continue;
+				}
+
+				var a = type.GetMember(prop.PropertyName);
+
+				if (prop.Writable) {
+					if (prop.PropertyType.GetConstructor(Type.EmptyTypes) != null) {
+						// defaultValueCreator will create new instance, then get the value from a field in that object. Prevents deserialized nulls from sharing with other instances.
+						Func<object> defaultValueCreator = () => prop.ValueProvider.GetValue(ctor.Invoke(null));
+						prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider, defaultValueCreator);
+					}
+					else if (prop.PropertyType.IsArray) {
+						Func<object> defaultValueCreator = () => (prop.ValueProvider.GetValue(referenceInstance) as Array).Clone();
+						prop.ValueProvider = new NullToDefaultValueProvider(prop.ValueProvider, defaultValueCreator);
 					}
 				}
+
+				prop.ShouldSerialize ??= instance => {
+					object val = prop.ValueProvider.GetValue(instance);
+					object refVal = prop.ValueProvider.GetValue(referenceInstance);
+
+					return !ConfigManager.ObjectEquals(val, refVal);
+				};
 			}
+
 			return props;
 		}
 	}
