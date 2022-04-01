@@ -164,7 +164,7 @@ namespace Terraria.Social.Steam
 			using (newModFile.Open())
 				newMod = new LocalMod(newModFile);
 
-			string stable = ModOrganizer.FindOldest(publishFolder);
+			string stable = ModOrganizer.FindOldest(publishedModFiles);
 			if (!stable.Contains(".tmod"))
 				stable = Directory.GetFiles(stable, "*.tmod")[0];
 
