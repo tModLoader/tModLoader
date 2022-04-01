@@ -164,13 +164,16 @@ namespace Terraria.Social.Steam
 			using (newModFile.Open())
 				newMod = new LocalMod(newModFile);
 
-			var modFile = new TmodFile(ModOrganizer.GetActiveTmodInRepo(publishedModFiles));
+			string stable = ModOrganizer.FindOldest(publishFolder);
+			if (!stable.Contains(".tmod"))
+				stable = Directory.GetFiles(stable, "*.tmod")[0];
 
-			LocalMod mod;
-			using (modFile.Open())
-				mod = new LocalMod(modFile);
+			LocalMod sMod;
+			var sModFile = new TmodFile(stable);
+			using (sModFile.Open())
+				sMod = new LocalMod(sModFile);
 
-			if (newMod.properties.version <= mod.properties.version)
+			if (newMod.properties.version <= sMod.properties.version)
 				throw new Exception("Mod version not incremented. Publishing item blocked until mod version is incremented");
 
 			// Prep for the publishing folder
@@ -185,12 +188,11 @@ namespace Terraria.Social.Steam
 			// Cleanup Old Folders
 			ModOrganizer.CleanupOldPublish(publishFolder);
 
-			string stable = ModOrganizer.FindOldest(publishFolder);
+			stable = ModOrganizer.FindOldest(publishFolder);
 			if (!stable.Contains(".tmod"))
 				stable = Directory.GetFiles(stable, "*.tmod")[0];
 
-			LocalMod sMod;
-			var sModFile = new TmodFile(stable);
+			sModFile = new TmodFile(stable);
 			using (sModFile.Open())
 				sMod = new LocalMod(sModFile);
 
