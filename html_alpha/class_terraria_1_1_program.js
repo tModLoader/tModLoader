@@ -11,5 +11,6 @@ var class_terraria_1_1_program =
     [ "PreviewFolder", "class_terraria_1_1_program.html#a63ec71b0cbb2e9fad8ebce65529b6b9e", null ],
     [ "ReleaseFolder", "class_terraria_1_1_program.html#a1e02a19fc0ba5f6b046ec859e296717c", null ],
     [ "LoadedPercentage", "class_terraria_1_1_program.html#aec7390e873c2204795fd6885f35ef75d", null ],
-    [ "SavePath", "class_terraria_1_1_program.html#ad6e5e251f9e0e47fa3c31bccb2e4b9a5", null ]
+    [ "SavePath", "class_terraria_1_1_program.html#ad6e5e251f9e0e47fa3c31bccb2e4b9a5", null ],
+    [ "SavePathShared", "class_terraria_1_1_program.html#aa1d775adb725d892d61163b4c7d7d344", null ]
 ];

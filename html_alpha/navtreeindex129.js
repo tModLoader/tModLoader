@@ -1,5 +1,6 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_initializers_1_1_chroma_initializer_1_1_event_localization.html#afe0c7dae71e0ee34536cadcf73f7ebcc":[1,0,2,9,3,0,0],
 "struct_terraria_1_1_liquid_data.html":[1,0,2,46],
 "struct_terraria_1_1_liquid_data.html#a0e0cae2b7c9872c534f77977ce48c06f":[1,0,2,46,2],
 "struct_terraria_1_1_liquid_data.html#a282e96c1afa15e50c2e16029723c6ef3":[1,0,2,46,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_tile.html#a37acfa918e979eef38b317a8a68623aa":[1,0,2,72,42],
 "struct_terraria_1_1_tile.html#a406a6eee010148c03ede8db0ee12d6af":[1,0,2,72,41],
 "struct_terraria_1_1_tile.html#a5562a90c01a3a9decc8e8414c1da1ba4":[1,0,2,72,22],
-"struct_terraria_1_1_tile.html#a56457a1f2ea5eb8727472cdf93ea6d8c":[1,0,2,72,40],
-"struct_terraria_1_1_tile.html#a5909ccfc691aa65139897fd4caadb60b":[1,0,2,72,24]
+"struct_terraria_1_1_tile.html#a56457a1f2ea5eb8727472cdf93ea6d8c":[1,0,2,72,40]
 };
