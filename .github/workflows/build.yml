@@ -478,10 +478,23 @@ jobs:
           echo Done
         working-directory: artifacts/ExampleMod
       
+      - name: Get Version tag for Release
+        id: version2
+        if: github.ref == 'refs/heads/1.4-stable'
+        shell: bash
+        run: |
+          echo "Attempting get current version id"
+          version=$(git describe --tags --abbrev=0)
+          echo "Current Version is: $version"
+          echo "::set-output name=new_version::$version"
+        env:
+          branch: ${{github.ref}}
+      
       - name: Make a release
         if: github.ref == 'refs/heads/1.4-stable'
         uses: ncipollo/release-action@v1
         with:
           artifacts: "artifacts/ExampleMod,artifacts/Build"
           token: ${{ secrets.GITHUB_TOKEN }}
-          body: "Monthly Github Auto-release for 1.4-stable"  
+          body: "Monthly Github Auto-release for 1.4-stable"
+          tag: ${{ steps.version2.outputs.new_version }}

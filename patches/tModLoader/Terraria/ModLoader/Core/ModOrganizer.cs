@@ -397,5 +397,26 @@ namespace Terraria.ModLoader.Core
 
 			return val;
 		}
+
+		internal static void DeleteMod(string tmodPath) {
+			if (tmodPath.Contains(Path.Combine("steamapps", "workshop"))) {
+				string parentDir = Directory.GetParent(tmodPath).ToString();
+
+				var match = ModOrganizer.PublishFolderMetadata.Match(parentDir);
+				if (match.Success)
+					parentDir = Directory.GetParent(parentDir).ToString();
+
+				string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";
+
+				AWorkshopEntry.TryReadingManifest(manifest, out var info);
+
+				var modManager = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
+
+				modManager.Uninstall(parentDir);
+			}
+			else {
+				File.Delete(tmodPath);
+			}
+		}
 	}
 }
