@@ -93,7 +93,7 @@
  				for (int j = 0; j < 200; j++) {
  					perIDStaticNPCImmunity[i][j] = 0u;
  				}
-@@ -221,7 +_,33 @@
+@@ -221,7 +_,34 @@
  			}
  		}
  
@@ -123,6 +123,7 @@
 +			globalProjectiles = new Instanced<GlobalProjectile>[0];
 +			DamageType = DamageClass.Generic;
 +			ArmorPenetration = 0;
++			CritChance = 0;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
