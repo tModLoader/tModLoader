@@ -3372,7 +3372,7 @@
  
 -			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot))
 +			//if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot))
-+			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot) && !ItemLoader.CanStack(theSlot, theItemToAccept))
++			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot) && ItemLoader.CanStack(theSlot, theItemToAccept))
  				return true;
  
  			return false;
