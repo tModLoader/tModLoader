@@ -381,7 +381,7 @@ namespace Terraria.ModLoader.Core
 
 				if (match.Success) {
 					Version testVers = new Version(match.Groups[1].Value);
-					if (testVers >= currVersion) {
+					if (testVers > currVersion) {
 						continue;
 					}
 					else {
