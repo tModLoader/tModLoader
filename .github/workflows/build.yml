@@ -9,7 +9,7 @@ on:
     types: [labeled]
     branches: [1.4-preview, 1.4-stable, 1.4, 1.4_mergedtesting]
   # Allows you to run this workflow manually from the Actions tab
-  # workflow_dispatch:
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
