@@ -40,6 +40,7 @@ namespace Terraria.ModLoader
 		/// This returns a struct called StatInheritanceData.
 		/// This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes' stat bonuses.
 		/// By default, this will return StatInheritanceData.Full for DamageClass.Generic, and StatInheritanceData.None for any other.
+		/// Any given DamageClass will also never call this method for itself.
 		/// For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.
 		/// </summary>
 		/// <param name="damageClass">The DamageClass which you want this DamageClass to benefit from statistically.</param>

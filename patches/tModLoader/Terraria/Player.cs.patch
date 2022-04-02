@@ -197,7 +197,7 @@
  				Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
  
  			if (talkNPC == -1)
-@@ -2100,12 +_,36 @@
+@@ -2100,12 +_,44 @@
  			itemTimeMax = frames;
  		}
  
@@ -212,8 +212,12 @@
 +				if (damageData[i].attackSpeed.useTime <= 0)
 +					throw new Exception("All of a class' attack speed stats must be greater than 0.");
 +				else {
-+					StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-+					useTimeMult = useTimeMult.CombineWith(damageData[i].attackSpeed.useTime.Scale(inheritanceData.useTimeInheritance));
++					if (sItem.DamageType == DamageClassLoader.DamageClasses[i]) {
++						useTimeMult = useTimeMult.CombineWith(damageData[i].attackSpeed.useTime);
++					} else {
++						StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
++						useTimeMult = useTimeMult.CombineWith(damageData[i].attackSpeed.useTime.Scale(inheritanceData.useTimeInheritance));
++					}
 +				}
 +			}
 +			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * (float)useTimeMult, this, sItem));
@@ -230,15 +234,19 @@
 +				if (damageData[i].attackSpeed.useTime <= 0)
 +					throw new Exception("All of a class' attack speed stats must be greater than 0.");
 +				else {
-+					StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-+					useTimeMult = useTimeMult.CombineWith(damageData[i].attackSpeed.useTime.Scale(inheritanceData.useTimeInheritance));
++					if (sItem.DamageType == DamageClassLoader.DamageClasses[i]) {
++						useTimeMult = useTimeMult.CombineWith(damageData[i].attackSpeed.useTime);
++					} else {
++						StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
++						useTimeMult = useTimeMult.CombineWith(damageData[i].attackSpeed.useTime.Scale(inheritanceData.useTimeInheritance));
++					}
 +				}
 +			}
 +			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * (float)useTimeMult * multiplier, this, sItem));
  		}
  
  		public void SetDummyItemTime(int frames) {
-@@ -2114,39 +_,52 @@
+@@ -2114,39 +_,56 @@
  			itemTimeMax = frames + 1;
  		}
  
@@ -294,8 +302,12 @@
 +				if (damageData[i].attackSpeed.useAnimation <= 0)
 +					throw new Exception("All of a class' attack speed stats must be greater than 0.");
 +				else {
-+					StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-+					animSpeedMult = animSpeedMult.CombineWith(damageData[i].attackSpeed.useAnimation.Scale(inheritanceData.useAnimationInheritance));
++					if (sItem.DamageType == DamageClassLoader.DamageClasses[i]) {
++						animSpeedMult = animSpeedMult.CombineWith(damageData[i].attackSpeed.useAnimation);
++					} else {
++						StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
++						animSpeedMult = animSpeedMult.CombineWith(damageData[i].attackSpeed.useAnimation.Scale(inheritanceData.useAnimationInheritance));
++					}
 +				}
 +			}
 +			ApplyItemAnimation(sItem, 1f / ((float)animSpeedMult * GetWeaponAttackSpeed(sItem)));
@@ -2262,7 +2274,7 @@
  			endurance = 0f;
  			whipRangeMultiplier = 1f;
 -			whipUseTimeMultiplier = 1f;
-+			whipUseTimeMultiplier = StatModifier.Default;
++			//whipUseTimeMultiplier = StatModifier.Default;
  			calmed = false;
  			beetleOrbs = 0;
  			beetleBuff = false;
@@ -4593,7 +4605,7 @@
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36988,11 +_,23 @@
+@@ -36988,11 +_,27 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
@@ -4606,8 +4618,12 @@
 +
 +			StatModifier kbModifier = StatModifier.Default;
 +			for (int i = 0; i < damageData.Length; i++) {
-+				StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-+				kbModifier = kbModifier.CombineWith(damageData[i].knockback.Scale(inheritanceData.knockbackInheritance));
++				if (sItem.DamageType == DamageClassLoader.DamageClasses[i]) {
++					kbModifier = kbModifier.CombineWith(damageData[i].knockback);
++				} else {
++					StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
++					kbModifier = kbModifier.CombineWith(damageData[i].knockback.Scale(inheritanceData.knockbackInheritance));
++				}
 +			}
 +
 +			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref kbModifier);
@@ -4619,7 +4635,7 @@
  			if (sItem.melee)
  				return meleeCrit;
  
-@@ -37003,9 +_,21 @@
+@@ -37003,9 +_,25 @@
  				return magicCrit;
  
  			return 0;
@@ -4627,8 +4643,12 @@
 +
 +			int crit = sItem.crit;
 +			for (int i = 0; i < damageData.Length; i++) {
-+				StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-+				crit += (int)(damageData[i].critChance * inheritanceData.critChanceInheritance);
++				if (sItem.DamageType == DamageClassLoader.DamageClasses[i]) {
++					crit += damageData[i].critChance;
++				} else {
++					StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
++					crit += (int)((float)damageData[i].critChance * inheritanceData.critChanceInheritance);
++				}
 +			}
 +
 +			CombinedHooks.ModifyWeaponCrit(this, sItem, ref crit);
@@ -4642,7 +4662,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,6 +_,28 @@
+@@ -37031,6 +_,32 @@
  			}
  
  			return num;
@@ -4650,8 +4670,12 @@
 +
 +			StatModifier damage = StatModifier.Default;
 +			for (int i = 0; i < damageData.Length; i++) {
-+				StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-+				damage = damage.CombineWith(damageData[i].damage.Scale(inheritanceData.damageInheritance));
++				if (sItem.DamageType == DamageClassLoader.DamageClasses[i]) {
++					damage = damage.CombineWith(damageData[i].damage);
++				} else {
++					StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
++					damage = damage.CombineWith(damageData[i].damage.Scale(inheritanceData.damageInheritance));
++				}
 +			}
 +
 +			// TODO: use an ItemID.Sets for arrow/bullet/rocket
@@ -4666,7 +4690,7 @@
 +
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage);
 +			int damageNum = forTooltip ? (int)(sItem.damage * ItemID.Sets.ToolTipDamageMultiplier[sItem.type]) : sItem.damage;
-+			damageNum = (int)(((float)damageNum * damage) + (float)damage.Flat + 5E-06f);
++			damageNum = (int)((float)damageNum * (float)damage + (float)damage.Flat + 5E-06f);
 +			return Math.Max(0, damageNum);
  		}
  

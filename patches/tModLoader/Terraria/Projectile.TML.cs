@@ -73,8 +73,10 @@ namespace Terraria
 			EntitySource_ItemUse actualSpawnSource = spawnSource as EntitySource_ItemUse;
 			if (actualSpawnSource.Entity is not Player)
 				return;
-			projectile.CritChance += (actualSpawnSource.Entity as Player).GetWeaponCrit(actualSpawnSource.Item);
-			projectile.ArmorPenetration += (actualSpawnSource.Entity as Player).GetWeaponArmorPenetration(actualSpawnSource.Item);
+
+			Player player = actualSpawnSource.Entity as Player;
+			projectile.CritChance += player.GetWeaponCrit(actualSpawnSource.Item);
+			projectile.ArmorPenetration += player.GetWeaponArmorPenetration(actualSpawnSource.Item);
 		}
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
