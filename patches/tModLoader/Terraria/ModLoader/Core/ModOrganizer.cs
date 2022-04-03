@@ -386,7 +386,7 @@ namespace Terraria.ModLoader.Core
 					}
 					else {
 						val = Directory.GetParent(fileName).ToString();
-						break;
+						currVersion = testVers;
 					}
 				}
 				else {

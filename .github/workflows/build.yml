@@ -262,7 +262,13 @@ jobs:
           echo ModloaderDir is: $ModloaderDir
           mkdir -p $ModloaderDir
           
-          export ExtraBuildModFlags="-ciprep \"Automatic update from GitHub: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
+          if [ ${{github.ref}} = 'refs/heads/1.4' ] ; then
+            ciprep=""
+          else
+            ciprep="-ciprep \"Automatic update from GitHub: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
+          fi
+          
+          export ExtraBuildModFlags="$ciprep -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\""
           echo ExtraBuildModFlags is: $ExtraBuildModFlags
           
           echo ::group::Building ExampleMod
