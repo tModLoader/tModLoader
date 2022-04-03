@@ -50,6 +50,7 @@ namespace Terraria.ModLoader
 		/// Allows you to modify the light levels of the tiles behind the water. The light color components will be multiplied by the parameters.
 		/// </summary>
 		public virtual void LightColorMultiplier(ref float r, ref float g, ref float b) {
+			// Default values taken from the LightMap contructor
 			r = 0.88f;
 			g = 0.96f;
 			b = 1.015f;
@@ -59,6 +60,7 @@ namespace Terraria.ModLoader
 		/// Allows you to change the hair color resulting from the biome hair dye when this water style is in use.
 		/// </summary>
 		public virtual Color BiomeHairColor() {
+			// Default value taken from DyeInitializer.LoadLegacyHairdyes on 1983 default case
 			return new Color(28, 216, 94);
 		}
 
