@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
+using Terraria.ID;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace Terraria
@@ -68,5 +71,26 @@ namespace Terraria
 		/// <inheritdoc cref="NewNPCDirect(IEntitySource, int, int, int, int, float, float, float, float, int)"/>
 		public static NPC NewNPCDirect(IEntitySource source, Vector2 position, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
 			=> NewNPCDirect(source, (int)position.X, (int)position.Y, type, start, ai0, ai1, ai2, ai3, target);
+
+		/// <summary>
+		/// Helper method for getting the parameters for seating a town NPC. Assumes the tile at <paramref name="anchorTilePosition"/> is a valid tile for sitting
+		/// </summary>
+		public void SitDown(Point anchorTilePosition, out int direction, out Vector2 bottom) {
+			Tile tile = Main.tile[anchorTilePosition.X, anchorTilePosition.Y];
+			if (tile.type < TileID.Count)
+				anchorTilePosition.Y -= 1; // Vanilla compatibility with new hook
+
+			TileRestingInfo info = new TileRestingInfo(this, anchorTilePosition, Vector2.Zero, ((tile.frameX != 0) ? 1 : (-1)), 2);
+			TileLoader.ModifySittingTargetInfo(anchorTilePosition.X, anchorTilePosition.Y, tile.type, ref info);
+			int anchorX = info.AnchorTilePosition.X;
+			int anchorY = info.AnchorTilePosition.Y;
+			int directionOffset = info.DirectionOffset;
+			direction = info.TargetDirection;
+			Vector2 finalOffset = info.FinalOffset;
+
+			bottom = new Point(anchorX, anchorY).ToWorldCoordinates(8f, 16f);
+			bottom.X += direction * directionOffset; // Added to match PlayerSittingHelper
+			bottom += finalOffset; // Added to match PlayerSittingHelper
+		}
 	}
 }

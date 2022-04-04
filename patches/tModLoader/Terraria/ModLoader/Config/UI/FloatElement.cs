@@ -1,22 +1,21 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Terraria.ModLoader.Config.UI
 {
 	public class FloatElement : PrimitiveRangeElement<float>
 	{
-		public override int NumberTicks => (int)((max - min) / increment) + 1;
-		public override float TickIncrement => (increment) / (max - min);
+		public override int NumberTicks => (int)((Max - Min) / Increment) + 1;
+		public override float TickIncrement => (Increment) / (Max - Min);
+
 		protected override float Proportion {
-			get => (GetValue() - min) / (max - min);
-			set => SetValue((float)Math.Round((value * (max - min) + min) * (1 / increment)) * increment);
+			get => (GetValue() - Min) / (Max - Min);
+			set => SetValue((float)Math.Round((value * (Max - Min) + Min) * (1 / Increment)) * Increment);
 		}
 
 		public FloatElement() {
-			min = 0;
-			max = 1;
-			increment = 0.01f;
+			Min = 0;
+			Max = 1;
+			Increment = 0.01f;
 		}
 	}
 }

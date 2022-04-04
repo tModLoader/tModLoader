@@ -154,8 +154,6 @@ namespace Terraria.ModLoader
 		/// <param name="type">The type.</param>
 		/// <param name="name">The name.</param>
 		/// <param name="texture">The texture.</param>
-		/// <param name="armTexture">The arm texture (for body slots).</param>
-		/// <param name="femaleTexture">The female texture (for body slots), if missing the regular body texture is used.</param>
 		/// <returns></returns>
 		public int AddEquipTexture(ModItem item, EquipType type, string texture) {
 			return AddEquipTexture(new EquipTexture(), item, type, texture);
@@ -296,6 +294,7 @@ namespace Terraria.ModLoader
 		/// Retrieve contents of files within the tmod file
 		/// </summary>
 		/// <param name="name">The name.</param>
+		/// <param name="newFileStream"></param>
 		/// <returns></returns>
 		public Stream GetFileStream(string name, bool newFileStream = false) => File?.GetStream(name, newFileStream);
 
@@ -314,7 +313,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.
+		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Expert-Cross-Mod-Content">Expert Cross Mod Content Guide</see> explains how to use this hook to implement and utilize cross-mod capabilities.
 		/// </summary>
 		public virtual object Call(params object[] args) {
 			return null;

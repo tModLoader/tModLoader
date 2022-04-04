@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 {
 	public static class Logging
 	{
-		public static readonly string LogDir = Path.Combine(Program.SavePath, "Logs");
+		public static readonly string LogDir = "tModLoader-Logs";
 		public static readonly string LogArchiveDir = Path.Combine(LogDir, "Old");
 
 		// BOM-less UTF8 encoding. Unfortunately, silly Discord, the application we send and get sent logs through 100 times a day,
@@ -48,8 +48,10 @@ namespace Terraria.ModLoader
 			Utils.TryCreatingDirectory(LogDir);
 
 			ConfigureAppenders(dedServ);
+		}
 
-			tML.InfoFormat("Starting tModLoader {0} {1}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier);
+		internal static void LogStartup(bool dedServ) {
+			tML.InfoFormat("Starting tModLoader {0} {1} built {2}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier, $"{BuildInfo.BuildDate:g}");
 			tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 			tML.InfoFormat("Running on {0} {1} {2} {3}", ReLogic.OS.Platform.Current.Type, System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture, FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);

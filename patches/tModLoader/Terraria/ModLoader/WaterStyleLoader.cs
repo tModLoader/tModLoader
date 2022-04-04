@@ -95,17 +95,15 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public void LightColorMultiplier(int style, ref float r, ref float g, ref float b) {
+		public void LightColorMultiplier(int style, float factor, ref float r, ref float g, ref float b) {
 			ModWaterStyle waterStyle = Get(style);
 
 			if (waterStyle != null) {
 				waterStyle.LightColorMultiplier(ref r, ref g, ref b);
 
-				r *= Lighting.LegacyEngine._negLight * Lighting.LegacyEngine._blueWave;
-				g *= Lighting.LegacyEngine._negLight * Lighting.LegacyEngine._blueWave;
-				b *= Lighting.LegacyEngine._negLight * Lighting.LegacyEngine._blueWave;
-
-				//TODO: Make this work with the new lighting engine.
+				r *= factor;
+				g *= factor;
+				b *= factor;
 			}
 		}
 	}

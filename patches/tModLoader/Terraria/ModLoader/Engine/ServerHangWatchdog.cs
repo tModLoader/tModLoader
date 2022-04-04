@@ -80,7 +80,7 @@ namespace Terraria.ModLoader.Engine
 						//failed to get stack trace, since the fallback-thread resumed the thread
 						//possible reasons:
 						//1.) This thread was just too slow (not very likely)
-						//2.) The deadlock ocurred and the fallbackThread rescued the situation.
+						//2.) The deadlock occurred and the fallbackThread rescued the situation.
 						//In both cases just return null.
 					}
 					try {

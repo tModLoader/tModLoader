@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
@@ -12,46 +10,53 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	abstract class CollectionElement : ConfigElement
+	internal abstract class CollectionElement : ConfigElement
 	{
-		protected object data;
-		protected UIElement dataListElement;
-		protected NestedUIList dataList;
-		protected float scale = 1f;
-		protected DefaultListValueAttribute defaultListValueAttribute;
-		protected JsonDefaultListValueAttribute jsonDefaultListValueAttribute;
+		private UIModConfigHoverImage initializeButton;
+		private UIModConfigHoverImage addButton;
+		private UIModConfigHoverImage deleteButton;
+		private UIModConfigHoverImage expandButton;
+		private UIModConfigHoverImageSplit upDownButton;
+		private bool expanded = true;
+		private bool pendingChanges = false;
 
-		UIModConfigHoverImage initializeButton;
-		UIModConfigHoverImage addButton;
-		UIModConfigHoverImage deleteButton;
-		UIModConfigHoverImage expandButton;
-		UIModConfigHoverImageSplit upDownButton;
-		bool expanded = true;
+		protected object Data { get; set; }
+		protected UIElement DataListElement { get; set; }
+		protected NestedUIList DataList { get; set; }
+		protected float Scale { get; set; } = 1f;
+		protected DefaultListValueAttribute DefaultListValueAttribute { get; set; }
+		protected JsonDefaultListValueAttribute JsonDefaultListValueAttribute { get; set; }
+
+		protected virtual bool CanAdd => true;
 
 		public override void OnBind() {
 			base.OnBind();
-			data = memberInfo.GetValue(item);
-			defaultListValueAttribute = ConfigManager.GetCustomAttribute<DefaultListValueAttribute>(memberInfo, null, null);
+
+			Data = MemberInfo.GetValue(Item);
+			DefaultListValueAttribute = ConfigManager.GetCustomAttribute<DefaultListValueAttribute>(MemberInfo, null, null);
 
 			MaxHeight.Set(300, 0f);
-			dataListElement = new UIElement();
-			dataListElement.Width.Set(-10f, 1f);
-			dataListElement.Left.Set(10f, 0f);
-			dataListElement.Height.Set(-30, 1f);
-			dataListElement.Top.Set(30f, 0f);
+			DataListElement = new UIElement();
+			DataListElement.Width.Set(-10f, 1f);
+			DataListElement.Left.Set(10f, 0f);
+			DataListElement.Height.Set(-30, 1f);
+			DataListElement.Top.Set(30f, 0f);
+
 			//panel.SetPadding(0);
 			//panel.BackgroundColor = Microsoft.Xna.Framework.Color.Transparent;
 			//panel.BorderColor =  Microsoft.Xna.Framework.Color.Transparent;
-			if (data != null)
-				Append(dataListElement);
-			dataListElement.OverflowHidden = true;
 
-			dataList = new NestedUIList();
-			dataList.Width.Set(-20, 1f);
-			dataList.Left.Set(0, 0f);
-			dataList.Height.Set(0, 1f);
-			dataList.ListPadding = 5f;
-			dataListElement.Append(dataList);
+			if (Data != null)
+				Append(DataListElement);
+
+			DataListElement.OverflowHidden = true;
+
+			DataList = new NestedUIList();
+			DataList.Width.Set(-20, 1f);
+			DataList.Left.Set(0, 0f);
+			DataList.Height.Set(0, 1f);
+			DataList.ListPadding = 5f;
+			DataListElement.Append(DataList);
 
 			UIScrollbar scrollbar = new UIScrollbar();
 			scrollbar.SetView(100f, 1000f);
@@ -59,15 +64,15 @@ namespace Terraria.ModLoader.Config.UI
 			scrollbar.Top.Set(6f, 0f);
 			scrollbar.Left.Pixels -= 3;
 			scrollbar.HAlign = 1f;
-			dataList.SetScrollbar(scrollbar);
-			dataListElement.Append(scrollbar);
+			DataList.SetScrollbar(scrollbar);
+			DataListElement.Append(scrollbar);
 
 			PrepareTypes();
 			// allow null collections to simplify modder code for OnDeserialize and allow null and empty lists to have different meanings, etc.
 			SetupList();
 
 			if (CanAdd) {
-				initializeButton = new UIModConfigHoverImage(playTexture, "Initialize");
+				initializeButton = new UIModConfigHoverImage(PlayTexture, "Initialize");
 				initializeButton.Top.Pixels += 4;
 				initializeButton.Left.Pixels -= 3;
 				initializeButton.HAlign = 1f;
@@ -81,7 +86,7 @@ namespace Terraria.ModLoader.Config.UI
 					pendingChanges = true;
 				};
 
-				addButton = new UIModConfigHoverImage(plusTexture, "Add");
+				addButton = new UIModConfigHoverImage(PlusTexture, "Add");
 				addButton.Top.Set(4, 0f);
 				addButton.Left.Set(-52, 1f);
 				addButton.OnClick += (a, b) => {
@@ -94,12 +99,12 @@ namespace Terraria.ModLoader.Config.UI
 					pendingChanges = true;
 				};
 
-				deleteButton = new UIModConfigHoverImage(deleteTexture, "Clear");
+				deleteButton = new UIModConfigHoverImage(DeleteTexture, "Clear");
 				deleteButton.Top.Set(4, 0f);
 				deleteButton.Left.Set(-25, 1f);
 				deleteButton.OnClick += (a, b) => {
 					SoundEngine.PlaySound(SoundID.Tink);
-					if (nullAllowed)
+					if (NullAllowed)
 						NullCollection();
 					else
 						ClearCollection();
@@ -110,7 +115,7 @@ namespace Terraria.ModLoader.Config.UI
 				};
 			}
 
-			expandButton = new UIModConfigHoverImage(collapsedTexture, "Expand");
+			expandButton = new UIModConfigHoverImage(CollapsedTexture, "Expand");
 			expandButton.Top.Set(4, 0f); // 10, -25: 4, -52
 			expandButton.Left.Set(-79, 1f);
 			expandButton.OnClick += (a, b) => {
@@ -118,16 +123,17 @@ namespace Terraria.ModLoader.Config.UI
 				pendingChanges = true;
 			};
 
-			upDownButton = new UIModConfigHoverImageSplit(upDownTexture, "Scale Up", "Scale Down");
+			upDownButton = new UIModConfigHoverImageSplit(UpDownTexture, "Scale Up", "Scale Down");
 			upDownButton.Top.Set(4, 0f);
 			upDownButton.Left.Set(-106, 1f);
 			upDownButton.OnClick += (a, b) => {
 				Rectangle r = b.GetDimensions().ToRectangle();
+
 				if (a.MousePosition.Y < r.Y + r.Height / 2) {
-					scale = Math.Min(2f, scale + 0.5f);
+					Scale = Math.Min(2f, Scale + 0.5f);
 				}
 				else {
-					scale = Math.Max(1f, scale - 0.5f);
+					Scale = Math.Max(1f, Scale - 0.5f);
 				}
 				//dataListPanel.RecalculateChildren();
 				////dataList.RecalculateChildren();
@@ -149,20 +155,22 @@ namespace Terraria.ModLoader.Config.UI
 			Recalculate(); // Needed?
 		}
 
-		protected virtual bool CanAdd => true;
-
 		protected object CreateCollectionElementInstance(Type type) {
 			object toAdd;
-			if (defaultListValueAttribute != null) {
-				toAdd = defaultListValueAttribute.Value;
+
+			if (DefaultListValueAttribute != null) {
+				toAdd = DefaultListValueAttribute.Value;
 			}
 			else {
 				toAdd = ConfigManager.AlternateCreateInstance(type);
+
 				if (!type.IsValueType && type != typeof(string)) {
-					string json = jsonDefaultListValueAttribute?.json ?? "{}";
+					string json = JsonDefaultListValueAttribute?.Json ?? "{}";
+
 					JsonConvert.PopulateObject(json, toAdd, ConfigManager.serializerSettings);
 				}
 			}
+
 			return toAdd;
 		}
 
@@ -174,14 +182,13 @@ namespace Terraria.ModLoader.Config.UI
 		protected abstract void InitializeCollection();
 
 		protected virtual void NullCollection() {
-			data = null;
-			SetObject(data);
+			Data = null;
+			SetObject(Data);
 		}
 		protected abstract void ClearCollection();
 
 		protected abstract void SetupList();
 
-		bool pendingChanges = false;
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
 
@@ -196,9 +203,9 @@ namespace Terraria.ModLoader.Config.UI
 			}
 			RemoveChild(expandButton);
 			RemoveChild(upDownButton);
-			RemoveChild(dataListElement);
+			RemoveChild(DataListElement);
 
-			if (data == null) {
+			if (Data == null) {
 				Append(initializeButton);
 			}
 			else {
@@ -209,24 +216,28 @@ namespace Terraria.ModLoader.Config.UI
 				Append(expandButton);
 				if (expanded) {
 					Append(upDownButton);
-					Append(dataListElement);
+					Append(DataListElement);
 					expandButton.HoverText = "Collapse";
-					expandButton.SetImage(expandedTexture);
+					expandButton.SetImage(ExpandedTexture);
 				}
 				else {
 					expandButton.HoverText = "Expand";
-					expandButton.SetImage(collapsedTexture);
+					expandButton.SetImage(CollapsedTexture);
 				}
 			}
 		}
 
 		public override void Recalculate() {
 			base.Recalculate();
+
 			float defaultHeight = 30;
-			float h = dataListElement.Parent != null ? dataList.GetTotalHeight() + defaultHeight : defaultHeight; // 24 for UIElement
-			h = Utils.Clamp(h, 30, 300 * scale);
-			MaxHeight.Set(300 * scale, 0f);
+			float h = DataListElement.Parent != null ? DataList.GetTotalHeight() + defaultHeight : defaultHeight; // 24 for UIElement
+
+			h = Utils.Clamp(h, 30, 300 * Scale);
+
+			MaxHeight.Set(300 * Scale, 0f);
 			Height.Set(h, 0f);
+
 			if (Parent != null && Parent is UISortableElement) {
 				Parent.Height.Set(h, 0f);
 			}

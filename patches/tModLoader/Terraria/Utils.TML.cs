@@ -122,7 +122,6 @@ namespace Terraria
 		public static void OpenToURL(string url) {
 			Process.Start(new ProcessStartInfo(url) {
 				UseShellExecute = true,
-				Verb = "open"
 			});
 		}
 

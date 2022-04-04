@@ -10,9 +10,10 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 	public class BackgroundColorAttribute : Attribute
 	{
-		public Color color;
+		public Color Color { get; }
+
 		public BackgroundColorAttribute(int r, int g, int b, int a = 255) {
-			this.color = new Color(r, g, b, a);
+			Color = new Color(r, g, b, a);
 		}
 	}
 
@@ -22,9 +23,10 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 	public class SliderColorAttribute : Attribute
 	{
-		public Color color;
+		public Color Color { get; }
+
 		public SliderColorAttribute(int r, int g, int b, int a = 255) {
-			this.color = new Color(r, g, b, a);
+			Color = new Color(r, g, b, a);
 		}
 	}
 
@@ -43,11 +45,13 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 	public class LabelAttribute : Attribute
 	{
-		readonly string label;
+		private readonly string label;
+
+		public string Label => label.StartsWith("$") ? Localization.Language.GetTextValue(label.Substring(1)) : label;
+
 		public LabelAttribute(string label) {
 			this.label = label;
 		}
-		public string Label => label.StartsWith("$") ? Localization.Language.GetTextValue(label.Substring(1)) : label;
 	}
 
 	/// <summary>
@@ -57,11 +61,13 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class TooltipAttribute : Attribute
 	{
-		readonly string tooltip;
+		private readonly string tooltip;
+
+		public string Tooltip => tooltip.StartsWith("$") ? Localization.Language.GetTextValue(tooltip.Substring(1)) : tooltip;
+
 		public TooltipAttribute(string tooltip) {
 			this.tooltip = tooltip;
 		}
-		public string Tooltip => tooltip.StartsWith("$") ? Localization.Language.GetTextValue(tooltip.Substring(1)) : tooltip;
 	}
 
 	/// <summary>
@@ -71,11 +77,13 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class HeaderAttribute : Attribute
 	{
-		readonly string header;
+		private readonly string header;
+
+		public string Header => header.StartsWith("$") ? Localization.Language.GetTextValue(header.Substring(1)) : header;
+
 		public HeaderAttribute(string header) {
 			this.header = header;
 		}
-		public string Header => header.StartsWith("$") ? Localization.Language.GetTextValue(header.Substring(1)) : header;
 	}
 
 	/// <summary>
@@ -84,9 +92,10 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class | AttributeTargets.Enum)]
 	public class CustomModConfigItemAttribute : Attribute
 	{
-		public Type t;
-		public CustomModConfigItemAttribute(Type t) {
-			this.t = t;
+		public Type Type { get; }
+
+		public CustomModConfigItemAttribute(Type type) {
+			Type = type;
 		}
 	}
 
@@ -95,9 +104,10 @@ namespace Terraria.ModLoader.Config
 	/// </summary>
 	public class JsonDefaultValueAttribute : Attribute
 	{
-		public string json;
+		public string Json { get; }
+
 		public JsonDefaultValueAttribute(string json) {
-			this.json = json;
+			Json = json;
 		}
 	}
 
@@ -108,6 +118,9 @@ namespace Terraria.ModLoader.Config
 	public class DefaultListValueAttribute : Attribute
 	{
 		private object value;
+
+		public virtual object Value => value;
+
 		public DefaultListValueAttribute(Type type, string value) {
 			try {
 				this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
@@ -127,8 +140,6 @@ namespace Terraria.ModLoader.Config
 		public DefaultListValueAttribute(bool value) => this.value = value;
 		public DefaultListValueAttribute(string value) => this.value = value;
 		public DefaultListValueAttribute(object value) => this.value = value;
-
-		public virtual object Value => value;
 
 		public override bool Equals(object obj) {
 			if (obj == this) {
@@ -160,6 +171,9 @@ namespace Terraria.ModLoader.Config
 	public class DefaultDictionaryKeyValueAttribute : Attribute
 	{
 		private object value;
+
+		public virtual object Value => value;
+
 		public DefaultDictionaryKeyValueAttribute(Type type, string value) {
 			try {
 				this.value = TypeDescriptor.GetConverter(type).ConvertFromInvariantString(value);
@@ -179,8 +193,6 @@ namespace Terraria.ModLoader.Config
 		public DefaultDictionaryKeyValueAttribute(bool value) => this.value = value;
 		public DefaultDictionaryKeyValueAttribute(string value) => this.value = value;
 		public DefaultDictionaryKeyValueAttribute(object value) => this.value = value;
-
-		public virtual object Value => value;
 
 		public override bool Equals(object obj) {
 			if (obj == this) {
@@ -211,9 +223,10 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class JsonDefaultListValueAttribute : Attribute
 	{
-		public string json;
+		public string Json { get; }
+
 		public JsonDefaultListValueAttribute(string json) {
-			this.json = json;
+			Json = json;
 		}
 	}
 
@@ -234,9 +247,10 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class JsonDefaultDictionaryKeyValueAttribute : Attribute
 	{
-		public string json;
+		public string Json { get; }
+
 		public JsonDefaultDictionaryKeyValueAttribute(string json) {
-			this.json = json;
+			Json = json;
 		}
 	}
 
@@ -260,18 +274,22 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class IncrementAttribute : Attribute
 	{
-		public object increment;
+		public object Increment { get; }
+
 		public IncrementAttribute(int increment) {
-			this.increment = increment;
+			Increment = increment;
 		}
+
 		public IncrementAttribute(float increment) {
-			this.increment = increment;
+			Increment = increment;
 		}
+
 		public IncrementAttribute(uint increment) {
-			this.increment = increment;
+			Increment = increment;
 		}
+
 		public IncrementAttribute(byte increment) {
-			this.increment = increment;
+			Increment = increment;
 		}
 	}
 
@@ -281,25 +299,27 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class RangeAttribute : Attribute
 	{
-		public object min;
-		public object max;
+		public object Min { get; }
+		public object Max { get; }
 
 		public RangeAttribute(int min, int max) {
-			this.min = min;
-			this.max = max;
+			Min = min;
+			Max = max;
 		}
 
 		public RangeAttribute(float min, float max) {
-			this.min = min;
-			this.max = max;
+			Min = min;
+			Max = max;
 		}
+
 		public RangeAttribute(uint min, uint max) {
-			this.min = min;
-			this.max = max;
+			Min = min;
+			Max = max;
 		}
+
 		public RangeAttribute(byte min, byte max) {
-			this.min = min;
-			this.max = max;
+			Min = min;
+			Max = max;
 		}
 	}
 
@@ -309,6 +329,7 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class SliderAttribute : Attribute
 	{
+
 	}
 
 	/// <summary>
@@ -317,6 +338,7 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class DrawTicksAttribute : Attribute
 	{
+
 	}
 
 	/// <summary>
@@ -325,6 +347,7 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class ColorNoAlphaAttribute : Attribute
 	{
+
 	}
 
 	/// <summary>
@@ -333,9 +356,10 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 	public class ColorHSLSliderAttribute : Attribute
 	{
-		public bool showSaturationAndLightness;
+		public bool ShowSaturationAndLightness { get; }
+
 		public ColorHSLSliderAttribute(bool showSaturationAndLightness = true) {
-			this.showSaturationAndLightness = showSaturationAndLightness;
+			ShowSaturationAndLightness = showSaturationAndLightness;
 		}
 	}
 
@@ -345,6 +369,7 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 	public class SeparatePageAttribute : Attribute
 	{
+
 	}
 
 	/// <summary>
@@ -353,37 +378,38 @@ namespace Terraria.ModLoader.Config
 	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Class)]
 	public class NullAllowedAttribute : Attribute
 	{
+
 	}
 
 	// Unimplemented ideas below:
+	/*
 
 	// Hide or Disable this item while in game.
-	//[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	//public class HideInGameAttribute : Attribute { }
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class HideInGameAttribute : Attribute { }
 
 	// Hide or Disable this item while a client?
-	//[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	//public class HideForClientAttribute : Attribute { }
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class HideForClientAttribute : Attribute { }
 
-	//[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
-	//public class StringRepresentationAttribute : Attribute
-	//{
-	//	public Func<string> StringRepresentation { get; set; }
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
+	public class StringRepresentationAttribute : Attribute
+	{
+		public Func<string> StringRepresentation { get; set; }
+	
+		public StringRepresentationAttribute(Type delegateType, string delegateName) {
+			StringRepresentation = (Func<string>)Delegate.CreateDelegate(delegateType, delegateType.GetMethod(delegateName));
+		}
+	}
 
-	//	public StringRepresentationAttribute(Type delegateType, string delegateName)
-	//	{
-	//		StringRepresentation = (Func<string>)Delegate.CreateDelegate(delegateType, delegateType.GetMethod(delegateName));
-	//	}
-	//}
+	[StringRepresentation(typeof(TestDelegate), "GetConnection")]
+	public class Test { }
 
-	//[StringRepresentation(typeof(TestDelegate), "GetConnection")]
-	//public class Test
-	//{
-	//}
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+	public class StringRepresentationAttribute : Attribute
+	{
+		public Func<string> SomeProperty { get; set; }
+	}
 
-	//[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-	//public class StringRepresentationAttribute : Attribute
-	//{
-	//	public Func<string> SomeProperty { get; set; }
-	//}
+	*/
 }

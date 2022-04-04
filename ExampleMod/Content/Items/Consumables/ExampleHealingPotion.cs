@@ -34,10 +34,11 @@ namespace ExampleMod.Content.Items.Consumables
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// Find the tooltip line that corresponds to 'Heals ... life'
 			// See https://tmodloader.github.io/tModLoader/html/class_terraria_1_1_mod_loader_1_1_tooltip_line.html for a list of vanilla tooltip line names
-			TooltipLine line = tooltips.FirstOrDefault(x => x.mod == "Terraria" && x.Name == "HealLife");
+			TooltipLine line = tooltips.FirstOrDefault(x => x.Mod == "Terraria" && x.Name == "HealLife");
+
 			if (line != null) {
 				// Change the text to 'Heals max/2 (max/4 when quick healing) life'
-				line.text = Language.GetTextValue("CommonItemTooltip.RestoresLife", $"{Main.LocalPlayer.statLifeMax2 / 2} ({Main.LocalPlayer.statLifeMax2 / 4} when quick healing)");
+				line.Text = Language.GetTextValue("CommonItemTooltip.RestoresLife", $"{Main.LocalPlayer.statLifeMax2 / 2} ({Main.LocalPlayer.statLifeMax2 / 4} when quick healing)");
 			}
 		}
 

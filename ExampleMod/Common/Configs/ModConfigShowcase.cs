@@ -642,21 +642,24 @@ namespace ExampleMod.Common.Configs
 	{
 		public override void OnBind() {
 			base.OnBind();
-			object subitem = memberInfo.GetValue(item);
+
+			object subitem = MemberInfo.GetValue(Item);
+
 			if (subitem == null) {
-				subitem = Activator.CreateInstance(memberInfo.Type);
+				subitem = Activator.CreateInstance(MemberInfo.Type);
 				JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings);
-				memberInfo.SetValue(item, subitem);
+				MemberInfo.SetValue(Item, subitem);
 			}
 
 			// item is the owner object instance, memberinfo is the Info about this field in item
 
 			int height = 30;
 			int order = 0;
+
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
 				var wrapped = ConfigManager.WrapIt(this, ref height, variable, subitem, order++);
 
-				if (list != null) {
+				if (List != null) {
 					wrapped.Item1.Left.Pixels -= 20;
 					wrapped.Item1.Width.Pixels += 20;
 				}
@@ -666,7 +669,7 @@ namespace ExampleMod.Common.Configs
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
 			Rectangle hitbox = GetInnerDimensions().ToRectangle();
-			Gradient g = (memberInfo.GetValue(item) as Gradient);
+			Gradient g = (MemberInfo.GetValue(Item) as Gradient);
 			if (g != null) {
 				int left = (hitbox.Left + hitbox.Right) / 2;
 				int right = hitbox.Right;
@@ -701,10 +704,10 @@ namespace ExampleMod.Common.Configs
 		public override void OnBind() {
 			base.OnBind();
 			circleTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
-			valueStrings = Enum.GetNames(memberInfo.Type);
-			TextDisplayFunction = () => memberInfo.Name + ": " + GetStringValue();
-			if (labelAttribute != null) {
-				TextDisplayFunction = () => labelAttribute.Label + ": " + GetStringValue();
+			valueStrings = Enum.GetNames(MemberInfo.Type);
+			TextDisplayFunction = () => MemberInfo.Name + ": " + GetStringValue();
+			if (LabelAttribute != null) {
+				TextDisplayFunction = () => LabelAttribute.Label + ": " + GetStringValue();
 			}
 		}
 
@@ -740,7 +743,7 @@ namespace ExampleMod.Common.Configs
 	class CustomFloatElement : FloatElement
 	{
 		public CustomFloatElement() {
-			colorMethod = new Utils.ColorLerpMethod((percent) => Color.Lerp(Color.BlueViolet, Color.Aquamarine, percent));
+			ColorMethod = new Utils.ColorLerpMethod((percent) => Color.Lerp(Color.BlueViolet, Color.Aquamarine, percent));
 		}
 	}
 }

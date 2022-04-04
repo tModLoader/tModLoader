@@ -2,6 +2,7 @@ using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Accessories;
+using ExampleMod.Content.Items.Armor;
 using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
 using ExampleMod.Content.Walls;
@@ -101,7 +102,7 @@ namespace ExampleMod.Content.NPCs
 			// This code slowly rotates the NPC in the bestiary
 			// (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
 			if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers)) {
-                drawModifiers.Rotation += 0.001f;
+				drawModifiers.Rotation += 0.001f;
 
 				// Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
 				NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
@@ -283,8 +284,7 @@ namespace ExampleMod.Content.NPCs
 		// }
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
-			// Readd this once ExampleCostume is implemented.
-			// npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>(), 1));
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleCostume>()));
 		}
 
 		// Make this Town NPC teleport to the King and/or Queen statue when triggered.

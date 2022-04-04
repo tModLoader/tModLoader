@@ -306,7 +306,7 @@ namespace Terraria.ModLoader.UI
 				{ "homepage", bp.homepage },
 				{ "description", bp.description },
 				{ "iconpath", iconPath },
-				{ "manifestfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
+				{ "sourcesfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
 				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
 				{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
 				{ "modside", bp.side.ToFriendlyString() },

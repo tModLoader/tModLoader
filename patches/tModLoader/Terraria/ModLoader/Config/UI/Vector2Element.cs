@@ -9,44 +9,52 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class Vector2Element : ConfigElement
+	internal class Vector2Element : ConfigElement
 	{
-		class Vector2Object
+		private class Vector2Object
 		{
-			internal Vector2 current;
-			PropertyFieldWrapper memberInfo;
-			object item;
-			IList<Vector2> array;
-			int index;
+			private readonly PropertyFieldWrapper memberInfo;
+			private readonly object item;
+			private readonly IList<Vector2> array;
+			private readonly int index;
+
+			private Vector2 current;
+
+			public Vector2 Current => current;
 
 			[Label("X")]
 			public float X {
-				get { return current.X; }
+				get => current.X;
 				set {
 					current.X = value;
 					Update();
 				}
 			}
+
 			[Label("Y")]
 			public float Y {
-				get { return current.Y; }
+				get => current.Y;
 				set {
 					current.Y = value;
 					Update();
 				}
 			}
+
 			private void Update() {
 				if (array == null)
 					memberInfo.SetValue(item, current);
 				else
 					array[index] = current;
+
 				Interface.modConfig.SetPendingChanges();
 			}
+
 			public Vector2Object(PropertyFieldWrapper memberInfo, object item) {
 				this.item = item;
 				this.memberInfo = memberInfo;
 				current = (Vector2)memberInfo.GetValue(item);
 			}
+
 			public Vector2Object(IList<Vector2> array, int index) {
 				current = array[index];
 				this.array = array;
@@ -54,32 +62,36 @@ namespace Terraria.ModLoader.Config.UI
 			}
 		}
 
-		int height;
-		Vector2Object c;
-		float min = 0;
-		float max = 1;
-		float increment = 0.01f;
-		public IList<Vector2> vector2List;
+		private int height;
+		private Vector2Object c;
+		private float min = 0;
+		private float max = 1;
+		private float increment = 0.01f;
+
+		public IList<Vector2> Vector2List { get; set; }
 
 		public override void OnBind() {
 			base.OnBind();
-			vector2List = (IList<Vector2>)list;
-			if (vector2List != null) {
-				drawLabel = false;
+
+			Vector2List = (IList<Vector2>)List;
+
+			if (Vector2List != null) {
+				DrawLabel = false;
 				height = 30;
-				c = new Vector2Object(vector2List, index);
+				c = new Vector2Object(Vector2List, Index);
 			}
 			else {
 				height = 30;
-				c = new Vector2Object(memberInfo, item);
+				c = new Vector2Object(MemberInfo, Item);
 			}
 
-			if (rangeAttribute != null && rangeAttribute.min is float && rangeAttribute.max is float) {
-				max = (float)rangeAttribute.max;
-				min = (float)rangeAttribute.min;
+			if (RangeAttribute != null && RangeAttribute.Min is float && RangeAttribute.Max is float) {
+				max = (float)RangeAttribute.Max;
+				min = (float)RangeAttribute.Min;
 			}
-			if (incrementAttribute != null && incrementAttribute.increment is float) {
-				increment = (float)incrementAttribute.increment;
+
+			if (IncrementAttribute != null && IncrementAttribute.Increment is float) {
+				increment = (float)IncrementAttribute.Increment;
 			}
 
 			int order = 0;
@@ -88,13 +100,13 @@ namespace Terraria.ModLoader.Config.UI
 
 				// Can X and Y inherit range and increment automatically? Pass in "fake PropertyFieldWrapper" to achieve? Real one desired for label.
 				if (wrapped.Item2 is FloatElement floatElement) {
-					floatElement.min = min;
-					floatElement.max = max;
-					floatElement.increment = increment;
-					floatElement.drawTicks = Attribute.IsDefined(memberInfo.MemberInfo, typeof(DrawTicksAttribute));
+					floatElement.Min = min;
+					floatElement.Max = max;
+					floatElement.Increment = increment;
+					floatElement.DrawTicks = Attribute.IsDefined(MemberInfo.MemberInfo, typeof(DrawTicksAttribute));
 				}
 
-				if (vector2List != null) {
+				if (Vector2List != null) {
 					wrapped.Item1.Left.Pixels -= 20;
 					wrapped.Item1.Width.Pixels += 20;
 				}
