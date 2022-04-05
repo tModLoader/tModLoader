@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Achievements/Achievement.cs
++++ src/tModLoader/Terraria/Achievements/Achievement.cs
+@@ -7,7 +_,7 @@
+ namespace Terraria.Achievements
+ {
+ 	[JsonObject(MemberSerialization.OptIn)]
+-	public class Achievement
++	public partial class Achievement
+ 	{
+ 		public delegate void AchievementCompleted(Achievement achievement);
+ 
