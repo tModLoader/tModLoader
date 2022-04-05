@@ -51,8 +51,8 @@
 +
 +			// TML: Initialization changed to accommodate ModTranslations.
 +			// This is okay to do since these are already defined in vanilla translations. Mods get this set in Register().
-+			FriendlyName = LocalizationLoader.GetOrCreateTranslation("Achievements." + name + "_Name"); // Language.GetText("Achievements." + name + "_Name");
-+			Description = LocalizationLoader.GetOrCreateTranslation("Achievements." + name + "_Description"); // Language.GetText("Achievements." + name + "_Description");
++			FriendlyName = MakeTranslation("Achievements." + name + "_Name"); // Language.GetText("Achievements." + name + "_Name");
++			Description = MakeTranslation("Achievements." + name + "_Description"); // Language.GetText("Achievements." + name + "_Description");
  		}
  
 +		// TML: Made virtual.

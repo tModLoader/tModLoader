@@ -44,6 +44,16 @@ namespace Terraria.Achievements
 			return Id > AchievementID.Count;
 		}
 
+		internal static ModTranslation MakeTranslation(string key) {
+			ModTranslation translation = LocalizationLoader.GetOrCreateTranslation(key);
+
+			translation.AddTranslation(Language.ActiveCulture, Language.GetTextValue(key));
+
+			LanguageManager.Instance.OnLanguageChanged += manager => translation.AddTranslation(manager.ActiveCulture, Language.GetTextValue(key));
+
+			return translation;
+		}
+
 		internal string GetFriendlyName() {
 			return FriendlyName.GetTranslation(LanguageManager.Instance.ActiveCulture);
 		}
