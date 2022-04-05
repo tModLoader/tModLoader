@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Terraria.Achievements;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
@@ -291,6 +292,11 @@ namespace Terraria.ModLoader
 		/// Get the id (type) of a ModMount by class. Assumes one instance per class.
 		/// </summary>
 		public static int MountType<T>() where T : ModMount => GetInstance<T>()?.Type ?? 0;
+
+		/// <summary>
+		/// Get the id (type) of an Achievement by class. Assumes one instance per class.
+		/// </summary>
+		public static int AchievementType<T>() where T : Achievement => GetInstance<Achievement>().Id;
 
 		internal static void Load(CancellationToken token) {
 			CacheVanillaState();

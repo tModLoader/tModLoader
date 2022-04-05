@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Achievements/AchievementManager.cs
++++ src/tModLoader/Terraria/Achievements/AchievementManager.cs
+@@ -23,7 +_,7 @@
+ 
+ 		private string _savePath;
+ 		private bool _isCloudSave;
+-		private Dictionary<string, Achievement> _achievements = new Dictionary<string, Achievement>();
++		internal Dictionary<string, Achievement> _achievements = new Dictionary<string, Achievement>(); // TML: Made internal.
+ 		private readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings();
+ 		private byte[] _cryptoKey;
+ 		private Dictionary<string, int> _achievementIconIndexes = new Dictionary<string, int>();

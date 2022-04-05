@@ -16,10 +16,11 @@
  	{
  		public delegate void AchievementCompleted(Achievement achievement);
  
- 		private static int _totalAchievements;
+-		private static int _totalAchievements;
 -		public readonly string Name;
 -		public readonly LocalizedText FriendlyName;
 -		public readonly LocalizedText Description;
++		internal static int _totalAchievements; // TML: Made internal.
 +		private readonly string _name; // TML: Rename to _name and make private, avoids conflicts with Modtype.
 +		public readonly ModTranslation FriendlyName; // TML: Changed to ModTranslation.
 +		public readonly ModTranslation Description; // TML: Changed to ModTranslation.

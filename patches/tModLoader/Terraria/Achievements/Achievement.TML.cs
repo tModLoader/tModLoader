@@ -25,6 +25,8 @@ namespace Terraria.Achievements
 				throw new Exception(
 					$"An achievement ID mismatch occurred. Achievement \"{Name}\" was registered with an ID of {id}, but was instantiated with an ID of {Id}.");
 			}
+
+			Main.Achievements.Register(this);
 		}
 
 		/// <summary>
