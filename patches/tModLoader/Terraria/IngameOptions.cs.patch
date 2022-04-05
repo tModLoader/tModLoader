@@ -57,21 +57,12 @@
  			if (flag5 && DrawLeftSide(sb, Lang.menu[147].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
  				if (flag4) {
-@@ -255,6 +_,7 @@
- 			if (flag5)
- 				num10++;
- 
-+			if(!Steam.IsSteamApp) {
- 			if (DrawLeftSide(sb, Lang.menu[131].Value, num10, vector, vector2, leftScale)) {
- 				leftHover = num10;
- 				if (flag4) {
-@@ -262,8 +_,9 @@
+@@ -262,8 +_,8 @@
  					IngameFancyUI.OpenAchievements();
  				}
  			}
 -
  			num10++;
-+			}
 +
  			if (DrawLeftSide(sb, Lang.menu[118].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
