@@ -1,4 +1,5 @@
-﻿using Terraria.Achievements;
+﻿using System;
+using Terraria.Achievements;
 
 namespace Terraria.ModLoader
 {
@@ -14,7 +15,12 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModAchievement>.Register(this);
-			AchievementLoader.achievements.Add(this);
+			Type = LoaderManager.Get<AchievementLoader>().Register(this);
+
+			if (Type != Achievement.Id) {
+				throw new Exception($"ModAchievement \"{Name}\" was registered with a type of \"{Type}\", but the associated Achievement had an ID of \"{Achievement.Id}\"!" +
+				                    "\nAchievements should not be instantiated manually as it causes issues with IDs.");
+			}
 		}
 
 		public sealed override void SetupContent() => SetStaticDefaults();
