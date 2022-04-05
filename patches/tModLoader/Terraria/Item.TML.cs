@@ -46,12 +46,7 @@ namespace Terraria
 		/// </summary>
 		public int ArmorPenetration {
 			get => _armorPenetration;
-			set {
-				if (value < 0)
-					throw new Exception("An item's armor penetration value cannot be set below 0.");
-				else
-					_armorPenetration = value;
-			}
+			set => _armorPenetration = Math.Max(0, value);
 		}
 
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
