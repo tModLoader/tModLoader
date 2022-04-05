@@ -526,7 +526,8 @@ namespace Terraria.ModLoader
 			}
 
 			// TML: Due to Segments.PlayerSegment._player being initialized way before any mods are loaded, calling methods on this player (which vanilla does) will crash since no ModPlayers are set up for it, so reinitialize it
-			SkyManager.Instance["CreditsRoll"] = new CreditsRollSky();
+			if (!Main.dedServ)
+				SkyManager.Instance["CreditsRoll"] = new CreditsRollSky();
 		}
 
 		/// <summary>
