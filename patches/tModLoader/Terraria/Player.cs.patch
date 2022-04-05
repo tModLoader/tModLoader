@@ -4662,7 +4662,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,6 +_,32 @@
+@@ -37031,6 +_,41 @@
  			}
  
  			return num;
@@ -4678,15 +4678,24 @@
 +				}
 +			}
 +
-+			// TODO: use an ItemID.Sets for arrow/bullet/rocket
-+			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
++			int flatDamageBonus = damage.Flat;
++			/*
++			TODO: use ItemID sets for ammo-specific bonuses
++			will probably accompany a planned overhaul to how a weapon's ammo pool is decided, but for now, this works fine
++			-thomas
++			*/
++			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) {
 +				damage *= (float)arrowDamage;
-+
-+			if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
++				damage.Flat += arrowDamage.Flat;
++			}
++			if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn) {
 +				damage *= (float)bulletDamage;
-+
-+			if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
++				damage.Flat += bulletDamage.Flat;
++			}
++			if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly) {
 +				damage *= (float)rocketDamage;
++				damage.Flat += rocketDamage.Flat;
++			}
 +
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage);
 +			int damageNum = forTooltip ? (int)(sItem.damage * ItemID.Sets.ToolTipDamageMultiplier[sItem.type]) : sItem.damage;
@@ -5488,7 +5497,7 @@
  			}
  
 -			int damage = (int)(20f * (1f + magicDamage + minionDamage - 2f));
-+			int damage = (int)(20f * (1f + (float)(allDamage.CombineWith(magicDamage)) + (float)(allDamage.CombineWith(minionDamage)) - 2f));
++			int damage = (int)(20f * (1f + (float)allDamage.CombineWith(magicDamage) + (float)allDamage.CombineWith(minionDamage) - 2f));
  			IEntitySource projectileSource_SetBonus = GetProjectileSource_SetBonus(3);
  			_ = Main.projectile[Projectile.NewProjectile(projectileSource_SetBonus, MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  		}

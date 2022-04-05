@@ -36,12 +36,7 @@ namespace Terraria
 		/// </summary>
 		public int ArmorPenetration {
 			get => _armorPenetration;
-			set {
-				if (value < 0)
-					throw new ArgumentException($"{nameof(Projectile)}.{nameof(ArmorPenetration)} must be >= 0.");
-				else
-					_armorPenetration = value;
-			}
+			set => _armorPenetration = Math.Max(0, value);
 		}
 
 		private int _crit = 0;
@@ -51,12 +46,7 @@ namespace Terraria
 		/// </summary>
 		public int CritChance {
 			get => _crit;
-			set {
-				if (value < 0)
-					throw new ArgumentException($"{nameof(Projectile)}.{nameof(CritChance)} must be >= 0.");
-				else
-					_crit = value;
-			}
+			set => _crit = Math.Max(0, value);
 		}
 
 		/* tML:
