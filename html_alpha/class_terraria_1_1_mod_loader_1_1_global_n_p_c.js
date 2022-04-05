@@ -8,6 +8,7 @@ var class_terraria_1_1_mod_loader_1_1_global_n_p_c =
     [ "CanBeHitByItem", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a27799f6e29f727b25d60b30f5ccce542", null ],
     [ "CanBeHitByProjectile", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ad37aad43533ce42b5dff034f40087d1a", null ],
     [ "CanChat", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5af944eec70a583dcf0ddd607cab8874", null ],
+    [ "CanFallThroughPlatforms", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a52b41935a017176111466da9731332c1", null ],
     [ "CanGoToStatue", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af7a04a4ca096beef91f5185eba604e7e", null ],
     [ "CanHitNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a998312aeb77abfb5e4ee075c6df39dee", null ],
     [ "CanHitPlayer", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a12bf30524cc768e5152513a2af03f129", null ],

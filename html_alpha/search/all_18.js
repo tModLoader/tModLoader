@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['y_3049',['Y',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a045179b1f8c6df2291cba35f0e1e2484',1,'Terraria::ModLoader::DrawableTooltipLine']]],
-  ['yellow_3050',['Yellow',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#ae8e0a02e68ea03f37b9ebc226f6c0a5c',1,'Terraria::ID::ItemRarityID']]],
-  ['yoyo_3051',['Yoyo',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a44d6e97236da3163b1f0a4e4e5907a33',1,'Terraria::ID::ProjAIStyleID']]],
-  ['yoyocascade_3052',['YoyoCascade',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyo_cascade.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]],
-  ['yoyosamarok_3053',['YoyosAmarok',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_amarok.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]],
-  ['yoyoshelfire_3054',['YoyosHelFire',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_hel_fire.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]],
-  ['yoyoskraken_3055',['YoyosKraken',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]],
-  ['yoyosyelets_3056',['YoyosYelets',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_yelets.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]]
+  ['y_3050',['Y',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a045179b1f8c6df2291cba35f0e1e2484',1,'Terraria::ModLoader::DrawableTooltipLine']]],
+  ['yellow_3051',['Yellow',['../class_terraria_1_1_i_d_1_1_item_rarity_i_d.html#ae8e0a02e68ea03f37b9ebc226f6c0a5c',1,'Terraria::ID::ItemRarityID']]],
+  ['yoyo_3052',['Yoyo',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a44d6e97236da3163b1f0a4e4e5907a33',1,'Terraria::ID::ProjAIStyleID']]],
+  ['yoyocascade_3053',['YoyoCascade',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyo_cascade.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]],
+  ['yoyosamarok_3054',['YoyosAmarok',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_amarok.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]],
+  ['yoyoshelfire_3055',['YoyosHelFire',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_hel_fire.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]],
+  ['yoyoskraken_3056',['YoyosKraken',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_kraken.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]],
+  ['yoyosyelets_3057',['YoyosYelets',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_yoyos_yelets.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]]
 ];

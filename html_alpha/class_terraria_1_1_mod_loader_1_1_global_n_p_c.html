@@ -125,6 +125,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5af944eec70a583dcf0ddd607cab8874"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5af944eec70a583dcf0ddd607cab8874">CanChat</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:a5af944eec70a583dcf0ddd607cab8874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can talk with the player. Return true to allow talking with the player, return false to block this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> from talking with the player, and return null to use the vanilla code for whether the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can talk. Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5af944eec70a583dcf0ddd607cab8874">More...</a><br /></td></tr>
 <tr class="separator:a5af944eec70a583dcf0ddd607cab8874"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52b41935a017176111466da9731332c1"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a52b41935a017176111466da9731332c1">CanFallThroughPlatforms</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc)</td></tr>
+<tr class="memdesc:a52b41935a017176111466da9731332c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how and when an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can fall through platforms and similar tiles. <br  />
+Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a52b41935a017176111466da9731332c1">More...</a><br /></td></tr>
+<tr class="separator:a52b41935a017176111466da9731332c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7a04a4ca096beef91f5185eba604e7e"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af7a04a4ca096beef91f5185eba604e7e">CanGoToStatue</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, bool toKingStatue)</td></tr>
 <tr class="memdesc:af7a04a4ca096beef91f5185eba604e7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be telported a King or Queen statue. Return true to allow the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to teleport to the statue, return false to block this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> from teleporting to the statue, and return null to use the vanilla code for whether the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can teleport to the statue. Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af7a04a4ca096beef91f5185eba604e7e">More...</a><br /></td></tr>
 <tr class="separator:af7a04a4ca096beef91f5185eba604e7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -722,6 +726,35 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a52b41935a017176111466da9731332c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52b41935a017176111466da9731332c1">&#9670;&nbsp;</a></span>CanFallThroughPlatforms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? bool Terraria.ModLoader.GlobalNPC.CanFallThroughPlatforms </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to determine how and when an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can fall through platforms and similar tiles. <br  />
+Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type). </p>
 
 </div>
 </div>
