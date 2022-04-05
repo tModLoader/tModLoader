@@ -9,10 +9,10 @@
  
  namespace Terraria.Achievements
  {
++	[Autoload(false)] // TML: Marked as un-autoloadable.
  	[JsonObject(MemberSerialization.OptIn)]
 -	public class Achievement
-+	// TML: Now extends ModType.
-+	public partial class Achievement : ModTexturedType
++	public partial class Achievement : ModTexturedType // TML: Now extended ModTexturedType.
  	{
  		public delegate void AchievementCompleted(Achievement achievement);
  

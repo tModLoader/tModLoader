@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 			base.Unload();
 
 			// Clear modded achievements.
-			var moddedKeys = Main.Achievements._achievements.Where(x =>!x.Value.IsModded()).Select(x => x.Key);
+			var moddedKeys = Main.Achievements._achievements.Where(x => x.Value.IsModded()).Select(x => x.Key);
 
 			foreach (string key in moddedKeys)
 				Main.Achievements._achievements.Remove(key);
