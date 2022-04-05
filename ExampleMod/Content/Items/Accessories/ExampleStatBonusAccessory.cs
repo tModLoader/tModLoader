@@ -46,18 +46,14 @@ namespace ExampleMod.Content.Items.Accessories
 			// In this case, we'll add 5 armor penetration to magic weapons.
 			player.GetArmorPenetration(DamageClass.Magic) += 5;
 
-			// GetAttackSpeed works pretty uniquely. It has within itself three StatModifiers: UseTime, UseAnimation, and UseSpeed.
-			// If you've studied up on basic item fields, you probably already know how these work. If you haven't, here's a quick rundown:
-			// 1] UseTime affects only the amount of time the item takes to FUNCTION.
-			// 2] UseAnimation affects only the amount of time the item takes to PLAY ITS ANIMATION.
-			// 3] UseSpeed affects both.
+			// GetAttackSpeed is functionally identical to GetDamage and GetKnockback; it's for attack speed.
 			// In this case, we'll make ranged weapons 15% faster to use overall.
-			// NOTE: SETTING ANY OF THE VALUES TO ZERO OR A NEGATIVE VALUE WILL THROW AN EXCEPTION, SO DON'T DO THAT.
-			player.GetAttackSpeed(DamageClass.Ranged).useSpeed += 0.15f;
+			// NOTE: Flat boosts do nothing here. Also, zero or a negative value as the result of these calculations will throw an exception. Plan accordingly.
+			player.GetAttackSpeed(DamageClass.Ranged) += 0.15f;
 
 			// And lastly, we'll use our last example effect to showcase how flat bonuses work with StatModifier.
 			// They're largely the same as additive or multiplicative bonuses, but require that you specify you want to address the flat bonus provided to said class.
-			// NOTE: Flat requires an int, not a float, and you cannot guarantee that any multiplicative action performed applies to all other flat bonuses. Plan accordingly.
+			// NOTE: Flat bonuses are only supported by GetDamage and GetKnockback, and will always apply after additive and multiplicative bonuses.
 			player.GetDamage(DamageClass.Summon).Flat += 8;
 		}
 	}
