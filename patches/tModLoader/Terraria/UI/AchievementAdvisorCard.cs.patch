@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/UI/AchievementAdvisorCard.cs
++++ src/tModLoader/Terraria/UI/AchievementAdvisorCard.cs
+@@ -16,7 +_,7 @@
+ 		public AchievementAdvisorCard(Achievement achievement, float order) {
+ 			this.achievement = achievement;
+ 			this.order = order;
+-			achievementIndex = Main.Achievements.GetIconIndex(achievement.Name);
++			achievementIndex = achievement.IsModded() ? 0 : Main.Achievements.GetIconIndex(achievement.Name); // TML: Set index to 0 if the achievement is modded.
+ 			frame = new Rectangle(achievementIndex % 8 * 66, achievementIndex / 8 * 66, 64, 64);
+ 		}
+ 

@@ -1,0 +1,41 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIAchievementListItem.cs
++++ src/tModLoader/Terraria/GameContent/UI/Elements/UIAchievementListItem.cs
+@@ -39,13 +_,13 @@
+ 			Width.Set(0f, 1f);
+ 			PaddingTop = 8f;
+ 			PaddingLeft = 9f;
+-			int num4 = _iconIndex = Main.Achievements.GetIconIndex(achievement.Name);
++			int num4 = _iconIndex = achievement.IsModded() ? 0 : Main.Achievements.GetIconIndex(achievement.Name); // TML: Set index to 0 if the achievement is modded.
+ 			_iconFrameUnlocked = new Rectangle(num4 % 8 * 66, num4 / 8 * 66, 64, 64);
+ 			_iconFrameLocked = _iconFrameUnlocked;
+-			_iconFrameLocked.X += 528;
++			_iconFrameLocked.X += achievement.IsModded() ? 66 : 528; // TML: Set to 66 if the achievement is modded.
+ 			_iconFrame = _iconFrameLocked;
+ 			UpdateIconFrame();
+-			_achievementIcon = new UIImageFramed(Main.Assets.Request<Texture2D>("Images/UI/Achievements"), _iconFrame);
++			_achievementIcon = new UIImageFramed(Main.Assets.Request<Texture2D>(achievement.Texture), _iconFrame); // TML: Use ModTexturedType.Texture instead of specifying the texture.
+ 			_achievementIcon.Left.Set(num2, 0f);
+ 			_achievementIcon.Top.Set(num3, 0f);
+ 			Append(_achievementIcon);
+@@ -80,10 +_,10 @@
+ 			float num3 = innerDimensions.Width - dimensions.Width + 1f - (float)(num * 2);
+ 			Vector2 baseScale = new Vector2(0.85f);
+ 			Vector2 baseScale2 = new Vector2(0.92f);
+-			string text = FontAssets.ItemStack.Value.CreateWrappedText(_achievement.Description.Value, (num3 - 20f) * (1f / baseScale2.X), Language.ActiveCulture.CultureInfo);
++			string text = FontAssets.ItemStack.Value.CreateWrappedText(_achievement.GetDescription(), (num3 - 20f) * (1f / baseScale2.X), Language.ActiveCulture.CultureInfo); // TML: Use GetDescription..
+ 			Vector2 stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, text, baseScale2, num3);
+ 			if (!_large)
+-				stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, _achievement.Description.Value, baseScale2, num3);
++				stringSize = ChatManager.GetStringSize(FontAssets.ItemStack.Value, _achievement.GetDescription(), baseScale2, num3); // TML: Use GetDescription.
+ 
+ 			float num4 = 38f + (float)(_large ? 20 : 0);
+ 			if (stringSize.Y > num4)
+@@ -102,7 +_,7 @@
+ 			spriteBatch.Draw(_categoryTexture.Value, vector, _categoryTexture.Frame(4, 2, (int)category), base.IsMouseHovering ? Color.White : Color.Silver, 0f, Vector2.Zero, 0.5f, SpriteEffects.None, 0f);
+ 			vector.X += 4f;
+ 			vector.X += 17f;
+-			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, _achievement.FriendlyName.Value, vector, value3, 0f, Vector2.Zero, baseScale, num3);
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, _achievement.GetFriendlyName(), vector, value3, 0f, Vector2.Zero, baseScale, num3); // TML: Use GetFriendlyName.
+ 			vector.X -= 17f;
+ 			Vector2 position = value2 + Vector2.UnitY * 27f + value;
+ 			DrawPanelBottom(spriteBatch, position, num3, color);

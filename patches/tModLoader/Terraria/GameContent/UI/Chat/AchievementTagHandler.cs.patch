@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Chat/AchievementTagHandler.cs
++++ src/tModLoader/Terraria/GameContent/UI/Chat/AchievementTagHandler.cs
+@@ -12,7 +_,7 @@
+ 			private Achievement _achievement;
+ 
+ 			public AchievementSnippet(Achievement achievement)
+-				: base(achievement.FriendlyName.Value, Color.LightBlue) {
++				: base(achievement.GetFriendlyName(), Color.LightBlue) { // TML: Use GetFriendlyName.
+ 				CheckForHover = true;
+ 				_achievement = achievement;
+ 			}

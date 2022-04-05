@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/UI/AchievementAdvisor.cs
++++ src/tModLoader/Terraria/UI/AchievementAdvisor.cs
+@@ -106,7 +_,7 @@
+ 				PlayerInput.SetZoom_UI();
+ 				Item item = new Item();
+ 				item.SetDefaults(0, noMatCheck: true);
+-				item.SetNameOverride(_hoveredCard.achievement.FriendlyName.Value);
++				item.SetNameOverride(_hoveredCard.achievement.GetFriendlyName()); // TML: Use GetFriendlyName.
+ 				item.ToolTip = ItemTooltip.FromLanguageKey(_hoveredCard.achievement.Description.Key);
+ 				item.type = 1;
+ 				item.scale = 0f;

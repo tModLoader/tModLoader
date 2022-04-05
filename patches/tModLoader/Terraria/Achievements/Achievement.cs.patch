@@ -22,8 +22,8 @@
 -		public readonly LocalizedText Description;
 +		internal static int _totalAchievements; // TML: Made internal.
 +		private readonly string _name; // TML: Rename to _name and make private, avoids conflicts with Modtype.
-+		public readonly ModTranslation FriendlyName; // TML: Changed to ModTranslation.
-+		public readonly ModTranslation Description; // TML: Changed to ModTranslation.
++		public ModTranslation FriendlyName; // TML: Changed to ModTranslation, no longer readonly.
++		public ModTranslation Description; // TML: Changed to ModTranslation, no longer readonly.
  		public readonly int Id = _totalAchievements++;
 -		private AchievementCategory _category;
 -		private IAchievementTracker _tracker;

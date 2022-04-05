@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/UI/InGamePopups.cs
++++ src/tModLoader/Terraria/UI/InGamePopups.cs
+@@ -59,10 +_,10 @@
+ 				CreationObject = achievement;
+ 				_ingameDisplayTimeLeft = 300;
+ 				_theAchievement = achievement;
+-				_title = achievement.FriendlyName.Value;
+-				int num = _iconIndex = Main.Achievements.GetIconIndex(achievement.Name);
++				_title = achievement.GetFriendlyName(); // TML: Use GetFriendlyName.
++				int num = _iconIndex = achievement.IsModded() ? 0 : Main.Achievements.GetIconIndex(achievement.Name); // TML: Set index to 0 if the achievement is modded.
+ 				_achievementIconFrame = new Rectangle(num % 8 * 66, num / 8 * 66, 64, 64);
+-				_achievementTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievements", AssetRequestMode.AsyncLoad);
++				_achievementTexture = Main.Assets.Request<Texture2D>(achievement.Texture, AssetRequestMode.AsyncLoad); // TML: Use ModTextureType.Texture.
+ 				_achievementBorderTexture = Main.Assets.Request<Texture2D>("Images/UI/Achievement_Borders", AssetRequestMode.AsyncLoad);
+ 			}
+ 
