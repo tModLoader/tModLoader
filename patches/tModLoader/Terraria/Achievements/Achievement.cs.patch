@@ -1,11 +1,159 @@
 --- src/TerrariaNetCore/Terraria/Achievements/Achievement.cs
 +++ src/tModLoader/Terraria/Achievements/Achievement.cs
-@@ -7,7 +_,7 @@
+@@ -2,25 +_,27 @@
+ using Newtonsoft.Json.Linq;
+ using System.Collections.Generic;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ 
  namespace Terraria.Achievements
  {
  	[JsonObject(MemberSerialization.OptIn)]
 -	public class Achievement
-+	public partial class Achievement
++	// TML: Now extends ModType.
++	public partial class Achievement : ModTexturedType
  	{
  		public delegate void AchievementCompleted(Achievement achievement);
  
+ 		private static int _totalAchievements;
+-		public readonly string Name;
+-		public readonly LocalizedText FriendlyName;
+-		public readonly LocalizedText Description;
++		private readonly string _name; // TML: Rename to _name and make private, avoids conflicts with Modtype.
++		public readonly ModTranslation FriendlyName; // TML: Changed to ModTranslation.
++		public readonly ModTranslation Description; // TML: Changed to ModTranslation.
+ 		public readonly int Id = _totalAchievements++;
+-		private AchievementCategory _category;
+-		private IAchievementTracker _tracker;
++		protected AchievementCategory _category; // TML: Made protected.
++		protected IAchievementTracker _tracker; // TML: Made protected.
+ 		[JsonProperty("Conditions")]
+-		private Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>();
+-		private int _completedCount;
++		protected Dictionary<string, AchievementCondition> _conditions = new Dictionary<string, AchievementCondition>(); // TML: Made protected.
++		protected int _completedCount; // TML: Made protected.
+ 
+ 		public AchievementCategory Category => _category;
+ 
+@@ -32,13 +_,18 @@
+ 
+ 		public IAchievementTracker GetTracker() => _tracker;
+ 
+-		public Achievement(string name) {
+-			Name = name;
+-			FriendlyName = Language.GetText("Achievements." + name + "_Name");
+-			Description = Language.GetText("Achievements." + name + "_Description");
++		// TML: Make constructor internal (from public).
++		internal Achievement(string name) {
++			_name = name;
++
++			// TML: Initialization changed to accommodate ModTranslations.
++			// This is okay to do since these are already defined in vanilla translations. Mods get this set in Register().
++			FriendlyName = LocalizationLoader.GetOrCreateTranslation("Achievements." + name + "_Name"); // Language.GetText("Achievements." + name + "_Name");
++			Description = LocalizationLoader.GetOrCreateTranslation("Achievements." + name + "_Description"); // Language.GetText("Achievements." + name + "_Description");
+ 		}
+ 
++		// TML: Made virtual.
+-		public void ClearProgress() {
++		public virtual void ClearProgress() {
+ 			_completedCount = 0;
+ 			foreach (KeyValuePair<string, AchievementCondition> condition in _conditions) {
+ 				condition.Value.Clear();
+@@ -48,7 +_,8 @@
+ 				_tracker.Clear();
+ 		}
+ 
++		// TML: Made virtual.
+-		public void Load(Dictionary<string, JObject> conditions) {
++		public virtual void Load(Dictionary<string, JObject> conditions) {
+ 			foreach (KeyValuePair<string, JObject> condition in conditions) {
+ 				if (_conditions.TryGetValue(condition.Key, out AchievementCondition value)) {
+ 					value.Load(condition.Value);
+@@ -61,12 +_,14 @@
+ 				_tracker.Load();
+ 		}
+ 
++		// TML: Made virtual.
+-		public void AddCondition(AchievementCondition condition) {
++		public virtual void AddCondition(AchievementCondition condition) {
+ 			_conditions[condition.Name] = condition;
+ 			condition.OnComplete += OnConditionComplete;
+ 		}
+ 
++		// TML: Made virtual and protected.
+-		private void OnConditionComplete(AchievementCondition condition) {
++		protected virtual void OnConditionComplete(AchievementCondition condition) {
+ 			_completedCount++;
+ 			if (_completedCount == _conditions.Count) {
+ 				if (_tracker == null && SocialAPI.Achievements != null)
+@@ -77,16 +_,19 @@
+ 			}
+ 		}
+ 
++		// TML: Made virtual and protected.
+-		private void UseTracker(IAchievementTracker tracker) {
++		protected virtual void UseTracker(IAchievementTracker tracker) {
+ 			tracker.ReportAs("STAT_" + Name);
+ 			_tracker = tracker;
+ 		}
+ 
++		// TML: Made virtual.
+-		public void UseTrackerFromCondition(string conditionName) {
++		public virtual void UseTrackerFromCondition(string conditionName) {
+ 			UseTracker(GetConditionTracker(conditionName));
+ 		}
+ 
++		// TML: Made virtual.
+-		public void UseConditionsCompletedTracker() {
++		public virtual void UseConditionsCompletedTracker() {
+ 			ConditionsCompletedTracker conditionsCompletedTracker = new ConditionsCompletedTracker();
+ 			foreach (KeyValuePair<string, AchievementCondition> condition in _conditions) {
+ 				conditionsCompletedTracker.AddCondition(condition.Value);
+@@ -95,7 +_,8 @@
+ 			UseTracker(conditionsCompletedTracker);
+ 		}
+ 
++		// TML: Made virtual.
+-		public void UseConditionsCompletedTracker(params string[] conditions) {
++		public virtual void UseConditionsCompletedTracker(params string[] conditions) {
+ 			ConditionsCompletedTracker conditionsCompletedTracker = new ConditionsCompletedTracker();
+ 			foreach (string key in conditions) {
+ 				conditionsCompletedTracker.AddCondition(_conditions[key]);
+@@ -104,26 +_,31 @@
+ 			UseTracker(conditionsCompletedTracker);
+ 		}
+ 
++		// TML: Made virtual.
+-		public void ClearTracker() {
++		public virtual void ClearTracker() {
+ 			_tracker = null;
+ 		}
+ 
++		// TML: Made virtual and protected.
+-		private IAchievementTracker GetConditionTracker(string name) => _conditions[name].GetAchievementTracker();
++		protected virtual IAchievementTracker GetConditionTracker(string name) => _conditions[name].GetAchievementTracker();
+ 
++		// TML: Made virtual.
+-		public void AddConditions(params AchievementCondition[] conditions) {
++		public virtual void AddConditions(params AchievementCondition[] conditions) {
+ 			for (int i = 0; i < conditions.Length; i++) {
+ 				AddCondition(conditions[i]);
+ 			}
+ 		}
+ 
++		// TML: Made virtual.
+-		public AchievementCondition GetCondition(string conditionName) {
++		public virtual AchievementCondition GetCondition(string conditionName) {
+ 			if (_conditions.TryGetValue(conditionName, out AchievementCondition value))
+ 				return value;
+ 
+ 			return null;
+ 		}
+ 
++		// TML: Made virtual.
+-		public void SetCategory(AchievementCategory category) {
++		public virtual void SetCategory(AchievementCategory category) {
+ 			_category = category;
+ 		}
+ 	}
