@@ -102,7 +102,7 @@ namespace Terraria
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
 			for (int i = 0; i < damageData.Length; i++) {
-				damageData[i] = new DamageClassData(StatModifier.Default, StatModifier.Default, 0, StatModifier.Default, 0);
+				damageData[i] = new DamageClassData(StatModifier.Default, StatModifierSimple.Default, 0, StatModifier.Default, 0);
 				DamageClassLoader.DamageClasses[i].SetDefaultStats(this);
 			}
 		}
@@ -138,7 +138,7 @@ namespace Terraria
 		/// Setting this such that it results in zero or a negative value will throw an exception.
 		/// NOTE: Due to the nature of attack speed modifiers, modifications to Flat will do nothing for this modifier.
 		/// </summary>
-		public ref StatModifier GetAttackSpeed<T>() where T : DamageClass => ref GetAttackSpeed(ModContent.GetInstance<T>());
+		public ref StatModifierSimple GetAttackSpeed<T>() where T : DamageClass => ref GetAttackSpeed(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the crit chance modifier for this damage type on this player.
@@ -174,9 +174,8 @@ namespace Terraria
 		/// Gets the attack speed modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return values with operators.
 		/// Setting this such that it results in zero or a negative value will throw an exception.
-		/// NOTE: Due to the nature of attack speed modifiers, modifications to Flat will do nothing for this modifier.
 		/// </summary>
-		public ref StatModifier GetAttackSpeed(DamageClass damageClass) {
+		public ref StatModifierSimple GetAttackSpeed(DamageClass damageClass) {
 			if (damageData[damageClass.Type].attackSpeed <= 0f)
 				throw new Exception("A class' attack speed stat cannot be less than 0.");
 			else
@@ -208,7 +207,7 @@ namespace Terraria
 		/// Calculates the armor penetration value of the item in question for this player.
 		/// </summary>
 		public float GetWeaponAttackSpeed(Item sItem) {
-			StatModifier attackSpeed = StatModifier.Default;
+			StatModifierSimple attackSpeed = StatModifierSimple.Default;
 			for (int i = 0; i < damageData.Length; i++) {
 				if (damageData[i].attackSpeed <= 0f)
 					throw new Exception("A class' attack speed stat cannot be less than 0.");

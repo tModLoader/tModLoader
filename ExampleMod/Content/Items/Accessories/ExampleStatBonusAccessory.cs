@@ -48,7 +48,7 @@ namespace ExampleMod.Content.Items.Accessories
 
 			// GetAttackSpeed is functionally identical to GetDamage and GetKnockback; it's for attack speed.
 			// In this case, we'll make ranged weapons 15% faster to use overall.
-			// NOTE: Flat boosts do nothing here. Also, zero or a negative value as the result of these calculations will throw an exception. Plan accordingly.
+			// NOTE: Zero or a negative value as the result of these calculations will throw an exception. Plan accordingly.
 			player.GetAttackSpeed(DamageClass.Ranged) += 0.15f;
 
 			// And lastly, we'll use our last example effect to showcase how flat bonuses work with StatModifier.
