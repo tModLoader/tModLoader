@@ -21,6 +21,7 @@ var class_terraria_1_1_lighting =
     [ "Initialize", "class_terraria_1_1_lighting.html#a31ff031c2c88aef9aa305b098e07d998", null ],
     [ "LightTiles", "class_terraria_1_1_lighting.html#a8507a12769c6ee183b3e80fb3c7048e2", null ],
     [ "NextLightMode", "class_terraria_1_1_lighting.html#a432361e80f740bd1ef3e9f05acab4df1", null ],
+    [ "LegacyEngine", "class_terraria_1_1_lighting.html#a8a14e94b89d972e7a6a59124e2586360", null ],
     [ "OffScreenTiles", "class_terraria_1_1_lighting.html#ad69c78484a41def9264e2397d2301857", null ],
     [ "GlobalBrightness", "class_terraria_1_1_lighting.html#aa67ab02944c2e966ca480b8f6cbb37d4", null ],
     [ "Mode", "class_terraria_1_1_lighting.html#a84f8b7ad2fb694377ecd4799dba356dc", null ],

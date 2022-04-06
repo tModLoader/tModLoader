@@ -1,5 +1,6 @@
 var NAVTREEINDEX127 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a923e6542c111f856808d03b40324b4d9":[1,0,2,4,68,87],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a9415020f17dad352d05da9c668ce514c":[1,0,2,4,68,37],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a96c99ff8964698d16dc5d288c34d3b53":[1,0,2,4,68,99],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a98622d7a3a0d42883132fb0158cacbc6":[1,0,2,4,68,39],
@@ -248,6 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_game_content_1_1_personalities_1_1_helper_info.html#a61abaf877415dac7d9875c13173ffe11":[1,0,2,5,16,9,1],
 "struct_terraria_1_1_game_content_1_1_personalities_1_1_helper_info.html#a68bd6f42f8657be4c0a47365a9c248e8":[1,0,2,5,16,9,0],
 "struct_terraria_1_1_game_content_1_1_personalities_1_1_helper_info.html#ab096cfd41405ca81baa464b3a2aa38f1":[1,0,2,5,16,9,3],
-"struct_terraria_1_1_game_content_1_1_personalities_1_1_helper_info.html#ac38f3c235b03e713d5102dba9d745134":[1,0,2,5,16,9,2],
-"struct_terraria_1_1_game_content_1_1_player_eye_helper.html":[1,0,2,5,47]
+"struct_terraria_1_1_game_content_1_1_personalities_1_1_helper_info.html#ac38f3c235b03e713d5102dba9d745134":[1,0,2,5,16,9,2]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX113 =
 {
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a60ccacd625fb05d1e5dce06b370c624a":[1,0,2,21,1,2,132],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a61aba50cc6b60c2a83402ddf1a140d18":[1,0,2,21,1,2,73],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a61ba4fe972362f609313faae78d89015":[1,0,2,21,1,2,220],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a620230e36374078cb443d5a33e6fc659":[1,0,2,21,1,2,115],
@@ -248,6 +249,5 @@ var NAVTREEINDEX113 =
 "class_terraria_1_1_u_i_1_1_in_game_popups_1_1_achievement_unlocked_popup.html#a237f22754f4ad98c42b585f5561711bd":[1,0,2,21,15,0,6],
 "class_terraria_1_1_u_i_1_1_in_game_popups_1_1_achievement_unlocked_popup.html#a48c27a4f064909224ffdefa08c0a318d":[1,0,2,21,15,0,3],
 "class_terraria_1_1_u_i_1_1_in_game_popups_1_1_achievement_unlocked_popup.html#a584e25ecd0e3a166f5de47a3d0030e4f":[1,0,2,21,15,0,2],
-"class_terraria_1_1_u_i_1_1_in_game_popups_1_1_achievement_unlocked_popup.html#a5fa5c3784bdd75e9f0357e9b7c512ecb":[1,0,2,21,15,0,5],
-"class_terraria_1_1_u_i_1_1_in_game_popups_1_1_achievement_unlocked_popup.html#aaeccd0fc6fd9343b5774d863fe1e5331":[1,0,2,21,15,0,8]
+"class_terraria_1_1_u_i_1_1_in_game_popups_1_1_achievement_unlocked_popup.html#a5fa5c3784bdd75e9f0357e9b7c512ecb":[1,0,2,21,15,0,5]
 };
