@@ -32,19 +32,18 @@
 		}
 
 		public override bool Equals(object obj) {
-			if (!(obj is StatModifier))
+			if (obj is not StatModifier m)
 				return false;
 
-			var m = (StatModifier)obj;
-			return Additive == m.Additive &&
-				   Multiplicative == m.Multiplicative &&
-				   Flat == m.Flat;
+			return this == m;
 		}
 
 		public override int GetHashCode() {
 			int hashCode = 1713062080;
 			hashCode = hashCode * -1521134295 + Additive.GetHashCode();
 			hashCode = hashCode * -1521134295 + Multiplicative.GetHashCode();
+			hashCode = hashCode * -1521134295 + Flat.GetHashCode();
+			hashCode = hashCode * -1521134295 + Base.GetHashCode();
 			return hashCode;
 		}
 
@@ -55,7 +54,7 @@
 		/// <param name="add">The additive modifier to add, where 0.01f is equivalent to 1%</param>
 		/// <returns></returns>
 		public static StatModifier operator +(StatModifier m, float add)
-			=> new StatModifier(m.Additive + add, m.Multiplicative, m.Flat);
+			=> new StatModifier(m.Additive + add, m.Multiplicative, m.Flat, m.Base);
 
 		/// <summary>
 		/// By using the subtract operator, the supplied subtractive modifier is combined with the existing modifiers. For example, subtracting 0.12f would be equivalent to a typical 12% damage decrease. For 99% of effects used in the game, this approach is used.
@@ -64,7 +63,7 @@
 		/// <param name="sub">The additive modifier to subtract, where 0.01f is equivalent to 1%</param>
 		/// <returns></returns>
 		public static StatModifier operator -(StatModifier m, float sub)
-			=> new StatModifier(m.Additive - sub, m.Multiplicative, m.Flat);
+			=> new StatModifier(m.Additive - sub, m.Multiplicative, m.Flat, m.Base);
 
 		/// <summary>
 		/// The multiply operator applies a multiplicative effect to the resulting multiplicative modifier. This effect is very rarely used, typical effects use the add operator.
@@ -73,10 +72,10 @@
 		/// <param name="mul">The factor by which the multiplicative modifier is scaled</param>
 		/// <returns></returns>
 		public static StatModifier operator *(StatModifier m, float mul)
-			=> new StatModifier(m.Additive, m.Multiplicative * mul, m.Flat);
+			=> new StatModifier(m.Additive, m.Multiplicative * mul, m.Flat, m.Base);
 
 		public static StatModifier operator /(StatModifier m, float div)
-			=> new StatModifier(m.Additive, m.Multiplicative / div, m.Flat);
+			=> new StatModifier(m.Additive, m.Multiplicative / div, m.Flat, m.Base);
 
 		public static StatModifier operator +(float add, StatModifier m)
 			=> m + add;
@@ -85,10 +84,10 @@
 			=> m * mul;
 
 		public static bool operator ==(StatModifier m1, StatModifier m2)
-			=> m1.Additive == m2.Additive && m1.Multiplicative == m2.Multiplicative && m1.Flat == m2.Flat;
+			=> m1.Additive == m2.Additive && m1.Multiplicative == m2.Multiplicative && m1.Flat == m2.Flat && m1.Base == m2.Base;
 
 		public static bool operator !=(StatModifier m1, StatModifier m2)
-			=> m1.Additive != m2.Additive || m1.Multiplicative != m2.Multiplicative || m1.Flat != m2.Flat;
+			=> m1.Additive != m2.Additive || m1.Multiplicative != m2.Multiplicative || m1.Flat != m2.Flat || m1.Base != m2.Base;
 
 		public float ApplyTo(float baseValue) =>
 			(baseValue + Base) * Additive * Multiplicative + Flat;
