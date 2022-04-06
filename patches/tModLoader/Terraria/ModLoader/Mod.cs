@@ -144,15 +144,12 @@ namespace Terraria.ModLoader
 		public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
 
 		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.
-		/// (The item parameter may be null if you don't want to associate an item with the texture.)
-		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property.
-		/// If the EquipType is EquipType.Body, make sure that you also provide an armTexture and a femaleTexture.
+		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.<br/>
+		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property.<br/>
 		/// Returns the ID / slot that is assigned to the equipment texture.
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
 		/// <param name="texture">The texture.</param>
 		/// <returns></returns>
 		public int AddEquipTexture(ModItem item, EquipType type, string texture) {
@@ -160,7 +157,21 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.
+		/// Adds an equipment texture of the specified type and internal name to your mod<br/>
+		/// (Use this if you don't want to associate an item with the texture)<br/>
+		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property.<br/>
+		/// Returns the ID / slot that is assigned to the equipment texture.
+		/// </summary>
+		/// <param name="name">The internal name..</param>
+		/// <param name="type">The type.</param>
+		/// <param name="texture">The texture.</param>
+		/// <returns></returns>
+		public int AddEquipTexture(string name, EquipType type, string texture) {
+			return AddEquipTexture(new EquipTexture(), name, type, texture);
+		}
+
+		/// <summary>
+		/// Adds an equipment texture of the specified type and associated item to your mod.
 		/// This method is different from the other AddEquipTexture in that you can specify the class of the equipment texture, thus allowing you to override EquipmentTexture's hooks.
 		/// All other parameters are the same as the other AddEquipTexture.
 		/// </summary>
@@ -170,28 +181,65 @@ namespace Terraria.ModLoader
 		/// <param name="texture">The texture.</param>
 		/// <returns></returns>
 		public int AddEquipTexture(EquipTexture equipTexture, ModItem item, EquipType type, string texture) {
+			return AddEquipTexture(equipTexture, item, null, type, texture);
+		}
+
+		/// <summary>
+		/// Adds an equipment texture of the specified type and internal name to your mod.<br/>
+		/// (Use this if you don't want to associate an item with the texture)<br/>
+		/// This method is different from the other AddEquipTexture in that you can specify the class of the equipment texture, thus allowing you to override EquipmentTexture's hooks.<br/>
+		/// All other parameters are the same as the other AddEquipTexture.
+		/// </summary>
+		/// <param name="equipTexture">The equip texture.</param>
+		/// <param name="name">The internal name.</param>
+		/// <param name="type">The type.</param>
+		/// <param name="texture">The texture.</param>
+		/// <returns></returns>
+		public int AddEquipTexture(EquipTexture equipTexture, string name, EquipType type, string texture) {
+			return AddEquipTexture(equipTexture, null, name, type, texture);
+		}
+
+		/// <summary>
+		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.<br/>
+		/// This method is different from the other AddEquipTexture in that it takes in both an associated item and internal name at once.<br/>
+		/// If both are provided, the equipTexture's name will be set to the internal name, alongside the keys for the equipTexture dictionnary.<br/>
+		/// NOTE : If an equipTexture of the same type associated to the same item already exists, automatic displays and <br/>
+		/// All other parameters are the same as the other AddEquipTexture.
+		/// </summary>
+		/// <param name="equipTexture">The equip texture.</param>
+		/// <param name="item">The item.</param>
+		/// <param name="name">The item.</param>
+		/// <param name="type">The type.</param>
+		/// <param name="texture">The texture.</param>
+		/// <returns></returns>
+		public int AddEquipTexture(EquipTexture equipTexture, ModItem item, string name, EquipType type, string texture) {
 			if (!loading)
 				throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
+
+			if (name == null && item == null)
+				throw new Exception("AddEquipTexture requires either an item or a name be provided");
 
 			ModContent.Request<Texture2D>(texture); //ensure texture exists
 
 			equipTexture.Texture = texture;
 			equipTexture.Mod = this;
-			equipTexture.Name = item.Name;
+			equipTexture.Name = name ?? item.Name;
 			equipTexture.Type = type;
 			equipTexture.Item = item;
 			int slot = equipTexture.Slot = EquipLoader.ReserveEquipID(type);
 
 			EquipLoader.equipTextures[type][slot] = equipTexture;
-			equipTextures[Tuple.Create(item.Name, type)] = equipTexture;
+			equipTextures[Tuple.Create(name ?? item.Name, type)] = equipTexture;
 
-			if (!EquipLoader.idToSlot.TryGetValue(item.Type, out var slots))
-				EquipLoader.idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
+			if (item != null) {
+				if (!EquipLoader.idToSlot.TryGetValue(item.Type, out var slots))
+					EquipLoader.idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
 
-			slots[type] = slot;
+				slots[type] = slot;
 
-			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
-				EquipLoader.slotToId[type][slot] = item.Type;
+				if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
+					EquipLoader.slotToId[type][slot] = item.Type;
+			}
 
 			return slot;
 		}

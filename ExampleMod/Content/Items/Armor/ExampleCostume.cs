@@ -32,6 +32,11 @@ namespace ExampleMod.Content.Items.Armor
 				// The below 2 lines are equivalent
 				//Mod.AddEquipTexture(new EquipTexture(), EquipType.Legs, $"{Texture}_{EquipType.Legs}");
 				Mod.AddEquipTexture(this, EquipType.Legs, $"{Texture}_{EquipType.Legs}");
+
+				//Add a separate set of equip textures by providing a custom name reference instead of an item reference
+				Mod.AddEquipTexture(new BlockyHead(), "BlockyAlt", EquipType.Head, $"{Texture}Alt_{EquipType.Head}");
+				Mod.AddEquipTexture(new EquipTexture(), "BlockyAlt", EquipType.Body, $"{Texture}Alt_{EquipType.Body}");
+				Mod.AddEquipTexture("BlockyAlt", EquipType.Legs, $"{Texture}Alt_{EquipType.Legs}");
 			}
 		}
 
@@ -41,15 +46,24 @@ namespace ExampleMod.Content.Items.Armor
 			int equipSlotBody = Mod.GetEquipSlot(Name, EquipType.Body);
 			int equipSlotLegs = Mod.GetEquipSlot(Name, EquipType.Legs);
 
+			int equipSlotHeadAlt = Mod.GetEquipSlot("BlockyAlt", EquipType.Head);
+			int equipSlotBodyAlt = Mod.GetEquipSlot("BlockyAlt", EquipType.Body);
+			int equipSlotLegsAlt = Mod.GetEquipSlot("BlockyAlt", EquipType.Legs);
+
 			ArmorIDs.Head.Sets.DrawHead[equipSlotHead] = false;
+			ArmorIDs.Head.Sets.DrawHead[equipSlotHeadAlt] = false;
 			ArmorIDs.Body.Sets.HidesTopSkin[equipSlotBody] = true;
 			ArmorIDs.Body.Sets.HidesArms[equipSlotBody] = true;
+			ArmorIDs.Body.Sets.HidesTopSkin[equipSlotBodyAlt] = true;
+			ArmorIDs.Body.Sets.HidesArms[equipSlotBodyAlt] = true;
 			ArmorIDs.Legs.Sets.HidesBottomSkin[equipSlotLegs] = true;
+			ArmorIDs.Legs.Sets.HidesBottomSkin[equipSlotLegsAlt] = true;
 		}
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Charm of Example");
-			Tooltip.SetDefault("Turns the holder into Blocky near town NPC");
+			Tooltip.SetDefault("Turns the holder into Blocky near town NPC"
+				+ "\nBlocky's colors will invert in water");
 
 			SetupDrawing();
 		}

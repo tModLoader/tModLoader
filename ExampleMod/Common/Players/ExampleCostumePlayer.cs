@@ -47,6 +47,13 @@ namespace ExampleMod.Common.Players
 				Player.head = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Head);
 				Player.body = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Body);
 				Player.legs = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Legs);
+
+				// Use the alternative equipment textures by calling them through their internal name.
+				if (Player.wet) {
+					Player.head = Mod.GetEquipSlot("BlockyAlt", EquipType.Head);
+					Player.body = Mod.GetEquipSlot("BlockyAlt", EquipType.Body);
+					Player.legs = Mod.GetEquipSlot("BlockyAlt", EquipType.Legs);
+				}
 			}
 		}
 
