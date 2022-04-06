@@ -5,6 +5,9 @@ namespace Terraria.ModLoader
 {
 	public struct StatInheritanceData
 	{
+		public static readonly StatInheritanceData Full = new StatInheritanceData(1f, 1f, 1f, 1f, 1f);
+		public static readonly StatInheritanceData None = new StatInheritanceData(0f, 0f, 0f, 0f, 0f);
+
 		public float damageInheritance;
 		public float attackSpeedInheritance;
 		public float critChanceInheritance;
@@ -18,8 +21,5 @@ namespace Terraria.ModLoader
 			this.knockbackInheritance = knockbackInheritance;
 			this.armorPenInheritance = armorPenInheritance;
 		}
-
-		public static StatInheritanceData Full => new StatInheritanceData(1f, 1f, 1f, 1f, 1f);
-		public static StatInheritanceData None => new StatInheritanceData(0f, 0f, 0f, 0f, 0f);
 	}
 }
