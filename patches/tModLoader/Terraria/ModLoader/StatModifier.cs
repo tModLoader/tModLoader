@@ -2,7 +2,7 @@
 {
 	public struct StatModifier
 	{
-		public static readonly StatModifier Default = new StatModifier(1f, 1f, 0);
+		public static readonly StatModifier Default = new StatModifier(1f, 1f, 0f, 0f);
 
 		/// <summary>
 		/// Increase to the base value of the stat. Directly added to the stat before multipliers are applied.
@@ -24,7 +24,7 @@
 		/// </summary>
 		public float Flat;
 
-		public StatModifier(float additive, float multiplicative = 1, float flat = 0, float @base = 1) {
+		public StatModifier(float additive, float multiplicative, float flat = 0f, float @base = 0f) {
 			Additive = additive;
 			Multiplicative = multiplicative;
 			Flat = flat;

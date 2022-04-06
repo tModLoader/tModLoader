@@ -45,14 +45,12 @@ namespace ExampleMod.Content.DamageClasses
 			*/
 			// This would allow our custom class to benefit from the following ranged stat bonuses:
 			// - Damage, at 100% effectiveness
-			// - Usage speed, at 40% effectiveness
+			// - Attack speed, at 40% effectiveness
 			// - Crit chance, at -100% effectiveness (this means anything that raises ranged crit chance specifically will lower the crit chance of our custom class by the same amount)
 			// - Armor penetration, at 250% effectiveness
 
 			// CAUTION: There is no hardcap on what you can set these to. Please be aware and advised that whatever you set them to may have unintended consequences,
 			// and that we are NOT responsible for any temporary or permanent damage caused to you, your character, or your world as a result of your morbid curiosity.
-
-			// BONUS INFO:
 			// To refer to a non-vanilla damage class for these sorts of things, use "ModContent.GetInstance<TargetDamageClassHere>()" instead of "DamageClass.XYZ".
 		}
 
@@ -74,7 +72,7 @@ namespace ExampleMod.Content.DamageClasses
 			player.GetCritChance<ExampleDamageClass>() += 4;
 			player.GetArmorPenetration<ExampleDamageClass>() += 10;
 			// These sorts of modifiers also exist for damage (GetDamage), knockback (GetKnockback), and attack speed (GetAttackSpeed).
-			// You'll see these used all around in referencce to vanilla classes and our example class here.
+			// You'll see these used all around in referencce to vanilla classes and our example class here. Familiarize yourself with them.
 		}
 
 		// This property lets you decide whether or not your damage class can use standard critical strike calculations.

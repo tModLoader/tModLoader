@@ -178,7 +178,7 @@ namespace Terraria
 			for (int i = 0; i < damageData.Length; i++) {
 				if (i != damageClass.Type) {
 					StatInheritanceData inheritanceData = damageClass.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-					stat = stat.CombineWith(damageData[damageClass.Type].damage.Scale(inheritanceData.damageInheritance));
+					stat = stat.CombineWith(damageData[i].damage.Scale(inheritanceData.damageInheritance));
 				}
 			}
 
@@ -193,7 +193,7 @@ namespace Terraria
 			for (int i = 0; i < damageData.Length; i++) {
 				if (i != damageClass.Type) {
 					StatInheritanceData inheritanceData = damageClass.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-					stat += damageData[damageClass.Type].critChance * inheritanceData.critChanceInheritance;
+					stat += damageData[i].critChance * inheritanceData.critChanceInheritance;
 				}
 			}
 
@@ -208,7 +208,7 @@ namespace Terraria
 			for (int i = 0; i < damageData.Length; i++) {
 				if (i != damageClass.Type) {
 					StatInheritanceData inheritanceData = damageClass.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-					stat += damageData[damageClass.Type].attackSpeed * inheritanceData.attackSpeedInheritance;
+					stat += (damageData[i].attackSpeed - 1) * inheritanceData.attackSpeedInheritance;
 				}
 			}
 
@@ -223,7 +223,7 @@ namespace Terraria
 			for (int i = 0; i < damageData.Length; i++) {
 				if (i != damageClass.Type) {
 					StatInheritanceData inheritanceData = damageClass.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-					stat += damageData[damageClass.Type].armorPen * inheritanceData.armorPenInheritance;
+					stat += damageData[i].armorPen * inheritanceData.armorPenInheritance;
 				}
 			}
 
@@ -238,7 +238,7 @@ namespace Terraria
 			for (int i = 0; i < damageData.Length; i++) {
 				if (i != damageClass.Type) {
 					StatInheritanceData inheritanceData = damageClass.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-					stat = stat.CombineWith(damageData[damageClass.Type].knockback.Scale(inheritanceData.knockbackInheritance));
+					stat = stat.CombineWith(damageData[i].knockback.Scale(inheritanceData.knockbackInheritance));
 				}
 			}
 

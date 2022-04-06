@@ -4613,7 +4613,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,6 +_,26 @@
+@@ -37031,6 +_,32 @@
  			}
  
  			return num;
@@ -4625,18 +4625,24 @@
 +			// will probably accompany a planned overhaul to how a weapon's ammo pool is decided, but for now, this works fine
 +			// -thomas
 +			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) {
-+				modifier = modifier.CombineWith(arrowDamage);
++				modifier *= arrowDamage.Additive * arrowDamage.Multiplicative;
++				modifier.Base += arrowDamage.Base;
++				modifier.Flat += arrowDamage.Flat;
 +			}
 +			if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn) {
-+				modifier = modifier.CombineWith(bulletDamage);
++				modifier *= bulletDamage.Additive * bulletDamage.Multiplicative;
++				modifier.Base += bulletDamage.Base;
++				modifier.Flat += bulletDamage.Flat;
 +			}
 +			if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly) {
-+				modifier = modifier.CombineWith(rocketDamage);
++				modifier *= rocketDamage.Additive * rocketDamage.Multiplicative;
++				modifier.Base += rocketDamage.Base;
++				modifier.Flat += rocketDamage.Flat;
 +			}
 +
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
 +			int baseDamage = forTooltip ? (int)(sItem.damage * ItemID.Sets.ToolTipDamageMultiplier[sItem.type]) : sItem.damage;
-+			return Math.Max(0, (int)modifier.ApplyTo(baseDamage));
++			return Math.Max(0, (int)(modifier.ApplyTo(baseDamage) + 5E-06f));
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse) {
