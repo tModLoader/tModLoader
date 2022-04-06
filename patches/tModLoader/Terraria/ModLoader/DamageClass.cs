@@ -1,21 +1,41 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
 	public abstract class DamageClass : ModType
 	{
+		/// <summary>
+		/// Default damage class for non-classed weapons and items, does not benefit from Generic bonuses
+		/// </summary>
 		public static DamageClass Default { get; private set; } = new DefaultDamageClass();
+
+		/// <summary>
+		/// Base damage class for all weapons. All vanilla damage classes inherit bonuses applied to this class.
+		/// Accessories which benefit all classes provide bonuses via the Generic class
+		/// </summary>
 		public static DamageClass Generic { get; private set; } = new GenericDamageClass();
 		public static DamageClass Melee { get; private set; } = new MeleeDamageClass();
 		public static DamageClass Ranged { get; private set; } = new RangedDamageClass();
 		public static DamageClass Magic { get; private set; } = new MagicDamageClass();
 		public static DamageClass Summon { get; private set; } = new SummonDamageClass();
+
 		/// <summary>
-		/// This is a damage class used solely by vanilla whips. It benefits from melee useAnimation and useSpeed bonuses.
+		/// This is a damage class used solely by vanilla whips. It benefits from melee attackSpeed bonuses.
 		/// </summary>
 		public static DamageClass SummonMeleeSpeed { get; private set; } = new SummonMeleeSpeedDamageClass();
+
+		/// <summary>
+		/// This is a damage class used solely by vanilla forbidden storm. It scales with both magic and summon damage modifiers.
+		/// </summary>
+		public static DamageClass MagicSummonHybrid { get; private set; } = new MagicSummonHybridDamageClass();
+
+		/// <summary>
+		/// Class provided for modders who want to coordinate throwing accessories and items. Not used by any vanilla items.
+		/// </summary>
 		public static DamageClass Throwing { get; private set; } = new ThrowingDamageClass();
+
 
 		/// <summary>
 		/// This is the internal ID of this DamageClass.

@@ -17,6 +17,7 @@ namespace Terraria.ModLoader
 			DamageClass.Magic,
 			DamageClass.Summon,
 			DamageClass.SummonMeleeSpeed,
+			DamageClass.MagicSummonHybrid,
 			DamageClass.Throwing
 		};
 

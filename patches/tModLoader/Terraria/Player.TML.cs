@@ -102,17 +102,10 @@ namespace Terraria
 			damageData = new DamageClassData[DamageClassLoader.DamageClassCount];
 
 			for (int i = 0; i < damageData.Length; i++) {
-				damageData[i] = new DamageClassData(StatModifier.Default, StatModifierSimple.Default, 0, StatModifier.Default, 0);
+				damageData[i] = new DamageClassData();
 				DamageClassLoader.DamageClasses[i].SetDefaultStats(this);
 			}
 		}
-
-
-		/// <summary>
-		/// Gets the crit chance modifier for this damage type on this player.
-		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
-		/// </summary>
-		public ref int GetCritChance<T>() where T : DamageClass => ref GetCritChance(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the damage modifier for this damage type on this player.
@@ -121,16 +114,23 @@ namespace Terraria
 		public ref StatModifier GetDamage<T>() where T : DamageClass => ref GetDamage(ModContent.GetInstance<T>());
 
 		/// <summary>
-		/// Gets the knockback modifier for this damage type on this player.
+		/// Gets the damage modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
-		public ref StatModifier GetKnockback<T>() where T : DamageClass => ref GetKnockback(ModContent.GetInstance<T>());
+		public ref StatModifier GetDamage(DamageClass damageClass) => ref damageData[damageClass.Type].damage;
+
 
 		/// <summary>
-		/// Gets the armor penetration modifier for this damage type on this player.
+		/// Gets the crit chance modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
-		public ref int GetArmorPenetration<T>() where T : DamageClass => ref GetArmorPenetration(ModContent.GetInstance<T>());
+		public ref float GetCritChance<T>() where T : DamageClass => ref GetCritChance(ModContent.GetInstance<T>());
+
+		/// <summary>
+		/// Gets the crit chance modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref float GetCritChance(DamageClass damageClass) => ref damageData[damageClass.Type].critChance;
 
 		/// <summary>
 		/// Gets the attack speed modifier for this damage type on this player.
@@ -138,19 +138,31 @@ namespace Terraria
 		/// Setting this such that it results in zero or a negative value will throw an exception.
 		/// NOTE: Due to the nature of attack speed modifiers, modifications to Flat will do nothing for this modifier.
 		/// </summary>
-		public ref StatModifierSimple GetAttackSpeed<T>() where T : DamageClass => ref GetAttackSpeed(ModContent.GetInstance<T>());
+		public ref float GetAttackSpeed<T>() where T : DamageClass => ref GetAttackSpeed(ModContent.GetInstance<T>());
 
 		/// <summary>
-		/// Gets the crit chance modifier for this damage type on this player.
-		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// Gets the attack speed modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return values with operators.
 		/// </summary>
-		public ref int GetCritChance(DamageClass damageClass) => ref damageData[damageClass.Type].critChance;
+		public ref float GetAttackSpeed(DamageClass damageClass) => ref damageData[damageClass.Type].attackSpeed;
 
 		/// <summary>
-		/// Gets the damage modifier for this damage type on this player.
+		/// Gets the armor penetration modifier for this damage type on this player.
 		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
 		/// </summary>
-		public ref StatModifier GetDamage(DamageClass damageClass) => ref damageData[damageClass.Type].damage;
+		public ref float GetArmorPenetration<T>() where T : DamageClass => ref GetArmorPenetration(ModContent.GetInstance<T>());
+
+		/// <summary>
+		/// Gets the armor penetration modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref float GetArmorPenetration(DamageClass damageClass) => ref damageData[damageClass.Type].armorPen;
+
+		/// <summary>
+		/// Gets the knockback modifier for this damage type on this player.
+		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
+		/// </summary>
+		public ref StatModifier GetKnockback<T>() where T : DamageClass => ref GetKnockback(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// Gets the knockback modifier for this damage type on this player.
@@ -158,72 +170,95 @@ namespace Terraria
 		/// </summary>
 		public ref StatModifier GetKnockback(DamageClass damageClass) => ref damageData[damageClass.Type].knockback;
 
-		/// <summary>
-		/// Gets the armor penetration modifier for this damage type on this player.
-		/// This returns a reference, and as such, you can freely modify this method's return value with operators.
-		/// Setting this to a negative value will throw an exception.
-		/// </summary>
-		public ref int GetArmorPenetration(DamageClass damageClass) {
-			if (damageData[damageClass.Type].armorPen < 0)
-				throw new Exception("A class' armor penetration stat cannot be less than 0.");
-			else
-				return ref damageData[damageClass.Type].armorPen;
-		}
+		public StatModifier GetTotalDamage<T>() where T : DamageClass => GetTotalDamage(ModContent.GetInstance<T>());
 
-		/// <summary>
-		/// Gets the attack speed modifier for this damage type on this player.
-		/// This returns a reference, and as such, you can freely modify this method's return values with operators.
-		/// Setting this such that it results in zero or a negative value will throw an exception.
-		/// </summary>
-		public ref StatModifierSimple GetAttackSpeed(DamageClass damageClass) {
-			if (damageData[damageClass.Type].attackSpeed <= 0f)
-				throw new Exception("A class' attack speed stat cannot be less than 0.");
-			else
-				return ref damageData[damageClass.Type].attackSpeed;
-		}
+		public StatModifier GetTotalDamage(DamageClass damageClass) {
+			StatModifier stat = damageData[damageClass.Type].damage;
 
-		/// <summary>
-		/// Calculates the armor penetration value of the item in question for this player.
-		/// </summary>
-		public int GetWeaponArmorPenetration(Item sItem) {
-			int armorPen = sItem.ArmorPenetration;
 			for (int i = 0; i < damageData.Length; i++) {
-				if (damageData[i].armorPen < 0)
-					throw new Exception("A class' armor penetration stat cannot be less than 0.");
-				else {
-					if (sItem.DamageType == DamageClassLoader.DamageClasses[i]) {
-						armorPen += damageData[i].armorPen;
-					} else {
-						StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-						armorPen += (int)((float)damageData[i].armorPen * inheritanceData.armorPenInheritance);
-					}
+				if (i != damageClass.Type) {
+					StatInheritanceData inheritanceData = damageClass.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
+					stat = stat.CombineWith(damageData[damageClass.Type].damage.Scale(inheritanceData.damageInheritance));
 				}
 			}
 
+			return stat;
+		}
+
+		public float GetTotalCritChance<T>() where T : DamageClass => GetTotalCritChance(ModContent.GetInstance<T>());
+
+		public float GetTotalCritChance(DamageClass damageClass) {
+			float stat = damageData[damageClass.Type].critChance;
+
+			for (int i = 0; i < damageData.Length; i++) {
+				if (i != damageClass.Type) {
+					StatInheritanceData inheritanceData = damageClass.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
+					stat += damageData[damageClass.Type].critChance * inheritanceData.critChanceInheritance;
+				}
+			}
+
+			return stat;
+		}
+
+		public float GetTotalAttackSpeed<T>() where T : DamageClass => GetTotalAttackSpeed(ModContent.GetInstance<T>());
+
+		public float GetTotalAttackSpeed(DamageClass damageClass) {
+			float stat = damageData[damageClass.Type].attackSpeed;
+
+			for (int i = 0; i < damageData.Length; i++) {
+				if (i != damageClass.Type) {
+					StatInheritanceData inheritanceData = damageClass.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
+					stat += damageData[damageClass.Type].attackSpeed * inheritanceData.attackSpeedInheritance;
+				}
+			}
+
+			return stat;
+		}
+
+		public float GetTotalArmorPenetration<T>() where T : DamageClass => GetTotalArmorPenetration(ModContent.GetInstance<T>());
+
+		public float GetTotalArmorPenetration(DamageClass damageClass) {
+			float stat = damageData[damageClass.Type].armorPen;
+
+			for (int i = 0; i < damageData.Length; i++) {
+				if (i != damageClass.Type) {
+					StatInheritanceData inheritanceData = damageClass.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
+					stat += damageData[damageClass.Type].armorPen * inheritanceData.armorPenInheritance;
+				}
+			}
+
+			return stat;
+		}
+
+		public StatModifier GetTotalKnockback<T>() where T : DamageClass => GetTotalKnockback(ModContent.GetInstance<T>());
+
+		public StatModifier GetTotalKnockback(DamageClass damageClass) {
+			StatModifier stat = damageData[damageClass.Type].knockback;
+
+			for (int i = 0; i < damageData.Length; i++) {
+				if (i != damageClass.Type) {
+					StatInheritanceData inheritanceData = damageClass.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
+					stat = stat.CombineWith(damageData[damageClass.Type].knockback.Scale(inheritanceData.knockbackInheritance));
+				}
+			}
+
+			return stat;
+		}
+
+		public int GetWeaponArmorPenetration(Item sItem) {
+			int armorPen = (int)(sItem.ArmorPenetration + GetTotalArmorPenetration(sItem.DamageType));
+			// TODO: CombinedHooks.ModifyWeaponArmorPenetration(this, sItem, ref armorPen);
 			return armorPen;
 		}
 
-		/// <summary>
-		/// Calculates the armor penetration value of the item in question for this player.
-		/// </summary>
 		public float GetWeaponAttackSpeed(Item sItem) {
-			StatModifierSimple attackSpeed = StatModifierSimple.Default;
-			for (int i = 0; i < damageData.Length; i++) {
-				if (damageData[i].attackSpeed <= 0f)
-					throw new Exception("A class' attack speed stat cannot be less than 0.");
-				else {
-					if (sItem.DamageType == DamageClassLoader.DamageClasses[i]) {
-						attackSpeed = attackSpeed.CombineWith(damageData[i].attackSpeed);
-					}
-					else {
-						StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-						attackSpeed = attackSpeed.CombineWith(damageData[i].attackSpeed.Scale(inheritanceData.attackSpeedInheritance));
-					}
-				}
-			}
-
+			float attackSpeed = GetTotalAttackSpeed(sItem.DamageType);
+			// apply a scale based on the set. It's not recommended for mods to use this, but vanilla does for super fast melee weapons so here we are
+			attackSpeed = 1 + (1 - attackSpeed) * ItemID.Sets.BonusAttackSpeedMultiplier[sItem.type];
 			return attackSpeed;
 		}
+
+
 
 		/// <summary>
 		/// Container for current SceneEffect client properties such as: Backgrounds, music, and water styling

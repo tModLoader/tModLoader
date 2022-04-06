@@ -1,5 +1,4 @@
-﻿using Terraria.ID;
-using Terraria.Localization;
+﻿using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
@@ -58,18 +57,30 @@ namespace Terraria.ModLoader
 		protected override string LangKey => "LegacyTooltip.53";
 
 		public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
-			return damageClass == Melee
-				? new StatInheritanceData(0f, 1f, 0f, 0f, 0f)
-				: damageClass == Summon
-					? StatInheritanceData.Full
-					: damageClass == Generic
-						? StatInheritanceData.Full
-						: StatInheritanceData.None;
+			if (damageClass == Melee)
+				return new StatInheritanceData(0f, 1f, 0f, 0f, 0f);
+
+			if (damageClass == Generic || damageClass == Summon)
+				return StatInheritanceData.Full;
+
+			return StatInheritanceData.None;
 		}
 
 		public override bool AllowStandardCrits => false;
 
 		public override bool ShowStatTooltipLine(Player player, string lineName) => lineName != "CritChance";
+	}
+
+	public class MagicSummonHybridDamageClass : VanillaDamageClass
+	{
+		protected override string LangKey => "magic or summon damage";
+
+		public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
+			if (damageClass == Generic || damageClass == Magic || damageClass == Summon)
+				return StatInheritanceData.Full;
+
+			return StatInheritanceData.None;
+		}
 	}
 
 	public class ThrowingDamageClass : VanillaDamageClass

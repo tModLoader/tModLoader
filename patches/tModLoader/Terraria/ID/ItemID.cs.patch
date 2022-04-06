@@ -50,3 +50,12 @@
  			public static bool[] AnimatesAsSoul = Factory.CreateBoolSet(575, 547, 520, 548, 521, 549, 3580, 3581);
  			public static bool[] gunProj = Factory.CreateBoolSet(3475, 3540, 3854, 3930);
  			public static int[] SortingPriorityBossSpawns = Factory.CreateIntSet(-1, 43, 1, 560, 2, 70, 3, 1331, 3, 361, 4, 5120, 5, 1133, 5, 4988, 6, 544, 7, 556, 8, 557, 9, 2495, 10, 2673, 11, 602, 12, 1844, 13, 1958, 14, 1293, 15, 2767, 16, 4271, 16, 3601, 17, 1291, 18, 109, 19, 29, 20, 50, 21, 3199, 21, 3124, 22);
+@@ -933,7 +_,7 @@
+ 			public static int[] SortingPriorityTerraforming = Factory.CreateIntSet(-1, 779, 100, 780, 99, 783, 98, 781, 97, 782, 96, 784, 95, 422, 94, 423, 93, 3477, 92, 66, 91, 67, 90, 2886, 89);
+ 			public static int[] GamepadExtraRange = Factory.CreateIntSet(0, 2797, 20, 3278, 4, 3285, 6, 3279, 8, 3280, 8, 3281, 9, 3262, 10, 3317, 10, 3282, 10, 3315, 10, 3316, 11, 3283, 12, 3290, 13, 3289, 11, 3284, 13, 3286, 13, 3287, 18, 3288, 18, 3291, 17, 3292, 18, 3389, 21);
+ 			public static bool[] GamepadWholeScreenUseRange = Factory.CreateBoolSet(1326, 1256, 1244, 3014, 113, 218, 495, 114, 496, 2796, 494, 3006, 65, 1931, 3570, 2750, 3065, 3029, 3030, 4381, 4956, 5065, 1309, 2364, 2365, 2551, 2535, 2584, 1157, 2749, 1802, 2621, 3249, 3531, 3474, 2366, 1572, 3569, 3571, 4269, 4273, 4281, 5119, 3611, 1299, 1254);
+-			public static float[] BonusMeleeSpeedMultiplier = Factory.CreateFloatSet(1f, 1827f, 0.5f, 3013f, 0.25f, 3106f, 0.33f);
++			public static float[] BonusAttackSpeedMultiplier = Factory.CreateFloatSet(1f, 1827f, 0.5f, 3013f, 0.25f, 3106f, 0.33f);
+ 			public static bool[] GamepadSmartQuickReach = Factory.CreateBoolSet(2798, 2797, 3030, 3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 3389, 2798, 65, 1931, 3570, 2750, 3065, 3029, 4956, 5065, 1256, 1244, 3014, 113, 218, 495);
+ 			public static bool[] Yoyo = Factory.CreateBoolSet(3262, 3278, 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3290, 3291, 3292, 3315, 3316, 3317, 3389);
+ 			public static bool[] AlsoABuildingItem = Factory.CreateBoolSet(3031, 205, 1128, 207, 206, 3032, 849, 3620, 509, 851, 850, 3625, 510, 1071, 1543, 1072, 1544, 1100, 1545, 4820, 4872);

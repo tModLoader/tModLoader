@@ -81,7 +81,7 @@
  		public float endurance;
  		public float whipRangeMultiplier;
 -		public float whipUseTimeMultiplier;
-+		internal ref StatModifier whipUseTimeMultiplier => ref GetAttackSpeed(DamageClass.SummonMeleeSpeed);
++		internal ref float whipUseTimeMultiplier => ref GetAttackSpeed(DamageClass.SummonMeleeSpeed);
  		public bool loveStruck;
  		public bool stinky;
  		public bool resistCold;
@@ -99,11 +99,11 @@
  		public int bartenderQuestLog;
  		public bool downedDD2EventAnyDifficulty;
 -		public int armorPenetration;
-+		internal ref int armorPenetration => ref GetArmorPenetration(DamageClass.Generic);
++		internal ref float armorPenetration => ref GetArmorPenetration(DamageClass.Generic);
  		public int statDefense;
  		public int statLifeMax = 100;
  		public int statLifeMax2 = 100;
-@@ -1080,22 +_,31 @@
+@@ -1080,22 +_,22 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
  		public bool JustDroppedAnItem;
@@ -113,24 +113,20 @@
 -		public float meleeDamage = 1f;
 -		public float magicDamage = 1f;
 -		public float rangedDamage = 1f;
-+		/*
- 		public int meleeAddDamage;
- 		public int rangedAddDamage;
- 		public int magicAddDamage;
- 		public int minionAddDamage;
+-		public int meleeAddDamage;
+-		public int rangedAddDamage;
+-		public int magicAddDamage;
+-		public int minionAddDamage;
 -		public float bulletDamage = 1f;
 -		public float arrowDamage = 1f;
 -		public float rocketDamage = 1f;
 -		public float minionDamage = 1f;
-+
-+		tML:
-+		these are now available as part of StatModifier. go nuts
-+		- thomas
-+		*/
-+		internal ref int allCrit => ref GetCritChance(DamageClass.Generic);
-+		internal ref int meleeCrit => ref GetCritChance(DamageClass.Melee);
-+		internal ref int magicCrit => ref GetCritChance(DamageClass.Magic);
-+		internal ref int rangedCrit => ref GetCritChance(DamageClass.Ranged);
+-		public float minionKB;
+-		public float meleeSpeed = 1f;
++		internal ref float allCrit => ref GetCritChance(DamageClass.Generic);
++		internal ref float meleeCrit => ref GetCritChance(DamageClass.Melee);
++		internal ref float magicCrit => ref GetCritChance(DamageClass.Magic);
++		internal ref float rangedCrit => ref GetCritChance(DamageClass.Ranged);
 +		internal ref StatModifier allDamage => ref GetDamage(DamageClass.Generic);
 +		internal ref StatModifier meleeDamage => ref GetDamage(DamageClass.Melee);
 +		internal ref StatModifier magicDamage => ref GetDamage(DamageClass.Magic);
@@ -140,9 +136,9 @@
 +		public StatModifier rocketDamage = StatModifier.Default;
 +		internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +		internal ref StatModifier allKB => ref GetKnockback(DamageClass.Generic);
- 		public float minionKB;
--		public float meleeSpeed = 1f;
-+		internal ref StatModifier meleeSpeed => ref GetAttackSpeed(DamageClass.Melee);
++		internal ref float minionKB => ref GetKnockback(DamageClass.Summon).Base;
++		internal ref float meleeSpeed => ref GetAttackSpeed(DamageClass.Melee);
++		internal float inverseMeleeSpeed => 1 / GetTotalAttackSpeed(DamageClass.Melee); // meleeSpeed is now a damage multiplier, so inverseMeleeSpeed is the useTime multiplier. By using GetTotalAttackSpeed we also incorporate anyone that adds attackSpeed to the Generic damage class
  		public float moveSpeed = 1f;
  		public float pickSpeed = 1f;
  		public float wallSpeed = 1f;
@@ -197,26 +193,20 @@
  				Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
  
  			if (talkNPC == -1)
-@@ -2100,12 +_,18 @@
+@@ -2100,12 +_,11 @@
  			itemTimeMax = frames;
  		}
  
 -		public void ApplyItemTime(Item sItem) {
 -			SetItemTime(sItem.useTime);
-+		public void ApplyItemTime(Item sItem, bool? callUseItem = null) {
+-		}
++		public void ApplyItemTime(Item sItem, float multiplier = 1, bool? callUseItem = null) {
 +			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
 +				return;
-+
-+			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * (float)GetWeaponAttackSpeed(sItem), this, sItem));
- 		}
  
 -		public void ApplyItemTime(Item sItem, float multiplier) {
 -			SetItemTime((int)((float)sItem.useTime * multiplier));
-+		public void ApplyItemTime(Item sItem, float multiplier, bool? callUseItem = null) {
-+			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
-+				return;
-+
-+			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * (float)GetWeaponAttackSpeed(sItem) * multiplier, this, sItem));
++			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * multiplier, this, sItem));
  		}
  
  		public void SetDummyItemTime(int frames) {
@@ -271,7 +261,7 @@
  
 -			SetItemAnimation(sItem.useAnimation);
 -			reuseDelay = sItem.reuseDelay;
-+			ApplyItemAnimation(sItem, 1f / GetWeaponAttackSpeed(sItem));
++			ApplyItemAnimation(sItem, 1);
  		}
  
  		public bool InOpposingTeam(Player otherPlayer) {
@@ -2318,7 +2308,7 @@
  					num5 = 30;
  
 -				float damage = (float)num5 * minionDamage;
-+				float damage = (float)num5 * minionDamage.Additive;
++				float damage = GetTotalDamage(DamageClass.Summon).ApplyTo(num5);
  				float knockback = 10f;
  				if (flag4)
  					knockback = 7f;
@@ -2327,7 +2317,7 @@
  				rect2.Width = 2;
  				rect2.Inflate(6, 12);
 -				float damage2 = 100f * minionDamage;
-+				float damage2 = 100f * minionDamage.Additive;
++				float damage2 = GetTotalDamage(DamageClass.Summon).ApplyTo(100f);
  				float knockback2 = 12f;
  				int nPCImmuneTime2 = 30;
  				int playerImmuneTime2 = 6;
@@ -2336,7 +2326,7 @@
  				rect3.Width = 2;
  				rect3.Inflate(6, 12);
 -				float damage3 = 120f * minionDamage;
-+				float damage3 = 120f * minionDamage.Additive;
++				float damage3 = GetTotalDamage(DamageClass.Summon).ApplyTo(120f);
  				float knockback3 = 12f;
  				int nPCImmuneTime3 = 30;
  				int playerImmuneTime3 = 6;
@@ -2345,10 +2335,19 @@
  				rect4.Width = 2;
  				rect4.Inflate(6, 12);
 -				float damage4 = 90f * minionDamage;
-+				float damage4 = 90f * minionDamage.Additive;
++				float damage4 = GetTotalDamage(DamageClass.Summon).ApplyTo(90f);
  				float knockback4 = 10f;
  				int nPCImmuneTime4 = 30;
  				int playerImmuneTime4 = 6;
+@@ -14389,7 +_,7 @@
+ 
+ 				rect5.Width = 2;
+ 				rect5.Inflate(6, 12);
+-				float damage5 = 40f * minionDamage;
++				float damage5 = GetTotalDamage(DamageClass.Summon).ApplyTo(40f);
+ 				float knockback5 = 10f;
+ 				int nPCImmuneTime5 = 30;
+ 				int playerImmuneTime5 = 12;
 @@ -14555,7 +_,7 @@
  			}
  
@@ -2358,23 +2357,35 @@
  				for (int i = 0; i < num2; i++) {
  					WorldGen.KillTile_MakeTileDust(point.X, point.Y, tile);
  				}
+@@ -14601,8 +_,10 @@
+ 				damage = ((!Main.expertMode) ? ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].NormalDamageDealt)) : ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].ExpertDamageDealt)));
+ 
+ 			OnHit(npc.Center.X, npc.Center.Y, npc);
++
++			// TODO: should armorPenetration be passed in to this function? Class specific armor penetration bonuses are currently ignored
+ 			if (armorPenetration > 0)
+-				damage += npc.checkArmorPenetration(armorPenetration);
++				damage += npc.checkArmorPenetration((int)armorPenetration);
+ 
+ 			NPCKillAttempt attempt = new NPCKillAttempt(npc);
+ 			int dmg = (int)npc.StrikeNPC(damage, knockback, direction, crit);
 @@ -14663,7 +_,7 @@
  
  					Rectangle rect2 = nPC.getRect();
  					if (rect.Intersects(rect2) && (nPC.noTileCollide || Collision.CanHit(base.position, width, height, nPC.position, nPC.width, nPC.height))) {
 -						float num = 40f * minionDamage;
-+						float num = 40f * minionDamage.Additive;
++						float num = GetTotalDamage(DamageClass.Summon).ApplyTo(40f);
  						float knockback = 5f;
  						int direction = base.direction;
  						if (velocity.X < 0f)
-@@ -15065,16 +_,18 @@
+@@ -15065,16 +_,17 @@
  
  						Rectangle rect = nPC.getRect();
  						if (rectangle.Intersects(rect) && (nPC.noTileCollide || CanHit(nPC))) {
 -							float num = 30f * meleeDamage;
-+							float num = 30f * allDamage.CombineWith(meleeDamage);
- 							float num2 = 9f;
-+							num2 *= allKB.CombineWith(GetKnockback(DamageClass.Melee));
+-							float num2 = 9f;
++							float num = GetTotalDamage(DamageClass.Melee).ApplyTo(30f);
++							float num2 = GetTotalKnockback(DamageClass.Melee).ApplyTo(9f);
  							bool crit = false;
 +							/*
  							if (kbGlove)
@@ -2385,18 +2396,18 @@
 -
 -							if (Main.rand.Next(100) < meleeCrit)
 +							*/
-+							if (Main.rand.Next(100) < (allCrit + meleeCrit))
++							if (Main.rand.Next(100) < GetTotalCritChance(DamageClass.Melee))
  								crit = true;
  
  							int num3 = base.direction;
-@@ -15115,16 +_,18 @@
+@@ -15115,16 +_,17 @@
  							ConsumeSolarFlare();
  						}
  
 -						float num4 = 150f * meleeDamage;
-+						float num4 = 150f * allDamage.CombineWith(meleeDamage);
- 						float num5 = 9f;
-+						num5 *= allKB.CombineWith(GetKnockback(DamageClass.Melee));
+-						float num5 = 9f;
++						float num4 = GetTotalDamage(DamageClass.Melee).ApplyTo(150f);
++						float num5 = GetTotalKnockback(DamageClass.Melee).ApplyTo(9f);
  						bool crit2 = false;
 +						/*
  						if (kbGlove)
@@ -2407,7 +2418,7 @@
 -
 -						if (Main.rand.Next(100) < meleeCrit)
 +						*/
-+						if (Main.rand.Next(100) < (allCrit + meleeCrit))
++						if (Main.rand.Next(100) < GetTotalCritChance(DamageClass.Melee))
  							crit2 = true;
  
  						int direction = base.direction;
@@ -2678,7 +2689,7 @@
  					aggro -= (int)((1f - stealth) * 1200f);
  					accRunSpeed *= 0.3f;
  					maxRunSpeed *= 0.3f;
-@@ -18455,15 +_,19 @@
+@@ -18455,15 +_,20 @@
  			if (manaSick)
  				magicDamage *= 1f - manaSickReduction;
  
@@ -2686,8 +2697,9 @@
  			float num32 = meleeSpeed - 1f;
  			num32 *= ItemID.Sets.BonusMeleeSpeedMultiplier[inventory[selectedItem].type];
  			meleeSpeed = 1f + num32;
++
++			tML: attack speed multipliers now applied in Player.GetWeaponAttackSpeed
 +			*/
-+			meleeSpeed = new StatModifier(1f + ((meleeSpeed.Additive - 1f) * ItemID.Sets.BonusMeleeSpeedMultiplier[inventory[selectedItem].type]), meleeSpeed.Multiplicative);
  			if ((double)pickSpeed < 0.3)
  				pickSpeed = 0.3f;
 -
@@ -2704,7 +2716,7 @@
  				}
  			}
  
-+			// tML: no longer set to reciprocal for consistency with other usage-speed-related modifiers
++			// tML: no longer set to reciprocal for consistency with other usage-speed-related modifiers. See inverseMeleeSpeed for vanilla uses of the stat
 -			meleeSpeed = 1f / meleeSpeed;
 +			// meleeSpeed = 1f / meleeSpeed;
 +			PlayerLoader.PostUpdateMiscEffects(this);
@@ -2800,7 +2812,7 @@
 +							*/
  							bool crit = false;
 -							if ((float)Main.rand.Next(1, 101) <= num81)
-+							int highestClassSpecificCrit = 0;
++							float highestClassSpecificCrit = 0;
 +							foreach (DamageClass damageType in DamageClassLoader.DamageClasses)
 +							{
 +								if (GetCritChance(damageType) > highestClassSpecificCrit)
@@ -3969,7 +3981,7 @@
  
  				if (ItemTimeIsZero && itemAnimation > 0) {
 +					if (ItemLoader.UseItem(item, this) == true)
-+						ApplyItemTime(item, false);
++						ApplyItemTime(item, callUseItem: false);
 +
  					if (item.hairDye >= 0) {
  						ApplyItemTime(item);
@@ -4298,7 +4310,7 @@
  			int damage = sItem.damage;
  			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
 -				speed /= meleeSpeed;
-+				speed *= meleeSpeed; // tML: changed from division to multiplication since meleeSpeed is no longer set to reciprocal
++				speed /= inverseMeleeSpeed;
  
  			bool canShoot = false;
  			int Damage = weaponDamage;
@@ -4566,29 +4578,16 @@
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36988,11 +_,27 @@
+@@ -36988,11 +_,15 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
--
--			return KnockBack;
 +			*/
-+
-+			// implement minionKB as 'base damage'
-+			KnockBack += minionKB * sItem.DamageType.GetModifierInheritance(DamageClass.Summon).knockbackInheritance;
-+
-+			StatModifier kbModifier = StatModifier.Default;
-+			for (int i = 0; i < damageData.Length; i++) {
-+				if (sItem.DamageType == DamageClassLoader.DamageClasses[i]) {
-+					kbModifier = kbModifier.CombineWith(damageData[i].knockback);
-+				} else {
-+					StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-+					kbModifier = kbModifier.CombineWith(damageData[i].knockback.Scale(inheritanceData.knockbackInheritance));
-+				}
-+			}
-+
-+			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref kbModifier);
-+			return Math.Max(0f, (KnockBack * kbModifier) + kbModifier.Flat);
+ 
+-			return KnockBack;
++			StatModifier modifier = GetTotalKnockback(sItem.DamageType);
++			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref modifier);
++			return Math.Max(0f, modifier.ApplyTo(sItem.knockBack));
  		}
  
  		public int GetWeaponCrit(Item sItem) {
@@ -4596,71 +4595,48 @@
  			if (sItem.melee)
  				return meleeCrit;
  
-@@ -37003,9 +_,25 @@
+@@ -37003,9 +_,16 @@
  				return magicCrit;
  
  			return 0;
 +			*/
 +
-+			int crit = sItem.crit;
-+			for (int i = 0; i < damageData.Length; i++) {
-+				if (sItem.DamageType == DamageClassLoader.DamageClasses[i]) {
-+					crit += damageData[i].critChance;
-+				} else {
-+					StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-+					crit += (int)((float)damageData[i].critChance * inheritanceData.critChanceInheritance);
-+				}
-+			}
-+
++			// TODO: Should ModifyWeaponCrit be float?
++			int crit = (int)(sItem.crit + GetTotalCritChance(sItem.DamageType));
 +			CombinedHooks.ModifyWeaponCrit(this, sItem, ref crit);
 +			return crit;
  		}
  
 -		public int GetWeaponDamage(Item sItem) {
-+		// public int GetWeaponDamage(Item sItem) {
 +		public int GetWeaponDamage(Item sItem, bool forTooltip = false) {
 +			/*
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,6 +_,40 @@
+@@ -37031,6 +_,26 @@
  			}
  
  			return num;
 +			*/
 +
-+			StatModifier damage = StatModifier.Default;
-+			for (int i = 0; i < damageData.Length; i++) {
-+				if (sItem.DamageType == DamageClassLoader.DamageClasses[i]) {
-+					damage = damage.CombineWith(damageData[i].damage);
-+				} else {
-+					StatInheritanceData inheritanceData = sItem.DamageType.GetModifierInheritance(DamageClassLoader.DamageClasses[i]);
-+					damage = damage.CombineWith(damageData[i].damage.Scale(inheritanceData.damageInheritance));
-+				}
-+			}
++			StatModifier modifier = GetTotalDamage(sItem.DamageType);
 +
-+			/*
-+			TODO: use ItemID sets for ammo-specific bonuses
-+			will probably accompany a planned overhaul to how a weapon's ammo pool is decided, but for now, this works fine
-+			-thomas
-+			*/
++			// TODO: use ItemID sets for ammo-specific bonuses
++			// will probably accompany a planned overhaul to how a weapon's ammo pool is decided, but for now, this works fine
++			// -thomas
 +			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) {
-+				damage *= (float)arrowDamage;
-+				damage.Flat += arrowDamage.Flat;
++				modifier = modifier.CombineWith(arrowDamage);
 +			}
 +			if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn) {
-+				damage *= (float)bulletDamage;
-+				damage.Flat += bulletDamage.Flat;
++				modifier = modifier.CombineWith(bulletDamage);
 +			}
 +			if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly) {
-+				damage *= (float)rocketDamage;
-+				damage.Flat += rocketDamage.Flat;
++				modifier = modifier.CombineWith(rocketDamage);
 +			}
 +
-+			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage);
-+			int damageNum = forTooltip ? (int)(sItem.damage * ItemID.Sets.ToolTipDamageMultiplier[sItem.type]) : sItem.damage;
-+			damageNum = (int)((float)damageNum * (float)damage + damage.Flat + 5E-06f);
-+			return Math.Max(0, damageNum);
++			CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
++			int baseDamage = forTooltip ? (int)(sItem.damage * ItemID.Sets.ToolTipDamageMultiplier[sItem.type]) : sItem.damage;
++			return Math.Max(0, (int)modifier.ApplyTo(baseDamage));
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse) {
@@ -5457,7 +5433,7 @@
  			}
  
 -			int damage = (int)(20f * (1f + magicDamage + minionDamage - 2f));
-+			int damage = (int)(20f * (1f + (float)allDamage.CombineWith(magicDamage) + (float)allDamage.CombineWith(minionDamage) - 2f));
++			int damage = (int)GetTotalDamage(DamageClass.MagicSummonHybrid).ApplyTo(20f);
  			IEntitySource projectileSource_SetBonus = GetProjectileSource_SetBonus(3);
  			_ = Main.projectile[Projectile.NewProjectile(projectileSource_SetBonus, MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  		}
