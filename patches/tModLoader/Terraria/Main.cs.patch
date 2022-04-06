@@ -1697,7 +1697,7 @@
  						numLines++;
  					}
 +					*/
-+					if (item.DamageType.AllowStandardCrits && item.DamageType.ShowStatTooltipLine(player[myPlayer], "CritChance")) {
++					if (item.DamageType.UseStandardCritCalcs && item.DamageType.ShowStatTooltipLine(player[myPlayer], "CritChance")) {
 +						int crit = player[myPlayer].GetWeaponCrit(item);
 +						toolTipLine[numLines] = crit + Lang.tip[5].Value;
 +						toolTipNames[numLines] = "CritChance";

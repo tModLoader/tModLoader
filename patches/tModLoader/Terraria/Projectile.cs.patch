@@ -397,7 +397,7 @@
 +											- thomas
 +											*/
 +
-+											if (DamageType.AllowStandardCrits && Main.rand.Next(100) < CritChance)
++											if (DamageType.UseStandardCritCalcs && Main.rand.Next(100) < CritChance)
 +												flag7 = true;
 +
  											int num15 = type;

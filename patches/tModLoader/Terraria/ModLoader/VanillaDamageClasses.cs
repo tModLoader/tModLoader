@@ -47,7 +47,7 @@ namespace Terraria.ModLoader
 	{
 		protected override string LangKey => "LegacyTooltip.53";
 
-		public override bool AllowStandardCrits => false;
+		public override bool UseStandardCritCalcs => false;
 
 		public override bool ShowStatTooltipLine(Player player, string lineName) => lineName != "CritChance" && lineName != "Speed";
 	}
@@ -66,7 +66,7 @@ namespace Terraria.ModLoader
 			return StatInheritanceData.None;
 		}
 
-		public override bool AllowStandardCrits => false;
+		public override bool UseStandardCritCalcs => false;
 
 		public override bool ShowStatTooltipLine(Player player, string lineName) => lineName != "CritChance";
 	}

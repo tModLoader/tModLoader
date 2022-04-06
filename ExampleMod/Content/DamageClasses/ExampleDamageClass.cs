@@ -78,7 +78,7 @@ namespace ExampleMod.Content.DamageClasses
 		// This property lets you decide whether or not your damage class can use standard critical strike calculations.
 		// Note that setting it to false will also prevent the critical strike chance tooltip line from being shown.
 		// This prevention will overrule anything set by ShowStatTooltipLine, so be careful!
-		public override bool AllowStandardCrits => true;
+		public override bool UseStandardCritCalcs => true;
 
 		public override bool ShowStatTooltipLine(Player player, string lineName) {
 			// This method lets you prevent certain common statistical tooltip lines from appearing on items associated with this DamageClass.

@@ -80,10 +80,10 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaultStats(Player player) { }
 
 		/// <summary>
-		/// This lets you decide whether or not your damage class can use standard crit chance calculations.
+		/// This lets you decide whether or not your damage class will use standard crit chance calculations.
 		/// Setting this to false will also hide the critical strike chance line in the tooltip of any item that uses this DamageClass.
 		/// </summary>
-		public virtual bool AllowStandardCrits => true;
+		public virtual bool UseStandardCritCalcs => true;
 
 		// to-do:
 		// this is a horrible approach to doin' this and I know full well that it is; this is just a stopgap to simplify the process for now
