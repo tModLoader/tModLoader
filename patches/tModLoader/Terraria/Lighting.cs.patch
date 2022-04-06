@@ -7,7 +7,7 @@
 -		private static readonly LightingEngine NewEngine = new LightingEngine();
 +		internal static readonly LightingEngine NewEngine = new LightingEngine();
 -		private static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera);
-+		internal static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera);
++		public static readonly LegacyLighting LegacyEngine = new LegacyLighting(Main.Camera);
  		private static ILightingEngine _activeEngine;
  
  		public static float GlobalBrightness {
