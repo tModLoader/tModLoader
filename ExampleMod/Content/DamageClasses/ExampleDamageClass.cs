@@ -20,12 +20,10 @@ namespace ExampleMod.Content.DamageClasses
 
 			return new StatInheritanceData(
 				damageInheritance: 0f,
-				useTimeInheritance: 0f,
-				useAnimationInheritance: 0f,
-				useSpeedInheritance: 0f,
 				critChanceInheritance: 0f,
-				knockbackInheritance: 0f,
-				armorPenInheritance: 0f
+				attackSpeedInheritance: 0f,
+				armorPenInheritance: 0f,
+				knockbackInheritance: 0f
 			);
 			// Now, what exactly did we just do, you might ask? Well, let's see here...
 			// StatInheritanceData is a struct which you'll need to return one of for any given outcome this method.
@@ -39,12 +37,10 @@ namespace ExampleMod.Content.DamageClasses
 			if (damageClass == DamageClass.Ranged)
 				return new StatInheritanceData(
 					damageInheritance: 1f,
-					useTimeInheritance: 0f,
-					useAnimationInheritance: 0f,
-					useSpeedInheritance: 0.4f,
 					critChanceInheritance: -1f,
-					knockbackInheritance: 0f,
-					armorPenInheritance: 2.5f
+					attackSpeedInheritance: 0.4f,
+					armorPenInheritance: 2.5f,
+					knockbackInheritance: 0f
 				);
 			*/
 			// This would allow our custom class to benefit from the following ranged stat bonuses:

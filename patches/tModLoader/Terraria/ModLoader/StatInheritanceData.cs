@@ -9,17 +9,17 @@ namespace Terraria.ModLoader
 		public static readonly StatInheritanceData None = new StatInheritanceData(0f, 0f, 0f, 0f, 0f);
 
 		public float damageInheritance;
-		public float attackSpeedInheritance;
 		public float critChanceInheritance;
-		public float knockbackInheritance;
+		public float attackSpeedInheritance;
 		public float armorPenInheritance;
+		public float knockbackInheritance;
 
-		public StatInheritanceData(float damageInheritance, float attackSpeedInheritance, float critChanceInheritance, float knockbackInheritance, float armorPenInheritance) {
+		public StatInheritanceData(float damageInheritance = 0f, float critChanceInheritance = 0f, float attackSpeedInheritance = 0f, float armorPenInheritance = 0f, float knockbackInheritance = 0f) {
 			this.damageInheritance = damageInheritance;
-			this.attackSpeedInheritance = attackSpeedInheritance;
 			this.critChanceInheritance = critChanceInheritance;
-			this.knockbackInheritance = knockbackInheritance;
+			this.attackSpeedInheritance = attackSpeedInheritance;
 			this.armorPenInheritance = armorPenInheritance;
+			this.knockbackInheritance = knockbackInheritance;
 		}
 	}
 }

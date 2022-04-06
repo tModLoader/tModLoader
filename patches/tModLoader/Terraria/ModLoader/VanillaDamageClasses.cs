@@ -58,7 +58,7 @@ namespace Terraria.ModLoader
 
 		public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
 			if (damageClass == Melee)
-				return new StatInheritanceData(0f, 1f, 0f, 0f, 0f);
+				return new StatInheritanceData(attackSpeedInheritance: 1f);
 
 			if (damageClass == Generic || damageClass == Summon)
 				return StatInheritanceData.Full;
