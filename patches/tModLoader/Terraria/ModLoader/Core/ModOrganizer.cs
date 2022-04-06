@@ -402,7 +402,7 @@ namespace Terraria.ModLoader.Core
 			if (tmodPath.Contains(Path.Combine("steamapps", "workshop"))) {
 				string parentDir = Directory.GetParent(tmodPath).ToString();
 
-				var match = ModOrganizer.PublishFolderMetadata.Match(parentDir);
+				var match = ModOrganizer.PublishFolderMetadata.Match(parentDir + Path.DirectorySeparatorChar);
 				if (match.Success)
 					parentDir = Directory.GetParent(parentDir).ToString();
 
