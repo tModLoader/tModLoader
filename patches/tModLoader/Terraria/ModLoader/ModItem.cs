@@ -261,10 +261,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="player">The player using the item</param>
-		/// <param name="damage">Use to directly multiply the player's effective damage.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
 		public virtual void ModifyWeaponDamage(Player player, ref StatModifier damage) {
 		}
 
@@ -298,18 +299,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
 		/// <param name="player">The player using the item.</param>
-		/// <param name="knockback">The StatModifier object representing the totality of the additive and multiplicative bonuses to be applied to the knockback.</param>
+		/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
 		public virtual void ModifyWeaponKnockback(Player player, ref StatModifier knockback) {
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's crit chance based on player buffs, etc.
+		/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="player">The player using this item</param>
-		/// <param name="crit">The critical strike chance, at 0 it will never trigger a crit and at 100 or above it will always trigger a crit</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
 		public virtual void ModifyWeaponCrit(Player player, ref int crit) {
 		}
 
