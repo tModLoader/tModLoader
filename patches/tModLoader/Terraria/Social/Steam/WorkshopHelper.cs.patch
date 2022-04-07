@@ -337,7 +337,7 @@
  					_endAction(this);
  				}
  
-@@ -305,6 +_,16 @@
+@@ -305,6 +_,15 @@
  						_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
  						return false;
  					}
@@ -345,7 +345,6 @@
 +
 +				private bool WrappedWriteManifest() {
 +					string headerText = GetHeaderText();
-+					TryWritingManifestToFolder(_entryData.BuildData["manifestfolder"], headerText);
 +					if (TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText))
 +						return true;
 +
