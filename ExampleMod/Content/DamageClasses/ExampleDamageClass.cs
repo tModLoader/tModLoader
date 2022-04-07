@@ -55,7 +55,7 @@ namespace ExampleMod.Content.DamageClasses
 		}
 
 		public override bool GetEffectInheritance(DamageClass damageClass) {
-			// This method allows you to make your damage class benefit from and be able to activate otherclass effects (e.g. Spectre bolts, Magma Stone) based on what returns true.
+			// This method allows you to make your damage class benefit from and be able to activate other classes' effects (e.g. Spectre bolts, Magma Stone) based on what returns true.
 			// Note that unlike our stat inheritance methods up above, you do not need to account for universal bonuses in this method.
 			// For this example, we'll make our class able to activate melee- and magic-specifically effects.
 			if (damageClass == DamageClass.Melee)
