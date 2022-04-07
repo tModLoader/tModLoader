@@ -254,7 +254,7 @@ namespace Terraria
 		public float GetWeaponAttackSpeed(Item sItem) {
 			float attackSpeed = GetTotalAttackSpeed(sItem.DamageType);
 			// apply a scale based on the set. It's not recommended for mods to use this, but vanilla does for super fast melee weapons so here we are
-			attackSpeed = 1 + (1 - attackSpeed) * ItemID.Sets.BonusAttackSpeedMultiplier[sItem.type];
+			attackSpeed = 1 + ((attackSpeed - 1) * ItemID.Sets.BonusAttackSpeedMultiplier[sItem.type]);
 			return attackSpeed;
 		}
 
