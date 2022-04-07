@@ -202,8 +202,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.<br/>
 		/// This method is different from the other AddEquipTexture in that it takes in both an associated item and internal name at once.<br/>
-		/// If both are provided, the equipTexture's name will be set to the internal name, alongside the keys for the equipTexture dictionnary.<br/>
-		/// NOTE : If an equipTexture of the same type associated to the same item already exists, automatic displays and <br/>
+		/// If both are provided, the EquipTexture's name will be set to the internal name, alongside the keys for the equipTexture dictionnary.<br/>
+		/// NOTE : If multiple EquipTextures of the same type are registered for the same item, the first one to be added will be the one automatically displayed on the player and mannequins<br/>
 		/// All other parameters are the same as the other AddEquipTexture.
 		/// </summary>
 		/// <param name="equipTexture">The equip texture.</param>
@@ -231,7 +231,8 @@ namespace Terraria.ModLoader
 			EquipLoader.equipTextures[type][slot] = equipTexture;
 			equipTextures[Tuple.Create(name ?? item.Name, type)] = equipTexture;
 
-			if (item != null) {
+			if (item != null)
+			{
 				if (!EquipLoader.idToSlot.TryGetValue(item.Type, out var slots))
 					EquipLoader.idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
 
