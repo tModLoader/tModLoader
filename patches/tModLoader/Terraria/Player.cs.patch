@@ -1064,7 +1064,7 @@
  				if (buffType[j] == 1) {
  					lavaImmune = true;
  					fireWalk = true;
-@@ -6645,18 +_,32 @@
+@@ -6645,18 +_,31 @@
  				else if (buffType[j] == 158) {
  					manaRegenBonus += 2;
  				}
@@ -1078,8 +1078,7 @@
 +				this fixes the Sharpening Station's armor penetration bonus bein' able to be applied to non-melee weapons (most notably summons) by holdin' a melee weapon
 +				- thomas
 +				*/
-+				else if (buffType[j] == 159)
-+				{
++				else if (buffType[j] == 159) {
 +					GetArmorPenetration(DamageClass.Melee) += 12;
 +				}
  				else if (buffType[j] == 192) {
