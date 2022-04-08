@@ -694,8 +694,8 @@ namespace Terraria.ModLoader
 		/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 		/// </summary>
 		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
-		/// <param name="itemDrop">The item that will be created when this fishing attempt succeeds. leave <0 for no item</param>
-		/// <param name="npcSpawn">The enemy that will be spawned if there is no item caught. leave <0 for no NPC spawn</param>
+		/// <param name="itemDrop">The item that will be created when this fishing attempt succeeds. leave &lt;0 for no item</param>
+		/// <param name="npcSpawn">The enemy that will be spawned if there is no item caught. leave &lt;0 for no NPC spawn</param>
 		/// <param name="sonar">Fill all of this structure's fields to override the sonar text, or make sonar.Text null to disable custom sonar</param>
 		/// <param name="sonarPosition">The position the Sonar text will spawn. Bobber location by default.</param>
 		public virtual void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
