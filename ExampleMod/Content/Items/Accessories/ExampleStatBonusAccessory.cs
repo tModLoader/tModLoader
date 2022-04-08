@@ -8,12 +8,13 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleStatBonusAccessory : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("20% increased damage\n"
+			Tooltip.SetDefault("20% increased damage; this is multiplicative with other damage bonuses\n"
+							 + "Increases base damage for all weapons by 4\n"
+							 + "Increases total damage for all weapons by 5\n"
 							 + "10% increased melee crit chance\n"
 							 + "100% increased example knockback\n"
 							 + "Magic attacks ignore an additional 5 defense points\n"
-							 + "Increases ranged firing speed by 15%\n"
-							 + "Increases summon damage by 8");
+							 + "Increases ranged firing speed by 15%");
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
