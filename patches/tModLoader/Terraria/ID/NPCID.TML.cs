@@ -32,6 +32,36 @@ namespace Terraria.ID
 			/// Whether or not a given NPC can sit on suitable furniture (<see cref="TileID.Sets.CanBeSatOnForNPCs"/>)
 			/// </summary>
 			public static bool[] CannotSitOnFurniture = Factory.CreateBoolSet(638, 656);
+
+			//Default ID is vanilla slimes
+			/// <summary>
+			/// Whether or not a given NPC is considered a slime.
+			/// </summary>
+			public static bool[] IsSlime = Factory.CreateBoolSet(1, 147, 537, 184, 204, 16, 59, 71, 667, 50, 535, 225, 302, 333, 334, 335, 336, 141, 81, 121, 183, 122, 138, 244, 657, 658, 659, 660, 304);
+
+			//Default ID is vanilla bunnies
+			/// <summary>
+			/// Whether or not a given NPC is considered a bunny.
+			/// </summary>
+			public static bool[] IsBunny = Factory.CreateBoolSet(46, 443, 646, 647, 648, 649, 650, 651, 652, 614, 303, 337, 47, 464, 540);
+
+			//Default ID is vanilla squirrels
+			/// <summary>
+			/// Whether or not a given NPC is considered a squirrel.
+			/// </summary>
+			public static bool[] IsSquirrel = Factory.CreateBoolSet(299, 538, 539, 639, 640, 641, 642, 643, 644, 645);
+
+			//Default ID is vanilla butterflies
+			/// <summary>
+			/// Whether or not a given NPC is considered a butterfly.
+			/// </summary>
+			public static bool[] IsButterfly = Factory.CreateBoolSet(356, 444, 653, 661);
+
+			//Default ID is vanilla birds
+			/// <summary>
+			/// Whether or not a given NPC is considered a bird.
+			/// </summary>
+			public static bool[] IsBird = Factory.CreateBoolSet(74, 297, 298, 442);
 		}
 	}
 }
