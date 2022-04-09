@@ -274,7 +274,7 @@
 +							SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 +						}
 +
-+						patchNotes = $"{_entryData.BuildData["version"]} learn more @ {_entryData.BuildData["homepage"]}";
++						patchNotes = $"{_entryData.BuildData["trueversion"]} learn more @ {_entryData.BuildData["homepage"]}";
 +
 +						string refs = _entryData.BuildData["workshopdeps"];
 +
