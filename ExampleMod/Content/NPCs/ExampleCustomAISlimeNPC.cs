@@ -44,6 +44,8 @@ namespace ExampleMod.Content.NPCs
 			// DisplayName.SetDefault("Flutter Slime"); // Automatic from localization files
 			Main.npcFrameCount[NPC.type] = 6; // make sure to set this for your modnpcs.
 
+			NPCID.Sets.IsSlime[Type] = true; // This NPC will be considered a slime.
+			
 			// Specify the debuffs it is immune to
 			NPCID.Sets.DebuffImmunitySets.Add(Type, new NPCDebuffImmunityData {
 				SpecificallyImmuneTo = new int[] {
