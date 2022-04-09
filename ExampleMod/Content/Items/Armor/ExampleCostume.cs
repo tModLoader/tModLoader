@@ -27,28 +27,28 @@ namespace ExampleMod.Content.Items.Armor
 			// The code below runs only if we're not loading on a server
 			if (Main.netMode != NetmodeID.Server) {
 				// Add equip textures
-				Mod.AddEquipTexture(new BlockyHead(), this, EquipType.Head, $"{Texture}_{EquipType.Head}");
-				Mod.AddEquipTexture(new EquipTexture(), this, EquipType.Body, $"{Texture}_{EquipType.Body}");
+				EquipLoader.AddEquipTexture(Mod, new BlockyHead(), this, EquipType.Head, $"{Texture}_{EquipType.Head}");
+				EquipLoader.AddEquipTexture(Mod, new EquipTexture(), this, EquipType.Body, $"{Texture}_{EquipType.Body}");
 				// The below 2 lines are equivalent
 				//Mod.AddEquipTexture(new EquipTexture(), EquipType.Legs, $"{Texture}_{EquipType.Legs}");
-				Mod.AddEquipTexture(this, EquipType.Legs, $"{Texture}_{EquipType.Legs}");
+				EquipLoader.AddEquipTexture(Mod, this, EquipType.Legs, $"{Texture}_{EquipType.Legs}");
 
 				//Add a separate set of equip textures by providing a custom name reference instead of an item reference
-				Mod.AddEquipTexture(new BlockyHead(), "BlockyAlt", EquipType.Head, $"{Texture}Alt_{EquipType.Head}");
-				Mod.AddEquipTexture(new EquipTexture(), "BlockyAlt", EquipType.Body, $"{Texture}Alt_{EquipType.Body}");
-				Mod.AddEquipTexture("BlockyAlt", EquipType.Legs, $"{Texture}Alt_{EquipType.Legs}");
+				EquipLoader.AddEquipTexture(Mod, new BlockyHead(), "BlockyAlt", EquipType.Head, $"{Texture}Alt_{EquipType.Head}");
+				EquipLoader.AddEquipTexture(Mod, new EquipTexture(), "BlockyAlt", EquipType.Body, $"{Texture}Alt_{EquipType.Body}");
+				EquipLoader.AddEquipTexture(Mod, "BlockyAlt", EquipType.Legs, $"{Texture}Alt_{EquipType.Legs}");
 			}
 		}
 
 		// Called in SetStaticDefaults
 		private void SetupDrawing() {
-			int equipSlotHead = Mod.GetEquipSlot(Name, EquipType.Head);
-			int equipSlotBody = Mod.GetEquipSlot(Name, EquipType.Body);
-			int equipSlotLegs = Mod.GetEquipSlot(Name, EquipType.Legs);
+			int equipSlotHead = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Head);
+			int equipSlotBody = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Body);
+			int equipSlotLegs = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs);
 
-			int equipSlotHeadAlt = Mod.GetEquipSlot("BlockyAlt", EquipType.Head);
-			int equipSlotBodyAlt = Mod.GetEquipSlot("BlockyAlt", EquipType.Body);
-			int equipSlotLegsAlt = Mod.GetEquipSlot("BlockyAlt", EquipType.Legs);
+			int equipSlotHeadAlt = EquipLoader.GetEquipSlot(Mod, "BlockyAlt", EquipType.Head);
+			int equipSlotBodyAlt = EquipLoader.GetEquipSlot(Mod, "BlockyAlt", EquipType.Body);
+			int equipSlotLegsAlt = EquipLoader.GetEquipSlot(Mod, "BlockyAlt", EquipType.Legs);
 
 			ArmorIDs.Head.Sets.DrawHead[equipSlotHead] = false;
 			ArmorIDs.Head.Sets.DrawHead[equipSlotHeadAlt] = false;

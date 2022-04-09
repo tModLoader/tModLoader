@@ -76,7 +76,7 @@ namespace Terraria.ModLoader
 			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 			if (autoloadEquip != null) {
 				foreach (var equip in autoloadEquip.equipTypes) {
-					Mod.AddEquipTexture(this, equip, $"{Texture}_{equip}");
+					EquipLoader.AddEquipTexture(Mod, this, equip, $"{Texture}_{equip}");
 				}
 			}
 
