@@ -449,6 +449,30 @@ namespace Terraria.ModLoader
 			npc.ModNPC?.BossLoot(ref name, ref potionType);
 		}
 
+		private static HookList HookCanFallThroughPlatforms = AddHook<Func<NPC, bool?>>(g => g.CanFallThroughPlatforms);
+
+		public static bool? CanFallThroughPlatforms(NPC npc) {
+			bool? ret = npc.ModNPC?.CanFallThroughPlatforms() ?? null;
+			if (ret.HasValue) {
+				if (!ret.Value) {
+					return false;
+				}
+				ret = true;
+			}
+
+			foreach (GlobalNPC g in HookCanFallThroughPlatforms.Enumerate(npc.globalNPCs)) {
+				bool? globalRet = g.CanFallThroughPlatforms(npc);
+				if (globalRet.HasValue) {
+					if (!globalRet.Value) {
+						return false;
+					}
+					ret = true;
+				}
+			}
+
+			return ret;
+		}
+
 		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Player, Item>>(g => g.OnCatchNPC);
 
 		public static void OnCatchNPC(NPC npc, Player player, Item item) {

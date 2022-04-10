@@ -162,6 +162,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to determine how and when an NPC can fall through platforms and similar tiles.
+		/// <br/>Return true to allow an NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
+		/// </summary>
+		public virtual bool? CanFallThroughPlatforms(NPC npc) {
+			return null;
+		}
+
+		/// <summary>
 		/// Allows you to make things happen when an NPC is caught. Ran Serverside.
 		/// </summary>
 		/// <param name="npc">The caught NPC</param>

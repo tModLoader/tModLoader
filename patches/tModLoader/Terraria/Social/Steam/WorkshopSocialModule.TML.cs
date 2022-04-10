@@ -75,6 +75,7 @@ namespace Terraria.Social.Steam
 					return false;
 				}
 
+				buildData["trueversion"] = buildData["version"];
 				// Use the stable version of the mod for publishing metadata, not the preview version!
 				if (!BuildInfo.IsStable) {
 					string stable = ModOrganizer.FindOldest(workshopFolderPath);

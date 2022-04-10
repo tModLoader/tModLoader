@@ -1074,6 +1074,17 @@
  			if (dryadWard) {
  				num2 = (int)num5 / 3;
  				num3 = 6;
+@@ -70586,6 +_,10 @@
+ 		}
+ 
+ 		private bool Collision_DecideFallThroughPlatforms() {
++			bool? modResult = NPCLoader.CanFallThroughPlatforms(this);
++			if (modResult.HasValue)
++				return modResult.Value;
++
+ 			bool result = false;
+ 			if (type == 2 || type == -43 || type == 190 || type == 191 || type == 192 || type == 193 || type == 194 || type == 317 || type == 318 || type == 133)
+ 				result = true;
 @@ -70871,6 +_,10 @@
  			if (IsABestiaryIconDummy)
  				newColor = Color.White;

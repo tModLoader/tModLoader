@@ -41,7 +41,7 @@ namespace ExampleMod.Content.NPCs
 		public ref float AI_FlutterTime => ref NPC.ai[2];
 
 		public override void SetStaticDefaults() {
-			// DisplayName.SetDefault("Flutter Slime"); // Automatic from .lang files
+			// DisplayName.SetDefault("Flutter Slime"); // Automatic from localization files
 			Main.npcFrameCount[NPC.type] = 6; // make sure to set this for your modnpcs.
 
 			// Specify the debuffs it is immune to
@@ -143,6 +143,17 @@ namespace ExampleMod.Content.NPCs
 					NPC.frame.Y = (int)Frame.Falling * frameHeight;
 					break;
 			}
+		}
+
+		// Here, because we use custom AI (aiStyle not set to a suitable vanilla value), we should manually decide when Flutter Slime can fall through platforms
+		public override bool? CanFallThroughPlatforms() {
+			if (AI_State == (float)ActionState.Fall && NPC.HasValidTarget && Main.player[NPC.target].Top.Y > NPC.Bottom.Y) {
+				// If Flutter Slime is currently falling, we want it to keep falling through platforms as long as it's above the player
+				return true;
+			}
+
+			return false;
+			// You could also return null here to apply vanilla behavior (which is the same as false for custom AI)
 		}
 
 		private void FallAsleep() {

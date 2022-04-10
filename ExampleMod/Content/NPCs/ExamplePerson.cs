@@ -24,12 +24,12 @@ using Terraria.DataStructures;
 
 namespace ExampleMod.Content.NPCs
 {
-	// [AutoloadHead] and npc.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
+	// [AutoloadHead] and NPC.townNPC are extremely important and absolutely both necessary for any Town NPC to work at all.
 	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
 		public override void SetStaticDefaults() {
-			// DisplayName automatically assigned from .lang files, but the commented line below is the normal approach.
+			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
 			Main.npcFrameCount[Type] = 25; // The amount of frames the NPC has
 
