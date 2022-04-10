@@ -457,6 +457,20 @@
  				case 12:
  				case 25:
  				case 27: {
+@@ -1274,10 +_,11 @@
+ 							break;
+ 
+ 						bool flag = false;
+-						if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
++						//if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
++						if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0 && ItemLoader.CanStack(Main.mouseItem, inv[slot])) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
+ 							flag = true;
+ 							if (Main.mouseItem.IsAir)
+-								Main.mouseItem.SetDefaults(inv[slot].type);
++								Main.mouseItem = inv[slot].Clone();
+ 							else
+ 								Main.mouseItem.stack++;
+ 
 @@ -1310,12 +_,15 @@
  
  			_ = Main.instance.shop[Main.npcShop];
