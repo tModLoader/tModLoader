@@ -426,6 +426,16 @@
  			if (Configuration.Save())
  				return PlayerInput.Save();
  
+@@ -3230,6 +_,9 @@
+ 
+ 			IsInTheMiddleOfLoadingSettings = true;
+ 			Configuration.Load();
++
++			ChromaInitializer.ConfigInit(); // Added by TML, see description in the class.
++
+ 			int currentValue = 0;
+ 			Configuration.Get("LastLaunchedVersion", ref currentValue);
+ 			bool flag = false;
 @@ -3272,7 +_,15 @@
  					screenBorderlessPendingResizes = 1;
  
