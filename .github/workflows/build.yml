@@ -128,7 +128,7 @@ jobs:
       - name: Install .NET SDKs
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.3'
+          dotnet-version: '6.0.x'
 
       # Runs a set of commands using the runners shell
       - name: Build script
