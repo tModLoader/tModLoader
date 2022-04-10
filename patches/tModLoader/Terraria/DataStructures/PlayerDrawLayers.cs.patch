@@ -43,6 +43,15 @@
  				Vector2 value6 = new Vector2(0f, 8f);
  				Vector2 vec4 = drawinfo.Position - Main.screenPosition + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.width / 2, drawinfo.drawPlayer.height - drawinfo.drawPlayer.bodyFrame.Height / 2) + new Vector2(0f, -4f) + value6;
  				vec4 = vec4.Floor();
+@@ -421,7 +_,7 @@
+ 		}
+ 
+ 		public static void DrawPlayer_08_1_Tails(ref PlayerDrawSet drawinfo) {
+-			if (drawinfo.drawPlayer.tail > 0 && drawinfo.drawPlayer.tail < 35 && !drawinfo.drawPlayer.mount.Active) {
++			if (drawinfo.drawPlayer.tail > 0 && !drawinfo.drawPlayer.mount.Active) {
+ 				Vector2 zero = Vector2.Zero;
+ 				if (drawinfo.isSitting)
+ 					zero.Y += -2f;
 @@ -436,10 +_,10 @@
  		}
  
