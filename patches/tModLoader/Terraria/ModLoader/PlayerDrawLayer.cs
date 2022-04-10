@@ -38,7 +38,6 @@ namespace Terraria.ModLoader
 
 		public virtual Transformation Transform { get; }
 
-
 		private readonly List<PlayerDrawLayer> _childrenBefore = new List<PlayerDrawLayer>();
 		public IReadOnlyList<PlayerDrawLayer> ChildrenBefore => _childrenBefore;
 

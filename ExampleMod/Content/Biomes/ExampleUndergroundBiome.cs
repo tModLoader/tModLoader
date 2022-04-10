@@ -14,8 +14,8 @@ namespace ExampleMod.Content.Biomes
 		// Select Music
 		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/MysteriousMystery");
 
-		// Sets how the AVFX associated with this biome will be displayed with respect to vanilla AVFX. For more information see AVFXPriority & its values.
-		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow; // We have set the AVFXPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
+		// Sets how the Scene Effect associated with this biome will be displayed with respect to vanilla Scene Effects. For more information see SceneEffectPriority & its values.
+		public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow; // We have set the SceneEffectPriority to be BiomeLow for purpose of example, however default behavour is BiomeLow.
 
 		// Populate the Bestiary Filter
 		public override string BestiaryIcon => base.BestiaryIcon;
@@ -37,8 +37,8 @@ namespace ExampleMod.Content.Biomes
 				Math.Abs(player.position.ToTileCoordinates().X - Main.maxTilesX / 2) < Main.maxTilesX / 6;
 		}
 
-		// In the event that both our biome AND one or more modded AVFX layers are active with the same AVFXPriority, this can decide which one.
-		// It's uncommon that need to assign a weight - you'd have to specifically believe that you don't need higher AVFXPriority, but do need to be the active AVFX within the priority you designated
+		// In the event that both our biome AND one or more modded SceneEffect layers are active with the same SceneEffect Priority, this can decide which one.
+		// It's uncommon that need to assign a weight - you'd have to specifically believe that you don't need higher SceneEffectPriority, but do need to be the active SceneEffect within the priority you designated
 		// In this case, we don't need it, so this inclusion is purely to demonstrate this is available.
 		// See the GetWeight documentation for more information.
 		/*

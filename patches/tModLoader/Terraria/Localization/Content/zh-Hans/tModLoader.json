@@ -273,10 +273,10 @@
 		"ModControls": "模组按键",
 
 		// Player and World Select
-		"MigratePlayersMessage": "你没有人物存档.\n如果你想将你的人物存档从原版转移到tModLoader,\n请将它们从“/Terraria/Players”复制到“/Terraria/ModLoader/Players”.\n复制[.plr]文件及同名文件夹.\n点击[这里]打开这些文件夹.\n复制完你所需的人物存档后,按[返回].",
+		"MigratePlayersMessage": "你没有人物存档.\n如果你想将你的人物存档从原版转移到tModLoader,\n请将它们从“/Terraria/Players”复制到“/Terraria/{0}/Players”.\n复制[.plr]文件及同名文件夹.\n点击[这里]打开这些文件夹.\n复制完你所需的人物存档后,按[返回].",
 		"MigratePlayersText": "点击[这里]转移人物存档...",
 		"MigratePlayersException": "尝试转移人物存档时发生错误",
-		"MigrateWorldsMessage": "你没有地图存档.\n如果你想将你的地图存档从原版转移到tModLoader,\n请将它们从“/Terraria/Worlds”复制到“/Terraria/ModLoader/Worlds”.\n复制[.wld]文件.\n点击[这里]打开这些文件夹.\n复制完你所需的地图存档后,按[返回].",
+		"MigrateWorldsMessage": "你没有地图存档.\n如果你想将你的地图存档从原版转移到tModLoader,\n请将它们从“/Terraria/Worlds”复制到“/Terraria/{0}/Worlds”.\n复制[.wld]文件.\n点击[这里]打开这些文件夹.\n复制完你所需的地图存档后,按[返回].",
 		"MigrateWorldsText": "点击[这里]转移地图...",
 		"MigratingWorldsText": "转移中...",
 		"ModsDifferentSinceLastPlay": "下列模组与上次使用此存档时启用的模组有所不同: ",

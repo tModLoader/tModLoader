@@ -8,7 +8,7 @@ Mods: {
 		}
 		
 		NPCName: {
-			FlutterSlime: Порхающий слизень
+			ExampleCustomAISlimeNPC: Порхающий слизень
 			Example_Person: Пример человека
 		}
 		
