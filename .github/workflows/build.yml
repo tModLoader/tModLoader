@@ -136,6 +136,12 @@ jobs:
         shell: bash
         run: |
           echo CI setup for Terraria v$TERRARIA_VERSION
+          
+          echo Listing installed .NET SDKs:
+          dotnet --list-sdks
+          echo Default .NET version:
+          dotnet --version
+          
           echo Downloading Terraria Server zip
           curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-$TERRARIA_VERSION.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
