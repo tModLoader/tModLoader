@@ -1,6 +1,6 @@
 --- src/Terraria/Configuration.targets
 +++ src/TerrariaNetCore/Configuration.targets
-@@ -1,26 +_,13 @@
+@@ -1,26 +_,15 @@
  <Project>
    <PropertyGroup>
 -    <TargetFramework>net40</TargetFramework>
@@ -8,7 +8,9 @@
 -    <PlatformTarget>x86</PlatformTarget>
 +    <TargetFramework>net6.0</TargetFramework>
 +    <!-- Defines the Minimum patch version that is required to play. -->
-+    <RuntimeFrameworkVersion>6.0.0</RuntimeFrameworkVersion>
++    <RuntimeFrameworkVersion>6.0.3</RuntimeFrameworkVersion>
++    <!-- Eliminates the Refs folder from output-->
++    <ProduceReferenceAssembly>false</ProduceReferenceAssembly> 
 +    <Configurations>Debug;Release</Configurations>
 +    <PlatformTarget>AnyCPU</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
