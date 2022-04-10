@@ -86,7 +86,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				string updateVersion = ModDownload.ModloaderVersion;
 				bool lastMonth = BuildInfo.tMLVersion.Minor == 12;
 				if (BuildInfo.IsStable && new Version(modBuildVersion.Major, modBuildVersion.Minor) == new Version(BuildInfo.tMLVersion.Major + (lastMonth ? 1 : 0), BuildInfo.tMLVersion.Minor + (lastMonth ? 0 : 1)))
-					updateVersion = "tModLoader Preview";
+					updateVersion = "tModLoader Preview: " + updateVersion;
 
 				tMLUpdateRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MBRequiresTMLUpdate", updateVersion)).WithFadedMouseOver(Color.Orange, Color.Orange * 0.7f);
 				tMLUpdateRequired.BackgroundColor = Color.Orange * 0.7f;
