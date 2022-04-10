@@ -9,3 +9,13 @@
  	{
  		private WorkshopHelper.UGCBased.Downloader _downloader;
  		private WorkshopHelper.UGCBased.PublishedItemsFinder _publishedItems;
+@@ -149,7 +_,8 @@
+ 			resourcePackPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, text, fullPath, settings.PreviewImagePath, settings.Publicity, usedTagsInternalNames);
+ 		}
+ 
+-		private string GetTemporaryFolderPath() => string.Concat(str2: SteamUser.GetSteamID().m_SteamID.ToString(), str0: _contentBaseFolder, str1: Path.DirectorySeparatorChar.ToString(), str3: Path.DirectorySeparatorChar.ToString());
++		//private string GetTemporaryFolderPath() => string.Concat(str2: SteamUser.GetSteamID().m_SteamID.ToString(), str0: _contentBaseFolder, str1: Path.DirectorySeparatorChar.ToString(), str3: Path.DirectorySeparatorChar.ToString());
++		private string GetTemporaryFolderPath() => ModLoader.Core.ModCompile.ModSourcePath + Path.DirectorySeparatorChar;
+ 
+ 		private bool MakeTemporaryFolder(string temporaryFolderPath) {
+ 			bool result = true;

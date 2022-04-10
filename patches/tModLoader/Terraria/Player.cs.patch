@@ -1815,16 +1815,15 @@
  				SoundEngine.PlaySound(SoundID.Item166, base.Center);
  				int num3 = -1;
  				if (Main.curMusic == 1)
-@@ -10917,10 +_,14 @@
+@@ -10917,10 +_,12 @@
  					currentItem.SetDefaults(5044);
  				else if (Main.curMusic == 90)
  					currentItem.SetDefaults(5112);
 -				else if (Main.curMusic > 13)
 +				else if (Main.curMusic > 13 && Main.curMusic < Main.maxMusic)
  					currentItem.SetDefaults(1596 + Main.curMusic - 14);
- 				else if (num3 != -1)
-+					; // Silence.
-+				else if (Main.curMusic < Main.maxMusic)
+-				else if (num3 != -1)
++				else if (num3 != -1 && Main.curMusic < Main.maxMusic)
  					currentItem.SetDefaults(num3 + 562);
 +				else if (MusicLoader.musicToItem.TryGetValue(Main.curMusic, out int modMusicBoxType))
 +					currentItem.SetDefaults(modMusicBoxType);
@@ -1949,11 +1948,11 @@
  		}
  
  		public void GetHairSettings(out bool fullHair, out bool hatHair, out bool hideHair, out bool backHairDraw, out bool drawsBackHairWithoutHeadgear) {
-+			fullHair = head > 0 && ArmorIDs.Head.Sets.DrawFullHair[head];
-+			hatHair = head > 0 && ArmorIDs.Head.Sets.DrawHatHair[head];
-+			hideHair = (face > 0 && ArmorIDs.Face.Sets.PreventHairDraw[face]) || (faceHead >= 0 && head != 0);
-+			backHairDraw = hair > 0 && ArmorIDs.Head.Sets.DrawBackHair[hair];
-+			drawsBackHairWithoutHeadgear = head > 0 && ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[head];
++			fullHair = head >= 0 && ArmorIDs.Head.Sets.DrawFullHair[head];
++			hatHair = head >= 0 && ArmorIDs.Head.Sets.DrawHatHair[head];
++			hideHair = (face >= 0 && ArmorIDs.Face.Sets.PreventHairDraw[face]) || (faceHead >= 0 && head != 0);
++			backHairDraw = hair >= 0 && ArmorIDs.Head.Sets.DrawBackHair[hair];
++			drawsBackHairWithoutHeadgear = head >= 0 && ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[head];
 +
 +			/*
  			fullHair = (hatHair = (hideHair = (drawsBackHairWithoutHeadgear = false)));
@@ -3290,6 +3289,20 @@
  					}
  					else {
  						statLife = 0;
+@@ -27556,6 +_,13 @@
+ 				if (FileUtilities.Exists(Main.playerPathName + ".bak", isCloudSave))
+ 					FileUtilities.Delete(Main.playerPathName + ".bak", isCloudSave);
+ 
++				string moddedPlayerPathName = Path.ChangeExtension(Main.playerPathName, ".tplr");
++				if (FileUtilities.Exists(moddedPlayerPathName, isCloudSave))
++					FileUtilities.Delete(moddedPlayerPathName, isCloudSave);
++
++				if (FileUtilities.Exists(moddedPlayerPathName + ".bak", isCloudSave))
++					FileUtilities.Delete(moddedPlayerPathName + ".bak", isCloudSave);
++
+ 				Main.ActivePlayerFileData = new PlayerFileData();
+ 			}
+ 		}
 @@ -27565,6 +_,11 @@
  				return;
  
@@ -3361,7 +3374,7 @@
  
 -			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot))
 +			//if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot))
-+			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot) && !ItemLoader.CanStack(theSlot, theItemToAccept))
++			if (theSlot.stack < theSlot.maxStack && theItemToAccept.IsTheSameAs(theSlot) && ItemLoader.CanStack(theSlot, theItemToAccept))
  				return true;
  
  			return false;

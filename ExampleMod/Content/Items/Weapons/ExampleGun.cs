@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -69,7 +70,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 		// What if I wanted multiple projectiles in a even spread? (Vampire Knives)
 		// Even Arc style: Multiple Projectile, Even Spread
-		/*public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		/*public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			float numberProjectiles = 3 + Main.rand.Next(3); // 3, 4, or 5 shots
 			float rotation = MathHelper.ToRadians(45);
 
@@ -99,14 +100,14 @@ namespace ExampleMod.Content.Items.Weapons
 			item.useAnimation = 12;
 			item.useTime = 4; // one third of useAnimation
 			item.reuseDelay = 14;
-		public override bool ConsumeAmmo(Player player)	{
+		public override bool CanConsumeAmmo(Player player)	{
 			// Because of how the game works, player.itemAnimation will be 11, 7, and finally 3. (useAnimation - 1, then - useTime until less than 0.)
 			// We can get the Clockwork Assault Riffle Effect by not consuming ammo when itemAnimation is lower than the first shot.
-			return !(player.itemAnimation < item.useAnimation - 2);
+			return !(player.itemAnimation < Item.useAnimation - 2);
 		}*/
 
 		// How can I shoot 2 different projectiles at the same time?
-		/*public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		/*public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			// Here we manually spawn the 2nd projectile, manually specifying the projectile type that we wish to shoot.
 			Projectile.NewProjectile(source, position, velocity, ProjectileID.GrenadeI, damage, knockback, player.whoAmI);
 

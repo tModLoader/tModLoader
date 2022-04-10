@@ -10,8 +10,7 @@ namespace Terraria.ModLoader.Assets
 {
 	public sealed class AssemblyResourcesContentSource : ContentSource
 	{
-
-		private readonly string RootPath;
+		private readonly string rootPath;
 		private readonly Assembly assembly;
 
 		public AssemblyResourcesContentSource(Assembly assembly, string rootPath = null) {
@@ -24,10 +23,10 @@ namespace Terraria.ModLoader.Assets
 					.Select(p => p.Substring(rootPath.Length));
 			}
 
-			RootPath = rootPath ?? "";
+			this.rootPath = rootPath ?? "";
 			SetAssetNames(resourceNames);
 		}
 
-		public override Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(RootPath + assetName);
+		public override Stream OpenStream(string assetName) => assembly.GetManifestResourceStream(rootPath + assetName);
 	}
 }

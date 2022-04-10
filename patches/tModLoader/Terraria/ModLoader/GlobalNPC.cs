@@ -180,6 +180,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to determine how and when an NPC can fall through platforms and similar tiles.
+		/// <br/>Return true to allow an NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
+		/// </summary>
+		public virtual bool? CanFallThroughPlatforms(NPC npc) {
+			return null;
+		}
+
+		/// <summary>
 		/// Allows you to make things happen when an NPC is caught. Ran Serverside.
 		/// </summary>
 		/// <param name="npc">The caught NPC</param>
@@ -189,7 +197,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
+		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify npc loot.
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="npcLoot"></param>
@@ -197,7 +206,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.
+		/// Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify npc loot.
 		/// </summary>
 		/// <param name="globalLoot"></param>
 		public virtual void ModifyGlobalLoot(GlobalLoot globalLoot) {

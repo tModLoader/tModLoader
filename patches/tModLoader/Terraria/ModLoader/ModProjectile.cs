@@ -11,7 +11,8 @@ using Terraria.ID;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.
+	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile">Basic Projectile Guide</see> teaches the basics of making a modded projectile.
 	/// </summary>
 	public abstract class ModProjectile : ModTexturedType {
 		/// <summary> The projectile object that this ModProjectile controls. </summary>

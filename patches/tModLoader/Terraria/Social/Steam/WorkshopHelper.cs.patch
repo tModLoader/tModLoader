@@ -274,7 +274,7 @@
 +							SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 +						}
 +
-+						patchNotes = $"{_entryData.BuildData["version"]} learn more @ {_entryData.BuildData["homepage"]}";
++						patchNotes = $"{_entryData.BuildData["trueversion"]} learn more @ {_entryData.BuildData["homepage"]}";
 +
 +						string refs = _entryData.BuildData["workshopdeps"];
 +
@@ -328,7 +328,16 @@
  						case EResult.k_EResultOK:
  							SteamFriends.ActivateGameOverlayToWebPage("steam://url/CommunityFilePage/" + _publishedFileID.m_PublishedFileId);
  							break;
-@@ -305,6 +_,16 @@
+@@ -291,6 +_,8 @@
+ 							break;
+ 					}
+ 
++					SteamUGC.SubscribeItem(_publishedFileID);
++
+ 					_endAction(this);
+ 				}
+ 
+@@ -305,6 +_,15 @@
  						_issueReporter.ReportManifestCreationProblem("Workshop.ReportIssue_CouldNotCreateResourcePackManifestFile", exception);
  						return false;
  					}
@@ -336,7 +345,6 @@
 +
 +				private bool WrappedWriteManifest() {
 +					string headerText = GetHeaderText();
-+					TryWritingManifestToFolder(_entryData.BuildData["manifestfolder"], headerText);
 +					if (TryWritingManifestToFolder(_entryData.ContentFolderPath, headerText))
 +						return true;
 +

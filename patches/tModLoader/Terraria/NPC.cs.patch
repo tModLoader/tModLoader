@@ -214,6 +214,64 @@
  			if (timeLeft < 0)
  				timeLeft = 0;
  
+@@ -37185,13 +_,14 @@
+ 			int num = -1;
+ 			int num2 = 7;
+ 			int num3 = 6;
+-			int num4 = 2;
++			int num4 = 1; // TML: #ModdedChairsForNPCs: Changed from 2 to 1 to support non 2 tile high chairs
+ 			int num5 = 1;
+-			int num6 = 2;
++			int num6 = 1; // TML: #ModdedChairsForNPCs: Changed from 2 to 1 to support non 2 tile high chairs
+ 			for (int i = point.X - num2; i <= point.X + num2; i += num5) {
+ 				for (int num7 = point.Y + num4; num7 >= point.Y - num3; num7 -= num6) {
+ 					Tile tile = Main.tile[i, num7];
+-					if (tile != null && tile.active() && TileID.Sets.CanBeSatOnForNPCs[tile.type] && (tile.frameY % 40 != 0 || num7 + 1 <= point.Y + num4)) {
++					//if (tile != null && tile.active() && TileID.Sets.CanBeSatOnForNPCs[tile.type] && (tile.frameY % 40 != 0 || num7 + 1 <= point.Y + num4)) {
++					if (tile != null && tile.active() && TileID.Sets.CanBeSatOnForNPCs[tile.type]) { // TML: #ModdedChairsForNPCs: Removed vanilla specific conditions
+ 						int num8 = Math.Abs(i - point.X) + Math.Abs(num7 - point.Y);
+ 						if (num == -1 || num8 < num) {
+ 							num = num8;
+@@ -37212,6 +_,12 @@
+ 
+ 				point2.Y += 2;
+ 			}
++			else if (tile2.type >= TileID.Count) { // Check necessary as in this case vanilla changes (to vanilla tiles that aren't sittable by default) by the hook should not take effect
++				TileRestingInfo info = new TileRestingInfo(this, point2, Vector2.Zero, base.direction);
++				TileLoader.ModifySittingTargetInfo(point2.X, point2.Y, tile2.type, ref info);
++				point2 = info.AnchorTilePosition;
++				point2.Y += 1; // Set to tile *below* chair
++			}
+ 
+ 			floorX = point2.X;
+ 			floorY = point2.Y;
+@@ -37219,9 +_,11 @@
+ 
+ 		private void AI_007_TryForcingSitting(int homeFloorX, int homeFloorY) {
+ 			Tile tile = Main.tile[homeFloorX, homeFloorY - 1];
+-			bool flag = type != 638 && type != 656 && ai[0] != 5f;
++			//bool flag = type != 638 && type != 656 && ai[0] != 5f;
++			bool flag = !NPCID.Sets.CannotSitOnFurniture[type] && ai[0] != 5f;
+ 			if (flag)
+-				flag &= (tile != null && tile.active() && (tile.type == 15 || tile.type == 497));
++				//flag &= (tile != null && tile.active() && (tile.type == 15 || tile.type == 497));
++				flag &= (tile != null && tile.active() && TileID.Sets.CanBeSatOnForNPCs[tile.type]); // TML: #ModdedChairsForNPCs
+ 
+ 			if (flag)
+ 				flag &= (tile.type != 15 || tile.frameY < 1080 || tile.frameY > 1098);
+@@ -37239,8 +_,10 @@
+ 			if (flag) {
+ 				ai[0] = 5f;
+ 				ai[1] = 900 + Main.rand.Next(10800);
+-				direction = ((tile.frameX != 0) ? 1 : (-1));
+-				base.Bottom = new Vector2(homeFloorX * 16 + 8 + 2 * direction, homeFloorY * 16);
++				// TML: #ModdedChairsForNPCs
++				SitDown(new Point(homeFloorX, homeFloorY - 1), out int targetDirection, out var bottom);
++				direction = targetDirection;
++				base.Bottom = bottom;
+ 				velocity = Vector2.Zero;
+ 				localAI[3] = 0f;
+ 				netUpdate = true;
 @@ -37252,6 +_,7 @@
  			if (type == 638 || type == 656)
  				num = 0;
@@ -274,6 +332,16 @@
  							if (Main.netMode != 1) {
  								if (WorldGen.OpenDoor(num18, num19 - 2, base.direction)) {
  									closeDoor = true;
+@@ -38109,7 +_,8 @@
+ 				if (ai[0] == 5f) {
+ 					Point coords = (base.Bottom + Vector2.UnitY * -2f).ToTileCoordinates();
+ 					Tile tile = Main.tile[coords.X, coords.Y];
+-					if (tile.type != 15 && tile.type != 497)
++					//if (tile.type != 15 && tile.type != 497)
++					if (!TileID.Sets.CanBeSatOnForNPCs[tile.type]) // TML: #ModdedChairsForNPCs 
+ 						ai[1] = 0f;
+ 					else
+ 						Main.sittingManager.AddNPC(whoAmI, coords);
 @@ -38281,13 +_,19 @@
  					num28 = 589;
  					num30 = 7f;
@@ -399,6 +467,28 @@
  				if (Main.expertMode)
  					num67 = (int)((float)num67 * Main.GameModeInfo.TownNPCDamageMultiplier);
  
+@@ -39054,15 +_,18 @@
+ 
+ 				if (flag27) {
+ 					Tile tile2 = Main.tile[b.X, b.Y];
+-					flag27 = (tile2.type == 15 || tile2.type == 497);
++					//flag27 = (tile2.type == 15 || tile2.type == 497);
++					flag27 = TileID.Sets.CanBeSatOnForNPCs[tile2.type]; // TML: #ModdedChairsForNPCs
+ 					if (flag27 && tile2.type == 15 && tile2.frameY >= 1080 && tile2.frameY <= 1098)
+ 						flag27 = false;
+ 
+ 					if (flag27) {
+ 						ai[0] = 5f;
+ 						ai[1] = 900 + Main.rand.Next(10800);
+-						base.direction = ((tile2.frameX != 0) ? 1 : (-1));
+-						base.Bottom = new Vector2(b.X * 16 + 8 + 2 * base.direction, b.Y * 16 + 16);
++						// TML: #ModdedChairsForNPCs
++						SitDown(b, out int targetDirection, out var bottom);
++						base.direction = targetDirection;
++						base.Bottom = bottom;
+ 						velocity = Vector2.Zero;
+ 						localAI[3] = 0f;
+ 						netUpdate = true;
 @@ -42416,7 +_,7 @@
  					Main.tile[num177 - direction, num178 + 1] = new Tile();
  
@@ -720,8 +810,8 @@
  
  							int num29 = (int)Main.player[num7].Center.X / 16;
  							int num30 = (int)(Main.player[num7].Bottom.Y + 8f) / 16;
-+							spawnInfo.playerFloorX = num29;
-+							spawnInfo.playerFloorY = num30;
++							spawnInfo.PlayerFloorX = num29;
++							spawnInfo.PlayerFloorY = num30;
  							if (Main.tile[num, num2].type == 367) {
 +								// Patch note: flag10 - marble
  								flag10 = true;
@@ -752,22 +842,22 @@
  			bool flag18 = (float)new Point(num9 - num, num10 - num2).X * Main.windSpeedTarget > 0f;
  			spawnTileType = SpawnNPC_TryFindingProperGroundTileType(spawnTileType, num, num2);
 +
-+			spawnInfo.spawnTileX = num;
-+			spawnInfo.spawnTileY = num2;
-+			spawnInfo.spawnTileType = num3;
-+			spawnInfo.player = Main.player[num7];
-+			spawnInfo.sky = flag3;
-+			spawnInfo.lihzahrd = flag4;
-+			spawnInfo.playerSafe = flag5;
-+			spawnInfo.invasion = flag6;
-+			spawnInfo.water = flag7;
-+			spawnInfo.granite = flag9;
-+			spawnInfo.marble = flag10;
-+			spawnInfo.spiderCave = flag11;
-+			spawnInfo.playerInTown = flag12;
-+			spawnInfo.desertCave = flag13;
-+			spawnInfo.planteraDefeated = flag14;
-+			spawnInfo.safeRangeX = flag15;
++			spawnInfo.SpawnTileX = num;
++			spawnInfo.SpawnTileY = num2;
++			spawnInfo.SpawnTileType = num3;
++			spawnInfo.Player = Main.player[num7];
++			spawnInfo.Sky = flag3;
++			spawnInfo.Lihzahrd = flag4;
++			spawnInfo.PlayerSafe = flag5;
++			spawnInfo.Invasion = flag6;
++			spawnInfo.Water = flag7;
++			spawnInfo.Granite = flag9;
++			spawnInfo.Marble = flag10;
++			spawnInfo.SpiderCave = flag11;
++			spawnInfo.PlayerInTown = flag12;
++			spawnInfo.DesertCave = flag13;
++			spawnInfo.PlanteraDefeated = flag14;
++			spawnInfo.SafeRangeX = flag15;
 +
  			int newNPC = 200;
  			int cattailX;
@@ -931,6 +1021,17 @@
  			if (dryadWard) {
  				num2 = (int)num5 / 3;
  				num3 = 6;
+@@ -70586,6 +_,10 @@
+ 		}
+ 
+ 		private bool Collision_DecideFallThroughPlatforms() {
++			bool? modResult = NPCLoader.CanFallThroughPlatforms(this);
++			if (modResult.HasValue)
++				return modResult.Value;
++
+ 			bool result = false;
+ 			if (type == 2 || type == -43 || type == 190 || type == 191 || type == 192 || type == 193 || type == 194 || type == 317 || type == 318 || type == 133)
+ 				result = true;
 @@ -70871,6 +_,10 @@
  			if (IsABestiaryIconDummy)
  				newColor = Color.White;

@@ -313,7 +313,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.
+		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Expert-Cross-Mod-Content">Expert Cross Mod Content Guide</see> explains how to use this hook to implement and utilize cross-mod capabilities.
 		/// </summary>
 		public virtual object Call(params object[] args) {
 			return null;

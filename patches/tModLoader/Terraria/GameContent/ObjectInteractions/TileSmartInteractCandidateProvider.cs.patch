@@ -1,0 +1,28 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ObjectInteractions/TileSmartInteractCandidateProvider.cs
++++ src/tModLoader/Terraria/GameContent/ObjectInteractions/TileSmartInteractCandidateProvider.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework;
+ using System;
+ using System.Collections.Generic;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.ObjectInteractions
+ {
+@@ -219,6 +_,8 @@
+ 						break;
+ 				}
+ 
++				TileLoader.ModifySmartInteractCoords(tile.type, ref num7, ref num8, ref num9, ref num10, ref num11);
++
+ 				if (num7 == 0 || num8 == 0)
+ 					continue;
+ 
+@@ -352,6 +_,8 @@
+ 								targets.Add(new Tuple<int, int>(i, j));
+ 							break;
+ 					}
++					if (TileLoader.HasSmartInteract(i, j, tile.type, settings))
++						targets.Add(new Tuple<int, int>(i, j));
+ 				}
+ 			}
+ 		}

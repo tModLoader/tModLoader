@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Terraria.GameContent.UI.Elements;
+﻿using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
@@ -18,6 +15,7 @@ namespace Terraria.ModLoader.Config.UI
 			textBoxBackground.Left.Set(-190, 1f);
 			textBoxBackground.Width.Set(180, 0f);
 			textBoxBackground.Height.Set(30, 0f);
+
 			Append(textBoxBackground);
 
 			uIInputTextField.SetText(Value);
@@ -25,10 +23,10 @@ namespace Terraria.ModLoader.Config.UI
 			uIInputTextField.Left.Set(10, 0f);
 			uIInputTextField.Width.Set(-20, 1f);
 			uIInputTextField.Height.Set(20, 0);
-			uIInputTextField.OnTextChange += (a, b) =>
-			{
+			uIInputTextField.OnTextChange += (a, b) => {
 				Value = uIInputTextField.CurrentString;
 			};
+
 			textBoxBackground.Append(uIInputTextField);
 		}
 	}
