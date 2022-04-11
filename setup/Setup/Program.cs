@@ -220,6 +220,7 @@ namespace Terraria.ModLoader.Setup
 				string TMLVERSIONDefine = $"TML_{string.Join("_", TMLVERSION.Split('.').Take(2))}";
 				Console.WriteLine($"TMLVERSIONDefine: {TMLVERSIONDefine}");
 				tMLModTargetsContents = tMLModTargetsContents.Replace("<DefineConstants></DefineConstants>", $"<DefineConstants>{TMLVERSIONDefine}</DefineConstants>");
+				UpdateFileText("patches/tModLoader/Terraria/release_extras/tMLMod.targets", tMLModTargetsContents); // The patch file needs to be updated as well since it will be copied to src and the postbuild will copy it to the steam folder as well.
 			}
 			UpdateFileText(Path.Combine(TMLDevSteamDir, "tMLMod.targets"), tMLModTargetsContents);
 		}
