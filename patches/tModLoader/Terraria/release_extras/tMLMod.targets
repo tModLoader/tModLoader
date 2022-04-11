@@ -7,6 +7,7 @@
 		<tMLName>tModLoader</tMLName>
 		<tMLPath>$(tMLName).dll</tMLPath>
 		<tMLServerPath>$(tMLPath) -server</tMLServerPath>
+		<DefineConstants></DefineConstants>
 	</PropertyGroup>
 	<ItemGroup>
 		<Reference Include="$(tMLSteamPath)$(tMLPath)" />

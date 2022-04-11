@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -210,7 +211,18 @@ namespace Terraria.ModLoader.Setup
 
 		internal static void UpdateTargetsFiles() {
 			UpdateFileText("src/WorkspaceInfo.targets", GetWorkspaceInfoTargetsText());
-			UpdateFileText(Path.Combine(TMLDevSteamDir, "tMLMod.targets"), File.ReadAllText("patches/tModLoader/Terraria/release_extras/tMLMod.targets"));
+			string tMLModTargetsContents = File.ReadAllText("patches/tModLoader/Terraria/release_extras/tMLMod.targets");
+
+			string TMLVERSION = Environment.GetEnvironmentVariable("TMLVERSION");
+			string TMLVERSIONDefine = "TML_Dev";
+			if (!string.IsNullOrWhiteSpace(TMLVERSION)) {
+				// Convert 2012.4.x to 2012_4
+				Console.WriteLine($"TMLVERSION found: {TMLVERSION}");
+				TMLVERSIONDefine = $"TML_{string.Join("_", TMLVERSION.Split('.').Take(2))}";
+			}
+			Console.WriteLine($"TMLVERSIONDefine: {TMLVERSIONDefine}");
+			tMLModTargetsContents = tMLModTargetsContents.Replace("<DefineConstants></DefineConstants>", $"<DefineConstants>{TMLVERSIONDefine}</DefineConstants>");
+			UpdateFileText(Path.Combine(TMLDevSteamDir, "tMLMod.targets"), tMLModTargetsContents);
 		}
 
 		private static void UpdateFileText(string path, string text) {

@@ -385,7 +385,11 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				Program.LaunchParameters.TryGetValue("-unsafe", out var unsafeParam) &&
 				bool.TryParse(unsafeParam, out var _allowUnsafe) && _allowUnsafe;
 
-			var preprocessorSymbols = new List<string> { "FNA" };
+			string tmlVersionPreprocessorSymbol = $"TML_{BuildInfo.tMLVersion.Major}_{BuildInfo.tMLVersion.Minor}";
+			if(BuildInfo.IsDev)
+				tmlVersionPreprocessorSymbol = "TML_DEV";
+
+			var preprocessorSymbols = new List<string> { "FNA", tmlVersionPreprocessorSymbol };
 			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
 				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
 
