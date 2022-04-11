@@ -309,7 +309,7 @@ namespace Terraria.ModLoader
 		/// All other parameters are the same as the other AddEquipTexture.
 		/// </summary>
 		/// <param name="equipTexture">The equip texture.</param>
-		/// /// <param name="mod">The mod the equipment texture is from.</param>
+		/// <param name="mod">The mod the equipment texture is from.</param>
 		/// <param name="item">The item.</param>
 		/// <param name="name">The internal name.</param>
 		/// <param name="type">The type.</param>
