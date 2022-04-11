@@ -13,9 +13,9 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 		}
 
 		public override bool IsVanitySet(int head, int body, int legs)
-			=> head == EquipLoader..GetEquipSlot(Mod, nameof(Jofairden_Head), EquipType.Head)
-			&& body == EquipLoader..GetEquipSlot(Mod, nameof(Jofairden_Body), EquipType.Body)
-			&& legs == EquipLoader..GetEquipSlot(Mod, nameof(Jofairden_Legs), EquipType.Legs);
+			=> head == EquipLoader.GetEquipSlot(Mod, nameof(Jofairden_Head), EquipType.Head)
+			&& body == EquipLoader.GetEquipSlot(Mod, nameof(Jofairden_Body), EquipType.Body)
+			&& legs == EquipLoader.GetEquipSlot(Mod, nameof(Jofairden_Legs), EquipType.Legs);
 
 		public override void UpdateVanitySet(Player player)
 			=> player.GetModPlayer<JofairdenArmorEffectPlayer>().HasSetBonus = true;
