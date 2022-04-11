@@ -214,14 +214,13 @@ namespace Terraria.ModLoader.Setup
 			string tMLModTargetsContents = File.ReadAllText("patches/tModLoader/Terraria/release_extras/tMLMod.targets");
 
 			string TMLVERSION = Environment.GetEnvironmentVariable("TMLVERSION");
-			string TMLVERSIONDefine = "TML_Dev";
-			if (!string.IsNullOrWhiteSpace(TMLVERSION)) {
+			if (!string.IsNullOrWhiteSpace(TMLVERSION) && branch == "1.4-stable") {
 				// Convert 2012.4.x to 2012_4
 				Console.WriteLine($"TMLVERSION found: {TMLVERSION}");
-				TMLVERSIONDefine = $"TML_{string.Join("_", TMLVERSION.Split('.').Take(2))}";
+				string TMLVERSIONDefine = $"TML_{string.Join("_", TMLVERSION.Split('.').Take(2))}";
+				Console.WriteLine($"TMLVERSIONDefine: {TMLVERSIONDefine}");
+				tMLModTargetsContents = tMLModTargetsContents.Replace("<DefineConstants></DefineConstants>", $"<DefineConstants>{TMLVERSIONDefine}</DefineConstants>");
 			}
-			Console.WriteLine($"TMLVERSIONDefine: {TMLVERSIONDefine}");
-			tMLModTargetsContents = tMLModTargetsContents.Replace("<DefineConstants></DefineConstants>", $"<DefineConstants>{TMLVERSIONDefine}</DefineConstants>");
 			UpdateFileText(Path.Combine(TMLDevSteamDir, "tMLMod.targets"), tMLModTargetsContents);
 		}
 
@@ -232,11 +231,12 @@ namespace Terraria.ModLoader.Setup
 				File.WriteAllText(path, text);
 		}
 
+		static string branch = "";
 		private static string GetWorkspaceInfoTargetsText() {
 			string gitsha = "";
 			RunCmd("", "git", "rev-parse HEAD", s => gitsha = s.Trim());
 
-			string branch = "";
+			branch = "";
 			RunCmd("", "git", "rev-parse --abbrev-ref HEAD", s => branch = s.Trim());
 
 			string GITHUB_HEAD_REF = Environment.GetEnvironmentVariable("GITHUB_HEAD_REF");
