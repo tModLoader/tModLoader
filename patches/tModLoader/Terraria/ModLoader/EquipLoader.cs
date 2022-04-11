@@ -251,8 +251,7 @@ namespace Terraria.ModLoader
 		/// <param name="type">The type.</param>
 		/// <param name="texture">The texture.</param>
 		/// <returns></returns>
-		public static int AddEquipTexture(Mod mod, ModItem item, EquipType type, string texture)
-		{
+		public static int AddEquipTexture(Mod mod, ModItem item, EquipType type, string texture) {
 			return AddEquipTexture(mod, new EquipTexture(), item, type, texture);
 		}
 
@@ -267,8 +266,7 @@ namespace Terraria.ModLoader
 		/// <param name="type">The type.</param>
 		/// <param name="texture">The texture.</param>
 		/// <returns></returns>
-		public static int AddEquipTexture(Mod mod, string name, EquipType type, string texture)
-		{
+		public static int AddEquipTexture(Mod mod, string name, EquipType type, string texture) {
 			return AddEquipTexture(mod, new EquipTexture(), name, type, texture);
 		}
 
@@ -283,8 +281,7 @@ namespace Terraria.ModLoader
 		/// <param name="type">The type.</param>
 		/// <param name="texture">The texture.</param>
 		/// <returns></returns>
-		public static int AddEquipTexture(Mod mod, EquipTexture equipTexture, ModItem item, EquipType type, string texture)
-		{
+		public static int AddEquipTexture(Mod mod, EquipTexture equipTexture, ModItem item, EquipType type, string texture) {
 			return AddEquipTexture(mod, equipTexture, item, null, type, texture);
 		}
 
@@ -300,8 +297,7 @@ namespace Terraria.ModLoader
 		/// <param name="type">The type.</param>
 		/// <param name="texture">The texture.</param>
 		/// <returns></returns>
-		public static int AddEquipTexture(Mod mod, EquipTexture equipTexture, string name, EquipType type, string texture)
-		{
+		public static int AddEquipTexture(Mod mod, EquipTexture equipTexture, string name, EquipType type, string texture) {
 			return AddEquipTexture(mod, equipTexture, null, name, type, texture);
 		}
 
