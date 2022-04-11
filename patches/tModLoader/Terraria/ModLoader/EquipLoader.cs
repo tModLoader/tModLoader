@@ -246,7 +246,7 @@ namespace Terraria.ModLoader
 		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property.<br/>
 		/// Returns the ID / slot that is assigned to the equipment texture.
 		/// </summary>
-		///  <param name="mod">The mod the equipment texture is from.</param>
+		/// <param name="mod">The mod the equipment texture is from.</param>
 		/// <param name="item">The item.</param>
 		/// <param name="type">The type.</param>
 		/// <param name="texture">The texture.</param>
