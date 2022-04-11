@@ -364,6 +364,41 @@
  					drawinfo.DrawDataCache.Add(item);
  					if (num == 3870) {
  						item = new DrawData(TextureAssets.GlowMask[238].Value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + origin5.X + num10), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + num11)), sourceRect, new Color(255, 255, 255, 127), num9, origin5, adjustedItemScale, drawinfo.itemEffect, 0);
+@@ -2407,13 +_,34 @@
+ 				}
+ 
+ 				int num12 = 10;
++
++				// If the item is animated, its texture is larger than the item because it contains multiple animation frames.
++				// Because of this, we can't trust the dimensions of the item's texture.
++				// Thankfully, `sourceRect` contains the width and height of the item.
++				// Specifically, it contains either the dimensions of the item's texture or the dimensions of a single frame of the item's animation if it is animated.
++				var frame = sourceRect.Value;
++				int width = frame.Width;
++				int height = frame.Height;
++
++				/*
+ 				Vector2 vector5 = new Vector2(value.Width / 2, value.Height / 2);
++				*/
++				Vector2 vector5 = new Vector2(width / 2, height / 2);
++
+ 				Vector2 vector6 = Main.DrawPlayerItemPos(drawinfo.drawPlayer.gravDir, num);
+ 				num12 = (int)vector6.X;
+ 				vector5.Y = vector6.Y;
++
++				/*
+ 				Vector2 origin7 = new Vector2(-num12, value.Height / 2);
++				*/
++				Vector2 origin7 = new Vector2(-num12, height / 2);
++
+ 				if (drawinfo.drawPlayer.direction == -1)
++					/*
+ 					origin7 = new Vector2(value.Width + num12, value.Height / 2);
++					*/
++					origin7 = new Vector2(width + num12, height / 2);
+ 
+ 				item = new DrawData(value, new Vector2((int)(drawinfo.ItemLocation.X - Main.screenPosition.X + vector5.X), (int)(drawinfo.ItemLocation.Y - Main.screenPosition.Y + vector5.Y)), sourceRect, heldItem.GetAlpha(drawinfo.itemColor), drawinfo.drawPlayer.itemRotation, origin7, adjustedItemScale, drawinfo.itemEffect, 0);
+ 				drawinfo.DrawDataCache.Add(item);
 @@ -2505,7 +_,7 @@
  			if (drawinfo.usesCompositeTorso) {
  				DrawPlayer_28_ArmOverItemComposite(ref drawinfo);

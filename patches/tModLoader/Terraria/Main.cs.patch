@@ -308,6 +308,19 @@
  		}
  
  		public static string playerPathName => ActivePlayerFileData.Path;
+@@ -2461,6 +_,12 @@
+ 			float num = 10f;
+ 			instance.LoadItem(itemtype);
+ 			Vector2 result = new Vector2(TextureAssets.Item[itemtype].Width() / 2, TextureAssets.Item[itemtype].Height() / 2);
++
++			// TML: If the item is animated, use the dimensions of a single frame of animation
++			if (Main.itemAnimations[itemtype]?.GetFrame(TextureAssets.Item[itemtype].Value) is { } frame) {
++			    result = new Vector2(frame.Width / 2, frame.Height / 2);
++			}
++
+ 			switch (itemtype) {
+ 				case 95:
+ 					num = 6f;
 @@ -2775,6 +_,7 @@
  			}
  
