@@ -245,15 +245,15 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 <tr class="memitem:ae3a54d0fa8536f84b68d739d5e92bf6a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ae3a54d0fa8536f84b68d739d5e92bf6a">ModifyStartingInventory</a> (IReadOnlyDictionary&lt; string, <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_terraria_1_1_item.html">Item</a> &gt;&gt; itemsByMod, bool mediumCoreDeath)</td></tr>
 <tr class="memdesc:ae3a54d0fa8536f84b68d739d5e92bf6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the items that will be added to the player's inventory. Useful if you want to stop vanilla or other mods from adding an item. You can access a mod's items by using the mod's internal name as the indexer, such as: additions["ModName"]. To access vanilla items you can use "Terraria" as the index.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ae3a54d0fa8536f84b68d739d5e92bf6a">More...</a><br /></td></tr>
 <tr class="separator:ae3a54d0fa8536f84b68d739d5e92bf6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f9745098d8ff59dac37537cd79cdad8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a0f9745098d8ff59dac37537cd79cdad8">ModifyWeaponCrit</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref int crit)</td></tr>
-<tr class="memdesc:a0f9745098d8ff59dac37537cd79cdad8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify a weapon's crit chance based on player buffs, etc.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a0f9745098d8ff59dac37537cd79cdad8">More...</a><br /></td></tr>
-<tr class="separator:a0f9745098d8ff59dac37537cd79cdad8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a662ac4102b49c327d3784755cc8be885"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a662ac4102b49c327d3784755cc8be885">ModifyWeaponDamage</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> damage, ref float flat)</td></tr>
-<tr class="memdesc:a662ac4102b49c327d3784755cc8be885"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a662ac4102b49c327d3784755cc8be885">More...</a><br /></td></tr>
-<tr class="separator:a662ac4102b49c327d3784755cc8be885"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaaa74ca2975e5fcd8e4f797eb6394938"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aaaa74ca2975e5fcd8e4f797eb6394938">ModifyWeaponKnockback</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> knockback, ref float flat)</td></tr>
-<tr class="memdesc:aaaa74ca2975e5fcd8e4f797eb6394938"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify a weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the <a class="el" href="class_terraria_1_1_player.html">Player</a> class's limited fields.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aaaa74ca2975e5fcd8e4f797eb6394938">More...</a><br /></td></tr>
-<tr class="separator:aaaa74ca2975e5fcd8e4f797eb6394938"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af05d0af30d856363253091d690b06860"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#af05d0af30d856363253091d690b06860">ModifyWeaponCrit</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref float crit)</td></tr>
+<tr class="memdesc:af05d0af30d856363253091d690b06860"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify a weapon's crit chance based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> has to offer.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#af05d0af30d856363253091d690b06860">More...</a><br /></td></tr>
+<tr class="separator:af05d0af30d856363253091d690b06860"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad77cbaede58f112e5d9ff08299eeede1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ad77cbaede58f112e5d9ff08299eeede1">ModifyWeaponDamage</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> damage)</td></tr>
+<tr class="memdesc:ad77cbaede58f112e5d9ff08299eeede1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify a weapon's damage based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> has to offer.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ad77cbaede58f112e5d9ff08299eeede1">More...</a><br /></td></tr>
+<tr class="separator:ad77cbaede58f112e5d9ff08299eeede1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a919067a237722575b266198d401de906"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a919067a237722575b266198d401de906">ModifyWeaponKnockback</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> knockback)</td></tr>
+<tr class="memdesc:a919067a237722575b266198d401de906"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify a weapon's knockback based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> has to offer.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a919067a237722575b266198d401de906">More...</a><br /></td></tr>
+<tr class="separator:a919067a237722575b266198d401de906"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6927f61bbe5edbb9437117a94fc2c64"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ac6927f61bbe5edbb9437117a94fc2c64">ModifyZoom</a> (ref float zoom)</td></tr>
 <tr class="memdesc:ac6927f61bbe5edbb9437117a94fc2c64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to modify the zoom factor for the player. The zoom correlates to the percentage of half the screen size the zoom can reach. A value of -1 passed in means no vanilla scope is in effect. A value of 1.0 means the scope can zoom half a screen width/height away, putting the player on the edge of the game screen. Vanilla values include .8, .6666, and .5.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ac6927f61bbe5edbb9437117a94fc2c64">More...</a><br /></td></tr>
 <tr class="separator:ac6927f61bbe5edbb9437117a94fc2c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2626,8 +2626,8 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 
 </div>
 </div>
-<a id="a0f9745098d8ff59dac37537cd79cdad8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f9745098d8ff59dac37537cd79cdad8">&#9670;&nbsp;</a></span>ModifyWeaponCrit()</h2>
+<a id="af05d0af30d856363253091d690b06860"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af05d0af30d856363253091d690b06860">&#9670;&nbsp;</a></span>ModifyWeaponCrit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2644,7 +2644,7 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref int&#160;</td>
+          <td class="paramtype">ref float&#160;</td>
           <td class="paramname"><em>crit</em>&#160;</td>
         </tr>
         <tr>
@@ -2660,19 +2660,19 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to temporarily modify a weapon's crit chance based on player buffs, etc. </p>
+<p>Allows you to dynamically modify a weapon's crit chance based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> has to offer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">item</td><td>The item</td></tr>
-    <tr><td class="paramname">crit</td><td>The crit chance, ranging from 0 to 100</td></tr>
+    <tr><td class="paramname">item</td><td>The item.</td></tr>
+    <tr><td class="paramname">crit</td><td>The total crit chance of the item after all normal crit chance calculations.</td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a662ac4102b49c327d3784755cc8be885"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a662ac4102b49c327d3784755cc8be885">&#9670;&nbsp;</a></span>ModifyWeaponDamage()</h2>
+<a id="ad77cbaede58f112e5d9ff08299eeede1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad77cbaede58f112e5d9ff08299eeede1">&#9670;&nbsp;</a></span>ModifyWeaponDamage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2690,13 +2690,7 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a>&#160;</td>
-          <td class="paramname"><em>damage</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>flat</em>&#160;</td>
+          <td class="paramname"><em>damage</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2711,20 +2705,19 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts). </p>
+<p>Allows you to dynamically modify a weapon's damage based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> has to offer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">item</td><td>The item being used</td></tr>
-    <tr><td class="paramname">damage</td><td>The <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> object representing the totality of the additive and multiplicative bonuses to be applied to the player's effective damage for this item.</td></tr>
-    <tr><td class="paramname">flat</td><td>This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</td></tr>
+    <tr><td class="paramname">item</td><td>The item being used.</td></tr>
+    <tr><td class="paramname">damage</td><td>The <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> object representing the totality of the various modifiers to be applied to the item's base damage.</td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="aaaa74ca2975e5fcd8e4f797eb6394938"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaaa74ca2975e5fcd8e4f797eb6394938">&#9670;&nbsp;</a></span>ModifyWeaponKnockback()</h2>
+<a id="a919067a237722575b266198d401de906"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a919067a237722575b266198d401de906">&#9670;&nbsp;</a></span>ModifyWeaponKnockback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2742,13 +2735,7 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a>&#160;</td>
-          <td class="paramname"><em>knockback</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref float&#160;</td>
-          <td class="paramname"><em>flat</em>&#160;</td>
+          <td class="paramname"><em>knockback</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2763,11 +2750,11 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to temporarily modify a weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the <a class="el" href="class_terraria_1_1_player.html">Player</a> class's limited fields. </p>
+<p>Allows you to dynamically modify a weapon's knockback based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> has to offer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">item</td><td></td></tr>
-    <tr><td class="paramname">knockback</td><td></td></tr>
+    <tr><td class="paramname">item</td><td>The item being used.</td></tr>
+    <tr><td class="paramname">knockback</td><td>The <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> object representing the totality of the various modifiers to be applied to the item's base knockback.</td></tr>
   </table>
   </dd>
 </dl>

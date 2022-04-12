@@ -315,6 +315,7 @@ var hierarchy =
     [ "Terraria.GameContent.UI.CustomCurrencySystem", "class_terraria_1_1_game_content_1_1_u_i_1_1_custom_currency_system.html", [
       [ "Terraria.GameContent.UI.CustomCurrencySingleCoin", "class_terraria_1_1_game_content_1_1_u_i_1_1_custom_currency_single_coin.html", null ]
     ] ],
+    [ "Terraria.ModLoader.DamageClassData", "class_terraria_1_1_mod_loader_1_1_damage_class_data.html", null ],
     [ "Terraria.ModLoader.DamageClassLoader", "class_terraria_1_1_mod_loader_1_1_damage_class_loader.html", null ],
     [ "Terraria.GameContent.Events.DD2Event", "class_terraria_1_1_game_content_1_1_events_1_1_d_d2_event.html", null ],
     [ "DefaultContractResolver", "class_default_contract_resolver.html", null ],
@@ -1229,12 +1230,14 @@ var hierarchy =
           ] ],
           [ "Terraria.ModLoader.DamageClass", "class_terraria_1_1_mod_loader_1_1_damage_class.html", [
             [ "Terraria.ModLoader.VanillaDamageClass", "class_terraria_1_1_mod_loader_1_1_vanilla_damage_class.html", [
+              [ "Terraria.ModLoader.DefaultDamageClass", "class_terraria_1_1_mod_loader_1_1_default_damage_class.html", null ],
               [ "Terraria.ModLoader.GenericDamageClass", "class_terraria_1_1_mod_loader_1_1_generic_damage_class.html", null ],
               [ "Terraria.ModLoader.MagicDamageClass", "class_terraria_1_1_mod_loader_1_1_magic_damage_class.html", null ],
+              [ "Terraria.ModLoader.MagicSummonHybridDamageClass", "class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html", null ],
               [ "Terraria.ModLoader.MeleeDamageClass", "class_terraria_1_1_mod_loader_1_1_melee_damage_class.html", null ],
-              [ "Terraria.ModLoader.NoScalingDamageClass", "class_terraria_1_1_mod_loader_1_1_no_scaling_damage_class.html", null ],
               [ "Terraria.ModLoader.RangedDamageClass", "class_terraria_1_1_mod_loader_1_1_ranged_damage_class.html", null ],
               [ "Terraria.ModLoader.SummonDamageClass", "class_terraria_1_1_mod_loader_1_1_summon_damage_class.html", null ],
+              [ "Terraria.ModLoader.SummonMeleeSpeedDamageClass", "class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html", null ],
               [ "Terraria.ModLoader.ThrowingDamageClass", "class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html", null ]
             ] ]
           ] ],
@@ -2114,6 +2117,7 @@ var hierarchy =
     [ "Terraria.GameContent.Skies.CreditsRoll.Actions.Sprites", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites.html", null ],
     [ "Terraria.Graphics.SpriteViewMatrix", "class_terraria_1_1_graphics_1_1_sprite_view_matrix.html", null ],
     [ "Terraria.Star", "class_terraria_1_1_star.html", null ],
+    [ "Terraria.ModLoader.StatInheritanceData", "struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data.html", null ],
     [ "Terraria.ModLoader.StatModifier", "struct_terraria_1_1_mod_loader_1_1_stat_modifier.html", null ],
     [ "Terraria.ID.StatusID", "class_terraria_1_1_i_d_1_1_status_i_d.html", null ],
     [ "Terraria.Social.Steam.SteamP2PReader", "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader.html", null ],

@@ -100,18 +100,21 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_dama
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad7d8da43255bc1b0a56ea70863432c16"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#ad7d8da43255bc1b0a56ea70863432c16">CountsAs</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> damageClass)</td></tr>
-<tr class="memdesc:ad7d8da43255bc1b0a56ea70863432c16"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks. Returns false in all cases by default, which does not let any other classes' effects trigger on this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#ad7d8da43255bc1b0a56ea70863432c16">More...</a><br /></td></tr>
-<tr class="separator:ad7d8da43255bc1b0a56ea70863432c16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f8425ff0c5a7407a1a84062a802cad1"><td class="memItemLeft" align="right" valign="top"><a id="a4f8425ff0c5a7407a1a84062a802cad1"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>GetCachedBenefitFrom</b> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> damageClass)</td></tr>
-<tr class="separator:a4f8425ff0c5a7407a1a84062a802cad1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a555e9683160a8245b9ac80705a509fc3"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a555e9683160a8245b9ac80705a509fc3">GetEffectInheritance</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> damageClass)</td></tr>
+<tr class="memdesc:a555e9683160a8245b9ac80705a509fc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks. Returns false in all cases by default, which does not let any other classes' effects trigger on this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a555e9683160a8245b9ac80705a509fc3">More...</a><br /></td></tr>
+<tr class="separator:a555e9683160a8245b9ac80705a509fc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bc22beaeca0cfe6e621f65b48397898"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data.html">StatInheritanceData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a4bc22beaeca0cfe6e621f65b48397898">GetModifierInheritance</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> damageClass)</td></tr>
+<tr class="memdesc:a4bc22beaeca0cfe6e621f65b48397898"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance. This returns a struct called <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data.html">StatInheritanceData</a>. This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes' stat bonuses. By default, this will return StatInheritanceData.Full for <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a4c35bf9b7f4b812d6a8e6aef3659a0a2" title="Base damage class for all weapons. All vanilla damage classes inherit bonuses applied to this class....">DamageClass.Generic</a>, and StatInheritanceData.None for any other. Any given <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will also never call this method for itself. For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a4bc22beaeca0cfe6e621f65b48397898">More...</a><br /></td></tr>
+<tr class="separator:a4bc22beaeca0cfe6e621f65b48397898"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a262246e6ddc2d6258f97cbf62da11c7b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a262246e6ddc2d6258f97cbf62da11c7b">SetDefaultStats</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:a262246e6ddc2d6258f97cbf62da11c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define default buffs for all items of this class (eg, base crit)  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a262246e6ddc2d6258f97cbf62da11c7b">More...</a><br /></td></tr>
+<tr class="memdesc:a262246e6ddc2d6258f97cbf62da11c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define default stat modifiers for all items of this class (e.g. base crit chance).  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a262246e6ddc2d6258f97cbf62da11c7b">More...</a><br /></td></tr>
 <tr class="separator:a262246e6ddc2d6258f97cbf62da11c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a080da7499507b6b71835a8b61d69ae67"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a080da7499507b6b71835a8b61d69ae67">SetupContent</a> ()</td></tr>
 <tr class="memdesc:a080da7499507b6b71835a8b61d69ae67"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aa2daf87c887ac0d98f00543a41e8e87f" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a080da7499507b6b71835a8b61d69ae67">More...</a><br /></td></tr>
 <tr class="separator:a080da7499507b6b71835a8b61d69ae67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38a8e63d4e3402ba2a4966257eb7489f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a38a8e63d4e3402ba2a4966257eb7489f">ShowStatTooltipLine</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, string lineName)</td></tr>
+<tr class="memdesc:a38a8e63d4e3402ba2a4966257eb7489f"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you enable or disable standard statistical tooltip lines displaying on items associated with this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. The lines usable are "Damage", "CritChance", "Speed", and "Knockback".  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a38a8e63d4e3402ba2a4966257eb7489f">More...</a><br /></td></tr>
+<tr class="separator:a38a8e63d4e3402ba2a4966257eb7489f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html">Terraria.ModLoader.ModType</a></td></tr>
 <tr class="memitem:a041087074eaff42734190d565f13ce1a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a041087074eaff42734190d565f13ce1a">IsLoadingEnabled</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
 <tr class="memdesc:a041087074eaff42734190d565f13ce1a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to stop Mod.AddContent from actually adding this content. Useful for items that can be disabled by a config.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a041087074eaff42734190d565f13ce1a">More...</a><br /></td></tr>
@@ -128,9 +131,6 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>GetCachedBenefitFrom
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:a45d1c4ed81ba54c9b83d9299bbfeb0af"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a45d1c4ed81ba54c9b83d9299bbfeb0af">GetBenefitFrom</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> damageClass)</td></tr>
-<tr class="memdesc:a45d1c4ed81ba54c9b83d9299bbfeb0af"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance. Returns 0 in all cases by default, which does not let any other classes boost this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a45d1c4ed81ba54c9b83d9299bbfeb0af">More...</a><br /></td></tr>
-<tr class="separator:a45d1c4ed81ba54c9b83d9299bbfeb0af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89e77200ae6acbfbcaa819830ed1a76c"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a89e77200ae6acbfbcaa819830ed1a76c">Register</a> ()</td></tr>
 <tr class="memdesc:a89e77200ae6acbfbcaa819830ed1a76c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a89e77200ae6acbfbcaa819830ed1a76c">More...</a><br /></td></tr>
 <tr class="separator:a89e77200ae6acbfbcaa819830ed1a76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,36 +140,45 @@ Properties</h2></td></tr>
 <tr class="memitem:a691da1da28715fb39c1cff4e056b6c5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_translation.html">ModTranslation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a691da1da28715fb39c1cff4e056b6c5c">ClassName</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a691da1da28715fb39c1cff4e056b6c5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the translation that is used behind <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a7f2eaf9ea55faee80fc8929c181a87e0" title="This is the name that will show up when an item tooltip displays &#39;X [ClassName]&#39;. This should include...">DisplayName</a>. The translation will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a691da1da28715fb39c1cff4e056b6c5c">More...</a><br /></td></tr>
 <tr class="separator:a691da1da28715fb39c1cff4e056b6c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2f8afc8ef2649e6e73d95872dd2013b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#af2f8afc8ef2649e6e73d95872dd2013b">Default</a> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_damage_class.html">DefaultDamageClass</a>()<code> [get]</code></td></tr>
+<tr class="memdesc:af2f8afc8ef2649e6e73d95872dd2013b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespace_terraria_1_1_mod_loader_1_1_default.html">Default</a> damage class for non-classed weapons and items, does not benefit from Generic bonuses  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#af2f8afc8ef2649e6e73d95872dd2013b">More...</a><br /></td></tr>
+<tr class="separator:af2f8afc8ef2649e6e73d95872dd2013b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f2eaf9ea55faee80fc8929c181a87e0"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a7f2eaf9ea55faee80fc8929c181a87e0">DisplayName</a><code> [get]</code></td></tr>
 <tr class="memdesc:a7f2eaf9ea55faee80fc8929c181a87e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the name that will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a7f2eaf9ea55faee80fc8929c181a87e0">More...</a><br /></td></tr>
 <tr class="separator:a7f2eaf9ea55faee80fc8929c181a87e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa58316088112f4e1f264d04b01f63367"><td class="memItemLeft" align="right" valign="top"><a id="aa58316088112f4e1f264d04b01f63367"></a>
 virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayNameInternal</b><code> [get]</code></td></tr>
 <tr class="separator:aa58316088112f4e1f264d04b01f63367"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c35bf9b7f4b812d6a8e6aef3659a0a2"><td class="memItemLeft" align="right" valign="top"><a id="a4c35bf9b7f4b812d6a8e6aef3659a0a2"></a>
-static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Generic</b> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_generic_damage_class.html">GenericDamageClass</a>()<code> [get]</code></td></tr>
+<tr class="memitem:a4c35bf9b7f4b812d6a8e6aef3659a0a2"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a4c35bf9b7f4b812d6a8e6aef3659a0a2">Generic</a> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_generic_damage_class.html">GenericDamageClass</a>()<code> [get]</code></td></tr>
+<tr class="memdesc:a4c35bf9b7f4b812d6a8e6aef3659a0a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base damage class for all weapons. All vanilla damage classes inherit bonuses applied to this class. Accessories which benefit all classes provide bonuses via the Generic class  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a4c35bf9b7f4b812d6a8e6aef3659a0a2">More...</a><br /></td></tr>
 <tr class="separator:a4c35bf9b7f4b812d6a8e6aef3659a0a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89dea78885ee30d96687cf290f0f8510"><td class="memItemLeft" align="right" valign="top"><a id="a89dea78885ee30d96687cf290f0f8510"></a>
 static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Magic</b> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_magic_damage_class.html">MagicDamageClass</a>()<code> [get]</code></td></tr>
 <tr class="separator:a89dea78885ee30d96687cf290f0f8510"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc9766bd9c1c252fba5c941201672dd6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#acc9766bd9c1c252fba5c941201672dd6">MagicSummonHybrid</a> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html">MagicSummonHybridDamageClass</a>()<code> [get]</code></td></tr>
+<tr class="memdesc:acc9766bd9c1c252fba5c941201672dd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a damage class used solely by vanilla forbidden storm. It scales with both magic and summon damage modifiers.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#acc9766bd9c1c252fba5c941201672dd6">More...</a><br /></td></tr>
+<tr class="separator:acc9766bd9c1c252fba5c941201672dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8fb890e33cca2623f652fa126625fb2"><td class="memItemLeft" align="right" valign="top"><a id="aa8fb890e33cca2623f652fa126625fb2"></a>
 static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Melee</b> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_melee_damage_class.html">MeleeDamageClass</a>()<code> [get]</code></td></tr>
 <tr class="separator:aa8fb890e33cca2623f652fa126625fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6adc754a5daa0df83e4180e4a8c63c53"><td class="memItemLeft" align="right" valign="top"><a id="a6adc754a5daa0df83e4180e4a8c63c53"></a>
-static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NoScaling</b> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_no_scaling_damage_class.html">NoScalingDamageClass</a>()<code> [get]</code></td></tr>
-<tr class="separator:a6adc754a5daa0df83e4180e4a8c63c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70f676c48522df49b11e864d19d701b6"><td class="memItemLeft" align="right" valign="top"><a id="a70f676c48522df49b11e864d19d701b6"></a>
 static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Ranged</b> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_ranged_damage_class.html">RangedDamageClass</a>()<code> [get]</code></td></tr>
 <tr class="separator:a70f676c48522df49b11e864d19d701b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cad912a4036af43e1e4233a59e39e48"><td class="memItemLeft" align="right" valign="top"><a id="a3cad912a4036af43e1e4233a59e39e48"></a>
 static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Summon</b> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_summon_damage_class.html">SummonDamageClass</a>()<code> [get]</code></td></tr>
 <tr class="separator:a3cad912a4036af43e1e4233a59e39e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07dc3f2d48bc5bd0053cebdbefea14a4"><td class="memItemLeft" align="right" valign="top"><a id="a07dc3f2d48bc5bd0053cebdbefea14a4"></a>
-static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Throwing</b> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html">ThrowingDamageClass</a>()<code> [get]</code></td></tr>
+<tr class="memitem:a955a2bf4fc555288677aa3a8f94728ee"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a955a2bf4fc555288677aa3a8f94728ee">SummonMeleeSpeed</a> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html">SummonMeleeSpeedDamageClass</a>()<code> [get]</code></td></tr>
+<tr class="memdesc:a955a2bf4fc555288677aa3a8f94728ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a damage class used solely by vanilla whips. It benefits from melee attackSpeed bonuses.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a955a2bf4fc555288677aa3a8f94728ee">More...</a><br /></td></tr>
+<tr class="separator:a955a2bf4fc555288677aa3a8f94728ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07dc3f2d48bc5bd0053cebdbefea14a4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a07dc3f2d48bc5bd0053cebdbefea14a4">Throwing</a> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html">ThrowingDamageClass</a>()<code> [get]</code></td></tr>
+<tr class="memdesc:a07dc3f2d48bc5bd0053cebdbefea14a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class provided for modders who want to coordinate throwing accessories and items. Not used by any vanilla items.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a07dc3f2d48bc5bd0053cebdbefea14a4">More...</a><br /></td></tr>
 <tr class="separator:a07dc3f2d48bc5bd0053cebdbefea14a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfbec195bd41e40269f9b754ee12c21a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#abfbec195bd41e40269f9b754ee12c21a">Type</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:abfbec195bd41e40269f9b754ee12c21a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the internal <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#abfbec195bd41e40269f9b754ee12c21a">More...</a><br /></td></tr>
 <tr class="separator:abfbec195bd41e40269f9b754ee12c21a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98381aeb799bda44f841ed0ebef90250"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a98381aeb799bda44f841ed0ebef90250">UseStandardCritCalcs</a><code> [get]</code></td></tr>
+<tr class="memdesc:a98381aeb799bda44f841ed0ebef90250"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you decide whether or not your damage class will use standard crit chance calculations. Setting this to false will also hide the critical strike chance line in the tooltip of any item that uses this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a98381aeb799bda44f841ed0ebef90250">More...</a><br /></td></tr>
+<tr class="separator:a98381aeb799bda44f841ed0ebef90250"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_terraria_1_1_mod_loader_1_1_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html">Terraria.ModLoader.ModType</a></td></tr>
 <tr class="memitem:a4cd1fe9fa20e03fea86dcdcfb5e921c6 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a4cd1fe9fa20e03fea86dcdcfb5e921c6">FullName</a><code> [get]</code></td></tr>
 <tr class="memdesc:a4cd1fe9fa20e03fea86dcdcfb5e921c6 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this, including the mod it is from.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a4cd1fe9fa20e03fea86dcdcfb5e921c6">More...</a><br /></td></tr>
@@ -192,8 +201,8 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
 <tr class="separator:a70f7612ca9aebec3149b51789f1b54c6 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad7d8da43255bc1b0a56ea70863432c16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7d8da43255bc1b0a56ea70863432c16">&#9670;&nbsp;</a></span>CountsAs()</h2>
+<a id="a555e9683160a8245b9ac80705a509fc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a555e9683160a8245b9ac80705a509fc3">&#9670;&nbsp;</a></span>GetEffectInheritance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,7 +211,7 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool Terraria.ModLoader.DamageClass.CountsAs </td>
+          <td class="memname">virtual bool Terraria.ModLoader.DamageClass.GetEffectInheritance </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td>
           <td class="paramname"><em>damageClass</em></td><td>)</td>
@@ -216,7 +225,7 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
 </table>
 </div><div class="memdoc">
 
-<p>This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks. Returns false in all cases by default, which does not let any other classes' effects trigger on this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. </p>
+<p>This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks. Returns false in all cases by default, which does not let any other classes' effects trigger on this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">damageClass</td><td>The <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> which you want this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> to gain effects from.</td></tr>
@@ -224,12 +233,10 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_vanilla_damage_class.html#a13f369d34c07d2382ec106f6f00c5ec4">Terraria.ModLoader.VanillaDamageClass</a>.</p>
-
 </div>
 </div>
-<a id="a45d1c4ed81ba54c9b83d9299bbfeb0af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45d1c4ed81ba54c9b83d9299bbfeb0af">&#9670;&nbsp;</a></span>GetBenefitFrom()</h2>
+<a id="a4bc22beaeca0cfe6e621f65b48397898"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bc22beaeca0cfe6e621f65b48397898">&#9670;&nbsp;</a></span>GetModifierInheritance()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,7 +245,7 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual float Terraria.ModLoader.DamageClass.GetBenefitFrom </td>
+          <td class="memname">virtual <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data.html">StatInheritanceData</a> Terraria.ModLoader.DamageClass.GetModifierInheritance </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td>
           <td class="paramname"><em>damageClass</em></td><td>)</td>
@@ -247,12 +254,12 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance. Returns 0 in all cases by default, which does not let any other classes boost this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. </p>
+<p>This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance. This returns a struct called <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data.html">StatInheritanceData</a>. This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes' stat bonuses. By default, this will return StatInheritanceData.Full for <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a4c35bf9b7f4b812d6a8e6aef3659a0a2" title="Base damage class for all weapons. All vanilla damage classes inherit bonuses applied to this class....">DamageClass.Generic</a>, and StatInheritanceData.None for any other. Any given <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will also never call this method for itself. For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">damageClass</td><td>The <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> which you want this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> to benefit from statistically.</td></tr>
@@ -260,7 +267,7 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html#afc35c651ea70115b39ce31420c4962a4">Terraria.ModLoader.ThrowingDamageClass</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_summon_damage_class.html#aa3225692a4c00c8a3b5ca40184001958">Terraria.ModLoader.SummonDamageClass</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_magic_damage_class.html#a405c01c313566c5ef96a7f2aaefab9f3">Terraria.ModLoader.MagicDamageClass</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_ranged_damage_class.html#ae9c7983f3083b4352bdc35e59d8e7c53">Terraria.ModLoader.RangedDamageClass</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_melee_damage_class.html#acc802d7e4d47c4b1de37eeb4405c24fc">Terraria.ModLoader.MeleeDamageClass</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_no_scaling_damage_class.html#a47083c5f892fe63162e204c569f2befa">Terraria.ModLoader.NoScalingDamageClass</a>, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_generic_damage_class.html#acfdaf3e7084aed8797278dec8659d3a1">Terraria.ModLoader.GenericDamageClass</a>.</p>
+<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html#aff90fd7d3a219bbe24799f12ef1b0602">Terraria.ModLoader.MagicSummonHybridDamageClass</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html#a698fd8a9fed9e5f57db56dbab702cb33">Terraria.ModLoader.SummonMeleeSpeedDamageClass</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_generic_damage_class.html#a6b6c00b637ce80550f4f3198be0bfa58">Terraria.ModLoader.GenericDamageClass</a>, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_damage_class.html#a192941af7e66b06564d88ceb75988f8d">Terraria.ModLoader.DefaultDamageClass</a>.</p>
 
 </div>
 </div>
@@ -317,7 +324,7 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
 </table>
 </div><div class="memdoc">
 
-<p>This lets you define default buffs for all items of this class (eg, base crit) </p>
+<p>This lets you define default stat modifiers for all items of this class (e.g. base crit chance). </p>
 
 <p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_generic_damage_class.html#a09f9ad9301812add421fa5a20e743008">Terraria.ModLoader.GenericDamageClass</a>.</p>
 
@@ -352,6 +359,46 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
 
 </div>
 </div>
+<a id="a38a8e63d4e3402ba2a4966257eb7489f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38a8e63d4e3402ba2a4966257eb7489f">&#9670;&nbsp;</a></span>ShowStatTooltipLine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.DamageClass.ShowStatTooltipLine </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>lineName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This lets you enable or disable standard statistical tooltip lines displaying on items associated with this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. The lines usable are "Damage", "CritChance", "Speed", and "Knockback". </p>
+
+<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html#a450f9b638a40a4d2302cef42170374ef">Terraria.ModLoader.SummonMeleeSpeedDamageClass</a>, and <a class="el" href="class_terraria_1_1_mod_loader_1_1_summon_damage_class.html#a2862aa267b6ed853ae1b98e3b4a93b41">Terraria.ModLoader.SummonDamageClass</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="a691da1da28715fb39c1cff4e056b6c5c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a691da1da28715fb39c1cff4e056b6c5c">&#9670;&nbsp;</a></span>ClassName</h2>
@@ -374,6 +421,30 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
 </div><div class="memdoc">
 
 <p>This is the translation that is used behind <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a7f2eaf9ea55faee80fc8929c181a87e0" title="This is the name that will show up when an item tooltip displays &#39;X [ClassName]&#39;. This should include...">DisplayName</a>. The translation will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part. </p>
+
+</div>
+</div>
+<a id="af2f8afc8ef2649e6e73d95872dd2013b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2f8afc8ef2649e6e73d95872dd2013b">&#9670;&nbsp;</a></span>Default</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> Terraria.ModLoader.DamageClass.Default = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_damage_class.html">DefaultDamageClass</a>()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="namespace_terraria_1_1_mod_loader_1_1_default.html">Default</a> damage class for non-classed weapons and items, does not benefit from Generic bonuses </p>
 
 </div>
 </div>
@@ -401,6 +472,102 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
 
 </div>
 </div>
+<a id="a4c35bf9b7f4b812d6a8e6aef3659a0a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c35bf9b7f4b812d6a8e6aef3659a0a2">&#9670;&nbsp;</a></span>Generic</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> Terraria.ModLoader.DamageClass.Generic = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_generic_damage_class.html">GenericDamageClass</a>()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Base damage class for all weapons. All vanilla damage classes inherit bonuses applied to this class. Accessories which benefit all classes provide bonuses via the Generic class </p>
+
+</div>
+</div>
+<a id="acc9766bd9c1c252fba5c941201672dd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc9766bd9c1c252fba5c941201672dd6">&#9670;&nbsp;</a></span>MagicSummonHybrid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> Terraria.ModLoader.DamageClass.MagicSummonHybrid = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html">MagicSummonHybridDamageClass</a>()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This is a damage class used solely by vanilla forbidden storm. It scales with both magic and summon damage modifiers. </p>
+
+</div>
+</div>
+<a id="a955a2bf4fc555288677aa3a8f94728ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a955a2bf4fc555288677aa3a8f94728ee">&#9670;&nbsp;</a></span>SummonMeleeSpeed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> Terraria.ModLoader.DamageClass.SummonMeleeSpeed = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html">SummonMeleeSpeedDamageClass</a>()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This is a damage class used solely by vanilla whips. It benefits from melee attackSpeed bonuses. </p>
+
+</div>
+</div>
+<a id="a07dc3f2d48bc5bd0053cebdbefea14a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07dc3f2d48bc5bd0053cebdbefea14a4">&#9670;&nbsp;</a></span>Throwing</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> Terraria.ModLoader.DamageClass.Throwing = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html">ThrowingDamageClass</a>()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Class provided for modders who want to coordinate throwing accessories and items. Not used by any vanilla items. </p>
+
+</div>
+</div>
 <a id="abfbec195bd41e40269f9b754ee12c21a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abfbec195bd41e40269f9b754ee12c21a">&#9670;&nbsp;</a></span>Type</h2>
 
@@ -422,6 +589,30 @@ static <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">
 </div><div class="memdoc">
 
 <p>This is the internal <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. </p>
+
+</div>
+</div>
+<a id="a98381aeb799bda44f841ed0ebef90250"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98381aeb799bda44f841ed0ebef90250">&#9670;&nbsp;</a></span>UseStandardCritCalcs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.DamageClass.UseStandardCritCalcs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This lets you decide whether or not your damage class will use standard crit chance calculations. Setting this to false will also hide the critical strike chance line in the tooltip of any item that uses this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. </p>
 
 </div>
 </div>

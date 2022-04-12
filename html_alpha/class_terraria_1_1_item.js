@@ -222,6 +222,7 @@ var class_terraria_1_1_item =
     [ "wingSlot", "class_terraria_1_1_item.html#ac2d58bdd5856de732c8c408f0095b298", null ],
     [ "wornArmor", "class_terraria_1_1_item.html#abed9b1df378dc470c3b3d3a553c05c27", null ],
     [ "AllowReforgeForStackableItem", "class_terraria_1_1_item.html#a0ca15ed1c8357bde27c6f15657a1ee59", null ],
+    [ "ArmorPenetration", "class_terraria_1_1_item.html#ae492e5886a9ebcd7c813dd2a11b4b9f1", null ],
     [ "CanBeQuickUsed", "class_terraria_1_1_item.html#a06f1c88e31d44fed2b5abcdb1dcc2176", null ],
     [ "DamageType", "class_terraria_1_1_item.html#ae08f7b55586fe6e9237b09b41845893d", null ],
     [ "FitsAccessoryVanitySlot", "class_terraria_1_1_item.html#a8743a4460ac1fd8ee82d5c36926a69ac", null ],

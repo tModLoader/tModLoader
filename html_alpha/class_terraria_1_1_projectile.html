@@ -151,6 +151,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>Colliding</b> (Rectan
 <tr class="memitem:ac8ac3192778c2f27105c2f05a25b27e9"><td class="memItemLeft" align="right" valign="top"><a id="ac8ac3192778c2f27105c2f05a25b27e9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CountsAsClass</b> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> damageClass)</td></tr>
 <tr class="separator:ac8ac3192778c2f27105c2f05a25b27e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae917389b2954bc7e68700d1f2c0ef5e7"><td class="memItemLeft" align="right" valign="top"><a id="ae917389b2954bc7e68700d1f2c0ef5e7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>CountsAsClass&lt; T &gt;</b> ()</td></tr>
+<tr class="separator:ae917389b2954bc7e68700d1f2c0ef5e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc7c36c39fceeca471393b517f1f9a8b"><td class="memItemLeft" align="right" valign="top"><a id="adc7c36c39fceeca471393b517f1f9a8b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Damage</b> ()</td></tr>
 <tr class="separator:adc7c36c39fceeca471393b517f1f9a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -651,8 +654,14 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>SentryLifeTime</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a334d3a25853855b61895ad9de680eaed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_projectile.html#a334d3a25853855b61895ad9de680eaed">ArmorPenetration</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a334d3a25853855b61895ad9de680eaed"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of defense points that this projectile can ignore on its own. Cannot be set to negative values. Defaults to 0. On spawn, if this projectile was fired from a weapon, this value has the total armor penetration of the weapon that made the projectile added to itself.  <a href="class_terraria_1_1_projectile.html#a334d3a25853855b61895ad9de680eaed">More...</a><br /></td></tr>
+<tr class="separator:a334d3a25853855b61895ad9de680eaed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5c3e395c80059ae076ea62911494c38"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_projectile.html#ab5c3e395c80059ae076ea62911494c38">CritChance</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:ab5c3e395c80059ae076ea62911494c38"><td class="mdescLeft">&#160;</td><td class="mdescRight">The critical strike chance modifier of this projectile. Cannot be set to negative values. Defaults to 0. On spawn, if this projectile was fired from a weapon, this value has the total critical strike chance of the weapon that made the projectile added to itself.  <a href="class_terraria_1_1_projectile.html#ab5c3e395c80059ae076ea62911494c38">More...</a><br /></td></tr>
+<tr class="separator:ab5c3e395c80059ae076ea62911494c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d02e0c321caf48136a22b27b50ebb09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>??&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_projectile.html#a0d02e0c321caf48136a22b27b50ebb09">DamageType</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a0d02e0c321caf48136a22b27b50ebb09"><td class="mdescLeft">&#160;</td><td class="mdescRight">The damage type of this <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance&lt;T&gt;() for custom damage types.  <a href="class_terraria_1_1_projectile.html#a0d02e0c321caf48136a22b27b50ebb09">More...</a><br /></td></tr>
+<tr class="memdesc:a0d02e0c321caf48136a22b27b50ebb09"><td class="mdescLeft">&#160;</td><td class="mdescRight">The damage type assigned to this projectile, represented as a DamageClass. Leave blank or use DamageClass.Default to prevent damage type scaling of any kind for this projectile. Use DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing for vanilla damage types. Refer to ExampleMod for more information on how to create and use your own damage types.  <a href="class_terraria_1_1_projectile.html#a0d02e0c321caf48136a22b27b50ebb09">More...</a><br /></td></tr>
 <tr class="separator:a0d02e0c321caf48136a22b27b50ebb09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2a63711e4078358202380e577c65fc8"><td class="memItemLeft" align="right" valign="top"><a id="ac2a63711e4078358202380e577c65fc8"></a>
 <a class="el" href="struct_terraria_1_1_mod_loader_1_1_ref_read_only_array.html">RefReadOnlyArray</a>&lt; <a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html">GlobalProjectile</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Globals</b><code> [get]</code></td></tr>
@@ -902,6 +911,54 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a334d3a25853855b61895ad9de680eaed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a334d3a25853855b61895ad9de680eaed">&#9670;&nbsp;</a></span>ArmorPenetration</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Projectile.ArmorPenetration</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The number of defense points that this projectile can ignore on its own. Cannot be set to negative values. Defaults to 0. On spawn, if this projectile was fired from a weapon, this value has the total armor penetration of the weapon that made the projectile added to itself. </p>
+
+</div>
+</div>
+<a id="ab5c3e395c80059ae076ea62911494c38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5c3e395c80059ae076ea62911494c38">&#9670;&nbsp;</a></span>CritChance</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Projectile.CritChance</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The critical strike chance modifier of this projectile. Cannot be set to negative values. Defaults to 0. On spawn, if this projectile was fired from a weapon, this value has the total critical strike chance of the weapon that made the projectile added to itself. </p>
+
+</div>
+</div>
 <a id="a0d02e0c321caf48136a22b27b50ebb09"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0d02e0c321caf48136a22b27b50ebb09">&#9670;&nbsp;</a></span>DamageType</h2>
 
@@ -922,7 +979,7 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </table>
 </div><div class="memdoc">
 
-<p>The damage type of this <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance&lt;T&gt;() for custom damage types. </p>
+<p>The damage type assigned to this projectile, represented as a DamageClass. Leave blank or use DamageClass.Default to prevent damage type scaling of any kind for this projectile. Use DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing for vanilla damage types. Refer to ExampleMod for more information on how to create and use your own damage types. </p>
 
 </div>
 </div>

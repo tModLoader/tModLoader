@@ -87,6 +87,7 @@ $(document).ready(function(){initNavTree('struct_terraria_1_1_mod_loader_1_1_sta
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="struct_terraria_1_1_mod_loader_1_1_stat_modifier-members.html">List of all members</a>  </div>
@@ -97,9 +98,12 @@ $(document).ready(function(){initNavTree('struct_terraria_1_1_mod_loader_1_1_sta
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a807eee95c6cfb59624957ca7a450f037"><td class="memItemLeft" align="right" valign="top"><a id="a807eee95c6cfb59624957ca7a450f037"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>StatModifier</b> (float additive, float multiplicative=1)</td></tr>
-<tr class="separator:a807eee95c6cfb59624957ca7a450f037"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad36d0d06c6bea37b7e12a6d4429ff147"><td class="memItemLeft" align="right" valign="top"><a id="ad36d0d06c6bea37b7e12a6d4429ff147"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>StatModifier</b> (float additive, float multiplicative, float flat=0f, float @base=0f)</td></tr>
+<tr class="separator:ad36d0d06c6bea37b7e12a6d4429ff147"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a180d923ae5aba87f08d01b5f1271e266"><td class="memItemLeft" align="right" valign="top"><a id="a180d923ae5aba87f08d01b5f1271e266"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>ApplyTo</b> (float baseValue)</td></tr>
+<tr class="separator:a180d923ae5aba87f08d01b5f1271e266"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58155691ff73f90857806a5ad547a65c"><td class="memItemLeft" align="right" valign="top"><a id="a58155691ff73f90857806a5ad547a65c"></a>
 <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CombineWith</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> m)</td></tr>
 <tr class="separator:a58155691ff73f90857806a5ad547a65c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -115,12 +119,6 @@ override int&#160;</td><td class="memItemRight" valign="bottom"><b>GetHashCode</
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae68035ee1f1160594db8806cf22db9f0"><td class="memItemLeft" align="right" valign="top"><a id="ae68035ee1f1160594db8806cf22db9f0"></a>
-static implicit&#160;</td><td class="memItemRight" valign="bottom"><b>operator float</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> m)</td></tr>
-<tr class="separator:ae68035ee1f1160594db8806cf22db9f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c50b9d5c1433e88d6c0d721b65e0c59"><td class="memItemLeft" align="right" valign="top"><a id="a6c50b9d5c1433e88d6c0d721b65e0c59"></a>
-static&#160;</td><td class="memItemRight" valign="bottom"><b>operator int</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> m)</td></tr>
-<tr class="separator:a6c50b9d5c1433e88d6c0d721b65e0c59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2799f3f095c24d32988087ea57b1fe41"><td class="memItemLeft" align="right" valign="top"><a id="a2799f3f095c24d32988087ea57b1fe41"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator!=</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> m1, <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> m2)</td></tr>
 <tr class="separator:a2799f3f095c24d32988087ea57b1fe41"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,19 +144,28 @@ static <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> m1, <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> m2)</td></tr>
 <tr class="separator:a218304d64b9a61e19b71561b702ff4b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:aab2a8cbedeaaad62c3dfe3f998d3bc1e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#aab2a8cbedeaaad62c3dfe3f998d3bc1e">Base</a></td></tr>
+<tr class="memdesc:aab2a8cbedeaaad62c3dfe3f998d3bc1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increase to the base value of the stat. Directly added to the stat before multipliers are applied.  <a href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#aab2a8cbedeaaad62c3dfe3f998d3bc1e">More...</a><br /></td></tr>
+<tr class="separator:aab2a8cbedeaaad62c3dfe3f998d3bc1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f06e9b39a35a7c68f6025ecd201fe52"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#a4f06e9b39a35a7c68f6025ecd201fe52">Flat</a></td></tr>
+<tr class="memdesc:a4f06e9b39a35a7c68f6025ecd201fe52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increase to the final value of the stat. Directly added to the stat after multipliers are applied.  <a href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#a4f06e9b39a35a7c68f6025ecd201fe52">More...</a><br /></td></tr>
+<tr class="separator:a4f06e9b39a35a7c68f6025ecd201fe52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a4d4c6b8b43bd08ea96a70de9c71eb502"><td class="memItemLeft" align="right" valign="top"><a id="a4d4c6b8b43bd08ea96a70de9c71eb502"></a>
-static readonly <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>One</b> = new <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a>(1f, 1f)</td></tr>
-<tr class="separator:a4d4c6b8b43bd08ea96a70de9c71eb502"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a156f7b961a9d63aba957f845b3dfc9e7"><td class="memItemLeft" align="right" valign="top"><a id="a156f7b961a9d63aba957f845b3dfc9e7"></a>
+static readonly <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Default</b> = new <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a>(1f, 1f, 0f, 0f)</td></tr>
+<tr class="separator:a156f7b961a9d63aba957f845b3dfc9e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:aa5d530a7bf5e9d69e6199fccc909ecaf"><td class="memItemLeft" align="right" valign="top"><a id="aa5d530a7bf5e9d69e6199fccc909ecaf"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>Additive</b><code> [get]</code></td></tr>
+<tr class="memitem:aa5d530a7bf5e9d69e6199fccc909ecaf"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#aa5d530a7bf5e9d69e6199fccc909ecaf">Additive</a><code> [get]</code></td></tr>
+<tr class="memdesc:aa5d530a7bf5e9d69e6199fccc909ecaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The combination of all additive multipliers. Starts at 1  <a href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#aa5d530a7bf5e9d69e6199fccc909ecaf">More...</a><br /></td></tr>
 <tr class="separator:aa5d530a7bf5e9d69e6199fccc909ecaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abefc6793905b37c529355420e6293695"><td class="memItemLeft" align="right" valign="top"><a id="abefc6793905b37c529355420e6293695"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>Multiplicative</b><code> [get]</code></td></tr>
+<tr class="memitem:abefc6793905b37c529355420e6293695"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#abefc6793905b37c529355420e6293695">Multiplicative</a><code> [get]</code></td></tr>
+<tr class="memdesc:abefc6793905b37c529355420e6293695"><td class="mdescLeft">&#160;</td><td class="mdescRight">The combination of all multiplicative multipliers. Starts at 1. Applies 'after' all additive bonuses have been accumulated.  <a href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#abefc6793905b37c529355420e6293695">More...</a><br /></td></tr>
 <tr class="separator:abefc6793905b37c529355420e6293695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -297,6 +304,88 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>Multiplicative</b><c
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aab2a8cbedeaaad62c3dfe3f998d3bc1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab2a8cbedeaaad62c3dfe3f998d3bc1e">&#9670;&nbsp;</a></span>Base</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Terraria.ModLoader.StatModifier.Base</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Increase to the base value of the stat. Directly added to the stat before multipliers are applied. </p>
+
+</div>
+</div>
+<a id="a4f06e9b39a35a7c68f6025ecd201fe52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f06e9b39a35a7c68f6025ecd201fe52">&#9670;&nbsp;</a></span>Flat</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Terraria.ModLoader.StatModifier.Flat</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Increase to the final value of the stat. Directly added to the stat after multipliers are applied. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="aa5d530a7bf5e9d69e6199fccc909ecaf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5d530a7bf5e9d69e6199fccc909ecaf">&#9670;&nbsp;</a></span>Additive</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Terraria.ModLoader.StatModifier.Additive</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The combination of all additive multipliers. Starts at 1 </p>
+
+</div>
+</div>
+<a id="abefc6793905b37c529355420e6293695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abefc6793905b37c529355420e6293695">&#9670;&nbsp;</a></span>Multiplicative</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Terraria.ModLoader.StatModifier.Multiplicative</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The combination of all multiplicative multipliers. Starts at 1. Applies 'after' all additive bonuses have been accumulated. </p>
 
 </div>
 </div>
