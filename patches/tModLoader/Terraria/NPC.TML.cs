@@ -27,11 +27,18 @@ namespace Terraria
 		public IBigProgressBar BossBar { get; set; }
 
 		private int _defenseDiff = 0;
+		/// <summary>
+		/// Used for dynamic defense adjustments.
+		/// </summary>
 		public int DefenseModifier {
 			get => _defenseDiff;
 			set => _defenseDiff = value;
 		}
 
+		/// <summary>
+		/// Figures out exactly how much defense this NPC has, with dynamic adjustments to that defense accounted for.
+		/// </summary>
+		/// <returns>The total defense of the NPC, dynamic adjustments included.</returns>
 		public int GetTotalDefense() => defense + DefenseModifier;
 
 		/// <summary> Returns whether or not this NPC currently has a (de)buff of the provided type. </summary>
