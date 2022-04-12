@@ -1,5 +1,6 @@
 var struct_terraria_1_1_tile_wall_wire_state_data =
 [
+    [ "SetAllBitsClearFrame", "struct_terraria_1_1_tile_wall_wire_state_data.html#a93e4119aea618ff4ca4df14c9b56d148", null ],
     [ "TileFrameX", "struct_terraria_1_1_tile_wall_wire_state_data.html#aa1b0e073ea2566f6ee559f14b51ecf7f", null ],
     [ "TileFrameY", "struct_terraria_1_1_tile_wall_wire_state_data.html#ac3b54d58af32917f64b58bc4c59a4225", null ],
     [ "BlockType", "struct_terraria_1_1_tile_wall_wire_state_data.html#a878fa7ab489827205c355847e55de50a", null ],
