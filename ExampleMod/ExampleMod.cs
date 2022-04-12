@@ -10,6 +10,8 @@ namespace ExampleMod
 
 		public static int ExampleCustomCurrencyId;
 
+		public override void PostAddRecipes() => RecipeHelper.Load(this);
+
 		public override void Load() {
 			// Registers a new custom currency
 			ExampleCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Currencies.ExampleCustomCurrency(ModContent.ItemType<Content.Items.ExampleItem>(), 999L, "Mods.ExampleMod.Currencies.ExampleCustomCurrency"));
