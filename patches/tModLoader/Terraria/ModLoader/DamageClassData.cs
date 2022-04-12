@@ -1,15 +1,11 @@
 ﻿namespace Terraria.ModLoader
 {
-	internal struct DamageClassData
+	public class DamageClassData
 	{
-		public StatModifier damage;
-		public int critChance;
-		public StatModifier knockback;
-
-		public DamageClassData(StatModifier damage, int critChance, StatModifier knockback) {
-			this.damage = damage;
-			this.critChance = critChance;
-			this.knockback = knockback;
-		}
+		public StatModifier damage = StatModifier.Default;
+		public float critChance = 0f;
+		public float attackSpeed = 1f;
+		public float armorPen = 0f;
+		public StatModifier knockback = StatModifier.Default;
 	}
 }
