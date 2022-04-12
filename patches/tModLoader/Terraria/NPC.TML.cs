@@ -26,6 +26,14 @@ namespace Terraria
 		/// </summary>
 		public IBigProgressBar BossBar { get; set; }
 
+		private int _defenseDiff = 0;
+		public int DefenseModifier {
+			get => _defenseDiff;
+			set => _defenseDiff = value;
+		}
+
+		public int GetTotalDefense() => defense + DefenseModifier;
+
 		/// <summary> Returns whether or not this NPC currently has a (de)buff of the provided type. </summary>
 		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
 
@@ -75,14 +83,6 @@ namespace Terraria
 			bottom = new Point(anchorX, anchorY).ToWorldCoordinates(8f, 16f);
 			bottom.X += direction * directionOffset; // Added to match PlayerSittingHelper
 			bottom += finalOffset; // Added to match PlayerSittingHelper
-		}
-
-		internal void ApplyDefenseLossFromVanillaStatusEffects() {
-			if (ichor)
-				defense -= 15;
-
-			if (betsysCurse)
-				defense -= 40;
 		}
 	}
 }

@@ -903,11 +903,11 @@
 +			therefore, let's do something that makes more sense and is shorter to write instead
 +			-thomas
 +			*/
-+			if (defense <= 0 || armorPenetration <= 0)
++			if (GetTotalDefense() <= 0 || armorPenetration <= 0)
 +				return 0;
 +
 +			float defenseEffectiveness = 0.5f;
-+			return (int)((float)Math.Min(defense, armorPenetration) * defenseEffectiveness);
++			return (int)((float)Math.Min(GetTotalDefense(), armorPenetration) * defenseEffectiveness);
  		}
  
  		public double StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false) {
@@ -980,10 +980,11 @@
  					netOffset *= 0f;
  				}
  				else {
-@@ -68860,6 +_,7 @@
+@@ -68860,6 +_,8 @@
  			}
  
  			UpdateNPC_BuffFlagsReset();
++			DefenseModifier = 0;
 +			NPCLoader.ResetEffects(this);
  			UpdateNPC_BuffSetFlags();
  			UpdateNPC_SoulDrainDebuff();
@@ -996,6 +997,30 @@
  			if (lifeRegen <= -240 && num < 2)
  				num = 2;
  
+@@ -69948,8 +_,10 @@
+ 					if (buffType[i] == 72)
+ 						midas = true;
+ 
+-					if (buffType[i] == 69)
++					if (buffType[i] == 69) {
+ 						ichor = true;
++						DefenseModifier -= 15;
++					}
+ 
+ 					if (buffType[i] == 31)
+ 						confused = true;
+@@ -69999,8 +_,10 @@
+ 					if (buffType[i] == 189)
+ 						daybreak = true;
+ 
+-					if (buffType[i] == 203)
++					if (buffType[i] == 203) {
+ 						betsysCurse = true;
++						DefenseModifier -= 40;
++					}
+ 
+ 					if (buffType[i] == 204)
+ 						oiled = true;
 @@ -70013,6 +_,7 @@
  
  					if (buffType[i] == 324)
