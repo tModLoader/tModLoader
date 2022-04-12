@@ -243,7 +243,7 @@ namespace Terraria.ModLoader
 		/// <param name="item">The item being used.</param>
 		/// <param name="player">The player using the item.</param>
 		/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
-		public virtual void ModifyWeaponCrit(Item item, Player player, ref int crit) {
+		public virtual void ModifyWeaponCrit(Item item, Player player, ref float crit) {
 		}
 
 		/// <summary>

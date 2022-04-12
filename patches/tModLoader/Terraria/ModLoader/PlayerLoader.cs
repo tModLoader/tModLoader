@@ -528,10 +528,10 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponCrit(Item item, ref int crit);
+		private delegate void DelegateModifyWeaponCrit(Item item, ref float crit);
 		private static HookList HookModifyWeaponCrit = AddHook<DelegateModifyWeaponCrit>(p => p.ModifyWeaponCrit);
 
-		public static void ModifyWeaponCrit(Player player, Item item, ref int crit) {
+		public static void ModifyWeaponCrit(Player player, Item item, ref float crit) {
 			if (item.IsAir) return;
 			foreach (int index in HookModifyWeaponCrit.arr) {
 				player.modPlayers[index].ModifyWeaponCrit(item, ref crit);

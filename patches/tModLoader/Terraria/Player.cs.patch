@@ -4601,9 +4601,9 @@
 +			*/
 +
 +			// TODO: Should ModifyWeaponCrit be float?
-+			int crit = (int)(sItem.crit + GetTotalCritChance(sItem.DamageType));
++			float crit = sItem.crit + GetTotalCritChance(sItem.DamageType);
 +			CombinedHooks.ModifyWeaponCrit(this, sItem, ref crit);
-+			return crit;
++			return (int)(crit + 5E-06f);
  		}
  
 -		public int GetWeaponDamage(Item sItem) {

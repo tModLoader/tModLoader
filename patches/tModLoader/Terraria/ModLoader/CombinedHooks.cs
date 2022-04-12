@@ -11,7 +11,7 @@ namespace Terraria.ModLoader
 			PlayerLoader.ModifyWeaponDamage(player, item, ref damage);
 		}
 
-		public static void ModifyWeaponCrit(Player player, Item item, ref int crit) {
+		public static void ModifyWeaponCrit(Player player, Item item, ref float crit) {
 			ItemLoader.ModifyWeaponCrit(item, player, ref crit);
 			PlayerLoader.ModifyWeaponCrit(player, item, ref crit);
 		}

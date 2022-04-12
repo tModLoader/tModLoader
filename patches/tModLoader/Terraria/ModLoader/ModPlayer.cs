@@ -433,7 +433,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item.</param>
 		/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
-		public virtual void ModifyWeaponCrit(Item item, ref int crit) {
+		public virtual void ModifyWeaponCrit(Item item, ref float crit) {
 		}
 
 		/// <summary>
