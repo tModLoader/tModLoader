@@ -76,5 +76,13 @@ namespace Terraria
 			bottom.X += direction * directionOffset; // Added to match PlayerSittingHelper
 			bottom += finalOffset; // Added to match PlayerSittingHelper
 		}
+
+		internal void ApplyDefenseLossFromVanillaStatusEffects() {
+			if (ichor)
+				defense -= 15;
+
+			if (betsysCurse)
+				defense -= 40;
+		}
 	}
 }

@@ -231,6 +231,7 @@ namespace Terraria.ModLoader
 				}
 				AI(npc);
 			}
+			npc.ApplyDefenseLossFromVanillaStatusEffects();
 			PostAI(npc);
 		}
 

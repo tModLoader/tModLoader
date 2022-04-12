@@ -885,7 +885,44 @@
  				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
  				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
  					Main.npc[nextNPC].townNpcVariationIndex = profile.RollVariation();
-@@ -61171,12 +_,14 @@
+@@ -61134,6 +_,7 @@
+ 		}
+ 
+ 		public int checkArmorPenetration(int armorPenetration) {
++			/*
+ 			if (armorPenetration <= 0)
+ 				return 0;
+ 
+@@ -61141,6 +_,17 @@
+ 				return defense / 2;
+ 
+ 			return armorPenetration / 2;
++
++			...yeah, none of that nonsense
++			this doesn't even return 0 on negative defense values like it should
++			therefore, let's do something that makes more sense and is shorter to write instead
++			-thomas
++			*/
++			if (defense <= 0 || armorPenetration <= 0)
++				return 0;
++
++			float defenseEffectiveness = 0.5f;
++			return (int)((float)Math.Min(defense, armorPenetration) * defenseEffectiveness);
+ 		}
+ 
+ 		public double StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false) {
+@@ -61162,21 +_,25 @@
+ 
+ 			double num = Damage;
+ 			int num2 = defense;
++			/*
+ 			if (ichor)
+ 				num2 -= 15;
+ 
+ 			if (betsysCurse)
+ 				num2 -= 40;
++			*/
+ 
  			if (num2 < 0)
  				num2 = 0;
  
