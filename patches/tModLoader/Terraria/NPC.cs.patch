@@ -885,7 +885,7 @@
  				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
  				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
  					Main.npc[nextNPC].townNpcVariationIndex = profile.RollVariation();
-@@ -61134,6 +_,7 @@
+@@ -61134,13 +_,25 @@
  		}
  
  		public int checkArmorPenetration(int armorPenetration) {
@@ -893,9 +893,10 @@
  			if (armorPenetration <= 0)
  				return 0;
  
-@@ -61141,6 +_,17 @@
+ 			if (armorPenetration > defense && defense >= 0)
  				return defense / 2;
- 
+-
++			// mid-comment commentception for patch context
  			return armorPenetration / 2;
 +
 +			...yeah, none of that nonsense
