@@ -896,7 +896,7 @@
  			if (armorPenetration > defense && defense >= 0)
  				return defense / 2;
 -
-+			// mid-comment commentception for patch context
++			// mid-comment comment for patch context
  			return armorPenetration / 2;
 +
 +			...yeah, none of that nonsense
@@ -912,10 +912,12 @@
  		}
  
  		public double StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false) {
-@@ -61162,21 +_,25 @@
+@@ -61161,22 +_,26 @@
+ 				return 0.0;
  
  			double num = Damage;
- 			int num2 = defense;
+-			int num2 = defense;
++			int num2 = GetTotalDefense();
 +			/*
  			if (ichor)
  				num2 -= 15;
