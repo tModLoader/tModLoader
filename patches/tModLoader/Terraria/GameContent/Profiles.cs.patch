@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Profiles.cs
++++ src/tModLoader/Terraria/GameContent/Profiles.cs
+@@ -5,7 +_,7 @@
+ 
+ namespace Terraria.GameContent
+ {
+-	public class Profiles
++	public partial class Profiles
+ 	{
+ 		public class LegacyNPCProfile : ITownNPCProfile
+ 		{
