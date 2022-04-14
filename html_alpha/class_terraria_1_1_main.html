@@ -842,7 +842,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>TriggerPing</b
 <tr class="memdesc:ab691f95842bf8419e83e458fe0e03a73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the buff at index <em>buffSlotOnPlayer</em>  is allowed to draw a "remaining time" text, and sets <em>buffTimeValue</em>  to it.  <a href="class_terraria_1_1_main.html#ab691f95842bf8419e83e458fe0e03a73">More...</a><br /></td></tr>
 <tr class="separator:ab691f95842bf8419e83e458fe0e03a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a904f4ba4002225d9e9b0d6ca46ea3059">TryRemovingBuff</a> (int i, int b)</td></tr>
-<tr class="memdesc:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls Player.DelBuff with index i after checking Main.debuff of buff type b. Will toggle Player.hideMisc for pet and light pet.  <a href="class_terraria_1_1_main.html#a904f4ba4002225d9e9b0d6ca46ea3059">More...</a><br /></td></tr>
+<tr class="memdesc:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_player.html#ae95973d4b5efa07894c3344d5734f16e" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">Player.DelBuff</a> with index i after checking Main.debuff of buff type b. Will toggle Player.hideMisc for pet and light pet.  <a href="class_terraria_1_1_main.html#a904f4ba4002225d9e9b0d6ca46ea3059">More...</a><br /></td></tr>
 <tr class="separator:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74038da99ec7caea4a91e67885320432"><td class="memItemLeft" align="right" valign="top"><a id="a74038da99ec7caea4a91e67885320432"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>TryRemovingBuff_CheckBuffHideMisc</b> (int slot, int buffID)</td></tr>
@@ -4537,7 +4537,7 @@ Can be called on any side, but only the server will actually sync it. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Calls Player.DelBuff with index i after checking Main.debuff of buff type b. Will toggle Player.hideMisc for pet and light pet. </p>
+<p>Calls <a class="el" href="class_terraria_1_1_player.html#ae95973d4b5efa07894c3344d5734f16e" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">Player.DelBuff</a> with index i after checking Main.debuff of buff type b. Will toggle Player.hideMisc for pet and light pet. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td>The index for buffType and buffTime</td></tr>

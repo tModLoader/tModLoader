@@ -139,8 +139,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad0c1344feedf42a09160c0b626b5c8e0"><td class="memItemLeft" align="right" valign="top"><a id="ad0c1344feedf42a09160c0b626b5c8e0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AccumulateGolfingScore</b> (int score)</td></tr>
 <tr class="separator:ad0c1344feedf42a09160c0b626b5c8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb4e91497854fdaf3957abc8098e4f81"><td class="memItemLeft" align="right" valign="top"><a id="acb4e91497854fdaf3957abc8098e4f81"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AddBuff</b> (int type, int timeToAdd, bool quiet=true, bool foodHack=false)</td></tr>
+<tr class="memitem:acb4e91497854fdaf3957abc8098e4f81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#acb4e91497854fdaf3957abc8098e4f81">AddBuff</a> (int type, int timeToAdd, bool quiet=true, bool foodHack=false)</td></tr>
+<tr class="memdesc:acb4e91497854fdaf3957abc8098e4f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <a class="el" href="class_buff_i_d.html">BuffID</a> and modded buffs are typically retrieved using ModContent.BuffType&lt;T&gt;. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations, run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code.  <a href="class_terraria_1_1_player.html#acb4e91497854fdaf3957abc8098e4f81">More...</a><br /></td></tr>
 <tr class="separator:acb4e91497854fdaf3957abc8098e4f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a489821fbdda77cce7bb290983eb9954c"><td class="memItemLeft" align="right" valign="top"><a id="a489821fbdda77cce7bb290983eb9954c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addDPS</b> (int dmg)</td></tr>
@@ -280,8 +280,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckMana</b> (int am
 <tr class="memitem:a31c5440aab112f0e1cae5491984115ef"><td class="memItemLeft" align="right" valign="top"><a id="a31c5440aab112f0e1cae5491984115ef"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>CheckMana</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, int amount=-1, bool pay=false, bool blockQuickMana=false)</td></tr>
 <tr class="separator:a31c5440aab112f0e1cae5491984115ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe3eaa732ac9782e02b1f8c0a4eee880"><td class="memItemLeft" align="right" valign="top"><a id="afe3eaa732ac9782e02b1f8c0a4eee880"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearBuff</b> (int type)</td></tr>
+<tr class="memitem:afe3eaa732ac9782e02b1f8c0a4eee880"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#afe3eaa732ac9782e02b1f8c0a4eee880">ClearBuff</a> (int type)</td></tr>
+<tr class="memdesc:afe3eaa732ac9782e02b1f8c0a4eee880"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill the gap. Use <a class="el" href="class_terraria_1_1_player.html#ae95973d4b5efa07894c3344d5734f16e" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">Player.DelBuff(int)</a> if you only know the buff index  <a href="class_terraria_1_1_player.html#afe3eaa732ac9782e02b1f8c0a4eee880">More...</a><br /></td></tr>
 <tr class="separator:afe3eaa732ac9782e02b1f8c0a4eee880"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e91fc16cef94075e4ea9ebe8823908c"><td class="memItemLeft" align="right" valign="top"><a id="a4e91fc16cef94075e4ea9ebe8823908c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearGrapplingBlacklist</b> ()</td></tr>
@@ -328,8 +328,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DashMovement</b> ()</
 <tr class="memitem:af720e31e3a7926f035f31e2d22937d8f"><td class="memItemLeft" align="right" valign="top"><a id="af720e31e3a7926f035f31e2d22937d8f"></a>
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>DashStartAction</b> (int dashDirection)</td></tr>
 <tr class="separator:af720e31e3a7926f035f31e2d22937d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae95973d4b5efa07894c3344d5734f16e"><td class="memItemLeft" align="right" valign="top"><a id="ae95973d4b5efa07894c3344d5734f16e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DelBuff</b> (int b)</td></tr>
+<tr class="memitem:ae95973d4b5efa07894c3344d5734f16e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#ae95973d4b5efa07894c3344d5734f16e">DelBuff</a> (int b)</td></tr>
+<tr class="memdesc:ae95973d4b5efa07894c3344d5734f16e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. Use <a class="el" href="class_terraria_1_1_player.html#afe3eaa732ac9782e02b1f8c0a4eee880" title="Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill t...">Player.ClearBuff</a> if you only know the buff type  <a href="class_terraria_1_1_player.html#ae95973d4b5efa07894c3344d5734f16e">More...</a><br /></td></tr>
 <tr class="separator:ae95973d4b5efa07894c3344d5734f16e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada092c550e82f787ab895c334679be1c"><td class="memItemLeft" align="right" valign="top"><a id="ada092c550e82f787ab895c334679be1c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DemonConch</b> ()</td></tr>
@@ -4453,6 +4453,109 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 <tr class="separator:af3dfef58afad89d424164f1e9392e752 inherit properties_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="acb4e91497854fdaf3957abc8098e4f81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb4e91497854fdaf3957abc8098e4f81">&#9670;&nbsp;</a></span>AddBuff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Terraria.Player.AddBuff </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeToAdd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>quiet</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>foodHack</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <a class="el" href="class_buff_i_d.html">BuffID</a> and modded buffs are typically retrieved using ModContent.BuffType&lt;T&gt;. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations, run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The buff type</td></tr>
+    <tr><td class="paramname">timeToAdd</td><td>The desired buff time in ticks. 60 ticks is 1 second</td></tr>
+    <tr><td class="paramname">quiet</td><td>If true, the network sync message is skipped.</td></tr>
+    <tr><td class="paramname">foodHack</td><td>unused</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afe3eaa732ac9782e02b1f8c0a4eee880"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe3eaa732ac9782e02b1f8c0a4eee880">&#9670;&nbsp;</a></span>ClearBuff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Terraria.Player.ClearBuff </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill the gap. Use <a class="el" href="class_terraria_1_1_player.html#ae95973d4b5efa07894c3344d5734f16e" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">Player.DelBuff(int)</a> if you only know the buff index </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>The buff type</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae95973d4b5efa07894c3344d5734f16e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae95973d4b5efa07894c3344d5734f16e">&#9670;&nbsp;</a></span>DelBuff()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Terraria.Player.DelBuff </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. Use <a class="el" href="class_terraria_1_1_player.html#afe3eaa732ac9782e02b1f8c0a4eee880" title="Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill t...">Player.ClearBuff</a> if you only know the buff type </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>The index of the buff to remove.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a9a9678802fe01f22543cf2b8562999d6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9a9678802fe01f22543cf2b8562999d6">&#9670;&nbsp;</a></span>DropItem()</h2>
 
