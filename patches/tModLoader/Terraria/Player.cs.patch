@@ -304,7 +304,19 @@
  				if (buffTime[i] >= 1 && buffType[i] == type)
  					return i;
  			}
-@@ -2637,7 +_,7 @@
+@@ -2632,12 +_,19 @@
+ 			return -1;
+ 		}
+ 
++		/// <summary>
++		/// Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations, run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code.
++		/// </summary>
++		/// <param name="type">The buff type</param>
++		/// <param name="timeToAdd">The desired buff time in ticks. 60 ticks is 1 second</param>
++		/// <param name="quiet">If true, the network sync message is skipped.</param>
++		/// <param name="foodHack">unused</param>
+ 		public void AddBuff(int type, int timeToAdd, bool quiet = true, bool foodHack = false) {
+ 			if (buffImmune[type])
  				return;
  
  			if (BuffID.Sets.IsFedState[type]) {
@@ -383,7 +395,14 @@
  				float debuffTimeMultiplier = Main.GameModeInfo.DebuffTimeMultiplier;
  				if (Main.GameModeInfo.IsJourneyMode) {
  					if (Main.masterMode)
-@@ -2755,24 +_,28 @@
+@@ -2752,27 +_,39 @@
+ 			return num;
+ 		}
+ 
++		/// <summary>
++		/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. Use <see cref="Player.ClearBuff"/> if you only know the buff type
++		/// </summary>
++		/// <param name="b">The index of the buff to remove.</param>
  		public void DelBuff(int b) {
  			buffTime[b] = 0;
  			buffType[b] = 0;
@@ -414,6 +433,10 @@
  			}
  		}
  
++		/// <summary>
++		/// Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill the gap. Use <see cref="Player.DelBuff(int)"/> if you only know the buff index
++		/// </summary>
++		/// <param name="type">The buff type</param>
  		public void ClearBuff(int type) {
 +			if (type == 0)
 +				return;
