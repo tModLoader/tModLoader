@@ -4658,14 +4658,12 @@
  			else if (sItem.type == 3930)
  				projToShoot = 715 + item.type - AmmoID.Rocket;
  			else if (sItem.useAmmo == AmmoID.Rocket)
-@@ -37152,9 +_,15 @@
- 			}
+@@ -37153,8 +_,14 @@
  
  			speed += item.shootSpeed;
--			if (item.ranged) {
+ 			if (item.ranged) {
 -				if (item.damage > 0)
 -					Damage += (int)((float)item.damage * rangedDamage);
-+			if (true) {
 +				if (item.damage > 0) {
 +					// determine damage multiplier using item base damage and apply to ammo
 +					// equivalent to Damage *= (item.damage + sItem.damage) / sItem.damage
