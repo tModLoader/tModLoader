@@ -241,22 +241,16 @@ namespace Terraria.ModLoader
 
 		private static HookList HookCanUseItem = AddHook<Func<Item, Player, bool>>(g => g.CanUseItem);
 
-		/// <summary>
-		/// Returns the "and" operation on the results of ModItem.CanUseItem and all GlobalItem.CanUseItem hooks.
-		/// Does not fail fast (every hook is called).
-		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <param name="player">The player holding the item.</param>
 		public static bool CanUseItem(Item item, Player player) {
-			bool flag = true;
-			if (item.ModItem != null)
-				flag &= item.ModItem.CanUseItem(player);
+			if (item.ModItem != null && !item.ModItem.CanUseItem(player))
+				return false;
 
 			foreach (var g in HookCanUseItem.Enumerate(item.globalItems)) {
-				flag &= g.CanUseItem(item, player);
+				if (!g.CanUseItem(item, player))
+					return false;
 			}
 
-			return flag;
+			return true;
 		}
 
 		private static HookList HookCanAutoReuseItem = AddHook<Func<Item, Player, bool?>>(g => g.CanAutoReuseItem);
@@ -526,48 +520,48 @@ namespace Terraria.ModLoader
 				g.Instance(item).OnResearched(item, fullyResearched);
 		}
     
-		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat);
+		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat) {
+		public static void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
 			if (item.IsAir)
 				return;
 
-			item.ModItem?.ModifyWeaponDamage(player, ref damage, ref flat);
+			item.ModItem?.ModifyWeaponDamage(player, ref damage);
 
 			foreach (var g in HookModifyWeaponDamage.Enumerate(item.globalItems)) {
-				g.ModifyWeaponDamage(item, player, ref damage, ref flat);
+				g.ModifyWeaponDamage(item, player, ref damage);
 			}
 		}
 
-		private delegate void DelegateModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat);
+		private delegate void DelegateModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback);
 		private static HookList HookModifyWeaponKnockback = AddHook<DelegateModifyWeaponKnockback>(g => g.ModifyWeaponKnockback);
 
 		/// <summary>
 		/// Calls ModItem.ModifyWeaponKnockback, then all GlobalItem.ModifyWeaponKnockback hooks.
 		/// </summary>
-		public static void ModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat) {
+		public static void ModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback) {
 			if (item.IsAir)
 				return;
 
-			item.ModItem?.ModifyWeaponKnockback(player, ref knockback, ref flat);
+			item.ModItem?.ModifyWeaponKnockback(player, ref knockback);
 
 			foreach (var g in HookModifyWeaponKnockback.Enumerate(item.globalItems)) {
-				g.ModifyWeaponKnockback(item, player, ref knockback, ref flat);
+				g.ModifyWeaponKnockback(item, player, ref knockback);
 			}
 		}
 
 
-		private delegate void DelegateModifyWeaponCrit(Item item, Player player, ref int crit);
+		private delegate void DelegateModifyWeaponCrit(Item item, Player player, ref float crit);
 		private static HookList HookModifyWeaponCrit = AddHook<DelegateModifyWeaponCrit>(g => g.ModifyWeaponCrit);
 
 		/// <summary>
 		/// Calls ModItem.ModifyWeaponCrit, then all GlobalItem.ModifyWeaponCrit hooks.
 		/// </summary>
-		public static void ModifyWeaponCrit(Item item, Player player, ref int crit) {
+		public static void ModifyWeaponCrit(Item item, Player player, ref float crit) {
 			if (item.IsAir)
 				return;
 
@@ -1812,23 +1806,27 @@ namespace Terraria.ModLoader
 
 		private static HookList HookModifyTooltips = AddHook<Action<Item, List<TooltipLine>>>(g => g.ModifyTooltips);
 
-		public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text,
-			ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor) {
-			List<TooltipLine> tooltips = new List<TooltipLine>();
+		public static List<TooltipLine> ModifyTooltips(Item item, ref int numTooltips, string[] names, ref string[] text, ref bool[] modifier, ref bool[] badModifier, ref int oneDropLogo, out Color?[] overrideColor) {
+			var tooltips = new List<TooltipLine>();
+
 			for (int k = 0; k < numTooltips; k++) {
 				TooltipLine tooltip = new TooltipLine(names[k], text[k]);
-				tooltip.isModifier = modifier[k];
-				tooltip.isModifierBad = badModifier[k];
+				tooltip.IsModifier = modifier[k];
+				tooltip.IsModifierBad = badModifier[k];
+
 				if (k == oneDropLogo) {
-					tooltip.oneDropLogo = true;
+					tooltip.OneDropLogo = true;
 				}
+
 				tooltips.Add(tooltip);
 			}
 
 			item.ModItem?.ModifyTooltips(tooltips);
 
-			foreach (var g in HookModifyTooltips.Enumerate(item.globalItems)) {
-				g.ModifyTooltips(item, tooltips);
+			if (!item.IsAir) { // Prevents dummy items used in Main.HoverItem from getting unrelated tooltips
+				foreach (var g in HookModifyTooltips.Enumerate(item.globalItems)) {
+					g.ModifyTooltips(item, tooltips);
+				}
 			}
 
 			numTooltips = tooltips.Count;
@@ -1837,14 +1835,17 @@ namespace Terraria.ModLoader
 			badModifier = new bool[numTooltips];
 			oneDropLogo = -1;
 			overrideColor = new Color?[numTooltips];
+
 			for (int k = 0; k < numTooltips; k++) {
-				text[k] = tooltips[k].text;
-				modifier[k] = tooltips[k].isModifier;
-				badModifier[k] = tooltips[k].isModifierBad;
-				if (tooltips[k].oneDropLogo) {
+				text[k] = tooltips[k].Text;
+				modifier[k] = tooltips[k].IsModifier;
+				badModifier[k] = tooltips[k].IsModifierBad;
+
+				if (tooltips[k].OneDropLogo) {
 					oneDropLogo = k;
 				}
-				overrideColor[k] = tooltips[k].overrideColor;
+
+				overrideColor[k] = tooltips[k].OverrideColor;
 			}
 
 			return tooltips;

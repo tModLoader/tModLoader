@@ -1,0 +1,96 @@
+--- src/TerrariaNetCore/Terraria/Initializers/ChromaInitializer.cs
++++ src/tModLoader/Terraria/Initializers/ChromaInitializer.cs
+@@ -36,24 +_,83 @@
+ 		public static IntRgbGameValueTracker Event_ManaPercent;
+ 		public static IntRgbGameValueTracker Event_BreathPercent;
+ 
++		// The following fields and method splits were added by TML to fix a vanilla execution order bug that causes RGB settings constantly being reset, be it due to crashes, early closes, or whatever else.
++		// The configuration portion of the initialization has been made to run early on.
++		// - Mirsario.
++
++		private static VendorColorProfile razerColorProfile;
++		private static VendorColorProfile corsairColorProfile;
++		private static VendorColorProfile logitechColorProfile;
++		private static VendorColorProfile steelSeriesColorProfile;
++		private static bool useRazer;
++		private static bool useCorsair;
++		private static bool useLogitech;
++		private static bool useSteelSeries;
++		private static float rgbUpdateRate;
++		private static bool configLoaded;
++
++		internal static void ConfigInit() {
++			ConfigInit_GetProfiles();
++			ConfigInit_GetCommonValues();
++
++			if (!configLoaded) {
++				ConfigInit_RegisterSaving();
++				
++				configLoaded = true;
++			}
++		}
++
+ 		private static void AddDevices() {
++			if (!configLoaded) {
++				ConfigInit(); // This is expected to have already been called by now, but... just in case.
++			}
++
++			AddDevices_AddDeviceGroups();
++			AddDevices_SetFrameTimeInSeconds();
++			AddDevices_Final();
++		}
++
++		private static void ConfigInit_GetProfiles() {
+ 			VendorColorProfile razerColorProfile = Main.Configuration.Get("RazerColorProfile", new VendorColorProfile(new Vector3(1f, 0.765f, 0.568f)));
+ 			VendorColorProfile corsairColorProfile = Main.Configuration.Get("CorsairColorProfile", new VendorColorProfile());
+ 			VendorColorProfile logitechColorProfile = Main.Configuration.Get("LogitechColorProfile", new VendorColorProfile());
+ 			VendorColorProfile steelSeriesColorProfile = Main.Configuration.Get("SteelSeriesColorProfile", new VendorColorProfile());
++
++			ChromaInitializer.razerColorProfile = razerColorProfile;
++			ChromaInitializer.corsairColorProfile = corsairColorProfile;
++			ChromaInitializer.logitechColorProfile = logitechColorProfile;
++			ChromaInitializer.steelSeriesColorProfile = steelSeriesColorProfile;
++		}
++
++		private static void AddDevices_AddDeviceGroups() {
+ 			_engine.AddDeviceGroup("Razer", new RazerDeviceGroup(razerColorProfile));
+ 			_engine.AddDeviceGroup("Corsair", new CorsairDeviceGroup(corsairColorProfile));
+ 			_engine.AddDeviceGroup("Logitech", new LogitechDeviceGroup(logitechColorProfile));
+ 			_engine.AddDeviceGroup("SteelSeries", new SteelSeriesDeviceGroup(steelSeriesColorProfile, "TERRARIA", "Terraria", IconColor.Green));
++		}
++
++		private static void ConfigInit_GetCommonValues() {
+ 			bool useRazer = Main.Configuration.Get("UseRazerRGB", defaultValue: true);
+ 			bool useCorsair = Main.Configuration.Get("UseCorsairRGB", defaultValue: true);
+ 			bool useLogitech = Main.Configuration.Get("UseLogitechRGB", defaultValue: true);
+ 			bool useSteelSeries = Main.Configuration.Get("UseSteelSeriesRGB", defaultValue: true);
+ 			float rgbUpdateRate = Main.Configuration.Get("RGBUpdatesPerSecond", 45f);
++			
+ 			if (rgbUpdateRate <= 1E-07f)
+ 				rgbUpdateRate = 45f;
+ 
++			ChromaInitializer.useRazer = useRazer;
++			ChromaInitializer.useCorsair = useCorsair;
++			ChromaInitializer.useLogitech = useLogitech;
++			ChromaInitializer.useSteelSeries = useSteelSeries;
++			ChromaInitializer.rgbUpdateRate = rgbUpdateRate;
++		}
++
++		private static void AddDevices_SetFrameTimeInSeconds() {
+ 			_engine.FrameTimeInSeconds = 1f / rgbUpdateRate;
++		}
++
++		private static void ConfigInit_RegisterSaving() {
+ 			Main.Configuration.OnSave += delegate (Preferences config) {
+ 				config.Put("RGBUpdatesPerSecond", rgbUpdateRate);
+ 				config.Put("UseRazerRGB", useRazer);
+@@ -65,7 +_,9 @@
+ 				config.Put("UseSteelSeriesRGB", useSteelSeries);
+ 				config.Put("SteelSeriesColorProfile", steelSeriesColorProfile);
+ 			};
++		}
+ 
++		private static void AddDevices_Final() {
+ 			if (useRazer)
+ 				_engine.EnableDeviceGroup("Razer");
+ 

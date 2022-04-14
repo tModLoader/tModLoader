@@ -25,6 +25,8 @@ using Terraria.ModLoader.Utilities;
 using Terraria.Initializers;
 using Terraria.Map;
 using Terraria.GameContent.Creative;
+using Terraria.Graphics.Effects;
+using Terraria.GameContent.Skies;
 
 namespace Terraria.ModLoader
 {
@@ -522,6 +524,10 @@ namespace Terraria.ModLoader
 			foreach (LocalizedText text in LanguageManager.Instance._localizedTexts.Values) {
 				text.Override = null;
 			}
+
+			// TML: Due to Segments.PlayerSegment._player being initialized way before any mods are loaded, calling methods on this player (which vanilla does) will crash since no ModPlayers are set up for it, so reinitialize it
+			if (!Main.dedServ)
+				SkyManager.Instance["CreditsRoll"] = new CreditsRollSky();
 		}
 
 		/// <summary>

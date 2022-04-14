@@ -51,7 +51,7 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "Mod Sources");
+		public static readonly string ModSourcePath = Path.Combine(Program.SavePathShared, "ModSources");
 
 		internal static string[] FindModSources()
 		{
@@ -175,6 +175,9 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				Console.Error.WriteLine(e);
 				Environment.Exit(1);
 			}
+
+			Social.Steam.WorkshopSocialModule.CiPublish(modFolder);
+
 			// Mod was built with success, exit code 0 indicates success.
 			Environment.Exit(0);
 		}
@@ -385,6 +388,11 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			var preprocessorSymbols = new List<string> { "FNA" };
 			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
 				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
+
+			if (BuildInfo.IsStable) {
+				string tmlVersionPreprocessorSymbol = $"TML_{BuildInfo.tMLVersion.Major}_{BuildInfo.tMLVersion.Minor}";
+				preprocessorSymbols.Add(tmlVersionPreprocessorSymbol);
+			}
 
 			var results = RoslynCompile(mod.Name, refs, files, preprocessorSymbols.ToArray(), allowUnsafe, out code, out pdb);
 

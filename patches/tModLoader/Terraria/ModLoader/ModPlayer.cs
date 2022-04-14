@@ -410,29 +410,30 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item">The item being used</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05f`</param>
-		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
-		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat) {
+		/// <param name="item">The item being used.</param>
+		/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
+		public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item"></param>
-		/// <param name="knockback"></param>
-		public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback, ref float flat) {
+		/// <param name="item">The item being used.</param>
+		/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
+		public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback) {
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's crit chance based on player buffs, etc.
+		/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item">The item</param>
-		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
-		public virtual void ModifyWeaponCrit(Item item, ref int crit) {
+		/// <param name="item">The item.</param>
+		/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
+		public virtual void ModifyWeaponCrit(Item item, ref float crit) {
 		}
 
 		/// <summary>
@@ -693,8 +694,8 @@ namespace Terraria.ModLoader
 		/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 		/// </summary>
 		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
-		/// <param name="itemDrop">The item that will be created when this fishing attempt succeeds. leave <0 for no item</param>
-		/// <param name="npcSpawn">The enemy that will be spawned if there is no item caught. leave <0 for no NPC spawn</param>
+		/// <param name="itemDrop">The item that will be created when this fishing attempt succeeds. leave &lt;0 for no item</param>
+		/// <param name="npcSpawn">The enemy that will be spawned if there is no item caught. leave &lt;0 for no NPC spawn</param>
 		/// <param name="sonar">Fill all of this structure's fields to override the sonar text, or make sonar.Text null to disable custom sonar</param>
 		/// <param name="sonarPosition">The position the Sonar text will spawn. Bobber location by default.</param>
 		public virtual void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {

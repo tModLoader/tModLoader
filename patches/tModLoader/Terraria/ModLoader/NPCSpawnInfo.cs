@@ -8,15 +8,15 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The x-coordinate of the tile the NPC will spawn above.
 		/// </summary>
-		public int spawnTileX;
-		//num
+		public int SpawnTileX;
+
 		/// <summary>
 		/// The y-coordinate of the tile the NPC will spawn above.
 		/// </summary>
-		public int spawnTileY;
-		//num2
-		public int spawnTileType;
-		//num3
+		public int SpawnTileY;
+
+		public int SpawnTileType;
+
 		/// <summary>
 		/// The player that this NPC is spawning around.
 		/// For convenience, here are the player zones, which are also useful for determining NPC spawn:
@@ -47,77 +47,76 @@ namespace Terraria.ModLoader
 		/// <item><description>ZoneSandstorm</description></item>
 		/// </list>
 		/// </summary>
-		public Player player;
-		//Main.player[j]
+		public Player Player;
+
 		/// <summary>
 		/// The x-coordinate of the tile the player is standing on.
 		/// </summary>
-		public int playerFloorX;
-		//num25
+		public int PlayerFloorX;
+
 		/// <summary>
 		/// The y-coordinate of the tile the player is standing on.
 		/// </summary>
-		public int playerFloorY;
-		//num26
+		public int PlayerFloorY;
+
 		/// <summary>
 		/// Whether or not the player is in the sky biome, where harpies and wyverns spawn.
 		/// </summary>
-		public bool sky;
-		//flag
+		public bool Sky;
+
 		/// <summary>
 		/// Whether or not the player is inside the jungle temple, where Lihzahrds spawn.
 		/// </summary>
-		public bool lihzahrd;
-		//flag2
+		public bool Lihzahrd;
+
 		/// <summary>
 		/// Whether or not the player is in front of a player-placed wall or in a large town. If this is true, enemies that can attack through walls should not spawn (unless an invasion is in progress).
 		/// </summary>
-		public bool playerSafe;
-		//flag3
+		public bool PlayerSafe;
+
 		/// <summary>
 		/// Whether or not there is an invasion going on and the player is near it.
 		/// </summary>
-		public bool invasion;
-		//flag4
+		public bool Invasion;
+
 		/// <summary>
 		/// Whether or not the tile the NPC will spawn in contains water.
 		/// </summary>
-		public bool water;
-		//flag5
+		public bool Water;
+
 		/// <summary>
 		/// Whether or not the NPC will spawn on a granite block or the player is near a granite biome.
 		/// </summary>
-		public bool granite;
-		//flag7
+		public bool Granite;
+
 		/// <summary>
 		/// Whether or not the NPC will spawn on a marble block or the player is near a marble biome.
 		/// </summary>
-		public bool marble;
-		//flag8
+		public bool Marble;
+
 		/// <summary>
 		/// Whether or not the player is in a spider cave or the NPC will spawn near one.
 		/// </summary>
-		public bool spiderCave;
-		//flag9
+		public bool SpiderCave;
+
 		/// <summary>
 		/// Whether or not the player is in a town. This is used for spawning critters instead of monsters.
 		/// </summary>
-		public bool playerInTown;
-		//flag10
+		public bool PlayerInTown;
+
 		/// <summary>
 		/// Whether or not the player is in front of a desert wall or the NPC will spawn near one.
 		/// </summary>
-		public bool desertCave;
-		//flag11
+		public bool DesertCave;
+
 		/// <summary>
 		/// Whether Plantera is defeated and the world is in hardmode. This isn't needed (it's easy to find by yourself), but it's a local flag in NPC.SpawnNPC, so it is included for completeness.
 		/// </summary>
-		public bool planteraDefeated;
-		//flag12
+		public bool PlanteraDefeated;
+
 		/// <summary>
 		/// Whether or not the NPC is horizontally within the range near the player in which NPCs cannot spawn. If this is true, it also means that it is vertically outside of the range near the player in which NPCs cannot spawn.
 		/// </summary>
-		public bool safeRangeX;
-		//flag14
+		public bool SafeRangeX;
 	}
 }

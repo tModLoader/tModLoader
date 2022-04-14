@@ -284,6 +284,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to determine how and when this NPC can fall through platforms and similar tiles.
+		/// <br/>Return true to allow this NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
+		/// </summary>
+		public virtual bool? CanFallThroughPlatforms() {
+			return null;
+		}
+
+		/// <summary>
 		/// Allows you to make things happen when this NPC is caught. Ran Serverside
 		/// </summary>
 		/// <param name="player">The player catching this NPC</param>
@@ -292,7 +300,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
+		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify npc loot.
 		/// </summary>
 		/// <param name="npcLoot"></param>
 		public virtual void ModifyNPCLoot(NPCLoot npcLoot) {
@@ -498,7 +507,6 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// When used in conjunction with "npc.hide = true", allows you to specify that this npc should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
 		/// </summary>
-		/// <param name="npc"></param>
 		/// <param name="index"></param>
 		public virtual void DrawBehind(int index)
 		{

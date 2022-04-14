@@ -93,7 +93,7 @@
  				for (int j = 0; j < 200; j++) {
  					perIDStaticNPCImmunity[i][j] = 0u;
  				}
-@@ -221,7 +_,32 @@
+@@ -221,7 +_,34 @@
  			}
  		}
  
@@ -122,11 +122,101 @@
 +			ModProjectile = null;
 +			globalProjectiles = new Instanced<GlobalProjectile>[0];
 +			DamageType = DamageClass.Generic;
++			ArmorPenetration = 0;
++			CritChance = 0;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
  			sentry = false;
-@@ -8088,9 +_,13 @@
+@@ -1806,6 +_,7 @@
+ 				ignoreWater = true;
+ 			}
+ 			else if (type == 150 || type == 151 || type == 152) {
++				ArmorPenetration = 10;
+ 				width = 28;
+ 				height = 28;
+ 				aiStyle = 4;
+@@ -2145,6 +_,7 @@
+ 				trap = true;
+ 			}
+ 			else if (type == 189) {
++				ArmorPenetration = 10;
+ 				width = 8;
+ 				height = 8;
+ 				aiStyle = 36;
+@@ -4851,6 +_,7 @@
+ 				netImportant = true;
+ 			}
+ 			else if (type == 493 || type == 494) {
++				ArmorPenetration = 10;
+ 				width = 32;
+ 				height = 32;
+ 				aiStyle = 4;
+@@ -5119,6 +_,7 @@
+ 				penetrate = -1;
+ 			}
+ 			else if (type == 532) {
++				ArmorPenetration = 25;
+ 				width = 16;
+ 				height = 16;
+ 				aiStyle = 1;
+@@ -5525,6 +_,7 @@
+ 				extraUpdates = 2;
+ 			}
+ 			else if (type == 595) {
++				ArmorPenetration = 20;
+ 				width = 68;
+ 				height = 64;
+ 				aiStyle = 75;
+@@ -6609,6 +_,7 @@
+ 				hide = true;
+ 			}
+ 			else if (type == 723 || type == 724 || type == 725 || type == 726) {
++				ArmorPenetration = 25;
+ 				width = 24;
+ 				height = 24;
+ 				aiStyle = 5;
+@@ -7230,6 +_,7 @@
+ 				ranged = true;
+ 			}
+ 			else if (type == 864) {
++				ArmorPenetration = 25;
+ 				netImportant = true;
+ 				width = 10;
+ 				height = 10;
+@@ -7589,6 +_,7 @@
+ 					coldDamage = true;
+ 			}
+ 			else if (type == 916) {
++				ArmorPenetration = 25;
+ 				width = 18;
+ 				height = 18;
+ 				aiStyle = 176;
+@@ -7611,6 +_,7 @@
+ 				height = 96;
+ 			}
+ 			else if (type == 917) {
++				ArmorPenetration = 30;
+ 				width = 30;
+ 				height = 30;
+ 				aiStyle = 177;
+@@ -8017,6 +_,7 @@
+ 				alpha = 255;
+ 			}
+ 			else if (type == 964) {
++				ArmorPenetration = 20;
+ 				width = 40;
+ 				height = 40;
+ 				aiStyle = 187;
+@@ -8054,6 +_,7 @@
+ 				alpha = 255;
+ 			}
+ 			else if (type == 969) {
++				ArmorPenetration = 10;
+ 				width = 56;
+ 				height = 64;
+ 				aiStyle = 177;
+@@ -8088,9 +_,18 @@
  				alpha = 255;
  				hide = true;
  			}
@@ -136,10 +226,31 @@
  			}
 +			*/
 +
++			// tML:
++			// this tells all vanilla summon class projectiles THAT AREN'T WHIPS to actually use the corresponding DamageClass
++			if (type < ProjectileID.Count && (minion || sentry || ProjectileID.Sets.MinionShot[type] || ProjectileID.Sets.SentryShot[type]))
++				DamageType = DamageClass.Summon;
++
 +			ProjectileLoader.SetDefaults(this);
  
  			width = (int)((float)width * scale);
  			height = (int)((float)height * scale);
+@@ -8102,6 +_,7 @@
+ 			height = 18;
+ 			aiStyle = 165;
+ 			friendly = true;
++			DamageType = DamageClass.SummonMeleeSpeed;
+ 			penetrate = -1;
+ 			tileCollide = false;
+ 			scale = 1f;
+@@ -8169,6 +_,7 @@
+ 			projectile.honeyWet = Collision.honey;
+ 			Main.projectileIdentity[Owner, num] = num;
+ 			FindBannerToAssociateTo(spawnSource, projectile);
++			HandlePlayerStatModifiers(spawnSource, projectile);
+ 			if (projectile.aiStyle == 1) {
+ 				while (projectile.velocity.X >= 16f || projectile.velocity.X <= -16f || projectile.velocity.Y >= 16f || projectile.velocity.Y < -16f) {
+ 					projectile.velocity.X *= 0.97f;
 @@ -8203,7 +_,7 @@
  				projectile.ai[1] = projectile.position.Y;
  			}
@@ -228,6 +339,30 @@
  								if (!flag5 && (Main.npc[i].noTileCollide || !ownerHitCheck || CanHitWithMeleeWeapon(Main.npc[i]))) {
  									bool flag6 = false;
  									if (Main.npc[i].type == 414) {
+@@ -9348,9 +_,14 @@
+ 
+ 										float num7 = knockBack;
+ 										bool flag7 = false;
+-										int num8 = Main.player[owner].armorPenetration;
++										// int num8 = Main.player[owner].armorPenetration;
+ 										bool flag8 = !npcProj && !trap;
+ 										switch (type) {
++											// tML:
++											// armor penetration is handled in a more flexible way now, so all this nonsense is now completely unnecessary
++											// please refer to the correspondin' cases in SetDefaults for more information on how vanilla armor penetration values are set
++											// - thomas
++											/*
+ 											case 864:
+ 												num8 += 25;
+ 												break;
+@@ -9390,6 +_,7 @@
+ 											case 969:
+ 												num8 += 10;
+ 												break;
++											*/
+ 											case 877:
+ 											case 878:
+ 											case 879:
 @@ -9401,7 +_,7 @@
  										}
  
@@ -237,7 +372,7 @@
  											float value2 = (scale - 1f) * 100f;
  											value2 = Utils.Clamp(value2, 0f, 50f);
  											num9 = (int)((float)num9 * (1f + value2 * 0.23f));
-@@ -9431,14 +_,21 @@
+@@ -9431,15 +_,30 @@
  										}
  
  										if (flag8) {
@@ -252,13 +387,22 @@
  
  											if (magic && Main.rand.Next(1, 101) <= Main.player[owner].magicCrit)
  												flag7 = true;
+ 
++											tML:
++											the above code only accounts for the "three" vanilla classes that are capable of crits, and doesn't account for throwin'
++											it also doesn't account for any modded damage types, and so a change was needed in order to allow it to work with new classes
++											on top of this, the change from usin' the player's class crit to usin' the projectile's crit chance is important
++											it's part of the fix for the infamous "crit swap" exploit, as well as a larger overall fix to crit chance
++
++											- thomas
 +											*/
 +
-+											if (!(minion || ProjectileID.Sets.MinionShot[type]) && Main.rand.Next(100) < Main.player[owner].GetWeaponCrit(Main.player[owner].HeldItem))
++											if (DamageType.UseStandardCritCalcs && Main.rand.Next(100) < CritChance)
 +												flag7 = true;
- 
++
  											int num15 = type;
  											if ((uint)(num15 - 688) <= 2u) {
+ 												if (Main.player[owner].setMonkT3) {
 @@ -9748,7 +_,7 @@
  												num21 = (int)((double)num21 * 0.75);
  										}
@@ -312,8 +456,10 @@
 +
 +										PostModifyHit:
 +
- 										if (flag8 && !hostile && num8 > 0)
- 											num21 += nPC.checkArmorPenetration(num8);
+-										if (flag8 && !hostile && num8 > 0)
++										if (flag8 && !hostile && ArmorPenetration > 0)
+-											num21 += nPC.checkArmorPenetration(num8);
++											num21 += nPC.checkArmorPenetration(ArmorPenetration);
  
  										NPCKillAttempt attempt = new NPCKillAttempt(nPC);
 +										// Extra context
@@ -353,10 +499,10 @@
  
  						bool flag18 = false;
 -						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit)
-+						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].meleeCrit + Main.player[owner].allCrit)
++						if (melee && Main.rand.Next(1, 101) <= Main.player[owner].GetTotalCritChance(DamageClass.Melee))
  							flag18 = true;
  
-+						//Patch context: ^ flag17, to be used below multiple times.
++						//Patch context: ^ flag18, to be used below multiple times.
  						int num45 = Main.DamageVar((int)((float)damage * num5), Main.player[owner].luck);
 +						
 +						ProjectileLoader.ModifyHitPvp(this, player2, ref num45, ref flag18);
@@ -475,7 +621,7 @@
  				if (numUpdates == -1 && (minion || sentry)) {
  					Player player = Main.player[owner];
 -					damage = (int)((float)originalDamage * player.minionDamage + (float)player.minionAddDamage + 5E-06f);
-+					damage = (int)((float)originalDamage * (float)(player.allDamage.CombineWith(player.minionDamage)) + (float)player.minionAddDamage + 5E-06f);
++					damage = (int)player.GetTotalDamage(DamageClass.Summon).ApplyTo(originalDamage);
  				}
  
  				if (minion && numUpdates == -1 && type != 625 && type != 628) {
@@ -627,6 +773,25 @@
  				localAI[0] = 1f;
  			}
  		}
+@@ -27419,8 +_,7 @@
+ 					break;
+ 			}
+ 
+-			float meleeSpeed = player.meleeSpeed;
+-			float num15 = 1f / meleeSpeed;
++			float num15 = 1f / player.inverseMeleeSpeed;
+ 			num2 *= num15;
+ 			num8 *= num15;
+ 			num9 *= num15;
+@@ -27733,7 +_,7 @@
+ 				}
+ 			}
+ 			else if (ai[0] == 1f) {
+-				float meleeSpeed = Main.player[owner].meleeSpeed;
++				float meleeSpeed = Main.player[owner].inverseMeleeSpeed;
+ 				float num5 = 14f / meleeSpeed;
+ 				float num6 = 0.9f / meleeSpeed;
+ 				float num7 = 300f / meleeSpeed;
 @@ -27977,7 +_,7 @@
  
  						if (flag3) {
@@ -707,6 +872,15 @@
  					if (player.channel && flag6 && !player.noItems && !player.CCed) {
  						if (ai[0] == 180f) {
  							Vector2 center = base.Center;
+@@ -43416,7 +_,7 @@
+ 				if (ai[0] > 120f)
+ 					num35 = 5f;
+ 
+-				damage = (int)((float)player.inventory[player.selectedItem].damage * player.magicDamage);
++				damage = (int)player.GetTotalDamage(DamageClass.Magic).ApplyTo(player.inventory[player.selectedItem].damage);
+ 				ai[0] += 1f;
+ 				ai[1] += 1f;
+ 				bool flag8 = false;
 @@ -43468,7 +_,7 @@
  
  				if (flag9 && Main.myPlayer == owner) {
@@ -716,7 +890,24 @@
  					if (player.channel && flag10 && !player.noItems && !player.CCed) {
  						if (ai[0] == 1f) {
  							Vector2 center2 = base.Center;
-@@ -44480,6 +_,11 @@
+@@ -44386,7 +_,7 @@
+ 					localAI[0] += (float)Main.rand.Next(10, 31) * 0.1f;
+ 
+ 				float num = localAI[0] / 60f;
+-				num /= (1f + Main.player[owner].meleeSpeed) / 2f;
++				num /= (1f + Main.player[owner].inverseMeleeSpeed) / 2f;
+ 				float num2 = ProjectileID.Sets.YoyosLifeTimeMultiplier[type];
+ 				if (num2 != -1f && num > num2)
+ 					ai[0] = -1f;
+@@ -44474,12 +_,17 @@
+ 			if (Main.player[owner].yoyoString)
+ 				num10 = num10 * 1.25f + 30f;
+ 
+-			num10 /= (1f + Main.player[owner].meleeSpeed * 3f) / 4f;
++			num10 /= (1f + Main.player[owner].inverseMeleeSpeed * 3f) / 4f;
+-			num8 /= (1f + Main.player[owner].meleeSpeed * 3f) / 4f;
++			num8 /= (1f + Main.player[owner].inverseMeleeSpeed * 3f) / 4f;
+ 			num7 = 14f - num8 / 2f;
  			if (num7 < 1f)
  				num7 = 1f;
  
