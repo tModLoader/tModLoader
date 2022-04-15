@@ -1100,7 +1100,7 @@
  				}
  				else if (buffType[j] == 16) {
  					archery = true;
-+					arrowDamage *= 1.2f; // moved from PickAmmo, as StatModifier allows multiplicative buffs to be 'registered' before additive ones
++					arrowDamage *= 1.2f; // moved from PickAmmo, as StatModifier allows multiplicative buffs to be 'registered' alongside additive ones
  				}
  				else if (buffType[j] == 17) {
  					detectCreature = true;
@@ -4728,7 +4728,7 @@
  				flag2 = true;
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
-@@ -37226,19 +_,287 @@
+@@ -37226,19 +_,243 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
@@ -4756,34 +4756,36 @@
 +		}
 +
 +		// tML: part 1 of PickAmmo, finds the currently active ammo item if possible
-+		public void PickAmmo_TryToFindCurrentAmmoItem(Item weapon, ref bool canShoot, out Item item) {
-+			item = new Item();
-+			bool flag = false;
++		public void PickAmmo_TryToFindCurrentAmmoItem(Item weapon, ref bool canShoot, out Item currentAmmo) {
++			currentAmmo = new Item();
++			bool checkMainInventorySlots = false;
 +			if (weapon.useAmmo == AmmoID.Coin) {
-+				for (int i = 0; i < 4; i++) {
-+					int num = 50 + i;
-+					if (inventory[num].ammo == weapon.useAmmo && inventory[num].stack > 0) {
-+						item = inventory[num];
++				for (int i = 50; i < 54; i++) {
++					bool? canChooseAmmo = ItemLoader.CanChooseAmmo(weapon, inventory[i], this);
++					if ((canChooseAmmo.HasValue && canChooseAmmo.Value) || (inventory[i].ammo == weapon.useAmmo && inventory[i].stack > 0)) {
++						currentAmmo = inventory[i];
 +						canShoot = true;
-+						flag = true;
++						checkMainInventorySlots = true;
 +						break;
 +					}
 +				}
 +			}
 +
 +			for (int j = 54; j < 58; j++) {
-+				if (inventory[j].ammo == weapon.useAmmo && inventory[j].stack > 0) {
-+					item = inventory[j];
++				bool? canChooseAmmo = ItemLoader.CanChooseAmmo(weapon, inventory[j], this);
++				if ((canChooseAmmo.HasValue && canChooseAmmo.Value) || (inventory[j].ammo == weapon.useAmmo && inventory[j].stack > 0)) {
++					currentAmmo = inventory[j];
 +					canShoot = true;
-+					flag = true;
++					checkMainInventorySlots = true;
 +					break;
 +				}
 +			}
 +
-+			if (!flag) {
++			if (!checkMainInventorySlots) {
 +				for (int k = 0; k < 54; k++) {
-+					if (inventory[k].ammo == weapon.useAmmo && inventory[k].stack > 0) {
-+						item = inventory[k];
++					bool? canChooseAmmo = ItemLoader.CanChooseAmmo(weapon, inventory[k], this);
++					if ((canChooseAmmo.HasValue && canChooseAmmo.Value) || (inventory[k].ammo == weapon.useAmmo && inventory[k].stack > 0)) {
++						currentAmmo = inventory[k];
 +						canShoot = true;
 +						break;
 +					}
@@ -4857,62 +4859,10 @@
 +			}
 +
 +			speed += ammo.shootSpeed;
-+			bool weaponHasBaseDamage = weapon.damage > 0;
-+			bool ammoHasBaseDamage = ammo.damage > 0;
-+			if (weaponHasBaseDamage || ammoHasBaseDamage) {
-+				StatModifier weaponDamageModifier = GetTotalDamage(weapon.DamageType);
++			if (ammo.damage > 0) {
 +				StatModifier ammoDamageModifier = GetTotalDamage(ammo.DamageType);
-+				bool weaponTakesGenericDamage = weapon.DamageType.GetModifierInheritance(DamageClass.Generic).damageInheritance != 0;
-+				bool ammoTakesGenericDamage = ammo.DamageType.GetModifierInheritance(DamageClass.Generic).damageInheritance != 0;
-+				if (weapon.DamageType == ammo.DamageType) {
-+					// if the damage types are identically, just apply the weapon's damage modifier to the ammo
-+					totalDamage += (int)weaponDamageModifier.ApplyTo(ammo.damage);
-+				}
-+				else if (weaponTakesGenericDamage) {
-+					// if the weapon takes generic damage, regardless of the ammo's feelings, ensure that the two modifiers are combined correctly
-+					StatModifier ammoDamageModifierSansGeneric = GetDamage(ammo.DamageType);
-+
-+					for (int i = 0; i < damageData.Length; i++) {
-+						DamageClass damageClass = DamageClassLoader.DamageClasses[i];
-+						if (damageClass == DamageClass.Generic || damageClass == weapon.DamageType || damageClass == ammo.DamageType)
-+							continue;
-+
-+						float weaponInheritanceForClass = weapon.DamageType.GetModifierInheritance(damageClass).damageInheritance;
-+						float ammoInheritanceForClass = ammo.DamageType.GetModifierInheritance(damageClass).damageInheritance;
-+						if (weaponInheritanceForClass == ammoInheritanceForClass)
-+							continue;
-+
-+						StatInheritanceData inheritanceData = ammo.DamageType.GetModifierInheritance(damageClass);
-+						ammoDamageModifierSansGeneric = ammoDamageModifierSansGeneric.CombineWith(damageData[i].damage.Scale(inheritanceData.damageInheritance));
-+					}
-+
-+					weaponDamageModifier.CombineWith(ammoDamageModifierSansGeneric);
-+					totalDamage += (int)weaponDamageModifier.ApplyTo(ammo.damage);
-+				}
-+				else if (ammoTakesGenericDamage) {
-+					// if the weapon doesn't take generic damage, but the ammo does, ensure that the two modifiers are combined correctly
-+					StatModifier weaponDamageModifierSansGeneric = GetDamage(weapon.DamageType);
-+
-+					for (int i = 0; i < damageData.Length; i++) {
-+						DamageClass damageClass = DamageClassLoader.DamageClasses[i];
-+						if (damageClass == DamageClass.Generic || damageClass == weapon.DamageType || damageClass == ammo.DamageType)
-+							continue;
-+
-+						float weaponInheritanceForClass = weapon.DamageType.GetModifierInheritance(damageClass).damageInheritance;
-+						float ammoInheritanceForClass = ammo.DamageType.GetModifierInheritance(damageClass).damageInheritance;
-+						if (weaponInheritanceForClass == ammoInheritanceForClass)
-+							continue;
-+
-+						StatInheritanceData inheritanceData = weapon.DamageType.GetModifierInheritance(damageClass);
-+						weaponDamageModifierSansGeneric = weaponDamageModifierSansGeneric.CombineWith(damageData[i].damage.Scale(inheritanceData.damageInheritance));
-+					}
-+
-+					ammoDamageModifier.CombineWith(weaponDamageModifierSansGeneric);
-+					totalDamage += (int)weaponDamageModifier.ApplyTo(ammo.damage);
-+				} else {
-+					// how would you even get here? either way, neither item takes generic damage, so just add the ammo's damage modifier to the ammo's damage and use that, I guess
-+					totalDamage += (int)ammoDamageModifier.ApplyTo(ammo.damage);
-+				}
++				float ammoDamageTotal = ammo.damage * ammoDamageModifier.Additive * ammoDamageModifier.Multiplicative;
++				totalDamage += (int)ammoDamageTotal;
 +			}
 +
 +			if ((weapon.useAmmo == AmmoID.Arrow || weapon.useAmmo == AmmoID.Stake) && archery) {
@@ -4925,12 +4875,19 @@
 +				// Damage = (int)((double)Damage * 1.2);
 +			}
 +
-+			// TO-DO: should ammo knockback addition be modified by knockback boosts for the damage types of either, similar to damage?
++			// TO-DO: more of a to-consider but lol
++			// should ammo knockback addition be modified by knockback boosts for the damage type of the ammo, similar to damage?
 +			totalKnockback += ammo.knockBack;
 +		}
 +
 +		// tML: final part of PickAmmo, handles ammo consumption
 +		public void PickAmmo_HandleAmmoConsumption(Item weapon, Item ammo, bool conserveAmmo = false, int projToShoot = 0) {
++			bool? canConsumeAmmo = CombinedHooks.CanConsumeAmmo(this, weapon, ammo);
++			if (canConsumeAmmo.HasValue) {
++				conserveAmmo = canConsumeAmmo.Value;
++				goto SkipVanillaConservationLogic;
++			}
++
 +			if (weapon.type == 3475 && Main.rand.Next(3) != 0)
 +				conserveAmmo = true;
 +
@@ -5002,8 +4959,7 @@
 +			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
 +				conserveAmmo = true;
 +
-+			conserveAmmo |= !CombinedHooks.CanConsumeAmmo(this, weapon, ammo);
-+
++			SkipVanillaConservationLogic:
 +			if (!conserveAmmo && ammo.consumable) {
 +				CombinedHooks.OnConsumeAmmo(this, weapon, ammo);
 +

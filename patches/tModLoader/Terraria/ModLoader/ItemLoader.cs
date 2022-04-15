@@ -593,49 +593,96 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Player, bool>>(g => g.CanConsumeAmmo);
-		private static HookList HookCanBeConsumedAsAmmo = AddHook<Func<Item, Player, bool>>(g => g.CanBeConsumedAsAmmo);
+		private static HookList HookCanChooseAmmo = AddHook<Func<Item, Item, Player, bool?>>(g => g.CanChooseAmmo);
+		private static HookList HookCanBeChosenAsAmmo = AddHook<Func<Item, Item, Player, bool?>>(g => g.CanBeChosenAsAmmo);
 
 		/// <summary>
-		/// Calls <see cref="ModItem.CanConsumeAmmo"/> for the weapon, <see cref="ModItem.CanBeConsumedAsAmmo"/> for the ammo, then each corresponding hook for the weapon and ammo, until one of them returns false. If all of them return true, returns true.
+		/// Calls <see cref="ModItem.CanChooseAmmo"/> for the weapon, <see cref="ModItem.CanBeChosenAsAmmo"/> for the ammo,
+		/// then each corresponding hook for the weapon and ammo, until one of them returns a concrete true-or-false value.
+		/// If all of them fail to do this, returns null.
 		/// </summary>
-		public static bool CanConsumeAmmo(Item weapon, Item ammo, Player player) {
-			if (weapon.ModItem != null && !weapon.ModItem.CanConsumeAmmo(player) ||
-					ammo.ModItem != null && !ammo.ModItem.CanBeConsumedAsAmmo(player))
-				return false;
+		public static bool? CanChooseAmmo(Item weapon, Item ammo, Player player) {
+			if (weapon.ModItem != null) {
+				bool? canChooseAmmoFromModItem = weapon.ModItem.CanChooseAmmo(ammo, player);
+				if (canChooseAmmoFromModItem.HasValue)
+					return canChooseAmmoFromModItem.Value;
+			}
+			if (ammo.ModItem != null) {
+				bool? canBeChosenAsAmmoFromModItem = ammo.ModItem.CanBeChosenAsAmmo(weapon, player);
+				if (canBeChosenAsAmmoFromModItem.HasValue)
+					return canBeChosenAsAmmoFromModItem.Value;
+			}
+
+			foreach (var g in HookCanChooseAmmo.Enumerate(weapon.globalItems)) {
+				bool? canChooseAmmo = g.CanChooseAmmo(weapon, ammo, player);
+				if (canChooseAmmo.HasValue)
+					return canChooseAmmo.Value;
+			}
+
+			foreach (var g in HookCanBeChosenAsAmmo.Enumerate(ammo.globalItems)) {
+				bool? canBeChosenAsAmmo = g.CanBeChosenAsAmmo(ammo, weapon, player);
+				if (canBeChosenAsAmmo.HasValue)
+					return canBeChosenAsAmmo.Value;
+			}
+
+			return null;
+		}
+
+		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Item, Player, bool?>>(g => g.CanConsumeAmmo);
+		private static HookList HookCanBeConsumedAsAmmo = AddHook<Func<Item, Item, Player, bool?>>(g => g.CanBeConsumedAsAmmo);
+
+		/// <summary>
+		/// Calls <see cref="ModItem.CanConsumeAmmo"/> for the weapon, <see cref="ModItem.CanBeConsumedAsAmmo"/> for the ammo,
+		/// then each corresponding hook for the weapon and ammo, until one of them returns a concrete true-or-false value.
+		/// If all of them fail to do this, returns null.
+		/// </summary>
+		public static bool? CanConsumeAmmo(Item weapon, Item ammo, Player player) {
+			if (weapon.ModItem != null) {
+				bool? canConsumeAmmo = weapon.ModItem.CanConsumeAmmo(ammo, player);
+				if (canConsumeAmmo.HasValue)
+					return canConsumeAmmo.Value;
+			}
+			if (ammo.ModItem != null) {
+				bool? canBeConsumedAsAmmo = ammo.ModItem.CanBeConsumedAsAmmo(weapon, player);
+				if (canBeConsumedAsAmmo.HasValue)
+					return canBeConsumedAsAmmo.Value;
+			}
 
 			foreach (var g in HookCanConsumeAmmo.Enumerate(weapon.globalItems)) {
-				if (!g.CanConsumeAmmo(weapon, player))
-					return false;
+				bool? canChooseAmmo = g.CanConsumeAmmo(weapon, ammo, player);
+				if (canChooseAmmo.HasValue)
+					return canChooseAmmo.Value;
 			}
 
 			foreach (var g in HookCanBeConsumedAsAmmo.Enumerate(ammo.globalItems)) {
-				if (!g.CanBeConsumedAsAmmo(ammo, player))
-					return false;
+				bool? canBeChosenAsAmmo = g.CanBeConsumedAsAmmo(ammo, weapon, player);
+				if (canBeChosenAsAmmo.HasValue)
+					return canBeChosenAsAmmo.Value;
 			}
 
-			return true;
+			return null;
 		}
 
-		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Player>>(g => g.OnConsumeAmmo);
-		private static HookList HookOnConsumedAsAmmo = AddHook<Action<Item, Player>>(g => g.OnConsumedAsAmmo);
+		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Item, Player>>(g => g.OnConsumeAmmo);
+		private static HookList HookOnConsumedAsAmmo = AddHook<Action<Item, Item, Player>>(g => g.OnConsumedAsAmmo);
 
 		/// <summary>
-		/// Calls <see cref="ModItem.OnConsumeAmmo"/> for the weapon, <see cref="ModItem.OnConsumedAsAmmo"/> for the ammo, then each corresponding hook for the weapon and ammo.
+		/// Calls <see cref="ModItem.OnConsumeAmmo"/> for the weapon, <see cref="ModItem.OnConsumedAsAmmo"/> for the ammo,
+		/// then each corresponding hook for the weapon and ammo.
 		/// </summary>
 		public static void OnConsumeAmmo(Item weapon, Item ammo, Player player) {
 			if (weapon.IsAir)
 				return;
 
-			weapon.ModItem?.OnConsumeAmmo(player);
-			ammo.ModItem?.OnConsumedAsAmmo(player);
+			weapon.ModItem?.OnConsumeAmmo(ammo, player);
+			ammo.ModItem?.OnConsumedAsAmmo(weapon, player);
 
 			foreach (var g in HookOnConsumeAmmo.Enumerate(weapon.globalItems)) {
-				g.OnConsumeAmmo(weapon, player);
+				g.OnConsumeAmmo(weapon, ammo, player);
 			}
 
 			foreach (var g in HookOnConsumedAsAmmo.Enumerate(ammo.globalItems)) {
-				g.OnConsumedAsAmmo(ammo, player);
+				g.OnConsumedAsAmmo(ammo, weapon, player);
 			}
 		}
 
