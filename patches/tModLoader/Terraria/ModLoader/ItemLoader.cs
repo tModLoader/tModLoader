@@ -597,11 +597,21 @@ namespace Terraria.ModLoader
 		private static HookList HookCanBeChosenAsAmmo = AddHook<Func<Item, Item, Player, bool?>>(g => g.CanBeChosenAsAmmo);
 
 		/// <summary>
-		/// Calls <see cref="ModItem.CanChooseAmmo"/> for the weapon, <see cref="ModItem.CanBeChosenAsAmmo"/> for the ammo,
-		/// then each corresponding hook for the weapon and ammo, until one of them returns a concrete true-or-false value.
+		/// Calls each <see cref="GlobalItem.CanChooseAmmo"/> for the weapon, and each <see cref="GlobalItem.CanBeChosenAsAmmo"/> for the ammo, then each
+		/// corresponding hook in <see cref="ModItem"/> if applicable for the weapon and/or ammo, until one of them returns a concrete true-or-false value.
 		/// If all of them fail to do this, returns null.
 		/// </summary>
 		public static bool? CanChooseAmmo(Item weapon, Item ammo, Player player) {
+			foreach (var g in HookCanChooseAmmo.Enumerate(weapon.globalItems)) {
+				bool? canChooseAmmo = g.CanChooseAmmo(weapon, ammo, player);
+				if (canChooseAmmo.HasValue)
+					return canChooseAmmo.Value;
+			}
+			foreach (var g in HookCanBeChosenAsAmmo.Enumerate(ammo.globalItems)) {
+				bool? canBeChosenAsAmmo = g.CanBeChosenAsAmmo(ammo, weapon, player);
+				if (canBeChosenAsAmmo.HasValue)
+					return canBeChosenAsAmmo.Value;
+			}
 			if (weapon.ModItem != null) {
 				bool? canChooseAmmoFromModItem = weapon.ModItem.CanChooseAmmo(ammo, player);
 				if (canChooseAmmoFromModItem.HasValue)
@@ -612,19 +622,6 @@ namespace Terraria.ModLoader
 				if (canBeChosenAsAmmoFromModItem.HasValue)
 					return canBeChosenAsAmmoFromModItem.Value;
 			}
-
-			foreach (var g in HookCanChooseAmmo.Enumerate(weapon.globalItems)) {
-				bool? canChooseAmmo = g.CanChooseAmmo(weapon, ammo, player);
-				if (canChooseAmmo.HasValue)
-					return canChooseAmmo.Value;
-			}
-
-			foreach (var g in HookCanBeChosenAsAmmo.Enumerate(ammo.globalItems)) {
-				bool? canBeChosenAsAmmo = g.CanBeChosenAsAmmo(ammo, weapon, player);
-				if (canBeChosenAsAmmo.HasValue)
-					return canBeChosenAsAmmo.Value;
-			}
-
 			return null;
 		}
 
@@ -632,11 +629,21 @@ namespace Terraria.ModLoader
 		private static HookList HookCanBeConsumedAsAmmo = AddHook<Func<Item, Item, Player, bool?>>(g => g.CanBeConsumedAsAmmo);
 
 		/// <summary>
-		/// Calls <see cref="ModItem.CanConsumeAmmo"/> for the weapon, <see cref="ModItem.CanBeConsumedAsAmmo"/> for the ammo,
-		/// then each corresponding hook for the weapon and ammo, until one of them returns a concrete true-or-false value.
+		/// Calls each <see cref="GlobalItem.CanConsumeAmmo"/> for the weapon, and each <see cref="GlobalItem.CanBeConsumedAsAmmo"/> for the ammo, then each
+		/// corresponding hook in <see cref="ModItem"/> if applicable for the weapon and/or ammo, until one of them returns a concrete true-or-false value.
 		/// If all of them fail to do this, returns null.
 		/// </summary>
 		public static bool? CanConsumeAmmo(Item weapon, Item ammo, Player player) {
+			foreach (var g in HookCanConsumeAmmo.Enumerate(weapon.globalItems)) {
+				bool? canConsumeAmmo = g.CanConsumeAmmo(weapon, ammo, player);
+				if (canConsumeAmmo.HasValue)
+					return canConsumeAmmo.Value;
+			}
+			foreach (var g in HookCanBeConsumedAsAmmo.Enumerate(ammo.globalItems)) {
+				bool? canBeConsumedAsAmmo = g.CanBeConsumedAsAmmo(ammo, weapon, player);
+				if (canBeConsumedAsAmmo.HasValue)
+					return canBeConsumedAsAmmo.Value;
+			}
 			if (weapon.ModItem != null) {
 				bool? canConsumeAmmo = weapon.ModItem.CanConsumeAmmo(ammo, player);
 				if (canConsumeAmmo.HasValue)
@@ -647,19 +654,6 @@ namespace Terraria.ModLoader
 				if (canBeConsumedAsAmmo.HasValue)
 					return canBeConsumedAsAmmo.Value;
 			}
-
-			foreach (var g in HookCanConsumeAmmo.Enumerate(weapon.globalItems)) {
-				bool? canChooseAmmo = g.CanConsumeAmmo(weapon, ammo, player);
-				if (canChooseAmmo.HasValue)
-					return canChooseAmmo.Value;
-			}
-
-			foreach (var g in HookCanBeConsumedAsAmmo.Enumerate(ammo.globalItems)) {
-				bool? canBeChosenAsAmmo = g.CanBeConsumedAsAmmo(ammo, weapon, player);
-				if (canBeChosenAsAmmo.HasValue)
-					return canBeChosenAsAmmo.Value;
-			}
-
 			return null;
 		}
 
