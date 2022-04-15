@@ -410,7 +410,7 @@
  
 +		/// <summary>
 +		/// This method sets a variety of common Item values common to bow weapons.<br/>
-+		/// Specfically: width = 14; height = 30; UseSound = SoundID.Item5;<br/>
++		/// Specifically: width = 14; height = 30; UseSound = SoundID.Item5;<br/>
 +		/// Addtionally: <inheritdoc cref="DefaultToRangedWeapon(int,int,int,float,bool)" />
 +		/// </summary>
 +		/// <param name="singleShotTime"></param>
@@ -444,6 +444,25 @@
  			flame = true;
  			noWet = !allowWaterPlacement;
  			holdStyle = 1;
+@@ -44921,6 +_,18 @@
+ 			autoReuse = true;
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of common Item values common to food items.<br/>
++		/// Specifically: UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? DrinkLiquid : EatFood;<br/>
++		/// useTurn = true; useAnimation = useTime = animationTime; maxStack = 30; consumable = true;<br/>
++		/// buffType = foodbuff; buffTime = foodbuffduration; rare = Blue; value = 20 silver;
++		/// </summary>
++		/// <param name="newwidth"></param>
++		/// <param name="newheight"></param>
++		/// <param name="foodbuff"></param>
++		/// <param name="foodbuffduration"></param>
++		/// <param name="useGulpSound">If true, the gulp sound is set, otherwise the crunch sound is set</param>
++		/// <param name="animationTime"></param>
+ 		public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
+ 			if (useGulpSound)
+ 				UseSound = SoundID.Item3;
 @@ -45006,6 +_,16 @@
  			SetDefaults(Type, noMatCheck: false);
  		}
