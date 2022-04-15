@@ -24,7 +24,7 @@ jobs:
         
         - name: Check out repo
           if: steps.date.outputs.date < 21
-          uses: actions/checkout@v2
+          uses: actions/checkout@v3
           with:
             persist-credentials: false
             token: ${{ secrets.TMODLOADERBOT_TOKEN }}
@@ -33,7 +33,7 @@ jobs:
         # The below merger for sure won't work while this branch is ahead of 1.4, so can't fast forward to test.
         - name: Merge
           if: steps.date.outputs.date < 21
-          uses: tModLoader/gh-action-nightly-merge@master
+          uses: robotology/gh-action-nightly-merge@v1.3.1
           with:
               stable_branch: '1.4'
               development_branch: '1.4-preview'
