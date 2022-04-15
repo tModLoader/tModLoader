@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Audio/OGGAudioTrack.cs
++++ src/tModLoader/Terraria/Audio/OGGAudioTrack.cs
+@@ -57,7 +_,7 @@
+ 		}
+ 
+ 		private void TryGettingVariable(string vorbisComment, string variableWeLookFor, ref int variableValueHolder) {
+-			if (vorbisComment.StartsWith(variableWeLookFor) && int.TryParse(vorbisComment, out int result))
++			if (vorbisComment.StartsWith(variableWeLookFor) && int.TryParse(vorbisComment.Remove(0, variableWeLookFor.Length + 1), out int result))
+ 				variableValueHolder = result;
+ 		}
+ 
