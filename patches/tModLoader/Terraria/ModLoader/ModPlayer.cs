@@ -437,14 +437,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not ammo will be consumed upon usage. Return false to stop the ammo from being depleted. Returns true by default.
+		/// Whether or not ammo will be consumed upon usage. Returns null by default, which allows vanilla to decide.
+		/// Return true to force the ammo to be consumed, and return false to forcibly stop it from being consumed.
 		/// <br>If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.</br>
 		/// </summary>
 		/// <param name="weapon">The item that is using this ammo</param>
 		/// <param name="ammo">The ammo item</param>
 		/// <returns></returns>
-		public virtual bool CanConsumeAmmo(Item weapon, Item ammo) {
-			return true;
+		public virtual bool? CanConsumeAmmo(Item weapon, Item ammo) {
+			return null;
 		}
 
 		/// <summary>
