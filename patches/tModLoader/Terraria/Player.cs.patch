@@ -4728,7 +4728,7 @@
  				flag2 = true;
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
-@@ -37226,19 +_,243 @@
+@@ -37226,19 +_,241 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
@@ -4875,8 +4875,6 @@
 +				// Damage = (int)((double)Damage * 1.2);
 +			}
 +
-+			// TO-DO: more of a to-consider but lol
-+			// should ammo knockback addition be modified by knockback boosts for the damage type of the ammo, similar to damage?
 +			totalKnockback += ammo.knockBack;
 +		}
 +
