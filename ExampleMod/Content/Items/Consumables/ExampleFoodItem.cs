@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Consumables
 {
-	public class ExamplePie : ModItem
+	public class ExampleFoodItem : ModItem
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Pie");
