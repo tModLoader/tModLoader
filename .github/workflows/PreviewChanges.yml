@@ -24,11 +24,16 @@ jobs:
         
         - name: Check out repo
           if: steps.date.outputs.date < 21
-          uses: actions/checkout@v3
+          uses: actions/checkout@v2
           with:
             persist-credentials: false
             token: ${{ secrets.TMODLOADERBOT_TOKEN }}
-        
+                 
+        - name: Patch for unsafe dir issue???
+          if: steps.date.outputs.date < 21
+          shell: bash
+          run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+            
         # There is a bug with this that requires the previous step to checkout a different branch then either of two specified
         # The below merger for sure won't work while this branch is ahead of 1.4, so can't fast forward to test.
         - name: Merge
