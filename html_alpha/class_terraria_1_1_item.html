@@ -138,14 +138,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultToAccessory</b
 <tr class="separator:a77dd0c685e62932c62222de6d84706cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb5e4820e1c454d636b1b619e53bf09c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#abb5e4820e1c454d636b1b619e53bf09c">DefaultToBow</a> (int singleShotTime, float shotVelocity, bool hasAutoReuse=false)</td></tr>
 <tr class="memdesc:abb5e4820e1c454d636b1b619e53bf09c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method sets a variety of common <a class="el" href="class_terraria_1_1_item.html">Item</a> values common to bow weapons.<br  />
- Specfically: width = 14; height = 30; UseSound = SoundID.Item5;<br  />
+ Specifically: width = 14; height = 30; UseSound = SoundID.Item5;<br  />
  Addtionally:   <a href="class_terraria_1_1_item.html#abb5e4820e1c454d636b1b619e53bf09c">More...</a><br /></td></tr>
 <tr class="separator:abb5e4820e1c454d636b1b619e53bf09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d659952c860e0e1f104e569468d4417"><td class="memItemLeft" align="right" valign="top"><a id="a5d659952c860e0e1f104e569468d4417"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultToCapturedCritter</b> (short npcIdToSpawnOnUse)</td></tr>
 <tr class="separator:a5d659952c860e0e1f104e569468d4417"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb2ac63a130f2ee589ea6c2b8bc90e59"><td class="memItemLeft" align="right" valign="top"><a id="aeb2ac63a130f2ee589ea6c2b8bc90e59"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultToFood</b> (int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound=false, int animationTime=17)</td></tr>
+<tr class="memitem:aeb2ac63a130f2ee589ea6c2b8bc90e59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#aeb2ac63a130f2ee589ea6c2b8bc90e59">DefaultToFood</a> (int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound=false, int animationTime=17)</td></tr>
+<tr class="memdesc:aeb2ac63a130f2ee589ea6c2b8bc90e59"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method sets a variety of common <a class="el" href="class_terraria_1_1_item.html">Item</a> values common to food items.<br  />
+ Specifically: UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? DrinkLiquid : EatFood;<br  />
+ useTurn = true; useAnimation = useTime = animationTime; maxStack = 30; consumable = true;<br  />
+ buffType = foodbuff; buffTime = foodbuffduration; rare = Blue; value = 20 silver;  <a href="class_terraria_1_1_item.html#aeb2ac63a130f2ee589ea6c2b8bc90e59">More...</a><br /></td></tr>
 <tr class="separator:aeb2ac63a130f2ee589ea6c2b8bc90e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afefae2726a1112115114359cb0fc740c"><td class="memItemLeft" align="right" valign="top"><a id="afefae2726a1112115114359cb0fc740c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultToGolfBall</b> (int projid)</td></tr>
@@ -968,13 +971,81 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </div><div class="memdoc">
 
 <p>This method sets a variety of common <a class="el" href="class_terraria_1_1_item.html">Item</a> values common to bow weapons.<br  />
- Specfically: width = 14; height = 30; UseSound = SoundID.Item5;<br  />
+ Specifically: width = 14; height = 30; UseSound = SoundID.Item5;<br  />
  Addtionally:  </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">singleShotTime</td><td></td></tr>
     <tr><td class="paramname">shotVelocity</td><td></td></tr>
     <tr><td class="paramname">hasAutoReuse</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aeb2ac63a130f2ee589ea6c2b8bc90e59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb2ac63a130f2ee589ea6c2b8bc90e59">&#9670;&nbsp;</a></span>DefaultToFood()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Terraria.Item.DefaultToFood </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>newwidth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>newheight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>foodbuff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>foodbuffduration</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useGulpSound</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>animationTime</em> = <code>17</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This method sets a variety of common <a class="el" href="class_terraria_1_1_item.html">Item</a> values common to food items.<br  />
+ Specifically: UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? DrinkLiquid : EatFood;<br  />
+ useTurn = true; useAnimation = useTime = animationTime; maxStack = 30; consumable = true;<br  />
+ buffType = foodbuff; buffTime = foodbuffduration; rare = Blue; value = 20 silver; </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newwidth</td><td></td></tr>
+    <tr><td class="paramname">newheight</td><td></td></tr>
+    <tr><td class="paramname">foodbuff</td><td></td></tr>
+    <tr><td class="paramname">foodbuffduration</td><td></td></tr>
+    <tr><td class="paramname">useGulpSound</td><td>If true, the gulp sound is set, otherwise the crunch sound is set</td></tr>
+    <tr><td class="paramname">animationTime</td><td></td></tr>
   </table>
   </dd>
 </dl>
