@@ -4612,7 +4612,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,6 +_,32 @@
+@@ -37031,6 +_,29 @@
  			}
  
  			return num;
@@ -4620,9 +4620,6 @@
 +
 +			StatModifier modifier = GetTotalDamage(sItem.DamageType);
 +
-+			// TODO: use ItemID sets for ammo-specific bonuses
-+			// will probably accompany a planned overhaul to how a weapon's ammo pool is decided, but for now, this works fine
-+			// -thomas
 +			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) {
 +				modifier *= arrowDamage.Additive * arrowDamage.Multiplicative;
 +				modifier.Base += arrowDamage.Base;
@@ -4728,7 +4725,7 @@
  				flag2 = true;
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
-@@ -37226,19 +_,241 @@
+@@ -37226,19 +_,252 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
@@ -4861,18 +4858,29 @@
 +			speed += ammo.shootSpeed;
 +			if (ammo.damage > 0) {
 +				StatModifier ammoDamageModifier = GetTotalDamage(ammo.DamageType);
++				if (weapon.useAmmo == AmmoID.Arrow || ammo.ammo == AmmoID.Arrow || weapon.useAmmo == AmmoID.Stake || ammo.ammo == AmmoID.Stake) {
++					ammoDamageModifier *= arrowDamage.Additive * arrowDamage.Multiplicative;
++					// NOTE: the Archery Potion damage bonus is handled through arrowDamage now, so the multiplier that'd otherwise be used here is unnecessary
++					if (archery) {
++						if (speed < 20f) {
++							speed *= 1.2f;
++							if (speed > 20f)
++								speed = 20f;
++						}
++					}
++				}
++				if (weapon.useAmmo == AmmoID.Bullet || ammo.ammo == AmmoID.Bullet
++				 || weapon.useAmmo == AmmoID.CandyCorn || ammo.ammo == AmmoID.CandyCorn) {
++					ammoDamageModifier *= bulletDamage.Additive * bulletDamage.Multiplicative;
++				}
++				if (weapon.useAmmo == AmmoID.Rocket || ammo.ammo == AmmoID.Rocket
++				 || weapon.useAmmo == AmmoID.StyngerBolt || ammo.ammo == AmmoID.StyngerBolt
++				 || weapon.useAmmo == AmmoID.JackOLantern || ammo.ammo == AmmoID.JackOLantern
++				 || weapon.useAmmo == AmmoID.NailFriendly || ammo.ammo == AmmoID.NailFriendly) {
++					ammoDamageModifier *= rocketDamage.Additive * rocketDamage.Multiplicative;
++				}
 +				float ammoDamageTotal = ammo.damage * ammoDamageModifier.Additive * ammoDamageModifier.Multiplicative;
 +				totalDamage += (int)ammoDamageTotal;
-+			}
-+
-+			if ((weapon.useAmmo == AmmoID.Arrow || weapon.useAmmo == AmmoID.Stake) && archery) {
-+				if (speed < 20f) {
-+					speed *= 1.2f;
-+					if (speed > 20f)
-+						speed = 20f;
-+				}
-+				// archery buff damage moved into UpdateBuffs
-+				// Damage = (int)((double)Damage * 1.2);
 +			}
 +
 +			totalKnockback += ammo.knockBack;
