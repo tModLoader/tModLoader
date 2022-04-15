@@ -876,15 +876,18 @@
  				for (int num2 = 199; num2 >= 0; num2--) {
  					if (!Main.npc[num2].active) {
  						num = num2;
-@@ -60974,7 +_,7 @@
+@@ -60974,9 +_,9 @@
  		}
  
  		private static void GiveTownUniqueDataToNPCsThatNeedIt(int Type, int nextNPC) {
 -			if (TypeToDefaultHeadIndex(Type) != -1 || Type == 453) {
 +			if (TypeToDefaultHeadIndex(Type) != -1 || (Type >= 0 && NPCID.Sets.SpawnsWithCustomName[Type])) {
  				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
- 				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
+-				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
++				if (TownNPCProfiles.Instance.GetProfile(Main.npc[nextNPC], out ITownNPCProfile profile)) {
  					Main.npc[nextNPC].townNpcVariationIndex = profile.RollVariation();
+ 					Main.npc[nextNPC].GivenName = profile.GetNameForVariant(Main.npc[nextNPC]);
+ 				}
 @@ -61171,12 +_,14 @@
  			if (num2 < 0)
  				num2 = 0;

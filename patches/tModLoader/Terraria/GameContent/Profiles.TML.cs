@@ -11,7 +11,7 @@ namespace Terraria.GameContent
 			private int _defaultVariationHeadIndex;
 			private Asset<Texture2D> _defaultNoAlt;
 
-			public LegacyNPCProfile(string npcFileTitleFilePath, int defaultHeadIndex) {
+			public AlternateLegacyNPCProfile(string npcFileTitleFilePath, int defaultHeadIndex) {
 				_rootFilePath = npcFileTitleFilePath;
 				_defaultVariationHeadIndex = defaultHeadIndex;
 				if (Main.dedServ)

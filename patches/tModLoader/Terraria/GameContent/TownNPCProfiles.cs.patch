@@ -1,13 +1,17 @@
 --- src/TerrariaNetCore/Terraria/GameContent/TownNPCProfiles.cs
 +++ src/tModLoader/Terraria/GameContent/TownNPCProfiles.cs
-@@ -1,4 +_,5 @@
+@@ -1,4 +_,6 @@
  using System.Collections.Generic;
 +using Terraria.ID;
++using Terraria.ModLoader;
  
  namespace Terraria.GameContent
  {
-@@ -31,30 +_,43 @@
+@@ -29,32 +_,48 @@
+ 			43,
+ 			44
  		};
++		// does Old Man count? should he? need to reference vanilla or ask someone who's done so already     -thomas
  		private Dictionary<int, ITownNPCProfile> _townNPCProfiles = new Dictionary<int, ITownNPCProfile> {
  			{ 369, new Profiles.LegacyNPCProfile("Images/TownNPCs/Angler", 22) },
 +			{ NPCID.ArmsDealer, new Profiles.AlternateLegacyNPCProfile("Images/NPC_19", NPCHeadID.ArmsDealer) },
@@ -24,7 +28,6 @@
  			{ 124, new Profiles.LegacyNPCProfile("Images/TownNPCs/Mechanic", 8) },
  			{ 17, new Profiles.LegacyNPCProfile("Images/TownNPCs/Merchant", 2) },
  			{ 18, new Profiles.LegacyNPCProfile("Images/TownNPCs/Nurse", 3) },
-+			// does Old Man count? should he? need to reference vanilla or ask someone who's done so already
  			{ 227, new Profiles.LegacyNPCProfile("Images/TownNPCs/Painter", 17) },
 +			{ NPCID.PartyGirl, new Profiles.AlternateLegacyNPCProfile("Images/NPC_208", NPCHeadID.PartyGirl) },
  			{ 229, new Profiles.LegacyNPCProfile("Images/TownNPCs/Pirate", 19) },
@@ -43,12 +46,15 @@
  			{ 638, new Profiles.VariantNPCProfile("Images/TownNPCs/Dog", "Dog", DogHeadIDs, "Labrador", "PitBull", "Beagle", "Corgi", "Dalmation", "Husky") },
  			{ 656, new Profiles.VariantNPCProfile("Images/TownNPCs/Bunny", "Bunny", BunnyHeadIDs, "White", "Angora", "Dutch", "Flemish", "Lop", "Silver") }		};
 +
++		public Dictionary<int, ITownNPCProfile> TownNPCProfileList;
++
  		public static TownNPCProfiles Instance = new TownNPCProfiles();
  
 -		public bool GetProfile(int npcId, out ITownNPCProfile profile) => _townNPCProfiles.TryGetValue(npcId, out profile);
-+		public bool GetProfile(int npcId, out ITownNPCProfile profile) {
-+			Dictionary<int, ITownNPCProfile> townNPCProfiles = _townNPCProfiles;
-+			return townNPCProfiles.TryGetValue(npcId, out profile);
++		public bool GetProfile(NPC npc, out ITownNPCProfile profile) {
++			TownNPCProfileList = _townNPCProfiles;
++			NPCLoader.SetTownNPCProfile(npc, TownNPCProfileList);
++			return TownNPCProfileList.TryGetValue(npc.type, out profile);
 +		}		
  	}
  }

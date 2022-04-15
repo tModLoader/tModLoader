@@ -208,6 +208,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateSetTownNPCProfile(NPC npc, Dictionary<int, ITownNPCProfile> database);
+		private static HookList HookSetTownNPCProfile = AddHook<DelegateSetTownNPCProfile>(g => g.SetTownNPCProfile);
+		public static void SetTownNPCProfile(NPC npc, Dictionary<int, ITownNPCProfile> database) {
+			npc.ModNPC?.SetTownNPCProfile(database);
+
+			foreach (GlobalNPC g in HookSetTownNPCProfile.Enumerate(npc.globalNPCs)) {
+				g.SetTownNPCProfile(npc, database);
+			}
+		}
+
 		private static HookList HookResetEffects = AddHook<Action<NPC>>(g => g.ResetEffects);
 
 		public static void ResetEffects(NPC npc) {

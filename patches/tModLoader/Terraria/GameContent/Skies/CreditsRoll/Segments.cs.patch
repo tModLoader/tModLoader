@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Skies/CreditsRoll/Segments.cs
++++ src/tModLoader/Terraria/GameContent/Skies/CreditsRoll/Segments.cs
+@@ -214,7 +_,7 @@
+ 				ProcessActions(_npc, localTimeForObject);
+ 				if (_npc.alpha < 255) {
+ 					_npc.FindFrame();
+-					if (_npc.townNPC && TownNPCProfiles.Instance.GetProfile(_npc.type, out ITownNPCProfile profile))
++					if (_npc.townNPC && TownNPCProfiles.Instance.GetProfile(_npc, out ITownNPCProfile profile))
+ 						TextureAssets.Npc[_npc.type] = profile.GetTextureNPCShouldUse(_npc);
+ 
+ 					_npc.Opacity *= info.DisplayOpacity;

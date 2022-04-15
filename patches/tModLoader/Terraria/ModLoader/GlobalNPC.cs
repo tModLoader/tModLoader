@@ -83,6 +83,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to set the town NPC profile that a given NPC uses.
+		/// </summary>
+		/// <param name="npc">The NPC in question.</param>
+		/// <param name="database">The list of town NPC profiles that currently exist.</param>
+		public virtual void SetTownNPCProfile(NPC npc, Dictionary<int, ITownNPCProfile> database) {
+		}
+
+		/// <summary>
 		/// This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied.
 		/// </summary>
 		/// <param name="npc"></param>

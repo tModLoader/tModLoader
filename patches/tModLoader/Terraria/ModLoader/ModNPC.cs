@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Utilities;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
@@ -183,6 +184,13 @@ namespace Terraria.ModLoader
 		/// <param name="database"></param>
 		/// <param name="bestiaryEntry"></param>
 		public virtual void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+		}
+
+		/// <summary>
+		/// Allows you to set the town NPC profile that this NPC uses.
+		/// </summary>
+		/// <param name="database">The list of town NPC profiles that currently exist.</param>
+		public virtual void SetTownNPCProfile(Dictionary<int, ITownNPCProfile> database) {
 		}
 
 		/// <summary>
