@@ -37,9 +37,10 @@ namespace Terraria
 
 		/// <summary>
 		/// Figures out exactly how much defense this NPC has, with dynamic adjustments to that defense accounted for.
+		/// Will never return a value lower than 0.
 		/// </summary>
-		/// <returns>The total defense of the NPC, dynamic adjustments included.</returns>
-		public int GetTotalDefense() => defense + DefenseModifier;
+		/// <returns>The total defense of the NPC, dynamic adjustments included. Cannot be below zero.</returns>
+		public int GetTotalDefense() => Math.Max(0, defense + DefenseModifier);
 
 		/// <summary> Returns whether or not this NPC currently has a (de)buff of the provided type. </summary>
 		public bool HasBuff(int type) => FindBuffIndex(type) != -1;

@@ -904,7 +904,7 @@
 +			therefore, let's do something that makes more sense and is shorter to write instead
 +			-thomas
 +			*/
-+			if (GetTotalDefense() <= 0 || armorPenetration <= 0)
++			if (armorPenetration <= 0)
 +				return 0;
 +
 +			float defenseEffectiveness = 0.5f;
@@ -912,7 +912,7 @@
  		}
  
  		public double StrikeNPCNoInteraction(int Damage, float knockBack, int hitDirection, bool crit = false, bool noEffect = false, bool fromNet = false) {
-@@ -61161,22 +_,26 @@
+@@ -61161,7 +_,8 @@
  				return 0.0;
  
  			double num = Damage;
@@ -922,12 +922,11 @@
  			if (ichor)
  				num2 -= 15;
  
- 			if (betsysCurse)
- 				num2 -= 40;
-+			*/
+@@ -61170,13 +_,16 @@
  
  			if (num2 < 0)
  				num2 = 0;
++			*/
  
 +			if (NPCLoader.StrikeNPC(this, ref num, num2, ref knockBack, hitDirection, ref crit)) {
 -			num = Main.CalculateDamageNPCsTake((int)num, num2);
