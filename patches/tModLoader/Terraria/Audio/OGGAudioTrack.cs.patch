@@ -1,11 +1,31 @@
 --- src/TerrariaNetCore/Terraria/Audio/OGGAudioTrack.cs
 +++ src/tModLoader/Terraria/Audio/OGGAudioTrack.cs
-@@ -57,7 +_,7 @@
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework.Audio;
+ using NVorbis;
+ using System.IO;
++using System;
+ 
+ namespace Terraria.Audio
+ {
+@@ -57,8 +_,20 @@
  		}
  
  		private void TryGettingVariable(string vorbisComment, string variableWeLookFor, ref int variableValueHolder) {
--			if (vorbisComment.StartsWith(variableWeLookFor) && int.TryParse(vorbisComment, out int result))
-+			if (vorbisComment.StartsWith(variableWeLookFor) && int.TryParse(vorbisComment.Remove(0, variableWeLookFor.Length + 1), out int result))
++			// Vanilla: Code is faulty, tries to parse the whole comment as one integer.
++			/*
+ 			if (vorbisComment.StartsWith(variableWeLookFor) && int.TryParse(vorbisComment, out int result))
  				variableValueHolder = result;
++			*/
++
++			// TML: Fixed parsing
++			if (vorbisComment.Length > variableWeLookFor.Length + 2 && vorbisComment.StartsWith(variableWeLookFor)) {
++				int separatorIndex = vorbisComment.IndexOf('=');
++
++				if (separatorIndex != -1 && int.TryParse(vorbisComment.AsSpan(separatorIndex + 1), out int result)) {
++					variableValueHolder = result;
++				}
++			}
  		}
  
+ 		public override void Dispose() {
