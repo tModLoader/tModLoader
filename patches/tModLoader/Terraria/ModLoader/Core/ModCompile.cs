@@ -390,7 +390,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
 
 			if (BuildInfo.IsStable) {
-				string tmlVersionPreprocessorSymbol = $"TML_{BuildInfo.tMLVersion.Major}_{BuildInfo.tMLVersion.Minor}";
+				string tmlVersionPreprocessorSymbol = $"TML_{BuildInfo.tMLVersion.Major}_{BuildInfo.tMLVersion.Minor:D2}";
 				preprocessorSymbols.Add(tmlVersionPreprocessorSymbol);
 			}
 
