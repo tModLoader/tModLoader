@@ -9,7 +9,7 @@ namespace Terraria.ModLoader.Setup
 {
 	internal class HookGenTask : SetupOperation
 	{
-		private const string dotnetSdkVersion = "6.0.0";
+		private const string dotnetSdkVersion = "6.0.3";
 		private const string libsPath = "src/tModLoader/Terraria/Libraries";
 		private const string binLibsPath = "src/tModLoader/Terraria/bin/Release/net6.0/Libraries";
 		private const string tmlAssemblyPath = @"src/tModLoader/Terraria/bin/Release/net6.0/tModLoader.dll";

@@ -84,6 +84,13 @@ namespace Terraria
 
 		public int NonFrameBits => (int)(bitpack & 0xFF001FFF);
 
+		/// <summary>
+		/// Intended to be used to set all the persistent data about a tile. For example, when loading a schematic from serialized NonFrameBits.
+		/// </summary>
+		public void SetAllBitsClearFrame(int nonFrameBits) {
+			bitpack = (int)(nonFrameBits & 0xFF001FFF);
+		}
+
 		public BlockType BlockType {
 			get {
 				if (IsHalfBlock)
