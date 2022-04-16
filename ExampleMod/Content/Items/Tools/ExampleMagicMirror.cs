@@ -32,11 +32,9 @@ namespace ExampleMod.Content.Items.Tools
 
 		// UseStyle is called each frame that the item is being actively used.
 		public override void UseStyle(Player player, Rectangle heldItemFrame) {
-			var entitySource = new EntitySource_ItemUse(player, player.HeldItem);
-
 			// Each frame, make some dust
 			if (Main.rand.NextBool()) {
-				Dust.NewDust(entitySource, player.position, player.width, player.height, 15, 0f, 0f, 150, Color.White, 1.1f); // Makes dust from the player's position and copies the hitbox of which the dust may spawn. Change these arguments if needed.
+				Dust.NewDust(player.position, player.width, player.height, 15, 0f, 0f, 150, Color.White, 1.1f); // Makes dust from the player's position and copies the hitbox of which the dust may spawn. Change these arguments if needed.
 			}
 
 			// This sets up the itemTime correctly.
@@ -48,7 +46,7 @@ namespace ExampleMod.Content.Items.Tools
 
 				// Make dust 70 times for a cool effect.
 				for (int d = 0; d < 70; d++) {
-					Dust.NewDust(entitySource, player.position, player.width, player.height, 15, player.velocity.X * 0.5f, player.velocity.Y * 0.5f, 150, default, 1.5f);
+					Dust.NewDust(player.position, player.width, player.height, 15, player.velocity.X * 0.5f, player.velocity.Y * 0.5f, 150, default, 1.5f);
 				}
 
 				// This code releases all grappling hooks and kills/despawns them.
@@ -66,7 +64,7 @@ namespace ExampleMod.Content.Items.Tools
 
 				// Make dust 70 times for a cool effect. This dust is the dust at the destination.
 				for (int d = 0; d < 70; d++) {
-					Dust.NewDust(entitySource, player.position, player.width, player.height, 15, 0f, 0f, 150, default, 1.5f);
+					Dust.NewDust(player.position, player.width, player.height, 15, 0f, 0f, 150, default, 1.5f);
 				}
 			}
 		}

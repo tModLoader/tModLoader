@@ -39,9 +39,7 @@ namespace ExampleMod.Common.GlobalProjectiles
 
 		public override void PostAI(Projectile projectile) {
 			if (trailActive) {
-				var entitySource = new EntitySource_Parent(projectile);
-
-				Dust.NewDustDirect(entitySource, projectile.position, projectile.width, projectile.height, DustID.TintableDustLighted, default, default, default, trailColor);
+				Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustID.TintableDustLighted, default, default, default, trailColor);
 			}
 		}
 	}

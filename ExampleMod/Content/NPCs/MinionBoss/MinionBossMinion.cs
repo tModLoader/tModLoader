@@ -103,7 +103,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			return Color.White * NPC.Opacity;
 		}
 
-		public override void HitEffect(IEntitySource hitSource, int hitDirection, double damage) {
+		public override void HitEffect(int hitDirection, double damage) {
 			if (NPC.life <= 0) {
 				// If this NPC dies, spawn some visuals
 
@@ -111,7 +111,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				for (int i = 0; i < 20; i++) {
 					Vector2 velocity = NPC.velocity + new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-2f, 2f));
-					Dust dust = Dust.NewDustPerfect(hitSource, NPC.Center, dustType, velocity, 26, Color.White, Main.rand.NextFloat(1.5f, 2.4f));
+					Dust dust = Dust.NewDustPerfect(NPC.Center, dustType, velocity, 26, Color.White, Main.rand.NextFloat(1.5f, 2.4f));
 
 					dust.noLight = true;
 					dust.noGravity = true;

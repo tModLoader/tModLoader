@@ -35,13 +35,13 @@ namespace Terraria.ModLoader
 			DustCount = DustID.Count;
 		}
 
-		internal static void SetupDust(Dust dust, IEntitySource source) {
+		internal static void SetupDust(Dust dust) {
 			ModDust modDust = GetDust(dust.type);
 
 			if (modDust != null) {
 				dust.frame.X = 0;
 				dust.frame.Y %= 30;
-				modDust.OnSpawn(dust, source);
+				modDust.OnSpawn(dust);
 			}
 		}
 

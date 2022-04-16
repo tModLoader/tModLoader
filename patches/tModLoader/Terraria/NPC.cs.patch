@@ -926,12 +926,12 @@
  			}
  		}
  
--		public void HitEffect(int hitDirection = 0, double dmg = 10.0) {
-+		public void HitEffect(int hitDirection = 0, double dmg = 10.0, IEntitySource effectSpawnSourceOverride = null)
-+			=> NPCLoader.HitEffect(this, effectSpawnSourceOverride ?? new EntitySource_HitEffect(this), hitDirection, dmg);
++		public void HitEffect(int hitDirection = 0, double dmg = 10.0)
++			=> NPCLoader.HitEffect(this, hitDirection, dmg);
 +
-+		public void VanillaHitEffect(int hitDirection = 0, double dmg = 10.0, IEntitySource effectSpawnSourceOverride = null) {
-+			var usedSource = effectSpawnSourceOverride ?? new EntitySource_HitEffect(this);
+-		public void HitEffect(int hitDirection = 0, double dmg = 10.0) {
++		public void VanillaHitEffect(int hitDirection = 0, double dmg = 10.0) {
++			var usedSource = new EntitySource_HitEffect(this);
 +
 +			IEntitySource.PushFallback(thisEntitySourceCache);
 +

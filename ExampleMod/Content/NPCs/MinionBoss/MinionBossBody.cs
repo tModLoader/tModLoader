@@ -258,7 +258,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 		}
 
-		public override void HitEffect(IEntitySource hitSource, int hitDirection, double damage) {
+		public override void HitEffect(int hitDirection, double damage) {
 			// If the NPC dies, spawn gore and play a sound
 			if (Main.netMode == NetmodeID.Server) {
 				// We don't want Mod.Find<ModGore> to run on servers as it will crash because gores are not loaded on servers
@@ -270,9 +270,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				int backGoreType = Mod.Find<ModGore>("MinionBossBody_Back").Type;
 				int frontGoreType = Mod.Find<ModGore>("MinionBossBody_Front").Type;
 
+				var entitySource = new EntitySource_Parent(NPC);
+
 				for (int i = 0; i < 2; i++) {
-					Gore.NewGore(hitSource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
-					Gore.NewGore(hitSource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
+					Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
+					Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
 				}
 
 				SoundEngine.PlaySound(SoundID.Roar, NPC.Center, 0);

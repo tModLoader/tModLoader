@@ -107,8 +107,7 @@ namespace ExampleMod.Content.Tiles
 
 				// We can support different dust for different styles here
 				if (dustChoice != -1) {
-					var entitySource = new EntitySource_TileUpdate(i, j);
-					var dust = Dust.NewDustDirect(entitySource, new Vector2(i * 16 + 4, j * 16 + 2), 4, 4, dustChoice, 0f, 0f, 100, default, 1f);
+					var dust = Dust.NewDustDirect(new Vector2(i * 16 + 4, j * 16 + 2), 4, 4, dustChoice, 0f, 0f, 100, default, 1f);
 
 					if (Main.rand.Next(3) != 0) {
 						dust.noGravity = true;

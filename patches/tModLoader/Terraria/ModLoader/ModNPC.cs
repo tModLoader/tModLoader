@@ -204,7 +204,7 @@ namespace Terraria.ModLoader
 		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
 		/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
-		public virtual void HitEffect(IEntitySource effectSpawnSource, int hitDirection, double damage) {
+		public virtual void HitEffect(int hitDirection, double damage) {
 		}
 
 		/// <summary>

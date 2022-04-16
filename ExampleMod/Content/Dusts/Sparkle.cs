@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Dusts
 {
 	public class Sparkle : ModDust
 	{
-		public override void OnSpawn(Dust dust, IEntitySource source) {
+		public override void OnSpawn(Dust dust) {
 			dust.velocity *= 0.4f; // Multiply the dust's start velocity by 0.4, slowing it down
 			dust.noGravity = true; // Makes the dust have no gravity.
 			dust.noLight = true; // Makes the dust emit no light.

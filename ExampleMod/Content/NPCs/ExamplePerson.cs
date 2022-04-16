@@ -112,11 +112,11 @@ namespace ExampleMod.Content.NPCs
 			return true;
 		}
 
-		public override void HitEffect(IEntitySource hitSource, int hitDirection, double damage) {
+		public override void HitEffect(int hitDirection, double damage) {
 			int num = NPC.life > 0 ? 1 : 5;
 
 			for (int k = 0; k < num; k++) {
-				Dust.NewDust(hitSource, NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
+				Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<Sparkle>());
 			}
 		}
 
@@ -305,8 +305,6 @@ namespace ExampleMod.Content.NPCs
 
 		// Create a square of pixels around the NPC on teleport.
 		public void StatueTeleport() {
-			var entitySource = new EntitySource_Parent(NPC); // Make sure to 'cache' sources before loops to avoid unnecessary allocations.
-
 			for (int i = 0; i < 30; i++) {
 				Vector2 position = Main.rand.NextVector2Square(-20, 21);
 				if (Math.Abs(position.X) > Math.Abs(position.Y)) {
@@ -316,7 +314,7 @@ namespace ExampleMod.Content.NPCs
 					position.Y = Math.Sign(position.Y) * 20;
 				}
 
-				Dust.NewDustPerfect(entitySource, NPC.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
+				Dust.NewDustPerfect(NPC.Center + position, ModContent.DustType<Sparkle>(), Vector2.Zero).noGravity = true;
 			}
 		}
 

@@ -79,7 +79,7 @@ namespace ExampleMod.Content.Items.Armor
 	{
 		public override void UpdateVanitySet(Player player) {
 			if (Main.rand.NextBool(20)) {
-				Dust.NewDust(new EntitySource_Parent(player), player.position, player.width, player.height, ModContent.DustType<Sparkle>());
+				Dust.NewDust(player.position, player.width, player.height, ModContent.DustType<Sparkle>());
 			}
 		}
 	}

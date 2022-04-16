@@ -79,12 +79,12 @@ namespace ExampleMod.Content.NPCs
 			});
 		}
 
-		public override void HitEffect(IEntitySource hitSource, int hitDirection, double damage) {
+		public override void HitEffect(int hitDirection, double damage) {
 			// Spawn confetti when this zombie is hit.
 
 			for (int i = 0; i < 10; i++) {
 				int dustType = Main.rand.Next(139, 143);
-				var dust = Dust.NewDustDirect(hitSource, NPC.position, NPC.width, NPC.height, dustType);
+				var dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, dustType);
 
 				dust.velocity.X += Main.rand.NextFloat(-0.05f, 0.05f);
 				dust.velocity.Y += Main.rand.NextFloat(-0.05f, 0.05f);
