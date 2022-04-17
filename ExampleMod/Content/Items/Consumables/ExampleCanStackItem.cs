@@ -53,7 +53,7 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void RightClick(Player player) {
-			var entitySource = new EntitySource_ItemOpen(player, Type);
+			var entitySource = player.GetSource_OpenItem(Type);
 
 			if (Main.hardMode) {
 				player.QuickSpawnItem(entitySource, ItemID.ChocolateChipCookie);

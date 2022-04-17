@@ -43,7 +43,7 @@ namespace ExampleMod.Content.Items.Consumables
 		public override void OpenBossBag(Player player) {
 			// We have to replicate the expert drops from MinionBossBody here via QuickSpawnItem
 
-			var entitySource = new EntitySource_ItemOpen(player, Type);
+			var entitySource = player.GetSource_OpenItem(Type);
 
 			if (Main.rand.NextBool(7)) {
 				player.QuickSpawnItem(entitySource, ModContent.ItemType<MinionBossMask>());
