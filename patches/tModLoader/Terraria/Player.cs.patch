@@ -1081,11 +1081,11 @@
 +
 +		// Internal redirects:
 +		internal IEntitySource GetProjectileSource_Buff(int buffIndex) => GetSource_Buff(buffIndex);
-+		internal IEntitySource GetProjectileSource_Item(Item item) => GetSource_Item(item);
++		internal IEntitySource GetProjectileSource_Item(Item item) => GetSource_ItemUse(item);
 +		internal IEntitySource GetItemSource_OpenItem(int itemType) => GetSource_OpenItem(itemType);
 +		internal IEntitySource GetItemSource_Death() => GetSource_Death();
 +		internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(ItemSourceID.ToEntitySourceID(itemSourceId));
-+		internal IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => GetSource_Item_WithPotentialAmmo(item, ammoItemId);
++		internal IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => GetSource_ItemUse_WithPotentialAmmo(item, ammoItemId);
 +		internal IEntitySource GetProjectileSource_SetBonus(int projectileSourceId) => GetSource_SetBonus(ProjectileSourceID.ToEntitySourceID(projectileSourceId));
 +		internal IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => GetSource_OnHit(victim, ProjectileSourceID.ToEntitySourceID(projectileSourceId));
 +		internal IEntitySource GetProjectileSource_OnHurt(Entity attacker, int projectileSourceId) => GetSource_OnHurt(attacker, ProjectileSourceID.ToEntitySourceID(projectileSourceId));

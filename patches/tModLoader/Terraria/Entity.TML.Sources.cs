@@ -30,10 +30,10 @@ namespace Terraria
 		public IEntitySource GetSource_SetBonus(int entitySourceId)
 			=> new EntitySource_ByEntitySourceID(this, entitySourceId);
 
-		public IEntitySource GetSource_Item(Item item)
+		public IEntitySource GetSource_ItemUse(Item item)
 			=> new EntitySource_ItemUse(this, item);
 
-		public IEntitySource GetSource_Item_WithPotentialAmmo(Item item, int ammoItemId)
+		public IEntitySource GetSource_ItemUse_WithPotentialAmmo(Item item, int ammoItemId)
 			=> new EntitySource_ItemUse_WithAmmo(this, item, ammoItemId);
 
 		// Damage / Death
