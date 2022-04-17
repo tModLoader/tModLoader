@@ -268,7 +268,7 @@ jobs:
           echo ModloaderDir is: $ModloaderDir
           mkdir -p $ModloaderDir
           
-          if [ ${{github.ref}} = 'refs/heads/1.4' ] ; then
+          if [ ${{github.ref}} = 'refs/heads/1.4' ] || [ ${{github.ref}} = 'refs/heads/1.4_mergedtesting' ] ; then
             ciprep=""
           else
             ciprep="-ciprep \"Automatic update from GitHub: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
