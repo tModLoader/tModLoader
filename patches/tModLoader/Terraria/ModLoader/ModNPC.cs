@@ -585,11 +585,11 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give this town NPC any name when it spawns. By default returns something embarrassing.
+		/// Allows you to give a list of names this NPC can be given on spawn. By default, returns a blank list, which means the NPC will not be named.
 		/// </summary>
 		/// <returns></returns>
-		public virtual string TownNPCName() {
-			return Language.GetTextValue("tModLoader.DefaultTownNPCName");
+		public virtual List<string> SetNPCNameList() {
+			return new List<string>();
 		}
 
 		/// <summary>

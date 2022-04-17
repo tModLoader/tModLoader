@@ -909,8 +909,14 @@ namespace Terraria.ModLoader
 			return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;
 		}
 
-		public static string TownNPCName(int type) {
-			return GetNPC(type)?.TownNPCName() ?? "";
+		private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);
+		public static void ModifyNPCNameList(NPC npc, List<string> nameList) {
+			if (npc.ModNPC != null)
+				nameList = npc.ModNPC.SetNPCNameList();
+
+			foreach (GlobalNPC g in HookModifyNPCNameList.Enumerate(npc.globalNPCs)) {
+				g.ModifyNPCNameList(npc, nameList);
+			}
 		}
 
 		public static bool UsesPartyHat(NPC npc) {

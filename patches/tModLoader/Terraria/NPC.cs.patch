@@ -48,7 +48,123 @@
  					npcsFoundForCheckActive[nPC.type] = true;
  			}
  
-@@ -874,7 +_,7 @@
+@@ -809,8 +_,113 @@
+ 			return false;
+ 		}
+ 
+-		public static string getNewNPCName(int npcType) => getNewNPCNameInner(npcType);
+-
++		public string getNewNPCName() {
++			List<string> NPCNameList = new List<string>();
++			switch (type) {
++				// TODO: this looks horrible, and I know it does
++				// ideally, there'd exist a better way to do this,
++				// but as of now, I'm not sure what it would be
++				// -thomas
++				case 17:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("MerchantNames");
++					break;
++				case 18:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("NurseNames");
++					break;
++				case 19:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("ArmsDealerNames");
++					break;
++				case 20:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("DryadNames");
++					break;
++				case 22:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("GuideNames");
++					break;
++				case 38:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("DemolitionistNames");
++					break;
++				case 54:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("ClothierNames");
++					break;
++				case 107:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("GoblinTinkererNames");
++					break;
++				case 108:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("WizardNames");
++					break;
++				case 124:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("MechanicNames");
++					break;
++				case 160:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("TruffleNames");
++					break;
++				case 178:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("SteampunkerNames");
++					break;
++				case 207:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("DyeTraderNames");
++					break;
++				case 208:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("PartyGirlNames");
++					break;
++				case 209:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("CyborgNames");
++					break;
++				case 227:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("PainterNames");
++					break;
++				case 228:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("WitchDoctorNames");
++					break;
++				case 229:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("PirateNames");
++					break;
++				case 353:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("StylistNames");
++					break;
++				case 368:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("TravelingMerchantNames");
++					break;
++				case 369:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("AnglerNames");
++					break;
++				case 453:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("SkeletonMerchantNames");
++					break;
++				case 441:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("TaxCollectorNames");
++					break;
++				case 550:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("BartenderNames");
++					break;
++				case 588:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("GolferNames");
++					break;
++				case 633:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("BestiaryGirlNames");
++					break;
++				case 663:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("PrincessNames");
++					break;
++				case 637:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("CatNames_Siamese");
++					break;
++				case 638:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("DogNames_Labrador");
++					break;
++				case 656:
++					NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategoryRaw("BunnyNames_White");
++					break;
++			}
++
++			NPCLoader.ModifyNPCNameList(this, NPCNameList);
++			if (NPCNameList != null && NPCNameList.Count > 0)
++				return NPCNameList[WorldGen.genRand.Next(NPCNameList.Count)];
++			else
++				return TypeName;
++		}
++
++		/*
+ 		private static string getNewNPCNameInner(int npcType) {
+ 			switch (npcType) {
+ 				case 17:
+@@ -874,9 +_,10 @@
  				case 656:
  					return Language.RandomFromCategory("BunnyNames_White", WorldGen.genRand).Value;
  				default:
@@ -56,7 +172,35 @@
 +					return NPCLoader.TownNPCName(npcType);
  			}
  		}
++		*/
  
+ 		public NetworkText GetTypeNetName() => NetworkText.FromKey(Lang.GetNPCName(netID).Key);
+ 
+@@ -917,7 +_,7 @@
+ 					continue;
+ 
+ 				if (flag) {
+-					Main.npc[i].GivenName = getNewNPCName(npcType);
++					Main.npc[i].GivenName = Main.npc[i].getNewNPCName();
+ 					Main.npc[i].needsUniqueInfoUpdate = true;
+ 					continue;
+ 				}
+@@ -930,14 +_,7 @@
+ 			}
+ 		}
+ 
+-		public static string firstNPCName(int npcType) {
+-			for (int i = 0; i < 200; i++) {
+-				if (Main.npc[i].active && Main.npc[i].type == npcType)
+-					return Main.npc[i].GivenOrTypeName;
+-			}
+-
+-			return getNewNPCName(npcType);
+-		}
++		public static string firstNPCName(int npcType) => GetFirstNPCNameOrNull(npcType);
+ 
+ 		public static string GetFirstNPCNameOrNull(int npcType) {
+ 			for (int i = 0; i < 200; i++) {
 @@ -1072,7 +_,7 @@
  				case 656:
  					return 39;
@@ -881,9 +1025,10 @@
  
  		private static void GiveTownUniqueDataToNPCsThatNeedIt(int Type, int nextNPC) {
 -			if (TypeToDefaultHeadIndex(Type) != -1 || Type == 453) {
-+			if (TypeToDefaultHeadIndex(Type) != -1 || (Type >= 0 && NPCID.Sets.SpawnsWithCustomName[Type])) {
- 				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
+-				Main.npc[nextNPC].GivenName = getNewNPCName(Type);
 -				if (TownNPCProfiles.Instance.GetProfile(Type, out ITownNPCProfile profile)) {
++			if (TypeToDefaultHeadIndex(Type) != -1 || (Type >= 0 && NPCID.Sets.SpawnsWithCustomName[Type])) {
++				Main.npc[nextNPC].GivenName = Main.npc[nextNPC].getNewNPCName();
 +				if (TownNPCProfiles.Instance.GetProfile(Main.npc[nextNPC], out ITownNPCProfile profile)) {
  					Main.npc[nextNPC].townNpcVariationIndex = profile.RollVariation();
  					Main.npc[nextNPC].GivenName = profile.GetNameForVariant(Main.npc[nextNPC]);

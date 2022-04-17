@@ -91,6 +91,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the list of names available to the given town NPC.
+		/// </summary>
+		public virtual void ModifyNPCNameList(NPC npc, List<string> nameList) {
+		}
+
+		/// <summary>
 		/// This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied.
 		/// </summary>
 		/// <param name="npc"></param>

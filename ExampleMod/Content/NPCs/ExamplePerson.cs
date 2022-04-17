@@ -22,6 +22,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
 using Terraria.DataStructures;
 using System.Collections.Generic;
+using ReLogic.Content;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -29,7 +30,6 @@ namespace ExampleMod.Content.NPCs
 	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
-		public override string Texture => "ExampleMod/Content/NPCs/ExamplePerson_Default";
 		public override void SetStaticDefaults() {
 			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
@@ -159,6 +159,15 @@ namespace ExampleMod.Content.NPCs
 
 		public override void SetTownNPCProfile(Dictionary<int, ITownNPCProfile> database) {
 			database[NPC.type] = new ExamplePersonProfile();
+		}
+
+		public override List<string> SetNPCNameList() {
+			return new List<string>() {
+				"Someone",
+				"Somebody",
+				"Blocky",
+				"Colorless"
+			}
 		}
 
 		public override void FindFrame(int frameHeight) {
@@ -333,30 +342,16 @@ namespace ExampleMod.Content.NPCs
 	public class ExamplePersonProfile : ITownNPCProfile
 	{
 		public int RollVariation() => 0;
-		public string GetNameForVariant(NPC npc) {
-			switch (WorldGen.genRand.Next(4)) {
-				case 0:
-					return "Someone";
-
-				case 1:
-					return "Somebody";
-
-				case 2:
-					return "Blocky";
-
-				default:
-					return "Colorless";
-			}
-		}
+		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
 
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Default");
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
 
 			if (npc.altTexture == 1)
 				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
 
-			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Default");
+			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
 		}
 
 		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExamplePerson_Head");
