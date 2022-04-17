@@ -3,7 +3,7 @@
 @@ -1,5 +_,7 @@
  namespace Terraria.DataStructures
  {
-+	//TML: Removed, see EntitySource_ByEntitySourceId.cs
++	//TML: Removed, in favor of Context properties on all IEntitySources, and EntitySource_Misc for entity-less cases.
 +	/*
  	public class EntitySource_ByItemSourceId : IEntitySource
  	{

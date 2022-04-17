@@ -1,7 +1,9 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemSourceID.cs
 +++ src/tModLoader/Terraria/ID/ItemSourceID.cs
-@@ -1,6 +_,9 @@
+@@ -1,6 +_,11 @@
 +using System;
++
++#nullable enable
 +
  namespace Terraria.ID
  {
@@ -11,20 +13,19 @@
  	{
  		public const int None = 0;
  		public const int SetBonus_Nebula = 1;
-@@ -10,5 +_,16 @@
+@@ -10,5 +_,15 @@
  		public const int GrandDesignOrMultiColorWrench = 5;
  		public const int TorchGod = 6;
  		public const int Count = 7;
 +
-+		// Reminder: this is temporary.
-+		public static int ToEntitySourceID(int itemSourceId) => itemSourceId switch {
-+			LuckyCoin => EntitySourceID.LuckyCoin,
-+			PlayerDeath => throw new ArgumentException($"{nameof(PlayerDeath)} is illegal."), //EntitySourceID.PlayerDeath,
-+			PlayerDropItemCheck => EntitySourceID.PlayerDropItemCheck,
-+			GrandDesignOrMultiColorWrench => EntitySourceID.GrandDesignOrMultiColorWrench,
-+			TorchGod => EntitySourceID.TorchGod,
-+			None => EntitySourceID.None,
-+			_ => throw new ArgumentException($"Invalid value: '{itemSourceId}'.")
++		public static string? ToContextString(int itemSourceId) => itemSourceId switch {
++			SetBonus_Nebula => nameof(SetBonus_Nebula),
++			LuckyCoin => nameof(LuckyCoin),
++			PlayerDeath => throw new ArgumentException($"Unexpected or invalid value: '{nameof(PlayerDeath)}' ({itemSourceId})."), // Due to EntitySource_Death being added.
++			PlayerDropItemCheck => nameof(PlayerDropItemCheck),
++			GrandDesignOrMultiColorWrench => nameof(GrandDesignOrMultiColorWrench),
++			TorchGod => nameof(TorchGod),
++			_ => null,
 +		};
  	}
  }

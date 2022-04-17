@@ -1073,7 +1073,7 @@
  		public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
  		public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
  		public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
-@@ -6617,21 +_,62 @@
+@@ -6617,21 +_,51 @@
  		public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  		public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  		public IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
@@ -1084,28 +1084,17 @@
 +		internal IEntitySource GetProjectileSource_Item(Item item) => GetSource_ItemUse(item);
 +		internal IEntitySource GetItemSource_OpenItem(int itemType) => GetSource_OpenItem(itemType);
 +		internal IEntitySource GetItemSource_Death() => GetSource_Death();
-+		internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(ItemSourceID.ToEntitySourceID(itemSourceId));
++		internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
 +		internal IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => GetSource_ItemUse_WithPotentialAmmo(item, ammoItemId);
-+		internal IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => GetSource_OnHit(victim, ProjectileSourceID.ToEntitySourceID(projectileSourceId));
-+		internal IEntitySource GetProjectileSource_OnHurt(Entity attacker, int projectileSourceId) => GetSource_OnHurt(attacker, ProjectileSourceID.ToEntitySourceID(projectileSourceId));
++		internal IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => GetSource_OnHit(victim, context: ProjectileSourceID.ToContextString(projectileSourceId));
++		internal IEntitySource GetProjectileSource_OnHurt(Entity attacker, int projectileSourceId) => GetSource_OnHurt(attacker, context: ProjectileSourceID.ToContextString(projectileSourceId));
 +		internal IEntitySource GetProjectileSource_Accessory(Item item) => GetSource_Accessory(item);
-+		internal IEntitySource GetProjectileSource_Misc(int projectileSourceId) => GetSource_Misc(ProjectileSourceID.ToEntitySourceID(projectileSourceId));
++		internal IEntitySource GetProjectileSource_Misc(int projectileSourceId) => GetSource_Misc(context: ProjectileSourceID.ToContextString(projectileSourceId));
 +		internal IEntitySource GetProjectileSource_TileInteraction(int tileCoordsX, int tileCoordsY) => GetSource_TileInteraction(tileCoordsX, tileCoordsY);
 +		internal IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => GetSource_TileInteraction(tileCoordsX, tileCoordsY);
 +		internal IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => GetSource_TileInteraction(tileCoordsX, tileCoordsY);
-+		internal IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => GetSource_OnHit(victim, ItemSourceID.ToEntitySourceID(itemSourceId));
-+		internal IEntitySource GetProjectileSource_SetBonus(int projectileSourceId) => projectileSourceId switch {
-+			ProjectileSourceID.SetBonus_SolarExplosion_WhenTakingDamage => GetSource_SetBonus("SolarExplosion", context: "TakingDamage"),
-+			ProjectileSourceID.SetBonus_SolarExplosion_WhenDashing => GetSource_SetBonus("SolarExplosion", context: "Dashing"),
-+			ProjectileSourceID.SetBonus_ForbiddenStorm => GetSource_SetBonus("ForbiddenStorm"),
-+			ProjectileSourceID.SetBonus_Titanium => GetSource_SetBonus("Titanium"),
-+			ProjectileSourceID.SetBonus_Orichalcum => GetSource_SetBonus("Orichalcum"),
-+			ProjectileSourceID.SetBonus_Chlorophyte => GetSource_SetBonus("Chlorophyte"),
-+			ProjectileSourceID.SetBonus_Stardust => GetSource_SetBonus("Stardust"),
-+			ProjectileSourceID.SetBonus_GhostHeal => GetSource_SetBonus("GhostHeal"),
-+			ProjectileSourceID.SetBonus_GhostHurt => GetSource_SetBonus("GhostHurt"),
-+			_ => throw new ArgumentException($"Invalid value: '{projectileSourceId}'.")
-+		};
++		internal IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => GetSource_OnHit(victim, context: ItemSourceID.ToContextString(itemSourceId));
++		internal IEntitySource GetProjectileSource_SetBonus(int projectileSourceId) => GetSource_FromThis(context: ProjectileSourceID.ToContextString(projectileSourceId));
 +
 +		// Public API methods can be found in:
 +		//   Entity.TML.Sources.cs;

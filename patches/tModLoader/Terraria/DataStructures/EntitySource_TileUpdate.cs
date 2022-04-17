@@ -1,3 +1,5 @@
+#nullable enable
+
 namespace Terraria.DataStructures
 {
 	/// <summary>
@@ -5,8 +7,8 @@ namespace Terraria.DataStructures
 	/// </summary>
 	public class EntitySource_TileUpdate : AEntitySource_Tile
 	{
-		public EntitySource_TileUpdate(int tileCoordsX, int tileCoordsY)
-			: base(tileCoordsX, tileCoordsY) {
+		public EntitySource_TileUpdate(int tileCoordsX, int tileCoordsY, string? context = null)
+			: base(tileCoordsX, tileCoordsY, context) {
 		}
 	}
 }

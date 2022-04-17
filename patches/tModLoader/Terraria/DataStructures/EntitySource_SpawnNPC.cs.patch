@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_SpawnNPC.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_SpawnNPC.cs
+@@ -1,6 +_,13 @@
++#nullable enable
++
+ namespace Terraria.DataStructures
+ {
+ 	public class EntitySource_SpawnNPC : IEntitySource
+ 	{
++		public string? Context { get; }
++
++		public EntitySource_SpawnNPC(string? context = null) {
++			Context = context;
++		}
+ 	}
+ }

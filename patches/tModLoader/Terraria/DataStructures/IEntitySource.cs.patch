@@ -1,7 +1,9 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/IEntitySource.cs
 +++ src/tModLoader/Terraria/DataStructures/IEntitySource.cs
-@@ -1,6 +_,27 @@
+@@ -1,6 +_,31 @@
 +using System.Collections.Generic;
++
++#nullable enable
 +
  namespace Terraria.DataStructures
  {
@@ -10,7 +12,9 @@
 +		// Used to add contexts to vanilla code without rewriting every line. Be sure to pop responsibly.
 +		private static readonly Stack<IEntitySource> fallbacks = new();
 +
-+		internal static IEntitySource GetFallback() {
++		string? Context { get; }
++
++		internal static IEntitySource? GetFallback() {
 +			if (fallbacks.TryPeek(out var result)) {
 +				return result;
 +			}
