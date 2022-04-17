@@ -28,6 +28,7 @@ namespace ExampleMod.Content.NPCs
 	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
+		public override string Texture => "ExampleMod/Content/NPCs/ExamplePerson_Default";
 		public override void SetStaticDefaults() {
 			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
@@ -338,5 +339,37 @@ namespace ExampleMod.Content.NPCs
 			multiplier = 12f;
 			randomOffset = 2f;
 		}
+	}
+
+	public class ExamplePersonProfile : ITownNPCProfile
+	{
+		public int RollVariation() => 0;
+		public string GetNameForVariant(NPC npc) {
+			switch (WorldGen.genRand.Next(4)) {
+				case 0:
+					return "Someone";
+
+				case 1:
+					return "Somebody";
+
+				case 2:
+					return "Blocky";
+
+				default:
+					return "Colorless";
+			}
+		}
+
+		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
+			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Default");
+
+			if (npc.altTexture == 1)
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
+
+			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Default");
+		}
+
+		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExamplePerson_Head");
 	}
 }
