@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
 using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -156,20 +157,8 @@ namespace ExampleMod.Content.NPCs
 			return score >= ((right - left) * (bottom - top)) / 2;
 		}
 
-		public override string TownNPCName() {
-			switch (WorldGen.genRand.Next(4)) {
-				case 0: // The cases are potential names for the NPC.
-					return "Someone";
-
-				case 1:
-					return "Somebody";
-
-				case 2:
-					return "Blocky";
-
-				default:
-					return "Colorless";
-			}
+		public override void SetTownNPCProfile(Dictionary<int, ITownNPCProfile> database) {
+			database[NPC.type] = new ExamplePersonProfile();
 		}
 
 		public override void FindFrame(int frameHeight) {
