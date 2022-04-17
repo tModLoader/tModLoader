@@ -19,6 +19,9 @@ namespace Terraria
 		public IEntitySource GetSource_Loot()
 			=> new EntitySource_Loot(this);
 
+		public IEntitySource GetSource_GiftOrReward()
+			=> new EntitySource_Gift(this);
+
 		// Item Use / Equipment Effects
 
 		public IEntitySource GetSource_Accessory(Item item)
