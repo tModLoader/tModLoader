@@ -51,7 +51,7 @@ namespace Terraria
 			=> new EntitySource_OnHit_ByEntitySourceID(attacker, this, entitySourceId);
 
 		public IEntitySource GetSource_Death()
-			=> new EntitySource_ByEntitySourceID(this, EntitySourceID.PlayerDeath);
+			=> new EntitySource_Death(this);
 		
 		// Etc
 

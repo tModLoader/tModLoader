@@ -21,7 +21,7 @@ namespace Terraria.ID
 		public const int SetBonus_Chlorophyte = 6;
 		public const int SetBonus_Stardust = 7;
 		public const int WeaponEnchantment_Confetti = 8;
-		public const int PlayerDeath_TombStone = 9;
+		public const int Death_TombStone = 9; // PlayerDeath_TombStone
 		public const int TorchGod = 10;
 		public const int FallingStar = 11;
 		public const int PlayerHurt_DropFootball = 12;
@@ -33,10 +33,10 @@ namespace Terraria.ID
 		// From ItemSourceID
 		public const int SetBonus_Nebula = 19;
 		public const int LuckyCoin = 20;
-		public const int PlayerDeath = 21;
-		public const int PlayerDropItemCheck = 22;
-		public const int GrandDesignOrMultiColorWrench = 23;
+		//public const int PlayerDeath = 21; // EntitySource_Death now exists.
+		public const int PlayerDropItemCheck = 21;
+		public const int GrandDesignOrMultiColorWrench = 22;
 		// Common
-		public const int Count = 24;
+		public const int Count = 23;
 	}
 }

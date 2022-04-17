@@ -1,6 +1,8 @@
 --- src/TerrariaNetCore/Terraria/ID/ItemSourceID.cs
 +++ src/tModLoader/Terraria/ID/ItemSourceID.cs
-@@ -1,6 +_,7 @@
+@@ -1,6 +_,9 @@
++using System;
++
  namespace Terraria.ID
  {
 +	//TML: Internalized. See EntitySourceID.cs
@@ -18,7 +20,7 @@
 +		public static int ToEntitySourceID(int id) => id switch {
 +			SetBonus_Nebula => EntitySourceID.SetBonus_Nebula,
 +			LuckyCoin => EntitySourceID.LuckyCoin,
-+			PlayerDeath => EntitySourceID.PlayerDeath,
++			PlayerDeath => throw new ArgumentException($"{nameof(PlayerDeath)} is illegal."), //EntitySourceID.PlayerDeath,
 +			PlayerDropItemCheck => EntitySourceID.PlayerDropItemCheck,
 +			GrandDesignOrMultiColorWrench => EntitySourceID.GrandDesignOrMultiColorWrench,
 +			TorchGod => EntitySourceID.TorchGod,
