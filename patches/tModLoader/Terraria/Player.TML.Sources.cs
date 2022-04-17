@@ -5,9 +5,9 @@ namespace Terraria
 	public partial class Player
 	{
 		public IEntitySource GetSource_Buff(int buffIndex) {
-			int buffId = buffType[buffIndex];
+			int buffTypeId = buffType[buffIndex];
 
-			return new EntitySource_Buff(this, buffId, buffIndex);
+			return new EntitySource_Buff(this, buffTypeId, buffIndex);
 		}
 	}
 }
