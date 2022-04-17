@@ -494,7 +494,7 @@ jobs:
         if: github.ref == 'refs/heads/1.4-stable'
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "artifacts/ExampleMod,artifacts/Build"
+          artifacts: "/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod, /home/runner/work/tModLoader/tModLoader/artifacts/Build"
           token: ${{ secrets.GITHUB_TOKEN }}
           body: "Monthly Github Auto-release for 1.4-stable"
           tag: ${{ steps.version2.outputs.new_version }}
