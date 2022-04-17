@@ -909,6 +909,17 @@ namespace Terraria.ModLoader
 			return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;
 		}
 
+		private delegate void DelegateModifyTypeName(NPC npc, ref string typeName);
+		private static HookList HookModifyTypeName = AddHook<DelegateModifyTypeName>(g => g.ModifyTypeName);
+		public static void ModifyTypeName(NPC npc, ref string typeName) {
+			if (npc.ModNPC != null)
+				npc.ModNPC.ModifyTypeName(ref typeName);
+
+			foreach (GlobalNPC g in HookModifyTypeName.Enumerate(npc.globalNPCs)) {
+				g.ModifyTypeName(npc, ref typeName);
+			}
+		}
+
 		private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);
 		public static void ModifyNPCNameList(NPC npc, List<string> nameList) {
 			if (npc.ModNPC != null)

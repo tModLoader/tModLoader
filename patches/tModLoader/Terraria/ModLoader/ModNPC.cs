@@ -585,6 +585,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the type name of this NPC dynamically.
+		/// </summary>
+		public virtual void ModifyTypeName(ref string typeName) {
+		}
+
+		/// <summary>
 		/// Allows you to give a list of names this NPC can be given on spawn.
 		/// By default, returns a blank list, which means the NPC will simply use its type name as its given name when prompted.
 		/// </summary>

@@ -83,6 +83,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the type name of this NPC dynamically.
+		/// </summary>
+		public virtual void ModifyTypeName(NPC npc, ref string typeName) {
+		}
+
+		/// <summary>
 		/// Allows you to set the town NPC profile that a given NPC uses.
 		/// </summary>
 		/// <param name="npc">The NPC in question.</param>

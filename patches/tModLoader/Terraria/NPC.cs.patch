@@ -30,6 +30,21 @@
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
+@@ -389,7 +_,13 @@
+ 
+ 		public int WhoAmIToTargettingIndex => whoAmI + 300;
+ 
+-		public string TypeName => Lang.GetNPCNameValue(netID);
++		public string TypeName {
++			get {
++				string typeName = Lang.GetNPCNameValue(netID);
++				NPCLoader.ModifyTypeName(this, ref typeName);
++				return typeName;
++			}
++		}
+ 
+ 		public string FullName {
+ 			get {
 @@ -458,7 +_,7 @@
  
  		public bool isLikeATownNPC {
