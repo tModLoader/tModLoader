@@ -1,6 +1,8 @@
 using Terraria.DataStructures;
 using Terraria.ID;
 
+#nullable enable
+
 namespace Terraria
 {
 	partial class Entity
@@ -30,8 +32,8 @@ namespace Terraria
 		public IEntitySource GetSource_OpenItem(int itemType)
 			=> new EntitySource_ItemOpen(this, itemType);
 		
-		public IEntitySource GetSource_SetBonus(int entitySourceId)
-			=> new EntitySource_ByEntitySourceID(this, entitySourceId);
+		public IEntitySource GetSource_SetBonus(string setName, string? context = null)
+			=> new EntitySource_SetBonus(this, setName);
 
 		public IEntitySource GetSource_ItemUse(Item item)
 			=> new EntitySource_ItemUse(this, item);
@@ -72,10 +74,10 @@ namespace Terraria
 
 		// Common - Static
 
-		public static IEntitySource GetSource_None()
+		public static IEntitySource? GetSource_None()
 			=> null;
 
-		public static IEntitySource InheritSource(Entity entity)
+		public static IEntitySource? InheritSource(Entity entity)
 			=> entity != null ? entity.GetSource_FromThis() : GetSource_None();
 
 		// Spawning - Static

@@ -17,14 +17,14 @@
  		public const int Count = 7;
 +
 +		// Reminder: this is temporary.
-+		public static int ToEntitySourceID(int id) => id switch {
-+			SetBonus_Nebula => EntitySourceID.SetBonus_Nebula,
++		public static int ToEntitySourceID(int itemSourceId) => itemSourceId switch {
 +			LuckyCoin => EntitySourceID.LuckyCoin,
 +			PlayerDeath => throw new ArgumentException($"{nameof(PlayerDeath)} is illegal."), //EntitySourceID.PlayerDeath,
 +			PlayerDropItemCheck => EntitySourceID.PlayerDropItemCheck,
 +			GrandDesignOrMultiColorWrench => EntitySourceID.GrandDesignOrMultiColorWrench,
 +			TorchGod => EntitySourceID.TorchGod,
-+			_ => EntitySourceID.None
++			None => EntitySourceID.None,
++			_ => throw new ArgumentException($"Invalid value: '{itemSourceId}'.")
 +		};
  	}
  }
