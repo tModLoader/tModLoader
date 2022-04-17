@@ -7,11 +7,8 @@
  
  namespace Terraria.GameContent
  {
-@@ -29,32 +_,48 @@
- 			43,
- 			44
+@@ -31,16 +_,22 @@
  		};
-+		// does Old Man count? should he? need to reference vanilla or ask someone who's done so already     -thomas
  		private Dictionary<int, ITownNPCProfile> _townNPCProfiles = new Dictionary<int, ITownNPCProfile> {
  			{ 369, new Profiles.LegacyNPCProfile("Images/TownNPCs/Angler", 22) },
 +			{ NPCID.ArmsDealer, new Profiles.AlternateLegacyNPCProfile("Images/NPC_19", NPCHeadID.ArmsDealer) },
@@ -31,30 +28,27 @@
  			{ 227, new Profiles.LegacyNPCProfile("Images/TownNPCs/Painter", 17) },
 +			{ NPCID.PartyGirl, new Profiles.AlternateLegacyNPCProfile("Images/NPC_208", NPCHeadID.PartyGirl) },
  			{ 229, new Profiles.LegacyNPCProfile("Images/TownNPCs/Pirate", 19) },
-+			{ 663, new Profiles.LegacyNPCProfile("Images/TownNPCs/Princess", 45) },
  			{ 142, new Profiles.LegacyNPCProfile("Images/TownNPCs/Santa", 11) },
  			{ 453, new Profiles.LegacyNPCProfile("Images/TownNPCs/SkeletonMerchant", -1) },
- 			{ 178, new Profiles.LegacyNPCProfile("Images/TownNPCs/Steampunker", 13) },
+@@ -48,13 +_,20 @@
  			{ 353, new Profiles.LegacyNPCProfile("Images/TownNPCs/Stylist", 20) },
  			{ 441, new Profiles.LegacyNPCProfile("Images/TownNPCs/TaxCollector", 23) },
  			{ 368, new Profiles.LegacyNPCProfile("Images/TownNPCs/TravelingMerchant", 21) },
 +			{ NPCID.Truffle, new Profiles.AlternateLegacyNPCProfile("Images/NPC_160", NPCHeadID.Truffle) },
 +			{ NPCID.WitchDoctor, new Profiles.AlternateLegacyNPCProfile("Images/NPC_228", NPCHeadID.WitchDoctor) },
  			{ 108, new Profiles.LegacyNPCProfile("Images/TownNPCs/Wizard", 10) },
--			{ 663, new Profiles.LegacyNPCProfile("Images/TownNPCs/Princess", 45) },
+ 			{ 663, new Profiles.LegacyNPCProfile("Images/TownNPCs/Princess", 45) },
  			{ 637, new Profiles.VariantNPCProfile("Images/TownNPCs/Cat", "Cat", CatHeadIDs, "Siamese", "Black", "OrangeTabby", "RussianBlue", "Silver", "White") },
  			{ 638, new Profiles.VariantNPCProfile("Images/TownNPCs/Dog", "Dog", DogHeadIDs, "Labrador", "PitBull", "Beagle", "Corgi", "Dalmation", "Husky") },
  			{ 656, new Profiles.VariantNPCProfile("Images/TownNPCs/Bunny", "Bunny", BunnyHeadIDs, "White", "Angora", "Dutch", "Flemish", "Lop", "Silver") }		};
-+
-+		public Dictionary<int, ITownNPCProfile> TownNPCProfileList;
 +
  		public static TownNPCProfiles Instance = new TownNPCProfiles();
  
 -		public bool GetProfile(int npcId, out ITownNPCProfile profile) => _townNPCProfiles.TryGetValue(npcId, out profile);
 +		public bool GetProfile(NPC npc, out ITownNPCProfile profile) {
-+			TownNPCProfileList = _townNPCProfiles;
-+			NPCLoader.SetTownNPCProfile(npc, TownNPCProfileList);
-+			return TownNPCProfileList.TryGetValue(npc.type, out profile);
++			Dictionary<int, ITownNPCProfile> townNPCProfileList = _townNPCProfiles;
++			NPCLoader.SetTownNPCProfile(npc, townNPCProfileList);
++			return townNPCProfileList.TryGetValue(npc.type, out profile);
 +		}		
  	}
  }
