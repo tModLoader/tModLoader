@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_ByItemSourceId.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_ByItemSourceId.cs
+@@ -1,5 +_,7 @@
+ namespace Terraria.DataStructures
+ {
++	//TML: Removed, see EntitySource_ByEntitySourceId.cs
++	/*
+ 	public class EntitySource_ByItemSourceId : IEntitySource
+ 	{
+ 		public readonly Entity Entity;
+@@ -10,4 +_,5 @@
+ 			SourceId = itemSourceId;
+ 		}
+ 	}
++	*/
+ }

@@ -1,12 +1,18 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_OnHit_ByItemSourceID.cs
 +++ src/tModLoader/Terraria/DataStructures/EntitySource_OnHit_ByItemSourceID.cs
-@@ -4,7 +_,8 @@
+@@ -1,6 +_,8 @@
+ namespace Terraria.DataStructures
+ {
++	//TML: Removed, see EntitySource_ByEntitySourceId.cs
++	/*
+-	public class EntitySource_OnHit_ByItemSourceID : AEntitySource_OnHit
++	public class EntitySource_OnHit_ByItemSourceID : EntitySource_OnHit
  	{
  		public readonly int SourceId;
  
-+		//TML: Last parameter turned optional
--		public EntitySource_OnHit_ByItemSourceID(Entity entityStriking, Entity entityStruck, int itemSourceId)
-+		public EntitySource_OnHit_ByItemSourceID(Entity entityStriking, Entity entityStruck, int itemSourceId = 0)
- 			: base(entityStriking, entityStruck) {
+@@ -9,4 +_,5 @@
  			SourceId = itemSourceId;
  		}
+ 	}
++	*/
+ }

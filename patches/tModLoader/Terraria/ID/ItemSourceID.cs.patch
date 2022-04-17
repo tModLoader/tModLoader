@@ -1,0 +1,28 @@
+--- src/TerrariaNetCore/Terraria/ID/ItemSourceID.cs
++++ src/tModLoader/Terraria/ID/ItemSourceID.cs
+@@ -1,6 +_,7 @@
+ namespace Terraria.ID
+ {
++	//TML: Internalized. See EntitySourceID.cs
+-	public static class ItemSourceID
++	internal static class ItemSourceID
+ 	{
+ 		public const int None = 0;
+ 		public const int SetBonus_Nebula = 1;
+@@ -10,5 +_,16 @@
+ 		public const int GrandDesignOrMultiColorWrench = 5;
+ 		public const int TorchGod = 6;
+ 		public const int Count = 7;
++
++		// Reminder: this is temporary.
++		public static int ToEntitySourceID(int id) => id switch {
++			SetBonus_Nebula => EntitySourceID.SetBonus_Nebula,
++			LuckyCoin => EntitySourceID.LuckyCoin,
++			PlayerDeath => EntitySourceID.PlayerDeath,
++			PlayerDropItemCheck => EntitySourceID.PlayerDropItemCheck,
++			GrandDesignOrMultiColorWrench => EntitySourceID.GrandDesignOrMultiColorWrench,
++			TorchGod => EntitySourceID.TorchGod,
++			_ => EntitySourceID.None
++		};
+ 	}
+ }

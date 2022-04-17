@@ -1058,47 +1058,47 @@
  				cWings = dyeItem.dye;
  
  			if (armorItem.type == 934)
-@@ -6598,40 +_,51 @@
+@@ -6598,11 +_,13 @@
  			}
  		}
  
-+		// TML:
-+		// All turned internal to suggest getting familiar with source types instead.
-+		// Some source types can have extra constructors added to simplify scenarios like some of these methods used to.
--		public IEntitySource GetProjectileSource_Buff(int buffIndex) {
-+		internal IEntitySource GetProjectileSource_Buff(int buffIndex) {
++		// Original vanilla methods:
++		/*
+ 		public IEntitySource GetProjectileSource_Buff(int buffIndex) {
  			int buffId = buffType[buffIndex];
  			return new EntitySource_Buff(this, buffId, buffIndex);
  		}
- 
--		public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
-+		internal IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
--		public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
-+		internal IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
--		public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
-+		internal IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
--		public IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_ByItemSourceId(this, itemSourceId);
-+		internal IEntitySource GetItemSource_Misc(int itemSourceId) => new EntitySource_ByItemSourceId(this, itemSourceId);
--		public IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => new EntitySource_ItemUse_WithAmmo(this, item, ammoItemId);
-+		internal IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => new EntitySource_ItemUse_WithAmmo(this, item, ammoItemId);
--		public IEntitySource GetProjectileSource_SetBonus(int projectileSourceId) => new EntitySource_ByProjectileSourceId(projectileSourceId);
-+		internal IEntitySource GetProjectileSource_SetBonus(int projectileSourceId) => new EntitySource_ByProjectileSourceId(projectileSourceId);
--		public IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => new EntitySource_OnHit_ByProjectileSourceID(this, victim, projectileSourceId);
-+		internal IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => new EntitySource_OnHit_ByProjectileSourceID(this, victim, projectileSourceId);
--		public IEntitySource GetProjectileSource_OnHurt(Entity attacker, int projectileSourceId) => new EntitySource_OnHit_ByProjectileSourceID(attacker, this, projectileSourceId);
-+		internal IEntitySource GetProjectileSource_OnHurt(Entity attacker, int projectileSourceId) => new EntitySource_OnHit_ByProjectileSourceID(attacker, this, projectileSourceId);
--		public IEntitySource GetProjectileSource_Accessory(Item item) => new EntitySource_ItemUse(this, item);
-+		internal IEntitySource GetProjectileSource_Accessory(Item item) => new EntitySource_ItemUse(this, item);
--		public IEntitySource GetProjectileSource_Misc(int projectileSourceId) => new EntitySource_ByProjectileSourceId(projectileSourceId);
-+		internal IEntitySource GetProjectileSource_Misc(int projectileSourceId) => new EntitySource_ByProjectileSourceId(projectileSourceId);
--		public IEntitySource GetProjectileSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
-+		internal IEntitySource GetProjectileSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
--		public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
-+		internal IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
--		public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
-+		internal IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
--		public IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
-+		internal IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
+-
++		
+ 		public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
+ 		public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
+ 		public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
+@@ -6617,21 +_,51 @@
+ 		public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
+ 		public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
+ 		public IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
++		*/
++
++		// Internal redirects:
++		internal IEntitySource GetProjectileSource_Buff(int buffIndex) => GetSource_Buff(buffIndex);
++		internal IEntitySource GetProjectileSource_Item(Item item) => GetSource_Item(item);
++		internal IEntitySource GetItemSource_OpenItem(int itemType) => GetSource_OpenItem(itemType);
++		internal IEntitySource GetItemSource_Death() => GetSource_Death();
++		internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(ItemSourceID.ToEntitySourceID(itemSourceId));
++		internal IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => GetSource_Item_WithPotentialAmmo(item, ammoItemId);
++		internal IEntitySource GetProjectileSource_SetBonus(int projectileSourceId) => GetSource_SetBonus(ProjectileSourceID.ToEntitySourceID(projectileSourceId));
++		internal IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => GetSource_OnHit(victim, ProjectileSourceID.ToEntitySourceID(projectileSourceId));
++		internal IEntitySource GetProjectileSource_OnHurt(Entity attacker, int projectileSourceId) => GetSource_OnHurt(attacker, ProjectileSourceID.ToEntitySourceID(projectileSourceId));
++		internal IEntitySource GetProjectileSource_Accessory(Item item) => GetSource_Accessory(item);
++		internal IEntitySource GetProjectileSource_Misc(int projectileSourceId) => GetSource_Misc(ProjectileSourceID.ToEntitySourceID(projectileSourceId));
++		internal IEntitySource GetProjectileSource_TileInteraction(int tileCoordsX, int tileCoordsY) => GetSource_TileInteraction(tileCoordsX, tileCoordsY);
++		internal IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => GetSource_TileInteraction(tileCoordsX, tileCoordsY);
++		internal IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => GetSource_TileInteraction(tileCoordsX, tileCoordsY);
++		internal IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => GetSource_OnHit(victim, ItemSourceID.ToEntitySourceID(itemSourceId));
++
++		// Public API methods can be found in:
++		//   Entity.TML.Sources.cs;
++		//   Player.TML.Sources.cs (if exists);
  
  		public void UpdateBuffs(int i) {
 +			/*
@@ -2215,6 +2215,15 @@
  					if (!tile.active() || tile.type != 4)
  						continue;
  
+@@ -12860,7 +_,7 @@
+ 					NetMessage.SendData(4, -1, -1, null, whoAmI);
+ 
+ 				if (numberOfTorchAttacksMade >= 95) {
+-					int number = Item.NewItem(new EntitySource_ByItemSourceId(this, 6), (int)position.X, (int)position.Y, width, height, 5043);
++					int number = Item.NewItem(GetItemSource_Misc(6), (int)position.X, (int)position.Y, width, height, 5043);
+ 					if (Main.netMode == 1)
+ 						NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 				}
 @@ -12907,6 +_,9 @@
  			if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < 22)
  				nearbyTorch[inventory[selectedItem].placeStyle] = true;
