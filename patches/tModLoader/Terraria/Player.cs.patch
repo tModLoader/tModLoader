@@ -2741,6 +2741,15 @@
  			if (wings == 32)
  				num27 = 3;
  
+@@ -21425,7 +_,7 @@
+ 			if (TileID.Sets.BasicChest[tile.type] || tile.type == 97)
+ 				r = new Rectangle(chestPointX * 16, chestPointY * 16, 32, 32);
+ 
+-			if (tile.type == 88)
++			if (TileID.Sets.BasicDresser[tile.type])
+ 				r = new Rectangle(chestPointX * 16, chestPointY * 16, 48, 32);
+ 
+ 			if (tile.type == 29)
 @@ -21639,6 +_,9 @@
  						break;
  				}
