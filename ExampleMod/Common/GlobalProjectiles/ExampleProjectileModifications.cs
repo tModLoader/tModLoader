@@ -3,7 +3,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using ExampleMod.Common.GlobalNPCs;
-using Terraria.DataStructures;
 
 namespace ExampleMod.Common.GlobalProjectiles
 {

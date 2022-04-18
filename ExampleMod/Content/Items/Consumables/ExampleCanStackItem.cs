@@ -5,7 +5,6 @@ using Terraria.GameContent.Creative;
 using Terraria.ModLoader.IO;
 using System.IO;
 using System.Collections.Generic;
-using Terraria.DataStructures;
 
 namespace ExampleMod.Content.Items.Consumables
 {

@@ -1,7 +1,6 @@
 using ExampleMod.Common.Players;
 using ExampleMod.Content.Dusts;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 

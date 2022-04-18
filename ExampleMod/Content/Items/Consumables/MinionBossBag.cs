@@ -7,7 +7,6 @@ using Terraria.GameContent.Creative;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
-using Terraria.DataStructures;
 
 namespace ExampleMod.Content.Items.Consumables
 {

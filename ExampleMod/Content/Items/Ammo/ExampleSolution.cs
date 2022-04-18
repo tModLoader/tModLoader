@@ -8,7 +8,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
 
 namespace ExampleMod.Content.Items.Ammo
 {
