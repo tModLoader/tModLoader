@@ -4102,7 +4102,7 @@
  
  				if (i == Main.myPlayer) {
 -					if (!dontConsumeWand && itemTime == (int)((float)item.useTime * tileSpeed) && item.tileWand > 0) {
-+					if (item.tileWand > 0 && !dontConsumeWand && itemTime == itemTimeMax) {
++					if (itemTimeMax != 0 && item.tileWand > 0 && !dontConsumeWand && itemTime == itemTimeMax) {
  						int tileWand = item.tileWand;
  						for (int num15 = 0; num15 < 58; num15++) {
  							if (tileWand == inventory[num15].type && inventory[num15].stack > 0) {
