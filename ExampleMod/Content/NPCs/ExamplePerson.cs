@@ -21,6 +21,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
 using Terraria.DataStructures;
+using System.Collections.Generic;
+using ReLogic.Content;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -155,19 +157,16 @@ namespace ExampleMod.Content.NPCs
 			return score >= ((right - left) * (bottom - top)) / 2;
 		}
 
-		public override string TownNPCName() {
-			switch (WorldGen.genRand.Next(4)) {
-				case 0: // The cases are potential names for the NPC.
-					return "Someone";
+		public override void SetTownNPCProfile(Dictionary<int, ITownNPCProfile> database) {
+			database[NPC.type] = new ExamplePersonProfile();
+		}
 
-				case 1:
-					return "Somebody";
-
-				case 2:
-					return "Blocky";
-
-				default:
-					return "Colorless";
+		public override List<string> SetNPCNameList() {
+			return new List<string>() {
+				"Someone",
+				"Somebody",
+				"Blocky",
+				"Colorless"
 			}
 		}
 
@@ -338,5 +337,23 @@ namespace ExampleMod.Content.NPCs
 			multiplier = 12f;
 			randomOffset = 2f;
 		}
+	}
+
+	public class ExamplePersonProfile : ITownNPCProfile
+	{
+		public int RollVariation() => 0;
+		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
+
+		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
+			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
+
+			if (npc.altTexture == 1)
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
+
+			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
+		}
+
+		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExamplePerson_Head");
 	}
 }

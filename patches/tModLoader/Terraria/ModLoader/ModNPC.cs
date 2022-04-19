@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Utilities;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
@@ -183,6 +184,13 @@ namespace Terraria.ModLoader
 		/// <param name="database"></param>
 		/// <param name="bestiaryEntry"></param>
 		public virtual void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+		}
+
+		/// <summary>
+		/// Allows you to set the town NPC profile that this NPC uses.
+		/// </summary>
+		/// <param name="database">The list of town NPC profiles that currently exist.</param>
+		public virtual void SetTownNPCProfile(Dictionary<int, ITownNPCProfile> database) {
 		}
 
 		/// <summary>
@@ -577,11 +585,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give this town NPC any name when it spawns. By default returns something embarrassing.
+		/// Allows you to modify the type name of this NPC dynamically.
+		/// </summary>
+		public virtual void ModifyTypeName(ref string typeName) {
+		}
+
+		/// <summary>
+		/// Allows you to give a list of names this NPC can be given on spawn.
+		/// By default, returns a blank list, which means the NPC will simply use its type name as its given name when prompted.
 		/// </summary>
 		/// <returns></returns>
-		public virtual string TownNPCName() {
-			return Language.GetTextValue("tModLoader.DefaultTownNPCName");
+		public virtual List<string> SetNPCNameList() {
+			return new List<string>();
 		}
 
 		/// <summary>

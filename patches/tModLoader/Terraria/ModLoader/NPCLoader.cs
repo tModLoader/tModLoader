@@ -208,6 +208,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateSetTownNPCProfile(NPC npc, Dictionary<int, ITownNPCProfile> database);
+		private static HookList HookSetTownNPCProfile = AddHook<DelegateSetTownNPCProfile>(g => g.SetTownNPCProfile);
+		public static void SetTownNPCProfile(NPC npc, Dictionary<int, ITownNPCProfile> database) {
+			npc.ModNPC?.SetTownNPCProfile(database);
+
+			foreach (GlobalNPC g in HookSetTownNPCProfile.Enumerate(npc.globalNPCs)) {
+				g.SetTownNPCProfile(npc, database);
+			}
+		}
+
 		private static HookList HookResetEffects = AddHook<Action<NPC>>(g => g.ResetEffects);
 
 		public static void ResetEffects(NPC npc) {
@@ -899,8 +909,25 @@ namespace Terraria.ModLoader
 			return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;
 		}
 
-		public static string TownNPCName(int type) {
-			return GetNPC(type)?.TownNPCName() ?? "";
+		private delegate void DelegateModifyTypeName(NPC npc, ref string typeName);
+		private static HookList HookModifyTypeName = AddHook<DelegateModifyTypeName>(g => g.ModifyTypeName);
+		public static void ModifyTypeName(NPC npc, ref string typeName) {
+			if (npc.ModNPC != null)
+				npc.ModNPC.ModifyTypeName(ref typeName);
+
+			foreach (GlobalNPC g in HookModifyTypeName.Enumerate(npc.globalNPCs)) {
+				g.ModifyTypeName(npc, ref typeName);
+			}
+		}
+
+		private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);
+		public static void ModifyNPCNameList(NPC npc, List<string> nameList) {
+			if (npc.ModNPC != null)
+				nameList = npc.ModNPC.SetNPCNameList();
+
+			foreach (GlobalNPC g in HookModifyNPCNameList.Enumerate(npc.globalNPCs)) {
+				g.ModifyNPCNameList(npc, nameList);
+			}
 		}
 
 		public static bool UsesPartyHat(NPC npc) {

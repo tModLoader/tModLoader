@@ -7,6 +7,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
+using System.Collections.Generic;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -91,19 +92,12 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override string TownNPCName() {
-			switch (WorldGen.genRand.Next(4)) {
-				case 0: // The cases are potential names for the NPC.
-					return "Blocky Bones";
-
-				case 1:
-					return "Someone's Ribcage";
-
-				case 2:
-					return "Underground Blockster";
-
-				default:
-					return "Darkness";
+		public override List<string> SetNPCNameList() {
+			return new List<string> {
+				"Blocky Bones",
+				"Someone's Ribcage",
+				"Underground Blockster",
+				"Darkness"
 			}
 		}
 
