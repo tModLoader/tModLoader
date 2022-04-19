@@ -48,8 +48,11 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		// The following method gives this gun a 38% chance to not consume ammo
-		public override bool CanConsumeAmmo(Player player) {
-			return Main.rand.NextFloat() >= 0.38f;
+		public override bool? CanConsumeAmmo(Player player) {
+			if (Main.rand.NextFloat() >= 0.38f)
+				return true;
+
+			return null;
 		}
 
 		// The following method makes the gun slightly inaccurate
