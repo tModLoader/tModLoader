@@ -649,6 +649,15 @@
  			if (Main.tenthAnniversaryWorld) {
  				if (Type == 58) {
  					Type = Main.rand.NextFromList(new short[3] {
+@@ -46363,6 +_,8 @@
+ 			if (ItemSlot.Options.HighlightNewItems && item.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type])
+ 				item.newAndShiny = true;
+ 
++			ItemLoader.OnSpawn(item, source);
++
+ 			if (Main.netMode == 2 && !noBroadcast)
+ 				NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
+ 			else if (Main.netMode == 0)
 @@ -46434,14 +_,17 @@
  						continue;
  

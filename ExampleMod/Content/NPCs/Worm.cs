@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -66,13 +67,17 @@ namespace ExampleMod.NPCs
 				}
 
 				Player target = Main.player[NPC.target];
+
 				// If the attack counter is 0, this NPC is less than 12.5 tiles away from its target, and has a path to the target unobstructed by blocks, summon a projectile.
 				if (attackCounter <= 0 && Vector2.Distance(NPC.Center, target.Center) < 200 && Collision.CanHit(NPC.Center, 1, 1, target.Center, 1, 1)) {
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-					int projectile = Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
-					Main.projectile[projectile].timeLeft = 300;
+					var entitySource = NPC.GetSource_FromAI();
+					var projectile = Projectile.NewProjectileDirect(entitySource, NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
+
+					projectile.timeLeft = 300;
+
 					attackCounter = 500;
 					NPC.netUpdate = true;
 				}
@@ -183,20 +188,20 @@ namespace ExampleMod.NPCs
 			}
 
 			if (Main.netMode != NetmodeID.MultiplayerClient) {
-				if (!tail && NPC.ai[0] == 0f) {
-					var source = NPC.GetSpawnSourceForNPCFromNPCAI();
+				var entitySource = NPC.GetSource_FromAI();
 
+				if (!tail && NPC.ai[0] == 0f) {
 					if (head) {
 						NPC.ai[3] = NPC.whoAmI;
 						NPC.realLife = NPC.whoAmI;
 						NPC.ai[2] = Main.rand.Next(minLength, maxLength + 1);
-						NPC.ai[0] = NPC.NewNPC(source, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), bodyType, NPC.whoAmI);
+						NPC.ai[0] = NPC.NewNPC(entitySource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), bodyType, NPC.whoAmI);
 					}
 					else if (NPC.ai[2] > 0f) {
-						NPC.ai[0] = NPC.NewNPC(source, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), NPC.type, NPC.whoAmI);
+						NPC.ai[0] = NPC.NewNPC(entitySource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), NPC.type, NPC.whoAmI);
 					}
 					else {
-						NPC.ai[0] = NPC.NewNPC(source, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), tailType, NPC.whoAmI);
+						NPC.ai[0] = NPC.NewNPC(entitySource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), tailType, NPC.whoAmI);
 					}
 
 					Main.npc[(int)NPC.ai[0]].ai[3] = NPC.ai[3];

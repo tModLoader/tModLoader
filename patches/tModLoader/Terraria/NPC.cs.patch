@@ -344,7 +344,7 @@
  			defDefense = defense;
  			defDamage = damage;
  			life = lifeMax;
-@@ -11049,6 +_,10 @@
+@@ -11049,6 +_,18 @@
  		}
  
  		public void AI() {
@@ -352,6 +352,14 @@
 +		}
 +
 +		public void VanillaAI() {
++			IEntitySource.PushFallback(thisEntitySourceCache);
++
++			VanillaAI_Inner();
++
++			IEntitySource.PopFallback();
++		}
++
++		private void VanillaAI_Inner() {
  			if (aiStyle == 0) {
  				if (Main.netMode != 1) {
  					for (int i = 0; i < 255; i++) {
@@ -1038,6 +1046,15 @@
  				for (int num2 = 199; num2 >= 0; num2--) {
  					if (!Main.npc[num2].active) {
  						num = num2;
+@@ -60967,6 +_,8 @@
+ 						ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
+ 				}
+ 
++				NPCLoader.OnSpawn(Main.npc[num], source);
++
+ 				return num;
+ 			}
+ 
 @@ -60974,9 +_,9 @@
  		}
  
@@ -1071,14 +1088,25 @@
  
  			if ((takenDamageMultiplier > 1f || Damage != 9999) && lifeMax > 1) {
  				if (friendly) {
-@@ -61454,6 +_,10 @@
+@@ -61453,7 +_,20 @@
+ 			}
  		}
  
- 		public void HitEffect(int hitDirection = 0, double dmg = 10.0) {
-+			NPCLoader.HitEffect(this, hitDirection, dmg);
++		public void HitEffect(int hitDirection = 0, double dmg = 10.0)
++			=> NPCLoader.HitEffect(this, hitDirection, dmg);
++
+-		public void HitEffect(int hitDirection = 0, double dmg = 10.0) {
++		public void VanillaHitEffect(int hitDirection = 0, double dmg = 10.0) {
++			var usedSource = new EntitySource_HitEffect(this);
++
++			IEntitySource.PushFallback(thisEntitySourceCache);
++
++			VanillaHitEffect_Inner(hitDirection, dmg);
++
++			IEntitySource.PopFallback();
 +		}
 +
-+		public void VanillaHitEffect(int hitDirection = 0, double dmg = 10.0) {
++		private void VanillaHitEffect_Inner(int hitDirection, double dmg) {
  			if (!active)
  				return;
  
@@ -1100,6 +1128,25 @@
  				return;
  
  			int num = FindBuffIndex(buffTypeToRemove);
+@@ -68775,9 +_,18 @@
+ 
+ 		public void UpdateNPC(int i) {
+ 			whoAmI = i;
++
+ 			if (!active)
+ 				return;
+ 
++			IEntitySource.PushFallback(thisEntitySourceCache);
++
++			UpdateNPC_Inner(i);
++
++			IEntitySource.PopFallback();
++		}
++
++		private void UpdateNPC_Inner(int i) {
+ 			if (offSetDelayTime > 0) {
+ 				netOffset *= 0f;
+ 			}
 @@ -68791,7 +_,7 @@
  				if (NPCID.Sets.NoMultiplayerSmoothingByType[type]) {
  					netOffset *= 0f;
@@ -1117,6 +1164,39 @@
  			UpdateNPC_BuffSetFlags();
  			UpdateNPC_SoulDrainDebuff();
  			UpdateNPC_BuffClearExpiredBuffs();
+@@ -69075,6 +_,8 @@
+ 			}
+ 		}
+ 
++		// Original vanilla methods:
++		/*
+ 		public static IEntitySource GetSpawnSource_NPCRelease(int whoReleasedIt) => new EntitySource_Parent(Main.player[whoReleasedIt]);
+ 		public static IEntitySource GetSpawnSource_NPCCatch(int whoCatchedIt) => new EntitySource_Parent(Main.player[whoCatchedIt]);
+ 		public IEntitySource GetSpawnSource_NPCHurt() => new EntitySource_Parent(this);
+@@ -69084,6 +_,23 @@
+ 		public static IEntitySource GetSpawnSourceForTownSpawn() => new EntitySource_SpawnNPC();
+ 		public IEntitySource GetSpawnSourceForNPCFromNPCAI() => new EntitySource_Parent(this);
+ 		public IEntitySource GetItemSource_Loot() => new EntitySource_Loot(this);
++		*/
++
++		// Internal redirects:
++		internal static IEntitySource GetSpawnSource_NPCRelease(int whoReleasedIt) => Main.player[whoReleasedIt].GetSource_ReleaseEntity();
++		internal static IEntitySource GetSpawnSource_NPCCatch(int whoCaughtIt) => Main.player[whoCaughtIt].GetSource_CatchEntity();
++		internal static IEntitySource GetSpawnSourceForNaturalSpawn() => GetSource_NaturalSpawn();
++		internal static IEntitySource GetSpawnSourceForTownSpawn() => GetSource_TownSpawn();
++		
++		internal IEntitySource GetSpawnSource_NPCHurt() => new EntitySource_Parent(this);
++		internal IEntitySource GetSpawnSource_ForProjectile() => GetSource_FromAI();
++		internal IEntitySource GetSpawnSourceForProjectileNPC() => GetSource_FromAI();
++		internal IEntitySource GetSpawnSourceForNPCFromNPCAI() => GetSource_FromAI();
++		internal IEntitySource GetItemSource_Loot() => GetSource_Loot();
++
++		// Public API methods can be found in:
++		//   Entity.TML.Sources.cs;
++		//   NPC.TML.Sources.cs (if exists);
+ 
+ 		private void UpdateNPC_UpdateTrails() {
+ 			int num = NPCID.Sets.TrailingMode[type];
 @@ -69822,6 +_,7 @@
  					num = 5;
  			}

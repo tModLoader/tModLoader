@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
@@ -91,57 +92,26 @@ namespace Terraria.ModLoader
 			NPCID.Search.Add(FullName, Type);
 		}
 
-		internal void SetupNPC(NPC npc) {
-			ModNPC newNPC = (ModNPC)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
-			newNPC.NPC = npc;
-			npc.ModNPC = newNPC;
-			newNPC.Mod = Mod;
-			newNPC.SetDefaults();
-		}
-
 		/// <summary>
-		/// Whether instances of this ModNPC are created through a memberwise clone or its constructor. Defaults to false.
+		/// Returns a clone of this ModNPC. 
+		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created. 
+		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references. 
 		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
-		/// Returns a clone of this ModNPC.
-		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created.
-		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references.
-		/// Only called if CloneNewInstances is set to true.
-		/// </summary>
-		public virtual ModNPC Clone() => (ModNPC)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this ModNPC for an NPC instance.
-		/// Called at the end of NPC.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual ModNPC NewInstance(NPC npcClone) {
-			if (CloneNewInstances) {
-				ModNPC clone = Clone();
-				clone.NPC = npcClone;
-				return clone;
-			}
-
-			ModNPC copy = (ModNPC)Activator.CreateInstance(GetType());
-			copy.NPC = npcClone;
-			copy.Mod = Mod;
-			copy.AIType = AIType;
-			copy.AnimationType = AnimationType;
-			copy.Music = Music;
-			copy.DrawOffsetY = DrawOffsetY;
-			copy.Banner = Banner;
-			copy.BannerItem = BannerItem;
-			return copy;
+		public virtual ModNPC Clone(NPC npc) {
+			ModNPC clone = (ModNPC)MemberwiseClone();
+			clone.NPC = npc;
+			return clone;
 		}
 
 		/// <summary>
 		/// Allows you to set all your NPC's properties, such as width, damage, aiStyle, lifeMax, etc.
 		/// </summary>
-		public virtual void SetDefaults() {
-		}
+		public virtual void SetDefaults() { }
+
+		/// <summary>
+		/// Gets called when your NPC spawns in world
+		/// </summary>
+		public virtual void OnSpawn(IEntitySource source) { }
 
 		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
@@ -239,10 +209,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
+		/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
-		/// <param name="hitDirection"></param>
-		/// <param name="damage"></param>
 		public virtual void HitEffect(int hitDirection, double damage) {
 		}
 

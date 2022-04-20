@@ -216,9 +216,10 @@ namespace ExampleMod.Content.NPCs
 					Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<WaspNest>())}";
 
 					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
+					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(new EntitySource_Gift(NPC), ModContent.ItemType<WaspNest>());
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>());
 
 					return;
 				}

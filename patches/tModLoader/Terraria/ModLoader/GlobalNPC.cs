@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
@@ -29,39 +30,22 @@ namespace Terraria.ModLoader
 		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
 		/// <summary>
-		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()).
-		/// Defaults to false (using default constructor).
+		/// Create a copy of this instanced GlobalNPC. Called when an npc is cloned.
 		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
-		/// Returns a clone of this GlobalNPC.
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references.
-		/// Only called if CloneNewInstances &amp;&amp; InstancePerEntity
-		/// </summary>
-		public virtual GlobalNPC Clone() => (GlobalNPC)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this GlobalNPC for an NPC instance.
-		/// Called at the end of NPC.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual GlobalNPC NewInstance(NPC npc) {
-			if (CloneNewInstances) {
-				return Clone();
-			}
-			GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());
-			copy.Mod = Mod;
-			copy.index = index;
-			return copy;
-		}
+		/// <param name="npc">The npc being cloned</param>
+		/// <param name="npcClone">The new npc</param>
+		public virtual GlobalNPC Clone(NPC npc, NPC npcClone) => (GlobalNPC)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every NPC that gets created.
 		/// </summary>
-		/// <param name="npc"></param>
 		public virtual void SetDefaults(NPC npc) {
+		}
+
+		/// <summary>
+		/// Gets called when any NPC spawns in world
+		/// </summary>
+		public virtual void OnSpawn(NPC npc, IEntitySource source) {
 		}
 
 		/// <summary>
@@ -141,11 +125,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.
+		/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
-		/// <param name="npc"></param>
-		/// <param name="hitDirection"></param>
-		/// <param name="damage"></param>
 		public virtual void HitEffect(NPC npc, int hitDirection, double damage) {
 		}
 
