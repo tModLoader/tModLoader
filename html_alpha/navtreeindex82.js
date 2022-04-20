@@ -1,5 +1,13 @@
 var NAVTREEINDEX82 =
 {
+"class_terraria_1_1_main.html#a5d5224766fbd3fc307edee84cd7ea202":[1,0,2,47,1307],
+"class_terraria_1_1_main.html#a5d6fb4f094a3369427396a85376656b7":[1,0,2,47,772],
+"class_terraria_1_1_main.html#a5d86a85f19063fde20551af1833f58ba":[1,0,2,47,627],
+"class_terraria_1_1_main.html#a5df6b9e71a14ba8adf7dd66af1301033":[1,0,2,47,834],
+"class_terraria_1_1_main.html#a5dfd027695035b531285ec808f889581":[1,0,2,47,163],
+"class_terraria_1_1_main.html#a5e1a8490e97b779fa9dc5ae96eea0a07":[1,0,2,47,436],
+"class_terraria_1_1_main.html#a5e1def0b2f7c189a9ce0ed28f370f67f":[1,0,2,47,1334],
+"class_terraria_1_1_main.html#a5e6529618f395004e7fc0dc8a85a89ed":[1,0,2,47,1319],
 "class_terraria_1_1_main.html#a5eaa61afbd3638cbbc8718d57edf872d":[1,0,2,47,537],
 "class_terraria_1_1_main.html#a5ec8b14b68e2b13405cd38342e6acbfe":[1,0,2,47,1303],
 "class_terraria_1_1_main.html#a5eed974ae3b60ee03630838082bf9638":[1,0,2,47,35],
@@ -241,13 +249,5 @@ var NAVTREEINDEX82 =
 "class_terraria_1_1_main.html#a8b9cd3c06b09ba3ac7457a4cf8b79cbe":[1,0,2,47,1036],
 "class_terraria_1_1_main.html#a8bcfd283fba8873b30721dcc689dc4b9":[1,0,2,47,1210],
 "class_terraria_1_1_main.html#a8c151a75749b73e0a552ad36e642a34a":[1,0,2,47,341],
-"class_terraria_1_1_main.html#a8c7af6844790643dab6ac4a0d288de58":[1,0,2,47,956],
-"class_terraria_1_1_main.html#a8cbae852404d7dfa6285838b37a4623d":[1,0,2,47,178],
-"class_terraria_1_1_main.html#a8d131c1e98ba9c0f317b7346281b00d1":[1,0,2,47,866],
-"class_terraria_1_1_main.html#a8d25a024cdf44203b9d86238750768d1":[1,0,2,47,662],
-"class_terraria_1_1_main.html#a8d46d3bb048079b4d5df16b5b29229b8":[1,0,2,47,311],
-"class_terraria_1_1_main.html#a8d65025464ccbca34718bbd8cb70dc7d":[1,0,2,47,210],
-"class_terraria_1_1_main.html#a8d933604dfdbb57fdd3f48686fc99806":[1,0,2,47,350],
-"class_terraria_1_1_main.html#a8db99d77e41442e8995c592758ed1305":[1,0,2,47,487],
-"class_terraria_1_1_main.html#a8e0cac19840bd9833b14d2f3e7cc81a9":[1,0,2,47,381]
+"class_terraria_1_1_main.html#a8c7af6844790643dab6ac4a0d288de58":[1,0,2,47,956]
 };

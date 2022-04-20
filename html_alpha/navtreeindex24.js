@@ -1,5 +1,11 @@
 var NAVTREEINDEX24 =
 {
+"class_terraria_1_1_graphics_1_1_effects_1_1_overlays.html#a4117965bd2e6ecfadba54449e513db95":[1,0,2,7,2,9,0],
+"class_terraria_1_1_graphics_1_1_effects_1_1_overlays.html#a9529ed8658899d566c74dc80851aa104":[1,0,2,7,2,9,1],
+"class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html":[1,0,2,7,2,10],
+"class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html#a2748499fdf80096bf847fa25c56037f2":[1,0,2,7,2,10,3],
+"class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html#a5a05dd46b005c397c33280d2a702bf57":[1,0,2,7,2,10,0],
+"class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html#a5c897393dc5ca3ee34d35c14fc618004":[1,0,2,7,2,10,4],
 "class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html#a747699caaf4277869d86f77412836be1":[1,0,2,7,2,10,7],
 "class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html#a87c1d608c41a0206186f73b349cfbbd1":[1,0,2,7,2,10,2],
 "class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html#a923b55d8b15fe23b5d4e43d322484d08":[1,0,2,7,2,10,5],
@@ -243,11 +249,5 @@ var NAVTREEINDEX24 =
 "class_terraria_1_1_graphics_1_1_shaders_1_1_shader_data.html#a5b9bd37cd9c05aeefe6dba93ef99599d":[1,0,2,7,5,7,2],
 "class_terraria_1_1_graphics_1_1_shaders_1_1_shader_data.html#a973c42545bf827a01aab451270424191":[1,0,2,7,5,7,3],
 "class_terraria_1_1_graphics_1_1_shaders_1_1_shader_data.html#af9ab60e3e82d5fb346da65e084582276":[1,0,2,7,5,7,1],
-"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html":[1,0,2,7,13],
-"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a1da4285807498eab94364addb21a036e":[1,0,2,7,13,5],
-"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a3d4d8d52c79071f6a1e62f7ecedd8029":[1,0,2,7,13,0],
-"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a55e596ccc8acb53f85ccd1da4d58f703":[1,0,2,7,13,3],
-"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a593945a9b50bf252e02077e8015d9630":[1,0,2,7,13,7],
-"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a750a83b6761a5e0b728732a6570ec636":[1,0,2,7,13,2],
-"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a76efa5657332e388e131f725c5dfeda9":[1,0,2,7,13,6]
+"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html":[1,0,2,7,13]
 };

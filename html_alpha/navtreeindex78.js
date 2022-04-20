@@ -1,5 +1,11 @@
 var NAVTREEINDEX78 =
 {
+"class_terraria_1_1_ingame_options.html#ac5dedf62bc7391cc51a8fd8509504158":[1,0,2,39,8],
+"class_terraria_1_1_ingame_options.html#addbdc97852edeadc8bb68bc7e1260b33":[1,0,2,39,11],
+"class_terraria_1_1_ingame_options.html#ae821c72007e209bfeb54ce479cef8c04":[1,0,2,39,17],
+"class_terraria_1_1_ingame_options.html#af6a5c92f93e87403e6c43fdad46c3426":[1,0,2,39,22],
+"class_terraria_1_1_ingame_options.html#afada9be76b07ca613e57f33d4180c326":[1,0,2,39,13],
+"class_terraria_1_1_ingame_options.html#afb834049555e1e0257fb0de25ef89196":[1,0,2,39,2],
 "class_terraria_1_1_ingame_options.html#afe0bdd422583e3695dc1018d132840f0":[1,0,2,39,7],
 "class_terraria_1_1_ingame_options.html#afed1f7de98f01ba87cca96b07d4381af":[1,0,2,39,19],
 "class_terraria_1_1_initializers_1_1_achievement_initializer.html":[1,0,2,9,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX78 =
 "class_terraria_1_1_item.html#aca6ba0af843692263ee72cbd4d5fbb84":[1,0,2,40,118],
 "class_terraria_1_1_item.html#acb62fb45f3efbdc3a73e6e6e764b200f":[1,0,2,40,237],
 "class_terraria_1_1_item.html#acb82dee36478b45df269bcee2e75804c":[1,0,2,40,181],
-"class_terraria_1_1_item.html#accb902372bebcec4b12671a918a8704e":[1,0,2,40,20],
-"class_terraria_1_1_item.html#acd6a8f13b8dee87697f58d4f1fe6c3bd":[1,0,2,40,145],
-"class_terraria_1_1_item.html#acdaa3df8ddaef1011268dacd195f4d1b":[1,0,2,40,122],
-"class_terraria_1_1_item.html#acdcec416f9c97e9a380d20dae131dbc6":[1,0,2,40,34],
-"class_terraria_1_1_item.html#ace3c10b8cad75d48e34d6d06c9286f46":[1,0,2,40,126],
-"class_terraria_1_1_item.html#acea6d4057104300ce0283cc4cb9002eb":[1,0,2,40,123],
-"class_terraria_1_1_item.html#acf8cf814177044c077eeb0329747279b":[1,0,2,40,81]
+"class_terraria_1_1_item.html#accb902372bebcec4b12671a918a8704e":[1,0,2,40,20]
 };

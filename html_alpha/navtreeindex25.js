@@ -1,5 +1,11 @@
 var NAVTREEINDEX25 =
 {
+"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a1da4285807498eab94364addb21a036e":[1,0,2,7,13,5],
+"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a3d4d8d52c79071f6a1e62f7ecedd8029":[1,0,2,7,13,0],
+"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a55e596ccc8acb53f85ccd1da4d58f703":[1,0,2,7,13,3],
+"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a593945a9b50bf252e02077e8015d9630":[1,0,2,7,13,7],
+"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a750a83b6761a5e0b728732a6570ec636":[1,0,2,7,13,2],
+"class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a76efa5657332e388e131f725c5dfeda9":[1,0,2,7,13,6],
 "class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#a82ef6b10dd7fe07c8d46f92991d303f9":[1,0,2,7,13,8],
 "class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#aa738e091acb7282cba66d160c7d26e43":[1,0,2,7,13,4],
 "class_terraria_1_1_graphics_1_1_sprite_view_matrix.html#aed0bfd0c7a07c0e3a25194b32fb8260b":[1,0,2,7,13,1],
@@ -243,11 +249,5 @@ var NAVTREEINDEX25 =
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a3143d7674069404e13ff4b32b4284640":[1,0,2,8,3,3,79],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a33c6d8ca714814ddb24880d0e113d50d":[1,0,2,8,3,3,46],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a33ecfe82c08c68319d3d49fa1a07741f":[1,0,2,8,3,3,188],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a3436938bc862b9c3ce9c43946bd91dba":[1,0,2,8,3,3,32],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a34461edade3a102c2db51510df7e7bf5":[1,0,2,8,3,3,18],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a363d0fb64a19d31bcf308b599b7f96e3":[1,0,2,8,3,3,183],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a36f240e542e37e48eddc2105d39f7fa9":[1,0,2,8,3,3,173],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a37f72d6f76f6f5b2247ff86f76d994eb":[1,0,2,8,3,3,68],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a38c8ec9d3d472a629e95ee6e05957713":[1,0,2,8,3,3,9],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a397566fe3239e8f7605aa18d18d066db":[1,0,2,8,3,3,8]
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a3436938bc862b9c3ce9c43946bd91dba":[1,0,2,8,3,3,32]
 };

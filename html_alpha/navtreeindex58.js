@@ -1,5 +1,11 @@
 var NAVTREEINDEX58 =
 {
+"class_terraria_1_1_i_d_1_1_item_i_d.html#af3fef229b146d3b33b68ed297022f1f4":[1,0,2,8,20,3647],
+"class_terraria_1_1_i_d_1_1_item_i_d.html#af420f7a23421a2bba16879a914084867":[1,0,2,8,20,3994],
+"class_terraria_1_1_i_d_1_1_item_i_d.html#af4326239da31e99889f321fa5df6baf8":[1,0,2,8,20,3071],
+"class_terraria_1_1_i_d_1_1_item_i_d.html#af4692a3235cef7bb0dcb6c2bcf227151":[1,0,2,8,20,667],
+"class_terraria_1_1_i_d_1_1_item_i_d.html#af46d3b61e3ea5cbb282e515eb11e6ac7":[1,0,2,8,20,671],
+"class_terraria_1_1_i_d_1_1_item_i_d.html#af47b53c076358dd37f54b906175eee3a":[1,0,2,8,20,766],
 "class_terraria_1_1_i_d_1_1_item_i_d.html#af48bd356789ead056fb79e5e3301bedc":[1,0,2,8,20,848],
 "class_terraria_1_1_i_d_1_1_item_i_d.html#af48bfbd534d16b827854d0908a8ef34a":[1,0,2,8,20,4331],
 "class_terraria_1_1_i_d_1_1_item_i_d.html#af48c7bb5076a74be167691f4c1ad1e70":[1,0,2,8,20,5081],
@@ -243,11 +249,5 @@ var NAVTREEINDEX58 =
 "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a2709d5ab1253d8e830c42bb4525fa596":[1,0,2,8,20,1,42],
 "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a279036c96cad83219c66fd81c5cb38bb":[1,0,2,8,20,1,47],
 "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a2892fffb751a3ad4a7bbc8f8ffc4520f":[1,0,2,8,20,1,37],
-"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a294d3e861fa0030399da7a40ef3aeacf":[1,0,2,8,20,1,52],
-"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a2db801eb800cb5d823b3312c7eda98b6":[1,0,2,8,20,1,46],
-"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a3001805f28ca2118463b769432b8e86d":[1,0,2,8,20,1,68],
-"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a30e514d1d7bb43ebab500c7a0daee557":[1,0,2,8,20,1,23],
-"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a32f8543a8ed2483bbd11799ed6c598dc":[1,0,2,8,20,1,49],
-"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a3419d4d992c55e2ffc9e1db80f64e6ed":[1,0,2,8,20,1,4],
-"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a3db3c9f2392eabb12743e03bdb72a45f":[1,0,2,8,20,1,51]
+"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a294d3e861fa0030399da7a40ef3aeacf":[1,0,2,8,20,1,52]
 };

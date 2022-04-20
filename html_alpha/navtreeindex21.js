@@ -1,5 +1,11 @@
 var NAVTREEINDEX21 =
 {
+"class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_horizontal_bars_player_reosurces_display_set.html#ae0c85755ac59ec0bc0176b828134e0ac":[1,0,2,5,21,4,3,4],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_horizontal_bars_player_reosurces_display_set.html#ae5bf3f0dcc0f2011067efcfe15b6ea37":[1,0,2,5,21,4,3,1],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager.html":[1,0,2,5,21,4,5],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager.html#a1b429f1b971bb79f196f8c229e1357ef":[1,0,2,5,21,4,5,6],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager.html#a3395ac7f5eaf2c2a5f3e47ab71060305":[1,0,2,5,21,4,5,2],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager.html#a70f9f10d4abd94bf4f66c553071206bd":[1,0,2,5,21,4,5,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager.html#a9cb18151ef72a375c61fae389fef8e88":[1,0,2,5,21,4,5,1],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager.html#ab03a90d2fa715ff25d26395552ff7cc9":[1,0,2,5,21,4,5,5],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_resource_sets_manager.html#ade6126e0cd0b73e402f04773c8c42d83":[1,0,2,5,21,4,5,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX21 =
 "class_terraria_1_1_game_content_1_1_vanilla_content_validator.html#a8c911f4799ae354c532d767c02aa2452":[1,0,2,5,71,0],
 "class_terraria_1_1_game_content_1_1_vanilla_content_validator.html#a9d98f2a06751b157fe7772b8553cdd2b":[1,0,2,5,71,3],
 "class_terraria_1_1_game_content_1_1_vanilla_content_validator.html#ac15bfd81360d281d73007cdd9fb6c26f":[1,0,2,5,71,2],
-"class_terraria_1_1_game_input_1_1_key_configuration.html":[1,0,2,6,0],
-"class_terraria_1_1_game_input_1_1_key_configuration.html#a06c7396e36ddf05d2ea52c4252af2c85":[1,0,2,6,0,0],
-"class_terraria_1_1_game_input_1_1_key_configuration.html#a2402646de99428b75f9491778e5fd671":[1,0,2,6,0,6],
-"class_terraria_1_1_game_input_1_1_key_configuration.html#a5b4ca761055b5e4389d8ff44c550322c":[1,0,2,6,0,1],
-"class_terraria_1_1_game_input_1_1_key_configuration.html#a77f6d88e4faa99e1dcfe909244cc9f5f":[1,0,2,6,0,5],
-"class_terraria_1_1_game_input_1_1_key_configuration.html#a98b2533a994f3ebce0277941c4ff1de2":[1,0,2,6,0,3],
-"class_terraria_1_1_game_input_1_1_key_configuration.html#aa8c05bca3220103ccf8a8d6ff1d8c05c":[1,0,2,6,0,7]
+"class_terraria_1_1_game_input_1_1_key_configuration.html":[1,0,2,6,0]
 };

@@ -1,5 +1,13 @@
 var NAVTREEINDEX81 =
 {
+"class_terraria_1_1_main.html#a2d5d68abb0a4e0bf07490868dbc8f2c0":[1,0,2,47,1137],
+"class_terraria_1_1_main.html#a2d6695ee2931de023f563782c29cf0f6":[1,0,2,47,219],
+"class_terraria_1_1_main.html#a2d6a6e54d30940821039eaa660f791f4":[1,0,2,47,1064],
+"class_terraria_1_1_main.html#a2debb733cac12856db32788ba1f8138c":[1,0,2,47,885],
+"class_terraria_1_1_main.html#a2dfa07dc3e79225ef03d91d35047f830":[1,0,2,47,740],
+"class_terraria_1_1_main.html#a2e62d7d4075649227bea8cc27b777d53":[1,0,2,47,746],
+"class_terraria_1_1_main.html#a2e74d315af2c0e19c4e46be08d4c04fe":[1,0,2,47,654],
+"class_terraria_1_1_main.html#a2e824b5445e3bcc80cdcb5e6138771d3":[1,0,2,47,708],
 "class_terraria_1_1_main.html#a2e8b2ee537702c1fafdae8b15aea7dda":[1,0,2,47,194],
 "class_terraria_1_1_main.html#a2e9af45497c7811b57f93fd459c76720":[1,0,2,47,1263],
 "class_terraria_1_1_main.html#a2f372b5eb8cee74804d91f6b9d9c567a":[1,0,2,47,1092],
@@ -241,13 +249,5 @@ var NAVTREEINDEX81 =
 "class_terraria_1_1_main.html#a5cb704809b2e29428a168d5d0ac70fa4":[1,0,2,47,399],
 "class_terraria_1_1_main.html#a5ce04764042caeed5aeba44b1c8c3981":[1,0,2,47,541],
 "class_terraria_1_1_main.html#a5cfb06d8627dd9a8dbfd49774262ad79":[1,0,2,47,932],
-"class_terraria_1_1_main.html#a5d33369668e31df4b1adaeffcb53d309":[1,0,2,47,28],
-"class_terraria_1_1_main.html#a5d5224766fbd3fc307edee84cd7ea202":[1,0,2,47,1307],
-"class_terraria_1_1_main.html#a5d6fb4f094a3369427396a85376656b7":[1,0,2,47,772],
-"class_terraria_1_1_main.html#a5d86a85f19063fde20551af1833f58ba":[1,0,2,47,627],
-"class_terraria_1_1_main.html#a5df6b9e71a14ba8adf7dd66af1301033":[1,0,2,47,834],
-"class_terraria_1_1_main.html#a5dfd027695035b531285ec808f889581":[1,0,2,47,163],
-"class_terraria_1_1_main.html#a5e1a8490e97b779fa9dc5ae96eea0a07":[1,0,2,47,436],
-"class_terraria_1_1_main.html#a5e1def0b2f7c189a9ce0ed28f370f67f":[1,0,2,47,1334],
-"class_terraria_1_1_main.html#a5e6529618f395004e7fc0dc8a85a89ed":[1,0,2,47,1319]
+"class_terraria_1_1_main.html#a5d33369668e31df4b1adaeffcb53d309":[1,0,2,47,28]
 };

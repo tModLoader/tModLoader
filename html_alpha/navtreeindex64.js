@@ -1,5 +1,11 @@
 var NAVTREEINDEX64 =
 {
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#aca0b8b6e088d1b2e82b6b4840c47c9f5":[1,0,2,8,33,131],
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#aca3ea59299028daf6ed940c5b17472a2":[1,0,2,8,33,567],
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#acb5e5b618c4e098d6076f711f76c9608":[1,0,2,8,33,546],
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#acc17a90595f65b4668c768d8cfc9db1b":[1,0,2,8,33,394],
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#acc41f98ff15b6cc3c75ed1dbb0dcb6dc":[1,0,2,8,33,375],
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#acd5047a2fcbbd9ee9f10e11b08797eee":[1,0,2,8,33,190],
 "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#acd8c4ab3cad5d4c9541fd1cb56c15e7c":[1,0,2,8,33,64],
 "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#acd9ba023b1b67e977a3dc70f15b6e29d":[1,0,2,8,33,66],
 "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#ace085cb9e12754d6228028b8279f83cd":[1,0,2,8,33,597],
@@ -243,11 +249,5 @@ var NAVTREEINDEX64 =
 "class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html#a1853eff3bcd7365571fc2357b1f13146":[1,0,2,8,36,4],
 "class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html#a1f7c1be9d36c94d139af442ed4207851":[1,0,2,8,36,5],
 "class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html#a29f4c54038e41d8287e93d9adf368ff4":[1,0,2,8,36,0],
-"class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html#a5024bb477b4be95ecf176ab96ef0d163":[1,0,2,8,36,6],
-"class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html#a65138fa5e1002eafc0c88df0aa952c6d":[1,0,2,8,36,10],
-"class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html#a6d144e5156c278694bf47acd430a3850":[1,0,2,8,36,8],
-"class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html#a749f2e84e7c4c2e8875df1b28f7b3336":[1,0,2,8,36,2],
-"class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html#a7ca267dbc4c184b1cf571b7e7da5e16b":[1,0,2,8,36,3],
-"class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html#a8d49585295d79f3a67a0ca1860e4a120":[1,0,2,8,36,7],
-"class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html#ac5dd53ceea545bf9e4c42328aa791fb1":[1,0,2,8,36,9]
+"class_terraria_1_1_i_d_1_1_player_item_slot_i_d.html#a5024bb477b4be95ecf176ab96ef0d163":[1,0,2,8,36,6]
 };

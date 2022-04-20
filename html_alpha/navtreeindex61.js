@@ -1,5 +1,11 @@
 var NAVTREEINDEX61 =
 {
+"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2337399e6f4c79fad995d0be24288d0a":[1,0,2,8,31,33],
+"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2af44a5c51b6c5750a16acf9ad023635":[1,0,2,8,31,16],
+"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2db5133358c0c7ea39991ed419cfab60":[1,0,2,8,31,77],
+"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2dbbdba57455266b342903b025cabd10":[1,0,2,8,31,7],
+"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2ec20dda4fd6b623c90df02612d8e65d":[1,0,2,8,31,5],
+"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2fb2188b9040480e80e4af0763087e73":[1,0,2,8,31,123],
 "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a311db0cdc38308000a1503731dc25b1d":[1,0,2,8,31,10],
 "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a34122e0ef10676f70ad93977430543ea":[1,0,2,8,31,18],
 "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a349b1094b1a1fdb14e8fb02368ca855a":[1,0,2,8,31,45],
@@ -243,11 +249,5 @@ var NAVTREEINDEX61 =
 "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a23ede405e31b689f04a67d9ec45d248a":[1,0,2,8,33,118],
 "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a242d0717fea6249d93ade2b15b79f769":[1,0,2,8,33,117],
 "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a245bcbf07a97c6d674329f0f8125938d":[1,0,2,8,33,701],
-"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a2483ca472781ea6594f2ffcbffcf20bc":[1,0,2,8,33,124],
-"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a24e09e18f71c8071bfdaf28615c9c0d6":[1,0,2,8,33,98],
-"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a258f4b59355bfacb4472b523f5af0a86":[1,0,2,8,33,429],
-"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a25dd696ee5bfb6d8468aec55dcefb421":[1,0,2,8,33,197],
-"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a264229b37f258ad96019c34c876dd8a5":[1,0,2,8,33,259],
-"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a264af1c7560c6f66e02ea941595b3876":[1,0,2,8,33,235],
-"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a273b7c07030b3399b9561c5b83f04764":[1,0,2,8,33,612]
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#a2483ca472781ea6594f2ffcbffcf20bc":[1,0,2,8,33,124]
 };

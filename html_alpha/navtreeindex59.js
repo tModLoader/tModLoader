@@ -1,5 +1,11 @@
 var NAVTREEINDEX59 =
 {
+"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a2db801eb800cb5d823b3312c7eda98b6":[1,0,2,8,20,1,46],
+"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a3001805f28ca2118463b769432b8e86d":[1,0,2,8,20,1,68],
+"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a30e514d1d7bb43ebab500c7a0daee557":[1,0,2,8,20,1,23],
+"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a32f8543a8ed2483bbd11799ed6c598dc":[1,0,2,8,20,1,49],
+"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a3419d4d992c55e2ffc9e1db80f64e6ed":[1,0,2,8,20,1,4],
+"class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a3db3c9f2392eabb12743e03bdb72a45f":[1,0,2,8,20,1,51],
 "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a3eb12efe310733f0554ed5d18ec19056":[1,0,2,8,20,1,48],
 "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a3ff608d4d162102b7a340397e51dc1bd":[1,0,2,8,20,1,40],
 "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a421e660310922f40f2f08ed2d09215d0":[1,0,2,8,20,1,58],
@@ -243,11 +249,5 @@ var NAVTREEINDEX59 =
 "class_terraria_1_1_i_d_1_1_message_i_d.html#a7e61f3e076ae37d83ade68cd3286571f":[1,0,2,8,27,28],
 "class_terraria_1_1_i_d_1_1_message_i_d.html#a7eb180c3130d2574b6a588fa0d4cf7e3":[1,0,2,8,27,94],
 "class_terraria_1_1_i_d_1_1_message_i_d.html#a7ed33cf3d797732808f2bb8539745e4e":[1,0,2,8,27,87],
-"class_terraria_1_1_i_d_1_1_message_i_d.html#a810b20d3b248a58e3499ded40c3eaca5":[1,0,2,8,27,92],
-"class_terraria_1_1_i_d_1_1_message_i_d.html#a820b97d936d2a4475da76b434ebb048c":[1,0,2,8,27,21],
-"class_terraria_1_1_i_d_1_1_message_i_d.html#a85351ee689ad27dc7520d4b564b853d9":[1,0,2,8,27,110],
-"class_terraria_1_1_i_d_1_1_message_i_d.html#a857c0e53258ca10cb8ad70f4678cea4e":[1,0,2,8,27,11],
-"class_terraria_1_1_i_d_1_1_message_i_d.html#a864ff9b4d5c5031d64b919c799dff246":[1,0,2,8,27,70],
-"class_terraria_1_1_i_d_1_1_message_i_d.html#a86b772e98eb46e27afe05e42bcb982c6":[1,0,2,8,27,144],
-"class_terraria_1_1_i_d_1_1_message_i_d.html#a86be00cb4d681fa6914ce31402b2bb39":[1,0,2,8,27,22]
+"class_terraria_1_1_i_d_1_1_message_i_d.html#a810b20d3b248a58e3499ded40c3eaca5":[1,0,2,8,27,92]
 };

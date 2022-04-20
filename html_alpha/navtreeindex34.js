@@ -1,5 +1,11 @@
 var NAVTREEINDEX34 =
 {
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ad4980de8d5f6a1f2b3bde63db7ac6447":[1,0,2,8,11,197],
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ad49aa67c54401af42403a67a5ed71a47":[1,0,2,8,11,245],
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ad62196145292d44eba72d6cefedee24c":[1,0,2,8,11,90],
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ad64bc1fa637fe28990a5fe0b429d5e2c":[1,0,2,8,11,242],
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ad661993c3c09a5c70b299716199d301e":[1,0,2,8,11,26],
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ada9730b45f22fbb9680e10ac1fa4139a":[1,0,2,8,11,226],
 "class_terraria_1_1_i_d_1_1_extras_i_d.html#adb65efdd94dcfb87d432d6f9e2d21fab":[1,0,2,8,11,229],
 "class_terraria_1_1_i_d_1_1_extras_i_d.html#ade85f138b9cadddeef66ac740ebb57c1":[1,0,2,8,11,239],
 "class_terraria_1_1_i_d_1_1_extras_i_d.html#adf75da936f397613b43e6c0b49de4ce5":[1,0,2,8,11,67],
@@ -243,11 +249,5 @@ var NAVTREEINDEX34 =
 "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a8b3c952f8c3f2a2516615ad4b154e79a":[1,0,2,8,14,36],
 "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a8b5af4fe64fab96175e8068e8b58df35":[1,0,2,8,14,165],
 "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a8f520d3c174b32a1462f9d877e4175c0":[1,0,2,8,14,68],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a8fbee8d931835dc82c6b693256c09474":[1,0,2,8,14,69],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a8fe0e26816dd2f94629cca9b365e2ea7":[1,0,2,8,14,280],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a8ff01ce2f10e1e6dbf64249b852dfdac":[1,0,2,8,14,41],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a8ff74f487944678d87a0cde42c5e9ecc":[1,0,2,8,14,106],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a90c3f9af7bdb46201907b88b743eec5d":[1,0,2,8,14,262],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a91a825338e87be60941cb4a405ab9011":[1,0,2,8,14,44],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a91db7f7b9cd99dd06f270da5eeb9cf74":[1,0,2,8,14,71]
+"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a8fbee8d931835dc82c6b693256c09474":[1,0,2,8,14,69]
 };

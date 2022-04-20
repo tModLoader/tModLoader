@@ -5,6 +5,8 @@ var class_terraria_1_1_localization_1_1_language_manager =
     [ "FindAll", "class_terraria_1_1_localization_1_1_language_manager.html#ab9df520396a633eb8ba3050af3880b02", null ],
     [ "FindAll", "class_terraria_1_1_localization_1_1_language_manager.html#ad0ee3f46ac87ba19fc899784cb2dd808", null ],
     [ "GetCategorySize", "class_terraria_1_1_localization_1_1_language_manager.html#ac53c111747e350024175d5689fb1577a", null ],
+    [ "GetKeysInCategory", "class_terraria_1_1_localization_1_1_language_manager.html#a9740942d18cde879888d70685fffee8e", null ],
+    [ "GetLocalizedEntriesInCategory", "class_terraria_1_1_localization_1_1_language_manager.html#a384e56a87eddf79cf35b328467c62054", null ],
     [ "GetText", "class_terraria_1_1_localization_1_1_language_manager.html#ad292c2b15ad9179331427a23cc8c4e8c", null ],
     [ "GetTextValue", "class_terraria_1_1_localization_1_1_language_manager.html#a9f1901e50105d9873d2fdf8816e122de", null ],
     [ "GetTextValue", "class_terraria_1_1_localization_1_1_language_manager.html#a97844ad6bbf730905ad3e9adf8010a2c", null ],

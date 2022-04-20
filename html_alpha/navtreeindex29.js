@@ -1,5 +1,11 @@
 var NAVTREEINDEX29 =
 {
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#af818c346feca9ad5e5fc7baf021c495f":[1,0,2,8,3,9,135],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#af9c0bb7414e4276d8ee77f36696c8346":[1,0,2,8,3,9,152],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#afb815388ef62a93232f0b8fc16045bb7":[1,0,2,8,3,9,30],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#afba0d5ce29170afd82aef777aa729f90":[1,0,2,8,3,9,11],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#afbcff90e6e5393c3f1ee1fe4c6e7633d":[1,0,2,8,3,9,26],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#afc39bcc749b21a69740d8a4e8bcb7deb":[1,0,2,8,3,9,193],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#afc6076d0f62f03156a0a8c5174a89335":[1,0,2,8,3,9,134],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#afd074b90590af6cfd6f8a5af7067a296":[1,0,2,8,3,9,87],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#afda7cc561ebea2571580216b748ba972":[1,0,2,8,3,9,95],
@@ -243,11 +249,5 @@ var NAVTREEINDEX29 =
 "class_terraria_1_1_i_d_1_1_buff_i_d.html#a4a6382204d5fc75949e33bd76730dce4":[1,0,2,8,4,32],
 "class_terraria_1_1_i_d_1_1_buff_i_d.html#a4aad01e99688cdb366a513ea5fbf331c":[1,0,2,8,4,58],
 "class_terraria_1_1_i_d_1_1_buff_i_d.html#a4b19aa9a4d9b0300784f707d755c608f":[1,0,2,8,4,171],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a4b5b51dfb793bdded69d35355c838ddc":[1,0,2,8,4,74],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a4eb2ae32f6d3e95f88b8453762b800fa":[1,0,2,8,4,306],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a4f513fb511622fc0317ad315b084cafc":[1,0,2,8,4,50],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a4f804e628742e436744294596c40a117":[1,0,2,8,4,312],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a4fa5f2e39ac76364bf9c834fc2db7472":[1,0,2,8,4,13],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a517c9fc98bff9792fe3daa4addfd3201":[1,0,2,8,4,116],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a51dc23f3f9c5eb3689931490a2e60768":[1,0,2,8,4,311]
+"class_terraria_1_1_i_d_1_1_buff_i_d.html#a4b5b51dfb793bdded69d35355c838ddc":[1,0,2,8,4,74]
 };

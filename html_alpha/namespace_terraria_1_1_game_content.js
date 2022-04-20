@@ -58,6 +58,7 @@ var namespace_terraria_1_1_game_content =
     [ "PotionOfReturnGateHelper", "struct_terraria_1_1_game_content_1_1_potion_of_return_gate_helper.html", "struct_terraria_1_1_game_content_1_1_potion_of_return_gate_helper" ],
     [ "PressurePlateHelper", "class_terraria_1_1_game_content_1_1_pressure_plate_helper.html", "class_terraria_1_1_game_content_1_1_pressure_plate_helper" ],
     [ "Profiles", "class_terraria_1_1_game_content_1_1_profiles.html", [
+      [ "AlternateLegacyNPCProfile", "class_terraria_1_1_game_content_1_1_profiles_1_1_alternate_legacy_n_p_c_profile.html", "class_terraria_1_1_game_content_1_1_profiles_1_1_alternate_legacy_n_p_c_profile" ],
       [ "LegacyNPCProfile", "class_terraria_1_1_game_content_1_1_profiles_1_1_legacy_n_p_c_profile.html", "class_terraria_1_1_game_content_1_1_profiles_1_1_legacy_n_p_c_profile" ],
       [ "TransformableNPCProfile", "class_terraria_1_1_game_content_1_1_profiles_1_1_transformable_n_p_c_profile.html", "class_terraria_1_1_game_content_1_1_profiles_1_1_transformable_n_p_c_profile" ],
       [ "VariantNPCProfile", "class_terraria_1_1_game_content_1_1_profiles_1_1_variant_n_p_c_profile.html", "class_terraria_1_1_game_content_1_1_profiles_1_1_variant_n_p_c_profile" ]

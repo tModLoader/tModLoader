@@ -1,5 +1,13 @@
 var NAVTREEINDEX80 =
 {
+"class_terraria_1_1_main.html#a00db306b3b8499762aa47b32d009cc82":[1,0,2,47,465],
+"class_terraria_1_1_main.html#a00e5b8c4b828bb879842a6e0a86ff245":[1,0,2,47,143],
+"class_terraria_1_1_main.html#a00ea71cea3506a211320a94f36ce5949":[1,0,2,47,1320],
+"class_terraria_1_1_main.html#a00f21462411b20be24c2c56b1cacf61c":[1,0,2,47,712],
+"class_terraria_1_1_main.html#a01457645ee9ec938bc00a0d4c5c2420b":[1,0,2,47,401],
+"class_terraria_1_1_main.html#a01540d6b5d657225501bee566320c9ae":[1,0,2,47,114],
+"class_terraria_1_1_main.html#a017d376f70edfd04718b5d74ad62255c":[1,0,2,47,336],
+"class_terraria_1_1_main.html#a019c39c25ef1a898866e24b179c35bf4":[1,0,2,47,672],
 "class_terraria_1_1_main.html#a019df77c36ac80ce38620a120bd8ce5b":[1,0,2,47,8],
 "class_terraria_1_1_main.html#a01b3e62f802a617fd456c390b1f3b244":[1,0,2,47,185],
 "class_terraria_1_1_main.html#a020260d59422760d6c70ff64abe07f86":[1,0,2,47,1155],
@@ -241,13 +249,5 @@ var NAVTREEINDEX80 =
 "class_terraria_1_1_main.html#a2ca7bff73411ad4fe82196c198ce69d0":[1,0,2,47,987],
 "class_terraria_1_1_main.html#a2cdab779737d01792a9c3abffb48ea8c":[1,0,2,47,1252],
 "class_terraria_1_1_main.html#a2d1b07754136dc393c5b2314df872d6f":[1,0,2,47,1150],
-"class_terraria_1_1_main.html#a2d4304bba4f96ed23af5ead57aecf573":[1,0,2,47,279],
-"class_terraria_1_1_main.html#a2d5d68abb0a4e0bf07490868dbc8f2c0":[1,0,2,47,1137],
-"class_terraria_1_1_main.html#a2d6695ee2931de023f563782c29cf0f6":[1,0,2,47,219],
-"class_terraria_1_1_main.html#a2d6a6e54d30940821039eaa660f791f4":[1,0,2,47,1064],
-"class_terraria_1_1_main.html#a2debb733cac12856db32788ba1f8138c":[1,0,2,47,885],
-"class_terraria_1_1_main.html#a2dfa07dc3e79225ef03d91d35047f830":[1,0,2,47,740],
-"class_terraria_1_1_main.html#a2e62d7d4075649227bea8cc27b777d53":[1,0,2,47,746],
-"class_terraria_1_1_main.html#a2e74d315af2c0e19c4e46be08d4c04fe":[1,0,2,47,654],
-"class_terraria_1_1_main.html#a2e824b5445e3bcc80cdcb5e6138771d3":[1,0,2,47,708]
+"class_terraria_1_1_main.html#a2d4304bba4f96ed23af5ead57aecf573":[1,0,2,47,279]
 };

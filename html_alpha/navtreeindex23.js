@@ -1,5 +1,11 @@
 var NAVTREEINDEX23 =
 {
+"class_terraria_1_1_game_input_1_1_triggers_set.html#a30bc3b92146117f567e17d4168d8bcfe":[1,0,2,6,7,9],
+"class_terraria_1_1_game_input_1_1_triggers_set.html#a333efaea754e4424eb1153bced1a36e1":[1,0,2,6,7,41],
+"class_terraria_1_1_game_input_1_1_triggers_set.html#a3a080e281a6a18071e43316c83e6bd2c":[1,0,2,6,7,45],
+"class_terraria_1_1_game_input_1_1_triggers_set.html#a3acf15b1540c044551b5f091a6d7ae6a":[1,0,2,6,7,46],
+"class_terraria_1_1_game_input_1_1_triggers_set.html#a3e35a0a7482c115376fe40da6b0dae85":[1,0,2,6,7,18],
+"class_terraria_1_1_game_input_1_1_triggers_set.html#a41ed3b0d77e567996dcb5554a3937a04":[1,0,2,6,7,2],
 "class_terraria_1_1_game_input_1_1_triggers_set.html#a44a0509530501ad1212135a47eedad60":[1,0,2,6,7,36],
 "class_terraria_1_1_game_input_1_1_triggers_set.html#a4519df4bd93e02bb85700f93279b0b66":[1,0,2,6,7,48],
 "class_terraria_1_1_game_input_1_1_triggers_set.html#a46ab1726676f38d1a58bc4bd059f5ebf":[1,0,2,6,7,38],
@@ -243,11 +249,5 @@ var NAVTREEINDEX23 =
 "class_terraria_1_1_graphics_1_1_effects_1_1_overlay_manager.html#a609718674acb9683def4dbaeb15b75d1":[1,0,2,7,2,8,0],
 "class_terraria_1_1_graphics_1_1_effects_1_1_overlay_manager.html#a7739a8152fdb6a58febe46224d0f5410":[1,0,2,7,2,8,3],
 "class_terraria_1_1_graphics_1_1_effects_1_1_overlay_manager.html#a8306338bfa8722a0d6557eace37e68fb":[1,0,2,7,2,8,2],
-"class_terraria_1_1_graphics_1_1_effects_1_1_overlays.html":[1,0,2,7,2,9],
-"class_terraria_1_1_graphics_1_1_effects_1_1_overlays.html#a4117965bd2e6ecfadba54449e513db95":[1,0,2,7,2,9,0],
-"class_terraria_1_1_graphics_1_1_effects_1_1_overlays.html#a9529ed8658899d566c74dc80851aa104":[1,0,2,7,2,9,1],
-"class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html":[1,0,2,7,2,10],
-"class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html#a2748499fdf80096bf847fa25c56037f2":[1,0,2,7,2,10,3],
-"class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html#a5a05dd46b005c397c33280d2a702bf57":[1,0,2,7,2,10,0],
-"class_terraria_1_1_graphics_1_1_effects_1_1_simple_overlay.html#a5c897393dc5ca3ee34d35c14fc618004":[1,0,2,7,2,10,4]
+"class_terraria_1_1_graphics_1_1_effects_1_1_overlays.html":[1,0,2,7,2,9]
 };

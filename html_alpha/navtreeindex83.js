@@ -1,5 +1,13 @@
 var NAVTREEINDEX83 =
 {
+"class_terraria_1_1_main.html#a8cbae852404d7dfa6285838b37a4623d":[1,0,2,47,178],
+"class_terraria_1_1_main.html#a8d131c1e98ba9c0f317b7346281b00d1":[1,0,2,47,866],
+"class_terraria_1_1_main.html#a8d25a024cdf44203b9d86238750768d1":[1,0,2,47,662],
+"class_terraria_1_1_main.html#a8d46d3bb048079b4d5df16b5b29229b8":[1,0,2,47,311],
+"class_terraria_1_1_main.html#a8d65025464ccbca34718bbd8cb70dc7d":[1,0,2,47,210],
+"class_terraria_1_1_main.html#a8d933604dfdbb57fdd3f48686fc99806":[1,0,2,47,350],
+"class_terraria_1_1_main.html#a8db99d77e41442e8995c592758ed1305":[1,0,2,47,487],
+"class_terraria_1_1_main.html#a8e0cac19840bd9833b14d2f3e7cc81a9":[1,0,2,47,381],
 "class_terraria_1_1_main.html#a8e23db199a88c74f61dba8141b3e1464":[1,0,2,47,259],
 "class_terraria_1_1_main.html#a8e56d8bc32276d1ef17cced312d376e8":[1,0,2,47,338],
 "class_terraria_1_1_main.html#a8e644675c929251bdf75637d6e7da6cb":[1,0,2,47,640],
@@ -241,13 +249,5 @@ var NAVTREEINDEX83 =
 "class_terraria_1_1_main.html#abce563e3d33941fc8abd6ea42faf3ccb":[1,0,2,47,1302],
 "class_terraria_1_1_main.html#abcf241669771db4c55deb2310213c44a":[1,0,2,47,1001],
 "class_terraria_1_1_main.html#abe243911d93b810e5b35782f2749d3d2":[1,0,2,47,284],
-"class_terraria_1_1_main.html#abe244b004f610a7465da0c6a291cff47":[1,0,2,47,900],
-"class_terraria_1_1_main.html#abe3198fc9475e2d38a853a31b13dad4b":[1,0,2,47,536],
-"class_terraria_1_1_main.html#abe3bb0004eab56963284f3788b0e20ca":[1,0,2,47,362],
-"class_terraria_1_1_main.html#abf082f1410c8cedddbf4b07e9653ecd5":[1,0,2,47,261],
-"class_terraria_1_1_main.html#abfbb307feaae9d0764f77cc2751a7c14":[1,0,2,47,1184],
-"class_terraria_1_1_main.html#abfe9e59ba6db27e2a7a2848ddbbd7a92":[1,0,2,47,996],
-"class_terraria_1_1_main.html#ac01eaec4fe2a7e97c88991384ad5ea78":[1,0,2,47,72],
-"class_terraria_1_1_main.html#ac04e1d983086e75b687ab1649a86b97a":[1,0,2,47,147],
-"class_terraria_1_1_main.html#ac09788b8ee2852ce20e40bb58f0622bf":[1,0,2,47,40]
+"class_terraria_1_1_main.html#abe244b004f610a7465da0c6a291cff47":[1,0,2,47,900]
 };

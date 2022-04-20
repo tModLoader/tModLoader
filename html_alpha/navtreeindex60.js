@@ -1,5 +1,11 @@
 var NAVTREEINDEX60 =
 {
+"class_terraria_1_1_i_d_1_1_message_i_d.html#a820b97d936d2a4475da76b434ebb048c":[1,0,2,8,27,21],
+"class_terraria_1_1_i_d_1_1_message_i_d.html#a85351ee689ad27dc7520d4b564b853d9":[1,0,2,8,27,110],
+"class_terraria_1_1_i_d_1_1_message_i_d.html#a857c0e53258ca10cb8ad70f4678cea4e":[1,0,2,8,27,11],
+"class_terraria_1_1_i_d_1_1_message_i_d.html#a864ff9b4d5c5031d64b919c799dff246":[1,0,2,8,27,70],
+"class_terraria_1_1_i_d_1_1_message_i_d.html#a86b772e98eb46e27afe05e42bcb982c6":[1,0,2,8,27,144],
+"class_terraria_1_1_i_d_1_1_message_i_d.html#a86be00cb4d681fa6914ce31402b2bb39":[1,0,2,8,27,22],
 "class_terraria_1_1_i_d_1_1_message_i_d.html#a87acd99dbc370a59eec17cc1c4af6f99":[1,0,2,8,27,126],
 "class_terraria_1_1_i_d_1_1_message_i_d.html#a8a730ca9ded7ae45c7f3e6837d96cb72":[1,0,2,8,27,84],
 "class_terraria_1_1_i_d_1_1_message_i_d.html#a8aa3f2abf8659bbec0c7d49f55f7aaf5":[1,0,2,8,27,115],
@@ -243,11 +249,5 @@ var NAVTREEINDEX60 =
 "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a20372c88514b2cfa5f96399598a1407e":[1,0,2,8,31,3],
 "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a20fdba4ee5c693dce717b6653be05dae":[1,0,2,8,31,117],
 "class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a220b6a97a4aea57d9892a7d43e075534":[1,0,2,8,31,111],
-"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a230d5c47742887fdbffec75aa637bd01":[1,0,2,8,31,120],
-"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2337399e6f4c79fad995d0be24288d0a":[1,0,2,8,31,33],
-"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2af44a5c51b6c5750a16acf9ad023635":[1,0,2,8,31,16],
-"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2db5133358c0c7ea39991ed419cfab60":[1,0,2,8,31,77],
-"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2dbbdba57455266b342903b025cabd10":[1,0,2,8,31,7],
-"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2ec20dda4fd6b623c90df02612d8e65d":[1,0,2,8,31,5],
-"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2fb2188b9040480e80e4af0763087e73":[1,0,2,8,31,123]
+"class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a230d5c47742887fdbffec75aa637bd01":[1,0,2,8,31,120]
 };

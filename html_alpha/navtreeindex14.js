@@ -1,5 +1,11 @@
 var NAVTREEINDEX14 =
 {
+"class_terraria_1_1_game_content_1_1_skies_1_1_ambient_sky.html#adf0f4d31ba10776d6850e11ca67625a9":[1,0,2,5,19,1,4],
+"class_terraria_1_1_game_content_1_1_skies_1_1_ambient_sky.html#af3d2a136ef950396dbd014f7ac4ec170":[1,0,2,5,19,1,1],
+"class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html":[1,0,2,5,19,2],
+"class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#a0c9d165f5a382e016f18c73e93803e34":[1,0,2,5,19,2,6],
+"class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#a18a789d923a1c79edc086085685fb79c":[1,0,2,5,19,2,1],
+"class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#a458c2f632e2eb9737dd4d32664e8640a":[1,0,2,5,19,2,0],
 "class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#a4e639294d9d377c385bf736d493bfb12":[1,0,2,5,19,2,2],
 "class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#a90008bd1d8725005e9bd2243c7e52c5a":[1,0,2,5,19,2,3],
 "class_terraria_1_1_game_content_1_1_skies_1_1_blizzard_sky.html#ac44f69e7c68e79de2e93f6a085a3328c":[1,0,2,5,19,2,5],
@@ -243,11 +249,5 @@ var NAVTREEINDEX14 =
 "class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#a7a459ce1db3f57518b9f983796d628a7":[1,0,2,5,19,8,2],
 "class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#a812513439f3f40b0951813b8919ca8b8":[1,0,2,5,19,8,6],
 "class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#aa268172311ab07e3031e1ef515fe2f7d":[1,0,2,5,19,8,3],
-"class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#ad7c32bcee1823d387a6a90eea73c3850":[1,0,2,5,19,8,8],
-"class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#add03243762abea9a6af73f3d54797a77":[1,0,2,5,19,8,0],
-"class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#af20b5b42dcdb0b1a7b490c92ff3945c0":[1,0,2,5,19,8,1],
-"class_terraria_1_1_game_content_1_1_skies_1_1_sandstorm_sky.html":[1,0,2,5,19,9],
-"class_terraria_1_1_game_content_1_1_skies_1_1_sandstorm_sky.html#a08208faef920514fe83f72a39ddfb3bf":[1,0,2,5,19,9,5],
-"class_terraria_1_1_game_content_1_1_skies_1_1_sandstorm_sky.html#a16ff70ea24e0d3ec4bcbf1f9ecab0b46":[1,0,2,5,19,9,2],
-"class_terraria_1_1_game_content_1_1_skies_1_1_sandstorm_sky.html#a5bf7e281aae7426884d39ebad0b0fd38":[1,0,2,5,19,9,4]
+"class_terraria_1_1_game_content_1_1_skies_1_1_party_sky.html#ad7c32bcee1823d387a6a90eea73c3850":[1,0,2,5,19,8,8]
 };
