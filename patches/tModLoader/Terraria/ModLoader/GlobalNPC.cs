@@ -67,6 +67,26 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the type name of this NPC dynamically.
+		/// </summary>
+		public virtual void ModifyTypeName(NPC npc, ref string typeName) {
+		}
+
+		/// <summary>
+		/// Allows you to set the town NPC profile that a given NPC uses.
+		/// </summary>
+		/// <param name="npc">The NPC in question.</param>
+		/// <param name="database">The list of town NPC profiles that currently exist.</param>
+		public virtual void SetTownNPCProfile(NPC npc, Dictionary<int, ITownNPCProfile> database) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the list of names available to the given town NPC.
+		/// </summary>
+		public virtual void ModifyNPCNameList(NPC npc, List<string> nameList) {
+		}
+
+		/// <summary>
 		/// This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied.
 		/// </summary>
 		/// <param name="npc"></param>

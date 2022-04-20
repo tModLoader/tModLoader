@@ -17,3 +17,12 @@
  
  				if (asset != null && asset.IsLoaded)
  					_customTexture = asset;
+@@ -162,7 +_,7 @@
+ 				return;
+ 			}
+ 
+-			if (_npcCache.townNPC && TownNPCProfiles.Instance.GetProfile(_npcCache.type, out ITownNPCProfile profile))
++			if (_npcCache.townNPC && TownNPCProfiles.Instance.GetProfile(_npcCache, out ITownNPCProfile profile))
+ 				TextureAssets.Npc[_npcCache.type] = profile.GetTextureNPCShouldUse(_npcCache);
+ 
+ 			Main.instance.DrawNPCDirect(spriteBatch, _npcCache, _npcCache.behindTiles, Vector2.Zero);

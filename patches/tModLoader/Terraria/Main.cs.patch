@@ -2286,7 +2286,8 @@
  
 -		protected void DrawNPCCheckAlt(NPC n) {
 +		public void DrawNPCCheckAlt(NPC n) {
- 			if (TownNPCProfiles.Instance.GetProfile(n.type, out ITownNPCProfile profile))
+-			if (TownNPCProfiles.Instance.GetProfile(n.type, out ITownNPCProfile profile))
++			if (TownNPCProfiles.Instance.GetProfile(n, out ITownNPCProfile profile))
  				TextureAssets.Npc[n.type] = profile.GetTextureNPCShouldUse(n);
  		}
  
@@ -2689,6 +2690,15 @@
  				if (npc[player[myPlayer].talkNPC].type == 20) {
  					SoundEngine.PlaySound(12);
  					npcChatText = Lang.GetDryadWorldStatusDialog();
+@@ -30076,7 +_,7 @@
+ 
+ 				spriteBatch.Draw(value, new Vector2(homeTileX * 16 - (int)screenPosition.X + num8, num11 - (float)(int)screenPosition.Y + (float)num9 + (float)num10), value2, Lighting.GetColor(homeTileX, num3), 0f, new Vector2(value2.Width / 2, value2.Height / 2), 1f, effects, 0f);
+ 				ITownNPCProfile profile;
+-				int num12 = (!TownNPCProfiles.Instance.GetProfile(nPC.type, out profile)) ? NPC.TypeToDefaultHeadIndex(nPC.type) : profile.GetHeadTextureIndex(nPC);
++				int num12 = (!TownNPCProfiles.Instance.GetProfile(nPC, out profile)) ? NPC.TypeToDefaultHeadIndex(nPC.type) : profile.GetHeadTextureIndex(nPC);
+ 				float scale = 1f;
+ 				float num13 = 0f;
+ 				num13 = ((TextureAssets.NpcHead[num12].Width() <= TextureAssets.NpcHead[num12].Height()) ? ((float)TextureAssets.NpcHead[num12].Height()) : ((float)TextureAssets.NpcHead[num12].Width()));
 @@ -30494,7 +_,7 @@
  					num29++;
  
@@ -2880,10 +2890,12 @@
  
  			if (recBigList && !flag9) {
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
-@@ -31307,7 +_,7 @@
+@@ -31306,8 +_,8 @@
+ 			for (int j = 0; j < 200; j++) {
  				if (npc[j].active && !_npcTypesThatAlreadyDrewAHead.Contains(npc[j].type)) {
  					ITownNPCProfile profile;
- 					int num4 = (!TownNPCProfiles.Instance.GetProfile(npc[j].type, out profile)) ? NPC.TypeToDefaultHeadIndex(npc[j].type) : profile.GetHeadTextureIndex(npc[j]);
+-					int num4 = (!TownNPCProfiles.Instance.GetProfile(npc[j].type, out profile)) ? NPC.TypeToDefaultHeadIndex(npc[j].type) : profile.GetHeadTextureIndex(npc[j]);
++					int num4 = (!TownNPCProfiles.Instance.GetProfile(npc[j], out profile)) ? NPC.TypeToDefaultHeadIndex(npc[j].type) : profile.GetHeadTextureIndex(npc[j]);
 -					if (num4 > 0 && num4 <= 46 && !NPCHeadID.Sets.CannotBeDrawnInHousingUI[num4] && _npcIndexWhoHoldsHeadIndex[num4] == -1) {
 +					if (num4 > 0 && num4 < NPCHeadLoader.NPCHeadCount && !NPCHeadID.Sets.CannotBeDrawnInHousingUI[num4] && _npcIndexWhoHoldsHeadIndex[num4] == -1) {
  						_npcIndexWhoHoldsHeadIndex[num4] = j;
@@ -3118,6 +3130,15 @@
  				while (enumerator.MoveNext() && enumerator.Current.Draw()) {
  				}
  			}
+@@ -33774,7 +_,7 @@
+ 
+ 				int num3 = mouseNPCType;
+ 				int num4 = 1;
+-				num4 = ((mouseNPCIndex < 0 || !TownNPCProfiles.Instance.GetProfile(num3, out ITownNPCProfile profile)) ? NPC.TypeToDefaultHeadIndex(num3) : profile.GetHeadTextureIndex(npc[mouseNPCIndex]));
++				num4 = ((mouseNPCIndex < 0 || !TownNPCProfiles.Instance.GetProfile(npc[mouseNPCIndex], out ITownNPCProfile profile)) ? NPC.TypeToDefaultHeadIndex(num3) : profile.GetHeadTextureIndex(npc[mouseNPCIndex]));
+ 				Texture2D value = TextureAssets.NpcHead[num4].Value;
+ 				spriteBatch.Draw(value, new Vector2((float)mouseX + 26f * num2 - (float)value.Width * 0.5f * num2, (float)mouseY + 26f * num2 - (float)value.Height * 0.5f * num2), null, Microsoft.Xna.Framework.Color.White, 0f, default(Vector2), num2, SpriteEffects.None, 0f);
+ 				if (PlayerInput.IgnoreMouseInterface)
 @@ -33909,6 +_,8 @@
  		}
  
@@ -3886,6 +3907,24 @@
  				if (!((float)((k + 1) * textureMaxWidth) > num7) || !((float)(k * textureMaxWidth) < num7 + num9))
  					continue;
  
+@@ -42936,7 +_,7 @@
+ 						for (int m = 0; m < 200; m++) {
+ 							if (npc[m].active && npc[m].townNPC) {
+ 								ITownNPCProfile profile;
+-								int num54 = (!TownNPCProfiles.Instance.GetProfile(npc[m].type, out profile)) ? NPC.TypeToDefaultHeadIndex(npc[m].type) : profile.GetHeadTextureIndex(npc[m]);
++								int num54 = (!TownNPCProfiles.Instance.GetProfile(npc[m], out profile)) ? NPC.TypeToDefaultHeadIndex(npc[m].type) : profile.GetHeadTextureIndex(npc[m]);
+ 								if (num54 > 0) {
+ 									SpriteEffects dir = SpriteEffects.None;
+ 									if (npc[m].direction > 0)
+@@ -43021,7 +_,7 @@
+ 					for (int num64 = 0; num64 < 200; num64++) {
+ 						if (npc[num64].active && npc[num64].townNPC) {
+ 							ITownNPCProfile profile2;
+-							int num65 = (!TownNPCProfiles.Instance.GetProfile(npc[num64].type, out profile2)) ? NPC.TypeToDefaultHeadIndex(npc[num64].type) : profile2.GetHeadTextureIndex(npc[num64]);
++							int num65 = (!TownNPCProfiles.Instance.GetProfile(npc[num64], out profile2)) ? NPC.TypeToDefaultHeadIndex(npc[num64].type) : profile2.GetHeadTextureIndex(npc[num64]);
+ 							if (num65 > 0) {
+ 								SpriteEffects dir2 = SpriteEffects.None;
+ 								if (npc[num64].direction > 0)
 @@ -43238,6 +_,7 @@
  						}
  					}
@@ -3902,6 +3941,15 @@
  					}
  				}
  
+@@ -43267,7 +_,7 @@
+ 				for (int num112 = 0; num112 < 200; num112++) {
+ 					if (npc[num112].active && npc[num112].townNPC) {
+ 						ITownNPCProfile profile3;
+-						int num113 = (!TownNPCProfiles.Instance.GetProfile(npc[num112].type, out profile3)) ? NPC.TypeToDefaultHeadIndex(npc[num112].type) : profile3.GetHeadTextureIndex(npc[num112]);
++						int num113 = (!TownNPCProfiles.Instance.GetProfile(npc[num112], out profile3)) ? NPC.TypeToDefaultHeadIndex(npc[num112].type) : profile3.GetHeadTextureIndex(npc[num112]);
+ 						if (num113 > 0) {
+ 							SpriteEffects dir3 = SpriteEffects.None;
+ 							if (npc[num112].direction > 0)
 @@ -43416,6 +_,7 @@
  				}
  
