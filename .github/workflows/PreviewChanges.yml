@@ -23,7 +23,7 @@ jobs:
           run: echo "::set-output name=date::$(date +'%d')"
         
         - name: Check out repo
-          if: steps.date.outputs.date < 21
+          if: steps.date.outputs.date < 23
           uses: actions/checkout@v2
           with:
             ref: 'refs/heads/1.3'
@@ -33,7 +33,7 @@ jobs:
         # There is a bug with this that requires the previous step to checkout a different branch then either of two specified
         # The below merger for sure won't work while this branch is ahead of 1.4, so can't fast forward to test.
         - name: Merge
-          if: steps.date.outputs.date < 21
+          if: steps.date.outputs.date < 23
           uses: tModLoader/gh-action-nightly-merge@master
           with:
               stable_branch: '1.4'
