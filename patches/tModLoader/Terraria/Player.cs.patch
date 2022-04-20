@@ -4788,7 +4788,7 @@
 +							break;
 +						}
 +					}
-+					if (inventory[i].ammo == weapon.useAmmo) {
++					else if (inventory[i].ammo == weapon.useAmmo) {
 +						currentAmmo = inventory[i];
 +						canShoot = true;
 +						skipMainInventorySlots = true;
@@ -4810,7 +4810,7 @@
 +						break;
 +					}
 +				}
-+				if (inventory[j].ammo == weapon.useAmmo) {
++				else if (inventory[j].ammo == weapon.useAmmo) {
 +					currentAmmo = inventory[j];
 +					canShoot = true;
 +					skipMainInventorySlots = true;
@@ -4831,7 +4831,7 @@
 +							break;
 +						}
 +					}
-+					if (inventory[k].ammo == weapon.useAmmo) {
++					else if (inventory[k].ammo == weapon.useAmmo) {
 +						currentAmmo = inventory[k];
 +						canShoot = true;
 +						break;
