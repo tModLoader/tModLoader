@@ -36,7 +36,7 @@ var class_terraria_1_1_mod_loader_1_1_n_p_c_loader =
     [ "ModifyHitNPC", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#aaeebe6e778031de5c1ecf897c494d078", null ],
     [ "ModifyHitPlayer", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#af66dfb83f743ca52c0f113b250235705", null ],
     [ "ModifyNPCLoot", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a08109741130f016a467415006e1d1c7e", null ],
-    [ "ModifyNPCNameList", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a06277ffc77b8efefb6087d4bb754561b", null ],
+    [ "ModifyNPCNameList", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a48ae756b1ae7cce5dcbbbf655d135b62", null ],
     [ "ModifyTypeName", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4e924258dc1bf73ef0687984fce6b231", null ],
     [ "NPCAI", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a5075fa0ca2bdcf3208edfbcc6c567a74", null ],
     [ "OnCatchNPC", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ae9defbeada46b8d79db4fd4ffdacfd96", null ],
