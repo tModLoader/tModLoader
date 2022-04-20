@@ -70,12 +70,15 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// This code shows using Color.Lerp,  Main.GameUpdateCount, and the modulo operator (%) to do a neat effect cycling between 4 custom colors.
+			int numColors = itemNameCycleColors.Length;
+			
 			foreach (TooltipLine line2 in tooltips) {
 				if (line2.Mod == "Terraria" && line2.Name == "ItemName") {
 					float fade = (Main.GameUpdateCount % 60) / 60f;
-					int index = (int)((Main.GameUpdateCount / 60) % 4);
+					int index = (int)((Main.GameUpdateCount / 60) % numColors);
+					int nextIndex = (index + 1) % numColors;
 
-					line2.OverrideColor = Color.Lerp(itemNameCycleColors[index], itemNameCycleColors[(index + 1) % itemNameCycleColors.Length], fade);
+					line2.OverrideColor = Color.Lerp(itemNameCycleColors[index], itemNameCycleColors[nextIndex], fade);
 				}
 			}
 		}
