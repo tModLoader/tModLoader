@@ -14,7 +14,7 @@ namespace Terraria.Localization
 			List<string> list = GetKeysInCategory(categoryName);
 			List<string> localizedList = new List<string>();
 			foreach (string key in list) {
-				localizedList = GetText(categoryName + "." + key).Value;
+				localizedList.Add(GetText(categoryName + "." + key).Value);
 			}
 			return localizedList;
 		}
