@@ -4612,7 +4612,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,6 +_,29 @@
+@@ -37031,13 +_,37 @@
  			}
  
  			return num;
@@ -4642,6 +4642,15 @@
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse) {
+ 			if (sItem.useAmmo > 0) {
+ 				canUse = false;
+ 				for (int i = 0; i < 58; i++) {
+-					if (inventory[i].ammo == sItem.useAmmo && inventory[i].stack > 0) {
++					bool? canChooseAmmo = ItemLoader.CanChooseAmmo(sItem, inventory[i], this);
++					if ((canChooseAmmo.HasValue && canChooseAmmo.Value) || (inventory[i].ammo == sItem.useAmmo && inventory[i].stack > 0)) {
+ 						canUse = true;
+ 						break;
+ 					}
 @@ -37056,6 +_,17 @@
  		}
  

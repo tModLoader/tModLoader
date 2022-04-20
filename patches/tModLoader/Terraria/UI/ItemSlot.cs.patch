@@ -588,6 +588,16 @@
  				if (ItemID.Sets.TrapSigned[item.type])
  					spriteBatch.Draw(TextureAssets.Wire.Value, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle(4, 58, 8, 8), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
  
+@@ -1627,7 +_,8 @@
+ 						int useAmmo = item.useAmmo;
+ 						num9 = 0;
+ 						for (int j = 0; j < 58; j++) {
+-							if (inv[j].ammo == useAmmo)
++							bool? canChooseAmmo = ItemLoader.CanChooseAmmo(item, inv[j], player);
++							if ((canChooseAmmo.HasValue && canChooseAmmo.Value) || inv[j].ammo == useAmmo)
+ 								num9 += inv[j].stack;
+ 						}
+ 					}
 @@ -1673,13 +_,17 @@
  					Vector2 position3 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  					Color color3 = item.GetAlpha(color) * ((float)player.potionDelay / (float)player.potionDelayTime);
