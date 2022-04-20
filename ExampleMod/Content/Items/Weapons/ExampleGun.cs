@@ -99,7 +99,7 @@ namespace ExampleMod.Content.Items.Weapons
 			item.useAnimation = 12;
 			item.useTime = 4; // one third of useAnimation
 			item.reuseDelay = 14;
-		public override bool? CanConsumeAmmo(Player player)	{
+		public override bool? CanConsumeAmmo(Item ammo, Player player)	{
 			// Because of how the game works, player.itemAnimation will be 11, 7, and finally 3. (useAnimation - 1, then - useTime until less than 0.)
 			// We can get the Clockwork Assault Riffle Effect by not consuming ammo when itemAnimation is lower than the first shot.
 			if (player.itemAnimation < Item.useAnimation - 2)
