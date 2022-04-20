@@ -121,5 +121,18 @@ namespace Terraria
 			
 			Logging.tML.Info($"Save Are Located At: {Path.GetFullPath(SavePath)}");
 		}
+
+		private const int HighDpiThreshold = 96; // Rando internet value that Solxan couldn't refind the sauce for.
+
+		// Add Support for High DPI displays, such as Mac M1 laptops. Must run before Game constructor.
+		private static void AttemptSupportHighDPI(bool isServer) {
+			if (isServer)
+				return;
+
+			SDL2.SDL.SDL_VideoInit(null);
+			SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
+			if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold)
+				Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
+		}
 	}
 }
