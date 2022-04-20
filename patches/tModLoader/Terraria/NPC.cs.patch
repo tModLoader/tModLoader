@@ -171,7 +171,7 @@
 +			List<string> NPCNameList = new List<string>();
 +			if (NPCNameCategoryKey != null)
 +				NPCNameList = LanguageManager.Instance.GetLocalizedEntriesInCategory(NPCNameCategoryKey);
-+			NPCLoader.ModifyNPCNameList(this, NPCNameList);
++			NPCNameList = NPCLoader.ModifyNPCNameList(this, NPCNameList);
 +			if (NPCNameList != null && NPCNameList.Count > 0)
 +				return NPCNameList[WorldGen.genRand.Next(NPCNameList.Count)];
 +			else
