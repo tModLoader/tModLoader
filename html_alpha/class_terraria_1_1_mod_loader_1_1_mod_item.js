@@ -74,6 +74,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "OnMissingMana", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a5ccfa0e1ded1e2d3e81d6a0fa8aaddd0", null ],
     [ "OnPickup", "class_terraria_1_1_mod_loader_1_1_mod_item.html#af4c3bac6bb5b2b23cb4818591699cc24", null ],
     [ "OnResearched", "class_terraria_1_1_mod_loader_1_1_mod_item.html#abcaf765f0c67878271f8e4e69acb7de4", null ],
+    [ "OnSpawn", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a38684f16ae086a6e8c2e9dab057affff", null ],
     [ "OpenBossBag", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53a548e1400eada55a6526d2f320d6c", null ],
     [ "PickAmmo", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a26d5d37fda0acaa0e3071b649c1a614e", null ],
     [ "PostDrawInInventory", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aeea295ae4ec512d2f6667019b044f8b4", null ],

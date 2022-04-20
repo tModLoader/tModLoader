@@ -87,7 +87,6 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_glob
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#properties">Properties</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_global_projectile-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Terraria.ModLoader.GlobalProjectile Class Reference</div>  </div>
@@ -122,9 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0070501f25f491b4b9e792c44bd6f7ba"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0070501f25f491b4b9e792c44bd6f7ba">CanUseGrapple</a> (int type, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a0070501f25f491b4b9e792c44bd6f7ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not a grappling hook that shoots this type of projectile can be used by the given player. Return null to use the default code (whether or not the player is in the middle of firing the grappling hook). Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0070501f25f491b4b9e792c44bd6f7ba">More...</a><br /></td></tr>
 <tr class="separator:a0070501f25f491b4b9e792c44bd6f7ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a989c8dbdc4be33d6b2b9741925d21c58"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html">GlobalProjectile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a989c8dbdc4be33d6b2b9741925d21c58">Clone</a> ()</td></tr>
-<tr class="memdesc:a989c8dbdc4be33d6b2b9741925d21c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a clone of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles....">GlobalProjectile</a>. By default this will return a memberwise clone; you will want to override this if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles....">GlobalProjectile</a> contains object references. Only called if CloneNewInstances &amp;&amp; InstancePerEntity  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a989c8dbdc4be33d6b2b9741925d21c58">More...</a><br /></td></tr>
-<tr class="separator:a989c8dbdc4be33d6b2b9741925d21c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9615b5a902b24e4ad4f40d81da53cc7f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html">GlobalProjectile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a9615b5a902b24e4ad4f40d81da53cc7f">Clone</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectile, <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectileClone)</td></tr>
+<tr class="memdesc:a9615b5a902b24e4ad4f40d81da53cc7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles....">GlobalProjectile</a>. Called when a projectile is cloned.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a9615b5a902b24e4ad4f40d81da53cc7f">More...</a><br /></td></tr>
+<tr class="separator:a9615b5a902b24e4ad4f40d81da53cc7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac05a8800b34d3f43309a759608d09fbd"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac05a8800b34d3f43309a759608d09fbd">Colliding</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectile, Rectangle projHitbox, Rectangle targetHitbox)</td></tr>
 <tr class="memdesc:ac05a8800b34d3f43309a759608d09fbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to use custom collision detection between a projectile and a player or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> that the projectile can damage. Useful for things like diagonal lasers, projectiles that leave a trail behind them, etc.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac05a8800b34d3f43309a759608d09fbd">More...</a><br /></td></tr>
 <tr class="separator:ac05a8800b34d3f43309a759608d09fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,9 +166,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac155350ec502aa873ef9748636accc88"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac155350ec502aa873ef9748636accc88">ModifyHitPvp</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectile, <a class="el" href="class_terraria_1_1_player.html">Player</a> target, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:ac155350ec502aa873ef9748636accc88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that a projectile does to an opponent player.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac155350ec502aa873ef9748636accc88">More...</a><br /></td></tr>
 <tr class="separator:ac155350ec502aa873ef9748636accc88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbeaf69a28ae0e369b60043a5049525a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html">GlobalProjectile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#acbeaf69a28ae0e369b60043a5049525a">NewInstance</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectile)</td></tr>
-<tr class="memdesc:acbeaf69a28ae0e369b60043a5049525a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new instance of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles....">GlobalProjectile</a> for a <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> instance. Called at the end of Projectile.SetDefaults. If CloneNewInstances is true, just calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a989c8dbdc4be33d6b2b9741925d21c58" title="Returns a clone of this GlobalProjectile. By default this will return a memberwise clone; you will wa...">Clone()</a> Otherwise calls the default constructor and copies fields  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#acbeaf69a28ae0e369b60043a5049525a">More...</a><br /></td></tr>
-<tr class="separator:acbeaf69a28ae0e369b60043a5049525a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab01ffa6483a27d73051ca9b30f249184"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#ab01ffa6483a27d73051ca9b30f249184">NumGrappleHooks</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectile, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref int numHooks)</td></tr>
 <tr class="memdesc:ab01ffa6483a27d73051ca9b30f249184"><td class="mdescLeft">&#160;</td><td class="mdescRight">How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#ab01ffa6483a27d73051ca9b30f249184">More...</a><br /></td></tr>
 <tr class="separator:ab01ffa6483a27d73051ca9b30f249184"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,6 +178,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a004341b430cdd90fb406238d872219e1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a004341b430cdd90fb406238d872219e1">OnHitPvp</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectile, <a class="el" href="class_terraria_1_1_player.html">Player</a> target, int damage, bool crit)</td></tr>
 <tr class="memdesc:a004341b430cdd90fb406238d872219e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects when a projectile hits an opponent player.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a004341b430cdd90fb406238d872219e1">More...</a><br /></td></tr>
 <tr class="separator:a004341b430cdd90fb406238d872219e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13edf684452d1c55b5041f42dc50f45f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a13edf684452d1c55b5041f42dc50f45f">OnSpawn</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectile, <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source)</td></tr>
+<tr class="memdesc:a13edf684452d1c55b5041f42dc50f45f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when any projectiles spawns in world  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a13edf684452d1c55b5041f42dc50f45f">More...</a><br /></td></tr>
+<tr class="separator:a13edf684452d1c55b5041f42dc50f45f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54e53d2666fd2746541428bee75542a9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a54e53d2666fd2746541428bee75542a9">OnTileCollide</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectile, Vector2 oldVelocity)</td></tr>
 <tr class="memdesc:a54e53d2666fd2746541428bee75542a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what happens when a projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a54e53d2666fd2746541428bee75542a9">More...</a><br /></td></tr>
 <tr class="separator:a54e53d2666fd2746541428bee75542a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,11 +244,24 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:a15bc5d879c3bc54983327fc23169d4cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a15bc5d879c3bc54983327fc23169d4cb">More...</a><br /></td></tr>
 <tr class="separator:a15bc5d879c3bc54983327fc23169d4cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
-Properties</h2></td></tr>
-<tr class="memitem:a1e2cdba14d6eabb0cc84c1eaef018d09"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a1e2cdba14d6eabb0cc84c1eaef018d09">CloneNewInstances</a><code> [get]</code></td></tr>
-<tr class="memdesc:a1e2cdba14d6eabb0cc84c1eaef018d09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether instances of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles....">GlobalProjectile</a> are created through Clone or constructor (by default implementations of NewInstance and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a989c8dbdc4be33d6b2b9741925d21c58" title="Returns a clone of this GlobalProjectile. By default this will return a memberwise clone; you will wa...">Clone()</a>). Defaults to false (using default constructor).  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a1e2cdba14d6eabb0cc84c1eaef018d09">More...</a><br /></td></tr>
-<tr class="separator:a1e2cdba14d6eabb0cc84c1eaef018d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_type.html">Terraria.ModLoader.GlobalType&lt; Projectile &gt;</a></td></tr>
+<tr class="memitem:a11d4feaea19d75e9ca85f4e491be8c3e inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a11d4feaea19d75e9ca85f4e491be8c3e"></a>
+static TResult&#160;</td><td class="memItemRight" valign="bottom"><b>GetGlobal&lt; TEntity, TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, bool exactType)</td></tr>
+<tr class="separator:a11d4feaea19d75e9ca85f4e491be8c3e inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29e03ac0f062293eb87d47b177ec7fbc inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a29e03ac0f062293eb87d47b177ec7fbc"></a>
+static TResult&#160;</td><td class="memItemRight" valign="bottom"><b>GetGlobal&lt; TEntity, TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, TResult baseInstance)</td></tr>
+<tr class="separator:a29e03ac0f062293eb87d47b177ec7fbc inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1307953c9133daa4d1a8f9464bdd3812 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a1307953c9133daa4d1a8f9464bdd3812"></a>
+static T&#160;</td><td class="memItemRight" valign="bottom"><b>Instance&lt; T &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; T &gt;[] globals, ushort index)</td></tr>
+<tr class="separator:a1307953c9133daa4d1a8f9464bdd3812 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eb46e41b0a6d0d7171c6754e3d85586 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a5eb46e41b0a6d0d7171c6754e3d85586"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&lt; TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, bool exactType, out TResult result)</td></tr>
+<tr class="separator:a5eb46e41b0a6d0d7171c6754e3d85586 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ff6e84854ba16db2e888ce7208c1116 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a9ff6e84854ba16db2e888ce7208c1116"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&lt; TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, TResult baseInstance, out TResult result)</td></tr>
+<tr class="separator:a9ff6e84854ba16db2e888ce7208c1116 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_terraria_1_1_mod_loader_1_1_global_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_terraria_1_1_mod_loader_1_1_global_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_type.html">Terraria.ModLoader.GlobalType&lt; Projectile &gt;</a></td></tr>
 <tr class="memitem:aefee6bbda59e6c2119accbd942226516 inherit properties_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_type.html#aefee6bbda59e6c2119accbd942226516">InstancePerEntity</a><code> [get]</code></td></tr>
 <tr class="memdesc:aefee6bbda59e6c2119accbd942226516 inherit properties_class_terraria_1_1_mod_loader_1_1_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create a new instance of this Global for every entity that exists. Useful for storing information on an entity. Defaults to false. Return true if you need to store information (have non-static fields).  <a href="class_terraria_1_1_mod_loader_1_1_global_type.html#aefee6bbda59e6c2119accbd942226516">More...</a><br /></td></tr>
@@ -274,25 +286,6 @@ Properties</h2></td></tr>
 <tr class="memitem:a70f7612ca9aebec3149b51789f1b54c6 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a70f7612ca9aebec3149b51789f1b54c6">Name</a><code> [get]</code></td></tr>
 <tr class="memdesc:a70f7612ca9aebec3149b51789f1b54c6 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this instance.  <a href="interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a70f7612ca9aebec3149b51789f1b54c6">More...</a><br /></td></tr>
 <tr class="separator:a70f7612ca9aebec3149b51789f1b54c6 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_type.html">Terraria.ModLoader.GlobalType&lt; Projectile &gt;</a></td></tr>
-<tr class="memitem:a11d4feaea19d75e9ca85f4e491be8c3e inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a11d4feaea19d75e9ca85f4e491be8c3e"></a>
-static TResult&#160;</td><td class="memItemRight" valign="bottom"><b>GetGlobal&lt; TEntity, TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, bool exactType)</td></tr>
-<tr class="separator:a11d4feaea19d75e9ca85f4e491be8c3e inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29e03ac0f062293eb87d47b177ec7fbc inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a29e03ac0f062293eb87d47b177ec7fbc"></a>
-static TResult&#160;</td><td class="memItemRight" valign="bottom"><b>GetGlobal&lt; TEntity, TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, TResult baseInstance)</td></tr>
-<tr class="separator:a29e03ac0f062293eb87d47b177ec7fbc inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1307953c9133daa4d1a8f9464bdd3812 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a1307953c9133daa4d1a8f9464bdd3812"></a>
-static T&#160;</td><td class="memItemRight" valign="bottom"><b>Instance&lt; T &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; T &gt;[] globals, ushort index)</td></tr>
-<tr class="separator:a1307953c9133daa4d1a8f9464bdd3812 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5eb46e41b0a6d0d7171c6754e3d85586 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a5eb46e41b0a6d0d7171c6754e3d85586"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&lt; TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, bool exactType, out TResult result)</td></tr>
-<tr class="separator:a5eb46e41b0a6d0d7171c6754e3d85586 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ff6e84854ba16db2e888ce7208c1116 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a9ff6e84854ba16db2e888ce7208c1116"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&lt; TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, TResult baseInstance, out TResult result)</td></tr>
-<tr class="separator:a9ff6e84854ba16db2e888ce7208c1116 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this. </p>
@@ -577,8 +570,8 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
 
 </div>
 </div>
-<a id="a989c8dbdc4be33d6b2b9741925d21c58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a989c8dbdc4be33d6b2b9741925d21c58">&#9670;&nbsp;</a></span>Clone()</h2>
+<a id="a9615b5a902b24e4ad4f40d81da53cc7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9615b5a902b24e4ad4f40d81da53cc7f">&#9670;&nbsp;</a></span>Clone()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -589,8 +582,19 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
         <tr>
           <td class="memname">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html">GlobalProjectile</a> Terraria.ModLoader.GlobalProjectile.Clone </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>&#160;</td>
+          <td class="paramname"><em>projectile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>&#160;</td>
+          <td class="paramname"><em>projectileClone</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -600,7 +604,14 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
 </table>
 </div><div class="memdoc">
 
-<p>Returns a clone of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles....">GlobalProjectile</a>. By default this will return a memberwise clone; you will want to override this if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles....">GlobalProjectile</a> contains object references. Only called if CloneNewInstances &amp;&amp; InstancePerEntity </p>
+<p>Create a copy of this instanced <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles....">GlobalProjectile</a>. Called when a projectile is cloned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">projectile</td><td>The projectile being cloned</td></tr>
+    <tr><td class="paramname">projectileClone</td><td>The new projectile</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1271,34 +1282,6 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
 
 </div>
 </div>
-<a id="acbeaf69a28ae0e369b60043a5049525a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbeaf69a28ae0e369b60043a5049525a">&#9670;&nbsp;</a></span>NewInstance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html">GlobalProjectile</a> Terraria.ModLoader.GlobalProjectile.NewInstance </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>&#160;</td>
-          <td class="paramname"><em>projectile</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create a new instance of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles....">GlobalProjectile</a> for a <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> instance. Called at the end of Projectile.SetDefaults. If CloneNewInstances is true, just calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a989c8dbdc4be33d6b2b9741925d21c58" title="Returns a clone of this GlobalProjectile. By default this will return a memberwise clone; you will wa...">Clone()</a> Otherwise calls the default constructor and copies fields </p>
-
-</div>
-</div>
 <a id="ab01ffa6483a27d73051ca9b30f249184"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab01ffa6483a27d73051ca9b30f249184">&#9670;&nbsp;</a></span>NumGrappleHooks()</h2>
 
@@ -1524,6 +1507,44 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a13edf684452d1c55b5041f42dc50f45f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13edf684452d1c55b5041f42dc50f45f">&#9670;&nbsp;</a></span>OnSpawn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalProjectile.OnSpawn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>&#160;</td>
+          <td class="paramname"><em>projectile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets called when any projectiles spawns in world </p>
 
 </div>
 </div>
@@ -2079,31 +2100,6 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
 </div><div class="memdoc">
 
 <p>This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="a1e2cdba14d6eabb0cc84c1eaef018d09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e2cdba14d6eabb0cc84c1eaef018d09">&#9670;&nbsp;</a></span>CloneNewInstances</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool Terraria.ModLoader.GlobalProjectile.CloneNewInstances</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Whether instances of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html" title="This class allows you to modify and use hooks for all projectiles, including vanilla projectiles....">GlobalProjectile</a> are created through Clone or constructor (by default implementations of NewInstance and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a989c8dbdc4be33d6b2b9741925d21c58" title="Returns a clone of this GlobalProjectile. By default this will return a memberwise clone; you will wa...">Clone()</a>). Defaults to false (using default constructor). </p>
 
 </div>
 </div>

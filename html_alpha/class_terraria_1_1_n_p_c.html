@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_n_p_c.html',''); in
 </div><!--header-->
 <div class="contents">
 
-<p>Inherits <a class="el" href="class_terraria_1_1_entity.html">Terraria.Entity</a>, and <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals.html">Terraria.ModLoader.IEntityWithGlobals&lt; GlobalNPC &gt;</a>.</p>
+<p>Inherits <a class="el" href="class_terraria_1_1_entity.html">Terraria.Entity</a>, and <a class="el" href="class_i_entity_with_globals.html">IEntityWithGlobals&lt; GlobalNPC &gt;</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -265,9 +265,6 @@ Color&#160;</td><td class="memItemRight" valign="bottom"><b>GetColor</b> (Color 
 <tr class="memitem:ae088028bf2d9b44ae131542ddfaaef18"><td class="memItemLeft" align="right" valign="top"><a id="ae088028bf2d9b44ae131542ddfaaef18"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetImmuneTime</b> (int fromWho, int time)</td></tr>
 <tr class="separator:ae088028bf2d9b44ae131542ddfaaef18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaac4920a829421c53b5d5a3a1a540cbe"><td class="memItemLeft" align="right" valign="top"><a id="aaac4920a829421c53b5d5a3a1a540cbe"></a>
-<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetItemSource_Loot</b> ()</td></tr>
-<tr class="separator:aaac4920a829421c53b5d5a3a1a540cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52bab189b8b596564f680447d55856cd"><td class="memItemLeft" align="right" valign="top"><a id="a52bab189b8b596564f680447d55856cd"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>GetLifePercent</b> ()</td></tr>
 <tr class="separator:a52bab189b8b596564f680447d55856cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -295,18 +292,9 @@ Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>getRect</b> ()</
 <tr class="memitem:a5058de5a518fa2bd838a1e36cf4180d6"><td class="memItemLeft" align="right" valign="top"><a id="a5058de5a518fa2bd838a1e36cf4180d6"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetShootingFrame</b> (float circleY)</td></tr>
 <tr class="separator:a5058de5a518fa2bd838a1e36cf4180d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad14721179e7555dc8b017f9def15cd8f"><td class="memItemLeft" align="right" valign="top"><a id="ad14721179e7555dc8b017f9def15cd8f"></a>
-<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSpawnSource_ForProjectile</b> ()</td></tr>
-<tr class="separator:ad14721179e7555dc8b017f9def15cd8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3721a33b0072ed3b4b45fbc39f8b3874"><td class="memItemLeft" align="right" valign="top"><a id="a3721a33b0072ed3b4b45fbc39f8b3874"></a>
-<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSpawnSource_NPCHurt</b> ()</td></tr>
-<tr class="separator:a3721a33b0072ed3b4b45fbc39f8b3874"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa51dc93a79b2efcc94107c598a88e187"><td class="memItemLeft" align="right" valign="top"><a id="aa51dc93a79b2efcc94107c598a88e187"></a>
-<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSpawnSourceForNPCFromNPCAI</b> ()</td></tr>
-<tr class="separator:aa51dc93a79b2efcc94107c598a88e187"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9301931229a53f22a7aabcf7c9e5255b"><td class="memItemLeft" align="right" valign="top"><a id="a9301931229a53f22a7aabcf7c9e5255b"></a>
-<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSpawnSourceForProjectileNPC</b> ()</td></tr>
-<tr class="separator:a9301931229a53f22a7aabcf7c9e5255b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1eef9e075a2981755e4ac62e27cb35f8"><td class="memItemLeft" align="right" valign="top"><a id="a1eef9e075a2981755e4ac62e27cb35f8"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_Buff</b> (int buffIndex)</td></tr>
+<tr class="separator:a1eef9e075a2981755e4ac62e27cb35f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe95a39074e023f5cba99dd59a0e47b3"><td class="memItemLeft" align="right" valign="top"><a id="abe95a39074e023f5cba99dd59a0e47b3"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetSpecialEventTextIfNotEmpty</b> (string specialTextKey, object substitutes, ref string specialEventText)</td></tr>
 <tr class="separator:abe95a39074e023f5cba99dd59a0e47b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -488,6 +476,54 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>Distance</b> (Vector
 <tr class="memitem:a6b3133bba44f7080b67e37a8154ffd43 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a6b3133bba44f7080b67e37a8154ffd43"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>DistanceSQ</b> (Vector2 Other)</td></tr>
 <tr class="separator:a6b3133bba44f7080b67e37a8154ffd43 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cc13a0fd700a6326df9c7d07389b805 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a0cc13a0fd700a6326df9c7d07389b805"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_Accessory</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, string? context=null)</td></tr>
+<tr class="separator:a0cc13a0fd700a6326df9c7d07389b805 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3543b21ddea65a8995ec0267b62c4d22 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a3543b21ddea65a8995ec0267b62c4d22"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_CatchEntity</b> (string? context=null)</td></tr>
+<tr class="separator:a3543b21ddea65a8995ec0267b62c4d22 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5469ee9a6d94319e3ca4c365636176c8 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a5469ee9a6d94319e3ca4c365636176c8"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_Death</b> (string? context=null)</td></tr>
+<tr class="separator:a5469ee9a6d94319e3ca4c365636176c8 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04ca8e3f6d66f4c3b099cbc08d91b71a inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a04ca8e3f6d66f4c3b099cbc08d91b71a"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_DropAsItem</b> (string? context=null)</td></tr>
+<tr class="separator:a04ca8e3f6d66f4c3b099cbc08d91b71a inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf1ce371a8d995264f17ccea092fd273 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="acf1ce371a8d995264f17ccea092fd273"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_FromAI</b> (string? context=null)</td></tr>
+<tr class="separator:acf1ce371a8d995264f17ccea092fd273 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbc1f1a22ce2950034003a09cb3ac5fe inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="afbc1f1a22ce2950034003a09cb3ac5fe"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_FromThis</b> (string? context=null)</td></tr>
+<tr class="separator:afbc1f1a22ce2950034003a09cb3ac5fe inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a394ed9fe27b247987bb665f392e910a1 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a394ed9fe27b247987bb665f392e910a1"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_GiftOrReward</b> (string? context=null)</td></tr>
+<tr class="separator:a394ed9fe27b247987bb665f392e910a1 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61dd792d07143a14391f3e3de1e50524 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a61dd792d07143a14391f3e3de1e50524"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_ItemUse</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, string? context=null)</td></tr>
+<tr class="separator:a61dd792d07143a14391f3e3de1e50524 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29f8bedac85824d2b4a5726219aca3ff inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a29f8bedac85824d2b4a5726219aca3ff"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_ItemUse_WithPotentialAmmo</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, int ammoItemId, string? context=null)</td></tr>
+<tr class="separator:a29f8bedac85824d2b4a5726219aca3ff inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d470829f40b7a8843b7721754eb0af8 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a6d470829f40b7a8843b7721754eb0af8"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_Loot</b> (string? context=null)</td></tr>
+<tr class="separator:a6d470829f40b7a8843b7721754eb0af8 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74e37cb066bac37f74bf073cd1425488 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a74e37cb066bac37f74bf073cd1425488"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_Misc</b> (string context)</td></tr>
+<tr class="separator:a74e37cb066bac37f74bf073cd1425488 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f1256b884ffd2c60cf44d305e411c71 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a0f1256b884ffd2c60cf44d305e411c71"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_OnHit</b> (<a class="el" href="class_terraria_1_1_entity.html">Entity</a> victim, string? context=null)</td></tr>
+<tr class="separator:a0f1256b884ffd2c60cf44d305e411c71 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9395ee5f7151cc9afba47c6141158e5 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="ae9395ee5f7151cc9afba47c6141158e5"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_OnHurt</b> (<a class="el" href="class_terraria_1_1_entity.html">Entity</a> attacker, string? context=null)</td></tr>
+<tr class="separator:ae9395ee5f7151cc9afba47c6141158e5 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae03c6051f302b7dd4436d97bd0e5cf5b inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="ae03c6051f302b7dd4436d97bd0e5cf5b"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_OpenItem</b> (int itemType, string? context=null)</td></tr>
+<tr class="separator:ae03c6051f302b7dd4436d97bd0e5cf5b inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32f6a595c84afd5b891e97464eaf84ab inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a32f6a595c84afd5b891e97464eaf84ab"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_ReleaseEntity</b> (string? context=null)</td></tr>
+<tr class="separator:a32f6a595c84afd5b891e97464eaf84ab inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17f66531b5ca6810fe790168b474d095 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a17f66531b5ca6810fe790168b474d095"></a>
+<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_TileInteraction</b> (int tileCoordsX, int tileCoordsY, string? context=null)</td></tr>
+<tr class="separator:a17f66531b5ca6810fe790168b474d095 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af686c076523aa8b8dedace4130b9c139 inherit pub_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="af686c076523aa8b8dedace4130b9c139"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>WithinRange</b> (Vector2 Target, float MaxRange)</td></tr>
 <tr class="separator:af686c076523aa8b8dedace4130b9c139 inherit pub_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -593,18 +629,6 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNPCInvasionG
 <tr class="memitem:a03893cc0d522daf9b058508a5961e919"><td class="memItemLeft" align="right" valign="top"><a id="a03893cc0d522daf9b058508a5961e919"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>GetNPCLocation</b> (int i, bool seekHead, bool averageDirection, out int index, out Vector2 pos)</td></tr>
 <tr class="separator:a03893cc0d522daf9b058508a5961e919"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69b37aa13257ea4ba05b62c577a54a07"><td class="memItemLeft" align="right" valign="top"><a id="a69b37aa13257ea4ba05b62c577a54a07"></a>
-static <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSpawnSource_NPCCatch</b> (int whoCatchedIt)</td></tr>
-<tr class="separator:a69b37aa13257ea4ba05b62c577a54a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbf28394fc3bce88b6f2397a23b73f7f"><td class="memItemLeft" align="right" valign="top"><a id="abbf28394fc3bce88b6f2397a23b73f7f"></a>
-static <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSpawnSource_NPCRelease</b> (int whoReleasedIt)</td></tr>
-<tr class="separator:abbf28394fc3bce88b6f2397a23b73f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addb270f25c6b1dd7409f32a852535739"><td class="memItemLeft" align="right" valign="top"><a id="addb270f25c6b1dd7409f32a852535739"></a>
-static <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSpawnSourceForNaturalSpawn</b> ()</td></tr>
-<tr class="separator:addb270f25c6b1dd7409f32a852535739"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad360f6c8cf0accc709bd7e593670581e"><td class="memItemLeft" align="right" valign="top"><a id="ad360f6c8cf0accc709bd7e593670581e"></a>
-static <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSpawnSourceForTownSpawn</b> ()</td></tr>
-<tr class="separator:ad360f6c8cf0accc709bd7e593670581e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6172f905c328f30c16dd682201546a45"><td class="memItemLeft" align="right" valign="top"><a id="a6172f905c328f30c16dd682201546a45"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetStackForSlimeItemDrop</b> (int item)</td></tr>
 <tr class="separator:a6172f905c328f30c16dd682201546a45"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -638,6 +662,12 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NearSpikeBall<
 <tr class="memitem:aa586bd49c055a44ef203045df95b9f29"><td class="memItemLeft" align="right" valign="top"><a id="aa586bd49c055a44ef203045df95b9f29"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewNPC</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, int X, int Y, int Type, int Start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int Target=255)</td></tr>
 <tr class="separator:aa586bd49c055a44ef203045df95b9f29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab958086bbb4d2cd31183c40d66e19165"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_n_p_c.html#ab958086bbb4d2cd31183c40d66e19165">NewNPCDirect</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, int x, int y, int type, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int target=255)</td></tr>
+<tr class="memdesc:ab958086bbb4d2cd31183c40d66e19165"><td class="mdescLeft">&#160;</td><td class="mdescRight">A short-hand for  <a href="class_terraria_1_1_n_p_c.html#ab958086bbb4d2cd31183c40d66e19165">More...</a><br /></td></tr>
+<tr class="separator:ab958086bbb4d2cd31183c40d66e19165"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac13f013a116b2fd6e3ede8b617faf2d1"><td class="memItemLeft" align="right" valign="top"><a id="ac13f013a116b2fd6e3ede8b617faf2d1"></a>
+static <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_n_p_c.html#ac13f013a116b2fd6e3ede8b617faf2d1">NewNPCDirect</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 position, int type, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int target=255)</td></tr>
+<tr class="separator:ac13f013a116b2fd6e3ede8b617faf2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f81df735e1764013280e44cf0ecc411"><td class="memItemLeft" align="right" valign="top"><a id="a1f81df735e1764013280e44cf0ecc411"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnGameEventClearedForTheFirstTime</b> (int gameEventId)</td></tr>
 <tr class="separator:a1f81df735e1764013280e44cf0ecc411"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -704,6 +734,19 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateRGBPerih
 <tr class="memitem:a98f24df412fe5462473f50aa8b49e96c"><td class="memItemLeft" align="right" valign="top"><a id="a98f24df412fe5462473f50aa8b49e96c"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>WouldBeEncouragedToDespawn</b> (int aistyle, int type)</td></tr>
 <tr class="separator:a98f24df412fe5462473f50aa8b49e96c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_static_methods_class_terraria_1_1_entity"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_terraria_1_1_entity')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_terraria_1_1_entity.html">Terraria.Entity</a></td></tr>
+<tr class="memitem:a61a3cadbfb43f0c7689dbfc24d495f15 inherit pub_static_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="a61a3cadbfb43f0c7689dbfc24d495f15"></a>
+static <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_NaturalSpawn</b> ()</td></tr>
+<tr class="separator:a61a3cadbfb43f0c7689dbfc24d495f15 inherit pub_static_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3c6470a78a418b7d7f1dc2766800405 inherit pub_static_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="aa3c6470a78a418b7d7f1dc2766800405"></a>
+static ? <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_None</b> ()</td></tr>
+<tr class="separator:aa3c6470a78a418b7d7f1dc2766800405 inherit pub_static_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8bfcfa8417c8c7afc3bc20d11a56e56 inherit pub_static_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="af8bfcfa8417c8c7afc3bc20d11a56e56"></a>
+static <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetSource_TownSpawn</b> ()</td></tr>
+<tr class="separator:af8bfcfa8417c8c7afc3bc20d11a56e56 inherit pub_static_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2dfbd8e782ba241e4b02b92f5e7e244 inherit pub_static_methods_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="ae2dfbd8e782ba241e4b02b92f5e7e244"></a>
+static ? <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td><td class="memItemRight" valign="bottom"><b>InheritSource</b> (<a class="el" href="class_terraria_1_1_entity.html">Entity</a> entity)</td></tr>
+<tr class="separator:ae2dfbd8e782ba241e4b02b92f5e7e244 inherit pub_static_methods_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -1534,10 +1577,6 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>TopRight</b><code>
 <tr class="memitem:af3dfef58afad89d424164f1e9392e752 inherit properties_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="af3dfef58afad89d424164f1e9392e752"></a>
 virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosition</b><code> [get]</code></td></tr>
 <tr class="separator:af3dfef58afad89d424164f1e9392e752 inherit properties_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header properties_interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals.html">Terraria.ModLoader.IEntityWithGlobals&lt; GlobalNPC &gt;</a></td></tr>
-<tr class="memitem:a9e76a1a323c86b12909096e407a0b8f9 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals"><td class="memItemLeft" align="right" valign="top"><a id="a9e76a1a323c86b12909096e407a0b8f9"></a>
-<a class="el" href="struct_terraria_1_1_mod_loader_1_1_ref_read_only_array.html">RefReadOnlyArray</a>&lt; <a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Globals</b><code> [get]</code></td></tr>
-<tr class="separator:a9e76a1a323c86b12909096e407a0b8f9 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a84cf160883544016836229e20e7b830b"></a>
@@ -1649,6 +1688,93 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </div><div class="memdoc">
 
 <p>Returns whether or not this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> currently has a (de)buff of the provided type. </p>
+
+</div>
+</div>
+<a id="ab958086bbb4d2cd31183c40d66e19165"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab958086bbb4d2cd31183c40d66e19165">&#9670;&nbsp;</a></span>NewNPCDirect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> Terraria.NPC.NewNPCDirect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>start</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai0</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai1</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai2</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai3</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>target</em> = <code>255</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A short-hand for </p>
+<p><code> Main.npc[Main.NewNPC(...)] </code> </p>
 
 </div>
 </div>

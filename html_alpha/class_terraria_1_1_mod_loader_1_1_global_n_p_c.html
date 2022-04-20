@@ -87,7 +87,6 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_glob
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#properties">Properties</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Terraria.ModLoader.GlobalNPC Class Reference</div>  </div>
@@ -144,9 +143,9 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 <tr class="memitem:afe194f5179f9af5463ef4bded6ae3a2f"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afe194f5179f9af5463ef4bded6ae3a2f">CheckDead</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:afe194f5179f9af5463ef4bded6ae3a2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> should be killed when it reaches 0 health. You may program extra effects in this hook (for example, how Golem's head lifts up for the second phase of its fight). Return false to stop the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> from being killed. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afe194f5179f9af5463ef4bded6ae3a2f">More...</a><br /></td></tr>
 <tr class="separator:afe194f5179f9af5463ef4bded6ae3a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a032e3518c1fa6ba47fe8042abe16c76a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a">Clone</a> ()</td></tr>
-<tr class="memdesc:a032e3518c1fa6ba47fe8042abe16c76a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a clone of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a>. By default this will return a memberwise clone; you will want to override this if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> contains object references. Only called if CloneNewInstances &amp;&amp; InstancePerEntity  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a">More...</a><br /></td></tr>
-<tr class="separator:a032e3518c1fa6ba47fe8042abe16c76a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a677d585eac784509310d8539387580"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5a677d585eac784509310d8539387580">Clone</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npcClone)</td></tr>
+<tr class="memdesc:a5a677d585eac784509310d8539387580"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a>. Called when an npc is cloned.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5a677d585eac784509310d8539387580">More...</a><br /></td></tr>
+<tr class="separator:a5a677d585eac784509310d8539387580"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e93b458e93b6de51dedfa5423ccf54d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a2e93b458e93b6de51dedfa5423ccf54d">DrawBehind</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, int index)</td></tr>
 <tr class="memdesc:a2e93b458e93b6de51dedfa5423ccf54d"><td class="mdescLeft">&#160;</td><td class="mdescRight">When used in conjunction with "npc.hide = true", allows you to specify that this npc should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a2e93b458e93b6de51dedfa5423ccf54d">More...</a><br /></td></tr>
 <tr class="separator:a2e93b458e93b6de51dedfa5423ccf54d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,7 +180,8 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 <tr class="memdesc:a6c91f67acd9fa2ca3438c641da5e0875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the chat message of any <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> that the player can talk to.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6c91f67acd9fa2ca3438c641da5e0875">More...</a><br /></td></tr>
 <tr class="separator:a6c91f67acd9fa2ca3438c641da5e0875"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc85c885fbec3533348e87c8def9d886"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afc85c885fbec3533348e87c8def9d886">HitEffect</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, int hitDirection, double damage)</td></tr>
-<tr class="memdesc:afc85c885fbec3533348e87c8def9d886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen whenever an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use <a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html" title="This readonly struct is a simple shortcut to ItemDropDatabase&#39;s methods.">NPCLoot</a>, but you can use HitEffect paired with a check for <code>if (npc.life &lt;= 0)</code> to do client-side death effects, such as spawning dust, gore, or death sounds.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afc85c885fbec3533348e87c8def9d886">More...</a><br /></td></tr>
+<tr class="memdesc:afc85c885fbec3533348e87c8def9d886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen whenever an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is hit, such as creating dust or gores. <br  />
+ This hook is client side. Usually when something happens when an npc dies such as item spawning, you use <a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html" title="This readonly struct is a simple shortcut to ItemDropDatabase&#39;s methods.">NPCLoot</a>, but you can use HitEffect paired with a check for <code>if (npc.life &lt;= 0)</code> to do client-side death effects, such as spawning dust, gore, or death sounds.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afc85c885fbec3533348e87c8def9d886">More...</a><br /></td></tr>
 <tr class="separator:afc85c885fbec3533348e87c8def9d886"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a864f48a10f6273f77c6a089b9baa8e4c"><td class="memItemLeft" align="right" valign="top"><a id="a864f48a10f6273f77c6a089b9baa8e4c"></a>
 <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Instance</b> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc)</td></tr>
@@ -212,9 +212,6 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 <tr class="memitem:abe8525d289c7727bf35050635fbf8a10"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#abe8525d289c7727bf35050635fbf8a10">ModifyTypeName</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, ref string typeName)</td></tr>
 <tr class="memdesc:abe8525d289c7727bf35050635fbf8a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the type name of this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> dynamically.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#abe8525d289c7727bf35050635fbf8a10">More...</a><br /></td></tr>
 <tr class="separator:abe8525d289c7727bf35050635fbf8a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae35c6fc2967d4631b20e4cd4d7a51bb6"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ae35c6fc2967d4631b20e4cd4d7a51bb6">NewInstance</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc)</td></tr>
-<tr class="memdesc:ae35c6fc2967d4631b20e4cd4d7a51bb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new instance of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> for an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> instance. Called at the end of NPC.SetDefaults. If CloneNewInstances is true, just calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a" title="Returns a clone of this GlobalNPC. By default this will return a memberwise clone; you will want to o...">Clone()</a> Otherwise calls the default constructor and copies fields  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ae35c6fc2967d4631b20e4cd4d7a51bb6">More...</a><br /></td></tr>
-<tr class="separator:ae35c6fc2967d4631b20e4cd4d7a51bb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9aed15677d38c7ce2700408e634f3e0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ac9aed15677d38c7ce2700408e634f3e0">OnCatchNPC</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:ac9aed15677d38c7ce2700408e634f3e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is caught. Ran Serverside.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ac9aed15677d38c7ce2700408e634f3e0">More...</a><br /></td></tr>
 <tr class="separator:ac9aed15677d38c7ce2700408e634f3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -239,6 +236,9 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 <tr class="memitem:adfe04399d60c51950e7a6a93541edcac"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#adfe04399d60c51950e7a6a93541edcac">OnKill</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:adfe04399d60c51950e7a6a93541edcac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> dies (for example, setting <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html" title="ModSystem is an abstract class that your classes can derive from. It contains general-use hooks,...">ModSystem</a> fields). This hook runs on the server/single player. For client-side effects, such as dust, gore, and sounds, see HitEffect  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#adfe04399d60c51950e7a6a93541edcac">More...</a><br /></td></tr>
 <tr class="separator:adfe04399d60c51950e7a6a93541edcac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8828c1b2d05ebe88b97b4d15609005dc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a8828c1b2d05ebe88b97b4d15609005dc">OnSpawn</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source)</td></tr>
+<tr class="memdesc:a8828c1b2d05ebe88b97b4d15609005dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when any <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> spawns in world  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a8828c1b2d05ebe88b97b4d15609005dc">More...</a><br /></td></tr>
+<tr class="separator:a8828c1b2d05ebe88b97b4d15609005dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78cc6cfde1d3aae79d01ded8aff5fddd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a78cc6cfde1d3aae79d01ded8aff5fddd">PostAI</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:a78cc6cfde1d3aae79d01ded8aff5fddd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how any <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> behaves. This will be called regardless of what PreAI returns.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a78cc6cfde1d3aae79d01ded8aff5fddd">More...</a><br /></td></tr>
 <tr class="separator:a78cc6cfde1d3aae79d01ded8aff5fddd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,11 +338,24 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:aafb2b539b238ed748890fc85dff2a1e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aafb2b539b238ed748890fc85dff2a1e4">More...</a><br /></td></tr>
 <tr class="separator:aafb2b539b238ed748890fc85dff2a1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
-Properties</h2></td></tr>
-<tr class="memitem:adda48aad4cbc0f80e96bd8fa2794cfa1"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#adda48aad4cbc0f80e96bd8fa2794cfa1">CloneNewInstances</a><code> [get]</code></td></tr>
-<tr class="memdesc:adda48aad4cbc0f80e96bd8fa2794cfa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether instances of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> are created through Clone or constructor (by default implementations of NewInstance and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a" title="Returns a clone of this GlobalNPC. By default this will return a memberwise clone; you will want to o...">Clone()</a>). Defaults to false (using default constructor).  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#adda48aad4cbc0f80e96bd8fa2794cfa1">More...</a><br /></td></tr>
-<tr class="separator:adda48aad4cbc0f80e96bd8fa2794cfa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_type.html">Terraria.ModLoader.GlobalType&lt; NPC &gt;</a></td></tr>
+<tr class="memitem:a11d4feaea19d75e9ca85f4e491be8c3e inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a11d4feaea19d75e9ca85f4e491be8c3e"></a>
+static TResult&#160;</td><td class="memItemRight" valign="bottom"><b>GetGlobal&lt; TEntity, TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, bool exactType)</td></tr>
+<tr class="separator:a11d4feaea19d75e9ca85f4e491be8c3e inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29e03ac0f062293eb87d47b177ec7fbc inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a29e03ac0f062293eb87d47b177ec7fbc"></a>
+static TResult&#160;</td><td class="memItemRight" valign="bottom"><b>GetGlobal&lt; TEntity, TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, TResult baseInstance)</td></tr>
+<tr class="separator:a29e03ac0f062293eb87d47b177ec7fbc inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1307953c9133daa4d1a8f9464bdd3812 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a1307953c9133daa4d1a8f9464bdd3812"></a>
+static T&#160;</td><td class="memItemRight" valign="bottom"><b>Instance&lt; T &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; T &gt;[] globals, ushort index)</td></tr>
+<tr class="separator:a1307953c9133daa4d1a8f9464bdd3812 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eb46e41b0a6d0d7171c6754e3d85586 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a5eb46e41b0a6d0d7171c6754e3d85586"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&lt; TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, bool exactType, out TResult result)</td></tr>
+<tr class="separator:a5eb46e41b0a6d0d7171c6754e3d85586 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ff6e84854ba16db2e888ce7208c1116 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a9ff6e84854ba16db2e888ce7208c1116"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&lt; TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, TResult baseInstance, out TResult result)</td></tr>
+<tr class="separator:a9ff6e84854ba16db2e888ce7208c1116 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_terraria_1_1_mod_loader_1_1_global_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_terraria_1_1_mod_loader_1_1_global_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_type.html">Terraria.ModLoader.GlobalType&lt; NPC &gt;</a></td></tr>
 <tr class="memitem:aefee6bbda59e6c2119accbd942226516 inherit properties_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_type.html#aefee6bbda59e6c2119accbd942226516">InstancePerEntity</a><code> [get]</code></td></tr>
 <tr class="memdesc:aefee6bbda59e6c2119accbd942226516 inherit properties_class_terraria_1_1_mod_loader_1_1_global_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create a new instance of this Global for every entity that exists. Useful for storing information on an entity. Defaults to false. Return true if you need to store information (have non-static fields).  <a href="class_terraria_1_1_mod_loader_1_1_global_type.html#aefee6bbda59e6c2119accbd942226516">More...</a><br /></td></tr>
@@ -367,25 +380,6 @@ Properties</h2></td></tr>
 <tr class="memitem:a70f7612ca9aebec3149b51789f1b54c6 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a70f7612ca9aebec3149b51789f1b54c6">Name</a><code> [get]</code></td></tr>
 <tr class="memdesc:a70f7612ca9aebec3149b51789f1b54c6 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this instance.  <a href="interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a70f7612ca9aebec3149b51789f1b54c6">More...</a><br /></td></tr>
 <tr class="separator:a70f7612ca9aebec3149b51789f1b54c6 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type')"><img src="closed.png" alt="-"/>&#160;Static Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_type.html">Terraria.ModLoader.GlobalType&lt; NPC &gt;</a></td></tr>
-<tr class="memitem:a11d4feaea19d75e9ca85f4e491be8c3e inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a11d4feaea19d75e9ca85f4e491be8c3e"></a>
-static TResult&#160;</td><td class="memItemRight" valign="bottom"><b>GetGlobal&lt; TEntity, TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, bool exactType)</td></tr>
-<tr class="separator:a11d4feaea19d75e9ca85f4e491be8c3e inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29e03ac0f062293eb87d47b177ec7fbc inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a29e03ac0f062293eb87d47b177ec7fbc"></a>
-static TResult&#160;</td><td class="memItemRight" valign="bottom"><b>GetGlobal&lt; TEntity, TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, TResult baseInstance)</td></tr>
-<tr class="separator:a29e03ac0f062293eb87d47b177ec7fbc inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1307953c9133daa4d1a8f9464bdd3812 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a1307953c9133daa4d1a8f9464bdd3812"></a>
-static T&#160;</td><td class="memItemRight" valign="bottom"><b>Instance&lt; T &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; T &gt;[] globals, ushort index)</td></tr>
-<tr class="separator:a1307953c9133daa4d1a8f9464bdd3812 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5eb46e41b0a6d0d7171c6754e3d85586 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a5eb46e41b0a6d0d7171c6754e3d85586"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&lt; TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, bool exactType, out TResult result)</td></tr>
-<tr class="separator:a5eb46e41b0a6d0d7171c6754e3d85586 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ff6e84854ba16db2e888ce7208c1116 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memItemLeft" align="right" valign="top"><a id="a9ff6e84854ba16db2e888ce7208c1116"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&lt; TGlobal, TResult &gt;</b> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_instanced.html">Instanced</a>&lt; TGlobal &gt;[] globals, TResult baseInstance, out TResult result)</td></tr>
-<tr class="separator:a9ff6e84854ba16db2e888ce7208c1116 inherit pub_static_methods_class_terraria_1_1_mod_loader_1_1_global_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this. </p>
@@ -981,8 +975,8 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 
 </div>
 </div>
-<a id="a032e3518c1fa6ba47fe8042abe16c76a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a032e3518c1fa6ba47fe8042abe16c76a">&#9670;&nbsp;</a></span>Clone()</h2>
+<a id="a5a677d585eac784509310d8539387580"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a677d585eac784509310d8539387580">&#9670;&nbsp;</a></span>Clone()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -993,8 +987,19 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
         <tr>
           <td class="memname">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a> Terraria.ModLoader.GlobalNPC.Clone </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npcClone</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -1004,7 +1009,14 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 </table>
 </div><div class="memdoc">
 
-<p>Returns a clone of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a>. By default this will return a memberwise clone; you will want to override this if your <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> contains object references. Only called if CloneNewInstances &amp;&amp; InstancePerEntity </p>
+<p>Create a copy of this instanced <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a>. Called when an npc is cloned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td>The npc being cloned</td></tr>
+    <tr><td class="paramname">npcClone</td><td>The new npc</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1622,15 +1634,8 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make things happen whenever an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use <a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html" title="This readonly struct is a simple shortcut to ItemDropDatabase&#39;s methods.">NPCLoot</a>, but you can use HitEffect paired with a check for <code>if (npc.life &lt;= 0)</code> to do client-side death effects, such as spawning dust, gore, or death sounds. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">npc</td><td></td></tr>
-    <tr><td class="paramname">hitDirection</td><td></td></tr>
-    <tr><td class="paramname">damage</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Allows you to make things happen whenever an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is hit, such as creating dust or gores. <br  />
+ This hook is client side. Usually when something happens when an npc dies such as item spawning, you use <a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html" title="This readonly struct is a simple shortcut to ItemDropDatabase&#39;s methods.">NPCLoot</a>, but you can use HitEffect paired with a check for <code>if (npc.life &lt;= 0)</code> to do client-side death effects, such as spawning dust, gore, or death sounds. </p>
 
 </div>
 </div>
@@ -2059,34 +2064,6 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 </div><div class="memdoc">
 
 <p>Allows you to modify the type name of this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> dynamically. </p>
-
-</div>
-</div>
-<a id="ae35c6fc2967d4631b20e4cd4d7a51bb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae35c6fc2967d4631b20e4cd4d7a51bb6">&#9670;&nbsp;</a></span>NewInstance()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a> Terraria.ModLoader.GlobalNPC.NewInstance </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
-          <td class="paramname"><em>npc</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create a new instance of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> for an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> instance. Called at the end of NPC.SetDefaults. If CloneNewInstances is true, just calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a" title="Returns a clone of this GlobalNPC. By default this will return a memberwise clone; you will want to o...">Clone()</a> Otherwise calls the default constructor and copies fields </p>
 
 </div>
 </div>
@@ -2527,6 +2504,44 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a8828c1b2d05ebe88b97b4d15609005dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8828c1b2d05ebe88b97b4d15609005dc">&#9670;&nbsp;</a></span>OnSpawn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalNPC.OnSpawn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets called when any <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> spawns in world </p>
 
 </div>
 </div>
@@ -2991,12 +3006,6 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 </div><div class="memdoc">
 
 <p>Allows you to set the properties of any and every <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> that gets created. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">npc</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -3725,31 +3734,6 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="adda48aad4cbc0f80e96bd8fa2794cfa1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adda48aad4cbc0f80e96bd8fa2794cfa1">&#9670;&nbsp;</a></span>CloneNewInstances</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool Terraria.ModLoader.GlobalNPC.CloneNewInstances</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Whether instances of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html" title="This class allows you to modify and use hooks for all NPCs, including vanilla mobs....">GlobalNPC</a> are created through Clone or constructor (by default implementations of NewInstance and <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a" title="Returns a clone of this GlobalNPC. By default this will return a memberwise clone; you will want to o...">Clone()</a>). Defaults to false (using default constructor). </p>
 
 </div>
 </div>

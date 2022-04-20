@@ -311,6 +311,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCreate</b> 
 <tr class="memitem:a72559dd4b2d1b7e1f5755cc406180c12"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a72559dd4b2d1b7e1f5755cc406180c12">OnResearched</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, bool fullyResearched)</td></tr>
 <tr class="memdesc:a72559dd4b2d1b7e1f5755cc406180c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create custom behaviour when an item is accepted by the Research function  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a72559dd4b2d1b7e1f5755cc406180c12">More...</a><br /></td></tr>
 <tr class="separator:a72559dd4b2d1b7e1f5755cc406180c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ad1fbdabaf6e7f0a03bb3f8729bae74"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a4ad1fbdabaf6e7f0a03bb3f8729bae74">OnSpawn</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source)</td></tr>
+<tr class="memdesc:a4ad1fbdabaf6e7f0a03bb3f8729bae74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when any item spawns in world  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a4ad1fbdabaf6e7f0a03bb3f8729bae74">More...</a><br /></td></tr>
+<tr class="separator:a4ad1fbdabaf6e7f0a03bb3f8729bae74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0eb343631d8090fa5bb7a85fcc9a784f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a0eb343631d8090fa5bb7a85fcc9a784f">OpenVanillaBag</a> (string context, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, int arg)</td></tr>
 <tr class="memdesc:a0eb343631d8090fa5bb7a85fcc9a784f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make vanilla bags drop your own items in addition to the default items. This method will not be called if any other <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a> returns false for PreOpenVanillaBag. Context will either be "present", "bossBag", "crate", "lockBox", "obsidianLockBox", "herbBag", or "goodieBag". For boss bags and crates, arg will be set to the type of the item being opened. This method is also called for modded bossBags that are properly implemented.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a0eb343631d8090fa5bb7a85fcc9a784f">More...</a><br /></td></tr>
 <tr class="separator:a0eb343631d8090fa5bb7a85fcc9a784f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3426,6 +3429,44 @@ Called before the ammo stack is reduced. </p>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a4ad1fbdabaf6e7f0a03bb3f8729bae74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ad1fbdabaf6e7f0a03bb3f8729bae74">&#9670;&nbsp;</a></span>OnSpawn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalItem.OnSpawn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets called when any item spawns in world </p>
 
 </div>
 </div>

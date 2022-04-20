@@ -1,9 +1,9 @@
 var class_terraria_1_1_gore =
 [
     [ "GetAlpha", "class_terraria_1_1_gore.html#aa6b20df61b7846d0c65d3f75962fe6b0", null ],
-    [ "NewGore", "class_terraria_1_1_gore.html#a99c43465db05b0c96da5f5d941e780d1", null ],
-    [ "NewGoreDirect", "class_terraria_1_1_gore.html#a6f50d9725660d35b1ff1d942ebb75ce3", null ],
-    [ "NewGorePerfect", "class_terraria_1_1_gore.html#a5c5f918e667ec582e81495cf507c30c6", null ],
+    [ "NewGore", "class_terraria_1_1_gore.html#afac8a14846e5fe7e5efc50575681f351", null ],
+    [ "NewGoreDirect", "class_terraria_1_1_gore.html#ab6125b4ba73ee4841c3dd4b40e88f060", null ],
+    [ "NewGorePerfect", "class_terraria_1_1_gore.html#a7e962ed1c9ebfb81fdac78410258e85d", null ],
     [ "Update", "class_terraria_1_1_gore.html#ab9078152d6eee8a04d22d83b7a49e88e", null ],
     [ "active", "class_terraria_1_1_gore.html#a68a31004af522ae7cbaccb56b65d15f7", null ],
     [ "alpha", "class_terraria_1_1_gore.html#a8df1fbbd2925484111bbbb90d7c29a7f", null ],

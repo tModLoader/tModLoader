@@ -106,9 +106,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aaed465630616b69bd0c36075c973cdaf"><td class="memItemLeft" align="right" valign="top">virtual ? Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_gore.html#aaed465630616b69bd0c36075c973cdaf">GetAlpha</a> (<a class="el" href="class_terraria_1_1_gore.html">Gore</a> gore, Color lightColor)</td></tr>
 <tr class="memdesc:aaed465630616b69bd0c36075c973cdaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to override the color this gore will draw in. Return null to draw it in the normal light color; returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_gore.html#aaed465630616b69bd0c36075c973cdaf">More...</a><br /></td></tr>
 <tr class="separator:aaed465630616b69bd0c36075c973cdaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada0fa9c0dc13df6c3c2c18a2e8055ed2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_gore.html#ada0fa9c0dc13df6c3c2c18a2e8055ed2">OnSpawn</a> (<a class="el" href="class_terraria_1_1_gore.html">Gore</a> gore)</td></tr>
-<tr class="memdesc:ada0fa9c0dc13df6c3c2c18a2e8055ed2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify a gore's fields when it is created.  <a href="class_terraria_1_1_mod_loader_1_1_mod_gore.html#ada0fa9c0dc13df6c3c2c18a2e8055ed2">More...</a><br /></td></tr>
-<tr class="separator:ada0fa9c0dc13df6c3c2c18a2e8055ed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac23cf90839bca3a0de6ddbaca0b38790"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_gore.html#ac23cf90839bca3a0de6ddbaca0b38790">OnSpawn</a> (<a class="el" href="class_terraria_1_1_gore.html">Gore</a> gore, <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source)</td></tr>
+<tr class="memdesc:ac23cf90839bca3a0de6ddbaca0b38790"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify a gore's fields when it is created.  <a href="class_terraria_1_1_mod_loader_1_1_mod_gore.html#ac23cf90839bca3a0de6ddbaca0b38790">More...</a><br /></td></tr>
+<tr class="separator:ac23cf90839bca3a0de6ddbaca0b38790"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a411e2f7772219c70bea337bd98fa8360"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_gore.html#a411e2f7772219c70bea337bd98fa8360">SetupContent</a> ()</td></tr>
 <tr class="memdesc:a411e2f7772219c70bea337bd98fa8360"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aa2daf87c887ac0d98f00543a41e8e87f" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_terraria_1_1_mod_loader_1_1_mod_gore.html#a411e2f7772219c70bea337bd98fa8360">More...</a><br /></td></tr>
 <tr class="separator:a411e2f7772219c70bea337bd98fa8360"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -216,8 +216,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get, s
 
 </div>
 </div>
-<a id="ada0fa9c0dc13df6c3c2c18a2e8055ed2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada0fa9c0dc13df6c3c2c18a2e8055ed2">&#9670;&nbsp;</a></span>OnSpawn()</h2>
+<a id="ac23cf90839bca3a0de6ddbaca0b38790"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac23cf90839bca3a0de6ddbaca0b38790">&#9670;&nbsp;</a></span>OnSpawn()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -229,8 +229,18 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b><code> [get, s
           <td class="memname">virtual void Terraria.ModLoader.ModGore.OnSpawn </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_gore.html">Gore</a>&#160;</td>
-          <td class="paramname"><em>gore</em></td><td>)</td>
+          <td class="paramname"><em>gore</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>

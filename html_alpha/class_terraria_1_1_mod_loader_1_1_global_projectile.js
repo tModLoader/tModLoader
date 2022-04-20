@@ -7,7 +7,7 @@ var class_terraria_1_1_mod_loader_1_1_global_projectile =
     [ "CanHitPlayer", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a4f51dbe916fc4bf552bfb340b96d130c", null ],
     [ "CanHitPvp", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a96b688c76e4ce10649982a3ab222eff5", null ],
     [ "CanUseGrapple", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0070501f25f491b4b9e792c44bd6f7ba", null ],
-    [ "Clone", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a989c8dbdc4be33d6b2b9741925d21c58", null ],
+    [ "Clone", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a9615b5a902b24e4ad4f40d81da53cc7f", null ],
     [ "Colliding", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac05a8800b34d3f43309a759608d09fbd", null ],
     [ "CutTiles", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a71b11f64254f701d32aee669c732d3ae", null ],
     [ "DrawBehind", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a870241df9f466526b62fc5c6aa332c33", null ],
@@ -22,11 +22,11 @@ var class_terraria_1_1_mod_loader_1_1_global_projectile =
     [ "ModifyHitNPC", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a78a58a0e560bf775d3ad11951906f73c", null ],
     [ "ModifyHitPlayer", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a294bc7ef4586362ed1ef19df56d88e09", null ],
     [ "ModifyHitPvp", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac155350ec502aa873ef9748636accc88", null ],
-    [ "NewInstance", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#acbeaf69a28ae0e369b60043a5049525a", null ],
     [ "NumGrappleHooks", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ab01ffa6483a27d73051ca9b30f249184", null ],
     [ "OnHitNPC", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a6c4760647ac0f9a454989e2b333c7b0c", null ],
     [ "OnHitPlayer", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a2dac12ff40a1dabbf0d4fb1442f6f832", null ],
     [ "OnHitPvp", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a004341b430cdd90fb406238d872219e1", null ],
+    [ "OnSpawn", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a13edf684452d1c55b5041f42dc50f45f", null ],
     [ "OnTileCollide", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a54e53d2666fd2746541428bee75542a9", null ],
     [ "PostAI", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a610a8a7456d42c49b38bb89f0b7523a5", null ],
     [ "PostDraw", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ae19f370053f18d36ebcdf88c89801393", null ],
@@ -40,6 +40,5 @@ var class_terraria_1_1_mod_loader_1_1_global_projectile =
     [ "ShouldUpdatePosition", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a947e32131ebfbf214c8d9530acc3bc77", null ],
     [ "SingleGrappleHook", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ae4651a2fa45e589a570b8b96a513a1b3", null ],
     [ "TileCollideStyle", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#aa1ea82f72edb07bdc91685e8b3920e40", null ],
-    [ "UseGrapple", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#aa2c88a7d4194399f4ed0e15b5c4e6e7f", null ],
-    [ "CloneNewInstances", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a1e2cdba14d6eabb0cc84c1eaef018d09", null ]
+    [ "UseGrapple", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#aa2c88a7d4194399f4ed0e15b5c4e6e7f", null ]
 ];

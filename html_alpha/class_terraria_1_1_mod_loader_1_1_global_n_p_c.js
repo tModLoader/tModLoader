@@ -14,7 +14,7 @@ var class_terraria_1_1_mod_loader_1_1_global_n_p_c =
     [ "CanHitPlayer", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a12bf30524cc768e5152513a2af03f129", null ],
     [ "CheckActive", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6803569c436f2938d5ac711920e706ec", null ],
     [ "CheckDead", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afe194f5179f9af5463ef4bded6ae3a2f", null ],
-    [ "Clone", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a032e3518c1fa6ba47fe8042abe16c76a", null ],
+    [ "Clone", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5a677d585eac784509310d8539387580", null ],
     [ "DrawBehind", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a2e93b458e93b6de51dedfa5423ccf54d", null ],
     [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ace0105b7dd87ff07bd2af18fe0e9ac18", null ],
     [ "DrawHealthBar", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a2fba444e49eb8bdd2bf974e92e0e9b4d", null ],
@@ -36,7 +36,6 @@ var class_terraria_1_1_mod_loader_1_1_global_n_p_c =
     [ "ModifyNPCLoot", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afa3015ffb9c4818ae7af1271585c9d17", null ],
     [ "ModifyNPCNameList", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7a5847691fcb9f1a18daafdbabe2bc6a", null ],
     [ "ModifyTypeName", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#abe8525d289c7727bf35050635fbf8a10", null ],
-    [ "NewInstance", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ae35c6fc2967d4631b20e4cd4d7a51bb6", null ],
     [ "OnCatchNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ac9aed15677d38c7ce2700408e634f3e0", null ],
     [ "OnChatButtonClicked", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7a9dc1f2fadc19db07e55dcb2f061aad", null ],
     [ "OnGoToStatue", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ae178ad8f9523b2f87b63220607a982f8", null ],
@@ -45,6 +44,7 @@ var class_terraria_1_1_mod_loader_1_1_global_n_p_c =
     [ "OnHitNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afeb07e4fd3c8b037c5526a6fb5c3e18b", null ],
     [ "OnHitPlayer", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5e30e8f6af971e9821243a3af23c38ca", null ],
     [ "OnKill", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#adfe04399d60c51950e7a6a93541edcac", null ],
+    [ "OnSpawn", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a8828c1b2d05ebe88b97b4d15609005dc", null ],
     [ "PostAI", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a78cc6cfde1d3aae79d01ded8aff5fddd", null ],
     [ "PostDraw", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a0f7d2fac7c1e5e64949ce9b2dbfedb87", null ],
     [ "PreAI", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ae5493040c8b14b6fcaff767eca894b67", null ],
@@ -70,6 +70,5 @@ var class_terraria_1_1_mod_loader_1_1_global_n_p_c =
     [ "TownNPCAttackShoot", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aa0c7388db7dc4d7dd7d920e9cf55ce8a", null ],
     [ "TownNPCAttackStrength", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a4d7d2713a9fe21de8069182c7897fde6", null ],
     [ "TownNPCAttackSwing", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5ef4cbdeffb9eed794a04b625d3099da", null ],
-    [ "UpdateLifeRegen", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6e84a3d90afc82add5f85b9ebe6a7031", null ],
-    [ "CloneNewInstances", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#adda48aad4cbc0f80e96bd8fa2794cfa1", null ]
+    [ "UpdateLifeRegen", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6e84a3d90afc82add5f85b9ebe6a7031", null ]
 ];

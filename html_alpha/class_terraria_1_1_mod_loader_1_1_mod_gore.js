@@ -1,7 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_mod_gore =
 [
     [ "GetAlpha", "class_terraria_1_1_mod_loader_1_1_mod_gore.html#aaed465630616b69bd0c36075c973cdaf", null ],
-    [ "OnSpawn", "class_terraria_1_1_mod_loader_1_1_mod_gore.html#ada0fa9c0dc13df6c3c2c18a2e8055ed2", null ],
+    [ "OnSpawn", "class_terraria_1_1_mod_loader_1_1_mod_gore.html#ac23cf90839bca3a0de6ddbaca0b38790", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_mod_gore.html#a479abca923a8e49094ccfb0f5bed818e", null ],
     [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_mod_gore.html#a411e2f7772219c70bea337bd98fa8360", null ],
     [ "Update", "class_terraria_1_1_mod_loader_1_1_mod_gore.html#a6714133002750bffa868fd284fe6fa25", null ],
