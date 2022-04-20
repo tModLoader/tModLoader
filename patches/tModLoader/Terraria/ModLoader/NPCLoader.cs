@@ -921,13 +921,15 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);
-		public static void ModifyNPCNameList(NPC npc, List<string> nameList) {
+		public static List<string> ModifyNPCNameList(NPC npc, List<string> nameList) {
 			if (npc.ModNPC != null)
 				nameList = npc.ModNPC.SetNPCNameList();
 
 			foreach (GlobalNPC g in HookModifyNPCNameList.Enumerate(npc.globalNPCs)) {
 				g.ModifyNPCNameList(npc, nameList);
 			}
+
+			return nameList;
 		}
 
 		public static bool UsesPartyHat(NPC npc) {
