@@ -1,7 +1,9 @@
 --- src/TerrariaNetCore/Terraria/ID/ProjectileSourceID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileSourceID.cs
-@@ -1,6 +_,9 @@
+@@ -1,6 +_,11 @@
 +#nullable enable
++
++using System;
 +
  namespace Terraria.ID
  {
@@ -26,7 +28,6 @@
 +			SetBonus_Stardust => nameof(SetBonus_Stardust),
 +			WeaponEnchantment_Confetti => nameof(WeaponEnchantment_Confetti),
 +			PlayerDeath_TombStone => nameof(PlayerDeath_TombStone),
-+			TorchGod => nameof(TorchGod),
 +			FallingStar => nameof(FallingStar),
 +			PlayerHurt_DropFootball => nameof(PlayerHurt_DropFootball),
 +			StormTigerTierSwap => nameof(StormTigerTierSwap),
@@ -34,6 +35,7 @@
 +			SetBonus_GhostHeal => nameof(SetBonus_GhostHeal),
 +			SetBonus_GhostHurt => nameof(SetBonus_GhostHurt),
 +			VampireKnives => nameof(VampireKnives),
++			TorchGod => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'."), // Due to 'EntitySource_TorchGod' being added.
 +			_ => null,
 +		};
  	}

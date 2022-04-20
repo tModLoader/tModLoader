@@ -2215,15 +2215,33 @@
  					if (!tile.active() || tile.type != 4)
  						continue;
  
-@@ -12860,7 +_,7 @@
+@@ -12860,7 +_,12 @@
  					NetMessage.SendData(4, -1, -1, null, whoAmI);
  
  				if (numberOfTorchAttacksMade >= 95) {
--					int number = Item.NewItem(new EntitySource_ByItemSourceId(this, 6), (int)position.X, (int)position.Y, width, height, 5043);
-+					int number = Item.NewItem(GetItemSource_Misc(6), (int)position.X, (int)position.Y, width, height, 5043);
++					/*
+ 					int number = Item.NewItem(new EntitySource_ByItemSourceId(this, 6), (int)position.X, (int)position.Y, width, height, 5043);
++					*/
++
++					int number = Item.NewItem(new EntitySource_TorchGod(this, Context: "TorchGod_FavorLoot"), (int)position.X, (int)position.Y, width, height, 5043);
++
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number, 1f);
  				}
+@@ -12890,7 +_,13 @@
+ 					float num10 = velocity.Length();
+ 					velocity.Normalize();
+ 					velocity *= num7;
++
++					/*
+ 					int num11 = Projectile.NewProjectile(GetProjectileSource_Misc(10), vector, velocity, 949, num8, 1f, whoAmI, num9, num10);
++					*/
++
++					int num11 = Projectile.NewProjectile(new EntitySource_TorchGod(this, Context: "TorchGod_Projectile"), vector, velocity, 949, num8, 1f, whoAmI, num9, num10);
++
+ 					Main.projectile[num11].ai[0] = num9;
+ 					Main.projectile[num11].ai[1] = num10;
+ 					Main.projectile[num11].netUpdate = true;
 @@ -12907,6 +_,9 @@
  			if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < 22)
  				nearbyTorch[inventory[selectedItem].placeStyle] = true;
