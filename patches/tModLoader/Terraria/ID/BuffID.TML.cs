@@ -8,6 +8,6 @@ public partial class BuffID
 		/// Set for debuffs.
 		/// Causes debuffs to last twice as long on players in expert mode. Defaults to false.
 		/// </summary>
-		public static bool[] LongerExpertDebuff = Factory.CreateBoolSet(20, 22, 23, 24, 30, 31, 32, 33, 35, 36, 39, 44, 46, 47, 69, 70, 80);
+		public static bool[] LongerExpertDebuff = Factory.CreateBoolSet(Poisoned, Darkness, Cursed, OnFire, Bleeding, Confused, Slow, Weak, Silenced, BrokenArmor, CursedInferno, Frostburn, Chilled, Frozen, Ichor, Venom, Blackout);
 	}
 }

@@ -4,7 +4,7 @@
 	{
 		partial class Sets
 		{
-			public static bool[] Glowsticks = Factory.CreateBoolSet(282, 286, 3002, 3112, 4776);
+			public static bool[] Glowsticks = Factory.CreateBoolSet(Glowstick, StickyGlowstick, SpelunkerGlowstick, BouncyGlowstick, FairyGlowstick);
 
 			/// <summary>
 			/// Set for all boss bags. Causes bags to drop dev armor.
