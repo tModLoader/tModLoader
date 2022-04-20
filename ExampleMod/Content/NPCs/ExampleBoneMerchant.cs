@@ -98,7 +98,7 @@ namespace ExampleMod.Content.NPCs
 				"Someone's Ribcage",
 				"Underground Blockster",
 				"Darkness"
-			}
+			};
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {

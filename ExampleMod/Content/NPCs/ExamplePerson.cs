@@ -167,7 +167,7 @@ namespace ExampleMod.Content.NPCs
 				"Somebody",
 				"Blocky",
 				"Colorless"
-			}
+			};
 		}
 
 		public override void FindFrame(int frameHeight) {
