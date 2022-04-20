@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Common.EntitySources
 {
-	// The following classes showcases pattern matching of IEntitySource instances to make thimgs happen only in specific contexts.
+	// The following classes showcases pattern matching of IEntitySource instances to make things happen only in specific contexts.
 	
 	public sealed class ExampleSourceDependentProjectileTweaks : GlobalProjectile
 	{
