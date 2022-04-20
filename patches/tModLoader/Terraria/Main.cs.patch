@@ -374,6 +374,16 @@
  					break;
  				case GraphicsProfile.Reach:
  					maxScreenW = 1920;
+@@ -2861,6 +_,9 @@
+ 					break;
+ 			}
+ 
++			maxScreenW = Math.Min(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width, maxScreenW);
++			maxScreenH = Math.Min(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, maxScreenH);
++
+ 			try {
+ 				graphics.ApplyChanges();
+ 			}
 @@ -2870,8 +_,8 @@
  					SetGraphicsProfileInternal();
  				}
