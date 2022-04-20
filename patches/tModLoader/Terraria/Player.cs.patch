@@ -4612,7 +4612,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,13 +_,37 @@
+@@ -37031,13 +_,46 @@
  			}
  
  			return num;
@@ -4646,8 +4646,17 @@
  				canUse = false;
  				for (int i = 0; i < 58; i++) {
 -					if (inventory[i].ammo == sItem.useAmmo && inventory[i].stack > 0) {
++					if (inventory[i].stack <= 0)
++						continue;
++
 +					bool? canChooseAmmo = ItemLoader.CanChooseAmmo(sItem, inventory[i], this);
-+					if ((canChooseAmmo.HasValue && canChooseAmmo.Value) || (inventory[i].ammo == sItem.useAmmo && inventory[i].stack > 0)) {
++					if (canChooseAmmo.HasValue) {
++						if (canChooseAmmo.Value) {
++							canUse = true;
++							break;
++						}
++					}
++					else if (inventory[i].ammo == sItem.useAmmo) {
  						canUse = true;
  						break;
  					}
@@ -4734,7 +4743,7 @@
  				flag2 = true;
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
-@@ -37226,19 +_,252 @@
+@@ -37226,19 +_,284 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
@@ -4764,33 +4773,65 @@
 +		// tML: part 1 of PickAmmo, finds the currently active ammo item if possible
 +		public void PickAmmo_TryToFindCurrentAmmoItem(Item weapon, ref bool canShoot, out Item currentAmmo) {
 +			currentAmmo = new Item();
-+			bool checkMainInventorySlots = false;
++			bool skipMainInventorySlots = false;
 +			if (weapon.useAmmo == AmmoID.Coin) {
 +				for (int i = 50; i < 54; i++) {
++					if (inventory[i].stack <= 0)
++						continue;
++
 +					bool? canChooseAmmo = ItemLoader.CanChooseAmmo(weapon, inventory[i], this);
-+					if ((canChooseAmmo.HasValue && canChooseAmmo.Value) || (inventory[i].ammo == weapon.useAmmo && inventory[i].stack > 0)) {
++					if (canChooseAmmo.HasValue) {
++						if (canChooseAmmo.Value) {
++							currentAmmo = inventory[i];
++							canShoot = true;
++							skipMainInventorySlots = true;
++							break;
++						}
++					}
++					if (inventory[i].ammo == weapon.useAmmo) {
 +						currentAmmo = inventory[i];
 +						canShoot = true;
-+						checkMainInventorySlots = true;
++						skipMainInventorySlots = true;
 +						break;
 +					}
 +				}
 +			}
 +
 +			for (int j = 54; j < 58; j++) {
++				if (inventory[j].stack <= 0)
++					continue;
++
 +				bool? canChooseAmmo = ItemLoader.CanChooseAmmo(weapon, inventory[j], this);
-+				if ((canChooseAmmo.HasValue && canChooseAmmo.Value) || (inventory[j].ammo == weapon.useAmmo && inventory[j].stack > 0)) {
++				if (canChooseAmmo.HasValue) {
++					if (canChooseAmmo.Value) {
++						currentAmmo = inventory[j];
++						canShoot = true;
++						skipMainInventorySlots = true;
++						break;
++					}
++				}
++				if (inventory[j].ammo == weapon.useAmmo) {
 +					currentAmmo = inventory[j];
 +					canShoot = true;
-+					checkMainInventorySlots = true;
++					skipMainInventorySlots = true;
 +					break;
 +				}
 +			}
 +
-+			if (!checkMainInventorySlots) {
++			if (!skipMainInventorySlots) {
 +				for (int k = 0; k < 54; k++) {
++					if (inventory[k].stack <= 0)
++						continue;
++
 +					bool? canChooseAmmo = ItemLoader.CanChooseAmmo(weapon, inventory[k], this);
-+					if ((canChooseAmmo.HasValue && canChooseAmmo.Value) || (inventory[k].ammo == weapon.useAmmo && inventory[k].stack > 0)) {
++					if (canChooseAmmo.HasValue) {
++						if (canChooseAmmo.Value) {
++							currentAmmo = inventory[k];
++							canShoot = true;
++							break;
++						}
++					}
++					if (inventory[k].ammo == weapon.useAmmo) {
 +						currentAmmo = inventory[k];
 +						canShoot = true;
 +						break;
