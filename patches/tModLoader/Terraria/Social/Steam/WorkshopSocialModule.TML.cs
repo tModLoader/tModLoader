@@ -34,7 +34,7 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-			if (BuildInfo.IsDev) {
+			if (false && BuildInfo.IsDev) {
 				IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 				return false;
 			}
@@ -107,6 +107,10 @@ namespace Terraria.Social.Steam
 			}
 
 			string[] usedTagsInternalNames = settings.GetUsedTagsInternalNames();
+			string[] modMetadata = { buildData["modside"] };
+
+			string[] tagsList = usedTagsInternalNames.Concat(modMetadata).ToArray();
+
 			string workshopDeps = "";
 
 			if (buildData["modreferences"].Length > 0) {
@@ -132,7 +136,7 @@ namespace Terraria.Social.Steam
 
 				_publisherInstances.Add(modPublisherInstance);
 
-				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, usedTagsInternalNames, buildData, currPublishID);
+				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList, buildData, currPublishID);
 
 				return true;
 			}
