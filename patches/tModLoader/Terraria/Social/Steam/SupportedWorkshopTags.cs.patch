@@ -7,19 +7,19 @@
 +
 +			// TML Added Mod Tags: [
 +			// Common Mod Focuses
-+			AddModTag("WorkshopTags.Content", "New Content");
-+			AddModTag("WorkshopTags.Utility", "Utilities");
-+			AddModTag("WorkshopTags.Library", "Library");
-+			AddModTag("WorkshopTags.QoL", "Quality of Life");
++			AddModTag("tModLoader.Tags.Content", "New Content");
++			AddModTag("tModLoader.Tags.Utility", "Utilities");
++			AddModTag("tModLoader.Tags.Library", "Library");
++			AddModTag("tModLoader.Tags.QoL", "Quality of Life");
 +
 +			// Tweaks
-+			AddModTag("WorkshopTags.Gameplay", "Gameplay Tweaks");
-+			AddModTag("WorkshopTags.Audio", "Audio Tweaks");
-+			AddModTag("WorkshopTags.Visual", "Visual Tweaks");
++			AddModTag("tModLoader.Tags.Gameplay", "Gameplay Tweaks");
++			AddModTag("tModLoader.Tags.Audio", "Audio Tweaks");
++			AddModTag("tModLoader.Tags.Visual", "Visual Tweaks");
 +
 +			// TBD Grouping
-+			AddModTag("WorkshopTags.Lang", "Localization Support");
-+			AddModTag("WorkshopTags.Gen", "Custom World Gen");
++			AddModTag("tModLoader.Tags.Lang", "Localization Support");
++			AddModTag("tModLoader.Tags.Gen", "Custom World Gen");
 +
 +			// ]
  		}

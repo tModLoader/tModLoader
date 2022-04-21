@@ -278,7 +278,7 @@
 		"MigratePlayersException": "There was a problem while trying to migrate Player files",
 		"MigrateWorldsMessage": "You have no worlds.\nIf you'd like to manually migrate your worlds from vanilla to tModLoader,\nyou can press the migrate button below to do so automatically.\nAlternatively, you can copy them from\n/Terraria/Worlds\nto\n/Terraria/{0}/Worlds manually.\nCopy the .wld files over.\nClick this text to open those folders.\nAfter copying over the worlds you want, press back.",
 		"MigrateWorldsText": "Click here to automatically migrate worlds from Terraria...",
-		"MigrateWorldsException": "There was a problem while trying to migrate World files",		
+		"MigrateWorldsException": "There was a problem while trying to migrate World files",
 		"MigratingWorldsText": "Migrating...",
 		"ModsDifferentSinceLastPlay": "The following mods are different since last time you played: ",
 		"Missing1Mod": "Missing 1 mod.",
@@ -459,5 +459,25 @@
 		"InGemCave": "Needs to be in Gem Cave",
 		"InLihzardTemple": "Needs to be in Lihzard Temple",
 		"InGraveyardBiome": "Needs to be in Graveyard Biome"
+	},
+	"Tags": {
+		"Content": "New Content",
+		"ContentDescription": "This is a placeholder description. Don't Translate!",
+		"Utility": "Utlities",
+		"UtilityDescription": "This is a placeholder description. Don't Translate!",
+		"Library": "Library",
+		"LibraryDescription": "This is a placeholder description. Don't Translate!",
+		"QoL": "Quality Of Life",
+		"QoLDescription": "This is a placeholder description. Don't Translate!",
+		"Gameplay": "Gameplay Tweaks",
+		"GameplayDescription": "This is a placeholder description. Don't Translate!",
+		"Audio": "Audio Tweaks",
+		"AudioDescription": "This is a placeholder description. Don't Translate!",
+		"Visual": "Visaul Tweaks",
+		"VisualDescription": "This is a placeholder description. Don't Translate!",
+		"Lang": "Localization Support",
+		"LangDescription": "This is a placeholder description. Don't Translate!",
+		"Gen": "Custom World Gen",
+		"GenDescription": "This is a placeholder description. Don't Translate!"
 	}
 }
