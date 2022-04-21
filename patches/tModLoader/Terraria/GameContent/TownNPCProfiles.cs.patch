@@ -30,7 +30,7 @@
  			{ 229, new Profiles.LegacyNPCProfile("Images/TownNPCs/Pirate", 19) },
  			{ 142, new Profiles.LegacyNPCProfile("Images/TownNPCs/Santa", 11) },
  			{ 453, new Profiles.LegacyNPCProfile("Images/TownNPCs/SkeletonMerchant", -1) },
-@@ -48,13 +_,20 @@
+@@ -48,13 +_,36 @@
  			{ 353, new Profiles.LegacyNPCProfile("Images/TownNPCs/Stylist", 20) },
  			{ 441, new Profiles.LegacyNPCProfile("Images/TownNPCs/TaxCollector", 23) },
  			{ 368, new Profiles.LegacyNPCProfile("Images/TownNPCs/TravelingMerchant", 21) },
@@ -46,9 +46,25 @@
  
 -		public bool GetProfile(int npcId, out ITownNPCProfile profile) => _townNPCProfiles.TryGetValue(npcId, out profile);
 +		public bool GetProfile(NPC npc, out ITownNPCProfile profile) {
-+			Dictionary<int, ITownNPCProfile> townNPCProfileList = _townNPCProfiles;
-+			NPCLoader.SetTownNPCProfile(npc, townNPCProfileList);
-+			return townNPCProfileList.TryGetValue(npc.type, out profile);
-+		}		
++			if (npc.type < NPCID.Count) {
++				bool profileExists = _townNPCProfiles.TryGetValue(npc.type, out profile);
++				if (profileExists)
++					NPCLoader.SetTownNPCProfile(npc, ref profile);
++				return profileExists;
++			}
++			else {
++				profile = npc.ModNPC.TownNPCProfile;
++				bool profileExists = profile != null;
++				if (profileExists)
++					NPCLoader.SetTownNPCProfile(npc, ref profile);
++				return profileExists;
++			}
++		}
++
++		internal void ResetTexturesAccordingToVanillaProfiles() {
++			foreach (KeyValuePair<int, ITownNPCProfile> pair in _townNPCProfiles) {
++				TextureAssets.Npc[pair.Key] = pair.Value.GetTextureNPCShouldUse();
++			}
++		}
  	}
  }
