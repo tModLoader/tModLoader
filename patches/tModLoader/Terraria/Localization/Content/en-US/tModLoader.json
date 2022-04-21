@@ -417,7 +417,25 @@
 		"ModExceptionHint": "\n\nTip: This is likely a mod's fault. Disable mods one by one and check if the issue persists",
 		"OneDriveHint": "\n\nTip: Try installing/enabling OneDrive. Right click your Documents folder and enable \"Always save on this device\"",
 		"AntivirusHint": "\n\nTip: If you have an antivirus, try adding Terraria to its whitelist/exclusion list",
-		"TypeInitializationHint": "\n\nTip: Restart the game. If this issue persists, try uninstalling Terraria completely, then reinstalling through Steam, and then reinstalling tModLoader"
+		"TypeInitializationHint": "\n\nTip: Restart the game. If this issue persists, try uninstalling Terraria completely, then reinstalling through Steam, and then reinstalling tModLoader",
+		"TagsContent": "New Content",
+		"TagsContentDescription": "This is a placeholder description. Don't Translate!",
+		"TagsUtility": "Utlities",
+		"TagsUtilityDescription": "This is a placeholder description. Don't Translate!",
+		"TagsLibrary": "Library",
+		"TagsLibraryDescription": "This is a placeholder description. Don't Translate!",
+		"TagsQoL": "Quality Of Life",
+		"TagsQoLDescription": "This is a placeholder description. Don't Translate!",
+		"TagsGameplay": "Gameplay Tweaks",
+		"TagsGameplayDescription": "This is a placeholder description. Don't Translate!",
+		"TagsAudio": "Audio Tweaks",
+		"TagsAudioDescription": "This is a placeholder description. Don't Translate!",
+		"TagsVisual": "Visaul Tweaks",
+		"TagsVisualDescription": "This is a placeholder description. Don't Translate!",
+		"TagsLang": "Localization Support",
+		"TagsLangDescription": "This is a placeholder description. Don't Translate!",
+		"TagsGen": "Custom World Gen",
+		"TagsGenDescription": "This is a placeholder description. Don't Translate!"
 	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "{0}% increased damage"
@@ -459,25 +477,5 @@
 		"InGemCave": "Needs to be in Gem Cave",
 		"InLihzardTemple": "Needs to be in Lihzard Temple",
 		"InGraveyardBiome": "Needs to be in Graveyard Biome"
-	},
-	"Tags": {
-		"Content": "New Content",
-		"ContentDescription": "This is a placeholder description. Don't Translate!",
-		"Utility": "Utlities",
-		"UtilityDescription": "This is a placeholder description. Don't Translate!",
-		"Library": "Library",
-		"LibraryDescription": "This is a placeholder description. Don't Translate!",
-		"QoL": "Quality Of Life",
-		"QoLDescription": "This is a placeholder description. Don't Translate!",
-		"Gameplay": "Gameplay Tweaks",
-		"GameplayDescription": "This is a placeholder description. Don't Translate!",
-		"Audio": "Audio Tweaks",
-		"AudioDescription": "This is a placeholder description. Don't Translate!",
-		"Visual": "Visaul Tweaks",
-		"VisualDescription": "This is a placeholder description. Don't Translate!",
-		"Lang": "Localization Support",
-		"LangDescription": "This is a placeholder description. Don't Translate!",
-		"Gen": "Custom World Gen",
-		"GenDescription": "This is a placeholder description. Don't Translate!"
 	}
 }
