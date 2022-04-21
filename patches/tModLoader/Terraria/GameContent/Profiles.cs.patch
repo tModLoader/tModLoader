@@ -9,55 +9,21 @@
  	{
  		public class LegacyNPCProfile : ITownNPCProfile
  		{
-@@ -25,7 +_,9 @@
+@@ -25,7 +_,7 @@
  			}
  
  			public int RollVariation() => 0;
 -			public string GetNameForVariant(NPC npc) => NPC.getNewNPCName(npc.type);
 +			public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
-+
-+			public Asset<Texture2D> GetTextureNPCShouldUse() => _defaultNoAlt;
  
  			public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
  				if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-@@ -34,7 +_,7 @@
- 				if (npc.altTexture == 1)
- 					return _defaultParty;
- 
--				return _defaultNoAlt;
-+				return GetTextureNPCShouldUse();
- 			}
- 
- 			public int GetHeadTextureIndex(NPC npc) => _defaultVariationHeadIndex;
-@@ -60,7 +_,9 @@
+@@ -60,7 +_,7 @@
  			}
  
  			public int RollVariation() => 0;
 -			public string GetNameForVariant(NPC npc) => NPC.getNewNPCName(npc.type);
 +			public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
-+
-+			public Asset<Texture2D> GetTextureNPCShouldUse() => _defaultNoAlt;
  
  			public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
  				if (npc.altTexture == 3)
-@@ -72,7 +_,7 @@
- 				if (npc.altTexture == 2)
- 					return _defaultTransformed;
- 
--				return _defaultNoAlt;
-+				return GetTextureNPCShouldUse();
- 			}
- 
- 			public int GetHeadTextureIndex(NPC npc) => _defaultVariationHeadIndex;
-@@ -101,6 +_,11 @@
- 
- 			public int RollVariation() => Main.rand.Next(_variants.Length);
- 			public string GetNameForVariant(NPC npc) => Language.RandomFromCategory(_npcBaseName + "Names_" + _variants[npc.townNpcVariationIndex], WorldGen.genRand).Value;
-+
-+			public Asset<Texture2D> GetTextureNPCShouldUse() {
-+				string text = _rootFilePath + "_" + _variants[1];
-+				return _variantTextures[text];
-+			}
- 
- 			public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
- 				string text = _rootFilePath + "_" + _variants[npc.townNpcVariationIndex];

@@ -23,8 +23,6 @@ namespace Terraria.GameContent
 			public int RollVariation() => 0;
 			public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
 
-			public Asset<Texture2D> GetTextureNPCShouldUse() => _defaultNoAlt;
-
 			public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) => _defaultNoAlt;
 
 			public int GetHeadTextureIndex(NPC npc) => _defaultVariationHeadIndex;
