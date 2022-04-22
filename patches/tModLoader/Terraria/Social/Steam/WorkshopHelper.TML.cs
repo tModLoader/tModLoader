@@ -114,7 +114,7 @@ namespace Terraria.Social.Steam
 
 			internal static bool GetPublishIdLocal(LocalMod mod, out ulong publishId) {
 				publishId = 0;
-				if (!AWorkshopEntry.TryReadingManifest(Path.Combine(Directory.GetParent(mod.modFile.path).ToString(), "workshop.json"), out var info))
+				if (!ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(mod.modFile.path), out var info))
 					return false;
 
 				publishId = info.workshopEntryId;
