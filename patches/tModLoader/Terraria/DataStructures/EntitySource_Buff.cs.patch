@@ -1,0 +1,24 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_Buff.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_Buff.cs
+@@ -1,3 +_,5 @@
++#nullable enable
++
+ namespace Terraria.DataStructures
+ {
+ 	public class EntitySource_Buff : IEntitySource
+@@ -5,11 +_,14 @@
+ 		public readonly Entity Entity;
+ 		public readonly int BuffId;
+ 		public readonly int BuffIndex;
++		
++		public string? Context { get; }
+ 
+-		public EntitySource_Buff(Entity entity, int buffId, int buffIndex) {
++		public EntitySource_Buff(Entity entity, int buffId, int buffIndex, string? context = null) {
+ 			Entity = entity;
+ 			BuffId = buffId;
+ 			BuffIndex = buffIndex;
++			Context = context;
+ 		}
+ 	}
+ }

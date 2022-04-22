@@ -201,3 +201,15 @@
  			Main.tile[i, j].inActive(inActive: false);
  			WorldGen.SquareTileFrame(i, j, resetFrame: false);
  			if (Main.netMode != 1)
+@@ -2510,7 +_,11 @@
+ 			if (!flag)
+ 				MassWireOperationStep(pe, toolMode, ref wireCount, ref actuatorCount);
+ 
++			/*
+ 			EntitySource_ByItemSourceId reason = new EntitySource_ByItemSourceId(user, 5);
++			*/
++			var reason = user.GetSource_Misc(ItemSourceID.ToContextString(ItemSourceID.GrandDesignOrMultiColorWrench));
++
+ 			Item.DropCache(reason, dropPoint, Vector2.Zero, 530);
+ 			Item.DropCache(reason, dropPoint, Vector2.Zero, 849);
+ 		}

@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
 using Terraria.GameContent.UI.BigProgressBar;
 using Terraria.ID;
 using Terraria.DataStructures;
@@ -10,9 +12,11 @@ namespace Terraria
 {
 	public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	{
-		public ModNPC ModNPC { get; internal set; }
+		internal readonly IEntitySource thisEntitySourceCache;
 
 		internal Instanced<GlobalNPC>[] globalNPCs = Array.Empty<Instanced<GlobalNPC>>();
+
+		public ModNPC ModNPC { get; internal set; }
 
 		public RefReadOnlyArray<Instanced<GlobalNPC>> Globals => new RefReadOnlyArray<Instanced<GlobalNPC>>(globalNPCs);
 
@@ -25,6 +29,10 @@ namespace Terraria
 		/// <para>To assign a vanilla boss bar for whatever reason, fetch it first through the NPC type using Main.BigBossProgressBar.TryGetSpecialVanillaBossBar</para>
 		/// </summary>
 		public IBigProgressBar BossBar { get; set; }
+
+		public NPC() {
+			thisEntitySourceCache = new EntitySource_Parent(this);
+		}
 
 		/// <summary> Returns whether or not this NPC currently has a (de)buff of the provided type. </summary>
 		public bool HasBuff(int type) => FindBuffIndex(type) != -1;
@@ -55,6 +63,14 @@ namespace Terraria
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
 			=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, baseInstance, out result);
+
+		/// <summary> A short-hand for <code> Main.npc[Main.NewNPC(...)] </code> </summary>
+		public static NPC NewNPCDirect(IEntitySource source, int x, int y, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
+			=> Main.npc[NewNPC(source, x, y, type, start, ai0, ai1, ai2, ai3, target)];
+
+		/// <inheritdoc cref="NewNPCDirect(IEntitySource, int, int, int, int, float, float, float, float, int)"/>
+		public static NPC NewNPCDirect(IEntitySource source, Vector2 position, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
+			=> NewNPCDirect(source, (int)position.X, (int)position.Y, type, start, ai0, ai1, ai2, ai3, target);
 
 		/// <summary>
 		/// Helper method for getting the parameters for seating a town NPC. Assumes the tile at <paramref name="anchorTilePosition"/> is a valid tile for sitting

@@ -1781,10 +1781,17 @@
  				num6 *= Star.starfallBoost;
  				if (!((float)Main.rand.Next(8000) < 10f * num6))
  					continue;
-@@ -46537,12 +_,17 @@
+@@ -46536,13 +_,24 @@
+ 					num15 = (float)num7 / num15;
  					num13 *= num15;
  					num14 *= num15;
++
++					/*
  					Projectile.NewProjectile(new EntitySource_ByProjectileSourceId(11), position.X, position.Y, num13, num14, 720, 0, 0f, Main.myPlayer, 0f, num10);
++					*/
++					var source = new EntitySource_Misc(nameof(ProjectileSourceID.FallingStar));
++
++					Projectile.NewProjectile(source, position.X, position.Y, num13, num14, 720, 0, 0f, Main.myPlayer, 0f, num10);
 +
 +					// Extra patch context.
  				}

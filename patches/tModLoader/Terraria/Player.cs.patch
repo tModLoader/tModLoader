@@ -76,6 +76,15 @@
  		public static int crystalLeafDamage = 100;
  		public static int crystalLeafKB = 10;
  		public float basiliskCharge;
+@@ -564,7 +_,7 @@
+ 		public byte oldLuckPotion;
+ 		public float endurance;
+ 		public float whipRangeMultiplier;
+-		public float whipUseTimeMultiplier;
++		internal ref float whipUseTimeMultiplier => ref GetAttackSpeed(DamageClass.SummonMeleeSpeed);
+ 		public bool loveStruck;
+ 		public bool stinky;
+ 		public bool resistCold;
 @@ -702,7 +_,7 @@
  		public bool poundRelease;
  		public float ghostFade;
@@ -85,7 +94,16 @@
  		public int[] buffType = new int[22];
  		public int[] buffTime = new int[22];
  		public bool[] buffImmune = new bool[338];
-@@ -1080,22 +_,25 @@
+@@ -872,7 +_,7 @@
+ 		public int golferScoreAccumulated;
+ 		public int bartenderQuestLog;
+ 		public bool downedDD2EventAnyDifficulty;
+-		public int armorPenetration;
++		internal ref float armorPenetration => ref GetArmorPenetration(DamageClass.Generic);
+ 		public int statDefense;
+ 		public int statLifeMax = 100;
+ 		public int statLifeMax2 = 100;
+@@ -1080,22 +_,22 @@
  		public bool parryDamageBuff;
  		public bool ballistaPanic;
  		public bool JustDroppedAnItem;
@@ -95,30 +113,32 @@
 -		public float meleeDamage = 1f;
 -		public float magicDamage = 1f;
 -		public float rangedDamage = 1f;
- 		public int meleeAddDamage;
- 		public int rangedAddDamage;
- 		public int magicAddDamage;
- 		public int minionAddDamage;
+-		public int meleeAddDamage;
+-		public int rangedAddDamage;
+-		public int magicAddDamage;
+-		public int minionAddDamage;
 -		public float bulletDamage = 1f;
 -		public float arrowDamage = 1f;
 -		public float rocketDamage = 1f;
 -		public float minionDamage = 1f;
-+		internal ref int allCrit => ref GetCritChance(DamageClass.Generic);
-+		internal ref int meleeCrit => ref GetCritChance(DamageClass.Melee);
-+		internal ref int magicCrit => ref GetCritChance(DamageClass.Magic);
-+		internal ref int rangedCrit => ref GetCritChance(DamageClass.Ranged);
+-		public float minionKB;
+-		public float meleeSpeed = 1f;
++		internal ref float allCrit => ref GetCritChance(DamageClass.Generic);
++		internal ref float meleeCrit => ref GetCritChance(DamageClass.Melee);
++		internal ref float magicCrit => ref GetCritChance(DamageClass.Magic);
++		internal ref float rangedCrit => ref GetCritChance(DamageClass.Ranged);
 +		internal ref StatModifier allDamage => ref GetDamage(DamageClass.Generic);
 +		internal ref StatModifier meleeDamage => ref GetDamage(DamageClass.Melee);
 +		internal ref StatModifier magicDamage => ref GetDamage(DamageClass.Magic);
 +		internal ref StatModifier rangedDamage => ref GetDamage(DamageClass.Ranged);
-+		public StatModifier bulletDamage = StatModifier.One;
-+		public StatModifier arrowDamage = StatModifier.One;
-+		public StatModifier rocketDamage = StatModifier.One;
++		public StatModifier bulletDamage = StatModifier.Default;
++		public StatModifier arrowDamage = StatModifier.Default;
++		public StatModifier rocketDamage = StatModifier.Default;
 +		internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +		internal ref StatModifier allKB => ref GetKnockback(DamageClass.Generic);
- 		public float minionKB;
--		public float meleeSpeed = 1f;
-+		public float meleeSpeed;
++		internal ref float minionKB => ref GetKnockback(DamageClass.Summon).Base;
++		internal ref float meleeSpeed => ref GetAttackSpeed(DamageClass.Melee);
++		internal float inverseMeleeSpeed => 1 / GetTotalAttackSpeed(DamageClass.Melee); // meleeSpeed is now a damage multiplier, so inverseMeleeSpeed is the useTime multiplier. By using GetTotalAttackSpeed we also incorporate anyone that adds attackSpeed to the Generic damage class
  		public float moveSpeed = 1f;
  		public float pickSpeed = 1f;
  		public float wallSpeed = 1f;
@@ -173,30 +193,24 @@
  				Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
  
  			if (talkNPC == -1)
-@@ -2100,12 +_,18 @@
+@@ -2100,12 +_,11 @@
  			itemTimeMax = frames;
  		}
  
 -		public void ApplyItemTime(Item sItem) {
 -			SetItemTime(sItem.useTime);
-+		public void ApplyItemTime(Item sItem, bool? callUseItem = null) {
+-		}
++		public void ApplyItemTime(Item sItem, float multiplier = 1, bool? callUseItem = null) {
 +			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
 +				return;
-+
-+			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime, this, sItem));
- 		}
  
 -		public void ApplyItemTime(Item sItem, float multiplier) {
 -			SetItemTime((int)((float)sItem.useTime * multiplier));
-+		public void ApplyItemTime(Item sItem, float multiplier, bool? callUseItem = null) {
-+			if ((callUseItem ?? ItemTimeIsZero) && ItemLoader.UseItem(sItem, this) == false)
-+				return;
-+
 +			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * multiplier, this, sItem));
  		}
  
  		public void SetDummyItemTime(int frames) {
-@@ -2114,39 +_,41 @@
+@@ -2114,39 +_,43 @@
  			itemTimeMax = frames + 1;
  		}
  
@@ -219,6 +233,7 @@
  
 -		private void ApplyItemAnimation(Item sItem) {
 +		public void ApplyItemAnimation(Item sItem) {
++			/*
  			if (sItem.melee) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * meleeSpeed));
 +				ApplyItemAnimation(sItem, meleeSpeed);
@@ -230,6 +245,7 @@
 +				ApplyItemAnimation(sItem, meleeSpeed * whipUseTimeMultiplier);
  				return;
  			}
++			*/
  
  			if (sItem.createTile >= 0) {
 -				SetItemAnimation((int)((float)sItem.useAnimation * tileSpeed));
@@ -245,7 +261,7 @@
  
 -			SetItemAnimation(sItem.useAnimation);
 -			reuseDelay = sItem.reuseDelay;
-+			ApplyItemAnimation(sItem, 1f);
++			ApplyItemAnimation(sItem, 1);
  		}
  
  		public bool InOpposingTeam(Player otherPlayer) {
@@ -288,7 +304,19 @@
  				if (buffTime[i] >= 1 && buffType[i] == type)
  					return i;
  			}
-@@ -2637,7 +_,7 @@
+@@ -2632,12 +_,19 @@
+ 			return -1;
+ 		}
+ 
++		/// <summary>
++		/// Gives the player the provided buff. This accounts for if the player is immune to the buff. This also accounts for adjusting the buff time for different game modes. If the player already has the buff, the re-apply logic will happen. Vanilla buff types are found in <see cref="BuffID"/> and modded buffs are typically retrieved using <see cref="ModContent.BuffType{T}"/>. The quiet parameter will determine if the network sync message should happen. This should only be set to false in non-deterministic situations (such as random chance) and code that only runs locally. Other situations, run on all clients so the buff should automatically be applied on all clients, keeping the player buff data in sync without burdening the network. When in doubt, consult vanilla source code examples or test your code.
++		/// </summary>
++		/// <param name="type">The buff type</param>
++		/// <param name="timeToAdd">The desired buff time in ticks. 60 ticks is 1 second</param>
++		/// <param name="quiet">If true, the network sync message is skipped.</param>
++		/// <param name="foodHack">unused</param>
+ 		public void AddBuff(int type, int timeToAdd, bool quiet = true, bool foodHack = false) {
+ 			if (buffImmune[type])
  				return;
  
  			if (BuffID.Sets.IsFedState[type]) {
@@ -367,7 +395,14 @@
  				float debuffTimeMultiplier = Main.GameModeInfo.DebuffTimeMultiplier;
  				if (Main.GameModeInfo.IsJourneyMode) {
  					if (Main.masterMode)
-@@ -2755,24 +_,28 @@
+@@ -2752,27 +_,39 @@
+ 			return num;
+ 		}
+ 
++		/// <summary>
++		/// Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap. Use <see cref="Player.ClearBuff"/> if you only know the buff type
++		/// </summary>
++		/// <param name="b">The index of the buff to remove.</param>
  		public void DelBuff(int b) {
  			buffTime[b] = 0;
  			buffType[b] = 0;
@@ -398,6 +433,10 @@
  			}
  		}
  
++		/// <summary>
++		/// Removes the provided buff type from the player and shuffles the remaining buff indexes down to fill the gap. Use <see cref="Player.DelBuff(int)"/> if you only know the buff index
++		/// </summary>
++		/// <param name="type">The buff type</param>
  		public void ClearBuff(int type) {
 +			if (type == 0)
 +				return;
@@ -1021,7 +1060,58 @@
  				cWings = dyeItem.dye;
  
  			if (armorItem.type == 934)
-@@ -6625,13 +_,15 @@
+@@ -6598,11 +_,13 @@
+ 			}
+ 		}
+ 
++		// Original vanilla methods:
++		/*
+ 		public IEntitySource GetProjectileSource_Buff(int buffIndex) {
+ 			int buffId = buffType[buffIndex];
+ 			return new EntitySource_Buff(this, buffId, buffIndex);
+ 		}
+-
++		
+ 		public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
+ 		public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
+ 		public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
+@@ -6617,21 +_,51 @@
+ 		public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
+ 		public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
+ 		public IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => new EntitySource_OnHit_ByItemSourceID(this, victim, itemSourceId);
++		*/
++
++		// Internal redirects:
++		internal IEntitySource GetProjectileSource_Buff(int buffIndex) => GetSource_Buff(buffIndex);
++		internal IEntitySource GetProjectileSource_Item(Item item) => GetSource_ItemUse(item);
++		internal IEntitySource GetItemSource_OpenItem(int itemType) => GetSource_OpenItem(itemType);
++		internal IEntitySource GetItemSource_Death() => GetSource_Death();
++		internal IEntitySource GetItemSource_Misc(int itemSourceId) => GetSource_Misc(context: ItemSourceID.ToContextString(itemSourceId));
++		internal IEntitySource GetProjectileSource_Item_WithPotentialAmmo(Item item, int ammoItemId) => GetSource_ItemUse_WithPotentialAmmo(item, ammoItemId);
++		internal IEntitySource GetProjectileSource_OnHit(Entity victim, int projectileSourceId) => GetSource_OnHit(victim, context: ProjectileSourceID.ToContextString(projectileSourceId));
++		internal IEntitySource GetProjectileSource_OnHurt(Entity attacker, int projectileSourceId) => GetSource_OnHurt(attacker, context: ProjectileSourceID.ToContextString(projectileSourceId));
++		internal IEntitySource GetProjectileSource_Accessory(Item item) => GetSource_Accessory(item);
++		internal IEntitySource GetProjectileSource_Misc(int projectileSourceId) => GetSource_Misc(context: ProjectileSourceID.ToContextString(projectileSourceId));
++		internal IEntitySource GetProjectileSource_TileInteraction(int tileCoordsX, int tileCoordsY) => GetSource_TileInteraction(tileCoordsX, tileCoordsY);
++		internal IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => GetSource_TileInteraction(tileCoordsX, tileCoordsY);
++		internal IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => GetSource_TileInteraction(tileCoordsX, tileCoordsY);
++		internal IEntitySource GetItemSource_OnHit(Entity victim, int itemSourceId) => GetSource_OnHit(victim, context: ItemSourceID.ToContextString(itemSourceId));
++		internal IEntitySource GetProjectileSource_SetBonus(int projectileSourceId) => GetSource_FromThis(context: ProjectileSourceID.ToContextString(projectileSourceId));
++
++		// Public API methods can be found in:
++		//   Entity.TML.Sources.cs;
++		//   Player.TML.Sources.cs (if exists);
+ 
+ 		public void UpdateBuffs(int i) {
++			/*
++			tML:
++			all accessories that previously used each class-specific crit field individually now use allCrit instead where appropriate
++			this allows them to automagically account for new classes, preventin' modders from havin' to do extra work for no reason
++			- thomas
++			*/
+ 			if (soulDrain > 0 && whoAmI == Main.myPlayer)
+ 				AddBuff(151, 2);
+ 
  			if (Main.dontStarveWorld)
  				UpdateStarvingState(withEmote: true);
  
@@ -1038,7 +1128,26 @@
  				if (buffType[j] == 1) {
  					lavaImmune = true;
  					fireWalk = true;
-@@ -6654,9 +_,12 @@
+@@ -6645,18 +_,31 @@
+ 				else if (buffType[j] == 158) {
+ 					manaRegenBonus += 2;
+ 				}
++				/*
+ 				else if (buffType[j] == 159 && inventory[selectedItem].melee) {
+ 					armorPenetration = 12;
+ 				}
++
++				tML:
++				commented out in favor of the below check for solely the Sharpening Station buff
++				this fixes the Sharpening Station's armor penetration bonus bein' able to be applied to non-melee weapons (most notably summons) by holdin' a melee weapon
++				- thomas
++				*/
++				else if (buffType[j] == 159) {
++					GetArmorPenetration(DamageClass.Melee) += 12;
++				}
+ 				else if (buffType[j] == 192) {
+ 					pickSpeed -= 0.2f;
+ 					moveSpeed += 0.2f;
  				}
  				else if (buffType[j] == 321) {
  					int num = 10;
@@ -1231,6 +1340,47 @@
  					minionKB += 1f;
  					moveSpeed += 0.4f;
  					pickSpeed -= 0.15f;
+@@ -8175,28 +_,40 @@
+ 				else if (buffType[j] == 333) {
+ 					hungry = true;
+ 					statDefense -= 2;
++					allCrit -= 2;
++					allDamage -= 0.05f;
++					/*
+ 					meleeCrit -= 2;
+ 					meleeDamage -= 0.05f;
++					*/
+ 					meleeSpeed -= 0.05f;
++					/*
+ 					magicCrit -= 2;
+ 					magicDamage -= 0.05f;
+ 					rangedCrit -= 2;
+ 					rangedDamage -= 0.05f;
+ 					minionDamage -= 0.05f;
++					*/
+ 					minionKB -= 0.5f;
+ 					pickSpeed += 0.05f;
+ 				}
+ 				else if (buffType[j] == 334) {
+ 					starving = true;
+ 					statDefense -= 4;
++					allCrit -= 4;
++					allDamage -= 0.1f;
++					/*
+ 					meleeCrit -= 4;
+ 					meleeDamage -= 0.1f;
++					*/
+ 					meleeSpeed -= 0.1f;
++					/*
+ 					magicCrit -= 4;
+ 					magicDamage -= 0.1f;
+ 					rangedCrit -= 4;
+ 					rangedDamage -= 0.1f;
+ 					minionDamage -= 0.1f;
++					*/
+ 					minionKB -= 1f;
+ 					pickSpeed += 0.15f;
+ 				}
 @@ -8227,6 +_,8 @@
  				else if (buffType[j] == 79) {
  					meleeEnchant = 8;
@@ -1908,7 +2058,12 @@
  							if (buffType[num10] >= 170 && buffType[num10] <= 171)
  								DelBuff(num10);
  						}
-@@ -11672,6 +_,8 @@
+@@ -11668,10 +_,12 @@
+ 				whipRangeMultiplier += 0.5f;
+ 				float num17 = 1.35f;
+ 				float num18 = 1f / num17;
+-				whipUseTimeMultiplier *= num18;
++				whipUseTimeMultiplier *= num17;
  			}
  
  			ApplyArmorSoundAndDustChanges();
@@ -2062,6 +2217,33 @@
  					if (!tile.active() || tile.type != 4)
  						continue;
  
+@@ -12860,7 +_,12 @@
+ 					NetMessage.SendData(4, -1, -1, null, whoAmI);
+ 
+ 				if (numberOfTorchAttacksMade >= 95) {
++					/*
+ 					int number = Item.NewItem(new EntitySource_ByItemSourceId(this, 6), (int)position.X, (int)position.Y, width, height, 5043);
++					*/
++
++					int number = Item.NewItem(new EntitySource_TorchGod(this, Context: "TorchGod_FavorLoot"), (int)position.X, (int)position.Y, width, height, 5043);
++
+ 					if (Main.netMode == 1)
+ 						NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 				}
+@@ -12890,7 +_,13 @@
+ 					float num10 = velocity.Length();
+ 					velocity.Normalize();
+ 					velocity *= num7;
++
++					/*
+ 					int num11 = Projectile.NewProjectile(GetProjectileSource_Misc(10), vector, velocity, 949, num8, 1f, whoAmI, num9, num10);
++					*/
++
++					int num11 = Projectile.NewProjectile(new EntitySource_TorchGod(this, Context: "TorchGod_Projectile"), vector, velocity, 949, num8, 1f, whoAmI, num9, num10);
++
+ 					Main.projectile[num11].ai[0] = num9;
+ 					Main.projectile[num11].ai[1] = num10;
+ 					Main.projectile[num11].netUpdate = true;
 @@ -12907,6 +_,9 @@
  			if (inventory[selectedItem].createTile == 4 && inventory[selectedItem].placeStyle < 22)
  				nearbyTorch[inventory[selectedItem].placeStyle] = true;
@@ -2088,34 +2270,38 @@
  
  			if (torchLuck < 0f)
  				torchLuck = 0f;
-@@ -13063,6 +_,9 @@
+@@ -13052,7 +_,7 @@
+ 			arcticDivingGear = false;
+ 			noBuilding = false;
+ 			strongBees = false;
+-			armorPenetration = 0;
++			// armorPenetration = 0;
+ 			shroomiteStealth = false;
+ 			statDefense = 0;
+ 			accWatch = 0;
+@@ -13062,6 +_,7 @@
+ 			canFloatInWater = false;
  			lifeRegen = 0;
  			manaCost = 1f;
++			/* individual class stats handled by ResetDamageClassData
  			meleeSpeed = 1f;
-+			allDamage = StatModifier.One;
-+			allCrit = 4;
-+			/* individual class damage handled by ResetDamageClassData
  			meleeDamage = 1f;
  			rangedDamage = 1f;
- 			magicDamage = 1f;
-@@ -13074,8 +_,10 @@
+@@ -13074,6 +_,7 @@
  			meleeCrit = 4;
  			rangedCrit = 4;
  			magicCrit = 4;
 +			*/
  			hasFootball = false;
  			drawingFootball = false;
-+			allKB = StatModifier.One;
  			minionKB = 0f;
- 			moveSpeed = 1f;
- 			boneArmor = false;
 @@ -13118,9 +_,14 @@
  			ammoCost75 = false;
  			manaRegenBuff = false;
  			hasCreditsSceneMusicBox = false;
-+			arrowDamage = StatModifier.One;
-+			bulletDamage = StatModifier.One;
-+			rocketDamage = StatModifier.One;
++			arrowDamage = StatModifier.Default;
++			bulletDamage = StatModifier.Default;
++			rocketDamage = StatModifier.Default;
 +			/*
  			arrowDamage = 1f;
  			bulletDamage = 1f;
@@ -2124,6 +2310,15 @@
  			coolWhipBuff = false;
  			yoraiz0rEye = 0;
  			yoraiz0rDarkness = false;
+@@ -13189,7 +_,7 @@
+ 
+ 			endurance = 0f;
+ 			whipRangeMultiplier = 1f;
+-			whipUseTimeMultiplier = 1f;
++			//whipUseTimeMultiplier = 1f;
+ 			calmed = false;
+ 			beetleOrbs = 0;
+ 			beetleBuff = false;
 @@ -13356,6 +_,7 @@
  			slowOgreSpit = false;
  			wings = 0;
@@ -2203,7 +2398,7 @@
  					num5 = 30;
  
 -				float damage = (float)num5 * minionDamage;
-+				float damage = (float)num5 * minionDamage.Additive;
++				float damage = GetTotalDamage(DamageClass.Summon).ApplyTo(num5);
  				float knockback = 10f;
  				if (flag4)
  					knockback = 7f;
@@ -2212,7 +2407,7 @@
  				rect2.Width = 2;
  				rect2.Inflate(6, 12);
 -				float damage2 = 100f * minionDamage;
-+				float damage2 = 100f * minionDamage.Additive;
++				float damage2 = GetTotalDamage(DamageClass.Summon).ApplyTo(100f);
  				float knockback2 = 12f;
  				int nPCImmuneTime2 = 30;
  				int playerImmuneTime2 = 6;
@@ -2221,7 +2416,7 @@
  				rect3.Width = 2;
  				rect3.Inflate(6, 12);
 -				float damage3 = 120f * minionDamage;
-+				float damage3 = 120f * minionDamage.Additive;
++				float damage3 = GetTotalDamage(DamageClass.Summon).ApplyTo(120f);
  				float knockback3 = 12f;
  				int nPCImmuneTime3 = 30;
  				int playerImmuneTime3 = 6;
@@ -2230,10 +2425,19 @@
  				rect4.Width = 2;
  				rect4.Inflate(6, 12);
 -				float damage4 = 90f * minionDamage;
-+				float damage4 = 90f * minionDamage.Additive;
++				float damage4 = GetTotalDamage(DamageClass.Summon).ApplyTo(90f);
  				float knockback4 = 10f;
  				int nPCImmuneTime4 = 30;
  				int playerImmuneTime4 = 6;
+@@ -14389,7 +_,7 @@
+ 
+ 				rect5.Width = 2;
+ 				rect5.Inflate(6, 12);
+-				float damage5 = 40f * minionDamage;
++				float damage5 = GetTotalDamage(DamageClass.Summon).ApplyTo(40f);
+ 				float knockback5 = 10f;
+ 				int nPCImmuneTime5 = 30;
+ 				int playerImmuneTime5 = 12;
 @@ -14555,7 +_,7 @@
  			}
  
@@ -2243,23 +2447,35 @@
  				for (int i = 0; i < num2; i++) {
  					WorldGen.KillTile_MakeTileDust(point.X, point.Y, tile);
  				}
+@@ -14601,8 +_,10 @@
+ 				damage = ((!Main.expertMode) ? ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].NormalDamageDealt)) : ((int)((float)damage * ItemID.Sets.BannerStrength[Item.BannerToItem(num)].ExpertDamageDealt)));
+ 
+ 			OnHit(npc.Center.X, npc.Center.Y, npc);
++
++			// TODO: should armorPenetration be passed in to this function? Class specific armor penetration bonuses are currently ignored
+ 			if (armorPenetration > 0)
+-				damage += npc.checkArmorPenetration(armorPenetration);
++				damage += npc.checkArmorPenetration((int)armorPenetration);
+ 
+ 			NPCKillAttempt attempt = new NPCKillAttempt(npc);
+ 			int dmg = (int)npc.StrikeNPC(damage, knockback, direction, crit);
 @@ -14663,7 +_,7 @@
  
  					Rectangle rect2 = nPC.getRect();
  					if (rect.Intersects(rect2) && (nPC.noTileCollide || Collision.CanHit(base.position, width, height, nPC.position, nPC.width, nPC.height))) {
 -						float num = 40f * minionDamage;
-+						float num = 40f * minionDamage.Additive;
++						float num = GetTotalDamage(DamageClass.Summon).ApplyTo(40f);
  						float knockback = 5f;
  						int direction = base.direction;
  						if (velocity.X < 0f)
-@@ -15065,16 +_,18 @@
+@@ -15065,16 +_,17 @@
  
  						Rectangle rect = nPC.getRect();
  						if (rectangle.Intersects(rect) && (nPC.noTileCollide || CanHit(nPC))) {
 -							float num = 30f * meleeDamage;
-+							float num = 30f * allDamage.CombineWith(meleeDamage);
- 							float num2 = 9f;
-+							num2 *= allKB.CombineWith(GetKnockback(DamageClass.Melee));
+-							float num2 = 9f;
++							float num = GetTotalDamage(DamageClass.Melee).ApplyTo(30f);
++							float num2 = GetTotalKnockback(DamageClass.Melee).ApplyTo(9f);
  							bool crit = false;
 +							/*
  							if (kbGlove)
@@ -2270,18 +2486,18 @@
 -
 -							if (Main.rand.Next(100) < meleeCrit)
 +							*/
-+							if (Main.rand.Next(100) < (allCrit + meleeCrit))
++							if (Main.rand.Next(100) < GetTotalCritChance(DamageClass.Melee))
  								crit = true;
  
  							int num3 = base.direction;
-@@ -15115,16 +_,18 @@
+@@ -15115,16 +_,17 @@
  							ConsumeSolarFlare();
  						}
  
 -						float num4 = 150f * meleeDamage;
-+						float num4 = 150f * allDamage.CombineWith(meleeDamage);
- 						float num5 = 9f;
-+						num5 *= allKB.CombineWith(GetKnockback(DamageClass.Melee));
+-						float num5 = 9f;
++						float num4 = GetTotalDamage(DamageClass.Melee).ApplyTo(150f);
++						float num5 = GetTotalKnockback(DamageClass.Melee).ApplyTo(9f);
  						bool crit2 = false;
 +						/*
  						if (kbGlove)
@@ -2292,7 +2508,7 @@
 -
 -						if (Main.rand.Next(100) < meleeCrit)
 +						*/
-+						if (Main.rand.Next(100) < (allCrit + meleeCrit))
++						if (Main.rand.Next(100) < GetTotalCritChance(DamageClass.Melee))
  							crit2 = true;
  
  						int direction = base.direction;
@@ -2473,7 +2689,7 @@
  						immune = false;
  						int num25 = (int)((float)num18 * gravDir - (float)num17) * 10;
  						if (mount.Active)
-@@ -18174,9 +_,11 @@
+@@ -18174,9 +_,17 @@
  			else
  				afkCounter = 0;
  
@@ -2481,6 +2697,12 @@
  			meleeCrit += inventory[selectedItem].crit;
  			magicCrit += inventory[selectedItem].crit;
  			rangedCrit += inventory[selectedItem].crit;
++
++			tML:
++			this, right here, is the principal cause of crit chance bein' a massive pain in the ass
++			by commentin' this out, your critical strike chance for the vanilla "three" classes capable of crits will no longer be modified based on your current weapon
++			this fixes a number of issues related to tooltip crit displays, and while it isn't the primary fix for crit swap, it definitely contributes to it
++			- thomas
 +			*/
  			if (whoAmI == Main.myPlayer) {
  				Main.musicBox2 = -1;
@@ -2557,10 +2779,36 @@
  					aggro -= (int)((1f - stealth) * 1200f);
  					accRunSpeed *= 0.3f;
  					maxRunSpeed *= 0.3f;
-@@ -18508,6 +_,7 @@
+@@ -18455,15 +_,20 @@
+ 			if (manaSick)
+ 				magicDamage *= 1f - manaSickReduction;
+ 
++			/*
+ 			float num32 = meleeSpeed - 1f;
+ 			num32 *= ItemID.Sets.BonusMeleeSpeedMultiplier[inventory[selectedItem].type];
+ 			meleeSpeed = 1f + num32;
++
++			tML: attack speed multipliers now applied in Player.GetWeaponAttackSpeed
++			*/
+ 			if ((double)pickSpeed < 0.3)
+ 				pickSpeed = 0.3f;
+-
++			// tML: no longer capped for consistency with other usage-speed-related modifiers
++			/*
+ 			if (meleeSpeed > 3f)
+ 				meleeSpeed = 3f;
+-
++			*/
+ 			if (tileSpeed > 3f)
+ 				tileSpeed = 3f;
+ 
+@@ -18507,7 +_,9 @@
+ 				}
  			}
  
- 			meleeSpeed = 1f / meleeSpeed;
++			// tML: no longer set to reciprocal for consistency with other usage-speed-related modifiers. See inverseMeleeSpeed for vanilla uses of the stat
+-			meleeSpeed = 1f / meleeSpeed;
++			// meleeSpeed = 1f / meleeSpeed;
 +			PlayerLoader.PostUpdateMiscEffects(this);
  			UpdateLifeRegen();
  			soulDrain = 0;
@@ -2636,7 +2884,7 @@
  						if (buffType[num79] == 38)
  							DelBuff(num79);
  					}
-@@ -19677,15 +_,17 @@
+@@ -19677,6 +_,7 @@
  					Rectangle rectangle2 = new Rectangle((int)base.position.X, (int)base.position.Y, width, height);
  					for (int num80 = 0; num80 < 200; num80++) {
  						if (Main.npc[num80].active && !Main.npc[num80].dontTakeDamage && !Main.npc[num80].friendly && Main.npc[num80].immune[i] == 0 && CanNPCBeHitByPlayerOrPlayerProjectile(Main.npc[num80]) && rectangle2.Intersects(new Rectangle((int)Main.npc[num80].position.X, (int)Main.npc[num80].position.Y, Main.npc[num80].width, Main.npc[num80].height))) {
@@ -2644,15 +2892,23 @@
  							float num81 = meleeCrit;
  							if (num81 < (float)rangedCrit)
  								num81 = rangedCrit;
- 
+@@ -19684,8 +_,18 @@
  							if (num81 < (float)magicCrit)
  								num81 = magicCrit;
--
+ 
++							tML:
++							the below accomplishes what this was tryin' to, and while accountin' for every damage type currently available
++							- thomas
 +							*/
-+							// congrats, minecarts now crit based on generic crit (which is probably what the above logic was trying to emulate)
  							bool crit = false;
 -							if ((float)Main.rand.Next(1, 101) <= num81)
-+							if ((float)Main.rand.Next(1, 101) <= allCrit)
++							float highestClassSpecificCrit = 0;
++							foreach (DamageClass damageType in DamageClassLoader.DamageClasses)
++							{
++								if (GetCritChance(damageType) > highestClassSpecificCrit)
++									highestClassSpecificCrit = GetCritChance(damageType);
++							}
++							if (Main.rand.Next(100) < allCrit + highestClassSpecificCrit)
  								crit = true;
  
  							float currentSpeed = Math.Abs(base.velocity.X) / maxRunSpeed;
@@ -2743,6 +2999,15 @@
  			if (wings == 32)
  				num27 = 3;
  
+@@ -21425,7 +_,7 @@
+ 			if (TileID.Sets.BasicChest[tile.type] || tile.type == 97)
+ 				r = new Rectangle(chestPointX * 16, chestPointY * 16, 32, 32);
+ 
+-			if (tile.type == 88)
++			if (TileID.Sets.BasicDresser[tile.type])
+ 				r = new Rectangle(chestPointX * 16, chestPointY * 16, 48, 32);
+ 
+ 			if (tile.type == 29)
 @@ -21639,6 +_,9 @@
  						break;
  				}
@@ -3815,7 +4080,7 @@
  
  				if (ItemTimeIsZero && itemAnimation > 0) {
 +					if (ItemLoader.UseItem(item, this) == true)
-+						ApplyItemTime(item, false);
++						ApplyItemTime(item, callUseItem: false);
 +
  					if (item.hairDye >= 0) {
  						ApplyItemTime(item);
@@ -3992,7 +4257,7 @@
  							int num = originalDamage;
  							bool flag = false;
  							int weaponCrit = GetWeaponCrit(sItem);
-@@ -31194,6 +_,11 @@
+@@ -31194,15 +_,25 @@
  							}
  
  							int num6 = Main.DamageVar(num, luck);
@@ -4004,7 +4269,11 @@
  							StatusToNPC(sItem.type, i);
  							if (Main.npc[i].life > 5)
  								OnHit(Main.npc[i].Center.X, Main.npc[i].Center.Y, Main.npc[i]);
-@@ -31203,6 +_,11 @@
+ 
+-							if (armorPenetration > 0)
++							if (GetWeaponArmorPenetration(sItem) > 0)
+-								num6 += Main.npc[i].checkArmorPenetration(armorPenetration);
++								num6 += Main.npc[i].checkArmorPenetration(GetWeaponArmorPenetration(sItem));
  
  							NPCKillAttempt attempt = new NPCKillAttempt(Main.npc[i]);
  							int dmgDone = (int)Main.npc[i].StrikeNPC(num6, knockBack, direction, flag);
@@ -4128,7 +4397,7 @@
  				if (sItem.stack <= 0)
  					sItem.SetDefaults();
  			}
-@@ -33081,6 +_,9 @@
+@@ -33081,16 +_,21 @@
  		}
  
  		private void ItemCheck_Shoot(int i, Item sItem, int weaponDamage) {
@@ -4138,7 +4407,10 @@
  			int projToShoot = sItem.shoot;
  			float speed = sItem.shootSpeed;
  			int damage = sItem.damage;
-@@ -33090,7 +_,9 @@
+ 			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
+-				speed /= meleeSpeed;
++				speed /= inverseMeleeSpeed;
+ 
  			bool canShoot = false;
  			int Damage = weaponDamage;
  			float KnockBack = sItem.knockBack;
@@ -4340,7 +4612,7 @@
  			}
  
  			TryAllowingItemReuse(sItem);
-@@ -36640,19 +_,43 @@
+@@ -36640,19 +_,44 @@
  
  		private void TryAllowingItemReuse(Item sItem) {
  			bool flag = false;
@@ -4370,7 +4642,9 @@
 +
  			if (autoReuseGlove) {
  				flag |= sItem.melee;
- 				flag |= (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]);
+-				flag |= (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]);
++				//flag |= (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]);
++				flag |= sItem.DamageType == DamageClass.SummonMeleeSpeed;
  			}
  
 -			if (flag)
@@ -4403,27 +4677,16 @@
  			if (sItem.summon)
  				KnockBack += minionKB;
  
-@@ -36988,11 +_,25 @@
+@@ -36988,11 +_,15 @@
  
  			if (sItem.ranged && setVortex)
  				KnockBack *= 1f + (1f - stealth) * 0.5f;
--
--			return KnockBack;
 +			*/
-+
-+			// implement minionKB as 'base damage'
-+			KnockBack += minionKB * sItem.DamageType.GetCachedBenefitFrom(DamageClass.Summon);
-+
-+			StatModifier kbModifier = StatModifier.One;
-+			var currentModifiers = damageData;
-+			var scalings = sItem.DamageType.benefitsCache;
-+			for (int i = 0; i < currentModifiers.Length; i++) {
-+				kbModifier = kbModifier.CombineWith(currentModifiers[i].knockback.Scale(scalings[i]));
-+			}
-+
-+			float flat = 0;
-+			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref kbModifier, ref flat);
-+			return Math.Max(0f, KnockBack * kbModifier + flat);
+ 
+-			return KnockBack;
++			StatModifier modifier = GetTotalKnockback(sItem.DamageType);
++			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref modifier);
++			return Math.Max(0f, modifier.ApplyTo(sItem.knockBack));
  		}
  
  		public int GetWeaponCrit(Item sItem) {
@@ -4431,63 +4694,54 @@
  			if (sItem.melee)
  				return meleeCrit;
  
-@@ -37003,9 +_,21 @@
+@@ -37003,9 +_,16 @@
  				return magicCrit;
  
  			return 0;
 +			*/
 +
-+			int crit = sItem.crit;
-+			var currentModifiers = damageData;
-+			var scalings = sItem.DamageType.benefitsCache;
-+			for (int i = 0; i < currentModifiers.Length; i++) {
-+				crit += (int)(currentModifiers[i].critChance * scalings[i]);
-+			}
-+
++			// TODO: Should ModifyWeaponCrit be float?
++			float crit = sItem.crit + GetTotalCritChance(sItem.DamageType);
 +			CombinedHooks.ModifyWeaponCrit(this, sItem, ref crit);
-+			return crit;
++			return (int)(crit + 5E-06f);
  		}
  
- 		public int GetWeaponDamage(Item sItem) {
+-		public int GetWeaponDamage(Item sItem) {
++		public int GetWeaponDamage(Item sItem, bool forTooltip = false) {
 +			/*
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,6 +_,37 @@
+@@ -37031,6 +_,32 @@
  			}
  
  			return num;
 +			*/
 +
-+			StatModifier damage = StatModifier.One;
-+			var currentModifiers = damageData;
-+			float[] scalings = sItem.DamageType.benefitsCache;
++			StatModifier modifier = GetTotalDamage(sItem.DamageType);
 +
-+			for (int i = 0; i < currentModifiers.Length; i++) {
-+				damage = damage.CombineWith(currentModifiers[i].damage.Scale(scalings[i]));
++			// TODO: use ItemID sets for ammo-specific bonuses
++			// will probably accompany a planned overhaul to how a weapon's ammo pool is decided, but for now, this works fine
++			// -thomas
++			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) {
++				modifier *= arrowDamage.Additive * arrowDamage.Multiplicative;
++				modifier.Base += arrowDamage.Base;
++				modifier.Flat += arrowDamage.Flat;
++			}
++			if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn) {
++				modifier *= bulletDamage.Additive * bulletDamage.Multiplicative;
++				modifier.Base += bulletDamage.Base;
++				modifier.Flat += bulletDamage.Flat;
++			}
++			if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly) {
++				modifier *= rocketDamage.Additive * rocketDamage.Multiplicative;
++				modifier.Base += rocketDamage.Base;
++				modifier.Flat += rocketDamage.Flat;
 +			}
 +
-+			// TODO: use an ItemID.Sets for arrow/bullet/rocket
-+			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)
-+				damage = damage.CombineWith(arrowDamage);
-+
-+			if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn)
-+				damage = damage.CombineWith(bulletDamage);
-+
-+			if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly)
-+				damage = damage.CombineWith(rocketDamage);
-+
-+			float flat = 0f;
-+
-+			//TODO: Add flat damage to StatModifier?
-+			flat += meleeAddDamage * sItem.DamageType.benefitsCache[DamageClass.Melee.Type];
-+			flat += rangedAddDamage * sItem.DamageType.benefitsCache[DamageClass.Ranged.Type];
-+			flat += magicAddDamage * sItem.DamageType.benefitsCache[DamageClass.Magic.Type];
-+			flat += minionAddDamage * sItem.DamageType.benefitsCache[DamageClass.Summon.Type];
-+
-+			CombinedHooks.ModifyWeaponDamage(this, sItem, ref damage, ref flat);
-+			int damageNum = (int)((sItem.damage * (float)damage) + flat);
-+			return Math.Max(0, damageNum);
++			CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
++			int baseDamage = forTooltip ? (int)(sItem.damage * ItemID.Sets.ToolTipDamageMultiplier[sItem.type]) : sItem.damage;
++			return Math.Max(0, (int)(modifier.ApplyTo(baseDamage) + 5E-06f));
  		}
  
  		public bool HasAmmo(Item sItem, bool canUse) {
@@ -5284,7 +5538,7 @@
  			}
  
 -			int damage = (int)(20f * (1f + magicDamage + minionDamage - 2f));
-+			int damage = (int)(20f * (1f + (float)(allDamage.CombineWith(magicDamage)) + (float)(allDamage.CombineWith(minionDamage)) - 2f));
++			int damage = (int)GetTotalDamage(DamageClass.MagicSummonHybrid).ApplyTo(20f);
  			IEntitySource projectileSource_SetBonus = GetProjectileSource_SetBonus(3);
  			_ = Main.projectile[Projectile.NewProjectile(projectileSource_SetBonus, MinionRestTargetPoint, Vector2.Zero, 656, damage, 0f, Main.myPlayer)];
  		}

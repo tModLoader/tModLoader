@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_ItemUse_WithAmmo.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_ItemUse_WithAmmo.cs
+@@ -1,11 +_,13 @@
++#nullable enable
++
+ namespace Terraria.DataStructures
+ {
+ 	public class EntitySource_ItemUse_WithAmmo : EntitySource_ItemUse
+ 	{
+ 		public readonly int AmmoItemIdUsed;
+ 
+-		public EntitySource_ItemUse_WithAmmo(Entity entity, Item item, int ammoItemIdUsed)
+-			: base(entity, item) {
++		public EntitySource_ItemUse_WithAmmo(Entity entity, Item item, int ammoItemIdUsed, string? context = null)
++			: base(entity, item, context) {
+ 			AmmoItemIdUsed = ammoItemIdUsed;
+ 		}
+ 	}

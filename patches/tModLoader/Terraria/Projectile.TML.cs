@@ -17,13 +17,52 @@ namespace Terraria
 		public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = 255, float ai0 = 0f, float ai1 = 0f)
 			=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1)];
 
-		private DamageClass _damageClass = DamageClass.Generic;
+		private DamageClass _damageClass = DamageClass.Default;
 		/// <summary>
-		/// The damage type of this Projectile. Assign to DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing, or ModContent.GetInstance&lt;T&gt;() for custom damage types.
+		/// The damage type assigned to this projectile, represented as a DamageClass.
+		/// Leave blank or use DamageClass.Default to prevent damage type scaling of any kind for this projectile.
+		/// Use DamageClass.Generic/Melee/Ranged/Magic/Summon/Throwing for vanilla damage types.
+		/// Refer to ExampleMod for more information on how to create and use your own damage types.
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;
-			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
+			set => _damageClass = value ?? throw new ArgumentException($"{nameof(Projectile)}.{nameof(DamageType)} cannot be null.");
+		}
+
+		private int _armorPenetration = 0;
+		/// <summary>
+		/// The number of defense points that this projectile can ignore on its own. Cannot be set to negative values. Defaults to 0.
+		/// On spawn, if this projectile was fired from a weapon, this value has the total armor penetration of the weapon that made the projectile added to itself.
+		/// </summary>
+		public int ArmorPenetration {
+			get => _armorPenetration;
+			set => _armorPenetration = Math.Max(0, value);
+		}
+
+		private int _crit = 0;
+		/// <summary>
+		/// The critical strike chance modifier of this projectile. Cannot be set to negative values. Defaults to 0.
+		/// On spawn, if this projectile was fired from a weapon, this value has the total critical strike chance of the weapon that made the projectile added to itself.
+		/// </summary>
+		public int CritChance {
+			get => _crit;
+			set => _crit = Math.Max(0, value);
+		}
+
+		/* tML:
+		this method is used to set the critical strike chance of a projectile based on the environment in which it was fired
+		this critical strike chance is then stored on the projectile and checked against for all critical strike calculations
+		this, alongside a number of other changes, is part of a massive list of fixes to critical strike chance made by tML
+
+		- thomas
+		*/
+		private static void HandlePlayerStatModifiers(IEntitySource spawnSource, Projectile projectile) {
+			if (spawnSource is EntitySource_ItemUse itemUseSource && itemUseSource.Entity is Player player) {
+				projectile.CritChance += player.GetWeaponCrit(itemUseSource.Item);
+				projectile.ArmorPenetration += player.GetWeaponArmorPenetration(itemUseSource.Item);
+			}
+
+			// TODO: what about other spawn sources which are from a player, but not an item use (accessories, set effects). Should be able to use projectile DamageType to get modifiers
 		}
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>
@@ -47,6 +86,10 @@ namespace Terraria
 		public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
 			=> GlobalType.TryGetGlobal<GlobalProjectile, T>(globalProjectiles, baseInstance, out result);
 
-		public bool CountsAsClass(DamageClass damageClass) => DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+		public bool CountsAsClass<T>() where T : DamageClass
+			=> CountsAsClass(ModContent.GetInstance<T>());
+
+		public bool CountsAsClass(DamageClass damageClass)
+			=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 	}
 }

@@ -37,8 +37,8 @@
  		public string Format(object arg0, object arg1, object arg2) => string.Format(Value, arg0, arg1, arg2);
 -		public string Format(params object[] args) => string.Format(Value, args);
 +		*/
-+
-+		private static readonly Regex PluralizationPatternRegex = new Regex(@"{\^(\d+):([\w;]+)}", RegexOptions.Compiled); // "{0} {^0:item,items}"
++		
++		private static readonly Regex PluralizationPatternRegex = new Regex(@"{\^(\d+):([^\r\n]+?)}", RegexOptions.Compiled); // "{0} {^0:item,items}"
 +
 +		public string Format(params object[] args) {
 +			string value = Value;
