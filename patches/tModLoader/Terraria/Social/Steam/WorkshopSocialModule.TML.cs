@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.Social.Base;
 using Terraria.Utilities;
 
@@ -16,16 +17,26 @@ namespace Terraria.Social.Steam
 
 		public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info) {
 			info = null;
+			if(!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
+				base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
+				return false;
+			}
 
-			string contentFolderPath = GetTemporaryFolderPath() + modFile.Name;
-
-			if (!Directory.Exists(contentFolderPath))
+			var existing = CheckIfUploaded(modFile);
+			if (existing == null)
 				return false;
 
-			if (AWorkshopEntry.TryReadingManifest(Path.Combine(contentFolderPath, "workshop.json"), out info))
-				return true;
+			string searchFolder = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{existing.PublishId}");
 
-			return false;
+			return ModOrganizer.TryReadManifest(searchFolder, out info);
+		}
+
+		private ModDownloadItem CheckIfUploaded(TmodFile modFile) {
+			// TODO: Test that this obeys the StringComparison limitations previously enforced. ExampleMod vs Examplemod need to not be allowed
+			// -> Haven't tested fix. Not sure if this same restriction applies from a ModOrganizer code perspective.
+			// -> If workshop folder exists, it will overwrite existing mod, allowing lowering of version number. <- I do not follow, this line doesn't make sense. Lowering the version is checked against the Mod Browser, not the local item.
+			// Oh yeah, publish a private mod, modname collision with a public mod later created. <- there is no solution to this. You take a risk in keeping it private.
+			return WorkshopHelper.QueryHelper.FindModDownloadItem(modFile.Name);
 		}
 
 		public override bool PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings) {
@@ -39,18 +50,8 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-			if (!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
-				base.IssueReporter.ReportInstantUploadProblem("tModLoader.NoWorkshopAccess");
-				return false;
-			}
-
-			// TODO: Test that this obeys the StringComparison limitations previously enforced. ExampleMod vs Examplemod need to not be allowed
-			// -> Haven't tested fix. Not sure if this same restriction applies from a ModOrganizer code perspective.
-			// -> If workshop folder exists, it will overwrite existing mod, allowing lowering of version number. <- I do not follow, this line doesn't make sense. Lowering the version is checked against the Mod Browser, not the local item.
-			// Oh yeah, publish a private mod, modname collision with a public mod later created. <- there is no solution to this. You take a risk in keeping it private.
-			var existing = WorkshopHelper.QueryHelper.FindModDownloadItem(buildData["name"]);
+			var existing = CheckIfUploaded(modFile);
 			ulong currPublishID = 0;
-
 			string workshopFolderPath = GetTemporaryFolderPath() + modFile.Name;
 
 			if (existing != null) {

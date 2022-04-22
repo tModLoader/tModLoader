@@ -399,24 +399,37 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal static void DeleteMod(string tmodPath) {
-			if (tmodPath.Contains(Path.Combine("steamapps", "workshop"))) {
-				string parentDir = Directory.GetParent(tmodPath).ToString();
+			string parentDir = GetParentDir(tmodPath);
 
-				var match = ModOrganizer.PublishFolderMetadata.Match(parentDir + Path.DirectorySeparatorChar);
-				if (match.Success)
-					parentDir = Directory.GetParent(parentDir).ToString();
-
-				string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";
-
-				AWorkshopEntry.TryReadingManifest(manifest, out var info);
-
+			if (TryReadManifest(parentDir, out var info)) {
 				var modManager = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
-
 				modManager.Uninstall(parentDir);
 			}
 			else {
 				File.Delete(tmodPath);
 			}
+		}
+
+		internal static bool TryReadManifest(string parentDir, out FoundWorkshopEntryInfo info) {
+			info = null;
+			if (!parentDir.Contains(Path.Combine("steamapps", "workshop")))
+				return false;
+
+			string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";
+
+			return AWorkshopEntry.TryReadingManifest(manifest, out info);
+		}
+
+		internal static string GetParentDir(string tmodPath) {
+			string parentDir = Directory.GetParent(tmodPath).ToString();
+			if (!tmodPath.Contains(Path.Combine("steamapps", "workshop")))
+				return parentDir;
+
+			var match = PublishFolderMetadata.Match(parentDir + Path.DirectorySeparatorChar);
+			if (match.Success)
+				parentDir = Directory.GetParent(parentDir).ToString();
+
+			return parentDir;
 		}
 	}
 }
