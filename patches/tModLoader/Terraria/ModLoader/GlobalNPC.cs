@@ -76,8 +76,11 @@ namespace Terraria.ModLoader
 		/// Allows you to set the town NPC profile that a given NPC uses.
 		/// </summary>
 		/// <param name="npc">The NPC in question.</param>
-		/// <param name="database">The list of town NPC profiles that currently exist.</param>
-		public virtual void SetTownNPCProfile(NPC npc, Dictionary<int, ITownNPCProfile> database) {
+		/// <returns>The profile that you want the given NPC to use.<br></br>
+		/// This will only influence their choice of profile if you do not return null.<br></br>
+		/// By default, returns null, which causes no change.</returns>
+		public virtual ITownNPCProfile ModifyTownNPCProfile(NPC npc) {
+			return null;
 		}
 
 		/// <summary>

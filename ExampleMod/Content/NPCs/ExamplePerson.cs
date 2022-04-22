@@ -157,8 +157,8 @@ namespace ExampleMod.Content.NPCs
 			return score >= ((right - left) * (bottom - top)) / 2;
 		}
 
-		public override void SetTownNPCProfile(Dictionary<int, ITownNPCProfile> database) {
-			database[NPC.type] = new ExamplePersonProfile();
+		public override ITownNPCProfile TownNPCProfile() {
+			return new ExamplePersonProfile();
 		}
 
 		public override List<string> SetNPCNameList() {
