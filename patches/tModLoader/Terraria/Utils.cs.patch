@@ -79,7 +79,7 @@
 +#if LINUX
 +				Process.Start(new ProcessStartInfo(folderPath) {
 +					FileName = "open-folder",
-+					Arguments = folderPath,
++					Arguments = $"\"{folderPath}\"",
 +					UseShellExecute = true,
 +					CreateNoWindow = true
 +				});

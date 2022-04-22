@@ -236,6 +236,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			try {
 				_cts = new CancellationTokenSource();
 
+				ServicePointManager.SecurityProtocol = DownloadFile.Tls12;
 				Task.Factory.StartNew(() => {
 					ServicePointManager.Expect100Continue = false;
 					string url = "http://javid.ddns.net/tModLoader/listmods.php";
