@@ -45,7 +45,7 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-			if (false && BuildInfo.IsDev) {
+			if (BuildInfo.IsDev) {
 				IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 				return false;
 			}
