@@ -285,6 +285,43 @@ namespace Terraria
 		}
 
 		/// <summary>
+		/// Returns a copy of the recipe passed in, including the same OnCraftHooks and ConsumeItemHooks. 
+		/// </summary>
+		/// <param name="recipe">The recipe to clone.</param>
+		public Recipe Clone(Recipe recipe) {
+			createItem = recipe.createItem.Clone();
+
+			requiredItem = new List<Item>(recipe.requiredItem.ToArray());
+			requiredTile = new List<int>(recipe.requiredTile.ToArray());
+			acceptedGroups = new List<int>(recipe.acceptedGroups.ToArray());
+
+			needHoney = recipe.needHoney;
+			needWater = recipe.needWater;
+			needLava = recipe.needLava;
+			anyWood = recipe.anyWood;
+			anyIronBar = recipe.anyIronBar;
+			anyPressurePlate = recipe.anyPressurePlate;
+			anySand = recipe.anySand;
+			anyFragment = recipe.anyFragment;
+			alchemy = recipe.alchemy;
+			needSnowBiome = recipe.needSnowBiome;
+			needGraveyardBiome = recipe.needGraveyardBiome;
+
+			OnCraftHooks = recipe.OnCraftHooks;
+			ConsumeItemHooks = recipe.ConsumeItemHooks;
+			foreach (Condition condition in recipe.Conditions) {
+				AddCondition(condition);
+			}
+
+			// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
+			// it here to not have multiple dupliocate hooks.
+			if (requiredTile.Contains(TileID.Bottles))
+				ConsumeItemHooks -= ConsumptionRules.Alchemy;
+
+			return this;
+		}
+
+		/// <summary>
 		/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
 		/// </summary>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>

@@ -90,6 +90,35 @@ namespace ExampleMod.Content
 
 				// When you're done, call this to register the recipe. Note that there's a semicolon at the end of the chain.
 				.Register();
+
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			// The following recipe showcases and explains cloning recipes and how they can modified to differ from the oringinal recipes they came from. //
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+			// If you are making multiple recipes that are very similar with only a few differences or want multiple recipes to make use of the same
+			// ConsumeItemHooks or OnCraftHooks, it may be easier to clone recipes instead of creating new ones.
+
+			// Start by creating a recipe you want to copy.
+			Recipe baseRecipe = Mod.CreateRecipe(ModContent.ItemType<Items.ExampleItem>(), 10);
+			baseRecipe.AddIngredient(ItemID.Wood, 10)
+				.AddIngredient(ItemID.CopperCoin)
+				.AddCondition(Recipe.Condition.InBeach)
+				.AddCondition(Recipe.Condition.TimeDay)
+				.Register();
+
+			// Start a new Recipe by cloning another recipe.
+			Recipe clonedRecipe = Mod.CloneRecipe(baseRecipe)
+				// We can new properties to this recipe without effecting the one we cloned from.
+				.AddIngredient(ItemID.SilverCoin)
+				.AddTile(TileID.Anvils);
+
+			// We can also remove properties from recipes like specific ingredients or conditions.
+			clonedRecipe.RemoveIngredient(baseRecipe.requiredItem[1]);
+			clonedRecipe.RemoveCondition(Recipe.Condition.InBeach);
+
+			// When you're done, call this to register the recipe.
+			clonedRecipe.Register();
+
 		}
 
 		public override void PostAddRecipes() {

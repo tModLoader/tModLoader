@@ -349,5 +349,7 @@ namespace Terraria.ModLoader
 		}
 
 		public Recipe CreateRecipe(int result, int amount = 1) => Recipe.Create(this, result, amount);
+
+		public Recipe CloneRecipe(Recipe recipe) => Recipe.Create(this, recipe.createItem.netID, 1).Clone(recipe);
 	}
 }
