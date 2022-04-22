@@ -30,7 +30,7 @@
  			{ 229, new Profiles.LegacyNPCProfile("Images/TownNPCs/Pirate", 19) },
  			{ 142, new Profiles.LegacyNPCProfile("Images/TownNPCs/Santa", 11) },
  			{ 453, new Profiles.LegacyNPCProfile("Images/TownNPCs/SkeletonMerchant", -1) },
-@@ -48,13 +_,26 @@
+@@ -48,13 +_,27 @@
  			{ 353, new Profiles.LegacyNPCProfile("Images/TownNPCs/Stylist", 20) },
  			{ 441, new Profiles.LegacyNPCProfile("Images/TownNPCs/TaxCollector", 23) },
  			{ 368, new Profiles.LegacyNPCProfile("Images/TownNPCs/TravelingMerchant", 21) },
@@ -48,6 +48,7 @@
 +		public bool GetProfile(NPC npc, out ITownNPCProfile profile) {
 +			_townNPCProfiles.TryGetValue(npc.type, out profile);
 +			NPCLoader.ModifyTownNPCProfile(npc, ref profile);
++			profile?.GetTextureNPCShouldUse(npc).Wait?.Invoke();
 +			return profile != null;
 +		}
 +
