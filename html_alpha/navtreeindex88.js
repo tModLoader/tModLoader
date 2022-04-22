@@ -248,6 +248,6 @@ var NAVTREEINDEX88 =
 "class_terraria_1_1_mod_loader_1_1_global_item.html#aff53200ad96a6112286e50ae936bf9c5":[1,0,2,13,42,6],
 "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html":[1,0,2,13,44],
 "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a068df531f0b46bcf56521532277bce2e":[1,0,2,13,44,64],
-"class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a0f7d2fac7c1e5e64949ce9b2dbfedb87":[1,0,2,13,44,46],
+"class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a0f7d2fac7c1e5e64949ce9b2dbfedb87":[1,0,2,13,44,47],
 "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a12bf30524cc768e5152513a2af03f129":[1,0,2,13,44,11]
 };

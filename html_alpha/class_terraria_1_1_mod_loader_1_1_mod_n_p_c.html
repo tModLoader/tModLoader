@@ -269,9 +269,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostAI</b> ()
 <tr class="memitem:aebfb5a21bbb328c413392fc5d540a46f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_list.html">List</a>&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aebfb5a21bbb328c413392fc5d540a46f">SetNPCNameList</a> ()</td></tr>
 <tr class="memdesc:aebfb5a21bbb328c413392fc5d540a46f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give a list of names this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be given on spawn. By default, returns a blank list, which means the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will simply use its type name as its given name when prompted.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aebfb5a21bbb328c413392fc5d540a46f">More...</a><br /></td></tr>
 <tr class="separator:aebfb5a21bbb328c413392fc5d540a46f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a999d553e654951eba8cd94317a250c48"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a999d553e654951eba8cd94317a250c48">SetTownNPCProfile</a> (Dictionary&lt; int, <a class="el" href="interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html">ITownNPCProfile</a> &gt; database)</td></tr>
-<tr class="memdesc:a999d553e654951eba8cd94317a250c48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> profile that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> uses.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a999d553e654951eba8cd94317a250c48">More...</a><br /></td></tr>
-<tr class="separator:a999d553e654951eba8cd94317a250c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf0618b3e2128b5148017219ddc1ce38"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#adf0618b3e2128b5148017219ddc1ce38">SetupContent</a> ()</td></tr>
 <tr class="memdesc:adf0618b3e2128b5148017219ddc1ce38"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aa2daf87c887ac0d98f00543a41e8e87f" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#adf0618b3e2128b5148017219ddc1ce38">More...</a><br /></td></tr>
 <tr class="separator:adf0618b3e2128b5148017219ddc1ce38"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -311,6 +308,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PostAI</b> ()
 <tr class="memitem:a5ab2125c0d53ccf0c98a39e6c1ced2c0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a5ab2125c0d53ccf0c98a39e6c1ced2c0">TownNPCAttackSwing</a> (ref int itemWidth, ref int itemHeight)</td></tr>
 <tr class="memdesc:a5ab2125c0d53ccf0c98a39e6c1ced2c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the width and height of the item this town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> swings when it attacks, which controls the range of this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>'s swung weapon. Only used when the town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> has an attack type of 3 (swinging).  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a5ab2125c0d53ccf0c98a39e6c1ced2c0">More...</a><br /></td></tr>
 <tr class="separator:a5ab2125c0d53ccf0c98a39e6c1ced2c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ee62fb61d4ff8dc5cf15b66afb25fd3"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html">ITownNPCProfile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a4ee62fb61d4ff8dc5cf15b66afb25fd3">TownNPCProfile</a> ()</td></tr>
+<tr class="memdesc:a4ee62fb61d4ff8dc5cf15b66afb25fd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set the town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> profile that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> uses.<br  />
+ By default, returns null, meaning that the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> doesn't use one.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a4ee62fb61d4ff8dc5cf15b66afb25fd3">More...</a><br /></td></tr>
+<tr class="separator:a4ee62fb61d4ff8dc5cf15b66afb25fd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83e3f3b8c2643881a6f01981821353bb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a83e3f3b8c2643881a6f01981821353bb">UpdateLifeRegen</a> (ref int damage)</td></tr>
 <tr class="memdesc:a83e3f3b8c2643881a6f01981821353bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> either regenerate health or take damage over time by setting npc.lifeRegen. Regeneration or damage will occur at a rate of half of npc.lifeRegen per second. The damage parameter is the number that appears above the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>'s head if it takes damage over time.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a83e3f3b8c2643881a6f01981821353bb">More...</a><br /></td></tr>
 <tr class="separator:a83e3f3b8c2643881a6f01981821353bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2613,40 +2614,6 @@ Return true to allow this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC
 
 </div>
 </div>
-<a id="a999d553e654951eba8cd94317a250c48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a999d553e654951eba8cd94317a250c48">&#9670;&nbsp;</a></span>SetTownNPCProfile()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void Terraria.ModLoader.ModNPC.SetTownNPCProfile </td>
-          <td>(</td>
-          <td class="paramtype">Dictionary&lt; int, <a class="el" href="interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html">ITownNPCProfile</a> &gt;&#160;</td>
-          <td class="paramname"><em>database</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to set the town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> profile that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> uses. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">database</td><td>The list of town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> profiles that currently exist.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="adf0618b3e2128b5148017219ddc1ce38"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adf0618b3e2128b5148017219ddc1ce38">&#9670;&nbsp;</a></span>SetupContent()</h2>
 
@@ -3194,6 +3161,34 @@ Return true to allow this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a4ee62fb61d4ff8dc5cf15b66afb25fd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ee62fb61d4ff8dc5cf15b66afb25fd3">&#9670;&nbsp;</a></span>TownNPCProfile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html">ITownNPCProfile</a> Terraria.ModLoader.ModNPC.TownNPCProfile </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to set the town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> profile that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> uses.<br  />
+ By default, returns null, meaning that the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> doesn't use one. </p>
 
 </div>
 </div>
