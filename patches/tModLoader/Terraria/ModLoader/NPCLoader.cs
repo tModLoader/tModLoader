@@ -222,7 +222,7 @@ namespace Terraria.ModLoader
 		private delegate ITownNPCProfile DelegateModifyTownNPCProfile(NPC npc);
 		private static HookList HookModifyTownNPCProfile = AddHook<DelegateModifyTownNPCProfile>(g => g.ModifyTownNPCProfile);
 		public static void ModifyTownNPCProfile(NPC npc, ref ITownNPCProfile profile) {
-			profile = npc.ModNPC?.TownNPCProfile ?? profile;
+			profile = npc.ModNPC?.TownNPCProfile() ?? profile;
 
 			foreach (GlobalNPC g in HookModifyTownNPCProfile.Enumerate(npc.globalNPCs)) {
 				profile = g.ModifyTownNPCProfile(npc) ?? profile;

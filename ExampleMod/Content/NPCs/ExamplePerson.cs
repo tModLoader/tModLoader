@@ -157,7 +157,9 @@ namespace ExampleMod.Content.NPCs
 			return score >= ((right - left) * (bottom - top)) / 2;
 		}
 
-		public override ITownNPCProfile TownNPCProfile => new ExamplePersonProfile();
+		public override ITownNPCProfile TownNPCProfile() {
+			return new ExamplePersonProfile();
+		}
 
 		public override List<string> SetNPCNameList() {
 			return new List<string>() {
@@ -342,8 +344,6 @@ namespace ExampleMod.Content.NPCs
 	{
 		public int RollVariation() => 0;
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
-
-		public Asset<Texture2D> GetTextureNPCShouldUse() => ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson", AssetRequestMode.ImmediateLoad);
 
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
