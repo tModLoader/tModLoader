@@ -8,7 +8,7 @@ namespace Terraria.ModLoader
 	public interface IPlant : ILoadable
 	{
 		public int PlantTileId { get; }
-		public int[] GrowsOnTileId { get; }
+		public int[] GrowsOnTileId { get; set; }
 
 		void ILoadable.Load(Mod mod) {
 			for (int i = 0; i < GrowsOnTileId.Length; i++) {
@@ -52,7 +52,7 @@ namespace Terraria.ModLoader
 
 	/// <summary>
 	/// This class represents a type of modded cactus.
-	/// This class encapsulates a function for retrieving the cactus's texture & an array for type of soil it grows on.
+	/// This class encapsulates a function for retrieving the cactus's texture and an array for type of soil it grows on.
 	/// </summary>
 	public abstract class ModCactus : IPlant
 	{
@@ -60,7 +60,7 @@ namespace Terraria.ModLoader
 		/// The cactus will share a tile ID with the vanilla cacti (80), so that the cacti can freely convert between each other if the sand below is converted.
 		/// </summary>
 		public int PlantTileId => TileID.Cactus;
-		public int[] GrowsOnTileId => new int[0];
+		public int[] GrowsOnTileId { get; set; } = new int[0];
 		public abstract Texture2D GetTexture();
 	}
 
@@ -75,7 +75,7 @@ namespace Terraria.ModLoader
 		/// The tree will share a tile ID with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted.
 		/// </summary>
 		public int PlantTileId => TileID.Trees;
-		public int[] GrowsOnTileId => new int[0];
+		public int[] GrowsOnTileId { get; set; } = new int[0];
 		public abstract Texture2D GetTexture();
 
 
@@ -146,7 +146,7 @@ namespace Terraria.ModLoader
 		/// The tree will share a tile ID with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted.
 		/// </summary>
 		public int PlantTileId => TileID.PalmTree;
-		public int[] GrowsOnTileId => new int[0];
+		public int[] GrowsOnTileId { get; set; } = new int[0];
 		public abstract Texture2D GetTexture();
 
 		/// <summary>
