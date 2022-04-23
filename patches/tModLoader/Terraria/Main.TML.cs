@@ -107,7 +107,7 @@ namespace Terraria
 					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
 
 				hovering = false;
-				GetInfoAccIconPosition(0, startX, out X, out Y);
+				GetInfoAccIconPosition(0, startX, out X, out int _);
 				buttonPosition = new Vector2(X, Y + 20);
 
 				if ((float)mouseX >= buttonPosition.X && (float)mouseY >= buttonPosition.Y && (float)mouseX <= buttonPosition.X + (float)buttonTexture.Width && (float)mouseY <= buttonPosition.Y + (float)buttonTexture.Height && !PlayerInput.IgnoreMouseInterface) {

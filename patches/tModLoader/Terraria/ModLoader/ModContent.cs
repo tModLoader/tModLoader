@@ -448,7 +448,8 @@ namespace Terraria.ModLoader
 
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
-			TownNPCProfiles.Instance.ResetTexturesAccordingToVanillaProfiles();
+			if (!Main.dedServ) // dedicated servers implode with texture swaps and I've never understood why, so here's a fix for that     -thomas
+				TownNPCProfiles.Instance.ResetTexturesAccordingToVanillaProfiles();
 
 			BossBarLoader.Unload();
 			PlayerLoader.Unload();
