@@ -20,33 +20,6 @@ namespace Terraria.ModLoader
 			array[array.Length - 1] = type;
 		}
 
-		/// <summary>
-		/// Allows the given type of tile to grow the given modded tree.
-		/// </summary>
-		/// <param name="soilType"></param>
-		/// <param name="tree"></param>
-		public void AddModTree(int soilType, ModTree tree) {
-			TileLoader.trees[soilType] = tree;
-		}
-
-		/// <summary>
-		/// Allows the given type of tile to grow the given modded palm tree.
-		/// </summary>
-		/// <param name="soilType"></param>
-		/// <param name="palmTree"></param>
-		public void AddModPalmTree(int soilType, ModPalmTree palmTree) {
-			TileLoader.palmTrees[soilType] = palmTree;
-		}
-
-		/// <summary>
-		/// Allows the given type of tile to grow the given modded cactus.
-		/// </summary>
-		/// <param name="soilType"></param>
-		/// <param name="cactus"></param>
-		public void AddModCactus(int soilType, ModCactus cactus) {
-			TileLoader.cacti[soilType] = cactus;
-		}
-
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalTile>.Register(this);
 			TileLoader.globalTiles.Add(this);

@@ -109,30 +109,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		/// <summary>
-		/// Allows this tile to grow the given modded tree.
-		/// </summary>
-		/// <param name="tree">The ModTree.</param>
-		public void SetModTree(ModTree tree) {
-			TileLoader.trees[Type] = tree;
-		}
-
-		/// <summary>
-		/// Allows this tile to grow the given modded palm tree.
-		/// </summary>
-		/// <param name="palmTree">The ModPalmTree</param>
-		public void SetModPalmTree(ModPalmTree palmTree) {
-			TileLoader.palmTrees[Type] = palmTree;
-		}
-
-		/// <summary>
-		/// Allows this tile to grow the given modded cactus.
-		/// </summary>
-		/// <param name="cactus">The ModCactus</param>
-		public void SetModCactus(ModCactus cactus) {
-			TileLoader.cacti[Type] = cactus;
-		}
-
 		protected sealed override void Register() {
 			ContainerName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Containers.{Name}", true);
 

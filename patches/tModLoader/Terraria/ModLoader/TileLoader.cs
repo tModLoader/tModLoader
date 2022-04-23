@@ -39,9 +39,6 @@ namespace Terraria.ModLoader
 		private static int nextTile = TileID.Count;
 		internal static readonly IList<ModTile> tiles = new List<ModTile>();
 		internal static readonly IList<GlobalTile> globalTiles = new List<GlobalTile>();
-		internal static readonly IDictionary<int, ModTree> trees = new Dictionary<int, ModTree>();
-		internal static readonly IDictionary<int, ModPalmTree> palmTrees = new Dictionary<int, ModPalmTree>();
-		internal static readonly IDictionary<int, ModCactus> cacti = new Dictionary<int, ModCactus>();
 		private static bool loaded = false;
 		private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 		private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -243,9 +240,6 @@ namespace Terraria.ModLoader
 
 			tiles.Clear();
 			globalTiles.Clear();
-			trees.Clear();
-			palmTrees.Clear();
-			cacti.Clear();
 
 			// Has to be ran on the main thread, since this may dispose textures.
 			Main.QueueMainThreadAction(() => {
@@ -899,81 +893,127 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool CanGrowModTree(int type) {
-			return trees.ContainsKey(type);
+			return ModPlantLoader.Exists(TileID.Trees, type);
 		}
 
 		public static void TreeDust(Tile tile, ref int dust) {
-			if (tile.active() && trees.ContainsKey(tile.type)) {
-				dust = trees[tile.type].CreateDust();
-			}
+			if (!tile.active())
+				return;
+
+			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, tile.type);
+			if (tree != null)
+				dust = tree.CreateDust();
 		}
 
 		public static void TreeGrowthFXGore(int type, ref int gore) {
-			if (trees.ContainsKey(type)) {
-				gore = trees[type].GrowthFXGore();
-			}
+			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, type);
+			if (tree != null)
+				gore = tree.GrowthFXGore();
 		}
 
 		public static bool CanDropAcorn(int type) {
-			return trees.ContainsKey(type) ? trees[type].CanDropAcorn() : false;
+			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, type);
+			if (tree == null)
+				return false;
+
+			return tree.CanDropAcorn();
 		}
 
 		public static void DropTreeWood(int type, ref int wood) {
-			if (trees.ContainsKey(type)) {
-				wood = trees[type].DropWood();
-			}
+			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, type);
+			if (tree != null)
+				wood = tree.DropWood();
 		}
 
+		//TODO: Missing Call Site
 		public static Texture2D GetTreeTexture(Tile tile) {
-			return tile.active() && trees.ContainsKey(tile.type) ? trees[tile.type].GetTexture() : null;
+			if (!tile.active())
+				return null;
+
+			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, tile.type);
+			if (tree == null)
+				return null;
+
+			return tree.GetTexture();
 		}
 
+		//TODO: Missing Call Site
 		public static Texture2D GetTreeTopTextures(int type, int i, int j, ref int frame,
-			ref int frameWidth, ref int frameHeight, ref int xOffsetLeft, ref int yOffset) {
-			return trees.ContainsKey(type) ? trees[type].GetTopTextures(i, j, ref frame,
-				ref frameWidth, ref frameHeight, ref xOffsetLeft, ref yOffset) : null;
+			ref int frameWidth, ref int frameHeight, ref int xOffsetLeft, ref int yOffset)
+		{
+			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, type);
+			if (tree == null)
+				return null;
+
+			return tree.GetTopTextures(i, j, ref frame, ref frameWidth, ref frameHeight, ref xOffsetLeft, ref yOffset);
 		}
 
+		//TODO: Missing Call Site
 		public static Texture2D GetTreeBranchTextures(int type, int i, int j, int trunkOffset, ref int frame) {
-			return trees.ContainsKey(type) ? trees[type].GetBranchTextures(i, j, trunkOffset, ref frame) : null;
+			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, type);
+			if (tree == null)
+				return null;
+
+			return tree.GetBranchTextures(i, j, trunkOffset, ref frame);
 		}
 
 		public static bool CanGrowModPalmTree(int type) {
-			return palmTrees.ContainsKey(type);
+			return ModPlantLoader.Exists(TileID.PalmTree, type);
 		}
 
 		public static void PalmTreeDust(Tile tile, ref int dust) {
-			if (tile.active() && palmTrees.ContainsKey(tile.type)) {
-				dust = palmTrees[tile.type].CreateDust();
-			}
+			if (!tile.active())
+				return;
+
+			var tree = ModPlantLoader.Get<ModPalmTree>(TileID.PalmTree, tile.type);
+			if (tree != null)
+				dust = tree.CreateDust();
 		}
 
 		public static void PalmTreeGrowthFXGore(int type, ref int gore) {
-			if (palmTrees.ContainsKey(type)) {
-				gore = palmTrees[type].GrowthFXGore();
-			}
+			var tree = ModPlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
+			if (tree != null)
+				gore = tree.GrowthFXGore();
 		}
 
 		public static void DropPalmTreeWood(int type, ref int wood) {
-			if (palmTrees.ContainsKey(type)) {
-				wood = palmTrees[type].DropWood();
-			}
+			var tree = ModPlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
+			if (tree != null)
+				wood = tree.DropWood();
 		}
 
+		//TODO: Missing Call Site
 		public static Texture2D GetPalmTreeTexture(Tile tile) {
-			return tile.active() && palmTrees.ContainsKey(tile.type) ? palmTrees[tile.type].GetTexture() : null;
+			if (!tile.active())
+				return null;
+
+			var tree = ModPlantLoader.Get<ModPalmTree>(TileID.PalmTree, tile.type);
+			if (tree == null)
+				return null;
+
+			return tree.GetTexture();
 		}
 
+		//TODO: Missing Call Site
 		public static Texture2D GetPalmTreeTopTextures(int type) {
-			return palmTrees.ContainsKey(type) ? palmTrees[type].GetTopTextures() : null;
+			var tree = ModPlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
+			if (tree == null)
+				return null;
+
+			return tree.GetTopTextures();
 		}
 
 		public static bool CanGrowModCactus(int type) {
-			return cacti.ContainsKey(type) || TileIO.Tiles.unloadedTypes.Contains((ushort)type);
+			return ModPlantLoader.Exists(TileID.Cactus, type) || TileIO.Tiles.unloadedTypes.Contains((ushort)type);
 		}
 
+		//TODO: Missing Call Site
 		public static Texture2D GetCactusTexture(int type) {
-			return cacti.ContainsKey(type) ? cacti[type].GetTexture() : null;
+			var tree = ModPlantLoader.Get<ModCactus>(TileID.Cactus, type);
+			if (tree == null)
+				return null;
+
+			return tree.GetTexture();
 		}
 
 		public static void PlaceInWorld(int i, int j, Item item) {
