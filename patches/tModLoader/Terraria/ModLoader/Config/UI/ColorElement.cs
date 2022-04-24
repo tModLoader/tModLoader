@@ -14,9 +14,7 @@ namespace Terraria.ModLoader.Config.UI
 			private readonly IList<Color> array;
 			private readonly int index;
 
-			private Color current;
-
-			public Color Current => current;
+			internal Color current;
 
 			[Label("Red")]
 			public byte R {
@@ -164,7 +162,7 @@ namespace Terraria.ModLoader.Config.UI
 			base.Draw(spriteBatch);
 			Rectangle hitbox = GetInnerDimensions().ToRectangle();
 			hitbox = new Rectangle(hitbox.X + hitbox.Width / 2, hitbox.Y, hitbox.Width / 2, 30);
-			Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, hitbox, c.Current);
+			Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, hitbox, c.current);
 		}
 
 		internal float GetHeight() {
