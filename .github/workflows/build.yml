@@ -501,18 +501,16 @@ jobs:
           echo "::set-output name=new_version::$version"
         env:
           branch: ${{github.ref}}
-      
-      - name: Zip artifact ExampleMod
-        if: github.ref == 'refs/heads/1.4-stable'
-        uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r /home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod.zip /home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod
           
-      - name: Zip artifact tMod
+      - name: Install Zip
         if: github.ref == 'refs/heads/1.4-stable'
         uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r /home/runner/work/tModLoader/tModLoader/artifacts/tModLoader.zip /home/runner/work/tModLoader/tModLoader/artifacts/Build
+        
+      - name: Zip Artifacts
+        working-directory: /home/runner/work/tModLoader/tModLoader/artifacts/
+        run: |
+          zip -qq -r ExampleMod.zip ExampleMod
+          zip -qq -r tModLoader.zip Build
       
       - name: Make a release
         if: github.ref == 'refs/heads/1.4-stable'
@@ -520,5 +518,6 @@ jobs:
         with:
           artifacts: "/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod.zip, /home/runner/work/tModLoader/tModLoader/artifacts/tModLoader.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
+          generateReleaseNotes: true
           body: "Monthly Github Auto-release for 1.4-stable"
           tag: ${{ steps.version2.outputs.new_version }}

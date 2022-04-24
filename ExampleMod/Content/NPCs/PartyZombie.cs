@@ -3,8 +3,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using ExampleMod.Content.Biomes;
 using Terraria.ModLoader.Utilities;
+using Terraria.DataStructures;
+using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Buffs;
 
 namespace ExampleMod.Content.NPCs
@@ -80,6 +81,7 @@ namespace ExampleMod.Content.NPCs
 
 		public override void HitEffect(int hitDirection, double damage) {
 			// Spawn confetti when this zombie is hit.
+
 			for (int i = 0; i < 10; i++) {
 				int dustType = Main.rand.Next(139, 143);
 				var dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, dustType);

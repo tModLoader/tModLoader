@@ -27,6 +27,7 @@ using Terraria.Map;
 using Terraria.GameContent.Creative;
 using Terraria.Graphics.Effects;
 using Terraria.GameContent.Skies;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader
 {
@@ -444,8 +445,12 @@ namespace Terraria.ModLoader
 			TileLoader.Unload();
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
+
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
+			if (!Main.dedServ) // dedicated servers implode with texture swaps and I've never understood why, so here's a fix for that     -thomas
+				TownNPCProfiles.Instance.ResetTexturesAccordingToVanillaProfiles();
+
 			BossBarLoader.Unload();
 			PlayerLoader.Unload();
 			BuffLoader.Unload();

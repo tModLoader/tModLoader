@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_Film.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_Film.cs
+@@ -1,6 +_,13 @@
++#nullable enable
++
+ namespace Terraria.DataStructures
+ {
+ 	public class EntitySource_Film : IEntitySource
+ 	{
++		public string? Context { get; }
++
++		public EntitySource_Film(string? context = null) {
++			Context = context;
++		}
+ 	}
+ }

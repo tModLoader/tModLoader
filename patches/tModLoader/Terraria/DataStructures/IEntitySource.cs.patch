@@ -1,0 +1,34 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/IEntitySource.cs
++++ src/tModLoader/Terraria/DataStructures/IEntitySource.cs
+@@ -1,6 +_,31 @@
++using System.Collections.Generic;
++
++#nullable enable
++
+ namespace Terraria.DataStructures
+ {
+ 	public interface IEntitySource
+ 	{
++		// Used to add contexts to vanilla code without rewriting every line. Be sure to pop responsibly.
++		private static readonly Stack<IEntitySource> fallbacks = new();
++
++		string? Context { get; }
++
++		internal static IEntitySource? GetFallback() {
++			if (fallbacks.TryPeek(out var result)) {
++				return result;
++			}
++
++			return null;
++		}
++
++		internal static void PushFallback(IEntitySource source)
++			=> fallbacks.Push(source);
++
++		internal static void PopFallback()
++			=> fallbacks.Pop();
++
++		internal static void ClearFallbacks()
++			=> fallbacks.Clear();
+ 	}
+ }

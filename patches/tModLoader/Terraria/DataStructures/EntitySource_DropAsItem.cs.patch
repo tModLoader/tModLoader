@@ -1,0 +1,20 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_DropAsItem.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_DropAsItem.cs
+@@ -1,11 +_,16 @@
++#nullable enable
++
+ namespace Terraria.DataStructures
+ {
+ 	public class EntitySource_DropAsItem : IEntitySource
+ 	{
+ 		public readonly Entity Entity;
+ 
+-		public EntitySource_DropAsItem(Entity entity) {
++		public string? Context { get; }
++
++		public EntitySource_DropAsItem(Entity entity, string? context = null) {
+ 			Entity = entity;
++			Context = context;
+ 		}
+ 	}
+ }

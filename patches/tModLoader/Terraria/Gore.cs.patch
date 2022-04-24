@@ -32,6 +32,39 @@
  		}
  
  		private void Gore_UpdateLeaf() {
+@@ -989,16 +_,28 @@
+ 				alpha++;
+ 		}
+ 
++		// Source-less overloads for vanilla
++		internal static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++			=> NewGorePerfect(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
++
++		internal static Gore NewGoreDirect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++			=> NewGoreDirect(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
++
++		internal static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++			=> NewGore(IEntitySource.GetFallback(), Position, Velocity, Type, Scale);
++
++		// Actual API methods
+-		public static Gore NewGorePerfect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
++		public static Gore NewGorePerfect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
+-			Gore gore = NewGoreDirect(Position, Velocity, Type, Scale);
++			Gore gore = NewGoreDirect(source, Position, Velocity, Type, Scale);
+ 			gore.position = Position;
+ 			gore.velocity = Velocity;
+ 			return gore;
+ 		}
+ 
+-		public static Gore NewGoreDirect(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) => Main.gore[NewGore(Position, Velocity, Type, Scale)];
++		public static Gore NewGoreDirect(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f)
++			=> Main.gore[NewGore(source, Position, Velocity, Type, Scale)];
+ 
+-		public static int NewGore(Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
++		public static int NewGore(IEntitySource source, Vector2 Position, Vector2 Velocity, int Type, float Scale = 1f) {
+ 			if (Main.netMode == 2)
+ 				return 600;
+ 
 @@ -1035,6 +_,13 @@
  			Main.gore[num].alpha = 0;
  			Main.gore[num].rotation = 0f;
@@ -41,7 +74,7 @@
 +			gore.ResetNewFields();
 +
 +			gore.ModGore = GoreLoader.GetModGore(gore.type);
-+			gore.ModGore?.OnSpawn(gore);
++			gore.ModGore?.OnSpawn(gore, source);
 +
  			if (!ChildSafety.Disabled && ChildSafety.DangerousGore(Type)) {
  				Main.gore[num].type = Main.rand.Next(11, 14);

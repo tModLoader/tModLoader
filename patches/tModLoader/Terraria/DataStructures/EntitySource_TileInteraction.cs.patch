@@ -1,0 +1,18 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_TileInteraction.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_TileInteraction.cs
+@@ -1,11 +_,13 @@
++#nullable enable
++
+ namespace Terraria.DataStructures
+ {
+ 	public class EntitySource_TileInteraction : AEntitySource_Tile
+ 	{
+ 		public readonly Entity Entity;
+ 
+-		public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY)
+-			: base(tileCoordsX, tileCoordsY) {
++		public EntitySource_TileInteraction(Entity entity, int tileCoordsX, int tileCoordsY, string? context = null)
++			: base(tileCoordsX, tileCoordsY, context) {
+ 			Entity = entity;
+ 		}
+ 	}

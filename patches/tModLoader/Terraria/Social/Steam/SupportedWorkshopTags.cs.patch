@@ -1,12 +1,26 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/SupportedWorkshopTags.cs
 +++ src/tModLoader/Terraria/Social/Steam/SupportedWorkshopTags.cs
-@@ -29,6 +_,10 @@
+@@ -29,6 +_,24 @@
  			AddResourcePackTag("WorkshopTags.Overhaul", "Overhaul");
  			AddResourcePackTag("WorkshopTags.Tweaks", "Tweaks");
  			AddResourcePackTag("WorkshopTags.OtherResourcePacks", "Other Packs");
 +
 +			// TML Added Mod Tags: [
-+			//AddModTag("WorkshopTags.Content", "Content");
++			// Common Mod Focuses
++			AddModTag("tModLoader.TagsContent", "New Content");
++			AddModTag("tModLoader.TagsUtility", "Utilities");
++			AddModTag("tModLoader.TagsLibrary", "Library");
++			AddModTag("tModLoader.TagsQoL", "Quality of Life");
++
++			// Tweaks
++			AddModTag("tModLoader.TagsGameplay", "Gameplay Tweaks");
++			AddModTag("tModLoader.TagsAudio", "Audio Tweaks");
++			AddModTag("tModLoader.TagsVisual", "Visual Tweaks");
++
++			// TBD Grouping
++			AddModTag("tModLoader.TagsLang", "Localization Support");
++			AddModTag("tModLoader.TagsGen", "Custom World Gen");
++
 +			// ]
  		}
  	}

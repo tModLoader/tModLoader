@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Localization/LanguageManager.cs
 +++ src/tModLoader/Terraria/Localization/LanguageManager.cs
-@@ -12,6 +_,7 @@
+@@ -12,14 +_,15 @@
  using System.Threading;
  using Terraria.GameContent;
  using Terraria.Initializers;
@@ -8,8 +8,9 @@
  using Terraria.Utilities;
  
  namespace Terraria.Localization
-@@ -19,7 +_,7 @@
- 	public class LanguageManager
+ {
+-	public class LanguageManager
++	public partial class LanguageManager
  	{
  		public static LanguageManager Instance = new LanguageManager();
 -		private readonly Dictionary<string, LocalizedText> _localizedTexts = new Dictionary<string, LocalizedText>();
@@ -44,3 +45,21 @@
  				for (int i = 0; i < 100; i++) {
  					string text = regex.Replace(value.Value, (Match match) => GetTextValue(match.Groups[1].ToString()));
  					if (text == value.Value)
+@@ -312,7 +_,7 @@
+ 			if (!_categoryGroupedKeys.ContainsKey(categoryName))
+ 				return new LocalizedText(categoryName + ".RANDOM", categoryName + ".RANDOM");
+ 
+-			List<string> list = _categoryGroupedKeys[categoryName];
++			List<string> list = GetKeysInCategory(categoryName);
+ 			return GetText(categoryName + "." + list[(random ?? Main.rand).Next(list.Count)]);
+ 		}
+ 
+@@ -320,7 +_,7 @@
+ 			if (!_categoryGroupedKeys.ContainsKey(categoryName))
+ 				return new LocalizedText(categoryName + ".INDEXED", categoryName + ".INDEXED");
+ 
+-			List<string> list = _categoryGroupedKeys[categoryName];
++			List<string> list = GetKeysInCategory(categoryName);
+ 			int index2 = index % list.Count;
+ 			return GetText(categoryName + "." + list[index2]);
+ 		}

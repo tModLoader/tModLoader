@@ -21,6 +21,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
 using Terraria.DataStructures;
+using System.Collections.Generic;
+using ReLogic.Content;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -155,20 +157,17 @@ namespace ExampleMod.Content.NPCs
 			return score >= ((right - left) * (bottom - top)) / 2;
 		}
 
-		public override string TownNPCName() {
-			switch (WorldGen.genRand.Next(4)) {
-				case 0: // The cases are potential names for the NPC.
-					return "Someone";
+		public override ITownNPCProfile TownNPCProfile() {
+			return new ExamplePersonProfile();
+		}
 
-				case 1:
-					return "Somebody";
-
-				case 2:
-					return "Blocky";
-
-				default:
-					return "Colorless";
-			}
+		public override List<string> SetNPCNameList() {
+			return new List<string>() {
+				"Someone",
+				"Somebody",
+				"Blocky",
+				"Colorless"
+			};
 		}
 
 		public override void FindFrame(int frameHeight) {
@@ -217,9 +216,10 @@ namespace ExampleMod.Content.NPCs
 					Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<WaspNest>())}";
 
 					int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
+					var entitySource = NPC.GetSource_GiftOrReward();
 
 					Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-					Main.LocalPlayer.QuickSpawnItem(new EntitySource_Gift(NPC), ModContent.ItemType<WaspNest>());
+					Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>());
 
 					return;
 				}
@@ -338,5 +338,23 @@ namespace ExampleMod.Content.NPCs
 			multiplier = 12f;
 			randomOffset = 2f;
 		}
+	}
+
+	public class ExamplePersonProfile : ITownNPCProfile
+	{
+		public int RollVariation() => 0;
+		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
+
+		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
+			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
+
+			if (npc.altTexture == 1)
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
+
+			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
+		}
+
+		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExamplePerson_Head");
 	}
 }
