@@ -4175,9 +4175,9 @@
  							num5 = 0.5f;
  
 +						PlayerLoader.ModifyZoom(LocalPlayer, ref num5);
- 						Vector2 vector3 = (MouseScreen - new Vector2(screenWidth, screenHeight) / 2f) / (new Vector2(screenWidth, screenHeight) / 2f);
+ 						Vector2 vector4 = (MouseScreen - new Vector2(screenWidth, screenHeight) / 2f) / (new Vector2(screenWidth, screenHeight) / 2f);
  						num4 = 48f;
- 						if (vector3 != Vector2.Zero && num5 != -1f) {
+ 						if (vector4 != Vector2.Zero && num5 != -1f) {
 @@ -48396,8 +_,10 @@
  					if (num7 < 0)
  						num7 = 0;
@@ -4199,8 +4199,8 @@
 -					vector2.Y = (float)(num9 - screenHeight / 2) / 1.5f;
 +					float zoom = 3f/2f;
 +					PlayerLoader.ModifyZoom(LocalPlayer, ref zoom);
-+					vector2.X = (num8 - screenWidth / 2) * zoom;
-+					vector2.Y = (num9 - screenHeight / 2) * zoom;
++					vector3.X = (num8 - screenWidth / 2) * zoom;
++					vector3.Y = (num9 - screenHeight / 2) * zoom;
  					flag = true;
  				}
  				else if (Main.player[myPlayer].inventory[Main.player[myPlayer].selectedItem].type == 1299 && Main.player[myPlayer].selectedItem != 58) {
