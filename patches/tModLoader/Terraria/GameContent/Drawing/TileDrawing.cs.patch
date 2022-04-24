@@ -16,6 +16,34 @@
  	{
  		private enum TileCounterType
  		{
+@@ -149,9 +_,11 @@
+ 						int tileStyle = 0;
+ 						switch (tile.type) {
+ 							case 5:
++								//TODO: Do I need to change tileStyle here to return some indication of being modded so can path TreeTop later?
+ 								tileStyle = GetTreeBiome(j, i, tile.frameX, tile.frameY);
+ 								break;
+ 							case 323:
++								//TODO: Do I need to change tileStyle here to return some indication of being modded so can path TreeTop later?
+ 								tileStyle = GetPalmTreeBiome(j, i);
+ 								break;
+ 						}
+@@ -193,6 +_,7 @@
+ 							_paintSystem.RequestTreeTop(ref lookupKey2);
+ 							_paintSystem.RequestTreeBranch(ref lookupKey2);
+ 						}
++						//TODO: Add an else here for modded??? Treetop textures are going to be a pain
+ 
+ 						break;
+ 					}
+@@ -244,6 +_,7 @@
+ 						if (x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance)
+ 							textureIndex = 21;
+ 
++						//TODO: Tree top for Palm Tree hook around here
+ 						treeFoliageVariantKey = default(TilePaintSystemV2.TreeFoliageVariantKey);
+ 						treeFoliageVariantKey.TextureIndex = textureIndex;
+ 						treeFoliageVariantKey.PaintColor = tile.color();
 @@ -338,8 +_,9 @@
  			byte b = (byte)(100f + 150f * Main.martianLight);
  			_martianGlow = new Color(b, b, b, 0);
@@ -74,7 +102,31 @@
  			if (drawData.tileLight.R < 1 && drawData.tileLight.G < 1 && drawData.tileLight.B < 1)
  				return;
  
-@@ -812,7 +_,7 @@
+@@ -666,7 +_,7 @@
+ 						break;
+ 					}
+ 				case 80: {
+-						GetCactusType(tileX, tileY, drawData.tileFrameX, drawData.tileFrameY, out bool evil, out bool good, out bool crimson);
++						GetCactusType(tileX, tileY, drawData.tileFrameX, drawData.tileFrameY, out bool evil, out bool good, out bool crimson, out var modTexture);
+ 						if (evil)
+ 							normalTileRect.Y += 54;
+ 
+@@ -675,13 +_,13 @@
+ 
+ 						if (crimson)
+ 							normalTileRect.Y += 162;
+-
+ 						break;
+ 					}
+ 				case 83:
+ 					drawData.drawTexture = GetTileDrawTexture(drawData.tileCache, tileX, tileY);
+ 					break;
+ 				case 323:
++					//TODO: Do I need to do something here to fix modded palm trees?
+ 					if (drawData.tileCache.frameX <= 132 && drawData.tileCache.frameX >= 88)
+ 						return;
+ 					vector.X += drawData.tileCache.frameY;
+@@ -812,50 +_,68 @@
  			}
  		}
  
@@ -83,7 +135,34 @@
  			Texture2D result = TextureAssets.Tile[tile.type].Value;
  			int tileStyle = 0;
  			int num = tile.type;
-@@ -837,7 +_,7 @@
++			Texture2D texture2D = null;
+ 			switch (tile.type) {
+ 				case 5:
+ 					tileStyle = GetTreeBiome(tileX, tileY, tile.frameX, tile.frameY);
++					texture2D = TileLoader.GetTreeTexture(tile);
+ 					break;
+ 				case 323:
+ 					tileStyle = GetPalmTreeBiome(tileX, tileY);
++					texture2D = TileLoader.GetPalmTreeTexture(tile);
+ 					break;
+ 				case 83:
+ 					if (IsAlchemyPlantHarvestable(tile.frameX / 18))
+ 						num = 84;
+ 					Main.instance.LoadTiles(num);
+ 					break;
++				case 80:
++					GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out bool evil, out bool good, out bool crimson, out texture2D);
++					break;
+ 			}
+ 
++			if (texture2D != null)
++				return texture2D;
++
+-			Texture2D texture2D = _paintSystem.TryGetTileAndRequestIfNotReady(num, tileStyle, tile.color());
++			texture2D = _paintSystem.TryGetTileAndRequestIfNotReady(num, tileStyle, tile.color());
+ 			if (texture2D != null)
+ 				result = texture2D;
+ 
  			return result;
  		}
  
@@ -92,6 +171,52 @@
  			Texture2D result = TextureAssets.Tile[tile.type].Value;
  			int tileStyle = 0;
  			int num = tile.type;
++			Texture2D texture2D = null;
+ 			switch (tile.type) {
+ 				case 5:
+ 					tileStyle = GetTreeBiome(tileX, tileY, tile.frameX, tile.frameY);
++					texture2D = TileLoader.GetTreeTexture(tile);
+ 					break;
+ 				case 323:
+ 					tileStyle = GetPalmTreeBiome(tileX, tileY);
++					texture2D = TileLoader.GetPalmTreeTexture(tile);
+ 					break;
+ 				case 83:
+ 					if (IsAlchemyPlantHarvestable(tile.frameX / 18))
+ 						num = 84;
+ 					Main.instance.LoadTiles(num);
+ 					break;
++				case 80:
++					GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out bool evil, out bool good, out bool crimson, out texture2D);
++					break;
+ 			}
+ 
++			if (texture2D != null)
++				return texture2D;
++
+-			Texture2D texture2D = _paintSystem.TryGetTileAndRequestIfNotReady(num, tileStyle, paintOverride);
++			texture2D = _paintSystem.TryGetTileAndRequestIfNotReady(num, tileStyle, paintOverride);
+ 			if (texture2D != null)
+ 				result = texture2D;
+ 
+@@ -2215,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private void GetCactusType(int tileX, int tileY, int frameX, int frameY, out bool evil, out bool good, out bool crimson) {
++		private void GetCactusType(int tileX, int tileY, int frameX, int frameY, out bool evil, out bool good, out bool crimson, out Texture2D modTexture) {
+ 			evil = false;
+ 			good = false;
+ 			crimson = false;
+@@ -2243,6 +_,8 @@
+ 					break;
+ 			}
+ 
++			modTexture = TileLoader.GetCactusTexture(Main.tile[num, num2].type);
++
+ 			if (Main.tile[num, num2].type == 112)
+ 				evil = true;
+ 
 @@ -2799,7 +_,8 @@
  			}
  		}
@@ -131,6 +256,44 @@
  			tileTop = 0;
  			tileWidth = 16;
  			tileHeight = 16;
+@@ -2915,6 +_,7 @@
+ 					}
+ 					break;
+ 				case 5: {
++						//TODO: Probably need to change this WRT to modded as well 
+ 						tileWidth = 20;
+ 						tileHeight = 20;
+ 						int treeBiome = GetTreeBiome(x, y, tileFrameX, tileFrameY);
+@@ -2938,6 +_,7 @@
+ 					tileHeight = 18;
+ 					break;
+ 				case 323: {
++						//TODO: Probably need to change this with respect to modded
+ 						tileWidth = 20;
+ 						tileHeight = 20;
+ 						int palmTreeBiome = GetPalmTreeBiome(x, y);
+@@ -3250,7 +_,8 @@
+ 					else
+ 						tileTop -= 20;
+ 					if (tileFrameX == 204) {
++						//TODO: This is for drawing Cactus Dye fruit. Mods will need a texture update?
+-						GetCactusType(x, y, tileFrameX, tileFrameY, out bool evil, out bool good, out bool crimson);
++						GetCactusType(x, y, tileFrameX, tileFrameY, out bool evil, out bool good, out bool crimson, out var modTexture);
+ 						if (good)
+ 							tileFrameX += 238;
+ 
+@@ -3259,6 +_,11 @@
+ 
+ 						if (crimson)
+ 							tileFrameX += 272;
++
++						if (modTexture != null) {
++							//TODO: Temp number because placeholder reminder that something needs to be done in this area.
++							tileFrameX += 100;
++						}
+ 					}
+ 					if (x % 2 == 0)
+ 						tileSpriteEffect = SpriteEffects.FlipHorizontally;
 @@ -4378,6 +_,10 @@
  						break;
  					}
@@ -176,6 +339,24 @@
 +				TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
  			}
  		}
+ 
+@@ -5470,6 +_,7 @@
+ 					bool flag2 = false;
+ 					switch (type) {
+ 						case 5:
++							//TODO: I probably have to do something here WRT foliage
+ 							flag2 = true;
+ 							getTreeFoliageDataMethod = WorldGen.GetCommonTreeFoliageData;
+ 							break;
+@@ -5690,7 +_,8 @@
+ 				}
+ 
+ 				if (tile.type == 227 && tileFrameX == 202) {
++					//TODO: This is cactus dye again. no idea what supposed to do with this yet
+-					GetCactusType(x, y, tileFrameX, tileFrameY, out bool evil, out bool good, out bool crimson);
++					GetCactusType(x, y, tileFrameX, tileFrameY, out bool evil, out bool good, out bool crimson, out var modTexture);
+ 					if (good)
+ 						tileFrameX = (short)(tileFrameX + 170);
  
 @@ -5720,7 +_,7 @@
  		}
