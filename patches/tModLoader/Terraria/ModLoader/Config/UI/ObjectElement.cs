@@ -41,7 +41,9 @@ namespace Terraria.ModLoader.Config.UI
 				// TODO: only do this if ToString is overriden.
 
 				var listType = MemberInfo.Type.GetGenericArguments()[0];
-				bool hasToString = listType.GetMethod("ToString", Array.Empty<Type>()).DeclaringType != typeof(object);
+
+				System.Reflection.MethodInfo methodInfo = listType.GetMethod("ToString", Array.Empty<Type>());
+				bool hasToString = methodInfo != null && methodInfo.DeclaringType != typeof(object);
 
 				if (hasToString) {
 					TextDisplayFunction = () => Index + 1 + ": " + (List[Index]?.ToString() ?? "null");
