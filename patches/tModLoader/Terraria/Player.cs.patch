@@ -4283,6 +4283,20 @@
  							ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, i, num6, dmgDone);
  							int num7 = Item.NPCtoBanner(Main.npc[i].BannerID());
  							if (num7 >= 0)
+@@ -31447,7 +_,12 @@
+ 				if (!itemRectangle.Intersects(value))
+ 					continue;
+ 
++				bool? canCapture = CombinedHooks.CanCapture(this, Main.npc[i], sItem);
++				if (canCapture.HasValue) {
++					if (canCapture.Value)
++						NPC.CatchNPC(i, whoAmI);
++				}
+-				if (!flag && ItemID.Sets.IsLavaBait[Main.npc[i].catchItem]) {
++				else if (!flag && ItemID.Sets.IsLavaBait[Main.npc[i].catchItem]) {
+ 					if (Main.myPlayer == whoAmI && Hurt(PlayerDeathReason.ByNPC(i), 1, (Main.npc[i].Center.X < base.Center.X) ? 1 : (-1), pvp: false, quiet: false, Crit: false, 3) > 0.0 && !dead)
+ 						AddBuff(24, 300, quiet: false);
+ 				}
 @@ -31738,6 +_,9 @@
  				Main.dust[num30].velocity.Y *= 2f;
  			}

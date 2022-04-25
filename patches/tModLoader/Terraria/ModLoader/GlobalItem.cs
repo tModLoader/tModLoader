@@ -354,6 +354,21 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to determine whether the given item can capture the given NPC.<br></br>
+		/// Return true or false to say the target can or cannot be captured, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC capturing rules to decide the target's fate.<br></br><br></br>
+		/// NOTE: this does not classify the given item as a capture tool, which is necessary for capturing NPCs in the first place.<br></br>
+		/// To do that, you will need a different hook.
+		/// </summary>
+		/// <param name="item">The item with which the player is trying to capture the target NPC.</param>
+		/// <param name="target">The NPC the player is trying to capture.</param>
+		/// <param name="player">The player attempting to capture the NPC.</param>
+		/// <returns></returns>
+		public virtual bool? CanCapture(Item item, NPC target, Player player) {
+			return null;
+		}
+
+		/// <summary>
 		/// Allows you to determine whether a melee weapon can hit the given NPC when swung. Return true to allow hitting the target, return false to block the weapon from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 		/// </summary>
 		public virtual bool? CanHitNPC(Item item, Player player, NPC target) {

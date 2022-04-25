@@ -193,11 +193,27 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when an NPC is caught. Ran Serverside.
+		/// Allows you to determine whether the given item can capture the given NPC.<br></br>
+		/// Return true or false to say the given NPC can or cannot be captured, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC capturing rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="OnCatchNPC"/> and <see cref="ModNPC.OnCatchNPC"/> are never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as a capture tool, which is necessary for capturing NPCs in the first place.<br></br>
+		/// To do that, you will need a different hook.
 		/// </summary>
-		/// <param name="npc">The caught NPC</param>
-		/// <param name="player">The player catching the NPC</param>
-		/// <param name="item">The item that will be spawned</param>
+		/// <param name="npc">The NPC that can potentially be captured.</param>
+		/// <param name="item">The item with which the player is trying to capture the given NPC.</param>
+		/// <param name="player">The player attempting to capture the given NPC.</param>
+		/// <returns></returns>
+		public virtual bool? CanBeCapturedBy(NPC npc, Item item, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given NPC is successfully caught by a capture tool, such as a bug net.
+		/// </summary>
+		/// <param name="npc">The caught NPC.</param>
+		/// <param name="player">The player catching the NPC.</param>
+		/// <param name="item">The item that was spawned as a result of the NPC's successful capture.</param>
 		public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
 		}
 

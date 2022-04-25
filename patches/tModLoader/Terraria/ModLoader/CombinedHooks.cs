@@ -154,5 +154,31 @@ namespace Terraria.ModLoader
 			}
 			return ret;
 		}
+
+		public static bool? CanCapture(Player player, NPC npc, Item item) {
+			bool? canCaptureOverall = null;
+			bool? canCaptureOnPlayer = PlayerLoader.CanCapture(player, npc, item);
+			bool? canCaptureOnItem = ItemLoader.CanCapture(item, npc, player);
+			bool? canCaptureOnNPC = NPCLoader.CanBeCapturedBy(npc, item, player);
+			if (canCaptureOnPlayer.HasValue) {
+				if (!canCaptureOnPlayer.Value)
+					return false;
+
+				canCaptureOverall = true;
+			}
+			if (canCaptureOnItem.HasValue) {
+				if (!canCaptureOnItem.Value)
+					return false;
+
+				canCaptureOverall = true;
+			}
+			if (canCaptureOnNPC.HasValue) {
+				if (!canCaptureOnNPC.Value)
+					return false;
+
+				canCaptureOverall = true;
+			}
+			return canCaptureOverall;
+		}
 	}
 }

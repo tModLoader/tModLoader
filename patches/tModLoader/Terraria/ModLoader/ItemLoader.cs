@@ -717,6 +717,37 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookCanCapture = AddHook<Func<Item, NPC, Player, bool?>>(g => g.CanCapture);
+
+		/// <summary>
+		/// Gathers the results of all <see cref="GlobalItem.CanCapture"/> instances, then <see cref="ModItem.CanCapture"/> if applicable.<br></br>
+		/// If any of them returns false, this returns false.<br></br>
+		/// Otherwise, if any of them returns true then this returns true.<br></br>
+		/// If all of them return null, this returns null.<br></br>
+		/// </summary>
+		public static bool? CanCapture(Item item, NPC target, Player player) {
+			bool? canCaptureOverall = null;
+			foreach (GlobalItem g in HookCanCapture.Enumerate(item.globalItems)) {
+				bool? canCaptureFromGlobalItem = g.CanCapture(item, target, player);
+				if (canCaptureFromGlobalItem.HasValue) {
+					if (!canCaptureFromGlobalItem.Value)
+						return false;
+
+					canCaptureOverall = true;
+				}
+			}
+			if (item.ModItem != null) {
+				bool? canCaptureAsModItem = item.ModItem.CanCapture(target, player);
+				if (canCaptureAsModItem.HasValue) {
+					if (!canCaptureAsModItem.Value)
+						return false;
+
+					canCaptureOverall = true;
+				}
+			}
+			return canCaptureOverall;
+		}
+
 		private static HookList HookCanHitNPC = AddHook<Func<Item, Player, NPC, bool?>>(g => g.CanHitNPC);
 
 		/// <summary>
