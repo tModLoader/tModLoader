@@ -842,7 +842,7 @@
  			}
  		}
  
-+		// this is made internal because NPC.CheckForNPCCatching now fulfills every use case
++		// this is made internal because NPC.CheckCatchNPC now fulfills every use case
 +		// that callin' this method manually could have for modders, and then some
 +		// -thomas
 -		public static void CatchNPC(int i, int who = -1) {
