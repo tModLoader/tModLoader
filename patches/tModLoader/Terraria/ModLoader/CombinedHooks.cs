@@ -155,7 +155,7 @@ namespace Terraria.ModLoader
 			return ret;
 		}
 
-		public static bool? CanCaptureWith(Player player, Item item) {
+		public static bool CanCaptureWith(Player player, Item item) {
 			bool? canCaptureWithOverall = null;
 			bool? canCaptureWithPlayer = PlayerLoader.CanCaptureWith(player, item);
 			bool? canCaptureWithItem = ItemLoader.CanCaptureWith(item, player);
@@ -171,7 +171,15 @@ namespace Terraria.ModLoader
 
 				canCaptureWithOverall = true;
 			}
-			return canCaptureWithOverall;
+
+			// I decided to bundle the vanilla logic into this hook, since vanilla does have rules for this
+			// doin' lets me save on patch size and improve readability in-context. it just makes sense
+			// not only that, but if somebody calls this hook elsewhere, that vanilla logic'll be important
+			// -thomas
+			if (canCaptureWithOverall.HasValue)
+				return canCaptureWithOverall.Value;
+			else
+				return item.type == 1991 || item.type == 3183 || item.type == 4821;
 		}
 
 		public static bool? CanCapture(Player player, NPC npc, Item item) {

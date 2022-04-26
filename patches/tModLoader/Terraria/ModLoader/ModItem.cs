@@ -429,8 +429,8 @@ namespace Terraria.ModLoader
 		/// Returns false by default; return true to allow it to be used for capturing.
 		/// </summary>
 		/// <param name="player">The player wielding this item.</param>
-		public virtual bool? CanCaptureWith(Player player) {
-			return null;
+		public virtual bool CanCaptureWith(Player player) {
+			return false;
 		}
 
 		/// <summary>

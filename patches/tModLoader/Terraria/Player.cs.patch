@@ -4047,7 +4047,7 @@
  					ItemCheck_UseWiringTools(item);
  					ItemCheck_UseLawnMower(item);
  					ItemCheck_PlayInstruments(item);
-@@ -30390,14 +_,19 @@
+@@ -30390,13 +_,14 @@
  						Vector2 vector = DirectionTo(ApplyRangeCompensation(0.2f, center, Main.MouseWorld)) * 10f;
  						Projectile.NewProjectile(GetProjectileSource_Accessory(boneGloveItem), center.X, center.Y, vector.X, vector.Y, 532, 25, 5f, whoAmI);
  					}
@@ -4059,16 +4059,10 @@
  					if (!dontAttack) {
  						itemRectangle = ItemCheck_EmitUseVisuals(item, itemRectangle);
 -						if (Main.myPlayer == whoAmI && (item.type == 1991 || item.type == 3183 || item.type == 4821))
--							itemRectangle = ItemCheck_CatchCritters(item, itemRectangle);
-+						if (Main.myPlayer == whoAmI) {
-+							bool validVanillaCaptureTool = item.type == 1991 || item.type == 3183 || item.type == 4821;
-+							bool? validModdedCaptureTool = CombinedHooks.CanCaptureWith(this, item);
-+							if ((validModdedCaptureTool.HasValue && validModdedCaptureTool.Value) || (!validModdedCaptureTool.HasValue && validVanillaCaptureTool))
-+								itemRectangle = ItemCheck_CatchCritters(item, itemRectangle);
-+						}
++						if (Main.myPlayer == whoAmI && CombinedHooks.CanCaptureWith(this, item))
+ 							itemRectangle = ItemCheck_CatchCritters(item, itemRectangle);
  
  						if (item.type == 3183 || item.type == 4821) {
- 							List<ushort> ignoreList = ItemCheck_GetTileCutIgnoreList(item);
 @@ -30406,7 +_,8 @@
  
  						if (Main.myPlayer == i && item.damage > 0) {

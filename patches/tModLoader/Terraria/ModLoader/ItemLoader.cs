@@ -736,16 +736,10 @@ namespace Terraria.ModLoader
 					canCaptureWithOverall = true;
 				}
 			}
-			if (item.ModItem != null) {
-				bool? canCaptureWithAsModItem = item.ModItem.CanCaptureWith(player);
-				if (canCaptureWithAsModItem.HasValue) {
-					if (!canCaptureWithAsModItem.Value)
-						return false;
-
-					canCaptureWithOverall = true;
-				}
-			}
-			return canCaptureWithOverall;
+			if (canCaptureWithOverall.HasValue)
+				return canCaptureWithOverall.Value;
+			else
+				return item.ModItem?.CanCaptureWith(player);
 		}
 
 		private static HookList HookCanCapture = AddHook<Func<Item, NPC, Player, bool?>>(g => g.CanCapture);
