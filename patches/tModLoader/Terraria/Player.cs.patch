@@ -4291,7 +4291,7 @@
  							ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, i, num6, dmgDone);
  							int num7 = Item.NPCtoBanner(Main.npc[i].BannerID());
  							if (num7 >= 0)
-@@ -31443,11 +_,18 @@
+@@ -31443,6 +_,8 @@
  				if (!Main.npc[i].active || Main.npc[i].catchItem <= 0)
  					continue;
  
@@ -4300,17 +4300,6 @@
  				Rectangle value = new Rectangle((int)Main.npc[i].position.X, (int)Main.npc[i].position.Y, Main.npc[i].width, Main.npc[i].height);
  				if (!itemRectangle.Intersects(value))
  					continue;
- 
-+				bool? canCatch = CombinedHooks.CanCatch(this, Main.npc[i], sItem);
-+				if (canCatch.HasValue) {
-+					if (canCatch.Value)
-+						NPC.CatchNPC(i, whoAmI);
-+				}
--				if (!flag && ItemID.Sets.IsLavaBait[Main.npc[i].catchItem]) {
-+				else if (!flag && ItemID.Sets.IsLavaBait[Main.npc[i].catchItem]) {
- 					if (Main.myPlayer == whoAmI && Hurt(PlayerDeathReason.ByNPC(i), 1, (Main.npc[i].Center.X < base.Center.X) ? 1 : (-1), pvp: false, quiet: false, Crit: false, 3) > 0.0 && !dead)
- 						AddBuff(24, 300, quiet: false);
- 				}
 @@ -31458,6 +_,7 @@
  				else {
  					NPC.CatchNPC(i, whoAmI);
