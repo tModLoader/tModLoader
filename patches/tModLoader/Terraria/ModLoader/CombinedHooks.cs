@@ -158,13 +158,13 @@ namespace Terraria.ModLoader
 		public static bool CanCaptureWith(Player player, Item item) {
 			bool? canCaptureWithOverall = null;
 			bool? canCaptureWithPlayer = PlayerLoader.CanCaptureWith(player, item);
-			bool? canCaptureWithItem = ItemLoader.CanCaptureWith(item, player);
 			if (canCaptureWithPlayer.HasValue) {
 				if (!canCaptureWithPlayer.Value)
 					return false;
 
 				canCaptureWithOverall = true;
 			}
+			bool? canCaptureWithItem = ItemLoader.CanCaptureWith(item, player);
 			if (canCaptureWithItem.HasValue) {
 				if (!canCaptureWithItem.Value)
 					return false;
@@ -185,20 +185,20 @@ namespace Terraria.ModLoader
 		public static bool? CanCapture(Player player, NPC npc, Item item) {
 			bool? canCaptureOverall = null;
 			bool? canCaptureOnPlayer = PlayerLoader.CanCapture(player, npc, item);
-			bool? canCaptureOnItem = ItemLoader.CanCapture(item, npc, player);
-			bool? canCaptureOnNPC = NPCLoader.CanBeCapturedBy(npc, item, player);
 			if (canCaptureOnPlayer.HasValue) {
 				if (!canCaptureOnPlayer.Value)
 					return false;
 
 				canCaptureOverall = true;
 			}
+			bool? canCaptureOnItem = ItemLoader.CanCapture(item, npc, player);
 			if (canCaptureOnItem.HasValue) {
 				if (!canCaptureOnItem.Value)
 					return false;
 
 				canCaptureOverall = true;
 			}
+			bool? canCaptureOnNPC = NPCLoader.CanBeCapturedBy(npc, item, player);
 			if (canCaptureOnNPC.HasValue) {
 				if (!canCaptureOnNPC.Value)
 					return false;
