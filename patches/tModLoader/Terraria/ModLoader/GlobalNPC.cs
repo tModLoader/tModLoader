@@ -196,9 +196,9 @@ namespace Terraria.ModLoader
 		/// Allows you to determine whether the given item can catch the given NPC.<br></br>
 		/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
 		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
-		/// If this returns false, <see cref="OnCatchNPC"/> and <see cref="ModNPC.OnCatchNPC"/> are never called.<br></br><br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
 		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
-		/// To do that, you will need to use <see cref="GlobalItem.CanCatchWith"/> or <see cref="ModItem.CanCatchWith"/>, as appropriate.
+		/// To do that, you will need to use <see cref="ModPlayer.CanCatchNPCWith"/>, <see cref="GlobalItem.CanCatchWith"/>, or <see cref="ModItem.CanCatchWith"/>, as appropriate.
 		/// </summary>
 		/// <param name="npc">The NPC that can potentially be caught.</param>
 		/// <param name="item">The item with which the player is trying to catch the given NPC.</param>
@@ -209,13 +209,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when the given NPC is successfully caught by an NPC-catching tool, such as a bug net.
+		/// Allows you to make things happen when the given item attempts to catch the given NPC.
 		/// </summary>
-		/// <param name="npc">The caught NPC.</param>
-		/// <param name="player">The player catching the NPC.</param>
-		/// <param name="item">The item that was spawned as a result of the NPC being caught.<br></br>
-		/// NOTE: this is NOT the item used to catch the NPC!</param>
-		public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
+		/// <param name="npc">The NPC which the player attempted to catch.</param>
+		/// <param name="player">The player attempting to catch the given NPC.</param>
+		/// <param name="item">The item used to catch the given NPC.</param>
+		/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
+		public virtual void OnCatchNPC(NPC npc, Player player, Item item, bool failed) {
 		}
 
 		/// <summary>

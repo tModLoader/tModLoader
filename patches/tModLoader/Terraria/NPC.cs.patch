@@ -838,20 +838,19 @@
  				if (Main.netMode == 2)
  					NetMessage.SendData(7);
  			}
-@@ -57238,6 +_,12 @@
+@@ -57238,7 +_,10 @@
  			}
  		}
  
-+		// to-do:
-+		// possibly find a way to add the item/projectile/general entity used as a parameter. would be useful context for addin' hooks
-+		// problem: it would require sizable changes to the method and its associated net message
-+		// as you might've guessed, I'm too stupid to figure out how this game's awful netcode works, so somebody else'll need to do this
-+		// I may come back to it later, but for now, this is just stayin' unchanged
++		// this is made internal because NPC.CheckForNPCCatching now fulfills every use case
++		// that callin' this method manually could have for modders, and then some
 +		// -thomas
- 		public static void CatchNPC(int i, int who = -1) {
+-		public static void CatchNPC(int i, int who = -1) {
++		internal static void CatchNPC(int i, int who = -1) {
  			if (!Main.npc[i].active)
  				return;
-@@ -57258,8 +_,15 @@
+ 
+@@ -57258,8 +_,14 @@
  					NetMessage.SendData(106, -1, -1, null, (int)position.X, position.Y);
  				}
  				else {
@@ -861,7 +860,6 @@
 +					*/
 +					int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, true, 0, true, false);
 +					
-+					NPCLoader.OnCatchNPC(Main.npc[i], Main.player[who], Main.item[itemWhoAmI]);
 +					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemWhoAmI, 1f); // NewItem above changed to noBroadcast, number2 is 1 for noGrabDelay effect.
 +					
  					Main.npc[i].active = false;

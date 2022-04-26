@@ -157,7 +157,7 @@ namespace Terraria.ModLoader
 
 		public static bool CanCatchWith(Player player, Item item) {
 			bool? canCatchWithOverall = null;
-			bool? canCatchWithPlayer = PlayerLoader.CanCatchWith(player, item);
+			bool? canCatchWithPlayer = PlayerLoader.CanCatchNPCWith(player, item);
 			if (canCatchWithPlayer.HasValue) {
 				if (!canCatchWithPlayer.Value)
 					return false;
@@ -182,16 +182,16 @@ namespace Terraria.ModLoader
 				return item.type == 1991 || item.type == 3183 || item.type == 4821;
 		}
 
-		public static bool? CanCatch(Player player, NPC npc, Item item) {
+		public static bool? CanCatchNPC(Player player, NPC npc, Item item) {
 			bool? canCatchOverall = null;
-			bool? canCatchOnPlayer = PlayerLoader.CanCatch(player, npc, item);
+			bool? canCatchOnPlayer = PlayerLoader.CanCatchNPC(player, npc, item);
 			if (canCatchOnPlayer.HasValue) {
 				if (!canCatchOnPlayer.Value)
 					return false;
 
 				canCatchOverall = true;
 			}
-			bool? canCatchOnItem = ItemLoader.CanCatch(item, npc, player);
+			bool? canCatchOnItem = ItemLoader.CanCatchNPC(item, npc, player);
 			if (canCatchOnItem.HasValue) {
 				if (!canCatchOnItem.Value)
 					return false;
@@ -206,6 +206,12 @@ namespace Terraria.ModLoader
 				canCatchOverall = true;
 			}
 			return canCatchOverall;
+		}
+
+		public static void OnCatchNPC(Player player, NPC npc, Item item, bool failed) {
+			PlayerLoader.OnCatchNPC(player, npc, item, failed);
+			ItemLoader.OnCatchNPC(item, npc, player, failed);
+			NPCLoader.OnCatchNPC(npc, player, item, failed);
 		}
 	}
 }

@@ -92,5 +92,49 @@ namespace Terraria
 			bottom.X += direction * directionOffset; // Added to match PlayerSittingHelper
 			bottom += finalOffset; // Added to match PlayerSittingHelper
 		}
+
+		/// <summary>
+		/// Runs all code related to the process of checking whether or not an NPC can be caught.<br></br>
+		/// After that, <see cref="CombinedHooks.OnCatchNPC"/> is run, followed by the code responsible for catching the NPC if applicable.<br></br>
+		/// You will need to call this manually if you want to make an NPC-catching tool which acts differently from vanilla's, such as one that uses a projectile instead of an item.
+		/// </summary>
+		/// <param name="npc">The NPC which can potentially be caught.</param>
+		/// <param name="catchToolRectangle">The hitbox of the tool being used to catch the NPC --- be it an item, a projectile, or something else entirely.</param>
+		/// <param name="item">The item to be used as a reference for the purposes of <see cref="CombinedHooks.CanCatchNPC"/> and <see cref="CombinedHooks.OnCatchNPC"/>.</param>
+		/// <param name="player">The player that owns the referenced item.</param>
+		/// <param name="lavaProofTool">Whether or not the tool is lavaproof for the purposes of catching vanilla's Underworld critters. Defaults to false.</param>
+		/// <returns>Whether or not the NPC was successfully caught.</returns>
+		public static bool CheckCatchNPC(NPC npc, Rectangle catchToolRectangle, Item item, Player player, bool lavaProofTool = false) {
+			Rectangle value = new Rectangle((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
+			if (!catchToolRectangle.Intersects(value))
+				return false;
+
+			bool? canCatch = CombinedHooks.CanCatchNPC(player, npc, item);
+			if (canCatch.HasValue) {
+				CombinedHooks.OnCatchNPC(player, npc, item, !canCatch.Value);
+				if (canCatch.Value)
+					NPC.CatchNPC(npc.whoAmI, player.whoAmI);
+
+				return canCatch.Value;
+			}
+			else if (!lavaProofTool && ItemID.Sets.IsLavaBait[npc.catchItem]) {
+				CombinedHooks.OnCatchNPC(player, npc, item, true);
+				if (Main.myPlayer == player.whoAmI && player.Hurt(PlayerDeathReason.ByNPC(npc.whoAmI), 1, (npc.Center.X < player.Center.X) ? 1 : (-1), pvp: false, quiet: false, Crit: false, 3) > 0.0 && !player.dead)
+					player.AddBuff(24, 300, quiet: false);
+				return false;
+			}
+			else if (npc.type == 585 || npc.type == 583 || npc.type == 584) {
+				bool canCatchFairy = npc.ai[2] <= 1f;
+				CombinedHooks.OnCatchNPC(player, npc, item, !canCatchFairy);
+				if (canCatchFairy)
+					NPC.CatchNPC(npc.whoAmI, player.whoAmI);
+				return canCatchFairy;
+			}
+			else {
+				CombinedHooks.OnCatchNPC(player, npc, item, false);
+				NPC.CatchNPC(npc.whoAmI, player.whoAmI);
+				return true;
+			}
+		}
 	}
 }

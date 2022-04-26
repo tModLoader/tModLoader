@@ -4291,7 +4291,13 @@
  							ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, i, num6, dmgDone);
  							int num7 = Item.NPCtoBanner(Main.npc[i].BannerID());
  							if (num7 >= 0)
-@@ -31447,7 +_,12 @@
+@@ -31443,11 +_,18 @@
+ 				if (!Main.npc[i].active || Main.npc[i].catchItem <= 0)
+ 					continue;
+ 
++				NPC.CheckCatchNPC(Main.npc[i], itemRectangle, sItem, this, flag);
++				/*
+ 				Rectangle value = new Rectangle((int)Main.npc[i].position.X, (int)Main.npc[i].position.Y, Main.npc[i].width, Main.npc[i].height);
  				if (!itemRectangle.Intersects(value))
  					continue;
  
@@ -4305,6 +4311,14 @@
  					if (Main.myPlayer == whoAmI && Hurt(PlayerDeathReason.ByNPC(i), 1, (Main.npc[i].Center.X < base.Center.X) ? 1 : (-1), pvp: false, quiet: false, Crit: false, 3) > 0.0 && !dead)
  						AddBuff(24, 300, quiet: false);
  				}
+@@ -31458,6 +_,7 @@
+ 				else {
+ 					NPC.CatchNPC(i, whoAmI);
+ 				}
++				*/
+ 			}
+ 
+ 			return itemRectangle;
 @@ -31738,6 +_,9 @@
  				Main.dust[num30].velocity.Y *= 2f;
  			}

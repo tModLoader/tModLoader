@@ -717,7 +717,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookCanCatchhWith = AddHook<Func<Item, Player, bool?>>(g => g.CanCatchWith);
+		private static HookList HookCanCatchWith = AddHook<Func<Item, Player, bool?>>(g => g.CanCatchWith);
 
 		/// <summary>
 		/// Gathers the results of all <see cref="GlobalItem.CanCatchWith"/> hooks, then the <see cref="ModItem.CanCatchWith"/> hook if applicable.<br></br>
@@ -727,7 +727,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool? CanCatchWith(Item item, Player player) {
 			bool? canCatchWithOverall = null;
-			foreach (GlobalItem g in HookCanCatchhWith.Enumerate(item.globalItems)) {
+			foreach (GlobalItem g in HookCanCatchWith.Enumerate(item.globalItems)) {
 				bool? canCatchWithFromGlobalItem = g.CanCatchWith(item, player);
 				if (canCatchWithFromGlobalItem.HasValue) {
 					if (!canCatchWithFromGlobalItem.Value)
@@ -750,7 +750,7 @@ namespace Terraria.ModLoader
 		/// Otherwise, if any of them returns true, then this returns true.<br></br>
 		/// If all of them return null, this returns null.<br></br>
 		/// </summary>
-		public static bool? CanCatch(Item item, NPC target, Player player) {
+		public static bool? CanCatchNPC(Item item, NPC target, Player player) {
 			bool? canCatchOverall = null;
 			foreach (GlobalItem g in HookCanCatch.Enumerate(item.globalItems)) {
 				bool? canCatchFromGlobalItem = g.CanCatch(item, target, player);
@@ -772,6 +772,17 @@ namespace Terraria.ModLoader
 			}
 			return canCatchOverall;
 		}
+
+		private static HookList HookOnCatchNPC = AddHook<Action<Item, NPC, Player, bool>>(g => g.OnCatchNPC);
+
+		public static void OnCatchNPC(Item item, NPC npc, Player player, bool failed) {
+			item.ModItem?.OnCatchNPC(npc, player, failed);
+
+			foreach (GlobalItem g in HookOnCatchNPC.Enumerate(item.globalItems)) {
+				g.OnCatchNPC(item, npc, player, failed);
+			}
+		}
+
 
 		private static HookList HookCanHitNPC = AddHook<Func<Item, Player, NPC, bool?>>(g => g.CanHitNPC);
 
