@@ -425,25 +425,26 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether this item can be used to capture NPCs, similar to bug nets.<br></br>
-		/// Returns false by default; return true to allow it to be used for capturing.
+		/// Allows you to determine whether this item can be used to catch NPCs, similar to bug nets.<br></br>
+		/// Returns false by default; return true to allow it to be used for catching.
 		/// </summary>
 		/// <param name="player">The player wielding this item.</param>
-		public virtual bool CanCaptureWith(Player player) {
+		public virtual bool CanCatchWith(Player player) {
 			return false;
 		}
 
 		/// <summary>
-		/// Allows you to determine whether this item can capture the given NPC.<br></br>
-		/// Return true or false to say the target can or cannot be captured, respectively, regardless of vanilla rules.<br></br>
-		/// Returns null by default, which allows vanilla's NPC capturing rules to decide the target's fate.<br></br><br></br>
-		/// NOTE: this does not classify the given item as a capture tool, which is necessary for capturing NPCs in the first place.<br></br>
-		/// To do that, you will need a different hook.
+		/// Allows you to determine whether this item can catch the given NPC.<br></br>
+		/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="GlobalNPC.OnCatchNPC"/> and <see cref="ModNPC.OnCatchNPC"/> are never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use <see cref="CanCatchWith"/>.
 		/// </summary>
-		/// <param name="target">The NPC the player is trying to capture.</param>
-		/// <param name="player">The player attempting to capture the NPC.</param>
+		/// <param name="target">The NPC the player is trying to catch.</param>
+		/// <param name="player">The player attempting to catch the NPC.</param>
 		/// <returns></returns>
-		public virtual bool? CanCapture(NPC target, Player player) {
+		public virtual bool? CanCatch(NPC target, Player player) {
 			return null;
 		}
 

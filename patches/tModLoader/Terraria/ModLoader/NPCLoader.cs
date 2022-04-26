@@ -483,12 +483,12 @@ namespace Terraria.ModLoader
 			return ret;
 		}
 
-		private static HookList HookCanBeCapturedBy = AddHook<Func<NPC, Item, Player, bool?>>(g => g.CanBeCapturedBy);
+		private static HookList HookCanBeCaughtBy = AddHook<Func<NPC, Item, Player, bool?>>(g => g.CanBeCaughtBy);
 
-		public static bool? CanBeCapturedBy(NPC npc, Item item, Player player) {
+		public static bool? CanBeCaughtBy(NPC npc, Item item, Player player) {
 			bool? canBeCapturedOverall = null;
-			foreach (GlobalNPC g in HookCanBeCapturedBy.Enumerate(npc.globalNPCs)) {
-				bool? canBeCapturedFromGlobalNPC = g.CanBeCapturedBy(npc, item, player);
+			foreach (GlobalNPC g in HookCanBeCaughtBy.Enumerate(npc.globalNPCs)) {
+				bool? canBeCapturedFromGlobalNPC = g.CanBeCaughtBy(npc, item, player);
 				if (canBeCapturedFromGlobalNPC.HasValue) {
 					if (!canBeCapturedFromGlobalNPC.Value)
 						return false;
@@ -497,7 +497,7 @@ namespace Terraria.ModLoader
 				}
 			}
 			if (npc.ModNPC != null) {
-				bool? canBeCapturedAsModNPC = npc.ModNPC.CanBeCapturedBy(item, player);
+				bool? canBeCapturedAsModNPC = npc.ModNPC.CanBeCaughtBy(item, player);
 				if (canBeCapturedAsModNPC.HasValue) {
 					if (!canBeCapturedAsModNPC.Value)
 						return false;

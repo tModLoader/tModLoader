@@ -4059,7 +4059,7 @@
  					if (!dontAttack) {
  						itemRectangle = ItemCheck_EmitUseVisuals(item, itemRectangle);
 -						if (Main.myPlayer == whoAmI && (item.type == 1991 || item.type == 3183 || item.type == 4821))
-+						if (Main.myPlayer == whoAmI && CombinedHooks.CanCaptureWith(this, item))
++						if (Main.myPlayer == whoAmI && CombinedHooks.CanCatchWith(this, item))
  							itemRectangle = ItemCheck_CatchCritters(item, itemRectangle);
  
  						if (item.type == 3183 || item.type == 4821) {
@@ -4295,9 +4295,9 @@
  				if (!itemRectangle.Intersects(value))
  					continue;
  
-+				bool? canCapture = CombinedHooks.CanCapture(this, Main.npc[i], sItem);
-+				if (canCapture.HasValue) {
-+					if (canCapture.Value)
++				bool? canCatch = CombinedHooks.CanCatch(this, Main.npc[i], sItem);
++				if (canCatch.HasValue) {
++					if (canCatch.Value)
 +						NPC.CatchNPC(i, whoAmI);
 +				}
 -				if (!flag && ItemID.Sets.IsLavaBait[Main.npc[i].catchItem]) {

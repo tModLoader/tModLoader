@@ -354,28 +354,29 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the given item can be used to capture NPCs, similar to bug nets.<br></br>
-		/// Return true or false to say the item can or cannot be used for capturing, respectively, regardless of vanilla rules.<br></br>
-		/// Returns null by default, which means that the item can only be used for capturing if it's one of the three vanilla bug nets.
+		/// Allows you to determine whether the given item can be used to catch NPCs, similar to bug nets.<br></br>
+		/// Return true or false to say the item can or cannot be used for catching, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which means that the item can only be used for catching if it's one of the three vanilla bug nets.
 		/// </summary>
-		/// <param name="item">The item with which the player could potentially capture something.</param>
+		/// <param name="item">The item with which the player could potentially catch something.</param>
 		/// <param name="player">The player wielding the item.</param>
-		public virtual bool? CanCaptureWith(Item item, Player player) {
+		public virtual bool? CanCatchWith(Item item, Player player) {
 			return null;
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the given item can capture the given NPC.<br></br>
-		/// Return true or false to say the target can or cannot be captured, respectively, regardless of vanilla rules.<br></br>
-		/// Returns null by default, which allows vanilla's NPC capturing rules to decide the target's fate.<br></br><br></br>
-		/// NOTE: this does not classify the given item as a capture tool, which is necessary for capturing NPCs in the first place.<br></br>
-		/// To do that, you will need a different hook.
+		/// Allows you to determine whether the given item can catch the given NPC.<br></br>
+		/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="GlobalNPC.OnCatchNPC"/> and <see cref="ModNPC.OnCatchNPC"/> are never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use <see cref="CanCatchWith"/>.
 		/// </summary>
-		/// <param name="item">The item with which the player is trying to capture the target NPC.</param>
-		/// <param name="target">The NPC the player is trying to capture.</param>
-		/// <param name="player">The player attempting to capture the NPC.</param>
+		/// <param name="item">The item with which the player is trying to catch the target NPC.</param>
+		/// <param name="target">The NPC the player is trying to catch.</param>
+		/// <param name="player">The player attempting to catch the NPC.</param>
 		/// <returns></returns>
-		public virtual bool? CanCapture(Item item, NPC target, Player player) {
+		public virtual bool? CanCatch(Item item, NPC target, Player player) {
 			return null;
 		}
 

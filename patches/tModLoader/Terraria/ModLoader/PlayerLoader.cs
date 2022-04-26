@@ -596,14 +596,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookCanCaptureWith = AddHook<Func<Item, bool?>>(p => p.CanCaptureWith);
+		private static HookList HookCanCatchWith = AddHook<Func<Item, bool?>>(p => p.CanCatchWith);
 
-		public static bool? CanCaptureWith(Player player, Item item) {
+		public static bool? CanCatchWith(Player player, Item item) {
 			bool? returnValue = null;
-			foreach (int index in HookCanCaptureWith.arr) {
-				bool? canCaptureWith = player.modPlayers[index].CanCaptureWith(item);
-				if (canCaptureWith.HasValue) {
-					if (!canCaptureWith.Value)
+			foreach (int index in HookCanCatchWith.arr) {
+				bool? canCatchWith = player.modPlayers[index].CanCatchWith(item);
+				if (canCatchWith.HasValue) {
+					if (!canCatchWith.Value)
 						return false;
 
 					returnValue = true;
@@ -612,14 +612,14 @@ namespace Terraria.ModLoader
 			return returnValue;
 		}
 
-		private static HookList HookCanCapture = AddHook<Func<NPC, Item, bool?>>(p => p.CanCapture);
+		private static HookList HookCanCatch = AddHook<Func<NPC, Item, bool?>>(p => p.CanCatch);
 
-		public static bool? CanCapture(Player player, NPC target, Item item) {
+		public static bool? CanCatch(Player player, NPC target, Item item) {
 			bool? returnValue = null;
-			foreach (int index in HookCanCapture.arr) {
-				bool? canCapture = player.modPlayers[index].CanCapture(target, item);
-				if (canCapture.HasValue) {
-					if (!canCapture.Value)
+			foreach (int index in HookCanCatch.arr) {
+				bool? canCatch = player.modPlayers[index].CanCatch(target, item);
+				if (canCatch.HasValue) {
+					if (!canCatch.Value)
 						return false;
 
 					returnValue = true;

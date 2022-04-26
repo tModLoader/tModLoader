@@ -506,7 +506,7 @@ namespace Terraria.ModLoader
 		/// Returns null by default, which means that the item can only be used for capturing if it's one of the three vanilla bug nets.
 		/// </summary>
 		/// <param name="item">The item with which the player could potentially capture something.</param>
-		public virtual bool? CanCaptureWith(Item item) {
+		public virtual bool? CanCatchWith(Item item) {
 			return null;
 		}
 
@@ -519,7 +519,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="target">The NPC the player is trying to capture.</param>
 		/// <param name="item">The item with which the player is trying to capture the target NPC.</param>
-		public virtual bool? CanCapture(NPC target, Item item) {
+		public virtual bool? CanCatch(NPC target, Item item) {
 			return null;
 		}
 
