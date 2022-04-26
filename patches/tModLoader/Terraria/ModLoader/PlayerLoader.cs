@@ -596,6 +596,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookCanCaptureWith = AddHook<Func<Item, bool?>>(p => p.CanCaptureWith);
+
+		public static bool? CanCaptureWith(Player player, Item item) {
+			bool? returnValue = null;
+			foreach (int index in HookCanCaptureWith.arr) {
+				bool? canCaptureWith = player.modPlayers[index].CanCaptureWith(item);
+				if (canCaptureWith.HasValue) {
+					if (!canCaptureWith.Value)
+						return false;
+
+					returnValue = true;
+				}
+			}
+			return returnValue;
+		}
+
 		private static HookList HookCanCapture = AddHook<Func<NPC, Item, bool?>>(p => p.CanCapture);
 
 		public static bool? CanCapture(Player player, NPC target, Item item) {

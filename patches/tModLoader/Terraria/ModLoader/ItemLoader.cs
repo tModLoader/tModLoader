@@ -717,12 +717,43 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookCanCaptureWith = AddHook<Func<Item, Player, bool?>>(g => g.CanCaptureWith);
+
+		/// <summary>
+		/// Gathers the results of all <see cref="GlobalItem.CanCaptureWith"/> hooks, then the <see cref="ModItem.CanCaptureWith"/> hook if applicable.<br></br>
+		/// If any of them returns false, this returns false.<br></br>
+		/// Otherwise, if any of them returns true, then this returns true.<br></br>
+		/// If all of them return null, this returns null.<br></br>
+		/// </summary>
+		public static bool? CanCaptureWith(Item item, Player player) {
+			bool? canCaptureWithOverall = null;
+			foreach (GlobalItem g in HookCanCaptureWith.Enumerate(item.globalItems)) {
+				bool? canCaptureWithFromGlobalItem = g.CanCaptureWith(item, player);
+				if (canCaptureWithFromGlobalItem.HasValue) {
+					if (!canCaptureWithFromGlobalItem.Value)
+						return false;
+
+					canCaptureWithOverall = true;
+				}
+			}
+			if (item.ModItem != null) {
+				bool? canCaptureWithAsModItem = item.ModItem.CanCaptureWith(player);
+				if (canCaptureWithAsModItem.HasValue) {
+					if (!canCaptureWithAsModItem.Value)
+						return false;
+
+					canCaptureWithOverall = true;
+				}
+			}
+			return canCaptureWithOverall;
+		}
+
 		private static HookList HookCanCapture = AddHook<Func<Item, NPC, Player, bool?>>(g => g.CanCapture);
 
 		/// <summary>
-		/// Gathers the results of all <see cref="GlobalItem.CanCapture"/> instances, then <see cref="ModItem.CanCapture"/> if applicable.<br></br>
+		/// Gathers the results of all <see cref="GlobalItem.CanCapture"/> hooks, then the <see cref="ModItem.CanCapture"/> hook if applicable.<br></br>
 		/// If any of them returns false, this returns false.<br></br>
-		/// Otherwise, if any of them returns true then this returns true.<br></br>
+		/// Otherwise, if any of them returns true, then this returns true.<br></br>
 		/// If all of them return null, this returns null.<br></br>
 		/// </summary>
 		public static bool? CanCapture(Item item, NPC target, Player player) {

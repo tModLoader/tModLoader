@@ -838,6 +838,19 @@
  				if (Main.netMode == 2)
  					NetMessage.SendData(7);
  			}
+@@ -57238,6 +_,12 @@
+ 			}
+ 		}
+ 
++		// to-do:
++		// possibly find a way to add the item/projectile/general entity used as a parameter. would be useful context for addin' hooks
++		// problem: it would require sizable changes to the method and its associated net message
++		// as you might've guessed, I'm too stupid to figure out how this game's awful netcode works, so somebody else'll need to do this
++		// I may come back to it later, but for now, this is just stayin' unchanged
++		// -thomas
+ 		public static void CatchNPC(int i, int who = -1) {
+ 			if (!Main.npc[i].active)
+ 				return;
 @@ -57258,8 +_,15 @@
  					NetMessage.SendData(106, -1, -1, null, (int)position.X, position.Y);
  				}

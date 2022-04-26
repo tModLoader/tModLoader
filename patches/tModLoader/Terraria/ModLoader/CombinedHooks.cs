@@ -155,6 +155,25 @@ namespace Terraria.ModLoader
 			return ret;
 		}
 
+		public static bool? CanCaptureWith(Player player, Item item) {
+			bool? canCaptureWithOverall = null;
+			bool? canCaptureWithPlayer = PlayerLoader.CanCaptureWith(player, item);
+			bool? canCaptureWithItem = ItemLoader.CanCaptureWith(item, player);
+			if (canCaptureWithPlayer.HasValue) {
+				if (!canCaptureWithPlayer.Value)
+					return false;
+
+				canCaptureWithOverall = true;
+			}
+			if (canCaptureWithItem.HasValue) {
+				if (!canCaptureWithItem.Value)
+					return false;
+
+				canCaptureWithOverall = true;
+			}
+			return canCaptureWithOverall;
+		}
+
 		public static bool? CanCapture(Player player, NPC npc, Item item) {
 			bool? canCaptureOverall = null;
 			bool? canCaptureOnPlayer = PlayerLoader.CanCapture(player, npc, item);

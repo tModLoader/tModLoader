@@ -354,6 +354,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to determine whether the given item can be used to capture NPCs, similar to bug nets.<br></br>
+		/// Return true or false to say the item can or cannot be used for capturing, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which means that the item can only be used for capturing if it's one of the three vanilla bug nets.
+		/// </summary>
+		/// <param name="item">The item with which the player could potentially capture something.</param>
+		/// <param name="player">The player wielding the item.</param>
+		public virtual bool? CanCaptureWith(Item item, Player player) {
+			return null;
+		}
+
+		/// <summary>
 		/// Allows you to determine whether the given item can capture the given NPC.<br></br>
 		/// Return true or false to say the target can or cannot be captured, respectively, regardless of vanilla rules.<br></br>
 		/// Returns null by default, which allows vanilla's NPC capturing rules to decide the target's fate.<br></br><br></br>
