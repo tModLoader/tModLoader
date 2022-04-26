@@ -850,7 +850,7 @@
  			if (!Main.npc[i].active)
  				return;
  
-@@ -57258,8 +_,14 @@
+@@ -57258,8 +_,15 @@
  					NetMessage.SendData(106, -1, -1, null, (int)position.X, position.Y);
  				}
  				else {
@@ -859,6 +859,7 @@
  					Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: false, 0, noGrabDelay: true);
 +					*/
 +					int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, true, 0, true, false);
++					// to-do: possibly restore hook for modifyin' the item spawned on catch? needs a new name so as to be clearly distinguished from the new OnCatchNPC
 +					
 +					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemWhoAmI, 1f); // NewItem above changed to noBroadcast, number2 is 1 for noGrabDelay effect.
 +					

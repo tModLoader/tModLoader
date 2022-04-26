@@ -4291,11 +4291,17 @@
  							ApplyNPCOnHitEffects(sItem, itemRectangle, num, knockBack, i, num6, dmgDone);
  							int num7 = Item.NPCtoBanner(Main.npc[i].BannerID());
  							if (num7 >= 0)
-@@ -31443,6 +_,8 @@
+@@ -31438,11 +_,13 @@
+ 		}
+ 
+ 		private Rectangle ItemCheck_CatchCritters(Item sItem, Rectangle itemRectangle) {
+-			bool flag = sItem.type == 3183 || sItem.type == 4821;
++			//bool flag = sItem.type == 3183 || sItem.type == 4821; // effectively replaced by ItemID.Sets.CanCatchLavaCritters
+ 			for (int i = 0; i < 200; i++) {
  				if (!Main.npc[i].active || Main.npc[i].catchItem <= 0)
  					continue;
  
-+				NPC.CheckCatchNPC(Main.npc[i], itemRectangle, sItem, this, flag);
++				NPC.CheckCatchNPC(Main.npc[i], itemRectangle, sItem, this, ItemID.Sets.CanCatchLavaCritters[sItem.type]);
 +				/*
  				Rectangle value = new Rectangle((int)Main.npc[i].position.X, (int)Main.npc[i].position.Y, Main.npc[i].width, Main.npc[i].height);
  				if (!itemRectangle.Intersects(value))

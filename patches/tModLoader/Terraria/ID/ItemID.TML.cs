@@ -25,6 +25,11 @@
 				KingSlimeBossBag, EyeOfCthulhuBossBag, EaterOfWorldsBossBag, BrainOfCthulhuBossBag, QueenBeeBossBag,
 				SkeletronBossBag, WallOfFleshBossBag, QueenSlimeBossBag
 			);
+
+			public static bool[] CanCatchLavaCritters = Factory.CreateBoolSet(
+				GoldenBugNet,
+				FireproofBugNet
+			);
 		}
 	}
 }
