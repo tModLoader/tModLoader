@@ -395,6 +395,15 @@
  			useStyle = 1;
  			autoReuse = true;
  			useAnimation = 15;
+@@ -44420,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		public void DefaultToCapturedCritter(short npcIdToSpawnOnUse) {
++		public void DefaultToCapturedCritter(int npcIdToSpawnOnUse) {
+ 			useStyle = 1;
+ 			autoReuse = true;
+ 			useTurn = true;
 @@ -44799,6 +_,11 @@
  			mountType = mount;
  		}
