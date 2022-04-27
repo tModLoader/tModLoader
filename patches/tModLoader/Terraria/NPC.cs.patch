@@ -13,6 +13,15 @@
  	{
  		private const int NPC_TARGETS_START = 300;
  		public bool IsABestiaryIconDummy;
+@@ -58,7 +_,7 @@
+ 		public int altTexture;
+ 		public int townNpcVariationIndex;
+ 		public Vector2 netOffset = Vector2.Zero;
+-		public short catchItem;
++		public int catchItem; // tML: changed to int for convenience and consistency purposes
+ 		public short releaseOwner = 255;
+ 		public int rarity;
+ 		public static bool taxCollector = false;
 @@ -104,14 +_,14 @@
  		private static int townRangeY = sHeight;
  		public float npcSlots = 1f;
