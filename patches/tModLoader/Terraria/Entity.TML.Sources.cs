@@ -60,8 +60,8 @@ namespace Terraria
 		public IEntitySource GetSource_ReleaseEntity(string? context = null)
 			=> new EntitySource_Parent(this, context);
 
-		public IEntitySource GetSource_CatchEntity(string? context = null)
-			=> new EntitySource_Parent(this, context);
+		public IEntitySource GetSource_CatchEntity(Entity caughtEntity, string? context = null)
+			=> new EntitySource_CatchEntity(this, caughtEntity, context);
 
 		// Common - Static
 

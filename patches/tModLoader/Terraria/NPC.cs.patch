@@ -850,7 +850,7 @@
  			if (!Main.npc[i].active)
  				return;
  
-@@ -57258,8 +_,15 @@
+@@ -57258,8 +_,14 @@
  					NetMessage.SendData(106, -1, -1, null, (int)position.X, position.Y);
  				}
  				else {
@@ -858,8 +858,7 @@
  					new Item().SetDefaults(Main.npc[i].catchItem);
  					Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: false, 0, noGrabDelay: true);
 +					*/
-+					int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, true, 0, true, false);
-+					// to-do: possibly restore hook for modifyin' the item spawned on catch? needs a new name so as to be clearly distinguished from the new OnCatchNPC
++					int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who, Main.npc[i]), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, true, 0, true, false);
 +					
 +					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemWhoAmI, 1f); // NewItem above changed to noBroadcast, number2 is 1 for noGrabDelay effect.
 +					
@@ -1193,7 +1192,7 @@
 +
 +		// Internal redirects:
 +		internal static IEntitySource GetSpawnSource_NPCRelease(int whoReleasedIt) => Main.player[whoReleasedIt].GetSource_ReleaseEntity();
-+		internal static IEntitySource GetSpawnSource_NPCCatch(int whoCaughtIt) => Main.player[whoCaughtIt].GetSource_CatchEntity();
++		internal static IEntitySource GetSpawnSource_NPCCatch(int whoCaughtIt, Entity caughtEntity) => Main.player[whoCaughtIt].GetSource_CatchEntity(caughtEntity);
 +		internal static IEntitySource GetSpawnSourceForNaturalSpawn() => GetSource_NaturalSpawn();
 +		internal static IEntitySource GetSpawnSourceForTownSpawn() => GetSource_TownSpawn();
 +		
