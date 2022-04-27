@@ -395,10 +395,11 @@
  			useStyle = 1;
  			autoReuse = true;
  			useAnimation = 15;
-@@ -44420,7 +_,7 @@
+@@ -44420,7 +_,8 @@
  			}
  		}
  
++		// tML: changed to take an int instead of a short for convenience and consistency purposes
 -		public void DefaultToCapturedCritter(short npcIdToSpawnOnUse) {
 +		public void DefaultToCapturedCritter(int npcIdToSpawnOnUse) {
  			useStyle = 1;
