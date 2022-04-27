@@ -2,6 +2,9 @@
 
 namespace Terraria.DataStructures
 {
+	/// <summary>
+	/// Used for when NPCs or other entities are caught by things like bug nets.
+	/// </summary>
 	public class EntitySource_CatchEntity : IEntitySource
 	{
 		public readonly Entity Entity;
