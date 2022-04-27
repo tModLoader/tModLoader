@@ -35,7 +35,7 @@
  		public static int lifeGrabRange = 250;
  		public static int treasureGrabRange = 150;
 -		public short makeNPC;
-+		public int makeNPC;
++		public int makeNPC; // tML: changed to int for convenience and consistency purposes
  		public bool expertOnly;
  		public bool expert;
 +		public bool masterOnly;

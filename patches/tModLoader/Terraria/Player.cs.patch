@@ -4054,7 +4054,8 @@
 +					endItemChecks: {}
  				}
  
- 				if (((item.damage >= 0 && item.type > 0 && !item.noMelee) || item.type == 1450 || item.type == 1991 || item.type == 3183 || item.type == 4821 || item.type == 3542 || item.type == 3779) && itemAnimation > 0) {
+-				if (((item.damage >= 0 && item.type > 0 && !item.noMelee) || item.type == 1450 || item.type == 1991 || item.type == 3183 || item.type == 4821 || item.type == 3542 || item.type == 3779) && itemAnimation > 0) {
++				if (((item.damage >= 0 && item.type > 0 && !item.noMelee) || item.type == 1450 || CombinedHooks.CanCatchNPCsWith(this, item) || item.type == 3542 || item.type == 3779) && itemAnimation > 0) {
  					ItemCheck_GetMeleeHitbox(item, drawHitbox, out bool dontAttack, out Rectangle itemRectangle);
  					if (!dontAttack) {
  						itemRectangle = ItemCheck_EmitUseVisuals(item, itemRectangle);

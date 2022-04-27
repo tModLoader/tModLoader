@@ -113,7 +113,7 @@ namespace Terraria
 			if (canCatch.HasValue) {
 				CombinedHooks.OnCatchNPC(player, npc, item, !canCatch.Value);
 				if (canCatch.Value)
-					NPC.CatchNPC(npc.whoAmI, player.whoAmI);
+					CatchNPC(npc.whoAmI, player.whoAmI);
 
 				return canCatch.Value;
 			}
@@ -127,12 +127,12 @@ namespace Terraria
 				bool canCatchFairy = npc.ai[2] <= 1f;
 				CombinedHooks.OnCatchNPC(player, npc, item, !canCatchFairy);
 				if (canCatchFairy)
-					NPC.CatchNPC(npc.whoAmI, player.whoAmI);
+					CatchNPC(npc.whoAmI, player.whoAmI);
 				return canCatchFairy;
 			}
 			else {
 				CombinedHooks.OnCatchNPC(player, npc, item, false);
-				NPC.CatchNPC(npc.whoAmI, player.whoAmI);
+				CatchNPC(npc.whoAmI, player.whoAmI);
 				return true;
 			}
 		}
