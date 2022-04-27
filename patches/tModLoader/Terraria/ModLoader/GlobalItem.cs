@@ -360,7 +360,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="item">The item with which the player could potentially catch something.</param>
 		/// <param name="player">The player wielding the item.</param>
-		public virtual bool? CanCatchWith(Item item, Player player) {
+		public virtual bool? CanCatchNPCsWith(Item item, Player player) {
 			return null;
 		}
 
@@ -370,7 +370,7 @@ namespace Terraria.ModLoader
 		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
 		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
 		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
-		/// To do that, you will need to use <see cref="CanCatchWith"/>.
+		/// To do that, you will need to use <see cref="CanCatchNPCsWith"/>.
 		/// </summary>
 		/// <param name="item">The item with which the player is trying to catch the target NPC.</param>
 		/// <param name="target">The NPC the player is trying to catch.</param>

@@ -157,14 +157,14 @@ namespace Terraria.ModLoader
 
 		public static bool CanCatchWith(Player player, Item item) {
 			bool? canCatchWithOverall = null;
-			bool? canCatchWithPlayer = PlayerLoader.CanCatchNPCWith(player, item);
+			bool? canCatchWithPlayer = PlayerLoader.CanCatchNPCsWith(player, item);
 			if (canCatchWithPlayer.HasValue) {
 				if (!canCatchWithPlayer.Value)
 					return false;
 
 				canCatchWithOverall = true;
 			}
-			bool? canCatchWithItem = ItemLoader.CanCatchWith(item, player);
+			bool? canCatchWithItem = ItemLoader.CanCatchNPCsWith(item, player);
 			if (canCatchWithItem.HasValue) {
 				if (!canCatchWithItem.Value)
 					return false;

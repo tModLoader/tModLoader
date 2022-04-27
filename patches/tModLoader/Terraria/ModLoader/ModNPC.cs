@@ -275,7 +275,7 @@ namespace Terraria.ModLoader
 		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
 		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
 		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
-		/// To do that, you will need to use <see cref="ModPlayer.CanCatchNPCWith"/>, <see cref="GlobalItem.CanCatchWith"/>, or <see cref="ModItem.CanCatchWith"/>, as appropriate.
+		/// To do that, you will need to use <see cref="ModPlayer.CanCatchNPCsWith"/>, <see cref="GlobalItem.CanCatchNPCsWith"/>, or <see cref="ModItem.CanCatchNPCsWith"/>, as appropriate.
 		/// </summary>
 		/// <param name="item">The item with which the player is trying to catch this NPC.</param>
 		/// <param name="player">The player attempting to catch this NPC.</param>

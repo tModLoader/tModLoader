@@ -596,12 +596,12 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookCanCatchNPCWith = AddHook<Func<Item, bool?>>(p => p.CanCatchNPCWith);
+		private static HookList HookCanCatchNPCsWith = AddHook<Func<Item, bool?>>(p => p.CanCatchNPCsWith);
 
-		public static bool? CanCatchNPCWith(Player player, Item item) {
+		public static bool? CanCatchNPCsWith(Player player, Item item) {
 			bool? returnValue = null;
-			foreach (int index in HookCanCatchNPCWith.arr) {
-				bool? canCatchWith = player.modPlayers[index].CanCatchNPCWith(item);
+			foreach (int index in HookCanCatchNPCsWith.arr) {
+				bool? canCatchWith = player.modPlayers[index].CanCatchNPCsWith(item);
 				if (canCatchWith.HasValue) {
 					if (!canCatchWith.Value)
 						return false;
