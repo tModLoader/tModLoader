@@ -376,7 +376,7 @@ namespace Terraria.ModLoader
 		/// <param name="target">The NPC the player is trying to catch.</param>
 		/// <param name="player">The player attempting to catch the NPC.</param>
 		/// <returns></returns>
-		public virtual bool? CanCatch(Item item, NPC target, Player player) {
+		public virtual bool? CanCatchNPC(Item item, NPC target, Player player) {
 			return null;
 		}
 
