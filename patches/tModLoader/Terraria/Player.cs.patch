@@ -4568,24 +4568,27 @@
  			if (Main.dedServ)
  				return;
  
-@@ -36070,22 +_,26 @@
+@@ -36070,7 +_,8 @@
  			}
  		}
  
 -		private void ApplyPotionDelay(Item sItem) {
 +		private void ApplyPotionDelay(Item sItem, bool quickHeal = false) {
++			/*
  			if (sItem.type == 227) {
  				potionDelay = restorationDelayTime;
--				AddBuff(21, potionDelay);
- 			}
- 			else if (sItem.type == 5) {
- 				potionDelay = mushroomDelayTime;
--				AddBuff(21, potionDelay);
- 			}
- 			else {
+ 				AddBuff(21, potionDelay);
+@@ -36083,9 +_,23 @@
  				potionDelay = potionDelayTime;
--				AddBuff(21, potionDelay);
+ 				AddBuff(21, potionDelay);
  			}
++			*/
++
++			potionDelay = sItem.type switch {
++				ItemID.RestorationPotion => restorationDelayTime,
++				ItemID.Mushroom          => mushroomDelayTime,
++				_                        => potionDelayTime,
++			};
 +
 +			CombinedHooks.ApplyPotionDelay(this, sItem, quickHeal, ref potionDelay);
 +
