@@ -34,17 +34,27 @@ namespace ExampleMod.Content.Items.Consumables
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// Find the tooltip line that corresponds to 'Heals ... life'
 			// See https://tmodloader.github.io/tModLoader/html/class_terraria_1_1_mod_loader_1_1_tooltip_line.html for a list of vanilla tooltip line names
-			TooltipLine line = tooltips.FirstOrDefault(x => x.Mod == "Terraria" && x.Name == "HealLife");
+			int lineIndex = tooltips.FindIndex(x => x.Mod == "Terraria" && x.Name == "HealLife");
 
-			if (line != null) {
+			if (lineIndex >= 0) {
+				TooltipLine line = tooltips[lineIndex];
 				// Change the text to 'Heals max/2 (max/4 when quick healing) life'
 				line.Text = Language.GetTextValue("CommonItemTooltip.RestoresLife", $"{Main.LocalPlayer.statLifeMax2 / 2} ({Main.LocalPlayer.statLifeMax2 / 4} when quick healing)");
+
+				TooltipLine sicknessLine = new(Mod, "ExampleMod.HealingPotionSickness", "Potion sickness lasts half as long if used manually");
+				tooltips.Insert(lineIndex + 1, sicknessLine);
 			}
 		}
 
 		public override void GetHealLife(Player player, bool quickHeal, ref int healValue) {
 			// Make the item heal half the player's max health normally, or one fourth if used with quick heal
 			healValue = player.statLifeMax2 / (quickHeal ? 4 : 2);
+		}
+
+		public override void ApplyPotionDelay(Player player, bool quickHeal, ref int potionDelay) {
+			// Make the potion sickness duration half as long if used normally
+			if (!quickHeal)
+				potionDelay /= 2;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
