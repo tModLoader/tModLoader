@@ -448,6 +448,18 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateApplyPotionDelay(Item item, bool quickHeal, ref int healValue);
+		private static HookList HookApplyPotionDelay = AddHook<DelegateApplyPotionDelay>(p => p.ApplyPotionDelay);
+
+		public static void ApplyPotionDelay(Player player, Item item, bool quickHeal, ref int healValue) {
+			if (item.IsAir)
+				return;
+
+			foreach (int index in HookApplyPotionDelay.arr) {
+				player.modPlayers[index].ApplyPotionDelay(item, quickHeal, ref healValue);
+			}
+		}
+
 		private delegate void DelegateGetHealMana(Item item, bool quickHeal, ref int healValue);
 		private static HookList HookGetHealMana = AddHook<DelegateGetHealMana>(p => p.GetHealMana);
 

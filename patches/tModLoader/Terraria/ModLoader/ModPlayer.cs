@@ -373,6 +373,9 @@ namespace Terraria.ModLoader
 		public virtual void GetHealLife(Item item, bool quickHeal, ref int healValue) {
 		}
 
+		public virtual void ApplyPotionDelay(Item item, bool quickHeal, ref int potionDelay) {
+		}
+
 		/// <summary>
 		/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
 		/// </summary>

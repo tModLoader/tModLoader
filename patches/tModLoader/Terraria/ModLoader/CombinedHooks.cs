@@ -21,6 +21,11 @@ namespace Terraria.ModLoader
 			PlayerLoader.ModifyWeaponKnockback(player, item, ref knockback);
 		}
 
+		public static void ApplyPotionDelay(Player player, Item item, bool quickHeal, ref int potionDelay) {
+			ItemLoader.ApplyPotionDelay(item, player, false, ref potionDelay);
+			PlayerLoader.ApplyPotionDelay(player, item, false, ref potionDelay);
+		}
+
 		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
 			ItemLoader.ModifyManaCost(item, player, ref reduce, ref mult);
 			PlayerLoader.ModifyManaCost(player, item, ref reduce, ref mult);

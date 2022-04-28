@@ -106,7 +106,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void SetDefaults() {
 		}
-		
+
 		/// <summary>
 		/// Gets called when your item spawns in world
 		/// </summary>
@@ -231,6 +231,9 @@ namespace Terraria.ModLoader
 		public virtual void GetHealLife(Player player, bool quickHeal, ref int healValue) {
 		}
 
+		public virtual void ApplyPotionDelay(Player player, bool quickHeal, ref int potionDelay) {
+		}
+
 		/// <summary>
 		/// Allows you to temporarily modify the amount of mana a mana healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healMana value.
 		/// </summary>
@@ -299,7 +302,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create custom behaviour when an item is accepted by the Research function 
+		/// Allows you to create custom behaviour when an item is accepted by the Research function
 		/// </summary>
 		/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
 		public virtual void OnResearched(bool fullyResearched) {
