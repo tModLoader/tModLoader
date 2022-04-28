@@ -53,8 +53,9 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void ApplyPotionDelay(Player player, bool quickHeal, ref int potionDelay) {
 			// Make the potion sickness duration half as long if used normally
-			if (!quickHeal)
+			if (!quickHeal) {
 				potionDelay /= 2;
+			}
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
