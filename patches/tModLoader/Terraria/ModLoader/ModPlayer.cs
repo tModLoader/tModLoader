@@ -2,10 +2,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -367,12 +367,18 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to temporarily modify the amount of life a life healing item will heal for, based on player buffs, accessories, etc. This is only called for items with a healLife value.
 		/// </summary>
-		/// <param name="item">The item.</param>
+		/// <param name="item">The item being used.</param>
 		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
 		/// <param name="healValue">The amount of life being healed.</param>
 		public virtual void GetHealLife(Item item, bool quickHeal, ref int healValue) {
 		}
 
+		/// <summary>
+		/// Allows you to temporarily modify the duration of potion sickness, based on player buffs, accessories, etc. This is only called for items with <see cref="Item.potion"/> set to true.
+		/// </summary>
+		/// <param name="item">The item being used.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="potionDelay">Duration of the <see cref="BuffID.PotionSickness"/> debuff.</param>
 		public virtual void ApplyPotionDelay(Item item, bool quickHeal, ref int potionDelay) {
 		}
 

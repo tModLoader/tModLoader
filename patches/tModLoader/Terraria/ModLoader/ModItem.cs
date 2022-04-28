@@ -9,11 +9,9 @@ using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
-using static Terraria.GameContent.Creative.CreativeUI;
 
 namespace Terraria.ModLoader
 {
@@ -231,6 +229,12 @@ namespace Terraria.ModLoader
 		public virtual void GetHealLife(Player player, bool quickHeal, ref int healValue) {
 		}
 
+		/// <summary>
+		/// Allows you to temporarily modify the duration of potion sickness, based on player buffs, accessories, etc. This is only called for items with <see cref="Item.potion"/> set to true.
+		/// </summary>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+		/// <param name="potionDelay">Duration of the <see cref="BuffID.PotionSickness"/> debuff.</param>
 		public virtual void ApplyPotionDelay(Player player, bool quickHeal, ref int potionDelay) {
 		}
 
