@@ -458,6 +458,9 @@ namespace Terraria.ModLoader
 			foreach (int index in HookApplyPotionDelay.arr) {
 				player.modPlayers[index].ApplyPotionDelay(item, quickHeal, ref healValue);
 			}
+
+			if (potionDelay < 0)
+				potionDelay = 0;
 		}
 
 		private delegate void DelegateGetHealMana(Item item, bool quickHeal, ref int healValue);
