@@ -528,10 +528,10 @@
  
 +						//Patch context: ^ flag18, to be used below multiple times.
  						int num45 = Main.DamageVar((int)((float)damage * num5), Main.player[owner].luck);
-+						
++
 +						ProjectileLoader.ModifyHitPvp(this, player2, ref num45, ref flag18);
 +						PlayerLoader.ModifyHitPvpWithProj(this, player2, ref num45, ref flag18);
-+						
++
  						if (!player2.immune)
  							StatusPvP(m);
  
@@ -649,7 +649,7 @@
  				}
  
  				if (minion && numUpdates == -1 && type != 625 && type != 628) {
-@@ -12121,8 +_,19 @@
+@@ -12121,8 +_,21 @@
  					overrideHeight = 4;
  				}
  
@@ -661,7 +661,9 @@
 +				}
 -				if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
 +				else if (((type != 440 && type != 449 && type != 606) || ai[1] != 1f) && (type != 466 || localAI[1] != 1f) && (type != 580 || !(localAI[1] > 0f)) && (type != 640 || !(localAI[1] > 0f))) {
-+					Vector2 vector2 = base.Center - new Vector2(num, num2) * hitboxCenterFrac;
++					// base.center isn't correct, we have to use position to get a right value
++					Vector2 center = base.position + new Vector2(base.width, base.height) * 0.5f;
++					Vector2 vector2 = center - new Vector2(num, num2) * hitboxCenterFrac;
  					if (aiStyle == 10) {
 +						base.velocity = Collision.TileCollision(vector2, base.velocity, num, num2, flag6, flag6);
 +						if (type >= ProjectileID.CopperCoinsFalling && type <= ProjectileID.PlatinumCoinsFalling)
