@@ -5449,20 +5449,20 @@
  			Item item = new Item();
  			int num = (questsDone + 50) / 2;
  			num = (int)((float)(num * Main.rand.Next(50, 201)) * 0.015f);
-@@ -39473,6 +_,7 @@
+@@ -39473,6 +_,8 @@
  				item.stack = num;
  			}
  
++			rewardItems.Add(item);
 +			/*
  			item.position = base.Center;
  			Item item2 = GetItem(whoAmI, item, anglerRewardSettings);
  			if (item2.stack > 0) {
-@@ -39480,6 +_,8 @@
+@@ -39480,6 +_,7 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
 +			*/
-+			rewardItems.Add(item);
  		}
  
  		public bool DropAnglerAccByMissing(List<int> itemIdsOfAccsWeWant, int randomChanceForASingleAcc, out bool botheredRollingForADrop, out int itemIdToDrop) {
