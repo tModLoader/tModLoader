@@ -2382,15 +2382,6 @@
  			}
  			else {
  				if (jumpBoost) {
-@@ -14215,7 +_,7 @@
- 						direction = -1;
- 				}
- 				else if ((itemAnimation == 0 || inventory[selectedItem].useTurn) && mount.AllowDirectionChange) {
--					direction = -1;
-+					direction = -1 ;
- 				}
- 
- 				if (velocity.Y == 0f || wingsLogic > 0 || mount.CanFly()) {
 @@ -14330,7 +_,7 @@
  				if (flag4)
  					num5 = 30;
@@ -3985,19 +3976,20 @@
  			Item item2 = (itemAnimation > 0) ? lastVisualizedSelectedItem : item;
  			Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
  			compositeFrontArm.enabled = false;
-@@ -30289,12 +_,23 @@
+@@ -30289,12 +_,21 @@
  				itemAnimation--;
  			}
  
+-			if (itemAnimation > 0)
+-				ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
+-			else
 +			goto DecrementItemTime;
 +
 +			HandleItemHolding:
 +
 +			ItemLoader.HoldItem(item, this);
 +
- 			if (itemAnimation > 0)
- 				ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
- 			else
++			if (itemAnimation == 0)
  				ItemCheck_ApplyHoldStyle(heightOffsetHitboxCenter, item2, drawHitbox);
  
 -			releaseUseItem = !controlUseItem;
@@ -4032,7 +4024,7 @@
  					bool flag4 = true;
  					int type2 = item.type;
  					if ((type2 == 65 || type2 == 676 || type2 == 723 || type2 == 724 || type2 == 757 || type2 == 674 || type2 == 675 || type2 == 989 || type2 == 1226 || type2 == 1227) && itemAnimation != itemAnimationMax - 1)
-@@ -30343,9 +_,13 @@
+@@ -30343,9 +_,16 @@
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
  					ItemCheck_MinionAltFeatureUse(item, flag4);
@@ -4040,6 +4032,9 @@
 +					if (item.shoot > 0 && itemAnimation > 0 && ItemTimeIsZero && flag4 && ItemLoader.CheckProjOnSwing(this, item))
  						ItemCheck_Shoot(i, item, weaponDamage);
  
++					if (itemAnimation > 0)
++						ItemCheck_ApplyUseStyle(heightOffsetHitboxCenter, item2, drawHitbox);
++
 +					// Added by TML. #ItemTimeOnAllClients - TODO: item time application with these item types
 +					if (whoAmI != Main.myPlayer)
 +						goto endItemChecks;

@@ -859,6 +859,35 @@
  								int num = damage;
  								position = base.Center;
  								int num2 = 0;
+@@ -29210,7 +_,12 @@
+ 			if (flag2 && player.channel && player.itemAnimation < num)
+ 				player.SetDummyItemTime(num);
+ 
+-			if (player.itemAnimation == 0)
++			/*
++			tML:
++			the reason this checks against itemAnimation == 1 + auto-reuse is because of the logic execution order and how auto-reuse now behaves with regard to itemAnimation
++			if reset every time a new usage starts, the spear's main projectile will just die instantly on use. the kill condition is checked manually to avoid this issue
++			*/
++			if (player.itemAnimation == 0 || (player.itemAnimation == 1 && player.ShouldAutoReuseItem(player.HeldItem)))
+ 				Kill();
+ 
+ 			rotation = (float)Math.Atan2(velocity.Y, velocity.X) + (float)Math.PI / 2f + (float)Math.PI / 4f;
+@@ -30375,7 +_,13 @@
+ 			GetWhipSettings(this, out float timeToFlyOut, out int _, out float _);
+ 			base.Center = Main.GetPlayerArmPosition(this) + velocity * (ai[0] - 1f);
+ 			spriteDirection = ((!(Vector2.Dot(velocity, Vector2.UnitX) < 0f)) ? 1 : (-1));
+-			if (ai[0] >= timeToFlyOut || player.itemAnimation == 0) {
++
++			/*
++			tML:
++			the reason this checks against itemAnimation == 1 + auto-reuse is because of the logic execution order and how auto-reuse now behaves with regard to itemAnimation
++			if reset every time a new usage starts, the spear's main projectile will just die instantly on use. the kill condition is checked manually to avoid this issue
++			*/
++			if (ai[0] >= timeToFlyOut || player.itemAnimation == 0 || (player.itemAnimation == 1 && player.ShouldAutoReuseItem(player.HeldItem))) {
+ 				Kill();
+ 				return;
+ 			}
 @@ -33091,6 +_,9 @@
  					if (num3 > (float)num9)
  						ai[0] = 1f;
