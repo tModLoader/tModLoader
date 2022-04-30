@@ -48,6 +48,14 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool Exists(int plantTileID, int growsOnTileID) => plants.ContainsKey(new Vector2(plantTileID, growsOnTileID));
+
+		public static Texture2D GetCactusFruitTexture(int type) {
+			var tree = Get<ModCactus>(TileID.Cactus, type);
+			if (tree == null)
+				return null;
+
+			return tree.GetFruitTexture();
+		}
 	}
 
 	/// <summary>
@@ -62,6 +70,7 @@ namespace Terraria.ModLoader
 		public int PlantTileId => TileID.Cactus;
 		public int[] GrowsOnTileId { get; set; } = new int[0];
 		public abstract Texture2D GetTexture();
+		public abstract Texture2D GetFruitTexture();
 	}
 
 	/// <summary>
