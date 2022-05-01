@@ -389,6 +389,11 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
 				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
 
+			if (BuildInfo.IsStable) {
+				string tmlVersionPreprocessorSymbol = $"TML_{BuildInfo.tMLVersion.Major}_{BuildInfo.tMLVersion.Minor:D2}";
+				preprocessorSymbols.Add(tmlVersionPreprocessorSymbol);
+			}
+
 			var results = RoslynCompile(mod.Name, refs, files, preprocessorSymbols.ToArray(), allowUnsafe, out code, out pdb);
 
 			int numWarnings = results.Count(e => e.Severity == DiagnosticSeverity.Warning);

@@ -11,6 +11,13 @@ namespace ExampleMod.Content.Items.Tools
 	// It may prove a useful guide for ModItems with similar behaviors.
 	internal class ExampleMagicMirror : ExampleItem
 	{
+		private static readonly Color[] itemNameCycleColors = {
+			new Color(254, 105, 47),
+			new Color(190, 30, 209),
+			new Color(34, 221, 151),
+			new Color(0, 106, 185),
+		};
+
 		public override string Texture => $"Terraria/Images/Item_{ItemID.IceMirror}"; // Copies the texture for the Ice Mirror, make your own texture if need be.
 
 		public override void SetStaticDefaults() {
@@ -61,15 +68,17 @@ namespace ExampleMod.Content.Items.Tools
 			}
 		}
 
-		private Color[] itemNameCycleColors = { new Color(254, 105, 47), new Color(190, 30, 209), new Color(34, 221, 151), new Color(0, 106, 185) };
-
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// This code shows using Color.Lerp,  Main.GameUpdateCount, and the modulo operator (%) to do a neat effect cycling between 4 custom colors.
+			int numColors = itemNameCycleColors.Length;
+			
 			foreach (TooltipLine line2 in tooltips) {
 				if (line2.Mod == "Terraria" && line2.Name == "ItemName") {
 					float fade = (Main.GameUpdateCount % 60) / 60f;
-					int index = (int)((Main.GameUpdateCount / 60) % 4);
-					line2.OverrideColor = Color.Lerp(itemNameCycleColors[index], itemNameCycleColors[(index + 1) % 4], fade);
+					int index = (int)((Main.GameUpdateCount / 60) % numColors);
+					int nextIndex = (index + 1) % numColors;
+
+					line2.OverrideColor = Color.Lerp(itemNameCycleColors[index], itemNameCycleColors[nextIndex], fade);
 				}
 			}
 		}

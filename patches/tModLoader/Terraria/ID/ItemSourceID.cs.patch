@@ -1,0 +1,30 @@
+--- src/TerrariaNetCore/Terraria/ID/ItemSourceID.cs
++++ src/tModLoader/Terraria/ID/ItemSourceID.cs
+@@ -1,6 +_,11 @@
++using System;
++
++#nullable enable
++
+ namespace Terraria.ID
+ {
++	//TML: Internalized in favor of string contexts on every entity source.
+-	public static class ItemSourceID
++	internal static class ItemSourceID
+ 	{
+ 		public const int None = 0;
+ 		public const int SetBonus_Nebula = 1;
+@@ -10,5 +_,14 @@
+ 		public const int GrandDesignOrMultiColorWrench = 5;
+ 		public const int TorchGod = 6;
+ 		public const int Count = 7;
++
++		public static string? ToContextString(int itemSourceId) => itemSourceId switch {
++			SetBonus_Nebula => nameof(SetBonus_Nebula),
++			LuckyCoin => nameof(LuckyCoin),
++			PlayerDropItemCheck => nameof(PlayerDropItemCheck),
++			GrandDesignOrMultiColorWrench => nameof(GrandDesignOrMultiColorWrench),
++			PlayerDeath or TorchGod => throw new ArgumentException($"Unexpected or invalid value: '{itemSourceId}'."), // Due to 'EntitySource_(Death and TorchGod)' being added.
++			_ => null,
++		};
+ 	}
+ }
