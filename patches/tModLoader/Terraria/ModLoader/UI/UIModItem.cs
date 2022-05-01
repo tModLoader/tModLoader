@@ -63,8 +63,11 @@ namespace Terraria.ModLoader.UI
 			base.OnInitialize();
 
 			string text = _mod.DisplayName + " v" + _mod.modFile.Version;
-			if (_mod.tModLoaderVersion < new Version(0, 10)) {
-				text += $" [c/FF0000:({Language.GetTextValue("tModLoader.ModOldWarning")})]";
+			if (_mod.tModLoaderVersion <= new Version(0, 12)) {
+				text += $" [c/FF0000:({"ALPHA:" + Language.GetTextValue("tModLoader.ModOldWarning")})]";
+			}
+			else if (BuildInfo.IsStable && _mod.tModLoaderVersion < new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor)) {
+				text += $" [c/FF0000:({"STABLE:" + Language.GetTextValue("tModLoader.ModOldWarning")})]";
 			}
 
 			if (_mod.modFile.HasFile("icon.png")) {
