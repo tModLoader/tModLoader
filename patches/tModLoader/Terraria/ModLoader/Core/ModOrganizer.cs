@@ -367,7 +367,7 @@ namespace Terraria.ModLoader.Core
 				return;
 
 			string location = FindOldest(repo);
-			if (Path.HasExtension(location))
+			if (location.EndsWith(".tmod"))
 				File.Delete(location);
 			else
 				Directory.Delete(location, true);
