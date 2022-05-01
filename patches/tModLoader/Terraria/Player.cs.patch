@@ -4758,7 +4758,7 @@
  						canUse = true;
  						break;
  					}
-@@ -37056,6 +_,17 @@
+@@ -37056,6 +_,21 @@
  		}
  
  		public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
@@ -4773,6 +4773,10 @@
 +			ItemLoader.PickAmmo(sItem, usedAmmo, this, ref projToShoot, ref speed, ref Damage, ref KnockBack);
 +			PickAmmo_HandleAmmoConsumption(sItem, usedAmmo, dontConsume, projToShoot);
 +			/*
++			PickAmmo's now split into submethods, and fairly extensively modified, in order to increase intuitivity and moddin' potential
++			the below is the vanilla PickAmmo code as it was prior to changes, just in case a point of reference is needed
++			-thomas
++
  			Item item = new Item();
  			bool flag = false;
  			usedAmmoItemId = 0;
