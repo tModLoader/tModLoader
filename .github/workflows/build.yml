@@ -509,8 +509,8 @@ jobs:
       - name: Zip Artifacts
         working-directory: /home/runner/work/tModLoader/tModLoader/artifacts/
         run: |
-          zip -qq -r ExampleMod.zip ExampleMod
-          zip -qq -r tModLoader.zip Build
+          cd ExampleMod; zip -qq -r ../ExampleMod.zip .; cd ..
+          cd Build; zip -qq -r ../tModLoader.zip .; cd ..
       
       - name: Make a release
         if: github.ref == 'refs/heads/1.4-stable'
