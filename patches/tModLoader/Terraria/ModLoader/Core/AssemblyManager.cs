@@ -151,6 +151,7 @@ namespace Terraria.ModLoader.Core
 				m.Side = mod.properties.side;
 				m.DisplayName = mod.properties.displayName;
 				m.TModLoaderVersion = mod.properties.buildVersion;
+				JITModAssemblies(mod);
 				return m;
 			}
 			catch (Exception e) {
@@ -255,6 +256,72 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal static IEnumerable<Mod> GetDependencies(Mod mod) => GetLoadContext(mod.Name).dependencies.Select(m => ModLoader.GetMod(mod.Name));
+
+		private static void JITModAssemblies(ModLoadContext modLoadContext) {
+			var exceptions = new System.Collections.Concurrent.ConcurrentQueue<(Exception exception, MethodInfo methodInfo)>();
+			foreach (var assembly in modLoadContext.assemblies.Values) {
+				var types = assembly.GetTypes();
+				types = types.Where(x => ShouldJITType(x)).ToArray();
+				var methodsToJIT = CollectMethodsToJIT(types);
+				methodsToJIT = methodsToJIT.Where(x => ShouldJITMethod(x));
+
+				if (Environment.ProcessorCount > 1) {
+					methodsToJIT.AsParallel().AsUnordered().ForAll(methodInfo => {
+						try {
+							ForceJITOnMethod(methodInfo);
+						}
+						catch (Exception e) {
+							exceptions.Enqueue((e, methodInfo));
+						}
+					});
+				}
+				else {
+					foreach (var method in methodsToJIT) {
+						try {
+							ForceJITOnMethod(method);
+						}
+						catch (Exception e) {
+							exceptions.Enqueue((e, method));
+						}
+					}
+				}
+			}
+			if (exceptions.Count > 0) {
+				var message = "\n" + string.Join("\n", exceptions.Select(x => $"In {x.methodInfo.DeclaringType.FullName} method: {x.exception.Message}")) + "\n";
+				throw new Exceptions.JITException(message);
+			}
+		}
+
+		private static bool ShouldJITType(Type type) {
+			IEnumerable<AMemberJitAttribute> MemberJitAttributes = type.GetCustomAttributes<AMemberJitAttribute>();
+			if (MemberJitAttributes.Any()) {
+				return MemberJitAttributes.All(attribute => attribute.ShouldJITType(type, loadedModContexts.Keys.ToList()));
+			}
+			return true;
+		}
+		
+		private static bool ShouldJITMethod(MethodInfo methodInfo) {
+			IEnumerable<AMemberJitAttribute> MemberJitAttributes = methodInfo.GetCustomAttributes<AMemberJitAttribute>();
+			if (MemberJitAttributes.Any()) {
+				return MemberJitAttributes.All(attribute => attribute.ShouldJITMethod(methodInfo, loadedModContexts.Keys.ToList()));
+			}
+			return true;
+		}
+
+		private static IEnumerable<MethodInfo> CollectMethodsToJIT(IEnumerable<Type> types) =>
+			from type in types
+			from method in GetAllMethods(type)
+			where !method.IsAbstract && !method.ContainsGenericParameters && method.GetMethodBody() != null
+			select method;
+
+		private static IEnumerable<MethodInfo> GetAllMethods(Type type) {
+			// Skip properties, for now.
+			return type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance).Where(m => !m.IsSpecialName);
+		}
+		
+		private static void ForceJITOnMethod(MethodInfo method) {
+			RuntimeHelpers.PrepareMethod(method.MethodHandle);
+		}
 	}
 }
 #endif
