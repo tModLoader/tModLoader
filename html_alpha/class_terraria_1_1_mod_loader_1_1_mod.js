@@ -10,6 +10,7 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "AddRecipeGroups", "class_terraria_1_1_mod_loader_1_1_mod.html#a61276e741d6a939b25f065e1099ff70b", null ],
     [ "AddRecipes", "class_terraria_1_1_mod_loader_1_1_mod.html#adbfe825532c8fffbac263bf8732b93b6", null ],
     [ "Call", "class_terraria_1_1_mod_loader_1_1_mod.html#a199022a7eb27307c41db97847fb4cef8", null ],
+    [ "CloneRecipe", "class_terraria_1_1_mod_loader_1_1_mod.html#a20046888c10ce5f6e271119b60577ca7", null ],
     [ "Close", "class_terraria_1_1_mod_loader_1_1_mod.html#ac1a3af8f2577a21c6efbc60103bf3089", null ],
     [ "CreateDefaultContentSource", "class_terraria_1_1_mod_loader_1_1_mod.html#a45a2495418f3037c72b0f0982adc587c", null ],
     [ "CreateRecipe", "class_terraria_1_1_mod_loader_1_1_mod.html#aa7d72c73d4dbf48ec5115b269b8d1fb8", null ],

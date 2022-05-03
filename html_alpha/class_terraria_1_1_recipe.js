@@ -45,6 +45,7 @@ var class_terraria_1_1_recipe =
     [ "ProcessGroupsForText", "class_terraria_1_1_recipe.html#adbb9fdfb5d588ec7d9a60ab4124dacaa", null ],
     [ "Register", "class_terraria_1_1_recipe.html#a82260971a47e82dd05fe06402efc0a4f", null ],
     [ "RemoveCondition", "class_terraria_1_1_recipe.html#abfefb19ea6645cbb8b574837d78e26f4", null ],
+    [ "RemoveIngredient", "class_terraria_1_1_recipe.html#aa9e9c20c35cfefeec9017567607e6793", null ],
     [ "RemoveIngredient", "class_terraria_1_1_recipe.html#a8e91488a600dbfdf0aa520c32c91ce1a", null ],
     [ "RemoveRecipe", "class_terraria_1_1_recipe.html#a6ae347a9049d22d13643bf18c448484b", null ],
     [ "RemoveRecipeGroup", "class_terraria_1_1_recipe.html#ace47a6fb8393457e8724bab13f6b9589", null ],
