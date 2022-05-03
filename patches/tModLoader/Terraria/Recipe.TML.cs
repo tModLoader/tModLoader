@@ -285,16 +285,17 @@ namespace Terraria
 		}
 
 		/// <summary>
-		/// Returns a copy of the recipe passed in, including the same OnCraftHooks and ConsumeItemHooks. 
+		/// Returns a copy of the recipe passed in, including the same OnCraftHooks and ConsumeItemHooks. Called only on the result of Recipe.Create to ensure Mod and RecipeIndex set correctly
 		/// </summary>
 		/// <param name="recipe">The recipe to clone.</param>
-		public Recipe Clone(Recipe recipe) {
+		internal Recipe Clone(Recipe recipe) {
 			createItem = recipe.createItem.Clone();
 
-			requiredItem = new List<Item>(recipe.requiredItem.ToArray());
+			requiredItem = new List<Item>(recipe.requiredItem.Select(x => x.Clone()).ToArray());
 			requiredTile = new List<int>(recipe.requiredTile.ToArray());
 			acceptedGroups = new List<int>(recipe.acceptedGroups.ToArray());
 
+			// These fields shouldn't be true, but are here just in case.
 			needHoney = recipe.needHoney;
 			needWater = recipe.needWater;
 			needLava = recipe.needLava;
