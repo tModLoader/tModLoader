@@ -54,7 +54,7 @@
  			if (!_nameToAbsolutePath.TryGetValue(assetName, out string value))
  				throw AssetLoadException.FromMissingAsset(assetName);
  
-@@ -69,22 +_,11 @@
+@@ -69,22 +_,17 @@
  				string[] files = Directory.GetFiles(_basePath, "*", SearchOption.AllDirectories);
  				for (int i = 0; i < files.Length; i++) {
  					string fullPath = Path.GetFullPath(files[i]);
@@ -66,7 +66,7 @@
  				}
  			}
  		}
--
+ 
 -		public void RejectAsset(string assetName, IRejectionReason reason) {
 -			_rejections.Reject(assetName, reason);
 -		}
@@ -76,5 +76,10 @@
 -		}
 -
 -		public bool TryGetRejections(List<string> rejectionReasons) => _rejections.TryGetRejections(rejectionReasons);
++		public override string GetExtension(string assetName) {
++			if (!_nameToAbsolutePath.TryGetValue(assetName, out string value))
++				throw AssetLoadException.FromMissingAsset(assetName);
++			return Path.GetExtension(value) ?? "";
++		}
  	}
  }

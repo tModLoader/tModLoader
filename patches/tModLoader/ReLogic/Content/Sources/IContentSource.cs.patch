@@ -42,6 +42,6 @@
 +		/// <returns></returns>
 +		public bool HasAsset(string assetName) => !Rejections.IsRejected(assetName) && GetExtension(assetName) != null;
 +
-+		IEnumerable<string> GetAllAssetsStartingWith(string assetNameStart) => EnumerateAssets().Where(s => s.StartsWith(assetNameStart));
++		IEnumerable<string> GetAllAssetsStartingWith(string assetNameStart) => EnumerateAssets().Where(s => s.ToLower().StartsWith(assetNameStart));
  	}
  }

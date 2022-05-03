@@ -34,7 +34,7 @@ namespace ReLogic.Content.Sources
 		public IEnumerable<string> EnumerateAssets() => assetPaths;
 
 		// Use CleanPath to ensure match the assetName path to the 'cleaned path' in assetExtensions for mods, keeping patches minimal.
-		public string GetExtension(string assetName) => assetExtensions.TryGetValue(AssetPathHelper.CleanPath(assetName), out var ext) ? ext : null;
+		public virtual string GetExtension(string assetName) => assetExtensions.TryGetValue(AssetPathHelper.CleanPath(assetName), out var ext) ? ext : null;
 
 		public abstract Stream OpenStream(string fullAssetName);
 	}
