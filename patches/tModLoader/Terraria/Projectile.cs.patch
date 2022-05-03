@@ -882,7 +882,7 @@
 +			/*
 +			tML:
 +			the reason this checks against itemAnimation == 1 + auto-reuse is because of the logic execution order and how auto-reuse now behaves with regard to itemAnimation
-+			if reset every time a new usage starts, the spear's main projectile will just die instantly on use. the kill condition is checked manually to avoid this issue
++			if reset every time a new usage starts, the whip's main projectile will just die instantly on use. the kill condition is checked manually to avoid this issue
 +			*/
 +			if (ai[0] >= timeToFlyOut || player.itemAnimation == 0 || (player.itemAnimation == 1 && player.ShouldAutoReuseItem(player.HeldItem))) {
  				Kill();
