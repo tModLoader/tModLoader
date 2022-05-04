@@ -62,6 +62,7 @@ namespace ExampleMod.Common.Configs
 		};
 		*/
 
+		// TODO: Not working at the moment.
 		// Using a custom class as a key in a Dictionary. When used as a Dictionary Key, special code must be used.
 		public Dictionary<ClassUsedAsKey, Color> CustomKey = new Dictionary<ClassUsedAsKey, Color>();
 
@@ -77,7 +78,7 @@ namespace ExampleMod.Common.Configs
 			},
 			new Color(1, 2, 3, 4));
 
-			itemDefinitionExample = new ItemDefinition("Terraria GoldOre"); // EntityDefinition uses ItemID field names rather than the numbers themselves for readability.
+			itemDefinitionExample = new ItemDefinition("Terraria/GoldOre"); // EntityDefinition uses ItemID field names rather than the numbers themselves for readability.
 		}
 	}
 
@@ -157,6 +158,7 @@ namespace ExampleMod.Common.Configs
 		[Tooltip("$Mods.ExampleMod.Common.LocalizedTooltip")]
 		public int LocalizedLabel;
 
+		// TODO: Not working. Code missing from ExampleMod.cs
 		[Label("$Mods.ExampleMod.Common.LocalizedLabelDynamic")]
 		public int LocalizedLabelDynamic;
 
@@ -213,6 +215,7 @@ namespace ExampleMod.Common.Configs
 		public SampleEnum EnumExample1 { get; set; }
 
 		// OptionStrings makes a string appear as a choice rather than an input field. Remember that users can manually edit json files, so be aware that a value other than the Options in OptionStrings might populate the field.
+		// TODO: Not working. Won't restore defaults
 		[OptionStrings(new string[] { "Win", "Lose", "Give Up" })]
 		[DefaultValue(new string[] { "Give Up", "Give Up" })]
 		public string[] ArrayOfString;
