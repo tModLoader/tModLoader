@@ -1100,9 +1100,9 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
     <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
     <tr><td class="paramname">type</td><td>The tile type</td></tr>
-    <tr><td class="paramname">fail</td><td></td></tr>
-    <tr><td class="paramname">effectOnly</td><td></td></tr>
-    <tr><td class="paramname">noItem</td><td></td></tr>
+    <tr><td class="paramname">fail</td><td>If true, the tile won't be mined</td></tr>
+    <tr><td class="paramname">effectOnly</td><td>If true, only the dust visuals will happen</td></tr>
+    <tr><td class="paramname">noItem</td><td>If true, the corrsponding item won't drop</td></tr>
   </table>
   </dd>
 </dl>
@@ -1644,6 +1644,8 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
   <table class="params">
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
     <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">type</td><td>The <a class="el" href="struct_terraria_1_1_tile.html">Tile</a> type of the tile being drawn</td></tr>
+    <tr><td class="paramname">spriteBatch</td><td>The SpriteBatch that should be used for all draw calls</td></tr>
   </table>
   </dd>
 </dl>
