@@ -1266,6 +1266,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Call all ModItem.ReforgePrice, then GlobalItem.ReforgePrice hooks.
 		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="reforgePrice"></param>
 		/// <param name="canApplyDiscount"></param>
 		/// <returns></returns>
 		public static bool ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) {

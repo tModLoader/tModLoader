@@ -195,6 +195,7 @@ namespace Terraria
 		/// Adds a recipe group ingredient to this recipe with the given RecipeGroup.
 		/// </summary>
 		/// <param name="recipeGroup">The RecipeGroup.</param>
+		/// <param name="stack"></param>
 		public Recipe AddRecipeGroup(RecipeGroup recipeGroup, int stack = 1) {
 			AddIngredient(recipeGroup.IconicItemId, stack);
 			AddGroup(recipeGroup.ID);
