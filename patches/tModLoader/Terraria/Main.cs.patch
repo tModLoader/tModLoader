@@ -4588,7 +4588,7 @@
  						if (!NPC.downedSlimeKing)
  							num3 /= 2;
  
-@@ -50141,13 +_,17 @@
+@@ -50141,6 +_,7 @@
  						WorldGen.UnspawnTravelNPC();
  				}
  				else if (!fastForwardTime && dayTime && time < 27000.0) {
@@ -4596,9 +4596,8 @@
  					int num6 = dayRate;
  					if (num6 < 1)
  						num6 = 1;
- 
--					int num7 = (int)(27000.0 / (double)num6);
-+					int num7 = (int)(27000.0 / dayRate);
+@@ -50148,6 +_,9 @@
+ 					int num7 = (int)(27000.0 / (double)num6);
  					num7 *= 4;
  					if (rand.Next(num7) == 0) {
 +					*/
