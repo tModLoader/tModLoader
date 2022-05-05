@@ -258,6 +258,11 @@ jobs:
           publishedfolder=$steamapps/steamapps/workshop/content/1281930/$publishid
           echo "publishedModFiles are at:"
           echo $publishedfolder
+          
+          [ ! -d "$publishedfolder" ] ; then
+            echo "Files not Found. Steam failed to download. Try again later."
+            exit -12390
+          fi
           echo ::endgroup::
           
           echo Adding version info to ExampleMod
