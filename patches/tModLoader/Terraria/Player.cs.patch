@@ -3892,7 +3892,19 @@
  			Main.instance.LoadItem(type);
  			if (type == 75)
  				return TextureAssets.Item[type].Frame(1, 8);
-@@ -30188,7 +_,7 @@
+@@ -30184,11 +_,19 @@
+ 			return TextureAssets.Item[type].Frame();
+ 		}
+ 
++		/// <summary>
++		/// Used to determine what the overall scale of an item should be.<br></br>
++		/// <see cref="CombinedHooks.ModifyItemScale"/> is called here.
++		/// </summary>
++		/// <param name="item">The item to fetch the adjusted scale of.</param>
++		/// <returns>
++		/// The final scale of the item, after the Titan Glove effect and all modded calculations.
++		/// </returns>
+ 		public float GetAdjustedItemScale(Item item) {
  			float num = item.scale;
  			if (item.melee && meleeScaleGlove)
  				num *= 1.1f;
