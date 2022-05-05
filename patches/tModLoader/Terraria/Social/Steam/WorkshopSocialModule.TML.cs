@@ -71,6 +71,10 @@ namespace Terraria.Social.Steam
 				// Publish by updating the files available on the current published version
 				workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{existing.PublishId}");
 
+				if (Directory.Exists(workshopFolderPath + "/bin"))
+					foreach (var fil in Directory.EnumerateFiles(workshopFolderPath))
+						File.Delete(fil);
+
 				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
 					return false;
