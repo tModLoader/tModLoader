@@ -3892,7 +3892,7 @@
  			Main.instance.LoadItem(type);
  			if (type == 75)
  				return TextureAssets.Item[type].Frame(1, 8);
-@@ -30184,11 +_,19 @@
+@@ -30184,11 +_,20 @@
  			return TextureAssets.Item[type].Frame();
  		}
  
@@ -3908,7 +3908,7 @@
  			float num = item.scale;
  			if (item.melee && meleeScaleGlove)
  				num *= 1.1f;
--
+ 
 +			CombinedHooks.ModifyItemScale(this, item, ref num);
  			return num;
  		}
