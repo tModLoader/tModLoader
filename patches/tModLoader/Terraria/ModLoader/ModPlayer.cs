@@ -501,6 +501,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to dynamically modify the given item's size for this player, similarly to the effect of the Titan Glove.
+		/// </summary>
+		/// <param name="item">The item to modify the scale of.</param>
+		/// <param name="scale">
+		/// The scale multiplier to be applied to the given item.<br></br>
+		/// Will be 1.1 if the Titan Glove is equipped, and 1 otherwise.
+		/// </param>
+		public virtual void ModifyItemScale(Item item, ref float scale) {
+		}
+
+		/// <summary>
 		/// This hook is called when a player damages anything, whether it be an NPC or another player, using anything, whether it be a melee weapon or a projectile. The x and y parameters are the coordinates of the victim parameter's center.
 		/// </summary>
 		/// <param name="x"></param>

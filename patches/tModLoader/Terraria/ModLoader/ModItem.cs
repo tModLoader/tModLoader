@@ -425,6 +425,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to dynamically modify this item's size for the given player, similarly to the effect of the Titan Glove.
+		/// </summary>
+		/// <param name="player">The player wielding this item.</param>
+		/// <param name="scale">
+		/// The scale multiplier to be applied to this item.<br></br>
+		/// Will be 1.1 if the Titan Glove is equipped, and 1 otherwise.
+		/// </param>
+		public virtual void ModifyItemScale(Player player, ref float scale) {
+		}
+
+		/// <summary>
 		/// Allows you to determine whether this melee weapon can hit the given NPC when swung. Return true to allow hitting the target, return false to block this weapon from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 		/// </summary>
 		/// <param name="player">The player.</param>
