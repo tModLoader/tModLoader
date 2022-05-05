@@ -259,7 +259,7 @@ jobs:
           echo "publishedModFiles are at:"
           echo $publishedfolder
           
-          [ ! -d "$publishedfolder" ] ; then
+          if [ ! -d "$publishedfolder" ] ; then
             echo "Files not Found. Steam failed to download. Try again later."
             exit -12390
           fi
