@@ -4588,23 +4588,25 @@
  						if (!NPC.downedSlimeKing)
  							num3 /= 2;
  
-@@ -50140,12 +_,14 @@
- 					if (!dayTime || time > 48600.0)
+@@ -50141,13 +_,17 @@
  						WorldGen.UnspawnTravelNPC();
  				}
--				else if (!fastForwardTime && dayTime && time < 27000.0) {
-+				else if (!fastForwardTime && dayRate > 0 && dayTime && time < 27000.0) {
+ 				else if (!fastForwardTime && dayTime && time < 27000.0) {
 +					/*
  					int num6 = dayRate;
  					if (num6 < 1)
  						num6 = 1;
-+					*/
  
 -					int num7 = (int)(27000.0 / (double)num6);
 +					int num7 = (int)(27000.0 / dayRate);
  					num7 *= 4;
  					if (rand.Next(num7) == 0) {
++					*/
++
++					if (rand.NextDouble() < dayRate / (27000.0 * 4))
  						int num8 = 0;
+ 						for (int j = 0; j < 200; j++) {
+ 							if (npc[j].active && npc[j].townNPC && npc[j].type != 37 && npc[j].type != 453)
 @@ -50505,6 +_,11 @@
  		}
  
