@@ -56,6 +56,7 @@ namespace Terraria
 		/// <summary>
 		/// Will spawn an item like QuickSpawnItem, but clones it (handy when you need to retain item infos)
 		/// </summary>
+		/// <param name="source">The spawn context</param>
 		/// <param name="item">The item you want to be cloned</param>
 		/// <param name="stack">The stack to give the item. Note that this will override maxStack if it's higher.</param>
 		public int QuickSpawnClonedItem(IEntitySource source, Item item, int stack = 1) {

@@ -88,6 +88,7 @@ namespace Terraria.ModLoader
 		internal static void EngineInit()
 		{
 			FileAssociationSupport.UpdateFileAssociation();
+			FolderShortcutSupport.UpdateFolderShortcuts();
 			MonoModHooks.Initialize();
 			ZipExtractFix.Init();
 			XnaTitleContainerRelativePathFix.Init();

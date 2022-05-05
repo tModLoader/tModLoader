@@ -70,7 +70,9 @@ namespace Terraria.ModLoader
 		/// To delete a prefix from an item when the item is loaded, return false when pre is the prefix you want to delete.
 		/// Use AllowPrefix to prevent rolling of a certain prefix.
 		/// </summary>
+		/// <param name="item"></param>
 		/// <param name="pre">The prefix being applied to the item, or the roll mode. -1 is when the item is naturally generated in a chest, crafted, purchased from an NPC, looted from a grab bag (excluding presents), or dropped by a slain enemy (if it's spawned with prefixGiven: -1). -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</param>
+		/// <param name="rand"></param>
 		/// <returns></returns>
 		public virtual bool? PrefixChance(Item item, int pre, UnifiedRandom rand) => null;
 

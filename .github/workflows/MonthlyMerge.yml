@@ -4,9 +4,9 @@ name: Monthly Update tModLoader
 on:
   # This workflow runs on the first of every month at 1:23 AM UTC. The random time selection is to minimize getting delayed by similar concurrent monthly actions 
   schedule:
-    - cron: '23 1 1 * *'
+    - cron: '0 0 1 * *'
   # Allows you to manually run the workflow
-  workflow_dispatch:
+  #workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,9 +27,12 @@ jobs:
             
         - name: Merge
           run: |
+            token=${{ secrets.TMODLOADERBOT_TOKEN }}
+            repo=$GITHUB_REPOSITORY
             git config user.name github-actions
             git config user.email github-actions@github.com
-            git reset --hard 1.4-preview
+            git remote set-url origin https://x-access-token:$token@github.com/$repo.git
+            git reset --hard origin/1.4-preview
             git push --force origin 1.4-stable
             
   # This workflow contains a single job called "build"
@@ -51,7 +54,10 @@ jobs:
             
         - name: Merge
           run: |
+            token=${{ secrets.TMODLOADERBOT_TOKEN }}
+            repo=$GITHUB_REPOSITORY
             git config user.name github-actions
             git config user.email github-actions@github.com
-            git reset --hard 1.4
+            git remote set-url origin https://x-access-token:$token@github.com/$repo.git
+            git reset --hard origin/1.4
             git push --force origin 1.4-preview

@@ -366,7 +366,11 @@ namespace Terraria.ModLoader.Core
 			if (tmods.Length <= 2)
 				return;
 
-			File.Delete(FindOldest(repo));
+			string location = FindOldest(repo);
+			if (location.EndsWith(".tmod"))
+				File.Delete(location);
+			else
+				Directory.Delete(location, true);
 		}
 
 		internal static string FindOldest(string repo) {
