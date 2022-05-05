@@ -4602,7 +4602,7 @@
  					if (rand.Next(num7) == 0) {
 +					*/
 +
-+					if (rand.NextDouble() < dayRate / (27000.0 * 4))
++					if (rand.NextDouble() < dayRate / (27000.0 * 4)) {
  						int num8 = 0;
  						for (int j = 0; j < 200; j++) {
  							if (npc[j].active && npc[j].townNPC && npc[j].type != 37 && npc[j].type != 453)
