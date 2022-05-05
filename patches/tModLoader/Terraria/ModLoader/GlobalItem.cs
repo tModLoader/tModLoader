@@ -912,15 +912,11 @@ namespace Terraria.ModLoader
 		/// <param name="tag"> The TagCompound to load data from. </param>
 		public virtual void LoadData(Item item, TagCompound tag) { }
 
-		/// <summary>
-		/// Allows you to send custom data for the given item between client and server.
-		/// </summary>
+		/// <inheritdoc cref="ModItem.NetSend"/>
 		public virtual void NetSend(Item item, BinaryWriter writer) {
 		}
 
-		/// <summary>
-		///
-		/// </summary>
+		/// <inheritdoc cref="ModItem.NetReceive"/>
 		public virtual void NetReceive(Item item, BinaryReader reader) {
 		}
 	}

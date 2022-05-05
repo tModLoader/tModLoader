@@ -1014,15 +1014,21 @@ namespace Terraria.ModLoader
 		/// <param name="tag"> The TagCompound to load data from. </param>
 		public virtual void LoadData(TagCompound tag) { }
 
+		//Does not use <see cref="NetReceive"> because of inheritdoc on the equivalent GlobalItem hook
 		/// <summary>
-		/// Allows you to send custom data for this item between client and server.
+		/// Allows you to send custom data for this item between client and server, which will be handled in NetReceive.
+		/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully sent, for example when the item is dropped into the world.
+		/// <br/>Can be called on both server and client.
 		/// </summary>
 		/// <param name="writer">The writer.</param>
 		public virtual void NetSend(BinaryWriter writer) {
 		}
 
+		//Does not use <see cref="NetSend"> because of inheritdoc on the equivalent GlobalItem hook
 		/// <summary>
-		/// Receives the custom data sent in the NetSend hook.
+		/// Receives the custom data sent in NetSend.
+		/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully received.
+		/// <br/>Can be called on both server and client.
 		/// </summary>
 		/// <param name="reader">The reader.</param>
 		public virtual void NetReceive(BinaryReader reader) {

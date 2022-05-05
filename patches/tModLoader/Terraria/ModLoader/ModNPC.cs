@@ -189,16 +189,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// If you are storing AI information outside of the NPC.ai array, use this to send that AI information between clients and servers.
+		/// If you are storing AI information outside of the NPC.ai array, use this to send that AI information between clients and servers, which will be handled in <see cref="ReceiveExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully sent, for example on NPC creation, on player join, or whenever NPC.netUpdate is set to true in the update loop for that tick.
+		/// <br/>Only called on the server.
 		/// </summary>
-		/// <param name="writer"></param>
+		/// <param name="writer">The writer.</param>
 		public virtual void SendExtraAI(BinaryWriter writer) {
 		}
 
 		/// <summary>
-		/// Use this to receive information that was sent in SendExtraAI.
+		/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully received.
+		/// <br/>Only called on the client.
 		/// </summary>
-		/// <param name="reader"></param>
+		/// <param name="reader">The reader.</param>
 		public virtual void ReceiveExtraAI(BinaryReader reader) {
 		}
 
