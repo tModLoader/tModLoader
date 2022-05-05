@@ -22,7 +22,7 @@ namespace Terraria.ModLoader
 		/// <summary> The NPC object that this ModNPC controls. </summary>
 		public NPC NPC { get; internal set; }
 
-		/// <summary> Shorthand for npc.type; </summary>
+		/// <summary> Shorthand for NPC.type; </summary>
 		public int Type => NPC.type;
 
 		/// <summary> The translations for the display name of this NPC. </summary>
@@ -189,7 +189,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// If you are storing AI information outside of the npc.ai array, use this to send that AI information between clients and servers.
+		/// If you are storing AI information outside of the NPC.ai array, use this to send that AI information between clients and servers.
 		/// </summary>
 		/// <param name="writer"></param>
 		public virtual void SendExtraAI(BinaryWriter writer) {
@@ -211,13 +211,13 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
-		/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+		/// <br/> This hook is client side. Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (NPC.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
 		public virtual void HitEffect(int hitDirection, double damage) {
 		}
 
 		/// <summary>
-		/// Allows you to make the NPC either regenerate health or take damage over time by setting npc.lifeRegen. Regeneration or damage will occur at a rate of half of npc.lifeRegen per second. The damage parameter is the number that appears above the NPC's head if it takes damage over time.
+		/// Allows you to make the NPC either regenerate health or take damage over time by setting NPC.lifeRegen. Regeneration or damage will occur at a rate of half of NPC.lifeRegen per second. The damage parameter is the number that appears above the NPC's head if it takes damage over time.
 		/// </summary>
 		/// <param name="damage"></param>
 		public virtual void UpdateLifeRegen(ref int damage) {
@@ -279,7 +279,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
-		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify npc loot.
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify NPC loot.
 		/// </summary>
 		/// <param name="npcLoot"></param>
 		public virtual void ModifyNPCLoot(NPCLoot npcLoot) {
@@ -483,7 +483,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// When used in conjunction with "npc.hide = true", allows you to specify that this npc should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
+		/// When used in conjunction with "NPC.hide = true", allows you to specify that this NPC should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
 		/// </summary>
 		/// <param name="index"></param>
 		public virtual void DrawBehind(int index)
@@ -533,11 +533,11 @@ namespace Terraria.ModLoader
 
 		/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
 		/// <summary>
-		/// Allows you to set an NPC's biome preferences and nearby npc preferences for the NPC happiness system. Recommended to only be used with NPCs that have shops.
+		/// Allows you to set an NPC's biome preferences and nearby NPC preferences for the NPC happiness system. Recommended to only be used with NPCs that have shops.
 		/// </summary>
 		/// <param name="shopHelperInstance">The vanilla shop modifier instance to invoke methods such as LikeNPC and HateBiome on</param>
-		/// <param name="primaryPlayerBiome">The current biome the player is in for purposes of npc happiness, referred by PrimaryBiomeID </param>
-		/// <param name="nearbyNPCsByType">The boolean array of if each type of npc is nearby</param>
+		/// <param name="primaryPlayerBiome">The current biome the player is in for purposes of NPC happiness, referred by PrimaryBiomeID </param>
+		/// <param name="nearbyNPCsByType">The boolean array of if each type of NPC is nearby</param>
 		public virtual void ModifyNPCHappiness(int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
 		}
 		*/
