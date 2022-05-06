@@ -4807,19 +4807,6 @@
  			Item item = new Item();
  			bool flag = false;
  			usedAmmoItemId = 0;
-@@ -37097,8 +_,11 @@
- 			int pickedProjectileId = -1;
- 			if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
- 				projToShoot = pickedProjectileId;
--			else if (sItem.type == 1946)
-+			else if (sItem.type == 1946) {
- 				projToShoot = 338 + item.type - 771;
-+				if (projToShoot > ProjectileID.RocketSnowmanIV)
-+					projToShoot = ProjectileID.RocketSnowmanIV;
-+			}
- 			else if (sItem.type == 3930)
- 				projToShoot = 715 + item.type - AmmoID.Rocket;
- 			else if (sItem.useAmmo == AmmoID.Rocket)
 @@ -37239,6 +_,261 @@
  					item.TurnToAir();
  				}
