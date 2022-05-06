@@ -466,12 +466,21 @@ namespace Terraria
 		}
 
 		/// <summary>
-		/// Helper method for modders to check if the player is able to autoswing (auto-reuse) an item.
-		/// <br>This checks item.autoReuse &amp;&amp; !player.noItems, and if Feral Claws effect applies to the item.</br>
-		/// <br>Additionally, any effects applied through the CanAutoReuseItem hooks.</br>
+		/// Returns true if an item animation is currently running.
 		/// </summary>
-		/// <param name="item">The item currently in use</param>
-		/// <returns>true if player can autoswing using the item</returns>
-		public bool ShouldAutoReuseItem(Item item) => TryAllowingItemReuse_Inner(item);
+		public bool ItemAnimationActive => itemAnimation > 0;
+
+		/// <summary>
+		/// Returns true if the item animation is on or after its last frame. Meaning it could (if the player clicks etc) start again next frame. <br/>
+		/// Vanilla uses it to despawn spears, but it's not recommended because it will desync in multiplayer <br/>
+		/// (a remote player could get the packet for a new projectile just as they're finishing a swing). <br/>
+		/// It is recommended to use ai counters for the lifetime of animation bound projectiles instead.
+		/// </summary>
+		public bool ItemAnimationEndingOrEnded => itemAnimation <= 1;
+
+		/// <summary>
+		/// Returns true if the item animation is in its first frame.
+		/// </summary>
+		public bool ItemAnimationJustStarted => itemAnimation == itemAnimationMax;
 	}
 }
