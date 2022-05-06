@@ -48,6 +48,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Gets called when any item spawns in world
+		/// </summary>
+		public virtual void OnSpawn(Item item, IEntitySource source) {
+		}
+
+		/// <summary>
 		/// Allows you to manually choose what prefix an item will get.
 		/// </summary>
 		/// <returns>The ID of the prefix to give the item, -1 to use default vanilla behavior</returns>
@@ -64,7 +70,9 @@ namespace Terraria.ModLoader
 		/// To delete a prefix from an item when the item is loaded, return false when pre is the prefix you want to delete.
 		/// Use AllowPrefix to prevent rolling of a certain prefix.
 		/// </summary>
+		/// <param name="item"></param>
 		/// <param name="pre">The prefix being applied to the item, or the roll mode. -1 is when the item is naturally generated in a chest, crafted, purchased from an NPC, looted from a grab bag (excluding presents), or dropped by a slain enemy (if it's spawned with prefixGiven: -1). -2 is when the item is rolled in the tinkerer. -3 determines if the item can be placed in the tinkerer slot.</param>
+		/// <param name="rand"></param>
 		/// <returns></returns>
 		public virtual bool? PrefixChance(Item item, int pre, UnifiedRandom rand) => null;
 
@@ -183,14 +191,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item">The item being used</param>
-		/// <param name="player">The player using the item</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05f`</param>
-		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
-		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage, ref float flat) {
+		/// <param name="item">The item being used.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
+		public virtual void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
 		}
 
 		/// <summary>
@@ -228,21 +235,23 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item">The item being used</param>
-		/// <param name="player">The player using the item</param>
-		/// <param name="knockback">The knockback</param>
-		public virtual void ModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback, ref float flat) {
+		/// <param name="item">The item being used.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
+		public virtual void ModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback) {
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's crit chance based on player buffs, etc.
+		/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item">The item being used</param>
-		/// <param name="player">The player using the item</param>
-		/// <param name="crit">The critical strike chance</param>
-		public virtual void ModifyWeaponCrit(Item item, Player player, ref int crit) {
+		/// <param name="item">The item being used.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
+		public virtual void ModifyWeaponCrit(Item item, Player player, ref float crit) {
 		}
 
 		/// <summary>
@@ -307,7 +316,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by an item.
+		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by an item.<br/>
+		/// These parameters will be provided to <see cref="Shoot(Item, Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/> where the projectile will actually be spawned.
 		/// </summary>
 		/// <param name="item"> The item being used. </param>
 		/// <param name="player"> The player using the item. </param>
@@ -320,7 +330,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify an item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
+		/// Allows you to modify an item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.<br/>
+		/// This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters. 
 		/// </summary>
 		/// <param name="item"> The item being used. </param>
 		/// <param name="player"> The player using the item. </param>
@@ -538,6 +549,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="armorSlot">head armor (0), body armor (1) or leg armor (2).</param>
 		/// <param name="type">The equipment texture ID of the item that the player is wearing.</param>
+		/// <param name="male">True if the player is male.</param>
 		/// <param name="equipSlot">The altered equipment texture ID for the legs (armorSlot 1 and 2) or head (armorSlot 0)</param>
 		/// <param name="robes">Set to true if you modify equipSlot when armorSlot == 1 to set Player.wearsRobe, otherwise ignore it</param>
 		public virtual void SetMatch(int armorSlot, int type, bool male, ref int equipSlot, ref bool robes) {

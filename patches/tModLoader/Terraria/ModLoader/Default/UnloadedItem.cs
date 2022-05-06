@@ -33,10 +33,10 @@ namespace Terraria.ModLoader.Default
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			for (int k = 0; k < tooltips.Count; k++) {
 				if (tooltips[k].Name == "Tooltip0") {
-					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemModTooltip", ModName);
+					tooltips[k].Text = Language.GetTextValue("tModLoader.UnloadedItemModTooltip", ModName);
 				}
 				else if (tooltips[k].Name == "Tooltip1") {
-					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemItemNameTooltip", ItemName);
+					tooltips[k].Text = Language.GetTextValue("tModLoader.UnloadedItemItemNameTooltip", ItemName);
 				}
 			}
 		}

@@ -272,10 +272,10 @@
 		"ModControls": "Contrôles pour les Mods",
 
 		// Player and World Select
-		"MigratePlayersMessage": "Vous n'avez pas de personnages.\nSi vous voulez migrer vos personnages de Vanilla à tModLoader,\ncopiez les de /Terraria/Players à /Terraria/ModLoader/Players.\nCopiez le document .plr ainsi que le dossier de même nom.\nCliquez ici pour ouvrir ces dossiers.\nAprès avoir copié les personnages voulus, retournez en arrière.",
+		"MigratePlayersMessage": "Vous n'avez pas de personnages.\nSi vous voulez migrer vos personnages de Vanilla à tModLoader,\ncopiez les de /Terraria/Players à /Terraria/{0}/Players.\nCopiez le document .plr ainsi que le dossier de même nom.\nCliquez ici pour ouvrir ces dossiers.\nAprès avoir copié les personnages voulus, retournez en arrière.",
 		"MigratePlayersText": "Cliquer ici pour migrer des personnages...",
 		"MigratePlayersException": "Il y a eu un problème pendant la migration des fichiers de personnage",
-		"MigrateWorldsMessage": "Vous n'avez pas de mondes.\nSi vous voulez migrer vos mondes de Vanilla à tModLoader,\ncopiez les de /Terraria/Worlds à /Terraria/ModLoader/Worlds.\nCopiez le document .wld.\nCliquez ici pour ouvrir ces dossiers.\nAprès avoir copié les mondes voulus, retournez en arrière.",
+		"MigrateWorldsMessage": "Vous n'avez pas de mondes.\nSi vous voulez migrer vos mondes de Vanilla à tModLoader,\ncopiez les de /Terraria/Worlds à /Terraria/{0}/Worlds.\nCopiez le document .wld.\nCliquez ici pour ouvrir ces dossiers.\nAprès avoir copié les mondes voulus, retournez en arrière.",
 		"MigrateWorldsText": "Cliquer ici pour migrer des mondes...",
 		"MigratingWorldsText": "Migration en cours...",
 		"ModsDifferentSinceLastPlay": "Les Mods suivants sont différents depuis la dernière fois que vous avez joué : ",

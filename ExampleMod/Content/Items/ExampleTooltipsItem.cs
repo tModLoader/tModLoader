@@ -26,7 +26,7 @@ namespace ExampleMod.Content.Items
 		public override void SetDefaults() {
 			Item.width = 20;
 			Item.height = 20;
-			Item.sellPrice(silver: 1);
+			Item.value = Item.sellPrice(silver: 1);
 			Item.rare = ItemRarityID.Blue;
 		}
 
@@ -40,14 +40,14 @@ namespace ExampleMod.Content.Items
 			tooltips.Add(line);
 
 			line = new TooltipLine(Mod, "Face", "I'm feeling just fine!") {
-				overrideColor = new Color(100, 100, 255)
+				OverrideColor = new Color(100, 100, 255)
 			};
 			tooltips.Add(line);
 
 			// Here we give the item name a rainbow effect.
 			foreach (TooltipLine line2 in tooltips) {
-				if (line2.mod == "Terraria" && line2.Name == "ItemName") {
-					line2.overrideColor = Main.DiscoColor;
+				if (line2.Mod == "Terraria" && line2.Name == "ItemName") {
+					line2.OverrideColor = Main.DiscoColor;
 				}
 			}
 

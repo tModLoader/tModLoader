@@ -1,0 +1,46 @@
+--- src/TerrariaNetCore/Terraria/Audio/OGGAudioTrack.cs
++++ src/tModLoader/Terraria/Audio/OGGAudioTrack.cs
+@@ -1,6 +_,7 @@
+ using Microsoft.Xna.Framework.Audio;
+ using NVorbis;
+ using System.IO;
++using System;
+ 
+ namespace Terraria.Audio
+ {
+@@ -49,17 +_,35 @@
+ 		}
+ 
+ 		private void FindLoops() {
++			// Vanilla: Code is faulty, tries to parse the whole comment as one integer.
++			/*
+ 			string[] comments = _vorbisReader.Comments;
+ 			foreach (string vorbisComment in comments) {
+ 				TryGettingVariable(vorbisComment, "LOOPSTART", ref _loopStart);
+ 				TryGettingVariable(vorbisComment, "LOOPEND", ref _loopEnd);
+ 			}
++			*/
++
++			// TML: Fixed parsing
++			var tags = _vorbisReader.Tags.All;
++			
++			void TryReadInteger(string entryName, ref int result) {
++				if (tags.TryGetValue(entryName, out var values) && values.Count > 0 && int.TryParse(values[0], out int potentialResult)) {
++					result = potentialResult;
++				}
++			}
++
++			TryReadInteger("LOOPSTART", ref _loopStart);
++			TryReadInteger("LOOPEND", ref _loopEnd);
+ 		}
+ 
++		// See the above.
++		/*
+ 		private void TryGettingVariable(string vorbisComment, string variableWeLookFor, ref int variableValueHolder) {
+ 			if (vorbisComment.StartsWith(variableWeLookFor) && int.TryParse(vorbisComment, out int result))
+ 				variableValueHolder = result;
+ 		}
++		*/
+ 
+ 		public override void Dispose() {
+ 			_soundEffectInstance.Dispose();

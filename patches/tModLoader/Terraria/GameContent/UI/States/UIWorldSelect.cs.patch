@@ -11,6 +11,15 @@
  using Terraria.GameContent.UI.Elements;
  using Terraria.GameInput;
  using Terraria.ID;
+@@ -11,6 +_,8 @@
+ using Terraria.Localization;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
++using Terraria.ModLoader;
++using Terraria.ModLoader.UI;
+ 
+ namespace Terraria.GameContent.UI.States
+ {
 @@ -25,6 +_,7 @@
  		private bool _isScrollbarAttached;
  		private List<Tuple<string, bool>> favoritesCache = new List<Tuple<string, bool>>();
@@ -19,11 +28,13 @@
  
  		public override void OnInitialize() {
  			UIElement uIElement = new UIElement();
-@@ -132,6 +_,49 @@
+@@ -132,6 +_,163 @@
  			int num = 0;
  			foreach (WorldFileData item in orderedEnumerable) {
  				_worldList.Add(new UIWorldListItem(item, num++, CanWorldBePlayed(item)));
 +			}
++
++			AddIndividualWorldMigrationButtons();
 +
 +			if (!orderedEnumerable.Any()) {
 +				string vanillaWorldsPath = Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "Worlds");
@@ -55,7 +66,7 @@
 +
 +					autoMigrateButton.Append(migrateText);
 +					_worldList.Add(autoMigrateButton);
-+					var noWorldsMessage = new UIText(Language.GetText("tModLoader.MigrateWorldsMessage"));
++					var noWorldsMessage = new UIText(Language.GetTextValue("tModLoader.MigrateWorldsMessage", BuildInfo.IsStable ? Program.ReleaseFolder : BuildInfo.IsPreview ? Program.PreviewFolder : Program.DevFolder));
 +					noWorldsMessage.Width.Set(0, 1);
 +					noWorldsMessage.Height.Set(300, 0);
 +					noWorldsMessage.MarginTop = 20f;
@@ -65,6 +76,118 @@
 +					};
 +
 +					_worldList.Add(noWorldsMessage);
++				}
++			}
++		}
++
++		private void AddIndividualWorldMigrationButtons() {
++			// TODO: Do we need to do extra work for .wld files that have been renamed? Is that valid?
++			// Vanilla and 1.3 paths are defaults, 1.4 tmod paths are relative to current savepath.
++			var otherPaths = new (string path, string message, int stabilityLevel)[] {
++				(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "Worlds"), "Click to copy \"{0}\" over from Terraria", 0),
++				(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "ModLoader", "Worlds"), "Click to copy \"{0}\" over from 1.3 tModLoader", 0),
++				(path: Path.Combine(Main.SavePath, "..", Program.ReleaseFolder, "Worlds"), "Click to copy \"{0}\" over from 1.4-stable", 1),
++				(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, "Worlds"), "Click to copy \"{0}\" over from 1.4-preview", 2),
++				(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, "Worlds"), "Click to copy \"{0}\" over from 1.4-dev", 3),
++			};
++
++			int currentStabilityLevel = BuildInfo.Purpose switch {
++				BuildInfo.BuildPurpose.Stable => 1,
++				BuildInfo.BuildPurpose.Preview => 2,
++				BuildInfo.BuildPurpose.Dev => 3,
++			};
++
++			foreach (var (otherSaveFolderPath, message, stabilityLevel) in otherPaths) {
++				if (stabilityLevel == currentStabilityLevel)
++					continue;
++				if (Directory.Exists(otherSaveFolderPath)) {
++					string[] files = Directory.GetFiles(otherSaveFolderPath, "*.wld");
++					int num2 = Math.Min(1000, files.Length);
++					for (int i = 0; i < num2; i++) {
++						string worldInThisWorldsPath = Path.Combine(Main.WorldPath, Path.GetFileName(files[i]));
++						if (File.Exists(worldInThisWorldsPath) && File.GetLastWriteTime(worldInThisWorldsPath) == File.GetLastWriteTime(files[i])) {
++							continue;
++						}
++
++						WorldFileData fileData = WorldFile.GetAllMetadata(files[i], cloudSave: false);
++						if (fileData != null) {
++							var migrateIndividualWorldPanel = new UIPanel();
++							migrateIndividualWorldPanel.Width.Set(0, 1);
++							migrateIndividualWorldPanel.Height.Set(50, 0);
++
++							float left = 0;
++							if (stabilityLevel > currentStabilityLevel) {
++								// TODO: Not necessarily newer...
++								var warningImage = new UIHoverImage(UICommon.ButtonErrorTexture, "This world is from a newer tModLoader, it might not work") {
++									Left = { Pixels = left },
++									Top = { Pixels = 3 }
++								};
++
++								migrateIndividualWorldPanel.Append(warningImage);
++
++								left += warningImage.Width.Pixels + 6;
++							}
++
++							var worldWithSameName = Main.WorldList.FirstOrDefault(x => x.Name == fileData.Name);
++							if (worldWithSameName != null) {
++								var warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, "A world with this name exists, it will be overwritten") {
++									Left = { Pixels = left },
++									Top = { Pixels = 3 }
++								};
++
++								migrateIndividualWorldPanel.Append(warningImage);
++
++								left += warningImage.Width.Pixels + 6;
++
++								if (File.GetLastWriteTime(worldWithSameName.Path) > File.GetLastWriteTime(files[i])) {
++									warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, "The existing world was last played more recently") {
++										Left = { Pixels = left },
++										Top = { Pixels = 3 }
++									};
++
++									migrateIndividualWorldPanel.Append(warningImage);
++
++									left += warningImage.Width.Pixels + 6;
++								}
++							}
++
++							var migrateIndividualWorldText = new UIText(string.Format(message, fileData.Name));
++							migrateIndividualWorldText.Width.Set(-left, 1);
++							migrateIndividualWorldText.Left.Set(left, 0);
++							migrateIndividualWorldText.Height.Set(0, 1);
++							migrateIndividualWorldText.OnClick += (a, b) => {
++								if (!_currentlyMigratingFiles) {
++									_currentlyMigratingFiles = true;
++									migrateIndividualWorldText.SetText(Language.GetText("tModLoader.MigratingWorldsText"));
++									Task.Factory.StartNew(() => {
++										try {
++											// Delete existing world files of the same name
++											string worldFileName = Path.GetFileNameWithoutExtension(fileData.Path);
++											foreach (var existingWorldFile in Directory.GetFiles(Main.WorldPath, $"{worldFileName}.*").Where(s => s.EndsWith(".wld") || s.EndsWith(".twld") || s.EndsWith(".bak"))) {
++												File.Delete(existingWorldFile);
++											}
++
++											var otherWorldFiles = Directory.GetFiles(otherSaveFolderPath, $"{worldFileName}.*")
++												.Where(s => s.EndsWith(".wld") || s.EndsWith(".twld") || s.EndsWith(".bak"));
++
++											foreach (string otherWorldFile in otherWorldFiles) {
++												File.Copy(otherWorldFile, Path.Combine(Main.WorldPath, Path.GetFileName(otherWorldFile)), true);
++											}
++										}
++										catch (Exception e) {
++											Logging.tML.Error(Language.GetText("tModLoader.MigratePlayersException"), e);
++										}
++										_currentlyMigratingFiles = false;
++										Main.menuMode = 6;
++									}, TaskCreationOptions.PreferFairness);
++								}
++							};
++
++							migrateIndividualWorldPanel.Append(migrateIndividualWorldText);
++
++							_worldList.Add(migrateIndividualWorldPanel);
++						}
++					}
 +				}
  			}
  		}

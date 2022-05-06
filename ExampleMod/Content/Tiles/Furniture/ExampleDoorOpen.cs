@@ -3,6 +3,7 @@ using ExampleMod.Content.Items.Placeable.Furniture;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -75,7 +76,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 		}
 
-		public override bool HasSmartInteract() {
+		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
 			return true;
 		}
 

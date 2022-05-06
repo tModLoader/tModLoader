@@ -10,39 +10,47 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class NPCDefinitionElement : DefinitionElement<NPCDefinition>
+	internal class NPCDefinitionElement : DefinitionElement<NPCDefinition>
 	{
 		protected override DefinitionOptionElement<NPCDefinition> CreateDefinitionOptionElement() => new NPCDefinitionOptionElement(Value, 0.5f);
 
 		protected override List<DefinitionOptionElement<NPCDefinition>> CreateDefinitionOptionElementList() {
-			optionScale = 0.8f;
+			OptionScale = 0.8f;
 			var options = new List<DefinitionOptionElement<NPCDefinition>>();
+
 			for (int i = 0; i < NPCLoader.NPCCount; i++) {
-				var optionElement = new NPCDefinitionOptionElement(new NPCDefinition(i), optionScale);
+				var optionElement = new NPCDefinitionOptionElement(new NPCDefinition(i), OptionScale);
 				optionElement.OnClick += (a, b) => {
-					Value = optionElement.definition;
-					updateNeeded = true;
-					selectionExpanded = false;
+					Value = optionElement.Definition;
+					UpdateNeeded = true;
+					SelectionExpanded = false;
 				};
 				options.Add(optionElement);
 			}
+
 			return options;
 		}
 
 		protected override List<DefinitionOptionElement<NPCDefinition>> GetPassedOptionElements() {
 			var passed = new List<DefinitionOptionElement<NPCDefinition>>();
-			foreach (var option in options) {
+
+			foreach (var option in Options) {
 				// Should this be the localized NPC name?
-				if (Lang.GetNPCName(option.type).Value.IndexOf(chooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
+				if (Lang.GetNPCName(option.Type).Value.IndexOf(ChooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
-				string modname = option.definition.mod;
-				if (option.type >= NPCID.Count) {
-					modname = NPCLoader.GetNPC(option.type).Mod.DisplayName; // or internal name?
+
+				string modname = option.Definition.Mod;
+
+				if (option.Type >= NPCID.Count) {
+					modname = NPCLoader.GetNPC(option.Type).Mod.DisplayName; // or internal name?
 				}
-				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
+
+				if (modname.IndexOf(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
+
 				passed.Add(option);
 			}
+
 			return passed;
 		}
 	}
@@ -54,16 +62,18 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			CalculatedStyle dimensions = base.GetInnerDimensions();
-			spriteBatch.Draw(backgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-			if (definition != null) {
-				int type = unloaded ? 0 : this.type;
+
+			spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
+
+			if (Definition != null) {
+				int type = Unloaded ? 0 : Type;
 				Main.instance.LoadNPC(type);
 				Texture2D npcTexture = TextureAssets.Npc[type].Value;
 
-				int frameCounter = Interface.modConfig.updateCount / 8;
+				int frameCounter = Interface.modConfig.UpdateCount / 8;
 				int frames = Main.npcFrameCount[type];
 
-				if (unloaded) {
+				if (Unloaded) {
 					npcTexture = TextureAssets.Item[ItemID.Count].Value; //Will this always return the 'missing item' texture?
 					frames = 1;
 				}
@@ -75,7 +85,8 @@ namespace Terraria.ModLoader.Config.UI
 				Rectangle rectangle2 = new Rectangle(0, y, width, height);
 
 				float drawScale = 1f;
-				float availableWidth = defaultBackgroundTexture.Width() * scale;
+				float availableWidth = DefaultBackgroundTexture.Width() * Scale;
+
 				if (width > availableWidth || height > availableWidth) {
 					if (width > height) {
 						drawScale = availableWidth / width;
@@ -84,8 +95,10 @@ namespace Terraria.ModLoader.Config.UI
 						drawScale = availableWidth / height;
 					}
 				}
-				drawScale *= scale;
-				Vector2 vector = backgroundTexture.Size() * scale;
+
+				drawScale *= Scale;
+
+				Vector2 vector = BackgroundTexture.Size() * Scale;
 				Vector2 position2 = dimensions.Position() + vector / 2f - rectangle2.Size() * drawScale / 2f;
 				Vector2 origin = rectangle2.Size() * 0;
 
@@ -93,8 +106,9 @@ namespace Terraria.ModLoader.Config.UI
 
 				spriteBatch.Draw(npcTexture, position2, rectangle2, Color.White, 0f, origin, drawScale, SpriteEffects.None, 0f);
 			}
+
 			if (IsMouseHovering)
-				UIModConfig.tooltip = tooltip;
+				UIModConfig.Tooltip = Tooltip;
 		}
 	}
 }

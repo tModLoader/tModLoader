@@ -63,9 +63,6 @@ namespace ExampleMod
 			if (!Main.dedServ) {
 				// Add certain equip textures
 				AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
-				AddEquipTexture(new Items.Armor.BlockyHead(), null, EquipType.Head, "BlockyHead", "ExampleMod/Items/Armor/ExampleCostume_Head");
-				AddEquipTexture(new Items.Armor.BlockyBody(), null, EquipType.Body, "BlockyBody", "ExampleMod/Items/Armor/ExampleCostume_Body", "ExampleMod/Items/Armor/ExampleCostume_Arms");
-				AddEquipTexture(new Items.Armor.BlockyLegs(), null, EquipType.Legs, "BlockyLeg", "ExampleMod/Items/Armor/ExampleCostume_Legs");
 
 				// Register a new music box
 				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/MarbleGallery"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));

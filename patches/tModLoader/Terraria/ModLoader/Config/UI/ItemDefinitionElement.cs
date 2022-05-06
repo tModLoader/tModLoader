@@ -1,48 +1,53 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class ItemDefinitionElement : DefinitionElement<ItemDefinition>
+	internal class ItemDefinitionElement : DefinitionElement<ItemDefinition>
 	{
 		protected override DefinitionOptionElement<ItemDefinition> CreateDefinitionOptionElement() => new ItemDefinitionOptionElement(Value, 0.5f);
 
 		protected override List<DefinitionOptionElement<ItemDefinition>> CreateDefinitionOptionElementList() {
 			var options = new List<DefinitionOptionElement<ItemDefinition>>();
+
 			for (int i = 0; i < ItemLoader.ItemCount; i++) {
-				var optionElement = new ItemDefinitionOptionElement(new ItemDefinition(i), optionScale);
+				var optionElement = new ItemDefinitionOptionElement(new ItemDefinition(i), OptionScale);
 				optionElement.OnClick += (a, b) => {
-					Value = optionElement.definition;
-					updateNeeded = true;
-					selectionExpanded = false;
+					Value = optionElement.Definition;
+					UpdateNeeded = true;
+					SelectionExpanded = false;
 				};
 				options.Add(optionElement);
 			}
+
 			return options;
 		}
 
 		protected override List<DefinitionOptionElement<ItemDefinition>> GetPassedOptionElements() {
 			var passed = new List<DefinitionOptionElement<ItemDefinition>>();
-			foreach (var option in options) {
-				if (ItemID.Sets.Deprecated[option.type])
+
+			foreach (var option in Options) {
+				if (ItemID.Sets.Deprecated[option.Type])
 					continue;
+
 				// Should this be the localized item name?
-				if (Lang.GetItemNameValue(option.type).IndexOf(chooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
+				if (!Lang.GetItemNameValue(option.Type).Contains(ChooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase))
 					continue;
+
 				string modname = "Terraria";
-				if (option.type >= ItemID.Count) {
-					modname = ItemLoader.GetItem(option.type).Mod.DisplayName; // or internal name?
+
+				if (option.Type >= ItemID.Count) {
+					modname = ItemLoader.GetItem(option.Type).Mod.DisplayName; // or internal name?
 				}
-				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
+
+				if (modname.IndexOf(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
+
 				passed.Add(option);
 			}
 			return passed;
@@ -51,39 +56,44 @@ namespace Terraria.ModLoader.Config.UI
 
 	internal class ItemDefinitionOptionElement : DefinitionOptionElement<ItemDefinition>
 	{
-		public Item item;
+		public Item Item { get; set; }
 
 		public ItemDefinitionOptionElement(ItemDefinition definition, float scale = .75f) : base(definition, scale) {
 		}
 
 		public override void SetItem(ItemDefinition definition) {
 			base.SetItem(definition);
-			this.item = new Item();
-			this.item.SetDefaults(this.type);
+
+			Item = new Item();
+			Item.SetDefaults(Type);
 		}
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
-			if (item != null) {
+			if (Item != null) {
 				CalculatedStyle dimensions = base.GetInnerDimensions();
-				spriteBatch.Draw(backgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-				if (!item.IsAir || unloaded) {
-					int type = unloaded ? ItemID.Count : this.item.type;
-					Main.instance.LoadItem(item.type);
+				spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
+
+				if (!Item.IsAir || Unloaded) {
+					int type = Unloaded ? ItemID.Count : Item.type;
+					Main.instance.LoadItem(Item.type);
 					Texture2D itemTexture = TextureAssets.Item[type].Value;
 					Rectangle rectangle2;
+
 					if (Main.itemAnimations[type] != null) {
 						rectangle2 = Main.itemAnimations[type].GetFrame(itemTexture);
 					}
 					else {
 						rectangle2 = itemTexture.Frame(1, 1, 0, 0);
 					}
+
 					Color newColor = Color.White;
 					float pulseScale = 1f;
-					ItemSlot.GetItemLight(ref newColor, ref pulseScale, item, false);
+					ItemSlot.GetItemLight(ref newColor, ref pulseScale, Item, false);
 					int height = rectangle2.Height;
 					int width = rectangle2.Width;
 					float drawScale = 1f;
-					float availableWidth = (float)defaultBackgroundTexture.Width() * scale;
+					float availableWidth = (float)DefaultBackgroundTexture.Width() * Scale;
+
 					if (width > availableWidth || height > availableWidth) {
 						if (width > height) {
 							drawScale = availableWidth / width;
@@ -92,27 +102,31 @@ namespace Terraria.ModLoader.Config.UI
 							drawScale = availableWidth / height;
 						}
 					}
-					drawScale *= scale;
-					Vector2 vector = backgroundTexture.Size() * scale;
+
+					drawScale *= Scale;
+					Vector2 vector = BackgroundTexture.Size() * Scale;
 					Vector2 position2 = dimensions.Position() + vector / 2f - rectangle2.Size() * drawScale / 2f;
 					Vector2 origin = rectangle2.Size() * (pulseScale / 2f - 0.5f);
 
-					if (ItemLoader.PreDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
-						item.GetColor(Color.White), origin, drawScale * pulseScale)) {
-						spriteBatch.Draw(itemTexture, position2, new Rectangle?(rectangle2), item.GetAlpha(newColor), 0f, origin, drawScale * pulseScale, SpriteEffects.None, 0f);
-						if (item.color != Color.Transparent) {
-							spriteBatch.Draw(itemTexture, position2, new Rectangle?(rectangle2), item.GetColor(Color.White), 0f, origin, drawScale * pulseScale, SpriteEffects.None, 0f);
+					if (ItemLoader.PreDrawInInventory(Item, spriteBatch, position2, rectangle2, Item.GetAlpha(newColor),
+						Item.GetColor(Color.White), origin, drawScale * pulseScale)) {
+						spriteBatch.Draw(itemTexture, position2, new Rectangle?(rectangle2), Item.GetAlpha(newColor), 0f, origin, drawScale * pulseScale, SpriteEffects.None, 0f);
+
+						if (Item.color != Color.Transparent) {
+							spriteBatch.Draw(itemTexture, position2, new Rectangle?(rectangle2), Item.GetColor(Color.White), 0f, origin, drawScale * pulseScale, SpriteEffects.None, 0f);
 						}
 					}
-					ItemLoader.PostDrawInInventory(item, spriteBatch, position2, rectangle2, item.GetAlpha(newColor),
-						item.GetColor(Color.White), origin, drawScale * pulseScale);
+
+					ItemLoader.PostDrawInInventory(Item, spriteBatch, position2, rectangle2, Item.GetAlpha(newColor), Item.GetColor(Color.White), origin, drawScale * pulseScale);
+
 					if (ItemID.Sets.TrapSigned[type]) {
-						spriteBatch.Draw(TextureAssets.Wire.Value, dimensions.Position() + new Vector2(40f, 40f) * scale, new Rectangle?(new Rectangle(4, 58, 8, 8)), Color.White, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
+						spriteBatch.Draw(TextureAssets.Wire.Value, dimensions.Position() + new Vector2(40f, 40f) * Scale, new Rectangle?(new Rectangle(4, 58, 8, 8)), Color.White, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
 					}
 				}
 			}
+
 			if (IsMouseHovering)
-				UIModConfig.tooltip = tooltip;
+				UIModConfig.Tooltip = Tooltip;
 		}
 	}
 

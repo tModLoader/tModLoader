@@ -1,10 +1,17 @@
 using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.GameContent.Creative;
 
 namespace ExampleMod.Content.Items.Placeable
 {
 	public class ExampleHerbSeeds : ModItem
 	{
+		public override void SetStaticDefaults() {
+			DisplayName.SetDefault("Example Herb Seeds");
+
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 20;
+		}
+
 		public override void SetDefaults() {
 			Item.autoReuse = true;
 			Item.useTurn = true;

@@ -457,6 +457,20 @@
  				case 12:
  				case 25:
  				case 27: {
+@@ -1274,10 +_,11 @@
+ 							break;
+ 
+ 						bool flag = false;
+-						if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
++						//if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
++						if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0 && ItemLoader.CanStack(Main.mouseItem, inv[slot])) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
+ 							flag = true;
+ 							if (Main.mouseItem.IsAir)
+-								Main.mouseItem.SetDefaults(inv[slot].type);
++								Main.mouseItem = inv[slot].Clone();
+ 							else
+ 								Main.mouseItem.stack++;
+ 
 @@ -1310,12 +_,15 @@
  
  			_ = Main.instance.shop[Main.npcShop];
@@ -593,13 +607,14 @@
  			}
  			else if (context == 6) {
  				Texture2D value8 = TextureAssets.Trash.Value;
-@@ -1740,6 +_,25 @@
+@@ -1740,6 +_,27 @@
  					if (inv == localPlayer.miscDyes)
  						result = 185 + slot;
  					break;
 +				//TML Context: GamePad number magic aligned to match DemonHeart Accessory.
 +				//TML Note: There is no Master Mode Accessory slot code here for Gamepads.
 +				//TML-added [[
++				/*TODO: Fix later because gamepads are trashing all
 +				case -10:
 +				case -11:
 +					int num3M = slot;
@@ -616,6 +631,7 @@
 +					result = 120 + num4M;
 +					break;
 +				// ]]
++				*/
  				case 19:
  					result = 180;
  					break;

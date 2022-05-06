@@ -30,7 +30,7 @@
  			};
  
 -			list.Sort((float x, float y) => y.CompareTo(x));
-+			list.Sort((x, y) => ((float)y).CompareTo((float)x));
++			list.Sort((x, y) => (y.Additive * y.Multiplicative).CompareTo(x.Additive * x.Multiplicative));
  			for (int i = 0; i < 5; i++) {
  				if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
  					list.RemoveAt(0);

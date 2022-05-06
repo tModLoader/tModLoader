@@ -1,12 +1,14 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UICharacterSelect.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UICharacterSelect.cs
-@@ -11,12 +_,15 @@
+@@ -11,12 +_,17 @@
  using Terraria.Localization;
  using Terraria.UI;
  using Terraria.UI.Gamepad;
 +using Terraria.ModLoader;
 +using System.IO;
 +using System.Threading.Tasks;
++using Terraria.ModLoader.UI;
++using Terraria.Utilities;
  
  namespace Terraria.GameContent.UI.States
  {
@@ -25,11 +27,13 @@
  
  		public override void OnInitialize() {
  			UIElement uIElement = new UIElement();
-@@ -141,6 +_,67 @@
+@@ -141,6 +_,192 @@
  			int num = 0;
  			foreach (PlayerFileData item in list) {
  				_playerList.Add(new UICharacterListItem(item, num++));
 +			}
++
++			AddIndividualPlayerMigrationButtons();
 +
 +			if (list.Count == 0) {
 +				string vanillaPlayersPath = Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "Players");
@@ -79,9 +83,9 @@
 +
 +					autoMigrateButton.Append(migrateText);
 +					_playerList.Add(autoMigrateButton);
-+					var noPlayersMessage = new UIText(Language.GetText("tModLoader.MigratePlayersMessage"));
++					var noPlayersMessage = new UIText(Language.GetTextValue("tModLoader.MigratePlayersMessage", BuildInfo.IsStable ? Program.ReleaseFolder : BuildInfo.IsPreview ? Program.PreviewFolder : Program.DevFolder));
 +					noPlayersMessage.Width.Set(0, 1);
-+					noPlayersMessage.Height.Set(200, 0);
++					noPlayersMessage.Height.Set(300, 0);
 +					noPlayersMessage.MarginTop = 20f;
 +					noPlayersMessage.OnClick += (a, b) => {
 +						Utils.OpenFolder(Main.PlayerPath);
@@ -89,6 +93,129 @@
 +					};
 +
 +					_playerList.Add(noPlayersMessage);
++				}
++			}
++		}
++
++		private void AddIndividualPlayerMigrationButtons() {
++			// TODO: Do we need to do extra work for .plr files that have been renamed? Is that valid?
++			// Vanilla and 1.3 paths are defaults, 1.4 tmod paths are relative to current savepath.
++			var otherPaths = new (string path, string message, int stabilityLevel)[] {
++				(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "Players"), "Click to copy \"{0}\" over from Terraria", 0),
++				(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "ModLoader", "Players"), "Click to copy \"{0}\" over from 1.3 tModLoader", 0),
++				(path: Path.Combine(Main.SavePath, "..", Program.ReleaseFolder, "Players"), "Click to copy \"{0}\" over from 1.4-stable", 1),
++				(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, "Players"), "Click to copy \"{0}\" over from 1.4-preview", 2),
++				(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, "Players"), "Click to copy \"{0}\" over from 1.4-dev", 3),
++			};
++
++			int currentStabilityLevel = BuildInfo.Purpose switch {
++				BuildInfo.BuildPurpose.Stable => 1,
++				BuildInfo.BuildPurpose.Preview => 2,
++				BuildInfo.BuildPurpose.Dev => 3,
++			};
++
++			foreach (var (otherSaveFolderPath, message, stabilityLevel) in otherPaths) {
++				if (stabilityLevel == currentStabilityLevel)
++					continue;
++				if (Directory.Exists(otherSaveFolderPath)) {
++					string[] files = Directory.GetFiles(otherSaveFolderPath, "*.plr");
++					int num2 = Math.Min(1000, files.Length);
++					for (int i = 0; i < num2; i++) {
++						string playerInThisPlayersPath = Path.Combine(Main.PlayerPath, Path.GetFileName(files[i]));
++						if (File.Exists(playerInThisPlayersPath) && File.GetLastWriteTime(playerInThisPlayersPath) == File.GetLastWriteTime(files[i])) {
++							continue;
++						}
++						
++						PlayerFileData fileData = Player.GetFileData(files[i], cloudSave: false);
++						if (fileData != null) {
++							var migrateIndividualPlayerPanel = new UIPanel();
++							migrateIndividualPlayerPanel.Width.Set(0, 1);
++							migrateIndividualPlayerPanel.Height.Set(50, 0);
++
++							float left = 0;
++							if (stabilityLevel > currentStabilityLevel) {
++								// TODO: Not necessarily newer...
++								var warningImage = new UIHoverImage(UICommon.ButtonErrorTexture, "This player is from a newer tModLoader, it might not work") {
++									Left = { Pixels = left },
++									Top = { Pixels = 3 }
++								};
++
++								migrateIndividualPlayerPanel.Append(warningImage);
++
++								left += warningImage.Width.Pixels + 6;
++							}
++
++							var playerWithSameName = Main.PlayerList.FirstOrDefault(x => x.Name == fileData.Name);
++							if (playerWithSameName != null) {
++								var warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, "A player with this name exists, it will be overwritten") {
++									Left = { Pixels = left },
++									Top = { Pixels = 3 }
++								};
++
++								migrateIndividualPlayerPanel.Append(warningImage);
++
++								left += warningImage.Width.Pixels + 6;
++
++								if(File.GetLastWriteTime(playerWithSameName.Path) > File.GetLastWriteTime(files[i])) {
++									warningImage = new UIHoverImage(UICommon.ButtonExclamationTexture, "The existing player was last played more recently") {
++										Left = { Pixels = left },
++										Top = { Pixels = 3 }
++									};
++
++									migrateIndividualPlayerPanel.Append(warningImage);
++
++									left += warningImage.Width.Pixels + 6;
++								}
++							}
++
++							var migrateIndividualPlayerText = new UIText(string.Format(message, fileData.Name));
++							migrateIndividualPlayerText.Width.Set(-left, 1);
++							migrateIndividualPlayerText.Left.Set(left, 0);
++							migrateIndividualPlayerText.Height.Set(0, 1);
++							migrateIndividualPlayerText.OnClick += (a, b) => {
++								if (!_currentlyMigratingFiles) {
++									_currentlyMigratingFiles = true;
++									migrateIndividualPlayerText.SetText(Language.GetText("tModLoader.MigratingWorldsText"));
++									Task.Factory.StartNew(() => {
++
++										try {
++											// Delete existing player files of the same name
++											string playerFileName = Path.GetFileNameWithoutExtension(fileData.Path);
++											foreach (var existingPlayerFile in Directory.GetFiles(Main.PlayerPath, $"{playerFileName}.*").Where(s => s.EndsWith(".plr") || s.EndsWith(".tplr") || s.EndsWith(".bak"))) {
++												File.Delete(existingPlayerFile);
++											}
++											string existingPlayerMapPath = Path.Combine(Main.PlayerPath, Path.GetFileNameWithoutExtension(fileData.Path));
++											if (Directory.Exists(existingPlayerMapPath)) {
++												Directory.Delete(existingPlayerMapPath, true);
++											}
++
++											var otherPlayerFiles = Directory.GetFiles(otherSaveFolderPath, $"{playerFileName}.*")
++												.Where(s => s.EndsWith(".plr") || s.EndsWith(".tplr") || s.EndsWith(".bak"));
++
++											foreach (string otherPlayerFile in otherPlayerFiles) {
++												File.Copy(otherPlayerFile, Path.Combine(Main.PlayerPath, Path.GetFileName(otherPlayerFile)), true);
++											}
++
++											// Copy map files
++											string playerMapPath = Path.Combine(otherSaveFolderPath, Path.GetFileNameWithoutExtension(fileData.Path));
++											if (Directory.Exists(playerMapPath)) {
++												FileUtilities.CopyFolder(playerMapPath, existingPlayerMapPath);
++											}												
++										}
++										catch (Exception e) {
++											Logging.tML.Error(Language.GetText("tModLoader.MigratePlayersException"), e);
++										}
++										_currentlyMigratingFiles = false;
++										Main.menuMode = 1;									
++									}, TaskCreationOptions.PreferFairness);
++								}
++							};							
++
++							migrateIndividualPlayerPanel.Append(migrateIndividualPlayerText);
++
++							_playerList.Add(migrateIndividualPlayerPanel);
++						}
++					}
 +				}
  			}
  		}

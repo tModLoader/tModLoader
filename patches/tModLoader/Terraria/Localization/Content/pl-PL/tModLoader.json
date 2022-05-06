@@ -272,10 +272,10 @@
 		"ModControls": "Mody - sterowanie",
 
 		// Player and World Select
-		"MigratePlayersMessage": "Nie masz żadnych postaci.\nJeśli chcesz zmigrować je z oficjalnej wersji do tModLoader,\nskopiuj ich pliki .plr z folderu /Terraria/Players do /Terraria/ModLoader/Players.\nKliknij, by otworzyć te foldery.\nPo skopiowaniu, kliknij Wróć.",
+		"MigratePlayersMessage": "Nie masz żadnych postaci.\nJeśli chcesz zmigrować je z oficjalnej wersji do tModLoader,\nskopiuj ich pliki .plr z folderu /Terraria/Players do /Terraria/{0}/Players.\nKliknij, by otworzyć te foldery.\nPo skopiowaniu, kliknij Wróć.",
 		"MigratePlayersText": "Kliknij tutaj, aby migrować graczy...",
 		"MigratePlayersException": "Wystąpił problem podczas próby migracji plików graczy",
-		"MigrateWorldsMessage": "Nie masz żadnych światów.\nJeśli chcesz zmigrować je z oficjalnej wersji do tModLoader,\nskopiuj ich pliki .wld z folderu /Terraria/Worlds do /Terraria/ModLoader/Worlds.\nKliknij, by otworzyć te foldery.\nPo skopiowaniu, kliknij Wróć.",
+		"MigrateWorldsMessage": "Nie masz żadnych światów.\nJeśli chcesz zmigrować je z oficjalnej wersji do tModLoader,\nskopiuj ich pliki .wld z folderu /Terraria/Worlds do /Terraria/{0}/Worlds.\nKliknij, by otworzyć te foldery.\nPo skopiowaniu, kliknij Wróć.",
 		"MigrateWorldsText": "Kliknij tutaj, aby migrować światy...",
 		"MigratingWorldsText": "Migrowanie...",
 		"ModsDifferentSinceLastPlay": "Te mody zmieniły się od ostatniego razu: ",

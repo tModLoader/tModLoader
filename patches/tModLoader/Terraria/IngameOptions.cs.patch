@@ -94,18 +94,38 @@
  					num4 = 1f;
  					num5 = 1.001f;
  					num6 = 0.001f;
-@@ -651,6 +_,14 @@
- 					rightHover = num16;
- 					if (flag4)
- 						Main.GamepadDisableInstructionsDisplay = !Main.GamepadDisableInstructionsDisplay;
-+				}
-+
-+				num16++;
+@@ -654,6 +_,14 @@
+ 				}
+ 
+ 				num16++;
 +				string text = BossBarLoader.InsertMenu(out Action onClick);
 +				if (DrawRightSide(sb, text, num16, vector3, vector4, rightScale[num16], (rightScale[num16] - num4) / (num5 - num4))) {
 +					rightHover = num16;
 +					if (flag4)
 +						onClick();
- 				}
++				}
++
++				num16++;
+ 				string textValue3 = Language.GetTextValue("UI.MinimapFrame_" + Main.MinimapFrameManagerInstance.ActiveSelectionKeyName);
+ 				if (DrawRightSide(sb, Language.GetTextValue("UI.SelectMapBorder", textValue3), num16, vector3, vector4, rightScale[num16], (rightScale[num16] - num4) / (num5 - num4))) {
+ 					rightHover = num16;
+@@ -724,7 +_,7 @@
+ 				num18++;
+ 				if (DrawRightSide(sb, Lang.menu[51].Value + ": " + Main.PendingResolutionWidth + "x" + Main.PendingResolutionHeight, num18, vector3, vector4, rightScale[num18], (rightScale[num18] - num4) / (num5 - num4))) {
+ 					rightHover = num18;
+-					if (flag4) {
++					if (flag4 || Main.mouseRight && Main.mouseRightRelease) {
+ 						int num19 = 0;
+ 						for (int m = 0; m < Main.numDisplayModes; m++) {
+ 							if (Main.displayWidth[m] == Main.PendingResolutionWidth && Main.displayHeight[m] == Main.PendingResolutionHeight) {
+@@ -733,9 +_,7 @@
+ 							}
+ 						}
  
- 				num16++;
+-						num19++;
+-						if (num19 >= Main.numDisplayModes)
+-							num19 = 0;
++						num19 = Utils.Repeat(num19 + (flag4 ? 1 : -1), Main.numDisplayModes);
+ 
+ 						Main.PendingResolutionWidth = Main.displayWidth[num19];
+ 						Main.PendingResolutionHeight = Main.displayHeight[num19];
