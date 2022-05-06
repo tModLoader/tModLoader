@@ -108,7 +108,7 @@ namespace ExampleMod.Content.Items.Weapons
 			item.useAnimation = 12;
 			item.useTime = 4; // one third of useAnimation
 			item.reuseDelay = 14;
-		public override bool? CanConsumeAmmo(Item ammo, Player player)	{
+		public override bool? CanConsumeAmmo(Item ammo, Player player) {
 			if (player.itemAnimation < !player.ItemAnimationJustStarted)
 				return false;
 
