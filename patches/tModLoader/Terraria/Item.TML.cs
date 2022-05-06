@@ -115,11 +115,14 @@ namespace Terraria
 			=> NewItem(source, (int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
 		private void ApplyItemAnimationCompensations() {
+			// <PR#>
 			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
-
+			// all items with autoReuse in vanilla are affected, but the animation only has a physical effect for !noMelee items
+			// for those items, we want the faster animation as that governs reuse time as dps is determined by swing speed.
+			// for the others like ranged weapons, it's fine to keep the animation matching the use time, as dps is determined by item use speed
 			currentUseAnimationCompensation = 0;
 
-			if (type < ItemID.Count && !noMelee) {
+			if (type < ItemID.Count && autoReuse && !noMelee) {
 				useAnimation--;
 				currentUseAnimationCompensation--;
 			}

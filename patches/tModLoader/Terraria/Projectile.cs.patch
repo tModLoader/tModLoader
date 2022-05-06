@@ -859,6 +859,38 @@
  								int num = damage;
  								position = base.Center;
  								int num2 = 0;
+@@ -29210,7 +_,7 @@
+ 			if (flag2 && player.channel && player.itemAnimation < num)
+ 				player.SetDummyItemTime(num);
+ 
+-			if (player.itemAnimation == 0)
++			if (player.ItemAnimationEndingOrEnded)
+ 				Kill();
+ 
+ 			rotation = (float)Math.Atan2(velocity.Y, velocity.X) + (float)Math.PI / 2f + (float)Math.PI / 4f;
+@@ -29480,7 +_,7 @@
+ 				ai[1] += 1f;
+ 			}
+ 
+-			if (Main.player[owner].itemAnimation == 0)
++			if (Main.player[owner].ItemAnimationEndingOrEnded)
+ 				Kill();
+ 
+ 			rotation = (float)Math.Atan2(velocity.Y, velocity.X) + 2.355f;
+@@ -30381,8 +_,11 @@
+ 			}
+ 
+ 			player.heldProj = whoAmI;
++
++			// causes projectile to be duped with <PR#> because tML makes reuse start at itemAnimation == 1
++			// could fix the calculation to `player.itemAnimationMax - (int)((ai[0] - 1) / MaxUpdates);` but the code doesn't do anything useful (even in vanilla)
+-			player.itemAnimation = player.itemAnimationMax - (int)(ai[0] / (float)MaxUpdates);
++			// player.itemAnimation = player.itemAnimationMax - (int)(ai[0] / MaxUpdates);
+-			player.itemTime = player.itemAnimation;
++			// player.itemTime = player.itemAnimation;
+ 			if (ai[0] == (float)(int)(timeToFlyOut / 2f)) {
+ 				WhipPointsForCollision.Clear();
+ 				FillWhipControlPoints(this, WhipPointsForCollision);
 @@ -33091,6 +_,9 @@
  					if (num3 > (float)num9)
  						ai[0] = 1f;
