@@ -78,7 +78,7 @@
  				weaponDrawOrder = WeaponDrawOrder.BehindBackArm;
  
 -			if (GolfHelper.IsPlayerHoldingClub(player) && player.itemAnimation > player.itemAnimationMax)
-+			if (GolfHelper.IsPlayerHoldingClub(player) && player.itemAnimation >= player.itemAnimationMax) // changed > to >= because of itemAnimation adjustment <PR#>.
++			if (GolfHelper.IsPlayerHoldingClub(player) && player.itemAnimation >= player.itemAnimationMax) // changed > to >= because of itemAnimation adjustment #2351
  				weaponDrawOrder = WeaponDrawOrder.OverFrontArm;
  
  			projectileDrawPosition = -1;

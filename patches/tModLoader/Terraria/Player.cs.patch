@@ -3909,7 +3909,7 @@
  			if (Main.myPlayer == i && PlayerInput.ShouldFastUseItem)
  				controlUseItem = true;
  
-+			// <PR#>
++			// #2351
 +			// tML is motivated to bring the itemAnimation and itemTime counters to parity, fixing desync bugs with autoReuse items and providing clearer behaviour
 +			//
 +			// the flow of this method has changed as follows
@@ -4638,7 +4638,7 @@
  		private void ItemCheck_HandleMPItemAnimation(Item sItem) {
 +			// Firstly, in vanilla, autoReuse items go from itemAnimation == 1 to itemAnimationMax-1 here, skipping the frame where itemAnimation == 0
 +			//   this prevents the item flickering out while being auto-reused, and prevents other control inputs that can happen on that 'frame where item is not in use' like useTurn
-+			//   but has the side-effect that autoReuse items are one frame shorter. tML fixes the itemAnimation counter, see the comments near the top of ItemCheck_Inner (<PR#>)
++			//   but has the side-effect that autoReuse items are one frame shorter. tML fixes the itemAnimation counter, see the comments near the top of ItemCheck_Inner (#2351)
 +			//
 +			// Secondly, we don't need to play the shoot-sound and ensure hold-out animation looping for remote players because Shoot logic now runs remote side in tML (#ItemTimeOnAllClients)
 +
@@ -4820,11 +4820,11 @@
  				flag2 = true;
  
 -			if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
-+			// changed to ItemAnimationJustStarted for consistency <PR#>. Also applies to flamethrower and clentaminator below
++			// changed to ItemAnimationJustStarted for consistency #2351. Also applies to flamethrower and clentaminator below
 +			if (sItem.type == 434 && !ItemAnimationJustStarted)
  				flag2 = true;
  
-+			// changed > to >= because of itemAnimation adjustment <PR#>. Uses ammo on last arrow not first
++			// changed > to >= because of itemAnimation adjustment. Uses ammo on last arrow not first
 -			if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
 +			if (sItem.type == 4953 && itemAnimation >= sItem.useAnimation - 8)
  				flag2 = true;

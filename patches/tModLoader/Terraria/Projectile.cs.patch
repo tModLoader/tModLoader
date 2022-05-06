@@ -882,7 +882,7 @@
  
  			player.heldProj = whoAmI;
 +
-+			// causes projectile to be duped with <PR#> because tML makes reuse start at itemAnimation == 1
++			// causes projectile to be duped with #2351 because tML makes reuse start at itemAnimation == 1
 +			// could fix the calculation to `player.itemAnimationMax - (int)((ai[0] - 1) / MaxUpdates);` but the code doesn't do anything useful (even in vanilla)
 -			player.itemAnimation = player.itemAnimationMax - (int)(ai[0] / (float)MaxUpdates);
 +			// player.itemAnimation = player.itemAnimationMax - (int)(ai[0] / MaxUpdates);
