@@ -27,6 +27,7 @@ using Terraria.Map;
 using Terraria.GameContent.Creative;
 using Terraria.Graphics.Effects;
 using Terraria.GameContent.Skies;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader
 {
@@ -97,6 +98,7 @@ namespace Terraria.ModLoader
 		/// Gets the asset with the specified name. Throws an Exception if the asset does not exist.
 		/// </summary>
 		/// <param name="name">The path to the asset without extension, including the mod name (or Terraria) for vanilla assets. Eg "ModName/Folder/FileNameWithoutExtension"</param>
+		/// <param name="mode">The desired timing for when the asset actually loads. Use ImmediateLoad if you need correct dimensions immediately, such as with UI initialization</param>
 		public static Asset<T> Request<T>(string name, AssetRequestMode mode = AssetRequestMode.AsyncLoad) where T : class {
 			SplitName(name, out string modName, out string subName);
 
@@ -444,8 +446,12 @@ namespace Terraria.ModLoader
 			TileLoader.Unload();
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
+
 			NPCLoader.Unload();
 			NPCHeadLoader.Unload();
+			if (!Main.dedServ) // dedicated servers implode with texture swaps and I've never understood why, so here's a fix for that     -thomas
+				TownNPCProfiles.Instance.ResetTexturesAccordingToVanillaProfiles();
+
 			BossBarLoader.Unload();
 			PlayerLoader.Unload();
 			BuffLoader.Unload();

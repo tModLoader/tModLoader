@@ -91,9 +91,9 @@ namespace Terraria.ModLoader
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type">The tile type</param>
-		/// <param name="fail"></param>
-		/// <param name="effectOnly"></param>
-		/// <param name="noItem"></param>
+		/// <param name="fail">If true, the tile won't be mined</param>
+		/// <param name="effectOnly">If true, only the dust visuals will happen</param>
+		/// <param name="noItem">If true, the corrsponding item won't drop</param>
 		public virtual void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem) {
 		}
 
@@ -164,6 +164,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The Tile type of the tile being drawn</param>
+		/// <param name="spriteBatch">The SpriteBatch that should be used for all draw calls</param>
 		public virtual void SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) {
 		}
 
