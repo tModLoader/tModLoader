@@ -118,7 +118,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "BossBagNPC", "class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a", null ],
     [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aefeef1e7ba614411d9ce7f70fb961355", null ],
     [ "Item", "class_terraria_1_1_mod_loader_1_1_mod_item.html#abc96a407c86a78570037ef4318d9c112", null ],
-    [ "OnlyShootOnSwing", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a6daba9133f6197cf30b1b9f628d27a62", null ],
     [ "SacrificeTotal", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a05f73e5975ca43ca2b0f5785cad7ea4c", null ],
     [ "Tooltip", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a0fa62e240cf6cb00feb461f9f8dd9eb7", null ],
     [ "Type", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a97741bf0a58d7f9c516aca91e5cac9bc", null ]

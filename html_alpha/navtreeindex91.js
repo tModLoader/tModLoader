@@ -1,6 +1,5 @@
 var NAVTREEINDEX91 =
 {
-"class_terraria_1_1_mod_loader_1_1_magic_damage_class.html#a887a73739b520355a4ef2e15a8f8cc69":[1,0,2,13,68,0],
 "class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html":[1,0,2,13,69],
 "class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html#a0e3c90c081c7ec9eaf921d89c6658c28":[1,0,2,13,69,1],
 "class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html#aff90fd7d3a219bbe24799f12ef1b0602":[1,0,2,13,69,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX91 =
 "class_terraria_1_1_mod_loader_1_1_mod_gore.html#a31d8086f6844a64a672628a256a31f81":[1,0,2,13,86,7],
 "class_terraria_1_1_mod_loader_1_1_mod_gore.html#a411e2f7772219c70bea337bd98fa8360":[1,0,2,13,86,3],
 "class_terraria_1_1_mod_loader_1_1_mod_gore.html#a479abca923a8e49094ccfb0f5bed818e":[1,0,2,13,86,2],
-"class_terraria_1_1_mod_loader_1_1_mod_gore.html#a6714133002750bffa868fd284fe6fa25":[1,0,2,13,86,4]
+"class_terraria_1_1_mod_loader_1_1_mod_gore.html#a6714133002750bffa868fd284fe6fa25":[1,0,2,13,86,4],
+"class_terraria_1_1_mod_loader_1_1_mod_gore.html#a7857653631cd8ca96941f1cf84792cc2":[1,0,2,13,86,5]
 };

@@ -164,9 +164,6 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanUseItem</b>
 <tr class="memitem:a837a41d46678a4c6764a9264d272809f"><td class="memItemLeft" align="right" valign="top"><a id="a837a41d46678a4c6764a9264d272809f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>CaughtFishStack</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="separator:a837a41d46678a4c6764a9264d272809f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6043c8ae44a770f4eae732e53e3bf602"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a6043c8ae44a770f4eae732e53e3bf602">CheckProjOnSwing</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
-<tr class="memdesc:a6043c8ae44a770f4eae732e53e3bf602"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the item is a modded item, ModItem.checkProjOnSwing is true, and the player is not at the beginning of the item's use animation, sets canShoot to false.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a6043c8ae44a770f4eae732e53e3bf602">More...</a><br /></td></tr>
-<tr class="separator:a6043c8ae44a770f4eae732e53e3bf602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d7ba55c1cba9007d0b08c348f833dbf"><td class="memItemLeft" align="right" valign="top"><a id="a1d7ba55c1cba9007d0b08c348f833dbf"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>ChoosePrefix</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_utilities_1_1_unified_random.html">UnifiedRandom</a> rand)</td></tr>
 <tr class="separator:a1d7ba55c1cba9007d0b08c348f833dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -861,44 +858,6 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </div><div class="memdoc">
 
 <p>Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ab63fbe3ee6a8ecbd4662a08aa4435921" title="Allows you to prevent items from stacking in the world.  This is only called when two items of the sa...">GlobalItem.CanStackInWorld</a> hooks until one returns false then <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a59eecaf5111ab06267eaeb72c16dd3a9" title="Allows you to decide if this item is allowed to stack with another of its type in the world....">ModItem.CanStackInWorld</a>. Returns whether any of the hooks returned false. </p>
-
-</div>
-</div>
-<a id="a6043c8ae44a770f4eae732e53e3bf602"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6043c8ae44a770f4eae732e53e3bf602">&#9670;&nbsp;</a></span>CheckProjOnSwing()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool Terraria.ModLoader.ItemLoader.CheckProjOnSwing </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
-          <td class="paramname"><em>player</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>item</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>If the item is a modded item, ModItem.checkProjOnSwing is true, and the player is not at the beginning of the item's use animation, sets canShoot to false. </p>
 
 </div>
 </div>

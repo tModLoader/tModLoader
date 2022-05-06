@@ -1,5 +1,6 @@
 var NAVTREEINDEX111 =
 {
+"class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#a37a1195a671c909f0995b63880392f64":[1,0,2,19,1,15,1],
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#a3b3bd4feb9c9ab0bfa871227514042b7":[1,0,2,19,1,15,6],
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#a4f4f2928bad7459a3da4ce07ff9f326a":[1,0,2,19,1,15,15],
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#a71cd32f39183cf548a1849e95bf16470":[1,0,2,19,1,15,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX111 =
 "class_terraria_1_1_test_high_f_p_s_issues.html#acb6023dff4ba6db2a568ebea692fd0eb":[1,0,2,71,1],
 "class_terraria_1_1_testing_1_1_chat_commands_1_1_argument_helper.html":[1,0,2,20,0,0],
 "class_terraria_1_1_testing_1_1_chat_commands_1_1_argument_helper.html#a4093e088d49d96c7b8ce61f8c763f65e":[1,0,2,20,0,0,0],
-"class_terraria_1_1_testing_1_1_chat_commands_1_1_argument_list_result.html":[1,0,2,20,0,1],
-"class_terraria_1_1_testing_1_1_chat_commands_1_1_argument_list_result.html#a0989ee587d1497d73be166a86d4e9815":[1,0,2,20,0,1,5]
+"class_terraria_1_1_testing_1_1_chat_commands_1_1_argument_list_result.html":[1,0,2,20,0,1]
 };
