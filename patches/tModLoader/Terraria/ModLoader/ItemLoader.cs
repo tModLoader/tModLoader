@@ -318,7 +318,7 @@ namespace Terraria.ModLoader
 		/// <br/> Returns whether or not the vanilla logic should be skipped.
 		/// </summary>
 		public static void HoldStyle(Item item, Player player, Rectangle heldItemFrame) {
-			if (item.IsAir || player.pulley || player.itemAnimation > 0)
+			if (item.IsAir || player.pulley || player.ItemAnimationActive)
 				return;
 
 			item.ModItem?.HoldStyle(player, heldItemFrame);
@@ -580,13 +580,6 @@ namespace Terraria.ModLoader
 			foreach (var g in HookModifyWeaponCrit.Enumerate(item.globalItems)) {
 				g.ModifyWeaponCrit(item, player, ref crit);
 			}
-		}
-
-		/// <summary>
-		/// If the item is a modded item, ModItem.checkProjOnSwing is true, and the player is not at the beginning of the item's use animation, sets canShoot to false.
-		/// </summary>
-		public static bool CheckProjOnSwing(Player player, Item item) {
-			return item.ModItem == null || !item.ModItem.OnlyShootOnSwing || player.itemAnimation == player.itemAnimationMax - 1;
 		}
 
 		private delegate void DelegatePickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
@@ -901,7 +894,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool? UseItem(Item item, Player player) {
 			if (item.IsAir)
-				return false;
+				return null;
 
 			bool? result = null;
 
@@ -1333,6 +1326,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Call all ModItem.ReforgePrice, then GlobalItem.ReforgePrice hooks.
 		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="reforgePrice"></param>
 		/// <param name="canApplyDiscount"></param>
 		/// <returns></returns>
 		public static bool ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) {

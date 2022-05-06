@@ -381,7 +381,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by this item.
+		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by this item.<br/>
+		/// These parameters will be provided to <see cref="Shoot(Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/> where the projectile will actually be spawned.
 		/// </summary>
 		/// <param name="player"> The player using the item. </param>
 		/// <param name="position"> The center position of the projectile. </param>
@@ -393,7 +394,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
+		/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.<br/>
+		/// This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters. 
 		/// </summary>
 		/// <param name="player"> The player using the item. </param>
 		/// <param name="source"> The projectile source's information. </param>
@@ -1020,11 +1022,6 @@ namespace Terraria.ModLoader
 		/// <param name="catchLocation">The catch location.</param>
 		public virtual void AnglerQuestChat(ref string description, ref string catchLocation) {
 		}
-
-		/// <summary>
-		/// Setting this to true makes it so that this weapon can shoot projectiles only at the beginning of its animation. Set this to true if you want a sword and its projectile creation to be in sync (for example, the Terra Blade). Defaults to false.
-		/// </summary>
-		public virtual bool OnlyShootOnSwing => false;
 
 		/// <summary>
 		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.

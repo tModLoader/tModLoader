@@ -8,7 +8,8 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleStatBonusAccessory : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("20% increased damage; this is multiplicative with other damage bonuses\n"
+			Tooltip.SetDefault("25% increased damage, this is an additive multiplier with other damage bonuses\n"
+							 + "12% increased multiplicative damage multiplier; this is multiplicative with other damage bonuses\n"
 							 + "Increases base damage for all weapons by 4\n"
 							 + "Increases total damage for all weapons by 5\n"
 							 + "10% increased melee crit chance\n"
@@ -32,11 +33,13 @@ namespace ExampleMod.Content.Items.Accessories
 			// When StatModifier is applied to a value, its additive modifiers are applied before multiplicative ones.
 			// Base damage is added directly to the weapon's base damage and is affected by damage bonuses, while flat damage is applied after all other calculations.
 			// In this case, we're doing a number of things:
-			// - Adding 20% damage, multiplicatively.
+			// - Adding 25% damage, additively. This is the typical "X% damage increase" that accessories use, use this one.
+			// - Adding 12% damage, multiplicatively. This effect is almost never useds in Terraria, typically you want to use the additive multiplier above. It is extremely hard to correctly balance the game with multiplicative bonuses.
 			// - Adding 4 base damage.
 			// - Adding 5 flat damage.
 			// Since we're using DamageClass.Generic, these bonuses apply to ALL damage the player deals.
-			player.GetDamage(DamageClass.Generic) *= 1.20f;
+			player.GetDamage(DamageClass.Generic) += 0.25f;
+			player.GetDamage(DamageClass.Generic) *= 1.12f;
 			player.GetDamage(DamageClass.Generic).Base += 4f;
 			player.GetDamage(DamageClass.Generic).Flat += 5f;
 

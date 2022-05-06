@@ -195,6 +195,7 @@ namespace Terraria
 		/// Adds a recipe group ingredient to this recipe with the given RecipeGroup.
 		/// </summary>
 		/// <param name="recipeGroup">The RecipeGroup.</param>
+		/// <param name="stack"></param>
 		public Recipe AddRecipeGroup(RecipeGroup recipeGroup, int stack = 1) {
 			AddIngredient(recipeGroup.IconicItemId, stack);
 			AddGroup(recipeGroup.ID);
@@ -280,6 +281,44 @@ namespace Terraria
 		/// </summary>
 		public Recipe AddConsumeItemCallback(ConsumeItemCallback callback) {
 			ConsumeItemHooks += callback;
+
+			return this;
+		}
+
+		/// <summary>
+		/// Returns a copy of the recipe passed in, including the same OnCraftHooks and ConsumeItemHooks. Called only on the result of Recipe.Create to ensure Mod and RecipeIndex set correctly
+		/// </summary>
+		/// <param name="recipe">The recipe to clone.</param>
+		internal Recipe Clone(Recipe recipe) {
+			createItem = recipe.createItem.Clone();
+
+			requiredItem = new List<Item>(recipe.requiredItem.Select(x => x.Clone()).ToArray());
+			requiredTile = new List<int>(recipe.requiredTile.ToArray());
+			acceptedGroups = new List<int>(recipe.acceptedGroups.ToArray());
+
+			// These fields shouldn't be true, but are here just in case.
+			needHoney = recipe.needHoney;
+			needWater = recipe.needWater;
+			needLava = recipe.needLava;
+			anyWood = recipe.anyWood;
+			anyIronBar = recipe.anyIronBar;
+			anyPressurePlate = recipe.anyPressurePlate;
+			anySand = recipe.anySand;
+			anyFragment = recipe.anyFragment;
+			alchemy = recipe.alchemy;
+			needSnowBiome = recipe.needSnowBiome;
+			needGraveyardBiome = recipe.needGraveyardBiome;
+
+			OnCraftHooks = recipe.OnCraftHooks;
+			ConsumeItemHooks = recipe.ConsumeItemHooks;
+			foreach (Condition condition in recipe.Conditions) {
+				AddCondition(condition);
+			}
+
+			// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
+			// it here to not have multiple dupliocate hooks.
+			if (requiredTile.Contains(TileID.Bottles))
+				ConsumeItemHooks -= ConsumptionRules.Alchemy;
 
 			return this;
 		}
