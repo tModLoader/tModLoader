@@ -495,7 +495,10 @@ namespace ExampleMod.Common.Configs
 	{
 		Weird,
 		Odd,
+		// Enum members can be individually labeled as well
+		[Label("Strange Label")]
 		Strange,
+		[Label("$Mods.ExampleMod.Config.SampleEnumLabels.Peculiar")]
 		Peculiar
 	}
 
