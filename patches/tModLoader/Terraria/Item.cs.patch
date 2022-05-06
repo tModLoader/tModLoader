@@ -373,6 +373,15 @@
  		}
  
  		public bool FitsAmmoSlot() {
+@@ -29993,7 +_,7 @@
+ 							case 2888:
+ 								useStyle = 5;
+ 								useAnimation = 24;
+-								useTime = 23;
++								useTime = 24;
+ 								width = 12;
+ 								height = 28;
+ 								shoot = 469;
 @@ -44343,7 +_,8 @@
  			shoot = projectileId;
  			UseSound = SoundID.Item152;

@@ -64,6 +64,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) {
 			if (Main.dayTime) {
+				Main.NewText("The chest stubbornly refuses to open in the light of the day. Try again at night.", Color.Orange);
 				return false;
 			}
 
@@ -150,6 +151,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 			else {
 				if (isLocked) {
+					// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
 					int key = ModContent.ItemType<ExampleChestKey>();
 					if (player.ConsumeItem(key) && Chest.Unlock(left, top)) {
 						if (Main.netMode == NetmodeID.MultiplayerClient) {

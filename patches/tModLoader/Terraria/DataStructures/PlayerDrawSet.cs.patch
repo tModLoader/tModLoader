@@ -73,7 +73,14 @@
  			seatYOffset = 0f;
  			sittingIndex = 0;
  			Vector2 posOffset = Vector2.Zero;
-@@ -209,10 +_,13 @@
+@@ -203,16 +_,19 @@
+ 			if (heldItem.type == 4952)
+ 				weaponDrawOrder = WeaponDrawOrder.BehindBackArm;
+ 
+-			if (GolfHelper.IsPlayerHoldingClub(player) && player.itemAnimation > player.itemAnimationMax)
++			if (GolfHelper.IsPlayerHoldingClub(player) && player.itemAnimation >= player.itemAnimationMax) // changed > to >= because of itemAnimation adjustment #2351
+ 				weaponDrawOrder = WeaponDrawOrder.OverFrontArm;
+ 
  			projectileDrawPosition = -1;
  			ItemLocation = Position + (drawPlayer.itemLocation - drawPlayer.position);
  			armorAdjust = 0;
