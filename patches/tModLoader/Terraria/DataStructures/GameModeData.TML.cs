@@ -26,18 +26,17 @@ namespace Terraria.DataStructures
 		/// </summary>
 		public float EffectiveEnemyDamageModifier {
 			get {
+				//The normal formula is (EnemyDamageMultiplier + 1) * 4/3 * difficultySliderPower.StrengthMultiplierToGiveNPCs
 				float enemyDamageModifier = EnemyDamageModifierWithPowersApplied;
 				if (Main.getGoodWorld) {
 					if (IsJourneyMode) {
-						//The normal formula is (EnemyDamageMultiplier + 1) * 4/3 * difficultySliderPower.StrengthMultiplierToGiveNPCs
-						//As the difficultySliderPower is already applied, we need to multiply (EnemyDamageMultiplier + 1) to get the correct value
 						enemyDamageModifier *= 2;
 					}
 					else {
 						enemyDamageModifier += 1;
 					}
 
-					enemyDamageModifier *= 1.25f;
+					enemyDamageModifier *= 4f/3f;
 				}
 
 				return enemyDamageModifier;
@@ -66,11 +65,10 @@ namespace Terraria.DataStructures
 		/// </summary>
 		public float EffectiveEnemyMaxLifeMultiplier {
 			get {
+				//The normal formula is (EnemyMaxLifeMultiplier + 1) * difficultySliderPower.StrengthMultiplierToGiveNPCs
 				float enemyMaxLifeMultiplier = EnemyMaxLifeMultiplierWithPowersApplied;
 				if (Main.getGoodWorld) {
 					if (IsJourneyMode) {
-						//The normal formula is (EnemyDamageMultiplier + 1) * difficultySliderPower.StrengthMultiplierToGiveNPCs
-						//As the difficultySliderPower is already applied, we need to multiply (EnemyDamageMultiplier + 1) to get the correct value
 						enemyMaxLifeMultiplier *= 2;
 					}
 					else {
