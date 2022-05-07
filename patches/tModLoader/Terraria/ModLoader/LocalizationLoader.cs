@@ -224,22 +224,26 @@ namespace Terraria.ModLoader
 				var jsonObject = JObject.Parse(jsonString);
 				// Flatten JSON into dot seperated key and value
 				var flattened = new Dictionary<string, string>();
-				foreach (JToken t in jsonObject.SelectTokens("$..*")) {
-					if (!t.HasValues) {
-						// Custom implementation of Path to allow "x.y" keys
-						string path = "";
-						JToken current = t;
-						for (JToken parent = t.Parent; parent != null; parent = parent.Parent) {
-							path = parent switch {
-								JProperty property => property.Name + (path == "" ? "" : "." + path),
-								JArray array => array.IndexOf(current) + (path == "" ? "" : "." + path),
-								_ => path
-							};
-							current = parent;
-						}
 
-						flattened.Add(path, t.ToString());
+				foreach (JToken t in jsonObject.SelectTokens("$..*")) {
+					if (t.HasValues) {
+						continue;
 					}
+
+					// Custom implementation of Path to allow "x.y" keys
+					string path = "";
+					JToken current = t;
+
+					for (JToken parent = t.Parent; parent != null; parent = parent.Parent) {
+						path = parent switch {
+							JProperty property => property.Name + (path == string.Empty ? string.Empty : "." + path),
+							JArray array => array.IndexOf(current) + (path == string.Empty ? string.Empty : "." + path),
+							_ => path
+						};
+						current = parent;
+					}
+
+					flattened.Add(path, t.ToString());
 				}
 
 				foreach (var (key, value) in flattened) {
