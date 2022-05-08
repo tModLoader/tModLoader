@@ -242,6 +242,76 @@ namespace Terraria.ModLoader
 			};
 
 		/// <summary>
+		/// Adds an equipment texture of the specified type, internal name, and/or associated item to your mod.<br/>
+		/// If no internal name is provided, the associated item's name will be used instead.<br/>
+		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property.<br/>
+		/// If you need to override EquipmentTexture's hooks, you can specify the class of the equipment texture class.
+		/// </summary>
+		/// <remarks>
+		/// If both an internal name and associated item are provided, the EquipTexture's name will be set to the internal name, alongside the keys for the equipTexture dictionnary.<br/>
+		/// Additionally, if multiple EquipTextures of the same type are registered for the same item, the first one to be added will be the one automatically displayed on the player and mannequins.
+		/// </remarks>
+		/// <param name="mod">The mod the equipment texture is from.</param>
+		/// <param name="equipTexture">The equip texture.</param>
+		/// <param name="item">The item.</param>
+		/// <param name="name">The internal name.</param>
+		/// <param name="type">The type.</param>
+		/// <param name="texture">The texture.</param>
+		/// <returns>the ID / slot that is assigned to the equipment texture.</returns>
+		public static int AddEquipTexture(Mod mod, string texture, EquipType type, ModItem item = null, string name = null, EquipTexture equipTexture = null) {
+			if (!mod.loading)
+				throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
+
+			if (name == null && item == null)
+				throw new Exception("AddEquipTexture requires either an item or a name be provided");
+
+			if (equipTexture == null)
+				equipTexture = new EquipTexture();
+
+			ModContent.Request<Texture2D>(texture); //ensure texture exists
+			 
+			equipTexture.Texture = texture;
+			equipTexture.Name = name ?? item.Name;
+			equipTexture.Type = type;
+			equipTexture.Item = item;
+			int slot = equipTexture.Slot = ReserveEquipID(type);
+
+			equipTextures[type][slot] = equipTexture;
+			mod.equipTextures[Tuple.Create(name ?? item.Name, type)] = equipTexture;
+
+			if (item != null) {
+				if (!idToSlot.TryGetValue(item.Type, out var slots))
+					idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
+
+				slots[type] = slot;
+
+				if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
+					slotToId[type][slot] = item.Type;
+			}
+
+			return slot;
+		}
+
+		/// <summary>
+		/// Gets the EquipTexture instance corresponding to the name and EquipType. Returns null if no EquipTexture with the given name and EquipType is found.
+		/// </summary>
+		/// <param name="mod">The mod the equipment texture is from.</param>
+		/// <param name="name">The name.</param>
+		/// <param name="type">The type.</param>
+		/// <returns></returns>
+		public static EquipTexture GetEquipTexture(Mod mod, string name, EquipType type) =>
+			mod.equipTextures.TryGetValue(Tuple.Create(name, type), out var texture) ? texture : null;
+
+		/// <summary>
+		/// Gets the slot/ID of the equipment texture corresponding to the given name. Returns -1 if no EquipTexture with the given name is found.
+		/// </summary>
+		/// <param name="mod">The mod the equipment texture is from.</param>
+		/// <param name="name">The name.</param>
+		/// <param name="type"></param>
+		/// <returns></returns>
+		public static int GetEquipSlot(Mod mod, string name, EquipType type) => GetEquipTexture(mod, name, type)?.Slot ?? -1;
+
+		/// <summary>
 		/// Hook Player.PlayerFrame
 		/// Calls each of the item's equipment texture's UpdateVanity hook.
 		/// </summary>
