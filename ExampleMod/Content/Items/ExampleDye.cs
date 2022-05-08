@@ -24,7 +24,7 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void SetDefaults() {
-			// Item.dye will already be assigned to this item prior to SetDefaults because of the above GameShaders.Armor.BindShader code in Load(). 
+			// Item.dye will already be assigned to this item prior to SetDefaults because of the above GameShaders.Armor.BindShader code in Load().
 			// This code here remembers Item.dye so that information isn't lost during CloneDefaults.
 			int dye = Item.dye;
 

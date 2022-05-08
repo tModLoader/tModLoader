@@ -38,7 +38,7 @@ namespace Terraria.ModLoader.UI
 		private bool _ready;
 
 		private CancellationTokenSource _cts;
-		
+
 		public override void OnInitialize() {
 			_uIElement = new UIElement {
 				Width = {Percent = 0.8f},
@@ -182,21 +182,7 @@ namespace Terraria.ModLoader.UI
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuClose);
 
-			string tmodPath = _localMod.modFile.path;
-
-			if (tmodPath.Contains(Path.Combine("steamapps", "workshop"))) {
-				string parentDir = Directory.GetParent(tmodPath).ToString();
-				string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";
-
-				Social.Base.AWorkshopEntry.TryReadingManifest(manifest, out var info);
-
-				var modManager = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
-
-				modManager.Uninstall(parentDir);
-			}
-			else {
-				File.Delete(tmodPath);
-			}
+			ModOrganizer.DeleteMod(_localMod.modFile.path);
 
 			Interface.modBrowser.ModifyUIModDownloadItemInstalled(_localMod.Name, null);
 
@@ -222,10 +208,10 @@ namespace Terraria.ModLoader.UI
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
-			
+
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 			UILinkPointNavigator.Shortcuts.BackButtonGoto = _gotoMenu;
-			
+
 			if (_modHomepageButton.IsMouseHovering) {
 				UICommon.DrawHoverStringInBounds(spriteBatch, _url);
 			}
@@ -261,7 +247,7 @@ namespace Terraria.ModLoader.UI
 		public override void Update(GameTime gameTime) {
 			if (!_loading && _ready) {
 				_modInfo.SetText(_info);
-				
+
 				if (!string.IsNullOrEmpty(_url)){
 					_uIElement.Append(_modHomepageButton);
 				}

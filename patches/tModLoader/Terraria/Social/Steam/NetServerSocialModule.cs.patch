@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Social/Steam/NetServerSocialModule.cs
+--- src/TerrariaNetCore/Terraria/Social/Steam/NetServerSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/NetServerSocialModule.cs
 @@ -107,8 +_,10 @@
  		}

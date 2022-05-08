@@ -7,7 +7,7 @@ namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class inherits from BinaryWriter. This means that you can use all of its writing functions to send information between client and server. This class also comes with a Send method that's used to actually send everything you've written between client and server.
-	/// 
+	///
 	/// ModPacket has all the same methods as BinaryWriter, and some additional ones.
 	/// </summary>
 	/// <seealso cref="System.IO.BinaryWriter" />

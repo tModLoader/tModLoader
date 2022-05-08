@@ -101,10 +101,10 @@ namespace Terraria.ModLoader
 
 			Texture2D logo = currentMenu.Logo.Value;
 			Vector2 logoDrawPos = new Vector2(Main.screenWidth / 2, 100f);
-			float scale = 1;
+			float scale = logoScale;
 
 			if (currentMenu.PreDrawLogo(spriteBatch, ref logoDrawPos, ref logoRotation, ref scale, ref color)) {
-				spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), color, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), logoScale * (currentMenu is MenutML ? 0.84f : scale), SpriteEffects.None, 0f);
+				spriteBatch.Draw(logo, logoDrawPos, new Rectangle(0, 0, logo.Width, logo.Height), color, logoRotation, new Vector2(logo.Width * 0.5f, logo.Height * 0.5f), scale, SpriteEffects.None, 0f);
 			}
 			currentMenu.PostDrawLogo(spriteBatch, logoDrawPos, logoRotation, scale, color);
 

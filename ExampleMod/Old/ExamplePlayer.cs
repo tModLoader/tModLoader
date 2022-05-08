@@ -51,12 +51,6 @@ namespace ExampleMod
 		public bool strongBeesUpgrade;
 		public bool manaHeart;
 		public int manaHeartCounter;
-		// These 5 relate to ExampleCostume.
-		public bool blockyAccessoryPrevious;
-		public bool blockyAccessory;
-		public bool blockyHideVanity;
-		public bool blockyForceVanity;
-		public bool blockyPower;
 		public bool nonStopParty; // The value of this bool can't be calculated by other clients automatically since it is set in ExampleUI. This bool is synced by SendClientChanges.
 		public bool examplePersonGiftReceived;
 
@@ -84,8 +78,6 @@ namespace ExampleMod
 				manaHeartCounter = 0;
 			}
 			manaHeart = false;
-			blockyAccessoryPrevious = blockyAccessory;
-			blockyAccessory = blockyHideVanity = blockyForceVanity = blockyPower = false;
 
 			player.statLifeMax2 += exampleLifeFruits * 2;
 		}
@@ -351,23 +343,6 @@ namespace ExampleMod
 			}
 		}
 
-		public override void UpdateVanityAccessories() {
-			for (int n = 13; n < 18 + player.extraAccessorySlots; n++) {
-				Item item = player.armor[n];
-				if (item.type == ItemType<Items.Armor.ExampleCostume>()) {
-					blockyHideVanity = false;
-					blockyForceVanity = true;
-				}
-			}
-		}
-
-		public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff) {
-			// Make sure this condition is the same as the condition in the Buff to remove itself. We do this here instead of in ModItem.UpdateAccessory in case we want future upgraded items to set blockyAccessory
-			if (player.townNPCs >= 1 && blockyAccessory) {
-				player.AddBuff(BuffType<Buffs.Blocky>(), 60, true);
-			}
-		}
-
 		public override void PostUpdateEquips() {
 			if (nullified) {
 				Nullify();
@@ -399,11 +374,6 @@ namespace ExampleMod
 		}
 
 		public override void FrameEffects() {
-			if ((blockyPower || blockyForceVanity) && !blockyHideVanity) {
-				player.legs = mod.GetEquipSlot("BlockyLeg", EquipType.Legs);
-				player.body = mod.GetEquipSlot("BlockyBody", EquipType.Body);
-				player.head = mod.GetEquipSlot("BlockyHead", EquipType.Head);
-			}
 			if (nullified) {
 				Nullify();
 			}
@@ -444,7 +414,6 @@ namespace ExampleMod
 				}
 				customDamage = true;
 			}
-			if (blockyAccessory) playSound = false;
 			constantDamage = 0;
 			percentDamage = 0f;
 			defenseEffect = -1f;
@@ -452,9 +421,6 @@ namespace ExampleMod
 		}
 
 		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
-			if (blockyAccessory)
-				SoundEngine.PlaySound(SoundID.Zombie, player.position, 13);
-
 			if (elementShield && damage > 1.0) {
 				if (elementShields < 6) {
 					int k;
@@ -623,16 +589,6 @@ namespace ExampleMod
 			if (player.FindBuffIndex(BuffID.UFOMount) > -1) {
 				dyeItemIDsPool.Clear();
 				dyeItemIDsPool.Add(ItemID.MartianArmorDye);
-			}
-		}
-
-		public override void ModifyDrawInfo(ref PlayerDrawInfo drawInfo) {
-			if ((blockyPower || blockyForceVanity) && !blockyHideVanity) {
-				player.headRotation = player.velocity.Y * (float)player.direction * 0.1f;
-				player.headRotation = Utils.Clamp(player.headRotation, -0.3f, 0.3f);
-				if (ZoneExample) {
-					player.headRotation = (float)Main.time * 0.1f * player.direction;
-				}
 			}
 		}
 

@@ -64,11 +64,11 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			}
 
 			int diff = _lastLife - Player.statLife;
-			
+
 			if (diff >= 0.1f * Player.statLifeMax2) {
 				_auraTime = 300 + diff;
 			}
-			
+
 			_lastLife = Player.statLife;
 		}
 

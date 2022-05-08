@@ -359,7 +359,7 @@ namespace Terraria.ModLoader.UI
 						if(info == null)
 							Console.WriteLine($"No mod with the name {modname} found on the workshop.");
 						else
-							info.InnerDownloadWithDeps(); 
+							info.InnerDownloadWithDeps();
 					}
 					catch (Exception e) {
 						Console.WriteLine(Language.GetTextValue("tModLoader.MBServerDownloadError", modname, e.ToString()));
@@ -372,9 +372,11 @@ namespace Terraria.ModLoader.UI
 		internal static void MessageBoxShow(string text, string caption = null) {
 			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
 			caption = caption ?? "Terraria: Error" + $" ({ModLoader.versionedName})";
-			string message = Language.GetTextValue("tModLoader.ClientLogHint", text, Path.Combine(Main.SavePath, "Logs"));
+			string logsLoc = Path.Combine(Directory.GetCurrentDirectory(), "tModLoader-Logs");
+
+			string message = Language.GetTextValue("tModLoader.ClientLogHint", text, logsLoc);
 			if(Language.ActiveCulture == null) // Simple backup approach in case error happens before localization is loaded
-				message = string.Format("{0}\n\nA client.log file containing error information has been generated in\n{1}\n(You will need to share this file if asking for help)", text, Path.Combine(Main.SavePath, "Logs"));
+				message = string.Format("{0}\n\nA client.log file containing error information has been generated in\n{1}\n(You will need to share this file if asking for help)", text, logsLoc);
 #if !MAC
 			System.Windows.Forms.MessageBox.Show(message, caption);
 #else

@@ -13,7 +13,7 @@ using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.UI.ModBrowser
 {
-	internal partial class UIModBrowser : UIState, IHaveBackButtonCommand 
+	internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 	{
 		public static bool AvoidGithub;
 		public static bool AvoidImgur;

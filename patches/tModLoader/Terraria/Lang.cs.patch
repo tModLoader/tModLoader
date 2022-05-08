@@ -1,6 +1,6 @@
---- src/Terraria/Terraria/Lang.cs
+--- src/TerrariaNetCore/Terraria/Lang.cs
 +++ src/tModLoader/Terraria/Lang.cs
-@@ -7,6 +_,7 @@
+@@ -8,6 +_,7 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Map;
@@ -8,7 +8,7 @@
  using Terraria.UI;
  using Terraria.Utilities;
  
-@@ -33,14 +_,14 @@
+@@ -34,14 +_,14 @@
  		[Old("Lang arrays have been replaced with the new Language.GetText system.")]
  		public static LocalizedText[] chestType2 = new LocalizedText[14];
  		public static LocalizedText[] prefix = new LocalizedText[85];
@@ -30,7 +30,7 @@
  		private static LocalizedText[] _emojiNameCache = new LocalizedText[151];
  
  		public static string GetMapObjectName(int id) {
-@@ -115,7 +_,7 @@
+@@ -116,7 +_,7 @@
  		public static string GetNPCNameValue(int netID) => GetNPCName(netID).Value;
  
  		public static LocalizedText GetNPCName(int netID) {
@@ -39,7 +39,7 @@
  				return _npcNameCache[netID];
  
  			if (netID < 0 && -netID - 1 < _negativeNpcNameCache.Length)
-@@ -127,8 +_,10 @@
+@@ -128,8 +_,10 @@
  		public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
  
  		public static LocalizedText GetItemName(int id) {
@@ -52,7 +52,7 @@
  				return _itemNameCache[id];
  
  			return LocalizedText.Empty;
-@@ -281,6 +_,10 @@
+@@ -282,6 +_,10 @@
  				return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_", obj)).FormatWith(obj);
  
  			int id = Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest];
@@ -63,7 +63,7 @@
  			return Language.GetTextValueWith("AnglerQuestText.Quest_" + ItemID.Search.GetName(id), obj);
  		}
  
-@@ -419,7 +_,7 @@
+@@ -420,7 +_,7 @@
  		public static void BuildMapAtlas() {
  			if (Main.dedServ)
  				return;

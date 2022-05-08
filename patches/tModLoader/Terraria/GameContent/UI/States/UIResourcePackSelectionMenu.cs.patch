@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/States/UIResourcePackSelectionMenu.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIResourcePackSelectionMenu.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIResourcePackSelectionMenu.cs
 @@ -35,6 +_,12 @@
  		private const string _snapPointName_openFolder = "OpenFolder";

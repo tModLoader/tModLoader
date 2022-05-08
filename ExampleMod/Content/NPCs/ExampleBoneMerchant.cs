@@ -7,6 +7,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
+using System.Collections.Generic;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -32,7 +33,7 @@ namespace ExampleMod.Content.NPCs
 			//What that means is: the NPC will have the AI of a town NPC, will attack like a town NPC, and have a shop (or any other additional functionality if you wish) like a town NPC.
 			//However, the NPC will not have their head displayed on the map, will de-spawn when no players are nearby or the world is closed, will spawn like any other NPC, and have no happiness button when chatting.
 			NPCID.Sets.ActsLikeTownNPC[Type] = true;
-			
+
 			//To reiterate, since this NPC isn't technically a town NPC, we need to tell the game that we still want this NPC to have a custom/randomized name when they spawn.
 			//In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
 			NPCID.Sets.SpawnsWithCustomName[Type] = true;
@@ -83,6 +84,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void HitEffect(int hitDirection, double damage) {
+			// Causes dust to spawn when the NPC takes damage.
 			int num = NPC.life > 0 ? 1 : 5;
 
 			for (int k = 0; k < num; k++) {
@@ -90,25 +92,18 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override string TownNPCName() {
-			switch (WorldGen.genRand.Next(4)) {
-				case 0: // The cases are potential names for the NPC.
-					return "Blocky Bones";
-
-				case 1:
-					return "Someone's Ribcage";
-
-				case 2:
-					return "Underground Blockster";
-
-				default:
-					return "Darkness";
-			}
+		public override List<string> SetNPCNameList() {
+			return new List<string> {
+				"Blocky Bones",
+				"Someone's Ribcage",
+				"Underground Blockster",
+				"Darkness"
+			};
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
 			//If any player is underground and has an example item in their inventory, the example bone merchant will have a slight chance to spawn.
-			if (spawnInfo.player.ZoneDirtLayerHeight && spawnInfo.player.inventory.Any(item => item.type == ModContent.ItemType<ExampleItem>())) {
+			if (spawnInfo.Player.ZoneDirtLayerHeight && spawnInfo.Player.inventory.Any(item => item.type == ModContent.ItemType<ExampleItem>())) {
 				return 0.34f;
 			}
 

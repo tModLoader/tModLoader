@@ -15,13 +15,13 @@ namespace ExampleMod.Common.GlobalNPCs
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleMountItem>());
 				nextSlot++; // Don't forget this line, it is essential.
 
-				// We can use shopCustomPrice and shopSpecialCurrency to support custom prices and currency. Usually a shop sells an item for item.value. 
+				// We can use shopCustomPrice and shopSpecialCurrency to support custom prices and currency. Usually a shop sells an item for item.value.
 				// Editing item.value in SetupShop is an incorrect approach.
 
 				// This shop entry sells for 2 Defenders Medals.
 				shop.item[nextSlot].SetDefaults(ModContent.ItemType<ExampleMountItem>());
 				shop.item[nextSlot].shopCustomPrice = 2;
-				shop.item[nextSlot].shopSpecialCurrency = CustomCurrencyID.DefenderMedals; // omit this line if shopCustomPrice should be in regular coins. 
+				shop.item[nextSlot].shopSpecialCurrency = CustomCurrencyID.DefenderMedals; // omit this line if shopCustomPrice should be in regular coins.
 				nextSlot++;
 
 				// This shop entry sells for 3 of a custom currency added in our mod.
@@ -33,7 +33,7 @@ namespace ExampleMod.Common.GlobalNPCs
 			else if (type == NPCID.Wizard) {
 				// You can use conditions to dynamically change items offered for sale in a shop
 				if (Main.expertMode) {
-					//TODO: 
+					//TODO:
 					// shop.item[nextSlot].SetDefaults(ItemType<Infinity>());
 					// nextSlot++;
 				}

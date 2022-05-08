@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/DataStructures/PlayerFishingConditions.cs
+--- src/TerrariaNetCore/Terraria/DataStructures/PlayerFishingConditions.cs
 +++ src/tModLoader/Terraria/DataStructures/PlayerFishingConditions.cs
 @@ -2,11 +_,14 @@
  {

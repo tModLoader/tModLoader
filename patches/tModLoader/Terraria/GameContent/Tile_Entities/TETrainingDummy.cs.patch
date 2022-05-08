@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Tile_Entities/TETrainingDummy.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TETrainingDummy.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TETrainingDummy.cs
 @@ -5,7 +_,7 @@
  

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/IO/WorldFileData.cs
+--- src/TerrariaNetCore/Terraria/IO/WorldFileData.cs
 +++ src/tModLoader/Terraria/IO/WorldFileData.cs
 @@ -4,6 +_,7 @@
  using System.IO;

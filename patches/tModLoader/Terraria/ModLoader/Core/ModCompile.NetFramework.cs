@@ -226,7 +226,7 @@ namespace Terraria.ModLoader.Core
 				if (!libs.Any(lib => Path.GetFileName(lib) == Path.GetFileName(file)))
 					File.Delete(file);
 
-			// replace tML lib with inferred paths based on names 
+			// replace tML lib with inferred paths based on names
 			libs.RemoveAt(0);
 
 			string tMLDir = Path.GetDirectoryName(tMLPath);

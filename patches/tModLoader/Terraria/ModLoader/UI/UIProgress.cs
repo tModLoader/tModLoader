@@ -71,7 +71,7 @@ namespace Terraria.ModLoader.UI
 
 			DisplayText = displayText;
 			this.gotoMenu = gotoMenu;
-			
+
 			if (cancel != null)
 				OnCancel += cancel;
 		}

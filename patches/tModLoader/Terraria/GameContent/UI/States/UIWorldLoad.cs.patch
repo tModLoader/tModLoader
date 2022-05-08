@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/States/UIWorldLoad.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorldLoad.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldLoad.cs
 @@ -59,6 +_,9 @@
  				text = _progress.Message;

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Map/MapHelper.cs
+--- src/TerrariaNetCore/Terraria/Map/MapHelper.cs
 +++ src/tModLoader/Terraria/Map/MapHelper.cs
 @@ -5,6 +_,8 @@
  using System.IO;

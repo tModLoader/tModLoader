@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/OS/IWindowService.cs
+--- src/TerrariaNetCore/ReLogic/OS/IWindowService.cs
 +++ src/tModLoader/ReLogic/OS/IWindowService.cs
 @@ -1,4 +_,5 @@
  using Microsoft.Xna.Framework;

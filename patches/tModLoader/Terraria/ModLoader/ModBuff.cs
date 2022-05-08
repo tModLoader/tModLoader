@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 
@@ -80,6 +81,35 @@ namespace Terraria.ModLoader
 		/// Allows you to modify the tooltip that displays when the mouse hovers over the buff icon, as well as the color the buff's name is drawn in.
 		/// </summary>
 		public virtual void ModifyBuffTip(ref string tip, ref int rare) {
+		}
+
+		/// <summary>
+		/// Allows you to draw things before the default draw code is ran. Return false to prevent drawing the buff. Returns true by default.
+		/// </summary>
+		/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
+		/// <param name="buffIndex">The index in Main.LocalPlayer.buffType and .buffTime of the buff</param>
+		/// <param name="drawParams">The draw parameters for the buff</param>
+		/// <returns><see langword="true"/> for allowing drawing, <see langword="false"/> for preventing drawing</returns>
+		public virtual bool PreDraw(SpriteBatch spriteBatch, int buffIndex, ref BuffDrawParams drawParams) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to draw things after the buff has been drawn. skipped is true if you or another mod has skipped drawing the buff (possibly hiding it or in favor of new visuals).
+		/// </summary>
+		/// <param name="spriteBatch">The spriteBatch that is drawn on</param>
+		/// <param name="buffIndex">The index in Main.LocalPlayer.buffType and .buffTime of the buff</param>
+		/// <param name="drawParams">The draw parameters for the buff</param>
+		public virtual void PostDraw(SpriteBatch spriteBatch, int buffIndex, BuffDrawParams drawParams) {
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the buff icon is right-clicked. Return false to prevent the buff from being cancelled.
+		/// </summary>
+		/// <param name="buffIndex">The index in Main.LocalPlayer.buffType and .buffTime of the buff</param>
+		/// <returns><see langword="true"/> for allowing the buff to be cancelled, <see langword="false"/> to prevent the buff from being cancelled</returns>
+		public virtual bool RightClick(int buffIndex) {
+			return true;
 		}
 	}
 }

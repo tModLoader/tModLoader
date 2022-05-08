@@ -46,7 +46,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 		public override void SetStaticDefaults() {
 			Main.tileShine[Type] = 400; // Responsible for golden particles
 			Main.tileFrameImportant[Type] = true; // Any multitile requires this
-			TileID.Sets.InteractibleByNPCs[Type] = true; // Town NPCs will behave differently when this tile is nearby
+			TileID.Sets.InteractibleByNPCs[Type] = true; // Town NPCs will palm their hand at this tile
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4); // Relics are 3x4
 			TileObjectData.newTile.LavaDeath = false; // Does not break when lava touches it
@@ -88,7 +88,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			if (itemType > 0) {
 				// Spawn the item
-				Item.NewItem(i * 16, j * 16, 32, 32, itemType);
+				Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, itemType);
 			}
 		}
 
@@ -123,14 +123,14 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Take the tile, check if it actually exists
 			Point p = new Point(i, j);
 			Tile tile = Main.tile[p.X, p.Y];
-			if (tile == null || !tile.IsActive) {
+			if (tile == null || !tile.HasTile) {
 				return;
 			}
 
 			// Get the initial draw parameters
 			Texture2D texture = RelicTexture.Value;
 
-			int frameY = tile.frameX / FrameWidth; // Picks the frame on the sheet based on the placeStyle of the item
+			int frameY = tile.TileFrameX / FrameWidth; // Picks the frame on the sheet based on the placeStyle of the item
 			Rectangle frame = texture.Frame(HorizontalFrames, VerticalFrames, 0, frameY);
 
 			Vector2 origin = frame.Size() / 2f;
@@ -138,7 +138,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 			Color color = Lighting.GetColor(p.X, p.Y);
 
-			bool direction = tile.frameY / FrameHeight != 0; // This is related to the alternate tile data we registered before
+			bool direction = tile.TileFrameY / FrameHeight != 0; // This is related to the alternate tile data we registered before
 			SpriteEffects effects = direction ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
 			// Some math magic to make it smoothly move up and down over time

@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Minecart.cs
++++ src/tModLoader/Terraria/Minecart.cs
+@@ -499,7 +_,7 @@
+ 			float num = value.Length();
+ 			value.Normalize();
+ 			Vector2 vector3 = vector2;
+-			Tile tile = null;
++			Tile tile = default;
+ 			bool flag = false;
+ 			bool flag2 = true;
+ 			int num2 = -1;

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ObjectData;
@@ -11,7 +12,8 @@ using Terraria.ObjectData;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.
+	/// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">Basic Tile Guide</see> teaches the basics of making a modded tile.
 	/// </summary>
 	public abstract class ModTile : ModBlockType
 	{
@@ -46,7 +48,7 @@ namespace Terraria.ModLoader
 		public virtual string HighlightTexture => Texture + "_Highlight";
 
 		public bool IsDoor => OpenDoorID != -1 || CloseDoorID != -1;
-		
+
 		/// <summary>
 		/// A convenient method for adding this tile's Type to the given array. This can be used with the arrays in TileID.Sets.RoomNeeds.
 		/// </summary>
@@ -175,9 +177,47 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.
 		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="settings">Use if you need special conditions, like settings.player.HasItem(ItemID.LihzahrdPowerCell)</param>
 		/// <returns></returns>
-		public virtual bool HasSmartInteract() {
+		public virtual bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
 			return false;
+		}
+
+		/// <summary>
+		/// Allows you to modify the smart interact parameters for the tile. Parameters already preset by deriving from TileObjectData defined for the tile.
+		/// <br/>Example usage: Beds/Dressers which have separate interactions based on where to click.
+		/// </summary>
+		/// <param name="width">Amount of tiles in x direction for which the smart interact should select for</param>
+		/// <param name="height">Amount of tiles in y direction for which the smart interact should select for</param>
+		/// <param name="frameWidth">Width of each tile, in pixels</param>
+		/// <param name="frameHeight">Height of each tile, in pixels</param>
+		/// <param name="extraY">Additional offset applied after calculations with frameHeight, in pixels</param>
+		public virtual void ModifySmartInteractCoords(ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
+		}
+
+		/// <summary>
+		/// Modify the parameters for the entity sitting on this furniture tile with its type registered to <see cref="TileID.Sets.CanBeSatOnForPlayers"/>.
+		/// <br/>This is also called on NPCs sitting on this tile! To access the entity (player or NPC), use info.restingEntity.
+		/// <br/>This gets called when calling <see cref="PlayerSittingHelper.SitDown"/>, when the town NPC decides to sit, and each tick while the player is sitting on a suitable furniture. i and j derived from "(entity.Bottom + new Vector2(0f, -2f)).ToTileCoordinates()" or from the tile coordinates the player clicked on.
+		/// <br/>Formula: anchorTilePosition.ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="info">The parameters for setting the anchor and offsets. You need to edit this</param>
+		public virtual void ModifySittingTargetInfo(int i, int j, ref TileRestingInfo info) {
+		}
+
+		/// <summary>
+		/// Modify the visual player offset when sleeping on this tile with its type registered to <see cref="TileID.Sets.CanBeSleptIn"/>.
+		/// <br/>This gets called when calling <see cref="PlayerSleepingHelper.SetIsSleepingAndAdjustPlayerRotation"/>, and each tick while the player is resting in the bed, i and j derived from "(player.Bottom + new Vector2(0f, -2f)).ToTileCoordinates()" or from the tile coordinates the player clicked on.
+		/// <br/>Formula: new Point(anchorTilePosition.X, anchorTilePosition.Y + 1).ToWorldCoordinates(8f, 16f) + finalOffset + new Vector2(0, targetDirection * directionOffset).
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="info">The parameters for setting the anchor and offsets. Default values match the regular vanilla bed.</param>
+		public virtual void ModifySleepingTargetInfo(int i, int j, ref TileRestingInfo info) {
 		}
 
 		/// <summary>
@@ -185,6 +225,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="wormChance">Chance for a worm to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-400, Plants-200, Various Piles-6</param>
+		/// <param name="grassHopperChance">Chance for a grass hopper to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-100, Plants-50</param>
+		/// <param name="jungleGrubChance">Chance for a jungle grub to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: JungleVines-250, JunglePlants2-40, PlantDetritus-10</param>
 		public virtual void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
 		}
 
@@ -202,6 +245,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="blockDamaged"></param>
 		public virtual bool CanKillTile(int i, int j, ref bool blockDamaged) {
 			return true;
 		}
@@ -211,6 +255,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="fail">If true, the tile won't be mined</param>
+		/// <param name="effectOnly">If true, only the dust visuals will happen</param>
+		/// <param name="noItem">If true, the corrsponding item won't drop</param>
 		public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) {
 		}
 
@@ -219,6 +266,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="frameX">The TileFrameX of the Tile at the coordinates</param>
+		/// <param name="frameY">The TileFrameY of the Tile at the coordinates</param>
 		public virtual void KillMultiTile(int i, int j, int frameX, int frameY) {
 		}
 
@@ -227,6 +276,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="closer"></param>
 		public virtual void NearbyEffects(int i, int j, bool closer) {
 		}
 
@@ -239,11 +289,23 @@ namespace Terraria.ModLoader
 		public virtual float GetTorchLuck(Player player) => 0f;
 
 		/// <summary>
-		/// Allows you to determine whether this block glows red when the given player has the Dangersense buff.
+		/// Allows you to determine whether this tile glows red when the given player has the Dangersense buff.
+		/// <br/>This is only called on the local client.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool Dangersense(int i, int j, Player player) {
+		/// <param name="player">Main.LocalPlayer</param>
+		public virtual bool IsTileDangerous(int i, int j, Player player) {
+			return false;
+		}
+
+		/// <summary>
+		/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
+		/// <br/>This is only called if Main.tileSpelunker[type] is false.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		public virtual bool IsTileSpelunkable(int i, int j) {
 			return false;
 		}
 
@@ -252,6 +314,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="spriteEffects"></param>
 		public virtual void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) {
 		}
 
@@ -262,6 +325,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="width"></param>
+		/// <param name="offsetY"></param>
+		/// <param name="height"></param>
+		/// <param name="tileFrameX"></param>
+		/// <param name="tileFrameY"></param>
 		public virtual void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
 		}
 
@@ -282,8 +350,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and frameYOffset should be used to specify an offset from the tiles frameX and frameY. "frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type];" will already be set before this hook is called, taking into account the TileID-wide animation set via AnimateTile. 
-		/// Use this hook for off-sync animations (lightning bug in a bottle), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via PreDraw. 
+		/// Animates an individual tile. i and j are the coordinates of the Tile in question. frameXOffset and frameYOffset should be used to specify an offset from the tiles frameX and frameY. "frameYOffset = modTile.animationFrameHeight * Main.tileFrame[type];" will already be set before this hook is called, taking into account the TileID-wide animation set via AnimateTile.
+		/// Use this hook for off-sync animations (lightning bug in a bottle), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via PreDraw.
 		/// </summary>
 		/// <param name="type">The tile type.</param>
 		/// <param name="i">The x position in tile coordinates.</param>
@@ -299,6 +367,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="spriteBatch"></param>
 		/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
 		public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 		}
@@ -308,6 +377,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="spriteBatch"></param>
 		public virtual void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
 		}
 
@@ -316,6 +386,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="resetFrame"></param>
+		/// <param name="noBreak"></param>
 		public virtual bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
 			return true;
 		}
@@ -351,6 +423,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="item">The inventory item</param>
 		public virtual bool AutoSelect(int i, int j, Item item) {
 			return false;
 		}
@@ -421,7 +494,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows customization of how a chest unlock is accomplished. By default, frameXAdjustment will be -36, shifting the frameX over to the left
-		/// by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly. 
+		/// by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly.
 		/// This hook is called on the client, and if successful will be called on the server and other clients as the action is synced.
 		/// Make sure that the logic is consistent and not dependent on local player data.
 		/// </summary>

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Netplay.cs
+--- src/TerrariaNetCore/Terraria/Netplay.cs
 +++ src/tModLoader/Terraria/Netplay.cs
 @@ -11,12 +_,14 @@
  using Terraria.IO;
@@ -41,7 +41,7 @@
 +				Utils.ShowFancyErrorMessage("Unable to find Steam Hosted Multiplayer server.", 0);
 +
 +			Logging.Terraria.InfoFormat("Connecting to {0}", friendlyName);
-+			
++
  			Connection.ResetSpecialFlags();
  			ResetNetDiag();
  			Main.ServerSideCharacter = false;

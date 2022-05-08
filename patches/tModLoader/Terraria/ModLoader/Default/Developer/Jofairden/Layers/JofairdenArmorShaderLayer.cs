@@ -39,9 +39,9 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			BeginShaderBatch(Main.spriteBatch);
 
 			ShaderId ??= GameShaders.Armor.GetShaderIdFromItemId(ItemID.LivingRainbowDye);
-			
+
 			GameShaders.Armor.Apply(ShaderId.Value, drawPlayer, data);
-			
+
 			var centerPos = data.position;
 
 			for (int i = 0; i < ShaderNumSegments; i++) {

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/AWorkshopPublishInfoState.cs
 @@ -10,6 +_,7 @@
  using Terraria.GameContent.UI.Elements;
@@ -66,7 +66,7 @@
 +
 +			// Added by tML
 +			if (_isMod)
-+				uiList.Add((this as WorkshopPublishInfoStateForMods).CreateTmlDisclaimer("disclaimer")); 
++				uiList.Add((this as WorkshopPublishInfoStateForMods).CreateTmlDisclaimer("disclaimer"));
 +
  			uiList.Add(CreatePreviewImageSelectionPanel("image"));
  			uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/DataStructures/TileEntitiesManager.cs
+--- src/TerrariaNetCore/Terraria/DataStructures/TileEntitiesManager.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntitiesManager.cs
 @@ -3,7 +_,7 @@
  

@@ -28,7 +28,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.noUseGraphic = true; // The sword is actually a "projectile", so the item should not be visible when used
 			Item.noMelee = true; // The projectile will do the damage and not the item
 
-			Item.rare = 0;
+			Item.rare = ItemRarityID.White;
 			Item.value = Item.sellPrice(0, 0, 0, 10);
 
 			Item.shoot = ModContent.ProjectileType<ExampleShortswordProjectile>(); // The projectile is what makes a shortsword work

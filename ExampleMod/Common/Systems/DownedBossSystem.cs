@@ -54,7 +54,7 @@ namespace ExampleMod.Common.Systems
 			/*
 			Remember that Bytes/BitsByte only have up to 8 entries. If you have more than 8 flags you want to sync, use multiple BitsByte:
 				This is wrong:
-			flags[8] = downed9thBoss; // an index of 8 is nonsense. 
+			flags[8] = downed9thBoss; // an index of 8 is nonsense.
 				This is correct:
 			flags[7] = downed8thBoss;
 			writer.Write(flags);

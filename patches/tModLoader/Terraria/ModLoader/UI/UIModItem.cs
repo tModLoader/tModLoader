@@ -37,6 +37,7 @@ namespace Terraria.ModLoader.UI
 		private UIImage _blockInput;
 		private UIPanel _deleteModDialog;
 		private readonly LocalMod _mod;
+		private bool modFromLocalModFolder;
 
 		private bool _configChangesRequireReload;
 		private bool _loaded;
@@ -62,8 +63,11 @@ namespace Terraria.ModLoader.UI
 			base.OnInitialize();
 
 			string text = _mod.DisplayName + " v" + _mod.modFile.Version;
-			if (_mod.tModLoaderVersion < new Version(0, 10)) {
-				text += $" [c/FF0000:({Language.GetTextValue("tModLoader.ModOldWarning")})]";
+			if (_mod.tModLoaderVersion <= new Version(0, 12)) {
+				text += $" [c/FF0000:({"ALPHA BUILT: " + Language.GetTextValue("tModLoader.ModOldWarning")})]";
+			}
+			else if (!BuildInfo.IsDev && _mod.tModLoaderVersion < new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor)) {
+				text += $" [c/FF0000:({"STABLE BUILT: " + Language.GetTextValue("tModLoader.ModOldWarning")})]";
 			}
 
 			if (_mod.modFile.HasFile("icon.png")) {
@@ -137,6 +141,7 @@ namespace Terraria.ModLoader.UI
 				Append(_modReferenceIcon);
 			}
 
+			/*
 			if (_mod.modFile.ValidModBrowserSignature) {
 				_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.GoldenKey].Name), Language.GetTextValue("tModLoader.ModsOriginatedFromModBrowser")) {
 					Left = { Pixels = -20, Percent = 1f }
@@ -144,6 +149,7 @@ namespace Terraria.ModLoader.UI
 
 				Append(_keyImage);
 			}
+			*/
 
 			if (ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
 				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {
@@ -156,12 +162,25 @@ namespace Terraria.ModLoader.UI
 				_modName.Left.Pixels += _keyImage.Width.Pixels + PADDING * 2f;
 			}
 
+			/*
 			if (_mod.properties.beta) {
 				_keyImage = new UIHoverImage(Main.Assets.Request<Texture2D>(TextureAssets.Item[ItemID.ShadowKey].Name), Language.GetTextValue("tModLoader.BetaModCantPublish")) {
 					Left = { Pixels = -10, Percent = 1f }
 				};
 
 				Append(_keyImage);
+			}
+			*/
+
+			if (_mod.modFile.path.StartsWith(ModLoader.ModPath)){
+				BackgroundColor = Color.MediumPurple * 0.7f;
+				modFromLocalModFolder = true;
+			}
+			else {
+				var steamIcon = new UIImage(TextureAssets.Extra[243]) {
+					Left = { Pixels = -22, Percent = 1f }
+				};
+				Append(steamIcon);
 			}
 
 			if (loadedMod != null) {
@@ -276,12 +295,16 @@ namespace Terraria.ModLoader.UI
 			base.MouseOver(evt);
 			BackgroundColor = UICommon.DefaultUIBlue;
 			BorderColor = new Color(89, 116, 213);
+			if(modFromLocalModFolder)
+				BackgroundColor = Color.MediumPurple;
 		}
 
 		public override void MouseOut(UIMouseEvent evt) {
 			base.MouseOut(evt);
 			BackgroundColor = new Color(63, 82, 151) * 0.7f;
 			BorderColor = new Color(89, 116, 213) * 0.7f;
+			if (modFromLocalModFolder)
+				BackgroundColor = Color.MediumPurple * 0.7f;
 		}
 
 		private void ToggleEnabled(UIMouseEvent evt, UIElement listeningElement) {
@@ -464,21 +487,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
-			string tmodPath = _mod.modFile.path;
-
-			if (tmodPath.Contains(Path.Combine("steamapps", "workshop"))) {
-				string parentDir = Directory.GetParent(tmodPath).ToString();
-				string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";
-
-				Social.Base.AWorkshopEntry.TryReadingManifest(manifest, out var info);
-
-				var modManager = new Social.Steam.WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
-
-				modManager.Uninstall(parentDir);
-			}
-			else {
-				File.Delete(tmodPath);
-			}
+			ModOrganizer.DeleteMod(_mod.modFile.path);
 
 			Interface.modBrowser.ModifyUIModDownloadItemInstalled(_mod.Name, null);
 

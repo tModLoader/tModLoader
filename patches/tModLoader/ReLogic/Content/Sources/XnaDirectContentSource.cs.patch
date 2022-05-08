@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/Content/Sources/XnaDirectContentSource.cs
+--- src/TerrariaNetCore/ReLogic/Content/Sources/XnaDirectContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/XnaDirectContentSource.cs
 @@ -1,56 +_,22 @@
  using System;

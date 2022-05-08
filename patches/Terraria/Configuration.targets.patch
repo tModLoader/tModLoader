@@ -1,26 +1,25 @@
 --- src/decompiled/Configuration.targets
 +++ src/Terraria/Configuration.targets
-@@ -1,17 +_,13 @@
+@@ -1,11 +_,20 @@
  <Project>
    <PropertyGroup>
--    <TargetFramework>net40</TargetFramework>
+     <TargetFramework>net40</TargetFramework>
 -    <Configurations>Debug;Release;ServerDebug;ServerRelease</Configurations>
 -    <AssemblySearchPaths>$(AssemblySearchPaths);{GAC}</AssemblySearchPaths>
--    <PlatformTarget>x86</PlatformTarget>
-+    <TargetFramework>net6.0</TargetFramework>
-+    <!-- Defines the Minimum patch version that is required to play. -->
-+    <RuntimeFrameworkVersion>6.0.0</RuntimeFrameworkVersion>
-+    <Configurations>Debug;Release</Configurations>
-+    <PlatformTarget>AnyCPU</PlatformTarget>
++    <Configurations>WindowsDebug;WindowsRelease;WindowsServerDebug;WindowsServerRelease;LinuxRelease;LinuxServerRelease;MacRelease;MacServerRelease</Configurations>
+     <PlatformTarget>x86</PlatformTarget>
      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
      <Optimize>true</Optimize>
--  </PropertyGroup>
--  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
--    <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
-+    <DefineConstants>$(DefineConstants);FNA;NETCORE</DefineConstants>
--  </PropertyGroup>
--  <PropertyGroup Condition="!$(Configuration.Contains('Server'))">
--    <DefineConstants>$(DefineConstants);CLIENT</DefineConstants>
++	<LangVersion>latest</LangVersion>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Windows'))">
++    <DefineConstants>$(DefineConstants);WINDOWS;XNA</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Linux'))">
++    <DefineConstants>$(DefineConstants);LINUX;FNA;MONO</DefineConstants>
++  </PropertyGroup>
++  <PropertyGroup Condition="$(Configuration.Contains('Mac'))">
++    <DefineConstants>$(DefineConstants);MAC;FNA;MONO</DefineConstants>
    </PropertyGroup>
-   <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
-     <Optimize>false</Optimize>
+   <PropertyGroup Condition="$(Configuration.Contains('Server'))">
+     <DefineConstants>$(DefineConstants);SERVER</DefineConstants>

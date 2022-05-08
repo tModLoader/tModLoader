@@ -71,7 +71,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 			}
-			
+
 			int tileEntity = 0;
 			List<TagCompound> itemFrames = new List<TagCompound>();
 			foreach (KeyValuePair<int, TileEntity> entity in TileEntity.ByID) {
@@ -89,7 +89,7 @@ namespace Terraria.ModLoader.IO
 				if(!(entity.Value is ModTileEntity))
 					tileEntity++;
 			}
-			
+
 			if (numFlags == 0) {
 				return null;
 			}

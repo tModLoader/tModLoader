@@ -114,7 +114,7 @@ namespace Terraria.Social.Steam
 
 			internal static bool GetPublishIdLocal(LocalMod mod, out ulong publishId) {
 				publishId = 0;
-				if (!AWorkshopEntry.TryReadingManifest(Path.Combine(Directory.GetParent(mod.modFile.path).ToString(), "workshop.json"), out var info))
+				if (!ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(mod.modFile.path), out var info))
 					return false;
 
 				publishId = info.workshopEntryId;
@@ -145,7 +145,7 @@ namespace Terraria.Social.Steam
 
 				if (enabledItems.Count > 0) {
 					ModLoader.ModLoader.Unload();
-				}	
+				}
 
 				if (!Main.dedServ) {
 					uiProgress = new UIWorkshopDownload(Interface.modBrowser);
@@ -160,7 +160,7 @@ namespace Terraria.Social.Steam
 			private static void TaskDownload(int counter, UIWorkshopDownload uiProgress, List<ModDownloadItem> items) {
 				var item = items[counter++];
 				var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
-				
+
 				uiProgress?.PrepUIForDownload(item.DisplayName);
 				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
 				mod.InnerDownload(uiProgress, item.HasUpdate);
@@ -185,7 +185,7 @@ namespace Terraria.Social.Steam
 			/// <summary>
 			/// Updates and/or Downloads the Item specified when generating the ModManager Instance.
 			/// </summary>
-			private bool InnerDownload(UIWorkshopDownload uiProgress, bool mbHasUpdate) {
+			internal bool InnerDownload(UIWorkshopDownload uiProgress, bool mbHasUpdate) {
 				downloadResult = EResult.k_EResultOK;
 
 				if (NeedsUpdate() || mbHasUpdate) {
@@ -201,7 +201,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-					Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", itemID.ToString()));
+					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", itemID.ToString()), 0);
 				}
 
 				return downloadResult == EResult.k_EResultOK;
@@ -328,7 +328,7 @@ namespace Terraria.Social.Steam
 
 			public bool IsInstalled() {
 				var currState = GetState();
-				
+
 				bool installed = (currState & (uint)(EItemState.k_EItemStateInstalled)) != 0;
 				bool downloading = (currState & ((uint)EItemState.k_EItemStateDownloading + (uint)EItemState.k_EItemStateDownloadPending)) != 0;
 				return installed && !downloading;
@@ -353,7 +353,7 @@ namespace Terraria.Social.Steam
 					if (item.Enabled && GetPublishIdLocal(item, out ulong publishId))
 						list.Add(new PublishedFileId_t(publishId));
 				}
-				
+
 				int count = list.Count;
 				if (count == 0)
 					return;
@@ -410,7 +410,11 @@ namespace Terraria.Social.Steam
 				AQueryInstance.InstalledMods = ModOrganizer.FindMods();
 
 				if (!ModManager.SteamAvailable) {
-					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop.\n\nCould not find steamclient.dll from a Steam install." , 0);
+					//TODO: Replace with a localization text
+					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop." +
+						"\n\nYou must have a valid Steam install on your system in order to use the in-game Mod Browser. " +
+						"\n\nNOTE: GoG users - once Steam is installed, you can use the ingame mod browser to download mods", 0);
+
 					return false;
 				}
 
@@ -459,7 +463,7 @@ namespace Terraria.Social.Steam
 						//	Disabling Long Description takes ~0.14 seconds per page of 50 items. Long Description not needed right now.
 						//TODO: Review an upgrade of ModBrowser to load only 1000 items at a time (ie paging Mod Browser).
 						QueryForPage();
-						
+
 						if (!HandleError(ErrorState))
 							return false;
 					} while (TotalItemsQueried != Items.Count + IncompleteModCount + HiddenModCount);
@@ -631,10 +635,30 @@ namespace Terraria.Social.Steam
 
 						if (installed != null) {
 							//exists = true;
-							if (cVersion > installed.modFile.Version)
+							var check = new ModManager(id);
+							if (check.NeedsUpdate()) {
 								update = true;
-							else if (cVersion < installed.modFile.Version)
-								update = updateIsDowngrade = true;
+
+								/*
+								string location = installed.modFile.path;
+								string repo = ModOrganizer.GetParentDir(location);
+								string oldest = ModOrganizer.FindOldest(repo);
+
+								if (!oldest.Contains(".tmod"))
+									oldest = Directory.GetFiles(oldest, "*.tmod")[0];
+
+								var sModFile = new TmodFile(oldest);
+								LocalMod sMod;
+								using (sModFile.Open())
+									sMod = new LocalMod(sModFile);
+
+								var installedVer = sMod.properties.version;
+								if (cVersion > installedVer)
+									update = true;
+								else if (cVersion < installedVer)
+									update = updateIsDowngrade = true;
+								*/
+							}
 						}
 
 						Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"]));
@@ -727,7 +751,7 @@ namespace Terraria.Social.Steam
 				if (Items.Count + TotalItemsQueried == 0)
 					return true;
 
-				// Otherwise, return the original condition. 
+				// Otherwise, return the original condition.
 				return Items.Count + IncompleteModCount != 0;
 			}
 		}

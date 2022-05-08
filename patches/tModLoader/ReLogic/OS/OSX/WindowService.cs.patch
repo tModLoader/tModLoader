@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/OS/OSX/WindowService.cs
+--- src/TerrariaNetCore/ReLogic/OS/OSX/WindowService.cs
 +++ src/tModLoader/ReLogic/OS/OSX/WindowService.cs
 @@ -18,5 +_,8 @@
  

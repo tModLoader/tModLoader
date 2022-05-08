@@ -39,7 +39,7 @@ namespace Terraria.ModLoader
 		/// Whether each player gets a ModPlayer by cloning the ModPlayer added to the Mod or by creating a new ModPlayer object with the same type as the ModPlayer added to the Mod. The accessor returns true by default. Return false if you want to assign fields through the constructor.
 		/// </summary>
 		public virtual bool CloneNewInstances => true;
-		
+
 		protected sealed override void Register() {
 			PlayerLoader.VerifyModPlayer(this);
 
@@ -133,13 +133,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting player.lifeRegen to 0 if it is positive, setting player.lifeRegenTime to 0, and subtracting a number from player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
+		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting Player.lifeRegen to 0 if it is positive, setting Player.lifeRegenTime to 0, and subtracting a number from Player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
 		/// </summary>
 		public virtual void UpdateBadLifeRegen() {
 		}
 
 		/// <summary>
-		/// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
+		/// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing Player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment Player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
 		/// </summary>
 		public virtual void UpdateLifeRegen() {
 		}
@@ -172,7 +172,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of player.controlLeft and player.controlRight. This is called sometime after PreUpdate is called.
+		/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of Player.controlLeft and Player.controlRight. This is called sometime after PreUpdate is called.
 		/// </summary>
 		public virtual void SetControls() {
 		}
@@ -190,7 +190,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Called after Update Accessories. 
+		/// Called after Update Accessories.
 		/// </summary>
 		public virtual void UpdateEquips() {
 		}
@@ -410,29 +410,30 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item">The item being used</param>
-		/// <param name="add">Used for additively stacking buffs (most common). Only ever use += on this field. Things with effects like "5% increased MyDamageClass damage" would use this: `add += 0.05f`</param>
-		/// <param name="mult">Use to directly multiply the player's effective damage. Good for debuffs, or things which should stack separately (eg ammo type buffs)</param>
-		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat) {
+		/// <param name="item">The item being used.</param>
+		/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
+		public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item"></param>
-		/// <param name="knockback"></param>
-		public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback, ref float flat) {
+		/// <param name="item">The item being used.</param>
+		/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
+		public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback) {
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's crit chance based on player buffs, etc.
+		/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item">The item</param>
-		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
-		public virtual void ModifyWeaponCrit(Item item, ref int crit) {
+		/// <param name="item">The item.</param>
+		/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
+		public virtual void ModifyWeaponCrit(Item item, ref float crit) {
 		}
 
 		/// <summary>
@@ -487,7 +488,7 @@ namespace Terraria.ModLoader
 		/// <param name="type"> The ID of the projectile. </param>
 		/// <param name="damage"> The damage of the projectile. </param>
 		/// <param name="knockback"> The knockback of the projectile. </param>
-		public virtual bool Shoot(Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public virtual bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			return true;
 		}
 
@@ -497,6 +498,17 @@ namespace Terraria.ModLoader
 		/// <param name="item"></param>
 		/// <param name="hitbox"></param>
 		public virtual void MeleeEffects(Item item, Rectangle hitbox) {
+		}
+
+		/// <summary>
+		/// Allows you to dynamically modify the given item's size for this player, similarly to the effect of the Titan Glove.
+		/// </summary>
+		/// <param name="item">The item to modify the scale of.</param>
+		/// <param name="scale">
+		/// The scale multiplier to be applied to the given item.<br></br>
+		/// Will be 1.1 if the Titan Glove is equipped, and 1 otherwise.
+		/// </param>
+		public virtual void ModifyItemScale(Item item, ref float scale) {
 		}
 
 		/// <summary>
@@ -689,17 +701,31 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the item the player gains from catching a fish. The fishingRod and bait parameters refer to the said items in the player's inventory. The liquidType parameter is 0 if the player is fishing in water, 1 for lava, and 2 for honey. The poolSize parameter is the tile size of the pool the player is fishing in. The worldLayer parameter is 0 if the player is in the sky, 1 if the player is on the surface, 2 if the player is underground, 3 if the player is in the caverns, and 4 if the player is in the underworld. The questFish parameter is the item ID for the day's Angler quest. Modify the caughtType parameter to change the item the player catches. The junk parameter is whether the player catches junk; you can set this to true if you make the player catch a junk item, and is mostly used to pass information (has no effect on the game).
+		/// Allows you to change the item or enemy the player gets when sucessfully catching a "fish". The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+		/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 		/// </summary>
-		/// <param name="fishingRod"></param>
-		/// <param name="bait"></param>
-		/// <param name="power"></param>
-		/// <param name="liquidType"></param>
-		/// <param name="poolSize"></param>
-		/// <param name="worldLayer"></param>
-		/// <param name="questFish"></param>
-		/// <param name="caughtType"></param>
-		public virtual void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType) {
+		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
+		/// <param name="itemDrop">The item that will be created when this fishing attempt succeeds. leave &lt;0 for no item</param>
+		/// <param name="npcSpawn">The enemy that will be spawned if there is no item caught. leave &lt;0 for no NPC spawn</param>
+		/// <param name="sonar">Fill all of this structure's fields to override the sonar text, or make sonar.Text null to disable custom sonar</param>
+		/// <param name="sonarPosition">The position the Sonar text will spawn. Bobber location by default.</param>
+		public virtual void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the item caught by the fishing player, including stack
+		/// </summary>
+		/// <param name="fish">The item (Fish) to modify</param>
+		public virtual void ModifyCaughtFish(Item fish) {
+		}
+
+		/// <summary>
+		/// Choose if this bait will be consumed or not when used for fishing. return null for vanilla behaviour.
+		/// Not consuming will always take priority over forced consumption
+		/// </summary>
+		/// <param name="bait">The item (bait) that would be consumed</param>
+		public virtual bool? CanConsumeBait(Item bait) {
+			return null;
 		}
 
 		/// <summary>
@@ -746,7 +772,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to reorder the player draw layers. 
+		/// Allows you to reorder the player draw layers.
 		/// This is called once at the end of mod loading, not during the game.
 		/// Use with extreme caution, or risk breaking other mods.
 		/// </summary>
@@ -757,7 +783,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify the visibility of layers about to be drawn
 		/// </summary>
-		/// <param name="layers"></param>
+		/// <param name="drawInfo"></param>
 		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) {
 		}
 
@@ -860,6 +886,14 @@ namespace Terraria.ModLoader
 		public virtual bool CanUseItem(Item item) {
 			return true;
 		}
+
+		/// <summary>
+		/// Allows you to modify the autoswing (auto-reuse) behavior of any item without having to mess with Item.autoReuse.
+		/// <br>Useful to create effects like the Feral Claws which makes melee weapons and whips auto-reusable.</br>
+		/// <br>Return true to enable autoswing (if not already enabled through autoReuse), return false to prevent autoswing. Returns null by default, which applies vanilla behavior.</br>
+		/// </summary>
+		/// <param name="item"> The item. </param>
+		public virtual bool? CanAutoReuseItem(Item item) => null;
 
 		/// <summary>
 		/// Called on the Client while the nurse chat is displayed. Return false to prevent the player from healing. If you return false, you need to set chatText so the user knows why they can't heal.

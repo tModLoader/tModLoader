@@ -18,8 +18,7 @@ namespace Terraria.ModLoader.Config.UI
 			OnClick += (ev, v) => Value = !Value;
 		}
 
-		protected override void DrawSelf(SpriteBatch spriteBatch)
-		{
+		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle dimensions = base.GetDimensions();
 			// "Yes" and "No" since no "True" and "False" translation available

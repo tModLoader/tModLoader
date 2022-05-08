@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Social/Base/AWorkshopTagsCollection.cs
+--- src/TerrariaNetCore/Terraria/Social/Base/AWorkshopTagsCollection.cs
 +++ src/tModLoader/Terraria/Social/Base/AWorkshopTagsCollection.cs
 @@ -2,7 +_,7 @@
  

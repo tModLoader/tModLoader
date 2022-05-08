@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Collision.cs
+--- src/TerrariaNetCore/Terraria/Collision.cs
 +++ src/tModLoader/Terraria/Collision.cs
 @@ -2100,7 +_,7 @@
  			Vector2 vector2 = default(Vector2);

@@ -24,6 +24,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			Item.consumable = true;
 			Item.value = 500;
 			Item.createTile = ModContent.TileType<Tiles.Furniture.ExampleChest>();
+			// Item.placeStyle = 1; // Use this to place the chest in its locked style
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -40,7 +41,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 		public override void SetStaticDefaults() {
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3; // Biome keys usually take 1 item to research instead.
 		}
-		
+
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.GoldenKey);
 			Item.width = 14;

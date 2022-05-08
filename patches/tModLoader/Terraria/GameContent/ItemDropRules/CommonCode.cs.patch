@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/ItemDropRules/CommonCode.cs
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonCode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
 @@ -1,12 +_,13 @@
  using Microsoft.Xna.Framework;
