@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader.Core;
@@ -269,13 +270,19 @@ namespace Terraria.ModLoader
 		public virtual void LoadWorldData(TagCompound tag) { }
 
 		/// <summary>
-		/// Allows you to send custom data between clients and server. This is useful for syncing information such as bosses that have been defeated.
+		/// Allows you to send custom data between clients and server, which will be handled in <see cref="NetReceive"/>. This is useful for syncing information such as bosses that have been defeated.
+		/// <br/>Called whenever <see cref="MessageID.WorldData"/> is successfully sent, for example after a boss is defeated, a new day starts, or a player joins the server.
+		/// <br/>Only called on the server.
 		/// </summary>
+		/// <param name="writer">The writer.</param>
 		public virtual void NetSend(BinaryWriter writer) { }
 
 		/// <summary>
-		/// Allows you to do things with custom data that is received between clients and server.
+		/// Use this to receive information that was sent in <see cref="NetSend"/>.
+		/// <br/>Called whenever <see cref="MessageID.WorldData"/> is successfully received.
+		/// <br/>Only called on the client.
 		/// </summary>
+		/// <param name="reader">The reader.</param>
 		public virtual void NetReceive(BinaryReader reader) { }
 
 		/// <summary>

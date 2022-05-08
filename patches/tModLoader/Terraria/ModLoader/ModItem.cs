@@ -29,7 +29,7 @@ namespace Terraria.ModLoader
 		public Item Item { get; internal set; }
 
 		/// <summary>
-		/// Shorthand for item.type;
+		/// Shorthand for Item.type;
 		/// </summary>
 		public int Type => Item.type;
 
@@ -717,7 +717,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns if the normal reforge pricing is applied.
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
-		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
+		/// The passed reforge price equals the Item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 		/// </summary>
 		public virtual bool ReforgePrice(ref int reforgePrice, ref bool canApplyDiscount) {
 			return true;
@@ -1022,15 +1022,21 @@ namespace Terraria.ModLoader
 		/// <param name="tag"> The TagCompound to load data from. </param>
 		public virtual void LoadData(TagCompound tag) { }
 
+		//Does not use <see cref="NetReceive"> because of inheritdoc on the equivalent GlobalItem hook
 		/// <summary>
-		/// Allows you to send custom data for this item between client and server.
+		/// Allows you to send custom data for this item between client and server, which will be handled in NetReceive.
+		/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully sent, for example when the item is dropped into the world.
+		/// <br/>Can be called on both server and client.
 		/// </summary>
 		/// <param name="writer">The writer.</param>
 		public virtual void NetSend(BinaryWriter writer) {
 		}
 
+		//Does not use <see cref="NetSend"> because of inheritdoc on the equivalent GlobalItem hook
 		/// <summary>
-		/// Receives the custom data sent in the NetSend hook.
+		/// Receives the custom data sent in NetSend.
+		/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully received.
+		/// <br/>Can be called on both server and client.
 		/// </summary>
 		/// <param name="reader">The reader.</param>
 		public virtual void NetReceive(BinaryReader reader) {
