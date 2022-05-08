@@ -1,8 +1,5 @@
 var NAVTREEINDEX128 =
 {
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info.html":[1,0,2,5,10,13],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info.html#a243f4ab2f83994fcf08b4e3ea0c382fa":[1,0,2,5,10,13,4],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info.html#a6f77b2a6f61d6084c072d004be951b8f":[1,0,2,5,10,13,0],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info.html#a7ec8e0a9d42b4a78bfcb2ee5298f6bd5":[1,0,2,5,10,13,3],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info.html#aa510675fb5eb95da152ddd5803c7f541":[1,0,2,5,10,13,6],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info.html#ac1e25ac9eb077764e2d05cc81634473b":[1,0,2,5,10,13,5],
@@ -249,5 +246,8 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_i_d_1_1_item_i_d_1_1_banner_effect.html#ae5fb7513d780115a62a44aab47e4c4a3":[1,0,2,8,20,0,7],
 "struct_terraria_1_1_i_d_1_1_item_i_d_1_1_banner_effect.html#af70aef681e17b04c7b3f64419a1258b8":[1,0,2,8,20,0,0],
 "struct_terraria_1_1_i_d_1_1_item_i_d_1_1_banner_effect.html#afa4f4d4ec76f81700cf293ff42fc6cb5":[1,0,2,8,20,0,1],
-"struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html":[1,0,2,8,32,0,0]
+"struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html":[1,0,2,8,32,0,0],
+"struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a029fc30506c6c0edaa7ec78dc1c503df":[1,0,2,8,32,0,0,1],
+"struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a0e87f869c2daaabe6d14f7379270d038":[1,0,2,8,32,0,0,2],
+"struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#a22daede02091e6f02ba95cf9e4422e29":[1,0,2,8,32,0,0,12]
 };

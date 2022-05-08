@@ -12,7 +12,6 @@ var class_terraria_1_1_mod_loader_1_1_equip_texture =
     [ "VerticalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_equip_texture.html#ab06c1c47e2e163d59418964f40755ad9", null ],
     [ "WingUpdate", "class_terraria_1_1_mod_loader_1_1_equip_texture.html#ac0256b1a5513250b598b495c4e814624", null ],
     [ "Item", "class_terraria_1_1_mod_loader_1_1_equip_texture.html#a1ef4348349e6b437eac4d37c7093b148", null ],
-    [ "Mod", "class_terraria_1_1_mod_loader_1_1_equip_texture.html#a1d64d147176c7cc1ff84bc0c7974a35c", null ],
     [ "Name", "class_terraria_1_1_mod_loader_1_1_equip_texture.html#ae49bdc67be6e7e64f333ff493f74cade", null ],
     [ "Slot", "class_terraria_1_1_mod_loader_1_1_equip_texture.html#a7553bacf32a584b692c9f15dd0d6da10", null ],
     [ "Texture", "class_terraria_1_1_mod_loader_1_1_equip_texture.html#a7a5891427caa64f71adf3ed7ea5b3b53", null ],

@@ -98,12 +98,24 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_equi
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a5d530423b312e086d94d69a338c95a5c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a5d530423b312e086d94d69a338c95a5c">AddEquipTexture</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod, string texture, <a class="el" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a> type, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html">ModItem</a> item=null, string name=null, <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html">EquipTexture</a> equipTexture=null)</td></tr>
+<tr class="memdesc:a5d530423b312e086d94d69a338c95a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an equipment texture of the specified type, internal name, and/or associated item to your mod.<br  />
+ If no internal name is provided, the associated item's name will be used instead.<br  />
+ You can then get the <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> for your texture by calling <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Gets the equipment texture for the specified equipment type and ID.">EquipLoader.GetEquipTexture</a>, and using the <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html" title="This serves as a place for you to program behaviors of equipment textures. This is useful for equipme...">EquipTexture</a>'s Slot property.<br  />
+ If you need to override EquipmentTexture's hooks, you can specify the class of the equipment texture class.  <a href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a5d530423b312e086d94d69a338c95a5c">More...</a><br /></td></tr>
+<tr class="separator:a5d530423b312e086d94d69a338c95a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f4f0fec2c1b9031403215236995d47f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a0f4f0fec2c1b9031403215236995d47f">EquipFrameEffects</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a0f4f0fec2c1b9031403215236995d47f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hook Player.PlayerFrame Calls each of the item's equipment texture's UpdateVanity hook.  <a href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a0f4f0fec2c1b9031403215236995d47f">More...</a><br /></td></tr>
 <tr class="separator:a0f4f0fec2c1b9031403215236995d47f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fec79483641b357d8045e722c9150ff"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a3fec79483641b357d8045e722c9150ff">GetEquipSlot</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod, string name, <a class="el" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a> type)</td></tr>
+<tr class="memdesc:a3fec79483641b357d8045e722c9150ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the slot/ID of the equipment texture corresponding to the given name. Returns -1 if no <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html" title="This serves as a place for you to program behaviors of equipment textures. This is useful for equipme...">EquipTexture</a> with the given name is found.  <a href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a3fec79483641b357d8045e722c9150ff">More...</a><br /></td></tr>
+<tr class="separator:a3fec79483641b357d8045e722c9150ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87c1e9bb37d938a07111fa76bae78575"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html">EquipTexture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575">GetEquipTexture</a> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a> type, int slot)</td></tr>
 <tr class="memdesc:a87c1e9bb37d938a07111fa76bae78575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the equipment texture for the specified equipment type and <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>.  <a href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575">More...</a><br /></td></tr>
 <tr class="separator:a87c1e9bb37d938a07111fa76bae78575"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5faa42f324a1662e333b85e75c63f34c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html">EquipTexture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a5faa42f324a1662e333b85e75c63f34c">GetEquipTexture</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod, string name, <a class="el" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a> type)</td></tr>
+<tr class="memdesc:a5faa42f324a1662e333b85e75c63f34c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html" title="This serves as a place for you to program behaviors of equipment textures. This is useful for equipme...">EquipTexture</a> instance corresponding to the name and EquipType. Returns null if no <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html" title="This serves as a place for you to program behaviors of equipment textures. This is useful for equipme...">EquipTexture</a> with the given name and EquipType is found.  <a href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a5faa42f324a1662e333b85e75c63f34c">More...</a><br /></td></tr>
+<tr class="separator:a5faa42f324a1662e333b85e75c63f34c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -114,6 +126,85 @@ static readonly <a class="el" href="namespace_terraria_1_1_mod_loader.html#ab563
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This serves as a central place to store equipment slots and their corresponding textures. You will use this to obtain the IDs for your equipment textures. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a5d530423b312e086d94d69a338c95a5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d530423b312e086d94d69a338c95a5c">&#9670;&nbsp;</a></span>AddEquipTexture()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.ModLoader.EquipLoader.AddEquipTexture </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td>
+          <td class="paramname"><em>mod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html">ModItem</a>&#160;</td>
+          <td class="paramname"><em>item</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>name</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html">EquipTexture</a>&#160;</td>
+          <td class="paramname"><em>equipTexture</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds an equipment texture of the specified type, internal name, and/or associated item to your mod.<br  />
+ If no internal name is provided, the associated item's name will be used instead.<br  />
+ You can then get the <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> for your texture by calling <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575" title="Gets the equipment texture for the specified equipment type and ID.">EquipLoader.GetEquipTexture</a>, and using the <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html" title="This serves as a place for you to program behaviors of equipment textures. This is useful for equipme...">EquipTexture</a>'s Slot property.<br  />
+ If you need to override EquipmentTexture's hooks, you can specify the class of the equipment texture class. </p>
+<p>If both an internal name and associated item are provided, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html" title="This serves as a place for you to program behaviors of equipment textures. This is useful for equipme...">EquipTexture</a>'s name will be set to the internal name, alongside the keys for the equipTexture dictionnary.<br  />
+ Additionally, if multiple EquipTextures of the same type are registered for the same item, the first one to be added will be the one automatically displayed on the player and mannequins. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mod</td><td>The mod the equipment texture is from.</td></tr>
+    <tr><td class="paramname">equipTexture</td><td>The equip texture.</td></tr>
+    <tr><td class="paramname">item</td><td>The item.</td></tr>
+    <tr><td class="paramname">name</td><td>The internal name.</td></tr>
+    <tr><td class="paramname">type</td><td>The type.</td></tr>
+    <tr><td class="paramname">texture</td><td>The texture.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> / slot that is assigned to the equipment texture.</dd></dl>
+
+</div>
+</div>
 <a id="a0f4f0fec2c1b9031403215236995d47f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f4f0fec2c1b9031403215236995d47f">&#9670;&nbsp;</a></span>EquipFrameEffects()</h2>
 
@@ -142,8 +233,61 @@ static readonly <a class="el" href="namespace_terraria_1_1_mod_loader.html#ab563
 
 </div>
 </div>
+<a id="a3fec79483641b357d8045e722c9150ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fec79483641b357d8045e722c9150ff">&#9670;&nbsp;</a></span>GetEquipSlot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.ModLoader.EquipLoader.GetEquipSlot </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td>
+          <td class="paramname"><em>mod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a>&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the slot/ID of the equipment texture corresponding to the given name. Returns -1 if no <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html" title="This serves as a place for you to program behaviors of equipment textures. This is useful for equipme...">EquipTexture</a> with the given name is found. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mod</td><td>The mod the equipment texture is from.</td></tr>
+    <tr><td class="paramname">name</td><td>The name.</td></tr>
+    <tr><td class="paramname">type</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="a87c1e9bb37d938a07111fa76bae78575"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87c1e9bb37d938a07111fa76bae78575">&#9670;&nbsp;</a></span>GetEquipTexture()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a87c1e9bb37d938a07111fa76bae78575">&#9670;&nbsp;</a></span>GetEquipTexture() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -181,6 +325,59 @@ static readonly <a class="el" href="namespace_terraria_1_1_mod_loader.html#ab563
   <table class="params">
     <tr><td class="paramname">type</td><td></td></tr>
     <tr><td class="paramname">slot</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a5faa42f324a1662e333b85e75c63f34c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5faa42f324a1662e333b85e75c63f34c">&#9670;&nbsp;</a></span>GetEquipTexture() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html">EquipTexture</a> Terraria.ModLoader.EquipLoader.GetEquipTexture </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td>
+          <td class="paramname"><em>mod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282">EquipType</a>&#160;</td>
+          <td class="paramname"><em>type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html" title="This serves as a place for you to program behaviors of equipment textures. This is useful for equipme...">EquipTexture</a> instance corresponding to the name and EquipType. Returns null if no <a class="el" href="class_terraria_1_1_mod_loader_1_1_equip_texture.html" title="This serves as a place for you to program behaviors of equipment textures. This is useful for equipme...">EquipTexture</a> with the given name and EquipType is found. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mod</td><td>The mod the equipment texture is from.</td></tr>
+    <tr><td class="paramname">name</td><td>The name.</td></tr>
+    <tr><td class="paramname">type</td><td>The type.</td></tr>
   </table>
   </dd>
 </dl>
