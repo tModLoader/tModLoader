@@ -39,6 +39,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "ModifyHitNPCWithProj", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a1a2fe132bd0027cf73f4c10cf2229f5a", null ],
     [ "ModifyHitPvp", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a9054e7ac006cb3a7a37ab55693a376be", null ],
     [ "ModifyHitPvpWithProj", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a87773cecdc388fd4df42596611cc2b7b", null ],
+    [ "ModifyItemScale", "class_terraria_1_1_mod_loader_1_1_mod_player.html#af74d5d06ca5d3a7d17a57b4d7a263205", null ],
     [ "ModifyLuck", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a57bca10159053653027ffd3ddc17bcb9", null ],
     [ "ModifyManaCost", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ab9967560b8364a9e37a7f20b3c930a5c", null ],
     [ "ModifyNurseHeal", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a74e6f26bb243335170ad46bb619e9edd", null ],

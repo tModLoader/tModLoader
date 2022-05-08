@@ -424,8 +424,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ForceUpdateBiomes</b>
 <tr class="memitem:a33a69d2fef571ed8a3e9f3d570d5c1d6"><td class="memItemLeft" align="right" valign="top"><a id="a33a69d2fef571ed8a3e9f3d570d5c1d6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GamepadEnableGrappleCooldown</b> ()</td></tr>
 <tr class="separator:a33a69d2fef571ed8a3e9f3d570d5c1d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad5516d35095bce1a3ec5473b17d89b65"><td class="memItemLeft" align="right" valign="top"><a id="ad5516d35095bce1a3ec5473b17d89b65"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>GetAdjustedItemScale</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
+<tr class="memitem:ad5516d35095bce1a3ec5473b17d89b65"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#ad5516d35095bce1a3ec5473b17d89b65">GetAdjustedItemScale</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
+<tr class="memdesc:ad5516d35095bce1a3ec5473b17d89b65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to determine what the overall scale of an item should be.<br  />
+ CombinedHooks.ModifyItemScale is called here.  <a href="class_terraria_1_1_player.html#ad5516d35095bce1a3ec5473b17d89b65">More...</a><br /></td></tr>
 <tr class="separator:ad5516d35095bce1a3ec5473b17d89b65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4927c60c9aa500c9804fbb14a6366e72"><td class="memItemLeft" align="right" valign="top"><a id="a4927c60c9aa500c9804fbb14a6366e72"></a>
 <a class="el" href="struct_terraria_1_1_data_structures_1_1_entity_shadow_info.html">EntityShadowInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetAdvancedShadow</b> (int shadowIndex)</td></tr>
@@ -4618,6 +4619,34 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </div><div class="memdoc">
 
 <p>Drops the ref'd item from the player at the position, and than turns the ref'd <a class="el" href="class_terraria_1_1_item.html">Item</a> to air. </p>
+
+</div>
+</div>
+<a id="ad5516d35095bce1a3ec5473b17d89b65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5516d35095bce1a3ec5473b17d89b65">&#9670;&nbsp;</a></span>GetAdjustedItemScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Terraria.Player.GetAdjustedItemScale </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Used to determine what the overall scale of an item should be.<br  />
+ CombinedHooks.ModifyItemScale is called here. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item to fetch the adjusted scale of.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The final scale of the item, after the Titan Glove effect and all modded calculations. </dd></dl>
 
 </div>
 </div>

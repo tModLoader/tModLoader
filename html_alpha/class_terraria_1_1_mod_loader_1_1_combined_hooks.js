@@ -6,6 +6,7 @@ var class_terraria_1_1_mod_loader_1_1_combined_hooks =
     [ "CanPlayerHitNPCWithItem", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a96eb359a92223716164e456d1ed13061", null ],
     [ "CanShoot", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a50d0d2fe74ced03936291da1bd87fa11", null ],
     [ "CanUseItem", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a6b92e6cc9f5bca6f73469273b4e9bbe2", null ],
+    [ "ModifyItemScale", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a5f9d4ac01e03c9409fac67a3dbc6a0cf", null ],
     [ "ModifyManaCost", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ace0abd347fc9d75e5cc25b3288c52fb4", null ],
     [ "ModifyShootStats", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a21ca87b7ebd24053006a526153256e63", null ],
     [ "ModifyWeaponCrit", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a3b213d22d4cb963b9990e483788ac3d4", null ],

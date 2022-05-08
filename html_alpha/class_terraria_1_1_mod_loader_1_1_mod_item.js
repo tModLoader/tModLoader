@@ -54,6 +54,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "MeleeEffects", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a06d18d25a2aa2ec8f908cbb3f41cb645", null ],
     [ "ModifyHitNPC", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aa533d40be6702b68133f006671a17b56", null ],
     [ "ModifyHitPvp", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ae18cf93cad8a7699240c9b8ae2584f5f", null ],
+    [ "ModifyItemScale", "class_terraria_1_1_mod_loader_1_1_mod_item.html#af1833c40f765b9f5332b4d3e0f0ecfca", null ],
     [ "ModifyManaCost", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a8175b362b2f4c08f31fa18f116556bba", null ],
     [ "ModifyResearchSorting", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac7bfb371a89e7785ff1a15c0ab3292a8", null ],
     [ "ModifyShootStats", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a95dad420a57616190b05b5c949ac7ef6", null ],

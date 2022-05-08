@@ -224,6 +224,9 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
 <tr class="memitem:a87773cecdc388fd4df42596611cc2b7b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a87773cecdc388fd4df42596611cc2b7b">ModifyHitPvpWithProj</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> proj, <a class="el" href="class_terraria_1_1_player.html">Player</a> target, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:a87773cecdc388fd4df42596611cc2b7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that a projectile created by this player does to an opponent player.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a87773cecdc388fd4df42596611cc2b7b">More...</a><br /></td></tr>
 <tr class="separator:a87773cecdc388fd4df42596611cc2b7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af74d5d06ca5d3a7d17a57b4d7a263205"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#af74d5d06ca5d3a7d17a57b4d7a263205">ModifyItemScale</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, ref float scale)</td></tr>
+<tr class="memdesc:af74d5d06ca5d3a7d17a57b4d7a263205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify the given item's size for this player, similarly to the effect of the Titan Glove.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#af74d5d06ca5d3a7d17a57b4d7a263205">More...</a><br /></td></tr>
+<tr class="separator:af74d5d06ca5d3a7d17a57b4d7a263205"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57bca10159053653027ffd3ddc17bcb9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a57bca10159053653027ffd3ddc17bcb9">ModifyLuck</a> (ref float luck)</td></tr>
 <tr class="memdesc:a57bca10159053653027ffd3ddc17bcb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify a player's luck amount.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a57bca10159053653027ffd3ddc17bcb9">More...</a><br /></td></tr>
 <tr class="separator:a57bca10159053653027ffd3ddc17bcb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2270,6 +2273,52 @@ If false is returned, the <a class="el" href="class_terraria_1_1_mod_loader_1_1_
     <tr><td class="paramname">target</td><td></td></tr>
     <tr><td class="paramname">damage</td><td></td></tr>
     <tr><td class="paramname">crit</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af74d5d06ca5d3a7d17a57b4d7a263205"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af74d5d06ca5d3a7d17a57b4d7a263205">&#9670;&nbsp;</a></span>ModifyItemScale()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModPlayer.ModifyItemScale </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>scale</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to dynamically modify the given item's size for this player, similarly to the effect of the Titan Glove. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item to modify the scale of.</td></tr>
+    <tr><td class="paramname">scale</td><td>The scale multiplier to be applied to the given item.<br  />
+ Will be 1.1 if the Titan Glove is equipped, and 1 otherwise. </td></tr>
   </table>
   </dd>
 </dl>

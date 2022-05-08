@@ -1,5 +1,8 @@
 var NAVTREEINDEX91 =
 {
+"class_terraria_1_1_mod_loader_1_1_logging.html#ac6705ba3e2388265fda5a58c5acd351b":[1,0,2,13,67,6],
+"class_terraria_1_1_mod_loader_1_1_logging.html#ae5c7c0a302892df4428d57119c256fa5":[1,0,2,13,67,1],
+"class_terraria_1_1_mod_loader_1_1_logging.html#af0ea519b23a240d53aa30bf0a056b7d0":[1,0,2,13,67,4],
 "class_terraria_1_1_mod_loader_1_1_magic_damage_class.html":[1,0,2,13,68],
 "class_terraria_1_1_mod_loader_1_1_magic_damage_class.html#a887a73739b520355a4ef2e15a8f8cc69":[1,0,2,13,68,0],
 "class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html":[1,0,2,13,69],
@@ -246,8 +249,5 @@ var NAVTREEINDEX91 =
 "class_terraria_1_1_mod_loader_1_1_mod_gore.html#a411e2f7772219c70bea337bd98fa8360":[1,0,2,13,86,3],
 "class_terraria_1_1_mod_loader_1_1_mod_gore.html#a479abca923a8e49094ccfb0f5bed818e":[1,0,2,13,86,2],
 "class_terraria_1_1_mod_loader_1_1_mod_gore.html#a6714133002750bffa868fd284fe6fa25":[1,0,2,13,86,4],
-"class_terraria_1_1_mod_loader_1_1_mod_gore.html#a7857653631cd8ca96941f1cf84792cc2":[1,0,2,13,86,5],
-"class_terraria_1_1_mod_loader_1_1_mod_gore.html#a7b4eb93bad2fa998cf2e9d21a55fafbf":[1,0,2,13,86,8],
-"class_terraria_1_1_mod_loader_1_1_mod_gore.html#aaed465630616b69bd0c36075c973cdaf":[1,0,2,13,86,0],
-"class_terraria_1_1_mod_loader_1_1_mod_gore.html#ac23cf90839bca3a0de6ddbaca0b38790":[1,0,2,13,86,1]
+"class_terraria_1_1_mod_loader_1_1_mod_gore.html#a7857653631cd8ca96941f1cf84792cc2":[1,0,2,13,86,5]
 };
