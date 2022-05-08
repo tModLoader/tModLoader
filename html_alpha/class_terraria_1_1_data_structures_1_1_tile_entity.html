@@ -117,10 +117,14 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTileValidFo
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>NetPlaceEntityAttempt</b> (int x, int y)</td></tr>
 <tr class="separator:a93060e6ca0bebd8083a20a5b97e8215f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c5cbb52b06a71a77677107f26402a19"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_data_structures_1_1_tile_entity.html#a2c5cbb52b06a71a77677107f26402a19">NetReceive</a> (BinaryReader reader)</td></tr>
-<tr class="memdesc:a2c5cbb52b06a71a77677107f26402a19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives the data sent in the NetSend hook. Called on MP Client when receiving tile data (!lightReceive) and when a MessageID.TileEntitySharing message is sent (lightReceive)  <a href="class_terraria_1_1_data_structures_1_1_tile_entity.html#a2c5cbb52b06a71a77677107f26402a19">More...</a><br /></td></tr>
+<tr class="memdesc:a2c5cbb52b06a71a77677107f26402a19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives custom data sent in the <a class="el" href="class_terraria_1_1_data_structures_1_1_tile_entity.html#ac7741d74e116d5a3051e3145d580d40c" title="Allows you to send custom data for this tile entity between client and server, which will be handled ...">NetSend</a> hook. <br  />
+Called while receiving tile data (!lightReceive) and when MessageID.TileEntitySharing is received (lightReceive). <br  />
+Only called on the client.  <a href="class_terraria_1_1_data_structures_1_1_tile_entity.html#a2c5cbb52b06a71a77677107f26402a19">More...</a><br /></td></tr>
 <tr class="separator:a2c5cbb52b06a71a77677107f26402a19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7741d74e116d5a3051e3145d580d40c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_data_structures_1_1_tile_entity.html#ac7741d74e116d5a3051e3145d580d40c">NetSend</a> (BinaryWriter writer)</td></tr>
-<tr class="memdesc:ac7741d74e116d5a3051e3145d580d40c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom data for this tile entity between client and server. This is called on the server while sending tile data (!lightSend) and when a MessageID.TileEntitySharing message is sent (lightSend)  <a href="class_terraria_1_1_data_structures_1_1_tile_entity.html#ac7741d74e116d5a3051e3145d580d40c">More...</a><br /></td></tr>
+<tr class="memdesc:ac7741d74e116d5a3051e3145d580d40c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom data for this tile entity between client and server, which will be handled in <a class="el" href="class_terraria_1_1_data_structures_1_1_tile_entity.html#a2c5cbb52b06a71a77677107f26402a19" title="Receives custom data sent in the NetSend hook.  Called while receiving tile data (!...">NetReceive</a>. <br  />
+Called while sending tile data (!lightSend) and when MessageID.TileEntitySharing is sent (lightSend). <br  />
+Only called on the server.  <a href="class_terraria_1_1_data_structures_1_1_tile_entity.html#ac7741d74e116d5a3051e3145d580d40c">More...</a><br /></td></tr>
 <tr class="separator:ac7741d74e116d5a3051e3145d580d40c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6bab2b18d0bfb501c9843f508bd620f"><td class="memItemLeft" align="right" valign="top"><a id="ab6bab2b18d0bfb501c9843f508bd620f"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnInventoryDraw</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, SpriteBatch spriteBatch)</td></tr>
@@ -296,7 +300,9 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>_UpdateStart
 </table>
 </div><div class="memdoc">
 
-<p>Receives the data sent in the NetSend hook. Called on MP Client when receiving tile data (!lightReceive) and when a MessageID.TileEntitySharing message is sent (lightReceive) </p>
+<p>Receives custom data sent in the <a class="el" href="class_terraria_1_1_data_structures_1_1_tile_entity.html#ac7741d74e116d5a3051e3145d580d40c" title="Allows you to send custom data for this tile entity between client and server, which will be handled ...">NetSend</a> hook. <br  />
+Called while receiving tile data (!lightReceive) and when MessageID.TileEntitySharing is received (lightReceive). <br  />
+Only called on the client. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">reader</td><td>The reader.</td></tr>
@@ -332,7 +338,9 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>_UpdateStart
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to send custom data for this tile entity between client and server. This is called on the server while sending tile data (!lightSend) and when a MessageID.TileEntitySharing message is sent (lightSend) </p>
+<p>Allows you to send custom data for this tile entity between client and server, which will be handled in <a class="el" href="class_terraria_1_1_data_structures_1_1_tile_entity.html#a2c5cbb52b06a71a77677107f26402a19" title="Receives custom data sent in the NetSend hook.  Called while receiving tile data (!...">NetReceive</a>. <br  />
+Called while sending tile data (!lightSend) and when MessageID.TileEntitySharing is sent (lightSend). <br  />
+Only called on the server. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">writer</td><td>The writer.</td></tr>

@@ -146,10 +146,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a582b142817f6195300b08a54d551e8bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A more advanced option to PostWorldGen, this method allows you modify the list of Generation Passes before a new world begins to be generated. For example, removing the "Planting Trees" pass will cause a world to generate without trees. Placing a new Generation Pass before the "Dungeon" pass will prevent the the mod's pass from cutting into the dungeon.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a582b142817f6195300b08a54d551e8bb">More...</a><br /></td></tr>
 <tr class="separator:a582b142817f6195300b08a54d551e8bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37c60edc8039c60534d7b386d1c5b734"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a37c60edc8039c60534d7b386d1c5b734">NetReceive</a> (BinaryReader reader)</td></tr>
-<tr class="memdesc:a37c60edc8039c60534d7b386d1c5b734"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do things with custom data that is received between clients and server.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a37c60edc8039c60534d7b386d1c5b734">More...</a><br /></td></tr>
+<tr class="memdesc:a37c60edc8039c60534d7b386d1c5b734"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to receive information that was sent in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ad996da06252797b99af133660c340376" title="Allows you to send custom data between clients and server, which will be handled in NetReceive....">NetSend</a>. <br  />
+Called whenever MessageID.WorldData is successfully received. <br  />
+Only called on the client.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a37c60edc8039c60534d7b386d1c5b734">More...</a><br /></td></tr>
 <tr class="separator:a37c60edc8039c60534d7b386d1c5b734"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad996da06252797b99af133660c340376"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ad996da06252797b99af133660c340376">NetSend</a> (BinaryWriter writer)</td></tr>
-<tr class="memdesc:ad996da06252797b99af133660c340376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom data between clients and server. This is useful for syncing information such as bosses that have been defeated.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ad996da06252797b99af133660c340376">More...</a><br /></td></tr>
+<tr class="memdesc:ad996da06252797b99af133660c340376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom data between clients and server, which will be handled in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a37c60edc8039c60534d7b386d1c5b734" title="Use this to receive information that was sent in NetSend.  Called whenever MessageID....">NetReceive</a>. This is useful for syncing information such as bosses that have been defeated. <br  />
+Called whenever MessageID.WorldData is successfully sent, for example after a boss is defeated, a new day starts, or a player joins the server. <br  />
+Only called on the server.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ad996da06252797b99af133660c340376">More...</a><br /></td></tr>
 <tr class="separator:ad996da06252797b99af133660c340376"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e9e57aef788c661c3b14caf3f4e92c1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a0e9e57aef788c661c3b14caf3f4e92c1">OnModLoad</a> ()</td></tr>
 <tr class="memdesc:a0e9e57aef788c661c3b14caf3f4e92c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook is called right after <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#afbcbdc176a60f3da809842f683ff2e75" title="Override this method to add most of your content to your mod. Here you will call other methods such a...">Mod.Load()</a>, which is guaranteed to be called after all content has been autoloaded.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a0e9e57aef788c661c3b14caf3f4e92c1">More...</a><br /></td></tr>
@@ -871,7 +875,15 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to do things with custom data that is received between clients and server. </p>
+<p>Use this to receive information that was sent in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ad996da06252797b99af133660c340376" title="Allows you to send custom data between clients and server, which will be handled in NetReceive....">NetSend</a>. <br  />
+Called whenever MessageID.WorldData is successfully received. <br  />
+Only called on the client. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reader</td><td>The reader.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -899,7 +911,15 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to send custom data between clients and server. This is useful for syncing information such as bosses that have been defeated. </p>
+<p>Allows you to send custom data between clients and server, which will be handled in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a37c60edc8039c60534d7b386d1c5b734" title="Use this to receive information that was sent in NetSend.  Called whenever MessageID....">NetReceive</a>. This is useful for syncing information such as bosses that have been defeated. <br  />
+Called whenever MessageID.WorldData is successfully sent, for example after a boss is defeated, a new day starts, or a player joins the server. <br  />
+Only called on the server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">writer</td><td>The writer.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

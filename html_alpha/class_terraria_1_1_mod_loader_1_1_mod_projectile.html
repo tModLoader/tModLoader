@@ -109,7 +109,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae5eb3338bf93c693f7367a824e39d242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae5eb3338bf93c693f7367a824e39d242">More...</a><br /></td></tr>
 <tr class="separator:ae5eb3338bf93c693f7367a824e39d242"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7cdbd7762f6cf8f3b573a91118741e8"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae7cdbd7762f6cf8f3b573a91118741e8">CanCutTiles</a> ()</td></tr>
-<tr class="memdesc:ae7cdbd7762f6cf8f3b573a91118741e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla decision.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae7cdbd7762f6cf8f3b573a91118741e8">More...</a><br /></td></tr>
+<tr class="memdesc:ae7cdbd7762f6cf8f3b573a91118741e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae7cdbd7762f6cf8f3b573a91118741e8">More...</a><br /></td></tr>
 <tr class="separator:ae7cdbd7762f6cf8f3b573a91118741e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84646298972f8dc71c072a6027cee9b7"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a84646298972f8dc71c072a6027cee9b7">CanDamage</a> ()</td></tr>
 <tr class="memdesc:a84646298972f8dc71c072a6027cee9b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this projectile is capable of killing tiles (such as grass) and damaging NPCs/players. Return false to prevent it from doing any sort of damage. Return true if you want the projectile to do damage regardless of the default blacklist. Return null to let the projectile follow vanilla can-damage-anything rules. This is what happens by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a84646298972f8dc71c072a6027cee9b7">More...</a><br /></td></tr>
@@ -133,10 +133,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:afa10ef5ad8b25baf604390edc5d0d8a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to use custom collision detection between this projectile and a player or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> that this projectile can damage. Useful for things like diagonal lasers, projectiles that leave a trail behind them, etc.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afa10ef5ad8b25baf604390edc5d0d8a5">More...</a><br /></td></tr>
 <tr class="separator:afa10ef5ad8b25baf604390edc5d0d8a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b548cb172688ca803e439ada0d966a8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4b548cb172688ca803e439ada0d966a8">CutTiles</a> ()</td></tr>
-<tr class="memdesc:a4b548cb172688ca803e439ada0d966a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code ran when the projectile cuts tiles. Only runs if <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae7cdbd7762f6cf8f3b573a91118741e8" title="Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla ...">CanCutTiles()</a> returns true. Useful when programming lasers and such.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4b548cb172688ca803e439ada0d966a8">More...</a><br /></td></tr>
+<tr class="memdesc:a4b548cb172688ca803e439ada0d966a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code ran when the projectile cuts tiles. Only runs if <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae7cdbd7762f6cf8f3b573a91118741e8" title="Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva...">CanCutTiles()</a> returns true. Useful when programming lasers and such.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4b548cb172688ca803e439ada0d966a8">More...</a><br /></td></tr>
 <tr class="separator:a4b548cb172688ca803e439ada0d966a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afeb145b64c1a15770296428a3a76be80"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afeb145b64c1a15770296428a3a76be80">DrawBehind</a> (int index, <a class="el" href="class_list.html">List</a>&lt; int &gt; behindNPCsAndTiles, <a class="el" href="class_list.html">List</a>&lt; int &gt; behindNPCs, <a class="el" href="class_list.html">List</a>&lt; int &gt; behindProjectiles, <a class="el" href="class_list.html">List</a>&lt; int &gt; overPlayers, <a class="el" href="class_list.html">List</a>&lt; int &gt; overWiresUI)</td></tr>
-<tr class="memdesc:afeb145b64c1a15770296428a3a76be80"><td class="mdescLeft">&#160;</td><td class="mdescRight">When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afeb145b64c1a15770296428a3a76be80">More...</a><br /></td></tr>
+<tr class="memdesc:afeb145b64c1a15770296428a3a76be80"><td class="mdescLeft">&#160;</td><td class="mdescRight">When used in conjunction with "Projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afeb145b64c1a15770296428a3a76be80">More...</a><br /></td></tr>
 <tr class="separator:afeb145b64c1a15770296428a3a76be80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5adc5de264dcaa493a2c4515e6767301"><td class="memItemLeft" align="right" valign="top">virtual ? Color&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a5adc5de264dcaa493a2c4515e6767301">GetAlpha</a> (Color lightColor)</td></tr>
 <tr class="memdesc:a5adc5de264dcaa493a2c4515e6767301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine the color and transparency in which this projectile is drawn. Return null to use the default color (normally light and buff color). Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a5adc5de264dcaa493a2c4515e6767301">More...</a><br /></td></tr>
@@ -154,7 +154,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:af7da8640cb6aaceb66187fcf62f9d018"><td class="mdescLeft">&#160;</td><td class="mdescRight">The location that the grappling hook pulls the player to. Defaults to the center of the hook projectile.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af7da8640cb6aaceb66187fcf62f9d018">More...</a><br /></td></tr>
 <tr class="separator:af7da8640cb6aaceb66187fcf62f9d018"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6ada2add80fed8a7a311044246cdefd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab6ada2add80fed8a7a311044246cdefd">Kill</a> (int timeLeft)</td></tr>
-<tr class="memdesc:ab6ada2add80fed8a7a311044246cdefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use <code>if (projectile.owner == Main.myPlayer)</code> if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab6ada2add80fed8a7a311044246cdefd">More...</a><br /></td></tr>
+<tr class="memdesc:ab6ada2add80fed8a7a311044246cdefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use <code>if (Projectile.owner == Main.myPlayer)</code> if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ab6ada2add80fed8a7a311044246cdefd">More...</a><br /></td></tr>
 <tr class="separator:ab6ada2add80fed8a7a311044246cdefd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3549ea7beb59643c9a516fb576823435"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a3549ea7beb59643c9a516fb576823435">MinionContactDamage</a> ()</td></tr>
 <tr class="memdesc:a3549ea7beb59643c9a516fb576823435"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this minion can damage NPCs by touching them. Returns false by default. Note that this will only be used if this projectile is considered a pet.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a3549ea7beb59643c9a516fb576823435">More...</a><br /></td></tr>
@@ -190,7 +190,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:adbef10c897f1ad8430059407d5ce36f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when your projectiles spawns in world  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#adbef10c897f1ad8430059407d5ce36f6">More...</a><br /></td></tr>
 <tr class="separator:adbef10c897f1ad8430059407d5ce36f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16aeaadbb50c97fc74aaed8bfee4a405"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a16aeaadbb50c97fc74aaed8bfee4a405">OnTileCollide</a> (Vector2 oldVelocity)</td></tr>
-<tr class="memdesc:a16aeaadbb50c97fc74aaed8bfee4a405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what happens when this projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a16aeaadbb50c97fc74aaed8bfee4a405">More...</a><br /></td></tr>
+<tr class="memdesc:a16aeaadbb50c97fc74aaed8bfee4a405"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine what happens when this projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with Projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a16aeaadbb50c97fc74aaed8bfee4a405">More...</a><br /></td></tr>
 <tr class="separator:a16aeaadbb50c97fc74aaed8bfee4a405"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22c221bd2a7bf9213223cc65658d96f7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a22c221bd2a7bf9213223cc65658d96f7">PostAI</a> ()</td></tr>
 <tr class="memdesc:a22c221bd2a7bf9213223cc65658d96f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how this projectile behaves. This will be called regardless of what PreAI returns.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a22c221bd2a7bf9213223cc65658d96f7">More...</a><br /></td></tr>
@@ -211,10 +211,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aec19872d1eedd53e9560c9ff488aa522"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether the vanilla code for Kill and the Kill hook will be called. Return false to stop them from being called. Returns true by default. Note that this does not stop the projectile from dying.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aec19872d1eedd53e9560c9ff488aa522">More...</a><br /></td></tr>
 <tr class="separator:aec19872d1eedd53e9560c9ff488aa522"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae79c16b0c419da4ffa1e71c5fd4afe19"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae79c16b0c419da4ffa1e71c5fd4afe19">ReceiveExtraAI</a> (BinaryReader reader)</td></tr>
-<tr class="memdesc:ae79c16b0c419da4ffa1e71c5fd4afe19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to receive information that was sent in SendExtraAI.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae79c16b0c419da4ffa1e71c5fd4afe19">More...</a><br /></td></tr>
+<tr class="memdesc:ae79c16b0c419da4ffa1e71c5fd4afe19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to receive information that was sent in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af23880ffebcd72fc659f5edf165ff4ad" title="If you are storing AI information outside of the Projectile.ai array, use this to send that AI inform...">SendExtraAI</a>. <br  />
+Called whenever MessageID.SyncProjectile is successfully received. <br  />
+Can be called on both server and client, depending on who owns the projectile.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae79c16b0c419da4ffa1e71c5fd4afe19">More...</a><br /></td></tr>
 <tr class="separator:ae79c16b0c419da4ffa1e71c5fd4afe19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af23880ffebcd72fc659f5edf165ff4ad"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af23880ffebcd72fc659f5edf165ff4ad">SendExtraAI</a> (BinaryWriter writer)</td></tr>
-<tr class="memdesc:af23880ffebcd72fc659f5edf165ff4ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you are storing AI information outside of the projectile.ai array, use this to send that AI information between clients and servers.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af23880ffebcd72fc659f5edf165ff4ad">More...</a><br /></td></tr>
+<tr class="memdesc:af23880ffebcd72fc659f5edf165ff4ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you are storing AI information outside of the Projectile.ai array, use this to send that AI information between clients and servers, which will be handled in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae79c16b0c419da4ffa1e71c5fd4afe19" title="Use this to receive information that was sent in SendExtraAI.  Called whenever MessageID....">ReceiveExtraAI</a>. <br  />
+Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick. <br  />
+Can be called on both server and client, depending on who owns the projectile.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af23880ffebcd72fc659f5edf165ff4ad">More...</a><br /></td></tr>
 <tr class="separator:af23880ffebcd72fc659f5edf165ff4ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a332b03efe6a21a9ba3abd344d66c9c0d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a332b03efe6a21a9ba3abd344d66c9c0d">SetDefaults</a> ()</td></tr>
 <tr class="memdesc:a332b03efe6a21a9ba3abd344d66c9c0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set all your projectile's properties, such as width, damage, aiStyle, penetrate, etc.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a332b03efe6a21a9ba3abd344d66c9c0d">More...</a><br /></td></tr>
@@ -284,7 +288,7 @@ Properties</h2></td></tr>
 <tr class="memdesc:acbd852ee9376a8eef0062a6ba0ebfbca"><td class="mdescLeft">&#160;</td><td class="mdescRight">The projectile object that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html" title="This class serves as a place for you to place all your properties and hooks for each projectile....">ModProjectile</a> controls.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#acbd852ee9376a8eef0062a6ba0ebfbca">More...</a><br /></td></tr>
 <tr class="separator:acbd852ee9376a8eef0062a6ba0ebfbca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed26fa088b36cecaa12c02fc7cdb7867"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aed26fa088b36cecaa12c02fc7cdb7867">Type</a><code> [get]</code></td></tr>
-<tr class="memdesc:aed26fa088b36cecaa12c02fc7cdb7867"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for projectile.type;  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aed26fa088b36cecaa12c02fc7cdb7867">More...</a><br /></td></tr>
+<tr class="memdesc:aed26fa088b36cecaa12c02fc7cdb7867"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for Projectile.type;  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aed26fa088b36cecaa12c02fc7cdb7867">More...</a><br /></td></tr>
 <tr class="separator:aed26fa088b36cecaa12c02fc7cdb7867"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_terraria_1_1_mod_loader_1_1_mod_textured_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_terraria_1_1_mod_loader_1_1_mod_textured_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_textured_type.html">Terraria.ModLoader.ModTexturedType</a></td></tr>
 <tr class="memitem:abd9cca3dfb1963d4fd6ea89f6d4da3a3 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_textured_type"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_textured_type.html#abd9cca3dfb1963d4fd6ea89f6d4da3a3">Texture</a><code> [get]</code></td></tr>
@@ -393,7 +397,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla decision. </p>
+<p>Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision. </p>
 
 </div>
 </div>
@@ -651,7 +655,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Code ran when the projectile cuts tiles. Only runs if <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae7cdbd7762f6cf8f3b573a91118741e8" title="Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla ...">CanCutTiles()</a> returns true. Useful when programming lasers and such. </p>
+<p>Code ran when the projectile cuts tiles. Only runs if <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae7cdbd7762f6cf8f3b573a91118741e8" title="Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva...">CanCutTiles()</a> returns true. Useful when programming lasers and such. </p>
 
 </div>
 </div>
@@ -713,7 +717,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles. </p>
+<p>When used in conjunction with "Projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles. </p>
 
 </div>
 </div>
@@ -916,7 +920,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use <code>if (projectile.owner == Main.myPlayer)</code> if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile) </p>
+<p>Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use <code>if (Projectile.owner == Main.myPlayer)</code> if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile) </p>
 
 </div>
 </div>
@@ -1449,7 +1453,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to determine what happens when this projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default. </p>
+<p>Allows you to determine what happens when this projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with Projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">oldVelocity</td><td>The velocity of the projectile upon collision.</td></tr>
@@ -1661,7 +1665,15 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Use this to receive information that was sent in SendExtraAI. </p>
+<p>Use this to receive information that was sent in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af23880ffebcd72fc659f5edf165ff4ad" title="If you are storing AI information outside of the Projectile.ai array, use this to send that AI inform...">SendExtraAI</a>. <br  />
+Called whenever MessageID.SyncProjectile is successfully received. <br  />
+Can be called on both server and client, depending on who owns the projectile. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reader</td><td>The reader.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1718,7 +1730,15 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>If you are storing AI information outside of the projectile.ai array, use this to send that AI information between clients and servers. </p>
+<p>If you are storing AI information outside of the Projectile.ai array, use this to send that AI information between clients and servers, which will be handled in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae79c16b0c419da4ffa1e71c5fd4afe19" title="Use this to receive information that was sent in SendExtraAI.  Called whenever MessageID....">ReceiveExtraAI</a>. <br  />
+Called whenever MessageID.SyncProjectile is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick. <br  />
+Can be called on both server and client, depending on who owns the projectile. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">writer</td><td>The writer.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1882,8 +1902,8 @@ Properties</h2></td></tr>
 <p>Allows you to determine how this projectile interacts with tiles. Return false if you completely override or cancel this projectile's tile collision behavior. Returns true by default. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">width</td><td>The width of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to projectile.width. </td></tr>
-    <tr><td class="paramname">height</td><td>The height of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to projectile.height. </td></tr>
+    <tr><td class="paramname">width</td><td>The width of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to Projectile.width. </td></tr>
+    <tr><td class="paramname">height</td><td>The height of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to Projectile.height. </td></tr>
     <tr><td class="paramname">fallThrough</td><td>Whether or not this projectile falls through platforms and similar tiles. </td></tr>
     <tr><td class="paramname">hitboxCenterFrac</td><td>Determines by how much the tile collision hitbox's position (top left corner) will be offset from this projectile's real center. If vanilla doesn't modify it, defaults to half the hitbox size (new Vector2(0.5f, 0.5f)). </td></tr>
   </table>
@@ -2168,7 +2188,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Shorthand for projectile.type; </p>
+<p>Shorthand for Projectile.type; </p>
 
 </div>
 </div>

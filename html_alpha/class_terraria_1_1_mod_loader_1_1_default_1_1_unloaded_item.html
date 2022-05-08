@@ -108,10 +108,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a42c0f6cbd39c892d75a9ddde56eabbb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify all the tooltips that display for this item. See here for information about <a class="el" href="class_terraria_1_1_mod_loader_1_1_tooltip_line.html" title="This class serves as a way to store information about a line of tooltip for an item....">TooltipLine</a>.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a42c0f6cbd39c892d75a9ddde56eabbb2">More...</a><br /></td></tr>
 <tr class="separator:a42c0f6cbd39c892d75a9ddde56eabbb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af89e07ca651571143134e0a25b6952e2"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#af89e07ca651571143134e0a25b6952e2">NetReceive</a> (BinaryReader reader)</td></tr>
-<tr class="memdesc:af89e07ca651571143134e0a25b6952e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives the custom data sent in the NetSend hook.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#af89e07ca651571143134e0a25b6952e2">More...</a><br /></td></tr>
+<tr class="memdesc:af89e07ca651571143134e0a25b6952e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives the custom data sent in NetSend. <br  />
+Called whenever an item container syncs its contents (various MessageIDs and sources), or MessageID.SyncItem and MessageID.InstancedItem are successfully received. <br  />
+Can be called on both server and client.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#af89e07ca651571143134e0a25b6952e2">More...</a><br /></td></tr>
 <tr class="separator:af89e07ca651571143134e0a25b6952e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d0b4f9fea3d91c6e5fde32a826f9f1e"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a8d0b4f9fea3d91c6e5fde32a826f9f1e">NetSend</a> (BinaryWriter writer)</td></tr>
-<tr class="memdesc:a8d0b4f9fea3d91c6e5fde32a826f9f1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom data for this item between client and server.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a8d0b4f9fea3d91c6e5fde32a826f9f1e">More...</a><br /></td></tr>
+<tr class="memdesc:a8d0b4f9fea3d91c6e5fde32a826f9f1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to send custom data for this item between client and server, which will be handled in NetReceive. <br  />
+Called whenever an item container syncs its contents (various MessageIDs and sources), or MessageID.SyncItem and MessageID.InstancedItem are successfully sent, for example when the item is dropped into the world. <br  />
+Can be called on both server and client.  <a href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a8d0b4f9fea3d91c6e5fde32a826f9f1e">More...</a><br /></td></tr>
 <tr class="separator:a8d0b4f9fea3d91c6e5fde32a826f9f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae10b3427d4d2e975974c143b081f0e91"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#ae10b3427d4d2e975974c143b081f0e91">SaveData</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
 <tr class="memdesc:ae10b3427d4d2e975974c143b081f0e91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for this item. <br  />
@@ -393,7 +397,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCreate</b> 
 <tr class="memdesc:ae522ac3b92031dc6f10fa092df611e5f inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special effects (such as the necro armor's hurt noise) when the player wears this item's vanity set. This hook is called regardless of whether the player is frozen in any way. Note that this hook is only ever called through this item's associated equipment texture.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ae522ac3b92031dc6f10fa092df611e5f">More...</a><br /></td></tr>
 <tr class="separator:ae522ac3b92031dc6f10fa092df611e5f inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae747b9a32a40363605021ad509a18d8f inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ae747b9a32a40363605021ad509a18d8f">ReforgePrice</a> (ref int reforgePrice, ref bool canApplyDiscount)</td></tr>
-<tr class="memdesc:ae747b9a32a40363605021ad509a18d8f inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the normal reforge pricing is applied. If true or false is returned and the price is altered, the price will equal the altered price. The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ae747b9a32a40363605021ad509a18d8f">More...</a><br /></td></tr>
+<tr class="memdesc:ae747b9a32a40363605021ad509a18d8f inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns if the normal reforge pricing is applied. If true or false is returned and the price is altered, the price will equal the altered price. The passed reforge price equals the Item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ae747b9a32a40363605021ad509a18d8f">More...</a><br /></td></tr>
 <tr class="separator:ae747b9a32a40363605021ad509a18d8f inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a788f215aa9817b3ffced439263cc8187 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a788f215aa9817b3ffced439263cc8187">RightClick</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a788f215aa9817b3ffced439263cc8187 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this item is right-clicked in the inventory. Useful for goodie bags.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a788f215aa9817b3ffced439263cc8187">More...</a><br /></td></tr>
@@ -505,7 +509,7 @@ override string&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b
 <tr class="memdesc:a0fa62e240cf6cb00feb461f9f8dd9eb7 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">The translations for the display name of this tooltip.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a0fa62e240cf6cb00feb461f9f8dd9eb7">More...</a><br /></td></tr>
 <tr class="separator:a0fa62e240cf6cb00feb461f9f8dd9eb7 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97741bf0a58d7f9c516aca91e5cac9bc inherit properties_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a97741bf0a58d7f9c516aca91e5cac9bc">Type</a><code> [get]</code></td></tr>
-<tr class="memdesc:a97741bf0a58d7f9c516aca91e5cac9bc inherit properties_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for item.type;  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a97741bf0a58d7f9c516aca91e5cac9bc">More...</a><br /></td></tr>
+<tr class="memdesc:a97741bf0a58d7f9c516aca91e5cac9bc inherit properties_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shorthand for Item.type;  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a97741bf0a58d7f9c516aca91e5cac9bc">More...</a><br /></td></tr>
 <tr class="separator:a97741bf0a58d7f9c516aca91e5cac9bc inherit properties_class_terraria_1_1_mod_loader_1_1_mod_item"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_terraria_1_1_mod_loader_1_1_mod_textured_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_terraria_1_1_mod_loader_1_1_mod_textured_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_textured_type.html">Terraria.ModLoader.ModTexturedType</a></td></tr>
 <tr class="memitem:abd9cca3dfb1963d4fd6ea89f6d4da3a3 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_textured_type"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_textured_type.html#abd9cca3dfb1963d4fd6ea89f6d4da3a3">Texture</a><code> [get]</code></td></tr>
@@ -673,7 +677,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Receives the custom data sent in the NetSend hook. </p>
+<p>Receives the custom data sent in NetSend. <br  />
+Called whenever an item container syncs its contents (various MessageIDs and sources), or MessageID.SyncItem and MessageID.InstancedItem are successfully received. <br  />
+Can be called on both server and client. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">reader</td><td>The reader.</td></tr>
@@ -709,7 +715,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to send custom data for this item between client and server. </p>
+<p>Allows you to send custom data for this item between client and server, which will be handled in NetReceive. <br  />
+Called whenever an item container syncs its contents (various MessageIDs and sources), or MessageID.SyncItem and MessageID.InstancedItem are successfully sent, for example when the item is dropped into the world. <br  />
+Can be called on both server and client. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">writer</td><td>The writer.</td></tr>
