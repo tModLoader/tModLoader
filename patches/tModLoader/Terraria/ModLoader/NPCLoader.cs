@@ -947,6 +947,10 @@ namespace Terraria.ModLoader
 			return npc.ModNPC?.UsesPartyHat() ?? true;
 		}
 
+		public static bool ActsLikeTownNPC(NPC npc) {
+			return npc.ModNPC?.ActsLikeTownNPC() ?? false;
+		}
+
 		private static HookList HookCanChat = AddHook<Func<NPC, bool?>>(g => g.CanChat);
 
 		public static bool CanChat(NPC npc, bool vanillaCanChat) {

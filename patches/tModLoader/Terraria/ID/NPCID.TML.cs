@@ -13,13 +13,6 @@ namespace Terraria.ID
 			/// </summary>
 			public static bool[] SpawnFromLastEmptySlot = Factory.CreateBoolSet(222, 245);
 
-			//Default IDs are the skeleton merchant and all town NPCs
-			/// <summary>
-			/// Whether or not a given NPC will act like a town NPC in terms of AI, animations, and attacks, but not necessarily
-			/// in other regards, such as having a happiness button or appearing on the minimap, like the bone merchant in vanilla.
-			/// </summary>
-			public static bool[] ActsLikeTownNPC = Factory.CreateBoolSet(17, 18, 19, 20, 22, 37, 38, 54, 107, 108, 124, 142, 160, 178, 207, 208, 209, 227, 228, 229, 353, 368, 369, 441, 453, 550, 588, 633, 663);
-
 			//Default ID is the skeleton merchant
 			/// <summary>
 			/// Whether or not a given NPC will spawn with a custom name like a town NPC. In order to determine what name will be selected, override the TownNPCName hook.

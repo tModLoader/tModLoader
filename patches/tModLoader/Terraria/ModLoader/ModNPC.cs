@@ -582,6 +582,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Whether or not this NPC will act like a town NPC in terms of AI, animations, and attacks, but not necessarily
+		/// in other regards, such as having a happiness button or appearing on the minimap, like the bone merchant in vanilla.
+		/// Defaults to false.
+		/// </summary>
+		public virtual bool ActsLikeTownNPC() {
+			return false;
+		}
+
+		/// <summary>
 		/// Allows you to determine whether this NPC can talk with the player. By default, returns if the NPC is a town NPC.
 		/// </summary>
 		/// <returns></returns>
