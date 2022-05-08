@@ -27,16 +27,14 @@ namespace ExampleMod.Content.Items.Armor
 			// The code below runs only if we're not loading on a server
 			if (Main.netMode != NetmodeID.Server) {
 				// Add equip textures
-				EquipLoader.AddEquipTexture(Mod, new BlockyHead(), this, EquipType.Head, $"{Texture}_{EquipType.Head}");
-				EquipLoader.AddEquipTexture(Mod, new EquipTexture(), this, EquipType.Body, $"{Texture}_{EquipType.Body}");
-				// The below 2 lines are equivalent
-				//Mod.AddEquipTexture(new EquipTexture(), EquipType.Legs, $"{Texture}_{EquipType.Legs}");
-				EquipLoader.AddEquipTexture(Mod, this, EquipType.Legs, $"{Texture}_{EquipType.Legs}");
+				EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Head}", EquipType.Head, this, equipTexture : new BlockyHead());
+				EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Body}", EquipType.Body, this);
+				EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
 
 				//Add a separate set of equip textures by providing a custom name reference instead of an item reference
-				EquipLoader.AddEquipTexture(Mod, new BlockyHead(), "BlockyAlt", EquipType.Head, $"{Texture}Alt_{EquipType.Head}");
-				EquipLoader.AddEquipTexture(Mod, new EquipTexture(), "BlockyAlt", EquipType.Body, $"{Texture}Alt_{EquipType.Body}");
-				EquipLoader.AddEquipTexture(Mod, "BlockyAlt", EquipType.Legs, $"{Texture}Alt_{EquipType.Legs}");
+				EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Head}", EquipType.Head, name : "BlockyAlt", equipTexture : new BlockyHead());
+				EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Body}", EquipType.Body, name : "BlockyAlt");
+				EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Legs}", EquipType.Legs, name : "BlockyAlt");
 			}
 		}
 

@@ -242,47 +242,15 @@ namespace Terraria.ModLoader
 			};
 
 		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.<br/>
+		/// Adds an equipment texture of the specified type, internal name, and/or associated item to your mod.<br/>
+		/// If no internal name is provided, the associated item's name will be used instead.<br/>
 		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property.<br/>
+		/// If you need to override EquipmentTexture's hooks, you can specify the class of the equipment texture class.
 		/// </summary>
-		/// <inheritdoc cref="AddEquipTexture(Mod, EquipTexture, ModItem, string, EquipType, string)"/>
-		public static int AddEquipTexture(Mod mod, ModItem item, EquipType type, string texture) {
-			return AddEquipTexture(mod, new EquipTexture(), item, type, texture);
-		}
-
-		/// <summary>
-		/// Adds an equipment texture of the specified type and internal name to your mod<br/>
-		/// (Use this if you don't want to associate an item with the texture)<br/>
-		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property.<br/>
-		/// </summary>
-		/// <inheritdoc cref="AddEquipTexture(Mod, EquipTexture, ModItem, string, EquipType, string)"/>
-		public static int AddEquipTexture(Mod mod, string name, EquipType type, string texture) {
-			return AddEquipTexture(mod, new EquipTexture(), name, type, texture);
-		}
-
 		/// <remarks>
-		/// This method is different from the other AddEquipTexture in that you can specify the class of the equipment texture, thus allowing you to override EquipmentTexture's hooks.
+		/// If both an internal name and associated item are provided, the EquipTexture's name will be set to the internal name, alongside the keys for the equipTexture dictionnary.<br/>
+		/// Additionally, if multiple EquipTextures of the same type are registered for the same item, the first one to be added will be the one automatically displayed on the player and mannequins.
 		/// </remarks>
-		/// <inheritdoc cref="AddEquipTexture(Mod, ModItem, EquipType, string)"/>
-		public static int AddEquipTexture(Mod mod, EquipTexture equipTexture, ModItem item, EquipType type, string texture) {
-			return AddEquipTexture(mod, equipTexture, item, null, type, texture);
-		}
-
-		/// <remarks>
-		/// This method is different from the other AddEquipTexture in that you can specify the class of the equipment texture, thus allowing you to override EquipmentTexture's hooks.
-		/// </remarks>
-		/// <inheritdoc cref="AddEquipTexture(Mod, string, EquipType, string)"/>
-		public static int AddEquipTexture(Mod mod, EquipTexture equipTexture, string name, EquipType type, string texture) {
-			return AddEquipTexture(mod, equipTexture, null, name, type, texture);
-		}
-
-		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.<br/>
-		/// This method is different from the other AddEquipTexture in that it takes in both an associated item and internal name at once.<br/>
-		/// If both are provided, the EquipTexture's name will be set to the internal name, alongside the keys for the equipTexture dictionnary.<br/>
-		/// NOTE : If multiple EquipTextures of the same type are registered for the same item, the first one to be added will be the one automatically displayed on the player and mannequins<br/>
-		/// All other parameters are the same as the other AddEquipTexture.
-		/// </summary>
 		/// <param name="mod">The mod the equipment texture is from.</param>
 		/// <param name="equipTexture">The equip texture.</param>
 		/// <param name="item">The item.</param>
@@ -290,17 +258,19 @@ namespace Terraria.ModLoader
 		/// <param name="type">The type.</param>
 		/// <param name="texture">The texture.</param>
 		/// <returns>the ID / slot that is assigned to the equipment texture.</returns>
-		public static int AddEquipTexture(Mod mod, EquipTexture equipTexture, ModItem item, string name, EquipType type, string texture) {
+		public static int AddEquipTexture(Mod mod, string texture, EquipType type, ModItem item = null, string name = null, EquipTexture equipTexture = null) {
 			if (!mod.loading)
 				throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
 
 			if (name == null && item == null)
 				throw new Exception("AddEquipTexture requires either an item or a name be provided");
 
-			ModContent.Request<Texture2D>(texture); //ensure texture exists
+			if (equipTexture == null)
+				equipTexture = new EquipTexture();
 
+			ModContent.Request<Texture2D>(texture); //ensure texture exists
+			 
 			equipTexture.Texture = texture;
-			equipTexture.Mod = mod;
 			equipTexture.Name = name ?? item.Name;
 			equipTexture.Type = type;
 			equipTexture.Item = item;
