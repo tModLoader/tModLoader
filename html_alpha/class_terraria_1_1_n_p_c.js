@@ -185,7 +185,7 @@ var class_terraria_1_1_n_p_c =
     [ "UpdateRGBPeriheralProbe", "class_terraria_1_1_n_p_c.html#a44446794079190585bf6e22db5bc05a4", null ],
     [ "UsesPartyHat", "class_terraria_1_1_n_p_c.html#a9b55408e055f0b5c4d1f8afe26b557c1", null ],
     [ "VanillaAI", "class_terraria_1_1_n_p_c.html#a86f20980341364904ef465f249f12f80", null ],
-    [ "VanillaFindFrame", "class_terraria_1_1_n_p_c.html#a189eae8c24c83d2bbb4a3651d197ed64", null ],
+    [ "VanillaFindFrame", "class_terraria_1_1_n_p_c.html#a648d25729a796efc8359ba4c23cba15f", null ],
     [ "VanillaHitEffect", "class_terraria_1_1_n_p_c.html#a33236d3d982b018f191121ac58a56d51", null ],
     [ "WouldBeEncouragedToDespawn", "class_terraria_1_1_n_p_c.html#a98f24df412fe5462473f50aa8b49e96c", null ],
     [ "activeTime", "class_terraria_1_1_n_p_c.html#ae50e283a342966b5a8b805d9943ad670", null ],
