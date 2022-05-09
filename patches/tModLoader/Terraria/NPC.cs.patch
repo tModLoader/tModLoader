@@ -45,18 +45,15 @@
  
  		public string FullName {
  			get {
-@@ -458,9 +_,9 @@
+@@ -458,7 +_,7 @@
  
  		public bool isLikeATownNPC {
  			get {
 -				if (type == 453)
 +				if (NPCID.Sets.ActsLikeTownNPC[type])
  					return true;
--
-+				
+ 
  				return townNPC;
- 			}
- 		}
 @@ -696,7 +_,7 @@
  		public static void UpdateFoundActiveNPCs() {
  			for (int i = 0; i < 200; i++) {
