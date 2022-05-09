@@ -16,7 +16,16 @@ namespace Terraria.ModLoader.IO
 		private Dictionary<string, object> dict = new Dictionary<string, object>();
 
 		public T Get<T>(string key) {
-			TryGet(key, out T value);
+			if(!TryGet(key, out T value) && value == null) {
+				try {
+					return TagIO.Deserialize<T>(null);
+				}
+				catch (Exception e) {
+					throw new IOException(
+						$"NBT Deserialization (type={typeof(T)}," +
+						$"entry={TagPrinter.Print(new KeyValuePair<string, object>(key, null))})", e);
+				}
+			}
 			return value;
 		}
 
