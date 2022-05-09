@@ -891,7 +891,7 @@
  			if (ai[0] == (float)(int)(timeToFlyOut / 2f)) {
  				WhipPointsForCollision.Clear();
  				FillWhipControlPoints(this, WhipPointsForCollision);
-@@ -29878,6 +_,7 @@
+@@ -30666,6 +_,7 @@
  					rangeMultiplier *= 0.95f;
  					break;
  			}
@@ -899,7 +899,7 @@
  		}
  
  		private void AI_160_Kites() {
-@@ -32276,6 +_,9 @@
+@@ -33091,6 +_,9 @@
  					if (num3 > (float)num9)
  						ai[0] = 1f;
  				}
