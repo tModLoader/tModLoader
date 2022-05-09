@@ -243,6 +243,14 @@
  			penetrate = -1;
  			tileCollide = false;
  			scale = 1f;
+@@ -8109,6 +_,7 @@
+ 			extraUpdates = 1;
+ 			usesLocalNPCImmunity = true;
+ 			localNPCHitCooldown = -1;
++			VanillaWhipSettings(this, out WhipSettings.segments, out WhipSettings.rangeMultiplier);
+ 		}
+ 
+ 		public static int GetNextSlot() {
 @@ -8169,6 +_,7 @@
  			projectile.honeyWet = Collision.honey;
  			Main.projectileIdentity[Owner, num] = num;
@@ -891,14 +899,18 @@
  			if (ai[0] == (float)(int)(timeToFlyOut / 2f)) {
  				WhipPointsForCollision.Clear();
  				FillWhipControlPoints(this, WhipPointsForCollision);
-@@ -30666,6 +_,7 @@
- 					rangeMultiplier *= 0.95f;
- 					break;
- 			}
-+			ProjectileLoader.GetWhipSettings(proj, Main.player[proj.owner], ref timeToFlyOut, ref segments, ref rangeMultiplier);
- 		}
+@@ -30632,6 +_,11 @@
  
- 		private void AI_160_Kites() {
+ 		public static void GetWhipSettings(Projectile proj, out float timeToFlyOut, out int segments, out float rangeMultiplier) {
+ 			timeToFlyOut = Main.player[proj.owner].itemAnimationMax * proj.MaxUpdates;
++			segments = proj.WhipSettings.segments;
++			rangeMultiplier = proj.WhipSettings.rangeMultiplier;
++		}
++
++		private static void VanillaWhipSettings(Projectile proj, out int segments, out float rangeMultiplier) {
+ 			segments = 20;
+ 			rangeMultiplier = 1f;
+ 			switch (proj.type) {
 @@ -33091,6 +_,9 @@
  					if (num3 > (float)num9)
  						ai[0] = 1f;

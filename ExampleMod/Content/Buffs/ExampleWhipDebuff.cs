@@ -14,7 +14,6 @@ namespace ExampleMod.Content.Buffs
 	public class ExampleWhipDebuffNPC : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
-		public override bool CloneNewInstances => true;
 
 		public bool markedByExampleWhip;
 
