@@ -174,12 +174,15 @@
  				if (aShoppingBiome.IsInBiome(player)) {
  					AddHappinessReportText("HateBiome", new {
  						BiomeName = BiomeNameByKey(aShoppingBiome.NameKey)
-@@ -316,7 +_,7 @@
+@@ -316,7 +_,10 @@
  
  		private bool IsNotReallyTownNPC(NPC npc) {
  			int type = npc.type;
++			/*
 -			if (type == 37 || type == 368 || type == 453)
-+			if (type == 37 || type == 368 || type == 453 || NPCLoader.ActsLikeTownNPC(npc))
++ 			if (type == 37 || type == 368 || type == 453)
++			*/
++			if (type == 37 || type == 368 || NPCID.Sets.ActsLikeTownNPC[type])
  				return true;
  
  			return false;

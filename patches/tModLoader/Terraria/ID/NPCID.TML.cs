@@ -15,6 +15,13 @@ namespace Terraria.ID
 
 			//Default ID is the skeleton merchant
 			/// <summary>
+			/// Whether or not a given NPC will act like a town NPC in terms of AI, animations, and attacks, but not in other regards, such as having a happiness button or appearing
+			/// on the minimap, like the bone merchant in vanilla.
+			/// </summary>
+			public static bool[] ActsLikeTownNPC = Factory.CreateBoolSet(453);
+
+			//Default ID is the skeleton merchant
+			/// <summary>
 			/// Whether or not a given NPC will spawn with a custom name like a town NPC. In order to determine what name will be selected, override the TownNPCName hook.
 			/// True will force a name to be rolled regardless of vanilla behavior. False will have vanilla handle the naming.
 			/// </summary>
