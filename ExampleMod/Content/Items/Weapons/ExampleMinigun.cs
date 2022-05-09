@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,6 +10,8 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded minigun.");
+
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -45,7 +48,7 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		// The following method gives this gun a 38% chance to not consume ammo
-		public override bool ConsumeAmmo(Player player) {
+		public override bool CanConsumeAmmo(Player player) {
 			return Main.rand.NextFloat() >= 0.38f;
 		}
 

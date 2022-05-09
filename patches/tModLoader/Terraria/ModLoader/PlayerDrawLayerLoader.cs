@@ -65,7 +65,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static PlayerDrawLayer[] GetDrawLayers(PlayerDrawSet drawInfo) {
 			foreach (var layer in _drawOrder) {
-				layer.ResetVisiblity(drawInfo);
+				layer.ResetVisibility(drawInfo);
 			}
 
 			PlayerLoader.HideDrawLayers(drawInfo);

@@ -36,11 +36,11 @@ namespace Terraria.ModLoader.UI
 				_currentString = newString;
 				OnTextChange?.Invoke(this, EventArgs.Empty);
 			}
-			
+
 			string displayString = _currentString;
 			if (++_textBlinkerCount / 20 % 2 == 0)
 				displayString += "|";
-			
+
 			CalculatedStyle space = GetDimensions();
 			if (_currentString.Length == 0) {
 				Utils.DrawBorderString(spriteBatch, _hintText, new Vector2(space.X, space.Y), Color.Gray);

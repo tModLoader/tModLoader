@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Graphics/Renderers/LegacyPlayerRenderer.cs
+--- src/TerrariaNetCore/Terraria/Graphics/Renderers/LegacyPlayerRenderer.cs
 +++ src/tModLoader/Terraria/Graphics/Renderers/LegacyPlayerRenderer.cs
 @@ -5,6 +_,7 @@
  using Terraria.DataStructures;
@@ -54,10 +54,10 @@
  			PlayerDrawLayers.DrawPlayer_extra_TorsoPlus(ref drawinfo);
  			PlayerDrawLayers.DrawPlayer_01_2_JimsCloak(ref drawinfo);
  			PlayerDrawLayers.DrawPlayer_extra_TorsoMinus(ref drawinfo);
-@@ -196,6 +_,15 @@
- 			PlayerDrawLayers.DrawPlayer_35_IceBarrier(ref drawinfo);
+@@ -198,6 +_,15 @@
  			PlayerDrawLayers.DrawPlayer_36_CTG(ref drawinfo);
  			PlayerDrawLayers.DrawPlayer_37_BeetleBuff(ref drawinfo);
+ 			PlayerDrawLayers.DrawPlayer_38_EyebrellaCloud(ref drawinfo);
 +			*/
 +			PlayerLoader.ModifyDrawInfo(ref drawinfo);
 +

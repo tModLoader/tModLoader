@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.UI;
 
@@ -127,27 +128,27 @@ namespace Terraria.ModLoader.UI
 				totalModMemory += usage.total;
 				var sb = new StringBuilder();
 				sb.Append(ModLoader.GetMod(modName).DisplayName);
-				sb.Append($"\nEstimate last load RAM usage: {SizeSuffix(usage.total)}");
+				sb.Append($"\n{Language.GetTextValue("tModLoader.LastLoadRamUsage", SizeSuffix(usage.total))}");
 				if (usage.managed > 0)
-					sb.Append($"\n Managed: {SizeSuffix(usage.managed)}");
+					sb.Append($"\n {Language.GetTextValue("tModLoader.ManagedMemory", SizeSuffix(usage.managed))}");
 				if (usage.managed > 0)
-					sb.Append($"\n Code: {SizeSuffix(usage.code)}");
+					sb.Append($"\n {Language.GetTextValue("tModLoader.CodeMemory", SizeSuffix(usage.code))}");
 				if (usage.sounds > 0)
-					sb.Append($"\n Sounds: {SizeSuffix(usage.sounds)}");
+					sb.Append($"\n {Language.GetTextValue("tModLoader.SoundMemory", SizeSuffix(usage.sounds))}");
 				if (usage.textures > 0)
-					sb.Append($"\n Textures: {SizeSuffix(usage.textures)}");
+					sb.Append($"\n {Language.GetTextValue("tModLoader.TextureMemory", SizeSuffix(usage.textures))}");
 				_memoryBarItems.Add(new MemoryBarItem(sb.ToString(), usage.total, _colors[i++ % _colors.Length]));
 			}
 
 			long allocatedMemory = Process.GetCurrentProcess().WorkingSet64;
 			var nonModMemory = allocatedMemory - totalModMemory;
 			_memoryBarItems.Add(new MemoryBarItem(
-				$"Terraria + misc: {SizeSuffix(nonModMemory)}\n Total: {SizeSuffix(allocatedMemory)}",
+				$"{Language.GetTextValue("tModLoader.TerrariaMemory", SizeSuffix(nonModMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffix(allocatedMemory))}",
 				nonModMemory, Color.DeepSkyBlue));
 
 			var remainingMemory = availableMemory - allocatedMemory;
 			_memoryBarItems.Add(new MemoryBarItem(
-				$"Available Memory: {SizeSuffix(remainingMemory)}\n Total: {SizeSuffix(availableMemory)}",
+				$"{Language.GetTextValue("tModLoader.AvailableMemory", SizeSuffix(remainingMemory))}\n {Language.GetTextValue("tModLoader.TotalMemory", SizeSuffix(availableMemory))}",
 				remainingMemory, Color.Gray));
 
 			//portion = (maxMemory - availableMemory - meminuse) / (float)maxMemory;
@@ -165,7 +166,7 @@ namespace Terraria.ModLoader.UI
 			// mag is 0 for bytes, 1 for KB, 2, for MB, etc.
 			int mag = (int)Math.Log(value, 1024);
 
-			// 1L << (mag * 10) == 2 ^ (10 * mag) 
+			// 1L << (mag * 10) == 2 ^ (10 * mag)
 			// [i.e. the number of bytes in the unit corresponding to mag]
 			decimal adjustedSize = (decimal)value / (1L << (mag * 10));
 

@@ -31,6 +31,8 @@ namespace Terraria.ModLoader
 
 		protected sealed override void Register() => BossBarLoader.AddBossBarStyle(this);
 
+		public sealed override void SetupContent() => SetStaticDefaults();
+
 		/// <summary>
 		/// Runs after update code for boss bars (skipped if PreventUpdate returns true), can be used to identify which NPCs to draw.
 		/// </summary>

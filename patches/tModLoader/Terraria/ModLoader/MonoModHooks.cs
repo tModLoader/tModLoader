@@ -1,6 +1,5 @@
 ﻿using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
-using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -36,6 +35,10 @@ namespace Terraria.ModLoader
 		private static HashSet<Assembly> NativeDetouringGranted = new HashSet<Assembly> { Assembly.GetExecutingAssembly() };
 
 		private static bool isInitialized;
+		static int hooks = 0;
+		static int detours = 0;
+		static int ndetours = 0;
+
 		internal static void Initialize() {
 			if (isInitialized)
 				return;
@@ -75,6 +78,21 @@ namespace Terraria.ModLoader
 			manager.OnNativeDetour += (asm, method, from, to) => {
 				NativeAccessCheck(asm);
 				Logging.tML.Debug($"NativeDetour {StringRep(method)} [{from} -> {to}] by {asm.GetName().Name}");
+			};
+
+			Hook.OnUndo += (obj) => {
+				hooks++;
+				return true;
+			};
+
+			Detour.OnUndo += (obj) => {
+				detours++;
+				return true;
+			};
+
+			NativeDetour.OnUndo += (obj) => {
+				ndetours++;
+				return true;
 			};
 
 			isInitialized = true;
@@ -123,33 +141,12 @@ namespace Terraria.ModLoader
 			if (mod is ModLoaderMod)
 				return;
 
-			int hooks = 0, detours = 0, ndetours = 0;
-			bool OnHookUndo(object obj) {
-				hooks++;
-				return true;
-			}
-			bool OnDetourUndo(object obj) {
-				detours++;
-				return true;
-			}
-			bool OnNativeDetourUndo(object obj) {
-				ndetours++;
-				return true;
-			}
-
-			Hook.OnUndo += OnHookUndo;
-			Detour.OnUndo += OnDetourUndo;
-			NativeDetour.OnUndo += OnNativeDetourUndo;
-
-			foreach (var asm in AssemblyManager.GetModAssemblies(mod.Name))
+			foreach (var asm in AssemblyManager.GetModAssemblies(mod.Name)) {
+				hooks = detours = ndetours = 0;
 				manager.Unload(asm);
-
-			Hook.OnUndo -= OnHookUndo;
-			Detour.OnUndo -= OnDetourUndo;
-			NativeDetour.OnUndo -= OnNativeDetourUndo;
-
-			if (hooks > 0 || detours > 0 || ndetours > 0)
-				Logging.tML.Debug($"Unloaded {hooks} hooks, {detours} detours and {ndetours} native detours from {mod.Name}");
+				if (hooks > 0 || detours > 0 || ndetours > 0)
+					Logging.tML.Debug($"Unloaded {hooks} hooks, {detours} detours and {ndetours} native detours from {asm.GetName().Name} in {mod.DisplayName}");
+			}
 		}
 	}
 }

@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.Graphics;
 using Terraria.Localization;
+using Terraria.Map;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -33,7 +34,7 @@ namespace Terraria.ModLoader
 			var hook = new HookList(ModLoader.Method(func));
 
 			hooks.Add(hook);
-			
+
 			return hook;
 		}
 
@@ -44,16 +45,18 @@ namespace Terraria.ModLoader
 		}
 
 		//Delegates
-		
+
 		private delegate void DelegateModifyTransformMatrix(ref SpriteViewMatrix Transform);
-		
+
 		private delegate void DelegateModifySunLightColor(ref Color tileColor, ref Color backgroundColor);
-		
+
 		private delegate void DelegateModifyLightingBrightness(ref float scale);
+
+		private delegate void DelegatePreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext);
 
 		private delegate void DelegatePostDrawFullscreenMap(ref string mouseText);
 
-		private delegate void DelegateModifyTimeRate(ref int timeRate, ref int tileUpdateRate);
+		private delegate void DelegateModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate);
 
 		private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes, ref float totalWeight);
 
@@ -62,6 +65,12 @@ namespace Terraria.ModLoader
 		private delegate void DelegateTileCountsAvailable(ReadOnlySpan<int> tileCounts);
 
 		//HookLists
+
+		private static HookList HookAddRecipes = AddHook<Action>(s => s.AddRecipes);
+
+		private static HookList HookPostAddRecipes = AddHook<Action>(s => s.PostAddRecipes);
+
+		private static HookList HookAddRecipeGroups = AddHook<Action>(s => s.AddRecipeGroups);
 
 		private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
 
@@ -74,6 +83,8 @@ namespace Terraria.ModLoader
 		private static HookList HookModifySunLightColor = AddHook<DelegateModifySunLightColor>(s => s.ModifySunLightColor);
 
 		private static HookList HookModifyLightingBrightness = AddHook<DelegateModifyLightingBrightness>(s => s.ModifyLightingBrightness);
+
+		private static HookList HookPreDrawMapIconOverlay = AddHook<DelegatePreDrawMapIconOverlay>(s => s.PreDrawMapIconOverlay);
 
 		private static HookList HookPostDrawFullscreenMap = AddHook<DelegatePostDrawFullscreenMap>(s => s.PostDrawFullscreenMap);
 

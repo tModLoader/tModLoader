@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -13,7 +14,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		// If you want to know more about tiles, please follow this link
 		// https://github.com/tModLoader/tModLoader/wiki/Basic-Tile
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// This changes a Framed tile to a FrameImportant tile
 			// For modders, just remember to set this to true when you make a tile that uses a TileObjectData
 			// Or basically all tiles that aren't like dirt, ores, or other basic building tiles
@@ -40,7 +41,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 32, 48, ModContent.ItemType<ExampleAnimatedGlowmaskTileItem>());
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 48, ModContent.ItemType<ExampleAnimatedGlowmaskTileItem>());
 		}
 
 		public override void AnimateTile(ref int frame, ref int frameCounter) {
@@ -50,8 +51,8 @@ namespace ExampleMod.Content.Tiles
 
 		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
 			Tile tile = Main.tile[i, j];
-			Texture2D texture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile").Value;
-			Texture2D glowTexture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile_Glow").Value;
+			Texture2D texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile").Value;
+			Texture2D glowTexture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedGlowmaskTile_Glow").Value;
 
 			// If you are using ModTile.SpecialDraw or PostDraw or PreDraw, use this snippet and add zero to all calls to spriteBatch.Draw
 			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting mode
@@ -59,23 +60,23 @@ namespace ExampleMod.Content.Tiles
 			Vector2 zero = Main.drawToScreen ? Vector2.Zero : new Vector2(Main.offScreenRange);
 
 			// Because height of third tile is different we change it
-			int height = tile.frameY % AnimationFrameHeight == 36 ? 18 : 16;
+			int height = tile.TileFrameY % AnimationFrameHeight == 36 ? 18 : 16;
 
 			// Offset along the Y axis depending on the current frame
 			int frameYOffset = Main.tileFrame[Type] * AnimationFrameHeight;
 
 			// Firstly we draw the original texture and then glow mask texture
-			Main.spriteBatch.Draw(
-				texture, 
+			spriteBatch.Draw(
+				texture,
 				new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
-				new Rectangle(tile.frameX, tile.frameY + frameYOffset, 16, height),
+				new Rectangle(tile.TileFrameX, tile.TileFrameY + frameYOffset, 16, height),
 				Lighting.GetColor(i, j), 0f, default, 1f, SpriteEffects.None, 0f);
 			// Make sure to draw with Color.White or at least a color that is fully opaque
 			// Achieve opaqueness by increasing the alpha channel closer to 255. (lowering closer to 0 will achieve transparency)
-			Main.spriteBatch.Draw(
+			spriteBatch.Draw(
 				glowTexture,
 				new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
-				new Rectangle(tile.frameX, tile.frameY + frameYOffset, 16, height),
+				new Rectangle(tile.TileFrameX, tile.TileFrameY + frameYOffset, 16, height),
 				Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 
 			// Return false to stop vanilla draw
@@ -85,6 +86,10 @@ namespace ExampleMod.Content.Tiles
 
 	internal class ExampleAnimatedGlowmaskTileItem : ModItem
 	{
+		public override void SetStaticDefaults() {
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+		}
+
 		public override void SetDefaults() {
 			Item.CloneDefaults(ItemID.VoidMonolith);
 			Item.createTile = ModContent.TileType<ExampleAnimatedGlowmaskTile>();

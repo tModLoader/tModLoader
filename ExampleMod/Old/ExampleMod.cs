@@ -23,8 +23,6 @@ namespace ExampleMod
 {
 	public class ExampleMod : Mod
 	{
-		public static ModHotKey RandomBuffHotKey;
-		public static int FaceCustomCurrencyId;
 		// With the new fonts in 1.3.5, font files are pretty big now so you need to generate the font file before building the mod.
 		// You can use https://forums.terraria.org/index.php?threads/dynamicspritefontgenerator-0-4-generate-fonts-without-xna-game-studio.57127/ to make dynamicspritefonts
 		public static DynamicSpriteFont exampleFont;
@@ -59,21 +57,12 @@ namespace ExampleMod
 			// In older tModLoader versions we used: ErrorLogger.Log("blabla");
 			// Replace that with above
 
-			// Registers a new hotkey
-			RandomBuffHotKey = RegisterHotKey("Random Buff", "P"); // See https://docs.microsoft.com/en-us/previous-versions/windows/xna/bb197781(v=xnagamestudio.41) for special keys
-
-			// Registers a new custom currency
-			FaceCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new ExampleCustomCurrency(ModContent.ItemType<Items.Face>(), 999L));
-
 			Mundane.AddHacks();
 
 			// All code below runs only if we're not loading on a server
 			if (!Main.dedServ) {
 				// Add certain equip textures
 				AddEquipTexture(null, EquipType.Legs, "ExampleRobe_Legs", "ExampleMod/Items/Armor/ExampleRobe_Legs");
-				AddEquipTexture(new Items.Armor.BlockyHead(), null, EquipType.Head, "BlockyHead", "ExampleMod/Items/Armor/ExampleCostume_Head");
-				AddEquipTexture(new Items.Armor.BlockyBody(), null, EquipType.Body, "BlockyBody", "ExampleMod/Items/Armor/ExampleCostume_Body", "ExampleMod/Items/Armor/ExampleCostume_Arms");
-				AddEquipTexture(new Items.Armor.BlockyLegs(), null, EquipType.Legs, "BlockyLeg", "ExampleMod/Items/Armor/ExampleCostume_Legs");
 
 				// Register a new music box
 				AddMusicBox(GetSoundSlot(SoundType.Music, "Sounds/Music/MarbleGallery"), ItemType("ExampleMusicBox"), TileType("ExampleMusicBox"));
@@ -153,7 +142,6 @@ namespace ExampleMod
 			// Unload static references
 			// You need to clear static references to assets (Texture2D, SoundEffects, Effects). 
 			// In addition to that, if you want your mod to completely unload during unload, you need to clear static references to anything referencing your Mod class
-			RandomBuffHotKey = null;
 			NPCs.ExampleTravelingMerchant.shopItems.Clear();
 		}
 

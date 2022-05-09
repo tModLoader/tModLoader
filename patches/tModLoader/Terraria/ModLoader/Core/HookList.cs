@@ -49,8 +49,8 @@ namespace Terraria.ModLoader.Core
 							return false;
 
 						var inst = instances[(int)(ij++)];
-						ii = inst.index;
-						current = inst.instance;
+						ii = inst.Index;
+						current = inst.Instance;
 					}
 
 					if (ii == hookIndex) {

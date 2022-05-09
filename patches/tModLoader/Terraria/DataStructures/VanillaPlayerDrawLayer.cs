@@ -34,7 +34,7 @@ namespace Terraria.DataStructures
 			_isHeadLayer = isHeadLayer;
 		}
 
-		public override bool GetDefaultVisiblity(PlayerDrawSet drawInfo) => condition?.Invoke(drawInfo) ?? true;
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) => condition?.Invoke(drawInfo) ?? true;
 
 		public override Position GetDefaultPosition() {
 			if (position != null)

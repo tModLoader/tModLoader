@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/States/UIWorkshopSelectWorldToPublish.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorkshopSelectWorldToPublish.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopSelectWorldToPublish.cs
 @@ -23,6 +_,12 @@
  		private UIState _menuToGoBackTo;

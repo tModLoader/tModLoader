@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
 @@ -1,6 +_,9 @@
  using Microsoft.Xna.Framework;
@@ -67,7 +67,7 @@
 +			// do not write other option, base64 holds all the info.
 +			if (I.ModItem != null || I.globalItems.Any()) {
 +				str = str + "/d" + ItemIO.ToBase64(I);
-+				
++
 +				goto End;
 +			}
 +

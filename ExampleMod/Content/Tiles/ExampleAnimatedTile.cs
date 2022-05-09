@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -12,7 +14,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		// If you want to know more about tiles, please follow this link
 		// https://github.com/tModLoader/tModLoader/wiki/Basic-Tile
-		public override void SetDefaults() {
+		public override void SetStaticDefaults() {
 			// If a tile is a light source
 			Main.tileLighted[Type] = true;
 			// This changes a Framed tile to a FrameImportant tile
@@ -34,7 +36,7 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(238, 145, 105), name);
 
 			// Can't use this since texture is vertical
-			//AnimationFrameHeight = 56;
+			// AnimationFrameHeight = 56;
 		}
 
 		// Our textures animation frames are arranged horizontally, which isn't typical, so here we specify animationFrameWidth which we use later in AnimateIndividualTile
@@ -75,7 +77,7 @@ namespace ExampleMod.Content.Tiles
 		// Below is an example completely manually drawing a tile. It shows some interesting concepts that may be useful for more advanced things
 		/*public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
 			// Instead of SetSpriteEffects
-			// Flips the sprite if x coord is odd. Makes the tile more interesting 
+			// Flips the sprite if x coord is odd. Makes the tile more interesting
 			SpriteEffects effects = SpriteEffects.None;
 			if (i % 2 == 1)
 				effects = SpriteEffects.FlipHorizontally;
@@ -95,7 +97,7 @@ namespace ExampleMod.Content.Tiles
 
 
 			Tile tile = Main.tile[i, j];
-			Texture2D texture = ModContent.GetTexture("ExampleMod/Content/Tiles/ExampleAnimatedTileTile").Value;
+			Texture2D texture = ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/ExampleAnimatedTileTile").Value;
 
 			// If you are using ModTile.SpecialDraw or PostDraw or PreDraw, use this snippet and add zero to all calls to spriteBatch.Draw
 			// The reason for this is to accommodate the shift in drawing coordinates that occurs when using the different Lighting mode
@@ -133,7 +135,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 16, 32, ModContent.ItemType<ExampleAnimatedTileItem>());
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 16, 32, ModContent.ItemType<ExampleAnimatedTileItem>());
 		}
 	}
 
@@ -141,6 +143,8 @@ namespace ExampleMod.Content.Tiles
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Red Firefly in a Bottle");
+
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {

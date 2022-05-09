@@ -6,7 +6,7 @@ using Terraria.GameInput;
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// Represents a loaded input binding. It is suggested to access the keybind status only in ModPlayer.ProcessTriggers. 
+	/// Represents a loaded input binding. It is suggested to access the keybind status only in ModPlayer.ProcessTriggers.
 	/// </summary>
 	public class ModKeybind
 	{
@@ -19,7 +19,7 @@ namespace Terraria.ModLoader
 			this.mod = mod;
 			this.name = name;
 			this.defaultBinding = defaultBinding;
-			
+
 			uniqueName = mod.Name + ": " + name;
 		}
 

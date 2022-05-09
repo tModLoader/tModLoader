@@ -15,7 +15,7 @@ namespace Terraria.ModLoader.IO
 {
 	internal static class PlayerIO
 	{
-		internal static void WriteVanillaHairDye(short hairDye, BinaryWriter writer) {
+		internal static void WriteByteVanillaHairDye(int hairDye, BinaryWriter writer) {
 			writer.Write((byte)(hairDye > EffectsTracker.vanillaHairShaderCount ? 0 : hairDye));
 		}
 
@@ -85,10 +85,13 @@ namespace Terraria.ModLoader.IO
 		public static List<TagCompound> SaveInventory(Item[] inv) {
 			var list = new List<TagCompound>();
 			for (int k = 0; k < inv.Length; k++) {
-				if (ItemLoader.NeedsModSaving(inv[k])) {
-					var tag = ItemIO.Save(inv[k]);
-					tag.Set("slot", (short)k);
-					list.Add(tag);
+				var globalData = ItemIO.SaveGlobals(inv[k]);
+				if (globalData != null || ItemLoader.NeedsModSaving(inv[k])) {
+					var tag = ItemIO.Save(inv[k], globalData);
+					if (tag.Count != 0) {
+						tag.Set("slot", (short)k);
+						list.Add(tag);
+					}
 				}
 			}
 			return list.Count > 0 ? list : null;
@@ -101,14 +104,14 @@ namespace Terraria.ModLoader.IO
 
 		public static List<TagCompound> SaveResearch(Player player) {
 			var list = new List<TagCompound>();
-			Dictionary<string, int> dictionary = new Dictionary<string, int>(player.creativeTracker.ItemSacrifices._sacrificeCountByItemPersistentId);
-			foreach (KeyValuePair<string, int> item in dictionary) {
-				ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(item.Key, out int netID);
-				ContentSamples.ItemsByType.TryGetValue(netID, out Item realItem);
-				if (ItemLoader.NeedsModSaving(realItem)) {
+			var dictionary = new Dictionary<int, int>(player.creativeTracker.ItemSacrifices.SacrificesCountByItemIdCache);
+			foreach (var item in dictionary) {
+				ModItem modItem = ItemLoader.GetItem(item.Key);
+				if (modItem != null) {
 					TagCompound tag = new TagCompound {
-						["sacrificeCount"] = item.Value,
-						["persistentID"] = item.Key
+						["mod"] = modItem.Mod.Name,
+						["name"] = modItem.Name,
+						["sacrificeCount"] = item.Value
 					};
 					list.Add(tag);
 				}
@@ -118,23 +121,35 @@ namespace Terraria.ModLoader.IO
 
 		public static void LoadResearch(Player player, IList<TagCompound> list) {
 			foreach (var tag in list) {
-				ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(tag.GetString("persistentID"), out int netID);
-				ContentSamples.ItemsByType.TryGetValue(netID, out Item realItem);
-				if (ItemLoader.NeedsModSaving(realItem)) {
-					player.creativeTracker.ItemSacrifices._sacrificeCountByItemPersistentId[tag.GetString("persistentID")] = tag.GetInt("sacrificeCount");
-					if (ContentSamples.ItemNetIdsByPersistentIds.TryGetValue(tag.GetString("persistentID"), out int value2))
-						player.creativeTracker.ItemSacrifices.SacrificesCountByItemIdCache[value2] = tag.GetInt("sacrificeCount");
+				if (!tag.ContainsKey("mod") || !tag.ContainsKey("name"))
+					continue; // Discard tags from previous insufficient implementation pre-alpha so they are not carried over to unloadedResearch
+
+				string modName = tag.GetString("mod");
+				string modItemName = tag.GetString("name");
+
+				if (ModContent.TryFind(modName, modItemName, out ModItem modItem)) {
+					int netId = modItem.Type;
+					string persistentId = ContentSamples.ItemPersistentIdsByNetIds[netId];
+
+					int sacrificeCount = tag.GetInt("sacrificeCount");
+					var itemSacrifices = player.creativeTracker.ItemSacrifices;
+					itemSacrifices._sacrificeCountByItemPersistentId[persistentId] = sacrificeCount;
+					itemSacrifices.SacrificesCountByItemIdCache[netId] = sacrificeCount;
+				}
+				else {
+					player.GetModPlayer<UnloadedPlayer>().unloadedResearch.Add(tag);
 				}
 			}
 		}
 
-		public static string SaveHairDye(short hairDye) {
+		public static string SaveHairDye(int hairDye) {
 			if (hairDye <= EffectsTracker.vanillaHairShaderCount)
 				return "";
 
 			int itemId = GameShaders.Hair._reverseShaderLookupDictionary[hairDye];
 			var modItem = ItemLoader.GetItem(itemId);
-			return modItem.Mod.Name + '/' + modItem.Name;
+
+			return modItem.FullName;
 		}
 
 		public static void LoadHairDye(Player player, string hairDyeItemName) {
@@ -148,17 +163,23 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveModData(Player player) {
 			var list = new List<TagCompound>();
+
+			var saveData = new TagCompound();
+
 			foreach (var modPlayer in player.modPlayers) {
-				var data = modPlayer.Save();
-				if (data == null)
+				modPlayer.SaveData(saveData);
+
+				if (saveData.Count == 0)
 					continue;
 
 				list.Add(new TagCompound {
 					["mod"] = modPlayer.Mod.Name,
 					["name"] = modPlayer.Name,
-					["data"] = data
+					["data"] = saveData
 				});
+				saveData = new TagCompound();
 			}
+
 			return list;
 		}
 
@@ -171,7 +192,7 @@ namespace Terraria.ModLoader.IO
 					var modPlayer = player.GetModPlayer(modPlayerBase);
 
 					try {
-						modPlayer.Load(tag.GetCompound("data"));
+						modPlayer.LoadData(tag.GetCompound("data"));
 					}
 					catch (Exception e) {
 						var mod = modPlayer.Mod;

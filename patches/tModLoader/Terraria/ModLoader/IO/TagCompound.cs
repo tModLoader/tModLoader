@@ -13,7 +13,11 @@ namespace Terraria.ModLoader.IO
 	//Additional conversions can be added using TagConverter
 	public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 	{
+		[ThreadStatic]
+		private static TagCompound emptyTagCache = new();
+
 		private Dictionary<string, object> dict = new Dictionary<string, object>();
+
 		public T Get<T>(string key) {
 			dict.TryGetValue(key, out object tag);
 			try {
@@ -28,7 +32,7 @@ namespace Terraria.ModLoader.IO
 
 		// adding default param to Set overload is a breaking changefor now.
 		public void Set(string key, object value) => Set(key, value, false);
-		
+
 		//if value is null, calls RemoveTag, also performs type checking
 		public void Set(string key, object value, bool replace = false) {
 			if (value == null) {

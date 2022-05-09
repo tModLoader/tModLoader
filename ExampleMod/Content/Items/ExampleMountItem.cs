@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,6 +10,8 @@ namespace ExampleMod.Content.Items
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("ExampleMount Car key");
 			Tooltip.SetDefault("This summons a modded mount.");
+
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults() {
@@ -17,7 +20,7 @@ namespace ExampleMod.Content.Items
 			Item.useTime = 20;
 			Item.useAnimation = 20;
 			Item.useStyle = ItemUseStyleID.Swing; // how the player's arm moves when using the item
-			Item.sellPrice(gold: 3);
+			Item.value = Item.sellPrice(gold: 3);
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item79; // What sound should play when using the item
 			Item.noMelee = true; // this item doesn't do any melee damage

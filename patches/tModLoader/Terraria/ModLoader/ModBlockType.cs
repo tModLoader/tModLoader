@@ -38,18 +38,25 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the properties after initial loading has completed.
+		/// <br/> This is where you would set the properties of this tile/wall. Many properties are stored as arrays throughout Terraria's code.
+		/// <br/> For example:
+		/// <list type="bullet">
+		/// <item> Main.tileSolid[Type] = true; </item>
+		/// <item> Main.tileSolidTop[Type] = true; </item>
+		/// <item> Main.tileBrick[Type] = true; </item>
+		/// <item> Main.tileBlockLight[Type] = true; </item>
+		/// </list>
+		/// </summary>
+		public override void SetStaticDefaults() { }
+
+		/// <summary>
 		/// Allows you to choose which minimap entry the tile/wall at the given coordinates will use. 0 is the first entry added by AddMapEntry, 1 is the second entry, etc. Returns 0 by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		public virtual ushort GetMapOption(int i, int j) {
 			return 0;
-		}
-
-		/// <summary>
-		/// Allows you to set the properties of this tile/wall. Many properties are stored as arrays throughout Terraria's code.
-		/// </summary>
-		public virtual void SetDefaults() {
 		}
 
 		/// <summary>
@@ -66,6 +73,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="fail">If true, the tile is spawning dust for reasons other than the tile actually being destroyed. Worms, projectiles, and other effects cause dust to spawn aside from the usual case of the tile breaking.</param>
+		/// <param name="num">The number of dust that will be spawned by the calling code</param>
 		public virtual void NumDust(int i, int j, bool fail, ref int num) {
 		}
 
@@ -74,6 +83,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The dust type that will be spawned by the calling code</param>
 		public virtual bool CreateDust(int i, int j, ref int type) {
 			type = DustType;
 			return true;
@@ -102,6 +112,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="spriteBatch"></param>
 		public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
 			return true;
 		}
@@ -111,6 +122,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="spriteBatch"></param>
 		public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch) {
 		}
 
@@ -132,12 +144,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine how much light this tile/wall emits.
-		/// If it is a tile, make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.
-		/// If it is a wall, it can also let you light up the block in front of this wall.
+		/// Allows you to determine how much light this tile/wall emits.<br/>
+		/// If it is a tile, make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.<br/>
+		/// If it is a wall, it can also let you light up the block in front of this wall.<br/>
+		/// See <see cref="Terraria.Graphics.Light.TileLightScanner.ApplyTileLight(Tile, int, int, ref Terraria.Utilities.FastRandom, ref Microsoft.Xna.Framework.Vector3)"/> for vanilla tile light values to use as a reference.<br/>
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="r">The red component of light, usually a value between 0 and 1</param>
+		/// <param name="g">The green component of light, usually a value between 0 and 1</param>
+		/// <param name="b">The blue component of light, usually a value between 0 and 1</param>
 		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 		}
 	}

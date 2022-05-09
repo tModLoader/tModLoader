@@ -1,5 +1,6 @@
 ﻿using ExampleMod.Content.Items.Ammo;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,7 +12,9 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleCustomAmmoGun : ModItem
 	{
 		public override void SetStaticDefaults() {
-			Tooltip.SetDefault("Uses CustomAmmo as ammo and shooting HomingProjectiles");
+			Tooltip.SetDefault("Uses ExampleCustomAmmo as ammo and shooting HomingProjectiles");
+
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 		public override void SetDefaults() {
 			Item.width = 42; // The width of item hitbox
@@ -28,11 +31,11 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useTime = 35; // The item's use time in ticks (60 ticks == 1 second.)
 			Item.UseSound = SoundID.Item11; // The sound that this item plays when used.
 			Item.useStyle = ItemUseStyleID.Shoot; // How you use the item (swinging, holding out, shoot, etc.)
-			Item.value = Item.buyPrice(gold: 1); //The value of the weapon in copper coins
+			Item.value = Item.buyPrice(gold: 1); // The value of the weapon in copper coins
 
-			//Custom ammo and shooting homing projectiles
+			// Custom ammo and shooting homing projectiles
 			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleHomingProjectile>();
-			Item.useAmmo = ModContent.ItemType<ExampleCustomAmmo>(); //Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
+			Item.useAmmo = ModContent.ItemType<ExampleCustomAmmo>(); // Restrict the type of ammo the weapon can use, so that the weapon cannot use other ammos
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

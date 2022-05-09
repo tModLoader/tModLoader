@@ -18,6 +18,7 @@ namespace Terraria.ModLoader
 		Shield,
 		Neck,
 		Face,
-		Balloon
+		Balloon,
+ 		Beard,
 	}
 }

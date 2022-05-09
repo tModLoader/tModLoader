@@ -1,0 +1,4 @@
+Downloaded from: https://frippery.org/files/busybox/busybox64.exe
+GitHub mirror: https://github.com/rmyorston/busybox-w32
+
+This file is distributed under GPL2: https://github.com/rmyorston/busybox-w32/blob/master/LICENSE

@@ -11,8 +11,8 @@ namespace Terraria.ModLoader.Default.Developer
 		public string InternalSetName => GetType().Name.Split('_')[0];
 
 		public override void SetStaticDefaults() {
-			var displayName = Name.Replace('_', ' ');
-			displayName.Insert(displayName.IndexOf(' '), SetSuffix);
+			string displayName = Name.Replace('_', ' ');
+			displayName = displayName.Insert(displayName.IndexOf(' '), SetSuffix);
 			DisplayName.SetDefault(displayName);
 		}
 
@@ -23,7 +23,7 @@ namespace Terraria.ModLoader.Default.Developer
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			var line = new TooltipLine(Mod, "DeveloperSetNote", $"{TooltipBrief}Developer Item") {
-				overrideColor = Color.OrangeRed
+				OverrideColor = Color.OrangeRed
 			};
 			tooltips.Add(line);
 		}

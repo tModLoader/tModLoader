@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Achievements/AchievementCondition.cs
+--- src/TerrariaNetCore/Terraria/Achievements/AchievementCondition.cs
 +++ src/tModLoader/Terraria/Achievements/AchievementCondition.cs
 @@ -1,5 +_,6 @@
  using Newtonsoft.Json;

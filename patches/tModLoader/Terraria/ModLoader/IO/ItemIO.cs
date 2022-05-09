@@ -11,14 +11,32 @@ namespace Terraria.ModLoader.IO
 	{
 		//replace netID writes in Terraria.Player.SavePlayer
 		//in Terraria.IO.WorldFile.SaveChests include IsModItem for no-item check
-		internal static void WriteVanillaID(Item item, BinaryWriter writer) => writer.Write(item.ModItem != null ? 0 : item.netID);
+		internal static void WriteVanillaID(Item item, BinaryWriter writer)
+			=> writer.Write(item.ModItem != null ? 0 : item.netID);
 
-		internal static void WriteShortVanillaID(Item item, BinaryWriter writer) => writer.Write((short)(item.ModItem != null ? 0 : item.netID));
+		internal static void WriteShortVanillaID(Item item, BinaryWriter writer)
+			=> WriteShortVanillaID(item.netID, writer);
 
-		internal static void WriteByteVanillaPrefix(Item item, BinaryWriter writer) => writer.Write((byte)(item.prefix >= PrefixID.Count ? 0 : item.prefix));
+		internal static void WriteShortVanillaID(int id, BinaryWriter writer)
+			=> writer.Write((short)(id >= ItemID.Count ? 0 : id));
 
-		public static TagCompound Save(Item item) {
+		internal static void WriteShortVanillaStack(Item item, BinaryWriter writer)
+			=> WriteShortVanillaStack(item.stack, writer);
+
+		internal static void WriteShortVanillaStack(int stack, BinaryWriter writer)
+			=> writer.Write((short)(stack > short.MaxValue ? short.MaxValue : stack));
+
+		internal static void WriteByteVanillaPrefix(Item item, BinaryWriter writer)
+			=> WriteByteVanillaPrefix(item.prefix, writer);
+
+		internal static void WriteByteVanillaPrefix(int prefix, BinaryWriter writer)
+			=> writer.Write((byte)(prefix >= PrefixID.Count ? 0 : prefix));
+
+		public static TagCompound Save(Item item) => Save(item, SaveGlobals(item));
+
+		public static TagCompound Save(Item item, List<TagCompound> globalData) {
 			var tag = new TagCompound();
+
 			if (item.type <= 0)
 				return tag;
 
@@ -29,11 +47,18 @@ namespace Terraria.ModLoader.IO
 			else {
 				tag.Set("mod", item.ModItem.Mod.Name);
 				tag.Set("name", item.ModItem.Name);
-				tag.Set("data", item.ModItem.Save());
+
+				var saveData = new TagCompound();
+
+				item.ModItem.SaveData(saveData);
+
+				if (saveData.Count > 0) {
+					tag.Set("data", saveData);
+				}
 			}
 
 			if (item.prefix != 0 && item.prefix < PrefixID.Count)
-				tag.Set("prefix", item.prefix);
+				tag.Set("prefix", (byte)item.prefix);
 
 			if (item.prefix >= PrefixID.Count) {
 				ModPrefix modPrefix = PrefixLoader.GetPrefix(item.prefix);
@@ -50,7 +75,7 @@ namespace Terraria.ModLoader.IO
 			if (item.favorited)
 				tag.Set("fav", true);
 
-			tag.Set("globalData", SaveGlobals(item));
+			tag.Set("globalData", globalData);
 
 			return tag;
 		}
@@ -69,7 +94,7 @@ namespace Terraria.ModLoader.IO
 			else {
 				if (ModContent.TryFind(modName, tag.GetString("name"), out ModItem modItem)) {
 					item.SetDefaults(modItem.Type);
-					item.ModItem.Load(tag.GetCompound("data"));
+					item.ModItem.LoadData(tag.GetCompound("data"));
 				}
 				else {
 					item.SetDefaults(ModContent.ItemType<UnloadedItem>());
@@ -83,6 +108,7 @@ namespace Terraria.ModLoader.IO
 			else if (tag.ContainsKey("prefix")) {
 				item.Prefix(tag.GetByte("prefix"));
 			}
+
 			item.stack = tag.Get<int?>("stack") ?? 1;
 			item.favorited = tag.GetBool("fav");
 
@@ -101,32 +127,40 @@ namespace Terraria.ModLoader.IO
 				return null; // UnloadedItems cannot have global data
 
 			var list = new List<TagCompound>();
+
+			var saveData = new TagCompound();
+
 			foreach (var globalItem in ItemLoader.globalItems) {
 				var globalItemInstance = globalItem.Instance(item);
-				if (globalItemInstance == null || !globalItemInstance.NeedsSaving(item))
+
+				globalItemInstance?.SaveData(item, saveData);
+
+				if (saveData.Count == 0)
 					continue;
 
 				list.Add(new TagCompound {
 					["mod"] = globalItemInstance.Mod.Name,
 					["name"] = globalItemInstance.Name,
-					["data"] = globalItemInstance.Save(item)
+					["data"] = saveData
 				});
+				saveData = new TagCompound();
 			}
+
 			return list.Count > 0 ? list : null;
 		}
 
 		internal static void LoadGlobals(Item item, IList<TagCompound> list) {
 			foreach (var tag in list) {
-				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out GlobalItem globalItem)) {
-					var globalItemInstance = globalItem.Instance(item);
+				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out GlobalItem globalItemBase) && item.TryGetGlobalItem(globalItemBase, out var globalItem)) {
 					try {
-						globalItemInstance.Load(item, tag.GetCompound("data"));
+						globalItem.LoadData(item, tag.GetCompound("data"));
 					}
 					catch (Exception e) {
 						throw new CustomModDataException(globalItem.Mod, $"Error in reading custom player data for {globalItem.FullName}", e);
 					}
 				}
 				else {
+					//Unloaded GlobalItems and GlobalItems that are no longer valid on an item (e.g. through AppliesToEntity)
 					item.GetGlobalItem<UnloadedGlobalItem>().data.Add(tag);
 				}
 			}
@@ -134,7 +168,7 @@ namespace Terraria.ModLoader.IO
 
 		public static void Send(Item item, BinaryWriter writer, bool writeStack = false, bool writeFavorite = false) {
 			writer.WriteVarInt(item.netID);
-			writer.Write(item.prefix); //TODO: Turn prefix into Int32.
+			writer.WriteVarInt(item.prefix);
 
 			if (writeStack)
 				writer.WriteVarInt(item.stack);
@@ -147,7 +181,7 @@ namespace Terraria.ModLoader.IO
 
 		public static void Receive(Item item, BinaryReader reader, bool readStack = false, bool readFavorite = false) {
 			item.netDefaults(reader.ReadVarInt());
-			item.Prefix(reader.ReadByte());
+			item.Prefix(ModNet.AllowVanillaClients ? reader.ReadByte() : reader.ReadVarInt());
 
 			if (readStack)
 				item.stack = reader.ReadVarInt();
@@ -167,14 +201,21 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static void SendModData(Item item, BinaryWriter writer) {
-			if (item.IsAir) return;
+			if (item.IsAir)
+				return;
+
 			writer.SafeWrite(w => item.ModItem?.NetSend(w));
-			foreach (var globalItem in ItemLoader.NetGlobals)
-				writer.SafeWrite(w => globalItem.Instance(item).NetSend(item, w));
+
+			foreach (var netGlobal in ItemLoader.NetGlobals) {
+				if (item.TryGetGlobalItem(netGlobal, out var globalItem))
+					writer.SafeWrite(w => globalItem.NetSend(item, w));
+			}
 		}
 
 		public static void ReceiveModData(Item item, BinaryReader reader) {
-			if (item.IsAir) return;
+			if (item.IsAir)
+				return;
+
 			try {
 				reader.SafeRead(r => item.ModItem?.NetReceive(r));
 			}
@@ -183,13 +224,16 @@ namespace Terraria.ModLoader.IO
 				Logging.tML.Error($"Above IOException error caused by {item.ModItem.Name} from the {item.ModItem.Mod.Name} mod.");
 			}
 
-			foreach (var globalItem in ItemLoader.NetGlobals) {
+			foreach (var netGlobal in ItemLoader.NetGlobals) {
+				if (!item.TryGetGlobalItem(netGlobal, out var globalItem))
+					continue;
+
 				try {
-					reader.SafeRead(r => globalItem.Instance(item).NetReceive(item, r));
+					reader.SafeRead(r => globalItem.NetReceive(item, r));
 				}
 				catch (IOException e) {
 					Logging.tML.Error(e.ToString());
-					Logging.tML.Error($"Above IOException error caused by {globalItem.Name} from the {globalItem.Mod.Name} mod while reading {item.Name}.");
+					Logging.tML.Error($"Above IOException error caused by {netGlobal.Name} from the {netGlobal.Mod.Name} mod while reading {item.Name}.");
 				}
 			}
 		}

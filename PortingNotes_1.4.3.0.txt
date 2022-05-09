@@ -1,0 +1,7 @@
+Notes:
+
+- Replace the cast in 'timeLeft -= (int)Main.dayRate;' in NPC.AI_123_DeerClops.
+
+Failed Patches:
+
+- None!

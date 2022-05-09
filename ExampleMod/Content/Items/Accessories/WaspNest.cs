@@ -43,6 +43,7 @@ namespace ExampleMod.Content.Items.Accessories
 		public override void SetStaticDefaults() {
 			// We can use vanilla language keys to copy the tooltip from HiveBackpack
 			Tooltip.SetDefault("{$ItemTooltip.HiveBackpack}");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 

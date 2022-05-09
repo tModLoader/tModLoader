@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/UI/Gamepad/GamepadPointID.cs
+--- src/TerrariaNetCore/Terraria/UI/Gamepad/GamepadPointID.cs
 +++ src/tModLoader/Terraria/UI/Gamepad/GamepadPointID.cs
 @@ -163,7 +_,7 @@
  		public const int ChestActRenameChest = 504;

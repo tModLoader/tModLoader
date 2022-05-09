@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/States/UIManageControls.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIManageControls.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIManageControls.cs
 @@ -11,6 +_,7 @@
  using Terraria.ID;
@@ -167,7 +167,7 @@
 +							string copyableProfileName = GetCopyableProfileName();
 +							PlayerInput.CurrentProfile.CopyIndividualModKeybindSettingsFrom(PlayerInput.OriginalProfiles[copyableProfileName], currentInputMode, bind);
 +						};
-+		
++
 +						right.Left.Precent = 0.7f;
 +						right.Width.Precent = 0.3f;
 +						right.Height.Precent = 1f;

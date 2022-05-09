@@ -31,13 +31,13 @@ namespace ExampleMod.Content.Items.Placeable
 			Item.value = 50;
 		}
 
-		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) { //Overrides the default sorting method of this Item.
-			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Torches; //Vanilla usually matches sorting methods with the right type of item, but sometimes, like with torches, it doesn't. Make sure to set whichever items manually if need be. 
+		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) { // Overrides the default sorting method of this Item.
+			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Torches; // Vanilla usually matches sorting methods with the right type of item, but sometimes, like with torches, it doesn't. Make sure to set whichever items manually if need be.
 		}
 
 		public override void HoldItem(Player player) {
 			// Randomly spawn sparkles when the torch is held. Twice bigger chance to spawn them when swinging the torch.
-			if (Main.rand.Next(player.itemAnimation > 0 ? 40 : 80) == 0) {
+			if (Main.rand.NextBool(player.itemAnimation > 0 ? 40 : 80)) {
 				Dust.NewDust(new Vector2(player.itemLocation.X + 16f * player.direction, player.itemLocation.Y - 14f * player.gravDir), 4, 4, ModContent.DustType<Sparkle>());
 			}
 

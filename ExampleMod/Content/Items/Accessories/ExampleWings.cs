@@ -1,3 +1,4 @@
+using ExampleMod.Common.Configs;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
@@ -9,8 +10,14 @@ namespace ExampleMod.Content.Items.Accessories
 	[AutoloadEquip(EquipType.Wings)]
 	public class ExampleWings : ModItem
 	{
+		// To see how this config option was added, see ExampleModConfig.cs
+		public override bool IsLoadingEnabled(Mod mod) {
+			return ModContent.GetInstance<ExampleModConfig>().ExampleWingsToggle;
+		}
+
 		public override void SetStaticDefaults() {
 			Tooltip.SetDefault("This is a modded wing.");
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
 			// These wings use the same values as the solar wings

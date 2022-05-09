@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/ReLogic.csproj
+--- src/TerrariaNetCore/ReLogic/ReLogic.csproj
 +++ src/tModLoader/ReLogic/ReLogic.csproj
 @@ -6,9 +_,10 @@
      <Company>Re-Logic</Company>
@@ -9,7 +9,7 @@
    <ItemGroup>
 -    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
 +    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.Reduced.dll" />
-     <Reference Include="../Terraria/Libraries/FNA/FNA.dll" />
+     <ProjectReference Include="../../../FNA/FNA.Core.csproj" />
      <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
      <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
 @@ -22,4 +_,9 @@

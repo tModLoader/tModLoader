@@ -93,7 +93,7 @@ namespace Terraria.ModLoader
 			AddNoSyncDeps(syncMods);
 
 			p.Write(syncMods.Count);
-			foreach (Mod mod in syncMods) { // We only sync ServerSide configs for ModSide.Both. ModSide.Server can have 
+			foreach (Mod mod in syncMods) { // We only sync ServerSide configs for ModSide.Both. ModSide.Server can have
 				p.Write(mod.Name);
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.Hash);
@@ -240,6 +240,8 @@ namespace Terraria.ModLoader
 		internal const int CHUNK_SIZE = 16384;
 		internal static void SendMod(string modName, int toClient) {
 			Mod mod = ModLoader.GetMod(modName);
+			if (mod.Side == ModSide.Server) // Prevent exposing server side mods to malicious clients
+				return;
 			string path = mod.File.path;
 			FileStream fs = File.OpenRead(path);
 
@@ -286,7 +288,7 @@ namespace Terraria.ModLoader
 
 				if (downloadingFile.Position == downloadingLength) {
 					downloadingFile.Close();
-					
+
 					var mod = new TmodFile(downloadingMod.path);
 
 					using (mod.Open()) { }
@@ -486,12 +488,12 @@ namespace Terraria.ModLoader
 
 				x += xAdjust * 400;
 				y += (i - xAdjust * 50) * 13;
-				
+
 				if (j == -1) {
 					Main.spriteBatch.DrawString(FontAssets.MouseText.Value, "Mod          Received(#, Bytes)     Sent(#, Bytes)", new Vector2((float)x, (float)y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 					continue;
 				}
-				
+
 				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, netMods[j].Name, new Vector2(x, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, rxMsgType[j].ToString(), new Vector2(x += 120, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
 				Main.spriteBatch.DrawString(FontAssets.MouseText.Value, rxDataType[j].ToString(), new Vector2(x += 30, y), Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
