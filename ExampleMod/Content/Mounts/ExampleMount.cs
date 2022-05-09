@@ -87,7 +87,7 @@ namespace ExampleMod.Content.Mounts
 		}
 
 		public override void UpdateEffects(Player player) {
-			// This code simulates some wind resistance for the balloons. 
+			// This code simulates some wind resistance for the balloons.
 			var balloons = (CarSpecificData)player.mount._mountSpecificData;
 			float ballonMovementScale = 0.05f;
 

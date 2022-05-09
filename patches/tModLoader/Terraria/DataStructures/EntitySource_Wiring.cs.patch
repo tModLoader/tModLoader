@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_Wiring.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_Wiring.cs
+@@ -1,9 +_,11 @@
++#nullable enable
++
+ namespace Terraria.DataStructures
+ {
+ 	public class EntitySource_Wiring : AEntitySource_Tile
+ 	{
+-		public EntitySource_Wiring(int tileCoordsX, int tileCoordsY)
+-			: base(tileCoordsX, tileCoordsY) {
++		public EntitySource_Wiring(int tileCoordsX, int tileCoordsY, string? context = null)
++			: base(tileCoordsX, tileCoordsY, context) {
+ 		}
+ 	}
+ }

@@ -55,7 +55,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// The roll chance of your prefix relative to a vanilla prefix, 1f by default. 
+		/// The roll chance of your prefix relative to a vanilla prefix, 1f by default.
 		/// </summary>
 		public virtual float RollChance(Item item) => 1f;
 

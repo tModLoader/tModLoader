@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Bestiary/NPCWasNearPlayerTracker.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Bestiary/NPCWasNearPlayerTracker.cs
 +++ src/tModLoader/Terraria/GameContent/Bestiary/NPCWasNearPlayerTracker.cs
 @@ -1,3 +_,4 @@
 +using System.Linq;

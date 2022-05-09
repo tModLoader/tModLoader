@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/MountID.cs
+--- src/TerrariaNetCore/Terraria/ID/MountID.cs
 +++ src/tModLoader/Terraria/ID/MountID.cs
 @@ -1,10 +_,12 @@
 +using Terraria.ModLoader;

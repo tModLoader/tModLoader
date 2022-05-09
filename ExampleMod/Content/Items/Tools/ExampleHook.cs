@@ -34,7 +34,7 @@ namespace ExampleMod.Content.Items.Tools
 
 	internal class ExampleHookProjectile : ModProjectile
 	{
-		private static Asset<Texture2D> chainTexture; 
+		private static Asset<Texture2D> chainTexture;
 
 		public override void Load() { // This is called once on mod (re)load when this piece of content is being loaded.
 			// This is the path to the texture that we'll use for the hook's chain. Make sure to update it.
@@ -114,7 +114,7 @@ namespace ExampleMod.Content.Items.Tools
 		public override void GrapplePullSpeed(Player player, ref float speed) {
 			speed = 10; // How fast you get pulled to the grappling hook projectile's landing position
 		}
-		
+
 		// Adjusts the position that the player will be pulled towards. This will make them hang 50 pixels away from the tile being grappled.
 		public override void GrappleTargetPoint(Player player, ref float grappleX, ref float grappleY) {
 			Vector2 dirToPlayer = Projectile.DirectionTo(player.Center);

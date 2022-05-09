@@ -20,7 +20,7 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> webHelpButton;
 		private UITextPanel<string> skipLoadButton;
 		private UITextPanel<string> retryButton;
-		
+
 		private string message;
 		private int gotoMenu;
 		private string webHelpURL;
@@ -96,7 +96,7 @@ namespace Terraria.ModLoader.UI
 			string continueKey = gotoMenu < 0 ? "Exit" : continueIsRetry ? "Retry" : "Continue";
 			continueButton.SetText(Language.GetTextValue("tModLoader." + continueKey));
 			continueButton.TextColor = gotoMenu >= 0 ? Color.White : Color.Red;
-			
+
 			area.AddOrRemoveChild(webHelpButton, !string.IsNullOrEmpty(webHelpURL));
 			area.AddOrRemoveChild(skipLoadButton, showSkip);
 			area.AddOrRemoveChild(exitAndDisableAllButton, gotoMenu < 0);

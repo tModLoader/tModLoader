@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/SpelunkerProjectileHelper.cs
++++ src/tModLoader/Terraria/GameContent/SpelunkerProjectileHelper.cs
+@@ -36,7 +_,7 @@
+ 			for (int i = num3; i <= num4; i++) {
+ 				for (int j = num5; j <= num6; j++) {
+ 					Tile tile = Main.tile[i, j];
+-					if (tile != null && tile.active() && Main.IsTileSpelunkable(tile) && !(new Vector2(num - i, num2 - j).Length() > 30f)) {
++					if (tile != null && tile.active() && Main.IsTileSpelunkable(i, j, tile) && !(new Vector2(num - i, num2 - j).Length() > 30f)) {
+ 						item.X = i;
+ 						item.Y = j;
+ 						if (_tilesChecked.Add(item) && Main.rand.Next(4) == 0) {

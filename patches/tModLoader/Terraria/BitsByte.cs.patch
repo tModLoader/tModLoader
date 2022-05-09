@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/BitsByte.cs
+--- src/TerrariaNetCore/Terraria/BitsByte.cs
 +++ src/tModLoader/Terraria/BitsByte.cs
 @@ -80,6 +_,17 @@
  			b7 = this[7];

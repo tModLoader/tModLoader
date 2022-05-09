@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 {
 	public static class Logging
 	{
-		public static readonly string LogDir = Path.Combine(Program.SavePath, "Logs");
+		public static readonly string LogDir = "tModLoader-Logs";
 		public static readonly string LogArchiveDir = Path.Combine(LogDir, "Old");
 
 		// BOM-less UTF8 encoding. Unfortunately, silly Discord, the application we send and get sent logs through 100 times a day,
@@ -48,8 +48,10 @@ namespace Terraria.ModLoader
 			Utils.TryCreatingDirectory(LogDir);
 
 			ConfigureAppenders(dedServ);
+		}
 
-			tML.InfoFormat("Starting tModLoader {0} {1}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier);
+		internal static void LogStartup(bool dedServ) {
+			tML.InfoFormat("Starting tModLoader {0} {1} built {2}", dedServ ? "server" : "client", BuildInfo.BuildIdentifier, $"{BuildInfo.BuildDate:g}");
 			tML.InfoFormat("Log date: {0}", DateTime.Now.ToString("d"));
 			tML.InfoFormat("Running on {0} {1} {2} {3}", ReLogic.OS.Platform.Current.Type, System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture, FrameworkVersion.Framework, FrameworkVersion.Version);
 			tML.InfoFormat("Executable: {0}", Assembly.GetEntryAssembly().Location);
@@ -87,7 +89,7 @@ namespace Terraria.ModLoader
 			layout.ActivateOptions();
 
 			var appenders = new List<IAppender>();
-			if (!dedServ) { 
+			if (!dedServ) {
 				appenders.Add(new ConsoleAppender {
 					Name = "ConsoleAppender",
 					Layout = layout
@@ -286,8 +288,7 @@ namespace Terraria.ModLoader
 			// In case of OOM, unload the Main.tile array and do immediate garbage collection.
 			// If we don't do this, there will be a big chance that this method will fail to even quit the game, due to another OOM exception being thrown.
 
-			Main.tile = null;
-
+			Main.tile = new Tilemap(0, 0);
 			GC.Collect();
 		}
 

@@ -1,202 +1,62 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Terraria.ID;
 
 namespace Terraria
 {
-	public partial class Tile
+	public readonly partial struct Tile
 	{
-		private static void SetBit(ref byte header, int position, bool value) {
-			if (value)
-				header = (byte)(header | (1 << position));
-			else
-				header = (byte)(header & ~(1 << position));
-		}
+		public ref ushort TileType => ref Get<TileTypeData>().Type;
+		public ref ushort WallType => ref Get<WallTypeData>().Type;
+		public ref short TileFrameX => ref Get<TileWallWireStateData>().TileFrameX;
+		public ref short TileFrameY => ref Get<TileWallWireStateData>().TileFrameY;
 
-		private static void SetBit(ref ushort header, int position, bool value) {
-			if (value)
-				header = (ushort)(header | (1 << position));
-			else
-				header = (ushort)(header & ~(1 << position));
-		}
+		public ref byte LiquidAmount => ref Get<LiquidData>().Amount;
+		public int LiquidType { get => Get<LiquidData>().LiquidType; set => Get<LiquidData>().LiquidType = value; }
+		public bool CheckingLiquid { get => Get<LiquidData>().CheckingLiquid; set => Get<LiquidData>().CheckingLiquid = value; }
+		public bool SkipLiquid { get => Get<LiquidData>().SkipLiquid; set => Get<LiquidData>().SkipLiquid = value; }
 
-		private static bool IsBitSet(ushort value, int pos) {
-			return (value & (1 << pos)) != 0;
-		}
+		public bool HasTile { get => Get<TileWallWireStateData>().HasTile; set => Get<TileWallWireStateData>().HasTile = value; }
+		public bool IsActuated { get => Get<TileWallWireStateData>().IsActuated; set => Get<TileWallWireStateData>().IsActuated = value; }
+		public bool HasActuator { get => Get<TileWallWireStateData>().HasActuator; set => Get<TileWallWireStateData>().HasActuator = value; }
+		public bool IsHalfBlock { get => Get<TileWallWireStateData>().IsHalfBlock; set => Get<TileWallWireStateData>().IsHalfBlock = value; }
+		public bool RedWire { get => Get<TileWallWireStateData>().RedWire; set => Get<TileWallWireStateData>().RedWire = value; }
+		public bool GreenWire { get => Get<TileWallWireStateData>().GreenWire; set => Get<TileWallWireStateData>().GreenWire = value; }
+		public bool BlueWire { get => Get<TileWallWireStateData>().BlueWire; set => Get<TileWallWireStateData>().BlueWire = value; }
+		public bool YellowWire { get => Get<TileWallWireStateData>().YellowWire; set => Get<TileWallWireStateData>().YellowWire = value; }
+		public byte TileColor { get => Get<TileWallWireStateData>().TileColor; set => Get<TileWallWireStateData>().TileColor = value; }
+		public byte WallColor { get => Get<TileWallWireStateData>().WallColor; set => Get<TileWallWireStateData>().WallColor = value; }
+		public int WallFrameX { get => Get<TileWallWireStateData>().WallFrameX; set => Get<TileWallWireStateData>().WallFrameX = value; }
+		public int WallFrameY { get => Get<TileWallWireStateData>().WallFrameY; set => Get<TileWallWireStateData>().WallFrameY = value; }
+		public SlopeType Slope { get => Get<TileWallWireStateData>().Slope; set => Get<TileWallWireStateData>().Slope = value; }
+		public int TileFrameNumber { get => Get<TileWallWireStateData>().TileFrameNumber; set => Get<TileWallWireStateData>().TileFrameNumber = value; }
+		public int WallFrameNumber { get => Get<TileWallWireStateData>().WallFrameNumber; set => Get<TileWallWireStateData>().WallFrameNumber = value; }
 
-		public int LiquidType {
-			get => (bTileHeader & 0x60) >> 5;
-			set {
-				if (value < 0 || value >= LiquidID.Count)
-					throw new Exception($"The liquid with type {value} does not exist");
+		public bool HasUnactuatedTile => HasTile && !IsActuated;
 
-				bTileHeader = (byte)((bTileHeader & 0x9F) | (32 * value));
-			}
-		}
+		public BlockType BlockType { get => Get<TileWallWireStateData>().BlockType; set => Get<TileWallWireStateData>().BlockType = value; }
 
-		public byte LiquidAmount {
-			get => liquid;
-			set {
-				liquid = value;
-				if (liquid == 0)
-					LiquidType = LiquidID.Water;
-			}
-		}
+		public bool TopSlope => Slope == SlopeType.SlopeDownLeft || Slope == SlopeType.SlopeDownRight;
+		public bool BottomSlope => Slope == SlopeType.SlopeUpLeft || Slope == SlopeType.SlopeUpRight;
+		public bool LeftSlope => Slope == SlopeType.SlopeDownRight || Slope == SlopeType.SlopeUpRight;
+		public bool RightSlope => Slope == SlopeType.SlopeDownLeft || Slope == SlopeType.SlopeUpLeft;
 
-		public bool IsActive {
-			get => IsBitSet(sTileHeader, 5);
-			set => SetBit(ref sTileHeader, 5, value);
-		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public unsafe ref T Get<T>() where T : unmanaged, ITileData
+			=> ref TileData<T>.ptr[TileId];
 
-		public bool IsActuated {
-			get => IsBitSet(sTileHeader, 6);
-			set => SetBit(ref sTileHeader, 6, value);
-		}
+		public override int GetHashCode() => (int)TileId;
 
-		public bool IsActiveUnactuated => IsActive && !IsActuated;
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool operator ==(Tile tile, Tile tile2) => tile.TileId == tile2.TileId;
 
-		public bool HasActuator {
-			get => IsBitSet(sTileHeader, 11);
-			set => SetBit(ref sTileHeader, 11, value);
-		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool operator !=(Tile tile, Tile tile2) => tile.TileId != tile2.TileId;
 
-		public bool IsHalfBlock {
-			get => IsBitSet(sTileHeader, 10);
-			set => SetBit(ref sTileHeader, 10, value);
-		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool operator ==(Tile tile, ArgumentException justSoYouCanCompareWithNull) => false;
 
-		public bool RedWire {
-			get => IsBitSet(sTileHeader, 7);
-			set => SetBit(ref sTileHeader, 7, value);
-		}
-
-		public bool GreenWire {
-			get => IsBitSet(sTileHeader, 9);
-			set => SetBit(ref sTileHeader, 9, value);
-		}
-
-		public bool BlueWire {
-			get => IsBitSet(sTileHeader, 8);
-			set => SetBit(ref sTileHeader, 8, value);
-		}
-
-		public bool YellowWire {
-			get => IsBitSet(bTileHeader, 7);
-			set => SetBit(ref bTileHeader, 7, value);
-		}
-
-		public byte Color {
-			get => (byte)(sTileHeader & 0x1F);
-			set => sTileHeader = (ushort)((sTileHeader & 0xFFE0) | value);
-		}
-
-		public byte WallColor {
-			get => (byte)(bTileHeader & 0x1F);
-			set => bTileHeader = (byte)((bTileHeader & 0xE0) | value);
-		}
-
-		public int WallFrameX {
-			get => (bTileHeader2 & 0xF) * 36;
-			set => bTileHeader2 = (byte)((bTileHeader2 & 0xF0) | ((value / 36) & 0xF));
-		}
-
-		public int WallFrameY {
-			get => (bTileHeader3 & 7) * 36;
-			set => bTileHeader3 = (byte)((bTileHeader3 & 0xF8) | ((value / 36) & 7));
-		}
-
-		public SlopeType Slope {
-			get => (SlopeType)((sTileHeader & 0x7000) >> 12);
-			set => sTileHeader = (ushort)((sTileHeader & 0x8FFF) | (((byte)value & 7) << 12));
-		}
-
-		public BlockType BlockType {
-			get {
-				if (IsHalfBlock) {
-					return BlockType.HalfBlock;
-				}
-
-				int slopeId = (int)Slope;
-
-				if (slopeId != 0) {
-					slopeId++;
-				}
-
-				return (BlockType)slopeId;
-			}
-			set {
-				IsHalfBlock = value != BlockType.HalfBlock;
-				Slope = value > BlockType.HalfBlock ? (SlopeType)(value - 1) : SlopeType.Solid;
-			}
-		}
-
-		public byte FrameNumber {
-			get => (byte)((bTileHeader2 & 0x30) >> 4);
-			set => bTileHeader2 = (byte)((bTileHeader2 & 0xCF) | ((value & 3) << 4));
-		}
-
-		public byte WallFrameNumber {
-			get => (byte)((bTileHeader2 & 0xC0) >> 6);
-			set => bTileHeader2 = (byte)((bTileHeader2 & 0x3F) | ((value & 3) << 6));
-		}
-
-		public bool CheckingLiquid {
-			get => IsBitSet(bTileHeader, 3);
-			set => SetBit(ref bTileHeader, 3, value);
-		}
-
-		public bool SkipLiquid {
-			get => IsBitSet(bTileHeader, 4);
-			set => SetBit(ref bTileHeader, 4, value);
-		}
-
-		public int CollisionType {
-			get {
-				if (!IsActive)
-					return 0;
-
-				if (IsHalfBlock)
-					return 2;
-
-				if (Slope != SlopeType.Solid)
-					return 2 + (int)Slope;
-
-				if (Main.tileSolid[type] && !Main.tileSolidTop[type])
-					return 1;
-
-				return -1;
-			}
-		}
-		
-		public bool IsTheSameAs(Tile other) {
-			if (other == null)
-				return false;
-
-			if (sTileHeader != other.sTileHeader)
-				return false;
-
-			if (IsActive) {
-				if (type != other.type)
-					return false;
-
-				if (Main.tileFrameImportant[type] && (frameX != other.frameX || frameY != other.frameY))
-					return false;
-			}
-
-			if (wall != other.wall || liquid != other.liquid)
-				return false;
-
-			if (other.liquid == 0) {
-				if (WallColor != other.WallColor)
-					return false;
-
-				if (YellowWire != other.YellowWire)
-					return false;
-			}
-			else if (bTileHeader != other.bTileHeader) {
-				return false;
-			}
-
-			return true;
-		}
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public static bool operator !=(Tile tile, ArgumentException justSoYouCanCompareWithNull) => true;
 	}
 }

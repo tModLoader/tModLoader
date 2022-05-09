@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Social/Steam/NetClientSocialModule.cs
+--- src/TerrariaNetCore/Terraria/Social/Steam/NetClientSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/NetClientSocialModule.cs
 @@ -27,12 +_,17 @@
  			_gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnLobbyJoinRequest);

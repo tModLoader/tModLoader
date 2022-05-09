@@ -9,6 +9,12 @@
 			public static bool[] Grass = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492);
 			public static bool[] CanBeClearedDuringOreRunner = Factory.CreateBoolSet(0, 1, 23, 25, 40, 53, 57, 59, 60, 70, 109, 112, 116, 117, 147, 161, 163, 164, 199, 200, 203, 234);
 
+			/// <summary>
+			/// Whether or not the tile will be ignored for automatic step up regarding town NPC collision.
+			/// <br>Only checked when <see cref="Collision.StepUp"/> with specialChecksMode set to 1 is called</br>
+			/// </summary>
+			public static bool[] IgnoredByNpcStepUp = Factory.CreateBoolSet(14, 16, 18, 134, 469);
+
 			/// <summary> Whether or not the smart cursor function is disabled when the cursor hovers above this tile. </summary>
 			// Maybe this should be a hook instead?
 			public static bool[] DisableSmartCursor = Factory.CreateBoolSet(4, 10, 11, 13, 21, 29, 33, 49, 50, 55, 79, 85, 88, 97, 104, 125, 132, 136, 139, 144, 174, 207, 209, 212, 216, 219, 237, 287, 334, 335, 338, 354, 386, 387, 388, 389, 411, 425, 441, 463, 467, 468, 491, 494, 510, 511, 573, 621);

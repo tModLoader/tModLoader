@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.Engine
 
 		protected override Stream OpenStream(string assetName) {
 			if (!assetName.StartsWith("tmod:")) {
-				if (alternateContentManager != null && File.Exists(Path.Combine(alternateContentManager.RootDirectory, assetName + ".xnb"))) { 
+				if (alternateContentManager != null && File.Exists(Path.Combine(alternateContentManager.RootDirectory, assetName + ".xnb"))) {
 					try {
 						return alternateContentManager.OpenStream(assetName);
 					}

@@ -9,7 +9,7 @@ namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each mount. Create instances of ModMoundData (preferably overriding this class) to pass as parameters to Mod.AddMount.
-	/// Only one instance of ModMount will exist for each mount, so storing player specific data on the ModMount is not good. 
+	/// Only one instance of ModMount will exist for each mount, so storing player specific data on the ModMount is not good.
 	/// Modders can use player.mount._mountSpecificData or a ModPlayer class to store player specific data relating to a mount. Use SetMount to assign these fields.
 	/// </summary>
 	public abstract class ModMount : ModTexturedType
@@ -42,7 +42,7 @@ namespace Terraria.ModLoader
 
 			foreach (MountTextureType textureType in Enum.GetValues(typeof(MountTextureType))) {
 				string extraTexture = GetExtraTexture(textureType);
-				
+
 				if(string.IsNullOrEmpty(extraTexture) || !ModContent.RequestIfExists<Texture2D>(extraTexture, out var textureAsset)) {
 					continue;
 				}

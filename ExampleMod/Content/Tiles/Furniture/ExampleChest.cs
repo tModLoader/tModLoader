@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
@@ -55,14 +56,15 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 		}
 
-		public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].frameX / 36);
+		public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].TileFrameX / 36);
 
-		public override bool HasSmartInteract() => true;
+		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) => true;
 
-		public override bool IsLockedChest(int i, int j) => Main.tile[i, j].frameX / 36 == 1;
+		public override bool IsLockedChest(int i, int j) => Main.tile[i, j].TileFrameX / 36 == 1;
 
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) {
 			if (Main.dayTime) {
+				Main.NewText("The chest stubbornly refuses to open in the light of the day. Try again at night.", Color.Orange);
 				return false;
 			}
 
@@ -74,11 +76,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			int left = i;
 			int top = j;
 			Tile tile = Main.tile[i, j];
-			if (tile.frameX % 36 != 0) {
+			if (tile.TileFrameX % 36 != 0) {
 				left--;
 			}
 
-			if (tile.frameY != 0) {
+			if (tile.TileFrameY != 0) {
 				top--;
 			}
 
@@ -94,10 +96,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 			return name + ": " + Main.chest[chest].name;
 		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num) => num = 1;
+		public override void NumDust(int i, int j, bool fail, ref int num) {
+			num = 1;
+		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-			Item.NewItem(i * 16, j * 16, 32, 32, ChestDrop);
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ChestDrop);
 			Chest.DestroyChest(i, j);
 		}
 
@@ -107,11 +111,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.mouseRightRelease = false;
 			int left = i;
 			int top = j;
-			if (tile.frameX % 36 != 0) {
+			if (tile.TileFrameX % 36 != 0) {
 				left--;
 			}
 
-			if (tile.frameY != 0) {
+			if (tile.TileFrameY != 0) {
 				top--;
 			}
 
@@ -147,6 +151,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 			else {
 				if (isLocked) {
+					// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
 					int key = ModContent.ItemType<ExampleChestKey>();
 					if (player.ConsumeItem(key) && Chest.Unlock(left, top)) {
 						if (Main.netMode == NetmodeID.MultiplayerClient) {
@@ -184,11 +189,11 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Tile tile = Main.tile[i, j];
 			int left = i;
 			int top = j;
-			if (tile.frameX % 36 != 0) {
+			if (tile.TileFrameX % 36 != 0) {
 				left--;
 			}
 
-			if (tile.frameY != 0) {
+			if (tile.TileFrameY != 0) {
 				top--;
 			}
 
@@ -200,7 +205,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Example Chest";
 				if (player.cursorItemIconText == "Example Chest") {
 					player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
-					if (Main.tile[left, top].frameX / 36 == 1) {
+					if (Main.tile[left, top].TileFrameX / 36 == 1) {
 						player.cursorItemIconID = ModContent.ItemType<ExampleChestKey>();
 					}
 

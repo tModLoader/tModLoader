@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/AssetSourceController.cs
+--- src/TerrariaNetCore/Terraria/GameContent/AssetSourceController.cs
 +++ src/tModLoader/Terraria/GameContent/AssetSourceController.cs
 @@ -11,6 +_,8 @@
  {

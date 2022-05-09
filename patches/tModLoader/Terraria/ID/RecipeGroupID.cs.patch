@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/RecipeGroupID.cs
+--- src/TerrariaNetCore/Terraria/ID/RecipeGroupID.cs
 +++ src/tModLoader/Terraria/ID/RecipeGroupID.cs
 @@ -15,5 +_,10 @@
  		public static int Dragonflies = 10;

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Initializers/LaunchInitializer.cs
+--- src/TerrariaNetCore/Terraria/Initializers/LaunchInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/LaunchInitializer.cs
 @@ -1,6 +_,9 @@
  using System;
@@ -59,7 +59,7 @@
 +			if ((publish = LaunchInitializer.TryParameter("-publish")) != null) {
 +				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish);
 +				// Application Exits
-+			} 
++			}
 +
 +			string install;
 +			if ((install = TryParameter("-install")) != null)

@@ -1,85 +1,68 @@
---- src/Terraria/Terraria/MonoLaunch.cs
+--- src/TerrariaNetCore/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -5,21 +_,27 @@
- using System.Linq;
+@@ -6,7 +_,9 @@
  using System.Reflection;
  using System.Runtime.InteropServices;
-+using System.Runtime.Loader;
+ using System.Runtime.Loader;
++using System.Threading;
  using Terraria;
 +using Terraria.ModLoader;
  
  internal static class MonoLaunch
  {
- #if NETCORE
- 	public static readonly object resolverLock = new object();
- #endif
-+
-+	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
- 	
+@@ -17,6 +_,7 @@
+ 	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
+ 
  	private static void Main(string[] args) {
-+		/*
++		Thread.CurrentThread.Name = "Entry Thread";
+ 		/*
  		// FNA is requested by both Terraria and ReLogic.dll
  		var loaded = new Dictionary<string, Assembly>();
+@@ -47,7 +_,22 @@
+ #endif
  
- 		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
- 			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
- 			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-+			
- 			if (text == null)
- 				return null;
- 
-@@ -36,39 +_,47 @@
- 				return assembly;
- 			}
- 		};
-+		*/
-+
-+#if NETCORE
-+		AssemblyLoadContext.Default.ResolvingUnmanagedDll += ResolveNativeLibrary;
-+#endif
-+
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
++		// Spawn a thread to use configured default stack size instead of the one reported in the binary
++		// https://social.msdn.microsoft.com/Forums/office/en-US/7132b30d-9792-4bf3-87ec-7198052e4ed3/main-thread-stack-size?forum=csharpgeneral
++		// post processing the binary with `editbin /stack:400000 tModLoader.dll` should do it for the main thread but it's annoying
++		// and duplicates the size defined in the runtimeconfig
++		// @TODO: Temporary change, make it cross platform, linux crashes if FNA loop is not in the REAL Main thread
++		//        Atm linux and mac use for main also the env variable so it works
++		var LocalLaunchGame = () => {
  		Program.LaunchGame(args, monoArgs: true);
++		};
++		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
++			new Thread(new ThreadStart(LocalLaunchGame)).Start();
++			// Move the dummy entry thread to background
++			Thread.CurrentThread.IsBackground = true;
++		} else {
++			LocalLaunchGame();
++		}
  	}
  
  #if NETCORE
--	private static IntPtr ResolveNativeLibrary(string name, Assembly assembly, DllImportSearchPath? searchPath) {
-+	private static IntPtr ResolveNativeLibrary(Assembly assembly, string name) {
- 		lock (resolverLock) {
- 			try {
- 				if (assemblies.TryGetValue(name, out var handle)) {
+@@ -58,11 +_,23 @@
  					return handle;
  				}
- 				
+ 
 -				Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
 +				Logging.tML.Debug($"Native Resolve: {assembly.FullName} -> {name}");
  
  				var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
  				var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
  				var match = files.FirstOrDefault();
- 				
--				Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
-+				Logging.tML.Debug(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
- 				
- 				if (match != null && NativeLibrary.TryLoad(match, out handle)) {
--					Console.WriteLine("\tsuccess");
-+					Logging.tML.Debug("\tsuccess");
- 					return assemblies[name] = handle;
- 				}
--				
--				return assemblies[name] = IntPtr.Zero;
-+				else {
-+					// Toss an error when failed to load needed library file, instead of just waiting for later to toss - Solxan
-+					assemblies[name] = IntPtr.Zero;
-+					throw new FileLoadException("Failed to load Native Library at " + match);
-+				}	
- 			}
- 			catch (DirectoryNotFoundException e) {
- 				throw new DirectoryNotFoundException("A needed library file was missing from the tModLoader directory. " + e.Message, e);
- 			}
- 		}
- 	}
--	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
++
++				if (match is null) {
++					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(dir, name + ".dll")}");
++				}
++
++				Logging.tML.Debug($"\tattempting load {match}");
++
++				handle = NativeLibrary.Load(match);
++
++				Logging.tML.Debug("\tsuccess");
++
++				return assemblies[name] = handle;
  
- 	private static string getNativeDir(string name) {
- 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+ 				Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
+ 

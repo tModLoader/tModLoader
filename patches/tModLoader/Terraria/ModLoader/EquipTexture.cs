@@ -13,11 +13,6 @@ namespace Terraria.ModLoader
 		public string Texture { get; internal set; }
 
 		/// <summary>
-		/// The mod that added this equipment texture.
-		/// </summary>
-		public Mod Mod { get; internal set; }
-
-		/// <summary>
 		/// The internal name of this equipment texture.
 		/// </summary>
 		public string Name { get; internal set; }
@@ -49,7 +44,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadow hooks. By default this will return the same thing as the associated ModItem's IsVanitySet, or false if no ModItem is associated.
+		/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the PreUpdateVanitySet, UpdateVanitySet, and ArmorSetShadows hooks. By default this will return the same thing as the associated ModItem's IsVanitySet, or false if no ModItem is associated.
 		/// </summary>
 		/// <param name="head"></param>
 		/// <param name="body"></param>

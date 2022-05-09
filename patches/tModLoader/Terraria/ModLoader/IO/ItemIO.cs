@@ -132,7 +132,7 @@ namespace Terraria.ModLoader.IO
 
 			foreach (var globalItem in ItemLoader.globalItems) {
 				var globalItemInstance = globalItem.Instance(item);
-				
+
 				globalItemInstance?.SaveData(item, saveData);
 
 				if (saveData.Count == 0)

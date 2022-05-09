@@ -224,19 +224,35 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookUpdateVanityAccessories = AddHook<Action>(p => p.UpdateVanityAccessories);
-
-		public static void UpdateVanityAccessories(Player player) {
-			foreach (int index in HookUpdateVanityAccessories.arr) {
-				player.modPlayers[index].UpdateVanityAccessories();
-			}
-		}
-
 		private static HookList HookPostUpdateEquips = AddHook<Action>(p => p.PostUpdateEquips);
 
 		public static void PostUpdateEquips(Player player) {
 			foreach (int index in HookPostUpdateEquips.arr) {
 				player.modPlayers[index].PostUpdateEquips();
+			}
+		}
+
+		private static HookList HookUpdateVisibleAccessories = AddHook<Action>(p => p.UpdateVisibleAccessories);
+
+		public static void UpdateVisibleAccessories(Player player) {
+			foreach (int index in HookUpdateVisibleAccessories.arr) {
+				player.modPlayers[index].UpdateVisibleAccessories();
+			}
+		}
+
+		private static HookList HookUpdateVisibleVanityAccessories = AddHook<Action>(p => p.UpdateVisibleVanityAccessories);
+
+		public static void UpdateVisibleVanityAccessories(Player player) {
+			foreach (int index in HookUpdateVisibleVanityAccessories.arr) {
+				player.modPlayers[index].UpdateVisibleVanityAccessories();
+			}
+		}
+
+		private static HookList HookUpdateDyes = AddHook<Action>(p => p.UpdateDyes);
+
+		public static void UpdateDyes(Player player) {
+			foreach (int index in HookUpdateDyes.arr) {
+				player.modPlayers[index].UpdateDyes();
 			}
 		}
 
@@ -450,7 +466,7 @@ namespace Terraria.ModLoader
 		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
 			if (item.IsAir)
 				return;
-			
+
 			foreach (int index in HookModifyManaCost.arr) {
 				player.modPlayers[index].ModifyManaCost(item, ref reduce, ref mult);
 			}
@@ -461,7 +477,7 @@ namespace Terraria.ModLoader
 		public static void OnMissingMana(Player player, Item item, int manaNeeded) {
 			if (item.IsAir)
 				return;
-			
+
 			foreach (int index in HookOnMissingMana.arr) {
 				player.modPlayers[index].OnMissingMana(item, manaNeeded);
 			}
@@ -472,23 +488,23 @@ namespace Terraria.ModLoader
 		public static void OnConsumeMana(Player player, Item item, int manaConsumed) {
 			if (item.IsAir)
 				return;
-			
+
 			foreach (int index in HookOnConsumeMana.arr) {
 				player.modPlayers[index].OnConsumeMana(item, manaConsumed);
 			}
 		}
 
-		private delegate void DelegateModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat);
+		private delegate void DelegateModifyWeaponDamage(Item item, ref StatModifier damage);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(p => p.ModifyWeaponDamage);
 		/// <summary>
 		/// Calls ModItem.HookModifyWeaponDamage, then all GlobalItem.HookModifyWeaponDamage hooks.
 		/// </summary>
-		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage, ref float flat) {
+		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage) {
 			if (item.IsAir)
 				return;
 
 			foreach (int index in HookModifyWeaponDamage.arr) {
-				player.modPlayers[index].ModifyWeaponDamage(item, ref damage, ref flat);
+				player.modPlayers[index].ModifyWeaponDamage(item, ref damage);
 			}
 		}
 
@@ -500,22 +516,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateModifyWeaponKnockback(Item item, ref StatModifier knockback, ref float flat);
+		private delegate void DelegateModifyWeaponKnockback(Item item, ref StatModifier knockback);
 		private static HookList HookModifyWeaponKnockback = AddHook<DelegateModifyWeaponKnockback>(p => p.ModifyWeaponKnockback);
 
-		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback, ref float flat) {
+		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback) {
 			if (item.IsAir)
 				return;
 
 			foreach (int index in HookModifyWeaponKnockback.arr) {
-				player.modPlayers[index].ModifyWeaponKnockback(item, ref knockback, ref flat);
+				player.modPlayers[index].ModifyWeaponKnockback(item, ref knockback);
 			}
 		}
 
-		private delegate void DelegateModifyWeaponCrit(Item item, ref int crit);
+		private delegate void DelegateModifyWeaponCrit(Item item, ref float crit);
 		private static HookList HookModifyWeaponCrit = AddHook<DelegateModifyWeaponCrit>(p => p.ModifyWeaponCrit);
 
-		public static void ModifyWeaponCrit(Player player, Item item, ref int crit) {
+		public static void ModifyWeaponCrit(Player player, Item item, ref float crit) {
 			if (item.IsAir) return;
 			foreach (int index in HookModifyWeaponCrit.arr) {
 				player.modPlayers[index].ModifyWeaponCrit(item, ref crit);
@@ -560,9 +576,9 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookShoot = AddHook<Func<Item, ProjectileSource_Item_WithAmmo, Vector2, Vector2, int, int, float, bool>>(p => p.Shoot);
+		private static HookList HookShoot = AddHook<Func<Item, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float, bool>>(p => p.Shoot);
 
-		public static bool Shoot(Player player, Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public static bool Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			bool defaultResult = true;
 
 			foreach (int index in HookShoot.arr) {
@@ -577,6 +593,15 @@ namespace Terraria.ModLoader
 		public static void MeleeEffects(Player player, Item item, Rectangle hitbox) {
 			foreach (int index in HookMeleeEffects.arr) {
 				player.modPlayers[index].MeleeEffects(item, hitbox);
+			}
+		}
+
+		private delegate void DelegateModifyItemScale(Item item, ref float scale);
+		private static HookList HookModifyItemScale = AddHook<DelegateModifyItemScale>(p => p.ModifyItemScale);
+
+		public static void ModifyItemScale(Player player, Item item, ref float scale) {
+			foreach (int index in HookModifyItemScale.arr) {
+				player.modPlayers[index].ModifyItemScale(item, ref scale);
 			}
 		}
 
@@ -786,20 +811,34 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegateCatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType);
+		private delegate void DelegateCatchFish(FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
 		private static HookList HookCatchFish = AddHook<DelegateCatchFish>(p => p.CatchFish);
 
-		public static void CatchFish(Player player, Item fishingRod, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType) {
-			int i = 0;
-			while (i < 58) {
-				if (player.inventory[i].stack > 0 && player.inventory[i].bait > 0) {
-					break;
-				}
-				i++;
-			}
+		public static void CatchFish(Player player, FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
 			foreach (int index in HookCatchFish.arr) {
-				player.modPlayers[index].CatchFish(fishingRod, player.inventory[i], power, liquidType, poolSize, worldLayer, questFish, ref caughtType);
+				player.modPlayers[index].CatchFish(attempt, ref itemDrop, ref enemySpawn, ref sonar, ref sonarPosition);
 			}
+		}
+
+		private delegate void DelegateModifyCaughtFish(Item fish);
+		private static HookList HookCaughtFish = AddHook<DelegateModifyCaughtFish>(p => p.ModifyCaughtFish);
+
+		public static void ModifyCaughtFish(Player player, Item fish) {
+			foreach (int index in HookCaughtFish.arr) {
+				player.modPlayers[index].ModifyCaughtFish(fish);
+			}
+		}
+
+		private delegate bool? DelegateCanConsumeBait(Item bait);
+		private static HookList HookCanConsumeBait = AddHook<DelegateCanConsumeBait>(p => p.CanConsumeBait);
+
+		public static bool? CanConsumeBait(Player player, Item bait) {
+			bool? ret = null;
+			foreach (int index in HookCaughtFish.arr) {
+				if (player.modPlayers[index].CanConsumeBait(bait) is bool b)
+					ret = (ret ?? true) && b;
+			}
+			return ret;
 		}
 
 		private delegate void DelegateGetFishingLevel(Item fishingRod, Item bait, ref float fishingLevel);
@@ -1006,13 +1045,32 @@ namespace Terraria.ModLoader
 		private static HookList HookCanUseItem = AddHook<Func<Item, bool>>(p => p.CanUseItem);
 
 		public static bool CanUseItem(Player player, Item item) {
-			bool result = true;
-
 			foreach (int index in HookCanUseItem.arr) {
-				result &= player.modPlayers[index].CanUseItem(item);
+				if (!player.modPlayers[index].CanUseItem(item))
+					return false;
 			}
 
-			return result;
+			return true;
+		}
+
+		private static HookList HookCanAutoReuseItem = AddHook<Func<Item, bool?>>(p => p.CanAutoReuseItem);
+
+		public static bool? CanAutoReuseItem(Player player, Item item) {
+			bool? flag = null;
+
+			foreach (int index in HookCanAutoReuseItem.arr) {
+				bool? allow = player.modPlayers[index].CanAutoReuseItem(item);
+
+				if (allow.HasValue) {
+					if (!allow.Value) {
+						return false;
+					}
+
+					flag = true;
+				}
+			}
+
+			return flag;
 		}
 
 		private delegate bool DelegateModifyNurseHeal(NPC npc, ref int health, ref bool removeDebuffs, ref string chatText);

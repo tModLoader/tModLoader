@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/OS/Windows/WindowService.cs
+--- src/TerrariaNetCore/ReLogic/OS/Windows/WindowService.cs
 +++ src/tModLoader/ReLogic/OS/Windows/WindowService.cs
 @@ -46,5 +_,9 @@
  			NativeMethods.FlashInfo flashInfo = NativeMethods.FlashInfo.CreateStop(window.Handle);

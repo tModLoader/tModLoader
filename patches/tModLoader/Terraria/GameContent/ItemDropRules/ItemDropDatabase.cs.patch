@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
 @@ -1,12 +_,13 @@
  using System.Collections.Generic;
@@ -24,10 +24,12 @@
  			if (!_entriesByNpcNetId.ContainsKey(npcNetId))
  				_entriesByNpcNetId[npcNetId] = new List<IItemDropRule>();
  
-@@ -114,6 +_,11 @@
+@@ -114,6 +_,13 @@
  			RegisterMimic();
  			RegisterEclipse();
  			RegisterBloodMoonFishing();
++
++			NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
 +
 +			foreach (KeyValuePair<int, NPC> pair in ContentSamples.NpcsByNetId) {
 +				NPCLoader.ModifyNPCLoot(pair.Value, new NPCLoot(pair.Key, this));
@@ -36,21 +38,3 @@
  			TrimDuplicateRulesForNegativeIDs();
  		}
  
-@@ -593,6 +_,7 @@
- 			RegisterToGlobal(new ItemDropWithConditionRule(520, 5, 1, 1, new Conditions.SoulOfLight()));
- 			RegisterToGlobal(new ItemDropWithConditionRule(521, 5, 1, 1, new Conditions.SoulOfNight()));
- 			RegisterToGlobal(ItemDropRule.ByCondition(new Conditions.PirateMap(), 1315, 100));
-+			NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
- 		}
- 
- 		private void RegisterFoodDrops() {
-@@ -897,7 +_,8 @@
- 			RegisterToNPC(476, ItemDropRule.Common(2676, 3, 2, 4));
- 			RegisterToNPC(476, ItemDropRule.Common(2272, 3));
- 			RegisterToNPC(476, ItemDropRule.Common(4731, 3));
-+			//Removed to avoid an exception on load
--			RegisterToNPC(476, ItemDropRule.Common(4986, 3, 69));
-+			//RegisterToNPC(476, ItemDropRule.Common(4986, 3, 69));
- 			int[] npcNetIds4 = new int[3] {
- 				473,
- 				474,

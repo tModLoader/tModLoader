@@ -3,8 +3,10 @@ using ReLogic.Content;
 using ReLogic.Content.Sources;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using Terraria.DataStructures;
 using Terraria.ModLoader.Assets;
 using Terraria.ModLoader.Default.Developer;
 using Terraria.ModLoader.Default.Patreon;
@@ -29,7 +31,7 @@ namespace Terraria.ModLoader.Default
 
 		public override IContentSource CreateDefaultContentSource() => new AssemblyResourcesContentSource(Assembly.GetExecutingAssembly(), "Terraria.ModLoader.Default.");
 
-		public override void Load() {			
+		public override void Load() {
 			PatronSets = GetContent<PatreonItem>().GroupBy(t => t.InternalSetName).Select(set => set.ToArray()).ToArray();
 			DeveloperSets = GetContent<DeveloperItem>().GroupBy(t => t.InternalSetName).Select(set => set.ToArray()).ToArray();
 		}
@@ -39,12 +41,12 @@ namespace Terraria.ModLoader.Default
 			DeveloperSets = null;
 		}
 
-		internal static bool TryGettingPatreonOrDevArmor(Player player) {
+		internal static bool TryGettingPatreonOrDevArmor(IEntitySource source, Player player) {
 			if (Main.rand.NextBool(ChanceToGetPatreonArmor)) {
 				int randomIndex = Main.rand.Next(PatronSets.Length);
 
 				foreach (var patreonItem in PatronSets[randomIndex]) {
-					player.QuickSpawnItem(patreonItem.Type);
+					player.QuickSpawnItem(source, patreonItem.Type);
 				}
 
 				return true;
@@ -54,12 +56,14 @@ namespace Terraria.ModLoader.Default
 				int randomIndex = Main.rand.Next(DeveloperSets.Length);
 
 				foreach (var developerItem in DeveloperSets[randomIndex]) {
-					player.QuickSpawnItem(developerItem.Type);
+					player.QuickSpawnItem(source, developerItem.Type);
 				}
 
 				return true;
 			}
 			return false;
 		}
+
+		public override void HandlePacket(BinaryReader reader, int whoAmI) => ModAccessorySlotPlayer.NetHandler.HandlePacket(reader, whoAmI);
 	}
 }
