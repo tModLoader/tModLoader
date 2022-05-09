@@ -24,9 +24,9 @@ var class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound =
     [ "GetShort", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a1f3eb5b691e99cdf79a52cc70875eda4", null ],
     [ "GetString", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#ac05f361e74b11d7fddaf60e4c3ab3fd7", null ],
     [ "Remove", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#adcd975500a22a06b82511ccec00b7800", null ],
-    [ "Set", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a00abf9ec8a3d61f3d304421cc3f671f1", null ],
     [ "Set", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a82aa5507cedd18a63053c653e5908681", null ],
     [ "ToString", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#af590c6c7bdedea389a24b4b9ecf08d92", null ],
+    [ "TryGet< T >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a67fc9ad4199883c6303337ee9c872f26", null ],
     [ "Count", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a546328535535759db8c68cec1c1cf302", null ],
     [ "this[string key]", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html#a179e03357055c268d5f63e9de82a56cd", null ]
 ];
