@@ -16,11 +16,7 @@ namespace Terraria.ModLoader.IO
 		private Dictionary<string, object> dict = new Dictionary<string, object>();
 
 		public T Get<T>(string key) {
-			if (!TryGet(key, out T value)) {
-				throw new KeyNotFoundException("The tag doesn't contain the key \"" + key +
-				                               "\", use TryGet instead if you aren't sure the tag contains the value");
-			}
-
+			TryGet(key, out T value);
 			return value;
 		}
 
