@@ -37,7 +37,12 @@ namespace Terraria.ModLoader
 		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
 		public int AIType { get; set; }
 
-		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the animation (FindFrame) of. Leave as 0 to not copy any animation. Defaults to 0. </summary>
+		/// <summary>
+		/// Determines which type of vanilla NPC this ModNPC will copy the animation/framing logic of, which includes checks to sets such as <seealso cref="Main.npcFrameCount"/>
+		/// and <seealso cref="NPCID.Sets.ExtraFramesCount"/>, and others. For example, selecting the Guide's type will copy how many frames, extra frames, and attack frames the
+		/// Guide has, and use those value for animation of this NPC. This is entirely based off of type and not the ModNPC instance itself; so be cautious if you
+		/// change this NPC's type.
+		/// </summary>
 		public int AnimationType { get; set; }
 
 		/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
@@ -583,6 +588,10 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to determine whether this NPC can talk with the player. By default, returns if the NPC is a town NPC.
+		/// <para></para>
+		/// This hook is not based on the type of the NPC, and is queried specifically on the ModNPC itself, regardless of if,
+		/// for example, the type of the NPC instance is changed. Returning true in all circumstances will *always* make the NPC
+		/// able to be chatted with no matter what else you do the NPC instance itself.
 		/// </summary>
 		/// <returns></returns>
 		public virtual bool CanChat() {
