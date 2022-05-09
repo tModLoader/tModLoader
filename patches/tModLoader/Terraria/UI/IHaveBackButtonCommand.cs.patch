@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/UI/IHaveBackButtonCommand.cs
+--- src/TerrariaNetCore/Terraria/UI/IHaveBackButtonCommand.cs
 +++ src/tModLoader/Terraria/UI/IHaveBackButtonCommand.cs
 @@ -1,7 +_,20 @@
 +using Terraria.Audio;

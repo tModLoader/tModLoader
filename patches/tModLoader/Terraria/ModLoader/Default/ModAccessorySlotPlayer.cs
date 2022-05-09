@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Terraria.DataStructures;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default
@@ -151,14 +152,14 @@ namespace Terraria.ModLoader.Default
 		}
 
 		// Death drops code, should run prior to dropping other items in case conditions are used based on player's current equips
-		public void DropItems() {
+		public void DropItems(IEntitySource itemSource) {
 			var loader = LoaderManager.Get<AccessorySlotLoader>();
 			var pos = Player.position + Player.Size / 2;
 			for (int i = 0; i < SlotCount; i++) {
 				if (loader.ModdedIsAValidEquipmentSlotForIteration(i, Player)) {
-					Player.DropItem(pos, ref exAccessorySlot[i]);
-					Player.DropItem(pos, ref exAccessorySlot[i + SlotCount]);
-					Player.DropItem(pos, ref exDyesAccessory[i]);
+					Player.DropItem(itemSource, pos, ref exAccessorySlot[i]);
+					Player.DropItem(itemSource, pos, ref exAccessorySlot[i + SlotCount]);
+					Player.DropItem(itemSource, pos, ref exDyesAccessory[i]);
 				}
 			}
 		}

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/MonoLaunch.cs
+--- src/TerrariaNetCore/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
 @@ -6,7 +_,9 @@
  using System.Reflection;

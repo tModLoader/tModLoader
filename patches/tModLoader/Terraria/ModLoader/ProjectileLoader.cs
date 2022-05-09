@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -111,11 +112,11 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Projectile projectile, bool createModProjectile = true) {
 			if (IsModProjectile(projectile) && createModProjectile) {
-				projectile.ModProjectile = GetProjectile(projectile.type).NewInstance(projectile);
+				projectile.ModProjectile = GetProjectile(projectile.type).Clone(projectile);
 			}
 
 			GlobalProjectile Instantiate(GlobalProjectile g)
-				=> g.InstancePerEntity ? g.NewInstance(projectile) : g;
+				=> g.InstancePerEntity ? g.Clone(projectile, projectile) : g;
 
 			LoaderUtils.InstantiateGlobals(projectile, globalProjectiles, ref projectile.globalProjectiles, Instantiate, () => {
 				projectile.ModProjectile?.SetDefaults();
@@ -126,6 +127,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookOnSpawn = AddHook<Action<Projectile, IEntitySource>>(g => g.OnSpawn);
+
+		internal static void OnSpawn(Projectile projectile, IEntitySource source) {
+			projectile.ModProjectile?.OnSpawn(source);
+
+			foreach (GlobalProjectile g in HookOnSpawn.Enumerate(projectile.globalProjectiles)) {
+				g.OnSpawn(projectile, source);
+			}
+		}
+		
 		//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
 		public static void ProjectileAI(Projectile projectile) {
 			if (PreAI(projectile)) {

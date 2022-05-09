@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/nativefiledialog.cs
+--- src/TerrariaNetCore/Terraria/nativefiledialog.cs
 +++ src/tModLoader/Terraria/nativefiledialog.cs
 @@ -69,7 +_,7 @@
  		nfdresult_t result = INTERNAL_NFD_OpenDialog(intPtr, ptr, out outPath2);

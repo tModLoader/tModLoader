@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/RecipeGroup.cs
+--- src/TerrariaNetCore/Terraria/RecipeGroup.cs
 +++ src/tModLoader/Terraria/RecipeGroup.cs
 @@ -5,9 +_,11 @@
  {

@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -30,13 +31,22 @@ namespace Terraria
 		/// </summary>
 		public bool IsCandidateForReforge => maxStack == 1 || AllowReforgeForStackableItem;
 
-		private DamageClass _damageClass = DamageClass.Generic;
+		private DamageClass _damageClass = DamageClass.Default;
 		/// <summary>
 		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or <see cref="ModContent.GetInstance"/> for custom damage types.
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;
-			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
+			set => _damageClass = value ?? throw new ArgumentException("An item's DamageType cannot be null.");
+		}
+
+		private int _armorPenetration = 0;
+		/// <summary>
+		/// The number of defense points that this item can ignore on its own. Cannot be set to negative values. Defaults to 0.
+		/// </summary>
+		public int ArmorPenetration {
+			get => _armorPenetration;
+			set => _armorPenetration = Math.Max(0, value);
 		}
 
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
@@ -66,7 +76,7 @@ namespace Terraria
 			=> CountsAsClass(ModContent.GetInstance<T>());
 
 		public bool CountsAsClass(DamageClass damageClass)
-			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+			=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 
 		// public version of IsNotTheSameAs for modders
 		/// <summary>
@@ -98,18 +108,21 @@ namespace Terraria
 			ItemID.Sets.IsAMaterial[74] = false;
 		}
 
-		public static int NewItem(Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
-			=> NewItem(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+		public static int NewItem(IEntitySource source, Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
+			=> NewItem(source, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
-		public static int NewItem(Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
-			=> NewItem((int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+		public static int NewItem(IEntitySource source, Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
+			=> NewItem(source, (int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
 		private void ApplyItemAnimationCompensations() {
+			// #2351
 			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
-
+			// all items with autoReuse in vanilla are affected, but the animation only has a physical effect for !noMelee items
+			// for those items, we want the faster animation as that governs reuse time as dps is determined by swing speed.
+			// for the others like ranged weapons, it's fine to keep the animation matching the use time, as dps is determined by item use speed
 			currentUseAnimationCompensation = 0;
 
-			if (type < ItemID.Count && !noMelee) {
+			if (type < ItemID.Count && autoReuse && !noMelee) {
 				useAnimation--;
 				currentUseAnimationCompensation--;
 			}
@@ -121,8 +134,8 @@ namespace Terraria
 		}
 
 		// Internal utility method. Move somewhere, if there's a better place.
-		internal static void DropItem(Item item, Rectangle rectangle) {
-			int droppedItemId = NewItem(rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
+		internal static void DropItem(IEntitySource source, Item item, Rectangle rectangle) {
+			int droppedItemId = NewItem(source, rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
 			var droppedItem = Main.item[droppedItemId];
 
 			droppedItem.ModItem = item.ModItem;

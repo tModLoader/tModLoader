@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/UI/ChestUI.cs
+--- src/TerrariaNetCore/Terraria/UI/ChestUI.cs
 +++ src/tModLoader/Terraria/UI/ChestUI.cs
 @@ -6,6 +_,8 @@
  using Terraria.GameContent;

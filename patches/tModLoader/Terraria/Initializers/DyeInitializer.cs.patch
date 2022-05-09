@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Initializers/DyeInitializer.cs
+--- src/TerrariaNetCore/Terraria/Initializers/DyeInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/DyeInitializer.cs
 @@ -4,6 +_,7 @@
  using Terraria.GameContent.Dyes;

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Drawing/TileDrawing.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
 +++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
 @@ -9,13 +_,14 @@
  using Terraria.GameContent.Tile_Entities;
@@ -131,11 +131,12 @@
  			tileTop = 0;
  			tileWidth = 16;
  			tileHeight = 16;
-@@ -4378,6 +_,9 @@
+@@ -4378,6 +_,10 @@
  						break;
  					}
  			}
 +
++			TileLoader.SetSpriteEffects(x, y, typeCache, ref tileSpriteEffect);
 +			TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight, ref tileFrameX, ref tileFrameY);
 +			TileLoader.SetAnimationFrame(typeCache, x, y, ref addFrX, ref addFrY);
  		}

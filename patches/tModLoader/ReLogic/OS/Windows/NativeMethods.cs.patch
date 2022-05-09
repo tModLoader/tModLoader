@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/OS/Windows/NativeMethods.cs
+--- src/TerrariaNetCore/ReLogic/OS/Windows/NativeMethods.cs
 +++ src/tModLoader/ReLogic/OS/Windows/NativeMethods.cs
 @@ -113,5 +_,15 @@
  

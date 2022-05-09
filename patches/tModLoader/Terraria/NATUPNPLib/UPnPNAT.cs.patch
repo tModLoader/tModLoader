@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/NATUPNPLib/UPnPNAT.cs
+--- src/TerrariaNetCore/Terraria/NATUPNPLib/UPnPNAT.cs
 +++ src/tModLoader/Terraria/NATUPNPLib/UPnPNAT.cs
 @@ -47,6 +_,12 @@
  					StaticPortMapping ret;

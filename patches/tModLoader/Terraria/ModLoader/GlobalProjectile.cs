@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
@@ -26,35 +27,11 @@ namespace Terraria.ModLoader
 		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
-		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()).
-		/// Defaults to false (using default constructor).
+		/// Create a copy of this instanced GlobalProjectile. Called when a projectile is cloned.
 		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
-		/// Returns a clone of this GlobalProjectile.
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references.
-		/// Only called if CloneNewInstances &amp;&amp; InstancePerEntity
-		/// </summary>
-		public virtual GlobalProjectile Clone() => (GlobalProjectile)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this GlobalProjectile for a Projectile instance.
-		/// Called at the end of Projectile.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual GlobalProjectile NewInstance(Projectile projectile) {
-			if (CloneNewInstances) {
-				return Clone();
-			}
-
-			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
-			copy.Mod = Mod;
-			copy.index = index;
-
-			return copy;
-		}
+		/// <param name="projectile">The projectile being cloned</param>
+		/// <param name="projectileClone">The new projectile</param>
+		public virtual GlobalProjectile Clone(Projectile projectile, Projectile projectileClone) => (GlobalProjectile)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every projectile that gets created.
@@ -63,6 +40,12 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults(Projectile projectile) {
 		}
 
+		/// <summary>
+		/// Gets called when any projectiles spawns in world
+		/// </summary>
+		public virtual void OnSpawn(Projectile projectile, IEntitySource source) {
+		}
+		
 		/// <summary>
 		/// Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
 		/// </summary>

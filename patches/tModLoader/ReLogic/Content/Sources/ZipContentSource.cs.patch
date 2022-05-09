@@ -1,4 +1,4 @@
---- src/Terraria/ReLogic/Content/Sources/ZipContentSource.cs
+--- src/TerrariaNetCore/ReLogic/Content/Sources/ZipContentSource.cs
 +++ src/tModLoader/ReLogic/Content/Sources/ZipContentSource.cs
 @@ -7,21 +_,15 @@
  

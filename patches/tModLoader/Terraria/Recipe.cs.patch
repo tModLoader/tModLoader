@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Recipe.cs
+--- src/TerrariaNetCore/Terraria/Recipe.cs
 +++ src/tModLoader/Terraria/Recipe.cs
 @@ -1,41 +_,45 @@
  using System;
@@ -344,11 +344,11 @@
  		}
  
 +		// meme man: i cn spek engrish
--		public void SetIngridients(params int[] ingridients) {
-+		private void SetIngridients(params int[] ingridients) {
- 			if (ingridients.Length == 1) {
- 				ingridients = new int[2] {
- 					ingridients[0],
+-		public void SetIngredients(params int[] ingredients) {
++		private void SetIngredients(params int[] ingredients) {
+ 			if (ingredients.Length == 1) {
+ 				ingredients = new int[2] {
+ 					ingredients[0],
 @@ -14329,18 +_,59 @@
  			}
  		}

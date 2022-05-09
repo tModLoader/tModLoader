@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Map/PingMapLayer.cs
+--- src/TerrariaNetCore/Terraria/Map/PingMapLayer.cs
 +++ src/tModLoader/Terraria/Map/PingMapLayer.cs
 @@ -10,6 +_,8 @@
  {

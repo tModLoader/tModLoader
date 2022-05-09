@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using Terraria.GameContent;
 using Terraria.GameContent.Personalities;
 using Terraria.ID;
@@ -9,90 +9,83 @@ namespace Terraria.ModLoader
 	/// <summary> This struct provides access to an NPC type's NPC &amp; Biome relationships. </summary>
 	public readonly struct NPCHappiness
 	{
-		public enum Relationship : sbyte
-		{
-			Neutral,
-			Hate,
-			Dislike,
-			Like,
-			Love
-		}
-
-		private static readonly IReadOnlyDictionary<int, Relationship> emptyDictionaryDummy = new ReadOnlyDictionary<int, Relationship>(new Dictionary<int, Relationship>());
-
-		internal static readonly Dictionary<int, Dictionary<int, Relationship>> NpcToNpcRelationship = new();
-		internal static readonly Dictionary<int, Dictionary<int, Relationship>> NpcToBiomeRelationship = new();
-
 		/// <summary> Allows you to modify the shop price multipliers associated with a (biome/npc type) relationship level. </summary>
-		public static readonly Dictionary<Relationship, float> RelationshipToPriceMultiplier = new() {
-			{ Relationship.Neutral, 1f },
-			{ Relationship.Hate, ShopHelper.hateValue },
-			{ Relationship.Dislike, ShopHelper.dislikeValue },
-			{ Relationship.Like, ShopHelper.likeValue },
-			{ Relationship.Love, ShopHelper.loveValue },
+		public static readonly Dictionary<AffectionLevel, float> AffectionLevelToPriceMultiplier = new() {
+			{ AffectionLevel.Hate, ShopHelper.hateValue },
+			{ AffectionLevel.Dislike, ShopHelper.dislikeValue },
+			{ AffectionLevel.Like, ShopHelper.likeValue },
+			{ AffectionLevel.Love, ShopHelper.loveValue },
 		};
 
 		public readonly int NpcType;
-
-		public IReadOnlyDictionary<int, Relationship> NpcTypeRelationships
-			=> NpcToNpcRelationship.TryGetValue(NpcType, out var result) ? result : emptyDictionaryDummy;
-
-		public IReadOnlyDictionary<int, Relationship> BiomeTypeRelationships
-			=> NpcToBiomeRelationship.TryGetValue(NpcType, out var result) ? result : emptyDictionaryDummy;
 
 		private NPCHappiness(int npcType) {
 			NpcType = npcType;
 		}
 
-		public void LoveNPC(int npcId)
-			=> SetRelationship(npcId, Relationship.Love, NpcToNpcRelationship);
+		public NPCHappiness SetNPCAffection<T>(AffectionLevel affectionLevel) where T : ModNPC
+			=> SetNPCAffection(ModContent.GetInstance<T>().Type, affectionLevel);
 
-		public void LikeNPC(int npcId)
-			=> SetRelationship(npcId, Relationship.Like, NpcToNpcRelationship);
+		public NPCHappiness SetNPCAffection(int npcId, AffectionLevel affectionLevel) {
+			var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(NpcType);
+			var shopModifiers = profile.ShopModifiers;
 
-		public void DislikeNPC(int npcId)
-			=> SetRelationship(npcId, Relationship.Dislike, NpcToNpcRelationship);
+			var existingEntry = (NPCPreferenceTrait)shopModifiers.SingleOrDefault(t => t is NPCPreferenceTrait npcPreference && npcPreference.NpcId == npcId);
 
-		public void HateNPC(int npcId)
-			=> SetRelationship(npcId, Relationship.Hate, NpcToNpcRelationship);
-
-		public void LoveBiome(int biomeId)
-			=> SetRelationship(biomeId, Relationship.Love, NpcToBiomeRelationship);
-
-		public void LikeBiome(int biomeId)
-			=> SetRelationship(biomeId, Relationship.Like, NpcToBiomeRelationship);
-
-		public void DislikeBiome(int biomeId)
-			=> SetRelationship(biomeId, Relationship.Dislike, NpcToBiomeRelationship);
-
-		public void HateBiome(int biomeId)
-			=> SetRelationship(biomeId, Relationship.Hate, NpcToBiomeRelationship);
-
-		private void SetRelationship(int index, Relationship relationship, Dictionary<int, Dictionary<int, Relationship>> dictionaries) {
-			bool removal = relationship == 0;
-
-			if (!dictionaries.TryGetValue(NpcType, out var subDictionary)) {
-				if (removal) {
-					return;
+			if (existingEntry != null) {
+				if (affectionLevel == 0) {
+					shopModifiers.Remove(existingEntry);
+					return this;
 				}
 
-				dictionaries[NpcType] = subDictionary = new();
+				existingEntry.Level = affectionLevel;
+				return this;
 			}
 
-			if (removal) {
-				subDictionary.Remove(index);
-				return;
+			shopModifiers.Add(new NPCPreferenceTrait {
+				NpcId = npcId,
+				Level = affectionLevel,
+			});
+
+			return this;
+		}
+
+		public NPCHappiness SetBiomeAffection<T>(AffectionLevel affectionLevel) where T : class, ILoadable, IShoppingBiome
+			=> SetBiomeAffection(ModContent.GetInstance<T>(), affectionLevel);
+
+		public NPCHappiness SetBiomeAffection(IShoppingBiome biome, AffectionLevel affectionLevel) {
+			var profile = Main.ShopHelper._database.GetOrCreateProfileByNPCID(NpcType);
+			var shopModifiers = profile.ShopModifiers;
+			bool removal = affectionLevel == 0;
+
+			var biomePreferenceList = (BiomePreferenceListTrait)shopModifiers.SingleOrDefault(t => t is BiomePreferenceListTrait);
+
+			if (biomePreferenceList == null) {
+				if (removal)
+					return this;
+
+				shopModifiers.Add(biomePreferenceList = new BiomePreferenceListTrait());
 			}
 
-			subDictionary[index] = relationship;
+			var biomePreferences = biomePreferenceList.Preferences;
+			var existingEntry = biomePreferenceList.SingleOrDefault(p => p.Biome == biome);
+
+			if (existingEntry != null) {
+				if (removal) {
+					biomePreferences.Remove(existingEntry);
+					return this;
+				}
+
+				existingEntry.Affection = affectionLevel;
+				return this;
+			}
+
+			biomePreferenceList.Add(affectionLevel, biome);
+
+			return this;
 		}
 
 		public static NPCHappiness Get(int npcType) => new(npcType);
-
-		internal static void ResetRelationships() {
-			NpcToNpcRelationship.Clear();
-			NpcToBiomeRelationship.Clear();
-		}
 
 		internal static void RegisterVanillaNpcRelationships() {
 			for (int i = 0; i < NPCID.Count; i++) {

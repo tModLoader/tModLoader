@@ -153,7 +153,7 @@ namespace Terraria.ModLoader
 			}
 
 			/// <summary>
-			/// Write cloud files, which will get the relevant part of the path and write map & tmap files
+			/// Write cloud files, which will get the relevant part of the path and write map &amp; tmap files
 			/// </summary>
 			private static void WriteCloudFiles(ZipFile zip, string path) {
 				// Path is still equal to local path

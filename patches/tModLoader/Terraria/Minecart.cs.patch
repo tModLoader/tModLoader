@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Minecart.cs
+--- src/TerrariaNetCore/Terraria/Minecart.cs
 +++ src/tModLoader/Terraria/Minecart.cs
 @@ -499,7 +_,7 @@
  			float num = value.Length();

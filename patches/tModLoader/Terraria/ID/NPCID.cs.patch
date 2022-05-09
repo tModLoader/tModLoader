@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/NPCID.cs
+--- src/TerrariaNetCore/Terraria/ID/NPCID.cs
 +++ src/tModLoader/Terraria/ID/NPCID.cs
 @@ -3,12 +_,13 @@
  using System;

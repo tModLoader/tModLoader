@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/IO/PlayerFileData.cs
+--- src/TerrariaNetCore/Terraria/IO/PlayerFileData.cs
 +++ src/tModLoader/Terraria/IO/PlayerFileData.cs
 @@ -2,6 +_,8 @@
  using System.Diagnostics;

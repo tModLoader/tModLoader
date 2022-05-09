@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Tile.cs
+--- src/TerrariaNetCore/Terraria/Tile.cs
 +++ src/tModLoader/Terraria/Tile.cs
 @@ -1,16 +_,32 @@
  using Microsoft.Xna.Framework;

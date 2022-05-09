@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Physics/BallCollision.cs
+--- src/TerrariaNetCore/Terraria/Physics/BallCollision.cs
 +++ src/tModLoader/Terraria/Physics/BallCollision.cs
 @@ -151,7 +_,7 @@
  			tileEdges = ((!(velocity.Y > velocity.X)) ? (tileEdges | TileEdges.TopRightSlope) : (tileEdges | TileEdges.BottomLeftSlope));

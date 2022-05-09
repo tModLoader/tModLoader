@@ -1,6 +1,6 @@
---- src/Terraria/Terraria/Map/TeleportPylonsMapLayer.cs
+--- src/TerrariaNetCore/Terraria/Map/TeleportPylonsMapLayer.cs
 +++ src/tModLoader/Terraria/Map/TeleportPylonsMapLayer.cs
-@@ -11,6 +_,8 @@
+@@ -12,6 +_,8 @@
  {
  	public class TeleportPylonsMapLayer : IMapLayer
  	{

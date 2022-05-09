@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/MessageID.cs
+--- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
 @@ -1,83 +_,335 @@
  using Terraria.Utilities;

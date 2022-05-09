@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Map/MapIconOverlay.cs
+--- src/TerrariaNetCore/Terraria/Map/MapIconOverlay.cs
 +++ src/tModLoader/Terraria/Map/MapIconOverlay.cs
 @@ -6,16 +_,26 @@
  	public class MapIconOverlay

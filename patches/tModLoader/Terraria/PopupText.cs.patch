@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/PopupText.cs
+--- src/TerrariaNetCore/Terraria/PopupText.cs
 +++ src/tModLoader/Terraria/PopupText.cs
 @@ -1,6 +_,8 @@
  using Microsoft.Xna.Framework;

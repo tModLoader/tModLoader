@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/WorldBuilding/Passes.cs
+--- src/TerrariaNetCore/Terraria/WorldBuilding/Passes.cs
 +++ src/tModLoader/Terraria/WorldBuilding/Passes.cs
 @@ -11,6 +_,7 @@
  			}

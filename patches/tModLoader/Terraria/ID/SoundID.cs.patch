@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/SoundID.cs
+--- src/TerrariaNetCore/Terraria/ID/SoundID.cs
 +++ src/tModLoader/Terraria/ID/SoundID.cs
 @@ -7,7 +_,7 @@
  {

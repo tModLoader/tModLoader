@@ -273,10 +273,10 @@
 		"ModControls": "Mod-Steuerung",
 
 		// Player and World Select
-		"MigratePlayersMessage": "Du hast keine Charaktere.\nWenn du deine Vanilla-Charaktere im tModLoader benutzen willst,\nkopiere sie von /Terraria/Players in /Terraria/ModLoader/Players.\n kopiere die .plr-Datei und den gleichnamigen Ordner.\n<Ordner öffnen>.\nKlicke auf 'zurück', wenn du fertig bist.",
+		"MigratePlayersMessage": "Du hast keine Charaktere.\nWenn du deine Vanilla-Charaktere im tModLoader benutzen willst,\nkopiere sie von /Terraria/Players in /Terraria/{0}/Players.\n kopiere die .plr-Datei und den gleichnamigen Ordner.\n<Ordner öffnen>.\nKlicke auf 'zurück', wenn du fertig bist.",
 		"MigratePlayersText": "Hier klicken um Spieler Dateien zu migrieren",
 		"MigratePlayersException": "Ein Fehler ist beim migrieren der Spieler Dateien aufgetreten",
-		"MigrateWorldsMessage": "Du hast keine Welten.\nWenn du deine Vanilla-Welten im tModLoader benutzen möchtest,\nkannst du auf übernehmen klicken um sie automatisch zu übernehmen.\nAlternativ, kannst du sie von \n /Terraria/Worlds\nin\n/Terraria/ModLoader/Worlds manuell kopieren.\nKopiere dafür die .wld-Datei.\n<Ordner Öffnen>.\nKlicke nach dem kopieren der Welten auf 'zurück'.",
+		"MigrateWorldsMessage": "Du hast keine Welten.\nWenn du deine Vanilla-Welten im tModLoader benutzen möchtest,\nkannst du auf übernehmen klicken um sie automatisch zu übernehmen.\nAlternativ, kannst du sie von \n /Terraria/Worlds\nin\n/Terraria/{0}/Worlds manuell kopieren.\nKopiere dafür die .wld-Datei.\n<Ordner Öffnen>.\nKlicke nach dem kopieren der Welten auf 'zurück'.",
 		"MigrateWorldsText": "Klicke hier um die Welten zu übernehmen...",
 		"MigratingWorldsText": "Übernehme Welten",
 		"ModsDifferentSinceLastPlay": "Diese Mods sind anders, seit du das letzte Mal gespielt hast: ",

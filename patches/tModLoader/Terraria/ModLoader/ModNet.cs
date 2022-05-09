@@ -240,6 +240,8 @@ namespace Terraria.ModLoader
 		internal const int CHUNK_SIZE = 16384;
 		internal static void SendMod(string modName, int toClient) {
 			Mod mod = ModLoader.GetMod(modName);
+			if (mod.Side == ModSide.Server) // Prevent exposing server side mods to malicious clients
+				return;
 			string path = mod.File.path;
 			FileStream fs = File.OpenRead(path);
 

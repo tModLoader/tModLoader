@@ -52,11 +52,13 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void RightClick(Player player) {
+			var entitySource = player.GetSource_OpenItem(Type);
+
 			if (Main.hardMode) {
-				player.QuickSpawnItem(ItemID.ChocolateChipCookie);
+				player.QuickSpawnItem(entitySource, ItemID.ChocolateChipCookie);
 			}
 			else {
-				player.QuickSpawnItem(ItemID.Coconut);
+				player.QuickSpawnItem(entitySource, ItemID.Coconut);
 			}
 		}
 

@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
@@ -14,59 +13,66 @@ namespace Terraria.ModLoader.Config.UI
 		private Type listType;
 
 		protected override void PrepareTypes() {
-			listType = memberInfo.Type.GetGenericArguments()[0];
-			jsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(memberInfo, listType);
+			listType = MemberInfo.Type.GetGenericArguments()[0];
+			JsonDefaultListValueAttribute = ConfigManager.GetCustomAttribute<JsonDefaultListValueAttribute>(MemberInfo, listType);
 		}
 
 		protected override void AddItem() {
-			((IList)data).Add(CreateCollectionElementInstance(listType));
+			((IList)Data).Add(CreateCollectionElementInstance(listType));
 		}
 
 		protected override void InitializeCollection() {
-			data = Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
-			SetObject(data);
+			Data = Activator.CreateInstance(typeof(List<>).MakeGenericType(listType));
+			SetObject(Data);
 		}
 
 		protected override void ClearCollection() {
-			((IList)data).Clear();
+			((IList)Data).Clear();
 		}
 
 		protected override void SetupList() {
-			dataList.Clear();
+			DataList.Clear();
+
 			int top = 0;
-			if (data != null) {
-				for (int i = 0; i < ((IList)data).Count; i++) {
+
+			if (Data != null) {
+				for (int i = 0; i < ((IList)Data).Count; i++) {
 					int index = i;
-					var wrapped = UIModConfig.WrapIt(dataList, ref top, memberInfo, item, 0, data, listType, index);
+					var wrapped = UIModConfig.WrapIt(DataList, ref top, MemberInfo, Item, 0, Data, listType, index);
 
 					wrapped.Item2.Left.Pixels += 24;
 					wrapped.Item2.Width.Pixels -= 30;
 
 					// Add delete button.
-					UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(deleteTexture, "Remove");
+					UIModConfigHoverImage deleteButton = new UIModConfigHoverImage(DeleteTexture, "Remove");
 					deleteButton.VAlign = 0.5f;
-					deleteButton.OnClick += (a, b) => { ((IList)data).RemoveAt(index); SetupList(); Interface.modConfig.SetPendingChanges(); };
+					deleteButton.OnClick += (a, b) => { ((IList)Data).RemoveAt(index); SetupList(); Interface.modConfig.SetPendingChanges(); };
 					wrapped.Item1.Append(deleteButton);
 				}
 			}
 		}
 	}
 
-	class NestedUIList : UIList
+	internal class NestedUIList : UIList
 	{
+		/*
 		public NestedUIList() {
-			//OverflowHidden = false;
+			OverflowHidden = false;
 		}
+		*/
 
 		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
+
 			PlayerInput.LockVanillaMouseScroll("ModLoader/ListElement");
 		}
 
 		public override void ScrollWheel(UIScrollWheelEvent evt) {
-			if (this._scrollbar != null) {
-				float oldpos = this._scrollbar.ViewPosition;
-				this._scrollbar.ViewPosition -= (float)evt.ScrollWheelValue;
+			if (_scrollbar != null) {
+				float oldpos = _scrollbar.ViewPosition;
+
+				_scrollbar.ViewPosition -= evt.ScrollWheelValue;
+
 				if (oldpos == _scrollbar.ViewPosition) {
 					base.ScrollWheel(evt);
 				}

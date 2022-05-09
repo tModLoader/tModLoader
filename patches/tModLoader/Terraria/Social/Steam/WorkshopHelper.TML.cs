@@ -114,7 +114,7 @@ namespace Terraria.Social.Steam
 
 			internal static bool GetPublishIdLocal(LocalMod mod, out ulong publishId) {
 				publishId = 0;
-				if (!AWorkshopEntry.TryReadingManifest(Path.Combine(Directory.GetParent(mod.modFile.path).ToString(), "workshop.json"), out var info))
+				if (!ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(mod.modFile.path), out var info))
 					return false;
 
 				publishId = info.workshopEntryId;
@@ -185,7 +185,7 @@ namespace Terraria.Social.Steam
 			/// <summary>
 			/// Updates and/or Downloads the Item specified when generating the ModManager Instance.
 			/// </summary>
-			private bool InnerDownload(UIWorkshopDownload uiProgress, bool mbHasUpdate) {
+			internal bool InnerDownload(UIWorkshopDownload uiProgress, bool mbHasUpdate) {
 				downloadResult = EResult.k_EResultOK;
 
 				if (NeedsUpdate() || mbHasUpdate) {
@@ -635,10 +635,30 @@ namespace Terraria.Social.Steam
 
 						if (installed != null) {
 							//exists = true;
-							if (cVersion > installed.modFile.Version)
+							var check = new ModManager(id);
+							if (check.NeedsUpdate()) {
 								update = true;
-							else if (cVersion < installed.modFile.Version)
-								update = updateIsDowngrade = true;
+
+								/*
+								string location = installed.modFile.path;
+								string repo = ModOrganizer.GetParentDir(location);
+								string oldest = ModOrganizer.FindOldest(repo);
+
+								if (!oldest.Contains(".tmod"))
+									oldest = Directory.GetFiles(oldest, "*.tmod")[0];
+
+								var sModFile = new TmodFile(oldest);
+								LocalMod sMod;
+								using (sModFile.Open())
+									sMod = new LocalMod(sModFile);
+
+								var installedVer = sMod.properties.version;
+								if (cVersion > installedVer)
+									update = true;
+								else if (cVersion < installedVer)
+									update = updateIsDowngrade = true;
+								*/
+							}
 						}
 
 						Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"]));

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/ID/TileID.cs
+--- src/TerrariaNetCore/Terraria/ID/TileID.cs
 +++ src/tModLoader/Terraria/ID/TileID.cs
 @@ -1,10 +_,11 @@
  using ReLogic.Reflection;

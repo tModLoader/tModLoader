@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/NPCSpawnParams.cs
+--- src/TerrariaNetCore/Terraria/NPCSpawnParams.cs
 +++ src/tModLoader/Terraria/NPCSpawnParams.cs
 @@ -6,7 +_,7 @@
  	{

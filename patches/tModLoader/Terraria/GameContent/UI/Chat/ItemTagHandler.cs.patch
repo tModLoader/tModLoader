@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Chat/ItemTagHandler.cs
 @@ -1,6 +_,9 @@
  using Microsoft.Xna.Framework;

@@ -6,19 +6,19 @@ namespace Terraria.ModLoader
 {
 	public static class CombinedHooks
 	{
-		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage, ref float flat) {
-			ItemLoader.ModifyWeaponDamage(item, player, ref damage, ref flat);
-			PlayerLoader.ModifyWeaponDamage(player, item, ref damage, ref flat);
+		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage) {
+			ItemLoader.ModifyWeaponDamage(item, player, ref damage);
+			PlayerLoader.ModifyWeaponDamage(player, item, ref damage);
 		}
 
-		public static void ModifyWeaponCrit(Player player, Item item, ref int crit) {
+		public static void ModifyWeaponCrit(Player player, Item item, ref float crit) {
 			ItemLoader.ModifyWeaponCrit(item, player, ref crit);
 			PlayerLoader.ModifyWeaponCrit(player, item, ref crit);
 		}
 
-		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback, ref float flat) {
-			ItemLoader.ModifyWeaponKnockback(item, player, ref knockback, ref flat);
-			PlayerLoader.ModifyWeaponKnockback(player, item, ref knockback, ref flat);
+		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback) {
+			ItemLoader.ModifyWeaponKnockback(item, player, ref knockback);
+			PlayerLoader.ModifyWeaponKnockback(player, item, ref knockback);
 		}
 
 		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
@@ -45,9 +45,9 @@ namespace Terraria.ModLoader
 			ItemLoader.OnConsumeAmmo(weapon, ammo, player);
 		}
 
-		//TODO: Fix various inconsistencies with calls of UseItem, and then make this and its inner methods use short-circuiting.
+		//TODO: Fix various inconsistencies with calls of UseItem
 		public static bool CanUseItem(Player player, Item item) {
-			return PlayerLoader.CanUseItem(player, item) & ItemLoader.CanUseItem(item, player);
+			return PlayerLoader.CanUseItem(player, item) && ItemLoader.CanUseItem(item, player);
 		}
 
 		// In Player.TryAllowingItemReuse_Inner
@@ -82,7 +82,7 @@ namespace Terraria.ModLoader
 			PlayerLoader.ModifyShootStats(player, item, ref position, ref velocity, ref type, ref damage, ref knockback);
 		}
 
-		public static bool Shoot(Player player, Item item, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public static bool Shoot(Player player, Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 			bool defaultResult = PlayerLoader.Shoot(player, item, source, position, velocity, type, damage, knockback);
 			return ItemLoader.Shoot(item, player, source, position, velocity, type, damage, knockback, defaultResult);
 		}
@@ -114,7 +114,7 @@ namespace Terraria.ModLoader
 		}
 
 		public static float TotalUseSpeedMultiplier(Player player, Item item) {
-			return PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player);
+			return PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player) * player.GetWeaponAttackSpeed(item);
 		}
 
 		public static float TotalUseTimeMultiplier(Player player, Item item) {

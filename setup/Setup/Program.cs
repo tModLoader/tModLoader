@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -210,7 +211,18 @@ namespace Terraria.ModLoader.Setup
 
 		internal static void UpdateTargetsFiles() {
 			UpdateFileText("src/WorkspaceInfo.targets", GetWorkspaceInfoTargetsText());
-			UpdateFileText(Path.Combine(TMLDevSteamDir, "tMLMod.targets"), File.ReadAllText("patches/tModLoader/Terraria/release_extras/tMLMod.targets"));
+			string tMLModTargetsContents = File.ReadAllText("patches/tModLoader/Terraria/release_extras/tMLMod.targets");
+
+			string TMLVERSION = Environment.GetEnvironmentVariable("TMLVERSION");
+			if (!string.IsNullOrWhiteSpace(TMLVERSION) && branch == "1.4-stable") {
+				// Convert 2012.4.x to 2012_4
+				Console.WriteLine($"TMLVERSION found: {TMLVERSION}");
+				string TMLVERSIONDefine = $"TML_{string.Join("_", TMLVERSION.Split('.').Take(2))}";
+				Console.WriteLine($"TMLVERSIONDefine: {TMLVERSIONDefine}");
+				tMLModTargetsContents = tMLModTargetsContents.Replace("<!-- TML stable version define placeholder -->", $"<DefineConstants>$(DefineConstants);{TMLVERSIONDefine}</DefineConstants>");
+				UpdateFileText("patches/tModLoader/Terraria/release_extras/tMLMod.targets", tMLModTargetsContents); // The patch file needs to be updated as well since it will be copied to src and the postbuild will copy it to the steam folder as well.
+			}
+			UpdateFileText(Path.Combine(TMLDevSteamDir, "tMLMod.targets"), tMLModTargetsContents);
 		}
 
 		private static void UpdateFileText(string path, string text) {
@@ -220,11 +232,12 @@ namespace Terraria.ModLoader.Setup
 				File.WriteAllText(path, text);
 		}
 
+		static string branch = "";
 		private static string GetWorkspaceInfoTargetsText() {
 			string gitsha = "";
 			RunCmd("", "git", "rev-parse HEAD", s => gitsha = s.Trim());
 
-			string branch = "";
+			branch = "";
 			RunCmd("", "git", "rev-parse --abbrev-ref HEAD", s => branch = s.Trim());
 
 			string GITHUB_HEAD_REF = Environment.GetEnvironmentVariable("GITHUB_HEAD_REF");

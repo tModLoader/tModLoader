@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/UI/UserInterface.cs
+--- src/TerrariaNetCore/Terraria/UI/UserInterface.cs
 +++ src/tModLoader/Terraria/UI/UserInterface.cs
 @@ -17,10 +_,26 @@
  		private List<UIState> _history = new List<UIState>();
