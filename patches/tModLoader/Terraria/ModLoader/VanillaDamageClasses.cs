@@ -66,6 +66,8 @@ namespace Terraria.ModLoader
 			return StatInheritanceData.None;
 		}
 
+		public override bool GetEffectInheritance(DamageClass damageClass) => damageClass == Summon;
+
 		public override bool UseStandardCritCalcs => false;
 
 		public override bool ShowStatTooltipLine(Player player, string lineName) => lineName != "CritChance";
@@ -81,6 +83,8 @@ namespace Terraria.ModLoader
 
 			return StatInheritanceData.None;
 		}
+
+		public override bool GetEffectInheritance(DamageClass damageClass) => damageClass == Magic || damageClass == Summon;
 	}
 
 	public class ThrowingDamageClass : VanillaDamageClass
