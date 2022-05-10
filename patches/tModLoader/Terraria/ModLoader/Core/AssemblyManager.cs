@@ -151,7 +151,6 @@ namespace Terraria.ModLoader.Core
 				m.Side = mod.properties.side;
 				m.DisplayName = mod.properties.displayName;
 				m.TModLoaderVersion = mod.properties.buildVersion;
-				JITModAssemblies(mod);
 				return m;
 			}
 			catch (Exception e) {
@@ -257,21 +256,32 @@ namespace Terraria.ModLoader.Core
 
 		internal static IEnumerable<Mod> GetDependencies(Mod mod) => GetLoadContext(mod.Name).dependencies.Select(m => ModLoader.GetMod(mod.Name));
 
-		private static void JITModAssemblies(ModLoadContext modLoadContext) {
-			var exceptions = new System.Collections.Concurrent.ConcurrentQueue<(Exception exception, MethodInfo methodInfo)>();
-			foreach (var assembly in modLoadContext.assemblies.Values) {
-				var types = assembly.GetTypes();
-				types = types.Where(x => ShouldJITType(x)).ToArray();
-				var methodsToJIT = CollectMethodsToJIT(types);
-				methodsToJIT = methodsToJIT.Where(x => ShouldJITMethod(x));
+		internal static void JITMod(Mod mod) => JITAssemblies(GetModAssemblies(mod.Name), mod.PreJITFilter);
+
+		private static void JITAssemblies(IEnumerable<Assembly> assemblies, PreJITFilter filter) {
+			var exceptions = new System.Collections.Concurrent.ConcurrentQueue<(Exception exception, MethodBase method)>();
+			foreach (var assembly in assemblies) {
+				const BindingFlags ALL = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
+
+				var methodsToJIT = assembly.GetTypes()
+					.Where(filter.ShouldJIT)
+					.SelectMany(type =>
+						type.GetMethods(ALL)
+							.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
+							.Concat<MethodBase>(type.GetConstructors(ALL))
+							.Concat(type.GetProperties(ALL).Where(filter.ShouldJIT).SelectMany(p => p.GetAccessors()))
+							.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.GetMethodBody() != null)
+							.Where(filter.ShouldJIT)
+					)
+					.ToArray();
 
 				if (Environment.ProcessorCount > 1) {
-					methodsToJIT.AsParallel().AsUnordered().ForAll(methodInfo => {
+					methodsToJIT.AsParallel().AsUnordered().ForAll(method => {
 						try {
-							ForceJITOnMethod(methodInfo);
+							ForceJITOnMethod(method);
 						}
 						catch (Exception e) {
-							exceptions.Enqueue((e, methodInfo));
+							exceptions.Enqueue((e, method));
 						}
 					});
 				}
@@ -287,39 +297,12 @@ namespace Terraria.ModLoader.Core
 				}
 			}
 			if (exceptions.Count > 0) {
-				var message = "\n" + string.Join("\n", exceptions.Select(x => $"In {x.methodInfo.DeclaringType.FullName} method: {x.exception.Message}")) + "\n";
+				var message = "\n" + string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
 				throw new Exceptions.JITException(message);
 			}
 		}
-
-		private static bool ShouldJITType(Type type) {
-			IEnumerable<AMemberJitAttribute> MemberJitAttributes = type.GetCustomAttributes<AMemberJitAttribute>();
-			if (MemberJitAttributes.Any()) {
-				return MemberJitAttributes.All(attribute => attribute.ShouldJITType(type, loadedModContexts.Keys.ToList()));
-			}
-			return true;
-		}
 		
-		private static bool ShouldJITMethod(MethodInfo methodInfo) {
-			IEnumerable<AMemberJitAttribute> MemberJitAttributes = methodInfo.GetCustomAttributes<AMemberJitAttribute>();
-			if (MemberJitAttributes.Any()) {
-				return MemberJitAttributes.All(attribute => attribute.ShouldJITMethod(methodInfo, loadedModContexts.Keys.ToList()));
-			}
-			return true;
-		}
-
-		private static IEnumerable<MethodInfo> CollectMethodsToJIT(IEnumerable<Type> types) =>
-			from type in types
-			from method in GetAllMethods(type)
-			where !method.IsAbstract && !method.ContainsGenericParameters && method.GetMethodBody() != null
-			select method;
-
-		private static IEnumerable<MethodInfo> GetAllMethods(Type type) {
-			// Skip properties, for now.
-			return type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance).Where(m => !m.IsSpecialName);
-		}
-		
-		private static void ForceJITOnMethod(MethodInfo method) {
+		private static void ForceJITOnMethod(MethodBase method) {
 			RuntimeHelpers.PrepareMethod(method.MethodHandle);
 		}
 	}

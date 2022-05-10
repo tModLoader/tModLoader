@@ -1,16 +1,11 @@
-﻿using Microsoft.Xna.Framework.Audio;
-using ReLogic.Content;
-using ReLogic.Content.Sources;
+﻿using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Terraria.Audio;
 using Terraria.Localization;
-using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader

@@ -89,6 +89,8 @@ namespace Terraria.ModLoader
 
 		public GameContent.Bestiary.ModSourceBestiaryInfoElement ModSourceBestiaryInfoElement;
 
+		public PreJITFilter PreJITFilter { get; protected set; } = new PreJITFilter();
+
 		internal void AutoloadConfig()
 		{
 			if (Code == null)
