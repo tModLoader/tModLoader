@@ -1,5 +1,7 @@
 var NAVTREEINDEX121 =
 {
+"functions_func_c.html":[1,3,1,2],
+"functions_func_d.html":[1,3,1,3],
 "functions_func_e.html":[1,3,1,4],
 "functions_func_f.html":[1,3,1,5],
 "functions_func_g.html":[1,3,1,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX121 =
 "interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment_1_1_i_shader_effect.html#ad9e2c93c60457665e0101925df941188":[1,0,2,5,19,0,5,5,1,0],
 "interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_player_segment_1_1_i_shader_effect.html#aea60e3ba86da1b859b95bcfd8ee9c6a0":[1,0,2,5,19,0,5,5,1,1],
 "interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_sprite_segment_1_1_i_shader_effect.html":[1,0,2,5,19,0,5,6,0],
-"interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_sprite_segment_1_1_i_shader_effect.html#a062e52e0f0ae006330d56a669a27fc61":[1,0,2,5,19,0,5,6,0,1],
-"interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_sprite_segment_1_1_i_shader_effect.html#aaa1903e689c2512867353042c55aa860":[1,0,2,5,19,0,5,6,0,0],
-"interface_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_i_big_progress_bar.html":[1,0,2,5,21,0,8]
+"interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_segments_1_1_sprite_segment_1_1_i_shader_effect.html#a062e52e0f0ae006330d56a669a27fc61":[1,0,2,5,19,0,5,6,0,1]
 };

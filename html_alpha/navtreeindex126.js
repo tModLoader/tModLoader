@@ -1,5 +1,7 @@
 var NAVTREEINDEX126 =
 {
+"namespace_terraria_1_1_social_1_1_we_game.html#a5c31a973430a9bf002b0ad1aa2fdb76b":[0,0,2,20,2,24],
+"namespace_terraria_1_1_social_1_1_we_game.html#a5c31a973430a9bf002b0ad1aa2fdb76ba4d4871f5c60c3c161e23e5482d938786":[0,0,2,20,2,24,0],
 "namespace_terraria_1_1_social_1_1_we_game.html#a5c31a973430a9bf002b0ad1aa2fdb76ba8cd321054034d7f2e4222c0a66e506e0":[0,0,2,20,2,24,1],
 "namespace_terraria_1_1_social_1_1_we_game.html#a868aa4f6c6683dda5d69fce06c3ec3f0":[0,0,2,20,2,25],
 "namespace_terraria_1_1_social_1_1_we_game.html#a868aa4f6c6683dda5d69fce06c3ec3f0a3cab03c00dbd11bc3569afa0748013f0":[0,0,2,20,2,25,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX126 =
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a3ccf2936b14323c21bf7a1fec7c627e1":[1,0,2,4,66,105],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a400c2ae56967713ed4c6c88aa80e87d1":[1,0,2,4,66,98],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a4983b0b18a81d615544e43f0bb0b3f2c":[1,0,2,4,66,77],
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a49b54478b28fb7eb2cfffbf2b8f68039":[1,0,2,4,66,109],
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a4c9b9557ab6fdfe9b65b870ad678233a":[1,0,2,4,66,34],
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a53f8b30705d552487bb936e20fec8972":[1,0,2,4,66,89]
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a49b54478b28fb7eb2cfffbf2b8f68039":[1,0,2,4,66,109]
 };

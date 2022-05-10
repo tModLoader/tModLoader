@@ -1,5 +1,7 @@
 var NAVTREEINDEX124 =
 {
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaada936a2dedf31046e45443d94adeed4":[0,0,2,5,8,308],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaae964545ead99d80ece5298248286736":[0,0,2,5,8,320],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaaedb17404b59a80742728c49d703f25c":[0,0,2,5,8,66],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaaf8e2d932fa112700bbfe29e5e0ac130":[0,0,2,5,8,237],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aab04af73cc58159689832b15824eca9e4":[0,0,2,5,8,126],
@@ -247,7 +249,5 @@ var NAVTREEINDEX124 =
 "namespace_terraria_1_1_game_content_1_1_u_i_1_1_elements.html":[0,0,2,6,21,2],
 "namespace_terraria_1_1_game_content_1_1_u_i_1_1_minimap.html":[0,0,2,6,21,3],
 "namespace_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets.html":[0,0,2,6,21,4],
-"namespace_terraria_1_1_game_content_1_1_u_i_1_1_states.html":[0,0,2,6,21,5],
-"namespace_terraria_1_1_game_input.html":[0,0,2,7],
-"namespace_terraria_1_1_game_input.html#a0fd6604c8409abe0923ed2e4498c2a70":[0,0,2,7,8]
+"namespace_terraria_1_1_game_content_1_1_u_i_1_1_states.html":[0,0,2,6,21,5]
 };

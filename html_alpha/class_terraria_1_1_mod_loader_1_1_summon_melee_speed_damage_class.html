@@ -97,6 +97,9 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_summ
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a698fc7f8a813591c6b1ac517e99172e6"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html#a698fc7f8a813591c6b1ac517e99172e6">GetEffectInheritance</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> damageClass)</td></tr>
+<tr class="memdesc:a698fc7f8a813591c6b1ac517e99172e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks. Returns false in all cases by default, which does not let any other classes' effects trigger on this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.  <a href="class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html#a698fc7f8a813591c6b1ac517e99172e6">More...</a><br /></td></tr>
+<tr class="separator:a698fc7f8a813591c6b1ac517e99172e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a698fd8a9fed9e5f57db56dbab702cb33"><td class="memItemLeft" align="right" valign="top">override <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data.html">StatInheritanceData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html#a698fd8a9fed9e5f57db56dbab702cb33">GetModifierInheritance</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> damageClass)</td></tr>
 <tr class="memdesc:a698fd8a9fed9e5f57db56dbab702cb33"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will benefit from (other than itself) for the purposes of stat bonuses, such as damage and crit chance. This returns a struct called <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data.html">StatInheritanceData</a>. This is used to allow extensive specifications for what your damage class can and can't benefit from in terms of other classes' stat bonuses. By default, this will return StatInheritanceData.Full for <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a4c35bf9b7f4b812d6a8e6aef3659a0a2" title="Base damage class for all weapons. All vanilla damage classes inherit bonuses applied to this class....">DamageClass.Generic</a>, and StatInheritanceData.None for any other. Any given <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will also never call this method for itself. For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.  <a href="class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html#a698fd8a9fed9e5f57db56dbab702cb33">More...</a><br /></td></tr>
 <tr class="separator:a698fd8a9fed9e5f57db56dbab702cb33"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -104,9 +107,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a450f9b638a40a4d2302cef42170374ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you enable or disable standard statistical tooltip lines displaying on items associated with this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. The lines usable are "Damage", "CritChance", "Speed", and "Knockback".  <a href="class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html#a450f9b638a40a4d2302cef42170374ef">More...</a><br /></td></tr>
 <tr class="separator:a450f9b638a40a4d2302cef42170374ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_terraria_1_1_mod_loader_1_1_damage_class"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_terraria_1_1_mod_loader_1_1_damage_class')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">Terraria.ModLoader.DamageClass</a></td></tr>
-<tr class="memitem:a555e9683160a8245b9ac80705a509fc3 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_damage_class"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a555e9683160a8245b9ac80705a509fc3">GetEffectInheritance</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> damageClass)</td></tr>
-<tr class="memdesc:a555e9683160a8245b9ac80705a509fc3 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_damage_class"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks. Returns false in all cases by default, which does not let any other classes' effects trigger on this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass.  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a555e9683160a8245b9ac80705a509fc3">More...</a><br /></td></tr>
-<tr class="separator:a555e9683160a8245b9ac80705a509fc3 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_damage_class"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a262246e6ddc2d6258f97cbf62da11c7b inherit pub_methods_class_terraria_1_1_mod_loader_1_1_damage_class"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a262246e6ddc2d6258f97cbf62da11c7b">SetDefaultStats</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a262246e6ddc2d6258f97cbf62da11c7b inherit pub_methods_class_terraria_1_1_mod_loader_1_1_damage_class"><td class="mdescLeft">&#160;</td><td class="mdescRight">This lets you define default stat modifiers for all items of this class (e.g. base crit chance).  <a href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a262246e6ddc2d6258f97cbf62da11c7b">More...</a><br /></td></tr>
 <tr class="separator:a262246e6ddc2d6258f97cbf62da11c7b inherit pub_methods_class_terraria_1_1_mod_loader_1_1_damage_class"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,6 +214,42 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a89e77200ae6acbfbcaa819830ed1a76c inherit pro_methods_class_terraria_1_1_mod_loader_1_1_damage_class"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a698fc7f8a813591c6b1ac517e99172e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a698fc7f8a813591c6b1ac517e99172e6">&#9670;&nbsp;</a></span>GetEffectInheritance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override bool Terraria.ModLoader.SummonMeleeSpeedDamageClass.GetEffectInheritance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>&#160;</td>
+          <td class="paramname"><em>damageClass</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>This lets you define the classes that this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> will count as (other than itself) for the purpose of armor and accessory effects, such as Spectre armor's bolts on magic attacks, or Magma Stone's Hellfire debuff on melee attacks. Returns false in all cases by default, which does not let any other classes' effects trigger on this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a>. For a more in-depth explanation and demonstration, refer to ExampleMod/Content/DamageClasses/ExampleDamageClass. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">damageClass</td><td>The <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> which you want this <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> to gain effects from.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html#a555e9683160a8245b9ac80705a509fc3">Terraria.ModLoader.DamageClass</a>.</p>
+
+</div>
+</div>
 <a id="a698fd8a9fed9e5f57db56dbab702cb33"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a698fd8a9fed9e5f57db56dbab702cb33">&#9670;&nbsp;</a></span>GetModifierInheritance()</h2>
 
