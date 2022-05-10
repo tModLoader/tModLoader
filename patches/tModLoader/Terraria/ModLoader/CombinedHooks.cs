@@ -113,6 +113,11 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
+		public static void ModifyItemScale(Player player, Item item, ref float scale) {
+			ItemLoader.ModifyItemScale(item, player, ref scale);
+			PlayerLoader.ModifyItemScale(player, item, ref scale);
+		}
+
 		public static float TotalUseSpeedMultiplier(Player player, Item item) {
 			return PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player) * player.GetWeaponAttackSpeed(item);
 		}
