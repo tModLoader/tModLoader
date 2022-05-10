@@ -714,6 +714,8 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Makes this ModNPC save along the world even if it's not a townNPC. Defaults to false.
+		/// <br/><b>NOTE:</b> A town NPC will always be saved.
+		/// <br/><b>NOTE:</b> A NPC that needs saving will not despawn naturally.
 		/// </summary>
 		public virtual bool NeedSaving() {
 			return false;
@@ -721,9 +723,11 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to save custom data for the given item.
+		/// Allows you to save custom data for the given npc.
 		/// <br/>
 		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
 		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
+		/// <br/><b>NOTE:</b> The npc may be saved even if NeedSaving returns false and this is not a townNPC, if another mod returns true on NeedSaving.
 		/// </summary>
 		/// <param name="tag">The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument</param>
 		public virtual void SaveData(TagCompound tag) {
