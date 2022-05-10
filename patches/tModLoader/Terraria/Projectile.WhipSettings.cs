@@ -2,8 +2,8 @@
 {
 	public struct WhipSettings
 	{
-		public int segments;
-		public float rangeMultiplier;
+		public int Segments;
+		public float RangeMultiplier;
 	}
 
 	public partial class Projectile

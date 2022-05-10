@@ -247,7 +247,7 @@
  			extraUpdates = 1;
  			usesLocalNPCImmunity = true;
  			localNPCHitCooldown = -1;
-+			VanillaWhipSettings(this, out WhipSettings.segments, out WhipSettings.rangeMultiplier);
++			VanillaWhipSettings(this, out WhipSettings.Segments, out WhipSettings.RangeMultiplier);
  		}
  
  		public static int GetNextSlot() {
@@ -903,8 +903,8 @@
  
  		public static void GetWhipSettings(Projectile proj, out float timeToFlyOut, out int segments, out float rangeMultiplier) {
  			timeToFlyOut = Main.player[proj.owner].itemAnimationMax * proj.MaxUpdates;
-+			segments = proj.WhipSettings.segments;
-+			rangeMultiplier = proj.WhipSettings.rangeMultiplier;
++			segments = proj.WhipSettings.Segments;
++			rangeMultiplier = proj.WhipSettings.RangeMultiplier;
 +		}
 +
 +		private static void VanillaWhipSettings(Projectile proj, out int segments, out float rangeMultiplier) {

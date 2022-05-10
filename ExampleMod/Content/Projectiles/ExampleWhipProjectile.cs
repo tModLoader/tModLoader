@@ -31,6 +31,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// implement a charge up using PreAI
+		// note that whips update twice per frame (Projectile.MaxUpdates == 2), so 120 charge time is only 60 ticks (1 second)
 		public override bool PreAI() {
 			Player owner = Main.player[Projectile.owner];
 			if (!owner.channel || ChargeTime >= 120) {
@@ -39,10 +40,10 @@ namespace ExampleMod.Content.Projectiles
 
 			ChargeTime++;
 			if (ChargeTime % 12 == 0) // 1 segment every 12 ticks of charge
-				Projectile.WhipSettings.segments++;
+				Projectile.WhipSettings.Segments++;
 
 			// increase range up to 2x for full charge
-			Projectile.WhipSettings.rangeMultiplier += 1 / 120f;
+			Projectile.WhipSettings.RangeMultiplier += 1 / 120f;
 
 			// reset the animation and item timer while charging
 			owner.itemAnimation = owner.itemAnimationMax;
