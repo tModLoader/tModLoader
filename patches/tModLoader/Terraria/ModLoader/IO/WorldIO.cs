@@ -249,7 +249,7 @@ namespace Terraria.ModLoader.IO
 
 					if (npc.townNPC) {
 						npc.GivenName = (string)tag["displayName"];
-						npc.homeless = (bool)tag["homeless"];
+						npc.homeless = tag.GetBool("homeless");
 						npc.homeTileX = (int)tag["homeTileX"];
 						npc.homeTileY = (int)tag["homeTileY"];
 					}
