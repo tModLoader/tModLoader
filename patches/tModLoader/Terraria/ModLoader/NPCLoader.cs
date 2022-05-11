@@ -328,12 +328,7 @@ namespace Terraria.ModLoader
 		private static HookList HookFindFrame = AddHook<Action<NPC, int>>(g => g.FindFrame);
 
 		public static void FindFrame(NPC npc, int frameHeight) {
-			int type = npc.type;
-			if (npc.ModNPC != null && npc.ModNPC.AnimationType > 0) {
-				npc.type = npc.ModNPC.AnimationType;
-			}
-			npc.VanillaFindFrame(frameHeight);
-			npc.type = type;
+			npc.VanillaFindFrame(frameHeight, npc.isLikeATownNPC, npc.ModNPC?.AnimationType is > 0 ? npc.ModNPC.AnimationType : npc.type);
 			npc.ModNPC?.FindFrame(frameHeight);
 
 			foreach (GlobalNPC g in HookFindFrame.Enumerate(npc.globalNPCs)) {

@@ -168,12 +168,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 							SoundEngine.PlaySound(SoundID.MenuClose);
 						}
 						else {
+							SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
 							player.chest = chest;
 							Main.playerInventory = true;
 							Main.recBigList = false;
 							player.chestX = left;
 							player.chestY = top;
-							SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
 						}
 
 						Recipe.FindRecipes();
