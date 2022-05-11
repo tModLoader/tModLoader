@@ -349,7 +349,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void LoadData(TagCompound tag) {
-			NumberOfTimesTalkedTo = tag.GetInt("NumberOfTimesTalkedTo");
+			NumberOfTimesTalkedTo = tag.GetInt("numberOfTimesTalkedTo");
 		}
 
 		public override void SaveData(TagCompound tag) {
