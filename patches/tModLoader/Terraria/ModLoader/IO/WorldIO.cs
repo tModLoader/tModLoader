@@ -127,7 +127,7 @@ namespace Terraria.ModLoader.IO
 		internal static List<TagCompound> SaveNPCs() {
 			var list = new List<TagCompound>();
 			var data = new TagCompound();
-			
+
 			for (int index = 0; index < Main.maxNPCs; index++) {
 				NPC npc = Main.npc[index];
 
@@ -204,37 +204,45 @@ namespace Terraria.ModLoader.IO
 			}
 
 			int nextFreeNPC = 0;
-			
+
 			foreach (TagCompound tag in list) {
 				NPC npc = null;
-				
+
+				while (nextFreeNPC < Main.maxNPCs && Main.npc[nextFreeNPC].active) {
+					nextFreeNPC++;
+				}
+
 				if ((string)tag["mod"] == "Terraria") {
 					int npcId = NPCID.Search.GetId((string)tag["name"]);
 					float x = (float)tag["x"];
 					float y = (float)tag["y"];
 
 					int index;
-					
+
 					for (index = 0; index < Main.maxNPCs; index++) {
 						npc = Main.npc[index];
-						
-						if (npc.type == npcId && npc.position.X == x && npc.position.Y == y)
-							break;
+
+						if (npc.active) {
+							if (npc.type == npcId && npc.position.X == x && npc.position.Y == y) break;
+						}
 					}
 
 					if (index == Main.maxNPCs) {
-						ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
-						continue;
+						if (nextFreeNPC == Main.maxNPCs) {
+							ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
+							continue;
+						}
+						else {
+							npc = Main.npc[nextFreeNPC];
+							npc.SetDefaults(npc.type);
+							npc.position = new Vector2(x, y);
+						}
 					}
 				}
 				else {
 					if (!ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
 						ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
 						continue;
-					}
-
-					while (nextFreeNPC < Main.maxNPCs && Main.npc[nextFreeNPC].active) {
-						nextFreeNPC++;
 					}
 
 					if (nextFreeNPC == Main.maxNPCs) {
@@ -260,13 +268,13 @@ namespace Terraria.ModLoader.IO
 				}
 
 				List<TagCompound> globalData = (List<TagCompound>)tag["globalData"];
-				
+
 				foreach (TagCompound tagCompound in globalData) {
 					string modName = (string)tagCompound["mod"];
-					
+
 					if (ModContent.TryFind(modName, (string)tagCompound["name"], out GlobalNPC globalNPC)) {
 						GlobalNPC globalNPC2 = globalNPC.Instance(npc);
-						
+
 						try {
 							globalNPC2.LoadData(npc, (TagCompound)tagCompound["data"]);
 						}

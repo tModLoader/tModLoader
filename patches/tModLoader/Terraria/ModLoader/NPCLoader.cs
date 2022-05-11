@@ -181,12 +181,12 @@ namespace Terraria.ModLoader
 				g.SetDefaults(npc);
 			}
 		}
-		
+
 		private static HookList HookOnSpawn = AddHook<Action<NPC, IEntitySource>>(g => g.OnSpawn);
 
 		internal static void OnSpawn(NPC npc, IEntitySource source) {
 			npc.ModNPC?.OnSpawn(source);
-			
+
 			foreach (GlobalNPC g in HookOnSpawn.Enumerate(npc.globalNPCs)) {
 				g.OnSpawn(npc, source);
 			}
@@ -1222,7 +1222,7 @@ namespace Terraria.ModLoader
 				return false;
 			if (NPCID.Sets.SavesAndLoads[npc.type] || (npc.ModNPC?.NeedSaving() == true))
 				return true;
-			
+
 			foreach (GlobalNPC globalNPC in HookNeedSaving.Enumerate(npc.globalNPCs)) {
 				if (globalNPC.NeedSaving(npc))
 					return true;
