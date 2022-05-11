@@ -65,8 +65,7 @@ namespace ExampleMod.Content.NPCs
 			}
 
 			Rectangle hitbox = NPC.Hitbox;
-			foreach (Item item in Main.item)
-			{
+			foreach (Item item in Main.item) {
 				//Pickup the items only if the NPC touches them and they aren't already being grabbed by a player
 				if (item.active && !item.beingGrabbed && item.type == ModContent.ItemType<ExampleItem>() &&
 				    hitbox.Intersects(item.Hitbox)) {
@@ -92,7 +91,8 @@ namespace ExampleMod.Content.NPCs
 			}
 
 			// Drop all the stolen items when the NPC dies
-			while (StolenItems > 0) { // Loop until all items are dropped, to avoid dropping more than maxStack items
+			while (StolenItems > 0) {
+				// Loop until all items are dropped, to avoid dropping more than maxStack items
 				int droppedAmount = Math.Min(ModContent.GetInstance<ExampleItem>().Item.maxStack, StolenItems);
 				StolenItems -= droppedAmount;
 				Item.NewItem(NPC.GetSource_Death(), NPC.Center, ModContent.ItemType<ExampleItem>(), droppedAmount, true);
@@ -100,8 +100,9 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {
-			if (spawnInfo.Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>())// Can only spawn in the ExampleSurfaceBiome
-			    && !NPC.AnyNPCs(Type)) {// Can only spawn if there are no other ExampleZombieThiefs
+			if (spawnInfo.Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>()) // Can only spawn in the ExampleSurfaceBiome
+			    && !NPC.AnyNPCs(Type)) {
+				// Can only spawn if there are no other ExampleZombieThiefs
 				return SpawnCondition.OverworldNightMonster.Chance * 0.1f; // Spawn with 1/10th the chance of a regular zombie.
 			}
 
@@ -113,7 +114,8 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void SaveData(TagCompound tag) {
-			if (StolenItems > 0) { // Note that at this point it may have less than 10 stolen items, if another mod or part of our decides to save the NPC
+			if (StolenItems > 0) {
+				// Note that at this point it may have less than 10 stolen items, if another mod or part of our decides to save the NPC
 				tag["StolenItems"] = StolenItems;
 			}
 		}

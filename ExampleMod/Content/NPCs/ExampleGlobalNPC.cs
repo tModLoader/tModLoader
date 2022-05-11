@@ -10,8 +10,8 @@ namespace ExampleMod.Content.NPCs
 
 		public bool HasBeenHitByPlayer = false;
 
-		public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit){
-			if(projectile.owner != 255){
+		public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit) {
+			if (projectile.owner != 255) {
 				HasBeenHitByPlayer = true;
 			}
 		}
@@ -26,8 +26,7 @@ namespace ExampleMod.Content.NPCs
 				return;
 			}
 
-			foreach (Item item in shop.item)
-			{
+			foreach (Item item in shop.item) {
 				int value = item.shopCustomPrice ?? item.value;
 				item.shopCustomPrice = value * 2;
 			}
@@ -36,7 +35,8 @@ namespace ExampleMod.Content.NPCs
 		// The data can't be shared on multiplayer for now
 
 		public override void SaveData(NPC npc, TagCompound tag) {
-			if (HasBeenHitByPlayer && npc.townNPC) { // No need to save if a non-town NPC has been hit by a player
+			if (HasBeenHitByPlayer && npc.townNPC) {
+				// No need to save if a non-town NPC has been hit by a player
 				tag.Add("HasBeenHitByPlayer", true);
 			}
 		}

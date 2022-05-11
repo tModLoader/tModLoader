@@ -200,7 +200,8 @@ namespace ExampleMod.Content.NPCs
 			chat.Add("This message has a weight of 0.1, meaning it appears 10 times as rare.", 0.1);
 
 			NumberOfTimesTalkedTo++;
-			if (NumberOfTimesTalkedTo >= 10) { //This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
+			if (NumberOfTimesTalkedTo >= 10) {
+				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
 				chat.Add("I'm getting tired of talking to you. I have to go.");
 			}
 
