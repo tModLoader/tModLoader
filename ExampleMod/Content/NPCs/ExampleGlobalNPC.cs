@@ -22,8 +22,7 @@ namespace ExampleMod.Content.NPCs
 
 		//If the merchant has been hit by a player, they will double their sell price
 		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
-			//This method is not instanced but we can use the fact that there is only 1 town npc of each type
-			if (Main.npc[NPC.FindFirstNPC(type)].GetGlobalNPC<ExampleGlobalNPC>().HasBeenHitByPlayer) {
+			if (Main.LocalPlayer.talkNPC != -1 || !Main.npc[Main.LocalPlayer.talkNPC].GetGlobalNPC<ExampleGlobalNPC>().HasBeenHitByPlayer) {
 				return;
 			}
 
