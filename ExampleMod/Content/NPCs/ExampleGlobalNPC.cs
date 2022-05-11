@@ -22,7 +22,7 @@ namespace ExampleMod.Content.NPCs
 
 		//If the merchant has been hit by a player, they will double their sell price
 		public override void SetupShop(int type, Chest shop, ref int nextSlot) {
-			if (Main.LocalPlayer.talkNPC != -1 || !Main.npc[Main.LocalPlayer.talkNPC].GetGlobalNPC<ExampleGlobalNPC>().HasBeenHitByPlayer) {
+			if (Main.LocalPlayer.talkNPC == -1 || !Main.npc[Main.LocalPlayer.talkNPC].GetGlobalNPC<ExampleGlobalNPC>().HasBeenHitByPlayer) {
 				return;
 			}
 
