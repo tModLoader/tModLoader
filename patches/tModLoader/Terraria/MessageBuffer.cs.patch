@@ -543,6 +543,40 @@
  					}
  					break;
  				case 91: {
+@@ -2687,8 +_,22 @@
+ 							break;
+ 
+ 						int num201 = reader.ReadInt32();
+-						int num202 = reader.ReadByte();
+-						if (num202 == 255) {
++						// TML: #WorldUIAnchorProjectileSyncFix
++						// Read ushort which contains type and owner, split it where necessary
++						int num202;
++						int type;
++						if (ModNet.AllowVanillaClients) {
++							num202 = reader.ReadByte();
++							type = num202;
++						}
++						else {
++							num202 = reader.ReadUInt16();
++							type = num202 >> 8;
++						}
++						bool delete = type == 255;
++						bool playerAnchor = type == 1;
++
++						if (delete) {
+ 							if (EmoteBubble.byID.ContainsKey(num201))
+ 								EmoteBubble.byID.Remove(num201);
+ 
+@@ -2703,7 +_,7 @@
+ 							metadata = reader.ReadInt16();
+ 
+ 						WorldUIAnchor worldUIAnchor = EmoteBubble.DeserializeNetAnchor(num202, num203);
+-						if (num202 == 1)
++						if (playerAnchor)
+ 							Main.player[num203].emoteTime = 360;
+ 
+ 						lock (EmoteBubble.byID) {
 @@ -3155,10 +_,28 @@
  					if (Main.netMode == 2) {
  						short x9 = reader.ReadInt16();

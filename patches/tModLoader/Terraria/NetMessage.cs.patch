@@ -242,7 +242,7 @@
  
  							break;
  						}
-@@ -1060,9 +_,16 @@
+@@ -1060,15 +_,31 @@
  							writer.Write((short)number);
  							writer.Write((short)number2);
  							Item item3 = Main.player[(int)number4].inventory[(int)number3];
@@ -262,6 +262,23 @@
  							break;
  						}
  					case 91:
+ 						writer.Write(number);
+-						writer.Write((byte)number2);
+-						if (number2 != 255f) {
++						// TML: #WorldUIAnchorProjectileSyncFix
++						// Send packed type and owner as ushort
++						bool noDelete = number2 != 255f;
++						if (ModNet.AllowVanillaClients)
++							writer.Write((byte)number2);
++						else {
++							int packedTypeOwner = (int)number2;
++							noDelete = (packedTypeOwner >> 8) != 255;
++							writer.Write((ushort)packedTypeOwner);
++						}
++						if (noDelete) {
+ 							writer.Write((ushort)number3);
+ 							writer.Write((ushort)number4);
+ 							writer.Write((byte)number5);
 @@ -1230,9 +_,17 @@
  							writer.Write((short)number);
  							writer.Write((short)number2);
