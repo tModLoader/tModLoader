@@ -12,12 +12,12 @@ namespace ExampleMod.Common.Players
 	public class ExampleFishingPlayer : ModPlayer
 	{
 		public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
-			// In this example, we will fish up an Example Person from the water in Example Surface Biome,
-			// as long as there isn't one in the world yet
-			// NOTE: if a fishing rod has multiple bobbers, then each one can spawn the NPC
-			if (attempt.playerFishingConditions.PoleItemType == ModContent.ItemType<ExampleFishingRod>() && !attempt.inLava && !attempt.inHoney &&
-					Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>())) {
-
+			bool inWater = !attempt.inLava && !attempt.inHoney;
+			bool inExampleSurfaceBiome = Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>());
+			if (attempt.playerFishingConditions.PoleItemType == ModContent.ItemType<ExampleFishingRod>() && inWater && inExampleSurfaceBiome) {
+				// In this example, we will fish up an Example Person from the water in Example Surface Biome,
+				// as long as there isn't one in the world yet
+				// NOTE: if a fishing rod has multiple bobbers, then each one can spawn the NPC
 				int npc = ModContent.NPCType<ExamplePerson>();
 				if (!NPC.AnyNPCs(npc)) {
 					// Make sure itemDrop = -1 when summoning an NPC, as otherwise terraria will only spawn the item
@@ -32,6 +32,19 @@ namespace ExampleMod.Common.Players
 
 					// And that text shows up on the player's head, not on the bobber location.
 					sonarPosition = new Vector2(Player.position.X, Player.position.Y - 64);
+
+					return; // This is important so your code after this that rolls items will not run
+				}
+			}
+
+			if (inWater && inExampleSurfaceBiome && attempt.crate) {
+				// If the game rolls a crate, we want to give ours to the player if he is in Example Surface Biome
+
+				// We don't want to replace golden/titanium crates (the highest tier crates), as they take highest priority in crate catches
+				// Their drop conditions are "veryrare" or "legendary"
+				// (After that come biome crates ("rare"), then iron/mythril ("uncommon"), then wood/pearl (none of the previous))
+				if (!attempt.veryrare && !attempt.legendary && attempt.rare) {
+					itemDrop = ModContent.ItemType<Content.Items.Consumables.ExampleFishingCrate>();
 				}
 			}
 		}
