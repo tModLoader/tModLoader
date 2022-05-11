@@ -25,21 +25,26 @@ namespace ExampleMod.Content.Items.Armor
 	{
 		public override void Load() {
 			// The code below runs only if we're not loading on a server
-			if (Main.netMode != NetmodeID.Server) {
-				// Add equip textures
-				EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Head}", EquipType.Head, this, equipTexture : new BlockyHead());
-				EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Body}", EquipType.Body, this);
-				EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
+			if (Main.netMode == NetmodeID.Server)
+				return;
 
-				//Add a separate set of equip textures by providing a custom name reference instead of an item reference
-				EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Head}", EquipType.Head, name : "BlockyAlt", equipTexture : new BlockyHead());
-				EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Body}", EquipType.Body, name : "BlockyAlt");
-				EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Legs}", EquipType.Legs, name : "BlockyAlt");
-			}
+			// Add equip textures
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Head}", EquipType.Head, this, equipTexture: new BlockyHead());
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Body}", EquipType.Body, this);
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
+
+			//Add a separate set of equip textures by providing a custom name reference instead of an item reference
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Head}", EquipType.Head, name: "BlockyAlt", equipTexture: new BlockyHead());
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Body}", EquipType.Body, name: "BlockyAlt");
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Legs}", EquipType.Legs, name: "BlockyAlt");
 		}
 
 		// Called in SetStaticDefaults
 		private void SetupDrawing() {
+			// Since the equipment textures weren't loaded on the server, we can't have this code running server-side
+			if (Main.netMode == NetmodeID.Server)
+				return;
+
 			int equipSlotHead = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Head);
 			int equipSlotBody = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Body);
 			int equipSlotLegs = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs);
