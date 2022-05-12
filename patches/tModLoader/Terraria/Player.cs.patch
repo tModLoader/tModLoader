@@ -4465,10 +4465,11 @@
  
  			bool canShoot = false;
  			int Damage = weaponDamage;
- 			float KnockBack = sItem.knockBack;
+-			float KnockBack = sItem.knockBack;
+-			if (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331) {
++			float KnockBack = GetWeaponKnockback(sItem, sItem.knockBack); // sItem.knockBack;
 +
 +			// WhoAmI check added by TML. #ItemTimeOnAllClients
--			if (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331) {
 +			if (whoAmI == Main.myPlayer && (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331)) {
  				grappling[0] = -1;
  				grapCount = 0;
@@ -4484,7 +4485,7 @@
 +					return;
 +				}
 +
-+				//KnockBack = GetWeaponKnockback(sItem, KnockBack); // tML: second call removed due to GetWeaponKnockback now working differently
++				//KnockBack = GetWeaponKnockback(sItem, KnockBack); // tML: call moved earlier in method
  				IEntitySource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
  				if (projToShoot == 228)
  					KnockBack = 0f;
