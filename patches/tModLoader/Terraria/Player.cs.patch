@@ -4465,11 +4465,10 @@
  
  			bool canShoot = false;
  			int Damage = weaponDamage;
--			float KnockBack = sItem.knockBack;
--			if (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331) {
-+			float KnockBack = GetWeaponKnockback(sItem, sItem.knockBack); // sItem.knockBack;
+ 			float KnockBack = sItem.knockBack;
 +
 +			// WhoAmI check added by TML. #ItemTimeOnAllClients
+-			if (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331) {
 +			if (whoAmI == Main.myPlayer && (projToShoot == 13 || projToShoot == 32 || projToShoot == 315 || (projToShoot >= 230 && projToShoot <= 235) || projToShoot == 331)) {
  				grappling[0] = -1;
  				grapCount = 0;
@@ -4485,7 +4484,7 @@
 +					return;
 +				}
 +
-+				//KnockBack = GetWeaponKnockback(sItem, KnockBack); // tML: call moved earlier in method
++				KnockBack = GetWeaponKnockback(sItem, KnockBack); // tML: call moved earlier in method
  				IEntitySource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
  				if (projToShoot == 228)
  					KnockBack = 0f;
@@ -4718,10 +4717,15 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36974,6 +_,7 @@
+@@ -36973,7 +_,11 @@
+ 			}
  		}
  
- 		public float GetWeaponKnockback(Item sItem, float KnockBack) {
++		// tML-specific overload that exists for consistency with other GetWeaponXYZ methods
++		public float GetWeaponKnockback(Item sItem) => GetWeaponKnockback(sItem, sItem.knockBack);
++
+-		public float GetWeaponKnockback(Item sItem, float KnockBack) {
++		public float GetWeaponKnockback(Item sItem, float baseKnockback) {
 +			/*
  			if (sItem.summon)
  				KnockBack += minionKB;
@@ -4735,7 +4739,7 @@
 -			return KnockBack;
 +			StatModifier modifier = GetTotalKnockback(sItem.DamageType);
 +			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref modifier);
-+			return Math.Max(0f, modifier.ApplyTo(sItem.knockBack));
++			return Math.Max(0f, modifier.ApplyTo(baseKnockback));
  		}
  
  		public int GetWeaponCrit(Item sItem) {
