@@ -163,7 +163,7 @@
  							if (bb22[7])
  								writer.Write((short)projectile.projUUID);
  
-+							if (extraAI != null) {
++							if (bb22[2]) {
 +								ProjectileLoader.SendExtraAI(writer, extraAI);
 +							}
 +
