@@ -97,7 +97,7 @@ namespace Terraria.ModLoader
 				return;
 
 			// TODO: Attribute to specify ordering of ModConfigs
-			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName))
+			foreach (Type type in AssemblyManager.GetLoadableTypes(Code).OrderBy(type => type.FullName))
 			{
 				if (type.IsAbstract)
 				{
