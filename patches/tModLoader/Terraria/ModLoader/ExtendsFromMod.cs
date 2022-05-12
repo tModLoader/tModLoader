@@ -2,7 +2,7 @@
 
 namespace Terraria.ModLoader
 {
-	[AttributeUsage(AttributeTargets.Class, Inherited = true)]
+	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class ExtendsFromMod : Attribute
 	{
 		public readonly string[] Names;
