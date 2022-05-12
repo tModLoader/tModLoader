@@ -153,9 +153,9 @@
  								bb22[6] = true;
  
 +							byte[] extraAI = !ModNet.AllowVanillaClients ? ProjectileLoader.WriteExtraAI(projectile) : null;
-+							ref bool hasExtraAI = ref bb22[2]; // This bit is unused by vanilla.
++							bool hasExtraAI = extraAI?.Length > 0;
 +
-+							hasExtraAI = extraAI?.Length > 0; 
++							bb22[2] = hasExtraAI; // This bit is unused by vanilla.
 +
  							writer.Write(bb22);
  							for (int num21 = 0; num21 < Projectile.maxAI; num21++) {
