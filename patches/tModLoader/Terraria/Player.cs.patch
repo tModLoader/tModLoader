@@ -4473,19 +4473,21 @@
  				grappling[0] = -1;
  				grapCount = 0;
  				for (int j = 0; j < 1000; j++) {
-@@ -33160,6 +_,12 @@
+@@ -33160,7 +_,13 @@
  			}
  
  			if (canShoot) {
+-				KnockBack = GetWeaponKnockback(sItem, KnockBack);
 +				// Added by TML. #ItemTimeOnAllClients
 +				if (whoAmI != Main.myPlayer) {
 +					ApplyItemTime(sItem);
 +					return;
 +				}
 +
- 				KnockBack = GetWeaponKnockback(sItem, KnockBack);
++				//KnockBack = GetWeaponKnockback(sItem, KnockBack); // tML: second call removed due to GetWeaponKnockback now working differently
  				IEntitySource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
  				if (projToShoot == 228)
+ 					KnockBack = 0f;
 @@ -33192,7 +_,7 @@
  				Vector2 value = Vector2.UnitX.RotatedBy(fullRotation);
  				Vector2 vector = Main.MouseWorld - pointPoisition;
