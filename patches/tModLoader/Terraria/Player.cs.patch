@@ -4715,10 +4715,15 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36974,6 +_,7 @@
+@@ -36973,7 +_,11 @@
+ 			}
  		}
  
- 		public float GetWeaponKnockback(Item sItem, float KnockBack) {
++		// tML-specific overload that exists for consistency with other GetWeaponXYZ methods
++		public float GetWeaponKnockback(Item sItem) => GetWeaponKnockback(sItem, sItem.knockBack);
++
+-		public float GetWeaponKnockback(Item sItem, float KnockBack) {
++		public float GetWeaponKnockback(Item sItem, float baseKnockback) {
 +			/*
  			if (sItem.summon)
  				KnockBack += minionKB;
@@ -4732,7 +4737,7 @@
 -			return KnockBack;
 +			StatModifier modifier = GetTotalKnockback(sItem.DamageType);
 +			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref modifier);
-+			return Math.Max(0f, modifier.ApplyTo(sItem.knockBack));
++			return Math.Max(0f, modifier.ApplyTo(baseKnockback));
  		}
  
  		public int GetWeaponCrit(Item sItem) {
