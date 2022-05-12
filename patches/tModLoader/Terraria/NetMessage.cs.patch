@@ -129,7 +129,7 @@
  							break;
  						}
  					case 22:
-@@ -586,9 +_,10 @@
+@@ -586,9 +_,12 @@
  								}
  							}
  
@@ -137,7 +137,9 @@
 +							if (nPC2.type >= 0 && Main.npcCatchable[nPC2.type])
  								writer.Write((byte)nPC2.releaseOwner);
  
-+							NPCLoader.SendExtraAI(writer, NPCLoader.WriteExtraAI(nPC2));
++							if (!ModNet.AllowVanillaClients)
++								NPCLoader.SendExtraAI(writer, NPCLoader.WriteExtraAI(nPC2));
++
  							break;
  						}
  					case 24:
