@@ -12,11 +12,11 @@ if [[ "$_uname" == *"_NT"* ]]; then
 else
 	# Ensure Unix builds have the right version of Steamworks.NET
 	unixSteamworks="PlatformVariantLibs/UNIX.Steamworks.NET.dll"
-	if [ -f "$unixSteamworks" ]; then
+	if [ -f "../$unixSteamworks" ]; then
 		echo "Deploying Steamworks.NET for this platform..."
-		steamworksVersion=$(find ./Libraries/Steamworks.NET -maxdepth 1 -type d -name '*.*.*' -printf %f -quit)
+		steamworksVersion=$(find ../Libraries/Steamworks.NET -maxdepth 1 -type d -name '*.*.*' -printf %f -quit)
 		defaultSteamworks="Libraries/Steamworks.NET/$steamworksVersion/Steamworks.NET.dll"
-		mv "$unixSteamworks" "$defaultSteamworks"
+		mv "../$unixSteamworks" "../$defaultSteamworks"
 	fi
 fi
 echo "Success!"
