@@ -43,13 +43,8 @@
  		public static readonly LegacySoundStyle DD2_GoblinBomb = new LegacySoundStyle(2, 14).WithVolume(0.5f);
  		public static readonly LegacySoundStyle AchievementComplete = CreateTrackable("achievement_complete");
  		public static readonly LegacySoundStyle BlizzardInsideBuildingLoop = CreateTrackable("blizzard_inside_building_loop", SoundType.Ambient);
-@@ -496,14 +_,16 @@
- 		public static Dictionary<string, ushort> IndexByName = null;
- 		public static Dictionary<ushort, LegacySoundStyle> SoundByIndex = null;
- 
-+		/*
+@@ -499,11 +_,11 @@
  		public static int TrackableLegacySoundCount => _trackableLegacySoundPathList.Count;
-+		*/
  
  		public static string GetTrackableLegacySoundPath(int id) => _trackableLegacySoundPathList[id];
 -		private static LegacySoundStyle CreateTrackable(string name, SoundStyleDefaults defaults) => CreateTrackable(name, 1, defaults.Type).WithPitchVariance(defaults.PitchVariance).WithVolume(defaults.Volume);
