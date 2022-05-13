@@ -205,7 +205,8 @@ AssetRepository&#160;</td><td class="memItemRight" valign="bottom"><b>Assets</b>
 <tr class="memdesc:a36d6e7daf2bdc3e210a55657521665fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the Backgrounds folder as background textures to the game. This means you do not need to manually call Mod.AddBackgroundTexture.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#a36d6e7daf2bdc3e210a55657521665fc">More...</a><br /></td></tr>
 <tr class="separator:a36d6e7daf2bdc3e210a55657521665fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9642d8745cca7c27cd3f3085e161e78"><td class="memItemLeft" align="right" valign="top">Assembly&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#ae9642d8745cca7c27cd3f3085e161e78">Code</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:ae9642d8745cca7c27cd3f3085e161e78"><td class="mdescLeft">&#160;</td><td class="mdescRight">The assembly code this is loaded when tModLoader loads this mod.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#ae9642d8745cca7c27cd3f3085e161e78">More...</a><br /></td></tr>
+<tr class="memdesc:ae9642d8745cca7c27cd3f3085e161e78"><td class="mdescLeft">&#160;</td><td class="mdescRight">The assembly code this is loaded when tModLoader loads this mod. <br  />
+ Do NOT call Assembly.GetTypes on this as it will error out if the mod uses the <a class="el" href="class_terraria_1_1_mod_loader_1_1_extends_from_mod_attribute.html">ExtendsFromModAttribute</a> attribute to inherit from weakly referenced mods. Use AssemblyManager.GetLoadableTypes(Assembly) instead.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#ae9642d8745cca7c27cd3f3085e161e78">More...</a><br /></td></tr>
 <tr class="separator:ae9642d8745cca7c27cd3f3085e161e78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9071819be09f0c3cf4d537369307a9d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html#af9071819be09f0c3cf4d537369307a9d">ContentAutoloadingEnabled</a> = true<code> [get]</code></td></tr>
 <tr class="memdesc:af9071819be09f0c3cf4d537369307a9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will autoload content by default. Autoloading content means you do not need to manually add content through methods.  <a href="class_terraria_1_1_mod_loader_1_1_mod.html#af9071819be09f0c3cf4d537369307a9d">More...</a><br /></td></tr>
@@ -234,6 +235,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNetSynced</b><code>
 <tr class="memitem:a3fae5b0aa5a1e105dc6c708af13274f2"><td class="memItemLeft" align="right" valign="top"><a id="a3fae5b0aa5a1e105dc6c708af13274f2"></a>
 short&#160;</td><td class="memItemRight" valign="bottom"><b>NetID</b><code> [get]</code></td></tr>
 <tr class="separator:a3fae5b0aa5a1e105dc6c708af13274f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15b2c1f89e1e00fcbaf45243a81ffcea"><td class="memItemLeft" align="right" valign="top"><a id="a15b2c1f89e1e00fcbaf45243a81ffcea"></a>
+<a class="el" href="class_terraria_1_1_mod_loader_1_1_pre_j_i_t_filter.html">PreJITFilter</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PreJITFilter</b> = new <a class="el" href="class_terraria_1_1_mod_loader_1_1_pre_j_i_t_filter.html">PreJITFilter</a>()<code> [get, protected set]</code></td></tr>
+<tr class="separator:a15b2c1f89e1e00fcbaf45243a81ffcea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f72ff1a6b7d389d20e3215b867e1f72"><td class="memItemLeft" align="right" valign="top"><a id="a1f72ff1a6b7d389d20e3215b867e1f72"></a>
 IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContentSource</b><code> [get]</code></td></tr>
 <tr class="separator:a1f72ff1a6b7d389d20e3215b867e1f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -869,7 +873,8 @@ IContentSource&#160;</td><td class="memItemRight" valign="bottom"><b>RootContent
 </table>
 </div><div class="memdoc">
 
-<p>The assembly code this is loaded when tModLoader loads this mod. </p>
+<p>The assembly code this is loaded when tModLoader loads this mod. <br  />
+ Do NOT call Assembly.GetTypes on this as it will error out if the mod uses the <a class="el" href="class_terraria_1_1_mod_loader_1_1_extends_from_mod_attribute.html">ExtendsFromModAttribute</a> attribute to inherit from weakly referenced mods. Use AssemblyManager.GetLoadableTypes(Assembly) instead. </p>
 
 </div>
 </div>

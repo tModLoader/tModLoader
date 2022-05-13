@@ -108,7 +108,12 @@ var hierarchy =
       [ "Terraria.ModLoader.Config.SliderAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_slider_attribute.html", null ],
       [ "Terraria.ModLoader.Config.SliderColorAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_slider_color_attribute.html", null ],
       [ "Terraria.ModLoader.Config.TooltipAttribute", "class_terraria_1_1_mod_loader_1_1_config_1_1_tooltip_attribute.html", null ],
+      [ "Terraria.ModLoader.ExtendsFromModAttribute", "class_terraria_1_1_mod_loader_1_1_extends_from_mod_attribute.html", null ],
       [ "Terraria.ModLoader.LegacyNameAttribute", "class_terraria_1_1_mod_loader_1_1_legacy_name_attribute.html", null ],
+      [ "Terraria.ModLoader.MemberJitAttribute", "class_terraria_1_1_mod_loader_1_1_member_jit_attribute.html", [
+        [ "Terraria.ModLoader.JITWhenModsEnabledAttribute", "class_terraria_1_1_mod_loader_1_1_j_i_t_when_mods_enabled_attribute.html", null ],
+        [ "Terraria.ModLoader.NoJITAttribute", "class_terraria_1_1_mod_loader_1_1_no_j_i_t_attribute.html", null ]
+      ] ],
       [ "Terraria.Utilities.OldAttribute", "class_terraria_1_1_utilities_1_1_old_attribute.html", null ]
     ] ],
     [ "Terraria.Social.Base.AWorkshopEntry", "class_terraria_1_1_social_1_1_base_1_1_a_workshop_entry.html", [
@@ -381,6 +386,8 @@ var hierarchy =
     [ "Exception", "class_exception.html", [
       [ "Terraria.Graphics.Effects.MissingEffectException", "class_terraria_1_1_graphics_1_1_effects_1_1_missing_effect_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.FolderCreationFailedException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_folder_creation_failed_exception.html", null ],
+      [ "Terraria.ModLoader.Exceptions.GetLoadableTypesException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_get_loadable_types_exception.html", null ],
+      [ "Terraria.ModLoader.Exceptions.JITException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_j_i_t_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.MissingResourceException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.OldHookException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html", null ],
       [ "Terraria.ModLoader.Exceptions.RecipeException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html", null ],
@@ -1940,6 +1947,7 @@ var hierarchy =
     [ "Terraria.IO.Preferences", "class_terraria_1_1_i_o_1_1_preferences.html", null ],
     [ "Terraria.ID.PrefixID", "class_terraria_1_1_i_d_1_1_prefix_i_d.html", null ],
     [ "Terraria.ModLoader.PrefixLoader", "class_terraria_1_1_mod_loader_1_1_prefix_loader.html", null ],
+    [ "Terraria.ModLoader.PreJITFilter", "class_terraria_1_1_mod_loader_1_1_pre_j_i_t_filter.html", null ],
     [ "Terraria.GameContent.PressurePlateHelper", "class_terraria_1_1_game_content_1_1_pressure_plate_helper.html", null ],
     [ "Terraria.ModLoader.Config.UI.PrimitiveRangeElement< byte >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html", null ],
     [ "Terraria.ModLoader.Config.UI.PrimitiveRangeElement< float >", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_primitive_range_element.html", [
