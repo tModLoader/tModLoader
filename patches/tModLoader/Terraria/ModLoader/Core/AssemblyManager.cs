@@ -316,7 +316,7 @@ namespace Terraria.ModLoader.Core
 
 		private static bool IsLoadable(ModLoadContext mod, Type type) {
 			foreach (var attr in type.GetCustomAttributesData()) {
-				if (attr.AttributeType.AssemblyQualifiedName == typeof(ExtendsFromMod).AssemblyQualifiedName) {
+				if (attr.AttributeType.AssemblyQualifiedName == typeof(ExtendsFromModAttribute).AssemblyQualifiedName) {
 					var modNames = (IEnumerable<CustomAttributeTypedArgument>)attr.ConstructorArguments[0].Value;
 					if (!modNames.All(v => mod.IsModDependencyPresent((string)v.Value)))
 						return false;

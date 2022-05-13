@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 		internal TmodFile File { get; set; }
 		/// <summary>
 		/// The assembly code this is loaded when tModLoader loads this mod. <br/>
-		/// Do NOT call <see cref="Assembly.GetTypes"/> on this as it will error out if the mod uses the <see cref="ExtendsFromMod"/> attribute to inherit from weakly referenced mods. Use <see cref="AssemblyManager.GetLoadableTypes(Assembly)"/> instead.
+		/// Do NOT call <see cref="Assembly.GetTypes"/> on this as it will error out if the mod uses the <see cref="ExtendsFromModAttribute"/> attribute to inherit from weakly referenced mods. Use <see cref="AssemblyManager.GetLoadableTypes(Assembly)"/> instead.
 		/// </summary>
 		public Assembly Code { get; internal set; }
 		/// <summary>
