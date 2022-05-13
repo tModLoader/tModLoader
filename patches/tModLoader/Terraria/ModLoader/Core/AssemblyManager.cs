@@ -299,11 +299,19 @@ namespace Terraria.ModLoader.Core
 		public static Type[] GetLoadableTypes(Assembly assembly) => hostContextForAssembly.TryGetValue(assembly, out var mlc) ? mlc.loadableTypes[assembly] : assembly.GetTypes();
 
 		private static IDictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc) {
-			return mod.Assemblies.ToDictionary(a => a, asm =>
-				mlc.LoadFromAssemblyName(asm.GetName()).GetTypes()
-					.Where(mType => IsLoadable(mod, mType))
-					.Select(mType => asm.GetType(mType.FullName, throwOnError: true, ignoreCase: false))
-					.ToArray());
+			try {
+				return mod.Assemblies.ToDictionary(a => a, asm =>
+			mlc.LoadFromAssemblyName(asm.GetName()).GetTypes()
+				.Where(mType => IsLoadable(mod, mType))
+				.Select(mType => asm.GetType(mType.FullName, throwOnError: true, ignoreCase: false))
+				.ToArray());
+			}
+			catch (Exception e) {
+				throw new Exceptions.GetLoadableTypesException(
+					"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n" + e.Message,
+					e
+				);
+			}
 		}
 
 		private static bool IsLoadable(ModLoadContext mod, Type type) {
