@@ -1,16 +1,13 @@
 using ReLogic.OS;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Xml.Linq;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Terraria
 {
@@ -187,8 +184,10 @@ namespace Terraria
 						Steamworks.SteamUserStats.SetAchievement(achievement);
 				}
 
-				if (nextCMD.Contains("checkupdates"))
+				if (nextCMD.Contains("checkupdates")) {
 					Steamworks.SteamApps.MarkContentCorrupt(false);
+					unloading = true;
+				}
 			}
 
 			Environment.Exit(0);
@@ -200,6 +199,9 @@ namespace Terraria
 		}
 
 		internal static void SendCmdToInterProcess(string cmd) {
+			if (tConnServer == null)
+				return;
+
 			StreamWriter sw = new StreamWriter(tConnServer);
 			sw.AutoFlush = true;
 			sw.WriteLine(cmd);

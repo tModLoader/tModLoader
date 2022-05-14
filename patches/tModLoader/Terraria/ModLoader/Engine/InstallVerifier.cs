@@ -1,11 +1,9 @@
 ﻿using ReLogic.OS;
-using Steamworks;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Reflection;
 using System.Security.Cryptography;
 using Terraria.Localization;
 using Terraria.Social;
@@ -178,6 +176,7 @@ namespace Terraria.ModLoader.Engine
 				string terrariaContentLocation = Path.Combine(terrariaInstallLocation, TmlContentDirectory);
 
 				if (!Directory.Exists(terrariaContentLocation)) {
+					Program.SendCmdToInterProcess("checkupdates");
 					Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
 					return false;
 				}
