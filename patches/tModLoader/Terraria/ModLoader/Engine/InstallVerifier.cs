@@ -188,7 +188,7 @@ namespace Terraria.ModLoader.Engine
 		}
 
 		private static void InitializeTerraria() {
-			if (!BuildInfo.IsDev)
+			if (BuildInfo.IsDev)
 				return;
 
 			var tConn = new Process();
