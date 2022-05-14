@@ -149,8 +149,6 @@ namespace Terraria
 			if (!LaunchParameters.ContainsKey("-terrariashim"))
 				return;
 
-			Environment.SetEnvironmentVariable("STEAMOVERLAYGAMEID", "");
-			Environment.SetEnvironmentVariable("STEAMGAMEID", "");
 			SetAppId("105600");
 
 			File.WriteAllText(sharedComms, "");
@@ -202,7 +200,12 @@ namespace Terraria
 		}
 
 		internal static string[] ReadCmdsFromInterProcess() {
-			return File.ReadAllLines(sharedComms);
+			var lines = File.ReadAllLines(sharedComms);
+			CleanComms();
+			return lines;
+		}
+
+		internal static void CleanComms() {
 			File.WriteAllText(sharedComms, "");
 		}
 

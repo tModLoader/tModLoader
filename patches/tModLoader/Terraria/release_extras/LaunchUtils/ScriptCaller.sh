@@ -65,6 +65,10 @@ echo "Attempting Launch..."
 # Move to the root folder
 cd "$root_dir"
 
+export STEAMGAMEID=""
+export STEAMOVERLAYGAMEID=""
+export STEAMAPPID=""
+
 if [[ "$_uname" == *"_NT"* ]]; then
 	# Replace / with \\ in WINDIR env var to not confuse MonoMod about the current platform
 	# somehow busybox-w64 replaces paths in envs with normalized paths (no clue why..., maybe open an issue there?)

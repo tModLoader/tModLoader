@@ -176,9 +176,11 @@ namespace Terraria.ModLoader.Engine
 					tConn.StartInfo.Arguments = "tmodloader.dll -terrariashim";
 					tConn.StartInfo.UseShellExecute = true;
 					tConn.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-					tConn.Start();
 
 					bool drm = false;
+					Program.CleanComms();
+					tConn.Start();
+
 					while (!drm) {
 						var lines = Program.ReadCmdsFromInterProcess();
 						foreach (var cmd in lines) {
