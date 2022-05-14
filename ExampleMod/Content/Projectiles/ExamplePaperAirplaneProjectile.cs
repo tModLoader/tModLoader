@@ -42,13 +42,13 @@ namespace ExampleMod.Content.Projectiles
 			// This will run only once as soon as the projectile spawns.
 			if (Projectile.ai[1] == 0f) {
 				Projectile.direction = (Projectile.velocity.X > 0f) ? 1 : (-1); // If it is moving right, then set Projectile.direction to 1. If it is moving left, then set Projectile.direction to -1.
-				Projectile.rotation = Projectile.velocity.ToRotation(); // Set the rotation.
-				Projectile.ai[1] = 1f; // Set Projectile.ai[1] to 1. This is only used to make this section of code one only once.
+				Projectile.rotation = Projectile.velocity.ToRotation(); // Set the rotation based on the velocity.
+				Projectile.ai[1] = 1f; // Set Projectile.ai[1] to 1. This is only used to make this section of code run only once.
 				Projectile.ai[0] = -Main.rand.Next(30, 80); // Set Projectile.ai[0] to a random number from -30 to -79.
 				Projectile.netUpdate = true; // Sync the projectile in a multiplayer game.
 			}
 
-			// Kill the projectile if it touches a liquid. (It will automatically get killed by touching a tile. You can change that with Projectile.tileCollide = false in SetDefaults)
+			// Kill the projectile if it touches a liquid. (It will automatically get killed by touching a tile. You can change that by returning false in OnTileCollide())
 			if (Projectile.wet && Projectile.owner == Main.myPlayer) {
 				Projectile.Kill();
 			}
@@ -105,7 +105,7 @@ namespace ExampleMod.Content.Projectiles
 				// Switch direction when the current velocity and the oldVelocity have different signs.
 				if (Projectile.velocity.X * Projectile.oldVelocity.X < 0f) {
 					Projectile.direction *= -1; // Reverse the direction
-					Projectile.ai[0] = -Main.rand.Next(120, 300); // Set it Projectile.ai[0] to a random number from -120 to -599.
+					Projectile.ai[0] = -Main.rand.Next(120, 300); // Set Projectile.ai[0] to a random number from -120 to -599.
 					Projectile.netUpdate = true; // Sync the projectile in a multiplayer game.
 				}
 			}
@@ -118,7 +118,6 @@ namespace ExampleMod.Content.Projectiles
 			if (Projectile.timeLeft % 2 == 0) {
 				Dust.NewDustPerfect(new Vector2(Projectile.Center.X - (Projectile.width * Projectile.direction), Projectile.Center.Y), ModContent.DustType<Dusts.Sparkle>(), null, 0, default, 0.5f); //Here we spawn the dust at the back of the projectile with half scale.
 			}
-			
 		}
 
 		// We need to do draw the projectile manually. If you don't include this, the projectile will be facing the wrong direction when flying left.
@@ -145,7 +144,7 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void Kill(int timeLeft) {
-			SoundEngine.PlaySound(SoundID.Item10, Projectile.position); // Play a sound when the projectile dies. In this case, that is when it hits a block or a liquid
+			SoundEngine.PlaySound(SoundID.Item10, Projectile.position); // Play a sound when the projectile dies. In this case, that is when it hits a block or a liquid.
 
 			if (Projectile.owner == Main.myPlayer && !Projectile.noDropItem) {
 				int dropItemType = ModContent.ItemType<Items.ExamplePaperAirplane>(); // This the item we want the paper airplane to drop.
