@@ -45,6 +45,7 @@ fi
 
 . ./UnixLinkerFix.sh
 run_script ./PlatformLibsDeploy.sh  2>&1 | tee -a "$LogFile"
+run_script ./TerrariaConnection.sh  2>&1 | tee -a "$LogFile"
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 echo "Parsing .NET version requirements from runtimeconfig.json"  2>&1 | tee -a "$LogFile"
@@ -71,12 +72,25 @@ if [[ "$_uname" == *"_NT"* ]]; then
 	export WINDIR=${WINDIR////\\}
 fi
 
+STEAMOVERLAYGAMEID=""
+STEAMGAMEID=""
+
 clear
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
 	echo "Launched Using Local Dotnet"  2>&1 | tee -a "$LogFile"
 	chmod a+x "$install_dir/dotnet"
+	
+	cd LaunchUtils/TerrariaConnection
+	"$install_dir/dotnet" TerrariaTranslator.dll &
+	
+	cd "$root_dir"
 	exec "$install_dir/dotnet" tModLoader.dll "$@" 2>"$NativeLog"
 else
 	echo "Launched Using System Dotnet"  2>&1 | tee -a "$LogFile"
+	
+	cd LaunchUtils/TerrariaConnection &
+	"$install_dir/dotnet" TerrariaTranslator.dll
+	
+	cd "$root_dir"
 	exec dotnet tModLoader.dll "$@" 2>"$NativeLog"
 fi
