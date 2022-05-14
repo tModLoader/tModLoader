@@ -3,6 +3,7 @@ using Steamworks;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -169,30 +170,7 @@ namespace Terraria.ModLoader.Engine
 			Logging.tML.Info("Checking Steam installation...");
 			IsSteam = true;
 			if (!Main.dedServ) {
-
-				if (BuildInfo.IsDev) {
-					var tConn = new Process();
-					tConn.StartInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
-					tConn.StartInfo.Arguments = "tmodloader.dll -terrariashim";
-					tConn.StartInfo.UseShellExecute = true;
-					tConn.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-
-					bool drm = false;
-					Program.CleanComms();
-					tConn.Start();
-
-					while (!drm) {
-						var lines = Program.ReadCmdsFromInterProcess();
-						foreach (var cmd in lines) {
-							if (cmd.Contains("success_DRM"))
-								drm = true;
-							else if (cmd.Contains("failed_DRM")) {
-								Utils.OpenToURL("https://terraria.org");
-								Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"), string.Empty);
-							}
-						}
-					}
-				}
+				InitializeTerraria();
 
 				Program.SetAppId("1281930");
 				SocialAPI.LoadSteam();
@@ -207,6 +185,38 @@ namespace Terraria.ModLoader.Engine
 
 			Logging.tML.Info("Steam installation OK.");
 			return true;
+		}
+
+		private static void InitializeTerraria() {
+			if (!BuildInfo.IsDev)
+				return;
+
+			var tConn = new Process();
+			tConn.StartInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
+			tConn.StartInfo.UseShellExecute = false;
+			tConn.StartInfo.RedirectStandardOutput = true;
+
+			Program.tConnServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
+			tConn.StartInfo.Arguments = $"tmodloader.dll -terrariashim {Program.tConnServer.GetClientHandleAsString()}";
+
+			bool drm = false;
+			tConn.Start();
+
+			while (!drm) {
+				var line = tConn.StandardOutput.ReadLine();
+				if (line == null)
+					continue;
+
+				if (line.Contains("failed_DRM")) {
+					Utils.OpenToURL("https://terraria.org");
+					Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"), string.Empty);
+				}
+
+				else if (line.Contains("success_DRM"))
+					drm = true;
+			}
+
+			Program.SendCmdToInterProcess("confirmed");
 		}
 
 		// Check if GOG install is correct

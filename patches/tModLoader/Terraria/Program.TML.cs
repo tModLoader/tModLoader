@@ -1,7 +1,9 @@
 using ReLogic.OS;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -142,76 +144,65 @@ namespace Terraria
 				Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 		}
 
-		private const string sharedComms = "LaunchUtils/terraria_io.txt";
-		
+		internal static AnonymousPipeServerStream tConnServer;
 
 		private static void ConnectToTerraria() {
-			if (!LaunchParameters.ContainsKey("-terrariashim"))
+			if (!LaunchParameters.TryGetValue("-terrariashim", out string pID))
 				return;
 
 			SetAppId("105600");
 
-			File.WriteAllText(sharedComms, "");
+			PipeStream tConnClient = new AnonymousPipeClientStream(PipeDirection.In, pID);
 
 			// Send DRM failed if failed
 			bool unloading = !Steamworks.SteamAPI.Init();
 			if (unloading) {
-				File.WriteAllText(sharedComms, "");
-				SendCmdToInterProcess("failed_DRM");
+				Console.WriteLine("failed_DRM");
 				Environment.Exit(1);
 			}
 
 			// Send DRM success
-			SendCmdToInterProcess("success_DRM");
+			Console.WriteLine("success_DRM");
 
 			bool spinConfirm = true;
 			while (!spinConfirm) {
-				var lines = ReadCmdsFromInterProcess();
-				foreach (string line in lines) {
-					if (line.Contains("confirmed"))
-						spinConfirm = true;
-				}
+				var line = ReadCmdFromInterProcess(tConnClient);
+				if (line != null && line.Contains("confirmed"))
+					spinConfirm = true;
 			}
 
 			// Core Terraria Connection Loop
 			while (!unloading) {
-				Thread.Sleep(1000);
+				Thread.Sleep(250);
 
-				var lines = ReadCmdsFromInterProcess();
+				var nextCMD = ReadCmdFromInterProcess(tConnClient);
+				if (nextCMD.Contains("unload"))
+					unloading = true;
 
-				foreach (string nextCMD in lines) {
-					if (nextCMD.Contains("unload"))
-						unloading = true;
+				if (nextCMD.Contains("grant:")) {
+					string achievement = nextCMD.Split(':')[1];
 
-					if (nextCMD.Contains("grant:")) {
-						string achievement = nextCMD.Split(':')[1];
-
-						Steamworks.SteamUserStats.GetAchievement(achievement, out bool pbAchieved);
-						if (!pbAchieved)
-							Steamworks.SteamUserStats.SetAchievement(achievement);
-					}
-
-					if (nextCMD.Contains("checkupdates"))
-						Steamworks.SteamApps.MarkContentCorrupt(false);
+					Steamworks.SteamUserStats.GetAchievement(achievement, out bool pbAchieved);
+					if (!pbAchieved)
+						Steamworks.SteamUserStats.SetAchievement(achievement);
 				}
+
+				if (nextCMD.Contains("checkupdates"))
+					Steamworks.SteamApps.MarkContentCorrupt(false);
 			}
 
 			Environment.Exit(0);
 		}
 
-		internal static string[] ReadCmdsFromInterProcess() {
-			var lines = File.ReadAllLines(sharedComms);
-			CleanComms();
-			return lines;
-		}
-
-		internal static void CleanComms() {
-			File.WriteAllText(sharedComms, "");
+		private static string ReadCmdFromInterProcess(PipeStream tConnClient) {
+			StreamReader sr = new StreamReader(tConnClient);
+			return sr.ReadLine();
 		}
 
 		internal static void SendCmdToInterProcess(string cmd) {
-			using (var ws = File.AppendText(sharedComms))
-				ws.WriteLine(cmd);
+			StreamWriter sw = new StreamWriter(tConnServer);
+			sw.AutoFlush = true;
+			sw.WriteLine(cmd);
 		}
 
 		internal static void SetAppId(string appId) {
