@@ -129,7 +129,7 @@
  							break;
  						}
  					case 22:
-@@ -586,9 +_,10 @@
+@@ -586,9 +_,12 @@
  								}
  							}
  
@@ -137,11 +137,13 @@
 +							if (nPC2.type >= 0 && Main.npcCatchable[nPC2.type])
  								writer.Write((byte)nPC2.releaseOwner);
  
-+							NPCLoader.SendExtraAI(writer, NPCLoader.WriteExtraAI(nPC2));
++							if (!ModNet.AllowVanillaClients)
++								NPCLoader.SendExtraAI(writer, NPCLoader.WriteExtraAI(nPC2));
++
  							break;
  						}
  					case 24:
-@@ -624,12 +_,16 @@
+@@ -624,12 +_,17 @@
  							if (projectile.knockBack != 0f)
  								bb22[5] = true;
  
@@ -153,8 +155,9 @@
  								bb22[6] = true;
  
 +							byte[] extraAI = !ModNet.AllowVanillaClients ? ProjectileLoader.WriteExtraAI(projectile) : null;
++							bool hasExtraAI = extraAI?.Length > 0;
 +
-+							bb22[2] = extraAI?.Length > 0; // This bit is unused by vanilla.
++							bb22[2] = hasExtraAI; // This bit is unused by vanilla.
 +
  							writer.Write(bb22);
  							for (int num21 = 0; num21 < Projectile.maxAI; num21++) {
@@ -163,7 +166,7 @@
  							if (bb22[7])
  								writer.Write((short)projectile.projUUID);
  
-+							if (extraAI != null) {
++							if (hasExtraAI) {
 +								ProjectileLoader.SendExtraAI(writer, extraAI);
 +							}
 +

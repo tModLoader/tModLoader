@@ -7,13 +7,14 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using Terraria.GameContent.Bestiary;
+using System.Collections.Generic;
 
 namespace ExampleMod.Content.NPCs
 {
 	/// <summary>
 	/// The main focus of this NPC is to show how to make something similar to the vanilla bone merchant;
 	/// which means that the NPC will act like any other town NPC but won't have a happiness button, won't appear on the minimap,
-	/// and will spawn like an enemy NPC. If you want a traditional town NPC instead, <see cref="ExamplePerson"/>.
+	/// and will spawn like an enemy NPC. If you want a traditional town NPC instead, see <see cref="ExamplePerson"/>.
 	/// </summary>
 	public class ExampleBoneMerchant : ModNPC
 	{
@@ -91,20 +92,13 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		public override string TownNPCName() {
-			switch (WorldGen.genRand.Next(4)) {
-				case 0: // The cases are potential names for the NPC.
-					return "Blocky Bones";
-
-				case 1:
-					return "Someone's Ribcage";
-
-				case 2:
-					return "Underground Blockster";
-
-				default:
-					return "Darkness";
-			}
+		public override List<string> SetNPCNameList() {
+			return new List<string> {
+				"Blocky Bones",
+				"Someone's Ribcage",
+				"Underground Blockster",
+				"Darkness"
+			};
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo) {

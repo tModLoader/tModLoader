@@ -83,6 +83,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The dust type that will be spawned by the calling code</param>
 		public virtual bool CreateDust(int i, int j, ref int type) {
 			type = DustType;
 			return true;
@@ -111,6 +112,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="spriteBatch"></param>
 		public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch) {
 			return true;
 		}
@@ -120,6 +122,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="spriteBatch"></param>
 		public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch) {
 		}
 
@@ -141,12 +144,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine how much light this tile/wall emits.
-		/// If it is a tile, make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.
-		/// If it is a wall, it can also let you light up the block in front of this wall.
+		/// Allows you to determine how much light this tile/wall emits.<br/>
+		/// If it is a tile, make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.<br/>
+		/// If it is a wall, it can also let you light up the block in front of this wall.<br/>
+		/// See <see cref="Terraria.Graphics.Light.TileLightScanner.ApplyTileLight(Tile, int, int, ref Terraria.Utilities.FastRandom, ref Microsoft.Xna.Framework.Vector3)"/> for vanilla tile light values to use as a reference.<br/>
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="r">The red component of light, usually a value between 0 and 1</param>
+		/// <param name="g">The green component of light, usually a value between 0 and 1</param>
+		/// <param name="b">The blue component of light, usually a value between 0 and 1</param>
 		public virtual void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 		}
 	}

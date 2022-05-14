@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_TileBreak.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_TileBreak.cs
+@@ -1,9 +_,11 @@
++#nullable enable
++
+ namespace Terraria.DataStructures
+ {
+ 	public class EntitySource_TileBreak : AEntitySource_Tile
+ 	{
+-		public EntitySource_TileBreak(int tileCoordsX, int tileCoordsY)
+-			: base(tileCoordsX, tileCoordsY) {
++		public EntitySource_TileBreak(int tileCoordsX, int tileCoordsY, string? context = null)
++			: base(tileCoordsX, tileCoordsY, context) {
+ 		}
+ 	}
+ }

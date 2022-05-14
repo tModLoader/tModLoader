@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.DataStructures
@@ -22,13 +23,17 @@ namespace Terraria.DataStructures
 		public virtual void LoadData(TagCompound tag) { }
 
 		/// <summary>
-		/// Allows you to send custom data for this tile entity between client and server. This is called on the server while sending tile data (!lightSend) and when a MessageID.TileEntitySharing message is sent (lightSend)
+		/// Allows you to send custom data for this tile entity between client and server, which will be handled in <see cref="NetReceive"/>.
+		/// <br/>Called while sending tile data (!lightSend) and when <see cref="MessageID.TileEntitySharing"/> is sent (lightSend).
+		/// <br/>Only called on the server.
 		/// </summary>
 		/// <param name="writer">The writer.</param>
 		public virtual void NetSend(BinaryWriter writer) => WriteExtraData(writer, true);
 
 		/// <summary>
-		/// Receives the data sent in the NetSend hook. Called on MP Client when receiving tile data (!lightReceive) and when a MessageID.TileEntitySharing message is sent (lightReceive)
+		/// Receives custom data sent in the <see cref="NetSend"/> hook.
+		/// <br/>Called while receiving tile data (!lightReceive) and when <see cref="MessageID.TileEntitySharing"/> is received (lightReceive).
+		/// <br/>Only called on the client.
 		/// </summary>
 		/// <param name="reader">The reader.</param>
 		public virtual void NetReceive(BinaryReader reader) => ReadExtraData(reader, true);

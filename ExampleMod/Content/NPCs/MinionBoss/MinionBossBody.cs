@@ -270,9 +270,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 				int backGoreType = Mod.Find<ModGore>("MinionBossBody_Back").Type;
 				int frontGoreType = Mod.Find<ModGore>("MinionBossBody_Front").Type;
 
+				var entitySource = NPC.GetSource_Death();
+
 				for (int i = 0; i < 2; i++) {
-					Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
-					Gore.NewGore(NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
+					Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), backGoreType);
+					Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
 				}
 
 				SoundEngine.PlaySound(SoundID.Roar, NPC.Center, 0);
@@ -325,10 +327,10 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			}
 
 			int count = MinionCount();
-			var source = NPC.GetSpawnSourceForNPCFromNPCAI();
+			var entitySource = NPC.GetSource_FromAI();
 
 			for (int i = 0; i < count; i++) {
-				int index = NPC.NewNPC(source, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
+				int index = NPC.NewNPC(entitySource, (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<MinionBossMinion>(), NPC.whoAmI);
 				NPC minionNPC = Main.npc[index];
 
 				// Now that the minion is spawned, we need to prepare it with data that is necessary for it to work
@@ -503,7 +505,9 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 				int type = ModContent.ProjectileType<MinionBossEye>();
 				int damage = NPC.damage / 2;
-				Projectile.NewProjectile(NPC.GetSpawnSource_ForProjectile(), position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
+				var entitySource = NPC.GetSource_FromAI();
+
+				Projectile.NewProjectile(entitySource, position, -Vector2.UnitY, type, damage, 0f, Main.myPlayer);
 			}
 		}
 	}

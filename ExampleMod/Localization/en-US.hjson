@@ -11,6 +11,10 @@ Mods: {
 		Config: {
 			ItemHeader: Items
 			
+			SampleEnumLabels: {
+				Peculiar: Very Peculiar
+			}
+			
 			ExampleWingsToggle: {
 				Label: ExampleWings Toggle
 				Tooltip: Enables or disables the ExampleWings item
@@ -26,6 +30,10 @@ Mods: {
 		
 		Currencies: {
 			ExampleCustomCurrency: example items
+		}
+
+		DamageClassName: {
+			ExampleDamageClass: example damage
 		}
 		
 		NPCName: {

@@ -44,9 +44,16 @@ namespace ExampleMod.Common.Players
 			// TODO: Need new hook, FrameEffects doesn't run while paused.
 			if ((BlockyPower || BlockyForceVanity) && !BlockyHideVanity) {
 				var exampleCostume = ModContent.GetInstance<ExampleCostume>();
-				Player.head = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Head);
-				Player.body = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Body);
-				Player.legs = Mod.GetEquipSlot(exampleCostume.Name, EquipType.Legs);
+				Player.head = EquipLoader.GetEquipSlot(Mod, exampleCostume.Name, EquipType.Head);
+				Player.body = EquipLoader.GetEquipSlot(Mod, exampleCostume.Name, EquipType.Body);
+				Player.legs = EquipLoader.GetEquipSlot(Mod, exampleCostume.Name, EquipType.Legs);
+
+				// Use the alternative equipment textures by calling them through their internal name.
+				if (Player.wet) {
+					Player.head = EquipLoader.GetEquipSlot(Mod, "BlockyAlt", EquipType.Head);
+					Player.body = EquipLoader.GetEquipSlot(Mod, "BlockyAlt", EquipType.Body);
+					Player.legs = EquipLoader.GetEquipSlot(Mod, "BlockyAlt", EquipType.Legs);
+				}
 			}
 		}
 

@@ -97,7 +97,7 @@ namespace Terraria.ModLoader.Config.UI
 						new object[] { valuesEnumerator.Current, (object)Data });
 					DataWrapperList.Add(proxy);
 
-					var wrappermemberInfo = ConfigManager.GetFieldsAndProperties(this).ToList()[0];
+					var wrappermemberInfo = ConfigManager.GetFieldsAndProperties(this).ToList().First(x => x.Name == "DataWrapperList");
 					int index = i;
 					var wrapped = UIModConfig.WrapIt(DataList, ref top, wrappermemberInfo, this, 0, DataWrapperList, genericType, i);
 					wrapped.Item2.Left.Pixels += 24;

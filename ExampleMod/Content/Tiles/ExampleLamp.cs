@@ -109,7 +109,7 @@ namespace ExampleMod.Content.Tiles
 				if (dustChoice != -1) {
 					var dust = Dust.NewDustDirect(new Vector2(i * 16 + 4, j * 16 + 2), 4, 4, dustChoice, 0f, 0f, 100, default, 1f);
 
-					if (Main.rand.Next(3) != 0) {
+					if (!Main.rand.NextBool(3)) {
 						dust.noGravity = true;
 					}
 

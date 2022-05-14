@@ -278,6 +278,7 @@
 		"MigratePlayersException": "Ha habido un problema al intentar migrar los archivos del jugador",
 		"MigrateWorldsMessage": "No tienes mundos.\nSi quieres migrar tus mundos de la versión clásica a tModLoader,\npuedes hacer clic en el botón de abajo para hacerlo automáticamente.\nAlternativamente, puedes copiarlos de\n/Terraria/Worlds\na /Terraria/{0}/Worlds manualmente.\nCopia los archivos .wld.\nHaz clic en este texto para abrir esas carpetas.\nCuando hayas copiado los mundos que querías, pulsa atrás.",
 		"MigrateWorldsText": "Haz clic aquí para transferir tus mundos",
+		"MigrateWorldsException": "Ha habido un error al transferir tus mundos",
 		"MigratingWorldsText": "Transfiriendo...",
 		"ModsDifferentSinceLastPlay": "Los siguientes mods han cambiado desde la última vez que jugaste: ",
 		"Missing1Mod": "Falta un mod",
@@ -364,7 +365,7 @@
 		"UnloadedItemItemName": "Objeto sin cargar",
 		"UnloadedItemModTooltip": "Mod: {0}",
 		"UnloadedItemItemNameTooltip": "Objeto: {0}",
-		"AprilFoolsJoke": "Chiste del Día de los inocentes",
+		"AprilFoolsJoke": "Chiste del Día de los Inocentes",
 		"DefaultTownNPCName": "Sin nombre",
 		"DefaultTownNPCChat": "A mi modder se le olvidó darme un mensaje que decir.",
 		"DefaultNurseCantHealChat": "No sé por qué no puedo curarte, a mi modder se le olvidó darme un mensaje que decir.",
@@ -391,7 +392,7 @@
 		// Misc
 		"OK": "OK",
 		"Continue": "Continuar",
-		"DeleteModConfirm": "¿Estás seguro de eliminar permanentemente este mod?",
+		"DeleteModConfirm": "¿Estás seguro de eliminar este mod?",
 		"PatreonSetTooltip": "¡Gracias por tu apoyo!",
 		"WorldGenError": "Se ha producido un fallo durante la generación del mundo",
 		"WorldIODataException": "Se ha encontrado un error en los datos de un mod para un mundo.",
@@ -406,7 +407,7 @@
 		"GraphicsEngineFailureMessage": "tML se cerró al probar algunas características gráficas experimentales. Si el problema persiste, es posible que debas editar el archivo config.json y establecer el valor de Support4K en 'false'.\nPor favor, reinicia tu juego.\nEstado del informe: {0}",
 		"OutOfMemory": "El juego se ha quedado sin memoria. Tendrás que encontrar qué mod está consumiendo recursos y contactar con sus desarrolladores o eliminarlo.",
 		"ContentFolderNotFoundInstallCheck": "No se ha podido encontrar el directorio {0}.\r\n\r\n¿Olvidaste extraer el directorio de contenido de tModLoader en la carpeta de tModLoader?\r\n\r\nAsegúrate de que tModLoader esté instalado en una carpeta separada de Terraria.",
-		"VanillaSteamInstallationNotFound": "Instalación de Terraria por Steam o el directorio de contenido de Terraria no encontrado. Por favor, asegúrate de que Terraria 1.4 se haya instalado por Steam.",
+		"VanillaSteamInstallationNotFound": "La instalación de Terraria por Steam o el directorio de Terraria no se ha encontrado. Por favor, asegúrate de que Terraria 1.4 se haya instalado por Steam.",
 		"SteamAPIHashMismatch": "La API de Steam no coincide, se asume que es pirata.\n\ntModLoader necesita una versión legítima de Terraria para funcionar correctamente.",
 		"VanillaGOGNotFound": "No se ha encontrado {0}. Las instalaciones de GOG deben tener el ejecutable de Terraria sin modificar para funcionar. Esta versión de tModLoader espera la versión {1} de Terraria, por lo que puede ser necesario restaurar una versión previa o actualizar Terraria a través de GOG Galaxy o esperar a que tModLoader se actualice.",
 		"GOGHashMismatch": "{0} no es el ejecutable de Terraria sin modificar.\r\n\r\nLas instalaciones de GOG deben tener el ejecutable de Terraria sin modificar para funcionar.\r\n\r\nSi has parcheado el .exe, puedes crear una copia del ejecutable original y nombrarlo \"Terraria_v<VERSIÓN>.exe\"",
@@ -457,6 +458,6 @@
 		"InHive": "Debe crearse en una colmena",
 		"InGemCave": "Debe crearse en una cueva de gemas",
 		"InLihzardTemple": "Debe crearse en el templo de la selva",
-		"InGraveyardBiome": "Debe crearse en el bioma del cementerio"
+		"InGraveyardBiome": "Debe crearse en el bioma de cementerio"
 	}
 }
