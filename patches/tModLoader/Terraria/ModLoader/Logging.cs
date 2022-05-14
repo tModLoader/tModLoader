@@ -172,7 +172,8 @@ namespace Terraria.ModLoader
 			"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", // client disconnects from server
 			"System.Diagnostics.Process.Kill", // attempt to kill non-started process when joining server
 			"Terraria.ModLoader.Core.AssemblyManager.CecilAssemblyResolver.Resolve",
-			"Terraria.ModLoader.Engine.TMLContentManager.OpenStream" // TML content manager delegating to vanilla dir
+			"Terraria.ModLoader.Engine.TMLContentManager.OpenStream", // TML content manager delegating to vanilla dir
+			"UwUPnP", // UPnP does a lot of trial and error
 		};
 
 		// there are a couple of annoying messages that happen during cancellation of asynchronous downloads
