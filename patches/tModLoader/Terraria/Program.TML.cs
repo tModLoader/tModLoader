@@ -148,6 +148,9 @@ namespace Terraria
 				return;
 
 			SetAppId("105600");
+			Environment.SetEnvironmentVariable("STEAMGAMEID", "");
+			Environment.SetEnvironmentVariable("STEAMOVERLAYGAMEID", "");
+			Environment.SetEnvironmentVariable("STEAMAPPID", "");
 
 			PipeStream tConnClient = new AnonymousPipeClientStream(PipeDirection.In, pID);
 
@@ -157,6 +160,8 @@ namespace Terraria
 				Console.WriteLine("failed_DRM");
 				Environment.Exit(1);
 			}
+
+			Steamworks.SteamFriends.SetRichPresence("status", "tModLoader");
 
 			// Send DRM success
 			Console.WriteLine("success_DRM");
@@ -190,6 +195,7 @@ namespace Terraria
 				}
 			}
 
+			Steamworks.SteamAPI.Shutdown();
 			Environment.Exit(0);
 		}
 

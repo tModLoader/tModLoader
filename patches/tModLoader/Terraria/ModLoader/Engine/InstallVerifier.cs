@@ -168,6 +168,9 @@ namespace Terraria.ModLoader.Engine
 			Logging.tML.Info("Checking Steam installation...");
 			IsSteam = true;
 			if (!Main.dedServ) {
+				Steamworks.SteamAPI.Init();
+				Steamworks.SteamAPI.Shutdown();			
+
 				InitializeTerraria();
 
 				Program.SetAppId("1281930");
