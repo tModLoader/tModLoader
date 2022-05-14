@@ -169,6 +169,30 @@ namespace Terraria.ModLoader.Engine
 			Logging.tML.Info("Checking Steam installation...");
 			IsSteam = true;
 			if (!Main.dedServ) {
+
+				if (BuildInfo.IsDev) {
+					var tConn = new Process();
+					tConn.StartInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
+					tConn.StartInfo.Arguments = "tmodloader.dll -terrariashim";
+					tConn.StartInfo.UseShellExecute = true;
+					tConn.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+					tConn.Start();
+
+					bool drm = false;
+					while (!drm) {
+						var lines = Program.ReadCmdsFromInterProcess();
+						foreach (var cmd in lines) {
+							if (cmd.Contains("success_DRM"))
+								drm = true;
+							else if (cmd.Contains("failed_DRM")) {
+								Utils.OpenToURL("https://terraria.org");
+								Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"), string.Empty);
+							}
+						}
+					}
+				}
+
+				Program.SetAppId("1281930");
 				SocialAPI.LoadSteam();
 				string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
 				string terrariaContentLocation = Path.Combine(terrariaInstallLocation, TmlContentDirectory);
@@ -177,12 +201,6 @@ namespace Terraria.ModLoader.Engine
 					Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
 					return false;
 				}
-			}
-
-			if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
-				Utils.OpenToURL("https://terraria.org");
-				Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"), string.Empty);
-				return false;
 			}
 
 			Logging.tML.Info("Steam installation OK.");

@@ -87,7 +87,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,74 @@
+@@ -138,32 +_,75 @@
  			}
  		}
  
@@ -105,6 +105,7 @@
  
 +			LaunchParameters = Utils.ParseArguements(args);
 +
++			ConnectToTerraria();
 +			bool isServer = LaunchParameters.ContainsKey("-server");
 +			try {
 +				Logging.Init(isServer);

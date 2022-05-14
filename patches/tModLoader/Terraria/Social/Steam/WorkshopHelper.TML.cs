@@ -40,6 +40,8 @@ namespace Terraria.Social.Steam
 		internal static void OnGameExitCleanup() {
 			if (ModManager.SteamUser) {
 				SteamAPI.Shutdown();
+				Program.SendCmdToInterProcess("unload");
+
 				return;
 			}
 
