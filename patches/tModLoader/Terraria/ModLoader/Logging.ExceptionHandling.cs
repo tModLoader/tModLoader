@@ -13,13 +13,12 @@ namespace Terraria.ModLoader
 {
 	public static partial class Logging
 	{
-		private static Exception previousException;
-		private static ThreadLocal<bool> handlerActive = new(() => false);
-		private static HashSet<string> pastExceptions = new();
-		private static HashSet<string> ignoreSources = new() {
+		private static readonly ThreadLocal<bool> handlerActive = new(() => false);
+		private static readonly HashSet<string> pastExceptions = new();
+		private static readonly HashSet<string> ignoreSources = new() {
 			"MP3Sharp",
 		};
-		private static List<string> ignoreContents = new() {
+		private static readonly List<string> ignoreContents = new() {
 			"System.Console.set_OutputEncoding", // when the game is launched without a console handle (client outside dev environment)
 			"Terraria.ModLoader.Core.ModCompile",
 			"Delegate.CreateDelegateNoSecurityCheck",
@@ -31,7 +30,7 @@ namespace Terraria.ModLoader
 			"UwUPnP", // UPnP does a lot of trial and error
 		};
 		// There are a couple of annoying messages that happen during cancellation of asynchronous downloads, and they have no other useful info to suppress by
-		private static List<string> ignoreMessages = new() {
+		private static readonly List<string> ignoreMessages = new() {
 			"A blocking operation was interrupted by a call to WSACancelBlockingCall", // c#.net abort for downloads
 			"The request was aborted: The request was canceled.", // System.Net.ConnectStream.IOError
 			"Object name: 'System.Net.Sockets.Socket'.", // System.Net.Sockets.Socket.BeginReceive
@@ -40,10 +39,12 @@ namespace Terraria.ModLoader
 			"Object name: 'SslStream'.", // System.Net.Security.SslState.InternalEndProcessAuthentication
 			"Unable to load DLL 'Microsoft.DiaSymReader.Native.x86.dll'", // Roslyn
 		};
-		private static List<string> ignoreThrowingMethods = new() {
+		private static readonly List<string> ignoreThrowingMethods = new() {
 			"at Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
 			"System.Threading.CancellationToken.Throw", // an operation (task) was deliberately cancelled
 		};
+		
+		private static Exception previousException;
 
 		public static void IgnoreExceptionSource(string source) {
 			ignoreSources.Add(source);
