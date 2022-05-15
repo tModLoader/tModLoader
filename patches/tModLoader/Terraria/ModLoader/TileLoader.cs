@@ -893,26 +893,26 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool CanGrowModTree(int type) {
-			return ModPlantLoader.Exists(TileID.Trees, type);
+			return PlantLoader.Exists(TileID.Trees, type);
 		}
 
 		public static void TreeDust(Tile tile, ref int dust) {
 			if (!tile.active())
 				return;
 
-			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, tile.type);
+			var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
 			if (tree != null)
 				dust = tree.CreateDust();
 		}
 
 		public static void TreeGrowthFXGore(int type, ref int gore) {
-			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, type);
+			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
 			if (tree != null)
 				gore = tree.GrowthFXGore();
 		}
 
 		public static bool CanDropAcorn(int type) {
-			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, type);
+			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
 			if (tree == null)
 				return false;
 
@@ -920,100 +920,46 @@ namespace Terraria.ModLoader
 		}
 
 		public static void DropTreeWood(int type, ref int wood) {
-			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, type);
+			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
 			if (tree != null)
 				wood = tree.DropWood();
 		}
 
-		//TODO: Missing Call Site
-		public static Texture2D GetTreeTexture(Tile tile) {
-			if (!tile.active())
-				return null;
-
-			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, tile.type);
-			if (tree == null)
-				return null;
-
-			return tree.GetTexture();
-		}
-
-		//TODO: Missing Call Site
-		public static Texture2D GetTreeTopTextures(int type, int i, int j, ref int frame,
-			ref int frameWidth, ref int frameHeight, ref int xOffsetLeft, ref int yOffset)
-		{
-			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, type);
-			if (tree == null)
-				return null;
-
-			return tree.GetTopTextures(i, j, ref frame, ref frameWidth, ref frameHeight, ref xOffsetLeft, ref yOffset);
-		}
-
-		//TODO: Missing Call Site
-		public static Texture2D GetTreeBranchTextures(int type, int i, int j, int trunkOffset, ref int frame) {
-			var tree = ModPlantLoader.Get<ModTree>(TileID.Trees, type);
-			if (tree == null)
-				return null;
-
-			return tree.GetBranchTextures(i, j, trunkOffset, ref frame);
-		}
-
 		public static bool CanGrowModPalmTree(int type) {
-			return ModPlantLoader.Exists(TileID.PalmTree, type);
+			return PlantLoader.Exists(TileID.PalmTree, type);
 		}
 
 		public static void PalmTreeDust(Tile tile, ref int dust) {
 			if (!tile.active())
 				return;
 
-			var tree = ModPlantLoader.Get<ModPalmTree>(TileID.PalmTree, tile.type);
+			var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, tile.type);
 			if (tree != null)
 				dust = tree.CreateDust();
 		}
 
 		public static void PalmTreeGrowthFXGore(int type, ref int gore) {
-			var tree = ModPlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
+			var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
 			if (tree != null)
 				gore = tree.GrowthFXGore();
 		}
 
 		public static void DropPalmTreeWood(int type, ref int wood) {
-			var tree = ModPlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
+			var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
 			if (tree != null)
 				wood = tree.DropWood();
 		}
 
-		//TODO: Missing Call Site
-		public static Texture2D GetPalmTreeTexture(Tile tile) {
-			if (!tile.active())
-				return null;
-
-			var tree = ModPlantLoader.Get<ModPalmTree>(TileID.PalmTree, tile.type);
-			if (tree == null)
-				return null;
-
-			return tree.GetTexture();
-		}
-
-		//TODO: Missing Call Site
-		public static Texture2D GetPalmTreeTopTextures(int type) {
-			var tree = ModPlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
-			if (tree == null)
-				return null;
-
-			return tree.GetTopTextures();
-		}
-
 		public static bool CanGrowModCactus(int type) {
-			return ModPlantLoader.Exists(TileID.Cactus, type) || TileIO.Tiles.unloadedTypes.Contains((ushort)type);
+			return PlantLoader.Exists(TileID.Cactus, type) || TileIO.Tiles.unloadedTypes.Contains((ushort)type);
 		}
 
-		//TODO: Missing Call Site
 		public static Texture2D GetCactusTexture(int type) {
-			var tree = ModPlantLoader.Get<ModCactus>(TileID.Cactus, type);
+			var tree = PlantLoader.Get<ModCactus>(TileID.Cactus, type);
 			if (tree == null)
 				return null;
 
-			return tree.GetTexture();
+			return tree.GetTexture().Value;
 		}
 
 		public static void PlaceInWorld(int i, int j, Item item) {

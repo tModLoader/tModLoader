@@ -16,19 +16,52 @@
  	{
  		private enum TileCounterType
  		{
-@@ -193,6 +_,7 @@
- 							_paintSystem.RequestTreeTop(ref lookupKey2);
- 							_paintSystem.RequestTreeBranch(ref lookupKey2);
- 						}
-+						//TODO: Add an else here for modded??? Treetop textures are going to be a pain
+@@ -142,11 +_,11 @@
+ 					if (tile == null)
+ 						continue;
  
- 						break;
++					int tileStyle = -1;
+ 					if (tile.active()) {
+ 						Main.instance.LoadTiles(tile.type);
+ 						lookupKey.TileType = tile.type;
+ 						lookupKey.PaintColor = tile.color();
+-						int tileStyle = 0;
+ 						switch (tile.type) {
+ 							case 5:
+ 								tileStyle = GetTreeBiome(j, i, tile.frameX, tile.frameY);
+@@ -170,12 +_,12 @@
  					}
-@@ -244,6 +_,7 @@
- 						if (x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance)
+ 
+ 					if (!prepareLazily)
+-						MakeExtraPreparations(tile, j, i);
++						MakeExtraPreparations(tile, j, i, tileStyle);
+ 				}
+ 			}
+ 		}
+ 
+-		private void MakeExtraPreparations(Tile tile, int x, int y) {
++		private void MakeExtraPreparations(Tile tile, int x, int y, int tileStyle) {
+ 			TilePaintSystemV2.TreeFoliageVariantKey treeFoliageVariantKey;
+ 			switch (tile.type) {
+ 				case 5: {
+@@ -241,9 +_,19 @@
+ 					}
+ 				case 323: {
+ 						int textureIndex = 15;
+-						if (x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance)
++						bool isOcean = x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance;
++						if (isOcean)
  							textureIndex = 21;
  
-+						//TODO: Tree top for Palm Tree hook around here
++						// Modded Palm Tree Leafage is indexed at -2 * growOnTile.type for Ocean, and -(2 * growOnTile.type + 1) for Oasis
++						// This unique selection is to avoid collision with ModTree leafage
++						if (Math.Abs(tileStyle) >= ModPalmTree.VanillaStyleCount) {
++							textureIndex = (Math.Abs(tileStyle) - ModPalmTree.VanillaStyleCount);
++							textureIndex *= -2;
++							if (isOcean)
++								textureIndex -= 1;
++						}
++
  						treeFoliageVariantKey = default(TilePaintSystemV2.TreeFoliageVariantKey);
  						treeFoliageVariantKey.TextureIndex = textureIndex;
  						treeFoliageVariantKey.PaintColor = tile.color();
@@ -138,7 +171,7 @@
 +					if (num == 80)
 +						texture2D = TileLoader.GetCactusTexture(sandType);
 +					if (tile.frameX == 204 || tile.frameX == 202)
-+						texture2D = ModPlantLoader.GetCactusFruitTexture(sandType);		
++						texture2D = PlantLoader.GetCactusFruitTexture(sandType);		
 +
 +					if (texture2D != null)
 +						return texture2D;
@@ -174,7 +207,7 @@
 +					if (num == 80)
 +						texture2D = TileLoader.GetCactusTexture(sandType);
 +					if (tile.frameX == 204 || tile.frameX == 202)
-+						texture2D = ModPlantLoader.GetCactusFruitTexture(sandType);
++						texture2D = PlantLoader.GetCactusFruitTexture(sandType);
 +
 +					if (texture2D != null)
 +						return texture2D;
@@ -187,31 +220,18 @@
  			if (texture2D != null)
  				result = texture2D;
  
-@@ -1026,6 +_,8 @@
- 			return GetTreeVariant(num, i);
- 		}
- 
-+		internal const int ModTreeVariant = 7;
-+
- 		public static int GetTreeVariant(int x, int y) {
- 			if (Main.tile[x, y] == null || !Main.tile[x, y].active())
- 				return -1;
 @@ -1047,6 +_,9 @@
  				case 199:
  					return 4;
  				default:
 +					if (TileLoader.CanGrowModTree(Main.tile[x, y].type))
-+						return ModTreeVariant + Main.tile[x, y].type;
++						return ModTree.VanillaStyleCount + Main.tile[x, y].type;
 +
  					return -1;
  			}
  		}
-@@ -2055,8 +_,11 @@
- 				Main.spriteBatch.Draw(TextureAssets.SunAltar.Value, new Vector2((float)(tileX * 16 - (int)screenPosition.X) - ((float)drawData.tileWidth - 16f) / 2f, tileY * 16 - (int)screenPosition.Y + drawData.tileTop) + screenOffset, new Rectangle(drawData.tileFrameX, drawData.tileFrameY, drawData.tileWidth, drawData.tileHeight), new Color((int)Main.mouseTextColor / 2, (int)Main.mouseTextColor / 2, (int)Main.mouseTextColor / 2, 0), 0f, _zero, 1f, drawData.tileSpriteEffect, 0f);
- 		}
+@@ -2057,6 +_,7 @@
  
-+		internal const int ModPalmTreeVariant = 8;
-+
  		private int GetPalmTreeVariant(int x, int y) {
  			int num = -1;
 +
@@ -223,7 +243,7 @@
  				num += 4;
  
 +			if (Main.tile[x, y].active() && TileLoader.CanGrowModPalmTree(Main.tile[x, y].type))
-+				num = (ModPalmTreeVariant + Main.tile[x,y].type) * (WorldGen.IsPalmOasisTree(x) ? -1 : 0);
++				num = (ModPalmTree.VanillaStyleCount + Main.tile[x,y].type) * (WorldGen.IsPalmOasisTree(x) ? -1 : 0);
 +
  			return num;
  		}
@@ -290,21 +310,17 @@
  						tileHeight = 20;
  						int treeBiome = GetTreeBiome(x, y, tileFrameX, tileFrameY);
 +
-+						if (treeBiome < ModTreeVariant)
++						if (treeBiome < ModTree.VanillaStyleCount)
 -						tileFrameX += (short)(176 * (treeBiome + 1));
 +							tileFrameX += (short)(176 * (treeBiome + 1));
  						break;
  					}
  				case 583:
-@@ -2938,10 +_,12 @@
- 					tileHeight = 18;
- 					break;
- 				case 323: {
-+						//TODO: Probably need to change this with respect to modded
+@@ -2941,7 +_,8 @@
  						tileWidth = 20;
  						tileHeight = 20;
  						int palmTreeBiome = GetPalmTreeBiome(x, y);
-+						if (Math.Abs(palmTreeBiome) < ModPalmTreeVariant)
++						if (Math.Abs(palmTreeBiome) < ModPalmTree.VanillaStyleCount)
 -						tileFrameY = (short)(22 * palmTreeBiome);
 +							tileFrameY = (short)(22 * palmTreeBiome);
  						break;
@@ -369,7 +385,7 @@
  							num20 = 2;
  						}
  
-+						if (Math.Abs(palmTreeBiome) >= ModTreeVariant) {
++						if (Math.Abs(palmTreeBiome) >= ModPalmTree.VanillaStyleCount) {
 +							y2 = 0;
 +
 +							if (palmTreeBiome < 0) {

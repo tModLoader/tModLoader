@@ -1,43 +1,47 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria.ID;
+using Terraria.GameContent;
 
 namespace Terraria.ModLoader
 {
 	public interface IPlant : ILoadable
 	{
 		public int PlantTileId { get; }
+		public int VanillaCount { get; }
 		public int[] GrowsOnTileId { get; set; }
+
+		public abstract Asset<Texture2D> GetTexture();
 
 		void ILoadable.Load(Mod mod) {
 			for (int i = 0; i < GrowsOnTileId.Length; i++) {
 				var plant = new Vector2(PlantTileId, GrowsOnTileId[i]);
 
-				if (ModPlantLoader.plants.TryGetValue(plant, out var existing)) {
+				if (PlantLoader.plants.TryGetValue(plant, out var existing)) {
 					Logging.tML.Error($"The new plant {GetType()} from {mod.DisplayName} conflicts with the existing {existing.GetType()}. New plant not added");
 					continue;
 				}
 
-				ModPlantLoader.plants.Add(plant, this);
+				if (!PlantLoader.plantIdToStyleLimit.ContainsKey((int)plant.X))
+					PlantLoader.plantIdToStyleLimit.Add((int)plant.X, VanillaCount);
+
+				PlantLoader.plants.Add(plant, this);
 			}
 		}
 
 		void ILoadable.Unload() {
 			for (int i = 0; i < GrowsOnTileId.Length; i++) {
-				ModPlantLoader.plants.Remove(new Vector2(PlantTileId, GrowsOnTileId[i]));
+				PlantLoader.plants.Remove(new Vector2(PlantTileId, GrowsOnTileId[i]));
 			}
 		}
-
-		/// <summary>
-		/// Return the texture that represents the tile sheet used for drawing this Plant.
-		/// </summary>
-		public abstract Texture2D GetTexture();
 	}
 
-	public static class ModPlantLoader
+	public static class PlantLoader
 	{
 		internal static Dictionary<Vector2, IPlant> plants = new Dictionary<Vector2, IPlant>();
+		internal static Dictionary<int, int> plantIdToStyleLimit = new Dictionary<int, int>();
 
 		public static T Get<T>(int plantTileID, int growsOnTileID) where T : IPlant
 		{
@@ -56,6 +60,14 @@ namespace Terraria.ModLoader
 
 			return tree.GetFruitTexture();
 		}
+
+		public static Asset<Texture2D> GetTexture(int plantId, int tileType) {
+			var plant = Get<IPlant>(plantId, tileType);
+			if (plant == null)
+				return null;
+
+			return plant.GetTexture();
+		}
 	}
 
 	/// <summary>
@@ -68,8 +80,9 @@ namespace Terraria.ModLoader
 		/// The cactus will share a tile ID with the vanilla cacti (80), so that the cacti can freely convert between each other if the sand below is converted.
 		/// </summary>
 		public int PlantTileId => TileID.Cactus;
+		public int VanillaCount => 0;
 		public int[] GrowsOnTileId { get; set; } = new int[0];
-		public abstract Texture2D GetTexture();
+		public abstract Asset<Texture2D> GetTexture();
 		public abstract Texture2D GetFruitTexture();
 	}
 
@@ -84,8 +97,15 @@ namespace Terraria.ModLoader
 		/// The tree will share a tile ID with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted.
 		/// </summary>
 		public int PlantTileId => TileID.Trees;
+
+		public const int VanillaStyleCount = 7;
+		public int VanillaCount => VanillaStyleCount;
+		public const int VanillaTopTextureCount = 100;
+
+		public TreePaintingSettings TreeShaderSettings { get; }
+
 		public int[] GrowsOnTileId { get; set; } = new int[0];
-		public abstract Texture2D GetTexture();
+		public abstract Asset<Texture2D> GetTexture();
 
 
 		/// <summary>
@@ -118,30 +138,19 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public abstract int DropWood();
 
+		public abstract void SetTreeFoliageSettings(Tile tile, int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight);
+
 		/// <summary>
 		/// Return the texture containing the possible tree tops that can be drawn above this tree.
+		/// The framing was determined under <cref>SetTreeFoliageSettings</cref>
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="frame"></param>
-		/// <param name="frameWidth"></param>
-		/// <param name="frameHeight"></param>
-		/// <param name="xOffsetLeft"></param>
-		/// <param name="yOffset"></param>
-		/// <returns></returns>
-		public abstract Texture2D GetTopTextures(int i, int j, ref int frame, ref int frameWidth, ref int frameHeight,
-			ref int xOffsetLeft, ref int yOffset);
+		public abstract Asset<Texture2D> GetTopTextures();
 
 		/// <summary>
 		/// Return the texture containing the possible tree branches that can be drawn next to this tree.
-		/// The trunkOffset parameter can be added to i to get the x-coordinate of the tree's trunk.
+		/// The framing was determined under <cref>SetTreeFoliageSettings</cref>
 		/// </summary>
-		/// <param name="i"></param>
-		/// <param name="j"></param>
-		/// <param name="trunkOffset"></param>
-		/// <param name="frame"></param>
-		/// <returns></returns>
-		public abstract Texture2D GetBranchTextures(int i, int j, int trunkOffset, ref int frame);
+		public abstract Asset<Texture2D> GetBranchTextures();
 	}
 
 	/// <summary>
@@ -155,8 +164,13 @@ namespace Terraria.ModLoader
 		/// The tree will share a tile ID with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted.
 		/// </summary>
 		public int PlantTileId => TileID.PalmTree;
+		public int VanillaCount => VanillaStyleCount;
+		public const int VanillaStyleCount = 8;
+
+		public TreePaintingSettings TreeShaderSettings { get; }
+
 		public int[] GrowsOnTileId { get; set; } = new int[0];
-		public abstract Texture2D GetTexture();
+		public abstract Asset<Texture2D> GetTexture();
 
 		/// <summary>
 		/// Return the type of dust created when this palm tree is destroyed. Returns 215 by default.
@@ -184,8 +198,22 @@ namespace Terraria.ModLoader
 		/// Return the texture containing the possible tree tops that can be drawn above this palm tree.
 		/// </summary>
 		/// <returns></returns>
-		public abstract Texture2D GetTopTextures();
-	}
+		public abstract Asset<Texture2D> GetTopTextures();
 
-	
+		/// <summary>
+		/// Return the texture containing the possible tree tops that can be drawn above this palm tree.
+		/// </summary>
+		/// <returns></returns>
+		public abstract Asset<Texture2D> GetOasisTopTextures();
+
+		/// <summary>
+		/// Return the texture containing the possible tree branches that can be drawn next to this tree.
+		/// </summary>
+		public abstract Asset<Texture2D> GetBranchTextures();
+
+		/// <summary>
+		/// Return the texture containing the possible tree branches that can be drawn next to this tree.
+		/// </summary>
+		public abstract Asset<Texture2D> GetOasisBranchTextures();
+	}
 }

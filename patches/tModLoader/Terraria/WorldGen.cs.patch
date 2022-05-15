@@ -1615,6 +1615,21 @@
  			_ = Main.tile[i, j];
  			int num = i + xoffset;
  			topTextureFrameWidth = 80;
+@@ -40101,6 +_,14 @@
+ 
+ 							return true;
+ 						}
++					default:
++						var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
++						if (tree != null) {
++							tree.SetTreeFoliageSettings(tile, xoffset, ref treeFrame, ref floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
++							treeStyle = tile.type + ModTree.VanillaTopTextureCount;
++							return true;
++						}
++						break;
+ 				}
+ 			}
+ 
 @@ -40523,6 +_,8 @@
  			if (num == 2)
  				return;
