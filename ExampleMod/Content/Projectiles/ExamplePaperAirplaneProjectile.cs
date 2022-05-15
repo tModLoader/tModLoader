@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Audio;
+using Terraria.GameContent;
 using System;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -41,7 +42,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// This will run only once as soon as the projectile spawns.
 			if (Projectile.ai[1] == 0f) {
-				Projectile.direction = (Projectile.velocity.X > 0f) ? 1 : (-1); // If it is moving right, then set Projectile.direction to 1. If it is moving left, then set Projectile.direction to -1.
+				Projectile.direction = (Projectile.velocity.X > 0).ToDirectionInt(); // If it is moving right, then set Projectile.direction to 1. If it is moving left, then set Projectile.direction to -1.
 				Projectile.rotation = Projectile.velocity.ToRotation(); // Set the rotation based on the velocity.
 				Projectile.ai[1] = 1f; // Set Projectile.ai[1] to 1. This is only used to make this section of code run only once.
 				Projectile.ai[0] = -Main.rand.Next(30, 80); // Set Projectile.ai[0] to a random number from -30 to -79.
@@ -60,7 +61,6 @@ namespace ExampleMod.Content.Projectiles
 			float ySinModifier = (float)Math.Sin((float)Math.PI * 2f * (float)(Main.timeForVisualEffects % 90.0 / 90.0)) * Projectile.direction * Main.WindForVisuals; // This will make the projectile fly in a sine wave fashion.
 
 			Vector2 newVelocity = rotationVector + new Vector2(Main.WindForVisuals, ySinModifier); // Create a new velocity using the rotation and wind.
-			_ = Vector2.UnitX * Projectile.direction; // Set the sign of the x unit to the same sign as the direction.
 
 			bool directionSameAsWind = Projectile.direction == Math.Sign(Main.WindForVisuals) && Projectile.velocity.Length() > 3f; // True if the projectile is moving the same direction as the wind and is not moving slowly.
 			bool readyForFlip = Projectile.ai[0] >= 20f && Projectile.ai[0] <= 69f; // True if Projectile.ai[0] is between 20 and 69
@@ -91,15 +91,12 @@ namespace ExampleMod.Content.Projectiles
 					Projectile.velocity.Y += yModifier;
 				}
 
-				// Cap the y velocity so the projectile falls slowly and doesn't rise too quickly
-				if (Projectile.velocity.Y < -2f) {
-					Projectile.velocity.Y = -2f;
-				}
-				if (Projectile.velocity.Y > 2f) {
-					Projectile.velocity.Y = 2f;
-				}
+				// Cap the y velocity so the projectile falls slowly and doesn't rise too quickly.
+				// MathHelper.Clamp() allows you to set a minimum and maximum value. In this case, the result will always be between -2f and 2f (inclusive).
+				Projectile.velocity.Y = MathHelper.Clamp(Projectile.velocity.Y, -2f, 2f);
 
-				// Set the x velocity. MathHelper.Clamp() allows you to set a minimum and maximum value. In this case, it will always be between -6f and 6f.
+				// Set the x velocity.
+				// MathHelper.Clamp() allows you to set a minimum and maximum value. In this case, the result will always be between -6f and 6f (inclusive).
 				Projectile.velocity.X = MathHelper.Clamp(Projectile.velocity.X + Main.WindForVisuals * 0.006f, -6f, 6f);
 
 				// Switch direction when the current velocity and the oldVelocity have different signs.
@@ -126,10 +123,10 @@ namespace ExampleMod.Content.Projectiles
 			SpriteEffects spriteEffects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipVertically : SpriteEffects.None);
 
 			// Getting texture of projectile
-			Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
+			Texture2D texture = TextureAssets.Projectile[Type].Value;
 
-			// Get this frame on texture. If you want your projectile to be animated, see ExampleAdvancedAnimatedProjectile
-			Rectangle sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+			// Get the currently selected frame on the texture.
+			Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
 
 			Vector2 origin = sourceRectangle.Size() / 2f;
 
@@ -148,7 +145,7 @@ namespace ExampleMod.Content.Projectiles
 
 			if (Projectile.owner == Main.myPlayer && !Projectile.noDropItem) {
 				int dropItemType = ModContent.ItemType<Items.ExamplePaperAirplane>(); // This the item we want the paper airplane to drop.
-				int newItem = Item.NewItem(Projectile.GetSource_DropAsItem(), (int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height, dropItemType); // Create a new item in the world.
+				int newItem = Item.NewItem(Projectile.GetSource_DropAsItem(), Projectile.Hitbox, dropItemType); // Create a new item in the world.
 				Main.item[newItem].noGrabDelay = 0; // Set the new item to be able to be picked up instantly
 
 				// Here we need to make sure the item is synced in multiplayer games.
