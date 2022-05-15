@@ -1,5 +1,8 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#ab6ba162f4f053eedfcbcd56462c816e2":[1,0,2,5,5,0,6],
+"struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#aeb55e337d8036656899faec51cba48af":[1,0,2,5,5,0,0],
+"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html":[1,0,2,5,9,2,0],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html#a43202634af80938b60cedf9f979dfd8b":[1,0,2,5,9,2,0,0],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html#a5c994e1452e7f11afdc2f1b6b5db2a84":[1,0,2,5,9,2,0,3],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html#a70118a7349e763ca334767f5bc5c4de1":[1,0,2,5,9,2,0,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_graphics_1_1_sprite_render_target_helper.html#a8fc5b080eb6b81815ea0b87c0c150993":[1,0,2,7,12,2],
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html":[1,0,2,7,15],
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html#a26562cd7a5ffe281e4ed028441266460":[1,0,2,7,15,3],
-"struct_terraria_1_1_graphics_1_1_vertex_colors.html#a67244aaba61abd9f047fe38af6eb98d8":[1,0,2,7,15,1],
-"struct_terraria_1_1_graphics_1_1_vertex_colors.html#a83bcb02bdb2530454492e35e1e5ac476":[1,0,2,7,15,4],
-"struct_terraria_1_1_graphics_1_1_vertex_colors.html#a9e11e7085d979fd7dfedf1006727a911":[1,0,2,7,15,2],
-"struct_terraria_1_1_graphics_1_1_vertex_colors.html#af64a523cbc656807ce62fde4c3bbaf62":[1,0,2,7,15,0]
+"struct_terraria_1_1_graphics_1_1_vertex_colors.html#a67244aaba61abd9f047fe38af6eb98d8":[1,0,2,7,15,1]
 };

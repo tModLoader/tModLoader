@@ -1,5 +1,6 @@
 var class_terraria_1_1_mod_loader_1_1_system_loader =
 [
+    [ "CanWorldBePlayed", "class_terraria_1_1_mod_loader_1_1_system_loader.html#a3638d61824acdd44dc0708a283c619ae", null ],
     [ "ModifyHardmodeTasks", "class_terraria_1_1_mod_loader_1_1_system_loader.html#a6f54b7708809bd55a4e2319ab01f2f7d", null ],
     [ "ModifyInterfaceLayers", "class_terraria_1_1_mod_loader_1_1_system_loader.html#ac2cc2ed73c9e88f42a763edbbc601a3f", null ],
     [ "ModifyLightingBrightness", "class_terraria_1_1_mod_loader_1_1_system_loader.html#acc95530ad7dd94a598d4c7fe19ca05e1", null ],

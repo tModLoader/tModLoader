@@ -1,5 +1,8 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_world_gen_1_1_check_tree_settings.html":[1,0,2,83,0],
+"struct_terraria_1_1_world_gen_1_1_check_tree_settings.html#a4b5037db3784c05ed8f279c4e4eda97c":[1,0,2,83,0,1],
+"struct_terraria_1_1_world_gen_1_1_check_tree_settings.html#adad307582f149219ed0c6ede74ee71c7":[1,0,2,83,0,0],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html":[1,0,2,83,1],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#a0b09433a47460a6106d57ba3e7973b9a":[1,0,2,83,1,6],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#a1e0308cfe43ffd1bc267e4839e42ff8d":[1,0,2,83,1,8],

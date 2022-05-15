@@ -1,5 +1,8 @@
 var NAVTREEINDEX127 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a0870467760700e05e2e49b46aa6aa18c":[1,0,2,4,66,74],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a098d544c722cab8c57d586fabf250a2f":[1,0,2,4,66,38],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a15b40dc101e35c3ccf7e14db67edffc3":[1,0,2,4,66,120],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a1c0cd68dbda2646f5ed4ad0ff10aebe6":[1,0,2,4,66,71],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a1f4a8a162201ad502cbff311b694ba4c":[1,0,2,4,66,48],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a20da8dcf83c21695d985dffe01624d57":[1,0,2,4,66,63],
@@ -246,8 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#a0d800484df581b23b27775854d37667a":[1,0,2,5,5,0,2],
 "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#a11c5abcab47bcfeb182756b5c3744ec9":[1,0,2,5,5,0,5],
 "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#a79ec0495862140bd841ef32954caab19":[1,0,2,5,5,0,1],
-"struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#ab5711265dbe11f32480c1ef4d6e8a098":[1,0,2,5,5,0,3],
-"struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#ab6ba162f4f053eedfcbcd56462c816e2":[1,0,2,5,5,0,6],
-"struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#aeb55e337d8036656899faec51cba48af":[1,0,2,5,5,0,0],
-"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html":[1,0,2,5,9,2,0]
+"struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#ab5711265dbe11f32480c1ef4d6e8a098":[1,0,2,5,5,0,3]
 };

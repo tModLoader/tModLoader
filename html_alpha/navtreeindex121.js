@@ -1,5 +1,8 @@
 var NAVTREEINDEX121 =
 {
+"classes.html":[1,1],
+"classnativefiledialog.html":[1,0,35],
+"classnativefiledialog.html#a364fae02e73c59ab753899df27b24bc1":[1,0,35,1],
 "classnativefiledialog.html#a364fae02e73c59ab753899df27b24bc1a1c9610e0cff6fcb3109195409c8d2441":[1,0,35,1,1],
 "classnativefiledialog.html#a364fae02e73c59ab753899df27b24bc1a2a53c1fd691da0339c5ad50e9152dc1a":[1,0,35,1,0],
 "classnativefiledialog.html#a364fae02e73c59ab753899df27b24bc1a860832e7a3482aaee8abfec5d9387afb":[1,0,35,1,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX121 =
 "interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_block_reason_provider.html#a6c30b567a8104550069e97844f8516f0":[1,0,2,5,15,2,0],
 "interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate.html":[1,0,2,5,15,3],
 "interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate.html#a6d8fe2199f67c6bdd2ad1a526d105b84":[1,0,2,5,15,3,0],
-"interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate.html#ac2abe0503166811d585f8e33b4983631":[1,0,2,5,15,3,1],
-"interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate_provider.html":[1,0,2,5,15,4],
-"interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate_provider.html#a146a74053a54922cf90598af1df4eaec":[1,0,2,5,15,4,0],
-"interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate_provider.html#a38508ae27905aaacbba1ff9ea64dea1e":[1,0,2,5,15,4,1]
+"interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate.html#ac2abe0503166811d585f8e33b4983631":[1,0,2,5,15,3,1]
 };

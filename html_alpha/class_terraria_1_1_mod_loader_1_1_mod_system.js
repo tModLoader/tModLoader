@@ -2,6 +2,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_system =
 [
     [ "AddRecipeGroups", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a17cc5105f561fb769a5e763552c84fab", null ],
     [ "AddRecipes", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a937da902849c421799c125419edd2486", null ],
+    [ "CanWorldBePlayed", "class_terraria_1_1_mod_loader_1_1_mod_system.html#ad33a847ce90c342dae26ff5f4d8da2d4", null ],
     [ "HijackGetData", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a0c4de40c23b314117eec54fb6ab5fd7a", null ],
     [ "HijackSendData", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a2acba5d368c6a5c9c1396249daec7183", null ],
     [ "LoadWorldData", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a64b444dc1fc406965b2d18683715888e", null ],
@@ -54,5 +55,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_system =
     [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a8a8b974e0c1e765e72e0025a7a8aef78", null ],
     [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a9037968777fbe16075d29207779299fb", null ],
     [ "TileCountsAvailable", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a742ae1402c0449d5da76de883472d740", null ],
-    [ "UpdateUI", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a1af5f62b629ecdf815641a339a10b8de", null ]
+    [ "UpdateUI", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a1af5f62b629ecdf815641a339a10b8de", null ],
+    [ "WorldCanBePlayedRejectionMessage", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a305217a196924877bf6c5f8345a78eda", null ]
 ];
