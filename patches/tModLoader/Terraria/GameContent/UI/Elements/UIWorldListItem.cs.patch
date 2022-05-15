@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIWorldListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIWorldListItem.cs
-@@ -2,11 +_,14 @@
+@@ -2,11 +_,15 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
  using ReLogic.OS;
@@ -11,6 +11,7 @@
  using Terraria.IO;
  using Terraria.Localization;
 +using Terraria.Utilities;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.Config;
  using Terraria.Social;
  using Terraria.UI;
@@ -131,6 +132,30 @@
  		}
  
  		private bool TryMovingToRejectionMenuIfNeeded(int worldGameMode) {
+@@ -283,6 +_,9 @@
+ 				return true;
+ 			}
+ 
++			if (_canBePlayed)
++				return false;
++
+ 			bool flag = Main.ActivePlayerFileData.Player.difficulty == 3;
+ 			bool isJourneyMode = value.IsJourneyMode;
+ 			if (flag && !isJourneyMode) {
+@@ -299,6 +_,13 @@
+ 				return true;
+ 			}
+ 
++			if (!SystemLoader.CanWorldBePlayed(Main.ActivePlayerFileData, _data, out var rejector)) {
++				SoundEngine.PlaySound(10);
++				Main.statusText = rejector.WorldCanBePlayedRejectionMessage(Main.ActivePlayerFileData, _data);
++				Main.menuMode = 1000000;
++				return true;
++			}
++
+ 			return false;
+ 		}
+ 
 @@ -342,10 +_,16 @@
  			_buttonLabel.SetText(Language.GetTextValue("UI.SeedCopied"));
  		}
