@@ -374,16 +374,6 @@
  					break;
  				case GraphicsProfile.Reach:
  					maxScreenW = 1920;
-@@ -2861,6 +_,9 @@
- 					break;
- 			}
- 
-+			maxScreenW = Math.Min(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width, maxScreenW);
-+			maxScreenH = Math.Min(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, maxScreenH);
-+
- 			try {
- 				graphics.ApplyChanges();
- 			}
 @@ -2870,8 +_,8 @@
  					SetGraphicsProfileInternal();
  				}
@@ -4588,7 +4578,7 @@
  						if (!NPC.downedSlimeKing)
  							num3 /= 2;
  
-@@ -50141,9 +_,14 @@
+@@ -50141,6 +_,7 @@
  						WorldGen.UnspawnTravelNPC();
  				}
  				else if (!fastForwardTime && dayTime && time < 27000.0) {
@@ -4596,13 +4586,16 @@
  					int num6 = dayRate;
  					if (num6 < 1)
  						num6 = 1;
-+					*/
-+					double num6 = dayRate;
-+					if (num6 < 0)
-+						num6 = 0;
- 
+@@ -50148,6 +_,9 @@
  					int num7 = (int)(27000.0 / (double)num6);
  					num7 *= 4;
+ 					if (rand.Next(num7) == 0) {
++					*/
++
++					if (rand.NextDouble() < dayRate / (27000.0 * 4)) {
+ 						int num8 = 0;
+ 						for (int j = 0; j < 200; j++) {
+ 							if (npc[j].active && npc[j].townNPC && npc[j].type != 37 && npc[j].type != 453)
 @@ -50505,6 +_,11 @@
  		}
  

@@ -28,11 +28,10 @@
  
  		public override void OnInitialize() {
  			UIElement uIElement = new UIElement();
-@@ -132,6 +_,163 @@
- 			int num = 0;
+@@ -133,12 +_,169 @@
  			foreach (WorldFileData item in orderedEnumerable) {
  				_worldList.Add(new UIWorldListItem(item, num++, CanWorldBePlayed(item)));
-+			}
+ 			}
 +
 +			AddIndividualWorldMigrationButtons();
 +
@@ -189,6 +188,15 @@
 +						}
 +					}
 +				}
- 			}
++			}
  		}
  
+-		private bool CanWorldBePlayed(WorldFileData file) {
++		internal static bool CanWorldBePlayed(WorldFileData file) {
+ 			bool num = Main.ActivePlayerFileData.Player.difficulty == 3;
+ 			bool flag = file.GameMode == 3;
+-			return num == flag;
++			return (num == flag) && SystemLoader.CanWorldBePlayed(Main.ActivePlayerFileData, file, out var _);
+ 		}
+ 
+ 		public override void Draw(SpriteBatch spriteBatch) {

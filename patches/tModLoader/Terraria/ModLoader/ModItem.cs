@@ -29,7 +29,7 @@ namespace Terraria.ModLoader
 		public Item Item { get; internal set; }
 
 		/// <summary>
-		/// Shorthand for item.type;
+		/// Shorthand for Item.type;
 		/// </summary>
 		public int Type => Item.type;
 
@@ -76,7 +76,7 @@ namespace Terraria.ModLoader
 			var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 			if (autoloadEquip != null) {
 				foreach (var equip in autoloadEquip.equipTypes) {
-					Mod.AddEquipTexture(this, equip, $"{Texture}_{equip}");
+					EquipLoader.AddEquipTexture(Mod, $"{Texture}_{equip}", equip, this);
 				}
 			}
 
@@ -381,7 +381,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by this item.
+		/// Allows you to modify the position, velocity, type, damage and/or knockback of a projectile being shot by this item.<br/>
+		/// These parameters will be provided to <see cref="Shoot(Player, EntitySource_ItemUse_WithAmmo, Vector2, Vector2, int, int, float)"/> where the projectile will actually be spawned.
 		/// </summary>
 		/// <param name="player"> The player using the item. </param>
 		/// <param name="position"> The center position of the projectile. </param>
@@ -393,7 +394,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.
+		/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.<br/>
+		/// This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters. 
 		/// </summary>
 		/// <param name="player"> The player using the item. </param>
 		/// <param name="source"> The projectile source's information. </param>
@@ -422,6 +424,17 @@ namespace Terraria.ModLoader
 		/// <param name="player">The player.</param>
 		/// <param name="hitbox">The hitbox.</param>
 		public virtual void MeleeEffects(Player player, Rectangle hitbox) {
+		}
+
+		/// <summary>
+		/// Allows you to dynamically modify this item's size for the given player, similarly to the effect of the Titan Glove.
+		/// </summary>
+		/// <param name="player">The player wielding this item.</param>
+		/// <param name="scale">
+		/// The scale multiplier to be applied to this item.<br></br>
+		/// Will be 1.1 if the Titan Glove is equipped, and 1 otherwise.
+		/// </param>
+		public virtual void ModifyItemScale(Player player, ref float scale) {
 		}
 
 		/// <summary>
@@ -704,7 +717,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns if the normal reforge pricing is applied.
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
-		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
+		/// The passed reforge price equals the Item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.
 		/// </summary>
 		public virtual bool ReforgePrice(ref int reforgePrice, ref bool canApplyDiscount) {
 			return true;
@@ -989,11 +1002,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Setting this to true makes it so that this weapon can shoot projectiles only at the beginning of its animation. Set this to true if you want a sword and its projectile creation to be in sync (for example, the Terra Blade). Defaults to false.
-		/// </summary>
-		public virtual bool OnlyShootOnSwing => false;
-
-		/// <summary>
 		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
 		/// </summary>
 		public virtual int BossBagNPC => 0;
@@ -1014,15 +1022,21 @@ namespace Terraria.ModLoader
 		/// <param name="tag"> The TagCompound to load data from. </param>
 		public virtual void LoadData(TagCompound tag) { }
 
+		//Does not use <see cref="NetReceive"> because of inheritdoc on the equivalent GlobalItem hook
 		/// <summary>
-		/// Allows you to send custom data for this item between client and server.
+		/// Allows you to send custom data for this item between client and server, which will be handled in NetReceive.
+		/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully sent, for example when the item is dropped into the world.
+		/// <br/>Can be called on both server and client.
 		/// </summary>
 		/// <param name="writer">The writer.</param>
 		public virtual void NetSend(BinaryWriter writer) {
 		}
 
+		//Does not use <see cref="NetSend"> because of inheritdoc on the equivalent GlobalItem hook
 		/// <summary>
-		/// Receives the custom data sent in the NetSend hook.
+		/// Receives the custom data sent in NetSend.
+		/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully received.
+		/// <br/>Can be called on both server and client.
 		/// </summary>
 		/// <param name="reader">The reader.</param>
 		public virtual void NetReceive(BinaryReader reader) {

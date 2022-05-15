@@ -20,8 +20,6 @@ namespace Terraria.ModLoader.Config.UI
 
 			private Vector2 current;
 
-			public Vector2 Current => current;
-
 			[Label("X")]
 			public float X {
 				get => current.X;

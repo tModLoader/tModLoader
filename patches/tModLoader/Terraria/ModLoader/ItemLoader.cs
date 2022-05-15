@@ -318,7 +318,7 @@ namespace Terraria.ModLoader
 		/// <br/> Returns whether or not the vanilla logic should be skipped.
 		/// </summary>
 		public static void HoldStyle(Item item, Player player, Rectangle heldItemFrame) {
-			if (item.IsAir || player.pulley || player.itemAnimation > 0)
+			if (item.IsAir || player.pulley || player.ItemAnimationActive)
 				return;
 
 			item.ModItem?.HoldStyle(player, heldItemFrame);
@@ -582,13 +582,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		/// <summary>
-		/// If the item is a modded item, ModItem.checkProjOnSwing is true, and the player is not at the beginning of the item's use animation, sets canShoot to false.
-		/// </summary>
-		public static bool CheckProjOnSwing(Player player, Item item) {
-			return item.ModItem == null || !item.ModItem.OnlyShootOnSwing || player.itemAnimation == player.itemAnimationMax - 1;
-		}
-
 		private delegate void DelegatePickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
 		private static HookList HookPickAmmo = AddHook<DelegatePickAmmo>(g => g.PickAmmo);
 
@@ -717,6 +710,20 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateModifyItemScale(Item item, Player player, ref float scale);
+		private static HookList HookModifyItemScale = AddHook<DelegateModifyItemScale>(g => g.ModifyItemScale);
+
+		/// <summary>
+		/// Calls <see cref="ModItem.ModifyItemScale"/> if applicable, then all applicable <see cref="GlobalItem.ModifyItemScale"/> instances.
+		/// </summary>
+		public static void ModifyItemScale(Item item, Player player, ref float scale) {
+			item.ModItem?.ModifyItemScale(player, ref scale);
+
+			foreach (var g in HookModifyItemScale.Enumerate(item.globalItems)) {
+				g.ModifyItemScale(item, player, ref scale);
+			}
+		}
+
 		private static HookList HookCanHitNPC = AddHook<Func<Item, Player, NPC, bool?>>(g => g.CanHitNPC);
 
 		/// <summary>
@@ -834,7 +841,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static bool? UseItem(Item item, Player player) {
 			if (item.IsAir)
-				return false;
+				return null;
 
 			bool? result = null;
 
@@ -1266,6 +1273,8 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Call all ModItem.ReforgePrice, then GlobalItem.ReforgePrice hooks.
 		/// </summary>
+		/// <param name="item"></param>
+		/// <param name="reforgePrice"></param>
 		/// <param name="canApplyDiscount"></param>
 		/// <returns></returns>
 		public static bool ReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount) {

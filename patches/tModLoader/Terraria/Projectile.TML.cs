@@ -57,12 +57,16 @@ namespace Terraria
 		- thomas
 		*/
 		private static void HandlePlayerStatModifiers(IEntitySource spawnSource, Projectile projectile) {
+			// to-do: make this less ugly and more easily extensible to modded sources
+			// (requires substantial changes, at minimum, to how entity sources are handled)
 			if (spawnSource is EntitySource_ItemUse itemUseSource && itemUseSource.Entity is Player player) {
 				projectile.CritChance += player.GetWeaponCrit(itemUseSource.Item);
 				projectile.ArmorPenetration += player.GetWeaponArmorPenetration(itemUseSource.Item);
 			}
-
-			// TODO: what about other spawn sources which are from a player, but not an item use (accessories, set effects). Should be able to use projectile DamageType to get modifiers
+			else if (spawnSource is EntitySource_Parent parentSource && parentSource.Entity is Projectile parentProjectile) {
+				projectile.CritChance += parentProjectile.CritChance;
+				projectile.ArmorPenetration += parentProjectile.ArmorPenetration;
+			}
 		}
 
 		/// <summary> Gets the instance of the specified GlobalProjectile type. This will throw exceptions on failure. </summary>

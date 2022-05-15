@@ -943,7 +943,7 @@
  				Projectile.NewProjectile(GetProjectileSource_TileBreak(num2, num3), num2 * 16 + 16, num3 * 16 + 16, 0f, 0f, 655, 0, 0f, Main.myPlayer);
  
 -			if (num13 != 0)
-+			// FishingCrate, GeyserTrap, and BeeHive
++			// FishingCrate, GeyserTrap, AntlionLarva, and BeeHive
 +			// geyser is 2x1
 +			if (TileLoader.Drop(num2, num3, type) && num13 != 0)
  				Item.NewItem(GetItemSource_FromTileBreak(num2, num3), num2 * 16, num3 * 16, tileData.CoordinateFullWidth, tileData.CoordinateFullHeight, num13);

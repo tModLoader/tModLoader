@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.Graphics;
+using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
 using Terraria.UI;
@@ -75,6 +76,8 @@ namespace Terraria.ModLoader
 		private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
 
 		private static HookList HookOnWorldUnload = AddHook<Action>(s => s.OnWorldUnload);
+
+		private static HookList HookCanWorldBePlayed = AddHook<Func<PlayerFileData, WorldFileData, bool>>(s => s.CanWorldBePlayed);
 
 		private static HookList HookModifyScreenPosition = AddHook<Action>(s => s.ModifyScreenPosition);
 

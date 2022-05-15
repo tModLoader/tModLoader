@@ -15,7 +15,7 @@ using Terraria.Localization;
 namespace Terraria.ModLoader.Core
 {
 	//todo: further documentation
-	internal static class AssemblyManager
+	public static class AssemblyManager
 	{
 		private class ModLoadContext : AssemblyLoadContext
 		{
@@ -26,6 +26,8 @@ namespace Terraria.ModLoader.Core
 
 			public Assembly assembly;
 			public IDictionary<string, Assembly> assemblies = new Dictionary<string, Assembly>();
+			public IDictionary<string, byte[]> assemblyBytes = new Dictionary<string, byte[]>();
+			public IDictionary<Assembly, Type[]> loadableTypes = new Dictionary<Assembly, Type[]>();
 			public long bytesLoaded = 0;
 
 			public ModLoadContext(LocalMod mod) : base(mod.Name, true) {
@@ -40,6 +42,7 @@ namespace Terraria.ModLoader.Core
 				dependencies = null;
 				assembly = null;
 				assemblies = null;
+				loadableTypes = null;
 			}
 
 			public void AddDependency(ModLoadContext dep) {
@@ -57,6 +60,9 @@ namespace Terraria.ModLoader.Core
 							LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath)): //load the unmodified dll and EaC pdb
 							LoadAssembly(modFile.GetModAssembly(), modFile.GetModPdb());
 					}
+
+					var mlc = new MetadataLoadContext(new MetadataResolver(this));
+					loadableTypes = GetLoadableTypes(this, mlc);
 				}
 				catch (Exception e) {
 					e.Data["mod"] = Name;
@@ -69,7 +75,9 @@ namespace Terraria.ModLoader.Core
 				using var pdbStrm = pdb == null ? null : new MemoryStream(pdb, false);
 				var asm = LoadFromStream(codeStrm, pdbStrm);
 
-				assemblies[asm.GetName().Name] = asm;
+				var name = asm.GetName().Name;
+				assemblyBytes[name] = code;
+				assemblies[name] = asm;
 				hostContextForAssembly[asm] = this;
 
 				bytesLoaded += code.LongLength + (pdb?.LongLength ?? 0);
@@ -90,6 +98,35 @@ namespace Terraria.ModLoader.Core
 					return asm;
 
 				return dependencies.Select(dep => dep.Load(assemblyName)).FirstOrDefault(a => a != null);
+			}
+
+			internal bool IsModDependencyPresent(string name) => name == Name || dependencies.Any(d => d.IsModDependencyPresent(name));
+
+
+			private class MetadataResolver : MetadataAssemblyResolver
+			{
+				private readonly ModLoadContext mod;
+
+				public MetadataResolver(ModLoadContext mod) {
+					this.mod = mod;
+				}
+
+				public override Assembly Resolve(MetadataLoadContext context, AssemblyName assemblyName) {
+					var existing = context.GetAssemblies().SingleOrDefault(a => a.GetName().FullName == assemblyName.FullName);
+					if (existing != null)
+						return existing;
+
+					var runtime = mod.LoadFromAssemblyName(assemblyName);
+					if (string.IsNullOrEmpty(runtime.Location))
+						return context.LoadFromByteArray(((ModLoadContext)GetLoadContext(runtime)).assemblyBytes[assemblyName.Name]);
+					
+
+					return context.LoadFromAssemblyPath(runtime.Location);
+				}
+			}
+
+			internal void ClearAssemblyBytes() {
+				assemblyBytes.Clear();
 			}
 		}
 
@@ -123,7 +160,7 @@ namespace Terraria.ModLoader.Core
 		//private static CecilAssemblyResolver cecilAssemblyResolver = new CecilAssemblyResolver();
 
 		private static bool assemblyResolverAdded;
-		internal static void AddAssemblyResolver() {
+		private static void AddAssemblyResolver() {
 			if (assemblyResolverAdded)
 				return;
 			assemblyResolverAdded = true;
@@ -131,7 +168,7 @@ namespace Terraria.ModLoader.Core
 			AppDomain.CurrentDomain.AssemblyResolve += TmlCustomResolver;
 		}
 
-		internal static Assembly TmlCustomResolver(object sender, ResolveEventArgs args) {
+		private static Assembly TmlCustomResolver(object sender, ResolveEventArgs args) {
 			//Legacy: With FNA and .Net5 changes, had aimed to eliminate the variants of tmodloader (tmodloaderdebug, tmodloaderserver) and Terraria as assembly names.
 			// However, due to uncertainty in that elimination, in particular for Terraria, have opted to retain the original check. - Solxan
 			var name = new AssemblyName(args.Name).Name;
@@ -169,10 +206,10 @@ namespace Terraria.ModLoader.Core
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorModNameDoesntMatchAssemblyName", modName, asmName));
 
 			// at least one of the types must be in a namespace that starts with the mod name
-			if (!assembly.GetTypes().Any(t => t.Namespace?.StartsWith(modName) == true))
+			if (!GetLoadableTypes(assembly).Any(t => t.Namespace?.StartsWith(modName) == true))
 				throw new Exception(Language.GetTextValue("tModLoader.BuildErrorNamespaceFolderDontMatch"));
 
-			var modTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Mod))).ToArray();
+			var modTypes = GetLoadableTypes(assembly).Where(t => t.IsSubclassOf(typeof(Mod))).ToArray();
 
 			if (modTypes.Length > 1)
 				throw new Exception($"{modName} has multiple classes extending Mod. Only one Mod per mod is supported at the moment");
@@ -208,6 +245,9 @@ namespace Terraria.ModLoader.Core
 					mod.LoadAssemblies();
 				}
 
+				foreach (var mod in modList)
+					mod.ClearAssemblyBytes();
+
 				//Assemblies must be loaded before any instantiation occurs to satisfy dependencies
 				Interface.loadMods.SetLoadStage("tModLoader.MSInstantiating");
 				MemoryTracking.Checkpoint();
@@ -224,15 +264,15 @@ namespace Terraria.ModLoader.Core
 
 		private static string GetModAssemblyFileName(this TmodFile modFile) => $"{modFile.Name}.dll";
 
-		internal static byte[] GetModAssembly(this TmodFile modFile) => modFile.GetBytes(modFile.GetModAssemblyFileName());
+		public static byte[] GetModAssembly(this TmodFile modFile) => modFile.GetBytes(modFile.GetModAssemblyFileName());
 
-		internal static byte[] GetModPdb(this TmodFile modFile) => modFile.GetBytes(Path.ChangeExtension(modFile.GetModAssemblyFileName(), "pdb"));
+		public static byte[] GetModPdb(this TmodFile modFile) => modFile.GetBytes(Path.ChangeExtension(modFile.GetModAssemblyFileName(), "pdb"));
 
 		private static ModLoadContext GetLoadContext(string name) => loadedModContexts.TryGetValue(name, out var value) ? value : throw new KeyNotFoundException(name);
 
-		internal static IEnumerable<Assembly> GetModAssemblies(string name) => GetLoadContext(name).assemblies.Values;
+		public static IEnumerable<Assembly> GetModAssemblies(string name) => GetLoadContext(name).assemblies.Values;
 
-		internal static bool GetAssemblyOwner(Assembly assembly, out string modName) {
+		public static bool GetAssemblyOwner(Assembly assembly, out string modName) {
 			if (hostContextForAssembly.TryGetValue(assembly, out var mod)) {
 				modName = mod.Name;
 				return true;
@@ -254,7 +294,90 @@ namespace Terraria.ModLoader.Core
 			return false;
 		}
 
-		internal static IEnumerable<Mod> GetDependencies(Mod mod) => GetLoadContext(mod.Name).dependencies.Select(m => ModLoader.GetMod(mod.Name));
+		public static IEnumerable<Mod> GetDependencies(Mod mod) => GetLoadContext(mod.Name).dependencies.Select(m => ModLoader.GetMod(mod.Name));
+
+		public static Type[] GetLoadableTypes(Assembly assembly) => hostContextForAssembly.TryGetValue(assembly, out var mlc) ? mlc.loadableTypes[assembly] : assembly.GetTypes();
+
+		private static IDictionary<Assembly, Type[]> GetLoadableTypes(ModLoadContext mod, MetadataLoadContext mlc) {
+			try {
+				return mod.Assemblies.ToDictionary(a => a, asm =>
+			mlc.LoadFromAssemblyName(asm.GetName()).GetTypes()
+				.Where(mType => IsLoadable(mod, mType))
+				.Select(mType => asm.GetType(mType.FullName, throwOnError: true, ignoreCase: false))
+				.ToArray());
+			}
+			catch (Exception e) {
+				throw new Exceptions.GetLoadableTypesException(
+					"This mod seems to inherit from classes in another mod. Use the [ExtendsFromMod] attribute to allow this mod to load when that mod is not enabled." + "\n" + e.Message,
+					e
+				);
+			}
+		}
+
+		private static bool IsLoadable(ModLoadContext mod, Type type) {
+			foreach (var attr in type.GetCustomAttributesData()) {
+				if (attr.AttributeType.AssemblyQualifiedName == typeof(ExtendsFromModAttribute).AssemblyQualifiedName) {
+					var modNames = (IEnumerable<CustomAttributeTypedArgument>)attr.ConstructorArguments[0].Value;
+					if (!modNames.All(v => mod.IsModDependencyPresent((string)v.Value)))
+						return false;
+				}
+			}
+
+			if (type.BaseType != null && !IsLoadable(mod, type.BaseType))
+				return false;
+
+			return type.GetInterfaces().All(i => IsLoadable(mod, i));
+		}
+
+		internal static void JITMod(Mod mod) => JITAssemblies(GetModAssemblies(mod.Name), mod.PreJITFilter);
+
+		public static void JITAssemblies(IEnumerable<Assembly> assemblies, PreJITFilter filter) {
+			var exceptions = new System.Collections.Concurrent.ConcurrentQueue<(Exception exception, MethodBase method)>();
+			foreach (var assembly in assemblies) {
+				const BindingFlags ALL = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
+
+				var methodsToJIT = GetLoadableTypes(assembly)
+					.Where(filter.ShouldJIT)
+					.SelectMany(type =>
+						type.GetMethods(ALL)
+							.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
+							.Concat<MethodBase>(type.GetConstructors(ALL))
+							.Concat(type.GetProperties(ALL).Where(filter.ShouldJIT).SelectMany(p => p.GetAccessors()))
+							.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.GetMethodBody() != null)
+							.Where(filter.ShouldJIT)
+					)
+					.ToArray();
+
+				if (Environment.ProcessorCount > 1) {
+					methodsToJIT.AsParallel().AsUnordered().ForAll(method => {
+						try {
+							ForceJITOnMethod(method);
+						}
+						catch (Exception e) {
+							exceptions.Enqueue((e, method));
+						}
+					});
+				}
+				else {
+					foreach (var method in methodsToJIT) {
+						try {
+							ForceJITOnMethod(method);
+						}
+						catch (Exception e) {
+							exceptions.Enqueue((e, method));
+						}
+					}
+				}
+			}
+			if (exceptions.Count > 0) {
+				var message = "\n" + string.Join("\n", exceptions.Select(x => $"In {x.method.DeclaringType.FullName}.{x.method.Name}, {x.exception.Message}")) + "\n";
+				throw new Exceptions.JITException(message);
+			}
+		}
+		
+		private static void ForceJITOnMethod(MethodBase method) {
+			RuntimeHelpers.PrepareMethod(method.MethodHandle);
+		}
 	}
 }
 #endif

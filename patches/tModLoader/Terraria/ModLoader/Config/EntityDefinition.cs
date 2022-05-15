@@ -56,7 +56,7 @@ namespace Terraria.ModLoader.Config
 		}
 
 		public override string ToString()
-			=> $"{Mod} {Name}";
+			=> $"{Mod}/{Name}";
 
 		public override int GetHashCode()
 			=> new { Mod, Name }.GetHashCode();

@@ -24,6 +24,7 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			Item.consumable = true;
 			Item.value = 500;
 			Item.createTile = ModContent.TileType<Tiles.Furniture.ExampleChest>();
+			// Item.placeStyle = 1; // Use this to place the chest in its locked style
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

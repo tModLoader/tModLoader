@@ -3892,6 +3892,27 @@
  			Main.instance.LoadItem(type);
  			if (type == 75)
  				return TextureAssets.Item[type].Frame(1, 8);
+@@ -30184,11 +_,20 @@
+ 			return TextureAssets.Item[type].Frame();
+ 		}
+ 
++		/// <summary>
++		/// Used to determine what the overall scale of an item should be.<br></br>
++		/// <see cref="CombinedHooks.ModifyItemScale"/> is called here.
++		/// </summary>
++		/// <param name="item">The item to fetch the adjusted scale of.</param>
++		/// <returns>
++		/// The final scale of the item, after the Titan Glove effect and all modded calculations.
++		/// </returns>
+ 		public float GetAdjustedItemScale(Item item) {
+ 			float num = item.scale;
+ 			if (item.melee && meleeScaleGlove)
+ 				num *= 1.1f;
+ 
++			CombinedHooks.ModifyItemScale(this, item, ref num);
+ 			return num;
+ 		}
+ 
 @@ -30204,6 +_,12 @@
  		}
  
@@ -3905,14 +3926,14 @@
  			if (CCed) {
  				channel = false;
  				itemAnimation = (itemAnimationMax = 0);
-@@ -30216,6 +_,39 @@
+@@ -30216,6 +_,57 @@
  			if (Main.myPlayer == i && PlayerInput.ShouldFastUseItem)
  				controlUseItem = true;
  
-+			// https://github.com/tModLoader/tModLoader/pull/1437
++			// #2351
++			// tML is motivated to bring the itemAnimation and itemTime counters to parity, fixing desync bugs with autoReuse items and providing clearer behaviour
 +			//
-+			// Here's a map of vanilla's execution order compared to TML's
-+			//
++			// the flow of this method has changed as follows
 +			// VANILLA:
 +			// 1. Reuse delay is applied
 +			// 2. Item animation is applied if button is pressed
@@ -3920,27 +3941,45 @@
 +			// 4. Hold / Use styles are invoked
 +			// 5. 'releaseUseItem' is set
 +			// 6. Item time is reduced
-+			// 7. Item logic applies item time
-+			//
++			// 7. Item logic applies item time if (itemAnimation > 0 && itemTime == 0)
++			// 8. ItemCheck_GetMeleeHitbox/MeleeDamage/CutTiles if (itemAnimation > 0)
++			// 9. More item logic/and effects (consumables, teleportations) if (itemAnimation > 0)
++			// 
 +			// TML:
 +			// 1. Item animation is reduced
 +			// 2. Item time is reduced
 +			// 3. Reuse delay is applied
 +			// 4. Item animation is applied if button is pressed
-+			// 5. 'releaseUseItem' is set
-+			// 6. Item logic applies item time
-+			// 7. Hold / Use styles are invoked
++			// 5. Hold / Use styles are invoked
++			// 6. 'releaseUseItem' is set
++			// 7. Item logic applies item time if (itemAnimation > 0 && itemTime == 0)
++			// 8. ItemCheck_GetMeleeHitbox/MeleeDamage/CutTiles if (itemAnimation > 0)
++			// 9. More item logic/and effects (consumables, teleportations) if (itemAnimation > 0)
 +			//
-+			// Way more sane and way less confusing!
-+
-+			// Gotos are admittedly not the cleanest way of doing this but they're the most patch-friendly
-+			// TLDR: this moves the blocks responsible for decrementing itemTime and itemAnimation to the start of the method
-+			// This is done so that itemTime and itemAnimation cannot be decremented in the same tick as the one they're set in, which should fix a lot of use time issues
-+			// -- ThomasThePencil
++			// At the end of ItemCheck:
++			//   VANILLA: itemAnimation goes from itemAnimationMax-1 to 0, before it can restart
++			//   TML:     itemAnimation goes from itemAnimationMax to 1, before it can restart
++			//
++			//   VANILLA: If the item has autoReuse, then it can restart at itemAnimation = 1, making the actual animation one frame shorter than expected.
++			//            If a reusuable item has equal itemAnimation and itemTime, the animation will be faster, and they will start to fire at different times
++			//
++			//   TML:     ItemCheck_HandleMPItemAnimation unnecessary. Animation times for modded items as written. See Item.ApplyItemAnimationCompensations
++			//
++			//   VANILLA: All items which don't have autoReuse get 1 frame where itemAnimation == 0, this is often used to despawn projectiles
++			//   TML:     There will be no frame with itemAnimation == 0 if an item is 'reused immediately', via autoReuse, knockbackGlove, or perfect click timing.
++			//            bound projectiles should despawn in the frame of itemAnimation <= 1, after doing damage.
++			//            Player.ItemAnimationEndingOrEnded has been made for this purpose but its use is not recommended due to potential for multiplayer desync.
++			//            Better to have ai counters for projectile lifetime set to itemAnimationMax on spawn
++			//
++			//   VANILLA: hitbox calulation and duration is based on an itemAnimation value between itemAnimationMax-1 and 1, resulting in itemAnimationMax-1 frames of hitbox
++			//   TML:     hitbox lasts the same length as itemAnimation, slightly more backswing (rotation) in the first frame
++			//
++			//   VANILLA: itemTime goes from itemTimeMax to 1, before it can restart, 0 means not using item
++			//   TML:     no change
 +
 +			goto DecrementItemAnimation;
 +
-+			ItemCheckPart1:
++			ReuseDelayAndAnimationStart:
 +
  			ItemCheck_HandleMount();
  			int weaponDamage = GetWeaponDamage(item);
@@ -3978,20 +4017,20 @@
  			if (!controlUseItem)
  				channel = false;
  
-+			goto ItemCheckPart2;
++			goto HoldAndUseStyle;
 +
 +			DecrementItemAnimation:
 +
  			Item item2 = (itemAnimation > 0) ? lastVisualizedSelectedItem : item;
  			Rectangle drawHitbox = Item.GetDrawHitbox(item2.type, this);
  			compositeFrontArm.enabled = false;
-@@ -30289,12 +_,23 @@
+@@ -30289,12 +_,22 @@
  				itemAnimation--;
  			}
  
 +			goto DecrementItemTime;
 +
-+			HandleItemHolding:
++			HoldAndUseStyle:
 +
 +			ItemLoader.HoldItem(item, this);
 +
@@ -4000,25 +4039,21 @@
  			else
  				ItemCheck_ApplyHoldStyle(heightOffsetHitboxCenter, item2, drawHitbox);
  
--			releaseUseItem = !controlUseItem;
-+			//releaseUseItem = !controlUseItem;
-+			return; // This is the end of our spaghetti trip!
+ 			releaseUseItem = !controlUseItem;
++			goto ItemTimeUseItem;
 +
-+			// See the comment at DecrementItemAnimation for explanation
 +			DecrementItemTime:
 +
  			if (itemTime > 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
-@@ -30308,11 +_,20 @@
+@@ -30308,37 +_,44 @@
  				}
  			}
  
-+			goto ItemCheckPart1;
++			goto ReuseDelayAndAnimationStart;
 +
-+			ItemCheckPart2:
-+
-+			releaseUseItem = !controlUseItem;
++			ItemTimeUseItem:
 +
  			if (!JustDroppedAnItem) {
  				ItemCheck_EmitHeldItemLight(item);
@@ -4031,13 +4066,43 @@
 +				if (true) { 
  					bool flag4 = true;
  					int type2 = item.type;
- 					if ((type2 == 65 || type2 == 676 || type2 == 723 || type2 == 724 || type2 == 757 || type2 == 674 || type2 == 675 || type2 == 989 || type2 == 1226 || type2 == 1227) && itemAnimation != itemAnimationMax - 1)
-@@ -30343,9 +_,13 @@
+-					if ((type2 == 65 || type2 == 676 || type2 == 723 || type2 == 724 || type2 == 757 || type2 == 674 || type2 == 675 || type2 == 989 || type2 == 1226 || type2 == 1227) && itemAnimation != itemAnimationMax - 1)
++					if ((type2 == 65 || type2 == 676 || type2 == 723 || type2 == 724 || type2 == 757 || type2 == 674 || type2 == 675 || type2 == 989 || type2 == 1226 || type2 == 1227) && !ItemAnimationJustStarted)
+ 						flag4 = false;
+ 
+-					if (type2 == 5097 && itemAnimation == itemAnimationMax - 1)
++					if (type2 == 5097 && ItemAnimationJustStarted)
+ 						_batbatCanHeal = true;
+ 
+-					if (type2 == 5094 && itemAnimation == itemAnimationMax - 1)
++					if (type2 == 5094 && ItemAnimationJustStarted)
+ 						_spawnTentacleSpikes = true;
+ 
+ 					if (type2 == 3852) {
+-						if (itemAnimation < itemAnimationMax - 12)
++						if (itemAnimation <= itemAnimationMax - 12) // tML, change < to <= to account for counter change
+ 							flag4 = false;
+ 
+-						if (altFunctionUse == 2 && itemAnimation != itemAnimationMax - 1)
++						if (altFunctionUse == 2 && !ItemAnimationJustStarted)
+ 							flag4 = false;
+ 					}
+ 
+-					if (type2 == 4956 && itemAnimation < itemAnimationMax - 3 * item.useTime)
++					if (type2 == 4956 && itemAnimation <= itemAnimationMax - 3 * item.useTime) // tML, change < to <= to account for counter change
+ 						flag4 = false;
+ 
+-					if (type2 == 4952 && itemAnimation < itemAnimationMax - 8)
++					if (type2 == 4952 && itemAnimation <= itemAnimationMax - 8) // tML, change < to <= to account for counter change
+ 						flag4 = false;
+ 
+-					if (type2 == 4953 && itemAnimation < itemAnimationMax - 10)
++					if (type2 == 4953 && itemAnimation <= itemAnimationMax - 10) // tML, change < to <= to account for counter change
+ 						flag4 = false;
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
- 					ItemCheck_MinionAltFeatureUse(item, flag4);
--					if (item.shoot > 0 && itemAnimation > 0 && ItemTimeIsZero && flag4)
-+					if (item.shoot > 0 && itemAnimation > 0 && ItemTimeIsZero && flag4 && ItemLoader.CheckProjOnSwing(this, item))
+@@ -30346,6 +_,10 @@
+ 					if (item.shoot > 0 && itemAnimation > 0 && ItemTimeIsZero && flag4)
  						ItemCheck_Shoot(i, item, weaponDamage);
  
 +					// Added by TML. #ItemTimeOnAllClients - TODO: item time application with these item types
@@ -4168,7 +4233,7 @@
  
  				if (i == Main.myPlayer) {
 -					if (!dontConsumeWand && itemTime == (int)((float)item.useTime * tileSpeed) && item.tileWand > 0) {
-+					if (item.tileWand > 0 && !dontConsumeWand && itemTime == itemTimeMax) {
++					if (itemTimeMax != 0 && item.tileWand > 0 && !dontConsumeWand && itemTime == itemTimeMax) {
  						int tileWand = item.tileWand;
  						for (int num15 = 0; num15 < 58; num15++) {
  							if (tileWand == inventory[num15].type && inventory[num15].stack > 0) {
@@ -4187,15 +4252,6 @@
  							if (item.stack > 0)
  								item.stack--;
  
-@@ -30794,6 +_,8 @@
- 
- 			if (itemAnimation == 0)
- 				JustDroppedAnItem = false;
-+
-+			goto HandleItemHolding;
- 		}
- 
- 		private void ItemCheck_EmitFoodParticles(Item sItem) {
 @@ -31056,11 +_,18 @@
  				if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  					continue;
@@ -4334,17 +4390,15 @@
  						if (tile.halfBrick()) {
  							WorldGen.PoundTile(x, y);
  							if (Main.netMode == 1)
-@@ -32586,8 +_,8 @@
- 				cursorItemIconEnabled = true;
- 				Main.ItemIconCacheUpdate(sItem.type);
+@@ -32777,7 +_,7 @@
+ 				}
  			}
--
--			if (!ItemTimeIsZero || itemAnimation <= 0 || !controlUseItem)
-+			// Stack size check added by TML. Works by coincidence in vanilla.
-+			if (!ItemTimeIsZero || itemAnimation <= 0 || !controlUseItem || sItem.stack <= 0)
- 				return;
  
- 			if (sItem.type == 205 || (sItem.type == 3032 && Main.tile[tileTargetX, tileTargetY].liquidType() == 0) || (sItem.type == 4872 && Main.tile[tileTargetX, tileTargetY].lava())) {
+-			if (sItem.type == 4715 && ((Main.mouseLeft && Main.mouseLeftRelease) | (itemAnimation == itemAnimationMax - 1))) {
++			if (sItem.type == 4715 && ((Main.mouseLeft && Main.mouseLeftRelease) | (ItemAnimationJustStarted))) {
+ 				Vector2 vector4 = new Vector2(position.X + (float)width * 0.5f, position.Y + (float)height * 0.5f);
+ 				float num13 = (float)Main.mouseX + Main.screenPosition.X - vector4.X;
+ 				float num14 = (float)Main.mouseY + Main.screenPosition.Y - vector4.Y;
 @@ -32914,7 +_,8 @@
  				}
  
@@ -4432,6 +4486,24 @@
  				KnockBack = GetWeaponKnockback(sItem, KnockBack);
  				IEntitySource projectileSource_Item_WithPotentialAmmo = GetProjectileSource_Item_WithPotentialAmmo(sItem, usedAmmoItemId);
  				if (projToShoot == 228)
+@@ -33192,7 +_,7 @@
+ 				Vector2 value = Vector2.UnitX.RotatedBy(fullRotation);
+ 				Vector2 vector = Main.MouseWorld - pointPoisition;
+ 				Vector2 v = itemRotation.ToRotationVector2() * direction;
+-				if (sItem.type == 3852 && itemAnimation != itemAnimationMax - 1)
++				if (sItem.type == 3852 && !ItemAnimationJustStarted)
+ 					vector = (v.ToRotation() + fullRotation).ToRotationVector2();
+ 
+ 				if (vector != Vector2.Zero)
+@@ -33241,7 +_,7 @@
+ 
+ 				float num2 = (float)Main.mouseX + Main.screenPosition.X - pointPoisition.X;
+ 				float num3 = (float)Main.mouseY + Main.screenPosition.Y - pointPoisition.Y;
+-				if (sItem.type == 3852 && itemAnimation != itemAnimationMax - 1) {
++				if (sItem.type == 3852 && !ItemAnimationJustStarted) {
+ 					Vector2 vector3 = vector;
+ 					num2 = vector3.X;
+ 					num3 = vector3.Y;
 @@ -33298,6 +_,13 @@
  					num3 = vector4.Y;
  				}
@@ -4554,7 +4626,7 @@
  		}
  
  		private bool ItemCheck_CheckCanUse(Item sItem) {
-+			if(sItem.IsAir || !CombinedHooks.CanUseItem(this, sItem))
++			if (sItem.IsAir || !CombinedHooks.CanUseItem(this, sItem))
 +				return false;
 +
  			int whoAmI = base.whoAmI;
@@ -4581,73 +4653,49 @@
  			if (sItem.type != 3269 && (!spaceGun || (sItem.type != 127 && sItem.type != 4347 && sItem.type != 4348))) {
  				if (statMana >= num) {
  					if (!flag2)
-@@ -36621,9 +_,19 @@
+@@ -36621,6 +_,13 @@
  		}
  
  		private void ItemCheck_HandleMPItemAnimation(Item sItem) {
-+			//return;
++			// Firstly, in vanilla, autoReuse items go from itemAnimation == 1 to itemAnimationMax-1 here, skipping the frame where itemAnimation == 0
++			//   this prevents the item flickering out while being auto-reused, and prevents other control inputs that can happen on that 'frame where item is not in use' like useTurn
++			//   but has the side-effect that autoReuse items are one frame shorter. tML fixes the itemAnimation counter, see the comments near the top of ItemCheck_Inner (#2351)
++			//
++			// Secondly, we don't need to play the shoot-sound and ensure hold-out animation looping for remote players because Shoot logic now runs remote side in tML (#ItemTimeOnAllClients)
 +
++			/*
  			if (sItem.autoReuse && !noItems) {
--				releaseUseItem = true;
-+				//releaseUseItem = true; // Now useless as per TryAllowingItemReuse -- direwolf420
-+
-+				// The following lines of code have been removed because of the change in how remote players' items now work in multiplayer.
-+				// Remote players used to simulate using the items by just playing pretty much guessed animations.
-+				// But now they instead run the logic the same way they would run locally, besides for authority-based exceptions.
-+				// -- Mirsario
-+
-+				/*
+ 				releaseUseItem = true;
  				if (itemAnimation == 1 && sItem.stack > 0) {
-+					itemAnimation = 0;
- 					if (sItem.shoot > 0 && whoAmI != Main.myPlayer && controlUseItem && sItem.useStyle == 5 && sItem.reuseDelay == 0) {
- 						ApplyItemAnimation(sItem);
- 						if (sItem.UseSound != null)
-@@ -36633,6 +_,7 @@
- 						itemAnimation = 0;
+@@ -36634,11 +_,14 @@
  					}
  				}
-+				*/
  			}
++			*/
  
  			TryAllowingItemReuse(sItem);
-@@ -36640,19 +_,44 @@
+ 		}
  
++		
  		private void TryAllowingItemReuse(Item sItem) {
++			/*
  			bool flag = false;
-+
-+			flag = TryAllowingItemReuse_Inner(sItem);
-+
-+			// _Inner code changed to utilize conditions from ItemCheck_HandleMPItemAnimation.
-+			// Now the previous assignment inside that method is useless and thus commented out
-+			if (flag)
-+				releaseUseItem = true;
-+		}
-+
-+		private bool TryAllowingItemReuse_Inner(Item sItem) {
-+			// Split into _Inner because it is used by ShouldAutoReuseItem 
-+			bool flag = false;
-+
-+			bool? allow = CombinedHooks.CanAutoReuseItem(this, sItem);
-+			if (allow.HasValue) {
-+				if (allow.Value) {
-+					return !noItems; // Even if forced to true, respect noItems (Cursed debuff)
-+				}
-+
-+				return false;
-+			}
-+
-+			flag |= sItem.autoReuse && !noItems; // Conditions taken from ItemCheck_HandleMPItemAnimation
-+
  			if (autoReuseGlove) {
  				flag |= sItem.melee;
--				flag |= (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]);
-+				//flag |= (sItem.summon && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]);
-+				flag |= sItem.DamageType == DamageClass.SummonMeleeSpeed;
+@@ -36646,13 +_,23 @@
  			}
  
--			if (flag)
--				releaseUseItem = true;
-+			return flag;
+ 			if (flag)
++			*/
++			if (CanAutoReuseItem(sItem))
+ 				releaseUseItem = true;
++		}
++
++		public bool CanAutoReuseItem(Item sItem) {
++			if (CombinedHooks.CanAutoReuseItem(this, sItem) is bool autoReuse)
++				return autoReuse;
++
++			return sItem.autoReuse || autoReuseGlove && (sItem.DamageType == DamageClass.Melee || sItem.DamageType == DamageClass.SummonMeleeSpeed);
  		}
  
  		private void ItemCheck_HandleMount() {
@@ -4667,10 +4715,15 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36974,6 +_,7 @@
+@@ -36973,7 +_,11 @@
+ 			}
  		}
  
- 		public float GetWeaponKnockback(Item sItem, float KnockBack) {
++		// tML-specific overload that exists for consistency with other GetWeaponXYZ methods
++		public float GetWeaponKnockback(Item sItem) => GetWeaponKnockback(sItem, sItem.knockBack);
++
+-		public float GetWeaponKnockback(Item sItem, float KnockBack) {
++		public float GetWeaponKnockback(Item sItem, float baseKnockback) {
 +			/*
  			if (sItem.summon)
  				KnockBack += minionKB;
@@ -4684,7 +4737,7 @@
 -			return KnockBack;
 +			StatModifier modifier = GetTotalKnockback(sItem.DamageType);
 +			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref modifier);
-+			return Math.Max(0f, modifier.ApplyTo(sItem.knockBack));
++			return Math.Max(0f, modifier.ApplyTo(baseKnockback));
  		}
  
  		public int GetWeaponCrit(Item sItem) {
@@ -4788,39 +4841,35 @@
  			bool flag2 = dontConsume;
  			if (sItem.type == 3475 && Main.rand.Next(3) != 0)
  				flag2 = true;
-@@ -37208,10 +_,15 @@
+@@ -37208,10 +_,12 @@
  			if (sItem.type == 1553 && Main.rand.Next(3) != 0)
  				flag2 = true;
  
-+			// Clockwork Assault Rifle.
-+			// The offset of '-2' doesn't quite matter. The goal is to only use ammo on the first shot.
 -			if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
-+			//if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
-+			if (sItem.type == 434 && itemAnimation < itemAnimationMax)
++			// changed to ItemAnimationJustStarted for consistency #2351. Also applies to flamethrower and clentaminator below
++			if (sItem.type == 434 && !ItemAnimationJustStarted)
  				flag2 = true;
  
-+			// Same as above.
++			// changed > to >= because of itemAnimation adjustment. Uses ammo on last arrow not first
 -			if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
-+			//if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
-+			if (sItem.type == 4953 && itemAnimation < itemAnimationMax)
++			if (sItem.type == 4953 && itemAnimation >= sItem.useAnimation - 8)
  				flag2 = true;
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
-@@ -37226,13 +_,20 @@
+@@ -37226,13 +_,17 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
-+			// Flamethrower.
-+			// Pre 1.4.3.4: -6 -> -5
-+			// Post 1.4.3.4: -2 -> -2
- 			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2)
+-			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2)
++			if (projToShoot == 85 && !ItemAnimationJustStarted)
  				flag2 = true;
  
- 			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
+-			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
++			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && !ItemAnimationJustStarted)
  				flag2 = true;
- 
-+			flag2 |= !CombinedHooks.CanConsumeAmmo(this, sItem, item);
 +
++			flag2 |= !CombinedHooks.CanConsumeAmmo(this, sItem, item);
+ 
  			if (!flag2 && item.consumable) {
 +				CombinedHooks.OnConsumeAmmo(this, sItem, item);
 +

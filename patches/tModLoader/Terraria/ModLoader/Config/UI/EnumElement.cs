@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader.Config.UI
@@ -23,6 +24,15 @@ namespace Terraria.ModLoader.Config.UI
 		public override void OnBind() {
 			base.OnBind();
 			valueStrings = Enum.GetNames(MemberInfo.Type);
+
+			// Retrieve individual Enum member labels
+			for (int i = 0; i < valueStrings.Length; i++) {
+				var enumFieldMemberInfo = MemberInfo.Type.GetMember(valueStrings[i]).FirstOrDefault();
+				if (enumFieldMemberInfo != null) {
+					valueStrings[i] = ((LabelAttribute)Attribute.GetCustomAttribute(enumFieldMemberInfo, typeof(LabelAttribute)))?.Label ?? valueStrings[i];
+				}
+			}
+
 			max = valueStrings.Length;
 
 			//valueEnums = Enum.GetValues(variable.Type);

@@ -221,6 +221,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="blockDamaged"></param>
 		public virtual bool CanKillTile(int i, int j, ref bool blockDamaged) {
 			return true;
 		}
@@ -230,6 +231,9 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="fail">If true, the tile won't be mined</param>
+		/// <param name="effectOnly">If true, only the dust visuals will happen</param>
+		/// <param name="noItem">If true, the corrsponding item won't drop</param>
 		public virtual void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem) {
 		}
 
@@ -238,6 +242,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="frameX">The TileFrameX of the Tile at the coordinates</param>
+		/// <param name="frameY">The TileFrameY of the Tile at the coordinates</param>
 		public virtual void KillMultiTile(int i, int j, int frameX, int frameY) {
 		}
 
@@ -246,6 +252,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="closer"></param>
 		public virtual void NearbyEffects(int i, int j, bool closer) {
 		}
 
@@ -283,6 +290,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="spriteEffects"></param>
 		public virtual void SetSpriteEffects(int i, int j, ref SpriteEffects spriteEffects) {
 		}
 
@@ -293,6 +301,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="width"></param>
+		/// <param name="offsetY"></param>
+		/// <param name="height"></param>
+		/// <param name="tileFrameX"></param>
+		/// <param name="tileFrameY"></param>
 		public virtual void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
 		}
 
@@ -330,6 +343,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="spriteBatch"></param>
 		/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
 		public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 		}
@@ -339,6 +353,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="spriteBatch"></param>
 		public virtual void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
 		}
 
@@ -347,6 +362,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="resetFrame"></param>
+		/// <param name="noBreak"></param>
 		public virtual bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
 			return true;
 		}
@@ -382,6 +399,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="item">The inventory item</param>
 		public virtual bool AutoSelect(int i, int j, Item item) {
 			return false;
 		}
