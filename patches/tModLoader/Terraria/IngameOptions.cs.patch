@@ -1,14 +1,9 @@
 --- src/TerrariaNetCore/Terraria/IngameOptions.cs
 +++ src/tModLoader/Terraria/IngameOptions.cs
-@@ -3,12 +_,16 @@
- using System;
- using System.Collections.Generic;
- using Terraria.Audio;
-+using Steamworks;
+@@ -6,9 +_,11 @@
  using Terraria.GameContent;
  using Terraria.GameInput;
  using Terraria.Localization;
-+using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.UI;
  using Terraria.Social;
  using Terraria.UI;
@@ -61,7 +56,7 @@
  			if (flag5)
  				num10++;
  
-+			if(SocialAPI.Mode != SocialMode.Steam) {
++			if (SocialAPI.Mode != SocialMode.Steam) {
  			if (DrawLeftSide(sb, Lang.menu[131].Value, num10, vector, vector2, leftScale)) {
  				leftHover = num10;
  				if (flag4) {
