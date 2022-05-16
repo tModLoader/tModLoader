@@ -543,26 +543,20 @@
  					}
  					break;
  				case 91: {
-@@ -2687,8 +_,22 @@
+@@ -2687,8 +_,17 @@
  							break;
  
  						int num201 = reader.ReadInt32();
--						int num202 = reader.ReadByte();
--						if (num202 == 255) {
 +						// TML: #WorldUIAnchorProjectileSyncFix
-+						// Read ushort which contains type and owner, split it where necessary
-+						int num202;
-+						int type;
-+						if (ModNet.AllowVanillaClients) {
-+							num202 = reader.ReadByte();
-+							type = num202;
+ 						int num202 = reader.ReadByte();
+-						if (num202 == 255) {
++						bool delete = num202 == 255;
++						bool playerAnchor = num202 == 1;
++						// If type corresponds to projectile (magic number 2), read another byte for owner
++						if (!ModNet.AllowVanillaClients && num202 == 2) {
++							int owner = reader.ReadByte();
++							num202 = owner << 8 | num202; // Reassign num202 for use in DeserializeNetAnchor - this is now "packedOwnerType"
 +						}
-+						else {
-+							num202 = reader.ReadUInt16();
-+							type = num202 >> 8;
-+						}
-+						bool delete = type == 255;
-+						bool playerAnchor = type == 1;
 +
 +						if (delete) {
  							if (EmoteBubble.byID.ContainsKey(num201))
