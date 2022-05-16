@@ -13,7 +13,7 @@
  		}
  
  		private void Save(string path, bool cloud) {
-+			if (Steam.IsSteamApp) return;
++			if (SocialAPI.Mode == SocialMode.Steam) return;
  			lock (_ioLock) {
  				if (SocialAPI.Achievements != null)
  					SocialAPI.Achievements.StoreStats();
@@ -21,14 +21,14 @@
  		public List<Achievement> CreateAchievementsList() => _achievements.Values.ToList();
  
  		public void Load() {
-+			if (Steam.IsSteamApp) return;
++			if (SocialAPI.Mode == SocialMode.Steam) return;
  			Load(_savePath, _isCloudSave);
  		}
  
 -		private void Load(string path, bool cloud) {
 +		private void Load(string path, bool cloud)
 +		{
-+			if (Steam.IsSteamApp) return;
++			if (SocialAPI.Mode == SocialMode.Steam) return;
  			bool flag = false;
  			lock (_ioLock) {
  				if (!FileUtilities.Exists(path, cloud))

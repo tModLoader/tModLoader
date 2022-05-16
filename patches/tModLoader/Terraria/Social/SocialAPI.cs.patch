@@ -17,7 +17,7 @@
 +#if DEBUG
 +					if (!Program.LaunchParameters.ContainsKey("-nosteam"))
 +#endif
-+						if (InstallVerifier.IsValid && InstallVerifier.IsSteam)
++						if (InstallVerifier.DistributionPlatform == DistributionPlatform.Steam)
 -				mode = SocialMode.Steam;
 +							mode = SocialMode.Steam;
 +
@@ -61,7 +61,7 @@
  			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
  			Workshop = LoadModule<Terraria.Social.Steam.WorkshopSocialModule>();
-@@ -79,14 +_,28 @@
+@@ -79,14 +_,29 @@
  			
  			if (Main.dedServ) {
  				Network = LoadModule<Terraria.Social.Steam.NetServerSocialModule>();
@@ -80,6 +80,7 @@
 +			}
 +
 +			_steamAPILoaded = true;
++			ModLoader.Engine.Steam.PostInit();
  		}
  
 +		private static bool _wegameAPILoaded = false;

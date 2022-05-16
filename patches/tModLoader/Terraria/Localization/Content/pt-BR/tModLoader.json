@@ -405,7 +405,6 @@
 		"GraphicsEngineReportFailure": "Falha",
 		"GraphicsEngineFailureMessage": "O tML encontrou uma falha ao testar alguns recursos gráficos experimentais. Se o problema persistir de forma consistente, talvez seja necessário editar config.json e definir a configuração do Support4K como false. \nPor favor, reinicie o seu jogo.\nStatus do Relatório: {0}",
 		"OutOfMemory": "O jogo ficou sem memória. Você terá que descobrir qual mod está consumindo muita memória e entrar em contato com os desenvolvedores ou removê-lo.",
-		"ContentFolderNotFoundInstallCheck": "Não foi possível encontrar a pasta {0}.\r\n\r\nVocê se esqueceu de extrair o diretório Content do tModLoader para a pasta tModLoader?\r\n\r\nCertifique-se de que o tModLoader está instalado em um diretório separado do Terraria.",
 		"VanillaSteamInstallationNotFound": "Instalação do Terraria no Steam ou pasta Content do Terraria não encontrada.\r\n\r\nPor favor, certifique-se de que o Terraria 1.4 está instalado através do Steam.",
 		"SteamAPIHashMismatch": "Incompatibilidade de hash da API do Steam, presumido como pirataria.\n\ntModLoader requer uma instalação legítima do Terraria para funcionar.",
 		"VanillaGOGNotFound": "{0} não foi encontrado.\r\n\r\nAs instalações do GOG devem ter o executável Terraria não modificado para funcionar. Esta versão do tModLoader espera a versão {1} do Terraria, pode ser preciso desatualizar ou atualizar o Terraria através do GOG Galaxy ou aguardar uma atualização do tModLoader.",

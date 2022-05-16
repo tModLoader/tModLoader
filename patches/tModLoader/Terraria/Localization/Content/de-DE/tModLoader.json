@@ -405,7 +405,6 @@
 		"GraphicsEngineReportFailure": "Ausfall",
 		"GraphicsEngineFailureMessage": "tML ist beim Testen von experimentellen Grafikfunktionen abgestürzt. Falls dieses Problem konsequent andauert, musst du vielleicht die config.json bearbeiten und die Support4K-Einstellung auf 'false' setzen. \nStarte bitte dein Spiel neu.\nStatusbericht: {0}",
 		"OutOfMemory": "Spiel hat nicht genügend Arbeitsspeicher. Du musst herausfinden welcher Mod viel Speicherplatz verbraucht und die Entwickler kontaktieren oder diesen entfernen.",
-		"ContentFolderNotFoundInstallCheck": "{0}-Verzeichnis konnte nicht gefunden werden.\r\n\r\nHast du vergessen tModLoaders Content-Verzeichnis in den tmodLoader-Ordner zu extrahieren?\r\n\r\nStelle sicher das tModLoader in einen separaten Ordner als Terraria installiert ist.",
 		"VanillaSteamInstallationNotFound": "Terraria Steam-Installation oder Terraria-Installationsverzeichnis nicht gefunden.\r\n\r\nStelle bitte sicher das Terraria 1.4 über Steam installiert ist.",
 		"SteamAPIHashMismatch": "Steam API-Hash-Mismatch, Raubkopie vermutet.\n\ntModLoader benötigt eine legitime Terraria-Installation zum Funktionieren.",
 		"VanillaGOGNotFound": "{0} konnte nicht gefunden werden.\r\n\r\nGOG-Installationen brauchen eine unveränderte Terraria-Programmdatei zum Funktionieren. Diese Version von tModLoader erwartet die {1}-Version von Terraria, du musst vielleicht über GOG Galaxy auf eine ältere oder neuere Terraria-Version wechseln, oder warten bis tModLoader aktualisiert wird.",
