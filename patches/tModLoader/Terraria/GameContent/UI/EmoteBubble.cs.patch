@@ -21,10 +21,10 @@
 +				// TML: #WorldUIAnchorProjectileSyncFix: Explanation below
 +				// Vanilla never uses Projectile as a WorldUIAnchor, but if mods do, it is very likely to desync.
 +				// As whoAmI is not enough to match a projectile between sides, TML rewrites it to use identity + owner instead.
-+				// It does so by packing the anchor entity type together with the ownerif it's a projectile.
++				// It does so by packing the anchor entity type together with the owner if it's a projectile.
 +				// Chosen because both variables can never go above 255 (whoAmI can go above that for projectiles), allowing for easier masking.
 +				// Methods (including the IO protocol) accessing this packed owner/type pair handle it properly.
-+				// This adds an overhead of a byte to the message 91 (SyncEmoteBubble) in case of Projectile
++				// This adds an overhead of a byte to the message 91 (SyncEmoteBubble) in case of Projectile.
 +				// tl;dr: byte type -> ushort packedOwnerType [owner << 8 | type] (only if it's a projectile)
 +				int whoAmI = anch.entity.whoAmI;
 +				if (!ModNet.AllowVanillaClients) {
