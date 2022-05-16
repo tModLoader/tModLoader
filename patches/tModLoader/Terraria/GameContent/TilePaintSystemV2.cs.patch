@@ -83,7 +83,7 @@
 +				Asset<Texture2D> asset;
 +
 +				if (PlantLoader.plantIdToStyleLimit.TryGetValue(Key.TileType, out int val)
-+					&& val >= Math.Abs(Key.TileStyle)) {
++					&& val <= Math.Abs(Key.TileStyle)) {
 +					int lookup = Math.Abs(Key.TileStyle) - val;
 +
 +					asset = PlantLoader.GetTexture(lookup, Key.TileType);

@@ -335,6 +335,7 @@ namespace Terraria.ModLoader
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
 
 			MapLoader.SetupModMap();
+			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
 
 			ContentSamples.Initialize();
@@ -463,6 +464,7 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			SoundLoader.Unload();
+			PlantLoader.UnloadPlants();
 
 			LoaderManager.Unload();
 

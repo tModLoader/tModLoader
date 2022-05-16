@@ -15,43 +15,54 @@ namespace Terraria.ModLoader
 
 		public abstract Asset<Texture2D> GetTexture();
 
+		public abstract void SetStaticDefaults();
+
 		void ILoadable.Load(Mod mod) {
-			for (int i = 0; i < GrowsOnTileId.Length; i++) {
-				var plant = new Vector2(PlantTileId, GrowsOnTileId[i]);
-
-				if (PlantLoader.plants.TryGetValue(plant, out var existing)) {
-					Logging.tML.Error($"The new plant {GetType()} from {mod.DisplayName} conflicts with the existing {existing.GetType()}. New plant not added");
-					continue;
-				}
-
-				if (!PlantLoader.plantIdToStyleLimit.ContainsKey((int)plant.X))
-					PlantLoader.plantIdToStyleLimit.Add((int)plant.X, VanillaCount);
-
-				PlantLoader.plants.Add(plant, this);
-			}
+			PlantLoader.plantList.Add(this);
 		}
 
-		void ILoadable.Unload() {
-			for (int i = 0; i < GrowsOnTileId.Length; i++) {
-				PlantLoader.plants.Remove(new Vector2(PlantTileId, GrowsOnTileId[i]));
-			}
-		}
+		void ILoadable.Unload() { }
 	}
 
 	public static class PlantLoader
 	{
-		internal static Dictionary<Vector2, IPlant> plants = new Dictionary<Vector2, IPlant>();
+		internal static Dictionary<Vector2, IPlant> plantLookup = new Dictionary<Vector2, IPlant>();
+		internal static List<IPlant> plantList = new List<IPlant>();
 		internal static Dictionary<int, int> plantIdToStyleLimit = new Dictionary<int, int>();
 
-		public static T Get<T>(int plantTileID, int growsOnTileID) where T : IPlant
-		{
-			if (!plants.TryGetValue(new Vector2(plantTileID, growsOnTileID), out IPlant plant))
+		internal static void SetupPlants() {
+			foreach (var plant in plantList) {
+				plant.SetStaticDefaults();
+
+				for (int i = 0; i < plant.GrowsOnTileId.Length; i++) {
+					var id = new Vector2(plant.PlantTileId, plant.GrowsOnTileId[i]);
+
+					if (plantLookup.TryGetValue(id, out var existing)) {
+						Logging.tML.Error($"The new plant {plant.GetType()} conflicts with the existing plant {existing.GetType()}. New plant not added");
+						continue;
+					}
+
+					if (!plantIdToStyleLimit.ContainsKey((int)id.X))
+						plantIdToStyleLimit.Add((int)id.X, plant.VanillaCount);
+
+					plantLookup.Add(id, plant);
+				}
+			}
+		}
+
+		internal static void UnloadPlants() {
+			plantList.Clear();
+			plantLookup.Clear();
+		}
+
+		public static T Get<T>(int plantTileID, int growsOnTileID) where T : IPlant {
+			if (!plantLookup.TryGetValue(new Vector2(plantTileID, growsOnTileID), out IPlant plant))
 				return default(T);
 
 			return (T)plant;
 		}
 
-		public static bool Exists(int plantTileID, int growsOnTileID) => plants.ContainsKey(new Vector2(plantTileID, growsOnTileID));
+		public static bool Exists(int plantTileID, int growsOnTileID) => plantLookup.ContainsKey(new Vector2(plantTileID, growsOnTileID));
 
 		public static Texture2D GetCactusFruitTexture(int type) {
 			var tree = Get<ModCactus>(TileID.Cactus, type);
@@ -81,7 +92,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int PlantTileId => TileID.Cactus;
 		public int VanillaCount => 0;
-		public int[] GrowsOnTileId { get; set; } = new int[0];
+		public int[] GrowsOnTileId { get; set; }
+		public abstract void SetStaticDefaults();
 		public abstract Asset<Texture2D> GetTexture();
 		public abstract Texture2D GetFruitTexture();
 	}
@@ -102,9 +114,10 @@ namespace Terraria.ModLoader
 		public int VanillaCount => VanillaStyleCount;
 		public const int VanillaTopTextureCount = 100;
 
-		public TreePaintingSettings TreeShaderSettings { get; }
+		public abstract TreePaintingSettings TreeShaderSettings { get; }
 
-		public int[] GrowsOnTileId { get; set; } = new int[0];
+		public int[] GrowsOnTileId { get; set; }
+		public abstract void SetStaticDefaults();
 		public abstract Asset<Texture2D> GetTexture();
 
 
@@ -167,9 +180,10 @@ namespace Terraria.ModLoader
 		public int VanillaCount => VanillaStyleCount;
 		public const int VanillaStyleCount = 8;
 
-		public TreePaintingSettings TreeShaderSettings { get; }
+		public abstract TreePaintingSettings TreeShaderSettings { get; }
 
-		public int[] GrowsOnTileId { get; set; } = new int[0];
+		public int[] GrowsOnTileId { get; set; }
+		public abstract void SetStaticDefaults();
 		public abstract Asset<Texture2D> GetTexture();
 
 		/// <summary>

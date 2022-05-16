@@ -20,7 +20,7 @@
  					if (tile == null)
  						continue;
  
-+					int tileStyle = -1;
++					int tileStyle = 0;
  					if (tile.active()) {
  						Main.instance.LoadTiles(tile.type);
  						lookupKey.TileType = tile.type;

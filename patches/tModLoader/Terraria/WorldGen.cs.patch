@@ -1606,15 +1606,6 @@
  			bool flag4 = !ReplaceTile_IsValidDresser(attemptingToReplaceWith) || !ReplaceTile_IsValidDresser(tile.type);
  			return !(num && flag && flag2 && flag3 && flag4);
  		}
-@@ -39995,6 +_,8 @@
- 		}
- 
- 		public static bool GetCommonTreeFoliageData(int i, int j, int xoffset, ref int treeFrame, ref int treeStyle, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight) {
-+			//TODO: This needs modding support?
-+
- 			_ = Main.tile[i, j];
- 			int num = i + xoffset;
- 			topTextureFrameWidth = 80;
 @@ -40101,6 +_,14 @@
  
  							return true;
