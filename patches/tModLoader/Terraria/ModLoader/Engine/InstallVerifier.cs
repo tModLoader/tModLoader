@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Threading;
 using Terraria.Localization;
 using Terraria.Social;
 
@@ -168,12 +169,9 @@ namespace Terraria.ModLoader.Engine
 			Logging.tML.Info("Checking Steam installation...");
 			IsSteam = true;
 			if (!Main.dedServ) {
-				Steamworks.SteamAPI.Init();
-				Steamworks.SteamAPI.Shutdown();			
-
 				InitializeTerraria();
-
 				Program.SetAppId("1281930");
+
 				SocialAPI.LoadSteam();
 				string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
 				string terrariaContentLocation = Path.Combine(terrariaInstallLocation, TmlContentDirectory);
@@ -190,8 +188,8 @@ namespace Terraria.ModLoader.Engine
 		}
 
 		private static void InitializeTerraria() {
-			if (BuildInfo.IsDev)
-				return;
+			//if (BuildInfo.IsDev)
+			//	return;
 
 			var tConn = new Process();
 			tConn.StartInfo.FileName = Process.GetCurrentProcess().MainModule.FileName;
@@ -209,6 +207,8 @@ namespace Terraria.ModLoader.Engine
 				if (line == null)
 					continue;
 
+				Logging.tML.Debug("TerrariaShim: " + line);
+
 				if (line.Contains("failed_DRM")) {
 					Utils.OpenToURL("https://terraria.org");
 					Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"), string.Empty);
@@ -219,6 +219,7 @@ namespace Terraria.ModLoader.Engine
 			}
 
 			Program.SendCmdToInterProcess("confirmed");
+			Thread.Sleep(500);
 		}
 
 		// Check if GOG install is correct

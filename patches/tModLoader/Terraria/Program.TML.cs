@@ -148,9 +148,6 @@ namespace Terraria
 				return;
 
 			SetAppId("105600");
-			Environment.SetEnvironmentVariable("STEAMGAMEID", "");
-			Environment.SetEnvironmentVariable("STEAMOVERLAYGAMEID", "");
-			Environment.SetEnvironmentVariable("STEAMAPPID", "");
 
 			PipeStream tConnClient = new AnonymousPipeClientStream(PipeDirection.In, pID);
 
@@ -214,7 +211,10 @@ namespace Terraria
 		}
 
 		internal static void SetAppId(string appId) {
-			File.WriteAllText("steam_appid.txt", appId);
+			Environment.SetEnvironmentVariable("STEAMGAMEID", appId);
+			Environment.SetEnvironmentVariable("STEAMOVERLAYGAMEID", appId);
+			Environment.SetEnvironmentVariable("STEAMAPPID", appId);
+			File.Delete("steam_appid.txt");
 		}
 	}
 }
