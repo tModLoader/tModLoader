@@ -64,7 +64,7 @@ namespace Terraria.ModLoader
 
 		public static bool Exists(int plantTileID, int growsOnTileID) => plantLookup.ContainsKey(new Vector2(plantTileID, growsOnTileID));
 
-		public static Texture2D GetCactusFruitTexture(int type) {
+		public static Asset<Texture2D> GetCactusFruitTexture(int type) {
 			var tree = Get<ModCactus>(TileID.Cactus, type);
 			if (tree == null)
 				return null;
@@ -91,11 +91,11 @@ namespace Terraria.ModLoader
 		/// The cactus will share a tile ID with the vanilla cacti (80), so that the cacti can freely convert between each other if the sand below is converted.
 		/// </summary>
 		public int PlantTileId => TileID.Cactus;
-		public int VanillaCount => 0;
+		public int VanillaCount => 1;
 		public int[] GrowsOnTileId { get; set; }
 		public abstract void SetStaticDefaults();
 		public abstract Asset<Texture2D> GetTexture();
-		public abstract Texture2D GetFruitTexture();
+		public abstract Asset<Texture2D> GetFruitTexture();
 	}
 
 	/// <summary>

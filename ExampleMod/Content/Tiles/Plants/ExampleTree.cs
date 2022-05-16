@@ -15,7 +15,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// This is the primary texture for the trunk. Branches and foliage use different settings.
-		public override Asset<Texture2D> GetTexture() => ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree");
+		public override Asset<Texture2D> GetTexture() => ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree", AssetRequestMode.ImmediateLoad);
 
 		// This is a blind copy-paste from Vanilla's PurityPalmTree settings.
 		//TODO: This needs some explanations
@@ -32,10 +32,10 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// Top Textures
-		public override Asset<Texture2D> GetBranchTextures() => ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Branches");
+		public override Asset<Texture2D> GetBranchTextures() => ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Branches", AssetRequestMode.ImmediateLoad);
 
 		// Top Textures
-		public override Asset<Texture2D> GetTopTextures() => ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Tops");
+		public override Asset<Texture2D> GetTopTextures() => ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Tops", AssetRequestMode.ImmediateLoad);
 
 		//TODO: Is this the right item drop?
 		public override int DropWood() => ModContent.Find<ModItem>("ExampleMod/ExampleDye").Type;
