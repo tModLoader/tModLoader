@@ -19,6 +19,7 @@
 		"ShowNewUpdatedModsInfoMessage": "The following mods were added or updated since last launch (you can disable this message in the settings):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
+		"ModUpdatedSinceLastLaunchMessage": "This mod updated since last launch",
 		"ViewOnGitHub": "View on GitHub",
 		"tModLoaderSettings": "tModLoader Settings",
 		"ModMenuSwap": "Switch Menu Theme",

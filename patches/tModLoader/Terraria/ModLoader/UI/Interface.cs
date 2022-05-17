@@ -140,7 +140,7 @@ namespace Terraria.ModLoader.UI
 						});
 					Main.SaveSettings();
 				}
-				else if (!ModLoader.DetectedModChangesForInfoMessage) {
+				else if (!ModLoader.DetectedModChangesForInfoMessage) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
 					ModLoader.DetectedModChangesForInfoMessage = true;
 
 					string info = ModOrganizer.DetectModChangesForInfoMessage();
