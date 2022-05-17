@@ -4973,7 +4973,7 @@
  
  			if ((sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && archery) {
  				if (speed < 20f) {
-@@ -37167,11 +_,21 @@
+@@ -37167,11 +_,34 @@
  						speed = 20f;
  				}
  
@@ -4987,26 +4987,47 @@
 +			ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref ammoDamage, ref KnockBack);
 +			totalDamage = (int)(ammoDamage.ApplyTo(item.damage) + 5E-06f);
 +
- 			bool flag2 = dontConsume;
-+			if (!dontConsume && CombinedHooks.CanConsumeAmmo(this, sItem, item) is bool canConsume) {
-+				flag2 = !canConsume;
-+				goto SkipVanillaConservationLogic;
++			if (!dontConsume && item.consumable && !IsAmmoFreeThisShot(sItem, item, projToShoot)) {
++				CombinedHooks.OnConsumeAmmo(this, sItem, item);
++				item.stack--;
++				if (item.stack <= 0) {
++					item.active = false;
++					item.TurnToAir();
++				}
++			}
++		}
++
++		public bool IsAmmoFreeThisShot(Item weapon, Item ammo, int projToShoot) {
++			Item sItem = weapon;
++			Item item = ammo;
++
+-			bool flag2 = dontConsume;
++			bool flag2 = false;
++			if (CombinedHooks.CanConsumeAmmo(this, sItem, item) is bool canConsume) {
++				return !canConsume;
 +			}
 +
  			if (sItem.type == 3475 && Main.rand.Next(3) != 0)
  				flag2 = true;
  
-@@ -37232,7 +_,10 @@
+@@ -37232,6 +_,7 @@
  			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
  				flag2 = true;
  
-+			SkipVanillaConservationLogic:
++			/*
  			if (!flag2 && item.consumable) {
-+				CombinedHooks.OnConsumeAmmo(this, sItem, item);
-+
  				item.stack--;
  				if (item.stack <= 0) {
- 					item.active = false;
+@@ -37239,6 +_,9 @@
+ 					item.TurnToAir();
+ 				}
+ 			}
++			*/
++
++			return flag2;
+ 		}
+ 
+ 		public void GetOtherPlayersPickTile(int x, int y, int pickDamage) {
 @@ -37274,7 +_,7 @@
  						NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  					}
