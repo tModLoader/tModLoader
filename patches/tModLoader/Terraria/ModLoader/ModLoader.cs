@@ -377,7 +377,8 @@ namespace Terraria.ModLoader
 			if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
 				showMemoryEstimates = true;
 
-			if (LastLaunchedTModLoaderVersion < new Version(2020, 0, 0, 0)) {
+			// TODO: Stable RecentGitHubCommits.txt is probably not accurate for showing stable users, we could use a summary for the month of changes rather than recent commits.
+			if (BuildInfo.IsPreview && LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 				ShowWhatsNew = true;
 				// TODO: Start retrieving what's new data from github here.
 			}
