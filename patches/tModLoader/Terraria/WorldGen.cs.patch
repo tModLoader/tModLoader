@@ -1660,6 +1660,15 @@
  			KillTile_GetItemDrops(x, y, tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, includeLargeObjectDrops);
  			if (!Main.getGoodWorld || tileCache.active()) {
  				if (dropItem > 0) {
+@@ -42126,6 +_,8 @@
+ 							}
+ 						}
+ 
++						TileLoader.DropPalmTreeWood(Main.tile[x, j].type, ref dropItem);
++
+ 						break;
+ 					}
+ 				case 171:
 @@ -42756,7 +_,7 @@
  
  						if (Main.tile[i, k] != null) {
@@ -1669,12 +1678,11 @@
  								dropItem = 9;
  								secondaryItem = 27;
  							}
-@@ -42803,6 +_,8 @@
+@@ -42803,6 +_,7 @@
  						dropItem = 2503;
  						break;
  				}
-+				TileLoader.DropTreeWood(Main.tile[x,y].type,ref dropItem);
-+				TileLoader.DropPalmTreeWood(Main.tile[x,y].type,ref dropItem);
++				TileLoader.DropTreeWood(Main.tile[x,y].type, ref dropItem);
  			}
  
  			int num = Player.FindClosest(new Vector2(x * 16, y * 16), 16, 16);

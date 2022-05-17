@@ -132,21 +132,6 @@
  						if (evil)
  							normalTileRect.Y += 54;
  
-@@ -675,13 +_,13 @@
- 
- 						if (crimson)
- 							normalTileRect.Y += 162;
--
- 						break;
- 					}
- 				case 83:
- 					drawData.drawTexture = GetTileDrawTexture(drawData.tileCache, tileX, tileY);
- 					break;
- 				case 323:
-+					//TODO: Do I need to do something here to fix modded palm trees?
- 					if (drawData.tileCache.frameX <= 132 && drawData.tileCache.frameX >= 88)
- 						return;
- 					vector.X += drawData.tileCache.frameY;
 @@ -812,7 +_,7 @@
  			}
  		}
@@ -396,11 +381,9 @@
  						int frameY2 = Main.tile[x, y].frameY;
  						byte tileColor4 = tile.color();
  						Texture2D treeTopTexture2 = GetTreeTopTexture(treeTextureIndex, palmTreeBiome, tileColor4);
-@@ -5645,17 +_,26 @@
- 		}
+@@ -5646,16 +_,23 @@
  
  		private Texture2D GetTreeTopTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor) {
-+			//TODO: I still need to add modded support here downwards, I think?
  			Texture2D texture2D = _paintSystem.TryGetTreeTopAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
 -			if (texture2D == null)
 +			if (texture2D == null) {
@@ -414,7 +397,6 @@
  		}
  
  		private Texture2D GetTreeBranchTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor) {
-+			//TODO: I still need to add modded support here downwards, I think?
  			Texture2D texture2D = _paintSystem.TryGetTreeBranchAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
 -			if (texture2D == null)
 +			if (texture2D == null) {

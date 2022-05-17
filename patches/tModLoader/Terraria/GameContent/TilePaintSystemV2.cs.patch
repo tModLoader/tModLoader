@@ -108,19 +108,3 @@
  				PrepareTextureIfNecessary(asset.Value);
  			}
  
-@@ -129,6 +_,7 @@
- 		{
- 			public int TileType;
- 			public int TileStyle;
-+			internal int TrueTileStyle;
- 			public int PaintColor;
- 
- 			public bool Equals(TileVariationkey other) {
-@@ -189,6 +_,7 @@
- 		public struct TreeFoliageVariantKey
- 		{
- 			public int TextureIndex;
-+			internal int TrueTextureIndex;
- 			public int TextureStyle;
- 			public int PaintColor;
- 
