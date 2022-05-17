@@ -35,6 +35,7 @@ namespace Terraria.ModLoader
 		public static bool ShowWhatsNew;
 		public static bool AlphaWelcomed;
 		public static bool PreviewFreezeNotification;
+		public static bool DetectedModChangesForInfoMessage;
 		public static bool ShowFirstLaunchWelcomeMessage;
 		public static Version LastPreviewFreezeNotificationSeen;
 
@@ -65,6 +66,7 @@ namespace Terraria.ModLoader
 		internal static bool removeForcedMinimumZoom;
 		internal static bool showMemoryEstimates = true;
 		internal static bool notifyNewMainMenuThemes = true;
+		internal static bool showNewUpdatedModsInfo = true;
 		internal static bool skipLoad;
 		internal static Action OnSuccessfulLoad;
 
@@ -341,6 +343,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
+			Main.Configuration.Put("ShowNewUpdatedModsInfo", showNewUpdatedModsInfo);
 			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
@@ -366,6 +369,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
+			Main.Configuration.Get("ShowNewUpdatedModsInfo", ref showNewUpdatedModsInfo);
 			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);

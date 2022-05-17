@@ -263,6 +263,13 @@ namespace Terraria.ModLoader.UI
 					ModLoader.notifyNewMainMenuThemes = !ModLoader.notifyNewMainMenuThemes;
 				}
 
+				buttonIndex++;
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.ShowNewUpdatedModsInfo{(ModLoader.showNewUpdatedModsInfo ? "Yes" : "No")}");
+				if (selectedMenu == buttonIndex) {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					ModLoader.showNewUpdatedModsInfo = !ModLoader.showNewUpdatedModsInfo;
+				}
+
 				/*
 				buttonIndex++;
 				buttonNames[buttonIndex] = Language.GetTextValue("tModLoader.ClearMBCredentials");

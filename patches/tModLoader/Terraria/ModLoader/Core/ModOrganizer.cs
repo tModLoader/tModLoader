@@ -90,6 +90,20 @@ namespace Terraria.ModLoader.Core
 			return true;
 		}
 
+		/// <summary>
+		/// Returns a dictionary of formatted display names and versions of every local mod
+		/// </summary>
+		internal static Dictionary<string, Tuple<string, Version>> GetFormattedDisplayNameAndVersionByMod() {
+			Dictionary<string, Tuple<string, Version>> versionsByMod = new();
+
+			var mods = FindMods();
+			foreach (var mod in mods) {
+				versionsByMod.Add(mod.Name, Tuple.Create($"({mod.DisplayName})", mod.properties.version));
+			}
+
+			return versionsByMod;
+		}
+
 		private static void DeleteTemporaryFiles() {
 			foreach (string path in GetTemporaryFiles()) {
 				Logging.tML.Info($"Cleaning up leftover temporary file {Path.GetFileName(path)}");
