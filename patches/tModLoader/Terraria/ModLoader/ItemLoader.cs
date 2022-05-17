@@ -604,45 +604,40 @@ namespace Terraria.ModLoader
 		/// then each corresponding hook in <see cref="ModItem"/> if applicable for the weapon and/or ammo, until one of them returns a concrete false value.<br></br>
 		/// If all of them fail to do this, returns either true (if one returned true prior) or null.
 		/// </summary>
-		public static bool? CanChooseAmmo(Item weapon, Item ammo, Player player) {
-			bool? canChooseAmmoOverall = null;
+		public static bool CanChooseAmmo(Item weapon, Item ammo, Player player) {
+			bool? result = null;
 			foreach (var g in HookCanChooseAmmo.Enumerate(weapon.globalItems)) {
-				bool? canChooseAmmoAsExistingItem = g.CanChooseAmmo(weapon, ammo, player);
-				if (canChooseAmmoAsExistingItem.HasValue) {
-					if (!canChooseAmmoAsExistingItem.Value)
-						return canChooseAmmoAsExistingItem.Value;
+				bool? r = g.CanChooseAmmo(weapon, ammo, player);
+				if (r is false)
+					return false;
 
-					canChooseAmmoOverall = canChooseAmmoAsExistingItem.Value;
-				}
+				result ??= r;
 			}
+
 			foreach (var g in HookCanBeChosenAsAmmo.Enumerate(ammo.globalItems)) {
-				bool? canBeChosenAsExistingAmmo = g.CanBeChosenAsAmmo(ammo, weapon, player);
-				if (canBeChosenAsExistingAmmo.HasValue) {
-					if (!canBeChosenAsExistingAmmo.Value)
-						return canBeChosenAsExistingAmmo.Value;
+				bool? r = g.CanBeChosenAsAmmo(ammo, weapon, player);
+				if (r is false)
+					return false;
 
-					canChooseAmmoOverall = canBeChosenAsExistingAmmo.Value;
-				}
+				result ??= r;
 			}
+
 			if (weapon.ModItem != null) {
-				bool? canChooseAmmoAsModItem = weapon.ModItem.CanChooseAmmo(ammo, player);
-				if (canChooseAmmoAsModItem.HasValue) {
-					if (!canChooseAmmoAsModItem.Value)
-						return canChooseAmmoAsModItem.Value;
+				bool? r = weapon.ModItem.CanChooseAmmo(ammo, player);
+				if (r is false)
+					return false;
 
-					canChooseAmmoOverall = canChooseAmmoAsModItem.Value;
-				}
+				result ??= r;
 			}
+
 			if (ammo.ModItem != null) {
-				bool? canBeChosenAsModdedAmmo = ammo.ModItem.CanBeChosenAsAmmo(weapon, player);
-				if (canBeChosenAsModdedAmmo.HasValue) {
-					if (!canBeChosenAsModdedAmmo.Value)
-						return canBeChosenAsModdedAmmo.Value;
+				bool? r = ammo.ModItem.CanBeChosenAsAmmo(weapon, player);
+				if (r is false)
+					return false;
 
-					canChooseAmmoOverall = canBeChosenAsModdedAmmo.Value;
-				}
+				result ??= r;
 			}
-			return canChooseAmmoOverall;
+			return result ?? ammo.ammo == weapon.useAmmo;
 		}
 
 		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Item, Player, bool?>>(g => g.CanConsumeAmmo);

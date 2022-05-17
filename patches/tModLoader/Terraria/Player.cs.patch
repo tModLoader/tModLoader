@@ -4811,104 +4811,57 @@
  						canUse = true;
  						break;
  					}
-@@ -37056,6 +_,21 @@
- 		}
+@@ -37062,7 +_,7 @@
+ 			if (sItem.useAmmo == AmmoID.Coin) {
+ 				for (int i = 0; i < 4; i++) {
+ 					int num = 50 + i;
+-					if (inventory[num].ammo == sItem.useAmmo && inventory[num].stack > 0) {
++					if (inventory[num].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[i], this)) {
+ 						item = inventory[num];
+ 						canShoot = true;
+ 						flag = true;
+@@ -37072,7 +_,7 @@
+ 			}
  
- 		public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
-+			usedAmmoItemId = 0;
-+			PickAmmo_TryToFindCurrentAmmoItem(sItem, ref canShoot, out Item usedAmmo);
-+			if (!canShoot)
-+				return;
-+
-+			usedAmmoItemId = usedAmmo.type;
-+			PickAmmo_DealWithConditionalProjectileChanges(sItem, usedAmmo, ref projToShoot, ref Damage);
-+			PickAmmo_InvokeStatModifiers(sItem, usedAmmo, ref speed, ref Damage, ref KnockBack);
-+			ItemLoader.PickAmmo(sItem, usedAmmo, this, ref projToShoot, ref speed, ref Damage, ref KnockBack);
-+			PickAmmo_HandleAmmoConsumption(sItem, usedAmmo, dontConsume, projToShoot);
+ 			for (int j = 54; j < 58; j++) {
+-				if (inventory[j].ammo == sItem.useAmmo && inventory[j].stack > 0) {
++				if (inventory[j].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[j], this)) {
+ 					item = inventory[j];
+ 					canShoot = true;
+ 					flag = true;
+@@ -37082,7 +_,7 @@
+ 
+ 			if (!flag) {
+ 				for (int k = 0; k < 54; k++) {
+-					if (inventory[k].ammo == sItem.useAmmo && inventory[k].stack > 0) {
++					if (inventory[k].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[k], this)) {
+ 						item = inventory[k];
+ 						canShoot = true;
+ 						break;
+@@ -37094,6 +_,18 @@
+ 				return;
+ 
+ 			usedAmmoItemId = item.type;
++			PickAmmo_DealWithConditionalProjectileChanges(sItem, item, ref projToShoot, ref Damage);
++			PickAmmo_InvokeStatModifiers(sItem, item, ref speed, ref Damage, ref KnockBack);
++			ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref Damage, ref KnockBack);
++			PickAmmo_HandleAmmoConsumption(sItem, item, dontConsume, projToShoot);
 +			/*
 +			PickAmmo's now split into submethods, and fairly extensively modified, in order to increase intuitivity and moddin' potential
 +			the below is the vanilla PickAmmo code as it was prior to changes, just in case a point of reference is needed
 +			-thomas
-+
- 			Item item = new Item();
- 			bool flag = false;
- 			usedAmmoItemId = 0;
-@@ -37239,6 +_,260 @@
- 					item.TurnToAir();
- 				}
- 			}
 +			*/
 +		}
-+
 +		// tML: part 1 of PickAmmo, finds the currently active ammo item if possible
-+		public void PickAmmo_TryToFindCurrentAmmoItem(Item weapon, ref bool canShoot, out Item currentAmmo) {
-+			currentAmmo = new Item();
-+			bool skipMainInventorySlots = false;
-+			if (weapon.useAmmo == AmmoID.Coin) {
-+				for (int i = 50; i < 54; i++) {
-+					if (inventory[i].stack <= 0)
-+						continue;
-+
-+					bool? canChooseAmmo = ItemLoader.CanChooseAmmo(weapon, inventory[i], this);
-+					if (canChooseAmmo.HasValue) {
-+						if (canChooseAmmo.Value) {
-+							currentAmmo = inventory[i];
-+							canShoot = true;
-+							skipMainInventorySlots = true;
-+							break;
-+						}
-+					}
-+					else if (inventory[i].ammo == weapon.useAmmo) {
-+						currentAmmo = inventory[i];
-+						canShoot = true;
-+						skipMainInventorySlots = true;
-+						break;
-+					}
-+				}
-+			}
-+
-+			for (int j = 54; j < 58; j++) {
-+				if (inventory[j].stack <= 0)
-+					continue;
-+
-+				bool? canChooseAmmo = ItemLoader.CanChooseAmmo(weapon, inventory[j], this);
-+				if (canChooseAmmo.HasValue) {
-+					if (canChooseAmmo.Value) {
-+						currentAmmo = inventory[j];
-+						canShoot = true;
-+						skipMainInventorySlots = true;
-+						break;
-+					}
-+				}
-+				else if (inventory[j].ammo == weapon.useAmmo) {
-+					currentAmmo = inventory[j];
-+					canShoot = true;
-+					skipMainInventorySlots = true;
-+					break;
-+				}
-+			}
-+
-+			if (!skipMainInventorySlots) {
-+				for (int k = 0; k < 54; k++) {
-+					if (inventory[k].stack <= 0)
-+						continue;
-+
-+					bool? canChooseAmmo = ItemLoader.CanChooseAmmo(weapon, inventory[k], this);
-+					if (canChooseAmmo.HasValue) {
-+						if (canChooseAmmo.Value) {
-+							currentAmmo = inventory[k];
-+							canShoot = true;
-+							break;
-+						}
-+					}
-+					else if (inventory[k].ammo == weapon.useAmmo) {
-+						currentAmmo = inventory[k];
-+						canShoot = true;
-+						break;
-+					}
-+				}
-+			}
-+		}
++		/*
+ 			int pickedProjectileId = -1;
+ 			if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
+ 				projToShoot = pickedProjectileId;
+@@ -37240,6 +_,190 @@
+ 				}
+ 			}
+ 		}
++		*/
 +
 +		// tML: part 2 of PickAmmo, deals with vanilla's various conditional projectile changes
 +		public void PickAmmo_DealWithConditionalProjectileChanges(Item weapon, Item ammo, ref int projToShoot, ref int Damage) {
@@ -5091,9 +5044,10 @@
 +					ammo.TurnToAir();
 +				}
 +			}
- 		}
++		}
  
  		public void GetOtherPlayersPickTile(int x, int y, int pickDamage) {
+ 			int tileId = hitTile.HitObject(x, y, 1);
 @@ -37274,7 +_,7 @@
  						NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  					}
