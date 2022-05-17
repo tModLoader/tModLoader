@@ -91,7 +91,7 @@ namespace Terraria.ModLoader.Core
 		}
 
 		/// <summary>
-		/// Collects local mod status and saves it to a file. Returns changes based on last time the method was called. Can be null if no changes.
+		/// Returns changes based on last time <see cref="SaveLastLaunchedMods"/> was called. Can be null if no changes.
 		/// </summary>
 		internal static string DetectModChangesForInfoMessage() {
 			string info = null;
@@ -162,14 +162,23 @@ namespace Terraria.ModLoader.Core
 				}
 			}
 
-			// Overwrite with current mods
+			return info;
+		}
+
+		/// <summary>
+		/// Collects local mod status and saves it to a file.
+		/// </summary>
+		internal static void SaveLastLaunchedMods() {
+			if (!ModLoader.showNewUpdatedModsInfo) // Not needed if feature that uses the file is disabled
+				return;
+
+			string fileName = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
+			var currMods = FindMods();
 			var fileText = new StringBuilder();
-			foreach (var item in currMods) {
-				fileText.Append($"{item.Key} {item.Value.properties.version}\n");
+			foreach (var mod in currMods) {
+				fileText.Append($"{mod.Name} {mod.properties.version}\n");
 			}
 			File.WriteAllText(fileName, fileText.ToString());
-
-			return info;
 		}
 
 		private static void DeleteTemporaryFiles() {
