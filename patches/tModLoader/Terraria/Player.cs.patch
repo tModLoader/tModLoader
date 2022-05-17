@@ -4869,21 +4869,69 @@
  						item = inventory[k];
  						canShoot = true;
  						break;
-@@ -37090,6 +_,13 @@
+@@ -37090,10 +_,31 @@
  				}
  			}
  
 +			return item;
 +		}
 +
-+		public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
++		public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int totalDamage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
 +			usedAmmoItemId = 0;
 +			Item item = ChooseAmmo(sItem);
 +			canShoot = item != null;
  			if (!canShoot)
  				return;
  
-@@ -37152,6 +_,7 @@
+ 			usedAmmoItemId = item.type;
++
++			StatModifier ammoDamage = GetTotalDamage(item.DamageType);
++			if (AmmoID.Sets.IsArrow[item.ammo])
++				ammoDamage = ammoDamage.CombineWith(arrowDamage);
++
++			if (AmmoID.Sets.IsBullet[item.ammo])
++				ammoDamage = ammoDamage.CombineWith(bulletDamage);
++
++			if (AmmoID.Sets.IsRocket[item.ammo])
++				ammoDamage = ammoDamage.CombineWith(rocketDamage);
++
++			ammoDamage.Base = 0;
++			ammoDamage.Flat = totalDamage;
++
+ 			int pickedProjectileId = -1;
+ 			if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
+ 				projToShoot = pickedProjectileId;
+@@ -37126,15 +_,15 @@
+ 			if (projToShoot == 42) {
+ 				if (item.type == 370) {
+ 					projToShoot = 65;
+-					Damage += 5;
++					ammoDamage.Flat += 5;
+ 				}
+ 				else if (item.type == 408) {
+ 					projToShoot = 68;
+-					Damage += 5;
++					ammoDamage.Flat += 5;
+ 				}
+ 				else if (item.type == 1246) {
+ 					projToShoot = 354;
+-					Damage += 5;
++					ammoDamage.Flat += 5;
+ 				}
+ 			}
+ 
+@@ -37143,15 +_,16 @@
+ 
+ 			if (hasMoltenQuiver && projToShoot == 1) {
+ 				projToShoot = 2;
+-				Damage += 2;
++				ammoDamage.Flat += 2;
+ 			}
+ 
+ 			if (magicQuiver && (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)) {
+-				KnockBack = (int)((double)KnockBack * 1.1);
++				KnockBack *= 1.1f;
+ 				speed *= 1.1f;
  			}
  
  			speed += item.shootSpeed;
@@ -4899,7 +4947,7 @@
  
  			if ((sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && archery) {
  				if (speed < 20f) {
-@@ -37167,11 +_,44 @@
+@@ -37167,11 +_,21 @@
  						speed = 20f;
  				}
  
@@ -4910,31 +4958,8 @@
  
  			KnockBack += item.knockBack;
 +
-+			if (item.damage > 0) {
-+				StatModifier ammoDamageModifier = GetTotalDamage(item.DamageType);
-+				if (AmmoID.Sets.IsArrow[item.ammo]) {
-+					ammoDamageModifier = ammoDamageModifier.CombineWith(arrowDamage);
-+					// NOTE: the Archery Potion damage bonus is handled through arrowDamage now, so the multiplier that'd otherwise be used here is unnecessary
-+					if (archery) {
-+						if (speed < 20f) {
-+							speed *= 1.2f;
-+							if (speed > 20f)
-+								speed = 20f;
-+						}
-+					}
-+				}
-+
-+				if (AmmoID.Sets.IsBullet[item.ammo])
-+					ammoDamageModifier = ammoDamageModifier.CombineWith(bulletDamage);
-+
-+				if (AmmoID.Sets.IsRocket[item.ammo])
-+					ammoDamageModifier = ammoDamageModifier.CombineWith(rocketDamage);
-+
-+				float ammoDamageTotal = item.damage * ammoDamageModifier.Additive * ammoDamageModifier.Multiplicative;
-+				Damage += (int)ammoDamageTotal;
-+			}
-+
-+			ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref Damage, ref KnockBack);
++			ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref ammoDamage, ref KnockBack);
++			totalDamage = (int)(ammoDamage.ApplyTo(item.damage) + 5E-06f);
 +
  			bool flag2 = dontConsume;
 +			if (CombinedHooks.CanConsumeAmmo(this, sItem, item) is bool canConsume) {

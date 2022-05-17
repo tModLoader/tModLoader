@@ -262,9 +262,9 @@ namespace Terraria.ModLoader
 		/// <param name="player">The player using the item</param>
 		/// <param name="type">The ID of the projectile shot</param>
 		/// <param name="speed">The speed of the projectile shot</param>
-		/// <param name="damage">The damage of the projectile shot</param>
+		/// <param name="damage">The damage modifier for the projectile. Total weapon damage is included as Flat damage. Be careful not to apply flat or base damage bonuses which are already applied to the weapon</param>
 		/// <param name="knockback">The speed of the projectile shot</param>
-		public virtual void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
+		public virtual void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
 		}
 
 		/// <summary>
