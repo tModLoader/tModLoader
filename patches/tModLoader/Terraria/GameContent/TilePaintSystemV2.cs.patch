@@ -9,7 +9,7 @@
  
  namespace Terraria.GameContent
  {
-@@ -74,7 +_,31 @@
+@@ -74,7 +_,33 @@
  			public TreeFoliageVariantKey Key;
  
  			public override void Prepare() {
@@ -20,6 +20,7 @@
 +					int lookup = Key.TextureIndex - ModTree.VanillaTopTextureCount;
 +
 +					asset = PlantLoader.Get<ModTree>(TileID.Trees, lookup).GetTopTextures();
++					
 +				}
 +				else if (Key.TextureIndex < 0) {
 +					int lookup = -1 * Key.TextureIndex;
@@ -39,10 +40,11 @@
 +					asset = TextureAssets.TreeTop[Key.TextureIndex];
 +				}
 +
++				asset.Wait?.Invoke();
  				PrepareTextureIfNecessary(asset.Value);
  			}
  
-@@ -88,7 +_,31 @@
+@@ -88,7 +_,32 @@
  			public TreeFoliageVariantKey Key;
  
  			public override void Prepare() {
@@ -71,11 +73,12 @@
 +				else {
 +					asset = TextureAssets.TreeBranch[Key.TextureIndex];
 +				}
-+				
++
++				asset.Wait?.Invoke();
  				PrepareTextureIfNecessary(asset.Value);
  			}
  
-@@ -102,7 +_,18 @@
+@@ -102,7 +_,19 @@
  			public TileVariationkey Key;
  
  			public override void Prepare() {
@@ -91,7 +94,8 @@
 +					Main.instance.LoadTiles(Key.TileType);
 +					asset = TextureAssets.Tile[Key.TileType];
 +				}
-+				
++
++				asset.Wait?.Invoke();
  				PrepareTextureIfNecessary(asset.Value);
  			}
  

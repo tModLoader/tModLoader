@@ -86,8 +86,6 @@ namespace Terraria.ModLoader
 		private static Action<int, Player>[] HookFloorVisuals;
 		private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
 		private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
-		private delegate int DelegateSaplingGrowthType(int type, ref int style);
-		private static DelegateSaplingGrowthType[] HookSaplingGrowthType;
 		private static Action<int, int, int, Item>[] HookPlaceInWorld;
 
 		internal static int ReserveTileID() {
@@ -226,7 +224,6 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookSlope, globalTiles, g => g.Slope);
 			ModLoader.BuildGlobalHook(ref HookFloorVisuals, globalTiles, g => g.FloorVisuals);
 			ModLoader.BuildGlobalHook<GlobalTile, DelegateChangeWaterfallStyle>(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
-			ModLoader.BuildGlobalHook<GlobalTile, DelegateSaplingGrowthType>(ref HookSaplingGrowthType, globalTiles, g => g.SaplingGrowthType);
 			ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
 
 			if (!unloading) {
@@ -855,41 +852,29 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static bool SaplingGrowthType(int type, ref int saplingType, ref int style) {
+		public static bool SaplingGrowthType(int soilType, ref int saplingType, ref int style) {
 			int originalType = saplingType;
 			int originalStyle = style;
-			bool flag = false;
-			ModTile modTile = GetTile(type);
 
-			if (modTile != null) {
-				saplingType = modTile.SaplingGrowthType(ref style);
+			var treeGrown = PlantLoader.Get<ModTree>(TileID.Trees, soilType);
 
-				if (saplingType >= 0 && TileID.Sets.TreeSapling[saplingType]) {
-					originalType = saplingType;
-					originalStyle = style;
-					flag = true;
-				}
-				else {
-					saplingType = originalType;
-					style = originalStyle;
-				}
+			if (treeGrown == null) {
+				var palmGrown = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, soilType);
+
+				if (palmGrown != null)
+					saplingType = palmGrown.SaplingGrowthType(ref style);
+				else
+					return false;
 			}
+			else
+				saplingType = treeGrown.SaplingGrowthType(ref style);
 
-			foreach (var hook in HookSaplingGrowthType) {
-				saplingType = hook(type, ref style);
+			if (TileID.Sets.TreeSapling[saplingType])
+				return true;
 
-				if (saplingType >= 0 && TileID.Sets.TreeSapling[saplingType]) {
-					originalType = saplingType;
-					originalStyle = style;
-					flag = true;
-				}
-				else {
-					saplingType = originalType;
-					style = originalStyle;
-				}
-			}
-
-			return flag;
+			saplingType = originalType;
+			style = originalStyle;
+			return false;
 		}
 
 		public static bool CanGrowModTree(int type) {

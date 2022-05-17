@@ -146,6 +146,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Defines the sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns 20 and style 0 by default.
+		/// The style parameter will determine which sapling is chosen if multiple sapling types share the same ID;
+		/// even if you only have a single sapling in an ID, you must still set this to 0.
+		/// </summary>
+		/// <param name="style"></param>
+		/// <returns></returns>
+		public virtual int SaplingGrowthType(ref int style) {
+			style = 0;
+			return 20;
+		}
+
+		/// <summary>
 		/// The ID of the item that is dropped in bulk when this tree is destroyed.
 		/// </summary>
 		/// <returns></returns>
@@ -200,6 +212,18 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public virtual int GrowthFXGore() {
 			return -1;
+		}
+
+		/// <summary>
+		/// Defines the sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns 20 and style 0 by default.
+		/// The style parameter will determine which sapling is chosen if multiple sapling types share the same ID;
+		/// even if you only have a single sapling in an ID, you must still set this to 0.
+		/// </summary>
+		/// <param name="style"></param>
+		/// <returns></returns>
+		public virtual int SaplingGrowthType(ref int style) {
+			style = 1;
+			return 20;
 		}
 
 		/// <summary>

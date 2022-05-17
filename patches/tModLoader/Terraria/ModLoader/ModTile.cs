@@ -452,15 +452,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows this tile to support a sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns -1 by default. The style parameter will determine which sapling is chosen if multiple sapling types share the same ID; even if you only have a single sapling in an ID, you must still set this to 0.
-		/// </summary>
-		/// <param name="style"></param>
-		/// <returns></returns>
-		public virtual int SaplingGrowthType(ref int style) {
-			return -1;
-		}
-
-		/// <summary>
 		/// Return true if this Tile corresponds to a chest that is locked. Prevents Quick Stacking items into the chest.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
