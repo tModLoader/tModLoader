@@ -1,5 +1,6 @@
 var NAVTREEINDEX121 =
 {
+"class_uw_u_pn_p_1_1_u_pn_p.html#abb4afc5932a02f5fb704efaaba14c13d":[1,0,3,0,2],
 "class_uw_u_pn_p_1_1_u_pn_p.html#ad31bece43e3e348f64f2c3bca02f907d":[1,0,3,0,3],
 "class_uw_u_pn_p_1_1_u_pn_p.html#ad8c7ade83dd87f51ea7b9890abddc1dc":[1,0,3,0,1],
 "classes.html":[1,1],
@@ -16,8 +17,8 @@ var NAVTREEINDEX121 =
 "classnativefiledialog.html#ad015f810ae97b11cebc345376a7dc842":[1,0,35,9],
 "classnativefiledialog.html#aeadaef3670dc3de9281eb92c4df871e7":[1,0,35,3],
 "classnativefiledialog.html#af0422ad594b56553df0ff318fd9a3ac0":[1,0,35,2],
-"functions.html":[1,3,0],
 "functions.html":[1,3,0,0],
+"functions.html":[1,3,0],
 "functions_b.html":[1,3,0,1],
 "functions_c.html":[1,3,0,2],
 "functions_d.html":[1,3,0,3],
@@ -64,8 +65,8 @@ var NAVTREEINDEX121 =
 "functions_t.html":[1,3,0,19],
 "functions_u.html":[1,3,0,20],
 "functions_v.html":[1,3,0,21],
-"functions_vars.html":[1,3,2,0],
 "functions_vars.html":[1,3,2],
+"functions_vars.html":[1,3,2,0],
 "functions_vars_b.html":[1,3,2,1],
 "functions_vars_c.html":[1,3,2,2],
 "functions_vars_d.html":[1,3,2,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX121 =
 "interface_terraria_1_1_game_content_1_1_loot_simulation_1_1_i_simulation_condition_setter.html#a9e5b125dfb59555f43c3a2636b17f127":[1,0,2,5,12,1,0],
 "interface_terraria_1_1_game_content_1_1_loot_simulation_1_1_i_simulation_condition_setter.html#ac00dc3e7f3b252af3c76d51c072d242f":[1,0,2,5,12,1,2],
 "interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_block_reason_provider.html":[1,0,2,5,15,2],
-"interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_block_reason_provider.html#a6c30b567a8104550069e97844f8516f0":[1,0,2,5,15,2,0],
-"interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate.html":[1,0,2,5,15,3]
+"interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_block_reason_provider.html#a6c30b567a8104550069e97844f8516f0":[1,0,2,5,15,2,0]
 };

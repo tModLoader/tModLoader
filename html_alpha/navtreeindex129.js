@@ -1,5 +1,6 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_graphics_1_1_vertex_colors.html":[1,0,2,7,15],
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html#a26562cd7a5ffe281e4ed028441266460":[1,0,2,7,15,3],
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html#a67244aaba61abd9f047fe38af6eb98d8":[1,0,2,7,15,1],
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html#a83bcb02bdb2530454492e35e1e5ac476":[1,0,2,7,15,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_physics_1_1_ball_pass_through_event.html#a6e81bb559b368f0589c31cb45cd85330":[1,0,2,17,2,3],
 "struct_terraria_1_1_physics_1_1_ball_pass_through_event.html#a75fc2446fc355a27b0ac26b0af42763d":[1,0,2,17,2,2],
 "struct_terraria_1_1_physics_1_1_ball_pass_through_event.html#a7a5d584b9036c66d87df34e644dde4d0":[1,0,2,17,2,4],
-"struct_terraria_1_1_physics_1_1_ball_pass_through_event.html#aab124df8227c7d1faee7c67a3a08a33f":[1,0,2,17,2,1],
-"struct_terraria_1_1_physics_1_1_ball_step_result.html":[1,0,2,17,3]
+"struct_terraria_1_1_physics_1_1_ball_pass_through_event.html#aab124df8227c7d1faee7c67a3a08a33f":[1,0,2,17,2,1]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX125 =
 {
+"namespace_terraria_1_1_game_content_1_1_loot_simulation.html":[0,0,2,6,12],
 "namespace_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types.html":[0,0,2,6,12,0],
 "namespace_terraria_1_1_game_content_1_1_metadata.html":[0,0,2,6,13],
 "namespace_terraria_1_1_game_content_1_1_net_modules.html":[0,0,2,6,14],
@@ -248,6 +249,5 @@ var NAVTREEINDEX125 =
 "namespace_terraria_1_1_object_data.html":[0,0,2,17],
 "namespace_terraria_1_1_physics.html":[0,0,2,18],
 "namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dd":[0,0,2,18,6],
-"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda1d18fe2cdd43a72d46421ecfe81b599e":[0,0,2,18,6,3],
-"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda27634ff8002b12e75d98e07ccd005d18":[0,0,2,18,6,1]
+"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda1d18fe2cdd43a72d46421ecfe81b599e":[0,0,2,18,6,3]
 };

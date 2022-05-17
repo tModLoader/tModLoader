@@ -1,5 +1,6 @@
 var NAVTREEINDEX126 =
 {
+"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda27634ff8002b12e75d98e07ccd005d18":[0,0,2,18,6,1],
 "namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda6adf97f83acf6453d4a6a4b1070f3754":[0,0,2,18,6,0],
 "namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda8dc0611245a871ac51bbeebb85f33a58":[0,0,2,18,6,2],
 "namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35ddac5457c5f3cfb4da8638ce7190f8e5152":[0,0,2,18,6,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX126 =
 "struct_terraria_1_1_data_structures_1_1_placement_hook.html#ac4f56240bdf647472f87570cf2ce2bea":[1,0,2,4,62,4],
 "struct_terraria_1_1_data_structures_1_1_placement_hook.html#afa170fd740c05f6081ef62684d4905cd":[1,0,2,4,62,3],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html":[1,0,2,4,66],
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a0013b85df5e4c2675969762f3f11dab4":[1,0,2,4,66,95],
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a02a81f24b4989583cd6cb9065d54b070":[1,0,2,4,66,54]
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a0013b85df5e4c2675969762f3f11dab4":[1,0,2,4,66,95]
 };
