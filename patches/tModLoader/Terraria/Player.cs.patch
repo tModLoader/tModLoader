@@ -4838,100 +4838,36 @@
  						item = inventory[k];
  						canShoot = true;
  						break;
-@@ -37094,6 +_,18 @@
- 				return;
- 
- 			usedAmmoItemId = item.type;
-+			PickAmmo_DealWithConditionalProjectileChanges(sItem, item, ref projToShoot, ref Damage);
-+			PickAmmo_InvokeStatModifiers(sItem, item, ref speed, ref Damage, ref KnockBack);
-+			ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref Damage, ref KnockBack);
-+			PickAmmo_HandleAmmoConsumption(sItem, item, dontConsume, projToShoot);
-+			/*
-+			PickAmmo's now split into submethods, and fairly extensively modified, in order to increase intuitivity and moddin' potential
-+			the below is the vanilla PickAmmo code as it was prior to changes, just in case a point of reference is needed
-+			-thomas
-+			*/
-+		}
-+		// tML: part 1 of PickAmmo, finds the currently active ammo item if possible
-+		/*
- 			int pickedProjectileId = -1;
- 			if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
- 				projToShoot = pickedProjectileId;
-@@ -37240,6 +_,190 @@
- 				}
+@@ -37152,6 +_,7 @@
  			}
- 		}
-+		*/
+ 
+ 			speed += item.shootSpeed;
++			/*
+ 			if (item.ranged) {
+ 				if (item.damage > 0)
+ 					Damage += (int)((float)item.damage * rangedDamage);
+@@ -37159,6 +_,7 @@
+ 			else {
+ 				Damage += item.damage;
+ 			}
++			*/
+ 
+ 			if ((sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && archery) {
+ 				if (speed < 20f) {
+@@ -37167,11 +_,47 @@
+ 						speed = 20f;
+ 				}
+ 
++				// archery potion buff moved into arrowDamage stat modifier
+-				Damage = (int)((double)Damage * 1.2);
++				// Damage = (int)((double)Damage * 1.2);
+ 			}
+ 
+ 			KnockBack += item.knockBack;
 +
-+		// tML: part 2 of PickAmmo, deals with vanilla's various conditional projectile changes
-+		public void PickAmmo_DealWithConditionalProjectileChanges(Item weapon, Item ammo, ref int projToShoot, ref int Damage) {
-+			int pickedProjectileId = -1;
-+			if (PickAmmo_TryFindingSpecificMatches(weapon.type, ammo.type, out pickedProjectileId))
-+				projToShoot = pickedProjectileId;
-+			else if (weapon.type == 1946) {
-+				projToShoot = 338 + ammo.type - 771;
-+				if (projToShoot > ProjectileID.RocketSnowmanIV)
-+					projToShoot = ProjectileID.RocketSnowmanIV;
-+			}
-+			else if (weapon.type == 3930)
-+				projToShoot = 715 + ammo.type - AmmoID.Rocket;
-+			else if (weapon.useAmmo == AmmoID.Rocket)
-+				projToShoot += ammo.shoot;
-+			else if (weapon.useAmmo == 780)
-+				projToShoot += ammo.shoot;
-+			else if (ammo.shoot > 0)
-+				projToShoot = ammo.shoot;
-+
-+			if (weapon.type == 3019 && projToShoot == 1)
-+				projToShoot = 485;
-+
-+			if (weapon.type == 3052)
-+				projToShoot = 495;
-+
-+			if (weapon.type == 4953 && projToShoot == 1)
-+				projToShoot = 932;
-+
-+			if (weapon.type == 4381)
-+				projToShoot = 819;
-+
-+			if (weapon.type == 4058 && projToShoot == 474)
-+				projToShoot = 117;
-+
-+			if (projToShoot == 42) {
-+				if (ammo.type == 370) {
-+					projToShoot = 65;
-+					Damage += 5;
-+				}
-+				else if (ammo.type == 408) {
-+					projToShoot = 68;
-+					Damage += 5;
-+				}
-+				else if (ammo.type == 1246) {
-+					projToShoot = 354;
-+					Damage += 5;
-+				}
-+			}
-+
-+			if (inventory[selectedItem].type == 2888 && projToShoot == 1)
-+				projToShoot = 469;
-+
-+			if (hasMoltenQuiver && projToShoot == 1) {
-+				projToShoot = 2;
-+				Damage += 2;
-+			}
-+		}
-+
-+		// tML: part 3 of PickAmmo, handles stat boosts
-+		public void PickAmmo_InvokeStatModifiers(Item weapon, Item ammo, ref float speed, ref int totalDamage, ref float totalKnockback) {
-+			if (magicQuiver && (weapon.useAmmo == AmmoID.Arrow || weapon.useAmmo == AmmoID.Stake)) {
-+				totalKnockback = (int)((double)totalKnockback * 1.1);
-+				speed *= 1.1f;
-+			}
-+
-+			speed += ammo.shootSpeed;
-+			if (ammo.damage > 0) {
-+				StatModifier ammoDamageModifier = GetTotalDamage(ammo.DamageType);
-+				if (weapon.useAmmo == AmmoID.Arrow || ammo.ammo == AmmoID.Arrow || weapon.useAmmo == AmmoID.Stake || ammo.ammo == AmmoID.Stake) {
++			if (item.damage > 0) {
++				StatModifier ammoDamageModifier = GetTotalDamage(item.DamageType);
++				if (sItem.useAmmo == AmmoID.Arrow || item.ammo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake || item.ammo == AmmoID.Stake) {
 +					ammoDamageModifier *= arrowDamage.Additive * arrowDamage.Multiplicative;
 +					// NOTE: the Archery Potion damage bonus is handled through arrowDamage now, so the multiplier that'd otherwise be used here is unnecessary
 +					if (archery) {
@@ -4942,112 +4878,42 @@
 +						}
 +					}
 +				}
-+				if (weapon.useAmmo == AmmoID.Bullet || ammo.ammo == AmmoID.Bullet
-+				 || weapon.useAmmo == AmmoID.CandyCorn || ammo.ammo == AmmoID.CandyCorn) {
++				if (sItem.useAmmo == AmmoID.Bullet || item.ammo == AmmoID.Bullet
++				 || sItem.useAmmo == AmmoID.CandyCorn || item.ammo == AmmoID.CandyCorn) {
 +					ammoDamageModifier *= bulletDamage.Additive * bulletDamage.Multiplicative;
 +				}
-+				if (weapon.useAmmo == AmmoID.Rocket || ammo.ammo == AmmoID.Rocket
-+				 || weapon.useAmmo == AmmoID.StyngerBolt || ammo.ammo == AmmoID.StyngerBolt
-+				 || weapon.useAmmo == AmmoID.JackOLantern || ammo.ammo == AmmoID.JackOLantern
-+				 || weapon.useAmmo == AmmoID.NailFriendly || ammo.ammo == AmmoID.NailFriendly) {
++				if (sItem.useAmmo == AmmoID.Rocket || item.ammo == AmmoID.Rocket
++				 || sItem.useAmmo == AmmoID.StyngerBolt || item.ammo == AmmoID.StyngerBolt
++				 || sItem.useAmmo == AmmoID.JackOLantern || item.ammo == AmmoID.JackOLantern
++				 || sItem.useAmmo == AmmoID.NailFriendly || item.ammo == AmmoID.NailFriendly) {
 +					ammoDamageModifier *= rocketDamage.Additive * rocketDamage.Multiplicative;
 +				}
-+				float ammoDamageTotal = ammo.damage * ammoDamageModifier.Additive * ammoDamageModifier.Multiplicative;
-+				totalDamage += (int)ammoDamageTotal;
++				float ammoDamageTotal = item.damage * ammoDamageModifier.Additive * ammoDamageModifier.Multiplicative;
++				Damage += (int)ammoDamageTotal;
 +			}
 +
-+			totalKnockback += ammo.knockBack;
-+		}
++			ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref Damage, ref KnockBack);
 +
-+		// tML: final part of PickAmmo, handles ammo consumption
-+		public void PickAmmo_HandleAmmoConsumption(Item weapon, Item ammo, bool conserveAmmo = false, int projToShoot = 0) {
-+			if (CombinedHooks.CanConsumeAmmo(this, weapon, ammo) is bool canConsume) {
-+				conserveAmmo = !canConsume;
+ 			bool flag2 = dontConsume;
++			if (CombinedHooks.CanConsumeAmmo(this, sItem, item) is bool canConsume) {
++				flag2 = !canConsume;
 +				goto SkipVanillaConservationLogic;
 +			}
 +
-+			if (weapon.type == 3475 && Main.rand.Next(3) != 0)
-+				conserveAmmo = true;
-+
-+			if (weapon.type == 3930 && Main.rand.Next(2) == 0)
-+				conserveAmmo = true;
-+
-+			if (weapon.type == 3540 && Main.rand.Next(3) != 0)
-+				conserveAmmo = true;
-+
-+			if (weapon.ranged) {
-+				if (magicQuiver && (weapon.useAmmo == AmmoID.Arrow || weapon.useAmmo == AmmoID.Stake) && Main.rand.Next(5) == 0)
-+					conserveAmmo = true;
-+
-+				if (ammoBox && Main.rand.Next(5) == 0)
-+					conserveAmmo = true;
-+
-+				if (ammoPotion && Main.rand.Next(5) == 0)
-+					conserveAmmo = true;
-+			}
-+
-+			if (weapon.type == 1782 && Main.rand.Next(3) == 0)
-+				conserveAmmo = true;
-+
-+			if (weapon.type == 98 && Main.rand.Next(3) == 0)
-+				conserveAmmo = true;
-+
-+			if (weapon.type == 2270 && Main.rand.Next(2) == 0)
-+				conserveAmmo = true;
-+
-+			if (weapon.type == 533 && Main.rand.Next(2) == 0)
-+				conserveAmmo = true;
-+
-+			if (weapon.type == 1929 && Main.rand.Next(2) == 0)
-+				conserveAmmo = true;
-+
-+			if (weapon.type == 1553 && Main.rand.Next(3) != 0)
-+				conserveAmmo = true;
-+
-+			// Clockwork Assault Rifle.
-+			// changed to ItemAnimationJustStarted for consistency #2351. Also applies to flamethrower and clentaminator below
-+			if (weapon.type == 434 && !ItemAnimationJustStarted)
-+				conserveAmmo = true;
-+
-+			// Eventide.
-+			// changed > to >= because of itemAnimation adjustment. Uses ammo on last arrow, not first.
-+			if (weapon.type == 4953 && itemAnimation >= weapon.useAnimation - 8)
-+				conserveAmmo = true;
-+
-+			if (weapon.ranged) {
-+				if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
-+					conserveAmmo = true;
-+
-+				if (chloroAmmoCost80 && Main.rand.Next(5) == 0)
-+					conserveAmmo = true;
-+
-+				if (ammoCost80 && Main.rand.Next(5) == 0)
-+					conserveAmmo = true;
-+
-+				if (ammoCost75 && Main.rand.Next(4) == 0)
-+					conserveAmmo = true;
-+			}
-+
-+			if (projToShoot == 85 && !ItemAnimationJustStarted)
-+				conserveAmmo = true;
-+
-+			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && !ItemAnimationJustStarted)
-+				conserveAmmo = true;
-+
-+			SkipVanillaConservationLogic:
-+			if (!conserveAmmo && ammo.consumable) {
-+				CombinedHooks.OnConsumeAmmo(this, weapon, ammo);
-+
-+				ammo.stack--;
-+				if (ammo.stack <= 0) {
-+					ammo.active = false;
-+					ammo.TurnToAir();
-+				}
-+			}
-+		}
+ 			if (sItem.type == 3475 && Main.rand.Next(3) != 0)
+ 				flag2 = true;
  
- 		public void GetOtherPlayersPickTile(int x, int y, int pickDamage) {
- 			int tileId = hitTile.HitObject(x, y, 1);
+@@ -37232,7 +_,10 @@
+ 			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
+ 				flag2 = true;
+ 
++			SkipVanillaConservationLogic:
+ 			if (!flag2 && item.consumable) {
++				CombinedHooks.OnConsumeAmmo(this, sItem, item);
++
+ 				item.stack--;
+ 				if (item.stack <= 0) {
+ 					item.active = false;
 @@ -37274,7 +_,7 @@
  						NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  					}
