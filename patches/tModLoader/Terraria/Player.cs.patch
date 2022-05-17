@@ -4825,12 +4825,38 @@
  						canUse = true;
  						break;
  					}
-@@ -37055,14 +_,21 @@
+@@ -37055,14 +_,47 @@
  			return false;
  		}
  
 -		public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
 -			Item item = new Item();
++		/// <summary>
++		/// More convienient version of PickAmmo for public consumption
++		/// </summary>
++		/// <param name="weapon"></param>
++		/// <param name="projToShoot"></param>
++		/// <param name="speed"></param>
++		/// <param name="damage"></param>
++		/// <param name="knockBack"></param>
++		/// <param name="usedAmmoItemId"></param>
++		/// <param name="dontConsume"></param>
++		/// <returns>true if ammo was chosen.</returns>
++		public bool PickAmmo(Item weapon, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, bool dontConsume = false) {
++			projToShoot = weapon.shoot;
++			speed = weapon.shootSpeed;
++			damage = weapon.damage;
++			knockBack = weapon.knockBack;
++			bool canShoot = false;
++			PickAmmo(weapon, ref projToShoot, ref speed, ref canShoot, ref damage, ref knockBack, out usedAmmoItemId, dontConsume);
++			if (!canShoot) {
++				projToShoot = 0;
++				return false;
++			}
++
++			return true;
++		}
++
 +		/// <summary>
 +		/// Select an ammo item stack from inventory to shoot with weapon
 +		/// </summary>
@@ -4876,7 +4902,7 @@
 +			return item;
 +		}
 +
-+		public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int totalDamage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
++		internal void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int totalDamage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
 +			usedAmmoItemId = 0;
 +			Item item = ChooseAmmo(sItem);
 +			canShoot = item != null;
