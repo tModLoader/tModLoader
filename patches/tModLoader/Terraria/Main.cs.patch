@@ -3766,7 +3766,7 @@
 +			string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +			string patreonShortURL = @"patreon.com/tModLoader";
 +			bool showPatreon = !Steam.IsSteamApp;
-+			string text = ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "") + Environment.NewLine + Environment.NewLine + "Terraria " + versionNumber;
++			string text = ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "") + (Main.menuMode == 0 ? Environment.NewLine : "") + Environment.NewLine + "Terraria " + versionNumber;
 +
  			Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);
  			origin.X *= 0.5f;
