@@ -294,8 +294,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not the given ammo item will be consumed; called on the weapon. If this, or <see cref="CanBeConsumedAsAmmo"/> on the ammo, returns false, then the ammo will not be valid for this weapon. <br></br>
-		/// By default, returns null and allows vanilla's ammo conservation rules to decide. Return true to make the ammo consumed regardless of vanilla rules, and return false to make it not consumed regardless. <br></br>
+		/// Whether or not the given ammo item will be consumed; called on the weapon.<br></br>
+		/// By default, returns null and allows vanilla's ammo conservation rules to decide.<br></br>
+		/// Return true to make the ammo consumed regardless of vanilla rules, and return false to make it not consumed regardless.<br></br>
 		/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
 		/// </summary>
 		/// <param name="weapon">The weapon that this hook is being called for.</param>
@@ -307,8 +308,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not the given ammo item will be consumed; called on the ammo. If this, or <see cref="CanConsumeAmmo"/> on the ammo, returns false, then the ammo will not be valid for this weapon. <br></br>
-		/// By default, returns null and allows vanilla's ammo conservation rules to decide. Return true to make this ammo consumed regardless of vanilla rules, and return false to make it not consumed. <br></br>
+		/// Whether or not the given ammo item will be consumed; called on the ammo.<br></br>
+		/// By default, returns null and allows vanilla's ammo conservation rules to decide.<br></br>
+		/// Return true to make this ammo consumed regardless of vanilla rules, and return false to make it not consumed regardless.<br></br>
 		/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
 		/// </summary>
 		/// <param name="ammo">The ammo that this hook is being called for.</param>
@@ -320,22 +322,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when ammo is consumed. Called by the weapon.
-		/// <br>Called before the ammo stack is reduced.</br>
+		/// Allows you to make things happen when the given ammo is consumed by the given weapon. Called by the weapon.<br></br>
+		/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
 		/// </summary>
 		/// <param name="weapon">The currently-active weapon.</param>
-		/// <param name="ammo">The ammo that this weapon is currently using.</param>
-		/// <param name="player">The player which this weapon and the ammo belong to.</param>
+		/// <param name="ammo">The ammo that the given weapon is currently using.</param>
+		/// <param name="player">The player which the given weapon and the given ammo belong to.</param>
 		public virtual void OnConsumeAmmo(Item weapon, Item ammo, Player player) {
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when ammo is consumed. Called by the ammo.
-		/// <br>Called before the ammo stack is reduced.</br>
+		/// Allows you to make things happen when the given ammo is consumed by the given weapon. Called by the ammo.<br></br>
+		/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
 		/// </summary>
 		/// <param name="ammo">The currently-active ammo.</param>
-		/// <param name="weapon">The weapon that is currently using this ammo.</param>
-		/// <param name="player">The player which the weapon and this ammo belong to.</param>
+		/// <param name="weapon">The weapon that is currently using the given ammo.</param>
+		/// <param name="player">The player which the given weapon and the given ammo belong to.</param>
 		public virtual void OnConsumedAsAmmo(Item ammo, Item weapon, Player player) {
 		}
 

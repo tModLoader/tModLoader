@@ -541,13 +541,17 @@ namespace Terraria.ModLoader
 		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Item, bool?>>(p => p.CanConsumeAmmo);
 
 		public static bool? CanConsumeAmmo(Player player, Item weapon, Item ammo) {
+			bool? canConsumeAmmo = null;
 			foreach (int index in HookCanConsumeAmmo.arr) {
-				bool? canConsumeAmmo = player.modPlayers[index].CanConsumeAmmo(weapon, ammo);
-				if (canConsumeAmmo.HasValue) {
-					return canConsumeAmmo.Value;
+				bool? canConsumeAmmoFromCurrentModPlayer = player.modPlayers[index].CanConsumeAmmo(weapon, ammo);
+				if (canConsumeAmmoFromCurrentModPlayer.HasValue) {
+					if (canConsumeAmmoFromCurrentModPlayer.Value)
+						return canConsumeAmmoFromCurrentModPlayer.Value;
+
+					canConsumeAmmo = canConsumeAmmoFromCurrentModPlayer.Value;
 				}
 			}
-			return null;
+			return canConsumeAmmo;
 		}
 
 		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Item>>(p => p.OnConsumeAmmo);
