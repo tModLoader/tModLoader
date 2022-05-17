@@ -25,6 +25,7 @@ namespace Terraria.ModLoader.UI
 
 		private UIImage _moreInfoButton;
 		private UIImage _modIcon;
+		private UIImageFramed updatedModDot;
 		private UIHoverImage _keyImage;
 		private UIImage _configButton;
 		private UIText _modName;
@@ -218,6 +219,18 @@ namespace Terraria.ModLoader.UI
 				_deleteModButton.OnClick += QuickModDelete;
 				Append(_deleteModButton);
 			}
+
+			if (ModOrganizer.modsThatUpdatedSinceLastLaunch.Contains(ModName)) {
+				var toggleImage = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
+				updatedModDot = new UIImageFramed(toggleImage, toggleImage.Frame(2, 1, 1, 0)) {
+					Left = { Pixels = _modName.GetInnerDimensions().ToRectangle().Right + 8 /* _modIconAdjust*/, Percent = 0f },
+					Top = { Pixels = 5, Percent = 0f },
+					Color = new Color(6, 95, 212)
+				};
+				//_modName.Left.Pixels += 18; // use these 2 for left of the modname
+
+				Append(updatedModDot);
+			}
 		}
 
 		// TODO: "Generate Language File Template" button in upcoming "Miscellaneous Tools" menu.
@@ -288,6 +301,9 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (_configButton?.IsMouseHovering == true) {
 				_tooltip = Language.GetTextValue("tModLoader.ModsOpenConfig");
+			}
+			else if (updatedModDot?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.ModUpdatedSinceLastLaunchMessage");
 			}
 		}
 
