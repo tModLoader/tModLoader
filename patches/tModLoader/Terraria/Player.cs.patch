@@ -4825,7 +4825,24 @@
  						canUse = true;
  						break;
  					}
-@@ -37062,7 +_,7 @@
+@@ -37055,14 +_,21 @@
+ 			return false;
+ 		}
+ 
+-		public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
+-			Item item = new Item();
++		/// <summary>
++		/// Select an ammo item stack from inventory to shoot with weapon
++		/// </summary>
++		/// <param name="weapon"></param>
++		/// <returns>Null if no suitable ammo is found</returns>
++		public Item ChooseAmmo(Item weapon) {
++			var sItem = weapon;
++			Item item = null;
+ 			bool flag = false;
+-			usedAmmoItemId = 0;
++			bool canShoot = false;
++
  			if (sItem.useAmmo == AmmoID.Coin) {
  				for (int i = 0; i < 4; i++) {
  					int num = 50 + i;
@@ -4852,6 +4869,20 @@
  						item = inventory[k];
  						canShoot = true;
  						break;
+@@ -37090,6 +_,13 @@
+ 				}
+ 			}
+ 
++			return item;
++		}
++
++		public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
++			usedAmmoItemId = 0;
++			Item item = ChooseAmmo(sItem);
++			canShoot = item != null;
+ 			if (!canShoot)
+ 				return;
+ 
 @@ -37152,6 +_,7 @@
  			}
  
