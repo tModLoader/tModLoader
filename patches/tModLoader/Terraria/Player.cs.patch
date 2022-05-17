@@ -4784,7 +4784,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,13 +_,39 @@
+@@ -37031,9 +_,29 @@
  			}
  
  			return num;
@@ -4806,25 +4806,23 @@
 +			return Math.Max(0, (int)(modifier.ApplyTo(baseDamage) + 5E-06f));
  		}
  
- 		public bool HasAmmo(Item sItem, bool canUse) {
++		public bool HasAmmo(Item sItem) => HasAmmo(sItem, canUse: true);
++
+-		public bool HasAmmo(Item sItem, bool canUse) {
++		internal bool HasAmmo(Item sItem, bool canUse) {
++			return sItem.useAmmo > 0 && ChooseAmmo(sItem) != null;
++			/*
  			if (sItem.useAmmo > 0) {
  				canUse = false;
  				for (int i = 0; i < 58; i++) {
--					if (inventory[i].ammo == sItem.useAmmo && inventory[i].stack > 0) {
-+					if (inventory[i].stack <= 0)
-+						continue;
-+
-+					bool? canChooseAmmo = ItemLoader.CanChooseAmmo(sItem, inventory[i], this);
-+					if (canChooseAmmo.HasValue) {
-+						if (canChooseAmmo.Value) {
-+							canUse = true;
-+							break;
-+						}
-+					}
-+					else if (inventory[i].ammo == sItem.useAmmo) {
- 						canUse = true;
- 						break;
- 					}
+@@ -37045,6 +_,7 @@
+ 			}
+ 
+ 			return canUse;
++			*/
+ 		}
+ 
+ 		private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId) {
 @@ -37055,14 +_,47 @@
  			return false;
  		}
