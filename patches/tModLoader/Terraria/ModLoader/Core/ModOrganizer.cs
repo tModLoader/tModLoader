@@ -97,7 +97,7 @@ namespace Terraria.ModLoader.Core
 			string info = null;
 
 			// Collect formatted display names and versions of every local mod
-			var currMods = FindMods().ToDictionary(mod => mod.Name, mod => Tuple.Create($"({mod.DisplayName})", mod.properties.version));
+			var currMods = FindMods().ToDictionary(mod => mod.Name, mod => mod);
 
 			string fileName = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
 
@@ -107,50 +107,49 @@ namespace Terraria.ModLoader.Core
 				try {
 					// Construct dict of last mods
 					var lines = File.ReadLines(fileName);
-					var lastMods = new Dictionary<string, Tuple<string, Version>>();
+					var lastMods = new Dictionary<string, Version>();
 					foreach (var line in lines) {
 						string[] parts = line.Split(' ');
-						if (parts.Length < 2) {
+						if (parts.Length != 2) {
 							continue;
 						}
 
-						string name = parts[0]; // Internal name is always first
-						string displayName = string.Join(" ", parts[1..^1]); // Display name is inbetween
-						string versionString = parts[^1]; // Version is always last
-						lastMods.Add(name, Tuple.Create(displayName, new Version(versionString)));
+						string name = parts[0];
+						string versionString = parts[1];
+						lastMods.Add(name, new Version(versionString));
 					}
 
 					// Generate diff and display if exists
-					// Only track new and updated, not deleted, maybe TODO?
-					var newMods = new Dictionary<string, string>();
-					var updatedMods = new Dictionary<string, string>();
+					// Only track new and updated, not deleted, maybe TODO? Would require saving the display name for deletion info
+					var newMods = new List<string>();
+					var updatedMods = new List<string>();
 					var messages = new StringBuilder();
 					foreach (var item in currMods) {
 						string name = item.Key;
-						string displayName = item.Value.Item1;
-						Version version = item.Value.Item2;
+						var localMod = item.Value;
+						Version version = localMod.properties.version;
 
 						if (!lastMods.ContainsKey(name))
-							newMods.Add(name, displayName);
-						else if (lastMods.TryGetValue(name, out var tuple) && tuple.Item2 < version)
-							updatedMods.Add(name, displayName);
+							newMods.Add(name);
+						else if (lastMods.TryGetValue(name, out var lastVersion) && lastVersion < version)
+							updatedMods.Add(name);
 					}
 
 					if (newMods.Count > 0) {
 						messages.Append(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessageNewMods"));
 						foreach (var newMod in newMods) {
-							messages.Append($"\n  {newMod.Key} {newMod.Value}");
+							messages.Append($"\n  {newMod} ({currMods[newMod].DisplayName})");
 						}
 					}
 
 					if (updatedMods.Count > 0) {
 						messages.Append(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessageUpdatedMods"));
 						foreach (var updatedMod in updatedMods) {
-							string name = updatedMod.Key;
-							string displayName = updatedMod.Value;
-							Version lastVersion = lastMods[name].Item2;
-							Version currVersion = currMods[name].Item2;
-							messages.Append($"\n  {name} {displayName} v{lastVersion} -> v{currVersion}");
+							string name = updatedMod;
+							string displayName = currMods[name].DisplayName;
+							Version lastVersion = lastMods[name];
+							Version currVersion = currMods[name].properties.version;
+							messages.Append($"\n  {name} ({displayName}) v{lastVersion} -> v{currVersion}");
 						}
 					}
 
@@ -166,8 +165,7 @@ namespace Terraria.ModLoader.Core
 			// Overwrite with current mods
 			var fileText = new StringBuilder();
 			foreach (var item in currMods) {
-				string compoundName = $"{item.Key} {item.Value.Item1}";
-				fileText.Append($"{compoundName} {item.Value.Item2}\n");
+				fileText.Append($"{item.Key} {item.Value.properties.version}\n");
 			}
 			File.WriteAllText(fileName, fileText.ToString());
 
