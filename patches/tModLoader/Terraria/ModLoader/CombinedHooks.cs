@@ -37,15 +37,15 @@ namespace Terraria.ModLoader
 		}
 
 		public static bool? CanConsumeAmmo(Player player, Item weapon, Item ammo) {
-			bool? canConsumeFromPlayer = PlayerLoader.CanConsumeAmmo(player, weapon, ammo);
 			bool? canConsumeFromItem = ItemLoader.CanConsumeAmmo(weapon, ammo, player);
-			if (canConsumeFromPlayer.HasValue || canConsumeFromItem.HasValue) {
-				if (canConsumeFromPlayer.HasValue)
-					return canConsumeFromPlayer.Value;
+			if (canConsumeFromItem is true)
+				return true;
 
-				return canConsumeFromItem.Value;
-			}
-			return null;
+			bool? canConsumeFromPlayer = PlayerLoader.CanConsumeAmmo(player, weapon, ammo);
+			if (canConsumeFromPlayer is true)
+				return true;
+
+			return canConsumeFromItem ?? canConsumeFromPlayer;
 		}
 
 		public static void OnConsumeAmmo(Player player, Item weapon, Item ammo) {

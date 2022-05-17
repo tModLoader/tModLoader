@@ -654,44 +654,39 @@ namespace Terraria.ModLoader
 		/// If all of them fail to do this, returns either false (if one returned false prior) or null.
 		/// </summary>
 		public static bool? CanConsumeAmmo(Item weapon, Item ammo, Player player) {
-			bool? shouldAmmoBeConsumedOverall = null;
+			bool? result = null;
 			foreach (var g in HookCanConsumeAmmo.Enumerate(weapon.globalItems)) {
-				bool? canConsumeAmmo = g.CanConsumeAmmo(weapon, ammo, player);
-				if (canConsumeAmmo.HasValue) {
-					if (canConsumeAmmo.Value)
-						return canConsumeAmmo.Value;
+				bool? r = g.CanConsumeAmmo(weapon, ammo, player);
+				if (r is true)
+					return true;
 
-					shouldAmmoBeConsumedOverall = canConsumeAmmo.Value;
-				}
+				result ??= r;
 			}
+
 			foreach (var g in HookCanBeConsumedAsAmmo.Enumerate(ammo.globalItems)) {
-				bool? canBeConsumedAsAmmo = g.CanBeConsumedAsAmmo(ammo, weapon, player);
-				if (canBeConsumedAsAmmo.HasValue) {
-					if (canBeConsumedAsAmmo.Value)
-						return canBeConsumedAsAmmo.Value;
+				bool? r = g.CanBeConsumedAsAmmo(ammo, weapon, player);
+				if (r is true)
+					return true;
 
-					shouldAmmoBeConsumedOverall = canBeConsumedAsAmmo.Value;
-				}
+				result ??= r;
 			}
+
 			if (weapon.ModItem != null) {
-				bool? canConsumeAmmoAsModItem = weapon.ModItem.CanConsumeAmmo(ammo, player);
-				if (canConsumeAmmoAsModItem.HasValue) {
-					if (canConsumeAmmoAsModItem.Value)
-						return canConsumeAmmoAsModItem.Value;
+				bool? r = weapon.ModItem?.CanConsumeAmmo(ammo, player);
+				if (r is true)
+					return true;
 
-					shouldAmmoBeConsumedOverall = canConsumeAmmoAsModItem.Value;
-				}
+				result ??= r;
 			}
+
 			if (ammo.ModItem != null) {
-				bool? canBeConsumedAsModdedAmmo = ammo.ModItem.CanBeConsumedAsAmmo(weapon, player);
-				if (canBeConsumedAsModdedAmmo.HasValue) {
-					if (canBeConsumedAsModdedAmmo.Value)
-						return canBeConsumedAsModdedAmmo.Value;
+				bool? r = ammo.ModItem?.CanBeConsumedAsAmmo(weapon, player);
+				if (r is true)
+					return true;
 
-					shouldAmmoBeConsumedOverall = canBeConsumedAsModdedAmmo.Value;
-				}
+				result ??= r;
 			}
-			return shouldAmmoBeConsumedOverall;
+			return result;
 		}
 
 		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Item, Player>>(g => g.OnConsumeAmmo);

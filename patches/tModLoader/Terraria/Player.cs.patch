@@ -4833,7 +4833,7 @@
  			Item item = new Item();
  			bool flag = false;
  			usedAmmoItemId = 0;
-@@ -37239,6 +_,261 @@
+@@ -37239,6 +_,260 @@
  					item.TurnToAir();
  				}
  			}
@@ -5008,9 +5008,8 @@
 +
 +		// tML: final part of PickAmmo, handles ammo consumption
 +		public void PickAmmo_HandleAmmoConsumption(Item weapon, Item ammo, bool conserveAmmo = false, int projToShoot = 0) {
-+			bool? canConsumeAmmo = CombinedHooks.CanConsumeAmmo(this, weapon, ammo);
-+			if (canConsumeAmmo.HasValue) {
-+				conserveAmmo = canConsumeAmmo.Value;
++			if (CombinedHooks.CanConsumeAmmo(this, weapon, ammo) is bool canConsume) {
++				conserveAmmo = !canConsume;
 +				goto SkipVanillaConservationLogic;
 +			}
 +
