@@ -3688,6 +3688,14 @@
  
  			if (menuMode == 888) {
  				if (!_blockFancyUIWhileLoading)
+@@ -39523,6 +_,7 @@
+ 			if (!WorldGen.drunkWorldGen && menuMode == 0) {
+ 				DrawSocialMediaButtons(color, num109);
+ 				num109 += 32f;
++				DrawtModLoaderSocialMediaButtons(color, num109);
+ 			}
+ 
+ 			if (!WorldGen.drunkWorldGen) {
 @@ -39560,6 +_,21 @@
  			else
  				mouseRightRelease = true;
@@ -3758,7 +3766,7 @@
 +			string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +			string patreonShortURL = @"patreon.com/tModLoader";
 +			bool showPatreon = !Steam.IsSteamApp;
-+			string text = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
++			string text = ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "") + Environment.NewLine + Environment.NewLine + "Terraria " + versionNumber;
 +
  			Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);
  			origin.X *= 0.5f;
