@@ -17,6 +17,8 @@
 		"FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
 		"WhatsNewMessage": "The following are basic change notes from the last time you launched the Alpha. You may find that mods that relate to these changes need to be rebuilt by the author. Visit GitHub to see more details:\n",
 		"ShowNewUpdatedModsInfoMessage": "The following mods were added or updated since last launch (you can disable this message in the settings):\n",
+		"ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
+		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
 		"ViewOnGitHub": "View on GitHub",
 		"tModLoaderSettings": "tModLoader Settings",
 		"ModMenuSwap": "Switch Menu Theme",

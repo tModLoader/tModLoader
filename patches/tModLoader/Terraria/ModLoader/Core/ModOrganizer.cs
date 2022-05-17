@@ -97,11 +97,7 @@ namespace Terraria.ModLoader.Core
 			string info = null;
 
 			// Collect formatted display names and versions of every local mod
-			var mods = FindMods();
-			Dictionary<string, Tuple<string, Version>> currMods = new();
-			foreach (var mod in mods) {
-				currMods.Add(mod.Name, Tuple.Create($"({mod.DisplayName})", mod.properties.version));
-			}
+			var currMods = FindMods().ToDictionary(mod => mod.Name, mod => Tuple.Create($"({mod.DisplayName})", mod.properties.version));
 
 			string fileName = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
 
@@ -109,9 +105,9 @@ namespace Terraria.ModLoader.Core
 			if (ModLoader.showNewUpdatedModsInfo && File.Exists(fileName)) {
 				// trycatch the read in case users manually modify the file
 				try {
-					// Construct dict of last loaded mods
+					// Construct dict of last mods
 					var lines = File.ReadLines(fileName);
-					Dictionary<string, Tuple<string, Version>> lastMods = new();
+					var lastMods = new Dictionary<string, Tuple<string, Version>>();
 					foreach (var line in lines) {
 						string[] parts = line.Split(' ');
 						if (parts.Length < 2) {
@@ -126,8 +122,8 @@ namespace Terraria.ModLoader.Core
 
 					// Generate diff and display if exists
 					// Only track new and updated, not deleted, maybe TODO?
-					Dictionary<string, string> newMods = new();
-					Dictionary<string, string> updatedMods = new();
+					var newMods = new Dictionary<string, string>();
+					var updatedMods = new Dictionary<string, string>();
 					var messages = new StringBuilder();
 					foreach (var item in currMods) {
 						string name = item.Key;
@@ -141,14 +137,14 @@ namespace Terraria.ModLoader.Core
 					}
 
 					if (newMods.Count > 0) {
-						messages.Append("\nNew Mods:");
+						messages.Append(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessageNewMods"));
 						foreach (var newMod in newMods) {
 							messages.Append($"\n  {newMod.Key} {newMod.Value}");
 						}
 					}
 
 					if (updatedMods.Count > 0) {
-						messages.Append("\nUpdated Mods:");
+						messages.Append(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessageUpdatedMods"));
 						foreach (var updatedMod in updatedMods) {
 							string name = updatedMod.Key;
 							string displayName = updatedMod.Value;
