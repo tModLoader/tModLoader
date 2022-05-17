@@ -27,6 +27,30 @@ namespace Terraria
 		public bool AllowReforgeForStackableItem { get; set; }
 
 		/// <summary>
+		/// Dictates.<br></br>
+		/// 
+		/// </summary>
+		public int ShotLimitPerUse { get; set; }
+
+		/// <summary>
+		/// Dictates whether or not this item should only consume ammo on its first shot of each use.<br></br>
+		/// Defaults to false. Has no effect if ShotLimitPerUse is kept at 1.<br></br>
+		/// Used in vanilla by the following:<br></br>
+		/// - Clockwork Assault Rifle<br></br>
+		/// - Flamethrower<br></br>
+		/// - Elf Melter<br></br>
+		/// - Clentaminator<br></br>
+		/// </summary>
+		public bool ConsumeAmmoOnFirstShotOnly { get; set; }
+
+		/// <summary>
+		/// Dictates whether or not this item should only consume ammo on its last shot of each use.<br></br>
+		/// Defaults to false. Has no effect if ShotLimitPerUse is kept at 1.<br></br>
+		/// Used in vanilla solely by Eventide.
+		/// </summary>
+		public bool ConsumeAmmoOnLastShotOnly { get; set; }
+
+		/// <summary>
 		/// Used to make stackable items reforgeable
 		/// </summary>
 		public bool IsCandidateForReforge => maxStack == 1 || AllowReforgeForStackableItem;
