@@ -38,7 +38,7 @@ namespace ExampleMod.Content.Projectiles
 		// If you just want the same vanilla behavior, you can instead set Projectile.aiStyle = 159 in SetDefaults and remove this AI() section.
 		public override void AI() {
 			// All projectiles have timers that help to delay certain events
-			// Projectile.ai[0], Projectile.ai[1] — timers that are automatically synchronized on the client and server
+			// Projectile.ai[0], Projectile.ai[1] â€” timers that are automatically synchronized on the client and server
 
 			// This will run only once as soon as the projectile spawns.
 			if (Projectile.ai[1] == 0f) {
@@ -117,7 +117,7 @@ namespace ExampleMod.Content.Projectiles
 			}
 		}
 
-		// We need to do draw the projectile manually. If you don't include this, the projectile will be facing the wrong direction when flying left.
+		// We need to draw the projectile manually. If you don't include this, the projectile will be facing the wrong direction when flying left.
 		public override bool PreDraw(ref Color lightColor) {
 			// This is where we specify which way to flip the sprite. If the projectile is moving to the left, then flip it vertically.
 			SpriteEffects spriteEffects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipVertically : SpriteEffects.None);
