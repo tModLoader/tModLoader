@@ -7,6 +7,8 @@ var class_terraria_1_1_mod_loader_1_1_mod_loader =
     [ "AlphaWelcomed", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#abe10f662dc343219047c28f1bd84702d", null ],
     [ "LastLaunchedTModLoaderAlphaSha", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aec3a6d2e3ea4a974df725af8d87f2380", null ],
     [ "LastLaunchedTModLoaderVersion", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#ad16ba87cca9484f916b19b6a5a8ef8be", null ],
+    [ "LastPreviewFreezeNotificationSeen", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3b339ad844fba7e6a301712eef16a072", null ],
+    [ "PreviewFreezeNotification", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaefa5fb2877269a328c423c91f825f8a", null ],
     [ "ShowFirstLaunchWelcomeMessage", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#adca9f1346ab9de4d12797915a621387c", null ],
     [ "ShowWhatsNew", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aabfba5b93f06954e8b05ec358b8653f7", null ],
     [ "CompressedPlatformRepresentation", "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a263513b76dcdfedb67534a729c678efb", null ],
