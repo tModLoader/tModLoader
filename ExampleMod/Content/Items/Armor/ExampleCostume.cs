@@ -25,31 +25,48 @@ namespace ExampleMod.Content.Items.Armor
 	{
 		public override void Load() {
 			// The code below runs only if we're not loading on a server
-			if (Main.netMode != NetmodeID.Server) {
-				// Add equip textures
-				Mod.AddEquipTexture(new BlockyHead(), this, EquipType.Head, $"{Texture}_{EquipType.Head}");
-				Mod.AddEquipTexture(new EquipTexture(), this, EquipType.Body, $"{Texture}_{EquipType.Body}");
-				// The below 2 lines are equivalent
-				//Mod.AddEquipTexture(new EquipTexture(), EquipType.Legs, $"{Texture}_{EquipType.Legs}");
-				Mod.AddEquipTexture(this, EquipType.Legs, $"{Texture}_{EquipType.Legs}");
-			}
+			if (Main.netMode == NetmodeID.Server)
+				return;
+
+			// Add equip textures
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Head}", EquipType.Head, this, equipTexture: new BlockyHead());
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Body}", EquipType.Body, this);
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
+
+			//Add a separate set of equip textures by providing a custom name reference instead of an item reference
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Head}", EquipType.Head, name: "BlockyAlt", equipTexture: new BlockyHead());
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Body}", EquipType.Body, name: "BlockyAlt");
+			EquipLoader.AddEquipTexture(Mod, $"{Texture}Alt_{EquipType.Legs}", EquipType.Legs, name: "BlockyAlt");
 		}
 
 		// Called in SetStaticDefaults
 		private void SetupDrawing() {
-			int equipSlotHead = Mod.GetEquipSlot(Name, EquipType.Head);
-			int equipSlotBody = Mod.GetEquipSlot(Name, EquipType.Body);
-			int equipSlotLegs = Mod.GetEquipSlot(Name, EquipType.Legs);
+			// Since the equipment textures weren't loaded on the server, we can't have this code running server-side
+			if (Main.netMode == NetmodeID.Server)
+				return;
+
+			int equipSlotHead = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Head);
+			int equipSlotBody = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Body);
+			int equipSlotLegs = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs);
+
+			int equipSlotHeadAlt = EquipLoader.GetEquipSlot(Mod, "BlockyAlt", EquipType.Head);
+			int equipSlotBodyAlt = EquipLoader.GetEquipSlot(Mod, "BlockyAlt", EquipType.Body);
+			int equipSlotLegsAlt = EquipLoader.GetEquipSlot(Mod, "BlockyAlt", EquipType.Legs);
 
 			ArmorIDs.Head.Sets.DrawHead[equipSlotHead] = false;
+			ArmorIDs.Head.Sets.DrawHead[equipSlotHeadAlt] = false;
 			ArmorIDs.Body.Sets.HidesTopSkin[equipSlotBody] = true;
 			ArmorIDs.Body.Sets.HidesArms[equipSlotBody] = true;
+			ArmorIDs.Body.Sets.HidesTopSkin[equipSlotBodyAlt] = true;
+			ArmorIDs.Body.Sets.HidesArms[equipSlotBodyAlt] = true;
 			ArmorIDs.Legs.Sets.HidesBottomSkin[equipSlotLegs] = true;
+			ArmorIDs.Legs.Sets.HidesBottomSkin[equipSlotLegsAlt] = true;
 		}
 
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Charm of Example");
-			Tooltip.SetDefault("Turns the holder into Blocky near town NPC");
+			Tooltip.SetDefault("Turns the holder into Blocky near town NPC"
+				+ "\nBlocky's colors will invert in water");
 
 			SetupDrawing();
 		}

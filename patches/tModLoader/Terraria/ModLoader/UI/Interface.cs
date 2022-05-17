@@ -130,6 +130,16 @@ namespace Terraria.ModLoader.UI
 								});
 					}
 				}
+				else if (ModLoader.PreviewFreezeNotification) {
+					ModLoader.PreviewFreezeNotification = false;
+					ModLoader.LastPreviewFreezeNotificationSeen = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
+					infoMessage.Show(Language.GetTextValue("tModLoader.MonthlyFreezeNotification"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
+						() => {
+							SoundEngine.PlaySound(SoundID.MenuOpen);
+							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14-alpha");
+						});
+					Main.SaveSettings();
+				}
 			}
 			if (Main.menuMode == modsMenuID) {
 				Main.MenuUI.SetState(modsMenu);

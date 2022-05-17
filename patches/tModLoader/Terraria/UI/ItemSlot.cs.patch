@@ -335,7 +335,7 @@
  						}
  					}
 -					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5125 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
-+					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < ItemLoader.ItemCount && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
++					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < ItemID.Count && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
  						if (Main.mouseRightRelease) {
  							player.OpenFishingCrate(inv[slot].type);
 +							if (ItemLoader.ConsumeItem(inv[slot], player))

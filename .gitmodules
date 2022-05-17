@@ -4,3 +4,6 @@
 [submodule "FNA"]
 	path = FNA
 	url = https://github.com/FNA-XNA/FNA.git
+[submodule "tModPorter"]
+	path = tModPorter
+	url = https://github.com/tModLoader/tModPorter.git
