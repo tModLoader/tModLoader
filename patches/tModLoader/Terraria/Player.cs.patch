@@ -1698,6 +1698,27 @@
  					moveSpeed += 0.05f;
  				}
  
+@@ -9269,17 +_,17 @@
+ 
+ 				if (armor[k].type == 1546) {
+ 					rangedCrit += 5;
+-					arrowDamage += 0.15f;
++					arrowDamage *= 0.15f; // tML += -> *= to imitate vanilla stacking behaviour
+ 				}
+ 
+ 				if (armor[k].type == 1547) {
+ 					rangedCrit += 5;
+-					bulletDamage += 0.15f;
++					bulletDamage *= 0.15f; // tML += -> *= to imitate vanilla stacking behaviour
+ 				}
+ 
+ 				if (armor[k].type == 1548) {
+ 					rangedCrit += 5;
+-					rocketDamage += 0.15f;
++					rocketDamage *= 0.15f; // tML += -> *= to imitate vanilla stacking behaviour
+ 				}
+ 
+ 				if (armor[k].type == 1549) {
 @@ -9514,43 +_,61 @@
  					statManaMax2 += 20;
  
@@ -4763,7 +4784,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,13 +_,46 @@
+@@ -37031,13 +_,39 @@
  			}
  
  			return num;
@@ -4771,21 +4792,14 @@
 +
 +			StatModifier modifier = GetTotalDamage(sItem.DamageType);
 +
-+			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) {
-+				modifier *= arrowDamage.Additive * arrowDamage.Multiplicative;
-+				modifier.Base += arrowDamage.Base;
-+				modifier.Flat += arrowDamage.Flat;
-+			}
-+			if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn) {
-+				modifier *= bulletDamage.Additive * bulletDamage.Multiplicative;
-+				modifier.Base += bulletDamage.Base;
-+				modifier.Flat += bulletDamage.Flat;
-+			}
-+			if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly) {
-+				modifier *= rocketDamage.Additive * rocketDamage.Multiplicative;
-+				modifier.Base += rocketDamage.Base;
-+				modifier.Flat += rocketDamage.Flat;
-+			}
++			if (AmmoID.Sets.IsArrow[sItem.useAmmo])
++				modifier = modifier.CombineWith(arrowDamage);
++
++			if (AmmoID.Sets.IsBullet[sItem.useAmmo])
++				modifier = modifier.CombineWith(bulletDamage);
++
++			if (AmmoID.Sets.IsRocket[sItem.useAmmo])
++				modifier = modifier.CombineWith(rocketDamage);
 +
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
 +			int baseDamage = forTooltip ? (int)(sItem.damage * ItemID.Sets.ToolTipDamageMultiplier[sItem.type]) : sItem.damage;
@@ -4854,7 +4868,7 @@
  
  			if ((sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && archery) {
  				if (speed < 20f) {
-@@ -37167,11 +_,47 @@
+@@ -37167,11 +_,44 @@
  						speed = 20f;
  				}
  
@@ -4867,8 +4881,8 @@
 +
 +			if (item.damage > 0) {
 +				StatModifier ammoDamageModifier = GetTotalDamage(item.DamageType);
-+				if (sItem.useAmmo == AmmoID.Arrow || item.ammo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake || item.ammo == AmmoID.Stake) {
-+					ammoDamageModifier *= arrowDamage.Additive * arrowDamage.Multiplicative;
++				if (AmmoID.Sets.IsArrow[item.ammo]) {
++					ammoDamageModifier = ammoDamageModifier.CombineWith(arrowDamage);
 +					// NOTE: the Archery Potion damage bonus is handled through arrowDamage now, so the multiplier that'd otherwise be used here is unnecessary
 +					if (archery) {
 +						if (speed < 20f) {
@@ -4878,16 +4892,13 @@
 +						}
 +					}
 +				}
-+				if (sItem.useAmmo == AmmoID.Bullet || item.ammo == AmmoID.Bullet
-+				 || sItem.useAmmo == AmmoID.CandyCorn || item.ammo == AmmoID.CandyCorn) {
-+					ammoDamageModifier *= bulletDamage.Additive * bulletDamage.Multiplicative;
-+				}
-+				if (sItem.useAmmo == AmmoID.Rocket || item.ammo == AmmoID.Rocket
-+				 || sItem.useAmmo == AmmoID.StyngerBolt || item.ammo == AmmoID.StyngerBolt
-+				 || sItem.useAmmo == AmmoID.JackOLantern || item.ammo == AmmoID.JackOLantern
-+				 || sItem.useAmmo == AmmoID.NailFriendly || item.ammo == AmmoID.NailFriendly) {
-+					ammoDamageModifier *= rocketDamage.Additive * rocketDamage.Multiplicative;
-+				}
++
++				if (AmmoID.Sets.IsBullet[item.ammo])
++					ammoDamageModifier = ammoDamageModifier.CombineWith(bulletDamage);
++
++				if (AmmoID.Sets.IsRocket[item.ammo])
++					ammoDamageModifier = ammoDamageModifier.CombineWith(rocketDamage);
++
 +				float ammoDamageTotal = item.damage * ammoDamageModifier.Additive * ammoDamageModifier.Multiplicative;
 +				Damage += (int)ammoDamageTotal;
 +			}
