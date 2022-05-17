@@ -96,7 +96,7 @@ namespace Terraria.ModLoader.Core
 		internal static string DetectModChangesForInfoMessage() {
 			string info = null;
 
-			// Collect formatted display names and versions of every local mod
+			// For convenience, convert to dict
 			var currMods = FindMods().ToDictionary(mod => mod.Name, mod => mod);
 
 			string fileName = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
