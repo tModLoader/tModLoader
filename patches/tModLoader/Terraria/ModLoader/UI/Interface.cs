@@ -140,6 +140,13 @@ namespace Terraria.ModLoader.UI
 						});
 					Main.SaveSettings();
 				}
+				else if (!ModLoader.DetectedModChangesForInfoMessage) {
+					ModLoader.DetectedModChangesForInfoMessage = true;
+
+					string info = ModOrganizer.DetectModChangesForInfoMessage();
+					if (info != null)
+						infoMessage.Show(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessage") + info, Main.menuMode);
+				}
 			}
 			if (Main.menuMode == modsMenuID) {
 				Main.MenuUI.SetState(modsMenu);

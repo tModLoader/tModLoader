@@ -91,17 +91,91 @@ namespace Terraria.ModLoader.Core
 		}
 
 		/// <summary>
-		/// Returns a dictionary of formatted display names and versions of every local mod
+		/// Collects local mod status and saves it to a file. Returns changes based on last time the method was called. Can be null if no changes.
 		/// </summary>
-		internal static Dictionary<string, Tuple<string, Version>> GetFormattedDisplayNameAndVersionByMod() {
-			Dictionary<string, Tuple<string, Version>> versionsByMod = new();
+		internal static string DetectModChangesForInfoMessage() {
+			string info = null;
 
+			// Collect formatted display names and versions of every local mod
 			var mods = FindMods();
+			Dictionary<string, Tuple<string, Version>> currMods = new();
 			foreach (var mod in mods) {
-				versionsByMod.Add(mod.Name, Tuple.Create($"({mod.DisplayName})", mod.properties.version));
+				currMods.Add(mod.Name, Tuple.Create($"({mod.DisplayName})", mod.properties.version));
 			}
 
-			return versionsByMod;
+			string fileName = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
+
+			// Only display if enabled and file exists
+			if (ModLoader.showNewUpdatedModsInfo && File.Exists(fileName)) {
+				// trycatch the read in case users manually modify the file
+				try {
+					// Construct dict of last loaded mods
+					var lines = File.ReadLines(fileName);
+					Dictionary<string, Tuple<string, Version>> lastMods = new();
+					foreach (var line in lines) {
+						string[] parts = line.Split(' ');
+						if (parts.Length < 2) {
+							continue;
+						}
+
+						string name = parts[0]; // Internal name is always first
+						string displayName = string.Join(" ", parts[1..^1]); // Display name is inbetween
+						string versionString = parts[^1]; // Version is always last
+						lastMods.Add(name, Tuple.Create(displayName, new Version(versionString)));
+					}
+
+					// Generate diff and display if exists
+					// Only track new and updated, not deleted, maybe TODO?
+					Dictionary<string, string> newMods = new();
+					Dictionary<string, string> updatedMods = new();
+					var messages = new StringBuilder();
+					foreach (var item in currMods) {
+						string name = item.Key;
+						string displayName = item.Value.Item1;
+						Version version = item.Value.Item2;
+
+						if (!lastMods.ContainsKey(name))
+							newMods.Add(name, displayName);
+						else if (lastMods.TryGetValue(name, out var tuple) && tuple.Item2 < version)
+							updatedMods.Add(name, displayName);
+					}
+
+					if (newMods.Count > 0) {
+						messages.Append("\nNew Mods:");
+						foreach (var newMod in newMods) {
+							messages.Append($"\n  {newMod.Key} {newMod.Value}");
+						}
+					}
+
+					if (updatedMods.Count > 0) {
+						messages.Append("\nUpdated Mods:");
+						foreach (var updatedMod in updatedMods) {
+							string name = updatedMod.Key;
+							string displayName = updatedMod.Value;
+							Version lastVersion = lastMods[name].Item2;
+							Version currVersion = currMods[name].Item2;
+							messages.Append($"\n  {name} {displayName} v{lastVersion} -> v{currVersion}");
+						}
+					}
+
+					// If any info is accumulated, return it
+					if (messages.Length > 0)
+						info = messages.ToString();
+				}
+				catch {
+
+				}
+			}
+
+			// Overwrite with current mods
+			var fileText = new StringBuilder();
+			foreach (var item in currMods) {
+				string compoundName = $"{item.Key} {item.Value.Item1}";
+				fileText.Append($"{compoundName} {item.Value.Item2}\n");
+			}
+			File.WriteAllText(fileName, fileText.ToString());
+
+			return info;
 		}
 
 		private static void DeleteTemporaryFiles() {
