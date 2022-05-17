@@ -4988,7 +4988,7 @@
 +			totalDamage = (int)(ammoDamage.ApplyTo(item.damage) + 5E-06f);
 +
  			bool flag2 = dontConsume;
-+			if (CombinedHooks.CanConsumeAmmo(this, sItem, item) is bool canConsume) {
++			if (!dontConsume && CombinedHooks.CanConsumeAmmo(this, sItem, item) is bool canConsume) {
 +				flag2 = !canConsume;
 +				goto SkipVanillaConservationLogic;
 +			}
