@@ -120,7 +120,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla decision.
+		/// Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision.
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <returns></returns>

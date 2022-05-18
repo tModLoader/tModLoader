@@ -710,6 +710,20 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateModifyItemScale(Item item, Player player, ref float scale);
+		private static HookList HookModifyItemScale = AddHook<DelegateModifyItemScale>(g => g.ModifyItemScale);
+
+		/// <summary>
+		/// Calls <see cref="ModItem.ModifyItemScale"/> if applicable, then all applicable <see cref="GlobalItem.ModifyItemScale"/> instances.
+		/// </summary>
+		public static void ModifyItemScale(Item item, Player player, ref float scale) {
+			item.ModItem?.ModifyItemScale(player, ref scale);
+
+			foreach (var g in HookModifyItemScale.Enumerate(item.globalItems)) {
+				g.ModifyItemScale(item, player, ref scale);
+			}
+		}
+
 		private static HookList HookCanHitNPC = AddHook<Func<Item, Player, NPC, bool?>>(g => g.CanHitNPC);
 
 		/// <summary>

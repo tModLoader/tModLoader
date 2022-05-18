@@ -3894,6 +3894,27 @@
  			Main.instance.LoadItem(type);
  			if (type == 75)
  				return TextureAssets.Item[type].Frame(1, 8);
+@@ -30184,11 +_,20 @@
+ 			return TextureAssets.Item[type].Frame();
+ 		}
+ 
++		/// <summary>
++		/// Used to determine what the overall scale of an item should be.<br></br>
++		/// <see cref="CombinedHooks.ModifyItemScale"/> is called here.
++		/// </summary>
++		/// <param name="item">The item to fetch the adjusted scale of.</param>
++		/// <returns>
++		/// The final scale of the item, after the Titan Glove effect and all modded calculations.
++		/// </returns>
+ 		public float GetAdjustedItemScale(Item item) {
+ 			float num = item.scale;
+ 			if (item.melee && meleeScaleGlove)
+ 				num *= 1.1f;
+ 
++			CombinedHooks.ModifyItemScale(this, item, ref num);
+ 			return num;
+ 		}
+ 
 @@ -30204,6 +_,12 @@
  		}
  
@@ -4696,10 +4717,15 @@
  					if (buffType[i] == 27 || buffType[i] == 101 || buffType[i] == 102) {
  						DelBuff(i);
  						i--;
-@@ -36974,6 +_,7 @@
+@@ -36973,7 +_,11 @@
+ 			}
  		}
  
- 		public float GetWeaponKnockback(Item sItem, float KnockBack) {
++		// tML-specific overload that exists for consistency with other GetWeaponXYZ methods
++		public float GetWeaponKnockback(Item sItem) => GetWeaponKnockback(sItem, sItem.knockBack);
++
+-		public float GetWeaponKnockback(Item sItem, float KnockBack) {
++		public float GetWeaponKnockback(Item sItem, float baseKnockback) {
 +			/*
  			if (sItem.summon)
  				KnockBack += minionKB;
@@ -4713,7 +4739,7 @@
 -			return KnockBack;
 +			StatModifier modifier = GetTotalKnockback(sItem.DamageType);
 +			CombinedHooks.ModifyWeaponKnockback(this, sItem, ref modifier);
-+			return Math.Max(0f, modifier.ApplyTo(sItem.knockBack));
++			return Math.Max(0f, modifier.ApplyTo(baseKnockback));
  		}
  
  		public int GetWeaponCrit(Item sItem) {

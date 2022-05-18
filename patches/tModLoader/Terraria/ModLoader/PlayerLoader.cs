@@ -596,6 +596,15 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateModifyItemScale(Item item, ref float scale);
+		private static HookList HookModifyItemScale = AddHook<DelegateModifyItemScale>(p => p.ModifyItemScale);
+
+		public static void ModifyItemScale(Player player, Item item, ref float scale) {
+			foreach (int index in HookModifyItemScale.arr) {
+				player.modPlayers[index].ModifyItemScale(item, ref scale);
+			}
+		}
+
 		private static HookList HookOnHitAnything = AddHook<Action<float, float, Entity>>(p => p.OnHitAnything);
 
 		public static void OnHitAnything(Player player, float x, float y, Entity victim) {

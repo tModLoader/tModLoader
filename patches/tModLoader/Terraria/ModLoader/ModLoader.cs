@@ -34,7 +34,10 @@ namespace Terraria.ModLoader
 		public static string LastLaunchedTModLoaderAlphaSha;
 		public static bool ShowWhatsNew;
 		public static bool AlphaWelcomed;
+		public static bool PreviewFreezeNotification;
+		public static bool DetectedModChangesForInfoMessage;
 		public static bool ShowFirstLaunchWelcomeMessage;
+		public static Version LastPreviewFreezeNotificationSeen;
 
 		public static string versionedName => (BuildInfo.Purpose != BuildInfo.BuildPurpose.Stable) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
 
@@ -63,6 +66,7 @@ namespace Terraria.ModLoader
 		internal static bool removeForcedMinimumZoom;
 		internal static bool showMemoryEstimates = true;
 		internal static bool notifyNewMainMenuThemes = true;
+		internal static bool showNewUpdatedModsInfo = true;
 		internal static bool skipLoad;
 		internal static Action OnSuccessfulLoad;
 
@@ -154,6 +158,8 @@ namespace Terraria.ModLoader
 					var mod = ModOrganizer.FindMods().FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
 					if (mod != null && mod.tModLoaderVersion != BuildInfo.tMLVersion)
 						msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
+					if (e is Exceptions.JITException)
+						msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
 				}
 				if (responsibleMods.Count > 0)
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
@@ -337,6 +343,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
+			Main.Configuration.Put("ShowNewUpdatedModsInfo", showNewUpdatedModsInfo);
 			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
@@ -344,6 +351,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
 			Main.Configuration.Put(nameof(AlphaWelcomed), AlphaWelcomed);
 			Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
+			Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		}
 
 		internal static void LoadConfiguration()
@@ -361,6 +369,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
+			Main.Configuration.Get("ShowNewUpdatedModsInfo", ref showNewUpdatedModsInfo);
 			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
@@ -368,6 +377,7 @@ namespace Terraria.ModLoader
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get(nameof(LastLaunchedTModLoaderVersion), "0.0"));
 			Main.Configuration.Get(nameof(AlphaWelcomed), ref AlphaWelcomed);
 			Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
+			LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
 		}
 
 		internal static void MigrateSettings()
@@ -375,7 +385,8 @@ namespace Terraria.ModLoader
 			if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
 				showMemoryEstimates = true;
 
-			if (LastLaunchedTModLoaderVersion < new Version(2020, 0, 0, 0)) {
+			// TODO: Stable RecentGitHubCommits.txt is probably not accurate for showing stable users, we could use a summary for the month of changes rather than recent commits.
+			if (BuildInfo.IsPreview && LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 				ShowWhatsNew = true;
 				// TODO: Start retrieving what's new data from github here.
 			}

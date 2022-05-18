@@ -32,7 +32,7 @@ Mods: {
 			ExampleCustomCurrency: example items
 		}
 
-		DamageClass: {
+		DamageClassName: {
 			ExampleDamageClass: example damage
 		}
 		

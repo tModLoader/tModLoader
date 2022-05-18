@@ -1,16 +1,12 @@
-﻿using Microsoft.Xna.Framework.Audio;
-using ReLogic.Content;
-using ReLogic.Content.Sources;
+﻿using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Terraria.Audio;
 using Terraria.Localization;
-using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
@@ -58,7 +54,7 @@ namespace Terraria.ModLoader
 
 			Type modType = GetType();
 
-			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
+			foreach (Type type in AssemblyManager.GetLoadableTypes(Code).OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
 				// Skip Mod, abstract, and generic classes.
 				if (type == modType || type.IsAbstract || type.ContainsGenericParameters)
 					continue;

@@ -374,16 +374,6 @@
  					break;
  				case GraphicsProfile.Reach:
  					maxScreenW = 1920;
-@@ -2861,6 +_,9 @@
- 					break;
- 			}
- 
-+			maxScreenW = Math.Min(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Width, maxScreenW);
-+			maxScreenH = Math.Min(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height, maxScreenH);
-+
- 			try {
- 				graphics.ApplyChanges();
- 			}
 @@ -2870,8 +_,8 @@
  					SetGraphicsProfileInternal();
  				}
@@ -473,11 +463,17 @@
  			PlayerInput.Load();
  			if (currentValue < 165) {
  				try {
-@@ -3574,8 +_,10 @@
+@@ -3574,8 +_,16 @@
  			mouseColorSlider.SetHSL(mouseColor);
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue != 248)
++
++			DateTime now = DateTime.UtcNow;
++			// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this month, then show the notification.
++			if (!BuildInfo.IsDev && ModCompile.DeveloperMode && now.Day >= 21 && (now.Year != ModLoader.ModLoader.LastPreviewFreezeNotificationSeen.Major || now.Month != ModLoader.ModLoader.LastPreviewFreezeNotificationSeen.Minor)) {
++				ModLoader.ModLoader.PreviewFreezeNotification = true;
++			}			
 +			if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
@@ -497,7 +493,26 @@
  			try {
  				string text = PlayerList[i].Path.Substring(0, PlayerList[i].Path.Length - 4);
  				if (text.Substring(text.Length - 1) != "." && text.Substring(text.Length - 1) != "\\" && Directory.Exists(text))
-@@ -3735,6 +_,7 @@
+@@ -3720,21 +_,23 @@
+ 		private static void EraseWorld(int i) {
+ 			try {
+ 				if (!WorldList[i].IsCloudSave) {
+-#if WINDOWS
++					if (OperatingSystem.IsWindows()) {
+ 					FileOperationAPIWrapper.MoveToRecycleBin(WorldList[i].Path);
+ 					FileOperationAPIWrapper.MoveToRecycleBin(WorldList[i].Path + ".bak");
+ 					for (int j = 2; j <= 9; j++) {
+ 						FileOperationAPIWrapper.MoveToRecycleBin(WorldList[i].Path + ".bak" + j);
+ 					}
+-#else
++					}
++					else {
+ 					File.Delete(Main.WorldList[i].Path);
+ 					File.Delete(Main.WorldList[i].Path + ".bak");
+-#endif
++					}
+ 				}
+ 				else if (SocialAPI.Cloud != null) {
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
  				}
  
@@ -4588,7 +4603,7 @@
  						if (!NPC.downedSlimeKing)
  							num3 /= 2;
  
-@@ -50141,9 +_,14 @@
+@@ -50141,6 +_,7 @@
  						WorldGen.UnspawnTravelNPC();
  				}
  				else if (!fastForwardTime && dayTime && time < 27000.0) {
@@ -4596,13 +4611,16 @@
  					int num6 = dayRate;
  					if (num6 < 1)
  						num6 = 1;
-+					*/
-+					double num6 = dayRate;
-+					if (num6 < 0)
-+						num6 = 0;
- 
+@@ -50148,6 +_,9 @@
  					int num7 = (int)(27000.0 / (double)num6);
  					num7 *= 4;
+ 					if (rand.Next(num7) == 0) {
++					*/
++
++					if (rand.NextDouble() < dayRate / (27000.0 * 4)) {
+ 						int num8 = 0;
+ 						for (int j = 0; j < 200; j++) {
+ 							if (npc[j].active && npc[j].townNPC && npc[j].type != 37 && npc[j].type != 453)
 @@ -50505,6 +_,11 @@
  		}
  

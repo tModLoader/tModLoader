@@ -133,13 +133,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting player.lifeRegen to 0 if it is positive, setting player.lifeRegenTime to 0, and subtracting a number from player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
+		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting Player.lifeRegen to 0 if it is positive, setting Player.lifeRegenTime to 0, and subtracting a number from Player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
 		/// </summary>
 		public virtual void UpdateBadLifeRegen() {
 		}
 
 		/// <summary>
-		/// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
+		/// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing Player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment Player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
 		/// </summary>
 		public virtual void UpdateLifeRegen() {
 		}
@@ -172,7 +172,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of player.controlLeft and player.controlRight. This is called sometime after PreUpdate is called.
+		/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of Player.controlLeft and Player.controlRight. This is called sometime after PreUpdate is called.
 		/// </summary>
 		public virtual void SetControls() {
 		}
@@ -498,6 +498,17 @@ namespace Terraria.ModLoader
 		/// <param name="item"></param>
 		/// <param name="hitbox"></param>
 		public virtual void MeleeEffects(Item item, Rectangle hitbox) {
+		}
+
+		/// <summary>
+		/// Allows you to dynamically modify the given item's size for this player, similarly to the effect of the Titan Glove.
+		/// </summary>
+		/// <param name="item">The item to modify the scale of.</param>
+		/// <param name="scale">
+		/// The scale multiplier to be applied to the given item.<br></br>
+		/// Will be 1.1 if the Titan Glove is equipped, and 1 otherwise.
+		/// </param>
+		public virtual void ModifyItemScale(Item item, ref float scale) {
 		}
 
 		/// <summary>

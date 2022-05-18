@@ -129,6 +129,13 @@ namespace Terraria
 			if (isServer)
 				return;
 
+			if (Platform.IsWindows) {
+				[System.Runtime.InteropServices.DllImport("user32.dll")]
+				static extern bool SetProcessDPIAware();
+
+				SetProcessDPIAware();
+			}
+
 			SDL2.SDL.SDL_VideoInit(null);
 			SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);
 			if (ddpi >= HighDpiThreshold || hdpi >= HighDpiThreshold || vdpi >= HighDpiThreshold)

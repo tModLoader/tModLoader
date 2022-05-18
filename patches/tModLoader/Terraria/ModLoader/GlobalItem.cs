@@ -358,6 +358,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to dynamically modify the given item's size for the given player, similarly to the effect of the Titan Glove.
+		/// </summary>
+		/// <param name="item">The item to modify the scale of.</param>
+		/// <param name="player">The player wielding the given item.</param>
+		/// <param name="scale">
+		/// The scale multiplier to be applied to the given item.<br></br>
+		/// Will be 1.1 if the Titan Glove is equipped, and 1 otherwise.
+		/// </param>
+		public virtual void ModifyItemScale(Item item, Player player, ref float scale) {
+		}
+
+		/// <summary>
 		/// Allows you to determine whether a melee weapon can hit the given NPC when swung. Return true to allow hitting the target, return false to block the weapon from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 		/// </summary>
 		public virtual bool? CanHitNPC(Item item, Player player, NPC target) {
@@ -914,15 +926,11 @@ namespace Terraria.ModLoader
 		/// <param name="tag"> The TagCompound to load data from. </param>
 		public virtual void LoadData(Item item, TagCompound tag) { }
 
-		/// <summary>
-		/// Allows you to send custom data for the given item between client and server.
-		/// </summary>
+		/// <inheritdoc cref="ModItem.NetSend"/>
 		public virtual void NetSend(Item item, BinaryWriter writer) {
 		}
 
-		/// <summary>
-		///
-		/// </summary>
+		/// <inheritdoc cref="ModItem.NetReceive"/>
 		public virtual void NetReceive(Item item, BinaryReader reader) {
 		}
 	}

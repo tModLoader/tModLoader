@@ -21,7 +21,7 @@
  		}
  
  		private static void LoadClientParameters(Main game) {
-@@ -38,6 +_,29 @@
+@@ -38,6 +_,34 @@
  
  			if (HasParameter("-host"))
  				game.AutoHost();
@@ -45,6 +45,11 @@
 +					(Main.PlayerList.FirstOrDefault(x => x.Name == playerName) ?? Main.PlayerList[0]).SetAsActive();
 +					Main.LoadWorlds();
 +					(Main.WorldList.FirstOrDefault(x => x.Name == worldName) ?? Main.WorldList[0]).SetAsActive();
++					if (!GameContent.UI.States.UIWorldSelect.CanWorldBePlayed(Main.ActiveWorldFileData))
++						throw new Exception($"The selected character {playerName} can not be used with the selected world {worldName}.\n" +
++							$"This could be due to mismatched Journey Mode or other mod specific changes." +
++							$"Check in Game Menus for more information.");
++
 +					WorldGen.playWorld();
 +				};
 +			}
