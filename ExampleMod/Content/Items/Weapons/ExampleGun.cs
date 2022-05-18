@@ -109,8 +109,7 @@ namespace ExampleMod.Content.Items.Weapons
 			item.useAnimation = 12;
 			item.useTime = 4; // one third of useAnimation
 			item.reuseDelay = 14;
-			item.ShotLimitPerUse = 3;
-			item.ConsumeAmmoOnFirstShotOnly = true;
+			item.consumeAmmoOnLastShotOnly = true;
 		*/
 
 		// How can I shoot 2 different projectiles at the same time?
