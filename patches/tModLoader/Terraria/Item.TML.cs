@@ -27,32 +27,33 @@ namespace Terraria
 		public bool AllowReforgeForStackableItem { get; set; }
 
 		/// <summary>
-		/// Dictates the amount of times a weapon can fire each time it is used.<br></br>
-		/// Defaults to 1. Vanilla items with non-default values include, but are not limited to:<br></br>
-		/// - Clockwork Assault Rifle<br></br>
-		/// - Clentaminator<br></br>
-		/// - Eventide<br></br>
-		/// - Zenith
+		/// Dictates the amount of times a weapon can be used (shot, etc) each time it animates (is swung, clicked, etc).<br/>
+		/// Defaults to null.<br/>
+		/// Used in vanilla by the following:<br/>
+		/// - BookStaff<br/>
+		/// - FairyQueenMagicItem<br/>
+		/// - FairyQueenRangedItem<br/>
 		/// </summary>
-		public int ShotLimitPerUse { get; set; }
+		public int? useLimitPerAnimation { get; set; }
 
 		/// <summary>
-		/// Dictates whether or not this item should only consume ammo on its first shot of each use.<br></br>
-		/// Defaults to false. Has no effect if ShotLimitPerUse is kept at 1.<br></br>
-		/// Used in vanilla by the following:<br></br>
-		/// - Clockwork Assault Rifle<br></br>
-		/// - Flamethrower<br></br>
-		/// - Elf Melter<br></br>
-		/// - Clentaminator
+		/// Dictates whether or not this item should only consume ammo on its first shot of each use.<br/>
+		/// Defaults to false.<br/>
+		/// Used in vanilla by the following:<br/>
+		/// - Flamethrower<br/>
+		/// - Elf Melter<br/>
 		/// </summary>
-		public bool ConsumeAmmoOnFirstShotOnly { get; set; }
+		public bool consumeAmmoOnFirstShotOnly { get; set; }
 
 		/// <summary>
-		/// Dictates whether or not this item should only consume ammo on its last shot of each use.<br></br>
-		/// Defaults to false. Has no effect if ShotLimitPerUse is kept at 1.<br></br>
-		/// Used in vanilla solely by Eventide.
+		/// Dictates whether or not this item should only consume ammo on its last shot of each use.<br/>
+		/// Defaults to false. <br/>
+		/// Used in vanilla by the following:<br/>
+		/// - ClockworkAssaultRifle<br/>
+		/// - Clentaminator<br/>
+		/// - FairyQueenRangedItem<br/>
 		/// </summary>
-		public bool ConsumeAmmoOnLastShotOnly { get; set; }
+		public bool consumeAmmoOnLastShotOnly { get; set; }
 
 		/// <summary>
 		/// Used to make stackable items reforgeable

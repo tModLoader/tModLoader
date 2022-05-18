@@ -373,30 +373,35 @@
  		}
  
  		public bool FitsAmmoSlot() {
-@@ -7929,6 +_,8 @@
+@@ -7929,6 +_,7 @@
  					value = 300;
  					break;
  				case 434:
-+					ShotLimitPerUse = 3;
-+					ConsumeAmmoOnFirstShotOnly = true;
++					consumeAmmoOnLastShotOnly = true;
  					autoReuse = true;
  					useStyle = 5;
  					useAnimation = 12;
-@@ -8902,6 +_,8 @@
+@@ -8902,6 +_,7 @@
  					rare = 2;
  					break;
  				case 506:
-+					ShotLimitPerUse = 5;
-+					ConsumeAmmoOnFirstShotOnly = true;
++					consumeAmmoOnFirstShotOnly = true;
  					useStyle = 5;
  					autoReuse = true;
  					useAnimation = 30;
-@@ -22916,6 +_,8 @@
+@@ -12284,6 +_,7 @@
+ 					scale = 1.15f;
+ 					break;
+ 				case 779:
++					consumeAmmoOnLastShotOnly = true;
+ 					useStyle = 5;
+ 					autoReuse = true;
+ 					useAnimation = 30;
+@@ -22916,6 +_,7 @@
  					melee = true;
  					return;
  				case 1910:
-+					ShotLimitPerUse = 6;
-+					ConsumeAmmoOnFirstShotOnly = true;
++					consumeAmmoOnFirstShotOnly = true;
  					useStyle = 5;
  					autoReuse = true;
  					useAnimation = 30;
@@ -413,7 +418,7 @@
  					shootSpeed = 17f;
  					return;
  				case 3852:
-+					ShotLimitPerUse = 4;
++					useLimitPerAnimation = 4;
  					useStyle = 5;
  					useAnimation = 25;
  					useTime = 3;
@@ -421,7 +426,7 @@
  					expert = true;
  					break;
  				case 4952:
-+					ShotLimitPerUse = 4;
++					useLimitPerAnimation = 4;
  					autoReuse = true;
  					useStyle = 14;
  					holdStyle = 6;
@@ -429,19 +434,11 @@
  					flame = true;
  					break;
  				case 4953:
-+					ShotLimitPerUse = 6;
-+					ConsumeAmmoOnLastShotOnly = true;
++					useLimitPerAnimation = 5;
++					consumeAmmoOnLastShotOnly = true;
  					useStyle = 5;
  					autoReuse = true;
  					useAnimation = 30;
-@@ -43243,6 +_,7 @@
- 					vanity = true;
- 					break;
- 				case 4956:
-+					ShotLimitPerUse = 3;
- 					useStyle = 1;
- 					width = 24;
- 					height = 24;
 @@ -44343,7 +_,8 @@
  			shoot = projectileId;
  			UseSound = SoundID.Item152;
@@ -598,9 +595,9 @@
 +			ModItem = null;
 +			globalItems = new Instanced<GlobalItem>[0];
 +			AllowReforgeForStackableItem = false;
-+			ShotLimitPerUse = 1;
-+			ConsumeAmmoOnFirstShotOnly = false;
-+			ConsumeAmmoOnLastShotOnly = false;
++			useLimitPerAnimation = null;
++			consumeAmmoOnFirstShotOnly = false;
++			consumeAmmoOnLastShotOnly = false;
 +			DamageType = DamageClass.Generic;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;

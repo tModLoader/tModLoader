@@ -193,7 +193,7 @@
  				Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
  
  			if (talkNPC == -1)
-@@ -2100,12 +_,11 @@
+@@ -2100,12 +_,12 @@
  			itemTimeMax = frames;
  		}
  
@@ -207,10 +207,11 @@
 -		public void ApplyItemTime(Item sItem, float multiplier) {
 -			SetItemTime((int)((float)sItem.useTime * multiplier));
 +			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * multiplier, this, sItem));
++			ItemUsesThisAnimation++;
  		}
  
  		public void SetDummyItemTime(int frames) {
-@@ -2114,39 +_,43 @@
+@@ -2114,39 +_,44 @@
  			itemTimeMax = frames + 1;
  		}
  
@@ -229,6 +230,7 @@
 +			SetItemAnimation(CombinedHooks.TotalAnimationTime(sItem.useAnimation * multiplier, this, sItem));
 +
 +			reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / CombinedHooks.TotalUseSpeedMultiplier(this, sItem));
++			ItemUsesThisAnimation = 0;
  		}
  
 -		private void ApplyItemAnimation(Item sItem) {
@@ -4068,7 +4070,7 @@
  			if (itemTime > 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
-@@ -30308,44 +_,67 @@
+@@ -30308,30 +_,40 @@
  				}
  			}
  
@@ -4100,7 +4102,7 @@
  						_spawnTentacleSpikes = true;
  
  					if (type2 == 3852) {
-+						/*
++						/* handled by Item.useLimitPerAnimation
  						if (itemAnimation < itemAnimationMax - 12)
  							flag4 = false;
 +						*/
@@ -4110,27 +4112,18 @@
  							flag4 = false;
  					}
  
-+					int useTime = CombinedHooks.TotalUseTime(item.useTime, this, item);
-+					int lastShotFrame = itemAnimationMax - ((item.ShotLimitPerUse - 1) * useTime);
-+					while (lastShotFrame < 1)
-+						lastShotFrame += useTime;
-+
-+					if (itemAnimation < lastShotFrame)
-+						flag4 = false;
-+
-+					/*
--					if (type2 == 4956 && itemAnimation < itemAnimationMax - 3 * item.useTime)
-+					if (type2 == 4956 && itemAnimation <= itemAnimationMax - 3 * item.useTime) // tML, change < to <= to account for counter change
++					/* Eventide and nightglow handled by Item.useLimitPerAnimation. Zenith use limit didn't do anything anyway
+ 					if (type2 == 4956 && itemAnimation < itemAnimationMax - 3 * item.useTime)
  						flag4 = false;
  
--					if (type2 == 4952 && itemAnimation < itemAnimationMax - 8)
-+					if (type2 == 4952 && itemAnimation <= itemAnimationMax - 8) // tML, change < to <= to account for counter change
- 						flag4 = false;
+@@ -30340,12 +_,20 @@
  
--					if (type2 == 4953 && itemAnimation < itemAnimationMax - 10)
-+					if (type2 == 4953 && itemAnimation <= itemAnimationMax - 10) // tML, change < to <= to account for counter change
+ 					if (type2 == 4953 && itemAnimation < itemAnimationMax - 10)
  						flag4 = false;
 +					*/
++
++					if (item.useLimitPerAnimation != null && ItemUsesThisAnimation >= item.useLimitPerAnimation.Value)
++						flag4 = false;
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
  					ItemCheck_MinionAltFeatureUse(item, flag4);
@@ -4826,7 +4819,7 @@
 +
 -		public bool HasAmmo(Item sItem, bool canUse) {
 +		internal bool HasAmmo(Item sItem, bool canUse) {
-+			return sItem.useAmmo > 0 && ChooseAmmo(sItem) != null;
++			return sItem.useAmmo == 0 || ChooseAmmo(sItem) != null;
 +			/*
  			if (sItem.useAmmo > 0) {
  				canUse = false;
@@ -4992,7 +4985,7 @@
  
  			if ((sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && archery) {
  				if (speed < 20f) {
-@@ -37167,11 +_,64 @@
+@@ -37167,11 +_,62 @@
  						speed = 20f;
  				}
  
@@ -5026,24 +5019,6 @@
 +		public bool IsAmmoFreeThisShot(Item weapon, Item ammo, int projToShoot) {
 +			Item sItem = weapon;
 +			Item item = ammo;
-+
--			bool flag2 = dontConsume;
-+			bool flag2 = false;
-+			if (sItem.ShotLimitPerUse > 1) {
-+				if (sItem.ConsumeAmmoOnFirstShotOnly && !ItemAnimationJustStarted)
-+					flag2 = true;
-+
-+				if (sItem.ConsumeAmmoOnLastShotOnly) {
-+					int useTime = CombinedHooks.TotalUseTime(sItem.useTime, this, sItem);
-+					int lastShotFrame = itemAnimationMax - ((sItem.ShotLimitPerUse - 1) * useTime);
-+					while (lastShotFrame < 1)
-+						lastShotFrame += useTime;
-+
-+					if (itemAnimation > lastShotFrame)
-+						flag2 = true;
-+				}
-+			}
-+
 +			/*
 +			TODO:
 +			the current approach to ammo consumption hooks demands that vanilla conservation chances still be allowed to factor in
@@ -5055,7 +5030,23 @@
 +			post-May-freeze, will decide on one and make changes accordingly
 +			- thomas
 +			*/
++			if (!CombinedHooks.CanConsumeAmmo(this, sItem, item))
++				return true;
 +
++			if (sItem.consumeAmmoOnFirstShotOnly && !ItemAnimationJustStarted)
++				return true;
++
++			if (sItem.consumeAmmoOnLastShotOnly) {
++				int useTime = CombinedHooks.TotalUseTime(sItem.useTime, this, sItem);
++				bool isLastShot = itemAnimation <= useTime || // not enough time to shoot again
++					sItem.useLimitPerAnimation != null && ItemUsesThisAnimation == sItem.useLimitPerAnimation - 1; // this shot hits the limit
++
++				if (!isLastShot)
++					return true;
++			}
++
+-			bool flag2 = dontConsume;
++			bool flag2 = false;
  			if (sItem.type == 3475 && Main.rand.Next(3) != 0)
  				flag2 = true;
  
@@ -5068,16 +5059,14 @@
  				flag2 = true;
  
  			if (ammoBox && Main.rand.Next(5) == 0)
-@@ -37208,11 +_,15 @@
+@@ -37208,11 +_,13 @@
  			if (sItem.type == 1553 && Main.rand.Next(3) != 0)
  				flag2 = true;
  
-+			/*
-+			// Clockwork Assault Rifle. Handled by ConsumeAmmoOnFirstShotOnly.
++			/* Clockwork Assault Rifle + Eventide. Handled by consumeAmmoOnLastShotOnly.
  			if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
  				flag2 = true;
  
-+			// Eventide. Handled by ConsumeAmmoOnLastShotOnly.
 -			if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
 +			if (sItem.type == 4953 && itemAnimation >= sItem.useAnimation - 8)
  				flag2 = true;
@@ -5085,27 +5074,23 @@
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
  				flag2 = true;
-@@ -37226,9 +_,12 @@
+@@ -37226,9 +_,10 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
-+			/*
-+			// Flamethrower + Elf Melter. Handled by ConsumeAmmoOnFirstShotOnly.
++			/* Flamethrower + Elf Melter (handled by consumeAmmoOnFirstShotOnly) + Clentaminator (handled by consumeAmmoOnFirstShotOnly)
  			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2)
  				flag2 = true;
 -
 +			
-+			// Clentaminator. Handled by ConsumeAmmoOnFirstShotOnly.
  			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
  				flag2 = true;
  
-@@ -37239,6 +_,11 @@
+@@ -37239,6 +_,9 @@
  					item.TurnToAir();
  				}
  			}
 +			*/
-+
-+			flag2 |= !CombinedHooks.CanConsumeAmmo(this, sItem, item);
 +
 +			return flag2;
  		}
