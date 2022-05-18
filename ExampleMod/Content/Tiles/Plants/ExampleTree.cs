@@ -1,4 +1,5 @@
 using ExampleMod.Content.Dusts;
+using ExampleMod.Content.Items;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
@@ -9,14 +10,6 @@ namespace ExampleMod.Content.Tiles
 {
 	public class ExampleTree : ModTree
 	{
-		public override void SetStaticDefaults() {
-			// Makes Example Tree grow on ExampleBlock
-			GrowsOnTileId = new int[1] { ModContent.TileType<ExampleBlock>() };
-		}
-
-		// This is the primary texture for the trunk. Branches and foliage use different settings.
-		public override Asset<Texture2D> GetTexture() => ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree");
-
 		// This is a blind copy-paste from Vanilla's PurityPalmTree settings.
 		//TODO: This needs some explanations
 		public override TreePaintingSettings TreeShaderSettings => new TreePaintingSettings {
@@ -26,6 +19,16 @@ namespace ExampleMod.Content.Tiles
 			SpecialGroupMinimumSaturationValue = 0.88f,
 			SpecialGroupMaximumSaturationValue = 1f
 		};
+
+		public override void SetStaticDefaults() {
+			// Makes Example Tree grow on ExampleBlock
+			GrowsOnTileId = new int[1] { ModContent.TileType<ExampleBlock>() };
+		}
+
+		// This is the primary texture for the trunk. Branches and foliage use different settings.
+		public override Asset<Texture2D> GetTexture() {
+			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree");
+		}
 
 		public override int SaplingGrowthType(ref int style) {
 			style = 0;
@@ -37,12 +40,17 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// Top Textures
-		public override Asset<Texture2D> GetBranchTextures() => ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Branches");
+		public override Asset<Texture2D> GetBranchTextures() {
+			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Branches");
+		}
 
 		// Top Textures
-		public override Asset<Texture2D> GetTopTextures() => ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Tops");
+		public override Asset<Texture2D> GetTopTextures() {
+			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Tops");
+		}
 
-		//TODO: Is this the right item drop?
-		public override int DropWood() => ModContent.Find<ModItem>("ExampleMod/ExampleDye").Type;
+		public override int DropWood() {
+			return ModContent.ItemType<ExampleDye>();
+		}
 	}
 }

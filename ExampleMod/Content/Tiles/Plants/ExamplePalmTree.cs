@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using ExampleMod.Content.Items;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -24,26 +25,38 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// This is the primary texture for the trunk. Branches and foliage use different settings.
-		public override Asset<Texture2D> GetTexture() => ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree");
+		public override Asset<Texture2D> GetTexture() {
+			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree");
+		}
 
 		public override int SaplingGrowthType(ref int style) {
 			style = 1;
 			return ModContent.TileType<Plants.ExampleSapling>();
 		}
 
-		// Palm Trees come in an Oasis variant. The Branch Textures for it, if we had them:
-		public override Asset<Texture2D> GetOasisBranchTextures() => null;
+		public override Asset<Texture2D> GetOasisBranchTextures() {
+			// Palm Trees come in an Oasis variant. The Branch Textures for it, if we had them:
+			return null;
+		}
 
-		// Regular Top Textures for the Ocean (we reused the same texture to save time, you don't have to reuse them): 
-		public override Asset<Texture2D> GetBranchTextures() => null;
+		public override Asset<Texture2D> GetBranchTextures() {
+			// Palm Trees come in a Beach variant. The Branch Textures for it, if we had them:
+			return null;
+		}
 
-		// Palm Trees come in an Oasis variant. The Top Textures for it, if we had one that works:
-		public override Asset<Texture2D> GetOasisTopTextures() => null; //ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree_Tops");
+		
+		public override Asset<Texture2D> GetOasisTopTextures() {
+			// Palm Trees come in an Oasis variant. The Top Textures for it, if we had one that works:
+			return null;
+		}
 
-		// Regular Top Textures for the Ocean (we reused the same texture to save time, you don't have to reuse them): 
-		public override Asset<Texture2D> GetTopTextures() => null; //ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree_Tops");
+		public override Asset<Texture2D> GetTopTextures() {
+			// Palm Trees come in a Beach variant. The Top Textures for it, if we had one that works:
+			return null;
+		}
 
-		//TODO: Is this the right item drop?
-		public override int DropWood() => ModContent.Find<ModItem>("ExampleMod/ExampleOre").Type; 
+		public override int DropWood() {
+			return ModContent.ItemType<Items.Placeable.ExampleOre>();
+		}
 	}
 }

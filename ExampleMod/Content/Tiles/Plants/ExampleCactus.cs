@@ -11,9 +11,13 @@ namespace ExampleMod.Content.Tiles
 			GrowsOnTileId = new int[1] { ModContent.TileType<ExampleOre>() };
 		}
 
-		public override Asset<Texture2D> GetTexture() => ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleCactus");
+		public override Asset<Texture2D> GetTexture() {
+			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleCactus");
+		}
 
 		// This would be where the Cactus Fruit Texture would go, if we had one.
-		public override Asset<Texture2D> GetFruitTexture() => null;
+		public override Asset<Texture2D> GetFruitTexture() {
+			return null;
+		}
 	}
 }

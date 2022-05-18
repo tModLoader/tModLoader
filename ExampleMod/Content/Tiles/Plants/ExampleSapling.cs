@@ -53,33 +53,41 @@ namespace ExampleMod.Content.Tiles.Plants
 			AdjTiles = new int[] { TileID.Saplings };
 		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num) => num = fail ? 1 : 3;
+		public override void NumDust(int i, int j, bool fail, ref int num) {
+			num = fail ? 1 : 3;
+		}
 
 		public override void RandomUpdate(int i, int j) {
 			// A random chance to slow down growth
-			if (WorldGen.genRand.NextBool(20)) {
-				Tile tile = Framing.GetTileSafely(i, j); // Safely get the tile at the given coordinates
-				bool growSucess; // A bool to see if the tree growing was sucessful.
+			if (!WorldGen.genRand.NextBool(20)) {
+				return;
+			}
 
-				// Style 0 is for the ExampleTree sapling, and style 1 is for ExamplePalmTree, so here we check frameX to call the correct method.
-				// Any pixels before 54 on the tilesheet are for ExampleTree while any pixels above it are for ExamplePalmTree
-				if (tile.TileFrameX < 54)
-					growSucess = WorldGen.GrowTree(i, j);
-				else
-					growSucess = WorldGen.GrowPalmTree(i, j);
+			Tile tile = Framing.GetTileSafely(i, j); // Safely get the tile at the given coordinates
+			bool growSucess; // A bool to see if the tree growing was sucessful.
 
-				// A flag to check if a player is near the sapling
-				bool isPlayerNear = WorldGen.PlayerLOS(i, j);
+			// Style 0 is for the ExampleTree sapling, and style 1 is for ExamplePalmTree, so here we check frameX to call the correct method.
+			// Any pixels before 54 on the tilesheet are for ExampleTree while any pixels above it are for ExamplePalmTree
+			if (tile.TileFrameX < 54) {
+				growSucess = WorldGen.GrowTree(i, j);
+			}
+			else {
+				growSucess = WorldGen.GrowPalmTree(i, j);
+			}
 
-				//If growing the tree was a sucess and the player is near, show growing effects
-				if (growSucess && isPlayerNear)
-					WorldGen.TreeGrowFXCheck(i, j);
+			// A flag to check if a player is near the sapling
+			bool isPlayerNear = WorldGen.PlayerLOS(i, j);
+
+			//If growing the tree was a sucess and the player is near, show growing effects
+			if (growSucess && isPlayerNear) {
+				WorldGen.TreeGrowFXCheck(i, j);
 			}
 		}
 
 		public override void SetSpriteEffects(int i, int j, ref SpriteEffects effects) {
-			if (i % 2 == 1)
+			if (i % 2 == 1) {
 				effects = SpriteEffects.FlipHorizontally;
+			}
 		}
 	}
 }
