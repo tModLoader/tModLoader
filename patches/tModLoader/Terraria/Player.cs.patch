@@ -4981,7 +4981,7 @@
  
  			if ((sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && archery) {
  				if (speed < 20f) {
-@@ -37167,11 +_,49 @@
+@@ -37167,11 +_,57 @@
  						speed = 20f;
  				}
  
@@ -5011,10 +5011,6 @@
 +
 -			bool flag2 = dontConsume;
 +			bool flag2 = false;
-+			if (CombinedHooks.CanConsumeAmmo(this, sItem, item) is bool canConsume) {
-+				return !canConsume;
-+			}
-+
 +			if (sItem.ShotLimitPerUse > 1) {
 +				if (sItem.ConsumeAmmoOnFirstShotOnly && !ItemAnimationJustStarted)
 +					flag2 = true;
@@ -5029,6 +5025,18 @@
 +						flag2 = true;
 +				}
 +			}
++
++			/*
++			TODO:
++			the current approach to ammo consumption hooks demands that vanilla conservation chances still be allowed to factor in
++			while this is fine for some, for others, it may be preferable to be able to guarantee ammo consumption if it should happen
++			for this, two approaches exist. each has their ups and downs:
++			1 - CanConsumeAmmo to nullable, return given value if it exists
++			2 - separate hook for forced ammo consumption. returns false by default, return true to bypass all vanilla conservation chances
++
++			post-May-freeze, will decide on one and make changes accordingly
++			- thomas
++			*/
 +
  			if (sItem.type == 3475 && Main.rand.Next(3) != 0)
  				flag2 = true;
@@ -5073,11 +5081,13 @@
  			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
  				flag2 = true;
  
-@@ -37239,6 +_,9 @@
+@@ -37239,6 +_,11 @@
  					item.TurnToAir();
  				}
  			}
 +			*/
++
++			flag2 |= !CombinedHooks.CanConsumeAmmo(this, sItem, item);
 +
 +			return flag2;
  		}

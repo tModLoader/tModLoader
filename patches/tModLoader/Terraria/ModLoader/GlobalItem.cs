@@ -295,30 +295,28 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Whether or not the given ammo item will be consumed; called on the weapon.<br></br>
-		/// By default, returns null and allows vanilla's ammo conservation rules to decide.<br></br>
-		/// Return true to make the ammo consumed regardless of vanilla rules, and return false to make it not consumed regardless.<br></br>
+		/// By default, returns true; return false to prevent ammo consumption.<br></br>
 		/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
 		/// </summary>
 		/// <param name="weapon">The weapon that this hook is being called for.</param>
 		/// <param name="ammo">The ammo that the weapon is attempting to consume.</param>
 		/// <param name="player">The player which this weapon and the ammo belong to.</param>
 		/// <returns></returns>
-		public virtual bool? CanConsumeAmmo(Item weapon, Item ammo, Player player) {
-			return null;
+		public virtual bool CanConsumeAmmo(Item weapon, Item ammo, Player player) {
+			return true;
 		}
 
 		/// <summary>
 		/// Whether or not the given ammo item will be consumed; called on the ammo.<br></br>
-		/// By default, returns null and allows vanilla's ammo conservation rules to decide.<br></br>
-		/// Return true to make this ammo consumed regardless of vanilla rules, and return false to make it not consumed regardless.<br></br>
+		/// By default, returns true; return false to prevent ammo consumption.<br></br>
 		/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
 		/// </summary>
 		/// <param name="ammo">The ammo that this hook is being called for.</param>
 		/// <param name="weapon">The weapon attempting to consume the ammo.</param>
 		/// <param name="player">The player which the weapon and this ammo belong to.</param>
 		/// <returns></returns>
-		public virtual bool? CanBeConsumedAsAmmo(Item ammo, Item weapon, Player player) {
-			return null;
+		public virtual bool CanBeConsumedAsAmmo(Item ammo, Item weapon, Player player) {
+			return true;
 		}
 
 		/// <summary>

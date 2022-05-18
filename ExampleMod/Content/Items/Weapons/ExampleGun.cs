@@ -104,16 +104,14 @@ namespace ExampleMod.Content.Items.Weapons
 
 		// How can I get a "Clockwork Assault Rifle" effect?
 		// 3 round burst, only consume 1 ammo for burst. Delay between bursts, use reuseDelay
-		/*	The following changes to SetDefaults()
+		// Make the following changes to SetDefaults():
+		/*
 			item.useAnimation = 12;
 			item.useTime = 4; // one third of useAnimation
 			item.reuseDelay = 14;
-		public override bool? CanConsumeAmmo(Item ammo, Player player) {
-			if (player.itemAnimation < !player.ItemAnimationJustStarted)
-				return false;
-
-			return null;
-		}*/
+			item.ShotLimitPerUse = 3;
+			item.ConsumeAmmoOnFirstShotOnly = true;
+		*/
 
 		// How can I shoot 2 different projectiles at the same time?
 		/*public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {

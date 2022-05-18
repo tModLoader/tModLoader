@@ -36,16 +36,8 @@ namespace Terraria.ModLoader
 			PlayerLoader.OnMissingMana(player, item, neededMana);
 		}
 
-		public static bool? CanConsumeAmmo(Player player, Item weapon, Item ammo) {
-			bool? canConsumeFromItem = ItemLoader.CanConsumeAmmo(weapon, ammo, player);
-			if (canConsumeFromItem is true)
-				return true;
-
-			bool? canConsumeFromPlayer = PlayerLoader.CanConsumeAmmo(player, weapon, ammo);
-			if (canConsumeFromPlayer is true)
-				return true;
-
-			return canConsumeFromItem ?? canConsumeFromPlayer;
+		public static bool CanConsumeAmmo(Player player, Item weapon, Item ammo) {
+			return PlayerLoader.CanConsumeAmmo(player, weapon, ammo) && ItemLoader.CanConsumeAmmo(weapon, ammo, player);
 		}
 
 		public static void OnConsumeAmmo(Player player, Item weapon, Item ammo) {

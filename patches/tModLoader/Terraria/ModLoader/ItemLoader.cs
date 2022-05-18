@@ -640,48 +640,28 @@ namespace Terraria.ModLoader
 			return result ?? ammo.ammo == weapon.useAmmo;
 		}
 
-		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Item, Player, bool?>>(g => g.CanConsumeAmmo);
-		private static HookList HookCanBeConsumedAsAmmo = AddHook<Func<Item, Item, Player, bool?>>(g => g.CanBeConsumedAsAmmo);
+		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Item, Player, bool>>(g => g.CanConsumeAmmo);
+		private static HookList HookCanBeConsumedAsAmmo = AddHook<Func<Item, Item, Player, bool>>(g => g.CanBeConsumedAsAmmo);
 
 		/// <summary>
 		/// Calls each <see cref="GlobalItem.CanConsumeAmmo"/> hook for the weapon, and each <see cref="GlobalItem.CanBeConsumedAsAmmo"/> hook for the ammo,<br></br>
-		/// then each corresponding hook in <see cref="ModItem"/> if applicable for the weapon and/or ammo, until one of them returns a concrete true value.<br></br>
-		/// If all of them fail to do this, returns either false (if one returned false prior) or null.
+		/// then each corresponding hook in <see cref="ModItem"/> if applicable for the weapon and/or ammo, until one of them returns a concrete false value.<br></br>
+		/// If all of them fail to do this, returns true.
 		/// </summary>
-		public static bool? CanConsumeAmmo(Item weapon, Item ammo, Player player) {
-			bool? result = null;
+		public static bool CanConsumeAmmo(Item weapon, Item ammo, Player player) {
 			foreach (var g in HookCanConsumeAmmo.Enumerate(weapon.globalItems)) {
-				bool? r = g.CanConsumeAmmo(weapon, ammo, player);
-				if (r is true)
-					return true;
-
-				result ??= r;
+				if (!g.CanConsumeAmmo(weapon, ammo, player))
+					return false;
 			}
 
 			foreach (var g in HookCanBeConsumedAsAmmo.Enumerate(ammo.globalItems)) {
-				bool? r = g.CanBeConsumedAsAmmo(ammo, weapon, player);
-				if (r is true)
-					return true;
-
-				result ??= r;
+				if (!g.CanBeConsumedAsAmmo(ammo, weapon, player))
+					return false;
 			}
-
-			if (weapon.ModItem != null) {
-				bool? r = weapon.ModItem?.CanConsumeAmmo(ammo, player);
-				if (r is true)
-					return true;
-
-				result ??= r;
-			}
-
-			if (ammo.ModItem != null) {
-				bool? r = ammo.ModItem?.CanBeConsumedAsAmmo(weapon, player);
-				if (r is true)
-					return true;
-
-				result ??= r;
-			}
-			return result;
+			if (weapon.ModItem != null && !weapon.ModItem.CanConsumeAmmo(ammo, player) ||
+				ammo.ModItem != null && !ammo.ModItem.CanBeConsumedAsAmmo(weapon, player))
+				return false;
+			return true;
 		}
 
 		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Item, Player>>(g => g.OnConsumeAmmo);
