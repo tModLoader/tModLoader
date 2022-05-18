@@ -1705,19 +1705,19 @@
  				if (armor[k].type == 1546) {
  					rangedCrit += 5;
 -					arrowDamage += 0.15f;
-+					arrowDamage *= 0.15f; // tML += -> *= to imitate vanilla stacking behaviour
++					arrowDamage *= 1.15f; // tML += -> *= to imitate vanilla stacking behaviour
  				}
  
  				if (armor[k].type == 1547) {
  					rangedCrit += 5;
 -					bulletDamage += 0.15f;
-+					bulletDamage *= 0.15f; // tML += -> *= to imitate vanilla stacking behaviour
++					bulletDamage *= 1.15f; // tML += -> *= to imitate vanilla stacking behaviour
  				}
  
  				if (armor[k].type == 1548) {
  					rangedCrit += 5;
 -					rocketDamage += 0.15f;
-+					rocketDamage *= 0.15f; // tML += -> *= to imitate vanilla stacking behaviour
++					rocketDamage *= 1.15f; // tML += -> *= to imitate vanilla stacking behaviour
  				}
  
  				if (armor[k].type == 1549) {
