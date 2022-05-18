@@ -493,7 +493,26 @@
  			try {
  				string text = PlayerList[i].Path.Substring(0, PlayerList[i].Path.Length - 4);
  				if (text.Substring(text.Length - 1) != "." && text.Substring(text.Length - 1) != "\\" && Directory.Exists(text))
-@@ -3735,6 +_,7 @@
+@@ -3720,21 +_,23 @@
+ 		private static void EraseWorld(int i) {
+ 			try {
+ 				if (!WorldList[i].IsCloudSave) {
+-#if WINDOWS
++					if (OperatingSystem.IsWindows()) {
+ 					FileOperationAPIWrapper.MoveToRecycleBin(WorldList[i].Path);
+ 					FileOperationAPIWrapper.MoveToRecycleBin(WorldList[i].Path + ".bak");
+ 					for (int j = 2; j <= 9; j++) {
+ 						FileOperationAPIWrapper.MoveToRecycleBin(WorldList[i].Path + ".bak" + j);
+ 					}
+-#else
++					}
++					else {
+ 					File.Delete(Main.WorldList[i].Path);
+ 					File.Delete(Main.WorldList[i].Path + ".bak");
+-#endif
++					}
+ 				}
+ 				else if (SocialAPI.Cloud != null) {
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
  				}
  
