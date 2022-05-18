@@ -3010,7 +3010,7 @@
  					if (!npc[k].active)
  						continue;
  
-+					if (!NPCLoader.ShowNameOnHover(npc[k]))
++					if (!npc[k].ShowNameOnHover)
 +						continue;
 +
  					int type = npc[k].type;

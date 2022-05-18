@@ -73,16 +73,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to decide whether or not the given NPC should display its name when hovering over it.<br></br>
-		/// Defaults to true.
-		/// </summary>
-		/// <param name="npc">The NPC in question.</param>
-		/// <returns>True if the name should be shown; false if it should not.</returns>
-		public virtual bool ShowNameOnHover(NPC npc) {
-			return true;
-		}
-
-		/// <summary>
 		/// Allows you to modify the bounding box for hovering over the given NPC (affects things like whether or not its name is displayed).
 		/// </summary>
 		/// <param name="npc">The NPC in question.</param>
