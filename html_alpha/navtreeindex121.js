@@ -1,5 +1,8 @@
 var NAVTREEINDEX121 =
 {
+"class_terraria_1_1_world_sections.html#a184504baeb2d22e808ff1dff652fba96":[1,0,2,84,14],
+"class_terraria_1_1_world_sections.html#a305efef9df6ec92bf1444ed00297ab22":[1,0,2,84,7],
+"class_terraria_1_1_world_sections.html#a4a867445112de3c0904452c133e90b84":[1,0,2,84,0],
 "class_terraria_1_1_world_sections.html#a4fd2abb6c3b485dd4ae5b42898de2f7a":[1,0,2,84,13],
 "class_terraria_1_1_world_sections.html#a87493e0d95f82b757cfc4b803b29533d":[1,0,2,84,4],
 "class_terraria_1_1_world_sections.html#a993a2e7fdfe8c6c244d7ae001618e2c4":[1,0,2,84,3],
@@ -34,8 +37,8 @@ var NAVTREEINDEX121 =
 "classnativefiledialog.html#ad015f810ae97b11cebc345376a7dc842":[1,0,35,9],
 "classnativefiledialog.html#aeadaef3670dc3de9281eb92c4df871e7":[1,0,35,3],
 "classnativefiledialog.html#af0422ad594b56553df0ff318fd9a3ac0":[1,0,35,2],
-"functions.html":[1,3,0,0],
 "functions.html":[1,3,0],
+"functions.html":[1,3,0,0],
 "functions_b.html":[1,3,0,1],
 "functions_c.html":[1,3,0,2],
 "functions_d.html":[1,3,0,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX121 =
 "interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html#a3616475d344ef9f3203233c252e55464":[1,0,2,5,43,0],
 "interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html#ab05cc5e5baf26834e3900b20d673f195":[1,0,2,5,43,3],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html":[1,0,2,5,10,15],
-"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#a59661ba87eaa85aa898f52bc9a322a26":[1,0,2,5,10,15,3],
-"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#ac4919be6ba25a4211e6ff0256b72cd84":[1,0,2,5,10,15,0],
-"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#acd5284759293072fbad7e560b5ba187b":[1,0,2,5,10,15,1],
-"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#aeadbc086960f7eb54de8284e463ab034":[1,0,2,5,10,15,2]
+"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#a59661ba87eaa85aa898f52bc9a322a26":[1,0,2,5,10,15,3]
 };

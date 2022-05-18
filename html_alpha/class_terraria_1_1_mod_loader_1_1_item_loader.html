@@ -262,6 +262,9 @@ static <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="cla
 <tr class="memitem:a0062213e244b8f8f0f4787b48384d45e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a0062213e244b8f8f0f4787b48384d45e">ModifyWeaponKnockback</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> knockback)</td></tr>
 <tr class="memdesc:a0062213e244b8f8f0f4787b48384d45e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a16aad590a14c763cf66b7631f4b091c9" title="Allows you to dynamically modify a weapon&#39;s knockback based on player and item conditions....">ModItem.ModifyWeaponKnockback</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aaa709d6b02b386a22e6e7464d6cafa13" title="Allows you to dynamically modify a weapon&#39;s knockback based on player and item conditions....">GlobalItem.ModifyWeaponKnockback</a> hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a0062213e244b8f8f0f4787b48384d45e">More...</a><br /></td></tr>
 <tr class="separator:a0062213e244b8f8f0f4787b48384d45e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add602a380a516d22a0fab669b541fcbb"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#add602a380a516d22a0fab669b541fcbb">NeedsAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:add602a380a516d22a0fab669b541fcbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aa7fda0d2e1dc71695127fcacce23daab" title="Whether or not having no ammo prevents an item that uses ammo from shooting. Return false to allow sh...">ModItem.NeedsAmmo</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#afc22d3956941d0da0fafbafac1c0db8d" title="Whether or not having no ammo prevents an item that uses ammo from shooting. Return false to allow sh...">GlobalItem.NeedsAmmo</a> hooks, until any of them returns false.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#add602a380a516d22a0fab669b541fcbb">More...</a><br /></td></tr>
+<tr class="separator:add602a380a516d22a0fab669b541fcbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97e598fe867983e89c98025b18baa2fa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a97e598fe867983e89c98025b18baa2fa">OnConsumeAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a97e598fe867983e89c98025b18baa2fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aef202c01834342fcc335a12305b2b0b8" title="Allows you to make things happen when the given ammo is consumed by this weapon.  Called before the a...">ModItem.OnConsumeAmmo</a> for the weapon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#abc0398f80ddaf8f2b902fca49be2a08d" title="Allows you to make things happen when this ammo is consumed by the given weapon.  Called before the a...">ModItem.OnConsumedAsAmmo</a> for the ammo, then each corresponding hook for the weapon and ammo.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a97e598fe867983e89c98025b18baa2fa">More...</a><br /></td></tr>
 <tr class="separator:a97e598fe867983e89c98025b18baa2fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1903,6 +1906,44 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </div><div class="memdoc">
 
 <p>Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a16aad590a14c763cf66b7631f4b091c9" title="Allows you to dynamically modify a weapon&#39;s knockback based on player and item conditions....">ModItem.ModifyWeaponKnockback</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aaa709d6b02b386a22e6e7464d6cafa13" title="Allows you to dynamically modify a weapon&#39;s knockback based on player and item conditions....">GlobalItem.ModifyWeaponKnockback</a> hooks. </p>
+
+</div>
+</div>
+<a id="add602a380a516d22a0fab669b541fcbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add602a380a516d22a0fab669b541fcbb">&#9670;&nbsp;</a></span>NeedsAmmo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Terraria.ModLoader.ItemLoader.NeedsAmmo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>weapon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aa7fda0d2e1dc71695127fcacce23daab" title="Whether or not having no ammo prevents an item that uses ammo from shooting. Return false to allow sh...">ModItem.NeedsAmmo</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#afc22d3956941d0da0fafbafac1c0db8d" title="Whether or not having no ammo prevents an item that uses ammo from shooting. Return false to allow sh...">GlobalItem.NeedsAmmo</a> hooks, until any of them returns false. </p>
 
 </div>
 </div>

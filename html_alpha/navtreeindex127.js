@@ -1,5 +1,8 @@
 var NAVTREEINDEX127 =
 {
+"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a86ab3dc84a692425f87ced1dbefe9ac6":[1,0,2,4,60,0],
+"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#ad0c15e7f3bb576b2516f7ef49ed93be4":[1,0,2,4,60,5],
+"struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html":[1,0,2,4,61],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html#a1f252b16c4a3223ceff58c1204b35c44":[1,0,2,4,61,2],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html#a6883a5166c14de2d969cd5e0009aa82d":[1,0,2,4,61,0],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html#aaefd9f75613e3afe65b35747c98af8be":[1,0,2,4,61,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_game_content_1_1_ambience_1_1_ambience_server_1_1_ambience_spawn_info.html#a1932fef3601c9d2512478dc932a2358d":[1,0,2,5,1,0,0,1],
 "struct_terraria_1_1_game_content_1_1_ambience_1_1_ambience_server_1_1_ambience_spawn_info.html#aee746c631f8dc7d183c1e56831b79a38":[1,0,2,5,1,0,0,0],
 "struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_ocean_line_cache.html":[1,0,2,5,1,1,0],
-"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_ocean_line_cache.html#a128f1fb0352f248a38ad72a9c656047d":[1,0,2,5,1,1,0,0],
-"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_ocean_line_cache.html#a7a3a87cd71fae2d37d5d2dd9c961297d":[1,0,2,5,1,1,0,1],
-"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_underworld_cache.html":[1,0,2,5,1,1,1],
-"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_underworld_cache.html#afcc76b35256d6cd9e8aa4a311b133fea":[1,0,2,5,1,1,1,0]
+"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_ocean_line_cache.html#a128f1fb0352f248a38ad72a9c656047d":[1,0,2,5,1,1,0,0]
 };

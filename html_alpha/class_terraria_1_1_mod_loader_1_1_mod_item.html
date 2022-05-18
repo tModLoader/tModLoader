@@ -309,6 +309,9 @@ This is only called when attempting to stack with an item of the same type.  <a 
 <tr class="memitem:a16aad590a14c763cf66b7631f4b091c9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a16aad590a14c763cf66b7631f4b091c9">ModifyWeaponKnockback</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> knockback)</td></tr>
 <tr class="memdesc:a16aad590a14c763cf66b7631f4b091c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify a weapon's knockback based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> has to offer.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a16aad590a14c763cf66b7631f4b091c9">More...</a><br /></td></tr>
 <tr class="separator:a16aad590a14c763cf66b7631f4b091c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7fda0d2e1dc71695127fcacce23daab"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aa7fda0d2e1dc71695127fcacce23daab">NeedsAmmo</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:aa7fda0d2e1dc71695127fcacce23daab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not having no ammo prevents an item that uses ammo from shooting. Return false to allow shooting with no ammo in the inventory, in which case this item will act as if the default ammo for it is being used. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aa7fda0d2e1dc71695127fcacce23daab">More...</a><br /></td></tr>
+<tr class="separator:aa7fda0d2e1dc71695127fcacce23daab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a813ac242bda4ad0c1e1a5fb0873de497"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a813ac242bda4ad0c1e1a5fb0873de497">NetReceive</a> (BinaryReader reader)</td></tr>
 <tr class="memdesc:a813ac242bda4ad0c1e1a5fb0873de497"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives the custom data sent in NetSend. <br  />
 Called whenever an item container syncs its contents (various MessageIDs and sources), or MessageID.SyncItem and MessageID.InstancedItem are successfully received. <br  />
@@ -3093,6 +3096,34 @@ This is only called when attempting to stack with an item of the same type. </p>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aa7fda0d2e1dc71695127fcacce23daab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7fda0d2e1dc71695127fcacce23daab">&#9670;&nbsp;</a></span>NeedsAmmo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModItem.NeedsAmmo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not having no ammo prevents an item that uses ammo from shooting. Return false to allow shooting with no ammo in the inventory, in which case this item will act as if the default ammo for it is being used. Returns true by default. </p>
 
 </div>
 </div>

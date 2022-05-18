@@ -292,6 +292,9 @@ This is only called when two items of the same type attempt to stack.  <a href="
 <tr class="memitem:aaa709d6b02b386a22e6e7464d6cafa13"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aaa709d6b02b386a22e6e7464d6cafa13">ModifyWeaponKnockback</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> knockback)</td></tr>
 <tr class="memdesc:aaa709d6b02b386a22e6e7464d6cafa13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify a weapon's knockback based on player and item conditions. Can be utilized to modify damage beyond the tools that <a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> has to offer.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#aaa709d6b02b386a22e6e7464d6cafa13">More...</a><br /></td></tr>
 <tr class="separator:aaa709d6b02b386a22e6e7464d6cafa13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc22d3956941d0da0fafbafac1c0db8d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#afc22d3956941d0da0fafbafac1c0db8d">NeedsAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:afc22d3956941d0da0fafbafac1c0db8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not having no ammo prevents an item that uses ammo from shooting. Return false to allow shooting with no ammo in the inventory, in which case the item will act as if the default ammo for it is being used. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#afc22d3956941d0da0fafbafac1c0db8d">More...</a><br /></td></tr>
+<tr class="separator:afc22d3956941d0da0fafbafac1c0db8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49149a9cd376fb371263a76482549daa"><td class="memItemLeft" align="right" valign="top"><a id="a49149a9cd376fb371263a76482549daa"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a49149a9cd376fb371263a76482549daa">NetReceive</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, BinaryReader reader)</td></tr>
 <tr class="separator:a49149a9cd376fb371263a76482549daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3122,6 +3125,44 @@ This is only called when two items of the same type attempt to stack. </p>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="afc22d3956941d0da0fafbafac1c0db8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc22d3956941d0da0fafbafac1c0db8d">&#9670;&nbsp;</a></span>NeedsAmmo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.GlobalItem.NeedsAmmo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not having no ammo prevents an item that uses ammo from shooting. Return false to allow shooting with no ammo in the inventory, in which case the item will act as if the default ammo for it is being used. Returns true by default. </p>
 
 </div>
 </div>

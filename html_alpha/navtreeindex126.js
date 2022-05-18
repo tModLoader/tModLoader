@@ -1,5 +1,8 @@
 var NAVTREEINDEX126 =
 {
+"namespace_terraria_1_1_mod_loader_1_1_utilities.html":[0,0,2,14,8],
+"namespace_terraria_1_1_modules.html":[0,0,2,15],
+"namespace_terraria_1_1_net.html":[0,0,2,16],
 "namespace_terraria_1_1_net.html#a8632cb2317a7d13885b046ebaf710034":[0,0,2,16,11],
 "namespace_terraria_1_1_net.html#a8632cb2317a7d13885b046ebaf710034a0d4c3d1b3f0c14e4aae9e9598ed745db":[0,0,2,16,11,1],
 "namespace_terraria_1_1_net.html#a8632cb2317a7d13885b046ebaf710034a0e0ef97241e10f281b5b2d0abc2e2685":[0,0,2,16,11,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX126 =
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a12a2bcba57c00260cc4e31adbe08a4a6":[1,0,2,4,60,1],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a23b6ccf3902796d61cb83f8f059b6e1d":[1,0,2,4,60,2],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a3d5a809d563f965fba299d813a9e854b":[1,0,2,4,60,4],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a4baf470250dcd9bad267adbecb5b9d46":[1,0,2,4,60,3],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a86ab3dc84a692425f87ced1dbefe9ac6":[1,0,2,4,60,0],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#ad0c15e7f3bb576b2516f7ef49ed93be4":[1,0,2,4,60,5],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html":[1,0,2,4,61]
+"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a4baf470250dcd9bad267adbecb5b9d46":[1,0,2,4,60,3]
 };

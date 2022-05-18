@@ -1,5 +1,8 @@
 var NAVTREEINDEX122 =
 {
+"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#ac4919be6ba25a4211e6ff0256b72cd84":[1,0,2,5,10,15,0],
+"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#acd5284759293072fbad7e560b5ba187b":[1,0,2,5,10,15,1],
+"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#aeadbc086960f7eb54de8284e463ab034":[1,0,2,5,10,15,2],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule_chain_attempt.html":[1,0,2,5,10,16],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule_chain_attempt.html#a530ea675be221baae7b925292271ae3f":[1,0,2,5,10,16,1],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule_chain_attempt.html#a536c49ae3dd5f424975af1eaaa1a3104":[1,0,2,5,10,16,0],
@@ -246,8 +249,5 @@ var NAVTREEINDEX122 =
 "namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372a90d6f5f81c3dfda9c79dcdc1fb12925d":[0,0,2,5,2,8],
 "namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372a9386bb1310347c936dfd385a55af1dc5":[0,0,2,5,2,3],
 "namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372aa53f89078e9dcc9cd92b539012bc9639":[0,0,2,5,2,10],
-"namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372ab0d2f83d79ed18c8e87f87d407997219":[0,0,2,5,2,4],
-"namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372ab1699518cfd30931d23b0a837bbdb129":[0,0,2,5,2,2],
-"namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372ac9ae9f5e403735b7dfc79608b6e802b5":[0,0,2,5,2,5],
-"namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372ad7459c2d54d1e4b0881ad49a9937e864":[0,0,2,5,2,6]
+"namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372ab0d2f83d79ed18c8e87f87d407997219":[0,0,2,5,2,4]
 };

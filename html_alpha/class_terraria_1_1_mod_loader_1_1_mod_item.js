@@ -64,6 +64,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "ModifyWeaponCrit", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ab0d70193be6612e2ccf7f8ad08861d2a", null ],
     [ "ModifyWeaponDamage", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a6e16e0206d68e1310857f56d729567dc", null ],
     [ "ModifyWeaponKnockback", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a16aad590a14c763cf66b7631f4b091c9", null ],
+    [ "NeedsAmmo", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aa7fda0d2e1dc71695127fcacce23daab", null ],
     [ "NetReceive", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a813ac242bda4ad0c1e1a5fb0873de497", null ],
     [ "NetSend", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a5f7a03b9388a7610935e6f628b257dfe", null ],
     [ "OnConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aef202c01834342fcc335a12305b2b0b8", null ],
