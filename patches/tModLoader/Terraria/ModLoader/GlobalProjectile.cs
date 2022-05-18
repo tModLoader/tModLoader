@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria.DataStructures;
 using Terraria.ModLoader.Core;
 
@@ -67,6 +68,27 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		public virtual void PostAI(Projectile projectile) {
+		}
+
+		/// <summary>
+		/// Use this judiciously to avoid straining the network.
+		/// <br/>If you are storing AI information outside of the Projectile.ai array, use this to send that AI information between clients and servers, which will be handled in <see cref="ReceiveExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
+		/// </summary>
+		/// <param name="projectile">The projectile.</param>
+		/// <param name="writer">The writer.</param>
+		public virtual void SendExtraAI(Projectile projectile, BinaryWriter writer) {
+		}
+
+		/// <summary>
+		/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully received.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
+		/// </summary>
+		/// <param name="projectile">The projectile.</param>
+		/// <param name="reader">The reader.</param>
+		public virtual void ReceiveExtraAI(Projectile projectile, BinaryReader reader) {
 		}
 
 		/// <summary>

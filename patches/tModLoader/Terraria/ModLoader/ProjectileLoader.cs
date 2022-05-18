@@ -198,15 +198,18 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static byte[] WriteExtraAI(Projectile projectile) {
-			if (projectile.ModProjectile == null) {
-				return Array.Empty<byte>();
-			}
+		private static HookList HookWriteExtraAI = AddHook<Action<Projectile, BinaryWriter>>(g => g.SendExtraAI);
 
+		public static byte[] WriteExtraAI(Projectile projectile) {
 			using var stream = new MemoryStream();
 			using var modWriter = new BinaryWriter(stream);
 
-			projectile.ModProjectile.SendExtraAI(modWriter);
+			projectile.ModProjectile?.SendExtraAI(modWriter);
+
+			foreach (GlobalProjectile g in HookWriteExtraAI.Enumerate(projectile.globalProjectiles)) {
+				g.SendExtraAI(projectile, modWriter);
+			}
+
 			modWriter.Flush();
 
 			return stream.ToArray();
@@ -216,15 +219,17 @@ namespace Terraria.ModLoader
 			return reader.ReadBytes(reader.Read7BitEncodedInt());
 		}
 
-		public static void ReceiveExtraAI(Projectile projectile, byte[] extraAI) {
-			if (projectile.ModProjectile == null) {
-				return;
-			}
+		private static HookList HookReceiveExtraAI = AddHook<Action<Projectile, BinaryReader>>(g => g.ReceiveExtraAI);
 
+		public static void ReceiveExtraAI(Projectile projectile, byte[] extraAI) {
 			using var stream = new MemoryStream(extraAI);
 			using var modReader = new BinaryReader(stream);
 
-			projectile.ModProjectile.ReceiveExtraAI(modReader);
+			projectile.ModProjectile?.ReceiveExtraAI(modReader);
+
+			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
+				g.ReceiveExtraAI(projectile, modReader);
+			}
 		}
 
 		private static HookList HookShouldUpdatePosition = AddHook<Func<Projectile, bool>>(g => g.ShouldUpdatePosition);
