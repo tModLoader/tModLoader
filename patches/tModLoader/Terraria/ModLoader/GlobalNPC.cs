@@ -73,6 +73,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the bounding box for hovering over the given NPC (affects things like whether or not its name is displayed).
+		/// </summary>
+		/// <param name="npc">The NPC in question.</param>
+		/// <param name="boundingBox">The bounding box used for determining whether or not the NPC counts as being hovered over.</param>
+		public virtual void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox) {
+		}
+
+		/// <summary>
 		/// Allows you to set the town NPC profile that a given NPC uses.
 		/// </summary>
 		/// <param name="npc">The NPC in question.</param>
