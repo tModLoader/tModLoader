@@ -410,6 +410,7 @@ var hierarchy =
     ] ],
     [ "Terraria.ModLoader.Core.TmodFile.FileEntry", "class_terraria_1_1_mod_loader_1_1_core_1_1_tmod_file_1_1_file_entry.html", null ],
     [ "Terraria.IO.FileMetadata", "class_terraria_1_1_i_o_1_1_file_metadata.html", null ],
+    [ "Terraria.Utilities.FileOperationAPIWrapper", "class_terraria_1_1_utilities_1_1_file_operation_a_p_i_wrapper.html", null ],
     [ "Terraria.Utilities.FileUtilities", "class_terraria_1_1_utilities_1_1_file_utilities.html", null ],
     [ "Terraria.Cinematics.Film", "class_terraria_1_1_cinematics_1_1_film.html", [
       [ "Terraria.Cinematics.DD2Film", "class_terraria_1_1_cinematics_1_1_d_d2_film.html", null ],

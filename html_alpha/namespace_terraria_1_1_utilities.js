@@ -5,6 +5,7 @@ var namespace_terraria_1_1_utilities =
     [ "CrashDump", "class_terraria_1_1_utilities_1_1_crash_dump.html", "class_terraria_1_1_utilities_1_1_crash_dump" ],
     [ "CrashWatcher", "class_terraria_1_1_utilities_1_1_crash_watcher.html", "class_terraria_1_1_utilities_1_1_crash_watcher" ],
     [ "FastRandom", "struct_terraria_1_1_utilities_1_1_fast_random.html", "struct_terraria_1_1_utilities_1_1_fast_random" ],
+    [ "FileOperationAPIWrapper", "class_terraria_1_1_utilities_1_1_file_operation_a_p_i_wrapper.html", "class_terraria_1_1_utilities_1_1_file_operation_a_p_i_wrapper" ],
     [ "FileUtilities", "class_terraria_1_1_utilities_1_1_file_utilities.html", "class_terraria_1_1_utilities_1_1_file_utilities" ],
     [ "IntRange", "struct_terraria_1_1_utilities_1_1_int_range.html", "struct_terraria_1_1_utilities_1_1_int_range" ],
     [ "NPCUtils", "class_terraria_1_1_utilities_1_1_n_p_c_utils.html", "class_terraria_1_1_utilities_1_1_n_p_c_utils" ],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX125 =
 {
+"namespace_terraria_1_1_game_content_1_1_item_drop_rules.html#afaef0fc3a9ff13cfe6a3447c9dbf6b48ac11a4f5a87b7a1160493edaad0f87403":[0,0,2,6,10,31,0],
+"namespace_terraria_1_1_game_content_1_1_liquid.html":[0,0,2,6,11],
 "namespace_terraria_1_1_game_content_1_1_loot_simulation.html":[0,0,2,6,12],
 "namespace_terraria_1_1_game_content_1_1_loot_simulation_1_1_loot_simulator_condition_setter_types.html":[0,0,2,6,12,0],
 "namespace_terraria_1_1_game_content_1_1_metadata.html":[0,0,2,6,13],
@@ -247,7 +249,5 @@ var NAVTREEINDEX125 =
 "namespace_terraria_1_1_net_1_1_sockets.html#a5fe7c604b7d9264be93d7d92b1046aa3":[0,0,2,16,0,5],
 "namespace_terraria_1_1_net_1_1_sockets.html#a84f79dd856d0d35432df3e97ce89334d":[0,0,2,16,0,3],
 "namespace_terraria_1_1_object_data.html":[0,0,2,17],
-"namespace_terraria_1_1_physics.html":[0,0,2,18],
-"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dd":[0,0,2,18,6],
-"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda1d18fe2cdd43a72d46421ecfe81b599e":[0,0,2,18,6,3]
+"namespace_terraria_1_1_physics.html":[0,0,2,18]
 };
