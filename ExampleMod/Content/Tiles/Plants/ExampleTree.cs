@@ -39,7 +39,7 @@ namespace ExampleMod.Content.Tiles
 			// This is where fancy code could go, but let's save that for an advanced example
 		}
 
-		// Top Textures
+		// Branch Textures
 		public override Asset<Texture2D> GetBranchTextures() {
 			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExampleTree_Branches");
 		}
