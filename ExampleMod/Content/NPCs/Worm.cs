@@ -74,7 +74,7 @@ namespace ExampleMod.NPCs
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
 					//This allows to have damage varying depending on the gamemode
-					int damage = (int) (5 * Main.GameModeInfo.EffectiveEnemyDamageModifier);
+					int damage = 5;
 					var entitySource = NPC.GetSource_FromAI();
 					var projectile = Projectile.NewProjectileDirect(entitySource, NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, damage, 0, Main.myPlayer);
 
