@@ -202,6 +202,9 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 <tr class="memitem:a92f1db23976a52d729126ade137063fc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a92f1db23976a52d729126ade137063fc">ModifyHitPlayer</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_player.html">Player</a> target, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:a92f1db23976a52d729126ade137063fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> does to a player.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a92f1db23976a52d729126ade137063fc">More...</a><br /></td></tr>
 <tr class="separator:a92f1db23976a52d729126ade137063fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40f947918bbf564a683d5eb25ef70acb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a40f947918bbf564a683d5eb25ef70acb">ModifyHoverBoundingBox</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, ref Rectangle boundingBox)</td></tr>
+<tr class="memdesc:a40f947918bbf564a683d5eb25ef70acb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the bounding box for hovering over the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> (affects things like whether or not its name is displayed).  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a40f947918bbf564a683d5eb25ef70acb">More...</a><br /></td></tr>
+<tr class="separator:a40f947918bbf564a683d5eb25ef70acb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa3015ffb9c4818ae7af1271585c9d17"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afa3015ffb9c4818ae7af1271585c9d17">ModifyNPCLoot</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html">NPCLoot</a> npcLoot)</td></tr>
 <tr class="memdesc:afa3015ffb9c4818ae7af1271585c9d17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add and modify <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> loot tables to drop on death and to appear in the Bestiary.<br  />
  The Basic <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use this hook to modify npc loot.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afa3015ffb9c4818ae7af1271585c9d17">More...</a><br /></td></tr>
@@ -1939,6 +1942,51 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
     <tr><td class="paramname">target</td><td></td></tr>
     <tr><td class="paramname">damage</td><td></td></tr>
     <tr><td class="paramname">crit</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a40f947918bbf564a683d5eb25ef70acb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40f947918bbf564a683d5eb25ef70acb">&#9670;&nbsp;</a></span>ModifyHoverBoundingBox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalNPC.ModifyHoverBoundingBox </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Rectangle&#160;</td>
+          <td class="paramname"><em>boundingBox</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to modify the bounding box for hovering over the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> (affects things like whether or not its name is displayed). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td>The <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> in question.</td></tr>
+    <tr><td class="paramname">boundingBox</td><td>The bounding box used for determining whether or not the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> counts as being hovered over.</td></tr>
   </table>
   </dd>
 </dl>

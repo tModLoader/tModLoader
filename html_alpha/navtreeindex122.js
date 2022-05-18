@@ -1,5 +1,9 @@
 var NAVTREEINDEX122 =
 {
+"interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html#a3616475d344ef9f3203233c252e55464":[1,0,2,5,43,0],
+"interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html#ab05cc5e5baf26834e3900b20d673f195":[1,0,2,5,43,3],
+"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html":[1,0,2,5,10,15],
+"interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#a59661ba87eaa85aa898f52bc9a322a26":[1,0,2,5,10,15,3],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#ac4919be6ba25a4211e6ff0256b72cd84":[1,0,2,5,10,15,0],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#acd5284759293072fbad7e560b5ba187b":[1,0,2,5,10,15,1],
 "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html#aeadbc086960f7eb54de8284e463ab034":[1,0,2,5,10,15,2],
@@ -245,9 +249,5 @@ var NAVTREEINDEX122 =
 "namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372a3634a34218faeadd59af95c76e540f0d":[0,0,2,5,2,0],
 "namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372a741f5ce56cf2b6c2a0183e6e47256407":[0,0,2,5,2,11],
 "namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372a7a3559c3e47879a19a95ffcc2bf53c48":[0,0,2,5,2,9],
-"namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372a7b009e598ace58314e9920810edab7d7":[0,0,2,5,2,1],
-"namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372a90d6f5f81c3dfda9c79dcdc1fb12925d":[0,0,2,5,2,8],
-"namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372a9386bb1310347c936dfd385a55af1dc5":[0,0,2,5,2,3],
-"namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372aa53f89078e9dcc9cd92b539012bc9639":[0,0,2,5,2,10],
-"namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372ab0d2f83d79ed18c8e87f87d407997219":[0,0,2,5,2,4]
+"namespace_terraria_1_1_enums.html#a0c9097eb4b9aedc37d7ca65ba311a372a7b009e598ace58314e9920810edab7d7":[0,0,2,5,2,1]
 };

@@ -196,6 +196,9 @@ Return true to allow this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC
 <tr class="memitem:a72508ef67b142de2406b12d6b700973d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a72508ef67b142de2406b12d6b700973d">ModifyHitPlayer</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> target, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:a72508ef67b142de2406b12d6b700973d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> does to a player.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a72508ef67b142de2406b12d6b700973d">More...</a><br /></td></tr>
 <tr class="separator:a72508ef67b142de2406b12d6b700973d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac140a1c20c1b11509616bdf9ae2d7823"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac140a1c20c1b11509616bdf9ae2d7823">ModifyHoverBoundingBox</a> (ref Rectangle boundingBox)</td></tr>
+<tr class="memdesc:ac140a1c20c1b11509616bdf9ae2d7823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the bounding box for hovering over this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> (affects things like whether or not its name is displayed).  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac140a1c20c1b11509616bdf9ae2d7823">More...</a><br /></td></tr>
+<tr class="separator:ac140a1c20c1b11509616bdf9ae2d7823"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cd9c8aa8696ed906faee74df121ee9c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0cd9c8aa8696ed906faee74df121ee9c">ModifyNPCLoot</a> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html">NPCLoot</a> npcLoot)</td></tr>
 <tr class="memdesc:a0cd9c8aa8696ed906faee74df121ee9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add and modify <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> loot tables to drop on death and to appear in the Bestiary.<br  />
  The Basic <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use this hook to modify <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> loot.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0cd9c8aa8696ed906faee74df121ee9c">More...</a><br /></td></tr>
@@ -271,7 +274,8 @@ Only called on the server.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c
 <tr class="memdesc:a90c57527bfca0ed7f14d88e09f3e498a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to set all your <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>'s properties, such as width, damage, aiStyle, lifeMax, etc.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a">More...</a><br /></td></tr>
 <tr class="separator:a90c57527bfca0ed7f14d88e09f3e498a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebfb5a21bbb328c413392fc5d540a46f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_list.html">List</a>&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aebfb5a21bbb328c413392fc5d540a46f">SetNPCNameList</a> ()</td></tr>
-<tr class="memdesc:aebfb5a21bbb328c413392fc5d540a46f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give a list of names this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be given on spawn. By default, returns a blank list, which means the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will simply use its type name as its given name when prompted.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aebfb5a21bbb328c413392fc5d540a46f">More...</a><br /></td></tr>
+<tr class="memdesc:aebfb5a21bbb328c413392fc5d540a46f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to give a list of names this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be given on spawn.<br  />
+ By default, returns a blank list, which means the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will simply use its type name as its given name when prompted.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aebfb5a21bbb328c413392fc5d540a46f">More...</a><br /></td></tr>
 <tr class="separator:aebfb5a21bbb328c413392fc5d540a46f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf0618b3e2128b5148017219ddc1ce38"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#adf0618b3e2128b5148017219ddc1ce38">SetupContent</a> ()</td></tr>
 <tr class="memdesc:adf0618b3e2128b5148017219ddc1ce38"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aa2daf87c887ac0d98f00543a41e8e87f" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#adf0618b3e2128b5148017219ddc1ce38">More...</a><br /></td></tr>
@@ -1667,6 +1671,40 @@ Return true to allow this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC
 
 </div>
 </div>
+<a id="ac140a1c20c1b11509616bdf9ae2d7823"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac140a1c20c1b11509616bdf9ae2d7823">&#9670;&nbsp;</a></span>ModifyHoverBoundingBox()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModNPC.ModifyHoverBoundingBox </td>
+          <td>(</td>
+          <td class="paramtype">ref Rectangle&#160;</td>
+          <td class="paramname"><em>boundingBox</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to modify the bounding box for hovering over this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> (affects things like whether or not its name is displayed). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">boundingBox</td><td>The bounding box used for determining whether or not the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> counts as being hovered over.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a0cd9c8aa8696ed906faee74df121ee9c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0cd9c8aa8696ed906faee74df121ee9c">&#9670;&nbsp;</a></span>ModifyNPCLoot()</h2>
 
@@ -2619,7 +2657,8 @@ Only called on the server. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to give a list of names this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be given on spawn. By default, returns a blank list, which means the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will simply use its type name as its given name when prompted. </p>
+<p>Allows you to give a list of names this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be given on spawn.<br  />
+ By default, returns a blank list, which means the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will simply use its type name as its given name when prompted. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>

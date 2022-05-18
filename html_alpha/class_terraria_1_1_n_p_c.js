@@ -429,6 +429,7 @@ var class_terraria_1_1_n_p_c =
     [ "ModNPC", "class_terraria_1_1_n_p_c.html#a9382bb3bbdd91263de1afa42fe528f40", null ],
     [ "Opacity", "class_terraria_1_1_n_p_c.html#a1c935e24f03fb14731b337b6b29eedc4", null ],
     [ "ShieldStrengthTowerMax", "class_terraria_1_1_n_p_c.html#a350ddc51dd74b9d4f55d39d0050c51b5", null ],
+    [ "ShowNameOnHover", "class_terraria_1_1_n_p_c.html#ab4616d6fc280147503bd017a0e7f5366", null ],
     [ "SupportsNPCTargets", "class_terraria_1_1_n_p_c.html#a0ac56d3b8e4bae2858d2cb9d3e2038fa", null ],
     [ "TooWindyForButterflies", "class_terraria_1_1_n_p_c.html#ad73c6d0aa01476931fb342f78298b7c1", null ],
     [ "TowersDefeated", "class_terraria_1_1_n_p_c.html#ac36de1b9aef2bc2aefdb70e3382c47e1", null ],

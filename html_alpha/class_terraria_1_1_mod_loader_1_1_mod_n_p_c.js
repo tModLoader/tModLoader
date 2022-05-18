@@ -32,6 +32,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "ModifyHitByProjectile", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a95122e1a8db39a14617a8d93c187efc8", null ],
     [ "ModifyHitNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a10bb42e54445d397e5a28277ed9c0d12", null ],
     [ "ModifyHitPlayer", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a72508ef67b142de2406b12d6b700973d", null ],
+    [ "ModifyHoverBoundingBox", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac140a1c20c1b11509616bdf9ae2d7823", null ],
     [ "ModifyNPCLoot", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0cd9c8aa8696ed906faee74df121ee9c", null ],
     [ "ModifyTypeName", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2e0fc1bbed2762481b009f47dd318ee5", null ],
     [ "OnCatchNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac5a8546208e826e46ccc68e96d532103", null ],
