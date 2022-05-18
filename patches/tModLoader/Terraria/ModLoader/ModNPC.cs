@@ -162,6 +162,37 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the type name of this NPC dynamically.
+		/// </summary>
+		public virtual void ModifyTypeName(ref string typeName) {
+		}
+
+		/// <summary>
+		/// Allows you to decide whether or not this NPC should display its name when hovering over it.<br></br>
+		/// Defaults to true.
+		/// </summary>
+		/// <returns>True if the name should be shown; false if it should not.</returns>
+		public virtual bool ShowNameOnHover() {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you to modify the bounding box for hovering over this NPC (affects things like whether or not its name is displayed).
+		/// </summary>
+		/// <param name="boundingBox">The bounding box used for determining whether or not the NPC counts as being hovered over.</param>
+		public virtual void ModifyHoverBoundingBox(ref Rectangle boundingBox) {
+		}
+
+		/// <summary>
+		/// Allows you to give a list of names this NPC can be given on spawn.<br></br>
+		/// By default, returns a blank list, which means the NPC will simply use its type name as its given name when prompted.
+		/// </summary>
+		/// <returns></returns>
+		public virtual List<string> SetNPCNameList() {
+			return new List<string>();
+		}
+
+		/// <summary>
 		/// Allows you to set the town NPC profile that this NPC uses.<br></br>
 		/// By default, returns null, meaning that the NPC doesn't use one.
 		/// </summary>
@@ -561,30 +592,6 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public virtual bool CheckConditions(int left, int right, int top, int bottom) {
 			return true;
-		}
-
-		/// <summary>
-		/// Allows you to modify the type name of this NPC dynamically.
-		/// </summary>
-		public virtual void ModifyTypeName(ref string typeName) {
-		}
-
-		/// <summary>
-		/// Allows you to decide whether or not this NPC should display its name when hovering over it.
-		/// Defaults to true.
-		/// </summary>
-		/// <returns>True if the name should be shown; false if it should not.</returns>
-		public virtual bool ShowNameOnHover() {
-			return true;
-		}
-
-		/// <summary>
-		/// Allows you to give a list of names this NPC can be given on spawn.
-		/// By default, returns a blank list, which means the NPC will simply use its type name as its given name when prompted.
-		/// </summary>
-		/// <returns></returns>
-		public virtual List<string> SetNPCNameList() {
-			return new List<string>();
 		}
 
 		/// <summary>

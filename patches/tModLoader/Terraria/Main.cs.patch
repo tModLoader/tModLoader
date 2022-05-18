@@ -3006,7 +3006,7 @@
  
  						MouseTextHackZoom(text, rare, 0);
  						mouseText = true;
-@@ -32050,6 +_,9 @@
+@@ -32050,18 +_,22 @@
  					if (!npc[k].active)
  						continue;
  
@@ -3016,7 +3016,12 @@
  					int type = npc[k].type;
  					LoadNPC(type);
  					npc[k].position += npc[k].netOffset;
-@@ -32061,7 +_,7 @@
+ 					Microsoft.Xna.Framework.Rectangle value3 = new Microsoft.Xna.Framework.Rectangle((int)npc[k].Bottom.X - npc[k].frame.Width / 2, (int)npc[k].Bottom.Y - npc[k].frame.Height, npc[k].frame.Width, npc[k].frame.Height);
+ 					if (npc[k].type >= 87 && npc[k].type <= 92)
+ 						value3 = new Microsoft.Xna.Framework.Rectangle((int)((double)npc[k].position.X + (double)npc[k].width * 0.5 - 32.0), (int)((double)npc[k].position.Y + (double)npc[k].height * 0.5 - 32.0), 64, 64);
++					NPCLoader.ModifyHoverBoundingBox(npc[k], ref value3);
+ 
+ 					bool flag = rectangle.Intersects(value3);
  					bool flag2 = flag || (SmartInteractShowingGenuine && SmartInteractNPC == k);
  					if (flag2 && ((npc[k].type != 85 && npc[k].type != 341 && npc[k].type != 629 && npc[k].aiStyle != 87) || npc[k].ai[0] != 0f) && npc[k].type != 488) {
  						bool flag3 = SmartInteractShowingGenuine && SmartInteractNPC == k;
