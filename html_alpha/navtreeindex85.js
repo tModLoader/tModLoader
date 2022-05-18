@@ -1,5 +1,12 @@
 var NAVTREEINDEX85 =
 {
+"class_terraria_1_1_main.html#aeb27cacc30d8d86cc492fb06b6413c26":[1,0,2,47,966],
+"class_terraria_1_1_main.html#aeb2893ddbab535a29111ec599d099440":[1,0,2,47,762],
+"class_terraria_1_1_main.html#aeb59718d838663ea500b4619b081d791":[1,0,2,47,94],
+"class_terraria_1_1_main.html#aeb6709a17f2341794d9cc48949df66f0":[1,0,2,47,200],
+"class_terraria_1_1_main.html#aeb8c9a26d9489a57219d500ca0187b93":[1,0,2,47,226],
+"class_terraria_1_1_main.html#aeb9fe4e8f51057b9e900a165f64c7af0":[1,0,2,47,548],
+"class_terraria_1_1_main.html#aebc9a4be9711dac63704f4aa6dc2630d":[1,0,2,47,80],
 "class_terraria_1_1_main.html#aebf35e03fcb5c753514219e16c1baf93":[1,0,2,47,102],
 "class_terraria_1_1_main.html#aec6db54cb70c123781127e3f2e1c1a72":[1,0,2,47,428],
 "class_terraria_1_1_main.html#aec93af4e6c940a0e6d1342d040c2a764":[1,0,2,47,752],
@@ -242,12 +249,5 @@ var NAVTREEINDEX85 =
 "class_terraria_1_1_minecart.html#aeb7b29206687343e3afdafaae3ade4b0":[1,0,2,49,12],
 "class_terraria_1_1_minecart.html#af1108f2d5c38f640ff5dbf082759531a":[1,0,2,49,6],
 "class_terraria_1_1_minecart.html#af507675ff580f8a8846fde67f5ab190d":[1,0,2,49,25],
-"class_terraria_1_1_minecart.html#af7e96752115fd2e8f882b86743f162e1":[1,0,2,49,31],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html":[1,0,2,13,8],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a03f5de6394c5c69705691d6ee3dec034":[1,0,2,13,8,17],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a069ca14fcbe651387a9196e46079566b":[1,0,2,13,8,19],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a355fa3af75e4eca4cf6d5bc0f915e523":[1,0,2,13,8,11],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a3d868f9f91322e56cde953885d4081fe":[1,0,2,13,8,8],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a48c6f8acd36a335efd1e414d3c5f0d9a":[1,0,2,13,8,7],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a4c5b2ffa6f69e72f09eb54ea10fc53ea":[1,0,2,13,8,4]
+"class_terraria_1_1_minecart.html#af7e96752115fd2e8f882b86743f162e1":[1,0,2,49,31]
 };

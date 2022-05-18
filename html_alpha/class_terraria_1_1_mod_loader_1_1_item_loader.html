@@ -125,8 +125,15 @@ static ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAutoReuse
 <tr class="memitem:a0b7622f93f8a86d5a0d6a4e5561027c3"><td class="memItemLeft" align="right" valign="top">static ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a0b7622f93f8a86d5a0d6a4e5561027c3">CanBurnInLava</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a0b7622f93f8a86d5a0d6a4e5561027c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a4ade56e1ccad98f196a937714fdbfbd2" title="Returns whether or not this item will burn in lava regardless of any conditions. Returns null by defa...">ModItem.CanBurnInLava</a>.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a0b7622f93f8a86d5a0d6a4e5561027c3">More...</a><br /></td></tr>
 <tr class="separator:a0b7622f93f8a86d5a0d6a4e5561027c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a221e77c97d28387f54bb499e5fdb294c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a221e77c97d28387f54bb499e5fdb294c">CanChooseAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:a221e77c97d28387f54bb499e5fdb294c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls each <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ac6bc7e67e37644ffad793c6e248833d0" title="Whether or not the given ammo item is valid for the given weapon; called on the weapon....">GlobalItem.CanChooseAmmo</a> hook for the weapon, and each <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a86e481cb1313f6b1a523fe6320639d47" title="Whether or not the given ammo item is valid for the given weapon; called on the ammo....">GlobalItem.CanBeChosenAsAmmo</a> hook for the ammo,<br  />
+ then each corresponding hook in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> if applicable for the weapon and/or ammo, until one of them returns a concrete false value.<br  />
+ If all of them fail to do this, returns either true (if one returned true prior) or <code>ammo.ammo == weapon.useAmmo</code>.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a221e77c97d28387f54bb499e5fdb294c">More...</a><br /></td></tr>
+<tr class="separator:a221e77c97d28387f54bb499e5fdb294c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae874452bca5ff5158ac7ec0d6d3116a1"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ae874452bca5ff5158ac7ec0d6d3116a1">CanConsumeAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:ae874452bca5ff5158ac7ec0d6d3116a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a244e3514a9c4a69175419da96fbe35b6" title="Whether or not ammo will be consumed upon usage. Called both by the weapon; if at least one of this a...">ModItem.CanConsumeAmmo</a> for the weapon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1e631dcdb8f74c90e219db68da956391" title="Whether or not ammo will be consumed upon usage. Called by the ammo; if at least one of this and CanC...">ModItem.CanBeConsumedAsAmmo</a> for the ammo, then each corresponding hook for the weapon and ammo, until one of them returns false. If all of them return true, returns true.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ae874452bca5ff5158ac7ec0d6d3116a1">More...</a><br /></td></tr>
+<tr class="memdesc:ae874452bca5ff5158ac7ec0d6d3116a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls each <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a98e0f2e9ca0c9b3748f287de117bb19e" title="Whether or not the given ammo item will be consumed; called on the weapon.  By default,...">GlobalItem.CanConsumeAmmo</a> hook for the weapon, and each <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aba5ea8a4dbf1284da1325cb151b9a896" title="Whether or not the given ammo item will be consumed; called on the ammo.  By default,...">GlobalItem.CanBeConsumedAsAmmo</a> hook for the ammo,<br  />
+ then each corresponding hook in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> if applicable for the weapon and/or ammo, until one of them returns a concrete false value.<br  />
+ If all of them fail to do this, returns true.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ae874452bca5ff5158ac7ec0d6d3116a1">More...</a><br /></td></tr>
 <tr class="separator:ae874452bca5ff5158ac7ec0d6d3116a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e8dcf2ba55001c6de7212da837e4e26"><td class="memItemLeft" align="right" valign="top"><a id="a0e8dcf2ba55001c6de7212da837e4e26"></a>
 static ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanConsumeBait</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> bait)</td></tr>
@@ -256,7 +263,7 @@ static <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="cla
 <tr class="memdesc:a0062213e244b8f8f0f4787b48384d45e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a16aad590a14c763cf66b7631f4b091c9" title="Allows you to dynamically modify a weapon&#39;s knockback based on player and item conditions....">ModItem.ModifyWeaponKnockback</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aaa709d6b02b386a22e6e7464d6cafa13" title="Allows you to dynamically modify a weapon&#39;s knockback based on player and item conditions....">GlobalItem.ModifyWeaponKnockback</a> hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a0062213e244b8f8f0f4787b48384d45e">More...</a><br /></td></tr>
 <tr class="separator:a0062213e244b8f8f0f4787b48384d45e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97e598fe867983e89c98025b18baa2fa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a97e598fe867983e89c98025b18baa2fa">OnConsumeAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:a97e598fe867983e89c98025b18baa2fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a37428a76cceee9aa18d7dc23294a2689" title="Allows you to make things happen when ammo is consumed. Called by the weapon.  Called before the ammo...">ModItem.OnConsumeAmmo</a> for the weapon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a09a8f53b9d36196a7d74f6715936d5b1" title="Allows you to make things happen when ammo is consumed. Called by the ammo.  Called before the ammo s...">ModItem.OnConsumedAsAmmo</a> for the ammo, then each corresponding hook for the weapon and ammo.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a97e598fe867983e89c98025b18baa2fa">More...</a><br /></td></tr>
+<tr class="memdesc:a97e598fe867983e89c98025b18baa2fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aef202c01834342fcc335a12305b2b0b8" title="Allows you to make things happen when the given ammo is consumed by this weapon.  Called before the a...">ModItem.OnConsumeAmmo</a> for the weapon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#abc0398f80ddaf8f2b902fca49be2a08d" title="Allows you to make things happen when this ammo is consumed by the given weapon.  Called before the a...">ModItem.OnConsumedAsAmmo</a> for the ammo, then each corresponding hook for the weapon and ammo.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a97e598fe867983e89c98025b18baa2fa">More...</a><br /></td></tr>
 <tr class="separator:a97e598fe867983e89c98025b18baa2fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a306bf8e55905d5f5f97fc377052cd5af"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a306bf8e55905d5f5f97fc377052cd5af">OnConsumeItem</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a306bf8e55905d5f5f97fc377052cd5af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ab34acf5234d176f4e43cc6b6075fbfe7" title="Allows you to make things happen when this item is consumed. Called before the item stack is reduced.">ModItem.OnConsumeItem</a> and all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a527df2063745f6e28bd2f7eb1261e4a0" title="Allows you to make things happen when this item is consumed. Called before the item stack is reduced.">GlobalItem.OnConsumeItem</a> hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a306bf8e55905d5f5f97fc377052cd5af">More...</a><br /></td></tr>
@@ -288,9 +295,9 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnResearched</
 <tr class="memitem:ade1e4bae9c5338483c565e66b63ad332"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ade1e4bae9c5338483c565e66b63ad332">OpenVanillaBag</a> (string context, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, int arg)</td></tr>
 <tr class="memdesc:ade1e4bae9c5338483c565e66b63ad332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a0eb343631d8090fa5bb7a85fcc9a784f" title="Allows you to make vanilla bags drop your own items in addition to the default items....">GlobalItem.OpenVanillaBag</a> hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ade1e4bae9c5338483c565e66b63ad332">More...</a><br /></td></tr>
 <tr class="separator:ade1e4bae9c5338483c565e66b63ad332"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a0c3c7cf3ec85f7202a15cbf88fe76c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a5a0c3c7cf3ec85f7202a15cbf88fe76c">PickAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref int type, ref float speed, ref int damage, ref float knockback)</td></tr>
-<tr class="memdesc:a5a0c3c7cf3ec85f7202a15cbf88fe76c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a26d5d37fda0acaa0e3071b649c1a614e" title="Allows you to modify the projectile created by a weapon based on the ammo it is using....">ModItem.PickAmmo</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a00f7e1225329327b3b683929d7e2019a" title="Allows you to modify the projectile created by a weapon based on the ammo it is using.">GlobalItem.PickAmmo</a> hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a5a0c3c7cf3ec85f7202a15cbf88fe76c">More...</a><br /></td></tr>
-<tr class="separator:a5a0c3c7cf3ec85f7202a15cbf88fe76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86bcf883f52900835ad19c83e289d080"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a86bcf883f52900835ad19c83e289d080">PickAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref int type, ref float speed, ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> damage, ref float knockback)</td></tr>
+<tr class="memdesc:a86bcf883f52900835ad19c83e289d080"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#afccf8f0da83d45d098a0560d832bf779" title="Allows you to modify various properties of the projectile created by a weapon based on the ammo it is...">ModItem.PickAmmo</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a87f0e41457d59545921387622017ece1" title="Allows you to modify various properties of the projectile created by a weapon based on the ammo it is...">GlobalItem.PickAmmo</a> hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a86bcf883f52900835ad19c83e289d080">More...</a><br /></td></tr>
+<tr class="separator:a86bcf883f52900835ad19c83e289d080"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2ef0e90963e4742da4d9e22ff84eb04"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ab2ef0e90963e4742da4d9e22ff84eb04">PostDrawInInventory</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)</td></tr>
 <tr class="memdesc:ab2ef0e90963e4742da4d9e22ff84eb04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aeea295ae4ec512d2f6667019b044f8b4" title="Allows you to draw things in front of this item in the inventory. This method is called even if PreDr...">ModItem.PostDrawInInventory</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a6143e484997884665bdee7ef94eaa171" title="Allows you to draw things in front of an item in the inventory. This method is called even if PreDraw...">GlobalItem.PostDrawInInventory</a> hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ab2ef0e90963e4742da4d9e22ff84eb04">More...</a><br /></td></tr>
 <tr class="separator:ab2ef0e90963e4742da4d9e22ff84eb04"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -556,6 +563,52 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 
 </div>
 </div>
+<a id="a221e77c97d28387f54bb499e5fdb294c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a221e77c97d28387f54bb499e5fdb294c">&#9670;&nbsp;</a></span>CanChooseAmmo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Terraria.ModLoader.ItemLoader.CanChooseAmmo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>weapon</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>ammo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls each <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ac6bc7e67e37644ffad793c6e248833d0" title="Whether or not the given ammo item is valid for the given weapon; called on the weapon....">GlobalItem.CanChooseAmmo</a> hook for the weapon, and each <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a86e481cb1313f6b1a523fe6320639d47" title="Whether or not the given ammo item is valid for the given weapon; called on the ammo....">GlobalItem.CanBeChosenAsAmmo</a> hook for the ammo,<br  />
+ then each corresponding hook in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> if applicable for the weapon and/or ammo, until one of them returns a concrete false value.<br  />
+ If all of them fail to do this, returns either true (if one returned true prior) or <code>ammo.ammo == weapon.useAmmo</code>. </p>
+
+</div>
+</div>
 <a id="ae874452bca5ff5158ac7ec0d6d3116a1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae874452bca5ff5158ac7ec0d6d3116a1">&#9670;&nbsp;</a></span>CanConsumeAmmo()</h2>
 
@@ -596,7 +649,9 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </table>
 </div><div class="memdoc">
 
-<p>Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a244e3514a9c4a69175419da96fbe35b6" title="Whether or not ammo will be consumed upon usage. Called both by the weapon; if at least one of this a...">ModItem.CanConsumeAmmo</a> for the weapon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1e631dcdb8f74c90e219db68da956391" title="Whether or not ammo will be consumed upon usage. Called by the ammo; if at least one of this and CanC...">ModItem.CanBeConsumedAsAmmo</a> for the ammo, then each corresponding hook for the weapon and ammo, until one of them returns false. If all of them return true, returns true. </p>
+<p>Calls each <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a98e0f2e9ca0c9b3748f287de117bb19e" title="Whether or not the given ammo item will be consumed; called on the weapon.  By default,...">GlobalItem.CanConsumeAmmo</a> hook for the weapon, and each <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aba5ea8a4dbf1284da1325cb151b9a896" title="Whether or not the given ammo item will be consumed; called on the ammo.  By default,...">GlobalItem.CanBeConsumedAsAmmo</a> hook for the ammo,<br  />
+ then each corresponding hook in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> if applicable for the weapon and/or ammo, until one of them returns a concrete false value.<br  />
+ If all of them fail to do this, returns true. </p>
 
 </div>
 </div>
@@ -1891,7 +1946,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </table>
 </div><div class="memdoc">
 
-<p>Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a37428a76cceee9aa18d7dc23294a2689" title="Allows you to make things happen when ammo is consumed. Called by the weapon.  Called before the ammo...">ModItem.OnConsumeAmmo</a> for the weapon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a09a8f53b9d36196a7d74f6715936d5b1" title="Allows you to make things happen when ammo is consumed. Called by the ammo.  Called before the ammo s...">ModItem.OnConsumedAsAmmo</a> for the ammo, then each corresponding hook for the weapon and ammo. </p>
+<p>Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aef202c01834342fcc335a12305b2b0b8" title="Allows you to make things happen when the given ammo is consumed by this weapon.  Called before the a...">ModItem.OnConsumeAmmo</a> for the weapon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#abc0398f80ddaf8f2b902fca49be2a08d" title="Allows you to make things happen when this ammo is consumed by the given weapon.  Called before the a...">ModItem.OnConsumedAsAmmo</a> for the ammo, then each corresponding hook for the weapon and ammo. </p>
 
 </div>
 </div>
@@ -2265,8 +2320,8 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 
 </div>
 </div>
-<a id="a5a0c3c7cf3ec85f7202a15cbf88fe76c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a0c3c7cf3ec85f7202a15cbf88fe76c">&#9670;&nbsp;</a></span>PickAmmo()</h2>
+<a id="a86bcf883f52900835ad19c83e289d080"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86bcf883f52900835ad19c83e289d080">&#9670;&nbsp;</a></span>PickAmmo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2307,7 +2362,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ref int&#160;</td>
+          <td class="paramtype">ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a>&#160;</td>
           <td class="paramname"><em>damage</em>, </td>
         </tr>
         <tr>
@@ -2329,7 +2384,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </table>
 </div><div class="memdoc">
 
-<p>Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a26d5d37fda0acaa0e3071b649c1a614e" title="Allows you to modify the projectile created by a weapon based on the ammo it is using....">ModItem.PickAmmo</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a00f7e1225329327b3b683929d7e2019a" title="Allows you to modify the projectile created by a weapon based on the ammo it is using.">GlobalItem.PickAmmo</a> hooks. </p>
+<p>Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#afccf8f0da83d45d098a0560d832bf779" title="Allows you to modify various properties of the projectile created by a weapon based on the ammo it is...">ModItem.PickAmmo</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a87f0e41457d59545921387622017ece1" title="Allows you to modify various properties of the projectile created by a weapon based on the ammo it is...">GlobalItem.PickAmmo</a> hooks. </p>
 
 </div>
 </div>

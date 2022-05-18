@@ -172,7 +172,11 @@ var NAVTREEINDEX25 =
 "class_terraria_1_1_i_d_1_1_ammo_i_d.html#acde2e3cd30989c95e829482eed26fbcb":[1,0,2,8,1,15],
 "class_terraria_1_1_i_d_1_1_ammo_i_d.html#ada876ba2dcd355828c86467967fea8aa":[1,0,2,8,1,10],
 "class_terraria_1_1_i_d_1_1_ammo_i_d_1_1_sets.html":[1,0,2,8,1,0],
-"class_terraria_1_1_i_d_1_1_ammo_i_d_1_1_sets.html#a61cae2b646b8b0889aabd5a8e1ce6dbb":[1,0,2,8,1,0,0],
+"class_terraria_1_1_i_d_1_1_ammo_i_d_1_1_sets.html#a52c05fb6ca212118e29a95776d8c4071":[1,0,2,8,1,0,1],
+"class_terraria_1_1_i_d_1_1_ammo_i_d_1_1_sets.html#a61cae2b646b8b0889aabd5a8e1ce6dbb":[1,0,2,8,1,0,4],
+"class_terraria_1_1_i_d_1_1_ammo_i_d_1_1_sets.html#ad384c6590d03d0e72c3d87bc7c4ff4ff":[1,0,2,8,1,0,2],
+"class_terraria_1_1_i_d_1_1_ammo_i_d_1_1_sets.html#af31119321ea5d24b3025ece80f63b981":[1,0,2,8,1,0,0],
+"class_terraria_1_1_i_d_1_1_ammo_i_d_1_1_sets.html#afc4659d8b7837686d3523f745cd400c7":[1,0,2,8,1,0,3],
 "class_terraria_1_1_i_d_1_1_animation_i_d.html":[1,0,2,8,2],
 "class_terraria_1_1_i_d_1_1_animation_i_d.html#a4522bf854ac11db0be74368d59903224":[1,0,2,8,2,2],
 "class_terraria_1_1_i_d_1_1_animation_i_d.html#a4b6e3c0f9e1ed9520b7bcee4bd73c1a0":[1,0,2,8,2,4],
@@ -245,9 +249,5 @@ var NAVTREEINDEX25 =
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon_1_1_sets.html#a624eb173609d4e474096da8384b8d062":[1,0,2,8,3,1,0,2],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon_1_1_sets.html#adf4c0e5a34042a13a009022e63d6d54f":[1,0,2,8,3,1,0,0],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html":[1,0,2,8,3,2],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html#a08f508cac63c0b27d84c1417f80f6966":[1,0,2,8,3,2,3],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html#a0c66778104de7b0116ca64312377f16e":[1,0,2,8,3,2,5],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html#a8ace14846273f93773d025e0a1d78b9b":[1,0,2,8,3,2,2],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html#ac37d270072f0379a033e550d91d4a18d":[1,0,2,8,3,2,1],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html#af54ec794e27df751dd3207b790219fe4":[1,0,2,8,3,2,4]
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html#a08f508cac63c0b27d84c1417f80f6966":[1,0,2,8,3,2,3]
 };

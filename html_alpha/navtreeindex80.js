@@ -1,5 +1,12 @@
 var NAVTREEINDEX80 =
 {
+"class_terraria_1_1_localization_1_1_localized_text.html#a9598543af1ef9d9b4b30547c5bdfa250":[1,0,2,11,3,6],
+"class_terraria_1_1_localization_1_1_localized_text.html#a99a22a5104b9a1803edecd2e6b65400b":[1,0,2,11,3,8],
+"class_terraria_1_1_localization_1_1_localized_text.html#aef0729e5f4d20873c264bce3a4f8d613":[1,0,2,11,3,1],
+"class_terraria_1_1_localization_1_1_localized_text.html#af5ae531cc54218bdf18be38275733545":[1,0,2,11,3,9],
+"class_terraria_1_1_localization_1_1_network_text.html":[1,0,2,11,4],
+"class_terraria_1_1_localization_1_1_network_text.html#a058494fcecd33fc5b3822cf14d1c0760":[1,0,2,11,4,5],
+"class_terraria_1_1_localization_1_1_network_text.html#a0b8e42ef12929e5fefe36dc1e4cbc297":[1,0,2,11,4,2],
 "class_terraria_1_1_localization_1_1_network_text.html#a34bdf01a2eca8e123304e275bbf620ec":[1,0,2,11,4,8],
 "class_terraria_1_1_localization_1_1_network_text.html#a3c557297e5656ee799cb1a7e9db234fc":[1,0,2,11,4,4],
 "class_terraria_1_1_localization_1_1_network_text.html#a3ecc71daf244962a32bd5d5a68401423":[1,0,2,11,4,6],
@@ -242,12 +249,5 @@ var NAVTREEINDEX80 =
 "class_terraria_1_1_main.html#a2a2076200f0230ce4338ea495ff49185":[1,0,2,47,325],
 "class_terraria_1_1_main.html#a2a31233975c6fdb231deb42ef536d06b":[1,0,2,47,810],
 "class_terraria_1_1_main.html#a2a4b93dd98c03b0fe7d89736b12c2b19":[1,0,2,47,196],
-"class_terraria_1_1_main.html#a2a5c5703abc32c505984dbae4446ea35":[1,0,2,47,220],
-"class_terraria_1_1_main.html#a2a5ed109be191ee512ce99ff1ee51141":[1,0,2,47,240],
-"class_terraria_1_1_main.html#a2aa0f78519fbbba41bb7ea62261e5408":[1,0,2,47,1066],
-"class_terraria_1_1_main.html#a2ab0f024ac362863f0202cd2336698fd":[1,0,2,47,718],
-"class_terraria_1_1_main.html#a2adb53fb8f0ff317728f3346636cc8eb":[1,0,2,47,860],
-"class_terraria_1_1_main.html#a2b2c93450e811b8355015b1e8c1d66a3":[1,0,2,47,1038],
-"class_terraria_1_1_main.html#a2b6d97f19ef32910d683317e60bc3d86":[1,0,2,47,343],
-"class_terraria_1_1_main.html#a2bada5711f957a5370bfe3a550812ff5":[1,0,2,47,1177]
+"class_terraria_1_1_main.html#a2a5c5703abc32c505984dbae4446ea35":[1,0,2,47,220]
 };
