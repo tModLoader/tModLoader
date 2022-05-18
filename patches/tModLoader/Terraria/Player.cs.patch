@@ -2207,6 +2207,16 @@
  							SmartSelect_SelectItem(i);
  							return;
  						}
+@@ -12556,6 +_,9 @@
+ 								}
+ 							}
+ 
++							if (!flag2 && !ItemLoader.NeedsAmmo(inventory[i], this))
++								flag2 = true;
++
+ 							if (flag2) {
+ 								SmartSelect_SelectItem(i);
+ 								return;
 @@ -12571,7 +_,7 @@
  							if (nonTorch == -1)
  								nonTorch = selectedItem;
@@ -4819,7 +4829,7 @@
 +
 -		public bool HasAmmo(Item sItem, bool canUse) {
 +		internal bool HasAmmo(Item sItem, bool canUse) {
-+			return sItem.useAmmo == 0 || ChooseAmmo(sItem) != null;
++			return sItem.useAmmo == 0 || ChooseAmmo(sItem) != null || !ItemLoader.NeedsAmmo(sItem, this);
 +			/*
  			if (sItem.useAmmo > 0) {
  				canUse = false;
@@ -4907,7 +4917,7 @@
  						item = inventory[k];
  						canShoot = true;
  						break;
-@@ -37090,10 +_,31 @@
+@@ -37090,10 +_,39 @@
  				}
  			}
  
@@ -4918,6 +4928,14 @@
 +			usedAmmoItemId = 0;
 +			Item item = ChooseAmmo(sItem);
 +			canShoot = item != null;
++
++			bool shootWithNoAmmo = false;
++			if (!canShoot && !ItemLoader.NeedsAmmo(sItem, this)) {
++				item = ContentSamples.ItemsByType[sItem.useAmmo];
++				if (item.ammo == sItem.useAmmo)
++					canShoot = shootWithNoAmmo = true;
++			}
++
  			if (!canShoot)
  				return;
  
@@ -4999,7 +5017,7 @@
 +			ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref ammoDamage, ref KnockBack);
 +			totalDamage = (int)(ammoDamage.ApplyTo(item.damage) + 5E-06f);
 +
-+			if (!dontConsume && item.consumable && !IsAmmoFreeThisShot(sItem, item, projToShoot)) {
++			if (!dontConsume && !shootWithNoAmmo && item.consumable && !IsAmmoFreeThisShot(sItem, item, projToShoot)) {
 +				CombinedHooks.OnConsumeAmmo(this, sItem, item);
 +				item.stack--;
 +				if (item.stack <= 0) {
@@ -5074,16 +5092,12 @@
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
  				flag2 = true;
-@@ -37226,9 +_,10 @@
+@@ -37226,6 +_,7 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
 +			/* Flamethrower + Elf Melter (handled by consumeAmmoOnFirstShotOnly) + Clentaminator (handled by consumeAmmoOnFirstShotOnly)
  			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2)
- 				flag2 = true;
--
-+			
- 			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
  				flag2 = true;
  
 @@ -37239,6 +_,9 @@

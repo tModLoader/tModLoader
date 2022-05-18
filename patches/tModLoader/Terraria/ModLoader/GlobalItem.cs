@@ -255,6 +255,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Whether or not having no ammo prevents an item that uses ammo from shooting.
+		/// Return false to allow shooting with no ammo in the inventory, in which case the item will act as if the default ammo for it is being used.
+		/// Returns true by default.
+		/// </summary>
+		public virtual bool NeedsAmmo(Item item, Player player) {
+			return true;
+		}
+
+		/// <summary>
 		/// Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using.
 		/// </summary>
 		/// <param name="weapon">The item that is using the given ammo.</param>
