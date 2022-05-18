@@ -2207,7 +2207,7 @@
  							SmartSelect_SelectItem(i);
  							return;
  						}
-@@ -12560,6 +_,9 @@
+@@ -12556,6 +_,9 @@
  								}
  							}
  
@@ -4917,7 +4917,7 @@
  						item = inventory[k];
  						canShoot = true;
  						break;
-@@ -37090,10 +_,31 @@
+@@ -37090,10 +_,39 @@
  				}
  			}
  
@@ -5092,16 +5092,12 @@
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
  				flag2 = true;
-@@ -37226,9 +_,10 @@
+@@ -37226,6 +_,7 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
 +			/* Flamethrower + Elf Melter (handled by consumeAmmoOnFirstShotOnly) + Clentaminator (handled by consumeAmmoOnFirstShotOnly)
  			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2)
- 				flag2 = true;
--
-+			
- 			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
  				flag2 = true;
  
 @@ -37239,6 +_,9 @@
