@@ -926,6 +926,22 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookShowNameOnHover = AddHook<Func<NPC, bool>>(g => g.ShowNameOnHover);
+		public static bool ShowNameOnHover(NPC npc) {
+			bool shouldShowName = true;
+			foreach (GlobalNPC g in HookShowNameOnHover.Enumerate(npc.globalNPCs)) {
+				bool globalShowName = g.ShowNameOnHover(npc);
+				if (!globalShowName)
+					return false;
+
+				shouldShowName = true;
+			}
+			if (npc.ModNPC != null)
+				shouldShowName &= npc.ModNPC.ShowNameOnHover();
+
+			return shouldShowName;
+		}
+
 		private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);
 		public static List<string> ModifyNPCNameList(NPC npc, List<string> nameList) {
 			if (npc.ModNPC != null)

@@ -3006,6 +3006,16 @@
  
  						MouseTextHackZoom(text, rare, 0);
  						mouseText = true;
+@@ -32050,6 +_,9 @@
+ 					if (!npc[k].active)
+ 						continue;
+ 
++					if (!NPCLoader.ShowNameOnHover(npc[k]))
++						continue;
++
+ 					int type = npc[k].type;
+ 					LoadNPC(type);
+ 					npc[k].position += npc[k].netOffset;
 @@ -32061,7 +_,7 @@
  					bool flag2 = flag || (SmartInteractShowingGenuine && SmartInteractNPC == k);
  					if (flag2 && ((npc[k].type != 85 && npc[k].type != 341 && npc[k].type != 629 && npc[k].aiStyle != 87) || npc[k].ai[0] != 0f) && npc[k].type != 488) {

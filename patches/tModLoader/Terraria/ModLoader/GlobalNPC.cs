@@ -73,6 +73,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to decide whether or not the given NPC should display its name when hovering over it.
+		/// Defaults to true.
+		/// </summary>
+		/// <param name="npc">The NPC in question.</param>
+		/// <returns>True if the name should be shown; false if it should not.</returns>
+		public virtual bool ShowNameOnHover(NPC npc) {
+			return true;
+		}
+
+		/// <summary>
 		/// Allows you to set the town NPC profile that a given NPC uses.
 		/// </summary>
 		/// <param name="npc">The NPC in question.</param>

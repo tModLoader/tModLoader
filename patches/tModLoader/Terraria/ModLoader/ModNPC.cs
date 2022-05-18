@@ -570,6 +570,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to decide whether or not this NPC should display its name when hovering over it.
+		/// Defaults to true.
+		/// </summary>
+		/// <returns>True if the name should be shown; false if it should not.</returns>
+		public virtual bool ShowNameOnHover() {
+			return true;
+		}
+
+		/// <summary>
 		/// Allows you to give a list of names this NPC can be given on spawn.
 		/// By default, returns a blank list, which means the NPC will simply use its type name as its given name when prompted.
 		/// </summary>
