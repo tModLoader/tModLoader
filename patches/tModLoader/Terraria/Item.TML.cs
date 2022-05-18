@@ -27,8 +27,12 @@ namespace Terraria
 		public bool AllowReforgeForStackableItem { get; set; }
 
 		/// <summary>
-		/// Dictates.<br></br>
-		/// 
+		/// Dictates the amount of times a weapon can fire each time it is used.<br></br>
+		/// Defaults to 1. Vanilla items with non-default values include, but are not limited to:<br></br>
+		/// - Clockwork Assault Rifle<br></br>
+		/// - Clentaminator<br></br>
+		/// - Eventide<br></br>
+		/// - Zenith
 		/// </summary>
 		public int ShotLimitPerUse { get; set; }
 
@@ -39,7 +43,7 @@ namespace Terraria
 		/// - Clockwork Assault Rifle<br></br>
 		/// - Flamethrower<br></br>
 		/// - Elf Melter<br></br>
-		/// - Clentaminator<br></br>
+		/// - Clentaminator
 		/// </summary>
 		public bool ConsumeAmmoOnFirstShotOnly { get; set; }
 

@@ -4068,7 +4068,7 @@
  			if (itemTime > 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
-@@ -30308,44 +_,66 @@
+@@ -30308,44 +_,67 @@
  				}
  			}
  
@@ -4117,6 +4117,7 @@
 +
 +					if (itemAnimation < lastShotFrame)
 +						flag4 = false;
++
 +					/*
 -					if (type2 == 4956 && itemAnimation < itemAnimationMax - 3 * item.useTime)
 +					if (type2 == 4956 && itemAnimation <= itemAnimationMax - 3 * item.useTime) // tML, change < to <= to account for counter change
@@ -4794,7 +4795,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,9 +_,29 @@
+@@ -37031,9 +_,34 @@
  			}
  
  			return num;
@@ -4816,6 +4817,11 @@
 +			return Math.Max(0, (int)(modifier.ApplyTo(baseDamage) + 5E-06f));
  		}
  
++		/// <summary>
++		/// Whether or not the player has ammunition available for the given weapon.
++		/// </summary>
++		/// <param name="sItem">The weapon for which to try to find ammunition.</param>
++		/// <returns>True if the player has ammo available; false otherwise.</returns>
 +		public bool HasAmmo(Item sItem) => HasAmmo(sItem, canUse: true);
 +
 -		public bool HasAmmo(Item sItem, bool canUse) {
@@ -4833,23 +4839,28 @@
  		}
  
  		private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId) {
-@@ -37055,14 +_,47 @@
+@@ -37055,14 +_,52 @@
  			return false;
  		}
  
 -		public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
 -			Item item = new Item();
 +		/// <summary>
-+		/// More convienient version of PickAmmo for public consumption
++		/// A more-convenient-to-call variant of the vanilla PickAmmo method, which handles most vanilla ammunition logic to decide various common stats related to ammunition-consuming weapons.<br></br>
++		/// The stats output by this method take into account any extra stats which the ammunition it finds may provide (read: it accounts for ammo damage and knockback).<br></br>
 +		/// </summary>
-+		/// <param name="weapon"></param>
-+		/// <param name="projToShoot"></param>
-+		/// <param name="speed"></param>
-+		/// <param name="damage"></param>
-+		/// <param name="knockBack"></param>
-+		/// <param name="usedAmmoItemId"></param>
-+		/// <param name="dontConsume"></param>
-+		/// <returns>true if ammo was chosen.</returns>
++		/// <param name="weapon">The weapon for which to handle ammunition logic.</param>
++		/// <param name="projToShoot">The projectile that should be shot based on the given weapon and the located ammunition.</param>
++		/// <param name="speed">The speed at which the projectile that would be made by the given weapon and located ammunition should move.</param>
++		/// <param name="damage">The damage value that the projectile shot should have, based on the given weapon and the located ammunition.</param>
++		/// <param name="knockBack">The knockback value that the projectile shot should have, based on the given weapon and the located ammunition.</param>
++		/// <param name="usedAmmoItemId">The numerical ID of the located ammunition.</param>
++		/// <param name="dontConsume">
++		/// Whether or not ammo consumption logic should be called upon.<br></br>
++		/// This defaults to false, and if it is true for any reason, ammo will not be consumed at the end of the method.<br></br>
++		/// This is useful for gathering the data needed based on PickAmmo's calculations without incidentally consuming any ammunition in the process.
++		/// </param>
++		/// <returns>True if ammo was found/chosen, and false otherwise.</returns>
 +		public bool PickAmmo(Item weapon, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, bool dontConsume = false) {
 +			projToShoot = weapon.shoot;
 +			speed = weapon.shootSpeed;
@@ -4866,10 +4877,10 @@
 +		}
 +
 +		/// <summary>
-+		/// Select an ammo item stack from inventory to shoot with weapon
++		/// Attempts to select an ammo item stack from this player's inventory to shoot with the given weapon.
 +		/// </summary>
-+		/// <param name="weapon"></param>
-+		/// <returns>Null if no suitable ammo is found</returns>
++		/// <param name="weapon">The weapon for which this call should try to find ammo.</param>
++		/// <returns>Null if no suitable ammo is found; otherwise, returns the first ammo item found.</returns>
 +		public Item ChooseAmmo(Item weapon) {
 +			var sItem = weapon;
 +			Item item = null;
@@ -4981,7 +4992,7 @@
  
  			if ((sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && archery) {
  				if (speed < 20f) {
-@@ -37167,11 +_,57 @@
+@@ -37167,11 +_,64 @@
  						speed = 20f;
  				}
  
@@ -5005,6 +5016,13 @@
 +			}
 +		}
 +
++		/// <summary>
++		/// Determines whether or not the given ammunition should be conserved, based on the given weapon as wielded by this player.
++		/// </summary>
++		/// <param name="weapon">The weapon attempting to consume the ammo.</param>
++		/// <param name="ammo">The ammo attempting to be conserved (i.e. not consumed).</param>
++		/// <param name="projToShoot">The projectile that should be shot by the given weapon/ammo combination.</param>
++		/// <returns>True if the ammo should be conserved on the given shot; false otherwise.</returns>
 +		public bool IsAmmoFreeThisShot(Item weapon, Item ammo, int projToShoot) {
 +			Item sItem = weapon;
 +			Item item = ammo;

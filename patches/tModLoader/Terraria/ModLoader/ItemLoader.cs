@@ -602,7 +602,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Calls each <see cref="GlobalItem.CanChooseAmmo"/> hook for the weapon, and each <see cref="GlobalItem.CanBeChosenAsAmmo"/> hook for the ammo,<br></br>
 		/// then each corresponding hook in <see cref="ModItem"/> if applicable for the weapon and/or ammo, until one of them returns a concrete false value.<br></br>
-		/// If all of them fail to do this, returns either true (if one returned true prior) or null.
+		/// If all of them fail to do this, returns either true (if one returned true prior) or <c>ammo.ammo == weapon.useAmmo</c>.
 		/// </summary>
 		public static bool CanChooseAmmo(Item weapon, Item ammo, Player player) {
 			bool? result = null;

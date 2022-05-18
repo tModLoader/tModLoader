@@ -409,6 +409,14 @@
  								width = 12;
  								height = 28;
  								shoot = 469;
+@@ -36960,6 +_,7 @@
+ 					shootSpeed = 17f;
+ 					return;
+ 				case 3852:
++					ShotLimitPerUse = 4;
+ 					useStyle = 5;
+ 					useAnimation = 25;
+ 					useTime = 3;
 @@ -43196,6 +_,7 @@
  					expert = true;
  					break;

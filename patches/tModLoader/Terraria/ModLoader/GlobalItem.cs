@@ -255,15 +255,19 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the projectile created by a weapon based on the ammo it is using.
+		/// Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using.
 		/// </summary>
-		/// <param name="weapon">The item that is using this ammo</param>
-		/// <param name="ammo">The ammo item</param>
-		/// <param name="player">The player using the item</param>
-		/// <param name="type">The ID of the projectile shot</param>
-		/// <param name="speed">The speed of the projectile shot</param>
-		/// <param name="damage">The damage modifier for the projectile. Total weapon damage is included as Flat damage. Be careful not to apply flat or base damage bonuses which are already applied to the weapon</param>
-		/// <param name="knockback">The speed of the projectile shot</param>
+		/// <param name="weapon">The item that is using the given ammo.</param>
+		/// <param name="ammo">The ammo item being used by the given weapon.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="type">The ID of the fired projectile.</param>
+		/// <param name="speed">The speed of the fired projectile.</param>
+		/// <param name="damage">
+		/// The damage modifier for the projectile.<br></br>
+		/// Total weapon damage is included as Flat damage.<br></br>
+		/// Be careful not to apply flat or base damage bonuses which are already applied to the weapon.
+		/// </param>
+		/// <param name="knockback">The knockback of the fired projectile.</param>
 		public virtual void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
 		}
 
