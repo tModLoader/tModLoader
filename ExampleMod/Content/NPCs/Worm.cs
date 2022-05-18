@@ -73,9 +73,8 @@ namespace ExampleMod.NPCs
 					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
 					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
 
-					int damage = 5;
 					var entitySource = NPC.GetSource_FromAI();
-					var projectile = Projectile.NewProjectileDirect(entitySource, NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, damage, 0, Main.myPlayer);
+					var projectile = Projectile.NewProjectileDirect(entitySource, NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
 
 					projectile.timeLeft = 300;
 
