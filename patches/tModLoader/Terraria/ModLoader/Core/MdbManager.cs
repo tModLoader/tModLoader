@@ -38,7 +38,7 @@ namespace Terraria.ModLoader.Core
 				var fileName = frame.GetFileName();
 				if (fileName != null && fileName[0] != '<')
 					continue;
-				
+
 				var method = frame.GetMethod();
 				var module = method?.DeclaringType?.Module;
 				if (module == null)
@@ -46,7 +46,7 @@ namespace Terraria.ModLoader.Core
 
 				if (!TryResolveLocation(module.ModuleVersionId, method.MetadataToken, frame.GetILOffset(), out fileName, out var line))
 					fileName = module.Name;
-				
+
 				f_fileName.SetValue(frame, fileName);
 				f_lineNo.SetValue(frame, line);
 			}
@@ -56,13 +56,13 @@ namespace Terraria.ModLoader.Core
 		{
 			fileName = "";
 			line = -1;
-			
+
 			if (!moduleDict.TryGetValue(mvid, out var moduleEntry))
 				return false;
 
 			if (!(moduleEntry.module.LookupToken(mdToken) is MethodReference mRef))
 				return false;
-			
+
 			var debugInfo = moduleEntry.mdbReader.Read(mRef.Resolve());
 			if (debugInfo == null || !debugInfo.HasSequencePoints) //#929 would be nice if we knew why MdbReader.Read may return null, but either way, there's nothing to get sequence points from here
 				return false;

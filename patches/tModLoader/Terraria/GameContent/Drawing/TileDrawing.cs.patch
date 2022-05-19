@@ -1,0 +1,436 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Drawing/TileDrawing.cs
++++ src/tModLoader/Terraria/GameContent/Drawing/TileDrawing.cs
+@@ -9,13 +_,14 @@
+ using Terraria.GameContent.Tile_Entities;
+ using Terraria.Graphics.Capture;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.ObjectData;
+ using Terraria.UI;
+ using Terraria.Utilities;
+ 
+ namespace Terraria.GameContent.Drawing
+ {
+-	public class TileDrawing
++	public partial class TileDrawing
+ 	{
+ 		private enum TileCounterType
+ 		{
+@@ -142,11 +_,11 @@
+ 					if (tile == null)
+ 						continue;
+ 
++					int tileStyle = 0;
+ 					if (tile.active()) {
+ 						Main.instance.LoadTiles(tile.type);
+ 						lookupKey.TileType = tile.type;
+ 						lookupKey.PaintColor = tile.color();
+-						int tileStyle = 0;
+ 						switch (tile.type) {
+ 							case 5:
+ 								tileStyle = GetTreeBiome(j, i, tile.frameX, tile.frameY);
+@@ -170,12 +_,12 @@
+ 					}
+ 
+ 					if (!prepareLazily)
+-						MakeExtraPreparations(tile, j, i);
++						MakeExtraPreparations(tile, j, i, tileStyle);
+ 				}
+ 			}
+ 		}
+ 
+-		private void MakeExtraPreparations(Tile tile, int x, int y) {
++		private void MakeExtraPreparations(Tile tile, int x, int y, int tileStyle) {
+ 			TilePaintSystemV2.TreeFoliageVariantKey treeFoliageVariantKey;
+ 			switch (tile.type) {
+ 				case 5: {
+@@ -241,9 +_,19 @@
+ 					}
+ 				case 323: {
+ 						int textureIndex = 15;
+-						if (x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance)
++						bool isOcean = x >= WorldGen.beachDistance && x <= Main.maxTilesX - WorldGen.beachDistance;
++						if (isOcean)
+ 							textureIndex = 21;
+ 
++						// Modded Palm Tree Leafage is indexed at -2 * growOnTile.type for Ocean, and -(2 * growOnTile.type + 1) for Oasis
++						// This unique selection is to avoid collision with ModTree leafage
++						if (Math.Abs(tileStyle) >= ModPalmTree.VanillaStyleCount) {
++							textureIndex = (Math.Abs(tileStyle) - ModPalmTree.VanillaStyleCount);
++							textureIndex *= -2;
++							if (isOcean)
++								textureIndex -= 1;
++						}
++
+ 						treeFoliageVariantKey = default(TilePaintSystemV2.TreeFoliageVariantKey);
+ 						treeFoliageVariantKey.TextureIndex = textureIndex;
+ 						treeFoliageVariantKey.PaintColor = tile.color();
+@@ -338,8 +_,9 @@
+ 			byte b = (byte)(100f + 150f * Main.martianLight);
+ 			_martianGlow = new Color(b, b, b, 0);
+ 			TileDrawInfo value = _currentTileDrawInfo.Value;
+-			for (int i = firstTileY; i < lastTileY + 4; i++) {
+-				for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
++			// tModLoader - Swapped loop iteration order to improve memory access linearity. Minor perf improvement, may cause slight visual discrepancies with tiles that overdraw
++			for (int j = firstTileX - 2; j < lastTileX + 2; j++) {
++				for (int i = firstTileY; i < lastTileY + 4; i++) {
+ 					Tile tile = Main.tile[j, i];
+ 					if (tile == null) {
+ 						tile = new Tile();
+@@ -356,6 +_,9 @@
+ 						if (!TextureAssets.Tile[type].IsLoaded)
+ 							Main.instance.LoadTiles(type);
+ 
++						if (!TileLoader.PreDraw(j, i, type, Main.spriteBatch))
++							goto PostDraw;
++
+ 						switch (type) {
+ 							case 541:
+ 								if (!_shouldShowInvisibleBlocks)
+@@ -482,6 +_,9 @@
+ 						}
+ 
+ 						DrawSingleTile(value, solidLayer, waterStyleOverride, unscaledPosition, vector, j, i);
++
++						PostDraw:
++						TileLoader.PostDraw(j, i, type, Main.spriteBatch);
+ 					}
+ 				}
+ 			}
+@@ -554,7 +_,7 @@
+ 			if (TileID.Sets.HasOutlines[drawData.typeCache])
+ 				GetTileOutlineInfo(tileX, tileY, drawData.typeCache, ref drawData.tileLight, ref highlightTexture, ref highlightColor);
+ 
+-			if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, drawData.tileCache, drawData.typeCache)) {
++			if (_localPlayer.dangerSense && IsTileDangerous(tileX, tileY, _localPlayer, drawData.tileCache, drawData.typeCache)) {
+ 				if (drawData.tileLight.R < byte.MaxValue)
+ 					drawData.tileLight.R = byte.MaxValue;
+ 
+@@ -573,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY)) {
++			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(tileX, tileY, drawData.typeCache, drawData.tileFrameX, drawData.tileFrameY)) {
+ 				if (drawData.tileLight.R < 200)
+ 					drawData.tileLight.R = 200;
+ 
+@@ -608,6 +_,7 @@
+ 
+ 			Rectangle normalTileRect = new Rectangle(drawData.tileFrameX + drawData.addFrX, drawData.tileFrameY + drawData.addFrY, drawData.tileWidth, drawData.tileHeight - drawData.halfBrickHeight);
+ 			Vector2 vector = new Vector2((float)(tileX * 16 - (int)screenPosition.X) - ((float)drawData.tileWidth - 16f) / 2f, tileY * 16 - (int)screenPosition.Y + drawData.tileTop + drawData.halfBrickHeight) + screenOffset;
++			TileLoader.DrawEffects(tileX, tileY, drawData.typeCache, Main.spriteBatch, ref drawData);
+ 			if (drawData.tileLight.R < 1 && drawData.tileLight.G < 1 && drawData.tileLight.B < 1)
+ 				return;
+ 
+@@ -666,7 +_,7 @@
+ 						break;
+ 					}
+ 				case 80: {
+-						GetCactusType(tileX, tileY, drawData.tileFrameX, drawData.tileFrameY, out bool evil, out bool good, out bool crimson);
++						GetCactusType(tileX, tileY, drawData.tileFrameX, drawData.tileFrameY, out bool evil, out bool good, out bool crimson, out var sandType);
+ 						if (evil)
+ 							normalTileRect.Y += 54;
+ 
+@@ -812,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY) {
++		public Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY) {
+ 			Texture2D result = TextureAssets.Tile[tile.type].Value;
+ 			int tileStyle = 0;
+ 			int num = tile.type;
+@@ -827,6 +_,25 @@
+ 					if (IsAlchemyPlantHarvestable(tile.frameX / 18))
+ 						num = 84;
+ 					Main.instance.LoadTiles(num);
++					break;
++				case 80:
++				case 227:
++					GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out bool evil, out bool good, out bool crimson, out int sandType);
++
++					if (!TileLoader.CanGrowModCactus(sandType))
++						break;
++
++					if (num == 80) {
++						tileStyle = sandType + 1;
++						break;
++					}
++						
++					if (tile.frameX == 204 || tile.frameX == 202) {
++						var asset = PlantLoader.GetCactusFruitTexture(sandType);
++						if (asset != null)
++							return asset.Value;
++					}
++
+ 					break;
+ 			}
+ 
+@@ -837,7 +_,7 @@
+ 			return result;
+ 		}
+ 
+-		private Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY, int paintOverride) {
++		public Texture2D GetTileDrawTexture(Tile tile, int tileX, int tileY, int paintOverride) {
+ 			Texture2D result = TextureAssets.Tile[tile.type].Value;
+ 			int tileStyle = 0;
+ 			int num = tile.type;
+@@ -852,6 +_,25 @@
+ 					if (IsAlchemyPlantHarvestable(tile.frameX / 18))
+ 						num = 84;
+ 					Main.instance.LoadTiles(num);
++					break;
++				case 80:
++				case 227:
++					GetCactusType(tileX, tileY, tile.frameX, tile.frameY, out bool evil, out bool good, out bool crimson, out int sandType);
++
++					if (!TileLoader.CanGrowModCactus(sandType))
++						break;
++
++					if (num == 80) {
++						tileStyle = sandType + 1;
++						break;
++					}
++
++					if (tile.frameX == 204 || tile.frameX == 202) {
++						var asset = PlantLoader.GetCactusFruitTexture(sandType);
++						if (asset != null)
++							return asset.Value;
++					}
++
+ 					break;
+ 			}
+ 
+@@ -1047,6 +_,9 @@
+ 				case 199:
+ 					return 4;
+ 				default:
++					if (TileLoader.CanGrowModTree(Main.tile[x, y].type))
++						return ModTree.VanillaStyleCount + Main.tile[x, y].type;
++
+ 					return -1;
+ 			}
+ 		}
+@@ -2057,6 +_,7 @@
+ 
+ 		private int GetPalmTreeVariant(int x, int y) {
+ 			int num = -1;
++
+ 			if (Main.tile[x, y].active() && Main.tile[x, y].type == 53)
+ 				num = 0;
+ 
+@@ -2072,6 +_,9 @@
+ 			if (WorldGen.IsPalmOasisTree(x))
+ 				num += 4;
+ 
++			if (Main.tile[x, y].active() && TileLoader.CanGrowModPalmTree(Main.tile[x, y].type))
++				num = (ModPalmTree.VanillaStyleCount + Main.tile[x,y].type) * (WorldGen.IsPalmOasisTree(x) ? -1 : 0);
++
+ 			return num;
+ 		}
+ 
+@@ -2215,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private void GetCactusType(int tileX, int tileY, int frameX, int frameY, out bool evil, out bool good, out bool crimson) {
++		private void GetCactusType(int tileX, int tileY, int frameX, int frameY, out bool evil, out bool good, out bool crimson, out int type) {
+ 			evil = false;
+ 			good = false;
+ 			crimson = false;
+@@ -2243,6 +_,8 @@
+ 					break;
+ 			}
+ 
++			type = Main.tile[num, num2].type;
++
+ 			if (Main.tile[num, num2].type == 112)
+ 				evil = true;
+ 
+@@ -2799,7 +_,8 @@
+ 			}
+ 		}
+ 
+-		private static bool IsTileDangerous(Player localPlayer, Tile tileCache, ushort typeCache) {
++		//TML: Added x/y for hook compatibility, made internal. Public variant in partial TML class
++		internal static bool IsTileDangerous(int tileX, int tileY, Player localPlayer, Tile tileCache, ushort typeCache) {
+ 			bool flag = false || typeCache == 135 || typeCache == 137 || typeCache == 138 || typeCache == 484 || typeCache == 141 || typeCache == 210 || typeCache == 442 || typeCache == 443 || typeCache == 444 || typeCache == 411 || typeCache == 485 || typeCache == 85;
+ 			if (tileCache.slope() == 0 && !tileCache.inActive()) {
+ 				flag = (flag || typeCache == 32 || typeCache == 69 || typeCache == 48 || typeCache == 232 || typeCache == 352 || typeCache == 483 || typeCache == 482 || typeCache == 481 || typeCache == 51 || typeCache == 229);
+@@ -2810,6 +_,10 @@
+ 					flag = (flag || typeCache == 162);
+ 			}
+ 
++			bool? modded = TileLoader.IsTileDangerous(tileX, tileY, typeCache, localPlayer);
++			if (modded.HasValue)
++				return modded.Value;
++
+ 			return flag;
+ 		}
+ 
+@@ -2820,7 +_,7 @@
+ 			return _tileSolid[typeCache];
+ 		}
+ 
+-		private void GetTileOutlineInfo(int x, int y, ushort typeCache, ref Color tileLight, ref Texture2D highlightTexture, ref Color highlightColor) {
++		public void GetTileOutlineInfo(int x, int y, ushort typeCache, ref Color tileLight, ref Texture2D highlightTexture, ref Color highlightColor) {
+ 			if (Main.InSmartCursorHighlightArea(x, y, out bool actuallySelected)) {
+ 				int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
+ 				if (num > 10) {
+@@ -2850,7 +_,7 @@
+ 
+ 		private bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
+ 
+-		private void GetTileDrawData(int x, int y, Tile tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor) {
++		public void GetTileDrawData(int x, int y, Tile tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor) {
+ 			tileTop = 0;
+ 			tileWidth = 16;
+ 			tileHeight = 16;
+@@ -2918,7 +_,9 @@
+ 						tileWidth = 20;
+ 						tileHeight = 20;
+ 						int treeBiome = GetTreeBiome(x, y, tileFrameX, tileFrameY);
++
++						if (treeBiome < ModTree.VanillaStyleCount)
+-						tileFrameX += (short)(176 * (treeBiome + 1));
++							tileFrameX += (short)(176 * (treeBiome + 1));
+ 						break;
+ 					}
+ 				case 583:
+@@ -2941,7 +_,8 @@
+ 						tileWidth = 20;
+ 						tileHeight = 20;
+ 						int palmTreeBiome = GetPalmTreeBiome(x, y);
++						if (Math.Abs(palmTreeBiome) < ModPalmTree.VanillaStyleCount)
+-						tileFrameY = (short)(22 * palmTreeBiome);
++							tileFrameY = (short)(22 * palmTreeBiome);
+ 						break;
+ 					}
+ 				case 4:
+@@ -3250,7 +_,7 @@
+ 					else
+ 						tileTop -= 20;
+ 					if (tileFrameX == 204) {
+-						GetCactusType(x, y, tileFrameX, tileFrameY, out bool evil, out bool good, out bool crimson);
++						GetCactusType(x, y, tileFrameX, tileFrameY, out bool evil, out bool good, out bool crimson, out int sandType);
+ 						if (good)
+ 							tileFrameX += 238;
+ 
+@@ -4378,6 +_,10 @@
+ 						break;
+ 					}
+ 			}
++
++			TileLoader.SetSpriteEffects(x, y, typeCache, ref tileSpriteEffect);
++			TileLoader.SetDrawPositions(x, y, ref tileWidth, ref tileTop, ref tileHeight, ref tileFrameX, ref tileFrameY);
++			TileLoader.SetAnimationFrame(typeCache, x, y, ref addFrX, ref addFrY);
+ 		}
+ 
+ 		private bool IsWindBlocked(int x, int y) {
+@@ -4445,11 +_,14 @@
+ 			}
+ 		}
+ 
+-		private void AddSpecialLegacyPoint(Point p) {
++		public void AddSpecialLegacyPoint(Point p) {
+ 			AddSpecialLegacyPoint(p.X, p.Y);
+ 		}
+ 
+-		private void AddSpecialLegacyPoint(int x, int y) {
++		public void AddSpecialLegacyPoint(int x, int y) {
++			if (_specialTilesCount >= _specialTileX.Length)
++				return; //Protection against too many special tiles
++
+ 			_specialTileX[_specialTilesCount] = x;
+ 			_specialTileY[_specialTilesCount] = y;
+ 			_specialTilesCount++;
+@@ -5096,6 +_,8 @@
+ 			int type = 706;
+ 			if (Main.waterStyle == 12)
+ 				type = 1147;
++			else if (Main.waterStyle >= Main.maxLiquidTypes)
++				type = LoaderManager.Get<WaterStylesLoader>().Get(Main.waterStyle).GetDropletGore();
+ 			else if (Main.waterStyle > 1)
+ 				type = 706 + Main.waterStyle - 1;
+ 
+@@ -5423,6 +_,8 @@
+ 
+ 					Main.spriteBatch.Draw(value9, vector, value10, new Color(255, 255, 255, 0) * 0.1f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+ 				}
++
++				TileLoader.SpecialDraw(type, num, num2, Main.spriteBatch);
+ 			}
+ 		}
+ 
+@@ -5622,6 +_,17 @@
+ 							num20 = 2;
+ 						}
+ 
++						if (Math.Abs(palmTreeBiome) >= ModPalmTree.VanillaStyleCount) {
++							y2 = 0;
++
++							if (palmTreeBiome < 0) {
++								num17 = 114;
++								num18 = 98;
++								num19 = 48;
++								num20 = 2;
++							}
++						}
++
+ 						int frameY2 = Main.tile[x, y].frameY;
+ 						byte tileColor4 = tile.color();
+ 						Texture2D treeTopTexture2 = GetTreeTopTexture(treeTextureIndex, palmTreeBiome, tileColor4);
+@@ -5646,16 +_,23 @@
+ 
+ 		private Texture2D GetTreeTopTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor) {
+ 			Texture2D texture2D = _paintSystem.TryGetTreeTopAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
+-			if (texture2D == null)
++			if (texture2D == null) {
++				if (treeTextureIndex < 0 || treeTextureIndex >= ModTree.VanillaTopTextureCount)
++					treeTextureIndex = 0;
+ 				texture2D = TextureAssets.TreeTop[treeTextureIndex].Value;
++			}
++				
+ 
+ 			return texture2D;
+ 		}
+ 
+ 		private Texture2D GetTreeBranchTexture(int treeTextureIndex, int treeTextureStyle, byte tileColor) {
+ 			Texture2D texture2D = _paintSystem.TryGetTreeBranchAndRequestIfNotReady(treeTextureIndex, treeTextureStyle, tileColor);
+-			if (texture2D == null)
++			if (texture2D == null) {
++				if (treeTextureIndex < 0 || treeTextureIndex >= ModTree.VanillaTopTextureCount)
++					treeTextureIndex = 0;
+ 				texture2D = TextureAssets.TreeBranch[treeTextureIndex].Value;
++			}
+ 
+ 			return texture2D;
+ 		}
+@@ -5690,7 +_,7 @@
+ 				}
+ 
+ 				if (tile.type == 227 && tileFrameX == 202) {
+-					GetCactusType(x, y, tileFrameX, tileFrameY, out bool evil, out bool good, out bool crimson);
++					GetCactusType(x, y, tileFrameX, tileFrameY, out bool evil, out bool good, out bool crimson, out int sandType);
+ 					if (good)
+ 						tileFrameX = (short)(tileFrameX + 170);
+ 
+@@ -5720,7 +_,7 @@
+ 		}
+ 
+ 		private void DrawAnimatedTile_AdjustForVisionChangers(int i, int j, Tile tileCache, ushort typeCache, short tileFrameX, short tileFrameY, ref Color tileLight, bool canDoDust) {
+-			if (_localPlayer.dangerSense && IsTileDangerous(_localPlayer, tileCache, typeCache)) {
++			if (_localPlayer.dangerSense && IsTileDangerous(i, j, _localPlayer, tileCache, typeCache)) {
+ 				if (tileLight.R < byte.MaxValue)
+ 					tileLight.R = byte.MaxValue;
+ 
+@@ -5739,7 +_,7 @@
+ 				}
+ 			}
+ 
+-			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(typeCache, tileFrameX, tileFrameY)) {
++			if (_localPlayer.findTreasure && Main.IsTileSpelunkable(i, j, typeCache, tileFrameX, tileFrameY)) {
+ 				if (tileLight.R < 200)
+ 					tileLight.R = 200;
+ 

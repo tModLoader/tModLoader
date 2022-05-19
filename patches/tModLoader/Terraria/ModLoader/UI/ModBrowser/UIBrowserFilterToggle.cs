@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.UI;
@@ -15,9 +14,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			private set;
 		}
 
-		public UIBrowserFilterToggle(int textureOffsetX, int textureOffsetY, int padding = 2) 
+		public UIBrowserFilterToggle(int textureOffsetX, int textureOffsetY, int padding = 2)
 			: base(Texture, Enum.GetValues(typeof(T)).Length, 32, 32, textureOffsetX, textureOffsetY, padding) {
-			
 			OnClick += UpdateToNext;
 			OnRightClick += UpdateToPrevious;
 		}

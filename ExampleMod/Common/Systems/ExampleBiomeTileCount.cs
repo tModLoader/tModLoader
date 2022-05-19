@@ -1,4 +1,5 @@
-﻿using ExampleMod.Content.Tiles;
+﻿using System;
+using ExampleMod.Content.Tiles;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Systems
@@ -7,7 +8,7 @@ namespace ExampleMod.Common.Systems
 	{
 		public int exampleBlockCount;
 
-		public override void TileCountsAvailable(int[] tileCounts) {
+		public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts) {
 			exampleBlockCount = tileCounts[ModContent.TileType<ExampleBlock>()];
 		}
 	}

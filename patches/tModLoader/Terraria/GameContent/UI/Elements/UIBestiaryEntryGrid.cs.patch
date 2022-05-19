@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/UI/Elements/UIBestiaryEntryGrid.cs
+--- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIBestiaryEntryGrid.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIBestiaryEntryGrid.cs
 @@ -100,7 +_,7 @@
  		}

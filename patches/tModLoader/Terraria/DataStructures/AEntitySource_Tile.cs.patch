@@ -1,0 +1,22 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/AEntitySource_Tile.cs
++++ src/tModLoader/Terraria/DataStructures/AEntitySource_Tile.cs
+@@ -1,13 +_,18 @@
+ using Microsoft.Xna.Framework;
+ 
++#nullable enable
++
+ namespace Terraria.DataStructures
+ {
+ 	public abstract class AEntitySource_Tile : IEntitySource
+ 	{
+ 		public readonly Point TileCoords;
+ 
+-		public AEntitySource_Tile(int tileCoordsX, int tileCoordsY) {
++		public string? Context { get; }
++
++		public AEntitySource_Tile(int tileCoordsX, int tileCoordsY, string? context) {
+ 			TileCoords = new Point(tileCoordsX, tileCoordsY);
++			Context = null;
+ 		}
+ 	}
+ }

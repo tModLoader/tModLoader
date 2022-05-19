@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Terraria.DataStructures
@@ -21,7 +20,7 @@ namespace Terraria.DataStructures
 			return (tileEntity = entity as T) != null;
 		}
 
-		public IEnumerable<KeyValuePair<int, TileEntity>> EnumerateEntities() => _types;
+		public IReadOnlyDictionary<int, TileEntity> EnumerateEntities() => _types;
 
 		internal void Reset() {
 			_types.Clear();

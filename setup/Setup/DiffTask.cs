@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Setup
 {
 	public class DiffTask : SetupOperation
 	{
-		private static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json", ".targets" };
+		private static string[] extensions = { ".cs", ".csproj", ".ico", ".resx", ".png", "App.config", ".json", ".targets", ".txt", ".bat", ".sh" };
 		private static bool IsDiffable(string relPath) => extensions.Any(relPath.EndsWith);
 
 		public static readonly string RemovedFileList = "removed_files.list";

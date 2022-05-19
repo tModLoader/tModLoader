@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -111,11 +112,11 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Projectile projectile, bool createModProjectile = true) {
 			if (IsModProjectile(projectile) && createModProjectile) {
-				projectile.ModProjectile = GetProjectile(projectile.type).NewInstance(projectile);
+				projectile.ModProjectile = GetProjectile(projectile.type).Clone(projectile);
 			}
 
 			GlobalProjectile Instantiate(GlobalProjectile g)
-				=> g.InstancePerEntity ? g.NewInstance(projectile) : g;
+				=> g.InstancePerEntity ? g.Clone(projectile, projectile) : g;
 
 			LoaderUtils.InstantiateGlobals(projectile, globalProjectiles, ref projectile.globalProjectiles, Instantiate, () => {
 				projectile.ModProjectile?.SetDefaults();
@@ -126,6 +127,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookOnSpawn = AddHook<Action<Projectile, IEntitySource>>(g => g.OnSpawn);
+
+		internal static void OnSpawn(Projectile projectile, IEntitySource source) {
+			projectile.ModProjectile?.OnSpawn(source);
+
+			foreach (GlobalProjectile g in HookOnSpawn.Enumerate(projectile.globalProjectiles)) {
+				g.OnSpawn(projectile, source);
+			}
+		}
+		
 		//in Terraria.Projectile rename AI to VanillaAI then make AI call ProjectileLoader.ProjectileAI(this)
 		public static void ProjectileAI(Projectile projectile) {
 			if (PreAI(projectile)) {
@@ -178,43 +189,42 @@ namespace Terraria.ModLoader
 				g.PostAI(projectile);
 			}
 		}
-		//in Terraria.NetMessage.SendData at end of case 27 call
-		//  ProjectileLoader.SendExtraAI(projectile, writer, ref bb14);
-		public static byte[] SendExtraAI(Projectile projectile, ref BitsByte flags) {
-			if (projectile.ModProjectile != null) {
-				byte[] data;
-				using (MemoryStream stream = new MemoryStream()) {
-					using (BinaryWriter modWriter = new BinaryWriter(stream)) {
-						projectile.ModProjectile.SendExtraAI(modWriter);
-						modWriter.Flush();
-						data = stream.ToArray();
-					}
-				}
-				if (data.Length > 0) {
-					flags[Projectile.maxAI + 1] = true;
-				}
-				return data;
+
+		public static void SendExtraAI(BinaryWriter writer, byte[] extraAI) {
+			writer.Write7BitEncodedInt(extraAI.Length);
+
+			if (extraAI.Length > 0) {
+				writer.Write(extraAI);
 			}
-			return new byte[0];
 		}
-		//in Terraria.MessageBuffer.GetData for case 27 after reading all data add
-		//  byte[] extraAI = ProjectileLoader.ReadExtraAI(reader, bitsByte14);
-		public static byte[] ReadExtraAI(BinaryReader reader, BitsByte flags) {
-			if (flags[Projectile.maxAI + 1]) {
-				return reader.ReadBytes(reader.ReadByte());
+
+		public static byte[] WriteExtraAI(Projectile projectile) {
+			if (projectile.ModProjectile == null) {
+				return Array.Empty<byte>();
 			}
-			return new byte[0];
+
+			using var stream = new MemoryStream();
+			using var modWriter = new BinaryWriter(stream);
+
+			projectile.ModProjectile.SendExtraAI(modWriter);
+			modWriter.Flush();
+
+			return stream.ToArray();
 		}
-		//in Terraria.MessageBuffer.GetData for case 27 before calling ProjectileFixDesperation add
-		//  ProjectileLoader.ReceiveExtraAI(projectile, extraAI);
+
+		public static byte[] ReadExtraAI(BinaryReader reader) {
+			return reader.ReadBytes(reader.Read7BitEncodedInt());
+		}
+
 		public static void ReceiveExtraAI(Projectile projectile, byte[] extraAI) {
-			if (extraAI.Length > 0 && projectile.ModProjectile != null) {
-				using (MemoryStream stream = new MemoryStream(extraAI)) {
-					using (BinaryReader reader = new BinaryReader(stream)) {
-						projectile.ModProjectile.ReceiveExtraAI(reader);
-					}
-				}
+			if (projectile.ModProjectile == null) {
+				return;
 			}
+
+			using var stream = new MemoryStream(extraAI);
+			using var modReader = new BinaryReader(stream);
+
+			projectile.ModProjectile.ReceiveExtraAI(modReader);
 		}
 
 		private static HookList HookShouldUpdatePosition = AddHook<Func<Projectile, bool>>(g => g.ShouldUpdatePosition);
@@ -233,16 +243,16 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		private delegate bool DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough);
+		private delegate bool DelegateTileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac);
 		private static HookList HookTileCollideStyle = AddHook<DelegateTileCollideStyle>(g => g.TileCollideStyle);
 
-		public static bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough) {
-			if (IsModProjectile(projectile) && !projectile.ModProjectile.TileCollideStyle(ref width, ref height, ref fallThrough)) {
+		public static bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
+			if (IsModProjectile(projectile) && !projectile.ModProjectile.TileCollideStyle(ref width, ref height, ref fallThrough, ref hitboxCenterFrac)) {
 				return false;
 			}
 
 			foreach (GlobalProjectile g in HookTileCollideStyle.Enumerate(projectile.globalProjectiles)) {
-				if (!g.TileCollideStyle(projectile, ref width, ref height, ref fallThrough)) {
+				if (!g.TileCollideStyle(projectile, ref width, ref height, ref fallThrough, ref hitboxCenterFrac)) {
 					return false;
 				}
 			}
@@ -340,17 +350,17 @@ namespace Terraria.ModLoader
 		private static HookList HookMinionContactDamage = AddHook<Func<Projectile, bool>>(g => g.MinionContactDamage);
 
 		public static bool MinionContactDamage(Projectile projectile) {
-			if (projectile.ModProjectile != null && !projectile.ModProjectile.MinionContactDamage()) {
-				return false;
+			if (projectile.ModProjectile != null && projectile.ModProjectile.MinionContactDamage()) {
+				return true;
 			}
 
 			foreach (GlobalProjectile g in HookMinionContactDamage.Enumerate(projectile.globalProjectiles)) {
-				if (!g.MinionContactDamage(projectile)) {
-					return false;
+				if (g.MinionContactDamage(projectile)) {
+					return true;
 				}
 			}
 
-			return true;
+			return false;
 		}
 
 		private delegate void DelegateModifyDamageHitbox(Projectile projectile, ref Rectangle hitbox);
@@ -688,10 +698,6 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookDrawBehind.Enumerate(projectile.globalProjectiles)) {
 				g.DrawBehind(projectile, index, behindNPCsAndTiles, behindNPCs, behindProjectiles, overPlayers, overWiresUI);
 			}
-		}
-
-		private static bool HasMethod(Type t, string method, params Type[] args) {
-			return t.GetMethod(method, args).DeclaringType != typeof(GlobalProjectile);
 		}
 
 		internal static void VerifyGlobalProjectile(GlobalProjectile projectile) {

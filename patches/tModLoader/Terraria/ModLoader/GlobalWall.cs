@@ -10,7 +10,7 @@ namespace Terraria.ModLoader
 			WallLoader.globalWalls.Add(this);
 		}
 
-		public sealed override void SetupContent() => SetDefaults();
+		public sealed override void SetupContent() => SetStaticDefaults();
 
 		/// <summary>
 		/// Allows you to customize which items the wall at the given coordinates drops. Return false to stop the game from dropping the wall's default item (the dropType parameter). Returns true by default.

@@ -17,8 +17,9 @@ using Terraria.Audio;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIMods : UIState
+	internal class UIMods : UIState, IHaveBackButtonCommand
 	{
+		public UIState PreviousUIState { get; set; }
 		private UIElement uIElement;
 		private UIPanel uIPanel;
 		private UILoaderAnimatedImage uiLoader;
@@ -43,7 +44,6 @@ namespace Terraria.ModLoader.UI
 		private UIAutoScaleTextTextPanel<string> buttonOMF;
 		private UIAutoScaleTextTextPanel<string> buttonMP;
 		private CancellationTokenSource _cts;
-		private bool forceReloadHidden = ModLoader.autoReloadRequiredModsLeavingModsScreen;
 
 		public override void OnInitialize() {
 			uIElement = new UIElement {
@@ -98,6 +98,7 @@ namespace Terraria.ModLoader.UI
 
 			buttonEA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsEnableAll")) {
 				TextColor = Color.Green,
+				Width = new StyleDimension(-10f, 1f / 3f),
 				Height = { Pixels = 40 },
 				VAlign = 1f,
 				Top = { Pixels = -65 }
@@ -109,29 +110,25 @@ namespace Terraria.ModLoader.UI
 			buttonDA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsDisableAll"));
 			buttonDA.CopyStyle(buttonEA);
 			buttonDA.TextColor = Color.Red;
+			buttonDA.HAlign = 0.5f;
 			buttonDA.WithFadedMouseOver();
 			buttonDA.OnClick += DisableAll;
 			uIElement.Append(buttonDA);
 
-			buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsForceReload"));
+			buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"));
 			buttonRM.CopyStyle(buttonEA);
-			buttonRM.Width = new StyleDimension(-10f, 1f / 3f);
 			buttonRM.HAlign = 1f;
 			buttonRM.WithFadedMouseOver();
 			buttonRM.OnClick += ReloadMods;
 			uIElement.Append(buttonRM);
 
-			UpdateTopRowButtons();
-
-			buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
-				Width = new StyleDimension(-10f, 1f / 3f),
-				Height = { Pixels = 40 },
-				VAlign = 1f,
-				Top = { Pixels = -20 }
-			}.WithFadedMouseOver();
+			buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"));
+			buttonB.CopyStyle(buttonEA);
+			buttonB.Top.Pixels = -20;
+			buttonB.WithFadedMouseOver();
 			buttonB.OnClick += BackClick;
-			uIElement.Append(buttonB);
 
+			uIElement.Append(buttonB);
 			buttonOMF = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"));
 			buttonOMF.CopyStyle(buttonB);
 			buttonOMF.HAlign = 0.5f;
@@ -233,36 +230,15 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
-		// Adjusts sizing and placement of top row buttons according to whether or not
-		// the Force Reload button is being shown.
-		private void UpdateTopRowButtons() {
-			var buttonWidth = new StyleDimension(-10f, 1f / (forceReloadHidden ? 2f : 3f));
-
-			buttonEA.Width = buttonWidth;
-
-			buttonDA.Width = buttonWidth;
-			buttonDA.HAlign = forceReloadHidden ? 1f : 0.5f;
-
-			uIElement.AddOrRemoveChild(buttonRM, !forceReloadHidden);
-		}
-
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(11, -1, -1, 1);
-
 			// To prevent entering the game with Configs that violate ReloadRequired
 			if (ConfigManager.AnyModNeedsReload()) {
 				Main.menuMode = Interface.reloadModsID;
 				return;
 			}
-
-			// If auto reloading required mods is enabled, check if any mods need reloading and reload as required
-			if (ModLoader.autoReloadRequiredModsLeavingModsScreen && items.Count(i => i.NeedsReload) > 0) {
-				Main.menuMode = Interface.reloadModsID;
-				return;
-			}
-
 			ConfigManager.OnChangedAll();
-			Main.menuMode = 0;
+
+			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 		}
 
 		private void ReloadMods(UIMouseEvent evt, UIElement listeningElement) {
@@ -382,12 +358,6 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Append(uiLoader);
 			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
 			Populate();
-
-			// Check if config has changed since buttons were placed and adjust layout accordingly
-			if (ModLoader.autoReloadRequiredModsLeavingModsScreen != forceReloadHidden) {
-				forceReloadHidden = ModLoader.autoReloadRequiredModsLeavingModsScreen;
-				UpdateTopRowButtons();
-			}
 		}
 
 		public override void OnDeactivate() {

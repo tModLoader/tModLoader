@@ -1,5 +1,13 @@
---- src/Terraria/Terraria/Audio/LegacySoundPlayer.cs
+--- src/TerrariaNetCore/Terraria/Audio/LegacySoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundPlayer.cs
+@@ -6,6 +_,7 @@
+ using System.Collections.Generic;
+ using System.IO;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.Audio
+ {
 @@ -41,8 +_,8 @@
  		public SoundEffectInstance SoundInstancePixie;
  		public Asset<SoundEffect>[] SoundItem = new Asset<SoundEffect>[SoundID.ItemSoundCount];
@@ -11,3 +19,22 @@
  		public Asset<SoundEffect>[] SoundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
  		public SoundEffectInstance[] SoundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
  		public SoundEffectInstance SoundInstanceMoonlordCry;
+@@ -1036,6 +_,18 @@
+ 												soundEffectInstance = SoundInstanceZombie[num8];
+ 												break;
+ 											}
++										default: {
++											// TODO, trackable sounds? verify working. return soundEffectInstance
++											if (type == SoundLoader.CustomSoundType) {
++												SoundLoader.customSoundInstances[num].Stop();
++												SoundLoader.customSoundInstances[num] = SoundLoader.customSounds[num].Value.CreateInstance();
++												SoundLoader.customSoundInstances[num].Volume = num2;
++												SoundLoader.customSoundInstances[num].Pan = num3;
++												//Main.PlaySoundInstance(SoundLoader.customSoundInstances[num]);
++												soundEffectInstance = SoundLoader.customSoundInstances[num];
++											}
++											break;
++										}
+ 									}
+ 									break;
+ 							}

@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/Initializers/WingStatsInitializer.cs
+--- src/TerrariaNetCore/Terraria/Initializers/WingStatsInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/WingStatsInitializer.cs
 @@ -1,12 +_,13 @@
  using Terraria.DataStructures;

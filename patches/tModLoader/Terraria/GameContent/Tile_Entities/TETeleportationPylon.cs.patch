@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Tile_Entities/TETeleportationPylon.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TETeleportationPylon.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TETeleportationPylon.cs
 @@ -2,7 +_,7 @@
  

@@ -94,20 +94,20 @@ namespace Terraria
 				amount = amountUsed;
 			};
 		}
-		
+
 		public readonly Mod Mod;
 		public readonly List<Condition> Conditions = new List<Condition>();
 
 		public delegate void OnCraftCallback(Recipe recipe, Item item);
 		public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
-		
+
 		internal OnCraftCallback OnCraftHooks { get; private set; }
 		internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
 
 		private void AddGroup(int id) {
 			acceptedGroups.Add(id);
 		}
-		
+
 		/// <summary>
 		/// The index of the recipe in the Main.recipe array.
 		/// </summary>
@@ -120,7 +120,7 @@ namespace Terraria
 		/// <param name="stack">The stack.</param>
 		public Recipe AddIngredient(int itemID, int stack = 1) {
 			requiredItem.Add(new Item(itemID) { stack = stack });
-			
+
 			return this;
 		}
 
@@ -150,7 +150,6 @@ namespace Terraria
 		/// <summary>
 		/// Adds an ingredient to this recipe of the given type of item and stack size.
 		/// </summary>
-		/// <param name="item">The item.</param>
 		/// <param name="stack">The stack.</param>
 		public Recipe AddIngredient<T>(int stack = 1) where T : ModItem
 			=> AddIngredient(ModContent.ItemType<T>(), stack);
@@ -167,7 +166,7 @@ namespace Terraria
 
 			int id = RecipeGroup.recipeGroupIDs[name];
 			var group = RecipeGroup.recipeGroups[id];
-			
+
 			AddIngredient(group.IconicItemId, stack);
 			AddGroup(id);
 
@@ -183,9 +182,9 @@ namespace Terraria
 		public Recipe AddRecipeGroup(int recipeGroupId, int stack = 1) {
 			if (!RecipeGroup.recipeGroups.ContainsKey(recipeGroupId))
 				throw new RecipeException($"A recipe group with the ID {recipeGroupId} does not exist.");
-			
+
 			RecipeGroup rec = RecipeGroup.recipeGroups[recipeGroupId];
-			
+
 			AddIngredient(rec.IconicItemId, stack);
 			AddGroup(recipeGroupId);
 
@@ -196,13 +195,14 @@ namespace Terraria
 		/// Adds a recipe group ingredient to this recipe with the given RecipeGroup.
 		/// </summary>
 		/// <param name="recipeGroup">The RecipeGroup.</param>
+		/// <param name="stack"></param>
 		public Recipe AddRecipeGroup(RecipeGroup recipeGroup, int stack = 1) {
 			AddIngredient(recipeGroup.IconicItemId, stack);
 			AddGroup(recipeGroup.ID);
 
 			return this;
 		}
-		
+
 		/// <summary>
 		/// Adds a required crafting station with the given tile type to this recipe. Ex: <c>recipe.AddTile(TileID.WorkBenches)</c>
 		/// </summary>
@@ -211,7 +211,7 @@ namespace Terraria
 		public Recipe AddTile(int tileID) {
 			if (tileID < 0 || tileID >= TileLoader.TileCount)
 				throw new RecipeException($"No tile has ID '{tileID}'.");
-			
+
 			requiredTile.Add(tileID);
 
 			return this;
@@ -225,7 +225,7 @@ namespace Terraria
 		/// <exception cref="RecipeException">The tile " + tileName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).</exception>
 		public Recipe AddTile(Mod mod, string tileName) {
 			mod ??= this.Mod;
-			
+
 			if (!ModContent.TryFind(mod.Name, tileName, out ModTile tile))
 				throw new RecipeException($"The tile {tileName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla tile, try using Recipe.AddTile(tileID).");
 
@@ -286,6 +286,44 @@ namespace Terraria
 		}
 
 		/// <summary>
+		/// Returns a copy of the recipe passed in, including the same OnCraftHooks and ConsumeItemHooks. Called only on the result of Recipe.Create to ensure Mod and RecipeIndex set correctly
+		/// </summary>
+		/// <param name="recipe">The recipe to clone.</param>
+		internal Recipe Clone(Recipe recipe) {
+			createItem = recipe.createItem.Clone();
+
+			requiredItem = new List<Item>(recipe.requiredItem.Select(x => x.Clone()).ToArray());
+			requiredTile = new List<int>(recipe.requiredTile.ToArray());
+			acceptedGroups = new List<int>(recipe.acceptedGroups.ToArray());
+
+			// These fields shouldn't be true, but are here just in case.
+			needHoney = recipe.needHoney;
+			needWater = recipe.needWater;
+			needLava = recipe.needLava;
+			anyWood = recipe.anyWood;
+			anyIronBar = recipe.anyIronBar;
+			anyPressurePlate = recipe.anyPressurePlate;
+			anySand = recipe.anySand;
+			anyFragment = recipe.anyFragment;
+			alchemy = recipe.alchemy;
+			needSnowBiome = recipe.needSnowBiome;
+			needGraveyardBiome = recipe.needGraveyardBiome;
+
+			OnCraftHooks = recipe.OnCraftHooks;
+			ConsumeItemHooks = recipe.ConsumeItemHooks;
+			foreach (Condition condition in recipe.Conditions) {
+				AddCondition(condition);
+			}
+
+			// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
+			// it here to not have multiple dupliocate hooks.
+			if (requiredTile.Contains(TileID.Bottles))
+				ConsumeItemHooks -= ConsumptionRules.Alchemy;
+
+			return this;
+		}
+
+		/// <summary>
 		/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
 		/// </summary>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
@@ -308,8 +346,8 @@ namespace Terraria
 					Main.availableRecipeY[k] = 65f * k;
 				}
 			}
-			
-			Main.recipe[numRecipes] = this;			
+
+			Main.recipe[numRecipes] = this;
 			RecipeIndex = numRecipes;
 			numRecipes++;
 		}

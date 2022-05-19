@@ -20,7 +20,7 @@ namespace Terraria.ModLoader.UI
 		private UITextPanel<string> webHelpButton;
 		private UITextPanel<string> skipLoadButton;
 		private UITextPanel<string> retryButton;
-		
+
 		private string message;
 		private int gotoMenu;
 		private string webHelpURL;
@@ -96,7 +96,7 @@ namespace Terraria.ModLoader.UI
 			string continueKey = gotoMenu < 0 ? "Exit" : continueIsRetry ? "Retry" : "Continue";
 			continueButton.SetText(Language.GetTextValue("tModLoader." + continueKey));
 			continueButton.TextColor = gotoMenu >= 0 ? Color.White : Color.Red;
-			
+
 			area.AddOrRemoveChild(webHelpButton, !string.IsNullOrEmpty(webHelpURL));
 			area.AddOrRemoveChild(skipLoadButton, showSkip);
 			area.AddOrRemoveChild(exitAndDisableAllButton, gotoMenu < 0);
@@ -121,7 +121,7 @@ namespace Terraria.ModLoader.UI
 		private void ContinueClick(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
 			if (gotoMenu < 0)
-				Environment.Exit(0);
+				Main.instance.Exit();
 
 			Main.menuMode = gotoMenu;
 		}
@@ -130,17 +130,17 @@ namespace Terraria.ModLoader.UI
 			foreach (var mod in ModLoader.EnabledMods)
 				ModLoader.DisableMod(mod);
 
-			Environment.Exit(0);
+			Main.instance.Exit();
 		}
 
 		private void OpenFile(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Process.Start(Logging.LogPath);
+			Utils.OpenFolder(Logging.LogDir);
 		}
 
 		private void VisitRegisterWebpage(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Process.Start(webHelpURL);
+			Utils.OpenToURL(webHelpURL);
 		}
 
 		private void SkipLoad(UIMouseEvent evt, UIElement listeningElement) {

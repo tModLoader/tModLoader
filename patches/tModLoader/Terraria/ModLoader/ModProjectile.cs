@@ -4,13 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.
+	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile">Basic Projectile Guide</see> teaches the basics of making a modded projectile.
 	/// </summary>
 	public abstract class ModProjectile : ModTexturedType
 	{
@@ -39,9 +41,9 @@ namespace Terraria.ModLoader
 		public bool DrawHeldProjInFrontOfHeldItemAndArms { get; set; }
 
 		/// <summary> The file name of this projectile's glow texture file in the mod loader's file space. If it does not exist it is ignored. </summary>
-		public virtual string GlowTexture => Texture + "_Glow";
+		public virtual string GlowTexture => Texture + "_Glow"; //TODO: this is wasteful. We should consider AutoStaticDefaults or something... requesting assets regularly is bad perf
 
-		/// <summary>  Shorthand for projectile.type; </summary>
+		/// <summary>  Shorthand for Projectile.type; </summary>
 		public int Type => Projectile.type;
 
 		public ModProjectile() {
@@ -52,7 +54,7 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModProjectile>.Register(this);
 
 			Projectile.type = ProjectileLoader.ReserveProjectileID();
-			DisplayName = Mod.GetOrCreateTranslation($"Mods.{Mod.Name}.ProjectileName.{Name}");
+			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ProjectileName.{Name}");
 
 			ProjectileLoader.projectiles.Add(this);
 		}
@@ -66,41 +68,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether instances of this ModProjectile are created through a memberwise clone or its constructor. Defaults to false.
-		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
 		/// Returns a clone of this ModProjectile. 
 		/// Allows you to decide which fields of your ModProjectile class are copied over when a new Projectile is created. 
 		/// By default this will return a memberwise clone; you will want to override this if your ModProjectile contains object references. 
-		/// Only called if CloneNewInstances is set to true.
 		/// </summary>
-		public virtual ModProjectile Clone() => (ModProjectile)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this ModProjectile for a Projectile instance. 
-		/// Called at the end of Projectile.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual ModProjectile NewInstance(Projectile projectileClone) {
-			if (CloneNewInstances) {
-				ModProjectile clone = Clone();
-				clone.Projectile = projectileClone;
-				return clone;
-			}
-
-			ModProjectile copy = (ModProjectile)Activator.CreateInstance(GetType());
-			copy.Projectile = projectileClone;
-			copy.Mod = Mod;
-			copy.AIType = AIType;
-			copy.CooldownSlot = CooldownSlot;
-			copy.DrawOffsetX = DrawOffsetX;
-			copy.DrawOriginOffsetY = DrawOriginOffsetY;
-			copy.DrawOriginOffsetX = DrawOriginOffsetX;
-			copy.DrawHeldProjInFrontOfHeldItemAndArms = DrawHeldProjInFrontOfHeldItemAndArms;
-			return copy;
+		public virtual ModProjectile Clone(Projectile projectile) {
+			ModProjectile clone = (ModProjectile)MemberwiseClone();
+			clone.Projectile = projectile;
+			return clone;
 		}
 
 		/// <summary>
@@ -110,16 +85,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to set all your projectile's static properties, such as names/translations and the arrays in ProjectileID.Sets.
+		/// Gets called when your projectiles spawns in world
 		/// </summary>
-		public virtual void SetStaticDefaults() {
+		public virtual void OnSpawn(IEntitySource source) {
 		}
 
 		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
 		/// </summary>
 		public virtual void AutoStaticDefaults() {
-			TextureAssets.Projectile[Projectile.type] = ModContent.GetTexture(Texture);
+			TextureAssets.Projectile[Projectile.type] = ModContent.Request<Texture2D>(Texture);
 			Main.projFrames[Projectile.type] = 1;
 			if (Projectile.hostile) {
 				Main.projHostile[Projectile.type] = true;
@@ -152,14 +127,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// If you are storing AI information outside of the projectile.ai array, use this to send that AI information between clients and servers.
+		/// If you are storing AI information outside of the Projectile.ai array, use this to send that AI information between clients and servers, which will be handled in <see cref="ReceiveExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
 		/// </summary>
+		/// <param name="writer">The writer.</param>
 		public virtual void SendExtraAI(BinaryWriter writer) {
 		}
 
 		/// <summary>
-		/// Use this to receive information that was sent in SendExtraAI.
+		/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully received.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
 		/// </summary>
+		/// <param name="reader">The reader.</param>
 		public virtual void ReceiveExtraAI(BinaryReader reader) {
 		}
 
@@ -171,17 +152,19 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine how this projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.
+		/// Allows you to determine how this projectile interacts with tiles. Return false if you completely override or cancel this projectile's tile collision behavior. Returns true by default.
 		/// </summary>
-		/// <param name="width">Width of the hitbox.</param>
-		/// <param name="height">Height of the hitbox.</param>
-		/// <param name="fallThrough">If the projectile can fall through platforms etc.</param>
-		public virtual bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough) {
+		/// <param name="width"> The width of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to Projectile.width. </param>
+		/// <param name="height"> The height of the hitbox this projectile will use for tile collision. If vanilla doesn't modify it, defaults to Projectile.height. </param>
+		/// <param name="fallThrough"> Whether or not this projectile falls through platforms and similar tiles. </param>
+		/// <param name="hitboxCenterFrac"> Determines by how much the tile collision hitbox's position (top left corner) will be offset from this projectile's real center. If vanilla doesn't modify it, defaults to half the hitbox size (new Vector2(0.5f, 0.5f)). </param>
+		/// <returns></returns>
+		public virtual bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to determine what happens when this projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default.
+		/// Allows you to determine what happens when this projectile collides with a tile. OldVelocity is the velocity before tile collision. The velocity that takes tile collision into account can be found with Projectile.velocity. Return true to allow the vanilla tile collision code to take place (which normally kills the projectile). Returns true by default.
 		/// </summary>
 		/// <param name="oldVelocity">The velocity of the projectile upon collision.</param>
 		public virtual bool OnTileCollide(Vector2 oldVelocity) {
@@ -189,7 +172,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla decision.
+		/// Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision.
 		/// </summary>
 		public virtual bool? CanCutTiles() {
 			return null;
@@ -209,7 +192,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use `if (projectile.owner == Main.myPlayer)` if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)
+		/// Allows you to control what happens when this projectile is killed (for example, creating dust or making sounds). Also useful for creating retrievable ammo. Called on all clients and the server in multiplayer, so be sure to use `if (Projectile.owner == Main.myPlayer)` if you are spawning retrievable ammo. (As seen in ExampleJavelinProjectile)
 		/// </summary>
 		public virtual void Kill(int timeLeft) {
 		}
@@ -418,7 +401,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// When used in conjunction with "projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
+		/// When used in conjunction with "Projectile.hide = true", allows you to specify that this projectile should be drawn behind certain elements. Add the index to one and only one of the lists. For example, the Nebula Arcanum projectile draws behind NPCs and tiles.
 		/// </summary>
 		public virtual void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
 		}

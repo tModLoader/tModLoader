@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria.DataStructures;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -16,8 +17,7 @@ namespace Terraria.ModLoader
 	{
 		public static readonly int NumVanilla = Assembly.GetExecutingAssembly()
 			.GetTypes()
-			.Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(TileEntity)) && !typeof(ModTileEntity).IsAssignableFrom(t))
-			.Count();
+			.Count(t => !t.IsAbstract && t.IsSubclassOf(typeof(TileEntity)) && !typeof(ModTileEntity).IsAssignableFrom(t));
 
 		// TODO: public bool netUpdate;
 
@@ -44,13 +44,7 @@ namespace Terraria.ModLoader
 		/// Returns the number of modded tile entities that exist in the world currently being played.
 		/// </summary>
 		public static int CountInWorld() {
-			int count = 0;
-			foreach (KeyValuePair<int, TileEntity> pair in ByID) {
-				if (pair.Value.type >= NumVanilla) {
-					count++;
-				}
-			}
-			return count;
+			return ByID.Count(pair => pair.Value.type >= NumVanilla);
 		}
 
 		internal static void Initialize() {
@@ -59,13 +53,13 @@ namespace Terraria.ModLoader
 		}
 
 		private static void UpdateStartInternal() {
-			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().OfType<ModTileEntity>()) {
+			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Values.OfType<ModTileEntity>()) {
 				tileEntity.PreGlobalUpdate();
 			}
 		}
 
 		private static void UpdateEndInternal() {
-			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().OfType<ModTileEntity>()) {
+			foreach (ModTileEntity tileEntity in manager.EnumerateEntities().Values.OfType<ModTileEntity>()) {
 				tileEntity.PostGlobalUpdate();
 			}
 		}
@@ -74,7 +68,7 @@ namespace Terraria.ModLoader
 		/// You should never use this. It is only included here for completion's sake.
 		/// </summary>
 		public override void NetPlaceEntityAttempt(int i, int j) {
-			if (!manager.TryGetTileEntity(type, out ModTileEntity modTileEntity) || !modTileEntity.ValidTile(i, j)) {
+			if (!manager.TryGetTileEntity(Type, out ModTileEntity modTileEntity)) {
 				return;
 			}
 
@@ -113,8 +107,11 @@ namespace Terraria.ModLoader
 			newEntity.Position = new Point16(i, j);
 			newEntity.ID = AssignNewID();
 			newEntity.type = (byte)Type;
-			ByID[newEntity.ID] = newEntity;
-			ByPosition[newEntity.Position] = newEntity;
+			lock (EntityCreationLock) {
+				ByID[newEntity.ID] = newEntity;
+				ByPosition[newEntity.Position] = newEntity;
+			}
+
 			return newEntity.ID;
 		}
 
@@ -123,8 +120,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public void Kill(int i, int j) {
 			Point16 pos = new Point16(i, j);
-			if (ByPosition.ContainsKey(pos)) {
-				TileEntity tileEntity = ByPosition[pos];
+			if (ByPosition.TryGetValue(pos, out var tileEntity)) {
 				if (tileEntity.type == Type) {
 					((ModTileEntity)tileEntity).OnKill();
 					ByID.Remove(tileEntity.ID);
@@ -138,8 +134,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public int Find(int i, int j) {
 			Point16 pos = new Point16(i, j);
-			if (ByPosition.ContainsKey(pos)) {
-				TileEntity tileEntity = ByPosition[pos];
+			if (ByPosition.TryGetValue(pos, out var tileEntity)) {
 				if (tileEntity.type == Type) {
 					return tileEntity.ID;
 				}
@@ -176,16 +171,20 @@ namespace Terraria.ModLoader
 			if (!Mod.loading)
 				throw new Exception("AddTileEntity can only be called from Mod.Load or Mod.Autoload");
 
+			// @TODO: Remove on release
+			var type = GetType();
+
+			if (!LoaderUtils.HasMethod(type, typeof(ModTileEntity), nameof(ModTileEntity.SaveData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModTileEntity), "Save"))
+				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
+			// @TODO: END Remove on release
+
 			manager.Register(this);
 			ModTypeLookup<ModTileEntity>.Register(this);
 		}
 
-		public virtual void Unload(){}
+		public virtual bool IsLoadingEnabled(Mod mod) => true;
 
-		/// <summary>
-		/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.
-		/// </summary>
-		public abstract bool ValidTile(int i, int j);
+		public virtual void Unload(){}
 
 		/// <summary>
 		/// This method does not get called by tModLoader, and is only included for you convenience so you do not have to cast the result of Mod.GetTileEntity.
@@ -217,5 +216,10 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void OnKill() {
 		}
+
+		/// <summary>
+		/// Whether or not this tile entity is allowed to survive at the given coordinates. You should check whether the tile is active, as well as the tile's type and frame.
+		/// </summary>
+		public abstract override bool IsTileValidForEntity(int x, int y);
 	}
 }

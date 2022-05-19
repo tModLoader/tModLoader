@@ -1,5 +1,5 @@
 The tModLoader Team (also tML Team) is the legal entity holding ownership of the tModLoader brand and software. 
-Current members are: Kaylee Kim (blushiemagic), David Jakes (Chicken-Bones), Javid Pack (jopojelly) and Daniël Zondervan (Jofairden)
+Current members are: Kaylee Kim (blushiemagic), David Jakes (Chicken-Bones), Javid Pack (jopojelly), Daniël Zondervan (Jofairden) and Dmitry Reshetov (Mirsario)
 
 Members can be added or removed only through unanimous vote. If a member is uncontactable for 2 weeks, they are considered to abstain from voting.
 

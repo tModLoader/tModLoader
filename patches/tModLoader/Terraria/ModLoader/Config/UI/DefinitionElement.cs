@@ -13,36 +13,37 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	abstract class DefinitionElement<T> : ConfigElement<T> where T : EntityDefinition
+	internal abstract class DefinitionElement<T> : ConfigElement<T> where T : EntityDefinition
 	{
-		protected bool updateNeeded;
-		protected bool selectionExpanded;
-		protected UIPanel chooserPanel;
-		protected NestedUIGrid chooserGrid;
-		protected UIFocusInputTextField chooserFilter;
-		protected UIFocusInputTextField chooserFilterMod;
-		protected float optionScale = 0.5f;
-		protected List<DefinitionOptionElement<T>> options;
-		protected DefinitionOptionElement<T> optionChoice;
+		protected bool UpdateNeeded { get; set; }
+		protected bool SelectionExpanded { get; set; }
+		protected UIPanel ChooserPanel { get; set; }
+		protected NestedUIGrid ChooserGrid { get; set; }
+		protected UIFocusInputTextField ChooserFilter { get; set; }
+		protected UIFocusInputTextField ChooserFilterMod { get; set; }
+		protected float OptionScale { get; set; } = 0.5f;
+		protected List<DefinitionOptionElement<T>> Options { get; set; }
+		protected DefinitionOptionElement<T> OptionChoice { get; set; }
+
 		public override void OnBind() {
 			base.OnBind();
 			Height.Set(30f, 0f);
 
-			optionChoice = CreateDefinitionOptionElement();
-			optionChoice.Top.Set(2f, 0f);
-			optionChoice.Left.Set(-30, 1f);
-			optionChoice.OnClick += (a, b) => {
-				selectionExpanded = !selectionExpanded;
-				updateNeeded = true;
+			OptionChoice = CreateDefinitionOptionElement();
+			OptionChoice.Top.Set(2f, 0f);
+			OptionChoice.Left.Set(-30, 1f);
+			OptionChoice.OnClick += (a, b) => {
+				SelectionExpanded = !SelectionExpanded;
+				UpdateNeeded = true;
 			};
-			TweakDefinitionOptionElement(optionChoice);
-			Append(optionChoice);
+			TweakDefinitionOptionElement(OptionChoice);
+			Append(OptionChoice);
 
-			chooserPanel = new UIPanel();
-			chooserPanel.Top.Set(30, 0);
-			chooserPanel.Height.Set(200, 0);
-			chooserPanel.Width.Set(0, 1);
-			chooserPanel.BackgroundColor = Color.CornflowerBlue;
+			ChooserPanel = new UIPanel();
+			ChooserPanel.Top.Set(30, 0);
+			ChooserPanel.Height.Set(200, 0);
+			ChooserPanel.Width.Set(0, 1);
+			ChooserPanel.BackgroundColor = Color.CornflowerBlue;
 
 			UIPanel textBoxBackgroundA = new UIPanel();
 			textBoxBackgroundA.Width.Set(160, 0f);
@@ -50,36 +51,36 @@ namespace Terraria.ModLoader.Config.UI
 			textBoxBackgroundA.Top.Set(-6, 0);
 			textBoxBackgroundA.PaddingTop = 0;
 			textBoxBackgroundA.PaddingBottom = 0;
-			chooserFilter = new UIFocusInputTextField("Filter by Name");
-			chooserFilter.OnTextChange += (a, b) => {
-				updateNeeded = true;
+			ChooserFilter = new UIFocusInputTextField("Filter by Name");
+			ChooserFilter.OnTextChange += (a, b) => {
+				UpdateNeeded = true;
 			};
-			chooserFilter.OnRightClick += (a, b) => chooserFilter.SetText("");
-			chooserFilter.Width = StyleDimension.Fill;
-			chooserFilter.Height.Set(-6, 1f);
-			chooserFilter.Top.Set(6, 0f);
-			textBoxBackgroundA.Append(chooserFilter);
-			chooserPanel.Append(textBoxBackgroundA);
+			ChooserFilter.OnRightClick += (a, b) => ChooserFilter.SetText("");
+			ChooserFilter.Width = StyleDimension.Fill;
+			ChooserFilter.Height.Set(-6, 1f);
+			ChooserFilter.Top.Set(6, 0f);
+			textBoxBackgroundA.Append(ChooserFilter);
+			ChooserPanel.Append(textBoxBackgroundA);
 
 			UIPanel textBoxBackgroundB = new UIPanel();
 			textBoxBackgroundB.CopyStyle(textBoxBackgroundA);
 			textBoxBackgroundB.Left.Set(180, 0);
-			chooserFilterMod = new UIFocusInputTextField("Filter by Mod");
-			chooserFilterMod.OnTextChange += (a, b) => {
-				updateNeeded = true;
+			ChooserFilterMod = new UIFocusInputTextField("Filter by Mod");
+			ChooserFilterMod.OnTextChange += (a, b) => {
+				UpdateNeeded = true;
 			};
-			chooserFilterMod.OnRightClick += (a, b) => chooserFilterMod.SetText("");
-			chooserFilterMod.Width = StyleDimension.Fill;
-			chooserFilterMod.Height.Set(-6, 1f);
-			chooserFilterMod.Top.Set(6, 0f);
-			textBoxBackgroundB.Append(chooserFilterMod);
-			chooserPanel.Append(textBoxBackgroundB);
+			ChooserFilterMod.OnRightClick += (a, b) => ChooserFilterMod.SetText("");
+			ChooserFilterMod.Width = StyleDimension.Fill;
+			ChooserFilterMod.Height.Set(-6, 1f);
+			ChooserFilterMod.Top.Set(6, 0f);
+			textBoxBackgroundB.Append(ChooserFilterMod);
+			ChooserPanel.Append(textBoxBackgroundB);
 
-			chooserGrid = new NestedUIGrid();
-			chooserGrid.Top.Set(30, 0);
-			chooserGrid.Height.Set(-30, 1);
-			chooserGrid.Width.Set(-12, 1);
-			chooserPanel.Append(chooserGrid);
+			ChooserGrid = new NestedUIGrid();
+			ChooserGrid.Top.Set(30, 0);
+			ChooserGrid.Height.Set(-30, 1);
+			ChooserGrid.Width.Set(-12, 1);
+			ChooserPanel.Append(ChooserGrid);
 
 			UIScrollbar scrollbar = new UIScrollbar();
 			scrollbar.SetView(100f, 1000f);
@@ -87,98 +88,113 @@ namespace Terraria.ModLoader.Config.UI
 			scrollbar.Top.Set(30f, 0f);
 			scrollbar.Left.Pixels += 8;
 			scrollbar.HAlign = 1f;
-			chooserGrid.SetScrollbar(scrollbar);
-			chooserPanel.Append(scrollbar);
+			ChooserGrid.SetScrollbar(scrollbar);
+			ChooserPanel.Append(scrollbar);
 			//Append(chooserPanel);
 
-			UIModConfigHoverImageSplit upDownButton = new UIModConfigHoverImageSplit(upDownTexture, "Zoom in", "Zoom out");
+			UIModConfigHoverImageSplit upDownButton = new UIModConfigHoverImageSplit(UpDownTexture, "Zoom in", "Zoom out");
 			upDownButton.Recalculate();
 			upDownButton.Top.Set(-4f, 0f);
 			upDownButton.Left.Set(-18, 1f);
 			upDownButton.OnClick += (a, b) => {
 				Rectangle r = b.GetDimensions().ToRectangle();
 				if (a.MousePosition.Y < r.Y + r.Height / 2) {
-					optionScale = Math.Min(1f, optionScale + 0.1f);
+					OptionScale = Math.Min(1f, OptionScale + 0.1f);
 				}
 				else {
-					optionScale = Math.Max(0.5f, optionScale - 0.1f);
+					OptionScale = Math.Max(0.5f, OptionScale - 0.1f);
 				}
-				foreach (var choice in options) {
-					choice.SetScale(optionScale);
+				foreach (var choice in Options) {
+					choice.SetScale(OptionScale);
 				}
 			};
-			chooserPanel.Append(upDownButton);
+			ChooserPanel.Append(upDownButton);
 		}
 
 		public override void Update(GameTime gameTime) {
 			base.Update(gameTime);
-			if (!updateNeeded) return;
-			updateNeeded = false;
-			if (selectionExpanded && options == null) {
-				options = CreateDefinitionOptionElementList();
+
+			if (!UpdateNeeded)
+				return;
+
+			UpdateNeeded = false;
+
+			if (SelectionExpanded && Options == null) {
+				Options = CreateDefinitionOptionElementList();
 			}
-			if (!selectionExpanded)
-				chooserPanel.Remove();
+
+			if (!SelectionExpanded)
+				ChooserPanel.Remove();
 			else
-				Append(chooserPanel);
-			float newHeight = selectionExpanded ? 240 : 30;
+				Append(ChooserPanel);
+
+			float newHeight = SelectionExpanded ? 240 : 30;
 			Height.Set(newHeight, 0f);
+
 			if (Parent != null && Parent is UISortableElement) {
 				Parent.Height.Pixels = newHeight;
 			}
-			if (selectionExpanded) {
+
+			if (SelectionExpanded) {
 				var passed = GetPassedOptionElements();
-				chooserGrid.Clear();
-				chooserGrid.AddRange(passed);
+				ChooserGrid.Clear();
+				ChooserGrid.AddRange(passed);
 			}
+
 			//itemChoice.SetItem(_GetValue()?.GetID() ?? 0);
-			optionChoice.SetItem(Value);
+			OptionChoice.SetItem(Value);
 		}
 
 		protected abstract List<DefinitionOptionElement<T>> GetPassedOptionElements();
 		protected abstract List<DefinitionOptionElement<T>> CreateDefinitionOptionElementList();
 		protected abstract DefinitionOptionElement<T> CreateDefinitionOptionElement();
+
 		protected virtual void TweakDefinitionOptionElement(DefinitionOptionElement<T> optionElement) { }
 	}
 
-	class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
+	internal class DefinitionOptionElement<T> : UIElement where T : EntityDefinition
 	{
-		public static Asset<Texture2D> defaultBackgroundTexture = TextureAssets.InventoryBack9;
-		public Asset<Texture2D> backgroundTexture = defaultBackgroundTexture;
-		public string tooltip;
-		internal float scale = .75f;
-		protected bool unloaded;
-		public int type;
-		public T definition;
+		public static Asset<Texture2D> DefaultBackgroundTexture { get; } = TextureAssets.InventoryBack9;
+
+		public Asset<Texture2D> BackgroundTexture { get; set; } = DefaultBackgroundTexture;
+		public string Tooltip { get; set; }
+		public int Type { get; set; }
+		public T Definition { get; set; }
+
+		internal float Scale { get; set; } = .75f;
+
+		protected bool Unloaded { get; set; }
 
 		public DefinitionOptionElement(T definition, float scale = .75f) {
 			SetItem(definition);
 
-			this.scale = scale;
-			this.Width.Set(defaultBackgroundTexture.Width() * scale, 0f);
-			this.Height.Set(defaultBackgroundTexture.Height() * scale, 0f);
+			Scale = scale;
+			Width.Set(DefaultBackgroundTexture.Width() * scale, 0f);
+			Height.Set(DefaultBackgroundTexture.Height() * scale, 0f);
 		}
 
 		public virtual void SetItem(T item) {
-			definition = item;
-			type = definition?.Type ?? 0;
-			unloaded = definition?.IsUnloaded ?? false;
-			if (definition == null || (type == 0 && !unloaded))
-				tooltip = "Nothing";
+			Definition = item;
+			Type = Definition?.Type ?? 0;
+			Unloaded = Definition?.IsUnloaded ?? false;
+
+			if (Definition == null || (Type == 0 && !Unloaded))
+				Tooltip = "Nothing";
 			else {
-				tooltip = $"{definition.name} [{definition.mod}]{(unloaded ? $" ({Language.GetTextValue("tModLoader.UnloadedItemItemName")})" : "")}";
+				Tooltip = $"{Definition.Name} [{Definition.Mod}]{(Unloaded ? $" ({Language.GetTextValue("tModLoader.UnloadedItemItemName")})" : "")}";
 			}
 		}
 
 		public virtual void SetScale(float scale) {
-			this.scale = scale;
-			this.Width.Set(defaultBackgroundTexture.Width() * scale, 0f);
-			this.Height.Set(defaultBackgroundTexture.Height() * scale, 0f);
+			Scale = scale;
+			Width.Set(DefaultBackgroundTexture.Width() * scale, 0f);
+			Height.Set(DefaultBackgroundTexture.Height() * scale, 0f);
 		}
 
 		public override int CompareTo(object obj) {
 			var other = obj as DefinitionOptionElement<T>;
-			return type.CompareTo(other.type);
+
+			return Type.CompareTo(other.Type);
 		}
 	}
 }

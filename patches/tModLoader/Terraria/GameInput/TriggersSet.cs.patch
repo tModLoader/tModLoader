@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameInput/TriggersSet.cs
+--- src/TerrariaNetCore/Terraria/GameInput/TriggersSet.cs
 +++ src/tModLoader/Terraria/GameInput/TriggersSet.cs
 @@ -1,6 +_,7 @@
  using Microsoft.Xna.Framework;
@@ -8,7 +8,7 @@
  
  namespace Terraria.GameInput
  {
-@@ -29,6 +_,33 @@
+@@ -30,6 +_,33 @@
  			}
  		}
  
@@ -42,23 +42,23 @@
  		public bool Up {
  			get {
  				return KeyStatus["Up"];
-@@ -505,6 +_,10 @@
+@@ -506,6 +_,10 @@
  			foreach (string knownTrigger in PlayerInput.KnownTriggers) {
  				KeyStatus.Add(knownTrigger, value: false);
  			}
 +
-+			foreach (var hotkey in HotKeyLoader.HotKeys) {
-+				KeyStatus.Add(hotkey.uniqueName, false);
++			foreach (var keybind in KeybindLoader.Keybinds) {
++				KeyStatus.Add(keybind.uniqueName, false);
 +			}
  		}
  
  		public Vector2 GetNavigatorDirections() {
-@@ -567,6 +_,8 @@
+@@ -571,6 +_,8 @@
  
  			if (HotbarScrollCD > 0 && (!(HotbarScrollCD == 1 && flag) || PlayerInput.CurrentProfile.HotbarRadialHoldTimeRequired <= 0))
  				HotbarScrollCD--;
 +
-+			PlayerHooks.ProcessTriggers(p, this);
++			PlayerLoader.ProcessTriggers(p, this);
  		}
  
  		public void CopyIntoDuringChat(Player p) {

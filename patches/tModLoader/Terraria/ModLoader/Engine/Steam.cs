@@ -13,9 +13,9 @@ namespace Terraria.ModLoader.Engine
 		public static AppId_t TMLAppID_t = new AppId_t(TMLAppID);
 		public static AppId_t TerrariaAppId_t = new AppId_t(TerrariaAppID);
 
-		private static bool SteamAPIRegistered = SteamAPI.Init() && SteamApps.BIsAppInstalled(new AppId_t(TMLAppID));
-		public static bool IsSteamApp { 
-			get => SocialAPI.Mode == SocialMode.Steam && SteamAPIRegistered;
+		// SteamAPI.Init() will have been called if SocialAPI.Mode == SocialMode.Steam because of SocialAPI.Initialize()
+		public static bool IsSteamApp {
+			get => SocialAPI.Mode == SocialMode.Steam && SteamApps.BIsAppInstalled(new AppId_t(TMLAppID));
 		}
 
 		public static ulong lastAvailableSteamCloudStorage = ulong.MaxValue;

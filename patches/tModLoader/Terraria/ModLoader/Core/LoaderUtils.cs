@@ -48,13 +48,22 @@ namespace Terraria.ModLoader.Core
 			//Could potentially be sped up.
 			var entityGlobalsCopy = entityGlobals;
 			var lateInitGlobals = globals
-				.Where(g => !entityGlobalsCopy.Any(i => i.index == g.index) && g.AppliesToEntity(entity, true))
+				.Where(g => !entityGlobalsCopy.Any(i => i.Index == g.index) && g.AppliesToEntity(entity, true))
 				.Select(g => new Instanced<TGlobal>(g.index, getInstance(g)));
 
 			entityGlobals = entityGlobals
 				.Union(lateInitGlobals)
-				.OrderBy(i => i.index)
+				.OrderBy(i => i.Index)
 				.ToArray();
+		}
+
+		public static bool HasMethod(Type type, Type declaringType, string method, params Type[] args) {
+			var methodInfo = type.GetMethod(method, args);
+
+			if (methodInfo == null)
+				return false;
+
+			return methodInfo.DeclaringType != declaringType;
 		}
 	}
 }

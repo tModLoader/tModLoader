@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Localization/LanguageManager.cs
 +++ src/Terraria/Terraria/Localization/LanguageManager.cs
-@@ -60,7 +_,7 @@
+@@ -85,7 +_,7 @@
  
  		private string[] GetLanguageFilesForCulture(GameCulture culture) {
  			Assembly.GetExecutingAssembly();

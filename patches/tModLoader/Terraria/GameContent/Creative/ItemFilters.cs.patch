@@ -1,4 +1,4 @@
---- src/Terraria/Terraria/GameContent/Creative/ItemFilters.cs
+--- src/TerrariaNetCore/Terraria/GameContent/Creative/ItemFilters.cs
 +++ src/tModLoader/Terraria/GameContent/Creative/ItemFilters.cs
 @@ -19,6 +_,7 @@
  			private bool[] _unusedBadPrefixLines = new bool[30];

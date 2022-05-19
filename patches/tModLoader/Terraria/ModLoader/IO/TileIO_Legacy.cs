@@ -48,7 +48,7 @@ namespace Terraria.ModLoader.IO
 				// Skip vanilla tiles
 				if (!nextModTile) {
 					skip = reader.ReadByte();
-					
+
 					while (skip == 255) {
 						for (byte k = 0; k < 255; k++) {
 							if (!NextLocation(ref i, ref j)) {
@@ -157,7 +157,7 @@ namespace Terraria.ModLoader.IO
 
 		/// <summary>
 		/// Increases the provided x and y coordinates to the next location in accordance with order-sensitive position IDs.
-		/// Typically used in clustering duplicate data across multiple consecutive locations, such as in ModLoader.TileIO 
+		/// Typically used in clustering duplicate data across multiple consecutive locations, such as in ModLoader.TileIO
 		/// </summary>
 		/// <param name="x"></param>
 		/// <param name="y"></param>

@@ -12,7 +12,7 @@ namespace Terraria.ModLoader.Default.Patreon
 
 		public override void SetStaticDefaults() {
 			var displayName = Name.Replace('_', ' ');
-			displayName.Insert(displayName.IndexOf(' '), SetSuffix);
+			displayName = displayName.Insert(displayName.IndexOf(' '), SetSuffix);
 			DisplayName.SetDefault(displayName);
 		}
 
@@ -23,7 +23,7 @@ namespace Terraria.ModLoader.Default.Patreon
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			var line = new TooltipLine(Mod, "PatreonThanks", Language.GetTextValue("tModLoader.PatreonSetTooltip")) {
-				overrideColor = Color.Aquamarine
+				OverrideColor = Color.Aquamarine
 			};
 			tooltips.Add(line);
 		}

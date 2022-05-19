@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
@@ -21,38 +22,16 @@ namespace Terraria.ModLoader
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
+		public sealed override void SetupContent() => SetStaticDefaults();
+
 		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
-		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()). 
-		/// Defaults to false (using default constructor).
+		/// Create a copy of this instanced GlobalProjectile. Called when a projectile is cloned.
 		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
-		/// Returns a clone of this GlobalProjectile. 
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references. 
-		/// Only called if CloneNewInstances && InstancePerEntity
-		/// </summary>
-		public virtual GlobalProjectile Clone() => (GlobalProjectile)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this GlobalProjectile for a Projectile instance. 
-		/// Called at the end of Projectile.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual GlobalProjectile NewInstance(Projectile projectile) {
-			if (CloneNewInstances) {
-				return Clone();
-			}
-
-			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
-			copy.Mod = Mod;
-			copy.index = index;
-
-			return copy;
-		}
+		/// <param name="projectile">The projectile being cloned</param>
+		/// <param name="projectileClone">The new projectile</param>
+		public virtual GlobalProjectile Clone(Projectile projectile, Projectile projectileClone) => (GlobalProjectile)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every projectile that gets created.
@@ -61,6 +40,12 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults(Projectile projectile) {
 		}
 
+		/// <summary>
+		/// Gets called when any projectiles spawns in world
+		/// </summary>
+		public virtual void OnSpawn(Projectile projectile, IEntitySource source) {
+		}
+		
 		/// <summary>
 		/// Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
 		/// </summary>
@@ -94,14 +79,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine how a projectile interacts with tiles. Width and height determine the projectile's hitbox for tile collision, and default to -1. Leave them as -1 to use the projectile's real size. Fallthrough determines whether the projectile can fall through platforms, etc., and defaults to true.
+		/// Allows you to determine how a projectile interacts with tiles. Return false if you completely override or cancel a projectile's tile collision behavior. Returns true by default.
 		/// </summary>
-		/// <param name="projectile"></param>
-		/// <param name="width"></param>
-		/// <param name="height"></param>
-		/// <param name="fallThrough"></param>
+		/// <param name="projectile"> The projectile. </param>
+		/// <param name="width"> The width of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to projectile.width. </param>
+		/// <param name="height"> The height of the hitbox the projectile will use for tile collision. If vanilla or a mod don't modify it, defaults to projectile.height. </param>
+		/// <param name="fallThrough"> Whether or not the projectile falls through platforms and similar tiles. </param>
+		/// <param name="hitboxCenterFrac"> Determines by how much the tile collision hitbox's position (top left corner) will be offset from the projectile's real center. If vanilla or a mod don't modify it, defaults to half the hitbox size (new Vector2(0.5f, 0.5f)). </param>
 		/// <returns></returns>
-		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough) {
+		public virtual bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
 			return true;
 		}
 
@@ -134,7 +120,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla decision.
+		/// Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision.
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <returns></returns>

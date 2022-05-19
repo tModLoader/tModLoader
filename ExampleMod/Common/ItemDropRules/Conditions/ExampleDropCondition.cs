@@ -3,7 +3,7 @@ using Terraria.GameContent.ItemDropRules;
 
 namespace ExampleMod.Common.ItemDropRules.Conditions
 {
-	//Very simple drop condition: drop during daytime
+	// Very simple drop condition: drop during daytime
 	public class ExampleDropCondition : IItemDropRuleCondition
 	{
 		public bool CanDrop(DropAttemptInfo info) {

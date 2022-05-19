@@ -21,6 +21,10 @@ namespace Terraria.ModLoader
 		{
 			public struct PrioritizedPair
 			{
+				public static readonly PrioritizedPair Default = new() {
+					value = -1
+				};
+
 				public int value;
 				public SceneEffectPriority priority;
 			}
@@ -33,8 +37,7 @@ namespace Terraria.ModLoader
 			public CaptureBiome.TileColorStyle tileColorStyle;
 
 			public SceneEffectInstance() {
-				anyActive = false;
-				waterStyle = undergroundBackground = surfaceBackground = music = new PrioritizedPair();
+				waterStyle = undergroundBackground = surfaceBackground = music = PrioritizedPair.Default;
 				tileColorStyle = CaptureBiome.TileColorStyle.Normal;
 			}
 		}
@@ -57,13 +60,13 @@ namespace Terraria.ModLoader
 			List<AtmosWeight> shortList = new List<AtmosWeight>();
 
 			for (int i = 0; i < list.Count; i++) {
-				ModSceneEffect avfx = list[i];
+				ModSceneEffect sceneEffect = list[i];
 
-				if (!avfx.IsSceneEffectActive(player))
+				if (!sceneEffect.IsSceneEffectActive(player))
 					continue;
 
 				shortList.Add(
-					new AtmosWeight(avfx.GetCorrWeight(player), avfx)
+					new AtmosWeight(sceneEffect.GetCorrWeight(player), sceneEffect)
 				);
 			}
 
@@ -75,39 +78,41 @@ namespace Terraria.ModLoader
 			result.anyActive = true;
 
 			shortList.Sort(AtmosWeight.InvertedCompare);
-			int avfxFields = 0;
+			int sceneEffectFields = 0;
 
-			for (int i = 0; avfxFields < 5 && i < shortList.Count; i++) {
-				ModSceneEffect avfx = shortList[i].type;
+			for (int i = 0; sceneEffectFields < 5 && i < shortList.Count; i++) {
+				ModSceneEffect sceneEffect = shortList[i].type;
 
-				if (result.waterStyle.priority == 0 && avfx.WaterStyle != null) {
-					result.waterStyle.value = avfx.WaterStyle.Slot;
-					result.waterStyle.priority = avfx.Priority;
-					avfxFields++;
+				if (result.waterStyle.priority == 0 && sceneEffect.WaterStyle != null) {
+					result.waterStyle.value = sceneEffect.WaterStyle.Slot;
+					result.waterStyle.priority = sceneEffect.Priority;
+					sceneEffectFields++;
 				}
 
-				if (result.undergroundBackground.priority == 0 && avfx.UndergroundBackgroundStyle != null) {
-					result.undergroundBackground.value = avfx.UndergroundBackgroundStyle.Slot;
-					result.undergroundBackground.priority = avfx.Priority;
-					avfxFields++;
+				if (result.undergroundBackground.priority == 0 && sceneEffect.UndergroundBackgroundStyle != null) {
+					result.undergroundBackground.value = sceneEffect.UndergroundBackgroundStyle.Slot;
+					result.undergroundBackground.priority = sceneEffect.Priority;
+					sceneEffectFields++;
 				}
 
-				if (result.surfaceBackground.priority == 0 && avfx.SurfaceBackgroundStyle != null) {
-					result.surfaceBackground.value = avfx.SurfaceBackgroundStyle.Slot;
-					result.surfaceBackground.priority = avfx.Priority;
-					avfxFields++;
+				if (result.surfaceBackground.priority == 0 && sceneEffect.SurfaceBackgroundStyle != null) {
+					result.surfaceBackground.value = sceneEffect.SurfaceBackgroundStyle.Slot;
+					result.surfaceBackground.priority = sceneEffect.Priority;
+					sceneEffectFields++;
 				}
 
-				if (result.music.priority == 0 && avfx.Music != -1) {
-					result.music.value = avfx.Music;
-					result.music.priority = avfx.Priority;
-					avfxFields++;
+				if (result.music.priority == 0 && sceneEffect.Music != -1) {
+					result.music.value = sceneEffect.Music;
+					result.music.priority = sceneEffect.Priority;
+					sceneEffectFields++;
 				}
 
-				if (result.tileColorStyle == CaptureBiome.TileColorStyle.Normal && avfx.TileColorStyle != CaptureBiome.TileColorStyle.Normal) {
-					result.tileColorStyle = avfx.TileColorStyle;
-					avfxFields++;
+				if (result.tileColorStyle == CaptureBiome.TileColorStyle.Normal && sceneEffect.TileColorStyle != CaptureBiome.TileColorStyle.Normal) {
+					result.tileColorStyle = sceneEffect.TileColorStyle;
+					sceneEffectFields++;
 				}
+
+				sceneEffect.SpecialVisuals(player);
 			}
 
 			player.CurrentSceneEffect = result;
@@ -115,10 +120,11 @@ namespace Terraria.ModLoader
 
 		// Ref or out? MusicLoader?
 		public void UpdateMusic(ref int music, ref SceneEffectPriority priority) {
-			int tst = Main.LocalPlayer.CurrentSceneEffect.music.value;
-			if (tst > -1) {
-				music = tst;
-				priority = Main.LocalPlayer.CurrentSceneEffect.music.priority;
+			var currentMusic = Main.LocalPlayer.CurrentSceneEffect.music;
+
+			if (currentMusic.value > -1 && currentMusic.priority > priority) {
+				music = currentMusic.value;
+				priority = currentMusic.priority;
 			}
 		}
 	}
