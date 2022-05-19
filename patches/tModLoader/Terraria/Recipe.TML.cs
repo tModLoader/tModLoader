@@ -112,11 +112,13 @@ namespace Terraria
 		/// The index of the recipe in the Main.recipe array.
 		/// </summary>
 		public int RecipeIndex { get; private set; }
-		
+
+		public (Recipe target, bool after) Ordering { get; internal set; }
+
 		/// <summary>
-		/// Any recipe with this flag will be deleted at the end of the recipe setup.
+		/// Any recipe with this flag won't be shown in game.
 		/// </summary>
-		public bool FlaggedForDeletion { get; private set; }
+		public bool Disabled { get; private set; }
 
 		/// <summary>
 		/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>
@@ -296,45 +298,41 @@ namespace Terraria
 		/// Moves the recipe to a given index in the Main.recipe array. This recipe must already be registered.
 		/// </summary>
 		internal Recipe MoveAt(int objective) {
-			if(Main.recipe[RecipeIndex] != this)
-				throw new RecipeException("This recipe is not registered.");
-			
 			int direction = objective > RecipeIndex ? 1 : -1;
-			
-			bool canBeBeatenAsFirstRecipe = (direction == 1) && RecipeLoader.FirstRecipeForItem[createItem.type] == this;
 
 			for (int index = RecipeIndex; index * direction < objective * direction; index += direction) {
 				Recipe movedRecipe = Main.recipe[index + direction];
 				movedRecipe.RecipeIndex = index;
 				Main.recipe[index] = movedRecipe;
-
-				if (canBeBeatenAsFirstRecipe && createItem.type == movedRecipe.createItem.type) {
-					RecipeLoader.FirstRecipeForItem[createItem.type] = movedRecipe;
-					canBeBeatenAsFirstRecipe = false;
-				}
 			}
 
 			Main.recipe[objective] = this;
 			RecipeIndex = objective;
-			
-			if (RecipeLoader.FirstRecipeForItem[createItem.type].RecipeIndex > RecipeIndex) {
-				RecipeLoader.FirstRecipeForItem[createItem.type] = this;
-			}
-			
+
 			return this;
 		}
-		
+
+		/// <summary>
+		/// Sets the Ordering of this recipe. This recipe can't already have one.
+		/// </summary>
+		private Recipe SetOrdering(Recipe recipe, bool after) {
+			if (!RecipeLoader.setupRecipes)
+				throw new RecipeException("You can only move recipes during setup");
+			if (Main.recipe[recipe.RecipeIndex] != recipe)
+				throw new RecipeException("The selected recipe is not registered.");
+			if (Ordering.target != null)
+				throw new RecipeException("This recipe already has an ordering.");
+			Ordering = (recipe, after);
+			return recipe;
+		}
+
 		/// <summary>
 		/// Moves the recipe before the first one creating the item of the ID given as parameter.
 		/// </summary>
-		public Recipe MoveBeforeRecipesOf(int itemID) {
-			if (RecipeLoader.FirstRecipeForItem.TryGetValue(itemID, out Recipe recipe)) {
-				return MoveBefore(recipe);
-			}
-			else {
-				//Still throw an error to make sure the code is correct if a recipe making this item is added
-				if (Main.recipe[recipe.RecipeIndex] != recipe)
-					throw new RecipeException("The selected recipe is not registered.");
+		public Recipe MoveBeforeRecipesOf(int itemId) {
+			Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
+			if (target != null) {
+				return MoveBefore(target);
 			}
 
 			return this;
@@ -343,49 +341,24 @@ namespace Terraria
 		/// <summary>
 		/// Moves the recipe before the one given as parameter. Both recipes must already be registered.
 		/// </summary>
-		public Recipe MoveBefore(Recipe recipe) {
-			if (Main.recipe[recipe.RecipeIndex] != recipe)
-				throw new RecipeException("The selected recipe is not registered.");
+		public Recipe MoveBefore(Recipe recipe) => SetOrdering(recipe, false);
 
-			if (RecipeIndex < recipe.RecipeIndex) {
-				return MoveAt(recipe.RecipeIndex - 1);
-			}
-			else {
-				return MoveAt(recipe.RecipeIndex);
-			}
-		}
-		
 		/// <summary>
 		/// Moves the recipe after the first one creating the item of the ID given as parameter.
 		/// </summary>
-		public Recipe MoveAfterRecipesOf(int itemID) {
-			if (RecipeLoader.FirstRecipeForItem.TryGetValue(itemID, out Recipe recipe)) {
-				return MoveAfter(recipe);
-			}
-			else {
-				//Still throw an error to make sure the code is correct if a recipe making this item is added
-				if (Main.recipe[recipe.RecipeIndex] != recipe)
-					throw new RecipeException("The selected recipe is not registered.");
+		public Recipe MoveAfterRecipesOf(int itemId) {
+			Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
+			if (target != null) {
+				return MoveAfter(target);
 			}
 
 			return this;
 		}
 
-
 		/// <summary>
 		/// Moves the recipe after the one given as parameter. Both recipes must already be registered.
 		/// </summary>
-		public Recipe MoveAfter(Recipe recipe) {
-			if (Main.recipe[recipe.RecipeIndex] != recipe)
-				throw new RecipeException("The selected recipe is not registered.");
-
-			if (RecipeIndex < recipe.RecipeIndex) {
-				return MoveAt(recipe.RecipeIndex);
-			}
-			else {
-				return MoveAt(recipe.RecipeIndex + 1);
-			}
-		}
+		public Recipe MoveAfter(Recipe recipe) => SetOrdering(recipe, true);
 
 		#endregion
 
@@ -455,10 +428,9 @@ namespace Terraria
 			RecipeIndex = numRecipes;
 			numRecipes++;
 
-			if (!RecipeLoader.FirstRecipeForItem.ContainsKey(createItem.type)) {
-				RecipeLoader.FirstRecipeForItem.Add(createItem.type, this);
-			}
-			
+			if (RecipeLoader.FirstRecipeForItem[createItem.type] == null)
+				RecipeLoader.FirstRecipeForItem[createItem.type] = this;
+
 			return this;
 		}
 

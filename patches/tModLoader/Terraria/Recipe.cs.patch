@@ -198,18 +198,23 @@
  			if (!anyPressurePlate)
  				return false;
  
-@@ -309,7 +_,7 @@
+@@ -309,7 +_,9 @@
  			Main.numAvailableRecipes = 0;
  			if (Main.guideItem.type > 0 && Main.guideItem.stack > 0 && Main.guideItem.Name != "") {
  				for (int j = 0; j < maxRecipes && Main.recipe[j].createItem.type != 0; j++) {
 -					for (int k = 0; k < maxRequirements && Main.recipe[j].requiredItem[k].type != 0; k++) {
++					if (Main.recipe[j].Disabled)
++						continue;
 +					for (int k = 0; k < Main.recipe[j].requiredItem.Count; k++) {
  						if (Main.guideItem.IsTheSameAs(Main.recipe[j].requiredItem[k]) || Main.recipe[j].useWood(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useSand(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useIronBar(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].useFragment(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].AcceptedByItemGroups(Main.guideItem.type, Main.recipe[j].requiredItem[k].type) || Main.recipe[j].usePressurePlate(Main.guideItem.type, Main.recipe[j].requiredItem[k].type)) {
  							Main.availableRecipe[Main.numAvailableRecipes] = j;
  							Main.numAvailableRecipes++;
-@@ -359,7 +_,7 @@
+@@ -357,9 +_,9 @@
+ 				}
+ 
  				for (int n = 0; n < maxRecipes && Main.recipe[n].createItem.type != 0; n++) {
- 					bool flag = true;
+-					bool flag = true;
++					bool flag = !Main.recipe[n].Disabled;
  					if (flag) {
 -						for (int num3 = 0; num3 < maxRequirements && Main.recipe[n].requiredTile[num3] != -1; num3++) {
 +						for (int num3 = 0; num3 < Main.recipe[n].requiredTile.Count && Main.recipe[n].requiredTile[num3] != -1; num3++) {
@@ -261,7 +266,7 @@
  			CreateReversePlatformRecipes();
 +			RecipeLoader.AddRecipes();
 +			RecipeLoader.PostAddRecipes();
-+			RecipeLoader.DeleteRecipes();
++			RecipeLoader.OrderRecipes();
  			UpdateWhichItemsAreMaterials();
 +			Item.PopulateMaterialCache();
  			UpdateMaterialFieldForAllRecipes();
@@ -401,8 +406,8 @@
 -			currentRecipe = new Recipe();
 +			currentRecipe.RecipeIndex = numRecipes;
 +
-+			if (!RecipeLoader.FirstRecipeForItem.ContainsKey(currentRecipe.createItem.type)) {
-+				RecipeLoader.FirstRecipeForItem.Add(currentRecipe.createItem.type, currentRecipe);
++			if (RecipeLoader.FirstRecipeForItem[currentRecipe.createItem.type] == null) {
++				RecipeLoader.FirstRecipeForItem[currentRecipe.createItem.type] = currentRecipe;
 +			}
 +
 +			// The following resets the currentRecipe field

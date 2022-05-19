@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using Terraria.ID;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
@@ -10,7 +12,7 @@ namespace Terraria.ModLoader
 	public static class RecipeLoader
 	{
 		internal static readonly IList<GlobalRecipe> globalRecipes = new List<GlobalRecipe>();
-		internal static readonly Dictionary<int, Recipe> FirstRecipeForItem = new();
+		internal static Recipe[] FirstRecipeForItem = new Recipe[ItemID.Count];
 
 		/// <summary>
 		/// Set when tML sets up modded recipes. Used to detect misuse of CreateRecipe
@@ -23,8 +25,8 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			globalRecipes.Clear();
-			FirstRecipeForItem.Clear();
 			setupRecipes = false;
+			FirstRecipeForItem = new Recipe[Recipe.maxRecipes];
 		}
 
 		internal static void AddRecipes() {
@@ -72,24 +74,36 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Deletes the recipes flagged for deletion
+		/// Orders everything in the recipe according to their Ordering.
 		/// </summary>
-		internal static void DeleteRecipes() {
-			int shift = 0;
-			for (int index = 0; index < Recipe.numRecipes; index++) {
-				Recipe recipe = Main.recipe[index];
-				if (recipe.FlaggedForDeletion) {
-					shift++;
+		internal static void OrderRecipes() {
+			List<Recipe> recipesToOrder = new List<Recipe>();
+			for (int recipeIndex = 0; recipeIndex < Main.recipe.Length; recipeIndex++) {
+				Recipe recipe = Main.recipe[recipeIndex];
+				Recipe parentRecipe = recipe;
+				while (parentRecipe.Ordering.target != null) {
+					if (recipesToOrder.Contains(parentRecipe))
+						throw new RecipeException("Recipe ordering loop detected.");
+					recipesToOrder.Add(parentRecipe);
+					parentRecipe = parentRecipe.Ordering.target;
 				}
-				else {
-					Main.recipe[index - shift] = recipe;
+
+				if (recipesToOrder.Count != 0) {
+					for (int orderIndex = recipesToOrder.Count - 1; orderIndex >= 0; orderIndex--) {
+						Recipe recipeToOrder = recipesToOrder[orderIndex];
+						int targetIndex = (recipeToOrder.Ordering.target.RecipeIndex > recipeToOrder.RecipeIndex) switch {
+							false when !recipeToOrder.Ordering.after => recipeToOrder.Ordering.target.RecipeIndex - 1,
+							true when recipeToOrder.Ordering.after => recipeToOrder.Ordering.target.RecipeIndex + 1,
+							_ => recipeToOrder.Ordering.target.RecipeIndex
+						};
+
+						recipeToOrder.MoveAt(targetIndex);
+						recipeToOrder.Ordering = default;
+					}
+
+					recipeIndex--; //Redo this location in case a not handled recipe took its place.
+					recipesToOrder.Clear();
 				}
-			}
-
-			Recipe.numRecipes -= shift;
-
-			for (int index = Recipe.numRecipes; index < Recipe.numRecipes + shift; index++) {
-				Main.recipe[index] = new Recipe();
 			}
 		}
 
