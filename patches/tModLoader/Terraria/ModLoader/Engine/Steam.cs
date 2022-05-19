@@ -44,11 +44,12 @@ namespace Terraria.ModLoader.Engine
 		}
 
 		internal static void SetAppId(AppId_t appId) {
-			Environment.SetEnvironmentVariable("STEAMGAMEID", appId.ToString());
-			Environment.SetEnvironmentVariable("STEAMOVERLAYGAMEID", appId.ToString());
-			Environment.SetEnvironmentVariable("STEAMAPPID", appId.ToString());
-			//File.WriteAllText("steam_appid.txt", appId.ToString());
-			File.Delete("steam_appid.txt");
+			if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
+				File.WriteAllText("steam_appid.txt", appId.ToString());
+			}
+			else if (Environment.GetEnvironmentVariable("SteamAppId") != appId.ToString()) {
+				throw new Exception("Cannot overwrite steam env. SteamAppId=" + Environment.GetEnvironmentVariable("SteamAppId"));
+			}
 		}
 	}
 }

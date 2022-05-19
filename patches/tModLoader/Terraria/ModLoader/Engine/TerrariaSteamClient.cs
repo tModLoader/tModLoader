@@ -1,9 +1,12 @@
 ﻿using log4net;
 using Steamworks;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 
 namespace Terraria.ModLoader.Engine
@@ -28,20 +31,29 @@ namespace Terraria.ModLoader.Engine
 		}
 
 		internal static LaunchResult Launch() {
-			if (Environment.GetEnvironmentVariable("STEAMCLIENTLAUNCH") != "1") {
+			if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
 				Logger.Debug("Disabled. Launched outside steam client.");
 				return LaunchResult.Ok;
 			}
 
 			serverPipe = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
+			var tMLName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
 			var proc = new Process() {
 				StartInfo = {
 					FileName = Environment.ProcessPath,
-					Arguments = $"tmodloader.dll -terrariasteamclient {serverPipe.GetClientHandleAsString()}",
+					Arguments = $"{tMLName} -terrariasteamclient {serverPipe.GetClientHandleAsString()}",
 					UseShellExecute = false,
 					RedirectStandardOutput = true
 				}
 			};
+
+			// clear steam env vars
+			foreach (var k in ((IEnumerable<string>)proc.StartInfo.EnvironmentVariables.Keys).ToArray()) {
+				if (k.StartsWith("steam", StringComparison.InvariantCultureIgnoreCase)) {
+					proc.StartInfo.EnvironmentVariables.Remove(k);
+				}
+			}
+
 			proc.Start();
 
 			while (true) {
