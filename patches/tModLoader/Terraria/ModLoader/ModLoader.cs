@@ -183,7 +183,8 @@ namespace Terraria.ModLoader
 				OnSuccessfulLoad = null;
 				skipLoad = false;
 				ModNet.NetReloadActive = false;
-				GOGModUpdateChecker.CheckModUpdates();
+				//TODO: FUTURE
+				//GOGModUpdateChecker.CheckModUpdates();
 			}
 		}
 

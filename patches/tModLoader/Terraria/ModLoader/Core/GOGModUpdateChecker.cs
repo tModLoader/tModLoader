@@ -1,4 +1,5 @@
-﻿using Ionic.Zlib;
+﻿/* //TODO: FUTURE
+using Ionic.Zlib;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -99,3 +100,4 @@ namespace Terraria.ModLoader.Core
 
 	}
 }
+*/
