@@ -4,7 +4,13 @@ var namespace_terraria_1_1_mod_loader =
     [ "Config", "namespace_terraria_1_1_mod_loader_1_1_config.html", "namespace_terraria_1_1_mod_loader_1_1_config" ],
     [ "Core", "namespace_terraria_1_1_mod_loader_1_1_core.html", "namespace_terraria_1_1_mod_loader_1_1_core" ],
     [ "Default", "namespace_terraria_1_1_mod_loader_1_1_default.html", "namespace_terraria_1_1_mod_loader_1_1_default" ],
-    [ "Engine", "namespace_terraria_1_1_mod_loader_1_1_engine.html", null ],
+    [ "Engine", "namespace_terraria_1_1_mod_loader_1_1_engine.html", [
+      [ "DistributionPlatform", "namespace_terraria_1_1_mod_loader_1_1_engine.html#ac6614fd6d065a32b79dee7728570069c", [
+        [ "Unknown", "namespace_terraria_1_1_mod_loader_1_1_engine.html#ac6614fd6d065a32b79dee7728570069ca88183b946cc5f0e8c96b2e66e1c74a7e", null ],
+        [ "Steam", "namespace_terraria_1_1_mod_loader_1_1_engine.html#ac6614fd6d065a32b79dee7728570069ca4db4563826bad0eb2f60ee6e42d0ea4b", null ],
+        [ "GoG", "namespace_terraria_1_1_mod_loader_1_1_engine.html#ac6614fd6d065a32b79dee7728570069ca7037f4d1f8a0288fb3ae3b9808f0faff", null ]
+      ] ]
+    ] ],
     [ "Exceptions", "namespace_terraria_1_1_mod_loader_1_1_exceptions.html", "namespace_terraria_1_1_mod_loader_1_1_exceptions" ],
     [ "IO", "namespace_terraria_1_1_mod_loader_1_1_i_o.html", "namespace_terraria_1_1_mod_loader_1_1_i_o" ],
     [ "UI", "namespace_terraria_1_1_mod_loader_1_1_u_i.html", "namespace_terraria_1_1_mod_loader_1_1_u_i" ],

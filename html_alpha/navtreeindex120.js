@@ -1,5 +1,8 @@
 var NAVTREEINDEX120 =
 {
+"class_terraria_1_1_world_gen.html#aa253ca066b465f0b887e888023a7083e":[1,0,2,83,86],
+"class_terraria_1_1_world_gen.html#aa2fe14d1962eaf2a099dd21defa2d4da":[1,0,2,83,429],
+"class_terraria_1_1_world_gen.html#aa33a10c9c8b2a8e0339e08f0266b0b75":[1,0,2,83,373],
 "class_terraria_1_1_world_gen.html#aa3ae2884f05c02e4c0259f5eb061ff10":[1,0,2,83,96],
 "class_terraria_1_1_world_gen.html#aa50e51e1a382de08f6eef252fb94daee":[1,0,2,83,241],
 "class_terraria_1_1_world_gen.html#aa5bce4fa427b329d3c89d222b82423e6":[1,0,2,83,148],
@@ -246,8 +249,5 @@ var NAVTREEINDEX120 =
 "class_terraria_1_1_world_gen_1_1_hooks.html#a825bf1afaf703502af996cb5808707f4":[1,0,2,83,2,2],
 "class_terraria_1_1_world_gen_1_1_hooks.html#afb0ff31534d9b202f6133efab9460d62":[1,0,2,83,2,4],
 "class_terraria_1_1_world_gen_1_1_saved_ore_tiers.html":[1,0,2,83,3],
-"class_terraria_1_1_world_gen_1_1_saved_ore_tiers.html#a2d77725695e1bc1e502ecb9e8072996a":[1,0,2,83,3,4],
-"class_terraria_1_1_world_gen_1_1_saved_ore_tiers.html#a3a3e214c676888b54fa6014124c06144":[1,0,2,83,3,6],
-"class_terraria_1_1_world_gen_1_1_saved_ore_tiers.html#a4324ab5f25b0645ea3c3831c652f2b42":[1,0,2,83,3,1],
-"class_terraria_1_1_world_gen_1_1_saved_ore_tiers.html#a894c7c6e445e384a4ba7bad0c3916f05":[1,0,2,83,3,0]
+"class_terraria_1_1_world_gen_1_1_saved_ore_tiers.html#a2d77725695e1bc1e502ecb9e8072996a":[1,0,2,83,3,4]
 };

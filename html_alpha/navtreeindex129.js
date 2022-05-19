@@ -1,5 +1,12 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_get_item_settings.html#a4290a109fe6b1e3d6e011a6548c484ef":[1,0,2,36,9],
+"struct_terraria_1_1_get_item_settings.html#a582cda0a94766d34aa2c09b35dd40b6a":[1,0,2,36,12],
+"struct_terraria_1_1_get_item_settings.html#a5902de8a768aa9b0fecfcc843d894ee9":[1,0,2,36,7],
+"struct_terraria_1_1_get_item_settings.html#a5ee354b8b876d9f8619122d42820c830":[1,0,2,36,6],
+"struct_terraria_1_1_get_item_settings.html#a75462a86a9c8ff964e89d992a0131c35":[1,0,2,36,0],
+"struct_terraria_1_1_get_item_settings.html#a8c8b6081f0f05215b16bd29bd41b4b84":[1,0,2,36,11],
+"struct_terraria_1_1_get_item_settings.html#a928319f98b521f36623ce1753a1fc67a":[1,0,2,36,13],
 "struct_terraria_1_1_get_item_settings.html#a9d024cfb59ba4d7a4339b86a157a7765":[1,0,2,36,1],
 "struct_terraria_1_1_get_item_settings.html#aa4fce49bc8b594005ee4954e07113f62":[1,0,2,36,8],
 "struct_terraria_1_1_get_item_settings.html#ab333c5c50af839f318f0d274a9245e7c":[1,0,2,36,4],
@@ -242,12 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data.html#ace5d994036a3e7ba5f5529f2d8b2dc5c":[1,0,2,13,149,1],
 "struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data.html#ae4d9e0ea0d6c6fcd3f65bf02d2625bca":[1,0,2,13,149,3],
 "struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data.html#aef8b91926cba04aa4f1c88eba71164e9":[1,0,2,13,149,0],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html":[1,0,2,13,150],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#a0061d5612b53de4d2792cfb32dcbcfaf":[1,0,2,13,150,8],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#a05caab9e5126493775ce563adec9d199":[1,0,2,13,150,13],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#a156f7b961a9d63aba957f845b3dfc9e7":[1,0,2,13,150,15],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#a180d923ae5aba87f08d01b5f1271e266":[1,0,2,13,150,1],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#a218304d64b9a61e19b71561b702ff4b9":[1,0,2,13,150,12],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#a2799f3f095c24d32988087ea57b1fe41":[1,0,2,13,150,5],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#a4bfa129b93eca3d3a9417fdb07c9c271":[1,0,2,13,150,4]
+"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html":[1,0,2,13,150]
 };

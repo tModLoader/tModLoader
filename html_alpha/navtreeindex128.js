@@ -1,5 +1,12 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#a61a128dc04bf670ebb1cb4be78d17a95":[1,0,2,4,81,7],
+"struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#aa916925edbdcf56c69865df2efb896fc":[1,0,2,4,81,5],
+"struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#adb394bf022ccd023bd48b3e1b0115a09":[1,0,2,4,81,1],
+"struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#af3f848fbe8a29fdebf22a3817f0a51c7":[1,0,2,4,81,3],
+"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html":[1,0,2,4,83],
+"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a17a292bf399f507faa01bf187aee012d":[1,0,2,4,83,12],
+"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a249890fa79f7ee328b43454d3a15f093":[1,0,2,4,83,7],
 "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a27f844c8effc36d374817a9995553f86":[1,0,2,4,83,1],
 "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a313434733b47c3b05cab6a6c7ba63f68":[1,0,2,4,83,6],
 "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a3f06c75e660c79d329ee78d204534070":[1,0,2,4,83,11],
@@ -242,12 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_get_item_settings.html":[1,0,2,36],
 "struct_terraria_1_1_get_item_settings.html#a10d14e6cbdc8ed9f480d918cd36229f5":[1,0,2,36,10],
 "struct_terraria_1_1_get_item_settings.html#a336fbaf41e96b66aa323598019c47ffa":[1,0,2,36,2],
-"struct_terraria_1_1_get_item_settings.html#a384f1500e2eadfd806a02e8249ad7fb0":[1,0,2,36,3],
-"struct_terraria_1_1_get_item_settings.html#a4290a109fe6b1e3d6e011a6548c484ef":[1,0,2,36,9],
-"struct_terraria_1_1_get_item_settings.html#a582cda0a94766d34aa2c09b35dd40b6a":[1,0,2,36,12],
-"struct_terraria_1_1_get_item_settings.html#a5902de8a768aa9b0fecfcc843d894ee9":[1,0,2,36,7],
-"struct_terraria_1_1_get_item_settings.html#a5ee354b8b876d9f8619122d42820c830":[1,0,2,36,6],
-"struct_terraria_1_1_get_item_settings.html#a75462a86a9c8ff964e89d992a0131c35":[1,0,2,36,0],
-"struct_terraria_1_1_get_item_settings.html#a8c8b6081f0f05215b16bd29bd41b4b84":[1,0,2,36,11],
-"struct_terraria_1_1_get_item_settings.html#a928319f98b521f36623ce1753a1fc67a":[1,0,2,36,13]
+"struct_terraria_1_1_get_item_settings.html#a384f1500e2eadfd806a02e8249ad7fb0":[1,0,2,36,3]
 };

@@ -1,5 +1,10 @@
 var class_terraria_1_1_mod_loader_1_1_logging =
 [
+    [ "LogFile", "class_terraria_1_1_mod_loader_1_1_logging.html#a77e74ca893fe44c0c4d7e050263b23d0", [
+      [ "Client", "class_terraria_1_1_mod_loader_1_1_logging.html#a77e74ca893fe44c0c4d7e050263b23d0a577d7068826de925ea2aec01dbadf5e4", null ],
+      [ "Server", "class_terraria_1_1_mod_loader_1_1_logging.html#a77e74ca893fe44c0c4d7e050263b23d0a9aa1b03934893d7134a660af4204f2a9", null ],
+      [ "TerrariaSteamClient", "class_terraria_1_1_mod_loader_1_1_logging.html#a77e74ca893fe44c0c4d7e050263b23d0a783ec977a05efdd354a509028f19a844", null ]
+    ] ],
     [ "IgnoreExceptionContents", "class_terraria_1_1_mod_loader_1_1_logging.html#a8731b7b43fc16de84f8bfd70cd00abc7", null ],
     [ "IgnoreExceptionSource", "class_terraria_1_1_mod_loader_1_1_logging.html#ae5c7c0a302892df4428d57119c256fa5", null ],
     [ "PrettifyStackTraceSources", "class_terraria_1_1_mod_loader_1_1_logging.html#a0e0ba2049a5c7e737d27373038e71d78", null ],
