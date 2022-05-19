@@ -7,6 +7,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.GameContent;
 using Terraria.ModLoader.Core;
+using Terraria.DataStructures;
 
 namespace Terraria.ModLoader
 {
@@ -30,6 +31,12 @@ namespace Terraria.ModLoader
 		private static DelegateModifyBuffTip[] HookModifyBuffTip;
 		private static Action<string, List<Vector2>>[] HookCustomBuffTipSize;
 		private static Action<string, SpriteBatch, int, int>[] HookDrawCustomBuffTip;
+		private delegate bool DelegatePreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams);
+		private static DelegatePreDraw[] HookPreDraw;
+		private delegate void DelegatePostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams);
+		private static DelegatePostDraw[] HookPostDraw;
+		private delegate bool DelegateRightClick(int type, int buffIndex);
+		private static DelegateRightClick[] HookRightClick;
 
 		internal static int ReserveBuffID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding buffs breaks vanilla client compatibility");
@@ -85,6 +92,9 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook<GlobalBuff, DelegateModifyBuffTip>(ref HookModifyBuffTip, globalBuffs, g => g.ModifyBuffTip);
 			ModLoader.BuildGlobalHook(ref HookCustomBuffTipSize, globalBuffs, g => g.CustomBuffTipSize);
 			ModLoader.BuildGlobalHook(ref HookDrawCustomBuffTip, globalBuffs, g => g.DrawCustomBuffTip);
+			ModLoader.BuildGlobalHook<GlobalBuff, DelegatePreDraw>(ref HookPreDraw, globalBuffs, g => g.PreDraw);
+			ModLoader.BuildGlobalHook<GlobalBuff, DelegatePostDraw>(ref HookPostDraw, globalBuffs, g => g.PostDraw);
+			ModLoader.BuildGlobalHook<GlobalBuff, DelegateRightClick>(ref HookRightClick, globalBuffs, g => g.RightClick);
 		}
 
 		internal static void Unload() {
@@ -160,6 +170,37 @@ namespace Terraria.ModLoader
 			foreach (var hook in HookDrawCustomBuffTip) {
 				hook(buffTip, spriteBatch, originX, originY);
 			}
+		}
+
+		public static bool PreDraw(SpriteBatch spriteBatch, int type, int buffIndex, ref BuffDrawParams drawParams) {
+			bool result = true;
+			foreach (var hook in HookPreDraw) {
+				result &= hook(spriteBatch, type, buffIndex, ref drawParams);
+			}
+			if (result && IsModBuff(type)) {
+				return GetBuff(type).PreDraw(spriteBatch, buffIndex, ref drawParams);
+			}
+			return result;
+		}
+
+		public static void PostDraw(SpriteBatch spriteBatch, int type, int buffIndex, BuffDrawParams drawParams) {
+			if (IsModBuff(type)) {
+				GetBuff(type).PostDraw(spriteBatch, buffIndex, drawParams);
+			}
+			foreach (var hook in HookPostDraw) {
+				hook(spriteBatch, type, buffIndex, drawParams);
+			}
+		}
+
+		public static bool RightClick(int type, int buffIndex) {
+			bool result = true;
+			foreach (var hook in HookRightClick) {
+				result &= hook(type, buffIndex);
+			}
+			if (IsModBuff(type)) {
+				result &= GetBuff(type).RightClick(buffIndex);
+			}
+			return result;
 		}
 	}
 }

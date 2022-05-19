@@ -28,5 +28,7 @@ file_download() {
 # Call a script setting its permission right for execution
 run_script() {
 	chmod a+x "$1"
-	"$@"
+
+	# LD_PRELOAD="" fixes error messages from steams library linking polluting the stdout of all programs(in tree) run by run_script
+	LD_PRELOAD="" "$@"
 }

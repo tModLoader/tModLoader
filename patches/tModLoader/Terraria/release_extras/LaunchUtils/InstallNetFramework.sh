@@ -78,14 +78,12 @@ if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
 		# *nix binaries are various and not worth detecting the required one here, always use "on-the-fly" script install
 		file_download dotnet-install.sh https://dot.net/v1/dotnet-install.sh
 
-		run_script ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "dotnet" --version "$dotnet_version"
+		run_script ./dotnet-install.sh --channel "$channel" --install-dir "$install_dir" --runtime "dotnet" --version "$dotnet_version" --verbose
 	fi
 fi
 
 echo "Dotnet should be present in \"$install_dir\""
-# @TODO: Re-evaluate if this needed
 if [[ ! -f "$install_dir/dotnet" && ! -f "$install_dir/dotnet.exe" ]]; then
 	echo -e "${TXTCOLOR_RED}Download of portable dotnet runtime seems to have failed,${TXTCOLOR_NC}"
-	echo -e "${TXTCOLOR_RED}proceeding will probably use system wide installed runtime${TXTCOLOR_NC}"
-	read -p "Please press Enter to try to run the game anyway... "
+	echo -e "${TXTCOLOR_RED}Proceeding will probably fall back to system wide installed runtime${TXTCOLOR_NC}"
 fi

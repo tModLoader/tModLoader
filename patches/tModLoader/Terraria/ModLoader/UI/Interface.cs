@@ -130,6 +130,23 @@ namespace Terraria.ModLoader.UI
 								});
 					}
 				}
+				else if (ModLoader.PreviewFreezeNotification) {
+					ModLoader.PreviewFreezeNotification = false;
+					ModLoader.LastPreviewFreezeNotificationSeen = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
+					infoMessage.Show(Language.GetTextValue("tModLoader.MonthlyFreezeNotification"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
+						() => {
+							SoundEngine.PlaySound(SoundID.MenuOpen);
+							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14-alpha");
+						});
+					Main.SaveSettings();
+				}
+				else if (!ModLoader.DetectedModChangesForInfoMessage) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
+					ModLoader.DetectedModChangesForInfoMessage = true;
+
+					string info = ModOrganizer.DetectModChangesForInfoMessage();
+					if (info != null)
+						infoMessage.Show(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessage") + info, Main.menuMode);
+				}
 			}
 			if (Main.menuMode == modsMenuID) {
 				Main.MenuUI.SetState(modsMenu);
@@ -197,7 +214,7 @@ namespace Terraria.ModLoader.UI
 			else if (Main.menuMode == tModLoaderSettingsID) {
 				offY = 210;
 				spacing = 42;
-				numButtons = 7;
+				numButtons = 9;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++) {
 					buttonScales[i] = 0.75f;
@@ -221,6 +238,14 @@ namespace Terraria.ModLoader.UI
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
 					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
+				}
+
+				
+				buttonIndex++;
+				buttonNames[buttonIndex] = (ModLoader.autoReloadRequiredModsLeavingModsScreen ? Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenNo"));
+				if (selectedMenu == buttonIndex) {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					ModLoader.autoReloadRequiredModsLeavingModsScreen = !ModLoader.autoReloadRequiredModsLeavingModsScreen;
 				}
 
 				/*
@@ -251,6 +276,13 @@ namespace Terraria.ModLoader.UI
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
 					ModLoader.notifyNewMainMenuThemes = !ModLoader.notifyNewMainMenuThemes;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.ShowNewUpdatedModsInfo{(ModLoader.showNewUpdatedModsInfo ? "Yes" : "No")}");
+				if (selectedMenu == buttonIndex) {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					ModLoader.showNewUpdatedModsInfo = !ModLoader.showNewUpdatedModsInfo;
 				}
 
 				/*
@@ -372,9 +404,11 @@ namespace Terraria.ModLoader.UI
 		internal static void MessageBoxShow(string text, string caption = null) {
 			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
 			caption = caption ?? "Terraria: Error" + $" ({ModLoader.versionedName})";
-			string message = Language.GetTextValue("tModLoader.ClientLogHint", text, Path.Combine(Main.SavePath, "Logs"));
+			string logsLoc = Path.Combine(Directory.GetCurrentDirectory(), "tModLoader-Logs");
+
+			string message = Language.GetTextValue("tModLoader.ClientLogHint", text, logsLoc);
 			if(Language.ActiveCulture == null) // Simple backup approach in case error happens before localization is loaded
-				message = string.Format("{0}\n\nA client.log file containing error information has been generated in\n{1}\n(You will need to share this file if asking for help)", text, Path.Combine(Main.SavePath, "Logs"));
+				message = string.Format("{0}\n\nA client.log file containing error information has been generated in\n{1}\n(You will need to share this file if asking for help)", text, logsLoc);
 #if !MAC
 			System.Windows.Forms.MessageBox.Show(message, caption);
 #else

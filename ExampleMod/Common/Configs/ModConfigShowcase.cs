@@ -62,6 +62,7 @@ namespace ExampleMod.Common.Configs
 		};
 		*/
 
+		// TODO: Not working at the moment.
 		// Using a custom class as a key in a Dictionary. When used as a Dictionary Key, special code must be used.
 		public Dictionary<ClassUsedAsKey, Color> CustomKey = new Dictionary<ClassUsedAsKey, Color>();
 
@@ -77,7 +78,7 @@ namespace ExampleMod.Common.Configs
 			},
 			new Color(1, 2, 3, 4));
 
-			itemDefinitionExample = new ItemDefinition("Terraria GoldOre"); // EntityDefinition uses ItemID field names rather than the numbers themselves for readability.
+			itemDefinitionExample = new ItemDefinition("Terraria/GoldOre"); // EntityDefinition uses ItemID field names rather than the numbers themselves for readability.
 		}
 	}
 
@@ -157,6 +158,7 @@ namespace ExampleMod.Common.Configs
 		[Tooltip("$Mods.ExampleMod.Common.LocalizedTooltip")]
 		public int LocalizedLabel;
 
+		// TODO: Not working. Code missing from ExampleMod.cs
 		[Label("$Mods.ExampleMod.Common.LocalizedLabelDynamic")]
 		public int LocalizedLabelDynamic;
 
@@ -213,6 +215,7 @@ namespace ExampleMod.Common.Configs
 		public SampleEnum EnumExample1 { get; set; }
 
 		// OptionStrings makes a string appear as a choice rather than an input field. Remember that users can manually edit json files, so be aware that a value other than the Options in OptionStrings might populate the field.
+		// TODO: Not working. Won't restore defaults
 		[OptionStrings(new string[] { "Win", "Lose", "Give Up" })]
 		[DefaultValue(new string[] { "Give Up", "Give Up" })]
 		public string[] ArrayOfString;
@@ -492,7 +495,10 @@ namespace ExampleMod.Common.Configs
 	{
 		Weird,
 		Odd,
+		// Enum members can be individually labeled as well
+		[Label("Strange Label")]
 		Strange,
+		[Label("$Mods.ExampleMod.Config.SampleEnumLabels.Peculiar")]
 		Peculiar
 	}
 
@@ -642,21 +648,24 @@ namespace ExampleMod.Common.Configs
 	{
 		public override void OnBind() {
 			base.OnBind();
-			object subitem = memberInfo.GetValue(item);
+
+			object subitem = MemberInfo.GetValue(Item);
+
 			if (subitem == null) {
-				subitem = Activator.CreateInstance(memberInfo.Type);
+				subitem = Activator.CreateInstance(MemberInfo.Type);
 				JsonConvert.PopulateObject("{}", subitem, ConfigManager.serializerSettings);
-				memberInfo.SetValue(item, subitem);
+				MemberInfo.SetValue(Item, subitem);
 			}
 
 			// item is the owner object instance, memberinfo is the Info about this field in item
 
 			int height = 30;
 			int order = 0;
+
 			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
 				var wrapped = ConfigManager.WrapIt(this, ref height, variable, subitem, order++);
 
-				if (list != null) {
+				if (List != null) {
 					wrapped.Item1.Left.Pixels -= 20;
 					wrapped.Item1.Width.Pixels += 20;
 				}
@@ -666,7 +675,7 @@ namespace ExampleMod.Common.Configs
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
 			Rectangle hitbox = GetInnerDimensions().ToRectangle();
-			Gradient g = (memberInfo.GetValue(item) as Gradient);
+			Gradient g = (MemberInfo.GetValue(Item) as Gradient);
 			if (g != null) {
 				int left = (hitbox.Left + hitbox.Right) / 2;
 				int right = hitbox.Right;
@@ -701,10 +710,10 @@ namespace ExampleMod.Common.Configs
 		public override void OnBind() {
 			base.OnBind();
 			circleTexture = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
-			valueStrings = Enum.GetNames(memberInfo.Type);
-			TextDisplayFunction = () => memberInfo.Name + ": " + GetStringValue();
-			if (labelAttribute != null) {
-				TextDisplayFunction = () => labelAttribute.Label + ": " + GetStringValue();
+			valueStrings = Enum.GetNames(MemberInfo.Type);
+			TextDisplayFunction = () => MemberInfo.Name + ": " + GetStringValue();
+			if (LabelAttribute != null) {
+				TextDisplayFunction = () => LabelAttribute.Label + ": " + GetStringValue();
 			}
 		}
 
@@ -740,7 +749,7 @@ namespace ExampleMod.Common.Configs
 	class CustomFloatElement : FloatElement
 	{
 		public CustomFloatElement() {
-			colorMethod = new Utils.ColorLerpMethod((percent) => Color.Lerp(Color.BlueViolet, Color.Aquamarine, percent));
+			ColorMethod = new Utils.ColorLerpMethod((percent) => Color.Lerp(Color.BlueViolet, Color.Aquamarine, percent));
 		}
 	}
 }

@@ -1,0 +1,53 @@
+--- src/TerrariaNetCore/ReLogic/Threading/FastParallel.cs
++++ src/tModLoader/ReLogic/Threading/FastParallel.cs
+@@ -28,6 +_,8 @@
+ 				_countdown.Signal();
+ 			}
+ 		}
++		
++		private static bool skipPrioritySetAttempts; // Added by TML.
+ 
+ 		public static bool ForceTasksOnCallingThread {
+ 			get;
+@@ -48,7 +_,11 @@
+ 				num2 = 1;
+ 
+ 			ThreadPriority priority = Thread.CurrentThread.Priority;
++			/*
+ 			Thread.CurrentThread.Priority = ThreadPriority.Highest;
++			*/
++			TrySetThreadPriority(Thread.CurrentThread, ThreadPriority.Highest);
++			
+ 			int num3 = num / num2;
+ 			int num4 = num % num2;
+ 			CountdownEvent countdownEvent = new CountdownEvent(num2);
+@@ -71,11 +_,29 @@
+ 			while (countdownEvent.CurrentCount != 0) {
+ 			}
+ 
++			/*
+ 			Thread.CurrentThread.Priority = priority;
++			*/
++
++			TrySetThreadPriority(Thread.CurrentThread, priority);
+ 		}
+ 
+ 		private static void InvokeTask(object context) {
+ 			((RangeTask)context).Invoke();
++		}
++		
++		// Added by TML.
++		// A workaround for a (Mac-specific?) issue with thread priority setting throwing 'ThreadStateException: Unable to set thread priority.'.
++		private static void TrySetThreadPriority(Thread thread, ThreadPriority priority) {
++			if (skipPrioritySetAttempts)
++				return;
++
++			try {
++				thread.Priority = priority;
++			}
++			catch {
++				skipPrioritySetAttempts = true;
++			}
+ 		}
+ 	}
+ }

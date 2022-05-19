@@ -120,6 +120,8 @@ namespace Terraria
 		#region RemoveX
 		public bool RemoveIngredient(Item item) => requiredItem.Remove(item);
 
+		public bool RemoveIngredient(int itemID) => requiredItem.RemoveAll(x => x.type == itemID) > 0;
+
 		public bool RemoveTile(int tileID) => requiredTile.Remove(tileID);
 
 		public bool RemoveRecipeGroup(int groupID) => acceptedGroups.Remove(groupID);

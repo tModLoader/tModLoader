@@ -29,8 +29,9 @@ namespace ExampleMod.Common.Players
 				new Item(ModContent.ItemType<ExampleBlock>(), 256),
 				new Item(ModContent.ItemType<ExampleWall>(), 256),
 				new Item(ModContent.ItemType<ExampleOre>(), 256),
-				new Item(ModContent.ItemType<ExampleChair>(), 256),
-				new Item(ModContent.ItemType<ExampleChest>(), 256),
+				new Item(ModContent.ItemType<ExampleChair>(), 99),
+				new Item(ModContent.ItemType<ExampleTable>(), 99),
+				new Item(ModContent.ItemType<ExampleChest>(), 99),
 				new Item(ModContent.ItemType<ExamplePlatform>(), 256)
 			};
 		}

@@ -1,12 +1,16 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using Terraria.DataStructures;
 using ReLogic.Content;
 using Terraria.GameContent;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
-	/// This class represents a type of dust that is added by a mod. Only one instance of this class will ever exist for each type of dust you add.
+	/// This class represents a type of dust that is added by a mod. Only one instance of this class will ever exist for each type of dust you add.<br/>
+	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Dust">Basic Dust Guide</see> teaches the basics of making modded dust.
 	/// </summary>
 	[Autoload(Side = ModSide.Client)]
 	public abstract class ModDust : ModTexturedType

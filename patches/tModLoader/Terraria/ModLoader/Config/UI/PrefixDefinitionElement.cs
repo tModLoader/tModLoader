@@ -1,16 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader.UI;
-using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class PrefixDefinitionElement : DefinitionElement<PrefixDefinition>
+	internal class PrefixDefinitionElement : DefinitionElement<PrefixDefinition>
 	{
 		protected override DefinitionOptionElement<PrefixDefinition> CreateDefinitionOptionElement() => new PrefixDefinitionOptionElement(Value, .8f);
 
@@ -20,22 +16,22 @@ namespace Terraria.ModLoader.Config.UI
 		}
 
 		protected override List<DefinitionOptionElement<PrefixDefinition>> CreateDefinitionOptionElementList() {
-			optionScale = 0.8f;
+			OptionScale = 0.8f;
 
 			var options = new List<DefinitionOptionElement<PrefixDefinition>>();
 
 			for (int i = 0; i < PrefixLoader.PrefixCount; i++) {
 				PrefixDefinitionOptionElement optionElement;
 
-				if(i == 0)
-					optionElement = new PrefixDefinitionOptionElement(new PrefixDefinition("Terraria", "None"), optionScale);
+				if (i == 0)
+					optionElement = new PrefixDefinitionOptionElement(new PrefixDefinition("Terraria", "None"), OptionScale);
 				else
-					optionElement = new PrefixDefinitionOptionElement(new PrefixDefinition(i), optionScale);
+					optionElement = new PrefixDefinitionOptionElement(new PrefixDefinition(i), OptionScale);
 
 				optionElement.OnClick += (a, b) => {
-					Value = optionElement.definition;
-					updateNeeded = true;
-					selectionExpanded = false;
+					Value = optionElement.Definition;
+					UpdateNeeded = true;
+					SelectionExpanded = false;
 				};
 
 				options.Add(optionElement);
@@ -47,17 +43,17 @@ namespace Terraria.ModLoader.Config.UI
 		protected override List<DefinitionOptionElement<PrefixDefinition>> GetPassedOptionElements() {
 			var passed = new List<DefinitionOptionElement<PrefixDefinition>>();
 
-			foreach (var option in options) {
+			foreach (var option in Options) {
 				// Should this be the localized Prefix name?
-				if (Lang.prefix[option.type].Value.IndexOf(chooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
+				if (Lang.prefix[option.Type].Value.IndexOf(ChooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
 
-				string modname = option.definition.mod;
+				string modname = option.Definition.Mod;
 
-				if (option.type >= PrefixID.Count)
-					modname = PrefixLoader.GetPrefix(option.type).Mod.DisplayName; // or internal name?
+				if (option.Type >= PrefixID.Count)
+					modname = PrefixLoader.GetPrefix(option.Type).Mod.DisplayName; // or internal name?
 
-				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
+				if (modname.IndexOf(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
 
 				passed.Add(option);
@@ -69,12 +65,13 @@ namespace Terraria.ModLoader.Config.UI
 
 	internal class PrefixDefinitionOptionElement : DefinitionOptionElement<PrefixDefinition>
 	{
-		UIAutoScaleTextTextPanel<string> text;
+		private readonly UIAutoScaleTextTextPanel<string> text;
+
 		public PrefixDefinitionOptionElement(PrefixDefinition definition, float scale = .75f) : base(definition, scale) {
 			Width.Set(150 * scale, 0f);
 			Height.Set(40 * scale, 0f);
 
-			text = new UIAutoScaleTextTextPanel<string>(type == 0 ? "None" : Lang.prefix[type].Value) {
+			text = new UIAutoScaleTextTextPanel<string>(Type == 0 ? "None" : Lang.prefix[Type].Value) {
 				Width = { Percent = 1f },
 				Height = { Percent = 1f },
 			};
@@ -84,7 +81,7 @@ namespace Terraria.ModLoader.Config.UI
 		public override void SetItem(PrefixDefinition item) {
 			base.SetItem(item);
 
-			text?.SetText(type == 0 ? "None" : Lang.prefix[type].Value);
+			text?.SetText(Type == 0 ? "None" : Lang.prefix[Type].Value);
 		}
 
 		public override void SetScale(float scale) {
@@ -96,7 +93,7 @@ namespace Terraria.ModLoader.Config.UI
 
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			if (IsMouseHovering)
-				UIModConfig.tooltip = tooltip;
+				UIModConfig.Tooltip = Tooltip;
 		}
 	}
 }

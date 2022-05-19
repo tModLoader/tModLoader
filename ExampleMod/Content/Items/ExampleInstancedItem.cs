@@ -33,7 +33,7 @@ namespace ExampleMod.Content.Items
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			for (int i = 0; i < colors.Length; i++) {
-				TooltipLine tooltipLine = new TooltipLine(Mod, "EM" + i, "Example " + i) { overrideColor = colors[i] };
+				TooltipLine tooltipLine = new TooltipLine(Mod, "EM" + i, "Example " + i) { OverrideColor = colors[i] };
 				tooltips.Add(tooltipLine);
 			}
 		}

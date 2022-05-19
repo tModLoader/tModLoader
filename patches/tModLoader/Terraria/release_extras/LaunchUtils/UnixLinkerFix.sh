@@ -10,7 +10,7 @@
 # Additionally, something in dotnet is requesting 'libSDL2.so' (instead of 'libSDL2-2.0.so.0' that is specified in dependencies)
 # without actually invoking managed NativeLibrary resolving events!
 
-echo "Fixing .NET SDL PATH issues"
+echo "Fixing .NET SDL PATH issues" 2>&1 | tee -a "$LogFile"
 
 if [ "$_uname" = Darwin ]; then
 	library_dir="$root_dir/Libraries/Native/OSX"
@@ -24,4 +24,4 @@ else
 	export LD_LIBRARY_PATH="$library_dir"
 	ln -sf "$library_dir/libSDL2-2.0.so.0" "$library_dir/libSDL2.so"
 fi
-echo "Success!"
+echo "Success!" 2>&1 | tee -a "$LogFile"

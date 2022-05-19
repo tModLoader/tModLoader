@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ObjectInteractions/NPCSmartInteractCandidateProvider.cs
++++ src/tModLoader/Terraria/GameContent/ObjectInteractions/NPCSmartInteractCandidateProvider.cs
+@@ -1,4 +_,5 @@
+ using Microsoft.Xna.Framework;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent.ObjectInteractions
+ {
+@@ -43,7 +_,7 @@
+ 			float npcDistanceFromCursor = -1f;
+ 			for (int i = 0; i < 200; i++) {
+ 				NPC nPC = Main.npc[i];
+-				if (nPC.active && nPC.townNPC && nPC.Hitbox.Intersects(value) && !flag) {
++				if (nPC.active && NPCLoader.CanChat(nPC, nPC.townNPC) && nPC.Hitbox.Intersects(value) && !flag) {
+ 					float num2 = nPC.Hitbox.Distance(mousevec);
+ 					if (num == -1 || Main.npc[num].Hitbox.Distance(mousevec) > num2) {
+ 						num = i;

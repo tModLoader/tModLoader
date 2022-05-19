@@ -41,7 +41,7 @@ namespace Terraria.ModLoader.UI
 			StreamWriter log = null;
 			IDisposable modHandle = null;
 			try {
-				var dir = Path.Combine(Main.SavePath, "Mod Reader", mod.Name);
+				var dir = Path.Combine(Main.SavePath, "ModReader", mod.Name);
 				if (Directory.Exists(dir))
 					Directory.Delete(dir, true);
 				Directory.CreateDirectory(dir);

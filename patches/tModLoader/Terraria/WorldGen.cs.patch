@@ -85,7 +85,16 @@
  			}
  
  			if (x < roomX1)
-@@ -2314,10 +_,20 @@
+@@ -2309,15 +_,29 @@
+ 		public static void setWorldSize() {
+ 			Main.bottomWorld = Main.maxTilesY * 16;
+ 			Main.rightWorld = Main.maxTilesX * 16;
++			/*
+ 			Main.maxSectionsX = Main.maxTilesX / 200;
+ 			Main.maxSectionsY = Main.maxTilesY / 150;
++			*/
++			Main.maxSectionsX = (Main.maxTilesX - 1) / Main.sectionWidth + 1;
++			Main.maxSectionsY = (Main.maxTilesY - 1) / Main.sectionHeight + 1;
  		}
  
  		public static void worldGenCallback(object threadContext) {
@@ -177,7 +186,7 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
-@@ -2753,21 +_,24 @@
+@@ -2753,21 +_,26 @@
  			noLiquidCheck = false;
  			Liquid.numLiquid = 0;
  			LiquidBuffer.numLiquidBuffer = 0;
@@ -196,8 +205,12 @@
  
  			lastMaxTilesX = Main.maxTilesX;
  			lastMaxTilesY = Main.maxTilesY;
- 			if (Main.netMode != 2)
- 				Main.sectionManager = new WorldSections(Main.maxTilesX / 200, Main.maxTilesY / 150);
+-			if (Main.netMode != 2)
++			if (Main.netMode != 2) {
+-				Main.sectionManager = new WorldSections(Main.maxTilesX / 200, Main.maxTilesY / 150);
++				// Main.sectionManager = new WorldSections(Main.maxTilesX / 200, Main.maxTilesY / 150);
++				Main.sectionManager = new WorldSections((Main.maxTilesX - 1) / Main.sectionWidth + 1, (Main.maxTilesY - 1) / Main.sectionHeight + 1);
++			}
  
 +			/*
  			if (Main.netMode != 1) {
@@ -930,7 +943,7 @@
  				Projectile.NewProjectile(GetProjectileSource_TileBreak(num2, num3), num2 * 16 + 16, num3 * 16 + 16, 0f, 0f, 655, 0, 0f, Main.myPlayer);
  
 -			if (num13 != 0)
-+			// FishingCrate, GeyserTrap, and BeeHive
++			// FishingCrate, GeyserTrap, AntlionLarva, and BeeHive
 +			// geyser is 2x1
 +			if (TileLoader.Drop(num2, num3, type) && num13 != 0)
  				Item.NewItem(GetItemSource_FromTileBreak(num2, num3), num2 * 16, num3 * 16, tileData.CoordinateFullWidth, tileData.CoordinateFullHeight, num13);
@@ -1593,6 +1606,21 @@
  			bool flag4 = !ReplaceTile_IsValidDresser(attemptingToReplaceWith) || !ReplaceTile_IsValidDresser(tile.type);
  			return !(num && flag && flag2 && flag3 && flag4);
  		}
+@@ -40101,6 +_,14 @@
+ 
+ 							return true;
+ 						}
++					default:
++						var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
++						if (tree != null) {
++							tree.SetTreeFoliageSettings(tile, xoffset, ref treeFrame, ref floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
++							treeStyle = tile.type + ModTree.VanillaTopTextureCount;
++							return true;
++						}
++						break;
+ 				}
+ 			}
+ 
 @@ -40523,6 +_,8 @@
  			if (num == 2)
  				return;
@@ -1632,6 +1660,15 @@
  			KillTile_GetItemDrops(x, y, tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, includeLargeObjectDrops);
  			if (!Main.getGoodWorld || tileCache.active()) {
  				if (dropItem > 0) {
+@@ -42126,6 +_,8 @@
+ 							}
+ 						}
+ 
++						TileLoader.DropPalmTreeWood(Main.tile[x, j].type, ref dropItem);
++
+ 						break;
+ 					}
+ 				case 171:
 @@ -42756,7 +_,7 @@
  
  						if (Main.tile[i, k] != null) {
@@ -1641,12 +1678,11 @@
  								dropItem = 9;
  								secondaryItem = 27;
  							}
-@@ -42803,6 +_,8 @@
+@@ -42803,6 +_,7 @@
  						dropItem = 2503;
  						break;
  				}
-+				TileLoader.DropTreeWood(Main.tile[x,y].type,ref dropItem);
-+				TileLoader.DropPalmTreeWood(Main.tile[x,y].type,ref dropItem);
++				TileLoader.DropTreeWood(Main.tile[x,y].type, ref dropItem);
  			}
  
  			int num = Player.FindClosest(new Vector2(x * 16, y * 16), 16, 16);
@@ -1768,10 +1804,17 @@
  				num6 *= Star.starfallBoost;
  				if (!((float)Main.rand.Next(8000) < 10f * num6))
  					continue;
-@@ -46537,12 +_,17 @@
+@@ -46536,13 +_,24 @@
+ 					num15 = (float)num7 / num15;
  					num13 *= num15;
  					num14 *= num15;
++
++					/*
  					Projectile.NewProjectile(new EntitySource_ByProjectileSourceId(11), position.X, position.Y, num13, num14, 720, 0, 0f, Main.myPlayer, 0f, num10);
++					*/
++					var source = new EntitySource_Misc(nameof(ProjectileSourceID.FallingStar));
++
++					Projectile.NewProjectile(source, position.X, position.Y, num13, num14, 720, 0, 0f, Main.myPlayer, 0f, num10);
 +
 +					// Extra patch context.
  				}

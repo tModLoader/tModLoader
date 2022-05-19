@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.UI;
 using Terraria.GameContent.Bestiary;
@@ -161,7 +162,7 @@ namespace Terraria.ModLoader
 		internal static void SetDefaults(NPC npc, bool createModNPC = true) {
 			if (IsModNPC(npc)) {
 				if (createModNPC) {
-					npc.ModNPC = GetNPC(npc.type).NewInstance(npc);
+					npc.ModNPC = GetNPC(npc.type).Clone(npc);
 				}
 				else //the default NPCs created and bound to ModNPCs are initialized before ResizeArrays. They come here during SetupContent.
 				{
@@ -170,7 +171,7 @@ namespace Terraria.ModLoader
 			}
 
 			GlobalNPC Instantiate(GlobalNPC g)
-				=> g.InstancePerEntity ? g.NewInstance(npc) : g;
+				=> g.InstancePerEntity ? g.Clone(npc, npc) : g;
 
 			LoaderUtils.InstantiateGlobals(npc, globalNPCs, ref npc.globalNPCs, Instantiate, () => {
 				npc.ModNPC?.SetDefaults();
@@ -178,6 +179,16 @@ namespace Terraria.ModLoader
 
 			foreach (GlobalNPC g in HookSetDefaults.Enumerate(npc.globalNPCs)) {
 				g.SetDefaults(npc);
+			}
+		}
+		
+		private static HookList HookOnSpawn = AddHook<Action<NPC, IEntitySource>>(g => g.OnSpawn);
+
+		internal static void OnSpawn(NPC npc, IEntitySource source) {
+			npc.ModNPC?.OnSpawn(source);
+			
+			foreach (GlobalNPC g in HookOnSpawn.Enumerate(npc.globalNPCs)) {
+				g.OnSpawn(npc, source);
 			}
 		}
 
@@ -205,6 +216,16 @@ namespace Terraria.ModLoader
 
 			foreach (GlobalNPC g in HookSetBestiary.Enumerate(npc.globalNPCs)) {
 				g.SetBestiary(npc, database, bestiaryEntry);
+			}
+		}
+
+		private delegate ITownNPCProfile DelegateModifyTownNPCProfile(NPC npc);
+		private static HookList HookModifyTownNPCProfile = AddHook<DelegateModifyTownNPCProfile>(g => g.ModifyTownNPCProfile);
+		public static void ModifyTownNPCProfile(NPC npc, ref ITownNPCProfile profile) {
+			profile = npc.ModNPC?.TownNPCProfile() ?? profile;
+
+			foreach (GlobalNPC g in HookModifyTownNPCProfile.Enumerate(npc.globalNPCs)) {
+				profile = g.ModifyTownNPCProfile(npc) ?? profile;
 			}
 		}
 
@@ -307,12 +328,7 @@ namespace Terraria.ModLoader
 		private static HookList HookFindFrame = AddHook<Action<NPC, int>>(g => g.FindFrame);
 
 		public static void FindFrame(NPC npc, int frameHeight) {
-			int type = npc.type;
-			if (npc.ModNPC != null && npc.ModNPC.AnimationType > 0) {
-				npc.type = npc.ModNPC.AnimationType;
-			}
-			npc.VanillaFindFrame(frameHeight);
-			npc.type = type;
+			npc.VanillaFindFrame(frameHeight, npc.isLikeATownNPC, npc.ModNPC?.AnimationType is > 0 ? npc.ModNPC.AnimationType : npc.type);
 			npc.ModNPC?.FindFrame(frameHeight);
 
 			foreach (GlobalNPC g in HookFindFrame.Enumerate(npc.globalNPCs)) {
@@ -436,6 +452,30 @@ namespace Terraria.ModLoader
 
 		public static void BossLoot(NPC npc, ref string name, ref int potionType) {
 			npc.ModNPC?.BossLoot(ref name, ref potionType);
+		}
+
+		private static HookList HookCanFallThroughPlatforms = AddHook<Func<NPC, bool?>>(g => g.CanFallThroughPlatforms);
+
+		public static bool? CanFallThroughPlatforms(NPC npc) {
+			bool? ret = npc.ModNPC?.CanFallThroughPlatforms() ?? null;
+			if (ret.HasValue) {
+				if (!ret.Value) {
+					return false;
+				}
+				ret = true;
+			}
+
+			foreach (GlobalNPC g in HookCanFallThroughPlatforms.Enumerate(npc.globalNPCs)) {
+				bool? globalRet = g.CanFallThroughPlatforms(npc);
+				if (globalRet.HasValue) {
+					if (!globalRet.Value) {
+						return false;
+					}
+					ret = true;
+				}
+			}
+
+			return ret;
 		}
 
 		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Player, Item>>(g => g.OnCatchNPC);
@@ -875,8 +915,38 @@ namespace Terraria.ModLoader
 			return GetNPC(type)?.CheckConditions(WorldGen.roomX1, WorldGen.roomX2, WorldGen.roomY1, WorldGen.roomY2) ?? true;
 		}
 
-		public static string TownNPCName(int type) {
-			return GetNPC(type)?.TownNPCName() ?? "";
+		private delegate void DelegateModifyTypeName(NPC npc, ref string typeName);
+		private static HookList HookModifyTypeName = AddHook<DelegateModifyTypeName>(g => g.ModifyTypeName);
+		public static void ModifyTypeName(NPC npc, ref string typeName) {
+			if (npc.ModNPC != null)
+				npc.ModNPC.ModifyTypeName(ref typeName);
+
+			foreach (GlobalNPC g in HookModifyTypeName.Enumerate(npc.globalNPCs)) {
+				g.ModifyTypeName(npc, ref typeName);
+			}
+		}
+
+		private delegate void DelegateModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox);
+		private static HookList HookModifyHoverBoundingBox = AddHook<DelegateModifyHoverBoundingBox>(g => g.ModifyHoverBoundingBox);
+		public static void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox) {
+			if (npc.ModNPC != null)
+				npc.ModNPC.ModifyHoverBoundingBox(ref boundingBox);
+
+			foreach (GlobalNPC g in HookModifyHoverBoundingBox.Enumerate(npc.globalNPCs)) {
+				g.ModifyHoverBoundingBox(npc, ref boundingBox);
+			}
+		}
+
+		private static HookList HookModifyNPCNameList = AddHook<Action<NPC, List<string>>>(g => g.ModifyNPCNameList);
+		public static List<string> ModifyNPCNameList(NPC npc, List<string> nameList) {
+			if (npc.ModNPC != null)
+				nameList = npc.ModNPC.SetNPCNameList();
+
+			foreach (GlobalNPC g in HookModifyNPCNameList.Enumerate(npc.globalNPCs)) {
+				g.ModifyNPCNameList(npc, nameList);
+			}
+
+			return nameList;
 		}
 
 		public static bool UsesPartyHat(NPC npc) {

@@ -335,7 +335,7 @@
  						}
  					}
 -					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5125 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
-+					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < ItemLoader.ItemCount && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
++					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < ItemID.Count && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
  						if (Main.mouseRightRelease) {
  							player.OpenFishingCrate(inv[slot].type);
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
@@ -457,6 +457,20 @@
  				case 12:
  				case 25:
  				case 27: {
+@@ -1274,10 +_,11 @@
+ 							break;
+ 
+ 						bool flag = false;
+-						if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
++						//if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
++						if (!flag && ((Main.mouseItem.stack < Main.mouseItem.maxStack && Main.mouseItem.type > 0 && ItemLoader.CanStack(Main.mouseItem, inv[slot])) || Main.mouseItem.IsAir) && inv[slot].type > 0 && (Main.mouseItem.type == inv[slot].type || Main.mouseItem.IsAir)) {
+ 							flag = true;
+ 							if (Main.mouseItem.IsAir)
+-								Main.mouseItem.SetDefaults(inv[slot].type);
++								Main.mouseItem = inv[slot].Clone();
+ 							else
+ 								Main.mouseItem.stack++;
+ 
 @@ -1310,12 +_,15 @@
  
  			_ = Main.instance.shop[Main.npcShop];
@@ -574,6 +588,15 @@
  				if (ItemID.Sets.TrapSigned[item.type])
  					spriteBatch.Draw(TextureAssets.Wire.Value, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle(4, 58, 8, 8), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
  
+@@ -1627,7 +_,7 @@
+ 						int useAmmo = item.useAmmo;
+ 						num9 = 0;
+ 						for (int j = 0; j < 58; j++) {
+-							if (inv[j].ammo == useAmmo)
++							if (inv[j].stack > 0 && ItemLoader.CanChooseAmmo(item, inv[j], player))
+ 								num9 += inv[j].stack;
+ 						}
+ 					}
 @@ -1673,13 +_,17 @@
  					Vector2 position3 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  					Color color3 = item.GetAlpha(color) * ((float)player.potionDelay / (float)player.potionDelayTime);
@@ -593,13 +616,14 @@
  			}
  			else if (context == 6) {
  				Texture2D value8 = TextureAssets.Trash.Value;
-@@ -1740,6 +_,25 @@
+@@ -1740,6 +_,27 @@
  					if (inv == localPlayer.miscDyes)
  						result = 185 + slot;
  					break;
 +				//TML Context: GamePad number magic aligned to match DemonHeart Accessory.
 +				//TML Note: There is no Master Mode Accessory slot code here for Gamepads.
 +				//TML-added [[
++				/*TODO: Fix later because gamepads are trashing all
 +				case -10:
 +				case -11:
 +					int num3M = slot;
@@ -616,6 +640,7 @@
 +					result = 120 + num4M;
 +					break;
 +				// ]]
++				*/
  				case 19:
  					result = 180;
  					break;

@@ -1,28 +1,27 @@
 ﻿using ReLogic.OS;
-using Steamworks;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Security.Cryptography;
 using Terraria.Localization;
 using Terraria.Social;
 
 namespace Terraria.ModLoader.Engine
 {
+	public enum DistributionPlatform
+	{
+		Unknown,
+		Steam,
+		GoG
+	}
+
 	internal static class InstallVerifier
 	{
-		public const string TmlContentDirectory = "Content";
-		public const string SteamAppIDPath = "steam_appid.txt";
-		private const string DefaultExe = "Terraria.exe";
-		private static string CheckExe = $"Terraria_1.4.3.6.exe"; // This should match the hashes. {Main.versionNumber}
-		public const bool RequireContentDirectory = false; // Not currently needed, due to tML matching vanilla's version.
+		private static string VanillaExe = "Terraria.exe";
+		private static string CheckExe = $"Terraria_1.4.3.6_B.exe"; // This should match the hashes. {Main.versionNumber}
+		private static string vanillaExePath;
 
-		private static bool? isValid;
-		public static bool IsValid => isValid ?? (isValid = InstallCheck()).Value;
-		public static bool IsGoG = false;
-		public static bool IsSteam = false;
+		public static DistributionPlatform DistributionPlatform;
 
 		private static string steamAPIPath;
 		private static string vanillaSteamAPI;
@@ -42,27 +41,27 @@ namespace Terraria.ModLoader.Engine
 				}
 
 				vanillaSteamAPI = "steam_api.dll";
-				gogHash = ToByteArray("d05cf700a90fc12d7f9ef40f1d303b3a"); // Don't forget to update CheckExe above
-				steamHash = ToByteArray("22e41c9960f3db473a036e93bbaec671");
+				gogHash = ToByteArray("0d4005c39a12a334d9bfd42dd5b656cc"); // Don't forget to update CheckExe above
+				steamHash = ToByteArray("5f321196521790a18a19d44fd066044e");
 			}
 			else if (Platform.IsOSX) {
 				steamAPIPath = "Libraries/Native/OSX/libsteam_api64.dylib";
 				steamAPIHash = ToByteArray("801e9bf5e5899a41c5999811d870b1ca");
 				vanillaSteamAPI = "libsteam_api.dylib";
-				gogHash = ToByteArray("4946b4e30e40c3a238a1aaecf0829bd6");
-				steamHash = ToByteArray("6b9b97670cc7cc922db77288d6ff0e88");
+				gogHash = ToByteArray("f483f6f795e5c045b73c330015e852a6");
+				steamHash = ToByteArray("c3b967ddc50f400dc1575de05979ee47");
 			}
 			else if (Platform.IsLinux) {
 				steamAPIPath = "Libraries/Native/Linux/libsteam_api64.so";
 				steamAPIHash = ToByteArray("ccdf20f0b2f9abbe1fea8314b9fab096");
 				vanillaSteamAPI = "libsteam_api.so";
-				gogHash = ToByteArray("2bb44d560a3799caa34310a4d9ee8f89");
-				steamHash = ToByteArray("c8112696dcdf53fe5a1a2810089f992b");
+				gogHash = ToByteArray("56794421993db33b7607d1be233b586d");
+				steamHash = ToByteArray("b08ed3b4fe5417e7cd56e06ad99f2ab7");
 			}
 			else {
 				string message = Language.GetTextValue("tModLoader.UnknownVerificationOS");
 				Logging.tML.Fatal(message);
-				Exit(message, string.Empty);
+				Exit(message);
 			}
 		}
 
@@ -84,39 +83,54 @@ namespace Terraria.ModLoader.Engine
 
 			return retval;
 		}
-		private static void Exit(string errorMessage, string extraMessage) {
-			errorMessage += $"\r\n\r\n{extraMessage}";
+
+		private static void Exit(string errorMessage) {
 			Logging.tML.Fatal(errorMessage);
 			UI.Interface.MessageBoxShow(errorMessage);
 			Environment.Exit(1);
 		}
 
-		private static bool InstallCheck() {
-			// Check if the content directory is present, if it's required
-			if (!Main.dedServ && RequireContentDirectory && !Directory.Exists(TmlContentDirectory)) {
-				Exit(Language.GetTextValue("tModLoader.ContentFolderNotFoundInstallCheck", TmlContentDirectory), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
-				return false;
+		internal static void Startup() {
+			DistributionPlatform = DetectPlatform(out string detectionDetails);
+			Logging.tML.Info($"Distribution Platform: {DistributionPlatform}. Detection method: {detectionDetails}");
+
+			if (DistributionPlatform == DistributionPlatform.GoG) {
+				CheckGoG();
+			}
+			else {
+				CheckSteam();
+			}
+		}
+
+		private static DistributionPlatform DetectPlatform(out string detectionDetails) {
+			if (Program.LaunchParameters.ContainsKey("-steam")) {
+				detectionDetails = "-steam launch parameter";
+				return DistributionPlatform.Steam;
 			}
 
-			// If its clearly a steam install/launch, use Steam API.
-			if (Directory.GetCurrentDirectory().Contains("steamapps", StringComparison.OrdinalIgnoreCase) || Program.LaunchParameters.ContainsKey("-steam"))
-				return CheckSteam();
-
-			Logging.tML.Info("Checking if GoG or Steam...");
+			if (Directory.GetCurrentDirectory().Contains("steamapps", StringComparison.OrdinalIgnoreCase)) {
+				detectionDetails = "CWD is /steamapps/";
+				return DistributionPlatform.Steam;
+			}
 
 			// If can't find a GoG folder, than assume it must be a Steam launch
-			if (!ObtainVanillaExePath(out var steamApiPath, out var exePath))
-				return CheckSteam();
+			if (!ObtainVanillaExePath(out var vanillaSteamAPIDir, out vanillaExePath)) {
+				detectionDetails = $"{VanillaExe} or {CheckExe} not found nearby";
+				return DistributionPlatform.Steam;
+			}
 
 			// Handle uniqueness of OSX installs. We want Terraria.app/Contents/MacOS/osx as the directory for steam_api file
 			if (Platform.IsOSX)
-				steamApiPath = Path.Combine(Directory.GetParent(steamApiPath).FullName, "MacOS", "osx");
+				vanillaSteamAPIDir = Path.Combine(Directory.GetParent(vanillaSteamAPIDir).FullName, "MacOS", "osx");
 
 			// If the steam_api file is present in the vanilla folder, than it is a Steam launch
-			if (File.Exists(Path.Combine(steamApiPath, vanillaSteamAPI)))
-				return CheckSteam();
+			if (File.Exists(Path.Combine(vanillaSteamAPIDir, vanillaSteamAPI))) {
+				detectionDetails = $"{vanillaSteamAPI} found";
+				return DistributionPlatform.Steam;
+			}
 
-			return CheckGoG(exePath);
+			detectionDetails = $"{Path.GetFileName(vanillaExePath)} found, no steam files or directories nearby.";
+			return DistributionPlatform.GoG;
 		}
 
 		private static bool ObtainVanillaExePath(out string vanillaPath, out string exePath) {
@@ -137,19 +151,13 @@ namespace Terraria.ModLoader.Engine
 				// Vanilla .exe files are in /Contents/Resources/, not /Contents/MacOS/
 				if (Directory.Exists("../Terraria/Terraria.app/")) {
 					vanillaPath = "../Terraria/Terraria.app/Contents/Resources/";
-					Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming Steam install");
 				}
 				else if (Directory.Exists("../Terraria.app/")) {
 					vanillaPath = "../Terraria.app/Contents/Resources/";
-					Logging.tML.Info($"Mac installation location found at {vanillaPath}, assuming GOG install");
 				}
 			}
 
-			if (CheckForExe(vanillaPath, out exePath))
-				return true;
-
-			Logging.tML.Info($"No nearby installation location found. Presuming Steam");
-			return false;
+			return CheckForExe(vanillaPath, out exePath);
 		}
 
 		private static bool CheckForExe(string vanillaPath, out string exePath) {
@@ -157,54 +165,52 @@ namespace Terraria.ModLoader.Engine
 			if (File.Exists(exePath))
 				return true;
 
-			exePath = Path.Combine(vanillaPath, DefaultExe);
+			exePath = Path.Combine(vanillaPath, VanillaExe);
 			if (File.Exists(exePath))
 				return true;
 
 			return false;
 		}
 
-		// Check if Steam installation is correct
-		private static bool CheckSteam() {
-			Logging.tML.Info("Checking Steam installation...");
-			IsSteam = true;
-			if (!Main.dedServ) {
-				SocialAPI.LoadSteam();
-				string terrariaInstallLocation = Steam.GetSteamTerrariaInstallDir();
-				string terrariaContentLocation = Path.Combine(terrariaInstallLocation, TmlContentDirectory);
-
-				if (!Directory.Exists(terrariaContentLocation)) {
-					Exit(Language.GetTextValue("tModLoader.VanillaSteamInstallationNotFound"), Language.GetTextValue("tModLoader.DefaultExtraMessage"));
-					return false;
-				}
-			}
-
+		private static void CheckSteam() {
 			if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
 				Utils.OpenToURL("https://terraria.org");
-				Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"), string.Empty);
-				return false;
+				Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"));
+				return;
 			}
 
-			Logging.tML.Info("Steam installation OK.");
-			return true;
+			if (Main.dedServ)
+				return;
+
+			var result = TerrariaSteamClient.Launch();
+			switch (result) {
+				case TerrariaSteamClient.LaunchResult.Ok:
+					break;
+				case TerrariaSteamClient.LaunchResult.ErrClientProcDied:
+					Exit("The terraria steam client process exited unexpectedly");
+					break;
+				case TerrariaSteamClient.LaunchResult.ErrSteamInitFailed:
+					Utils.OpenToURL("https://terraria.org");
+					Exit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"));
+					break;
+				default:
+					throw new Exception("Unsupported result type: " + result);
+			}
 		}
 
 		// Check if GOG install is correct
-		private static bool CheckGoG(string vanillaExePath) {
-			Logging.tML.Info("Checking GOG installation...");
-			IsGoG = true;
-
+		private static void CheckGoG() {
 			if (!File.Exists(vanillaExePath)) {
-				if(Main.dedServ)
-					return false;
+				if (Main.dedServ)
+					return;
 
-				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaExePath, CheckExe), string.Empty);
-				return false;
+				Exit(Language.GetTextValue("tModLoader.VanillaGOGNotFound", vanillaExePath, CheckExe));
+				return;
 			}
 
 			if (!HashMatchesFile(vanillaExePath, gogHash) && !HashMatchesFile(vanillaExePath, steamHash)) {
-				Exit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath), string.Empty);
-				return false;
+				Exit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath));
+				return;
 			}
 
 			if (Path.GetFileName(vanillaExePath) != CheckExe) {
@@ -212,9 +218,6 @@ namespace Terraria.ModLoader.Engine
 				Logging.tML.Info($"Backing up {Path.GetFileName(vanillaExePath)} to {CheckExe}");
 				File.Copy(vanillaExePath, pathToCheckExe);
 			}
-
-			Logging.tML.Info("GOG installation OK.");
-			return true;
 		}
 	}
 }

@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/EntitySource_RevengeSystem.cs
++++ src/tModLoader/Terraria/DataStructures/EntitySource_RevengeSystem.cs
+@@ -1,6 +_,13 @@
++#nullable enable
++
+ namespace Terraria.DataStructures
+ {
+ 	public class EntitySource_RevengeSystem : IEntitySource
+ 	{
++		public string? Context { get; }
++
++		public EntitySource_RevengeSystem(string? context = null) {
++			Context = context;
++		}
+ 	}
+ }
