@@ -3790,7 +3790,7 @@
  			if (SocialAPI.Network != null)
  				SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
  			else
-@@ -39673,7 +_,11 @@
+@@ -39673,7 +_,19 @@
  		}
  
  		private static void DrawVersionNumber(Microsoft.Xna.Framework.Color menuColor, float upBump) {
@@ -3798,6 +3798,14 @@
 +			string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +			string patreonShortURL = @"patreon.com/tModLoader";
 +			bool showPatreon = !Steam.IsSteamApp;
++
++			// Show number of mods - 1 such as to show number of enabled mods that are not tModLoader itself
++			string modsMessage = Language.GetTextValue("tModLoader.MenuModsEnabled", Math.Max(0, ModLoader.ModLoader.Mods.Length - 1));
++			/* //TODO: FUTURE
++			if (ModLoader.Core.GOGModUpdateChecker.ModUpdatesAvailable > 0) {
++				modsMessage += " " + Language.GetTextValue("tModLoader.MenuModUpdatesAvailable", ModLoader.Core.GOGModUpdateChecker.ModUpdatesAvailable);
++			}
++			*/
 +			string text = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
 +
  			Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);
