@@ -40,6 +40,7 @@ Mods: {
 			ExampleCustomAISlimeNPC: Flutter Slime
 			# Here we see that spaces in translation keys are not allowed. Any space will be replaced with an underscore.
 			Example_Person: Example Person
+			Example_Travelling_Merchant: Example Traveler
 		}
 		
 		MapObject: {
