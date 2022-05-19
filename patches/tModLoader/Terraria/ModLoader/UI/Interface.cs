@@ -214,7 +214,7 @@ namespace Terraria.ModLoader.UI
 			else if (Main.menuMode == tModLoaderSettingsID) {
 				offY = 210;
 				spacing = 42;
-				numButtons = 8;
+				numButtons = 9;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++) {
 					buttonScales[i] = 0.75f;
@@ -240,7 +240,7 @@ namespace Terraria.ModLoader.UI
 					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 				}
 
-				/*
+				
 				buttonIndex++;
 				buttonNames[buttonIndex] = (ModLoader.autoReloadRequiredModsLeavingModsScreen ? Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenNo"));
 				if (selectedMenu == buttonIndex) {
@@ -248,6 +248,7 @@ namespace Terraria.ModLoader.UI
 					ModLoader.autoReloadRequiredModsLeavingModsScreen = !ModLoader.autoReloadRequiredModsLeavingModsScreen;
 				}
 
+				/*
 				buttonIndex++;
 				buttonNames[buttonIndex] = (Main.UseExperimentalFeatures ? Language.GetTextValue("tModLoader.ExperimentalFeaturesYes") : Language.GetTextValue("tModLoader.ExperimentalFeaturesNo"));
 				if (selectedMenu == buttonIndex) {
