@@ -1337,6 +1337,11 @@ var hierarchy =
             [ "Terraria.ModLoader.PlayerDrawLayerSlot", "class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html", null ]
           ] ]
         ] ]
+      ] ],
+      [ "Terraria.ModLoader.IPlant", "interface_terraria_1_1_mod_loader_1_1_i_plant.html", [
+        [ "Terraria.ModLoader.ModCactus", "class_terraria_1_1_mod_loader_1_1_mod_cactus.html", null ],
+        [ "Terraria.ModLoader.ModPalmTree", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html", null ],
+        [ "Terraria.ModLoader.ModTree", "class_terraria_1_1_mod_loader_1_1_mod_tree.html", null ]
       ] ]
     ] ],
     [ "Terraria.ModLoader.ILoader", "interface_terraria_1_1_mod_loader_1_1_i_loader.html", [
@@ -1815,20 +1820,17 @@ var hierarchy =
     [ "Terraria.GameInput.PlayerInput.MiscSettingsTEMP", "class_terraria_1_1_game_input_1_1_player_input_1_1_misc_settings_t_e_m_p.html", null ],
     [ "Terraria.ModLoader.Mod", "class_terraria_1_1_mod_loader_1_1_mod.html", null ],
     [ "Terraria.ModLoader.UI.ModBrowser.ModBrowserSortModesExtensions", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_mod_browser_1_1_mod_browser_sort_modes_extensions.html", null ],
-    [ "Terraria.ModLoader.ModCactus", "class_terraria_1_1_mod_loader_1_1_mod_cactus.html", null ],
     [ "Terraria.ModLoader.Config.ModConfig", "class_terraria_1_1_mod_loader_1_1_config_1_1_mod_config.html", null ],
     [ "Terraria.ModLoader.ModContent", "class_terraria_1_1_mod_loader_1_1_mod_content.html", null ],
     [ "Terraria.WorldBuilding.Modifiers", "class_terraria_1_1_world_building_1_1_modifiers.html", null ],
     [ "Terraria.ModLoader.ModKeybind", "class_terraria_1_1_mod_loader_1_1_mod_keybind.html", null ],
     [ "Terraria.ModLoader.ModLoader", "class_terraria_1_1_mod_loader_1_1_mod_loader.html", null ],
     [ "Terraria.ModLoader.ModNet", "class_terraria_1_1_mod_loader_1_1_mod_net.html", null ],
-    [ "Terraria.ModLoader.ModPalmTree", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html", null ],
     [ "Terraria.WorldBuilding.ModShapes", "class_terraria_1_1_world_building_1_1_mod_shapes.html", null ],
     [ "Terraria.ModLoader.ModSideExtensions", "class_terraria_1_1_mod_loader_1_1_mod_side_extensions.html", null ],
     [ "Terraria.ModLoader.UI.ModBrowser.ModSideFilterModesExtensions", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_mod_browser_1_1_mod_side_filter_modes_extensions.html", null ],
     [ "Terraria.ModLoader.UI.ModsMenuSortModesExtensions", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_mods_menu_sort_modes_extensions.html", null ],
     [ "Terraria.ModLoader.ModTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html", null ],
-    [ "Terraria.ModLoader.ModTree", "class_terraria_1_1_mod_loader_1_1_mod_tree.html", null ],
     [ "Terraria.ModLoader.ModTypeLookup< T >", "class_terraria_1_1_mod_loader_1_1_mod_type_lookup.html", null ],
     [ "Terraria.ModLoader.MonoModHooks", "class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html", null ],
     [ "Terraria.GameContent.Events.MoonlordDeathDrama", "class_terraria_1_1_game_content_1_1_events_1_1_moonlord_death_drama.html", null ],
@@ -1907,6 +1909,7 @@ var hierarchy =
     [ "Terraria.Physics.PhysicsProperties", "class_terraria_1_1_physics_1_1_physics_properties.html", null ],
     [ "Terraria.GameContent.Biomes.Desert.PitEntrance", "class_terraria_1_1_game_content_1_1_biomes_1_1_desert_1_1_pit_entrance.html", null ],
     [ "Terraria.DataStructures.PlacementHook", "struct_terraria_1_1_data_structures_1_1_placement_hook.html", null ],
+    [ "Terraria.ModLoader.PlantLoader", "class_terraria_1_1_mod_loader_1_1_plant_loader.html", null ],
     [ "Terraria.Utilities.PlatformUtilities", "class_terraria_1_1_utilities_1_1_platform_utilities.html", null ],
     [ "Terraria.ModLoader.BackupIO.Player", "class_terraria_1_1_mod_loader_1_1_backup_i_o_1_1_player.html", null ],
     [ "Terraria.Initializers.PlayerDataInitializer", "class_terraria_1_1_initializers_1_1_player_data_initializer.html", null ],

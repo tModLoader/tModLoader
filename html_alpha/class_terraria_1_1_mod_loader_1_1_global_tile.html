@@ -100,15 +100,6 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_glob
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1805eae9415bff4cb264134168402560"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a1805eae9415bff4cb264134168402560">AddModCactus</a> (int soilType, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_cactus.html">ModCactus</a> cactus)</td></tr>
-<tr class="memdesc:a1805eae9415bff4cb264134168402560"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows the given type of tile to grow the given modded cactus.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a1805eae9415bff4cb264134168402560">More...</a><br /></td></tr>
-<tr class="separator:a1805eae9415bff4cb264134168402560"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0086ec6a893e1673c93ec70c61edf048"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a0086ec6a893e1673c93ec70c61edf048">AddModPalmTree</a> (int soilType, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html">ModPalmTree</a> palmTree)</td></tr>
-<tr class="memdesc:a0086ec6a893e1673c93ec70c61edf048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows the given type of tile to grow the given modded palm tree.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a0086ec6a893e1673c93ec70c61edf048">More...</a><br /></td></tr>
-<tr class="separator:a0086ec6a893e1673c93ec70c61edf048"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3841dd4112247ff5ce14c48d7c9abf6a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a3841dd4112247ff5ce14c48d7c9abf6a">AddModTree</a> (int soilType, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html">ModTree</a> tree)</td></tr>
-<tr class="memdesc:a3841dd4112247ff5ce14c48d7c9abf6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows the given type of tile to grow the given modded tree.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a3841dd4112247ff5ce14c48d7c9abf6a">More...</a><br /></td></tr>
-<tr class="separator:a3841dd4112247ff5ce14c48d7c9abf6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e6d50b6608008bc8530d8b4499eb8e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a0e6d50b6608008bc8530d8b4499eb8e1">AddToArray</a> (ref int[] array, int type)</td></tr>
 <tr class="memdesc:a0e6d50b6608008bc8530d8b4499eb8e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenient method for adding an integer to the end of an array. This can be used with the arrays in TileID.Sets.RoomNeeds.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a0e6d50b6608008bc8530d8b4499eb8e1">More...</a><br /></td></tr>
 <tr class="separator:a0e6d50b6608008bc8530d8b4499eb8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,9 +160,6 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
 <tr class="memitem:abf8afee6c3f52064dcb7454f79a3d9a9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#abf8afee6c3f52064dcb7454f79a3d9a9">RightClick</a> (int i, int j, int type)</td></tr>
 <tr class="memdesc:abf8afee6c3f52064dcb7454f79a3d9a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when any tile is right-clicked by the player.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#abf8afee6c3f52064dcb7454f79a3d9a9">More...</a><br /></td></tr>
 <tr class="separator:abf8afee6c3f52064dcb7454f79a3d9a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab11111b678186be34cd6cea3ba860a25"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#ab11111b678186be34cd6cea3ba860a25">SaplingGrowthType</a> (int type, ref int style)</td></tr>
-<tr class="memdesc:ab11111b678186be34cd6cea3ba860a25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows a tile to support a sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns -1 by default. The style parameter will determine which sapling is chosen if multiple sapling types share the same <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>; even if you only have a single sapling in an <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>, you must still set this to 0.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#ab11111b678186be34cd6cea3ba860a25">More...</a><br /></td></tr>
-<tr class="separator:ab11111b678186be34cd6cea3ba860a25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adec30c147c382f5adec9e4534ead5022"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#adec30c147c382f5adec9e4534ead5022">SetSpriteEffects</a> (int i, int j, int type, ref SpriteEffects spriteEffects)</td></tr>
 <tr class="memdesc:adec30c147c382f5adec9e4534ead5022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether or not a tile will draw itself flipped in the world.  <a href="class_terraria_1_1_mod_loader_1_1_global_tile.html#adec30c147c382f5adec9e4534ead5022">More...</a><br /></td></tr>
 <tr class="separator:adec30c147c382f5adec9e4534ead5022"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -267,117 +255,6 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class allows you to modify the behavior of any tile in the game. Create an instance of an overriding class then call Mod.AddGlobalTile to use this. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1805eae9415bff4cb264134168402560"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1805eae9415bff4cb264134168402560">&#9670;&nbsp;</a></span>AddModCactus()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Terraria.ModLoader.GlobalTile.AddModCactus </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>soilType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_cactus.html">ModCactus</a>&#160;</td>
-          <td class="paramname"><em>cactus</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Allows the given type of tile to grow the given modded cactus. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">soilType</td><td></td></tr>
-    <tr><td class="paramname">cactus</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a0086ec6a893e1673c93ec70c61edf048"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0086ec6a893e1673c93ec70c61edf048">&#9670;&nbsp;</a></span>AddModPalmTree()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Terraria.ModLoader.GlobalTile.AddModPalmTree </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>soilType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html">ModPalmTree</a>&#160;</td>
-          <td class="paramname"><em>palmTree</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Allows the given type of tile to grow the given modded palm tree. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">soilType</td><td></td></tr>
-    <tr><td class="paramname">palmTree</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a3841dd4112247ff5ce14c48d7c9abf6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3841dd4112247ff5ce14c48d7c9abf6a">&#9670;&nbsp;</a></span>AddModTree()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Terraria.ModLoader.GlobalTile.AddModTree </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>soilType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html">ModTree</a>&#160;</td>
-          <td class="paramname"><em>tree</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Allows the given type of tile to grow the given modded tree. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">soilType</td><td></td></tr>
-    <tr><td class="paramname">tree</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a0e6d50b6608008bc8530d8b4499eb8e1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0e6d50b6608008bc8530d8b4499eb8e1">&#9670;&nbsp;</a></span>AddToArray()</h2>
 
@@ -1403,52 +1280,6 @@ Return true to force this behavior, or false to prevent it, overriding vanilla c
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ab11111b678186be34cd6cea3ba860a25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab11111b678186be34cd6cea3ba860a25">&#9670;&nbsp;</a></span>SaplingGrowthType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual int Terraria.ModLoader.GlobalTile.SaplingGrowthType </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>style</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows a tile to support a sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns -1 by default. The style parameter will determine which sapling is chosen if multiple sapling types share the same <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>; even if you only have a single sapling in an <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>, you must still set this to 0. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">type</td><td></td></tr>
-    <tr><td class="paramname">style</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>

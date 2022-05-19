@@ -1,8 +1,5 @@
 var class_terraria_1_1_mod_loader_1_1_global_tile =
 [
-    [ "AddModCactus", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a1805eae9415bff4cb264134168402560", null ],
-    [ "AddModPalmTree", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a0086ec6a893e1673c93ec70c61edf048", null ],
-    [ "AddModTree", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a3841dd4112247ff5ce14c48d7c9abf6a", null ],
     [ "AddToArray", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a0e6d50b6608008bc8530d8b4499eb8e1", null ],
     [ "AdjTiles", "class_terraria_1_1_mod_loader_1_1_global_tile.html#af9adc1ab792f7967301064a9c57b2062", null ],
     [ "AnimateTile", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a7eccf0ca48646e841ead05b15f2dd28d", null ],
@@ -23,7 +20,6 @@ var class_terraria_1_1_mod_loader_1_1_global_tile =
     [ "PreHitWire", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a9afac373b80e99e6ffc23c9d192b042a", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a8f1eda00abcc78260df2ad5f478d4c38", null ],
     [ "RightClick", "class_terraria_1_1_mod_loader_1_1_global_tile.html#abf8afee6c3f52064dcb7454f79a3d9a9", null ],
-    [ "SaplingGrowthType", "class_terraria_1_1_mod_loader_1_1_global_tile.html#ab11111b678186be34cd6cea3ba860a25", null ],
     [ "SetSpriteEffects", "class_terraria_1_1_mod_loader_1_1_global_tile.html#adec30c147c382f5adec9e4534ead5022", null ],
     [ "SetupContent", "class_terraria_1_1_mod_loader_1_1_global_tile.html#aee9e9eb5e551f328950f45419fc56031", null ],
     [ "Slope", "class_terraria_1_1_mod_loader_1_1_global_tile.html#a01d357fc71a23b11a8ae248edef1a881", null ],

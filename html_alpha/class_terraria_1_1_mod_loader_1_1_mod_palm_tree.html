@@ -86,14 +86,18 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Terraria.ModLoader.ModPalmTree Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This class represents a type of modded palm tree. The palm tree will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted. This class encapsulates several functions that distinguish each type of palm tree from each other. Use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a8a9dbf17647df43cb1af21d47a9363cc" title="Allows this tile to grow the given modded palm tree.">ModTile.SetModPalmTree</a> or <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a0086ec6a893e1673c93ec70c61edf048" title="Allows the given type of tile to grow the given modded palm tree.">GlobalTile.AddModPalmTree</a> to make a tile able to grow this kind of palm tree.  
+<p>This class represents a type of modded palm tree. The palm tree will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted. This class encapsulates several functions that distinguish each type of palm tree from each other.  
  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#details">More...</a></p>
+
+<p>Inherits <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -103,18 +107,75 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a76101e9e28d3be3668b7b3bc487f05f0"><td class="memItemLeft" align="right" valign="top">abstract int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a76101e9e28d3be3668b7b3bc487f05f0">DropWood</a> ()</td></tr>
 <tr class="memdesc:a76101e9e28d3be3668b7b3bc487f05f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the item that is dropped in bulk when this palm tree is destroyed.  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a76101e9e28d3be3668b7b3bc487f05f0">More...</a><br /></td></tr>
 <tr class="separator:a76101e9e28d3be3668b7b3bc487f05f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04f1f5af8b47f5645231ba3a6bce1419"><td class="memItemLeft" align="right" valign="top">abstract Texture2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a04f1f5af8b47f5645231ba3a6bce1419">GetTexture</a> ()</td></tr>
-<tr class="memdesc:a04f1f5af8b47f5645231ba3a6bce1419"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture that represents the tile sheet used for drawing this palm tree.  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a04f1f5af8b47f5645231ba3a6bce1419">More...</a><br /></td></tr>
-<tr class="separator:a04f1f5af8b47f5645231ba3a6bce1419"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76a1c25dd336f9dacbf383a4befcbbdc"><td class="memItemLeft" align="right" valign="top">abstract Texture2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a76a1c25dd336f9dacbf383a4befcbbdc">GetTopTextures</a> ()</td></tr>
-<tr class="memdesc:a76a1c25dd336f9dacbf383a4befcbbdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree tops that can be drawn above this palm tree.  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a76a1c25dd336f9dacbf383a4befcbbdc">More...</a><br /></td></tr>
-<tr class="separator:a76a1c25dd336f9dacbf383a4befcbbdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af33e8df3aa42b5ef22bb051a33e0b277"><td class="memItemLeft" align="right" valign="top">abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#af33e8df3aa42b5ef22bb051a33e0b277">GetBranchTextures</a> ()</td></tr>
+<tr class="memdesc:af33e8df3aa42b5ef22bb051a33e0b277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree branches that can be drawn next to this tree.  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#af33e8df3aa42b5ef22bb051a33e0b277">More...</a><br /></td></tr>
+<tr class="separator:af33e8df3aa42b5ef22bb051a33e0b277"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae95756a30a78f34464af2b09e9030d0a"><td class="memItemLeft" align="right" valign="top">abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#ae95756a30a78f34464af2b09e9030d0a">GetOasisBranchTextures</a> ()</td></tr>
+<tr class="memdesc:ae95756a30a78f34464af2b09e9030d0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree branches that can be drawn next to this tree.  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#ae95756a30a78f34464af2b09e9030d0a">More...</a><br /></td></tr>
+<tr class="separator:ae95756a30a78f34464af2b09e9030d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affeabadfdc9ad251e287ba3d14fb52d3"><td class="memItemLeft" align="right" valign="top">abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#affeabadfdc9ad251e287ba3d14fb52d3">GetOasisTopTextures</a> ()</td></tr>
+<tr class="memdesc:affeabadfdc9ad251e287ba3d14fb52d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree tops that can be drawn above this palm tree.  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#affeabadfdc9ad251e287ba3d14fb52d3">More...</a><br /></td></tr>
+<tr class="separator:affeabadfdc9ad251e287ba3d14fb52d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bb9e1ac0d274bf06a337b28c1ec2a0c"><td class="memItemLeft" align="right" valign="top"><a id="a4bb9e1ac0d274bf06a337b28c1ec2a0c"></a>
+abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetTexture</b> ()</td></tr>
+<tr class="separator:a4bb9e1ac0d274bf06a337b28c1ec2a0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d17030ded6b0d562811e72195816f7c"><td class="memItemLeft" align="right" valign="top">abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a4d17030ded6b0d562811e72195816f7c">GetTopTextures</a> ()</td></tr>
+<tr class="memdesc:a4d17030ded6b0d562811e72195816f7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree tops that can be drawn above this palm tree.  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a4d17030ded6b0d562811e72195816f7c">More...</a><br /></td></tr>
+<tr class="separator:a4d17030ded6b0d562811e72195816f7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa15e4e3308f9de9d4b8e95bc8259ed0b"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#aa15e4e3308f9de9d4b8e95bc8259ed0b">GrowthFXGore</a> ()</td></tr>
 <tr class="memdesc:aa15e4e3308f9de9d4b8e95bc8259ed0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of gore created to represent leaves when this palm tree grows on-screen. Returns -1 by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#aa15e4e3308f9de9d4b8e95bc8259ed0b">More...</a><br /></td></tr>
 <tr class="separator:aa15e4e3308f9de9d4b8e95bc8259ed0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae69a18388e7402849a38bb2fd28785b0"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#ae69a18388e7402849a38bb2fd28785b0">SaplingGrowthType</a> (ref int style)</td></tr>
+<tr class="memdesc:ae69a18388e7402849a38bb2fd28785b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns 20 and style 0 by default. The style parameter will determine which sapling is chosen if multiple sapling types share the same <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>; even if you only have a single sapling in an <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>, you must still set this to 0.  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#ae69a18388e7402849a38bb2fd28785b0">More...</a><br /></td></tr>
+<tr class="separator:ae69a18388e7402849a38bb2fd28785b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa45578d19d1fa157c1284dec2cb754a7"><td class="memItemLeft" align="right" valign="top"><a id="aa45578d19d1fa157c1284dec2cb754a7"></a>
+abstract void&#160;</td><td class="memItemRight" valign="bottom"><b>SetStaticDefaults</b> ()</td></tr>
+<tr class="separator:aa45578d19d1fa157c1284dec2cb754a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a></td></tr>
+<tr class="memitem:a6fad86b0f61ef043fd5cb05fc64e7d2a inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top">void ILoadable.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html#a6fad86b0f61ef043fd5cb05fc64e7d2a">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
+<tr class="memdesc:a6fad86b0f61ef043fd5cb05fc64e7d2a inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when loading the type.  <a href="interface_terraria_1_1_mod_loader_1_1_i_plant.html#a6fad86b0f61ef043fd5cb05fc64e7d2a">More...</a><br /></td></tr>
+<tr class="separator:a6fad86b0f61ef043fd5cb05fc64e7d2a inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dfe715faefd31131af8aecf56987843 inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top">void ILoadable.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html#a3dfe715faefd31131af8aecf56987843">Unload</a> ()</td></tr>
+<tr class="memdesc:a3dfe715faefd31131af8aecf56987843 inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called during unloading when needed.  <a href="interface_terraria_1_1_mod_loader_1_1_i_plant.html#a3dfe715faefd31131af8aecf56987843">More...</a><br /></td></tr>
+<tr class="separator:a3dfe715faefd31131af8aecf56987843 inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_interface_terraria_1_1_mod_loader_1_1_i_loadable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_interface_terraria_1_1_mod_loader_1_1_i_loadable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html">Terraria.ModLoader.ILoadable</a></td></tr>
+<tr class="memitem:a99cb7624fdbd3514ea3af077a6d0e63e inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_loadable"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a99cb7624fdbd3514ea3af077a6d0e63e">IsLoadingEnabled</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
+<tr class="memdesc:a99cb7624fdbd3514ea3af077a6d0e63e inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_loadable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this type should be loaded when it's told to. Returning false disables Mod.AddContent from actually loading this type.  <a href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a99cb7624fdbd3514ea3af077a6d0e63e">More...</a><br /></td></tr>
+<tr class="separator:a99cb7624fdbd3514ea3af077a6d0e63e inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_loadable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a3c474a6d615cdc9e7e6d877a0be28404"><td class="memItemLeft" align="right" valign="top"><a id="a3c474a6d615cdc9e7e6d877a0be28404"></a>
+const int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaStyleCount</b> = 8</td></tr>
+<tr class="separator:a3c474a6d615cdc9e7e6d877a0be28404"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a272e710a43f98442dbe73261bfcc8b84"><td class="memItemLeft" align="right" valign="top"><a id="a272e710a43f98442dbe73261bfcc8b84"></a>
+int[]&#160;</td><td class="memItemRight" valign="bottom"><b>GrowsOnTileId</b><code> [get, set]</code></td></tr>
+<tr class="separator:a272e710a43f98442dbe73261bfcc8b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8747dfeb9262eb1a0668f3e37a9e22d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a8747dfeb9262eb1a0668f3e37a9e22d1">PlantTileId</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8747dfeb9262eb1a0668f3e37a9e22d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tree will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted.  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a8747dfeb9262eb1a0668f3e37a9e22d1">More...</a><br /></td></tr>
+<tr class="separator:a8747dfeb9262eb1a0668f3e37a9e22d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f794113df7cec94dee1109d8a5755db"><td class="memItemLeft" align="right" valign="top"><a id="a0f794113df7cec94dee1109d8a5755db"></a>
+abstract <a class="el" href="class_terraria_1_1_game_content_1_1_tree_painting_settings.html">TreePaintingSettings</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TreeShaderSettings</b><code> [get]</code></td></tr>
+<tr class="separator:a0f794113df7cec94dee1109d8a5755db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a974fc13b8eed6da5b194536abd379547"><td class="memItemLeft" align="right" valign="top"><a id="a974fc13b8eed6da5b194536abd379547"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code> [get]</code></td></tr>
+<tr class="separator:a974fc13b8eed6da5b194536abd379547"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_terraria_1_1_mod_loader_1_1_i_plant')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a></td></tr>
+<tr class="memitem:a08a772f5b47797b8ecc77e4e9fe4b967 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top"><a id="a08a772f5b47797b8ecc77e4e9fe4b967"></a>
+int[]&#160;</td><td class="memItemRight" valign="bottom"><b>GrowsOnTileId</b><code> [get, set]</code></td></tr>
+<tr class="separator:a08a772f5b47797b8ecc77e4e9fe4b967 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1c9faf9b572b51b3e98c549e6016ad5 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top"><a id="ab1c9faf9b572b51b3e98c549e6016ad5"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>PlantTileId</b><code> [get]</code></td></tr>
+<tr class="separator:ab1c9faf9b572b51b3e98c549e6016ad5 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acecce70f10f6a8c73a5c74eaabad3082 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top"><a id="acecce70f10f6a8c73a5c74eaabad3082"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code> [get]</code></td></tr>
+<tr class="separator:acecce70f10f6a8c73a5c74eaabad3082 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class represents a type of modded palm tree. The palm tree will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted. This class encapsulates several functions that distinguish each type of palm tree from each other. Use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a8a9dbf17647df43cb1af21d47a9363cc" title="Allows this tile to grow the given modded palm tree.">ModTile.SetModPalmTree</a> or <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a0086ec6a893e1673c93ec70c61edf048" title="Allows the given type of tile to grow the given modded palm tree.">GlobalTile.AddModPalmTree</a> to make a tile able to grow this kind of palm tree. </p>
+<div class="textblock"><p>This class represents a type of modded palm tree. The palm tree will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted. This class encapsulates several functions that distinguish each type of palm tree from each other. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="acffaa71eb58c8ceef669e50a15c8dc5c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acffaa71eb58c8ceef669e50a15c8dc5c">&#9670;&nbsp;</a></span>CreateDust()</h2>
@@ -172,8 +233,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a04f1f5af8b47f5645231ba3a6bce1419"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04f1f5af8b47f5645231ba3a6bce1419">&#9670;&nbsp;</a></span>GetTexture()</h2>
+<a id="af33e8df3aa42b5ef22bb051a33e0b277"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af33e8df3aa42b5ef22bb051a33e0b277">&#9670;&nbsp;</a></span>GetBranchTextures()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -182,7 +243,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">abstract Texture2D Terraria.ModLoader.ModPalmTree.GetTexture </td>
+          <td class="memname">abstract Asset&lt;Texture2D&gt; Terraria.ModLoader.ModPalmTree.GetBranchTextures </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -195,13 +256,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return the texture that represents the tile sheet used for drawing this palm tree. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Return the texture containing the possible tree branches that can be drawn next to this tree. </p>
 
 </div>
 </div>
-<a id="a76a1c25dd336f9dacbf383a4befcbbdc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76a1c25dd336f9dacbf383a4befcbbdc">&#9670;&nbsp;</a></span>GetTopTextures()</h2>
+<a id="ae95756a30a78f34464af2b09e9030d0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae95756a30a78f34464af2b09e9030d0a">&#9670;&nbsp;</a></span>GetOasisBranchTextures()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,7 +270,62 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">abstract Texture2D Terraria.ModLoader.ModPalmTree.GetTopTextures </td>
+          <td class="memname">abstract Asset&lt;Texture2D&gt; Terraria.ModLoader.ModPalmTree.GetOasisBranchTextures </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the texture containing the possible tree branches that can be drawn next to this tree. </p>
+
+</div>
+</div>
+<a id="affeabadfdc9ad251e287ba3d14fb52d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affeabadfdc9ad251e287ba3d14fb52d3">&#9670;&nbsp;</a></span>GetOasisTopTextures()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">abstract Asset&lt;Texture2D&gt; Terraria.ModLoader.ModPalmTree.GetOasisTopTextures </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the texture containing the possible tree tops that can be drawn above this palm tree. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a4d17030ded6b0d562811e72195816f7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d17030ded6b0d562811e72195816f7c">&#9670;&nbsp;</a></span>GetTopTextures()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">abstract Asset&lt;Texture2D&gt; Terraria.ModLoader.ModPalmTree.GetTopTextures </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -253,6 +368,66 @@ Public Member Functions</h2></td></tr>
 
 <p>Return the type of gore created to represent leaves when this palm tree grows on-screen. Returns -1 by default. </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ae69a18388e7402849a38bb2fd28785b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae69a18388e7402849a38bb2fd28785b0">&#9670;&nbsp;</a></span>SaplingGrowthType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int Terraria.ModLoader.ModPalmTree.SaplingGrowthType </td>
+          <td>(</td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>style</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Defines the sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns 20 and style 0 by default. The style parameter will determine which sapling is chosen if multiple sapling types share the same <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>; even if you only have a single sapling in an <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>, you must still set this to 0. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">style</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a8747dfeb9262eb1a0668f3e37a9e22d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8747dfeb9262eb1a0668f3e37a9e22d1">&#9670;&nbsp;</a></span>PlantTileId</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.ModLoader.ModPalmTree.PlantTileId</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The tree will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted. </p>
 
 </div>
 </div>

@@ -86,26 +86,68 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="class_terraria_1_1_mod_loader_1_1_mod_cactus-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Terraria.ModLoader.ModCactus Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This class represents a type of modded cactus. The cactus will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla cacti (80), so that the cacti can freely convert between each other if the sand below is converted. This class encapsulates a function for retrieving the cactus's texture, the only difference between each type of cactus. Use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#ac95c5d3d5f2d4ff31c9694bde95d9161" title="Allows this tile to grow the given modded cactus.">ModTile.SetModCactus</a> or <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a1805eae9415bff4cb264134168402560" title="Allows the given type of tile to grow the given modded cactus.">GlobalTile.AddModCactus</a> to make a tile able to grow this kind of cactus.  
+<p>This class represents a type of modded cactus. This class encapsulates a function for retrieving the cactus's texture and an array for type of soil it grows on.  
  <a href="class_terraria_1_1_mod_loader_1_1_mod_cactus.html#details">More...</a></p>
+
+<p>Inherits <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae9d8bb8e74107a6b3525a0501c90782c"><td class="memItemLeft" align="right" valign="top">abstract Texture2D&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_cactus.html#ae9d8bb8e74107a6b3525a0501c90782c">GetTexture</a> ()</td></tr>
-<tr class="memdesc:ae9d8bb8e74107a6b3525a0501c90782c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture that represents the tile sheet used for drawing this cactus.  <a href="class_terraria_1_1_mod_loader_1_1_mod_cactus.html#ae9d8bb8e74107a6b3525a0501c90782c">More...</a><br /></td></tr>
-<tr class="separator:ae9d8bb8e74107a6b3525a0501c90782c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad56d01a347f2b4c4397a00b0269444ac"><td class="memItemLeft" align="right" valign="top"><a id="ad56d01a347f2b4c4397a00b0269444ac"></a>
+abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetFruitTexture</b> ()</td></tr>
+<tr class="separator:ad56d01a347f2b4c4397a00b0269444ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bf96e206f04263633d596faa14e2afd"><td class="memItemLeft" align="right" valign="top"><a id="a3bf96e206f04263633d596faa14e2afd"></a>
+abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetTexture</b> ()</td></tr>
+<tr class="separator:a3bf96e206f04263633d596faa14e2afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9337928924631998f83d470bf5087c4d"><td class="memItemLeft" align="right" valign="top"><a id="a9337928924631998f83d470bf5087c4d"></a>
+abstract void&#160;</td><td class="memItemRight" valign="bottom"><b>SetStaticDefaults</b> ()</td></tr>
+<tr class="separator:a9337928924631998f83d470bf5087c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a></td></tr>
+<tr class="memitem:a6fad86b0f61ef043fd5cb05fc64e7d2a inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top">void ILoadable.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html#a6fad86b0f61ef043fd5cb05fc64e7d2a">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
+<tr class="memdesc:a6fad86b0f61ef043fd5cb05fc64e7d2a inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when loading the type.  <a href="interface_terraria_1_1_mod_loader_1_1_i_plant.html#a6fad86b0f61ef043fd5cb05fc64e7d2a">More...</a><br /></td></tr>
+<tr class="separator:a6fad86b0f61ef043fd5cb05fc64e7d2a inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dfe715faefd31131af8aecf56987843 inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top">void ILoadable.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html#a3dfe715faefd31131af8aecf56987843">Unload</a> ()</td></tr>
+<tr class="memdesc:a3dfe715faefd31131af8aecf56987843 inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called during unloading when needed.  <a href="interface_terraria_1_1_mod_loader_1_1_i_plant.html#a3dfe715faefd31131af8aecf56987843">More...</a><br /></td></tr>
+<tr class="separator:a3dfe715faefd31131af8aecf56987843 inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_interface_terraria_1_1_mod_loader_1_1_i_loadable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_interface_terraria_1_1_mod_loader_1_1_i_loadable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html">Terraria.ModLoader.ILoadable</a></td></tr>
+<tr class="memitem:a99cb7624fdbd3514ea3af077a6d0e63e inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_loadable"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a99cb7624fdbd3514ea3af077a6d0e63e">IsLoadingEnabled</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
+<tr class="memdesc:a99cb7624fdbd3514ea3af077a6d0e63e inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_loadable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this type should be loaded when it's told to. Returning false disables Mod.AddContent from actually loading this type.  <a href="interface_terraria_1_1_mod_loader_1_1_i_loadable.html#a99cb7624fdbd3514ea3af077a6d0e63e">More...</a><br /></td></tr>
+<tr class="separator:a99cb7624fdbd3514ea3af077a6d0e63e inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_loadable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:afda9988de326517d23a344b1a1787b9f"><td class="memItemLeft" align="right" valign="top"><a id="afda9988de326517d23a344b1a1787b9f"></a>
+int[]&#160;</td><td class="memItemRight" valign="bottom"><b>GrowsOnTileId</b><code> [get, set]</code></td></tr>
+<tr class="separator:afda9988de326517d23a344b1a1787b9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adca2ad6c1799be1745d85622ade7042d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_cactus.html#adca2ad6c1799be1745d85622ade7042d">PlantTileId</a><code> [get]</code></td></tr>
+<tr class="memdesc:adca2ad6c1799be1745d85622ade7042d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The cactus will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla cacti (80), so that the cacti can freely convert between each other if the sand below is converted.  <a href="class_terraria_1_1_mod_loader_1_1_mod_cactus.html#adca2ad6c1799be1745d85622ade7042d">More...</a><br /></td></tr>
+<tr class="separator:adca2ad6c1799be1745d85622ade7042d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca486ea1e5e2ae6e34daf191592d5f8a"><td class="memItemLeft" align="right" valign="top"><a id="aca486ea1e5e2ae6e34daf191592d5f8a"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code> [get]</code></td></tr>
+<tr class="separator:aca486ea1e5e2ae6e34daf191592d5f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_terraria_1_1_mod_loader_1_1_i_plant')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a></td></tr>
+<tr class="memitem:a08a772f5b47797b8ecc77e4e9fe4b967 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top"><a id="a08a772f5b47797b8ecc77e4e9fe4b967"></a>
+int[]&#160;</td><td class="memItemRight" valign="bottom"><b>GrowsOnTileId</b><code> [get, set]</code></td></tr>
+<tr class="separator:a08a772f5b47797b8ecc77e4e9fe4b967 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1c9faf9b572b51b3e98c549e6016ad5 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top"><a id="ab1c9faf9b572b51b3e98c549e6016ad5"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>PlantTileId</b><code> [get]</code></td></tr>
+<tr class="separator:ab1c9faf9b572b51b3e98c549e6016ad5 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acecce70f10f6a8c73a5c74eaabad3082 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top"><a id="acecce70f10f6a8c73a5c74eaabad3082"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code> [get]</code></td></tr>
+<tr class="separator:acecce70f10f6a8c73a5c74eaabad3082 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This class represents a type of modded cactus. The cactus will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla cacti (80), so that the cacti can freely convert between each other if the sand below is converted. This class encapsulates a function for retrieving the cactus's texture, the only difference between each type of cactus. Use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#ac95c5d3d5f2d4ff31c9694bde95d9161" title="Allows this tile to grow the given modded cactus.">ModTile.SetModCactus</a> or <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html#a1805eae9415bff4cb264134168402560" title="Allows the given type of tile to grow the given modded cactus.">GlobalTile.AddModCactus</a> to make a tile able to grow this kind of cactus. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae9d8bb8e74107a6b3525a0501c90782c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9d8bb8e74107a6b3525a0501c90782c">&#9670;&nbsp;</a></span>GetTexture()</h2>
+<div class="textblock"><p>This class represents a type of modded cactus. This class encapsulates a function for retrieving the cactus's texture and an array for type of soil it grows on. </p>
+</div><h2 class="groupheader">Property Documentation</h2>
+<a id="adca2ad6c1799be1745d85622ade7042d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adca2ad6c1799be1745d85622ade7042d">&#9670;&nbsp;</a></span>PlantTileId</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -114,21 +156,17 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">abstract Texture2D Terraria.ModLoader.ModCactus.GetTexture </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="memname">int Terraria.ModLoader.ModCactus.PlantTileId</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Return the texture that represents the tile sheet used for drawing this cactus. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>The cactus will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla cacti (80), so that the cacti can freely convert between each other if the sand below is converted. </p>
 
 </div>
 </div>
