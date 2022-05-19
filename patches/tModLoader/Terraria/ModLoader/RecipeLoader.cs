@@ -77,34 +77,55 @@ namespace Terraria.ModLoader
 		/// Orders everything in the recipe according to their Ordering.
 		/// </summary>
 		internal static void OrderRecipes() {
-			List<Recipe> recipesToOrder = new List<Recipe>();
-			for (int recipeIndex = 0; recipeIndex < Main.recipe.Length; recipeIndex++) {
-				Recipe recipe = Main.recipe[recipeIndex];
-				Recipe parentRecipe = recipe;
-				while (parentRecipe.Ordering.target != null) {
-					if (recipesToOrder.Contains(parentRecipe))
-						throw new RecipeException("Recipe ordering loop detected.");
-					recipesToOrder.Add(parentRecipe);
-					parentRecipe = parentRecipe.Ordering.target;
-				}
+			// first-pass, collect sortBefore and sortAfter
+			Dictionary<Recipe, List<Recipe>> sortBefore = new();
+			Dictionary<Recipe, List<Recipe>> sortAfter = new();
+			var baseOrder = new List<Recipe>(Main.recipe.Length);
+			foreach (var r in Main.recipe) {
+				switch (r.Ordering) {
+					case (null, _):
+						baseOrder.Add(r);
+						break;
+					case (var target, false): // sortBefore
+						if (!sortBefore.TryGetValue(target, out var before))
+							before = sortBefore[target] = new();
 
-				if (recipesToOrder.Count != 0) {
-					for (int orderIndex = recipesToOrder.Count - 1; orderIndex >= 0; orderIndex--) {
-						Recipe recipeToOrder = recipesToOrder[orderIndex];
-						int targetIndex = (recipeToOrder.Ordering.target.RecipeIndex > recipeToOrder.RecipeIndex) switch {
-							false when !recipeToOrder.Ordering.after => recipeToOrder.Ordering.target.RecipeIndex - 1,
-							true when recipeToOrder.Ordering.after => recipeToOrder.Ordering.target.RecipeIndex + 1,
-							_ => recipeToOrder.Ordering.target.RecipeIndex
-						};
+						before.Add(r);
+						break;
+					case (var target, true): // sortBefore
+						if (!sortAfter.TryGetValue(target, out var after))
+							after = sortAfter[target] = new();
 
-						recipeToOrder.MoveAt(targetIndex);
-						recipeToOrder.Ordering = default;
-					}
-
-					recipeIndex--; //Redo this location in case a not handled recipe took its place.
-					recipesToOrder.Clear();
+						after.Add(r);
+						break;
 				}
 			}
+
+			if (!sortBefore.Any() && !sortAfter.Any())
+				return;
+
+			// define sort function
+			int i = 0;
+			void Sort(Recipe r) {
+				if (sortBefore.TryGetValue(r, out var before))
+					foreach (var c in before)
+						Sort(c);
+
+				r.RecipeIndex = i;
+				Main.recipe[i++] = r;
+
+				if (sortAfter.TryGetValue(r, out var after))
+					foreach (var c in after)
+						Sort(c);
+			}
+
+			// second pass, sort!
+			foreach (var r in baseOrder) {
+				Sort(r);
+			}
+
+			if (i != Main.recipe.Length)
+				throw new Exception("Sorting code is broken?");
 		}
 
 		/// <summary>

@@ -111,7 +111,7 @@ namespace Terraria
 		/// <summary>
 		/// The index of the recipe in the Main.recipe array.
 		/// </summary>
-		public int RecipeIndex { get; private set; }
+		public int RecipeIndex { get; internal set; }
 
 		public (Recipe target, bool after) Ordering { get; internal set; }
 
@@ -292,25 +292,7 @@ namespace Terraria
 			return this;
 		}
 
-		#region Recipe movement
-
-		/// <summary>
-		/// Moves the recipe to a given index in the Main.recipe array. This recipe must already be registered.
-		/// </summary>
-		internal Recipe MoveAt(int objective) {
-			int direction = objective > RecipeIndex ? 1 : -1;
-
-			for (int index = RecipeIndex; index * direction < objective * direction; index += direction) {
-				Recipe movedRecipe = Main.recipe[index + direction];
-				movedRecipe.RecipeIndex = index;
-				Main.recipe[index] = movedRecipe;
-			}
-
-			Main.recipe[objective] = this;
-			RecipeIndex = objective;
-
-			return this;
-		}
+		#region Ordering
 
 		/// <summary>
 		/// Sets the Ordering of this recipe. This recipe can't already have one.
@@ -323,6 +305,16 @@ namespace Terraria
 			if (Ordering.target != null)
 				throw new RecipeException("This recipe already has an ordering.");
 			Ordering = (recipe, after);
+
+			var target = recipe;
+			do {
+				if (target == this)
+					throw new Exception("Recipe ordering loop!");
+
+				target = target.Ordering.target;
+			} while (target != null);
+
+
 			return recipe;
 		}
 
