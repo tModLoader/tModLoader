@@ -905,10 +905,12 @@
  		}
  
  		private static void SetTileValue() {
-@@ -4908,8 +_,15 @@
+@@ -4908,8 +_,17 @@
  		}
  
  		protected override void Initialize() {
++			InitTMLContentManager();
++
 +			DateTime date = DateTime.Now;
 +			if (date.Month == 5 && date.Day == 17 || date.Month == 7 && date.Day == 8 || date.Month == 10 && date.Day == 24
 +				|| date.Month == 6 && date.Day == 1 || date.Month == 4 || date.Day == 1 || new Random().Next(100) == 0) {
@@ -3454,12 +3456,13 @@
  				if (mapStyle == 1 && mapEnabled)
  					Y += 261;
  			}
-@@ -36142,6 +_,9 @@
+@@ -36142,6 +_,10 @@
  
  		private static void TryDisposingEverything() {
  			ChromaInitializer.DisableAllDeviceGroups();
 +
 +			WorkshopHelper.OnGameExitCleanup(); // Added by TML.
++			TerrariaSteamClient.Shutdown();
 +
  			CaptureManager.Instance.Dispose();
  			audioSystem.Dispose();
@@ -3797,7 +3800,7 @@
 -			string text = versionNumber;
 +			string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +			string patreonShortURL = @"patreon.com/tModLoader";
-+			bool showPatreon = !Steam.IsSteamApp;
++			bool showPatreon = SocialAPI.Mode != SocialMode.Steam;
 +
 +			// Show number of mods - 1 such as to show number of enabled mods that are not tModLoader itself
 +			string modsMessage = Language.GetTextValue("tModLoader.MenuModsEnabled", Math.Max(0, ModLoader.ModLoader.Mods.Length - 1));

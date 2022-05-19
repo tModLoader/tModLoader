@@ -394,7 +394,6 @@
 		"GraphicsEngineReportFailure": "Ошибка. (GraphicsEngineReportFailure)",
 		// "GraphicsEngineFailureMessage": "tML encountered a crash when testing some experimental graphics features. If this issue persists consistently, you may have to edit config.json and set the Support4K setting to false. \nPlease restart your game.\nReport Status: {0}",
 		"OutOfMemory": "Игре не хватило памяти. Попробуйте выяснить какой мод потребляет много памяти, и сообщить об этом его разработчикам, либо удалите мод. (OutOfMemory)",
-		// "ContentFolderNotFoundInstallCheck": "{0} directory could not be found.\r\n\r\nDid you forget to extract tModLoader's Content directory into the tModLoader folder?\r\n\r\nEnsure tModLoader is installed in a separate folder from Terraria.",
 		// "VanillaSteamInstallationNotFound": "Terraria Steam installation or Terraria Content directory not found.\r\n\r\nPlease ensure Terraria 1.4 is installed through Steam.",
 		"SteamAPIHashMismatch": "Неверный хэш библиотеки Steam, возможно, это пиратская версия.\n\ntModLoader-у необходима лицензионная Terraria для работы. (SteamAPIHashMismatch)",
 		"VanillaGOGNotFound": "Невозможно найти {0}.\r\n\r\nGOG-версиям необходима немодифицированная Terraria для работы. Ожидалась {1} версия Terraria, возможно придётся обновить/откатить Terraria через GOG Galaxy, либо подождите пока tModLoader обновится до этой версии. (VanillaGOGNotFound)",

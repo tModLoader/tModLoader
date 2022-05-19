@@ -18,6 +18,13 @@ namespace Terraria.ModLoader
 {
 	public static partial class Logging
 	{
+		public enum LogFile
+		{
+			Client,
+			Server,
+			TerrariaSteamClient
+		}
+
 		public static readonly string LogDir = "tModLoader-Logs";
 		public static readonly string LogArchiveDir = Path.Combine(LogDir, "Old");
 
@@ -36,14 +43,13 @@ namespace Terraria.ModLoader
 		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
 		internal static ILog tML { get; } = LogManager.GetLogger("tML");
 
-		internal static void Init(bool dedServ) {
+		internal static void Init(LogFile logFile) {
 			if (Program.LaunchParameters.ContainsKey("-build"))
 				return;
 
 			// This is the first file we attempt to use.
 			Utils.TryCreatingDirectory(LogDir);
-
-			ConfigureAppenders(dedServ);
+			ConfigureAppenders(logFile);
 		}
 
 		internal static void LogStartup(bool dedServ) {
@@ -72,7 +78,6 @@ namespace Terraria.ModLoader
 				tML.Warn(line);
 
 			AppDomain.CurrentDomain.UnhandledException += (s, args) => tML.Error("Unhandled Exception", args.ExceptionObject as Exception);
-
 			LogFirstChanceExceptions();
 			AssemblyResolving.Init();
 			LoggingHooks.Init();
@@ -82,7 +87,7 @@ namespace Terraria.ModLoader
 				GraphicsChangeTracker.RedirectLogs();
 		}
 
-		private static void ConfigureAppenders(bool dedServ) {
+		private static void ConfigureAppenders(LogFile logFile) {
 			var layout = new PatternLayout {
 				ConversionPattern = "[%d{HH:mm:ss}] [%t/%level] [%logger]: %m%n"
 			};
@@ -90,8 +95,7 @@ namespace Terraria.ModLoader
 			layout.ActivateOptions();
 
 			var appenders = new List<IAppender>();
-
-			if (!dedServ) {
+			if (logFile == LogFile.Client) {
 				appenders.Add(new ConsoleAppender {
 					Name = "ConsoleAppender",
 					Layout = layout
@@ -105,7 +109,7 @@ namespace Terraria.ModLoader
 
 			var fileAppender = new FileAppender {
 				Name = "FileAppender",
-				File = LogPath = Path.Combine(LogDir, GetNewLogFile(dedServ ? "server" : "client")),
+				File = LogPath = Path.Combine(LogDir, GetNewLogFile(logFile.ToString().ToLowerInvariant())),
 				AppendToFile = false,
 				Encoding = encoding,
 				Layout = layout
