@@ -335,6 +335,7 @@ namespace Terraria.ModLoader
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
 
 			MapLoader.SetupModMap();
+			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
 
 			ContentSamples.Initialize();
@@ -346,6 +347,8 @@ namespace Terraria.ModLoader
 
 			MenuLoader.GotoSavedModMenu();
 			BossBarLoader.GotoSavedStyle();
+
+			ModOrganizer.SaveLastLaunchedMods();
 		}
 
 		private static void CacheVanillaState() {
@@ -463,6 +466,7 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			SoundLoader.Unload();
+			PlantLoader.UnloadPlants();
 
 			LoaderManager.Unload();
 

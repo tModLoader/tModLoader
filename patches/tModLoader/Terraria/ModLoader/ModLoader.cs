@@ -31,7 +31,10 @@ namespace Terraria.ModLoader
 		public static string LastLaunchedTModLoaderAlphaSha;
 		public static bool ShowWhatsNew;
 		public static bool AlphaWelcomed;
+		public static bool PreviewFreezeNotification;
+		public static bool DetectedModChangesForInfoMessage;
 		public static bool ShowFirstLaunchWelcomeMessage;
+		public static Version LastPreviewFreezeNotificationSeen;
 
 		public static string versionedName => (BuildInfo.Purpose != BuildInfo.BuildPurpose.Stable) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
 
@@ -49,11 +52,13 @@ namespace Terraria.ModLoader
 		internal static string modBrowserPassphrase = "";
 
 		internal static bool autoReloadAndEnableModsLeavingModBrowser = true;
+		internal static bool autoReloadRequiredModsLeavingModsScreen = true;
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static bool removeForcedMinimumZoom;
 		internal static bool showMemoryEstimates = true;
 		internal static bool notifyNewMainMenuThemes = true;
+		internal static bool showNewUpdatedModsInfo = true;
 		internal static bool skipLoad;
 		internal static Action OnSuccessfulLoad;
 
@@ -169,6 +174,8 @@ namespace Terraria.ModLoader
 				OnSuccessfulLoad = null;
 				skipLoad = false;
 				ModNet.NetReloadActive = false;
+				//TODO: FUTURE
+				//GOGModUpdateChecker.CheckModUpdates();
 			}
 		}
 
@@ -321,6 +328,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
 			Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
 			Main.Configuration.Put("AutomaticallyReloadAndEnableModsLeavingModBrowser", autoReloadAndEnableModsLeavingModBrowser);
+			Main.Configuration.Put("AutomaticallyReloadRequiredModsLeavingModsScreen", autoReloadRequiredModsLeavingModsScreen);
 			Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
@@ -329,6 +337,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Put(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Put("ShowModMenuNotifications", notifyNewMainMenuThemes);
+			Main.Configuration.Put("ShowNewUpdatedModsInfo", showNewUpdatedModsInfo);
 			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
@@ -336,6 +345,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
 			Main.Configuration.Put(nameof(AlphaWelcomed), AlphaWelcomed);
 			Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
+			Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
 		}
 
 		internal static void LoadConfiguration()
@@ -344,6 +354,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
 			Main.Configuration.Get("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
 			Main.Configuration.Get("AutomaticallyReloadAndEnableModsLeavingModBrowser", ref autoReloadAndEnableModsLeavingModBrowser);
+			Main.Configuration.Get("AutomaticallyReloadRequiredModsLeavingModsScreen", ref autoReloadRequiredModsLeavingModsScreen);
 			Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
 			Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
@@ -352,6 +363,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
 			Main.Configuration.Get(nameof(UI.ModBrowser.UIModBrowser.EarlyAutoUpdate), ref UI.ModBrowser.UIModBrowser.EarlyAutoUpdate);
 			Main.Configuration.Get("ShowModMenuNotifications", ref notifyNewMainMenuThemes);
+			Main.Configuration.Get("ShowNewUpdatedModsInfo", ref showNewUpdatedModsInfo);
 			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
@@ -359,6 +371,7 @@ namespace Terraria.ModLoader
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get(nameof(LastLaunchedTModLoaderVersion), "0.0"));
 			Main.Configuration.Get(nameof(AlphaWelcomed), ref AlphaWelcomed);
 			Main.Configuration.Get(nameof(LastLaunchedTModLoaderAlphaSha), ref LastLaunchedTModLoaderAlphaSha);
+			LastPreviewFreezeNotificationSeen = new Version(Main.Configuration.Get(nameof(LastPreviewFreezeNotificationSeen), "0.0"));
 		}
 
 		internal static void MigrateSettings()
@@ -366,7 +379,8 @@ namespace Terraria.ModLoader
 			if (LastLaunchedTModLoaderVersion < new Version(0, 11, 7, 5))
 				showMemoryEstimates = true;
 
-			if (LastLaunchedTModLoaderVersion < new Version(2020, 0, 0, 0)) {
+			// TODO: Stable RecentGitHubCommits.txt is probably not accurate for showing stable users, we could use a summary for the month of changes rather than recent commits.
+			if (BuildInfo.IsPreview && LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion) {
 				ShowWhatsNew = true;
 				// TODO: Start retrieving what's new data from github here.
 			}

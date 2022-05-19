@@ -193,7 +193,7 @@
  				Main.BestiaryTracker.Chats.RegisterChatStartWith(Main.npc[npcIndex]);
  
  			if (talkNPC == -1)
-@@ -2100,12 +_,11 @@
+@@ -2100,12 +_,12 @@
  			itemTimeMax = frames;
  		}
  
@@ -207,10 +207,11 @@
 -		public void ApplyItemTime(Item sItem, float multiplier) {
 -			SetItemTime((int)((float)sItem.useTime * multiplier));
 +			SetItemTime(CombinedHooks.TotalUseTime(sItem.useTime * multiplier, this, sItem));
++			ItemUsesThisAnimation++;
  		}
  
  		public void SetDummyItemTime(int frames) {
-@@ -2114,39 +_,43 @@
+@@ -2114,39 +_,44 @@
  			itemTimeMax = frames + 1;
  		}
  
@@ -229,6 +230,7 @@
 +			SetItemAnimation(CombinedHooks.TotalAnimationTime(sItem.useAnimation * multiplier, this, sItem));
 +
 +			reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / CombinedHooks.TotalUseSpeedMultiplier(this, sItem));
++			ItemUsesThisAnimation = 0;
  		}
  
 -		private void ApplyItemAnimation(Item sItem) {
@@ -1162,7 +1164,7 @@
  				}
  				else if (buffType[j] == 16) {
  					archery = true;
-+					arrowDamage *= 1.2f; // moved from PickAmmo, as StatModifier allows multiplicative buffs to be 'registered' before additive ones
++					arrowDamage *= 1.2f; // moved from PickAmmo, as StatModifier allows multiplicative buffs to be 'registered' alongside additive ones
  				}
  				else if (buffType[j] == 17) {
  					detectCreature = true;
@@ -1698,6 +1700,27 @@
  					moveSpeed += 0.05f;
  				}
  
+@@ -9269,17 +_,17 @@
+ 
+ 				if (armor[k].type == 1546) {
+ 					rangedCrit += 5;
+-					arrowDamage += 0.15f;
++					arrowDamage *= 1.15f; // tML += -> *= to imitate vanilla stacking behaviour
+ 				}
+ 
+ 				if (armor[k].type == 1547) {
+ 					rangedCrit += 5;
+-					bulletDamage += 0.15f;
++					bulletDamage *= 1.15f; // tML += -> *= to imitate vanilla stacking behaviour
+ 				}
+ 
+ 				if (armor[k].type == 1548) {
+ 					rangedCrit += 5;
+-					rocketDamage += 0.15f;
++					rocketDamage *= 1.15f; // tML += -> *= to imitate vanilla stacking behaviour
+ 				}
+ 
+ 				if (armor[k].type == 1549) {
 @@ -9514,43 +_,61 @@
  					statManaMax2 += 20;
  
@@ -2184,6 +2207,16 @@
  							SmartSelect_SelectItem(i);
  							return;
  						}
+@@ -12556,6 +_,9 @@
+ 								}
+ 							}
+ 
++							if (!flag2 && !ItemLoader.NeedsAmmo(inventory[i], this))
++								flag2 = true;
++
+ 							if (flag2) {
+ 								SmartSelect_SelectItem(i);
+ 								return;
 @@ -12571,7 +_,7 @@
  							if (nonTorch == -1)
  								nonTorch = selectedItem;
@@ -4047,7 +4080,7 @@
  			if (itemTime > 0) {
  				itemTime--;
  				if (ItemTimeIsZero && whoAmI == Main.myPlayer) {
-@@ -30308,37 +_,44 @@
+@@ -30308,30 +_,40 @@
  				}
  			}
  
@@ -4079,29 +4112,31 @@
  						_spawnTentacleSpikes = true;
  
  					if (type2 == 3852) {
--						if (itemAnimation < itemAnimationMax - 12)
-+						if (itemAnimation <= itemAnimationMax - 12) // tML, change < to <= to account for counter change
++						/* handled by Item.useLimitPerAnimation
+ 						if (itemAnimation < itemAnimationMax - 12)
  							flag4 = false;
++						*/
  
 -						if (altFunctionUse == 2 && itemAnimation != itemAnimationMax - 1)
 +						if (altFunctionUse == 2 && !ItemAnimationJustStarted)
  							flag4 = false;
  					}
  
--					if (type2 == 4956 && itemAnimation < itemAnimationMax - 3 * item.useTime)
-+					if (type2 == 4956 && itemAnimation <= itemAnimationMax - 3 * item.useTime) // tML, change < to <= to account for counter change
++					/* Eventide and nightglow handled by Item.useLimitPerAnimation. Zenith use limit didn't do anything anyway
+ 					if (type2 == 4956 && itemAnimation < itemAnimationMax - 3 * item.useTime)
  						flag4 = false;
  
--					if (type2 == 4952 && itemAnimation < itemAnimationMax - 8)
-+					if (type2 == 4952 && itemAnimation <= itemAnimationMax - 8) // tML, change < to <= to account for counter change
- 						flag4 = false;
+@@ -30340,12 +_,20 @@
  
--					if (type2 == 4953 && itemAnimation < itemAnimationMax - 10)
-+					if (type2 == 4953 && itemAnimation <= itemAnimationMax - 10) // tML, change < to <= to account for counter change
+ 					if (type2 == 4953 && itemAnimation < itemAnimationMax - 10)
  						flag4 = false;
++					*/
++
++					if (item.useLimitPerAnimation != null && ItemUsesThisAnimation >= item.useLimitPerAnimation.Value)
++						flag4 = false;
  
  					ItemCheck_TurretAltFeatureUse(item, flag4);
-@@ -30346,6 +_,10 @@
+ 					ItemCheck_MinionAltFeatureUse(item, flag4);
  					if (item.shoot > 0 && itemAnimation > 0 && ItemTimeIsZero && flag4)
  						ItemCheck_Shoot(i, item, weaponDamage);
  
@@ -4763,7 +4798,7 @@
  			int num = sItem.damage;
  			if (num > 0) {
  				if (sItem.melee) {
-@@ -37031,6 +_,32 @@
+@@ -37031,9 +_,34 @@
  			}
  
  			return num;
@@ -4771,111 +4806,310 @@
 +
 +			StatModifier modifier = GetTotalDamage(sItem.DamageType);
 +
-+			// TODO: use ItemID sets for ammo-specific bonuses
-+			// will probably accompany a planned overhaul to how a weapon's ammo pool is decided, but for now, this works fine
-+			// -thomas
-+			if (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) {
-+				modifier *= arrowDamage.Additive * arrowDamage.Multiplicative;
-+				modifier.Base += arrowDamage.Base;
-+				modifier.Flat += arrowDamage.Flat;
-+			}
-+			if (sItem.useAmmo == AmmoID.Bullet || sItem.useAmmo == AmmoID.CandyCorn) {
-+				modifier *= bulletDamage.Additive * bulletDamage.Multiplicative;
-+				modifier.Base += bulletDamage.Base;
-+				modifier.Flat += bulletDamage.Flat;
-+			}
-+			if (sItem.useAmmo == AmmoID.Rocket || sItem.useAmmo == AmmoID.StyngerBolt || sItem.useAmmo == AmmoID.JackOLantern || sItem.useAmmo == AmmoID.NailFriendly) {
-+				modifier *= rocketDamage.Additive * rocketDamage.Multiplicative;
-+				modifier.Base += rocketDamage.Base;
-+				modifier.Flat += rocketDamage.Flat;
-+			}
++			if (AmmoID.Sets.IsArrow[sItem.useAmmo])
++				modifier = modifier.CombineWith(arrowDamage);
++
++			if (AmmoID.Sets.IsBullet[sItem.useAmmo])
++				modifier = modifier.CombineWith(bulletDamage);
++
++			if (AmmoID.Sets.IsRocket[sItem.useAmmo])
++				modifier = modifier.CombineWith(rocketDamage);
 +
 +			CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
 +			int baseDamage = forTooltip ? (int)(sItem.damage * ItemID.Sets.ToolTipDamageMultiplier[sItem.type]) : sItem.damage;
 +			return Math.Max(0, (int)(modifier.ApplyTo(baseDamage) + 5E-06f));
  		}
  
- 		public bool HasAmmo(Item sItem, bool canUse) {
-@@ -37097,8 +_,11 @@
++		/// <summary>
++		/// Whether or not the player has ammunition available for the given weapon.
++		/// </summary>
++		/// <param name="sItem">The weapon for which to try to find ammunition.</param>
++		/// <returns>True if the player has ammo available; false otherwise.</returns>
++		public bool HasAmmo(Item sItem) => HasAmmo(sItem, canUse: true);
++
+-		public bool HasAmmo(Item sItem, bool canUse) {
++		internal bool HasAmmo(Item sItem, bool canUse) {
++			return sItem.useAmmo == 0 || ChooseAmmo(sItem) != null || !ItemLoader.NeedsAmmo(sItem, this);
++			/*
+ 			if (sItem.useAmmo > 0) {
+ 				canUse = false;
+ 				for (int i = 0; i < 58; i++) {
+@@ -37045,6 +_,7 @@
+ 			}
+ 
+ 			return canUse;
++			*/
+ 		}
+ 
+ 		private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId) {
+@@ -37055,14 +_,52 @@
+ 			return false;
+ 		}
+ 
+-		public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
+-			Item item = new Item();
++		/// <summary>
++		/// A more-convenient-to-call variant of the vanilla PickAmmo method, which handles most vanilla ammunition logic to decide various common stats related to ammunition-consuming weapons.<br></br>
++		/// The stats output by this method take into account any extra stats which the ammunition it finds may provide (read: it accounts for ammo damage and knockback).<br></br>
++		/// </summary>
++		/// <param name="weapon">The weapon for which to handle ammunition logic.</param>
++		/// <param name="projToShoot">The projectile that should be shot based on the given weapon and the located ammunition.</param>
++		/// <param name="speed">The speed at which the projectile that would be made by the given weapon and located ammunition should move.</param>
++		/// <param name="damage">The damage value that the projectile shot should have, based on the given weapon and the located ammunition.</param>
++		/// <param name="knockBack">The knockback value that the projectile shot should have, based on the given weapon and the located ammunition.</param>
++		/// <param name="usedAmmoItemId">The numerical ID of the located ammunition.</param>
++		/// <param name="dontConsume">
++		/// Whether or not ammo consumption logic should be called upon.<br></br>
++		/// This defaults to false, and if it is true for any reason, ammo will not be consumed at the end of the method.<br></br>
++		/// This is useful for gathering the data needed based on PickAmmo's calculations without incidentally consuming any ammunition in the process.
++		/// </param>
++		/// <returns>True if ammo was found/chosen, and false otherwise.</returns>
++		public bool PickAmmo(Item weapon, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, bool dontConsume = false) {
++			projToShoot = weapon.shoot;
++			speed = weapon.shootSpeed;
++			damage = weapon.damage;
++			knockBack = weapon.knockBack;
++			bool canShoot = false;
++			PickAmmo(weapon, ref projToShoot, ref speed, ref canShoot, ref damage, ref knockBack, out usedAmmoItemId, dontConsume);
++			if (!canShoot) {
++				projToShoot = 0;
++				return false;
++			}
++
++			return true;
++		}
++
++		/// <summary>
++		/// Attempts to select an ammo item stack from this player's inventory to shoot with the given weapon.
++		/// </summary>
++		/// <param name="weapon">The weapon for which this call should try to find ammo.</param>
++		/// <returns>Null if no suitable ammo is found; otherwise, returns the first ammo item found.</returns>
++		public Item ChooseAmmo(Item weapon) {
++			var sItem = weapon;
++			Item item = null;
+ 			bool flag = false;
+-			usedAmmoItemId = 0;
++			bool canShoot = false;
++
+ 			if (sItem.useAmmo == AmmoID.Coin) {
+ 				for (int i = 0; i < 4; i++) {
+ 					int num = 50 + i;
+-					if (inventory[num].ammo == sItem.useAmmo && inventory[num].stack > 0) {
++					if (inventory[num].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[i], this)) {
+ 						item = inventory[num];
+ 						canShoot = true;
+ 						flag = true;
+@@ -37072,7 +_,7 @@
+ 			}
+ 
+ 			for (int j = 54; j < 58; j++) {
+-				if (inventory[j].ammo == sItem.useAmmo && inventory[j].stack > 0) {
++				if (inventory[j].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[j], this)) {
+ 					item = inventory[j];
+ 					canShoot = true;
+ 					flag = true;
+@@ -37082,7 +_,7 @@
+ 
+ 			if (!flag) {
+ 				for (int k = 0; k < 54; k++) {
+-					if (inventory[k].ammo == sItem.useAmmo && inventory[k].stack > 0) {
++					if (inventory[k].stack > 0 && ItemLoader.CanChooseAmmo(sItem, inventory[k], this)) {
+ 						item = inventory[k];
+ 						canShoot = true;
+ 						break;
+@@ -37090,10 +_,39 @@
+ 				}
+ 			}
+ 
++			return item;
++		}
++
++		internal void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int totalDamage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false) {
++			usedAmmoItemId = 0;
++			Item item = ChooseAmmo(sItem);
++			canShoot = item != null;
++
++			bool shootWithNoAmmo = false;
++			if (!canShoot && !ItemLoader.NeedsAmmo(sItem, this)) {
++				item = ContentSamples.ItemsByType[sItem.useAmmo];
++				if (item.ammo == sItem.useAmmo)
++					canShoot = shootWithNoAmmo = true;
++			}
++
+ 			if (!canShoot)
+ 				return;
+ 
+ 			usedAmmoItemId = item.type;
++
++			StatModifier ammoDamage = GetTotalDamage(item.DamageType);
++			if (AmmoID.Sets.IsArrow[item.ammo])
++				ammoDamage = ammoDamage.CombineWith(arrowDamage);
++
++			if (AmmoID.Sets.IsBullet[item.ammo])
++				ammoDamage = ammoDamage.CombineWith(bulletDamage);
++
++			if (AmmoID.Sets.IsRocket[item.ammo])
++				ammoDamage = ammoDamage.CombineWith(rocketDamage);
++
++			ammoDamage.Base = 0;
++			ammoDamage.Flat = totalDamage;
++
  			int pickedProjectileId = -1;
  			if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  				projToShoot = pickedProjectileId;
--			else if (sItem.type == 1946)
-+			else if (sItem.type == 1946) {
- 				projToShoot = 338 + item.type - 771;
-+				if (projToShoot > ProjectileID.RocketSnowmanIV)
-+					projToShoot = ProjectileID.RocketSnowmanIV;
-+			}
- 			else if (sItem.type == 3930)
- 				projToShoot = 715 + item.type - AmmoID.Rocket;
- 			else if (sItem.useAmmo == AmmoID.Rocket)
-@@ -37153,8 +_,14 @@
+@@ -37126,15 +_,15 @@
+ 			if (projToShoot == 42) {
+ 				if (item.type == 370) {
+ 					projToShoot = 65;
+-					Damage += 5;
++					ammoDamage.Flat += 5;
+ 				}
+ 				else if (item.type == 408) {
+ 					projToShoot = 68;
+-					Damage += 5;
++					ammoDamage.Flat += 5;
+ 				}
+ 				else if (item.type == 1246) {
+ 					projToShoot = 354;
+-					Damage += 5;
++					ammoDamage.Flat += 5;
+ 				}
+ 			}
+ 
+@@ -37143,15 +_,16 @@
+ 
+ 			if (hasMoltenQuiver && projToShoot == 1) {
+ 				projToShoot = 2;
+-				Damage += 2;
++				ammoDamage.Flat += 2;
+ 			}
+ 
+ 			if (magicQuiver && (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake)) {
+-				KnockBack = (int)((double)KnockBack * 1.1);
++				KnockBack *= 1.1f;
+ 				speed *= 1.1f;
+ 			}
  
  			speed += item.shootSpeed;
++			/*
  			if (item.ranged) {
--				if (item.damage > 0)
--					Damage += (int)((float)item.damage * rangedDamage);
-+				if (item.damage > 0) {
-+					// determine damage multiplier using item base damage and apply to ammo
-+					// equivalent to Damage *= (item.damage + sItem.damage) / sItem.damage
-+					if (sItem.damage > 0) // coin gun fix.
-+						Damage += (int)(item.damage * Damage / (float)sItem.damage);
-+					else
-+						Damage += item.damage;
-+				}
- 			}
+ 				if (item.damage > 0)
+ 					Damage += (int)((float)item.damage * rangedDamage);
+@@ -37159,6 +_,7 @@
  			else {
  				Damage += item.damage;
-@@ -37166,11 +_,12 @@
- 					if (speed > 20f)
+ 			}
++			*/
+ 
+ 			if ((sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && archery) {
+ 				if (speed < 20f) {
+@@ -37167,11 +_,62 @@
  						speed = 20f;
  				}
--
+ 
++				// archery potion buff moved into arrowDamage stat modifier
 -				Damage = (int)((double)Damage * 1.2);
-+				// archery buff damage moved into UpdateBuffs
 +				// Damage = (int)((double)Damage * 1.2);
  			}
  
  			KnockBack += item.knockBack;
-+			ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref Damage, ref KnockBack);
- 			bool flag2 = dontConsume;
++
++			ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref ammoDamage, ref KnockBack);
++			totalDamage = (int)(ammoDamage.ApplyTo(item.damage) + 5E-06f);
++
++			if (!dontConsume && !shootWithNoAmmo && item.consumable && !IsAmmoFreeThisShot(sItem, item, projToShoot)) {
++				CombinedHooks.OnConsumeAmmo(this, sItem, item);
++				item.stack--;
++				if (item.stack <= 0) {
++					item.active = false;
++					item.TurnToAir();
++				}
++			}
++		}
++
++		/// <summary>
++		/// Determines whether or not the given ammunition should be conserved, based on the given weapon as wielded by this player.
++		/// </summary>
++		/// <param name="weapon">The weapon attempting to consume the ammo.</param>
++		/// <param name="ammo">The ammo attempting to be conserved (i.e. not consumed).</param>
++		/// <param name="projToShoot">The projectile that should be shot by the given weapon/ammo combination.</param>
++		/// <returns>True if the ammo should be conserved on the given shot; false otherwise.</returns>
++		public bool IsAmmoFreeThisShot(Item weapon, Item ammo, int projToShoot) {
++			Item sItem = weapon;
++			Item item = ammo;
++			/*
++			TODO:
++			the current approach to ammo consumption hooks demands that vanilla conservation chances still be allowed to factor in
++			while this is fine for some, for others, it may be preferable to be able to guarantee ammo consumption if it should happen
++			for this, two approaches exist. each has their ups and downs:
++			1 - CanConsumeAmmo to nullable, return given value if it exists
++			2 - separate hook for forced ammo consumption. returns false by default, return true to bypass all vanilla conservation chances
++
++			post-May-freeze, will decide on one and make changes accordingly
++			- thomas
++			*/
++			if (!CombinedHooks.CanConsumeAmmo(this, sItem, item))
++				return true;
++
++			if (sItem.consumeAmmoOnFirstShotOnly && !ItemAnimationJustStarted)
++				return true;
++
++			if (sItem.consumeAmmoOnLastShotOnly) {
++				int useTime = CombinedHooks.TotalUseTime(sItem.useTime, this, sItem);
++				bool isLastShot = itemAnimation <= useTime || // not enough time to shoot again
++					sItem.useLimitPerAnimation != null && ItemUsesThisAnimation == sItem.useLimitPerAnimation - 1; // this shot hits the limit
++
++				if (!isLastShot)
++					return true;
++			}
++
+-			bool flag2 = dontConsume;
++			bool flag2 = false;
  			if (sItem.type == 3475 && Main.rand.Next(3) != 0)
  				flag2 = true;
-@@ -37208,10 +_,12 @@
+ 
+@@ -37181,7 +_,7 @@
+ 			if (sItem.type == 3540 && Main.rand.Next(3) != 0)
+ 				flag2 = true;
+ 
+-			if (magicQuiver && (sItem.useAmmo == AmmoID.Arrow || sItem.useAmmo == AmmoID.Stake) && Main.rand.Next(5) == 0)
++			if (magicQuiver && AmmoID.Sets.IsArrow[sItem.useAmmo] && Main.rand.Next(5) == 0)
+ 				flag2 = true;
+ 
+ 			if (ammoBox && Main.rand.Next(5) == 0)
+@@ -37208,11 +_,13 @@
  			if (sItem.type == 1553 && Main.rand.Next(3) != 0)
  				flag2 = true;
  
--			if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
-+			// changed to ItemAnimationJustStarted for consistency #2351. Also applies to flamethrower and clentaminator below
-+			if (sItem.type == 434 && !ItemAnimationJustStarted)
++			/* Clockwork Assault Rifle + Eventide. Handled by consumeAmmoOnLastShotOnly.
+ 			if (sItem.type == 434 && itemAnimation < sItem.useAnimation - 2)
  				flag2 = true;
  
-+			// changed > to >= because of itemAnimation adjustment. Uses ammo on last arrow not first
 -			if (sItem.type == 4953 && itemAnimation > sItem.useAnimation - 8)
 +			if (sItem.type == 4953 && itemAnimation >= sItem.useAnimation - 8)
  				flag2 = true;
++			*/
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
-@@ -37226,13 +_,17 @@
+ 				flag2 = true;
+@@ -37226,6 +_,7 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
--			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2)
-+			if (projToShoot == 85 && !ItemAnimationJustStarted)
++			/* Flamethrower + Elf Melter (handled by consumeAmmoOnFirstShotOnly) + Clentaminator (handled by consumeAmmoOnFirstShotOnly)
+ 			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2)
  				flag2 = true;
  
--			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && itemAnimation < itemAnimationMax - 5)
-+			if ((projToShoot == 145 || projToShoot == 146 || projToShoot == 147 || projToShoot == 148 || projToShoot == 149) && !ItemAnimationJustStarted)
- 				flag2 = true;
+@@ -37239,6 +_,9 @@
+ 					item.TurnToAir();
+ 				}
+ 			}
++			*/
 +
-+			flag2 |= !CombinedHooks.CanConsumeAmmo(this, sItem, item);
++			return flag2;
+ 		}
  
- 			if (!flag2 && item.consumable) {
-+				CombinedHooks.OnConsumeAmmo(this, sItem, item);
-+
- 				item.stack--;
- 				if (item.stack <= 0) {
- 					item.active = false;
+ 		public void GetOtherPlayersPickTile(int x, int y, int pickDamage) {
 @@ -37274,7 +_,7 @@
  						NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  					}
@@ -5390,117 +5624,79 @@
  			Item item = new Item();
  			item.type = 0;
  			switch (questsDone) {
-@@ -39349,34 +_,68 @@
+@@ -39349,6 +_,8 @@
  					}
  			}
  
-+			if (!item.IsAir) {
-+				rewardItems.Add(item);
-+			}
-+
++			rewardItems.Add(item);
 +			/*
  			item.position = base.Center;
-+			*/
-+
  			Item item2 = GetItem(whoAmI, item, anglerRewardSettings);
-+
  			if (item2.stack > 0) {
-+				/*
- 				int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+@@ -39356,11 +_,14 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
-+				*/
-+
-+				rewardItems.Add(item2);
  			}
++			*/
  
  			if (item.type == 2417) {
  				Item item3 = new Item();
  				Item item4 = new Item();
  				item3.SetDefaults(2418);
-+
++				rewardItems.Add(item3);
 +				/*
  				item3.position = base.Center;
-+				*/
-+
  				item2 = GetItem(whoAmI, item3, anglerRewardSettings);
-+
  				if (item2.stack > 0) {
-+					/*
- 					int number2 = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+@@ -39368,15 +_,20 @@
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number2, 1f);
-+					*/
-+
-+					rewardItems.Add(item2);
  				}
-+
-+				rewardItems.Add(item3);
++				*/
  
  				item4.SetDefaults(2419);
-+
++				rewardItems.Add(item4);
 +				/*
  				item4.position = base.Center;
-+				*/
-+
  				item2 = GetItem(whoAmI, item4, anglerRewardSettings);
 +
  				if (item2.stack > 0) {
-+					/*
  					int number3 = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number3, 1f);
-+					*/
-+
-+					rewardItems.Add(item2);
  				}
-+				
-+				rewardItems.Add(item4);
++				*/
  			}
  			else {
  				if (item.type != 2498)
-@@ -39385,26 +_,48 @@
+@@ -39385,26 +_,34 @@
  				Item item5 = new Item();
  				Item item6 = new Item();
  				item5.SetDefaults(2499);
-+
++				rewardItems.Add(item5);
 +				/*
  				item5.position = base.Center;
-+				*/
-+
  				item2 = GetItem(whoAmI, item5, anglerRewardSettings);
 +
  				if (item2.stack > 0) {
-+					/*
  					int number4 = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number4, 1f);
-+					*/
-+
-+					rewardItems.Add(item2);
  				}
-+
-+				rewardItems.Add(item5);
++				*/
  
  				item6.SetDefaults(2500);
-+
++				rewardItems.Add(item6);
 +				/*
  				item6.position = base.Center;
-+				*/
-+
  				item2 = GetItem(whoAmI, item6, anglerRewardSettings);
 +
  				if (item2.stack > 0) {
-+					/*
  					int number5 = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
  					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number5, 1f);
-+					*/
-+
-+					rewardItems.Add(item2);
  				}
-+
-+				rewardItems.Add(item6);
++				*/
  			}
  		}
  
@@ -5509,29 +5705,20 @@
  			if (Main.rand.Next((int)(100f * rarityReduction)) > 50)
  				return;
  
-@@ -39434,16 +_,28 @@
+@@ -39434,6 +_,8 @@
  			if (Main.rand.Next(250) <= questsDone)
  				item.stack++;
  
-+
-+			if (item.stack > 0)
-+				rewardItems.Add(item);
-+
++			rewardItems.Add(item);
 +			/*
  			item.position = base.Center;
-+			*/
-+
  			Item item2 = GetItem(whoAmI, item, GetItemSettings.NPCEntityToPlayerInventorySettings);
-+
  			if (item2.stack > 0) {
-+				/*
- 				int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+@@ -39441,9 +_,10 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
-+				*/
-+
-+				rewardItems.Add(item2);
  			}
++			*/
  		}
  
 -		private void GetAnglerReward_Money(IEntitySource source, int questsDone, float rarityReduction, ref GetItemSettings anglerRewardSettings) {
@@ -5539,20 +5726,23 @@
  			Item item = new Item();
  			int num = (questsDone + 50) / 2;
  			num = (int)((float)(num * Main.rand.Next(50, 201)) * 0.015f);
-@@ -39476,9 +_,13 @@
+@@ -39473,6 +_,8 @@
+ 				item.stack = num;
+ 			}
+ 
++			rewardItems.Add(item);
++			/*
  			item.position = base.Center;
  			Item item2 = GetItem(whoAmI, item, anglerRewardSettings);
  			if (item2.stack > 0) {
-+				/*
- 				int number = Item.NewItem(source, (int)position.X, (int)position.Y, width, height, item2.type, item2.stack, noBroadcast: false, 0, noGrabDelay: true);
+@@ -39480,6 +_,7 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
-+				*/
-+
-+				rewardItems.Add(item2);
  			}
++			*/
  		}
  
+ 		public bool DropAnglerAccByMissing(List<int> itemIdsOfAccsWeWant, int randomChanceForASingleAcc, out bool botheredRollingForADrop, out int itemIdToDrop) {
 @@ -39603,13 +_,17 @@
  					list.Add(3556);
  				}

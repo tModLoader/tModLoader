@@ -245,7 +245,7 @@
  
  							break;
  						}
-@@ -1060,9 +_,16 @@
+@@ -1060,14 +_,28 @@
  							writer.Write((short)number);
  							writer.Write((short)number2);
  							Item item3 = Main.player[(int)number4].inventory[(int)number3];
@@ -265,6 +265,18 @@
  							break;
  						}
  					case 91:
+ 						writer.Write(number);
++						// TML: #WorldUIAnchorProjectileSyncFix
++						// number2 is packed with owner and type
++						int packedOwnerType = (int)number2;
++						number2 = (int)number2 & 0xFF; // Reassign for patch reduction - this is now "type" (Masking has no effect on vanilla value)
+ 						writer.Write((byte)number2);
++						// Send byte for owner if type corresponds to projectile (magic number 2)
++						if (!ModNet.AllowVanillaClients && number2 == 2)
++							writer.Write((byte)(packedOwnerType >> 8));
+ 						if (number2 != 255f) {
+ 							writer.Write((ushort)number3);
+ 							writer.Write((ushort)number4);
 @@ -1230,9 +_,17 @@
  							writer.Write((short)number);
  							writer.Write((short)number2);
