@@ -45,11 +45,13 @@ namespace ExampleMod.Content.Items.Tools
 			// If you're unsure what to return, return null.
 			// For this example, we'll give our example bug net a 20% chance to catch lava critters successfully (50% with a Warmth Potion buff active).
 			if (ItemID.Sets.IsLavaBait[target.catchItem]) {
-				if (!player.resistCold && Main.rand.NextBool(5))
+				if (!player.resistCold && Main.rand.NextBool(5)) {
 					return true;
+				}
 
-				if (player.resistCold && Main.rand.NextBool())
+				if (player.resistCold && Main.rand.NextBool()) {
 					return true;
+				}
 			}
 
 			// For all cases where true isn't explicitly returned, we'll return null so that vanilla catching rules and effects can take place.
@@ -69,8 +71,9 @@ namespace ExampleMod.Content.Items.Tools
 	public class ExampleCatchItemModification : GlobalItem
 	{
 		public override void OnSpawn(Item item, IEntitySource source) {
-			if (source is not EntitySource_CatchEntity catchEntity)
+			if (source is not EntitySource_CatchEntity catchEntity) {
 				return;
+			}
 
 			if (catchEntity.Entity is Player player) {
 				// Gives a 5% chance for the Example Bug Net to duplicate caught NPCs.
