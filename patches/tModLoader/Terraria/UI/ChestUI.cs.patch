@@ -78,11 +78,12 @@
  						int num3 = inventory[item2.Key].stack;
  						int num4 = item[num2].maxStack - item[num2].stack;
  						if (num4 == 0)
-@@ -655,6 +_,9 @@
+@@ -655,6 +_,10 @@
  					if ((item5.Value != num6 || inventory[item5.Key].netID != num6) && (!flag || inventory[item5.Key].stack <= 0))
  						continue;
  
-+					if (!flag && !ItemLoader.CanStack(item[num5], inventory[item5.Key])) // outmost for iterates over empty slots, flag not true means item was not put in yet (meaning canstack does not have to be checked)
++					// Outmost for iterates over empty slots, flag not true means item was not put in yet (meaning CanStack does not have to be checked)
++					if (!flag && !ItemLoader.CanStack(item[num5], inventory[item5.Key]))
 +						continue;
 +
  					SoundEngine.PlaySound(7);
