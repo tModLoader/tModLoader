@@ -319,38 +319,38 @@ namespace Terraria
 		}
 
 		/// <summary>
-		/// Moves the recipe before the first one creating the item of the ID given as parameter.
+		/// Sorts the recipe before the first one creating the item of the ID given as parameter.
 		/// </summary>
-		public Recipe MoveBeforeRecipesOf(int itemId) {
+		public Recipe SortBeforeFirstRecipesOf(int itemId) {
 			Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
 			if (target != null) {
-				return MoveBefore(target);
+				return SortBefore(target);
 			}
 
 			return this;
 		}
 
 		/// <summary>
-		/// Moves the recipe before the one given as parameter. Both recipes must already be registered.
+		/// Sorts the recipe before the one given as parameter. Both recipes must already be registered.
 		/// </summary>
-		public Recipe MoveBefore(Recipe recipe) => SetOrdering(recipe, false);
+		public Recipe SortBefore(Recipe recipe) => SetOrdering(recipe, false);
 
 		/// <summary>
-		/// Moves the recipe after the first one creating the item of the ID given as parameter.
+		/// Sorts the recipe after the first one creating the item of the ID given as parameter.
 		/// </summary>
-		public Recipe MoveAfterRecipesOf(int itemId) {
+		public Recipe SortAfterFirstRecipesOf(int itemId) {
 			Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
 			if (target != null) {
-				return MoveAfter(target);
+				return SortAfter(target);
 			}
 
 			return this;
 		}
 
 		/// <summary>
-		/// Moves the recipe after the one given as parameter. Both recipes must already be registered.
+		/// Sorts the recipe after the one given as parameter. Both recipes must already be registered.
 		/// </summary>
-		public Recipe MoveAfter(Recipe recipe) => SetOrdering(recipe, true);
+		public Recipe SortAfter(Recipe recipe) => SetOrdering(recipe, true);
 
 		#endregion
 

@@ -51,7 +51,7 @@ namespace ExampleMod.Content.Items.Accessories
 				.AddIngredient<ExampleItem>()
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				.Register()
-				.MoveBefore(Main.recipe.First(recipe => recipe.createItem.wingSlot != -1)); // Places this recipe before any wing so every wing stays together in the crafting menu.
+				.SortBefore(Main.recipe.First(recipe => recipe.createItem.wingSlot != -1)); // Places this recipe before any wing so every wing stays together in the crafting menu.
 		}
 	}
 }
