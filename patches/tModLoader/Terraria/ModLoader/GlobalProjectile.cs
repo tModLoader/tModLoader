@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.DataStructures;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
