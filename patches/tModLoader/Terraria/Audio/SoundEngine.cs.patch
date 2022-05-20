@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundEngine.cs
 +++ src/tModLoader/Terraria/Audio/SoundEngine.cs
-@@ -6,7 +_,7 @@
+@@ -6,10 +_,10 @@
  
  namespace Terraria.Audio
  {
@@ -8,7 +8,11 @@
 +	public static partial class SoundEngine
  	{
  		public static readonly object AudioLock = new object();
- 		public static LegacySoundPlayer LegacySoundPlayer;
+-		public static LegacySoundPlayer LegacySoundPlayer;
++		internal static LegacySoundPlayer LegacySoundPlayer;
+ 		public static SoundPlayer SoundPlayer;
+ 		public static bool AreSoundsPaused;
+ 
 @@ -20,6 +_,8 @@
  
  		public static void Initialize() {
@@ -18,49 +22,68 @@
  		}
  
  		public static void Load(IServiceProvider services) {
-@@ -60,13 +_,20 @@
+@@ -56,6 +_,8 @@
+ 			}
+ 		}
+ 
++		//TML: See SoundEngine.TML.cs for new PlaySound overloads
++		/*
+ 		public static void PlaySound(int type, Vector2 position, int style = 1) {
  			PlaySound(type, (int)position.X, (int)position.Y, style);
  		}
- 
--		public static SoundEffectInstance PlaySound(LegacySoundStyle type, Vector2 position) => PlaySound(type, (int)position.X, (int)position.Y);
-+		public static SoundEffectInstance PlaySound(ISoundStyle type, Vector2 position) => PlaySound(type, (int)position.X, (int)position.Y);
- 
--		public static SoundEffectInstance PlaySound(LegacySoundStyle type, int x = -1, int y = -1) {
-+		public static SoundEffectInstance PlaySound(ISoundStyle type, int x = -1, int y = -1) {
- 			if (type == null)
+@@ -77,11 +_,11 @@
  				return null;
  
--			return PlaySound(type.SoundId, x, y, type.Style, type.Volume, type.GetRandomPitch());
-+			SlotId slot;
-+
-+			if (x != -1 || y != -1)
-+				slot = PlayTrackedSound(type, new Vector2(x, y));
-+			else
-+				slot = PlayTrackedSound(type);
-+
-+			return slot.IsValid ? GetActiveSound(slot)?.Sound : null;
+ #if FNA
+-			lock(AudioLock)
++			lock (AudioLock)
+ #endif
+ 				return LegacySoundPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
+-
  		}
++		*/
  
- 		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
-@@ -94,7 +_,7 @@
+ 		public static ActiveSound GetActiveSound(SlotId id) {
+ 			if (Main.dedServ)
+@@ -94,43 +_,45 @@
  
  		}
  
 -		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position)
-+		public static SlotId PlayTrackedSound(ISoundStyle style, Vector2 position)
++		//TML: Position parameter made nullable.
++		public static SlotId PlayTrackedSound(ISoundStyle style, Vector2? position = null)
  		{
- 			if(Main.dedServ)
+-			if(Main.dedServ)
++			if (Main.dedServ)
  				return SlotId.Invalid;
-@@ -106,7 +_,7 @@
+-
++			
+ 			if (!IsAudioSupported)
+ 				return SlotId.Invalid;
  
+ 			return SoundPlayer.Play(style, position);
+-
  		}
  
++		//TML: Merged into the above method.
++		/*
 -		public static SlotId PlayTrackedSound(SoundStyle style)
 +		public static SlotId PlayTrackedSound(ISoundStyle style)
  		{
- 			if(Main.dedServ)
+-			if(Main.dedServ)
++			if (Main.dedServ)
  				return SlotId.Invalid;
-@@ -123,14 +_,14 @@
+ 
+ 			if (!IsAudioSupported)
+ 				return SlotId.Invalid;
+ 
+ 			return SoundPlayer.Play(style);
+-
+ 		}
++		*/
+ 
+ 		public static void StopTrackedSounds() {
+ 			if (IsAudioSupported)
  				SoundPlayer.StopAll();
  		}
  

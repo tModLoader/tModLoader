@@ -1,6 +1,17 @@
 --- src/TerrariaNetCore/Terraria/Audio/ActiveSound.cs
 +++ src/tModLoader/Terraria/Audio/ActiveSound.cs
-@@ -17,14 +_,14 @@
+@@ -8,8 +_,8 @@
+ {
+ 	public class ActiveSound
+ 	{
+-		public readonly bool IsGlobal;
+-		public Vector2 Position;
++		//public readonly bool IsGlobal;
++		public Vector2? Position; //TML: Made nullable
+ 		public float Volume;
+ 
+ 		public SoundEffectInstance Sound {
+@@ -17,20 +_,21 @@
  			private set;
  		}
  
@@ -14,20 +25,37 @@
 +		public bool IsPlaying => !Sound.IsDisposed && Sound.State == SoundState.Playing;
  
 -		public ActiveSound(SoundStyle style, Vector2 position) {
-+		public ActiveSound(ISoundStyle style, Vector2 position) {
++		//TML: Position parameter made nullable.
++		public ActiveSound(ISoundStyle style, Vector2? position = null) {
  #if FNA
  			Monitor.Enter(SoundEngine.AudioLock);
  #endif
-@@ -38,7 +_,7 @@
+ 			Position = position;
+ 			Volume = 1f;
+-			IsGlobal = false;
++			//IsGlobal = false;
+ 			Style = style;
+ 			Play();
+ #if FNA
+@@ -38,13 +_,16 @@
  #endif
  		}
  
++		//TML: Merged with the above constructor.
++		/*
 -		public ActiveSound(SoundStyle style) {
 +		public ActiveSound(ISoundStyle style) {
  			Position = Vector2.Zero;
  			Volume = 1f;
  			IsGlobal = true;
-@@ -71,7 +_,7 @@
+ 			Style = style;
+ 			Play();
+ 		}
++		*/
+ 
+ 		private void Play() {
+ 			SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
+@@ -71,14 +_,17 @@
  		}
  
  		public void Update() {
@@ -35,4 +63,16 @@
 +			if (Sound != null && !Sound.IsDisposed) {
  				Vector2 value = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
  				float num = 1f;
++				/*
  				if (!IsGlobal) {
++				*/
++				if (Position.HasValue) {
+-					float value2 = (Position.X - value.X) / ((float)Main.screenWidth * 0.5f);
++					float value2 = (Position.Value.X - value.X) / ((float)Main.screenWidth * 0.5f);
+ 					value2 = MathHelper.Clamp(value2, -1f, 1f);
+ 					Sound.Pan = value2;
+-					float num2 = Vector2.Distance(Position, value);
++					float num2 = Vector2.Distance(Position.Value, value);
+ 					num = 1f - num2 / ((float)Main.screenWidth * 1.5f);
+ 				}
+ 

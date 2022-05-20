@@ -1,27 +1,47 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -11,8 +_,8 @@
+@@ -11,12 +_,18 @@
  	{
  		private readonly SlotVector<ActiveSound> _trackedSounds = new SlotVector<ActiveSound>(4096);
  
 -		public SlotId Play(SoundStyle style, Vector2 position) {
-+		public SlotId Play(ISoundStyle style, Vector2 position) {
 -			if (Main.dedServ || style == null || !style.IsTrackable)
++		//TML: Position parameter made nullable.
++		public SlotId Play(ISoundStyle style, Vector2? position = null) {
 +			if (Main.dedServ || style == null)
  				return SlotId.Invalid;
  
++			/*
  			if (Vector2.DistanceSquared(Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), position) > 100000000f)
-@@ -26,8 +_,8 @@
+ 				return SlotId.Invalid;
++			*/
++
++			if (position.HasValue && Vector2.DistanceSquared(Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), position.Value) > 100000000f)
++				return SlotId.Invalid;
+ 
+ 			ActiveSound value = new ActiveSound(style, position);
+ 			return _trackedSounds.Add(value);
+@@ -25,14 +_,17 @@
+ 		public void Reload() {
  			StopAll();
  		}
- 
+-
 -		public SlotId Play(SoundStyle style) {
-+		public SlotId Play(ISoundStyle style) {
 -			if (Main.dedServ || style == null || !style.IsTrackable)
++		
++		//TML: Merged into the above method.
++		/*
++		public SlotId Play(ISoundStyle style) {
 +			if (Main.dedServ || style == null)
  				return SlotId.Invalid;
  
  			ActiveSound value = new ActiveSound(style);
+ 			return _trackedSounds.Add(value);
+ 		}
++		*/
+ 
+ 		public ActiveSound GetActiveSound(SlotId id) {
+ 			if (!_trackedSounds.Has(id))
 @@ -80,7 +_,7 @@
  #endif
  		}
