@@ -1,5 +1,10 @@
 var NAVTREEINDEX10 =
 {
+"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a06ccfb0a103753d8a9e495fc2b13849f":[1,0,2,5,7,6,1],
+"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a29f7d8cab95a3b6016f79307ebab76b2":[1,0,2,5,7,6,4],
+"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a2eb436a6e54aa4d3cf1ec1db429de2a8":[1,0,2,5,7,6,0],
+"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a5b494bf5b31ca5e955e0043caf3a8d50":[1,0,2,5,7,6,2],
+"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a8244c44c26c2f9434dadb9b94ec39dd3":[1,0,2,5,7,6,3],
 "class_terraria_1_1_game_content_1_1_events_1_1_sandstorm.html":[1,0,2,5,7,7],
 "class_terraria_1_1_game_content_1_1_events_1_1_sandstorm.html#a0184f5dbbf265939c80369fe31d76315":[1,0,2,5,7,7,2],
 "class_terraria_1_1_game_content_1_1_events_1_1_sandstorm.html#a04f219d4f7869d66c92de21ef7d970cd":[1,0,2,5,7,7,6],
@@ -244,10 +249,5 @@ var NAVTREEINDEX10 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_christmas.html#a1da8a6d530f4ecb3892100dd251913f5":[1,0,2,5,10,5,18,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_christmas.html#abaaddaba22d9fcb03f6193da1e4479cb":[1,0,2,5,10,5,18,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_christmas.html#ae86fbdd1868ec82b48db6e8efbbfb524":[1,0,2,5,10,5,18,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption.html":[1,0,2,5,10,5,19],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption.html#a2e15b4175ee792d22002c857304a2fb4":[1,0,2,5,10,5,19,0],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption.html#a6511f6dc04f0d7eec8bb45e9aa6c4653":[1,0,2,5,10,5,19,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption.html#aa8854f03cdabdd7f2da5abfafbd102fa":[1,0,2,5,10,5,19,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption_and_not_expert.html":[1,0,2,5,10,5,20],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption_and_not_expert.html#af49f99204dbd58d5c2edee75b829b829":[1,0,2,5,10,5,20,0]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption.html":[1,0,2,5,10,5,19]
 };

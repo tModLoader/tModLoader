@@ -1,5 +1,10 @@
 var NAVTREEINDEX18 =
 {
+"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_martian_saucer_big_progress_bar.html#a41e7bc1ec885a73115ca403f34d57a57":[1,0,2,5,21,0,10,2],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_martian_saucer_big_progress_bar.html#aac52011b7b4e5e46a2584f5c5ca7d407":[1,0,2,5,21,0,10,1],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_martian_saucer_big_progress_bar.html#af82a387e3f8413d80df562ab9dd00b61":[1,0,2,5,21,0,10,0],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_moon_lord_progress_bar.html":[1,0,2,5,21,0,11],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_moon_lord_progress_bar.html#a67472bcdd94c0d5f88fad433d6c44a61":[1,0,2,5,21,0,11,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_moon_lord_progress_bar.html#aa06d04c795804be37aa204264955ef90":[1,0,2,5,21,0,11,2],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_moon_lord_progress_bar.html#aaa6724c8c7a5513e02a2d2bef21b4294":[1,0,2,5,21,0,11,1],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_nebula_pillar_big_progress_bar.html":[1,0,2,5,21,0,12],
@@ -244,10 +249,5 @@ var NAVTREEINDEX18 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_colored_slider_simple.html#aa4aba24f8f778321e7760e335a01d68d":[1,0,2,5,21,2,25,3],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_infinite_items_display.html":[1,0,2,5,21,2,26],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_infinite_items_display.html#a03ee1f635a5e08a8814778745d83b062":[1,0,2,5,21,2,26,1],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_infinite_items_display.html#a504d2f7d43a7dec4a53e0fdaaa1ff6fb":[1,0,2,5,21,2,26,6],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_infinite_items_display.html#a60b4803390bf1658588ea2e9c7128574":[1,0,2,5,21,2,26,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_infinite_items_display.html#a60b4803390bf1658588ea2e9c7128574ab9ad2b2f9cad51350c93a732954c3851":[1,0,2,5,21,2,26,0,1],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_infinite_items_display.html#a60b4803390bf1658588ea2e9c7128574ad0be79eb2b0d3fa1c6ccd1e78eb68284":[1,0,2,5,21,2,26,0,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_infinite_items_display.html#a7a52fdccc9677e08ebd9d8eae7540c50":[1,0,2,5,21,2,26,9],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_infinite_items_display.html#a8ff48feb1170a08a1ed93aca5e5f2e8d":[1,0,2,5,21,2,26,5]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_creative_infinite_items_display.html#a504d2f7d43a7dec4a53e0fdaaa1ff6fb":[1,0,2,5,21,2,26,6]
 };

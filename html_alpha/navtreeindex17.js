@@ -1,5 +1,10 @@
 var NAVTREEINDEX17 =
 {
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#adf7c5b291da25fdf72a010fbdf6ac8c6":[1,0,2,5,20,4,24],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#ae0a0167003cc46bb0650f9bb08c3fd94":[1,0,2,5,20,4,1],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#aed55e15a268d7a7551bed80000eff8b4":[1,0,2,5,20,4,16],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#af3332fde1f9837097bee69c327761c7c":[1,0,2,5,20,4,2],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_item_frame.html":[1,0,2,5,20,5],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_item_frame.html#a2097554ccf2d82c17f5398b64b705349":[1,0,2,5,20,5,17],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_item_frame.html#a28fa07f50af01bc3bb9c4a50495d33bb":[1,0,2,5,20,5,6],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_item_frame.html#a35e0e4df06a1c780bb534c6a5fabd179":[1,0,2,5,20,5,16],
@@ -244,10 +249,5 @@ var NAVTREEINDEX17 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_lunar_pillar_big_progess_bar.html":[1,0,2,5,21,0,9],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_lunar_pillar_big_progess_bar.html#ab1febab603cde18a5708a4ef8e33c902":[1,0,2,5,21,0,9,1],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_lunar_pillar_big_progess_bar.html#afb05d40e91624ad5b75bd6aa3885ef6a":[1,0,2,5,21,0,9,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_martian_saucer_big_progress_bar.html":[1,0,2,5,21,0,10],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_martian_saucer_big_progress_bar.html#a41e7bc1ec885a73115ca403f34d57a57":[1,0,2,5,21,0,10,2],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_martian_saucer_big_progress_bar.html#aac52011b7b4e5e46a2584f5c5ca7d407":[1,0,2,5,21,0,10,1],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_martian_saucer_big_progress_bar.html#af82a387e3f8413d80df562ab9dd00b61":[1,0,2,5,21,0,10,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_moon_lord_progress_bar.html":[1,0,2,5,21,0,11],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_moon_lord_progress_bar.html#a67472bcdd94c0d5f88fad433d6c44a61":[1,0,2,5,21,0,11,0]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_martian_saucer_big_progress_bar.html":[1,0,2,5,21,0,10]
 };

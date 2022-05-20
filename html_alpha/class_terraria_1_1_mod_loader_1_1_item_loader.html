@@ -125,6 +125,13 @@ static ? bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanAutoReuse
 <tr class="memitem:a0b7622f93f8a86d5a0d6a4e5561027c3"><td class="memItemLeft" align="right" valign="top">static ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a0b7622f93f8a86d5a0d6a4e5561027c3">CanBurnInLava</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a0b7622f93f8a86d5a0d6a4e5561027c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a4ade56e1ccad98f196a937714fdbfbd2" title="Returns whether or not this item will burn in lava regardless of any conditions. Returns null by defa...">ModItem.CanBurnInLava</a>.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a0b7622f93f8a86d5a0d6a4e5561027c3">More...</a><br /></td></tr>
 <tr class="separator:a0b7622f93f8a86d5a0d6a4e5561027c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e8b7c50129ee28fbe35fe74134dc531"><td class="memItemLeft" align="right" valign="top">static ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a1e8b7c50129ee28fbe35fe74134dc531">CanCatchNPC</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> target, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:a1e8b7c50129ee28fbe35fe74134dc531"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gathers the results of all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aa1f2d2a0474b7f606680976ac5f6f24e" title="Allows you to determine whether the given item can catch the given NPC.  Return true or false to say ...">GlobalItem.CanCatchNPC</a> hooks, then the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a3614fa75d1f18df5139412c314b830bd" title="Allows you to determine whether this item can catch the given NPC.  Return true or false to say the g...">ModItem.CanCatchNPC</a> hook if applicable.<br  />
+ If any of them returns false, this returns false.<br  />
+ Otherwise, if any of them returns true, then this returns true.<br  />
+ If all of them return null, this returns null.<br  />
+  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a1e8b7c50129ee28fbe35fe74134dc531">More...</a><br /></td></tr>
+<tr class="separator:a1e8b7c50129ee28fbe35fe74134dc531"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a221e77c97d28387f54bb499e5fdb294c"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a221e77c97d28387f54bb499e5fdb294c">CanChooseAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a221e77c97d28387f54bb499e5fdb294c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls each <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#ac6bc7e67e37644ffad793c6e248833d0" title="Whether or not the given ammo item is valid for the given weapon; called on the weapon....">GlobalItem.CanChooseAmmo</a> hook for the weapon, and each <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a86e481cb1313f6b1a523fe6320639d47" title="Whether or not the given ammo item is valid for the given weapon; called on the ammo....">GlobalItem.CanBeChosenAsAmmo</a> hook for the ammo,<br  />
  then each corresponding hook in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> if applicable for the weapon and/or ammo, until one of them returns a concrete false value.<br  />
@@ -239,7 +246,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>ItemSpace</b> 
 <tr class="memdesc:a96ec5383c404f37f9e69a81a3dc09590"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ae18cf93cad8a7699240c9b8ae2584f5f" title="Allows you to modify the damage, etc., that this melee weapon does to a player.">ModItem.ModifyHitPvp</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a896355b7a4061e20bc21d3a9e7c10a93" title="Allows you to modify the damage, etc., that a melee weapon does to a player.">GlobalItem.ModifyHitPvp</a> hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a96ec5383c404f37f9e69a81a3dc09590">More...</a><br /></td></tr>
 <tr class="separator:a96ec5383c404f37f9e69a81a3dc09590"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3373621455bac10ba12ff955e4fee34d"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a3373621455bac10ba12ff955e4fee34d">ModifyItemScale</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref float scale)</td></tr>
-<tr class="memdesc:a3373621455bac10ba12ff955e4fee34d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#af1833c40f765b9f5332b4d3e0f0ecfca" title="Allows you to dynamically modify this item&#39;s size for the given player, similarly to the effect of th...">ModItem.ModifyItemScale</a> if applicable, then all applicable <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a56082e75c7be47f81d6e272415ebaee8" title="Allows you to dynamically modify the given item&#39;s size for the given player, similarly to the effect ...">GlobalItem.ModifyItemScale</a> instances.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a3373621455bac10ba12ff955e4fee34d">More...</a><br /></td></tr>
+<tr class="memdesc:a3373621455bac10ba12ff955e4fee34d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#af1833c40f765b9f5332b4d3e0f0ecfca">ModItem.ModifyItemScale</a> if applicable, then all applicable <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a56082e75c7be47f81d6e272415ebaee8">GlobalItem.ModifyItemScale</a> instances.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a3373621455bac10ba12ff955e4fee34d">More...</a><br /></td></tr>
 <tr class="separator:a3373621455bac10ba12ff955e4fee34d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ca3a21d2a51bbdf72f502b713c73bb8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a0ca3a21d2a51bbdf72f502b713c73bb8">ModifyManaCost</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref float reduce, ref float mult)</td></tr>
 <tr class="memdesc:a0ca3a21d2a51bbdf72f502b713c73bb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a8175b362b2f4c08f31fa18f116556bba" title="Allows you to temporarily modify the amount of mana this item will consume on use,...">ModItem.ModifyManaCost</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a88717f23eaaaaa8f85cc9cbdbe9b9245" title="Allows you to temporarily modify the amount of mana an item will consume on use, based on player buff...">GlobalItem.ModifyManaCost</a> hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a0ca3a21d2a51bbdf72f502b713c73bb8">More...</a><br /></td></tr>
@@ -265,6 +272,9 @@ static <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="cla
 <tr class="memitem:add602a380a516d22a0fab669b541fcbb"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#add602a380a516d22a0fab669b541fcbb">NeedsAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:add602a380a516d22a0fab669b541fcbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aa7fda0d2e1dc71695127fcacce23daab" title="Whether or not having no ammo prevents an item that uses ammo from shooting. Return false to allow sh...">ModItem.NeedsAmmo</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#afc22d3956941d0da0fafbafac1c0db8d" title="Whether or not having no ammo prevents an item that uses ammo from shooting. Return false to allow sh...">GlobalItem.NeedsAmmo</a> hooks, until any of them returns false.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#add602a380a516d22a0fab669b541fcbb">More...</a><br /></td></tr>
 <tr class="separator:add602a380a516d22a0fab669b541fcbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30a1f22ada8b998759186ea5c0694789"><td class="memItemLeft" align="right" valign="top"><a id="a30a1f22ada8b998759186ea5c0694789"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCatchNPC</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, bool failed)</td></tr>
+<tr class="separator:a30a1f22ada8b998759186ea5c0694789"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97e598fe867983e89c98025b18baa2fa"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a97e598fe867983e89c98025b18baa2fa">OnConsumeAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:a97e598fe867983e89c98025b18baa2fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aef202c01834342fcc335a12305b2b0b8" title="Allows you to make things happen when the given ammo is consumed by this weapon.  Called before the a...">ModItem.OnConsumeAmmo</a> for the weapon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#abc0398f80ddaf8f2b902fca49be2a08d" title="Allows you to make things happen when this ammo is consumed by the given weapon.  Called before the a...">ModItem.OnConsumedAsAmmo</a> for the ammo, then each corresponding hook for the weapon and ammo.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a97e598fe867983e89c98025b18baa2fa">More...</a><br /></td></tr>
 <tr class="separator:a97e598fe867983e89c98025b18baa2fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -563,6 +573,54 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </div><div class="memdoc">
 
 <p>Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a4ade56e1ccad98f196a937714fdbfbd2" title="Returns whether or not this item will burn in lava regardless of any conditions. Returns null by defa...">ModItem.CanBurnInLava</a>. </p>
+
+</div>
+</div>
+<a id="a1e8b7c50129ee28fbe35fe74134dc531"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e8b7c50129ee28fbe35fe74134dc531">&#9670;&nbsp;</a></span>CanCatchNPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static ? bool Terraria.ModLoader.ItemLoader.CanCatchNPC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gathers the results of all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#aa1f2d2a0474b7f606680976ac5f6f24e" title="Allows you to determine whether the given item can catch the given NPC.  Return true or false to say ...">GlobalItem.CanCatchNPC</a> hooks, then the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a3614fa75d1f18df5139412c314b830bd" title="Allows you to determine whether this item can catch the given NPC.  Return true or false to say the g...">ModItem.CanCatchNPC</a> hook if applicable.<br  />
+ If any of them returns false, this returns false.<br  />
+ Otherwise, if any of them returns true, then this returns true.<br  />
+ If all of them return null, this returns null.<br  />
+ </p>
 
 </div>
 </div>
@@ -1655,7 +1713,7 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </table>
 </div><div class="memdoc">
 
-<p>Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#af1833c40f765b9f5332b4d3e0f0ecfca" title="Allows you to dynamically modify this item&#39;s size for the given player, similarly to the effect of th...">ModItem.ModifyItemScale</a> if applicable, then all applicable <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a56082e75c7be47f81d6e272415ebaee8" title="Allows you to dynamically modify the given item&#39;s size for the given player, similarly to the effect ...">GlobalItem.ModifyItemScale</a> instances. </p>
+<p>Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#af1833c40f765b9f5332b4d3e0f0ecfca">ModItem.ModifyItemScale</a> if applicable, then all applicable <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a56082e75c7be47f81d6e272415ebaee8">GlobalItem.ModifyItemScale</a> instances. </p>
 
 </div>
 </div>

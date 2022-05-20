@@ -1,5 +1,10 @@
 var NAVTREEINDEX13 =
 {
+"class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database.html#afea3b3dbe31d74a87a5a597091e86a12":[1,0,2,5,16,16,2],
+"class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database_populator.html":[1,0,2,5,16,17],
+"class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database_populator.html#a5ada5c93edc67bf78df69443501fef49":[1,0,2,5,16,17,0],
+"class_terraria_1_1_game_content_1_1_personalities_1_1_personality_profile.html":[1,0,2,5,16,18],
+"class_terraria_1_1_game_content_1_1_personalities_1_1_personality_profile.html#a2c8a884f46e6120378f18ed5e8590e7a":[1,0,2,5,16,18,0],
 "class_terraria_1_1_game_content_1_1_personalities_1_1_snow_biome.html":[1,0,2,5,16,19],
 "class_terraria_1_1_game_content_1_1_personalities_1_1_snow_biome.html#ad315eb28cf18dd7ffcd0fca11dc1753e":[1,0,2,5,16,19,0],
 "class_terraria_1_1_game_content_1_1_personalities_1_1_snow_biome.html#ae42ab2e58a21022439ae4f220d189e93":[1,0,2,5,16,19,1],
@@ -244,10 +249,5 @@ var NAVTREEINDEX13 =
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_underworld_shader.html#a02534a83a25eb7ab7caeab897d8388c7":[1,0,2,5,17,46,0],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_vine_shader.html":[1,0,2,5,17,47],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_virtual_keyboard.html":[1,0,2,5,17,48],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_virtual_keyboard.html#a294e1c18a3935f7ffe19e8faf57ae632":[1,0,2,5,17,48,0],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_virtual_keyboard.html#a920ccfb9b2afd1ee12bcd0f1396b879e":[1,0,2,5,17,48,1],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_virtual_keyboard.html#aa4248199a07197c74a07fef3ff1b1f18":[1,0,2,5,17,48,2],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_wall_of_flesh_shader.html":[1,0,2,5,17,49],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_wall_of_flesh_shader.html#a8aae386be716833745bfef72918779da":[1,0,2,5,17,49,0],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_worm_shader.html":[1,0,2,5,17,50]
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_virtual_keyboard.html#a294e1c18a3935f7ffe19e8faf57ae632":[1,0,2,5,17,48,0]
 };

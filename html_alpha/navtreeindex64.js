@@ -1,5 +1,12 @@
 var NAVTREEINDEX64 =
 {
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#abcecdba7ee99718e30f46efbc4c311b6":[1,0,2,8,32,433],
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#abd23fdbc7c2a9e037619669c30211da1":[1,0,2,8,32,598],
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#abd54f70188074861f540a4c2c50d3ed0":[1,0,2,8,32,169],
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#abde5e6ba908deba5c5eaee4c0bcae370":[1,0,2,8,32,474],
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#abdec42082fbc4de496d53b247efd403b":[1,0,2,8,32,110],
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#abe35f2a738293a2de230b04b50ce8558":[1,0,2,8,32,270],
+"class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#abe44f40d6f4eb80f29e98202ec33ae14":[1,0,2,8,32,329],
 "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#abe971d34eea79d7cfe627bf90e9a0337":[1,0,2,8,32,21],
 "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#abed425e27cf99032e40c8813752ceebf":[1,0,2,8,32,503],
 "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html#abf26555139aaee6ae6b30886b53f4fdc":[1,0,2,8,32,380],
@@ -242,12 +249,5 @@ var NAVTREEINDEX64 =
 "class_terraria_1_1_i_d_1_1_netmode_i_d.html":[1,0,2,8,29],
 "class_terraria_1_1_i_d_1_1_netmode_i_d.html#a38cf9c8c7152cf67fd0f445c711b9311":[1,0,2,8,29,2],
 "class_terraria_1_1_i_d_1_1_netmode_i_d.html#aa4928f3ceaa245d0c101e7888f2a0e17":[1,0,2,8,29,0],
-"class_terraria_1_1_i_d_1_1_netmode_i_d.html#af687feb4169fd5d281cd64ab1708fa55":[1,0,2,8,29,1],
-"class_terraria_1_1_i_d_1_1_paint_i_d.html":[1,0,2,8,33],
-"class_terraria_1_1_i_d_1_1_paint_i_d.html#a129bb9c112bb28cdce853316083edee1":[1,0,2,8,33,10],
-"class_terraria_1_1_i_d_1_1_paint_i_d.html#a1a8910afc7844b53f3ec927393e0234f":[1,0,2,8,33,9],
-"class_terraria_1_1_i_d_1_1_paint_i_d.html#a1c578d1b287bbf2f025f520d9a8b86d6":[1,0,2,8,33,22],
-"class_terraria_1_1_i_d_1_1_paint_i_d.html#a2168c66f30f67757d3f33f851d194b9c":[1,0,2,8,33,0],
-"class_terraria_1_1_i_d_1_1_paint_i_d.html#a2e4a8bcacb72864ffebf25c38cfeba8f":[1,0,2,8,33,26],
-"class_terraria_1_1_i_d_1_1_paint_i_d.html#a43719cb1a42b54f7f1fbbd438ec3b8d1":[1,0,2,8,33,18]
+"class_terraria_1_1_i_d_1_1_netmode_i_d.html#af687feb4169fd5d281cd64ab1708fa55":[1,0,2,8,29,1]
 };

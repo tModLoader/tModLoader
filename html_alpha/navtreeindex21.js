@@ -1,5 +1,10 @@
 var NAVTREEINDEX21 =
 {
+"class_terraria_1_1_game_content_1_1_u_i_1_1_item_rarity.html":[1,0,2,5,21,15],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_item_rarity.html#a568ecce8885d8b54f2bec2a2b5f5c920":[1,0,2,5,21,15,0],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_item_rarity.html#a798a01b28b9108ae73da1e87c3638a72":[1,0,2,5,21,15,1],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_legacy_multiplayer_close_players_overlay.html":[1,0,2,5,21,16],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_legacy_multiplayer_close_players_overlay.html#a3c12562183d8ba64deee1579b4cb6f75":[1,0,2,5,21,16,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame.html":[1,0,2,5,21,3,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame.html#a038ab8cf76682e82fe9f4057fd6bba48":[1,0,2,5,21,3,0,4],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_minimap_1_1_minimap_frame.html#a0d19ad90f81f6b9ab8fbc356c9e87687":[1,0,2,5,21,3,0,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX21 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_workshop_publish_info_state_for_world.html#a13c2802636df9a4babdbd92a4ad0cc1b":[1,0,2,5,21,5,23,2],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_workshop_publish_info_state_for_world.html#a215fd480c35923a94f0d87589f90f135":[1,0,2,5,21,5,23,4],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_workshop_publish_info_state_for_world.html#a2269d464e584eb00865d84f32c913a6a":[1,0,2,5,21,5,23,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_workshop_publish_info_state_for_world.html#a2bb3bc27444fa429c6aef4f137a67f0d":[1,0,2,5,21,5,23,3],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_workshop_publish_info_state_for_world.html#a65e81b651344004b4f691fbdf510845e":[1,0,2,5,21,5,23,1],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i.html":[1,0,2,5,21,18],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i.html#a39ecd57f2d796f47b8f5b814a877d749":[1,0,2,5,21,18,3],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i.html#ad234fb62bef29fbc3486bd684f486990":[1,0,2,5,21,18,2],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_wires_u_i_1_1_settings.html":[1,0,2,5,21,18,0]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_workshop_publish_info_state_for_world.html#a2bb3bc27444fa429c6aef4f137a67f0d":[1,0,2,5,21,5,23,3]
 };

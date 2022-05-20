@@ -7,7 +7,7 @@ var class_terraria_1_1_entity =
     [ "Distance", "class_terraria_1_1_entity.html#a8973f997e12f32690d61b0eeb522134e", null ],
     [ "DistanceSQ", "class_terraria_1_1_entity.html#a6b3133bba44f7080b67e37a8154ffd43", null ],
     [ "GetSource_Accessory", "class_terraria_1_1_entity.html#a0cc13a0fd700a6326df9c7d07389b805", null ],
-    [ "GetSource_CatchEntity", "class_terraria_1_1_entity.html#a3543b21ddea65a8995ec0267b62c4d22", null ],
+    [ "GetSource_CatchEntity", "class_terraria_1_1_entity.html#a6f006515c2f26eeb43344d410a51d47b", null ],
     [ "GetSource_Death", "class_terraria_1_1_entity.html#a5469ee9a6d94319e3ca4c365636176c8", null ],
     [ "GetSource_DropAsItem", "class_terraria_1_1_entity.html#a04ca8e3f6d66f4c3b099cbc08d91b71a", null ],
     [ "GetSource_FromAI", "class_terraria_1_1_entity.html#acf1ce371a8d995264f17ccea092fd273", null ],

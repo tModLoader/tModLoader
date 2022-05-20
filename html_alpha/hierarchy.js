@@ -1009,6 +1009,7 @@ var hierarchy =
       ] ],
       [ "Terraria.DataStructures.EntitySource_BossSpawn", "class_terraria_1_1_data_structures_1_1_entity_source___boss_spawn.html", null ],
       [ "Terraria.DataStructures.EntitySource_Buff", "class_terraria_1_1_data_structures_1_1_entity_source___buff.html", null ],
+      [ "Terraria.DataStructures.EntitySource_CatchEntity", "class_terraria_1_1_data_structures_1_1_entity_source___catch_entity.html", null ],
       [ "Terraria.DataStructures.EntitySource_DebugCommand", "class_terraria_1_1_data_structures_1_1_entity_source___debug_command.html", null ],
       [ "Terraria.DataStructures.EntitySource_DropAsItem", "class_terraria_1_1_data_structures_1_1_entity_source___drop_as_item.html", null ],
       [ "Terraria.DataStructures.EntitySource_Film", "class_terraria_1_1_data_structures_1_1_entity_source___film.html", null ],

@@ -1,5 +1,12 @@
 var NAVTREEINDEX71 =
 {
+"class_terraria_1_1_i_d_1_1_sound_i_d.html#a31979d7d30184d16561531e066558b42":[1,0,2,8,43,186],
+"class_terraria_1_1_i_d_1_1_sound_i_d.html#a34776352be34dc638b4f972762314b24":[1,0,2,8,43,197],
+"class_terraria_1_1_i_d_1_1_sound_i_d.html#a350127dead1149490b117cc65cc05e6c":[1,0,2,8,43,29],
+"class_terraria_1_1_i_d_1_1_sound_i_d.html#a35107aac243125850d0509c3d7e9a0fc":[1,0,2,8,43,17],
+"class_terraria_1_1_i_d_1_1_sound_i_d.html#a352567bfb58b8624b595212209d2e59c":[1,0,2,8,43,77],
+"class_terraria_1_1_i_d_1_1_sound_i_d.html#a35a002f319cefb90be4b034ca89ef2d7":[1,0,2,8,43,49],
+"class_terraria_1_1_i_d_1_1_sound_i_d.html#a363194979e84d3efebb0680ebb1f5a78":[1,0,2,8,43,223],
 "class_terraria_1_1_i_d_1_1_sound_i_d.html#a3659eb96c2ab7344030914b269ba8ddb":[1,0,2,8,43,251],
 "class_terraria_1_1_i_d_1_1_sound_i_d.html#a36763f46bd4f3be72450c8def8e8d8e7":[1,0,2,8,43,274],
 "class_terraria_1_1_i_d_1_1_sound_i_d.html#a36d0aefe99ecaaf32208288689d790f0":[1,0,2,8,43,157],
@@ -242,12 +249,5 @@ var NAVTREEINDEX71 =
 "class_terraria_1_1_i_d_1_1_sound_i_d.html#ab245a7250433a967f4cddee13386832f":[1,0,2,8,43,227],
 "class_terraria_1_1_i_d_1_1_sound_i_d.html#ab2554911ec33cd558323ab548fdb8482":[1,0,2,8,43,382],
 "class_terraria_1_1_i_d_1_1_sound_i_d.html#ab25ff132ba1788e6eb51b5b4eead92e1":[1,0,2,8,43,353],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#ab2f14df7b58d5d7fbe6a5a279f2d901b":[1,0,2,8,43,389],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#ab3aeb60c09c70107554c930caac68fee":[1,0,2,8,43,206],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#ab3ee4231f843cbcf16f7a7dae9b7497e":[1,0,2,8,43,397],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#ab581dfaa848a6b4161efd18772a3514a":[1,0,2,8,43,391],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#ab5985d06ebeef73a37ac6535a384a2d2":[1,0,2,8,43,257],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#ab5fc9c4e02e824bc46414b9a174ce449":[1,0,2,8,43,379],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#ab65c2ffd36430938c1d166a03854acaa":[1,0,2,8,43,45],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#ab68fc18989678e865b795cd148672a87":[1,0,2,8,43,395]
+"class_terraria_1_1_i_d_1_1_sound_i_d.html#ab2f14df7b58d5d7fbe6a5a279f2d901b":[1,0,2,8,43,389]
 };

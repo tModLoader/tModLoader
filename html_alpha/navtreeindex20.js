@@ -1,5 +1,10 @@
 var NAVTREEINDEX20 =
 {
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#a93789c0b6b5b5f14f7a9ea828dbb8d8e":[1,0,2,5,21,2,59,13],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#a954856e268dc2a4c9c167f6103407f7b":[1,0,2,5,21,2,59,0],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#a983e5874ad74019246960dc9b603579b":[1,0,2,5,21,2,59,14],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#a998f2fe54f3221d81d8c4af4ba62f4ad":[1,0,2,5,21,2,59,3],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#ab31ca61645c42aad0b63a87b8cbd0ff2":[1,0,2,5,21,2,59,12],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#ac222f6b51a3f344297c8c8386724a290":[1,0,2,5,21,2,59,15],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#acc8c92837f606c269f0107ab537bd471":[1,0,2,5,21,2,59,5],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_text_panel.html#adb542e4a86db5deef6a47c7ba6997c90":[1,0,2,5,21,2,59,18],
@@ -244,10 +249,5 @@ var NAVTREEINDEX20 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_issue_reports_indicator.html":[1,0,2,5,21,14],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_issue_reports_indicator.html#a2b098fb3dcbb92a5344591dc319b7a3c":[1,0,2,5,21,14,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_issue_reports_indicator.html#a2b794acf7fdc39aba4ed0d1b57a4bad8":[1,0,2,5,21,14,1],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_issue_reports_indicator.html#ab9a7f7337ef8d5a01b3443940b963e74":[1,0,2,5,21,14,2],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_item_rarity.html":[1,0,2,5,21,15],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_item_rarity.html#a568ecce8885d8b54f2bec2a2b5f5c920":[1,0,2,5,21,15,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_item_rarity.html#a798a01b28b9108ae73da1e87c3638a72":[1,0,2,5,21,15,1],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_legacy_multiplayer_close_players_overlay.html":[1,0,2,5,21,16],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_legacy_multiplayer_close_players_overlay.html#a3c12562183d8ba64deee1579b4cb6f75":[1,0,2,5,21,16,0]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_issue_reports_indicator.html#ab9a7f7337ef8d5a01b3443940b963e74":[1,0,2,5,21,14,2]
 };

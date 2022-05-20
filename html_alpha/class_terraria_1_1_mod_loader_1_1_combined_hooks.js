@@ -1,6 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_combined_hooks =
 [
     [ "CanAutoReuseItem", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ac503989233167ce7ff125a8206de6fd5", null ],
+    [ "CanCatchNPC", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a4a23a0dd59ffce0306d5dc0da6b82726", null ],
     [ "CanConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a759fe8877476c22221b4802ae1ae22e9", null ],
     [ "CanConsumeBait", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a09bfab2c40c669d43d3d7d9a35fbf38f", null ],
     [ "CanPlayerHitNPCWithItem", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a96eb359a92223716164e456d1ed13061", null ],
@@ -12,6 +13,7 @@ var class_terraria_1_1_mod_loader_1_1_combined_hooks =
     [ "ModifyWeaponCrit", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a3b213d22d4cb963b9990e483788ac3d4", null ],
     [ "ModifyWeaponDamage", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ad480b598a51a8cd0289390a06eed227d", null ],
     [ "ModifyWeaponKnockback", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#aec25e61a656166c17d73aa54cc2a7156", null ],
+    [ "OnCatchNPC", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a1205ddd90e7f3b27e92770d0f666aa87", null ],
     [ "OnConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a0811c07716932f81c97893e974542297", null ],
     [ "OnConsumeMana", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a66ebe7169a134de5a8d45e4fe74559df", null ],
     [ "OnMissingMana", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#a489c14486111f61f07bcfd17cab039e2", null ],

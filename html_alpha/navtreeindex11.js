@@ -1,5 +1,10 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption.html#a2e15b4175ee792d22002c857304a2fb4":[1,0,2,5,10,5,19,0],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption.html#a6511f6dc04f0d7eec8bb45e9aa6c4653":[1,0,2,5,10,5,19,1],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption.html#aa8854f03cdabdd7f2da5abfafbd102fa":[1,0,2,5,10,5,19,2],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption_and_not_expert.html":[1,0,2,5,10,5,20],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption_and_not_expert.html#af49f99204dbd58d5c2edee75b829b829":[1,0,2,5,10,5,20,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption_and_not_expert.html#af6645e6ff1e6f2138e37cb0a160570df":[1,0,2,5,10,5,20,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption_and_not_expert.html#afda77b094232e416b759ad37cedf6853":[1,0,2,5,10,5,20,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_crimson.html":[1,0,2,5,10,5,21],
@@ -244,10 +249,5 @@ var NAVTREEINDEX11 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#a1686dfd31a9f3bda39e58fb075f1eb37":[1,0,2,5,10,27,5],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#a4880d56e9193cfed6a4eddde886ab20d":[1,0,2,5,10,27,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#a554d9f2383c6b34a7b276740ea620447":[1,0,2,5,10,27,6],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#a59c8a0b202c93d0ca1b94f57a1914a84":[1,0,2,5,10,27,0],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#aa134a433c6f36520542690185718a976":[1,0,2,5,10,27,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#abb2045f1bd917798c7e574b29e7a7572":[1,0,2,5,10,27,7],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#ad047e5c25bcfd089bb814f503e2fbfd7":[1,0,2,5,10,27,3],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_not_scaled_with_luck_drop_rule.html":[1,0,2,5,10,28],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_not_scaled_with_luck_drop_rule.html#a18b4df57dfb7614c00bf01ed1ad5c0c0":[1,0,2,5,10,28,4]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#a59c8a0b202c93d0ca1b94f57a1914a84":[1,0,2,5,10,27,0]
 };

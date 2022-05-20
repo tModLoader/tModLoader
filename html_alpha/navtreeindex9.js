@@ -1,5 +1,10 @@
 var NAVTREEINDEX9 =
 {
+"class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_materials.html":[1,0,2,5,4,13,9],
+"class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_materials.html#a1b5f49537d1daf178c8434e594e7efc7":[1,0,2,5,4,13,9,1],
+"class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_materials.html#ab7425f5e8858f9f24fa882660ce1e678":[1,0,2,5,4,13,9,2],
+"class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_materials.html#ad32788ef26195688ca46a812ee1b8767":[1,0,2,5,4,13,9,0],
+"class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_misc_accessories.html":[1,0,2,5,4,13,10],
 "class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_misc_accessories.html#a1a513151f3639ec56c2e00ed8d400004":[1,0,2,5,4,13,10,1],
 "class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_misc_accessories.html#aa83fcb881f9354e66f119bf27de1f3c7":[1,0,2,5,4,13,10,0],
 "class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_misc_accessories.html#ae59d8b8a1b4f6214f9740407b2f154cd":[1,0,2,5,4,13,10,2],
@@ -244,10 +249,5 @@ var NAVTREEINDEX9 =
 "class_terraria_1_1_game_content_1_1_events_1_1_moonlord_death_drama_1_1_moonlord_piece.html#a1ecc41b0b52cf1c54e2b53a7716fb2b0":[1,0,2,5,7,5,1,0],
 "class_terraria_1_1_game_content_1_1_events_1_1_moonlord_death_drama_1_1_moonlord_piece.html#a226005af51aa6d1bb8f808fe2b588225":[1,0,2,5,7,5,1,4],
 "class_terraria_1_1_game_content_1_1_events_1_1_moonlord_death_drama_1_1_moonlord_piece.html#aee984cfb43a25736f0ce5234a11415e2":[1,0,2,5,7,5,1,2],
-"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html":[1,0,2,5,7,6],
-"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a06ccfb0a103753d8a9e495fc2b13849f":[1,0,2,5,7,6,1],
-"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a29f7d8cab95a3b6016f79307ebab76b2":[1,0,2,5,7,6,4],
-"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a2eb436a6e54aa4d3cf1ec1db429de2a8":[1,0,2,5,7,6,0],
-"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a5b494bf5b31ca5e955e0043caf3a8d50":[1,0,2,5,7,6,2],
-"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a8244c44c26c2f9434dadb9b94ec39dd3":[1,0,2,5,7,6,3]
+"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html":[1,0,2,5,7,6]
 };

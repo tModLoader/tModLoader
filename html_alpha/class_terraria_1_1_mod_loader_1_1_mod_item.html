@@ -152,6 +152,15 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="memitem:a4ade56e1ccad98f196a937714fdbfbd2"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a4ade56e1ccad98f196a937714fdbfbd2">CanBurnInLava</a> ()</td></tr>
 <tr class="memdesc:a4ade56e1ccad98f196a937714fdbfbd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour).  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a4ade56e1ccad98f196a937714fdbfbd2">More...</a><br /></td></tr>
 <tr class="separator:a4ade56e1ccad98f196a937714fdbfbd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3614fa75d1f18df5139412c314b830bd"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a3614fa75d1f18df5139412c314b830bd">CanCatchNPC</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> target, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:a3614fa75d1f18df5139412c314b830bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether this item can catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.<br  />
+ Return true or false to say the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can or cannot be caught, respectively, regardless of vanilla rules.<br  />
+ Returns null by default, which allows vanilla's <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> catching rules to decide the target's fate.<br  />
+ If this returns false, CombinedHooks.OnCatchNPC is never called.<br  />
+<br  />
+ NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br  />
+ To do that, you will need to use the "CatchingTool" set in ItemID.Sets.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a3614fa75d1f18df5139412c314b830bd">More...</a><br /></td></tr>
+<tr class="separator:a3614fa75d1f18df5139412c314b830bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab28be38e8ace00dbd7b4308ede681a00"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ab28be38e8ace00dbd7b4308ede681a00">CanChooseAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:ab28be38e8ace00dbd7b4308ede681a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not the given ammo item is valid for this weapon. If this, or <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a226cdb8c3e561146ab0d78512d8496aa" title="Whether or not this ammo item is valid for the given weapon. If this, or CanChooseAmmo on the weapon,...">CanBeChosenAsAmmo</a> on the ammo, returns false, then the ammo will not be valid for this weapon. <br  />
  By default, returns null and allows Item.useAmmo and Item.ammo to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid. <br  />
@@ -285,7 +294,6 @@ This is only called when attempting to stack with an item of the same type.  <a 
 <tr class="memdesc:ae18cf93cad8a7699240c9b8ae2584f5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that this melee weapon does to a player.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#ae18cf93cad8a7699240c9b8ae2584f5f">More...</a><br /></td></tr>
 <tr class="separator:ae18cf93cad8a7699240c9b8ae2584f5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1833c40f765b9f5332b4d3e0f0ecfca"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#af1833c40f765b9f5332b4d3e0f0ecfca">ModifyItemScale</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref float scale)</td></tr>
-<tr class="memdesc:af1833c40f765b9f5332b4d3e0f0ecfca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify this item's size for the given player, similarly to the effect of the Titan Glove.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#af1833c40f765b9f5332b4d3e0f0ecfca">More...</a><br /></td></tr>
 <tr class="separator:af1833c40f765b9f5332b4d3e0f0ecfca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8175b362b2f4c08f31fa18f116556bba"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a8175b362b2f4c08f31fa18f116556bba">ModifyManaCost</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref float reduce, ref float mult)</td></tr>
 <tr class="memdesc:a8175b362b2f4c08f31fa18f116556bba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to temporarily modify the amount of mana this item will consume on use, based on player buffs, accessories, etc. This is only called for items with a mana value.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a8175b362b2f4c08f31fa18f116556bba">More...</a><br /></td></tr>
@@ -322,6 +330,9 @@ Can be called on both server and client.  <a href="class_terraria_1_1_mod_loader
 Called whenever an item container syncs its contents (various MessageIDs and sources), or MessageID.SyncItem and MessageID.InstancedItem are successfully sent, for example when the item is dropped into the world. <br  />
 Can be called on both server and client.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a5f7a03b9388a7610935e6f628b257dfe">More...</a><br /></td></tr>
 <tr class="separator:a5f7a03b9388a7610935e6f628b257dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61d1b940011372db3328add82b088a78"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a61d1b940011372db3328add82b088a78">OnCatchNPC</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, bool failed)</td></tr>
+<tr class="memdesc:a61d1b940011372db3328add82b088a78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this item attempts to catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a61d1b940011372db3328add82b088a78">More...</a><br /></td></tr>
+<tr class="separator:a61d1b940011372db3328add82b088a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef202c01834342fcc335a12305b2b0b8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aef202c01834342fcc335a12305b2b0b8">OnConsumeAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="memdesc:aef202c01834342fcc335a12305b2b0b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when the given ammo is consumed by this weapon.<br  />
  Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.  <a href="class_terraria_1_1_mod_loader_1_1_mod_item.html#aef202c01834342fcc335a12305b2b0b8">More...</a><br /></td></tr>
@@ -1094,6 +1105,58 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 </div><div class="memdoc">
 
 <p>Returns whether or not this item will burn in lava regardless of any conditions. Returns null by default (follow vanilla behaviour). </p>
+
+</div>
+</div>
+<a id="a3614fa75d1f18df5139412c314b830bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3614fa75d1f18df5139412c314b830bd">&#9670;&nbsp;</a></span>CanCatchNPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? bool Terraria.ModLoader.ModItem.CanCatchNPC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to determine whether this item can catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.<br  />
+ Return true or false to say the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can or cannot be caught, respectively, regardless of vanilla rules.<br  />
+ Returns null by default, which allows vanilla's <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> catching rules to decide the target's fate.<br  />
+ If this returns false, CombinedHooks.OnCatchNPC is never called.<br  />
+<br  />
+ NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br  />
+ To do that, you will need to use the "CatchingTool" set in ItemID.Sets. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">target</td><td>The <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> the player is trying to catch.</td></tr>
+    <tr><td class="paramname">player</td><td>The player attempting to catch the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -2756,7 +2819,8 @@ This is only called when attempting to stack with an item of the same type. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to dynamically modify this item's size for the given player, similarly to the effect of the Titan Glove. </p>
+<p></p>
+<p>Allows you to dynamically modify this item's size for the given player, similarly to the effect of the Titan Glove.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">player</td><td>The player wielding this item.</td></tr>
@@ -3200,6 +3264,58 @@ Can be called on both server and client. </p>
 </dl>
 
 <p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a8d0b4f9fea3d91c6e5fde32a826f9f1e">Terraria.ModLoader.Default.UnloadedItem</a>.</p>
+
+</div>
+</div>
+<a id="a61d1b940011372db3328add82b088a78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61d1b940011372db3328add82b088a78">&#9670;&nbsp;</a></span>OnCatchNPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModItem.OnCatchNPC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>failed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to make things happen when this item attempts to catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td>The <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> which the player attempted to catch.</td></tr>
+    <tr><td class="paramname">player</td><td>The player attempting to catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.</td></tr>
+    <tr><td class="paramname">failed</td><td>Whether or not the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> has been successfully caught.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

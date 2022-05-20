@@ -1,5 +1,10 @@
 var NAVTREEINDEX6 =
 {
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#adf765904a171b58dba86e0e9f930121f":[1,0,2,5,2,1,2,28],
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#ae0f395fdbf8ad6eab092fa001fe297c3":[1,0,2,5,2,1,2,40],
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#ae5fcbd09469631b10f894c0df8f78c0a":[1,0,2,5,2,1,2,47],
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#ae742c15ca17a9ee465cb10ef2f940c00":[1,0,2,5,2,1,2,1],
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#aeabc393572fc6cde06c08c04dba2d045":[1,0,2,5,2,1,2,19],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#aee545db1c02e9c9fc7012b1d59616b38":[1,0,2,5,2,1,2,32],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#aeeff27170d1873a677fc7f7978252503":[1,0,2,5,2,1,2,36],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#af35f305e296da71c7636e9c9e9a6b205":[1,0,2,5,2,1,2,61],
@@ -244,10 +249,5 @@ var NAVTREEINDEX6 =
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_overlay_info_element.html":[1,0,2,5,2,49],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_overlay_info_element.html#a0bdbfc9634b1ab641200310b2d3c9c5d":[1,0,2,5,2,49,0],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_overlay_info_element.html#a583cca4af1e792dc7cc0109ccf36513b":[1,0,2,5,2,49,2],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_overlay_info_element.html#a98361a344fd31428f324216120386d34":[1,0,2,5,2,49,3],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_overlay_info_element.html#adbc923b63fa556754e9dd99e58c8c1f9":[1,0,2,5,2,49,4],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_overlay_info_element.html#add7e78ed0fdabadec5e7941f536fc0b5":[1,0,2,5,2,49,1],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_decorative_overlay_info_element.html":[1,0,2,5,2,50],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_decorative_overlay_info_element.html#a590110d22b370ad7ff7fae31eb0b15d2":[1,0,2,5,2,50,2],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_decorative_overlay_info_element.html#a65161d92d9b36427b59bfc2f9cb9258a":[1,0,2,5,2,50,0]
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_spawn_condition_bestiary_overlay_info_element.html#a98361a344fd31428f324216120386d34":[1,0,2,5,2,49,3]
 };

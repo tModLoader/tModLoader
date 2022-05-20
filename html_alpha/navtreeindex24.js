@@ -1,5 +1,10 @@
 var NAVTREEINDEX24 =
 {
+"class_terraria_1_1_graphics_1_1_effects_1_1_filter.html#a14537587d3b05e63d4538aae16260408":[1,0,2,7,2,2,4],
+"class_terraria_1_1_graphics_1_1_effects_1_1_filter.html#a15b98c6877893a40e6b5fd51ec7ed656":[1,0,2,7,2,2,1],
+"class_terraria_1_1_graphics_1_1_effects_1_1_filter.html#a1d5eb1ceaa0c7bcdb52a9c66044a1c8d":[1,0,2,7,2,2,8],
+"class_terraria_1_1_graphics_1_1_effects_1_1_filter.html#a2146892ce7e519a60c8d3d94cf91b648":[1,0,2,7,2,2,2],
+"class_terraria_1_1_graphics_1_1_effects_1_1_filter.html#a2252bf2d4ffbef0306f1babcb371eae9":[1,0,2,7,2,2,3],
 "class_terraria_1_1_graphics_1_1_effects_1_1_filter.html#a5f13775aa0de7f70a1c1f3bec4076d73":[1,0,2,7,2,2,6],
 "class_terraria_1_1_graphics_1_1_effects_1_1_filter.html#a7cb41a814c09fdcddf2b197d9853fd3a":[1,0,2,7,2,2,5],
 "class_terraria_1_1_graphics_1_1_effects_1_1_filter.html#ab27295a4e91ec30d33636801f68cf890":[1,0,2,7,2,2,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX24 =
 "class_terraria_1_1_graphics_1_1_shaders_1_1_hair_shader_data_set.html#a601bc904cfb49348649d5a2bfc429b23":[1,0,2,7,5,4,4],
 "class_terraria_1_1_graphics_1_1_shaders_1_1_hair_shader_data_set.html#a92c6a14a4c141607b34c0c68ffe42d9b":[1,0,2,7,5,4,1],
 "class_terraria_1_1_graphics_1_1_shaders_1_1_hair_shader_data_set.html#accb31820477e49b1eb43e6d827dfc114":[1,0,2,7,5,4,2],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_hair_shader_data_set.html#af3f6df8901b66c3cb5c6f56b3ee0fbfc":[1,0,2,7,5,4,3],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html":[1,0,2,7,5,5],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html#a0ddd36157f0da8a26a017496034e1427":[1,0,2,7,5,5,14],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html#a3e743922ab6072cbab3ee3af79ae57b6":[1,0,2,7,5,5,7],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html#a3ef12a56772b27af59b7a3738ab16bb9":[1,0,2,7,5,5,5],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html#a4577106f45d4406cc1eae7e33efc4c23":[1,0,2,7,5,5,8]
+"class_terraria_1_1_graphics_1_1_shaders_1_1_hair_shader_data_set.html#af3f6df8901b66c3cb5c6f56b3ee0fbfc":[1,0,2,7,5,4,3]
 };

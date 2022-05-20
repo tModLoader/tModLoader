@@ -1,5 +1,10 @@
 var NAVTREEINDEX25 =
 {
+"class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html":[1,0,2,7,5,5],
+"class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html#a0ddd36157f0da8a26a017496034e1427":[1,0,2,7,5,5,14],
+"class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html#a3e743922ab6072cbab3ee3af79ae57b6":[1,0,2,7,5,5,7],
+"class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html#a3ef12a56772b27af59b7a3738ab16bb9":[1,0,2,7,5,5,5],
+"class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html#a4577106f45d4406cc1eae7e33efc4c23":[1,0,2,7,5,5,8],
 "class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html#a5018bb799ff2873d6fd5098be10c2a32":[1,0,2,7,5,5,10],
 "class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html#a5f2924e82bb0085e0a89c4a4790af37e":[1,0,2,7,5,5,13],
 "class_terraria_1_1_graphics_1_1_shaders_1_1_misc_shader_data.html#a735bc92c827a0640010b8bfbaa0120ff":[1,0,2,7,5,5,12],
@@ -244,10 +249,5 @@ var NAVTREEINDEX25 =
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon.html#addb367166f53f053ff001dc9ca65b3bb":[1,0,2,8,3,1,3],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon.html#ae813470a72a165265ab38c08617e920f":[1,0,2,8,3,1,11],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon.html#aeed949eb183b848d689f370d872a3a33":[1,0,2,8,3,1,12],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon_1_1_sets.html":[1,0,2,8,3,1,0],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon_1_1_sets.html#a5be50aebc9cc7f6fbf14168b08decf64":[1,0,2,8,3,1,0,1],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon_1_1_sets.html#a624eb173609d4e474096da8384b8d062":[1,0,2,8,3,1,0,2],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon_1_1_sets.html#adf4c0e5a34042a13a009022e63d6d54f":[1,0,2,8,3,1,0,0],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html":[1,0,2,8,3,2],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_beard.html#a08f508cac63c0b27d84c1417f80f6966":[1,0,2,8,3,2,3]
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_balloon_1_1_sets.html":[1,0,2,8,3,1,0]
 };

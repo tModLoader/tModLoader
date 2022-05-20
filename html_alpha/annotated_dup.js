@@ -84,6 +84,7 @@ var annotated_dup =
         [ "EntityShadowInfo", "struct_terraria_1_1_data_structures_1_1_entity_shadow_info.html", "struct_terraria_1_1_data_structures_1_1_entity_shadow_info" ],
         [ "EntitySource_BossSpawn", "class_terraria_1_1_data_structures_1_1_entity_source___boss_spawn.html", "class_terraria_1_1_data_structures_1_1_entity_source___boss_spawn" ],
         [ "EntitySource_Buff", "class_terraria_1_1_data_structures_1_1_entity_source___buff.html", "class_terraria_1_1_data_structures_1_1_entity_source___buff" ],
+        [ "EntitySource_CatchEntity", "class_terraria_1_1_data_structures_1_1_entity_source___catch_entity.html", "class_terraria_1_1_data_structures_1_1_entity_source___catch_entity" ],
         [ "EntitySource_DebugCommand", "class_terraria_1_1_data_structures_1_1_entity_source___debug_command.html", "class_terraria_1_1_data_structures_1_1_entity_source___debug_command" ],
         [ "EntitySource_DropAsItem", "class_terraria_1_1_data_structures_1_1_entity_source___drop_as_item.html", "class_terraria_1_1_data_structures_1_1_entity_source___drop_as_item" ],
         [ "EntitySource_Film", "class_terraria_1_1_data_structures_1_1_entity_source___film.html", "class_terraria_1_1_data_structures_1_1_entity_source___film" ],

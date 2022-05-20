@@ -115,6 +115,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad6815d7134a83a69d25be338163ad6fb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ad6815d7134a83a69d25be338163ad6fb">BuffTownNPC</a> (ref float damageMult, ref int defense)</td></tr>
 <tr class="memdesc:ad6815d7134a83a69d25be338163ad6fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the stats of town NPCs. Useful for buffing town NPCs when certain bosses are defeated, etc.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ad6815d7134a83a69d25be338163ad6fb">More...</a><br /></td></tr>
 <tr class="separator:ad6815d7134a83a69d25be338163ad6fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6663e653f74c931a232c3e710568a3bd"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6663e653f74c931a232c3e710568a3bd">CanBeCaughtBy</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
+<tr class="memdesc:a6663e653f74c931a232c3e710568a3bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether the given item can catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.<br  />
+ Return true or false to say the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can or cannot be caught, respectively, regardless of vanilla rules.<br  />
+ Returns null by default, which allows vanilla's <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> catching rules to decide the target's fate.<br  />
+ If this returns false, CombinedHooks.OnCatchNPC is never called.<br  />
+<br  />
+ NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br  />
+ To do that, you will need to use the "CatchingTool" set in ItemID.Sets.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6663e653f74c931a232c3e710568a3bd">More...</a><br /></td></tr>
+<tr class="separator:a6663e653f74c931a232c3e710568a3bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27799f6e29f727b25d60b30f5ccce542"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a27799f6e29f727b25d60b30f5ccce542">CanBeHitByItem</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a27799f6e29f727b25d60b30f5ccce542"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine whether an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be hit by the given melee weapon when swung. Return true to allow hitting the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>, return false to block hitting the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>, and return null to use the vanilla code for whether the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be hit. Returns null by default.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a27799f6e29f727b25d60b30f5ccce542">More...</a><br /></td></tr>
 <tr class="separator:a27799f6e29f727b25d60b30f5ccce542"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,9 +227,9 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 <tr class="memitem:abe8525d289c7727bf35050635fbf8a10"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#abe8525d289c7727bf35050635fbf8a10">ModifyTypeName</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, ref string typeName)</td></tr>
 <tr class="memdesc:abe8525d289c7727bf35050635fbf8a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the type name of this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> dynamically.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#abe8525d289c7727bf35050635fbf8a10">More...</a><br /></td></tr>
 <tr class="separator:abe8525d289c7727bf35050635fbf8a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9aed15677d38c7ce2700408e634f3e0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ac9aed15677d38c7ce2700408e634f3e0">OnCatchNPC</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
-<tr class="memdesc:ac9aed15677d38c7ce2700408e634f3e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is caught. Ran Serverside.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ac9aed15677d38c7ce2700408e634f3e0">More...</a><br /></td></tr>
-<tr class="separator:ac9aed15677d38c7ce2700408e634f3e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af868081d4d53a7bbb258b5552098bfb0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af868081d4d53a7bbb258b5552098bfb0">OnCaughtBy</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> item, bool failed)</td></tr>
+<tr class="memdesc:af868081d4d53a7bbb258b5552098bfb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when the given item attempts to catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af868081d4d53a7bbb258b5552098bfb0">More...</a><br /></td></tr>
+<tr class="separator:af868081d4d53a7bbb258b5552098bfb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a9dc1f2fadc19db07e55dcb2f061aad"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7a9dc1f2fadc19db07e55dcb2f061aad">OnChatButtonClicked</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, bool firstButton)</td></tr>
 <tr class="memdesc:a7a9dc1f2fadc19db07e55dcb2f061aad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen whenever a button is clicked on this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>'s chat window. The firstButton parameter tells whether the first button or second button (button and button2 from SetChatButtons) was clicked.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7a9dc1f2fadc19db07e55dcb2f061aad">More...</a><br /></td></tr>
 <tr class="separator:a7a9dc1f2fadc19db07e55dcb2f061aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -598,6 +607,65 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetGlobal&l
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a6663e653f74c931a232c3e710568a3bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6663e653f74c931a232c3e710568a3bd">&#9670;&nbsp;</a></span>CanBeCaughtBy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual ? bool Terraria.ModLoader.GlobalNPC.CanBeCaughtBy </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to determine whether the given item can catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.<br  />
+ Return true or false to say the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can or cannot be caught, respectively, regardless of vanilla rules.<br  />
+ Returns null by default, which allows vanilla's <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> catching rules to decide the target's fate.<br  />
+ If this returns false, CombinedHooks.OnCatchNPC is never called.<br  />
+<br  />
+ NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br  />
+ To do that, you will need to use the "CatchingTool" set in ItemID.Sets. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td>The <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> that can potentially be caught.</td></tr>
+    <tr><td class="paramname">item</td><td>The item with which the player is trying to catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.</td></tr>
+    <tr><td class="paramname">player</td><td>The player attempting to catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -2152,8 +2220,8 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 
 </div>
 </div>
-<a id="ac9aed15677d38c7ce2700408e634f3e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9aed15677d38c7ce2700408e634f3e0">&#9670;&nbsp;</a></span>OnCatchNPC()</h2>
+<a id="af868081d4d53a7bbb258b5552098bfb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af868081d4d53a7bbb258b5552098bfb0">&#9670;&nbsp;</a></span>OnCaughtBy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2162,7 +2230,7 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void Terraria.ModLoader.GlobalNPC.OnCatchNPC </td>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalNPC.OnCaughtBy </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
           <td class="paramname"><em>npc</em>, </td>
@@ -2177,7 +2245,13 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
-          <td class="paramname"><em>item</em>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>failed</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2192,12 +2266,13 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make things happen when an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is caught. Ran Serverside. </p>
+<p>Allows you to make things happen when the given item attempts to catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">npc</td><td>The caught <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a></td></tr>
-    <tr><td class="paramname">player</td><td>The player catching the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a></td></tr>
-    <tr><td class="paramname">item</td><td>The item that will be spawned</td></tr>
+    <tr><td class="paramname">npc</td><td>The <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> which the player attempted to catch.</td></tr>
+    <tr><td class="paramname">player</td><td>The player attempting to catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.</td></tr>
+    <tr><td class="paramname">item</td><td>The item used to catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.</td></tr>
+    <tr><td class="paramname">failed</td><td>Whether or not the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> has been successfully caught.</td></tr>
   </table>
   </dd>
 </dl>
