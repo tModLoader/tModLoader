@@ -1,5 +1,13 @@
 var NAVTREEINDEX117 =
 {
+"class_terraria_1_1_utils.html#afb5be6e991b5f9891f72409782b4e0b1":[1,0,2,79,103],
+"class_terraria_1_1_utils.html#afb5dfac974daf51a96eb0e0986eb1a92":[1,0,2,79,144],
+"class_terraria_1_1_utils.html#afbede46892833ef4117cd5f7592068eb":[1,0,2,79,83],
+"class_terraria_1_1_utils.html#afd89b462e5a8560e35c2b795b3198fc2":[1,0,2,79,57],
+"class_terraria_1_1_utils.html#afdbe76e4dc2b567c0ad06526cc354e76":[1,0,2,79,73],
+"class_terraria_1_1_utils.html#afde95cdf12c93898694f0ee008323f72":[1,0,2,79,44],
+"class_terraria_1_1_utils.html#afdeb21e27e7193d8434150d7bce1c3a4":[1,0,2,79,35],
+"class_terraria_1_1_utils.html#afe20bfb3683c27392d06db44e7f24cc2":[1,0,2,79,184],
 "class_terraria_1_1_waterfall_manager.html":[1,0,2,81],
 "class_terraria_1_1_waterfall_manager.html#a1855498379667ef3367afc60efa74247":[1,0,2,81,6],
 "class_terraria_1_1_waterfall_manager.html#a4f1b4633eb081b743fd02f13ac13ee73":[1,0,2,81,3],
@@ -241,13 +249,5 @@ var NAVTREEINDEX117 =
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_is_touching_air.html#a9ac60e3a1ccddcd14b0f3271f80d9781":[1,0,2,23,13,11,0],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_is_touching_air.html#a9ad5cfd5d3437183d886036aed897650":[1,0,2,23,13,11,1],
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_not_in_shape.html":[1,0,2,23,13,12],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_not_in_shape.html#a211f16bc50c5379b86df626073f76410":[1,0,2,23,13,12,1],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_not_in_shape.html#a6d032c02f5d7c31b888d4e421b7a25bd":[1,0,2,23,13,12,0],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_not_touching.html":[1,0,2,23,13,13],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_not_touching.html#a40c677d7dd4bcd9c023320f8eb13b98e":[1,0,2,23,13,13,1],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_not_touching.html#a99096e6130072c0992569e1c657b8db9":[1,0,2,23,13,13,0],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_offset.html":[1,0,2,23,13,14],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_offset.html#a432408938287f0e8cb5911024f5a866e":[1,0,2,23,13,14,0],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_offset.html#aefbfd6df5490e16856709cf53cc62583":[1,0,2,23,13,14,1],
-"class_terraria_1_1_world_building_1_1_modifiers_1_1_only_tiles.html":[1,0,2,23,13,15]
+"class_terraria_1_1_world_building_1_1_modifiers_1_1_not_in_shape.html#a211f16bc50c5379b86df626073f76410":[1,0,2,23,13,12,1]
 };

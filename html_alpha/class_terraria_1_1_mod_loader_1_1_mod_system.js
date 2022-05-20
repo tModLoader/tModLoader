@@ -24,6 +24,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_system =
     [ "PostDrawInterface", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a53384495c48e8628e1c60e95304542d6", null ],
     [ "PostDrawTiles", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a57c58e88b2f22627d757cc11c5f1175c", null ],
     [ "PostSetupContent", "class_terraria_1_1_mod_loader_1_1_mod_system.html#af5edb34271da5a5f04f348d134d7c8ce", null ],
+    [ "PostSetupRecipes", "class_terraria_1_1_mod_loader_1_1_mod_system.html#acb8a3da59607912637e05a9712ba70e3", null ],
     [ "PostUpdateDusts", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a389d90d8636cf76d388df212c89170cf", null ],
     [ "PostUpdateEverything", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a074f95069ae476f4617320bd44d51eb9", null ],
     [ "PostUpdateGores", "class_terraria_1_1_mod_loader_1_1_mod_system.html#ab4381dbe9ced73b53ecf93fc0b57fdb4", null ],
