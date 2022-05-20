@@ -343,7 +343,7 @@ namespace Terraria.ModLoader.Core
 							.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
 							.Concat<MethodBase>(type.GetConstructors(ALL))
 							.Concat(type.GetProperties(ALL).Where(filter.ShouldJIT).SelectMany(p => p.GetAccessors()))
-							.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.GetMethodBody() != null)
+							.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.GetMethodBody() != null && m.DeclaringType == type)
 							.Where(filter.ShouldJIT)
 					)
 					.ToArray();
