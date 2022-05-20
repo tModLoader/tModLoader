@@ -11,6 +11,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalProjectile>;
 
 namespace Terraria.ModLoader
@@ -198,15 +199,29 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static byte[] WriteExtraAI(Projectile projectile) {
-			if (projectile.ModProjectile == null) {
-				return Array.Empty<byte>();
-			}
+		private static HookList HookWriteExtraAI = AddHook<Action<Projectile, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
 
+		public static byte[] WriteExtraAI(Projectile projectile) {
 			using var stream = new MemoryStream();
 			using var modWriter = new BinaryWriter(stream);
 
-			projectile.ModProjectile.SendExtraAI(modWriter);
+			projectile.ModProjectile?.SendExtraAI(modWriter);
+
+			using var bufferedStream = new MemoryStream();
+			using var globalWriter = new BinaryWriter(bufferedStream);
+
+			BitWriter bitWriter = new BitWriter();
+
+			foreach (GlobalProjectile g in HookWriteExtraAI.Enumerate(projectile.globalProjectiles)) {
+				g.SendExtraAI(projectile, bitWriter, globalWriter);
+			}
+
+			bitWriter.Flush(modWriter);
+
+			modWriter.Write(bufferedStream.ToArray());
+
+			globalWriter.Flush();
+
 			modWriter.Flush();
 
 			return stream.ToArray();
@@ -216,15 +231,38 @@ namespace Terraria.ModLoader
 			return reader.ReadBytes(reader.Read7BitEncodedInt());
 		}
 
-		public static void ReceiveExtraAI(Projectile projectile, byte[] extraAI) {
-			if (projectile.ModProjectile == null) {
-				return;
-			}
+		private static HookList HookReceiveExtraAI = AddHook<Action<Projectile, BitReader, BinaryReader>>(g => g.ReceiveExtraAI);
 
+		public static void ReceiveExtraAI(Projectile projectile, byte[] extraAI) {
 			using var stream = new MemoryStream(extraAI);
 			using var modReader = new BinaryReader(stream);
 
-			projectile.ModProjectile.ReceiveExtraAI(modReader);
+			projectile.ModProjectile?.ReceiveExtraAI(modReader);
+
+			BitReader bitReader = new BitReader(modReader);
+
+			try {
+				foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
+					g.ReceiveExtraAI(projectile, bitReader, modReader);
+				}
+
+				if (bitReader.BitsRead < bitReader.MaxBits) {
+					throw new IOException($"Read underflow {bitReader.MaxBits - bitReader.BitsRead} of {bitReader.MaxBits} compressed bits in ReceiveExtraAI, more info below");
+				}
+
+				if (stream.Position < stream.Length) {
+					throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length} bytes in ReceiveExtraAI, more info below");
+				}
+			}
+			catch (IOException e) {
+				Logging.tML.Error(e.ToString());
+
+				string culprits = $"Above IOException error in projectile {(projectile.ModProjectile == null ? projectile.Name : projectile.ModProjectile.FullName)} may be caused by one of these:";
+				foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
+					culprits += $"\n    {g.Name}";
+				}
+				Logging.tML.Error(culprits);
+			}
 		}
 
 		private static HookList HookShouldUpdatePosition = AddHook<Func<Projectile, bool>>(g => g.ShouldUpdatePosition);
