@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.IO
 
 		public bool ReadBit() {
 			if (BitsRead >= MaxBits) {
-				throw new IOException("Read overflow while reading compressed bits");
+				throw new IOException("Read overflow while reading compressed bits, more info below");
 			}
 
 			return (bytes[BitsRead / 8] & (1 << BitsRead++ % 8)) != 0;

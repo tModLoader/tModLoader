@@ -241,16 +241,27 @@ namespace Terraria.ModLoader
 
 			BitReader bitReader = new BitReader(modReader);
 
-			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
-				g.ReceiveExtraAI(projectile, bitReader, modReader);
-			}
+			try {
+				foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
+					g.ReceiveExtraAI(projectile, bitReader, modReader);
+				}
 
-			if (bitReader.BitsRead < bitReader.MaxBits) {
-				throw new IOException($"Read underflow {bitReader.MaxBits - bitReader.BitsRead} of {bitReader.MaxBits} bits in ReceiveExtraAI, a mod is not reading all compressed bits it sent");
+				if (bitReader.BitsRead < bitReader.MaxBits) {
+					throw new IOException($"Read underflow {bitReader.MaxBits - bitReader.BitsRead} of {bitReader.MaxBits} compressed bits in ReceiveExtraAI, more info below");
+				}
+
+				if (stream.Position < stream.Length) {
+					throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length} bytes in ReceiveExtraAI, more info below");
+				}
 			}
-			
-			if (stream.Position < stream.Length) {
-				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length} bytes in ReceiveExtraAI, a mod is not reading all data it sent");
+			catch (IOException e) {
+				Logging.tML.Error(e.ToString());
+
+				string culprits = $"Above IOException error in projectile {(projectile.ModProjectile == null ? projectile.Name : projectile.ModProjectile.FullName)} may be caused by one of these:";
+				foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
+					culprits += $"\n    {g.Name}";
+				}
+				Logging.tML.Error(culprits);
 			}
 		}
 
