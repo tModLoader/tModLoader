@@ -1,5 +1,15 @@
 var NAVTREEINDEX122 =
 {
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_sort_step.html#aa3b45b6cb0f5b0300d16e2e1b7a8f737":[1,0,2,5,2,24,0],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_u_i_collection_info_provider.html":[1,0,2,5,2,25],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_u_i_collection_info_provider.html#aa236eb9a5b3edcd35dec2a06f96b2ac3":[1,0,2,5,2,25,0],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_entry_icon.html":[1,0,2,5,2,26],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_entry_icon.html#a2f8e249400ab4a4746a728e049643868":[1,0,2,5,2,26,4],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_entry_icon.html#a3bdbbf0d3b909c06cb1fa6f7d7ccdafc":[1,0,2,5,2,26,2],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_entry_icon.html#abe6595550ff861f9b14de5efa02206a5":[1,0,2,5,2,26,1],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_entry_icon.html#ae24d6b0b38b7a5f9b2abe4ad24e00ad1":[1,0,2,5,2,26,3],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_entry_icon.html#ae41b35e3ea77623f78b09920a4909c17":[1,0,2,5,2,26,0],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_filter_info_provider.html":[1,0,2,5,2,27],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_filter_info_provider.html#a237fa82022c628427296fbe5647bb54b":[1,0,2,5,2,27,1],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_filter_info_provider.html#af5ce139fbe406e867f7929b61fe1642b":[1,0,2,5,2,27,0],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_item_bestiary_info_element.html":[1,0,2,5,2,28],
@@ -162,8 +172,8 @@ var NAVTREEINDEX122 =
 "interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a52fd73042e4c0ddeed26c7974e9592af":[1,0,2,13,55,0],
 "interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a70f7612ca9aebec3149b51789f1b54c6":[1,0,2,13,55,2],
 "interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#ae001b098c12c404ce71f234957dcb8a4":[1,0,2,13,55,1],
-"interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html":[1,0,2,13,5,13],
-"interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html#a6cd4f6978db224e5870b3c981fe8e379":[1,0,2,13,5,13,0],
+"interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html":[1,0,2,13,5,15],
+"interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html#a6cd4f6978db224e5870b3c981fe8e379":[1,0,2,13,5,15,0],
 "interface_terraria_1_1_mod_loader_1_1_i_plant.html":[1,0,2,13,60],
 "interface_terraria_1_1_mod_loader_1_1_i_plant.html#a08a772f5b47797b8ecc77e4e9fe4b967":[1,0,2,13,60,4],
 "interface_terraria_1_1_mod_loader_1_1_i_plant.html#a34d336d247982dd3634449f7a2355078":[1,0,2,13,60,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX122 =
 "namespace_terraria.html#a7925d076a5f2eac3e53b58c8ff914b27a6f1cb6155af5b5344be44b5731fe2fd1":[0,0,2,90,0],
 "namespace_terraria.html#a7925d076a5f2eac3e53b58c8ff914b27a71ff71526d15db86eb50fcac245d183b":[0,0,2,90,3],
 "namespace_terraria.html#a7925d076a5f2eac3e53b58c8ff914b27ae06d26940b3dab9e54a85b567f2ed5c1":[0,0,2,90,2],
-"namespace_terraria.html#a7925d076a5f2eac3e53b58c8ff914b27af5a7924e621e84c9280a9a27e1bcb7f6":[0,0,2,90,1],
-"namespace_terraria.html#aae2b711dde04c3469e06d546d8ea2c9c":[0,0,2,91],
-"namespace_terraria.html#ad94af700497b54286669cf696aa7af54":[0,0,2,88],
-"namespace_terraria.html#ad94af700497b54286669cf696aa7af54a06ff9b7d295af3610d674649a4673666":[0,0,2,88,2],
-"namespace_terraria.html#ad94af700497b54286669cf696aa7af54a614236d1d209287da16efeb9c742c7de":[0,0,2,88,1],
-"namespace_terraria.html#ad94af700497b54286669cf696aa7af54a627ab04c392cf8734c7534cec3dbe9b5":[0,0,2,88,0],
-"namespace_terraria_1_1_achievements.html":[0,0,2,0],
-"namespace_terraria_1_1_achievements.html#ab0f382a5c33f07f9cbde72677b52032d":[0,0,2,0,8],
-"namespace_terraria_1_1_achievements.html#ab0f382a5c33f07f9cbde72677b52032da121189969c46f49b8249633c2d5a7bfa":[0,0,2,0,8,1],
-"namespace_terraria_1_1_achievements.html#ab0f382a5c33f07f9cbde72677b52032da6adf97f83acf6453d4a6a4b1070f3754":[0,0,2,0,8,0],
-"namespace_terraria_1_1_achievements.html#ab0f382a5c33f07f9cbde72677b52032da86576f63453fd5551fcbfc28b1296ff1":[0,0,2,0,8,4]
+"namespace_terraria.html#a7925d076a5f2eac3e53b58c8ff914b27af5a7924e621e84c9280a9a27e1bcb7f6":[0,0,2,90,1]
 };

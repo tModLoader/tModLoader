@@ -1118,6 +1118,8 @@ var annotated_dup =
           [ "BigEndianReader", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_reader.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_reader" ],
           [ "BigEndianWriter", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_big_endian_writer" ],
           [ "BinaryIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_binary_i_o" ],
+          [ "BitReader", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bit_reader.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bit_reader" ],
+          [ "BitWriter", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bit_writer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bit_writer" ],
           [ "BoolTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer" ],
           [ "ColorSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer" ],
           [ "ImageIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o" ],
