@@ -11,6 +11,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalProjectile>;
 
 namespace Terraria.ModLoader
@@ -198,7 +199,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookWriteExtraAI = AddHook<Action<Projectile, BinaryWriter>>(g => g.SendExtraAI);
+		private static HookList HookWriteExtraAI = AddHook<Action<Projectile, BitWriter, BinaryWriter>>(g => g.SendExtraAI);
 
 		public static byte[] WriteExtraAI(Projectile projectile) {
 			using var stream = new MemoryStream();
@@ -206,9 +207,20 @@ namespace Terraria.ModLoader
 
 			projectile.ModProjectile?.SendExtraAI(modWriter);
 
+			using var bufferedStream = new MemoryStream();
+			using var globalWriter = new BinaryWriter(bufferedStream);
+
+			BitWriter bitWriter = new BitWriter();
+
 			foreach (GlobalProjectile g in HookWriteExtraAI.Enumerate(projectile.globalProjectiles)) {
-				g.SendExtraAI(projectile, modWriter);
+				g.SendExtraAI(projectile, bitWriter, globalWriter);
 			}
+
+			bitWriter.Flush(modWriter);
+
+			modWriter.Write(bufferedStream.ToArray());
+
+			globalWriter.Flush();
 
 			modWriter.Flush();
 
@@ -219,7 +231,7 @@ namespace Terraria.ModLoader
 			return reader.ReadBytes(reader.Read7BitEncodedInt());
 		}
 
-		private static HookList HookReceiveExtraAI = AddHook<Action<Projectile, BinaryReader>>(g => g.ReceiveExtraAI);
+		private static HookList HookReceiveExtraAI = AddHook<Action<Projectile, BitReader, BinaryReader>>(g => g.ReceiveExtraAI);
 
 		public static void ReceiveExtraAI(Projectile projectile, byte[] extraAI) {
 			using var stream = new MemoryStream(extraAI);
@@ -227,8 +239,10 @@ namespace Terraria.ModLoader
 
 			projectile.ModProjectile?.ReceiveExtraAI(modReader);
 
+			BitReader bitReader = new BitReader(modReader);
+
 			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
-				g.ReceiveExtraAI(projectile, modReader);
+				g.ReceiveExtraAI(projectile, bitReader, modReader);
 			}
 		}
 

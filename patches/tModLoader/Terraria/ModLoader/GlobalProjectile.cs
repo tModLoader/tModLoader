@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria.DataStructures;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
@@ -72,13 +73,14 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Use this judiciously to avoid straining the network.
-		/// <br/>If you are storing AI information outside of the Projectile.ai array, use this to send that AI information between clients and servers, which will be handled in <see cref="ReceiveExtraAI"/>.
+		/// <br/>Checks and methods such as <see cref="AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
 		/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
 		/// <br/>Can be called on both server and client, depending on who owns the projectile.
 		/// </summary>
 		/// <param name="projectile">The projectile.</param>
-		/// <param name="writer">The writer.</param>
-		public virtual void SendExtraAI(Projectile projectile, BinaryWriter writer) {
+		/// <param name="bitWriter">The compressible bit writer. Booleans written via this are compressed across all mods to improve multiplayer performance.</param>
+		/// <param name="binaryWriter">The writer.</param>
+		public virtual void SendExtraAI(Projectile projectile, BitWriter bitWriter, BinaryWriter binaryWriter) {
 		}
 
 		/// <summary>
@@ -87,8 +89,9 @@ namespace Terraria.ModLoader
 		/// <br/>Can be called on both server and client, depending on who owns the projectile.
 		/// </summary>
 		/// <param name="projectile">The projectile.</param>
-		/// <param name="reader">The reader.</param>
-		public virtual void ReceiveExtraAI(Projectile projectile, BinaryReader reader) {
+		/// <param name="bitReader">The compressible bit reader.</param>
+		/// <param name="binaryReader">The reader.</param>
+		public virtual void ReceiveExtraAI(Projectile projectile, BitReader bitReader, BinaryReader binaryReader) {
 		}
 
 		/// <summary>
