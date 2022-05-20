@@ -16,7 +16,7 @@ namespace Terraria.ModLoader.Core
 			// These have to be arrays rather than ReadOnlySpan as the JIT won't unpack/promote 'struct in struct' (or span in struct either)
 			// Revisit with .NET 6 https://github.com/dotnet/runtime/issues/37924
 			private readonly Instanced<T>[] instances;
-			private readonly int[] hookInds;
+			private readonly int[] hookIndices;
 
 			// ideally this would be Instanced<T> and drop the need for the ii variable in the MoveNext function
 			// but again, struct in struct promotion (and also increasing the 'field count'
@@ -28,9 +28,9 @@ namespace Terraria.ModLoader.Core
 			//private int j;
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public InstanceEnumerator(Instanced<T>[] instances, int[] hookInds) {
+			public InstanceEnumerator(Instanced<T>[] instances, int[] hookIndices) {
 				this.instances = instances;
-				this.hookInds = hookInds;
+				this.hookIndices = hookIndices;
 				current = default;
 				ij = 0;
 				//i = 0;
@@ -41,10 +41,13 @@ namespace Terraria.ModLoader.Core
 
 			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			public bool MoveNext() {
-				var ii = -1;
-				while ((int)(ij >> 32) < hookInds.Length) {
-					int hookIndex = hookInds[(int)(ij >> 32)];
+				int ii = -1;
+
+				while ((int)(ij >> 32) < hookIndices.Length) {
+					int hookIndex = hookIndices[(int)(ij >> 32)];
+
 					ij += 1L << 32;
+
 					while (ii < hookIndex) {
 						if ((int)ij == instances.Length)
 							return false;
@@ -67,23 +70,26 @@ namespace Terraria.ModLoader.Core
 
 		public readonly MethodInfo method;
 
-		private int[] inds = Array.Empty<int>();
+		private int[] indices = Array.Empty<int>();
 
 		public HookList(MethodInfo method) {
 			this.method = method;
 		}
-
-		public InstanceEnumerator Enumerate(Instanced<T>[] instances) => new(instances, inds);
+		
+		public InstanceEnumerator Enumerate(Instanced<T>[] instances)
+			=> new(instances, indices);
 
 		public void Update<U>(IList<U> instances) where U : GlobalType {
-			inds = instances.WhereMethodIsOverridden(method).Select(g => (int)g.index).ToArray();
+			indices = instances.WhereMethodIsOverridden(method).Select(g => (int)g.index).ToArray();
 		}
 
-		public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate => new(expr.ToMethodInfo());
+		public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate
+			=> new(expr.ToMethodInfo());
 	}
 
 	public static class HookList
 	{
-		public static HookList<U>.InstanceEnumerator Enumerate<U>(this HookList<U> hookList, IEntityWithGlobals<U> entity) where U : GlobalType => hookList.Enumerate(entity.Globals.array);
+		public static HookList<U>.InstanceEnumerator Enumerate<U>(this HookList<U> hookList, IEntityWithGlobals<U> entity) where U : GlobalType
+			=> hookList.Enumerate(entity.Globals.array);
 	}
 }

@@ -57,6 +57,7 @@ namespace Terraria.ModLoader
 
 		protected override void ValidateType() {
 			base.ValidateType();
+			
 			if (!IsCloneable)
 				throw new Exception($"{GetType().FullName} is not cloneable, and ModItems must be cloneable. See the documentation on {nameof(IsCloneable)}");
 		}

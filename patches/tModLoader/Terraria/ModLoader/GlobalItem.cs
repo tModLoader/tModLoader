@@ -19,8 +19,10 @@ namespace Terraria.ModLoader
 	{
 		protected override void ValidateType() {
 			base.ValidateType();
+
 			LoaderUtils.MustOverrideTogether(this, g => g.SaveData, g => g.LoadData);
 			LoaderUtils.MustOverrideTogether(this, g => g.NetSend, g => g.NetReceive);
+			
 			if (InstancePerEntity && !IsCloneable)
 				throw new Exception($"{GetType().FullName} has {nameof(InstancePerEntity)} but not {nameof(IsCloneable)}. See the documentation on {nameof(IsCloneable)}");
 		}

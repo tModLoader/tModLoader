@@ -35,6 +35,7 @@ namespace Terraria.ModLoader
 
 		protected override void ValidateType() {
 			base.ValidateType();
+			
 			LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
 			LoaderUtils.MustOverrideTogether(this, p => p.clientClone, p => p.SendClientChanges);
 		}

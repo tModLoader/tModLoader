@@ -107,29 +107,33 @@ namespace Terraria.ModLoader.Core
 
 		private static void MustOverrideTogether(Type type, params MethodInfo[] methods) {
 			int c = methods.Count(m => HasOverride(type, m));
+			
 			if (c > 0 && c < methods.Length)
 				throw new Exception($"{type} must override all of ({string.Join('/', methods.Select(m => m.Name))}) or none");
 		}
 
-		private static HashSet<Type> ValidatedTypes = new();
-		internal static bool IsValidated(Type type) => !ValidatedTypes.Add(type);
+		private static HashSet<Type> validatedTypes = new();
 
-		private static Dictionary<Type, bool> TypeIsCloneable = new();
+		internal static bool IsValidated(Type type) => !validatedTypes.Add(type);
+
+		private static Dictionary<Type, bool> typeIsCloneable = new();
+		
 		internal static bool IsCloneable<T, F>(T t, Expression<Func<T, F>> cloneMethod) where F : Delegate {
 			var rootCloneableType = typeof(T);
 			var type = t.GetType();
-			if (TypeIsCloneable.TryGetValue(type, out var cloneable))
+			
+			if (typeIsCloneable.TryGetValue(type, out var cloneable))
 				return cloneable;
 
 			bool hasReferenceTypedFieldsOnSubclass = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
 				.Any(f => f.DeclaringType.IsSubclassOf(rootCloneableType) && !f.FieldType.IsValueType);
 
-			return TypeIsCloneable[type] = !hasReferenceTypedFieldsOnSubclass || HasOverride(type, cloneMethod);
+			return typeIsCloneable[type] = !hasReferenceTypedFieldsOnSubclass || HasOverride(type, cloneMethod);
 		}
 
 		internal static void ClearTypeInfo() {
-			ValidatedTypes.Clear();
-			TypeIsCloneable.Clear();
+			validatedTypes.Clear();
+			typeIsCloneable.Clear();
 		}
 	}
 }
