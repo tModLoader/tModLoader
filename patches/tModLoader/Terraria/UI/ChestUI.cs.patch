@@ -82,7 +82,7 @@
  					if ((item5.Value != num6 || inventory[item5.Key].netID != num6) && (!flag || inventory[item5.Key].stack <= 0))
  						continue;
  
-+					if (!ItemLoader.CanStack(item[num5], inventory[item5.Key]))
++					if (!flag && !ItemLoader.CanStack(item[num5], inventory[item5.Key])) // outmost for iterates over empty slots, flag not true means item was not put in yet (meaning canstack does not have to be checked)
 +						continue;
 +
  					SoundEngine.PlaySound(7);
