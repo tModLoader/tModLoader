@@ -558,9 +558,10 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>BusyWithAnyInv
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>CanReleaseNPCs</b> (int who)</td></tr>
 <tr class="separator:a9363cc70631f2951836bfbaca82d3565"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83b53721a5422c4aba972e3e4247be63"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_n_p_c.html#a83b53721a5422c4aba972e3e4247be63">CheckCatchNPC</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, Rectangle catchToolRectangle, <a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, bool lavaProofTool=false)</td></tr>
-<tr class="memdesc:a83b53721a5422c4aba972e3e4247be63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs all code related to the process of checking whether or not an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be caught.<br  />
+<tr class="memdesc:a83b53721a5422c4aba972e3e4247be63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs most code related to the process of checking whether or not an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be caught.<br  />
  After that, CombinedHooks.OnCatchNPC is run, followed by the code responsible for catching the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> if applicable.<br  />
- You will need to call this manually if you want to make an NPC-catching tool which acts differently from vanilla's, such as one that uses a projectile instead of an item.  <a href="class_terraria_1_1_n_p_c.html#a83b53721a5422c4aba972e3e4247be63">More...</a><br /></td></tr>
+ You will need to call this manually if you want to make an NPC-catching tool which acts differently from vanilla's, such as one that uses a projectile instead of an item.<br  />
+ As a note, if calling this manually, you will need to check <code>npc.active &amp;&amp; npc.catchItem &gt; 0</code> yourself.  <a href="class_terraria_1_1_n_p_c.html#a83b53721a5422c4aba972e3e4247be63">More...</a><br /></td></tr>
 <tr class="separator:a83b53721a5422c4aba972e3e4247be63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0d9c29cce22dbb0c68280b3e1059195"><td class="memItemLeft" align="right" valign="top"><a id="ab0d9c29cce22dbb0c68280b3e1059195"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearFoundActiveNPCs</b> ()</td></tr>
@@ -794,8 +795,10 @@ int[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffType</b> = new i
 <tr class="memitem:ab70f76f7b9afc6c9c24f688b6d3764dd"><td class="memItemLeft" align="right" valign="top"><a id="ab70f76f7b9afc6c9c24f688b6d3764dd"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>canGhostHeal</b> = true</td></tr>
 <tr class="separator:ab70f76f7b9afc6c9c24f688b6d3764dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab22f267697af4115e047057eff28d3f"><td class="memItemLeft" align="right" valign="top"><a id="aab22f267697af4115e047057eff28d3f"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>catchItem</b></td></tr>
+<tr class="memitem:aab22f267697af4115e047057eff28d3f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_n_p_c.html#aab22f267697af4115e047057eff28d3f">catchItem</a></td></tr>
+<tr class="memdesc:aab22f267697af4115e047057eff28d3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the item that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> becomes when caught.<br  />
+ Mainly used for critters that can be caught with bug nets, such as butterflies and worms.<br  />
+ Bug nets and other catching tools will only work on NPCs with this field set to something greater than 0.  <a href="class_terraria_1_1_n_p_c.html#aab22f267697af4115e047057eff28d3f">More...</a><br /></td></tr>
 <tr class="separator:aab22f267697af4115e047057eff28d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac267cee5415f6ffe7b72b911ea8434e9"><td class="memItemLeft" align="right" valign="top"><a id="ac267cee5415f6ffe7b72b911ea8434e9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>celled</b></td></tr>
@@ -1636,9 +1639,10 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </table>
 </div><div class="memdoc">
 
-<p>Runs all code related to the process of checking whether or not an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be caught.<br  />
+<p>Runs most code related to the process of checking whether or not an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be caught.<br  />
  After that, CombinedHooks.OnCatchNPC is run, followed by the code responsible for catching the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> if applicable.<br  />
- You will need to call this manually if you want to make an NPC-catching tool which acts differently from vanilla's, such as one that uses a projectile instead of an item. </p>
+ You will need to call this manually if you want to make an NPC-catching tool which acts differently from vanilla's, such as one that uses a projectile instead of an item.<br  />
+ As a note, if calling this manually, you will need to check <code>npc.active &amp;&amp; npc.catchItem &gt; 0</code> yourself. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">npc</td><td>The <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> which can potentially be caught.</td></tr>
@@ -1976,6 +1980,25 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aab22f267697af4115e047057eff28d3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab22f267697af4115e047057eff28d3f">&#9670;&nbsp;</a></span>catchItem</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.NPC.catchItem</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the item that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> becomes when caught.<br  />
+ Mainly used for critters that can be caught with bug nets, such as butterflies and worms.<br  />
+ Bug nets and other catching tools will only work on NPCs with this field set to something greater than 0. </p>
 
 </div>
 </div>
