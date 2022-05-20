@@ -11,7 +11,7 @@ namespace Terraria.Audio
 	{
 		private static readonly UnifiedRandom Random = new();
 
-		private int[] styles = Array.Empty<int>();
+		private int[] styles;
 
 		public int SoundId { get; set; }
 		public SoundType Type { get; set; }
@@ -46,6 +46,9 @@ namespace Terraria.Audio
 			: this(soundId, stackalloc int[] { style }, type) { }
 		
 		public LegacySoundStyle(int soundId, ReadOnlySpan<int> styles, SoundType type = SoundType.Sound) {
+			if (styles.Length == 0)
+				throw new ArgumentException("At least one style must be provided.", nameof(styles));
+
 			SoundId = soundId;
 			this.styles = styles.ToArray();
 			Type = type;
