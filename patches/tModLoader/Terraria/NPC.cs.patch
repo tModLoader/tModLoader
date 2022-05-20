@@ -292,11 +292,12 @@
  		}
  
  		public void SetDefaultsKeepPlayerInteraction(int Type) {
-@@ -1910,6 +_,8 @@
+@@ -1910,6 +_,9 @@
  				return;
  			}
  
 +			ModNPC = null;
++			ShowNameOnHover = true;
 +			globalNPCs = new Instanced<GlobalNPC>[0];
  			waterMovementSpeed = (lavaMovementSpeed = 0.5f);
  			honeyMovementSpeed = 0.25f;

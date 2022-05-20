@@ -543,6 +543,34 @@
  					}
  					break;
  				case 91: {
+@@ -2687,8 +_,17 @@
+ 							break;
+ 
+ 						int num201 = reader.ReadInt32();
++						// TML: #WorldUIAnchorProjectileSyncFix
+ 						int num202 = reader.ReadByte();
+-						if (num202 == 255) {
++						bool delete = num202 == 255;
++						bool playerAnchor = num202 == 1;
++						// If type corresponds to projectile (magic number 2), read another byte for owner
++						if (!ModNet.AllowVanillaClients && num202 == 2) {
++							int owner = reader.ReadByte();
++							num202 = owner << 8 | num202; // Reassign num202 for use in DeserializeNetAnchor - this is now "packedOwnerType"
++						}
++
++						if (delete) {
+ 							if (EmoteBubble.byID.ContainsKey(num201))
+ 								EmoteBubble.byID.Remove(num201);
+ 
+@@ -2703,7 +_,7 @@
+ 							metadata = reader.ReadInt16();
+ 
+ 						WorldUIAnchor worldUIAnchor = EmoteBubble.DeserializeNetAnchor(num202, num203);
+-						if (num202 == 1)
++						if (playerAnchor)
+ 							Main.player[num203].emoteTime = 360;
+ 
+ 						lock (EmoteBubble.byID) {
 @@ -3155,10 +_,28 @@
  					if (Main.netMode == 2) {
  						short x9 = reader.ReadInt16();

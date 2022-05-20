@@ -25,6 +25,7 @@ namespace Terraria.ModLoader.Core
 
 		private static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
 		private static List<string> readFailures = new List<string>(); // TODO: Reflect these skipped Mods in the UI somehow.
+		internal static List<string> modsThatUpdatedSinceLastLaunch = new List<string>();
 
 		internal static WorkshopHelper.UGCBased.Downloader WorkshopFileFinder = new WorkshopHelper.UGCBased.Downloader();
 
@@ -88,6 +89,101 @@ namespace Terraria.ModLoader.Core
 				Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
 			}
 			return true;
+		}
+
+		/// <summary>
+		/// Returns changes based on last time <see cref="SaveLastLaunchedMods"/> was called. Can be null if no changes.
+		/// </summary>
+		internal static string DetectModChangesForInfoMessage() {
+			string info = null;
+
+			// For convenience, convert to dict
+			var currMods = FindMods().ToDictionary(mod => mod.Name, mod => mod);
+
+			string fileName = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
+
+			// Only display if enabled and file exists
+			if (ModLoader.showNewUpdatedModsInfo && File.Exists(fileName)) {
+				// trycatch the read in case users manually modify the file
+				try {
+					// Construct dict of last mods
+					var lines = File.ReadLines(fileName);
+					var lastMods = new Dictionary<string, Version>();
+					foreach (var line in lines) {
+						string[] parts = line.Split(' ');
+						if (parts.Length != 2) {
+							continue;
+						}
+
+						string name = parts[0];
+						string versionString = parts[1];
+						lastMods.Add(name, new Version(versionString));
+					}
+
+					// Generate diff and display if exists
+					// Only track new and updated, not deleted, maybe TODO? Would require saving the display name for deletion info
+					var newMods = new List<string>();
+					var updatedMods = new List<string>();
+					var messages = new StringBuilder();
+					foreach (var item in currMods) {
+						string name = item.Key;
+						var localMod = item.Value;
+						Version version = localMod.properties.version;
+
+						if (!lastMods.ContainsKey(name)) {
+							newMods.Add(name);
+							modsThatUpdatedSinceLastLaunch.Add(name);
+						}
+						else if (lastMods.TryGetValue(name, out var lastVersion) && lastVersion < version) {
+							updatedMods.Add(name);
+							modsThatUpdatedSinceLastLaunch.Add(name);
+						}
+					}
+
+					if (newMods.Count > 0) {
+						messages.Append(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessageNewMods"));
+						foreach (var newMod in newMods) {
+							messages.Append($"\n  {newMod} ({currMods[newMod].DisplayName})");
+						}
+					}
+
+					if (updatedMods.Count > 0) {
+						messages.Append(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessageUpdatedMods"));
+						foreach (var updatedMod in updatedMods) {
+							string name = updatedMod;
+							string displayName = currMods[name].DisplayName;
+							Version lastVersion = lastMods[name];
+							Version currVersion = currMods[name].properties.version;
+							messages.Append($"\n  {name} ({displayName}) v{lastVersion} -> v{currVersion}");
+						}
+					}
+
+					// If any info is accumulated, return it
+					if (messages.Length > 0)
+						info = messages.ToString();
+				}
+				catch {
+
+				}
+			}
+
+			return info;
+		}
+
+		/// <summary>
+		/// Collects local mod status and saves it to a file.
+		/// </summary>
+		internal static void SaveLastLaunchedMods() {
+			if (!ModLoader.showNewUpdatedModsInfo) // Not needed if feature that uses the file is disabled
+				return;
+
+			string fileName = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
+			var currMods = FindMods();
+			var fileText = new StringBuilder();
+			foreach (var mod in currMods) {
+				fileText.Append($"{mod.Name} {mod.properties.version}\n");
+			}
+			File.WriteAllText(fileName, fileText.ToString());
 		}
 
 		private static void DeleteTemporaryFiles() {

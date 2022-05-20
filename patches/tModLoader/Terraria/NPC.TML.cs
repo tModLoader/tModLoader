@@ -21,6 +21,8 @@ namespace Terraria
 		/// <summary> Provides access to (static) happiness data associated with this NPC's type. </summary>
 		public NPCHappiness Happiness => NPCHappiness.Get(type);
 
+		public bool ShowNameOnHover { get; set; }
+
 		/// <summary>
 		/// Assign a special boss bar, vanilla or modded. Not used by vanilla.
 		/// <para>To assign a modded boss bar, use NPC.BossBar = ModContent.GetInstance&lt;ExampleBossBar&gt;(); where ExampleBossBar is a ModBossBar</para>

@@ -14,11 +14,18 @@
 		"MenuDevelopModsDescription": "用你的模组源代码来开发模组以供其他玩家游玩。",
 		"MenuEnableDeveloperMode": "启用开发者模式",
 		"WelcomeMessageBeta": "欢迎使用tModLoader 1.4 Alpha测试版.\n\n你已经成功安装了最新不稳定版本的tModLoader（它随时都可能会更新、遇到Bug或崩溃！）\n\n进入创意工坊界面以访问tModLoader的模组相关功能。\n\n加入tModLoader的Discord群交流和tModLoader 1.4相关的模组、测试、工具和更新等内容。",
+		// "MonthlyFreezeNotification": "The monthly alpha freeze has started. As a reminder, on the 21st of each month, there is a period of time where modders are expected to publish an update for their mods on the 1.4-preview branch in anticipation for all of the code and API changes to tModLoader that were made over the last month. The current 1.4-preview will become the new 1.4-stable on the 1st of next month.\n\nFailure to do so will mean that mods you've made will likely fail to load starting on the 1st of next month.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes. Click \"More Info\" to learn more about the alpha release cycle.",
 		"FirstLaunchWelcomeMessage": "欢迎使用tModLoader.\n\n你已成功安装tModLoader.使用模组浏览器可以找到你想要下载的模组.在模组管理中可以更改已安装的模组.更改模组后,请确保你点击了“重新加载模组”以使它们生效.",
 		"WhatsNewMessage": "以下是自您上次启动 Alpha 版本后更新的更改基本说明。与这些更改相关的模组也许需要由其作者重新构建。访问 GitHub 以查看更多细节：\n",
+		// "ShowNewUpdatedModsInfoMessage": "The following mods were added or updated since last launch (you can disable this message in the settings):\n",
+		// "ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
+		// "ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
+		// "ModUpdatedSinceLastLaunchMessage": "This mod updated since last launch",
 		"ViewOnGitHub": "在 GitHub 上查看",
 		"tModLoaderSettings": "tModLoader设置",
 		"ModMenuSwap": "切换背景主题",
+		"MenuModsEnabled": "{0} 个模组启用", // Google translated approximation, fix this if needed, and then remove this comment
+		// "MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		"AudioNotSupported": "没有找到音频设备。正在关闭所有音频。",
 
 		// Mods Menu
@@ -26,6 +33,7 @@
 		"ModsEnableAll": "启用全部",
 		"ModsDisableAll": "禁用全部",
 		"ModsReloadMods": "重新加载模组",
+		// "ModsForceReload": "Force Reload",
 		"ModsOpenModsFolder": "打开模组文件夹",
 		"ModsModPacks": "模组整合包",
 		"ModsDisable": "禁用",
@@ -145,6 +153,7 @@
 		"ModInfoNoDescriptionAvailable": "无可用描述",
 		"ModInfoProblemTryAgain": "出现问题,请重试",
 		"ModInfoDisableModToDelete": "禁用模组以删除",
+		// "ModInfoVisitSteampage": "Visit the Mod's Steam Workshop page",
 
 		// Mod Packs
 		"ModPacksHeader": "模组整合包",
@@ -262,11 +271,15 @@
 		"ShowMemoryEstimatesNo": "显示模组内存估算: 关闭",
 		"ShowModMenuNotificationsYes": "解锁新的背景主题时提示：开启",
 		"ShowModMenuNotificationsNo": "解锁新的背景主题时提示：关闭",
+		// "ShowNewUpdatedModsInfoYes": "Show Which Mods Updated Since Last Launch: On",
+		// "ShowNewUpdatedModsInfoNo": "Show Which Mods Updated Since Last Launch: Off",
 		"ClearMBCredentials": "清空模组浏览器证书",
 		"AutomaticallyEnableNewlyDownloadedModsYes": "自动启用新下载的模组: 开启",
 		"AutomaticallyEnableNewlyDownloadedModsNo": "自动启用新下载的模组: 关闭",
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserYes": "离开模组浏览器时自动启用并重新加载模组: 开启",
 		"AutomaticallyReloadAndEnableModsLeavingModBrowserNo": "离开模组浏览器时自动启用并重新加载模组: 关闭",
+		// "AutomaticallyReloadRequiredModsLeavingModsScreenYes": "Automatically Reload Required Mods When Leaving Mods Screen: On",
+		// "AutomaticallyReloadRequiredModsLeavingModsScreenNo": "Automatically Reload Required Mods When Leaving Mods Screen: Off",
 		"ReloadModsReminder": "你已更新一些模组,记得重新加载以使其生效.",
 		"EnableModsReminder": "你刚下载的模组目前已禁用,如果你需要使用它们,记得启用并重新加载.",
 		"DontShowAgain": "不再提示",
@@ -278,6 +291,7 @@
 		"MigratePlayersException": "尝试转移人物存档时发生错误",
 		"MigrateWorldsMessage": "你没有地图存档.\n如果你想将你的地图存档从原版转移到tModLoader,\n请将它们从“/Terraria/Worlds”复制到“/Terraria/{0}/Worlds”.\n复制[.wld]文件.\n点击[这里]打开这些文件夹.\n复制完你所需的地图存档后,按[返回].",
 		"MigrateWorldsText": "点击[这里]转移地图...",
+		// "MigrateWorldsException": "There was a problem while trying to migrate World files",
 		"MigratingWorldsText": "转移中...",
 		"ModsDifferentSinceLastPlay": "下列模组与上次使用此存档时启用的模组有所不同: ",
 		"Missing1Mod": "缺少1个模组.",
@@ -369,6 +383,16 @@
 		"DefaultTownNPCChat": "模组作者忘记给我一个聊天信息了.",
 		"DefaultNurseCantHealChat": "我也不知道为什么我无法治愈你,模组作者忘记给我一个聊天信息了.",
 
+		// Memory bar
+		// "LastLoadRamUsage": "Estimated last load RAM usage: {0}",
+		// "AvailableMemory": "Available Memory: {0}",
+		// "TerrariaMemory": "Terraria + misc: {0}",
+		// "ManagedMemory": "Managed: {0}",
+		// "CodeMemory": "Code: {0}",
+		// "SoundMemory": "Sounds: {0}",
+		// "TextureMemory": "Textures: {0}",
+		// "TotalMemory": "Total: {0}",
+
 		// Extra mouse buttons
 		"MouseMiddle": "鼠标中键",
 		"MouseXButton1": "鼠标#4",
@@ -395,7 +419,6 @@
 		"GraphicsEngineReportFailure": "失败",
 		"GraphicsEngineFailureMessage": "tModLoader目前在启用部分测试功能后崩溃了。如果你一直遇到这个问题，那么请打开游戏配置文件（config.json）并将其中的Support4K选项关闭（设为false）\n请重新启动游戏。\n异常上报进度：{0}",
 		"OutOfMemory": "游戏内存不足。请检查模组的内存占用，并移除占用较大的模组，或联系它们的开发者以修复这个问题。",
-		"ContentFolderNotFoundInstallCheck": "无法检测到{0}文件夹。\r\n\r\n请确保tModLoader安装在单独的文件夹里，或从Steam中直接安装。",
 		"VanillaSteamInstallationNotFound": "无法检测到原版Terraria的Content资源文件夹。\r\n\r\n请确保已经从Steam安装了原版Terraria且位于同一个Steam目录。",
 		"SteamAPIHashMismatch": "SteamAPI校验失败，检测为盗版。\n\ntModLoader需要购买安装正版Terraria。",
 		"VanillaGOGNotFound": "无法检测到{0}。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。此版本的tModLoader需要安装Terraria {1}, 请使用GOG Galaxy升级或降级你的Terraria, 或等待tModLoader更新。",
@@ -407,6 +430,24 @@
 		"OneDriveHint": "\n\n提示：建议安装或启动OneDrive，并将“我的文档”设置为始终本地可用。",
 		"AntivirusHint": "\n\n提示：如果你开启了杀毒软件，请尝试将Terraria和tModLoader加入白名单。",
 		"TypeInitializationHint": "\n\n提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader"
+		// "TagsContent": "New Content",
+		// "TagsContentDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsUtility": "Utilities",
+		// "TagsUtilityDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsLibrary": "Library",
+		// "TagsLibraryDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsQoL": "Quality Of Life",
+		// "TagsQoLDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsGameplay": "Gameplay Tweaks",
+		// "TagsGameplayDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsAudio": "Audio Tweaks",
+		// "TagsAudioDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsVisual": "Visual Tweaks",
+		// "TagsVisualDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsLang": "Localization Support",
+		// "TagsLangDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsGen": "Custom World Gen",
+		// "TagsGenDescription": "This is a placeholder description. Don't Translate!"
 	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "增加{0}%伤害"

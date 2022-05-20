@@ -463,11 +463,17 @@
  			PlayerInput.Load();
  			if (currentValue < 165) {
  				try {
-@@ -3574,8 +_,10 @@
+@@ -3574,8 +_,16 @@
  			mouseColorSlider.SetHSL(mouseColor);
  			mouseBorderColorSlider.SetHSL(MouseBorderColor);
  			mouseBorderColorSlider.Alpha = (float)(int)MouseBorderColor.A / 255f;
 -			if (currentValue != 248)
++
++			DateTime now = DateTime.UtcNow;
++			// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this month, then show the notification.
++			if (!BuildInfo.IsDev && ModCompile.DeveloperMode && now.Day >= 21 && (now.Year != ModLoader.ModLoader.LastPreviewFreezeNotificationSeen.Major || now.Month != ModLoader.ModLoader.LastPreviewFreezeNotificationSeen.Minor)) {
++				ModLoader.ModLoader.PreviewFreezeNotification = true;
++			}			
 +			if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
@@ -487,7 +493,26 @@
  			try {
  				string text = PlayerList[i].Path.Substring(0, PlayerList[i].Path.Length - 4);
  				if (text.Substring(text.Length - 1) != "." && text.Substring(text.Length - 1) != "\\" && Directory.Exists(text))
-@@ -3735,6 +_,7 @@
+@@ -3720,21 +_,23 @@
+ 		private static void EraseWorld(int i) {
+ 			try {
+ 				if (!WorldList[i].IsCloudSave) {
+-#if WINDOWS
++					if (OperatingSystem.IsWindows()) {
+ 					FileOperationAPIWrapper.MoveToRecycleBin(WorldList[i].Path);
+ 					FileOperationAPIWrapper.MoveToRecycleBin(WorldList[i].Path + ".bak");
+ 					for (int j = 2; j <= 9; j++) {
+ 						FileOperationAPIWrapper.MoveToRecycleBin(WorldList[i].Path + ".bak" + j);
+ 					}
+-#else
++					}
++					else {
+ 					File.Delete(Main.WorldList[i].Path);
+ 					File.Delete(Main.WorldList[i].Path + ".bak");
+-#endif
++					}
+ 				}
+ 				else if (SocialAPI.Cloud != null) {
  					SocialAPI.Cloud.Delete(WorldList[i].Path);
  				}
  
@@ -880,10 +905,12 @@
  		}
  
  		private static void SetTileValue() {
-@@ -4908,8 +_,15 @@
+@@ -4908,8 +_,17 @@
  		}
  
  		protected override void Initialize() {
++			InitTMLContentManager();
++
 +			DateTime date = DateTime.Now;
 +			if (date.Month == 5 && date.Day == 17 || date.Month == 7 && date.Day == 8 || date.Month == 10 && date.Day == 24
 +				|| date.Month == 6 && date.Day == 1 || date.Month == 4 || date.Day == 1 || new Random().Next(100) == 0) {
@@ -2981,7 +3008,22 @@
  
  						MouseTextHackZoom(text, rare, 0);
  						mouseText = true;
-@@ -32061,7 +_,7 @@
+@@ -32050,18 +_,22 @@
+ 					if (!npc[k].active)
+ 						continue;
+ 
++					if (!npc[k].ShowNameOnHover)
++						continue;
++
+ 					int type = npc[k].type;
+ 					LoadNPC(type);
+ 					npc[k].position += npc[k].netOffset;
+ 					Microsoft.Xna.Framework.Rectangle value3 = new Microsoft.Xna.Framework.Rectangle((int)npc[k].Bottom.X - npc[k].frame.Width / 2, (int)npc[k].Bottom.Y - npc[k].frame.Height, npc[k].frame.Width, npc[k].frame.Height);
+ 					if (npc[k].type >= 87 && npc[k].type <= 92)
+ 						value3 = new Microsoft.Xna.Framework.Rectangle((int)((double)npc[k].position.X + (double)npc[k].width * 0.5 - 32.0), (int)((double)npc[k].position.Y + (double)npc[k].height * 0.5 - 32.0), 64, 64);
++					NPCLoader.ModifyHoverBoundingBox(npc[k], ref value3);
+ 
+ 					bool flag = rectangle.Intersects(value3);
  					bool flag2 = flag || (SmartInteractShowingGenuine && SmartInteractNPC == k);
  					if (flag2 && ((npc[k].type != 85 && npc[k].type != 341 && npc[k].type != 629 && npc[k].aiStyle != 87) || npc[k].ai[0] != 0f) && npc[k].type != 488) {
  						bool flag3 = SmartInteractShowingGenuine && SmartInteractNPC == k;
@@ -3414,12 +3456,13 @@
  				if (mapStyle == 1 && mapEnabled)
  					Y += 261;
  			}
-@@ -36142,6 +_,9 @@
+@@ -36142,6 +_,10 @@
  
  		private static void TryDisposingEverything() {
  			ChromaInitializer.DisableAllDeviceGroups();
 +
 +			WorkshopHelper.OnGameExitCleanup(); // Added by TML.
++			TerrariaSteamClient.Shutdown();
 +
  			CaptureManager.Instance.Dispose();
  			audioSystem.Dispose();
@@ -3750,14 +3793,22 @@
  			if (SocialAPI.Network != null)
  				SocialAPI.Network.LaunchLocalServer(tServer, MenuServerMode);
  			else
-@@ -39673,7 +_,11 @@
+@@ -39673,7 +_,19 @@
  		}
  
  		private static void DrawVersionNumber(Microsoft.Xna.Framework.Color menuColor, float upBump) {
 -			string text = versionNumber;
 +			string supportMessage = Language.GetTextValue("tModLoader.PatreonSupport");
 +			string patreonShortURL = @"patreon.com/tModLoader";
-+			bool showPatreon = !Steam.IsSteamApp;
++			bool showPatreon = SocialAPI.Mode != SocialMode.Steam;
++
++			// Show number of mods - 1 such as to show number of enabled mods that are not tModLoader itself
++			string modsMessage = Language.GetTextValue("tModLoader.MenuModsEnabled", Math.Max(0, ModLoader.ModLoader.Mods.Length - 1));
++			/* //TODO: FUTURE
++			if (ModLoader.Core.GOGModUpdateChecker.ModUpdatesAvailable > 0) {
++				modsMessage += " " + Language.GetTextValue("tModLoader.MenuModUpdatesAvailable", ModLoader.Core.GOGModUpdateChecker.ModUpdatesAvailable);
++			}
++			*/
 +			string text = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
 +
  			Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);

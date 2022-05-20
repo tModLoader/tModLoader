@@ -28,6 +28,7 @@ using Terraria.GameContent.Creative;
 using Terraria.Graphics.Effects;
 using Terraria.GameContent.Skies;
 using Terraria.GameContent;
+using System.Reflection;
 
 namespace Terraria.ModLoader
 {
@@ -301,6 +302,7 @@ namespace Terraria.ModLoader
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
+				if (mod.Code != Assembly.GetExecutingAssembly()) AssemblyManager.JITMod(mod);
 				ContentInstance.Register(mod);
 				mod.loading = true;
 				mod.AutoloadConfig();
@@ -333,6 +335,7 @@ namespace Terraria.ModLoader
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
 
 			MapLoader.SetupModMap();
+			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
 
 			ContentSamples.Initialize();
@@ -344,6 +347,8 @@ namespace Terraria.ModLoader
 
 			MenuLoader.GotoSavedModMenu();
 			BossBarLoader.GotoSavedStyle();
+
+			ModOrganizer.SaveLastLaunchedMods();
 		}
 
 		private static void CacheVanillaState() {
@@ -461,6 +466,7 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			SoundLoader.Unload();
+			PlantLoader.UnloadPlants();
 
 			LoaderManager.Unload();
 

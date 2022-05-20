@@ -16,9 +16,6 @@ namespace ExampleMod.Content.Tiles
 			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleBlock>();
 
 			AddMapEntry(new Color(200, 200, 200));
-
-			// todo: implement
-			// SetModTree(new Trees.ExampleTree());
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {
@@ -28,11 +25,6 @@ namespace ExampleMod.Content.Tiles
 		// todo: implement
 		// public override void ChangeWaterfallStyle(ref int style) {
 		// 	style = mod.GetWaterfallStyleSlot("ExampleWaterfallStyle");
-		// }
-		//
-		// public override int SaplingGrowthType(ref int style) {
-		// 	style = 0;
-		// 	return TileType<ExampleSapling>();
 		// }
 	}
 }
