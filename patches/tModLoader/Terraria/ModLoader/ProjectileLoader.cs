@@ -244,6 +244,14 @@ namespace Terraria.ModLoader
 			foreach (GlobalProjectile g in HookReceiveExtraAI.Enumerate(projectile.globalProjectiles)) {
 				g.ReceiveExtraAI(projectile, bitReader, modReader);
 			}
+
+			if (bitReader.BitsRead < bitReader.MaxBits) {
+				throw new IOException($"Read underflow {bitReader.MaxBits - bitReader.BitsRead} of {bitReader.MaxBits} bits in ReceiveExtraAI, a mod is not reading all compressed bits it sent");
+			}
+			
+			if (stream.Position < stream.Length) {
+				throw new IOException($"Read underflow {stream.Length - stream.Position} of {stream.Length} bytes in ReceiveExtraAI, a mod is not reading all data it sent");
+			}
 		}
 
 		private static HookList HookShouldUpdatePosition = AddHook<Func<Projectile, bool>>(g => g.ShouldUpdatePosition);

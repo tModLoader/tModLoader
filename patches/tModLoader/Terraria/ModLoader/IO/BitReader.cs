@@ -7,14 +7,25 @@ namespace Terraria.ModLoader.IO
 	public class BitReader
 	{
 		private byte[] bytes;
-		private int i;
+		public int MaxBits { get; private set; }
+		public int BitsRead { get; private set; }
 
 		public BitReader(BinaryReader reader) {
-			bytes = reader.ReadBytes(reader.ReadVarInt());
+			MaxBits = reader.ReadVarInt();
+
+			int byteCount = MaxBits / 8;
+			if (MaxBits % 8 != 0)
+				byteCount++;
+
+			bytes = reader.ReadBytes(byteCount);
 		}
 
 		public bool ReadBit() {
-			return (bytes[i / 8] & (1 << i++ % 8)) != 0;
+			if (BitsRead >= MaxBits) {
+				throw new IOException("Read overflow while reading compressed bits");
+			}
+
+			return (bytes[BitsRead / 8] & (1 << BitsRead++ % 8)) != 0;
 		}
 	}
 }
