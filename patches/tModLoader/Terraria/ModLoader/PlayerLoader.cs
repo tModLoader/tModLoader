@@ -53,7 +53,7 @@ namespace Terraria.ModLoader
 			players.Clear();
 		}
 
-		private static HookList HookInitialize = AddHook(p => p.Initialize);
+		private static HookList HookInitialize = AddHook<Action>(p => p.Initialize);
 		internal static void SetupPlayer(Player player) {
 			player.modPlayers = players.Select(modPlayer => modPlayer.NewInstance(player)).ToArray();
 
