@@ -45,11 +45,7 @@ namespace ExampleMod.Content.Items.Tools
 			// If you're unsure what to return, return null.
 			// For this example, we'll give our example bug net a 20% chance to catch lava critters successfully (50% with a Warmth Potion buff active).
 			if (ItemID.Sets.IsLavaBait[target.catchItem]) {
-				if (!player.resistCold && Main.rand.NextBool(5)) {
-					return true;
-				}
-
-				if (player.resistCold && Main.rand.NextBool()) {
+				if (Main.rand.NextBool(player.resistCold ? 2 : 5)) {
 					return true;
 				}
 			}
