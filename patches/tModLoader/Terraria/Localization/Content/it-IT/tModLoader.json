@@ -293,6 +293,8 @@
 		// "MigrateWorldsMessage": "You have no worlds.\nIf you'd like to manually migrate your worlds from vanilla to tModLoader,\nyou can press the migrate button below to do so automatically.\nAlternatively, you can copy them from\n/Terraria/Worlds\nto\n/Terraria/{0}/Worlds manually.\nCopy the .wld files over.\nClick this text to open those folders.\nAfter copying over the worlds you want, press back.",
 		// "MigrateWorldsText": "Click here to automatically migrate worlds from Terraria...",
 		// "MigrateWorldsException": "There was a problem while trying to migrate World files",
+		// "MigrateIndividualPlayersHeader": "Migrate individual players...",
+		// "MigrateIndividualWorldsHeader": "Migrate individual worlds...",
 		// "MigratingWorldsText": "Migrating...",
 		// "ModsDifferentSinceLastPlay": "The following mods are different since last time you played: ",
 		// "Missing1Mod": "Missing 1 mod.",

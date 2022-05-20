@@ -291,6 +291,8 @@
 		"MigrateWorldsMessage": "No tienes mundos.\nSi quieres migrar tus mundos de la versión clásica a tModLoader,\npuedes hacer clic en el botón de abajo para hacerlo automáticamente.\nAlternativamente, puedes copiarlos de\n/Terraria/Worlds\na /Terraria/{0}/Worlds manualmente.\nCopia los archivos .wld.\nHaz clic en este texto para abrir esas carpetas.\nCuando hayas copiado los mundos que querías, pulsa atrás.",
 		"MigrateWorldsText": "Haz clic aquí para transferir tus mundos",
 		"MigrateWorldsException": "Ha habido un error al transferir tus mundos",
+		// "MigrateIndividualPlayersHeader": "Migrate individual players...",
+		// "MigrateIndividualWorldsHeader": "Migrate individual worlds...",
 		"MigratingWorldsText": "Transfiriendo...",
 		"ModsDifferentSinceLastPlay": "Los siguientes mods han cambiado desde la última vez que jugaste: ",
 		"Missing1Mod": "Falta un mod",

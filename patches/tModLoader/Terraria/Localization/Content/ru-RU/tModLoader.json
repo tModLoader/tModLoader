@@ -291,6 +291,8 @@
 		"MigrateWorldsMessage": "У вас нет миров.\nЕсли вы хотите перенести миры из оригинальной игры в tModLoader,\nвы можете сделать это автоматически, нажав кнопку внизу.\nТакже, скопировать их из\n /Terraria/Worlds\nв\n/Terraria/{0}/Worlds вручную.\nКопируйте файлы с расширением .wld.\nКликните здесь, чтобы открыть обе эти папки.\nПосле того, как вы скопировали нужные вам миры, нажмите назад.",
 		"MigrateWorldsText": "Кликните здесь, чтобы перенести миры...",
 		// "MigrateWorldsException": "There was a problem while trying to migrate World files",
+		// "MigrateIndividualPlayersHeader": "Migrate individual players...",
+		// "MigrateIndividualWorldsHeader": "Migrate individual worlds...",
 		"MigratingWorldsText": "Происходит перенос миров...",
 		"ModsDifferentSinceLastPlay": "Следующие моды были изменены с последнего момента, как вы играли: ",
 		"Missing1Mod": "Отсутствует 1 мод.",

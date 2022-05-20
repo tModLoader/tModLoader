@@ -291,6 +291,8 @@
 		"MigrateWorldsMessage": "Nie masz żadnych światów.\nJeśli chcesz zmigrować je z oficjalnej wersji do tModLoader,\nskopiuj ich pliki .wld z folderu /Terraria/Worlds do /Terraria/{0}/Worlds.\nKliknij, by otworzyć te foldery.\nPo skopiowaniu, kliknij Wróć.",
 		"MigrateWorldsText": "Kliknij tutaj, aby migrować światy...",
 		// "MigrateWorldsException": "There was a problem while trying to migrate World files",
+		// "MigrateIndividualPlayersHeader": "Migrate individual players...",
+		// "MigrateIndividualWorldsHeader": "Migrate individual worlds...",
 		"MigratingWorldsText": "Migrowanie...",
 		"ModsDifferentSinceLastPlay": "Te mody zmieniły się od ostatniego razu: ",
 		"Missing1Mod": "Brakujące mody: 1",
