@@ -409,11 +409,15 @@ namespace Terraria.ModLoader.UI
 			string message = Language.GetTextValue("tModLoader.ClientLogHint", text, logsLoc);
 			if(Language.ActiveCulture == null) // Simple backup approach in case error happens before localization is loaded
 				message = string.Format("{0}\n\nA client.log file containing error information has been generated in\n{1}\n(You will need to share this file if asking for help)", text, logsLoc);
+#if !NETCORE
 #if !MAC
 			System.Windows.Forms.MessageBox.Show(message, caption);
 #else
 			File.WriteAllText("fake-messagebox.txt", $"{caption}\n\n{text}");
 			Process.Start("fake-messagebox.txt");
+#endif
+#else
+			SDL2.SDL.SDL_ShowSimpleMessageBox(SDL2.SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR, caption, message, IntPtr.Zero);
 #endif
 		}
 

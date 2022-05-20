@@ -176,7 +176,7 @@
  					Lang.InitializeLegacyLocalization();
  					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
-@@ -171,9 +_,10 @@
+@@ -171,9 +_,11 @@
  					else
  						main.DedServ();
  				}
@@ -187,9 +187,19 @@
 +			catch (Exception e) {
 +				Logging.Terraria.Fatal("Main engine crash", e);
 +				DisplayException(e);
++				Environment.Exit(1);
  			}
  		}
  
+@@ -201,6 +_,8 @@
+ 					}
+ 				}
+ 
++				TerrariaSteamClient.Shutdown();
++
+ 				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
+ 					streamWriter.WriteLine(DateTime.Now);
+ 					streamWriter.WriteLine(text);
 @@ -208,9 +_,22 @@
  				}
  

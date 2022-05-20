@@ -44,7 +44,7 @@ namespace Terraria.ModLoader.UI
 		private UIAutoScaleTextTextPanel<string> buttonOMF;
 		private UIAutoScaleTextTextPanel<string> buttonMP;
 		private CancellationTokenSource _cts;
-		private bool forceReloadHidden = ModLoader.autoReloadRequiredModsLeavingModsScreen;
+		private bool forceReloadHidden => ModLoader.autoReloadRequiredModsLeavingModsScreen && !ModCompile.DeveloperMode;
 
 		public override void OnInitialize() {
 			uIElement = new UIElement {
@@ -247,7 +247,7 @@ namespace Terraria.ModLoader.UI
 			buttonDA.Width = buttonWidth;
 			buttonDA.HAlign = forceReloadHidden ? 1f : 0.5f;
 
-			uIElement.AddOrRemoveChild(buttonRM, !forceReloadHidden);
+			uIElement.AddOrRemoveChild(buttonRM, ModCompile.DeveloperMode || !forceReloadHidden);
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -385,12 +385,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Append(uiLoader);
 			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
 			Populate();
-
-			// Check if config has changed since buttons were placed and adjust layout accordingly
-			if (ModLoader.autoReloadRequiredModsLeavingModsScreen != forceReloadHidden) {
-				forceReloadHidden = ModLoader.autoReloadRequiredModsLeavingModsScreen;
-				UpdateTopRowButtons();
-			}
+			UpdateTopRowButtons();
 		}
 
 		public override void OnDeactivate() {
