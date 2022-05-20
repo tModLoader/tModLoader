@@ -600,7 +600,30 @@
  					}
  					break;
  				case 124: {
-@@ -3292,10 +_,22 @@
+@@ -3282,20 +_,45 @@
+ 						ushort key = reader.ReadUInt16();
+ 						LegacySoundStyle legacySoundStyle = SoundID.SoundByIndex[key];
+ 						BitsByte bitsByte2 = reader.ReadByte();
++						/*
+ 						int num33 = -1;
+ 						float num34 = 1f;
+ 						float num35 = 0f;
+ 						SoundEngine.PlaySound(Style: (!bitsByte2[0]) ? legacySoundStyle.Style : reader.ReadInt32(), volumeScale: (!bitsByte2[1]) ? legacySoundStyle.Volume : MathHelper.Clamp(reader.ReadSingle(), 0f, 1f), pitchOffset: (!bitsByte2[2]) ? legacySoundStyle.GetRandomPitch() : MathHelper.Clamp(reader.ReadSingle(), -1f, 1f), type: legacySoundStyle.SoundId, x: point.X, y: point.Y);
++						*/
++
++						if (bitsByte2[0])
++							legacySoundStyle.Style = reader.ReadInt32();
++
++						if (bitsByte2[1])
++							legacySoundStyle.Volume = MathHelper.Clamp(reader.ReadSingle(), 0f, 1f);
++
++						if (bitsByte2[2])
++							legacySoundStyle.Pitch = MathHelper.Clamp(reader.ReadSingle(), 0f, 1f);
++
++						SoundEngine.PlaySound(legacySoundStyle, point.ToVector2());
+ 					}
+ 					break;
+ 				case 133:
  					if (Main.netMode == 2) {
  						short x5 = reader.ReadInt16();
  						int y5 = reader.ReadInt16();

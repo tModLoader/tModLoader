@@ -1,5 +1,10 @@
 --- src/TerrariaNetCore/Terraria/ID/SoundID.cs
 +++ src/tModLoader/Terraria/ID/SoundID.cs
+@@ -1,3 +_,4 @@
++using System;
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Reflection;
 @@ -5,9 +_,9 @@
  
  namespace Terraria.ID
@@ -137,7 +142,7 @@
  		public static readonly LegacySoundStyle DD2_GoblinBomb = new LegacySoundStyle(2, 14).WithVolume(0.5f);
  		public static readonly LegacySoundStyle AchievementComplete = CreateTrackable("achievement_complete");
  		public static readonly LegacySoundStyle BlizzardInsideBuildingLoop = CreateTrackable("blizzard_inside_building_loop", SoundType.Ambient);
-@@ -499,11 +_,11 @@
+@@ -499,25 +_,33 @@
  		public static int TrackableLegacySoundCount => _trackableLegacySoundPathList.Count;
  
  		public static string GetTrackableLegacySoundPath(int id) => _trackableLegacySoundPathList[id];
@@ -153,3 +158,25 @@
  			if (_trackableLegacySoundPathList == null)
  				_trackableLegacySoundPathList = new List<string>();
  
++			Span<int> styles = stackalloc int[variations]; // Added due to TML's changes.
++
+ 			int count = _trackableLegacySoundPathList.Count;
+ 			if (variations == 1) {
++				styles[0] = TrackableLegacySoundCount;
+ 				_trackableLegacySoundPathList.Add(name);
+ 			}
+ 			else {
+ 				for (int i = 0; i < variations; i++) {
++					styles[i] = TrackableLegacySoundCount;
+ 					_trackableLegacySoundPathList.Add(name + "_" + i);
+ 				}
+ 			}
+ 
++			/*
+ 			return new LegacySoundStyle(42, count, variations, type);
++			*/
++			
++			return new LegacySoundStyle(42, styles, type);
+ 		}
+ 
+ 		public static void FillAccessMap() {
