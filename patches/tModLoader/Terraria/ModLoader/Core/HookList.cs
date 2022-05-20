@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Terraria.ModLoader.Core
 {
-	public class HookList<T> where T : GlobalType
+	public class HookList<T> where T : class
 	{
 		// Don't change a single line without performance testing and checking the disassembly. As of NET 5.0.0, this implementation is on par with hand-coding
 		// Disassembly checked using Relyze Desktop 3.3.0
@@ -66,33 +67,23 @@ namespace Terraria.ModLoader.Core
 
 		public readonly MethodInfo method;
 
-		private int[] registeredGlobalIndices = Array.Empty<int>();
+		private int[] inds = Array.Empty<int>();
 
-		internal HookList(MethodInfo method) {
+		public HookList(MethodInfo method) {
 			this.method = method;
 		}
 
-		public InstanceEnumerator Enumerate(IEntityWithGlobals<T> entity) => Enumerate(entity.Globals.array);
+		public InstanceEnumerator Enumerate(Instanced<T>[] instances) => new(instances, inds);
 
-		public InstanceEnumerator Enumerate(Instanced<T>[] instances) => new(instances, registeredGlobalIndices);
-
-		public void Update(IList<T> instances) {
-			registeredGlobalIndices = ModLoader.BuildGlobalHookNew(instances, method);
+		public void Update<U>(IList<U> instances) where U : GlobalType {
+			inds = instances.WhereMethodIsOverridden(method).Select(g => (int)g.index).ToArray();
 		}
+
+		public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate => new(expr.ToMethodInfo());
 	}
 
-	public class HookList<TGlobal, TDelegate> : HookList<TGlobal>
-		where TGlobal : GlobalType
-		where TDelegate : Delegate
+	public static class HookList
 	{
-		public TDelegate Invoke { get; private set; }
-
-		public HookList(MethodInfo method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(method) {
-			Invoke = getInvoker(this);
-		}
-
-		internal HookList(Expression<Func<TGlobal, TDelegate>> method, Func<HookList<TGlobal>, TDelegate> getInvoker) : base(ModLoader.Method(method)) {
-			Invoke = getInvoker(this);
-		}
+		public static HookList<U>.InstanceEnumerator Enumerate<U>(this HookList<U> hookList, IEntityWithGlobals<U> entity) where U : GlobalType => hookList.Enumerate(entity.Globals.array);
 	}
 }

@@ -392,71 +392,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows type inference on T and F
 		/// </summary>
-		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr)
-		{
+		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate {
 			list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
 		}
 
-		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr)
-		{
-			return BuildGlobalHook(providers, Method(expr));
-		}
-
-		internal static T[] BuildGlobalHook<T>(IList<T> providers, MethodInfo method)
-		{
-			if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
-			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-
-			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
-		}
-
-		internal static int[] BuildGlobalHookNew<T>(IList<T> providers, MethodInfo method) {
-			if (!method.IsVirtual)
-				throw new ArgumentException("Cannot build hook for non-virtual method " + method);
-
-			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-			var list = new List<int>();
-			var baseDeclaringType = method.DeclaringType;
-			bool isInterface = baseDeclaringType.IsInterface;
-
-			for (int i = 0; i < providers.Count; i++) {
-				var currentType = providers[i].GetType();
-
-				if (isInterface) {
-					// In case of interfaces, we can skip shenanigans that 'explicit interface method implementations' bring,
-					// and just check if the provider implements the interface.
-					if (baseDeclaringType.IsAssignableFrom(currentType)) {
-						list.Add(i);
-					}
-				}
-				else {
-					var currentMethod = currentType.GetMethod(method.Name, argTypes);
-
-					if (currentMethod != null && currentMethod.DeclaringType != baseDeclaringType) {
-						list.Add(i);
-					}
-				}
-			}
-
-			return list.ToArray();
-		}
-
-		internal static MethodInfo Method<T, F>(Expression<Func<T, F>> expr)
-		{
-			MethodInfo method;
-
-			try {
-				var convert = expr.Body as UnaryExpression;
-				var makeDelegate = convert.Operand as MethodCallExpression;
-				var methodArg = makeDelegate.Object as ConstantExpression;
-				method = methodArg.Value as MethodInfo;
-				if (method == null) throw new NullReferenceException();
-			}
-			catch (Exception e) {
-				throw new ArgumentException("Invalid hook expression " + expr, e);
-			}
-
-			return method;
+		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate {
+			return providers.WhereMethodIsOverridden(expr).ToArray();
 		}
 	}
 }

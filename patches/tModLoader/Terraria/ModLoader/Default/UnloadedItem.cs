@@ -10,6 +10,8 @@ namespace Terraria.ModLoader.Default
 	{
 		private TagCompound data;
 
+		public override bool IsCloneable => true; // safe to share 'data' between clones, because it cannot be changed after creation/load
+
 		public string ModName { get; private set; }
 		public string ItemName { get; private set; }
 
@@ -75,12 +77,6 @@ namespace Terraria.ModLoader.Default
 
 		public override void NetReceive(BinaryReader reader) {
 			Setup(TagIO.Read(reader));
-		}
-
-		public override ModItem Clone(Item item) {
-			var clone = (UnloadedItem)base.Clone(item);
-			clone.data = (TagCompound)data?.Clone();
-			return clone;
 		}
 	}
 }

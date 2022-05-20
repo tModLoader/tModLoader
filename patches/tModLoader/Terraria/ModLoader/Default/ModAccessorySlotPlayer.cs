@@ -22,8 +22,6 @@ namespace Terraria.ModLoader.Default
 		internal bool scrollSlots;
 		internal int scrollbarSlotPosition;
 
-		public override bool CloneNewInstances => false;
-
 		public int SlotCount => slots.Count;
 		public int LoadedSlotCount => SlotCount - UnloadedSlotCount;
 		public int UnloadedSlotCount { get; private set; } = 0;

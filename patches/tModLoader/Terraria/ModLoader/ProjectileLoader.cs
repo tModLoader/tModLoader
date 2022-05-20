@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,8 +28,8 @@ namespace Terraria.ModLoader
 		private static readonly List<HookList> modHooks = new List<HookList>();
 		private static Instanced<GlobalProjectile>[] globalProjectilesArray = new Instanced<GlobalProjectile>[0];
 
-		private static HookList AddHook<F>(Expression<Func<GlobalProjectile, F>> func) {
-			var hook = new HookList(ModLoader.Method(func));
+		private static HookList AddHook<F>(Expression<Func<GlobalProjectile, F>> func) where F : Delegate {
+			var hook = HookList.Create(func);
 
 			hooks.Add(hook);
 
@@ -112,13 +111,10 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Projectile projectile, bool createModProjectile = true) {
 			if (IsModProjectile(projectile) && createModProjectile) {
-				projectile.ModProjectile = GetProjectile(projectile.type).Clone(projectile);
+				projectile.ModProjectile = GetProjectile(projectile.type).NewInstance(projectile);
 			}
 
-			GlobalProjectile Instantiate(GlobalProjectile g)
-				=> g.InstancePerEntity ? g.Clone(projectile, projectile) : g;
-
-			LoaderUtils.InstantiateGlobals(projectile, globalProjectiles, ref projectile.globalProjectiles, Instantiate, () => {
+			LoaderUtils.InstantiateGlobals(projectile, globalProjectiles, ref projectile.globalProjectiles, () => {
 				projectile.ModProjectile?.SetDefaults();
 			});
 
