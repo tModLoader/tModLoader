@@ -13,6 +13,15 @@
  	{
  		private const int NPC_TARGETS_START = 300;
  		public bool IsABestiaryIconDummy;
+@@ -58,7 +_,7 @@
+ 		public int altTexture;
+ 		public int townNpcVariationIndex;
+ 		public Vector2 netOffset = Vector2.Zero;
+-		public short catchItem;
++		public int catchItem; // tML: changed to int for convenience and consistency purposes
+ 		public short releaseOwner = 255;
+ 		public int rarity;
+ 		public static bool taxCollector = false;
 @@ -104,14 +_,14 @@
  		private static int townRangeY = sHeight;
  		public float npcSlots = 1f;
@@ -839,7 +848,19 @@
  				if (Main.netMode == 2)
  					NetMessage.SendData(7);
  			}
-@@ -57258,8 +_,15 @@
+@@ -57238,7 +_,10 @@
+ 			}
+ 		}
+ 
++		// this is made internal because NPC.CheckCatchNPC now fulfills every use case
++		// that callin' this method manually could have for modders, and then some
++		// -thomas
+-		public static void CatchNPC(int i, int who = -1) {
++		internal static void CatchNPC(int i, int who = -1) {
+ 			if (!Main.npc[i].active)
+ 				return;
+ 
+@@ -57258,8 +_,14 @@
  					NetMessage.SendData(106, -1, -1, null, (int)position.X, position.Y);
  				}
  				else {
@@ -847,9 +868,8 @@
  					new Item().SetDefaults(Main.npc[i].catchItem);
  					Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, noBroadcast: false, 0, noGrabDelay: true);
 +					*/
-+					int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, true, 0, true, false);
++					int itemWhoAmI = Item.NewItem(GetSpawnSource_NPCCatch(who, Main.npc[i]), (int)Main.player[who].Center.X, (int)Main.player[who].Center.Y, 0, 0, Main.npc[i].catchItem, 1, true, 0, true, false);
 +					
-+					NPCLoader.OnCatchNPC(Main.npc[i], Main.player[who], Main.item[itemWhoAmI]);
 +					NetMessage.SendData(MessageID.SyncItem, -1, -1, null, itemWhoAmI, 1f); // NewItem above changed to noBroadcast, number2 is 1 for noGrabDelay effect.
 +					
  					Main.npc[i].active = false;
@@ -1182,7 +1202,7 @@
 +
 +		// Internal redirects:
 +		internal static IEntitySource GetSpawnSource_NPCRelease(int whoReleasedIt) => Main.player[whoReleasedIt].GetSource_ReleaseEntity();
-+		internal static IEntitySource GetSpawnSource_NPCCatch(int whoCaughtIt) => Main.player[whoCaughtIt].GetSource_CatchEntity();
++		internal static IEntitySource GetSpawnSource_NPCCatch(int whoCaughtIt, Entity caughtEntity) => Main.player[whoCaughtIt].GetSource_CatchEntity(caughtEntity);
 +		internal static IEntitySource GetSpawnSourceForNaturalSpawn() => GetSource_NaturalSpawn();
 +		internal static IEntitySource GetSpawnSourceForTownSpawn() => GetSource_TownSpawn();
 +		

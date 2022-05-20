@@ -22,7 +22,7 @@
  	{
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
-@@ -51,7 +_,7 @@
+@@ -51,18 +_,20 @@
  		public int tileWand = -1;
  		public bool wornArmor;
  		public int tooltipContext = -1;
@@ -31,8 +31,11 @@
  		public int fishingPole = 1;
  		public int bait;
  		public static int coinGrabRange = 350;
-@@ -61,8 +_,10 @@
- 		public short makeNPC;
+ 		public static int manaGrabRange = 300;
+ 		public static int lifeGrabRange = 250;
+ 		public static int treasureGrabRange = 150;
+-		public short makeNPC;
++		public int makeNPC; // tML: changed to int for convenience and consistency purposes
  		public bool expertOnly;
  		public bool expert;
 +		public bool masterOnly;
@@ -458,6 +461,16 @@
  			useStyle = 1;
  			autoReuse = true;
  			useAnimation = 15;
+@@ -44420,7 +_,8 @@
+ 			}
+ 		}
+ 
++		// tML: changed to take an int instead of a short for convenience and consistency purposes
+-		public void DefaultToCapturedCritter(short npcIdToSpawnOnUse) {
++		public void DefaultToCapturedCritter(int npcIdToSpawnOnUse) {
+ 			useStyle = 1;
+ 			autoReuse = true;
+ 			useTurn = true;
 @@ -44799,6 +_,11 @@
  			mountType = mount;
  		}

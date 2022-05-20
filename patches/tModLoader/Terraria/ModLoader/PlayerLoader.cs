@@ -596,6 +596,30 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookCanCatchNPC = AddHook<Func<NPC, Item, bool?>>(p => p.CanCatchNPC);
+
+		public static bool? CanCatchNPC(Player player, NPC target, Item item) {
+			bool? returnValue = null;
+			foreach (int index in HookCanCatchNPC.arr) {
+				bool? canCatch = player.modPlayers[index].CanCatchNPC(target, item);
+				if (canCatch.HasValue) {
+					if (!canCatch.Value)
+						return false;
+
+					returnValue = true;
+				}
+			}
+			return returnValue;
+		}
+
+		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Item, bool>>(p => p.OnCatchNPC);
+
+		public static void OnCatchNPC(Player player, NPC target, Item item, bool failed) {
+			foreach (int index in HookOnCatchNPC.arr) {
+				player.modPlayers[index].OnCatchNPC(target, item, failed);
+			}
+		}
+
 		private delegate void DelegateModifyItemScale(Item item, ref float scale);
 		private static HookList HookModifyItemScale = AddHook<DelegateModifyItemScale>(p => p.ModifyItemScale);
 

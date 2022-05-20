@@ -301,11 +301,27 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this NPC is caught. Ran Serverside
+		/// Allows you to determine whether the given item can catch this NPC.<br></br>
+		/// Return true or false to say this NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
 		/// </summary>
-		/// <param name="player">The player catching this NPC</param>
-		/// <param name="item">The item that will be spawned</param>
-		public virtual void OnCatchNPC(Player player, Item item) {
+		/// <param name="item">The item with which the player is trying to catch this NPC.</param>
+		/// <param name="player">The player attempting to catch this NPC.</param>
+		/// <returns></returns>
+		public virtual bool? CanBeCaughtBy(Item item, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given item attempts to catch this NPC.
+		/// </summary>
+		/// <param name="player">The player attempting to catch this NPC.</param>
+		/// <param name="item">The item used to catch this NPC.</param>
+		/// <param name="failed">Whether or not this NPC has been successfully caught.</param>
+		public virtual void OnCaughtBy(Player player, Item item, bool failed) {
 		}
 
 		/// <summary>

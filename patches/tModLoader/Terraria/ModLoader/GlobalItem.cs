@@ -405,6 +405,31 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to determine whether the given item can catch the given NPC.<br></br>
+		/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+		/// </summary>
+		/// <param name="item">The item with which the player is trying to catch the target NPC.</param>
+		/// <param name="target">The NPC the player is trying to catch.</param>
+		/// <param name="player">The player attempting to catch the NPC.</param>
+		/// <returns></returns>
+		public virtual bool? CanCatchNPC(Item item, NPC target, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given item attempts to catch the given NPC.
+		/// </summary>
+		/// <param name="item">The item used to catch the given NPC.</param>
+		/// <param name="npc">The NPC which the player attempted to catch.</param>
+		/// <param name="player">The player attempting to catch the given NPC.</param>
+		/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
+		public virtual void OnCatchNPC(Item item, NPC npc, Player player, bool failed) {
+		}
+
 		/// Allows you to dynamically modify the given item's size for the given player, similarly to the effect of the Titan Glove.
 		/// </summary>
 		/// <param name="item">The item to modify the scale of.</param>

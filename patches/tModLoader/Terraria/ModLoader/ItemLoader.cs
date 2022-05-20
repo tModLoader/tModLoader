@@ -771,6 +771,48 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private static HookList HookCanCatchNPC = AddHook<Func<Item, NPC, Player, bool?>>(g => g.CanCatchNPC);
+
+		/// <summary>
+		/// Gathers the results of all <see cref="GlobalItem.CanCatchNPC"/> hooks, then the <see cref="ModItem.CanCatchNPC"/> hook if applicable.<br></br>
+		/// If any of them returns false, this returns false.<br></br>
+		/// Otherwise, if any of them returns true, then this returns true.<br></br>
+		/// If all of them return null, this returns null.<br></br>
+		/// </summary>
+		public static bool? CanCatchNPC(Item item, NPC target, Player player) {
+			bool? canCatchOverall = null;
+			foreach (GlobalItem g in HookCanCatchNPC.Enumerate(item.globalItems)) {
+				bool? canCatchFromGlobalItem = g.CanCatchNPC(item, target, player);
+				if (canCatchFromGlobalItem.HasValue) {
+					if (!canCatchFromGlobalItem.Value)
+						return false;
+
+					canCatchOverall = true;
+				}
+			}
+			if (item.ModItem != null) {
+				bool? canCatchAsModItem = item.ModItem.CanCatchNPC(target, player);
+				if (canCatchAsModItem.HasValue) {
+					if (!canCatchAsModItem.Value)
+						return false;
+
+					canCatchOverall = true;
+				}
+			}
+			return canCatchOverall;
+		}
+
+		private static HookList HookOnCatchNPC = AddHook<Action<Item, NPC, Player, bool>>(g => g.OnCatchNPC);
+
+		public static void OnCatchNPC(Item item, NPC npc, Player player, bool failed) {
+			item.ModItem?.OnCatchNPC(npc, player, failed);
+
+			foreach (GlobalItem g in HookOnCatchNPC.Enumerate(item.globalItems)) {
+				g.OnCatchNPC(item, npc, player, failed);
+			}
+		}
+
+
 		private delegate void DelegateModifyItemScale(Item item, Player player, ref float scale);
 		private static HookList HookModifyItemScale = AddHook<DelegateModifyItemScale>(g => g.ModifyItemScale);
 

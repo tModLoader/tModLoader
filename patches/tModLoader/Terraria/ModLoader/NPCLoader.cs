@@ -478,13 +478,38 @@ namespace Terraria.ModLoader
 			return ret;
 		}
 
-		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Player, Item>>(g => g.OnCatchNPC);
+		private static HookList HookCanBeCaughtBy = AddHook<Func<NPC, Item, Player, bool?>>(g => g.CanBeCaughtBy);
 
-		public static void OnCatchNPC(NPC npc, Player player, Item item) {
-			npc.ModNPC?.OnCatchNPC(player, item);
+		public static bool? CanBeCaughtBy(NPC npc, Item item, Player player) {
+			bool? canBeCaughtOverall = null;
+			foreach (GlobalNPC g in HookCanBeCaughtBy.Enumerate(npc.globalNPCs)) {
+				bool? canBeCaughtFromGlobalNPC = g.CanBeCaughtBy(npc, item, player);
+				if (canBeCaughtFromGlobalNPC.HasValue) {
+					if (!canBeCaughtFromGlobalNPC.Value)
+						return false;
 
-			foreach (GlobalNPC g in HookOnCatchNPC.Enumerate(npc.globalNPCs)) {
-				g.OnCatchNPC(npc, player, item);
+					canBeCaughtOverall = true;
+				}
+			}
+			if (npc.ModNPC != null) {
+				bool? canBeCaughtAsModNPC = npc.ModNPC.CanBeCaughtBy(item, player);
+				if (canBeCaughtAsModNPC.HasValue) {
+					if (!canBeCaughtAsModNPC.Value)
+						return false;
+
+					canBeCaughtOverall = true;
+				}
+			}
+			return canBeCaughtOverall;
+		}
+
+		private static HookList HookOnCaughtBy = AddHook<Action<NPC, Player, Item, bool>>(g => g.OnCaughtBy);
+
+		public static void OnCaughtBy(NPC npc, Player player, Item item, bool failed) {
+			npc.ModNPC?.OnCaughtBy(player, item, failed);
+
+			foreach (GlobalNPC g in HookOnCaughtBy.Enumerate(npc.globalNPCs)) {
+				g.OnCaughtBy(npc, player, item, failed);
 			}
 		}
 

@@ -159,5 +159,37 @@ namespace Terraria.ModLoader
 			}
 			return ret;
 		}
+
+		public static bool? CanCatchNPC(Player player, NPC npc, Item item) {
+			bool? canCatchOverall = null;
+			bool? canCatchOnPlayer = PlayerLoader.CanCatchNPC(player, npc, item);
+			if (canCatchOnPlayer.HasValue) {
+				if (!canCatchOnPlayer.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			bool? canCatchOnItem = ItemLoader.CanCatchNPC(item, npc, player);
+			if (canCatchOnItem.HasValue) {
+				if (!canCatchOnItem.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			bool? canCatchOnNPC = NPCLoader.CanBeCaughtBy(npc, item, player);
+			if (canCatchOnNPC.HasValue) {
+				if (!canCatchOnNPC.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			return canCatchOverall;
+		}
+
+		public static void OnCatchNPC(Player player, NPC npc, Item item, bool failed) {
+			PlayerLoader.OnCatchNPC(player, npc, item, failed);
+			ItemLoader.OnCatchNPC(item, npc, player, failed);
+			NPCLoader.OnCaughtBy(npc, player, item, failed);
+		}
 	}
 }
