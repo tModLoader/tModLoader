@@ -93,7 +93,7 @@ namespace Terraria.ModLoader
 		/// Whether or not this type is cloneable. By default, cloning is supported if this type has only value typed fields, or if it overrides <see cref="Clone"/><br/>
 		/// If this type has reference fields, which are safe to share between clones then override this property to return true.
 		/// </summary>
-		public virtual bool IsCloneable => LoaderUtils.IsCloneable(this, m => m.Clone);
+		public virtual bool IsCloneable => LoaderUtils.IsCloneable<ModType<TEntity, TModType>, Func<TEntity, TModType>>(this, m => m.Clone);
 
 		/// <summary>
 		/// Whether to create new instances of this mod type via <see cref="Clone(TEntity)"/> or via the default constructor
