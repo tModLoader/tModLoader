@@ -57,12 +57,17 @@ namespace ExampleMod.Common.GlobalProjectiles
 		public override void AI(Projectile projectile) {
 			if (differentBehaviour) {
 				int p = Player.FindClosest(projectile.position, projectile.width, projectile.height);
-				int dustType;
+				float currentDistance = p == -1 ? 0 : projectile.Distance(Main.player[p].Center);
+				int dustType = DustID.GemSapphire;
 
-				// Normal behaviour when in close range
-				if (p != -1 && projectile.Distance(Main.player[p].Center) < distance / 2) {
+				// Ends behaviour when in very close range
+				if (currentDistance < distance / 4) {
+					differentBehaviour = false;
+					projectile.netUpdate = true;
+				}
+				// Move at normal speed but can speed back up
+				else if (currentDistance < distance / 2) {
 					projectile.extraUpdates = 0;
-					dustType = DustID.GemSapphire;
 				}
 				// Becomes faster when out of range
 				else {
@@ -73,15 +78,6 @@ namespace ExampleMod.Common.GlobalProjectiles
 				// Visually indicates this typhoon has special behaviour and which mode it is in
 				int d = Dust.NewDust(projectile.position, projectile.width, projectile.height, dustType, Scale: 5f);
 				Main.dust[d].noGravity = true;
-
-				if (projectile.Distance(Main.player[p].Center) < distance / 3) {
-					//differentBehaviour = false;
-					//projectile.netUpdate = true;
-
-					// Do not do this!
-					// Anything your Send/ReceiveExtraAI relies on should always be the same between client and server
-					// Ignoring this risks desync, read overflows, or unread packets that can even affect other mods' behaviour
-				}
 			}
 		}
 	}
