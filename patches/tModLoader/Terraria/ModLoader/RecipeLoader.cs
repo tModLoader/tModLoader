@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using Terraria.ID;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader
 {
@@ -10,6 +12,7 @@ namespace Terraria.ModLoader
 	public static class RecipeLoader
 	{
 		internal static readonly IList<GlobalRecipe> globalRecipes = new List<GlobalRecipe>();
+		internal static Recipe[] FirstRecipeForItem = new Recipe[ItemID.Count];
 
 		/// <summary>
 		/// Set when tML sets up modded recipes. Used to detect misuse of CreateRecipe
@@ -23,6 +26,7 @@ namespace Terraria.ModLoader
 		internal static void Unload() {
 			globalRecipes.Clear();
 			setupRecipes = false;
+			FirstRecipeForItem = new Recipe[Recipe.maxRecipes];
 		}
 
 		internal static void AddRecipes() {
@@ -55,6 +59,73 @@ namespace Terraria.ModLoader
 					throw;
 				}
 			}
+		}
+
+		internal static void PostSetupRecipes() {
+			foreach (Mod mod in ModLoader.Mods) {
+				try {
+					SystemLoader.PostSetupRecipes(mod);
+				}
+				catch (Exception e) {
+					e.Data["mod"] = mod.Name;
+					throw;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Orders everything in the recipe according to their Ordering.
+		/// </summary>
+		internal static void OrderRecipes() {
+			// first-pass, collect sortBefore and sortAfter
+			Dictionary<Recipe, List<Recipe>> sortBefore = new();
+			Dictionary<Recipe, List<Recipe>> sortAfter = new();
+			var baseOrder = new List<Recipe>(Main.recipe.Length);
+			foreach (var r in Main.recipe) {
+				switch (r.Ordering) {
+					case (null, _):
+						baseOrder.Add(r);
+						break;
+					case (var target, false): // sortBefore
+						if (!sortBefore.TryGetValue(target, out var before))
+							before = sortBefore[target] = new();
+
+						before.Add(r);
+						break;
+					case (var target, true): // sortBefore
+						if (!sortAfter.TryGetValue(target, out var after))
+							after = sortAfter[target] = new();
+
+						after.Add(r);
+						break;
+				}
+			}
+
+			if (!sortBefore.Any() && !sortAfter.Any())
+				return;
+
+			// define sort function
+			int i = 0;
+			void Sort(Recipe r) {
+				if (sortBefore.TryGetValue(r, out var before))
+					foreach (var c in before)
+						Sort(c);
+
+				r.RecipeIndex = i;
+				Main.recipe[i++] = r;
+
+				if (sortAfter.TryGetValue(r, out var after))
+					foreach (var c in after)
+						Sort(c);
+			}
+
+			// second pass, sort!
+			foreach (var r in baseOrder) {
+				Sort(r);
+			}
+
+			if (i != Main.recipe.Length)
+				throw new Exception("Sorting code is broken?");
 		}
 
 		/// <summary>

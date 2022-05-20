@@ -111,7 +111,14 @@ namespace Terraria
 		/// <summary>
 		/// The index of the recipe in the Main.recipe array.
 		/// </summary>
-		public int RecipeIndex { get; private set; }
+		public int RecipeIndex { get; internal set; }
+
+		public (Recipe target, bool after) Ordering { get; internal set; }
+
+		/// <summary>
+		/// Any recipe with this flag won't be shown in game.
+		/// </summary>
+		public bool Disabled { get; private set; }
 
 		/// <summary>
 		/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>
@@ -285,6 +292,68 @@ namespace Terraria
 			return this;
 		}
 
+		#region Ordering
+
+		/// <summary>
+		/// Sets the Ordering of this recipe. This recipe can't already have one.
+		/// </summary>
+		private Recipe SetOrdering(Recipe recipe, bool after) {
+			if (!RecipeLoader.setupRecipes)
+				throw new RecipeException("You can only move recipes during setup");
+			if (Main.recipe[recipe.RecipeIndex] != recipe)
+				throw new RecipeException("The selected recipe is not registered.");
+			if (Ordering.target != null)
+				throw new RecipeException("This recipe already has an ordering.");
+			Ordering = (recipe, after);
+
+			var target = recipe;
+			do {
+				if (target == this)
+					throw new Exception("Recipe ordering loop!");
+
+				target = target.Ordering.target;
+			} while (target != null);
+
+
+			return recipe;
+		}
+
+		/// <summary>
+		/// Sorts the recipe before the first one creating the item of the ID given as parameter.
+		/// </summary>
+		public Recipe SortBeforeFirstRecipesOf(int itemId) {
+			Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
+			if (target != null) {
+				return SortBefore(target);
+			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Sorts the recipe before the one given as parameter. Both recipes must already be registered.
+		/// </summary>
+		public Recipe SortBefore(Recipe recipe) => SetOrdering(recipe, false);
+
+		/// <summary>
+		/// Sorts the recipe after the first one creating the item of the ID given as parameter.
+		/// </summary>
+		public Recipe SortAfterFirstRecipesOf(int itemId) {
+			Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
+			if (target != null) {
+				return SortAfter(target);
+			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Sorts the recipe after the one given as parameter. Both recipes must already be registered.
+		/// </summary>
+		public Recipe SortAfter(Recipe recipe) => SetOrdering(recipe, true);
+
+		#endregion
+
 		/// <summary>
 		/// Returns a copy of the recipe passed in, including the same OnCraftHooks and ConsumeItemHooks. Called only on the result of Recipe.Create to ensure Mod and RecipeIndex set correctly
 		/// </summary>
@@ -327,7 +396,7 @@ namespace Terraria
 		/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
 		/// </summary>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
-		public void Register() {
+		public Recipe Register() {
 			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
 
@@ -350,6 +419,11 @@ namespace Terraria
 			Main.recipe[numRecipes] = this;
 			RecipeIndex = numRecipes;
 			numRecipes++;
+
+			if (RecipeLoader.FirstRecipeForItem[createItem.type] == null)
+				RecipeLoader.FirstRecipeForItem[createItem.type] = this;
+
+			return this;
 		}
 
 		internal static Recipe Create(Mod mod, int result, int amount) {
