@@ -4155,12 +4155,12 @@
  				}
  
 -				if (((item.damage >= 0 && item.type > 0 && !item.noMelee) || item.type == 1450 || item.type == 1991 || item.type == 3183 || item.type == 4821 || item.type == 3542 || item.type == 3779) && itemAnimation > 0) {
-+				if (((item.damage >= 0 && item.type > 0 && !item.noMelee) || item.type == 1450 || CombinedHooks.CanCatchNPCsWith(this, item) || item.type == 3542 || item.type == 3779) && itemAnimation > 0) {
++				if (((item.damage >= 0 && item.type > 0 && !item.noMelee) || item.type == 1450 || ItemID.Sets.CatchingTool[item.type] || item.type == 3542 || item.type == 3779) && itemAnimation > 0) {
  					ItemCheck_GetMeleeHitbox(item, drawHitbox, out bool dontAttack, out Rectangle itemRectangle);
  					if (!dontAttack) {
  						itemRectangle = ItemCheck_EmitUseVisuals(item, itemRectangle);
 -						if (Main.myPlayer == whoAmI && (item.type == 1991 || item.type == 3183 || item.type == 4821))
-+						if (Main.myPlayer == whoAmI && CombinedHooks.CanCatchNPCsWith(this, item))
++						if (Main.myPlayer == whoAmI && ItemID.Sets.CatchingTool[item.type])
  							itemRectangle = ItemCheck_CatchCritters(item, itemRectangle);
  
  						if (item.type == 3183 || item.type == 4821) {
@@ -4388,12 +4388,12 @@
  
  		private Rectangle ItemCheck_CatchCritters(Item sItem, Rectangle itemRectangle) {
 -			bool flag = sItem.type == 3183 || sItem.type == 4821;
-+			//bool flag = sItem.type == 3183 || sItem.type == 4821; // effectively replaced by ItemID.Sets.CanCatchLavaCritters
++			//bool flag = sItem.type == 3183 || sItem.type == 4821; // effectively replaced by ItemID.Sets.LavaproofCatchingTool
  			for (int i = 0; i < 200; i++) {
  				if (!Main.npc[i].active || Main.npc[i].catchItem <= 0)
  					continue;
  
-+				NPC.CheckCatchNPC(Main.npc[i], itemRectangle, sItem, this, ItemID.Sets.CanCatchLavaCritters[sItem.type]);
++				NPC.CheckCatchNPC(Main.npc[i], itemRectangle, sItem, this, ItemID.Sets.LavaproofCatchingTool[sItem.type]);
 +				/*
  				Rectangle value = new Rectangle((int)Main.npc[i].position.X, (int)Main.npc[i].position.Y, Main.npc[i].width, Main.npc[i].height);
  				if (!itemRectangle.Intersects(value))

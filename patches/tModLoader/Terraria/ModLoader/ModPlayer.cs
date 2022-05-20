@@ -501,22 +501,12 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to determine whether the given item can be used to catch NPCs, similar to bug nets.<br></br>
-		/// Return true or false to say the item can or cannot be used for catching, respectively, regardless of vanilla rules.<br></br>
-		/// Returns null by default, which means that the item can only be used for catching if it's one of the three vanilla bug nets.
-		/// </summary>
-		/// <param name="item">The item with which the player could potentially catch something.</param>
-		public virtual bool? CanCatchNPCsWith(Item item) {
-			return null;
-		}
-
-		/// <summary>
 		/// Allows you to determine whether the given item can catch the given NPC.<br></br>
 		/// Return true or false to say the target can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
 		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
 		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
 		/// NOTE: this does not classify the given item as a catch tool, which is necessary for catching NPCs in the first place.<br></br>
-		/// To do that, you will need to use <see cref="CanCatchNPCsWith"/>.
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
 		/// </summary>
 		/// <param name="target">The NPC the player is trying to catch.</param>
 		/// <param name="item">The item with which the player is trying to catch the target NPC.</param>

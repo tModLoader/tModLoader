@@ -503,13 +503,13 @@ namespace Terraria.ModLoader
 			return canBeCaughtOverall;
 		}
 
-		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Player, Item, bool>>(g => g.OnCatchNPC);
+		private static HookList HookOnCaughtBy = AddHook<Action<NPC, Player, Item, bool>>(g => g.OnCaughtBy);
 
-		public static void OnCatchNPC(NPC npc, Player player, Item item, bool failed) {
-			npc.ModNPC?.OnCatchNPC(player, item, failed);
+		public static void OnCaughtBy(NPC npc, Player player, Item item, bool failed) {
+			npc.ModNPC?.OnCaughtBy(player, item, failed);
 
-			foreach (GlobalNPC g in HookOnCatchNPC.Enumerate(npc.globalNPCs)) {
-				g.OnCatchNPC(npc, player, item, failed);
+			foreach (GlobalNPC g in HookOnCaughtBy.Enumerate(npc.globalNPCs)) {
+				g.OnCaughtBy(npc, player, item, failed);
 			}
 		}
 

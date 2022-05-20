@@ -26,7 +26,21 @@
 				SkeletronBossBag, WallOfFleshBossBag, QueenSlimeBossBag
 			);
 
-			public static bool[] CanCatchLavaCritters = Factory.CreateBoolSet(
+			/// <summary>
+			/// Set for catching tools (bug net-type items which can catch critters).<br></br>
+			/// If you want your catching tool to be able to catch the Underworld's lava critters, don't forget to use the <see cref="LavaproofCatchingTool"/> set in conjunction with this one.
+			/// </summary>
+			public static bool[] CatchingTool = Factory.CreateBoolSet(
+				BugNet,
+				GoldenBugNet,
+				FireproofBugNet
+			);
+
+			/// <summary>
+			/// Set for catching tools which can catch the Underworld's lava critters.<br></br>
+			/// Don't forget to use the <see cref="CatchingTool"/> set in conjunction with this one. 
+			/// </summary>
+			public static bool[] LavaproofCatchingTool = Factory.CreateBoolSet(
 				GoldenBugNet,
 				FireproofBugNet
 			);
