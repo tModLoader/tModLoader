@@ -50,10 +50,9 @@ namespace ExampleMod.Content.Items.Tools
 
 				if (player.resistCold && Main.rand.NextBool())
 					return true;
-
-				// As a note, we don't want to return false here, since that would prevent vanilla's code for failed catches on lava critters from running.
-				// Thus, we'll return nothing special if both of the above fail, and simply allow our "default" null return to deal with the remaining cases.
 			}
+
+			// For all cases where true isn't explicitly returned, we'll return null so that vanilla catching rules and effects can take place.
 			return null;
 		}
 

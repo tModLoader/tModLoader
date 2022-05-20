@@ -13,11 +13,16 @@
  	{
  		private const int NPC_TARGETS_START = 300;
  		public bool IsABestiaryIconDummy;
-@@ -58,7 +_,7 @@
+@@ -58,7 +_,12 @@
  		public int altTexture;
  		public int townNpcVariationIndex;
  		public Vector2 netOffset = Vector2.Zero;
 -		public short catchItem;
++		/// <summary>
++		/// The numerical ID of the item that this NPC becomes when caught.<br></br>
++		/// Mainly used for critters that can be caught with bug nets, such as butterflies and worms.<br></br>
++		/// Bug nets and other catching tools will only work on NPCs with this field set to something greater than 0.
++		/// </summary>
 +		public int catchItem; // tML: changed to int for convenience and consistency purposes
  		public short releaseOwner = 255;
  		public int rarity;
