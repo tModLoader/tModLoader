@@ -97,7 +97,7 @@ namespace Terraria
 		/// Runs most code related to the process of checking whether or not an NPC can be caught.<br></br>
 		/// After that, <see cref="CombinedHooks.OnCatchNPC"/> is run, followed by the code responsible for catching the NPC if applicable.<br></br>
 		/// You will need to call this manually if you want to make an NPC-catching tool which acts differently from vanilla's, such as one that uses a projectile instead of an item.<br></br>
-		/// As a note, if calling this manually, you will need to check <c>npc.active &amp;&amp; npc.catchItem > 0</c> yourself.
+		/// As a note, if calling this manually, you will need to check <c>npc.active &amp;&amp; npc.catchItem &gt; 0</c> yourself.
 		/// </summary>
 		/// <param name="npc">The NPC which can potentially be caught.</param>
 		/// <param name="catchToolRectangle">The hitbox of the tool being used to catch the NPC --- be it an item, a projectile, or something else entirely.</param>
