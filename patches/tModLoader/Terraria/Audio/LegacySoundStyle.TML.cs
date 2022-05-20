@@ -9,15 +9,26 @@ namespace Terraria.Audio
 {
 	public record struct LegacySoundStyle : ISoundStyle
 	{
+		private const float MinPitchValue = -1f;
+		private const float MaxPitchValue = 1f;
+
 		private static readonly UnifiedRandom Random = new();
 
 		private int[] styles;
+		private float pitchVariance = 0f;
 
 		public int SoundId { get; set; }
 		public SoundType Type { get; set; }
 		public float Volume { get; set; } = 1f;
-		public float Pitch { get; set; }
-		public float PitchVariance { get; set; }
+		public float Pitch { get; set; } = 0f;
+
+		//TODO: Behavior to be implemented: [[
+		public int MaxInstances { get; set; } = 1;
+		public bool RestartIfPlaying { get; set; } = true;
+		// (Internal ones are questionable)
+		internal bool UsesMusicPitch { get; set; } = false;
+		internal bool PlayOnlyIfFocused { get; set; } = false;
+		// ]]
 
 		public int Style {
 			set {
@@ -42,6 +53,39 @@ namespace Terraria.Audio
 			}
 		}
 
+		public float PitchVariance {
+			get => pitchVariance;
+			set {
+				if (pitchVariance < 0f)
+					throw new ArgumentException("Pitch variance cannot be negative.", nameof(value));
+
+				pitchVariance = value;
+			}
+		}
+
+		public (float minPitch, float maxPitch) PitchRange {
+			get {
+				float halfVariance = PitchVariance;
+				float minPitch = Math.Max(MinPitchValue, Pitch - halfVariance);
+				float maxPitch = Math.Min(MaxPitchValue, Pitch + halfVariance);
+
+				return (minPitch, maxPitch);
+			}
+			set {
+				float minPitch = value.minPitch;
+				float maxPitch = value.maxPitch;
+
+				if (minPitch > maxPitch)
+					throw new ArgumentException("Min pitch cannot be greater than max pitch.", nameof(value));
+				
+				minPitch = Math.Max(MinPitchValue, minPitch);
+				maxPitch = Math.Min(MaxPitchValue, maxPitch);
+
+				Pitch = (minPitch + maxPitch) * 0.5f;
+				PitchVariance = maxPitch - minPitch;
+			}
+		}
+
 		public LegacySoundStyle(int soundId, int style = 0, SoundType type = SoundType.Sound)
 			: this(soundId, stackalloc int[] { style }, type) { }
 		
@@ -52,10 +96,6 @@ namespace Terraria.Audio
 			SoundId = soundId;
 			this.styles = styles.ToArray();
 			Type = type;
-
-			Pitch = 0f;
-			PitchVariance = 0f;
-			Volume = 1f;
 		}
 
 		public LegacySoundStyle WithVolume(float volume) {
