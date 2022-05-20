@@ -123,7 +123,7 @@ namespace Terraria
 					player.AddBuff(24, 300, quiet: false);
 				return false;
 			}
-			else if (npc.type == 585 || npc.type == 583 || npc.type == 584) {
+			else if (npc.type == NPCID.FairyCritterBlue || npc.type == NPCID.FairyCritterPink || npc.type == NPCID.FairyCritterGreen) {
 				bool canCatchFairy = npc.ai[2] <= 1f;
 				CombinedHooks.OnCatchNPC(player, npc, item, !canCatchFairy);
 				if (canCatchFairy)
