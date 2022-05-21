@@ -136,7 +136,7 @@ namespace Terraria.Audio
 			if (Styles.Length == 1)
 				return Styles[0];
 
-			return Styles[Main.rand.Next(Styles.Length)];
+			return Styles[Random.Next(Styles.Length)];
 		}
 
 		public static bool operator ==(ISoundStyle soundStyleA, LegacySoundStyle soundStyleB) => Equals(soundStyleA, soundStyleB);
