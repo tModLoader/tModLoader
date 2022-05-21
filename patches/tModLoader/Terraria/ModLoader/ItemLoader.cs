@@ -123,7 +123,7 @@ namespace Terraria.ModLoader
 				.Select(g => new Instanced<GlobalItem>(g.index, g))
 				.ToArray();
 
-			NetGlobals = globalItems.WhereMethodIsOverridden<GlobalItem, Action<Item, BinaryWriter>>(g => g.NetSend).ToArray();
+			NetGlobals = globalItems.WhereMethodIsOverridden(g => g.NetSend).ToArray();
 
 			foreach (var hook in hooks.Union(modHooks)) {
 				hook.Update(globalItems);
