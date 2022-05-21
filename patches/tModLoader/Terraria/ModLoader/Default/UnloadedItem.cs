@@ -60,10 +60,12 @@ namespace Terraria.ModLoader.Default
 				return;
 			}
 
+			var modData = tag.GetCompound("data");
+
 			Item.SetDefaults(modItem.Type);
 
-			if (data?.Count > 0) {
-				Item.ModItem.LoadData(data);
+			if (modData?.Count > 0) {
+				Item.ModItem.LoadData(modData);
 			}
 
 			if (tag.ContainsKey("globalData")) {
