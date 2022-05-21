@@ -1,6 +1,5 @@
 var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
 [
-    [ "ModNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a8818a3d5be9a0b00ec2fdbaee4394431", null ],
     [ "AI", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a942333fc831a20cfb1f77c1309259040", null ],
     [ "AutoStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a7e88ceafdeafdc02677acbbe09176060", null ],
     [ "BossHeadRotation", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac104a730758e08856600cdb299c5c950", null ],
@@ -19,7 +18,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "CheckActive", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#af248bbc4ee608491a1937e061aea188d", null ],
     [ "CheckConditions", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a6916cc867d0e74e427037430a6bcdea4", null ],
     [ "CheckDead", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#adde60c9d375631c44ca3f59bfd385a5f", null ],
-    [ "Clone", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a6e0b78d666a88e3948f7f43b33056645", null ],
+    [ "CreateTemplateEntity", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a06f8bad63253167d0aa6e7b30a09b719", null ],
     [ "DrawBehind", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a21f331d5529062dd1ca5201c69586412", null ],
     [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a48e74edfb4b8b0c3e106cc849b74db32", null ],
     [ "DrawHealthBar", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab82fe3da48465d7e821d84cc23d16ef7", null ],
@@ -87,5 +86,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "NPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#adf259d7e95a453a9d95ab0811952d4bf", null ],
     [ "SceneEffectPriority", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a8edfef4b01670b0e19667262727464a3", null ],
     [ "SpawnModBiomes", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ae8f56182cf5a6356cc184c6e69ea54a4", null ],
+    [ "Texture", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a528e19d143fb36a926e7097809c5681d", null ],
     [ "Type", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a19743677e861579560d728a62bae575f", null ]
 ];

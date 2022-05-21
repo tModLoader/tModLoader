@@ -97,13 +97,10 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <p>This class serves as a place for you to place all your properties and hooks for each mount. Create instances of ModMoundData (preferably overriding this class) to pass as parameters to Mod.AddMount. Only one instance of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a> will exist for each mount, so storing player specific data on the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a> is not good. Modders can use player.mount._mountSpecificData or a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> class to store player specific data relating to a mount. Use SetMount to assign these fields.  
  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#details">More...</a></p>
 
-<p>Inherits <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_textured_type.html">Terraria.ModLoader.ModTexturedType</a>.</p>
+<p>Inherits <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html">Terraria.ModLoader.ModType&lt; Mount.MountData, ModMount &gt;</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab710319779e5bad4cd545c999a71cc79"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#ab710319779e5bad4cd545c999a71cc79">ModMount</a> ()</td></tr>
-<tr class="memdesc:ab710319779e5bad4cd545c999a71cc79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#ab710319779e5bad4cd545c999a71cc79">More...</a><br /></td></tr>
-<tr class="separator:ab710319779e5bad4cd545c999a71cc79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcddee38c5f06627e80b3d34ec8a792a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#adcddee38c5f06627e80b3d34ec8a792a">AimAbility</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, Vector2 mousePosition)</td></tr>
 <tr class="memdesc:adcddee38c5f06627e80b3d34ec8a792a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when the mount ability is aiming (while charging).  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#adcddee38c5f06627e80b3d34ec8a792a">More...</a><br /></td></tr>
 <tr class="separator:adcddee38c5f06627e80b3d34ec8a792a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,6 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac80a022d1b2196ebebd0202fbdf21d37"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#ac80a022d1b2196ebebd0202fbdf21d37">JumpSpeed</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> mountedPlayer, ref float jumpSeed, float xVelocity)</td></tr>
 <tr class="memdesc:ac80a022d1b2196ebebd0202fbdf21d37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the mount's jump speed based on its state.  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#ac80a022d1b2196ebebd0202fbdf21d37">More...</a><br /></td></tr>
 <tr class="separator:ac80a022d1b2196ebebd0202fbdf21d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ce3a7490dc0adfff658bdef16f9362e"><td class="memItemLeft" align="right" valign="top"><a id="a7ce3a7490dc0adfff658bdef16f9362e"></a>
+override <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html">ModMount</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NewInstance</b> (<a class="el" href="class_terraria_1_1_mount_1_1_mount_data.html">Mount.MountData</a> entity)</td></tr>
+<tr class="separator:a7ce3a7490dc0adfff658bdef16f9362e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7f5785b04e5deafd995f0027cbc7b4b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#ac7f5785b04e5deafd995f0027cbc7b4b">SetMount</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref bool skipDust)</td></tr>
 <tr class="memdesc:ac7f5785b04e5deafd995f0027cbc7b4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when this mount is spawned in. Useful for player-specific initialization, utilizing player.mount._mountSpecificData or a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> class since <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a> is shared between all players. Custom dust spawning logic is also possible via the skipDust parameter.  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#ac7f5785b04e5deafd995f0027cbc7b4b">More...</a><br /></td></tr>
 <tr class="separator:ac7f5785b04e5deafd995f0027cbc7b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,48 +137,76 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa5a46031d652887b95176a7041f01da2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#aa5a46031d652887b95176a7041f01da2">UseAbility</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, Vector2 mousePosition, bool toggleOn)</td></tr>
 <tr class="memdesc:aa5a46031d652887b95176a7041f01da2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen while the mouse is pressed while the mount is active. Called each tick the mouse is pressed.  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#aa5a46031d652887b95176a7041f01da2">More...</a><br /></td></tr>
 <tr class="separator:aa5a46031d652887b95176a7041f01da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html">Terraria.ModLoader.ModType</a></td></tr>
-<tr class="memitem:a041087074eaff42734190d565f13ce1a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a041087074eaff42734190d565f13ce1a">IsLoadingEnabled</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
-<tr class="memdesc:a041087074eaff42734190d565f13ce1a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to stop Mod.AddContent from actually adding this content. Useful for items that can be disabled by a config.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a041087074eaff42734190d565f13ce1a">More...</a><br /></td></tr>
-<tr class="separator:a041087074eaff42734190d565f13ce1a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3d4cf476fc2714a84b3b6c75aed702a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#ae3d4cf476fc2714a84b3b6c75aed702a">Load</a> ()</td></tr>
-<tr class="memdesc:ae3d4cf476fc2714a84b3b6c75aed702a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to perform one-time loading tasks. Beware that mod content has not finished loading here, things like <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_content.html" title="Manages content added by mods. Liasons between mod content and Terraria&#39;s arrays and oversees the Loa...">ModContent</a> lookup tables or <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> Sets are not fully populated.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#ae3d4cf476fc2714a84b3b6c75aed702a">More...</a><br /></td></tr>
-<tr class="separator:ae3d4cf476fc2714a84b3b6c75aed702a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f9098827ca2e9fdc0af05bfda96c8f9 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a1f9098827ca2e9fdc0af05bfda96c8f9">Unload</a> ()</td></tr>
-<tr class="memdesc:a1f9098827ca2e9fdc0af05bfda96c8f9 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to safely unload things you added in Load.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a1f9098827ca2e9fdc0af05bfda96c8f9">More...</a><br /></td></tr>
-<tr class="separator:a1f9098827ca2e9fdc0af05bfda96c8f9 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html">Terraria.ModLoader.ModType&lt; Mount.MountData, ModMount &gt;</a></td></tr>
+<tr class="memitem:aeb73d9b078163fba8a510ff7d51033c3 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual TModType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aeb73d9b078163fba8a510ff7d51033c3">Clone</a> (TEntity newEntity)</td></tr>
+<tr class="memdesc:aeb73d9b078163fba8a510ff7d51033c3 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a copy of this instanced global. Called when an entity is cloned.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aeb73d9b078163fba8a510ff7d51033c3">More...</a><br /></td></tr>
+<tr class="separator:aeb73d9b078163fba8a510ff7d51033c3 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8626b35d479ce090df7acef383817394 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a8626b35d479ce090df7acef383817394">IsLoadingEnabled</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
+<tr class="memdesc:a8626b35d479ce090df7acef383817394 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to stop Mod.AddContent from actually adding this content. Useful for items that can be disabled by a config.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a8626b35d479ce090df7acef383817394">More...</a><br /></td></tr>
+<tr class="separator:a8626b35d479ce090df7acef383817394 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4249cb0c755091dded6260fcf3c25614 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a4249cb0c755091dded6260fcf3c25614">Load</a> ()</td></tr>
+<tr class="memdesc:a4249cb0c755091dded6260fcf3c25614 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to perform one-time loading tasks. Beware that mod content has not finished loading here, things like ModContent lookup tables or ID Sets are not fully populated.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a4249cb0c755091dded6260fcf3c25614">More...</a><br /></td></tr>
+<tr class="separator:a4249cb0c755091dded6260fcf3c25614 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92fd60a4a3110bbcd84d6ade99544e2a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual TModType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a92fd60a4a3110bbcd84d6ade99544e2a">NewInstance</a> (TEntity entity)</td></tr>
+<tr class="memdesc:a92fd60a4a3110bbcd84d6ade99544e2a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new instance of this <a class="el" href="class_mod_type.html">ModType</a> for a specific entity  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a92fd60a4a3110bbcd84d6ade99544e2a">More...</a><br /></td></tr>
+<tr class="separator:a92fd60a4a3110bbcd84d6ade99544e2a inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f2524abd52a2c3705d3ba8425a7463d inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a7f2524abd52a2c3705d3ba8425a7463d">Unload</a> ()</td></tr>
+<tr class="memdesc:a7f2524abd52a2c3705d3ba8425a7463d inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to safely unload things you added in Load.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a7f2524abd52a2c3705d3ba8425a7463d">More...</a><br /></td></tr>
+<tr class="separator:a7f2524abd52a2c3705d3ba8425a7463d inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:afbc32301457ffe0221657e19b4496558"><td class="memItemLeft" align="right" valign="top"><a id="afbc32301457ffe0221657e19b4496558"></a>
+override <a class="el" href="class_terraria_1_1_mount_1_1_mount_data.html">Mount.MountData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CreateTemplateEntity</b> ()</td></tr>
+<tr class="separator:afbc32301457ffe0221657e19b4496558"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f6238999fa79ac7eda61c95e2cda61f"><td class="memItemLeft" align="right" valign="top"><a id="a9f6238999fa79ac7eda61c95e2cda61f"></a>
 virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>GetExtraTexture</b> (<a class="el" href="namespace_terraria_1_1_mod_loader.html#a555e5c41bc6d6a2a44f1e088f86a5398">MountTextureType</a> textureType)</td></tr>
 <tr class="separator:a9f6238999fa79ac7eda61c95e2cda61f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ddd266a0d2e6879aa92f39f71178749"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#a8ddd266a0d2e6879aa92f39f71178749">Register</a> ()</td></tr>
 <tr class="memdesc:a8ddd266a0d2e6879aa92f39f71178749"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override.  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#a8ddd266a0d2e6879aa92f39f71178749">More...</a><br /></td></tr>
 <tr class="separator:a8ddd266a0d2e6879aa92f39f71178749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_terraria_1_1_mod_loader_1_1_mod_type')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html">Terraria.ModLoader.ModType&lt; Mount.MountData, ModMount &gt;</a></td></tr>
+<tr class="memitem:a1a7404e64e0be43e808759728dbfe65b inherit pro_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a1a7404e64e0be43e808759728dbfe65b">InitTemplateInstance</a> ()</td></tr>
+<tr class="memdesc:a1a7404e64e0be43e808759728dbfe65b inherit pro_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create dummy objects for instanced mod-types  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a1a7404e64e0be43e808759728dbfe65b">More...</a><br /></td></tr>
+<tr class="separator:a1a7404e64e0be43e808759728dbfe65b inherit pro_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a702da29c511b4b08f0d3ebbddbd96a67 inherit pro_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><b>InitTemplateInstance</b> ()</td></tr>
+<tr class="memdesc:a702da29c511b4b08f0d3ebbddbd96a67 inherit pro_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create dummy objects for instanced mod-types  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a702da29c511b4b08f0d3ebbddbd96a67">More...</a><br /></td></tr>
+<tr class="separator:a702da29c511b4b08f0d3ebbddbd96a67 inherit pro_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a876ec72a5821883af4a429cb76f54c68 inherit pro_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a876ec72a5821883af4a429cb76f54c68">ValidateType</a> ()</td></tr>
+<tr class="memdesc:a876ec72a5821883af4a429cb76f54c68 inherit pro_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check for the correct overrides of different hook methods and fields and properties  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a876ec72a5821883af4a429cb76f54c68">More...</a><br /></td></tr>
+<tr class="separator:a876ec72a5821883af4a429cb76f54c68 inherit pro_methods_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a4a304bf6a3bbbd1ae87e5345425e2e57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mount_1_1_mount_data.html">Mount.MountData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#a4a304bf6a3bbbd1ae87e5345425e2e57">MountData</a><code> [get, set]</code></td></tr>
+<tr class="memitem:a4a304bf6a3bbbd1ae87e5345425e2e57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mount_1_1_mount_data.html">Mount.MountData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#a4a304bf6a3bbbd1ae87e5345425e2e57">MountData</a><code> [get]</code></td></tr>
 <tr class="memdesc:a4a304bf6a3bbbd1ae87e5345425e2e57"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vanilla MountData object that is controlled by this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a>.  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#a4a304bf6a3bbbd1ae87e5345425e2e57">More...</a><br /></td></tr>
 <tr class="separator:a4a304bf6a3bbbd1ae87e5345425e2e57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac41f17946c1cf2101cc31c413e52d3bf"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#ac41f17946c1cf2101cc31c413e52d3bf">Texture</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac41f17946c1cf2101cc31c413e52d3bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file name of this type's texture file in the mod loader's file space.  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#ac41f17946c1cf2101cc31c413e52d3bf">More...</a><br /></td></tr>
+<tr class="separator:ac41f17946c1cf2101cc31c413e52d3bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae739df11e0a57755445bf6260451037a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#ae739df11e0a57755445bf6260451037a">Type</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ae739df11e0a57755445bf6260451037a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a> in the Mount.mounts array.  <a href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#ae739df11e0a57755445bf6260451037a">More...</a><br /></td></tr>
 <tr class="separator:ae739df11e0a57755445bf6260451037a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header properties_class_terraria_1_1_mod_loader_1_1_mod_textured_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_terraria_1_1_mod_loader_1_1_mod_textured_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_textured_type.html">Terraria.ModLoader.ModTexturedType</a></td></tr>
-<tr class="memitem:abd9cca3dfb1963d4fd6ea89f6d4da3a3 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_textured_type"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_textured_type.html#abd9cca3dfb1963d4fd6ea89f6d4da3a3">Texture</a><code> [get]</code></td></tr>
-<tr class="memdesc:abd9cca3dfb1963d4fd6ea89f6d4da3a3 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_textured_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The file name of this type's texture file in the mod loader's file space.  <a href="class_terraria_1_1_mod_loader_1_1_mod_textured_type.html#abd9cca3dfb1963d4fd6ea89f6d4da3a3">More...</a><br /></td></tr>
-<tr class="separator:abd9cca3dfb1963d4fd6ea89f6d4da3a3 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_textured_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_terraria_1_1_mod_loader_1_1_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html">Terraria.ModLoader.ModType</a></td></tr>
-<tr class="memitem:a4cd1fe9fa20e03fea86dcdcfb5e921c6 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a4cd1fe9fa20e03fea86dcdcfb5e921c6">FullName</a><code> [get]</code></td></tr>
-<tr class="memdesc:a4cd1fe9fa20e03fea86dcdcfb5e921c6 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this, including the mod it is from.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a4cd1fe9fa20e03fea86dcdcfb5e921c6">More...</a><br /></td></tr>
-<tr class="separator:a4cd1fe9fa20e03fea86dcdcfb5e921c6 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fc8872b940093b8acdc4a33f09f7ae4 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a3fc8872b940093b8acdc4a33f09f7ae4">Mod</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a3fc8872b940093b8acdc4a33f09f7ae4 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod this belongs to.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a3fc8872b940093b8acdc4a33f09f7ae4">More...</a><br /></td></tr>
-<tr class="separator:a3fc8872b940093b8acdc4a33f09f7ae4 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fafc6b8f1a076cfd607262d5b108f61 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a2fafc6b8f1a076cfd607262d5b108f61">Name</a><code> [get]</code></td></tr>
-<tr class="memdesc:a2fafc6b8f1a076cfd607262d5b108f61 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a2fafc6b8f1a076cfd607262d5b108f61">More...</a><br /></td></tr>
-<tr class="separator:a2fafc6b8f1a076cfd607262d5b108f61 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_class_terraria_1_1_mod_loader_1_1_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html">Terraria.ModLoader.ModType&lt; Mount.MountData, ModMount &gt;</a></td></tr>
+<tr class="memitem:a0b64b26188f42ffa7c2a7e111771ec08 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a0b64b26188f42ffa7c2a7e111771ec08">CloneNewInstances</a><code> [get]</code></td></tr>
+<tr class="memdesc:a0b64b26188f42ffa7c2a7e111771ec08 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether to create new instances of this mod type via <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aeb73d9b078163fba8a510ff7d51033c3" title="Create a copy of this instanced global. Called when an entity is cloned.">Clone(TEntity)</a> or via the default constructor Defaults to false (default constructor).  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a0b64b26188f42ffa7c2a7e111771ec08">More...</a><br /></td></tr>
+<tr class="separator:a0b64b26188f42ffa7c2a7e111771ec08 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1bf92ca59ee36eed25a581e2f313ef6 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top"><a id="ac1bf92ca59ee36eed25a581e2f313ef6"></a>
+TEntity&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [get, set]</code></td></tr>
+<tr class="separator:ac1bf92ca59ee36eed25a581e2f313ef6 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf3ba5958416ef2fabc11a9bb925346b inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#acf3ba5958416ef2fabc11a9bb925346b">FullName</a><code> [get]</code></td></tr>
+<tr class="memdesc:acf3ba5958416ef2fabc11a9bb925346b inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this, including the mod it is from.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#acf3ba5958416ef2fabc11a9bb925346b">More...</a><br /></td></tr>
+<tr class="separator:acf3ba5958416ef2fabc11a9bb925346b inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28b756f218eb06e3ef6bc61321dd7d89 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a28b756f218eb06e3ef6bc61321dd7d89">IsCloneable</a><code> [get]</code></td></tr>
+<tr class="memdesc:a28b756f218eb06e3ef6bc61321dd7d89 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this type is cloneable. By default, cloning is supported if this type has only value typed fields, or if it overrides <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aeb73d9b078163fba8a510ff7d51033c3" title="Create a copy of this instanced global. Called when an entity is cloned.">Clone</a><br  />
+ If this type has reference fields, which are safe to share between clones then override this property to return true.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a28b756f218eb06e3ef6bc61321dd7d89">More...</a><br /></td></tr>
+<tr class="separator:a28b756f218eb06e3ef6bc61321dd7d89 inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fb01629380c6e44c7bfb745f5de9b8a inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a3fb01629380c6e44c7bfb745f5de9b8a">Mod</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a3fb01629380c6e44c7bfb745f5de9b8a inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The mod this belongs to.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a3fb01629380c6e44c7bfb745f5de9b8a">More...</a><br /></td></tr>
+<tr class="separator:a3fb01629380c6e44c7bfb745f5de9b8a inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08aa33c526d5f565937d1090ea6a325f inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memItemLeft" align="right" valign="top">virtual string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a08aa33c526d5f565937d1090ea6a325f">Name</a><code> [get]</code></td></tr>
+<tr class="memdesc:a08aa33c526d5f565937d1090ea6a325f inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internal name of this.  <a href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a08aa33c526d5f565937d1090ea6a325f">More...</a><br /></td></tr>
+<tr class="separator:a08aa33c526d5f565937d1090ea6a325f inherit properties_class_terraria_1_1_mod_loader_1_1_mod_type"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_mod_type.html">Terraria.ModLoader.IModType</a></td></tr>
 <tr class="memitem:a52fd73042e4c0ddeed26c7974e9592af inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a52fd73042e4c0ddeed26c7974e9592af">FullName</a><code> [get]</code></td></tr>
 <tr class="memdesc:a52fd73042e4c0ddeed26c7974e9592af inherit properties_interface_terraria_1_1_mod_loader_1_1_i_mod_type"><td class="mdescLeft">&#160;</td><td class="mdescRight">=&gt; $"{Mod.Name}/{Name}"  <a href="interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a52fd73042e4c0ddeed26c7974e9592af">More...</a><br /></td></tr>
@@ -192,27 +220,7 @@ Properties</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class serves as a place for you to place all your properties and hooks for each mount. Create instances of ModMoundData (preferably overriding this class) to pass as parameters to Mod.AddMount. Only one instance of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a> will exist for each mount, so storing player specific data on the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a> is not good. Modders can use player.mount._mountSpecificData or a <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a> class to store player specific data relating to a mount. Use SetMount to assign these fields. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab710319779e5bad4cd545c999a71cc79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab710319779e5bad4cd545c999a71cc79">&#9670;&nbsp;</a></span>ModMount()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Terraria.ModLoader.ModMount.ModMount </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Constructor </p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="adcddee38c5f06627e80b3d34ec8a792a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adcddee38c5f06627e80b3d34ec8a792a">&#9670;&nbsp;</a></span>AimAbility()</h2>
 
@@ -562,7 +570,7 @@ Properties</h2></td></tr>
 
 <p>If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override. </p>
 
-<p>Implements <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a88a7f706233a3abc436089ec25a8b203">Terraria.ModLoader.ModType</a>.</p>
+<p>Implements <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a20529894b92bb3faa0c90f763b3a90bf">Terraria.ModLoader.ModType&lt; Mount.MountData, ModMount &gt;</a>.</p>
 
 </div>
 </div>
@@ -636,7 +644,7 @@ Properties</h2></td></tr>
 
 <p>Allows you to modify the properties after initial loading has completed. This is where you would set properties of this type of mount. </p>
 
-<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aa2daf87c887ac0d98f00543a41e8e87f">Terraria.ModLoader.ModType</a>.</p>
+<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aede25175050860ec8ea5e2d33c352437">Terraria.ModLoader.ModType&lt; Mount.MountData, ModMount &gt;</a>.</p>
 
 </div>
 </div>
@@ -665,7 +673,7 @@ Properties</h2></td></tr>
 
 <p>If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html#a34a136fd232f9b07928ed93e47aacab3" title="Allows you to modify the properties after initial loading has completed. This is where you would set ...">SetStaticDefaults</a> in it. </p>
 
-<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#a90ee4135030b6761f855d8c7d22bcfda">Terraria.ModLoader.ModType</a>.</p>
+<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aa6bc19d977556b547b409540892163ee">Terraria.ModLoader.ModType&lt; Mount.MountData, ModMount &gt;</a>.</p>
 
 </div>
 </div>
@@ -824,12 +832,36 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>The vanilla MountData object that is controlled by this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_mount.html" title="This class serves as a place for you to place all your properties and hooks for each mount....">ModMount</a>. </p>
+
+</div>
+</div>
+<a id="ac41f17946c1cf2101cc31c413e52d3bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac41f17946c1cf2101cc31c413e52d3bf">&#9670;&nbsp;</a></span>Texture</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual string Terraria.ModLoader.ModMount.Texture</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The file name of this type's texture file in the mod loader's file space. </p>
 
 </div>
 </div>

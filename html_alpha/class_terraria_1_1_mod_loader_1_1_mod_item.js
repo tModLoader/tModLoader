@@ -1,6 +1,5 @@
 var class_terraria_1_1_mod_loader_1_1_mod_item =
 [
-    [ "ModItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a2fcccf12f242f22d41393da61bcafe98", null ],
     [ "AddRecipes", "class_terraria_1_1_mod_loader_1_1_mod_item.html#add2f98fcaf12f32319273e4747590ef4", null ],
     [ "AllowPrefix", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a6c21c1b0f962716a2b2298318a512241", null ],
     [ "AltFunctionUse", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac90ec46c3c5018c66bb3be49426fe96f", null ],
@@ -31,9 +30,9 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "CanUseItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html#af19bcb03073673df4d45192e7fcbf7da", null ],
     [ "CaughtFishStack", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aefc0281802ac8613a15946eed7a5b053", null ],
     [ "ChoosePrefix", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a812e93a69c5ba2a04cc6e68e7c756649", null ],
-    [ "Clone", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a89f4a24f89ace0a92b2c50767d362bb2", null ],
     [ "ConsumeItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html#abccc8228ad371afde7231d4763b0824e", null ],
     [ "CreateRecipe", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a1bc28cb886699847a614541b61660dbc", null ],
+    [ "CreateTemplateEntity", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a0aee33463ea0739f46dca0e8ed24afb9", null ],
     [ "DrawArmorColor", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ad6b829c635b333febf4a76f07aa32774", null ],
     [ "EquipFrameEffects", "class_terraria_1_1_mod_loader_1_1_mod_item.html#af2f0f595ec31c12886d82cf356bd2dc5", null ],
     [ "ExtractinatorUse", "class_terraria_1_1_mod_loader_1_1_mod_item.html#ac53dd0f4d41cf3b0a6171416b8ef2d9c", null ],
@@ -119,12 +118,14 @@ var class_terraria_1_1_mod_loader_1_1_mod_item =
     [ "UseSpeedMultiplier", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a224ff3041b9cb177ae1ca686d00bd4a4", null ],
     [ "UseStyle", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a386259dab7cc034e7d8406dcbae3b5fe", null ],
     [ "UseTimeMultiplier", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aa6ad17778289e20f8cb4bb37b77dc6f8", null ],
+    [ "ValidateType", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a6068657a73b771243ca9da2e8570dc7d", null ],
     [ "VerticalWingSpeeds", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a2aabeb881b1ae8564091ac382afefaca", null ],
     [ "WingUpdate", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aa3849baf5c0607283abd3b59da1f631a", null ],
     [ "BossBagNPC", "class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a", null ],
     [ "DisplayName", "class_terraria_1_1_mod_loader_1_1_mod_item.html#aefeef1e7ba614411d9ce7f70fb961355", null ],
     [ "Item", "class_terraria_1_1_mod_loader_1_1_mod_item.html#abc96a407c86a78570037ef4318d9c112", null ],
     [ "SacrificeTotal", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a05f73e5975ca43ca2b0f5785cad7ea4c", null ],
+    [ "Texture", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a9aba9b04ef606dfdfc575f299146ae85", null ],
     [ "Tooltip", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a0fa62e240cf6cb00feb461f9f8dd9eb7", null ],
     [ "Type", "class_terraria_1_1_mod_loader_1_1_mod_item.html#a97741bf0a58d7f9c516aca91e5cac9bc", null ]
 ];

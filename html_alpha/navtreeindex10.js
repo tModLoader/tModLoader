@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html":[1,0,2,5,7,6],
 "class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a06ccfb0a103753d8a9e495fc2b13849f":[1,0,2,5,7,6,1],
 "class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a29f7d8cab95a3b6016f79307ebab76b2":[1,0,2,5,7,6,4],
 "class_terraria_1_1_game_content_1_1_events_1_1_mystic_log_fairies_event.html#a2eb436a6e54aa4d3cf1ec1db429de2a8":[1,0,2,5,7,6,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_christmas.html":[1,0,2,5,10,5,18],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_christmas.html#a1da8a6d530f4ecb3892100dd251913f5":[1,0,2,5,10,5,18,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_christmas.html#abaaddaba22d9fcb03f6193da1e4479cb":[1,0,2,5,10,5,18,0],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_christmas.html#ae86fbdd1868ec82b48db6e8efbbfb524":[1,0,2,5,10,5,18,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption.html":[1,0,2,5,10,5,19]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_christmas.html#ae86fbdd1868ec82b48db6e8efbbfb524":[1,0,2,5,10,5,18,1]
 };

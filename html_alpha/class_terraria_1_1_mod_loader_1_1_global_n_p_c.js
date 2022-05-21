@@ -15,7 +15,6 @@ var class_terraria_1_1_mod_loader_1_1_global_n_p_c =
     [ "CanHitPlayer", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a12bf30524cc768e5152513a2af03f129", null ],
     [ "CheckActive", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a6803569c436f2938d5ac711920e706ec", null ],
     [ "CheckDead", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#afe194f5179f9af5463ef4bded6ae3a2f", null ],
-    [ "Clone", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5a677d585eac784509310d8539387580", null ],
     [ "DrawBehind", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a2e93b458e93b6de51dedfa5423ccf54d", null ],
     [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ace0105b7dd87ff07bd2af18fe0e9ac18", null ],
     [ "DrawHealthBar", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a2fba444e49eb8bdd2bf974e92e0e9b4d", null ],

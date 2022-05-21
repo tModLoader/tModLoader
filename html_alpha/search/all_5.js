@@ -108,6 +108,6 @@ var searchData=
   ['frostmoondropgatingchance_903',['FrostMoonDropGatingChance',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_frost_moon_drop_gating_chance.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]],
   ['frozenkeycondition_904',['FrozenKeyCondition',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_frozen_key_condition.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]],
   ['frozenorwebbeddebuff_905',['FrozenOrWebbedDebuff',['../class_terraria_1_1_data_structures_1_1_player_draw_layers.html#a229df502b5fb51777be24f1361f91a0d',1,'Terraria::DataStructures::PlayerDrawLayers']]],
-  ['fullname_906',['FullName',['../class_terraria_1_1_mod_loader_1_1_mod_type.html#a4cd1fe9fa20e03fea86dcdcfb5e921c6',1,'Terraria.ModLoader.ModType.FullName()'],['../interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a52fd73042e4c0ddeed26c7974e9592af',1,'Terraria.ModLoader.IModType.FullName()']]],
+  ['fullname_906',['FullName',['../class_terraria_1_1_mod_loader_1_1_mod_type.html#acf3ba5958416ef2fabc11a9bb925346b',1,'Terraria.ModLoader.ModType.FullName()'],['../interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a52fd73042e4c0ddeed26c7974e9592af',1,'Terraria.ModLoader.IModType.FullName()']]],
   ['furniture_907',['Furniture',['../class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_furniture.html',1,'Terraria::GameContent::Creative::ItemFilters']]]
 ];

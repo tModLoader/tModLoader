@@ -112,7 +112,7 @@ var searchData=
   ['antlion_109',['Antlion',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a2ec20dda4fd6b623c90df02612d8e65d',1,'Terraria::ID::NPCAIStyleID']]],
   ['aperplayersliderpower_110',['APerPlayerSliderPower',['../class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_per_player_slider_power.html',1,'Terraria::GameContent::Creative::CreativePowers']]],
   ['aperplayertogglepower_111',['APerPlayerTogglePower',['../class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_per_player_toggle_power.html',1,'Terraria::GameContent::Creative::CreativePowers']]],
-  ['appliestoentity_112',['AppliesToEntity',['../class_terraria_1_1_mod_loader_1_1_global_type.html#a99752dfdb472d0500b18baca4a69dd3e',1,'Terraria::ModLoader::GlobalType']]],
+  ['appliestoentity_112',['AppliesToEntity',['../class_terraria_1_1_mod_loader_1_1_global_type.html#aa7c4436eb90d801a73a4d789efa33176',1,'Terraria::ModLoader::GlobalType']]],
   ['apply_113',['Apply',['../class_terraria_1_1_mod_loader_1_1_mod_prefix.html#adc2deb5f2b010b6241e9177edf2f30c8',1,'Terraria::ModLoader::ModPrefix']]],
   ['applyequipeffects_114',['ApplyEquipEffects',['../class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a85a519a95aea0a57f446f5c793601a8b',1,'Terraria::ModLoader::ModAccessorySlot']]],
   ['aprilfools_115',['AprilFools',['../class_terraria_1_1_mod_loader_1_1_default_1_1_april_fools.html',1,'Terraria::ModLoader::Default']]],

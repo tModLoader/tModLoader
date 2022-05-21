@@ -7,7 +7,6 @@ var class_terraria_1_1_mod_loader_1_1_global_projectile =
     [ "CanHitPlayer", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a4f51dbe916fc4bf552bfb340b96d130c", null ],
     [ "CanHitPvp", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a96b688c76e4ce10649982a3ab222eff5", null ],
     [ "CanUseGrapple", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0070501f25f491b4b9e792c44bd6f7ba", null ],
-    [ "Clone", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a9615b5a902b24e4ad4f40d81da53cc7f", null ],
     [ "Colliding", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac05a8800b34d3f43309a759608d09fbd", null ],
     [ "CutTiles", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a71b11f64254f701d32aee669c732d3ae", null ],
     [ "DrawBehind", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a870241df9f466526b62fc5c6aa332c33", null ],

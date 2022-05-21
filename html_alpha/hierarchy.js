@@ -591,7 +591,7 @@ var hierarchy =
     [ "Terraria.GetItemSettings", "struct_terraria_1_1_get_item_settings.html", null ],
     [ "Terraria.ModLoader.GlobalLoot", "struct_terraria_1_1_mod_loader_1_1_global_loot.html", null ],
     [ "GlobalType", "class_global_type.html", [
-      [ "Terraria.ModLoader.GlobalType< TEntity >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ]
+      [ "Terraria.ModLoader.GlobalType< TEntity, TGlobal >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ]
     ] ],
     [ "Terraria.ID.GlowMaskID", "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html", null ],
     [ "Terraria.GameContent.Golf.GolfBallTrackRecord", "class_terraria_1_1_game_content_1_1_golf_1_1_golf_ball_track_record.html", null ],
@@ -618,9 +618,7 @@ var hierarchy =
     [ "Terraria.HitTile", "class_terraria_1_1_hit_tile.html", null ],
     [ "Terraria.HitTile.HitTileObject", "class_terraria_1_1_hit_tile_1_1_hit_tile_object.html", null ],
     [ "Terraria.ModLoader.Utilities.HjsonExtensions.HjsonStyle", "struct_terraria_1_1_mod_loader_1_1_utilities_1_1_hjson_extensions_1_1_hjson_style.html", null ],
-    [ "Terraria.ModLoader.Core.HookList< TGlobal >", "class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html", [
-      [ "Terraria.ModLoader.Core.HookList< TGlobal, TDelegate >", "class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html", null ]
-    ] ],
+    [ "Terraria.ModLoader.Core.HookList< T >", "class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html", null ],
     [ "Terraria.Player.Hooks", "class_terraria_1_1_player_1_1_hooks.html", null ],
     [ "Terraria.WorldGen.Hooks", "class_terraria_1_1_world_gen_1_1_hooks.html", null ],
     [ "Terraria.GameContent.Biomes.CaveHouse.HouseBuilder", "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html", [
@@ -1193,153 +1191,166 @@ var hierarchy =
         [ "Terraria.GameContent.Personalities.UndergroundBiome", "class_terraria_1_1_game_content_1_1_personalities_1_1_underground_biome.html", null ]
       ] ],
       [ "Terraria.ModLoader.IModType", "interface_terraria_1_1_mod_loader_1_1_i_mod_type.html", [
-        [ "Terraria.ModLoader.ModTileEntity", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html", [
-          [ "Terraria.ModLoader.Default.UnloadedTileEntity", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html", null ]
+        [ "Terraria.ModLoader.ModType< Mount.MountData, ModMount >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", [
+          [ "Terraria.ModLoader.ModMount", "class_terraria_1_1_mod_loader_1_1_mod_mount.html", null ]
         ] ],
-        [ "Terraria.ModLoader.ModType", "class_terraria_1_1_mod_loader_1_1_mod_type.html", [
-          [ "Terraria.ModLoader.GlobalType< Projectile >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
-            [ "Terraria.ModLoader.GlobalProjectile", "class_terraria_1_1_mod_loader_1_1_global_projectile.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.GlobalType< Item >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
-            [ "Terraria.ModLoader.GlobalItem", "class_terraria_1_1_mod_loader_1_1_global_item.html", [
-              [ "Terraria.ModLoader.Default.UnloadedGlobalItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_item.html", null ]
+        [ "Terraria.ModLoader.ModType< Item, ModItem >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", [
+          [ "Terraria.ModLoader.ModItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html", [
+            [ "Terraria.ModLoader.Default.ModLoaderModItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_loader_mod_item.html", [
+              [ "Terraria.ModLoader.Default.AprilFools", "class_terraria_1_1_mod_loader_1_1_default_1_1_april_fools.html", null ],
+              [ "Terraria.ModLoader.Default.StartBag", "class_terraria_1_1_mod_loader_1_1_default_1_1_start_bag.html", null ],
+              [ "Terraria.ModLoader.Default.UnloadedItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html", null ]
             ] ]
-          ] ],
-          [ "Terraria.ModLoader.GlobalType< NPC >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
-            [ "Terraria.ModLoader.GlobalNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.IO.TagSerializer< Point16, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-            [ "Terraria.ModLoader.IO.Point16Serializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.IO.TagSerializer< Vector2, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-            [ "Terraria.ModLoader.IO.Vector2TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_vector2_tag_serializer.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.IO.TagSerializer< Vector3, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-            [ "Terraria.ModLoader.IO.Vector3TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_vector3_tag_serializer.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.IO.TagSerializer< ushort, short >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-            [ "Terraria.ModLoader.IO.UShortTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_short_tag_serializer.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.IO.TagSerializer< uint, int >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-            [ "Terraria.ModLoader.IO.UIntTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.IO.TagSerializer< T, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
-          [ "Terraria.ModLoader.IO.TagSerializer< Rectangle, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-            [ "Terraria.ModLoader.IO.RectangleSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_rectangle_serializer.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.IO.TagSerializer< Color, int >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-            [ "Terraria.ModLoader.IO.ColorSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.IO.TagSerializer< ulong, long >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-            [ "Terraria.ModLoader.IO.ULongTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_long_tag_serializer.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.IO.TagSerializer< bool, byte >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
-            [ "Terraria.ModLoader.IO.BoolTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.DamageClass", "class_terraria_1_1_mod_loader_1_1_damage_class.html", [
-            [ "Terraria.ModLoader.VanillaDamageClass", "class_terraria_1_1_mod_loader_1_1_vanilla_damage_class.html", [
-              [ "Terraria.ModLoader.DefaultDamageClass", "class_terraria_1_1_mod_loader_1_1_default_damage_class.html", null ],
-              [ "Terraria.ModLoader.GenericDamageClass", "class_terraria_1_1_mod_loader_1_1_generic_damage_class.html", null ],
-              [ "Terraria.ModLoader.MagicDamageClass", "class_terraria_1_1_mod_loader_1_1_magic_damage_class.html", null ],
-              [ "Terraria.ModLoader.MagicSummonHybridDamageClass", "class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html", null ],
-              [ "Terraria.ModLoader.MeleeDamageClass", "class_terraria_1_1_mod_loader_1_1_melee_damage_class.html", null ],
-              [ "Terraria.ModLoader.RangedDamageClass", "class_terraria_1_1_mod_loader_1_1_ranged_damage_class.html", null ],
-              [ "Terraria.ModLoader.SummonDamageClass", "class_terraria_1_1_mod_loader_1_1_summon_damage_class.html", null ],
-              [ "Terraria.ModLoader.SummonMeleeSpeedDamageClass", "class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html", null ],
-              [ "Terraria.ModLoader.ThrowingDamageClass", "class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html", null ]
-            ] ]
-          ] ],
-          [ "Terraria.ModLoader.GlobalBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_global_background_style.html", null ],
-          [ "Terraria.ModLoader.GlobalBlockType", "class_terraria_1_1_mod_loader_1_1_global_block_type.html", [
-            [ "Terraria.ModLoader.GlobalTile", "class_terraria_1_1_mod_loader_1_1_global_tile.html", null ],
-            [ "Terraria.ModLoader.GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.GlobalBossBar", "class_terraria_1_1_mod_loader_1_1_global_boss_bar.html", null ],
-          [ "Terraria.ModLoader.GlobalBuff", "class_terraria_1_1_mod_loader_1_1_global_buff.html", null ],
-          [ "Terraria.ModLoader.GlobalInfoDisplay", "class_terraria_1_1_mod_loader_1_1_global_info_display.html", null ],
-          [ "Terraria.ModLoader.GlobalRecipe", "class_terraria_1_1_mod_loader_1_1_global_recipe.html", null ],
-          [ "Terraria.ModLoader.GlobalType< TEntity >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ],
-          [ "Terraria.ModLoader.IO.TagSerializer< T, S >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
-          [ "Terraria.ModLoader.ModAccessorySlot", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html", [
-            [ "Terraria.ModLoader.Default.UnloadedAccessorySlot", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_accessory_slot.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.ModBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_background_style.html", [
-            [ "Terraria.ModLoader.ModSurfaceBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_surface_background_style.html", null ],
-            [ "Terraria.ModLoader.ModUndergroundBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_underground_background_style.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.ModBossBarStyle", "class_terraria_1_1_mod_loader_1_1_mod_boss_bar_style.html", null ],
-          [ "Terraria.ModLoader.ModCommand", "class_terraria_1_1_mod_loader_1_1_mod_command.html", null ],
-          [ "Terraria.ModLoader.ModMapLayer", "class_terraria_1_1_mod_loader_1_1_mod_map_layer.html", null ],
-          [ "Terraria.ModLoader.ModMenu", "class_terraria_1_1_mod_loader_1_1_mod_menu.html", null ],
+          ] ]
+        ] ],
+        [ "Terraria.ModLoader.ModType< Player, ModPlayer >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", [
           [ "Terraria.ModLoader.ModPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html", [
             [ "Terraria.ModLoader.Default.ModAccessorySlotPlayer", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html", null ],
             [ "Terraria.ModLoader.Default.UnloadedPlayer", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_player.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.ModPrefix", "class_terraria_1_1_mod_loader_1_1_mod_prefix.html", null ],
-          [ "Terraria.ModLoader.ModRarity", "class_terraria_1_1_mod_loader_1_1_mod_rarity.html", null ],
-          [ "Terraria.ModLoader.ModSceneEffect", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html", [
-            [ "Terraria.ModLoader.ModBiome", "class_terraria_1_1_mod_loader_1_1_mod_biome.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.ModSound", "class_terraria_1_1_mod_loader_1_1_mod_sound.html", null ],
-          [ "Terraria.ModLoader.ModSystem", "class_terraria_1_1_mod_loader_1_1_mod_system.html", [
-            [ "Terraria.ModLoader.Default.UnloadedSystem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.ModTexturedType", "class_terraria_1_1_mod_loader_1_1_mod_textured_type.html", [
-            [ "Terraria.ModLoader.InfoDisplay", "class_terraria_1_1_mod_loader_1_1_info_display.html", [
-              [ "Terraria.ModLoader.VanillaInfoDisplay", "class_terraria_1_1_mod_loader_1_1_vanilla_info_display.html", [
-                [ "Terraria.ModLoader.CompassInfoDisplay", "class_terraria_1_1_mod_loader_1_1_compass_info_display.html", null ],
-                [ "Terraria.ModLoader.DPSMeterInfoDisplay", "class_terraria_1_1_mod_loader_1_1_d_p_s_meter_info_display.html", null ],
-                [ "Terraria.ModLoader.DepthMeterInfoDisplay", "class_terraria_1_1_mod_loader_1_1_depth_meter_info_display.html", null ],
-                [ "Terraria.ModLoader.DummyInfoDisplay", "class_terraria_1_1_mod_loader_1_1_dummy_info_display.html", null ],
-                [ "Terraria.ModLoader.FishFinderInfoDisplay", "class_terraria_1_1_mod_loader_1_1_fish_finder_info_display.html", null ],
-                [ "Terraria.ModLoader.LifeformAnalyzerInfoDisplay", "class_terraria_1_1_mod_loader_1_1_lifeform_analyzer_info_display.html", null ],
-                [ "Terraria.ModLoader.MetalDetectorInfoDisplay", "class_terraria_1_1_mod_loader_1_1_metal_detector_info_display.html", null ],
-                [ "Terraria.ModLoader.RadarInfoDisplay", "class_terraria_1_1_mod_loader_1_1_radar_info_display.html", null ],
-                [ "Terraria.ModLoader.SextantInfoDisplay", "class_terraria_1_1_mod_loader_1_1_sextant_info_display.html", null ],
-                [ "Terraria.ModLoader.StopwatchInfoDisplay", "class_terraria_1_1_mod_loader_1_1_stopwatch_info_display.html", null ],
-                [ "Terraria.ModLoader.TallyCounterInfoDisplay", "class_terraria_1_1_mod_loader_1_1_tally_counter_info_display.html", null ],
-                [ "Terraria.ModLoader.WatchesInfoDisplay", "class_terraria_1_1_mod_loader_1_1_watches_info_display.html", null ],
-                [ "Terraria.ModLoader.WeatherRadioInfoDisplay", "class_terraria_1_1_mod_loader_1_1_weather_radio_info_display.html", null ]
+          ] ]
+        ] ],
+        [ "Terraria.ModLoader.ModType< TEntity >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", [
+          [ "Terraria.ModLoader.ModType< TEntity, TModType >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", [
+            [ "Terraria.ModLoader.GlobalType< Item, GlobalItem >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
+              [ "Terraria.ModLoader.GlobalItem", "class_terraria_1_1_mod_loader_1_1_global_item.html", [
+                [ "Terraria.ModLoader.Default.UnloadedGlobalItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_item.html", null ]
               ] ]
             ] ],
-            [ "Terraria.ModLoader.ModBlockType", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html", [
-              [ "Terraria.ModLoader.ModTile", "class_terraria_1_1_mod_loader_1_1_mod_tile.html", [
-                [ "Terraria.ModLoader.Default.UnloadedTile", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile.html", [
-                  [ "Terraria.ModLoader.Default.UnloadedChest", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_chest.html", null ],
-                  [ "Terraria.ModLoader.Default.UnloadedDresser", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_dresser.html", null ],
-                  [ "Terraria.ModLoader.Default.UnloadedNonSolidTile", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_non_solid_tile.html", null ],
-                  [ "Terraria.ModLoader.Default.UnloadedSemiSolidTile", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_semi_solid_tile.html", null ],
-                  [ "Terraria.ModLoader.Default.UnloadedSolidTile", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_solid_tile.html", null ],
-                  [ "Terraria.ModLoader.Default.UnloadedSupremeFurniture", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_supreme_furniture.html", null ]
+            [ "Terraria.ModLoader.GlobalType< Projectile, GlobalProjectile >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
+              [ "Terraria.ModLoader.GlobalProjectile", "class_terraria_1_1_mod_loader_1_1_global_projectile.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.GlobalType< NPC, GlobalNPC >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
+              [ "Terraria.ModLoader.GlobalNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.IO.TagSerializer< Point16, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
+              [ "Terraria.ModLoader.IO.Point16Serializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.IO.TagSerializer< Vector2, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
+              [ "Terraria.ModLoader.IO.Vector2TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_vector2_tag_serializer.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.IO.TagSerializer< Vector3, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
+              [ "Terraria.ModLoader.IO.Vector3TagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_vector3_tag_serializer.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.IO.TagSerializer< ushort, short >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
+              [ "Terraria.ModLoader.IO.UShortTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_short_tag_serializer.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.IO.TagSerializer< uint, int >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
+              [ "Terraria.ModLoader.IO.UIntTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_int_tag_serializer.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.IO.TagSerializer< T, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
+            [ "Terraria.ModLoader.IO.TagSerializer< Rectangle, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
+              [ "Terraria.ModLoader.IO.RectangleSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_rectangle_serializer.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.IO.TagSerializer< Color, int >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
+              [ "Terraria.ModLoader.IO.ColorSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_color_serializer.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.IO.TagSerializer< ulong, long >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
+              [ "Terraria.ModLoader.IO.ULongTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_u_long_tag_serializer.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.IO.TagSerializer< bool, byte >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
+              [ "Terraria.ModLoader.IO.BoolTagSerializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_bool_tag_serializer.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.DamageClass", "class_terraria_1_1_mod_loader_1_1_damage_class.html", [
+              [ "Terraria.ModLoader.VanillaDamageClass", "class_terraria_1_1_mod_loader_1_1_vanilla_damage_class.html", [
+                [ "Terraria.ModLoader.DefaultDamageClass", "class_terraria_1_1_mod_loader_1_1_default_damage_class.html", null ],
+                [ "Terraria.ModLoader.GenericDamageClass", "class_terraria_1_1_mod_loader_1_1_generic_damage_class.html", null ],
+                [ "Terraria.ModLoader.MagicDamageClass", "class_terraria_1_1_mod_loader_1_1_magic_damage_class.html", null ],
+                [ "Terraria.ModLoader.MagicSummonHybridDamageClass", "class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html", null ],
+                [ "Terraria.ModLoader.MeleeDamageClass", "class_terraria_1_1_mod_loader_1_1_melee_damage_class.html", null ],
+                [ "Terraria.ModLoader.RangedDamageClass", "class_terraria_1_1_mod_loader_1_1_ranged_damage_class.html", null ],
+                [ "Terraria.ModLoader.SummonDamageClass", "class_terraria_1_1_mod_loader_1_1_summon_damage_class.html", null ],
+                [ "Terraria.ModLoader.SummonMeleeSpeedDamageClass", "class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html", null ],
+                [ "Terraria.ModLoader.ThrowingDamageClass", "class_terraria_1_1_mod_loader_1_1_throwing_damage_class.html", null ]
+              ] ]
+            ] ],
+            [ "Terraria.ModLoader.GlobalBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_global_background_style.html", null ],
+            [ "Terraria.ModLoader.GlobalBlockType", "class_terraria_1_1_mod_loader_1_1_global_block_type.html", [
+              [ "Terraria.ModLoader.GlobalTile", "class_terraria_1_1_mod_loader_1_1_global_tile.html", null ],
+              [ "Terraria.ModLoader.GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.GlobalBossBar", "class_terraria_1_1_mod_loader_1_1_global_boss_bar.html", null ],
+            [ "Terraria.ModLoader.GlobalBuff", "class_terraria_1_1_mod_loader_1_1_global_buff.html", null ],
+            [ "Terraria.ModLoader.GlobalInfoDisplay", "class_terraria_1_1_mod_loader_1_1_global_info_display.html", null ],
+            [ "Terraria.ModLoader.GlobalRecipe", "class_terraria_1_1_mod_loader_1_1_global_recipe.html", null ],
+            [ "Terraria.ModLoader.GlobalType< TEntity, TGlobal >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ],
+            [ "Terraria.ModLoader.IO.TagSerializer< T, S >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
+            [ "Terraria.ModLoader.ModAccessorySlot", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html", [
+              [ "Terraria.ModLoader.Default.UnloadedAccessorySlot", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_accessory_slot.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.ModBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_background_style.html", [
+              [ "Terraria.ModLoader.ModSurfaceBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_surface_background_style.html", null ],
+              [ "Terraria.ModLoader.ModUndergroundBackgroundStyle", "class_terraria_1_1_mod_loader_1_1_mod_underground_background_style.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.ModBossBarStyle", "class_terraria_1_1_mod_loader_1_1_mod_boss_bar_style.html", null ],
+            [ "Terraria.ModLoader.ModCommand", "class_terraria_1_1_mod_loader_1_1_mod_command.html", null ],
+            [ "Terraria.ModLoader.ModMapLayer", "class_terraria_1_1_mod_loader_1_1_mod_map_layer.html", null ],
+            [ "Terraria.ModLoader.ModMenu", "class_terraria_1_1_mod_loader_1_1_mod_menu.html", null ],
+            [ "Terraria.ModLoader.ModPrefix", "class_terraria_1_1_mod_loader_1_1_mod_prefix.html", null ],
+            [ "Terraria.ModLoader.ModRarity", "class_terraria_1_1_mod_loader_1_1_mod_rarity.html", null ],
+            [ "Terraria.ModLoader.ModSceneEffect", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html", [
+              [ "Terraria.ModLoader.ModBiome", "class_terraria_1_1_mod_loader_1_1_mod_biome.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.ModSound", "class_terraria_1_1_mod_loader_1_1_mod_sound.html", null ],
+            [ "Terraria.ModLoader.ModSystem", "class_terraria_1_1_mod_loader_1_1_mod_system.html", [
+              [ "Terraria.ModLoader.Default.UnloadedSystem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html", null ]
+            ] ],
+            [ "Terraria.ModLoader.ModTexturedType", "class_terraria_1_1_mod_loader_1_1_mod_textured_type.html", [
+              [ "Terraria.ModLoader.InfoDisplay", "class_terraria_1_1_mod_loader_1_1_info_display.html", [
+                [ "Terraria.ModLoader.VanillaInfoDisplay", "class_terraria_1_1_mod_loader_1_1_vanilla_info_display.html", [
+                  [ "Terraria.ModLoader.CompassInfoDisplay", "class_terraria_1_1_mod_loader_1_1_compass_info_display.html", null ],
+                  [ "Terraria.ModLoader.DPSMeterInfoDisplay", "class_terraria_1_1_mod_loader_1_1_d_p_s_meter_info_display.html", null ],
+                  [ "Terraria.ModLoader.DepthMeterInfoDisplay", "class_terraria_1_1_mod_loader_1_1_depth_meter_info_display.html", null ],
+                  [ "Terraria.ModLoader.DummyInfoDisplay", "class_terraria_1_1_mod_loader_1_1_dummy_info_display.html", null ],
+                  [ "Terraria.ModLoader.FishFinderInfoDisplay", "class_terraria_1_1_mod_loader_1_1_fish_finder_info_display.html", null ],
+                  [ "Terraria.ModLoader.LifeformAnalyzerInfoDisplay", "class_terraria_1_1_mod_loader_1_1_lifeform_analyzer_info_display.html", null ],
+                  [ "Terraria.ModLoader.MetalDetectorInfoDisplay", "class_terraria_1_1_mod_loader_1_1_metal_detector_info_display.html", null ],
+                  [ "Terraria.ModLoader.RadarInfoDisplay", "class_terraria_1_1_mod_loader_1_1_radar_info_display.html", null ],
+                  [ "Terraria.ModLoader.SextantInfoDisplay", "class_terraria_1_1_mod_loader_1_1_sextant_info_display.html", null ],
+                  [ "Terraria.ModLoader.StopwatchInfoDisplay", "class_terraria_1_1_mod_loader_1_1_stopwatch_info_display.html", null ],
+                  [ "Terraria.ModLoader.TallyCounterInfoDisplay", "class_terraria_1_1_mod_loader_1_1_tally_counter_info_display.html", null ],
+                  [ "Terraria.ModLoader.WatchesInfoDisplay", "class_terraria_1_1_mod_loader_1_1_watches_info_display.html", null ],
+                  [ "Terraria.ModLoader.WeatherRadioInfoDisplay", "class_terraria_1_1_mod_loader_1_1_weather_radio_info_display.html", null ]
                 ] ]
               ] ],
-              [ "Terraria.ModLoader.ModWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html", [
-                [ "Terraria.ModLoader.Default.UnloadedWall", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_wall.html", null ]
-              ] ]
+              [ "Terraria.ModLoader.ModBlockType", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html", [
+                [ "Terraria.ModLoader.ModTile", "class_terraria_1_1_mod_loader_1_1_mod_tile.html", [
+                  [ "Terraria.ModLoader.Default.UnloadedTile", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile.html", [
+                    [ "Terraria.ModLoader.Default.UnloadedChest", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_chest.html", null ],
+                    [ "Terraria.ModLoader.Default.UnloadedDresser", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_dresser.html", null ],
+                    [ "Terraria.ModLoader.Default.UnloadedNonSolidTile", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_non_solid_tile.html", null ],
+                    [ "Terraria.ModLoader.Default.UnloadedSemiSolidTile", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_semi_solid_tile.html", null ],
+                    [ "Terraria.ModLoader.Default.UnloadedSolidTile", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_solid_tile.html", null ],
+                    [ "Terraria.ModLoader.Default.UnloadedSupremeFurniture", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_supreme_furniture.html", null ]
+                  ] ]
+                ] ],
+                [ "Terraria.ModLoader.ModWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html", [
+                  [ "Terraria.ModLoader.Default.UnloadedWall", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_wall.html", null ]
+                ] ]
+              ] ],
+              [ "Terraria.ModLoader.ModBossBar", "class_terraria_1_1_mod_loader_1_1_mod_boss_bar.html", null ],
+              [ "Terraria.ModLoader.ModBuff", "class_terraria_1_1_mod_loader_1_1_mod_buff.html", null ],
+              [ "Terraria.ModLoader.ModDust", "class_terraria_1_1_mod_loader_1_1_mod_dust.html", null ],
+              [ "Terraria.ModLoader.ModGore", "class_terraria_1_1_mod_loader_1_1_mod_gore.html", [
+                [ "Terraria.ModLoader.SimpleModGore", "class_terraria_1_1_mod_loader_1_1_simple_mod_gore.html", null ]
+              ] ],
+              [ "Terraria.ModLoader.ModWaterStyle", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html", null ],
+              [ "Terraria.ModLoader.ModWaterfallStyle", "class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html", null ]
             ] ],
-            [ "Terraria.ModLoader.ModBossBar", "class_terraria_1_1_mod_loader_1_1_mod_boss_bar.html", null ],
-            [ "Terraria.ModLoader.ModBuff", "class_terraria_1_1_mod_loader_1_1_mod_buff.html", null ],
-            [ "Terraria.ModLoader.ModDust", "class_terraria_1_1_mod_loader_1_1_mod_dust.html", null ],
-            [ "Terraria.ModLoader.ModGore", "class_terraria_1_1_mod_loader_1_1_mod_gore.html", [
-              [ "Terraria.ModLoader.SimpleModGore", "class_terraria_1_1_mod_loader_1_1_simple_mod_gore.html", null ]
-            ] ],
-            [ "Terraria.ModLoader.ModItem", "class_terraria_1_1_mod_loader_1_1_mod_item.html", [
-              [ "Terraria.ModLoader.Default.ModLoaderModItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_loader_mod_item.html", [
-                [ "Terraria.ModLoader.Default.AprilFools", "class_terraria_1_1_mod_loader_1_1_default_1_1_april_fools.html", null ],
-                [ "Terraria.ModLoader.Default.StartBag", "class_terraria_1_1_mod_loader_1_1_default_1_1_start_bag.html", null ],
-                [ "Terraria.ModLoader.Default.UnloadedItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html", null ]
-              ] ]
-            ] ],
-            [ "Terraria.ModLoader.ModMount", "class_terraria_1_1_mod_loader_1_1_mod_mount.html", null ],
-            [ "Terraria.ModLoader.ModNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html", null ],
-            [ "Terraria.ModLoader.ModProjectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html", null ],
-            [ "Terraria.ModLoader.ModWaterStyle", "class_terraria_1_1_mod_loader_1_1_mod_water_style.html", null ],
-            [ "Terraria.ModLoader.ModWaterfallStyle", "class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html", null ]
-          ] ],
-          [ "Terraria.ModLoader.PlayerDrawLayer", "class_terraria_1_1_mod_loader_1_1_player_draw_layer.html", [
-            [ "Terraria.ModLoader.PlayerDrawLayerSlot", "class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html", null ]
+            [ "Terraria.ModLoader.PlayerDrawLayer", "class_terraria_1_1_mod_loader_1_1_player_draw_layer.html", [
+              [ "Terraria.ModLoader.PlayerDrawLayerSlot", "class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html", null ]
+            ] ]
           ] ]
-        ] ]
+        ] ],
+        [ "Terraria.ModLoader.ModType< Projectile, ModProjectile >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", [
+          [ "Terraria.ModLoader.ModProjectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html", null ]
+        ] ],
+        [ "Terraria.ModLoader.ModType< NPC, ModNPC >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", [
+          [ "Terraria.ModLoader.ModNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html", null ]
+        ] ],
+        [ "Terraria.ModLoader.ModTileEntity", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html", [
+          [ "Terraria.ModLoader.Default.UnloadedTileEntity", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html", null ]
+        ] ],
+        [ "Terraria.ModLoader.ModType< TEntity, TModType >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", null ]
       ] ],
       [ "Terraria.ModLoader.IPlant", "interface_terraria_1_1_mod_loader_1_1_i_plant.html", [
         [ "Terraria.ModLoader.ModCactus", "class_terraria_1_1_mod_loader_1_1_mod_cactus.html", null ],
@@ -1424,7 +1435,7 @@ var hierarchy =
     [ "Terraria.ModLoader.Instanced< T >", "struct_terraria_1_1_mod_loader_1_1_instanced.html", null ],
     [ "Terraria.ModLoader.Instanced< GlobalItem >", "struct_terraria_1_1_mod_loader_1_1_instanced.html", null ],
     [ "Terraria.ModLoader.Instanced< GlobalProjectile >", "struct_terraria_1_1_mod_loader_1_1_instanced.html", null ],
-    [ "Terraria.ModLoader.Core.HookList< TGlobal, TDelegate >.InstanceEnumerator", "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html", null ],
+    [ "Terraria.ModLoader.Core.HookList< T >.InstanceEnumerator", "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html", null ],
     [ "Terraria.Utilities.IntRange", "struct_terraria_1_1_utilities_1_1_int_range.html", null ],
     [ "Terraria.ID.InvasionID", "class_terraria_1_1_i_d_1_1_invasion_i_d.html", null ],
     [ "Terraria.GameContent.Bestiary.BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Invasions", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_te88d9ec051cbe968cdce0d7ccd2a60c1.html", null ],
@@ -1834,6 +1845,9 @@ var hierarchy =
     [ "Terraria.ModLoader.UI.ModBrowser.ModSideFilterModesExtensions", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_mod_browser_1_1_mod_side_filter_modes_extensions.html", null ],
     [ "Terraria.ModLoader.UI.ModsMenuSortModesExtensions", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_mods_menu_sort_modes_extensions.html", null ],
     [ "Terraria.ModLoader.ModTranslation", "class_terraria_1_1_mod_loader_1_1_mod_translation.html", null ],
+    [ "ModType", "class_mod_type.html", [
+      [ "Terraria.ModLoader.ModType< TEntity, TModType >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", null ]
+    ] ],
     [ "Terraria.ModLoader.ModTypeLookup< T >", "class_terraria_1_1_mod_loader_1_1_mod_type_lookup.html", null ],
     [ "Terraria.ModLoader.MonoModHooks", "class_terraria_1_1_mod_loader_1_1_mono_mod_hooks.html", null ],
     [ "Terraria.GameContent.Events.MoonlordDeathDrama", "class_terraria_1_1_game_content_1_1_events_1_1_moonlord_death_drama.html", null ],

@@ -18,6 +18,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "CanUseItem", "class_terraria_1_1_mod_loader_1_1_mod_player.html#acc076dcae6e7254a706130119bad26d1", null ],
     [ "CatchFish", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a2f9e0d6317cbbb755100c790cc5e0376", null ],
     [ "clientClone", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a8df0879f930e49f6d4b81b4d8decd4be", null ],
+    [ "CreateTemplateEntity", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a5a03c139b2cc9b32315dd23f3fafd549", null ],
     [ "DrawEffects", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a4a18dfa71b9dc5936a16b27f2b084e70", null ],
     [ "FrameEffects", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a155cba1e22cce620d994dac9d88e993e", null ],
     [ "GetDyeTraderReward", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ac412621fb39079d5db3fee8bf1bcc9bc", null ],
@@ -53,6 +54,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "ModifyWeaponKnockback", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a919067a237722575b266198d401de906", null ],
     [ "ModifyZoom", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ac6927f61bbe5edbb9437117a94fc2c64", null ],
     [ "NaturalLifeRegen", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ae8dbfbc03aeba36009cca97321fb8754", null ],
+    [ "NewInstance", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ad5c6aa8fb01c85b59aa0918149dee89c", null ],
     [ "OnCatchNPC", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a9e0dd97f610dca04c99d583052fdf3b0", null ],
     [ "OnConsumeAmmo", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a6bb0584ad6810e06dbad60b0bdca5818", null ],
     [ "OnConsumeMana", "class_terraria_1_1_mod_loader_1_1_mod_player.html#af4e7b3b015c910db82afcb064e4b1433", null ],
@@ -110,6 +112,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "UseAnimationMultiplier", "class_terraria_1_1_mod_loader_1_1_mod_player.html#af9a650186ff012b31a6e86c4ccd81473", null ],
     [ "UseSpeedMultiplier", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aacfc3d8bbfe282add43d9a0d784675fb", null ],
     [ "UseTimeMultiplier", "class_terraria_1_1_mod_loader_1_1_mod_player.html#abb5e4c7ee1acbfc31227fed71446a0a7", null ],
-    [ "CloneNewInstances", "class_terraria_1_1_mod_loader_1_1_mod_player.html#a864e34b0e52742d1533fe7e5b2d7236d", null ],
+    [ "ValidateType", "class_terraria_1_1_mod_loader_1_1_mod_player.html#afc5824d3c261669434f2816659e5f9fd", null ],
     [ "Player", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aef06e9e920e0ada60349621b53566c04", null ]
 ];

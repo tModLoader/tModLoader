@@ -1,7 +1,7 @@
 var struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator =
 [
-    [ "InstanceEnumerator", "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#ad2001f9dd27d92db442a639495f194b1", null ],
-    [ "GetEnumerator", "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#a24b482b379a575f1a3915adb82abf02f", null ],
-    [ "MoveNext", "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#a70657cde880e76ab9755f4971c6433c7", null ],
-    [ "Current", "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#a695b514766caf130ed70f2e3a9c071f6", null ]
+    [ "InstanceEnumerator", "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#a329620b30628fd8b9ac6782844d1661c", null ],
+    [ "GetEnumerator", "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#a8ef87230391829ee5f9ae831d80f4b12", null ],
+    [ "MoveNext", "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#abee0a889b77e8640d806019607a9c0c1", null ],
+    [ "Current", "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#a2e60a8de91219bf1e0a5bb5f09ed2914", null ]
 ];

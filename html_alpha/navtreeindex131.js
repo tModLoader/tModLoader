@@ -1,5 +1,23 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_tile_wall_wire_state_data.html#acfc29d3943d1a4ad491c2ef9e059d488":[1,0,2,77,15],
+"struct_terraria_1_1_tile_wall_wire_state_data.html#ada43440a0bf081cf78c4fa35366197d9":[1,0,2,77,20],
+"struct_terraria_1_1_tile_wall_wire_state_data.html#aee4a5ff63c55719e7ba1b0dd42cfcc30":[1,0,2,77,16],
+"struct_terraria_1_1_tile_wall_wire_state_data.html#aef9c61aca971ebc0d9a9d76d258a61da":[1,0,2,77,14],
+"struct_terraria_1_1_tile_wall_wire_state_data.html#af2ff0d36d8a88ead7b5d57a53353ef44":[1,0,2,77,5],
+"struct_terraria_1_1_tilemap.html":[1,0,2,74],
+"struct_terraria_1_1_tilemap.html#a054eae5f6d4fbef748f0e98b2415d151":[1,0,2,74,3],
+"struct_terraria_1_1_tilemap.html#a2d2b52b11a083001ad177dc1ed92fa54":[1,0,2,74,0],
+"struct_terraria_1_1_tilemap.html#a74066cbd43ef82095f316787837869a2":[1,0,2,74,2],
+"struct_terraria_1_1_tilemap.html#a8aeab32c399f467339db07c4270e6741":[1,0,2,74,1],
+"struct_terraria_1_1_tilemap.html#ae5df62e924a241956fbd1b9bb6ff6af4":[1,0,2,74,4],
+"struct_terraria_1_1_u_i_1_1_alignment.html":[1,0,2,21,4],
+"struct_terraria_1_1_u_i_1_1_alignment.html#a0a076ce2c4a00bd98d93e3dd6bec8a46":[1,0,2,21,4,0],
+"struct_terraria_1_1_u_i_1_1_alignment.html#a25a770cdfe318742c173391a0b98ecf5":[1,0,2,21,4,4],
+"struct_terraria_1_1_u_i_1_1_alignment.html#a2ad83100b19f5176730a4e2f81aa3e3b":[1,0,2,21,4,11],
+"struct_terraria_1_1_u_i_1_1_alignment.html#a2e1131ca579c2bfe57b9dbd9be8ed776":[1,0,2,21,4,9],
+"struct_terraria_1_1_u_i_1_1_alignment.html#a2e762c785c0681a66aa0009ae4995975":[1,0,2,21,4,8],
+"struct_terraria_1_1_u_i_1_1_alignment.html#a849b6d77db112b1754f42015ef0dce4c":[1,0,2,21,4,7],
 "struct_terraria_1_1_u_i_1_1_alignment.html#a9501416356b9fecd542b715391e1c4d9":[1,0,2,21,4,10],
 "struct_terraria_1_1_u_i_1_1_alignment.html#a9a22f3085998c605371f39f0dbd46991":[1,0,2,21,4,5],
 "struct_terraria_1_1_u_i_1_1_alignment.html#acc00d64db01f3679e419bd71046fd1a5":[1,0,2,21,4,2],
@@ -111,5 +129,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ab4a41891b488a8e30e51e30da3da83e6":[1,0,2,83,1,4],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ac026067dd86556b03343af3accafb339":[1,0,2,83,1,9],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#af29be99c6e7eeb85d0fd385f07a3ebd6":[1,0,2,83,1,5],
-"structnativefiledialog_1_1nfdpathset__t.html":[1,0,35,0]
+"structnativefiledialog_1_1nfdpathset__t.html":[1,0,36,0]
 };

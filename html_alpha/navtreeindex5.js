@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"class_terraria_1_1_framing.html#ab8fc43d4d7d41c92e8d1569b1e14efee":[1,0,2,35,2],
 "class_terraria_1_1_framing.html#ad904a473924bdd9a2a56233724a45571":[1,0,2,35,7],
 "class_terraria_1_1_framing.html#adf8f859033cd5cb805b13aad59a55236":[1,0,2,35,6],
 "class_terraria_1_1_framing.html#ae8fe95c790b7c9f378405c02d256a1da":[1,0,2,35,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#ac82252493140bc2b4e547811c15d5dda":[1,0,2,5,2,1,2,37],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#ac84adf6a8ffe77599acd988cb73fbb75":[1,0,2,5,2,1,2,12],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#aca0b2e6845a809a1bd38f49dd034e5ad":[1,0,2,5,2,1,2,39],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#ad39a82a7becbf72a309fa9237578a43c":[1,0,2,5,2,1,2,30],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#ad4a2404333ee0521414f52ad1ace9839":[1,0,2,5,2,1,2,58]
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_crownos_icon_indexes.html#ad39a82a7becbf72a309fa9237578a43c":[1,0,2,5,2,1,2,30]
 };

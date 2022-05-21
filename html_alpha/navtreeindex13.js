@@ -1,5 +1,6 @@
 var NAVTREEINDEX13 =
 {
+"class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database.html#af2bc96b156f476b389b88cc03d2be884":[1,0,2,5,16,16,4],
 "class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database.html#afea3b3dbe31d74a87a5a597091e86a12":[1,0,2,5,16,16,2],
 "class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database_populator.html":[1,0,2,5,16,17],
 "class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database_populator.html#a5ada5c93edc67bf78df69443501fef49":[1,0,2,5,16,17,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX13 =
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_underworld_shader.html":[1,0,2,5,17,46],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_underworld_shader.html#a02534a83a25eb7ab7caeab897d8388c7":[1,0,2,5,17,46,0],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_vine_shader.html":[1,0,2,5,17,47],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_virtual_keyboard.html":[1,0,2,5,17,48],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_virtual_keyboard.html#a294e1c18a3935f7ffe19e8faf57ae632":[1,0,2,5,17,48,0]
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_virtual_keyboard.html":[1,0,2,5,17,48]
 };

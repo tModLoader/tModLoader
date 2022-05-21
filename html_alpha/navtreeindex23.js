@@ -1,5 +1,6 @@
 var NAVTREEINDEX23 =
 {
+"class_terraria_1_1_game_input_1_1_trigger_names.html#a82eab565b5d85a135eaeffc6d446cb5a":[1,0,2,6,5,8],
 "class_terraria_1_1_game_input_1_1_trigger_names.html#a833f5fe95273bfe08ab6f545235ecc72":[1,0,2,6,5,3],
 "class_terraria_1_1_game_input_1_1_trigger_names.html#a8c16fd32f76769f0d456e83c3b455cde":[1,0,2,6,5,31],
 "class_terraria_1_1_game_input_1_1_trigger_names.html#a9a6bdde8329ea46d2977709754e3e15b":[1,0,2,6,5,42],
@@ -248,6 +249,5 @@ var NAVTREEINDEX23 =
 "class_terraria_1_1_graphics_1_1_effects_1_1_effect_manager.html#ab9cb19404881406db4b4fd054f66765b":[1,0,2,7,2,1,5],
 "class_terraria_1_1_graphics_1_1_effects_1_1_effect_manager.html#ac5b6d021a29d4a2c7034c20794a73ccc":[1,0,2,7,2,1,2],
 "class_terraria_1_1_graphics_1_1_effects_1_1_effect_manager.html#adbf65de80e8bec0758f91537dcf1a220":[1,0,2,7,2,1,1],
-"class_terraria_1_1_graphics_1_1_effects_1_1_effect_manager.html#ae84fcd0adf6dceb5e88cdf4ce432ec5d":[1,0,2,7,2,1,6],
-"class_terraria_1_1_graphics_1_1_effects_1_1_filter.html":[1,0,2,7,2,2]
+"class_terraria_1_1_graphics_1_1_effects_1_1_effect_manager.html#ae84fcd0adf6dceb5e88cdf4ce432ec5d":[1,0,2,7,2,1,6]
 };

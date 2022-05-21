@@ -1,6 +1,5 @@
 var class_terraria_1_1_mod_loader_1_1_mod_projectile =
 [
-    [ "ModProjectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afbad8858ec6ca683ba683bd51a95309d", null ],
     [ "AI", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a1538782f9048f5743001270d0f4a2692", null ],
     [ "AutoStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae5eb3338bf93c693f7367a824e39d242", null ],
     [ "CanCutTiles", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ae7cdbd7762f6cf8f3b573a91118741e8", null ],
@@ -9,8 +8,8 @@ var class_terraria_1_1_mod_loader_1_1_mod_projectile =
     [ "CanHitPlayer", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aeb68fca5dd3414109803b6e920d9b610", null ],
     [ "CanHitPvp", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4be1c96db232e9c9c6abb42baebf3818", null ],
     [ "CanUseGrapple", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a27ba41537ee551c46d60cd85c5a67da2", null ],
-    [ "Clone", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aff4dbabc96285965c76573326006316d", null ],
     [ "Colliding", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afa10ef5ad8b25baf604390edc5d0d8a5", null ],
+    [ "CreateTemplateEntity", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a01c6a037b1b44ff64df18ce41dc1e4bb", null ],
     [ "CutTiles", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a4b548cb172688ca803e439ada0d966a8", null ],
     [ "DrawBehind", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afeb145b64c1a15770296428a3a76be80", null ],
     [ "GetAlpha", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a5adc5de264dcaa493a2c4515e6767301", null ],
@@ -55,5 +54,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_projectile =
     [ "DrawOriginOffsetY", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a0ea23462a3e2aa26b378a401da452293", null ],
     [ "GlowTexture", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a5f4331c9f0cc0fefb578daec0cb106b7", null ],
     [ "Projectile", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#acbd852ee9376a8eef0062a6ba0ebfbca", null ],
+    [ "Texture", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a70c635bc40995a07e6d09f099f8d655c", null ],
     [ "Type", "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aed26fa088b36cecaa12c02fc7cdb7867", null ]
 ];

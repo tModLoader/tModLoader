@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_per_player_slider_power.html#a7d938ed808691d8817788265d098caf6":[1,0,2,5,4,2,0,0],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_per_player_slider_power.html#a8166c6140c9719da27cd838ab88abfe2":[1,0,2,5,4,2,0,11],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_per_player_slider_power.html#a81cd77b224de6c2169c530a50f89297d":[1,0,2,5,4,2,0,3],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_per_player_slider_power.html#a851637ad5cd3f7e98bcd36bfb194ad62":[1,0,2,5,4,2,0,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_furniture.html#ae609a4fde3c982d166e7b8ae4e27a403":[1,0,2,5,4,13,7,0],
 "class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_gameplay_items.html":[1,0,2,5,4,13,8],
 "class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_gameplay_items.html#a46e8148bbeb21ae36153f6f21c65b362":[1,0,2,5,4,13,8,2],
-"class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_gameplay_items.html#adf6382e765b10c4cbd94179f23c01b4a":[1,0,2,5,4,13,8,0],
-"class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_gameplay_items.html#af9b2f32baa601f2e0d187727d847f293":[1,0,2,5,4,13,8,1]
+"class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_gameplay_items.html#adf6382e765b10c4cbd94179f23c01b4a":[1,0,2,5,4,13,8,0]
 };

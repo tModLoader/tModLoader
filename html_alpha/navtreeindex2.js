@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"class_terraria_1_1_cinematics_1_1_d_s_t_film.html#ab453d407722ca276e346545d2992f319":[1,0,2,3,2,2],
 "class_terraria_1_1_cinematics_1_1_film.html":[1,0,2,3,3],
 "class_terraria_1_1_cinematics_1_1_film.html#a09344e1c53de707a994ed46356beb25d":[1,0,2,3,3,10],
 "class_terraria_1_1_cinematics_1_1_film.html#a1e9c35930b4c624e3412cb809f704d2f":[1,0,2,3,3,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "class_terraria_1_1_data_structures_1_1_entity_source___old_ones_army.html":[1,0,2,4,29],
 "class_terraria_1_1_data_structures_1_1_entity_source___old_ones_army.html#a2bbdc3fe69cf3c3f2e77799abf7deeea":[1,0,2,4,29,1],
 "class_terraria_1_1_data_structures_1_1_entity_source___old_ones_army.html#aa583afa9be72b4f7cd8b0089e69e8212":[1,0,2,4,29,0],
-"class_terraria_1_1_data_structures_1_1_entity_source___on_hit.html":[1,0,2,4,30],
-"class_terraria_1_1_data_structures_1_1_entity_source___on_hit.html#a4bbc319eb816f16f546dbce6dfba9de1":[1,0,2,4,30,0]
+"class_terraria_1_1_data_structures_1_1_entity_source___on_hit.html":[1,0,2,4,30]
 };
