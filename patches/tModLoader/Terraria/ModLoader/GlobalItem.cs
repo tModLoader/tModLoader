@@ -8,18 +8,26 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
-using static Terraria.GameContent.Creative.CreativeUI;
+using System;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
 	/// </summary>
-	public abstract class GlobalItem : GlobalType<Item>
+	public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	{
-		protected sealed override void Register() {
-			ItemLoader.VerifyGlobalItem(this);
+		protected override void ValidateType() {
+			base.ValidateType();
 
+			LoaderUtils.MustOverrideTogether(this, g => g.SaveData, g => g.LoadData);
+			LoaderUtils.MustOverrideTogether(this, g => g.NetSend, g => g.NetReceive);
+			
+			if (InstancePerEntity && !IsCloneable)
+				throw new Exception($"{GetType().FullName} has {nameof(InstancePerEntity)} but not {nameof(IsCloneable)}. See the documentation on {nameof(IsCloneable)}");
+		}
+
+		protected sealed override void Register() {
 			ModTypeLookup<GlobalItem>.Register(this);
 
 			index = (ushort)ItemLoader.globalItems.Count;
@@ -30,13 +38,6 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() => SetStaticDefaults();
 
 		public GlobalItem Instance(Item item) => Instance(item.globalItems, index);
-
-		/// <summary>
-		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.
-		/// </summary>
-		/// <param name="item">The item being cloned</param>
-		/// <param name="itemClone">The new item</param>
-		public virtual GlobalItem Clone(Item item, Item itemClone) => (GlobalItem)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every item that gets created.

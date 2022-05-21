@@ -8,6 +8,8 @@ namespace Terraria.ModLoader.Default
 	{
 		private List<Item> items = new List<Item>();
 
+		public override bool IsCloneable => true; // safe to share items between clones, because it cannot be changed after creation/load
+
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("{$tModLoader.StartBagItemName}");
 			Tooltip.SetDefault("{$tModLoader.StartBagTooltip}\n{$CommonItemTooltip.RightClickToOpen}");

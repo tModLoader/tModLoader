@@ -1,11 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -13,36 +12,35 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 	/// </summary>
-	public abstract class ModPlayer : ModType
+	public abstract class ModPlayer : ModType<Player, ModPlayer>
 	{
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
-		public Player Player { get; internal set; }
+		public Player Player => Entity;
 
-		internal int index;
+		internal ushort index;
 
-		internal ModPlayer CreateFor(Player newPlayer) {
-			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
-			modPlayer.Mod = Mod;
-			modPlayer.Player = newPlayer;
-			modPlayer.index = index;
-			modPlayer.Initialize();
-			return modPlayer;
+		protected override Player CreateTemplateEntity() => null;
+
+		public override ModPlayer NewInstance(Player entity) {
+			var inst = base.NewInstance(entity);
+			inst.index = index;
+			return inst;
 		}
 
 		public bool TypeEquals(ModPlayer other) {
 			return Mod == other.Mod && Name == other.Name;
 		}
 
-		/// <summary>
-		/// Whether each player gets a ModPlayer by cloning the ModPlayer added to the Mod or by creating a new ModPlayer object with the same type as the ModPlayer added to the Mod. The accessor returns true by default. Return false if you want to assign fields through the constructor.
-		/// </summary>
-		public virtual bool CloneNewInstances => true;
+		protected override void ValidateType() {
+			base.ValidateType();
+			
+			LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
+			LoaderUtils.MustOverrideTogether(this, p => p.clientClone, p => p.SendClientChanges);
+		}
 
 		protected sealed override void Register() {
-			PlayerLoader.VerifyModPlayer(this);
-
 			ModTypeLookup<ModPlayer>.Register(this);
 			PlayerLoader.Add(this);
 		}
