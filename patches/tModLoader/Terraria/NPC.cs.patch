@@ -276,7 +276,7 @@
  			return result;
  		}
  
-@@ -1869,9 +_,19 @@
+@@ -1869,9 +_,21 @@
  			defDamage = damage;
  			defDefense = defense;
  			if (flag) {
@@ -289,11 +289,13 @@
 +		public void CloneDefaults(int Type) {
 +			int originalType = type;
 +			int originalNetID = netID;
-+			ModNPC originalModEntity = ModNPC;
++			var originalModNPC = ModNPC;
++			var originalGlobals = globalNPCs;
 +			SetDefaultsKeepPlayerInteraction(Type);
 +			type = originalType;
 +			netID = originalNetID;
-+			ModNPC = originalModEntity;
++			ModNPC = originalModNPC;
++			globalNPCs = originalGlobals;
  		}
  
  		public void SetDefaultsKeepPlayerInteraction(int Type) {

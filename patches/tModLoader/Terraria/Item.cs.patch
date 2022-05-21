@@ -546,18 +546,20 @@
  		public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
  			if (useGulpSound)
  				UseSound = SoundID.Item3;
-@@ -45006,6 +_,16 @@
+@@ -45006,6 +_,18 @@
  			SetDefaults(Type, noMatCheck: false);
  		}
  
 +		public void CloneDefaults(int TypeToClone) {
 +			int originalType = type;
 +			int originalNetID = netID;
-+			ModItem originalModItem = ModItem;
++			var originalModItem = ModItem;
++			var originalGlobals = globalItems;
 +			SetDefaults(TypeToClone);
 +			type = originalType;
 +			netID = originalNetID;
 +			ModItem = originalModItem;
++			globalItems = originalGlobals;
 +		}
 +
  		public void SetDefaults(int Type, bool noMatCheck = false) {
