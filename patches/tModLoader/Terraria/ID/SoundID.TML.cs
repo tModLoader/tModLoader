@@ -35,10 +35,10 @@ namespace Terraria.ID
 		public static readonly LegacySoundStyle Drown = new(23, 0);
 		public static readonly LegacySoundStyle Chat = new(24, 0);
 		public static readonly LegacySoundStyle MaxMana = new(25, 0);
-		public static readonly LegacySoundStyle Mummy = new(26, stackalloc int[] { 3, 4 }) { Volume = 0.9f, PitchVariance = 0.2f };
-		public static readonly LegacySoundStyle Pixie = new(27, 0);
-		public static readonly LegacySoundStyle Mech = new(28, 0);
-		public static readonly LegacySoundStyle Zombie = new(29, 0);
+		public static readonly LegacySoundStyle Mummy = new(LegacySoundIDs.Zombie, stackalloc int[] { 3, 4 }) { Volume = 0.9f, PitchVariance = 0.2f }; //26
+		public static readonly LegacySoundStyle Pixie = new(27, 0) { PitchVariance = 0.2f, RestartIfPlaying = false };
+		public static readonly LegacySoundStyle Mech = new(28, 0) { PitchVariance = 0.2f, RestartIfPlaying = false };
+		//public static readonly LegacySoundStyle Zombie = new(29, 0);
 		public static readonly LegacySoundStyle Duck = new(30, 0);
 		public static readonly LegacySoundStyle Frog = new(31, 0);
 		public static readonly LegacySoundStyle Bird = new(32, 0);
@@ -56,9 +56,10 @@ namespace Terraria.ID
 			MaxInstances = SoundEngine.LegacySoundPlayer.SoundThunder.Length,
 			PitchVariance = 0.2f,
 		};
-		public static readonly LegacySoundStyle Seagull = new(44, 0);
-		public static readonly LegacySoundStyle Dolphin = new(45, 0);
-		public static readonly LegacySoundStyle Owl = new(46, 0);
+		public static readonly LegacySoundStyle Seagull = new(LegacySoundIDs.Zombie, stackalloc int[] { 106, 107, 108 }) { Volume = 0.2f, PitchRange = (-0.7f, 0f) }; //44
+		public static readonly LegacySoundStyle Dolphin = new(LegacySoundIDs.Zombie, 109) { Volume = 0.3f, PitchVariance = 0.2f }; //45
+		public static readonly LegacySoundStyle Owl = new(LegacySoundIDs.Zombie, stackalloc int[] { 110, 111 }); //46
+		public static readonly LegacySoundStyle OwlFunny = new(LegacySoundIDs.Zombie, stackalloc int[] { 110, 111 }); //46
 		/*
 		public static readonly LegacySoundStyle GuitarC = new(47, 0);
 		public static readonly LegacySoundStyle GuitarD = new(48, 0);
