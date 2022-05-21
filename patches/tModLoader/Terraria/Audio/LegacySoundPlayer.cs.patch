@@ -36,6 +36,14 @@
  		}
  
  		private SoundEffectInstance CreateInstance(Asset<SoundEffect> asset) {
+@@ -825,6 +_,7 @@
+ 							break;
+ 						default:
+ 							switch (type) {
++								// funni. This may be a decompilation artifact, but this case seems unreachable.
+ 								case 45:
+ 									num = 109;
+ 									SoundInstanceZombie[num] = SoundZombie[num].Value.CreateInstance();
 @@ -1058,7 +_,80 @@
  			return null;
  		}

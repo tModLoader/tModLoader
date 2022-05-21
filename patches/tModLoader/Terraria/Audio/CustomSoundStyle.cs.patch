@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/Audio/CustomSoundStyle.cs
 +++ src/tModLoader/Terraria/Audio/CustomSoundStyle.cs
 @@ -1,3 +_,7 @@
-+// See CustomSoundStyle.TML.cs
++// Superseded by SoundStyle.TML.cs
 +
 +/*
 +using Microsoft.Xna.Framework;

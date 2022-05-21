@@ -1,6 +1,7 @@
 using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -28,9 +29,12 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useAnimation = 8; // The length of the item's use animation in ticks (60 ticks == 1 second.)
 			Item.useStyle = ItemUseStyleID.Shoot; // How you use the item (swinging, holding out, etc.)
 			Item.autoReuse = true; // Whether or not you can hold click to automatically use it again.
+			
 			// The sound that this item plays when used.
-			Item.UseSound = new ModSoundStyle($"{nameof(ExampleMod)}/Assets/Sounds/Items/Guns/ExampleGun", volume: 0.9f, pitchVariance: 0.1f);
-			//Item.UseSound = SoundID.Item11;
+			Item.UseSound = new SoundStyle($"{nameof(ExampleMod)}/Assets/Sounds/Items/Guns/ExampleGun") {
+				Volume = 0.9f,
+				PitchVariance = 0.1f
+			};
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged; // Sets the damage type to ranged.

@@ -1,7 +1,7 @@
 --- src/TerrariaNetCore/Terraria/Audio/LegacySoundStyle.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundStyle.cs
 @@ -1,3 +_,7 @@
-+// See LegacySoundStyle.TML.cs
++// Superseded by SoundStyle.TML.cs
 +
 +/*
 +using Microsoft.Xna.Framework;

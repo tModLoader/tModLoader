@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/MessageBuffer.cs
 +++ src/tModLoader/Terraria/MessageBuffer.cs
-@@ -19,6 +_,9 @@
+@@ -19,6 +_,10 @@
  using Terraria.Net;
  using Terraria.Testing;
  using Terraria.UI;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
++using LegacySoundStyle = Terraria.Audio.SoundStyle;
  
  namespace Terraria
  {
@@ -612,7 +613,7 @@
 +						*/
 +
 +						if (bitsByte2[0])
-+							legacySoundStyle.Style = reader.ReadInt32();
++							legacySoundStyle.Variants = new int[] { reader.ReadInt32() };
 +
 +						if (bitsByte2[1])
 +							legacySoundStyle.Volume = MathHelper.Clamp(reader.ReadSingle(), 0f, 1f);

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
-@@ -34,10 +_,15 @@
+@@ -34,10 +_,16 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -9,6 +9,7 @@
 +using Terraria.ModLoader.IO;
 +using Terraria.ModLoader.UI;
 +using System.Linq;
++using LegacySoundStyle = Terraria.Audio.SoundStyle;
  
  namespace Terraria
  {

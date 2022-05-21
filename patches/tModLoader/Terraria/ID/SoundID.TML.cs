@@ -1,414 +1,622 @@
 using System;
 using Terraria.Audio;
+using static Terraria.ID.SoundID.SoundStyleDefaults;
 
 namespace Terraria.ID
 {
-	public partial class SoundID {
+	partial class SoundID
+	{
+		partial struct SoundStyleDefaults
+		{
+			// Defaults had to be moved out of SoundID to ensure that their fields are initialized before SoundID's.
+			public static readonly SoundStyleDefaults ItemDefaults = new(1f, 0.12f); // Pitch variance is now 'max - min', not a half.
+			public static readonly SoundStyleDefaults NPCHitDefaults = new(1f, 0.2f);
+			public static readonly SoundStyleDefaults NPCDeathDefaults = new(1f, 0.2f);
+		}
+
+		private const string Prefix = "Terraria/Sounds/";
+		private const string PrefixCustom = "Terraria/Sounds/Custom/";
+
 		// Start of IDs that used to be 'int' typed.
-		public static readonly LegacySoundStyle Dig = new(0, stackalloc int[] { 0, 1, 2 }) { PitchVariance = 0.2f };
-		public static readonly LegacySoundStyle PlayerHit = new(1, stackalloc int[] { 0, 1, 2 }) { PitchVariance = 0.2f };
-		public static readonly LegacySoundStyle Item = new(2, 0);
-		//public static readonly LegacySoundStyle NPCHit = new(3, 0);
-		//public static readonly LegacySoundStyle NPCKilled = new(4, 0);
-		public static readonly LegacySoundStyle PlayerKilled = new(5, 0);
-		public static readonly LegacySoundStyle Grass = new(6, 0) { PitchVariance = 0.6f };
-		public static readonly LegacySoundStyle Grab = new(7, 0) { PitchVariance = 0.2f };
-		public static readonly LegacySoundStyle DoorOpen = new(8, 0) { PitchVariance = 0.4f };
-		public static readonly LegacySoundStyle DoorClosed = new(9, 0) { PitchVariance = 0.4f };
-		public static readonly LegacySoundStyle MenuOpen = new(10, 0);
-		public static readonly LegacySoundStyle MenuClose = new(11, 0);
-		public static readonly LegacySoundStyle MenuTick = new(12, 0) { PlayOnlyIfFocused = true };
-		public static readonly LegacySoundStyle Shatter = new(13, 0);
-		public static readonly LegacySoundStyle ZombieMoan = new(14, stackalloc int[] { 0, 1, 2 }) { Volume = 0.4f };
-		public static readonly LegacySoundStyle ZombieMoan_SandShark = new(14, 7) { Volume = 0.4f };
-		public static readonly LegacySoundStyle ZombieMoan_BloodZombie = new(14, stackalloc int[] { 21, 22, 23 }) { Volume = 0.4f };
-		public static readonly LegacySoundStyle Roar = new(15, 0) { RestartIfPlaying = false };
-		public static readonly LegacySoundStyle Roar_WormDig = new(15, 1) { RestartIfPlaying = false };
-		//public static readonly LegacySoundStyle Roar_Something = new(15, 2) { RestartIfPlaying = false };
-		public static readonly LegacySoundStyle DoubleJump = new(16, 0) { PitchVariance = 0.2f };
-		public static readonly LegacySoundStyle Run = new(17, 0) { PitchVariance = 0.2f };
-		public static readonly LegacySoundStyle Coins = new(18, 0);
-		public static readonly LegacySoundStyle Splash = new(19, 0) { PitchVariance = 0.2f, RestartIfPlaying = false };
-		public static readonly LegacySoundStyle FemaleHit = new(20, stackalloc int[] { 0, 1, 2 });
-		public static readonly LegacySoundStyle Tink = new(21, stackalloc int[] { 0, 1, 2 });
-		public static readonly LegacySoundStyle Unlock = new(22, 0);
-		public static readonly LegacySoundStyle Drown = new(23, 0);
-		public static readonly LegacySoundStyle Chat = new(24, 0);
-		public static readonly LegacySoundStyle MaxMana = new(25, 0);
-		public static readonly LegacySoundStyle Mummy = new(LegacySoundIDs.Zombie, stackalloc int[] { 3, 4 }) { Volume = 0.9f, PitchVariance = 0.2f }; //26
-		public static readonly LegacySoundStyle Pixie = new(27, 0) { PitchVariance = 0.2f, RestartIfPlaying = false };
-		public static readonly LegacySoundStyle Mech = new(28, 0) { PitchVariance = 0.2f, RestartIfPlaying = false };
-		//public static readonly LegacySoundStyle Zombie = new(29, 0);
-		public static readonly LegacySoundStyle Duck = new(30, 0);
-		public static readonly LegacySoundStyle Frog = new(31, 0);
-		public static readonly LegacySoundStyle Bird = new(32, 0);
-		public static readonly LegacySoundStyle Critter = new(33, 0);
-		public static readonly LegacySoundStyle Waterfall = new(34, 0);
-		public static readonly LegacySoundStyle Lavafall = new(35, 0);
-		public static readonly LegacySoundStyle ForceRoar = new(36, 0);
-		public static readonly LegacySoundStyle Meowmere = new(37, 0);
-		public static readonly LegacySoundStyle CoinPickup = new(38, 0);
-		public static readonly LegacySoundStyle Drip = new(39, 0);
-		public static readonly LegacySoundStyle Camera = new(40, 0);
-		public static readonly LegacySoundStyle MoonLord = new(41, 0);
-		public static readonly LegacySoundStyle Trackable = new(42, 0);
-		public static readonly LegacySoundStyle Thunder = new(43, 0) {
-			MaxInstances = SoundEngine.LegacySoundPlayer.SoundThunder.Length,
-			PitchVariance = 0.2f,
-		};
-		public static readonly LegacySoundStyle Seagull = new(LegacySoundIDs.Zombie, stackalloc int[] { 106, 107, 108 }) { Volume = 0.2f, PitchRange = (-0.7f, 0f) }; //44
-		public static readonly LegacySoundStyle Dolphin = new(LegacySoundIDs.Zombie, 109) { Volume = 0.3f, PitchVariance = 0.2f }; //45
-		public static readonly LegacySoundStyle Owl = new(LegacySoundIDs.Zombie, stackalloc int[] { 110, 111 }); //46
-		public static readonly LegacySoundStyle OwlFunny = new(LegacySoundIDs.Zombie, stackalloc int[] { 110, 111 }); //46
-		/*
-		public static readonly LegacySoundStyle GuitarC = new(47, 0);
-		public static readonly LegacySoundStyle GuitarD = new(48, 0);
-		public static readonly LegacySoundStyle GuitarEm = new(49, 0);
-		public static readonly LegacySoundStyle GuitarG = new(50, 0);
-		public static readonly LegacySoundStyle GuitarAm = new(51, 0);
-		public static readonly LegacySoundStyle GuitarF = new(52, 0);
-		public static readonly LegacySoundStyle DrumHiHat = new(53, 0);
-		public static readonly LegacySoundStyle DrumTomHigh = new(54, 0);
-		public static readonly LegacySoundStyle DrumTomLow = new(55, 0);
-		public static readonly LegacySoundStyle DrumTomMid = new(56, 0);
-		public static readonly LegacySoundStyle DrumClosedHiHat = new(57, 0);
-		public static readonly LegacySoundStyle DrumCymbal1 = new(58, 0);
-		public static readonly LegacySoundStyle DrumCymbal2 = new(59, 0);
-		public static readonly LegacySoundStyle DrumKick = new(60, 0);
-		public static readonly LegacySoundStyle DrumTamaSnare = new(61, 0);
-		public static readonly LegacySoundStyle DrumFloorTom = new(62, 0);
-		*/
-		public static readonly LegacySoundStyle Research = new(63, stackalloc int[] { 1, 2, 3 });
-		public static readonly LegacySoundStyle ResearchComplete = new(64, 0);
-		public static readonly LegacySoundStyle QueenSlime = new(65, 0);
-		public static readonly LegacySoundStyle Count = new(66, 0);
+		public static readonly SoundStyle Dig = new($"{Prefix}Dig_", 0, 3) { PitchVariance = 0.2f };
+		public static readonly SoundStyle PlayerHit = new($"{Prefix}Player_Hit_", 0, 3) { PitchVariance = 0.2f };
+		public static readonly SoundStyle Item = new($"{Prefix}Item_");
+		//public static readonly SoundStyle NPCHit = new($"{Prefix}NPC_Hit");
+		//public static readonly SoundStyle NPCKilled = new($"{Prefix}NPC_Killed");
+		public static readonly SoundStyle PlayerKilled = new($"{Prefix}Player_Killed");
+		public static readonly SoundStyle Grass = new($"{Prefix}Grass") { PitchVariance = 0.6f };
+		public static readonly SoundStyle Grab = new($"{Prefix}Grab") { PitchVariance = 0.2f };
+		public static readonly SoundStyle DoorOpen = new($"{Prefix}Door_Opened") { PitchVariance = 0.4f };
+		public static readonly SoundStyle DoorClosed = new($"{Prefix}Door_Closed") { PitchVariance = 0.4f };
+		public static readonly SoundStyle MenuOpen = new($"{Prefix}Menu_Open");
+		public static readonly SoundStyle MenuClose = new($"{Prefix}Menu_Close");
+		public static readonly SoundStyle MenuTick = new($"{Prefix}Menu_Tick") { PlayOnlyIfFocused = true };
+		public static readonly SoundStyle Shatter = new($"{Prefix}Shatter");
+		public static readonly SoundStyle ZombieMoan = new($"{Prefix}Zombie_", 0, 3) { Volume = 0.4f };
+		public static readonly SoundStyle ZombieMoan_SandShark = new($"{Prefix}Zombie_7") { Volume = 0.4f };
+		public static readonly SoundStyle ZombieMoan_BloodZombie = new($"{Prefix}Zombie_", 21, 3) { Volume = 0.4f };
+		public static readonly SoundStyle Roar = new($"{Prefix}Roar_0") { RestartIfPlaying = false };
+		public static readonly SoundStyle Roar_WormDig = new($"{Prefix}Roar_1") { RestartIfPlaying = false };
+		//public static readonly SoundStyle Roar_Something = new($"{Prefix}Roar_2") { RestartIfPlaying = false };
+		public static readonly SoundStyle DoubleJump = new($"{Prefix}Double_Jump") { PitchVariance = 0.2f };
+		public static readonly SoundStyle Run = new($"{Prefix}Run") { PitchVariance = 0.2f };
+		public static readonly SoundStyle Coins = new($"{Prefix}Coins");
+		public static readonly SoundStyle Splash = new($"{Prefix}Splash_0") { PitchVariance = 0.2f, RestartIfPlaying = false };
+		public static readonly SoundStyle SplashWeak = new($"{Prefix}Splash_1") { PitchVariance = 0.2f, RestartIfPlaying = false };
+		public static readonly SoundStyle FemaleHit = new($"{Prefix}Female_Hit_", 0, 3);
+		public static readonly SoundStyle Tink = new($"{Prefix}Tink_", 0, 3);
+		public static readonly SoundStyle Unlock = new($"{Prefix}Unlock");
+		public static readonly SoundStyle Drown = new($"{Prefix}Drown");
+		public static readonly SoundStyle Chat = new($"{Prefix}Chat");
+		public static readonly SoundStyle MaxMana = new($"{Prefix}MaxMana");
+		public static readonly SoundStyle Mummy = new($"{Prefix}Zombie_", 3, 2) { Volume = 0.9f, PitchVariance = 0.2f };
+		public static readonly SoundStyle Pixie = new($"{Prefix}Pixie") { PitchVariance = 0.2f, RestartIfPlaying = false };
+		public static readonly SoundStyle Mech = new($"{Prefix}Mech_0") { PitchVariance = 0.2f, RestartIfPlaying = false };
+		//public static readonly SoundStyle Zombie = new($"{Prefix}Zombie_", 3, 2);
+		public static readonly SoundStyle Duck = new($"{Prefix}Zombie_", 10, 2) { Volume = 0.75f, PitchRange = (-0.7f, 0.0f) };
+		//TODO: This should play with 1 in 300 chance in Duck.
+		public static readonly SoundStyle DuckFunny = new($"{Prefix}Zombie_12") { Volume = 0.75f, PitchRange = (-0.4f, 0.2f), RestartIfPlaying = false };
+		public static readonly SoundStyle Frog = new($"{Prefix}Zombie_13") { Volume = 0.35f, PitchRange = (-0.4f, 0.2f) };
+		//TODO: Inaccurate variants, search & analyze "PlaySound(32," in vanilla src.
+		public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", 14, 5) { Volume = 0.15f, PitchRange = (-0.7f, 0.26f), RestartIfPlaying = false };
+		public static readonly SoundStyle Critter = new($"{Prefix}Zombie_15") { Volume = 0.2f, PitchRange = (-0.1f, 0.3f), RestartIfPlaying = false };
+		public static readonly SoundStyle Waterfall = new($"{Prefix}Liquid_0") { Volume = 0.2f };
+		public static readonly SoundStyle Lavafall = new($"{Prefix}Liquid_1") { Volume = 0.65f };
+		public static readonly SoundStyle ForceRoar = new($"{Prefix}Roar_0");
+		public static readonly SoundStyle ForceRoarPitched = new($"{Prefix}Roar_0") { Pitch = 0.6f };
+		public static readonly SoundStyle Meowmere = new($"{Prefix}Item_", 57, 2) { PitchVariance = 0.8f };
+		public static readonly SoundStyle CoinPickup = new($"{Prefix}Coin_", 0, 5) { PitchVariance = 0.16f };
+		public static readonly SoundStyle Drip = new($"{Prefix}Drip_", 0, 3) { Volume = 0.5f, PitchVariance = 0.6f };
+		public static readonly SoundStyle Camera = new($"{Prefix}Camera");
+		//TODO: Might need special distance falloff rules.
+		public static readonly SoundStyle MoonLord = new($"{Prefix}NPC_Killed_10") { PitchVariance = 0.2f };
+		public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 7) { MaxInstances = 7, PitchVariance = 0.2f, };
+		public static readonly SoundStyle Seagull = new($"{Prefix}Zombie_", 106, 3) { Volume = 0.2f, PitchRange = (-0.7f, 0f) };
+		public static readonly SoundStyle Dolphin = new($"{Prefix}Zombie_109") { Volume = 0.3f, PitchVariance = 0.2f, RestartIfPlaying = false };
+		public static readonly SoundStyle Owl = new($"{Prefix}Zombie_", 110, 2) { PitchVariance = 0.2f };
+		//TODO: This should play with 1 in 300 chance in Owl.
+		public static readonly SoundStyle OwlFunny = new($"{Prefix}Zombie_", 112, 3) { PitchVariance = 0.2f };
+		public static readonly SoundStyle GuitarC = new($"{Prefix}Item_47") { Volume = 0.45f, Group = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarD = new($"{Prefix}Item_48") { Volume = 0.45f, Group = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarEm = new($"{Prefix}Item_49") { Volume = 0.45f, Group = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarG = new($"{Prefix}Item_50") { Volume = 0.45f, Group = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarAm = new($"{Prefix}Item_51") { Volume = 0.45f, Group = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarF = new($"{Prefix}Item_52") { Volume = 0.45f, Group = "Terraria/Guitar" };
+		public static readonly SoundStyle DrumHiHat = new($"{Prefix}Item_53") { Volume = 0.7f, Group = "Terraria/Drums" };
+		public static readonly SoundStyle DrumTomHigh = new($"{Prefix}Item_54") { Volume = 0.7f, Group = "Terraria/Drums" };
+		public static readonly SoundStyle DrumTomLow = new($"{Prefix}Item_55") { Volume = 0.7f, Group = "Terraria/Drums" };
+		public static readonly SoundStyle DrumTomMid = new($"{Prefix}Item_56") { Volume = 0.7f, Group = "Terraria/Drums" };
+		public static readonly SoundStyle DrumClosedHiHat = new($"{Prefix}Item_57") { Volume = 0.7f, Group = "Terraria/Drums" };
+		public static readonly SoundStyle DrumCymbal1 = new($"{Prefix}Item_58") { Volume = 0.7f, Group = "Terraria/Drums" };
+		public static readonly SoundStyle DrumCymbal2 = new($"{Prefix}Item_59") { Volume = 0.7f, Group = "Terraria/Drums" };
+		public static readonly SoundStyle DrumKick = new($"{Prefix}Item_60") { Volume = 0.7f, Group = "Terraria/Drums" };
+		public static readonly SoundStyle DrumTamaSnare = new($"{Prefix}Item_61") { Volume = 0.7f, Group = "Terraria/Drums" };
+		public static readonly SoundStyle DrumFloorTom = new($"{Prefix}Item_62") { Volume = 0.7f, Group = "Terraria/Drums" };
+		public static readonly SoundStyle Research = new($"{Prefix}Research_", 1, 3);
+		public static readonly SoundStyle ResearchComplete = new($"{Prefix}Research_0");
+		public static readonly SoundStyle QueenSlime = new($"{Prefix}Zombie_", 115, 3) { Volume = 0.5f, RestartIfPlaying = false };
 		// End of replaced IDs.
 
-		public static readonly LegacySoundStyle NPCHit1 = NPCHitSound(3, 1);
-		public static readonly LegacySoundStyle NPCHit2 = NPCHitSound(3, 2);
-		public static readonly LegacySoundStyle NPCHit3 = NPCHitSound(3, 3);
-		public static readonly LegacySoundStyle NPCHit4 = NPCHitSound(3, 4);
-		public static readonly LegacySoundStyle NPCHit5 = NPCHitSound(3, 5);
-		public static readonly LegacySoundStyle NPCHit6 = NPCHitSound(3, 6);
-		public static readonly LegacySoundStyle NPCHit7 = NPCHitSound(3, 7);
-		public static readonly LegacySoundStyle NPCHit8 = NPCHitSound(3, 8);
-		public static readonly LegacySoundStyle NPCHit9 = NPCHitSound(3, 9);
-		public static readonly LegacySoundStyle NPCHit10 = NPCHitSound(3, 10);
-		public static readonly LegacySoundStyle NPCHit11 = NPCHitSound(3, 11);
-		public static readonly LegacySoundStyle NPCHit12 = NPCHitSound(3, 12);
-		public static readonly LegacySoundStyle NPCHit13 = NPCHitSound(3, 13);
-		public static readonly LegacySoundStyle NPCHit14 = NPCHitSound(3, 14);
-		public static readonly LegacySoundStyle NPCHit15 = NPCHitSound(3, 15);
-		public static readonly LegacySoundStyle NPCHit16 = NPCHitSound(3, 16);
-		public static readonly LegacySoundStyle NPCHit17 = NPCHitSound(3, 17);
-		public static readonly LegacySoundStyle NPCHit18 = NPCHitSound(3, 18);
-		public static readonly LegacySoundStyle NPCHit19 = NPCHitSound(3, 19);
-		public static readonly LegacySoundStyle NPCHit20 = NPCHitSound(3, 20) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit21 = NPCHitSound(3, 21) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit22 = NPCHitSound(3, 22) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit23 = NPCHitSound(3, 23) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit24 = NPCHitSound(3, 24) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit25 = NPCHitSound(3, 25) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit26 = NPCHitSound(3, 26) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit27 = NPCHitSound(3, 27) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit28 = NPCHitSound(3, 28) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit29 = NPCHitSound(3, 29) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit30 = NPCHitSound(3, 30) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit31 = NPCHitSound(3, 31) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit32 = NPCHitSound(3, 32) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit33 = NPCHitSound(3, 33) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit34 = NPCHitSound(3, 34) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit35 = NPCHitSound(3, 35) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit36 = NPCHitSound(3, 36) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit37 = NPCHitSound(3, 37) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit38 = NPCHitSound(3, 38) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit39 = NPCHitSound(3, 39) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit40 = NPCHitSound(3, 40) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit41 = NPCHitSound(3, 41) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit42 = NPCHitSound(3, 42) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit43 = NPCHitSound(3, 43) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit44 = NPCHitSound(3, 44) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit45 = NPCHitSound(3, 45) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit46 = NPCHitSound(3, 46) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit47 = NPCHitSound(3, 47) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit48 = NPCHitSound(3, 48) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit49 = NPCHitSound(3, 49) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit50 = NPCHitSound(3, 50) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit51 = NPCHitSound(3, 51) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit52 = NPCHitSound(3, 52) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit53 = NPCHitSound(3, 53) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit54 = NPCHitSound(3, 54) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit55 = NPCHitSound(3, 55) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit56 = NPCHitSound(3, 56) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCHit57 = NPCHitSound(3, 57) with { Volume = 0.6f, RestartIfPlaying = false };
+		public static readonly SoundStyle NPCHit1 = NPCHitSound(1);
+		public static readonly SoundStyle NPCHit2 = NPCHitSound(2);
+		public static readonly SoundStyle NPCHit3 = NPCHitSound(3);
+		public static readonly SoundStyle NPCHit4 = NPCHitSound(4);
+		public static readonly SoundStyle NPCHit5 = NPCHitSound(5);
+		public static readonly SoundStyle NPCHit6 = NPCHitSound(6);
+		public static readonly SoundStyle NPCHit7 = NPCHitSound(7);
+		public static readonly SoundStyle NPCHit8 = NPCHitSound(8);
+		public static readonly SoundStyle NPCHit9 = NPCHitSound(9);
+		public static readonly SoundStyle NPCHit10 = NPCHitSound(10);
+		public static readonly SoundStyle NPCHit11 = NPCHitSound(11);
+		public static readonly SoundStyle NPCHit12 = NPCHitSound(12);
+		public static readonly SoundStyle NPCHit13 = NPCHitSound(13);
+		public static readonly SoundStyle NPCHit14 = NPCHitSound(14);
+		public static readonly SoundStyle NPCHit15 = NPCHitSound(15);
+		public static readonly SoundStyle NPCHit16 = NPCHitSound(16);
+		public static readonly SoundStyle NPCHit17 = NPCHitSound(17);
+		public static readonly SoundStyle NPCHit18 = NPCHitSound(18);
+		public static readonly SoundStyle NPCHit19 = NPCHitSound(19);
+		public static readonly SoundStyle NPCHit20 = NPCHitSound(20) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit21 = NPCHitSound(21) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit22 = NPCHitSound(22) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit23 = NPCHitSound(23) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit24 = NPCHitSound(24) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit25 = NPCHitSound(25) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit26 = NPCHitSound(26) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit27 = NPCHitSound(27) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit28 = NPCHitSound(28) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit29 = NPCHitSound(29) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit30 = NPCHitSound(30) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit31 = NPCHitSound(31) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit32 = NPCHitSound(32) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit33 = NPCHitSound(33) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit34 = NPCHitSound(34) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit35 = NPCHitSound(35) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit36 = NPCHitSound(36) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit37 = NPCHitSound(37) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit38 = NPCHitSound(38) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit39 = NPCHitSound(39) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit40 = NPCHitSound(40) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit41 = NPCHitSound(41) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit42 = NPCHitSound(42) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit43 = NPCHitSound(43) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit44 = NPCHitSound(44) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit45 = NPCHitSound(45) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit46 = NPCHitSound(46) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit47 = NPCHitSound(47) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit48 = NPCHitSound(48) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit49 = NPCHitSound(49) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit50 = NPCHitSound(50) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit51 = NPCHitSound(51) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit52 = NPCHitSound(52) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit53 = NPCHitSound(53) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit54 = NPCHitSound(54) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit55 = NPCHitSound(55) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit56 = NPCHitSound(56) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCHit57 = NPCHitSound(57) with { Volume = 0.6f, RestartIfPlaying = false };
 		public static int NPCHitCount = 58; // Added by tML
-		public static readonly LegacySoundStyle NPCDeath1 = NPCDeathSound(4, 1);
-		public static readonly LegacySoundStyle NPCDeath2 = NPCDeathSound(4, 2);
-		public static readonly LegacySoundStyle NPCDeath3 = NPCDeathSound(4, 3);
-		public static readonly LegacySoundStyle NPCDeath4 = NPCDeathSound(4, 4);
-		public static readonly LegacySoundStyle NPCDeath5 = NPCDeathSound(4, 5);
-		public static readonly LegacySoundStyle NPCDeath6 = NPCDeathSound(4, 6);
-		public static readonly LegacySoundStyle NPCDeath7 = NPCDeathSound(4, 7);
-		public static readonly LegacySoundStyle NPCDeath8 = NPCDeathSound(4, 8);
-		public static readonly LegacySoundStyle NPCDeath9 = NPCDeathSound(4, 9);
-		public static readonly LegacySoundStyle NPCDeath10 = NPCDeathSound(4, 10) with { RestartIfPlaying = false };
-		public static readonly LegacySoundStyle NPCDeath11 = NPCDeathSound(4, 11);
-		public static readonly LegacySoundStyle NPCDeath12 = NPCDeathSound(4, 12);
-		public static readonly LegacySoundStyle NPCDeath13 = NPCDeathSound(4, 13);
-		public static readonly LegacySoundStyle NPCDeath14 = NPCDeathSound(4, 14);
-		public static readonly LegacySoundStyle NPCDeath15 = NPCDeathSound(4, 15);
-		public static readonly LegacySoundStyle NPCDeath16 = NPCDeathSound(4, 16);
-		public static readonly LegacySoundStyle NPCDeath17 = NPCDeathSound(4, 17);
-		public static readonly LegacySoundStyle NPCDeath18 = NPCDeathSound(4, 18);
-		public static readonly LegacySoundStyle NPCDeath19 = NPCDeathSound(4, 19);
-		public static readonly LegacySoundStyle NPCDeath20 = NPCDeathSound(4, 20);
-		public static readonly LegacySoundStyle NPCDeath21 = NPCDeathSound(4, 21);
-		public static readonly LegacySoundStyle NPCDeath22 = NPCDeathSound(4, 22);
-		public static readonly LegacySoundStyle NPCDeath23 = NPCDeathSound(4, 23) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath24 = NPCDeathSound(4, 24) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath25 = NPCDeathSound(4, 25) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath26 = NPCDeathSound(4, 26) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath27 = NPCDeathSound(4, 27) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath28 = NPCDeathSound(4, 28) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath29 = NPCDeathSound(4, 29) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath30 = NPCDeathSound(4, 30) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath31 = NPCDeathSound(4, 31) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath32 = NPCDeathSound(4, 32) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath33 = NPCDeathSound(4, 33) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath34 = NPCDeathSound(4, 34) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath35 = NPCDeathSound(4, 35) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath36 = NPCDeathSound(4, 36) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath37 = NPCDeathSound(4, 37) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath38 = NPCDeathSound(4, 38) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath39 = NPCDeathSound(4, 39) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath40 = NPCDeathSound(4, 40) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath41 = NPCDeathSound(4, 41) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath42 = NPCDeathSound(4, 42) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath43 = NPCDeathSound(4, 43) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath44 = NPCDeathSound(4, 44) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath45 = NPCDeathSound(4, 45) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath46 = NPCDeathSound(4, 46) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath47 = NPCDeathSound(4, 47) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath48 = NPCDeathSound(4, 48) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath49 = NPCDeathSound(4, 49) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath50 = NPCDeathSound(4, 50) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath51 = NPCDeathSound(4, 51) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath52 = NPCDeathSound(4, 52) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath53 = NPCDeathSound(4, 53) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath54 = NPCDeathSound(4, 54) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath55 = NPCDeathSound(4, 55) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath56 = NPCDeathSound(4, 56) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath57 = NPCDeathSound(4, 57) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle NPCDeath58 = NPCDeathSound(4, 58);
-		public static readonly LegacySoundStyle NPCDeath59 = NPCDeathSound(4, 59);
-		public static readonly LegacySoundStyle NPCDeath60 = NPCDeathSound(4, 60);
-		public static readonly LegacySoundStyle NPCDeath61 = NPCDeathSound(4, 61) with { Volume = 0.6f };
-		public static readonly LegacySoundStyle NPCDeath62 = NPCDeathSound(4, 62) with { Volume = 0.6f };
-		public static readonly LegacySoundStyle NPCDeath63 = NPCDeathSound(4, 63);
-		public static readonly LegacySoundStyle NPCDeath64 = NPCDeathSound(4, 64);
-		public static readonly LegacySoundStyle NPCDeath65 = NPCDeathSound(4, 65);
+		public static readonly SoundStyle NPCDeath1 = NPCDeathSound(1);
+		public static readonly SoundStyle NPCDeath2 = NPCDeathSound(2);
+		public static readonly SoundStyle NPCDeath3 = NPCDeathSound(3);
+		public static readonly SoundStyle NPCDeath4 = NPCDeathSound(4);
+		public static readonly SoundStyle NPCDeath5 = NPCDeathSound(5);
+		public static readonly SoundStyle NPCDeath6 = NPCDeathSound(6);
+		public static readonly SoundStyle NPCDeath7 = NPCDeathSound(7);
+		public static readonly SoundStyle NPCDeath8 = NPCDeathSound(8);
+		public static readonly SoundStyle NPCDeath9 = NPCDeathSound(9);
+		public static readonly SoundStyle NPCDeath10 = NPCDeathSound(10) with { RestartIfPlaying = false };
+		public static readonly SoundStyle NPCDeath11 = NPCDeathSound(11);
+		public static readonly SoundStyle NPCDeath12 = NPCDeathSound(12);
+		public static readonly SoundStyle NPCDeath13 = NPCDeathSound(13);
+		public static readonly SoundStyle NPCDeath14 = NPCDeathSound(14);
+		public static readonly SoundStyle NPCDeath15 = NPCDeathSound(15);
+		public static readonly SoundStyle NPCDeath16 = NPCDeathSound(16);
+		public static readonly SoundStyle NPCDeath17 = NPCDeathSound(17);
+		public static readonly SoundStyle NPCDeath18 = NPCDeathSound(18);
+		public static readonly SoundStyle NPCDeath19 = NPCDeathSound(19);
+		public static readonly SoundStyle NPCDeath20 = NPCDeathSound(20);
+		public static readonly SoundStyle NPCDeath21 = NPCDeathSound(21);
+		public static readonly SoundStyle NPCDeath22 = NPCDeathSound(22);
+		public static readonly SoundStyle NPCDeath23 = NPCDeathSound(23) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath24 = NPCDeathSound(24) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath25 = NPCDeathSound(25) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath26 = NPCDeathSound(26) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath27 = NPCDeathSound(27) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath28 = NPCDeathSound(28) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath29 = NPCDeathSound(29) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath30 = NPCDeathSound(30) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath31 = NPCDeathSound(31) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath32 = NPCDeathSound(32) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath33 = NPCDeathSound(33) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath34 = NPCDeathSound(34) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath35 = NPCDeathSound(35) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath36 = NPCDeathSound(36) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath37 = NPCDeathSound(37) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath38 = NPCDeathSound(38) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath39 = NPCDeathSound(39) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath40 = NPCDeathSound(40) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath41 = NPCDeathSound(41) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath42 = NPCDeathSound(42) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath43 = NPCDeathSound(43) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath44 = NPCDeathSound(44) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath45 = NPCDeathSound(45) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath46 = NPCDeathSound(46) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath47 = NPCDeathSound(47) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath48 = NPCDeathSound(48) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath49 = NPCDeathSound(49) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath50 = NPCDeathSound(50) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath51 = NPCDeathSound(51) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath52 = NPCDeathSound(52) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath53 = NPCDeathSound(53) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath54 = NPCDeathSound(54) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath55 = NPCDeathSound(55) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath56 = NPCDeathSound(56) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath57 = NPCDeathSound(57) with { Volume = 0.5f };
+		public static readonly SoundStyle NPCDeath58 = NPCDeathSound(58);
+		public static readonly SoundStyle NPCDeath59 = NPCDeathSound(59);
+		public static readonly SoundStyle NPCDeath60 = NPCDeathSound(60);
+		public static readonly SoundStyle NPCDeath61 = NPCDeathSound(61) with { Volume = 0.6f };
+		public static readonly SoundStyle NPCDeath62 = NPCDeathSound(62) with { Volume = 0.6f };
+		public static readonly SoundStyle NPCDeath63 = NPCDeathSound(63);
+		public static readonly SoundStyle NPCDeath64 = NPCDeathSound(64);
+		public static readonly SoundStyle NPCDeath65 = NPCDeathSound(65);
 		public static int NPCDeathCount = 66; // TML: Changed from short to int.
-		public static readonly LegacySoundStyle Item1 = ItemSound(2, stackalloc int[] { 1, 18, 19 });
-		public static readonly LegacySoundStyle Item2 = ItemSound(2, 2);
-		public static readonly LegacySoundStyle Item3 = ItemSound(2, 3);
-		public static readonly LegacySoundStyle Item4 = ItemSound(2, 4);
-		public static readonly LegacySoundStyle Item5 = ItemSound(2, 5);
-		public static readonly LegacySoundStyle Item6 = ItemSound(2, 6);
-		public static readonly LegacySoundStyle Item7 = ItemSound(2, 7);
-		public static readonly LegacySoundStyle Item8 = ItemSound(2, 8);
-		public static readonly LegacySoundStyle Item9 = ItemSound(2, 9);
-		public static readonly LegacySoundStyle Item10 = ItemSound(2, 10);
-		public static readonly LegacySoundStyle Item11 = ItemSound(2, 11);
-		public static readonly LegacySoundStyle Item12 = ItemSound(2, 12);
-		public static readonly LegacySoundStyle Item13 = ItemSound(2, 13);
-		public static readonly LegacySoundStyle Item14 = ItemSound(2, 14);
-		public static readonly LegacySoundStyle Item15 = ItemSound(2, 15);
-		public static readonly LegacySoundStyle Item16 = ItemSound(2, 16);
-		public static readonly LegacySoundStyle Item17 = ItemSound(2, 17);
-		public static readonly LegacySoundStyle Item18 = ItemSound(2, 18);
-		public static readonly LegacySoundStyle Item19 = ItemSound(2, 19);
-		public static readonly LegacySoundStyle Item20 = ItemSound(2, 20);
-		public static readonly LegacySoundStyle Item21 = ItemSound(2, 21);
-		public static readonly LegacySoundStyle Item22 = ItemSound(2, 22);
-		public static readonly LegacySoundStyle Item23 = ItemSound(2, 23);
-		public static readonly LegacySoundStyle Item24 = ItemSound(2, 24);
-		public static readonly LegacySoundStyle Item25 = ItemSound(2, 25);
-		public static readonly LegacySoundStyle Item26 = ItemSound(2, 26) with { UsesMusicPitch = true };
-		public static readonly LegacySoundStyle Item27 = ItemSound(2, 27);
-		public static readonly LegacySoundStyle Item28 = ItemSound(2, 28);
-		public static readonly LegacySoundStyle Item29 = ItemSound(2, 29);
-		public static readonly LegacySoundStyle Item30 = ItemSound(2, 30);
-		public static readonly LegacySoundStyle Item31 = ItemSound(2, 31);
-		public static readonly LegacySoundStyle Item32 = ItemSound(2, 32);
-		public static readonly LegacySoundStyle Item33 = ItemSound(2, 33);
-		public static readonly LegacySoundStyle Item34 = ItemSound(2, 34);
-		public static readonly LegacySoundStyle Item35 = ItemSound(2, 35) with { UsesMusicPitch = true };
-		public static readonly LegacySoundStyle Item36 = ItemSound(2, 36);
-		public static readonly LegacySoundStyle Item37 = ItemSound(2, 37) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle Item38 = ItemSound(2, 38);
-		public static readonly LegacySoundStyle Item39 = ItemSound(2, 39);
-		public static readonly LegacySoundStyle Item40 = ItemSound(2, 40);
-		public static readonly LegacySoundStyle Item41 = ItemSound(2, 41);
-		public static readonly LegacySoundStyle Item42 = ItemSound(2, 42);
-		public static readonly LegacySoundStyle Item43 = ItemSound(2, 43);
-		public static readonly LegacySoundStyle Item44 = ItemSound(2, 44);
-		public static readonly LegacySoundStyle Item45 = ItemSound(2, 45);
-		public static readonly LegacySoundStyle Item46 = ItemSound(2, 46);
-		public static readonly LegacySoundStyle Item47 = ItemSound(2, 47) with { UsesMusicPitch = true };
-		public static readonly LegacySoundStyle Item48 = ItemSound(2, 48);
-		public static readonly LegacySoundStyle Item49 = ItemSound(2, 49);
-		public static readonly LegacySoundStyle Item50 = ItemSound(2, 50);
-		public static readonly LegacySoundStyle Item51 = ItemSound(2, 51);
-		public static readonly LegacySoundStyle Item52 = ItemSound(2, 52) with { Volume = 0.35f };
-		public static readonly LegacySoundStyle Item53 = ItemSound(2, 53) with { Volume = 0.75f, PitchRange = (-0.4f, -0.2f), RestartIfPlaying = false };
-		public static readonly LegacySoundStyle Item54 = ItemSound(2, 54);
-		public static readonly LegacySoundStyle Item55 = ItemSound(2, 55) with { Volume = 0.75f * 0.75f, PitchRange = (-0.4f, -0.2f), RestartIfPlaying = false };
-		public static readonly LegacySoundStyle Item56 = ItemSound(2, 56);
-		public static readonly LegacySoundStyle Item57 = ItemSound(2, 57);
-		public static readonly LegacySoundStyle Item58 = ItemSound(2, 58);
-		public static readonly LegacySoundStyle Item59 = ItemSound(2, 59);
-		public static readonly LegacySoundStyle Item60 = ItemSound(2, 60);
-		public static readonly LegacySoundStyle Item61 = ItemSound(2, 61);
-		public static readonly LegacySoundStyle Item62 = ItemSound(2, 62);
-		public static readonly LegacySoundStyle Item63 = ItemSound(2, 63);
-		public static readonly LegacySoundStyle Item64 = ItemSound(2, 64);
-		public static readonly LegacySoundStyle Item65 = ItemSound(2, 65);
-		public static readonly LegacySoundStyle Item66 = ItemSound(2, 66);
-		public static readonly LegacySoundStyle Item67 = ItemSound(2, 67);
-		public static readonly LegacySoundStyle Item68 = ItemSound(2, 68);
-		public static readonly LegacySoundStyle Item69 = ItemSound(2, 69);
-		public static readonly LegacySoundStyle Item70 = ItemSound(2, 70);
-		public static readonly LegacySoundStyle Item71 = ItemSound(2, 71);
-		public static readonly LegacySoundStyle Item72 = ItemSound(2, 72);
-		public static readonly LegacySoundStyle Item73 = ItemSound(2, 73);
-		public static readonly LegacySoundStyle Item74 = ItemSound(2, 74);
-		public static readonly LegacySoundStyle Item75 = ItemSound(2, 75);
-		public static readonly LegacySoundStyle Item76 = ItemSound(2, 76);
-		public static readonly LegacySoundStyle Item77 = ItemSound(2, 77);
-		public static readonly LegacySoundStyle Item78 = ItemSound(2, 78);
-		public static readonly LegacySoundStyle Item79 = ItemSound(2, 79);
-		public static readonly LegacySoundStyle Item80 = ItemSound(2, 80);
-		public static readonly LegacySoundStyle Item81 = ItemSound(2, 81);
-		public static readonly LegacySoundStyle Item82 = ItemSound(2, 82);
-		public static readonly LegacySoundStyle Item83 = ItemSound(2, 83);
-		public static readonly LegacySoundStyle Item84 = ItemSound(2, 84);
-		public static readonly LegacySoundStyle Item85 = ItemSound(2, 85);
-		public static readonly LegacySoundStyle Item86 = ItemSound(2, 86);
-		public static readonly LegacySoundStyle Item87 = ItemSound(2, 87);
-		public static readonly LegacySoundStyle Item88 = ItemSound(2, 88);
-		public static readonly LegacySoundStyle Item89 = ItemSound(2, 89);
-		public static readonly LegacySoundStyle Item90 = ItemSound(2, 90);
-		public static readonly LegacySoundStyle Item91 = ItemSound(2, 91);
-		public static readonly LegacySoundStyle Item92 = ItemSound(2, 92);
-		public static readonly LegacySoundStyle Item93 = ItemSound(2, 93);
-		public static readonly LegacySoundStyle Item94 = ItemSound(2, 94);
-		public static readonly LegacySoundStyle Item95 = ItemSound(2, 95);
-		public static readonly LegacySoundStyle Item96 = ItemSound(2, 96);
-		public static readonly LegacySoundStyle Item97 = ItemSound(2, 97);
-		public static readonly LegacySoundStyle Item98 = ItemSound(2, 98);
-		public static readonly LegacySoundStyle Item99 = ItemSound(2, 99);
-		public static readonly LegacySoundStyle Item100 = ItemSound(2, 100);
-		public static readonly LegacySoundStyle Item101 = ItemSound(2, 101);
-		public static readonly LegacySoundStyle Item102 = ItemSound(2, 102);
-		public static readonly LegacySoundStyle Item103 = ItemSound(2, 103);
-		public static readonly LegacySoundStyle Item104 = ItemSound(2, 104);
-		public static readonly LegacySoundStyle Item105 = ItemSound(2, 105);
-		public static readonly LegacySoundStyle Item106 = ItemSound(2, 106);
-		public static readonly LegacySoundStyle Item107 = ItemSound(2, 107);
-		public static readonly LegacySoundStyle Item108 = ItemSound(2, 108);
-		public static readonly LegacySoundStyle Item109 = ItemSound(2, 109);
-		public static readonly LegacySoundStyle Item110 = ItemSound(2, 110);
-		public static readonly LegacySoundStyle Item111 = ItemSound(2, 111);
-		public static readonly LegacySoundStyle Item112 = ItemSound(2, 112);
-		public static readonly LegacySoundStyle Item113 = ItemSound(2, 113);
-		public static readonly LegacySoundStyle Item114 = ItemSound(2, 114);
-		public static readonly LegacySoundStyle Item115 = ItemSound(2, 115);
-		public static readonly LegacySoundStyle Item116 = ItemSound(2, 116) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle Item117 = ItemSound(2, 117);
-		public static readonly LegacySoundStyle Item118 = ItemSound(2, 118);
-		public static readonly LegacySoundStyle Item119 = ItemSound(2, 119);
-		public static readonly LegacySoundStyle Item120 = ItemSound(2, 120);
-		public static readonly LegacySoundStyle Item121 = ItemSound(2, 121);
-		public static readonly LegacySoundStyle Item122 = ItemSound(2, 122);
-		public static readonly LegacySoundStyle Item123 = ItemSound(2, 123) with { Volume = 0.5f };
-		public static readonly LegacySoundStyle Item124 = ItemSound(2, 124) with { Volume = 0.65f };
-		public static readonly LegacySoundStyle Item125 = ItemSound(2, 125) with { Volume = 0.65f };
-		public static readonly LegacySoundStyle Item126 = ItemSound(2, 126);
-		public static readonly LegacySoundStyle Item127 = ItemSound(2, 127);
-		public static readonly LegacySoundStyle Item128 = ItemSound(2, 128);
-		public static readonly LegacySoundStyle Item129 = ItemSound(2, 129) with { Volume = 0.6f };
-		public static readonly LegacySoundStyle Item130 = ItemSound(2, 130);
-		public static readonly LegacySoundStyle Item131 = ItemSound(2, 131);
-		public static readonly LegacySoundStyle Item132 = ItemSound(2, 132) with { PitchVariance = 0.04f };
-		public static readonly LegacySoundStyle Item133 = ItemSound(2, 133);
-		public static readonly LegacySoundStyle Item134 = ItemSound(2, 134);
-		public static readonly LegacySoundStyle Item135 = ItemSound(2, 135);
-		public static readonly LegacySoundStyle Item136 = ItemSound(2, 136);
-		public static readonly LegacySoundStyle Item137 = ItemSound(2, 137);
-		public static readonly LegacySoundStyle Item138 = ItemSound(2, 138);
-		public static readonly LegacySoundStyle Item139 = ItemSound(2, 139);
-		public static readonly LegacySoundStyle Item140 = ItemSound(2, 140);
-		public static readonly LegacySoundStyle Item141 = ItemSound(2, 141);
-		public static readonly LegacySoundStyle Item142 = ItemSound(2, 142);
-		public static readonly LegacySoundStyle Item143 = ItemSound(2, 143);
-		public static readonly LegacySoundStyle Item144 = ItemSound(2, 144);
-		public static readonly LegacySoundStyle Item145 = ItemSound(2, 145);
-		public static readonly LegacySoundStyle Item146 = ItemSound(2, 146);
-		public static readonly LegacySoundStyle Item147 = ItemSound(2, 147);
-		public static readonly LegacySoundStyle Item148 = ItemSound(2, 148);
-		public static readonly LegacySoundStyle Item149 = ItemSound(2, 149);
-		public static readonly LegacySoundStyle Item150 = ItemSound(2, 150);
-		public static readonly LegacySoundStyle Item151 = ItemSound(2, 151);
-		public static readonly LegacySoundStyle Item152 = ItemSound(2, 152);
-		public static readonly LegacySoundStyle Item153 = ItemSound(2, 153) with { PitchVariance = 0.3f };
-		public static readonly LegacySoundStyle Item154 = ItemSound(2, 154);
-		public static readonly LegacySoundStyle Item155 = ItemSound(2, 155);
-		public static readonly LegacySoundStyle Item156 = ItemSound(2, 156) with { Volume = 0.6f, PitchVariance = 0.2f };
-		public static readonly LegacySoundStyle Item157 = ItemSound(2, 157) with { Volume = 0.7f };
-		public static readonly LegacySoundStyle Item158 = ItemSound(2, 158) with { Volume = 0.8f };
-		public static readonly LegacySoundStyle Item159 = ItemSound(2, 159) with { Volume = 0.75f, RestartIfPlaying = false, };
-		public static readonly LegacySoundStyle Item160 = ItemSound(2, 160);
-		public static readonly LegacySoundStyle Item161 = ItemSound(2, 161);
-		public static readonly LegacySoundStyle Item162 = ItemSound(2, 162);
-		public static readonly LegacySoundStyle Item163 = ItemSound(2, 163);
-		public static readonly LegacySoundStyle Item164 = ItemSound(2, 164);
-		public static readonly LegacySoundStyle Item165 = ItemSound(2, 165);
-		public static readonly LegacySoundStyle Item166 = ItemSound(2, 166);
-		public static readonly LegacySoundStyle Item167 = ItemSound(2, 167);
-		public static readonly LegacySoundStyle Item168 = ItemSound(2, 168);
-		public static readonly LegacySoundStyle Item169 = ItemSound(2, 169) with { Pitch = -0.8f };
-		public static readonly LegacySoundStyle Item170 = ItemSound(2, 170);
-		public static readonly LegacySoundStyle Item171 = ItemSound(2, 171);
-		public static readonly LegacySoundStyle Item172 = ItemSound(2, 172);
-
-		private static readonly SoundStyleDefaults NPCHitDefaults = new(1f, 0.2f);
-		private static readonly SoundStyleDefaults NPCDeathDefaults = new(1f, 0.2f);
+		public static readonly SoundStyle Item1 = ItemSound(stackalloc int[] { 1, 18, 19 });
+		public static readonly SoundStyle Item2 = ItemSound(2);
+		public static readonly SoundStyle Item3 = ItemSound(3);
+		public static readonly SoundStyle Item4 = ItemSound(4);
+		public static readonly SoundStyle Item5 = ItemSound(5);
+		public static readonly SoundStyle Item6 = ItemSound(6);
+		public static readonly SoundStyle Item7 = ItemSound(7);
+		public static readonly SoundStyle Item8 = ItemSound(8);
+		public static readonly SoundStyle Item9 = ItemSound(9);
+		public static readonly SoundStyle Item10 = ItemSound(10);
+		public static readonly SoundStyle Item11 = ItemSound(11);
+		public static readonly SoundStyle Item12 = ItemSound(12);
+		public static readonly SoundStyle Item13 = ItemSound(13);
+		public static readonly SoundStyle Item14 = ItemSound(14);
+		public static readonly SoundStyle Item15 = ItemSound(15);
+		public static readonly SoundStyle Item16 = ItemSound(16);
+		public static readonly SoundStyle Item17 = ItemSound(17);
+		public static readonly SoundStyle Item18 = ItemSound(18);
+		public static readonly SoundStyle Item19 = ItemSound(19);
+		public static readonly SoundStyle Item20 = ItemSound(20);
+		public static readonly SoundStyle Item21 = ItemSound(21);
+		public static readonly SoundStyle Item22 = ItemSound(22);
+		public static readonly SoundStyle Item23 = ItemSound(23);
+		public static readonly SoundStyle Item24 = ItemSound(24);
+		public static readonly SoundStyle Item25 = ItemSound(25);
+		public static readonly SoundStyle Item26 = ItemSound(26) with { UsesMusicPitch = true };
+		public static readonly SoundStyle Item27 = ItemSound(27);
+		public static readonly SoundStyle Item28 = ItemSound(28);
+		public static readonly SoundStyle Item29 = ItemSound(29);
+		public static readonly SoundStyle Item30 = ItemSound(30);
+		public static readonly SoundStyle Item31 = ItemSound(31);
+		public static readonly SoundStyle Item32 = ItemSound(32);
+		public static readonly SoundStyle Item33 = ItemSound(33);
+		public static readonly SoundStyle Item34 = ItemSound(34);
+		public static readonly SoundStyle Item35 = ItemSound(35) with { UsesMusicPitch = true };
+		public static readonly SoundStyle Item36 = ItemSound(36);
+		public static readonly SoundStyle Item37 = ItemSound(37) with { Volume = 0.5f };
+		public static readonly SoundStyle Item38 = ItemSound(38);
+		public static readonly SoundStyle Item39 = ItemSound(39);
+		public static readonly SoundStyle Item40 = ItemSound(40);
+		public static readonly SoundStyle Item41 = ItemSound(41);
+		public static readonly SoundStyle Item42 = ItemSound(42);
+		public static readonly SoundStyle Item43 = ItemSound(43);
+		public static readonly SoundStyle Item44 = ItemSound(44);
+		public static readonly SoundStyle Item45 = ItemSound(45);
+		public static readonly SoundStyle Item46 = ItemSound(46);
+		public static readonly SoundStyle Item47 = ItemSound(47) with { UsesMusicPitch = true };
+		public static readonly SoundStyle Item48 = ItemSound(48);
+		public static readonly SoundStyle Item49 = ItemSound(49);
+		public static readonly SoundStyle Item50 = ItemSound(50);
+		public static readonly SoundStyle Item51 = ItemSound(51);
+		public static readonly SoundStyle Item52 = ItemSound(52) with { Volume = 0.35f };
+		public static readonly SoundStyle Item53 = ItemSound(53) with { Volume = 0.75f, PitchRange = (-0.4f, -0.2f), RestartIfPlaying = false };
+		public static readonly SoundStyle Item54 = ItemSound(54);
+		public static readonly SoundStyle Item55 = ItemSound(55) with { Volume = 0.75f * 0.75f, PitchRange = (-0.4f, -0.2f), RestartIfPlaying = false };
+		public static readonly SoundStyle Item56 = ItemSound(56);
+		public static readonly SoundStyle Item57 = ItemSound(57);
+		public static readonly SoundStyle Item58 = ItemSound(58);
+		public static readonly SoundStyle Item59 = ItemSound(59);
+		public static readonly SoundStyle Item60 = ItemSound(60);
+		public static readonly SoundStyle Item61 = ItemSound(61);
+		public static readonly SoundStyle Item62 = ItemSound(62);
+		public static readonly SoundStyle Item63 = ItemSound(63);
+		public static readonly SoundStyle Item64 = ItemSound(64);
+		public static readonly SoundStyle Item65 = ItemSound(65);
+		public static readonly SoundStyle Item66 = ItemSound(66);
+		public static readonly SoundStyle Item67 = ItemSound(67);
+		public static readonly SoundStyle Item68 = ItemSound(68);
+		public static readonly SoundStyle Item69 = ItemSound(69);
+		public static readonly SoundStyle Item70 = ItemSound(70);
+		public static readonly SoundStyle Item71 = ItemSound(71);
+		public static readonly SoundStyle Item72 = ItemSound(72);
+		public static readonly SoundStyle Item73 = ItemSound(73);
+		public static readonly SoundStyle Item74 = ItemSound(74);
+		public static readonly SoundStyle Item75 = ItemSound(75);
+		public static readonly SoundStyle Item76 = ItemSound(76);
+		public static readonly SoundStyle Item77 = ItemSound(77);
+		public static readonly SoundStyle Item78 = ItemSound(78);
+		public static readonly SoundStyle Item79 = ItemSound(79);
+		public static readonly SoundStyle Item80 = ItemSound(80);
+		public static readonly SoundStyle Item81 = ItemSound(81);
+		public static readonly SoundStyle Item82 = ItemSound(82);
+		public static readonly SoundStyle Item83 = ItemSound(83);
+		public static readonly SoundStyle Item84 = ItemSound(84);
+		public static readonly SoundStyle Item85 = ItemSound(85);
+		public static readonly SoundStyle Item86 = ItemSound(86);
+		public static readonly SoundStyle Item87 = ItemSound(87);
+		public static readonly SoundStyle Item88 = ItemSound(88);
+		public static readonly SoundStyle Item89 = ItemSound(89);
+		public static readonly SoundStyle Item90 = ItemSound(90);
+		public static readonly SoundStyle Item91 = ItemSound(91);
+		public static readonly SoundStyle Item92 = ItemSound(92);
+		public static readonly SoundStyle Item93 = ItemSound(93);
+		public static readonly SoundStyle Item94 = ItemSound(94);
+		public static readonly SoundStyle Item95 = ItemSound(95);
+		public static readonly SoundStyle Item96 = ItemSound(96);
+		public static readonly SoundStyle Item97 = ItemSound(97);
+		public static readonly SoundStyle Item98 = ItemSound(98);
+		public static readonly SoundStyle Item99 = ItemSound(99);
+		public static readonly SoundStyle Item100 = ItemSound(100);
+		public static readonly SoundStyle Item101 = ItemSound(101);
+		public static readonly SoundStyle Item102 = ItemSound(102);
+		public static readonly SoundStyle Item103 = ItemSound(103);
+		public static readonly SoundStyle Item104 = ItemSound(104);
+		public static readonly SoundStyle Item105 = ItemSound(105);
+		public static readonly SoundStyle Item106 = ItemSound(106);
+		public static readonly SoundStyle Item107 = ItemSound(107);
+		public static readonly SoundStyle Item108 = ItemSound(108);
+		public static readonly SoundStyle Item109 = ItemSound(109);
+		public static readonly SoundStyle Item110 = ItemSound(110);
+		public static readonly SoundStyle Item111 = ItemSound(111);
+		public static readonly SoundStyle Item112 = ItemSound(112);
+		public static readonly SoundStyle Item113 = ItemSound(113);
+		public static readonly SoundStyle Item114 = ItemSound(114);
+		public static readonly SoundStyle Item115 = ItemSound(115);
+		public static readonly SoundStyle Item116 = ItemSound(116) with { Volume = 0.5f };
+		public static readonly SoundStyle Item117 = ItemSound(117);
+		public static readonly SoundStyle Item118 = ItemSound(118);
+		public static readonly SoundStyle Item119 = ItemSound(119);
+		public static readonly SoundStyle Item120 = ItemSound(120);
+		public static readonly SoundStyle Item121 = ItemSound(121);
+		public static readonly SoundStyle Item122 = ItemSound(122);
+		public static readonly SoundStyle Item123 = ItemSound(123) with { Volume = 0.5f };
+		public static readonly SoundStyle Item124 = ItemSound(124) with { Volume = 0.65f };
+		public static readonly SoundStyle Item125 = ItemSound(125) with { Volume = 0.65f };
+		public static readonly SoundStyle Item126 = ItemSound(126);
+		public static readonly SoundStyle Item127 = ItemSound(127);
+		public static readonly SoundStyle Item128 = ItemSound(128);
+		public static readonly SoundStyle Item129 = ItemSound(129) with { Volume = 0.6f };
+		public static readonly SoundStyle Item130 = ItemSound(130);
+		public static readonly SoundStyle Item131 = ItemSound(131);
+		public static readonly SoundStyle Item132 = ItemSound(132) with { PitchVariance = 0.04f };
+		public static readonly SoundStyle Item133 = ItemSound(133);
+		public static readonly SoundStyle Item134 = ItemSound(134);
+		public static readonly SoundStyle Item135 = ItemSound(135);
+		public static readonly SoundStyle Item136 = ItemSound(136);
+		public static readonly SoundStyle Item137 = ItemSound(137);
+		public static readonly SoundStyle Item138 = ItemSound(138);
+		public static readonly SoundStyle Item139 = ItemSound(139);
+		public static readonly SoundStyle Item140 = ItemSound(140);
+		public static readonly SoundStyle Item141 = ItemSound(141);
+		public static readonly SoundStyle Item142 = ItemSound(142);
+		public static readonly SoundStyle Item143 = ItemSound(143);
+		public static readonly SoundStyle Item144 = ItemSound(144);
+		public static readonly SoundStyle Item145 = ItemSound(145);
+		public static readonly SoundStyle Item146 = ItemSound(146);
+		public static readonly SoundStyle Item147 = ItemSound(147);
+		public static readonly SoundStyle Item148 = ItemSound(148);
+		public static readonly SoundStyle Item149 = ItemSound(149);
+		public static readonly SoundStyle Item150 = ItemSound(150);
+		public static readonly SoundStyle Item151 = ItemSound(151);
+		public static readonly SoundStyle Item152 = ItemSound(152);
+		public static readonly SoundStyle Item153 = ItemSound(153) with { PitchVariance = 0.3f };
+		public static readonly SoundStyle Item154 = ItemSound(154);
+		public static readonly SoundStyle Item155 = ItemSound(155);
+		public static readonly SoundStyle Item156 = ItemSound(156) with { Volume = 0.6f, PitchVariance = 0.2f };
+		public static readonly SoundStyle Item157 = ItemSound(157) with { Volume = 0.7f };
+		public static readonly SoundStyle Item158 = ItemSound(158) with { Volume = 0.8f };
+		public static readonly SoundStyle Item159 = ItemSound(159) with { Volume = 0.75f, RestartIfPlaying = false, };
+		public static readonly SoundStyle Item160 = ItemSound(160);
+		public static readonly SoundStyle Item161 = ItemSound(161);
+		public static readonly SoundStyle Item162 = ItemSound(162);
+		public static readonly SoundStyle Item163 = ItemSound(163);
+		public static readonly SoundStyle Item164 = ItemSound(164);
+		public static readonly SoundStyle Item165 = ItemSound(165);
+		public static readonly SoundStyle Item166 = ItemSound(166);
+		public static readonly SoundStyle Item167 = ItemSound(167);
+		public static readonly SoundStyle Item168 = ItemSound(168);
+		public static readonly SoundStyle Item169 = ItemSound(169) with { Pitch = -0.8f };
+		public static readonly SoundStyle Item170 = ItemSound(170);
+		public static readonly SoundStyle Item171 = ItemSound(171);
+		public static readonly SoundStyle Item172 = ItemSound(172);
 
 		// Util methods below
 
-		private static LegacySoundStyle SoundWithDefaults(SoundStyleDefaults defaults, LegacySoundStyle style)
+		private static SoundStyle SoundWithDefaults(SoundStyleDefaults defaults, SoundStyle style)
 		{
 			defaults.Apply(ref style);
 
 			return style;
 		}
 
-		private static LegacySoundStyle NPCHitSound(int soundId, int soundStyle)
-			=> SoundWithDefaults(NPCHitDefaults, new(soundId, soundStyle));
+		private static SoundStyle NPCHitSound(int soundStyle)
+			=> SoundWithDefaults(NPCHitDefaults, new($"{Prefix}NPC_Hit_{soundStyle}"));
 
-		private static LegacySoundStyle NPCHitSound(int soundId, ReadOnlySpan<int> soundStyles)
-			=> SoundWithDefaults(NPCHitDefaults, new(soundId, soundStyles));
+		private static SoundStyle NPCHitSound(ReadOnlySpan<int> soundStyles)
+			=> SoundWithDefaults(NPCHitDefaults, new($"{Prefix}NPC_Hit_", soundStyles));
 
-		private static LegacySoundStyle NPCDeathSound(int soundId, int soundStyle)
-			=> SoundWithDefaults(NPCDeathDefaults, new(soundId, soundStyle));
+		private static SoundStyle NPCDeathSound(int soundStyle)
+			=> SoundWithDefaults(NPCDeathDefaults, new($"{Prefix}NPC_Killed_{soundStyle}"));
 
-		private static LegacySoundStyle NPCDeathSound(int soundId, ReadOnlySpan<int> soundStyles)
-			=> SoundWithDefaults(NPCDeathDefaults, new(soundId, soundStyles));
+		private static SoundStyle NPCDeathSound(ReadOnlySpan<int> soundStyles)
+			=> SoundWithDefaults(NPCDeathDefaults, new($"{Prefix}NPC_Killed_", soundStyles));
 		
-		private static LegacySoundStyle ItemSound(int soundId, int soundStyle)
-			=> SoundWithDefaults(ItemDefaults, new(soundId, soundStyle));
+		private static SoundStyle ItemSound(int soundStyle)
+			=> SoundWithDefaults(ItemDefaults, new($"{Prefix}Item_{soundStyle}"));
 
-		private static LegacySoundStyle ItemSound(int soundId, ReadOnlySpan<int> soundStyles)
-			=> SoundWithDefaults(ItemDefaults, new(soundId, soundStyles));
+		private static SoundStyle ItemSound(ReadOnlySpan<int> soundStyles)
+			=> SoundWithDefaults(ItemDefaults, new($"{Prefix}Item_", soundStyles));
+
+		// Mapping:
+
+		internal static SoundStyle GetLegacyStyle(int type, int style) => type switch {
+			LegacySoundIDs.Dig => Dig,
+			LegacySoundIDs.PlayerHit => PlayerHit,
+			LegacySoundIDs.Item => Item,
+			LegacySoundIDs.NPCHit => style switch {
+				1 => NPCHit1,
+				2 => NPCHit2,
+				3 => NPCHit3,
+				4 => NPCHit4,
+				5 => NPCHit5,
+				6 => NPCHit6,
+				7 => NPCHit7,
+				8 => NPCHit8,
+				9 => NPCHit9,
+				10 => NPCHit10,
+				11 => NPCHit11,
+				12 => NPCHit12,
+				13 => NPCHit13,
+				14 => NPCHit14,
+				15 => NPCHit15,
+				16 => NPCHit16,
+				17 => NPCHit17,
+				18 => NPCHit18,
+				19 => NPCHit19,
+				20 => NPCHit20,
+				21 => NPCHit21,
+				22 => NPCHit22,
+				23 => NPCHit23,
+				24 => NPCHit24,
+				25 => NPCHit25,
+				26 => NPCHit26,
+				27 => NPCHit27,
+				28 => NPCHit28,
+				29 => NPCHit29,
+				30 => NPCHit30,
+				31 => NPCHit31,
+				32 => NPCHit32,
+				33 => NPCHit33,
+				34 => NPCHit34,
+				35 => NPCHit35,
+				36 => NPCHit36,
+				37 => NPCHit37,
+				38 => NPCHit38,
+				39 => NPCHit39,
+				40 => NPCHit40,
+				41 => NPCHit41,
+				42 => NPCHit42,
+				43 => NPCHit43,
+				44 => NPCHit44,
+				45 => NPCHit45,
+				46 => NPCHit46,
+				47 => NPCHit47,
+				48 => NPCHit48,
+				49 => NPCHit49,
+				50 => NPCHit50,
+				51 => NPCHit51,
+				52 => NPCHit52,
+				53 => NPCHit53,
+				54 => NPCHit54,
+				55 => NPCHit55,
+				56 => NPCHit56,
+				57 => NPCHit57,
+				_ => default,
+			},
+			LegacySoundIDs.NPCKilled => style switch {
+				1 => NPCDeath1,
+				2 => NPCDeath2,
+				3 => NPCDeath3,
+				4 => NPCDeath4,
+				5 => NPCDeath5,
+				6 => NPCDeath6,
+				7 => NPCDeath7,
+				8 => NPCDeath8,
+				9 => NPCDeath9,
+				10 => NPCDeath10,
+				11 => NPCDeath11,
+				12 => NPCDeath12,
+				13 => NPCDeath13,
+				14 => NPCDeath14,
+				15 => NPCDeath15,
+				16 => NPCDeath16,
+				17 => NPCDeath17,
+				18 => NPCDeath18,
+				19 => NPCDeath19,
+				20 => NPCDeath20,
+				21 => NPCDeath21,
+				22 => NPCDeath22,
+				23 => NPCDeath23,
+				24 => NPCDeath24,
+				25 => NPCDeath25,
+				26 => NPCDeath26,
+				27 => NPCDeath27,
+				28 => NPCDeath28,
+				29 => NPCDeath29,
+				30 => NPCDeath30,
+				31 => NPCDeath31,
+				32 => NPCDeath32,
+				33 => NPCDeath33,
+				34 => NPCDeath34,
+				35 => NPCDeath35,
+				36 => NPCDeath36,
+				37 => NPCDeath37,
+				38 => NPCDeath38,
+				39 => NPCDeath39,
+				40 => NPCDeath40,
+				41 => NPCDeath41,
+				42 => NPCDeath42,
+				43 => NPCDeath43,
+				44 => NPCDeath44,
+				45 => NPCDeath45,
+				46 => NPCDeath46,
+				47 => NPCDeath47,
+				48 => NPCDeath48,
+				49 => NPCDeath49,
+				50 => NPCDeath50,
+				51 => NPCDeath51,
+				52 => NPCDeath52,
+				53 => NPCDeath53,
+				54 => NPCDeath54,
+				55 => NPCDeath55,
+				56 => NPCDeath56,
+				57 => NPCDeath57,
+				58 => NPCDeath58,
+				59 => NPCDeath59,
+				60 => NPCDeath60,
+				61 => NPCDeath61,
+				62 => NPCDeath62,
+				63 => NPCDeath63,
+				64 => NPCDeath64,
+				65 => NPCDeath65,
+				_ => default,
+			},
+			LegacySoundIDs.PlayerKilled => PlayerKilled,
+			LegacySoundIDs.Grass => Grass,
+			LegacySoundIDs.Grab => Grab,
+			LegacySoundIDs.DoorOpen => DoorOpen,
+			LegacySoundIDs.DoorClosed => DoorClosed,
+			LegacySoundIDs.MenuOpen => MenuOpen,
+			LegacySoundIDs.MenuClose => MenuClose,
+			LegacySoundIDs.MenuTick => MenuTick,
+			LegacySoundIDs.Shatter => Shatter,
+			LegacySoundIDs.ZombieMoan => ZombieMoan,
+			LegacySoundIDs.Roar => Roar,
+			LegacySoundIDs.DoubleJump => DoubleJump,
+			LegacySoundIDs.Run => Run,
+			LegacySoundIDs.Coins => Coins,
+			LegacySoundIDs.Splash => style switch { 1 => SplashWeak, _ => Splash },
+			LegacySoundIDs.FemaleHit => FemaleHit,
+			LegacySoundIDs.Tink => Tink,
+			LegacySoundIDs.Unlock => Unlock,
+			LegacySoundIDs.Drown => Drown,
+			LegacySoundIDs.Chat => Chat,
+			LegacySoundIDs.MaxMana => MaxMana,
+			LegacySoundIDs.Mummy => Mummy,
+			LegacySoundIDs.Pixie => Pixie,
+			LegacySoundIDs.Mech => Mech,
+			LegacySoundIDs.Zombie => new SoundStyle($"{Prefix}Zombie_{style}"),
+			LegacySoundIDs.Duck => Duck,
+			LegacySoundIDs.Frog => Frog,
+			LegacySoundIDs.Bird => Bird,
+			LegacySoundIDs.Critter => Critter,
+			LegacySoundIDs.Waterfall => Waterfall,
+			LegacySoundIDs.Lavafall => Lavafall,
+			LegacySoundIDs.ForceRoar => ForceRoar,
+			LegacySoundIDs.Meowmere => Meowmere,
+			LegacySoundIDs.CoinPickup => CoinPickup,
+			LegacySoundIDs.Drip => Drip,
+			LegacySoundIDs.Camera => Camera,
+			LegacySoundIDs.MoonLord => MoonLord,
+			//LegacySoundIDs.Trackable => Trackable,
+			LegacySoundIDs.Thunder => Thunder,
+			LegacySoundIDs.Seagull => Seagull,
+			LegacySoundIDs.Dolphin => Dolphin,
+			LegacySoundIDs.Owl => Owl,
+			LegacySoundIDs.GuitarC => GuitarC,
+			LegacySoundIDs.GuitarD => GuitarD,
+			LegacySoundIDs.GuitarEm => GuitarEm,
+			LegacySoundIDs.GuitarG => GuitarG,
+			LegacySoundIDs.GuitarAm => GuitarAm,
+			LegacySoundIDs.GuitarF => GuitarF,
+			LegacySoundIDs.DrumHiHat => DrumHiHat,
+			LegacySoundIDs.DrumTomHigh => DrumTomHigh,
+			LegacySoundIDs.DrumTomLow => DrumTomLow,
+			LegacySoundIDs.DrumTomMid => DrumTomMid,
+			LegacySoundIDs.DrumClosedHiHat => DrumClosedHiHat,
+			LegacySoundIDs.DrumCymbal1 => DrumCymbal1,
+			LegacySoundIDs.DrumCymbal2 => DrumCymbal2,
+			LegacySoundIDs.DrumKick => DrumKick,
+			LegacySoundIDs.DrumTamaSnare => DrumTamaSnare,
+			LegacySoundIDs.DrumFloorTom => DrumFloorTom,
+			LegacySoundIDs.Research => Research,
+			LegacySoundIDs.ResearchComplete => ResearchComplete,
+			LegacySoundIDs.QueenSlime => QueenSlime,
+			_ => default,
+		};
 	}
 }

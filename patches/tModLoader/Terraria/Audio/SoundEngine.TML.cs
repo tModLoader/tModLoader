@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Utilities;
+using Terraria.ID;
 
 #nullable enable
 
@@ -19,17 +20,14 @@ namespace Terraria.Audio
 
 		// Internal redirects
 
-		internal static SoundEffectInstance? PlaySound(LegacySoundStyle type, int x = -1, int y = -1)
+		internal static SoundEffectInstance? PlaySound(SoundStyle type, int x = -1, int y = -1)
 			=> PlaySound(type, XYToOptionalPosition(x, y));
 
 		internal static void PlaySound(int type, Vector2 position, int style = 1)
 			=> PlaySound(type, (int)position.X, (int)position.Y, style);
 
 		internal static SoundEffectInstance? PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
-			var soundStyle = new LegacySoundStyle(type, Style, SoundType.Sound) {
-				Volume = volumeScale,
-				Pitch = pitchOffset,
-			};
+			var soundStyle = SoundID.GetLegacyStyle(type, Style);
 
 			return PlaySound(soundStyle, XYToOptionalPosition(x, y));
 		}
