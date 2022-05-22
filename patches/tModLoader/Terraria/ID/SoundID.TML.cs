@@ -36,11 +36,12 @@ namespace Terraria.ID
 		public static readonly SoundStyle MenuTick = new($"{Prefix}Menu_Tick") { PlayOnlyIfFocused = true };
 		public static readonly SoundStyle Shatter = new($"{Prefix}Shatter");
 		public static readonly SoundStyle ZombieMoan = new($"{Prefix}Zombie_", 0, 3) { Volume = 0.4f };
-		public static readonly SoundStyle ZombieMoan_SandShark = new($"{Prefix}Zombie_7") { Volume = 0.4f };
-		public static readonly SoundStyle ZombieMoan_BloodZombie = new($"{Prefix}Zombie_", 21, 3) { Volume = 0.4f };
-		public static readonly SoundStyle Roar = new($"{Prefix}Roar_0") { RestartIfPlaying = false };
-		public static readonly SoundStyle Roar_WormDig = new($"{Prefix}Roar_1") { RestartIfPlaying = false };
-		//public static readonly SoundStyle Roar_Something = new($"{Prefix}Roar_2") { RestartIfPlaying = false };
+		public static readonly SoundStyle SandShark = new($"{Prefix}Zombie_7") { Volume = 0.4f }; // New field
+		public static readonly SoundStyle BloodZombie = new($"{Prefix}Zombie_", 21, 3) { Volume = 0.4f }; // New field
+		public static readonly SoundStyle Roar = new($"{Prefix}Roar_0") { RestartIfPlaying = false, Group = "Terraria/Roar" };
+		public static readonly SoundStyle WormDig = new($"{Prefix}Roar_1") { RestartIfPlaying = false }; // New field
+		public static readonly SoundStyle WormDigQuiet = WormDig with { Volume = 0.25f }; // New field
+		public static readonly SoundStyle ScaryScream = new($"{Prefix}Roar_2") { RestartIfPlaying = false }; // New field
 		public static readonly SoundStyle DoubleJump = new($"{Prefix}Double_Jump") { PitchVariance = 0.2f };
 		public static readonly SoundStyle Run = new($"{Prefix}Run") { PitchVariance = 0.2f };
 		public static readonly SoundStyle Coins = new($"{Prefix}Coins");
@@ -63,10 +64,10 @@ namespace Terraria.ID
 		//TODO: Inaccurate variants, search & analyze "PlaySound(32," in vanilla src.
 		public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", 14, 5) { Volume = 0.15f, PitchRange = (-0.7f, 0.26f), RestartIfPlaying = false };
 		public static readonly SoundStyle Critter = new($"{Prefix}Zombie_15") { Volume = 0.2f, PitchRange = (-0.1f, 0.3f), RestartIfPlaying = false };
-		public static readonly SoundStyle Waterfall = new($"{Prefix}Liquid_0") { Volume = 0.2f };
-		public static readonly SoundStyle Lavafall = new($"{Prefix}Liquid_1") { Volume = 0.65f };
-		public static readonly SoundStyle ForceRoar = new($"{Prefix}Roar_0");
-		public static readonly SoundStyle ForceRoarPitched = new($"{Prefix}Roar_0") { Pitch = 0.6f };
+		public static readonly SoundStyle Waterfall = new($"{Prefix}Liquid_0") { Volume = 0.2f, RestartIfPlaying = false };
+		public static readonly SoundStyle Lavafall = new($"{Prefix}Liquid_1") { Volume = 0.65f, RestartIfPlaying = false };
+		public static readonly SoundStyle ForceRoar = new($"{Prefix}Roar_0") { Group = "Terraria/Roar" };
+		public static readonly SoundStyle ForceRoarPitched = new($"{Prefix}Roar_0") { Pitch = 0.6f, Group = "Terraria/Roar" };
 		public static readonly SoundStyle Meowmere = new($"{Prefix}Item_", 57, 2) { PitchVariance = 0.8f };
 		public static readonly SoundStyle CoinPickup = new($"{Prefix}Coin_", 0, 5) { PitchVariance = 0.16f };
 		public static readonly SoundStyle Drip = new($"{Prefix}Drip_", 0, 3) { Volume = 0.5f, PitchVariance = 0.6f };
@@ -399,71 +400,35 @@ namespace Terraria.ID
 
 		// Mapping
 		
-		private static SoundStyle[][] legacySoundMapping = Array.Empty<SoundStyle[]>();
+		private static SoundStyle[][] legacyArrayedStylesMapping = new SoundStyle[LegacySoundIDs.Count][];
 
 		static SoundID() {
-			FillLegacyStyleMap();
+			FillLegacyArrayedStylesMap();
 		}
 
 		internal static bool TryGetLegacyStyle(int type, int style, out SoundStyle result) {
-			if (type < 0 || type >= legacySoundMapping.Length) {
-				result = default;
-				return false;
+			var tempResult = GetLegacyStyle(type, style);
+
+			if (tempResult.HasValue) {
+				result = tempResult.Value;
+				return true;
 			}
 
-			var innerArray = legacySoundMapping[type];
-			
-			if (innerArray == null || innerArray.Length == 0) {
-				result = default;
-				return false;
-			}
-
-			if (style < 0 || style >= innerArray.Length) {
-				style = 0;
-			}
-
-			result = innerArray[style];
-			return true;
+			result = default;
+			return false;
 		}
 
-		private static void FillLegacyStyleMap() {
-			var flags = BindingFlags.Public | BindingFlags.Static;
+		private static void FillLegacyArrayedStylesMap() {
+			const BindingFlags Flags = BindingFlags.Public | BindingFlags.Static;
 
-			legacySoundMapping = new SoundStyle[LegacySoundIDs.Count][];
-
-			foreach (var idField in typeof(LegacySoundIDs).GetFields(flags)) {
-				if (idField is not { IsLiteral: true, IsInitOnly: false } || idField.FieldType != typeof(int)) {
-					continue;
-				}
-
-				var styleField = typeof(SoundID).GetField(idField.Name, flags);
-
-				if (styleField?.FieldType != typeof(SoundStyle)) {
-					continue;
-				}
-				
-				int type = (int)idField.GetValue(null);
-				ref var array = ref legacySoundMapping[type];
-
-				Array.Resize(ref array, Math.Max(array?.Length ?? 0, 1));
-
-				array[0] = (SoundStyle)styleField.GetValue(null);
-			}
-
-			// The following manual labor styled code is used to avoid resizing arrays more than needed.
-			// Theoretically, the above lines could be expanded to cover all cases using regex 'n' stuff, but that would perform poorly.
-			
-			void AddNumberedStyles(int type, string baseName, int start, int numStyles) {
-				ref var array = ref legacySoundMapping[type];
-				
-				Array.Resize(ref array, Math.Max(array?.Length ?? 0, start + numStyles));
+			static void AddNumberedStyles(int type, string baseName, int start, int numStyles) {
+				var array = legacyArrayedStylesMapping[type] = new SoundStyle[start + numStyles];
 
 				for (int i = 0; i < numStyles; i++) {
 					int ii = start + i;
-					var styleField = typeof(SoundID).GetField($"{baseName}{ii}", flags);
-
-					if (styleField != null) {
-						array[ii] = (SoundStyle)styleField.GetValue(null);
+					
+					if (typeof(SoundID).GetField($"{baseName}{ii}", Flags)?.GetValue(null) is SoundStyle soundStyle) {
+						array[ii] = soundStyle;
 					}
 				}
 			}
@@ -472,13 +437,11 @@ namespace Terraria.ID
 			AddNumberedStyles(LegacySoundIDs.NPCHit, nameof(LegacySoundIDs.NPCHit), 0, 65);
 			AddNumberedStyles(LegacySoundIDs.NPCKilled, nameof(LegacySoundIDs.NPCKilled), 0, 57);
 
-			var zombieArray = new SoundStyle[117 + 1];
+			var zombieArray = legacyArrayedStylesMapping[LegacySoundIDs.Zombie] = new SoundStyle[117 + 1];
 
 			for (int i = 0; i < zombieArray.Length; i++) {
 				zombieArray[i] = new SoundStyle($"{Prefix}Zombie_{i}");
 			}
-
-			legacySoundMapping[LegacySoundIDs.Zombie] = zombieArray;
 		}
 
 		// Helper methods
@@ -507,5 +470,87 @@ namespace Terraria.ID
 
 		private static SoundStyle ItemSound(ReadOnlySpan<int> soundStyles)
 			=> SoundWithDefaults(ItemDefaults, new($"{Prefix}Item_", soundStyles));
+
+		// Moved to bottom for its size
+
+		internal static SoundStyle? GetLegacyStyle(int type, int style) => type switch {
+			// Arrayed
+			LegacySoundIDs.Zombie
+				=> new SoundStyle($"{Prefix}Zombie_{style}"),
+			LegacySoundIDs.Item or
+			LegacySoundIDs.NPCHit or
+			LegacySoundIDs.NPCKilled
+				=> style >= 0 && style < legacyArrayedStylesMapping[type].Length ? legacyArrayedStylesMapping[type][style] : null,
+			// Everything else
+			LegacySoundIDs.Dig => Dig,
+			LegacySoundIDs.PlayerHit => PlayerHit,
+			LegacySoundIDs.PlayerKilled => PlayerKilled,
+			LegacySoundIDs.Grass => Grass,
+			LegacySoundIDs.Grab => Grab,
+			LegacySoundIDs.DoorOpen => DoorOpen,
+			LegacySoundIDs.DoorClosed => DoorClosed,
+			LegacySoundIDs.MenuOpen => MenuOpen,
+			LegacySoundIDs.MenuClose => MenuClose,
+			LegacySoundIDs.MenuTick => MenuTick,
+			LegacySoundIDs.Shatter => Shatter,
+			LegacySoundIDs.ZombieMoan => ZombieMoan,
+			LegacySoundIDs.Roar => style switch {
+				0 => Roar,
+				1 => WormDig,
+				2 => ScaryScream,
+				4 => WormDigQuiet,
+				_ => null,
+			},
+			LegacySoundIDs.DoubleJump => DoubleJump,
+			LegacySoundIDs.Run => Run,
+			LegacySoundIDs.Coins => Coins,
+			LegacySoundIDs.Splash => style switch { 1 => SplashWeak, _ => Splash },
+			LegacySoundIDs.FemaleHit => FemaleHit,
+			LegacySoundIDs.Tink => Tink,
+			LegacySoundIDs.Unlock => Unlock,
+			LegacySoundIDs.Drown => Drown,
+			LegacySoundIDs.Chat => Chat,
+			LegacySoundIDs.MaxMana => MaxMana,
+			LegacySoundIDs.Mummy => Mummy,
+			LegacySoundIDs.Pixie => Pixie,
+			LegacySoundIDs.Mech => Mech,
+			LegacySoundIDs.Duck => Duck,
+			LegacySoundIDs.Frog => Frog,
+			LegacySoundIDs.Bird => Bird,
+			LegacySoundIDs.Critter => Critter,
+			LegacySoundIDs.Waterfall => Waterfall,
+			LegacySoundIDs.Lavafall => Lavafall,
+			LegacySoundIDs.ForceRoar => ForceRoar,
+			LegacySoundIDs.Meowmere => Meowmere,
+			LegacySoundIDs.CoinPickup => CoinPickup,
+			LegacySoundIDs.Drip => Drip,
+			LegacySoundIDs.Camera => Camera,
+			LegacySoundIDs.MoonLord => MoonLord,
+			//LegacySoundIDs.Trackable => Trackable,
+			LegacySoundIDs.Thunder => Thunder,
+			LegacySoundIDs.Seagull => Seagull,
+			LegacySoundIDs.Dolphin => Dolphin,
+			LegacySoundIDs.Owl => Owl,
+			LegacySoundIDs.GuitarC => GuitarC,
+			LegacySoundIDs.GuitarD => GuitarD,
+			LegacySoundIDs.GuitarEm => GuitarEm,
+			LegacySoundIDs.GuitarG => GuitarG,
+			LegacySoundIDs.GuitarAm => GuitarAm,
+			LegacySoundIDs.GuitarF => GuitarF,
+			LegacySoundIDs.DrumHiHat => DrumHiHat,
+			LegacySoundIDs.DrumTomHigh => DrumTomHigh,
+			LegacySoundIDs.DrumTomLow => DrumTomLow,
+			LegacySoundIDs.DrumTomMid => DrumTomMid,
+			LegacySoundIDs.DrumClosedHiHat => DrumClosedHiHat,
+			LegacySoundIDs.DrumCymbal1 => DrumCymbal1,
+			LegacySoundIDs.DrumCymbal2 => DrumCymbal2,
+			LegacySoundIDs.DrumKick => DrumKick,
+			LegacySoundIDs.DrumTamaSnare => DrumTamaSnare,
+			LegacySoundIDs.DrumFloorTom => DrumFloorTom,
+			LegacySoundIDs.Research => Research,
+			LegacySoundIDs.ResearchComplete => ResearchComplete,
+			LegacySoundIDs.QueenSlime => QueenSlime,
+			_ => null,
+		};
 	}
 }
