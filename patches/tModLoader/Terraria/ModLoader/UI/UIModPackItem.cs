@@ -42,15 +42,20 @@ namespace Terraria.ModLoader.UI
 		private readonly UIAutoScaleTextTextPanel<string> _updateListWithEnabledButton;
 		private readonly UIImageButton _deleteButton;
 		private readonly string _filename;
+		private readonly bool _legacy;
 
-		public UIModPackItem(string name, string[] mods) {
+		public UIModPackItem(string name, string[] mods, bool legacy) {
+			_legacy = legacy;
 			_filename = name;
-			_mods = mods;
-			_numMods = mods.Length;
-			_modMissing = new bool[mods.Length];
+
 			_numModsEnabled = 0;
 			_numModsDisabled = 0;
 			_numModsMissing = 0;
+
+			_mods = mods;
+			_numMods = mods.Length;
+			_modMissing = new bool[mods.Length];
+
 			for (int i = 0; i < mods.Length; i++) {
 				if (UIModPacks.Mods.Contains(mods[i])) {
 					if (ModLoader.IsEnabled(mods[i])) {
@@ -73,6 +78,7 @@ namespace Terraria.ModLoader.UI
 			Width.Percent = 1f;
 			SetPadding(6f);
 
+			// The below doesn't care about legacy
 			_modName = new UIText(name) {
 				Left = { Pixels = 10 },
 				Top = { Pixels = 5 }
@@ -120,7 +126,7 @@ namespace Terraria.ModLoader.UI
 			}.WithFadedMouseOver();
 			_viewInModBrowserButton.PaddingTop -= 2f;
 			_viewInModBrowserButton.PaddingBottom -= 2f;
-			_viewInModBrowserButton.OnClick += ViewInModBrowser;
+			_viewInModBrowserButton.OnClick += DownloadMissingMods;
 			Append(_viewInModBrowserButton);
 
 			_updateListWithEnabledButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabled")) {
@@ -131,7 +137,7 @@ namespace Terraria.ModLoader.UI
 			}.WithFadedMouseOver();
 			_updateListWithEnabledButton.PaddingTop -= 2f;
 			_updateListWithEnabledButton.PaddingBottom -= 2f;
-			_updateListWithEnabledButton.OnClick += (a, b) => UIModPacks.SaveModList(_filename);
+			_updateListWithEnabledButton.OnClick += (a, b) => UIModPacks.SaveModPack(_filename);
 			Append(_updateListWithEnabledButton);
 
 			_deleteButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete")) {
@@ -139,6 +145,10 @@ namespace Terraria.ModLoader.UI
 			};
 			_deleteButton.OnClick += DeleteButtonClick;
 			Append(_deleteButton);
+		}
+
+		private void SharedConstructor() {
+			
 		}
 
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width) {
@@ -162,6 +172,7 @@ namespace Terraria.ModLoader.UI
 			drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 355, innerDimensions.Y);
 			DrawPanel(spriteBatch, drawPos, 350f);
 			DrawEnabledText(spriteBatch, drawPos + new Vector2(10f, 5f));
+
 			//if (this.enabled != ModLoader.ModLoaded(mod.name))
 			//{
 			//	drawPos += new Vector2(120f, 5f);
@@ -186,11 +197,19 @@ namespace Terraria.ModLoader.UI
 
 		private void DeleteButtonClick(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modPackItem = ((UIModPackItem)listeningElement.Parent);
-			Directory.CreateDirectory(UIModPacks.ModPacksDirectory);
-			string path = UIModPacks.ModPacksDirectory + Path.DirectorySeparatorChar + modPackItem._filename + ".json";
-			if (File.Exists(path)) {
-				File.Delete(path);
+
+			if (_legacy) {
+				string path = UIModPacks.ModPacksDirectory + Path.DirectorySeparatorChar + modPackItem._filename + ".json";
+				if (File.Exists(path)) {
+					File.Delete(path);
+				}
 			}
+			else {
+				string path = Path.Combine(UIModPacks.ModPacksDirectory, _filename);
+				if (Directory.Exists(path))
+					Directory.Delete(path, true);
+			}
+			
 			Main.menuMode = Interface.modPacksMenuID;// should reload
 		}
 
@@ -213,19 +232,25 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-		private static void ViewInModBrowser(UIMouseEvent evt, UIElement listeningElement) {
+		private static void DownloadMissingMods(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
-			Interface.modBrowser.Activate();
-			Interface.modBrowser.FilterTextBox.Text = "";
-			Interface.modBrowser.SpecialModPackFilter = modListItem._mods.ToList();
-			Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
-			Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
-			Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
-			Interface.modBrowser.UpdateFilterToggle.SetCurrentState((int)Interface.modBrowser.UpdateFilterMode);
-			Interface.modBrowser.ModSideFilterToggle.SetCurrentState((int)Interface.modBrowser.ModSideFilterMode);
-			Interface.modBrowser.UpdateNeeded = true;
-			SoundEngine.PlaySound(SoundID.MenuOpen);
-			Main.menuMode = Interface.modBrowserID;
+
+			if (modListItem._legacy) {
+				Interface.modBrowser.Activate();
+				Interface.modBrowser.FilterTextBox.Text = "";
+				Interface.modBrowser.SpecialModPackFilter = modListItem._mods.ToList();
+				Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
+				Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
+				Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
+				Interface.modBrowser.UpdateFilterToggle.SetCurrentState((int)Interface.modBrowser.UpdateFilterMode);
+				Interface.modBrowser.ModSideFilterToggle.SetCurrentState((int)Interface.modBrowser.ModSideFilterMode);
+				Interface.modBrowser.UpdateNeeded = true;
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				Main.menuMode = Interface.modBrowserID;
+				return;
+			}
+
+			throw new NotImplementedException();
 		}
 
 		private static void EnableListOnly(UIMouseEvent evt, UIElement listeningElement) {
