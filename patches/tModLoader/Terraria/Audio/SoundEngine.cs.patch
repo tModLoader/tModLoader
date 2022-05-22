@@ -9,7 +9,7 @@
  		}
  
  		public static void Load(IServiceProvider services) {
-@@ -324,7 +_,7 @@
+@@ -319,7 +_,7 @@
  				}
  			}
  			catch (NoAudioHardwareException) {
