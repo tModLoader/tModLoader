@@ -18,6 +18,31 @@
 +
 +			if (position.HasValue && Vector2.DistanceSquared(Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), position.Value) > 100000000f)
 +				return SlotId.Invalid;
++
++			// Handle PlayOnlyIfFocused
++			if (style.PlayOnlyIfFocused && !Main.hasFocus)
++				return SlotId.Invalid;
++
++			// Handle the MaxInstances & RestartIfPlaying properties
++			int maxInstances = style.MaxInstances;
++
++			if (maxInstances > 0) {
++				int instanceCount = 0;
++
++				foreach (var pair in _trackedSounds) {
++					var activeSound = pair.Value;
++
++					if (activeSound.IsPlaying && style.IsTheSameAs(activeSound.Style) && ++instanceCount >= maxInstances) {
++						if (!style.RestartIfPlaying) {
++							return SlotId.Invalid;
++						}
++
++						activeSound.Sound.Stop(true);
++
++						break;
++					}
++				}
++			}
  
  			ActiveSound value = new ActiveSound(style, position);
  			return _trackedSounds.Add(value);
