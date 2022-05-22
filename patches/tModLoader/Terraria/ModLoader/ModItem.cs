@@ -9,11 +9,8 @@ using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
-using static Terraria.GameContent.Creative.CreativeUI;
 
 namespace Terraria.ModLoader
 {
@@ -21,12 +18,12 @@ namespace Terraria.ModLoader
 	/// This class serves as a place for you to place all your properties and hooks for each item. Create instances of ModItem (preferably overriding this class) to pass as parameters to Mod.AddItem.<br/>
 	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Item">Basic Item Guide</see> teaches the basics of making a modded item.
 	/// </summary>
-	public abstract class ModItem : ModTexturedType
+	public abstract class ModItem : ModType<Item, ModItem>
 	{
 		/// <summary>
 		/// The item object that this ModItem controls.
 		/// </summary>
-		public Item Item { get; internal set; }
+		public Item Item => Entity;
 
 		/// <summary>
 		/// Shorthand for Item.type;
@@ -44,26 +41,29 @@ namespace Terraria.ModLoader
 		public ModTranslation Tooltip { get; internal set; }
 
 		/// <summary>
+		/// The file name of this type's texture file in the mod loader's file space.
+		/// </summary>
+		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
+
+		/// <summary>
 		/// Easy get/set for an item's Sacrifice Total Count
 		/// </summary>
 		public int SacrificeTotal {
-			get => Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type];
-			set => Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = value;
+			get => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type];
+			set => GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = value;
 		}
 
-		public ModItem() {
-			Item = new Item { ModItem = this };
+		protected override Item CreateTemplateEntity() => new() { ModItem = this };
+
+		protected override void ValidateType() {
+			base.ValidateType();
+			
+			if (!IsCloneable)
+				Logging.tML.Warn($"{GetType().FullName} is not cloneable, and ModItems must be cloneable. See the documentation on {nameof(IsCloneable)}");
 		}
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModItem>.Register(this);
-
-			// @TODO: Remove on release
-			var type = GetType();
-
-			if (!LoaderUtils.HasMethod(type, typeof(ModItem), nameof(SaveData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModItem), "Save"))
-				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
-			// @TODO: END Remove on release
 
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemName.{Name}");
 			Tooltip = LocalizationLoader.GetOrCreateTranslation(Mod, $"ItemTooltip.{Name}", true);
@@ -88,16 +88,6 @@ namespace Terraria.ModLoader
 			AutoStaticDefaults();
 			SetStaticDefaults();
 			ItemID.Search.Add(FullName, Type);
-		}
-
-		/// <summary>
-		/// Create a copy of this ModItem. Called when an item is cloned.
-		/// </summary>
-		/// <param name="item">The new item</param>
-		public virtual ModItem Clone(Item item) {
-			ModItem clone = (ModItem)MemberwiseClone();
-			clone.Item = item;
-			return clone;
 		}
 
 		/// <summary>

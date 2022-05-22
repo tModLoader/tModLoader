@@ -1,19 +1,16 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 	/// </summary>
-	public abstract class GlobalNPC : GlobalType<NPC>
+	public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 		protected sealed override void Register() {
 			NPCLoader.VerifyGlobalNPC(this);
@@ -28,13 +25,6 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() => SetStaticDefaults();
 
 		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
-
-		/// <summary>
-		/// Create a copy of this instanced GlobalNPC. Called when an npc is cloned.
-		/// </summary>
-		/// <param name="npc">The npc being cloned</param>
-		/// <param name="npcClone">The new npc</param>
-		public virtual GlobalNPC Clone(NPC npc, NPC npcClone) => (GlobalNPC)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every NPC that gets created.

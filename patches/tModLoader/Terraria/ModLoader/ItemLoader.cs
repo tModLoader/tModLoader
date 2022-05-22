@@ -6,14 +6,12 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalItem>;
@@ -37,8 +35,8 @@ namespace Terraria.ModLoader
 		private static readonly List<HookList> hooks = new List<HookList>();
 		private static readonly List<HookList> modHooks = new List<HookList>();
 
-		private static HookList AddHook<F>(Expression<Func<GlobalItem, F>> func) {
-			var hook = new HookList(ModLoader.Method(func));
+		private static HookList AddHook<F>(Expression<Func<GlobalItem, F>> func) where F : Delegate {
+			var hook = HookList.Create(func);
 
 			hooks.Add(hook);
 
@@ -127,7 +125,7 @@ namespace Terraria.ModLoader
 				.Select(g => new Instanced<GlobalItem>(g.index, g))
 				.ToArray();
 
-			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
+			NetGlobals = globalItems.WhereMethodIsOverridden<GlobalItem, Action<Item, BinaryWriter>>(g => g.NetSend).ToArray();
 
 			foreach (var hook in hooks.Union(modHooks)) {
 				hook.Update(globalItems);
@@ -163,12 +161,9 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Item item, bool createModItem = true) {
 			if (IsModItem(item.type) && createModItem)
-				item.ModItem = GetItem(item.type).Clone(item);
+				item.ModItem = GetItem(item.type).NewInstance(item);
 
-			GlobalItem Instantiate(GlobalItem g)
-				=> g.InstancePerEntity ? g.Clone(item, item) : g;
-
-			LoaderUtils.InstantiateGlobals(item, globalItems, ref item.globalItems, Instantiate, () => {
+			LoaderUtils.InstantiateGlobals(item, globalItems, ref item.globalItems, () => {
 				item.ModItem?.AutoDefaults();
 				item.ModItem?.SetDefaults();
 			});
@@ -1998,50 +1993,6 @@ namespace Terraria.ModLoader
 			NetGlobals = new GlobalItem[n];
 			for (short i = 0; i < n; i++)
 				NetGlobals[i] = ModContent.Find<GlobalItem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
-		}
-
-		internal static void VerifyGlobalItem(GlobalItem item) {
-			var type = item.GetType();
-			int saveMethods = 0;
-
-			// Shortcut
-			static bool HasMethod(Type type, string method, params Type[] parameters) => LoaderUtils.HasMethod(type, typeof(GlobalItem), method, parameters);
-
-			if (HasMethod(type, nameof(GlobalItem.SaveData), typeof(Item), typeof(TagCompound)))
-				saveMethods++;
-
-			if (HasMethod(type, nameof(GlobalItem.LoadData), typeof(Item), typeof(TagCompound)))
-				saveMethods++;
-
-			if (saveMethods == 1)
-				throw new Exception($"{type} must override both of ({nameof(GlobalItem.SaveData)}/{nameof(GlobalItem.LoadData)}) or none");
-
-			// @TODO: Remove on release
-			if ((saveMethods == 0) && HasMethod(type, "Save", typeof(Item)))
-				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
-			// @TODO: END Remove on release
-
-			int netMethods = 0;
-
-			if (HasMethod(type, nameof(GlobalItem.NetSend), typeof(Item), typeof(BinaryWriter)))
-				netMethods++;
-
-			if (HasMethod(type, nameof(GlobalItem.NetReceive), typeof(Item), typeof(BinaryReader)))
-				netMethods++;
-
-			if (netMethods == 1)
-				throw new Exception($"{type} must override both of ({nameof(GlobalItem.NetSend)}/{nameof(GlobalItem.NetReceive)}) or none");
-
-			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-				.Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalItem)));
-
-			if (hasInstanceFields) {
-				if (!item.InstancePerEntity)
-					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
-
-				if (!HasMethod(type, "Clone", typeof(Item), typeof(Item)))
-					throw new Exception(type + " has InstancePerEntity but does not override Clone(Item, Item)");
-			}
 		}
 	}
 }

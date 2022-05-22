@@ -1,10 +1,7 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.DataStructures;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -12,7 +9,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
 	/// </summary>
-	public abstract class GlobalProjectile : GlobalType<Projectile>
+	public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile>
 	{
 		protected sealed override void Register() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
@@ -27,13 +24,6 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() => SetStaticDefaults();
 
 		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
-
-		/// <summary>
-		/// Create a copy of this instanced GlobalProjectile. Called when a projectile is cloned.
-		/// </summary>
-		/// <param name="projectile">The projectile being cloned</param>
-		/// <param name="projectileClone">The new projectile</param>
-		public virtual GlobalProjectile Clone(Projectile projectile, Projectile projectileClone) => (GlobalProjectile)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every projectile that gets created.

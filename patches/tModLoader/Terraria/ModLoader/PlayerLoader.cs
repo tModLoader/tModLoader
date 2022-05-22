@@ -2,16 +2,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.DataStructures;
 using Terraria.GameInput;
-using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
-using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
@@ -35,20 +32,20 @@ namespace Terraria.ModLoader
 
 		private static List<HookList> hooks = new List<HookList>();
 
-		private static HookList AddHook<F>(Expression<Func<ModPlayer, F>> func) {
-			var hook = new HookList(ModLoader.Method(func));
+		private static HookList AddHook<F>(Expression<Func<ModPlayer, F>> func) where F : Delegate {
+			var hook = new HookList(func.ToMethodInfo());
 			hooks.Add(hook);
 			return hook;
 		}
 
 		internal static void Add(ModPlayer player) {
-			player.index = players.Count;
+			player.index = (ushort)players.Count;
 			players.Add(player);
 		}
 
 		internal static void RebuildHooks() {
 			foreach (var hook in hooks) {
-				hook.arr = ModLoader.BuildGlobalHook(players, hook.method).Select(p => p.index).ToArray();
+				hook.arr = players.WhereMethodIsOverridden(hook.method).Select(p => (int)p.index).ToArray();
 			}
 		}
 
@@ -56,8 +53,13 @@ namespace Terraria.ModLoader
 			players.Clear();
 		}
 
+		private static HookList HookInitialize = AddHook<Action>(p => p.Initialize);
 		internal static void SetupPlayer(Player player) {
-			player.modPlayers = players.Select(modPlayer => modPlayer.CreateFor(player)).ToArray();
+			player.modPlayers = players.Select(modPlayer => modPlayer.NewInstance(player)).ToArray();
+
+			foreach (int index in HookInitialize.arr) {
+				player.modPlayers[index].Initialize();
+			}
 		}
 
 		private static HookList HookResetEffects = AddHook<Action>(p => p.ResetEffects);
@@ -988,45 +990,6 @@ namespace Terraria.ModLoader
 				}
 			}
 			return false;
-		}
-
-		internal static void VerifyModPlayer(ModPlayer player) {
-			var type = player.GetType();
-
-			// Shortcut
-			static bool HasMethod(Type type, string method, params Type[] parameters) => LoaderUtils.HasMethod(type, typeof(ModPlayer), method, parameters);
-
-			/*
-			int netClientMethods = 0;
-
-			if (HasMethod(type, nameof(ModPlayer.clientClone), typeof(ModPlayer)))
-				netClientMethods++;
-
-			if (HasMethod(type, nameof(ModPlayer.SyncPlayer), typeof(int), typeof(int), typeof(bool)))
-				netClientMethods++;
-
-			if (HasMethod(type, nameof(ModPlayer.SendClientChanges), typeof(ModPlayer)))
-				netClientMethods++;
-
-			if (netClientMethods > 0 && netClientMethods < 3)
-				throw new Exception($"{type} must override all of ({nameof(ModPlayer.clientClone)}/{nameof(ModPlayer.SyncPlayer)}/{nameof(ModPlayer.SendClientChanges)}) or none");
-			*/
-
-			int saveMethods = 0;
-
-			if (HasMethod(type, nameof(ModPlayer.SaveData), typeof(TagCompound)))
-				saveMethods++;
-
-			if (HasMethod(type, nameof(ModPlayer.LoadData), typeof(TagCompound)))
-				saveMethods++;
-
-			if (saveMethods == 1)
-				throw new Exception($"{type} must override both of ({nameof(ModPlayer.SaveData)}/{nameof(ModPlayer.LoadData)}) or none");
-
-			// @TODO: Remove on release
-			if ((saveMethods == 0) && HasMethod(type, "Save"))
-				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
-			// @TODO: END Remove on release
 		}
 
 		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);

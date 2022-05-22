@@ -14,9 +14,8 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.GameContent.ItemDropRules;
-using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalNPC>;
 using Terraria.ModLoader.Utilities;
+using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalNPC>;
 
 namespace Terraria.ModLoader
 {
@@ -41,8 +40,8 @@ namespace Terraria.ModLoader
 		private static readonly List<HookList> hooks = new List<HookList>();
 		private static readonly List<HookList> modHooks = new List<HookList>();
 
-		private static HookList AddHook<F>(Expression<Func<GlobalNPC, F>> func) {
-			var hook = new HookList(ModLoader.Method(func));
+		private static HookList AddHook<F>(Expression<Func<GlobalNPC, F>> func) where F : Delegate {
+			var hook = HookList.Create(func);
 
 			hooks.Add(hook);
 
@@ -162,7 +161,7 @@ namespace Terraria.ModLoader
 		internal static void SetDefaults(NPC npc, bool createModNPC = true) {
 			if (IsModNPC(npc)) {
 				if (createModNPC) {
-					npc.ModNPC = GetNPC(npc.type).Clone(npc);
+					npc.ModNPC = GetNPC(npc.type).NewInstance(npc);
 				}
 				else //the default NPCs created and bound to ModNPCs are initialized before ResizeArrays. They come here during SetupContent.
 				{
@@ -170,10 +169,7 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			GlobalNPC Instantiate(GlobalNPC g)
-				=> g.InstancePerEntity ? g.Clone(npc, npc) : g;
-
-			LoaderUtils.InstantiateGlobals(npc, globalNPCs, ref npc.globalNPCs, Instantiate, () => {
+			LoaderUtils.InstantiateGlobals(npc, globalNPCs, ref npc.globalNPCs, () => {
 				npc.ModNPC?.SetDefaults();
 			});
 

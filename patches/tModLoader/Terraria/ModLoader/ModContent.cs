@@ -445,6 +445,7 @@ namespace Terraria.ModLoader
 		internal static void Unload() {
 			ContentInstance.Clear();
 			ModTypeLookup.Clear();
+			LoaderUtils.ClearTypeInfo();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			PrefixLoader.Unload();
@@ -474,7 +475,6 @@ namespace Terraria.ModLoader
 			GlobalBackgroundStyleLoader.Unload();
 			PlayerDrawLayerLoader.Unload();
 			SystemLoader.Unload();
-			TileEntity.manager.Reset();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
@@ -482,6 +482,7 @@ namespace Terraria.ModLoader
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
 			Recipe.SetupRecipes();
+			TileEntity.manager.Reset();
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
 			RecipeLoader.Unload();
