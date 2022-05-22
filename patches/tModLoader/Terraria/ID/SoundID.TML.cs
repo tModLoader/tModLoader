@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text.RegularExpressions;
 using Terraria.Audio;
 using static Terraria.ID.SoundID.SoundStyleDefaults;
 
@@ -394,7 +397,91 @@ namespace Terraria.ID
 		public static readonly SoundStyle Item171 = ItemSound(171);
 		public static readonly SoundStyle Item172 = ItemSound(172);
 
-		// Util methods below
+		// Mapping
+		
+		private static SoundStyle[][] legacySoundMapping = Array.Empty<SoundStyle[]>();
+
+		static SoundID() {
+			FillLegacyStyleMap();
+		}
+
+		internal static bool TryGetLegacyStyle(int type, int style, out SoundStyle result) {
+			if (type < 0 || type >= legacySoundMapping.Length) {
+				result = default;
+				return false;
+			}
+
+			var innerArray = legacySoundMapping[type];
+			
+			if (innerArray == null || innerArray.Length == 0) {
+				result = default;
+				return false;
+			}
+
+			if (style < 0 || style >= innerArray.Length) {
+				style = 0;
+			}
+
+			result = innerArray[style];
+			return true;
+		}
+
+		private static void FillLegacyStyleMap() {
+			var flags = BindingFlags.Public | BindingFlags.Static;
+
+			legacySoundMapping = new SoundStyle[LegacySoundIDs.Count][];
+
+			foreach (var idField in typeof(LegacySoundIDs).GetFields(flags)) {
+				if (idField is not { IsLiteral: true, IsInitOnly: false } || idField.FieldType != typeof(int)) {
+					continue;
+				}
+
+				var styleField = typeof(SoundID).GetField(idField.Name, flags);
+
+				if (styleField?.FieldType != typeof(SoundStyle)) {
+					continue;
+				}
+				
+				int type = (int)idField.GetValue(null);
+				ref var array = ref legacySoundMapping[type];
+
+				Array.Resize(ref array, Math.Max(array?.Length ?? 0, 1));
+
+				array[0] = (SoundStyle)styleField.GetValue(null);
+			}
+
+			// The following manual labor styled code is used to avoid resizing arrays more than needed.
+			// Theoretically, the above lines could be expanded to cover all cases using regex 'n' stuff, but that would perform poorly.
+			
+			void AddNumberedStyles(int type, string baseName, int start, int numStyles) {
+				ref var array = ref legacySoundMapping[type];
+				
+				Array.Resize(ref array, Math.Max(array?.Length ?? 0, start + numStyles));
+
+				for (int i = 0; i < numStyles; i++) {
+					int ii = start + i;
+					var styleField = typeof(SoundID).GetField($"{baseName}{ii}", flags);
+
+					if (styleField != null) {
+						array[ii] = (SoundStyle)styleField.GetValue(null);
+					}
+				}
+			}
+
+			AddNumberedStyles(LegacySoundIDs.Item, nameof(LegacySoundIDs.Item), 0, 172);
+			AddNumberedStyles(LegacySoundIDs.NPCHit, nameof(LegacySoundIDs.NPCHit), 0, 65);
+			AddNumberedStyles(LegacySoundIDs.NPCKilled, nameof(LegacySoundIDs.NPCKilled), 0, 57);
+
+			var zombieArray = new SoundStyle[117 + 1];
+
+			for (int i = 0; i < zombieArray.Length; i++) {
+				zombieArray[i] = new SoundStyle($"{Prefix}Zombie_{i}");
+			}
+
+			legacySoundMapping[LegacySoundIDs.Zombie] = zombieArray;
+		}
+
+		// Helper methods
 
 		private static SoundStyle SoundWithDefaults(SoundStyleDefaults defaults, SoundStyle style)
 		{
@@ -420,203 +507,5 @@ namespace Terraria.ID
 
 		private static SoundStyle ItemSound(ReadOnlySpan<int> soundStyles)
 			=> SoundWithDefaults(ItemDefaults, new($"{Prefix}Item_", soundStyles));
-
-		// Mapping:
-
-		internal static SoundStyle GetLegacyStyle(int type, int style) => type switch {
-			LegacySoundIDs.Dig => Dig,
-			LegacySoundIDs.PlayerHit => PlayerHit,
-			LegacySoundIDs.Item => Item,
-			LegacySoundIDs.NPCHit => style switch {
-				1 => NPCHit1,
-				2 => NPCHit2,
-				3 => NPCHit3,
-				4 => NPCHit4,
-				5 => NPCHit5,
-				6 => NPCHit6,
-				7 => NPCHit7,
-				8 => NPCHit8,
-				9 => NPCHit9,
-				10 => NPCHit10,
-				11 => NPCHit11,
-				12 => NPCHit12,
-				13 => NPCHit13,
-				14 => NPCHit14,
-				15 => NPCHit15,
-				16 => NPCHit16,
-				17 => NPCHit17,
-				18 => NPCHit18,
-				19 => NPCHit19,
-				20 => NPCHit20,
-				21 => NPCHit21,
-				22 => NPCHit22,
-				23 => NPCHit23,
-				24 => NPCHit24,
-				25 => NPCHit25,
-				26 => NPCHit26,
-				27 => NPCHit27,
-				28 => NPCHit28,
-				29 => NPCHit29,
-				30 => NPCHit30,
-				31 => NPCHit31,
-				32 => NPCHit32,
-				33 => NPCHit33,
-				34 => NPCHit34,
-				35 => NPCHit35,
-				36 => NPCHit36,
-				37 => NPCHit37,
-				38 => NPCHit38,
-				39 => NPCHit39,
-				40 => NPCHit40,
-				41 => NPCHit41,
-				42 => NPCHit42,
-				43 => NPCHit43,
-				44 => NPCHit44,
-				45 => NPCHit45,
-				46 => NPCHit46,
-				47 => NPCHit47,
-				48 => NPCHit48,
-				49 => NPCHit49,
-				50 => NPCHit50,
-				51 => NPCHit51,
-				52 => NPCHit52,
-				53 => NPCHit53,
-				54 => NPCHit54,
-				55 => NPCHit55,
-				56 => NPCHit56,
-				57 => NPCHit57,
-				_ => default,
-			},
-			LegacySoundIDs.NPCKilled => style switch {
-				1 => NPCDeath1,
-				2 => NPCDeath2,
-				3 => NPCDeath3,
-				4 => NPCDeath4,
-				5 => NPCDeath5,
-				6 => NPCDeath6,
-				7 => NPCDeath7,
-				8 => NPCDeath8,
-				9 => NPCDeath9,
-				10 => NPCDeath10,
-				11 => NPCDeath11,
-				12 => NPCDeath12,
-				13 => NPCDeath13,
-				14 => NPCDeath14,
-				15 => NPCDeath15,
-				16 => NPCDeath16,
-				17 => NPCDeath17,
-				18 => NPCDeath18,
-				19 => NPCDeath19,
-				20 => NPCDeath20,
-				21 => NPCDeath21,
-				22 => NPCDeath22,
-				23 => NPCDeath23,
-				24 => NPCDeath24,
-				25 => NPCDeath25,
-				26 => NPCDeath26,
-				27 => NPCDeath27,
-				28 => NPCDeath28,
-				29 => NPCDeath29,
-				30 => NPCDeath30,
-				31 => NPCDeath31,
-				32 => NPCDeath32,
-				33 => NPCDeath33,
-				34 => NPCDeath34,
-				35 => NPCDeath35,
-				36 => NPCDeath36,
-				37 => NPCDeath37,
-				38 => NPCDeath38,
-				39 => NPCDeath39,
-				40 => NPCDeath40,
-				41 => NPCDeath41,
-				42 => NPCDeath42,
-				43 => NPCDeath43,
-				44 => NPCDeath44,
-				45 => NPCDeath45,
-				46 => NPCDeath46,
-				47 => NPCDeath47,
-				48 => NPCDeath48,
-				49 => NPCDeath49,
-				50 => NPCDeath50,
-				51 => NPCDeath51,
-				52 => NPCDeath52,
-				53 => NPCDeath53,
-				54 => NPCDeath54,
-				55 => NPCDeath55,
-				56 => NPCDeath56,
-				57 => NPCDeath57,
-				58 => NPCDeath58,
-				59 => NPCDeath59,
-				60 => NPCDeath60,
-				61 => NPCDeath61,
-				62 => NPCDeath62,
-				63 => NPCDeath63,
-				64 => NPCDeath64,
-				65 => NPCDeath65,
-				_ => default,
-			},
-			LegacySoundIDs.PlayerKilled => PlayerKilled,
-			LegacySoundIDs.Grass => Grass,
-			LegacySoundIDs.Grab => Grab,
-			LegacySoundIDs.DoorOpen => DoorOpen,
-			LegacySoundIDs.DoorClosed => DoorClosed,
-			LegacySoundIDs.MenuOpen => MenuOpen,
-			LegacySoundIDs.MenuClose => MenuClose,
-			LegacySoundIDs.MenuTick => MenuTick,
-			LegacySoundIDs.Shatter => Shatter,
-			LegacySoundIDs.ZombieMoan => ZombieMoan,
-			LegacySoundIDs.Roar => Roar,
-			LegacySoundIDs.DoubleJump => DoubleJump,
-			LegacySoundIDs.Run => Run,
-			LegacySoundIDs.Coins => Coins,
-			LegacySoundIDs.Splash => style switch { 1 => SplashWeak, _ => Splash },
-			LegacySoundIDs.FemaleHit => FemaleHit,
-			LegacySoundIDs.Tink => Tink,
-			LegacySoundIDs.Unlock => Unlock,
-			LegacySoundIDs.Drown => Drown,
-			LegacySoundIDs.Chat => Chat,
-			LegacySoundIDs.MaxMana => MaxMana,
-			LegacySoundIDs.Mummy => Mummy,
-			LegacySoundIDs.Pixie => Pixie,
-			LegacySoundIDs.Mech => Mech,
-			LegacySoundIDs.Zombie => new SoundStyle($"{Prefix}Zombie_{style}"),
-			LegacySoundIDs.Duck => Duck,
-			LegacySoundIDs.Frog => Frog,
-			LegacySoundIDs.Bird => Bird,
-			LegacySoundIDs.Critter => Critter,
-			LegacySoundIDs.Waterfall => Waterfall,
-			LegacySoundIDs.Lavafall => Lavafall,
-			LegacySoundIDs.ForceRoar => ForceRoar,
-			LegacySoundIDs.Meowmere => Meowmere,
-			LegacySoundIDs.CoinPickup => CoinPickup,
-			LegacySoundIDs.Drip => Drip,
-			LegacySoundIDs.Camera => Camera,
-			LegacySoundIDs.MoonLord => MoonLord,
-			//LegacySoundIDs.Trackable => Trackable,
-			LegacySoundIDs.Thunder => Thunder,
-			LegacySoundIDs.Seagull => Seagull,
-			LegacySoundIDs.Dolphin => Dolphin,
-			LegacySoundIDs.Owl => Owl,
-			LegacySoundIDs.GuitarC => GuitarC,
-			LegacySoundIDs.GuitarD => GuitarD,
-			LegacySoundIDs.GuitarEm => GuitarEm,
-			LegacySoundIDs.GuitarG => GuitarG,
-			LegacySoundIDs.GuitarAm => GuitarAm,
-			LegacySoundIDs.GuitarF => GuitarF,
-			LegacySoundIDs.DrumHiHat => DrumHiHat,
-			LegacySoundIDs.DrumTomHigh => DrumTomHigh,
-			LegacySoundIDs.DrumTomLow => DrumTomLow,
-			LegacySoundIDs.DrumTomMid => DrumTomMid,
-			LegacySoundIDs.DrumClosedHiHat => DrumClosedHiHat,
-			LegacySoundIDs.DrumCymbal1 => DrumCymbal1,
-			LegacySoundIDs.DrumCymbal2 => DrumCymbal2,
-			LegacySoundIDs.DrumKick => DrumKick,
-			LegacySoundIDs.DrumTamaSnare => DrumTamaSnare,
-			LegacySoundIDs.DrumFloorTom => DrumFloorTom,
-			LegacySoundIDs.Research => Research,
-			LegacySoundIDs.ResearchComplete => ResearchComplete,
-			LegacySoundIDs.QueenSlime => QueenSlime,
-			_ => default,
-		};
 	}
 }

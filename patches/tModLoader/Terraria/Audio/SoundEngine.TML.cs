@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Utilities;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 #nullable enable
 
@@ -27,7 +28,11 @@ namespace Terraria.Audio
 			=> PlaySound(type, (int)position.X, (int)position.Y, style);
 
 		internal static SoundEffectInstance? PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
-			var soundStyle = SoundID.GetLegacyStyle(type, Style);
+			if (!SoundID.TryGetLegacyStyle(type, Style, out var soundStyle)) {
+				Logging.tML.Warn($"Failed to get legacy sound style for ({type}, {Style}) input.");
+
+				return null;
+			}
 
 			return PlaySound(soundStyle, XYToOptionalPosition(x, y));
 		}
