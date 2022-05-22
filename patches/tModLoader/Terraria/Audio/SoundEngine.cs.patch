@@ -44,18 +44,16 @@
 +		*/
  
  		public static ActiveSound GetActiveSound(SlotId id) {
- 			if (Main.dedServ)
-@@ -94,37 +_,43 @@
- 
+ 			if (Main.dedServ) // #if SERVER
+@@ -93,16 +_,21 @@
+ 			return SoundPlayer.GetActiveSound(id);
  		}
  
 +		/*
- 		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position)
+ 		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position) {
 +		*/
-+		public static SlotId PlayTrackedSound(in SoundStyle style, Vector2? position = null)
- 		{
--			if(Main.dedServ)
-+			if (Main.dedServ)
++		public static SlotId PlayTrackedSound(in SoundStyle style, Vector2? position = null) {
+ 			if (Main.dedServ) // #if SERVER
  				return SlotId.Invalid;
 -
 +			
@@ -64,23 +62,16 @@
  
 -			return SoundPlayer.Play(style, position);
 +			return SoundPlayer.Play(in style, position);
--
  		}
  
 +		//TML: Merged into the above method.
 +		/*
--		public static SlotId PlayTrackedSound(SoundStyle style)
-+		public static SlotId PlayTrackedSound(ISoundStyle style)
- 		{
--			if(Main.dedServ)
-+			if (Main.dedServ)
+ 		public static SlotId PlayTrackedSound(SoundStyle style) {
+ 			if (Main.dedServ) // #if SERVER
  				return SlotId.Invalid;
- 
- 			if (!IsAudioSupported)
- 				return SlotId.Invalid;
+@@ -112,12 +_,15 @@
  
  			return SoundPlayer.Play(style);
--
  		}
 +		*/
  
@@ -91,14 +82,10 @@
  
 +		//TML: Removed; Sound styles no longer use IDs anywhere.
 +		/*
--		public static SoundEffect GetTrackableSoundByStyleId(int id) {
-+		public static SoundEffect GetTrackableSoundByStyleId(int soundId, int style) {
--			if(Main.dedServ)
-+			if (Main.dedServ)
+ 		public static SoundEffect GetTrackableSoundByStyleId(int id) {
+ 			if (Main.dedServ) // #if SERVER
  				return null;
- 
- 			if (!IsAudioSupported)
-@@ -132,13 +_,14 @@
+@@ -127,13 +_,14 @@
  
  			return LegacySoundPlayer.GetTrackableSoundByStyleId(id);
  		}
@@ -111,10 +98,10 @@
  
 -		public static ActiveSound FindActiveSound(SoundStyle style) {
 +		public static ActiveSound FindActiveSound(in SoundStyle style) {
- 			if(Main.dedServ)
+ 			if (Main.dedServ) // #if SERVER
  				return null;
  
-@@ -324,7 +_,7 @@
+@@ -319,7 +_,7 @@
  				}
  			}
  			catch (NoAudioHardwareException) {

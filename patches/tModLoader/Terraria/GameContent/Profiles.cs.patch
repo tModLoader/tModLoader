@@ -9,7 +9,7 @@
  	{
  		public class LegacyNPCProfile : ITownNPCProfile
  		{
-@@ -25,7 +_,7 @@
+@@ -26,7 +_,7 @@
  			}
  
  			public int RollVariation() => 0;
@@ -18,7 +18,7 @@
  
  			public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
  				if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-@@ -60,7 +_,7 @@
+@@ -62,7 +_,7 @@
  			}
  
  			public int RollVariation() => 0;

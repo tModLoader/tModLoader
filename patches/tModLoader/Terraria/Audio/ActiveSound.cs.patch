@@ -31,25 +31,24 @@
  			Style = style;
  			Play();
  #if FNA
-@@ -38,13 +_,16 @@
+@@ -38,6 +_,8 @@
  #endif
  		}
  
 +		//TML: Merged with the above constructor.
 +		/*
--		public ActiveSound(SoundStyle style) {
-+		public ActiveSound(ISoundStyle style) {
- 			Position = Vector2.Zero;
- 			Volume = 1f;
- 			IsGlobal = true;
- 			Style = style;
- 			Play();
+ 		public ActiveSound(SoundStyle style) {
+ #if FNA
+ 			Monitor.Enter(SoundEngine.AudioLock);
+@@ -51,6 +_,7 @@
+ 			Monitor.Exit(SoundEngine.AudioLock);
+ #endif
  		}
 +		*/
  
  		private void Play() {
  			SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
-@@ -71,14 +_,17 @@
+@@ -77,14 +_,17 @@
  		}
  
  		public void Update() {
