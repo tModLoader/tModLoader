@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 			LoaderUtils.MustOverrideTogether(this, g => g.NetSend, g => g.NetReceive);
 			
 			if (InstancePerEntity && !IsCloneable)
-				throw new Exception($"{GetType().FullName} has {nameof(InstancePerEntity)} but not {nameof(IsCloneable)}. See the documentation on {nameof(IsCloneable)}");
+				Logging.tML.Warn($"{GetType().FullName} has {nameof(InstancePerEntity)} but not {nameof(IsCloneable)}. See the documentation on {nameof(IsCloneable)}");
 		}
 
 		protected sealed override void Register() {
