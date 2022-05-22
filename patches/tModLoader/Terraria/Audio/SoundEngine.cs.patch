@@ -31,12 +31,8 @@
  		public static void PlaySound(int type, Vector2 position, int style = 1) {
  			PlaySound(type, (int)position.X, (int)position.Y, style);
  		}
-@@ -77,11 +_,11 @@
- 				return null;
- 
- #if FNA
--			lock(AudioLock)
-+			lock (AudioLock)
+@@ -80,8 +_,8 @@
+ 			lock(AudioLock)
  #endif
  				return LegacySoundPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
 -
