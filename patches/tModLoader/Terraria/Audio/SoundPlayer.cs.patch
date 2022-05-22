@@ -7,8 +7,8 @@
 -		public SlotId Play(SoundStyle style, Vector2 position) {
 -			if (Main.dedServ || style == null || !style.IsTrackable)
 +		//TML: Position parameter made nullable.
-+		public SlotId Play(ISoundStyle style, Vector2? position = null) {
-+			if (Main.dedServ || style == null)
++		public SlotId Play(SoundStyle style, Vector2? position = null) {
++			if (Main.dedServ)
  				return SlotId.Invalid;
  
 +			/*
@@ -47,7 +47,7 @@
  		}
  
 -		public ActiveSound FindActiveSound(SoundStyle style) {
-+		public ActiveSound FindActiveSound(ISoundStyle style) {
++		public ActiveSound FindActiveSound(in SoundStyle style) {
  			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
  				if (item.Value.Style == style)
  					return item.Value;

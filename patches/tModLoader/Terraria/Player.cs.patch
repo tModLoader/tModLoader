@@ -565,7 +565,7 @@
  				return;
  
 -			LegacySoundStyle legacySoundStyle = null;
-+			ISoundStyle legacySoundStyle = null;
++			SoundStyle? legacySoundStyle = null;
 -			if (CountBuffs() == 22)
 +			if (CountBuffs() == MaxBuffs)
  				return;

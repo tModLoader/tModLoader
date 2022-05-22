@@ -48,7 +48,7 @@
  		public short glowMask;
  		public float scale = 1f;
 -		public LegacySoundStyle UseSound;
-+		public ISoundStyle UseSound;
++		public SoundStyle? UseSound;
  		public int defense;
  		public int headSlot = -1;
  		public int bodySlot = -1;

@@ -10,7 +10,7 @@ using Terraria.Utilities;
 namespace Terraria.Audio
 {
 	// Completely reimplemented by TML.
-	public record struct SoundStyle : ISoundStyle
+	public record struct SoundStyle
 	{
 		private const float MinPitchValue = -1f;
 		private const float MaxPitchValue = 1f;
@@ -159,9 +159,5 @@ namespace Terraria.Audio
 
 			return result;
 		}
-
-		public static bool operator ==(ISoundStyle soundStyleA, SoundStyle soundStyleB) => Equals(soundStyleA, soundStyleB);
-		
-		public static bool operator !=(ISoundStyle soundStyleA, SoundStyle soundStyleB) => !Equals(soundStyleA, soundStyleB);
 	}
 }

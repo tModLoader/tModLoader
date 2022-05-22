@@ -45,13 +45,14 @@
  
  		public static ActiveSound GetActiveSound(SlotId id) {
  			if (Main.dedServ)
-@@ -94,37 +_,41 @@
+@@ -94,37 +_,43 @@
  
  		}
  
--		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position)
-+		//TML: Position parameter made nullable.
-+		public static SlotId PlayTrackedSound(ISoundStyle style, Vector2? position = null)
++		/*
+ 		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position)
++		*/
++		public static SlotId PlayTrackedSound(in SoundStyle style, Vector2? position = null)
  		{
 -			if(Main.dedServ)
 +			if (Main.dedServ)
@@ -108,7 +109,7 @@
  		}
  
 -		public static ActiveSound FindActiveSound(SoundStyle style) {
-+		public static ActiveSound FindActiveSound(ISoundStyle style) {
++		public static ActiveSound FindActiveSound(in SoundStyle style) {
  			if(Main.dedServ)
  				return null;
  

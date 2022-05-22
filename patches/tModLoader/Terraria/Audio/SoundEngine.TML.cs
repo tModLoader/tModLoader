@@ -10,18 +10,22 @@ namespace Terraria.Audio
 {
 	partial class SoundEngine
 	{
-		public static SoundEffectInstance? PlaySound(ISoundStyle type, Vector2? position = null) {
-			if (type == null)
-				return null;
-
-			SlotId slot = PlayTrackedSound(type, position);
+		public static SoundEffectInstance? PlaySound(in SoundStyle type, Vector2? position = null) {
+			SlotId slot = PlayTrackedSound(in type, position);
 
 			return slot.IsValid ? GetActiveSound(slot)?.Sound : null;
 		}
 
 		// Internal redirects
 
-		internal static SoundEffectInstance? PlaySound(SoundStyle type, int x = -1, int y = -1)
+		internal static SoundEffectInstance? PlaySound(SoundStyle? type, Vector2? position = null) {
+			if (type == null)
+				return null;
+
+			return PlaySound(type.Value, position);
+		}
+
+		internal static SoundEffectInstance? PlaySound(SoundStyle? type, int x, int y) //(SoundStyle type, int x = -1, int y = -1)
 			=> PlaySound(type, XYToOptionalPosition(x, y));
 
 		internal static void PlaySound(int type, Vector2 position, int style = 1)
