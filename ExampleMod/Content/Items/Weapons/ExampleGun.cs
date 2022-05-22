@@ -33,7 +33,8 @@ namespace ExampleMod.Content.Items.Weapons
 			// The sound that this item plays when used.
 			Item.UseSound = new SoundStyle($"{nameof(ExampleMod)}/Assets/Sounds/Items/Guns/ExampleGun") {
 				Volume = 0.9f,
-				PitchVariance = 0.1f
+				PitchVariance = 0.2f,
+				MaxInstances = 3,
 			};
 
 			// Weapon Properties
