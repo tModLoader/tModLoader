@@ -408,6 +408,15 @@
  			if (!item.Prefix(-3))
  				return;
  
+@@ -13166,7 +_,7 @@
+ 			if (!InWorld(i, y))
+ 				return false;
+ 
+-			while (Main.tile[i, num].type == 20) {
++			while (TileID.Sets.TreeSapling[Main.tile[i, num].type]) {
+ 				num++;
+ 				if (Main.tile[i, num] == null)
+ 					return false;
 @@ -13182,7 +_,7 @@
  			if (tile2.wall != 0 || tile2.liquid != 0)
  				return false;

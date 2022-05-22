@@ -20,8 +20,8 @@ namespace ExampleMod.Content.Tiles
 		};
 
 		public override void SetStaticDefaults() {
-			// Makes Example Palm Tree grow on ExampleBar
-			GrowsOnTileId = new int[1] { ModContent.TileType<ExampleBar>() };
+			// Makes Example Palm Tree grow on Gold Ore
+			GrowsOnTileId = new int[1] { TileID.Gold };
 		}
 
 		// This is the primary texture for the trunk. Branches and foliage use different settings.
@@ -52,7 +52,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override Asset<Texture2D> GetTopTextures() {
 			// Palm Trees come in a Beach variant. The Top Textures for it, if we had one that works:
-			return null;
+			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree_Tops");
 		}
 
 		public override int DropWood() {
