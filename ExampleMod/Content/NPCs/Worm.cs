@@ -366,7 +366,7 @@ namespace ExampleMod.NPCs
 							num195 = 20f;
 						}
 						NPC.soundDelay = (int)num195;
-						SoundEngine.PlaySound(SoundID.Roar, NPC.position, 1);
+						SoundEngine.PlaySound(SoundID.WormDig, NPC.position);
 					}
 					num193 = (float)System.Math.Sqrt((double)(num191 * num191 + num192 * num192));
 					float num196 = System.Math.Abs(num191);
