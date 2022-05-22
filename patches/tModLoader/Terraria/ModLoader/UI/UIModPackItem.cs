@@ -9,6 +9,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
+using Terraria.Utilities;
 using Terraria.Audio;
 using ReLogic.Content;
 
@@ -43,6 +44,8 @@ namespace Terraria.ModLoader.UI
 		private readonly UIImageButton _deleteButton;
 		private readonly string _filename;
 		private readonly bool _legacy;
+
+		private static string ConfigBackups => Path.Combine(Main.SavePath, "ModConfigsBackups");
 
 		public UIModPackItem(string name, string[] mods, bool legacy) {
 			_legacy = legacy;
@@ -96,7 +99,8 @@ namespace Terraria.ModLoader.UI
 			viewListButton.OnClick += ViewListInfo;
 			Append(viewListButton);
 
-			_enableListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableThisList")) {
+			_enableListButton = new UIAutoScaleTextTextPanel<string>(
+				_legacy ? Language.GetTextValue("tModLoader.ModPackEnableThisList") : "Deactivate Mod Pack") {
 				Width = { Pixels = 151 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = 248 },
@@ -104,7 +108,7 @@ namespace Terraria.ModLoader.UI
 			}.WithFadedMouseOver();
 			_enableListButton.PaddingTop -= 2f;
 			_enableListButton.PaddingBottom -= 2f;
-			_enableListButton.OnClick += EnableList;
+			_enableListButton.OnClick += _legacy ? EnableList : DeactivateModPack;
 			Append(_enableListButton);
 
 			_enableListOnlyButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackEnableOnlyThisList")) {
@@ -115,7 +119,7 @@ namespace Terraria.ModLoader.UI
 			}.WithFadedMouseOver();
 			_enableListOnlyButton.PaddingTop -= 2f;
 			_enableListOnlyButton.PaddingBottom -= 2f;
-			_enableListOnlyButton.OnClick += EnableListOnly;
+			_enableListOnlyButton.OnClick += ActivateModPack;
 			Append(_enableListOnlyButton);
 
 			_viewInModBrowserButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewModsInModBrowser")) {
@@ -233,12 +237,12 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private static void DownloadMissingMods(UIMouseEvent evt, UIElement listeningElement) {
-			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
+			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 
-			if (modListItem._legacy) {
+			if (modpack._legacy) {
 				Interface.modBrowser.Activate();
 				Interface.modBrowser.FilterTextBox.Text = "";
-				Interface.modBrowser.SpecialModPackFilter = modListItem._mods.ToList();
+				Interface.modBrowser.SpecialModPackFilter = modpack._mods.ToList();
 				Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
 				Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
 				Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
@@ -250,28 +254,66 @@ namespace Terraria.ModLoader.UI
 				return;
 			}
 
+			string modpackMods = Path.Combine(modpack._filename, "mods");
+			foreach (var mod in Directory.EnumerateFiles(modpackMods, "*.tmod")) {
+				File.Copy(mod, Path.Combine(ModLoader.ModPath, Path.GetFileName(mod)));
+			}
+
+			string modpackModsInstall = Path.Combine(modpack._filename, "mods", "install.txt");
+			// Some code to autodownload steam mods
+
 			throw new NotImplementedException();
+
+			UIModPacks.Mods = Core.ModOrganizer.FindMods().Select(m => m.Name).ToArray();
 		}
 
-		private static void EnableListOnly(UIMouseEvent evt, UIElement listeningElement) {
-			UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
+		private static void ActivateModPack(UIMouseEvent evt, UIElement listeningElement) {
 			foreach (var item in UIModPacks.Mods) {
 				ModLoader.DisableMod(item);
 			}
-			foreach (string modname in modListItem._mods) {
-				if (UIModPacks.Mods.Contains(modname))
-					ModLoader.EnableMod(modname);
-			}
-			Main.menuMode = Interface.reloadModsID; // should reload, which should refresh enabled counts
 
-			if (modListItem._numModsMissing > 0) {
-				string missing = "";
-				for (int i = 0; i < modListItem._mods.Length; i++) {
-					if (modListItem._modMissing[i]) {
-						missing += modListItem._mods[i] + "\n";
-					}
-				}
-				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsMissing", missing), Interface.reloadModsID);
+			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
+
+			if (modpack._legacy) {
+				EnableList(evt, listeningElement);
+				return;
+			}
+
+			// Deploy Configs
+			string deployedConfigs = Config.ConfigManager.ModConfigPath;
+			string modpackConfigs = Path.Combine(modpack._filename, "configs");
+
+			Directory.Delete(ConfigBackups, true);
+			FileUtilities.CopyFolder(deployedConfigs, ConfigBackups);
+
+			Directory.Delete(deployedConfigs, true);
+			FileUtilities.CopyFolder(modpackConfigs, deployedConfigs);
+
+			// Deploy Mods
+			DownloadMissingMods(evt, listeningElement);
+
+			// Enable Mods
+			EnableList(evt, listeningElement);
+		}
+
+		private static void DeactivateModPack(UIMouseEvent evt, UIElement listeningElement) {
+			foreach (var item in ModLoader.EnabledMods) {
+				ModLoader.DisableMod(item);
+			}
+
+			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
+
+			// Restore configs
+			string deployedConfigs = Config.ConfigManager.ModConfigPath;
+
+			Directory.Delete(deployedConfigs, true);
+			FileUtilities.CopyFolder(ConfigBackups, deployedConfigs);
+			Directory.Delete(ConfigBackups, true);
+
+			// Delete non-workshop mods
+			string modpackMods = Path.Combine(modpack._filename, "mods");
+			foreach (var mod in Directory.EnumerateFiles(modpackMods, "*.tmod")) {
+				File.Copy(mod, Path.Combine(ModLoader.ModPath, Path.GetFileName(mod)));
 			}
 		}
 
