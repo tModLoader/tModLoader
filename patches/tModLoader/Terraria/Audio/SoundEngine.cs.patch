@@ -62,7 +62,8 @@
  			if (!IsAudioSupported)
  				return SlotId.Invalid;
  
- 			return SoundPlayer.Play(style, position);
+-			return SoundPlayer.Play(style, position);
++			return SoundPlayer.Play(in style, position);
 -
  		}
  

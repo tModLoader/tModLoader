@@ -1,13 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -11,12 +_,18 @@
+@@ -11,12 +_,43 @@
  	{
  		private readonly SlotVector<ActiveSound> _trackedSounds = new SlotVector<ActiveSound>(4096);
  
 -		public SlotId Play(SoundStyle style, Vector2 position) {
 -			if (Main.dedServ || style == null || !style.IsTrackable)
 +		//TML: Position parameter made nullable.
-+		public SlotId Play(SoundStyle style, Vector2? position = null) {
++		public SlotId Play(in SoundStyle style, Vector2? position = null) {
 +			if (Main.dedServ)
  				return SlotId.Invalid;
  
