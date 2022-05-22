@@ -10,7 +10,18 @@ using Terraria.Utilities;
 
 namespace Terraria.Audio
 {
+	public enum MaxSoundInstancesBehavior
+	{
+		DontPlay,
+		Restart,
+	}
+
 	// Completely reimplemented by TML.
+
+	/// <summary>
+	/// This data type describes in detail how a sound should be played.
+	/// <br/> Passable to the <see cref="SoundEngine.PlaySound(in SoundStyle, Vector2?)"/> method.
+	/// </summary>
 	public record struct SoundStyle
 	{
 		private const float MinPitchValue = -1f;
@@ -27,18 +38,40 @@ namespace Terraria.Audio
 		private Asset<SoundEffect>? effectCache = null;
 		private Asset<SoundEffect>?[]? variantsEffectCache = null;
 
+		/// <summary> The sound effect to play. </summary>
 		public string SoundPath { get; set; }
-		public SoundType Type { get; set; }
-		public string? Group { get; set; } = null;
 
+		/// <summary>
+		/// Controls which volume setting will this be affected by.
+		/// <br/> Ambience sounds also don't play when the game is out of focus.
+		/// </summary>
+		public SoundType Type { get; set; }
+
+		/// <summary> If defined, this string will be the only thing used to determine which styles should instances be shared with. </summary>
+		public string? Identifier { get; set; } = null;
+
+		/// <summary>
+		/// The max amount of sound instances that this style will allow creating, before stopping a playing sound or refusing to play a new one.
+		/// <br/> Set to 0 for no limits.
+		/// </summary>
 		public int MaxInstances { get; set; } = 1;
-		public bool RestartIfPlaying { get; set; } = true;
+
+		/// <summary> Determines what the action taken when the max amount of sound instances is reached. </summary>
+		public MaxSoundInstancesBehavior MaxInstancesBehavior { get; set; } = MaxSoundInstancesBehavior.Restart;
+
+		/// <summary> If true, this sound won't play if the game's window isn't selected. </summary>
 		public bool PlayOnlyIfFocused { get; set; } = false;
+
+		/// <summary> Whether or not to loop played sounds. </summary>
 		public bool IsLooped { get; set; } = false;
 
 		// Questionable workaround for old music instruments.
 		internal bool UsesMusicPitch { get; set; } = false;
 
+		/// <summary>
+		/// An array of possible suffixes to randomly append to after <see cref="SoundPath"/>.
+		/// <br/> Setting this property resets <see cref="VariantsWeights"/>.
+		/// </summary>
 		public ReadOnlySpan<int> Variants {
 			get => variants;
 			set {
@@ -53,7 +86,11 @@ namespace Terraria.Audio
 				variants = value.ToArray();
 			}
 		}
-		
+
+		/// <summary>
+		/// An array of randomization weights to optionally go with <see cref="Variants"/>.
+		/// <br/> Set this last, if at all, as the <see cref="Variants"/>'s setter resets all weights data.
+		/// </summary>
 		public ReadOnlySpan<float> VariantsWeights {
 			get => variantsWeights;
 			set {
@@ -74,16 +111,26 @@ namespace Terraria.Audio
 			}
 		}
 
+		/// <summary> The volume multiplier to play sounds with. </summary>
 		public float Volume {
 			get => volume;
 			set => volume = MathHelper.Clamp(volume, 0f, 1f);
 		}
 
+		/// <summary>
+		/// The pitch <b>offset</b> to play sounds with.
+		/// <para/>In XNA and FNA, Pitch ranges from -1.0f (down one octave) to 1.0f (up one octave). 0.0f is unity (normal) pitch.
+		/// </summary>
 		public float Pitch {
 			get => pitch;
 			set => pitch = MathHelper.Clamp(pitch, MinPitchValue, MaxPitchValue);
 		}
 
+		/// <summary>
+		/// The pitch offset randomness value. Cannot be negative.
+		/// <br/>With Pitch at 0.0, and PitchVariance at 1.0, used pitch will range from -0.5 to 0.5. 
+		/// <para/>In XNA and FNA, Pitch ranges from -1.0f (down one octave) to 1.0f (up one octave). 0.0f is unity (normal) pitch.
+		/// </summary>
 		public float PitchVariance {
 			get => pitchVariance;
 			set {
@@ -94,6 +141,10 @@ namespace Terraria.Audio
 			}
 		}
 
+		/// <summary>
+		/// A helper property for controlling both Pitch and PitchVariance at once.
+		/// <para/>In XNA and FNA, Pitch ranges from -1.0f (down one octave) to 1.0f (up one octave). 0.0f is unity (normal) pitch.
+		/// </summary>
 		public (float minPitch, float maxPitch) PitchRange {
 			get {
 				float halfVariance = PitchVariance;
@@ -158,7 +209,7 @@ namespace Terraria.Audio
 
 		// To be optimized, improved.
 		public bool IsTheSameAs(SoundStyle style) {
-			if (Group != null && Group == style.Group)
+			if (Identifier != null && Identifier == style.Identifier)
 				return true;
 
 			if (SoundPath == style.SoundPath)

@@ -33,13 +33,13 @@
 +					var activeSound = pair.Value;
 +
 +					if (activeSound.IsPlaying && style.IsTheSameAs(activeSound.Style) && ++instanceCount >= maxInstances) {
-+						if (!style.RestartIfPlaying) {
-+							return SlotId.Invalid;
++						switch (style.MaxInstancesBehavior) {
++							case MaxSoundInstancesBehavior.Restart:
++								activeSound.Sound.Stop(true);
++								break;
++							default:
++								return SlotId.Invalid;
 +						}
-+
-+						activeSound.Sound.Stop(true);
-+
-+						break;
 +					}
 +				}
 +			}
