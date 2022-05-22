@@ -105,7 +105,7 @@
  			return new LegacySoundStyle(42, count, variations, type);
 +			*/
 +			
-+			return new LegacySoundStyle($"{PrefixCustom}{name}", variations, type);
++			return new LegacySoundStyle($"{PrefixCustom}{name}{(variations > 1 ? "_" : null)}", variations, type);
  		}
  
  		public static void FillAccessMap() {
