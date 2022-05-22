@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/SoundPlaySet.cs
++++ src/tModLoader/Terraria/DataStructures/SoundPlaySet.cs
+@@ -1,9 +_,14 @@
++using Terraria.Audio;
++
+ namespace Terraria.DataStructures
+ {
+ 	public class SoundPlaySet
+ 	{
+ 		public int IntendedCooldown;
++		/*
+ 		public int SoundType;
+ 		public int SoundStyle;
++		*/
++		public SoundStyle? Style; // Added by TML.
+ 	}
+ }

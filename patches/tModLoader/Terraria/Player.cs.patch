@@ -2472,6 +2472,17 @@
  				float knockback5 = 10f;
  				int nPCImmuneTime5 = 30;
  				int playerImmuneTime5 = 12;
+@@ -14426,7 +_,10 @@
+ 				num -= height;
+ 
+ 			if (runSoundDelay == 0 && velocity.Y == 0f) {
++				/*
+ 				SoundEngine.PlaySound(hermesStepSound.SoundType, (int)position.X, (int)position.Y, hermesStepSound.SoundStyle);
++				*/
++				SoundEngine.PlaySound(hermesStepSound.Style, position);
+ 				runSoundDelay = hermesStepSound.IntendedCooldown;
+ 			}
+ 
 @@ -14555,7 +_,7 @@
  			}
  
@@ -3344,6 +3355,34 @@
  
  			wearsRobe = false;
  			bool somethingSpecial = false;
+@@ -25610,9 +_,14 @@
+ 				SetArmorEffectVisuals(this);
+ 			}
+ 
++			/*
+ 			hermesStepSound.SoundType = 17;
+ 			hermesStepSound.SoundStyle = -1;
++			*/
++			hermesStepSound.Style = SoundID.Run;
++			
+ 			hermesStepSound.IntendedCooldown = 9;
++
+ 			if (head == 99 && body == 65 && legs == 54)
+ 				turtleArmor = true;
+ 
+@@ -25621,8 +_,12 @@
+ 
+ 			ApplyArmorSoundAndDustChanges();
+ 			if (legs == 140) {
++				/*
+ 				hermesStepSound.SoundType = 2;
+ 				hermesStepSound.SoundStyle = 24;
++				*/
++				hermesStepSound.Style = SoundID.Item24;
++
+ 				hermesStepSound.IntendedCooldown = 6;
+ 			}
+ 
 @@ -25632,6 +_,7 @@
  				faceHead = -1;
  			}
