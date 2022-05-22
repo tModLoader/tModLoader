@@ -42,7 +42,6 @@ namespace Terraria.ModLoader.Core
 			foreach (string mod in Directory.GetFiles(ModLoader.ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
 				AttemptLoadMod(mod, ref mods, ref names);
 
-			var installedIds = new List<string>();
 			// Load Mods from Workshop downloads
 			foreach (string repo in WorkshopFileFinder.ModPaths) {
 				var fileName = GetActiveTmodInRepo(repo);
@@ -50,13 +49,7 @@ namespace Terraria.ModLoader.Core
 					continue;
 
 				AttemptLoadMod(fileName, ref mods, ref names);
-
-				TryReadManifest(repo, out var info);
-				installedIds.Add(info.workshopEntryId.ToString());
 			}
-
-			var path = Path.Combine(ModLoader.ModPath, "installed.txt");
-			File.WriteAllLinesAsync(path, installedIds);
 
 			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
 		}
