@@ -45,7 +45,7 @@
  
  		public static ActiveSound GetActiveSound(SlotId id) {
  			if (Main.dedServ)
-@@ -94,43 +_,45 @@
+@@ -94,37 +_,41 @@
  
  		}
  
@@ -87,6 +87,8 @@
  				SoundPlayer.StopAll();
  		}
  
++		//TML: Removed; Sound styles no longer use IDs anywhere.
++		/*
 -		public static SoundEffect GetTrackableSoundByStyleId(int id) {
 +		public static SoundEffect GetTrackableSoundByStyleId(int soundId, int style) {
 -			if(Main.dedServ)
@@ -94,14 +96,14 @@
  				return null;
  
  			if (!IsAudioSupported)
- 				return null;
+@@ -132,13 +_,14 @@
  
--			return LegacySoundPlayer.GetTrackableSoundByStyleId(id);
-+			return LegacySoundPlayer.GetTrackableSoundByStyleId(soundId, style);
+ 			return LegacySoundPlayer.GetTrackableSoundByStyleId(id);
  		}
++		*/
  
  		public static void StopAmbientSounds() {
-@@ -138,7 +_,7 @@
+ 			if (IsAudioSupported && LegacySoundPlayer != null)
  				LegacySoundPlayer.StopAmbientSounds();
  		}
  
