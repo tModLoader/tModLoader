@@ -18,24 +18,22 @@ namespace Terraria.Audio
 		private static readonly UnifiedRandom Random = new();
 
 		private int[]? variants;
+		private float volume = 1f;
+		private float pitch = 0f;
 		private float pitchVariance = 0f;
 		private Asset<SoundEffect>? effectCache = null;
 		private Asset<SoundEffect>?[]? variantsEffectCache = null;
 
 		public string SoundPath { get; set; }
 		public SoundType Type { get; set; }
-		public float Volume { get; set; } = 1f;
-		public float Pitch { get; set; } = 0f;
-
 		public string? Group { get; set; } = null;
 
-		//TODO: Behavior to be implemented: [[
 		public int MaxInstances { get; set; } = 1;
 		public bool RestartIfPlaying { get; set; } = true;
-		// (Internal ones are questionable)
+		public bool PlayOnlyIfFocused { get; set; } = false;
+		
+		//TODO: Behavior to be implemented, and in some other way, as this is, questionable.
 		internal bool UsesMusicPitch { get; set; } = false;
-		internal bool PlayOnlyIfFocused { get; set; } = false;
-		// ]]
 
 		public Span<int> Variants {
 			get => variants;
@@ -50,6 +48,16 @@ namespace Terraria.Audio
 
 				value.CopyTo(variants);
 			}
+		}
+
+		public float Volume {
+			get => volume;
+			set => volume = MathHelper.Clamp(volume, 0f, 1f);
+		}
+
+		public float Pitch {
+			get => pitch;
+			set => pitch = MathHelper.Clamp(pitch, MinPitchValue, MaxPitchValue);
 		}
 
 		public float PitchVariance {
@@ -139,7 +147,7 @@ namespace Terraria.Audio
 		}
 
 		public float GetRandomPitch()
-			=> MathHelper.Clamp(Pitch + ((Random.NextFloat() - 0.5f) * PitchVariance), -1f, 1f);
+			=> MathHelper.Clamp(Pitch + ((Random.NextFloat() - 0.5f) * PitchVariance), MinPitchValue, MaxPitchValue);
 
 		internal SoundStyle WithVolume(float volume)
 			=> this with { Volume = volume };
