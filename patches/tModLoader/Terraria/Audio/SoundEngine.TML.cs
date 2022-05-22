@@ -38,6 +38,11 @@ namespace Terraria.Audio
 				return null;
 			}
 
+			soundStyle = soundStyle with {
+				Volume = soundStyle.Volume * volumeScale,
+				Pitch = soundStyle.Pitch + pitchOffset
+			};
+
 			return PlaySound(soundStyle, XYToOptionalPosition(x, y));
 		}
 
