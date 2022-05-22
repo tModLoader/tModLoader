@@ -58,7 +58,7 @@
 +						if (Math.Abs(tileStyle) >= ModPalmTree.VanillaStyleCount) {
 +							textureIndex = (Math.Abs(tileStyle) - ModPalmTree.VanillaStyleCount);
 +							textureIndex *= -2;
-+							if (isOcean)
++							if (!isOcean)
 +								textureIndex -= 1;
 +						}
 +
@@ -225,7 +225,7 @@
  				num += 4;
  
 +			if (Main.tile[x, y].active() && TileLoader.CanGrowModPalmTree(Main.tile[x, y].type))
-+				num = (ModPalmTree.VanillaStyleCount + Main.tile[x,y].type) * (WorldGen.IsPalmOasisTree(x) ? -1 : 0);
++				num = (ModPalmTree.VanillaStyleCount + Main.tile[x,y].type) * (WorldGen.IsPalmOasisTree(x) ? -1 : 1);
 +
  			return num;
  		}
@@ -363,19 +363,26 @@
  			}
  		}
  
-@@ -5622,6 +_,17 @@
+@@ -5622,6 +_,24 @@
  							num20 = 2;
  						}
  
 +						if (Math.Abs(palmTreeBiome) >= ModPalmTree.VanillaStyleCount) {
 +							y2 = 0;
 +
++							// Oasis Tree
 +							if (palmTreeBiome < 0) {
 +								num17 = 114;
 +								num18 = 98;
 +								num19 = 48;
 +								num20 = 2;
 +							}
++
++							treeTextureIndex = (Math.Abs(palmTreeBiome) - ModPalmTree.VanillaStyleCount);
++							treeTextureIndex *= -2;
++							// Oasis tree
++							if (palmTreeBiome < 0)
++								treeTextureIndex -= 1;
 +						}
 +
  						int frameY2 = Main.tile[x, y].frameY;
