@@ -4713,7 +4713,7 @@
  		}
  
  		public static void SetResolution(int width, int height) {
-@@ -51082,7 +_,11 @@
+@@ -51087,7 +_,11 @@
  					width = (int)(num2 * (float)height);
  				}
  
@@ -4726,7 +4726,7 @@
  				if (!graphics.IsFullScreen) {
  					num3 = Math.Max(graphics.PreferredBackBufferWidth, graphics.GraphicsDevice.Viewport.Width);
  					num4 = Math.Max(graphics.PreferredBackBufferHeight, graphics.GraphicsDevice.Viewport.Height);
-@@ -51136,6 +_,7 @@
+@@ -51141,6 +_,7 @@
  				graphics.ToggleFullScreen();
  			}
  
@@ -4734,7 +4734,7 @@
  			if (width != num3 || height != num4 || flag2) {
  				mapTime = 0;
  				if (gamePaused)
-@@ -51145,7 +_,9 @@
+@@ -51150,7 +_,9 @@
  				screenHeight = height;
  				graphics.PreferredBackBufferWidth = screenWidth;
  				graphics.PreferredBackBufferHeight = screenHeight;
