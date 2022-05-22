@@ -19,6 +19,22 @@
  		public Asset<SoundEffect>[] SoundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
  		public SoundEffectInstance[] SoundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
  		public SoundEffectInstance SoundInstanceMoonlordCry;
+@@ -96,6 +_,7 @@
+ 		}
+ 
+ 		private void LoadAll() {
++			/*
+ 			SoundMech[0] = Load("Sounds/Mech_0");
+ 			SoundGrab = Load("Sounds/Grab");
+ 			SoundPixie = Load("Sounds/Pixie");
+@@ -177,6 +_,7 @@
+ 			for (int num3 = 0; num3 < TrackableSounds.Length; num3++) {
+ 				TrackableSounds[num3] = Load("Sounds/Custom" + Path.DirectorySeparatorChar + SoundID.GetTrackableLegacySoundPath(num3));
+ 			}
++			*/
+ 		}
+ 
+ 		public void CreateAllSoundInstances() {
 @@ -185,6 +_,8 @@
  			}
  
