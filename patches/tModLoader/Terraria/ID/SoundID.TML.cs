@@ -57,24 +57,24 @@ namespace Terraria.ID
 		public static readonly SoundStyle Pixie = new($"{Prefix}Pixie") { PitchVariance = 0.2f, RestartIfPlaying = false };
 		public static readonly SoundStyle Mech = new($"{Prefix}Mech_0") { PitchVariance = 0.2f, RestartIfPlaying = false };
 		//public static readonly SoundStyle Zombie = new($"{Prefix}Zombie_", 3, 2);
-		public static readonly SoundStyle Duck = new($"{Prefix}Zombie_", 10, 2) { Type = SoundType.Ambient, Volume = 0.75f, PitchRange = (-0.7f, 0.0f) };
+		public static readonly SoundStyle Duck = new($"{Prefix}Zombie_", 10, 2, SoundType.Ambient) { Volume = 0.75f, PitchRange = (-0.7f, 0.0f) };
 		//TODO: This should play with 1 in 300 chance in Duck.
-		public static readonly SoundStyle DuckFunny = new($"{Prefix}Zombie_12") { Type = SoundType.Ambient, Volume = 0.75f, PitchRange = (-0.4f, 0.2f), RestartIfPlaying = false };
-		public static readonly SoundStyle Frog = new($"{Prefix}Zombie_13") { Type = SoundType.Ambient, Volume = 0.35f, PitchRange = (-0.4f, 0.2f) };
+		public static readonly SoundStyle DuckFunny = new($"{Prefix}Zombie_12", SoundType.Ambient) { Volume = 0.75f, PitchRange = (-0.4f, 0.2f), RestartIfPlaying = false };
+		public static readonly SoundStyle Frog = new($"{Prefix}Zombie_13", SoundType.Ambient) { Volume = 0.35f, PitchRange = (-0.4f, 0.2f) };
 		//TODO: Inaccurate variants, search & analyze "PlaySound(32," in vanilla src.
-		public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", 14, 5) { Type = SoundType.Ambient, Volume = 0.15f, PitchRange = (-0.7f, 0.26f), RestartIfPlaying = false };
-		public static readonly SoundStyle Critter = new($"{Prefix}Zombie_15") { Type = SoundType.Ambient, Volume = 0.2f, PitchRange = (-0.1f, 0.3f), RestartIfPlaying = false };
-		public static readonly SoundStyle Waterfall = new($"{Prefix}Liquid_0") { Type = SoundType.Ambient, Volume = 0.2f, RestartIfPlaying = false };
-		public static readonly SoundStyle Lavafall = new($"{Prefix}Liquid_1") { Type = SoundType.Ambient, Volume = 0.65f, RestartIfPlaying = false };
+		public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", 14, 5, SoundType.Ambient) { Volume = 0.15f, PitchRange = (-0.7f, 0.26f), RestartIfPlaying = false };
+		public static readonly SoundStyle Critter = new($"{Prefix}Zombie_15", SoundType.Ambient) { Volume = 0.2f, PitchRange = (-0.1f, 0.3f), RestartIfPlaying = false };
+		public static readonly SoundStyle Waterfall = new($"{Prefix}Liquid_0", SoundType.Ambient) { Volume = 0.2f, RestartIfPlaying = false };
+		public static readonly SoundStyle Lavafall = new($"{Prefix}Liquid_1", SoundType.Ambient) { Volume = 0.65f, RestartIfPlaying = false };
 		public static readonly SoundStyle ForceRoar = new($"{Prefix}Roar_0") { Group = "Terraria/Roar" };
 		public static readonly SoundStyle ForceRoarPitched = new($"{Prefix}Roar_0") { Pitch = 0.6f, Group = "Terraria/Roar" };
 		public static readonly SoundStyle Meowmere = new($"{Prefix}Item_", 57, 2) { PitchVariance = 0.8f };
 		public static readonly SoundStyle CoinPickup = new($"{Prefix}Coin_", 0, 5) { PitchVariance = 0.16f };
-		public static readonly SoundStyle Drip = new($"{Prefix}Drip_", 0, 3) { Type = SoundType.Ambient, Volume = 0.5f, PitchVariance = 0.6f };
+		public static readonly SoundStyle Drip = new($"{Prefix}Drip_", 0, 3, SoundType.Ambient) { Volume = 0.5f, PitchVariance = 0.6f };
 		public static readonly SoundStyle Camera = new($"{Prefix}Camera");
 		//TODO: Might need special distance falloff rules.
 		public static readonly SoundStyle MoonLord = new($"{Prefix}NPC_Killed_10") { PitchVariance = 0.2f };
-		public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 7) { Type = SoundType.Ambient, MaxInstances = 7, PitchVariance = 0.2f, };
+		public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 7, SoundType.Ambient) { MaxInstances = 7, PitchVariance = 0.2f, };
 		public static readonly SoundStyle Seagull = new($"{Prefix}Zombie_", 106, 3) { Volume = 0.2f, PitchRange = (-0.7f, 0f) };
 		public static readonly SoundStyle Dolphin = new($"{Prefix}Zombie_109") { Volume = 0.3f, PitchVariance = 0.2f, RestartIfPlaying = false };
 		public static readonly SoundStyle Owl = new($"{Prefix}Zombie_", 110, 2) { PitchVariance = 0.2f };
