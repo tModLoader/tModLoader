@@ -397,7 +397,7 @@ namespace Terraria.ModLoader.UI
 
 		internal void Populate() {
 			Task.Factory
-				.StartNew(ModOrganizer.FindMods, _cts.Token)
+				.StartNew(() => ModOrganizer.FindMods(), _cts.Token)
 				.ContinueWith(task => {
 					var mods = task.Result;
 					foreach (var mod in mods) {
