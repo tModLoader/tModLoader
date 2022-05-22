@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -11,12 +_,43 @@
+@@ -11,28 +_,69 @@
  	{
  		private readonly SlotVector<ActiveSound> _trackedSounds = new SlotVector<ActiveSound>(4096);
  
@@ -43,10 +43,19 @@
 +					}
 +				}
 +			}
++
++			// Handle 'UsesMusicPitch'.. This property is a weird solution, and is currently internal.
++			SoundStyle styleCopy = style;
++			
++			if (style.UsesMusicPitch) {
++				styleCopy.Pitch += Main.musicPitch;
++			}
  
- 			ActiveSound value = new ActiveSound(style, position);
+-			ActiveSound value = new ActiveSound(style, position);
++			ActiveSound value = new ActiveSound(styleCopy, position);
  			return _trackedSounds.Add(value);
-@@ -25,14 +_,17 @@
+ 		}
+ 
  		public void Reload() {
  			StopAll();
  		}

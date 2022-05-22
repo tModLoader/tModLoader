@@ -32,7 +32,7 @@ namespace Terraria.Audio
 		public bool RestartIfPlaying { get; set; } = true;
 		public bool PlayOnlyIfFocused { get; set; } = false;
 		
-		//TODO: Behavior to be implemented, and in some other way, as this is questionable.
+		// Questinoable workaround for old music instruments.
 		internal bool UsesMusicPitch { get; set; } = false;
 
 		public Span<int> Variants {
