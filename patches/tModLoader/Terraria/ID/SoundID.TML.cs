@@ -56,9 +56,10 @@ namespace Terraria.ID
 		public static readonly SoundStyle Mummy = new($"{Prefix}Zombie_", 3, 2) { Volume = 0.9f, PitchVariance = 0.2f };
 		public static readonly SoundStyle Pixie = new($"{Prefix}Pixie") { PitchVariance = 0.2f, RestartIfPlaying = false };
 		public static readonly SoundStyle Mech = new($"{Prefix}Mech_0") { PitchVariance = 0.2f, RestartIfPlaying = false };
+
 		//public static readonly SoundStyle Zombie = new($"{Prefix}Zombie_", 3, 2);
 		
-		// Explanation: There is a 1/300 chance for a duck to play a 'funni' easter egg sound variant.
+		// Explanation: There is a 1 in 300 chance for a duck to play a 'funni' easter egg sound variant.
 		public static readonly SoundStyle Duck = new($"{Prefix}Zombie_", stackalloc (int, float)[] { (10, 300f), (11, 300f), (12, 1f), }, SoundType.Ambient) {
 			Volume = 0.75f,
 			PitchRange = (-0.7f, 0.0f)
@@ -80,7 +81,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 7, SoundType.Ambient) { MaxInstances = 7, PitchVariance = 0.2f, };
 		public static readonly SoundStyle Seagull = new($"{Prefix}Zombie_", 106, 3) { Volume = 0.2f, PitchRange = (-0.7f, 0f) };
 		public static readonly SoundStyle Dolphin = new($"{Prefix}Zombie_109") { Volume = 0.3f, PitchVariance = 0.2f, RestartIfPlaying = false };
-		// Explanation: There is a 1/300 chance for an owl to play a 'funni' easter egg sound variant.
+		// Explanation: There is a 1 in 300 chance for an owl to play a 'funni' easter egg sound variant.
 		public static readonly SoundStyle Owl = new($"{Prefix}Zombie_", stackalloc (int, float)[] { (110, 300f), (2, 300f), (112, 1f), (113, 1f), (114, 1f), }) {
 			PitchVariance = 0.2f
 		};
