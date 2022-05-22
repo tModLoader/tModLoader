@@ -34,7 +34,8 @@ namespace Terraria.Audio
 		public int MaxInstances { get; set; } = 1;
 		public bool RestartIfPlaying { get; set; } = true;
 		public bool PlayOnlyIfFocused { get; set; } = false;
-		
+		public bool IsLooped { get; set; } = false;
+
 		// Questionable workaround for old music instruments.
 		internal bool UsesMusicPitch { get; set; } = false;
 

@@ -40,7 +40,7 @@
  		public ActiveSound(SoundStyle style) {
  #if FNA
  			Monitor.Enter(SoundEngine.AudioLock);
-@@ -51,6 +_,7 @@
+@@ -51,10 +_,12 @@
  			Monitor.Exit(SoundEngine.AudioLock);
  #endif
  		}
@@ -48,6 +48,11 @@
  
  		private void Play() {
  			SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
+ 			soundEffectInstance.Pitch += Style.GetRandomPitch();
++			soundEffectInstance.IsLooped = Style.IsLooped;
+ 			soundEffectInstance.Play();
+ 			SoundInstanceGarbageCollector.Track(soundEffectInstance);
+ 			Sound = soundEffectInstance;
 @@ -77,14 +_,17 @@
  		}
  
