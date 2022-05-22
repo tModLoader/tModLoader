@@ -57,9 +57,12 @@ namespace Terraria.ID
 		public static readonly SoundStyle Pixie = new($"{Prefix}Pixie") { PitchVariance = 0.2f, RestartIfPlaying = false };
 		public static readonly SoundStyle Mech = new($"{Prefix}Mech_0") { PitchVariance = 0.2f, RestartIfPlaying = false };
 		//public static readonly SoundStyle Zombie = new($"{Prefix}Zombie_", 3, 2);
-		public static readonly SoundStyle Duck = new($"{Prefix}Zombie_", 10, 2, SoundType.Ambient) { Volume = 0.75f, PitchRange = (-0.7f, 0.0f) };
-		//TODO: This should play with 1 in 300 chance in Duck.
-		public static readonly SoundStyle DuckFunny = new($"{Prefix}Zombie_12", SoundType.Ambient) { Volume = 0.75f, PitchRange = (-0.4f, 0.2f), RestartIfPlaying = false };
+		
+		// Explanation: There is a 1/300 chance for a duck to play a 'funni' easter egg sound variant.
+		public static readonly SoundStyle Duck = new($"{Prefix}Zombie_", stackalloc (int, float)[] { (10, 300f), (11, 300f), (12, 1f), }, SoundType.Ambient) {
+			Volume = 0.75f,
+			PitchRange = (-0.7f, 0.0f)
+		};
 		public static readonly SoundStyle Frog = new($"{Prefix}Zombie_13", SoundType.Ambient) { Volume = 0.35f, PitchRange = (-0.4f, 0.2f) };
 		//TODO: Inaccurate variants, search & analyze "PlaySound(32," in vanilla src.
 		public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", 14, 5, SoundType.Ambient) { Volume = 0.15f, PitchRange = (-0.7f, 0.26f), RestartIfPlaying = false };
@@ -77,9 +80,10 @@ namespace Terraria.ID
 		public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 7, SoundType.Ambient) { MaxInstances = 7, PitchVariance = 0.2f, };
 		public static readonly SoundStyle Seagull = new($"{Prefix}Zombie_", 106, 3) { Volume = 0.2f, PitchRange = (-0.7f, 0f) };
 		public static readonly SoundStyle Dolphin = new($"{Prefix}Zombie_109") { Volume = 0.3f, PitchVariance = 0.2f, RestartIfPlaying = false };
-		public static readonly SoundStyle Owl = new($"{Prefix}Zombie_", 110, 2) { PitchVariance = 0.2f };
-		//TODO: This should play with 1 in 300 chance in Owl.
-		public static readonly SoundStyle OwlFunny = new($"{Prefix}Zombie_", 112, 3) { PitchVariance = 0.2f };
+		// Explanation: There is a 1/300 chance for an owl to play a 'funni' easter egg sound variant.
+		public static readonly SoundStyle Owl = new($"{Prefix}Zombie_", stackalloc (int, float)[] { (110, 300f), (2, 300f), (112, 1f), (113, 1f), (114, 1f), }) {
+			PitchVariance = 0.2f
+		};
 		public static readonly SoundStyle GuitarC = new($"{Prefix}Item_47") { Volume = 0.45f, Group = "Terraria/Guitar" };
 		public static readonly SoundStyle GuitarD = new($"{Prefix}Item_48") { Volume = 0.45f, Group = "Terraria/Guitar" };
 		public static readonly SoundStyle GuitarEm = new($"{Prefix}Item_49") { Volume = 0.45f, Group = "Terraria/Guitar" };

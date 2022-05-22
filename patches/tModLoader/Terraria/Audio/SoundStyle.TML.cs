@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Content;
 using System;
+using System.Linq;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 
@@ -18,6 +19,8 @@ namespace Terraria.Audio
 		private static readonly UnifiedRandom Random = new();
 
 		private int[]? variants;
+		private float[]? variantsWeights = null;
+		private float? totalVariantWeight = null;
 		private float volume = 1f;
 		private float pitch = 0f;
 		private float pitchVariance = 0f;
@@ -32,21 +35,41 @@ namespace Terraria.Audio
 		public bool RestartIfPlaying { get; set; } = true;
 		public bool PlayOnlyIfFocused { get; set; } = false;
 		
-		// Questinoable workaround for old music instruments.
+		// Questionable workaround for old music instruments.
 		internal bool UsesMusicPitch { get; set; } = false;
 
-		public Span<int> Variants {
+		public ReadOnlySpan<int> Variants {
 			get => variants;
 			set {
-				if (value == null)
-					throw new ArgumentNullException(nameof(value));
+				variantsWeights = null;
+				totalVariantWeight = null;
 
-				if (value.Length == 0)
-					throw new ArgumentException("Styles array must not be empty.", nameof(value));
+				if (value.IsEmpty) {
+					variants = null;
+					return;
+				}
 
-				Array.Resize(ref variants, value.Length);
+				variants = value.ToArray();
+			}
+		}
+		
+		public ReadOnlySpan<float> VariantsWeights {
+			get => variantsWeights;
+			set {
+				if (value.Length == 0) {
+					variantsWeights = null;
+					totalVariantWeight = null;
+					return;
+				}
 
-				value.CopyTo(variants);
+				if (variants == null)
+					throw new ArgumentException("Variants weights must be set after variants.");
+
+				if (value.Length != variants.Length)
+					throw new ArgumentException("Variants and their weights must have the same length.");
+
+				variantsWeights = value.ToArray();
+				totalVariantWeight = null;
 			}
 		}
 
@@ -111,11 +134,25 @@ namespace Terraria.Audio
 			}
 		}
 
-		public SoundStyle(string soundPath, ReadOnlySpan<int> variantSuffixes, SoundType type = SoundType.Sound) : this(soundPath, type) {
-			if (variantSuffixes.Length == 0)
-				throw new ArgumentException("At least one style must be provided.", nameof(variantSuffixes));
+		public SoundStyle(string soundPath, ReadOnlySpan<int> variants, SoundType type = SoundType.Sound) : this(soundPath, type) {
+			this.variants = variants.IsEmpty ? null : variants.ToArray();
+		}
 
-			variants = variantSuffixes.ToArray();
+		public SoundStyle(string soundPath, ReadOnlySpan<(int variant, float weight)> weightedVariants, SoundType type = SoundType.Sound) : this(soundPath, type) {
+			if (weightedVariants.IsEmpty) {
+				variants = null;
+				return;
+			}
+
+			variants = new int[weightedVariants.Length];
+			variantsWeights = new float[weightedVariants.Length];
+
+			for (int i = 0; i < weightedVariants.Length; i++) {
+				(int variant, float weight) = weightedVariants[i];
+
+				variants[i] = variant;
+				variantsWeights[i] = weight;
+			}
 		}
 
 		// To be optimized, improved.
@@ -136,12 +173,12 @@ namespace Terraria.Audio
 				asset = effectCache ??= ModContent.Request<SoundEffect>(SoundPath, AssetRequestMode.ImmediateLoad);
 			}
 			else {
-				int variantId = Main.rand.Next(variants.Length);
-				int variant = variants[variantId];
+				int variantIndex = GetRandomVariantIndex();
+				int variant = variants[variantIndex];
 
 				Array.Resize(ref variantsEffectCache, variants.Length);
 
-				asset = variantsEffectCache[variantId] ??= ModContent.Request<SoundEffect>(SoundPath + variant, AssetRequestMode.ImmediateLoad);
+				asset = variantsEffectCache[variantIndex] ??= ModContent.Request<SoundEffect>(SoundPath + variant, AssetRequestMode.ImmediateLoad);
 			}
 
 			return asset.Value;
@@ -155,6 +192,29 @@ namespace Terraria.Audio
 		
 		internal SoundStyle WithPitchVariance(float pitchVariance)
 			=> this with { PitchVariance = pitchVariance };
+
+		private int GetRandomVariantIndex() {
+			if (variantsWeights == null) {
+				// Simple random.
+				return Random.Next(variants!.Length);
+			}
+			
+			// Weighted random.
+			totalVariantWeight ??= variantsWeights.Sum();
+
+			float random = (float)Random.NextDouble() * totalVariantWeight.Value;
+			float accumulatedWeight = 0f;
+
+			for (int i = 0; i < variantsWeights.Length; i++) {
+				accumulatedWeight += variantsWeights[i];
+
+				if (random < accumulatedWeight) {
+					return i;
+				}
+			}
+
+			return 0; // Unreachable.
+		}
 
 		private static int[] CreateVariants(int start, int count) {
 			if (count <= 1)
