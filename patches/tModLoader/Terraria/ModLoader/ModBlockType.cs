@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.Audio;
 
 namespace Terraria.ModLoader
 {
@@ -10,11 +11,8 @@ namespace Terraria.ModLoader
 		/// <summary> The internal ID of this type of tile/wall. </summary>
 		public ushort Type { get; internal set; }
 
-		/// <summary> The default type of sound made when this tile/wall is hit. Defaults to 0. </summary>
-		public int SoundType { get; set; }
-
-		/// <summary> The default style of sound made when this tile/wall is hit. Defaults to 1. </summary>
-		public int SoundStyle { get; set; } = 1;
+		/// <summary> The default style of sound made when this tile/wall is hit. Defaults to null. </summary>
+		public SoundStyle? HitSound { get; set; } = null;
 
 		/// <summary> The default type of dust made when this tile/wall is hit. Defaults to 0. </summary>
 		public int DustType { get; set; }

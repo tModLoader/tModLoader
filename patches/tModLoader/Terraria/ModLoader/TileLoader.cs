@@ -416,22 +416,23 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		//in Terraria.WorldGen.KillTile inside if (!effectOnly && !WorldGen.stopDrops) for playing sounds
-		//  add if(!TileLoader.KillSound(i, j, tile.type)) { } to beginning of if/else chain and turn first if into else if
 		public static bool KillSound(int i, int j, int type) {
 			foreach (var hook in HookKillSound) {
-				if (!hook(i, j, type)) {
+				if (!hook(i, j, type))
 					return false;
-				}
 			}
-			ModTile modTile = GetTile(type);
+			
+			var modTile = GetTile(type);
+
 			if (modTile != null) {
-				if (!modTile.KillSound(i, j)) {
+				if (!modTile.KillSound(i, j))
 					return false;
-				}
-				SoundEngine.PlaySound(modTile.SoundType, i * 16, j * 16, modTile.SoundStyle);
+				
+				SoundEngine.PlaySound(modTile.HitSound, new Vector2(i * 16, j * 16));
+				
 				return false;
 			}
+			
 			return true;
 		}
 		
