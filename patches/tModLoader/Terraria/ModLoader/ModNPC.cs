@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -17,16 +16,21 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
 	/// </summary>
-	public abstract class ModNPC : ModTexturedType
+	public abstract class ModNPC : ModType<NPC, ModNPC>
 	{
 		/// <summary> The NPC object that this ModNPC controls. </summary>
-		public NPC NPC { get; internal set; }
+		public NPC NPC => Entity;
 
 		/// <summary> Shorthand for NPC.type; </summary>
 		public int Type => NPC.type;
 
 		/// <summary> The translations for the display name of this NPC. </summary>
 		public ModTranslation DisplayName { get; internal set; }
+
+		/// <summary>
+		/// The file name of this type's texture file in the mod loader's file space.
+		/// </summary>
+		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
 		/// <summary> The file name of this NPC's head texture file, to be used in autoloading. </summary>
 		public virtual string HeadTexture => Texture + "_Head";
@@ -66,9 +70,7 @@ namespace Terraria.ModLoader
 		/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
 		public int[] SpawnModBiomes { get; set; } = new int[0];
 
-		public ModNPC() {
-			NPC = new NPC{ModNPC = this};
-		}
+		protected override NPC CreateTemplateEntity() => new() { ModNPC = this };
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModNPC>.Register(this);
@@ -95,17 +97,6 @@ namespace Terraria.ModLoader
 			SetStaticDefaults();
 
 			NPCID.Search.Add(FullName, Type);
-		}
-
-		/// <summary>
-		/// Returns a clone of this ModNPC. 
-		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created. 
-		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references. 
-		/// </summary>
-		public virtual ModNPC Clone(NPC npc) {
-			ModNPC clone = (ModNPC)MemberwiseClone();
-			clone.NPC = npc;
-			return clone;
 		}
 
 		/// <summary>
@@ -159,6 +150,28 @@ namespace Terraria.ModLoader
 		/// <param name="database"></param>
 		/// <param name="bestiaryEntry"></param>
 		public virtual void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the type name of this NPC dynamically.
+		/// </summary>
+		public virtual void ModifyTypeName(ref string typeName) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the bounding box for hovering over this NPC (affects things like whether or not its name is displayed).
+		/// </summary>
+		/// <param name="boundingBox">The bounding box used for determining whether or not the NPC counts as being hovered over.</param>
+		public virtual void ModifyHoverBoundingBox(ref Rectangle boundingBox) {
+		}
+
+		/// <summary>
+		/// Allows you to give a list of names this NPC can be given on spawn.<br></br>
+		/// By default, returns a blank list, which means the NPC will simply use its type name as its given name when prompted.
+		/// </summary>
+		/// <returns></returns>
+		public virtual List<string> SetNPCNameList() {
+			return new List<string>();
 		}
 
 		/// <summary>
@@ -279,11 +292,27 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this NPC is caught. Ran Serverside
+		/// Allows you to determine whether the given item can catch this NPC.<br></br>
+		/// Return true or false to say this NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
 		/// </summary>
-		/// <param name="player">The player catching this NPC</param>
-		/// <param name="item">The item that will be spawned</param>
-		public virtual void OnCatchNPC(Player player, Item item) {
+		/// <param name="item">The item with which the player is trying to catch this NPC.</param>
+		/// <param name="player">The player attempting to catch this NPC.</param>
+		/// <returns></returns>
+		public virtual bool? CanBeCaughtBy(Item item, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given item attempts to catch this NPC.
+		/// </summary>
+		/// <param name="player">The player attempting to catch this NPC.</param>
+		/// <param name="item">The item used to catch this NPC.</param>
+		/// <param name="failed">Whether or not this NPC has been successfully caught.</param>
+		public virtual void OnCaughtBy(Player player, Item item, bool failed) {
 		}
 
 		/// <summary>
@@ -561,21 +590,6 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public virtual bool CheckConditions(int left, int right, int top, int bottom) {
 			return true;
-		}
-
-		/// <summary>
-		/// Allows you to modify the type name of this NPC dynamically.
-		/// </summary>
-		public virtual void ModifyTypeName(ref string typeName) {
-		}
-
-		/// <summary>
-		/// Allows you to give a list of names this NPC can be given on spawn.
-		/// By default, returns a blank list, which means the NPC will simply use its type name as its given name when prompted.
-		/// </summary>
-		/// <returns></returns>
-		public virtual List<string> SetNPCNameList() {
-			return new List<string>();
 		}
 
 		/// <summary>

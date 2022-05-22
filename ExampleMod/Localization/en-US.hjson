@@ -56,10 +56,28 @@ Mods: {
 				Summons a {$Mods.ExampleMod.Common.PaperAirplane} to follow aimlessly behind you
 				Second Line!
 				'''
+			ExampleBugNet:
+				'''
+				Used to catch critters
+				Has a 20% chance to successfully catch lava critters
+				This increases to 50% if the Warmth Potion buff is active
+				Has a 5% chance to duplicate caught critters
+				'''
+			ExampleSpecificAmmoGun:
+				'''
+				Does not accept cursed bullets as ammunition
+				Fires three rounds in rapid succession
+				Each shot consumes ammunition with a different chance
+				The first shot has a 20% chance to not consume bullets
+				The second shot has a 63% chance to not consume bullets
+				The last shot has a 36% chance to not consume bullets
+				Shots that consume ammunition have their damage boosted by 20%
+				'''
 		}
 		
 		ItemName: {
 			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+			ExampleSpecificAmmoGun: '''Example Rifle'''
 		}
 		
 		ProjectileName: {

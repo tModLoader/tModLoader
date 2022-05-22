@@ -1,16 +1,15 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria.DataStructures;
-using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
 	/// </summary>
-	public abstract class GlobalProjectile : GlobalType<Projectile>
+	public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile>
 	{
 		protected sealed override void Register() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
@@ -25,13 +24,6 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() => SetStaticDefaults();
 
 		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
-
-		/// <summary>
-		/// Create a copy of this instanced GlobalProjectile. Called when a projectile is cloned.
-		/// </summary>
-		/// <param name="projectile">The projectile being cloned</param>
-		/// <param name="projectileClone">The new projectile</param>
-		public virtual GlobalProjectile Clone(Projectile projectile, Projectile projectileClone) => (GlobalProjectile)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every projectile that gets created.
@@ -67,6 +59,29 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		public virtual void PostAI(Projectile projectile) {
+		}
+
+		/// <summary>
+		/// Use this judiciously to avoid straining the network.
+		/// <br/>Checks and methods such as <see cref="AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
+		/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
+		/// </summary>
+		/// <param name="projectile">The projectile.</param>
+		/// <param name="bitWriter">The compressible bit writer. Booleans written via this are compressed across all mods to improve multiplayer performance.</param>
+		/// <param name="binaryWriter">The writer.</param>
+		public virtual void SendExtraAI(Projectile projectile, BitWriter bitWriter, BinaryWriter binaryWriter) {
+		}
+
+		/// <summary>
+		/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully received.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
+		/// </summary>
+		/// <param name="projectile">The projectile.</param>
+		/// <param name="bitReader">The compressible bit reader.</param>
+		/// <param name="binaryReader">The reader.</param>
+		public virtual void ReceiveExtraAI(Projectile projectile, BitReader bitReader, BinaryReader binaryReader) {
 		}
 
 		/// <summary>

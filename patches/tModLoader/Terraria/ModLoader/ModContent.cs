@@ -335,6 +335,7 @@ namespace Terraria.ModLoader
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
 
 			MapLoader.SetupModMap();
+			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
 
 			ContentSamples.Initialize();
@@ -413,8 +414,9 @@ namespace Terraria.ModLoader
 			RecipeGroupHelper.ResetRecipeGroups();
 			RecipeLoader.setupRecipes = true;
 			Recipe.SetupRecipes();
-			ContentSamples.FixItemsAfterRecipesAreAdded();
 			RecipeLoader.setupRecipes = false;
+			ContentSamples.FixItemsAfterRecipesAreAdded();
+			RecipeLoader.PostSetupRecipes();
 		}
 
 		internal static void UnloadModContent() {
@@ -443,6 +445,7 @@ namespace Terraria.ModLoader
 		internal static void Unload() {
 			ContentInstance.Clear();
 			ModTypeLookup.Clear();
+			LoaderUtils.ClearTypeInfo();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			PrefixLoader.Unload();
@@ -465,13 +468,13 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			SoundLoader.Unload();
+			PlantLoader.UnloadPlants();
 
 			LoaderManager.Unload();
 
 			GlobalBackgroundStyleLoader.Unload();
 			PlayerDrawLayerLoader.Unload();
 			SystemLoader.Unload();
-			TileEntity.manager.Reset();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
@@ -479,6 +482,7 @@ namespace Terraria.ModLoader
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
 			Recipe.SetupRecipes();
+			TileEntity.manager.Reset();
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
 			RecipeLoader.Unload();

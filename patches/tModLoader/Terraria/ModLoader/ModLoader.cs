@@ -13,13 +13,10 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI;
-using Version = System.Version;
 using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
 using ReLogic.Content;
 using System.Runtime.CompilerServices;
-#if NETCORE
-#endif
 
 namespace Terraria.ModLoader
 {
@@ -42,7 +39,7 @@ namespace Terraria.ModLoader
 		public static string versionedName => (BuildInfo.Purpose != BuildInfo.BuildPurpose.Stable) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
 
 #if NETCORE
-		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (InstallVerifier.IsGoG ? "g" : "s") + "c";
+		public static string CompressedPlatformRepresentation => (Platform.IsWindows ? "w" : (Platform.IsLinux ? "l" : "m")) + (InstallVerifier.DistributionPlatform == DistributionPlatform.GoG ? "g" : "s") + "c";
 #else
 		public static string CompressedPlatformRepresentation => "w" + (InstallVerifier.IsGoG ? "g" : "s") + "n";
 #endif
@@ -54,13 +51,8 @@ namespace Terraria.ModLoader
 		internal static readonly string modBrowserPublicKey = "<RSAKeyValue><Modulus>oCZObovrqLjlgTXY/BKy72dRZhoaA6nWRSGuA+aAIzlvtcxkBK5uKev3DZzIj0X51dE/qgRS3OHkcrukqvrdKdsuluu0JmQXCv+m7sDYjPQ0E6rN4nYQhgfRn2kfSvKYWGefp+kqmMF9xoAq666YNGVoERPm3j99vA+6EIwKaeqLB24MrNMO/TIf9ysb0SSxoV8pC/5P/N6ViIOk3adSnrgGbXnFkNQwD0qsgOWDks8jbYyrxUFMc4rFmZ8lZKhikVR+AisQtPGUs3ruVh4EWbiZGM2NOkhOCOM4k1hsdBOyX2gUliD0yjK5tiU3LBqkxoi2t342hWAkNNb4ZxLotw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 		internal static string modBrowserPassphrase = "";
 
-		private static string steamID64 = "";
-		internal static string SteamID64 {
-			get => InstallVerifier.IsGoG ? steamID64 : Steamworks.SteamUser.GetSteamID().ToString();
-			set => steamID64 = value;
-		}
-
 		internal static bool autoReloadAndEnableModsLeavingModBrowser = true;
+		internal static bool autoReloadRequiredModsLeavingModsScreen = true;
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static bool removeForcedMinimumZoom;
@@ -182,6 +174,8 @@ namespace Terraria.ModLoader
 				OnSuccessfulLoad = null;
 				skipLoad = false;
 				ModNet.NetReloadActive = false;
+				//TODO: FUTURE
+				//GOGModUpdateChecker.CheckModUpdates();
 			}
 		}
 
@@ -331,10 +325,10 @@ namespace Terraria.ModLoader
 		internal static void SaveConfiguration()
 		{
 			Main.Configuration.Put("ModBrowserPassphrase", modBrowserPassphrase);
-			Main.Configuration.Put("SteamID64", steamID64);
 			Main.Configuration.Put("DownloadModsFromServers", ModNet.downloadModsFromServers);
 			Main.Configuration.Put("OnlyDownloadSignedModsFromServers", ModNet.onlyDownloadSignedMods);
 			Main.Configuration.Put("AutomaticallyReloadAndEnableModsLeavingModBrowser", autoReloadAndEnableModsLeavingModBrowser);
+			Main.Configuration.Put("AutomaticallyReloadRequiredModsLeavingModsScreen", autoReloadRequiredModsLeavingModsScreen);
 			Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
@@ -357,10 +351,10 @@ namespace Terraria.ModLoader
 		internal static void LoadConfiguration()
 		{
 			Main.Configuration.Get("ModBrowserPassphrase", ref modBrowserPassphrase);
-			Main.Configuration.Get("SteamID64", ref steamID64);
 			Main.Configuration.Get("DownloadModsFromServers", ref ModNet.downloadModsFromServers);
 			Main.Configuration.Get("OnlyDownloadSignedModsFromServers", ref ModNet.onlyDownloadSignedMods);
 			Main.Configuration.Get("AutomaticallyReloadAndEnableModsLeavingModBrowser", ref autoReloadAndEnableModsLeavingModBrowser);
+			Main.Configuration.Get("AutomaticallyReloadRequiredModsLeavingModsScreen", ref autoReloadRequiredModsLeavingModsScreen);
 			Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
 			Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
@@ -398,71 +392,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows type inference on T and F
 		/// </summary>
-		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr)
-		{
+		internal static void BuildGlobalHook<T, F>(ref F[] list, IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate {
 			list = BuildGlobalHook(providers, expr).Select(expr.Compile()).ToArray();
 		}
 
-		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr)
-		{
-			return BuildGlobalHook(providers, Method(expr));
-		}
-
-		internal static T[] BuildGlobalHook<T>(IList<T> providers, MethodInfo method)
-		{
-			if (!method.IsVirtual) throw new ArgumentException("Cannot build hook for non-virtual method " + method);
-			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-
-			return providers.Where(p => p.GetType().GetMethod(method.Name, argTypes).DeclaringType != typeof(T)).ToArray();
-		}
-
-		internal static int[] BuildGlobalHookNew<T>(IList<T> providers, MethodInfo method) {
-			if (!method.IsVirtual)
-				throw new ArgumentException("Cannot build hook for non-virtual method " + method);
-
-			var argTypes = method.GetParameters().Select(p => p.ParameterType).ToArray();
-			var list = new List<int>();
-			var baseDeclaringType = method.DeclaringType;
-			bool isInterface = baseDeclaringType.IsInterface;
-
-			for (int i = 0; i < providers.Count; i++) {
-				var currentType = providers[i].GetType();
-
-				if (isInterface) {
-					// In case of interfaces, we can skip shenanigans that 'explicit interface method implementations' bring,
-					// and just check if the provider implements the interface.
-					if (baseDeclaringType.IsAssignableFrom(currentType)) {
-						list.Add(i);
-					}
-				}
-				else {
-					var currentMethod = currentType.GetMethod(method.Name, argTypes);
-
-					if (currentMethod != null && currentMethod.DeclaringType != baseDeclaringType) {
-						list.Add(i);
-					}
-				}
-			}
-
-			return list.ToArray();
-		}
-
-		internal static MethodInfo Method<T, F>(Expression<Func<T, F>> expr)
-		{
-			MethodInfo method;
-
-			try {
-				var convert = expr.Body as UnaryExpression;
-				var makeDelegate = convert.Operand as MethodCallExpression;
-				var methodArg = makeDelegate.Object as ConstantExpression;
-				method = methodArg.Value as MethodInfo;
-				if (method == null) throw new NullReferenceException();
-			}
-			catch (Exception e) {
-				throw new ArgumentException("Invalid hook expression " + expr, e);
-			}
-
-			return method;
+		internal static T[] BuildGlobalHook<T, F>(IList<T> providers, Expression<Func<T, F>> expr) where F : Delegate {
+			return providers.WhereMethodIsOverridden(expr).ToArray();
 		}
 	}
 }

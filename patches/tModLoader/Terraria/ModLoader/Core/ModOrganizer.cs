@@ -25,11 +25,13 @@ namespace Terraria.ModLoader.Core
 
 		private static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
 		private static List<string> readFailures = new List<string>(); // TODO: Reflect these skipped Mods in the UI somehow.
+
+		internal static string lastLaunchedModsFilePath = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
 		internal static List<string> modsThatUpdatedSinceLastLaunch = new List<string>();
 
 		internal static WorkshopHelper.UGCBased.Downloader WorkshopFileFinder = new WorkshopHelper.UGCBased.Downloader();
 
-		internal static LocalMod[] FindMods() {
+		internal static LocalMod[] FindMods(bool ignoreModsFolder = false, bool logDuplicates = false) {
 			Directory.CreateDirectory(ModLoader.ModPath);
 			var mods = new List<LocalMod>();
 			var names = new HashSet<string>();
@@ -38,9 +40,11 @@ namespace Terraria.ModLoader.Core
 
 			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
 
-			// Prioritize loading Mods from Mods folder for Dev/Beta simplicitiy.
-			foreach (string mod in Directory.GetFiles(ModLoader.ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
-				AttemptLoadMod(mod, ref mods, ref names);
+			// Prioritize loading Mods from Mods folder for Dev/Beta simplicity.
+			if (!ignoreModsFolder) {
+				foreach (string mod in Directory.GetFiles(ModLoader.ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
+					AttemptLoadMod(mod, ref mods, ref names, logDuplicates);
+			}
 
 			// Load Mods from Workshop downloads
 			foreach (string repo in WorkshopFileFinder.ModPaths) {
@@ -48,13 +52,13 @@ namespace Terraria.ModLoader.Core
 				if (fileName == null)
 					continue;
 
-				AttemptLoadMod(fileName, ref mods, ref names);
+				AttemptLoadMod(fileName, ref mods, ref names, logDuplicates);
 			}
 
 			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
 		}
 
-		private static bool AttemptLoadMod(string fileName, ref List<LocalMod> mods, ref HashSet<string> names) {
+		private static bool AttemptLoadMod(string fileName, ref List<LocalMod> mods, ref HashSet<string> names, bool logDuplicates) {
 			var lastModified = File.GetLastWriteTime(fileName);
 
 			if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
@@ -85,7 +89,7 @@ namespace Terraria.ModLoader.Core
 			if (names.Add(mod.Name)) {
 				mods.Add(mod);
 			}
-			else {
+			else if (logDuplicates) {
 				Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
 			}
 			return true;
@@ -98,16 +102,14 @@ namespace Terraria.ModLoader.Core
 			string info = null;
 
 			// For convenience, convert to dict
-			var currMods = FindMods().ToDictionary(mod => mod.Name, mod => mod);
-
-			string fileName = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
+			var currMods = FindMods(ignoreModsFolder: true).ToDictionary(mod => mod.Name, mod => mod);
 
 			// Only display if enabled and file exists
-			if (ModLoader.showNewUpdatedModsInfo && File.Exists(fileName)) {
+			if (ModLoader.showNewUpdatedModsInfo && File.Exists(lastLaunchedModsFilePath)) {
 				// trycatch the read in case users manually modify the file
 				try {
 					// Construct dict of last mods
-					var lines = File.ReadLines(fileName);
+					var lines = File.ReadLines(lastLaunchedModsFilePath);
 					var lastMods = new Dictionary<string, Version>();
 					foreach (var line in lines) {
 						string[] parts = line.Split(' ');
@@ -174,16 +176,18 @@ namespace Terraria.ModLoader.Core
 		/// Collects local mod status and saves it to a file.
 		/// </summary>
 		internal static void SaveLastLaunchedMods() {
+			if (Main.dedServ) // Not relevant for the server yet, all features using this data are clientside
+				return;
+
 			if (!ModLoader.showNewUpdatedModsInfo) // Not needed if feature that uses the file is disabled
 				return;
 
-			string fileName = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
 			var currMods = FindMods();
 			var fileText = new StringBuilder();
 			foreach (var mod in currMods) {
 				fileText.Append($"{mod.Name} {mod.properties.version}\n");
 			}
-			File.WriteAllText(fileName, fileText.ToString());
+			File.WriteAllText(lastLaunchedModsFilePath, fileText.ToString());
 		}
 
 		private static void DeleteTemporaryFiles() {
@@ -214,7 +218,7 @@ namespace Terraria.ModLoader.Core
 			//	File.Delete(fileName);
 			//}
 			Interface.loadMods.SetLoadStage("tModLoader.MSFinding");
-			var modsToLoad = FindMods().Where(mod => ModLoader.IsEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
+			var modsToLoad = FindMods(logDuplicates: true).Where(mod => ModLoader.IsEnabled(mod.Name) && LoadSide(mod.properties.side)).ToList();
 
 			// Press shift while starting up tModLoader or while trapped in a reload cycle to skip loading all mods.
 			if (Main.instance.IsActive && Main.oldKeyState.PressingShift() || ModLoader.skipLoad || token.IsCancellationRequested) {

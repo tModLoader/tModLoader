@@ -1606,6 +1606,21 @@
  			bool flag4 = !ReplaceTile_IsValidDresser(attemptingToReplaceWith) || !ReplaceTile_IsValidDresser(tile.type);
  			return !(num && flag && flag2 && flag3 && flag4);
  		}
+@@ -40101,6 +_,14 @@
+ 
+ 							return true;
+ 						}
++					default:
++						var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
++						if (tree != null) {
++							tree.SetTreeFoliageSettings(tile, xoffset, ref treeFrame, ref floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
++							treeStyle = tile.type + ModTree.VanillaTopTextureCount;
++							return true;
++						}
++						break;
+ 				}
+ 			}
+ 
 @@ -40523,6 +_,8 @@
  			if (num == 2)
  				return;
@@ -1645,6 +1660,15 @@
  			KillTile_GetItemDrops(x, y, tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, includeLargeObjectDrops);
  			if (!Main.getGoodWorld || tileCache.active()) {
  				if (dropItem > 0) {
+@@ -42126,6 +_,8 @@
+ 							}
+ 						}
+ 
++						TileLoader.DropPalmTreeWood(Main.tile[x, j].type, ref dropItem);
++
+ 						break;
+ 					}
+ 				case 171:
 @@ -42756,7 +_,7 @@
  
  						if (Main.tile[i, k] != null) {
@@ -1654,12 +1678,11 @@
  								dropItem = 9;
  								secondaryItem = 27;
  							}
-@@ -42803,6 +_,8 @@
+@@ -42803,6 +_,7 @@
  						dropItem = 2503;
  						break;
  				}
-+				TileLoader.DropTreeWood(Main.tile[x,y].type,ref dropItem);
-+				TileLoader.DropPalmTreeWood(Main.tile[x,y].type,ref dropItem);
++				TileLoader.DropTreeWood(Main.tile[x,y].type, ref dropItem);
  			}
  
  			int num = Player.FindClosest(new Vector2(x * 16, y * 16), 16, 16);

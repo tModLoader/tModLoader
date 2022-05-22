@@ -8,18 +8,26 @@ using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
-using static Terraria.GameContent.Creative.CreativeUI;
+using System;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all items, including vanilla items. Create an instance of an overriding class then call Mod.AddGlobalItem to use this.
 	/// </summary>
-	public abstract class GlobalItem : GlobalType<Item>
+	public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	{
-		protected sealed override void Register() {
-			ItemLoader.VerifyGlobalItem(this);
+		protected override void ValidateType() {
+			base.ValidateType();
 
+			LoaderUtils.MustOverrideTogether(this, g => g.SaveData, g => g.LoadData);
+			LoaderUtils.MustOverrideTogether(this, g => g.NetSend, g => g.NetReceive);
+			
+			if (InstancePerEntity && !IsCloneable)
+				Logging.tML.Warn($"{GetType().FullName} has {nameof(InstancePerEntity)} but not {nameof(IsCloneable)}. See the documentation on {nameof(IsCloneable)}");
+		}
+
+		protected sealed override void Register() {
 			ModTypeLookup<GlobalItem>.Register(this);
 
 			index = (ushort)ItemLoader.globalItems.Count;
@@ -30,13 +38,6 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() => SetStaticDefaults();
 
 		public GlobalItem Instance(Item item) => Instance(item.globalItems, index);
-
-		/// <summary>
-		/// Create a copy of this instanced GlobalItem. Called when an item is cloned.
-		/// </summary>
-		/// <param name="item">The item being cloned</param>
-		/// <param name="itemClone">The new item</param>
-		public virtual GlobalItem Clone(Item item, Item itemClone) => (GlobalItem)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every item that gets created.
@@ -255,54 +256,101 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify the projectile created by a weapon based on the ammo it is using.
+		/// Whether or not having no ammo prevents an item that uses ammo from shooting.
+		/// Return false to allow shooting with no ammo in the inventory, in which case the item will act as if the default ammo for it is being used.
+		/// Returns true by default.
 		/// </summary>
-		/// <param name="weapon">The item that is using this ammo</param>
-		/// <param name="ammo">The ammo item</param>
-		/// <param name="player">The player using the item</param>
-		/// <param name="type">The ID of the projectile shot</param>
-		/// <param name="speed">The speed of the projectile shot</param>
-		/// <param name="damage">The damage of the projectile shot</param>
-		/// <param name="knockback">The speed of the projectile shot</param>
-		public virtual void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
-		}
-
-		/// <summary>
-		/// Whether or not ammo will be consumed upon usage. Called by the weapon; if at least one of this and <see cref="CanBeConsumedAsAmmo"/> returns false then the ammo will not be used. By default returns true.
-		/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
-		/// </summary>
-		/// <param name="weapon">The item that the player is using</param>
-		/// <param name="player">The player using the item</param>
-		public virtual bool CanConsumeAmmo(Item weapon, Player player) {
+		public virtual bool NeedsAmmo(Item item, Player player) {
 			return true;
 		}
 
 		/// <summary>
-		/// Whether or not ammo will be consumed upon usage. Called by the ammo; if at least one of this and <see cref="CanConsumeAmmo"/> returns false then the ammo will not be used. By default returns true.
-		/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
+		/// Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using.
 		/// </summary>
-		/// <param name="ammo">The ammo item</param>
-		/// <param name="player">The player consuming the ammo</param>
-		public virtual bool CanBeConsumedAsAmmo(Item ammo, Player player) {
+		/// <param name="weapon">The item that is using the given ammo.</param>
+		/// <param name="ammo">The ammo item being used by the given weapon.</param>
+		/// <param name="player">The player using the item.</param>
+		/// <param name="type">The ID of the fired projectile.</param>
+		/// <param name="speed">The speed of the fired projectile.</param>
+		/// <param name="damage">
+		/// The damage modifier for the projectile.<br></br>
+		/// Total weapon damage is included as Flat damage.<br></br>
+		/// Be careful not to apply flat or base damage bonuses which are already applied to the weapon.
+		/// </param>
+		/// <param name="knockback">The knockback of the fired projectile.</param>
+		public virtual void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
+		}
+
+		/// <summary>
+		/// Whether or not the given ammo item is valid for the given weapon; called on the weapon. If this, or <see cref="CanBeChosenAsAmmo"/> on the ammo, returns false, then the ammo will not be valid for this weapon. <br></br>
+		/// By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid. <br></br>
+		/// If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+		/// </summary>
+		/// <param name="weapon">The weapon that this hook is being called for.</param>
+		/// <param name="ammo">The ammo that the weapon is attempting to select.</param>
+		/// <param name="player">The player which this weapon and the potential ammo belong to.</param>
+		/// <returns></returns>
+		public virtual bool? CanChooseAmmo(Item weapon, Item ammo, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Whether or not the given ammo item is valid for the given weapon; called on the ammo. If this, or <see cref="CanChooseAmmo"/> on the weapon, returns false, then the ammo will not be valid for this weapon. <br></br>
+		/// By default, returns null and allows <see cref="Item.useAmmo"/> and <see cref="Item.ammo"/> to decide. Return true to make the ammo valid regardless of these fields, and return false to make it invalid. <br></br>
+		/// If false is returned, the <see cref="CanConsumeAmmo"/>, <see cref="CanBeConsumedAsAmmo"/>, <see cref="OnConsumeAmmo"/>, and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+		/// </summary>
+		/// <param name="ammo">The ammo that this hook is being called for.</param>
+		/// <param name="weapon">The weapon attempting to select the ammo.</param>
+		/// <param name="player">The player which the weapon and this potential ammo belong to.</param>
+		/// <returns></returns>
+		public virtual bool? CanBeChosenAsAmmo(Item ammo, Item weapon, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Whether or not the given ammo item will be consumed; called on the weapon.<br></br>
+		/// By default, returns true; return false to prevent ammo consumption.<br></br>
+		/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
+		/// </summary>
+		/// <param name="weapon">The weapon that this hook is being called for.</param>
+		/// <param name="ammo">The ammo that the weapon is attempting to consume.</param>
+		/// <param name="player">The player which this weapon and the ammo belong to.</param>
+		/// <returns></returns>
+		public virtual bool CanConsumeAmmo(Item weapon, Item ammo, Player player) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when ammo is consumed. Called by the weapon.
-		/// <br>Called before the ammo stack is reduced.</br>
+		/// Whether or not the given ammo item will be consumed; called on the ammo.<br></br>
+		/// By default, returns true; return false to prevent ammo consumption.<br></br>
+		/// If false is returned, the <see cref="OnConsumeAmmo"/> and <see cref="OnConsumedAsAmmo"/> hooks are never called.
 		/// </summary>
-		/// <param name="weapon">The item that the player is using</param>
-		/// <param name="player">The player consuming the ammo</param>
-		public virtual void OnConsumeAmmo(Item weapon, Player player) {
+		/// <param name="ammo">The ammo that this hook is being called for.</param>
+		/// <param name="weapon">The weapon attempting to consume the ammo.</param>
+		/// <param name="player">The player which the weapon and this ammo belong to.</param>
+		/// <returns></returns>
+		public virtual bool CanBeConsumedAsAmmo(Item ammo, Item weapon, Player player) {
+			return true;
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when ammo is consumed. Called by the ammo.
-		/// <br>Called before the ammo stack is reduced.</br>
+		/// Allows you to make things happen when the given ammo is consumed by the given weapon. Called by the weapon.<br></br>
+		/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
 		/// </summary>
-		/// <param name="ammo">The ammo item</param>
-		/// <param name="player">The player consuming the ammo</param>
-		public virtual void OnConsumedAsAmmo(Item ammo, Player player) {
+		/// <param name="weapon">The currently-active weapon.</param>
+		/// <param name="ammo">The ammo that the given weapon is currently using.</param>
+		/// <param name="player">The player which the given weapon and the given ammo belong to.</param>
+		public virtual void OnConsumeAmmo(Item weapon, Item ammo, Player player) {
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given ammo is consumed by the given weapon. Called by the ammo.<br></br>
+		/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
+		/// </summary>
+		/// <param name="ammo">The currently-active ammo.</param>
+		/// <param name="weapon">The weapon that is currently using the given ammo.</param>
+		/// <param name="player">The player which the given weapon and the given ammo belong to.</param>
+		public virtual void OnConsumedAsAmmo(Item ammo, Item weapon, Player player) {
 		}
 
 		/// <summary>
@@ -358,6 +406,31 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to determine whether the given item can catch the given NPC.<br></br>
+		/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+		/// </summary>
+		/// <param name="item">The item with which the player is trying to catch the target NPC.</param>
+		/// <param name="target">The NPC the player is trying to catch.</param>
+		/// <param name="player">The player attempting to catch the NPC.</param>
+		/// <returns></returns>
+		public virtual bool? CanCatchNPC(Item item, NPC target, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given item attempts to catch the given NPC.
+		/// </summary>
+		/// <param name="item">The item used to catch the given NPC.</param>
+		/// <param name="npc">The NPC which the player attempted to catch.</param>
+		/// <param name="player">The player attempting to catch the given NPC.</param>
+		/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
+		public virtual void OnCatchNPC(Item item, NPC npc, Player player, bool failed) {
+		}
+
 		/// Allows you to dynamically modify the given item's size for the given player, similarly to the effect of the Titan Glove.
 		/// </summary>
 		/// <param name="item">The item to modify the scale of.</param>

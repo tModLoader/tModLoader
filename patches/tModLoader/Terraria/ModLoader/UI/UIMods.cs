@@ -44,6 +44,7 @@ namespace Terraria.ModLoader.UI
 		private UIAutoScaleTextTextPanel<string> buttonOMF;
 		private UIAutoScaleTextTextPanel<string> buttonMP;
 		private CancellationTokenSource _cts;
+		private bool forceReloadHidden => ModLoader.autoReloadRequiredModsLeavingModsScreen && !ModCompile.DeveloperMode;
 
 		public override void OnInitialize() {
 			uIElement = new UIElement {
@@ -115,17 +116,23 @@ namespace Terraria.ModLoader.UI
 			buttonDA.OnClick += DisableAll;
 			uIElement.Append(buttonDA);
 
-			buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsReloadMods"));
+			buttonRM = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsForceReload"));
 			buttonRM.CopyStyle(buttonEA);
+			buttonRM.Width = new StyleDimension(-10f, 1f / 3f);
 			buttonRM.HAlign = 1f;
 			buttonRM.WithFadedMouseOver();
 			buttonRM.OnClick += ReloadMods;
 			uIElement.Append(buttonRM);
 
-			buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back"));
-			buttonB.CopyStyle(buttonEA);
-			buttonB.Top.Pixels = -20;
-			buttonB.WithFadedMouseOver();
+			UpdateTopRowButtons();
+
+			buttonB = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
+				Width = new StyleDimension(-10f, 1f / 3f),
+				Height = { Pixels = 40 },
+				VAlign = 1f,
+				Top = { Pixels = -20 }
+			}.WithFadedMouseOver();
+
 			buttonB.OnClick += BackClick;
 
 			uIElement.Append(buttonB);
@@ -230,12 +237,32 @@ namespace Terraria.ModLoader.UI
 			Append(uIElement);
 		}
 
+		// Adjusts sizing and placement of top row buttons according to whether or not
+		// the Force Reload button is being shown.
+		private void UpdateTopRowButtons() {
+			var buttonWidth = new StyleDimension(-10f, 1f / (forceReloadHidden ? 2f : 3f));
+
+			buttonEA.Width = buttonWidth;
+
+			buttonDA.Width = buttonWidth;
+			buttonDA.HAlign = forceReloadHidden ? 1f : 0.5f;
+
+			uIElement.AddOrRemoveChild(buttonRM, ModCompile.DeveloperMode || !forceReloadHidden);
+		}
+
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			// To prevent entering the game with Configs that violate ReloadRequired
 			if (ConfigManager.AnyModNeedsReload()) {
 				Main.menuMode = Interface.reloadModsID;
 				return;
 			}
+
+			// If auto reloading required mods is enabled, check if any mods need reloading and reload as required
+			if (ModLoader.autoReloadRequiredModsLeavingModsScreen && items.Count(i => i.NeedsReload) > 0) {
+				Main.menuMode = Interface.reloadModsID;
+				return;
+			}
+
 			ConfigManager.OnChangedAll();
 
 			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
@@ -358,6 +385,7 @@ namespace Terraria.ModLoader.UI
 			uIPanel.Append(uiLoader);
 			ConfigManager.LoadAll(); // Makes sure MP configs are cleared.
 			Populate();
+			UpdateTopRowButtons();
 		}
 
 		public override void OnDeactivate() {
@@ -369,7 +397,7 @@ namespace Terraria.ModLoader.UI
 
 		internal void Populate() {
 			Task.Factory
-				.StartNew(ModOrganizer.FindMods, _cts.Token)
+				.StartNew(() => ModOrganizer.FindMods(), _cts.Token)
 				.ContinueWith(task => {
 					var mods = task.Result;
 					foreach (var mod in mods) {

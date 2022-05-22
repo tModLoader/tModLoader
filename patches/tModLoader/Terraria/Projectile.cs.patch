@@ -94,16 +94,19 @@
  				for (int j = 0; j < 200; j++) {
  					perIDStaticNPCImmunity[i][j] = 0u;
  				}
-@@ -221,7 +_,34 @@
+@@ -221,7 +_,37 @@
  			}
  		}
  
 +		public void CloneDefaults(int TypeToClone) {
 +			int originalType = type;
-+			ModProjectile originalModProjectile = ModProjectile;
++			var originalModProjectile = ModProjectile;
++			var originalGlobals = globalProjectiles;
 +			SetDefaults(TypeToClone);
 +			type = originalType;
 +			ModProjectile = originalModProjectile;
++			globalProjectiles = originalGlobals;
++
 +			int num = ProjectileID.Sets.TrailCacheLength[type];
 +			if (num != oldPos.Length) {
 +				Array.Resize(ref oldPos, num);
