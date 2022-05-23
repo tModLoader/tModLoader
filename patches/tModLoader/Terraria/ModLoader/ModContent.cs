@@ -467,7 +467,6 @@ namespace Terraria.ModLoader
 			DamageClassLoader.Unload();
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
-			SoundLoader.Unload();
 			PlantLoader.UnloadPlants();
 
 			LoaderManager.Unload();
@@ -528,7 +527,6 @@ namespace Terraria.ModLoader
 			SystemLoader.ResizeArrays();
 
 			if (!Main.dedServ) {
-				SoundLoader.ResizeAndFillArrays();
 				GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
 			}
