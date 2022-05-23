@@ -10,7 +10,7 @@ namespace Terraria.Audio
 		/// <summary>
 		/// Safely attempts to get a currently playing <see cref="ActiveSound"/> instance, tied to the provided <see cref="SlotId"/>.
 		/// </summary>
-		public bool TryGetSound(SlotId id, [NotNullWhen(true)] out ActiveSound? result)
+		public bool TryGetActiveSound(SlotId id, [NotNullWhen(true)] out ActiveSound? result)
 			=> _trackedSounds.TryGetValue(id, out result);
 	}
 }

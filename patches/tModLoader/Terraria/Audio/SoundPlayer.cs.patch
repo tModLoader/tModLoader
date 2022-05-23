@@ -90,7 +90,7 @@
  
 +		//TML: Implementation internalized, moved to SoundPlayer.TML.cs for nullability reasons.
 +		internal ActiveSound GetActiveSound(SlotId id)
-+			=> TryGetSound(id, out var result) ? result : null;
++			=> TryGetActiveSound(id, out var result) ? result : null;
 +		/*
  		public ActiveSound GetActiveSound(SlotId id) {
  			if (!_trackedSounds.Has(id))

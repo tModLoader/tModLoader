@@ -20,14 +20,14 @@ namespace Terraria.Audio
 			return SoundPlayer.Play(in style, position);
 		}
 
-		/// <inheritdoc cref="SoundPlayer.TryGetSound(SlotId, out ActiveSound?)"/>
-		public static bool TryGetSound(SlotId slotId, out ActiveSound? result) {
+		/// <inheritdoc cref="SoundPlayer.TryGetActiveSound(SlotId, out ActiveSound?)"/>
+		public static bool TryGetActiveSound(SlotId slotId, out ActiveSound? result) {
 			if (Main.dedServ || !IsAudioSupported) {
 				result = null;
 				return false;
 			}
 
-			return SoundPlayer.TryGetSound(slotId, out result);
+			return SoundPlayer.TryGetActiveSound(slotId, out result);
 		}
 
 		// Internal redirects
@@ -68,7 +68,7 @@ namespace Terraria.Audio
 			=> PlaySound(in style, position);
 
 		internal static ActiveSound? GetActiveSound(SlotId slotId)
-			=> TryGetSound(slotId, out var result) ? result : null;
+			=> TryGetActiveSound(slotId, out var result) ? result : null;
 
 		// Utilities
 
