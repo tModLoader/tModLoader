@@ -179,7 +179,7 @@ var NAVTREEINDEX =
 "struct_terraria_1_1_data_structures_1_1_point16.html#ac72e27e072caf88e3fd599ea010a2a63",
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a1898593a231e4e58a8974d476cc42d3c",
 "struct_terraria_1_1_mod_loader_1_1_pos_data.html#aafc0c7a72c5f4aff5d2de7e021b10294",
-"struct_terraria_1_1_u_i_1_1_calculated_style.html#aa4526da68e51833be2cb9cc9de21f57a"
+"struct_terraria_1_1_u_i_1_1_calculated_style.html#a50773a071cecc45a18b380522d0088b8"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
