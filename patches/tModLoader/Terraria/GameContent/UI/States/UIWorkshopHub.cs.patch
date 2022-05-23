@@ -77,7 +77,7 @@
 +			modBrowser.VAlign = 0.5f;
 +			uIElement2.Append(modBrowser);
 +
-+			var tbd = MakeButton_TBD();
++			var tbd = MakeButton_ModPackMenu();
 +			tbd.HAlign = 1f;
 +			tbd.VAlign = 0.5f;
 +			uIElement2.Append(tbd);
@@ -100,8 +100,8 @@
 +			if (listeningElement == _buttonModBrowser)
 +				localizedText = Language.GetText("tModLoader.MenuDownloadModsDescription");
 +
-+			if (listeningElement == _buttonTBD)
-+				localizedText = Language.GetText("Not Implemented in tModLoader 1.4");
++			if (listeningElement == _buttonModPack)
++				localizedText = Language.GetText("tModLoader.MenuModPackDescription");
 +
  			if (listeningElement == _buttonUseResourcePacks)
  				localizedText = Language.GetText("Workshop.HubDescriptionUseResourcePacks");

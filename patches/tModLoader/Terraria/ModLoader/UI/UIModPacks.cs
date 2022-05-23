@@ -1,7 +1,8 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -17,7 +18,7 @@ using Terraria.Audio;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModPacks : UIState
+	internal class UIModPacks : UIState, IHaveBackButtonCommand
 	{
 		internal const string MODPACK_REGEX = "[^a-zA-Z0-9_.-]+";
 		internal static string ModPacksDirectory = Path.Combine(ModLoader.ModPath, "ModPacks");
@@ -27,6 +28,7 @@ namespace Terraria.ModLoader.UI
 		private UILoaderAnimatedImage _uiLoader;
 		private UIPanel _scrollPanel;
 		private CancellationTokenSource _cts;
+		public UIState PreviousUIState { get; set; }
 
 		public override void OnInitialize() {
 			var uIElement = new UIElement {
@@ -41,20 +43,20 @@ namespace Terraria.ModLoader.UI
 
 			_scrollPanel = new UIPanel {
 				Width = { Percent = 1f },
-				Height = { Pixels = -65, Percent = 1f },
+				Height = { Pixels = -65, Percent = 0.9f },
 				BackgroundColor = UICommon.MainPanelBackground
 			};
 			uIElement.Append(_scrollPanel);
 
 			_modPacks = new UIList {
 				Width = { Pixels = -25, Percent = 1f },
-				Height = { Percent = 1f },
+				Height = { Percent = 0.9f },
 				ListPadding = 5f
 			};
 			_scrollPanel.Append(_modPacks);
 
 			var uIScrollbar = new UIScrollbar {
-				Height = { Percent = 1f },
+				Height = { Percent = 0.9f },
 				HAlign = 1f
 			}.WithView(100f, 1000f);
 			_scrollPanel.Append(uIScrollbar);
@@ -67,10 +69,21 @@ namespace Terraria.ModLoader.UI
 			}.WithPadding(15f);
 			uIElement.Append(titleTextPanel);
 
+			var folderButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.OpenModPackFolder")) {
+				Width = new StyleDimension(-10f, 1f / 2f),
+				Height = { Pixels = 40 },
+				VAlign = 0.9f,
+				HAlign = 0f,
+				Top = { Pixels = -20 }
+			}.WithFadedMouseOver();
+			folderButton.OnClick += OpenFolder;
+			uIElement.Append(folderButton);
+
 			var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
 				Width = new StyleDimension(-10f, 1f / 2f),
 				Height = { Pixels = 40 },
 				VAlign = 1f,
+				HAlign = 0f,
 				Top = { Pixels = -20 }
 			}.WithFadedMouseOver();
 			backButton.OnClick += BackClick;
@@ -79,6 +92,7 @@ namespace Terraria.ModLoader.UI
 			var saveNewButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"));
 			saveNewButton.CopyStyle(backButton);
 			saveNewButton.TextColor = Color.Green;
+			saveNewButton.VAlign = 1f;
 			saveNewButton.HAlign = 1f;
 			saveNewButton.WithFadedMouseOver();
 			saveNewButton.OnClick += SaveNewModList;
@@ -90,7 +104,7 @@ namespace Terraria.ModLoader.UI
 		private static UIVirtualKeyboard _virtualKeyboard;
 		private static UIVirtualKeyboard VirtualKeyboard =>
 			_virtualKeyboard ?? (_virtualKeyboard = new UIVirtualKeyboard(
-				Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", SaveModList, () => Main.menuMode = Interface.modPacksMenuID));
+				Language.GetTextValue("tModLoader.ModPacksEnterModPackName"), "", SaveModPack, () => Main.menuMode = Interface.modPacksMenuID));
 
 		private static void SaveNewModList(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(11);
@@ -99,29 +113,91 @@ namespace Terraria.ModLoader.UI
 			Main.menuMode = 888;
 		}
 
-		public static void SaveModList(string filename) {
+		public static void SaveModPack(string filename) {
 			// Sanitize input if not valid
 			if (!IsValidModpackName(filename)) {
 				VirtualKeyboard.Text = SanitizeModpackName(filename);
 				return;
 			}
-			// TODO
-			//Main.menuMode = Interface.modsMenuID;
 
-			//SoundEngine.PlaySound(10, -1, -1, 1);
+			if (!Directory.Exists(Config.ConfigManager.ModConfigPath))
+				Directory.CreateDirectory(Config.ConfigManager.ModConfigPath);
+
+			string configsPath = Path.Combine(ModPacksDirectory, filename, "configs");
+			Directory.CreateDirectory(configsPath);
+			var configsAll = Directory.EnumerateFiles(Config.ConfigManager.ModConfigPath);
+
+			string modsPath = Path.Combine(ModPacksDirectory, filename, "mods");
+			Directory.CreateDirectory(modsPath);
+
+			var modsSteamAll = ModOrganizer.FindMods(true);
+			var workshopIds = new List<string>();
+
+			var modsManualAll = Directory.EnumerateFiles(ModOrganizer.modPath, "*.tmod");
+
+			foreach (var enabled in ModLoader.EnabledMods) {
+				// Export Config Files
+				foreach (var config in configsAll) {
+					if (!config.Contains(enabled))
+						continue;
+
+					File.Copy(config, Path.Combine(configsPath, Path.GetFileName(config)));
+					break;
+				}
+
+				// Prep work for export workshop mods to a download manager list
+				foreach (var mod in modsSteamAll) {
+					if (mod.Name != enabled)
+						continue;
+
+					string parentDir = ModOrganizer.GetParentDir(mod.modFile.path);
+					if (!ModOrganizer.TryReadManifest(parentDir, out var info))
+						continue;
+
+					workshopIds.Add(info.workshopEntryId.ToString());
+					break;
+				}
+
+				// Export non-workshop mods to the modpack
+				foreach (var mod in modsManualAll) {
+					if (!mod.Contains(enabled))
+						continue;
+
+					File.Copy(mod, Path.Combine(modsPath, Path.GetFileName(mod)));
+					break;
+				}
+			}
+
+			// Export enabled.json to the modpack
+			string enabledJson = Path.Combine(ModOrganizer.modPath, "enabled.json");
+			File.Copy(enabledJson, Path.Combine(modsPath, "enabled.json"), true);
+
+			// Write the required workshop mods to install.txt
+			File.Delete(Path.Combine(modsPath, "install.txt"));
+			File.WriteAllLines(Path.Combine(modsPath, "install.txt"), workshopIds);
+
+
+			// Legacy code we need to port forward???
+			/*
 			Directory.CreateDirectory(ModPacksDirectory);
 
 			string path = Path.Combine(ModPacksDirectory, filename + ".json");
 			var foundMods = ModOrganizer.FindMods().Select(x => x.Name).Intersect(ModLoader.EnabledMods).ToList();
 			string json = JsonConvert.SerializeObject(foundMods, Formatting.Indented);
 			File.WriteAllText(path, json);
+			*/
 
-			Main.menuMode = Interface.modPacksMenuID; // should reload
+			Interface.modPacksMenu.OnDeactivate(); // should reload
+			Interface.modPacksMenu.OnActivate(); // should reload
 		}
 
-		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(11);
-			Main.menuMode = Interface.modsMenuID;
+			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
+		}
+
+		private void OpenFolder(UIMouseEvent evt, UIElement listeningElement) {
+			Utils.OpenFolder(ModPacksDirectory);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
@@ -151,16 +227,28 @@ namespace Terraria.ModLoader.UI
 				.StartNew(delegate {
 					Mods = ModOrganizer.FindMods().Select(m => m.Name).ToArray();
 					Directory.CreateDirectory(ModPacksDirectory);
-					return Directory.GetFiles(ModPacksDirectory, "*.json", SearchOption.TopDirectoryOnly);
+					var dirs = Directory.GetDirectories(ModPacksDirectory, "*", SearchOption.TopDirectoryOnly);
+					var files = Directory.GetFiles(ModPacksDirectory, "*.json", SearchOption.TopDirectoryOnly);
+					return files.Concat(dirs);
 				}, _cts.Token)
+
 				.ContinueWith(task => {
 					foreach (string modPackPath in task.Result) {
 						try {
 							if (!IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath))) {
 								throw new Exception();
 							}
-							string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(modPackPath));
-							_modPacks.Add(new UIModPackItem(Path.GetFileNameWithoutExtension(modPackPath), modPackMods));
+
+							if (Directory.Exists(modPackPath)) {
+								string enabledJson = Path.Combine(modPackPath, "mods", "enabled.json");
+								string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(enabledJson));
+								_modPacks.Add(new UIModPackItem(modPackPath, modPackMods, false));
+							}
+								
+							else {
+								string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(modPackPath));
+								_modPacks.Add(new UIModPackItem(Path.GetFileNameWithoutExtension(modPackPath), modPackMods, true));
+							}
 						}
 						catch {
 							var badModPackMessage = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackMalformed", Path.GetFileName(modPackPath))) {

@@ -157,19 +157,53 @@ namespace Terraria.Social.Steam
 				Task.Run(() => TaskDownload(counter, uiProgress, items));
 			}
 
-			private static void TaskDownload(int counter, UIWorkshopDownload uiProgress, List<ModDownloadItem> items) {
-				var item = items[counter++];
-				var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
+			internal static void DownloadBatch(string[] workshopIds, UI.UIState returnMenu) {
+				//Set UIWorkshopDownload
+				UIWorkshopDownload uiProgress = null;		
 
-				uiProgress?.PrepUIForDownload(item.DisplayName);
-				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
-				mod.InnerDownload(uiProgress, item.HasUpdate);
+				if (!Main.dedServ) {
+					uiProgress = new UIWorkshopDownload(Interface.modPacksMenu);
+					Main.MenuUI.SetState(uiProgress);
+				}
 
-				if (counter == items.Count) {
-					uiProgress?.Leave();
+				int counter = 0;
+
+				Task.Run(() => TaskDownload(counter, uiProgress, ids: workshopIds));
+			}
+
+			private static void TaskDownload(int counter, UIWorkshopDownload uiProgress, List<ModDownloadItem> items = null, string[] ids = null) {
+				string name = "";
+				bool hasUpdate = false;
+				ModManager mod = null;
+				int endCount = 0;
+
+				if (items == null) {
+					var id = ids[counter++];
+					mod = new ModManager(new PublishedFileId_t(ulong.Parse(id)));
+
+					hasUpdate = mod.NeedsUpdate() || !mod.IsInstalled();
+					name = id;
+					endCount = ids.Length;
+				}
+
+				if (ids == null) {
+					var item = items[counter++];
+					mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
+
+					hasUpdate = item.HasUpdate;
+					name = item.DisplayName;
+					endCount = items.Count;
+				}
+
+				uiProgress?.PrepUIForDownload(name);
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", name));
+				mod.InnerDownload(uiProgress, hasUpdate);
+
+				if (counter == endCount) {
+					uiProgress?.Leave(items != null);
 
 					// Restore Enabled items.
-					if (enabledItems.Count > 0) {
+					if (enabledItems?.Count > 0) {
 						foreach (var localMod in enabledItems) {
 							localMod.Enabled = true;
 						}
@@ -177,7 +211,7 @@ namespace Terraria.Social.Steam
 					}
 				}
 				else
-					Task.Run(() => TaskDownload(counter, uiProgress, items));
+					Task.Run(() => TaskDownload(counter, uiProgress, items, ids));
 			}
 
 			private EResult downloadResult;
