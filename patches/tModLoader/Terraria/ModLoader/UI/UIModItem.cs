@@ -155,6 +155,7 @@ namespace Terraria.ModLoader.UI
 				Append(_keyImage);
 
 				_modName.Left.Pixels += _keyImage.Width.Pixels + PADDING * 2f;
+				_modName.Recalculate();
 			}
 
 			/*
