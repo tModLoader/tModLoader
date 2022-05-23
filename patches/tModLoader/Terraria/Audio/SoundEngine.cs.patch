@@ -31,22 +31,12 @@
  		public static void PlaySound(int type, Vector2 position, int style = 1) {
  			PlaySound(type, (int)position.X, (int)position.Y, style);
  		}
-@@ -82,6 +_,7 @@
- 				return LegacySoundPlayer.PlaySound(type, x, y, Style, volumeScale, pitchOffset);
- 
- 		}
-+		*/
- 
- 		public static ActiveSound GetActiveSound(SlotId id) {
- 			if (Main.dedServ) // #if SERVER
-@@ -93,16 +_,21 @@
+@@ -93,16 +_,19 @@
  			return SoundPlayer.GetActiveSound(id);
  		}
  
-+		/*
- 		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position) {
-+		*/
-+		public static SlotId PlayTrackedSound(in SoundStyle style, Vector2? position = null) {
+-		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position) {
++		public static SlotId PlayTrackedSound(SoundStyle style, Vector2? position = null) {
  			if (Main.dedServ) // #if SERVER
  				return SlotId.Invalid;
  
@@ -56,6 +46,7 @@
 -			return SoundPlayer.Play(style, position);
 +			return SoundPlayer.Play(in style, position);
  		}
++		*/
  
 +		//TML: Merged into the above method.
 +		/*

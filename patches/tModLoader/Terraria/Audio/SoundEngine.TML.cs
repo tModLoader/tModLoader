@@ -12,19 +12,33 @@ namespace Terraria.Audio
 	{
 		// Public API methods
 
-		public static SoundEffectInstance? PlaySound(in SoundStyle type, Vector2? position = null) {
-			SlotId slot = PlayTrackedSound(in type, position);
+		public static SlotId PlaySound(in SoundStyle style, Vector2? position = null) {
+			if (Main.dedServ || !IsAudioSupported) {
+				return SlotId.Invalid;
+			}
 
-			return slot.IsValid ? GetActiveSound(slot)?.Sound : null;
+			return SoundPlayer.Play(in style, position);
+		}
+
+		/// <inheritdoc cref="SoundPlayer.TryGetSound(SlotId, out ActiveSound?)"/>
+		public static bool TryGetSound(SlotId slotId, out ActiveSound? result) {
+			if (Main.dedServ || !IsAudioSupported) {
+				result = null;
+				return false;
+			}
+
+			return SoundPlayer.TryGetSound(slotId, out result);
 		}
 
 		// Internal redirects
 
-		internal static SoundEffectInstance? PlaySound(SoundStyle? type, Vector2? position = null) {
-			if (type == null)
+		internal static SoundEffectInstance? PlaySound(SoundStyle? style, Vector2? position = null) {
+			if (style == null)
 				return null;
+			
+			var slotId = PlaySound(style.Value, position);
 
-			return PlaySound(type.Value, position);
+			return slotId.IsValid ? GetActiveSound(slotId)?.Sound : null;
 		}
 
 		internal static SoundEffectInstance? PlaySound(SoundStyle? type, int x, int y) //(SoundStyle type, int x = -1, int y = -1)
@@ -45,8 +59,16 @@ namespace Terraria.Audio
 				Pitch = soundStyle.Pitch + pitchOffset
 			};
 
-			return PlaySound(soundStyle, XYToOptionalPosition(x, y));
+			var slotId = PlaySound(soundStyle, XYToOptionalPosition(x, y));
+
+			return slotId.IsValid ? GetActiveSound(slotId)?.Sound : null;
 		}
+
+		internal static SlotId PlayTrackedSound(in SoundStyle style, Vector2? position = null)
+			=> PlaySound(in style, position);
+
+		internal static ActiveSound? GetActiveSound(SlotId slotId)
+			=> TryGetSound(slotId, out var result) ? result : null;
 
 		// Utilities
 
