@@ -1,6 +1,6 @@
 steamcmd +force_install_dir ../tmod +login anonymous +app_update 1281930 +quit
 
-input="installed.txt"
+input="install.txt"
 if [ -f "$input" ] ; then
 	str="+force_install_dir ../tmod +login anonymous"
 	while read -r line

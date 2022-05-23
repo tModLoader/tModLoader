@@ -18,7 +18,7 @@ using Terraria.Audio;
 
 namespace Terraria.ModLoader.UI
 {
-	internal class UIModPacks : UIState
+	internal class UIModPacks : UIState, IHaveBackButtonCommand
 	{
 		internal const string MODPACK_REGEX = "[^a-zA-Z0-9_.-]+";
 		internal static string ModPacksDirectory = Path.Combine(ModLoader.ModPath, "ModPacks");
@@ -28,6 +28,7 @@ namespace Terraria.ModLoader.UI
 		private UILoaderAnimatedImage _uiLoader;
 		private UIPanel _scrollPanel;
 		private CancellationTokenSource _cts;
+		public UIState PreviousUIState { get; set; }
 
 		public override void OnInitialize() {
 			var uIElement = new UIElement {
@@ -107,10 +108,15 @@ namespace Terraria.ModLoader.UI
 				return;
 			}
 
+			if (!Directory.Exists(Config.ConfigManager.ModConfigPath))
+				Directory.CreateDirectory(Config.ConfigManager.ModConfigPath);
+
 			string configsPath = Path.Combine(ModPacksDirectory, filename, "configs");
+			Directory.CreateDirectory(configsPath);
 			var configsAll = Directory.EnumerateFiles(Config.ConfigManager.ModConfigPath);
 
 			string modsPath = Path.Combine(ModPacksDirectory, filename, "mods");
+			Directory.CreateDirectory(modsPath);
 
 			var modsSteamAll = ModOrganizer.FindMods(true);
 			var workshopIds = new List<string>();
@@ -152,10 +158,11 @@ namespace Terraria.ModLoader.UI
 
 			// Export enabled.json to the modpack
 			string enabledJson = Path.Combine(ModOrganizer.modPath, "enabled.json");
-			File.Copy(enabledJson, Path.Combine(modsPath, "enabled.json"));
+			File.Copy(enabledJson, Path.Combine(modsPath, "enabled.json"), true);
 
 			// Write the required workshop mods to install.txt
-			File.WriteAllLinesAsync(Path.Combine(modsPath, "install.txt"), workshopIds);
+			File.Delete(Path.Combine(modsPath, "install.txt"));
+			File.WriteAllLines(Path.Combine(modsPath, "install.txt"), workshopIds);
 
 
 			// Legacy code we need to port forward???
@@ -168,12 +175,13 @@ namespace Terraria.ModLoader.UI
 			File.WriteAllText(path, json);
 			*/
 
-			Main.menuMode = Interface.modPacksMenuID; // should reload
+			Interface.modPacksMenu.OnDeactivate(); // should reload
+			Interface.modPacksMenu.OnActivate(); // should reload
 		}
 
-		private static void BackClick(UIMouseEvent evt, UIElement listeningElement) {
+		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(11);
-			Main.menuMode = Interface.modsMenuID;
+			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {

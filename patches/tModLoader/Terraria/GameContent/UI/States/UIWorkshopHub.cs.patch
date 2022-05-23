@@ -100,8 +100,8 @@
 +			if (listeningElement == _buttonModBrowser)
 +				localizedText = Language.GetText("tModLoader.MenuDownloadModsDescription");
 +
-+			if (listeningElement == _buttonTBD)
-+				localizedText = Language.GetText("Not Implemented in tModLoader 1.4");
++			if (listeningElement == _buttonModPack)
++				localizedText = Language.GetText("tModLoader.MenuModPackDescription");
 +
  			if (listeningElement == _buttonUseResourcePacks)
  				localizedText = Language.GetText("Workshop.HubDescriptionUseResourcePacks");
