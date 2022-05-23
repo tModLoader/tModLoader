@@ -39,7 +39,7 @@ namespace Terraria.ModLoader.Core
 						}
 
 						var msg = $"{type.FullName} has reference fields ({string.Join(", ", fields.Select(f => f.Name))}) that may not be safe to share between clones." + Environment.NewLine +
-								$"For deep-cloning, add a custom Clone override. If shallow (memberwise) cloning is acceptable, mark the fields with [{nameof(CloneByReference)}] or properties with [field: {nameof(CloneByReference)}]";
+								$"For deep-cloning, add a custom Clone override and make proper copies of these fields. If shallow (memberwise) cloning is acceptable, mark the fields with [{nameof(CloneByReference)}] or properties with [field: {nameof(CloneByReference)}]";
 						Logging.tML.Warn(msg);
 					}
 
