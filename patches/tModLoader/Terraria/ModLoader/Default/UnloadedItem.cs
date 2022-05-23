@@ -8,9 +8,8 @@ namespace Terraria.ModLoader.Default
 	[LegacyName("MysteryItem")]
 	public sealed class UnloadedItem : ModLoaderModItem
 	{
+		[CloneByReference] // safe to share between clones, because it cannot be changed after creation/load
 		private TagCompound data;
-
-		public override bool IsCloneable => true; // safe to share 'data' between clones, because it cannot be changed after creation/load
 
 		public string ModName { get; private set; }
 		public string ItemName { get; private set; }

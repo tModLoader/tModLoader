@@ -443,9 +443,7 @@ namespace Terraria.ModLoader
 
 		//TODO: Unhardcode ALL of this.
 		internal static void Unload() {
-			ContentInstance.Clear();
-			ModTypeLookup.Clear();
-			LoaderUtils.ClearTypeInfo();
+			TypeCaching.Clear();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			PrefixLoader.Unload();

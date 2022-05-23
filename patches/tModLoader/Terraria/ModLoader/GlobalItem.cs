@@ -22,9 +22,9 @@ namespace Terraria.ModLoader
 
 			LoaderUtils.MustOverrideTogether(this, g => g.SaveData, g => g.LoadData);
 			LoaderUtils.MustOverrideTogether(this, g => g.NetSend, g => g.NetReceive);
-			
-			if (InstancePerEntity && !IsCloneable)
-				Logging.tML.Warn($"{GetType().FullName} has {nameof(InstancePerEntity)} but not {nameof(IsCloneable)}. See the documentation on {nameof(IsCloneable)}");
+
+			if (!IsCloneable)
+				Cloning.WarnNotCloneable(GetType());
 		}
 
 		protected sealed override void Register() {

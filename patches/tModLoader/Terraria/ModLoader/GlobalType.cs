@@ -77,11 +77,12 @@ namespace Terraria.ModLoader
 
 	public abstract class GlobalType<TEntity, TGlobal> : GlobalType where TGlobal : GlobalType<TEntity, TGlobal>
 	{
+		private bool? _isCloneable;
 		/// <summary>
-		/// Whether or not this type is cloneable. By default, cloning is supported if this type has only value typed fields, or if it overrides <see cref="Clone"/><br/>
-		/// If this type has reference fields, which are safe to share between clones then override this property to return true.
+		/// Whether or not this type is cloneable. Cloning is supported if<br/>
+		/// all reference typed fields in each sub-class which doesn't override Clone are marked with [CloneByReference]
 		/// </summary>
-		public virtual bool IsCloneable => LoaderUtils.IsCloneable<GlobalType<TEntity, TGlobal>, Func<TEntity, TEntity, TGlobal>>(this, m => m.Clone);
+		public virtual bool IsCloneable => _isCloneable ??= Cloning.IsCloneable<GlobalType<TEntity, TGlobal>, Func<TEntity, TEntity, TGlobal>>(this, m => m.Clone);
 
 		/// <summary>
 		/// Whether to create new instances of this mod type via <see cref="Clone"/> or via the default constructor
@@ -108,7 +109,7 @@ namespace Terraria.ModLoader
 		/// <returns>A clone of this global</returns>
 		public virtual TGlobal Clone(TEntity from, TEntity to) {
 			if (!IsCloneable)
-				throw new NotSupportedException($"{GetType().FullName} has non value typed fields, but does not override {nameof(Clone)} or {nameof(IsCloneable)}");
+				Cloning.WarnNotCloneable(GetType());
 
 			return (TGlobal)MemberwiseClone();
 		}
