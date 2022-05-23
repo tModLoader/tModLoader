@@ -10,10 +10,10 @@ using Terraria.Utilities;
 
 namespace Terraria.Audio
 {
-	public enum MaxSoundInstancesBehavior
+	public enum SoundLimitBehavior
 	{
-		DontPlay,
-		Restart,
+		IgnoreNew,
+		ReplaceOldest,
 	}
 
 	// Completely reimplemented by TML.
@@ -57,7 +57,7 @@ namespace Terraria.Audio
 		public int MaxInstances { get; set; } = 1;
 
 		/// <summary> Determines what the action taken when the max amount of sound instances is reached. </summary>
-		public MaxSoundInstancesBehavior MaxInstancesBehavior { get; set; } = MaxSoundInstancesBehavior.Restart;
+		public SoundLimitBehavior SoundLimitBehavior { get; set; } = SoundLimitBehavior.ReplaceOldest;
 
 		/// <summary> If true, this sound won't play if the game's window isn't selected. </summary>
 		public bool PlayOnlyIfFocused { get; set; } = false;

@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 using Terraria.Audio;
-using static Terraria.Audio.MaxSoundInstancesBehavior;
+using static Terraria.Audio.SoundLimitBehavior;
 using static Terraria.ID.SoundID.SoundStyleDefaults;
 
 namespace Terraria.ID
@@ -37,15 +37,15 @@ namespace Terraria.ID
 		public static readonly SoundStyle ZombieMoan = new($"{Prefix}Zombie_", 0, 3) { Volume = 0.4f };
 		public static readonly SoundStyle SandShark = new($"{Prefix}Zombie_7") { Volume = 0.4f }; // New field
 		public static readonly SoundStyle BloodZombie = new($"{Prefix}Zombie_", 21, 3) { Volume = 0.4f }; // New field
-		public static readonly SoundStyle Roar = new($"{Prefix}Roar_0") { Identifier = "Terraria/Roar", MaxInstancesBehavior = DontPlay };
-		public static readonly SoundStyle WormDig = new($"{Prefix}Roar_1") { MaxInstancesBehavior = DontPlay }; // New field
+		public static readonly SoundStyle Roar = new($"{Prefix}Roar_0") { Identifier = "Terraria/Roar", SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle WormDig = new($"{Prefix}Roar_1") { SoundLimitBehavior = IgnoreNew }; // New field
 		public static readonly SoundStyle WormDigQuiet = WormDig with { Volume = 0.25f }; // New field
-		public static readonly SoundStyle ScaryScream = new($"{Prefix}Roar_2") { MaxInstancesBehavior = DontPlay }; // New field
+		public static readonly SoundStyle ScaryScream = new($"{Prefix}Roar_2") { SoundLimitBehavior = IgnoreNew }; // New field
 		public static readonly SoundStyle DoubleJump = new($"{Prefix}Double_Jump") { PitchVariance = 0.2f };
 		public static readonly SoundStyle Run = new($"{Prefix}Run") { PitchVariance = 0.2f };
 		public static readonly SoundStyle Coins = new($"{Prefix}Coins");
-		public static readonly SoundStyle Splash = new($"{Prefix}Splash_0") { PitchVariance = 0.2f, MaxInstancesBehavior = DontPlay };
-		public static readonly SoundStyle SplashWeak = new($"{Prefix}Splash_1") { PitchVariance = 0.2f, MaxInstancesBehavior = DontPlay };
+		public static readonly SoundStyle Splash = new($"{Prefix}Splash_0") { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle SplashWeak = new($"{Prefix}Splash_1") { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 		public static readonly SoundStyle FemaleHit = new($"{Prefix}Female_Hit_", 0, 3);
 		public static readonly SoundStyle Tink = new($"{Prefix}Tink_", 0, 3);
 		public static readonly SoundStyle Unlock = new($"{Prefix}Unlock");
@@ -53,8 +53,8 @@ namespace Terraria.ID
 		public static readonly SoundStyle Chat = new($"{Prefix}Chat");
 		public static readonly SoundStyle MaxMana = new($"{Prefix}MaxMana");
 		public static readonly SoundStyle Mummy = new($"{Prefix}Zombie_", 3, 2) { Volume = 0.9f, PitchVariance = 0.2f };
-		public static readonly SoundStyle Pixie = new($"{Prefix}Pixie") { PitchVariance = 0.2f, MaxInstancesBehavior = DontPlay };
-		public static readonly SoundStyle Mech = new($"{Prefix}Mech_0") { PitchVariance = 0.2f, MaxInstancesBehavior = DontPlay };
+		public static readonly SoundStyle Pixie = new($"{Prefix}Pixie") { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle Mech = new($"{Prefix}Mech_0") { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 
 		//public static readonly SoundStyle Zombie = new($"{Prefix}Zombie_", 3, 2);
 		
@@ -65,10 +65,10 @@ namespace Terraria.ID
 		};
 		public static readonly SoundStyle Frog = new($"{Prefix}Zombie_13", SoundType.Ambient) { Volume = 0.35f, PitchRange = (-0.4f, 0.2f) };
 		//TODO: Inaccurate variants, search & analyze "PlaySound(32," in vanilla src.
-		public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", 14, 5, SoundType.Ambient) { Volume = 0.15f, PitchRange = (-0.7f, 0.26f), MaxInstancesBehavior = DontPlay };
-		public static readonly SoundStyle Critter = new($"{Prefix}Zombie_15", SoundType.Ambient) { Volume = 0.2f, PitchRange = (-0.1f, 0.3f), MaxInstancesBehavior = DontPlay };
-		public static readonly SoundStyle Waterfall = new($"{Prefix}Liquid_0", SoundType.Ambient) { Volume = 0.2f, MaxInstancesBehavior = DontPlay };
-		public static readonly SoundStyle Lavafall = new($"{Prefix}Liquid_1", SoundType.Ambient) { Volume = 0.65f, MaxInstancesBehavior = DontPlay };
+		public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", 14, 5, SoundType.Ambient) { Volume = 0.15f, PitchRange = (-0.7f, 0.26f), SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle Critter = new($"{Prefix}Zombie_15", SoundType.Ambient) { Volume = 0.2f, PitchRange = (-0.1f, 0.3f), SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle Waterfall = new($"{Prefix}Liquid_0", SoundType.Ambient) { Volume = 0.2f, SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle Lavafall = new($"{Prefix}Liquid_1", SoundType.Ambient) { Volume = 0.65f, SoundLimitBehavior = IgnoreNew };
 		public static readonly SoundStyle ForceRoar = new($"{Prefix}Roar_0") { Identifier = "Terraria/Roar" };
 		public static readonly SoundStyle ForceRoarPitched = new($"{Prefix}Roar_0") { Pitch = 0.6f, Identifier = "Terraria/Roar" };
 		public static readonly SoundStyle Meowmere = new($"{Prefix}Item_", 57, 2) { PitchVariance = 0.8f };
@@ -79,7 +79,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle MoonLord = new($"{Prefix}NPC_Killed_10") { PitchVariance = 0.2f };
 		public static readonly SoundStyle Thunder = new($"{Prefix}Thunder_", 0, 7, SoundType.Ambient) { MaxInstances = 7, PitchVariance = 0.2f, };
 		public static readonly SoundStyle Seagull = new($"{Prefix}Zombie_", 106, 3) { Volume = 0.2f, PitchRange = (-0.7f, 0f) };
-		public static readonly SoundStyle Dolphin = new($"{Prefix}Zombie_109") { Volume = 0.3f, PitchVariance = 0.2f, MaxInstancesBehavior = DontPlay };
+		public static readonly SoundStyle Dolphin = new($"{Prefix}Zombie_109") { Volume = 0.3f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 		// Explanation: There is a 1 in 300 chance for an owl to play a 'funni' easter egg sound variant.
 		public static readonly SoundStyle Owl = new($"{Prefix}Zombie_", stackalloc (int, float)[] { (110, 300f), (2, 300f), (112, 1f), (113, 1f), (114, 1f), }) {
 			PitchVariance = 0.2f
@@ -102,7 +102,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle DrumFloorTom = new($"{Prefix}Item_62") { Volume = 0.7f, Identifier = "Terraria/Drums" };
 		public static readonly SoundStyle Research = new($"{Prefix}Research_", 1, 3);
 		public static readonly SoundStyle ResearchComplete = new($"{Prefix}Research_0");
-		public static readonly SoundStyle QueenSlime = new($"{Prefix}Zombie_", 115, 3) { Volume = 0.5f, MaxInstancesBehavior = DontPlay };
+		public static readonly SoundStyle QueenSlime = new($"{Prefix}Zombie_", 115, 3) { Volume = 0.5f, SoundLimitBehavior = IgnoreNew };
 		// End of replaced IDs.
 
 		public static readonly SoundStyle NPCHit1 = NPCHitSound(1);
@@ -161,7 +161,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle NPCHit54 = NPCHitSound(54) with { Volume = 0.5f };
 		public static readonly SoundStyle NPCHit55 = NPCHitSound(55) with { Volume = 0.5f };
 		public static readonly SoundStyle NPCHit56 = NPCHitSound(56) with { Volume = 0.5f };
-		public static readonly SoundStyle NPCHit57 = NPCHitSound(57) with { Volume = 0.6f, MaxInstancesBehavior = DontPlay };
+		public static readonly SoundStyle NPCHit57 = NPCHitSound(57) with { Volume = 0.6f, SoundLimitBehavior = IgnoreNew };
 		public static int NPCHitCount = 58; // Added by tML
 		public static readonly SoundStyle NPCDeath1 = NPCDeathSound(1);
 		public static readonly SoundStyle NPCDeath2 = NPCDeathSound(2);
@@ -172,7 +172,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle NPCDeath7 = NPCDeathSound(7);
 		public static readonly SoundStyle NPCDeath8 = NPCDeathSound(8);
 		public static readonly SoundStyle NPCDeath9 = NPCDeathSound(9);
-		public static readonly SoundStyle NPCDeath10 = NPCDeathSound(10) with { MaxInstancesBehavior = DontPlay };
+		public static readonly SoundStyle NPCDeath10 = NPCDeathSound(10) with { SoundLimitBehavior = IgnoreNew };
 		public static readonly SoundStyle NPCDeath11 = NPCDeathSound(11);
 		public static readonly SoundStyle NPCDeath12 = NPCDeathSound(12);
 		public static readonly SoundStyle NPCDeath13 = NPCDeathSound(13);
@@ -281,9 +281,9 @@ namespace Terraria.ID
 		public static readonly SoundStyle Item50 = ItemSound(50);
 		public static readonly SoundStyle Item51 = ItemSound(51);
 		public static readonly SoundStyle Item52 = ItemSound(52) with { Volume = 0.35f };
-		public static readonly SoundStyle Item53 = ItemSound(53) with { Volume = 0.75f, PitchRange = (-0.4f, -0.2f), MaxInstancesBehavior = DontPlay };
+		public static readonly SoundStyle Item53 = ItemSound(53) with { Volume = 0.75f, PitchRange = (-0.4f, -0.2f), SoundLimitBehavior = IgnoreNew };
 		public static readonly SoundStyle Item54 = ItemSound(54);
-		public static readonly SoundStyle Item55 = ItemSound(55) with { Volume = 0.75f * 0.75f, PitchRange = (-0.4f, -0.2f), MaxInstancesBehavior = DontPlay };
+		public static readonly SoundStyle Item55 = ItemSound(55) with { Volume = 0.75f * 0.75f, PitchRange = (-0.4f, -0.2f), SoundLimitBehavior = IgnoreNew };
 		public static readonly SoundStyle Item56 = ItemSound(56);
 		public static readonly SoundStyle Item57 = ItemSound(57);
 		public static readonly SoundStyle Item58 = ItemSound(58);
@@ -387,7 +387,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle Item156 = ItemSound(156) with { Volume = 0.6f, PitchVariance = 0.2f };
 		public static readonly SoundStyle Item157 = ItemSound(157) with { Volume = 0.7f };
 		public static readonly SoundStyle Item158 = ItemSound(158) with { Volume = 0.8f };
-		public static readonly SoundStyle Item159 = ItemSound(159) with { Volume = 0.75f, MaxInstancesBehavior = DontPlay, };
+		public static readonly SoundStyle Item159 = ItemSound(159) with { Volume = 0.75f, SoundLimitBehavior = IgnoreNew, };
 		public static readonly SoundStyle Item160 = ItemSound(160);
 		public static readonly SoundStyle Item161 = ItemSound(161);
 		public static readonly SoundStyle Item162 = ItemSound(162);

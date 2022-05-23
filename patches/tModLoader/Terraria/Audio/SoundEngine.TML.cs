@@ -10,6 +10,8 @@ namespace Terraria.Audio
 {
 	partial class SoundEngine
 	{
+		// Public API methods
+
 		public static SoundEffectInstance? PlaySound(in SoundStyle type, Vector2? position = null) {
 			SlotId slot = PlayTrackedSound(in type, position);
 

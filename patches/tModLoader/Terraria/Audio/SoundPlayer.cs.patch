@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -11,28 +_,69 @@
+@@ -11,28 +_,71 @@
  	{
  		private readonly SlotVector<ActiveSound> _trackedSounds = new SlotVector<ActiveSound>(4096);
  
@@ -32,14 +32,16 @@
 +				foreach (var pair in _trackedSounds) {
 +					var activeSound = pair.Value;
 +
-+					if (activeSound.IsPlaying && style.IsTheSameAs(activeSound.Style) && ++instanceCount >= maxInstances) {
-+						switch (style.MaxInstancesBehavior) {
-+							case MaxSoundInstancesBehavior.Restart:
-+								activeSound.Sound.Stop(true);
-+								break;
-+							default:
-+								return SlotId.Invalid;
-+						}
++					if (!activeSound.IsPlaying || !style.IsTheSameAs(activeSound.Style) || ++instanceCount < maxInstances) {
++						continue;
++					}
++
++					switch (style.SoundLimitBehavior) {
++						case SoundLimitBehavior.ReplaceOldest: //TODO: Make this actually true to its name -- replace the *oldest* sound.
++							activeSound.Sound.Stop(true);
++							break;
++						default:
++							return SlotId.Invalid;
 +					}
 +				}
 +			}
