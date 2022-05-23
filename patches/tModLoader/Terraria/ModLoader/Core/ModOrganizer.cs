@@ -182,7 +182,7 @@ namespace Terraria.ModLoader.Core
 			if (!ModLoader.showNewUpdatedModsInfo) // Not needed if feature that uses the file is disabled
 				return;
 
-			var currMods = FindMods();
+			var currMods = FindMods(ignoreModsFolder: true);
 			var fileText = new StringBuilder();
 			foreach (var mod in currMods) {
 				fileText.Append($"{mod.Name} {mod.properties.version}\n");
