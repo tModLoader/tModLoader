@@ -26,7 +26,7 @@ namespace Terraria.Audio
 		}
 
 		/// <inheritdoc cref="SoundPlayer.TryGetActiveSound(SlotId, out ActiveSound?)"/>
-		public static bool TryGetActiveSound(SlotId slotId, out ActiveSound? result) {
+		public static bool TryGetActiveSound(SlotId slotId, [NotNullWhen(true)] out ActiveSound? result) {
 			if (Main.dedServ || !IsAudioSupported) {
 				result = null;
 				return false;
