@@ -104,9 +104,12 @@ namespace Terraria.ModLoader.Core
 			return method;
 		}
 
+		public static MethodInfo GetDerivedDefinition(Type t, MethodInfo baseMethod) =>
+			t.GetMethods().Single(m => m.GetBaseDefinition() == baseMethod);
+
 		public static bool HasOverride(Type t, MethodInfo baseMethod) =>
 			baseMethod.DeclaringType.IsInterface ? t.IsAssignableTo(baseMethod.DeclaringType) :
-			t.GetMethods().Single(m => m.GetBaseDefinition() == baseMethod).DeclaringType != baseMethod.DeclaringType;
+			GetDerivedDefinition(t, baseMethod).DeclaringType != baseMethod.DeclaringType;
 
 		public static bool HasOverride<T, F>(Type t, Expression<Func<T, F>> expr) where F : Delegate =>
 			HasOverride(t, expr.ToMethodInfo());
@@ -135,24 +138,8 @@ namespace Terraria.ModLoader.Core
 
 		internal static bool IsValidated(Type type) => !validatedTypes.Add(type);
 
-		private static Dictionary<Type, bool> typeIsCloneable = new();
-		
-		internal static bool IsCloneable<T, F>(T t, Expression<Func<T, F>> cloneMethod) where F : Delegate {
-			var rootCloneableType = typeof(T);
-			var type = t.GetType();
-			
-			if (typeIsCloneable.TryGetValue(type, out var cloneable))
-				return cloneable;
-
-			bool hasReferenceTypedFieldsOnSubclass = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-				.Any(f => f.DeclaringType.IsSubclassOf(rootCloneableType) && !f.FieldType.IsValueType);
-
-			return typeIsCloneable[type] = !hasReferenceTypedFieldsOnSubclass || HasOverride(type, cloneMethod);
-		}
-
-		internal static void ClearTypeInfo() {
-			validatedTypes.Clear();
-			typeIsCloneable.Clear();
+		static LoaderUtils() {
+			TypeCaching.OnClear += validatedTypes.Clear;
 		}
 	}
 }

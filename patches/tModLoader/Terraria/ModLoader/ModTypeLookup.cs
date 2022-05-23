@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
-	internal static class ModTypeLookup
-	{
-		public static event Action OnClear;
-
-		public static void Clear() => OnClear?.Invoke();
-	}
-
 	public static class ModTypeLookup<T> where T : IModType
 	{
 		private static readonly Dictionary<string, T> dict = new Dictionary<string, T>();
 		private static readonly Dictionary<string, Dictionary<string, T>> tieredDict = new Dictionary<string, Dictionary<string, T>>();
 
 		static ModTypeLookup() {
-			ModTypeLookup.OnClear += () => {
-				dict.Clear();
-				tieredDict.Clear();
-			};
+			if (typeof(T).Assembly == typeof(ModTypeLookup<>).Assembly) {
+				TypeCaching.OnClear += () => {
+					dict.Clear();
+					tieredDict.Clear();
+				};
+			}
 		}
 
 		public static void Register(T instance) {

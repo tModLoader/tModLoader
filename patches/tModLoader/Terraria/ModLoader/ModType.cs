@@ -89,11 +89,12 @@ namespace Terraria.ModLoader
 
 	public abstract class ModType<TEntity, TModType> : ModType<TEntity> where TModType : ModType<TEntity, TModType>
 	{
+		private bool? _isCloneable;
 		/// <summary>
-		/// Whether or not this type is cloneable. By default, cloning is supported if this type has only value typed fields, or if it overrides <see cref="Clone"/><br/>
-		/// If this type has reference fields, which are safe to share between clones then override this property to return true.
+		/// Whether or not this type is cloneable. Cloning is supported if<br/>
+		/// all reference typed fields in each sub-class which doesn't override Clone are marked with [CloneByReference]
 		/// </summary>
-		public virtual bool IsCloneable => LoaderUtils.IsCloneable<ModType<TEntity, TModType>, Func<TEntity, TModType>>(this, m => m.Clone);
+		public virtual bool IsCloneable => _isCloneable ??= Cloning.IsCloneable<ModType<TEntity, TModType>, Func<TEntity, TModType>>(this, m => m.Clone);
 
 		/// <summary>
 		/// Whether to create new instances of this mod type via <see cref="Clone(TEntity)"/> or via the default constructor
@@ -108,7 +109,7 @@ namespace Terraria.ModLoader
 		/// <returns>A clone of this mod type</returns>
 		public virtual TModType Clone(TEntity newEntity) {
 			if (!IsCloneable)
-				throw new NotSupportedException($"{GetType().FullName} has non value typed fields, but does not override {nameof(Clone)} or {nameof(IsCloneable)}");
+				Cloning.WarnNotCloneable(GetType());
 
 			var inst = (TModType)MemberwiseClone();
 			inst.Entity = newEntity;
