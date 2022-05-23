@@ -18,6 +18,7 @@ var class_terraria_1_1_mod_loader_1_1_global_projectile =
     [ "Kill", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a1d449abeb4ee387b6b2ebe33da5693aa", null ],
     [ "MinionContactDamage", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ab216a84d7301f86afada25f4b9f17156", null ],
     [ "ModifyDamageHitbox", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a8863ddeef94b1e985c64dd86fad6ed5b", null ],
+    [ "ModifyDamageScaling", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0fc117fe6359e966fa9e7f2607677e85", null ],
     [ "ModifyHitNPC", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a78a58a0e560bf775d3ad11951906f73c", null ],
     [ "ModifyHitPlayer", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#a294bc7ef4586362ed1ef19df56d88e09", null ],
     [ "ModifyHitPvp", "class_terraria_1_1_mod_loader_1_1_global_projectile.html#ac155350ec502aa873ef9748636accc88", null ],

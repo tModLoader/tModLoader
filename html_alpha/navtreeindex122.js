@@ -1,5 +1,11 @@
 var NAVTREEINDEX122 =
 {
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_provide_search_filter_string.html#a191124469d0e4d3fb9a878fef5d2be34":[1,0,2,5,2,30,0],
+"interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_item_sort_step.html":[1,0,2,5,4,8],
+"interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html":[1,0,2,5,4,9],
+"interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html#a339bb91bba495604e2cb942534f81737":[1,0,2,5,4,9,3],
+"interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html#a3c895b683ccb0d89c460b7bfdb5385ed":[1,0,2,5,4,9,1],
+"interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html#a68d0a75324d47949d223ee36dc241f34":[1,0,2,5,4,9,2],
 "interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html#a6f16446d9fd5bee56c88cc269fb6a1c2":[1,0,2,5,4,9,6],
 "interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html#a7db3d20db60dd6d6c9402fde35b179b2":[1,0,2,5,4,9,0],
 "interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html#a92ad9bef61a3dc284d52ad796eab224f":[1,0,2,5,4,9,5],
@@ -243,11 +249,5 @@ var NAVTREEINDEX122 =
 "namespace_terraria_1_1_achievements.html#ac09695bff54107205b278c10a3c6a55da1686a6c336b71b36d77354cea19a8b52":[0,0,2,0,9,1],
 "namespace_terraria_1_1_achievements.html#ac09695bff54107205b278c10a3c6a55da22ae0e2b89e5e3d477f988cc36d3272b":[0,0,2,0,9,0],
 "namespace_terraria_1_1_audio.html":[0,0,2,1],
-"namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5":[0,0,2,1,17],
-"namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5a47dcbd834e669233d7eb8a51456ed217":[0,0,2,1,17,2],
-"namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5a9d07e0e08af7f96cf45be0112b9ccfbe":[0,0,2,1,17,0],
-"namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5aed8e37bad13d76c6dbeb58152440b41e":[0,0,2,1,17,1],
-"namespace_terraria_1_1_audio.html#ad021b74d3067cb9c4eec923ecbf4878b":[0,0,2,1,16],
-"namespace_terraria_1_1_audio.html#ad021b74d3067cb9c4eec923ecbf4878ba0932849c10a2084fe072b4dc2789777d":[0,0,2,1,16,1],
-"namespace_terraria_1_1_audio.html#ad021b74d3067cb9c4eec923ecbf4878ba4722ef06d93c19fa300744e06c5d808e":[0,0,2,1,16,0]
+"namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5":[0,0,2,1,17]
 };

@@ -154,6 +154,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8863ddeef94b1e985c64dd86fad6ed5b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a8863ddeef94b1e985c64dd86fad6ed5b">ModifyDamageHitbox</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectile, ref Rectangle hitbox)</td></tr>
 <tr class="memdesc:a8863ddeef94b1e985c64dd86fad6ed5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the hitbox used by a projectile for damaging players and NPCs.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a8863ddeef94b1e985c64dd86fad6ed5b">More...</a><br /></td></tr>
 <tr class="separator:a8863ddeef94b1e985c64dd86fad6ed5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fc117fe6359e966fa9e7f2607677e85"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0fc117fe6359e966fa9e7f2607677e85">ModifyDamageScaling</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectile, ref float damageScale)</td></tr>
+<tr class="memdesc:a0fc117fe6359e966fa9e7f2607677e85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0fc117fe6359e966fa9e7f2607677e85">More...</a><br /></td></tr>
+<tr class="separator:a0fc117fe6359e966fa9e7f2607677e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78a58a0e560bf775d3ad11951906f73c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a78a58a0e560bf775d3ad11951906f73c">ModifyHitNPC</a> (<a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> projectile, <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)</td></tr>
 <tr class="memdesc:a78a58a0e560bf775d3ad11951906f73c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, knockback, etc., that a projectile does to an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. This method is only called for the owner of the projectile, meaning that in multi-player, projectiles owned by a player call this method on that client, and projectiles owned by the server such as enemy projectiles call this method on the server.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#a78a58a0e560bf775d3ad11951906f73c">More...</a><br /></td></tr>
 <tr class="separator:a78a58a0e560bf775d3ad11951906f73c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1090,6 +1093,51 @@ TEntity&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [
   <table class="params">
     <tr><td class="paramname">projectile</td><td></td></tr>
     <tr><td class="paramname">hitbox</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a0fc117fe6359e966fa9e7f2607677e85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fc117fe6359e966fa9e7f2607677e85">&#9670;&nbsp;</a></span>ModifyDamageScaling()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalProjectile.ModifyDamageScaling </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>&#160;</td>
+          <td class="paramname"><em>projectile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>damageScale</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">projectile</td><td></td></tr>
+    <tr><td class="paramname">damageScale</td><td>The damage scaling</td></tr>
   </table>
   </dd>
 </dl>

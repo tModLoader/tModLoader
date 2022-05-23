@@ -1,5 +1,11 @@
 var NAVTREEINDEX125 =
 {
+"namespace_terraria_1_1_game_content_1_1_achievements.html":[0,0,2,6,0],
+"namespace_terraria_1_1_game_content_1_1_ambience.html":[0,0,2,6,1],
+"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4b":[0,0,2,6,1,2],
+"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba0413b488dfaec064a21b8070c506a870":[0,0,2,6,1,2,6],
+"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba25efa8482af47be9b5871d5bc602f6f7":[0,0,2,6,1,2,16],
+"namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba26cf32679ec486e40032e24fa39d15c8":[0,0,2,6,1,2,5],
 "namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba36337f6d3f47f8e059ae0df500286d44":[0,0,2,6,1,2,1],
 "namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba36bc465f7500c60e712b6cb877545483":[0,0,2,6,1,2,17],
 "namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4ba491f39d1385670cdf9954de0d03fd82c":[0,0,2,6,1,2,9],
@@ -243,11 +249,5 @@ var NAVTREEINDEX125 =
 "namespace_terraria_1_1_mod_loader_1_1_assets.html":[0,0,2,14,0],
 "namespace_terraria_1_1_mod_loader_1_1_config.html":[0,0,2,14,1],
 "namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073":[0,0,2,14,1,30],
-"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262":[0,0,2,14,1,30,1],
-"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a8fb53cb4338611e251a9bb003961f984":[0,0,2,14,1,30,0],
-"namespace_terraria_1_1_mod_loader_1_1_config_1_1_u_i.html":[0,0,2,14,1,0],
-"namespace_terraria_1_1_mod_loader_1_1_core.html":[0,0,2,14,2],
-"namespace_terraria_1_1_mod_loader_1_1_default.html":[0,0,2,14,3],
-"namespace_terraria_1_1_mod_loader_1_1_default_1_1_developer.html":[0,0,2,14,3,0],
-"namespace_terraria_1_1_mod_loader_1_1_default_1_1_developer_1_1_jofairden.html":[0,0,2,14,3,0,0]
+"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262":[0,0,2,14,1,30,1]
 };

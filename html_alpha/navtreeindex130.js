@@ -1,5 +1,11 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_mod_loader_1_1_pos_data.html#a060d787941cb734cc86e0b31f6775b8a":[1,0,2,13,135,7],
+"struct_terraria_1_1_mod_loader_1_1_pos_data.html#a16b609b08861a6900e9983decf1a7ac5":[1,0,2,13,135,16],
+"struct_terraria_1_1_mod_loader_1_1_pos_data.html#a3bf9dd89b12e9e547aff7de2fbbb85e0":[1,0,2,13,135,17],
+"struct_terraria_1_1_mod_loader_1_1_pos_data.html#a4b099019b3d702a961267c5f43c92129":[1,0,2,13,135,8],
+"struct_terraria_1_1_mod_loader_1_1_pos_data.html#a6baab487df3c5a4fe389ccadc2219243":[1,0,2,13,135,2],
+"struct_terraria_1_1_mod_loader_1_1_pos_data.html#a7f88b9fc951f8d94061195ea177e90ae":[1,0,2,13,135,6],
 "struct_terraria_1_1_mod_loader_1_1_pos_data.html#aaaf1a683c4b46380f807d811afcd0048":[1,0,2,13,135,10],
 "struct_terraria_1_1_mod_loader_1_1_pos_data.html#aad5b58ee22f960e8fd1a7d719eb28c5a":[1,0,2,13,135,14],
 "struct_terraria_1_1_mod_loader_1_1_pos_data.html#aafc0c7a72c5f4aff5d2de7e021b10294":[1,0,2,13,135,9],
@@ -243,11 +249,5 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_u_i_1_1_alignment.html#a2e762c785c0681a66aa0009ae4995975":[1,0,2,21,4,8],
 "struct_terraria_1_1_u_i_1_1_alignment.html#a849b6d77db112b1754f42015ef0dce4c":[1,0,2,21,4,7],
 "struct_terraria_1_1_u_i_1_1_alignment.html#a9501416356b9fecd542b715391e1c4d9":[1,0,2,21,4,10],
-"struct_terraria_1_1_u_i_1_1_alignment.html#a9a22f3085998c605371f39f0dbd46991":[1,0,2,21,4,5],
-"struct_terraria_1_1_u_i_1_1_alignment.html#acc00d64db01f3679e419bd71046fd1a5":[1,0,2,21,4,2],
-"struct_terraria_1_1_u_i_1_1_alignment.html#ad1c15c5bdaee391716b5bc7cc754d561":[1,0,2,21,4,3],
-"struct_terraria_1_1_u_i_1_1_alignment.html#af6277e0b267bb2d038bd66ae09159860":[1,0,2,21,4,6],
-"struct_terraria_1_1_u_i_1_1_alignment.html#af7110c4f9d8c548c5de880e3e3d8909c":[1,0,2,21,4,1],
-"struct_terraria_1_1_u_i_1_1_calculated_style.html":[1,0,2,21,5],
-"struct_terraria_1_1_u_i_1_1_calculated_style.html#a027c6c2ec738dd02231e81abc2ac9275":[1,0,2,21,5,6]
+"struct_terraria_1_1_u_i_1_1_alignment.html#a9a22f3085998c605371f39f0dbd46991":[1,0,2,21,4,5]
 };

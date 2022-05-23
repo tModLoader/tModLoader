@@ -159,6 +159,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a05d92282c478a458ce442424456686ad"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a05d92282c478a458ce442424456686ad">ModifyDamageHitbox</a> (ref Rectangle hitbox)</td></tr>
 <tr class="memdesc:a05d92282c478a458ce442424456686ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the hitbox used by this projectile for damaging players and NPCs.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a05d92282c478a458ce442424456686ad">More...</a><br /></td></tr>
 <tr class="separator:a05d92282c478a458ce442424456686ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98f8aa76e4b2fb7cdae636e098dba787"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a98f8aa76e4b2fb7cdae636e098dba787">ModifyDamageScaling</a> (ref float damageScale)</td></tr>
+<tr class="memdesc:a98f8aa76e4b2fb7cdae636e098dba787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a98f8aa76e4b2fb7cdae636e098dba787">More...</a><br /></td></tr>
+<tr class="separator:a98f8aa76e4b2fb7cdae636e098dba787"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e56ac26789ded224c498af6fd5661ec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a9e56ac26789ded224c498af6fd5661ec">ModifyFishingLine</a> (ref Vector2 lineOriginOffset, ref Color lineColor)</td></tr>
 <tr class="memdesc:a9e56ac26789ded224c498af6fd5661ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this projectile is a bobber, allows you to modify the origin of the fisihing line that's connecting to the fishing pole, as well as the fishing line's color.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#a9e56ac26789ded224c498af6fd5661ec">More...</a><br /></td></tr>
 <tr class="separator:a9e56ac26789ded224c498af6fd5661ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -976,6 +979,40 @@ TEntity&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">hitbox</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a98f8aa76e4b2fb7cdae636e098dba787"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98f8aa76e4b2fb7cdae636e098dba787">&#9670;&nbsp;</a></span>ModifyDamageScaling()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModProjectile.ModifyDamageScaling </td>
+          <td>(</td>
+          <td class="paramtype">ref float&#160;</td>
+          <td class="paramname"><em>damageScale</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">damageScale</td><td>The damage scaling</td></tr>
   </table>
   </dd>
 </dl>

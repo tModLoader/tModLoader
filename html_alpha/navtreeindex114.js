@@ -1,5 +1,11 @@
 var NAVTREEINDEX114 =
 {
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#afa558f683450a8f05c7a6d753f4e58a8":[1,0,2,21,1,2,47],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#afa7f7c01acc0909ec390c16af944b29c":[1,0,2,21,1,2,125],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#afc76ad818d23df8248bc427104dcc09a":[1,0,2,21,1,2,53],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#afcc2f1d69d0b7c6137d7e40f6c634b87":[1,0,2,21,1,2,83],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#afd0b65d73edd8368e79d83e32d8b718d":[1,0,2,21,1,2,154],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#afec5509a5a47af9049206e63eff38dd5":[1,0,2,21,1,2,161],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_page.html":[1,0,2,21,1,3],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_page.html#a00e5839c8d7499b2169a7c9a0899ab05":[1,0,2,21,1,3,5],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_page.html#a01ea406938626fff5896f9086944e8ae":[1,0,2,21,1,3,26],
@@ -243,11 +249,5 @@ var NAVTREEINDEX114 =
 "class_terraria_1_1_u_i_1_1_item_tooltip.html#af07e911e17529624c95b79d07c84667a":[1,0,2,21,18,2],
 "class_terraria_1_1_u_i_1_1_legacy_game_interface_layer.html":[1,0,2,21,19],
 "class_terraria_1_1_u_i_1_1_legacy_game_interface_layer.html#a954206357f1b8805795aa34793982f80":[1,0,2,21,19,1],
-"class_terraria_1_1_u_i_1_1_legacy_game_interface_layer.html#a9692b27ff704f7d036183186da4f16b6":[1,0,2,21,19,0],
-"class_terraria_1_1_u_i_1_1_legacy_net_diagnostics_u_i.html":[1,0,2,21,20],
-"class_terraria_1_1_u_i_1_1_legacy_net_diagnostics_u_i.html#a169bff48d3087fd177661274ec96179e":[1,0,2,21,20,1],
-"class_terraria_1_1_u_i_1_1_legacy_net_diagnostics_u_i.html#a23844d63dc8686dbcf79fc4e239272e8":[1,0,2,21,20,6],
-"class_terraria_1_1_u_i_1_1_legacy_net_diagnostics_u_i.html#a3fe704745172dfdc262787667faaf56d":[1,0,2,21,20,8],
-"class_terraria_1_1_u_i_1_1_legacy_net_diagnostics_u_i.html#a5285973f5102bd390a908c52b20f20b4":[1,0,2,21,20,13],
-"class_terraria_1_1_u_i_1_1_legacy_net_diagnostics_u_i.html#a5719beef923edcd98845ad83079002a6":[1,0,2,21,20,5]
+"class_terraria_1_1_u_i_1_1_legacy_game_interface_layer.html#a9692b27ff704f7d036183186da4f16b6":[1,0,2,21,19,0]
 };
