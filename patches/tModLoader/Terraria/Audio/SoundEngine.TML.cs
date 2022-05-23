@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Utilities;
+using System.Diagnostics.CodeAnalysis;
 using Terraria.ID;
 using Terraria.ModLoader;
 
