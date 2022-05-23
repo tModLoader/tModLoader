@@ -114,7 +114,7 @@ namespace Terraria.Audio
 		/// <summary> The volume multiplier to play sounds with. </summary>
 		public float Volume {
 			get => volume;
-			set => volume = MathHelper.Clamp(volume, 0f, 1f);
+			set => volume = MathHelper.Clamp(value, 0f, 1f);
 		}
 
 		/// <summary>
@@ -123,7 +123,7 @@ namespace Terraria.Audio
 		/// </summary>
 		public float Pitch {
 			get => pitch;
-			set => pitch = MathHelper.Clamp(pitch, MinPitchValue, MaxPitchValue);
+			set => pitch = MathHelper.Clamp(value, MinPitchValue, MaxPitchValue);
 		}
 
 		/// <summary>
