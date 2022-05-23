@@ -43,20 +43,20 @@ namespace Terraria.ModLoader.UI
 
 			_scrollPanel = new UIPanel {
 				Width = { Percent = 1f },
-				Height = { Pixels = -65, Percent = 1f },
+				Height = { Pixels = -65, Percent = 0.9f },
 				BackgroundColor = UICommon.MainPanelBackground
 			};
 			uIElement.Append(_scrollPanel);
 
 			_modPacks = new UIList {
 				Width = { Pixels = -25, Percent = 1f },
-				Height = { Percent = 1f },
+				Height = { Percent = 0.9f },
 				ListPadding = 5f
 			};
 			_scrollPanel.Append(_modPacks);
 
 			var uIScrollbar = new UIScrollbar {
-				Height = { Percent = 1f },
+				Height = { Percent = 0.9f },
 				HAlign = 1f
 			}.WithView(100f, 1000f);
 			_scrollPanel.Append(uIScrollbar);
@@ -69,10 +69,21 @@ namespace Terraria.ModLoader.UI
 			}.WithPadding(15f);
 			uIElement.Append(titleTextPanel);
 
+			var folderButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.OpenModPackFolder")) {
+				Width = new StyleDimension(-10f, 1f / 2f),
+				Height = { Pixels = 40 },
+				VAlign = 0.9f,
+				HAlign = 0f,
+				Top = { Pixels = -20 }
+			}.WithFadedMouseOver();
+			folderButton.OnClick += ;
+			uIElement.Append(folderButton);
+
 			var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
 				Width = new StyleDimension(-10f, 1f / 2f),
 				Height = { Pixels = 40 },
 				VAlign = 1f,
+				HAlign = 0f,
 				Top = { Pixels = -20 }
 			}.WithFadedMouseOver();
 			backButton.OnClick += BackClick;
@@ -81,6 +92,7 @@ namespace Terraria.ModLoader.UI
 			var saveNewButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"));
 			saveNewButton.CopyStyle(backButton);
 			saveNewButton.TextColor = Color.Green;
+			saveNewButton.VAlign = 1f;
 			saveNewButton.HAlign = 1f;
 			saveNewButton.WithFadedMouseOver();
 			saveNewButton.OnClick += SaveNewModList;
@@ -182,6 +194,10 @@ namespace Terraria.ModLoader.UI
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(11);
 			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
+		}
+
+		private void OpenFolder(UIMouseEvent evt, UIElement listeningElement) {
+			Utils.OpenFolder(ModPacksDirectory);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
