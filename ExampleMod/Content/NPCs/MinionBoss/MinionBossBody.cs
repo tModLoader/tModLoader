@@ -277,7 +277,7 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 					Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-6, 7), Main.rand.Next(-6, 7)), frontGoreType);
 				}
 
-				SoundEngine.PlaySound(SoundID.Roar, NPC.Center, 0);
+				SoundEngine.PlaySound(SoundID.Roar, NPC.Center);
 			}
 		}
 

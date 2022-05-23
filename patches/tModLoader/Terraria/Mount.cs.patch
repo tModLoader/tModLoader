@@ -116,6 +116,28 @@
  			return num;
  		}
  
+@@ -2272,7 +_,10 @@
+ 							Vector2 vector = mountedPlayer.Center + new Vector2(mountedPlayer.width * -mountedPlayer.direction, 26f);
+ 							Vector2 vector2 = new Vector2(0f, -4f).RotatedByRandom(0.10000000149011612);
+ 							Projectile.NewProjectile(GetProjectileSpawnSource(mountedPlayer), vector.X, vector.Y, vector2.X, vector2.Y, 930, damage, 0f, Main.myPlayer);
++							/*
+ 							SoundEngine.PlaySound(SoundID.Item89.SoundId, (int)vector.X, (int)vector.Y, SoundID.Item89.Style, 0.2f);
++							*/
++							SoundEngine.PlaySound(SoundID.Item89 with { Volume = SoundID.Item89.Volume * 0.2f }, vector);
+ 						}
+ 
+ 						int type = 14;
+@@ -2287,7 +_,10 @@
+ 						v *= 12f;
+ 						v = v.RotatedByRandom(0.20000000298023224);
+ 						Projectile.NewProjectile(GetProjectileSpawnSource(mountedPlayer), value.X, value.Y, v.X, v.Y, type, damage2, 0f, Main.myPlayer);
++						/*
+ 						SoundEngine.PlaySound(SoundID.Item11.SoundId, (int)value.X, (int)value.Y, SoundID.Item11.Style, 0.2f);
++						*/
++						SoundEngine.PlaySound(SoundID.Item11 with { Volume = SoundID.Item11.Volume * 0.2f }, value);
+ 					}
+ 					break;
+ 				case 8:
 @@ -2482,6 +_,9 @@
  		private Vector2 GetWitchBroomTrinketOriginOffset(Player player) => new Vector2(27 * player.direction, 5f);
  

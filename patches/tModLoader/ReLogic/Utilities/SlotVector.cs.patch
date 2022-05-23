@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/ReLogic/Utilities/SlotVector.cs
++++ src/tModLoader/ReLogic/Utilities/SlotVector.cs
+@@ -4,7 +_,8 @@
+ 
+ namespace ReLogic.Utilities
+ {
++	// See SlotVector.TML.cs too.
+-	public sealed class SlotVector<T> : IEnumerable<SlotVector<T>.ItemPair>, IEnumerable
++	public sealed partial class SlotVector<T> : IEnumerable<SlotVector<T>.ItemPair>, IEnumerable
+ 	{
+ 		public sealed class Enumerator : IEnumerator<ItemPair>, IDisposable, IEnumerator
+ 		{

@@ -47,8 +47,8 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override bool? UseItem(Player player) {
 			// Because we're skipping sound playback on use animation start, we have to play it ourselves whenever the item is actually used.
-			if (!Main.dedServ) {
-				SoundEngine.PlaySound(Item.UseSound, player.Center);
+			if (!Main.dedServ && Item.UseSound.HasValue) {
+				SoundEngine.PlaySound(Item.UseSound.Value, player.Center);
 			}
 
 			return null;
