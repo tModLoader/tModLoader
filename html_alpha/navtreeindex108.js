@@ -1,7 +1,5 @@
 var NAVTREEINDEX108 =
 {
-"class_terraria_1_1_program.html#aeb611f3f6ff2ff69f95bce3f56cc2282":[1,0,2,57,6],
-"class_terraria_1_1_program.html#aec7390e873c2204795fd6885f35ef75d":[1,0,2,57,10],
 "class_terraria_1_1_projectile.html":[1,0,2,58],
 "class_terraria_1_1_projectile.html#a0024e81f603e49376c63fcc7b43c42e7":[1,0,2,58,137],
 "class_terraria_1_1_projectile.html#a00626028646ac8c64466a70f72e92cfa":[1,0,2,58,36],
@@ -249,5 +247,7 @@ var NAVTREEINDEX108 =
 "class_terraria_1_1_recipe.html#ad1b634df70a8f13b8e1458265506dc34":[1,0,2,60,33],
 "class_terraria_1_1_recipe.html#ad403fdde23282d2917d1799afdbe1188":[1,0,2,60,53],
 "class_terraria_1_1_recipe.html#ada0c59f951962779535b7c575bb05763":[1,0,2,60,34],
-"class_terraria_1_1_recipe.html#adabb939e6328acf4ceab6d98c1e59932":[1,0,2,60,72]
+"class_terraria_1_1_recipe.html#adabb939e6328acf4ceab6d98c1e59932":[1,0,2,60,72],
+"class_terraria_1_1_recipe.html#adbb9fdfb5d588ec7d9a60ab4124dacaa":[1,0,2,60,43],
+"class_terraria_1_1_recipe.html#ae01b91e168573d1947c2f13da325350e":[1,0,2,60,26]
 };

@@ -2125,7 +2125,6 @@ var hierarchy =
     [ "Terraria.Audio.SoundEngine", "class_terraria_1_1_audio_1_1_sound_engine.html", null ],
     [ "Terraria.ID.SoundID", "class_terraria_1_1_i_d_1_1_sound_i_d.html", null ],
     [ "Terraria.Audio.SoundInstanceGarbageCollector", "class_terraria_1_1_audio_1_1_sound_instance_garbage_collector.html", null ],
-    [ "Terraria.ModLoader.SoundLoader", "class_terraria_1_1_mod_loader_1_1_sound_loader.html", null ],
     [ "Terraria.Audio.SoundPlayer", "class_terraria_1_1_audio_1_1_sound_player.html", null ],
     [ "Terraria.DataStructures.SoundPlaySet", "class_terraria_1_1_data_structures_1_1_sound_play_set.html", null ],
     [ "Terraria.Audio.SoundStyle", "struct_terraria_1_1_audio_1_1_sound_style.html", null ],

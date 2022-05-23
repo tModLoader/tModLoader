@@ -1,7 +1,5 @@
 var NAVTREEINDEX122 =
 {
-"interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html#a6f16446d9fd5bee56c88cc269fb6a1c2":[1,0,2,5,4,9,6],
-"interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html#a7db3d20db60dd6d6c9402fde35b179b2":[1,0,2,5,4,9,0],
 "interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html#a92ad9bef61a3dc284d52ad796eab224f":[1,0,2,5,4,9,5],
 "interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html#a94fec36ed99716fa4b61d76b11b71126":[1,0,2,5,4,9,4],
 "interface_terraria_1_1_game_content_1_1_creative_1_1_i_item_entry_filter.html":[1,0,2,5,4,10],
@@ -249,5 +247,7 @@ var NAVTREEINDEX122 =
 "namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5aed8e37bad13d76c6dbeb58152440b41e":[0,0,2,1,17,1],
 "namespace_terraria_1_1_audio.html#ad021b74d3067cb9c4eec923ecbf4878b":[0,0,2,1,16],
 "namespace_terraria_1_1_audio.html#ad021b74d3067cb9c4eec923ecbf4878ba0932849c10a2084fe072b4dc2789777d":[0,0,2,1,16,1],
-"namespace_terraria_1_1_audio.html#ad021b74d3067cb9c4eec923ecbf4878ba4722ef06d93c19fa300744e06c5d808e":[0,0,2,1,16,0]
+"namespace_terraria_1_1_audio.html#ad021b74d3067cb9c4eec923ecbf4878ba4722ef06d93c19fa300744e06c5d808e":[0,0,2,1,16,0],
+"namespace_terraria_1_1_chat.html":[0,0,2,2],
+"namespace_terraria_1_1_chat_1_1_commands.html":[0,0,2,2,0]
 };

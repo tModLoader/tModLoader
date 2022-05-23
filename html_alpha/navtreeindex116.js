@@ -1,7 +1,5 @@
 var NAVTREEINDEX116 =
 {
-"class_terraria_1_1_utilities_1_1_n_p_c_utils.html#afe9e3177c67b62fdc810ccb8415d552a":[1,0,2,22,8,6],
-"class_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_search_filters.html":[1,0,2,22,8,0],
 "class_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_search_filters.html#a18a0673bdd47121b8fe4ac009ab370d5":[1,0,2,22,8,0,3],
 "class_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_search_filters.html#a33bf4a62f310a357431f97e08e698a59":[1,0,2,22,8,0,2],
 "class_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_search_filters.html#ab4c45a2e6c26a4f68be9252437e36399":[1,0,2,22,8,0,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX116 =
 "class_terraria_1_1_wiring.html#a27ba6190bac4b1fc09fe40697c5772cf":[1,0,2,82,30],
 "class_terraria_1_1_wiring.html#a2c0036dc101a0ae7f2082a9660e56476":[1,0,2,82,29],
 "class_terraria_1_1_wiring.html#a382daa160a62624cc4e9a9be239e367a":[1,0,2,82,19],
-"class_terraria_1_1_wiring.html#a3b4f84278b256c641e45ca131f13dedd":[1,0,2,82,34]
+"class_terraria_1_1_wiring.html#a3b4f84278b256c641e45ca131f13dedd":[1,0,2,82,34],
+"class_terraria_1_1_wiring.html#a3c56fc424ebc66cd1132bd43f11f916c":[1,0,2,82,32],
+"class_terraria_1_1_wiring.html#a423c84d100eaee8d4fd8a40a22bc5799":[1,0,2,82,2]
 };

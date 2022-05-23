@@ -1303,7 +1303,6 @@ var annotated_dup =
         [ "SceneEffectLoader", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader.html", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader" ],
         [ "SextantInfoDisplay", "class_terraria_1_1_mod_loader_1_1_sextant_info_display.html", "class_terraria_1_1_mod_loader_1_1_sextant_info_display" ],
         [ "SimpleModGore", "class_terraria_1_1_mod_loader_1_1_simple_mod_gore.html", null ],
-        [ "SoundLoader", "class_terraria_1_1_mod_loader_1_1_sound_loader.html", null ],
         [ "StatInheritanceData", "struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data.html", "struct_terraria_1_1_mod_loader_1_1_stat_inheritance_data" ],
         [ "StatModifier", "struct_terraria_1_1_mod_loader_1_1_stat_modifier.html", "struct_terraria_1_1_mod_loader_1_1_stat_modifier" ],
         [ "StopwatchInfoDisplay", "class_terraria_1_1_mod_loader_1_1_stopwatch_info_display.html", "class_terraria_1_1_mod_loader_1_1_stopwatch_info_display" ],

@@ -46,7 +46,6 @@ var class_terraria_1_1_mod_loader_1_1_mod =
     [ "PreJITFilter", "class_terraria_1_1_mod_loader_1_1_mod.html#a15b2c1f89e1e00fcbaf45243a81ffcea", null ],
     [ "RootContentSource", "class_terraria_1_1_mod_loader_1_1_mod.html#a1f72ff1a6b7d389d20e3215b867e1f72", null ],
     [ "Side", "class_terraria_1_1_mod_loader_1_1_mod.html#ad921b4895d8db73a6139987c4c456777", null ],
-    [ "SoundAutoloadingEnabled", "class_terraria_1_1_mod_loader_1_1_mod.html#adc70a1662799e620716c519dfb824d73", null ],
     [ "TModLoaderVersion", "class_terraria_1_1_mod_loader_1_1_mod.html#a0365dd6999086e682dd90ed65543edd0", null ],
     [ "Version", "class_terraria_1_1_mod_loader_1_1_mod.html#a25e6f7b4866109d4137e7ace4e78ee64", null ]
 ];
