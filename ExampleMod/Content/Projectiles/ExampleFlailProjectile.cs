@@ -82,13 +82,13 @@ namespace ExampleMod.Content.Projectiles
 
 		// Another thing that won't automatically be inherited by using Projectile.aiStyle and AIType are effects that happen when the projectile hits something. Here we see the code responcible for applying the OnFire debuff to players and enemies.
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
-			if (Main.rand.Next(2) == 0) {
+			if (Main.rand.NextBool(2)) {
 				target.AddBuff(BuffID.OnFire, 300);
 			}
 		}
 
 		public override void OnHitPlayer(Player target, int damage, bool crit) {
-			if (Main.rand.Next(4) == 0) {
+			if (Main.rand.NextBool(4)) {
 				target.AddBuff(BuffID.OnFire, 180, quiet: false);
 			}
 		}
@@ -97,7 +97,7 @@ namespace ExampleMod.Content.Projectiles
 		public override void AI() {
 			// The only reason this code works is because the author read the vanilla code and comprehended it well enough to tack on additional logic.
 			if (Main.myPlayer == Projectile.owner && Projectile.ai[0] == 2f && Projectile.ai[1] == 0f) {
-				Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.Grenade, Projectile.damage, Projectile.knockBack, Main.myPlayer);
+				Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity, ProjectileID.Grenade, Projectile.damage, Projectile.knockBack, Main.myPlayer);
 				Projectile.ai[1]++;
 			}
 		}
