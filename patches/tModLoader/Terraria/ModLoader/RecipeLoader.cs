@@ -35,8 +35,8 @@ namespace Terraria.ModLoader
 				try {
 					mod.AddRecipes();
 					SystemLoader.AddRecipes(mod);
-					LoaderUtils.ForEachAggregateExceptions(mod.GetContent<ModItem>(), item => item.AddRecipes());
-					LoaderUtils.ForEachAggregateExceptions(mod.GetContent<GlobalItem>(), global => global.AddRecipes());
+					LoaderUtils.ForEachAndAggregateExceptions(mod.GetContent<ModItem>(), item => item.AddRecipes());
+					LoaderUtils.ForEachAndAggregateExceptions(mod.GetContent<GlobalItem>(), global => global.AddRecipes());
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;

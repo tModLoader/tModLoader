@@ -22,7 +22,7 @@ namespace Terraria.ModLoader
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
 		internal void SetupContent() {
-			LoaderUtils.ForEachAggregateExceptions(GetContent<ModType>(), e => e.SetupContent());
+			LoaderUtils.ForEachAndAggregateExceptions(GetContent<ModType>(), e => e.SetupContent());
 		}
 
 		internal void UnloadContent() {
@@ -57,7 +57,7 @@ namespace Terraria.ModLoader
 					.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
 					.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 
-				LoaderUtils.ForEachAggregateExceptions(loadableTypes, t => AddContent((ILoadable)Activator.CreateInstance(t, true)));
+				LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, t => AddContent((ILoadable)Activator.CreateInstance(t, true)));
 			}
 
 			// Skip loading client assets if this is a dedicated server;

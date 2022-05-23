@@ -39,7 +39,7 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		public static void ForEachAggregateExceptions<T>(IEnumerable<T> enumerable, Action<T> action) {
+		public static void ForEachAndAggregateExceptions<T>(IEnumerable<T> enumerable, Action<T> action) {
 			var exceptions = new List<Exception>();
 			foreach (var t in enumerable) {
 				try {
