@@ -46,6 +46,9 @@ var hierarchy =
     [ "Terraria.WorldBuilding.Actions", "class_terraria_1_1_world_building_1_1_actions.html", null ],
     [ "Terraria.Audio.ActiveSound", "class_terraria_1_1_audio_1_1_active_sound.html", null ],
     [ "Terraria.AdvancedPopupRequest", "struct_terraria_1_1_advanced_popup_request.html", null ],
+    [ "AggregateException", "class_aggregate_exception.html", [
+      [ "Terraria.ModLoader.Exceptions.MultipleException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_multiple_exception.html", null ]
+    ] ],
     [ "Terraria.GameContent.ObjectInteractions.AHoverInteractionChecker", "class_terraria_1_1_game_content_1_1_object_interactions_1_1_a_hover_interaction_checker.html", [
       [ "Terraria.GameContent.ObjectInteractions.PotionOfReturnGateInteractionChecker", "class_terraria_1_1_game_content_1_1_object_interactions_1_1_potion_of_return_gate_interaction_checker.html", null ]
     ] ],

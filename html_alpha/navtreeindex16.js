@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_terraria_1_1_game_content_1_1_texture_assets.html#a81faeb675b6a07a536a9b32514e60964":[1,0,2,5,64,99],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#a8212092604004e95de21a78dcf4823c7":[1,0,2,5,64,47],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#a82327730833eea8e5c70e280e8b6a032":[1,0,2,5,64,106],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#a8280c17cc65c68a7090e48d3e77e33a1":[1,0,2,5,64,49],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#ac26f3bfb6ce1c580039785664ced4079":[1,0,2,5,20,4,15],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#ac8bcaf67b7ed7e80605d834bfd6d2784":[1,0,2,5,20,4,0],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#ace9824ea148e9b696966afc91bd24c08":[1,0,2,5,20,4,23],
-"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#ace9df721cd593fad6974714be781a772":[1,0,2,5,20,4,12],
-"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#adb92c254e7a04789567ff60183896785":[1,0,2,5,20,4,26]
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#ace9df721cd593fad6974714be781a772":[1,0,2,5,20,4,12]
 };

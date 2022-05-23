@@ -1,5 +1,11 @@
 var NAVTREEINDEX127 =
 {
+"struct_terraria_1_1_data_structures_1_1_draw_data.html":[1,0,2,4,12],
+"struct_terraria_1_1_data_structures_1_1_draw_data.html#a0b7dd07fe5686f1b816de0729fe9b1ec":[1,0,2,4,12,6],
+"struct_terraria_1_1_data_structures_1_1_draw_data.html#a10a8d23c01eb01ca9813e3da35353e72":[1,0,2,4,12,13],
+"struct_terraria_1_1_data_structures_1_1_draw_data.html#a1a26cb2f96c225c40d08ef92da0010aa":[1,0,2,4,12,3],
+"struct_terraria_1_1_data_structures_1_1_draw_data.html#a1d61dd9f52afdba35f702536ad12d426":[1,0,2,4,12,4],
+"struct_terraria_1_1_data_structures_1_1_draw_data.html#a384079c9424b849e324fa4cbd476c816":[1,0,2,4,12,15],
 "struct_terraria_1_1_data_structures_1_1_draw_data.html#a4593bd1264ccc37a05f9baaf1b1ae889":[1,0,2,4,12,19],
 "struct_terraria_1_1_data_structures_1_1_draw_data.html#a481b7c2a602a932b407b07afcb9d3caa":[1,0,2,4,12,16],
 "struct_terraria_1_1_data_structures_1_1_draw_data.html#a4d33f0feedbcf1f4f1eac34e6dbe5e26":[1,0,2,4,12,8],
@@ -243,11 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html#aa1dbdb5896e7f98b527599636a70d1f5":[1,0,2,4,68,4],
 "struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html#aebb31a7110eab9cce7671b005c1d0777":[1,0,2,4,68,2],
 "struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html#afb84107092b0aefc22ea7da32efc39f5":[1,0,2,4,68,7],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html":[1,0,2,4,69],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a191f36c8f104e4a383af23c454ee265f":[1,0,2,4,69,4],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a67ff0cd70f983119965d93edd6eb4b6d":[1,0,2,4,69,5],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a9f4bac4436567edf802a0c0f977b13cb":[1,0,2,4,69,8],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#aa6bb87a6d25a0cdd5e61e4f91b140e57":[1,0,2,4,69,1],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#ad085849ad0ab661929b18dfc21bc8331":[1,0,2,4,69,0],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#adb8f25953de77d73b9107f24c756a5f3":[1,0,2,4,69,7]
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html":[1,0,2,4,69]
 };

@@ -1,5 +1,11 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a191f36c8f104e4a383af23c454ee265f":[1,0,2,4,69,4],
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a67ff0cd70f983119965d93edd6eb4b6d":[1,0,2,4,69,5],
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#a9f4bac4436567edf802a0c0f977b13cb":[1,0,2,4,69,8],
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#aa6bb87a6d25a0cdd5e61e4f91b140e57":[1,0,2,4,69,1],
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#ad085849ad0ab661929b18dfc21bc8331":[1,0,2,4,69,0],
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#adb8f25953de77d73b9107f24c756a5f3":[1,0,2,4,69,7],
 "struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#ae34349c65bee51c051ecef7f357cd957":[1,0,2,4,69,2],
 "struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#aed410181aacbc37666cba54dd66b9145":[1,0,2,4,69,6],
 "struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html#aed923af41529fe1265f46ec23e36f19b":[1,0,2,4,69,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a111b90d756298e453c144c3d007ba83d":[1,0,2,5,65,7,1],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a2ba671a399a0112cd84b43bd75fb9f40":[1,0,2,5,65,7,6],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a5b308944a48d469c09206e531526bf0e":[1,0,2,5,65,7,5],
-"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a5f71c52f37292ac8721bd0136bb3534f":[1,0,2,5,65,7,4],
-"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a61643aa0e3523adb32ea20e86399f184":[1,0,2,5,65,7,0],
-"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a8b272140f9b20ad57ac213f50bcb1971":[1,0,2,5,65,7,3],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html":[1,0,2,5,21,0,1],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html#a80de6f7c36f962bbadfbacd31ab0ac76":[1,0,2,5,21,0,1,1],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html#ae6f1b032af53cbf0ad8a60b1cdaf21a9":[1,0,2,5,21,0,1,0],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_extra_bestiary_info_page_information.html":[1,0,2,5,21,2,2]
+"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a5f71c52f37292ac8721bd0136bb3534f":[1,0,2,5,65,7,4]
 };

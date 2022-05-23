@@ -1,5 +1,11 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_tile_wall_wire_state_data.html#a93e4119aea618ff4ca4df14c9b56d148":[1,0,2,77,0],
+"struct_terraria_1_1_tile_wall_wire_state_data.html#aa1b0e073ea2566f6ee559f14b51ecf7f":[1,0,2,77,1],
+"struct_terraria_1_1_tile_wall_wire_state_data.html#aa59b80536cc4f6bdddaea0aaf3c25924":[1,0,2,77,12],
+"struct_terraria_1_1_tile_wall_wire_state_data.html#abac5bdd978fa5a86896df56358edfe70":[1,0,2,77,13],
+"struct_terraria_1_1_tile_wall_wire_state_data.html#ac3b54d58af32917f64b58bc4c59a4225":[1,0,2,77,2],
+"struct_terraria_1_1_tile_wall_wire_state_data.html#ac772a6fa70aec7e09e6929213f249ae3":[1,0,2,77,4],
 "struct_terraria_1_1_tile_wall_wire_state_data.html#acfc29d3943d1a4ad491c2ef9e059d488":[1,0,2,77,15],
 "struct_terraria_1_1_tile_wall_wire_state_data.html#ada43440a0bf081cf78c4fa35366197d9":[1,0,2,77,20],
 "struct_terraria_1_1_tile_wall_wire_state_data.html#aee4a5ff63c55719e7ba1b0dd42cfcc30":[1,0,2,77,16],
@@ -129,5 +135,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ab4a41891b488a8e30e51e30da3da83e6":[1,0,2,83,1,4],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ac026067dd86556b03343af3accafb339":[1,0,2,83,1,9],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#af29be99c6e7eeb85d0fd385f07a3ebd6":[1,0,2,83,1,5],
-"structnativefiledialog_1_1nfdpathset__t.html":[1,0,36,0]
+"structnativefiledialog_1_1nfdpathset__t.html":[1,0,37,0]
 };

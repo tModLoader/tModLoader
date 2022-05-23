@@ -1,5 +1,11 @@
 var NAVTREEINDEX101 =
 {
+"class_terraria_1_1_n_p_c.html#ae343b9a2208e44424d4a85d71da9970f":[1,0,2,53,140],
+"class_terraria_1_1_n_p_c.html#ae39de6acf32f759f2dd58cfa08cda0ba":[1,0,2,53,42],
+"class_terraria_1_1_n_p_c.html#ae412502d4090763987ad1aae9e5982ac":[1,0,2,53,206],
+"class_terraria_1_1_n_p_c.html#ae4c8dd778794603cee5dc830346d8b5f":[1,0,2,53,92],
+"class_terraria_1_1_n_p_c.html#ae50e283a342966b5a8b805d9943ad670":[1,0,2,53,188],
+"class_terraria_1_1_n_p_c.html#ae52765fc0956d5c4fc2f53963eae0f60":[1,0,2,53,349],
 "class_terraria_1_1_n_p_c.html#ae5d4ef17d54b9ce96ee00dbffdb97a55":[1,0,2,53,293],
 "class_terraria_1_1_n_p_c.html#ae6333051b1a4c7631d507269f7114fec":[1,0,2,53,356],
 "class_terraria_1_1_n_p_c.html#ae6d04ab7e6fb6f58103fc500f5b7d815":[1,0,2,53,350],
@@ -243,11 +249,5 @@ var NAVTREEINDEX101 =
 "class_terraria_1_1_object_data_1_1_tile_object_data.html#ab57b97cbc618a3eb021d6e57637f2507":[1,0,2,16,0,62],
 "class_terraria_1_1_object_data_1_1_tile_object_data.html#ab7e0526feba9170705f7375cdf3a182d":[1,0,2,16,0,49],
 "class_terraria_1_1_object_data_1_1_tile_object_data.html#aba202fe1a5f4b5e5e0202eb8559a6b8b":[1,0,2,16,0,11],
-"class_terraria_1_1_object_data_1_1_tile_object_data.html#abcfb8a26687c3b512049709fdeeea777":[1,0,2,16,0,30],
-"class_terraria_1_1_object_data_1_1_tile_object_data.html#abf32f39beeca9ef21774df4b8edf7d05":[1,0,2,16,0,82],
-"class_terraria_1_1_object_data_1_1_tile_object_data.html#ac1e08159f32917c2103dc653a0b2e513":[1,0,2,16,0,4],
-"class_terraria_1_1_object_data_1_1_tile_object_data.html#ac68c5320b5b481c86f79b03f01adef87":[1,0,2,16,0,17],
-"class_terraria_1_1_object_data_1_1_tile_object_data.html#ac9338d73c9bb9f0218a27d7d0ce4556d":[1,0,2,16,0,68],
-"class_terraria_1_1_object_data_1_1_tile_object_data.html#ac9bed820fdfc1fc0d82244c396064a1f":[1,0,2,16,0,27],
-"class_terraria_1_1_object_data_1_1_tile_object_data.html#aca57c4a1e97780c792c008c4f83ba4b4":[1,0,2,16,0,61]
+"class_terraria_1_1_object_data_1_1_tile_object_data.html#abcfb8a26687c3b512049709fdeeea777":[1,0,2,16,0,30]
 };

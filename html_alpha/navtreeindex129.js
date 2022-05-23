@@ -1,5 +1,11 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a61643aa0e3523adb32ea20e86399f184":[1,0,2,5,65,7,0],
+"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_wall_variation_key.html#a8b272140f9b20ad57ac213f50bcb1971":[1,0,2,5,65,7,3],
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html":[1,0,2,5,21,0,1],
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html#a80de6f7c36f962bbadfbacd31ab0ac76":[1,0,2,5,21,0,1,1],
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_big_progress_bar_info.html#ae6f1b032af53cbf0ad8a60b1cdaf21a9":[1,0,2,5,21,0,1,0],
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_extra_bestiary_info_page_information.html":[1,0,2,5,21,2,2],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_extra_bestiary_info_page_information.html#a03f5ba05a8b4a7eec2a882656d846ea4":[1,0,2,5,21,2,2,0],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_stats_snapshot.html":[1,0,2,5,21,4,7],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_player_stats_snapshot.html#a225d3e8a4995407cb63d7e6a2c206fdb":[1,0,2,5,21,4,7,7],
@@ -243,11 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_happiness.html#a82fa9fe7648b2edd1702ac06b82c2b89":[1,0,2,13,125,3],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_happiness.html#a86559f947cb1d512645c086a812aa921":[1,0,2,13,125,6],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_happiness.html#ad9d4f4acd1d1406d909e82514c3859fe":[1,0,2,13,125,5],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_happiness.html#ae964b431d84c7a8df415acba42349f3b":[1,0,2,13,125,1],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_happiness.html#af0dfe8288ac7729af7387f3e2cdd7323":[1,0,2,13,125,4],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html":[1,0,2,13,128],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html#a2462a572e9b6d9f3bf87e24824b690f7":[1,0,2,13,128,3],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html#a34bd8414ff54502647c3bd500ca28a66":[1,0,2,13,128,2],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html#a4fc241a0da21ff48f731851c4e18c694":[1,0,2,13,128,0],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html#a70b0a297a43e30cfc06586a2cbef7a79":[1,0,2,13,128,1]
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_happiness.html#ae964b431d84c7a8df415acba42349f3b":[1,0,2,13,125,1]
 };

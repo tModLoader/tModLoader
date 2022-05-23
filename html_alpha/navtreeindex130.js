@@ -1,5 +1,11 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_happiness.html#af0dfe8288ac7729af7387f3e2cdd7323":[1,0,2,13,125,4],
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html":[1,0,2,13,128],
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html#a2462a572e9b6d9f3bf87e24824b690f7":[1,0,2,13,128,3],
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html#a34bd8414ff54502647c3bd500ca28a66":[1,0,2,13,128,2],
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html#a4fc241a0da21ff48f731851c4e18c694":[1,0,2,13,128,0],
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html#a70b0a297a43e30cfc06586a2cbef7a79":[1,0,2,13,128,1],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html#a9e10e72cdaa4a4efd162130abd9e6e4c":[1,0,2,13,128,4],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html":[1,0,2,13,129],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a061547278841568b6ba6dabaebd4b9e5":[1,0,2,13,129,17],
@@ -243,11 +249,5 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_tile_wall_wire_state_data.html#a7e0b89b8b3ba96ac128537aa337b9601":[1,0,2,77,7],
 "struct_terraria_1_1_tile_wall_wire_state_data.html#a84ccf4047c44db052ede1bb3246a4451":[1,0,2,77,9],
 "struct_terraria_1_1_tile_wall_wire_state_data.html#a878fa7ab489827205c355847e55de50a":[1,0,2,77,3],
-"struct_terraria_1_1_tile_wall_wire_state_data.html#a8d72241b6182653a5c87ae71e969af4d":[1,0,2,77,10],
-"struct_terraria_1_1_tile_wall_wire_state_data.html#a93e4119aea618ff4ca4df14c9b56d148":[1,0,2,77,0],
-"struct_terraria_1_1_tile_wall_wire_state_data.html#aa1b0e073ea2566f6ee559f14b51ecf7f":[1,0,2,77,1],
-"struct_terraria_1_1_tile_wall_wire_state_data.html#aa59b80536cc4f6bdddaea0aaf3c25924":[1,0,2,77,12],
-"struct_terraria_1_1_tile_wall_wire_state_data.html#abac5bdd978fa5a86896df56358edfe70":[1,0,2,77,13],
-"struct_terraria_1_1_tile_wall_wire_state_data.html#ac3b54d58af32917f64b58bc4c59a4225":[1,0,2,77,2],
-"struct_terraria_1_1_tile_wall_wire_state_data.html#ac772a6fa70aec7e09e6929213f249ae3":[1,0,2,77,4]
+"struct_terraria_1_1_tile_wall_wire_state_data.html#a8d72241b6182653a5c87ae71e969af4d":[1,0,2,77,10]
 };

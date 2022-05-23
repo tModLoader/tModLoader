@@ -1,5 +1,11 @@
 var NAVTREEINDEX98 =
 {
+"class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition.html#a4309b414d8e2d76c18f8357d5c73f74c":[1,0,2,13,7,1,88],
+"class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition.html#a46c06e8dd010650aa51706d2ef1e47c3":[1,0,2,13,7,1,97],
+"class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition.html#a47ace244a56383dad470a645bad8499f":[1,0,2,13,7,1,94],
+"class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition.html#a4c4ad5fd38d3546f045b93da8e167377":[1,0,2,13,7,1,22],
+"class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition.html#a4c598016deea55973f3fb9fc4271e5a8":[1,0,2,13,7,1,32],
+"class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition.html#a4edaf706c2641470a012c369ecd127b8":[1,0,2,13,7,1,16],
 "class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition.html#a51c09d342fdcdb4ed9645a6795ae4099":[1,0,2,13,7,1,60],
 "class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition.html#a53589c760a0fe2118434edfb938c1f4d":[1,0,2,13,7,1,5],
 "class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition.html#a5de817289843ec62c9ac36679b6e8b81":[1,0,2,13,7,1,17],
@@ -243,11 +249,5 @@ var NAVTREEINDEX98 =
 "class_terraria_1_1_mount.html#aa186f85dea3d1b8ebd9971338a3e125b":[1,0,2,50,17],
 "class_terraria_1_1_mount.html#aa5bca7df8e22e5fc715127638e9afdab":[1,0,2,50,79],
 "class_terraria_1_1_mount.html#aa7ed34ca2cb25409e2f7d399322b9ce0":[1,0,2,50,26],
-"class_terraria_1_1_mount.html#aa9f4a4ac0ab52ee1ac6f722346bbd1b5":[1,0,2,50,12],
-"class_terraria_1_1_mount.html#aab8dd7a157121bf9af5b662058182be8":[1,0,2,50,15],
-"class_terraria_1_1_mount.html#aad74cf7bb75b53d32e4b98814f91ed47":[1,0,2,50,90],
-"class_terraria_1_1_mount.html#aae5ddd67f10e1278fb5bdd1afbb3385b":[1,0,2,50,3],
-"class_terraria_1_1_mount.html#ab19a9c8130b3752bac67d8f14ffc4af1":[1,0,2,50,20],
-"class_terraria_1_1_mount.html#ab22b755672ac7ca7d1aa26a32d0a967d":[1,0,2,50,72],
-"class_terraria_1_1_mount.html#ab54bcda7a49c0927ef4e9deb8f8880b5":[1,0,2,50,65]
+"class_terraria_1_1_mount.html#aa9f4a4ac0ab52ee1ac6f722346bbd1b5":[1,0,2,50,12]
 };

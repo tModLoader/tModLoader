@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_gameplay_items.html#adf6382e765b10c4cbd94179f23c01b4a":[1,0,2,5,4,13,8,0],
 "class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_gameplay_items.html#af9b2f32baa601f2e0d187727d847f293":[1,0,2,5,4,13,8,1],
 "class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_materials.html":[1,0,2,5,4,13,9],
 "class_terraria_1_1_game_content_1_1_creative_1_1_item_filters_1_1_materials.html#a1b5f49537d1daf178c8434e594e7efc7":[1,0,2,5,4,13,9,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "class_terraria_1_1_game_content_1_1_events_1_1_moonlord_death_drama_1_1_moonlord_piece.html#a17c20846d4b2c01ed7e07525dcf43679":[1,0,2,5,7,5,1,5],
 "class_terraria_1_1_game_content_1_1_events_1_1_moonlord_death_drama_1_1_moonlord_piece.html#a1b116103697fbee8199f98b4c34e4275":[1,0,2,5,7,5,1,3],
 "class_terraria_1_1_game_content_1_1_events_1_1_moonlord_death_drama_1_1_moonlord_piece.html#a1ecc41b0b52cf1c54e2b53a7716fb2b0":[1,0,2,5,7,5,1,0],
-"class_terraria_1_1_game_content_1_1_events_1_1_moonlord_death_drama_1_1_moonlord_piece.html#a226005af51aa6d1bb8f808fe2b588225":[1,0,2,5,7,5,1,4],
-"class_terraria_1_1_game_content_1_1_events_1_1_moonlord_death_drama_1_1_moonlord_piece.html#aee984cfb43a25736f0ce5234a11415e2":[1,0,2,5,7,5,1,2]
+"class_terraria_1_1_game_content_1_1_events_1_1_moonlord_death_drama_1_1_moonlord_piece.html#a226005af51aa6d1bb8f808fe2b588225":[1,0,2,5,7,5,1,4]
 };

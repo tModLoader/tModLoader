@@ -1,5 +1,11 @@
 var NAVTREEINDEX92 =
 {
+"class_terraria_1_1_mod_loader_1_1_mod_command.html":[1,0,2,13,87],
+"class_terraria_1_1_mod_loader_1_1_mod_command.html#a0baffa44571dd5dedc9bb278a94fad4e":[1,0,2,13,87,3],
+"class_terraria_1_1_mod_loader_1_1_mod_command.html#a5691c1b52fc3b7f9f6de2c8cf71fbe27":[1,0,2,13,87,5],
+"class_terraria_1_1_mod_loader_1_1_mod_command.html#a5af7daa9bde5cebd40eb03494441c9e2":[1,0,2,13,87,0],
+"class_terraria_1_1_mod_loader_1_1_mod_command.html#a76e2334d62d27e18a25882c052a44452":[1,0,2,13,87,1],
+"class_terraria_1_1_mod_loader_1_1_mod_command.html#a9a5b6d0f245f4fb4bfcf8e0588726326":[1,0,2,13,87,2],
 "class_terraria_1_1_mod_loader_1_1_mod_command.html#ab53c5d3bbea6259e97df8004901d99e4":[1,0,2,13,87,6],
 "class_terraria_1_1_mod_loader_1_1_mod_command.html#ac807de4b57a97d5ee2c6105ceff5d4b9":[1,0,2,13,87,4],
 "class_terraria_1_1_mod_loader_1_1_mod_content.html":[1,0,2,13,88],
@@ -243,11 +249,5 @@ var NAVTREEINDEX92 =
 "class_terraria_1_1_mod_loader_1_1_mod_menu.html#ad20d36cca32badff079c150f83dc39ba":[1,0,2,13,95,9],
 "class_terraria_1_1_mod_loader_1_1_mod_menu.html#ad668cabc85b1d2c1d31e37a4d7fc77c6":[1,0,2,13,95,4],
 "class_terraria_1_1_mod_loader_1_1_mod_menu.html#ad6a2b1a741a45773e8e7b36cda5d87b4":[1,0,2,13,95,14],
-"class_terraria_1_1_mod_loader_1_1_mod_menu.html#ae80bf2b79fcd8ec48c1020389199c7a1":[1,0,2,13,95,11],
-"class_terraria_1_1_mod_loader_1_1_mod_menu.html#ae8d2231f6a9fd20a15584fb77255dfac":[1,0,2,13,95,7],
-"class_terraria_1_1_mod_loader_1_1_mod_mount.html":[1,0,2,13,96],
-"class_terraria_1_1_mod_loader_1_1_mod_mount.html#a1d44fb298520421c03480c15dcc2dae7":[1,0,2,13,96,13],
-"class_terraria_1_1_mod_loader_1_1_mod_mount.html#a34a136fd232f9b07928ed93e47aacab3":[1,0,2,13,96,10],
-"class_terraria_1_1_mod_loader_1_1_mod_mount.html#a368ce90730ec41cf4730516821f720c7":[1,0,2,13,96,12],
-"class_terraria_1_1_mod_loader_1_1_mod_mount.html#a36e0a249221e2c691c70765fc9cc4c81":[1,0,2,13,96,11]
+"class_terraria_1_1_mod_loader_1_1_mod_menu.html#ae80bf2b79fcd8ec48c1020389199c7a1":[1,0,2,13,95,11]
 };

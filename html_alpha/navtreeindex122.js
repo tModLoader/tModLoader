@@ -1,5 +1,11 @@
 var NAVTREEINDEX122 =
 {
+"interface_terraria_1_1_chat_1_1_i_chat_processor.html#a74c313628a8d45f6de37021c03616540":[1,0,2,2,5,0],
+"interface_terraria_1_1_data_structures_1_1_i_config_key_holder.html":[1,0,2,4,49],
+"interface_terraria_1_1_data_structures_1_1_i_config_key_holder.html#a8057e68df457c934f623ee6cd7d97b0d":[1,0,2,4,49,1],
+"interface_terraria_1_1_data_structures_1_1_i_config_key_holder.html#aa598d179207b8693ce3f630b60c5996f":[1,0,2,4,49,0],
+"interface_terraria_1_1_data_structures_1_1_i_entity_source.html":[1,0,2,4,50],
+"interface_terraria_1_1_data_structures_1_1_i_entity_source.html#af3141d556be043ca8d40c0d5d73852a4":[1,0,2,4,50,0],
 "interface_terraria_1_1_data_structures_1_1_i_entry_filter.html":[1,0,2,4,51],
 "interface_terraria_1_1_data_structures_1_1_i_entry_filter.html#a020c3dd89360164a59d29faf64968a35":[1,0,2,4,51,1],
 "interface_terraria_1_1_data_structures_1_1_i_entry_filter.html#aa783e24b1ec1803335d380e530825a61":[1,0,2,4,51,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX122 =
 "interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html":[1,0,2,21,12],
 "interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#a5edf1c74b93f079ff1eefd7a3fefa779":[1,0,2,21,12,1],
 "interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#a954375e5ed4dfa350b158d204b825c19":[1,0,2,21,12,0],
-"interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#a9f5e334ec1895e6c5d956d45f62a41eb":[1,0,2,21,12,2],
-"interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#aae025ec8daab65c166dbea897bf6de18":[1,0,2,21,12,3],
-"interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#ab580bcfc7dc62058566647ed0755a094":[1,0,2,21,12,4],
-"interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#ac160a9f18d8eefa5ef9df8f0d95a2e78":[1,0,2,21,12,5],
-"interface_terraria_1_1_utilities_1_1_file_browser_1_1_i_file_browser.html":[1,0,2,22,0,2],
-"interface_terraria_1_1_utilities_1_1_file_browser_1_1_i_file_browser.html#affb920faf65dde721e82a1f569892943":[1,0,2,22,0,2,0],
-"namespace_extensions.html":[0,0,0]
+"interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#a9f5e334ec1895e6c5d956d45f62a41eb":[1,0,2,21,12,2]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#adb92c254e7a04789567ff60183896785":[1,0,2,5,20,4,26],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#add5c9159ae52922893a4440625eb3764":[1,0,2,5,20,4,20],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#adf7c5b291da25fdf72a010fbdf6ac8c6":[1,0,2,5,20,4,24],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_hat_rack.html#ae0a0167003cc46bb0650f9bb08c3fd94":[1,0,2,5,20,4,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_golem_head_progress_bar.html#ac48ff7985f7cf769b340574d8a48bf75":[1,0,2,5,21,0,7,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_golem_head_progress_bar.html#ac7f7724dd4187cb35b9fabb3c7ce6bd9":[1,0,2,5,21,0,7,2],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_lunar_pillar_big_progess_bar.html":[1,0,2,5,21,0,9],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_lunar_pillar_big_progess_bar.html#ab1febab603cde18a5708a4ef8e33c902":[1,0,2,5,21,0,9,1],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_lunar_pillar_big_progess_bar.html#afb05d40e91624ad5b75bd6aa3885ef6a":[1,0,2,5,21,0,9,0]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_lunar_pillar_big_progess_bar.html#ab1febab603cde18a5708a4ef8e33c902":[1,0,2,5,21,0,9,1]
 };

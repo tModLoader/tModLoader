@@ -1110,6 +1110,7 @@ var annotated_dup =
           [ "JITException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_j_i_t_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_j_i_t_exception" ],
           [ "LevenshteinDistance", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance" ],
           [ "MissingResourceException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception" ],
+          [ "MultipleException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_multiple_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_multiple_exception" ],
           [ "OldHookException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_old_hook_exception" ],
           [ "RecipeException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_recipe_exception" ],
           [ "ResourceLoadException", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception.html", "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_resource_load_exception" ]
@@ -1659,6 +1660,7 @@ var annotated_dup =
     [ "UwUPnP", "namespace_uw_u_pn_p.html", [
       [ "UPnP", "class_uw_u_pn_p_1_1_u_pn_p.html", "class_uw_u_pn_p_1_1_u_pn_p" ]
     ] ],
+    [ "AggregateException", "class_aggregate_exception.html", null ],
     [ "Attribute", "class_attribute.html", null ],
     [ "BuffID", "class_buff_i_d.html", [
       [ "Sets", "class_buff_i_d_1_1_sets.html", "class_buff_i_d_1_1_sets" ]

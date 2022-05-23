@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#a554d9f2383c6b34a7b276740ea620447":[1,0,2,5,10,27,6],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#a59c8a0b202c93d0ca1b94f57a1914a84":[1,0,2,5,10,27,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#aa134a433c6f36520542690185718a976":[1,0,2,5,10,27,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html#abb2045f1bd917798c7e574b29e7a7572":[1,0,2,5,10,27,7],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "class_terraria_1_1_game_content_1_1_personalities_1_1_ocean_biome.html#a3fa361fdb8bbc34331b6305522b81e53":[1,0,2,5,16,15,0],
 "class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database.html":[1,0,2,5,16,16],
 "class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database.html#a01a40edd5c37300e78b73af801bc0ed8":[1,0,2,5,16,16,1],
-"class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database.html#a1877ff25b217e95d302acaccc94c2f0f":[1,0,2,5,16,16,0],
-"class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database.html#a7cc249c7f9c802d2ebde30a72085b276":[1,0,2,5,16,16,3]
+"class_terraria_1_1_game_content_1_1_personalities_1_1_personality_database.html#a1877ff25b217e95d302acaccc94c2f0f":[1,0,2,5,16,16,0]
 };

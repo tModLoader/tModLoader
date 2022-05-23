@@ -1,5 +1,6 @@
 var NAVTREEINDEX24 =
 {
+"class_terraria_1_1_graphics_1_1_effects_1_1_effect_manager.html#ae84fcd0adf6dceb5e88cdf4ce432ec5d":[1,0,2,7,2,1,6],
 "class_terraria_1_1_graphics_1_1_effects_1_1_filter.html":[1,0,2,7,2,2],
 "class_terraria_1_1_graphics_1_1_effects_1_1_filter.html#a14537587d3b05e63d4538aae16260408":[1,0,2,7,2,2,4],
 "class_terraria_1_1_graphics_1_1_effects_1_1_filter.html#a15b98c6877893a40e6b5fd51ec7ed656":[1,0,2,7,2,2,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX24 =
 "class_terraria_1_1_graphics_1_1_shaders_1_1_hair_shader_data_set.html":[1,0,2,7,5,4],
 "class_terraria_1_1_graphics_1_1_shaders_1_1_hair_shader_data_set.html#a005a1836f68c9e17685980dc4311ab9b":[1,0,2,7,5,4,0],
 "class_terraria_1_1_graphics_1_1_shaders_1_1_hair_shader_data_set.html#a601bc904cfb49348649d5a2bfc429b23":[1,0,2,7,5,4,4],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_hair_shader_data_set.html#a92c6a14a4c141607b34c0c68ffe42d9b":[1,0,2,7,5,4,1],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_hair_shader_data_set.html#accb31820477e49b1eb43e6d827dfc114":[1,0,2,7,5,4,2]
+"class_terraria_1_1_graphics_1_1_shaders_1_1_hair_shader_data_set.html#a92c6a14a4c141607b34c0c68ffe42d9b":[1,0,2,7,5,4,1]
 };
