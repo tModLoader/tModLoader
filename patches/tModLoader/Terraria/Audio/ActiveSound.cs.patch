@@ -1,0 +1,76 @@
+--- src/TerrariaNetCore/Terraria/Audio/ActiveSound.cs
++++ src/tModLoader/Terraria/Audio/ActiveSound.cs
+@@ -8,8 +_,8 @@
+ {
+ 	public class ActiveSound
+ 	{
+-		public readonly bool IsGlobal;
+-		public Vector2 Position;
++		//public readonly bool IsGlobal;
++		public Vector2? Position; //TML: Made nullable
+ 		public float Volume;
+ 
+ 		public SoundEffectInstance Sound {
+@@ -22,15 +_,16 @@
+ 			private set;
+ 		}
+ 
+-		public bool IsPlaying => Sound.State == SoundState.Playing;
++		public bool IsPlaying => !Sound.IsDisposed && Sound.State == SoundState.Playing;
+ 
++		//TML: Position parameter made nullable.
+-		public ActiveSound(SoundStyle style, Vector2 position) {
++		public ActiveSound(SoundStyle style, Vector2? position = null) {
+ #if FNA
+ 			Monitor.Enter(SoundEngine.AudioLock);
+ #endif
+ 			Position = position;
+ 			Volume = 1f;
+-			IsGlobal = false;
++			//IsGlobal = false;
+ 			Style = style;
+ 			Play();
+ #if FNA
+@@ -38,6 +_,8 @@
+ #endif
+ 		}
+ 
++		//TML: Merged with the above constructor.
++		/*
+ 		public ActiveSound(SoundStyle style) {
+ #if FNA
+ 			Monitor.Enter(SoundEngine.AudioLock);
+@@ -51,10 +_,12 @@
+ 			Monitor.Exit(SoundEngine.AudioLock);
+ #endif
+ 		}
++		*/
+ 
+ 		private void Play() {
+ 			SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
+ 			soundEffectInstance.Pitch += Style.GetRandomPitch();
++			soundEffectInstance.IsLooped = Style.IsLooped;
+ 			soundEffectInstance.Play();
+ 			SoundInstanceGarbageCollector.Track(soundEffectInstance);
+ 			Sound = soundEffectInstance;
+@@ -77,14 +_,17 @@
+ 		}
+ 
+ 		public void Update() {
+-			if (Sound != null) {
++			if (Sound != null && !Sound.IsDisposed) {
+ 				Vector2 value = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+ 				float num = 1f;
++				/*
+ 				if (!IsGlobal) {
++				*/
++				if (Position.HasValue) {
+-					float value2 = (Position.X - value.X) / ((float)Main.screenWidth * 0.5f);
++					float value2 = (Position.Value.X - value.X) / ((float)Main.screenWidth * 0.5f);
+ 					value2 = MathHelper.Clamp(value2, -1f, 1f);
+ 					Sound.Pan = value2;
+-					float num2 = Vector2.Distance(Position, value);
++					float num2 = Vector2.Distance(Position.Value, value);
+ 					num = 1f - num2 / ((float)Main.screenWidth * 1.5f);
+ 				}
+ 

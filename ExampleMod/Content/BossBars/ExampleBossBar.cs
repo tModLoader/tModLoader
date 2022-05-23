@@ -24,11 +24,11 @@ namespace ExampleMod.Content.BossBars
 
 		public override bool PreDraw(SpriteBatch spriteBatch, NPC npc, ref BossBarDrawParams drawParams) {
 			// Make the bar shake the less health the NPC has
-			float shakeIntensity = Utils.Clamp(1f - drawParams.lifePercentToShow - 0.2f, 0f, 1f);
-			drawParams.barCenter.Y -= 20f;
-			drawParams.barCenter += new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)) * shakeIntensity * 15f;
+			float shakeIntensity = Utils.Clamp(1f - drawParams.LifePercentToShow - 0.2f, 0f, 1f);
+			drawParams.BarCenter.Y -= 20f;
+			drawParams.BarCenter += new Vector2(Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f)) * shakeIntensity * 15f;
 
-			drawParams.iconColor = Main.DiscoColor;
+			drawParams.IconColor = Main.DiscoColor;
 
 			return true;
 		}

@@ -107,7 +107,7 @@ namespace Terraria
 					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
 
 				hovering = false;
-				GetInfoAccIconPosition(0, startX, out X, out Y);
+				GetInfoAccIconPosition(0, startX, out X, out int _);
 				buttonPosition = new Vector2(X, Y + 20);
 
 				if ((float)mouseX >= buttonPosition.X && (float)mouseY >= buttonPosition.Y && (float)mouseX <= buttonPosition.X + (float)buttonTexture.Width && (float)mouseY <= buttonPosition.Y + (float)buttonTexture.Height && !PlayerInput.IgnoreMouseInterface) {
@@ -165,37 +165,21 @@ namespace Terraria
 			}
 		}
 
-		internal void PostSocialInitialize() {
+		internal void InitTMLContentManager() {
 			if (dedServ) {
 				return;
 			}
 
-			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
-
-			if (!Directory.Exists(vanillaContentFolder)) {
-				vanillaContentFolder = "../Content"; // Nested Manual Install
+			string vanillaContentFolder;
+			if (SocialAPI.Mode == SocialMode.Steam) {
+				vanillaContentFolder = Path.Combine(Steam.GetSteamTerrariaInstallDir(), "Content");
 			}
+			else {
+				vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
 
-#if MAC
-			vanillaContentFolder = "../../../../Terraria/Terraria.app/Contents/Resources/Content";
-#endif
-
-			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
-				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
-				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
-
-				if (appInstalled) {
-					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
-					Logging.Terraria.Info("Found Terraria steamapp install at: " + steamInstallFolder);
-
-					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
-
-					if (!Directory.Exists(vanillaContentFolder))
-						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/Resources/Content");
+				if (!Directory.Exists(vanillaContentFolder)) {
+					vanillaContentFolder = "../Content"; // Nested Manual Install
 				}
-
-				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
-				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)ModLoader.Engine.Steam.lastAvailableSteamCloudStorage)} available");
 			}
 
 			if (!Directory.Exists(vanillaContentFolder)) {
@@ -203,8 +187,8 @@ namespace Terraria
 				Environment.Exit(1);
 			}
 
-			if (Directory.Exists(Path.Combine(InstallVerifier.TmlContentDirectory, "Images")))
-				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, InstallVerifier.TmlContentDirectory, null);
+			if (Directory.Exists(Path.Combine("Content", "Images")))
+				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
 
 			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
 		}

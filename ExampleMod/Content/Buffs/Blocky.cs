@@ -24,11 +24,14 @@ namespace ExampleMod.Content.Buffs
 			// We use blockyAccessoryPrevious here instead of blockyAccessory because UpdateBuffs happens before UpdateEquips but after ResetEffects.
 			if (player.townNPCs >= 1 && p.BlockyAccessoryPrevious) {
 				p.BlockyPower = true;
+
 				if (Main.myPlayer == player.whoAmI && Main.time % 1000 == 0) {
-					player.QuickSpawnItem(new EntitySource_Buff(player, Type, buffIndex), ModContent.ItemType<ExampleBlock>());
+					player.QuickSpawnItem(player.GetSource_Buff(buffIndex), ModContent.ItemType<ExampleBlock>());
 				}
+
 				player.jumpSpeedBoost += 4.8f;
 				player.extraFall += 45;
+
 				// Some other effects:
 				//player.lifeRegen++;
 				//player.meleeCrit += 2;

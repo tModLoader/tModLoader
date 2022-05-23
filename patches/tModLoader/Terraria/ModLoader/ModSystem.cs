@@ -4,9 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
+using Terraria.ID;
+using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -19,13 +20,6 @@ namespace Terraria.ModLoader
 	public abstract partial class ModSystem : ModType
 	{
 		protected override void Register() {
-			// @TODO: Remove on release
-			var type = GetType();
-
-			if (!LoaderUtils.HasMethod(type, typeof(ModSystem), nameof(SaveWorldData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModSystem), "SaveWorldData"))
-				throw new Exception($"{type} has old SaveData callback with no arguments but not new SaveData with TagCompound, not loading the mod to avoid wiping mod data");
-			// @TODO: END Remove on release
-
 			SystemLoader.Add(this);
 			ModTypeLookup<ModSystem>.Register(this);
 		}
@@ -59,6 +53,12 @@ namespace Terraria.ModLoader
 		/// <br/> You can use this to edit recipes added by other mods.
 		/// </summary>
 		public virtual void PostAddRecipes() { }
+
+		/// <summary>
+		/// Override this method to do treatment about recipes once they have been setup. You shouldn't edit any recipe here.
+		/// </summary>
+		public virtual void PostSetupRecipes() {
+		}
 
 		/// <summary>
 		/// Override this method to add recipe groups to the game.
@@ -269,13 +269,31 @@ namespace Terraria.ModLoader
 		public virtual void LoadWorldData(TagCompound tag) { }
 
 		/// <summary>
-		/// Allows you to send custom data between clients and server. This is useful for syncing information such as bosses that have been defeated.
+		/// Allows you to prevent the world and player from being loaded/selected as a valid combination, similar to Journey Mode pairing.
 		/// </summary>
+		public virtual bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldFileData) {
+			return true;
+		}
+
+		public virtual string WorldCanBePlayedRejectionMessage(PlayerFileData playerData, WorldFileData worldData) {
+			return $"The selected character {playerData.Name} can not be used with the selected world {worldData.Name}.\n" +
+							$"This could be due to mismatched Journey Mode or other mod specific changes.";
+		}
+
+		/// <summary>
+		/// Allows you to send custom data between clients and server, which will be handled in <see cref="NetReceive"/>. This is useful for syncing information such as bosses that have been defeated.
+		/// <br/>Called whenever <see cref="MessageID.WorldData"/> is successfully sent, for example after a boss is defeated, a new day starts, or a player joins the server.
+		/// <br/>Only called on the server.
+		/// </summary>
+		/// <param name="writer">The writer.</param>
 		public virtual void NetSend(BinaryWriter writer) { }
 
 		/// <summary>
-		/// Allows you to do things with custom data that is received between clients and server.
+		/// Use this to receive information that was sent in <see cref="NetSend"/>.
+		/// <br/>Called whenever <see cref="MessageID.WorldData"/> is successfully received.
+		/// <br/>Only called on the client.
 		/// </summary>
+		/// <param name="reader">The reader.</param>
 		public virtual void NetReceive(BinaryReader reader) { }
 
 		/// <summary>

@@ -4,8 +4,8 @@
  		public override bool Deserialize(BinaryReader reader, int userId) {
  			switch (reader.ReadByte()) {
  				case 0: {
-+					if(Main.dedServ)
-+					return false;
++						if (Main.dedServ) // #if SERVER
++							return false;
 +
  						TeleportPylonInfo info3 = default(TeleportPylonInfo);
  						info3.PositionInTiles = new Point16(reader.ReadInt16(), reader.ReadInt16());
@@ -14,8 +14,8 @@
  						break;
  					}
  				case 1: {
-+					if(Main.dedServ)
-+					return false;
++						if (Main.dedServ) // #if SERVER
++							return false;
 +
  						TeleportPylonInfo info2 = default(TeleportPylonInfo);
  						info2.PositionInTiles = new Point16(reader.ReadInt16(), reader.ReadInt16());

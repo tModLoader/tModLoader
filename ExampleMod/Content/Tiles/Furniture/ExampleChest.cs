@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.Localization;
@@ -57,12 +58,13 @@ namespace ExampleMod.Content.Tiles.Furniture
 
 		public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].TileFrameX / 36);
 
-		public override bool HasSmartInteract() => true;
+		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) => true;
 
 		public override bool IsLockedChest(int i, int j) => Main.tile[i, j].TileFrameX / 36 == 1;
 
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) {
 			if (Main.dayTime) {
+				Main.NewText("The chest stubbornly refuses to open in the light of the day. Try again at night.", Color.Orange);
 				return false;
 			}
 
@@ -149,6 +151,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 			else {
 				if (isLocked) {
+					// Make sure to change the code in UnlockChest if you don't want the chest to only unlock at night.
 					int key = ModContent.ItemType<ExampleChestKey>();
 					if (player.ConsumeItem(key) && Chest.Unlock(left, top)) {
 						if (Main.netMode == NetmodeID.MultiplayerClient) {
@@ -165,12 +168,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 							SoundEngine.PlaySound(SoundID.MenuClose);
 						}
 						else {
+							SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
 							player.chest = chest;
 							Main.playerInventory = true;
 							Main.recBigList = false;
 							player.chestX = left;
 							player.chestY = top;
-							SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
 						}
 
 						Recipe.FindRecipes();

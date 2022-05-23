@@ -1,5 +1,7 @@
+using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -27,8 +29,13 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useAnimation = 8; // The length of the item's use animation in ticks (60 ticks == 1 second.)
 			Item.useStyle = ItemUseStyleID.Shoot; // How you use the item (swinging, holding out, etc.)
 			Item.autoReuse = true; // Whether or not you can hold click to automatically use it again.
-			//Item.UseSound = SoundID.Item11;
-			Item.UseSound = SoundLoader.GetLegacySoundSlot(Mod, "Assets/Sounds/PlasmaFire"); // The sound that this item plays when used.
+			
+			// The sound that this item plays when used.
+			Item.UseSound = new SoundStyle($"{nameof(ExampleMod)}/Assets/Sounds/Items/Guns/ExampleGun") {
+				Volume = 0.9f,
+				PitchVariance = 0.2f,
+				MaxInstances = 3,
+			};
 
 			// Weapon Properties
 			Item.DamageType = DamageClass.Ranged; // Sets the damage type to ranged.
@@ -53,6 +60,14 @@ namespace ExampleMod.Content.Items.Weapons
 		// This method lets you adjust position of the gun in the player's hands. Play with these values until it looks good with your graphics.
 		public override Vector2? HoldoutOffset() {
 			return new Vector2(2f, -2f);
+		}
+
+		//TODO: Move this to a more specifically named example. Say, a paint gun?
+		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+			// Every projectile shot from this gun has a 1/3 chance of being an ExampleInstancedProjectile
+			if (Main.rand.NextBool(3)) {
+				type = ModContent.ProjectileType<ExampleInstancedProjectile>();
+			}
 		}
 
 		/*
@@ -95,15 +110,13 @@ namespace ExampleMod.Content.Items.Weapons
 
 		// How can I get a "Clockwork Assault Rifle" effect?
 		// 3 round burst, only consume 1 ammo for burst. Delay between bursts, use reuseDelay
-		/*	The following changes to SetDefaults()
+		// Make the following changes to SetDefaults():
+		/*
 			item.useAnimation = 12;
 			item.useTime = 4; // one third of useAnimation
 			item.reuseDelay = 14;
-		public override bool CanConsumeAmmo(Player player)	{
-			// Because of how the game works, player.itemAnimation will be 11, 7, and finally 3. (useAnimation - 1, then - useTime until less than 0.)
-			// We can get the Clockwork Assault Riffle Effect by not consuming ammo when itemAnimation is lower than the first shot.
-			return !(player.itemAnimation < Item.useAnimation - 2);
-		}*/
+			item.consumeAmmoOnLastShotOnly = true;
+		*/
 
 		// How can I shoot 2 different projectiles at the same time?
 		/*public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {

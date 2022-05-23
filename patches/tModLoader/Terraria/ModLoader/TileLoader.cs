@@ -6,6 +6,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -38,9 +39,6 @@ namespace Terraria.ModLoader
 		private static int nextTile = TileID.Count;
 		internal static readonly IList<ModTile> tiles = new List<ModTile>();
 		internal static readonly IList<GlobalTile> globalTiles = new List<GlobalTile>();
-		internal static readonly IDictionary<int, ModTree> trees = new Dictionary<int, ModTree>();
-		internal static readonly IDictionary<int, ModPalmTree> palmTrees = new Dictionary<int, ModPalmTree>();
-		internal static readonly IDictionary<int, ModCactus> cacti = new Dictionary<int, ModCactus>();
 		private static bool loaded = false;
 		private static readonly int vanillaChairCount = TileID.Sets.RoomNeeds.CountsAsChair.Length;
 		private static readonly int vanillaTableCount = TileID.Sets.RoomNeeds.CountsAsTable.Length;
@@ -88,8 +86,6 @@ namespace Terraria.ModLoader
 		private static Action<int, Player>[] HookFloorVisuals;
 		private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
 		private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
-		private delegate int DelegateSaplingGrowthType(int type, ref int style);
-		private static DelegateSaplingGrowthType[] HookSaplingGrowthType;
 		private static Action<int, int, int, Item>[] HookPlaceInWorld;
 
 		internal static int ReserveTileID() {
@@ -228,7 +224,6 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookSlope, globalTiles, g => g.Slope);
 			ModLoader.BuildGlobalHook(ref HookFloorVisuals, globalTiles, g => g.FloorVisuals);
 			ModLoader.BuildGlobalHook<GlobalTile, DelegateChangeWaterfallStyle>(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
-			ModLoader.BuildGlobalHook<GlobalTile, DelegateSaplingGrowthType>(ref HookSaplingGrowthType, globalTiles, g => g.SaplingGrowthType);
 			ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
 
 			if (!unloading) {
@@ -242,9 +237,6 @@ namespace Terraria.ModLoader
 
 			tiles.Clear();
 			globalTiles.Clear();
-			trees.Clear();
-			palmTrees.Clear();
-			cacti.Clear();
 
 			// Has to be ran on the main thread, since this may dispose textures.
 			Main.QueueMainThreadAction(() => {
@@ -383,36 +375,64 @@ namespace Terraria.ModLoader
 			&& MusicLoader.tileToMusic[tile.type].ContainsKey(tile.frameY / 36 * 36);
 		}
 
-		public static bool HasSmartInteract(int type) {
-			return GetTile(type)?.HasSmartInteract() ?? false;
+		public static bool HasSmartInteract(int i, int j, int type, SmartInteractScanSettings settings) {
+			return GetTile(type)?.HasSmartInteract(i, j, settings) ?? false;
 		}
 
-		public static void FixSmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraX, ref int extraY) {
+		public static void ModifySmartInteractCoords(int type, ref int width, ref int height, ref int frameWidth, ref int frameHeight, ref int extraY) {
+			ModTile modTile = GetTile(type);
+			if (modTile == null)
+				return;
+
+			TileObjectData data = TileObjectData.GetTileData(type, 0);
+			if (data == null)
+				return;
+
+			width = data.Width;
+			height = data.Height;
+			frameWidth = data.CoordinateWidth + data.CoordinatePadding;
+			frameHeight = data.CoordinateHeights[0] + data.CoordinatePadding;
+			extraY = data.CoordinateFullHeight % frameHeight;
+
+			modTile.ModifySmartInteractCoords(ref width, ref height, ref frameWidth, ref frameHeight, ref extraY);
+		}
+
+		public static void ModifySittingTargetInfo(int i, int j, int type, ref TileRestingInfo info) {
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
-				TileObjectData data = TileObjectData.GetTileData(type, 0);
-				width = data.Width;
-				height = data.Height;
-				frameWidth = data.CoordinateWidth + data.CoordinatePadding;
-				frameHeight = data.CoordinateHeights[0] + data.CoordinatePadding;
-				extraY = data.CoordinateFullHeight % frameHeight;
+				modTile.ModifySittingTargetInfo(i, j, ref info);
+			}
+			else {
+				info.AnchorTilePosition.Y += 1; // Hardcoded vanilla offset from the bottom tile moved here (all chairs have height-1 offset)
 			}
 		}
-		
-		public static bool KillSound(int i, int j, int type) {
-			foreach (var hook in HookKillSound) {
-				if (!hook(i, j, type)) {
-					return false;
-				}
-			}
+
+		public static void ModifySleepingTargetInfo(int i, int j, int type, ref TileRestingInfo info) {
 			ModTile modTile = GetTile(type);
 			if (modTile != null) {
-				if (!modTile.KillSound(i, j)) {
+				// Because vanilla sets its own offset based on frameY, ignoring tile type, which might not be set to an expected default, reassign it
+				info.VisualOffset = new Vector2(-9f, 1f); // Taken from default case of vanilla beds 
+				modTile.ModifySleepingTargetInfo(i, j, ref info);
+			}
+		}
+
+		public static bool KillSound(int i, int j, int type) {
+			foreach (var hook in HookKillSound) {
+				if (!hook(i, j, type))
 					return false;
-				}
-				SoundEngine.PlaySound(modTile.SoundType, i * 16, j * 16, modTile.SoundStyle);
+			}
+			
+			var modTile = GetTile(type);
+
+			if (modTile != null) {
+				if (!modTile.KillSound(i, j))
+					return false;
+				
+				SoundEngine.PlaySound(modTile.HitSound, new Vector2(i * 16, j * 16));
+				
 				return false;
 			}
+			
 			return true;
 		}
 		
@@ -833,119 +853,99 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static bool SaplingGrowthType(int type, ref int saplingType, ref int style) {
+		public static bool SaplingGrowthType(int soilType, ref int saplingType, ref int style) {
 			int originalType = saplingType;
 			int originalStyle = style;
-			bool flag = false;
-			ModTile modTile = GetTile(type);
 
-			if (modTile != null) {
-				saplingType = modTile.SaplingGrowthType(ref style);
+			var treeGrown = PlantLoader.Get<ModTree>(TileID.Trees, soilType);
 
-				if (saplingType >= 0 && TileID.Sets.TreeSapling[saplingType]) {
-					originalType = saplingType;
-					originalStyle = style;
-					flag = true;
-				}
-				else {
-					saplingType = originalType;
-					style = originalStyle;
-				}
+			if (treeGrown == null) {
+				var palmGrown = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, soilType);
+
+				if (palmGrown != null)
+					saplingType = palmGrown.SaplingGrowthType(ref style);
+				else
+					return false;
 			}
+			else
+				saplingType = treeGrown.SaplingGrowthType(ref style);
 
-			foreach (var hook in HookSaplingGrowthType) {
-				saplingType = hook(type, ref style);
+			if (TileID.Sets.TreeSapling[saplingType])
+				return true;
 
-				if (saplingType >= 0 && TileID.Sets.TreeSapling[saplingType]) {
-					originalType = saplingType;
-					originalStyle = style;
-					flag = true;
-				}
-				else {
-					saplingType = originalType;
-					style = originalStyle;
-				}
-			}
-
-			return flag;
+			saplingType = originalType;
+			style = originalStyle;
+			return false;
 		}
 
 		public static bool CanGrowModTree(int type) {
-			return trees.ContainsKey(type);
+			return PlantLoader.Exists(TileID.Trees, type);
 		}
 
 		public static void TreeDust(Tile tile, ref int dust) {
-			if (tile.active() && trees.ContainsKey(tile.type)) {
-				dust = trees[tile.type].CreateDust();
-			}
+			if (!tile.active())
+				return;
+
+			var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
+			if (tree != null)
+				dust = tree.CreateDust();
 		}
 
 		public static void TreeGrowthFXGore(int type, ref int gore) {
-			if (trees.ContainsKey(type)) {
-				gore = trees[type].GrowthFXGore();
-			}
+			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
+			if (tree != null)
+				gore = tree.GrowthFXGore();
 		}
 
 		public static bool CanDropAcorn(int type) {
-			return trees.ContainsKey(type) ? trees[type].CanDropAcorn() : false;
+			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
+			if (tree == null)
+				return false;
+
+			return tree.CanDropAcorn();
 		}
 
 		public static void DropTreeWood(int type, ref int wood) {
-			if (trees.ContainsKey(type)) {
-				wood = trees[type].DropWood();
-			}
-		}
-
-		public static Texture2D GetTreeTexture(Tile tile) {
-			return tile.active() && trees.ContainsKey(tile.type) ? trees[tile.type].GetTexture() : null;
-		}
-
-		public static Texture2D GetTreeTopTextures(int type, int i, int j, ref int frame,
-			ref int frameWidth, ref int frameHeight, ref int xOffsetLeft, ref int yOffset) {
-			return trees.ContainsKey(type) ? trees[type].GetTopTextures(i, j, ref frame,
-				ref frameWidth, ref frameHeight, ref xOffsetLeft, ref yOffset) : null;
-		}
-
-		public static Texture2D GetTreeBranchTextures(int type, int i, int j, int trunkOffset, ref int frame) {
-			return trees.ContainsKey(type) ? trees[type].GetBranchTextures(i, j, trunkOffset, ref frame) : null;
+			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
+			if (tree != null)
+				wood = tree.DropWood();
 		}
 
 		public static bool CanGrowModPalmTree(int type) {
-			return palmTrees.ContainsKey(type);
+			return PlantLoader.Exists(TileID.PalmTree, type);
 		}
 
 		public static void PalmTreeDust(Tile tile, ref int dust) {
-			if (tile.active() && palmTrees.ContainsKey(tile.type)) {
-				dust = palmTrees[tile.type].CreateDust();
-			}
+			if (!tile.active())
+				return;
+
+			var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, tile.type);
+			if (tree != null)
+				dust = tree.CreateDust();
 		}
 
 		public static void PalmTreeGrowthFXGore(int type, ref int gore) {
-			if (palmTrees.ContainsKey(type)) {
-				gore = palmTrees[type].GrowthFXGore();
-			}
+			var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
+			if (tree != null)
+				gore = tree.GrowthFXGore();
 		}
 
 		public static void DropPalmTreeWood(int type, ref int wood) {
-			if (palmTrees.ContainsKey(type)) {
-				wood = palmTrees[type].DropWood();
-			}
-		}
-
-		public static Texture2D GetPalmTreeTexture(Tile tile) {
-			return tile.active() && palmTrees.ContainsKey(tile.type) ? palmTrees[tile.type].GetTexture() : null;
-		}
-
-		public static Texture2D GetPalmTreeTopTextures(int type) {
-			return palmTrees.ContainsKey(type) ? palmTrees[type].GetTopTextures() : null;
+			var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
+			if (tree != null)
+				wood = tree.DropWood();
 		}
 
 		public static bool CanGrowModCactus(int type) {
-			return cacti.ContainsKey(type) || TileIO.Tiles.unloadedTypes.Contains((ushort)type);
+			return PlantLoader.Exists(TileID.Cactus, type) || TileIO.Tiles.unloadedTypes.Contains((ushort)type);
 		}
 
 		public static Texture2D GetCactusTexture(int type) {
-			return cacti.ContainsKey(type) ? cacti[type].GetTexture() : null;
+			var tree = PlantLoader.Get<ModCactus>(TileID.Cactus, type);
+			if (tree == null)
+				return null;
+
+			return tree.GetTexture().Value;
 		}
 
 		public static void PlaceInWorld(int i, int j, Item item) {

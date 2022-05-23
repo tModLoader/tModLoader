@@ -23,7 +23,7 @@ namespace Terraria.ModLoader.Default.Developer
 
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			var line = new TooltipLine(Mod, "DeveloperSetNote", $"{TooltipBrief}Developer Item") {
-				overrideColor = Color.OrangeRed
+				OverrideColor = Color.OrangeRed
 			};
 			tooltips.Add(line);
 		}

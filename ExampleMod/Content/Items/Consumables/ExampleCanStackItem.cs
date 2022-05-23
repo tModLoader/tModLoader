@@ -17,6 +17,8 @@ namespace ExampleMod.Content.Items.Consumables
 		// We set this when the item is crafted. In other contexts, this will be the empty string ""
 		public string craftedPlayerName = string.Empty;
 
+		public override bool IsCloneable => true; // safe to share craftedPlayerName between clones, because it cannot be changed after creation/load
+
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example CanStack Item: Gift Bag");
 			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
@@ -52,13 +54,13 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void RightClick(Player player) {
-			var source = player.GetItemSource_OpenItem(Type);
+			var entitySource = player.GetSource_OpenItem(Type);
 
 			if (Main.hardMode) {
-				player.QuickSpawnItem(source, ItemID.ChocolateChipCookie);
+				player.QuickSpawnItem(entitySource, ItemID.ChocolateChipCookie);
 			}
 			else {
-				player.QuickSpawnItem(source, ItemID.Coconut);
+				player.QuickSpawnItem(entitySource, ItemID.Coconut);
 			}
 		}
 

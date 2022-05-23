@@ -1,6 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Dust.cs
 +++ src/tModLoader/Terraria/Dust.cs
-@@ -4,6 +_,8 @@
+@@ -1,9 +_,12 @@
+ using Microsoft.Xna.Framework;
+ using System;
++using Terraria.DataStructures;
+ using Terraria.GameContent;
  using Terraria.GameContent.Events;
  using Terraria.Graphics.Shaders;
  using Terraria.Utilities;

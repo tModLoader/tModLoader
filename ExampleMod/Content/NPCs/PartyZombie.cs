@@ -3,8 +3,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using ExampleMod.Content.Biomes;
 using Terraria.ModLoader.Utilities;
+using Terraria.DataStructures;
+using ExampleMod.Content.Biomes;
+using ExampleMod.Content.Buffs;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -79,6 +81,7 @@ namespace ExampleMod.Content.NPCs
 
 		public override void HitEffect(int hitDirection, double damage) {
 			// Spawn confetti when this zombie is hit.
+
 			for (int i = 0; i < 10; i++) {
 				int dustType = Main.rand.Next(139, 143);
 				var dust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, dustType);
@@ -88,6 +91,17 @@ namespace ExampleMod.Content.NPCs
 
 				dust.scale *= 1f + Main.rand.NextFloat(-0.03f, 0.03f);
 			}
+		}
+
+		public override void OnHitPlayer(Player target, int damage, bool crit) {
+			// Here we can make things happen if this NPC hits a player via its hitbox (not projectiles it shoots, this is handled in the projectile code usually)
+			// Common use is applying buffs/debuffs:
+
+			int buffType = ModContent.BuffType<AnimatedBuff>();
+			// Alternatively, you can use a vanilla buff: int buffType = BuffID.Slow;
+
+			int timeToAdd = 5 * 60; //This makes it 5 seconds, one second is 60 ticks
+			target.AddBuff(buffType, timeToAdd);
 		}
 	}
 }

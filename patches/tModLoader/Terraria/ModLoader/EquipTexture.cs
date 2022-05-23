@@ -13,11 +13,6 @@ namespace Terraria.ModLoader
 		public string Texture { get; internal set; }
 
 		/// <summary>
-		/// The mod that added this equipment texture.
-		/// </summary>
-		public Mod Mod { get; internal set; }
-
-		/// <summary>
 		/// The internal name of this equipment texture.
 		/// </summary>
 		public string Name { get; internal set; }

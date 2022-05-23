@@ -9,7 +9,7 @@ on:
     types: [labeled]
     branches: [1.4-preview, 1.4-stable, 1.4, 1.4_mergedtesting]
   # Allows you to run this workflow manually from the Actions tab
-  # workflow_dispatch:
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -128,7 +128,7 @@ jobs:
       - name: Install .NET SDKs
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '6.0.201'
 
       # Runs a set of commands using the runners shell
       - name: Build script
@@ -136,6 +136,12 @@ jobs:
         shell: bash
         run: |
           echo CI setup for Terraria v$TERRARIA_VERSION
+          
+          echo Listing installed .NET SDKs:
+          dotnet --list-sdks
+          echo Default .NET version:
+          dotnet --version
+          
           echo Downloading Terraria Server zip
           curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-$TERRARIA_VERSION.zip -o terrariaserver.zip
           unzip -q terrariaserver.zip
@@ -252,6 +258,11 @@ jobs:
           publishedfolder=$steamapps/steamapps/workshop/content/1281930/$publishid
           echo "publishedModFiles are at:"
           echo $publishedfolder
+          
+          if [ ! -d "$publishedfolder" ] ; then
+            echo "Files not Found. Steam failed to download. Try again later."
+            exit -12390
+          fi
           echo ::endgroup::
           
           echo Adding version info to ExampleMod
@@ -262,7 +273,13 @@ jobs:
           echo ModloaderDir is: $ModloaderDir
           mkdir -p $ModloaderDir
           
-          export ExtraBuildModFlags="-ciprep \"Automatic update from GitHub: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
+          if [ ${{github.ref}} = 'refs/heads/1.4' ] || [ ${{github.ref}} = 'refs/heads/1.4_mergedtesting' ] ; then
+            ciprep=""
+          else
+            ciprep="-ciprep \"Automatic update from GitHub: ${{ github.event.compare }}\" -publishedmodfiles \"$(cygpath -w $publishedfolder)\" -uploadfolder \"/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod\""
+          fi
+          
+          export ExtraBuildModFlags="$ciprep -tmlsavedirectory \"$(cygpath -w $ModloaderDir)\""
           echo ExtraBuildModFlags is: $ExtraBuildModFlags
           
           echo ::group::Building ExampleMod
@@ -372,11 +389,11 @@ jobs:
       - name: Check out base branch
         uses: actions/checkout@v2
         with:
-          fetch-depth: 2
+          fetch-depth: 0
           
       - name: Detect ExampleMod Changed Files
         id: changed-files-examplemod
-        uses: tj-actions/changed-files@v9.1
+        uses: tj-actions/changed-files@v18.4
         with:
           files: |
             ExampleMod
@@ -389,7 +406,7 @@ jobs:
           
       - name: Detect patches Changed Files
         id: changed-files-patches
-        uses: tj-actions/changed-files@v9.1
+        uses: tj-actions/changed-files@v18.4
         with:
           files: |
             patches
@@ -414,12 +431,10 @@ jobs:
         working-directory: artifacts/Build
         
       - name: Setup steamcmd
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true' || steps.changed-files-patches.outputs.any_changed == 'true'
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
         
       - name: Setup Authentication Files
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true' || steps.changed-files-patches.outputs.any_changed == 'true'
         shell: bash
         run: |
           echo Decrypting Authentication Files
@@ -429,7 +444,6 @@ jobs:
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
           
       - name: Attempt run_app_build_http 
-        if: steps.changed-files-patches.outputs.any_changed == 'true'
         shell: bash
         run: |
           mkdir artifacts/shared
@@ -438,7 +452,7 @@ jobs:
           ls -alhR ./solutions/Manifests
           manifesto=${GITHUB_WORKSPACE}/solutions/Manifests
           if [ ${{github.ref}} = 'refs/heads/1.4-stable' ] ; then
-            manifesto=$manifesto/app.vdf
+            manifesto=$manifesto/stable.vdf
           fi
           if [ ${{github.ref}} = 'refs/heads/1.4-preview' ] ; then
             manifesto=$manifesto/preview.vdf
@@ -451,7 +465,6 @@ jobs:
           cat BuildOutput/*.log
           
       - name: Download ExampleMod build artifact from build job
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
         # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
         uses: actions/download-artifact@v2
         with:
@@ -459,14 +472,12 @@ jobs:
           path: artifacts/ExampleMod
           
       - name: View ExampleMod build artifact files
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
         run: |
           echo pwd is: ${PWD}
           ls -alhR
         working-directory: artifacts/ExampleMod
         
       - name: Attempt workshop_build_item 
-        if: steps.changed-files-examplemod.outputs.any_changed == 'true'
         shell: bash
         run: |
           echo Changes detected in ExampleMod folder, attempting to publish ExampleMod to workshop
@@ -483,3 +494,35 @@ jobs:
           cat publish.vdf
           echo Done
         working-directory: artifacts/ExampleMod
+      
+      - name: Get Version tag for Release
+        id: version2
+        if: github.ref == 'refs/heads/1.4-stable'
+        shell: bash
+        run: |
+          echo "Attempting get current version id"
+          version=$(git describe --tags --abbrev=0)
+          echo "Current Version is: $version"
+          echo "::set-output name=new_version::$version"
+        env:
+          branch: ${{github.ref}}
+          
+      - name: Install Zip
+        if: github.ref == 'refs/heads/1.4-stable'
+        uses: montudor/action-zip@v1
+        
+      - name: Zip Artifacts
+        working-directory: /home/runner/work/tModLoader/tModLoader/artifacts/
+        run: |
+          cd ExampleMod; zip -qq -r ../ExampleMod.zip .; cd ..
+          cd Build; zip -qq -r ../tModLoader.zip .; cd ..
+      
+      - name: Make a release
+        if: github.ref == 'refs/heads/1.4-stable'
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "/home/runner/work/tModLoader/tModLoader/artifacts/ExampleMod.zip, /home/runner/work/tModLoader/tModLoader/artifacts/tModLoader.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          generateReleaseNotes: true
+          body: "Monthly Github Auto-release for 1.4-stable"
+          tag: ${{ steps.version2.outputs.new_version }}

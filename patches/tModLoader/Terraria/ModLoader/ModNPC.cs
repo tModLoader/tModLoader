@@ -2,11 +2,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Utilities;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 
@@ -15,16 +16,21 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class serves as a place for you to place all your properties and hooks for each NPC. Create instances of ModNPC (preferably overriding this class) to pass as parameters to Mod.AddNPC.
 	/// </summary>
-	public abstract class ModNPC : ModTexturedType
+	public abstract class ModNPC : ModType<NPC, ModNPC>
 	{
 		/// <summary> The NPC object that this ModNPC controls. </summary>
-		public NPC NPC { get; internal set; }
+		public NPC NPC => Entity;
 
-		/// <summary> Shorthand for npc.type; </summary>
+		/// <summary> Shorthand for NPC.type; </summary>
 		public int Type => NPC.type;
 
 		/// <summary> The translations for the display name of this NPC. </summary>
 		public ModTranslation DisplayName { get; internal set; }
+
+		/// <summary>
+		/// The file name of this type's texture file in the mod loader's file space.
+		/// </summary>
+		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
 
 		/// <summary> The file name of this NPC's head texture file, to be used in autoloading. </summary>
 		public virtual string HeadTexture => Texture + "_Head";
@@ -35,7 +41,12 @@ namespace Terraria.ModLoader
 		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the behavior (AI) of. Leave as 0 to not copy any behavior. Defaults to 0. </summary>
 		public int AIType { get; set; }
 
-		/// <summary> Determines which type of vanilla NPC this ModNPC will copy the animation (FindFrame) of. Leave as 0 to not copy any animation. Defaults to 0. </summary>
+		/// <summary>
+		/// Determines which type of vanilla NPC this ModNPC will copy the animation/framing logic of, which includes checks to sets such as <seealso cref="Main.npcFrameCount"/>
+		/// and <seealso cref="NPCID.Sets.ExtraFramesCount"/>, and others. For example, selecting the Guide's type will copy how many frames, extra frames, and attack frames the
+		/// Guide has, and use those value for animation of this NPC. This is entirely based off of type and not the ModNPC instance itself; so be cautious if you
+		/// change this NPC's type.
+		/// </summary>
 		public int AnimationType { get; set; }
 
 		/// <summary> The ID of the music that plays when this NPC is on or near the screen. Defaults to -1, which means music plays normally. </summary>
@@ -59,9 +70,7 @@ namespace Terraria.ModLoader
 		/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
 		public int[] SpawnModBiomes { get; set; } = new int[0];
 
-		public ModNPC() {
-			NPC = new NPC{ModNPC = this};
-		}
+		protected override NPC CreateTemplateEntity() => new() { ModNPC = this };
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModNPC>.Register(this);
@@ -90,57 +99,15 @@ namespace Terraria.ModLoader
 			NPCID.Search.Add(FullName, Type);
 		}
 
-		internal void SetupNPC(NPC npc) {
-			ModNPC newNPC = (ModNPC)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
-			newNPC.NPC = npc;
-			npc.ModNPC = newNPC;
-			newNPC.Mod = Mod;
-			newNPC.SetDefaults();
-		}
-
-		/// <summary>
-		/// Whether instances of this ModNPC are created through a memberwise clone or its constructor. Defaults to false.
-		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
-		/// Returns a clone of this ModNPC.
-		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created.
-		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references.
-		/// Only called if CloneNewInstances is set to true.
-		/// </summary>
-		public virtual ModNPC Clone() => (ModNPC)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this ModNPC for an NPC instance.
-		/// Called at the end of NPC.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual ModNPC NewInstance(NPC npcClone) {
-			if (CloneNewInstances) {
-				ModNPC clone = Clone();
-				clone.NPC = npcClone;
-				return clone;
-			}
-
-			ModNPC copy = (ModNPC)Activator.CreateInstance(GetType());
-			copy.NPC = npcClone;
-			copy.Mod = Mod;
-			copy.AIType = AIType;
-			copy.AnimationType = AnimationType;
-			copy.Music = Music;
-			copy.DrawOffsetY = DrawOffsetY;
-			copy.Banner = Banner;
-			copy.BannerItem = BannerItem;
-			return copy;
-		}
-
 		/// <summary>
 		/// Allows you to set all your NPC's properties, such as width, damage, aiStyle, lifeMax, etc.
 		/// </summary>
-		public virtual void SetDefaults() {
-		}
+		public virtual void SetDefaults() { }
+
+		/// <summary>
+		/// Gets called when your NPC spawns in world
+		/// </summary>
+		public virtual void OnSpawn(IEntitySource source) { }
 
 		/// <summary>
 		/// Automatically sets certain static defaults. Override this if you do not want the properties to be set for you.
@@ -186,6 +153,36 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the type name of this NPC dynamically.
+		/// </summary>
+		public virtual void ModifyTypeName(ref string typeName) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the bounding box for hovering over this NPC (affects things like whether or not its name is displayed).
+		/// </summary>
+		/// <param name="boundingBox">The bounding box used for determining whether or not the NPC counts as being hovered over.</param>
+		public virtual void ModifyHoverBoundingBox(ref Rectangle boundingBox) {
+		}
+
+		/// <summary>
+		/// Allows you to give a list of names this NPC can be given on spawn.<br></br>
+		/// By default, returns a blank list, which means the NPC will simply use its type name as its given name when prompted.
+		/// </summary>
+		/// <returns></returns>
+		public virtual List<string> SetNPCNameList() {
+			return new List<string>();
+		}
+
+		/// <summary>
+		/// Allows you to set the town NPC profile that this NPC uses.<br></br>
+		/// By default, returns null, meaning that the NPC doesn't use one.
+		/// </summary>
+		public virtual ITownNPCProfile TownNPCProfile() {
+			return null;
+		}
+
+		/// <summary>
 		/// This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied. (Note: This hook is only really useful for GlobalNPC, but is included in ModNPC for completion.)
 		/// </summary>
 		public virtual void ResetEffects() {
@@ -210,16 +207,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// If you are storing AI information outside of the npc.ai array, use this to send that AI information between clients and servers.
+		/// If you are storing AI information outside of the NPC.ai array, use this to send that AI information between clients and servers, which will be handled in <see cref="ReceiveExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully sent, for example on NPC creation, on player join, or whenever NPC.netUpdate is set to true in the update loop for that tick.
+		/// <br/>Only called on the server.
 		/// </summary>
-		/// <param name="writer"></param>
+		/// <param name="writer">The writer.</param>
 		public virtual void SendExtraAI(BinaryWriter writer) {
 		}
 
 		/// <summary>
-		/// Use this to receive information that was sent in SendExtraAI.
+		/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncNPC"/> is successfully received.
+		/// <br/>Only called on the client.
 		/// </summary>
-		/// <param name="reader"></param>
+		/// <param name="reader">The reader.</param>
 		public virtual void ReceiveExtraAI(BinaryReader reader) {
 		}
 
@@ -231,15 +232,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+		/// Allows you to make things happen whenever this NPC is hit, such as creating dust or gores.
+		/// <br/> This hook is client side. Usually when something happens when an NPC dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (NPC.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
-		/// <param name="hitDirection"></param>
-		/// <param name="damage"></param>
 		public virtual void HitEffect(int hitDirection, double damage) {
 		}
 
 		/// <summary>
-		/// Allows you to make the NPC either regenerate health or take damage over time by setting npc.lifeRegen. Regeneration or damage will occur at a rate of half of npc.lifeRegen per second. The damage parameter is the number that appears above the NPC's head if it takes damage over time.
+		/// Allows you to make the NPC either regenerate health or take damage over time by setting NPC.lifeRegen. Regeneration or damage will occur at a rate of half of NPC.lifeRegen per second. The damage parameter is the number that appears above the NPC's head if it takes damage over time.
 		/// </summary>
 		/// <param name="damage"></param>
 		public virtual void UpdateLifeRegen(ref int damage) {
@@ -284,15 +284,40 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this NPC is caught. Ran Serverside
+		/// Allows you to determine how and when this NPC can fall through platforms and similar tiles.
+		/// <br/>Return true to allow this NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
 		/// </summary>
-		/// <param name="player">The player catching this NPC</param>
-		/// <param name="item">The item that will be spawned</param>
-		public virtual void OnCatchNPC(Player player, Item item) {
+		public virtual bool? CanFallThroughPlatforms() {
+			return null;
 		}
 
 		/// <summary>
-		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
+		/// Allows you to determine whether the given item can catch this NPC.<br></br>
+		/// Return true or false to say this NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+		/// </summary>
+		/// <param name="item">The item with which the player is trying to catch this NPC.</param>
+		/// <param name="player">The player attempting to catch this NPC.</param>
+		/// <returns></returns>
+		public virtual bool? CanBeCaughtBy(Item item, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given item attempts to catch this NPC.
+		/// </summary>
+		/// <param name="player">The player attempting to catch this NPC.</param>
+		/// <param name="item">The item used to catch this NPC.</param>
+		/// <param name="failed">Whether or not this NPC has been successfully caught.</param>
+		public virtual void OnCaughtBy(Player player, Item item, bool failed) {
+		}
+
+		/// <summary>
+		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify NPC loot.
 		/// </summary>
 		/// <param name="npcLoot"></param>
 		public virtual void ModifyNPCLoot(NPCLoot npcLoot) {
@@ -496,7 +521,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// When used in conjunction with "npc.hide = true", allows you to specify that this npc should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
+		/// When used in conjunction with "NPC.hide = true", allows you to specify that this NPC should be drawn behind certain elements. Add the index to one of Main.DrawCacheNPCsMoonMoon, DrawCacheNPCsOverPlayers, DrawCacheNPCProjectiles, or DrawCacheNPCsBehindNonSolidTiles.
 		/// </summary>
 		/// <param name="index"></param>
 		public virtual void DrawBehind(int index)
@@ -546,11 +571,11 @@ namespace Terraria.ModLoader
 
 		/* Disabled until #2083 is addressed. Originally introduced in #1323, but was refactored and now would be for additional features outside PR scope.
 		/// <summary>
-		/// Allows you to set an NPC's biome preferences and nearby npc preferences for the NPC happiness system. Recommended to only be used with NPCs that have shops.
+		/// Allows you to set an NPC's biome preferences and nearby NPC preferences for the NPC happiness system. Recommended to only be used with NPCs that have shops.
 		/// </summary>
 		/// <param name="shopHelperInstance">The vanilla shop modifier instance to invoke methods such as LikeNPC and HateBiome on</param>
-		/// <param name="primaryPlayerBiome">The current biome the player is in for purposes of npc happiness, referred by PrimaryBiomeID </param>
-		/// <param name="nearbyNPCsByType">The boolean array of if each type of npc is nearby</param>
+		/// <param name="primaryPlayerBiome">The current biome the player is in for purposes of NPC happiness, referred by PrimaryBiomeID </param>
+		/// <param name="nearbyNPCsByType">The boolean array of if each type of NPC is nearby</param>
 		public virtual void ModifyNPCHappiness(int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
 		}
 		*/
@@ -568,14 +593,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give this town NPC any name when it spawns. By default returns something embarrassing.
-		/// </summary>
-		/// <returns></returns>
-		public virtual string TownNPCName() {
-			return Language.GetTextValue("tModLoader.DefaultTownNPCName");
-		}
-
-		/// <summary>
 		/// Allows you to determine whether this town NPC wears a party hat during a party. Returns true by default.
 		/// </summary>
 		/// <returns></returns>
@@ -585,6 +602,10 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to determine whether this NPC can talk with the player. By default, returns if the NPC is a town NPC.
+		/// <para></para>
+		/// This hook is not based on the type of the NPC, and is queried specifically on the ModNPC itself, regardless of if,
+		/// for example, the type of the NPC instance is changed. Returning true in all circumstances will *always* make the NPC
+		/// able to be chatted with no matter what else you do the NPC instance itself.
 		/// </summary>
 		/// <returns></returns>
 		public virtual bool CanChat() {

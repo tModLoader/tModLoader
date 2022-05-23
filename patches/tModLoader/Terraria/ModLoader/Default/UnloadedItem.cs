@@ -10,6 +10,8 @@ namespace Terraria.ModLoader.Default
 	{
 		private TagCompound data;
 
+		public override bool IsCloneable => true; // safe to share 'data' between clones, because it cannot be changed after creation/load
+
 		public string ModName { get; private set; }
 		public string ItemName { get; private set; }
 
@@ -33,10 +35,10 @@ namespace Terraria.ModLoader.Default
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			for (int k = 0; k < tooltips.Count; k++) {
 				if (tooltips[k].Name == "Tooltip0") {
-					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemModTooltip", ModName);
+					tooltips[k].Text = Language.GetTextValue("tModLoader.UnloadedItemModTooltip", ModName);
 				}
 				else if (tooltips[k].Name == "Tooltip1") {
-					tooltips[k].text = Language.GetTextValue("tModLoader.UnloadedItemItemNameTooltip", ItemName);
+					tooltips[k].Text = Language.GetTextValue("tModLoader.UnloadedItemItemNameTooltip", ItemName);
 				}
 			}
 		}
@@ -58,10 +60,12 @@ namespace Terraria.ModLoader.Default
 				return;
 			}
 
+			var modData = tag.GetCompound("data");
+
 			Item.SetDefaults(modItem.Type);
 
-			if (data?.Count > 0) {
-				Item.ModItem.LoadData(data);
+			if (modData?.Count > 0) {
+				Item.ModItem.LoadData(modData);
 			}
 
 			if (tag.ContainsKey("globalData")) {
@@ -75,12 +79,6 @@ namespace Terraria.ModLoader.Default
 
 		public override void NetReceive(BinaryReader reader) {
 			Setup(TagIO.Read(reader));
-		}
-
-		public override ModItem Clone(Item item) {
-			var clone = (UnloadedItem)base.Clone(item);
-			clone.data = (TagCompound)data?.Clone();
-			return clone;
 		}
 	}
 }

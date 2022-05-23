@@ -27,17 +27,55 @@ namespace Terraria
 		public bool AllowReforgeForStackableItem { get; set; }
 
 		/// <summary>
+		/// Dictates the amount of times a weapon can be used (shot, etc) each time it animates (is swung, clicked, etc).<br/>
+		/// Defaults to null.<br/>
+		/// Used in vanilla by the following:<br/>
+		/// - BookStaff<br/>
+		/// - FairyQueenMagicItem<br/>
+		/// - FairyQueenRangedItem<br/>
+		/// </summary>
+		public int? useLimitPerAnimation { get; set; }
+
+		/// <summary>
+		/// Dictates whether or not this item should only consume ammo on its first shot of each use.<br/>
+		/// Defaults to false.<br/>
+		/// Used in vanilla by the following:<br/>
+		/// - Flamethrower<br/>
+		/// - Elf Melter<br/>
+		/// </summary>
+		public bool consumeAmmoOnFirstShotOnly { get; set; }
+
+		/// <summary>
+		/// Dictates whether or not this item should only consume ammo on its last shot of each use.<br/>
+		/// Defaults to false. <br/>
+		/// Used in vanilla by the following:<br/>
+		/// - ClockworkAssaultRifle<br/>
+		/// - Clentaminator<br/>
+		/// - FairyQueenRangedItem<br/>
+		/// </summary>
+		public bool consumeAmmoOnLastShotOnly { get; set; }
+
+		/// <summary>
 		/// Used to make stackable items reforgeable
 		/// </summary>
 		public bool IsCandidateForReforge => maxStack == 1 || AllowReforgeForStackableItem;
 
-		private DamageClass _damageClass = DamageClass.Generic;
+		private DamageClass _damageClass = DamageClass.Default;
 		/// <summary>
 		/// The damage type of this Item. Assign to DamageClass.Melee/Ranged/Magic/Summon/Throwing for vanilla classes, or <see cref="ModContent.GetInstance"/> for custom damage types.
 		/// </summary>
 		public DamageClass DamageType {
 			get => _damageClass;
-			set => _damageClass = value ?? throw new ArgumentException("DamageType cannot be null");
+			set => _damageClass = value ?? throw new ArgumentException("An item's DamageType cannot be null.");
+		}
+
+		private int _armorPenetration = 0;
+		/// <summary>
+		/// The number of defense points that this item can ignore on its own. Cannot be set to negative values. Defaults to 0.
+		/// </summary>
+		public int ArmorPenetration {
+			get => _armorPenetration;
+			set => _armorPenetration = Math.Max(0, value);
 		}
 
 		/// <summary> Gets the instance of the specified GlobalItem type. This will throw exceptions on failure. </summary>
@@ -54,12 +92,12 @@ namespace Terraria
 
 		/// <summary> Gets the instance of the specified GlobalItem type. </summary>
 		public bool TryGetGlobalItem<T>(out T result, bool exactType = true) where T : GlobalItem
-			=> GlobalType.TryGetGlobal<GlobalItem, T>(globalItems, exactType, out result);
+			=> GlobalType.TryGetGlobal(globalItems, exactType, out result);
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
-			=> GlobalType.TryGetGlobal<GlobalItem, T>(globalItems, baseInstance, out result);
+			=> GlobalType.TryGetGlobal(globalItems, baseInstance, out result);
 
 		public TagCompound SerializeData() => ItemIO.Save(this);
 
@@ -67,7 +105,7 @@ namespace Terraria
 			=> CountsAsClass(ModContent.GetInstance<T>());
 
 		public bool CountsAsClass(DamageClass damageClass)
-			=> DamageClassLoader.countsAs[DamageType.Type, damageClass.Type];
+			=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
 
 		// public version of IsNotTheSameAs for modders
 		/// <summary>
@@ -106,11 +144,14 @@ namespace Terraria
 			=> NewItem(source, (int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
 		private void ApplyItemAnimationCompensations() {
+			// #2351
 			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
-
+			// all items with autoReuse in vanilla are affected, but the animation only has a physical effect for !noMelee items
+			// for those items, we want the faster animation as that governs reuse time as dps is determined by swing speed.
+			// for the others like ranged weapons, it's fine to keep the animation matching the use time, as dps is determined by item use speed
 			currentUseAnimationCompensation = 0;
 
-			if (type < ItemID.Count && !noMelee) {
+			if (type < ItemID.Count && autoReuse && !noMelee) {
 				useAnimation--;
 				currentUseAnimationCompensation--;
 			}

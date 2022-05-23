@@ -1,18 +1,16 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 	/// </summary>
-	public abstract class GlobalNPC : GlobalType<NPC>
+	public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 		protected sealed override void Register() {
 			NPCLoader.VerifyGlobalNPC(this);
@@ -29,39 +27,15 @@ namespace Terraria.ModLoader
 		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
 
 		/// <summary>
-		/// Whether instances of this GlobalNPC are created through Clone or constructor (by default implementations of NewInstance and Clone()).
-		/// Defaults to false (using default constructor).
+		/// Allows you to set the properties of any and every NPC that gets created.
 		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
-		/// Returns a clone of this GlobalNPC.
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalNPC contains object references.
-		/// Only called if CloneNewInstances &amp;&amp; InstancePerEntity
-		/// </summary>
-		public virtual GlobalNPC Clone() => (GlobalNPC)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this GlobalNPC for an NPC instance.
-		/// Called at the end of NPC.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual GlobalNPC NewInstance(NPC npc) {
-			if (CloneNewInstances) {
-				return Clone();
-			}
-			GlobalNPC copy = (GlobalNPC)Activator.CreateInstance(GetType());
-			copy.Mod = Mod;
-			copy.index = index;
-			return copy;
+		public virtual void SetDefaults(NPC npc) {
 		}
 
 		/// <summary>
-		/// Allows you to set the properties of any and every NPC that gets created.
+		/// Gets called when any NPC spawns in world
 		/// </summary>
-		/// <param name="npc"></param>
-		public virtual void SetDefaults(NPC npc) {
+		public virtual void OnSpawn(NPC npc, IEntitySource source) {
 		}
 
 		/// <summary>
@@ -80,6 +54,37 @@ namespace Terraria.ModLoader
 		/// <param name="database"></param>
 		/// <param name="bestiaryEntry"></param>
 		public virtual void SetBestiary(NPC npc, BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the type name of this NPC dynamically.
+		/// </summary>
+		public virtual void ModifyTypeName(NPC npc, ref string typeName) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the bounding box for hovering over the given NPC (affects things like whether or not its name is displayed).
+		/// </summary>
+		/// <param name="npc">The NPC in question.</param>
+		/// <param name="boundingBox">The bounding box used for determining whether or not the NPC counts as being hovered over.</param>
+		public virtual void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox) {
+		}
+
+		/// <summary>
+		/// Allows you to set the town NPC profile that a given NPC uses.
+		/// </summary>
+		/// <param name="npc">The NPC in question.</param>
+		/// <returns>The profile that you want the given NPC to use.<br></br>
+		/// This will only influence their choice of profile if you do not return null.<br></br>
+		/// By default, returns null, which causes no change.</returns>
+		public virtual ITownNPCProfile ModifyTownNPCProfile(NPC npc) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to modify the list of names available to the given town NPC.
+		/// </summary>
+		public virtual void ModifyNPCNameList(NPC npc, List<string> nameList) {
 		}
 
 		/// <summary>
@@ -121,11 +126,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores. This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
+		/// Allows you to make things happen whenever an NPC is hit, such as creating dust or gores.
+		/// <br/> This hook is client side. Usually when something happens when an npc dies such as item spawning, you use NPCLoot, but you can use HitEffect paired with a check for `if (npc.life &lt;= 0)` to do client-side death effects, such as spawning dust, gore, or death sounds.
 		/// </summary>
-		/// <param name="npc"></param>
-		/// <param name="hitDirection"></param>
-		/// <param name="damage"></param>
 		public virtual void HitEffect(NPC npc, int hitDirection, double damage) {
 		}
 
@@ -180,16 +183,42 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when an NPC is caught. Ran Serverside.
+		/// Allows you to determine how and when an NPC can fall through platforms and similar tiles.
+		/// <br/>Return true to allow an NPC to fall through platforms, false to prevent it. Returns null by default, applying vanilla behaviors (based on aiStyle and type).
 		/// </summary>
-		/// <param name="npc">The caught NPC</param>
-		/// <param name="player">The player catching the NPC</param>
-		/// <param name="item">The item that will be spawned</param>
-		public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
+		public virtual bool? CanFallThroughPlatforms(NPC npc) {
+			return null;
 		}
 
 		/// <summary>
-		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.
+		/// Allows you to determine whether the given item can catch the given NPC.<br></br>
+		/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+		/// </summary>
+		/// <param name="npc">The NPC that can potentially be caught.</param>
+		/// <param name="item">The item with which the player is trying to catch the given NPC.</param>
+		/// <param name="player">The player attempting to catch the given NPC.</param>
+		/// <returns></returns>
+		public virtual bool? CanBeCaughtBy(NPC npc, Item item, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given item attempts to catch the given NPC.
+		/// </summary>
+		/// <param name="npc">The NPC which the player attempted to catch.</param>
+		/// <param name="player">The player attempting to catch the given NPC.</param>
+		/// <param name="item">The item used to catch the given NPC.</param>
+		/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
+		public virtual void OnCaughtBy(NPC npc, Player player, Item item, bool failed) {
+		}
+
+		/// <summary>
+		/// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify npc loot.
 		/// </summary>
 		/// <param name="npc"></param>
 		/// <param name="npcLoot"></param>
@@ -197,7 +226,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.
+		/// Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify npc loot.
 		/// </summary>
 		/// <param name="globalLoot"></param>
 		public virtual void ModifyGlobalLoot(GlobalLoot globalLoot) {

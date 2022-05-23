@@ -13,79 +13,93 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public sealed class DrawableTooltipLine : TooltipLine
 	{
+		// Won't be needed in future C# versions.
+		private int _originalX;
+		private int _originalY;
+
 		/// <summary>
 		/// The text of this tooltip.
 		/// </summary>
-		public new readonly string text;
+		public new readonly string Text;
+
 		/// <summary>
 		/// The index of the tooltip in the array
 		/// </summary>
-		public readonly int index;
+		public readonly int Index;
+
 		/// <summary>
 		/// Whether or not this tooltip gives prefix information. This will make it so that the tooltip is colored either green or red.
 		/// </summary>
-		public new readonly bool isModifier;
+		public new readonly bool IsModifier;
+
 		/// <summary>
 		/// If isModifier is true, this determines whether the tooltip is colored green or red.
 		/// </summary>
-		public new readonly bool isModifierBad;
+		public new readonly bool IsModifierBad;
 
-		private int _originalX;
 		/// <summary>
 		/// The X position where the tooltip would be drawn that is not adjusted by mods.
 		/// </summary>
 		public int OriginalX {
-			get { return _originalX; }
-			internal set { X = _originalX = value; }
+			get => _originalX;
+			internal set => X = _originalX = value;
 		}
 
-		private int _originalY;
 		/// <summary>
 		/// The Y position where the tooltip would be drawn that is not adjusted by mods.
 		/// </summary>
 		public int OriginalY {
-			get { return _originalY; }
-			internal set { Y = _originalY = value; }
+			get => _originalY;
+			internal set => Y = _originalY = value;
 		}
+
 		/// <summary>
 		/// The X position where the tooltip would be drawn.
 		/// </summary>
 		public int X;
+
 		/// <summary>
 		/// The Y position where the tooltip would be drawn.
 		/// </summary>
 		public int Y;
+
 		/// <summary>
 		/// The color the tooltip would be drawn in
 		/// </summary>
 		public Color Color { get; internal set; }
+
 		/// <summary>
 		/// If the tooltip line's color was overridden this will hold that color, it will be null otherwise
 		/// </summary>
-		public new Color? overrideColor { get; internal set; }
+		public new Color? OverrideColor { get; internal set; }
+
 		/// <summary>
 		/// Whether the tooltip is a One Drop logo or not. If it is, the tooltip text will be empty.
 		/// </summary>
-		public new readonly bool oneDropLogo;
+		public new readonly bool OneDropLogo;
+
 		/// <summary>
 		/// The font this tooltip would be drawn with
 		/// </summary>
-		public DynamicSpriteFont font = FontAssets.MouseText.Value;
+		public DynamicSpriteFont Font = FontAssets.MouseText.Value;
+
 		/// <summary>
 		/// The rotation this tooltip would be drawn in
 		/// </summary>
-		public float rotation = 0f;
+		public float Rotation;
+
 		/// <summary>
 		/// The origin of this tooltip
 		/// </summary>
-		public Vector2 origin = Vector2.Zero;
+		public Vector2 Origin = Vector2.Zero;
+
 		/// <summary>
 		/// The baseScale of this tooltip. When drawing the One Drop logo the scale is calculated by (baseScale.X + baseScale.Y) / 2
 		/// </summary>
-		public Vector2 baseScale = Vector2.One;
+		public Vector2 BaseScale = Vector2.One;
 
-		public float maxWidth = -1;
-		public float spread = 2;
+		public float MaxWidth = -1;
+		public float Spread = 2;
 
 		/// <summary>
 		/// Creates a new DrawableTooltipLine object
@@ -95,17 +109,17 @@ namespace Terraria.ModLoader
 		/// <param name="x">The X position where the tooltip would be drawn.</param>
 		/// <param name="y">The Y position where the tooltip would be drawn.</param>
 		/// <param name="color">The color the tooltip would be drawn in</param>
-		public DrawableTooltipLine(TooltipLine parent, int index, int x, int y, Color color) : base(parent.mod, parent.Name, parent.text) {
-			isModifier = parent.isModifier;
-			isModifierBad = parent.isModifierBad;
-			overrideColor = parent.overrideColor;
-			oneDropLogo = parent.oneDropLogo;
-			text = parent.text;
+		public DrawableTooltipLine(TooltipLine parent, int index, int x, int y, Color color) : base(parent.Mod, parent.Name, parent.Text) {
+			IsModifier = parent.IsModifier;
+			IsModifierBad = parent.IsModifierBad;
+			OverrideColor = parent.OverrideColor;
+			OneDropLogo = parent.OneDropLogo;
+			Text = parent.Text;
 
-			this.index = index;
+			Index = index;
 			OriginalX = x;
 			OriginalY = y;
-			this.Color = color;
+			Color = color;
 		}
 	}
 }

@@ -13,8 +13,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 
 		public bool HasAura => _auraTime > 0;
 
-		public override bool CloneNewInstances => true;
-
 		public override void ResetEffects() {
 			HasSetBonus = false;
 		}
@@ -70,10 +68,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			}
 
 			_lastLife = Player.statLife;
-		}
-
-		public object Clone() {
-			return MemberwiseClone();
 		}
 	}
 }

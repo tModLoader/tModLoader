@@ -184,7 +184,7 @@ namespace Terraria.ModLoader
 			bool isModded = NpcToBossBar(npc, out ModBossBar bossBar);
 
 			if (isModded)
-				drawParams.barTexture = GetTexture(bossBar).Value;
+				drawParams.BarTexture = GetTexture(bossBar).Value;
 
 			bool modify = true;
 

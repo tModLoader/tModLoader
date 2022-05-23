@@ -111,7 +111,14 @@ namespace Terraria
 		/// <summary>
 		/// The index of the recipe in the Main.recipe array.
 		/// </summary>
-		public int RecipeIndex { get; private set; }
+		public int RecipeIndex { get; internal set; }
+
+		public (Recipe target, bool after) Ordering { get; internal set; }
+
+		/// <summary>
+		/// Any recipe with this flag won't be shown in game.
+		/// </summary>
+		public bool Disabled { get; private set; }
 
 		/// <summary>
 		/// Adds an ingredient to this recipe with the given item type and stack size. Ex: <c>recipe.AddIngredient(ItemID.IronAxe)</c>
@@ -195,6 +202,7 @@ namespace Terraria
 		/// Adds a recipe group ingredient to this recipe with the given RecipeGroup.
 		/// </summary>
 		/// <param name="recipeGroup">The RecipeGroup.</param>
+		/// <param name="stack"></param>
 		public Recipe AddRecipeGroup(RecipeGroup recipeGroup, int stack = 1) {
 			AddIngredient(recipeGroup.IconicItemId, stack);
 			AddGroup(recipeGroup.ID);
@@ -284,11 +292,111 @@ namespace Terraria
 			return this;
 		}
 
+		#region Ordering
+
+		/// <summary>
+		/// Sets the Ordering of this recipe. This recipe can't already have one.
+		/// </summary>
+		private Recipe SetOrdering(Recipe recipe, bool after) {
+			if (!RecipeLoader.setupRecipes)
+				throw new RecipeException("You can only move recipes during setup");
+			if (Main.recipe[recipe.RecipeIndex] != recipe)
+				throw new RecipeException("The selected recipe is not registered.");
+			if (Ordering.target != null)
+				throw new RecipeException("This recipe already has an ordering.");
+			Ordering = (recipe, after);
+
+			var target = recipe;
+			do {
+				if (target == this)
+					throw new Exception("Recipe ordering loop!");
+
+				target = target.Ordering.target;
+			} while (target != null);
+
+
+			return recipe;
+		}
+
+		/// <summary>
+		/// Sorts the recipe before the first one creating the item of the ID given as parameter.
+		/// </summary>
+		public Recipe SortBeforeFirstRecipesOf(int itemId) {
+			Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
+			if (target != null) {
+				return SortBefore(target);
+			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Sorts the recipe before the one given as parameter. Both recipes must already be registered.
+		/// </summary>
+		public Recipe SortBefore(Recipe recipe) => SetOrdering(recipe, false);
+
+		/// <summary>
+		/// Sorts the recipe after the first one creating the item of the ID given as parameter.
+		/// </summary>
+		public Recipe SortAfterFirstRecipesOf(int itemId) {
+			Recipe target = RecipeLoader.FirstRecipeForItem[itemId];
+			if (target != null) {
+				return SortAfter(target);
+			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Sorts the recipe after the one given as parameter. Both recipes must already be registered.
+		/// </summary>
+		public Recipe SortAfter(Recipe recipe) => SetOrdering(recipe, true);
+
+		#endregion
+
+		/// <summary>
+		/// Returns a copy of the recipe passed in, including the same OnCraftHooks and ConsumeItemHooks. Called only on the result of Recipe.Create to ensure Mod and RecipeIndex set correctly
+		/// </summary>
+		/// <param name="recipe">The recipe to clone.</param>
+		internal Recipe Clone(Recipe recipe) {
+			createItem = recipe.createItem.Clone();
+
+			requiredItem = new List<Item>(recipe.requiredItem.Select(x => x.Clone()).ToArray());
+			requiredTile = new List<int>(recipe.requiredTile.ToArray());
+			acceptedGroups = new List<int>(recipe.acceptedGroups.ToArray());
+
+			// These fields shouldn't be true, but are here just in case.
+			needHoney = recipe.needHoney;
+			needWater = recipe.needWater;
+			needLava = recipe.needLava;
+			anyWood = recipe.anyWood;
+			anyIronBar = recipe.anyIronBar;
+			anyPressurePlate = recipe.anyPressurePlate;
+			anySand = recipe.anySand;
+			anyFragment = recipe.anyFragment;
+			alchemy = recipe.alchemy;
+			needSnowBiome = recipe.needSnowBiome;
+			needGraveyardBiome = recipe.needGraveyardBiome;
+
+			OnCraftHooks = recipe.OnCraftHooks;
+			ConsumeItemHooks = recipe.ConsumeItemHooks;
+			foreach (Condition condition in recipe.Conditions) {
+				AddCondition(condition);
+			}
+
+			// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
+			// it here to not have multiple dupliocate hooks.
+			if (requiredTile.Contains(TileID.Bottles))
+				ConsumeItemHooks -= ConsumptionRules.Alchemy;
+
+			return this;
+		}
+
 		/// <summary>
 		/// Adds this recipe to the game. Call this after you have finished setting the result, ingredients, etc.
 		/// </summary>
 		/// <exception cref="RecipeException">A recipe without any result has been added.</exception>
-		public void Register() {
+		public Recipe Register() {
 			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
 
@@ -311,6 +419,11 @@ namespace Terraria
 			Main.recipe[numRecipes] = this;
 			RecipeIndex = numRecipes;
 			numRecipes++;
+
+			if (RecipeLoader.FirstRecipeForItem[createItem.type] == null)
+				RecipeLoader.FirstRecipeForItem[createItem.type] = this;
+
+			return this;
 		}
 
 		internal static Recipe Create(Mod mod, int result, int amount) {

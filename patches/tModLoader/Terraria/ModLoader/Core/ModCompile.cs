@@ -51,7 +51,7 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		public static readonly string ModSourcePath = Path.Combine(Program.SavePath, "ModSources");
+		public static readonly string ModSourcePath = Path.Combine(Program.SavePathShared, "ModSources");
 
 		internal static string[] FindModSources()
 		{
@@ -388,6 +388,11 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			var preprocessorSymbols = new List<string> { "FNA" };
 			if (Program.LaunchParameters.TryGetValue("-define", out var defineParam))
 				preprocessorSymbols.AddRange(defineParam.Split(';', ' '));
+
+			if (BuildInfo.IsStable) {
+				string tmlVersionPreprocessorSymbol = $"TML_{BuildInfo.tMLVersion.Major}_{BuildInfo.tMLVersion.Minor:D2}";
+				preprocessorSymbols.Add(tmlVersionPreprocessorSymbol);
+			}
 
 			var results = RoslynCompile(mod.Name, refs, files, preprocessorSymbols.ToArray(), allowUnsafe, out code, out pdb);
 

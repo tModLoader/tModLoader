@@ -1,11 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -13,36 +12,35 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 	/// </summary>
-	public abstract class ModPlayer : ModType
+	public abstract class ModPlayer : ModType<Player, ModPlayer>
 	{
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
-		public Player Player { get; internal set; }
+		public Player Player => Entity;
 
-		internal int index;
+		internal ushort index;
 
-		internal ModPlayer CreateFor(Player newPlayer) {
-			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
-			modPlayer.Mod = Mod;
-			modPlayer.Player = newPlayer;
-			modPlayer.index = index;
-			modPlayer.Initialize();
-			return modPlayer;
+		protected override Player CreateTemplateEntity() => null;
+
+		public override ModPlayer NewInstance(Player entity) {
+			var inst = base.NewInstance(entity);
+			inst.index = index;
+			return inst;
 		}
 
 		public bool TypeEquals(ModPlayer other) {
 			return Mod == other.Mod && Name == other.Name;
 		}
 
-		/// <summary>
-		/// Whether each player gets a ModPlayer by cloning the ModPlayer added to the Mod or by creating a new ModPlayer object with the same type as the ModPlayer added to the Mod. The accessor returns true by default. Return false if you want to assign fields through the constructor.
-		/// </summary>
-		public virtual bool CloneNewInstances => true;
+		protected override void ValidateType() {
+			base.ValidateType();
+			
+			LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
+			LoaderUtils.MustOverrideTogether(this, p => p.clientClone, p => p.SendClientChanges);
+		}
 
 		protected sealed override void Register() {
-			PlayerLoader.VerifyModPlayer(this);
-
 			ModTypeLookup<ModPlayer>.Register(this);
 			PlayerLoader.Add(this);
 		}
@@ -133,13 +131,13 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting player.lifeRegen to 0 if it is positive, setting player.lifeRegenTime to 0, and subtracting a number from player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
+		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting Player.lifeRegen to 0 if it is positive, setting Player.lifeRegenTime to 0, and subtracting a number from Player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
 		/// </summary>
 		public virtual void UpdateBadLifeRegen() {
 		}
 
 		/// <summary>
-		/// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
+		/// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing Player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment Player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
 		/// </summary>
 		public virtual void UpdateLifeRegen() {
 		}
@@ -172,7 +170,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of player.controlLeft and player.controlRight. This is called sometime after PreUpdate is called.
+		/// Use this to modify the control inputs that the player receives. For example, the Confused debuff swaps the values of Player.controlLeft and Player.controlRight. This is called sometime after PreUpdate is called.
 		/// </summary>
 		public virtual void SetControls() {
 		}
@@ -410,48 +408,50 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify this weapon's damage based on player buffs, etc. This is useful for creating new classes of damage, or for making subclasses of damage (for example, Shroomite armor set boosts).
+		/// Allows you to dynamically modify a weapon's damage based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item">The item being used</param>
-		/// <param name="damage">The StatModifier object representing the totality of the additive and multiplicative bonuses to be applied to the player's effective damage for this item.</param>
-		/// <param name="flat">This is a flat damage bonus that will be added after add and mult are applied. It facilitates effects like "4 more damage from weapons"</param>
-		public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage, ref float flat) {
+		/// <param name="item">The item being used.</param>
+		/// <param name="damage">The StatModifier object representing the totality of the various modifiers to be applied to the item's base damage.</param>
+		public virtual void ModifyWeaponDamage(Item item, ref StatModifier damage) {
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's knockback based on player buffs, etc. This allows you to customize knockback beyond the Player class's limited fields.
+		/// Allows you to dynamically modify a weapon's knockback based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item"></param>
-		/// <param name="knockback"></param>
-		public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback, ref float flat) {
+		/// <param name="item">The item being used.</param>
+		/// <param name="knockback">The StatModifier object representing the totality of the various modifiers to be applied to the item's base knockback.</param>
+		public virtual void ModifyWeaponKnockback(Item item, ref StatModifier knockback) {
 		}
 
 		/// <summary>
-		/// Allows you to temporarily modify a weapon's crit chance based on player buffs, etc.
+		/// Allows you to dynamically modify a weapon's crit chance based on player and item conditions.
+		/// Can be utilized to modify damage beyond the tools that DamageClass has to offer.
 		/// </summary>
-		/// <param name="item">The item</param>
-		/// <param name="crit">The crit chance, ranging from 0 to 100</param>
-		public virtual void ModifyWeaponCrit(Item item, ref int crit) {
+		/// <param name="item">The item.</param>
+		/// <param name="crit">The total crit chance of the item after all normal crit chance calculations.</param>
+		public virtual void ModifyWeaponCrit(Item item, ref float crit) {
 		}
 
 		/// <summary>
-		/// Whether or not ammo will be consumed upon usage. Return false to stop the ammo from being depleted. Returns true by default.
-		/// <br>If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.</br>
+		/// Whether or not the given ammo item will be consumed by this weapon.<br></br>
+		/// By default, returns true; return false to prevent ammo consumption. <br></br>
+		/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
 		/// </summary>
-		/// <param name="weapon">The item that is using this ammo</param>
-		/// <param name="ammo">The ammo item</param>
+		/// <param name="weapon">The weapon that this player is attempting to use.</param>
+		/// <param name="ammo">The ammo that the give nweapon is attempting to consume.</param>
 		/// <returns></returns>
 		public virtual bool CanConsumeAmmo(Item weapon, Item ammo) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when ammo is consumed.
-		/// <br>Called before the ammo stack is reduced.</br>
+		/// Allows you to make things happen when the given ammo is consumed by the given weapon.<br></br>
+		/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
 		/// </summary>
-		/// <param name="weapon">The item that is using this ammo</param>
-		/// <param name="ammo">The ammo item</param>
-		/// <returns></returns>
+		/// <param name="weapon">The weapon that is currently using the given ammo.</param>
+		/// <param name="ammo">The ammo that the given weapon is currently using.</param>
 		public virtual void OnConsumeAmmo(Item weapon, Item ammo) {
 		}
 
@@ -496,6 +496,39 @@ namespace Terraria.ModLoader
 		/// <param name="item"></param>
 		/// <param name="hitbox"></param>
 		public virtual void MeleeEffects(Item item, Rectangle hitbox) {
+		}
+
+		/// <summary>
+		/// Allows you to determine whether the given item can catch the given NPC.<br></br>
+		/// Return true or false to say the target can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as a catch tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+		/// </summary>
+		/// <param name="target">The NPC the player is trying to catch.</param>
+		/// <param name="item">The item with which the player is trying to catch the target NPC.</param>
+		public virtual bool? CanCatchNPC(NPC target, Item item) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given item attempts to catch the given NPC.
+		/// </summary>
+		/// <param name="npc">The NPC which the player attempted to catch.</param>
+		/// <param name="item">The item used to catch the given NPC.</param>
+		/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
+		public virtual void OnCatchNPC(NPC npc, Item item, bool failed) {
+		}
+
+		/// Allows you to dynamically modify the given item's size for this player, similarly to the effect of the Titan Glove.
+		/// </summary>
+		/// <param name="item">The item to modify the scale of.</param>
+		/// <param name="scale">
+		/// The scale multiplier to be applied to the given item.<br></br>
+		/// Will be 1.1 if the Titan Glove is equipped, and 1 otherwise.
+		/// </param>
+		public virtual void ModifyItemScale(Item item, ref float scale) {
 		}
 
 		/// <summary>
@@ -770,7 +803,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Allows you to modify the visibility of layers about to be drawn
 		/// </summary>
-		/// <param name="layers"></param>
+		/// <param name="drawInfo"></param>
 		public virtual void HideDrawLayers(PlayerDrawSet drawInfo) {
 		}
 

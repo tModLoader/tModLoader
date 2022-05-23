@@ -20,33 +20,6 @@ namespace Terraria.ModLoader
 			array[array.Length - 1] = type;
 		}
 
-		/// <summary>
-		/// Allows the given type of tile to grow the given modded tree.
-		/// </summary>
-		/// <param name="soilType"></param>
-		/// <param name="tree"></param>
-		public void AddModTree(int soilType, ModTree tree) {
-			TileLoader.trees[soilType] = tree;
-		}
-
-		/// <summary>
-		/// Allows the given type of tile to grow the given modded palm tree.
-		/// </summary>
-		/// <param name="soilType"></param>
-		/// <param name="palmTree"></param>
-		public void AddModPalmTree(int soilType, ModPalmTree palmTree) {
-			TileLoader.palmTrees[soilType] = palmTree;
-		}
-
-		/// <summary>
-		/// Allows the given type of tile to grow the given modded cactus.
-		/// </summary>
-		/// <param name="soilType"></param>
-		/// <param name="cactus"></param>
-		public void AddModCactus(int soilType, ModCactus cactus) {
-			TileLoader.cacti[soilType] = cactus;
-		}
-
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalTile>.Register(this);
 			TileLoader.globalTiles.Add(this);
@@ -91,9 +64,9 @@ namespace Terraria.ModLoader
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type">The tile type</param>
-		/// <param name="fail"></param>
-		/// <param name="effectOnly"></param>
-		/// <param name="noItem"></param>
+		/// <param name="fail">If true, the tile won't be mined</param>
+		/// <param name="effectOnly">If true, only the dust visuals will happen</param>
+		/// <param name="noItem">If true, the corrsponding item won't drop</param>
 		public virtual void KillTile(int i, int j, int type, ref bool fail, ref bool effectOnly, ref bool noItem) {
 		}
 
@@ -164,6 +137,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type">The Tile type of the tile being drawn</param>
+		/// <param name="spriteBatch">The SpriteBatch that should be used for all draw calls</param>
 		public virtual void SpecialDraw(int i, int j, int type, SpriteBatch spriteBatch) {
 		}
 
@@ -273,16 +248,6 @@ namespace Terraria.ModLoader
 		/// <param name="type"></param>
 		/// <param name="style"></param>
 		public virtual void ChangeWaterfallStyle(int type, ref int style) {
-		}
-
-		/// <summary>
-		/// Allows a tile to support a sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns -1 by default. The style parameter will determine which sapling is chosen if multiple sapling types share the same ID; even if you only have a single sapling in an ID, you must still set this to 0.
-		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="style"></param>
-		/// <returns></returns>
-		public virtual int SaplingGrowthType(int type, ref int style) {
-			return -1;
 		}
 	}
 }

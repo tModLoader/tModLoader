@@ -1,16 +1,12 @@
-﻿using Microsoft.Xna.Framework.Audio;
-using ReLogic.Content;
-using ReLogic.Content.Sources;
+﻿using ReLogic.Content;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Terraria.Audio;
 using Terraria.Localization;
-using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
@@ -26,9 +22,7 @@ namespace Terraria.ModLoader
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
 		internal void SetupContent() {
-			foreach (var e in content.OfType<ModType>()) {
-				e.SetupContent();
-			}
+			LoaderUtils.ForEachAndAggregateExceptions(GetContent<ModType>(), e => e.SetupContent());
 		}
 
 		internal void UnloadContent() {
@@ -53,30 +47,17 @@ namespace Terraria.ModLoader
 				AsyncLoadQueue.Dequeue().Wait();
 
 			LocalizationLoader.Autoload(this);
-
 			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
 
-			Type modType = GetType();
+			if (ContentAutoloadingEnabled) {
+				var loadableTypes = AssemblyManager.GetLoadableTypes(Code)
+					.Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
+					.Where(t => t.IsAssignableTo(typeof(ILoadable)))
+					.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) != null) // has default constructor
+					.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
+					.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 
-			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
-				// Skip Mod, abstract, and generic classes.
-				if (type == modType || type.IsAbstract || type.ContainsGenericParameters)
-					continue;
-
-				// Don't autoload things with no default constructor
-				if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) == null)
-					continue;
-
-				// Having the check here instead of enclosing the foreach statement is required for modSound autoloading to function properly
-				// In the case of a ModSound loading rework where it doesn't piggyback off content AutoLoading, the entire foreach statement
-				// can be enclosed in a ContentAutoloadingEnabled check. - pbone
-				if (ContentAutoloadingEnabled && typeof(ILoadable).IsAssignableFrom(type)) {
-					var autoload = AutoloadAttribute.GetValue(type);
-
-					if (autoload.NeedsAutoloading) {
-						AddContent((ILoadable)Activator.CreateInstance(type, true));
-					}
-				}
+				LoaderUtils.ForEachAndAggregateExceptions(loadableTypes, t => AddContent((ILoadable)Activator.CreateInstance(t, true)));
 			}
 
 			// Skip loading client assets if this is a dedicated server;
@@ -85,9 +66,6 @@ namespace Terraria.ModLoader
 
 			if (GoreAutoloadingEnabled)
 				GoreLoader.AutoloadGores(this);
-
-			if (SoundAutoloadingEnabled)
-				SoundLoader.AutoloadSounds(this);
 
 			if (MusicAutoloadingEnabled)
 				MusicLoader.AutoloadMusic(this);

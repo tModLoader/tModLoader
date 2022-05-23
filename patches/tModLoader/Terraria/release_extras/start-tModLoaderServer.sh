@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 cd "$(dirname "$0")"
 
-launch_args="-server -config serverconfig.txt"
+launch_args="$@ -server"
+if [[ ! "$launch_args" == *"-config"* ]]; then
+	launch_args="$launch_args -config serverconfig.txt"
+fi
 
 read -p "Use Steam Server (y)/(n) " steam
 
@@ -18,7 +21,5 @@ if [ $steam = "y" ]; then
 	fi
 fi
 
-launch_args="$launch_args $@"
-
 chmod +x ./LaunchUtils/ScriptCaller.sh
-./start-tModLoader.sh $launch_args
+./LaunchUtils/ScriptCaller.sh $launch_args

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
+using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader.UI;
@@ -93,6 +94,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static void PostSetupRecipes(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.PostSetupRecipes();
+				}
+			}
+		}
+
 		internal static void AddRecipeGroups(Mod mod) {
 			if (SystemsByMod.TryGetValue(mod, out var systems)) {
 				foreach (var system in systems) {
@@ -111,6 +120,18 @@ namespace Terraria.ModLoader
 			foreach (var system in HookOnWorldUnload.arr) {
 				system.OnWorldUnload();
 			}
+		}
+
+		public static bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldData, out ModSystem rejector) {
+			foreach (var system in HookCanWorldBePlayed.arr) {
+				if (!system.CanWorldBePlayed(playerData, worldData)) {
+					rejector = system;
+					return false;
+				}
+			}
+
+			rejector = null;
+			return true;
 		}
 
 		public static void ModifyScreenPosition() {

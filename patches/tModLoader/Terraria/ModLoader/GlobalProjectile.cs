@@ -1,15 +1,15 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using Terraria.ModLoader.Core;
+using System.IO;
+using Terraria.DataStructures;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.
 	/// </summary>
-	public abstract class GlobalProjectile : GlobalType<Projectile>
+	public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile>
 	{
 		protected sealed override void Register() {
 			ProjectileLoader.VerifyGlobalProjectile(this);
@@ -26,43 +26,18 @@ namespace Terraria.ModLoader
 		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
 
 		/// <summary>
-		/// Whether instances of this GlobalProjectile are created through Clone or constructor (by default implementations of NewInstance and Clone()).
-		/// Defaults to false (using default constructor).
-		/// </summary>
-		public virtual bool CloneNewInstances => false;
-
-		/// <summary>
-		/// Returns a clone of this GlobalProjectile.
-		/// By default this will return a memberwise clone; you will want to override this if your GlobalProjectile contains object references.
-		/// Only called if CloneNewInstances &amp;&amp; InstancePerEntity
-		/// </summary>
-		public virtual GlobalProjectile Clone() => (GlobalProjectile)MemberwiseClone();
-
-		/// <summary>
-		/// Create a new instance of this GlobalProjectile for a Projectile instance.
-		/// Called at the end of Projectile.SetDefaults.
-		/// If CloneNewInstances is true, just calls Clone()
-		/// Otherwise calls the default constructor and copies fields
-		/// </summary>
-		public virtual GlobalProjectile NewInstance(Projectile projectile) {
-			if (CloneNewInstances) {
-				return Clone();
-			}
-
-			GlobalProjectile copy = (GlobalProjectile)Activator.CreateInstance(GetType());
-			copy.Mod = Mod;
-			copy.index = index;
-
-			return copy;
-		}
-
-		/// <summary>
 		/// Allows you to set the properties of any and every projectile that gets created.
 		/// </summary>
 		/// <param name="projectile"></param>
 		public virtual void SetDefaults(Projectile projectile) {
 		}
 
+		/// <summary>
+		/// Gets called when any projectiles spawns in world
+		/// </summary>
+		public virtual void OnSpawn(Projectile projectile, IEntitySource source) {
+		}
+		
 		/// <summary>
 		/// Allows you to determine how any projectile behaves. Return false to stop the vanilla AI and the AI hook from being run. Returns true by default.
 		/// </summary>
@@ -84,6 +59,29 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="projectile"></param>
 		public virtual void PostAI(Projectile projectile) {
+		}
+
+		/// <summary>
+		/// Use this judiciously to avoid straining the network.
+		/// <br/>Checks and methods such as <see cref="AppliesToEntity"/> can reduce how much data must be sent for how many projectiles.
+		/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully sent, for example on projectile creation, or whenever Projectile.netUpdate is set to true in the update loop for that tick.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
+		/// </summary>
+		/// <param name="projectile">The projectile.</param>
+		/// <param name="bitWriter">The compressible bit writer. Booleans written via this are compressed across all mods to improve multiplayer performance.</param>
+		/// <param name="binaryWriter">The writer.</param>
+		public virtual void SendExtraAI(Projectile projectile, BitWriter bitWriter, BinaryWriter binaryWriter) {
+		}
+
+		/// <summary>
+		/// Use this to receive information that was sent in <see cref="SendExtraAI"/>.
+		/// <br/>Called whenever <see cref="MessageID.SyncProjectile"/> is successfully received.
+		/// <br/>Can be called on both server and client, depending on who owns the projectile.
+		/// </summary>
+		/// <param name="projectile">The projectile.</param>
+		/// <param name="bitReader">The compressible bit reader.</param>
+		/// <param name="binaryReader">The reader.</param>
+		public virtual void ReceiveExtraAI(Projectile projectile, BitReader bitReader, BinaryReader binaryReader) {
 		}
 
 		/// <summary>
@@ -137,7 +135,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Return true or false to specify if the projectile can cut tiles, like vines. Return null for vanilla decision.
+		/// Return true or false to specify if the projectile can cut tiles like vines, pots, and Queen Bee larva. Return null for vanilla decision.
 		/// </summary>
 		/// <param name="projectile"></param>
 		/// <returns></returns>

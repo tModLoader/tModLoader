@@ -10,38 +10,46 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI
 {
-	class ProjectileDefinitionElement : DefinitionElement<ProjectileDefinition>
+	internal class ProjectileDefinitionElement : DefinitionElement<ProjectileDefinition>
 	{
 		protected override DefinitionOptionElement<ProjectileDefinition> CreateDefinitionOptionElement() => new ProjectileDefinitionOptionElement(Value, 0.5f);
 
 		protected override List<DefinitionOptionElement<ProjectileDefinition>> CreateDefinitionOptionElementList() {
 			var options = new List<DefinitionOptionElement<ProjectileDefinition>>();
+
 			for (int i = 0; i < ProjectileLoader.ProjectileCount; i++) {
-				var optionElement = new ProjectileDefinitionOptionElement(new ProjectileDefinition(i), optionScale);
+				var optionElement = new ProjectileDefinitionOptionElement(new ProjectileDefinition(i), OptionScale);
 				optionElement.OnClick += (a, b) => {
-					Value = optionElement.definition;
-					updateNeeded = true;
-					selectionExpanded = false;
+					Value = optionElement.Definition;
+					UpdateNeeded = true;
+					SelectionExpanded = false;
 				};
 				options.Add(optionElement);
 			}
+
 			return options;
 		}
 
 		protected override List<DefinitionOptionElement<ProjectileDefinition>> GetPassedOptionElements() {
 			var passed = new List<DefinitionOptionElement<ProjectileDefinition>>();
-			foreach (var option in options) {
+
+			foreach (var option in Options) {
 				// Should this be the localized projectile name?
-				if (Lang.GetProjectileName(option.type).Value.IndexOf(chooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
+				if (Lang.GetProjectileName(option.Type).Value.IndexOf(ChooserFilter.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
 					continue;
-				string modname = option.definition.mod;
-				if (option.type >= ProjectileID.Count) {
-					modname = ProjectileLoader.GetProjectile(option.type).Mod.DisplayName; // or internal name?
+
+				string modname = option.Definition.Mod;
+
+				if (option.Type >= ProjectileID.Count) {
+					modname = ProjectileLoader.GetProjectile(option.Type).Mod.DisplayName; // or internal name?
 				}
-				if (modname.IndexOf(chooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase) == -1)
+
+				if (!modname.Contains(ChooserFilterMod.CurrentString, StringComparison.OrdinalIgnoreCase))
 					continue;
+
 				passed.Add(option);
 			}
+
 			return passed;
 		}
 	}
@@ -54,17 +62,17 @@ namespace Terraria.ModLoader.Config.UI
 		protected override void DrawSelf(SpriteBatch spriteBatch) {
 			CalculatedStyle dimensions = GetInnerDimensions();
 
-			spriteBatch.Draw(backgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			spriteBatch.Draw(BackgroundTexture.Value, dimensions.Position(), null, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
 
-			if (definition != null) {
-				int type = unloaded ? ProjectileID.Count : this.type;
+			if (Definition != null) {
+				int type = Unloaded ? ProjectileID.Count : Type;
 				Main.instance.LoadProjectile(type);
 				Texture2D projectileTexture = TextureAssets.Projectile[type].Value;
 
-				int frameCounter = Interface.modConfig.updateCount / 4;
+				int frameCounter = Interface.modConfig.UpdateCount / 4;
 				int frames = Main.projFrames[type];
 
-				if (unloaded) {
+				if (Unloaded) {
 					projectileTexture = TextureAssets.Item[ItemID.Count].Value;
 					frames = 1;
 				}
@@ -76,7 +84,7 @@ namespace Terraria.ModLoader.Config.UI
 				var rectangle2 = new Rectangle(0, y, width, height);
 
 				float drawScale = 1f;
-				float availableWidth = (float)defaultBackgroundTexture.Width() * scale;
+				float availableWidth = (float)DefaultBackgroundTexture.Width() * Scale;
 
 				if (width > availableWidth || height > availableWidth) {
 					if (width > height) {
@@ -87,16 +95,17 @@ namespace Terraria.ModLoader.Config.UI
 					}
 				}
 
-				drawScale *= scale;
+				drawScale *= Scale;
 
-				Vector2 vector = backgroundTexture.Size() * scale;
+				Vector2 vector = BackgroundTexture.Size() * Scale;
 				Vector2 position2 = dimensions.Position() + vector / 2f - rectangle2.Size() * drawScale / 2f;
 				Vector2 origin = rectangle2.Size() * 0/* * (pulseScale / 2f - 0.5f)*/;
 
 				spriteBatch.Draw(projectileTexture, position2, rectangle2, Color.White, 0f, origin, drawScale, SpriteEffects.None, 0f);
 			}
+
 			if (IsMouseHovering)
-				UIModConfig.tooltip = tooltip;
+				UIModConfig.Tooltip = Tooltip;
 		}
 	}
 }

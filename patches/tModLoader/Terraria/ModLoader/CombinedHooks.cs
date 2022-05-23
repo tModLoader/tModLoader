@@ -6,19 +6,19 @@ namespace Terraria.ModLoader
 {
 	public static class CombinedHooks
 	{
-		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage, ref float flat) {
-			ItemLoader.ModifyWeaponDamage(item, player, ref damage, ref flat);
-			PlayerLoader.ModifyWeaponDamage(player, item, ref damage, ref flat);
+		public static void ModifyWeaponDamage(Player player, Item item, ref StatModifier damage) {
+			ItemLoader.ModifyWeaponDamage(item, player, ref damage);
+			PlayerLoader.ModifyWeaponDamage(player, item, ref damage);
 		}
 
-		public static void ModifyWeaponCrit(Player player, Item item, ref int crit) {
+		public static void ModifyWeaponCrit(Player player, Item item, ref float crit) {
 			ItemLoader.ModifyWeaponCrit(item, player, ref crit);
 			PlayerLoader.ModifyWeaponCrit(player, item, ref crit);
 		}
 
-		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback, ref float flat) {
-			ItemLoader.ModifyWeaponKnockback(item, player, ref knockback, ref flat);
-			PlayerLoader.ModifyWeaponKnockback(player, item, ref knockback, ref flat);
+		public static void ModifyWeaponKnockback(Player player, Item item, ref StatModifier knockback) {
+			ItemLoader.ModifyWeaponKnockback(item, player, ref knockback);
+			PlayerLoader.ModifyWeaponKnockback(player, item, ref knockback);
 		}
 
 		public static void ModifyManaCost(Player player, Item item, ref float reduce, ref float mult) {
@@ -113,8 +113,13 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
+		public static void ModifyItemScale(Player player, Item item, ref float scale) {
+			ItemLoader.ModifyItemScale(item, player, ref scale);
+			PlayerLoader.ModifyItemScale(player, item, ref scale);
+		}
+
 		public static float TotalUseSpeedMultiplier(Player player, Item item) {
-			return PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player);
+			return PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player) * player.GetWeaponAttackSpeed(item);
 		}
 
 		public static float TotalUseTimeMultiplier(Player player, Item item) {
@@ -153,6 +158,38 @@ namespace Terraria.ModLoader
 				ret = (ret ?? true) && b;
 			}
 			return ret;
+		}
+
+		public static bool? CanCatchNPC(Player player, NPC npc, Item item) {
+			bool? canCatchOverall = null;
+			bool? canCatchOnPlayer = PlayerLoader.CanCatchNPC(player, npc, item);
+			if (canCatchOnPlayer.HasValue) {
+				if (!canCatchOnPlayer.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			bool? canCatchOnItem = ItemLoader.CanCatchNPC(item, npc, player);
+			if (canCatchOnItem.HasValue) {
+				if (!canCatchOnItem.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			bool? canCatchOnNPC = NPCLoader.CanBeCaughtBy(npc, item, player);
+			if (canCatchOnNPC.HasValue) {
+				if (!canCatchOnNPC.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			return canCatchOverall;
+		}
+
+		public static void OnCatchNPC(Player player, NPC npc, Item item, bool failed) {
+			PlayerLoader.OnCatchNPC(player, npc, item, failed);
+			ItemLoader.OnCatchNPC(item, npc, player, failed);
+			NPCLoader.OnCaughtBy(npc, player, item, failed);
 		}
 	}
 }

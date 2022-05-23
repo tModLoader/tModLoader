@@ -25,7 +25,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal TmodFile File { get; set; }
 		/// <summary>
-		/// The assembly code this is loaded when tModLoader loads this mod.
+		/// The assembly code this is loaded when tModLoader loads this mod. <br/>
+		/// Do NOT call <see cref="Assembly.GetTypes"/> on this as it will error out if the mod uses the <see cref="ExtendsFromModAttribute"/> attribute to inherit from weakly referenced mods. Use <see cref="AssemblyManager.GetLoadableTypes(Assembly)"/> instead.
 		/// </summary>
 		public Assembly Code { get; internal set; }
 		/// <summary>
@@ -54,10 +55,6 @@ namespace Terraria.ModLoader
 		/// Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any ModGore classes that share names with the images. This means you do not need to manually call Mod.AddGore.
 		/// </summary>
 		public bool GoreAutoloadingEnabled { get; init; } = true;
-		/// <summary>
-		/// Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, and Sounds/NPCKilled to add them as npcKilled sounds. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any ModSound classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.
-		/// </summary>
-		public bool SoundAutoloadingEnabled { get; init; } = true;
 		/// <summary>
 		/// Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them.
 		/// </summary>
@@ -89,13 +86,15 @@ namespace Terraria.ModLoader
 
 		public GameContent.Bestiary.ModSourceBestiaryInfoElement ModSourceBestiaryInfoElement;
 
+		public PreJITFilter PreJITFilter { get; protected set; } = new PreJITFilter();
+
 		internal void AutoloadConfig()
 		{
 			if (Code == null)
 				return;
 
 			// TODO: Attribute to specify ordering of ModConfigs
-			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName))
+			foreach (Type type in AssemblyManager.GetLoadableTypes(Code).OrderBy(type => type.FullName))
 			{
 				if (type.IsAbstract)
 				{
@@ -142,84 +141,6 @@ namespace Terraria.ModLoader
 		public IEnumerable<ILoadable> GetContent() => content;
 
 		public IEnumerable<T> GetContent<T>() where T : ILoadable => content.OfType<T>();
-
-		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.
-		/// (The item parameter may be null if you don't want to associate an item with the texture.)
-		/// You can then get the ID for your texture by calling EquipLoader.GetEquipTexture, and using the EquipTexture's Slot property.
-		/// If the EquipType is EquipType.Body, make sure that you also provide an armTexture and a femaleTexture.
-		/// Returns the ID / slot that is assigned to the equipment texture.
-		/// </summary>
-		/// <param name="item">The item.</param>
-		/// <param name="type">The type.</param>
-		/// <param name="name">The name.</param>
-		/// <param name="texture">The texture.</param>
-		/// <returns></returns>
-		public int AddEquipTexture(ModItem item, EquipType type, string texture) {
-			return AddEquipTexture(new EquipTexture(), item, type, texture);
-		}
-
-		/// <summary>
-		/// Adds an equipment texture of the specified type, internal name, and associated item to your mod.
-		/// This method is different from the other AddEquipTexture in that you can specify the class of the equipment texture, thus allowing you to override EquipmentTexture's hooks.
-		/// All other parameters are the same as the other AddEquipTexture.
-		/// </summary>
-		/// <param name="equipTexture">The equip texture.</param>
-		/// <param name="item">The item.</param>
-		/// <param name="type">The type.</param>
-		/// <param name="texture">The texture.</param>
-		/// <returns></returns>
-		public int AddEquipTexture(EquipTexture equipTexture, ModItem item, EquipType type, string texture) {
-			if (!loading)
-				throw new Exception("AddEquipTexture can only be called from Mod.Load or Mod.Autoload");
-
-			ModContent.Request<Texture2D>(texture); //ensure texture exists
-
-			equipTexture.Texture = texture;
-			equipTexture.Mod = this;
-			equipTexture.Name = item.Name;
-			equipTexture.Type = type;
-			equipTexture.Item = item;
-			int slot = equipTexture.Slot = EquipLoader.ReserveEquipID(type);
-
-			EquipLoader.equipTextures[type][slot] = equipTexture;
-			equipTextures[Tuple.Create(item.Name, type)] = equipTexture;
-
-			if (!EquipLoader.idToSlot.TryGetValue(item.Type, out var slots))
-				EquipLoader.idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
-
-			slots[type] = slot;
-
-			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
-				EquipLoader.slotToId[type][slot] = item.Type;
-
-			return slot;
-		}
-
-		/// <summary>
-		/// Gets the EquipTexture instance corresponding to the name and EquipType. Returns null if no EquipTexture with the given name and EquipType is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="type">The type.</param>
-		/// <returns></returns>
-		public EquipTexture GetEquipTexture(string name, EquipType type) =>
-			equipTextures.TryGetValue(Tuple.Create(name, type), out var texture) ? texture : null;
-
-		/// <summary>
-		/// Gets the slot/ID of the equipment texture corresponding to the given name. Returns -1 if no EquipTexture with the given name is found.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public int GetEquipSlot(string name, EquipType type) => GetEquipTexture(name, type)?.Slot ?? -1;
-
-		/// <summary>
-		/// Same as GetEquipSlot, except returns the number as an sbyte (signed byte) for your convenience.
-		/// </summary>
-		/// <param name="name">The name.</param>
-		/// <param name="type"></param>
-		/// <returns></returns>
-		public sbyte GetAccessorySlot(string name, EquipType type) => (sbyte)GetEquipSlot(name, type);
 
 		/// <summary> Attempts to find the content instance from this mod with the specified name. Caching the result is recommended.<para/>This will throw exceptions on failure. </summary>
 		/// <exception cref="KeyNotFoundException"/>
@@ -313,7 +234,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.
+		/// Used for weak inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Expert-Cross-Mod-Content">Expert Cross Mod Content Guide</see> explains how to use this hook to implement and utilize cross-mod capabilities.
 		/// </summary>
 		public virtual object Call(params object[] args) {
 			return null;
@@ -348,5 +270,12 @@ namespace Terraria.ModLoader
 		}
 
 		public Recipe CreateRecipe(int result, int amount = 1) => Recipe.Create(this, result, amount);
+
+		/// <summary>
+		/// Creates a clone of the provided recipe except the source mod of the Recipe will be this Mod. The clone will have to registered after being tweaked.
+		/// </summary>
+		/// <param name="recipe"></param>
+		/// <returns></returns>
+		public Recipe CloneRecipe(Recipe recipe) => Recipe.Create(this, recipe.createItem.type, recipe.createItem.stack).Clone(recipe);
 	}
 }

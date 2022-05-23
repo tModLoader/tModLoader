@@ -22,7 +22,7 @@
  	{
  		private string _nameOverride;
  		public const int luckPotionDuration1 = 10800;
-@@ -51,7 +_,7 @@
+@@ -51,18 +_,24 @@
  		public int tileWand = -1;
  		public bool wornArmor;
  		public int tooltipContext = -1;
@@ -31,8 +31,15 @@
  		public int fishingPole = 1;
  		public int bait;
  		public static int coinGrabRange = 350;
-@@ -61,8 +_,10 @@
- 		public short makeNPC;
+ 		public static int manaGrabRange = 300;
+ 		public static int lifeGrabRange = 250;
+ 		public static int treasureGrabRange = 150;
+-		public short makeNPC;
++		/// <summary>
++		/// The numerical ID of the NPC that this item creates when used.<br></br>
++		/// Mainly used for caught critters as items so that they can be released into the world.
++		/// </summary>
++		public int makeNPC; // tML: changed to int for convenience and consistency purposes
  		public bool expertOnly;
  		public bool expert;
 +		public bool masterOnly;
@@ -43,6 +50,15 @@
  		public byte paint;
  		public bool instanced;
  		public int ownIgnore = -1;
+@@ -98,7 +_,7 @@
+ 		public int alpha;
+ 		public short glowMask;
+ 		public float scale = 1f;
+-		public LegacySoundStyle UseSound;
++		public SoundStyle? UseSound;
+ 		public int defense;
+ 		public int headSlot = -1;
+ 		public int bodySlot = -1;
 @@ -148,11 +_,44 @@
  		public bool DD2Summon;
  		public int netID;
@@ -373,6 +389,82 @@
  		}
  
  		public bool FitsAmmoSlot() {
+@@ -7929,6 +_,7 @@
+ 					value = 300;
+ 					break;
+ 				case 434:
++					consumeAmmoOnLastShotOnly = true;
+ 					autoReuse = true;
+ 					useStyle = 5;
+ 					useAnimation = 12;
+@@ -8902,6 +_,7 @@
+ 					rare = 2;
+ 					break;
+ 				case 506:
++					consumeAmmoOnFirstShotOnly = true;
+ 					useStyle = 5;
+ 					autoReuse = true;
+ 					useAnimation = 30;
+@@ -12284,6 +_,7 @@
+ 					scale = 1.15f;
+ 					break;
+ 				case 779:
++					consumeAmmoOnLastShotOnly = true;
+ 					useStyle = 5;
+ 					autoReuse = true;
+ 					useAnimation = 30;
+@@ -22916,6 +_,7 @@
+ 					melee = true;
+ 					return;
+ 				case 1910:
++					consumeAmmoOnFirstShotOnly = true;
+ 					useStyle = 5;
+ 					autoReuse = true;
+ 					useAnimation = 30;
+@@ -29993,7 +_,7 @@
+ 							case 2888:
+ 								useStyle = 5;
+ 								useAnimation = 24;
+-								useTime = 23;
++								useTime = 24;
+ 								width = 12;
+ 								height = 28;
+ 								shoot = 469;
+@@ -36960,6 +_,7 @@
+ 					shootSpeed = 17f;
+ 					return;
+ 				case 3852:
++					useLimitPerAnimation = 4;
+ 					useStyle = 5;
+ 					useAnimation = 25;
+ 					useTime = 3;
+@@ -43196,6 +_,7 @@
+ 					expert = true;
+ 					break;
+ 				case 4952:
++					useLimitPerAnimation = 4;
+ 					autoReuse = true;
+ 					useStyle = 14;
+ 					holdStyle = 6;
+@@ -43217,6 +_,8 @@
+ 					flame = true;
+ 					break;
+ 				case 4953:
++					useLimitPerAnimation = 5;
++					consumeAmmoOnLastShotOnly = true;
+ 					useStyle = 5;
+ 					autoReuse = true;
+ 					useAnimation = 30;
+@@ -44343,7 +_,8 @@
+ 			shoot = projectileId;
+ 			UseSound = SoundID.Item152;
+ 			noMelee = true;
+-			summon = true;
++			//summon = true;
++			DamageType = DamageClass.SummonMeleeSpeed;
+ 			noUseGraphic = true;
+ 			damage = dmg;
+ 			knockBack = kb;
 @@ -44387,7 +_,7 @@
  			return false;
  		}
@@ -382,6 +474,16 @@
  			useStyle = 1;
  			autoReuse = true;
  			useAnimation = 15;
+@@ -44420,7 +_,8 @@
+ 			}
+ 		}
+ 
++		// tML: changed to take an int instead of a short for convenience and consistency purposes
+-		public void DefaultToCapturedCritter(short npcIdToSpawnOnUse) {
++		public void DefaultToCapturedCritter(int npcIdToSpawnOnUse) {
+ 			useStyle = 1;
+ 			autoReuse = true;
+ 			useTurn = true;
 @@ -44799,6 +_,11 @@
  			mountType = mount;
  		}
@@ -400,7 +502,7 @@
  
 +		/// <summary>
 +		/// This method sets a variety of common Item values common to bow weapons.<br/>
-+		/// Specfically: width = 14; height = 30; UseSound = SoundID.Item5;<br/>
++		/// Specifically: width = 14; height = 30; UseSound = SoundID.Item5;<br/>
 +		/// Addtionally: <inheritdoc cref="DefaultToRangedWeapon(int,int,int,float,bool)" />
 +		/// </summary>
 +		/// <param name="singleShotTime"></param>
@@ -434,18 +536,39 @@
  			flame = true;
  			noWet = !allowWaterPlacement;
  			holdStyle = 1;
-@@ -45006,6 +_,16 @@
+@@ -44921,6 +_,18 @@
+ 			autoReuse = true;
+ 		}
+ 
++		/// <summary>
++		/// This method sets a variety of common Item values common to food items.<br/>
++		/// Specifically: UseSound = useGulpSound ? Item3 : Item2; useStyle = useGulpSound ? DrinkLiquid : EatFood;<br/>
++		/// useTurn = true; useAnimation = useTime = animationTime; maxStack = 30; consumable = true;<br/>
++		/// buffType = foodbuff; buffTime = foodbuffduration; rare = Blue; value = 20 silver;
++		/// </summary>
++		/// <param name="newwidth"></param>
++		/// <param name="newheight"></param>
++		/// <param name="foodbuff"></param>
++		/// <param name="foodbuffduration"></param>
++		/// <param name="useGulpSound">If true, the gulp sound is set, otherwise the crunch sound is set</param>
++		/// <param name="animationTime"></param>
+ 		public void DefaultToFood(int newwidth, int newheight, int foodbuff, int foodbuffduration, bool useGulpSound = false, int animationTime = 17) {
+ 			if (useGulpSound)
+ 				UseSound = SoundID.Item3;
+@@ -45006,6 +_,18 @@
  			SetDefaults(Type, noMatCheck: false);
  		}
  
 +		public void CloneDefaults(int TypeToClone) {
 +			int originalType = type;
 +			int originalNetID = netID;
-+			ModItem originalModItem = ModItem;
++			var originalModItem = ModItem;
++			var originalGlobals = globalItems;
 +			SetDefaults(TypeToClone);
 +			type = originalType;
 +			netID = originalNetID;
 +			ModItem = originalModItem;
++			globalItems = originalGlobals;
 +		}
 +
  		public void SetDefaults(int Type, bool noMatCheck = false) {
@@ -493,13 +616,16 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -45207,14 +_,20 @@
+@@ -45207,14 +_,23 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			ModItem = null;
 +			globalItems = new Instanced<GlobalItem>[0];
 +			AllowReforgeForStackableItem = false;
++			useLimitPerAnimation = null;
++			consumeAmmoOnFirstShotOnly = false;
++			consumeAmmoOnLastShotOnly = false;
 +			DamageType = DamageClass.Generic;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
@@ -620,6 +746,15 @@
  			if (Main.tenthAnniversaryWorld) {
  				if (Type == 58) {
  					Type = Main.rand.NextFromList(new short[3] {
+@@ -46363,6 +_,8 @@
+ 			if (ItemSlot.Options.HighlightNewItems && item.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[item.type])
+ 				item.newAndShiny = true;
+ 
++			ItemLoader.OnSpawn(item, source);
++
+ 			if (Main.netMode == 2 && !noBroadcast)
+ 				NetMessage.SendData(21, -1, -1, null, num, noGrabDelay.ToInt());
+ 			else if (Main.netMode == 0)
 @@ -46434,14 +_,17 @@
  						continue;
  
@@ -654,7 +789,7 @@
 +
 +			newItem.ModItem = ModItem?.Clone(newItem);
 +			newItem.globalItems = globalItems
-+				.Select(g => new Instanced<GlobalItem>(g.index, g.instance?.Clone(this, newItem)))
++				.Select(g => new Instanced<GlobalItem>(g.Index, g.Instance?.Clone(this, newItem)))
 +				.ToArray();
 +
 +			return newItem;
@@ -667,7 +802,7 @@
 +
 +			newItem.ModItem = dataSource.ModItem?.Clone(newItem);
 +			newItem.globalItems = dataSource.globalItems
-+				.Select(g => new Instanced<GlobalItem>(g.index, g.instance?.Clone(dataSource, newItem)))
++				.Select(g => new Instanced<GlobalItem>(g.Index, g.Instance?.Clone(dataSource, newItem)))
 +				.ToArray();
 +
 +			return newItem;
