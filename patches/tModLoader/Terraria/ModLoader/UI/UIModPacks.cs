@@ -211,7 +211,9 @@ namespace Terraria.ModLoader.UI
 				.StartNew(delegate {
 					Mods = ModOrganizer.FindMods().Select(m => m.Name).ToArray();
 					Directory.CreateDirectory(ModPacksDirectory);
-					return Directory.GetDirectories(ModPacksDirectory, "*", SearchOption.TopDirectoryOnly);
+					var dirs = Directory.GetDirectories(ModPacksDirectory, "*", SearchOption.TopDirectoryOnly);
+					var files = Directory.GetFiles(ModPacksDirectory, "*.json", SearchOption.TopDirectoryOnly);
+					return files.Concat(dirs);
 				}, _cts.Token)
 
 				.ContinueWith(task => {
