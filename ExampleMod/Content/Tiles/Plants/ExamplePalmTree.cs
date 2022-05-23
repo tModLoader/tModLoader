@@ -26,7 +26,6 @@ namespace ExampleMod.Content.Tiles
 
 		// This is the primary texture for the trunk. Branches and foliage use different settings.
 		// The first row will be the Ocean textures, the second row will be Oasis Textures.
-		// Our Texture is out of date - we haveb't added Oasis yet.
 		public override Asset<Texture2D> GetTexture() {
 			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree");
 		}
