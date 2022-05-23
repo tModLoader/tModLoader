@@ -76,7 +76,7 @@ namespace Terraria.ModLoader.UI
 				HAlign = 0f,
 				Top = { Pixels = -20 }
 			}.WithFadedMouseOver();
-			folderButton.OnClick += ;
+			folderButton.OnClick += OpenFolder;
 			uIElement.Append(folderButton);
 
 			var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
