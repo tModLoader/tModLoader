@@ -78,7 +78,7 @@ namespace ExampleMod.Common.Players
 
 		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
 			if (BlockyAccessory) {
-				SoundEngine.PlaySound(SoundID.Zombie, Player.position, 13);
+				SoundEngine.PlaySound(SoundID.Frog, Player.position);
 			}
 		}
 	}

@@ -243,15 +243,5 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <returns></returns>
 		public abstract Asset<Texture2D> GetOasisTopTextures();
-
-		/// <summary>
-		/// Return the texture containing the possible tree branches that can be drawn next to this tree.
-		/// </summary>
-		public abstract Asset<Texture2D> GetBranchTextures();
-
-		/// <summary>
-		/// Return the texture containing the possible tree branches that can be drawn next to this tree.
-		/// </summary>
-		public abstract Asset<Texture2D> GetOasisBranchTextures();
 	}
 }

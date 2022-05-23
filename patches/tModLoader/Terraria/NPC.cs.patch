@@ -44,6 +44,17 @@
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
+@@ -218,8 +_,8 @@
+ 		public int defDefense;
+ 		public bool coldDamage;
+ 		public bool trapImmune;
+-		public LegacySoundStyle HitSound;
+-		public LegacySoundStyle DeathSound;
++		public SoundStyle? HitSound;
++		public SoundStyle? DeathSound;
+ 		public int life;
+ 		public int lifeMax;
+ 		public Rectangle targetRect;
 @@ -389,7 +_,13 @@
  
  		public int WhoAmIToTargettingIndex => whoAmI + 300;
@@ -692,6 +703,29 @@
  									for (int k = 0; k < num38; k++) {
  										Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  										obj.velocity.Y -= 3f + (float)num37 * 1.5f;
+@@ -44201,7 +_,7 @@
+ 			bool flag21 = false;
+ 			bool flag22 = false;
+ 			bool flag23 = false;
+-			LegacySoundStyle style = null;
++			SoundStyle? style = null;
+ 			int num20 = 0;
+ 			bool flag24 = false;
+ 			float num21 = 1f;
+@@ -45053,8 +_,13 @@
+ 
+ 			if (!flag20) {
+ 				if (ai[3] < (float)num19 && flag21) {
++					/*
+ 					if (num20 > 0 && Main.rand.Next(num20) == 0)
+ 						SoundEngine.PlayTrackedSound(style, base.Center);
++					*/
++
++					if (num20 > 0 && Main.rand.Next(num20) == 0 && style.HasValue)
++						SoundEngine.PlayTrackedSound(style.Value, base.Center);
+ 
+ 					bool hasValidTarget = HasValidTarget;
+ 					nPCTargetingMethod(this, faceTarget: true, null);
 @@ -45232,7 +_,7 @@
  				Tile tileSafely4 = Framing.GetTileSafely(num64, num65 - 1);
  				Tile tileSafely5 = Framing.GetTileSafely(num64, num65 - 2);

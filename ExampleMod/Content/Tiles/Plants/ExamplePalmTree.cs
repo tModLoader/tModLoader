@@ -25,6 +25,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// This is the primary texture for the trunk. Branches and foliage use different settings.
+		// The first row will be the Ocean textures, the second row will be Oasis Textures.
 		public override Asset<Texture2D> GetTexture() {
 			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree");
 		}
@@ -33,25 +34,14 @@ namespace ExampleMod.Content.Tiles
 			style = 1;
 			return ModContent.TileType<Plants.ExampleSapling>();
 		}
-
-		public override Asset<Texture2D> GetOasisBranchTextures() {
-			// Palm Trees come in an Oasis variant. The Branch Textures for it, if we had them:
-			return null;
-		}
-
-		public override Asset<Texture2D> GetBranchTextures() {
-			// Palm Trees come in a Beach variant. The Branch Textures for it, if we had them:
-			return null;
-		}
-
 		
 		public override Asset<Texture2D> GetOasisTopTextures() {
-			// Palm Trees come in an Oasis variant. The Top Textures for it, if we had one that works:
-			return null;
+			// Palm Trees come in an Oasis variant. The Top Textures for it:
+			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmOasisTree_Tops");
 		}
 
 		public override Asset<Texture2D> GetTopTextures() {
-			// Palm Trees come in a Beach variant. The Top Textures for it, if we had one that works:
+			// Palm Trees come in a Beach variant. The Top Textures for it:
 			return ModContent.Request<Texture2D>("ExampleMod/Content/Tiles/Plants/ExamplePalmTree_Tops");
 		}
 

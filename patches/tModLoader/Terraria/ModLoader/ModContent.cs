@@ -443,9 +443,7 @@ namespace Terraria.ModLoader
 
 		//TODO: Unhardcode ALL of this.
 		internal static void Unload() {
-			ContentInstance.Clear();
-			ModTypeLookup.Clear();
-			LoaderUtils.ClearTypeInfo();
+			TypeCaching.Clear();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			PrefixLoader.Unload();
@@ -467,7 +465,6 @@ namespace Terraria.ModLoader
 			DamageClassLoader.Unload();
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
-			SoundLoader.Unload();
 			PlantLoader.UnloadPlants();
 
 			LoaderManager.Unload();
@@ -528,7 +525,6 @@ namespace Terraria.ModLoader
 			SystemLoader.ResizeArrays();
 
 			if (!Main.dedServ) {
-				SoundLoader.ResizeAndFillArrays();
 				GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
 			}

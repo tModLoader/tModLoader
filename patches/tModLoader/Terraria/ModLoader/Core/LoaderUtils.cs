@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.Core
 {
@@ -36,6 +37,24 @@ namespace Terraria.ModLoader.Core
 					ResetStaticMembers(nestedType, recursive);
 				}
 			}
+		}
+
+		public static void ForEachAndAggregateExceptions<T>(IEnumerable<T> enumerable, Action<T> action) {
+			var exceptions = new List<Exception>();
+			foreach (var t in enumerable) {
+				try {
+					action(t);
+				}
+				catch (Exception ex) {
+					exceptions.Add(ex);
+				}
+			}
+
+			if (exceptions.Count == 1)
+				throw exceptions[0];
+
+			if (exceptions.Count > 0)
+				throw new MultipleException(exceptions);
 		}
 
 		public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, IEnumerable<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal> {
@@ -85,9 +104,12 @@ namespace Terraria.ModLoader.Core
 			return method;
 		}
 
+		public static MethodInfo GetDerivedDefinition(Type t, MethodInfo baseMethod) =>
+			t.GetMethods().Single(m => m.GetBaseDefinition() == baseMethod);
+
 		public static bool HasOverride(Type t, MethodInfo baseMethod) =>
 			baseMethod.DeclaringType.IsInterface ? t.IsAssignableTo(baseMethod.DeclaringType) :
-			t.GetMethods().Single(m => m.GetBaseDefinition() == baseMethod).DeclaringType != baseMethod.DeclaringType;
+			GetDerivedDefinition(t, baseMethod).DeclaringType != baseMethod.DeclaringType;
 
 		public static bool HasOverride<T, F>(Type t, Expression<Func<T, F>> expr) where F : Delegate =>
 			HasOverride(t, expr.ToMethodInfo());
@@ -116,24 +138,8 @@ namespace Terraria.ModLoader.Core
 
 		internal static bool IsValidated(Type type) => !validatedTypes.Add(type);
 
-		private static Dictionary<Type, bool> typeIsCloneable = new();
-		
-		internal static bool IsCloneable<T, F>(T t, Expression<Func<T, F>> cloneMethod) where F : Delegate {
-			var rootCloneableType = typeof(T);
-			var type = t.GetType();
-			
-			if (typeIsCloneable.TryGetValue(type, out var cloneable))
-				return cloneable;
-
-			bool hasReferenceTypedFieldsOnSubclass = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-				.Any(f => f.DeclaringType.IsSubclassOf(rootCloneableType) && !f.FieldType.IsValueType);
-
-			return typeIsCloneable[type] = !hasReferenceTypedFieldsOnSubclass || HasOverride(type, cloneMethod);
-		}
-
-		internal static void ClearTypeInfo() {
-			validatedTypes.Clear();
-			typeIsCloneable.Clear();
+		static LoaderUtils() {
+			TypeCaching.OnClear += validatedTypes.Clear;
 		}
 	}
 }

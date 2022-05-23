@@ -28,6 +28,7 @@
 		"MenuModsEnabled": "{0} {^0:Mod;Mods} Enabled",
 		"MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		"AudioNotSupported": "No audio hardware found. Disabling all audio.",
+		"13InfoButton": "How to Access 1.3 tModLoader",
 
 		// Mods Menu
 		"ModsModsList": "Mods List",

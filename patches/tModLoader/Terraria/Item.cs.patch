@@ -50,6 +50,15 @@
  		public byte paint;
  		public bool instanced;
  		public int ownIgnore = -1;
+@@ -98,7 +_,7 @@
+ 		public int alpha;
+ 		public short glowMask;
+ 		public float scale = 1f;
+-		public LegacySoundStyle UseSound;
++		public SoundStyle? UseSound;
+ 		public int defense;
+ 		public int headSlot = -1;
+ 		public int bodySlot = -1;
 @@ -148,11 +_,44 @@
  		public bool DD2Summon;
  		public int netID;

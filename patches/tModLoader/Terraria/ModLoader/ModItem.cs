@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
@@ -57,9 +58,9 @@ namespace Terraria.ModLoader
 
 		protected override void ValidateType() {
 			base.ValidateType();
-			
+
 			if (!IsCloneable)
-				Logging.tML.Warn($"{GetType().FullName} is not cloneable, and ModItems must be cloneable. See the documentation on {nameof(IsCloneable)}");
+				Cloning.WarnNotCloneable(GetType());
 		}
 
 		protected sealed override void Register() {
