@@ -298,13 +298,15 @@
  						break;
  					}
  				case 583:
-@@ -2941,7 +_,8 @@
+@@ -2941,7 +_,10 @@
  						tileWidth = 20;
  						tileHeight = 20;
  						int palmTreeBiome = GetPalmTreeBiome(x, y);
 +						if (Math.Abs(palmTreeBiome) < ModPalmTree.VanillaStyleCount)
 -						tileFrameY = (short)(22 * palmTreeBiome);
 +							tileFrameY = (short)(22 * palmTreeBiome);
++						else
++							tileFrameY = (short)(22 * (palmTreeBiome < 0 ? 1 : 0));
  						break;
  					}
  				case 4:

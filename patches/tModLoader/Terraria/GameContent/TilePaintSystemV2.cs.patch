@@ -47,7 +47,7 @@
  				PrepareTextureIfNecessary(asset.Value);
  			}
  
-@@ -88,7 +_,35 @@
+@@ -88,7 +_,21 @@
  			public TreeFoliageVariantKey Key;
  
  			public override void Prepare() {
@@ -58,20 +58,6 @@
 +					int lookup = Key.TextureIndex - ModTree.VanillaTopTextureCount;
 +
 +					asset = PlantLoader.Get<ModTree>(TileID.Trees, lookup).GetBranchTextures();
-+				}
-+				else if (Key.TextureIndex < 0) {
-+					int lookup = -1 * Key.TextureIndex;
-+
-+					bool isOcean = lookup % 2 == 0;
-+
-+					if (isOcean) {
-+						lookup = lookup / 2;
-+						asset = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, lookup).GetBranchTextures();
-+					}
-+					else {
-+						lookup = (lookup - 1) / 2;
-+						asset = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, lookup).GetOasisBranchTextures();
-+					}
 +				}
 +				else {
 +					asset = TextureAssets.TreeBranch[Key.TextureIndex];
