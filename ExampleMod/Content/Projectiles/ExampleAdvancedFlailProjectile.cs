@@ -92,7 +92,7 @@ namespace ExampleMod.Content.Projectiles
 			int ricochetTimeLimit = launchTimeLimit + 5;
 
 			// Scaling these speeds and accelerations by the players meleeSpeed make the weapon more responsive if the player boosts their meleeSpeed
-			float meleeSpeed = player.meleeSpeed;
+			float meleeSpeed = player.GetAttackSpeed(DamageClass.Melee);
 			float meleeSpeedMultiplier = 1f / meleeSpeed;
 			launchSpeed *= meleeSpeedMultiplier;
 			unusedRetractAcceleration *= meleeSpeedMultiplier;
@@ -360,7 +360,7 @@ namespace ExampleMod.Content.Projectiles
 					Collision.HitTiles(Projectile.position, velocity, Projectile.width, Projectile.height);
 				}
 
-				SoundEngine.PlaySound(SoundID.Dig, (int)Projectile.position.X, (int)Projectile.position.Y);
+				SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
 			}
 
 			// Force retraction if stuck on tiles while retracting
