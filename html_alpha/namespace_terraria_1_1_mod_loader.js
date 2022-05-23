@@ -25,6 +25,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "BossBarLoader", "class_terraria_1_1_mod_loader_1_1_boss_bar_loader.html", "class_terraria_1_1_mod_loader_1_1_boss_bar_loader" ],
     [ "BuffLoader", "class_terraria_1_1_mod_loader_1_1_buff_loader.html", "class_terraria_1_1_mod_loader_1_1_buff_loader" ],
     [ "BuildInfo", "class_terraria_1_1_mod_loader_1_1_build_info.html", "class_terraria_1_1_mod_loader_1_1_build_info" ],
+    [ "CloneByReference", "class_terraria_1_1_mod_loader_1_1_clone_by_reference.html", null ],
     [ "CombinedHooks", "class_terraria_1_1_mod_loader_1_1_combined_hooks.html", "class_terraria_1_1_mod_loader_1_1_combined_hooks" ],
     [ "CommandCaller", "interface_terraria_1_1_mod_loader_1_1_command_caller.html", "interface_terraria_1_1_mod_loader_1_1_command_caller" ],
     [ "CommandLoader", "class_terraria_1_1_mod_loader_1_1_command_loader.html", "class_terraria_1_1_mod_loader_1_1_command_loader" ],

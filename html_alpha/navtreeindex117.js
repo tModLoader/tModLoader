@@ -1,5 +1,7 @@
 var NAVTREEINDEX117 =
 {
+"class_terraria_1_1_wiring.html#a3c56fc424ebc66cd1132bd43f11f916c":[1,0,2,82,32],
+"class_terraria_1_1_wiring.html#a423c84d100eaee8d4fd8a40a22bc5799":[1,0,2,82,2],
 "class_terraria_1_1_wiring.html#a42dfb9c344ef9b6e1563aae97acfd2c1":[1,0,2,82,3],
 "class_terraria_1_1_wiring.html#a4b851e7741ed5e25cfe2621f44e8bd64":[1,0,2,82,41],
 "class_terraria_1_1_wiring.html#a4caea1627af511c31555bc0b652d1958":[1,0,2,82,39],
@@ -247,7 +249,5 @@ var NAVTREEINDEX117 =
 "class_terraria_1_1_world_building_1_1_modifiers_1_1_skip_walls.html#a567f06473bf99ef054b8a86ffa76c62b":[1,0,2,23,13,21,1],
 "class_terraria_1_1_world_building_1_1_passes.html":[1,0,2,23,15],
 "class_terraria_1_1_world_building_1_1_passes_1_1_clear.html":[1,0,2,23,15,0],
-"class_terraria_1_1_world_building_1_1_passes_1_1_clear.html#a38595e4420cbff58c1b6b0ba1770e6d4":[1,0,2,23,15,0,1],
-"class_terraria_1_1_world_building_1_1_passes_1_1_clear.html#af5be00a5e46f02e735b42ed374fb58a5":[1,0,2,23,15,0,0],
-"class_terraria_1_1_world_building_1_1_passes_1_1_scatter_custom.html":[1,0,2,23,15,1]
+"class_terraria_1_1_world_building_1_1_passes_1_1_clear.html#a38595e4420cbff58c1b6b0ba1770e6d4":[1,0,2,23,15,0,1]
 };

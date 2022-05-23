@@ -7,7 +7,6 @@ var class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item =
     [ "SaveData", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#ae10b3427d4d2e975974c143b081f0e91", null ],
     [ "SetDefaults", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#acbcebdc3ad659e507dd9475610df7093", null ],
     [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a942565b369d78a628256923a4727cdcc", null ],
-    [ "IsCloneable", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#ab2e806c7728b86b574d0bbfe876adee3", null ],
     [ "ItemName", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#a06c71f500336ed805193b0093ebb7897", null ],
     [ "ModName", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html#ad6c484b3931fb6a67376b891c12f12f7", null ]
 ];

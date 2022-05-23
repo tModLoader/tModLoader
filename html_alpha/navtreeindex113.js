@@ -1,5 +1,7 @@
 var NAVTREEINDEX113 =
 {
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_page_i_d.html#a48e61246d9d16230d97e626bf44d33f9":[1,0,2,21,1,1,15],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_page_i_d.html#a4eedcab2f016260baa133b16836f50cf":[1,0,2,21,1,1,9],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_page_i_d.html#a5edd157ea7abe0d015762af0c5373828":[1,0,2,21,1,1,17],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_page_i_d.html#a85ac246c1138cda741a0d66401217fbd":[1,0,2,21,1,1,23],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_page_i_d.html#a8976265f14240271cc155650c213053f":[1,0,2,21,1,1,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX113 =
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#afc76ad818d23df8248bc427104dcc09a":[1,0,2,21,1,2,53],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#afcc2f1d69d0b7c6137d7e40f6c634b87":[1,0,2,21,1,2,83],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#afd0b65d73edd8368e79d83e32d8b718d":[1,0,2,21,1,2,154],
-"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#afec5509a5a47af9049206e63eff38dd5":[1,0,2,21,1,2,161],
-"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_page.html":[1,0,2,21,1,3],
-"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_page.html#a00e5839c8d7499b2169a7c9a0899ab05":[1,0,2,21,1,3,5]
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#afec5509a5a47af9049206e63eff38dd5":[1,0,2,21,1,2,161]
 };
