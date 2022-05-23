@@ -100,8 +100,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_cue_audio_track.html">CueAudioTrack</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_custom_sound_style.html">CustomSoundStyle</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_disabled_audio_system.html">DisabledAudioSystem</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>GStreamerAudioSupport</b></td></tr>
@@ -115,8 +113,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_legacy_sound_player.html">LegacySoundPlayer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_legacy_sound_style.html">LegacySoundStyle</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_m_p3_audio_track.html">MP3AudioTrack</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_music_cue_holder.html">MusicCueHolder</a></td></tr>
@@ -129,13 +125,19 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_sound_player.html">SoundPlayer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_sound_style.html">SoundStyle</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_audio_1_1_sound_style.html">SoundStyle</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This data type describes in detail how a sound should be played. <br  />
+ Passable to the <a class="el" href="class_terraria_1_1_audio_1_1_sound_engine.html#aa3302d515d26fcce9092ffa938539e9c" title="Attempts to play a sound, and returns a valid SlotId handle to it on success.">SoundEngine.PlaySound(in SoundStyle, Vector2?)</a> method.  <a href="struct_terraria_1_1_audio_1_1_sound_style.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_w_a_v_audio_track.html">WAVAudioTrack</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:ad021b74d3067cb9c4eec923ecbf4878b"><td class="memItemLeft" align="right" valign="top"><a id="ad021b74d3067cb9c4eec923ecbf4878b"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><b>SoundLimitBehavior</b> { <b>IgnoreNew</b>
+, <b>ReplaceOldest</b>
+ }</td></tr>
+<tr class="separator:ad021b74d3067cb9c4eec923ecbf4878b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a340a6a79c6d616242f6f0582d0ffe5"><td class="memItemLeft" align="right" valign="top"><a id="a6a340a6a79c6d616242f6f0582d0ffe5"></a>enum class &#160;</td><td class="memItemRight" valign="bottom"><b>SoundType</b> { <b>Sound</b>
 , <b>Ambient</b>
 , <b>Music</b>

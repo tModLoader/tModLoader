@@ -1293,7 +1293,6 @@ var hierarchy =
             [ "Terraria.ModLoader.ModSceneEffect", "class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html", [
               [ "Terraria.ModLoader.ModBiome", "class_terraria_1_1_mod_loader_1_1_mod_biome.html", null ]
             ] ],
-            [ "Terraria.ModLoader.ModSound", "class_terraria_1_1_mod_loader_1_1_mod_sound.html", null ],
             [ "Terraria.ModLoader.ModSystem", "class_terraria_1_1_mod_loader_1_1_mod_system.html", [
               [ "Terraria.ModLoader.Default.UnloadedSystem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_system.html", null ]
             ] ],
@@ -2129,11 +2128,7 @@ var hierarchy =
     [ "Terraria.ModLoader.SoundLoader", "class_terraria_1_1_mod_loader_1_1_sound_loader.html", null ],
     [ "Terraria.Audio.SoundPlayer", "class_terraria_1_1_audio_1_1_sound_player.html", null ],
     [ "Terraria.DataStructures.SoundPlaySet", "class_terraria_1_1_data_structures_1_1_sound_play_set.html", null ],
-    [ "Terraria.Audio.SoundStyle", "class_terraria_1_1_audio_1_1_sound_style.html", [
-      [ "Terraria.Audio.CustomSoundStyle", "class_terraria_1_1_audio_1_1_custom_sound_style.html", null ],
-      [ "Terraria.Audio.LegacySoundStyle", "class_terraria_1_1_audio_1_1_legacy_sound_style.html", null ]
-    ] ],
-    [ "Terraria.ID.SoundID.SoundStyleDefaults", "struct_terraria_1_1_i_d_1_1_sound_i_d_1_1_sound_style_defaults.html", null ],
+    [ "Terraria.Audio.SoundStyle", "struct_terraria_1_1_audio_1_1_sound_style.html", null ],
     [ "Terraria.ModLoader.Utilities.SpawnCondition", "class_terraria_1_1_mod_loader_1_1_utilities_1_1_spawn_condition.html", null ],
     [ "Terraria.GameContent.Bestiary.BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions", "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_database_n_p_cs_populator_1_1_common_tags_1_1_spawn_conditions.html", null ],
     [ "Terraria.ID.AchievementHelperID.Special", "class_terraria_1_1_i_d_1_1_achievement_helper_i_d_1_1_special.html", null ],

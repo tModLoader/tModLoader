@@ -211,7 +211,7 @@ var class_terraria_1_1_item =
     [ "uniqueStack", "class_terraria_1_1_item.html#aa19576a9b9e5f3f4f27fed26d9796948", null ],
     [ "useAmmo", "class_terraria_1_1_item.html#a3a2d2e112c23a20ad5da25a4c9d0b788", null ],
     [ "useAnimation", "class_terraria_1_1_item.html#a16f902ddbf75458b8c42f1e972739a72", null ],
-    [ "UseSound", "class_terraria_1_1_item.html#af0b48f2e4520f69d807071f13564c9d7", null ],
+    [ "UseSound", "class_terraria_1_1_item.html#a02e33f263978da039f98fbbe365950cd", null ],
     [ "useStyle", "class_terraria_1_1_item.html#a669f3b0beb5718bf7ea3b1ba4654ea6f", null ],
     [ "useTime", "class_terraria_1_1_item.html#ac28dd32d13b0b02339fdaa4e1240dd2e", null ],
     [ "useTurn", "class_terraria_1_1_item.html#a08ed4e48432e6713e60b90b213ee75df", null ],

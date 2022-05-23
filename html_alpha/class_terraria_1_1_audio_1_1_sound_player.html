@@ -94,21 +94,15 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_audio_1_1_sound_pla
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a133af06846ea95f662d77aca889bdc15"><td class="memItemLeft" align="right" valign="top"><a id="a133af06846ea95f662d77aca889bdc15"></a>
-<a class="el" href="class_terraria_1_1_audio_1_1_active_sound.html">ActiveSound</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FindActiveSound</b> (<a class="el" href="class_terraria_1_1_audio_1_1_sound_style.html">SoundStyle</a> style)</td></tr>
-<tr class="separator:a133af06846ea95f662d77aca889bdc15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7897080cf590ace74463e20ae45b125"><td class="memItemLeft" align="right" valign="top"><a id="af7897080cf590ace74463e20ae45b125"></a>
-<a class="el" href="class_terraria_1_1_audio_1_1_active_sound.html">ActiveSound</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetActiveSound</b> (SlotId id)</td></tr>
-<tr class="separator:af7897080cf590ace74463e20ae45b125"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade4274890037d450c61be08ae69b414b"><td class="memItemLeft" align="right" valign="top"><a id="ade4274890037d450c61be08ae69b414b"></a>
+<a class="el" href="class_terraria_1_1_audio_1_1_active_sound.html">ActiveSound</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FindActiveSound</b> (in <a class="el" href="struct_terraria_1_1_audio_1_1_sound_style.html">SoundStyle</a> style)</td></tr>
+<tr class="separator:ade4274890037d450c61be08ae69b414b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10295ad3a3bbe049a1d6b901706510b2"><td class="memItemLeft" align="right" valign="top"><a id="a10295ad3a3bbe049a1d6b901706510b2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>PauseAll</b> ()</td></tr>
 <tr class="separator:a10295ad3a3bbe049a1d6b901706510b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cc9a1f7c7491b4d1e9aa053019e6cae"><td class="memItemLeft" align="right" valign="top"><a id="a9cc9a1f7c7491b4d1e9aa053019e6cae"></a>
-SlotId&#160;</td><td class="memItemRight" valign="bottom"><b>Play</b> (<a class="el" href="class_terraria_1_1_audio_1_1_sound_style.html">SoundStyle</a> style)</td></tr>
-<tr class="separator:a9cc9a1f7c7491b4d1e9aa053019e6cae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ca59947a29c9cb899fcf20c192efacc"><td class="memItemLeft" align="right" valign="top"><a id="a9ca59947a29c9cb899fcf20c192efacc"></a>
-SlotId&#160;</td><td class="memItemRight" valign="bottom"><b>Play</b> (<a class="el" href="class_terraria_1_1_audio_1_1_sound_style.html">SoundStyle</a> style, Vector2 position)</td></tr>
-<tr class="separator:a9ca59947a29c9cb899fcf20c192efacc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accdad1901b2458e0f3f5856853e3c505"><td class="memItemLeft" align="right" valign="top"><a id="accdad1901b2458e0f3f5856853e3c505"></a>
+SlotId&#160;</td><td class="memItemRight" valign="bottom"><b>Play</b> (in <a class="el" href="struct_terraria_1_1_audio_1_1_sound_style.html">SoundStyle</a> style, Vector2? position=null)</td></tr>
+<tr class="separator:accdad1901b2458e0f3f5856853e3c505"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab75b1b5c824ca2535e1601eb982bbd3e"><td class="memItemLeft" align="right" valign="top"><a id="ab75b1b5c824ca2535e1601eb982bbd3e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Reload</b> ()</td></tr>
 <tr class="separator:ab75b1b5c824ca2535e1601eb982bbd3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -118,10 +112,44 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ResumeAll</b> ()</td>
 <tr class="memitem:ae88da8dd386ff1b70e8fee6c38fff405"><td class="memItemLeft" align="right" valign="top"><a id="ae88da8dd386ff1b70e8fee6c38fff405"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>StopAll</b> ()</td></tr>
 <tr class="separator:ae88da8dd386ff1b70e8fee6c38fff405"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53e8c0449f4aec4693192429573f5fce"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_sound_player.html#a53e8c0449f4aec4693192429573f5fce">TryGetActiveSound</a> (SlotId id, [NotNullWhen(true)] out <a class="el" href="class_terraria_1_1_audio_1_1_active_sound.html">ActiveSound</a>? result)</td></tr>
+<tr class="memdesc:a53e8c0449f4aec4693192429573f5fce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely attempts to get a currently playing <a class="el" href="class_terraria_1_1_audio_1_1_active_sound.html">ActiveSound</a> instance, tied to the provided SlotId.  <a href="class_terraria_1_1_audio_1_1_sound_player.html#a53e8c0449f4aec4693192429573f5fce">More...</a><br /></td></tr>
+<tr class="separator:a53e8c0449f4aec4693192429573f5fce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a195126be94be457f3a87d572b508e7bc"><td class="memItemLeft" align="right" valign="top"><a id="a195126be94be457f3a87d572b508e7bc"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> ()</td></tr>
 <tr class="separator:a195126be94be457f3a87d572b508e7bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a53e8c0449f4aec4693192429573f5fce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53e8c0449f4aec4693192429573f5fce">&#9670;&nbsp;</a></span>TryGetActiveSound()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Audio.SoundPlayer.TryGetActiveSound </td>
+          <td>(</td>
+          <td class="paramtype">SlotId&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">[NotNullWhen(true)] out <a class="el" href="class_terraria_1_1_audio_1_1_active_sound.html">ActiveSound</a>?&#160;</td>
+          <td class="paramname"><em>result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Safely attempts to get a currently playing <a class="el" href="class_terraria_1_1_audio_1_1_active_sound.html">ActiveSound</a> instance, tied to the provided SlotId. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

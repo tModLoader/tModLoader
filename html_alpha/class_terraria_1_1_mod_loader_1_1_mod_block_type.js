@@ -14,9 +14,8 @@ var class_terraria_1_1_mod_loader_1_1_mod_block_type =
     [ "RandomUpdate", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a36252af895e9cbd94015d3d0c309c900", null ],
     [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#acab1248b618ad633a6cc0859cf3e48d6", null ],
     [ "DustType", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a57c92d959cd07b11bac3ce6f7e379a15", null ],
+    [ "HitSound", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#ac2ff8e76177cb21779afe9927b69e98e", null ],
     [ "ItemDrop", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#ab38346a81262f8dce57d4cd067bab64e", null ],
-    [ "SoundStyle", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a97fc5dbd03c7815bfa6f020722be7cc0", null ],
-    [ "SoundType", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a579318b344291c800720e4462ecc5eb7", null ],
     [ "Type", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a4db343626fb4dd9ca56d0e2a0112db98", null ],
     [ "VanillaFallbackOnModDeletion", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a8326ca065798e743a60d496ee4b7713c", null ]
 ];
