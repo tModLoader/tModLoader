@@ -226,11 +226,11 @@ namespace Terraria.ModLoader.UI
 			_categoryButtons.Add(SearchFilterToggle);
 			upperMenuContainer.Append(SearchFilterToggle);
 
-			buttonMP = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsModPacks"));
+			buttonMP = new UIAutoScaleTextTextPanel<string>("TBD");
 			buttonMP.CopyStyle(buttonOMF);
 			buttonMP.HAlign = 1f;
 			buttonMP.WithFadedMouseOver();
-			buttonMP.OnClick += GotoModPacksMenu;
+			buttonMP.OnClick += null;
 			uIElement.Append(buttonMP);
 
 			uIPanel.Append(upperMenuContainer);
@@ -278,13 +278,6 @@ namespace Terraria.ModLoader.UI
 			SoundEngine.PlaySound(10, -1, -1, 1);
 			Directory.CreateDirectory(ModLoader.ModPath);
 			Utils.OpenFolder(ModLoader.ModPath);
-		}
-
-		private static void GotoModPacksMenu(UIMouseEvent evt, UIElement listeningElement) {
-			if (!Interface.modsMenu.loading) {
-				SoundEngine.PlaySound(12, -1, -1, 1);
-				Main.menuMode = Interface.modPacksMenuID;
-			}
 		}
 
 		private void EnableAll(UIMouseEvent evt, UIElement listeningElement) {
