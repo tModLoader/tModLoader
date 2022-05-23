@@ -18,7 +18,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace ExampleMod.NPCs
+namespace ExampleMod.Content.NPCs
 {
 	[AutoloadHead]
 	class ExampleTravelingMerchant : ModNPC
@@ -27,27 +27,30 @@ namespace ExampleMod.NPCs
 		public const double despawnTime = 48600.0;
 
 		// the time of day the traveler will spawn (double.MaxValue for no spawn)
-		// saved and loaded with the world in ExampleWorld
+		// saved and loaded with the world in TravelingMerchantSystem
 		public static double spawnTime = double.MaxValue;
 
-		// The list of items in the traveler's shop. Saved with the world and reset when a new traveler spawns
-		public static List<Item> shopItems = new List<Item>();
+		// The list of items in the traveler's shop. Saved with the world and set when the traveler spawns
+		public List<Item> shopItems = new List<Item>();
 
-		public static NPC FindNPC(int npcType) => Main.npc.FirstOrDefault(npc => npc.type == npcType && npc.active);
-
-		public static void UpdateTravelingMerchant() {
-			NPC traveler = FindNPC(ModContent.NPCType<ExampleTravelingMerchant>()); // Find an Explorer if there's one spawned in the world
-			if (traveler != null && (!Main.dayTime || Main.time >= despawnTime) && !IsNpcOnscreen(traveler.Center)) // If it's past the despawn time and the NPC isn't onscreen
+		public override bool PreAI() {
+			if ((!Main.dayTime || Main.time >= despawnTime) && !IsNpcOnscreen(NPC.Center)) // If it's past the despawn time and the NPC isn't onscreen
 			{
 				// Here we despawn the NPC and send a message stating that the NPC has despawned
 				// LegacyMisc.35 is {0) has departed!
-				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("LegacyMisc.35", traveler.FullName), 50, 125, 255);
-				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("LegacyMisc.35", traveler.GetFullNetName()), new Color(50, 125, 255));
-				traveler.active = false;
-				traveler.netSkip = -1;
-				traveler.life = 0;
-				traveler = null;
+				if (Main.netMode == NetmodeID.SinglePlayer) Main.NewText(Language.GetTextValue("LegacyMisc.35", NPC.FullName), 50, 125, 255);
+				else ChatHelper.BroadcastChatMessage(NetworkText.FromKey("LegacyMisc.35", NPC.GetFullNetName()), new Color(50, 125, 255));
+				NPC.active = false;
+				NPC.netSkip = -1;
+				NPC.life = 0;
+				return false;
 			}
+
+			return true;
+		}
+
+		public static void UpdateTravelingMerchant() {
+			bool travelerIsThere = (NPC.FindFirstNPC(ModContent.NPCType<ExampleTravelingMerchant>()) != -1); // Find a Merchant if there's one spawned in the world
 
 			// Main.time is set to 0 each morning, and only for one update. Sundialling will never skip past time 0 so this is the place for 'on new day' code
 			if (Main.dayTime && Main.time == 0) {
@@ -55,7 +58,7 @@ namespace ExampleMod.NPCs
 				// You can also add a day counter here to prevent the merchant from possibly spawning multiple days in a row.
 
 				// NPC won't spawn today if it stayed all night
-				if (traveler == null && Main.rand.NextBool(4)) { // 4 = 25% Chance
+				if (!travelerIsThere && Main.rand.NextBool(1)) { // 4 = 25% Chance
 																// Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
 					spawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
 				}
@@ -65,13 +68,12 @@ namespace ExampleMod.NPCs
 			}
 
 			// Spawn the traveler if the spawn conditions are met (time of day, no events, no sundial)
-			if (traveler == null && CanSpawnNow()) {
-				int newTraveler = NPC.NewNPC(NPC.GetSource_TownSpawn(), Main.spawnTileX * 16, Main.spawnTileY * 16, ModContent.NPCType<ExampleTravelingMerchant>(), 1); // Spawning at the world spawn
-				traveler = Main.npc[newTraveler];
+			if (!travelerIsThere && CanSpawnNow()) {
+				int newTraveler = NPC.NewNPC(Entity.GetSource_TownSpawn(), Main.spawnTileX * 16, Main.spawnTileY * 16, ModContent.NPCType<ExampleTravelingMerchant>(), 1); // Spawning at the world spawn
+				NPC traveler = Main.npc[newTraveler];
 				traveler.homeless = true;
 				traveler.direction = Main.spawnTileX >= WorldGen.bestX ? -1 : 1;
 				traveler.netUpdate = true;
-				shopItems = CreateNewShop();
 
 				// Prevents the traveler from spawning again the same day
 				spawnTime = double.MaxValue;
@@ -111,7 +113,7 @@ namespace ExampleMod.NPCs
 			return (maxTime - minTime) * Main.rand.NextDouble() + minTime;
 		}
 
-		public static List<Item> CreateNewShop() {
+		public void CreateNewShop() {
 			// create a list of item ids
 			var itemIds = new List<int>();
 
@@ -149,19 +151,16 @@ namespace ExampleMod.NPCs
 					break;
 			}
 
-			// conver to a list of items
-			var items = new List<Item>();
+			// convert to a list of items
+			shopItems = new List<Item>();
 			foreach (int itemId in itemIds) {
 				Item item = new Item();
 				item.SetDefaults(itemId);
-				items.Add(item);
+				shopItems.Add(item);
 			}
-			return items;
 		}
 
 		public override void SetStaticDefaults() {
-			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
-			// DisplayName.SetDefault("Example Traveler");
 			Main.npcFrameCount[NPC.type] = 25;
 			NPCID.Sets.ExtraFramesCount[NPC.type] = 9;
 			NPCID.Sets.AttackFrameCount[NPC.type] = 4;
@@ -185,17 +184,14 @@ namespace ExampleMod.NPCs
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			AnimationType = NPCID.Guide;
+			CreateNewShop();
 		}
 
-		public static TagCompound Save() {
-			return new TagCompound {
-				["spawnTime"] = spawnTime,
-				["shopItems"] = shopItems
-			};
+		public override void SaveData(TagCompound tag) {
+			tag["itemIds"] = shopItems;
 		}
 
-		public static void Load(TagCompound tag) {
-			spawnTime = tag.GetDouble("spawnTime");
+		public override void LoadData(TagCompound tag) {
 			shopItems = tag.Get<List<Item>>("shopItems");
 		}
 
@@ -208,6 +204,10 @@ namespace ExampleMod.NPCs
 
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money) {
 			return false; // This should always be false, because we spawn in the Travleing Merchant manually
+		}
+
+		public override ITownNPCProfile TownNPCProfile() {
+			return new ExampleTravelingMerchantProfile();
 		}
 
 		public override List<string> SetNPCNameList() {
@@ -251,7 +251,7 @@ namespace ExampleMod.NPCs
 
 		public override void SetupShop(Chest shop, ref int nextSlot) {
 			foreach (Item item in shopItems) {
-				// We dont want "empty" items and unloaded items to appear
+				// We don't want "empty" items and unloaded items to appear
 				if (item == null || item.type == ItemID.None)
 					continue;
 
@@ -289,21 +289,21 @@ namespace ExampleMod.NPCs
 		}
 	}
 
-	public class ExamplePersonProfile : ITownNPCProfile
+	public class ExampleTravelingMerchantProfile : ITownNPCProfile
 	{
 		public int RollVariation() => 0;
 		public string GetNameForVariant(NPC npc) => npc.getNewNPCName();
 
 		public Asset<Texture2D> GetTextureNPCShouldUse(NPC npc) {
 			if (npc.IsABestiaryIconDummy && !npc.ForcePartyHatOn)
-				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
+				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant");
 
 			if (npc.altTexture == 1)
 				return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson_Party");
 
-			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExamplePerson");
+			return ModContent.Request<Texture2D>("ExampleMod/Content/NPCs/ExampleTravelingMerchant");
 		}
 
-		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExamplePerson_Head");
+		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExampleTravelingMerchant_Head");
 	}
 }
