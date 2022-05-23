@@ -12,6 +12,11 @@ namespace Terraria.Audio
 	{
 		// Public API methods
 
+		/// <summary>
+		/// Attempts to play a sound, and returns a valid <see cref="SlotId"/> handle to it on success.
+		/// </summary>
+		/// <param name="style"> The sound style that describes everything about the played sound. </param>
+		/// <param name="position"> An optional 2D position to play the sound at. When null, this sound will be heard everywhere. </param>
 		public static SlotId PlaySound(in SoundStyle style, Vector2? position = null) {
 			if (Main.dedServ || !IsAudioSupported) {
 				return SlotId.Invalid;
