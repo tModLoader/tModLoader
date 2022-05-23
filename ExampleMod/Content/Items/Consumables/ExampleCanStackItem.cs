@@ -15,7 +15,6 @@ namespace ExampleMod.Content.Items.Consumables
 	public class ExampleCanStackItem : ModItem
 	{
 		// We set this when the item is crafted. In other contexts, this will be the empty string ""
-		[CloneByReference] // safe to share between clones, because it cannot be changed after creation/load
 		public string craftedPlayerName = string.Empty;
 
 		public override void SetStaticDefaults() {
