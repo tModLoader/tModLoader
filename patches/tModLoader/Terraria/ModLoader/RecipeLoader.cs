@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
@@ -34,12 +35,8 @@ namespace Terraria.ModLoader
 				try {
 					mod.AddRecipes();
 					SystemLoader.AddRecipes(mod);
-
-					foreach (ModItem item in mod.GetContent<ModItem>())
-						item.AddRecipes();
-
-					foreach (GlobalItem globalItem in mod.GetContent<GlobalItem>())
-						globalItem.AddRecipes();
+					LoaderUtils.ForEachAndAggregateExceptions(mod.GetContent<ModItem>(), item => item.AddRecipes());
+					LoaderUtils.ForEachAndAggregateExceptions(mod.GetContent<GlobalItem>(), global => global.AddRecipes());
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;

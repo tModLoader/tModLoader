@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.Core
 {
@@ -36,6 +37,24 @@ namespace Terraria.ModLoader.Core
 					ResetStaticMembers(nestedType, recursive);
 				}
 			}
+		}
+
+		public static void ForEachAndAggregateExceptions<T>(IEnumerable<T> enumerable, Action<T> action) {
+			var exceptions = new List<Exception>();
+			foreach (var t in enumerable) {
+				try {
+					action(t);
+				}
+				catch (Exception ex) {
+					exceptions.Add(ex);
+				}
+			}
+
+			if (exceptions.Count == 1)
+				throw exceptions[0];
+
+			if (exceptions.Count > 0)
+				throw new MultipleException(exceptions);
 		}
 
 		public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, IEnumerable<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal> {
