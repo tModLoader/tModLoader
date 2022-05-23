@@ -22,9 +22,7 @@ namespace Terraria.ModLoader
 		internal readonly IList<ILoadable> content = new List<ILoadable>();
 
 		internal void SetupContent() {
-			foreach (var e in content.OfType<ModType>()) {
-				e.SetupContent();
-			}
+			LoaderUtils.ForEachAggregateExceptions(GetContent<ModType>(), e => e.SetupContent());
 		}
 
 		internal void UnloadContent() {
@@ -49,30 +47,17 @@ namespace Terraria.ModLoader
 				AsyncLoadQueue.Dequeue().Wait();
 
 			LocalizationLoader.Autoload(this);
-
 			ModSourceBestiaryInfoElement = new GameContent.Bestiary.ModSourceBestiaryInfoElement(this, DisplayName);
 
-			Type modType = GetType();
+			if (ContentAutoloadingEnabled) {
+				var loadableTypes = AssemblyManager.GetLoadableTypes(Code)
+					.Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
+					.Where(t => t.IsAssignableTo(typeof(ILoadable)))
+					.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) != null) // has default constructor
+					.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
+					.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
 
-			foreach (Type type in AssemblyManager.GetLoadableTypes(Code).OrderBy(type => type.FullName, StringComparer.InvariantCulture)) {
-				// Skip Mod, abstract, and generic classes.
-				if (type == modType || type.IsAbstract || type.ContainsGenericParameters)
-					continue;
-
-				// Don't autoload things with no default constructor
-				if (type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) == null)
-					continue;
-
-				// Having the check here instead of enclosing the foreach statement is required for modSound autoloading to function properly
-				// In the case of a ModSound loading rework where it doesn't piggyback off content AutoLoading, the entire foreach statement
-				// can be enclosed in a ContentAutoloadingEnabled check. - pbone
-				if (ContentAutoloadingEnabled && typeof(ILoadable).IsAssignableFrom(type)) {
-					var autoload = AutoloadAttribute.GetValue(type);
-
-					if (autoload.NeedsAutoloading) {
-						AddContent((ILoadable)Activator.CreateInstance(type, true));
-					}
-				}
+				LoaderUtils.ForEachAggregateExceptions(loadableTypes, t => AddContent((ILoadable)Activator.CreateInstance(t, true)));
 			}
 
 			// Skip loading client assets if this is a dedicated server;
