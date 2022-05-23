@@ -1,16 +1,16 @@
 var searchData=
 [
-  ['infoname_6240',['InfoName',['../class_terraria_1_1_mod_loader_1_1_info_display.html#a92fb42a5b373faf7c26581734b7c0eb3',1,'Terraria::ModLoader::InfoDisplay']]],
-  ['instanceperentity_6241',['InstancePerEntity',['../class_terraria_1_1_mod_loader_1_1_global_type.html#a9613244267e46bbd80b7657dfa7ad0b4',1,'Terraria::ModLoader::GlobalType']]],
-  ['isavailable_6242',['IsAvailable',['../class_terraria_1_1_mod_loader_1_1_mod_menu.html#a85b24b0deceea643b4a93b25ea80b10c',1,'Terraria::ModLoader::ModMenu']]],
-  ['iscandidateforreforge_6243',['IsCandidateForReforge',['../class_terraria_1_1_item.html#a121a8acd82baa2bdf0c3cbc700a04aa3',1,'Terraria::Item']]],
-  ['iscloneable_6244',['IsCloneable',['../class_terraria_1_1_mod_loader_1_1_global_type.html#a9658ccdb699db30ba7f15aff011dc214',1,'Terraria.ModLoader.GlobalType.IsCloneable()'],['../class_terraria_1_1_mod_loader_1_1_mod_type.html#a28b756f218eb06e3ef6bc61321dd7d89',1,'Terraria.ModLoader.ModType.IsCloneable()']]],
-  ['isheadlayer_6245',['IsHeadLayer',['../class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a75c79c6584246557a3099938e4dc81de',1,'Terraria::ModLoader::PlayerDrawLayer']]],
-  ['isselected_6246',['IsSelected',['../class_terraria_1_1_mod_loader_1_1_mod_boss_bar_style.html#a199d5f537488cb564a584a7e3663fe85',1,'Terraria::ModLoader::ModBossBarStyle']]],
-  ['item_6247',['Item',['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#a1ef4348349e6b437eac4d37c7093b148',1,'Terraria.ModLoader.EquipTexture.Item()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#abc96a407c86a78570037ef4318d9c112',1,'Terraria.ModLoader.ModItem.Item()']]],
-  ['itemanimationactive_6248',['ItemAnimationActive',['../class_terraria_1_1_player.html#afd60304a91754ac408852377bd52461a',1,'Terraria::Player']]],
-  ['itemanimationendingorended_6249',['ItemAnimationEndingOrEnded',['../class_terraria_1_1_player.html#aba59025c5026299ee1ac73b5f41256c5',1,'Terraria::Player']]],
-  ['itemanimationjuststarted_6250',['ItemAnimationJustStarted',['../class_terraria_1_1_player.html#a217c32947b1cefbd1f59285fa25e2077',1,'Terraria::Player']]],
-  ['itemdrop_6251',['ItemDrop',['../class_terraria_1_1_mod_loader_1_1_mod_block_type.html#ab38346a81262f8dce57d4cd067bab64e',1,'Terraria::ModLoader::ModBlockType']]],
-  ['itemusesthisanimation_6252',['ItemUsesThisAnimation',['../class_terraria_1_1_player.html#a43b74de4a5857ec6a9dc8a073af4c9c9',1,'Terraria::Player']]]
+  ['infoname_6238',['InfoName',['../class_terraria_1_1_mod_loader_1_1_info_display.html#a92fb42a5b373faf7c26581734b7c0eb3',1,'Terraria::ModLoader::InfoDisplay']]],
+  ['instanceperentity_6239',['InstancePerEntity',['../class_terraria_1_1_mod_loader_1_1_global_type.html#a9613244267e46bbd80b7657dfa7ad0b4',1,'Terraria::ModLoader::GlobalType']]],
+  ['isavailable_6240',['IsAvailable',['../class_terraria_1_1_mod_loader_1_1_mod_menu.html#a85b24b0deceea643b4a93b25ea80b10c',1,'Terraria::ModLoader::ModMenu']]],
+  ['iscandidateforreforge_6241',['IsCandidateForReforge',['../class_terraria_1_1_item.html#a121a8acd82baa2bdf0c3cbc700a04aa3',1,'Terraria::Item']]],
+  ['iscloneable_6242',['IsCloneable',['../class_terraria_1_1_mod_loader_1_1_global_type.html#a9658ccdb699db30ba7f15aff011dc214',1,'Terraria.ModLoader.GlobalType.IsCloneable()'],['../class_terraria_1_1_mod_loader_1_1_mod_type.html#a28b756f218eb06e3ef6bc61321dd7d89',1,'Terraria.ModLoader.ModType.IsCloneable()']]],
+  ['isheadlayer_6243',['IsHeadLayer',['../class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a75c79c6584246557a3099938e4dc81de',1,'Terraria::ModLoader::PlayerDrawLayer']]],
+  ['isselected_6244',['IsSelected',['../class_terraria_1_1_mod_loader_1_1_mod_boss_bar_style.html#a199d5f537488cb564a584a7e3663fe85',1,'Terraria::ModLoader::ModBossBarStyle']]],
+  ['item_6245',['Item',['../class_terraria_1_1_mod_loader_1_1_equip_texture.html#a1ef4348349e6b437eac4d37c7093b148',1,'Terraria.ModLoader.EquipTexture.Item()'],['../class_terraria_1_1_mod_loader_1_1_mod_item.html#abc96a407c86a78570037ef4318d9c112',1,'Terraria.ModLoader.ModItem.Item()']]],
+  ['itemanimationactive_6246',['ItemAnimationActive',['../class_terraria_1_1_player.html#afd60304a91754ac408852377bd52461a',1,'Terraria::Player']]],
+  ['itemanimationendingorended_6247',['ItemAnimationEndingOrEnded',['../class_terraria_1_1_player.html#aba59025c5026299ee1ac73b5f41256c5',1,'Terraria::Player']]],
+  ['itemanimationjuststarted_6248',['ItemAnimationJustStarted',['../class_terraria_1_1_player.html#a217c32947b1cefbd1f59285fa25e2077',1,'Terraria::Player']]],
+  ['itemdrop_6249',['ItemDrop',['../class_terraria_1_1_mod_loader_1_1_mod_block_type.html#ab38346a81262f8dce57d4cd067bab64e',1,'Terraria::ModLoader::ModBlockType']]],
+  ['itemusesthisanimation_6250',['ItemUsesThisAnimation',['../class_terraria_1_1_player.html#a43b74de4a5857ec6a9dc8a073af4c9c9',1,'Terraria::Player']]]
 ];

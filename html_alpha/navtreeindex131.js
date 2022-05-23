@@ -1,7 +1,5 @@
 var NAVTREEINDEX131 =
 {
-"struct_terraria_1_1_tile_wall_wire_state_data.html#a93e4119aea618ff4ca4df14c9b56d148":[1,0,2,77,0],
-"struct_terraria_1_1_tile_wall_wire_state_data.html#aa1b0e073ea2566f6ee559f14b51ecf7f":[1,0,2,77,1],
 "struct_terraria_1_1_tile_wall_wire_state_data.html#aa59b80536cc4f6bdddaea0aaf3c25924":[1,0,2,77,12],
 "struct_terraria_1_1_tile_wall_wire_state_data.html#abac5bdd978fa5a86896df56358edfe70":[1,0,2,77,13],
 "struct_terraria_1_1_tile_wall_wire_state_data.html#ac3b54d58af32917f64b58bc4c59a4225":[1,0,2,77,2],

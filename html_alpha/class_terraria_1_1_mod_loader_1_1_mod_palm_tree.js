@@ -2,8 +2,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_palm_tree =
 [
     [ "CreateDust", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#acffaa71eb58c8ceef669e50a15c8dc5c", null ],
     [ "DropWood", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a76101e9e28d3be3668b7b3bc487f05f0", null ],
-    [ "GetBranchTextures", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#af33e8df3aa42b5ef22bb051a33e0b277", null ],
-    [ "GetOasisBranchTextures", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#ae95756a30a78f34464af2b09e9030d0a", null ],
     [ "GetOasisTopTextures", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#affeabadfdc9ad251e287ba3d14fb52d3", null ],
     [ "GetTexture", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a4bb9e1ac0d274bf06a337b28c1ec2a0c", null ],
     [ "GetTopTextures", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a4d17030ded6b0d562811e72195816f7c", null ],
