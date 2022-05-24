@@ -182,9 +182,9 @@ namespace Terraria.ModLoader.UI
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuClose);
 
-			ModOrganizer.DeleteMod(_localMod.modFile.path);
+			ModOrganizer.DeleteMod(_localMod);
 
-			Interface.modBrowser.ModifyUIModDownloadItemInstalled(_localMod.Name, null);
+			Interface.modBrowser.PopulateModBrowser();
 
 			Main.menuMode = _gotoMenu;
 		}

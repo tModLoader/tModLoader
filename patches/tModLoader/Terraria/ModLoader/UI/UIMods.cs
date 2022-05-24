@@ -45,6 +45,7 @@ namespace Terraria.ModLoader.UI
 		private UIAutoScaleTextTextPanel<string> buttonMP;
 		private CancellationTokenSource _cts;
 		private bool forceReloadHidden => ModLoader.autoReloadRequiredModsLeavingModsScreen && !ModCompile.DeveloperMode;
+		internal bool needsMBRefresh = false;
 
 		public override void OnInitialize() {
 			uIElement = new UIElement {
@@ -264,6 +265,11 @@ namespace Terraria.ModLoader.UI
 			}
 
 			ConfigManager.OnChangedAll();
+
+			if (needsMBRefresh) {
+				Interface.modBrowser.PopulateModBrowser();
+				needsMBRefresh = false;
+			}
 
 			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
 		}

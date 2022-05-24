@@ -235,7 +235,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", itemID.ToString()), 0);
+					Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate"));
 				}
 
 				return downloadResult == EResult.k_EResultOK;
@@ -665,11 +665,12 @@ namespace Terraria.Social.Steam
 						// Check against installed mods
 						bool update = false;
 						bool updateIsDowngrade = false;
+						bool needsRestart = false;
 						var installed = InstalledMods.FirstOrDefault(m => m.Name == metadata["name"]);
+						var check = new ModManager(id);
 
 						if (installed != null) {
 							//exists = true;
-							var check = new ModManager(id);
 							if (check.NeedsUpdate()) {
 								update = true;
 
@@ -694,8 +695,11 @@ namespace Terraria.Social.Steam
 								*/
 							}
 						}
+						else if (check.IsInstalled()) {
+							needsRestart = true;
+						}
 
-						Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"]));
+						Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], needsRestart));
 					}
 					ReleaseWorkshopQuery();
 				}
