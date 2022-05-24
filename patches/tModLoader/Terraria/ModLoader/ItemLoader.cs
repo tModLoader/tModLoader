@@ -88,6 +88,7 @@ namespace Terraria.ModLoader
 
 			//Sets
 			LoaderUtils.ResetStaticMembers(typeof(ItemID), true);
+			LoaderUtils.ResetStaticMembers(typeof(AmmoID), true);
 
 			//Etc
 			Array.Resize(ref Item.cachedItemSpawnsByType, nextItem);
