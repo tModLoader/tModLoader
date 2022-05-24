@@ -84,22 +84,22 @@ namespace Terraria.ID
 		public static readonly SoundStyle Owl = new($"{Prefix}Zombie_", stackalloc (int, float)[] { (110, 300f), (2, 300f), (112, 1f), (113, 1f), (114, 1f), }) {
 			PitchVariance = 0.2f
 		};
-		public static readonly SoundStyle GuitarC = new($"{Prefix}Item_47") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
-		public static readonly SoundStyle GuitarD = new($"{Prefix}Item_48") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
-		public static readonly SoundStyle GuitarEm = new($"{Prefix}Item_49") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
-		public static readonly SoundStyle GuitarG = new($"{Prefix}Item_50") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
-		public static readonly SoundStyle GuitarAm = new($"{Prefix}Item_51") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
-		public static readonly SoundStyle GuitarF = new($"{Prefix}Item_52") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
-		public static readonly SoundStyle DrumHiHat = new($"{Prefix}Item_53") { Volume = 0.7f, Identifier = "Terraria/Drums" };
-		public static readonly SoundStyle DrumTomHigh = new($"{Prefix}Item_54") { Volume = 0.7f, Identifier = "Terraria/Drums" };
-		public static readonly SoundStyle DrumTomLow = new($"{Prefix}Item_55") { Volume = 0.7f, Identifier = "Terraria/Drums" };
-		public static readonly SoundStyle DrumTomMid = new($"{Prefix}Item_56") { Volume = 0.7f, Identifier = "Terraria/Drums" };
-		public static readonly SoundStyle DrumClosedHiHat = new($"{Prefix}Item_57") { Volume = 0.7f, Identifier = "Terraria/Drums" };
-		public static readonly SoundStyle DrumCymbal1 = new($"{Prefix}Item_58") { Volume = 0.7f, Identifier = "Terraria/Drums" };
-		public static readonly SoundStyle DrumCymbal2 = new($"{Prefix}Item_59") { Volume = 0.7f, Identifier = "Terraria/Drums" };
-		public static readonly SoundStyle DrumKick = new($"{Prefix}Item_60") { Volume = 0.7f, Identifier = "Terraria/Drums" };
-		public static readonly SoundStyle DrumTamaSnare = new($"{Prefix}Item_61") { Volume = 0.7f, Identifier = "Terraria/Drums" };
-		public static readonly SoundStyle DrumFloorTom = new($"{Prefix}Item_62") { Volume = 0.7f, Identifier = "Terraria/Drums" };
+		public static readonly SoundStyle GuitarC = new($"{Prefix}Item_133") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarD = new($"{Prefix}Item_134") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarEm = new($"{Prefix}Item_135") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarG = new($"{Prefix}Item_136") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarAm = new($"{Prefix}Item_137") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
+		public static readonly SoundStyle GuitarF = new($"{Prefix}Item_138") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
+		public static readonly SoundStyle DrumHiHat = new($"{Prefix}Item_139") { Volume = 0.7f, Identifier = "Terraria/Drums" };
+		public static readonly SoundStyle DrumTomHigh = new($"{Prefix}Item_140") { Volume = 0.7f, Identifier = "Terraria/Drums" };
+		public static readonly SoundStyle DrumTomLow = new($"{Prefix}Item_141") { Volume = 0.7f, Identifier = "Terraria/Drums" };
+		public static readonly SoundStyle DrumTomMid = new($"{Prefix}Item_142") { Volume = 0.7f, Identifier = "Terraria/Drums" };
+		public static readonly SoundStyle DrumClosedHiHat = new($"{Prefix}Item_143") { Volume = 0.7f, Identifier = "Terraria/Drums" };
+		public static readonly SoundStyle DrumCymbal1 = new($"{Prefix}Item_144") { Volume = 0.7f, Identifier = "Terraria/Drums" };
+		public static readonly SoundStyle DrumCymbal2 = new($"{Prefix}Item_145") { Volume = 0.7f, Identifier = "Terraria/Drums" };
+		public static readonly SoundStyle DrumKick = new($"{Prefix}Item_146") { Volume = 0.7f, Identifier = "Terraria/Drums" };
+		public static readonly SoundStyle DrumTamaSnare = new($"{Prefix}Item_147") { Volume = 0.7f, Identifier = "Terraria/Drums" };
+		public static readonly SoundStyle DrumFloorTom = new($"{Prefix}Item_148") { Volume = 0.7f, Identifier = "Terraria/Drums" };
 		public static readonly SoundStyle Research = new($"{Prefix}Research_", 1, 3);
 		public static readonly SoundStyle ResearchComplete = new($"{Prefix}Research_0");
 		public static readonly SoundStyle QueenSlime = new($"{Prefix}Zombie_", 115, 3) { Volume = 0.5f, SoundLimitBehavior = IgnoreNew };
@@ -254,7 +254,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle Item23 = ItemSound(23);
 		public static readonly SoundStyle Item24 = ItemSound(24);
 		public static readonly SoundStyle Item25 = ItemSound(25);
-		public static readonly SoundStyle Item26 = ItemSound(26) with { UsesMusicPitch = true };
+		public static readonly SoundStyle Item26 = ItemSound(26) with { Volume = 0.75f, PitchVariance = 0f, UsesMusicPitch = true };
 		public static readonly SoundStyle Item27 = ItemSound(27);
 		public static readonly SoundStyle Item28 = ItemSound(28);
 		public static readonly SoundStyle Item29 = ItemSound(29);
@@ -263,7 +263,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle Item32 = ItemSound(32);
 		public static readonly SoundStyle Item33 = ItemSound(33);
 		public static readonly SoundStyle Item34 = ItemSound(34);
-		public static readonly SoundStyle Item35 = ItemSound(35) with { UsesMusicPitch = true };
+		public static readonly SoundStyle Item35 = ItemSound(35) with { Volume = 0.75f, PitchVariance = 0f, UsesMusicPitch = true };
 		public static readonly SoundStyle Item36 = ItemSound(36);
 		public static readonly SoundStyle Item37 = ItemSound(37) with { Volume = 0.5f };
 		public static readonly SoundStyle Item38 = ItemSound(38);
@@ -275,7 +275,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle Item44 = ItemSound(44);
 		public static readonly SoundStyle Item45 = ItemSound(45);
 		public static readonly SoundStyle Item46 = ItemSound(46);
-		public static readonly SoundStyle Item47 = ItemSound(47) with { UsesMusicPitch = true };
+		public static readonly SoundStyle Item47 = ItemSound(47) with { Volume = 0.75f, PitchVariance = 0f, UsesMusicPitch = true };
 		public static readonly SoundStyle Item48 = ItemSound(48);
 		public static readonly SoundStyle Item49 = ItemSound(49);
 		public static readonly SoundStyle Item50 = ItemSound(50);

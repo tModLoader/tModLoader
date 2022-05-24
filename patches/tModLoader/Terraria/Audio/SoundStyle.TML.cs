@@ -65,7 +65,11 @@ namespace Terraria.Audio
 		/// <summary> Whether or not to loop played sounds. </summary>
 		public bool IsLooped { get; set; } = false;
 
-		// Questionable workaround for old music instruments.
+		/// <summary>
+		/// Whether or not this sound obeys the <see cref="Main.musicPitch"/> field to decide its pitch.<br/>
+		/// Defaults to false. Used in vanilla by the sounds for the Bell, the (Magical) Harp, and The Axe.<br/>
+		/// Could prove useful, but is kept internal for the moment.
+		/// </summary>
 		internal bool UsesMusicPitch { get; set; } = false;
 
 		/// <summary>
@@ -134,7 +138,7 @@ namespace Terraria.Audio
 		public float PitchVariance {
 			get => pitchVariance;
 			set {
-				if (pitchVariance < 0f)
+				if (value < 0f)
 					throw new ArgumentException("Pitch variance cannot be negative.", nameof(value));
 
 				pitchVariance = value;
