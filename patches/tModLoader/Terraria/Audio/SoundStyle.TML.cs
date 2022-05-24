@@ -138,7 +138,7 @@ namespace Terraria.Audio
 		public float PitchVariance {
 			get => pitchVariance;
 			set {
-				if (pitchVariance < 0f)
+				if (value < 0f)
 					throw new ArgumentException("Pitch variance cannot be negative.", nameof(value));
 
 				pitchVariance = value;
