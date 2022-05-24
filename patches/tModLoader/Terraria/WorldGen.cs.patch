@@ -85,7 +85,7 @@
  			}
  
  			if (x < roomX1)
-@@ -2309,15 +_,29 @@
+@@ -2309,19 +_,37 @@
  		public static void setWorldSize() {
  			Main.bottomWorld = Main.maxTilesY * 16;
  			Main.rightWorld = Main.maxTilesX * 16;
@@ -107,7 +107,10 @@
 +		}
 +
 +		public static void do_worldGenCallBack(object threadContext) {
- 			SoundEngine.PlaySound(10);
++			Main.QueueMainThreadAction(() => {
+-			SoundEngine.PlaySound(10);
++				SoundEngine.PlaySound(10);
++			});
  			clearWorld();
  			GenerateWorld(Main.ActiveWorldFileData.Seed, threadContext as GenerationProgress);
  			WorldFile.SaveWorld(Main.ActiveWorldFileData.IsCloudSave, resetTime: true);
@@ -115,18 +118,45 @@
  			if (Main.menuMode == 10 || Main.menuMode == 888)
  				Main.menuMode = 6;
  
-@@ -2402,6 +_,11 @@
++			Main.QueueMainThreadAction(() => {
+-			SoundEngine.PlaySound(10);
++				SoundEngine.PlaySound(10);
++			});
+ 			generatingWorld = false;
+ 		}
+ 
+@@ -2395,12 +_,19 @@
+ 			Rain.ClearRain();
+ 			if (netMode == 0) {
+ 				WorldFile.SaveWorld();
++				Main.QueueMainThreadAction(() => {
+-				SoundEngine.PlaySound(10);
++					SoundEngine.PlaySound(10);
++				});
+ 			}
+ 			else {
+ 				Netplay.Disconnect = true;
  				Main.netMode = 0;
  			}
- 
++
 +			//This is only called in case of a manual quit or disconnect.
 +			//There is a less common (client) call to this in Netplay.InnerClientLoop.
 +			SystemLoader.OnWorldUnload();
 +			TileIO.PostExitWorldCleanup();
-+
+ 
  			Main.fastForwardTime = false;
  			Main.UpdateTimeRate();
- 			Main.menuMode = 0;
+@@ -2410,7 +_,9 @@
+ 		}
+ 
+ 		public static void SaveAndQuit(Action callback = null) {
++			Main.QueueMainThreadAction(() => {
+-			SoundEngine.PlaySound(11);
++				SoundEngine.PlaySound(11);
++			});
+ 			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
+ 		}
+ 
 @@ -2484,13 +_,20 @@
  					}
  
@@ -165,7 +195,7 @@
  							return;
  						}
  					}
-@@ -2525,6 +_,12 @@
+@@ -2525,12 +_,20 @@
  			if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
  				Main.anglerQuestFinished = true;
  
@@ -178,6 +208,15 @@
  			Main.player[Main.myPlayer].Spawn(PlayerSpawnContext.SpawningIntoWorld);
  			Main.ActivePlayerFileData.StartPlayTimer();
  			_lastSeed = Main.ActiveWorldFileData.Seed;
+ 			Player.Hooks.EnterWorld(Main.myPlayer);
+ 			WorldFile.SetOngoingToTemps();
++			Main.QueueMainThreadAction(() => {
+-			SoundEngine.PlaySound(11);
++				SoundEngine.PlaySound(11);
++			});
+ 			Main.resetClouds = true;
+ 			noMapUpdate = false;
+ 		}
 @@ -2556,6 +_,7 @@
  		}
  
@@ -186,6 +225,17 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
+@@ -2595,7 +_,9 @@
+ 			}
+ 
+ 			_lastSeed = Main.ActiveWorldFileData.Seed;
++			Main.QueueMainThreadAction(() => {
+-			SoundEngine.PlaySound(10);
++				SoundEngine.PlaySound(10);
++			});
+ 			WorldFile.SetOngoingToTemps();
+ 			Hooks.WorldLoaded();
+ 		}
 @@ -2753,21 +_,26 @@
  			noLiquidCheck = false;
  			Liquid.numLiquid = 0;
