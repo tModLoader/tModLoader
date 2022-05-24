@@ -26,6 +26,8 @@ namespace Terraria.ModLoader
 		}
 
 		internal void UnloadContent() {
+			SystemLoader.OnModUnload(this);
+			
 			Unload();
 
 			foreach (var loadable in content.Reverse()) {

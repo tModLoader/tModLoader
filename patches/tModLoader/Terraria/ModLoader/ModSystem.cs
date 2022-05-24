@@ -38,6 +38,11 @@ namespace Terraria.ModLoader
 		public virtual void OnModLoad() { }
 
 		/// <summary>
+		/// This hook is called right before Mod.UnLoad()
+		/// </summary>
+		public virtual void OnModUnload() { }
+
+		/// <summary>
 		/// Allows you to load things in your system after the mod's content has been setup (arrays have been resized to fit the content, etc).
 		/// </summary>
 		public virtual void PostSetupContent() { }

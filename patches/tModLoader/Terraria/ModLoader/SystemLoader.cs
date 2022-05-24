@@ -70,6 +70,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static void OnModUnload(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.OnModUnload();
+				}
+			}
+		}
+
 		internal static void PostSetupContent(Mod mod) {
 			if (SystemsByMod.TryGetValue(mod, out var systems)) {
 				foreach (var system in systems) {
