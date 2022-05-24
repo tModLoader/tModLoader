@@ -2890,9 +2890,12 @@
  
  			if (recBigList && !flag9) {
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
-@@ -31306,8 +_,8 @@
+@@ -31304,10 +_,10 @@
+ 			}
+ 
  			for (int j = 0; j < 200; j++) {
- 				if (npc[j].active && !_npcTypesThatAlreadyDrewAHead.Contains(npc[j].type)) {
+-				if (npc[j].active && !_npcTypesThatAlreadyDrewAHead.Contains(npc[j].type)) {
++				if (npc[j].active && !_npcTypesThatAlreadyDrewAHead.Contains(npc[j].type) && npc[j].ModNPC?.TownNPCStayingHomeless != true) {
  					ITownNPCProfile profile;
 -					int num4 = (!TownNPCProfiles.Instance.GetProfile(npc[j].type, out profile)) ? NPC.TypeToDefaultHeadIndex(npc[j].type) : profile.GetHeadTextureIndex(npc[j]);
 +					int num4 = (!TownNPCProfiles.Instance.GetProfile(npc[j], out profile)) ? NPC.TypeToDefaultHeadIndex(npc[j].type) : profile.GetHeadTextureIndex(npc[j]);

@@ -5,7 +5,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.Projectiles
+namespace ExampleMod.Content.Projectiles
 {
 	public class SparklingBall : ModProjectile
 	{

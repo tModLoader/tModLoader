@@ -3,7 +3,7 @@ using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Armor;
 using ExampleMod.Content.Items.Placeable.Furniture;
 using ExampleMod.Content.Items.Tools;
-using ExampleMod.Projectiles;
+using ExampleMod.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -172,7 +172,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override void SetDefaults() {
-			NPC.townNPC = true; // This will be changed once the NPC is spawned
+			NPC.townNPC = true;
 			NPC.friendly = true;
 			NPC.width = 18;
 			NPC.height = 40;
@@ -184,6 +184,7 @@ namespace ExampleMod.Content.NPCs
 			NPC.DeathSound = SoundID.NPCDeath1;
 			NPC.knockBackResist = 0.5f;
 			AnimationType = NPCID.Guide;
+			TownNPCStayingHomeless = true;
 			CreateNewShop();
 		}
 

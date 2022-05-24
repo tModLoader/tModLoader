@@ -67,6 +67,9 @@ namespace Terraria.ModLoader
 		/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
 		public int[] SpawnModBiomes { get; set; } = new int[0];
 
+		/// <summary> Setting this to true will make the NPC not appear in the housing menu nor make it find an house. </summary>
+		public bool TownNPCStayingHomeless { get; set; }
+
 		public ModNPC() {
 			NPC = new NPC{ModNPC = this};
 		}
@@ -99,9 +102,9 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns a clone of this ModNPC. 
-		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created. 
-		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references. 
+		/// Returns a clone of this ModNPC.
+		/// Allows you to decide which fields of your ModNPC class are copied over when a new NPC is created.
+		/// By default this will return a memberwise clone; you will want to override this if your ModNPC contains object references.
 		/// </summary>
 		public virtual ModNPC Clone(NPC npc) {
 			ModNPC clone = (ModNPC)MemberwiseClone();
