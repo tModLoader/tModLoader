@@ -66,8 +66,8 @@ namespace Terraria.Audio
 		public bool IsLooped { get; set; } = false;
 
 		/// <summary>
-		/// Whether or not this sound obeys the <see cref="Main.musicPitch"/> field to decide its pitch.<br></br>
-		/// Defaults to false. Used in vanilla by the sounds for the Bell, the (Magical) Harp, and The Axe.<br></br>
+		/// Whether or not this sound obeys the <see cref="Main.musicPitch"/> field to decide its pitch.<br/>
+		/// Defaults to false. Used in vanilla by the sounds for the Bell, the (Magical) Harp, and The Axe.<br/>
 		/// Could prove useful, but is kept internal for the moment.
 		/// </summary>
 		internal bool UsesMusicPitch { get; set; } = false;
