@@ -22,17 +22,6 @@
  			0.7f,
  			0.7f,
  			0.7f,
-@@ -72,7 +_,9 @@
- 			Main.playerInventory = false;
- 			Main.editChest = false;
- 			Main.npcChatText = "";
-+			Main.QueueMainThreadAction(() => {
--			SoundEngine.PlaySound(10);
-+				SoundEngine.PlaySound(10);
-+			});
- 			Main.ingameOptionsWindow = true;
- 			category = 0;
- 			for (int i = 0; i < leftScale.Length; i++) {
 @@ -172,7 +_,7 @@
  			noSound = false;
  			bool flag5 = SocialAPI.Network != null && SocialAPI.Network.CanInvite();

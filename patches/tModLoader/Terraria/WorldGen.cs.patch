@@ -85,7 +85,7 @@
  			}
  
  			if (x < roomX1)
-@@ -2309,19 +_,37 @@
+@@ -2309,19 +_,39 @@
  		public static void setWorldSize() {
  			Main.bottomWorld = Main.maxTilesY * 16;
  			Main.rightWorld = Main.maxTilesX * 16;
@@ -107,6 +107,7 @@
 +		}
 +
 +		public static void do_worldGenCallBack(object threadContext) {
++			//TML: #PlaySoundThreadLockWorkaround - This is a workaround for lock freeze issues related to calling PlaySound outside the main thread.
 +			Main.QueueMainThreadAction(() => {
 -			SoundEngine.PlaySound(10);
 +				SoundEngine.PlaySound(10);
@@ -118,6 +119,7 @@
  			if (Main.menuMode == 10 || Main.menuMode == 888)
  				Main.menuMode = 6;
  
++			//TML: #PlaySoundThreadLockWorkaround
 +			Main.QueueMainThreadAction(() => {
 -			SoundEngine.PlaySound(10);
 +				SoundEngine.PlaySound(10);
@@ -125,10 +127,11 @@
  			generatingWorld = false;
  		}
  
-@@ -2395,12 +_,19 @@
+@@ -2395,12 +_,20 @@
  			Rain.ClearRain();
  			if (netMode == 0) {
  				WorldFile.SaveWorld();
++				//TML: #PlaySoundThreadLockWorkaround
 +				Main.QueueMainThreadAction(() => {
 -				SoundEngine.PlaySound(10);
 +					SoundEngine.PlaySound(10);
@@ -146,10 +149,11 @@
  
  			Main.fastForwardTime = false;
  			Main.UpdateTimeRate();
-@@ -2410,7 +_,9 @@
+@@ -2410,7 +_,10 @@
  		}
  
  		public static void SaveAndQuit(Action callback = null) {
++			//TML: #PlaySoundThreadLockWorkaround
 +			Main.QueueMainThreadAction(() => {
 -			SoundEngine.PlaySound(11);
 +				SoundEngine.PlaySound(11);
@@ -195,7 +199,7 @@
  							return;
  						}
  					}
-@@ -2525,12 +_,20 @@
+@@ -2525,12 +_,21 @@
  			if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
  				Main.anglerQuestFinished = true;
  
@@ -210,6 +214,7 @@
  			_lastSeed = Main.ActiveWorldFileData.Seed;
  			Player.Hooks.EnterWorld(Main.myPlayer);
  			WorldFile.SetOngoingToTemps();
++			//TML: #PlaySoundThreadLockWorkaround
 +			Main.QueueMainThreadAction(() => {
 -			SoundEngine.PlaySound(11);
 +				SoundEngine.PlaySound(11);
@@ -225,10 +230,11 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
-@@ -2595,7 +_,9 @@
+@@ -2595,7 +_,10 @@
  			}
  
  			_lastSeed = Main.ActiveWorldFileData.Seed;
++			//TML: #PlaySoundThreadLockWorkaround
 +			Main.QueueMainThreadAction(() => {
 -			SoundEngine.PlaySound(10);
 +				SoundEngine.PlaySound(10);
