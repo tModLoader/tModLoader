@@ -498,9 +498,9 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
-			ModOrganizer.DeleteMod(_mod.modFile.path);
+			ModOrganizer.DeleteMod(_mod);
 
-			Interface.modBrowser.ModifyUIModDownloadItemInstalled(_mod.Name, null);
+			Interface.modsMenu.needsMBRefresh = true;
 
 			CloseDialog(evt, listeningElement);
 			Interface.modsMenu.Activate();

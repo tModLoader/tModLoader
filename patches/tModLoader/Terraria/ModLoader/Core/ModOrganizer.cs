@@ -502,14 +502,17 @@ namespace Terraria.ModLoader.Core
 			return val;
 		}
 
-		internal static void DeleteMod(string tmodPath) {
+		internal static void DeleteMod(LocalMod tmod) {
+			string tmodPath = tmod.modFile.path;
 			string parentDir = GetParentDir(tmodPath);
 
 			if (TryReadManifest(parentDir, out var info)) {
+				// Is a mod on Steam Workshop
 				var modManager = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
-				modManager.Uninstall(parentDir);
+				modManager.Uninstall();
 			}
 			else {
+				// Is a Mod in Mods Folder
 				File.Delete(tmodPath);
 			}
 		}
