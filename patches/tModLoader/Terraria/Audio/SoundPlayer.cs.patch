@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -1,24 +_,67 @@
+@@ -1,24 +_,66 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
  using System.Collections.Generic;
@@ -63,7 +63,6 @@
 +			
 +			// Handle 'UsesMusicPitch' (currently used solely to deal with vanilla's older instrument items).
 +			if (style.UsesMusicPitch) {
-+				styleCopy.Volume *= 0.75f;
 +				styleCopy.Pitch += Main.musicPitch;
 +			}
  
