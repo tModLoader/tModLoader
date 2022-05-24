@@ -225,15 +225,6 @@
  
  			for (int n = 0; n < Main.countsAsHostForGameplay.Length; n++) {
  				Main.countsAsHostForGameplay[n] = false;
-@@ -4085,7 +_,7 @@
- 
- 			Main.tile[x, num7].slope(0);
- 			Main.tile[x, num7].halfBrick(halfBrick: false);
--			PlaceTile(x, num10, 135, mute: false, forced: true, -1, 7);
-+			PlaceTile(x, num10, 135, mute: true, forced: true, -1, 7); // tML: muted post-sound-overhaul to avoid a crash
- 			for (int m = num8; m <= num10; m++) {
- 				Main.tile[x, m].wire(wire: true);
- 				if (m < num9) {
 @@ -5616,6 +_,8 @@
  		}
  
@@ -290,24 +281,6 @@
  			AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
  				numOceanCaveTreasure = 0;
  				skipDesertTileCheck = false;
-@@ -6747,7 +_,7 @@
- 											KillTile(num821, num822);
- 									}
- 									else if (Main.tile[num821 - 1, num822].active() && Main.tile[num821 + 1, num822].active()) {
--										PlaceTile(num821, num822, type10);
-+										PlaceTile(num821, num822, type10, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 										if (Main.tile[num821 - 1, num820].type == 70)
- 											Main.tile[num821 - 1, num820].type = 59;
- 
-@@ -6755,7 +_,7 @@
- 											Main.tile[num821 + 1, num820].type = 59;
- 									}
- 									else if (Main.tile[num821, num822 - 1].active() && Main.tile[num821, num822 + 1].active()) {
--										PlaceTile(num821, num822, type10);
-+										PlaceTile(num821, num822, type10, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 										if (Main.tile[num821, num820 - 1].type == 70)
- 											Main.tile[num821, num820 - 1].type = 59;
- 
 @@ -8402,10 +_,11 @@
  							int num557 = 0;
  							while (!flag36 && num557 < 100) {
@@ -321,57 +294,6 @@
  									flag36 = true;
  							}
  
-@@ -8719,9 +_,9 @@
- 								else if (!Main.tile[num511, num512].active() && Main.tile[num511, num512 + 1].type != 151 && Main.tile[num511, num512 + 1].type != 274) {
- 									if (Main.tile[num511 + 1, num512].type != 190 && Main.tile[num511 + 1, num512].type != 48 && Main.tile[num511 + 1, num512].type != 232 && SolidTile(num511 - 1, num512 + 1) && SolidTile(num511 + 1, num512) && !Main.tile[num511 - 1, num512].active() && !Main.tile[num511 + 1, num512 - 1].active()) {
- 										if (Main.tile[num511 + 1, num512].type == 495)
--											PlaceTile(num511, num512, Main.tile[num511 + 1, num512].type);
-+											PlaceTile(num511, num512, Main.tile[num511 + 1, num512].type, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 										else
--											PlaceTile(num511, num512, Main.tile[num511, num512 + 1].type);
-+											PlaceTile(num511, num512, Main.tile[num511, num512 + 1].type, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 
- 										if (genRand.Next(2) == 0)
- 											SlopeTile(num511, num512, 2);
-@@ -8731,9 +_,9 @@
- 
- 									if (Main.tile[num511 - 1, num512].type != 190 && Main.tile[num511 - 1, num512].type != 48 && Main.tile[num511 - 1, num512].type != 232 && SolidTile(num511 + 1, num512 + 1) && SolidTile(num511 - 1, num512) && !Main.tile[num511 + 1, num512].active() && !Main.tile[num511 - 1, num512 - 1].active()) {
- 										if (Main.tile[num511 - 1, num512].type == 495)
--											PlaceTile(num511, num512, Main.tile[num511 - 1, num512].type);
-+											PlaceTile(num511, num512, Main.tile[num511 - 1, num512].type, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 										else
--											PlaceTile(num511, num512, Main.tile[num511, num512 + 1].type);
-+											PlaceTile(num511, num512, Main.tile[num511, num512 + 1].type, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 
- 										if (genRand.Next(2) == 0)
- 											SlopeTile(num511, num512, 1);
-@@ -9681,7 +_,7 @@
- 								}
- 
- 								num383--;
--								PlaceTile(num382, num383, 77);
-+								PlaceTile(num382, num383, 77, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 								if (Main.tile[num382, num383].type == 77) {
- 									flag23 = true;
- 								}
-@@ -9917,7 +_,7 @@
- 
- 							if (flag18 && (Main.tile[num352, num353 - 1].liquid == 0 || num350 < num351 / 5) && (Main.tile[num352, num353].type == 2 || (notTheBees && Main.tile[num352, num353].type == 60)) && (Main.tile[num352 - 1, num353].type == 2 || (notTheBees && Main.tile[num352 - 1, num353].type == 60)) && (Main.tile[num352 + 1, num353].type == 2 || (notTheBees && Main.tile[num352 + 1, num353].type == 60))) {
- 								num353--;
--								PlaceTile(num352, num353, 488);
-+								PlaceTile(num352, num353, 488, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 								if (Main.tile[num352, num353].active() && Main.tile[num352, num353].type == 488) {
- 									if (genRand.Next(2) == 0) {
- 										logX = num352;
-@@ -11025,7 +_,7 @@
- 												Main.tile[num199, num200 + 1].halfBrick(halfBrick: false);
- 											}
- 
--											PlaceTile(num199, num200, 3);
-+											PlaceTile(num199, num200, 3, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 											if (Main.tile[num199, num200].active() && Main.tile[num199, num200].type == 3) {
- 												Main.tile[num199, num200].frameX = (short)((num198 + genRand.Next(3)) * 18);
- 												if (genRand.Next(3) != 0)
 @@ -11551,7 +_,7 @@
  							}
  						}
@@ -486,33 +408,6 @@
  			if (!item.Prefix(-3))
  				return;
  
-@@ -12671,7 +_,7 @@
- 									Main.tile[m, n].type = 23;
- 									if (Main.tile[m, n - 1].type == 61 || Main.tile[m, n - 1].type == 74) {
- 										Main.tile[m, n - 1].active(active: false);
--										PlaceTile(m, n - 1, 24);
-+										PlaceTile(m, n - 1, 24, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 									}
- 								}
- 								else if (Main.tile[m, n - 1].type == 233 || Main.tile[m, n - 1].type == 82) {
-@@ -12693,7 +_,7 @@
- 									Main.tile[num3, num4].type = 199;
- 									if (Main.tile[num3, num4 - 1].type == 61 || Main.tile[num3, num4 - 1].type == 74) {
- 										Main.tile[num3, num4 - 1].active(active: false);
--										PlaceTile(num3, num4 - 1, 201);
-+										PlaceTile(num3, num4 - 1, 201, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 									}
- 									else if (Main.tile[num3, num4 - 1].type == 233 || Main.tile[num3, num4 - 1].type == 82) {
- 										KillTile(num3, num4 - 1);
-@@ -12765,7 +_,7 @@
- 							GrowTreeWithSettings(num8, num7, GrowTreeSettings.Profiles.VanityTree_Sakura);
- 
- 						if (!Main.tile[num8, num7 - 1].active())
--							PlaceTile(num8, num7 - 1, 3);
-+							PlaceTile(num8, num7 - 1, 3, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 					}
- 
- 					if (Main.tile[num8, num7].type == 59)
 @@ -13166,7 +_,7 @@
  			if (!InWorld(i, y))
  				return false;
@@ -713,15 +608,6 @@
  										flag2 = true;
  										break;
  									}
-@@ -18799,7 +_,7 @@
- 				num87++;
- 				int num90 = rectangle3.X + num88 + 15 - genRand.Next(30);
- 				int num91 = rectangle3.Y + num89 + 15 - genRand.Next(30);
--				PlaceTile(num90, num91, 237);
-+				PlaceTile(num90, num91, 237, mute: true); // tML: muted post-sound-overhaul to avoid a crash
- 				if (Main.tile[num90, num91].type == 237) {
- 					lAltarX = num90 - Main.tile[num90, num91].frameX / 18;
- 					lAltarY = num91 - Main.tile[num90, num91].frameY / 18;
 @@ -23753,7 +_,7 @@
  				Main.tile[i, j] = new Tile();
  
@@ -1592,6 +1478,16 @@
  											default:
  												tile.active(active: true);
  												tile.type = (ushort)num;
+@@ -38267,7 +_,8 @@
+ 
+ 						SquareTileFrame(i, j);
+ 						result = true;
+-						if (!mute) {
++						// tML: to fix a number of errors post-sound-rework, tile placements are now automagically muted during initial worldgen
++						if (!mute && !generatingWorld) {
+ 							switch (num) {
+ 								case 127:
+ 									SoundEngine.PlaySound(SoundID.Item30, i * 16, j * 16);
 @@ -38313,11 +_,13 @@
  				return;
  
