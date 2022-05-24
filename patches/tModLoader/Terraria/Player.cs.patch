@@ -4508,68 +4508,6 @@
  				Vector2 vector4 = new Vector2(position.X + (float)width * 0.5f, position.Y + (float)height * 0.5f);
  				float num13 = (float)Main.mouseX + Main.screenPosition.X - vector4.X;
  				float num14 = (float)Main.mouseY + Main.screenPosition.Y - vector4.Y;
-@@ -32851,43 +_,45 @@
- 		public void PlayGuitarChord(float range) {
- 			int num = 6;
- 			float num2 = 1f / (float)num;
-+			// tML: all these get changed to SoundIDs post-sound-overhaul to avoid misidentified chord sounds
- 			if (range > num2 * 5f)
--				SoundEngine.PlaySound(51, base.Center);
-+				SoundEngine.PlaySound(SoundID.GuitarAm, base.Center);
- 			else if (range > num2 * 4f)
--				SoundEngine.PlaySound(47, base.Center);
-+				SoundEngine.PlaySound(SoundID.GuitarC, base.Center);
- 			else if (range > num2 * 3f)
--				SoundEngine.PlaySound(48, base.Center);
-+				SoundEngine.PlaySound(SoundID.GuitarD, base.Center);
- 			else if (range > num2 * 2f)
--				SoundEngine.PlaySound(49, base.Center);
-+				SoundEngine.PlaySound(SoundID.GuitarEm, base.Center);
- 			else if (range > num2 * 1f)
--				SoundEngine.PlaySound(50, base.Center);
-+				SoundEngine.PlaySound(SoundID.GuitarG, base.Center);
- 			else
--				SoundEngine.PlaySound(52, base.Center);
-+				SoundEngine.PlaySound(SoundID.GuitarF, base.Center);
- 		}
- 
- 		public void PlayDrums(float range) {
- 			int num = 10;
- 			float num2 = 1f / (float)num;
-+			// tML: all these get changed to SoundIDs post-sound-overhaul to avoid misidentified drum sounds
- 			if (range > num2 * 9f)
--				SoundEngine.PlaySound(59, base.Center);
-+				SoundEngine.PlaySound(SoundID.DrumCymbal2, base.Center);
- 			else if (range > num2 * 8f)
--				SoundEngine.PlaySound(58, base.Center);
-+				SoundEngine.PlaySound(SoundID.DrumCymbal1, base.Center);
- 			else if (range > num2 * 7f)
--				SoundEngine.PlaySound(53, base.Center);
-+				SoundEngine.PlaySound(SoundID.DrumHiHat, base.Center);
- 			else if (range > num2 * 6f)
--				SoundEngine.PlaySound(57, base.Center);
-+				SoundEngine.PlaySound(SoundID.DrumClosedHiHat, base.Center);
- 			else if (range > num2 * 5f)
--				SoundEngine.PlaySound(62, base.Center);
-+				SoundEngine.PlaySound(SoundID.DrumFloorTom, base.Center);
- 			else if (range > num2 * 4f)
--				SoundEngine.PlaySound(61, base.Center);
-+				SoundEngine.PlaySound(SoundID.DrumTamaSnare, base.Center);
- 			else if (range > num2 * 3f)
--				SoundEngine.PlaySound(54, base.Center);
-+				SoundEngine.PlaySound(SoundID.DrumTomHigh, base.Center);
- 			else if (range > num2 * 2f)
--				SoundEngine.PlaySound(56, base.Center);
-+				SoundEngine.PlaySound(SoundID.DrumTomMid, base.Center);
- 			else if (range > num2 * 1f)
--				SoundEngine.PlaySound(55, base.Center);
-+				SoundEngine.PlaySound(SoundID.DrumTomLow, base.Center);
- 			else
--				SoundEngine.PlaySound(60, base.Center);
-+				SoundEngine.PlaySound(SoundID.DrumKick, base.Center);
- 		}
- 
- 		private void ItemCheck_UseWiringTools(Item sItem) {
 @@ -32914,7 +_,8 @@
  				}
  
