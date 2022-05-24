@@ -61,7 +61,7 @@
 +
 +			SoundStyle styleCopy = style;
 +			
-+			// Handle 'UsesMusicPitch'.
++			// Handle 'UsesMusicPitch' (currently used solely to deal with vanilla's older instrument items).
 +			if (style.UsesMusicPitch) {
 +				styleCopy.Volume *= 0.75f;
 +				styleCopy.Pitch += Main.musicPitch;
