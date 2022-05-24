@@ -1,5 +1,6 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_resource_draw_settings.html#a6ebb3cf85683006117b4c22be0ca1631":[1,0,2,5,21,4,8,2],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_resource_draw_settings.html#a7fefef0cd1e1141831818de2c56a25ed":[1,0,2,5,21,4,8,6],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_resource_draw_settings.html#aaa6e949acbc2eef1f4528898bf3f5649":[1,0,2,5,21,4,8,9],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_resource_draw_settings.html#ad441b59dc17fe7702fe3099e059bf6c4":[1,0,2,5,21,4,8,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a9d8a053bcf524a2ae93b36fc0427a871":[1,0,2,13,129,0],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a9ecd7f479712ba7729f8a822677ecb39":[1,0,2,13,129,1],
 "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#aac6323c47eff69f8fe8c2d82f62dde8d":[1,0,2,13,129,14],
-"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#ad7c874472c31dd12a0854ffc92f6db23":[1,0,2,13,129,3],
-"struct_terraria_1_1_mod_loader_1_1_pos_data.html":[1,0,2,13,135]
+"struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#ad7c874472c31dd12a0854ffc92f6db23":[1,0,2,13,129,3]
 };

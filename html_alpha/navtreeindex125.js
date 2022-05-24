@@ -1,5 +1,6 @@
 var NAVTREEINDEX125 =
 {
+"namespace_terraria_1_1_game_content.html#af4db74619ca68df95a55ae98748bc628ac3a4804cc71f0254193cbc7d25554515":[0,0,2,6,74,3],
 "namespace_terraria_1_1_game_content_1_1_achievements.html":[0,0,2,6,0],
 "namespace_terraria_1_1_game_content_1_1_ambience.html":[0,0,2,6,1],
 "namespace_terraria_1_1_game_content_1_1_ambience.html#a442cd6482de70752ff81a0d8fb645b4b":[0,0,2,6,1,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX125 =
 "namespace_terraria_1_1_mod_loader.html#affc5ce60a82065004f36d2c31383f84bac7cd7bb6472a947d26895c3d92ef9581":[0,0,2,14,177,3],
 "namespace_terraria_1_1_mod_loader_1_1_assets.html":[0,0,2,14,0],
 "namespace_terraria_1_1_mod_loader_1_1_config.html":[0,0,2,14,1],
-"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073":[0,0,2,14,1,30],
-"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073a4e433c6a88a4e41c650c09c8936cf262":[0,0,2,14,1,30,1]
+"namespace_terraria_1_1_mod_loader_1_1_config.html#a8d21db79dbed48a11834c81269b9e073":[0,0,2,14,1,30]
 };

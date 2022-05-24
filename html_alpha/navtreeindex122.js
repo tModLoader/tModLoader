@@ -1,5 +1,6 @@
 var NAVTREEINDEX122 =
 {
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_provide_search_filter_string.html":[1,0,2,5,2,30],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_provide_search_filter_string.html#a191124469d0e4d3fb9a878fef5d2be34":[1,0,2,5,2,30,0],
 "interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_item_sort_step.html":[1,0,2,5,4,8],
 "interface_terraria_1_1_game_content_1_1_creative_1_1_i_creative_power.html":[1,0,2,5,4,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX122 =
 "namespace_terraria_1_1_achievements.html#ac09695bff54107205b278c10a3c6a55d":[0,0,2,0,9],
 "namespace_terraria_1_1_achievements.html#ac09695bff54107205b278c10a3c6a55da1686a6c336b71b36d77354cea19a8b52":[0,0,2,0,9,1],
 "namespace_terraria_1_1_achievements.html#ac09695bff54107205b278c10a3c6a55da22ae0e2b89e5e3d477f988cc36d3272b":[0,0,2,0,9,0],
-"namespace_terraria_1_1_audio.html":[0,0,2,1],
-"namespace_terraria_1_1_audio.html#a6a340a6a79c6d616242f6f0582d0ffe5":[0,0,2,1,17]
+"namespace_terraria_1_1_audio.html":[0,0,2,1]
 };

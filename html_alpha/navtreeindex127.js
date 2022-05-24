@@ -1,5 +1,6 @@
 var NAVTREEINDEX127 =
 {
+"struct_terraria_1_1_data_structures_1_1_draw_data.html#af62c0a562765d600261ba85b32d05607":[1,0,2,4,12,0],
 "struct_terraria_1_1_data_structures_1_1_drill_debug_draw.html":[1,0,2,4,13],
 "struct_terraria_1_1_data_structures_1_1_drill_debug_draw.html#a54936db033033e9e760106537c3f57aa":[1,0,2,4,13,2],
 "struct_terraria_1_1_data_structures_1_1_drill_debug_draw.html#aaef111db47a8ebef3180fce09a71f830":[1,0,2,4,13,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_data_structures_1_1_point16.html#a5506594d2a115377f1234622f00e14f6":[1,0,2,4,71,21],
 "struct_terraria_1_1_data_structures_1_1_point16.html#a7408711a44eb8696db53e45cfad4ed85":[1,0,2,4,71,9],
 "struct_terraria_1_1_data_structures_1_1_point16.html#a7b4bcd15ab71f3c6002b262946cfd8b9":[1,0,2,4,71,2],
-"struct_terraria_1_1_data_structures_1_1_point16.html#a7c46f04ae5d591d0d3c8ac216262e06d":[1,0,2,4,71,3],
-"struct_terraria_1_1_data_structures_1_1_point16.html#a8503a2bb04246cd31312616485d55542":[1,0,2,4,71,18]
+"struct_terraria_1_1_data_structures_1_1_point16.html#a7c46f04ae5d591d0d3c8ac216262e06d":[1,0,2,4,71,3]
 };

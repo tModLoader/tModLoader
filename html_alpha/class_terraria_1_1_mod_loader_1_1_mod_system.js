@@ -17,6 +17,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_system =
     [ "NetReceive", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a37c60edc8039c60534d7b386d1c5b734", null ],
     [ "NetSend", "class_terraria_1_1_mod_loader_1_1_mod_system.html#ad996da06252797b99af133660c340376", null ],
     [ "OnModLoad", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a0e9e57aef788c661c3b14caf3f4e92c1", null ],
+    [ "OnModUnload", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a61b929325bf8e1b8a872ae24d923f94a", null ],
     [ "OnWorldLoad", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a1bb26eb162376d984f2226e69011af27", null ],
     [ "OnWorldUnload", "class_terraria_1_1_mod_loader_1_1_mod_system.html#abcccf837881eb1644ccc50b0a40f15ef", null ],
     [ "PostAddRecipes", "class_terraria_1_1_mod_loader_1_1_mod_system.html#a38999fb5241c70847ddd9bd42d73472d", null ],

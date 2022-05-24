@@ -1,5 +1,6 @@
 var NAVTREEINDEX121 =
 {
+"class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles.html#a98bc55f97aeabcc2697fd41edc992a0f":[1,0,2,83,1,0,3],
 "class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles.html#aa328cfbada154ce8574ac69a5a63f03e":[1,0,2,83,1,0,7],
 "class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles.html#ab35d2979662c8cff114e164f9c363190":[1,0,2,83,1,0,0],
 "class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles.html#ab948cf9c5609aff688c4d1d3ef752e7b":[1,0,2,83,1,0,8],
@@ -75,15 +76,15 @@ var NAVTREEINDEX121 =
 "classnativefiledialog.html#ad015f810ae97b11cebc345376a7dc842":[1,0,37,9],
 "classnativefiledialog.html#aeadaef3670dc3de9281eb92c4df871e7":[1,0,37,3],
 "classnativefiledialog.html#af0422ad594b56553df0ff318fd9a3ac0":[1,0,37,2],
-"functions.html":[1,3,0],
 "functions.html":[1,3,0,0],
+"functions.html":[1,3,0],
 "functions_b.html":[1,3,0,1],
 "functions_c.html":[1,3,0,2],
 "functions_d.html":[1,3,0,3],
 "functions_e.html":[1,3,0,4],
 "functions_f.html":[1,3,0,5],
-"functions_func.html":[1,3,1],
 "functions_func.html":[1,3,1,0],
+"functions_func.html":[1,3,1],
 "functions_func_b.html":[1,3,1,1],
 "functions_func_c.html":[1,3,1,2],
 "functions_func_d.html":[1,3,1,3],
@@ -123,8 +124,8 @@ var NAVTREEINDEX121 =
 "functions_t.html":[1,3,0,19],
 "functions_u.html":[1,3,0,20],
 "functions_v.html":[1,3,0,21],
-"functions_vars.html":[1,3,2,0],
 "functions_vars.html":[1,3,2],
+"functions_vars.html":[1,3,2,0],
 "functions_vars_b.html":[1,3,2,1],
 "functions_vars_c.html":[1,3,2,2],
 "functions_vars_d.html":[1,3,2,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX121 =
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_item_bestiary_info_element.html":[1,0,2,5,2,28],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_preference_provider_element.html":[1,0,2,5,2,29],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_preference_provider_element.html#a79f791c55b184c623d06e821d3750c6e":[1,0,2,5,2,29,1],
-"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_preference_provider_element.html#acc44664dc38d614f94f8ced266d4324c":[1,0,2,5,2,29,0],
-"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_provide_search_filter_string.html":[1,0,2,5,2,30]
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_preference_provider_element.html#acc44664dc38d614f94f8ced266d4324c":[1,0,2,5,2,29,0]
 };
