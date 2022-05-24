@@ -13,7 +13,7 @@ namespace Terraria.ModLoader
 		public ushort Type { get; internal set; }
 
 		/// <summary>
-		/// The default style of sound made when this tile/wall is hit.<br></br>
+		/// The default style of sound made when this tile/wall is hit.<br/>
 		/// Defaults to SoundID.Dig, which is the sound used for tiles such as dirt and sand.
 		/// </summary>
 		public SoundStyle? HitSound { get; set; } = SoundID.Dig;
