@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -1,24 +_,66 @@
+@@ -1,24 +_,67 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
  using System.Collections.Generic;
@@ -59,10 +59,11 @@
 +				}
 +			}
 +
-+			// Handle 'UsesMusicPitch'.. This property is a weird solution, and is currently internal.
 +			SoundStyle styleCopy = style;
 +			
++			// Handle 'UsesMusicPitch'.
 +			if (style.UsesMusicPitch) {
++				styleCopy.Volume *= 0.75f;
 +				styleCopy.Pitch += Main.musicPitch;
 +			}
  

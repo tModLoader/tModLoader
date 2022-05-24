@@ -254,7 +254,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle Item23 = ItemSound(23);
 		public static readonly SoundStyle Item24 = ItemSound(24);
 		public static readonly SoundStyle Item25 = ItemSound(25);
-		public static readonly SoundStyle Item26 = ItemSound(26) with { UsesMusicPitch = true };
+		public static readonly SoundStyle Item26 = ItemSound(26) with { PitchVariance = 0f, UsesMusicPitch = true };
 		public static readonly SoundStyle Item27 = ItemSound(27);
 		public static readonly SoundStyle Item28 = ItemSound(28);
 		public static readonly SoundStyle Item29 = ItemSound(29);
@@ -263,7 +263,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle Item32 = ItemSound(32);
 		public static readonly SoundStyle Item33 = ItemSound(33);
 		public static readonly SoundStyle Item34 = ItemSound(34);
-		public static readonly SoundStyle Item35 = ItemSound(35) with { UsesMusicPitch = true };
+		public static readonly SoundStyle Item35 = ItemSound(35) with { PitchVariance = 0f, UsesMusicPitch = true };
 		public static readonly SoundStyle Item36 = ItemSound(36);
 		public static readonly SoundStyle Item37 = ItemSound(37) with { Volume = 0.5f };
 		public static readonly SoundStyle Item38 = ItemSound(38);
@@ -275,7 +275,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle Item44 = ItemSound(44);
 		public static readonly SoundStyle Item45 = ItemSound(45);
 		public static readonly SoundStyle Item46 = ItemSound(46);
-		public static readonly SoundStyle Item47 = ItemSound(47) with { UsesMusicPitch = true };
+		public static readonly SoundStyle Item47 = ItemSound(47) with { PitchVariance = 0f, UsesMusicPitch = true };
 		public static readonly SoundStyle Item48 = ItemSound(48);
 		public static readonly SoundStyle Item49 = ItemSound(49);
 		public static readonly SoundStyle Item50 = ItemSound(50);
