@@ -59,9 +59,9 @@
 +				}
 +			}
 +
-+			// Handle 'UsesMusicPitch'.. This property is a weird solution, and is currently internal.
 +			SoundStyle styleCopy = style;
 +			
++			// Handle 'UsesMusicPitch'.. This property is a weird solution for keeping vanilla's old instruments' behavior alive, and is currently internal.
 +			if (style.UsesMusicPitch) {
 +				styleCopy.Pitch += Main.musicPitch;
 +			}
