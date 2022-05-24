@@ -67,7 +67,7 @@ namespace Terraria.Audio
 
 		/// <summary>
 		/// Whether or not this sound obeys the <see cref="Main.musicPitch"/> field to decide its pitch.<br></br>
-		/// Used in vanilla by the sounds for the Bell, the (Magical) Harp, and The Axe.<br></br>
+		/// Defaults to false. Used in vanilla by the sounds for the Bell, the (Magical) Harp, and The Axe.<br></br>
 		/// Useful for sounds made by other such instrument items.
 		/// </summary>
 		public bool UsesMusicPitch { get; set; } = false;
