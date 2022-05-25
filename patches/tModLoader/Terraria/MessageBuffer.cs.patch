@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/MessageBuffer.cs
 +++ src/tModLoader/Terraria/MessageBuffer.cs
-@@ -19,6 +_,9 @@
+@@ -19,6 +_,10 @@
  using Terraria.Net;
  using Terraria.Testing;
  using Terraria.UI;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
++using LegacySoundStyle = Terraria.Audio.SoundStyle;
  
  namespace Terraria
  {
@@ -543,6 +544,34 @@
  					}
  					break;
  				case 91: {
+@@ -2687,8 +_,17 @@
+ 							break;
+ 
+ 						int num201 = reader.ReadInt32();
++						// TML: #WorldUIAnchorProjectileSyncFix
+ 						int num202 = reader.ReadByte();
+-						if (num202 == 255) {
++						bool delete = num202 == 255;
++						bool playerAnchor = num202 == 1;
++						// If type corresponds to projectile (magic number 2), read another byte for owner
++						if (!ModNet.AllowVanillaClients && num202 == 2) {
++							int owner = reader.ReadByte();
++							num202 = owner << 8 | num202; // Reassign num202 for use in DeserializeNetAnchor - this is now "packedOwnerType"
++						}
++
++						if (delete) {
+ 							if (EmoteBubble.byID.ContainsKey(num201))
+ 								EmoteBubble.byID.Remove(num201);
+ 
+@@ -2703,7 +_,7 @@
+ 							metadata = reader.ReadInt16();
+ 
+ 						WorldUIAnchor worldUIAnchor = EmoteBubble.DeserializeNetAnchor(num202, num203);
+-						if (num202 == 1)
++						if (playerAnchor)
+ 							Main.player[num203].emoteTime = 360;
+ 
+ 						lock (EmoteBubble.byID) {
 @@ -3155,10 +_,28 @@
  					if (Main.netMode == 2) {
  						short x9 = reader.ReadInt16();
@@ -572,7 +601,30 @@
  					}
  					break;
  				case 124: {
-@@ -3292,10 +_,22 @@
+@@ -3282,20 +_,45 @@
+ 						ushort key = reader.ReadUInt16();
+ 						LegacySoundStyle legacySoundStyle = SoundID.SoundByIndex[key];
+ 						BitsByte bitsByte2 = reader.ReadByte();
++						/*
+ 						int num33 = -1;
+ 						float num34 = 1f;
+ 						float num35 = 0f;
+ 						SoundEngine.PlaySound(Style: (!bitsByte2[0]) ? legacySoundStyle.Style : reader.ReadInt32(), volumeScale: (!bitsByte2[1]) ? legacySoundStyle.Volume : MathHelper.Clamp(reader.ReadSingle(), 0f, 1f), pitchOffset: (!bitsByte2[2]) ? legacySoundStyle.GetRandomPitch() : MathHelper.Clamp(reader.ReadSingle(), -1f, 1f), type: legacySoundStyle.SoundId, x: point.X, y: point.Y);
++						*/
++
++						if (bitsByte2[0])
++							legacySoundStyle.Variants = new int[] { reader.ReadInt32() };
++
++						if (bitsByte2[1])
++							legacySoundStyle.Volume = MathHelper.Clamp(reader.ReadSingle(), 0f, 1f);
++
++						if (bitsByte2[2])
++							legacySoundStyle.Pitch = MathHelper.Clamp(reader.ReadSingle(), 0f, 1f);
++
++						SoundEngine.PlaySound(legacySoundStyle, point.ToVector2());
+ 					}
+ 					break;
+ 				case 133:
  					if (Main.netMode == 2) {
  						short x5 = reader.ReadInt16();
  						int y5 = reader.ReadInt16();

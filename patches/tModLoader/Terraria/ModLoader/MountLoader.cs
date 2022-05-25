@@ -53,12 +53,6 @@ namespace Terraria.ModLoader
 			return mountData.ModMount != null;
 		}
 
-		internal static void SetupMount(Mount.MountData mount) {
-			if (IsModMount(mount)) {
-				GetMount(mount.ModMount.Type).SetupMount(mount);
-			}
-		}
-
 		public static void JumpHeight(Player mountedPlayer, Mount.MountData mount, ref int jumpHeight, float xVelocity) {
 			if (IsModMount(mount)) {
 				mount.ModMount.JumpHeight(mountedPlayer, ref jumpHeight, xVelocity);

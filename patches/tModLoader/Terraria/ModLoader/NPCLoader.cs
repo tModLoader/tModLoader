@@ -14,9 +14,8 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.GameContent.ItemDropRules;
-using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalNPC>;
 using Terraria.ModLoader.Utilities;
+using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalNPC>;
 
 namespace Terraria.ModLoader
 {
@@ -41,8 +40,8 @@ namespace Terraria.ModLoader
 		private static readonly List<HookList> hooks = new List<HookList>();
 		private static readonly List<HookList> modHooks = new List<HookList>();
 
-		private static HookList AddHook<F>(Expression<Func<GlobalNPC, F>> func) {
-			var hook = new HookList(ModLoader.Method(func));
+		private static HookList AddHook<F>(Expression<Func<GlobalNPC, F>> func) where F : Delegate {
+			var hook = HookList.Create(func);
 
 			hooks.Add(hook);
 
@@ -162,7 +161,7 @@ namespace Terraria.ModLoader
 		internal static void SetDefaults(NPC npc, bool createModNPC = true) {
 			if (IsModNPC(npc)) {
 				if (createModNPC) {
-					npc.ModNPC = GetNPC(npc.type).Clone(npc);
+					npc.ModNPC = GetNPC(npc.type).NewInstance(npc);
 				}
 				else //the default NPCs created and bound to ModNPCs are initialized before ResizeArrays. They come here during SetupContent.
 				{
@@ -170,10 +169,7 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			GlobalNPC Instantiate(GlobalNPC g)
-				=> g.InstancePerEntity ? g.Clone(npc, npc) : g;
-
-			LoaderUtils.InstantiateGlobals(npc, globalNPCs, ref npc.globalNPCs, Instantiate, () => {
+			LoaderUtils.InstantiateGlobals(npc, globalNPCs, ref npc.globalNPCs, () => {
 				npc.ModNPC?.SetDefaults();
 			});
 
@@ -478,13 +474,38 @@ namespace Terraria.ModLoader
 			return ret;
 		}
 
-		private static HookList HookOnCatchNPC = AddHook<Action<NPC, Player, Item>>(g => g.OnCatchNPC);
+		private static HookList HookCanBeCaughtBy = AddHook<Func<NPC, Item, Player, bool?>>(g => g.CanBeCaughtBy);
 
-		public static void OnCatchNPC(NPC npc, Player player, Item item) {
-			npc.ModNPC?.OnCatchNPC(player, item);
+		public static bool? CanBeCaughtBy(NPC npc, Item item, Player player) {
+			bool? canBeCaughtOverall = null;
+			foreach (GlobalNPC g in HookCanBeCaughtBy.Enumerate(npc.globalNPCs)) {
+				bool? canBeCaughtFromGlobalNPC = g.CanBeCaughtBy(npc, item, player);
+				if (canBeCaughtFromGlobalNPC.HasValue) {
+					if (!canBeCaughtFromGlobalNPC.Value)
+						return false;
 
-			foreach (GlobalNPC g in HookOnCatchNPC.Enumerate(npc.globalNPCs)) {
-				g.OnCatchNPC(npc, player, item);
+					canBeCaughtOverall = true;
+				}
+			}
+			if (npc.ModNPC != null) {
+				bool? canBeCaughtAsModNPC = npc.ModNPC.CanBeCaughtBy(item, player);
+				if (canBeCaughtAsModNPC.HasValue) {
+					if (!canBeCaughtAsModNPC.Value)
+						return false;
+
+					canBeCaughtOverall = true;
+				}
+			}
+			return canBeCaughtOverall;
+		}
+
+		private static HookList HookOnCaughtBy = AddHook<Action<NPC, Player, Item, bool>>(g => g.OnCaughtBy);
+
+		public static void OnCaughtBy(NPC npc, Player player, Item item, bool failed) {
+			npc.ModNPC?.OnCaughtBy(player, item, failed);
+
+			foreach (GlobalNPC g in HookOnCaughtBy.Enumerate(npc.globalNPCs)) {
+				g.OnCaughtBy(npc, player, item, failed);
 			}
 		}
 
@@ -923,6 +944,17 @@ namespace Terraria.ModLoader
 
 			foreach (GlobalNPC g in HookModifyTypeName.Enumerate(npc.globalNPCs)) {
 				g.ModifyTypeName(npc, ref typeName);
+			}
+		}
+
+		private delegate void DelegateModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox);
+		private static HookList HookModifyHoverBoundingBox = AddHook<DelegateModifyHoverBoundingBox>(g => g.ModifyHoverBoundingBox);
+		public static void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox) {
+			if (npc.ModNPC != null)
+				npc.ModNPC.ModifyHoverBoundingBox(ref boundingBox);
+
+			foreach (GlobalNPC g in HookModifyHoverBoundingBox.Enumerate(npc.globalNPCs)) {
+				g.ModifyHoverBoundingBox(npc, ref boundingBox);
 			}
 		}
 

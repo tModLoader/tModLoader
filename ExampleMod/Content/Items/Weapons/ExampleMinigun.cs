@@ -48,8 +48,14 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		// The following method gives this gun a 38% chance to not consume ammo
-		public override bool CanConsumeAmmo(Player player) {
+		public override bool CanConsumeAmmo(Item ammo, Player player) {
 			return Main.rand.NextFloat() >= 0.38f;
+		}
+
+		// The following method allows this gun to shoot when having no ammo, as long as the player has at least 10 example items in their inventory.
+		// The gun will then shoot as if the default ammo for it, in this case the musket ball, is being used.
+		public override bool NeedsAmmo(Player player) {
+			return player.CountItem(ModContent.ItemType<ExampleItem>(), 10) < 10;
 		}
 
 		// The following method makes the gun slightly inaccurate

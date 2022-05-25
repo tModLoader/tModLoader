@@ -22,4 +22,4 @@ if [ $steam = "y" ]; then
 fi
 
 chmod +x ./LaunchUtils/ScriptCaller.sh
-./start-tModLoader.sh $launch_args
+./LaunchUtils/ScriptCaller.sh $launch_args

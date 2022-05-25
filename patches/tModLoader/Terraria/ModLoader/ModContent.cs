@@ -28,6 +28,7 @@ using Terraria.GameContent.Creative;
 using Terraria.Graphics.Effects;
 using Terraria.GameContent.Skies;
 using Terraria.GameContent;
+using System.Reflection;
 
 namespace Terraria.ModLoader
 {
@@ -301,6 +302,7 @@ namespace Terraria.ModLoader
 
 			Interface.loadMods.SetLoadStage("tModLoader.MSIntializing", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
+				if (mod.Code != Assembly.GetExecutingAssembly()) AssemblyManager.JITMod(mod);
 				ContentInstance.Register(mod);
 				mod.loading = true;
 				mod.AutoloadConfig();
@@ -333,6 +335,7 @@ namespace Terraria.ModLoader
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
 
 			MapLoader.SetupModMap();
+			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
 
 			ContentSamples.Initialize();
@@ -344,6 +347,8 @@ namespace Terraria.ModLoader
 
 			MenuLoader.GotoSavedModMenu();
 			BossBarLoader.GotoSavedStyle();
+
+			ModOrganizer.SaveLastLaunchedMods();
 		}
 
 		private static void CacheVanillaState() {
@@ -409,8 +414,9 @@ namespace Terraria.ModLoader
 			RecipeGroupHelper.ResetRecipeGroups();
 			RecipeLoader.setupRecipes = true;
 			Recipe.SetupRecipes();
-			ContentSamples.FixItemsAfterRecipesAreAdded();
 			RecipeLoader.setupRecipes = false;
+			ContentSamples.FixItemsAfterRecipesAreAdded();
+			RecipeLoader.PostSetupRecipes();
 		}
 
 		internal static void UnloadModContent() {
@@ -437,8 +443,7 @@ namespace Terraria.ModLoader
 
 		//TODO: Unhardcode ALL of this.
 		internal static void Unload() {
-			ContentInstance.Clear();
-			ModTypeLookup.Clear();
+			TypeCaching.Clear();
 			ItemLoader.Unload();
 			EquipLoader.Unload();
 			PrefixLoader.Unload();
@@ -460,14 +465,13 @@ namespace Terraria.ModLoader
 			DamageClassLoader.Unload();
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
-			SoundLoader.Unload();
+			PlantLoader.UnloadPlants();
 
 			LoaderManager.Unload();
 
 			GlobalBackgroundStyleLoader.Unload();
 			PlayerDrawLayerLoader.Unload();
 			SystemLoader.Unload();
-			TileEntity.manager.Reset();
 			ResizeArrays(true);
 			for (int k = 0; k < Recipe.maxRecipes; k++) {
 				Main.recipe[k] = new Recipe();
@@ -475,6 +479,7 @@ namespace Terraria.ModLoader
 			Recipe.numRecipes = 0;
 			RecipeGroupHelper.ResetRecipeGroups();
 			Recipe.SetupRecipes();
+			TileEntity.manager.Reset();
 			MapLoader.UnloadModMap();
 			ItemSorting.SetupWhiteLists();
 			RecipeLoader.Unload();
@@ -520,7 +525,6 @@ namespace Terraria.ModLoader
 			SystemLoader.ResizeArrays();
 
 			if (!Main.dedServ) {
-				SoundLoader.ResizeAndFillArrays();
 				GlobalBackgroundStyleLoader.ResizeAndFillArrays(unloading);
 				GoreLoader.ResizeAndFillArrays();
 			}

@@ -5,12 +5,13 @@
  using Terraria.Localization;
  
  namespace Terraria.Chat.Commands
-@@ -7,6 +_,8 @@
+@@ -7,6 +_,9 @@
  	{
  		public void ProcessIncomingMessage(string text, byte clientId) {
  			ChatHelper.BroadcastChatMessageAs(clientId, NetworkText.FromLiteral(text), Main.player[clientId].ChatColor());
-+			if(Main.dedServ)
-+			Console.WriteLine("<{0}> {1}",Main.player[clientId].name,text);
++
++			if (Main.dedServ) // #if SERVER
++				Console.WriteLine("<{0}> {1}", Main.player[clientId].name, text);
  		}
  
  		public void ProcessOutgoingMessage(ChatMessage message) {

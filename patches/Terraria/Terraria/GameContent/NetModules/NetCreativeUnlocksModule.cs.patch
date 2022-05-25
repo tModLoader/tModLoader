@@ -4,8 +4,8 @@
  		}
  
  		public override bool Deserialize(BinaryReader reader, int userId) {
-+			if(Main.dedServ)
-+			return false;
++			if (Main.dedServ) // #if SERVER
++				return false;
 +
  			short key = reader.ReadInt16();
  			string persistentId = ContentSamples.ItemPersistentIdsByNetIds[key];

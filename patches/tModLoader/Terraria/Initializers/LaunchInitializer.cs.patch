@@ -10,7 +10,7 @@
  using Terraria.Social;
  
  namespace Terraria.Initializers
-@@ -23,6 +_,10 @@
+@@ -26,6 +_,10 @@
  			string s;
  			if ((s = TryParameter("-p", "-port")) != null && int.TryParse(s, out int result))
  				Netplay.ListenPort = result;
@@ -21,7 +21,7 @@
  		}
  
  		private static void LoadClientParameters(Main game) {
-@@ -38,6 +_,29 @@
+@@ -41,6 +_,34 @@
  
  			if (HasParameter("-host"))
  				game.AutoHost();
@@ -45,13 +45,18 @@
 +					(Main.PlayerList.FirstOrDefault(x => x.Name == playerName) ?? Main.PlayerList[0]).SetAsActive();
 +					Main.LoadWorlds();
 +					(Main.WorldList.FirstOrDefault(x => x.Name == worldName) ?? Main.WorldList[0]).SetAsActive();
++					if (!GameContent.UI.States.UIWorldSelect.CanWorldBePlayed(Main.ActiveWorldFileData))
++						throw new Exception($"The selected character {playerName} can not be used with the selected world {worldName}.\n" +
++							$"This could be due to mismatched Journey Mode or other mod specific changes." +
++							$"Check in Game Menus for more information.");
++
 +					WorldGen.playWorld();
 +				};
 +			}
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -99,6 +_,16 @@
+@@ -102,6 +_,16 @@
  			if ((s2 = TryParameter("-language")) != null)
  				LanguageManager.Instance.SetLanguage(s2);
  
@@ -68,7 +73,7 @@
  			string worldName;
  			if ((worldName = TryParameter("-worldname")) != null)
  				game.SetWorldName(worldName);
-@@ -107,6 +_,15 @@
+@@ -110,6 +_,15 @@
  			if ((newMOTD = TryParameter("-motd")) != null)
  				game.NewMOTD(newMOTD);
  
@@ -84,7 +89,7 @@
  			string banFilePath;
  			if ((banFilePath = TryParameter("-banlist")) != null)
  				Netplay.BanFilePath = banFilePath;
-@@ -155,7 +_,7 @@
+@@ -158,7 +_,7 @@
  			return false;
  		}
  

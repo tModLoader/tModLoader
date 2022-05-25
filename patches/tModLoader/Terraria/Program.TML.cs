@@ -2,13 +2,12 @@ using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Xml.Linq;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Terraria
 {

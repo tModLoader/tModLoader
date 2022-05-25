@@ -1,12 +1,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -14,7 +11,7 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// This class allows you to modify and use hooks for all NPCs, including vanilla mobs. Create an instance of an overriding class then call Mod.AddGlobalNPC to use this.
 	/// </summary>
-	public abstract class GlobalNPC : GlobalType<NPC>
+	public abstract class GlobalNPC : GlobalType<NPC, GlobalNPC>
 	{
 		protected sealed override void Register() {
 			NPCLoader.VerifyGlobalNPC(this);
@@ -29,13 +26,6 @@ namespace Terraria.ModLoader
 		public sealed override void SetupContent() => SetStaticDefaults();
 
 		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
-
-		/// <summary>
-		/// Create a copy of this instanced GlobalNPC. Called when an npc is cloned.
-		/// </summary>
-		/// <param name="npc">The npc being cloned</param>
-		/// <param name="npcClone">The new npc</param>
-		public virtual GlobalNPC Clone(NPC npc, NPC npcClone) => (GlobalNPC)MemberwiseClone();
 
 		/// <summary>
 		/// Allows you to set the properties of any and every NPC that gets created.
@@ -71,6 +61,14 @@ namespace Terraria.ModLoader
 		/// Allows you to modify the type name of this NPC dynamically.
 		/// </summary>
 		public virtual void ModifyTypeName(NPC npc, ref string typeName) {
+		}
+
+		/// <summary>
+		/// Allows you to modify the bounding box for hovering over the given NPC (affects things like whether or not its name is displayed).
+		/// </summary>
+		/// <param name="npc">The NPC in question.</param>
+		/// <param name="boundingBox">The bounding box used for determining whether or not the NPC counts as being hovered over.</param>
+		public virtual void ModifyHoverBoundingBox(NPC npc, ref Rectangle boundingBox) {
 		}
 
 		/// <summary>
@@ -194,12 +192,29 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when an NPC is caught. Ran Serverside.
+		/// Allows you to determine whether the given item can catch the given NPC.<br></br>
+		/// Return true or false to say the given NPC can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as an NPC-catching tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
 		/// </summary>
-		/// <param name="npc">The caught NPC</param>
-		/// <param name="player">The player catching the NPC</param>
-		/// <param name="item">The item that will be spawned</param>
-		public virtual void OnCatchNPC(NPC npc, Player player, Item item) {
+		/// <param name="npc">The NPC that can potentially be caught.</param>
+		/// <param name="item">The item with which the player is trying to catch the given NPC.</param>
+		/// <param name="player">The player attempting to catch the given NPC.</param>
+		/// <returns></returns>
+		public virtual bool? CanBeCaughtBy(NPC npc, Item item, Player player) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given item attempts to catch the given NPC.
+		/// </summary>
+		/// <param name="npc">The NPC which the player attempted to catch.</param>
+		/// <param name="player">The player attempting to catch the given NPC.</param>
+		/// <param name="item">The item used to catch the given NPC.</param>
+		/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
+		public virtual void OnCaughtBy(NPC npc, Player player, Item item, bool failed) {
 		}
 
 		/// <summary>

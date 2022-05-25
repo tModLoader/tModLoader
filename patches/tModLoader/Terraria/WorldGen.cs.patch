@@ -85,7 +85,7 @@
  			}
  
  			if (x < roomX1)
-@@ -2309,15 +_,29 @@
+@@ -2309,19 +_,39 @@
  		public static void setWorldSize() {
  			Main.bottomWorld = Main.maxTilesY * 16;
  			Main.rightWorld = Main.maxTilesX * 16;
@@ -107,7 +107,11 @@
 +		}
 +
 +		public static void do_worldGenCallBack(object threadContext) {
- 			SoundEngine.PlaySound(10);
++			//TML: #PlaySoundThreadLockWorkaround - This is a workaround for lock freeze issues related to calling PlaySound outside the main thread.
++			Main.QueueMainThreadAction(() => {
+-			SoundEngine.PlaySound(10);
++				SoundEngine.PlaySound(10);
++			});
  			clearWorld();
  			GenerateWorld(Main.ActiveWorldFileData.Seed, threadContext as GenerationProgress);
  			WorldFile.SaveWorld(Main.ActiveWorldFileData.IsCloudSave, resetTime: true);
@@ -115,18 +119,48 @@
  			if (Main.menuMode == 10 || Main.menuMode == 888)
  				Main.menuMode = 6;
  
-@@ -2402,6 +_,11 @@
++			//TML: #PlaySoundThreadLockWorkaround
++			Main.QueueMainThreadAction(() => {
+-			SoundEngine.PlaySound(10);
++				SoundEngine.PlaySound(10);
++			});
+ 			generatingWorld = false;
+ 		}
+ 
+@@ -2395,12 +_,20 @@
+ 			Rain.ClearRain();
+ 			if (netMode == 0) {
+ 				WorldFile.SaveWorld();
++				//TML: #PlaySoundThreadLockWorkaround
++				Main.QueueMainThreadAction(() => {
+-				SoundEngine.PlaySound(10);
++					SoundEngine.PlaySound(10);
++				});
+ 			}
+ 			else {
+ 				Netplay.Disconnect = true;
  				Main.netMode = 0;
  			}
- 
++
 +			//This is only called in case of a manual quit or disconnect.
 +			//There is a less common (client) call to this in Netplay.InnerClientLoop.
 +			SystemLoader.OnWorldUnload();
 +			TileIO.PostExitWorldCleanup();
-+
+ 
  			Main.fastForwardTime = false;
  			Main.UpdateTimeRate();
- 			Main.menuMode = 0;
+@@ -2410,7 +_,10 @@
+ 		}
+ 
+ 		public static void SaveAndQuit(Action callback = null) {
++			//TML: #PlaySoundThreadLockWorkaround
++			Main.QueueMainThreadAction(() => {
+-			SoundEngine.PlaySound(11);
++				SoundEngine.PlaySound(11);
++			});
+ 			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
+ 		}
+ 
 @@ -2484,13 +_,20 @@
  					}
  
@@ -165,7 +199,7 @@
  							return;
  						}
  					}
-@@ -2525,6 +_,12 @@
+@@ -2525,12 +_,21 @@
  			if (Main.netMode == 0 && Main.anglerWhoFinishedToday.Contains(Main.player[Main.myPlayer].name))
  				Main.anglerQuestFinished = true;
  
@@ -178,6 +212,16 @@
  			Main.player[Main.myPlayer].Spawn(PlayerSpawnContext.SpawningIntoWorld);
  			Main.ActivePlayerFileData.StartPlayTimer();
  			_lastSeed = Main.ActiveWorldFileData.Seed;
+ 			Player.Hooks.EnterWorld(Main.myPlayer);
+ 			WorldFile.SetOngoingToTemps();
++			//TML: #PlaySoundThreadLockWorkaround
++			Main.QueueMainThreadAction(() => {
+-			SoundEngine.PlaySound(11);
++				SoundEngine.PlaySound(11);
++			});
+ 			Main.resetClouds = true;
+ 			noMapUpdate = false;
+ 		}
 @@ -2556,6 +_,7 @@
  		}
  
@@ -186,6 +230,18 @@
  			Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
  			WorldFile.LoadWorld(Main.ActiveWorldFileData.IsCloudSave);
  			if (loadFailed || !loadSuccess) {
+@@ -2595,7 +_,10 @@
+ 			}
+ 
+ 			_lastSeed = Main.ActiveWorldFileData.Seed;
++			//TML: #PlaySoundThreadLockWorkaround
++			Main.QueueMainThreadAction(() => {
+-			SoundEngine.PlaySound(10);
++				SoundEngine.PlaySound(10);
++			});
+ 			WorldFile.SetOngoingToTemps();
+ 			Hooks.WorldLoaded();
+ 		}
 @@ -2753,21 +_,26 @@
  			noLiquidCheck = false;
  			Liquid.numLiquid = 0;
@@ -408,6 +464,15 @@
  			if (!item.Prefix(-3))
  				return;
  
+@@ -13166,7 +_,7 @@
+ 			if (!InWorld(i, y))
+ 				return false;
+ 
+-			while (Main.tile[i, num].type == 20) {
++			while (TileID.Sets.TreeSapling[Main.tile[i, num].type]) {
+ 				num++;
+ 				if (Main.tile[i, num] == null)
+ 					return false;
 @@ -13182,7 +_,7 @@
  			if (tile2.wall != 0 || tile2.liquid != 0)
  				return false;
@@ -943,7 +1008,7 @@
  				Projectile.NewProjectile(GetProjectileSource_TileBreak(num2, num3), num2 * 16 + 16, num3 * 16 + 16, 0f, 0f, 655, 0, 0f, Main.myPlayer);
  
 -			if (num13 != 0)
-+			// FishingCrate, GeyserTrap, and BeeHive
++			// FishingCrate, GeyserTrap, AntlionLarva, and BeeHive
 +			// geyser is 2x1
 +			if (TileLoader.Drop(num2, num3, type) && num13 != 0)
  				Item.NewItem(GetItemSource_FromTileBreak(num2, num3), num2 * 16, num3 * 16, tileData.CoordinateFullWidth, tileData.CoordinateFullHeight, num13);
@@ -1469,6 +1534,16 @@
  											default:
  												tile.active(active: true);
  												tile.type = (ushort)num;
+@@ -38267,7 +_,8 @@
+ 
+ 						SquareTileFrame(i, j);
+ 						result = true;
+-						if (!mute) {
++						// tML: to fix a number of errors post-sound-rework, tile placements are now automagically muted during initial worldgen
++						if (!mute && !generatingWorld) {
+ 							switch (num) {
+ 								case 127:
+ 									SoundEngine.PlaySound(SoundID.Item30, i * 16, j * 16);
 @@ -38313,11 +_,13 @@
  				return;
  
@@ -1606,6 +1681,21 @@
  			bool flag4 = !ReplaceTile_IsValidDresser(attemptingToReplaceWith) || !ReplaceTile_IsValidDresser(tile.type);
  			return !(num && flag && flag2 && flag3 && flag4);
  		}
+@@ -40101,6 +_,14 @@
+ 
+ 							return true;
+ 						}
++					default:
++						var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
++						if (tree != null) {
++							tree.SetTreeFoliageSettings(tile, xoffset, ref treeFrame, ref floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
++							treeStyle = tile.type + ModTree.VanillaTopTextureCount;
++							return true;
++						}
++						break;
+ 				}
+ 			}
+ 
 @@ -40523,6 +_,8 @@
  			if (num == 2)
  				return;
@@ -1645,6 +1735,15 @@
  			KillTile_GetItemDrops(x, y, tileCache, out int dropItem, out int dropItemStack, out int secondaryItem, out int secondaryItemStack, includeLargeObjectDrops);
  			if (!Main.getGoodWorld || tileCache.active()) {
  				if (dropItem > 0) {
+@@ -42126,6 +_,8 @@
+ 							}
+ 						}
+ 
++						TileLoader.DropPalmTreeWood(Main.tile[x, j].type, ref dropItem);
++
+ 						break;
+ 					}
+ 				case 171:
 @@ -42756,7 +_,7 @@
  
  						if (Main.tile[i, k] != null) {
@@ -1654,12 +1753,11 @@
  								dropItem = 9;
  								secondaryItem = 27;
  							}
-@@ -42803,6 +_,8 @@
+@@ -42803,6 +_,7 @@
  						dropItem = 2503;
  						break;
  				}
-+				TileLoader.DropTreeWood(Main.tile[x,y].type,ref dropItem);
-+				TileLoader.DropPalmTreeWood(Main.tile[x,y].type,ref dropItem);
++				TileLoader.DropTreeWood(Main.tile[x,y].type, ref dropItem);
  			}
  
  			int num = Player.FindClosest(new Vector2(x * 16, y * 16), 16, 16);

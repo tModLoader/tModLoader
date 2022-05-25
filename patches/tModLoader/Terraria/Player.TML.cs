@@ -482,5 +482,10 @@ namespace Terraria
 		/// Returns true if the item animation is in its first frame.
 		/// </summary>
 		public bool ItemAnimationJustStarted => itemAnimation == itemAnimationMax;
+
+		/// <summary>
+		/// The number of times the item has been used/fired this animation (swing)
+		/// </summary>
+		public int ItemUsesThisAnimation { get; private set; }
 	}
 }

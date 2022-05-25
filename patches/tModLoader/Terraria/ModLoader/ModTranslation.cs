@@ -4,6 +4,7 @@ using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
+	[CloneByReference]
 	public class ModTranslation
 	{
 		private const int fallback = 1;

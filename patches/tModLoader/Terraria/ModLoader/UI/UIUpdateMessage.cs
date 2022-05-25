@@ -9,6 +9,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader.Engine;
 using Terraria.ModLoader.UI.DownloadManager;
+using Terraria.Social;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
@@ -53,7 +54,7 @@ namespace Terraria.ModLoader.UI
 			button2.OnClick += OpenURL;
 			_area.Append(button2);
 
-			if (Platform.IsWindows && !InstallVerifier.IsSteam) {
+			if (Platform.IsWindows && SocialAPI.Mode != SocialMode.Steam) {
 				_autoUpdateButton = new UITextPanel<string>("Auto Update", 0.7f, true);
 				_autoUpdateButton.CopyStyle(button);
 				_autoUpdateButton.HAlign = 1f;
@@ -67,7 +68,7 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate() {
 			base.OnActivate();
 
-			if (Platform.IsWindows && !InstallVerifier.IsSteam && ModBrowser.UIModBrowser.PlatformSupportsTls12)
+			if (Platform.IsWindows && SocialAPI.Mode != SocialMode.Steam && ModBrowser.UIModBrowser.PlatformSupportsTls12)
 				_area.AddOrRemoveChild(_autoUpdateButton, !string.IsNullOrEmpty(_autoUpdateUrl));
 		}
 

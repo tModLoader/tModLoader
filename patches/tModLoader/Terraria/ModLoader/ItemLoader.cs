@@ -6,14 +6,12 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.Utilities;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.GlobalItem>;
@@ -37,8 +35,8 @@ namespace Terraria.ModLoader
 		private static readonly List<HookList> hooks = new List<HookList>();
 		private static readonly List<HookList> modHooks = new List<HookList>();
 
-		private static HookList AddHook<F>(Expression<Func<GlobalItem, F>> func) {
-			var hook = new HookList(ModLoader.Method(func));
+		private static HookList AddHook<F>(Expression<Func<GlobalItem, F>> func) where F : Delegate {
+			var hook = HookList.Create(func);
 
 			hooks.Add(hook);
 
@@ -90,6 +88,7 @@ namespace Terraria.ModLoader
 
 			//Sets
 			LoaderUtils.ResetStaticMembers(typeof(ItemID), true);
+			LoaderUtils.ResetStaticMembers(typeof(AmmoID), true);
 
 			//Etc
 			Array.Resize(ref Item.cachedItemSpawnsByType, nextItem);
@@ -97,6 +96,8 @@ namespace Terraria.ModLoader
 			Array.Resize(ref Item.claw, nextItem);
 			Array.Resize(ref Lang._itemNameCache, nextItem);
 			Array.Resize(ref Lang._itemTooltipCache, nextItem);
+
+			Array.Resize(ref RecipeLoader.FirstRecipeForItem, nextItem);
 
 			for (int k = ItemID.Count; k < nextItem; k++) {
 				Lang._itemNameCache[k] = LocalizedText.Empty;
@@ -125,7 +126,7 @@ namespace Terraria.ModLoader
 				.Select(g => new Instanced<GlobalItem>(g.index, g))
 				.ToArray();
 
-			NetGlobals = ModLoader.BuildGlobalHook<GlobalItem, Action<Item, BinaryWriter>>(globalItems, g => g.NetSend);
+			NetGlobals = globalItems.WhereMethodIsOverridden<GlobalItem, Action<Item, BinaryWriter>>(g => g.NetSend).ToArray();
 
 			foreach (var hook in hooks.Union(modHooks)) {
 				hook.Update(globalItems);
@@ -161,12 +162,9 @@ namespace Terraria.ModLoader
 
 		internal static void SetDefaults(Item item, bool createModItem = true) {
 			if (IsModItem(item.type) && createModItem)
-				item.ModItem = GetItem(item.type).Clone(item);
+				item.ModItem = GetItem(item.type).NewInstance(item);
 
-			GlobalItem Instantiate(GlobalItem g)
-				=> g.InstancePerEntity ? g.Clone(item, item) : g;
-
-			LoaderUtils.InstantiateGlobals(item, globalItems, ref item.globalItems, Instantiate, () => {
+			LoaderUtils.InstantiateGlobals(item, globalItems, ref item.globalItems, () => {
 				item.ModItem?.AutoDefaults();
 				item.ModItem?.SetDefaults();
 			});
@@ -582,13 +580,29 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private delegate void DelegatePickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback);
+		private static HookList HookNeedsAmmo = AddHook<Func<Item, Player, bool>>(g => g.NeedsAmmo);
+		/// <summary>
+		/// Calls ModItem.NeedsAmmo, then all GlobalItem.NeedsAmmo hooks, until any of them returns false.
+		/// </summary>
+		public static bool NeedsAmmo(Item weapon, Player player) {
+			if (!weapon.ModItem?.NeedsAmmo(player) ?? false)
+				return false;
+
+			foreach (var g in HookNeedsAmmo.Enumerate(weapon.globalItems)) {
+				if (!g.NeedsAmmo(weapon, player))
+					return false;
+			}
+
+			return true;
+		}
+
+		private delegate void DelegatePickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback);
 		private static HookList HookPickAmmo = AddHook<DelegatePickAmmo>(g => g.PickAmmo);
 
 		/// <summary>
 		/// Calls ModItem.PickAmmo, then all GlobalItem.PickAmmo hooks.
 		/// </summary>
-		public static void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
+		public static void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
 			ammo.ModItem?.PickAmmo(weapon, player, ref type, ref speed, ref damage, ref knockback);
 
 			foreach (var g in HookPickAmmo.Enumerate(ammo.globalItems)) {
@@ -596,49 +610,94 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Player, bool>>(g => g.CanConsumeAmmo);
-		private static HookList HookCanBeConsumedAsAmmo = AddHook<Func<Item, Player, bool>>(g => g.CanBeConsumedAsAmmo);
+		private static HookList HookCanChooseAmmo = AddHook<Func<Item, Item, Player, bool?>>(g => g.CanChooseAmmo);
+		private static HookList HookCanBeChosenAsAmmo = AddHook<Func<Item, Item, Player, bool?>>(g => g.CanBeChosenAsAmmo);
 
 		/// <summary>
-		/// Calls <see cref="ModItem.CanConsumeAmmo"/> for the weapon, <see cref="ModItem.CanBeConsumedAsAmmo"/> for the ammo, then each corresponding hook for the weapon and ammo, until one of them returns false. If all of them return true, returns true.
+		/// Calls each <see cref="GlobalItem.CanChooseAmmo"/> hook for the weapon, and each <see cref="GlobalItem.CanBeChosenAsAmmo"/> hook for the ammo,<br></br>
+		/// then each corresponding hook in <see cref="ModItem"/> if applicable for the weapon and/or ammo, until one of them returns a concrete false value.<br></br>
+		/// If all of them fail to do this, returns either true (if one returned true prior) or <c>ammo.ammo == weapon.useAmmo</c>.
+		/// </summary>
+		public static bool CanChooseAmmo(Item weapon, Item ammo, Player player) {
+			bool? result = null;
+			foreach (var g in HookCanChooseAmmo.Enumerate(weapon.globalItems)) {
+				bool? r = g.CanChooseAmmo(weapon, ammo, player);
+				if (r is false)
+					return false;
+
+				result ??= r;
+			}
+
+			foreach (var g in HookCanBeChosenAsAmmo.Enumerate(ammo.globalItems)) {
+				bool? r = g.CanBeChosenAsAmmo(ammo, weapon, player);
+				if (r is false)
+					return false;
+
+				result ??= r;
+			}
+
+			if (weapon.ModItem != null) {
+				bool? r = weapon.ModItem.CanChooseAmmo(ammo, player);
+				if (r is false)
+					return false;
+
+				result ??= r;
+			}
+
+			if (ammo.ModItem != null) {
+				bool? r = ammo.ModItem.CanBeChosenAsAmmo(weapon, player);
+				if (r is false)
+					return false;
+
+				result ??= r;
+			}
+			return result ?? ammo.ammo == weapon.useAmmo;
+		}
+
+		private static HookList HookCanConsumeAmmo = AddHook<Func<Item, Item, Player, bool>>(g => g.CanConsumeAmmo);
+		private static HookList HookCanBeConsumedAsAmmo = AddHook<Func<Item, Item, Player, bool>>(g => g.CanBeConsumedAsAmmo);
+
+		/// <summary>
+		/// Calls each <see cref="GlobalItem.CanConsumeAmmo"/> hook for the weapon, and each <see cref="GlobalItem.CanBeConsumedAsAmmo"/> hook for the ammo,<br></br>
+		/// then each corresponding hook in <see cref="ModItem"/> if applicable for the weapon and/or ammo, until one of them returns a concrete false value.<br></br>
+		/// If all of them fail to do this, returns true.
 		/// </summary>
 		public static bool CanConsumeAmmo(Item weapon, Item ammo, Player player) {
-			if (weapon.ModItem != null && !weapon.ModItem.CanConsumeAmmo(player) ||
-					ammo.ModItem != null && !ammo.ModItem.CanBeConsumedAsAmmo(player))
-				return false;
-
 			foreach (var g in HookCanConsumeAmmo.Enumerate(weapon.globalItems)) {
-				if (!g.CanConsumeAmmo(weapon, player))
+				if (!g.CanConsumeAmmo(weapon, ammo, player))
 					return false;
 			}
 
 			foreach (var g in HookCanBeConsumedAsAmmo.Enumerate(ammo.globalItems)) {
-				if (!g.CanBeConsumedAsAmmo(ammo, player))
+				if (!g.CanBeConsumedAsAmmo(ammo, weapon, player))
 					return false;
 			}
-
+			if (weapon.ModItem != null && !weapon.ModItem.CanConsumeAmmo(ammo, player) ||
+				ammo.ModItem != null && !ammo.ModItem.CanBeConsumedAsAmmo(weapon, player))
+				return false;
 			return true;
 		}
 
-		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Player>>(g => g.OnConsumeAmmo);
-		private static HookList HookOnConsumedAsAmmo = AddHook<Action<Item, Player>>(g => g.OnConsumedAsAmmo);
+		private static HookList HookOnConsumeAmmo = AddHook<Action<Item, Item, Player>>(g => g.OnConsumeAmmo);
+		private static HookList HookOnConsumedAsAmmo = AddHook<Action<Item, Item, Player>>(g => g.OnConsumedAsAmmo);
 
 		/// <summary>
-		/// Calls <see cref="ModItem.OnConsumeAmmo"/> for the weapon, <see cref="ModItem.OnConsumedAsAmmo"/> for the ammo, then each corresponding hook for the weapon and ammo.
+		/// Calls <see cref="ModItem.OnConsumeAmmo"/> for the weapon, <see cref="ModItem.OnConsumedAsAmmo"/> for the ammo,
+		/// then each corresponding hook for the weapon and ammo.
 		/// </summary>
 		public static void OnConsumeAmmo(Item weapon, Item ammo, Player player) {
 			if (weapon.IsAir)
 				return;
 
-			weapon.ModItem?.OnConsumeAmmo(player);
-			ammo.ModItem?.OnConsumedAsAmmo(player);
+			weapon.ModItem?.OnConsumeAmmo(ammo, player);
+			ammo.ModItem?.OnConsumedAsAmmo(weapon, player);
 
 			foreach (var g in HookOnConsumeAmmo.Enumerate(weapon.globalItems)) {
-				g.OnConsumeAmmo(weapon, player);
+				g.OnConsumeAmmo(weapon, ammo, player);
 			}
 
 			foreach (var g in HookOnConsumedAsAmmo.Enumerate(ammo.globalItems)) {
-				g.OnConsumedAsAmmo(ammo, player);
+				g.OnConsumedAsAmmo(ammo, weapon, player);
 			}
 		}
 
@@ -709,6 +768,48 @@ namespace Terraria.ModLoader
 				g.MeleeEffects(item, player, hitbox);
 			}
 		}
+
+		private static HookList HookCanCatchNPC = AddHook<Func<Item, NPC, Player, bool?>>(g => g.CanCatchNPC);
+
+		/// <summary>
+		/// Gathers the results of all <see cref="GlobalItem.CanCatchNPC"/> hooks, then the <see cref="ModItem.CanCatchNPC"/> hook if applicable.<br></br>
+		/// If any of them returns false, this returns false.<br></br>
+		/// Otherwise, if any of them returns true, then this returns true.<br></br>
+		/// If all of them return null, this returns null.<br></br>
+		/// </summary>
+		public static bool? CanCatchNPC(Item item, NPC target, Player player) {
+			bool? canCatchOverall = null;
+			foreach (GlobalItem g in HookCanCatchNPC.Enumerate(item.globalItems)) {
+				bool? canCatchFromGlobalItem = g.CanCatchNPC(item, target, player);
+				if (canCatchFromGlobalItem.HasValue) {
+					if (!canCatchFromGlobalItem.Value)
+						return false;
+
+					canCatchOverall = true;
+				}
+			}
+			if (item.ModItem != null) {
+				bool? canCatchAsModItem = item.ModItem.CanCatchNPC(target, player);
+				if (canCatchAsModItem.HasValue) {
+					if (!canCatchAsModItem.Value)
+						return false;
+
+					canCatchOverall = true;
+				}
+			}
+			return canCatchOverall;
+		}
+
+		private static HookList HookOnCatchNPC = AddHook<Action<Item, NPC, Player, bool>>(g => g.OnCatchNPC);
+
+		public static void OnCatchNPC(Item item, NPC npc, Player player, bool failed) {
+			item.ModItem?.OnCatchNPC(npc, player, failed);
+
+			foreach (GlobalItem g in HookOnCatchNPC.Enumerate(item.globalItems)) {
+				g.OnCatchNPC(item, npc, player, failed);
+			}
+		}
+
 
 		private delegate void DelegateModifyItemScale(Item item, Player player, ref float scale);
 		private static HookList HookModifyItemScale = AddHook<DelegateModifyItemScale>(g => g.ModifyItemScale);
@@ -1893,50 +1994,6 @@ namespace Terraria.ModLoader
 			NetGlobals = new GlobalItem[n];
 			for (short i = 0; i < n; i++)
 				NetGlobals[i] = ModContent.Find<GlobalItem>(ModNet.GetMod(r.ReadInt16()).Name, r.ReadString());
-		}
-
-		internal static void VerifyGlobalItem(GlobalItem item) {
-			var type = item.GetType();
-			int saveMethods = 0;
-
-			// Shortcut
-			static bool HasMethod(Type type, string method, params Type[] parameters) => LoaderUtils.HasMethod(type, typeof(GlobalItem), method, parameters);
-
-			if (HasMethod(type, nameof(GlobalItem.SaveData), typeof(Item), typeof(TagCompound)))
-				saveMethods++;
-
-			if (HasMethod(type, nameof(GlobalItem.LoadData), typeof(Item), typeof(TagCompound)))
-				saveMethods++;
-
-			if (saveMethods == 1)
-				throw new Exception($"{type} must override both of ({nameof(GlobalItem.SaveData)}/{nameof(GlobalItem.LoadData)}) or none");
-
-			// @TODO: Remove on release
-			if ((saveMethods == 0) && HasMethod(type, "Save", typeof(Item)))
-				throw new Exception($"{type} has old Load/Save callbacks but not new LoadData/SaveData ones, not loading the mod to avoid wiping mod data");
-			// @TODO: END Remove on release
-
-			int netMethods = 0;
-
-			if (HasMethod(type, nameof(GlobalItem.NetSend), typeof(Item), typeof(BinaryWriter)))
-				netMethods++;
-
-			if (HasMethod(type, nameof(GlobalItem.NetReceive), typeof(Item), typeof(BinaryReader)))
-				netMethods++;
-
-			if (netMethods == 1)
-				throw new Exception($"{type} must override both of ({nameof(GlobalItem.NetSend)}/{nameof(GlobalItem.NetReceive)}) or none");
-
-			bool hasInstanceFields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-				.Any(f => f.DeclaringType.IsSubclassOf(typeof(GlobalItem)));
-
-			if (hasInstanceFields) {
-				if (!item.InstancePerEntity)
-					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
-
-				if (!HasMethod(type, "Clone", typeof(Item), typeof(Item)))
-					throw new Exception(type + " has InstancePerEntity but does not override Clone(Item, Item)");
-			}
 		}
 	}
 }

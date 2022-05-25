@@ -27,6 +27,35 @@ namespace Terraria
 		public bool AllowReforgeForStackableItem { get; set; }
 
 		/// <summary>
+		/// Dictates the amount of times a weapon can be used (shot, etc) each time it animates (is swung, clicked, etc).<br/>
+		/// Defaults to null.<br/>
+		/// Used in vanilla by the following:<br/>
+		/// - BookStaff<br/>
+		/// - FairyQueenMagicItem<br/>
+		/// - FairyQueenRangedItem<br/>
+		/// </summary>
+		public int? useLimitPerAnimation { get; set; }
+
+		/// <summary>
+		/// Dictates whether or not this item should only consume ammo on its first shot of each use.<br/>
+		/// Defaults to false.<br/>
+		/// Used in vanilla by the following:<br/>
+		/// - Flamethrower<br/>
+		/// - Elf Melter<br/>
+		/// </summary>
+		public bool consumeAmmoOnFirstShotOnly { get; set; }
+
+		/// <summary>
+		/// Dictates whether or not this item should only consume ammo on its last shot of each use.<br/>
+		/// Defaults to false. <br/>
+		/// Used in vanilla by the following:<br/>
+		/// - ClockworkAssaultRifle<br/>
+		/// - Clentaminator<br/>
+		/// - FairyQueenRangedItem<br/>
+		/// </summary>
+		public bool consumeAmmoOnLastShotOnly { get; set; }
+
+		/// <summary>
 		/// Used to make stackable items reforgeable
 		/// </summary>
 		public bool IsCandidateForReforge => maxStack == 1 || AllowReforgeForStackableItem;
@@ -63,12 +92,12 @@ namespace Terraria
 
 		/// <summary> Gets the instance of the specified GlobalItem type. </summary>
 		public bool TryGetGlobalItem<T>(out T result, bool exactType = true) where T : GlobalItem
-			=> GlobalType.TryGetGlobal<GlobalItem, T>(globalItems, exactType, out result);
+			=> GlobalType.TryGetGlobal(globalItems, exactType, out result);
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
-			=> GlobalType.TryGetGlobal<GlobalItem, T>(globalItems, baseInstance, out result);
+			=> GlobalType.TryGetGlobal(globalItems, baseInstance, out result);
 
 		public TagCompound SerializeData() => ItemIO.Save(this);
 

@@ -10,7 +10,7 @@ namespace Terraria.GameContent.UI.States
 		private UIElement _buttonMods;
 		private UIElement _buttonModSources;
 		private UIElement _buttonModBrowser;
-		private UIElement _buttonTBD;
+		private UIElement _buttonModPack;
 
 		private UIElement MakeButton_OpenModsMenu() {
 			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubResourcepacks", "tModLoader.MenuManageMods");
@@ -51,15 +51,17 @@ namespace Terraria.GameContent.UI.States
 			Main.MenuUI.SetState(Interface.modBrowser);
 		}
 
-		private UIElement MakeButton_TBD() {
-			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds", "To Be Determined");
-			uIElement.OnClick += Click_OpenTBDMenu;
-			_buttonTBD = uIElement;
+		private UIElement MakeButton_ModPackMenu() {
+			UIElement uIElement = MakeFancyButton("Images/UI/Workshop/HubPublishWorlds","tModLoader.ModsModPacks");
+			uIElement.OnClick += Click_OpenModPackMenu;
+			_buttonModPack = uIElement;
 			return uIElement;
 		}
 
-		private void Click_OpenTBDMenu(UIMouseEvent evt, UIElement listeningElement) {
+		private void Click_OpenModPackMenu(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
+			Interface.modPacksMenu.PreviousUIState = this;
+			Main.MenuUI.SetState(Interface.modPacksMenu);
 		}
 	}
 }

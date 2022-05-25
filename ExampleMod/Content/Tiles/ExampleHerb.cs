@@ -60,8 +60,7 @@ namespace ExampleMod.Content.Tiles
 			};
 			TileObjectData.addTile(Type);
 
-			SoundType = SoundID.Grass;
-			SoundStyle = 0;
+			HitSound = SoundID.Grass;
 			DustType = DustID.Ambient_DarkBrown;
 		}
 
