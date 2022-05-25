@@ -184,7 +184,7 @@ namespace Terraria.ModLoader
 
 			for (int i = TileID.Count; i < nextTile; i++) {
 				Main.tileGlowMask[i] = -1; //If we don't this, every modded tile will have a glowmask by default.
-				GameContent.Metadata.TileMaterials.MaterialsByTileId[i] = GameContent.Metadata.TileMaterials._materialsByName["Default"];
+				GameContent.Metadata.TileMaterials.MaterialsByTileId[i] = GameContent.Metadata.TileMaterials._materialsByName["Default"]; //Set this so golf balls know how to interact with modded tiles physics-wise. If not set, then golf balls vanish when touching modded tiles.
 			}
 
 			while (TileObjectData._data.Count < nextTile) {
