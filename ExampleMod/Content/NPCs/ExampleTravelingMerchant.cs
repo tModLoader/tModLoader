@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Chat;
 using Terraria.GameContent;
@@ -17,6 +16,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.Utilities;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -58,7 +58,7 @@ namespace ExampleMod.Content.NPCs
 				// You can also add a day counter here to prevent the merchant from possibly spawning multiple days in a row.
 
 				// NPC won't spawn today if it stayed all night
-				if (!travelerIsThere && Main.rand.NextBool(1)) { // 4 = 25% Chance
+				if (!travelerIsThere && Main.rand.NextBool(4)) { // 4 = 25% Chance
 																// Here we can make it so the NPC doesnt spawn at the EXACT same time every time it does spawn
 					spawnTime = GetRandomSpawnTime(5400, 8100); // minTime = 6:00am, maxTime = 7:30am
 				}
@@ -204,7 +204,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override bool CanTownNPCSpawn(int numTownNPCs, int money) {
-			return false; // This should always be false, because we spawn in the Travleing Merchant manually
+			return false; // This should always be false, because we spawn in the Traveling Merchant manually
 		}
 
 		public override ITownNPCProfile TownNPCProfile() {
@@ -221,23 +221,26 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override string GetChat() {
+			WeightedRandom<string> chat = new WeightedRandom<string>();
+
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
-			if (partyGirl >= 0 && Main.rand.NextBool(4)) {
-				return "Can you please tell " + Main.npc[partyGirl].GivenName + " to stop decorating my cousin's house with colors?";
+			if (partyGirl >= 0) {
+				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.PartyGirlDialogue", Main.npc[partyGirl].GivenName));
 			}
-			switch (Main.rand.Next(4)) {
-				case 0:
-					return "Sometimes my cousin feels like they're different from everyone else here.";
-				case 1:
-					return "What's your favorite color? My cousin's favorite colors are white and black.";
-				case 2: {
-						// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
-						Main.npcChatCornerItem = ItemID.HiveBackpack;
-						return $"Hey, if you find a [i:{ItemID.HiveBackpack}], my cousin can upgrade it for you.";
-					}
-				default:
-					return "What? My cousin doesn't have any arms or legs? Oh, don't be ridiculous!";
+
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.StandardDialogue1"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.StandardDialogue2"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.StandardDialogue3"));
+
+			string hivePackDialogue = Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.HiveBackpackDialogue");
+			chat.Add(hivePackDialogue);
+
+			if (hivePackDialogue.Equals(chat.Get().ToString())) {
+				// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
+				Main.npcChatCornerItem = ItemID.HiveBackpack;
 			}
+
+			return chat; // chat is implicitly cast to a string.
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2) {

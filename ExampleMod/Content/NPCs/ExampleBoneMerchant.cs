@@ -115,9 +115,9 @@ namespace ExampleMod.Content.NPCs
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add("It's relaxing down here in the underground.");
-			chat.Add("What am I doing down here you may ask? I'm not sure, but leave me be!");
-			chat.Add("Huh? What wares do I have? I have no idea! How about you ask?");
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue1"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue2"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue3"));
 			return chat; // chat is implicitly cast to a string.
 		}
 
