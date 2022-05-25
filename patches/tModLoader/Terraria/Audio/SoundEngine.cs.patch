@@ -22,6 +22,22 @@
  		}
  
  		public static void Load(IServiceProvider services) {
+@@ -30,6 +_,15 @@
+ 		}
+ 
+ 		public static void Update() {
++			// Thread safety test code, don't anyone dare to ship this.
++			/*
++			if (Main.rand.Next(3) == 0) {
++				System.Threading.ThreadPool.QueueUserWorkItem(_ => {
++					PlaySound(new SoundStyle($"Terraria/Sounds/Zombie_{Main.rand.Next(1, 100)}"));
++				});
++			}
++			*/
++
+ 			if (IsAudioSupported) {
+ 				if (Main.audioSystem != null)
+ 					Main.audioSystem.UpdateAudioEngine();
 @@ -56,6 +_,8 @@
  			}
  		}
