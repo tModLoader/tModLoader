@@ -509,7 +509,7 @@ namespace Terraria.ModLoader.Core
 			if (TryReadManifest(parentDir, out var info)) {
 				// Is a mod on Steam Workshop
 				var modManager = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
-				modManager.Uninstall();
+				modManager.Uninstall(parentDir);
 			}
 			else {
 				// Is a Mod in Mods Folder
