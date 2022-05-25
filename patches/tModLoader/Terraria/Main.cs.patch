@@ -72,6 +72,16 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
+@@ -501,7 +_,8 @@
+ 		public static float gFader;
+ 		public static byte gFadeDir = 1;
+ 		public static bool shouldDrawNetDiagnosticsUI;
++		private static INetDiagnosticsUI activeNetDiagnosticsUI;
+-		public static INetDiagnosticsUI ActiveNetDiagnosticsUI => dedServ ? new EmptyDiagnosticsUI() : new NetDiagnosticsUI();
++		public static INetDiagnosticsUI ActiveNetDiagnosticsUI => activeNetDiagnosticsUI ??= dedServ ? new EmptyDiagnosticsUI() : new NetDiagnosticsUI();
+ 		public static IMultiplayerClosePlayersOverlay ActiveClosePlayersTeamOverlay = new NewMultiplayerClosePlayersOverlay();
+ 		public static double UpdateTimeAccumulator;
+ 		public static bool drawSkip;
 @@ -513,12 +_,12 @@
  		public static bool showSplash = true;
  		public static bool ignoreErrors = true;
