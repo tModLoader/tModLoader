@@ -1,6 +1,15 @@
 --- src/TerrariaNetCore/Terraria/Audio/ActiveSound.cs
 +++ src/tModLoader/Terraria/Audio/ActiveSound.cs
-@@ -8,8 +_,8 @@
+@@ -1,15 +_,14 @@
+-#if FNA
+-using System.Threading;
+-#endif
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Audio;
++using System;
++using System.Threading.Tasks;
+ 
+ namespace Terraria.Audio
  {
  	public class ActiveSound
  	{
@@ -11,28 +20,29 @@
  		public float Volume;
  
  		public SoundEffectInstance Sound {
-@@ -22,15 +_,16 @@
+@@ -22,22 +_,20 @@
  			private set;
  		}
  
 -		public bool IsPlaying => Sound.State == SoundState.Playing;
-+		public bool IsPlaying => !Sound.IsDisposed && Sound.State == SoundState.Playing;
++		public bool IsPlaying => Sound?.IsDisposed == false && Sound.State == SoundState.Playing;
  
-+		//TML: Position parameter made nullable.
 -		public ActiveSound(SoundStyle style, Vector2 position) {
+-#if FNA
+-			Monitor.Enter(SoundEngine.AudioLock);
+-#endif
++		//TML: Position parameter made nullable.
 +		public ActiveSound(SoundStyle style, Vector2? position = null) {
- #if FNA
- 			Monitor.Enter(SoundEngine.AudioLock);
- #endif
  			Position = position;
  			Volume = 1f;
 -			IsGlobal = false;
 +			//IsGlobal = false;
  			Style = style;
++			
  			Play();
- #if FNA
-@@ -38,6 +_,8 @@
- #endif
+-#if FNA
+-			Monitor.Exit(SoundEngine.AudioLock);
+-#endif
  		}
  
 +		//TML: Merged with the above constructor.
@@ -40,24 +50,64 @@
  		public ActiveSound(SoundStyle style) {
  #if FNA
  			Monitor.Enter(SoundEngine.AudioLock);
-@@ -51,10 +_,12 @@
+@@ -51,10 +_,17 @@
  			Monitor.Exit(SoundEngine.AudioLock);
  #endif
  		}
 +		*/
  
  		private void Play() {
++			if (!Program.IsMainThread) {
++				RunOnMainThreadAndWait(Play);
++				return;
++			}
++
  			SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
  			soundEffectInstance.Pitch += Style.GetRandomPitch();
 +			soundEffectInstance.IsLooped = Style.IsLooped;
  			soundEffectInstance.Play();
  			SoundInstanceGarbageCollector.Track(soundEffectInstance);
  			Sound = soundEffectInstance;
-@@ -77,14 +_,17 @@
+@@ -62,29 +_,52 @@
+ 		}
+ 
+ 		public void Stop() {
++			if (!Program.IsMainThread) {
++				RunOnMainThreadAndWait(Stop);
++				return;
++			}
++			
+ 			if (Sound != null)
+ 				Sound.Stop();
+ 		}
+ 
+ 		public void Pause() {
++			if (!Program.IsMainThread) {
++				RunOnMainThreadAndWait(Pause);
++				return;
++			}
++			
+ 			if (Sound != null && Sound.State == SoundState.Playing)
+ 				Sound.Pause();
+ 		}
+ 
+ 		public void Resume() {
++			if (!Program.IsMainThread) {
++				RunOnMainThreadAndWait(Resume);
++				return;
++			}
++			
+ 			if (Sound != null && Sound.State == SoundState.Paused)
+ 				Sound.Resume();
  		}
  
  		public void Update() {
 -			if (Sound != null) {
++			if (!Program.IsMainThread) {
++				RunOnMainThreadAndWait(Update);
++				return;
++			}
++			
 +			if (Sound != null && !Sound.IsDisposed) {
  				Vector2 value = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
  				float num = 1f;
@@ -74,3 +124,23 @@
  					num = 1f - num2 / ((float)Main.screenWidth * 1.5f);
  				}
  
+@@ -104,6 +_,19 @@
+ 				num = MathHelper.Clamp(num, 0f, 1f);
+ 				Sound.Volume = num;
+ 			}
++		}
++
++		// Added by TML.
++		// As the name states, runs code on the main thread and waits for it to finish.
++		private static void RunOnMainThreadAndWait(Action action) {
++			var tcs = new TaskCompletionSource<bool>();
++
++			Main.QueueMainThreadAction(() => {
++				action();
++				tcs.SetResult(true);
++			});
++
++			tcs.Task.Wait();
+ 		}
+ 	}
+ }
