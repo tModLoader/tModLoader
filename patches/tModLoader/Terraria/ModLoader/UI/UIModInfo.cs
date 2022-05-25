@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
@@ -184,7 +185,7 @@ namespace Terraria.ModLoader.UI
 
 			ModOrganizer.DeleteMod(_localMod);
 
-			Interface.modBrowser.PopulateModBrowser();
+			Task.Run(() => { Interface.modBrowser.InnerPopulateModBrowser(); });
 
 			Main.menuMode = _gotoMenu;
 		}

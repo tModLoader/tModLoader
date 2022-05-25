@@ -267,7 +267,7 @@ namespace Terraria.ModLoader.UI
 			ConfigManager.OnChangedAll();
 
 			if (needsMBRefresh) {
-				Interface.modBrowser.PopulateModBrowser();
+				Task.Run(() => { Interface.modBrowser.InnerPopulateModBrowser(); });
 				needsMBRefresh = false;
 			}
 

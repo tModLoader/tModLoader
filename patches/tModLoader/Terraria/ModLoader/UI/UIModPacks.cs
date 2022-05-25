@@ -142,7 +142,6 @@ namespace Terraria.ModLoader.UI
 						continue;
 
 					File.Copy(config, Path.Combine(configsPath, Path.GetFileName(config)));
-					break;
 				}
 
 				// Prep work for export workshop mods to a download manager list
