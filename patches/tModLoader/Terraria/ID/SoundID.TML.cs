@@ -14,6 +14,7 @@ namespace Terraria.ID
 			public static readonly SoundStyleDefaults ItemDefaults = new(1f, 0.12f); // Pitch variance is now 'max - min', not a half.
 			public static readonly SoundStyleDefaults NPCHitDefaults = new(1f, 0.2f);
 			public static readonly SoundStyleDefaults NPCDeathDefaults = new(1f, 0.2f);
+			public static readonly SoundStyleDefaults ZombieDefaults = new(1f, 0.2f);
 		}
 
 		private const string Prefix = "Terraria/Sounds/";
@@ -401,9 +402,127 @@ namespace Terraria.ID
 		public static readonly SoundStyle Item170 = ItemSound(170);
 		public static readonly SoundStyle Item171 = ItemSound(171);
 		public static readonly SoundStyle Item172 = ItemSound(172);
+		// ZombieX sound styles are new, and weren't present in vanilla neither as int nor SoundStyle fields. 
+		public static readonly SoundStyle Zombie1 = ZombieSound(1);
+		public static readonly SoundStyle Zombie2 = ZombieSound(2);
+		public static readonly SoundStyle Zombie3 = ZombieSound(3);
+		public static readonly SoundStyle Zombie4 = ZombieSound(4);
+		public static readonly SoundStyle Zombie5 = ZombieSound(5);
+		public static readonly SoundStyle Zombie6 = ZombieSound(6);
+		public static readonly SoundStyle Zombie7 = ZombieSound(7);
+		public static readonly SoundStyle Zombie8 = ZombieSound(8);
+		public static readonly SoundStyle Zombie9 = ZombieSound(9);
+		public static readonly SoundStyle Zombie10 = ZombieSound(10);
+		public static readonly SoundStyle Zombie11 = ZombieSound(11);
+		public static readonly SoundStyle Zombie12 = ZombieSound(12);
+		public static readonly SoundStyle Zombie13 = ZombieSound(13);
+		public static readonly SoundStyle Zombie14 = ZombieSound(14);
+		public static readonly SoundStyle Zombie15 = ZombieSound(15);
+		public static readonly SoundStyle Zombie16 = ZombieSound(16);
+		public static readonly SoundStyle Zombie17 = ZombieSound(17);
+		public static readonly SoundStyle Zombie18 = ZombieSound(18);
+		public static readonly SoundStyle Zombie19 = ZombieSound(19);
+		public static readonly SoundStyle Zombie20 = ZombieSound(20);
+		public static readonly SoundStyle Zombie21 = ZombieSound(21);
+		public static readonly SoundStyle Zombie22 = ZombieSound(22);
+		public static readonly SoundStyle Zombie23 = ZombieSound(23);
+		public static readonly SoundStyle Zombie24 = ZombieSound(24) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie25 = ZombieSound(25) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie26 = ZombieSound(26) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie27 = ZombieSound(27) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie28 = ZombieSound(28) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie29 = ZombieSound(29) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie30 = ZombieSound(30) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie31 = ZombieSound(31) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie32 = ZombieSound(32) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie33 = ZombieSound(33) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie34 = ZombieSound(34) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie35 = ZombieSound(35) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie36 = ZombieSound(36) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie37 = ZombieSound(37) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie38 = ZombieSound(38) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie39 = ZombieSound(39) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie40 = ZombieSound(40) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie41 = ZombieSound(41) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie42 = ZombieSound(42) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie43 = ZombieSound(43) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie44 = ZombieSound(44) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie45 = ZombieSound(45) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie46 = ZombieSound(46) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie47 = ZombieSound(47) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie48 = ZombieSound(48) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie49 = ZombieSound(49) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie50 = ZombieSound(50) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie51 = ZombieSound(51) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie52 = ZombieSound(52) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie53 = ZombieSound(53) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie54 = ZombieSound(54) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie55 = ZombieSound(55) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie56 = ZombieSound(56) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie57 = ZombieSound(57) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie58 = ZombieSound(58) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie59 = ZombieSound(59) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie60 = ZombieSound(60) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie61 = ZombieSound(61) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie62 = ZombieSound(62) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie63 = ZombieSound(63) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie64 = ZombieSound(64) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie65 = ZombieSound(65) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie66 = ZombieSound(66) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie67 = ZombieSound(67) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie68 = ZombieSound(68) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie69 = ZombieSound(69) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie70 = ZombieSound(70) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie71 = ZombieSound(71) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie72 = ZombieSound(72) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie73 = ZombieSound(73) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie74 = ZombieSound(74) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie75 = ZombieSound(75) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie76 = ZombieSound(76) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie77 = ZombieSound(77) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie78 = ZombieSound(78) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie79 = ZombieSound(79) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie80 = ZombieSound(80) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie81 = ZombieSound(81) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie82 = ZombieSound(82) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie83 = ZombieSound(83) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie84 = ZombieSound(84) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie85 = ZombieSound(85) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie86 = ZombieSound(86) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie87 = ZombieSound(87) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie88 = ZombieSound(88) with { Volume = 0.7f };
+		public static readonly SoundStyle Zombie89 = ZombieSound(89) with { Volume = 0.7f };
+		public static readonly SoundStyle Zombie90 = ZombieSound(90) with { Volume = 0.7f };
+		public static readonly SoundStyle Zombie91 = ZombieSound(91) with { Volume = 0.7f };
+		public static readonly SoundStyle Zombie92 = ZombieSound(92) with { Volume = 0.5f };
+		public static readonly SoundStyle Zombie93 = ZombieSound(93) with { Volume = 0.4f };
+		public static readonly SoundStyle Zombie94 = ZombieSound(94) with { Volume = 0.4f };
+		public static readonly SoundStyle Zombie95 = ZombieSound(95) with { Volume = 0.4f };
+		public static readonly SoundStyle Zombie96 = ZombieSound(96) with { Volume = 0.4f };
+		public static readonly SoundStyle Zombie97 = ZombieSound(97) with { Volume = 0.4f };
+		public static readonly SoundStyle Zombie98 = ZombieSound(98) with { Volume = 0.4f };
+		public static readonly SoundStyle Zombie99 = ZombieSound(99) with { Volume = 0.4f };
+		public static readonly SoundStyle Zombie100 = ZombieSound(100) with { Volume = 0.25f };
+		public static readonly SoundStyle Zombie101 = ZombieSound(101) with { Volume = 0.25f };
+		public static readonly SoundStyle Zombie102 = ZombieSound(102) with { Volume = 0.4f };
+		public static readonly SoundStyle Zombie103 = ZombieSound(103) with { Volume = 0.4f };
+		public static readonly SoundStyle Zombie104 = ZombieSound(104) with { Volume = 0.55f };
+		public static readonly SoundStyle Zombie105 = ZombieSound(105);
+		public static readonly SoundStyle Zombie106 = ZombieSound(106);
+		public static readonly SoundStyle Zombie107 = ZombieSound(107);
+		public static readonly SoundStyle Zombie108 = ZombieSound(108);
+		public static readonly SoundStyle Zombie109 = ZombieSound(109);
+		public static readonly SoundStyle Zombie110 = ZombieSound(110);
+		public static readonly SoundStyle Zombie111 = ZombieSound(111);
+		public static readonly SoundStyle Zombie112 = ZombieSound(112);
+		public static readonly SoundStyle Zombie113 = ZombieSound(113);
+		public static readonly SoundStyle Zombie114 = ZombieSound(114);
+		public static readonly SoundStyle Zombie115 = ZombieSound(115);
+		public static readonly SoundStyle Zombie116 = ZombieSound(116);
+		public static readonly SoundStyle Zombie117 = ZombieSound(117);
 
 		// Mapping
-		
+
 		private static SoundStyle[][] legacyArrayedStylesMapping = new SoundStyle[LegacySoundIDs.Count][];
 
 		static SoundID() {
@@ -440,12 +559,7 @@ namespace Terraria.ID
 			AddNumberedStyles(LegacySoundIDs.Item, nameof(LegacySoundIDs.Item), 0, 172);
 			AddNumberedStyles(LegacySoundIDs.NPCHit, nameof(LegacySoundIDs.NPCHit), 0, 65);
 			AddNumberedStyles(LegacySoundIDs.NPCKilled, "NPCDeath", 0, 57);
-
-			var zombieArray = legacyArrayedStylesMapping[LegacySoundIDs.Zombie] = new SoundStyle[117 + 1];
-
-			for (int i = 0; i < zombieArray.Length; i++) {
-				zombieArray[i] = new SoundStyle($"{Prefix}Zombie_{i}");
-			}
+			AddNumberedStyles(LegacySoundIDs.Zombie, nameof(LegacySoundIDs.Zombie), 0, 118);
 		}
 
 		// Helper methods
@@ -475,12 +589,17 @@ namespace Terraria.ID
 		private static SoundStyle ItemSound(ReadOnlySpan<int> soundStyles)
 			=> SoundWithDefaults(ItemDefaults, new($"{Prefix}Item_", soundStyles));
 
+		private static SoundStyle ZombieSound(int soundStyle)
+			=> SoundWithDefaults(ZombieDefaults, new($"{Prefix}Zombie_{soundStyle}"));
+
+		private static SoundStyle ZombieSound(ReadOnlySpan<int> soundStyles)
+			=> SoundWithDefaults(ZombieDefaults, new($"{Prefix}Zombie_", soundStyles));
+
 		// Moved to bottom for its size
 
 		internal static SoundStyle? GetLegacyStyle(int type, int style) => type switch {
 			// Arrayed
-			LegacySoundIDs.Zombie
-				=> new SoundStyle($"{Prefix}Zombie_{style}"),
+			LegacySoundIDs.Zombie or
 			LegacySoundIDs.Item or
 			LegacySoundIDs.NPCHit or
 			LegacySoundIDs.NPCKilled
