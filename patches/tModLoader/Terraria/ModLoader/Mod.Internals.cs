@@ -81,12 +81,40 @@ namespace Terraria.ModLoader
 			fileHandle = File?.Open();
 			RootContentSource = CreateDefaultContentSource();
 			Assets = new AssetRepository(Main.instance.Services.Get<AssetReaderCollection>(), new[] { RootContentSource }) {
-				AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
+				AssetLoadFailHandler = OnceFailedLoadingAnAsset
 			};
 		}
 
 		internal void TransferAllAssets() {
 			Assets.TransferAllAssets();
+		}
+
+		internal List<Exception> AssetExceptions = new List<Exception>();
+		internal void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
+			if (!Main.gameMenu) {
+				// TODO: Add a user friendly indicator/inbox for viewing these errors that happen in-game
+				Logging.Terraria.Error($"Failed to load asset: \"{assetPath}\"", e);
+				Terraria.UI.FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);
+			}
+			else {
+				if (e is AssetLoadException AssetLoadException) {
+					// Fix this once ContenSources are sane with extensions
+					ICollection<string> keys = RootContentSource.EnumerateAssets().ToList();
+					var cleanKeys = new List<string>();
+					foreach (var key in keys) {
+						string keyWithoutExtension = key.Substring(0, key.LastIndexOf("."));
+						string extension = RootContentSource.GetExtension(keyWithoutExtension);
+						if (extension != null) {
+							cleanKeys.Add(key.Substring(0, key.LastIndexOf(extension)));
+						}
+					}
+					var MissingResourceException = new Exceptions.MissingResourceException(assetPath.Replace("\\", "/"), cleanKeys);
+					AssetExceptions.Add(MissingResourceException);
+				}
+				else {
+					AssetExceptions.Add(e);
+				}
+			}
 		}
 	}
 }

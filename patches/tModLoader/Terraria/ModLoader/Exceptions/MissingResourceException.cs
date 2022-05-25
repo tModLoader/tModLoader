@@ -24,10 +24,11 @@ namespace Terraria.ModLoader.Exceptions
 		}
 
 		public static string ProcessMessage(string message, ICollection<string> keys) {
-			string closestMatch = "";
-			closestMatch = LevenshteinDistance.FolderAwareEditDistance(message, keys.ToArray());
+			string closestMatch = LevenshteinDistance.FolderAwareEditDistance(message, keys.ToArray());
 			if (closestMatch != null && closestMatch != "") {
-				return Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundPathHint", message, closestMatch) + "\n";
+				// TODO: UIMessageBox still doesn't display long sequences of colored text correct.
+				(string a, string b) = LevenshteinDistance.ComputeColorTaggedString(message, closestMatch);
+				return Language.GetTextValue("tModLoader.LoadErrorResourceNotFoundPathHint", message, closestMatch) + "\n" + a + "\n" + b + "\n";
 			}
 			return message;
 		}
@@ -126,6 +127,85 @@ namespace Terraria.ModLoader.Exceptions
 			}
 			// Step 7
 			return d[n, m];
+		}
+
+		public static (string, string) ComputeColorTaggedString(string s, string t) {
+			//s = "HYUENDAI";
+			//t = "HYUANDAI";
+
+			int n = s.Length;
+			int m = t.Length;
+			int[,] d = new int[n + 1, m + 1];
+			string[,] resultsA = new string[n + 1, m + 1];
+			string[,] resultsB = new string[n + 1, m + 1];
+
+			// Step 1
+			if (n == 0) {
+				return ("", "");
+			}
+
+			if (m == 0) {
+				return ("", "");
+			}
+
+			// Step 2
+			for (int i = 0; i <= n; d[i, 0] = i++) {
+				if (i < n) {
+					resultsA[i + 1, 0] = "" + s[i];
+					resultsB[i + 1, 0] = "" + s[i];
+				}
+			}
+
+			for (int j = 0; j <= m; d[0, j] = j++) {
+				if (j < m) {
+					resultsA[0, j + 1] = "" + t[j];
+					resultsB[0, j + 1] = "" + t[j];
+				}
+			}
+
+			// Step 3
+			for (int i = 1; i <= n; i++) {
+				//Step 4
+				for (int j = 1; j <= m; j++) {
+					// Step 5
+					int cost = (t[j - 1] == s[i - 1]) ? 0 : 2; // substitution
+
+					// Step 6
+					d[i, j] = Math.Min(
+						Math.Min(d[i - 1, j] + 2, d[i, j - 1] + 2),
+						d[i - 1, j - 1] + cost);
+
+					if (d[i, j] == d[i - 1, j - 1] + cost) {
+						if (cost == 0) {
+							resultsA[i, j] = $"{resultsA[i - 1, j - 1]}{s[i - 1]}";
+							resultsB[i, j] = $"{resultsB[i - 1, j - 1]}{t[j - 1]}";
+						}
+						else {
+							resultsA[i, j] = $"{resultsA[i - 1, j - 1]}[c/ffff00:{s[i - 1]}]"; //
+							resultsB[i, j] = $"{resultsB[i - 1, j - 1]}[c/ffff00:{t[j - 1]}]"; // 
+						}
+					}
+					else if (d[i, j] == d[i - 1, j] + 2) // deletion
+					{
+						resultsA[i, j] = $"{resultsA[i - 1, j]} ";
+						resultsB[i, j] = $"{resultsB[i - 1, j]}[c/ff0000:{s[i - 1]}]";
+
+						//resultsB[i, j] = $"{resultsA[i - 1, j]}{s[i - 1]}";
+					}
+					else if (d[i, j] == d[i, j - 1] + 2) // insertion
+					{
+						resultsA[i, j] = $"{resultsA[i, j - 1]}[c/00ff00:{t[j - 1]}]";
+						resultsB[i, j] = $"{resultsB[i, j - 1]} ";
+
+						//resultsA[i, j] = $"{resultsA[i, j - 1]}{t[i]}";
+					}
+					else {
+						Console.WriteLine();
+					}
+				}
+			}
+			// Step 7
+			return (resultsA[n, m], resultsB[n, m]);
 		}
 	}
 }
