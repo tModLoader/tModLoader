@@ -69,7 +69,7 @@ namespace ExampleMod.Content.NPCs
 
 			// Spawn the traveler if the spawn conditions are met (time of day, no events, no sundial)
 			if (!travelerIsThere && CanSpawnNow()) {
-				int newTraveler = NPC.NewNPC(Entity.GetSource_TownSpawn(), Main.spawnTileX * 16, Main.spawnTileY * 16, ModContent.NPCType<ExampleTravelingMerchant>(), 1); // Spawning at the world spawn
+				int newTraveler = NPC.NewNPC(Terraria.Entity.GetSource_TownSpawn(), Main.spawnTileX * 16, Main.spawnTileY * 16, ModContent.NPCType<ExampleTravelingMerchant>(), 1); // Spawning at the world spawn
 				NPC traveler = Main.npc[newTraveler];
 				traveler.homeless = true;
 				traveler.direction = Main.spawnTileX >= WorldGen.bestX ? -1 : 1;
@@ -235,12 +235,13 @@ namespace ExampleMod.Content.NPCs
 			string hivePackDialogue = Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleTravelingMerchant.HiveBackpackDialogue");
 			chat.Add(hivePackDialogue);
 
-			if (hivePackDialogue.Equals(chat.Get().ToString())) {
+			string dialogueLine = chat; // chat is implicitly cast to a string.
+			if (hivePackDialogue.Equals(dialogueLine)) {
 				// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
 				Main.npcChatCornerItem = ItemID.HiveBackpack;
 			}
 
-			return chat; // chat is implicitly cast to a string.
+			return dialogueLine;
 		}
 
 		public override void SetChatButtons(ref string button, ref string button2) {
