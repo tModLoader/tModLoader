@@ -26,6 +26,17 @@
  	{
  		/* hide unused consts
  		public const bool IsServer = false;
+@@ -30,6 +_,10 @@
+ 		public static bool LoadedEverything;
+ 		public static IntPtr JitForcedMethodCache;
+ 
++		public static Thread MainThread { get; private set; }
++
++		public static bool IsMainThread => Thread.CurrentThread == MainThread;
++
+ 		public static float LoadedPercentage {
+ 			get {
+ 				if (ThingsToLoad == 0)
 @@ -55,21 +_,15 @@
  			LoadedEverything = true;
  		}
@@ -88,7 +99,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,30 +_,78 @@
+@@ -138,30 +_,80 @@
  			}
  		}
  
@@ -100,7 +111,10 @@
 +		// Moving all calls to Main to LaunchGame_() mitigates this risk
  		public static void LaunchGame(string[] args, bool monoArgs = false) {
 +			// It's not the Entry Thread anymore, but it still is the base thread of FNA and Main
- 			Thread.CurrentThread.Name = "Main Thread";
++			MainThread = Thread.CurrentThread;
+-			Thread.CurrentThread.Name = "Main Thread";
++			MainThread.Name = "Main Thread";
++
  			if (monoArgs)
  				args = Utils.ConvertMonoArgsToDotNet(args);
  
