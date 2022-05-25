@@ -439,7 +439,7 @@ namespace Terraria.ID
 
 			AddNumberedStyles(LegacySoundIDs.Item, nameof(LegacySoundIDs.Item), 0, 172);
 			AddNumberedStyles(LegacySoundIDs.NPCHit, nameof(LegacySoundIDs.NPCHit), 0, 65);
-			AddNumberedStyles(LegacySoundIDs.NPCKilled, nameof(LegacySoundIDs.NPCKilled), 0, 57);
+			AddNumberedStyles(LegacySoundIDs.NPCKilled, "NPCDeath", 0, 57);
 
 			var zombieArray = legacyArrayedStylesMapping[LegacySoundIDs.Zombie] = new SoundStyle[117 + 1];
 
@@ -484,7 +484,7 @@ namespace Terraria.ID
 			LegacySoundIDs.Item or
 			LegacySoundIDs.NPCHit or
 			LegacySoundIDs.NPCKilled
-				=> style >= 0 && style < legacyArrayedStylesMapping[type].Length ? legacyArrayedStylesMapping[type][style] : null,
+				=> style >= 1 && style < legacyArrayedStylesMapping[type].Length ? legacyArrayedStylesMapping[type][style] : null,
 			// Everything else
 			LegacySoundIDs.Dig => Dig,
 			LegacySoundIDs.PlayerHit => PlayerHit,
