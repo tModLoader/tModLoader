@@ -174,6 +174,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref WorldGen.houseTile, nextTile);
 			//Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
 			Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
+			Array.Resize(ref GameContent.Metadata.TileMaterials.MaterialsByTileId, nextTile);
 			Array.Resize(ref HouseUtils.BlacklistedTiles, nextTile);
 			Array.Resize(ref HouseUtils.BeelistedTiles, nextTile);
 
@@ -183,6 +184,7 @@ namespace Terraria.ModLoader
 
 			for (int i = TileID.Count; i < nextTile; i++) {
 				Main.tileGlowMask[i] = -1; //If we don't this, every modded tile will have a glowmask by default.
+				GameContent.Metadata.TileMaterials.MaterialsByTileId[i] = GameContent.Metadata.TileMaterials._materialsByName["Default"]; //Set this so golf balls know how to interact with modded tiles physics-wise. If not set, then golf balls vanish when touching modded tiles.
 			}
 
 			while (TileObjectData._data.Count < nextTile) {
