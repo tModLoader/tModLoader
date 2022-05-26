@@ -330,6 +330,8 @@ namespace Terraria.ModLoader
 			if (Main.dedServ)
 				ModNet.AssignNetIDs();
 
+			ModNet.SetModNetDiagnosticsUI(ModLoader.Mods);
+
 			Main.player[255] = new Player();
 
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
