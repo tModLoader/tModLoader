@@ -1,5 +1,11 @@
 var NAVTREEINDEX112 =
 {
+"class_terraria_1_1_social_1_1_we_game_1_1_cloud_social_module.html#a9db02e6fdc0dc7e34ca5a9b3f7629764":[1,0,2,19,2,2,4],
+"class_terraria_1_1_social_1_1_we_game_1_1_cloud_social_module.html#ac560bb28c4f38c69f41a95684c152eea":[1,0,2,19,2,2,0],
+"class_terraria_1_1_social_1_1_we_game_1_1_core_social_module.html":[1,0,2,19,2,3],
+"class_terraria_1_1_social_1_1_we_game_1_1_core_social_module.html#a1016f79fcda1e1cce0d09b1ab6ad4353":[1,0,2,19,2,3,0],
+"class_terraria_1_1_social_1_1_we_game_1_1_core_social_module.html#a3bd66292282a2f58bb83af7358cd716b":[1,0,2,19,2,3,2],
+"class_terraria_1_1_social_1_1_we_game_1_1_core_social_module.html#a5c3441e3596bd3ff10d224a3daa95b5e":[1,0,2,19,2,3,5],
 "class_terraria_1_1_social_1_1_we_game_1_1_core_social_module.html#ad0fef7871a2c89030fc448fcaf7663db":[1,0,2,19,2,3,1],
 "class_terraria_1_1_social_1_1_we_game_1_1_core_social_module.html#ae84a0c480a0b2d9342c2282e129cd43a":[1,0,2,19,2,3,4],
 "class_terraria_1_1_social_1_1_we_game_1_1_core_social_module.html#af145b9e14c474e613ab78e5905160cbc":[1,0,2,19,2,3,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX112 =
 "class_terraria_1_1_time_logger.html#aa50c8973c987fa8b2078c5e91d6ee94a":[1,0,2,78,3],
 "class_terraria_1_1_time_logger.html#aad7ef209101df1a4022df23fe2d896ca":[1,0,2,78,16],
 "class_terraria_1_1_time_logger.html#ac14a4d71ba792a120de98e9e49565919":[1,0,2,78,12],
-"class_terraria_1_1_time_logger.html#ace2edf5ca7bca84dfad9d4b5c6793eda":[1,0,2,78,20],
-"class_terraria_1_1_time_logger.html#acead25f001f18a7780fa005fe1f04a31":[1,0,2,78,19],
-"class_terraria_1_1_time_logger.html#aeee9ee511b2d4c34d5fdf9963d8baf06":[1,0,2,78,2],
-"class_terraria_1_1_u_i_1_1_achievement_advisor.html":[1,0,2,21,2],
-"class_terraria_1_1_u_i_1_1_achievement_advisor.html#a00837e0dd4e25ed746b77208a5b763ef":[1,0,2,21,2,2],
-"class_terraria_1_1_u_i_1_1_achievement_advisor.html#a130bfeb5f22c8eb8f6cc80907ab24858":[1,0,2,21,2,1],
-"class_terraria_1_1_u_i_1_1_achievement_advisor.html#a142fe42b5f53113b6dc3a2f4239fd838":[1,0,2,21,2,5]
+"class_terraria_1_1_time_logger.html#ace2edf5ca7bca84dfad9d4b5c6793eda":[1,0,2,78,20]
 };

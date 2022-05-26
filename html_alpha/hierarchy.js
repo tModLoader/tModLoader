@@ -1426,6 +1426,7 @@ var hierarchy =
       [ "Terraria.GameContent.ItemDropRules.OneFromRulesRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_rules_rule.html", null ]
     ] ],
     [ "Terraria.UI.INetDiagnosticsUI", "interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html", [
+      [ "Terraria.ModLoader.UI.UIModNetDiagnostics", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_mod_net_diagnostics.html", null ],
       [ "Terraria.UI.EmptyDiagnosticsUI", "class_terraria_1_1_u_i_1_1_empty_diagnostics_u_i.html", null ],
       [ "Terraria.UI.LegacyNetDiagnosticsUI", "class_terraria_1_1_u_i_1_1_legacy_net_diagnostics_u_i.html", null ],
       [ "Terraria.UI.NetDiagnosticsUI", "class_terraria_1_1_u_i_1_1_net_diagnostics_u_i.html", null ]

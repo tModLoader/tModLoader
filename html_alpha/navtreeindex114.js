@@ -1,5 +1,11 @@
 var NAVTREEINDEX114 =
 {
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a66cae415bd6aaf19d370ee679ba00d1e":[1,0,2,21,1,2,120],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a6be5ec1a27ee6c129d9043b48e89ac34":[1,0,2,21,1,2,104],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a6c2491ad4a7733a3cc5c492dc35fb84c":[1,0,2,21,1,2,177],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a6c2f9cffdaa579b3b703b4828bbcd60f":[1,0,2,21,1,2,60],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a6d4dcbb17f65ca854b2a1d4b1fe15452":[1,0,2,21,1,2,138],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a6da6d06cdef3a952cd05819ee9bdea35":[1,0,2,21,1,2,163],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a6e2e95b6e9baab7477863b851e488ed6":[1,0,2,21,1,2,30],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a6f94649082c12cd105f0ff876fbcb8a9":[1,0,2,21,1,2,58],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a7012ca18f86b36a9737779df700fd37a":[1,0,2,21,1,2,208],
@@ -243,11 +249,5 @@ var NAVTREEINDEX114 =
 "class_terraria_1_1_u_i_1_1_in_game_popups_1_1_achievement_unlocked_popup.html#acaa49055bcb02e14a46b0104d4d05b06":[1,0,2,21,15,0,1],
 "class_terraria_1_1_u_i_1_1_in_game_popups_1_1_achievement_unlocked_popup.html#acadeec14f7baab22d5012750e0073ebb":[1,0,2,21,15,0,0],
 "class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html":[1,0,2,21,15,1],
-"class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html#a0c8c51e19899a83c41eaa651aa5157e5":[1,0,2,21,15,1,2],
-"class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html#a2fb9ae8212df277a259071de8bc6dd2d":[1,0,2,21,15,1,0],
-"class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html#a6805f74d5991d28ad279c3a7739e934c":[1,0,2,21,15,1,7],
-"class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html#ab4da3a07c7641aa368f794c4a6b4aaba":[1,0,2,21,15,1,6],
-"class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html#ab78374ea2fff1d82bf847b756d1ad370":[1,0,2,21,15,1,1],
-"class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html#af0f0f558f6c8b4b78a7a9527b66f5dc7":[1,0,2,21,15,1,8],
-"class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html#af608ad609098554b0d0e9253396a3b1f":[1,0,2,21,15,1,3]
+"class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html#a0c8c51e19899a83c41eaa651aa5157e5":[1,0,2,21,15,1,2]
 };

@@ -1159,6 +1159,7 @@ var annotated_dup =
           [ "UICommon", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common" ],
           [ "UICreateMod", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_create_mod.html", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_create_mod" ],
           [ "UICycleImage", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_cycle_image.html", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_cycle_image" ],
+          [ "UIModNetDiagnostics", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_mod_net_diagnostics.html", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_mod_net_diagnostics" ],
           [ "UIModsFilterResults", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_mods_filter_results.html", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_mods_filter_results" ]
         ] ],
         [ "Utilities", "namespace_terraria_1_1_mod_loader_1_1_utilities.html", [

@@ -10,6 +10,7 @@ var namespace_terraria_1_1_mod_loader_1_1_u_i =
     [ "UICommon", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common" ],
     [ "UICreateMod", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_create_mod.html", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_create_mod" ],
     [ "UICycleImage", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_cycle_image.html", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_cycle_image" ],
+    [ "UIModNetDiagnostics", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_mod_net_diagnostics.html", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_mod_net_diagnostics" ],
     [ "UIModsFilterResults", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_mods_filter_results.html", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_mods_filter_results" ],
     [ "EnabledFilter", "namespace_terraria_1_1_mod_loader_1_1_u_i.html#a70f722e401c4179cf08a638114820ebe", [
       [ "All", "namespace_terraria_1_1_mod_loader_1_1_u_i.html#a70f722e401c4179cf08a638114820ebeab1c94ca2fbc3e78fc30069c8d0f01680", null ],
