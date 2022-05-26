@@ -9,6 +9,5 @@ var class_terraria_1_1_mod_loader_1_1_global_block_type =
     [ "PlaceInWorld", "class_terraria_1_1_mod_loader_1_1_global_block_type.html#a75169529f08c8a0215163a64a3483524", null ],
     [ "PostDraw", "class_terraria_1_1_mod_loader_1_1_global_block_type.html#a62b20741e85e9279669a582080e70c40", null ],
     [ "PreDraw", "class_terraria_1_1_mod_loader_1_1_global_block_type.html#ad73f60073052d06f640b8f6f2e947e73", null ],
-    [ "RandomUpdate", "class_terraria_1_1_mod_loader_1_1_global_block_type.html#a9335566eaa7791a2712b2b1cbd88ef61", null ],
-    [ "SetDefaults", "class_terraria_1_1_mod_loader_1_1_global_block_type.html#af84a1bf8c6618caffb7672aceb58a553", null ]
+    [ "RandomUpdate", "class_terraria_1_1_mod_loader_1_1_global_block_type.html#a9335566eaa7791a2712b2b1cbd88ef61", null ]
 ];

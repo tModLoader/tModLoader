@@ -1,6 +1,5 @@
 var NAVTREEINDEX131 =
 {
-"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#aff89761a936b9a07b395d8357e541da8":[1,0,2,58,0,7],
 "struct_terraria_1_1_scene_metrics_scan_settings.html":[1,0,2,66],
 "struct_terraria_1_1_scene_metrics_scan_settings.html#a1b4de4cdc2841456d63ce0fa3a84c387":[1,0,2,66,0],
 "struct_terraria_1_1_scene_metrics_scan_settings.html#a91b6f2be0286f9d70e58cb83dc6cf202":[1,0,2,66,2],
