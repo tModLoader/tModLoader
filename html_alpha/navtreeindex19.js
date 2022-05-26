@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_hair_style_button.html#ab60fd22e83885e1f945353c769f97df6":[1,0,2,5,21,2,32,3],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_hair_style_button.html#ac35fb2cd703572b8db7f68660bb41e91":[1,0,2,5,21,2,32,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_hair_style_button.html#ad0c25d3032d17262925fc7de6991f5a2":[1,0,2,5,21,2,32,1],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_hair_style_button.html#ad605e98517b0f1f4ff847637526b0f6f":[1,0,2,5,21,2,32,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_workshop_import_world_list_item.html#a5e50745b6366e35edc4eb6e1d802184f":[1,0,2,5,21,2,63,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_workshop_import_world_list_item.html#a60dc81a49aeb1c57cffe5560e17ca637":[1,0,2,5,21,2,63,2],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_workshop_import_world_list_item.html#a6dbafff3d61bcae831dd12a786798da2":[1,0,2,5,21,2,63,3],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_workshop_import_world_list_item.html#ab9db07e63c7e3b4d3622c2864fb28ebd":[1,0,2,5,21,2,63,4],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_workshop_import_world_list_item.html#ad95ff4305b89294e344de502b1573079":[1,0,2,5,21,2,63,5]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_workshop_import_world_list_item.html#ab9db07e63c7e3b4d3622c2864fb28ebd":[1,0,2,5,21,2,63,4]
 };

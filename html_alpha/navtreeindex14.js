@@ -1,5 +1,6 @@
 var NAVTREEINDEX14 =
 {
+"class_terraria_1_1_game_content_1_1_shop_helper.html#a222d0a9e4075779bc967fd22536667a9":[1,0,2,5,58,2],
 "class_terraria_1_1_game_content_1_1_shop_helper.html#a28d7b0bc5f1b94fd769a461b5d9ac6f7":[1,0,2,5,58,1],
 "class_terraria_1_1_game_content_1_1_shop_helper.html#a535c372ea6281e812b81ea2e8f7d9d24":[1,0,2,5,58,3],
 "class_terraria_1_1_game_content_1_1_shop_helper.html#ae8f6c1c5e4d5fb6d7486b8f926c92ef2":[1,0,2,5,58,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX14 =
 "class_terraria_1_1_game_content_1_1_skies_1_1_nebula_sky.html#a46630b84b92721d2c21c87aa24c6487a":[1,0,2,5,19,7,2],
 "class_terraria_1_1_game_content_1_1_skies_1_1_nebula_sky.html#a66b383d7a869ba53ee671fe87cd6aeb2":[1,0,2,5,19,7,5],
 "class_terraria_1_1_game_content_1_1_skies_1_1_nebula_sky.html#a732b8781d4e968c98328ae91c0722bfb":[1,0,2,5,19,7,7],
-"class_terraria_1_1_game_content_1_1_skies_1_1_nebula_sky.html#ad7468fa12cb9d7ceca5640be0d258fda":[1,0,2,5,19,7,8],
-"class_terraria_1_1_game_content_1_1_skies_1_1_nebula_sky.html#af3d1197d5eadb6a4207baed21f2ec64b":[1,0,2,5,19,7,3]
+"class_terraria_1_1_game_content_1_1_skies_1_1_nebula_sky.html#ad7468fa12cb9d7ceca5640be0d258fda":[1,0,2,5,19,7,8]
 };

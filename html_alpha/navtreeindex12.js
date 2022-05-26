@@ -89,6 +89,7 @@ var NAVTREEINDEX12 =
 "class_terraria_1_1_game_content_1_1_metadata_1_1_tile_material.html#a13beab56e877ca31e40173fe034b2e6f":[1,0,2,5,13,1,0],
 "class_terraria_1_1_game_content_1_1_metadata_1_1_tile_materials.html":[1,0,2,5,13,2],
 "class_terraria_1_1_game_content_1_1_metadata_1_1_tile_materials.html#a37e8d3815b06dc3dc8275d9dc0b9d4bc":[1,0,2,5,13,2,0],
+"class_terraria_1_1_game_content_1_1_metadata_1_1_tile_materials.html#a8c659ea35e7f4dfd9b6ebcd8055264da":[1,0,2,5,13,2,2],
 "class_terraria_1_1_game_content_1_1_metadata_1_1_tile_materials.html#a991cd036113fad9d378288657a816492":[1,0,2,5,13,2,1],
 "class_terraria_1_1_game_content_1_1_minecart_digger_helper.html":[1,0,2,5,45],
 "class_terraria_1_1_game_content_1_1_minecart_digger_helper.html#a600988c141a69710accf2750ccb2d7d8":[1,0,2,5,45,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "class_terraria_1_1_game_content_1_1_pressure_plate_helper.html#a1bc02b547e7f2f960615937835f2be0c":[1,0,2,5,56,2],
 "class_terraria_1_1_game_content_1_1_pressure_plate_helper.html#a736e7f0d758c5481cf32ca061005482a":[1,0,2,5,56,7],
 "class_terraria_1_1_game_content_1_1_pressure_plate_helper.html#aa1e863a47ee092981541b1a698fb0797":[1,0,2,5,56,3],
-"class_terraria_1_1_game_content_1_1_pressure_plate_helper.html#aa7ed19a9acb5322260b215f24086f6ac":[1,0,2,5,56,5],
-"class_terraria_1_1_game_content_1_1_pressure_plate_helper.html#ab690e25d5123ef9e21a271580247e02a":[1,0,2,5,56,6]
+"class_terraria_1_1_game_content_1_1_pressure_plate_helper.html#aa7ed19a9acb5322260b215f24086f6ac":[1,0,2,5,56,5]
 };

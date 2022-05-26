@@ -1,5 +1,6 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a6060950e9ad8322d7fcc34e7e97241fc":[1,0,2,4,67,81],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a62a3fa49b38863386783d08d89f18047":[1,0,2,4,67,29],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a62c7190decfd4027bbf855e555bd5828":[1,0,2,4,67,111],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a652cc5fdacbdb091cf8a48c42cf08b8a":[1,0,2,4,67,92],
@@ -248,6 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one_1_1_parameters.html#a9c14800cbc4cf00505577e9f23e4fcfb":[1,0,2,5,10,11,0,1],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one_1_1_parameters.html#aa2ac4d31d261bd44a8ec922c79e4f3b2":[1,0,2,5,10,11,0,3],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one_1_1_parameters.html#abf01cb47b19696239fbc15098366508b":[1,0,2,5,10,11,0,2],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one_1_1_parameters.html#af325a4a14044f3259b628bc04592af04":[1,0,2,5,10,11,0,6],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info.html":[1,0,2,5,10,13]
+"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one_1_1_parameters.html#af325a4a14044f3259b628bc04592af04":[1,0,2,5,10,11,0,6]
 };

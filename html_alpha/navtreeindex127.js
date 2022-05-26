@@ -1,5 +1,6 @@
 var NAVTREEINDEX127 =
 {
+"namespacemembers.html":[0,1,0],
 "namespacemembers_enum.html":[0,1,1],
 "namespaces.html":[0,0],
 "pages.html":[],
@@ -248,6 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a53f8b30705d552487bb936e20fec8972":[1,0,2,4,67,89],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a5a0f57a605c10fe61590d721e95f9496":[1,0,2,4,67,27],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a5d20afce9868369f6384bd5592f30947":[1,0,2,4,67,17],
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a604b329c15a84318a76379aeeae8a1de":[1,0,2,4,67,86],
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a6060950e9ad8322d7fcc34e7e97241fc":[1,0,2,4,67,81]
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a604b329c15a84318a76379aeeae8a1de":[1,0,2,4,67,86]
 };
