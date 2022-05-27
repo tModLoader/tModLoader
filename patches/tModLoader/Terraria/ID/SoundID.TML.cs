@@ -590,10 +590,10 @@ namespace Terraria.ID
 			=> SoundWithDefaults(ItemDefaults, new($"{Prefix}Item_", soundStyles));
 
 		private static SoundStyle ZombieSound(int soundStyle)
-			=> SoundWithDefaults(ZombieDefaults, new($"{Prefix}Zombie_{soundStyle}"));
+			=> SoundWithDefaults(ZombieDefaults, new($"{Prefix}Zombie_{soundStyle}")) with { SoundLimitBehavior = IgnoreNew };
 
 		private static SoundStyle ZombieSound(ReadOnlySpan<int> soundStyles)
-			=> SoundWithDefaults(ZombieDefaults, new($"{Prefix}Zombie_", soundStyles));
+			=> SoundWithDefaults(ZombieDefaults, new($"{Prefix}Zombie_", soundStyles)) with { SoundLimitBehavior = IgnoreNew };
 
 		// Moved to bottom for its size
 
