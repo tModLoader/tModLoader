@@ -30,11 +30,7 @@
 	<Target Name="Package" AfterTargets="Build" Condition="@(NugetReference) != ''">
 		<Message Text="Packaging mod..." />
 		<PackageModFile
-				LibrariesDir="Libraries"
-				ProjectDepsFilePath="$(ProjectDepsFilePath)"
-				ProjectRuntimeConfigFilePath="$(ProjectRuntimeConfigFilePath)"
-				AssemblyName="$(AssemblyName)"
-				OutputPath="$(OutputPath)"
+				NugetReferences="@(NugetReference)"
 				Test="@(NugetReference)" >
 			<Output TaskParameter="OutTest" ItemName="OutTest" />
 		</PackageModFile>
