@@ -20,7 +20,8 @@ public class InvokeRewriter : BaseRewriter {
 	public static void RefactorStaticMethodCall(string type, string name, RewriteInvoke handler) => handlers.Add((type, name, isStatic: true, handler));
 
 	public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node) {
-		node = (InvocationExpressionSyntax)base.VisitInvocationExpression(node); // fix arguments and expression first
+		if (base.VisitInvocationExpression(node) is SyntaxNode newNode && newNode != node) // fix arguments and expression first
+			return newNode;
 
 		if (model.GetOperation(node) is not IInvalidOperation op || node.ArgumentList.Arguments.Any(arg => model.GetOperation(arg) is IInvalidOperation))
 			return node;
