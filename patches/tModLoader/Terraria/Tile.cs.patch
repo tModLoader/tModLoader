@@ -202,25 +202,15 @@
  			liquid = 0;
  			sTileHeader = 0;
  			bTileHeader = 0;
-@@ -203,9 +_,10 @@
+@@ -203,6 +_,7 @@
  			bTileHeader3 = 0;
  			frameX = 0;
  			frameY = 0;
 +			*/
  		}
  
--		public Color actColor(Color oldColor) {
-+		internal Color actColor(Color oldColor) {
- 			if (!inActive())
- 				return oldColor;
- 
-@@ -213,12 +_,12 @@
- 			return new Color((byte)(num * (double)(int)oldColor.R), (byte)(num * (double)(int)oldColor.G), (byte)(num * (double)(int)oldColor.B), oldColor.A);
- 		}
- 
--		public void actColor(ref Vector3 oldColor) {
-+		internal void actColor(ref Vector3 oldColor) {
- 			if (inActive())
+ 		public Color actColor(Color oldColor) {
+@@ -218,7 +_,7 @@
  				oldColor *= 0.4f;
  		}
  
