@@ -16,6 +16,31 @@
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
 	</ItemGroup>
+	<Target Name="IncludeNuget" BeforeTargets="ResolveAssemblyReferences">
+		<Message Text="Include %(NugetReference.Identity) with version %(NugetReference.Version)" />
+		<ItemGroup>
+			<NugetReference Update="%(NugetReference.Identity)" >
+				<Visible>false</Visible>
+			</NugetReference>
+			<PackageReference Include="%(NugetReference.Identity)" Version="%(NugetReference.Version)" />
+		</ItemGroup>
+	</Target>
+	
+	<UsingTask TaskName="PackageModFile" AssemblyFile="C:\Users\ikerv\Documents\Programming\tModLoader\tModLoader\BuildTools\Build\netstandard2.0\tModLoader.BuildTools.dll" />
+	<Target Name="Package" AfterTargets="Build" Condition="@(NugetReference) != ''">
+		<Message Text="Packaging mod..." />
+		<PackageModFile
+				LibrariesDir="Libraries"
+				ProjectDepsFilePath="$(ProjectDepsFilePath)"
+				ProjectRuntimeConfigFilePath="$(ProjectRuntimeConfigFilePath)"
+				AssemblyName="$(AssemblyName)"
+				OutputPath="$(OutputPath)"
+				Test="@(NugetReference)" >
+			<Output TaskParameter="OutTest" ItemName="OutTest" />
+		</PackageModFile>
+		<Message Text="Output is: @(OutTest)" />
+	</Target>
+	
 	<Target Name="BuildMod" AfterTargets="Build">
 		<Exec Command="dotnet $(tMLServerPath) -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks) $(ExtraBuildModFlags)" WorkingDirectory="$(tMLSteamPath)"/>
 	</Target>
