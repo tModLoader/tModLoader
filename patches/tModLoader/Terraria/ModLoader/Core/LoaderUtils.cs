@@ -60,7 +60,7 @@ namespace Terraria.ModLoader.Core
 		public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, IEnumerable<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal> {
 			entityGlobals = globals
 				.Where(g => g.AppliesToEntity(entity, false))
-				.Select(g => new Instanced<TGlobal>(g.index, g.NewInstance(entity)))
+				.Select(g => new Instanced<TGlobal>(g.index, g.InstancePerEntity ? g.NewInstance(entity) : g))
 				.ToArray();
 
 			midInstantiationAction();
@@ -69,7 +69,7 @@ namespace Terraria.ModLoader.Core
 			var entityGlobalsCopy = entityGlobals;
 			var lateInitGlobals = globals
 				.Where(g => !entityGlobalsCopy.Any(i => i.Index == g.index) && g.AppliesToEntity(entity, true))
-				.Select(g => new Instanced<TGlobal>(g.index, g.NewInstance(entity)));
+				.Select(g => new Instanced<TGlobal>(g.index, g.InstancePerEntity ? g.NewInstance(entity) : g));
 
 			entityGlobals = entityGlobals
 				.Union(lateInitGlobals)
