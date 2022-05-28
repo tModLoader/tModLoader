@@ -413,7 +413,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to override vanilla tile slope behaviour for non-solid tiles. Return true to allow this tile to be sloped even without Main.tileSolid set for it. Returns false by default.
+		/// Allows you to control whether this tile can be sloped.
+		/// If Main.tileSolid is set for this tile, this check will be ignored.
+		/// Return true to allow this tile to be sloped.
+		/// Returns false by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
