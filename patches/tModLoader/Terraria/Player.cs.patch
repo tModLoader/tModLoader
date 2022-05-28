@@ -4466,6 +4466,15 @@
  			if (sItem.type == 1450 && Main.rand.Next(3) == 0) {
  				int num3 = -1;
  				float x = itemRectangle.X + Main.rand.Next(itemRectangle.Width);
+@@ -32078,7 +_,7 @@
+ 
+ 			if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
+ 				Tile tile = Main.tile[tileTargetX, tileTargetY];
+-				if (!tile.active() || IsTilePoundable(tile))
++				if (!tile.active() || IsTilePoundable(tile) && !TileLoader.CanBeSloped(tileTargetX, tileTargetY, tile.type))
+ 					poundRelease = false;
+ 			}
+ 
 @@ -32127,7 +_,7 @@
  			if (Main.tileHammer[tile.type]) {
  				canHitWalls = false;
@@ -4487,6 +4496,15 @@
  				if (sItem.axe > 0) {
  					AchievementsHelper.CurrentlyMining = true;
  					if (!WorldGen.CanKillTile(x, y))
+@@ -32310,7 +_,7 @@
+ 
+ 		private void ItemCheck_UseMiningTools_TryPoundingTile(Item sItem, int tileHitId, ref bool hitWall, int x, int y) {
+ 			Tile tile = Main.tile[x, y];
+-			if (sItem.hammer > 0 && tile.active() && (Main.tileSolid[tile.type] || tile.type == 314 || tile.type == 351 || tile.type == 424 || tile.type == 442) && poundRelease) {
++			if (sItem.hammer > 0 && tile.active() && (Main.tileSolid[tile.type] || TileLoader.CanBeSloped(x, y, tile.type) || tile.type == 314 || tile.type == 351 || tile.type == 424 || tile.type == 442) && poundRelease) {
+ 				hitWall = false;
+ 				ApplyItemTime(sItem);
+ 				int damageAmount = 100;
 @@ -32322,7 +_,10 @@
  					if (!poundRelease)
  						return;

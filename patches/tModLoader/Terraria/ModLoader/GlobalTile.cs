@@ -224,6 +224,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to override vanilla tile slope behaviour for any non-solid tiles. Return true to allow tile to be sloped even without Main.tileSolid set for it. Returns false by default.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type"></param>
+		public virtual bool CanBeSloped(int i, int j, int type) {
+			return false;
+		}
+
+		/// <summary>
 		/// Allows you to control how hammers slope any tile. Return true to allow the tile to slope normally. Returns true by default. Called on the local Client and Single Player.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
