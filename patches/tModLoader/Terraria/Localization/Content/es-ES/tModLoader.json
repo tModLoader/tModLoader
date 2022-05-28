@@ -432,23 +432,23 @@
 		"AntivirusHint": "\n\nSugerencia: Si tienes antivirus, prueba a añadir Terraria a tu lista de exclusiones.",
 		"TypeInitializationHint": "\n\nSugerencia: Reinicia el juego. Si el problema persiste, prueba a desinstalar Terraria completamente, reinstálalo a través de Steam y vuelve a instalar tModLoader."
 		// "TagsContent": "New Content",
-		// "TagsContentDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsContentDescription": "Adds new content (i.e. items, weapons, npcs, etc.) to the game",
 		// "TagsUtility": "Utilities",
-		// "TagsUtilityDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsUtilityDescription": "Adds utility-oriented content or features",
 		// "TagsLibrary": "Library",
-		// "TagsLibraryDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsLibraryDescription": "Utilities or features that other mods use. In other words, Provides useful features for other modders",
 		// "TagsQoL": "Quality Of Life",
-		// "TagsQoLDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsQoLDescription": "Adjustments that improve the gameplay and/or feel of the game (i.e. improved recipes, etc.)",
 		// "TagsGameplay": "Gameplay Tweaks",
-		// "TagsGameplayDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsGameplayDescription": "Adjustments that change existing features (i.e. different UI, etc.)",
 		// "TagsAudio": "Audio Tweaks",
-		// "TagsAudioDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsAudioDescription": "Adjustments that change existing audio (i.e. new boss themes, etc.)",
 		// "TagsVisual": "Visual Tweaks",
-		// "TagsVisualDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsVisualDescription": "Adjustments that change existing visualization (i.e. particle effects, etc.)",
 		// "TagsLang": "Localization Support",
-		// "TagsLangDescription": "This is a placeholder description. Don't Translate!",
+		// "TagsLangDescription": "Adds language support for your mod. In other words, your mod supports different languages",
 		// "TagsGen": "Custom World Gen",
-		// "TagsGenDescription": "This is a placeholder description. Don't Translate!"
+		// "TagsGenDescription": "Changes the way the world is generated (i.e. ores, new structures, etc.)"
 	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "Aumenta un {0}% el daño"
