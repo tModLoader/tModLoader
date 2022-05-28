@@ -6,8 +6,6 @@
 cd "$(dirname "$0")"
 . ./BashUtils.sh
 
-echo "You are on platform: \"$_uname\""
-
 # Try to prevent "misleading" execution inside WSL
 # Check from: https://stackoverflow.com/questions/38086185/how-to-check-if-a-program-is-run-in-bash-on-ubuntu-on-windows-and-not-just-plain
 if [[ -n "$IS_WSL" || -n "$WSL_DISTRO_NAME" ]]; then
@@ -38,6 +36,8 @@ touch "$NativeLog"
 echo "Verifying .NET...."  2>&1 | tee -a "$LogFile"
 echo "This may take a few moments."
 echo "Logging to $LogFile"  2>&1 | tee -a "$LogFile"
+
+echo "You are on platform: \"$_uname $(uname -m)\""  2>&1 | tee -a "$LogFile"
 
 if [[ "$_uname" == *"_NT"* ]]; then
 	run_script ./Remove13_64Bit.sh  2>&1 | tee -a "$LogFile"

@@ -41,7 +41,7 @@
  	}
  
  #if NETCORE
-@@ -58,11 +_,23 @@
+@@ -58,12 +_,24 @@
  					return handle;
  				}
  
@@ -51,7 +51,7 @@
  				var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
  				var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
  				var match = files.FirstOrDefault();
-+
+ 
 +				if (match is null) {
 +					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(dir, name + ".dll")}");
 +				}
@@ -63,6 +63,23 @@
 +				Logging.tML.Debug("\tsuccess");
 +
 +				return assemblies[name] = handle;
- 
++
  				Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
  
+ 				if (match != null && NativeLibrary.TryLoad(match, out handle)) {
+@@ -83,8 +_,13 @@
+ 	}
+ 
+ 	private static string getNativeDir(string name) {
+-		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+-			return "Windows";
++		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
++			if (RuntimeInformation.ProcessArchitecture == Architecture.X86)
++				return "Win32";
++			else if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
++				return "Windows";
++		}
++			
+ 		if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+ 			return "Linux";
+ 		if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
