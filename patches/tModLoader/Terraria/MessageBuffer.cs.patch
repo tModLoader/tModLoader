@@ -20,7 +20,7 @@
  				return;
 +			*/
  
-+			if (b < LegacyNetDiagnosticsUI.maxMsg) // Check added by TML.
++			if (b < NetDiagnosticsUI.MaxMessages) // Check added by TML. Ignores TML MessageIDs and ModPackets
 -			Main.ActiveNetDiagnosticsUI.CountReadMessage(b, length);
 +				Main.ActiveNetDiagnosticsUI.CountReadMessage(b, length);
 +

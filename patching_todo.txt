@@ -33,10 +33,6 @@
 		//In Item.GetDrawHitbox, return the following size if it's not null.
 			itemAnimations[item[i].type]?.GetFrame(itemTexture[item[i].type])
 			
-	//LegacyNetDiagnosticsUI:
-		//Add this to the end of PrintNetDiagnosticsLineForMessage
-			ModNet.DrawModDiagnoseNet();
-			
 	//LegacySoundPlayer
 		//Re-add clamps for volume and pitch, 0.0..1.0 and -1.0..1.0 respectively?
 			
