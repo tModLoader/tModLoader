@@ -22,11 +22,18 @@ public class AutomaticTest {
 
 	[TestCaseSource(nameof(GetTestCases))]
 	public async Task RewriteCode(Document doc) {
+		RemoveIfExists(Path.ChangeExtension(doc.FilePath!, ".Out.cs"));
+
 		doc = await tModPorter.Rewrite(doc);
 		if (doc.Project == _project)
 			Assert.Fail("No content change!");
 
 		await AssertFixed(doc);
+	}
+
+	private static void RemoveIfExists(string path) {
+		if (File.Exists(path))
+			File.Delete(path);
 	}
 
 	[Test]
@@ -51,6 +58,13 @@ public class AutomaticTest {
 
 	[Test]
 	public async Task ProjectWideRefactor() {
+		var baseProject = await LoadProject();
+		var testCaseDocs = baseProject.Documents.Where(doc => doc.FilePath!.Replace('\\', '/').Contains("/ProjectWide/")).ToArray();
+		foreach (var doc in testCaseDocs) {
+			RemoveIfExists(Path.ChangeExtension(doc.FilePath!, ".Out.cs"));
+		}
+
+
 		int pass = 0;
 		var log = (ProgressUpdate update) => {
 			if (update is not ProgressUpdate.Progress progress) {
@@ -65,33 +79,32 @@ public class AutomaticTest {
 			}
 		};
 
-		var baseProject = await LoadProject();
+
 		var project = await new tModPorter(dryRun: true).Process(baseProject, log);
 		TestContext.Out.WriteLine("Complete. Comparing files...");
 
 		var updatedDocs = project.GetChanges(baseProject).GetChangedDocuments().ToHashSet();
 		Assert.Multiple(async () => {
-			foreach (var doc in project.Documents) {
-				if (!doc.FilePath!.Replace('\\', '/').Contains("/ProjectWide/"))
-					continue;
+			foreach (var testDoc in testCaseDocs) {
+				if (!updatedDocs.Contains(testDoc.Id))
+					Assert.Fail($"{testDoc.Name}: No content change!");
 
-				if (!updatedDocs.Contains(doc.Id))
-					Assert.Fail($"{doc.Name}: No content change!");
-
-				await AssertFixed(doc);
-				TestContext.Out.WriteLine("Success: " + doc.Name);
+				await AssertFixed(project.GetDocument(testDoc.Id)!);
+				TestContext.Out.WriteLine("Success: " + testDoc.Name);
 			}
 		});
 	}
 
 	private static async Task AssertFixed(Document doc) {
 		var result = (await doc.GetTextAsync()).ToString();
-		await File.WriteAllTextAsync(Path.ChangeExtension(doc.FilePath!, ".Out.cs"), result);
 
 		string fixedFilePath = Path.ChangeExtension(doc.FilePath!, ".Expected.cs");
 		Assert.True(File.Exists(fixedFilePath), $"File '{fixedFilePath}' doesn't exist.");
 
 		string fixedContent = await File.ReadAllTextAsync(fixedFilePath);
+		if (!string.Equals(fixedContent, result))
+			await File.WriteAllTextAsync(Path.ChangeExtension(doc.FilePath!, ".Out.cs"), result);
+
 		FileAssert.Equal(doc.Name, fixedContent, result);
 	}
 

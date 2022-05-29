@@ -12,7 +12,7 @@
         <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
     </ItemGroup>
     <ItemGroup>
-		<Compile Remove="**/*.Fix.cs" />
+		<Compile Remove="**/*.Expected.cs" />
         <Compile Remove="**/*.Out.cs" />
     </ItemGroup>
 </Project>

@@ -13,6 +13,6 @@
     <ItemGroup>
         <Compile Remove="**/*.cs" />
 		<Compile Include="Common/*.cs" />
-        <Compile Include="**/*.Fix.cs" />
+        <Compile Include="**/*.Expected.cs" />
     </ItemGroup>
 </Project>
