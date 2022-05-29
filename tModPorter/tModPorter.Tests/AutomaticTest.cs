@@ -88,7 +88,7 @@ public class AutomaticTest {
 		var result = (await doc.GetTextAsync()).ToString();
 		await File.WriteAllTextAsync(Path.ChangeExtension(doc.FilePath!, ".Out.cs"), result);
 
-		string fixedFilePath = Path.ChangeExtension(doc.FilePath!, ".Fix.cs");
+		string fixedFilePath = Path.ChangeExtension(doc.FilePath!, ".Expected.cs");
 		Assert.True(File.Exists(fixedFilePath), $"File '{fixedFilePath}' doesn't exist.");
 
 		string fixedContent = await File.ReadAllTextAsync(fixedFilePath);
