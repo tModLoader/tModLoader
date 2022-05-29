@@ -53,7 +53,7 @@
      <EmbeddedResource Include="GameContent/Creative/Content/*" />
      <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -47,15 +_,29 @@
+@@ -47,15 +_,31 @@
    <ItemGroup>
      <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
      <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
@@ -82,6 +82,8 @@
    <Target Name="CopyToSteamDir" AfterTargets="Build">
 +    <!-- Deal with Abnormal Managed Libaries that require deployment assembly replacements for varying architectures-->
 +    <Copy SourceFiles="Libraries\Common\UNIX.Steamworks.NET.dll" DestinationFolder="$(TargetDir)\PlatformVariantLibs" SkipUnchangedFiles="True" />
++	<Delete Files="$(TargetDir)\tModPorter.runtimeconfig.json" />
++	<Delete Files="$(TargetDir)\tModPorter.deps.json" />
      <!-- copy files systematically to output folder -->
      <ItemGroup>
        <BinFiles Include="$(TargetDir)**" />
