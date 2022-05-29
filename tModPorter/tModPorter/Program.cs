@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using static System.Console;
 
@@ -7,9 +8,9 @@ namespace tModPorter;
 
 public class Program {
 	public static async Task Main(string[] args) {
-		string projectPath = GetProjectPath(args);
+		string projectPath = GetProjectPath(args.LastOrDefault());
 
-		tModPorter porter = new();
+		tModPorter porter = new(noBackups: args.Contains("-nobak"));
 
 		try {
 			await porter.ProcessProject(projectPath, UpdateProgress);
@@ -23,10 +24,10 @@ public class Program {
 		ReadKey();
 	}
 
-	private static string GetProjectPath(string[] args) {
+	private static string GetProjectPath(string path) {
 		// Check if the args have a valid file path
-		if (args.Length > 0 && File.Exists(Path.ChangeExtension(args[0], ".csproj")))
-			return args[0];
+		if (path != null && File.Exists(Path.ChangeExtension(path, ".csproj")))
+			return path;
 
 		// Ask the user for a path
 		WriteLine("Enter the path to the .csproj of the mod you want to port");

@@ -20,9 +20,11 @@ public class tModPorter
 	private int docsCompletedThisPass = 0;
 
 	public bool DryRun { get; }
+	public bool NoBackups { get; }
 
-	public tModPorter(bool dryRun = false) {
+	public tModPorter(bool dryRun = false, bool noBackups = false) {
 		DryRun = dryRun;
+		NoBackups = noBackups;
 	}
 
 	public async Task ProcessProject(string projectPath, Action<ProgressUpdate>? updateProgress = null) {
@@ -96,12 +98,14 @@ public class tModPorter
 				updateProgress(new Warning($"Less than 95% confidence about the file encoding of: {doc.FilePath}"));
 		}
 
-		int i = 2;
-		string backupPath = $"{path}.bak";
-		while (File.Exists(backupPath)) {
-			backupPath = $"{path}.bak{i++}";
+		if (!NoBackups) {
+			int i = 2;
+			string backupPath = $"{path}.bak";
+			while (File.Exists(backupPath)) {
+				backupPath = $"{path}.bak{i++}";
+			}
+			File.Move(path, backupPath);
 		}
-		File.Move(path, backupPath);
 
 		await File.WriteAllTextAsync(path, (await doc.GetTextAsync()).ToString(), encoding);
 	}
