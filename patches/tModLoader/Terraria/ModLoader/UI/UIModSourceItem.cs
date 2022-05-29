@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using ReLogic.Content;
+using ReLogic.OS;
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
@@ -123,6 +125,7 @@ namespace Terraria.ModLoader.UI
 
 				int leftPixels = -26;
 
+				bool projNeedsUpdate = false;
 				if (!File.Exists(csprojFile) || Interface.createMod.CsprojUpdateNeeded(File.ReadAllText(csprojFile))) {
 					var icon = UICommon.ButtonExclamationTexture;
 					var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
@@ -157,6 +160,7 @@ namespace Terraria.ModLoader.UI
 					Append(upgradeCSProjButton);
 
 					leftPixels -= 26;
+					projNeedsUpdate = true;
 				}
 
 				// Display upgrade .lang files button if any .lang files present
@@ -179,6 +183,45 @@ namespace Terraria.ModLoader.UI
 					};
 
 					Append(upgradeLangFilesButton);
+
+					leftPixels -= 26;
+				}
+
+
+				// Display Run tModPorter for Windows when csproj is valid
+				if (Platform.IsWindows && !projNeedsUpdate) {
+					var pIcon = UICommon.ButtonExclamationTexture;
+					var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
+						Left = { Pixels = leftPixels, Percent = 1f },
+						Top = { Pixels = 4 }
+					};
+
+					portModButton.OnClick += (s, e) => {
+						string modFolderName = Path.GetFileName(_mod);
+						string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
+
+						string args = $"\"{csprojFile}\"";
+
+						string git = Path.Combine(_mod, ".git");
+						if (File.Exists(git)) {
+							args = $"-nobak {args}";
+						}
+
+						var tMLName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+						var porterPath =  Path.Combine(Directory.GetParent(tMLName).ToString(), "tModPorter", "tModPorter.bat");
+
+						var porterInfo = new ProcessStartInfo() {
+							FileName = porterPath,
+							Arguments = args,
+							UseShellExecute = true
+						};
+
+						var porter = Process.Start(porterInfo);
+					};
+
+					Append(portModButton);
+
+					leftPixels -= 26;
 				}
 			}
 		}
