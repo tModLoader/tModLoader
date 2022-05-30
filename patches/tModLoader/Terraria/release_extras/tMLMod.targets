@@ -17,12 +17,14 @@
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
 	</ItemGroup>
 
+	<ItemDefinitionGroup>
+		<ModReference>
+			<Visible>false</Visible>
+		</ModReference>
+	</ItemDefinitionGroup>
 	<Target Name="IncludeModReferences" BeforeTargets="ResolveAssemblyReferences">
 		<Message Text="Adding %(ModReference.Identity)" />
 		<ItemGroup>
-			<ModReference Update="%(ModReference.Identity)" >
-				<Visible>false</Visible>
-			</ModReference>
 			<Reference Include="%(ModReference.Identity)">
 				<HintPath Condition="%(ModReference.HintPath) != ''">%(ModReference.HintPath)</HintPath>
 			</Reference>
