@@ -22,18 +22,16 @@ public class PackageModFile : TaskBase
 	public string OutTest { get; set; } = string.Empty;
 
 	protected override void Run() {
-		Log.LogMessage(MessageImportance.Low, $"Executing stuff...");
+		Log.LogMessage(MessageImportance.Low, "Executing stuff...");
 		Log.LogMessage(Test);
 		OutTest = Test;
 
 		Dictionary<string, ITaskItem> nugetLookup = NugetReferences.ToDictionary(x => x.ItemSpec);
 
 		foreach (ITaskItem nugetReference in NugetReferences) {
-			var identifier = nugetReference.GetMetadata("Identity");
 			var version = nugetReference.GetMetadata("Version");
 			var spec = nugetReference.ItemSpec;
 			Log.LogMessage($"{spec} - v{version} - Metadatas: {string.Join(" | ", (IList<string>) nugetReference.MetadataNames)}");
-			Log.LogMessage($"\t{nugetReference.GetMetadata("FullPath")}"); // FullPath points to ModFolder/NugetPackageName
 		}
 
 		foreach (ITaskItem referencePath in ReferencePaths) {
