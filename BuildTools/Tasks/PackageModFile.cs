@@ -35,9 +35,9 @@ public class PackageModFile : TaskBase
 
 		List<ITaskItem> nugetReferences = new List<ITaskItem>();
 		foreach (ITaskItem referencePath in ReferencePaths) {
-			var hintPath = referencePath.GetMetadata("HintPath");
-			var nugetPackageId = referencePath.GetMetadata("NuGetPackageId");
-			var nugetPackageVersion = referencePath.GetMetadata("NuGetPackageVersion");
+			string? hintPath = referencePath.GetMetadata("HintPath");
+			string? nugetPackageId = referencePath.GetMetadata("NuGetPackageId");
+			string? nugetPackageVersion = referencePath.GetMetadata("NuGetPackageVersion");
 
 			if (string.IsNullOrEmpty(nugetPackageId)) continue;
 			if (!nugetLookup.ContainsKey(nugetPackageId)) continue;
