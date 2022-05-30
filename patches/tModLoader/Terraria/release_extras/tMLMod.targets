@@ -23,6 +23,11 @@
 		</ModReference>
 	</ItemDefinitionGroup>
 	<Target Name="IncludeModReferences" BeforeTargets="ResolveAssemblyReferences">
+		<Message Text="FIND ME - Following references:" />
+		<ItemGroup>
+			<DllReference Include="@(Reference)" Condition="$([System.String]::new('%(FullPath)').StartsWith($(MSBuildProjectDirectory)))" />
+		</ItemGroup>
+		<Message Text="FIND ME - @(DllReference)" />
 		<Message Text="Adding %(ModReference.Identity)" />
 		<ItemGroup>
 			<Reference Include="%(ModReference.Identity)">
