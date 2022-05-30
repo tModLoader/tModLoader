@@ -34,13 +34,24 @@
 	<UsingTask TaskName="PackageModFile" AssemblyFile="C:\Users\ikerv\Documents\Programming\tModLoader\tModLoader\BuildTools\Build\netstandard2.0\tModLoader.BuildTools.dll" />
 	<Target Name="Package" AfterTargets="Build">
 		<Message Text="Packaging mod..." />
+
+		<Error
+				Text="OutputTmodPath should be set to the location of the file to be written. If you are using 'dotnet build', add '/p:OutputTmodPath=path/to/file' after the command."
+				Condition="$(OutputTmodPath) == ''" />
+
+		<Error
+				Text="TmlVersion should be set to the version of TML this mod is being built for. If you are using 'dotnet build', add '/p:TmlVersion=0.1.2.3' after the command."
+				Condition="$(TmlVersion) == ''" />
+
 		<PackageModFile
 				PackageReferences="@(PackageReference)"
 				ModReferences="@(ModReference)"
 				ReferencePaths="@(ReferencePath)"
 				ProjectDirectory="$(MSBuildProjectDirectory)"
 				OutputPath="$(OutputPath)"
-				AssemblyName="$(AssemblyName)" >
+				AssemblyName="$(AssemblyName)"
+				TmlVersion="$(TmlVersion)"
+				OutputTmodPath="$(OutputTmodPath)" >
 		</PackageModFile>
 	</Target>
 	

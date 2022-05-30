@@ -1,9 +1,9 @@
 ﻿using Microsoft.Build.Framework;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using tModLoader.BuildTools.ModFile;
 
 namespace tModLoader.BuildTools.Tasks;
 
@@ -27,6 +27,12 @@ public class PackageModFile : TaskBase
 	[Required]
 	public string AssemblyName { get; set; } = string.Empty;
 
+	[Required]
+	public string TmlVersion { get; set; } = string.Empty;
+
+	[Required]
+	public string OutputTmodPath { get; set; } = string.Empty;
+
 	protected override void Run() {
 		List<ITaskItem> nugetReferences = GetNugetReferences();
 
@@ -44,11 +50,13 @@ public class PackageModFile : TaskBase
 		}
 		Log.LogMessage(MessageImportance.Low, $"Found mod's dll file: {modDll}");
 
+		TmodFile modFile = new(OutputTmodPath, AssemblyName, new Version(69, 420), Version.Parse(TmlVersion));
+
 		// 1) Get mod .dll file - DONE
-		// 2) Copy .dll to TmodFile
-		// 3) Copy references to TmodFile
-		// 4) Get all resources, convert them, and copy them to the TmodFile
-		// 5) Create Info file from .csproj
+		// 2) Create Info file from .csproj
+		// 3) Copy .dll to TmodFile
+		// 4) Copy references to TmodFile
+		// 5) Get all resources, convert them, and copy them to the TmodFile
 	}
 
 	private List<ITaskItem> GetNugetReferences() {
