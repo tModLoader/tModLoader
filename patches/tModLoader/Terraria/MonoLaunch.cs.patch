@@ -10,10 +10,15 @@
  
  internal static class MonoLaunch
  {
-@@ -17,6 +_,7 @@
+@@ -17,6 +_,12 @@
  	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
  
  	private static void Main(string[] args) {
++		if (args.Length > 0 && args[0] == "-tModPorter") {
++			tModPorter.Program.Main(args.Skip(1).ToArray()).GetAwaiter().GetResult();
++			return;
++		}
++
 +		Thread.CurrentThread.Name = "Entry Thread";
  		/*
  		// FNA is requested by both Terraria and ReLogic.dll
