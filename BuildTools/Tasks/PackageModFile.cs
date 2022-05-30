@@ -21,13 +21,34 @@ public class PackageModFile : TaskBase
 	[Required]
 	public string ProjectDirectory { get; set; } = string.Empty;
 
+	[Required]
+	public string OutputPath { get; set; } = string.Empty;
+
+	[Required]
+	public string AssemblyName { get; set; } = string.Empty;
+
 	protected override void Run() {
 		List<ITaskItem> nugetReferences = GetNugetReferences();
 
 		List<ITaskItem> modReferences = GetModReferences();
 
+		// Assumes all dll references are under the mod's folder (at same level or in subfolders).
+		// Letting dll references be anywhere would mean doing some weird filters on references,
+		// or using a custom `<DllReference>` thing that would get translated to a `<Reference>`.
 		IEnumerable<ITaskItem> dllReferences = ReferencePaths.Where(x => x.GetMetadata("FullPath").StartsWith(ProjectDirectory));
-		Log.LogMessage($"Found {dllReferences.Count()} dll references.");
+		Log.LogMessage(MessageImportance.Low, $"Found {dllReferences.Count()} dll references.");
+
+		string modDll = Path.Combine(ProjectDirectory, OutputPath, Path.ChangeExtension(AssemblyName, ".dll"));
+		if (!File.Exists(modDll)) {
+			throw new FileNotFoundException("Mod dll not found.", modDll);
+		}
+		Log.LogMessage(MessageImportance.Low, $"Found mod's dll file: {modDll}");
+
+		// 1) Get mod .dll file - DONE
+		// 2) Copy .dll to TmodFile
+		// 3) Copy references to TmodFile
+		// 4) Get all resources, convert them, and copy them to the TmodFile
+		// 5) Create Info file from .csproj
 	}
 
 	private List<ITaskItem> GetNugetReferences() {
@@ -63,7 +84,7 @@ public class PackageModFile : TaskBase
 			bool isWeak = string.Equals(weakRef, "true", StringComparison.OrdinalIgnoreCase);
 
 			if (string.IsNullOrEmpty(modName)) {
-				throw new Exception("A mod reference must have an identity (Include=\"ModName\").");
+				throw new Exception("A mod reference must have an identity (Include=\"ModName\"). It should match the internal name of the mod you are referencing.");
 			}
 
 			Log.LogMessage(MessageImportance.Low, $"{modName} [Weak: {isWeak}] - Found at: {modPath}");

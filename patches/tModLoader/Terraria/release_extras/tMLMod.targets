@@ -38,7 +38,9 @@
 				PackageReferences="@(PackageReference)"
 				ModReferences="@(ModReference)"
 				ReferencePaths="@(ReferencePath)"
-				ProjectDirectory="$(MSBuildProjectDirectory)" >
+				ProjectDirectory="$(MSBuildProjectDirectory)"
+				OutputPath="$(OutputPath)"
+				AssemblyName="$(AssemblyName)" >
 		</PackageModFile>
 	</Target>
 	
