@@ -1393,6 +1393,24 @@
  			}
  
  			UpdateHungerBuffs();
+@@ -8237,7 +_,7 @@
+ 		}
+ 
+ 		public void UpdateHungerBuffs() {
+-			for (int i = 0; i < 22; i++) {
++			for (int i = 0; i < MaxBuffs; i++) {
+ 				if (buffType[i] <= 0 || buffTime[i] <= 0)
+ 					continue;
+ 
+@@ -8270,7 +_,7 @@
+ 				return;
+ 
+ 			bool flag = false;
+-			for (int i = 0; i < 22; i++) {
++			for (int i = 0; i < MaxBuffs; i++) {
+ 				if (buffTime[i] > 0 && BuffID.Sets.IsFedState[buffType[i]]) {
+ 					flag = true;
+ 					break;
 @@ -8577,12 +_,19 @@
  			}
  		}
