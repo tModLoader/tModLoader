@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 public class ModItemTest : ModItem
 {
@@ -23,4 +24,6 @@ public class ModItemTest : ModItem
 	public override void ModifyWeaponCrit(Player player, ref float crit) { /* Empty */ }
 
 	public override void ModifyWeaponDamage(Player player, ref StatModifier damage) { /* Empty */ }
+
+	public override void LoadData(TagCompound tag) { /* Empty */ }
 }
