@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
-// Break
 
 public class SimpleRenamedMembersTest
 {
