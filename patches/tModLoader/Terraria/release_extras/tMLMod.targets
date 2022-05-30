@@ -25,13 +25,14 @@
 			<PackageReference Include="%(NugetReference.Identity)" Version="%(NugetReference.Version)" />
 		</ItemGroup>
 	</Target>
-	
+
 	<UsingTask TaskName="PackageModFile" AssemblyFile="C:\Users\ikerv\Documents\Programming\tModLoader\tModLoader\BuildTools\Build\netstandard2.0\tModLoader.BuildTools.dll" />
-	<Target Name="Package" AfterTargets="Build" Condition="@(NugetReference) != ''">
+	<Target Name="Package" AfterTargets="Build">
 		<Message Text="Packaging mod..." />
 		<PackageModFile
-				NugetReferences="@(NugetReference)"
-				Test="@(NugetReference)" >
+				NugetReferences="@(PackageReference)"
+				ReferencePaths="@(ReferencePath)"
+				Test="@(ReferencePath)" >
 			<Output TaskParameter="OutTest" ItemName="OutTest" />
 		</PackageModFile>
 		<Message Text="Output is: @(OutTest)" />
