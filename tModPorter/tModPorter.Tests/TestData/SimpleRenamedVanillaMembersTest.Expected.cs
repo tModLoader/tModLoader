@@ -13,7 +13,7 @@ public class SimpleRenamedVanillaMembersTest
 		var itemLockoutTime = Main.timeItemSlotCannotBeReusedFor;
 		var maxInventory = Main.InventorySlotsTotal;
 		var quickBG = Main.instantBGTransitionCounter;
-		var smartCursorEnabled = Main.SmartCursorIsUsed;
+		var smartCursorEnabled = Main.SmartCursorIsUsed; // get only property
 		var tileValue = Main.tileOreFinderPriority;
 		var worldRate = Main.desiredWorldTilesUpdateRate;
 		var lightMode = Lighting.LegacyEngine.Mode;
