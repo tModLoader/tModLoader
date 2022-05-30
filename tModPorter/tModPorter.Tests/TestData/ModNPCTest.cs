@@ -1,5 +1,7 @@
 ﻿using System;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 public class ModNPCTest : ModNPC
 {
@@ -8,4 +10,8 @@ public class ModNPCTest : ModNPC
 	}
 
 	public override void NPCLoot() {  /*empty*/ }
+
+	public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor) { return true; }
+
+	public override void PostDraw(SpriteBatch spriteBatch, Color drawColor) { /* Empty */ }
 }
