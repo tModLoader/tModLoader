@@ -23,7 +23,7 @@
 		</ModReference>
 	</ItemDefinitionGroup>
 	<Target Name="IncludeModReferences" BeforeTargets="ResolveAssemblyReferences">
-		<Message Text="Adding %(ModReference.Identity)" />
+		<Message Text="Adding %(ModReference.Identity) as a reference" />
 		<ItemGroup>
 			<Reference Include="%(ModReference.Identity)">
 				<HintPath Condition="%(ModReference.HintPath) != ''">%(ModReference.HintPath)</HintPath>
