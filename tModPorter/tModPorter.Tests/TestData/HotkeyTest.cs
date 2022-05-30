@@ -5,6 +5,9 @@ public class HotkeyTest : Mod
 	public static ModHotKey CustomHotkey;
 
 	void Method() {
-		CustomHotkey = this.RegisterHotKey("Custom Hotkey", "C");
+		Mod mod = this;
+		CustomHotkey = mod.RegisterHotKey("Custom Hotkey", "C");
+
+		CustomHotkey = RegisterHotKey("Custom Hotkey Via Identifier", "C");
 	}
 }
