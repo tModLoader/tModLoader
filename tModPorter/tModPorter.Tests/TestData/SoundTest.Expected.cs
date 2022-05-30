@@ -18,6 +18,7 @@ public class SoundTest
 
 		SoundEngine.PlaySound(SoundID.MenuTick, new Vector2(420, 421)); // Convert x/y into Vector2
 		SoundEngine.PlaySound(SoundID.MenuTick, player.position); // Simplify manual x/y int conversion into Vector2
+		SoundEngine.PlaySound(SoundID.Item17, player.Center); // Also simplify style if combinable with type
 
 		SoundEngine.PlaySound(SoundID.Item10, player.position); // The following four have dedicated numbered SoundStyles
 		SoundEngine.PlaySound(SoundID.NPCHit10, player.position);

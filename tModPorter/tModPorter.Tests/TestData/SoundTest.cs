@@ -18,6 +18,7 @@ public class SoundTest
 
 		Main.PlaySound(SoundID.MenuTick, 420, 421);
 		Main.PlaySound(SoundID.MenuTick, (int)player.position.X, (int)player.position.Y);
+		Main.PlaySound(SoundID.Item, (int)player.Center.X, (int)player.Center.Y, 17);
 
 		Main.PlaySound(new LegacySoundStyle(2, 10), player.position);
 		Main.PlaySound(new LegacySoundStyle(3, 10), player.position);
