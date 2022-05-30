@@ -224,13 +224,14 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify whether any tile can be sloped.
+		/// Allows you to control whether any non-solid tile can be sloped.
+		/// Returns false by default.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
 		/// <param name="type"></param>
-		/// <param name="sloping"></param>
-		public virtual void ModifySloping(int i, int j, int type, ref bool sloping) {
+		public virtual bool CanBeSloped(int i, int j, int type) {
+			return false;
 		}
 
 		/// <summary>

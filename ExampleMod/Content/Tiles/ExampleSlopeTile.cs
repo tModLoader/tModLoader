@@ -18,8 +18,8 @@ namespace ExampleMod.Content.Tiles
 			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleSlopedTile>();
 		}
 
-		public override void ModifySloping(int i, int j, ref bool sloping) {
-			sloping = true;
+		public override bool CanBeSloped(int i, int j) {
+			return true;
 		}
 
 		public override bool Slope(int i, int j) {
