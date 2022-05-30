@@ -156,6 +156,7 @@ namespace Terraria.ModLoader.UI
 						Main.menuMode = Interface.modSourcesID;
 
 						upgradeCSProjButton.Remove();
+						_upgradePotentialChecked = false;
 					};
 					Append(upgradeCSProjButton);
 
