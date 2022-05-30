@@ -20,14 +20,15 @@ public class tModPorter
 	private int docsCompletedThisPass = 0;
 
 	public bool DryRun { get; }
-	public bool NoBackups { get; }
+	public bool? MakeBackups { get; private set; }
 
-	public tModPorter(bool dryRun = false, bool noBackups = false) {
+	public tModPorter(bool dryRun = false, bool? makeBackups = null) {
 		DryRun = dryRun;
-		NoBackups = noBackups;
+		MakeBackups = makeBackups;
 	}
 
 	public async Task ProcessProject(string projectPath, Action<ProgressUpdate>? updateProgress = null) {
+		MakeBackups ??= !IsUnderGit(projectPath);
 		updateProgress ??= _ => { };
 		var start = DateTime.Now;
 
@@ -98,7 +99,7 @@ public class tModPorter
 				updateProgress(new Warning($"Less than 95% confidence about the file encoding of: {doc.FilePath}"));
 		}
 
-		if (!NoBackups) {
+		if (MakeBackups!.Value) {
 			int i = 2;
 			string backupPath = $"{path}.bak";
 			while (File.Exists(backupPath)) {
@@ -121,6 +122,8 @@ public class tModPorter
 
 		return doc;
 	}
+
+	private static bool IsUnderGit(string path) => Path.GetDirectoryName(path) is string parent && (Directory.Exists(Path.Combine(parent, ".git")) || IsUnderGit(parent));
 
 	private class ProjectLoadProgressAdapter : IProgress<ProjectLoadProgress> {
 		private Action<ProgressUpdate> updateProgress;

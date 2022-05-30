@@ -10,7 +10,7 @@ public class Program {
 	public static async Task Main(string[] args) {
 		string projectPath = GetProjectPath(args.LastOrDefault());
 
-		tModPorter porter = new(noBackups: args.Contains("-nobak"));
+		tModPorter porter = new();
 
 		try {
 			await porter.ProcessProject(projectPath, UpdateProgress);
@@ -25,30 +25,21 @@ public class Program {
 	}
 
 	private static string GetProjectPath(string path) {
-		// Check if the args have a valid file path
-		if (path != null && File.Exists(Path.ChangeExtension(path, ".csproj")))
-			return path;
+		while (true) {
+			if (path != null) {
+				path = path.Trim('"');
+				path = Path.ChangeExtension(path, ".csproj");
+				if (File.Exists(path))
+					return path;
+			}
 
-		// Ask the user for a path
-		WriteLine("Enter the path to the .csproj of the mod you want to port");
-		string filePath = Path.ChangeExtension(ReadLine(), ".csproj")!;
-
-		// Continue asking until a valid file is passed
-		while (!File.Exists(filePath)) {
 			Clear();
-			ForegroundColor = ConsoleColor.Yellow;
-			WriteLine("The path you entered doesn't exist");
-			ForegroundColor = ConsoleColor.Gray;
+			if (path != null)
+				Write("The path you entered doesn't exist. ");
 
-			filePath = Path.ChangeExtension(ReadLine(), ".csproj")!;
+			WriteLine("Enter the path to the .csproj of the mod you want to port:");
+			path = ReadLine();
 		}
-
-		// Reset the console
-		ForegroundColor = ConsoleColor.Gray;
-		Clear();
-
-		// Return the path passed in by the user
-		return filePath;
 	}
 
 	private static void UpdateProgress(ProgressUpdate update) {

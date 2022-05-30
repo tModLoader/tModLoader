@@ -201,14 +201,8 @@ namespace Terraria.ModLoader.UI
 						string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
 
 						string args = $"\"{csprojFile}\"";
-
-						string git = Path.Combine(_mod, ".git");
-						if (File.Exists(git)) {
-							args = $"-nobak {args}";
-						}
-
-						var tMLName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
-						var porterPath =  Path.Combine(Directory.GetParent(tMLName).ToString(), "tModPorter", "tModPorter.bat");
+						var tMLPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+						var porterPath =  Path.Combine(Path.GetDirectoryName(tMLPath), "tModPorter", "tModPorter.bat");
 
 						var porterInfo = new ProcessStartInfo() {
 							FileName = porterPath,
