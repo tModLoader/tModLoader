@@ -16,12 +16,12 @@
 		<Reference Remove="$(tMLLibraryPath)/**/runtime*/**" />
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
 	</ItemGroup>
-	
+
 	<UsingTask TaskName="PackageModFile" AssemblyFile="C:\Users\ikerv\Documents\Programming\tModLoader\tModLoader\BuildTools\Build\netstandard2.0\tModLoader.BuildTools.dll" />
 	<Target Name="Package" AfterTargets="Build">
 		<Message Text="Packaging mod..." />
 		<PackageModFile
-				NugetReferences="@(PackageReference)"
+				PackageReferences="@(PackageReference)"
 				ReferencePaths="@(ReferencePath)"
 				Test="@(ReferencePath)" >
 			<Output TaskParameter="OutTest" ItemName="OutTest" />

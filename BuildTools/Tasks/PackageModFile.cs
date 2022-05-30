@@ -10,7 +10,7 @@ namespace tModLoader.BuildTools.Tasks;
 public class PackageModFile : TaskBase
 {
 	[Required]
-	public ITaskItem[] NugetReferences { get; set; } = Array.Empty<ITaskItem>();
+	public ITaskItem[] PackageReferences { get; set; } = Array.Empty<ITaskItem>();
 
 	[Required]
 	public ITaskItem[] ReferencePaths { get; set; } = Array.Empty<ITaskItem>();
@@ -26,13 +26,8 @@ public class PackageModFile : TaskBase
 		Log.LogMessage(Test);
 		OutTest = Test;
 
-		Dictionary<string, ITaskItem> nugetLookup = NugetReferences.ToDictionary(x => x.ItemSpec);
-
-		foreach (ITaskItem nugetReference in NugetReferences) {
-			var version = nugetReference.GetMetadata("Version");
-			var spec = nugetReference.ItemSpec;
-			Log.LogMessage($"{spec} - v{version} - Metadatas: {string.Join(" | ", (IList<string>) nugetReference.MetadataNames)}");
-		}
+		Dictionary<string, ITaskItem> nugetLookup = PackageReferences.ToDictionary(x => x.ItemSpec);
+		List<ITaskItem> nugetReferences = new List<ITaskItem>();
 
 		foreach (ITaskItem referencePath in ReferencePaths) {
 			var hintPath = referencePath.GetMetadata("HintPath");
@@ -42,7 +37,10 @@ public class PackageModFile : TaskBase
 			if (string.IsNullOrEmpty(nugetPackageId)) continue;
 			if (!nugetLookup.ContainsKey(nugetPackageId)) continue;
 
-			Log.LogMessage($"{nugetPackageId} - v{nugetPackageVersion} - Found at: {hintPath}");
+			Log.LogMessage(MessageImportance.Low, $"{nugetPackageId} - v{nugetPackageVersion} - Found at: {hintPath}");
+			nugetReferences.Add(nugetLookup[nugetPackageId]);
 		}
+
+		Log.LogMessage(MessageImportance.Normal, $"Found {nugetReferences.Count} nuget references.");
 	}
 }
