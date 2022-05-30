@@ -17,11 +17,24 @@
 		<Reference Remove="$(tMLLibraryPath)/**/*.resources.dll" />
 	</ItemGroup>
 
+	<Target Name="IncludeModReferences" BeforeTargets="ResolveAssemblyReferences">
+		<Message Text="Adding %(ModReference.Identity)" />
+		<ItemGroup>
+			<ModReference Update="%(ModReference.Identity)" >
+				<Visible>false</Visible>
+			</ModReference>
+			<Reference Include="%(ModReference.Identity)">
+				<HintPath Condition="%(ModReference.HintPath) != ''">%(ModReference.HintPath)</HintPath>
+			</Reference>
+		</ItemGroup>
+	</Target>
+
 	<UsingTask TaskName="PackageModFile" AssemblyFile="C:\Users\ikerv\Documents\Programming\tModLoader\tModLoader\BuildTools\Build\netstandard2.0\tModLoader.BuildTools.dll" />
 	<Target Name="Package" AfterTargets="Build">
 		<Message Text="Packaging mod..." />
 		<PackageModFile
 				PackageReferences="@(PackageReference)"
+				ModReferences="@(ModReference)"
 				ReferencePaths="@(ReferencePath)" >
 		</PackageModFile>
 	</Target>

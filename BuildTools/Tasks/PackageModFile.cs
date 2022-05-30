@@ -16,17 +16,14 @@ public class PackageModFile : TaskBase
 	public ITaskItem[] ReferencePaths { get; set; } = Array.Empty<ITaskItem>();
 
 	[Required]
-	public string Test { get; set; } = string.Empty;
-
-	[Output]
-	public string OutTest { get; set; } = string.Empty;
+	public ITaskItem[] ModReferences { get; set; } = Array.Empty<ITaskItem>();
 
 	protected override void Run() {
 		Log.LogMessage(MessageImportance.Low, "Executing stuff...");
-		Log.LogMessage(Test);
-		OutTest = Test;
 
 		List<ITaskItem> nugetReferences = GetNugetReferences();
+
+		List<ITaskItem> modReferences = GetModReferences();
 	}
 
 	private List<ITaskItem> GetNugetReferences() {
@@ -51,5 +48,28 @@ public class PackageModFile : TaskBase
 		if (nugetLookup.Count != nugetReferences.Count)
 			Log.LogWarning($"Expected {nugetLookup.Count} nuget references but found {nugetReferences.Count}.");
 		return nugetReferences;
+	}
+
+	private List<ITaskItem> GetModReferences() {
+		List<ITaskItem> modReferences = new List<ITaskItem>();
+		foreach (ITaskItem modReference in ModReferences) {
+			string? modPath = modReference.GetMetadata("HintPath");
+			string? modName = modReference.GetMetadata("Identity");
+			string? weakRef = modReference.GetMetadata("Weak");
+			bool isWeak = string.Equals(weakRef, "true", StringComparison.OrdinalIgnoreCase);
+
+			if (string.IsNullOrEmpty(modName)) {
+				throw new Exception("A mod reference must have an identity (Include=\"ModName\").");
+			}
+			if (!isWeak && string.IsNullOrEmpty(modPath)) {
+				throw new Exception("A mod reference must be defined as weak or have a HintPath.");
+			}
+
+			Log.LogMessage(MessageImportance.Low, $"{modName} [Weak: {isWeak}] - Found at: {modPath}");
+			modReferences.Add(modReference);
+		}
+
+		Log.LogMessage(MessageImportance.Normal, $"Found {modReferences.Count} mod references.");
+		return modReferences;
 	}
 }
