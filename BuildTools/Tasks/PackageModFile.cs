@@ -61,9 +61,6 @@ public class PackageModFile : TaskBase
 			if (string.IsNullOrEmpty(modName)) {
 				throw new Exception("A mod reference must have an identity (Include=\"ModName\").");
 			}
-			if (!isWeak && string.IsNullOrEmpty(modPath)) {
-				throw new Exception("A mod reference must be defined as weak or have a HintPath.");
-			}
 
 			Log.LogMessage(MessageImportance.Low, $"{modName} [Weak: {isWeak}] - Found at: {modPath}");
 			modReferences.Add(modReference);
