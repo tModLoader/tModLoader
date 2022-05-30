@@ -25,11 +25,11 @@ public class TmodFile
 
 	private Version Version { get; }
 
-	internal TmodFile(string path, string name, Version version) {
+	internal TmodFile(string path, string name, Version version, Version modLoaderVersion) {
 		_path = path;
 		Name = name;
 		Version = version;
-		ModLoaderVersion = BuildInfo.tMLVersion;
+		ModLoaderVersion = modLoaderVersion;
 	}
 
 	/// <summary>
