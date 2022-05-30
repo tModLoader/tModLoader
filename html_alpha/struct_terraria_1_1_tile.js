@@ -1,5 +1,7 @@
 var struct_terraria_1_1_tile =
 [
+    [ "actColor", "struct_terraria_1_1_tile.html#a5d29f49a82c149de2ce204079d9d4860", null ],
+    [ "actColor", "struct_terraria_1_1_tile.html#a9ac2820df5768c0ac422a072b01d5089", null ],
     [ "Clear", "struct_terraria_1_1_tile.html#aa43b552744080f6578bb81b1af123a71", null ],
     [ "ClearEverything", "struct_terraria_1_1_tile.html#ab79e270007e021e75ccb812a92c4a4fd", null ],
     [ "ClearTile", "struct_terraria_1_1_tile.html#ae79eecffe4572d21ef77bef428e6ce89", null ],

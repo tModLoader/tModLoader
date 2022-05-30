@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "tModLoader", "index.html", [
+    [ "tModPorter", "md__github_workspace_src_t_mod_loader__terraria_release_extras_t_mod_porter__r_e_a_d_m_e.html", null ],
     [ "Packages", "namespaces.html", [
       [ "Packages", "namespaces.html", "namespaces_dup" ],
       [ "Package Functions", "namespacemembers.html", [
@@ -172,14 +173,14 @@ var NAVTREEINDEX =
 "class_terraria_1_1_world_gen.html#ad0d6a591eb7470cf1449ba597fd9a3f9",
 "functions_vars.html",
 "interface_terraria_1_1_graphics_1_1_renderers_1_1_i_particle.html#a63387a2014a1bb9a76895b72c690cac6",
-"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa09c9ea004b0c0822b75bdec322b90ff4",
-"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aac3284af0ef741b2490c9a4753c855f0e",
-"namespace_terraria_1_1_graphics_1_1_effects.html#a9cc811e33837fdf6cc2e58376f5b610fa2dfebfa889397f5f69caa79cb5960f34",
-"namespace_uw_u_pn_p.html",
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a4c9b9557ab6fdfe9b65b870ad678233a",
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one_1_1_parameters.html#a95b4690dd5e4db09b6606115dbdf614d",
-"struct_terraria_1_1_i_d_1_1_item_i_d_1_1_banner_effect.html#a96f87f7fe35926bb5615e131e33e58af",
-"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a85d0efbd4600806ad2ec4be1cc95da7e"
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa099c2cac32a5622e36d9f895e3a595ac",
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aac10018bfecfd881420692730a3943262",
+"namespace_terraria_1_1_graphics_1_1_effects.html#a9cc811e33837fdf6cc2e58376f5b610fa1f5c5ce5cdbea723378e6db882a732ec",
+"namespace_terraria_1_1_world_building.html",
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a49b54478b28fb7eb2cfffbf2b8f68039",
+"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one_1_1_parameters.html#a7a1849baad53abb21a68d5396e5472cd",
+"struct_terraria_1_1_i_d_1_1_item_i_d_1_1_banner_effect.html#a7a1ec99e0e7ea0c438e511c3bef9fdf5",
+"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a547ec74d7e741d95750153ca908c7e3a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
