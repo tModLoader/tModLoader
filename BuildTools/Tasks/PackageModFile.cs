@@ -18,12 +18,16 @@ public class PackageModFile : TaskBase
 	[Required]
 	public ITaskItem[] ModReferences { get; set; } = Array.Empty<ITaskItem>();
 
-	protected override void Run() {
-		Log.LogMessage(MessageImportance.Low, "Executing stuff...");
+	[Required]
+	public string ProjectDirectory { get; set; } = string.Empty;
 
+	protected override void Run() {
 		List<ITaskItem> nugetReferences = GetNugetReferences();
 
 		List<ITaskItem> modReferences = GetModReferences();
+
+		IEnumerable<ITaskItem> dllReferences = ReferencePaths.Where(x => x.GetMetadata("FullPath").StartsWith(ProjectDirectory));
+		Log.LogMessage($"Found {dllReferences.Count()} dll references.");
 	}
 
 	private List<ITaskItem> GetNugetReferences() {
