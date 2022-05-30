@@ -27,8 +27,9 @@ public class PackageModFile : TaskBase
 		OutTest = Test;
 
 		Dictionary<string, ITaskItem> nugetLookup = PackageReferences.ToDictionary(x => x.ItemSpec);
-		List<ITaskItem> nugetReferences = new List<ITaskItem>();
+		if (nugetLookup.ContainsKey("tModLoader.CodeAssist")) nugetLookup.Remove("tModLoader.CodeAssist");
 
+		List<ITaskItem> nugetReferences = new List<ITaskItem>();
 		foreach (ITaskItem referencePath in ReferencePaths) {
 			var hintPath = referencePath.GetMetadata("HintPath");
 			var nugetPackageId = referencePath.GetMetadata("NuGetPackageId");
@@ -42,5 +43,8 @@ public class PackageModFile : TaskBase
 		}
 
 		Log.LogMessage(MessageImportance.Normal, $"Found {nugetReferences.Count} nuget references.");
+
+		if (nugetLookup.Count != nugetReferences.Count)
+			Log.LogWarning($"Expected {nugetLookup.Count} nuget references but found {nugetReferences.Count}.");
 	}
 }
