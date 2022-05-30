@@ -17,4 +17,10 @@ public class ModItemTest : ModItem
 	public override bool? UseItem(Player player) { return true; /* comment */ }
 	
 	public override void NetReceive(BinaryReader reader) { /* Empty */ }
+
+	public override void ModifyWeaponKnockback(Player player, ref StatModifier knockback) { /* Empty */ }
+
+	public override void ModifyWeaponCrit(Player player, ref float crit) { /* Empty */ }
+
+	public override void ModifyWeaponDamage(Player player, ref StatModifier damage) { /* Empty */ }
 }
