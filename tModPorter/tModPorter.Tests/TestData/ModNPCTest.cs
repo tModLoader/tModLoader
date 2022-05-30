@@ -6,4 +6,6 @@ public class ModNPCTest : ModNPC
 	public void IdentifierTest() {
 		Console.Write(npc);
 	}
+
+	public override void NPCLoot() {  /*empty*/ }
 }
