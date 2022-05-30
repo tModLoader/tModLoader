@@ -22,11 +22,8 @@
 		<Message Text="Packaging mod..." />
 		<PackageModFile
 				PackageReferences="@(PackageReference)"
-				ReferencePaths="@(ReferencePath)"
-				Test="@(ReferencePath)" >
-			<Output TaskParameter="OutTest" ItemName="OutTest" />
+				ReferencePaths="@(ReferencePath)" >
 		</PackageModFile>
-		<Message Text="Output is: @(OutTest)" />
 	</Target>
 	
 	<Target Name="BuildMod" AfterTargets="Build">
