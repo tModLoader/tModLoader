@@ -1,5 +1,7 @@
 using Terraria;
-using Terraria.ModLoader; 
+using Terraria.DataStructures; // TileDrawInfo
+using Terraria.ModLoader;
+using Microsoft.Xna.Framework.Graphics;
 
 public class GlobalTileTest : GlobalTile {
 	public override bool? IsTileDangerous(int i, int j, int type, Player player) {
@@ -7,4 +9,6 @@ public class GlobalTileTest : GlobalTile {
 	}
 
 	public override void SetStaticDefaults() { /* Empty */ }
+
+	public override void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData) { /* Empty */ }
 }

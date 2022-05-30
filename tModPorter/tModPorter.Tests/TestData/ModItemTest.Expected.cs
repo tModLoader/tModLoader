@@ -3,6 +3,7 @@ using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Microsoft.Xna.Framework;
 
 public class ModItemTest : ModItem
 {
@@ -15,8 +16,12 @@ public class ModItemTest : ModItem
 		Item.useTime += 2;
 	}
 
+	public override bool PreReforge() { return false; /* comment */ }
+
 	public override bool? UseItem(Player player) { return true; /* comment */ }
-	
+
+	public override void UseStyle(Player player, Rectangle heldItemFrame) { /* comment */ }
+
 	public override void NetReceive(BinaryReader reader) { /* Empty */ }
 
 	public override void ModifyWeaponKnockback(Player player, ref StatModifier knockback) { /* Empty */ }

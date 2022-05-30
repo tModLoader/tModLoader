@@ -15,8 +15,12 @@ public class ModItemTest : ModItem
 		item.useTime += 2;
 	}
 
+	public override bool NewPreReforge() { return false; /* comment */ }
+
 	public override bool UseItem(Player player) { return true; /* comment */ }
-	
+
+	public override void UseStyle(Player player) { /* comment */ }
+
 	public override void NetRecieve(BinaryReader reader) { /* Empty */ }
 
 	public override void GetWeaponKnockback(Player player, ref float knockback) { /* Empty */ }

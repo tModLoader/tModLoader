@@ -1,6 +1,6 @@
 using Terraria.ModLoader;
 
-public class HotkeyTest : Mod
+public class ModHotKeyTest : Mod
 {
 	public static ModKeybind CustomHotkey;
 
