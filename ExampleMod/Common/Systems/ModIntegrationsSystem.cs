@@ -60,16 +60,22 @@ namespace ExampleMod.Common.Systems
 
 			// The "AddBoss" method requires many parameters, defined separately below:
 
+			// The name used for the title of the page
 			string bossName = "Minion Boss";
 
+			// The NPC type of the boss
 			int bossType = ModContent.NPCType<Content.NPCs.MinionBoss.MinionBossBody>();
 
 			// Value inferred from boss progression, see the wiki for details
 			float weight = 0.7f;
 
+			// Used for tracking checklist progress
 			Func<bool> downed = () => DownedBossSystem.downedMinionBoss;
+
+			// If the boss should show up on the checklist in the first place and when (here, always)
 			Func<bool> available = () => true;
 
+			// "collectibles" like relic, trophy, mask, pet
 			List<int> collection = new List<int>()
 			{
 				ModContent.ItemType<Content.Items.Placeable.Furniture.MinionBossRelic>(),
@@ -78,11 +84,14 @@ namespace ExampleMod.Common.Systems
 				ModContent.ItemType<Content.Items.Armor.Vanity.MinionBossMask>()
 			};
 
+			// The item used to summon the boss with (if available)
 			int summonItem = ModContent.ItemType<Content.Items.Consumables.MinionBossSummonItem>();
 
+			// Information for the player so he knows how to encounter the boss
 			string spawnInfo = $"Use a [i:{summonItem}]";
 
-			string despawnInfo = null; // The boss does not despawn in a special way, so we omit it
+			// The boss does not have a custom despawn message, so we omit it
+			string despawnInfo = null;
 
 			// By default, it draws the first frame of the boss, omit if you don't need custom drawing
 			// But we want to draw the bestiary texture instead, so we create the code for that to draw centered on the intended location
