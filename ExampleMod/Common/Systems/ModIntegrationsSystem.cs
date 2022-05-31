@@ -21,7 +21,7 @@ namespace ExampleMod.Common.Systems
 			// https://forums.terraria.org/index.php?threads/.74786/
 			DoCensusIntegration();
 
-			// Boss Checklist shows comprehensive information about bosses in its own UI. We can customize it
+			// Boss Checklist shows comprehensive information about bosses in its own UI. We can customize it:
 			// https://forums.terraria.org/index.php?threads/.50668/
 			DoBossChecklistIntegration();
 		}
@@ -38,7 +38,7 @@ namespace ExampleMod.Common.Systems
 			int npcType = ModContent.NPCType<Content.NPCs.ExamplePerson>();
 
 			// The message makes use of chat tags to make the item appear directly, making it more fancy
-			string message = $"Have either an [i:{ModContent.ItemType<Content.Items.ExampleItem>()}] or an [i:{ModContent.ItemType<Content.Items.Placeable.ExampleBlock>()}] in your inventory";
+			string message = $"Have either an Example Item [i:{ModContent.ItemType<Content.Items.ExampleItem>()}] or an Example Block [i:{ModContent.ItemType<Content.Items.Placeable.ExampleBlock>()}] in your inventory";
 
 			// Finally, call the desired method
 			censusMod.Call("TownNPCCondition", npcType, message);
