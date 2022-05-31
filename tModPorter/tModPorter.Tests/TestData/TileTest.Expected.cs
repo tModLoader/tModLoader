@@ -64,20 +64,20 @@ public class TileTest
 		tile.LiquidType = LiquidID.Lava;
 		tile.LiquidType = LiquidID.Honey;
 
-		if (tile.LiquidType == LiquidID.Lava || tile.LiquidType == LiquidID.Honey) { }
+		if ((tile.LiquidType == LiquidID.Lava) || (tile.LiquidType == LiquidID.Honey)) { }
 		if ((tile.LiquidType == LiquidID.Lava) != (tile2.LiquidType == LiquidID.Lava)) { }
-		if (tile.LiquidType != LiquidID.Lava) { }
+		if (!(tile.LiquidType == LiquidID.Lava)) { }
 
 #if COMPILE_ERROR
-		tile.lava/* Suggestion: LiquidType = LiquidID.Water */(false);
-		tile.honey/* Suggestion: LiquidType = LiquidID.Water */(false);
+		tile.lava/* Suggestion: LiquidType = ... */(false);
+		tile.honey/* Suggestion: LiquidType = ... */(false);
 		tile.lava/* Suggestion: LiquidType = ... */(liquid > 0);
 #endif
 	}
 
 #if COMPILE_ERROR
 	void TileNullable() {
-		Tile tile = null; /* Tiles can no-longer be null. Suggestion: replace 'null' with 'default' and remove all null checks.  */
+		Tile tile = null/* Tiles can no-longer be null. Suggestion: replace 'null' with 'default' and remove all null checks. */;
 		if (tile == null) { }
 		if (tile != null) {
 			tile.HasTile = false;

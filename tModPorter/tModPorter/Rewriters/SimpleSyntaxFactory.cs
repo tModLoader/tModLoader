@@ -15,4 +15,19 @@ public static class SimpleSyntaxFactory
 
 	public static AssignmentExpressionSyntax SimpleAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right) =>
 		AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, OperatorToken(SyntaxKind.EqualsToken), right);
+
+	public static BinaryExpressionSyntax SimpleBinaryExpression(SyntaxKind kind, ExpressionSyntax left, ExpressionSyntax right) {
+		var expr = BinaryExpression(kind, left, right);
+		return expr.WithOperatorToken(expr.OperatorToken.WithLeadingTrivia(Space).WithTrailingTrivia(Space));
+	}
+
+	public static UsingDirectiveSyntax SimpleUsing(string ns) {
+		var u = UsingDirective(IdentifierName(ns.ToString()));
+		return u.WithUsingKeyword(u.UsingKeyword.WithTrailingTrivia(Space)).WithTrailingTrivia(CarriageReturnLineFeed);
+	}
+
+	public static ExpressionSyntax Parens(ExpressionSyntax expr) {
+		// TODO, only wrap if necessary
+		return ParenthesizedExpression(expr);
+	}
 }
