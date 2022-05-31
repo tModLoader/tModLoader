@@ -9,8 +9,11 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
-	public class ExampleWhipProjectile : ModProjectile
+	public class ExampleWhipAdvancedProjectile : ModProjectile
 	{
+		// The texture doesn't have the same name as the item, so this property points to it.
+		public override string Texture => "ExampleMod/Content/Projectiles/ExampleWhipProjectile";
+
 		public override void SetStaticDefaults() {
 			// This makes the projectile use whip collision detection and allows flasks to be applied to it.
 			ProjectileID.Sets.IsAWhip[Type] = true;
