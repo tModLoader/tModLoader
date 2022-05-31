@@ -21,7 +21,7 @@ public class BuildProperties
 	private bool _noCompile = false;
 	private bool _hideCode = false;
 	private bool _hideResources = false;
-	private bool _includeSource = false;
+	public bool IncludeSource = false;
 
 	private string _eacPath = "";
 
@@ -136,7 +136,7 @@ public class BuildProperties
 				properties._hideResources = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 				break;
 			case "includeSource":
-				properties._includeSource = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+				properties.IncludeSource = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 				break;
 			case "buildIgnore":
 				properties._buildIgnores = value.Split(',').Select(s => s.Trim().Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar))
@@ -215,7 +215,7 @@ public class BuildProperties
 		if (!_hideResources) {
 			writer.Write("!hideResources");
 		}
-		if (_includeSource) {
+		if (IncludeSource) {
 			writer.Write("includeSource");
 		}
 		if (_eacPath.Length > 0) {
@@ -235,7 +235,8 @@ public class BuildProperties
 		return data;
 	}
 
-	internal bool IgnoreFile(string resource) => _buildIgnores.Any(fileMask => FitsMask(resource, fileMask));
+	internal bool IgnoreFile(string resource) =>
+		_buildIgnores.Any(fileMask => FitsMask(resource, fileMask)) || _dllReferences.Contains("lib/" + Path.GetFileName(resource));
 
 	private bool FitsMask(string fileName, string fileMask) {
 		string pattern =
@@ -249,6 +250,4 @@ public class BuildProperties
 			+ '$';
 		return new Regex(pattern, RegexOptions.IgnoreCase).IsMatch(fileName);
 	}
-
-	public override string ToString() => $"{nameof(_dllReferences)}: {_dllReferences.Count}, {nameof(_modReferences)}: {_modReferences.Count}, {nameof(_weakReferences)}: {_weakReferences.Count}, {nameof(_sortAfter)}: {_sortAfter.Length}, {nameof(_sortBefore)}: {_sortBefore.Length}, {nameof(_buildIgnores)}: {_buildIgnores.Length}, {nameof(_author)}: {_author}, {nameof(Version)}: {Version}, {nameof(_displayName)}: {_displayName}, {nameof(_noCompile)}: {_noCompile}, {nameof(_hideCode)}: {_hideCode}, {nameof(_hideResources)}: {_hideResources}, {nameof(_includeSource)}: {_includeSource}, {nameof(_eacPath)}: {_eacPath}, {nameof(Beta)}: {Beta}, {nameof(_homepage)}: {_homepage}, {nameof(_description)}: {_description}, {nameof(_side)}: {_side}";
 }
