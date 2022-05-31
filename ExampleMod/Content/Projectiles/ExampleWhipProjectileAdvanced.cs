@@ -1,5 +1,4 @@
-﻿using ExampleMod.Content.Buffs;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
@@ -18,8 +17,15 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void SetDefaults() {
-			// This method quickly sets the whip's properties.
-			Projectile.DefaultToWhip();
+			Projectile.width = 18;
+			Projectile.height = 18;
+			Projectile.friendly = true;
+			Projectile.penetrate = -1;
+			Projectile.tileCollide = false;
+			Projectile.ownerHitCheck = true; // This prevents the projectile from hitting through solid tiles.
+			Projectile.extraUpdates = 1;
+			Projectile.usesLocalNPCImmunity = true;
+			Projectile.localNPCHitCooldown = -1;
 		}
 
 		private float Timer {
@@ -32,27 +38,55 @@ namespace ExampleMod.Content.Projectiles
 			set => Projectile.ai[1] = value;
 		}
 
-		// This example uses PreAI to implement a charging mechanic.
-		// If you remove this, also remove Item.channel = true from the item's SetDefaults.
-		public override bool PreAI() {
+		public override void AI() {
 			Player owner = Main.player[Projectile.owner];
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; // Without PiOver2, the rotation would be off by 90 degrees counterclockwise.
 
-			// Like other whips, this whip updates twice per frame (Projectile.extraUpdates = 1), so 120 is equal to 1 second.
-			if (!owner.channel || ChargeTime >= 120) {
-				return true; // Let the vanilla whip AI run.
+			Projectile.Center = Main.GetPlayerArmPosition(Projectile) + Projectile.velocity * Timer;
+			// Vanilla uses Vector2.Dot(Projectile.velocity, Vector2.UnitX) here. Dot Product returns the difference between two vectors, 0 meaning they are perpendicular.
+			// However, the use of UnitX basically turns it into a more complicated way of checking if the projectile's velocity is above or equal to zero on the X axis.
+			Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
+
+			Charge();
+
+			float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates;
+
+			if (Timer >= swingTime || owner.itemAnimation <= 0) {
+				Projectile.Kill();
+				return;
 			}
 
-			if (++ChargeTime % 12 == 0) // 1 segment per 12 ticks of charge.
-				Projectile.WhipSettings.Segments++;
+			owner.heldProj = Projectile.whoAmI;
 
-			// Increase range up to 2x for full charge.
-			Projectile.WhipSettings.RangeMultiplier += 1 / 120f;
+			// These two lines ensure that the timing of the owner's use animation is correct.
+			owner.itemAnimation = owner.itemAnimationMax - (int)(Timer / Projectile.MaxUpdates);
+			owner.itemTime = owner.itemAnimation;
 
-			// Reset the animation and item timer while charging.
-			owner.itemAnimation = owner.itemAnimationMax;
-			owner.itemTime = owner.itemTimeMax;
+			if (Timer == swingTime / 2) {
+				// Plays a whipcrack sound at the tip of the whip.
+				List<Vector2> points = Projectile.WhipPointsForCollision;
+				Projectile.FillWhipControlPoints(Projectile, points);
+				SoundEngine.PlaySound(SoundID.Item153, points[points.Count - 1]);
+			}
+		}
 
-			return false; // Prevent the vanilla whip AI from running.
+		// This method handles a charging mechanic.
+		// If you remove this, also remove Item.channel = true from the item's SetDefaults.
+		private void Charge() {
+			// Like other whips, this whip updates twice per frame (Projectile.extraUpdates = 1), so 120 is equal to 1 second.
+			if (owner.channel && ChargeTime < 120) {
+				ChargeTime++;
+
+				if (ChargeTime % 12 == 0) // 1 segment per 12 ticks of charge.
+					Projectile.WhipSettings.Segments++;
+
+				// Increase range up to 2x for full charge.
+				Projectile.WhipSettings.RangeMultiplier += 1 / 120f;
+
+				return;
+			}
+
+			Timer++;
 		}
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {

@@ -6,6 +6,12 @@ namespace ExampleMod.Content.Buffs
 {
 	public class ExampleWhipDebuff : ModBuff
 	{
+		public override void SetStaticDefaults() {
+			// This allows the debuff to be inflicted on NPCs that would otherwise be immune to all debuffs.
+			// Other mods may check it for different purposes.
+			BuffID.Sets.IsAnNPCWhipDebuff[Type] = true;
+		}
+
 		public override void Update(NPC npc, ref int buffIndex) {
 			npc.GetGlobalNPC<ExampleWhipDebuffNPC>().markedByExampleWhip = true;
 		}
@@ -13,6 +19,7 @@ namespace ExampleMod.Content.Buffs
 
 	public class ExampleWhipDebuffNPC : GlobalNPC
 	{
+		// This is required to store information on entities that isn't shared between them.
 		public override bool InstancePerEntity => true;
 
 		public bool markedByExampleWhip;
@@ -21,9 +28,10 @@ namespace ExampleMod.Content.Buffs
 			markedByExampleWhip = false;
 		}
 
-		// Currently, this is inconsistent with vanilla, increasing damage after it is randomised instead of before. It will be changed to a different hook in the future.
+		// TODO: Inconsistent with vanilla, increasing damage AFTER it is randomised, not before. Change to a different hook in the future.
 		public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
-			if (markedByExampleWhip && !projectile.npcProj && !projectile.trap && (projectile.minion || ProjectileID.Sets.MinionShot[projectile.type])) {
+			// Only player attacks should benefit from this buff, hence the NPC and trap checks.
+			if (markedByExampleWhip && !projectile.npcProj && !projectile.trap && (projectile.minion || ProjectileID.Sets.MinionShot[Type])) {
 				damage += 5;
 			}
 		}

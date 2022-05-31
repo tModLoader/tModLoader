@@ -13,13 +13,14 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override void SetDefaults() {
-			// Call this method to quickly set the whip's properties.
-			// Mouse over the method to see the parameters
+			// This method quickly sets the whip's properties.
+			// Mouse over to see its parameters.
 			Item.DefaultToWhip(ModContent.ProjectileType<ExampleWhipProjectile>(), 20, 2, 4); 
 
 			Item.shootSpeed = 4;
 			Item.rare = ItemRarityID.Green;
-			Item.channel = true; // This is used for the charging functionality. Remove it if your whip shouldn't be chargeable.
+
+			Item.channel = true;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
