@@ -27,10 +27,15 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 	}
 
 	private void UsingNamespace(INamespaceSymbol ns) {
-		if (usings.Any(u => u.Name.ToString() == ns.ToString()))
+		var fullname = ns.ToString();
+		if (usings.Any(u => u.Name.ToString() == fullname))
 			return;
 
-		usings = usings.Add(SimpleUsing(ns.ToString()));
+		int idx = 0;
+		while (idx < usings.Count && string.Compare(usings[idx].Name.ToString(), fullname) < 0)
+			idx++;
+
+		usings = usings.Insert(idx, SimpleUsing(fullname));
 	}
 
 	public string UseType(INamedTypeSymbol sym) {

@@ -148,5 +148,6 @@ public static class Config
 
 		RenameMethod("Terraria.Lighting",	from: "BlackOut", to: "Clear");
 		RenameMethod("Terraria.Utils",		from: "InverseLerp", to: "GetLerpValue");
+		RenameMethod("Terraria.NetMessage",	from: "BroadcastChatMessage", to: "BroadcastChatMessage", newType: "Terraria.Chat.ChatHelper");
 	}
 }

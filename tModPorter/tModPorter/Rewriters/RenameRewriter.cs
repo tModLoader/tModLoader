@@ -4,18 +4,42 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Operations;
 using System.Collections.Generic;
 using System.Linq;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace tModPorter.Rewriters;
 
 public class RenameRewriter : BaseRewriter
 {
-	private static List<(string type, string from, string to, bool isMethod)> memberRenames = new();
+	public class MemberRename
+	{
+		public string type { get; init; }
+		public string from { get; init; }
+		public string to { get; init; }
+		public bool isMethod { get; init; }
+
+		public SyntaxAnnotation followupAnnotation { get; private set; }
+
+		public void FollowBy(SyntaxAnnotation ann) {
+			followupAnnotation = ann;
+		}
+	}
+
+	private static List<MemberRename> memberRenames = new();
 	private static List<(string from, string to)> typeRenames = new();
 
-	public static void RenameInstanceField(string type, string from, string to) => memberRenames.Add((type, from, to, isMethod: false));
-	public static void RenameStaticField(string type, string from, string to) => memberRenames.Add((type, from, to, isMethod: false));
-	public static void RenameMethod(string type, string from, string to) => memberRenames.Add((type, from, to, isMethod: true));
+	private static MemberRename RenameMember(MemberRename entry) {
+		memberRenames.Add(entry);
+		return entry;
+	}
+
+	public static MemberRename RenameInstanceField(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to });
+	public static MemberRename RenameStaticField(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to });
+	public static MemberRename RenameMethod(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to, isMethod = true });
 	public static void RenameType(string from, string to) => typeRenames.Add((from, to));
+
+	public static SyntaxAnnotation MovedTargetType(string newType) => new(nameof(MovedTargetType), newType);
+	public static void RenameStaticField(string type, string from, string to, string newType) => RenameStaticField(type, from, to).FollowBy(MovedTargetType(newType));
+	public static void RenameMethod(string type, string from, string to, string newType) => RenameMethod(type, from, to).FollowBy(MovedTargetType(newType));
 
 	public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node) {
 		return node.Parent switch {
@@ -37,6 +61,19 @@ public class RenameRewriter : BaseRewriter
 
 			_ => node,
 		};
+	}
+
+	public override SyntaxNode VisitMemberAccessExpression(MemberAccessExpressionSyntax node) {
+		node = (MemberAccessExpressionSyntax)base.VisitMemberAccessExpression(node);
+		if (node.Name is IdentifierNameSyntax identifier &&
+			identifier.Identifier.GetAnnotations(nameof(MovedTargetType)).SingleOrDefault() is SyntaxAnnotation { Data: var newType}) {
+			return node
+				.ReplaceToken(identifier.Identifier, identifier.Identifier.WithoutAnnotations(nameof(MovedTargetType)))
+				.WithExpression(IdentifierName(UseTypeName(newType)))
+				.WithTriviaFrom(node);
+		}
+
+		return node;
 	}
 
 	public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node) {
@@ -63,6 +100,14 @@ public class RenameRewriter : BaseRewriter
 		return (op = model.GetOperation(memberRefExpr) as IInvalidOperation) != null;
 	}
 
+	private static SyntaxToken Apply(MemberRename entry, SyntaxToken nameToken) {
+		nameToken = nameToken.WithText(entry.to);
+		if (entry.followupAnnotation != null)
+			nameToken = nameToken.WithAdditionalAnnotations(entry.followupAnnotation);
+
+		return nameToken;
+	}
+
 	private static IdentifierNameSyntax Refactor(IdentifierNameSyntax nameSyntax, ITypeSymbol instType, bool refactoringMethod) =>
 		nameSyntax.WithIdentifier(Refactor(nameSyntax.Identifier, instType, refactoringMethod));
 
@@ -70,11 +115,11 @@ public class RenameRewriter : BaseRewriter
 		if (instType == null)
 			return nameToken;
 
-		foreach (var (type, from, to, isMethod) in memberRenames) {
-			if (from != nameToken.Text || refactoringMethod && !isMethod || !instType.InheritsFrom(type))
+		foreach (var entry in memberRenames) {
+			if (entry.from != nameToken.Text || refactoringMethod && !entry.isMethod || !instType.InheritsFrom(entry.type))
 				continue;
 
-			return nameToken.WithText(to);
+			return Apply(entry, nameToken);
 		}
 
 		return nameToken;
@@ -83,13 +128,13 @@ public class RenameRewriter : BaseRewriter
 	private IdentifierNameSyntax RefactorSpeculative(IdentifierNameSyntax nameSyntax) {
 		var nameToken = nameSyntax.Identifier;
 
-		foreach (var (type, from, to, isMethod) in memberRenames) {
-			if (from != nameToken.Text)
+		foreach (var entry in memberRenames) {
+			if (entry.from != nameToken.Text)
 				continue;
 
-			var repl = nameSyntax.WithIdentifier(nameToken.WithText(to));
+			var repl = nameSyntax.WithIdentifier(Apply(entry, nameToken));
 			var speculate = model.GetSpeculativeSymbolInfo(nameSyntax.SpanStart, repl, SpeculativeBindingOption.BindAsExpression);
-			if (speculate.Symbol?.ContainingType?.ToString() == type)
+			if (speculate.Symbol?.ContainingType?.ToString() == entry.type)
 				return repl;
 		}
 
@@ -116,4 +161,3 @@ public class RenameRewriter : BaseRewriter
 		return nameSyntax;
 	}
 }
-
