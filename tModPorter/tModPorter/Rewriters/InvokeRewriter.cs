@@ -81,7 +81,10 @@ public class InvokeRewriter : BaseRewriter {
 
 	#region Handlers
 	public static RewriteInvoke AddComment(string comment) => (invoke, methodName) => {
-		return invoke;
+		if (methodName.TrailingTrivia.Any(SyntaxKind.MultiLineCommentTrivia))
+			return invoke;
+
+		return invoke.ReplaceToken(methodName, methodName.WithBlockComment(comment));
 	};
 
 	private static ExpressionSyntax ConvertInvokeToMemberReference(InvocationExpressionSyntax invoke, string memberName) =>
