@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 namespace ExampleMod.Common.Systems
 {
 	// Showcases using Mod.Call of other mods to facilitate mod integration/compatibility/support
+	// Mod.Call is explained here https://github.com/tModLoader/tModLoader/wiki/Expert-Cross-Mod-Content#call-aka-modcall-intermediate
 	// This only showcases one way to implement such integrations, you are free to explore your own options and other mods examples
 
 	// You need to look for resources the mod developers provide regarding how they want you to add mod compatibility
