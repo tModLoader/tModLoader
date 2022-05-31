@@ -1,7 +1,6 @@
 using Terraria;
-using Terraria.ModLoader;
 
-public class DamageClassTest : Mod
+public class DamageClassTest
 {
 	public void MethodA()
 	{
