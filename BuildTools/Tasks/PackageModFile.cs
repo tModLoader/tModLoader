@@ -33,6 +33,9 @@ public class PackageModFile : TaskBase
 	[Required]
 	public string OutputTmodPath { get; set; } = string.Empty;
 
+	[Required]
+	public ITaskItem[] ModProperties { get; set; } = Array.Empty<ITaskItem>();
+
 	protected override void Run() {
 		List<ITaskItem> nugetReferences = GetNugetReferences();
 
@@ -50,7 +53,9 @@ public class PackageModFile : TaskBase
 		}
 		Log.LogMessage(MessageImportance.Low, $"Found mod's dll file: {modDll}");
 
-		TmodFile modFile = new(OutputTmodPath, AssemblyName, new Version(69, 420), Version.Parse(TmlVersion));
+		Dictionary<string, string> modProperties = GetModProperties();
+
+		TmodFile modFile = new(OutputTmodPath, AssemblyName, Version.Parse(modProperties["Version"]), Version.Parse(TmlVersion));
 
 		// 1) Get mod .dll file - DONE
 		// 2) Create Info file from .csproj
@@ -101,5 +106,24 @@ public class PackageModFile : TaskBase
 
 		Log.LogMessage(MessageImportance.Normal, $"Found {modReferences.Count} mod references.");
 		return modReferences;
+	}
+
+	private Dictionary<string, string> GetModProperties() {
+		Dictionary<string, string> modProperties = new Dictionary<string, string>();
+
+		string descriptionFilePath = Path.Combine(ProjectDirectory, "description.txt");
+		if (!File.Exists(descriptionFilePath))
+			throw new FileNotFoundException("Mod description not found.", descriptionFilePath);
+		modProperties.Add("description", File.ReadAllText(descriptionFilePath));
+
+		foreach (ITaskItem modProperty in ModProperties) {
+			string? modPropertyName = modProperty.ItemSpec;
+			string? modPropertyValue = modProperty.GetMetadata("Value");
+
+			Log.LogMessage(MessageImportance.Low, $"{modPropertyName} - Value: {modPropertyValue}");
+			modProperties.Add(modPropertyName, modPropertyValue);
+		}
+
+		return modProperties;
 	}
 }

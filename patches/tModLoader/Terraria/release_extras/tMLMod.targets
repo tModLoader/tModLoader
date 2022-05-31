@@ -35,6 +35,22 @@
 	<Target Name="Package" AfterTargets="Build">
 		<Message Text="Packaging mod..." />
 
+		<Message Text="Convert mod properties into item group" />
+		<ItemGroup>
+			<ModProperty Include="ModVersion" Value="$(ModVersion)" />
+			<ModProperty Include="DisplayName" Value="$(DisplayName)" />
+			<ModProperty Include="Author" Value="$(Author)" />
+			<ModProperty Include="Homepage" Value="$(Homepage)" />
+			<ModProperty Include="HideCode" Value="$(HideCode)" />
+			<ModProperty Include="HideResources" Value="$(HideResources)" />
+			<ModProperty Include="IncludeSource" Value="$(IncludeSource)" />
+			<ModProperty Include="IncludePDB" Value="$(IncludePDB)" />
+			<ModProperty Include="BuildIgnore" Value="$(BuildIgnore)" />
+			<ModProperty Include="ModSide" Value="$(ModSide)" />
+			<ModProperty Include="SortBefore" Value="$(SortBefore)" />
+			<ModProperty Include="SortAfter" Value="$(SortAfter)" />
+		</ItemGroup>
+
 		<Error
 				Text="OutputTmodPath should be set to the location of the file to be written. If you are using 'dotnet build', add '/p:OutputTmodPath=path/to/file' after the command."
 				Condition="$(OutputTmodPath) == ''" />
@@ -51,7 +67,8 @@
 				OutputPath="$(OutputPath)"
 				AssemblyName="$(AssemblyName)"
 				TmlVersion="$(TmlVersion)"
-				OutputTmodPath="$(OutputTmodPath)" >
+				OutputTmodPath="$(OutputTmodPath)"
+				ModProperties="@(ModProperty)" >
 		</PackageModFile>
 	</Target>
 	
