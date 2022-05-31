@@ -15,17 +15,19 @@ public static class Config
 	static Config() {
 		RenameInstanceField("Terraria.ModLoader.ModType",		from: "mod",			to: "Mod");
 		RenameInstanceField("Terraria.ModLoader.ModItem",		from: "item",			to: "Item");
-		RenameInstanceField("Terraria.ModLoader.ModNPC",			from: "npc",			to: "NPC");
+		RenameInstanceField("Terraria.ModLoader.ModNPC",		from: "npc",			to: "NPC");
 		RenameInstanceField("Terraria.ModLoader.ModPlayer",		from: "player",			to: "Player");
 		RenameInstanceField("Terraria.ModLoader.ModProjectile",	from: "projectile",		to: "Projectile");
 		RenameInstanceField("Terraria.ModLoader.ModMount",		from: "mountData",		to: "MountData");
 
-		RenameInstanceField("Terraria.Item",				from: "modItem",		to: "ModItem");
+		RenameInstanceField("Terraria.Item",			from: "modItem",		to: "ModItem");
 		RenameInstanceField("Terraria.NPC",				from: "modNPC",			to: "ModNPC");
 		RenameInstanceField("Terraria.Projectile",		from: "modProjectile",	to: "ModProjectile");
 		RenameInstanceField("Terraria.Mount.MountData",	from: "modMountData",	to: "ModMount");
 
 		RenameType(from: "Terraria.ModLoader.ModMountData", to: "Terraria.ModLoader.ModMount");
+		RenameType(from: "Terraria.ModLoader.ModWorld",		to: "Terraria.ModLoader.ModSystem");
+		RenameType(from: "Terraria.ModLoader.ModHotKey",	to: "Terraria.ModLoader.ModKeybind");
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "text",			to: "Text");
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "isModifier",		to: "IsModifier");
@@ -74,21 +76,36 @@ public static class Config
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "EatingUsing", to: "EatFood");
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "Stabbing",	to: "Thrust");
 
-		RenameMethod("Terraria.ModLoader.ModItem",		from: "NetRecieve",		to: "NetReceive");
-		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "NewPreReforge",	to: "PreReforge");
-		RenameMethod("Terraria.ModLoader.ModTile",		from: "NewRightClick",	to: "RightClick");
-		RenameMethod("Terraria.ModLoader.ModTile",		from: "Dangersense",	to: "IsTileDangerous");
-		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "Dangersense",	to: "IsTileDangerous");
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "NetRecieve",			to: "NetReceive");
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "NewPreReforge",		to: "PreReforge");
+		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "NewPreReforge",		to: "PreReforge");
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
+		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "GetWeaponKnockback",	to: "ModifyWeaponKnockback");
+		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "GetWeaponKnockback",	to: "ModifyWeaponKnockback");
+		RenameMethod("Terraria.ModLoader.ModNPC",		from: "NPCLoot",			to: "OnKill");
+		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "NPCLoot",			to: "OnKill");
+		RenameMethod("Terraria.ModLoader.ModTile",		from: "NewRightClick",		to: "RightClick");
+		RenameMethod("Terraria.ModLoader.ModTile",		from: "Dangersense",		to: "IsTileDangerous");
+		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "Dangersense",		to: "IsTileDangerous");
+		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "ValidTile",			to: "IsTileValidForEntity");
+
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",	to: "LoadData");
+		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "Load",	to: "LoadData");
+		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "Load",	to: "LoadData");
+		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "Load",	to: "LoadData");
+		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Load",	to: "LoadWorldData");
 
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.GlobalWall",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.InfoDisplay",	from: "SetDefaults", to: "SetStaticDefaults");
-		RenameMethod("Terraria.ModLoader.ModTile",		from: "SetDefaults", to: "SetStaticDefaults");
-		RenameMethod("Terraria.ModLoader.ModWall",		from: "SetDefaults", to: "SetStaticDefaults");
+		RenameMethod("Terraria.ModLoader.ModBlockType",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModBuff",		from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModDust",		from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModMount",		from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModPrefix",	from: "SetDefaults", to: "SetStaticDefaults");
+
+		RenameInstanceField("Terraria.ModLoader.ModBlockType", from: "drop", to: "ItemDrop");
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "BuffType",		ToFindTypeCall("ModBuff"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "DustType",		ToFindTypeCall("ModDust"));
@@ -101,5 +118,35 @@ public static class Config
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "TileType",		ToFindTypeCall("ModTile"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "WallType",		ToFindTypeCall("ModWall"));
 
+		RenameStaticField("Terraria.Main",		from: "dresserX",			to: "interactedDresserTopLeftX");
+		RenameStaticField("Terraria.Main",		from: "dresserY",			to: "interactedDresserTopLeftY");
+		RenameStaticField("Terraria.Main",		from: "ActivePlayerCount",	to: "CurrentFrameFlags.ActivePlayersCount");
+		RenameStaticField("Terraria.Main",		from: "GlobalTime",			to: "GlobalTimeWrappedHourly");
+		RenameStaticField("Terraria.Main",		from: "itemLockoutTime",	to: "timeItemSlotCannotBeReusedFor");
+		RenameStaticField("Terraria.Main",		from: "maxInventory",		to: "InventorySlotsTotal");
+		RenameStaticField("Terraria.Main",		from: "quickBG",			to: "instantBGTransitionCounter");
+		RenameStaticField("Terraria.Main",		from: "SmartCursorEnabled",	to: "SmartCursorIsUsed");
+		RenameStaticField("Terraria.Main",		from: "tileValue",			to: "tileOreFinderPriority");
+		RenameStaticField("Terraria.Main",		from: "worldRate",			to: "desiredWorldTilesUpdateRate");
+		RenameStaticField("Terraria.Lighting",	from: "lightMode",			to: "LegacyEngine.Mode");
+
+		RenameInstanceField("Terraria.Item",	from: "owner",				to: "playerIndexTheItemIsReservedFor");
+		RenameInstanceField("Terraria.Player",	from: "hideVisual",			to: "hideVisibleAccessory");
+		RenameInstanceField("Terraria.Player",	from: "showItemIcon",		to: "cursorItemIconEnabled");
+		RenameInstanceField("Terraria.Player",	from: "showItemIcon2",		to: "cursorItemIconID");
+		RenameInstanceField("Terraria.Player",	from: "showItemIconText",	to: "cursorItemIconText");
+		RenameInstanceField("Terraria.Player",	from: "ZoneHoly",			to: "ZoneHallow");
+		RenameInstanceField("Terraria.Player",	from: "doubleJumpBlizzard",	to: "hasJumpOption_Blizzard");
+		RenameInstanceField("Terraria.Player",	from: "doubleJumpCloud",	to: "hasJumpOption_Cloud");
+		RenameInstanceField("Terraria.Player",	from: "doubleJumpFart",		to: "hasJumpOption_Fart");
+		RenameInstanceField("Terraria.Player",	from: "doubleJumpSail",		to: "hasJumpOption_Sail");
+		RenameInstanceField("Terraria.Player",	from: "doubleJumpSandstorm",to: "hasJumpOption_Sandstorm");
+		RenameInstanceField("Terraria.Player",	from: "doubleJumpUnicorn",	to: "hasJumpOption_Unicorn");
+
+		RenameStaticField("Terraria.ID.NPCID.Sets",			from: "TechnicallyABoss",	to: "ShouldBeCountedAsBoss");
+		RenameStaticField("Terraria.ID.ProjectileID.Sets",	from: "Homing",				to: "CultistIsResistantTo");
+
+		RenameMethod("Terraria.Lighting",	from: "BlackOut", to: "Clear");
+		RenameMethod("Terraria.Utils",		from: "InverseLerp", to: "GetLerpValue");
 	}
 }
