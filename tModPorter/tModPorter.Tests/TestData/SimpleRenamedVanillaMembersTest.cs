@@ -12,7 +12,7 @@ public class SimpleRenamedMembersTest
 		var itemLockoutTime = Main.itemLockoutTime;
 		var maxInventory = Main.maxInventory;
 		var quickBG = Main.quickBG;
-		var smartCursorEnabled = Main.SmartCursorEnabled;
+		var smartCursorEnabled = Main.SmartCursorEnabled; // get only property in 1.4
 		var tileValue = Main.tileValue;
 		var worldRate = Main.worldRate;
 		var lightMode = Lighting.lightMode;

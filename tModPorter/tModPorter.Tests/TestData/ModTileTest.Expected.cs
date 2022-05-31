@@ -1,5 +1,5 @@
 using Terraria;
-using Terraria.DataStructures; // TileDrawInfo
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
 

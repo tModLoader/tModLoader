@@ -1,5 +1,5 @@
 using Terraria;
-using Terraria.Chat; // ChatHelper
+using Terraria.Chat;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 
@@ -13,7 +13,7 @@ public class SimpleRenamedVanillaMembersTest
 		var itemLockoutTime = Main.timeItemSlotCannotBeReusedFor;
 		var maxInventory = Main.InventorySlotsTotal;
 		var quickBG = Main.instantBGTransitionCounter;
-		var smartCursorEnabled = Main.SmartCursorIsUsed; // get only property
+		var smartCursorEnabled = Main.SmartCursorIsUsed; // get only property in 1.4
 		var tileValue = Main.tileOreFinderPriority;
 		var worldRate = Main.desiredWorldTilesUpdateRate;
 		var lightMode = Lighting.LegacyEngine.Mode;

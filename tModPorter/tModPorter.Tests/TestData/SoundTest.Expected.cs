@@ -1,8 +1,11 @@
 using Terraria;
-using Terraria.ID; // SoundID
-using Terraria.Audio; // SoundEngine
-using Microsoft.Xna.Framework; // Vector2
+using Terraria.ID;
+using Terraria.Audio;
+using Microsoft.Xna.Framework;
 
+//TODO modded sound retrieval&playback
+//TODO non-dedicated IDs (Compile_Error req?)
+//TODO pitch + volume
 public class SoundTest
 {
 	void Method() {
@@ -34,9 +37,5 @@ public class SoundTest
 		SoundEngine.PlaySound(SoundID.NPCHit10, player.position);
 		SoundEngine.PlaySound(SoundID.NPCDeath10, player.position);
 		SoundEngine.PlaySound(SoundID.Zombie10, player.position);
-
-		//TODO modded sound retrieval&playback
-		//TODO non-dedicated IDs (Compile_Error req?)
-		//TODO pitch + volume
 	}
 }

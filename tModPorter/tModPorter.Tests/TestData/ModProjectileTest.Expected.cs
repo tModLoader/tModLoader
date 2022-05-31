@@ -1,7 +1,6 @@
 using System;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework; // Vector2, Color
-// Blank
+using Microsoft.Xna.Framework;
 
 public class ModProjectileTest : ModProjectile
 {
