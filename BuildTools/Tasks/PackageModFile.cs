@@ -40,15 +40,6 @@ public class PackageModFile : TaskBase
 	private static readonly IList<string> SourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
 
 	protected override void Run() {
-		List<ITaskItem> nugetReferences = GetNugetReferences();
-		List<ITaskItem> modReferences = GetModReferences();
-
-		// Assumes all dll references are under the mod's folder (at same level or in subfolders).
-		// Letting dll references be anywhere would mean doing some weird filters on references,
-		// or using a custom `<DllReference>` thing that would get translated to a `<Reference>`.
-		List<ITaskItem> dllReferences = ReferencePaths.Where(x => x.GetMetadata("FullPath").StartsWith(ProjectDirectory)).ToList();
-		Log.LogMessage(MessageImportance.Low, $"Found {dllReferences.Count} dll references.");
-
 		string modDllName = Path.ChangeExtension(AssemblyName, ".dll");
 		string modDllPath = Path.Combine(ProjectDirectory, OutputPath, modDllName);
 		if (!File.Exists(modDllPath))
@@ -61,6 +52,28 @@ public class PackageModFile : TaskBase
 		TmodFile tmodFile = new(OutputTmodPath, AssemblyName, modProperties.Version, Version.Parse(TmlVersion));
 
 		tmodFile.AddFile(modDllName, File.ReadAllBytes(modDllPath));
+		AddAllReferences(tmodFile, modProperties);
+		tmodFile.AddFile("Info", modProperties.ToBytes(Version.Parse(TmlVersion)));
+
+		Log.LogMessage(MessageImportance.Low, "Adding resources...");
+		List<string> resources = Directory.GetFiles(ProjectDirectory, "*", SearchOption.AllDirectories)
+			.Where(res => !IgnoreResource(modProperties, res))
+			.ToList();
+		Parallel.ForEach(resources, resource => AddResource(tmodFile, resource));
+
+		Log.LogMessage(MessageImportance.Low, "Saving mod file...");
+		tmodFile.Save();
+	}
+
+	private void AddAllReferences(TmodFile tmodFile, BuildProperties modProperties) {
+		List<ITaskItem> nugetReferences = GetNugetReferences();
+		List<ITaskItem> modReferences = GetModReferences();
+
+		// Assumes all dll references are under the mod's folder (at same level or in subfolders).
+		// Letting dll references be anywhere would mean doing some weird filters on references,
+		// or using a custom `<DllReference>` thing that would get translated to a `<Reference>`.
+		List<ITaskItem> dllReferences = ReferencePaths.Where(x => x.GetMetadata("FullPath").StartsWith(ProjectDirectory)).ToList();
+		Log.LogMessage(MessageImportance.Low, $"Found {dllReferences.Count} dll references.");
 
 		foreach (ITaskItem taskItem in nugetReferences) {
 			string nugetName = "lib/" + taskItem.GetMetadata("NuGetPackageId") + ".dll";
@@ -75,7 +88,7 @@ public class PackageModFile : TaskBase
 			string dllPath = dllReference.GetMetadata("FullPath");
 			string dllName = Path.GetFileNameWithoutExtension(dllPath);
 
-			Log.LogMessage(MessageImportance.Low, $"Adding dll ref with path {dllPath}");
+			Log.LogMessage(MessageImportance.Low, $"Adding dll reference with path {dllPath}");
 			tmodFile.AddFile($"lib/{dllName}.dll", File.ReadAllBytes(dllPath));
 			modProperties.AddDllReference(dllName);
 		}
@@ -84,22 +97,9 @@ public class PackageModFile : TaskBase
 			string? modName = modReference.GetMetadata("Identity");
 			string? weakRef = modReference.GetMetadata("Weak");
 
+			Log.LogMessage(MessageImportance.Low, $"Adding mod reference with mod name {modName} [Weak: {weakRef}]");
 			modProperties.AddModReference(modName, string.Equals(weakRef, "true", StringComparison.OrdinalIgnoreCase));
 		}
-		tmodFile.AddFile("Info", modProperties.ToBytes(Version.Parse(TmlVersion)));
-
-		List<string> resources = Directory.GetFiles(ProjectDirectory, "*", SearchOption.AllDirectories)
-			.Where(res => !IgnoreResource(modProperties, res))
-			.ToList();
-		Parallel.ForEach(resources, resource => AddResource(tmodFile, resource));
-
-
-		// 1) Get mod .dll file - DONE
-		// 2) Create Info file from .csproj - DONE
-		// 3) Copy .dll to TmodFile - done
-		// 4) Copy references to TmodFile - done
-		// 5) Get all resources, convert them, and copy them to the TmodFile
-		tmodFile.Save();
 	}
 
 	private List<ITaskItem> GetNugetReferences() {
