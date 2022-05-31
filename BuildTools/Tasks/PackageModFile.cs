@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using tModLoader.BuildTools.ModFile;
 
 namespace tModLoader.BuildTools.Tasks;
@@ -36,6 +37,8 @@ public class PackageModFile : TaskBase
 	[Required]
 	public ITaskItem[] ModProperties { get; set; } = Array.Empty<ITaskItem>();
 
+	private static readonly IList<string> SourceExtensions = new List<string> { ".csproj", ".cs", ".sln" };
+
 	protected override void Run() {
 		List<ITaskItem> nugetReferences = GetNugetReferences();
 		List<ITaskItem> modReferences = GetModReferences();
@@ -43,8 +46,8 @@ public class PackageModFile : TaskBase
 		// Assumes all dll references are under the mod's folder (at same level or in subfolders).
 		// Letting dll references be anywhere would mean doing some weird filters on references,
 		// or using a custom `<DllReference>` thing that would get translated to a `<Reference>`.
-		IEnumerable<ITaskItem> dllReferences = ReferencePaths.Where(x => x.GetMetadata("FullPath").StartsWith(ProjectDirectory));
-		Log.LogMessage(MessageImportance.Low, $"Found {dllReferences.Count()} dll references.");
+		List<ITaskItem> dllReferences = ReferencePaths.Where(x => x.GetMetadata("FullPath").StartsWith(ProjectDirectory)).ToList();
+		Log.LogMessage(MessageImportance.Low, $"Found {dllReferences.Count} dll references.");
 
 		string modDllName = Path.ChangeExtension(AssemblyName, ".dll");
 		string modDllPath = Path.Combine(ProjectDirectory, OutputPath, modDllName);
@@ -68,21 +71,35 @@ public class PackageModFile : TaskBase
 			modProperties.AddDllReference(taskItem.GetMetadata("NuGetPackageId"));
 		}
 
+		foreach (ITaskItem dllReference in dllReferences) {
+			string dllPath = dllReference.GetMetadata("FullPath");
+			string dllName = Path.GetFileNameWithoutExtension(dllPath);
+
+			Log.LogMessage(MessageImportance.Low, $"Adding dll ref with path {dllPath}");
+			tmodFile.AddFile($"lib/{dllName}.dll", File.ReadAllBytes(dllPath));
+			modProperties.AddDllReference(dllName);
+		}
+
 		foreach (ITaskItem modReference in modReferences) {
 			string? modName = modReference.GetMetadata("Identity");
 			string? weakRef = modReference.GetMetadata("Weak");
 
 			modProperties.AddModReference(modName, string.Equals(weakRef, "true", StringComparison.OrdinalIgnoreCase));
 		}
-
 		tmodFile.AddFile("Info", modProperties.ToBytes(Version.Parse(TmlVersion)));
-		tmodFile.Save();
+
+		List<string> resources = Directory.GetFiles(ProjectDirectory, "*", SearchOption.AllDirectories)
+			.Where(res => !IgnoreResource(modProperties, res))
+			.ToList();
+		Parallel.ForEach(resources, resource => AddResource(tmodFile, resource));
+
 
 		// 1) Get mod .dll file - DONE
 		// 2) Create Info file from .csproj - DONE
 		// 3) Copy .dll to TmodFile - done
 		// 4) Copy references to TmodFile - done
 		// 5) Get all resources, convert them, and copy them to the TmodFile
+		tmodFile.Save();
 	}
 
 	private List<ITaskItem> GetNugetReferences() {
@@ -144,5 +161,30 @@ public class PackageModFile : TaskBase
 		properties.SetDescription(File.ReadAllText(descriptionFilePath));
 
 		return properties;
+	}
+
+	private bool IgnoreResource(BuildProperties properties, string resourcePath) {
+		string relPath = resourcePath.Substring(ProjectDirectory.Length + 1);
+		return properties.IgnoreFile(relPath) ||
+		       relPath[0] == '.' ||
+		       relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
+		       relPath.StartsWith("obj" + Path.DirectorySeparatorChar) ||
+		       relPath == "build.txt" || // For mod's that still use a build.txt
+		       !properties.IncludeSource && SourceExtensions.Contains(Path.GetExtension(resourcePath));
+	}
+
+	private void AddResource(TmodFile tmodFile, string resourcePath) {
+		string relPath = resourcePath.Substring(ProjectDirectory.Length + 1);
+
+		Log.LogMessage("Adding resource: {0}", relPath);
+
+		using FileStream src = File.OpenRead(resourcePath);
+		using MemoryStream dst = new MemoryStream();
+
+		if (!ContentConverters.Convert(ref relPath, src, dst))
+			src.CopyTo(dst);
+
+		tmodFile.AddFile(relPath, dst.ToArray());
+		src.Dispose();
 	}
 }
