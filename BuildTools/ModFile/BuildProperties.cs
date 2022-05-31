@@ -9,9 +9,9 @@ namespace tModLoader.BuildTools.ModFile;
 
 public class BuildProperties
 {
-	private string[] _dllReferences = Array.Empty<string>();
-	private ModReference[] _modReferences = Array.Empty<ModReference>();
-	private ModReference[] _weakReferences = Array.Empty<ModReference>();
+	private List<string> _dllReferences = new();
+	private List<ModReference> _modReferences = new();
+	private List<ModReference> _weakReferences = new();
 	private string[] _sortAfter = Array.Empty<string>();
 	private string[] _sortBefore = Array.Empty<string>();
 	private string[] _buildIgnores = Array.Empty<string>();
@@ -52,6 +52,9 @@ public class BuildProperties
 		foreach (ITaskItem property in taskItems) {
 			string propertyName = property.ItemSpec;
 			string propertyValue = property.GetMetadata("Value");
+
+			// Make the first letter lowercase
+			propertyName = char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1);
 
 			ProcessProperty(properties, propertyName, propertyValue);
 		}
@@ -97,13 +100,13 @@ public class BuildProperties
 	private static void ProcessProperty(BuildProperties properties, string property, string value) {
 		switch (property) {
 			case "dllReferences":
-				properties._dllReferences = ReadList(value).ToArray();
+				properties._dllReferences = ReadList(value).ToList();
 				break;
 			case "modReferences":
-				properties._modReferences = ReadList(value).Select(ModReference.Parse).ToArray();
+				properties._modReferences = ReadList(value).Select(ModReference.Parse).ToList();
 				break;
 			case "weakReferences":
-				properties._weakReferences = ReadList(value).Select(ModReference.Parse).ToArray();
+				properties._weakReferences = ReadList(value).Select(ModReference.Parse).ToList();
 				break;
 			case "sortBefore":
 				properties._sortBefore = ReadList(value).ToArray();
@@ -150,19 +153,30 @@ public class BuildProperties
 		_description = description;
 	}
 
+	internal void AddDllReference(string name) {
+		_dllReferences.Add(name);
+	}
+
+	internal void AddModReference(string modName, bool weak) {
+		if (weak)
+			_weakReferences.Add(ModReference.Parse(modName));
+		else
+			_modReferences.Add(ModReference.Parse(modName));
+	}
+
 	internal byte[] ToBytes(Version buildVersion) {
 		using MemoryStream memoryStream = new MemoryStream();
 		using BinaryWriter writer = new BinaryWriter(memoryStream);
 
-		if (_dllReferences.Length > 0) {
+		if (_dllReferences.Count > 0) {
 			writer.Write("dllReferences");
 			WriteList(_dllReferences, writer);
 		}
-		if (_modReferences.Length > 0) {
+		if (_modReferences.Count > 0) {
 			writer.Write("modReferences");
 			WriteList(_modReferences, writer);
 		}
-		if (_weakReferences.Length > 0) {
+		if (_weakReferences.Count > 0) {
 			writer.Write("weakReferences");
 			WriteList(_weakReferences, writer);
 		}
@@ -236,5 +250,5 @@ public class BuildProperties
 		return new Regex(pattern, RegexOptions.IgnoreCase).IsMatch(fileName);
 	}
 
-	public override string ToString() => $"{nameof(_dllReferences)}: {_dllReferences}, {nameof(_modReferences)}: {_modReferences.Length}, {nameof(_weakReferences)}: {_weakReferences.Length}, {nameof(_sortAfter)}: {_sortAfter.Length}, {nameof(_sortBefore)}: {_sortBefore.Length}, {nameof(_buildIgnores)}: {_buildIgnores.Length}, {nameof(_author)}: {_author}, {nameof(Version)}: {Version}, {nameof(_displayName)}: {_displayName}, {nameof(_noCompile)}: {_noCompile}, {nameof(_hideCode)}: {_hideCode}, {nameof(_hideResources)}: {_hideResources}, {nameof(_includeSource)}: {_includeSource}, {nameof(_eacPath)}: {_eacPath}, {nameof(Beta)}: {Beta}, {nameof(_homepage)}: {_homepage}, {nameof(_description)}: {_description}, {nameof(_side)}: {_side}";
+	public override string ToString() => $"{nameof(_dllReferences)}: {_dllReferences.Count}, {nameof(_modReferences)}: {_modReferences.Count}, {nameof(_weakReferences)}: {_weakReferences.Count}, {nameof(_sortAfter)}: {_sortAfter.Length}, {nameof(_sortBefore)}: {_sortBefore.Length}, {nameof(_buildIgnores)}: {_buildIgnores.Length}, {nameof(_author)}: {_author}, {nameof(Version)}: {Version}, {nameof(_displayName)}: {_displayName}, {nameof(_noCompile)}: {_noCompile}, {nameof(_hideCode)}: {_hideCode}, {nameof(_hideResources)}: {_hideResources}, {nameof(_includeSource)}: {_includeSource}, {nameof(_eacPath)}: {_eacPath}, {nameof(Beta)}: {Beta}, {nameof(_homepage)}: {_homepage}, {nameof(_description)}: {_description}, {nameof(_side)}: {_side}";
 }

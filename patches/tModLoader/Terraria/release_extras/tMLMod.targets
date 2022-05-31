@@ -46,7 +46,7 @@
 			<ModProperty Include="IncludeSource" Value="$(IncludeSource)" />
 			<ModProperty Include="IncludePDB" Value="$(IncludePDB)" />
 			<ModProperty Include="BuildIgnore" Value="$(BuildIgnore)" />
-			<ModProperty Include="ModSide" Value="$(ModSide)" />
+			<ModProperty Include="Side" Value="$(ModSide)" />
 			<ModProperty Include="SortBefore" Value="$(SortBefore)" />
 			<ModProperty Include="SortAfter" Value="$(SortAfter)" />
 		</ItemGroup>
