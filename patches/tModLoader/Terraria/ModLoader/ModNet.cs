@@ -101,6 +101,15 @@ namespace Terraria.ModLoader
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.Hash);
 				p.Write(mod.File.ValidModBrowserSignature);
+
+				if (ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(mod.File.path), out var info)) {
+					p.Write(true); // Is a Workshop Mod and thus can be synced.
+					p.Write(info.workshopEntryId);
+				}
+				else {
+					p.Write(false);
+				}
+
 				SendServerConfigs(p, mod);
 			}
 
@@ -155,15 +164,23 @@ namespace Terraria.ModLoader
 			Mod[] clientMods = ModLoader.Mods;
 			LocalMod[] modFiles = ModOrganizer.FindMods();
 			needsReload = false;
+			List<string> workshopMods = new List<string>();
+
 			downloadQueue.Clear();
 			pendingConfigs.Clear();
 			var syncSet = new HashSet<string>();
 			var blockedList = new List<ModHeader>();
 
-			int n = reader.ReadInt32();
-			for (int i = 0; i < n; i++) {
+			int numberOfMods = reader.ReadInt32();
+			for (int i = 0; i < numberOfMods; i++) {
 				var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
 				syncSet.Add(header.name);
+
+				bool isWorkshop = reader.ReadBoolean();
+				ulong workshopId = 0;
+				if (isWorkshop) {
+					workshopId = reader.ReadUInt64();
+				}
 
 				int configCount = reader.ReadInt32();
 				for (int c = 0; c < configCount; c++)
@@ -174,6 +191,11 @@ namespace Terraria.ModLoader
 					continue;
 
 				needsReload = true;
+
+				if (isWorkshop) {
+					workshopMods.Add(workshopId.ToString());
+					continue;
+				}
 
 				LocalMod[] localVersions = modFiles.Where(m => m.Name == header.name).ToArray();
 				LocalMod matching = Array.Find(localVersions, mod => header.Matches(mod.modFile));
@@ -197,6 +219,8 @@ namespace Terraria.ModLoader
 					ModLoader.DisableMod(mod.Name);
 					needsReload = true;
 				}
+
+			Social.Steam.WorkshopHelper.ModManager.DownloadBatch(workshopMods.ToArray(), null);
 
 			if (blockedList.Count > 0) {
 				string msg = Language.GetTextValue("tModLoader.MPServerModsCantDownload");

@@ -161,7 +161,7 @@ namespace Terraria.Social.Steam
 				//Set UIWorkshopDownload
 				UIWorkshopDownload uiProgress = null;		
 
-				if (!Main.dedServ) {
+				if (!Main.dedServ && returnMenu != null) {
 					uiProgress = new UIWorkshopDownload(Interface.modPacksMenu);
 					Main.MenuUI.SetState(uiProgress);
 				}
