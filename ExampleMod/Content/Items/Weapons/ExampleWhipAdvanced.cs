@@ -17,14 +17,14 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override void SetDefaults() {
 			// Call this method to quickly set some of the properties below.
-			//Item.DefaultToWhip(ModContent.ProjectileType<ExampleWhipAdvancedProjectile>(), 20, 2, 4);
+			//Item.DefaultToWhip(ModContent.ProjectileType<ExampleWhipProjectileAdvanced>(), 20, 2, 4);
 
 			Item.DamageType = DamageClass.SummonMeleeSpeed;
 			Item.damage = 20;
 			Item.knockBack = 2;
 			Item.rare = ItemRarityID.Green;
 
-			Item.shoot = ModContent.ProjectileType<ExampleWhipAdvancedProjectile>();
+			Item.shoot = ModContent.ProjectileType<ExampleWhipProjectileAdvanced>();
 			Item.shootSpeed = 4;
 
 			Item.useStyle = ItemUseStyleID.Swing;

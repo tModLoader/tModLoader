@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
-	public class ExampleWhipAdvancedProjectile : ModProjectile
+	public class ExampleWhipProjectileAdvanced : ModProjectile
 	{
 		// The texture doesn't have the same name as the item, so this property points to it.
 		public override string Texture => "ExampleMod/Content/Projectiles/ExampleWhipProjectile";
