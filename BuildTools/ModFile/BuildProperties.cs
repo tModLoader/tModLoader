@@ -250,4 +250,6 @@ public class BuildProperties
 			+ '$';
 		return new Regex(pattern, RegexOptions.IgnoreCase).IsMatch(fileName);
 	}
+
+	public override string ToString() => $"{nameof(_dllReferences)}: {_dllReferences.Count}, {nameof(_modReferences)}: {_modReferences.Count}, {nameof(_weakReferences)}: {_weakReferences.Count}, {nameof(_sortAfter)}: {_sortAfter.Length}, {nameof(_sortBefore)}: {_sortBefore.Length}, {nameof(_buildIgnores)}: {_buildIgnores.Length}, {nameof(_author)}: {_author}, {nameof(Version)}: {Version}, {nameof(_displayName)}: {_displayName}, {nameof(_noCompile)}: {_noCompile}, {nameof(_hideCode)}: {_hideCode}, {nameof(_hideResources)}: {_hideResources}, {nameof(IncludeSource)}: {IncludeSource}, {nameof(_eacPath)}: {_eacPath}, {nameof(Beta)}: {Beta}, {nameof(_homepage)}: {_homepage}, {nameof(_description)}: {_description}, {nameof(_side)}: {_side}";
 }
