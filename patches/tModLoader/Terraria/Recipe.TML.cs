@@ -426,7 +426,7 @@ namespace Terraria
 			return this;
 		}
 
-		internal static Recipe Create(int result, int amount) {
+		public static Recipe Create(int result, int amount) {
 			var recipe = new Recipe(ModContent.LoadingMod);
 
 			if (!RecipeLoader.setupRecipes)
