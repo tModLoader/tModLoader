@@ -426,8 +426,8 @@ namespace Terraria
 			return this;
 		}
 
-		internal static Recipe Create(Mod mod, int result, int amount) {
-			var recipe = new Recipe(mod);
+		internal static Recipe Create(int result, int amount) {
+			var recipe = new Recipe(ModContent.LoadingMod);
 
 			if (!RecipeLoader.setupRecipes)
 				throw new RecipeException("A Recipe can only be created inside recipe related methods");
