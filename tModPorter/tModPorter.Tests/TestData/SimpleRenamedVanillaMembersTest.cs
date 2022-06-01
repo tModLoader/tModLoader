@@ -2,7 +2,7 @@ using Terraria;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 
-public class SimpleRenamedMembersTest
+public class SimpleRenamedVanillaMembersTest
 {
 	void Method() {
 		var dresserX = Main.dresserX;

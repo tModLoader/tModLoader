@@ -7,8 +7,17 @@ public class DamageClassTest : Mod
 	{
 		Item item = new();
 		item.DamageType = DamageClass.Melee;
-		// item.magic = false /* tModPorter - this is redundant, for more info see https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#damage-classes */ ;
+		item.DamageType = DamageClass.Magic;
 		item.DamageType = DamageClass.Summon;
+		item.DamageType = DamageClass.Throwing;
+		item.DamageType = DamageClass.Ranged;
+
+#if COMPILE_ERROR
+		item.magic = false /* Suggestion: remove. See https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#damage-classes */ ;
+
+		// can't port conditional setter, emit a suggestion
+		item.ranged/* Suggestion: item.DamageType = ... */ = 1 > 2;
+#endif
 	}
 
 	public void MethodB(AnotherItemClass item)

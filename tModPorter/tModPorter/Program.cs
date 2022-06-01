@@ -21,6 +21,9 @@ public class Program {
 			WriteLine(ex);
 		}
 
+		WriteLine();
+		WriteLine();
+		WriteLine("Press any key to exit...");
 		ReadKey();
 	}
 

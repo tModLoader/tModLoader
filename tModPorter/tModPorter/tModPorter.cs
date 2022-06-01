@@ -113,12 +113,13 @@ public class tModPorter
 
 	public static async Task<Document> Rewrite(Document doc) {
 		Document prevDoc;
+		int i = 0;
 		do {
 			prevDoc = doc;
 			foreach (var rewriter in Config.CreateRewriters()) {
 				doc = await rewriter.Rewrite(doc);
 			}
-		} while (doc != prevDoc);
+		} while (doc != prevDoc && ++i < 1000);
 
 		return doc;
 	}

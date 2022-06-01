@@ -13,7 +13,6 @@ public class TexturesTest : Mod
 		texture = Main.npcTexture[index];
 		texture = Main.buffTexture[index];
 		texture = Main.goreTexture[index];
-		texture = Main.dustTexture[index];
 		texture = Main.tileTexture[index];
 		texture = Main.glowMaskTexture[index];
 		texture = Main.npcHeadTexture[index];
@@ -21,6 +20,11 @@ public class TexturesTest : Mod
 
 		texture = Main.chainsTexture[index];
 		texture = Main.wireUITexture[index];
+
+		texture = Main.dustTexture;
+		texture = Main.sunTexture;
+		texture = Main.sun2Texture;
+		texture = Main.sun3Texture;
 
 		texture = Main.wireTexture;
 		texture = Main.wire2Texture;

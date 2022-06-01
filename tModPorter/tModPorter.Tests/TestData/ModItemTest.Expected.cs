@@ -31,4 +31,6 @@ public class ModItemTest : ModItem
 	public override void ModifyWeaponDamage(Player player, ref StatModifier damage) { /* Empty */ }
 
 	public override void LoadData(TagCompound tag) { /* Empty */ }
+
+	public override void SaveData(TagCompound tag)/* Edit tag parameter rather than returning new TagCompound */ => new TagCompound();
 }
