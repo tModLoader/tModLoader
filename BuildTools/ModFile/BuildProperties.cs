@@ -98,6 +98,9 @@ public class BuildProperties
 	}
 
 	private static void ProcessProperty(BuildProperties properties, string property, string value) {
+		if (string.IsNullOrEmpty(value))
+			return;
+
 		switch (property) {
 			case "dllReferences":
 				properties._dllReferences = ReadList(value).ToList();

@@ -45,7 +45,7 @@
 
 		<Message Text="Convert mod properties into item group" />
 		<ItemGroup>
-			<ModProperty Include="ModVersion" Value="$(ModVersion)" />
+			<ModProperty Include="Version" Value="$(Version)" />
 			<ModProperty Include="DisplayName" Value="$(DisplayName)" />
 			<ModProperty Include="Author" Value="$(Author)" />
 			<ModProperty Include="Homepage" Value="$(Homepage)" />
