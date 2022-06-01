@@ -9,7 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
-    <NugetReference Include="SkiaSharp" Version="2.88.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Old\**" />
