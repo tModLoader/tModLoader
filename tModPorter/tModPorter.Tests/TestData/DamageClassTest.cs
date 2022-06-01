@@ -11,10 +11,12 @@ public class DamageClassTest
 		item.throwing = true;
 		item.ranged = true;
 
+#if COMPILE_ERROR
 		item.magic = false;
 
 		// can't port conditional setter, emit a suggestion
 		item.ranged = 1 > 2;
+#endif
 	}
 
 	public void MethodB(AnotherItemClass item)
