@@ -362,7 +362,7 @@ namespace Terraria
 
 		/// <summary>
 		/// Creates a clone of the provided recipe except the source mod of the Recipe will the currently loading mod.
-		/// <br/> The clone will have to registered after being tweaked.
+		/// <br/> The clone will have to be registered after being tweaked.
 		/// </summary>
 		/// <param name="recipe"></param>
 		/// <returns></returns>
