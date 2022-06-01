@@ -55,6 +55,7 @@
 +    <Reference Include="MonoMod.Utils" />
 +	<PackageReference Include="Mono.Cecil" Version="0.11.4" />
 +	<!-- </Temporary> -->
++    <ProjectReference Include="../../../BuildTools/tModLoader.BuildTools.csproj" />
    </ItemGroup>
    <ItemGroup>
 +    <EmbeddedResource Include="**\*.png" />
@@ -94,3 +95,15 @@
      <!-- copy files systematically to output folder -->
      <ItemGroup>
        <BinFiles Include="$(TargetDir)**" />
+@@ -66,6 +_,11 @@
+     <Exec Command="robocopy &quot;$(TargetDir)Libraries&quot; &quot;$(_ActualOutputDirectory)\Libraries&quot; /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
+       <Output TaskParameter="ExitCode" PropertyName="PurgeExitCode" />
+     </Exec>
++    
++    <!-- Copy the ImageSharp library from the build output to the BuildTools library folder in tModLoader/Libraries -->
++    <!-- Needed for the BuildTools to be able to convert images to .rawimg that can be packed into the .tmod file -->
++    <Copy SourceFiles="$(TargetDir)Libraries/sixlabors.imagesharp/1.0.3/lib/netcoreapp3.1/SixLabors.ImageSharp.dll" DestinationFolder="$(_ActualOutputDirectory)/Libraries/tModLoader.BuildTools/1.0.0/" SkipUnchangedFiles="True" />
++    
+     <Warning Text="\Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
+   </Target>
+   <!--See first answer in https://stackoverflow.com/questions/55946010/how-to-specify-output-folder-for-the-referenced-nuget-packages for how this was created-->

@@ -31,7 +31,7 @@
 		</ItemGroup>
 	</Target>
 
-	<UsingTask TaskName="PackageModFile" AssemblyFile="C:\Users\ikerv\Documents\Programming\tModLoader\tModLoader\BuildTools\Build\net6.0\tModLoader.BuildTools.dll" />
+	<UsingTask TaskName="PackageModFile" AssemblyFile="$(tMLLibraryPath)/tModLoader.BuildTools/1.0.0/tModLoader.BuildTools.dll" />
 	<Target Name="Package" AfterTargets="Build">
 		<Message Text="Packaging mod..." />
 
