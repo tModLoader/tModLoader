@@ -61,7 +61,7 @@
 
 		<PropertyGroup>
 			<!-- Use default values in case they have not been provided -->
-			<OutputTmodPath Condition="$(OutputTmodPath) == ''">$(OutputPath)/$(ModName).tmod</OutputTmodPath>
+			<OutputTmodPath Condition="$(OutputTmodPath) == ''">$(OutputPath)/$(AssemblyName).tmod</OutputTmodPath>
 			<TmlVersion Condition="$(TmlVersion) == ''">1.4</TmlVersion>
 		</PropertyGroup>
 
