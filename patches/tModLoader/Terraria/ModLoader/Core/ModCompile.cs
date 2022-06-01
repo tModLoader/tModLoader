@@ -186,6 +186,9 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 				string output = process.StandardOutput.ReadToEnd();
 
 				if (process.ExitCode != 0) {
+					Console.WriteLine("Complete build output:");
+					Console.WriteLine(output);
+
 					Match errorMatch = Regex.Match(output, @"^\s*(\d+) Error\(s\)", RegexOptions.Multiline | RegexOptions.Compiled);
 					Match warningMatch = Regex.Match(output, @"^\s*(\d+) Warning\(s\)", RegexOptions.Multiline | RegexOptions.Compiled);
 					string numErrors = errorMatch.Success ? errorMatch.Groups[1].Value : "?";

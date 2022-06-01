@@ -23,12 +23,19 @@
 		</ModReference>
 	</ItemDefinitionGroup>
 	<Target Name="IncludeModReferences" BeforeTargets="ResolveAssemblyReferences">
-		<Message Text="Adding %(ModReference.Identity) as a reference" />
-		<ItemGroup>
+		<Message Text="Adding %(ModReference.Identity) as a reference"/>
+
+		<ItemGroup Condition="'%(ModReference.ProjectPath)'=='' AND '%(ModReference.HintPath)'!=''">
 			<Reference Include="%(ModReference.Identity)">
-				<HintPath Condition="%(ModReference.HintPath) != ''">%(ModReference.HintPath)</HintPath>
+				<HintPath>%(ModReference.HintPath)</HintPath>
 			</Reference>
 		</ItemGroup>
+
+		<ItemGroup Condition="'%(ModReference.ProjectPath)'!=''">
+			<ProjectReference Include="%(ModReference.ProjectPath)"/>
+		</ItemGroup>
+
+		<Message Text="Either ProjectPath or HintPath must be set for the mod reference to %(ModReference.Identity)" Condition="'%(ModReference.ProjectPath)'=='' AND '%(ModReference.HintPath)'==''"/>
 	</Target>
 
 	<UsingTask TaskName="PackageModFile" AssemblyFile="$(tMLLibraryPath)/tModLoader.BuildTools/1.0.0/tModLoader.BuildTools.dll" />
