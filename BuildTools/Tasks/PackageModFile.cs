@@ -80,7 +80,8 @@ public class PackageModFile : TaskBase
 			string nugetFile = taskItem.GetMetadata("HintPath");
 
 			Log.LogMessage(MessageImportance.Low, $"Adding nuget {nugetName} with path {nugetFile}");
-			tmodFile.AddFile(nugetName, File.ReadAllBytes(nugetFile));
+			if (!string.Equals(taskItem.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase))
+				tmodFile.AddFile(nugetName, File.ReadAllBytes(nugetFile));
 			modProperties.AddDllReference(taskItem.GetMetadata("NuGetPackageId"));
 		}
 
@@ -89,7 +90,8 @@ public class PackageModFile : TaskBase
 			string dllName = Path.GetFileNameWithoutExtension(dllPath);
 
 			Log.LogMessage(MessageImportance.Low, $"Adding dll reference with path {dllPath}");
-			tmodFile.AddFile($"lib/{dllName}.dll", File.ReadAllBytes(dllPath));
+			if (!string.Equals(dllReference.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase))
+				tmodFile.AddFile($"lib/{dllName}.dll", File.ReadAllBytes(dllPath));
 			modProperties.AddDllReference(dllName);
 		}
 
@@ -170,7 +172,8 @@ public class PackageModFile : TaskBase
 		       relPath.StartsWith("bin" + Path.DirectorySeparatorChar) ||
 		       relPath.StartsWith("obj" + Path.DirectorySeparatorChar) ||
 		       relPath == "build.txt" || // For mod's that still use a build.txt
-		       !properties.IncludeSource && SourceExtensions.Contains(Path.GetExtension(resourcePath));
+		       !properties.IncludeSource && SourceExtensions.Contains(Path.GetExtension(resourcePath)) ||
+		       Path.GetFileName(resourcePath) == "Thumbs.db";
 	}
 
 	private void AddResource(TmodFile tmodFile, string resourcePath) {
