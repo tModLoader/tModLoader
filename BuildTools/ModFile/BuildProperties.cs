@@ -41,7 +41,7 @@ public class BuildProperties
 
 	private static void WriteList<T>(IEnumerable<T> list, BinaryWriter writer) {
 		foreach (var item in list)
-			writer.Write(item!.ToString());
+			writer.Write(item!.ToString()!);
 
 		writer.Write("");
 	}
