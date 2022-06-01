@@ -264,6 +264,12 @@ namespace Terraria
 		/// <param name="conditions">An array of conditions.</param>
 		public Recipe AddCondition(params Condition[] conditions) => AddCondition((IEnumerable<Condition>)conditions);
 
+		public Recipe AddCondition(Condition condition) {
+			Conditions.Add(condition);
+
+			return this;
+		}
+
 		/// <summary>
 		/// Adds a collectiom of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).
 		/// </summary>
