@@ -118,7 +118,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Returns whether or not a asset with the specified name exists.
-		/// Includes the mod name prefix like GetAsset
+		/// Includes the mod name prefix like Request
 		/// </summary>
 		public static bool HasAsset(string name) {
 			if (Main.dedServ || string.IsNullOrWhiteSpace(name) || !name.Contains('/'))
