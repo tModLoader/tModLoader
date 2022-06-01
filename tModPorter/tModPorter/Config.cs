@@ -151,9 +151,10 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.NPCID.Sets",			from: "TechnicallyABoss",	to: "ShouldBeCountedAsBoss");
 		RenameStaticField("Terraria.ID.ProjectileID.Sets",	from: "Homing",				to: "CultistIsResistantTo");
 
-		RenameMethod("Terraria.Lighting",	from: "BlackOut", to: "Clear");
-		RenameMethod("Terraria.Utils",		from: "InverseLerp", to: "GetLerpValue");
-		RenameMethod("Terraria.NetMessage",	from: "BroadcastChatMessage", to: "BroadcastChatMessage", newType: "Terraria.Chat.ChatHelper");
+		RenameMethod("Terraria.Lighting",	from: "BlackOut",				to: "Clear");
+		RenameMethod("Terraria.Utils",		from: "InverseLerp",			to: "GetLerpValue");
+		RenameMethod("Terraria.NetMessage",	from: "BroadcastChatMessage",	to: "BroadcastChatMessage", newType: "Terraria.Chat.ChatHelper");
+		RenameMethod("Terraria.Main",		from: "PlaySound",				to: "PlaySound",			newType: "Terraria.Audio.SoundEngine");
 
 		AddTextureRenames();
 	}
