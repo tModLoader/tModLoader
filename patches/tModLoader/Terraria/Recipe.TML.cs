@@ -355,7 +355,16 @@ namespace Terraria
 		#endregion
 
 		/// <summary>
-		/// Returns a copy of the recipe passed in, including the same OnCraftHooks and ConsumeItemHooks. Called only on the result of Recipe.Create to ensure Mod and RecipeIndex set correctly
+		/// Creates a clone of the provided recipe except the source mod of the Recipe will the currently loading mod.
+		/// <br/> The clone will have to registered after being tweaked.
+		/// </summary>
+		/// <param name="recipe"></param>
+		/// <returns></returns>
+		public static Recipe CloneRecipe(Recipe recipe) => Create(recipe.createItem.type, recipe.createItem.stack).Clone(recipe);
+
+		/// <summary>
+		/// Returns a copy of the recipe passed in, including the same OnCraftHooks and ConsumeItemHooks.
+		/// <br/> Called only on the result of <see cref="Create(int, int)"/> to ensure Mod and RecipeIndex set correctly.
 		/// </summary>
 		/// <param name="recipe">The recipe to clone.</param>
 		internal Recipe Clone(Recipe recipe) {

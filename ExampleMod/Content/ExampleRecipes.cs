@@ -109,7 +109,7 @@ namespace ExampleMod.Content
 				.Register();
 
 			// Start a new Recipe by cloning another recipe.
-			Recipe clonedRecipe = Mod.CloneRecipe(baseRecipe)
+			Recipe clonedRecipe = Recipe.CloneRecipe(baseRecipe)
 				// We can new properties to this recipe without affecting the one we cloned from.
 				.AddIngredient(ItemID.SilverCoin)
 				.AddTile(TileID.Anvils);
