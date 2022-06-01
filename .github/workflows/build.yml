@@ -270,9 +270,6 @@ jobs:
           fi
           echo ::endgroup::
           
-          echo Adding version info to ExampleMod
-          echo "version = ${{ steps.version.outputs.new_version }}" >> ./ExampleMod/build.txt
-          
           #pwd gives an absolute path, required for -tmlsavedirectory as the build command is executed from the steam/deployment dir          
           ModloaderDir=$(pwd)/local/ModLoader
           echo ModloaderDir is: $ModloaderDir
@@ -288,7 +285,7 @@ jobs:
           echo ExtraBuildModFlags is: $ExtraBuildModFlags
           
           echo ::group::Building ExampleMod
-          dotnet build ExampleMod/ExampleMod.csproj --nologo
+          dotnet build ExampleMod/ExampleMod.csproj --nologo /p:TmlVersion="${{ steps.version.outputs.new_version }}" /p:Version="${{ steps.version.outputs.new_version }}"
           echo ::endgroup::
           
           mkdir -p artifacts/Mods
