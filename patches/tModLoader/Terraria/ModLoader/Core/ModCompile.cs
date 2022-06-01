@@ -68,6 +68,9 @@ namespace Terraria.ModLoader.Core
 
 		public static bool DeveloperMode => Debugger.IsAttached || Directory.Exists(ModSourcePath) && FindModSources().Length > 0;
 
+		private static readonly Regex ErrorRegex = new(@"^\s*(\d+) Error\(s\)", RegexOptions.Multiline | RegexOptions.Compiled);
+		private static readonly Regex WarningRegex = new(@"^\s*(\d+) Warning\(s\)", RegexOptions.Multiline | RegexOptions.Compiled);
+		private static readonly Regex ErrorMessageRegex = new(@"error \w*:", RegexOptions.Compiled);
 		private static readonly string tMLDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 		private static readonly string oldModReferencesPath = Path.Combine(Program.SavePath, "references");
 		private static readonly string modTargetsPath = Path.Combine(ModSourcePath, "tModLoader.targets");
@@ -189,12 +192,13 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 					Console.WriteLine("Complete build output:");
 					Console.WriteLine(output);
 
-					Match errorMatch = Regex.Match(output, @"^\s*(\d+) Error\(s\)", RegexOptions.Multiline | RegexOptions.Compiled);
-					Match warningMatch = Regex.Match(output, @"^\s*(\d+) Warning\(s\)", RegexOptions.Multiline | RegexOptions.Compiled);
+
+					Match errorMatch = ErrorRegex.Match(output);
+					Match warningMatch = WarningRegex.Match(output);
 					string numErrors = errorMatch.Success ? errorMatch.Groups[1].Value : "?";
 					string numWarnings = warningMatch.Success ? warningMatch.Groups[1].Value : "?";
 
-					string firstError = output.Split('\n').FirstOrDefault(line => line.Contains(" error :"));
+					string firstError = output.Split('\n').FirstOrDefault(line => ErrorMessageRegex.IsMatch(line), "N/A");
 
 					throw new BuildException(Language.GetTextValue("tModLoader.CompileError", mod.Name+".dll", numErrors, numWarnings) + $"\nError: {firstError}");
 				}

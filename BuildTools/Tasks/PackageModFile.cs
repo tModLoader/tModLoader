@@ -80,8 +80,10 @@ public class PackageModFile : TaskBase
 			string nugetFile = taskItem.GetMetadata("HintPath");
 
 			Log.LogMessage(MessageImportance.Low, $"Adding nuget {nugetName} with path {nugetFile}");
-			if (!string.Equals(taskItem.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase))
-				tmodFile.AddFile(nugetName, File.ReadAllBytes(nugetFile));
+			if (string.Equals(taskItem.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase))
+				continue;
+
+			tmodFile.AddFile(nugetName, File.ReadAllBytes(nugetFile));
 			modProperties.AddDllReference(taskItem.GetMetadata("NuGetPackageId"));
 		}
 
@@ -90,8 +92,10 @@ public class PackageModFile : TaskBase
 			string dllName = Path.GetFileNameWithoutExtension(dllPath);
 
 			Log.LogMessage(MessageImportance.Low, $"Adding dll reference with path {dllPath}");
-			if (!string.Equals(dllReference.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase))
-				tmodFile.AddFile($"lib/{dllName}.dll", File.ReadAllBytes(dllPath));
+			if (string.Equals(dllReference.GetMetadata("Private"), "true", StringComparison.OrdinalIgnoreCase))
+				continue;
+
+			tmodFile.AddFile($"lib/{dllName}.dll", File.ReadAllBytes(dllPath));
 			modProperties.AddDllReference(dllName);
 		}
 
@@ -132,6 +136,8 @@ public class PackageModFile : TaskBase
 		List<ITaskItem> modReferences = new List<ITaskItem>();
 		foreach (ITaskItem modReference in ModReferences) {
 			string? modPath = modReference.GetMetadata("HintPath");
+			if (string.IsNullOrEmpty(modPath))
+				modPath = modReference.GetMetadata("ProjectPath");
 			string? modName = modReference.GetMetadata("Identity");
 			string? weakRef = modReference.GetMetadata("Weak");
 			bool isWeak = string.Equals(weakRef, "true", StringComparison.OrdinalIgnoreCase);
