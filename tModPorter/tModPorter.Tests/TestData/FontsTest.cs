@@ -11,6 +11,8 @@ public class FontsTest : Mod
 		font = Main.fontItemText;
 		font = Main.fontMouseText;
 
+		var len = Main.fontDeathText.MeasureString("");
+
 		int index = 0;
 		font = Main.fontCombatText[index];
 	}
