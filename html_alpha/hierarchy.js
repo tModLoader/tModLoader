@@ -1904,7 +1904,6 @@ var hierarchy =
     [ "Terraria.ModLoader.NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", null ],
     [ "Terraria.ModLoader.NPCLoot", "struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html", null ],
     [ "Terraria.GameContent.Skies.CreditsRoll.Actions.NPCs", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs.html", null ],
-    [ "Terraria.ModLoader.Utilities.NPCSpawnHelper", "class_terraria_1_1_mod_loader_1_1_utilities_1_1_n_p_c_spawn_helper.html", null ],
     [ "Terraria.ModLoader.NPCSpawnInfo", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html", null ],
     [ "Terraria.NPCSpawnParams", "struct_terraria_1_1_n_p_c_spawn_params.html", null ],
     [ "Terraria.DataStructures.NPCStrengthHelper", "struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html", null ],
