@@ -1,7 +1,7 @@
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent; //TextureAssets
 
 public class TexturesTest : Mod
 {
@@ -14,7 +14,6 @@ public class TexturesTest : Mod
 		texture = TextureAssets.Npc[index].Value;
 		texture = TextureAssets.Buff[index].Value;
 		texture = TextureAssets.Gore[index].Value;
-		texture = TextureAssets.Dust.Value;
 		texture = TextureAssets.Tile[index].Value;
 		texture = TextureAssets.GlowMask[index].Value;
 		texture = TextureAssets.NpcHead[index].Value;
@@ -22,6 +21,11 @@ public class TexturesTest : Mod
 
 		texture = TextureAssets.Chains[index].Value;
 		texture = TextureAssets.WireUi[index].Value;
+
+		texture = TextureAssets.Dust.Value;
+		texture = TextureAssets.Sun.Value;
+		texture = TextureAssets.Sun2.Value;
+		texture = TextureAssets.Sun3.Value;
 
 		texture = TextureAssets.Wire.Value;
 		texture = TextureAssets.Wire2.Value;

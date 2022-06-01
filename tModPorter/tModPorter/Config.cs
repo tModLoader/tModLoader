@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using tModPorter.Rewriters;
 using static tModPorter.Rewriters.RenameRewriter;
 using static tModPorter.Rewriters.InvokeRewriter;
-using System;
 
 namespace tModPorter;
 
-public static class Config
+public static partial class Config
 {
 	public static List<BaseRewriter> CreateRewriters() => new() {
 		new RenameRewriter(),
@@ -150,5 +149,7 @@ public static class Config
 		RenameMethod("Terraria.Lighting",	from: "BlackOut", to: "Clear");
 		RenameMethod("Terraria.Utils",		from: "InverseLerp", to: "GetLerpValue");
 		RenameMethod("Terraria.NetMessage",	from: "BroadcastChatMessage", to: "BroadcastChatMessage", newType: "Terraria.Chat.ChatHelper");
+
+		AddTextureRenames();
 	}
 }
