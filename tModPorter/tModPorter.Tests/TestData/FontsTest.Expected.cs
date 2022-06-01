@@ -12,6 +12,8 @@ public class FontsTest : Mod
 		font = FontAssets.ItemStack.Value;
 		font = FontAssets.MouseText.Value;
 
+		var len = FontAssets.DeathText.Value.MeasureString("");
+
 		int index = 0;
 		font = FontAssets.CombatText[index].Value;
 	}

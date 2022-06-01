@@ -22,4 +22,17 @@ public class ModPlayerTest : ModPlayer
 	}
 
 	public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) { /* Empty */ }
+
+	public override void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk) {
+		// The following are 1.3 parameters written out using new 1.4 syntax
+		Item fishingRodLocal = fishingRod;
+		Item baitLocal = bait;
+		int powerLocal = power;
+		int liquidTypeLocal = liquidType;
+		int poolSizeLocal = poolSize;
+		int worldLayerLocal = worldLayer;
+		int questFishLocal = questFish;
+		ref int caughtTypeLocal = ref caughtType;
+		// ref int junkLocal = ref junk; // Can't really be transformed, unless you check for fisher.rolledItemDrop = Main.rand.Next(2337, 2340);
+	}
 }

@@ -10,5 +10,10 @@ public class GlobalTileTest : GlobalTile {
 
 	public override void SetStaticDefaults() { /* Empty */ }
 
-	public override void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData) { /* Empty */ }
+	public override void DrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
+		drawData.tileLight = drawData.tileLight * 0.5f;
+
+		// Textbook usage of nextSpecialDrawIndex, reduced to one method in 1.4
+		Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
+	}
 }

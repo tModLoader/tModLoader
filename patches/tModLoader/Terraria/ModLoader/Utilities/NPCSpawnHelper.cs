@@ -5,11 +5,7 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.Utilities
 {
-	//todo: further documentation
-	/// <summary>
-	/// This server as a central class to help modders spawn their npcs. It's basically the vanilla spawn code if-else chains condensed into objects. See ExampleMod for usages.
-	/// </summary>
-	public static class NPCSpawnHelper
+	internal static class NPCSpawnHelper
 	{
 		internal static List<SpawnCondition> conditions = new List<SpawnCondition>();
 
@@ -31,6 +27,9 @@ namespace Terraria.ModLoader.Utilities
 	}
 
 	//todo: further documentation
+	/// <summary>
+	/// This server as a central class to help modders spawn their npcs. It's basically the vanilla spawn code if-else chains condensed into objects. See ExampleMod for usages.
+	/// </summary>
 	public class SpawnCondition
 	{
 		private Func<NPCSpawnInfo, bool> condition;

@@ -15,5 +15,14 @@ public class ModTileTest : ModTile
 
 	public override bool NewRightClick(int i, int j) { return false; /* comment */ }
 
-	public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) { /* comment */ }
+	public override bool HasSmartInteract() { return true; /* comment */ }
+
+	public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex) {
+		drawColor *= 0.5f;
+
+		// Textbook usage of nextSpecialDrawIndex, reduced to one method in 1.4
+		Main.specX[nextSpecialDrawIndex] = i;
+		Main.specY[nextSpecialDrawIndex] = j;
+		nextSpecialDrawIndex++;
+	}
 }
