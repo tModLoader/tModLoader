@@ -30,9 +30,6 @@ namespace Terraria.ModLoader.UI
 		internal void Build(string mod, bool reload)
 			=> Build(mc => mc.Build(mod), reload);
 
-		internal void BuildAll(bool reload)
-			=> Build(mc => mc.BuildAll(), reload);
-
 		internal void Build(Action<ModCompile> buildAction, bool reload) {
 			Main.menuMode = Interface.buildModID;
 			Task.Run(() => BuildMod(buildAction, reload));

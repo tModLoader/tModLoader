@@ -113,50 +113,6 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			Logging.ResetPastExceptions();
 		}
 
-		internal void BuildAll()
-		{
-			var modList = new List<LocalMod>();
-			foreach (var modFolder in FindModSources())
-				modList.Add(ReadBuildInfo(modFolder));
-
-			//figure out which of the installed mods are required for building
-			var installedMods = ModOrganizer.FindMods().Where(mod => !modList.Exists(m => m.Name == mod.Name)).ToList();
-
-			var requiredFromInstall = new HashSet<LocalMod>();
-			void Require(LocalMod mod, bool includeWeak)
-			{
-				foreach (var dep in mod.properties.RefNames(includeWeak)) {
-					var depMod = installedMods.SingleOrDefault(m => m.Name == dep);
-					if (depMod != null && requiredFromInstall.Add(depMod))
-						Require(depMod, false);
-				}
-			}
-
-			foreach (var mod in modList)
-				Require(mod, true);
-
-			modList.AddRange(requiredFromInstall);
-
-			//sort and version check
-			List<BuildingMod> modsToBuild;
-			try {
-				ModOrganizer.EnsureDependenciesExist(modList, true);
-				ModOrganizer.EnsureTargetVersionsMet(modList);
-				var sortedModList = ModOrganizer.Sort(modList);
-				modsToBuild = sortedModList.OfType<BuildingMod>().ToList();
-			}
-			catch (ModSortingException e) {
-				throw new BuildException(e.Message);
-			}
-
-			//build
-			int num = 0;
-			foreach (var mod in modsToBuild) {
-				status.SetProgress(num++, modsToBuild.Count);
-				Build(mod);
-			}
-		}
-
 		internal static void BuildModCommandLine(string modFolder)
 		{
 			UpdateReferencesFolder();
@@ -191,20 +147,12 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 		private BuildingMod ReadBuildInfo(string modFolder)
 		{
 			if (modFolder.EndsWith("\\") || modFolder.EndsWith("/")) modFolder = modFolder.Substring(0, modFolder.Length - 1);
-			var modName = Path.GetFileName(modFolder);
-			status.SetStatus(Language.GetTextValue("tModLoader.ReadingProperties", modName));
+			string modName = Path.GetFileName(modFolder);
 
-			BuildProperties properties;
-			try {
-				properties = BuildProperties.ReadBuildFile(modFolder);
-			}
-			catch (Exception e) {
-				throw new BuildException(Language.GetTextValue("tModLoader.BuildErrorFailedLoadBuildTxt", Path.Combine(modFolder, "build.txt")), e);
-			}
 
-			var file = Path.Combine(ModLoader.ModPath, modName + ".tmod");
-			var modFile = new TmodFile(file, modName, properties.version);
-			return new BuildingMod(modFile, properties, modFolder);
+			string file = Path.Combine(ModLoader.ModPath, modName + ".tmod");
+			var modFile = new TmodFile(file, modName);
+			return new BuildingMod(modFile, null, modFolder);
 		}
 
 		private void Build(BuildingMod mod)

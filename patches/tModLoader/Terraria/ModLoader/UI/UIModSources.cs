@@ -109,14 +109,14 @@ namespace Terraria.ModLoader.UI
 				Top = { Pixels = -65 }
 			};
 			buttonBA.WithFadedMouseOver();
-			buttonBA.OnClick += BuildMods;
+			//buttonBA.OnClick += BuildMods;
 			//_uIElement.Append(buttonBA);
 
 			var buttonBRA = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSBuildReloadAll"));
 			buttonBRA.CopyStyle(buttonBA);
 			buttonBRA.HAlign = 0.5f;
 			buttonBRA.WithFadedMouseOver();
-			buttonBRA.OnClick += BuildAndReload;
+			//buttonBRA.OnClick += BuildAndReload;
 			//_uIElement.Append(buttonBRA);
 
 			var buttonCreateMod = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.MSCreateMod"));
@@ -162,18 +162,6 @@ namespace Terraria.ModLoader.UI
 			} catch(Exception e) {
 				Logging.tML.Error(e);
 			}
-		}
-
-		private void BuildMods(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(10, -1, -1, 1);
-			if (_modList.Count > 0)
-				Interface.buildMod.BuildAll(false);
-		}
-
-		private void BuildAndReload(UIMouseEvent evt, UIElement listeningElement) {
-			SoundEngine.PlaySound(10, -1, -1, 1);
-			if (_modList.Count > 0)
-				Interface.buildMod.BuildAll(true);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch) {
