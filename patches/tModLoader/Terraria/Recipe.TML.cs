@@ -72,7 +72,7 @@ namespace Terraria
 
 			public Condition(NetworkText description, Predicate<Recipe> predicate) {
 				DescriptionText = description ?? throw new ArgumentNullException(nameof(description));
-				Predicate = predicate ?? throw new ArgumentNullException(nameof(description));
+				Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
 			}
 
 			public bool RecipeAvailable(Recipe recipe) => Predicate(recipe);
