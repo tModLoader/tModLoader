@@ -30,4 +30,6 @@ public class ModItemTest : ModItem
 	public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat) { /* Empty */ }
 
 	public override void Load(TagCompound tag) { /* Empty */ }
+
+	public override TagCompound Save() => new TagCompound();
 }

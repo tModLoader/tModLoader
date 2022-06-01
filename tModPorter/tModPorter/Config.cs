@@ -91,10 +91,15 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "ValidTile",			to: "IsTileValidForEntity");
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",	to: "LoadData");
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",	to: "SaveData");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "Load",	to: "LoadData");
+		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "Save",	to: "SaveData");
 		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "Load",	to: "LoadData");
+		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "Save",	to: "SaveData");
 		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "Load",	to: "LoadData");
+		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "Save",	to: "SaveData");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Load",	to: "LoadWorldData");
+		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Save",	to: "SaveWorldData");
 
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.GlobalWall",	from: "SetDefaults", to: "SetStaticDefaults");
