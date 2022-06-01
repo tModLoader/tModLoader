@@ -73,19 +73,4 @@ public class TileTest
 		tile.lava(liquid > 0);
 #endif
 	}
-
-#if COMPILE_ERROR
-	void TileNullable() {
-		Tile tile = null;
-		if (tile == null) { }
-		if (tile != null) {
-			tile.active(false);
-		}
-		tile?.active(true);
-
-		int type = tile?.active() ? tile.type : 0;
-		type = tile?.type ?? 0;
-		type = tile?.wallFrameNumber() ?? 0;
-	}
-#endif
 }

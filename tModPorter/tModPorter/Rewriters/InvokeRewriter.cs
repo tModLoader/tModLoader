@@ -11,7 +11,7 @@ using static tModPorter.Rewriters.SimpleSyntaxFactory;
 namespace tModPorter.Rewriters;
 
 public class InvokeRewriter : BaseRewriter {
-	public delegate SyntaxNode RewriteInvoke(InvocationExpressionSyntax invoke, SyntaxToken methodName);
+	public delegate SyntaxNode RewriteInvoke(InvokeRewriter rw, InvocationExpressionSyntax invoke, SyntaxToken methodName);
 
 	private static List<(string type, string name, bool isStatic, RewriteInvoke handler)> handlers = new();
 
@@ -39,13 +39,13 @@ public class InvokeRewriter : BaseRewriter {
 		};
 	}
 
-	private static SyntaxNode Refactor(InvocationExpressionSyntax node, SimpleNameSyntax nameSyntax, ITypeSymbol targetType) {
+	private SyntaxNode Refactor(InvocationExpressionSyntax node, SimpleNameSyntax nameSyntax, ITypeSymbol targetType) {
 		var nameToken = nameSyntax.Identifier;
 		foreach (var (type, name, isStatic, handler) in handlers) {
 			if (name != nameToken.Text || !targetType.InheritsFrom(type))
 				continue;
 
-			return handler(node, nameToken);
+			return handler(this, node, nameToken);
 		}
 
 		return node;
@@ -73,15 +73,18 @@ public class InvokeRewriter : BaseRewriter {
 			if (isStatic ? !GetStaticallyLocalTypes().Any(t => t.InheritsFrom(type)) : enclosingMethod.IsStatic || !enclosingType.InheritsFrom(type))
 				continue;
 
-			return handler(node, nameToken);
+			return handler(this, node, nameToken);
 		}
 
 		return node;
 	}
 
 	#region Handlers
-	public static RewriteInvoke AddComment(string comment) => (invoke, methodName) => {
-		return invoke;
+	public static RewriteInvoke AddComment(string comment) => (_, invoke, methodName) => {
+		if (methodName.TrailingTrivia.Any(SyntaxKind.MultiLineCommentTrivia))
+			return invoke;
+
+		return invoke.ReplaceToken(methodName, methodName.WithBlockComment(comment));
 	};
 
 	private static ExpressionSyntax ConvertInvokeToMemberReference(InvocationExpressionSyntax invoke, string memberName) =>
@@ -92,34 +95,59 @@ public class InvokeRewriter : BaseRewriter {
 		};
 
 
-	public static RewriteInvoke GetterSetterToProperty(string propName, string constantType = null, string constantName = null) => (invoke, methodName) => {
-		return invoke.ArgumentList.Arguments.Count switch {
-			0 => ConvertInvokeToMemberReference(invoke, propName).WithTriviaFrom(invoke),
+	public static RewriteInvoke GetterSetterToProperty(string propName, string constantType = null, string constantName = null) => (rw, invoke, methodName) => {
+		if (invoke.ArgumentList.Arguments.Count > 1)
+			return invoke;
 
-			1 => SimpleAssignmentExpression(
+		ExpressionSyntax constantExpression = null;
+		if (constantType != null) {
+			constantExpression = SimpleMemberAccessExpression(IdentifierName(rw.UseTypeName(constantType)), constantName);
+		}
+
+		switch (invoke.ArgumentList.Arguments.Count) {
+			case 0:
+				var result = ConvertInvokeToMemberReference(invoke, propName);
+				if (constantType != null)
+					result = Parens(SimpleBinaryExpression(SyntaxKind.EqualsExpression, result, constantExpression));
+
+				return result.WithTriviaFrom(invoke);
+
+			case 1:
+				var arg = invoke.ArgumentList.Arguments[0].Expression;
+				if (constantType != null) {
+					if (rw.model.GetOperation(arg) is ILiteralOperation { ConstantValue: { Value: true } }) {
+						invoke = invoke.ReplaceNode(arg, constantExpression);
+					}
+					else {
+						return AddComment($"Suggestion: {propName} = ...")(rw, invoke, methodName);
+					}
+				}
+
+				return SimpleAssignmentExpression(
 					ConvertInvokeToMemberReference(invoke, propName),
 					invoke.ArgumentList.Arguments[0].Expression
-				).WithTriviaFrom(invoke),
+				).WithTriviaFrom(invoke);
 
-			_ => invoke
-		};
+			default:
+				throw new Exception("Unreachable");
+		}
 	};
 
-	public static RewriteInvoke GetterToProperty(string propName) => (invoke, methodName) => {
+	public static RewriteInvoke GetterToProperty(string propName) => (_, invoke, methodName) => {
 		if (invoke.ArgumentList.Arguments.Count > 0	)
 			return invoke;
 
 		return ConvertInvokeToMemberReference(invoke, propName).WithTriviaFrom(invoke);
 	};
 
-	public static RewriteInvoke ComparisonFunctionToPropertyEquality(string propName) => (invoke, methodName) => {
+	public static RewriteInvoke ComparisonFunctionToPropertyEquality(string propName) => (_, invoke, methodName) => {
 		return invoke;
 	};
 
-	public static RewriteInvoke ToFindTypeCall(string type) => (invoke, methodName) => {
+	public static RewriteInvoke ToFindTypeCall(string type) => (rw, invoke, methodName) => {
 		// TODO: we should replace the entire NameSyntax with a GenericName, to avoid breaking the tree, rather than making an invalid IdentifierNameSyntax
 		// might be a problem for recursive calls
-		invoke = invoke.ReplaceToken(methodName, methodName.WithText($"Find<{type}>"));
+		invoke = invoke.ReplaceToken(methodName, methodName.WithText($"Find<{rw.UseTypeName(type)}>"));
 		return SimpleMemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
 	};
 	#endregion
