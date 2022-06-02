@@ -23,6 +23,7 @@ namespace Terraria.ModLoader
 		public ModTranslation DisplayName { get; private set; }
 		/// <summary>
 		/// The path to the 30x30 texture that will appear for this biome in the bestiary. Defaults to adding "_Icon" onto the usual namespace+classname derived texture path.
+		/// <br/> Vanilla icons use a drop shadow at 40 percent opacity and the texture will be offset 1 pixel left and up from centered in the bestiary filter grid.
 		/// </summary>
 		public virtual string BestiaryIcon => (GetType().Namespace + "." + Name + "_Icon").Replace('.', '/');
 		/// <summary>
