@@ -33,6 +33,19 @@ namespace Terraria.ModLoader
 		protected override string LangKey => "LegacyTooltip.2";
 	}
 
+	public class MeleeNoSpeedDamageClass : VanillaDamageClass
+	{
+		protected override string LangKey => "LegacyTooltip.2";
+
+		public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) => new StatInheritanceData(
+			damageInheritance: 1f,
+			critChanceInheritance: 1f,
+			attackSpeedInheritance: 0f,
+			armorPenInheritance: 1f,
+			knockbackInheritance: 1f
+		);
+	}
+
 	public class RangedDamageClass : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.3";
