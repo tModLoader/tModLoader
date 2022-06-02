@@ -17,6 +17,19 @@ public class DamageClassTest
 		// can't port conditional setter, emit a suggestion
 		item.ranged = 1 > 2;
 #endif
+
+		bool itemIsmelee = item.melee;
+		bool itemIsmagic = item.magic;
+		bool itemIssummon = item.summon;
+		bool itemIsthrowing = item.throwing;
+		bool itemIsRanged = item.ranged;
+
+		Projectile proj = new();
+		// No minion, that is different
+		bool projIsmelee = proj.melee;
+		bool projIsmagic = proj.magic;
+		bool projIsthrowing = proj.throwing;
+		bool projIsRanged = proj.ranged;
 	}
 
 	public void MethodB(AnotherItemClass item)

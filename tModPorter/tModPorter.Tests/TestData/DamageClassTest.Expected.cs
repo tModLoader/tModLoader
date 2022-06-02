@@ -18,6 +18,19 @@ public class DamageClassTest : Mod
 		// can't port conditional setter, emit a suggestion
 		item.ranged/* Suggestion: item.DamageType = ... */ = 1 > 2;
 #endif
+
+		bool itemIsmelee = item.CountsAsClass(DamageClass.Melee);
+		bool itemIsmagic = item.CountsAsClass(DamageClass.Magic);
+		bool itemIssummon = item.CountsAsClass(DamageClass.Summon);
+		bool itemIsthrowing = item.CountsAsClass(DamageClass.Throwing);
+		bool itemIsRanged = item.CountsAsClass(DamageClass.Ranged);
+
+		Projectile proj = new();
+		// No minion, that is different
+		bool projIsmelee = proj.CountsAsClass(DamageClass.Melee);
+		bool projIsmagic = proj.CountsAsClass(DamageClass.Magic);
+		bool projIsthrowing = proj.CountsAsClass(DamageClass.Throwing);
+		bool projIsRanged = proj.CountsAsClass(DamageClass.Ranged);
 	}
 
 	public void MethodB(AnotherItemClass item)
