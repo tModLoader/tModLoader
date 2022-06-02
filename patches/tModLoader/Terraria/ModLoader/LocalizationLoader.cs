@@ -36,10 +36,10 @@ namespace Terraria.ModLoader
 			translations[translation.Key] = translation;
 		}
 
-		internal static ModTranslation GetOrCreateTranslation(Mod mod, string key, bool defaultEmpty = false)
+		public static ModTranslation GetOrCreateTranslation(Mod mod, string key, bool defaultEmpty = false)
 			=> GetOrCreateTranslation($"Mods.{mod.Name}.{key}", defaultEmpty);
 
-		internal static ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false) {
+		public static ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false) {
 			key = key.Replace(" ", "_");
 
 			if (translations.TryGetValue(key, out var translation))
