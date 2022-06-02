@@ -392,6 +392,10 @@
 		"DefaultTownNPCChat": "My modder forgot to give me a chat message.",
 		"DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
+		// Tooltip lines
+		"NoAttackSpeedScaling": "Does not scale with attack speed",
+		"SpecialAttackSpeedScaling": "Attack speed boosts reduced to {0}%",
+
 		// Memory bar
 		"LastLoadRamUsage": "Estimated last load RAM usage: {0}",
 		"AvailableMemory": "Available Memory: {0}",
