@@ -170,7 +170,7 @@ namespace Terraria
 		}
 
 		private void AdjustItemMeleeSpeedEffects() {
-			if (melee && shoot > 0) {
+			if (type < ItemID.Count && melee && shoot > 0) {
 				if (noMelee)
 					DamageType = DamageClass.MeleeNoSpeed;
 				else
