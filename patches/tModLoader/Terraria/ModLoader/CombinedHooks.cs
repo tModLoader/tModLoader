@@ -122,8 +122,12 @@ namespace Terraria.ModLoader
 			return PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player) * player.GetWeaponAttackSpeed(item);
 		}
 
-		public static float TotalUseTimeMultiplier(Player player, Item item) {
-			return PlayerLoader.UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player) / TotalUseSpeedMultiplier(player, item);
+		public static float TotalUseTimeMultiplier(Player player, Item item)
+		{
+			float useTimeMult = PlayerLoader.UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player);
+			if (!item.attackSpeedOnlyAffectsWeaponAnimation)
+				useTimeMult /= TotalUseSpeedMultiplier(player, item);
+			return useTimeMult;
 		}
 
 		public static int TotalUseTime(float useTime, Player player, Item item) {
@@ -132,6 +136,7 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
+		// TO-DO: should this be affected by item.attackSpeedOnlyAffectsWeaponAnimation?
 		public static float TotalUseAnimationMultiplier(Player player, Item item) {
 			float result = PlayerLoader.UseAnimationMultiplier(player, item) * ItemLoader.UseAnimationMultiplier(item, player);
 

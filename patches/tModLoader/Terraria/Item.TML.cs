@@ -21,6 +21,13 @@ namespace Terraria
 		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
 
 		/// <summary>
+		/// Dictates whether or not attack speed modifiers on this weapon will actually affect its use time.<br/>
+		/// Defaults to false, which allows attack speed modifiers to affect use time. Set this to true to prevent this from happening.<br/>
+		/// Used in vanilla by all melee weapons which shoot a projectile and have <see cref="noMelee"/> set to false.
+		/// </summary>
+		public bool attackSpeedOnlyAffectsWeaponAnimation { get; set; }
+
+		/// <summary>
 		/// Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1.
 		/// <br>This prevents it from receiving a prefix on craft.</br>
 		/// </summary>

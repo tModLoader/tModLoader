@@ -585,7 +585,7 @@
  
  			if (type == 0) {
  				netID = 0;
-@@ -45044,7 +_,15 @@
+@@ -45044,7 +_,24 @@
  				SetDefaults5(type);
  			}
  
@@ -595,6 +595,15 @@
 +			//Set 'master' bool for vanilla items with master rarity.
 +			if (type < ItemID.Count && rare == ItemRarityID.Master) {
 +				master = true;
++			}
++
++			// tML: make sure some vanilla balance doesn't get obliterated through clever damage class abuse
++			if (melee && shoot > 0)
++			{
++				if (noMelee)
++					DamageType = DamageClass.MeleeNoSpeed;
++				else
++					attackSpeedOnlyAffectsWeaponAnimation = true;
 +			}
 +
 -			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
@@ -616,13 +625,14 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -45207,14 +_,23 @@
+@@ -45207,14 +_,24 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			ModItem = null;
 +			globalItems = new Instanced<GlobalItem>[0];
 +			AllowReforgeForStackableItem = false;
++			attackSpeedOnlyAffectsWeaponAnimation = false;
 +			useLimitPerAnimation = null;
 +			consumeAmmoOnFirstShotOnly = false;
 +			consumeAmmoOnLastShotOnly = false;
