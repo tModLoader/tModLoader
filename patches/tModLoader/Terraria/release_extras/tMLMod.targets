@@ -34,9 +34,6 @@
 		<ItemGroup>
 			<ProjectReference Include="%(ModReference.ProjectPath)" Condition="'%(ModReference.ProjectPath)'!=''" />
 		</ItemGroup>
-
-		<Message Text="Either ProjectPath or HintPath must be set for the mod reference to %(ModReference.Identity)"
-				 Condition="'%(ModReference.ProjectPath)'=='' AND '%(ModReference.HintPath)'==''" />
 	</Target>
 
 	<UsingTask TaskName="PackageModFile" AssemblyFile="$(tMLLibraryPath)/tModLoader.BuildTools/1.0.0/tModLoader.BuildTools.dll" />
@@ -59,18 +56,15 @@
 			<ModProperty Include="SortAfter" Value="$(SortAfter)" />
 		</ItemGroup>
 
-		<Warning
-				Text="OutputTmodPath should be set to the location of the file to be written. If you are using 'dotnet build', add '/p:OutputTmodPath=path/to/file' after the command."
-				Condition="$(OutputTmodPath) == ''" />
-
-		<Warning
-				Text="TmlVersion should be set to the version of TML this mod is being built for. If you are using 'dotnet build', add '/p:TmlVersion=0.1.2.3' after the command."
-				Condition="$(TmlVersion) == ''" />
-
+		<GetAssemblyIdentity AssemblyFiles="$(tMLSteamPath)$(tMLPath)">
+			<Output TaskParameter="Assemblies" ItemName="TmlAssemblyIdentity" />
+		</GetAssemblyIdentity>
+		
 		<PropertyGroup>
 			<!-- Use default values in case they have not been provided -->
 			<OutputTmodPath Condition="$(OutputTmodPath) == ''">$(OutputPath)/$(AssemblyName).tmod</OutputTmodPath>
-			<TmlVersion Condition="$(TmlVersion) == ''">1.4</TmlVersion>
+			<TmlVersion Condition="$(TmlVersion) == '' AND TmlAssemblyIdentity!=''">%(TmlAssemblyIdentity.Version)</TmlVersion>
+			<TmlVersion Condition="$(TmlVersion) == '' AND TmlAssemblyIdentity==''">1.4</TmlVersion>
 		</PropertyGroup>
 
 		<PackageModFile
