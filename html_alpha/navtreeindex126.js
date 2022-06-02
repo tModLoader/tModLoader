@@ -1,5 +1,7 @@
 var NAVTREEINDEX126 =
 {
+"namespace_terraria_1_1_graphics_1_1_effects.html#a9cc811e33837fdf6cc2e58376f5b610fa03462a41aec357b74c89eb8d272532f7":[1,0,2,8,2,14,0],
+"namespace_terraria_1_1_graphics_1_1_effects.html#a9cc811e33837fdf6cc2e58376f5b610fa1f5c5ce5cdbea723378e6db882a732ec":[1,0,2,8,2,14,5],
 "namespace_terraria_1_1_graphics_1_1_effects.html#a9cc811e33837fdf6cc2e58376f5b610fa2dfebfa889397f5f69caa79cb5960f34":[1,0,2,8,2,14,3],
 "namespace_terraria_1_1_graphics_1_1_effects.html#a9cc811e33837fdf6cc2e58376f5b610fa815dff01257e5ef182b25d4c1ef0a7a0":[1,0,2,8,2,14,1],
 "namespace_terraria_1_1_graphics_1_1_effects.html#a9cc811e33837fdf6cc2e58376f5b610fa90df47491be2a6b98456f2728cb24268":[1,0,2,8,2,14,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX126 =
 "namespace_terraria_1_1_u_i_1_1_gamepad.html":[1,0,2,22,1],
 "namespace_terraria_1_1_utilities.html":[1,0,2,23],
 "namespace_terraria_1_1_utilities_1_1_file_browser.html":[1,0,2,23,0],
-"namespace_terraria_1_1_utilities_1_1_terraria.html":[1,0,2,23,1],
-"namespace_terraria_1_1_utilities_1_1_terraria_1_1_utilities.html":[1,0,2,23,1,0],
-"namespace_terraria_1_1_world_building.html":[1,0,2,24]
+"namespace_terraria_1_1_utilities_1_1_terraria.html":[1,0,2,23,1]
 };
