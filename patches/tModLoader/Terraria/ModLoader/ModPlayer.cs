@@ -965,5 +965,9 @@ namespace Terraria.ModLoader
 		/// <param name="mediumCoreDeath">Whether you are setting up a mediumcore player's inventory after their death.</param>
 		public virtual void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath) {
 		}
+
+		public virtual bool? ChooseBestTorch(ref int type, ref int style) {
+			return null;
+		}
 	}
 }

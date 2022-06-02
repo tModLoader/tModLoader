@@ -1110,5 +1110,26 @@ namespace Terraria.ModLoader
 				.SelectMany(kv => kv.Value)
 				.ToList();
 		}
+
+		private delegate bool? DelegateChooseBestTorch(ref int type, ref int style);
+		private static HookList HookChooseBestTorch = AddHook<DelegateChooseBestTorch>(p => p.ChooseBestTorch);
+
+		public static bool? ChooseBestTorch(Player player, ref int type, ref int style) {
+			bool? flag = null;
+
+			foreach (int index in HookChooseBestTorch.arr) {
+				bool? allow = player.modPlayers[index].ChooseBestTorch(ref type, ref style);
+
+				if (allow.HasValue) {
+					if (!allow.Value) {
+						return false;
+					}
+
+					flag = true;
+				}
+			}
+
+			return flag;
+		}
 	}
 }

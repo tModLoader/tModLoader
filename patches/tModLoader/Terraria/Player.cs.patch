@@ -3816,6 +3816,23 @@
  						for (int i = 0; i < num2; i++) {
  							WorldGen.KillTile_MakeTileDust(tileTargetX, tileTargetY, tile);
  						}
+@@ -28394,10 +_,14 @@
+ 					SoundEngine.PlaySound(0, tileTargetX * 16, tileTargetY * 16);
+ 			}
+ 			else {
++				// TML: Run ModPlayer hook to determine Torch God's Favor behavior.
++				int type = inventory[selectedItem].createTile;
++				bool? doTorchGodsFavor = PlayerLoader.ChooseBestTorch(this, ref type, ref num);
+-				if (UsingBiomeTorches && inventory[selectedItem].createTile == 4 && num == 0)
++				if (doTorchGodsFavor ?? (UsingBiomeTorches && inventory[selectedItem].createTile == 4 && num == 0))
+ 					num = BiomeTorchPlaceStyle(num);
+ 
++				// Replace inventory[selectedItem].createTile with a ref'd variale that may be modified by modders.
+-				flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, inventory[selectedItem].createTile, mute: false, forced, whoAmI, num);
++				flag = WorldGen.PlaceTile(tileTargetX, tileTargetY, type, mute: false, forced, whoAmI, num);
+ 			}
+ 
+ 			if (flag) {
 @@ -28420,8 +_,11 @@
  				PlaceThing_Tiles_PlaceIt_UnslopeForSolids();
  				PlaceThing_Tiles_PlaceIt_KillGrassForSolids();
