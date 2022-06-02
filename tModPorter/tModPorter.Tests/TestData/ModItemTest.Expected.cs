@@ -16,6 +16,8 @@ public class ModItemTest : ModItem
 		Item.useTime += 2;
 	}
 
+	public override ModItem Clone(Item newEntity) { return null; }
+
 	public override bool PreReforge() { return false; /* comment */ }
 
 	public override bool? UseItem(Player player) { return true; /* comment */ }
