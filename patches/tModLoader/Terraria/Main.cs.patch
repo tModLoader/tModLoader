@@ -1774,26 +1774,36 @@
  						if (item.useAnimation <= 8)
  							toolTipLine[numLines] = Lang.tip[6].Value;
  						else if (item.useAnimation <= 20)
-@@ -15283,10 +_,32 @@
+@@ -15283,10 +_,42 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
  
 +						toolTipNames[numLines] = "Speed";
  						numLines++;
 +
++						/*
++						tML:
++						these lines add a degree of transparency which vanilla doesn't provide by tellin' the player what
++						does and doesn't get affected by attack speed bonuses, as well as if the item in question has any
++						special scalin' rules. they're tML-specific, and can be messed with at the will of the modder
++
++						as for why they're differently named: prep for when that tooltip rework comes out
++						-thomas
++						*/
 +						if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
 +							toolTipLine[numLines] = Language.GetTextValue("tModLoader.NoAttackSpeedScaling");
-+							toolTipNames[numLines] = "SpeedScaling";
++							toolTipNames[numLines] = "NoSpeedScaling";
 +							numLines++;
 +						}
 +						else if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] != 1f) {
++							// we want to convert the multiplier into a percentage before showin' it     -thomas
 +							int decimalPlaces = 2;
 +							double attackSpeedScaling = ItemID.Sets.BonusAttackSpeedMultiplier[item.type] * 100.0;
 +							toolTipLine[numLines] = Language.GetTextValue(
 +								"tModLoader.SpecialAttackSpeedScaling",
 +								Math.Round(attackSpeedScaling * Math.Pow(10.0, (double)decimalPlaces)) / Math.Pow(10.0, (double)decimalPlaces) + "%"
 +							);
-+							toolTipNames[numLines] = "SpeedScaling";
++							toolTipNames[numLines] = "SpecialSpeedScaling";
 +							numLines++;
 +						}
  					}
