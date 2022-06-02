@@ -12,8 +12,8 @@ namespace Terraria.ModLoader.Engine
 		public const uint TMLAppID = 1281930;
 		public const uint TerrariaAppID = 105600;
 
-		public static AppId_t TMLAppID_t = new AppId_t(TMLAppID);
-		public static AppId_t TerrariaAppId_t = new AppId_t(TerrariaAppID);
+		public static AppId_t TMLAppID_t => new AppId_t(TMLAppID);
+		public static AppId_t TerrariaAppId_t => new AppId_t(TerrariaAppID);
 
 		public static ulong lastAvailableSteamCloudStorage = ulong.MaxValue;
 

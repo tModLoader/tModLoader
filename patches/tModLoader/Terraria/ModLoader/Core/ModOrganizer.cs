@@ -463,7 +463,7 @@ namespace Terraria.ModLoader.Core
 
 		internal static void CleanupOldPublish(string repo) {
 			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-			if (tmods.Length <= 2)
+			if (tmods.Length <= 3)
 				return;
 
 			string location = FindOldest(repo);
