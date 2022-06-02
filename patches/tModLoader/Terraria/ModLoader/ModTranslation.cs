@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader
 {
 	[CloneByReference]
+	[DebuggerDisplay("{Key}, {GetDefault()}")]
 	public class ModTranslation
 	{
 		private const int fallback = 1;

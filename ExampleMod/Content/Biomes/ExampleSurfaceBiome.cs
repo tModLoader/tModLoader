@@ -25,7 +25,8 @@ namespace ExampleMod.Content.Biomes
 
 		// Use SetStaticDefaults to assign the display name
 		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Surface");
+			// This translation is set in localization files
+			// DisplayName.SetDefault("Example Surface");
 		}
 
 		// Calculate when the biome is active.
