@@ -585,26 +585,21 @@
  
  			if (type == 0) {
  				netID = 0;
-@@ -45044,7 +_,24 @@
+@@ -45044,7 +_,19 @@
  				SetDefaults5(type);
  			}
  
 +			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
 +			ApplyItemAnimationCompensations();
 +
++			// tML: make sure some vanilla balance doesn't get obliterated by attack speed changes
++			AdjustItemMeleeSpeedEffects();
++
 +			//Set 'master' bool for vanilla items with master rarity.
 +			if (type < ItemID.Count && rare == ItemRarityID.Master) {
 +				master = true;
 +			}
 +
-+			// tML: make sure some vanilla balance doesn't get obliterated through clever damage class abuse
-+			if (melee && shoot > 0)
-+			{
-+				if (noMelee)
-+					DamageType = DamageClass.MeleeNoSpeed;
-+				else
-+					attackSpeedOnlyAffectsWeaponAnimation = true;
-+			}
 +
 -			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
 +			dye = GameShaders.Armor.GetShaderIdFromItemId(type);

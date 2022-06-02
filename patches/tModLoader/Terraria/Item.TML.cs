@@ -169,6 +169,15 @@ namespace Terraria
 			currentUseAnimationCompensation = 0;
 		}
 
+		private void AdjustItemMeleeSpeedEffects() {
+			if (melee && shoot > 0) {
+				if (noMelee)
+					DamageType = DamageClass.MeleeNoSpeed;
+				else
+					attackSpeedOnlyAffectsWeaponAnimation = true;
+			}
+		}
+
 		// Internal utility method. Move somewhere, if there's a better place.
 		internal static void DropItem(IEntitySource source, Item item, Rectangle rectangle) {
 			int droppedItemId = NewItem(source, rectangle, item.netID, 1, noBroadcast: true, prefixGiven: item.prefix);
