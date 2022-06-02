@@ -13,6 +13,9 @@ public abstract class FindTypeTest : Mod
 		int h = mod.TileEntityType("TileEntityClass");
 		int i = mod.TileType("TileClass");
 		int j = mod.WallType("WallClass");
+
+		int k = mod.GetGoreSlot("GoreTextureOrClass");
+		int l = ModGore.GetGoreSlot("ModName/GoreTextureOrClass");
 	}
 
 	int ViaIdentifier() => BuffType("BuffClass");
