@@ -7,6 +7,29 @@ public class ModTileTest : ModTile
 {
 	void Method() {
 		drop = 1;
+		dustType = 0;
+#if COMPILE_ERROR
+		soundType = 1;
+		soundStyle = 0;
+#endif
+
+#if COMPILE_ERROR //TODO
+		sapling = true;
+		torch = true;
+		bed = true;
+		dresserDrop = 0;
+		dresser = "";
+		chestDrop = 0;
+		chest = "";
+		closeDoorID = 0;
+		openDoorID = 0;
+		disableSmartInteract = true;
+		disableSmartCursor = true;
+		minPick = 0;
+		mineResist = 0;
+		animationFrameHeight = 0;
+		adjTiles = new int[0];
+#endif
 	}
 
 	public override bool Dangersense(int i, int j, Player player) {
