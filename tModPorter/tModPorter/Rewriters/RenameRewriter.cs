@@ -149,7 +149,7 @@ public class RenameRewriter : BaseRewriter {
 			return;
 		
 		rw.RegisterAction<MemberAccessExpressionSyntax>(memberAccess, (newNode) =>
-			newNode.WithExpression(IdentifierName(rw.UseTypeName(newType)).WithTriviaFrom(newNode.Expression))
+			newNode.WithExpression(rw.UseType(newType).WithTriviaFrom(newNode.Expression))
 		);
 	};
 

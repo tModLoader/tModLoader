@@ -1,9 +1,9 @@
+using Microsoft.Xna.Framework;
 using System;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Microsoft.Xna.Framework;
 
 public class ModItemTest : ModItem
 {
@@ -20,7 +20,7 @@ public class ModItemTest : ModItem
 
 	public override bool PreReforge() { return false; /* comment */ }
 
-	public override bool? UseItem(Player player) { return true; /* comment */ }
+	public override bool? UseItem(Player player)/* Suggestion: Return null instead of false */ { return true; /* comment */ }
 
 	public override void UseStyle(Player player, Rectangle heldItemFrame) { /* comment */ }
 

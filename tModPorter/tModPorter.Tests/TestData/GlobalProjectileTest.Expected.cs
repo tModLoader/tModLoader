@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class GlobalProjectileTest : GlobalProjectile
 {
+	public override bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) => true;
+
 	public override bool PreDrawExtras(Projectile projectile) { return true; }
 
 	public override bool PreDraw(Projectile projectile, ref Color lightColor) { return true; }
