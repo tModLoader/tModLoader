@@ -32,9 +32,18 @@ public static partial class Config
 		RenameType(from: "Terraria.ModLoader.ModHotKey",	to: "Terraria.ModLoader.ModKeybind");
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "text",			to: "Text");
+		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "mod",			to: "Mod");
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "isModifier",		to: "IsModifier");
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "isModifierBad",	to: "IsModifierBad");
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "overrideColor",	to: "OverrideColor");
+
+
+		RenameInstanceField("Terraria.ModLoader.ModProjectile", from: "aiType",								  to: "AIType");
+		RenameInstanceField("Terraria.ModLoader.ModProjectile", from: "cooldownSlot",						  to: "CooldownSlot");
+		RenameInstanceField("Terraria.ModLoader.ModProjectile", from: "drawOffsetX",				 		  to: "DrawOffsetX");
+		RenameInstanceField("Terraria.ModLoader.ModProjectile", from: "drawOriginOffsetY",					  to: "DrawOriginOffsetY");
+		RenameInstanceField("Terraria.ModLoader.ModProjectile", from: "drawOriginOffsetX",					  to: "DrawOriginOffsetX");
+		RenameInstanceField("Terraria.ModLoader.ModProjectile", from: "drawHeldProjInFrontOfHeldItemAndArms", to: "DrawHeldProjInFrontOfHeldItemAndArms");
 
 		RenameInstanceField("Terraria.Tile", from: "frameX",		to: "TileFrameX");
 		RenameInstanceField("Terraria.Tile", from: "frameY",		to: "TileFrameY");
@@ -126,21 +135,26 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"DrawEffects");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"IsTileDangerous", comment: "Suggestion: Return null instead of false");
 
-		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",	to: "LoadData");
-		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",	to: "SaveData");
-		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "Load",	to: "LoadData");
-		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "Save",	to: "SaveData");
-		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "Load",	to: "LoadData");
-		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "Save",	to: "SaveData");
-		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "Load",	to: "LoadData");
-		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "Save",	to: "SaveData");
-		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Load",	to: "LoadWorldData");
-		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Save",	to: "SaveWorldData");
-		ChangeHookSignature("Terraria.ModLoader.ModItem",		"SaveData",			comment: "Edit tag parameter rather than returning new TagCompound");
-		ChangeHookSignature("Terraria.ModLoader.GlobalItem",	"SaveData",			comment: "Edit tag parameter rather than returning new TagCompound");
-		ChangeHookSignature("Terraria.ModLoader.ModPlayer",		"SaveData",			comment: "Edit tag parameter rather than returning new TagCompound");
-		ChangeHookSignature("Terraria.ModLoader.ModTileEntity", "SaveData",			comment: "Edit tag parameter rather than returning new TagCompound");
-		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"SaveWorldData",	comment: "Edit tag parameter rather than returning new TagCompound");
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",		to: "SaveData");
+		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "Load",		to: "LoadData");
+		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "Save",		to: "SaveData");
+		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "Load",		to: "LoadData");
+		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "Save",		to: "SaveData");
+		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "Load",		to: "LoadData");
+		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "Save",		to: "SaveData");
+		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Load",		to: "LoadWorldData");
+		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Save",		to: "SaveWorldData");
+		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Initialize", to: "OnWorldLoad");
+		RenameMethod("Terraria.ModLoader.ModSystem",	from: "PreUpdate",	to: "PreUpdateWorld");
+		RenameMethod("Terraria.ModLoader.ModSystem",	from: "PostUpdate", to: "PostUpdateWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",		"SaveData",			comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",	"SaveData",			comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",		"SaveData",			comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.ModTileEntity", "SaveData",			comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"SaveWorldData",	comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"OnWorldLoad",		comment: "Suggestion: Also concider overriding OnWorldUnload"); // TODO this doesn't work?
+		ChangeHookSignature("Terraria.ModLoader.ModItem",		"Clone");
 
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.GlobalWall",	from: "SetDefaults", to: "SetStaticDefaults");
@@ -151,7 +165,11 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModMount",		from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModPrefix",	from: "SetDefaults", to: "SetStaticDefaults");
 
-		RenameInstanceField("Terraria.ModLoader.ModBlockType", from: "drop", to: "ItemDrop");
+		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "drop",		 to: "ItemDrop");
+		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "dustType",    to: "DustType");
+
+		RenameInstanceField("Terraria.ModLoader.ModWaterStyle",		from: "Type",		to: "Slot");
+		RenameInstanceField("Terraria.ModLoader.ModWaterfallStyle", from: "Type",		to: "Slot");
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "BuffType",		ToFindTypeCall("Terraria.ModLoader.ModBuff"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "DustType",		ToFindTypeCall("Terraria.ModLoader.ModDust"));
