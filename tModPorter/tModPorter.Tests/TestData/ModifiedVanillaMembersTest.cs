@@ -10,7 +10,11 @@ public class ModifiedVanillaMembersTest
 #if COMPILE_ERROR
 		player.Spawn();
 
+		player.SporeSac();
+
 		ItemText.NewText(null, 0, false, false);
+
+		var height = Main.NPCAddHeight(123);
 #endif
 	}
 }
