@@ -32,6 +32,15 @@ public class tModPorter
 		updateProgress ??= _ => { };
 		var start = DateTime.Now;
 
+		var obj_folder = Path.Combine(Path.GetDirectoryName(projectPath)!, "obj");
+		if (Directory.Exists(obj_folder)) {
+			try {
+				Directory.Delete(obj_folder, true);
+			} catch (Exception e) {
+				updateProgress(new Warning(e.Message));
+			}
+		}
+
 		MSBuildLocator.RegisterDefaults();
 
 		using MSBuildWorkspace workspace = MSBuildWorkspace.Create();
