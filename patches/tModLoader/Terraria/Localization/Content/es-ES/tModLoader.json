@@ -159,7 +159,7 @@
 		"ModInfoNoDescriptionAvailable": "Sin descripción",
 		"ModInfoProblemTryAgain": "Ha habido un problema, inténtalo de nuevo",
 		"ModInfoDisableModToDelete": "Desactiva el mod para borrarlo",
-		"ModInfoVisitSteampage": "Visita la página del mod en Steam Workshop",
+		"ModInfoVisitSteampage": "Visitar mod en la Steam Workshop",
 
 		// Mod Packs
 		"ModPacksHeader": "Paquetes de mods",
