@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static tModPorter.Rewriters.SimpleSyntaxFactory;
 
 namespace tModPorter.Rewriters;
@@ -56,15 +58,30 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		usings = usings.Insert(idx, SimpleUsing(fullname));
 	}
 
-	public string UseType(INamedTypeSymbol sym) {
+	public TypeSyntax UseType(ITypeSymbol sym) =>
+		sym is INamedTypeSymbol named ?
+			UseType(named) :
+			IdentifierName(sym.ToString());
+
+	public TypeSyntax UseType(INamedTypeSymbol sym) {
+		if (sym.ConstructedFrom is INamedTypeSymbol genericTemplate && genericTemplate.SpecialType == SpecialType.System_Nullable_T)
+			return NullableType(UseType(sym.TypeArguments[0]));
+
+		var specialKind = sym.SpecialType.SpecialTypeKind();
+		if (specialKind != SyntaxKind.None)
+			return PredefinedType(Token(specialKind));
+
 		if (sym.ContainingNamespace != null) {
 			UsingNamespace(sym.ContainingNamespace);
 		}
 
-		return sym.Name;
+		return IdentifierName(sym.Name);
 	}
 
-	public string UseTypeName(string fullname) => UseType(model.Compilation.GetTypeByMetadataName(fullname));
+	public IdentifierNameSyntax UseType(string fullname) => (IdentifierNameSyntax)UseType(model.Compilation.GetTypeByMetadataName(fullname));
+
+	public ParameterSyntax Parameter(IParameterSymbol p) =>
+		SyntaxFactory.Parameter(default, new(ModifierToken(p.RefKind)), UseType(p.Type).WithTrailingTrivia(Space), Identifier(p.Name), default);
 
 	public void RegisterAction<T>(SyntaxNode node, Func<T, T> rewrite) where T : SyntaxNode => RegisterAction(node, (n) => rewrite((T)n));
 

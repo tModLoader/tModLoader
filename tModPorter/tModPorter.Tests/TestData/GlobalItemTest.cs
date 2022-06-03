@@ -4,6 +4,8 @@ using Terraria.ModLoader.IO;
 
 public class GlobalItemTest : GlobalItem
 {
+	public override bool UseItem(Item item, Player player) => false;
+
 	public override bool NewPreReforge(Item item) { return false; /* comment */ }
 
 	public override void UseStyle(Item item, Player player) { /* comment */ }
@@ -15,4 +17,8 @@ public class GlobalItemTest : GlobalItem
 	public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat) { /* Empty */ }
 
 	public override void Load(Item item, TagCompound tag) { /* Empty */ }
+
+#if COMPILE_ERROR
+	public override TagCompound Save(Item item) => new TagCompound();
+#endif
 }

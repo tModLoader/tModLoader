@@ -121,6 +121,11 @@ public class tModPorter
 			}
 		} while (doc != prevDoc && ++i < 1000);
 
+#if DEBUG
+		if (i == 1000)
+			throw new Exception("Infinite recursion");
+#endif
+
 		return doc;
 	}
 

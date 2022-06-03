@@ -10,7 +10,8 @@ using static tModPorter.Rewriters.SimpleSyntaxFactory;
 
 namespace tModPorter.Rewriters;
 
-public class InvokeRewriter : BaseRewriter {
+public class InvokeRewriter : BaseRewriter
+{
 	public delegate SyntaxNode RewriteInvoke(InvokeRewriter rw, InvocationExpressionSyntax invoke, SyntaxToken methodName);
 
 	private static List<(string type, string name, bool isStatic, RewriteInvoke handler)> handlers = new();
@@ -101,7 +102,7 @@ public class InvokeRewriter : BaseRewriter {
 
 		ExpressionSyntax constantExpression = null;
 		if (constantType != null) {
-			constantExpression = SimpleMemberAccessExpression(IdentifierName(rw.UseTypeName(constantType)), constantName);
+			constantExpression = SimpleMemberAccessExpression(rw.UseType(constantType), constantName);
 		}
 
 		switch (invoke.ArgumentList.Arguments.Count) {
@@ -147,7 +148,7 @@ public class InvokeRewriter : BaseRewriter {
 	public static RewriteInvoke ToFindTypeCall(string type) => (rw, invoke, methodName) => {
 		// TODO: we should replace the entire NameSyntax with a GenericName, to avoid breaking the tree, rather than making an invalid IdentifierNameSyntax
 		// might be a problem for recursive calls
-		invoke = invoke.ReplaceToken(methodName, methodName.WithText($"Find<{rw.UseTypeName(type)}>"));
+		invoke = invoke.ReplaceToken(methodName, methodName.WithText($"Find<{rw.UseType(type)}>"));
 		return SimpleMemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
 	};
 	#endregion
