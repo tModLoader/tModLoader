@@ -31,5 +31,7 @@ public class ModItemTest : ModItem
 
 	public override void Load(TagCompound tag) { /* Empty */ }
 
+#if COMPILE_ERROR
 	public override TagCompound Save() => new TagCompound();
+#endif
 }

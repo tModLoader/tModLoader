@@ -19,9 +19,11 @@ public class ModPlayerTest : ModPlayer
 
 	public override void LoadData(TagCompound tag) { /* Empty */ }
 
+#if COMPILE_ERROR
 	public override void SaveData(TagCompound tag)/* Edit tag parameter rather than returning new TagCompound */ {
 		return new TagCompound();
 	}
+#endif
 
 	public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) { /* Empty */ }
 
