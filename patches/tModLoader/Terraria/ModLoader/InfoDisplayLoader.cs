@@ -82,8 +82,9 @@ namespace Terraria.ModLoader
 		public static bool Active(InfoDisplay info) {
 			bool active = info.Active();
 			foreach (GlobalInfoDisplay global in globalInfoDisplays) {
-				if (global.Active(info).HasValue)
-					active &= global.Active(info).Value;
+				bool? val = global.Active(info);
+				if (val.HasValue)
+					active &= val.Value;
 			}
 			return active;
 		}
