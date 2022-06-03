@@ -25,9 +25,9 @@ namespace Terraria.ModLoader.Core
 			public int Length { get; }
 			public int CompressedLength { get; }
 
-			internal ReadOnlyMemory<byte> cachedBytes;
+			internal ReadOnlyMemory<byte>? cachedBytes;
 
-			internal FileEntry(string name, int offset, int length, int compressedLength, ReadOnlyMemory<byte> cachedBytes = default) {
+			internal FileEntry(string name, int offset, int length, int compressedLength, ReadOnlyMemory<byte>? cachedBytes = null) {
 				Name = name;
 				Offset = offset;
 				Length = length;
@@ -83,12 +83,11 @@ namespace Terraria.ModLoader.Core
 		public bool HasFile(string fileName) => files.ContainsKey(Sanitize(fileName));
 
 		public ReadOnlySpan<byte> GetBytes(FileEntry entry) {
-			if (!entry.cachedBytes.IsEmpty && !entry.IsCompressed)
-				return entry.cachedBytes.Span;
+			if (entry.cachedBytes != null && !entry.IsCompressed)
+				return entry.cachedBytes.Value.Span;
 
-			using (var stream = GetStream(entry)) {
+			using (var stream = GetStream(entry))
 				return stream.ReadBytes(entry.Length);
-			}
 		}
 
 		public List<string> GetFileNames() => files.Keys.ToList();
@@ -97,8 +96,8 @@ namespace Terraria.ModLoader.Core
 
 		public Stream GetStream(FileEntry entry, bool newFileStream = false) {
 			Stream stream;
-			if (!entry.cachedBytes.IsEmpty) {
-				stream = new MemoryStream(entry.cachedBytes.ToArray());
+			if (entry.cachedBytes != null) {
+				stream = new MemoryStream(entry.cachedBytes.Value.ToArray());
 			}
 			else if (fileStream == null) {
 				throw new IOException($"File not open: {path}");
@@ -216,8 +215,10 @@ namespace Terraria.ModLoader.Core
 				writer.Write(fileTable.Length);
 
 				foreach (var f in fileTable) {
-					if (f.CompressedLength != f.cachedBytes.Length)
-						throw new Exception($"CompressedLength ({f.CompressedLength}) != cachedBytes.Length ({f.cachedBytes.Length}): {f.Name}");
+					Debug.Assert(f.cachedBytes != null);
+
+					if (f.CompressedLength != f.cachedBytes.Value.Length)
+						throw new Exception($"CompressedLength ({f.CompressedLength}) != cachedBytes.Value.Length ({f.cachedBytes.Value.Length}): {f.Name}");
 
 					writer.Write(f.Name);
 					writer.Write(f.Length);
@@ -227,7 +228,9 @@ namespace Terraria.ModLoader.Core
 				// write compressed files and update offsets
 				int offset = (int)fileStream.Position; // offset starts at end of file table
 				foreach (var f in fileTable) {
-					writer.Write(f.cachedBytes.Span);
+					Debug.Assert(f.cachedBytes != null);
+
+					writer.Write(f.cachedBytes.Value.Span);
 
 					f.Offset = offset;
 					offset += f.CompressedLength;
