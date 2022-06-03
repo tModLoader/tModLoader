@@ -8,7 +8,7 @@ public class DamageClassTest
 		item.melee = true;
 		item.magic = true;
 		item.summon = true;
-		item.throwing = true;
+		item.thrown = true;
 		item.ranged = true;
 
 #if COMPILE_ERROR
@@ -21,14 +21,14 @@ public class DamageClassTest
 		bool itemIsmelee = item.melee;
 		bool itemIsmagic = item.magic;
 		bool itemIssummon = item.summon;
-		bool itemIsthrowing = item.throwing;
+		bool itemIsthrowing = item.thrown;
 		bool itemIsRanged = item.ranged;
 
 		Projectile proj = new();
 		// No minion, that is different
 		bool projIsmelee = proj.melee;
 		bool projIsmagic = proj.magic;
-		bool projIsthrowing = proj.throwing;
+		bool projIsthrowing = proj.thrown;
 		bool projIsRanged = proj.ranged;
 	}
 
