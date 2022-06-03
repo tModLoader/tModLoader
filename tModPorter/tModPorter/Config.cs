@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using tModPorter.Rewriters;
 using static tModPorter.Rewriters.RenameRewriter;
 using static tModPorter.Rewriters.InvokeRewriter;
+using static tModPorter.Rewriters.HookSignatureRewriter;
 
 namespace tModPorter;
 
@@ -10,6 +11,7 @@ public static partial class Config
 	public static List<BaseRewriter> CreateRewriters() => new() {
 		new RenameRewriter(),
 		new InvokeRewriter(),
+		new HookSignatureRewriter(),
 	};
 
 	static Config() {
@@ -81,14 +83,48 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "NewPreReforge",		to: "PreReforge");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
+		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "GetWeaponCrit",		to: "ModifyWeaponCrit");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "GetWeaponKnockback",	to: "ModifyWeaponKnockback");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "GetWeaponKnockback",	to: "ModifyWeaponKnockback");
+		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "GetWeaponKnockback",	to: "ModifyWeaponKnockback");
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "NPCLoot",			to: "OnKill");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "NPCLoot",			to: "OnKill");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "NewRightClick",		to: "RightClick");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "Dangersense",		to: "IsTileDangerous");
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "Dangersense",		to: "IsTileDangerous");
 		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "ValidTile",			to: "IsTileValidForEntity");
+		
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"UseStyle");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"UseStyle");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"UseItem", comment: "Suggestion: Return null instead of false");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"UseItem", comment: "Suggestion: Return null instead of false");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"ModifyWeaponKnockback");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"ModifyWeaponKnockback");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ModifyWeaponKnockback");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"ModifyWeaponCrit");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"ModifyWeaponCrit");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ModifyWeaponCrit");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"ModifyWeaponDamage");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"ModifyWeaponDamage");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ModifyWeaponDamage");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"PreDraw");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PreDraw");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"PostDraw");
+		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PostDraw");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDrawExtras");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PreDrawExtras");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PreDraw");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PreDraw");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PostDraw");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PostDraw");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"TileCollideStyle");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"TileCollideStyle");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"DrawEffects");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"CatchFish");
+		ChangeHookSignature("Terraria.ModLoader.ModTile",			"HasSmartInteract");
+		ChangeHookSignature("Terraria.ModLoader.ModTile",			"DrawEffects");
+		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"DrawEffects");
+		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"IsTileDangerous", comment: "Suggestion: Return null instead of false");
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",	to: "LoadData");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",	to: "SaveData");
@@ -100,6 +136,11 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "Save",	to: "SaveData");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Load",	to: "LoadWorldData");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Save",	to: "SaveWorldData");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",		"SaveData",			comment: "Edit tag parameter rather than returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",	"SaveData",			comment: "Edit tag parameter rather than returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",		"SaveData",			comment: "Edit tag parameter rather than returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.ModTileEntity", "SaveData",			comment: "Edit tag parameter rather than returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"SaveWorldData",	comment: "Edit tag parameter rather than returning new TagCompound");
 
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.GlobalWall",	from: "SetDefaults", to: "SetStaticDefaults");

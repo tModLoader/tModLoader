@@ -13,5 +13,7 @@ public class ModNPCTest : ModNPC
 
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) { return true; }
 
-	public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) { /* Empty */ }
+	public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+		Vector2 screen = screenPos - Vector2.One * 6f;
+	}
 }
