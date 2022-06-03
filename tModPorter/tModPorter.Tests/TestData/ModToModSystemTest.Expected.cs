@@ -10,9 +10,9 @@ using Terraria.UI;
 public class ModToModSystemTest : Mod
 {
 #if COMPILE_ERROR
-	public override void UpdateMusic(ref int music) /* Suggestion: Use ModSystem. */ { /* Empty */ }
+	public override void UpdateMusic(ref int music) /* Suggestion: Use ModSceneEffect.Music and .Priority, aswell as ModSceneEffect.IsSceneEffectActive */ { /* Empty */ }
 
-	public override void UpdateMusic(ref int music, ref MusicPriority priority) /* Suggestion: Use ModSystem. */ { /* Empty */ }
+	public override void UpdateMusic(ref int music, ref MusicPriority priority) /* Suggestion: Suggestion: Use ModSceneEffect.Music and .Priority, aswell as ModSceneEffect.IsSceneEffectActive */ { /* Empty */ }
 
 	public override void ModifyTransformMatrix(ref SpriteViewMatrix Transform) /* Suggestion: Use ModSystem.ModifyTransformMatrix */ { /* Empty */ }
 
