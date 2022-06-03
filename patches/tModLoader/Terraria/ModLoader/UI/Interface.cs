@@ -108,11 +108,14 @@ namespace Terraria.ModLoader.UI
 					ModLoader.ShowFirstLaunchWelcomeMessage = false;
 					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 				}
+
+				/*
 				else if (!ModLoader.AlphaWelcomed) {
 					ModLoader.AlphaWelcomed = true;
 					infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
 					Main.SaveSettings();
 				}
+				*/
 				else if (ModLoader.ShowWhatsNew) {
 					ModLoader.ShowWhatsNew = false;
 					if (File.Exists("RecentGitHubCommits.txt")) {
