@@ -16,6 +16,9 @@ public abstract class FindTypeTest : Mod
 
 		int k = mod.GetGoreSlot("GoreTextureOrClass");
 		int l = ModGore.GetGoreSlot("ModName/GoreTextureOrClass");
+#if COMPILE_ERROR
+		int m = mod.GetGoreSlot<GoreClass>();
+#endif
 	}
 
 	int ViaIdentifier() => BuffType("BuffClass");

@@ -16,6 +16,9 @@ public abstract class FindTypeTest : Mod
 
 		int k = mod.Find<ModGore>("GoreTextureOrClass").Type;
 		int l = ModContent.Find<ModGore>("ModName/GoreTextureOrClass").Type;
+#if COMPILE_ERROR
+		int m = ModContent.GoreType<GoreClass>();
+#endif
 	}
 
 	int ViaIdentifier() => Find<ModBuff>("BuffClass").Type;
