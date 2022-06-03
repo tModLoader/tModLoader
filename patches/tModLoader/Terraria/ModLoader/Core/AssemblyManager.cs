@@ -11,6 +11,7 @@ using Terraria.ModLoader.UI;
 using System.Runtime.Loader;
 using System.Runtime.CompilerServices;
 using Terraria.Localization;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader.Core
 {
@@ -174,6 +175,9 @@ namespace Terraria.ModLoader.Core
 			var name = new AssemblyName(args.Name).Name;
 			if (name.Contains("tModLoader") || name == "Terraria")
 				return Assembly.GetExecutingAssembly();
+
+			if (name == "FNA")
+				return typeof(Vector2).Assembly;
 
 			return null;
 		}
