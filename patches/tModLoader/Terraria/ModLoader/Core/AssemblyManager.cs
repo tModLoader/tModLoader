@@ -268,9 +268,9 @@ namespace Terraria.ModLoader.Core
 
 		private static string GetModAssemblyFileName(this TmodFile modFile) => $"{modFile.Name}.dll";
 
-		public static ReadOnlyMemory<byte> GetModAssembly(this TmodFile modFile) => modFile.GetBytes(modFile.GetModAssemblyFileName());
+		public static ReadOnlySpan<byte> GetModAssembly(this TmodFile modFile) => modFile.GetBytes(modFile.GetModAssemblyFileName());
 
-		public static ReadOnlyMemory<byte> GetModPdb(this TmodFile modFile) => modFile.GetBytes(Path.ChangeExtension(modFile.GetModAssemblyFileName(), "pdb"));
+		public static ReadOnlySpan<byte> GetModPdb(this TmodFile modFile) => modFile.GetBytes(Path.ChangeExtension(modFile.GetModAssemblyFileName(), "pdb"));
 
 		private static ModLoadContext GetLoadContext(string name) => loadedModContexts.TryGetValue(name, out var value) ? value : throw new KeyNotFoundException(name);
 

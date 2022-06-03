@@ -82,17 +82,18 @@ namespace Terraria.ModLoader.Core
 
 		public bool HasFile(string fileName) => files.ContainsKey(Sanitize(fileName));
 
-		public ReadOnlyMemory<byte> GetBytes(FileEntry entry) {
+		public ReadOnlySpan<byte> GetBytes(FileEntry entry) {
 			if (!entry.cachedBytes.IsEmpty && !entry.IsCompressed)
-				return entry.cachedBytes;
+				return entry.cachedBytes.Span;
 
-			using (var stream = GetStream(entry))
+			using (var stream = GetStream(entry)) {
 				return stream.ReadBytes(entry.Length);
+			}
 		}
 
 		public List<string> GetFileNames() => files.Keys.ToList();
 
-		public ReadOnlyMemory<byte> GetBytes(string fileName) => files.TryGetValue(Sanitize(fileName), out var entry) ? GetBytes(entry) : null;
+		public ReadOnlySpan<byte> GetBytes(string fileName) => files.TryGetValue(Sanitize(fileName), out var entry) ? GetBytes(entry) : null;
 
 		public Stream GetStream(FileEntry entry, bool newFileStream = false) {
 			Stream stream;

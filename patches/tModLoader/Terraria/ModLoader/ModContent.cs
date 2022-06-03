@@ -74,7 +74,7 @@ namespace Terraria.ModLoader
 		/// Gets the byte representation of the file with the specified name. The name is in the format of "ModFolder/OtherFolders/FileNameWithExtension". Throws an ArgumentException if the file does not exist.
 		/// </summary>
 		/// <exception cref="MissingResourceException">Missing mod: " + name</exception>
-		public static ReadOnlyMemory<byte> GetFileBytes(string name) {
+		public static ReadOnlySpan<byte> GetFileBytes(string name) {
 			SplitName(name, out string modName, out string subName);
 
 			if (!ModLoader.TryGetMod(modName, out var mod))
