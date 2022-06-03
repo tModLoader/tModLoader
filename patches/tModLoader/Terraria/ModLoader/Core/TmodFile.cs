@@ -2,6 +2,7 @@ using Ionic.Zlib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -24,10 +25,9 @@ namespace Terraria.ModLoader.Core
 			public int Length { get; }
 			public int CompressedLength { get; }
 
-			// intended to be readonly, but unfortunately no ReadOnlySpan on .NET 4.5
-			internal byte[] cachedBytes;
+			internal ReadOnlyMemory<byte> cachedBytes;
 
-			internal FileEntry(string name, int offset, int length, int compressedLength, byte[] cachedBytes = null) {
+			internal FileEntry(string name, int offset, int length, int compressedLength, ReadOnlyMemory<byte> cachedBytes = default) {
 				Name = name;
 				Offset = offset;
 				Length = length;
@@ -82,8 +82,8 @@ namespace Terraria.ModLoader.Core
 
 		public bool HasFile(string fileName) => files.ContainsKey(Sanitize(fileName));
 
-		public byte[] GetBytes(FileEntry entry) {
-			if (entry.cachedBytes != null && !entry.IsCompressed)
+		public ReadOnlyMemory<byte> GetBytes(FileEntry entry) {
+			if (!entry.cachedBytes.IsEmpty && !entry.IsCompressed)
 				return entry.cachedBytes;
 
 			using (var stream = GetStream(entry))
@@ -92,12 +92,12 @@ namespace Terraria.ModLoader.Core
 
 		public List<string> GetFileNames() => files.Keys.ToList();
 
-		public byte[] GetBytes(string fileName) => files.TryGetValue(Sanitize(fileName), out var entry) ? GetBytes(entry) : null;
+		public ReadOnlyMemory<byte> GetBytes(string fileName) => files.TryGetValue(Sanitize(fileName), out var entry) ? GetBytes(entry) : null;
 
 		public Stream GetStream(FileEntry entry, bool newFileStream = false) {
 			Stream stream;
-			if (entry.cachedBytes != null) {
-				stream = new MemoryStream(entry.cachedBytes);
+			if (!entry.cachedBytes.IsEmpty) {
+				stream = new MemoryStream(entry.cachedBytes.ToArray());
 			}
 			else if (fileStream == null) {
 				throw new IOException($"File not open: {path}");
@@ -147,14 +147,14 @@ namespace Terraria.ModLoader.Core
 		/// </summary>
 		/// <param name="fileName">The internal filepath, will be slash sanitised automatically</param>
 		/// <param name="data">The file content to add. WARNING, data is kept as a shallow copy, so modifications to the passed byte array will affect file content</param>
-		internal void AddFile(string fileName, byte[] data) {
+		internal void AddFile(string fileName, ReadOnlyMemory<byte> data) {
 			fileName = Sanitize(fileName);
 			int size = data.Length;
 
 			if (size > MIN_COMPRESS_SIZE && ShouldCompress(fileName)) {
 				using (var ms = new MemoryStream(data.Length)) {
 					using (var ds = new DeflateStream(ms, CompressionMode.Compress))
-						ds.Write(data, 0, data.Length);
+						ds.Write(data.Span);
 
 					var compressed = ms.ToArray();
 					if (compressed.Length < size * COMPRESSION_TRADEOFF)
@@ -226,7 +226,7 @@ namespace Terraria.ModLoader.Core
 				// write compressed files and update offsets
 				int offset = (int)fileStream.Position; // offset starts at end of file table
 				foreach (var f in fileTable) {
-					writer.Write(f.cachedBytes);
+					writer.Write(f.cachedBytes.Span);
 
 					f.Offset = offset;
 					offset += f.CompressedLength;

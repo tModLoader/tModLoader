@@ -368,12 +368,16 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 			foreach (var refMod in FindReferencedMods(mod.properties)) {
 				using (refMod.modFile.Open()) {
 					var path = Path.Combine(tempDir, refMod + ".dll");
-					File.WriteAllBytes(path, refMod.modFile.GetModAssembly());
+					using (var fs = File.Create(path)) {
+						fs.Write(refMod.modFile.GetModAssembly().Span);
+					}
 					refs.Add(path);
 
 					foreach (var refDll in refMod.properties.dllReferences) {
 						path = Path.Combine(tempDir, refDll + ".dll");
-						File.WriteAllBytes(path, refMod.modFile.GetBytes("lib/" + refDll + ".dll"));
+						using (var fs = File.Create(path)) {
+							fs.Write(refMod.modFile.GetBytes("lib/" + refDll + ".dll").Span);
+						}
 						refs.Add(path);
 					}
 				}

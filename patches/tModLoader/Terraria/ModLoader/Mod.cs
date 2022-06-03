@@ -209,7 +209,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="name">The name.</param>
 		/// <returns></returns>
-		public byte[] GetFileBytes(string name) => File?.GetBytes(name);
+		public ReadOnlyMemory<byte> GetFileBytes(string name) => File?.GetBytes(name) ?? ReadOnlyMemory<byte>.Empty;
 
 		/// <summary>
 		/// Retrieve contents of files within the tmod file

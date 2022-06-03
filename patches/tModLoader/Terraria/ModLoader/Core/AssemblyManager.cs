@@ -54,12 +54,12 @@ namespace Terraria.ModLoader.Core
 				try {
 					using (modFile.Open()) {
 						foreach (var dll in properties.dllReferences) {
-							LoadAssembly(modFile.GetBytes("lib/" + dll + ".dll"));
+							LoadAssembly(modFile.GetBytes("lib/" + dll + ".dll").ToArray());
 						}
 
 						assembly = Debugger.IsAttached && File.Exists(properties.eacPath) ?
-							LoadAssembly(modFile.GetModAssembly(), File.ReadAllBytes(properties.eacPath)): //load the unmodified dll and EaC pdb
-							LoadAssembly(modFile.GetModAssembly(), modFile.GetModPdb());
+							LoadAssembly(modFile.GetModAssembly().ToArray(), File.ReadAllBytes(properties.eacPath)): //load the unmodified dll and EaC pdb
+							LoadAssembly(modFile.GetModAssembly().ToArray(), modFile.GetModPdb().ToArray());
 					}
 
 					var mlc = new MetadataLoadContext(new MetadataResolver(this));
@@ -120,7 +120,7 @@ namespace Terraria.ModLoader.Core
 					var runtime = mod.LoadFromAssemblyName(assemblyName);
 					if (string.IsNullOrEmpty(runtime.Location))
 						return context.LoadFromByteArray(((ModLoadContext)GetLoadContext(runtime)).assemblyBytes[assemblyName.Name]);
-					
+
 
 					return context.LoadFromAssemblyPath(runtime.Location);
 				}
@@ -268,9 +268,9 @@ namespace Terraria.ModLoader.Core
 
 		private static string GetModAssemblyFileName(this TmodFile modFile) => $"{modFile.Name}.dll";
 
-		public static byte[] GetModAssembly(this TmodFile modFile) => modFile.GetBytes(modFile.GetModAssemblyFileName());
+		public static ReadOnlyMemory<byte> GetModAssembly(this TmodFile modFile) => modFile.GetBytes(modFile.GetModAssemblyFileName());
 
-		public static byte[] GetModPdb(this TmodFile modFile) => modFile.GetBytes(Path.ChangeExtension(modFile.GetModAssemblyFileName(), "pdb"));
+		public static ReadOnlyMemory<byte> GetModPdb(this TmodFile modFile) => modFile.GetBytes(Path.ChangeExtension(modFile.GetModAssemblyFileName(), "pdb"));
 
 		private static ModLoadContext GetLoadContext(string name) => loadedModContexts.TryGetValue(name, out var value) ? value : throw new KeyNotFoundException(name);
 
@@ -378,7 +378,7 @@ namespace Terraria.ModLoader.Core
 				throw new Exceptions.JITException(message);
 			}
 		}
-		
+
 		private static void ForceJITOnMethod(MethodBase method) {
 			RuntimeHelpers.PrepareMethod(method.MethodHandle);
 
