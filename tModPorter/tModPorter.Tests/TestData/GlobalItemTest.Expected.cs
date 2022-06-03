@@ -15,7 +15,11 @@ public class GlobalItemTest : GlobalItem
 
 	public override void ModifyWeaponCrit(Item item, Player player, ref float crit) { /* Empty */ }
 
-	public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) { /* Empty */ }
+	public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
+		damage += 0.1f;
+		damage *= 0.2f;
+		damage.Flat += 4;
+	}
 
 	public override void LoadData(Item item, TagCompound tag) { /* Empty */ }
 

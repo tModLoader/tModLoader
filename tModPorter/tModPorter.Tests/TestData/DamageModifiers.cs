@@ -7,6 +7,7 @@ public class DamageModifiers : ModPlayer
 		player.magicDamage += 2;
 		player.meleeCrit *= 5;
 		player.allDamage += 0.10f;
+		player.allDamageMult *= 0.08f;
 #if COMPILE_ERROR
 		player.minionDamage = 8;
 #endif

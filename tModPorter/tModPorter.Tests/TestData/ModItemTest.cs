@@ -29,7 +29,11 @@ public class ModItemTest : ModItem
 
 	public override void GetWeaponCrit(Player player, ref int crit) { /* Empty */ }
 
-	public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat) { /* Empty */ }
+	public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat) {
+		add += 0.1f;
+		mult *= 0.2f;
+		flat += 4;
+	}
 
 	public override void Load(TagCompound tag) { /* Empty */ }
 

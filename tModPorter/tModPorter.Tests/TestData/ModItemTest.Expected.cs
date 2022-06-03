@@ -30,7 +30,11 @@ public class ModItemTest : ModItem
 
 	public override void ModifyWeaponCrit(Player player, ref float crit) { /* Empty */ }
 
-	public override void ModifyWeaponDamage(Player player, ref StatModifier damage) { /* Empty */ }
+	public override void ModifyWeaponDamage(Player player, ref StatModifier damage) {
+		damage += 0.1f;
+		damage *= 0.2f;
+		damage.Flat += 4;
+	}
 
 	public override void LoadData(TagCompound tag) { /* Empty */ }
 

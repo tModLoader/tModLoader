@@ -7,6 +7,7 @@ public class DamageModifiers : ModPlayer
 		Player.GetDamage(DamageClass.Magic) += 2;
 		Player.GetCritChance(DamageClass.Melee) *= 5;
 		Player.GetDamage(DamageClass.Generic) += 0.10f;
+		Player.GetDamage(DamageClass.Generic) *= 0.08f;
 #if COMPILE_ERROR
 		Player.GetDamage(DamageClass.Summon) = 8;
 #endif

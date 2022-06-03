@@ -14,7 +14,11 @@ public class GlobalItemTest : GlobalItem
 
 	public override void GetWeaponCrit(Item item, Player player, ref int crit) { /* Empty */ }
 
-	public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat) { /* Empty */ }
+	public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat) {
+		add += 0.1f;
+		mult *= 0.2f;
+		flat += 4;
+	}
 
 	public override void Load(Item item, TagCompound tag) { /* Empty */ }
 

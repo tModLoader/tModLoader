@@ -15,7 +15,11 @@ public class ModPlayerTest : ModPlayer
 
 	public override void ModifyWeaponCrit(Item item, ref float crit) { /* Empty */ }
 
-	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) { /* Empty */ }
+	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
+		damage += 0.1f;
+		damage *= 0.2f;
+		damage.Flat += 4;
+	}
 
 	public override void LoadData(TagCompound tag) { /* Empty */ }
 
