@@ -4,8 +4,7 @@ using Microsoft.Xna.Framework;
 
 public class ShootModItemTest : ModItem
 {
-	public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
-	{
+	public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack) {
 		float speedXLocal = speedX;
 		float speedYLocal = speedY;
 		float knockBackLocal = knockBack; // Only rename if parameter was knockBack
