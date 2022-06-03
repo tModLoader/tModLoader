@@ -9,7 +9,7 @@ public class ModWorldTest : ModSystem
 	public override void SaveWorldData(TagCompound tag)/* Edit tag parameter rather than returning new TagCompound */ => new TagCompound();
 #endif
 
-	public override void OnWorldLoad() /* Also concider overriding OnWorldUnload */ { /* Empty */ }
+	public override void OnWorldLoad() /* Suggestion: Also concider overriding OnWorldUnload */ { /* Empty */ }
 
 	public override void PreUpdateWorld() { /* Empty */ }
 
