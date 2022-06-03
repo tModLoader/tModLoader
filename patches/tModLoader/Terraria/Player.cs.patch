@@ -4959,8 +4959,8 @@
 +		public bool PickAmmo(Item weapon, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, bool dontConsume = false) {
 +			projToShoot = weapon.shoot;
 +			speed = weapon.shootSpeed;
-+			damage = weapon.damage;
-+			knockBack = weapon.knockBack;
++			damage = GetWeaponDamage(weapon);
++			knockBack = GetWeaponKnockback(weapon);
 +			bool canShoot = false;
 +			PickAmmo(weapon, ref projToShoot, ref speed, ref canShoot, ref damage, ref knockBack, out usedAmmoItemId, dontConsume);
 +			if (!canShoot) {

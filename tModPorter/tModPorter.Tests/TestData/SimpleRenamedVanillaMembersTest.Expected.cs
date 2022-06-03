@@ -21,6 +21,26 @@ public class SimpleRenamedVanillaMembersTest
 		var homing = ProjectileID.Sets.CultistIsResistantTo;
 		var rasterizer = Main.Rasterizer;
 
+		var waterCandles = Main.SceneMetrics.WaterCandleCount;
+		var peaceCandles = Main.SceneMetrics.PeaceCandleCount;
+		var partyMonoliths = Main.SceneMetrics.PartyMonolithCount;
+		var evilTiles = Main.SceneMetrics.EvilTileCount;
+		var holyTiles = Main.SceneMetrics.HolyTileCount;
+		var meteorTile = Main.SceneMetrics.MeteorTileCount;
+		var jungleTiles = Main.SceneMetrics.JungleTileCount;
+		var snowTiles = Main.SceneMetrics.SnowTileCount;
+		var bloodTiles = Main.SceneMetrics.BloodTileCount;
+		var sandTiles = Main.SceneMetrics.SandTileCount;
+		var shroomTiles = Main.SceneMetrics.MushroomTileCount;
+		var dungeonTiles = Main.SceneMetrics.DungeonTileCount; // private set in 1.4
+
+		var monolithType = Main.SceneMetrics.ActiveMonolithType; // private set in 1.4
+		var clock = Main.SceneMetrics.HasClock;
+		var campfire = Main.SceneMetrics.HasCampfire;
+		var starInBottle = Main.SceneMetrics.HasStarInBottle;
+		var heartLantern = Main.SceneMetrics.HasHeartLantern;
+		var sunflower = Main.SceneMetrics.HasSunflower;
+
 		float inverseLerp = Utils.GetLerpValue(0f, 1f, 0.1f, false);
 		Lighting.Clear();
 		ChatHelper.BroadcastChatMessage(null, Color.White, -1);
@@ -37,8 +57,18 @@ public class SimpleRenamedVanillaMembersTest
 		var doubleJumpSail = player.hasJumpOption_Sail;
 		var doubleJumpSandstorm = player.hasJumpOption_Sandstorm;
 		var doubleJumpUnicorn = player.hasJumpOption_Unicorn;
+		var hasBanner = Main.SceneMetrics.hasBanner;
+		var extraAccessorySlots = player.GetAmountOfExtraAccessorySlotsToShow();
+
+		Main.PlayerRenderer.DrawPlayer(Main.Camera, player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 
 		var item = new Item();
 		var owner = item.playerIndexTheItemIsReservedFor;
+
+		var item2 = new Item();
+		var isTheSameAs = item.type == item2.type;
+		var isTheSameAsNegated = item.type != item2.type;
+		var isTheSameAsNegatedVariant = item.type != item2.type;
+		var isNotTheSameAs = item.IsNotSameTypePrefixAndStack(item2);
 	}
 }
