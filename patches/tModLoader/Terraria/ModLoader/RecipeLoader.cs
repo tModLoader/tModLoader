@@ -33,7 +33,6 @@ namespace Terraria.ModLoader
 		internal static void AddRecipes() {
 			foreach (Mod mod in ModLoader.Mods) {
 				try {
-					mod.AddRecipes();
 					SystemLoader.AddRecipes(mod);
 					LoaderUtils.ForEachAndAggregateExceptions(mod.GetContent<ModItem>(), item => item.AddRecipes());
 					LoaderUtils.ForEachAndAggregateExceptions(mod.GetContent<GlobalItem>(), global => global.AddRecipes());
@@ -48,7 +47,6 @@ namespace Terraria.ModLoader
 		internal static void PostAddRecipes() {
 			foreach (Mod mod in ModLoader.Mods) {
 				try {
-					mod.PostAddRecipes();
 					SystemLoader.PostAddRecipes(mod);
 				}
 				catch (Exception e) {

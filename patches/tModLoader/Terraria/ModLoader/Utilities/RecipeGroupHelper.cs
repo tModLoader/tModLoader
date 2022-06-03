@@ -63,7 +63,6 @@ namespace Terraria.ModLoader.Utilities
 		internal static void AddRecipeGroups() {
 			foreach (Mod mod in ModLoader.Mods) {
 				try {
-					mod.AddRecipeGroups();
 					SystemLoader.AddRecipeGroups(mod);
 				}
 				catch (Exception e) {
