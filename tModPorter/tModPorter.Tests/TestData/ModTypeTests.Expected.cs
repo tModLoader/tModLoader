@@ -127,5 +127,6 @@ public class ModTypeModMountDataTest : ModMount
 		extraTextures /* Use GetExtraTexture hook inplace of extraTextures */ = null;
 		extraTextures = null;
 #endif
+		return true;
 	}
 }
