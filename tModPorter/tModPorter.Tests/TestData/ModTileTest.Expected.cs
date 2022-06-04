@@ -20,9 +20,9 @@ public class ModTileTest : ModTile
 		TileID.Sets.Torch[Type] = true;
 		TileID.Sets.CanBeSleptIn[Type] = true;
 		DresserDrop = 0;
-		ContainerName.SetDefault("");
+		ContainerName.SetDefault("") /* Suggestion: Also set TileID.Sets.BasicDresser */;
 		ChestDrop = 0;
-		ContainerName.SetDefault("");
+		ContainerName.SetDefault("") /* Suggestion: Also set TileID.Sets.BasicChest */;
 		CloseDoorID = 0;
 		OpenDoorID = 0;
 		TileID.Sets.DisableSmartInteract[Type] = true;
