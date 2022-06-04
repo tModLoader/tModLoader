@@ -180,6 +180,25 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.ModWaterStyle",		from: "Type",		to: "Slot");
 		RenameInstanceField("Terraria.ModLoader.ModWaterfallStyle", from: "Type",		to: "Slot");
 
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "desertCave", to: "DesertCave");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "granite", to: "Granite");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "invasion", to: "Invasion");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "lihzahrd", to: "Lihzahrd");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "marble", to: "Marble");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "planteraDefeated", to: "PlanteraDefeated");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "player", to: "Player");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "playerFloorX", to: "PlayerFloorX");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "playerFloorY", to: "PlayerFloorY");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "playerInTown", to: "PlayerInTown");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "playerSafe", to: "PlayerSafe");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "safeRangeX", to: "SafeRangeX");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "sky", to: "Sky");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "spawnTileType", to: "SpawnTileType");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "spawnTileX", to: "SpawnTileX");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "spawnTileY", to: "SpawnTileY");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "spiderCave", to: "SpiderCave");
+		RenameInstanceField("Terraria.ModLoader.NPCSpawnInfo", from: "water", to: "Water");
+
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "BuffType",		ToFindTypeCall("Terraria.ModLoader.ModBuff"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "DustType",		ToFindTypeCall("Terraria.ModLoader.ModDust"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "ItemType",		ToFindTypeCall("Terraria.ModLoader.ModItem"));
