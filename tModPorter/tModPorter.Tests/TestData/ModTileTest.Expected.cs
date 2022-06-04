@@ -11,8 +11,8 @@ public class ModTileTest : ModTile
 		ItemDrop = 1;
 		DustType = 0;
 #if COMPILE_ERROR
-		HitSound = /* Suggestion: Use a SoundStyle here */ 0;
-		soundStyle = /* Suggestion: Utilize HitSound */ 0;
+		HitSound /* Suggestion: Use a SoundStyle here */ = 0;
+		soundStyle /* Suggestion: Utilize HitSound */ = 0;
 #endif
 
 #if COMPILE_ERROR //TODO
