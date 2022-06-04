@@ -168,6 +168,15 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "drop",		 to: "ItemDrop");
 		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "dustType",    to: "DustType");
 
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "dresserDrop",			 to: "DresserDrop");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "chestDrop",			 to: "ChestDrop");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "closeDoorID",			 to: "CloseDoorID");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "openDoorID",			 to: "OpenDoorID");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "minPick",				 to: "MinPick");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "mineResist",			 to: "MineResist");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "animationFrameHeight",  to: "AnimationFrameHeight");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "adjTiles",				 to: "AdjTiles");
+
 		RenameInstanceField("Terraria.ModLoader.ModWaterStyle",		from: "Type",		to: "Slot");
 		RenameInstanceField("Terraria.ModLoader.ModWaterfallStyle", from: "Type",		to: "Slot");
 

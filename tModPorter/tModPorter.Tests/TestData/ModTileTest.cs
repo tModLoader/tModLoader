@@ -13,7 +13,7 @@ public class ModTileTest : ModTile
 		soundStyle = 0;
 #endif
 
-#if COMPILE_ERROR //TODO
+#if COMPILE_ERROR
 		sapling = true;
 		torch = true;
 		bed = true;

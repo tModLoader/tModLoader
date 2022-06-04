@@ -15,22 +15,22 @@ public class ModTileTest : ModTile
 		soundStyle /* Suggestion: Utilize HitSound */ = 0;
 #endif
 
-#if COMPILE_ERROR //TODO
-		sapling = true;
-		torch = true;
-		bed = true;
-		dresserDrop = 0;
-		dresser = "";
-		chestDrop = 0;
-		chest = "";
-		closeDoorID = 0;
-		openDoorID = 0;
-		disableSmartInteract = true;
-		disableSmartCursor = true;
-		minPick = 0;
-		mineResist = 0;
-		animationFrameHeight = 0;
-		adjTiles = new int[0];
+#if COMPILE_ERROR
+		TileID.Sets.TreeSapling[Type] /* Suggestion: Also set TileID.Sets.CommonSapling */ = true;
+		TileID.Sets.Torch[Type] = true;
+		TileID.Sets.CanBeSleptIn[Type] = true;
+		DresserDrop = 0;
+		ContainerName.SetDefault("");
+		ChestDrop = 0;
+		ContainerName.SetDefault("");
+		CloseDoorID = 0;
+		OpenDoorID = 0;
+		TileID.Sets.DisableSmartInteract[Type] = true;
+		TileID.Sets.DisableSmartCursor[Type] = true;
+		MinPick = 0;
+		MineResist = 0;
+		AnimationFrameHeight = 0;
+		AdjTiles = new int[0];
 #endif
 	}
 
