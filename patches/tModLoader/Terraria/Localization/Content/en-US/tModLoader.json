@@ -395,6 +395,7 @@
 		// Tooltip lines
 		"NoAttackSpeedScaling": "Does not scale with attack speed",
 		"SpecialAttackSpeedScaling": "Attack speed boosts reduced to {0}%",
+		"ModifiedByMods": "Stats have been modified by ",
 
 		// Memory bar
 		"LastLoadRamUsage": "Estimated last load RAM usage: {0}",

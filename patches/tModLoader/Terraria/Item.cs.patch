@@ -620,12 +620,13 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -45207,14 +_,24 @@
+@@ -45207,14 +_,25 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			ModItem = null;
 +			globalItems = new Instanced<GlobalItem>[0];
++			StatsModifiedBy = new List<Mod>();
 +			AllowReforgeForStackableItem = false;
 +			attackSpeedOnlyAffectsWeaponAnimation = false;
 +			useLimitPerAnimation = null;

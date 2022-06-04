@@ -20,6 +20,8 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
 
+		public List<Mod> StatsModifiedBy = new List<Mod>();
+
 		/// <summary>
 		/// Dictates whether or not attack speed modifiers on this weapon will actually affect its use time.<br/>
 		/// Defaults to false, which allows attack speed modifiers to affect use time. Set this to true to prevent this from happening.<br/>
