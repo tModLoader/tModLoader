@@ -1399,10 +1399,10 @@ static float[]&#160;</td><td class="memItemRight" valign="bottom"><b>cloudBGX</b
 static <a class="el" href="class_terraria_1_1_i_o_1_1_favorites_file.html">FavoritesFile</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CloudFavoritesData</b> = new <a class="el" href="class_terraria_1_1_i_o_1_1_favorites_file.html">FavoritesFile</a>(&quot;ModLoader/favorites.json&quot;, true)</td></tr>
 <tr class="separator:a13e552968af1c149c36724ca2a437bb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb09b8e6e09c0ca28d7f148d44807fb8"><td class="memItemLeft" align="right" valign="top"><a id="abb09b8e6e09c0ca28d7f148d44807fb8"></a>
-static string&#160;</td><td class="memItemRight" valign="bottom"><b>CloudPlayerPath</b> = &quot;ModLoader/players&quot;</td></tr>
+static string&#160;</td><td class="memItemRight" valign="bottom"><b>CloudPlayerPath</b> = (BuildInfo.IsStable ? Program.ReleaseFolder : BuildInfo.IsPreview ? Program.PreviewFolder : Program.DevFolder) + &quot;/players&quot;</td></tr>
 <tr class="separator:abb09b8e6e09c0ca28d7f148d44807fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00db306b3b8499762aa47b32d009cc82"><td class="memItemLeft" align="right" valign="top"><a id="a00db306b3b8499762aa47b32d009cc82"></a>
-static string&#160;</td><td class="memItemRight" valign="bottom"><b>CloudWorldPath</b> = &quot;ModLoader/worlds&quot;</td></tr>
+static string&#160;</td><td class="memItemRight" valign="bottom"><b>CloudWorldPath</b> = (BuildInfo.IsStable ? Program.ReleaseFolder : BuildInfo.IsPreview ? Program.PreviewFolder : Program.DevFolder) + &quot;/worlds&quot;</td></tr>
 <tr class="separator:a00db306b3b8499762aa47b32d009cc82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcecd75d346dd5f7c38fdf14b0adbc40"><td class="memItemLeft" align="right" valign="top"><a id="afcecd75d346dd5f7c38fdf14b0adbc40"></a>
 static string&#160;</td><td class="memItemRight" valign="bottom"><b>cMana</b> = &quot;J&quot;</td></tr>
