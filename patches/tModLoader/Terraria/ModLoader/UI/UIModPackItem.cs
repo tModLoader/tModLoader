@@ -323,7 +323,10 @@ namespace Terraria.ModLoader.UI
 
 			foreach (var file in Directory.EnumerateFiles(deployedConfigs))
 				File.Delete(file);
-
+			
+			if (!Directory.Exists(ConfigBackups))
+				Directory.CreateDirectory(ConfigBackups);
+			
 			FileUtilities.CopyFolder(ConfigBackups, deployedConfigs);
 
 			foreach (var file in Directory.EnumerateFiles(ConfigBackups))
