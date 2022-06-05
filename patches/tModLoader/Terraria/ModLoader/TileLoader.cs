@@ -45,7 +45,7 @@ namespace Terraria.ModLoader
 		private static readonly int vanillaTorchCount = TileID.Sets.RoomNeeds.CountsAsTorch.Length;
 		private static readonly int vanillaDoorCount = TileID.Sets.RoomNeeds.CountsAsDoor.Length;
 
-		private static Func<int, int, int, bool>[] HookKillSound;
+		private static Func<int, int, int, bool, bool>[] HookKillSound;
 		private delegate void DelegateNumDust(int i, int j, int type, bool fail, ref int num);
 		private static DelegateNumDust[] HookNumDust;
 		private delegate bool DelegateCreateDust(int i, int j, int type, ref int dustType);
@@ -418,16 +418,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static bool KillSound(int i, int j, int type) {
+		public static bool KillSound(int i, int j, int type, bool fail) {
 			foreach (var hook in HookKillSound) {
-				if (!hook(i, j, type))
+				if (!hook(i, j, type, fail))
 					return false;
 			}
 			
 			var modTile = GetTile(type);
 
 			if (modTile != null) {
-				if (!modTile.KillSound(i, j))
+				if (!modTile.KillSound(i, j, fail))
 					return false;
 				
 				SoundEngine.PlaySound(modTile.HitSound, new Vector2(i * 16, j * 16));
