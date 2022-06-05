@@ -1801,7 +1801,7 @@
 +							double attackSpeedScaling = ItemID.Sets.BonusAttackSpeedMultiplier[item.type] * 100.0;
 +							toolTipLine[numLines] = Language.GetTextValue(
 +								"tModLoader.SpecialAttackSpeedScaling",
-+								Math.Round(attackSpeedScaling * Math.Pow(10.0, (double)decimalPlaces)) / Math.Pow(10.0, (double)decimalPlaces) + "%"
++								Math.Round(attackSpeedScaling * Math.Pow(10.0, (double)decimalPlaces)) / Math.Pow(10.0, (double)decimalPlaces)
 +							);
 +							toolTipNames[numLines] = "SpecialSpeedScaling";
 +							numLines++;
@@ -2228,8 +2228,8 @@
 +				{
 +					Mod mod = item.StatsModifiedBy[i];
 +					if (i > 0)
-+						toolTipLine += ", ";
-+					toolTipLine += mod.DisplayName;
++						toolTipLine[numLines] += ", ";
++					toolTipLine[numLines] += mod.DisplayName;
 +				}
 +				toolTipNames[numLines] = "ModifiedByMods";
 +				numLines++;

@@ -8,12 +8,13 @@
  using Terraria.Audio;
  using Terraria.DataStructures;
  using Terraria.Enums;
-@@ -11,10 +_,12 @@
+@@ -11,10 +_,13 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
++using System.Collections.Generic;
  
  namespace Terraria
  {
