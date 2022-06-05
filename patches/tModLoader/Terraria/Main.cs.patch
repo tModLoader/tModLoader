@@ -483,7 +483,7 @@
 +			// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this month, then show the notification.
 +			if (!BuildInfo.IsDev && ModCompile.DeveloperMode && now.Day >= 21 && (now.Year != ModLoader.ModLoader.LastPreviewFreezeNotificationSeen.Major || now.Month != ModLoader.ModLoader.LastPreviewFreezeNotificationSeen.Minor)) {
 +				ModLoader.ModLoader.PreviewFreezeNotification = true;
-+			}			
++			}
 +			if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
@@ -3007,6 +3007,42 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
+@@ -31758,7 +_,7 @@
+ 				spriteBatch.Draw(value, new Vector2(pivotTopLeftX, num), value.Frame(2, 1, 1), OurFavoriteColor, 0f, default(Vector2), num2, SpriteEffects.None, 0f);
+ 		}
+ 
+-		private void DrawBlockReplacementIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset) {
++		private void DrawBlockReplacementIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset, ref string text) {
+ 			if (!playerInventory)
+ 				return;
+ 
+@@ -31776,7 +_,7 @@
+ 			if (mouseX > pivotTopLeftX && (float)mouseX < (float)pivotTopLeftX + (float)rectangle.Width * num2 && mouseY > num && (float)mouseY < (float)num + (float)rectangle.Height * num2) {
+ 				flag2 = true;
+ 				player[myPlayer].mouseInterface = true;
+-				MouseText(flag ? Language.GetTextValue("GameUI.BlockReplacerOn") : Language.GetTextValue("GameUI.BlockReplacerOff"), 0, 0);
++				text = flag ? Language.GetTextValue("GameUI.BlockReplacerOn") : Language.GetTextValue("GameUI.BlockReplacerOff");
+ 				mouseText = true;
+ 				if (mouseLeft && mouseLeftRelease) {
+ 					SoundEngine.PlaySound(22);
+@@ -31792,7 +_,7 @@
+ 			UILinkPointNavigator.SetPosition(6000 + gamepadPointOffset, vector + rectangle.Size() * 0.65f);
+ 		}
+ 
+-		private void DrawTorchBiomeSwapIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset) {
++		private void DrawTorchBiomeSwapIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset, ref string text) {
+ 			if (!playerInventory)
+ 				return;
+ 
+@@ -31810,7 +_,7 @@
+ 			if (mouseX > pivotTopLeftX && (float)mouseX < (float)pivotTopLeftX + (float)rectangle.Width * num2 && mouseY > num && (float)mouseY < (float)num + (float)rectangle.Height * num2) {
+ 				flag2 = true;
+ 				player[myPlayer].mouseInterface = true;
+-				MouseText(flag ? Language.GetTextValue("GameUI.TorchTypeSwapperOn") : Language.GetTextValue("GameUI.TorchTypeSwapperOff"), 0, 0);
++				text = flag ? Language.GetTextValue("GameUI.TorchTypeSwapperOn") : Language.GetTextValue("GameUI.TorchTypeSwapperOff");
+ 				mouseText = true;
+ 				if (mouseLeft && mouseLeftRelease) {
+ 					SoundEngine.PlaySound(22);
 @@ -31830,15 +_,19 @@
  			int stack = mouseItem.stack;
  			mouseItem = r.createItem.Clone();
@@ -3497,6 +3533,195 @@
  				if (mapStyle == 1 && mapEnabled)
  					Y += 261;
  			}
+@@ -35543,9 +_,10 @@
+ 			GetBuilderAccsCountToShow(player, out int blockReplaceIcons, out int torchGodIcons, out int totalDrawnIcons);
+ 			start.Y += 24 * torchGodIcons;
+ 			bool flag = totalDrawnIcons >= 10;
+-			int num2 = 10;
++			int num2 = builderAccStatus.Length;
+ 			for (int i = 0; i < num2; i++) {
+-				int num3 = i - 2;
++				int num3 = i;
++				/*
+ 				switch (i) {
+ 					case 0:
+ 						num3 = 8;
+@@ -35556,6 +_,13 @@
+ 				}
+ 
+ 				Texture2D value = TextureAssets.BuilderAcc.Value;
++				*/
++
++				BuilderToggle builderToggle = BuilderToggleLoader.BuilderToggles[num3];
++				if (!BuilderToggleLoader.Active(builderToggle))
++					continue;
++
++                Texture2D value = ModContent.Request<Texture2D>(builderToggle.Texture).Value;
+ 				Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(0, 16, 14, 14);
+ 				Microsoft.Xna.Framework.Color color = Microsoft.Xna.Framework.Color.White;
+ 				Microsoft.Xna.Framework.Color color2 = new Microsoft.Xna.Framework.Color(127, 127, 127);
+@@ -35563,17 +_,18 @@
+ 				if (flag)
+ 					vector.Y -= 24f;
+ 
++				string text = "";
+ 				bool flag2 = Utils.CenteredRectangle(vector, new Vector2(14f)).Contains(MouseScreen.ToPoint()) && !PlayerInput.IgnoreMouseInterface;
+ 				bool flag3 = flag2 && mouseLeft && mouseLeftRelease;
+ 				switch (num3) {
+ 					case 8:
+-						if (!player.InfoAccMechShowWires)
+-							continue;
++						// if (!player.InfoAccMechShowWires)
++						// 	continue;
+ 						rectangle.X = num3 * 16;
+ 						color = ((builderAccStatus[num3] == 0) ? color : color2);
+ 						if (flag2) {
+ 							player.mouseInterface = true;
+-							MouseText((builderAccStatus[num3] == 0) ? Language.GetTextValue("GameUI.WireModeForced") : Language.GetTextValue("GameUI.WireModeNormal"), 0, 0);
++							text = builderAccStatus[num3] == 0 ? Language.GetTextValue("GameUI.WireModeForced") : Language.GetTextValue("GameUI.WireModeNormal");
+ 							mouseText = true;
+ 						}
+ 						if (flag3) {
+@@ -35583,13 +_,13 @@
+ 						}
+ 						break;
+ 					case 0:
+-						if (!player.rulerLine)
+-							continue;
++						// if (!player.rulerLine)
++						// 	continue;
+ 						rectangle.X = num3 * 16;
+ 						color = ((builderAccStatus[num3] == 0) ? color : color2);
+ 						if (flag2) {
+ 							player.mouseInterface = true;
+-							MouseText((builderAccStatus[num3] == 0) ? Language.GetTextValue("GameUI.RulerOn") : Language.GetTextValue("GameUI.RulerOff"), 0, 0);
++							text = builderAccStatus[num3] == 0 ? Language.GetTextValue("GameUI.RulerOn") : Language.GetTextValue("GameUI.RulerOff");
+ 							mouseText = true;
+ 						}
+ 						if (flag3) {
+@@ -35599,13 +_,13 @@
+ 						}
+ 						break;
+ 					case 1:
+-						if (!player.rulerGrid)
+-							continue;
++						// if (!player.rulerGrid)
++						// 	continue;
+ 						rectangle.X = num3 * 16;
+ 						color = ((builderAccStatus[num3] == 0) ? color : color2);
+ 						if (flag2) {
+ 							player.mouseInterface = true;
+-							MouseText((builderAccStatus[num3] == 0) ? Language.GetTextValue("GameUI.MechanicalRulerOn") : Language.GetTextValue("GameUI.MechanicalRulerOff"), 0, 0);
++							text = builderAccStatus[num3] == 0 ? Language.GetTextValue("GameUI.MechanicalRulerOn") : Language.GetTextValue("GameUI.MechanicalRulerOff");
+ 							mouseText = true;
+ 						}
+ 						if (flag3) {
+@@ -35615,13 +_,13 @@
+ 						}
+ 						break;
+ 					case 3:
+-						if (!player.autoPaint)
+-							continue;
++						// if (!player.autoPaint)
++						// 	continue;
+ 						rectangle.X = num3 * 16;
+ 						color = ((builderAccStatus[num3] == 0) ? color : color2);
+ 						if (flag2) {
+ 							player.mouseInterface = true;
+-							MouseText((builderAccStatus[num3] == 0) ? Language.GetTextValue("GameUI.PaintSprayerOn") : Language.GetTextValue("GameUI.PaintSprayerOff"), 0, 0);
++							text = builderAccStatus[num3] == 0 ? Language.GetTextValue("GameUI.PaintSprayerOn") : Language.GetTextValue("GameUI.PaintSprayerOff");
+ 							mouseText = true;
+ 						}
+ 						if (flag3) {
+@@ -35631,13 +_,13 @@
+ 						}
+ 						break;
+ 					case 2:
+-						if (!player.autoActuator)
+-							continue;
++						// if (!player.autoActuator)
++						// 	continue;
+ 						rectangle.X = num3 * 16;
+ 						color = ((builderAccStatus[num3] == 0) ? color : color2);
+ 						if (flag2) {
+ 							player.mouseInterface = true;
+-							MouseText((builderAccStatus[num3] == 0) ? Language.GetTextValue("GameUI.ActuationDeviceOn") : Language.GetTextValue("GameUI.ActuationDeviceOff"), 0, 0);
++							text = builderAccStatus[num3] == 0 ? Language.GetTextValue("GameUI.ActuationDeviceOn") : Language.GetTextValue("GameUI.ActuationDeviceOff");
+ 							mouseText = true;
+ 						}
+ 						if (flag3) {
+@@ -35651,8 +_,8 @@
+ 					case 6:
+ 					case 7:
+ 					case 9:
+-						if (!player.InfoAccMechShowWires)
+-							continue;
++						// if (!player.InfoAccMechShowWires)
++						// 	continue;
+ 						rectangle.X = num3 * 16;
+ 						color = ((builderAccStatus[num3] == 0) ? color : ((builderAccStatus[num3] == 1) ? color2 : ((builderAccStatus[num3] == 2) ? color2.MultiplyRGBA(new Microsoft.Xna.Framework.Color(0.66f, 0.66f, 0.66f, 0.66f)) : color2.MultiplyRGBA(new Microsoft.Xna.Framework.Color(0.33f, 0.33f, 0.33f, 0.33f)))));
+ 						if (flag2) {
+@@ -35692,7 +_,7 @@
+ 									break;
+ 							}
+ 
+-							MouseText($"{arg}: {arg2}", 0, 0);
++							text = $"{arg}: {arg2}";
+ 							mouseText = true;
+ 						}
+ 						if (flag3) {
+@@ -35704,8 +_,27 @@
+ 							mouseLeftRelease = false;
+ 						}
+ 						break;
++					case 10:
++						DrawBlockReplacementIcon(0, 0, flag, 0, ref text);
++						num++;
++						goto drawHoverText;
+ 					case 11:
+-						continue;
++						DrawTorchBiomeSwapIcon(0, 0, flag, 1, ref text);
++						num++;
++						goto drawHoverText;
++					default:
++						num = builderToggle.Type;
++						if (flag2) {
++							player.mouseInterface = true;
++							text = builderToggle.DisplayValue();
++							mouseText = true;
++						}
++						if (flag3) {
++							builderAccStatus[num] = builderToggle.IncreaseCurrentState();
++							SoundEngine.PlaySound(12);
++							mouseLeftRelease = false;
++						}
++						break;
+ 				}
+ 
+ 				spriteBatch.Draw(value, vector, rectangle, color, 0f, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
+@@ -35714,14 +_,22 @@
+ 
+ 				UILinkPointNavigator.SetPosition(6000 + num + blockReplaceIcons + torchGodIcons, vector + rectangle.Size() * 0.15f);
+ 				num++;
++
++				drawHoverText:
++				BuilderToggleLoader.ModifyDisplayValue(builderToggle, ref text);
++
++				if (mouseText && Main.HoverItem.type <= 0 && text != "")
++					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(mouseX + 14, mouseY + 14), new Color(255, 255, 255), 0f, Vector2.Zero, Vector2.One);
+ 			}
+ 
++			/*
+ 			DrawBlockReplacementIcon(0, 0, flag, 0);
+ 			num++;
+ 			if (player.unlockedBiomeTorches) {
+ 				DrawTorchBiomeSwapIcon(0, 0, flag, 1);
+ 				num++;
+ 			}
++			*/
+ 
+ 			UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = num;
+ 		}
 @@ -36142,6 +_,10 @@
  
  		private static void TryDisposingEverything() {
