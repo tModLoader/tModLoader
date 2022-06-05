@@ -100,8 +100,8 @@ namespace ExampleMod.Common.GlobalNPCs
 		// Vanilla uses this for the biome keys, souls of night/light, as well as the holiday drops.
 		// Any drop rules in ModifyGlobalLoot should only run once. Everything else should go in ModifyNPCLoot.
 		public override void ModifyGlobalLoot(GlobalLoot globalLoot) {
-			globalLoot.Add(ItemDropRule.ByCondition(new Conditions.IsMasterMode(), ModContent.ItemType<ExampleSoul>(), 5, 1, 1)); // If the world is in master mode, drop ExampleSouls 20% of the time from every npc.
-			//TODO: Make it so it only drops from enemies in ExampleBiome when that gets made.
+			// If the ExampleSoulCondition is true, drop ExampleSoul 20% of the time. See Common/ItemDropRules/DropConditions/ExampleSoulCondition.cs for how it's determined
+			globalLoot.Add(ItemDropRule.ByCondition(new ExampleSoulCondition(), ModContent.ItemType<ExampleSoul>(), 5, 1, 1));
 		}
 	}
 }
