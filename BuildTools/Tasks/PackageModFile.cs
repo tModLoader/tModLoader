@@ -32,6 +32,8 @@ public class PackageModFile : TaskBase
 	public string TmlVersion { get; set; } = string.Empty;
 
 	[Required]
+	public string TmlDllPath { get; set; } = string.Empty;
+
 	public string OutputTmodPath { get; set; } = string.Empty;
 
 	[Required]
@@ -48,6 +50,10 @@ public class PackageModFile : TaskBase
 
 		BuildProperties modProperties = GetModProperties();
 		Log.LogMessage(MessageImportance.Low, $"Loaded build properties: {modProperties}");
+
+		if (string.IsNullOrEmpty(OutputTmodPath))
+			OutputTmodPath = SavePathLocator.FindSavePath(Log, TmlDllPath, AssemblyName);
+		Log.LogMessage(MessageImportance.Normal, $"Using path for .tmod file: {OutputTmodPath}");
 
 		TmodFile tmodFile = new(OutputTmodPath, AssemblyName, modProperties.Version, Version.Parse(TmlVersion));
 
@@ -185,7 +191,7 @@ public class PackageModFile : TaskBase
 	private void AddResource(TmodFile tmodFile, string resourcePath) {
 		string relPath = resourcePath.Substring(ProjectDirectory.Length + 1);
 
-		Log.LogMessage("Adding resource: {0}", relPath);
+		Log.LogMessage(MessageImportance.Low, "Adding resource: {0}", relPath);
 
 		using FileStream src = File.OpenRead(resourcePath);
 		using MemoryStream dst = new MemoryStream();

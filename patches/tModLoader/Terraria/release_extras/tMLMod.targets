@@ -62,7 +62,6 @@
 		
 		<PropertyGroup>
 			<!-- Use default values in case they have not been provided -->
-			<OutputTmodPath Condition="$(OutputTmodPath) == ''">$(OutputPath)/$(AssemblyName).tmod</OutputTmodPath>
 			<TmlVersion Condition="$(TmlVersion) == '' AND TmlAssemblyIdentity!=''">%(TmlAssemblyIdentity.Version)</TmlVersion>
 			<TmlVersion Condition="$(TmlVersion) == '' AND TmlAssemblyIdentity==''">1.4</TmlVersion>
 		</PropertyGroup>
@@ -75,6 +74,7 @@
 				OutputPath="$(OutputPath)"
 				AssemblyName="$(AssemblyName)"
 				TmlVersion="$(TmlVersion)"
+				TmlDllPath="$(tMLSteamPath)$(tMLPath)"
 				OutputTmodPath="$(OutputTmodPath)"
 				ModProperties="@(ModProperty)" >
 		</PackageModFile>
