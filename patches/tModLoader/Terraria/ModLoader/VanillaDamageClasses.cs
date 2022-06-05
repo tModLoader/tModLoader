@@ -44,6 +44,8 @@ namespace Terraria.ModLoader
 			armorPenInheritance: 1f,
 			knockbackInheritance: 1f
 		);
+
+		public override bool GetEffectInheritance(DamageClass damageClass) => damageClass == Melee;
 	}
 
 	public class RangedDamageClass : VanillaDamageClass
