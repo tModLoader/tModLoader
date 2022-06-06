@@ -20,6 +20,15 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
 
+		public List<Mod> StatsModifiedBy { get; private set; } = new();
+
+		/// <summary>
+		/// Dictates whether or not attack speed modifiers on this weapon will actually affect its use time.<br/>
+		/// Defaults to false, which allows attack speed modifiers to affect use time. Set this to true to prevent this from happening.<br/>
+		/// Used in vanilla by all melee weapons which shoot a projectile and have <see cref="noMelee"/> set to false.
+		/// </summary>
+		public bool attackSpeedOnlyAffectsWeaponAnimation { get; set; }
+
 		/// <summary>
 		/// Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1.
 		/// <br>This prevents it from receiving a prefix on craft.</br>
@@ -151,7 +160,7 @@ namespace Terraria
 		public static int NewItem(IEntitySource source, Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 			=> NewItem(source, (int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
-		private void ApplyItemAnimationCompensations() {
+		private void ApplyItemAnimationCompensationsToVanillaItems() {
 			// #2351
 			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
 			// all items with autoReuse in vanilla are affected, but the animation only has a physical effect for !noMelee items
@@ -168,6 +177,15 @@ namespace Terraria
 		private void UndoItemAnimationCompensations() {
 			useAnimation -= currentUseAnimationCompensation;
 			currentUseAnimationCompensation = 0;
+		}
+
+		private void RestoreMeleeSpeedBehaviorOnVanillaItems() {
+			if (type < ItemID.Count && melee && shoot > 0) {
+				if (noMelee)
+					DamageType = DamageClass.MeleeNoSpeed;
+				else
+					attackSpeedOnlyAffectsWeaponAnimation = true;
+			}
 		}
 
 		// Internal utility method. Move somewhere, if there's a better place.

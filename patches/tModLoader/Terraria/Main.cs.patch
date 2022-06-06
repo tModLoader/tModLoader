@@ -1774,12 +1774,37 @@
  						if (item.useAnimation <= 8)
  							toolTipLine[numLines] = Lang.tip[6].Value;
  						else if (item.useAnimation <= 20)
-@@ -15283,10 +_,16 @@
+@@ -15283,10 +_,41 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
  
 +						toolTipNames[numLines] = "Speed";
  						numLines++;
++
++						/*
++						tML:
++						these lines add a degree of transparency which vanilla doesn't provide by tellin' the player what
++						does and doesn't get affected by attack speed bonuses, as well as if the item in question has any
++						special scalin' rules. they're tML-specific, and can be messed with at the will of the modder
++
++						as for why they're differently named: prep for when that tooltip rework comes out
++						-thomas
++						*/
++						if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
++							if (ModLoader.ModLoader.meleeSpeedScalingTooltipVisibility == 0) {
++								toolTipLine[numLines] = Language.GetTextValue("tModLoader.NoAttackSpeedScaling");
++								toolTipNames[numLines] = "NoSpeedScaling";
++								numLines++;
++							}
++						}
++						else if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] != 1f) {
++							if (ModLoader.ModLoader.meleeSpeedScalingTooltipVisibility <= 1) {
++								int attackSpeedScaling = (int)(ItemID.Sets.BonusAttackSpeedMultiplier[item.type] * 100);
++								toolTipLine[numLines] = Language.GetTextValue("tModLoader.SpecialAttackSpeedScaling", attackSpeedScaling);
++								toolTipNames[numLines] = "SpecialSpeedScaling";
++								numLines++;
++							}
++						}
  					}
 +
 +					if (!item.DamageType.ShowStatTooltipLine(player[myPlayer], "Knockback"))
@@ -2186,14 +2211,34 @@
  				numLines++;
  			}
  
-@@ -15718,6 +_,7 @@
+@@ -15718,8 +_,27 @@
  				if (amountNeeded - sacrificeCount > 0) {
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.CreativeSacrificeNeeded", amountNeeded - sacrificeCount);
  					researchLine = numLines;
 +					toolTipNames[numLines] = "JourneyResearch";
  					numLines++;
  				}
++			}
++
++			if (item.StatsModifiedBy.Count > 0)
++			{
++				if (keyState.PressingShift()) {
++					toolTipLine[numLines] = Language.GetTextValue("tModLoader.ModifiedByMods");
++					for (int i = 0; i < item.StatsModifiedBy.Count; i++) {
++						Mod mod = item.StatsModifiedBy[i];
++						if (i > 0)
++							toolTipLine[numLines] += ", ";
++						toolTipLine[numLines] += mod.DisplayName;
++					}
++				}
++				else {
++					toolTipLine[numLines] = Language.GetTextValue("tModLoader.ModifiedByModsHoldSHIFT");
++				}
++				toolTipNames[numLines] = "ModifiedByMods";
++				numLines++;
  			}
+ 
+ 			string bestiaryNotes = item.BestiaryNotes;
 @@ -15727,11 +_,12 @@
  				string[] array = bestiaryNotes.Split('\n');
  				foreach (string text2 in array) {

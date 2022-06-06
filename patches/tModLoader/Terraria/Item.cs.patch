@@ -76,7 +76,7 @@
 +				if (value)
 +					DamageType = DamageClass.Melee;
 +				else if (DamageType == DamageClass.Melee)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		internal bool magic {
@@ -85,7 +85,7 @@
 +				if (value)
 +					DamageType = DamageClass.Magic;
 +				else if (DamageType == DamageClass.Magic)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		internal bool ranged {
@@ -94,7 +94,7 @@
 +				if (value)
 +					DamageType = DamageClass.Ranged;
 +				else if (DamageType == DamageClass.Ranged)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		internal bool summon {
@@ -103,7 +103,7 @@
 +				if (value)
 +					DamageType = DamageClass.Summon;
 +				else if (DamageType == DamageClass.Summon)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
  		public bool sentry;
@@ -302,7 +302,7 @@
 +			if (num >= PrefixID.Count)
 +				PrefixLoader.GetPrefix(num)?.Apply(this);
 +
-+			ApplyItemAnimationCompensations();
++			ApplyItemAnimationCompensationsToVanillaItems();
 +
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
@@ -585,12 +585,15 @@
  
  			if (type == 0) {
  				netID = 0;
-@@ -45044,7 +_,15 @@
+@@ -45044,7 +_,18 @@
  				SetDefaults5(type);
  			}
  
 +			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
-+			ApplyItemAnimationCompensations();
++			ApplyItemAnimationCompensationsToVanillaItems();
++
++			// tML: make sure some vanilla balance doesn't get obliterated by attack speed changes
++			RestoreMeleeSpeedBehaviorOnVanillaItems();
 +
 +			//Set 'master' bool for vanilla items with master rarity.
 +			if (type < ItemID.Count && rare == ItemRarityID.Master) {
@@ -616,17 +619,19 @@
  				netID = 0;
  				type = 0;
  				stack = 0;
-@@ -45207,14 +_,23 @@
+@@ -45207,14 +_,25 @@
  		public void ResetStats(int Type) {
  			tooltipContext = -1;
  			BestiaryNotes = null;
 +			ModItem = null;
 +			globalItems = new Instanced<GlobalItem>[0];
++			StatsModifiedBy = new();
 +			AllowReforgeForStackableItem = false;
++			attackSpeedOnlyAffectsWeaponAnimation = false;
 +			useLimitPerAnimation = null;
 +			consumeAmmoOnFirstShotOnly = false;
 +			consumeAmmoOnLastShotOnly = false;
-+			DamageType = DamageClass.Generic;
++			DamageType = DamageClass.Default;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;
