@@ -395,6 +395,7 @@
 		// Tooltip lines
 		"NoAttackSpeedScaling": "Does not scale with attack speed",
 		"SpecialAttackSpeedScaling": "Attack speed boosts reduced to {0}%",
+		"ModifiedByModsHoldSHIFT": "Stats have been modified (hold SHIFT for more info)",
 		"ModifiedByMods": "Stats have been modified by ",
 
 		// Memory bar

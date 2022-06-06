@@ -2212,7 +2212,7 @@
  				numLines++;
  			}
  
-@@ -15718,8 +_,23 @@
+@@ -15718,8 +_,27 @@
  				if (amountNeeded - sacrificeCount > 0) {
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.CreativeSacrificeNeeded", amountNeeded - sacrificeCount);
  					researchLine = numLines;
@@ -2223,13 +2223,17 @@
 +
 +			if (item.StatsModifiedBy != null && item.StatsModifiedBy.Count > 0)
 +			{
-+				toolTipLine[numLines] = Language.GetTextValue("tModLoader.ModifiedByMods");
-+				for (int i = 0; i < item.StatsModifiedBy.Count; i++)
-+				{
-+					Mod mod = item.StatsModifiedBy[i];
-+					if (i > 0)
-+						toolTipLine[numLines] += ", ";
-+					toolTipLine[numLines] += mod.DisplayName;
++				if (keyState.PressingShift()) {
++					toolTipLine[numLines] = Language.GetTextValue("tModLoader.ModifiedByMods");
++					for (int i = 0; i < item.StatsModifiedBy.Count; i++) {
++						Mod mod = item.StatsModifiedBy[i];
++						if (i > 0)
++							toolTipLine[numLines] += ", ";
++						toolTipLine[numLines] += mod.DisplayName;
++					}
++				}
++				else {
++					toolTipLine[numLines] = Language.GetTextValue("tModLoader.ModifiedByModsHoldSHIFT");
 +				}
 +				toolTipNames[numLines] = "ModifiedByMods";
 +				numLines++;
