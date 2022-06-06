@@ -77,7 +77,7 @@
 +				if (value)
 +					DamageType = DamageClass.Melee;
 +				else if (DamageType == DamageClass.Melee)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		internal bool magic {
@@ -86,7 +86,7 @@
 +				if (value)
 +					DamageType = DamageClass.Magic;
 +				else if (DamageType == DamageClass.Magic)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		internal bool ranged {
@@ -95,7 +95,7 @@
 +				if (value)
 +					DamageType = DamageClass.Ranged;
 +				else if (DamageType == DamageClass.Ranged)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		internal bool summon {
@@ -104,7 +104,7 @@
 +				if (value)
 +					DamageType = DamageClass.Summon;
 +				else if (DamageType == DamageClass.Summon)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
  		public bool sentry;
@@ -633,7 +633,7 @@
 +			useLimitPerAnimation = null;
 +			consumeAmmoOnFirstShotOnly = false;
 +			consumeAmmoOnLastShotOnly = false;
-+			DamageType = DamageClass.Generic;
++			DamageType = DamageClass.Default;
  			sentry = false;
  			canBePlacedInVanityRegardlessOfConditions = false;
  			DD2Summon = false;
