@@ -326,6 +326,7 @@
 		"MSCreateMod": "Stwórz Moda",
 		"VersionUpgrade": "LINK: Dowiedz się więcej o przygotowaniu Modów do nowej wersji tML",
 		"MSPortToLatest": "Uruchom program tModPorter",
+		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Do budowania modów wymagane są dodatkowe biblioteki. (Brak folderu ModCompile)",

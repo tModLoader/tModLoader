@@ -11,6 +11,8 @@
 		"MenuModSources": "Fontes de Mods",
 		"MenuDevelopMods": "Desenvolver Mods",
 		"MenuDevelopModsDescription": "Desenvolva e publique Mods para outros usarem, usando seu código em Fontes de Mods",
+		"ModsModPacks": "Pacotes de Mods",
+		// "MenuModPackDescription": "Manage Mod Packs, for features like saving your current list of mods & config, and Import & Export Mod Packs. Experimental.",
 		"MenuEnableDeveloperMode": "Habilitar Modo Desenvolvedor",
 		"WelcomeMessageBeta": "Bem-vindo à Alpha do tModLoader 1.4.\n\nVocê instalou com sucesso um tModLoader instável que pode conter bugs que quebram o jogo. \n\nUse o menu Oficina para acessar as funções do tModLoader relacionadas aos Mods.\n\nJunte-se ao Discord do tModLoader para saber mais sobre quais mods e/ou ferramentas de teste estão disponíveis para o tModLoader 1.4 como parte de sua revisão da 1.4.",
 		// "MonthlyFreezeNotification": "The monthly alpha freeze has started. As a reminder, on the 21st of each month, there is a period of time where modders are expected to publish an update for their mods on the 1.4-preview branch in anticipation for all of the code and API changes to tModLoader that were made over the last month. The current 1.4-preview will become the new 1.4-stable on the 1st of next month.\n\nFailure to do so will mean that mods you've made will likely fail to load starting on the 1st of next month.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes. Click \"More Info\" to learn more about the alpha release cycle.",
@@ -26,6 +28,7 @@
 		// "MenuModsEnabled": "{0} {^0:Mod;Mods} Enabled",
 		// "MenuModUpdatesAvailable": "({0} {^0:Update;Updates} Available!)",
 		"AudioNotSupported": "Nenhum hardware de áudio encontrado. Desativando todo o áudio.",
+		// "13InfoButton": "How to Access 1.3 tModLoader",
 
 		// Mods Menu
 		"ModsModsList": "Lista de Mods",
@@ -34,7 +37,10 @@
 		"ModsReloadMods": "Recarregar Mods",
 		// "ModsForceReload": "Force Reload",
 		"ModsOpenModsFolder": "Abrir Pasta de Mods",
-		"ModsModPacks": "Pacotes de Mods",
+		// "OpenModPackFolder": "Open Mod Pack Folder",
+		// "DeactivateModPack": "Unload Mod Pack",
+		// "ActivateModPack": "Load Mod Pack",
+		// "DownloadMissingMods": "Download Missing Mods",
 		"ModsDisable": "Desativar",
 		"ModsEnable": "Ativar",
 		"ModConfiguration": "Configuração de Mods",
@@ -87,6 +93,7 @@
 		"ModVersionInfoUnchanged": "Erro: Informações da versão do mod devem ser incrementadas antes de atualizar.",
 		"ConsultSteamLogs": "Consulte Steam workshop_log.txt (Local padrão: {0}) para mais informações.",
 		"SteamRejectUpdate": "O item já está/foi instalado: {0}. Se você está tentando re-instalar, feche a instância atual e re-inicie.",
+		// "BrowserRejectWarning": "Can't Download. Click For Info",
 		"BeginDownload": "Tentando fazer o download do item: {0}",
 		"EndDownload": "Download do item concluído",
 		"CreateItem": "Criando item {0}",
@@ -318,6 +325,8 @@
 		"MSModSourcesCantHaveSpaces": "(Pastas de Fontes de Mod não podem ter espaços)",
 		"MSCreateMod": "Criar Mod",
 		"VersionUpgrade": "LINK: Aprenda sobre a Migração de Mods para a atualização mais recente",
+		// "MSPortToLatest": "Run tModPorter",
+		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Bibliotecas extras são necessárias para construir mods. (Pasta ModCompile não encontrada)",
@@ -431,6 +440,7 @@
 		"OneDriveHint": "\n\nDica: Tente instalar/ativar o OneDrive. Clique com o botão direito na pasta Documentos e ative \"Manter sempre neste dispositivo\"",
 		"AntivirusHint": "\n\nDica: Se você tiver um antivírus, tente adicionar Terraria à sua lista de permissão/lista de exclusão",
 		"TypeInitializationHint": "\n\nDica: Reinicie o jogo. Se o problema persistir, tente desinstalar o Terraria completamente, reinstalar por meio do Steam e, em seguida, reinstalar o tModLoader"
+		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		// "TagsContent": "New Content",
 		// "TagsContentDescription": "Adds new content (i.e. items, weapons, npcs, etc.) to the game",
 		// "TagsUtility": "Utilities",
