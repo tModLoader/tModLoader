@@ -662,14 +662,20 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>MechSpawn</b> 
 <tr class="memitem:a2670a251b967cb06d7454a50ad920905"><td class="memItemLeft" align="right" valign="top"><a id="a2670a251b967cb06d7454a50ad920905"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NearSpikeBall</b> (int x, int y)</td></tr>
 <tr class="separator:a2670a251b967cb06d7454a50ad920905"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa586bd49c055a44ef203045df95b9f29"><td class="memItemLeft" align="right" valign="top"><a id="aa586bd49c055a44ef203045df95b9f29"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewNPC</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, int X, int Y, int Type, int Start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int Target=255)</td></tr>
+<tr class="memitem:aa586bd49c055a44ef203045df95b9f29"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_n_p_c.html#aa586bd49c055a44ef203045df95b9f29">NewNPC</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, int X, int Y, int Type, int Start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int Target=255)</td></tr>
+<tr class="memdesc:aa586bd49c055a44ef203045df95b9f29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> into the game world with the given type. This method should not be called on multiplayer clients. The X and Y parameters dictate the centered spawn position. ai0, ai1, ai2, and ai3 will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. The <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> AI code will have to be written to utilize those values. Target can be set to a Player.whoAmI to have the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> targetting a specific <a class="el" href="class_terraria_1_1_player.html">Player</a> immediately on spawn. Start can be used to ensure that an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> spawns in a slot after an existing <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. This can be used to ensure that the spawned <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> draws behind an existing <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. This is useful for bosses that spawn minions. The return value is the index of the spawned <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> within the Main.npc array.  <a href="class_terraria_1_1_n_p_c.html#aa586bd49c055a44ef203045df95b9f29">More...</a><br /></td></tr>
 <tr class="separator:aa586bd49c055a44ef203045df95b9f29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab958086bbb4d2cd31183c40d66e19165"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_n_p_c.html#ab958086bbb4d2cd31183c40d66e19165">NewNPCDirect</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, int x, int y, int type, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int target=255)</td></tr>
-<tr class="memdesc:ab958086bbb4d2cd31183c40d66e19165"><td class="mdescLeft">&#160;</td><td class="mdescRight">A short-hand for  <a href="class_terraria_1_1_n_p_c.html#ab958086bbb4d2cd31183c40d66e19165">More...</a><br /></td></tr>
+<tr class="memdesc:ab958086bbb4d2cd31183c40d66e19165"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+<br  />
+This particular overload returns the actual <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> within the Main.npc array. <br  />
+ A short-hand for  <a href="class_terraria_1_1_n_p_c.html#ab958086bbb4d2cd31183c40d66e19165">More...</a><br /></td></tr>
 <tr class="separator:ab958086bbb4d2cd31183c40d66e19165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac13f013a116b2fd6e3ede8b617faf2d1"><td class="memItemLeft" align="right" valign="top"><a id="ac13f013a116b2fd6e3ede8b617faf2d1"></a>
-static <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_n_p_c.html#ac13f013a116b2fd6e3ede8b617faf2d1">NewNPCDirect</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 position, int type, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int target=255)</td></tr>
+<tr class="memitem:ac13f013a116b2fd6e3ede8b617faf2d1"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_n_p_c.html#ac13f013a116b2fd6e3ede8b617faf2d1">NewNPCDirect</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 position, int type, int start=0, float ai0=0f, float ai1=0f, float ai2=0f, float ai3=0f, int target=255)</td></tr>
+<tr class="memdesc:ac13f013a116b2fd6e3ede8b617faf2d1"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+<br  />
+This particular overload returns the actual <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> within the Main.npc array. It also uses a Vector2 for the spawn position instead of X and Y. <br  />
+ A short-hand for  <a href="class_terraria_1_1_n_p_c.html#ac13f013a116b2fd6e3ede8b617faf2d1">More...</a><br /></td></tr>
 <tr class="separator:ac13f013a116b2fd6e3ede8b617faf2d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f81df735e1764013280e44cf0ecc411"><td class="memItemLeft" align="right" valign="top"><a id="a1f81df735e1764013280e44cf0ecc411"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnGameEventClearedForTheFirstTime</b> (int gameEventId)</td></tr>
@@ -1769,8 +1775,110 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
+<a id="aa586bd49c055a44ef203045df95b9f29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa586bd49c055a44ef203045df95b9f29">&#9670;&nbsp;</a></span>NewNPC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.NPC.NewNPC </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Start</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai0</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai1</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai2</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai3</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Target</em> = <code>255</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Spawns an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> into the game world with the given type. This method should not be called on multiplayer clients. The X and Y parameters dictate the centered spawn position. ai0, ai1, ai2, and ai3 will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. The <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> AI code will have to be written to utilize those values. Target can be set to a Player.whoAmI to have the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> targetting a specific <a class="el" href="class_terraria_1_1_player.html">Player</a> immediately on spawn. Start can be used to ensure that an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> spawns in a slot after an existing <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. This can be used to ensure that the spawned <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> draws behind an existing <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. This is useful for bosses that spawn minions. The return value is the index of the spawned <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> within the Main.npc array. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td></td></tr>
+    <tr><td class="paramname">X</td><td></td></tr>
+    <tr><td class="paramname">Y</td><td></td></tr>
+    <tr><td class="paramname">Type</td><td>Either an NPCID entry or ModContent.NPCType&lt;T&gt;, for example NPCID.BabySlime or ModContent.NPCType&lt;MyModNPC&gt;()</td></tr>
+    <tr><td class="paramname">Start</td><td></td></tr>
+    <tr><td class="paramname">ai0</td><td></td></tr>
+    <tr><td class="paramname">ai1</td><td></td></tr>
+    <tr><td class="paramname">ai2</td><td></td></tr>
+    <tr><td class="paramname">ai3</td><td></td></tr>
+    <tr><td class="paramname">Target</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="ab958086bbb4d2cd31183c40d66e19165"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab958086bbb4d2cd31183c40d66e19165">&#9670;&nbsp;</a></span>NewNPCDirect()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab958086bbb4d2cd31183c40d66e19165">&#9670;&nbsp;</a></span>NewNPCDirect() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1851,8 +1959,95 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </table>
 </div><div class="memdoc">
 
-<p>A short-hand for </p>
-<p><code> Main.npc[Main.NewNPC(...)] </code> </p>
+<p><br  />
+<br  />
+This particular overload returns the actual <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> within the Main.npc array. <br  />
+ A short-hand for </p>
+<p><code> Main.npc[NPC.NewNPC(...)] </code></p>
+
+</div>
+</div>
+<a id="ac13f013a116b2fd6e3ede8b617faf2d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac13f013a116b2fd6e3ede8b617faf2d1">&#9670;&nbsp;</a></span>NewNPCDirect() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> Terraria.NPC.NewNPCDirect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>start</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai0</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai1</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai2</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai3</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>target</em> = <code>255</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><br  />
+<br  />
+This particular overload returns the actual <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> instance rather than the index of the spawned <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> within the Main.npc array. It also uses a Vector2 for the spawn position instead of X and Y. <br  />
+ A short-hand for </p>
+<p><code> Main.npc[NPC.NewNPC(...)] </code></p>
 
 </div>
 </div>

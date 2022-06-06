@@ -416,20 +416,28 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsAGolfingItem
 <tr class="memitem:a522d09db654ebcedd242ec8ce6a31546"><td class="memItemLeft" align="right" valign="top"><a id="a522d09db654ebcedd242ec8ce6a31546"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>MechSpawn</b> (float x, float y, int type)</td></tr>
 <tr class="separator:a522d09db654ebcedd242ec8ce6a31546"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a438e2f4a4ef1ebb47daca7d30bc055"><td class="memItemLeft" align="right" valign="top"><a id="a7a438e2f4a4ef1ebb47daca7d30bc055"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewItem</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, int X, int Y, int Width, int Height, int Type, int Stack=1, bool noBroadcast=false, int pfix=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memitem:a7a438e2f4a4ef1ebb47daca7d30bc055"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a7a438e2f4a4ef1ebb47daca7d30bc055">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, int X, int Y, int Width, int Height, int Type, int Stack=1, bool noBroadcast=false, int pfix=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memdesc:a7a438e2f4a4ef1ebb47daca7d30bc055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y. This method should not be called on multiplayer clients. If you need to spawn items from client code, use <a class="el" href="">Player.QuickSpawnItem(IEntitySource, int, int)</a> instead, it handles the multiplayer syncing code needed. The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_terraria_1_1_item.html">Item</a> within the Main.item array.  <a href="class_terraria_1_1_item.html#a7a438e2f4a4ef1ebb47daca7d30bc055">More...</a><br /></td></tr>
 <tr class="separator:a7a438e2f4a4ef1ebb47daca7d30bc055"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7d47fb02ce484b22f8d2eef0cfbf87e"><td class="memItemLeft" align="right" valign="top"><a id="af7d47fb02ce484b22f8d2eef0cfbf87e"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewItem</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Rectangle rectangle, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memitem:af7d47fb02ce484b22f8d2eef0cfbf87e"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#af7d47fb02ce484b22f8d2eef0cfbf87e">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Rectangle rectangle, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memdesc:af7d47fb02ce484b22f8d2eef0cfbf87e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+<br  />
+This particular overload uses a Rectangle instead of X, Y, Width, and Height to determine the actual spawn position.  <a href="class_terraria_1_1_item.html#af7d47fb02ce484b22f8d2eef0cfbf87e">More...</a><br /></td></tr>
 <tr class="separator:af7d47fb02ce484b22f8d2eef0cfbf87e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70cf762c48813cbeef8b677656bfb054"><td class="memItemLeft" align="right" valign="top"><a id="a70cf762c48813cbeef8b677656bfb054"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewItem</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 pos, int Width, int Height, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memitem:a70cf762c48813cbeef8b677656bfb054"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a70cf762c48813cbeef8b677656bfb054">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 pos, int Width, int Height, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memdesc:a70cf762c48813cbeef8b677656bfb054"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+<br  />
+This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.  <a href="class_terraria_1_1_item.html#a70cf762c48813cbeef8b677656bfb054">More...</a><br /></td></tr>
 <tr class="separator:a70cf762c48813cbeef8b677656bfb054"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0f057a4ed207ce83cd3141063371604"><td class="memItemLeft" align="right" valign="top"><a id="ae0f057a4ed207ce83cd3141063371604"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewItem</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 pos, Vector2 randomBox, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memitem:ae0f057a4ed207ce83cd3141063371604"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#ae0f057a4ed207ce83cd3141063371604">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 pos, Vector2 randomBox, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memdesc:ae0f057a4ed207ce83cd3141063371604"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+<br  />
+This particular overload uses two Vector2 to determine the actual spawn position.  <a href="class_terraria_1_1_item.html#ae0f057a4ed207ce83cd3141063371604">More...</a><br /></td></tr>
 <tr class="separator:ae0f057a4ed207ce83cd3141063371604"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71f7ee3fbdcb676cc15bb9edd558b9cd"><td class="memItemLeft" align="right" valign="top"><a id="a71f7ee3fbdcb676cc15bb9edd558b9cd"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewItem</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 position, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memitem:a71f7ee3fbdcb676cc15bb9edd558b9cd"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a71f7ee3fbdcb676cc15bb9edd558b9cd">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 position, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memdesc:a71f7ee3fbdcb676cc15bb9edd558b9cd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+<br  />
+This particular overload uses a Vector2 instead of X, Y, Width, and Height to determine the actual spawn position.  <a href="class_terraria_1_1_item.html#a71f7ee3fbdcb676cc15bb9edd558b9cd">More...</a><br /></td></tr>
 <tr class="separator:a71f7ee3fbdcb676cc15bb9edd558b9cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a768167f354ef21dee8573fadeaf6a8c4"><td class="memItemLeft" align="right" valign="top"><a id="a768167f354ef21dee8573fadeaf6a8c4"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>NPCtoBanner</b> (int i)</td></tr>
@@ -1329,6 +1337,437 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </div><div class="memdoc">
 
 <p>returns false if and only if netID (deprecated, equivalent to type), stack and prefix match </p>
+
+</div>
+</div>
+<a id="a7a438e2f4a4ef1ebb47daca7d30bc055"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a438e2f4a4ef1ebb47daca7d30bc055">&#9670;&nbsp;</a></span>NewItem() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.Item.NewItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Stack</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noBroadcast</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pfix</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noGrabDelay</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>reverseLookup</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y. This method should not be called on multiplayer clients. If you need to spawn items from client code, use <a class="el" href="">Player.QuickSpawnItem(IEntitySource, int, int)</a> instead, it handles the multiplayer syncing code needed. The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_terraria_1_1_item.html">Item</a> within the Main.item array. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td></td></tr>
+    <tr><td class="paramname">X</td><td></td></tr>
+    <tr><td class="paramname">Y</td><td></td></tr>
+    <tr><td class="paramname">Width</td><td></td></tr>
+    <tr><td class="paramname">Height</td><td></td></tr>
+    <tr><td class="paramname">Type</td><td>Either an ItemID entry or ModContent.ItemType&lt;T&gt;, for example ItemID.IronskinPotion or ModContent.ItemType&lt;MyModItem&gt;()</td></tr>
+    <tr><td class="paramname">Stack</td><td><a class="el" href="class_terraria_1_1_item.html">Item</a> stack</td></tr>
+    <tr><td class="paramname">noBroadcast</td><td></td></tr>
+    <tr><td class="paramname">pfix</td><td></td></tr>
+    <tr><td class="paramname">noGrabDelay</td><td></td></tr>
+    <tr><td class="paramname">reverseLookup</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="af7d47fb02ce484b22f8d2eef0cfbf87e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7d47fb02ce484b22f8d2eef0cfbf87e">&#9670;&nbsp;</a></span>NewItem() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.Item.NewItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Rectangle&#160;</td>
+          <td class="paramname"><em>rectangle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Stack</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noBroadcast</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>prefixGiven</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noGrabDelay</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>reverseLookup</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><br  />
+<br  />
+This particular overload uses a Rectangle instead of X, Y, Width, and Height to determine the actual spawn position. </p>
+
+</div>
+</div>
+<a id="a70cf762c48813cbeef8b677656bfb054"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70cf762c48813cbeef8b677656bfb054">&#9670;&nbsp;</a></span>NewItem() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.Item.NewItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Stack</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noBroadcast</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>prefixGiven</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noGrabDelay</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>reverseLookup</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><br  />
+<br  />
+This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position. </p>
+
+</div>
+</div>
+<a id="ae0f057a4ed207ce83cd3141063371604"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0f057a4ed207ce83cd3141063371604">&#9670;&nbsp;</a></span>NewItem() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.Item.NewItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>randomBox</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Stack</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noBroadcast</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>prefixGiven</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noGrabDelay</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>reverseLookup</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><br  />
+<br  />
+This particular overload uses two Vector2 to determine the actual spawn position. </p>
+
+</div>
+</div>
+<a id="a71f7ee3fbdcb676cc15bb9edd558b9cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71f7ee3fbdcb676cc15bb9edd558b9cd">&#9670;&nbsp;</a></span>NewItem() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.Item.NewItem </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Stack</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noBroadcast</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>prefixGiven</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>noGrabDelay</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>reverseLookup</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><br  />
+<br  />
+This particular overload uses a Vector2 instead of X, Y, Width, and Height to determine the actual spawn position. </p>
 
 </div>
 </div>

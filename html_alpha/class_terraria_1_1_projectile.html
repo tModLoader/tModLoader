@@ -404,14 +404,20 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNPCIndexImmu
 <tr class="memitem:a1c81e4b2e714dc4ebf99be43ddb11c51"><td class="memItemLeft" align="right" valign="top"><a id="a1c81e4b2e714dc4ebf99be43ddb11c51"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>KillOldestJavelin</b> (int protectedProjectileIndex, int projectileType, int targetNPCIndex, Point[] bufferForScan)</td></tr>
 <tr class="separator:a1c81e4b2e714dc4ebf99be43ddb11c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96e6de68e5afccc41fe644f3fa341441"><td class="memItemLeft" align="right" valign="top"><a id="a96e6de68e5afccc41fe644f3fa341441"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewProjectile</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner=255, float ai0=0f, float ai1=0f)</td></tr>
+<tr class="memitem:a96e6de68e5afccc41fe644f3fa341441"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_projectile.html#a96e6de68e5afccc41fe644f3fa341441">NewProjectile</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner=255, float ai0=0f, float ai1=0f)</td></tr>
+<tr class="memdesc:a96e6de68e5afccc41fe644f3fa341441"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self explanitory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0 and ai1 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>. The <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> AI code will have to be written to utilize those values. The return value is the index of the spawned <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> within the Main.projectile array. <br  />
+ Make sure that this method is called only by the client in charge of the source causing this projectile to spawn. Failure to do this will result in the projectile spawning once for each player in the world. For example, if <a class="el" href="class_terraria_1_1_player.html">Player</a> code uses this method, make sure to first check  <a href="class_terraria_1_1_projectile.html#a96e6de68e5afccc41fe644f3fa341441">More...</a><br /></td></tr>
 <tr class="separator:a96e6de68e5afccc41fe644f3fa341441"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a635f32aa197ad02f3f874bbebbbab9"><td class="memItemLeft" align="right" valign="top"><a id="a2a635f32aa197ad02f3f874bbebbbab9"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>NewProjectile</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner=255, float ai0=0f, float ai1=0f)</td></tr>
+<tr class="memitem:a2a635f32aa197ad02f3f874bbebbbab9"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_projectile.html#a2a635f32aa197ad02f3f874bbebbbab9">NewProjectile</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner=255, float ai0=0f, float ai1=0f)</td></tr>
+<tr class="memdesc:a2a635f32aa197ad02f3f874bbebbbab9"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+<br  />
+This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity.  <a href="class_terraria_1_1_projectile.html#a2a635f32aa197ad02f3f874bbebbbab9">More...</a><br /></td></tr>
 <tr class="separator:a2a635f32aa197ad02f3f874bbebbbab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb2a9b19332167e7edf9e2e16db99aa4"><td class="memItemLeft" align="right" valign="top"><a id="adb2a9b19332167e7edf9e2e16db99aa4"></a>
-static <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>&#160;</td><td class="memItemRight" valign="bottom"><b>NewProjectileDirect</b> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner=255, float ai0=0f, float ai1=0f)</td></tr>
+<tr class="memitem:adb2a9b19332167e7edf9e2e16db99aa4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_projectile.html#adb2a9b19332167e7edf9e2e16db99aa4">NewProjectileDirect</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner=255, float ai0=0f, float ai1=0f)</td></tr>
+<tr class="memdesc:adb2a9b19332167e7edf9e2e16db99aa4"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
+<br  />
+This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity. The return value is the actual <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> instance rather than the index of the spawned <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> within the Main.projectile array. <br  />
+ A short-hand for  <a href="class_terraria_1_1_projectile.html#adb2a9b19332167e7edf9e2e16db99aa4">More...</a><br /></td></tr>
 <tr class="separator:adb2a9b19332167e7edf9e2e16db99aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac57e57c6b388b80db4813c5df559d4a0"><td class="memItemLeft" align="right" valign="top"><a id="ac57e57c6b388b80db4813c5df559d4a0"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>RandomizeInsanityShadowFor</b> (<a class="el" href="class_terraria_1_1_entity.html">Entity</a> targetEntity, bool isHostile, out Vector2 spawnposition, out Vector2 spawnvelocity, out float ai0, out float ai1)</td></tr>
@@ -862,6 +868,285 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="a96e6de68e5afccc41fe644f3fa341441"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96e6de68e5afccc41fe644f3fa341441">&#9670;&nbsp;</a></span>NewProjectile() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.Projectile.NewProjectile </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>spawnSource</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>X</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>Y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>SpeedX</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>SpeedY</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Damage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>KnockBack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Owner</em> = <code>255</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai0</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai1</em> = <code>0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self explanitory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0 and ai1 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a>. The <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> AI code will have to be written to utilize those values. The return value is the index of the spawned <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> within the Main.projectile array. <br  />
+ Make sure that this method is called only by the client in charge of the source causing this projectile to spawn. Failure to do this will result in the projectile spawning once for each player in the world. For example, if <a class="el" href="class_terraria_1_1_player.html">Player</a> code uses this method, make sure to first check </p>
+<p><code>if(Main.myPlayer == Player.whoAmI)</code> to ensure that only the local player spawns the projectile. <br  />
+ Projectiles spawning other projectiles should check <code>if(Main.myPlayer == Projectile.owner)</code> <br  />
+ If the source is an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> or non-player owned projectile, checking <code>if (Main.netMode != NetmodeID.MultiplayerClient)</code> will ensure that clients don't attempt to spawn the projectile.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spawnSource</td><td></td></tr>
+    <tr><td class="paramname">X</td><td></td></tr>
+    <tr><td class="paramname">Y</td><td></td></tr>
+    <tr><td class="paramname">SpeedX</td><td></td></tr>
+    <tr><td class="paramname">SpeedY</td><td></td></tr>
+    <tr><td class="paramname">Type</td><td>Either an ProjectileID entry or ModContent.ProjectileType&lt;T&gt;, for example ProjectileID.FireArrow or ModContent.ProjectileType&lt;MyModProjectile&gt;()</td></tr>
+    <tr><td class="paramname">Damage</td><td></td></tr>
+    <tr><td class="paramname">KnockBack</td><td></td></tr>
+    <tr><td class="paramname">Owner</td><td></td></tr>
+    <tr><td class="paramname">ai0</td><td></td></tr>
+    <tr><td class="paramname">ai1</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a2a635f32aa197ad02f3f874bbebbbab9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a635f32aa197ad02f3f874bbebbbab9">&#9670;&nbsp;</a></span>NewProjectile() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.Projectile.NewProjectile </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>spawnSource</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>velocity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Damage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>KnockBack</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>Owner</em> = <code>255</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai0</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai1</em> = <code>0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><br  />
+<br  />
+This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity. </p>
+
+</div>
+</div>
+<a id="adb2a9b19332167e7edf9e2e16db99aa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb2a9b19332167e7edf9e2e16db99aa4">&#9670;&nbsp;</a></span>NewProjectileDirect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> Terraria.Projectile.NewProjectileDirect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a>&#160;</td>
+          <td class="paramname"><em>spawnSource</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>velocity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>damage</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>knockback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>owner</em> = <code>255</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai0</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>ai1</em> = <code>0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><br  />
+<br  />
+This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity. The return value is the actual <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> instance rather than the index of the spawned <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> within the Main.projectile array. <br  />
+ A short-hand for </p>
+<p><code> Main.projectile[Projectile.NewProjectile(...)] </code></p>
 
 </div>
 </div>
