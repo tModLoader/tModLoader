@@ -149,7 +149,7 @@ namespace Terraria.ModLoader.UI
 					infoMessage.Show(Language.GetTextValue("tModLoader.MonthlyFreezeNotification"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
 						() => {
 							SoundEngine.PlaySound(SoundID.MenuOpen);
-							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14-alpha");
+							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14");
 						});
 					Main.SaveSettings();
 				}
@@ -159,6 +159,17 @@ namespace Terraria.ModLoader.UI
 					string info = ModOrganizer.DetectModChangesForInfoMessage();
 					if (info != null)
 						infoMessage.Show(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessage") + info, Main.menuMode);
+				}
+			}
+			if (Main.MenuUI.CurrentState == modSources) {
+				if (!ModLoader.SeenFirstLaunchModderWelcomeMessage) {
+					ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
+					infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), modSourcesID, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
+						() => {
+							SoundEngine.PlaySound(SoundID.MenuOpen);
+							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
+						});
+					Main.SaveSettings();
 				}
 			}
 			if (Main.menuMode == modsMenuID) {

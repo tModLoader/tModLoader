@@ -247,6 +247,42 @@
  			penetrate = -1;
  			tileCollide = false;
  			scale = 1f;
+@@ -8123,6 +_,10 @@
+ 			return result;
+ 		}
+ 
++		/// <summary>
++		/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float)"/>
++		/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity.
++		/// </summary>
+ 		public static int NewProjectile(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner = 255, float ai0 = 0f, float ai1 = 0f) => NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, Type, Damage, KnockBack, Owner, ai0, ai1);
+ 
+ 		public static int FindOldestProjectile() {
+@@ -8138,6 +_,24 @@
+ 			return result;
+ 		}
+ 
++		/// <summary>
++		/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self explanitory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0 and ai1 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
++		/// <br/> Make sure that this method is called only by the client in charge of the source causing this projectile to spawn. Failure to do this will result in the projectile spawning once for each player in the world. For example, if Player code uses this method, make sure to first check <code>if(Main.myPlayer == Player.whoAmI)</code> to ensure that only the local player spawns the projectile.
++		/// <br/> Projectiles spawning other projectiles should check <code>if(Main.myPlayer == Projectile.owner)</code>
++		/// <br/> If the source is an NPC or non-player owned projectile, checking <code>if (Main.netMode != NetmodeID.MultiplayerClient)</code> will ensure that clients don't attempt to spawn the projectile.
++		/// </summary>
++		/// <param name="spawnSource"></param>
++		/// <param name="X"></param>
++		/// <param name="Y"></param>
++		/// <param name="SpeedX"></param>
++		/// <param name="SpeedY"></param>
++		/// <param name="Type">Either an <see cref="ProjectileID"/> entry or <see cref="ModContent.ProjectileType{T}"/>, for example <see cref="ProjectileID.FireArrow"/> or ModContent.ProjectileType&lt;MyModProjectile&gt;()</param>
++		/// <param name="Damage"></param>
++		/// <param name="KnockBack"></param>
++		/// <param name="Owner"></param>
++		/// <param name="ai0"></param>
++		/// <param name="ai1"></param>
++		/// <returns></returns>
+ 		public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = 255, float ai0 = 0f, float ai1 = 0f) {
+ 			int num = 1000;
+ 			for (int i = 0; i < 1000; i++) {
 @@ -8169,6 +_,7 @@
  			projectile.honeyWet = Collision.honey;
  			Main.projectileIdentity[Owner, num] = num;

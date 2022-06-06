@@ -27,7 +27,7 @@
  
  		public override void OnInitialize() {
  			UIElement uIElement = new UIElement();
-@@ -141,6 +_,216 @@
+@@ -141,6 +_,217 @@
  			int num = 0;
  			foreach (PlayerFileData item in list) {
  				_playerList.Add(new UICharacterListItem(item, num++));
@@ -123,6 +123,7 @@
 +			playerMigrationPanel.VisibleWhenExpanded.Add(scrollbar);
 +
 +			// TODO: Do we need to do extra work for .plr files that have been renamed? Is that valid?
++			// TODO: We could probably support cloud players as well, if we tried.
 +			// Vanilla and 1.3 paths are defaults, 1.4 tmod paths are relative to current savepath.
 +			var otherPaths = new (string path, string message, int stabilityLevel)[] {
 +				(path: Path.Combine(ReLogic.OS.Platform.Get<ReLogic.OS.IPathService>().GetStoragePath("Terraria"), "Players"), "Click to copy \"{0}\" over from Terraria", 0),

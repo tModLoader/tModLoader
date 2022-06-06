@@ -11,6 +11,8 @@
 		"MenuModSources": "Исходники модов",
 		"MenuDevelopMods": "Разработка модов",
 		"MenuDevelopModsDescription": "Разработка и публикация модов из исходного кода.",
+		"ModsModPacks": "Сборки модов",
+		// "MenuModPackDescription": "Manage Mod Packs, for features like saving your current list of mods & config, and Import & Export Mod Packs. Experimental.",
 		"MenuEnableDeveloperMode": "Включить режим разработчика",
 		"WelcomeMessageBeta": "Добро пожаловать в альфа версию tModLoader для Террарии 1.4.\n\nВы установили нестабильную версию tModLoader которая может содержать баги, ломающие игру. \n\nИспользуйте меню мастерской для доступа к функционалу модов и tModLoader.\n\nПрисоединитесь к серверу tModLoader в Discord (Примечание: сервер англоязычный) чтобы узнать больше о том какие моды и/или инструменты доступны для альфа версии tModLoader в данный момент.",
 		"MonthlyFreezeNotification": "Ежемесячная заморозка альфа-версии началась. Напоминаем, с 21 числа каждого месяца начинается период времени, когда разработчикам модов следует обновить свои моды до версии 1.4-preview в следствии с изменениями кода и API которые были сделаны за месяц. Текущая версия 1.4-preview станет новой 1.4-stable 1-го числа следующего месяца.\n\nНе обновлённые моды возможно перестанут корректно работать 1-го числа.\n\nПрисоединяйтесь к Discord-серверу tModLoader что бы узнать больше об изменениях этого месяца и заметках об обновлении модов. Нажмите \"Больше информации\" что бы узнать больше о цикле релиза альфа-версии.",
@@ -26,6 +28,7 @@
 		"MenuModsEnabled": "{^0:Включён;Включено;Включены} {0} {^0:мод;мода;модов}",
 		"MenuModUpdatesAvailable": "(доступно {0} {^0:обновление;обновления;обновлений}!)",
 		"AudioNotSupported": "Не найдены устройства вывода звука, всё аудио будет отключено.",
+		// "13InfoButton": "How to Access 1.3 tModLoader",
 
 		// Mods Menu
 		"ModsModsList": "Список модов",
@@ -34,7 +37,10 @@
 		"ModsReloadMods": "Перезагрузить моды",
 		"ModsForceReload": "Принудительная перезагрузка",
 		"ModsOpenModsFolder": "Открыть папку модов",
-		"ModsModPacks": "Сборки модов",
+		// "OpenModPackFolder": "Open Mod Pack Folder",
+		// "DeactivateModPack": "Unload Mod Pack",
+		// "ActivateModPack": "Load Mod Pack",
+		// "DownloadMissingMods": "Download Missing Mods",
 		"ModsDisable": "Выключить",
 		"ModsEnable": "Включить",
 		"ModConfiguration": "Настройки модов",
@@ -87,6 +93,7 @@
 		"ModVersionInfoUnchanged": "Ошибка: Версия мода должна быть увеличена для обновления.",
 		"ConsultSteamLogs": "См. workshop_log.txt (Обычное расположение: {0}) для большей информации.",
 		"SteamRejectUpdate": "Уже установлено: {0}. Если это попытка переустановки, перезапустите tModLoader.",
+		// "BrowserRejectWarning": "Can't Download. Click For Info",
 		"BeginDownload": "Попытка загрузки: {0}",
 		"EndDownload": "Загружено",
 		"CreateItem": "Создание {0}",
@@ -318,6 +325,8 @@
 		"MSModSourcesCantHaveSpaces": "(Папки исходников модов не могут содержать пробелы)",
 		"MSCreateMod": "Создать мод",
 		"VersionUpgrade": "Ссылка: Узнайте больше о переносе модов на новую версию",
+		// "MSPortToLatest": "Run tModPorter",
+		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Дополнительные библиотеки требуются для сборки модов. (Папка ModCompile отсутствует)",
@@ -430,7 +439,8 @@
 		"ModExceptionHint": "\n\nЭто скорее всего проблема мода(ов). Отключите моды по одному и проверьте, осталась ли проблема",
 		"OneDriveHint": "\n\nПопробуйте установить/включить OneDrive. Нажмите правую кнопку мыши по папке \"Документы\" и включите \"Всегда сохранять на этом устройстве\"",
 		"AntivirusHint": "\n\nЕсли у Вас есть антивирус, добавьте Terraria в его список исключений/белый список",
-	 "TypeInitializationHint": "\n\nПерезапустите игру. Если проблема останется, попробуйте полностью удалить Terraria, затем переустановить через Steam, и затем переустановить tModLoader",
+		"TypeInitializationHint": "\n\nПерезапустите игру. Если проблема останется, попробуйте полностью удалить Terraria, затем переустановить через Steam, и затем переустановить tModLoader",
+		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Новый контент",
 		"TagsContentDescription": "Добавляет новый контент (т.е. предметы, оружия, НИПов, и т.д.) в игру",
 		"TagsUtility": "Утилиты",

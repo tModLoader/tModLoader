@@ -39,6 +39,9 @@
 		"ModsForceReload": "强制重新加载模组",
 		"ModsOpenModsFolder": "打开模组文件夹",
 		"OpenModPackFolder": "打开模组整合包文件夹",
+		// "DeactivateModPack": "Unload Mod Pack",
+		// "ActivateModPack": "Load Mod Pack",
+		// "DownloadMissingMods": "Download Missing Mods",
 		"ModsDisable": "禁用",
 		"ModsEnable": "启用",
 		"ModConfiguration": "模组配置",
@@ -91,6 +94,7 @@
 		"ModVersionInfoUnchanged": "模组的版本号在更新时应当增加。",
 		"ConsultSteamLogs": "查看 Steam 的 workshop_log.txt （默认位置在: {0}）以获得更多细节。",
 		"SteamRejectUpdate": "模组已被安装：{0}。若要重新安装，请关闭当前游戏后重启。",
+		// "BrowserRejectWarning": "Can't Download. Click For Info",
 		"BeginDownload": "正在尝试下载模组：{0}",
 		"EndDownload": "项目下载完成",
 		"CreateItem": "正在创建模组 {0}",
@@ -322,6 +326,8 @@
 		"MSModSourcesCantHaveSpaces": "(Mod Sources文件夹不能含有空格)",
 		"MSCreateMod": "创建模组",
 		"VersionUpgrade": "链接: 了解如何迁移到tModLoader 1.4",
+		// "MSPortToLatest": "Run tModPorter",
+		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "生成模组需要额外的库. (缺少[ModCompile]文件夹)",
@@ -435,6 +441,7 @@
 		"OneDriveHint": "\n\n提示：建议安装或启动OneDrive，并将“我的文档”设置为始终本地可用。",
 		"AntivirusHint": "\n\n提示：如果你开启了杀毒软件，请尝试将Terraria和tModLoader加入白名单。",
 		"TypeInitializationHint": "\n\n提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader"
+		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		// "TagsContent": "New Content",
 		// "TagsContentDescription": "Adds new content (i.e. items, weapons, npcs, etc.) to the game",
 		// "TagsUtility": "Utilities",
