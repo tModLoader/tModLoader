@@ -720,7 +720,7 @@
  					position = (position + item.position) / 2f;
  					velocity = (velocity + item.velocity) / 2f;
  					int num3 = item.stack;
-@@ -46280,7 +_,14 @@
+@@ -46280,13 +_,46 @@
  				case 4070:
  					return TextureAssets.Item[type].Frame(1, 4);
  				default:
@@ -736,6 +736,38 @@
  			}
  		}
  
++		/// <summary>
++		/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
++		/// <br/><br/>This particular overload uses two Vector2 to determine the actual spawn position.
++		/// </summary>
+ 		public static int NewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, (int)randomBox.X, (int)randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
++		
++		/// <summary>
++		/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
++		/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.
++		/// </summary>
+ 		public static int NewItem(IEntitySource source, Vector2 pos, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false) => NewItem(source, (int)pos.X, (int)pos.Y, Width, Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
+ 
++		/// <summary>
++		/// Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y.
++		/// This method should not be called on multiplayer clients. If you need to spawn items from client code, use <see cref="Player.QuickSpawnItem(IEntitySource, int, int)"></see> instead, it handles the multiplayer syncing code needed.
++		/// The source represents the entity causing this item to spawn. The return value is the index of the spawned Item within the <see cref="Main.item"/> array. 
++		/// </summary>
++		/// <param name="source"></param>
++		/// <param name="X"></param>
++		/// <param name="Y"></param>
++		/// <param name="Width"></param>
++		/// <param name="Height"></param>
++		/// <param name="Type">Either an <see cref="ItemID"/> entry or <see cref="ModContent.ItemType{T}"/>, for example <see cref="ItemID.IronskinPotion"/> or ModContent.ItemType&lt;MyModItem&gt;()</param>
++		/// <param name="Stack">Item stack</param>
++		/// <param name="noBroadcast"></param>
++		/// <param name="pfix"></param>
++		/// <param name="noGrabDelay"></param>
++		/// <param name="reverseLookup"></param>
++		/// <returns></returns>
+ 		public static int NewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false) {
+ 			if (WorldGen.gen)
+ 				return 0;
 @@ -46294,6 +_,9 @@
  			if (Main.rand == null)
  				Main.rand = new UnifiedRandom();
