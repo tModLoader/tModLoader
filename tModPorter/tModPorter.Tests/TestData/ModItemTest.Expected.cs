@@ -19,7 +19,7 @@ public class ModItemTest : ModItem
 #if COMPILE_ERROR
 	public override bool IgnoreDamageModifiers/* Suggestion: Removed. If you returned true, concider not setting Item.DamageType, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance */ => false;
 
-	public override bool OnlyShootOnSwing/* Suggestion: Removed. If you returned true, override CanShoot to only return true if player.ItemAnimationJustStarted */ => false;
+	public override bool OnlyShootOnSwing/* Suggestion: Removed. If you returned true, set Item.useTime to a multiple of Item.useAnimation */ => false;
 #endif
 
 	protected override bool CloneNewInstances => false;
