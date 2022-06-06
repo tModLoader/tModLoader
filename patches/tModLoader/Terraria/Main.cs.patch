@@ -1791,14 +1791,14 @@
 +						-thomas
 +						*/
 +						if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
-+							if (ModLoader.ModLoader.meleeSpeedScalingTooltipVisibility == 0) {
++							if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility == 0) {
 +								toolTipLine[numLines] = Language.GetTextValue("tModLoader.NoAttackSpeedScaling");
 +								toolTipNames[numLines] = "NoSpeedScaling";
 +								numLines++;
 +							}
 +						}
 +						else if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] != 1f) {
-+							if (ModLoader.ModLoader.meleeSpeedScalingTooltipVisibility <= 1) {
++							if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility <= 1) {
 +								int attackSpeedScaling = (int)(ItemID.Sets.BonusAttackSpeedMultiplier[item.type] * 100);
 +								toolTipLine[numLines] = Language.GetTextValue("tModLoader.SpecialAttackSpeedScaling", attackSpeedScaling);
 +								toolTipNames[numLines] = "SpecialSpeedScaling";
