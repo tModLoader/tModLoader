@@ -14,6 +14,7 @@ var class_terraria_1_1_mod_loader_1_1_damage_class =
     [ "Magic", "class_terraria_1_1_mod_loader_1_1_damage_class.html#a89dea78885ee30d96687cf290f0f8510", null ],
     [ "MagicSummonHybrid", "class_terraria_1_1_mod_loader_1_1_damage_class.html#acc9766bd9c1c252fba5c941201672dd6", null ],
     [ "Melee", "class_terraria_1_1_mod_loader_1_1_damage_class.html#aa8fb890e33cca2623f652fa126625fb2", null ],
+    [ "MeleeNoSpeed", "class_terraria_1_1_mod_loader_1_1_damage_class.html#a9be273bd97e9b46bfe307d11132d998b", null ],
     [ "Ranged", "class_terraria_1_1_mod_loader_1_1_damage_class.html#a70f676c48522df49b11e864d19d701b6", null ],
     [ "Summon", "class_terraria_1_1_mod_loader_1_1_damage_class.html#a3cad912a4036af43e1e4233a59e39e48", null ],
     [ "SummonMeleeSpeed", "class_terraria_1_1_mod_loader_1_1_damage_class.html#a955a2bf4fc555288677aa3a8f94728ee", null ],

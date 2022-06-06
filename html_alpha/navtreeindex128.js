@@ -1,5 +1,12 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a2bae421e7ec739c8b76cd57f007831e9":[2,0,2,4,67,91],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a3331bb647ba66223c5a6c681d61525df":[2,0,2,4,67,113],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a33a86c129c7fa0d5ac73ba252a504d4e":[2,0,2,4,67,21],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a359412f29837b3fe2e99ad7f311f6bc8":[2,0,2,4,67,115],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a36e4606f2006d92691cf19a13a5d1527":[2,0,2,4,67,10],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a3754f03791b754d59c8d2d1a2192be5c":[2,0,2,4,67,15],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a3ccf2936b14323c21bf7a1fec7c627e1":[2,0,2,4,67,105],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a400c2ae56967713ed4c6c88aa80e87d1":[2,0,2,4,67,98],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a4983b0b18a81d615544e43f0bb0b3f2c":[2,0,2,4,67,77],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a49b54478b28fb7eb2cfffbf2b8f68039":[2,0,2,4,67,109],
@@ -242,12 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#ab0cb8fb42333a5c2611c19c8b67aadb4":[2,0,2,5,9,2,2,1],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#ad535f808e5d40414e8d2fa8c85fc2ff9":[2,0,2,5,9,2,2,3],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html":[2,0,2,5,10,6],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a0dcf58a01d6fd892a09071cf8afee764":[2,0,2,5,10,6,1],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a2ed878405b39e349be29d4f67a0d2579":[2,0,2,5,10,6,0],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a308e004a77e1c0e43ddcbbdc19243375":[2,0,2,5,10,6,3],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a408a500da6688510524fdf2aed2eff9a":[2,0,2,5,10,6,4],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#ad1e4e5a1c5ff0b4a56ce383ba04e57a0":[2,0,2,5,10,6,5],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#add9a1c697c087ec2d0142c9bc4e63b63":[2,0,2,5,10,6,2],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one_1_1_parameters.html":[2,0,2,5,10,11,0],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one_1_1_parameters.html#a4cbb21de66d38518b6195407fa49ef7e":[2,0,2,5,10,11,0,7]
+"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a0dcf58a01d6fd892a09071cf8afee764":[2,0,2,5,10,6,1]
 };

@@ -1233,6 +1233,7 @@ var annotated_dup =
         [ "MagicSummonHybridDamageClass", "class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html", "class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class" ],
         [ "MapLegend", "class_terraria_1_1_mod_loader_1_1_map_legend.html", "class_terraria_1_1_mod_loader_1_1_map_legend" ],
         [ "MeleeDamageClass", "class_terraria_1_1_mod_loader_1_1_melee_damage_class.html", "class_terraria_1_1_mod_loader_1_1_melee_damage_class" ],
+        [ "MeleeNoSpeedDamageClass", "class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class.html", "class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class" ],
         [ "MemberJitAttribute", "class_terraria_1_1_mod_loader_1_1_member_jit_attribute.html", "class_terraria_1_1_mod_loader_1_1_member_jit_attribute" ],
         [ "MenuLoader", "class_terraria_1_1_mod_loader_1_1_menu_loader.html", "class_terraria_1_1_mod_loader_1_1_menu_loader" ],
         [ "MetalDetectorInfoDisplay", "class_terraria_1_1_mod_loader_1_1_metal_detector_info_display.html", "class_terraria_1_1_mod_loader_1_1_metal_detector_info_display" ],

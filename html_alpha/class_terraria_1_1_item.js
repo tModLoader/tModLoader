@@ -223,6 +223,7 @@ var class_terraria_1_1_item =
     [ "wornArmor", "class_terraria_1_1_item.html#abed9b1df378dc470c3b3d3a553c05c27", null ],
     [ "AllowReforgeForStackableItem", "class_terraria_1_1_item.html#a0ca15ed1c8357bde27c6f15657a1ee59", null ],
     [ "ArmorPenetration", "class_terraria_1_1_item.html#ae492e5886a9ebcd7c813dd2a11b4b9f1", null ],
+    [ "attackSpeedOnlyAffectsWeaponAnimation", "class_terraria_1_1_item.html#a1cbd9213f933fbca4d22e77ac05756d1", null ],
     [ "CanBeQuickUsed", "class_terraria_1_1_item.html#a06f1c88e31d44fed2b5abcdb1dcc2176", null ],
     [ "consumeAmmoOnFirstShotOnly", "class_terraria_1_1_item.html#a0a3474ad3afb436696fe30457dcf1afa", null ],
     [ "consumeAmmoOnLastShotOnly", "class_terraria_1_1_item.html#af3b3f3fa5755d7f859f109680a3d7a97", null ],
@@ -242,6 +243,7 @@ var class_terraria_1_1_item =
     [ "OriginalDefense", "class_terraria_1_1_item.html#acb62fb45f3efbdc3a73e6e6e764b200f", null ],
     [ "OriginalRarity", "class_terraria_1_1_item.html#ab81f11c334569035389a9381372e79df", null ],
     [ "ranged", "class_terraria_1_1_item.html#aa5443f0ef5aa688bf71f6bc3ec87a88d", null ],
+    [ "StatsModifiedBy", "class_terraria_1_1_item.html#a897cd5d34f6b86dd48a0677554f51252", null ],
     [ "summon", "class_terraria_1_1_item.html#a796145608a1cbb274db1c7fd7459ed76", null ],
     [ "useLimitPerAnimation", "class_terraria_1_1_item.html#a865a880dc9077ce08b2882264e0913eb", null ]
 ];

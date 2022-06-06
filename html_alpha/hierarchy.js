@@ -1262,6 +1262,7 @@ var hierarchy =
                 [ "Terraria.ModLoader.MagicDamageClass", "class_terraria_1_1_mod_loader_1_1_magic_damage_class.html", null ],
                 [ "Terraria.ModLoader.MagicSummonHybridDamageClass", "class_terraria_1_1_mod_loader_1_1_magic_summon_hybrid_damage_class.html", null ],
                 [ "Terraria.ModLoader.MeleeDamageClass", "class_terraria_1_1_mod_loader_1_1_melee_damage_class.html", null ],
+                [ "Terraria.ModLoader.MeleeNoSpeedDamageClass", "class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class.html", null ],
                 [ "Terraria.ModLoader.RangedDamageClass", "class_terraria_1_1_mod_loader_1_1_ranged_damage_class.html", null ],
                 [ "Terraria.ModLoader.SummonDamageClass", "class_terraria_1_1_mod_loader_1_1_summon_damage_class.html", null ],
                 [ "Terraria.ModLoader.SummonMeleeSpeedDamageClass", "class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html", null ],
