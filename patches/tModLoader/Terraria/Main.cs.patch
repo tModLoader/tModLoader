@@ -1774,7 +1774,7 @@
  						if (item.useAnimation <= 8)
  							toolTipLine[numLines] = Lang.tip[6].Value;
  						else if (item.useAnimation <= 20)
-@@ -15283,10 +_,42 @@
+@@ -15283,10 +_,41 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
  
@@ -1791,20 +1791,19 @@
 +						-thomas
 +						*/
 +						if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
-+							toolTipLine[numLines] = Language.GetTextValue("tModLoader.NoAttackSpeedScaling");
-+							toolTipNames[numLines] = "NoSpeedScaling";
-+							numLines++;
++							if (ModLoader.ModLoader.meleeSpeedScalingTooltipVisibility == 0) {
++								toolTipLine[numLines] = Language.GetTextValue("tModLoader.NoAttackSpeedScaling");
++								toolTipNames[numLines] = "NoSpeedScaling";
++								numLines++;
++							}
 +						}
 +						else if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] != 1f) {
-+							// we want to convert the multiplier into a percentage before showin' it     -thomas
-+							int decimalPlaces = 2;
-+							double attackSpeedScaling = ItemID.Sets.BonusAttackSpeedMultiplier[item.type] * 100.0;
-+							toolTipLine[numLines] = Language.GetTextValue(
-+								"tModLoader.SpecialAttackSpeedScaling",
-+								Math.Round(attackSpeedScaling * Math.Pow(10.0, (double)decimalPlaces)) / Math.Pow(10.0, (double)decimalPlaces)
-+							);
-+							toolTipNames[numLines] = "SpecialSpeedScaling";
-+							numLines++;
++							if (ModLoader.ModLoader.meleeSpeedScalingTooltipVisibility <= 1) {
++								int attackSpeedScaling = (int)(ItemID.Sets.BonusAttackSpeedMultiplier[item.type] * 100);
++								toolTipLine[numLines] = Language.GetTextValue("tModLoader.SpecialAttackSpeedScaling", attackSpeedScaling);
++								toolTipNames[numLines] = "SpecialSpeedScaling";
++								numLines++;
++							}
 +						}
  					}
 +

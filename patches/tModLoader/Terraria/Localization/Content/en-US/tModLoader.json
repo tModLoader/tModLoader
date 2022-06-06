@@ -271,6 +271,9 @@
 		"ExperimentalFeaturesNo": "Experimental Features: Off",
 		"RemoveForcedMinimumZoomYes": "Remove Forced Minimum Zoom: On",
 		"RemoveForcedMinimumZoomNo": "Remove Forced Minimum Zoom: Off",
+		"MeleeSpeedScalingTooltipVisibility0": "Melee Speed Effect Tooltips: Show All",
+		"MeleeSpeedScalingTooltipVisibility1": "Melee Speed Effect Tooltips: Show Adjusted Effectiveness",
+		"MeleeSpeedScalingTooltipVisibility2": "Melee Speed Effect Tooltips: Hidden",
 		"AllowGreaterResolutionsYes": "Allow Greater Resolutions: On",
 		"AllowGreaterResolutionsNo": "Allow Greater Resolutions: Off",
 		"ShowMemoryEstimatesYes": "Show Mod Memory Estimates: On",
@@ -394,7 +397,7 @@
 
 		// Tooltip lines
 		"NoAttackSpeedScaling": "Does not scale with attack speed",
-		"SpecialAttackSpeedScaling": "Attack speed boosts reduced to {0}%",
+		"SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
 		"ModifiedByModsHoldSHIFT": "Stats have been modified (hold SHIFT for more info)",
 		"ModifiedByMods": "Stats have been modified by ",
 
