@@ -26,6 +26,7 @@ public static partial class Config
 		RenameInstanceField("Terraria.NPC",				from: "modNPC",			to: "ModNPC");
 		RenameInstanceField("Terraria.Projectile",		from: "modProjectile",	to: "ModProjectile");
 		RenameInstanceField("Terraria.Mount.MountData",	from: "modMountData",	to: "ModMount");
+		RenameInstanceField("Terraria.Gore",			from: "modGore",		to: "ModGore");
 
 		RenameType(from: "Terraria.ModLoader.ModMountData", to: "Terraria.ModLoader.ModMount");
 		RenameType(from: "Terraria.ModLoader.ModWorld",		to: "Terraria.ModLoader.ModSystem");
@@ -51,6 +52,9 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.ModNPC", from: "drawOffsetY",	to: "DrawOffsetY");
 		RenameInstanceField("Terraria.ModLoader.ModNPC", from: "banner",		to: "Banner");
 		RenameInstanceField("Terraria.ModLoader.ModNPC", from: "bannerItem",	to: "BannerItem");
+
+		RenameInstanceField("Terraria.ModLoader.ModGore", from: "updateType",	to: "UpdateType");
+		RenameInstanceField("Terraria.ModLoader.ModDust", from: "updateType",	to: "UpdateType");
 
 		RenameInstanceField("Terraria.Tile", from: "frameX",		to: "TileFrameX");
 		RenameInstanceField("Terraria.Tile", from: "frameY",		to: "TileFrameY");
