@@ -43,7 +43,7 @@
 		"DownloadMissingMods": "Descargar mods faltantes",
 		"ModsDisable": "Desactivar",
 		"ModsEnable": "Activar",
-		"ModConfiguration": "Configuración de mods",
+		"ModConfiguration": "Configurar mods",
 		"ModsOpenConfig": "Haz clic para abrir la configuración",
 		"ModOldWarning": "Mod desactualizado, actívalo bajo tu propia responsabilidad",
 		"ModDependencyClickTooltip": "Este mod depende de {0}\n(Haz clic para activar)",
@@ -324,8 +324,9 @@
 		"MSPublish": "Publicar",
 		"MSModSourcesCantHaveSpaces": "(Las carpetas de fuentes de mods no pueden contener espacios)",
 		"MSCreateMod": "Crear mod",
-		"VersionUpgrade": "Haz clic para más info. sobre la Migración de Mods",
+		"VersionUpgrade": "Haz clic para más info. sobre la migración de mods",
 		"MSPortToLatest": "Ejecutar tModPorter",
+		"MSFirstLaunchModderWelcomeMessage": "Hacer mods para tModLoader en Visual Studio ahora requiere la instalación del SDK .NET 6, lo que puede hacerse instalando Visual Studio 2022.\nLa guía de migración que se encuentra en Github enseñará los cambios de código necesarios para adaptar los mods a la versión 1.4. La guía también enseña a utilizar tModPorter para que migre una gran parte del mod por ti.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Se requieren librerías adicionales para construir mods (falta la carpeta ModCompile)",
