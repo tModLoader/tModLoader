@@ -10,9 +10,9 @@ public class ModTypeModItemTest : ModItem
 	}
 
 	// Most "ModTypes" had this Autoload variant in 1.3
-	public override bool IsLoadingEnabled(Mod mod) /* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
-		Method (ref name /* name is defined by overridable Name property */ );
+		Method (ref name/* name is defined by overridable Name property */);
 		name = "n1";
 		name = "n2";
 #endif
@@ -23,11 +23,11 @@ public class ModTypeModItemTest : ModItem
 // Below are exceptions to the Autoload rule
 public class ModTypeModBuffTest : ModBuff
 {
-	public override bool IsLoadingEnabled(Mod mod) /* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
-		name /* name is defined by overridable Name property */ = "n1";
+		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
-		texture /* texture is defined by overridable Texture property */ = "t1";
+		texture/* texture is defined by overridable Texture property */ = "t1";
 		texture = "t2";
 #endif
 		return true;
@@ -36,11 +36,11 @@ public class ModTypeModBuffTest : ModBuff
 
 public class ModTypeModDustTest : ModDust
 {
-	public override bool IsLoadingEnabled(Mod mod) /* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
-		name /* name is defined by overridable Name property */ = "n1";
+		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
-		texture /* texture is defined by overridable Texture property */ = "t1";
+		texture/* texture is defined by overridable Texture property */ = "t1";
 		texture = "t2";
 #endif
 		return true;
@@ -49,11 +49,11 @@ public class ModTypeModDustTest : ModDust
 
 public class ModTypeModTileTest : ModTile
 {
-	public override bool IsLoadingEnabled(Mod mod) /* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
-		name /* name is defined by overridable Name property */ = "n1";
+		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
-		texture /* texture is defined by overridable Texture property */ = "t1";
+		texture/* texture is defined by overridable Texture property */ = "t1";
 		texture = "t2";
 #endif
 		return true;
@@ -62,11 +62,11 @@ public class ModTypeModTileTest : ModTile
 
 public class ModTypeModWallTest : ModWall
 {
-	public override bool IsLoadingEnabled(Mod mod) /* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
-		name /* name is defined by overridable Name property */ = "n1";
+		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
-		texture /* texture is defined by overridable Texture property */ = "t1";
+		texture/* texture is defined by overridable Texture property */ = "t1";
 		texture = "t2";
 #endif
 		return true;
@@ -79,11 +79,11 @@ public class ModTypeModWaterfallStyleTest : ModWaterfallStyle
 		int type = Slot;
 	}
 
-	public override bool IsLoadingEnabled(Mod mod) /* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
-		name /* name is defined by overridable Name property */ = "n1";
+		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
-		texture /* texture is defined by overridable Texture property */ = "t1";
+		texture/* texture is defined by overridable Texture property */ = "t1";
 		texture = "t2";
 #endif
 		return true;
@@ -96,13 +96,13 @@ public class ModTypeModWaterStyleTest : ModWaterStyle
 		int type = Slot;
     }
 
-	public override bool IsLoadingEnabled(Mod mod) /* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
-		name /* name is defined by overridable Name property */ = "n1";
+		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
-		texture /* texture is defined by overridable Texture property */ = "t1";
+		texture/* texture is defined by overridable Texture property */ = "t1";
 		texture = "t2";
-		blockTexture /* blockTexture is defined by overridable BlockTexture property */ = "b1";
+		blockTexture/* blockTexture is defined by overridable BlockTexture property */ = "b1";
 		blockTexture = "b2";
 #endif
 		return true;
@@ -118,13 +118,13 @@ public class ModTypeModWaterStyleTest : ModWaterStyle
 
 public class ModTypeModMountDataTest : ModMount
 {
-	public override bool IsLoadingEnabled(Mod mod) /* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
-		name /* name is defined by overridable Name property */ = "n1";
+		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
-		texture /* texture is defined by overridable Texture property */ = "t1";
+		texture/* texture is defined by overridable Texture property */ = "t1";
 		texture = "t2";
-		extraTextures /* Use GetExtraTexture hook inplace of extraTextures */ = null;
+		extraTextures/* Use GetExtraTexture hook inplace of extraTextures */ = null;
 		extraTextures = null;
 #endif
 		return true;

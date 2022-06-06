@@ -11,12 +11,12 @@ public class ShootModItemTest : ModItem
 		float knockBackLocal = knockback; // Only rename if parameter was knockBack
 
 #if COMPILE_ERROR
-		RefVector2DontPort(ref position /* Use ModifyShootStats for ref operations */);
-		RefIntDontPort(ref type /* Use ModifyShootStats for ref operations */);
-		RefIntDontPort(ref damage /* Use ModifyShootStats for ref operations */);
-		RefFloatDontPort(ref velocity.X /* Use ModifyShootStats for ref operations */);
-		RefFloatDontPort(ref velocity.Y /* Use ModifyShootStats for ref operations */);
-		RefFloatDontPort(ref knockback /* Use ModifyShootStats for ref operations */);
+		RefVector2DontPort(ref position/* Use ModifyShootStats for ref operations */);
+		RefIntDontPort(ref type/* Use ModifyShootStats for ref operations */);
+		RefIntDontPort(ref damage/* Use ModifyShootStats for ref operations */);
+		RefFloatDontPort(ref velocity.X/* Use ModifyShootStats for ref operations */);
+		RefFloatDontPort(ref velocity.Y/* Use ModifyShootStats for ref operations */);
+		RefFloatDontPort(ref knockback/* Use ModifyShootStats for ref operations */);
 #endif
 
 		return true;
