@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -26,6 +27,14 @@ public class ModPlayerTest : ModPlayer
 #if COMPILE_ERROR
 	public override void SaveData(TagCompound tag)/* Suggestion: Edit tag parameter rather than returning new TagCompound */ {
 		return new TagCompound();
+	}
+
+	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)/* Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed */ {
+		items.Add(9);
+	}
+
+	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)/* Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed */ {
+		items.Add(9);
 	}
 #endif
 

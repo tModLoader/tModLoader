@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -24,6 +25,14 @@ public class ModPlayerTest : ModPlayer
 #if COMPILE_ERROR
 	public override TagCompound Save() {
 		return new TagCompound();
+	}
+
+	public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath) {
+		items.Add(9);
+	}
+
+	public override void SetupStartInventory(IList<Item> items) {
+		items.Add(9);
 	}
 #endif
 
