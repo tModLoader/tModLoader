@@ -1,5 +1,6 @@
 var NAVTREEINDEX127 =
 {
+"namespace_terraria_1_1_utilities_1_1_terraria.html":[1,0,2,23,1],
 "namespace_terraria_1_1_utilities_1_1_terraria_1_1_utilities.html":[1,0,2,23,1,0],
 "namespace_terraria_1_1_world_building.html":[1,0,2,24],
 "namespace_uw_u_pn_p.html":[1,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a359412f29837b3fe2e99ad7f311f6bc8":[2,0,2,4,67,115],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a36e4606f2006d92691cf19a13a5d1527":[2,0,2,4,67,10],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a3754f03791b754d59c8d2d1a2192be5c":[2,0,2,4,67,15],
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a3ccf2936b14323c21bf7a1fec7c627e1":[2,0,2,4,67,105],
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a400c2ae56967713ed4c6c88aa80e87d1":[2,0,2,4,67,98]
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a3ccf2936b14323c21bf7a1fec7c627e1":[2,0,2,4,67,105]
 };

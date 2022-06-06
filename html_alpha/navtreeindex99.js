@@ -1,5 +1,6 @@
 var NAVTREEINDEX99 =
 {
+"class_terraria_1_1_modules_1_1_tile_placement_hooks_module.html":[2,0,2,14,10],
 "class_terraria_1_1_modules_1_1_tile_placement_hooks_module.html#a7347692f2d058429999cc21f024233b9":[2,0,2,14,10,1],
 "class_terraria_1_1_modules_1_1_tile_placement_hooks_module.html#aac21deb60a40ad72fdad7d75582a8b18":[2,0,2,14,10,2],
 "class_terraria_1_1_modules_1_1_tile_placement_hooks_module.html#accf4ad15e4af51f1df003fd72abdc2ce":[2,0,2,14,10,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX99 =
 "class_terraria_1_1_n_p_c.html#a209b13dc796cae9707f5b6c43c0ba9b2":[2,0,2,53,219],
 "class_terraria_1_1_n_p_c.html#a2186aceff44e1d51d1dc3fe13fb74ae4":[2,0,2,53,313],
 "class_terraria_1_1_n_p_c.html#a21c419469eb2798f3bb033c196bc01f4":[2,0,2,53,415],
-"class_terraria_1_1_n_p_c.html#a21f88f12f35ac62fbf9871785b67b8c7":[2,0,2,53,264],
-"class_terraria_1_1_n_p_c.html#a22067c16e8bc431cdfa34b19aa4c163d":[2,0,2,53,252]
+"class_terraria_1_1_n_p_c.html#a21f88f12f35ac62fbf9871785b67b8c7":[2,0,2,53,264]
 };
