@@ -149,7 +149,7 @@ namespace Terraria.ModLoader.UI
 					infoMessage.Show(Language.GetTextValue("tModLoader.MonthlyFreezeNotification"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
 						() => {
 							SoundEngine.PlaySound(SoundID.MenuOpen);
-							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14-alpha");
+							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14");
 						});
 					Main.SaveSettings();
 				}

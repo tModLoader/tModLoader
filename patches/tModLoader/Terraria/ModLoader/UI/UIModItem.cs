@@ -146,7 +146,8 @@ namespace Terraria.ModLoader.UI
 			}
 			*/
 
-			if (ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
+			// TODO: Keep this feature locked to Dev for now until we are sure modders are at fault for this warning.
+			if (BuildInfo.IsDev && ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
 				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {
 					Left = { Pixels = _modIconAdjust + PADDING },
 					Top = { Pixels = 3 }

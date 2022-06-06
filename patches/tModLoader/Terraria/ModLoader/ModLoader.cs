@@ -148,6 +148,8 @@ namespace Terraria.ModLoader
 				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
 				if (responsibleMods.Count == 1) {
 					var mod = ModOrganizer.FindMods().FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
+					if (mod != null)
+						msg += $" v{mod.properties.version}";
 					if (mod != null && mod.tModLoaderVersion != BuildInfo.tMLVersion)
 						msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
 					if (e is Exceptions.JITException)
