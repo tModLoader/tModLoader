@@ -37,7 +37,6 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "isModifierBad",	to: "IsModifierBad");
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "overrideColor",	to: "OverrideColor");
 
-
 		RenameInstanceField("Terraria.ModLoader.ModProjectile", from: "aiType",								  to: "AIType");
 		RenameInstanceField("Terraria.ModLoader.ModProjectile", from: "cooldownSlot",						  to: "CooldownSlot");
 		RenameInstanceField("Terraria.ModLoader.ModProjectile", from: "drawOffsetX",				 		  to: "DrawOffsetX");
@@ -45,8 +44,17 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.ModProjectile", from: "drawOriginOffsetX",					  to: "DrawOriginOffsetX");
 		RenameInstanceField("Terraria.ModLoader.ModProjectile", from: "drawHeldProjInFrontOfHeldItemAndArms", to: "DrawHeldProjInFrontOfHeldItemAndArms");
 
+		RenameInstanceField("Terraria.ModLoader.ModNPC", from: "aiType",		to: "AIType");
+		RenameInstanceField("Terraria.ModLoader.ModNPC", from: "animationType", to: "AnimationType");
+		RenameInstanceField("Terraria.ModLoader.ModNPC", from: "music",			to: "Music");
+		RenameInstanceField("Terraria.ModLoader.ModNPC", from: "musicPriority", to: "SceneEffectPriority");
+		RenameInstanceField("Terraria.ModLoader.ModNPC", from: "drawOffsetY",	to: "DrawOffsetY");
+		RenameInstanceField("Terraria.ModLoader.ModNPC", from: "banner",		to: "Banner");
+		RenameInstanceField("Terraria.ModLoader.ModNPC", from: "bannerItem",	to: "BannerItem");
+
 		RenameInstanceField("Terraria.Tile", from: "frameX",		to: "TileFrameX");
 		RenameInstanceField("Terraria.Tile", from: "frameY",		to: "TileFrameY");
+		RenameInstanceField("Terraria.Tile", from: "liquid",		to: "LiquidAmount");
 		RenameInstanceField("Terraria.Tile", from: "type",			to: "TileType");
 		RenameInstanceField("Terraria.Tile", from: "wall",			to: "WallType");
 		RenameInstanceField("Terraria.Tile", from: "wallFrameX",	to: "WallFrameX");
@@ -87,6 +95,7 @@ public static partial class Config
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "EatingUsing", to: "EatFood");
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "Stabbing",	to: "Thrust");
 
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "UpdateVanity",		to: "EquipFrameEffects");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NetRecieve",			to: "NetReceive");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NewPreReforge",		to: "PreReforge");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "NewPreReforge",		to: "PreReforge");
@@ -98,11 +107,18 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "GetWeaponKnockback",	to: "ModifyWeaponKnockback");
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "NPCLoot",			to: "OnKill");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "NPCLoot",			to: "OnKill");
+		RenameMethod("Terraria.ModLoader.ModNPC",		from: "PreNPCLoot",			to: "PreKill");
+		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "PreNPCLoot",			to: "PreKill");
+		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SpecialNPCLoot",		to: "SpecialOnKill");
+		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SpecialNPCLoot",		to: "SpecialOnKill");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "NewRightClick",		to: "RightClick");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "Dangersense",		to: "IsTileDangerous");
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "Dangersense",		to: "IsTileDangerous");
 		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "ValidTile",			to: "IsTileValidForEntity");
-		
+		RenameMethod("Terraria.ModLoader.EquipTexture", from: "UpdateVanity",		to: "FrameEffects");
+
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"HoldStyle");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"HoldStyle");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"UseStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"UseStyle");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"UseItem", comment: "Suggestion: Return null instead of false");
@@ -126,6 +142,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PreDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PostDraw");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PostDraw");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"CanDamage", comment: "Suggestion: Return null instead of false");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"CanDamage", comment: "Suggestion: Return null instead of false");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"DrawEffects");
@@ -153,7 +171,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",		"SaveData",			comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModTileEntity", "SaveData",			comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"SaveWorldData",	comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
-		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"OnWorldLoad",		comment: "Suggestion: Also concider overriding OnWorldUnload"); // TODO this doesn't work?
+		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"OnWorldLoad",		comment: "Suggestion: Also concider overriding OnWorldUnload"); // TODO this doesn't work for just adding a comment when the sig didnt change
+		//ChangeHookSignature("Terraria.ModLoader.ModSystem",	"TileCountsAvailable"); // TODO causes recursion
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"Clone");
 
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "SetDefaults", to: "SetStaticDefaults");

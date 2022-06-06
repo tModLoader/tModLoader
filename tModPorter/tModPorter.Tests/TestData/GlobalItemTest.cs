@@ -8,6 +8,8 @@ public class GlobalItemTest : GlobalItem
 
 	public override bool NewPreReforge(Item item) { return false; /* comment */ }
 
+	public override void HoldStyle(Item item, Player player) { /* comment */ }
+
 	public override void UseStyle(Item item, Player player) { /* comment */ }
 
 	public override void GetWeaponKnockback(Item item, Player player, ref float knockback) { /* Empty */ }

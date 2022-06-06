@@ -1,3 +1,4 @@
+using System;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -14,4 +15,6 @@ public class ModWorldTest : ModSystem
 	public override void PreUpdateWorld() { /* Empty */ }
 
 	public override void PostUpdateWorld() { /* Empty */ }
+
+	public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts) { /* Empty */ }
 }

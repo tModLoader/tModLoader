@@ -16,13 +16,25 @@ public class ModItemTest : ModItem
 		Item.useTime += 2;
 	}
 
+#if COMPILE_ERROR
+	public override bool IgnoreDamageModifiers /* Suggestion: Removed. If you returned true, concider not setting Item.DamageType, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance */ => false;
+
+	public override bool OnlyShootOnSwing /* Suggestion: Removed. If you returned true, override CanShoot to only return true if player.ItemAnimationJustStarted */ => false;
+#endif
+
+	protected override bool CloneNewInstances => false;
+
 	public override ModItem Clone(Item newEntity) { return null; }
 
 	public override bool PreReforge() { return false; /* comment */ }
 
 	public override bool? UseItem(Player player)/* Suggestion: Return null instead of false */ { return true; /* comment */ }
 
+	public override void HoldStyle(Player player, Rectangle heldItemFrame) { /* comment */ }
+
 	public override void UseStyle(Player player, Rectangle heldItemFrame) { /* comment */ }
+
+	public override void EquipFrameEffects(Player player, EquipType type) { /* comment */ }
 
 	public override void NetReceive(BinaryReader reader) { /* Empty */ }
 

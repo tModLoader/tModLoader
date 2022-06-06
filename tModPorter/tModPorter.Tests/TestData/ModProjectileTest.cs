@@ -15,6 +15,8 @@ public class ModProjectileTest : ModProjectile
 		Console.Write(drawHeldProjInFrontOfHeldItemAndArms);
 	}
 
+	public override bool CanDamage() { return false; }
+
 	public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough) { return true; }
 
 	public override bool PreDrawExtras(SpriteBatch spriteBatch) { return true; }

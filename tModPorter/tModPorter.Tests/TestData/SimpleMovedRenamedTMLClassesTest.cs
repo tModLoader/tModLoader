@@ -10,5 +10,7 @@ public class SimpleMovedRenamedTMLClassesTest
 		PlayerHooks.ResetEffects(player); // PlayerHooks -> PlayerLoader
 
 		SpawnCondition condition = SpawnCondition.TownWaterCritter; // SpawnCondition namespace: Terraria.ModLoader.Utilities
+
+		MusicPriority priority = MusicPriority.BiomeLow; // MusicPriority -> SceneEffectPriority
 	}
 }

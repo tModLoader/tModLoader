@@ -14,4 +14,6 @@ public class ModWorldTest : ModWorld
 	public override void PreUpdate() { /* Empty */ }
 
 	public override void PostUpdate() { /* Empty */ }
+
+	public override void TileCountsAvailable(int[] tileCounts) { /* Empty */ }
 }

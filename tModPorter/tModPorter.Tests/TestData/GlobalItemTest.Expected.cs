@@ -9,6 +9,8 @@ public class GlobalItemTest : GlobalItem
 
 	public override bool PreReforge(Item item) { return false; /* comment */ }
 
+	public override void HoldStyle(Item item, Player player, Rectangle heldItemFrame) { /* comment */ }
+
 	public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) { /* comment */ }
 
 	public override void ModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback) { /* Empty */ }
