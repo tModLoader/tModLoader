@@ -483,7 +483,7 @@
 +			// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this month, then show the notification.
 +			if (!BuildInfo.IsDev && ModCompile.DeveloperMode && now.Day >= 21 && (now.Year != ModLoader.ModLoader.LastPreviewFreezeNotificationSeen.Major || now.Month != ModLoader.ModLoader.LastPreviewFreezeNotificationSeen.Minor)) {
 +				ModLoader.ModLoader.PreviewFreezeNotification = true;
-+			}			
++			}
 +			if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
@@ -2756,6 +2756,19 @@
  				float scale = 1f;
  				float num13 = 0f;
  				num13 = ((TextureAssets.NpcHead[num12].Width() <= TextureAssets.NpcHead[num12].Height()) ? ((float)TextureAssets.NpcHead[num12].Height()) : ((float)TextureAssets.NpcHead[num12].Width()));
+@@ -30276,8 +_,10 @@
+ 				}
+ 			}
+ 
+-			GetBuilderAccsCountToShow(LocalPlayer, out int _, out int _, out int totalDrawnIcons);
+-			bool pushSideToolsUp = totalDrawnIcons >= 10;
++			// GetBuilderAccsCountToShow(LocalPlayer, out int _, out int _, out int totalDrawnIcons);
++			//Kirtle: TODO: bool is false with 11 items, should only be false with 10 items..
++			// bool pushSideToolsUp = totalDrawnIcons >= 10;
++			bool pushSideToolsUp = (int)BuilderToggleLoader.ActiveBuilderToggles() / 12 != BuilderToggleLoader.BuilderTogglePage;
+ 			if (!PlayerInput.UsingGamepad)
+ 				DrawHotbarLockIcon(num, num2, pushSideToolsUp);
+ 
 @@ -30494,7 +_,7 @@
  					num29++;
  
@@ -3007,7 +3020,22 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31830,15 +_,19 @@
+@@ -31758,6 +_,8 @@
+ 				spriteBatch.Draw(value, new Vector2(pivotTopLeftX, num), value.Frame(2, 1, 1), OurFavoriteColor, 0f, default(Vector2), num2, SpriteEffects.None, 0f);
+ 		}
+ 
++		//Kirtle: Mention why I removed these methods..
++		/*
+ 		private void DrawBlockReplacementIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset) {
+ 			if (!playerInventory)
+ 				return;
+@@ -31825,20 +_,25 @@
+ 
+ 			UILinkPointNavigator.SetPosition(6000 + gamepadPointOffset, vector + rectangle.Size() * 0.65f);
+ 		}
++		*/
+ 
+ 		public static void CraftItem(Recipe r) {
  			int stack = mouseItem.stack;
  			mouseItem = r.createItem.Clone();
  			mouseItem.stack += stack;
@@ -3497,6 +3525,103 @@
  				if (mapStyle == 1 && mapEnabled)
  					Y += 261;
  			}
+@@ -35529,6 +_,8 @@
+ 			X += StartX;
+ 		}
+ 
++		//Kirtle: I've tried making use of the vanilla code but it has so many non linear steps and magic numbers because
++		//of BlockSwap and TorchBiome that I decided to just comment it out and organize it
+ 		private void DrawBuilderAccToggles(Vector2 start) {
+ 			if (!playerInventory)
+ 				return;
+@@ -35536,7 +_,7 @@
+ 			string.IsNullOrEmpty(npcChatText);
+ 			if (false || Main.player[myPlayer].sign >= 0)
+ 				return;
+-
++			/*
+ 			int num = 0;
+ 			Player player = Main.player[myPlayer];
+ 			int[] builderAccStatus = Main.player[myPlayer].builderAccStatus;
+@@ -35724,6 +_,78 @@
+ 			}
+ 
+ 			UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = num;
++			*/
++
++			Player player = Main.player[myPlayer];
++			int[] builderAccStatus = Main.player[myPlayer].builderAccStatus;
++			bool shiftHotbarLock = (int)BuilderToggleLoader.ActiveBuilderToggles() / 12 != BuilderToggleLoader.BuilderTogglePage;
++			Vector2 startPosition = start - new Vector2(0, shiftHotbarLock ? 42 : 21);
++			List<BuilderToggle> activeToggles = BuilderToggleLoader.ActiveBuilderTogglesList();
++			string text = "";
++
++			BuilderTogglePageHandler((int)startPosition.Y, activeToggles.Count, out bool moveDownForButton, out int startIndex, out int endIndex);
++			for (int i = startIndex; i < endIndex; i++) {
++				BuilderToggle builderToggle = activeToggles[i];
++
++				Texture2D texture = ModContent.Request<Texture2D>(builderToggle.Texture).Value;
++				Rectangle rectangle = new Rectangle(0, 0, texture.Width, texture.Height);
++				Color color = builderToggle.DisplayColorTexture();
++
++				Vector2 position = startPosition + new Vector2(0, moveDownForButton ? 24 : 0) + new Vector2(0, (i % 12) * 24);
++				text = builderToggle.DisplayValue();
++				int numberOfStates = builderToggle.NumberOfStates;
++				int toggleType = builderToggle.Type;
++
++				BuilderToggleLoader.ModifyDisplayValue(builderToggle, ref text);
++				BuilderToggleLoader.ModifyNumberOfStates(builderToggle, ref numberOfStates);
++
++				bool hover = Utils.CenteredRectangle(position, new Vector2(14f)).Contains(MouseScreen.ToPoint()) && !PlayerInput.IgnoreMouseInterface;
++				bool click = hover && mouseLeft && mouseLeftRelease;
++
++				if (toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) {
++					if (toggleType == BuilderToggle.BlockSwap.Type)
++						rectangle = texture.Frame(3, 1, builderToggle.CurrentState != 0 ? 1 : 0);
++					else
++						rectangle = texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 1 : 0);
++				}
++				else
++					rectangle = builderToggle.Type < 10 ? new Rectangle(builderToggle.Type * 16, 16, 14, 14) : rectangle;
++
++				BuilderToggleLoader.ModifyDisplayColor(builderToggle, ref color);
++				spriteBatch.Draw(texture, position, rectangle, color, 0f, rectangle.Size() / 2f, 1f, SpriteEffects.None,
++					0f);
++
++				if (hover) {
++					player.mouseInterface = true;
++					mouseText = true;
++
++					if (toggleType != BuilderToggle.BlockSwap.Type && toggleType != BuilderToggle.TorchBiome.Type)
++						spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, position, null, OurFavoriteColor, 0f, TextureAssets.InfoIcon[13].Value.Size() / 2f, 1f, SpriteEffects.None, 0f);
++					else if (toggleType == BuilderToggle.BlockSwap.Type)
++						spriteBatch.Draw(texture, position, texture.Frame(3, 1, 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
++					else if (toggleType == BuilderToggle.TorchBiome.Type)
++						spriteBatch.Draw(texture, position, texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 3 : 2), OurFavoriteColor, 0f, rectangle.Size() / 2f, 0.9f, SpriteEffects.None, 0f);
++				}
++
++				if (click) {
++					builderAccStatus[toggleType] = (builderAccStatus[toggleType] + 1) % numberOfStates;
++					SoundEngine.PlaySound((toggleType == BuilderToggle.BlockSwap.Type || toggleType == BuilderToggle.TorchBiome.Type) ? SoundID.Unlock : SoundID.MenuTick);
++					mouseLeftRelease = false;
++				}
++
++
++				UILinkPointNavigator.SetPosition(6000 + i % 12, position + rectangle.Size() * 0.15f);
++
++				if (mouseText && hover && HoverItem.type <= 0) {
++					float colorByte = (float)mouseTextColor / 255f;
++					Color textColor = new Color(colorByte, colorByte, colorByte);
++
++					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text, new Vector2(mouseX + 14, mouseY + 14), textColor, 0f, Vector2.Zero, Vector2.One);
++					mouseText = false;
++				}
++			}
++
++			UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = (endIndex - startIndex);
+ 		}
+ 
+ 		private static void GetBuilderAccsCountToShow(Player plr, out int blockReplaceIcons, out int torchGodIcons, out int totalDrawnIcons) {
 @@ -36142,6 +_,10 @@
  
  		private static void TryDisposingEverything() {
