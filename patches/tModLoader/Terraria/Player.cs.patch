@@ -4804,7 +4804,7 @@
 +			if (CombinedHooks.CanAutoReuseItem(this, sItem) is bool autoReuse)
 +				return autoReuse;
 +
-+			return sItem.autoReuse || autoReuseGlove && (sItem.DamageType == DamageClass.Melee || sItem.DamageType == DamageClass.SummonMeleeSpeed);
++			return sItem.autoReuse || autoReuseGlove && (sItem.CountsAsClass(DamageClass.Melee) || sItem.DamageType == DamageClass.SummonMeleeSpeed);
  		}
  
  		private void ItemCheck_HandleMount() {

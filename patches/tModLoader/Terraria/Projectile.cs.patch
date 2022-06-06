@@ -46,7 +46,7 @@
 +				if (value)
 +					DamageType = DamageClass.Melee;
 +				else if (DamageType == DamageClass.Melee)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		internal bool magic {
@@ -55,7 +55,7 @@
 +				if (value)
 +					DamageType = DamageClass.Magic;
 +				else if (DamageType == DamageClass.Magic)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		internal bool ranged {
@@ -64,7 +64,7 @@
 +				if (value)
 +					DamageType = DamageClass.Ranged;
 +				else if (DamageType == DamageClass.Ranged)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		public bool minion;
@@ -125,13 +125,25 @@
  		public void SetDefaults(int Type) {
 +			ModProjectile = null;
 +			globalProjectiles = new Instanced<GlobalProjectile>[0];
-+			DamageType = DamageClass.Generic;
++			DamageType = DamageClass.Default;
 +			ArmorPenetration = 0;
 +			CritChance = 0;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
  			sentry = false;
+@@ -269,9 +_,11 @@
+ 			minionSlots = 0f;
+ 			soundDelay = 0;
+ 			spriteDirection = 1;
++			/*
+ 			melee = false;
+ 			ranged = false;
+ 			magic = false;
++			*/
+ 			ownerHitCheck = false;
+ 			hide = false;
+ 			lavaWet = false;
 @@ -1806,6 +_,7 @@
  				ignoreWater = true;
  			}

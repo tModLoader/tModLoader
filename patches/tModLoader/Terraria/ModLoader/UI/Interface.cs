@@ -238,7 +238,7 @@ namespace Terraria.ModLoader.UI
 			else if (Main.menuMode == tModLoaderSettingsID) {
 				offY = 210;
 				spacing = 42;
-				numButtons = 9;
+				numButtons = 10;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++) {
 					buttonScales[i] = 0.75f;
@@ -286,6 +286,13 @@ namespace Terraria.ModLoader.UI
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
 					ModLoader.removeForcedMinimumZoom = !ModLoader.removeForcedMinimumZoom;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.MeleeSpeedScalingTooltipVisibility{ModLoader.meleeSpeedScalingTooltipVisibility}");
+				if (selectedMenu == buttonIndex) {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					ModLoader.meleeSpeedScalingTooltipVisibility = (ModLoader.meleeSpeedScalingTooltipVisibility + 1) % 3;
 				}
 
 				buttonIndex++;
