@@ -1,5 +1,7 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_player_1_1_overhead_message.html#a9d9d158adf1da5bff57e3caf4dbadb6d":[2,0,2,55,4,5],
+"struct_terraria_1_1_player_1_1_overhead_message.html#ae38514d84ef705c5e6689379a04e1aae":[2,0,2,55,4,1],
 "struct_terraria_1_1_player_1_1_rabbit_order_frame_helper.html":[2,0,2,55,5],
 "struct_terraria_1_1_player_1_1_rabbit_order_frame_helper.html#a5be3741c2f639c6f81456121e26544d6":[2,0,2,55,5,0],
 "struct_terraria_1_1_player_1_1_rabbit_order_frame_helper.html#a9f6b2bfda5a6fbd03d35099f012dd64b":[2,0,2,55,5,1],

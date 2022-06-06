@@ -1,5 +1,7 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a281debef597624f37e4391c317c79b43":[2,0,2,4,67,79],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a283c07a28ff4ea8069e6e0d5f7400cce":[2,0,2,4,67,76],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a2bae421e7ec739c8b76cd57f007831e9":[2,0,2,4,67,91],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a3331bb647ba66223c5a6c681d61525df":[2,0,2,4,67,113],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a33a86c129c7fa0d5ac73ba252a504d4e":[2,0,2,4,67,21],
@@ -247,7 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#a0eec350a911d51e7d563dae024c02c01":[2,0,2,5,9,2,2,0],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#a1be4823872f852fdec5b6108af3373cc":[2,0,2,5,9,2,2,2],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#ab0cb8fb42333a5c2611c19c8b67aadb4":[2,0,2,5,9,2,2,1],
-"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#ad535f808e5d40414e8d2fa8c85fc2ff9":[2,0,2,5,9,2,2,3],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html":[2,0,2,5,10,6],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a0dcf58a01d6fd892a09071cf8afee764":[2,0,2,5,10,6,1]
+"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#ad535f808e5d40414e8d2fa8c85fc2ff9":[2,0,2,5,9,2,2,3]
 };

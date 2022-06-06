@@ -1,5 +1,7 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html":[2,0,2,5,10,6],
+"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a0dcf58a01d6fd892a09071cf8afee764":[2,0,2,5,10,6,1],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a2ed878405b39e349be29d4f67a0d2579":[2,0,2,5,10,6,0],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a308e004a77e1c0e43ddcbbdc19243375":[2,0,2,5,10,6,3],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html#a408a500da6688510524fdf2aed2eff9a":[2,0,2,5,10,6,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_graphics_1_1_virtual_camera.html#ac648fa491b3371e0f9f917af075e7dc4":[2,0,2,7,17,1],
 "struct_terraria_1_1_graphics_1_1_virtual_camera.html#ae96208efd687d818d5decc892cd3d53b":[2,0,2,7,17,0],
 "struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html":[2,0,2,8,3,3,0,0],
-"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a0b6fcd43aea825a77a83cb1178e34aec":[2,0,2,8,3,3,0,0,2],
-"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a1f3b08c27fa6756de1b8fa460c61c095":[2,0,2,8,3,3,0,0,1],
-"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a29b95b6c45a894e9fad75f4098947e60":[2,0,2,8,3,3,0,0,0]
+"struct_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body_1_1_sets_1_1_include_cape_front_and_back_info.html#a0b6fcd43aea825a77a83cb1178e34aec":[2,0,2,8,3,3,0,0,2]
 };

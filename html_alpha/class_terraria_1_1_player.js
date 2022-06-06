@@ -204,6 +204,7 @@ var class_terraria_1_1_player =
     [ "Hurt", "class_terraria_1_1_player.html#a738cc3cd87279e133620e652a4a7c25c", null ],
     [ "InInteractionRange", "class_terraria_1_1_player.html#ab606e1ddbf6c7f760f5a3ea3c0acb060", null ],
     [ "InModBiome", "class_terraria_1_1_player.html#aee1d82f69be88d14a9be2fa765cee8d9", null ],
+    [ "InModBiome< T >", "class_terraria_1_1_player.html#ab8feae5ea6184dc14047d80d24e5645d", null ],
     [ "InOpposingTeam", "class_terraria_1_1_player.html#a923311956a3615576392acbecfcdfe61", null ],
     [ "InternalSaveMap", "class_terraria_1_1_player.html#a760adf9447dc7f50201fef1803d43ccc", null ],
     [ "InterruptItemUsageIfOverTile", "class_terraria_1_1_player.html#a69bceacd363b362e4b6786537412cc11", null ],

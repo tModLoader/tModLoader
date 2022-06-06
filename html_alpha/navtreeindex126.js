@@ -1,5 +1,7 @@
 var NAVTREEINDEX126 =
 {
+"namespace_terraria_1_1_graphics.html":[1,0,2,8],
+"namespace_terraria_1_1_graphics_1_1_camera_modifiers.html":[1,0,2,8,0],
 "namespace_terraria_1_1_graphics_1_1_capture.html":[1,0,2,8,1],
 "namespace_terraria_1_1_graphics_1_1_effects.html":[1,0,2,8,2],
 "namespace_terraria_1_1_graphics_1_1_effects.html#a67ad55a6fb093831634702ec5fa9be0f":[1,0,2,8,2,13],
@@ -247,7 +249,5 @@ var NAVTREEINDEX126 =
 "namespace_terraria_1_1_testing.html":[1,0,2,21],
 "namespace_terraria_1_1_testing_1_1_chat_commands.html":[1,0,2,21,0],
 "namespace_terraria_1_1_u_i.html":[1,0,2,22],
-"namespace_terraria_1_1_u_i.html#a112f5cbb42c3dd41eb9b79c4745f4666":[1,0,2,22,33],
-"namespace_terraria_1_1_u_i.html#a238d476335b3fee00e6b28dc5a52bd1e":[1,0,2,22,31],
-"namespace_terraria_1_1_u_i.html#a238d476335b3fee00e6b28dc5a52bd1ea63d72051e901c069f8aa1b32aa0c43bb":[1,0,2,22,31,0]
+"namespace_terraria_1_1_u_i.html#a112f5cbb42c3dd41eb9b79c4745f4666":[1,0,2,22,33]
 };
