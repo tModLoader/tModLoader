@@ -178,6 +178,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"OnWorldLoad",		comment: "Suggestion: Also concider overriding OnWorldUnload"); // TODO this doesn't work for just adding a comment when the sig didnt change
 		//ChangeHookSignature("Terraria.ModLoader.ModSystem",	"TileCountsAvailable"); // TODO causes recursion
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"Clone");
+		ChangeHookSignature("Terraria.ModLoader.ModGore",		"OnSpawn");
 
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.GlobalWall",	from: "SetDefaults", to: "SetStaticDefaults");
