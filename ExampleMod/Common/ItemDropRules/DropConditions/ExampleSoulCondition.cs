@@ -13,25 +13,15 @@ namespace ExampleMod.Common.ItemDropRules.DropConditions
 				// Disclaimer: This is adapted from Conditions.SoulOfWhateverConditionCanDrop(info) to remove the cavern layer restriction, because ExampleUndergroundBiome also extends into the dirt layer
 
 				NPC npc = info.npc;
-				if (npc.boss) {
+				if (npc.boss || NPCID.Sets.CannotDropSouls[npc.type]) {
 					return false;
 				}
 
-				switch (npc.type) {
-					// TODO NPCID.Sets?
-					case NPCID.BlueSlime:
-					case NPCID.EaterofWorldsHead:
-					case NPCID.EaterofWorldsBody:
-					case NPCID.EaterofWorldsTail:
-					case NPCID.Slimer:
-					case NPCID.SlimeSpiked:
-						return false;
-					default:
-						if (!Main.hardMode || npc.lifeMax <= 1 || npc.friendly /*|| npc.position.Y <= Main.rockLayer * 16.0*/ || npc.value < 1f) {
-							return false;
-						}
-						return info.player.InModBiome<ExampleUndergroundBiome>();
+				if (!Main.hardMode || npc.lifeMax <= 1 || npc.friendly /*|| npc.position.Y <= Main.rockLayer * 16.0*/ || npc.value < 1f) {
+					return false;
 				}
+
+				return info.player.InModBiome<ExampleUndergroundBiome>();
 			}
 			return false;
 		}
