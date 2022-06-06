@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.GameContent.ItemDropRules;
 
-namespace ExampleMod.Common.ItemDropRules.Conditions
+namespace ExampleMod.Common.ItemDropRules.DropConditions
 {
 	// Drop condition where items drop only on Journey mode.
 	public class ExampleJourneyModeDropCondition : IItemDropRuleCondition

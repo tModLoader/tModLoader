@@ -61,7 +61,7 @@ namespace ExampleMod.Common.Players
 			if ((BlockyPower || BlockyForceVanity) && !BlockyHideVanity) {
 				Player.headRotation = Player.velocity.Y * Player.direction * 0.1f;
 				Player.headRotation = Utils.Clamp(Player.headRotation, -0.3f, 0.3f);
-				if (Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>())) {
+				if (Player.InModBiome<ExampleSurfaceBiome>()) {
 					Player.headRotation = (float)Main.time * 0.1f * Player.direction;
 				}
 			}
