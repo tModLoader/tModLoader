@@ -20,7 +20,7 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
 
-		public List<Mod> StatsModifiedBy = new List<Mod>();
+		public List<Mod> StatsModifiedBy { get; private set; } = new();
 
 		/// <summary>
 		/// Dictates whether or not attack speed modifiers on this weapon will actually affect its use time.<br/>
@@ -152,7 +152,7 @@ namespace Terraria
 		public static int NewItem(IEntitySource source, Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 			=> NewItem(source, (int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
-		private void ApplyItemAnimationCompensations() {
+		private void ApplyItemAnimationCompensationsToVanillaItems() {
 			// #2351
 			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
 			// all items with autoReuse in vanilla are affected, but the animation only has a physical effect for !noMelee items
@@ -171,7 +171,7 @@ namespace Terraria
 			currentUseAnimationCompensation = 0;
 		}
 
-		private void AdjustItemMeleeSpeedEffects() {
+		private void RestoreMeleeSpeedBehaviorOnVanillaItems() {
 			if (type < ItemID.Count && melee && shoot > 0) {
 				if (noMelee)
 					DamageType = DamageClass.MeleeNoSpeed;

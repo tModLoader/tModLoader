@@ -2221,7 +2221,7 @@
  				}
 +			}
 +
-+			if (item.StatsModifiedBy != null && item.StatsModifiedBy.Count > 0)
++			if (item.StatsModifiedBy.Count > 0)
 +			{
 +				if (keyState.PressingShift()) {
 +					toolTipLine[numLines] = Language.GetTextValue("tModLoader.ModifiedByMods");

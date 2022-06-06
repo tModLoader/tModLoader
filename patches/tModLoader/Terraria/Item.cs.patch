@@ -8,13 +8,12 @@
  using Terraria.Audio;
  using Terraria.DataStructures;
  using Terraria.Enums;
-@@ -11,10 +_,13 @@
+@@ -11,10 +_,12 @@
  using Terraria.ID;
  using Terraria.UI;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.IO;
-+using System.Collections.Generic;
  
  namespace Terraria
  {
@@ -303,7 +302,7 @@
 +			if (num >= PrefixID.Count)
 +				PrefixLoader.GetPrefix(num)?.Apply(this);
 +
-+			ApplyItemAnimationCompensations();
++			ApplyItemAnimationCompensationsToVanillaItems();
 +
  			float num14 = 1f * num2 * (2f - num4) * (2f - num7) * num5 * num3 * num6 * (1f + (float)num8 * 0.02f);
  			if (num == 62 || num == 69 || num == 73 || num == 77)
@@ -586,21 +585,20 @@
  
  			if (type == 0) {
  				netID = 0;
-@@ -45044,7 +_,19 @@
+@@ -45044,7 +_,18 @@
  				SetDefaults5(type);
  			}
  
 +			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
-+			ApplyItemAnimationCompensations();
++			ApplyItemAnimationCompensationsToVanillaItems();
 +
 +			// tML: make sure some vanilla balance doesn't get obliterated by attack speed changes
-+			AdjustItemMeleeSpeedEffects();
++			RestoreMeleeSpeedBehaviorOnVanillaItems();
 +
 +			//Set 'master' bool for vanilla items with master rarity.
 +			if (type < ItemID.Count && rare == ItemRarityID.Master) {
 +				master = true;
 +			}
-+
 +
 -			dye = (byte)GameShaders.Armor.GetShaderIdFromItemId(type);
 +			dye = GameShaders.Armor.GetShaderIdFromItemId(type);
@@ -627,7 +625,7 @@
  			BestiaryNotes = null;
 +			ModItem = null;
 +			globalItems = new Instanced<GlobalItem>[0];
-+			StatsModifiedBy = new List<Mod>();
++			StatsModifiedBy = new();
 +			AllowReforgeForStackableItem = false;
 +			attackSpeedOnlyAffectsWeaponAnimation = false;
 +			useLimitPerAnimation = null;

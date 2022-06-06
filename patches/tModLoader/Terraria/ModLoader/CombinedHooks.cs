@@ -122,11 +122,11 @@ namespace Terraria.ModLoader
 			return PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player) * player.GetWeaponAttackSpeed(item);
 		}
 
-		public static float TotalUseTimeMultiplier(Player player, Item item)
-		{
+		public static float TotalUseTimeMultiplier(Player player, Item item) {
 			float useTimeMult = PlayerLoader.UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player);
 			if (!item.attackSpeedOnlyAffectsWeaponAnimation)
 				useTimeMult /= TotalUseSpeedMultiplier(player, item);
+
 			return useTimeMult;
 		}
 
