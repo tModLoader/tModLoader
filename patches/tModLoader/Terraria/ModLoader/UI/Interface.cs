@@ -289,10 +289,10 @@ namespace Terraria.ModLoader.UI
 				}
 
 				buttonIndex++;
-				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.MeleeSpeedScalingTooltipVisibility{ModLoader.meleeSpeedScalingTooltipVisibility}");
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.AttackSpeedScalingTooltipVisibility{ModLoader.attackSpeedScalingTooltipVisibility}");
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
-					ModLoader.meleeSpeedScalingTooltipVisibility = (ModLoader.meleeSpeedScalingTooltipVisibility + 1) % 3;
+					ModLoader.attackSpeedScalingTooltipVisibility = (ModLoader.attackSpeedScalingTooltipVisibility + 1) % 3;
 				}
 
 				buttonIndex++;
