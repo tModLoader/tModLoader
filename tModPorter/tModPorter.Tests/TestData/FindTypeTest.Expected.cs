@@ -13,6 +13,12 @@ public abstract class FindTypeTest : Mod
 		int h = mod.Find<ModTileEntity>("TileEntityClass").Type;
 		int i = mod.Find<ModTile>("TileClass").Type;
 		int j = mod.Find<ModWall>("WallClass").Type;
+
+		int k = mod.Find<ModGore>("GoreTextureOrClass").Type;
+		int l = ModContent.Find<ModGore>("ModName/GoreTextureOrClass").Type;
+#if COMPILE_ERROR
+		int m = ModContent.GoreType<GoreClass>();
+#endif
 	}
 
 	int ViaIdentifier() => Find<ModBuff>("BuffClass").Type;

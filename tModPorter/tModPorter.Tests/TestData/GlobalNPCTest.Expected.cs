@@ -5,7 +5,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class GlobalNPCTest : GlobalNPC
 {
+	public override bool PreKill(NPC npc) { return true; /* Empty */ }
+
 	public override void OnKill(NPC npc) { /* Empty */ }
+
+	public override bool SpecialOnKill(NPC npc) { return true; /* Empty */ }
 
 	public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		spriteBatch.Draw(null, npc.Center - screenPos, drawColor);
