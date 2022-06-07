@@ -10,4 +10,8 @@ public class ModHotKeyTest : Mod
 
 		CustomHotkey = RegisterHotKey("Custom Hotkey Via Identifier", "C");
 	}
+
+#if COMPILE_ERROR
+	public override void HotKeyPressed(string name) { /* Empty */ }
+#endif
 }

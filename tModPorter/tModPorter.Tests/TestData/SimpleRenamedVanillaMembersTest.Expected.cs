@@ -45,6 +45,18 @@ public class SimpleRenamedVanillaMembersTest
 		Lighting.Clear();
 		ChatHelper.BroadcastChatMessage(null, Color.White, -1);
 
+		int water = LiquidID.Water;
+		int honey = LiquidID.Honey;
+		int lava = LiquidID.Lava;
+
+		// Yes. The variables are named with opposing sides, the underlying values are the same
+		int type_Solid = (int)BlockType.Solid;
+		int type_Halfbrick = (int)BlockType.HalfBlock;
+		int type_SlopeDownRight = (int)BlockType.SlopeDownLeft;
+		int type_SlopeDownLeft = (int)BlockType.SlopeDownRight;
+		int type_SlopeUpRight = (int)BlockType.SlopeUpLeft;
+		int type_SlopeUpLeft = (int)BlockType.SlopeUpRight;
+
 		var player = new Player();
 		var hideVisual = player.hideVisibleAccessory;
 		var showItemIcon = player.cursorItemIconEnabled;

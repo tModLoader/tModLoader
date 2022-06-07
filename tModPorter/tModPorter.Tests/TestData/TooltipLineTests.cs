@@ -4,6 +4,7 @@ public class TooltipLineTests
 {
 	void Method() {
 		TooltipLine line = new TooltipLine(null, "", "");
+		string mod = line.mod;
 		line.text = "";
 		line.isModifier = true;
 		line.isModifierBad = false;

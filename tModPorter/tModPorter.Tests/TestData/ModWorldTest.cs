@@ -8,4 +8,12 @@ public class ModWorldTest : ModWorld
 #if COMPILE_ERROR
 	public override TagCompound Save() => new TagCompound();
 #endif
+
+	public override void Initialize() { /* Empty */ }
+
+	public override void PreUpdate() { /* Empty */ }
+
+	public override void PostUpdate() { /* Empty */ }
+
+	public override void TileCountsAvailable(int[] tileCounts) { /* Empty */ }
 }
