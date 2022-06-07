@@ -6,7 +6,7 @@ var class_terraria_1_1_mod_loader_1_1_wall_loader =
     [ "CreateDust", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a1acf233cc635924ba44924c5007d2b90", null ],
     [ "Drop", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#aacb5778106adf74f7ab7ec0c85124eb0", null ],
     [ "GetWall", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a52a7457356cd330af2425e371a0cdc49", null ],
-    [ "KillSound", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#ae0c6b450d6b529b15455156a8cbfc3f7", null ],
+    [ "KillSound", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a11126e9d077739d761dfa99b33464f38", null ],
     [ "KillWall", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a6a4c55c91723199f427f3885f5c5efce", null ],
     [ "ModifyLight", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a9ee37d72799ec15eea2c5dc5d01ec11d", null ],
     [ "NumDust", "class_terraria_1_1_mod_loader_1_1_wall_loader.html#a77cded322e6f9ceb44ab7ebdc1194985", null ],

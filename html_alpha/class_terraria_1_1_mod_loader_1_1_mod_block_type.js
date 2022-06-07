@@ -5,7 +5,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_block_type =
     [ "CreateDust", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a704eb64f751ac58c90aa83c0184ff082", null ],
     [ "CreateMapEntryName", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a4b6fa5ed042290573fa32f4723de9320", null ],
     [ "GetMapOption", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a72e55e7b3e53f3560cd4cf73f7d068b8", null ],
-    [ "KillSound", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a7f7681882ce3491d6406a970c02418a9", null ],
+    [ "KillSound", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a829591d294c0a1eaf60c9a8db7685172", null ],
     [ "ModifyLight", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#ad1b23e51e8c48c18e819fcfa104351c8", null ],
     [ "NumDust", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a96efadd91fca4439e44bc1dabe9d1fa8", null ],
     [ "PlaceInWorld", "class_terraria_1_1_mod_loader_1_1_mod_block_type.html#af5f5c933f295c9c80989d20cdd92c5b1", null ],

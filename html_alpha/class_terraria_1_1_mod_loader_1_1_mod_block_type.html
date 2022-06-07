@@ -117,9 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a72e55e7b3e53f3560cd4cf73f7d068b8"><td class="memItemLeft" align="right" valign="top">virtual ushort&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a72e55e7b3e53f3560cd4cf73f7d068b8">GetMapOption</a> (int i, int j)</td></tr>
 <tr class="memdesc:a72e55e7b3e53f3560cd4cf73f7d068b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to choose which minimap entry the tile/wall at the given coordinates will use. 0 is the first entry added by AddMapEntry, 1 is the second entry, etc. Returns 0 by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a72e55e7b3e53f3560cd4cf73f7d068b8">More...</a><br /></td></tr>
 <tr class="separator:a72e55e7b3e53f3560cd4cf73f7d068b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f7681882ce3491d6406a970c02418a9"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a7f7681882ce3491d6406a970c02418a9">KillSound</a> (int i, int j)</td></tr>
-<tr class="memdesc:a7f7681882ce3491d6406a970c02418a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize which sound you want to play when the tile/wall at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile/wall. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a7f7681882ce3491d6406a970c02418a9">More...</a><br /></td></tr>
-<tr class="separator:a7f7681882ce3491d6406a970c02418a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a829591d294c0a1eaf60c9a8db7685172"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a829591d294c0a1eaf60c9a8db7685172">KillSound</a> (int i, int j, bool fail)</td></tr>
+<tr class="memdesc:a829591d294c0a1eaf60c9a8db7685172"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize which sound you want to play when the tile/wall at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile/wall. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_block_type.html#a829591d294c0a1eaf60c9a8db7685172">More...</a><br /></td></tr>
+<tr class="separator:a829591d294c0a1eaf60c9a8db7685172"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1b23e51e8c48c18e819fcfa104351c8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_block_type.html#ad1b23e51e8c48c18e819fcfa104351c8">ModifyLight</a> (int i, int j, ref float r, ref float g, ref float b)</td></tr>
 <tr class="memdesc:ad1b23e51e8c48c18e819fcfa104351c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to determine how much light this tile/wall emits.<br  />
  If it is a tile, make sure you set Main.tileLighted[Type] to true in SetDefaults for this to work.<br  />
@@ -459,8 +459,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a7f7681882ce3491d6406a970c02418a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f7681882ce3491d6406a970c02418a9">&#9670;&nbsp;</a></span>KillSound()</h2>
+<a id="a829591d294c0a1eaf60c9a8db7685172"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a829591d294c0a1eaf60c9a8db7685172">&#9670;&nbsp;</a></span>KillSound()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -478,7 +478,13 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>j</em>&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>fail</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -498,6 +504,7 @@ Additional Inherited Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
     <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">fail</td><td>If true, the tile/wall is only partially damaged. If false, the tile/wall is fully destroyed.</td></tr>
   </table>
   </dd>
 </dl>

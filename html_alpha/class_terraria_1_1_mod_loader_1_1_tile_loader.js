@@ -32,7 +32,7 @@ var class_terraria_1_1_mod_loader_1_1_tile_loader =
     [ "IsTileDangerous", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a872ab2042699da6ba8c63f7de055a50e", null ],
     [ "IsTileSpelunkable", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a3383fa53523447f13679914de815ac8b", null ],
     [ "KillMultiTile", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a55eb953fc2613988bbaae58b4ea1c2f9", null ],
-    [ "KillSound", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#abcdd5a864dd8e5d84d229daa7e06445e", null ],
+    [ "KillSound", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a7f2f086447240d5eb5a7133ccdc86133", null ],
     [ "KillTile", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a9d48f57f2a17d2c9ada8c5d7ceb43564", null ],
     [ "MineDamage", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ab29238a2b62e3d051384f2c920bdb813", null ],
     [ "ModifyLight", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ac94a9d7d01ee07e0f66d2d455106dc15", null ],
