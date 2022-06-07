@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace Terraria.ModLoader
@@ -20,7 +21,7 @@ namespace Terraria.ModLoader
 		public virtual bool? Active(BuilderToggle builderToggle) => null;
 
 		/// <summary>
-		///
+		///	Allows you to modify how many states a given BuilderToggle has. Each state can allow for different textures, display names, etc..
 		/// </summary>
 		/// <param name="builderToggle">The builder toggle you're modifying the display value for.</param>
 		/// <param name="displayValue">The number of states the builder toggle has</param>
@@ -39,5 +40,14 @@ namespace Terraria.ModLoader
 		/// <param name="builderToggle">The builder toggle you're modifying the display value for.</param>
 		/// <param name="displayColor">The color value the builder toggle has</param>
 		public virtual void ModifyDisplayColor(BuilderToggle builderToggle, ref Color displayColor) { }
+
+		/// <summary>
+		/// Allows you to modify the texture of the builder toggle.
+		/// </summary>
+		/// <param name="builderToggle">The builder toggle you're modifying the display value for.</param>
+		/// <param name="texture">The <see cref="Texture2D"/> the builder toggle is using</param>
+		/// <param name="rectangle">The <see cref="Rectangle"/> the builder toggle is using</param>
+		/// <returns></returns>
+		public virtual void ModifyDisplayTexture(BuilderToggle builderToggle, ref Texture2D texture, ref Rectangle rectangle) { }
 	}
 }

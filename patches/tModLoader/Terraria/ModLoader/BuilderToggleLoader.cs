@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
@@ -96,6 +97,12 @@ namespace Terraria.ModLoader
 		public static void ModifyDisplayColor(BuilderToggle builderToggle, ref Color displayColor) {
 			foreach (GlobalBuilderToggle global in globalBuilderToggles) {
 				global.ModifyDisplayColor(builderToggle, ref displayColor);
+			}
+		}
+
+		public static void ModifyDisplayTexture(BuilderToggle builderToggle, ref Texture2D texture, ref Rectangle rectangle) {
+			foreach (GlobalBuilderToggle global in globalBuilderToggles) {
+				global.ModifyDisplayTexture(builderToggle, ref texture, ref rectangle);
 			}
 		}
 	}

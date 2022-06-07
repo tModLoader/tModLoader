@@ -148,19 +148,21 @@ namespace Terraria
 			if (activeToggles > 12) {
 				startIndex = 12 * BuilderToggleLoader.BuilderTogglePage;
 
-				if (activeToggles - startIndex <= 12)
+				if (activeToggles - startIndex < 12)
 					endIndex = activeToggles;
-				else
+				else if (startIndex == 0)
 					endIndex = startIndex + 12;
+				else
+					endIndex = startIndex + 11;
 
 				Texture2D buttonTexture = UICommon.InfoDisplayPageArrowTexture.Value;
 				bool hover = false;
 				Vector2 buttonPosition = new Vector2(3, startY - 6f);
 
 				if (BuilderToggleLoader.BuilderTogglePage != 0) {
-					//Can show previous
 					moveDownForButton = true;
 
+					spriteBatch.Draw(buttonTexture, buttonPosition + new Vector2(0, 13f), new Rectangle(0, 0, buttonTexture.Width, buttonTexture.Height), Color.White, -(float)Math.PI / 2, default, 1f, SpriteEffects.None, 0f);
 					if ((float)mouseX >= buttonPosition.X && (float)mouseY >= buttonPosition.Y && (float)mouseX <= buttonPosition.X + (float)buttonTexture.Width && (float)mouseY <= buttonPosition.Y + (float)buttonTexture.Height && !PlayerInput.IgnoreMouseInterface) {
 						hover = true;
 
@@ -175,19 +177,15 @@ namespace Terraria
 							if (BuilderToggleLoader.BuilderTogglePage > 0)
 								BuilderToggleLoader.BuilderTogglePage--;
 						}
+
+						spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition + new Vector2(0, 17) - Vector2.One * 2f, null, OurFavoriteColor, -(float)Math.PI / 2, default, 1f, SpriteEffects.None, 0f);
 					}
 				}
 
-				spriteBatch.Draw(buttonTexture, buttonPosition, new Rectangle(0, 0, buttonTexture.Width, buttonTexture.Height), Color.White, 0f, default, 1f, SpriteEffects.FlipVertically, 0f);
-
-				if (hover)
-					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
-
-				hover = false;
-				buttonPosition = new Vector2(3, startY + (endIndex - startIndex) * 24f - 6f);
+				buttonPosition = new Vector2(3, startY + ((endIndex - startIndex) + (BuilderToggleLoader.BuilderTogglePage != 0).ToInt()) * 24f - 6f);
 
 				if (BuilderToggleLoader.BuilderTogglePage != activeToggles / 12) {
-					//Can show next
+					spriteBatch.Draw(buttonTexture, buttonPosition + new Vector2(0, 12f), new Rectangle(0, 0, buttonTexture.Width, buttonTexture.Height), Color.White, (float)Math.PI / 2, new Vector2(buttonTexture.Width, buttonTexture.Height), 1f, SpriteEffects.None, 0f);
 
 					if ((float)mouseX >= buttonPosition.X && (float)mouseY >= buttonPosition.Y && (float)mouseX <= buttonPosition.X + (float)buttonTexture.Width && (float)mouseY <= buttonPosition.Y + (float)buttonTexture.Height && !PlayerInput.IgnoreMouseInterface) {
 						hover = true;
@@ -203,15 +201,12 @@ namespace Terraria
 							if (BuilderToggleLoader.BuilderTogglePage < activeToggles / 12)
 								BuilderToggleLoader.BuilderTogglePage++;
 						}
+
+						spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition + new Vector2(4, 12) - Vector2.One * 2f, null, OurFavoriteColor, (float)Math.PI / 2, new Vector2(buttonTexture.Width, buttonTexture.Height), 1f, SpriteEffects.None, 0f);
 					}
 				}
 
-				spriteBatch.Draw(buttonTexture, buttonPosition, new Rectangle(0, 0, buttonTexture.Width, buttonTexture.Height), Color.White, 0f, default, 1f, SpriteEffects.FlipVertically, 0f);
-
-				if (hover)
-					spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, buttonPosition - Vector2.One * 2f, null, OurFavoriteColor, 0f, default, 1f, SpriteEffects.None, 0f);
-
-				if (mouseText && HoverItem.type <= 0) {
+				if (mouseText && hover) {
 					float colorByte = (float)mouseTextColor / 255f;
 					Color textColor = new Color(colorByte, colorByte, colorByte);
 

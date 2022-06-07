@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 		public static BuilderToggle TorchBiome { get; private set; } = new TorchBiomeBuilderToggle();
 
 		/// <summary>
-		/// This is the internal ID of this BuilderToggle.
+		/// This is the internal ID of this builder toggle.
 		/// </summary>
 		public int Type { get; internal set; }
 
@@ -33,14 +33,14 @@ namespace Terraria.ModLoader
 		public virtual bool Active() => false;
 
 		/// <summary>
-		/// This is the number of different functionalities your BuilderToggle will have.
+		/// This is the number of different functionalities your builder toggle will have.
 		/// For a toggle that has an On and Off state, you'd need 2 states!
 		/// </summary>
 		/// <value>Default value is 2</value>
 		public virtual int NumberOfStates { get; internal set; } = 2;
 
 		/// <summary>
-		/// This is the current state of this BuilderToggle. Every time the toggle is clicked, it will change.
+		/// This is the current state of this builder toggle. Every time the toggle is clicked, it will change.
 		/// </summary>
 		public int CurrentState => Main.player[Main.myPlayer].builderAccStatus[Type];
 
@@ -52,6 +52,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// This is the value that will show up when hovering on the toggle icon.
+		/// You can specify different values per each available <see cref="CurrentState"/>
 		/// </summary>
 		public abstract string DisplayValue();
 

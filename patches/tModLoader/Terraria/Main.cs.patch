@@ -2756,16 +2756,16 @@
  				float scale = 1f;
  				float num13 = 0f;
  				num13 = ((TextureAssets.NpcHead[num12].Width() <= TextureAssets.NpcHead[num12].Height()) ? ((float)TextureAssets.NpcHead[num12].Height()) : ((float)TextureAssets.NpcHead[num12].Width()));
-@@ -30276,8 +_,10 @@
+@@ -30276,8 +_,12 @@
  				}
  			}
  
--			GetBuilderAccsCountToShow(LocalPlayer, out int _, out int _, out int totalDrawnIcons);
--			bool pushSideToolsUp = totalDrawnIcons >= 10;
-+			// GetBuilderAccsCountToShow(LocalPlayer, out int _, out int _, out int totalDrawnIcons);
-+			//Kirtle: TODO: bool is false with 11 items, should only be false with 10 items..
-+			// bool pushSideToolsUp = totalDrawnIcons >= 10;
-+			bool pushSideToolsUp = (int)BuilderToggleLoader.ActiveBuilderToggles() / 12 != BuilderToggleLoader.BuilderTogglePage;
++			/*
+ 			GetBuilderAccsCountToShow(LocalPlayer, out int _, out int _, out int totalDrawnIcons);
+ 			bool pushSideToolsUp = totalDrawnIcons >= 10;
++			*/
++			int activeToggles = BuilderToggleLoader.ActiveBuilderToggles();
++			bool pushSideToolsUp = activeToggles / 12 != BuilderToggleLoader.BuilderTogglePage || activeToggles % 12 >= 10;
  			if (!PlayerInput.UsingGamepad)
  				DrawHotbarLockIcon(num, num2, pushSideToolsUp);
  
@@ -3024,7 +3024,7 @@
  				spriteBatch.Draw(value, new Vector2(pivotTopLeftX, num), value.Frame(2, 1, 1), OurFavoriteColor, 0f, default(Vector2), num2, SpriteEffects.None, 0f);
  		}
  
-+		//Kirtle: Mention why I removed these methods..
++		// These 2 methods are no longer necessary because they had hardcoded values and did nearly the same thing. Builder Toggles are now much more flexible and dynamic
 +		/*
  		private void DrawBlockReplacementIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset) {
  			if (!playerInventory)
@@ -3525,15 +3525,6 @@
  				if (mapStyle == 1 && mapEnabled)
  					Y += 261;
  			}
-@@ -35529,6 +_,8 @@
- 			X += StartX;
- 		}
- 
-+		//Kirtle: I've tried making use of the vanilla code but it has so many non linear steps and magic numbers because
-+		//of BlockSwap and TorchBiome that I decided to just comment it out and organize it
- 		private void DrawBuilderAccToggles(Vector2 start) {
- 			if (!playerInventory)
- 				return;
 @@ -35536,7 +_,7 @@
  			string.IsNullOrEmpty(npcChatText);
  			if (false || Main.player[myPlayer].sign >= 0)
@@ -3543,17 +3534,17 @@
  			int num = 0;
  			Player player = Main.player[myPlayer];
  			int[] builderAccStatus = Main.player[myPlayer].builderAccStatus;
-@@ -35724,6 +_,78 @@
+@@ -35724,6 +_,81 @@
  			}
  
  			UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = num;
 +			*/
 +
 +			Player player = Main.player[myPlayer];
-+			int[] builderAccStatus = Main.player[myPlayer].builderAccStatus;
-+			bool shiftHotbarLock = (int)BuilderToggleLoader.ActiveBuilderToggles() / 12 != BuilderToggleLoader.BuilderTogglePage;
-+			Vector2 startPosition = start - new Vector2(0, shiftHotbarLock ? 42 : 21);
++			int[] builderAccStatus = player.builderAccStatus;
 +			List<BuilderToggle> activeToggles = BuilderToggleLoader.ActiveBuilderTogglesList();
++			bool shiftHotbarLock = activeToggles.Count / 12 != BuilderToggleLoader.BuilderTogglePage || activeToggles.Count % 12 >= 10;
++			Vector2 startPosition = start - new Vector2(0, shiftHotbarLock ? 42 : 21);
 +			string text = "";
 +
 +			BuilderTogglePageHandler((int)startPosition.Y, activeToggles.Count, out bool moveDownForButton, out int startIndex, out int endIndex);
@@ -3569,8 +3560,8 @@
 +				int numberOfStates = builderToggle.NumberOfStates;
 +				int toggleType = builderToggle.Type;
 +
-+				BuilderToggleLoader.ModifyDisplayValue(builderToggle, ref text);
 +				BuilderToggleLoader.ModifyNumberOfStates(builderToggle, ref numberOfStates);
++				BuilderToggleLoader.ModifyDisplayValue(builderToggle, ref text);
 +
 +				bool hover = Utils.CenteredRectangle(position, new Vector2(14f)).Contains(MouseScreen.ToPoint()) && !PlayerInput.IgnoreMouseInterface;
 +				bool click = hover && mouseLeft && mouseLeftRelease;
@@ -3580,13 +3571,16 @@
 +						rectangle = texture.Frame(3, 1, builderToggle.CurrentState != 0 ? 1 : 0);
 +					else
 +						rectangle = texture.Frame(4, 1, builderToggle.CurrentState == 0 ? 1 : 0);
++
++					position += new Vector2(1, 0);
 +				}
 +				else
 +					rectangle = builderToggle.Type < 10 ? new Rectangle(builderToggle.Type * 16, 16, 14, 14) : rectangle;
 +
 +				BuilderToggleLoader.ModifyDisplayColor(builderToggle, ref color);
-+				spriteBatch.Draw(texture, position, rectangle, color, 0f, rectangle.Size() / 2f, 1f, SpriteEffects.None,
-+					0f);
++				BuilderToggleLoader.ModifyDisplayTexture(builderToggle, ref texture, ref rectangle);
++
++				spriteBatch.Draw(texture, position, rectangle, color, 0f, rectangle.Size() / 2f, 1f, SpriteEffects.None, 0f);
 +
 +				if (hover) {
 +					player.mouseInterface = true;
