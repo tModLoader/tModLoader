@@ -116,13 +116,13 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a8c82217a07aa3340d2d8c1e58fa618a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether Plantera is defeated and the world is in hardmode. This isn't needed (it's easy to find by yourself), but it's a local flag in NPC.SpawnNPC, so it is included for completeness.  <a href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a8c82217a07aa3340d2d8c1e58fa618a4">More...</a><br /></td></tr>
 <tr class="separator:a8c82217a07aa3340d2d8c1e58fa618a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1849e496ac67f56b975dd3b1ebaa9707"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a1849e496ac67f56b975dd3b1ebaa9707">Player</a></td></tr>
-<tr class="memdesc:a1849e496ac67f56b975dd3b1ebaa9707"><td class="mdescLeft">&#160;</td><td class="mdescRight">The player that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is spawning around. For convenience, here are the player zones, which are also useful for determining <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> spawn: </p><ul>
+<tr class="memdesc:a1849e496ac67f56b975dd3b1ebaa9707"><td class="mdescLeft">&#160;</td><td class="mdescRight">The player that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is spawning around. For convenience, here are the player zones, which are also useful for determining <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> spawn: (ZoneGranite, ZoneMarble, ZoneHive, ZoneGemCave are not actually proper spawning related checks, they are for visuals only (RGB), determined by the backwall type) </p><ul>
 <li>
 ZoneDungeon </li>
 <li>
 ZoneCorrupt </li>
 <li>
-ZoneHoly </li>
+ZoneHallow </li>
 <li>
 ZoneMeteor </li>
 <li>
@@ -165,6 +165,10 @@ ZoneBeach </li>
 ZoneRain </li>
 <li>
 ZoneSandstorm </li>
+<li>
+ZoneOldOneArmy </li>
+<li>
+ZoneGraveyard </li>
 </ul>
  <a href="struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html#a1849e496ac67f56b975dd3b1ebaa9707">More...</a><br /></td></tr>
 <tr class="separator:a1849e496ac67f56b975dd3b1ebaa9707"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -313,13 +317,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>SpawnTileType</b></td>
       </table>
 </div><div class="memdoc">
 
-<p>The player that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is spawning around. For convenience, here are the player zones, which are also useful for determining <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> spawn: </p><ul>
+<p>The player that this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is spawning around. For convenience, here are the player zones, which are also useful for determining <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> spawn: (ZoneGranite, ZoneMarble, ZoneHive, ZoneGemCave are not actually proper spawning related checks, they are for visuals only (RGB), determined by the backwall type) </p><ul>
 <li>
 ZoneDungeon </li>
 <li>
 ZoneCorrupt </li>
 <li>
-ZoneHoly </li>
+ZoneHallow </li>
 <li>
 ZoneMeteor </li>
 <li>
@@ -362,6 +366,10 @@ ZoneBeach </li>
 ZoneRain </li>
 <li>
 ZoneSandstorm </li>
+<li>
+ZoneOldOneArmy </li>
+<li>
+ZoneGraveyard </li>
 </ul>
 </p>
 
