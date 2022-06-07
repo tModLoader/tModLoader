@@ -48,4 +48,6 @@ public class ModTileTest : ModTile
 		Main.specY[nextSpecialDrawIndex] = j;
 		nextSpecialDrawIndex++;
 	}
+
+	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) { /* comment */ }
 }

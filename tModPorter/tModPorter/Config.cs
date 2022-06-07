@@ -179,6 +179,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"SaveWorldData",	comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"OnWorldLoad",		comment: "Suggestion: Also concider overriding OnWorldUnload"); // TODO this doesn't work for just adding a comment when the sig didnt change
 		//ChangeHookSignature("Terraria.ModLoader.ModSystem",	"TileCountsAvailable"); // TODO causes recursion
+		ChangeHookSignature("Terraria.ModLoader.ModTile",		"SetDrawPositions");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"Clone");
 		ChangeHookSignature("Terraria.ModLoader.ModGore",		"OnSpawn");
 
@@ -257,6 +258,8 @@ public static partial class Config
 		RenameStaticField("Terraria.Main",		from: "tileValue",			to: "tileOreFinderPriority");
 		RenameStaticField("Terraria.Main",		from: "worldRate",			to: "desiredWorldTilesUpdateRate");
 		RenameStaticField("Terraria.Lighting",	from: "lightMode",			to: "LegacyEngine.Mode");
+
+		RenameInstanceField("Terraria.ObjectData.TileObjectData", from: "HookCheck", to: "HookCheckIfCanPlace");
 
 		RenameInstanceField("Terraria.Item",	from: "owner",				to: "playerIndexTheItemIsReservedFor");
 		RenameInstanceField("Terraria.Player",	from: "hideVisual",			to: "hideVisibleAccessory");

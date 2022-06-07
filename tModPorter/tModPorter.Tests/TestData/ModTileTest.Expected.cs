@@ -48,4 +48,6 @@ public class ModTileTest : ModTile
 		// Textbook usage of nextSpecialDrawIndex, reduced to one method in 1.4
 		Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
 	}
+
+	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) { /* comment */ }
 }

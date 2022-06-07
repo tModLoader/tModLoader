@@ -1,5 +1,6 @@
 using Terraria;
 using Terraria.ID;
+using Terraria.ObjectData;
 using Microsoft.Xna.Framework;
 
 public class SimpleRenamedVanillaMembersTest
@@ -48,13 +49,16 @@ public class SimpleRenamedVanillaMembersTest
 		int honey = Tile.Liquid_Honey;
 		int lava = Tile.Liquid_Lava;
 
-		// Yes. The variables are named with opposing sides, the underlying values are the same
+		// Yes. The variables are named with opposing sides in 1.3, the underlying values are the same
 		int type_Solid = Tile.Type_Solid;
 		int type_Halfbrick = Tile.Type_Halfbrick;
 		int type_SlopeDownRight = Tile.Type_SlopeDownRight;
 		int type_SlopeDownLeft = Tile.Type_SlopeDownLeft;
 		int type_SlopeUpRight = Tile.Type_SlopeUpRight;
 		int type_SlopeUpLeft = Tile.Type_SlopeUpLeft;
+
+		var tileObjectData = new TileObjectData();
+		var hookCheck = tileObjectData.HookCheck;
 
 		var player = new Player();
 		var hideVisual = player.hideVisual;
