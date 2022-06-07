@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
@@ -70,6 +71,16 @@ namespace ExampleMod.Content.Tiles
 			// frameYOffset = modTile.animationFrameHeight * Main.tileFrame [type] will already be set before this hook is called
 			// But we have a horizontal animated texture, so we use frameXOffset instead of frameYOffset
 			frameXOffset = uniqueAnimationFrame * animationFrameWidth;
+		}
+
+		// This method allows you to change the sound a tile makes when hit
+		public override bool KillSound(int i, int j, bool fail) {
+			// Play the glass shattering sound instead of the normal digging sound if the tile is destroyed on this hit
+			if (!fail) {
+				SoundEngine.PlaySound(SoundID.Shatter, new Vector2(i, j).ToWorldCoordinates());
+				return false;
+			}
+			return base.KillSound(i, j, fail);
 		}
 
 		//TODO: It's better to have an actual class for this example, instead of comments

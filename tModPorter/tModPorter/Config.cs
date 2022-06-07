@@ -156,6 +156,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"DrawEffects");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"DrawEffects");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"IsTileDangerous", comment: "Suggestion: Return null instead of false");
+		ChangeHookSignature("Terraria.ModLoader.ModBlockType",		"KillSound");
+		ChangeHookSignature("Terraria.ModLoader.GlobalBlockType",	"KillSound");
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",		to: "SaveData");
