@@ -74,13 +74,13 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// This method allows you to change the sound a tile makes when hit
-		public override bool KillSound(int i, int j, bool fullyDestroyed) {
+		public override bool KillSound(int i, int j, bool fail) {
 			// Play the glass shattering sound instead of the normal digging sound if the tile is destroyed on this hit
-			if (fullyDestroyed) {
+			if (!fail) {
 				SoundEngine.PlaySound(SoundID.Shatter, new Vector2(i, j).ToWorldCoordinates());
 				return false;
 			}
-			return base.KillSound(i, j, fullyDestroyed);
+			return base.KillSound(i, j, fail);
 		}
 
 		//TODO: It's better to have an actual class for this example, instead of comments
