@@ -120,7 +120,7 @@ public class tModPorter
 
 		var path = doc.FilePath ?? throw new NullReferenceException("No path? " + doc?.Name);
 
-		/*
+		// TODO, store encoding with the document ids and calculate it on first read
 		Encoding encoding;
 		using (Stream fs = new FileStream(path, FileMode.Open, FileAccess.Read)) {
 			DetectionResult detectionResult = CharsetDetector.DetectFromStream(fs);
@@ -128,7 +128,6 @@ public class tModPorter
 			if (detectionResult.Detected.Confidence < .95f)
 				updateProgress(new Warning($"Less than 95% confidence about the file encoding of: {doc.FilePath}"));
 		}
-		*/
 
 		if (MakeBackups!.Value) {
 			int i = 2;
@@ -139,7 +138,7 @@ public class tModPorter
 			File.Move(path, backupPath);
 		}
 
-		await File.WriteAllTextAsync(path, (await doc.GetTextAsync()).ToString(), Encoding.UTF8);
+		await File.WriteAllTextAsync(path, (await doc.GetTextAsync()).ToString(), encoding);
 	}
 
 	public static async Task<Document> RewriteOnce(Document doc) {
