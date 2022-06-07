@@ -136,16 +136,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static bool KillSound(int i, int j, int type, bool fail) {
+		public static bool KillSound(int i, int j, int type, bool fullyDestroyed) {
 			foreach (var hook in HookKillSound) {
-				if (!hook(i, j, type, fail))
+				if (!hook(i, j, type, fullyDestroyed))
 					return false;
 			}
 			
 			var modWall = GetWall(type);
 
 			if (modWall != null) {
-				if (!modWall.KillSound(i, j, fail))
+				if (!modWall.KillSound(i, j, fullyDestroyed))
 					return false;
 				
 				SoundEngine.PlaySound(modWall.HitSound, new Vector2(i * 16, j * 16));

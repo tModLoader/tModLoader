@@ -1518,7 +1518,7 @@
  
 -		private static void KillWall_PlaySounds(int i, int j, Tile tileCache) {
 +		private static void KillWall_PlaySounds(int i, int j, Tile tileCache, bool fail = false) {
-+			if (!WallLoader.KillSound(i,j,tileCache.wall, fail))
++			if (!WallLoader.KillSound(i,j,tileCache.wall,!fail))
 +				return;
 +
  			if (tileCache.wall == 241 || (tileCache.wall >= 88 && tileCache.wall <= 93) || tileCache.wall == 21 || tileCache.wall == 186 || tileCache.wall == 136 || tileCache.wall == 137 || tileCache.wall == 168 || tileCache.wall == 169 || tileCache.wall == 172 || tileCache.wall == 226 || tileCache.wall == 227 || tileCache.wall == 242 || tileCache.wall == 243)
@@ -1721,7 +1721,7 @@
  
  			int type = tileCache.type;
 +
-+			if(!TileLoader.KillSound(i,j,type,fail))
++			if(!TileLoader.KillSound(i,j,type,!fail))
 +				return;
 +
  			if (type == 127 || type == 623) {

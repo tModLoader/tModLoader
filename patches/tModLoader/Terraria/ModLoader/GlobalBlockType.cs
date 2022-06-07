@@ -15,9 +15,9 @@ namespace Terraria.ModLoader
 		/// <param name="i"></param>
 		/// <param name="j"></param>
 		/// <param name="type"></param>
-		/// <param name="fail">Whether or not the tile/wall is actually destroyed.</param>
+		/// <param name="fullyDestroyed">Whether or not the tile/wall is destroyed, as opposed to just being hit.</param>
 		/// <returns></returns>
-		public virtual bool KillSound(int i, int j, int type, bool fail) {
+		public virtual bool KillSound(int i, int j, int type, bool fullyDestroyed) {
 			return true;
 		}
 
