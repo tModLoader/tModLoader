@@ -238,6 +238,10 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.Mod",			from: "TextureExists",	to: "HasAsset");
 		RenameMethod("Terraria.ModLoader.ModContent",	from: "TextureExists",	to: "HasAsset");
 
+		RenameType(from: "Terraria.ModLoader.PlayerHooks",		to: "Terraria.ModLoader.PlayerLoader");
+		RenameType(from: "Terraria.ModLoader.MusicPriority",	to: "Terraria.ModLoader.SceneEffectPriority");
+		RenameType(from: "Terraria.ModLoader.SpawnCondition",	to: "Terraria.ModLoader.Utilities.SpawnCondition");
+
 		RenameNamespace(from: "Terraria.World.Generation", to: "Terraria.WorldBuilding");
 
 		RenameStaticField("Terraria.Main",		from: "dresserX",			to: "interactedDresserTopLeftX");
