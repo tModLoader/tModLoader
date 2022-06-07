@@ -42,20 +42,14 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 	public override SyntaxToken VisitToken(SyntaxToken token) => token;
 
 	public override SyntaxNode VisitCompilationUnit(CompilationUnitSyntax node) {
-		usings = node.Usings;
+		usings = VisitUsingList(node.Usings);
 		return ((CompilationUnitSyntax)base.VisitCompilationUnit(node)).WithUsings(usings);
 	}
 
+	protected virtual SyntaxList<UsingDirectiveSyntax> VisitUsingList(SyntaxList<UsingDirectiveSyntax> usings) => usings;
+
 	private void UsingNamespace(INamespaceSymbol ns) {
-		var fullname = ns.ToString();
-		if (usings.Any(u => u.Name.ToString() == fullname))
-			return;
-
-		int idx = 0;
-		while (idx < usings.Count && string.Compare(usings[idx].Name.ToString(), fullname) < 0)
-			idx++;
-
-		usings = usings.Insert(idx, SimpleUsing(fullname));
+		usings = usings.WithUsingNamespace(ns.ToString());
 	}
 
 	public TypeSyntax UseType(ITypeSymbol sym) =>

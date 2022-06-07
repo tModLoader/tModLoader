@@ -53,13 +53,14 @@ public class TileTest
 #endif
 	}
 
-	void TileLiquid(Tile tile, Tile tile2, byte liquid) {
+	void TileLiquid(Tile tile, Tile tile2, byte liquidType) {
 		tile.liquidType(0);
 		tile.liquidType(1);
 		tile.liquidType(2);
-		tile.liquidType(liquid);
+		tile.liquidType(liquidType);
 
-		liquid = tile.liquidType();
+		tile.liquid = 255;
+		liquidType = tile.liquidType();
 		tile.lava(true);
 		tile.honey(true);
 

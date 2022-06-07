@@ -8,9 +8,24 @@ public class ModNPCTest : ModNPC
 {
 	public void IdentifierTest() {
 		Console.Write(npc);
+		Console.Write(aiType);
+		Console.Write(animationType);
+		Console.Write(music);
+		Console.Write(musicPriority);
+		Console.Write(drawOffsetY);
+		Console.Write(banner);
+		Console.Write(bannerItem);
+
+#if COMPILE_ERROR
+		Console.Write(bossBag);
+#endif
 	}
 
-	public override void NPCLoot() {  /*empty*/ }
+	public override bool PreNPCLoot() { return true; /*empty*/ }
+
+	public override void NPCLoot() { /*empty*/ }
+
+	public override bool SpecialNPCLoot() { return true; /* Empty */ }
 
 	public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor) { return true; }
 
