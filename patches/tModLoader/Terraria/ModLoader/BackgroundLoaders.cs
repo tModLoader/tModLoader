@@ -31,13 +31,13 @@ namespace Terraria.ModLoader
 		public static int GetBackgroundSlot(string texture) => backgrounds[texture];
 
 		/// <summary> Returns the slot/ID of the background texture with the given mod and path. Throws exceptions on failure. </summary>
-		public static int GetBackgroundSlot(Mod mod, string texture) => backgrounds[$"{mod.Name}/{texture}"];
+		public static int GetBackgroundSlot(Mod mod, string texture) => GetBackgroundSlot($"{mod.Name}/{texture}");
 
 		/// <summary> Safely attempts to output the slot/ID of the background texture with the given full path. The path must be prefixed with a mod name. </summary>
 		public static bool TryGetBackgroundSlot(string texture, out int slot) => backgrounds.TryGetValue(texture, out slot);
 
 		/// <summary> Safely attempts to output the slot/ID of the background texture with the given mod and path. </summary>
-		public static bool TryGetBackgroundSlot(Mod mod, string texture, out int slot) => backgrounds.TryGetValue($"{mod.Name}/{texture}", out slot);
+		public static bool TryGetBackgroundSlot(Mod mod, string texture, out int slot) => TryGetBackgroundSlot($"{mod.Name}/{texture}", out slot);
 
 		/// <summary>
 		/// Adds a texture to the list of background textures and assigns it a background texture slot.
