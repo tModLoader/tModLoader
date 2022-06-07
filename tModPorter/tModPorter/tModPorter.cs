@@ -64,15 +64,14 @@ public class tModPorter
 			docsCompletedThisPass = 0;
 			updateProgress(new Progress(pass, docsCompletedThisPass, documentCount));
 
-			var tasks = project.Documents.Select(doc => Task.Run(async () => await Process(doc, updateProgress))).ToArray();
-			var docs = await Task.WhenAll(tasks);
-			var changed = docs.Except(project.Documents).ToArray();
+			var tasks = project.Documents.Select(doc => Task.Run(async () => (doc.Id, root: await Process(doc, updateProgress)))).ToArray();
+			var changed = (await Task.WhenAll(tasks)).Where(e => e.root != null).ToArray();
 			if (!changed.Any())
 				break;
 
 			var sln = project.Solution;
-			foreach (var doc in changed) {
-				sln = sln.WithDocumentSyntaxRoot(doc.Id, (await doc.GetSyntaxRootAsync())!, PreservationMode.PreserveIdentity);
+			foreach (var (docId, root) in changed) {
+				sln = sln.WithDocumentSyntaxRoot(docId, root!, PreservationMode.PreserveIdentity);
 			}
 			project = sln.GetProject(project.Id)!;
 			pass++;
@@ -81,7 +80,7 @@ public class tModPorter
 		return project;
 	}
 
-	private async Task<Document> Process(Document doc, Action<ProgressUpdate> updateProgress) {
+	private async Task<SyntaxNode?> Process(Document doc, Action<ProgressUpdate> updateProgress) {
 		var newDoc = await Rewrite(doc);
 		if (newDoc != doc) {
 			await Update(newDoc, updateProgress);
@@ -91,7 +90,7 @@ public class tModPorter
 		Interlocked.Increment(ref docsCompletedThisPass);
 		updateProgress(new Progress(pass, docsCompletedThisPass, documentCount));
 
-		return newDoc;
+		return newDoc == doc ? null : await newDoc.GetSyntaxRootAsync();
 	}
 
 	protected virtual async Task Update(Document doc, Action<ProgressUpdate> updateProgress) {
