@@ -28,9 +28,11 @@ public static partial class Config
 		RenameInstanceField("Terraria.Mount.MountData",	from: "modMountData",	to: "ModMount");
 		RenameInstanceField("Terraria.Gore",			from: "modGore",		to: "ModGore");
 
-		RenameType(from: "Terraria.ModLoader.ModMountData", to: "Terraria.ModLoader.ModMount");
-		RenameType(from: "Terraria.ModLoader.ModWorld",		to: "Terraria.ModLoader.ModSystem");
-		RenameType(from: "Terraria.ModLoader.ModHotKey",	to: "Terraria.ModLoader.ModKeybind");
+		RenameType(from: "Terraria.ModLoader.ModMountData",		 to: "Terraria.ModLoader.ModMount");
+		RenameType(from: "Terraria.ModLoader.ModWorld",			 to: "Terraria.ModLoader.ModSystem");
+		RenameType(from: "Terraria.ModLoader.ModHotKey",		 to: "Terraria.ModLoader.ModKeybind");
+		RenameType(from: "Terraria.ModLoader.ModSurfaceBgStyle", to: "Terraria.ModLoader.ModSurfaceBackgroundStyle");
+		RenameType(from: "Terraria.ModLoader.ModUgBgStyle",		 to: "Terraria.ModLoader.ModUndergroundBackgroundStyle");
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "text",			to: "Text");
 		RenameInstanceField("Terraria.ModLoader.TooltipLine",	from: "mod",			to: "Mod");
