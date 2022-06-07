@@ -233,6 +233,12 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "TileEntityType",	ToFindTypeCall("Terraria.ModLoader.ModTileEntity"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "TileType",		ToFindTypeCall("Terraria.ModLoader.ModTile"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "WallType",		ToFindTypeCall("Terraria.ModLoader.ModWall"));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetGoreSlot",		ToFindTypeCall("Terraria.ModLoader.ModGore"));
+
+		RenameMethod("Terraria.ModLoader.Mod",			from: "TextureExists",	to: "HasAsset");
+		RenameMethod("Terraria.ModLoader.ModContent",	from: "TextureExists",	to: "HasAsset");
+
+		RenameNamespace(from: "Terraria.World.Generation", to: "Terraria.WorldBuilding");
 
 		RenameStaticField("Terraria.Main",		from: "dresserX",			to: "interactedDresserTopLeftX");
 		RenameStaticField("Terraria.Main",		from: "dresserY",			to: "interactedDresserTopLeftY");

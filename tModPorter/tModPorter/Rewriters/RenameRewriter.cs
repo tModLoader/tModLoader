@@ -28,6 +28,7 @@ public class RenameRewriter : BaseRewriter {
 
 	private static List<MemberRename> memberRenames = new();
 	private static List<(string from, string to)> typeRenames = new();
+	private static Dictionary<string, string> namespaceRenames = new();
 
 	private static MemberRename RenameMember(MemberRename entry) {
 		memberRenames.Add(entry);
@@ -38,6 +39,7 @@ public class RenameRewriter : BaseRewriter {
 	public static MemberRename RenameStaticField(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to });
 	public static MemberRename RenameMethod(string type, string from, string to) => RenameMember(new() { type = type, from = from, to = to, isMethod = true });
 	public static void RenameType(string from, string to) => typeRenames.Add((from, to));
+	public static void RenameNamespace(string from, string to) => namespaceRenames.Add(from, to);
 
 	public static MemberRename RenameStaticField(string type, string from, string to, string newType) => RenameStaticField(type, from, to).FollowBy(OnType(newType));
 	public static MemberRename RenameMethod(string type, string from, string to, string newType) => RenameMethod(type, from, to).FollowBy(OnType(newType));
@@ -72,6 +74,30 @@ public class RenameRewriter : BaseRewriter {
 		}
 
 		return node;
+	}
+
+	public override SyntaxNode VisitQualifiedName(QualifiedNameSyntax node) {
+		if (model.GetSymbolInfo(node).Symbol != null)
+			return node;
+
+		if (!namespaceRenames.TryGetValue(node.ToString(), out var newNamespace))
+			return base.VisitQualifiedName(node);
+
+
+		return Name(newNamespace);
+	}
+
+	protected override SyntaxList<UsingDirectiveSyntax> VisitUsingList(SyntaxList<UsingDirectiveSyntax> usings) {
+		var renamed = usings.Where(u => namespaceRenames.ContainsKey(u.Name.ToString())).ToArray();
+		if (renamed.Length == 0)
+			return usings;
+
+		usings = List(usings.Except(renamed));
+		foreach (var u in renamed) {
+			usings = usings.WithUsingNamespace(namespaceRenames[u.Name.ToString()]);
+		}
+
+		return base.VisitUsingList(usings);
 	}
 
 	private bool MemberReferenceInvalid(SyntaxNode memberRefExpr, out IInvalidOperation op, out bool isInvoke) {
