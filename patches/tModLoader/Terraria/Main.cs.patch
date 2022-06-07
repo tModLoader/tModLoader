@@ -3036,39 +3036,6 @@
 +		*/
  
  		public static void CraftItem(Recipe r) {
-@@ -31758,7 +_,7 @@
- 				spriteBatch.Draw(value, new Vector2(pivotTopLeftX, num), value.Frame(2, 1, 1), OurFavoriteColor, 0f, default(Vector2), num2, SpriteEffects.None, 0f);
- 		}
- 
-		private void DrawBlockReplacementIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset) {
- 			if (!playerInventory)
- 				return;
- 
-@@ -31776,7 +_,7 @@
- 			if (mouseX > pivotTopLeftX && (float)mouseX < (float)pivotTopLeftX + (float)rectangle.Width * num2 && mouseY > num && (float)mouseY < (float)num + (float)rectangle.Height * num2) {
- 				flag2 = true;
- 				player[myPlayer].mouseInterface = true;
-				MouseText(flag ? Language.GetTextValue("GameUI.BlockReplacerOn") : Language.GetTextValue("GameUI.BlockReplacerOff"), 0, 0);
- 				mouseText = true;
- 				if (mouseLeft && mouseLeftRelease) {
- 					SoundEngine.PlaySound(22);
-@@ -31792,7 +_,7 @@
- 			UILinkPointNavigator.SetPosition(6000 + gamepadPointOffset, vector + rectangle.Size() * 0.65f);
- 		}
- 
-		private void DrawTorchBiomeSwapIcon(int pivotTopLeftX, int pivotTopLeftY, bool pushSideToolsUp, int gamepadPointOffset) {
- 			if (!playerInventory)
- 				return;
- 
-@@ -31810,7 +_,7 @@
- 			if (mouseX > pivotTopLeftX && (float)mouseX < (float)pivotTopLeftX + (float)rectangle.Width * num2 && mouseY > num && (float)mouseY < (float)num + (float)rectangle.Height * num2) {
- 				flag2 = true;
- 				player[myPlayer].mouseInterface = true;
-				MouseText(flag ? Language.GetTextValue("GameUI.TorchTypeSwapperOn") : Language.GetTextValue("GameUI.TorchTypeSwapperOff"), 0, 0);
- 				mouseText = true;
- 				if (mouseLeft && mouseLeftRelease) {
- 					SoundEngine.PlaySound(22);
-@@ -31830,15 +_,19 @@
  			int stack = mouseItem.stack;
  			mouseItem = r.createItem.Clone();
  			mouseItem.stack += stack;
