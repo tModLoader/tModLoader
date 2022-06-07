@@ -29,8 +29,16 @@ public class ModTileTest : ModTile
 		mineResist = 0;
 		animationFrameHeight = 0;
 		adjTiles = new int[0];
+
+		SetModTree(new ExampleTree());
+		SetModCactus(new ExampleCactus());
+		SetModPalmTree(new ExamplePalmTree());
 #endif
 	}
+
+#if COMPILE_ERROR
+	public override int SaplingGrowthType(ref int style) { return -1; }
+#endif
 
 	public override bool Dangersense(int i, int j, Player player) {
 		return false;

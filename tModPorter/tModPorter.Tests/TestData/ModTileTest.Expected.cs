@@ -31,8 +31,16 @@ public class ModTileTest : ModTile
 		MineResist = 0;
 		AnimationFrameHeight = 0;
 		AdjTiles = new int[0];
+
+		SetModTree(new ExampleTree())/* Suggestion: Removed, assign GrowsOnTileId to this tile type in ModTree.SetStaticDefaults */;
+		SetModCactus(new ExampleCactus())/* Suggestion: Removed, assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults */;
+		SetModPalmTree(new ExamplePalmTree())/* Suggestion: Removed, assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults */;
 #endif
 	}
+
+#if COMPILE_ERROR
+	public override int SaplingGrowthType(ref int style)/* Suggestion: Move to ModTree*/ { return -1; }
+#endif
 
 	public override bool IsTileDangerous(int i, int j, Player player) {
 		return false;
