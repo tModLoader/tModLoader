@@ -17,4 +17,6 @@ public class GlobalTileTest : GlobalTile {
 		// Textbook usage of nextSpecialDrawIndex, reduced to one method in 1.4
 		Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
 	}
+
+	public override void PlaceInWorld(int i, int j, int type, Item item) { /* Empty */ }
 }

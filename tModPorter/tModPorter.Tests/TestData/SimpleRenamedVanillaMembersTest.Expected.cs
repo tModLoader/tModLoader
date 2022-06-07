@@ -74,6 +74,7 @@ public class SimpleRenamedVanillaMembersTest
 		var doubleJumpSandstorm = player.hasJumpOption_Sandstorm;
 		var doubleJumpUnicorn = player.hasJumpOption_Unicorn;
 		var hasBanner = Main.SceneMetrics.hasBanner;
+		var bannerBuff = Main.SceneMetrics.NPCBannerBuff;
 		var extraAccessorySlots = player.GetAmountOfExtraAccessorySlotsToShow();
 
 		Main.PlayerRenderer.DrawPlayer(Main.Camera, player, Vector2.Zero, 0f, Vector2.Zero, 1f);

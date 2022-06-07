@@ -157,7 +157,11 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"HasSmartInteract");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"DrawEffects");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"DrawEffects");
+		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"PlaceInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"IsTileDangerous", comment: "Suggestion: Return null instead of false");
+
+		RenameMethod("Terraria.ModLoader.ModNPC", from: "TownNPCName", to: "SetNPCNameList");
+		//ChangeHookSignature("Terraria.ModLoader.ModNPC", "SetNPCNameList", comment: "Suggestion: Return a list of names"); // TODO causes test to not complete
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",		to: "SaveData");

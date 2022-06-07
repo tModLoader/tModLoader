@@ -73,6 +73,7 @@ public class SimpleRenamedVanillaMembersTest
 		var doubleJumpSandstorm = player.doubleJumpSandstorm;
 		var doubleJumpUnicorn = player.doubleJumpUnicorn;
 		var hasBanner = player.hasBanner;
+		var bannerBuff = player.NPCBannerBuff;
 		var extraAccessorySlots = player.extraAccessorySlots;
 
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);

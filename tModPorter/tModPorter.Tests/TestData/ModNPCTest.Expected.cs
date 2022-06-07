@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,4 +32,10 @@ public class ModNPCTest : ModNPC
 	public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		Vector2 screen = screenPos - Vector2.One * 6f;
 	}
+
+#if COMPILE_ERROR
+	public override string[] AltTextures/* Suggestion: Create a ITownNPCProfile, in its GetTextureNPCShouldUse, check for npc.altTexture to return the texture you want. Then, use TownNPCProfile hook to return an instance of that ITownNPCProfile*/ => new string[0];
+
+	public override List<string> SetNPCNameList()/* Suggestion: Return a list of names */ { return "Name"; }
+#endif
 }
