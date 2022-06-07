@@ -1,5 +1,7 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_player_1_1_overhead_message.html#a70f5d4275b9e77a1810958da4140c7fe":[2,0,2,55,4,4],
+"struct_terraria_1_1_player_1_1_overhead_message.html#a9a1f307a4c0747486fd767e9c5ed70bd":[2,0,2,55,4,2],
 "struct_terraria_1_1_player_1_1_overhead_message.html#a9d9d158adf1da5bff57e3caf4dbadb6d":[2,0,2,55,4,5],
 "struct_terraria_1_1_player_1_1_overhead_message.html#ae38514d84ef705c5e6689379a04e1aae":[2,0,2,55,4,1],
 "struct_terraria_1_1_player_1_1_rabbit_order_frame_helper.html":[2,0,2,55,5],
@@ -247,7 +249,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#a8e205d42b50fc6aa83e655194cd098a5":[2,0,2,83,1,1],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#aa31b8299dfd259e3ccc5d07ea12c4956":[2,0,2,83,1,7],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ab4a41891b488a8e30e51e30da3da83e6":[2,0,2,83,1,4],
-"struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ac026067dd86556b03343af3accafb339":[2,0,2,83,1,9],
-"struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#af29be99c6e7eeb85d0fd385f07a3ebd6":[2,0,2,83,1,5],
-"structnativefiledialog_1_1nfdpathset__t.html":[2,0,37,0]
+"struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ac026067dd86556b03343af3accafb339":[2,0,2,83,1,9]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX91 =
 {
+"class_terraria_1_1_mod_loader_1_1_initialization_context.html":[2,0,2,13,59],
+"class_terraria_1_1_mod_loader_1_1_item_creation_context.html":[2,0,2,13,62],
 "class_terraria_1_1_mod_loader_1_1_item_loader.html":[2,0,2,13,63],
 "class_terraria_1_1_mod_loader_1_1_item_loader.html#a00344c8227fc398f2fb8b833af11d3fd":[2,0,2,13,63,97],
 "class_terraria_1_1_mod_loader_1_1_item_loader.html#a0062213e244b8f8f0f4787b48384d45e":[2,0,2,13,63,53],
@@ -247,7 +249,5 @@ var NAVTREEINDEX91 =
 "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a8b9c6b3b1ada9c690bfbc011958bb8a6":[2,0,2,13,81,22],
 "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a8bbcd7efd8c9f12c7e676704d3d1d390":[2,0,2,13,81,15],
 "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a906b8c78242cdad9cbdaaef9b7d4240f":[2,0,2,13,81,20],
-"class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#aa47becf5c7dc5086022f115a3e698bea":[2,0,2,13,81,21],
-"class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#aac2e98b69e0d6d2172b57f0274365f0b":[2,0,2,13,81,26],
-"class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#aba12d9904ac360b2739aead8a2f32b06":[2,0,2,13,81,16]
+"class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#aa47becf5c7dc5086022f115a3e698bea":[2,0,2,13,81,21]
 };

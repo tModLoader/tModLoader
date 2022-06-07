@@ -1,5 +1,7 @@
 var NAVTREEINDEX126 =
 {
+"namespace_terraria_1_1_game_input.html#af1143be20d08c306f1145dafff9be582ae284f442886a813a918ae6ac75ad41f6":[1,0,2,7,9,3],
+"namespace_terraria_1_1_game_input.html#af1143be20d08c306f1145dafff9be582af2a47c6809d88e175dade0ef7b16aa13":[1,0,2,7,9,2],
 "namespace_terraria_1_1_graphics.html":[1,0,2,8],
 "namespace_terraria_1_1_graphics_1_1_camera_modifiers.html":[1,0,2,8,0],
 "namespace_terraria_1_1_graphics_1_1_capture.html":[1,0,2,8,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX126 =
 "namespace_terraria_1_1_social_1_1_we_game.html#a868aa4f6c6683dda5d69fce06c3ec3f0aa6fff580feaafda7ffe5c5d61e0ab6a7":[1,0,2,20,2,25,2],
 "namespace_terraria_1_1_social_1_1_we_game.html#a868aa4f6c6683dda5d69fce06c3ec3f0ae321c53b354930ba96f0243e652df458":[1,0,2,20,2,25,1],
 "namespace_terraria_1_1_testing.html":[1,0,2,21],
-"namespace_terraria_1_1_testing_1_1_chat_commands.html":[1,0,2,21,0],
-"namespace_terraria_1_1_u_i.html":[1,0,2,22],
-"namespace_terraria_1_1_u_i.html#a112f5cbb42c3dd41eb9b79c4745f4666":[1,0,2,22,33]
+"namespace_terraria_1_1_testing_1_1_chat_commands.html":[1,0,2,21,0]
 };

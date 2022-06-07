@@ -1,5 +1,7 @@
 var class_terraria_1_1_mod_loader_1_1_damage_class =
 [
+    [ "CountsAsClass", "class_terraria_1_1_mod_loader_1_1_damage_class.html#a84d63da0bea5e78a39a83bbfaf1c0a71", null ],
+    [ "CountsAsClass< T >", "class_terraria_1_1_mod_loader_1_1_damage_class.html#a9309415f9b8a1e9859d1c5d05b4ce11f", null ],
     [ "GetEffectInheritance", "class_terraria_1_1_mod_loader_1_1_damage_class.html#a555e9683160a8245b9ac80705a509fc3", null ],
     [ "GetModifierInheritance", "class_terraria_1_1_mod_loader_1_1_damage_class.html#a4bc22beaeca0cfe6e621f65b48397898", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_damage_class.html#a89e77200ae6acbfbcaa819830ed1a76c", null ],
