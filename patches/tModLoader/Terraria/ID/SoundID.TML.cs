@@ -641,8 +641,8 @@ namespace Terraria.ID
 			LegacySoundIDs.Frog => Frog,
 			LegacySoundIDs.Bird => Bird,
 			LegacySoundIDs.Critter => Critter,
-			LegacySoundIDs.Waterfall or
-			LegacySoundIDs.Lavafall => (type == LegacySoundIDs.Waterfall ? Waterfall : Lavafall) with { Volume = (type == LegacySoundIDs.Waterfall ? Waterfall.Volume : Lavafall.Volume) * style / 50f },
+			LegacySoundIDs.Waterfall => Waterfall with { Volume = Waterfall.Volume * style / 50f },
+			LegacySoundIDs.Lavafall => Lavafall with { Volume = Lavafall.Volume * style / 50f },
 			LegacySoundIDs.ForceRoar => style switch { -1 => ForceRoarPitched, _ => ForceRoar },
 			LegacySoundIDs.Meowmere => Meowmere,
 			LegacySoundIDs.CoinPickup => CoinPickup,
