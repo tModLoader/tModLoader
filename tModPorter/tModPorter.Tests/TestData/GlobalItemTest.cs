@@ -35,9 +35,8 @@ public class GlobalItemTest : GlobalItem
 
 	public override void DrawHair(int head, ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
 #endif
-}
 
-public override void Load(Item item, TagCompound tag) { /* Empty */ }
+	public override void Load(Item item, TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR
 	public override TagCompound Save(Item item) => new TagCompound();
