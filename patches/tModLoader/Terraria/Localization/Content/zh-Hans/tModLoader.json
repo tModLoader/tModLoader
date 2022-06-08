@@ -17,7 +17,7 @@
 		"MenuEnableDeveloperMode": "启用开发者模式",
 		"WelcomeMessageBeta": "欢迎使用tModLoader 1.4 Alpha测试版.\n\n你已经成功安装了最新不稳定版本的tModLoader（它随时都可能会更新、遇到Bug或崩溃！）\n\n进入创意工坊界面以访问tModLoader的模组相关功能。\n\n加入tModLoader的Discord群交流和tModLoader 1.4相关的模组、测试、工具和更新等内容。",
 		"MonthlyFreezeNotification": "每月冻结期已开始：在每个月的21日之后，模组制作者需要在1.4-preview分支上发布模组更新，来为该月所有的代码和API修改做准备。目前的1.4-preview分支将在下个月1日成为新的1.4-stable分支，也就是默认的版本。如果模组制作者不更新他们的模组，就意味着模组很可能在下个月1日开始无法加载。加入tModLoader的Discord群来了解更多关于这个月的变化或查看模组迁移说明。点击“更多信息”来了解更多关于持续集成发布周期的信息",
-		"FirstLaunchWelcomeMessage": "欢迎使用tModLoader.\n\n你已成功安装tModLoader.使用模组浏览器可以找到你想要下载的模组.在模组管理中可以更改已安装的模组.更改模组后,请确保你点击了“重新加载模组”以使它们生效.",
+		"FirstLaunchWelcomeMessage": "欢迎使用tModLoader 1.4！\n\n使用创意工坊来使用模组相关的功能. 如果你还在使用tModLoader 1.4, 你也可以在Steam的Beta选项里切换回旧版本（1.3-legacy）。如果你找不到以前曾经玩过的模组, 它们可能现在还没有更新到1.4.",
 		"WhatsNewMessage": "以下是自您上次启动 tModLoader 1.4 版本后更新的基本说明。受这些更改影响的模组或许需要其作者进行更新。访问 GitHub 以查看更多细节：\n",
 		"ShowNewUpdatedModsInfoMessage": "自从上一次启动以来，以下模组被添加或更新（你可以在设置中关掉这个提示）：\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\n新增模组：",
