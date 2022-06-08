@@ -34,8 +34,8 @@ public class ModNPCTest : ModNPC
 	}
 
 #if COMPILE_ERROR
-	public override string[] AltTextures/* Suggestion: Create a ITownNPCProfile, in its GetTextureNPCShouldUse, check for npc.altTexture to return the texture you want. Then, use TownNPCProfile hook to return an instance of that ITownNPCProfile */ => new string[0];
+	public override string[] AltTextures/* tModPorter Suggestion: Create a ITownNPCProfile, in its GetTextureNPCShouldUse, check for npc.altTexture to return the texture you want. Then, use TownNPCProfile hook to return an instance of that ITownNPCProfile */ => new string[0];
 
-	public override List<string> SetNPCNameList()/* Suggestion: Return a list of names */ { return "Name"; }
+	public override List<string> SetNPCNameList()/* tModPorter Suggestion: Return a list of names */ { return "Name"; }
 #endif
 }
