@@ -31,7 +31,7 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 	public override SyntaxNode Visit(SyntaxNode node) {
 		SyntaxNode newNode = base.Visit(node);
 
-		if (node != newNode && extraNodeVisitors.Remove(node, out var list)) {
+		if (node != null && extraNodeVisitors.Count > 0 && extraNodeVisitors.Remove(node, out var list)) {
 			foreach (var f in list)
 				newNode = f(newNode);
 		}
