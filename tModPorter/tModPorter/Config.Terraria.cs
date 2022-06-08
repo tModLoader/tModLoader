@@ -46,6 +46,16 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "HasSameSlope",		ComparisonFunctionToPropertyEquality("BlockType"));
 		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		AddComment("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
 
+		RenameStaticField("Terraria.Tile", from: "Liquid_Water",		to: "Water",			newType: "Terraria.ID.LiquidID");
+		RenameStaticField("Terraria.Tile", from: "Liquid_Honey",		to: "Honey",			newType: "Terraria.ID.LiquidID");
+		RenameStaticField("Terraria.Tile", from: "Liquid_Lava",			to: "Lava",				newType: "Terraria.ID.LiquidID");
+		RenameStaticField("Terraria.Tile", from: "Type_Solid",			to: "Solid",			newType: "Terraria.ID.BlockType");
+		RenameStaticField("Terraria.Tile", from: "Type_Halfbrick",		to: "HalfBlock",		newType: "Terraria.ID.BlockType");
+		RenameStaticField("Terraria.Tile", from: "Type_SlopeDownRight",	to: "SlopeDownLeft",	newType: "Terraria.ID.BlockType");
+		RenameStaticField("Terraria.Tile", from: "Type_SlopeDownLeft",	to: "SlopeDownRight",	newType: "Terraria.ID.BlockType");
+		RenameStaticField("Terraria.Tile", from: "Type_SlopeUpRight",	to: "SlopeUpLeft",		newType: "Terraria.ID.BlockType");
+		RenameStaticField("Terraria.Tile", from: "Type_SlopeUpLeft",	to: "SlopeUpRight",		newType: "Terraria.ID.BlockType");
+
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "HoldingUp",	to: "HoldUp");
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "HoldingOut",	to: "Shoot");
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "SwingThrow",	to: "Swing");
@@ -65,6 +75,25 @@ public static partial class Config
 		RenameStaticField("Terraria.Main",		from: "SmartCursorEnabled",	to: "SmartCursorIsUsed");
 		RenameStaticField("Terraria.Main",		from: "tileValue",			to: "tileOreFinderPriority");
 		RenameStaticField("Terraria.Main",		from: "worldRate",			to: "desiredWorldTilesUpdateRate");
+		RenameStaticField("Terraria.Main",		from: "waterCandles",		to: "SceneMetrics.WaterCandleCount");
+		RenameStaticField("Terraria.Main",		from: "peaceCandles",		to: "SceneMetrics.PeaceCandleCount");
+		RenameStaticField("Terraria.Main",		from: "partyMonoliths",		to: "SceneMetrics.PartyMonolithCount");
+		RenameStaticField("Terraria.Main",		from: "evilTiles",			to: "SceneMetrics.EvilTileCount");
+		RenameStaticField("Terraria.Main",		from: "holyTiles",			to: "SceneMetrics.HolyTileCount");
+		RenameStaticField("Terraria.Main",		from: "meteorTile",			to: "SceneMetrics.MeteorTileCount");
+		RenameStaticField("Terraria.Main",		from: "jungleTiles",		to: "SceneMetrics.JungleTileCount");
+		RenameStaticField("Terraria.Main",		from: "snowTiles",			to: "SceneMetrics.SnowTileCount");
+		RenameStaticField("Terraria.Main",		from: "bloodTiles",			to: "SceneMetrics.BloodTileCount");
+		RenameStaticField("Terraria.Main",		from: "sandTiles",			to: "SceneMetrics.SandTileCount");
+		RenameStaticField("Terraria.Main",		from: "shroomTiles",		to: "SceneMetrics.MushroomTileCount");
+		RenameStaticField("Terraria.Main",		from: "dungeonTiles",		to: "SceneMetrics.DungeonTileCount");
+		RenameStaticField("Terraria.Main",		from: "monolithType",		to: "SceneMetrics.ActiveMonolithType");
+		RenameStaticField("Terraria.Main",		from: "clock",				to: "SceneMetrics.HasClock");
+		RenameStaticField("Terraria.Main",		from: "campfire",			to: "SceneMetrics.HasCampfire");
+		RenameStaticField("Terraria.Main",		from: "starInBottle",		to: "SceneMetrics.HasStarInBottle");
+		RenameStaticField("Terraria.Main",		from: "heartLantern",		to: "SceneMetrics.HasHeartLantern");
+		RenameStaticField("Terraria.Main",		from: "sunflower",			to: "SceneMetrics.HasSunflower");
+
 		RenameStaticField("Terraria.Lighting",	from: "lightMode",			to: "LegacyEngine.Mode");
 
 		RenameInstanceField("Terraria.Item",	from: "owner",				to: "playerIndexTheItemIsReservedFor");
@@ -80,10 +109,12 @@ public static partial class Config
 		RenameInstanceField("Terraria.Player",	from: "doubleJumpSandstorm",to: "hasJumpOption_Sandstorm");
 		RenameInstanceField("Terraria.Player",	from: "doubleJumpUnicorn",	to: "hasJumpOption_Unicorn");
 
+		RenameMethod("Terraria.Item",		from: "IsNotTheSameAs",			to: "IsNotSameTypePrefixAndStack");
 		RenameMethod("Terraria.Lighting",	from: "BlackOut",				to: "Clear");
 		RenameMethod("Terraria.Utils",		from: "InverseLerp",			to: "GetLerpValue");
-		RenameMethod("Terraria.NetMessage",	from: "BroadcastChatMessage",	to: "BroadcastChatMessage", newType: "Terraria.Chat.ChatHelper");
-		RenameMethod("Terraria.Main",		from: "PlaySound",				to: "PlaySound",			newType: "Terraria.Audio.SoundEngine");
+
+		RenameMethod("Terraria.Main",		from: "PlaySound",				to: "PlaySound",				newType: "Terraria.Audio.SoundEngine");
+		RenameMethod("Terraria.NetMessage",	from: "BroadcastChatMessage",	to: "BroadcastChatMessage",		newType: "Terraria.Chat.ChatHelper");
 	}
 
 	private static void AddTextureRenames() {
