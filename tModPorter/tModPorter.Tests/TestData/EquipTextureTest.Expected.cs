@@ -11,6 +11,18 @@ public class EquipTextureTest : EquipTexture
 		Console.WriteLine(Item);
 	}
 	public override void FrameEffects(Player player, EquipType type) { /* Empty */ }
+
+#if COMPILE_ERROR
+	public override bool DrawHead()/* tModPorter Suggestion: Removed. After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false */ { return true; /* Empty */ }
+
+	public override bool DrawBody()/* tModPorter Suggestion: Removed. After registering this as EquipType.Body, use ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true if you returned false */ { return true; /* Empty */ }
+
+	public override bool DrawLegs()/* tModPorter Suggestion: Removed. After registering this as EquipType.Legs or Shoes, use ArmorIDs.Legs.Sets.HidesBottomSkin[slot] = true if you returned false for EquipType.Legs, and ArmorIDs.Shoe.Sets.OverridesLegs[slot] = true if you returned false for EquipType.Shoes */ { return true; /* Empty */ }
+
+	public override void DrawHands(ref bool drawHands, ref bool drawArms)/* tModPorter Suggestion: Removed. After registering this as EquipType.Body, use ArmorIDs.Body.Sets.HidesHands[slot] = false if you had drawHands set to true. If you had drawArms set to true, you don't need to do anything */ { /* Empty */ }
+
+	public override void DrawHair(ref bool drawHair, ref bool drawAltHair)/* tModPorter Suggestion: Removed. After registering this as EquipType.Head, use ArmorIDs.Body.Sets.DrawFullHair[slot] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[slot] = true if you had drawAltHair set to true */ { /* Empty */ }
+#endif
 }
 
 public class EquipTextureModTest : Mod

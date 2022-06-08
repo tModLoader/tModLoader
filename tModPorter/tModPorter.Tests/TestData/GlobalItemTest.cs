@@ -24,7 +24,20 @@ public class GlobalItemTest : GlobalItem
 		flat += 4;
 	}
 
-	public override void Load(Item item, TagCompound tag) { /* Empty */ }
+#if COMPILE_ERROR
+	public override bool DrawHead(int head) { return true; /* Empty */ }
+
+	public override bool DrawBody(int body) { return true; /* Empty */ }
+
+	public override bool DrawLegs(int legs) { return true; /* Empty */ }
+
+	public override void DrawHands(int body, ref bool drawHands, ref bool drawArms) { /* Empty */ }
+
+	public override void DrawHair(int head, ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
+#endif
+}
+
+public override void Load(Item item, TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR
 	public override TagCompound Save(Item item) => new TagCompound();
