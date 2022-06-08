@@ -87,7 +87,7 @@ namespace ExampleMod.Content.Tiles
                     if (amountOfCrystals < 2)
                     {
                         int style = (short)WorldGen.genRand.Next(1);
-                        if (WorldGen.PlaceTile(i + additionalX, j + additionalY, TileID.Crystals, true, style: style)) // Places crystal shards first, because hardcoded!
+                        if (WorldGen.PlaceTile(i + additionalX, j + additionalY, TileID.Crystals, true, style: style)) // Places crystal shards first, because vanilla have some hardcoded stuff in here for crystals, such as Y tile frame set, so it will be "connected" to stone. If we won't place crystal shard first, then it will use very first X/Y frame for crystal.
                         {
                             Main.tile[i + additionalX, j + additionalY].TileType = ModContent.TileType<ExampleCrystal>(); // ... if succesfully placed, then replace with our crystal
                             Main.Map.Update(i + additionalX, j + additionalY, Main.Map[i + additionalX, j + additionalY].Light); // also don't forget to update it on map, so it won't appear as crystal shards
