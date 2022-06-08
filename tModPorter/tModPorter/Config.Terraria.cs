@@ -96,6 +96,8 @@ public static partial class Config
 
 		RenameStaticField("Terraria.Lighting",	from: "lightMode",			to: "LegacyEngine.Mode");
 
+		RenameInstanceField("Terraria.ObjectData.TileObjectData", from: "HookCheck", to: "HookCheckIfCanPlace");
+
 		RenameInstanceField("Terraria.Item",	from: "owner",				to: "playerIndexTheItemIsReservedFor");
 		RenameInstanceField("Terraria.Player",	from: "hideVisual",			to: "hideVisibleAccessory");
 		RenameInstanceField("Terraria.Player",	from: "showItemIcon",		to: "cursorItemIconEnabled");

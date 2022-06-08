@@ -64,6 +64,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "PreNPCLoot",			to: "PreKill");
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "SpecialNPCLoot",		to: "SpecialOnKill");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "SpecialNPCLoot",		to: "SpecialOnKill");
+		RenameMethod("Terraria.ModLoader.ModNPC",		from: "TownNPCName",		to: "SetNPCNameList");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "NewRightClick",		to: "RightClick");
 		RenameMethod("Terraria.ModLoader.ModTile",		from: "Dangersense",		to: "IsTileDangerous");
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "Dangersense",		to: "IsTileDangerous");
@@ -101,10 +102,13 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"DrawEffects");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"CatchFish");
+		ChangeHookSignature("Terraria.ModLoader.ModTile",			"SetDrawPositions");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"HasSmartInteract");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"DrawEffects");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"DrawEffects");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"IsTileDangerous", comment: "Suggestion: Return null instead of false");
+		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"PlaceInWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"SetNPCNameList", comment: "Suggestion: Return a list of names");
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",		to: "SaveData");
@@ -187,9 +191,11 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.Mod",			from: "TextureExists",	to: "HasAsset");
 		RenameMethod("Terraria.ModLoader.ModContent",	from: "TextureExists",	to: "HasAsset");
 
-		RenameType(from: "Terraria.ModLoader.PlayerHooks",		to: "Terraria.ModLoader.PlayerLoader");
-		RenameType(from: "Terraria.ModLoader.MusicPriority",	to: "Terraria.ModLoader.SceneEffectPriority");
-		RenameType(from: "Terraria.ModLoader.SpawnCondition",	to: "Terraria.ModLoader.Utilities.SpawnCondition");
+		RenameType(from: "Terraria.ModLoader.PlayerHooks",			to: "Terraria.ModLoader.PlayerLoader");
+		RenameType(from: "Terraria.ModLoader.MusicPriority",		to: "Terraria.ModLoader.SceneEffectPriority");
+		RenameType(from: "Terraria.ModLoader.SpawnCondition",		to: "Terraria.ModLoader.Utilities.SpawnCondition");
+		RenameType(from: "Terraria.ModLoader.ModSurfaceBgStyle",	to: "Terraria.ModLoader.ModSurfaceBackgroundStyle");
+		RenameType(from: "Terraria.ModLoader.ModUgBgStyle",			to: "Terraria.ModLoader.ModUndergroundBackgroundStyle");
 	}
 }
 
