@@ -37,8 +37,12 @@ namespace Terraria.ModLoader
 	{
 		protected override string LangKey => "LegacyTooltip.2";
 
-		public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) =>
-			damageClass == Melee ? StatInheritanceData.Full with { attackSpeedInheritance = 0 } : StatInheritanceData.None;
+		public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
+			if (damageClass == Generic || damageClass == Melee)
+				return StatInheritanceData.Full with { attackSpeedInheritance = 0 };
+
+			return StatInheritanceData.None;
+		}
 
 		public override bool GetEffectInheritance(DamageClass damageClass) => damageClass == Melee;
 	}
