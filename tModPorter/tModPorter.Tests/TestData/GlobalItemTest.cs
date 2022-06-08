@@ -29,7 +29,7 @@ public class GlobalItemTest : GlobalItem
 
 	public override bool DrawBody(int body) { return true; /* Empty */ }
 
-	public override bool DrawLegs(int legs) { return true; /* Empty */ }
+	public override bool DrawLegs(int legs, int shoes) { return true; /* Empty */ }
 
 	public override void DrawHands(int body, ref bool drawHands, ref bool drawArms) { /* Empty */ }
 
