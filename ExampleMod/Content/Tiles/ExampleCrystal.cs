@@ -26,7 +26,8 @@ namespace ExampleMod.Content.Tiles
             DustType = ModContent.DustType<Sparkle>();
         }
 
-        public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].TileFrameX / 18); // this override is redundant, but in case if you want more map names option ig, then you can leave it alone?
+        public override ushort GetMapOption(int i, int j) 
+			=> (ushort)(Main.tile[i, j].TileFrameX / 18); // this override is redundant, but in case if you want more map names option ig, then you can leave it alone?
 
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
         {
@@ -36,17 +37,22 @@ namespace ExampleMod.Content.Tiles
             return false;
         }
     }
-    // this class does some spreading
+
+    // We need a GlobalTile class to make sure our crystal can randomly spawn in the world
+	// The logic is contained in the RandomUpdate function
     internal class ExampleCrystalGrow : GlobalTile
     {
         public override void RandomUpdate(int i, int j, int type)
         {
-            if (Main.hardMode && type == TileID.Stone && j > Main.rockLayer && WorldGen.genRand.NextBool(110))
-                // this code line above means, that your crystal will grow only if: it's Hardmode, on Stone, in rock layer, and with same chance as vanilla Crystal Shards.
+			// The crystal will grow only if: the world is in Hardmode, the tile is Stone, it's in the rock layer
+			// and with same chance as the vanilla Crystal Shards have of spawning.
+            if (Main.hardMode && type == TileID.Stone && j > Main.rockLayer && WorldGen.genRand.NextBool(110))       
             {
+				// Randomly generate the direction the crystal spawns in
                 int coordinateChance = WorldGen.genRand.Next(4);
                 int additionalX = 0;
                 int additionalY = 0;
+				
                 if (coordinateChance == 0)
                 {
                     additionalX = -1;
@@ -57,24 +63,30 @@ namespace ExampleMod.Content.Tiles
                     additionalX = 1;
                     additionalY = 1;
                 }
+				
+				// Checks if the position where the crystal should spawn doesn't already have a tile
                 if (!Main.tile[i + additionalX, j + additionalY].HasTile)
                 {
-                    int num4 = 0;
-                    int num5 = 6;
+					// Count how many crystals there are in the area
+                    int amountOfCrystals = 0;
+                    int tilesToCheck = 6;
                     int tile = ModContent.TileType<ExampleCrystal>();
-                    for (int k = i - num5; k <= i + num5; k++)
+					
+                    for (int k = i - tilesToCheck; k <= i + tilesToCheck; k++)
                     {
-                        for (int l = j - num5; l <= j + num5; l++)
+                        for (int l = j - tilesToCheck; l <= j + tilesToCheck; l++)
                         {
                             if (Main.tile[k, l].HasTile && Main.tile[k, l].TileType == tile)
                             {
-                                num4++;
+                                amountOfCrystals++;
                             }
                         }
                     }
-                    if (num4 < 2)
+					
+					// If there are less than 2 crystals, we can proceed to spawn one
+                    if (amountOfCrystals < 2)
                     {
-                        int style = (short)WorldGen.genRand.Next(1); // chooses style(s) that you want
+                        int style = (short)WorldGen.genRand.Next(1);
                         if (WorldGen.PlaceTile(i + additionalX, j + additionalY, TileID.Crystals, true, style: style)) // Places crystal shards first, because hardcoded!
                         {
                             Main.tile[i + additionalX, j + additionalY].TileType = ModContent.TileType<ExampleCrystal>(); // ... if succesfully placed, then replace with our crystal
@@ -87,6 +99,7 @@ namespace ExampleMod.Content.Tiles
         }
     }
 
+	// The item for our custom crystal
     internal class ExampleCrystalItem : ModItem
     {
         public override void SetStaticDefaults()
