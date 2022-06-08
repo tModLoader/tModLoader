@@ -74,6 +74,8 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 
 	public IdentifierNameSyntax UseType(string fullname) => (IdentifierNameSyntax)UseType(model.Compilation.GetTypeByMetadataName(fullname));
 
+	public bool IsUsingNamespace(string @namespace) => usings.Contains(@namespace);
+
 	public ParameterSyntax Parameter(IParameterSymbol p) =>
 		SyntaxFactory.Parameter(default, new(ModifierToken(p.RefKind)), UseType(p.Type).WithTrailingTrivia(Space), Identifier(p.Name), default);
 
