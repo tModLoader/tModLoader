@@ -85,7 +85,7 @@
  			}
  
  			if (x < roomX1)
-@@ -2309,15 +_,29 @@
+@@ -2309,15 +_,30 @@
  		public static void setWorldSize() {
  			Main.bottomWorld = Main.maxTilesY * 16;
  			Main.rightWorld = Main.maxTilesX * 16;
@@ -109,6 +109,7 @@
 +		public static void do_worldGenCallBack(object threadContext) {
  			SoundEngine.PlaySound(10);
  			clearWorld();
++			SystemLoader.OnWorldLoad();
  			GenerateWorld(Main.ActiveWorldFileData.Seed, threadContext as GenerationProgress);
  			WorldFile.SaveWorld(Main.ActiveWorldFileData.IsCloudSave, resetTime: true);
 +			BackupIO.archiveLock = false;

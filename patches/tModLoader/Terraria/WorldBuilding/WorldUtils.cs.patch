@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/WorldUtils.cs
++++ src/tModLoader/Terraria/WorldBuilding/WorldUtils.cs
+@@ -1,5 +_,6 @@
+ using Microsoft.Xna.Framework;
+ using System;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.WorldBuilding
+ {
+@@ -81,6 +_,7 @@
+ 
+ 		public static void DebugRegen() {
+ 			WorldGen.clearWorld();
++			SystemLoader.OnWorldLoad();
+ 			WorldGen.GenerateWorld(Main.ActiveWorldFileData.Seed);
+ 			Main.NewText("World Regen Complete.");
+ 		}

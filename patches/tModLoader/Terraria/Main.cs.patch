@@ -934,6 +934,14 @@
  
  			musicFade[50] = 1f;
  			for (int i = 0; i < 10; i++) {
+@@ -5071,6 +_,7 @@
+ 
+ 			if (skipMenu) {
+ 				WorldGen.clearWorld();
++				SystemLoader.OnWorldLoad();
+ 				gameMenu = false;
+ 				LoadPlayers();
+ 				PlayerList[0].SetAsActive();
 @@ -8372,11 +_,17 @@
  		public static void LoadTestLog(string logname) {
  		}
