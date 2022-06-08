@@ -59,17 +59,11 @@ namespace ExampleMod.Content.Tiles
                 if (coordinateChance == 0)
                 {
                     additionalX = -1;
+                    additionalY = -1;
                 }
                 else if (coordinateChance == 1)
                 {
                     additionalX = 1;
-                }
-                else if (coordinateChance == 0)
-                {
-                    additionalY = -1;
-                }
-                else
-                {
                     additionalY = 1;
                 }
                 if (!Main.tile[i + additionalX, j + additionalY].HasTile)
