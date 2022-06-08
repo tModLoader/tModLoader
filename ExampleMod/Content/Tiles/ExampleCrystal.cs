@@ -31,9 +31,26 @@ namespace ExampleMod.Content.Tiles
 
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
         {
-            Main.tile[i, j].TileType = TileID.Crystals;
-            WorldGen.TileFrame(i, j, resetFrame, noBreak); // applies vanilla Crystal Shards behavior
-            Main.tile[i, j].TileType = Type;
+            bool invalidPlacement = false;
+            if (Main.tile[i - 1, j].Slope != SlopeType.Solid)
+                invalidPlacement = true;
+            if (Main.tile[i + 1, j].Slope != SlopeType.Solid)
+                invalidPlacement = true;
+            if (Main.tile[i, j - 1].Slope != SlopeType.Solid || Main.tile[i, j - 1].IsHalfBlock)
+                invalidPlacement = true;
+            if (Main.tile[i, j + 1].Slope != SlopeType.Solid || Main.tile[i, j + 1].IsHalfBlock)
+                invalidPlacement = true;
+            if (!invalidPlacement)
+            {
+                Main.tile[i, j].TileType = TileID.Crystals;
+                WorldGen.TileFrame(i, j, resetFrame, noBreak); // applies vanilla Crystal Shards behavior
+                Main.tile[i, j].TileType = Type;
+            }
+            else
+            {
+                WorldGen.KillTile(i, j, false, false, true);
+                return true;
+            }
             return false;
         }
     }
@@ -46,26 +63,35 @@ namespace ExampleMod.Content.Tiles
         {
 			// The crystal will grow only if: the world is in Hardmode, the tile is Stone, it's in the rock layer
 			// and with same chance as the vanilla Crystal Shards have of spawning.
-            if (Main.hardMode && type == TileID.Stone && j > Main.rockLayer && WorldGen.genRand.NextBool(110))       
+            if (Main.hardMode && type == TileID.Stone && j > Main.rockLayer && WorldGen.genRand.NextBool(1))       
             {
 				// Randomly generate the direction the crystal spawns in
                 int coordinateChance = WorldGen.genRand.Next(4);
                 int additionalX = 0;
                 int additionalY = 0;
-				
-                if (coordinateChance == 0)
-                {
-                    additionalX = -1;
-                    additionalY = -1;
-                }
-                else if (coordinateChance == 1)
-                {
-                    additionalX = 1;
-                    additionalY = 1;
-                }
-				
+
+				switch (coordinateChance)
+				{
+					case 0:
+						additionalX = -1;
+						additionalY = 0;
+						break;
+					case 1:
+						additionalX = 1;
+						additionalY = 0;
+						break;
+					case 2:
+						additionalX = 0;
+						additionalY = -1;
+						break;
+					case 3:
+						additionalX = 0;
+						additionalY = 1;
+						break;
+				}
+
 				// Checks if the position where the crystal should spawn doesn't already have a tile
-                if (!Main.tile[i + additionalX, j + additionalY].HasTile)
+				if (!Main.tile[i + additionalX, j + additionalY].HasTile)
                 {
 					// Count how many crystals there are in the area
                     int amountOfCrystals = 0;
@@ -89,7 +115,7 @@ namespace ExampleMod.Content.Tiles
                         int style = (short)WorldGen.genRand.Next(1);
                         if (WorldGen.PlaceTile(i + additionalX, j + additionalY, TileID.Crystals, true, style: style)) // Places crystal shards first, because vanilla have some hardcoded stuff in here for crystals, such as Y tile frame set, so it will be "connected" to stone. If we won't place crystal shard first, then it will use very first X/Y frame for crystal.
                         {
-                            Main.tile[i + additionalX, j + additionalY].TileType = ModContent.TileType<ExampleCrystal>(); // ... if succesfully placed, then replace with our crystal
+                            Main.tile[i + additionalX, j + additionalY].TileType = (ushort)ModContent.TileType<ExampleCrystal>(); // ... if succesfully placed, then replace with our crystal
                             Main.Map.Update(i + additionalX, j + additionalY, Main.Map[i + additionalX, j + additionalY].Light); // also don't forget to update it on map, so it won't appear as crystal shards
                         }
                         NetMessage.SendTileSquare(-1, i + additionalX, j + additionalY, TileChangeType.None);
