@@ -1183,6 +1183,90 @@
  				cloudBGActive = rand.Next(num2 * 3, num * 2);
  				if (netMode == 2)
  					NetMessage.SendData(7);
+@@ -10184,6 +_,8 @@
+ 			}
+ 		}
+ 
++		private static SlotId waterfallSoundSlot, lavafallSoundSlot;
++
+ 		public static void Ambience() {
+ 			ambientCounter++;
+ 			if (ambientCounter < 15)
+@@ -10192,12 +_,35 @@
+ 			ambientCounter = 0;
+ 			Microsoft.Xna.Framework.Point point = LocalPlayer.Center.ToPoint();
+ 			if (ambientWaterfallStrength > 0f) {
++				SoundStyle copy = SoundID.Waterfall;
++				copy.Volume *= ambientWaterfallStrength / 50f;
++
++				if (copy.Volume > 0 && ambientWaterfallX != -1 && ambientWaterfallY != -1) {
++					_isWaterfallMusicPlaying = true;
++
++					Vector2 pos = new(ambientWaterfallX, ambientWaterfallY);
++
++					if (!SoundEngine.TryGetActiveSound(waterfallSoundSlot, out ActiveSound waterfall)) {
++						waterfallSoundSlot = SoundEngine.PlaySound(copy, pos);
++						waterfall = SoundEngine.GetActiveSound(waterfallSoundSlot);
++					}
++					
++					if (waterfall is not null) {
++						waterfall.Volume = copy.Volume;
++						waterfall.Position = pos;
++					}
++				} else {
++					SoundEngine.SoundPlayer.StopAll(copy);
++					_isWaterfallMusicPlaying = false;
++				}
++				/*
+ 				SoundEngine.PlaySound(34, (int)ambientWaterfallX, (int)ambientWaterfallY, (int)ambientWaterfallStrength);
+ 				_isWaterfallMusicPlaying = true;
++				*/
+ 			}
+ 			else {
+ 				if (_isWaterfallMusicPlaying)
+-					SoundEngine.PlaySound(34, point.X, point.Y, 0);
++					SoundEngine.SoundPlayer.StopAll(SoundID.Waterfall);
+ 
+ 				_isWaterfallMusicPlaying = false;
+ 			}
+@@ -10213,13 +_,36 @@
+ 
+ 			float num5 = ambientLavafallStrength + ambientLavaStrength;
+ 			if (ambientLavafallStrength > 0f) {
++				SoundStyle copy = SoundID.Lavafall;
++				copy.Volume *= num5 / 50f;
++
++				if (copy.Volume > 0 && num3 != -1 && num4 != -1) {
++					_isLavafallMusicPlaying = true;
++
++					Vector2 pos = new(num3, num4);
++
++					if (!SoundEngine.TryGetActiveSound(lavafallSoundSlot, out ActiveSound lavafall)) {
++						lavafallSoundSlot = SoundEngine.PlaySound(copy, pos);
++						lavafall = SoundEngine.GetActiveSound(lavafallSoundSlot);
++					}
++
++					if (lavafall is not null) {
++						lavafall.Volume = copy.Volume;
++						lavafall.Position = pos;
++					}
++				} else {
++					SoundEngine.SoundPlayer.StopAll(copy);
++					_isLavafallMusicPlaying = false;
++				}
++				/*
+ 				SoundEngine.PlaySound(35, (int)num3, (int)num4, (int)num5);
+ 				_isLavafallMusicPlaying = true;
++				*/
+ 				return;
+ 			}
+ 
+ 			if (_isLavafallMusicPlaying)
+-				SoundEngine.PlaySound(35, point.X, point.Y, 0);
++				SoundEngine.SoundPlayer.StopAll(SoundID.Lavafall);
+ 
+ 			_isLavafallMusicPlaying = false;
+ 		}
 @@ -12355,11 +_,16 @@
  		}
  

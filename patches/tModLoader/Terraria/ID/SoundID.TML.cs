@@ -68,8 +68,8 @@ namespace Terraria.ID
 		//TODO: Inaccurate variants, search & analyze "PlaySound(32," in vanilla src.
 		public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", 14, 5, SoundType.Ambient) { Volume = 0.15f, PitchRange = (-0.7f, 0.26f), SoundLimitBehavior = IgnoreNew };
 		public static readonly SoundStyle Critter = new($"{Prefix}Zombie_15", SoundType.Ambient) { Volume = 0.2f, PitchRange = (-0.1f, 0.3f), SoundLimitBehavior = IgnoreNew };
-		public static readonly SoundStyle Waterfall = new($"{Prefix}Liquid_0", SoundType.Ambient) { Volume = 0.2f, SoundLimitBehavior = ReplaceOldest };
-		public static readonly SoundStyle Lavafall = new($"{Prefix}Liquid_1", SoundType.Ambient) { Volume = 0.65f, SoundLimitBehavior = ReplaceOldest };
+		public static readonly SoundStyle Waterfall = new($"{Prefix}Liquid_0", SoundType.Ambient) { Volume = 0.2f, SoundLimitBehavior = IgnoreNew };
+		public static readonly SoundStyle Lavafall = new($"{Prefix}Liquid_1", SoundType.Ambient) { Volume = 0.65f, SoundLimitBehavior = IgnoreNew };
 		public static readonly SoundStyle ForceRoar = new($"{Prefix}Roar_0") { Identifier = "Terraria/Roar" };
 		public static readonly SoundStyle ForceRoarPitched = new($"{Prefix}Roar_0") { Pitch = 0.6f, Identifier = "Terraria/Roar" };
 		public static readonly SoundStyle Meowmere = new($"{Prefix}Item_", 57, 2) { PitchVariance = 0.8f };
@@ -641,8 +641,8 @@ namespace Terraria.ID
 			LegacySoundIDs.Frog => Frog,
 			LegacySoundIDs.Bird => Bird,
 			LegacySoundIDs.Critter => Critter,
-			LegacySoundIDs.Waterfall => Waterfall with { Volume = Waterfall.Volume * style / 50f },
-			LegacySoundIDs.Lavafall => Lavafall with { Volume = Lavafall.Volume * style / 50f },
+			LegacySoundIDs.Waterfall => Waterfall,
+			LegacySoundIDs.Lavafall => Lavafall,
 			LegacySoundIDs.ForceRoar => style switch { -1 => ForceRoarPitched, _ => ForceRoar },
 			LegacySoundIDs.Meowmere => Meowmere,
 			LegacySoundIDs.CoinPickup => CoinPickup,

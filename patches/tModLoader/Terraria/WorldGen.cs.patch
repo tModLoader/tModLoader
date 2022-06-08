@@ -115,6 +115,72 @@
  			if (Main.menuMode == 10 || Main.menuMode == 888)
  				Main.menuMode = 6;
  
+@@ -2340,13 +_,6 @@
+ 		}
+ 
+ 		public static void JustQuit() {
+-			try {
+-				SoundEngine.PlaySound(34, -1, -1, 0);
+-				SoundEngine.PlaySound(35, -1, -1, 0);
+-			}
+-			catch {
+-			}
+-
+ 			Main.invasionProgress = -1;
+ 			Main.invasionProgressDisplayLeft = 0;
+ 			Main.invasionProgressAlpha = 0f;
+@@ -2354,6 +_,18 @@
+ 			Main.menuMode = 10;
+ 			Main.gameMenu = true;
+ 			SoundEngine.StopTrackedSounds();
++
++			try {
++				// Delay playing the "menu close" sound until AFTER all sounds have stopped
++				SoundEngine.PlaySound(11);
++			}
++			catch {
++			}
++
++			// Properly stop waterfall/lavafall sounds
++			Main.ambientWaterfallStrength = 0f;
++			Main.ambientLavafallStrength = 0f;
++
+ 			CaptureInterface.ResetFocus();
+ 			Main.ActivePlayerFileData.StopPlayTimer();
+ 			Main.fastForwardTime = false;
+@@ -2371,13 +_,6 @@
+ 
+ 		public static void SaveAndQuitCallBack(object threadContext) {
+ 			int netMode = Main.netMode;
+-			try {
+-				SoundEngine.PlaySound(34, -1, -1, 0);
+-				SoundEngine.PlaySound(35, -1, -1, 0);
+-			}
+-			catch {
+-			}
+-
+ 			if (netMode == 0)
+ 				WorldFile.CacheSaveTime();
+ 
+@@ -2388,6 +_,18 @@
+ 			Main.menuMode = 10;
+ 			Main.gameMenu = true;
+ 			SoundEngine.StopTrackedSounds();
++
++			try {
++				// Delay playing the "menu close" sound until AFTER all sounds have stopped
++				SoundEngine.PlaySound(11);
++			}
++			catch {
++			}
++			
++			// Properly stop waterfall/lavafall sounds
++			Main.ambientWaterfallStrength = 0f;
++			Main.ambientLavafallStrength = 0f;
++			
+ 			CaptureInterface.ResetFocus();
+ 			Main.ActivePlayerFileData.StopPlayTimer();
+ 			Player.SavePlayer(Main.ActivePlayerFileData);
 @@ -2402,6 +_,11 @@
  				Main.netMode = 0;
  			}
@@ -127,6 +193,14 @@
  			Main.fastForwardTime = false;
  			Main.UpdateTimeRate();
  			Main.menuMode = 0;
+@@ -2410,7 +_,6 @@
+ 		}
+ 
+ 		public static void SaveAndQuit(Action callback = null) {
+-			SoundEngine.PlaySound(11);
+ 			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
+ 		}
+ 
 @@ -2484,13 +_,20 @@
  					}
  
