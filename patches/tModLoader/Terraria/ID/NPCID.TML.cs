@@ -32,6 +32,14 @@ namespace Terraria.ID
 			/// Whether or not a given NPC can sit on suitable furniture (<see cref="TileID.Sets.CanBeSatOnForNPCs"/>)
 			/// </summary>
 			public static bool[] CannotSitOnFurniture = Factory.CreateBoolSet(638, 656);
+
+			// IDs taken from Conditions.SoulOfWhateverConditionCanDrop
+			/// <summary>
+			/// Whether or not a given NPC is excluded from dropping hardmode souls (Soul of Night/Light)
+			/// <br/>Contains vanilla NPCs that are easy to spawn in large numbers, preventing easy soul farming
+			/// <br/>Do not add your NPC to this if it would be excluded automatically (i.e. critter, town NPC, or no coin drops)
+			/// </summary>
+			public static bool[] CannotDropSouls = Factory.CreateBoolSet(1, 13, 14, 15, 121, 535);
 		}
 	}
 }

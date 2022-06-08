@@ -7,7 +7,15 @@ public class ModProjectileTest : ModProjectile
 {
 	public void IdentifierTest() {
 		Console.Write(projectile);
+		Console.Write(aiType);
+		Console.Write(cooldownSlot);
+		Console.Write(drawOffsetX);
+		Console.Write(drawOriginOffsetY);
+		Console.Write(drawOriginOffsetX);
+		Console.Write(drawHeldProjInFrontOfHeldItemAndArms);
 	}
+
+	public override bool CanDamage() { return false; }
 
 	public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough) { return true; }
 

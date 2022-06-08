@@ -13,7 +13,7 @@ namespace ExampleMod.Common.Players
 	{
 		public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
 			bool inWater = !attempt.inLava && !attempt.inHoney;
-			bool inExampleSurfaceBiome = Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>());
+			bool inExampleSurfaceBiome = Player.InModBiome<ExampleSurfaceBiome>();
 			if (attempt.playerFishingConditions.PoleItemType == ModContent.ItemType<ExampleFishingRod>() && inWater && inExampleSurfaceBiome) {
 				// In this example, we will fish up an Example Person from the water in Example Surface Biome,
 				// as long as there isn't one in the world yet

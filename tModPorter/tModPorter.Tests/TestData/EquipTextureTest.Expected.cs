@@ -1,6 +1,19 @@
+using System;
+using Terraria;
 using Terraria.ModLoader;
 
-public class EquipTextureTest : Mod
+public class EquipTextureTest : EquipTexture
+{
+	void Method() {
+#if COMPILE_ERROR
+		Console.WriteLine(mod/* Suggestion: Removed */);
+#endif
+		Console.WriteLine(Item);
+	}
+	public override void FrameEffects(Player player, EquipType type) { /* Empty */ }
+}
+
+public class EquipTextureModTest : Mod
 {
 	void Method() {
 		Mod mod = this;

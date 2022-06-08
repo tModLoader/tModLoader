@@ -1,6 +1,20 @@
+using System;
+using Terraria;
 using Terraria.ModLoader;
 
-public class EquipTextureTest : Mod
+public class EquipTextureTest : EquipTexture
+{
+	void Method() {
+#if COMPILE_ERROR
+		Console.WriteLine(mod);
+#endif
+		Console.WriteLine(item);
+	}
+
+	public override void UpdateVanity(Player player, EquipType type) { /* Empty */ }
+}
+
+public class EquipTextureModTest : Mod
 {
 	void Method() {
 		Mod mod = this;

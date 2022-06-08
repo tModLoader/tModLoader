@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.GameContent.ItemDropRules;
 
-namespace ExampleMod.Common.ItemDropRules.Conditions
+namespace ExampleMod.Common.ItemDropRules.DropConditions
 {
 	// Very simple drop condition: drop during daytime
 	public class ExampleDropCondition : IItemDropRuleCondition

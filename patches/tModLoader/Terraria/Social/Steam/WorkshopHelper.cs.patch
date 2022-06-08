@@ -32,7 +32,7 @@
  			}
  
  			public class Downloader
-@@ -34,26 +_,65 @@
+@@ -34,26 +_,68 @@
  					private set;
  				}
  
@@ -57,7 +57,10 @@
 +						var array = new AppId_t[] { ModLoader.Engine.Steam.TerrariaAppId_t, ModLoader.Engine.Steam.TMLAppID_t };
 +						foreach (var app in array) {
 +							SteamApps.GetAppInstallDir(app, out string installLoc, 1000);
-+							var workshopLoc = Path.Combine(Directory.GetParent(Directory.GetParent(installLoc).ToString()).ToString(), "workshop", "content", app.m_AppId.ToString());
++							if (installLoc == null)
++								installLoc = "."; // fallback for #2491
++
++							var workshopLoc = Path.Combine(installLoc, "..", "..", "workshop", "content", app.m_AppId.ToString());
 +							if (Directory.Exists(workshopLoc)) {
 +								list.AddRange(Directory.EnumerateDirectories(workshopLoc));
 +							}

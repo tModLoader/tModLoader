@@ -186,8 +186,7 @@ namespace Terraria.ModLoader.UI
 			File.WriteAllText(path, json);
 			*/
 
-			Interface.modPacksMenu.OnDeactivate(); // should reload
-			Interface.modPacksMenu.OnActivate(); // should reload
+			Main.menuMode = Interface.modPacksMenuID; // should reload
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
