@@ -22,20 +22,11 @@ namespace ExampleMod.Content.Tiles
             Main.tileShine2[Type] = true;
             Main.tileShine[Type] = 500;
             Main.tileSpelunker[Type] = true;
+            ItemType = ModContent.ItemType<ExampleCrystalItem>();
+            DustType = ModContent.DustType<Sparkle>();
         }
 
         public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].TileFrameX / 18); // this override is redundant, but in case if you want more map names option ig, then you can leave it alone?
-
-        public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
-        {
-            int toDrop = 0;
-			if (!fail)
-			{
-				toDrop = ModContent.ItemType<ExampleCrystalItem>();
-				DustType = ModContent.DustType<Sparkle>();
-			}
-			if (toDrop > 0) Item.NewItem(Entity.GetSource_None(), i * 16, j * 16, 16, 16, toDrop);
-        }
 
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
         {
