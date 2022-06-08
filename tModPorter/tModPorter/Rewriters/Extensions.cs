@@ -17,9 +17,13 @@ public static class Extensions
 
 	public static SyntaxToken WithText(this SyntaxToken token, string text) => text == token.Text ? token : Identifier(text).WithTriviaFrom(token);
 
-	public static SyntaxToken WithBlockComment(this SyntaxToken token, string comment) => token.WithTrailingTrivia(token.TrailingTrivia.Insert(0, Comment($"/* {comment} */")));
+	public static T WithBlockComment<T>(this T node, string comment) where T : SyntaxNode {
+		var trivia = node.GetTrailingTrivia();
+		if (trivia.Any(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia) && t.ToString().Contains("tModPorter")))
+			return node;
 
-	public static T WithBlockComment<T>(this T node, string comment) where T : SyntaxNode => node.WithTrailingTrivia(node.GetTrailingTrivia().Insert(0, Comment($"/* {comment} */")));
+		return node.WithTrailingTrivia(trivia.Insert(0, Comment($"/* tModPorter {comment} */")));
+	}
 
 	public static bool Contains(this SyntaxList<UsingDirectiveSyntax> usings, string @namespace) => usings.Any(u => u.Name.ToString() == @namespace);
 

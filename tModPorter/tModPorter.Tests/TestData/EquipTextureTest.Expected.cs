@@ -6,7 +6,7 @@ public class EquipTextureTest : EquipTexture
 {
 	void Method() {
 #if COMPILE_ERROR
-		Console.WriteLine(mod/* Suggestion: Removed */);
+		Console.WriteLine(mod/* tModPorter Note: Field removed */);
 #endif
 		Console.WriteLine(Item);
 	}

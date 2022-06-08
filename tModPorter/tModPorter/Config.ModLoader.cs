@@ -119,12 +119,12 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Initialize", to: "OnWorldLoad");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "PreUpdate",	to: "PreUpdateWorld");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "PostUpdate", to: "PostUpdateWorld");
-		ChangeHookSignature("Terraria.ModLoader.ModItem",		"SaveData",			comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
-		ChangeHookSignature("Terraria.ModLoader.GlobalItem",	"SaveData",			comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
-		ChangeHookSignature("Terraria.ModLoader.ModPlayer",		"SaveData",			comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
-		ChangeHookSignature("Terraria.ModLoader.ModTileEntity", "SaveData",			comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
-		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"SaveWorldData",	comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
-		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"OnWorldLoad",		comment: "Suggestion: Also consider overriding OnWorldUnload"); // TODO this doesn't work for just adding a comment when the sig didnt change
+		ChangeHookSignature("Terraria.ModLoader.ModItem",		"SaveData",			comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",	"SaveData",			comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",		"SaveData",			comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.ModTileEntity", "SaveData",			comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"SaveWorldData",	comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
+		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"OnWorldLoad",		comment: "Suggestion: Also override OnWorldUnload"); // TODO this doesn't work for just adding a comment when the sig didnt change
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"TileCountsAvailable");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"Clone");
 		ChangeHookSignature("Terraria.ModLoader.ModGore",		"OnSpawn");

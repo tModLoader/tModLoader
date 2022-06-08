@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class GlobalProjectileTest : GlobalProjectile
 {
-	public override bool? CanDamage(Projectile projectile)/* Suggestion: Return null instead of false */ { return false; }
+	public override bool? CanDamage(Projectile projectile)/* tModPorter Suggestion: Return null instead of false */ { return false; }
 
 	public override bool TileCollideStyle(Projectile projectile, ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) => true;
 

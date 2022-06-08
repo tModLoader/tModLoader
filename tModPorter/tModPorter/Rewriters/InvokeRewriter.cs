@@ -12,7 +12,7 @@ namespace tModPorter.Rewriters;
 
 public class InvokeRewriter : BaseRewriter
 {
-	public delegate SyntaxNode RewriteInvoke(InvokeRewriter rw, InvocationExpressionSyntax invoke, SyntaxToken methodName);
+	public delegate SyntaxNode RewriteInvoke(InvokeRewriter rw, InvocationExpressionSyntax invoke, NameSyntax methodName);
 
 	private static List<(string type, string name, bool isStatic, RewriteInvoke handler)> handlers = new();
 
@@ -46,7 +46,7 @@ public class InvokeRewriter : BaseRewriter
 			if (name != nameToken.Text || !targetType.InheritsFrom(type))
 				continue;
 
-			return handler(this, node, nameToken);
+			return handler(this, node, nameSyntax);
 		}
 
 		return node;
@@ -74,7 +74,7 @@ public class InvokeRewriter : BaseRewriter
 			if (isStatic ? !GetStaticallyLocalTypes().Any(t => t.InheritsFrom(type)) : enclosingMethod.IsStatic || !enclosingType.InheritsFrom(type))
 				continue;
 
-			return handler(this, node, nameToken);
+			return handler(this, node, nameSyntax);
 		}
 
 		return node;
@@ -82,10 +82,7 @@ public class InvokeRewriter : BaseRewriter
 
 	#region Handlers
 	public static RewriteInvoke AddComment(string comment) => (_, invoke, methodName) => {
-		if (methodName.TrailingTrivia.Any(SyntaxKind.MultiLineCommentTrivia))
-			return invoke;
-
-		return invoke.ReplaceToken(methodName, methodName.WithBlockComment(comment));
+		return invoke.ReplaceNode(methodName, methodName.WithBlockComment(comment));
 	};
 
 	private static ExpressionSyntax ConvertInvokeToMemberReference(InvocationExpressionSyntax invoke, string memberName) =>
@@ -146,7 +143,7 @@ public class InvokeRewriter : BaseRewriter
 	};
 
 	public static RewriteInvoke ToFindTypeCall(string type) => (rw, invoke, methodName) => {
-		if (methodName.Parent is not IdentifierNameSyntax nameSyntax)
+		if (methodName is not IdentifierNameSyntax nameSyntax)
 			return invoke;
 
 		invoke = invoke.ReplaceNode(nameSyntax, GenericName("Find", rw.UseType(type)));
