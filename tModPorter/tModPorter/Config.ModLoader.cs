@@ -123,6 +123,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Initialize", to: "OnWorldLoad");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "PreUpdate",	to: "PreUpdateWorld");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "PostUpdate", to: "PostUpdateWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",		"CanEquipAccessory",comment: "Suggestion: Consider using new hook CanAccessoryBeEquippedWith");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",	"CanEquipAccessory",comment: "Suggestion: Consider using new hook CanAccessoryBeEquippedWith");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"SaveData",			comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",	"SaveData",			comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",		"SaveData",			comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");

@@ -13,6 +13,8 @@ public class GlobalItemTest : GlobalItem
 
 	public override void UseStyle(Item item, Player player, Rectangle heldItemFrame) { /* comment */ }
 
+	public override bool CanEquipAccessory(Item item, Player player, int slot, bool modded)/* tModPorter Suggestion: Consider using new hook CanAccessoryBeEquippedWith */ { return true; /* comment */ }
+
 	public override void ModifyWeaponKnockback(Item item, Player player, ref StatModifier knockback) { /* Empty */ }
 
 	public override void ModifyWeaponCrit(Item item, Player player, ref float crit) { /* Empty */ }

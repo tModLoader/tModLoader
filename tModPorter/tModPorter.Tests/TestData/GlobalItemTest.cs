@@ -12,6 +12,8 @@ public class GlobalItemTest : GlobalItem
 
 	public override void UseStyle(Item item, Player player) { /* comment */ }
 
+	public override bool CanEquipAccessory(Item item, Player player, int slot) { return true; /* comment */ }
+
 	public override void GetWeaponKnockback(Item item, Player player, ref float knockback) { /* Empty */ }
 
 	public override void GetWeaponCrit(Item item, Player player, ref int crit) { /* Empty */ }

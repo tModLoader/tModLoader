@@ -35,6 +35,8 @@ public class ModItemTest : ModItem
 
 	public override void UpdateVanity(Player player, EquipType type) { /* comment */ }
 
+	public override bool CanEquipAccessory(Player player, int slot) { return true; /* comment */ }
+
 	public override void NetRecieve(BinaryReader reader) { /* Empty */ }
 
 	public override void GetWeaponKnockback(Player player, ref float knockback) { /* Empty */ }
