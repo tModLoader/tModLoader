@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 public class GlobalTileTest : GlobalTile {
-	public override bool? IsTileDangerous(int i, int j, int type, Player player)/* Suggestion: Return null instead of false */ {
+	public override bool? IsTileDangerous(int i, int j, int type, Player player)/* tModPorter Suggestion: Return null instead of false */ {
 		return false;
 	}
 

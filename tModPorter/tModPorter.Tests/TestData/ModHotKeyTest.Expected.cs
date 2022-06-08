@@ -12,6 +12,6 @@ public class ModHotKeyTest : Mod
 	}
 
 #if COMPILE_ERROR
-	public override void HotKeyPressed(string name)/* Suggestion: Use ModPlayer.ProcessTriggers */ { /* Empty */ }
+	public override void HotKeyPressed(string name)/* tModPorter Suggestion: Use ModPlayer.ProcessTriggers */ { /* Empty */ }
 #endif
 }

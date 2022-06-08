@@ -17,9 +17,9 @@ public class ModItemTest : ModItem
 	}
 
 #if COMPILE_ERROR
-	public override bool IgnoreDamageModifiers/* Suggestion: Removed. If you returned true, concider not setting Item.DamageType, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance */ => false;
+	public override bool IgnoreDamageModifiers/* tModPorter Note: Removed. If you returned true, consider leaving Item.DamageType as DamageClass.Default, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance */ => false;
 
-	public override bool OnlyShootOnSwing/* Suggestion: Removed. If you returned true, set Item.useTime to a multiple of Item.useAnimation */ => false;
+	public override bool OnlyShootOnSwing/* tModPorter Note: Removed. If you returned true, set Item.useTime to a multiple of Item.useAnimation */ => false;
 #endif
 
 	protected override bool CloneNewInstances => false;
@@ -28,7 +28,7 @@ public class ModItemTest : ModItem
 
 	public override bool PreReforge() { return false; /* comment */ }
 
-	public override bool? UseItem(Player player)/* Suggestion: Return null instead of false */ { return true; /* comment */ }
+	public override bool? UseItem(Player player)/* tModPorter Suggestion: Return null instead of false */ { return true; /* comment */ }
 
 	public override void HoldStyle(Player player, Rectangle heldItemFrame) { /* comment */ }
 
@@ -51,6 +51,6 @@ public class ModItemTest : ModItem
 	public override void LoadData(TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR
-	public override void SaveData(TagCompound tag)/* Suggestion: Edit tag parameter rather than returning new TagCompound */ => new TagCompound();
+	public override void SaveData(TagCompound tag)/* tModPorter Suggestion: Edit tag parameter instead of returning new TagCompound */ => new TagCompound();
 #endif
 }

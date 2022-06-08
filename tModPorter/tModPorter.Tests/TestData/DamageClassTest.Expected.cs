@@ -13,10 +13,10 @@ public class DamageClassTest : Mod
 		item.DamageType = DamageClass.Ranged;
 
 #if COMPILE_ERROR
-		item.magic = false/* Suggestion: remove. See https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#damage-classes */;
+		item.magic = false/* tModPorter Suggestion: Remove. See https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#damage-classes */;
 
 		// can't port conditional setter, emit a suggestion
-		item.ranged/* Suggestion: item.DamageType = ... */ = 1 > 2;
+		item.ranged/* tModPorter Suggestion: item.DamageType = ... */ = 1 > 2;
 #endif
 
 		bool itemIsmelee = item.CountsAsClass(DamageClass.Melee);

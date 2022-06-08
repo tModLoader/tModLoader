@@ -12,7 +12,7 @@ namespace tModPorter.Rewriters;
 
 public class InvokeRewriter : BaseRewriter
 {
-	public delegate SyntaxNode RewriteInvoke(InvokeRewriter rw, InvocationExpressionSyntax invoke, SyntaxToken methodName);
+	public delegate SyntaxNode RewriteInvoke(InvokeRewriter rw, InvocationExpressionSyntax invoke, NameSyntax methodName);
 
 	private static List<(string type, string name, bool isStatic, RewriteInvoke handler)> handlers = new();
 
@@ -46,7 +46,7 @@ public class InvokeRewriter : BaseRewriter
 			if (name != nameToken.Text || !targetType.InheritsFrom(type))
 				continue;
 
-			return handler(this, node, nameToken);
+			return handler(this, node, nameSyntax);
 		}
 
 		return node;
@@ -74,7 +74,7 @@ public class InvokeRewriter : BaseRewriter
 			if (isStatic ? !GetStaticallyLocalTypes().Any(t => t.InheritsFrom(type)) : enclosingMethod.IsStatic || !enclosingType.InheritsFrom(type))
 				continue;
 
-			return handler(this, node, nameToken);
+			return handler(this, node, nameSyntax);
 		}
 
 		return node;
@@ -82,10 +82,7 @@ public class InvokeRewriter : BaseRewriter
 
 	#region Handlers
 	public static RewriteInvoke AddComment(string comment) => (_, invoke, methodName) => {
-		if (methodName.TrailingTrivia.Any(SyntaxKind.MultiLineCommentTrivia))
-			return invoke;
-
-		return invoke.ReplaceToken(methodName, methodName.WithBlockComment(comment));
+		return invoke.ReplaceNode(methodName, methodName.WithBlockComment(comment));
 	};
 
 	private static ExpressionSyntax ConvertInvokeToMemberReference(InvocationExpressionSyntax invoke, string memberName) =>
@@ -146,12 +143,10 @@ public class InvokeRewriter : BaseRewriter
 	};
 
 	public static RewriteInvoke ToFindTypeCall(string type) => (rw, invoke, methodName) => {
-		if (invoke.Expression is GenericNameSyntax || invoke.Expression is MemberAccessExpressionSyntax memberAccess && memberAccess.Name is GenericNameSyntax)
+		if (methodName is not IdentifierNameSyntax nameSyntax)
 			return invoke;
 
-		// TODO: we should replace the entire NameSyntax with a GenericName, to avoid breaking the tree, rather than making an invalid IdentifierNameSyntax
-		// might be a problem for recursive calls
-		invoke = invoke.ReplaceToken(methodName, methodName.WithText($"Find<{rw.UseType(type)}>"));
+		invoke = invoke.ReplaceNode(nameSyntax, GenericName("Find", rw.UseType(type)));
 		return SimpleMemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
 	};
 	#endregion

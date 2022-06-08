@@ -10,7 +10,7 @@ public class ModTypeModItemTest : ModItem
 	}
 
 	// Most "ModTypes" had this Autoload variant in 1.3
-	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
 		Method (ref name/* name is defined by overridable Name property */);
 		name = "n1";
@@ -23,7 +23,7 @@ public class ModTypeModItemTest : ModItem
 // Below are exceptions to the Autoload rule
 public class ModTypeModBuffTest : ModBuff
 {
-	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
 		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
@@ -36,7 +36,7 @@ public class ModTypeModBuffTest : ModBuff
 
 public class ModTypeModDustTest : ModDust
 {
-	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
 		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
@@ -49,7 +49,7 @@ public class ModTypeModDustTest : ModDust
 
 public class ModTypeModTileTest : ModTile
 {
-	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
 		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
@@ -62,7 +62,7 @@ public class ModTypeModTileTest : ModTile
 
 public class ModTypeModWallTest : ModWall
 {
-	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
 		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
@@ -79,7 +79,7 @@ public class ModTypeModWaterfallStyleTest : ModWaterfallStyle
 		int type = Slot;
 	}
 
-	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
 		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
@@ -96,7 +96,7 @@ public class ModTypeModWaterStyleTest : ModWaterStyle
 		int type = Slot;
     }
 
-	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
 		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
@@ -118,7 +118,7 @@ public class ModTypeModWaterStyleTest : ModWaterStyle
 
 public class ModTypeModMountDataTest : ModMount
 {
-	public override bool IsLoadingEnabled(Mod mod)/* Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
+	public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
 		name/* name is defined by overridable Name property */ = "n1";
 		name = "n2";
