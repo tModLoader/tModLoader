@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -1,24 +_,83 @@
+@@ -1,24 +_,90 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
  using System.Collections.Generic;
@@ -74,6 +74,13 @@
 +							return SlotId.Invalid;
 +					}
 +				}
++			}
++
++			// Handle special case for Waterfall/Lavafall logic.
++			// The volume being <= 0 or the position being null indicates that the sound should be stopped, rather than having a sound with no volume play.
++			// -- absoluteAquarian
++			if ((style.IsTheSameAs(ID.SoundID.Waterfall) || style.IsTheSameAs(ID.SoundID.Lavafall)) && (style.Volume <= 0 || position is null)) {
++				return SlotId.Invalid;
 +			}
 +
 +			SoundStyle styleCopy = style;
