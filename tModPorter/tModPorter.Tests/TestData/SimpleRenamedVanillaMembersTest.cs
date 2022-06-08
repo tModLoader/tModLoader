@@ -83,6 +83,7 @@ public class SimpleRenamedVanillaMembersTest
 
 		var item2 = new Item();
 		var isTheSameAs = item.IsTheSameAs(item2);
+		var isTheSameAsExpression = (1 > 2 ? item : item2).IsTheSameAs((1 > 2 ? item2 : item));
 		var isTheSameAsNegated = !item.IsTheSameAs(item2);
 		var isTheSameAsNegatedVariant = item.IsTheSameAs(item2) == false;
 		var isNotTheSameAs = item.IsNotTheSameAs(item2);

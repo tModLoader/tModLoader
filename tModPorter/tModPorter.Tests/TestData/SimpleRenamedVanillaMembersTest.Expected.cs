@@ -84,6 +84,7 @@ public class SimpleRenamedVanillaMembersTest
 
 		var item2 = new Item();
 		var isTheSameAs = item.type == item2.type;
+		var isTheSameAsExpression = (1 > 2 ? item : item2).type == (1 > 2 ? item2 : item).type;
 		var isTheSameAsNegated = item.type != item2.type;
 		var isTheSameAsNegatedVariant = item.type != item2.type;
 		var isNotTheSameAs = item.IsNotSameTypePrefixAndStack(item2);
