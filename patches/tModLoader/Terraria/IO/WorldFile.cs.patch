@@ -44,14 +44,14 @@
  			if (!FileUtilities.Exists(Main.worldPathName, flag) && Main.autoGen) {
  				if (!flag) {
  					for (int num = Main.worldPathName.Length - 1; num >= 0; num--) {
-@@ -321,6 +_,7 @@
- 				}
+@@ -329,6 +_,7 @@
+ 					Main.ActiveWorldFileData.SetSeed(text);
  
- 				WorldGen.clearWorld();
+ 				UIWorldCreation.ProcessSpecialWorldSeeds(text);
 +				SystemLoader.OnWorldLoad();
- 				Main.ActiveWorldFileData = CreateMetadata((Main.worldName == "") ? "World" : Main.worldName, flag, Main.GameMode);
- 				string text = (Main.AutogenSeedName ?? "").Trim();
- 				if (text.Length == 0)
+ 				WorldGen.GenerateWorld(Main.ActiveWorldFileData.Seed, Main.AutogenProgress);
+ 				SaveWorld();
+ 			}
 @@ -356,6 +_,8 @@
  							CheckSavedOreTiers();
  							binaryReader.Close();
