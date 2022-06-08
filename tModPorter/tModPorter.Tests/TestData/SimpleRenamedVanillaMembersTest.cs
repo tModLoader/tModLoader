@@ -41,6 +41,14 @@ public class SimpleRenamedVanillaMembersTest
 		var heartLantern = Main.heartLantern;
 		var sunflower = Main.sunflower;
 
+		var expertDebuffTime = Main.expertDebuffTime;
+		var expertNPCDamage = Main.expertNPCDamage;
+		var expertLife = Main.expertLife;
+		var expertDamage = Main.expertDamage;
+		var expertKnockBack = Main.expertKnockBack;
+		var knockBackMultiplier = Main.knockBackMultiplier;
+		var damageMultiplier = Main.damageMultiplier;
+
 		float inverseLerp = Utils.InverseLerp(0f, 1f, 0.1f, false);
 		Lighting.BlackOut();
 		NetMessage.BroadcastChatMessage(null, Color.White, -1);
@@ -87,5 +95,8 @@ public class SimpleRenamedVanillaMembersTest
 		var isTheSameAsNegated = !item.IsTheSameAs(item2);
 		var isTheSameAsNegatedVariant = item.IsTheSameAs(item2) == false;
 		var isNotTheSameAs = item.IsNotTheSameAs(item2);
+
+		NPC npc = new NPC();
+		npc.damage = (int)(80f * Main.damageMultiplier); // int cast matches return type
 	}
 }

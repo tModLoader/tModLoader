@@ -42,6 +42,14 @@ public class SimpleRenamedVanillaMembersTest
 		var heartLantern = Main.SceneMetrics.HasHeartLantern;
 		var sunflower = Main.SceneMetrics.HasSunflower;
 
+		var expertDebuffTime = Main.GameModeInfo.DebuffTimeMultiplier;
+		var expertNPCDamage = Main.GameModeInfo.TownNPCDamageMultiplier;
+		var expertLife = Main.GameModeInfo.EnemyMaxLifeMultiplier;
+		var expertDamage = Main.GameModeInfo.EnemyDamageMultiplier;
+		var expertKnockBack = Main.GameModeInfo.KnockbackToEnemiesMultiplier;
+		var knockBackMultiplier = Main.GameModeInfo.KnockbackToEnemiesMultiplier;
+		var damageMultiplier = Main.GameModeInfo.EnemyDamageMultiplier;
+
 		float inverseLerp = Utils.GetLerpValue(0f, 1f, 0.1f, false);
 		Lighting.Clear();
 		ChatHelper.BroadcastChatMessage(null, Color.White, -1);
@@ -88,5 +96,8 @@ public class SimpleRenamedVanillaMembersTest
 		var isTheSameAsNegated = item.type != item2.type;
 		var isTheSameAsNegatedVariant = item.type != item2.type;
 		var isNotTheSameAs = item.IsNotSameTypePrefixAndStack(item2);
+
+		NPC npc = new NPC();
+		npc.damage = npc.GetAttackDamage_ScaledByStrength(80f); // int cast matches return type
 	}
 }

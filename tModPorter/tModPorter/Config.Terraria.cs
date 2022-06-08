@@ -94,6 +94,14 @@ public static partial class Config
 		RenameStaticField("Terraria.Main",		from: "heartLantern",		to: "SceneMetrics.HasHeartLantern");
 		RenameStaticField("Terraria.Main",		from: "sunflower",			to: "SceneMetrics.HasSunflower");
 
+		RenameStaticField("Terraria.Main", from: "expertDebuffTime",	to: "GameModeInfo.DebuffTimeMultiplier");
+		RenameStaticField("Terraria.Main", from: "expertNPCDamage",		to: "GameModeInfo.TownNPCDamageMultiplier");
+		RenameStaticField("Terraria.Main", from: "expertLife",			to: "GameModeInfo.EnemyMaxLifeMultiplier");
+		RenameStaticField("Terraria.Main", from: "expertDamage",		to: "GameModeInfo.EnemyDamageMultiplier");
+		RenameStaticField("Terraria.Main", from: "expertKnockBack",		to: "GameModeInfo.KnockbackToEnemiesMultiplier");
+		RenameStaticField("Terraria.Main", from: "knockBackMultiplier",	to: "GameModeInfo.KnockbackToEnemiesMultiplier");
+		RenameStaticField("Terraria.Main", from: "damageMultiplier",	to: "GameModeInfo.EnemyDamageMultiplier");
+
 		RenameStaticField("Terraria.Lighting",	from: "lightMode",			to: "LegacyEngine.Mode");
 
 		RenameInstanceField("Terraria.ObjectData.TileObjectData", from: "HookCheck", to: "HookCheckIfCanPlace");
