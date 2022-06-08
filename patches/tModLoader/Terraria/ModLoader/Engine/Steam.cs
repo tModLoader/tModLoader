@@ -37,7 +37,7 @@ namespace Terraria.ModLoader.Engine
 		public static string GetSteamTerrariaInstallDir() {
 			SteamApps.GetAppInstallDir(TerrariaAppId_t, out string terrariaInstallLocation, 1000);
 			if (terrariaInstallLocation == null) {
-				terrariaInstallLocation = "../Terraria";
+				terrariaInstallLocation = "../Terraria"; // fallback for #2491
 				Logging.Terraria.Warn($"Steam reports no terraria install directory. Falling back to {terrariaInstallLocation}");
 			}
 			if (Platform.IsOSX) {
