@@ -146,12 +146,10 @@ public class InvokeRewriter : BaseRewriter
 	};
 
 	public static RewriteInvoke ToFindTypeCall(string type) => (rw, invoke, methodName) => {
-		if (invoke.Expression is GenericNameSyntax || invoke.Expression is MemberAccessExpressionSyntax memberAccess && memberAccess.Name is GenericNameSyntax)
+		if (methodName.Parent is not IdentifierNameSyntax nameSyntax)
 			return invoke;
 
-		// TODO: we should replace the entire NameSyntax with a GenericName, to avoid breaking the tree, rather than making an invalid IdentifierNameSyntax
-		// might be a problem for recursive calls
-		invoke = invoke.ReplaceToken(methodName, methodName.WithText($"Find<{rw.UseType(type)}>"));
+		invoke = invoke.ReplaceNode(nameSyntax, GenericName("Find", rw.UseType(type)));
 		return SimpleMemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
 	};
 	#endregion

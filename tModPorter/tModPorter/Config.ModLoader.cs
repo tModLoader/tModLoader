@@ -125,7 +125,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModTileEntity", "SaveData",			comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"SaveWorldData",	comment: "Suggestion: Edit tag parameter rather than returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"OnWorldLoad",		comment: "Suggestion: Also concider overriding OnWorldUnload"); // TODO this doesn't work for just adding a comment when the sig didnt change
-		//ChangeHookSignature("Terraria.ModLoader.ModSystem",	"TileCountsAvailable"); // TODO causes recursion
+		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"TileCountsAvailable"); // TODO causes recursion
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"Clone");
 		ChangeHookSignature("Terraria.ModLoader.ModGore",		"OnSpawn");
 

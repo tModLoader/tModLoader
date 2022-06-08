@@ -69,6 +69,10 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 			UsingNamespace(sym.ContainingNamespace);
 		}
 
+		if (sym.TypeArguments.Length > 0) {
+			return GenericName(Identifier(sym.Name), TypeArgumentList(sym.TypeArguments.Select(UseType)));
+		}
+
 		return IdentifierName(sym.Name);
 	}
 

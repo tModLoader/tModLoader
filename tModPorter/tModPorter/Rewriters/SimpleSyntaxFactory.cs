@@ -42,16 +42,17 @@ public static class SimpleSyntaxFactory
 		return ParenthesizedExpression(expr);
 	}
 
-	public static ParameterListSyntax ParameterList(IEnumerable<ParameterSyntax> @params) {
-		var arr = @params.ToArray();
+	public static SeparatedSyntaxList<T> SeparatedList<T>(IEnumerable<T> items) where T : SyntaxNode {
+		var arr = items.ToArray();
 		if (arr.Length == 0)
-			return SyntaxFactory.ParameterList();
+			return SyntaxFactory.SeparatedList<T>();
 
-		return SyntaxFactory.ParameterList(SeparatedList(
-				arr,
-				Enumerable.Repeat(Token(SyntaxKind.CommaToken).WithTrailingTrivia(Space), arr.Length - 1)
-			));
+		return SyntaxFactory.SeparatedList(arr, Enumerable.Repeat(Token(SyntaxKind.CommaToken).WithTrailingTrivia(Space), arr.Length - 1));
 	}
+
+	public static ParameterListSyntax ParameterList(IEnumerable<ParameterSyntax> items) => SyntaxFactory.ParameterList(SeparatedList(items));
+	public static TypeArgumentListSyntax TypeArgumentList(IEnumerable<TypeSyntax> items) => SyntaxFactory.TypeArgumentList(SeparatedList(items));
+	public static GenericNameSyntax GenericName(string name, params TypeSyntax[] args) => SyntaxFactory.GenericName(Identifier(name), TypeArgumentList(args));
 
 	public static SyntaxToken ModifierToken(RefKind refKind) => refKind switch {
 		RefKind.None => default,
