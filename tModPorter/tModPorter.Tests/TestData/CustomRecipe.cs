@@ -1,8 +1,7 @@
-﻿using Terraria;
-using Terraria.ModLoader;
+﻿using Terraria.ModLoader;
 
 #if COMPILE_ERROR
-public class CustomRecipe : Recipe
+public class CustomRecipe : ModRecipe
 {
 	public CustomRecipe(Mod mod) : base(mod) { }
 }
