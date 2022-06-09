@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Immutable;
 using System.Linq;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static tModPorter.Rewriters.SimpleSyntaxFactory;
@@ -23,6 +24,19 @@ public static class Extensions
 			return node;
 
 		return node.WithTrailingTrivia(trivia.Insert(0, Comment($"/* tModPorter {comment} */")));
+	}
+
+	public static T WithTrailingCommentsFrom<T>(this T node, SyntaxNode other) where T : SyntaxNode {
+		var comments = other.GetTrailingTrivia().Where(t => !string.IsNullOrWhiteSpace(t.ToString())).ToImmutableArray();
+		if (comments.Length == 0)
+			return node;
+
+		var existing = node.GetTrailingTrivia();
+		int i = existing.Count;
+		while (i > 0 && existing[i - 1].IsKind(SyntaxKind.EndOfLineTrivia))
+			i--;
+
+		return node.WithTrailingTrivia(existing.InsertRange(i, comments));
 	}
 
 	public static bool Contains(this SyntaxList<UsingDirectiveSyntax> usings, string @namespace) => usings.Any(u => u.Name.ToString() == @namespace);

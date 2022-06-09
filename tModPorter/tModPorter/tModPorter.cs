@@ -102,16 +102,22 @@ public class tModPorter
 	}
 
 	private async Task<SyntaxNode?> Process(Document doc, Action<ProgressUpdate> updateProgress) {
-		var newDoc = await RewriteOnce(doc);
-		if (newDoc != doc) {
-			await Update(newDoc, updateProgress);
-			updateProgress(new FileUpdated(doc.Name));
+		try {
+			var newDoc = await RewriteOnce(doc);
+			if (newDoc != doc) {
+				await Update(newDoc, updateProgress);
+				updateProgress(new FileUpdated(doc.Name));
+			}
+
+			Interlocked.Increment(ref docsCompletedThisPass);
+			updateProgress(new Progress(pass, docsCompletedThisPass, documentsThisPass));
+
+			return newDoc == doc ? null : await newDoc.GetSyntaxRootAsync();
 		}
-
-		Interlocked.Increment(ref docsCompletedThisPass);
-		updateProgress(new Progress(pass, docsCompletedThisPass, documentsThisPass));
-
-		return newDoc == doc ? null : await newDoc.GetSyntaxRootAsync();
+		catch (Exception ex) {
+			updateProgress(new Error(doc.Name, ex));
+			return null;
+		}
 	}
 
 	protected virtual async Task Update(Document doc, Action<ProgressUpdate> updateProgress) {

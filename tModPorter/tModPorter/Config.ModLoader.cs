@@ -198,6 +198,9 @@ public static partial class Config
 		RenameType(from: "Terraria.ModLoader.SpawnCondition",		to: "Terraria.ModLoader.Utilities.SpawnCondition");
 		RenameType(from: "Terraria.ModLoader.ModSurfaceBgStyle",	to: "Terraria.ModLoader.ModSurfaceBackgroundStyle");
 		RenameType(from: "Terraria.ModLoader.ModUgBgStyle",			to: "Terraria.ModLoader.ModUndergroundBackgroundStyle");
+
+		RenameType(from: "Terraria.ModLoader.ModRecipe", to: "Terraria.Recipe");
+		RenameMethod("Terraria.Recipe", from: "AddRecipe", "Register");
 	}
 }
 
