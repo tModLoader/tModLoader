@@ -200,4 +200,8 @@ public class RenameRewriter : BaseRewriter {
 			SimpleMemberAccessExpression(newNode.WithoutTrivia(), memberName).WithTriviaFrom(newNode)
 		);
 	};
+	public static AdditionalRenameAction AddCommentToOverride(string comment) => (rw, node) => {
+		if (node.Parent is MethodDeclarationSyntax decl)
+			rw.RegisterAction<MethodDeclarationSyntax>(decl, newNode => newNode.WithParameterList(newNode.ParameterList.WithBlockComment(comment)));
+	};
 }

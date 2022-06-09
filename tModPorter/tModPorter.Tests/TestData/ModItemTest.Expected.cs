@@ -62,8 +62,6 @@ public class ModItemTest : ModItem
 	public override void DrawHair(ref bool drawHair, ref bool drawAltHair)/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Body.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true */ { /* Empty */ }
 #endif
 
-	public override void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration)/* tModPorter Suggestion: In SetStaticDefaults, needs to mirror values to ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(...), otherwise wings won't work. Only use this hook for dynamic adjustments moving forward */ { /* Empty */ } // ModItem recommendation only
-
 	public override void LoadData(TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR

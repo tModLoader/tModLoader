@@ -61,8 +61,6 @@ public class ModItemTest : ModItem
 	public override void DrawHair(ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
 #endif
 
-	public override void HorizontalWingSpeeds(Player player, ref float speed, ref float acceleration) { /* Empty */ } // ModItem recommendation only
-
 	public override void Load(TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR
