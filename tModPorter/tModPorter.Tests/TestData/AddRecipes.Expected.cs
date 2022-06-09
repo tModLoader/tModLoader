@@ -78,4 +78,17 @@ public class ModAddRecipes : Mod
 		recipe.AddTile(TileID.WorkBenches);
 		recipe.Register();
 	}
+
+#if COMPILE_ERROR
+	public Recipe MakeRecipe() => CreateRecipe();
+
+	public void AddRecipeViaAnotherCall(ModItem item) {
+		var recipe = MakeRecipe(item.Type);
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.Register();
+
+		recipe = MakeRecipe(item.Type, 2);
+		recipe.Register();
+	}
+#endif
 }

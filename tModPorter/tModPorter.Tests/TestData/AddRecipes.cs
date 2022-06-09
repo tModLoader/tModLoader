@@ -86,4 +86,19 @@ public class ModAddRecipes : Mod
 		recipe.SetResult(item, 5);
 		recipe.AddRecipe();
 	}
+
+#if COMPILE_ERROR
+	public ModRecipe MakeRecipe() => new ModRecipe(this);
+
+	public void AddRecipeViaAnotherCall(ModItem item) {
+		var recipe = MakeRecipe();
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.SetResult(item);
+		recipe.AddRecipe();
+
+		recipe = MakeRecipe();
+		recipe.SetResult(item, 2);
+		recipe.AddRecipe();
+	}
+#endif
 }
