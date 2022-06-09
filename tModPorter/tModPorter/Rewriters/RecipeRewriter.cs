@@ -33,9 +33,8 @@ namespace tModPorter.Rewriters
 			public override void VisitInvocationExpression(InvocationExpressionSyntax node) {
 				if (node.Parent is ExpressionStatementSyntax &&
 					node.Expression is MemberAccessExpressionSyntax { Expression: IdentifierNameSyntax target, Name.Identifier.Text: "SetResult" } &&
-					model.GetOperation(target) is ILocalReferenceOperation local && local.Type?.ToString() == "Terraria.Recipe") {
-
-					references.Add(local);
+					model.GetOperation(target) is ILocalReferenceOperation local && IsRecipe(local.Type)) {
+						references.Add(local);
 				}
 
 				base.VisitInvocationExpression(node);
@@ -45,8 +44,28 @@ namespace tModPorter.Rewriters
 			public override void VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node) { }
 			public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node) { }
 			public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node) { }
-		}
 
+			private bool IsRecipe(ITypeSymbol type) {
+				if (type.ToString() == "Terraria.Recipe")
+					return true;
+
+				if (type.BaseType == null)
+					return false;
+
+				// the BaseType in the SemanticModel for classes extending Recipe is object because Recipe is sealed
+				if (type.BaseType.ToString() != "object")
+					return IsRecipe(type.BaseType);
+
+				if (type.DeclaringSyntaxReferences.Length != 1 || type.DeclaringSyntaxReferences[0].GetSyntax() is not ClassDeclarationSyntax decl ||
+					decl.BaseList is not BaseListSyntax baseList || baseList.Types.Count == 0)
+					return false;
+
+				var baseTypeSyntax = baseList.Types[0].Type;
+				var sm = model.Compilation.GetSemanticModel(decl.SyntaxTree);
+				var t = sm.GetTypeInfo(baseTypeSyntax);
+				return t.Type != null && IsRecipe(t.Type);
+			}
+		}
 
 		public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node) {
 			var refs = RecipeSetResultVisitor.GetReferences(model, node);
