@@ -124,7 +124,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",		"SaveData",			comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModTileEntity", "SaveData",			comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"SaveWorldData",	comment: "Suggestion: Edit tag parameter instead of returning new TagCompound");
-		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"OnWorldLoad",		comment: "Suggestion: Also override OnWorldUnload"); // TODO this doesn't work for just adding a comment when the sig didnt change
+		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"OnWorldLoad",		comment: "Suggestion: Also concider overriding OnWorldUnload, and mirror your worldgen-sensitive data initialization in PreWorldGen"); // TODO this doesn't work for just adding a comment when the sig didnt change
 		ChangeHookSignature("Terraria.ModLoader.ModSystem",		"TileCountsAvailable");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"Clone");
 		ChangeHookSignature("Terraria.ModLoader.ModGore",		"OnSpawn");
