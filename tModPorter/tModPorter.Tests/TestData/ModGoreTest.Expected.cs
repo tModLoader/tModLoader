@@ -12,6 +12,6 @@ public class ModGoreTest : ModGore
 	public override void OnSpawn(Gore gore, IEntitySource source) { /* Empty */ }
 
 #if COMPILE_ERROR
-	public override bool DrawBehind(Gore gore)/* Suggestion: Removed. Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults */ { return false; }
+	public override bool DrawBehind(Gore gore)/* tModPorter Suggestion: Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults */ { return false; }
 #endif
 }

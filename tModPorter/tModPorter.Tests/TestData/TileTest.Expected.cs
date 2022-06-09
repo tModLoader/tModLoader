@@ -50,7 +50,7 @@ public class TileTest
 		if (tile.HasUnactuatedTile) { }
 		if (tile.BlockType == tile.BlockType) { }
 #if COMPILE_ERROR
-		if (tile.isTheSameAs/* Suggestion: Read https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles */(tile)) { }
+		if (tile.isTheSameAs/* tModPorter Suggestion: Read https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles */(tile)) { }
 #endif
 	}
 
@@ -70,9 +70,9 @@ public class TileTest
 		if (!(tile.LiquidType == LiquidID.Lava)) { }
 
 #if COMPILE_ERROR
-		tile.lava/* Suggestion: LiquidType = ... */(false);
-		tile.honey/* Suggestion: LiquidType = ... */(false);
-		tile.lava/* Suggestion: LiquidType = ... */(liquid > 0);
+		tile.lava/* tModPorter Suggestion: LiquidType = ... */(false);
+		tile.honey/* tModPorter Suggestion: LiquidType = ... */(false);
+		tile.lava/* tModPorter Suggestion: LiquidType = ... */(liquid > 0);
 #endif
 	}
 }

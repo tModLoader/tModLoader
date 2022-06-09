@@ -4,7 +4,7 @@ public class TileNullability // TODO, maybe, if ever
 {
 #if COMPILE_ERROR
 	void TileNullable() {
-		Tile tile = null/* Suggestion: Tiles can no-longer be null. Replace 'null' with 'default' and remove all null checks. */;
+		Tile tile = null/* tModPorter Suggestion: Tiles can no-longer be null. Replace 'null' with 'default' and remove all null checks. */;
 		if (tile == null) { }
 		if (tile != null) {
 			tile.HasTile = false;

@@ -8,6 +8,6 @@ public class ModTileEntityTest : ModTileEntity
 	public override void LoadData(TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR
-	public override void SaveData(TagCompound tag)/* Suggestion: Edit tag parameter rather than returning new TagCompound */ => new TagCompound();
+	public override void SaveData(TagCompound tag)/* tModPorter Suggestion: Edit tag parameter instead of returning new TagCompound */ => new TagCompound();
 #endif
 }
