@@ -15,7 +15,7 @@ public class PlayerDrawInfoTest
 		bool drawHeldProjInFrontOfHeldItemAndBody = info.heldProjOverHand;
 		bool drawHair = info.fullHair;
 		bool drawAltHair = info.hatHair;
-		//int hairShader = info.hairDyePacked; // Can't be reasonably ported
+		//int hairShader = info.hairShader; // Can't be reasonably ported, hairDyePacked has a different representation and needs (un)packing
 		int headArmorShader = info.cHead;
 		int bodyArmorShader = info.cBody;
 		int legArmorShader = info.cLegs;
