@@ -438,10 +438,10 @@ namespace Terraria
 		}
 
 		public static Recipe Create(int result, int amount = 1) {
-			var recipe = new Recipe(ModContent.LoadingMod);
-
 			if (!RecipeLoader.setupRecipes)
 				throw new RecipeException("A Recipe can only be created inside recipe related methods");
+
+			var recipe = new Recipe(ModContent.LoadingMod);
 
 			recipe.createItem.SetDefaults(result, false);
 			recipe.createItem.stack = amount;
