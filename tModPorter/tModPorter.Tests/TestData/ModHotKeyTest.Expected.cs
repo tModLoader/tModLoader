@@ -10,4 +10,8 @@ public class ModHotKeyTest : Mod
 
 		CustomHotkey = KeybindLoader.RegisterKeybind(this, "Custom Hotkey Via Identifier", "C");
 	}
+
+#if COMPILE_ERROR
+	public override void HotKeyPressed(string name)/* tModPorter Suggestion: Use ModPlayer.ProcessTriggers */ { /* Empty */ }
+#endif
 }

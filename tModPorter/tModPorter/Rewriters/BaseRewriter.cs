@@ -31,7 +31,7 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 	public override SyntaxNode Visit(SyntaxNode node) {
 		SyntaxNode newNode = base.Visit(node);
 
-		if (node != newNode && extraNodeVisitors.Remove(node, out var list)) {
+		if (node != null && extraNodeVisitors.Count > 0 && extraNodeVisitors.Remove(node, out var list)) {
 			foreach (var f in list)
 				newNode = f(newNode);
 		}
@@ -42,20 +42,14 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 	public override SyntaxToken VisitToken(SyntaxToken token) => token;
 
 	public override SyntaxNode VisitCompilationUnit(CompilationUnitSyntax node) {
-		usings = node.Usings;
+		usings = VisitUsingList(node.Usings);
 		return ((CompilationUnitSyntax)base.VisitCompilationUnit(node)).WithUsings(usings);
 	}
 
+	protected virtual SyntaxList<UsingDirectiveSyntax> VisitUsingList(SyntaxList<UsingDirectiveSyntax> usings) => usings;
+
 	private void UsingNamespace(INamespaceSymbol ns) {
-		var fullname = ns.ToString();
-		if (usings.Any(u => u.Name.ToString() == fullname))
-			return;
-
-		int idx = 0;
-		while (idx < usings.Count && string.Compare(usings[idx].Name.ToString(), fullname) < 0)
-			idx++;
-
-		usings = usings.Insert(idx, SimpleUsing(fullname));
+		usings = usings.WithUsingNamespace(ns.ToString());
 	}
 
 	public TypeSyntax UseType(ITypeSymbol sym) =>
@@ -75,10 +69,16 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 			UsingNamespace(sym.ContainingNamespace);
 		}
 
+		if (sym.TypeArguments.Length > 0) {
+			return GenericName(Identifier(sym.Name), TypeArgumentList(sym.TypeArguments.Select(UseType)));
+		}
+
 		return IdentifierName(sym.Name);
 	}
 
 	public IdentifierNameSyntax UseType(string fullname) => (IdentifierNameSyntax)UseType(model.Compilation.GetTypeByMetadataName(fullname));
+
+	public bool IsUsingNamespace(string @namespace) => usings.Contains(@namespace);
 
 	public ParameterSyntax Parameter(IParameterSymbol p) =>
 		SyntaxFactory.Parameter(default, new(ModifierToken(p.RefKind)), UseType(p.Type).WithTrailingTrivia(Space), Identifier(p.Name), default);

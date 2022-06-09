@@ -64,11 +64,19 @@ namespace Terraria
 		public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
 			=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, baseInstance, out result);
 
-		/// <summary> A short-hand for <code> Main.npc[Main.NewNPC(...)] </code> </summary>
+		/// <summary>
+		/// <inheritdoc cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/>
+		/// <br/><br/>This particular overload returns the actual NPC instance rather than the index of the spawned NPC within the <see cref="Main.npc"/> array.
+		/// <br/> A short-hand for <code> Main.npc[NPC.NewNPC(...)] </code>
+		/// </summary>
 		public static NPC NewNPCDirect(IEntitySource source, int x, int y, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
 			=> Main.npc[NewNPC(source, x, y, type, start, ai0, ai1, ai2, ai3, target)];
 
-		/// <inheritdoc cref="NewNPCDirect(IEntitySource, int, int, int, int, float, float, float, float, int)"/>
+		/// <summary>
+		/// <inheritdoc cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/>
+		/// <br/><br/>This particular overload returns the actual NPC instance rather than the index of the spawned NPC within the <see cref="Main.npc"/> array. It also uses a Vector2 for the spawn position instead of X and Y.
+		/// <br/> A short-hand for <code> Main.npc[NPC.NewNPC(...)] </code>
+		/// </summary>
 		public static NPC NewNPCDirect(IEntitySource source, Vector2 position, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
 			=> NewNPCDirect(source, (int)position.X, (int)position.Y, type, start, ai0, ai1, ai2, ai3, target);
 

@@ -1,7 +1,10 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Immutable;
 using System.Linq;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static tModPorter.Rewriters.SimpleSyntaxFactory;
 
 namespace tModPorter.Rewriters;
 
@@ -13,11 +16,41 @@ public static class Extensions
 	public static SyntaxToken WithTriviaFrom(this SyntaxToken node, SyntaxToken other) =>
 		node.WithLeadingTrivia(other.LeadingTrivia).WithTrailingTrivia(other.TrailingTrivia);
 
-	public static SyntaxToken WithText(this SyntaxToken token, string text) => Identifier(text).WithTriviaFrom(token);
+	public static SyntaxToken WithText(this SyntaxToken token, string text) => text == token.Text ? token : Identifier(text).WithTriviaFrom(token);
 
-	public static SyntaxToken WithBlockComment(this SyntaxToken token, string comment) => token.WithTrailingTrivia(token.TrailingTrivia.Insert(0, Comment($"/* {comment} */")));
+	public static T WithBlockComment<T>(this T node, string comment) where T : SyntaxNode {
+		var trivia = node.GetTrailingTrivia();
+		if (trivia.Any(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia) && t.ToString().Contains("tModPorter")))
+			return node;
 
-	public static T WithBlockComment<T>(this T node, string comment) where T : SyntaxNode => node.WithTrailingTrivia(node.GetTrailingTrivia().Insert(0, Comment($"/* {comment} */")));
+		return node.WithTrailingTrivia(trivia.Insert(0, Comment($"/* tModPorter {comment} */")));
+	}
+
+	public static T WithTrailingCommentsFrom<T>(this T node, SyntaxNode other) where T : SyntaxNode {
+		var comments = other.GetTrailingTrivia().Where(t => !string.IsNullOrWhiteSpace(t.ToString())).ToImmutableArray();
+		if (comments.Length == 0)
+			return node;
+
+		var existing = node.GetTrailingTrivia();
+		int i = existing.Count;
+		while (i > 0 && existing[i - 1].IsKind(SyntaxKind.EndOfLineTrivia))
+			i--;
+
+		return node.WithTrailingTrivia(existing.InsertRange(i, comments));
+	}
+
+	public static bool Contains(this SyntaxList<UsingDirectiveSyntax> usings, string @namespace) => usings.Any(u => u.Name.ToString() == @namespace);
+
+	public static SyntaxList<UsingDirectiveSyntax> WithUsingNamespace(this SyntaxList<UsingDirectiveSyntax> usings, string @namespace) {
+		if (usings.Contains(@namespace))
+			return usings;
+
+		int idx = 0;
+		while (idx < usings.Count && string.Compare(usings[idx].Name.ToString(), @namespace) < 0)
+			idx++;
+
+		return usings.Insert(idx, SimpleUsing(@namespace));
+	}
 
 	public static bool InheritsFrom(this ITypeSymbol type, string fromTypeName) =>
 		type.ToString() == fromTypeName ||

@@ -521,6 +521,7 @@ namespace Terraria.ModLoader
 		public virtual void OnCatchNPC(NPC npc, Item item, bool failed) {
 		}
 
+		/// <summary>
 		/// Allows you to dynamically modify the given item's size for this player, similarly to the effect of the Titan Glove.
 		/// </summary>
 		/// <param name="item">The item to modify the scale of.</param>

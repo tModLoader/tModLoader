@@ -24,7 +24,13 @@ public class AutomaticTest {
 	public async Task RewriteCode(Document doc) {
 		RemoveIfExists(Path.ChangeExtension(doc.FilePath!, ".Out.cs"));
 
-		doc = await tModPorter.Rewrite(doc);
+		while (true) {
+			var pDoc = doc;
+			doc = await tModPorter.RewriteOnce(doc);
+			if (doc == pDoc)
+				break;
+		}
+
 		if (doc.Project == _project)
 			Assert.Fail("No content change!");
 
@@ -37,10 +43,10 @@ public class AutomaticTest {
 	}
 
 	[Test]
-	public async Task FixedModCompiles() {
+	public async Task ExpectedModCompiles() {
 		using MSBuildWorkspace workspace = MSBuildWorkspace.Create();
 
-		var proj = await workspace.OpenProjectAsync(TestModPath[..^".csproj".Length] + "Fixed.csproj");
+		var proj = await workspace.OpenProjectAsync(TestModPath[..^".csproj".Length] + "Expected.csproj");
 		var comp = (await proj.GetCompilationAsync())!;
 		using var peStream = new MemoryStream();
 		var result = comp.Emit(peStream);

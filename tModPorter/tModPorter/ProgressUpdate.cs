@@ -8,6 +8,11 @@ public record ProgressUpdate
 		public override string ToString() => $"Warning: ${Message}";
 	}
 
+	public record Error(string Filename, Exception Exception) : ProgressUpdate()
+	{
+		public override string ToString() => $"{Filename}: {Exception}";
+	}
+
 	public record ProjectLoading(string Operation, TimeSpan ElapsedTime, string PathAndFramework) : ProgressUpdate() {
 		public override string ToString() => $"{Operation,-15} {ElapsedTime,-15:m\\:ss\\.fff} {PathAndFramework}";
 	}

@@ -183,7 +183,9 @@ namespace Terraria
 			}
 
 			if (!Directory.Exists(vanillaContentFolder)) {
-				Interface.MessageBoxShow(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
+				string message = Language.GetTextValue("tModLoader.ContentFolderNotFound");
+				Logging.tML.Fatal(message);
+				Interface.MessageBoxShow(message);
 				Environment.Exit(1);
 			}
 

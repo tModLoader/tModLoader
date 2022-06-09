@@ -278,6 +278,9 @@ namespace Terraria
 		/// <exception cref="NullReferenceException"/>
 		public bool InModBiome(ModBiome baseInstance) => modBiomeFlags[baseInstance.ZeroIndexType];
 
+		/// <inheritdoc cref="InModBiome"/>
+		public bool InModBiome<T>() where T : ModBiome => InModBiome(ModContent.GetInstance<T>());
+
 		/// <summary>
 		/// The zone property storing if the player is not in any particular biome. Updated in <see cref="UpdateBiomes"/>
 		/// Does NOT account for height. Please use ZoneForest / ZoneNormalX for height based derivatives.
