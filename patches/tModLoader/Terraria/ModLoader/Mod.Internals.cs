@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
@@ -86,12 +87,22 @@ namespace Terraria.ModLoader
 		}
 
 		internal void TransferAllAssets() {
+			initialTransferComplete = false;
 			Assets.TransferAllAssets();
+			initialTransferComplete = true;
+			if (AssetExceptions.Count > 0) {
+				if (AssetExceptions.Count == 1)
+					throw AssetExceptions[0];
+
+				if (AssetExceptions.Count > 0)
+					throw new MultipleException(AssetExceptions);
+			}
 		}
 
+		internal bool initialTransferComplete;
 		internal List<Exception> AssetExceptions = new List<Exception>();
 		internal void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
-			if (!Main.gameMenu) {
+			if (initialTransferComplete) {
 				// TODO: Add a user friendly indicator/inbox for viewing these errors that happen in-game
 				Logging.Terraria.Error($"Failed to load asset: \"{assetPath}\"", e);
 				Terraria.UI.FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);

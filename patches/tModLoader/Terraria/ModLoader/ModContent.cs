@@ -323,13 +323,6 @@ namespace Terraria.ModLoader
 				mod.PostSetupContent();
 				SystemLoader.PostSetupContent(mod);
 				mod.TransferAllAssets();
-				if(mod.AssetExceptions.Count > 0) {
-					if (mod.AssetExceptions.Count == 1)
-						throw mod.AssetExceptions[0];
-
-					if (mod.AssetExceptions.Count > 0)
-						throw new MultipleException(mod.AssetExceptions);
-				}
 			});
 
 			MemoryTracking.Finish();
