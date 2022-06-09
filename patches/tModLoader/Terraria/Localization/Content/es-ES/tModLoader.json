@@ -441,7 +441,7 @@
 		"AntivirusHint": "\n\nSugerencia: Si tienes antivirus, prueba a añadir Terraria a tu lista de exclusiones.",
 		"TypeInitializationHint": "\n\nSugerencia: Reinicia el juego. Si el problema persiste, prueba a desinstalar Terraria completamente, reinstálalo a través de Steam y vuelve a instalar tModLoader."
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
-    "TagsContent": "Nuevo contenido",
+		"TagsContent": "Nuevo contenido",
 		"TagsContentDescription": "Añaden nuevo contenido al juego (como objetos, armas, NPCs, etc.)",
 		"TagsUtility": "Herramientas",
 		"TagsUtilityDescription": "Añaden contenidos o funciones para mejorar las herramientas y utilidades del juego",
