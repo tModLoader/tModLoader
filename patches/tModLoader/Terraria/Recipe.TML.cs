@@ -368,8 +368,8 @@ namespace Terraria
 			if (!RecipeLoader.setupRecipes)
 				throw new RecipeException("A Recipe can only be cloned inside recipe related methods");
 
-			ArgumentNullException.ThrowIfNull(ModContent.LoadingMod);
-			var clone = new Recipe(ModContent.LoadingMod);
+			ArgumentNullException.ThrowIfNull(RecipeLoader.CurrentMod);
+			var clone = new Recipe(RecipeLoader.CurrentMod);
 
 			clone.createItem = createItem.Clone();
 
@@ -442,8 +442,8 @@ namespace Terraria
 			if (!RecipeLoader.setupRecipes)
 				throw new RecipeException("A Recipe can only be created inside recipe related methods");
 
-			ArgumentNullException.ThrowIfNull(ModContent.LoadingMod);
-			var recipe = new Recipe(ModContent.LoadingMod);
+			ArgumentNullException.ThrowIfNull(RecipeLoader.CurrentMod);
+			var recipe = new Recipe(RecipeLoader.CurrentMod);
 
 			recipe.createItem.SetDefaults(result, false);
 			recipe.createItem.stack = amount;
