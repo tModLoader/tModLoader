@@ -100,7 +100,6 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"CanDamage", comment: "Suggestion: Return null instead of false");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"TileCollideStyle");
-		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"DrawEffects");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"CatchFish");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"SetDrawPositions");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"HasSmartInteract");
@@ -198,9 +197,52 @@ public static partial class Config
 		RenameType(from: "Terraria.ModLoader.SpawnCondition",		to: "Terraria.ModLoader.Utilities.SpawnCondition");
 		RenameType(from: "Terraria.ModLoader.ModSurfaceBgStyle",	to: "Terraria.ModLoader.ModSurfaceBackgroundStyle");
 		RenameType(from: "Terraria.ModLoader.ModUgBgStyle",			to: "Terraria.ModLoader.ModUndergroundBackgroundStyle");
+		RenameType(from: "Terraria.ModLoader.PlayerDrawInfo",		to: "Terraria.DataStructures.PlayerDrawSet");
+
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "position", to: "Position");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "itemLocation", to: "ItemLocation");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "drawHeldProjInFrontOfHeldItemAndBody", to: "heldProjOverHand");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "drawHair", to: "fullHair");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "drawAltHair", to: "hatHair");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "headArmorShader", to: "cHead");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "bodyArmorShader", to: "cBody");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "legArmorShader", to: "cLegs");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "handOnShader", to: "cHandOn");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "handOffShader", to: "cHandOff");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "backShader", to: "cBack");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "frontShader", to: "cFront");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "shoeShader", to: "cShoe");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "waistShader", to: "cWaist");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "shieldShader", to: "cShield");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "neckShader", to: "cNeck");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "faceShader", to: "cFace");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "balloonShader", to: "cBalloon");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "wingShader", to: "cWings");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "carpetShader", to: "cCarpet");
+
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "hairColor", to: "colorHair");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "eyeWhiteColor", to: "colorEyeWhites");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "eyeColor", to: "colorEyes");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "faceColor", to: "colorHead");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "bodyColor", to: "colorBodySkin");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "legColor", to: "colorLegs");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "shirtColor", to: "colorShirt");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "underShirtColor", to: "colorUnderShirt");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "pantsColor", to: "colorPants");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "shoeColor", to: "colorShoes");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "upperArmorColor", to: "colorArmorHead");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "middleArmorColor", to: "colorArmorBody");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "mountColor", to: "colorMount");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "lowerArmorColor", to: "colorArmorLegs");
+
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "legGlowMask", to: "legsGlowMask");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "legGlowMaskColor", to: "legsGlowColor");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "spriteEffects", to: "playerEffect");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "headOrigin", to: "headVect");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "bodyOrigin", to: "bodyVect");
+		RenameInstanceField("Terraria.DataStructures.PlayerDrawSet", from: "legOrigin", to: "legVect");
 
 		RenameType(from: "Terraria.ModLoader.ModRecipe", to: "Terraria.Recipe");
 		RenameMethod("Terraria.Recipe", from: "AddRecipe", "Register");
 	}
 }
-
