@@ -12,7 +12,7 @@ using Terraria.ModLoader.Config;
 
 // Because this config was designed to show off various UI capabilities,
 // this config have no effect on the mod and provides purely teaching example.
-namespace ExampleMod.Common.Configs
+namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(99, 180, 209)]
 	[Label("ModConfig Showcase B: Ranges")]

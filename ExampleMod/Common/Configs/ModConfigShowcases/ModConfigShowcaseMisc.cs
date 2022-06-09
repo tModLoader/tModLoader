@@ -13,7 +13,7 @@ using ExampleMod.Common.Configs.CustomUI;
 
 // Because this config was designed to show off various UI capabilities,
 // this config have no effect on the mod and provides purely teaching example.
-namespace ExampleMod.Common.Configs
+namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	/// <summary>
 	/// This config is just a showcase of various attributes and their effects in the UI window.

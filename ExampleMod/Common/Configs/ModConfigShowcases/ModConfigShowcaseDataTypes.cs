@@ -10,7 +10,7 @@ using ExampleMod.Common.Configs.CustomDataTypes;
 
 // Because this config was designed to show off various UI capabilities,
 // this config have no effect on the mod and provides purely teaching example.
-namespace ExampleMod.Common.Configs
+namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(144, 252, 249)]
 	[Label("ModConfig Showcase A: Data Types")]
