@@ -8,5 +8,9 @@ public class GenBaseTest : GenBase
 		var height = GenBase._worldHeight;
 		var random = GenBase._random;
 		var tiles = GenBase._tiles;
+		tiles = GenBase._tiles;
+
+		var test = new GenBaseTest();
+		width = GenBase._worldWidth;
 	}
 }

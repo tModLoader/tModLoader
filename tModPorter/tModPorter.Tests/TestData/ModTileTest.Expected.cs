@@ -31,8 +31,16 @@ public class ModTileTest : ModTile
 		MineResist = 0;
 		AnimationFrameHeight = 0;
 		AdjTiles = new int[0];
+
+		SetModTree(new ExampleTree())/* tModPorter Suggestion: Removed, assign GrowsOnTileId to this tile type in ModTree.SetStaticDefaults */;
+		SetModCactus(new ExampleCactus())/* tModPorter Suggestion: Removed, assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults */;
+		SetModPalmTree(new ExamplePalmTree())/* tModPorter Suggestion: Removed, assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults */;
 #endif
 	}
+
+#if COMPILE_ERROR
+	public override int SaplingGrowthType(ref int style)/* tModPorter Suggestion: Move to ModTree */ { return -1; }
+#endif
 
 	public override bool IsTileDangerous(int i, int j, Player player) {
 		return false;
@@ -48,4 +56,6 @@ public class ModTileTest : ModTile
 		// Textbook usage of nextSpecialDrawIndex, reduced to one method in 1.4
 		Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
 	}
+
+	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) { /* comment */ }
 }

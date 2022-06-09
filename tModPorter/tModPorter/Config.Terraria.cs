@@ -46,6 +46,8 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "HasSameSlope",		ComparisonFunctionToPropertyEquality("BlockType"));
 		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		AddComment("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
 
+		RenameStaticField("Terraria.ID.DustID", from: "Fire", to: "Torch");
+
 		RenameStaticField("Terraria.Tile", from: "Liquid_Water",		to: "Water",			newType: "Terraria.ID.LiquidID");
 		RenameStaticField("Terraria.Tile", from: "Liquid_Honey",		to: "Honey",			newType: "Terraria.ID.LiquidID");
 		RenameStaticField("Terraria.Tile", from: "Liquid_Lava",			to: "Lava",				newType: "Terraria.ID.LiquidID");
@@ -94,7 +96,17 @@ public static partial class Config
 		RenameStaticField("Terraria.Main",		from: "heartLantern",		to: "SceneMetrics.HasHeartLantern");
 		RenameStaticField("Terraria.Main",		from: "sunflower",			to: "SceneMetrics.HasSunflower");
 
+		RenameStaticField("Terraria.Main", from: "expertDebuffTime",	to: "GameModeInfo.DebuffTimeMultiplier");
+		RenameStaticField("Terraria.Main", from: "expertNPCDamage",		to: "GameModeInfo.TownNPCDamageMultiplier");
+		RenameStaticField("Terraria.Main", from: "expertLife",			to: "GameModeInfo.EnemyMaxLifeMultiplier");
+		RenameStaticField("Terraria.Main", from: "expertDamage",		to: "GameModeInfo.EnemyDamageMultiplier");
+		RenameStaticField("Terraria.Main", from: "expertKnockBack",		to: "GameModeInfo.KnockbackToEnemiesMultiplier");
+		RenameStaticField("Terraria.Main", from: "knockBackMultiplier",	to: "GameModeInfo.KnockbackToEnemiesMultiplier");
+		RenameStaticField("Terraria.Main", from: "damageMultiplier",	to: "GameModeInfo.EnemyDamageMultiplier");
+
 		RenameStaticField("Terraria.Lighting",	from: "lightMode",			to: "LegacyEngine.Mode");
+
+		RenameInstanceField("Terraria.ObjectData.TileObjectData", from: "HookCheck", to: "HookCheckIfCanPlace");
 
 		RenameInstanceField("Terraria.Item",	from: "owner",				to: "playerIndexTheItemIsReservedFor");
 		RenameInstanceField("Terraria.Player",	from: "hideVisual",			to: "hideVisibleAccessory");
