@@ -25,15 +25,15 @@ public class ModPlayerTest : ModPlayer
 	public override void LoadData(TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR
-	public override void SaveData(TagCompound tag)/* Suggestion: Edit tag parameter rather than returning new TagCompound */ {
+	public override void SaveData(TagCompound tag)/* tModPorter Suggestion: Edit tag parameter instead of returning new TagCompound */ {
 		return new TagCompound();
 	}
 
-	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)/* Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed */ {
+	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)/* tModPorter Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed */ {
 		items.Add(9);
 	}
 
-	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)/* Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed */ {
+	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)/* tModPorter Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed */ {
 		items.Add(9);
 	}
 #endif

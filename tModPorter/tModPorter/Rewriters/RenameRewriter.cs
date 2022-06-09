@@ -147,10 +147,10 @@ public class RenameRewriter : BaseRewriter {
 			}
 		}
 
-		return nameSyntax;
+		return RefactorType(nameSyntax);
 	}
 
-	private SyntaxNode RefactorType(IdentifierNameSyntax nameSyntax) {
+	private IdentifierNameSyntax RefactorType(IdentifierNameSyntax nameSyntax) {
 		var nameToken = nameSyntax.Identifier;
 
 		foreach (var (from, to) in typeRenames) {
@@ -158,13 +158,20 @@ public class RenameRewriter : BaseRewriter {
 				continue;
 
 			var qualifier = from[..^nameToken.Text.Length];
-			if (qualifier[^1] != '.' || !to.StartsWith(qualifier))
+			if (qualifier[^1] != '.')
 				continue;
 
-			var repl = nameSyntax.WithIdentifier(nameToken.WithText(to[qualifier.Length..]));
-			var speculate = model.GetSpeculativeSymbolInfo(nameSyntax.SpanStart, repl, SpeculativeBindingOption.BindAsTypeOrNamespace);
-			if (speculate.Symbol?.ToString() == to)
-				return repl;
+			if (to.StartsWith(qualifier)) { // check for a nested class or similar
+				var repl = nameSyntax.WithIdentifier(nameToken.WithText(to[qualifier.Length..]));
+				var speculate = model.GetSpeculativeSymbolInfo(nameSyntax.SpanStart, repl, SpeculativeBindingOption.BindAsTypeOrNamespace);
+				if (speculate.Symbol?.ToString() == to)
+					return repl;
+			}
+
+			if (IsUsingNamespace(qualifier[..^1])) {
+				nameSyntax = UseType(to).WithTriviaFrom(nameSyntax);
+				break;
+			}
 		}
 
 		return nameSyntax;

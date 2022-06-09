@@ -5,7 +5,7 @@ using Terraria.ModLoader.IO;
 
 public class GlobalItemTest : GlobalItem
 {
-	public override bool? UseItem(Item item, Player player)/* Suggestion: Return null instead of false */ => false;
+	public override bool? UseItem(Item item, Player player)/* tModPorter Suggestion: Return null instead of false */ => false;
 
 	public override bool PreReforge(Item item) { return false; /* comment */ }
 
@@ -26,6 +26,6 @@ public class GlobalItemTest : GlobalItem
 	public override void LoadData(Item item, TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR
-	public override void SaveData(Item item, TagCompound tag)/* Suggestion: Edit tag parameter rather than returning new TagCompound */ => new TagCompound();
+	public override void SaveData(Item item, TagCompound tag)/* tModPorter Suggestion: Edit tag parameter instead of returning new TagCompound */ => new TagCompound();
 #endif
 }
