@@ -8,7 +8,7 @@ public static partial class Config
 	public static List<BaseRewriter> CreateRewriters() => new() {
 		new RenameRewriter(),
 		new InvokeRewriter(),
-		new HookSignatureRewriter(),
+		new HookRewriter(),
 		new RecipeRewriter(),
 	};
 

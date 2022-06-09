@@ -32,9 +32,9 @@ public class ModTileTest : ModTile
 		AnimationFrameHeight = 0;
 		AdjTiles = new int[0];
 
-		SetModTree(new ExampleTree())/* tModPorter Suggestion: Removed, assign GrowsOnTileId to this tile type in ModTree.SetStaticDefaults */;
-		SetModCactus(new ExampleCactus())/* tModPorter Suggestion: Removed, assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults */;
-		SetModPalmTree(new ExamplePalmTree())/* tModPorter Suggestion: Removed, assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults */;
+		SetModTree(new ExampleTree())/* tModPorter Note: Removed, assign GrowsOnTileId to this tile type in ModTree.SetStaticDefaults */;
+		SetModCactus(new ExampleCactus())/* tModPorter Note: Removed, assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults */;
+		SetModPalmTree(new ExamplePalmTree())/* tModPorter Note: Removed, assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults */;
 #endif
 	}
 
