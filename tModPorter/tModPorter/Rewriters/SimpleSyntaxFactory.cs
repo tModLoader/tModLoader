@@ -61,4 +61,19 @@ public static class SimpleSyntaxFactory
 		RefKind.In => Token(SyntaxKind.InKeyword).WithTrailingTrivia(Space),
 		_ => throw new Exception("Unreachable")
 	};
+
+	public static ArgumentListSyntax WithAdditionalArguments(this ArgumentListSyntax args, ArgumentListSyntax other) {
+		if (other.Arguments.Count == 0)
+			return args;
+
+		var argList = args.Arguments;
+		if (argList.Count == 0)
+			return other;
+
+		var l = argList.GetWithSeparators()
+			.Add(Token(SyntaxKind.CommaToken).WithTrailingTrivia(Space))
+			.AddRange(other.Arguments.GetWithSeparators());
+
+		return args.WithArguments(SyntaxFactory.SeparatedList<ArgumentSyntax>(l));
+	}
 }

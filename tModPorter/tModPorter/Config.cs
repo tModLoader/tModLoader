@@ -9,6 +9,7 @@ public static partial class Config
 		new RenameRewriter(),
 		new InvokeRewriter(),
 		new HookSignatureRewriter(),
+		new RecipeRewriter(),
 	};
 
 	static Config() {

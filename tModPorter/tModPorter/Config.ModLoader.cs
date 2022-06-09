@@ -190,6 +190,9 @@ public static partial class Config
 		RenameType(from: "Terraria.ModLoader.PlayerHooks",		to: "Terraria.ModLoader.PlayerLoader");
 		RenameType(from: "Terraria.ModLoader.MusicPriority",	to: "Terraria.ModLoader.SceneEffectPriority");
 		RenameType(from: "Terraria.ModLoader.SpawnCondition",	to: "Terraria.ModLoader.Utilities.SpawnCondition");
+
+		RenameType(from: "Terraria.ModLoader.ModRecipe", to: "Terraria.Recipe");
+		RenameMethod("Terraria.Recipe", from: "AddRecipe", "Register");
 	}
 }
 
