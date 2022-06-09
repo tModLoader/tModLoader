@@ -361,50 +361,43 @@ namespace Terraria
 		#endregion
 
 		/// <summary>
-		/// Creates a clone of the provided recipe except the source mod of the Recipe will the currently loading mod.
+		/// Returns a clone of this recipe except the source mod of the Recipe will the currently loading mod.
 		/// <br/> The clone will have to be registered after being tweaked.
 		/// </summary>
-		/// <param name="recipe"></param>
-		/// <returns></returns>
-		public static Recipe CloneRecipe(Recipe recipe) => Create(recipe.createItem.type, recipe.createItem.stack).Clone(recipe);
+		public Recipe Clone() {
+			var clone = new Recipe(ModContent.LoadingMod);
 
-		/// <summary>
-		/// Returns a copy of the recipe passed in, including the same OnCraftHooks and ConsumeItemHooks.
-		/// <br/> Called only on the result of <see cref="Create(int, int)"/> to ensure Mod and RecipeIndex set correctly.
-		/// </summary>
-		/// <param name="recipe">The recipe to clone.</param>
-		internal Recipe Clone(Recipe recipe) {
-			createItem = recipe.createItem.Clone();
+			clone.createItem = createItem.Clone();
 
-			requiredItem = new List<Item>(recipe.requiredItem.Select(x => x.Clone()).ToArray());
-			requiredTile = new List<int>(recipe.requiredTile.ToArray());
-			acceptedGroups = new List<int>(recipe.acceptedGroups.ToArray());
+			clone.requiredItem = new List<Item>(requiredItem.Select(x => x.Clone()).ToArray());
+			clone.requiredTile = new List<int>(requiredTile.ToArray());
+			clone.acceptedGroups = new List<int>(acceptedGroups.ToArray());
 
 			// These fields shouldn't be true, but are here just in case.
-			needHoney = recipe.needHoney;
-			needWater = recipe.needWater;
-			needLava = recipe.needLava;
-			anyWood = recipe.anyWood;
-			anyIronBar = recipe.anyIronBar;
-			anyPressurePlate = recipe.anyPressurePlate;
-			anySand = recipe.anySand;
-			anyFragment = recipe.anyFragment;
-			alchemy = recipe.alchemy;
-			needSnowBiome = recipe.needSnowBiome;
-			needGraveyardBiome = recipe.needGraveyardBiome;
+			clone.needHoney = needHoney;
+			clone.needWater = needWater;
+			clone.needLava = needLava;
+			clone.anyWood = anyWood;
+			clone.anyIronBar = anyIronBar;
+			clone.anyPressurePlate = anyPressurePlate;
+			clone.anySand = anySand;
+			clone.anyFragment = anyFragment;
+			clone.alchemy = alchemy;
+			clone.needSnowBiome = needSnowBiome;
+			clone.needGraveyardBiome = needGraveyardBiome;
 
-			OnCraftHooks = recipe.OnCraftHooks;
-			ConsumeItemHooks = recipe.ConsumeItemHooks;
-			foreach (Condition condition in recipe.Conditions) {
+			clone.OnCraftHooks = OnCraftHooks;
+			clone.ConsumeItemHooks = ConsumeItemHooks;
+			foreach (Condition condition in Conditions) {
 				AddCondition(condition);
 			}
 
 			// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
 			// it here to not have multiple dupliocate hooks.
-			if (requiredTile.Contains(TileID.Bottles))
-				ConsumeItemHooks -= ConsumptionRules.Alchemy;
+			if (clone.requiredTile.Contains(TileID.Bottles))
+				clone.ConsumeItemHooks -= ConsumptionRules.Alchemy;
 
-			return this;
+			return clone;
 		}
 
 		/// <summary>
