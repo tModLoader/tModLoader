@@ -10,7 +10,7 @@ public record ProgressUpdate
 
 	public record Error(string Filename, Exception Exception) : ProgressUpdate()
 	{
-		public override string ToString() => $"Error {Filename}: {Exception}";
+		public override string ToString() => $"{Filename}: {Exception}";
 	}
 
 	public record ProjectLoading(string Operation, TimeSpan ElapsedTime, string PathAndFramework) : ProgressUpdate() {

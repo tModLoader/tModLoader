@@ -101,4 +101,20 @@ public class ModAddRecipes : Mod
 		recipe.AddRecipe();
 	}
 #endif
+
+	public Action InLambda() => () => {
+		var recipe = new ModRecipe(this);
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.SetResult(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.AddRecipe();
+	};
+
+	public Action InDelegate() => delegate() {
+		var recipe = new ModRecipe(this);
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.SetResult(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.AddRecipe();
+	};
 }

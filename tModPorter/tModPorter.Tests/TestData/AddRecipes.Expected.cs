@@ -91,4 +91,18 @@ public class ModAddRecipes : Mod
 		recipe.Register();
 	}
 #endif
+
+	public Action InLambda() => () => {
+		var recipe = CreateRecipe(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.Register();
+	};
+
+	public Action InDelegate() => delegate() {
+		var recipe = CreateRecipe(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.Register();
+	};
 }

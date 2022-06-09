@@ -11,8 +11,7 @@ namespace tModPorter.Rewriters
 {
 	public class RecipeRewriter : BaseRewriter {
 
-		private class RecipeSetResultVisitor : CSharpSyntaxVisitor
-		{
+		private class RecipeSetResultVisitor : CSharpSyntaxVisitor {
 			private readonly List<ILocalReferenceOperation> references = new();
 			private readonly SemanticModel model;
 
@@ -43,6 +42,9 @@ namespace tModPorter.Rewriters
 			}
 
 			public override void VisitMethodDeclaration(MethodDeclarationSyntax node) { }
+			public override void VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node) { }
+			public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node) { }
+			public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node) { }
 		}
 
 
