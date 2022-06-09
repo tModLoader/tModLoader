@@ -393,7 +393,7 @@ namespace Terraria
 			clone.OnCraftHooks = OnCraftHooks;
 			clone.ConsumeItemHooks = ConsumeItemHooks;
 			foreach (Condition condition in Conditions) {
-				AddCondition(condition);
+				clone.AddCondition(condition);
 			}
 
 			// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
