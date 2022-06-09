@@ -365,6 +365,9 @@ namespace Terraria
 		/// <br/> The clone will have to be registered after being tweaked.
 		/// </summary>
 		public Recipe Clone() {
+			if (!RecipeLoader.setupRecipes)
+				throw new RecipeException("A Recipe can only be cloned inside recipe related methods");
+
 			var clone = new Recipe(ModContent.LoadingMod);
 
 			clone.createItem = createItem.Clone();
