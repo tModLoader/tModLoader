@@ -368,6 +368,7 @@ namespace Terraria
 			if (!RecipeLoader.setupRecipes)
 				throw new RecipeException("A Recipe can only be cloned inside recipe related methods");
 
+			ArgumentNullException.ThrowIfNull(ModContent.LoadingMod);
 			var clone = new Recipe(ModContent.LoadingMod);
 
 			clone.createItem = createItem.Clone();
@@ -441,6 +442,7 @@ namespace Terraria
 			if (!RecipeLoader.setupRecipes)
 				throw new RecipeException("A Recipe can only be created inside recipe related methods");
 
+			ArgumentNullException.ThrowIfNull(ModContent.LoadingMod);
 			var recipe = new Recipe(ModContent.LoadingMod);
 
 			recipe.createItem.SetDefaults(result, false);
