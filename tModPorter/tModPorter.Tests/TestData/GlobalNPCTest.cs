@@ -19,3 +19,4 @@ public class GlobalNPCTest : GlobalNPC
 	public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor) {
 		spriteBatch.Draw(null, npc.Center - Main.screenPosition, drawColor);
 	}
+}

@@ -44,7 +44,7 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "leftSlope",		GetterToProperty("LeftSlope"));
 		RefactorInstanceMethodCall("Terraria.Tile", "rightSlope",		GetterToProperty("RightSlope"));
 		RefactorInstanceMethodCall("Terraria.Tile", "HasSameSlope",		ComparisonFunctionToPropertyEquality("BlockType"));
-		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		AddComment("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
+		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		AddComment("Suggestion: Read https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
 
 		RenameStaticField("Terraria.ID.DustID", from: "Fire", to: "Torch");
 
@@ -95,14 +95,13 @@ public static partial class Config
 		RenameStaticField("Terraria.Main",		from: "starInBottle",		to: "SceneMetrics.HasStarInBottle");
 		RenameStaticField("Terraria.Main",		from: "heartLantern",		to: "SceneMetrics.HasHeartLantern");
 		RenameStaticField("Terraria.Main",		from: "sunflower",			to: "SceneMetrics.HasSunflower");
-
-		RenameStaticField("Terraria.Main", from: "expertDebuffTime",	to: "GameModeInfo.DebuffTimeMultiplier");
-		RenameStaticField("Terraria.Main", from: "expertNPCDamage",		to: "GameModeInfo.TownNPCDamageMultiplier");
-		RenameStaticField("Terraria.Main", from: "expertLife",			to: "GameModeInfo.EnemyMaxLifeMultiplier");
-		RenameStaticField("Terraria.Main", from: "expertDamage",		to: "GameModeInfo.EnemyDamageMultiplier");
-		RenameStaticField("Terraria.Main", from: "expertKnockBack",		to: "GameModeInfo.KnockbackToEnemiesMultiplier");
-		RenameStaticField("Terraria.Main", from: "knockBackMultiplier",	to: "GameModeInfo.KnockbackToEnemiesMultiplier");
-		RenameStaticField("Terraria.Main", from: "damageMultiplier",	to: "GameModeInfo.EnemyDamageMultiplier");
+		RenameStaticField("Terraria.Main",		from: "expertDebuffTime",	to: "GameModeInfo.DebuffTimeMultiplier");
+		RenameStaticField("Terraria.Main",		from: "expertNPCDamage",	to: "GameModeInfo.TownNPCDamageMultiplier");
+		RenameStaticField("Terraria.Main",		from: "expertLife",			to: "GameModeInfo.EnemyMaxLifeMultiplier");
+		RenameStaticField("Terraria.Main",		from: "expertDamage",		to: "GameModeInfo.EnemyDamageMultiplier");
+		RenameStaticField("Terraria.Main",		from: "expertKnockBack",	to: "GameModeInfo.KnockbackToEnemiesMultiplier");
+		RenameStaticField("Terraria.Main",		from: "knockBackMultiplier",to: "GameModeInfo.KnockbackToEnemiesMultiplier");
+		RenameStaticField("Terraria.Main",		from: "damageMultiplier",	to: "GameModeInfo.EnemyDamageMultiplier");
 
 		RenameStaticField("Terraria.Lighting",	from: "lightMode",			to: "LegacyEngine.Mode");
 

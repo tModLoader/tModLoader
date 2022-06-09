@@ -59,6 +59,9 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "GetWeaponKnockback",	to: "ModifyWeaponKnockback");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "GetWeaponKnockback",	to: "ModifyWeaponKnockback");
 		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "GetWeaponKnockback",	to: "ModifyWeaponKnockback");
+		RenameMethod("Terraria.ModLoader.ModItem",		from: "ConsumeAmmo",		to: "CanConsumeAmmo");
+		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "ConsumeAmmo",		to: "CanConsumeAmmo");
+		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "ConsumeAmmo",		to: "CanConsumeAmmo");
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "NPCLoot",			to: "OnKill");
 		RenameMethod("Terraria.ModLoader.GlobalNPC",	from: "NPCLoot",			to: "OnKill");
 		RenameMethod("Terraria.ModLoader.ModNPC",		from: "PreNPCLoot",			to: "PreKill");
@@ -71,6 +74,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.GlobalTile",	from: "Dangersense",		to: "IsTileDangerous");
 		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "ValidTile",			to: "IsTileValidForEntity");
 		RenameMethod("Terraria.ModLoader.EquipTexture", from: "UpdateVanity",		to: "FrameEffects");
+		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "SetupStartInventory",to: "AddStartingItems");
+		RenameMethod("Terraria.ModLoader.ModType",		from: "Autoload",			to: "IsLoadingEnabled").FollowBy(AddCommentToOverride("Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead"));
 
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"HoldStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"HoldStyle");
@@ -87,6 +92,15 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"ModifyWeaponDamage");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"ModifyWeaponDamage");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"ModifyWeaponDamage");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"Shoot");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"Shoot");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"Shoot");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"PickAmmo");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"PickAmmo");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"CanConsumeAmmo");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"CanConsumeAmmo");
+		ChangeHookSignature("Terraria.ModLoader.ModItem",			"OnConsumeAmmo");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"OnConsumeAmmo");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"PreDraw");
 		ChangeHookSignature("Terraria.ModLoader.GlobalNPC",			"PreDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"PostDraw");
@@ -97,11 +111,14 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PreDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"PostDraw");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PostDraw");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"DrawBehind");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"DrawBehind");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"CanDamage", comment: "Suggestion: Return null instead of false");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"CanDamage", comment: "Suggestion: Return null instead of false");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"CatchFish");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"AddStartingItems", comment: "Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"SetDrawPositions");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"HasSmartInteract");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"DrawEffects");
@@ -109,6 +126,9 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"IsTileDangerous", comment: "Suggestion: Return null instead of false");
 		ChangeHookSignature("Terraria.ModLoader.GlobalTile",		"PlaceInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModNPC",			"SetNPCNameList", comment: "Suggestion: Return a list of names");
+		ChangeHookSignature("Terraria.ModLoader.ModMount",			"JumpHeight");
+		ChangeHookSignature("Terraria.ModLoader.ModMount",			"JumpSpeed");
+		ChangeHookSignature("Terraria.ModLoader.ModType",			"IsLoadingEnabled");
 
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false if you returned false");
@@ -125,6 +145,34 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHair",		"After registering this as EquipType.Head, use ArmorIDs.Body.Sets.DrawFullHair[slot] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[slot] = true if you had drawAltHair set to true");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.DrawFullHair[head] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[head] = true if you had drawAltHair set to true");
+
+		HookRemoved("Terraria.ModLoader.ModGore",	"DrawBehind",			"Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults");
+		HookRemoved("Terraria.ModLoader.Mod",		"HotKeyPressed",		"Use ModPlayer.ProcessTriggers");
+		HookRemoved("Terraria.ModLoader.ModTile",	"SaplingGrowthType",	"Use ModTree.SaplingGrowthType");
+
+		HookRemoved("Terraria.ModLoader.ModSurfaceBackgroundStyle",		"ChooseBgStyle", "Create a ModBiome (or ModSceneEffect) class and override SurfaceBackgroundStyle property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive)");
+		HookRemoved("Terraria.ModLoader.ModUndergroundBackgroundStyle",	"ChooseBgStyle", "Create a ModBiome (or ModSceneEffect) class and override UndergroundBackgroundStyle property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive)");
+
+		HookRemoved("Terraria.ModLoader.Mod", "UpdateMusic",				"Use ModSceneEffect.Music and .Priority, aswell as ModSceneEffect.IsSceneEffectActive");
+		HookRemoved("Terraria.ModLoader.Mod", "ModifyTransformMatrix",		"Use ModSystem.ModifyTransformMatrix");
+		HookRemoved("Terraria.ModLoader.Mod", "UpdateUI",					"Use ModSystem.UpdateUI");
+		HookRemoved("Terraria.ModLoader.Mod", "PreUpdateEntities",			"Use ModSystem.PreUpdateEntities");
+		HookRemoved("Terraria.ModLoader.Mod", "MidUpdateDustTime",			"Use ModSystem.PostUpdateDusts or ModSystem.PreUpdateTime");
+		HookRemoved("Terraria.ModLoader.Mod", "MidUpdateGoreProjectile",	"Use ModSystem.PostUpdateGores or ModSystem.PreUpdateProjectiles");
+		HookRemoved("Terraria.ModLoader.Mod", "MidUpdateInvasionNet",		"Use ModSystem.PostUpdateInvasions");
+		HookRemoved("Terraria.ModLoader.Mod", "MidUpdateItemDust",			"Use ModSystem.PostUpdateItems or ModSystem.PreUpdateDusts");
+		HookRemoved("Terraria.ModLoader.Mod", "MidUpdateNPCGore",			"Use ModSystem.PostUpdateNPCs or ModSystem.PreUpdateGores");
+		HookRemoved("Terraria.ModLoader.Mod", "MidUpdatePlayerNPC",			"Use ModSystem.PostUpdatePlayers or ModSystem.PreUpdateNPCs");
+		HookRemoved("Terraria.ModLoader.Mod", "MidUpdateProjectileItem",	"Use ModSystem.PostUpdateProjectiles or ModSystem.PreUpdateItems");
+		HookRemoved("Terraria.ModLoader.Mod", "MidUpdateTimeWorld",			"Use ModSystem.PostUpdateTime");
+		HookRemoved("Terraria.ModLoader.Mod", "PostUpdateEverything",		"Use ModSystem.PostUpdateEverything");
+		HookRemoved("Terraria.ModLoader.Mod", "ModifyInterfaceLayers",		"Use ModSystem.ModifyInterfaceLayers");
+		HookRemoved("Terraria.ModLoader.Mod", "ModifySunLightColor",		"Use ModSystem.ModifySunLightColor");
+		HookRemoved("Terraria.ModLoader.Mod", "ModifyLightingBrightness",	"Use ModSystem.ModifyLightingBrightness");
+		HookRemoved("Terraria.ModLoader.Mod", "PostDrawInterface",			"Use ModSystem.PostDrawInterface");
+		HookRemoved("Terraria.ModLoader.Mod", "PostDrawFullscreenMap",		"Use ModSystem.PostDrawFullscreenMap or a ModMapLayer");
+		HookRemoved("Terraria.ModLoader.Mod", "PostUpdateInput",			"Use ModSystem.PostUpdateInput");
+		HookRemoved("Terraria.ModLoader.Mod", "PreSaveAndQuit",				"Use ModSystem.PreSaveAndQuit");
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",		to: "SaveData");
@@ -204,6 +252,8 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "TileType",		ToFindTypeCall("Terraria.ModLoader.ModTile"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "WallType",		ToFindTypeCall("Terraria.ModLoader.ModWall"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetGoreSlot",		ToFindTypeCall("Terraria.ModLoader.ModGore"));
+
+		RefactorStaticMethodCall("Terraria.ModLoader.ModGore", "GetGoreSlot",	ToFindTypeCall("Terraria.ModLoader.ModGore")); //todo, OnType ModContent
 
 		RenameMethod("Terraria.ModLoader.Mod",			from: "TextureExists",	to: "HasAsset");
 		RenameMethod("Terraria.ModLoader.ModContent",	from: "TextureExists",	to: "HasAsset");

@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 public class ModSurfaceBgStyleTest : ModSurfaceBackgroundStyle
 {
 #if COMPILE_ERROR
-	public override bool ChooseBgStyle()/* tModPorter Suggestion: Create a ModBiome (or ModSceneEffect) class and override SurfaceBackgroundStyle property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive) */ { return true; }
+	public override bool ChooseBgStyle()/* tModPorter Note: Removed. Create a ModBiome (or ModSceneEffect) class and override SurfaceBackgroundStyle property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive) */ { return true; }
 #endif
 
 	void Method() {
@@ -18,7 +18,7 @@ public class ModSurfaceBgStyleTest : ModSurfaceBackgroundStyle
 public class ModUgBgStyleTest : ModUndergroundBackgroundStyle
 {
 #if COMPILE_ERROR
-	public override bool ChooseBgStyle()/* tModPorter Suggestion: Create a ModBiome (or ModSceneEffect) class and override UndergroundBackgroundStyle property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive) */ { return true; }
+	public override bool ChooseBgStyle()/* tModPorter Note: Removed. Create a ModBiome (or ModSceneEffect) class and override UndergroundBackgroundStyle property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive) */ { return true; }
 #endif
 
 	void Method() {

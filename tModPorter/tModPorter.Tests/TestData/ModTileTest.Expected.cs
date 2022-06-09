@@ -39,7 +39,7 @@ public class ModTileTest : ModTile
 	}
 
 #if COMPILE_ERROR
-	public override int SaplingGrowthType(ref int style)/* tModPorter Suggestion: Move to ModTree */ { return -1; }
+	public override int SaplingGrowthType(ref int style)/* tModPorter Note: Removed. Use ModTree.SaplingGrowthType */ { return -1; }
 #endif
 
 	public override bool IsTileDangerous(int i, int j, Player player) {

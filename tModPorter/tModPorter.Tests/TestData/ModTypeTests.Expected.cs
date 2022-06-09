@@ -5,14 +5,14 @@ using System.Collections.Generic;
 // Also contain lesser used ModTypes
 public class ModTypeModItemTest : ModItem
 {
-	void Method() {
+	void Method(ref string s) {
 		var a = Mod;
 	}
 
 	// Most "ModTypes" had this Autoload variant in 1.3
 	public override bool IsLoadingEnabled(Mod mod)/* tModPorter Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead */ {
 #if COMPILE_ERROR
-		Method (ref name/* name is defined by overridable Name property */);
+		Method(ref name/* name is defined by overridable Name property */);
 		name = "n1";
 		name = "n2";
 #endif
