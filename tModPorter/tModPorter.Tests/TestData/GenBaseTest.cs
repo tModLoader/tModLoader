@@ -12,5 +12,9 @@ public class GenBaseTest : GenBase
 
 		var test = new GenBaseTest();
 		width = test._worldWidth;
+
+#if COMPILE_ERROR
+		width = new GenBaseTest()._worldWidth; // leave this alone, may have side effects
+#endif
 	}
 }
