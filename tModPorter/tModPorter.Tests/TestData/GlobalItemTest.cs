@@ -4,6 +4,8 @@ using Terraria.ModLoader.IO;
 
 public class GlobalItemTest : GlobalItem
 {
+	public override bool CloneNewInstances => true;
+
 	public override bool UseItem(Item item, Player player) => false;
 
 	public override bool NewPreReforge(Item item) { return false; /* comment */ }
