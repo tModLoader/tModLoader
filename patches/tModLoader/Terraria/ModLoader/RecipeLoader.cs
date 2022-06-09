@@ -23,7 +23,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The mod currently adding recipes.
 		/// </summary>
-		internal static Mod CurrentMod;
+		internal static Mod CurrentMod { get; private set; }
 
 		internal static void Add(GlobalRecipe globalRecipe) {
 			globalRecipes.Add(globalRecipe);
