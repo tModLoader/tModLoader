@@ -54,6 +54,8 @@ public class SimpleRenamedVanillaMembersTest
 		Lighting.Clear();
 		ChatHelper.BroadcastChatMessage(null, Color.White, -1);
 
+		int dustFire = DustID.Torch;
+
 		int water = LiquidID.Water;
 		int honey = LiquidID.Honey;
 		int lava = LiquidID.Lava;

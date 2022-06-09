@@ -46,6 +46,8 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "HasSameSlope",		ComparisonFunctionToPropertyEquality("BlockType"));
 		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		AddComment("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
 
+		RenameStaticField("Terraria.ID.DustID", from: "Fire", to: "Torch");
+
 		RenameStaticField("Terraria.Tile", from: "Liquid_Water",		to: "Water",			newType: "Terraria.ID.LiquidID");
 		RenameStaticField("Terraria.Tile", from: "Liquid_Honey",		to: "Honey",			newType: "Terraria.ID.LiquidID");
 		RenameStaticField("Terraria.Tile", from: "Liquid_Lava",			to: "Lava",				newType: "Terraria.ID.LiquidID");

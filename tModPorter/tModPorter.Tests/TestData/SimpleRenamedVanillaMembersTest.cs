@@ -53,6 +53,8 @@ public class SimpleRenamedVanillaMembersTest
 		Lighting.BlackOut();
 		NetMessage.BroadcastChatMessage(null, Color.White, -1);
 
+		int dustFire = DustID.Fire;
+
 		int water = Tile.Liquid_Water;
 		int honey = Tile.Liquid_Honey;
 		int lava = Tile.Liquid_Lava;
