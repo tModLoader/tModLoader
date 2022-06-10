@@ -75,6 +75,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "ValidTile",			to: "IsTileValidForEntity");
 		RenameMethod("Terraria.ModLoader.EquipTexture", from: "UpdateVanity",		to: "FrameEffects");
 		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "SetupStartInventory",to: "AddStartingItems");
+		RenameMethod("Terraria.ModLoader.ModPrefix",	from: "AutoDefaults",		to: "AutoStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModType",		from: "Autoload",			to: "IsLoadingEnabled").FollowBy(AddCommentToOverride("Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead"));
 
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"HoldStyle");
