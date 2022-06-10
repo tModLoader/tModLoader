@@ -100,5 +100,7 @@ public class SimpleRenamedVanillaMembersTest
 
 		NPC npc = new NPC();
 		npc.damage = (int)(80f * Main.damageMultiplier); // int cast matches return type
+
+		Utils.PerLinePoint cut = DelegateMethods.CutTiles;
 	}
 }

@@ -101,5 +101,7 @@ public class SimpleRenamedVanillaMembersTest
 
 		NPC npc = new NPC();
 		npc.damage = npc.GetAttackDamage_ScaledByStrength(80f); // int cast matches return type
+
+		Utils.TileActionAttempt cut = DelegateMethods.CutTiles;
 	}
 }
