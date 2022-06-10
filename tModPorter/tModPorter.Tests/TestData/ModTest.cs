@@ -2,11 +2,9 @@ using Terraria.ModLoader;
 
 public class ModTest : Mod
 {
-	public ModTest()
-	{
+	public ModTest() {
 #if COMPILE_ERROR
-		Properties = new ModProperties()
-		{
+		Properties = new ModProperties() {
 			Autoload = true,
 			AutoloadBackgrounds = true,
 			AutoloadGores = true,
