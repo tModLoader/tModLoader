@@ -12,7 +12,7 @@ public class ModTileTest : ModTile
 		DustType = 0;
 #if COMPILE_ERROR
 		HitSound/* tModPorter Suggestion: Use a SoundStyle here */ = 0;
-		soundStyle/* tModPorter Note: Removed, integrate into HitSound */ = 0;
+		soundStyle/* tModPorter Note: Removed. Integrate into HitSound */ = 0;
 #endif
 
 		DresserDrop = 0;
@@ -25,17 +25,17 @@ public class ModTileTest : ModTile
 		AdjTiles = new int[0];
 
 #if COMPILE_ERROR
-		sapling/* tModPorter Note: Removed, use TileID.Sets.TreeSapling and TileID.Sets.CommonSapling instead */ = true;
-		torch/* tModPorter Note: Removed, use TileID.Sets.Torch instead */ = true;
-		bed/* tModPorter Note: Removed, use TileID.Sets.CanBeSleptIn instead */ = true;
-		dresser/* tModPorter Note: Removed, use ContainerName.SetDefault() and TileID.Sets.BasicDresser */ = "";
-		chest/* tModPorter Note: Removed, use  ContainerName.SetDefault() and TileID.Sets.BasicChest */ = "";
-		disableSmartInteract/* tModPorter Note: Removed, use TileID.Sets.DisableSmartInteract instead */ = true;
-		disableSmartCursor/* tModPorter Note: Removed, use TileID.Sets.DisableSmartCursor instead */ = true;
+		sapling/* tModPorter Note: Removed. Use TileID.Sets.TreeSapling and TileID.Sets.CommonSapling instead */ = true;
+		torch/* tModPorter Note: Removed. Use TileID.Sets.Torch instead */ = true;
+		bed/* tModPorter Note: Removed. Use TileID.Sets.CanBeSleptIn instead */ = true;
+		dresser/* tModPorter Note: Removed. Use ContainerName.SetDefault() and TileID.Sets.BasicDresser instead */ = "";
+		chest/* tModPorter Note: Removed. Use ContainerName.SetDefault() and TileID.Sets.BasicChest instead */ = "";
+		disableSmartInteract/* tModPorter Note: Removed. Use TileID.Sets.DisableSmartInteract instead */ = true;
+		disableSmartCursor/* tModPorter Note: Removed. Use TileID.Sets.DisableSmartCursor instead */ = true;
 
-		SetModTree(new ExampleTree())/* tModPorter Note: Removed, assign GrowsOnTileId to this tile type in ModTree.SetStaticDefaults */;
-		SetModCactus(new ExampleCactus())/* tModPorter Note: Removed, assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults */;
-		SetModPalmTree(new ExamplePalmTree())/* tModPorter Note: Removed, assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults */;
+		SetModTree(new ExampleTree())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModTree.SetStaticDefaults instead */;
+		SetModCactus(new ExampleCactus())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults instead */;
+		SetModPalmTree(new ExamplePalmTree())/* tModPorter Note: Removed. Assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults instead */;
 #endif
 	}
 

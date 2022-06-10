@@ -4,10 +4,10 @@ public class ModBuffTest : ModBuff
 {
 	public override void SetStaticDefaults() {
 #if COMPILE_ERROR
-		canBeCleared/* tModPorter Note: Removed, use BuffID.Sets.NurseCannotRemoveDebuff */ = true;
-		longerExpertDebuff/* tModPorter Note: Removed, use BuffID.Sets.LongerExpertDebuff */ = true;
+		canBeCleared/* tModPorter Note: Removed. Use BuffID.Sets.NurseCannotRemoveDebuff instead */ = true;
+		longerExpertDebuff/* tModPorter Note: Removed. Use BuffID.Sets.LongerExpertDebuff instead */ = true;
 
-		bool a = BuffLoader.CanBeCleared(0)/* tModPorter Note: Removed, use BuffID.Sets.NurseCannotRemoveDebuff */;
+		bool a = BuffLoader.CanBeCleared(0)/* tModPorter Note: Removed. Use BuffID.Sets.NurseCannotRemoveDebuff instead */;
 #endif
 	}
 }
