@@ -3,8 +3,7 @@ using Terraria;
 
 public class IEntitySourceTest
 {
-	void Method()
-	{
+	void Method() {
 		NPC.NewNPC(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
 		Gore.NewGore(new Vector2(), new Vector2(), 3, 4);
