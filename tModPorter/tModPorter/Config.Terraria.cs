@@ -102,6 +102,13 @@ public static partial class Config
 		RenameStaticField("Terraria.Main",		from: "expertKnockBack",	to: "GameModeInfo.KnockbackToEnemiesMultiplier");
 		RenameStaticField("Terraria.Main",		from: "knockBackMultiplier",to: "GameModeInfo.KnockbackToEnemiesMultiplier");
 		RenameStaticField("Terraria.Main",		from: "damageMultiplier",	to: "GameModeInfo.EnemyDamageMultiplier");
+		RenameStaticField("Terraria.WorldGen",	from: "CopperTierOre",		to: "SavedOreTiers.Copper");
+		RenameStaticField("Terraria.WorldGen",	from: "IronTierOre",		to: "SavedOreTiers.Iron");
+		RenameStaticField("Terraria.WorldGen",	from: "SilverTierOre",		to: "SavedOreTiers.Silver");
+		RenameStaticField("Terraria.WorldGen",	from: "GoldTierOre",		to: "SavedOreTiers.Gold");
+		RenameStaticField("Terraria.WorldGen",	from: "oreTier1",			to: "SavedOreTiers.Cobalt");
+		RenameStaticField("Terraria.WorldGen",	from: "oreTier2",			to: "SavedOreTiers.Mythril");
+		RenameStaticField("Terraria.WorldGen",	from: "oreTier3",			to: "SavedOreTiers.Adamantite");
 
 		RenameStaticField("Terraria.Lighting",	from: "lightMode",			to: "LegacyEngine.Mode");
 

@@ -50,6 +50,15 @@ public class SimpleRenamedVanillaMembersTest
 		var knockBackMultiplier = Main.GameModeInfo.KnockbackToEnemiesMultiplier;
 		var damageMultiplier = Main.GameModeInfo.EnemyDamageMultiplier;
 
+		int copperTierOreInt = WorldGen.SavedOreTiers.Copper;
+		ushort copperTierOre = (ushort)WorldGen.SavedOreTiers.Copper;
+		ushort ironTierOre = (ushort)WorldGen.SavedOreTiers.Iron;
+		ushort silverTierOre = (ushort)WorldGen.SavedOreTiers.Silver;
+		ushort goldTierOre = (ushort)WorldGen.SavedOreTiers.Gold;
+		int oreTier1 = WorldGen.SavedOreTiers.Cobalt;
+		int oreTier2 = WorldGen.SavedOreTiers.Mythril;
+		int oreTier3 = WorldGen.SavedOreTiers.Adamantite;
+
 		float inverseLerp = Utils.GetLerpValue(0f, 1f, 0.1f, false);
 		Lighting.Clear();
 		ChatHelper.BroadcastChatMessage(null, Color.White, -1);

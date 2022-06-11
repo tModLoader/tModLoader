@@ -18,3 +18,14 @@ public class GenBaseTest : GenBase
 #endif
 	}
 }
+
+#if COMPILE_ERROR
+public class GenPassTest : GenPass
+{
+	// Mandatory
+	public GenPassTest(string name, float loadWeight) : base(name, loadWeight) { /* Empty */ }
+
+	// do NOT port to: protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration), breaks invocation sites
+	public override void Apply(GenerationProgress progress) { /* Empty */ }
+}
+#endif
