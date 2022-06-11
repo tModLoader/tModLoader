@@ -49,7 +49,6 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.ModGore", from: "updateType",	to: "UpdateType");
 		RenameInstanceField("Terraria.ModLoader.ModDust", from: "updateType",	to: "UpdateType");
 
-		RenameMethod("Terraria.ModLoader.ModItem",		from: "UpdateVanity",		to: "EquipFrameEffects");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NetRecieve",			to: "NetReceive");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NewPreReforge",		to: "PreReforge");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "NewPreReforge",		to: "PreReforge");
@@ -252,9 +251,10 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "TileEntityType",	ToFindTypeCall("Terraria.ModLoader.ModTileEntity"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "TileType",		ToFindTypeCall("Terraria.ModLoader.ModTile"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "WallType",		ToFindTypeCall("Terraria.ModLoader.ModWall"));
-		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetGoreSlot",		ToFindTypeCall("Terraria.ModLoader.ModGore"));
 
-		RefactorStaticMethodCall("Terraria.ModLoader.ModGore", "GetGoreSlot",	ToFindTypeCall("Terraria.ModLoader.ModGore")); //todo, OnType ModContent
+		//RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetGoreSlot",		ToFindTypeCall("Terraria.ModLoader.ModGore")); // TODO needs more sophisicated rewriter that detects parameter content
+
+		//RefactorStaticMethodCall("Terraria.ModLoader.ModGore", "GetGoreSlot",	ToFindTypeCall("Terraria.ModLoader.ModGore")); //todo, OnType ModContent, and same as Mod.GetGoreSlot
 
 		RenameMethod("Terraria.ModLoader.Mod",			from: "TextureExists",	to: "HasAsset");
 		RenameMethod("Terraria.ModLoader.ModContent",	from: "TextureExists",	to: "HasAsset");

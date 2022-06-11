@@ -34,8 +34,6 @@ public class ModItemTest : ModItem
 
 	public override void UseStyle(Player player, Rectangle heldItemFrame) { /* comment */ }
 
-	public override void EquipFrameEffects(Player player, EquipType type) { /* comment */ }
-
 	public override bool CanEquipAccessory(Player player, int slot, bool modded)/* tModPorter Suggestion: Consider using new hook CanAccessoryBeEquippedWith */ { return true; /* comment */ }
 
 	public override void NetReceive(BinaryReader reader) { /* Empty */ }
