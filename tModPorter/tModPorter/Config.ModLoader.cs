@@ -113,8 +113,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PostDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"DrawBehind");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"DrawBehind");
-		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"CanDamage", comment: "Suggestion: Return null instead of false");
-		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"CanDamage", comment: "Suggestion: Return null instead of false");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"CanDamage", comment: "Suggestion: Return null instead of true");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"CanDamage", comment: "Suggestion: Return null instead of true");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"CatchFish");
