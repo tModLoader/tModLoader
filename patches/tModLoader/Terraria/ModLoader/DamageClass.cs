@@ -50,6 +50,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// This is the translation that is used behind <see cref="DisplayName"/>. The translation will show up when an item tooltip displays 'X [ClassName]'. This should include the 'damage' part.
 		/// </summary>
+		[TranslationKeyPattern("DamageClassName.{Name}")]
 		public ModTranslation ClassName { get; internal set; }
 
 		/// <summary>
@@ -102,8 +103,6 @@ namespace Terraria.ModLoader
 		public virtual bool ShowStatTooltipLine(Player player, string lineName) => true;
 
 		protected sealed override void Register() {
-			ClassName = LocalizationLoader.GetOrCreateTranslation(Mod, $"DamageClassName.{Name}");
-
 			ModTypeLookup<DamageClass>.Register(this);
 
 			Type = DamageClassLoader.Add(this);

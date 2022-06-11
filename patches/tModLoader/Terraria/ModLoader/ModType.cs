@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Terraria.ModLoader.Core;
+using System.Reflection;
 
 namespace Terraria.ModLoader
 {
@@ -30,7 +32,23 @@ namespace Terraria.ModLoader
 			Mod = mod;
 			InitTemplateInstance();
 			Load();
+			AutoAssignTranslationKeys();
 			Register();
+		}
+
+		private void AutoAssignTranslationKeys() {
+			Type type = GetType();
+			var modTranslations = type.GetProperties().Where(x => x.PropertyType == typeof(ModTranslation));
+			foreach (var modTranslation in modTranslations) {
+				var translationKeyPatternAttribute = modTranslation.GetCustomAttribute<TranslationKeyPatternAttribute>();
+				if (translationKeyPatternAttribute != null) {
+					string key = Utils.FormatWith(translationKeyPatternAttribute.Pattern, new {
+						Name = this.Name,
+					});
+
+					modTranslation.SetValue(this, LocalizationLoader.GetOrCreateTranslation(Mod, key));
+				}
+			}
 		}
 
 		/// <summary>
