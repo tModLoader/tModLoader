@@ -142,9 +142,9 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHands",	"After registering this as EquipType.Body, use ArmorIDs.Body.Sets.HidesHands[slot] = false if you had drawHands set to true. If you had drawArms set to true, you don't need to do anything");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHands",	"In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false if you had drawHands set to true. If you had drawArms set to true, you don't need to do anything");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHands",	"In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesHands[body] = false if you had drawHands set to true. If you had drawArms set to true, you don't need to do anything");
-		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHair",		"After registering this as EquipType.Head, use ArmorIDs.Body.Sets.DrawFullHair[slot] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[slot] = true if you had drawAltHair set to true");
-		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true");
-		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.DrawFullHair[head] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[head] = true if you had drawAltHair set to true");
+		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHair",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawFullHair[slot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[slot] = true if you had drawAltHair set to true");
+		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true");
+		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[head] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[head] = true if you had drawAltHair set to true");
 
 		HookRemoved("Terraria.ModLoader.ModGore",	"DrawBehind",			"Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults");
 		HookRemoved("Terraria.ModLoader.Mod",		"HotKeyPressed",		"Use ModPlayer.ProcessTriggers");
