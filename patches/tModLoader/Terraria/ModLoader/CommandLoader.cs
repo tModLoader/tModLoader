@@ -84,7 +84,7 @@ namespace Terraria.ModLoader
 			args = args.Skip(1).ToArray();
 
 			if (caller.CommandType != CommandType.Console) {
-				if (name[0] != '/')
+				if (name == "" || name[0] != '/')
 					return false;
 
 				name = name.Substring(1);
