@@ -160,7 +160,9 @@ public static partial class Config
 		RenameTextureAsset(from: "chainsTexture",		to: "Chains");
 		RenameTextureAsset(from: "blackTileTexture",	to: "BlackTile");
 		RenameTextureAsset(from: "magicPixel",			to: "MagicPixel");
+		RenameTextureAsset(from: "fishingLineTexture",	to: "FishingLine");
 		RenameTextureAsset(from: "wireUITexture",		to: "WireUi");
+		RenameTextureAsset(from: "gemTexture",			to: "Gem");
 
 		void RenameMultipleTextures(int n, Func<string, string> from, Func<string, string> to) {
 			for (int i = 0; i <= n; i++) {
