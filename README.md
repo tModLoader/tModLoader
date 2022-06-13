@@ -35,7 +35,7 @@ If you would like to contact us or TML users, it's best to join our [Discord ser
 
 ## Contributors
 ### Core team
-TML is largely created and maintained by a core team of contributors: **Blushiemagic**, **Chicken-Bones**, **Jopojelly**, **Jofairden** and **Mirsario**
+TML is largely created and maintained by a core team of contributors: **Blushiemagic**, **Chicken-Bones**, **Jopojelly**, **Jofairden**, **Mirsario** and **Solxanich**
 
 This project exists in its current state thanks to all the people who have contributed:
 
