@@ -1,5 +1,6 @@
 ﻿using static tModPorter.Rewriters.RenameRewriter;
 using static tModPorter.Rewriters.InvokeRewriter;
+using static tModPorter.Rewriters.AddComment;
 using System;
 
 namespace tModPorter;
@@ -44,7 +45,7 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "leftSlope",		GetterToProperty("LeftSlope"));
 		RefactorInstanceMethodCall("Terraria.Tile", "rightSlope",		GetterToProperty("RightSlope"));
 		RefactorInstanceMethodCall("Terraria.Tile", "HasSameSlope",		ComparisonFunctionToPropertyEquality("BlockType"));
-		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		AddComment("Suggestion: Read https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
+		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		Comment("Suggestion: Read https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
 
 		RenameStaticField("Terraria.ID.DustID", from: "Fire", to: "Torch");
 

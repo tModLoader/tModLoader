@@ -1,6 +1,8 @@
 ﻿using static tModPorter.Rewriters.RenameRewriter;
 using static tModPorter.Rewriters.InvokeRewriter;
+using static tModPorter.Rewriters.MemberUseRewriter;
 using static tModPorter.Rewriters.HookRewriter;
+using static tModPorter.Rewriters.AddComment;
 
 namespace tModPorter;
 
@@ -48,6 +50,27 @@ public static partial class Config
 
 		RenameInstanceField("Terraria.ModLoader.ModGore", from: "updateType",	to: "UpdateType");
 		RenameInstanceField("Terraria.ModLoader.ModDust", from: "updateType",	to: "UpdateType");
+
+		RefactorInstanceMethodCall("Terraria.ModLoader.BuffLoader", "CanBeCleared",			Removed("Use !BuffID.Sets.NurseCannotRemoveDebuff instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModBuff",		"canBeCleared",			Removed("Use BuffID.Sets.NurseCannotRemoveDebuff instead, and invert the logic"));
+		RefactorInstanceMember("Terraria.ModLoader.ModBuff",		"longerExpertDebuff",	Removed("Use BuffID.Sets.LongerExpertDebuff instead"));
+		RefactorInstanceMember("Terraria.ModLoader.EquipTexture",	"mod",					Removed(""));
+		RefactorInstanceMember("Terraria.ModLoader.ModNPC",			"bossBag",				Removed("Spawn the treasure bag alongside other loot via npcLoot.Add(ItemDropRule.BossBag(type))"));
+		RefactorInstanceMember("Terraria.ModLoader.Mod",			"Properties",			Removed("Instead, assign the properties directly (ContentAutoloadingEnabled, GoreAutoloadingEnabled, MusicAutoloadingEnabled, and BackgroundAutoloadingEnabled)"));
+		RefactorInstanceMember("Terraria.ModLoader.ModBlockType",	"soundStyle",			Removed("Integrate into HitSound"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"sapling",				Removed("Use TileID.Sets.TreeSapling and TileID.Sets.CommonSapling instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"torch",				Removed("Use TileID.Sets.Torch instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"bed",					Removed("Use TileID.Sets.CanBeSleptIn instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"dresser",				Removed("Use ContainerName.SetDefault() and TileID.Sets.BasicDresser instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"chest",				Removed("Use ContainerName.SetDefault() and TileID.Sets.BasicChest instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"disableSmartInteract",	Removed("Use TileID.Sets.DisableSmartInteract instead"));
+		RefactorInstanceMember("Terraria.ModLoader.ModTile",		"disableSmartCursor",	Removed("Use TileID.Sets.DisableSmartCursor instead"));
+		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModTree",			Removed("Assign GrowsOnTileId to this tile type in ModTree.SetStaticDefaults instead"));
+		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModCactus",			Removed("Assign GrowsOnTileId to this tile type in ModCactus.SetStaticDefaults instead"));
+		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile",	"SetModPalmTree",		Removed("Assign GrowsOnTileId to this tile type in ModPalmTree.SetStaticDefaults instead"));
+
+		// TODO, assignment rewriter
+		// RefactorInstanceMember("Terraria.ModLoader.ModBlockType", "HitSound", Comment("Suggestion: Use a SoundStyle here"));
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NetRecieve",			to: "NetReceive");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NewPreReforge",		to: "PreReforge");
@@ -207,17 +230,18 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModMount",		from: "SetDefaults", to: "SetStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModPrefix",	from: "SetDefaults", to: "SetStaticDefaults");
 
-		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "drop",		 to: "ItemDrop");
-		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "dustType",    to: "DustType");
+		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "drop",		to: "ItemDrop");
+		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "dustType",	to: "DustType");
+		RenameInstanceField("Terraria.ModLoader.ModBlockType",		from: "soundType",	to: "HitSound");
 
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "dresserDrop",			 to: "DresserDrop");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "chestDrop",			 to: "ChestDrop");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "closeDoorID",			 to: "CloseDoorID");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "openDoorID",			 to: "OpenDoorID");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "minPick",				 to: "MinPick");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "mineResist",			 to: "MineResist");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "animationFrameHeight",  to: "AnimationFrameHeight");
-		RenameInstanceField("Terraria.ModLoader.ModTile", from: "adjTiles",				 to: "AdjTiles");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "dresserDrop",			to: "DresserDrop");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "chestDrop",			to: "ChestDrop");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "closeDoorID",			to: "CloseDoorID");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "openDoorID",			to: "OpenDoorID");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "minPick",				to: "MinPick");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "mineResist",			to: "MineResist");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "animationFrameHeight",	to: "AnimationFrameHeight");
+		RenameInstanceField("Terraria.ModLoader.ModTile", from: "adjTiles",				to: "AdjTiles");
 
 		RenameInstanceField("Terraria.ModLoader.ModWaterStyle",		from: "Type",		to: "Slot");
 		RenameInstanceField("Terraria.ModLoader.ModWaterfallStyle", from: "Type",		to: "Slot");

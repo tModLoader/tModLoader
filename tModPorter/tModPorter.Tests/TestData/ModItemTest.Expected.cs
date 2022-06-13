@@ -57,7 +57,7 @@ public class ModItemTest : ModItem
 
 	public override void DrawHands(ref bool drawHands, ref bool drawArms)/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false if you had drawHands set to true. If you had drawArms set to true, you don't need to do anything */ { /* Empty */ }
 
-	public override void DrawHair(ref bool drawHair, ref bool drawAltHair)/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Body.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true */ { /* Empty */ }
+	public override void DrawHair(ref bool drawHair, ref bool drawAltHair)/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true */ { /* Empty */ }
 #endif
 
 	public override void LoadData(TagCompound tag) { /* Empty */ }
