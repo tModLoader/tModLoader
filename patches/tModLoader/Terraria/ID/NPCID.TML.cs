@@ -43,9 +43,12 @@ namespace Terraria.ID
 
 			//No Default IDs, as there is no vanilla precedent for this functionality
 			/// <summary>
-			/// Whether or not this NPC can still interact with doors if they use the Vanilla Town NPC aiStyle (AKA aiStyle == 7)
+			/// Whether or not this NPC can still interact with doors if they use the Vanilla TownNPC aiStyle (AKA aiStyle == 7)
 			/// but are not actually marked as Town NPCs (AKA npc.townNPC == true).
 			/// </summary>
+			/// <remarks>
+			/// Note: This set DOES NOT DO ANYTHING if your NPC doesn't use the Vanilla TownNPC aiStyle (aiStyle == 7).
+			/// </remarks>
 			public static bool[] AllowDoorInteraction = Factory.CreateBoolSet();
 		}
 	}
