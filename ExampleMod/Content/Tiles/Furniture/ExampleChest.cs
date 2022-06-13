@@ -130,7 +130,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			Main.npcChatCornerItem = 0;
 			Main.npcChatText = "";
 			if (Main.editChest) {
-				SoundEngine.PlaySound(SoundID.MenuOpen);
+				SoundEngine.PlaySound(SoundID.MenuTick);
 				Main.editChest = false;
 				Main.npcChatText = string.Empty;
 			}
