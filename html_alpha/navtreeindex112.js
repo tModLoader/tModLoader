@@ -1,5 +1,6 @@
 var NAVTREEINDEX112 =
 {
+"class_terraria_1_1_social_1_1_we_game_1_1_achievements_social_module.html#a5e7d3ff49e8da818d69e4abdcaff47a6":[2,0,2,19,2,0,5],
 "class_terraria_1_1_social_1_1_we_game_1_1_achievements_social_module.html#a874f4379bc3b906ec9cc72fe55e73b83":[2,0,2,19,2,0,6],
 "class_terraria_1_1_social_1_1_we_game_1_1_achievements_social_module.html#a948d699d86468c3a56258f8fef7cf1ab":[2,0,2,19,2,0,1],
 "class_terraria_1_1_social_1_1_we_game_1_1_achievements_social_module.html#ac87c6fe2d918c40bc328b3aabf076977":[2,0,2,19,2,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX112 =
 "class_terraria_1_1_tile_data_packing.html#acc312fab21c8bfdd793f967636a61d63":[2,0,2,73,3],
 "class_terraria_1_1_time_logger.html":[2,0,2,78],
 "class_terraria_1_1_time_logger.html#a05047de88f7e48d87f2662715e21b8bd":[2,0,2,78,11],
-"class_terraria_1_1_time_logger.html#a05aa75e236b4bd124b6380cd58d5108d":[2,0,2,78,7],
-"class_terraria_1_1_time_logger.html#a094c03bd0a091096955b42f2266fd9cc":[2,0,2,78,6]
+"class_terraria_1_1_time_logger.html#a05aa75e236b4bd124b6380cd58d5108d":[2,0,2,78,7]
 };

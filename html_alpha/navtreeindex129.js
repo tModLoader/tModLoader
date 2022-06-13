@@ -1,5 +1,6 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html#a720826626f9692752c63772946a180d4":[2,0,2,5,9,2,0,1],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html":[2,0,2,5,9,2,2],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#a0eec350a911d51e7d563dae024c02c01":[2,0,2,5,9,2,2,0],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#a1be4823872f852fdec5b6108af3373cc":[2,0,2,5,9,2,2,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html#af64a523cbc656807ce62fde4c3bbaf62":[2,0,2,7,15,0],
 "struct_terraria_1_1_graphics_1_1_vertex_colors.html#afc8d06edfaf2d92c3150f361bf083207":[2,0,2,7,15,5],
 "struct_terraria_1_1_graphics_1_1_virtual_camera.html":[2,0,2,7,17],
-"struct_terraria_1_1_graphics_1_1_virtual_camera.html#a653da2aae8122319a3a77203b813ff75":[2,0,2,7,17,2],
-"struct_terraria_1_1_graphics_1_1_virtual_camera.html#a72fc4fa8b4f8ed9eff5e89ff36a2ef51":[2,0,2,7,17,4]
+"struct_terraria_1_1_graphics_1_1_virtual_camera.html#a653da2aae8122319a3a77203b813ff75":[2,0,2,7,17,2]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX118 =
 {
+"class_terraria_1_1_world_building_1_1_conditions.html":[2,0,2,23,1],
 "class_terraria_1_1_world_building_1_1_conditions_1_1_continue.html":[2,0,2,23,1,0],
 "class_terraria_1_1_world_building_1_1_conditions_1_1_continue.html#af954b1e80a6eb711e0795594e8f60f05":[2,0,2,23,1,0,0],
 "class_terraria_1_1_world_building_1_1_conditions_1_1_has_lava.html":[2,0,2,23,1,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX118 =
 "class_terraria_1_1_world_building_1_1_world_generator.html":[2,0,2,23,23],
 "class_terraria_1_1_world_building_1_1_world_generator.html#a4b32e8b7fcfcdb5b07d50449e64c6dfe":[2,0,2,23,23,0],
 "class_terraria_1_1_world_building_1_1_world_generator.html#a5a25f58a680e14d7a04e17b77c2ea4b2":[2,0,2,23,23,3],
-"class_terraria_1_1_world_building_1_1_world_generator.html#a6d8517d0d721917b6a02b21f9a03ac37":[2,0,2,23,23,2],
-"class_terraria_1_1_world_building_1_1_world_generator.html#ad5b86d61fbca59998838b0965b1cfea4":[2,0,2,23,23,1]
+"class_terraria_1_1_world_building_1_1_world_generator.html#a6d8517d0d721917b6a02b21f9a03ac37":[2,0,2,23,23,2]
 };
