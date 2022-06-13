@@ -10,8 +10,7 @@ public class ModTypeModItemTest : ModItem
 	}
 
 	// Most "ModTypes" had this Autoload variant in 1.3
-	public override bool Autoload(ref string name)
-	{
+	public override bool Autoload(ref string name) {
 #if COMPILE_ERROR
 		Method(ref name);
 		name = "n1";
@@ -24,8 +23,7 @@ public class ModTypeModItemTest : ModItem
 // Below are exceptions to the Autoload rule
 public class ModTypeModBuffTest : ModBuff
 {
-	public override bool Autoload(ref string name, ref string texture)
-	{
+	public override bool Autoload(ref string name, ref string texture) {
 #if COMPILE_ERROR
 		name = "n1";
 		name = "n2";
@@ -38,8 +36,7 @@ public class ModTypeModBuffTest : ModBuff
 
 public class ModTypeModDustTest : ModDust
 {
-	public override bool Autoload(ref string name, ref string texture)
-	{
+	public override bool Autoload(ref string name, ref string texture) {
 #if COMPILE_ERROR
 		name = "n1";
 		name = "n2";
@@ -66,8 +63,7 @@ public class ModTypeModTileTest : ModTile
 
 public class ModTypeModWallTest : ModWall
 {
-	public override bool Autoload(ref string name, ref string texture)
-	{
+	public override bool Autoload(ref string name, ref string texture) {
 #if COMPILE_ERROR
 		name = "n1";
 		name = "n2";
@@ -84,8 +80,7 @@ public class ModTypeModWaterfallStyleTest : ModWaterfallStyle
 		int type = Type;
 	}
 
-	public override bool Autoload(ref string name, ref string texture)
-	{
+	public override bool Autoload(ref string name, ref string texture) {
 #if COMPILE_ERROR
 		name = "n1";
 		name = "n2";
@@ -102,8 +97,7 @@ public class ModTypeModWaterStyleTest : ModWaterStyle
 		int type = Type;
     }
 
-	public override bool Autoload(ref string name, ref string texture, ref string blockTexture)
-	{
+	public override bool Autoload(ref string name, ref string texture, ref string blockTexture) {
 #if COMPILE_ERROR
 		name = "n1";
 		name = "n2";

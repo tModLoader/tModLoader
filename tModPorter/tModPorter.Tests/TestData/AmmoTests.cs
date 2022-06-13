@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 public class AmmoModItemTest : ModItem
 {
 	public override void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
-    }
+	}
 
 #if COMPILE_ERROR
 	public override void PickAmmo(Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
@@ -37,15 +37,4 @@ public class AmmoGlobalItemTest : GlobalItem
 public class AmmoModPlayerItemTest : ModPlayer
 {
 	public override bool ConsumeAmmo(Item weapon, Item ammo) { return true; /* Empty */ }
-
-	void Method() {
-		var item = new Item();
-		int shoot = 0;
-		float speed = 0f;
-		bool canShoot = false;
-		int Damage = 0;
-		float KnockBack = 0;
-
-		player.PickAmmo(item, ref shoot, ref speed, ref canShoot, ref Damage, ref KnockBack, false);
-	}
 }

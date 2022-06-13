@@ -37,10 +37,4 @@ public class AmmoGlobalItemTest : GlobalItem
 public class AmmoModPlayerItemTest : ModPlayer
 {
 	public override bool CanConsumeAmmo(Item weapon, Item ammo) { return true; /* Empty */ }
-
-	void Method() {
-		var item = new Item();
-
-		bool canShoot = Player.PickAmmo(item, out int shoot, out float speed, out int Damage, out float KnockBack, out int usedAmmoItemId, false);
-	}
 }

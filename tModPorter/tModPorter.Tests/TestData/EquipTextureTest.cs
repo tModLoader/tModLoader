@@ -12,6 +12,18 @@ public class EquipTextureTest : EquipTexture
 	}
 
 	public override void UpdateVanity(Player player, EquipType type) { /* Empty */ }
+
+#if COMPILE_ERROR
+	public override bool DrawHead() { return true; /* Empty */ }
+
+	public override bool DrawBody() { return true; /* Empty */ }
+
+	public override bool DrawLegs() { return true; /* Empty */ }
+
+	public override void DrawHands(ref bool drawHands, ref bool drawArms) { /* Empty */ }
+
+	public override void DrawHair(ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
+#endif
 }
 
 public class EquipTextureModTest : Mod

@@ -35,6 +35,8 @@ public class ModItemTest : ModItem
 
 	public override void UpdateVanity(Player player, EquipType type) { /* comment */ }
 
+	public override bool CanEquipAccessory(Player player, int slot) { return true; /* comment */ }
+
 	public override void NetRecieve(BinaryReader reader) { /* Empty */ }
 
 	public override void GetWeaponKnockback(Player player, ref float knockback) { /* Empty */ }
@@ -46,6 +48,18 @@ public class ModItemTest : ModItem
 		mult *= 0.2f;
 		flat += 4;
 	}
+
+#if COMPILE_ERROR
+	public override bool DrawHead() { return true; /* Empty */ }
+
+	public override bool DrawBody() { return true; /* Empty */ }
+
+	public override bool DrawLegs() { return true; /* Empty */ }
+
+	public override void DrawHands(ref bool drawHands, ref bool drawArms) { /* Empty */ }
+
+	public override void DrawHair(ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
+#endif
 
 	public override void Load(TagCompound tag) { /* Empty */ }
 

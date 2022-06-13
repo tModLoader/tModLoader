@@ -16,5 +16,7 @@ public class GlobalNPCTest : GlobalNPC
 		return true;
 	}
 
-	public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) { /* Empty */ }
+	public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+		spriteBatch.Draw(null, npc.Center - screenPos, drawColor);
+	}
 }

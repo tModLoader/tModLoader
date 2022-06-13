@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -24,4 +25,11 @@ public class ModProjectileTest : ModProjectile
 	public override bool PreDraw(ref Color lightColor) { return true; }
 
 	public override void PostDraw(Color lightColor) { /* Empty */ }
+
+	public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+		behindNPCsAndTiles.Add(index);
+		behindNPCs.Add(index);
+		behindProjectiles.Add(index);
+		overWiresUI.Add(index);
+	}
 }

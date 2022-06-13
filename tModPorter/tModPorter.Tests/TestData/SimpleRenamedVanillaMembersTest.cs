@@ -1,5 +1,6 @@
 using Terraria;
 using Terraria.ID;
+using Terraria.ObjectData;
 using Microsoft.Xna.Framework;
 
 public class SimpleRenamedVanillaMembersTest
@@ -40,21 +41,34 @@ public class SimpleRenamedVanillaMembersTest
 		var heartLantern = Main.heartLantern;
 		var sunflower = Main.sunflower;
 
+		var expertDebuffTime = Main.expertDebuffTime;
+		var expertNPCDamage = Main.expertNPCDamage;
+		var expertLife = Main.expertLife;
+		var expertDamage = Main.expertDamage;
+		var expertKnockBack = Main.expertKnockBack;
+		var knockBackMultiplier = Main.knockBackMultiplier;
+		var damageMultiplier = Main.damageMultiplier;
+
 		float inverseLerp = Utils.InverseLerp(0f, 1f, 0.1f, false);
 		Lighting.BlackOut();
 		NetMessage.BroadcastChatMessage(null, Color.White, -1);
+
+		int dustFire = DustID.Fire;
 
 		int water = Tile.Liquid_Water;
 		int honey = Tile.Liquid_Honey;
 		int lava = Tile.Liquid_Lava;
 
-		// Yes. The variables are named with opposing sides, the underlying values are the same
+		// Yes. The variables are named with opposing sides in 1.3, the underlying values are the same
 		int type_Solid = Tile.Type_Solid;
 		int type_Halfbrick = Tile.Type_Halfbrick;
 		int type_SlopeDownRight = Tile.Type_SlopeDownRight;
 		int type_SlopeDownLeft = Tile.Type_SlopeDownLeft;
 		int type_SlopeUpRight = Tile.Type_SlopeUpRight;
 		int type_SlopeUpLeft = Tile.Type_SlopeUpLeft;
+
+		var tileObjectData = new TileObjectData();
+		var hookCheck = tileObjectData.HookCheck;
 
 		var player = new Player();
 		var hideVisual = player.hideVisual;
@@ -69,6 +83,7 @@ public class SimpleRenamedVanillaMembersTest
 		var doubleJumpSandstorm = player.doubleJumpSandstorm;
 		var doubleJumpUnicorn = player.doubleJumpUnicorn;
 		var hasBanner = player.hasBanner;
+		var bannerBuff = player.NPCBannerBuff;
 		var extraAccessorySlots = player.extraAccessorySlots;
 
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
@@ -78,8 +93,12 @@ public class SimpleRenamedVanillaMembersTest
 
 		var item2 = new Item();
 		var isTheSameAs = item.IsTheSameAs(item2);
+		var isTheSameAsExpression = (1 > 2 ? item : item2).IsTheSameAs((1 > 2 ? item2 : item));
 		var isTheSameAsNegated = !item.IsTheSameAs(item2);
 		var isTheSameAsNegatedVariant = item.IsTheSameAs(item2) == false;
 		var isNotTheSameAs = item.IsNotTheSameAs(item2);
+
+		NPC npc = new NPC();
+		npc.damage = (int)(80f * Main.damageMultiplier); // int cast matches return type
 	}
 }
