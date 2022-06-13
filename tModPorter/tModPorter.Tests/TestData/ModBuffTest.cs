@@ -4,7 +4,7 @@ public class ModBuffTest : ModBuff
 {
 	public override void SetDefaults() {
 #if COMPILE_ERROR
-		canBeCleared = true;
+		canBeCleared = false;
 		longerExpertDebuff = true;
 
 		bool a = BuffLoader.CanBeCleared(0);
