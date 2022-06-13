@@ -103,11 +103,17 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ac814c6c5f5fb6c6b4c7b5390ec61546b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#ac814c6c5f5fb6c6b4c7b5390ec61546b">AddBackgroundTexture</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod, string texture)</td></tr>
 <tr class="memdesc:ac814c6c5f5fb6c6b4c7b5390ec61546b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a texture to the list of background textures and assigns it a background texture slot.  <a href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#ac814c6c5f5fb6c6b4c7b5390ec61546b">More...</a><br /></td></tr>
 <tr class="separator:ac814c6c5f5fb6c6b4c7b5390ec61546b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43bb613e628ce5d1372a12c9378735a4"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#a43bb613e628ce5d1372a12c9378735a4">GetBackgroundSlot</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod, string texture)</td></tr>
+<tr class="memdesc:a43bb613e628ce5d1372a12c9378735a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the slot/ID of the background texture with the given mod and path. Throws exceptions on failure.  <a href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#a43bb613e628ce5d1372a12c9378735a4">More...</a><br /></td></tr>
+<tr class="separator:a43bb613e628ce5d1372a12c9378735a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acec6846e4b16fa559531e838dfc51de9"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#acec6846e4b16fa559531e838dfc51de9">GetBackgroundSlot</a> (string texture)</td></tr>
-<tr class="memdesc:acec6846e4b16fa559531e838dfc51de9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the slot/ID of the background texture with the given name. Throws exceptions on failure.  <a href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#acec6846e4b16fa559531e838dfc51de9">More...</a><br /></td></tr>
+<tr class="memdesc:acec6846e4b16fa559531e838dfc51de9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the slot/ID of the background texture with the given full path. The path must be prefixed with a mod name. Throws exceptions on failure.  <a href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#acec6846e4b16fa559531e838dfc51de9">More...</a><br /></td></tr>
 <tr class="separator:acec6846e4b16fa559531e838dfc51de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dc694a2ff4d3580ddc836f0ef3101d4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#a5dc694a2ff4d3580ddc836f0ef3101d4">TryGetBackgroundSlot</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod, string texture, out int slot)</td></tr>
+<tr class="memdesc:a5dc694a2ff4d3580ddc836f0ef3101d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely attempts to output the slot/ID of the background texture with the given mod and path.  <a href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#a5dc694a2ff4d3580ddc836f0ef3101d4">More...</a><br /></td></tr>
+<tr class="separator:a5dc694a2ff4d3580ddc836f0ef3101d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad17af3e59b5b028ba274c265014cfb15"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#ad17af3e59b5b028ba274c265014cfb15">TryGetBackgroundSlot</a> (string texture, out int slot)</td></tr>
-<tr class="memdesc:ad17af3e59b5b028ba274c265014cfb15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely attempts to output the slot/ID of the background texture with the given name.  <a href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#ad17af3e59b5b028ba274c265014cfb15">More...</a><br /></td></tr>
+<tr class="memdesc:ad17af3e59b5b028ba274c265014cfb15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Safely attempts to output the slot/ID of the background texture with the given full path. The path must be prefixed with a mod name.  <a href="class_terraria_1_1_mod_loader_1_1_background_texture_loader.html#ad17af3e59b5b028ba274c265014cfb15">More...</a><br /></td></tr>
 <tr class="separator:ad17af3e59b5b028ba274c265014cfb15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
@@ -182,8 +188,46 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 
 </div>
 </div>
+<a id="a43bb613e628ce5d1372a12c9378735a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43bb613e628ce5d1372a12c9378735a4">&#9670;&nbsp;</a></span>GetBackgroundSlot() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Terraria.ModLoader.BackgroundTextureLoader.GetBackgroundSlot </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td>
+          <td class="paramname"><em>mod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>texture</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the slot/ID of the background texture with the given mod and path. Throws exceptions on failure. </p>
+
+</div>
+</div>
 <a id="acec6846e4b16fa559531e838dfc51de9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acec6846e4b16fa559531e838dfc51de9">&#9670;&nbsp;</a></span>GetBackgroundSlot()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acec6846e4b16fa559531e838dfc51de9">&#9670;&nbsp;</a></span>GetBackgroundSlot() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,12 +250,56 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the slot/ID of the background texture with the given name. Throws exceptions on failure. </p>
+<p>Returns the slot/ID of the background texture with the given full path. The path must be prefixed with a mod name. Throws exceptions on failure. </p>
+
+</div>
+</div>
+<a id="a5dc694a2ff4d3580ddc836f0ef3101d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dc694a2ff4d3580ddc836f0ef3101d4">&#9670;&nbsp;</a></span>TryGetBackgroundSlot() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Terraria.ModLoader.BackgroundTextureLoader.TryGetBackgroundSlot </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a>&#160;</td>
+          <td class="paramname"><em>mod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>texture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out int&#160;</td>
+          <td class="paramname"><em>slot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Safely attempts to output the slot/ID of the background texture with the given mod and path. </p>
 
 </div>
 </div>
 <a id="ad17af3e59b5b028ba274c265014cfb15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad17af3e59b5b028ba274c265014cfb15">&#9670;&nbsp;</a></span>TryGetBackgroundSlot()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad17af3e59b5b028ba274c265014cfb15">&#9670;&nbsp;</a></span>TryGetBackgroundSlot() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -244,7 +332,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 </table>
 </div><div class="memdoc">
 
-<p>Safely attempts to output the slot/ID of the background texture with the given name. </p>
+<p>Safely attempts to output the slot/ID of the background texture with the given full path. The path must be prefixed with a mod name. </p>
 
 </div>
 </div>
