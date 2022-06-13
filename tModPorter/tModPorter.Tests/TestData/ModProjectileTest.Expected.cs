@@ -16,7 +16,7 @@ public class ModProjectileTest : ModProjectile
 		Console.Write(DrawHeldProjInFrontOfHeldItemAndArms);
 	}
 
-	public override bool? CanDamage()/* tModPorter Suggestion: Return null instead of false */ { return false; }
+	public override bool? CanDamage()/* tModPorter Suggestion: Return null instead of true */ { return false; }
 
 	public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) { return true; }
 

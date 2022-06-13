@@ -49,7 +49,6 @@ public static partial class Config
 		RenameInstanceField("Terraria.ModLoader.ModGore", from: "updateType",	to: "UpdateType");
 		RenameInstanceField("Terraria.ModLoader.ModDust", from: "updateType",	to: "UpdateType");
 
-		RenameMethod("Terraria.ModLoader.ModItem",		from: "UpdateVanity",		to: "EquipFrameEffects");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NetRecieve",			to: "NetReceive");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "NewPreReforge",		to: "PreReforge");
 		RenameMethod("Terraria.ModLoader.GlobalItem",	from: "NewPreReforge",		to: "PreReforge");
@@ -75,6 +74,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "ValidTile",			to: "IsTileValidForEntity");
 		RenameMethod("Terraria.ModLoader.EquipTexture", from: "UpdateVanity",		to: "FrameEffects");
 		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "SetupStartInventory",to: "AddStartingItems");
+		RenameMethod("Terraria.ModLoader.ModPrefix",	from: "AutoDefaults",		to: "AutoStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModType",		from: "Autoload",			to: "IsLoadingEnabled").FollowBy(AddCommentToOverride("Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead"));
 
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"HoldStyle");
@@ -113,8 +113,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"PostDraw");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"DrawBehind");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"DrawBehind");
-		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"CanDamage", comment: "Suggestion: Return null instead of false");
-		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"CanDamage", comment: "Suggestion: Return null instead of false");
+		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"CanDamage", comment: "Suggestion: Return null instead of true");
+		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"CanDamage", comment: "Suggestion: Return null instead of true");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"CatchFish");
@@ -142,9 +142,9 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHands",	"After registering this as EquipType.Body, use ArmorIDs.Body.Sets.HidesHands[slot] = false if you had drawHands set to true. If you had drawArms set to true, you don't need to do anything");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHands",	"In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false if you had drawHands set to true. If you had drawArms set to true, you don't need to do anything");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHands",	"In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesHands[body] = false if you had drawHands set to true. If you had drawArms set to true, you don't need to do anything");
-		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHair",		"After registering this as EquipType.Head, use ArmorIDs.Body.Sets.DrawFullHair[slot] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[slot] = true if you had drawAltHair set to true");
-		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true");
-		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.DrawFullHair[head] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[head] = true if you had drawAltHair set to true");
+		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHair",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawFullHair[slot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[slot] = true if you had drawAltHair set to true");
+		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true");
+		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[head] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[head] = true if you had drawAltHair set to true");
 
 		HookRemoved("Terraria.ModLoader.ModGore",	"DrawBehind",			"Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults");
 		HookRemoved("Terraria.ModLoader.Mod",		"HotKeyPressed",		"Use ModPlayer.ProcessTriggers");
@@ -251,9 +251,10 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "TileEntityType",	ToFindTypeCall("Terraria.ModLoader.ModTileEntity"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "TileType",		ToFindTypeCall("Terraria.ModLoader.ModTile"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "WallType",		ToFindTypeCall("Terraria.ModLoader.ModWall"));
-		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetGoreSlot",		ToFindTypeCall("Terraria.ModLoader.ModGore"));
 
-		RefactorStaticMethodCall("Terraria.ModLoader.ModGore", "GetGoreSlot",	ToFindTypeCall("Terraria.ModLoader.ModGore")); //todo, OnType ModContent
+		//RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetGoreSlot",		ToFindTypeCall("Terraria.ModLoader.ModGore")); // TODO needs more sophisicated rewriter that detects parameter content
+
+		//RefactorStaticMethodCall("Terraria.ModLoader.ModGore", "GetGoreSlot",	ToFindTypeCall("Terraria.ModLoader.ModGore")); //todo, OnType ModContent, and same as Mod.GetGoreSlot
 
 		RenameMethod("Terraria.ModLoader.Mod",			from: "TextureExists",	to: "HasAsset");
 		RenameMethod("Terraria.ModLoader.ModContent",	from: "TextureExists",	to: "HasAsset");

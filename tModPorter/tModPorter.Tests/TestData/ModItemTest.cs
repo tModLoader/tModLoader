@@ -33,8 +33,6 @@ public class ModItemTest : ModItem
 
 	public override void UseStyle(Player player) { /* comment */ }
 
-	public override void UpdateVanity(Player player, EquipType type) { /* comment */ }
-
 	public override bool CanEquipAccessory(Player player, int slot) { return true; /* comment */ }
 
 	public override void NetRecieve(BinaryReader reader) { /* Empty */ }
