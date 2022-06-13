@@ -171,8 +171,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 							SoundEngine.PlaySound(SoundID.MenuClose);
 						}
 						else {
+							SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
 							player.OpenChest(left, top, chest);
-							SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuOpen);
 						}
 
 						Recipe.FindRecipes();
