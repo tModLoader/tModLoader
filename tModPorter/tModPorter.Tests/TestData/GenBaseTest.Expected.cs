@@ -1,4 +1,5 @@
 ﻿using Terraria.WorldBuilding;
+using Terraria.IO;
 
 public class GenBaseTest : GenBase
 {
@@ -14,18 +15,16 @@ public class GenBaseTest : GenBase
 		width = _worldWidth;
 
 #if COMPILE_ERROR
+		test.Apply(null); // don't change Apply to ApplyPass
 		width = new GenBaseTest()._worldWidth; // leave this alone, may have side effects
 #endif
 	}
 }
 
-#if COMPILE_ERROR
 public class GenPassTest : GenPass
 {
 	// Mandatory
 	public GenPassTest(string name, float loadWeight) : base(name, loadWeight) { /* Empty */ }
 
-	// do NOT port to: protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration), breaks invocation sites
-	public override void Apply(GenerationProgress progress) { /* Empty */ }
+	protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) { /* Empty */ }
 }
-#endif

@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 
+#if COMPILE_ERROR
 public class IEntitySourceTest
 {
 	void Method() {
@@ -26,3 +27,22 @@ public class IEntitySourceTest
 		Projectile.NewProjectileDirect(new Vector2(), new Vector2(), 3, 4, 5, 6, 7, 8);
 	}
 }
+
+public class ModTileWithEntitySource : ModTile
+{
+	public override void KillMultiTile(int i, int j, int frameX, int frameY) {
+		Item.NewItem(i * 16, j * 16, 64, 32, ItemID.StoneBlock);
+	}
+
+	public override bool Drop(int i, int j) {
+		Item.NewItem(i * 16, j * 16, 64, 32, ItemID.StoneBlock);
+	}
+}
+
+public class ModWallWithEntitySource : ModWall
+{
+	public override bool Drop(int i, int j) {
+		Projectile.NewProjectile(new Vector2(), new Vector2(), 3, 4, 5, 6, 7, 8);
+	}
+}
+#endif
