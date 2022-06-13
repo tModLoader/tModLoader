@@ -258,6 +258,7 @@ var class_terraria_1_1_player =
     [ "OpenCanofWorms", "class_terraria_1_1_player.html#ad7d1c81d7827fb153b134b9b4bbb586d", null ],
     [ "OpenCapricornLegs", "class_terraria_1_1_player.html#ae0f6016946c64244a2531b17922d3e62", null ],
     [ "OpenCapricornTail", "class_terraria_1_1_player.html#abf8e16e3931fec6201fd008b8208881f", null ],
+    [ "OpenChest", "class_terraria_1_1_player.html#ac6434bf43444378f491da6bd283b99f6", null ],
     [ "OpenFishingCrate", "class_terraria_1_1_player.html#ae9827bce45ad4a49a75a92179c01a9eb", null ],
     [ "OpenGoodieBag", "class_terraria_1_1_player.html#a75b23a4c8f6227adbbf6a4c1eebcc68b", null ],
     [ "OpenHerbBag", "class_terraria_1_1_player.html#a244e9b297b108db602bd8f4ff9d6c35b", null ],

@@ -1,5 +1,6 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#a1be4823872f852fdec5b6108af3373cc":[2,0,2,5,9,2,2,2],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#ab0cb8fb42333a5c2611c19c8b67aadb4":[2,0,2,5,9,2,2,1],
 "struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_shot_strength.html#ad535f808e5d40414e8d2fa8c85fc2ff9":[2,0,2,5,9,2,2,3],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_attempt_info.html":[2,0,2,5,10,6],
@@ -248,6 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_graphics_1_1_virtual_camera.html#a653da2aae8122319a3a77203b813ff75":[2,0,2,7,17,2],
 "struct_terraria_1_1_graphics_1_1_virtual_camera.html#a72fc4fa8b4f8ed9eff5e89ff36a2ef51":[2,0,2,7,17,4],
 "struct_terraria_1_1_graphics_1_1_virtual_camera.html#abe9f0553be1ae1a8d9a03442ac7269f9":[2,0,2,7,17,3],
-"struct_terraria_1_1_graphics_1_1_virtual_camera.html#ac648fa491b3371e0f9f917af075e7dc4":[2,0,2,7,17,1],
-"struct_terraria_1_1_graphics_1_1_virtual_camera.html#ae96208efd687d818d5decc892cd3d53b":[2,0,2,7,17,0]
+"struct_terraria_1_1_graphics_1_1_virtual_camera.html#ac648fa491b3371e0f9f917af075e7dc4":[2,0,2,7,17,1]
 };

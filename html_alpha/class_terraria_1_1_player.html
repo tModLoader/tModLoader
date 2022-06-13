@@ -812,6 +812,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenCapricornLegs</b>
 <tr class="memitem:abf8e16e3931fec6201fd008b8208881f"><td class="memItemLeft" align="right" valign="top"><a id="abf8e16e3931fec6201fd008b8208881f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenCapricornTail</b> (int sourceItemType)</td></tr>
 <tr class="separator:abf8e16e3931fec6201fd008b8208881f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6434bf43444378f491da6bd283b99f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#ac6434bf43444378f491da6bd283b99f6">OpenChest</a> (int x, int y, int newChest)</td></tr>
+<tr class="memdesc:ac6434bf43444378f491da6bd283b99f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles boilerplate for gamepad and <a class="el" href="namespace_terraria_1_1_u_i.html">UI</a> when opening or closing a container. <br  />
+Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates.  <a href="class_terraria_1_1_player.html#ac6434bf43444378f491da6bd283b99f6">More...</a><br /></td></tr>
+<tr class="separator:ac6434bf43444378f491da6bd283b99f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9827bce45ad4a49a75a92179c01a9eb"><td class="memItemLeft" align="right" valign="top"><a id="ae9827bce45ad4a49a75a92179c01a9eb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenFishingCrate</b> (int crateItemID)</td></tr>
 <tr class="separator:ae9827bce45ad4a49a75a92179c01a9eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5218,6 +5222,51 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </div><div class="memdoc">
 
 <p>Invoked at the end of loading vanilla player data from files to fix stuff that isn't initialized coming out of load. Only run on the <a class="el" href="class_terraria_1_1_player.html">Player</a> select screen during loading of data. Primarily meant to prevent unwarranted first few frame fall damage/lava damage if load lagging Corrects the player.lavaMax time, wingsLogic, and no fall dmg to be accurate for the provided items in accessory slots. </p>
+
+</div>
+</div>
+<a id="ac6434bf43444378f491da6bd283b99f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6434bf43444378f491da6bd283b99f6">&#9670;&nbsp;</a></span>OpenChest()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Terraria.Player.OpenChest </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>newChest</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handles boilerplate for gamepad and <a class="el" href="namespace_terraria_1_1_u_i.html">UI</a> when opening or closing a container. <br  />
+Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The top-left X coordinate of the container.</td></tr>
+    <tr><td class="paramname">y</td><td>The top-left Y coordinate of the container.</td></tr>
+    <tr><td class="paramname">newChest</td><td>The container index in Main.chest if opening, or -1 if closing.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
