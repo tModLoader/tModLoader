@@ -40,6 +40,13 @@ namespace Terraria.ID
 			/// <br/>Do not add your NPC to this if it would be excluded automatically (i.e. critter, town NPC, or no coin drops)
 			/// </summary>
 			public static bool[] CannotDropSouls = Factory.CreateBoolSet(1, 13, 14, 15, 121, 535);
+
+			//No Default IDs, as there is no vanilla precedent for this functionality
+			/// <summary>
+			/// Whether or not this NPC can still interact with doors if they use the Vanilla Town NPC aiStyle (AKA aiStyle == 7)
+			/// but are not actually marked as Town NPCs (AKA npc.townNPC == true).
+			/// </summary>
+			public static bool[] AllowDoorInteraction = Factory.CreateBoolSet();
 		}
 	}
 }
