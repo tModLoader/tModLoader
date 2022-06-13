@@ -3270,6 +3270,22 @@
  			short frameX = Main.tile[myX, myY].frameX;
  			bool flag = frameX / 72 == 1;
  			bool flag2 = frameX % 72 < 36;
+@@ -23248,7 +_,14 @@
+ 				StopPettingAnimal();
+ 		}
+ 
++		/// <summary>
++		/// Handles boilerplate for gamepad and UI when opening or closing a container.
++		/// <br/>Sets <see cref="Player.chestX"/>, and <see cref="Player.chestY"/>, and <see cref="Player.chest"/> to the given coordinates.
++		/// </summary>
++		/// <param name="x">The top-left X coordinate of the container.</param>
++		/// <param name="y">The top-left Y coordinate of the container.</param>
++		/// <param name="newChest">The container index in <see cref="Main.chest"/> if opening, or -1 if closing.</param>
+-		private void OpenChest(int x, int y, int newChest) {
++		public void OpenChest(int x, int y, int newChest) {
+ 			if (chest != -1 && Main.myPlayer == whoAmI) {
+ 				for (int i = 0; i < 40; i++) {
+ 					ItemSlot.SetGlow(i, -1f, chest: true);
 @@ -24067,7 +_,7 @@
  				cursorItemIconID = 3747;
  			}
