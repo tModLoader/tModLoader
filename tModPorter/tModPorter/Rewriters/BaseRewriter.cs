@@ -84,7 +84,7 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 	public ParameterSyntax Parameter(IParameterSymbol p) =>
 		SyntaxFactory.Parameter(default, new(ModifierToken(p.RefKind)), UseType(p.Type).WithTrailingTrivia(Space), Identifier(p.Name), default);
 
-	public void RegisterAction<T>(SyntaxNode node, Func<T, T> rewrite) where T : SyntaxNode => RegisterAction(node, (n) => rewrite((T)n));
+	public void RegisterAction<T>(SyntaxNode node, Func<T, SyntaxNode> rewrite) where T : SyntaxNode => RegisterAction(node, (n) => rewrite((T)n));
 
 	public void RegisterAction(SyntaxNode node, Func<SyntaxNode, SyntaxNode> rewrite) {
 

@@ -130,8 +130,8 @@ namespace tModPorter.Rewriters
 
 		private static SyntaxNode AppendArgs(SyntaxNode n, ArgumentListSyntax extraArgs) {
 			return n switch {
-				ObjectCreationExpressionSyntax newObj => newObj.WithArgumentList(newObj.ArgumentList.WithAdditionalArguments(extraArgs)),
-				InvocationExpressionSyntax invoke => invoke.WithArgumentList(invoke.ArgumentList.WithAdditionalArguments(extraArgs)),
+				ObjectCreationExpressionSyntax newObj => newObj.WithArgumentList(newObj.ArgumentList.Concat(extraArgs)),
+				InvocationExpressionSyntax invoke => invoke.WithArgumentList(invoke.ArgumentList.Concat(extraArgs)),
 				_ => n
 			};
 		}

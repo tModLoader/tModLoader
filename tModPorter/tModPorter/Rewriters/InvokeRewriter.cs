@@ -139,7 +139,7 @@ public class InvokeRewriter : BaseRewriter
 	};
 
 	public static RewriteInvoke ComparisonFunctionToPropertyEquality(string propName) => (_, invoke, methodName) => {
-		return invoke;
+		return invoke; // TODO
 	};
 
 	public static RewriteInvoke ToFindTypeCall(string type) => (rw, invoke, methodName) => {
@@ -148,6 +148,33 @@ public class InvokeRewriter : BaseRewriter
 
 		invoke = invoke.ReplaceNode(nameSyntax, GenericName("Find", rw.UseType(type)));
 		return MemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
+	};
+
+	private static bool SuspectSideEffects(ExpressionSyntax expr, out ExpressionSyntax concern) {
+		switch (expr) {
+			case MemberAccessExpressionSyntax memberAccess: return SuspectSideEffects(memberAccess.Expression, out concern);
+			case NameSyntax: concern = null; return false;
+			default: concern = expr; return true;
+		};
+	}
+
+	public static RewriteInvoke ToStaticMethodCall(string onType, string newName, bool targetBecomesFirstArg = false) => (rw, invoke, methodName) => {
+		var targetExpr = invoke.Expression switch {
+			MemberAccessExpressionSyntax memberAccess => memberAccess.Expression,
+			NameSyntax _ => ThisExpression(),
+			_ => throw new ArgumentException("Strange invoke target")
+		};
+
+		var args = invoke.ArgumentList;
+		if (targetBecomesFirstArg) {
+			args = ArgumentList(new[] { targetExpr.WithoutTrivia() }).Concat(args);
+		}
+		else if (SuspectSideEffects(invoke.Expression, out var concern)) {
+			invoke = invoke.WithLeadingTrivia(invoke.GetLeadingTrivia().Add(Comment($"/* {concern} */")));
+		}
+
+		var member = MemberAccessExpression(rw.UseType(onType), newName);
+		return InvocationExpression(member, args).WithTriviaFrom(invoke);
 	};
 	#endregion
 }

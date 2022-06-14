@@ -119,7 +119,7 @@ public class RenameRewriter : BaseRewriter {
 
 			var repl = nameSyntax.WithIdentifier(entry.to);
 			var speculate = model.GetSpeculativeSymbolInfo(nameSyntax.SpanStart, repl, SpeculativeBindingOption.BindAsExpression);
-			if (speculate.Symbol?.ContainingType?.ToString() == entry.type) {
+			if (speculate.Symbol?.ContainingType?.ToString() == entry.type || model.GetEnclosingSymbol(nameSyntax.SpanStart).ContainingType.InheritsFrom(entry.type)) {
 				entry.followup?.Invoke(this, nameToken);
 				return repl;
 			}
@@ -154,13 +154,15 @@ public class RenameRewriter : BaseRewriter {
 		return nameSyntax;
 	}
 
-	public static AdditionalRenameAction OnType(string newType) => (rw, node) => {
-		if (node.Parent.Parent is not MemberAccessExpressionSyntax memberAccess || memberAccess.Expression is not SimpleNameSyntax onType)
-			return;
-		
-		rw.RegisterAction<MemberAccessExpressionSyntax>(memberAccess, (newNode) =>
-			newNode.WithExpression(rw.UseType(newType).WithTriviaFrom(newNode.Expression))
-		);
+	public static AdditionalRenameAction OnType(string newType) => (rw, token) => {
+		if (token.Parent.Parent is MemberAccessExpressionSyntax { Expression: SimpleNameSyntax } memberAccess) {
+			rw.RegisterAction<MemberAccessExpressionSyntax>(memberAccess, n =>
+				n.WithExpression(rw.UseType(newType).WithTriviaFrom(n.Expression)));
+		}
+		else if (token.Parent is SimpleNameSyntax name && rw.model.GetOperation(token.Parent) is IInvalidOperation) { // standalone expr
+			rw.RegisterAction<SimpleNameSyntax>(name,
+				n => MemberAccessExpression(rw.UseType(newType), n.WithoutTrivia()).WithTriviaFrom(n));
+		}
 	};
 
 	public static AdditionalRenameAction AccessMember(string memberName) => (rw, node) => {
