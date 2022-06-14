@@ -1,22 +1,22 @@
 using Terraria;
 using Terraria.ModLoader;
 
-public class DamageClassTest : Mod
+public class DamageClassTest
 {
 	public void MethodA()
 	{
 		Item item = new();
-		item.DamageType = DamageClass.Melee;
+		item.DamageType = DamageClass.Melee/* tModPorter Suggestion: Consider MeleeNoSpeed for no attack speed scaling */;
 		item.DamageType = DamageClass.Magic;
 		item.DamageType = DamageClass.Summon;
 		item.DamageType = DamageClass.Throwing;
 		item.DamageType = DamageClass.Ranged;
 
 #if COMPILE_ERROR
-		item.magic = false/* tModPorter Suggestion: Remove. See https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#damage-classes */;
+		item.magic = false/* tModPorter Suggestion: Remove. See Item.DamageType */;
 
 		// can't port conditional setter, emit a suggestion
-		item.ranged/* tModPorter Suggestion: item.DamageType = ... */ = 1 > 2;
+		item.ranged/* tModPorter Suggestion: DamageType = ... */ = 1 > 2;
 #endif
 
 		bool itemIsmelee = item.CountsAsClass(DamageClass.Melee);
@@ -26,7 +26,7 @@ public class DamageClassTest : Mod
 		bool itemIsRanged = item.CountsAsClass(DamageClass.Ranged);
 
 		Projectile proj = new();
-		// No minion, that is different
+		bool projIsminion = proj.minion; // Don't port minion, that is different
 		bool projIsmelee = proj.CountsAsClass(DamageClass.Melee);
 		bool projIsmagic = proj.CountsAsClass(DamageClass.Magic);
 		bool projIsthrowing = proj.CountsAsClass(DamageClass.Throwing);

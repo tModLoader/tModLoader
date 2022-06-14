@@ -174,7 +174,7 @@ public class RenameRewriter : BaseRewriter {
 		};
 
 		rw.RegisterAction<ExpressionSyntax>(usage, (newNode) =>
-			SimpleMemberAccessExpression(newNode.WithoutTrivia(), memberName).WithTriviaFrom(newNode)
+			MemberAccessExpression(newNode.WithoutTrivia(), memberName).WithTriviaFrom(newNode)
 		);
 	};
 	public static AdditionalRenameAction AddCommentToOverride(string comment) => (rw, node) => {

@@ -32,6 +32,29 @@ public class MemberUseRewriter : BaseRewriter {
 			return node;
 
 		return handler.handler.Invoke(this, op, node);
-
 	}
+
+	public static RewriteMemberUse DamageTypeField(string className, string comment = null) => (rw, op, memberName) => {
+		var damageClassExpr = MemberAccessExpression(rw.UseType("Terraria.ModLoader.DamageClass"), className);
+
+		if (op.Parent is IAssignmentOperation assign && assign.Target == op) {
+			var expr = assign.Syntax;
+			if (assign.Value is not ILiteralOperation { ConstantValue: { Value: bool constantValue } })
+				return memberName.WithBlockComment("Suggestion: DamageType = ..."); // some other literal assignment
+
+			if (!constantValue) { // = false
+				rw.RegisterAction(assign.Syntax, n => n.WithBlockComment("Suggestion: Remove. See Item.DamageType"));
+				return memberName;
+			}
+
+			rw.RegisterAction(assign.Value.Syntax, n => damageClassExpr.WithTriviaFrom(n).WithBlockComment(comment));
+			return memberName.WithIdentifier(memberName.Identifier.WithText("DamageType"));
+		}
+		else { // plain identifier or member access
+			
+			var rootExpr = (ExpressionSyntax)op.Syntax;
+			rw.RegisterAction<ExpressionSyntax>(rootExpr, n => InvocationExpression(n.WithoutTrivia(), damageClassExpr).WithTriviaFrom(n));
+			return memberName.WithIdentifier(memberName.Identifier.WithText("CountsAsClass"));
+		}
+	};
 }

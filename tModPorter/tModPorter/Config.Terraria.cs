@@ -1,5 +1,6 @@
 ﻿using static tModPorter.Rewriters.RenameRewriter;
 using static tModPorter.Rewriters.InvokeRewriter;
+using static tModPorter.Rewriters.MemberUseRewriter;
 using static tModPorter.Rewriters.AddComment;
 using System;
 
@@ -59,10 +60,20 @@ public static partial class Config
 		RenameStaticField("Terraria.Tile", from: "Type_SlopeUpRight",	to: "SlopeUpLeft",		newType: "Terraria.ID.BlockType");
 		RenameStaticField("Terraria.Tile", from: "Type_SlopeUpLeft",	to: "SlopeUpRight",		newType: "Terraria.ID.BlockType");
 
+		RefactorInstanceMember("Terraria.Item",			"melee",	DamageTypeField("Melee", "Suggestion: Consider MeleeNoSpeed for no attack speed scaling"));
+		RefactorInstanceMember("Terraria.Item",			"ranged",	DamageTypeField("Ranged"));
+		RefactorInstanceMember("Terraria.Item",			"magic",	DamageTypeField("Magic"));
+		RefactorInstanceMember("Terraria.Item",			"summon",	DamageTypeField("Summon"));
+		RefactorInstanceMember("Terraria.Item",			"thrown",	DamageTypeField("Throwing"));
+		RefactorInstanceMember("Terraria.Projectile",	"melee",	DamageTypeField("Melee"));
+		RefactorInstanceMember("Terraria.Projectile",	"ranged",	DamageTypeField("Ranged"));
+		RefactorInstanceMember("Terraria.Projectile",	"magic",	DamageTypeField("Magic"));
+		RefactorInstanceMember("Terraria.Projectile",	"thrown",	DamageTypeField("Throwing"));
+
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "HoldingUp",	to: "HoldUp");
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "HoldingOut",	to: "Shoot");
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "SwingThrow",	to: "Swing");
-		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "EatingUsing", to: "EatFood");
+		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "EatingUsing",to: "EatFood");
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "Stabbing",	to: "Thrust");
 
 		RenameStaticField("Terraria.ID.NPCID.Sets",			from: "TechnicallyABoss",	to: "ShouldBeCountedAsBoss");

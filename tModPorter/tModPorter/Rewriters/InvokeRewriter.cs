@@ -87,7 +87,7 @@ public class InvokeRewriter : BaseRewriter
 	#region Handlers
 	private static ExpressionSyntax ConvertInvokeToMemberReference(InvocationExpressionSyntax invoke, string memberName) =>
 		invoke.Expression switch {
-			MemberAccessExpressionSyntax memberAccess => SimpleMemberAccessExpression(memberAccess.Expression, memberName).WithTriviaFrom(memberAccess),
+			MemberAccessExpressionSyntax memberAccess => MemberAccessExpression(memberAccess.Expression, memberName).WithTriviaFrom(memberAccess),
 			IdentifierNameSyntax identifierName => IdentifierName(memberName).WithTriviaFrom(identifierName),
 			_ => throw new Exception($"Cannot convert {invoke.Expression.GetType()} to member access")
 		};
@@ -99,14 +99,14 @@ public class InvokeRewriter : BaseRewriter
 
 		ExpressionSyntax constantExpression = null;
 		if (constantType != null) {
-			constantExpression = SimpleMemberAccessExpression(rw.UseType(constantType), constantName);
+			constantExpression = MemberAccessExpression(rw.UseType(constantType), constantName);
 		}
 
 		switch (invoke.ArgumentList.Arguments.Count) {
 			case 0:
 				var result = ConvertInvokeToMemberReference(invoke, propName);
 				if (constantType != null)
-					result = Parens(SimpleBinaryExpression(SyntaxKind.EqualsExpression, result, constantExpression));
+					result = Parens(SimpleSyntaxFactory.BinaryExpression(SyntaxKind.EqualsExpression, result, constantExpression));
 
 				return result.WithTriviaFrom(invoke);
 
@@ -121,7 +121,7 @@ public class InvokeRewriter : BaseRewriter
 					}
 				}
 
-				return SimpleAssignmentExpression(
+				return AssignmentExpression(
 					ConvertInvokeToMemberReference(invoke, propName),
 					invoke.ArgumentList.Arguments[0].Expression
 				).WithTriviaFrom(invoke);
@@ -147,7 +147,7 @@ public class InvokeRewriter : BaseRewriter
 			return invoke;
 
 		invoke = invoke.ReplaceNode(nameSyntax, GenericName("Find", rw.UseType(type)));
-		return SimpleMemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
+		return MemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
 	};
 	#endregion
 }

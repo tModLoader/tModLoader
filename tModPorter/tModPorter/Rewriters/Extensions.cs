@@ -19,6 +19,9 @@ public static class Extensions
 	public static SyntaxToken WithText(this SyntaxToken token, string text) => text == token.Text ? token : Identifier(text).WithTriviaFrom(token);
 
 	public static T WithBlockComment<T>(this T node, string comment) where T : SyntaxNode {
+		if (comment == null)
+			return node;
+
 		var trivia = node.GetTrailingTrivia();
 		if (trivia.Any(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia) && t.ToString().Contains("tModPorter")))
 			return node;
