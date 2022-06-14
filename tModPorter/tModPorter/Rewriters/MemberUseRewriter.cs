@@ -48,13 +48,13 @@ public class MemberUseRewriter : BaseRewriter {
 			}
 
 			rw.RegisterAction(assign.Value.Syntax, n => damageClassExpr.WithTriviaFrom(n).WithBlockComment(comment));
-			return memberName.WithIdentifier(memberName.Identifier.WithText("DamageType"));
+			return memberName.WithIdentifier("DamageType");
 		}
 		else { // plain identifier or member access
 			
 			var rootExpr = (ExpressionSyntax)op.Syntax;
 			rw.RegisterAction<ExpressionSyntax>(rootExpr, n => InvocationExpression(n.WithoutTrivia(), damageClassExpr).WithTriviaFrom(n));
-			return memberName.WithIdentifier(memberName.Identifier.WithText("CountsAsClass"));
+			return memberName.WithIdentifier("CountsAsClass");
 		}
 	};
 
@@ -70,6 +70,6 @@ public class MemberUseRewriter : BaseRewriter {
 			return n;
 		});
 
-		return memberName.WithIdentifier(memberName.Identifier.WithText(methodName));
+		return memberName.WithIdentifier(methodName);
 	};
 }

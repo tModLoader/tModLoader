@@ -13,10 +13,9 @@ public static class Extensions
 	public static T WithTriviaFrom<T>(this T node, SyntaxNode other) where T : SyntaxNode =>
 		node.WithLeadingTrivia(other.GetLeadingTrivia()).WithTrailingTrivia(other.GetTrailingTrivia());
 
-	public static SyntaxToken WithTriviaFrom(this SyntaxToken node, SyntaxToken other) =>
-		node.WithLeadingTrivia(other.LeadingTrivia).WithTrailingTrivia(other.TrailingTrivia);
-
 	public static SyntaxToken WithText(this SyntaxToken token, string text) => text == token.Text ? token : Identifier(text).WithTriviaFrom(token);
+
+	public static IdentifierNameSyntax WithIdentifier(this IdentifierNameSyntax name, string text) => text == name.Identifier.Text ? name : name.WithIdentifier(name.Identifier.WithText(text));
 
 	public static T WithBlockComment<T>(this T node, string comment) where T : SyntaxNode {
 		if (comment == null)

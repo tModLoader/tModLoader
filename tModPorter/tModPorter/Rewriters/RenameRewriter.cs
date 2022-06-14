@@ -117,7 +117,7 @@ public class RenameRewriter : BaseRewriter {
 			if (entry.from != nameToken.Text)
 				continue;
 
-			var repl = nameSyntax.WithIdentifier(nameToken.WithText(entry.to));
+			var repl = nameSyntax.WithIdentifier(entry.to);
 			var speculate = model.GetSpeculativeSymbolInfo(nameSyntax.SpanStart, repl, SpeculativeBindingOption.BindAsExpression);
 			if (speculate.Symbol?.ContainingType?.ToString() == entry.type) {
 				entry.followup?.Invoke(this, nameToken);
@@ -140,7 +140,7 @@ public class RenameRewriter : BaseRewriter {
 				continue;
 
 			if (to.StartsWith(qualifier)) { // check for a nested class or similar
-				var repl = nameSyntax.WithIdentifier(nameToken.WithText(to[qualifier.Length..]));
+				var repl = nameSyntax.WithIdentifier(to[qualifier.Length..]);
 				var speculate = model.GetSpeculativeSymbolInfo(nameSyntax.SpanStart, repl, SpeculativeBindingOption.BindAsTypeOrNamespace);
 				if (speculate.Symbol?.ToString() == to)
 					return repl;
