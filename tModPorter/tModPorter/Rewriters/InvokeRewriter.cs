@@ -158,7 +158,7 @@ public class InvokeRewriter : BaseRewriter
 		};
 	}
 
-	public static RewriteInvoke ToStaticMethodCall(string onType, string newName, bool targetBecomesFirstArg = false) => (rw, invoke, methodName) => {
+	public static RewriteInvoke ToStaticMethodCall(string onType, string newName, bool targetBecomesFirstArg = false) => (rw, invoke, _) => {
 		var targetExpr = invoke.Expression switch {
 			MemberAccessExpressionSyntax memberAccess => memberAccess.Expression,
 			NameSyntax _ => ThisExpression(),
@@ -175,6 +175,47 @@ public class InvokeRewriter : BaseRewriter
 
 		var member = MemberAccessExpression(rw.UseType(onType), newName);
 		return InvocationExpression(member, args).WithTriviaFrom(invoke);
+	};
+
+	public static RewriteInvoke ConvertAddEquipTexture => (rw, invoke, methodName) => {
+		var paramOps = invoke.ArgumentList.Arguments.Select(arg => rw.model.GetOperation(arg.Expression)).ToArray();
+		var method = rw.model.Compilation.GetTypeByMetadataName("Terraria.ModLoader.EquipLoader").LookupMethod("AddEquipTexture");
+		if (method == null)
+			return invoke;
+
+		invoke = (InvocationExpressionSyntax)ToStaticMethodCall(method.ContainingType.ToString(), method.Name, targetBecomesFirstArg: true)(rw, invoke, methodName);
+		if (paramOps.Any(op => op == null || op is IInvalidOperation) || paramOps.Length < 4)
+			return invoke;
+
+		var args = invoke.ArgumentList.Arguments;
+		int offset = 1;
+		ExpressionSyntax equipTexture = null;
+		if (paramOps[2].Type.ToString() == "Terraria.ModLoader.EquipType") {
+			offset++;
+			equipTexture = args[1].Expression;
+		}
+
+		static ExpressionSyntax ReplaceNullLiteral(ExpressionSyntax expr) => expr.IsKind(SyntaxKind.NullLiteralExpression) ? null : expr;
+
+		// arg map (ModItem variant)
+		// 0 -> 0 (mod)
+		// 1 -> 3 (item)
+		// 2 -> 2 (type)
+		// 3 -> 4 (name)
+		// 4 -> 1 (texture)
+		// optional overload 1 -> 5 (equipTexture)
+		var newArgs = new ExpressionSyntax[6] {
+			args[0].Expression,			// mod
+			args[offset+3].Expression,	// texture
+			args[offset+1].Expression,	// type
+			ReplaceNullLiteral(args[offset+0].Expression),	// item
+			ReplaceNullLiteral(args[offset+2].Expression),	// name
+			equipTexture
+		};
+
+		// todo, trivia from the rest
+
+		return invoke.WithArgumentList(ArgumentList(method, newArgs));
 	};
 	#endregion
 }

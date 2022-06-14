@@ -289,7 +289,7 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetEquipTexture",		ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipTexture",		targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetEquipSlot",		ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipSlot",			targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetAccessorySlot",	ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipSlot",			targetBecomesFirstArg: true));
-		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddEquipTexture",		ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"AddEquipTexture",			targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddEquipTexture",		ConvertAddEquipTexture);
 
 		RenameMethod("Terraria.ModLoader.Mod",			from: "TextureExists",	to: "HasAsset");
 		RenameMethod("Terraria.ModLoader.ModContent",	from: "TextureExists",	to: "HasAsset");

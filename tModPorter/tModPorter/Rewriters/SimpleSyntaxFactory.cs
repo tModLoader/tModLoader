@@ -87,4 +87,25 @@ public static class SimpleSyntaxFactory
 
 		return args.WithArguments(SyntaxFactory.SeparatedList<ArgumentSyntax>(l));
 	}
+
+	public static ArgumentListSyntax ArgumentList(IMethodSymbol method, params ExpressionSyntax[] newArgs) {
+		var argSyntaxes = new List<ArgumentSyntax>();
+
+		bool useNamedArgs = false;
+		for (int i = 0; i < newArgs.Length; i++) {
+			var arg = newArgs[i];
+			if (arg == null) {
+				useNamedArgs = true;
+				continue;
+			}
+
+			var param = method.Parameters[i];
+			if (useNamedArgs)
+				argSyntaxes.Add(Argument(NameColon(param.Name).WithTrailingTrivia(Space), default, arg));
+			else
+				argSyntaxes.Add(Argument(arg));
+		}
+
+		return ArgumentList(argSyntaxes);
+	}
 }
