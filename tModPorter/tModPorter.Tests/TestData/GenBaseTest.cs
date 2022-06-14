@@ -14,7 +14,16 @@ public class GenBaseTest : GenBase
 		width = test._worldWidth;
 
 #if COMPILE_ERROR
+		test.Apply(null); // don't change Apply to ApplyPass
 		width = new GenBaseTest()._worldWidth; // leave this alone, may have side effects
 #endif
 	}
+}
+
+public class GenPassTest : GenPass
+{
+	// Mandatory
+	public GenPassTest(string name, float loadWeight) : base(name, loadWeight) { /* Empty */ }
+
+	public override void Apply(GenerationProgress progress) { /* Empty */ }
 }

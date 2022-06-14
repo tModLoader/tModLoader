@@ -105,7 +105,7 @@ namespace tModPorter.Rewriters
 
 			var itemExpr = resultArgs.Arguments[0].Expression;
 			if (model.GetOperation(itemExpr) is IOperation op && op.Type.InheritsFrom("Terraria.ModLoader.ModItem")) {
-				resultArgs = resultArgs.ReplaceNode(itemExpr, SimpleMemberAccessExpression(itemExpr, "Type"));
+				resultArgs = resultArgs.ReplaceNode(itemExpr, MemberAccessExpression(itemExpr, "Type"));
 			}
 
 			return AppendArgs(node, resultArgs);
@@ -121,7 +121,7 @@ namespace tModPorter.Rewriters
 				args = args.RemoveAt(0);
 
 				bool isCallOnThis = target is ThisExpressionSyntax && model.GetEnclosingSymbol(origNode.SpanStart) is IMethodSymbol mSym && !mSym.IsStatic && mSym.ContainingType.InheritsFrom("Terraria.ModLoader.Mod");
-				var expr = SimpleMemberAccessExpression(target, "CreateRecipe");
+				var expr = MemberAccessExpression(target, "CreateRecipe");
 				return InvocationExpression(isCallOnThis ? expr.Name : expr, node.ArgumentList.WithArguments(args));
 			}
 

@@ -13,16 +13,22 @@ public static class SimpleSyntaxFactory
 	public static SyntaxToken OperatorToken(SyntaxKind kind) =>
 		Token(new(Space), kind, new(Space));
 
-	public static MemberAccessExpressionSyntax SimpleMemberAccessExpression(ExpressionSyntax expression, string memberName) =>
-		MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, IdentifierName(memberName));
+	public static MemberAccessExpressionSyntax MemberAccessExpression(ExpressionSyntax expression, string memberName) =>
+		SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, IdentifierName(memberName));
 
-	public static AssignmentExpressionSyntax SimpleAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right) =>
-		AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, OperatorToken(SyntaxKind.EqualsToken), right);
+	public static AssignmentExpressionSyntax AssignmentExpression(ExpressionSyntax left, ExpressionSyntax right) =>
+		SyntaxFactory.AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, OperatorToken(SyntaxKind.EqualsToken), right);
 
-	public static BinaryExpressionSyntax SimpleBinaryExpression(SyntaxKind kind, ExpressionSyntax left, ExpressionSyntax right) {
-		var expr = BinaryExpression(kind, left, right);
+	public static BinaryExpressionSyntax BinaryExpression(SyntaxKind kind, ExpressionSyntax left, ExpressionSyntax right) {
+		var expr = SyntaxFactory.BinaryExpression(kind, left, right);
 		return expr.WithOperatorToken(expr.OperatorToken.WithLeadingTrivia(Space).WithTrailingTrivia(Space));
 	}
+
+	public static InvocationExpressionSyntax InvocationExpression(ExpressionSyntax target, string methodName, params ExpressionSyntax[] args) =>
+		InvocationExpression(MemberAccessExpression(target, methodName), args);
+
+	public static InvocationExpressionSyntax InvocationExpression(ExpressionSyntax target, params ExpressionSyntax[] args) =>
+		SyntaxFactory.InvocationExpression(target, ArgumentList(SeparatedList(args.Select(Argument))));
 
 	public static NameSyntax Name(string s) {
 		int l = s.LastIndexOf('.');

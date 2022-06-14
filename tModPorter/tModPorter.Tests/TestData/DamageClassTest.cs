@@ -25,7 +25,7 @@ public class DamageClassTest
 		bool itemIsRanged = item.ranged;
 
 		Projectile proj = new();
-		// No minion, that is different
+		bool projIsminion = proj.minion; // Don't port minion, that is different
 		bool projIsmelee = proj.melee;
 		bool projIsmagic = proj.magic;
 		bool projIsthrowing = proj.thrown;

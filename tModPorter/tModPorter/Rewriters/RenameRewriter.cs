@@ -45,25 +45,17 @@ public class RenameRewriter : BaseRewriter {
 	public static MemberRename RenameMethod(string type, string from, string to, string newType) => RenameMethod(type, from, to).FollowBy(OnType(newType));
 
 	public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node) {
-		return node.Parent switch {
-			MemberAccessExpressionSyntax memberAccess when node == memberAccess.Name && MemberReferenceInvalid(memberAccess, out _, out bool isInvoke) =>
-				Refactor(node, model.GetTypeInfo(memberAccess.Expression).Type, isInvoke),
+		if (!IdentifierNameInvalid(node, out var op, out var targetType, out bool isInvoke))
+			return node;
 
-			MemberBindingExpressionSyntax memberBinding when MemberReferenceInvalid(memberBinding, out var op, out bool isInvoke) && op.ChildOperations.First() is IConditionalAccessInstanceOperation target =>
-				Refactor(node, target.Type, isInvoke),
+		if (op != null) {
+			if (targetType != null)
+				return Refactor(node, targetType, isInvoke);
+			
+			return RefactorSpeculative(node);
+		}
 
-			// getting the operation for errored identifiers as part of the lhs of an initializer expression is difficult directly, need to go via the assignment
-			AssignmentExpressionSyntax assignment when assignment.Parent is InitializerExpressionSyntax && model.GetOperation(assignment) is IAssignmentOperation { Target: IInvalidOperation, Parent: var parent } =>
-				Refactor(node, parent.Type, refactoringMethod: false),
-
-			_ when model.GetOperation(node) is IInvalidOperation =>
-				RefactorSpeculative(node),
-
-			_ when model.GetSymbolInfo(node).Symbol == null =>
-				RefactorType(node),
-
-			_ => node,
-		};
+		return RefactorType(node);
 	}
 
 	public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node) {
@@ -100,20 +92,6 @@ public class RenameRewriter : BaseRewriter {
 		return base.VisitUsingList(usings);
 	}
 
-	private bool MemberReferenceInvalid(SyntaxNode memberRefExpr, out IInvalidOperation op, out bool isInvoke) {
-		// for MemberAccessExpressionSyntax and MemberBindingExpressionSyntax which are the target of InvocationExpressionSyntax, there is no operation for the member access, only the invocation
-		// We check that all the arguments for the invocation are valid as a way of determining that it's the member access which is causing the failure (though this may fail if they rely on generic type inference I guess?)
-		// If only there was a way to get 'member not found diagnostics...'
-		// A different option would be to find the target type of the invoke/member access and see if the named member is missing
-		if (memberRefExpr.Parent is InvocationExpressionSyntax invoke && memberRefExpr == invoke.Expression) {
-			isInvoke = true;
-			return (op = model.GetOperation(invoke) as IInvalidOperation) != null && invoke.ArgumentList.Arguments.All(arg => model.GetOperation(arg) is not IInvalidOperation);
-		}
-
-		isInvoke = false;
-		return (op = model.GetOperation(memberRefExpr) as IInvalidOperation) != null;
-	}
-
 	private IdentifierNameSyntax Refactor(IdentifierNameSyntax nameSyntax, ITypeSymbol instType, bool refactoringMethod) =>
 		nameSyntax.WithIdentifier(Refactor(nameSyntax.Identifier, instType, refactoringMethod));
 
@@ -139,7 +117,7 @@ public class RenameRewriter : BaseRewriter {
 			if (entry.from != nameToken.Text)
 				continue;
 
-			var repl = nameSyntax.WithIdentifier(nameToken.WithText(entry.to));
+			var repl = nameSyntax.WithIdentifier(entry.to);
 			var speculate = model.GetSpeculativeSymbolInfo(nameSyntax.SpanStart, repl, SpeculativeBindingOption.BindAsExpression);
 			if (speculate.Symbol?.ContainingType?.ToString() == entry.type) {
 				entry.followup?.Invoke(this, nameToken);
@@ -162,15 +140,14 @@ public class RenameRewriter : BaseRewriter {
 				continue;
 
 			if (to.StartsWith(qualifier)) { // check for a nested class or similar
-				var repl = nameSyntax.WithIdentifier(nameToken.WithText(to[qualifier.Length..]));
+				var repl = nameSyntax.WithIdentifier(to[qualifier.Length..]);
 				var speculate = model.GetSpeculativeSymbolInfo(nameSyntax.SpanStart, repl, SpeculativeBindingOption.BindAsTypeOrNamespace);
 				if (speculate.Symbol?.ToString() == to)
 					return repl;
 			}
 
 			if (IsUsingNamespace(qualifier[..^1])) {
-				nameSyntax = UseType(to).WithTriviaFrom(nameSyntax);
-				break;
+				return UseType(to).WithTriviaFrom(nameSyntax);
 			}
 		}
 
@@ -197,7 +174,7 @@ public class RenameRewriter : BaseRewriter {
 		};
 
 		rw.RegisterAction<ExpressionSyntax>(usage, (newNode) =>
-			SimpleMemberAccessExpression(newNode.WithoutTrivia(), memberName).WithTriviaFrom(newNode)
+			MemberAccessExpression(newNode.WithoutTrivia(), memberName).WithTriviaFrom(newNode)
 		);
 	};
 	public static AdditionalRenameAction AddCommentToOverride(string comment) => (rw, node) => {

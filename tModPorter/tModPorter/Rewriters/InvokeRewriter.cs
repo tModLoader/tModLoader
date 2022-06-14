@@ -16,9 +16,13 @@ public class InvokeRewriter : BaseRewriter
 
 	private static List<(string type, string name, bool isStatic, RewriteInvoke handler)> handlers = new();
 
-	public static void RefactorInstanceMethodCall(string type, string name, RewriteInvoke handler) => handlers.Add((type, name, isStatic: false, handler));
 
+	public static void RefactorInstanceMethodCall(string type, string name, RewriteInvoke handler) => handlers.Add((type, name, isStatic: false, handler));
 	public static void RefactorStaticMethodCall(string type, string name, RewriteInvoke handler) => handlers.Add((type, name, isStatic: true, handler));
+
+	private static RewriteInvoke ToApplicator(AddComment comment) => (_, invoke, _) => invoke.ReplaceNode(invoke.ArgumentList, comment.Apply(invoke.ArgumentList));
+	public static void RefactorInstanceMethodCall(string type, string name, AddComment comment) => RefactorInstanceMethodCall(type, name, ToApplicator(comment));
+	public static void RefactorStaticMethodCall(string type, string name, AddComment comment) => RefactorStaticMethodCall(type, name, ToApplicator(comment));
 
 	public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node) {
 		if (base.VisitInvocationExpression(node) is SyntaxNode newNode && newNode != node) // fix arguments and expression first
@@ -81,13 +85,9 @@ public class InvokeRewriter : BaseRewriter
 	}
 
 	#region Handlers
-	public static RewriteInvoke AddComment(string comment) => (_, invoke, methodName) => {
-		return invoke.ReplaceNode(methodName, methodName.WithBlockComment(comment));
-	};
-
 	private static ExpressionSyntax ConvertInvokeToMemberReference(InvocationExpressionSyntax invoke, string memberName) =>
 		invoke.Expression switch {
-			MemberAccessExpressionSyntax memberAccess => SimpleMemberAccessExpression(memberAccess.Expression, memberName).WithTriviaFrom(memberAccess),
+			MemberAccessExpressionSyntax memberAccess => MemberAccessExpression(memberAccess.Expression, memberName).WithTriviaFrom(memberAccess),
 			IdentifierNameSyntax identifierName => IdentifierName(memberName).WithTriviaFrom(identifierName),
 			_ => throw new Exception($"Cannot convert {invoke.Expression.GetType()} to member access")
 		};
@@ -99,14 +99,14 @@ public class InvokeRewriter : BaseRewriter
 
 		ExpressionSyntax constantExpression = null;
 		if (constantType != null) {
-			constantExpression = SimpleMemberAccessExpression(rw.UseType(constantType), constantName);
+			constantExpression = MemberAccessExpression(rw.UseType(constantType), constantName);
 		}
 
 		switch (invoke.ArgumentList.Arguments.Count) {
 			case 0:
 				var result = ConvertInvokeToMemberReference(invoke, propName);
 				if (constantType != null)
-					result = Parens(SimpleBinaryExpression(SyntaxKind.EqualsExpression, result, constantExpression));
+					result = Parens(SimpleSyntaxFactory.BinaryExpression(SyntaxKind.EqualsExpression, result, constantExpression));
 
 				return result.WithTriviaFrom(invoke);
 
@@ -117,11 +117,11 @@ public class InvokeRewriter : BaseRewriter
 						invoke = invoke.ReplaceNode(arg, constantExpression);
 					}
 					else {
-						return AddComment($"Suggestion: {propName} = ...")(rw, invoke, methodName);
+						return invoke.ReplaceNode(methodName, methodName.WithBlockComment($"Suggestion: {propName} = ..."));
 					}
 				}
 
-				return SimpleAssignmentExpression(
+				return AssignmentExpression(
 					ConvertInvokeToMemberReference(invoke, propName),
 					invoke.ArgumentList.Arguments[0].Expression
 				).WithTriviaFrom(invoke);
@@ -147,7 +147,7 @@ public class InvokeRewriter : BaseRewriter
 			return invoke;
 
 		invoke = invoke.ReplaceNode(nameSyntax, GenericName("Find", rw.UseType(type)));
-		return SimpleMemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
+		return MemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
 	};
 	#endregion
 }

@@ -13,22 +13,23 @@ public class ModTileTest : ModTile
 		soundStyle = 0;
 #endif
 
-#if COMPILE_ERROR
-		sapling = true;
-		torch = true;
-		bed = true;
 		dresserDrop = 0;
-		dresser = "";
 		chestDrop = 0;
-		chest = "";
 		closeDoorID = 0;
 		openDoorID = 0;
-		disableSmartInteract = true;
-		disableSmartCursor = true;
 		minPick = 0;
 		mineResist = 0;
 		animationFrameHeight = 0;
 		adjTiles = new int[0];
+
+#if COMPILE_ERROR
+		sapling = true;
+		torch = true;
+		bed = true;
+		dresser = "";
+		chest = "";
+		disableSmartInteract = true;
+		disableSmartCursor = true;
 
 		SetModTree(new ExampleTree());
 		SetModCactus(new ExampleCactus());

@@ -7,8 +7,8 @@ public class ModWallTest : ModWall
 		ItemDrop = 1;
 		DustType = 0;
 #if COMPILE_ERROR
-		HitSound /* tModPorter Suggestion: Use a SoundStyle here */ = 0;
-		soundStyle /* tModPorter Suggestion: Utilize HitSound */ = 0;
+		HitSound/* tModPorter Suggestion: Use a SoundStyle here */ = 0;
+		soundStyle/* tModPorter Note: Removed. Integrate into HitSound */ = 0;
 #endif
 	}
 }

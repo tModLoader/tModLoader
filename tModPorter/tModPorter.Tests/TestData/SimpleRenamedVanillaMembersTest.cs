@@ -49,6 +49,15 @@ public class SimpleRenamedVanillaMembersTest
 		var knockBackMultiplier = Main.knockBackMultiplier;
 		var damageMultiplier = Main.damageMultiplier;
 
+		int copperTierOreInt = WorldGen.CopperTierOre;
+		ushort copperTierOre = WorldGen.CopperTierOre;
+		ushort ironTierOre = WorldGen.IronTierOre;
+		ushort silverTierOre = WorldGen.SilverTierOre;
+		ushort goldTierOre = WorldGen.GoldTierOre;
+		int oreTier1 = WorldGen.oreTier1;
+		int oreTier2 = WorldGen.oreTier2;
+		int oreTier3 = WorldGen.oreTier3;
+
 		float inverseLerp = Utils.InverseLerp(0f, 1f, 0.1f, false);
 		Lighting.BlackOut();
 		NetMessage.BroadcastChatMessage(null, Color.White, -1);
@@ -100,5 +109,7 @@ public class SimpleRenamedVanillaMembersTest
 
 		NPC npc = new NPC();
 		npc.damage = (int)(80f * Main.damageMultiplier); // int cast matches return type
+
+		Utils.PerLinePoint cut = DelegateMethods.CutTiles;
 	}
 }

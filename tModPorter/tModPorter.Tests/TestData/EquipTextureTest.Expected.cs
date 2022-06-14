@@ -6,7 +6,7 @@ public class EquipTextureTest : EquipTexture
 {
 	void Method() {
 #if COMPILE_ERROR
-		Console.WriteLine(mod/* tModPorter Note: Field removed */);
+		Console.WriteLine(mod/* tModPorter Note: Removed. */);
 #endif
 		Console.WriteLine(Item);
 	}
@@ -22,7 +22,7 @@ public class EquipTextureTest : EquipTexture
 
 	public override void DrawHands(ref bool drawHands, ref bool drawArms)/* tModPorter Note: Removed. After registering this as EquipType.Body, use ArmorIDs.Body.Sets.HidesHands[slot] = false if you had drawHands set to true. If you had drawArms set to true, you don't need to do anything */ { /* Empty */ }
 
-	public override void DrawHair(ref bool drawHair, ref bool drawAltHair)/* tModPorter Note: Removed. After registering this as EquipType.Head, use ArmorIDs.Body.Sets.DrawFullHair[slot] = true if you had drawHair set to true, and ArmorIDs.Body.Sets.DrawHatHair[slot] = true if you had drawAltHair set to true */ { /* Empty */ }
+	public override void DrawHair(ref bool drawHair, ref bool drawAltHair)/* tModPorter Note: Removed. After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawFullHair[slot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[slot] = true if you had drawAltHair set to true */ { /* Empty */ }
 #endif
 }
 

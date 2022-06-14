@@ -9,6 +9,30 @@ public class DamageClassPlayerFields : ModPlayer {
 		player.whipUseTimeMultiplier = 2;
 	}
 
+	public override void UpdateEquips() {
+		player.allDamage += 0.10f;
+		player.meleeDamage += 0.1f;
+		player.rangedDamage += 0.1f;
+		player.magicDamage += 2;
+		player.minionDamage += 0.1f;
+		player.thrownDamage += 0.1f;
+
+		player.allDamageMult *= 0.08f;
+		player.meleeDamageMult *= 0.08f;
+		player.rangedDamageMult *= 0.08f;
+		player.magicDamageMult *= 0.08f;
+		player.minionDamageMult *= 0.08f;
+		player.thrownDamageMult *= 0.08f;
+
+		player.meleeCrit *= 5;
+		player.rangedCrit *= 5;
+		player.magicCrit *= 5;
+		player.thrownCrit *= 5;
+#if COMPILE_ERROR
+		player.minionDamage = 8;
+#endif
+	}
+
 	public void MethodB(Player player) {
 		player.meleeSpeed = 1;
 		A.meleeSpeed = 2;
