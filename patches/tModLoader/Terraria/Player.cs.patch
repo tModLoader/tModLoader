@@ -5200,10 +5200,19 @@
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
  				flag2 = true;
-@@ -37226,6 +_,7 @@
+@@ -37226,6 +_,16 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
++			// Copied as-is from 1.3
++			if (item.CountsAsClass(DamageClass.Throwing)) {
++				if (ThrownCost50 && Main.rand.Next(100) < 50)
++					flag2 = true;
++
++				if (ThrownCost33 && Main.rand.Next(100) < 33)
++					flag2 = true;
++			}
++
 +			/* Flamethrower + Elf Melter (handled by consumeAmmoOnFirstShotOnly) + Clentaminator (handled by consumeAmmoOnFirstShotOnly)
  			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2)
  				flag2 = true;
