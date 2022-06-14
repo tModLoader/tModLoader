@@ -188,7 +188,7 @@ public class InvokeRewriter : BaseRewriter
 			return invoke;
 
 		var args = invoke.ArgumentList.Arguments;
-		int offset = 1;
+		int offset = 0;
 		ExpressionSyntax equipTexture = null;
 		if (paramOps[2].Type.ToString() == "Terraria.ModLoader.EquipType") {
 			offset++;
@@ -206,16 +206,17 @@ public class InvokeRewriter : BaseRewriter
 		// optional overload 1 -> 5 (equipTexture)
 		var newArgs = new ExpressionSyntax[6] {
 			args[0].Expression,			// mod
-			args[offset+3].Expression,	// texture
-			args[offset+1].Expression,	// type
-			ReplaceNullLiteral(args[offset+0].Expression),	// item
-			ReplaceNullLiteral(args[offset+2].Expression),	// name
+			args[offset+4].Expression,	// texture
+			args[offset+2].Expression,	// type
+			ReplaceNullLiteral(args[offset+1].Expression),	// item
+			ReplaceNullLiteral(args[offset+3].Expression),	// name
 			equipTexture
 		};
 
-		// todo, trivia from the rest
+		if (paramOps.Length > offset + 4)
+			invoke = invoke.WithBlockComment("Note: armTexture and femaleTexture now part of new spritesheet. https://github.com/tModLoader/tModLoader/wiki/Armor-Texture-Migration-Guide");
 
-		return invoke.WithArgumentList(ArgumentList(method, newArgs));
+		return invoke.WithArgumentList(ArgumentList(method, newArgs).WithTriviaFrom(invoke.ArgumentList));
 	};
 	#endregion
 }
