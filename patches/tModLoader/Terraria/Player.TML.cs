@@ -268,15 +268,17 @@ namespace Terraria
 		public float ThrownVelocity { get; set; }
 
 		/// <summary>
-		/// If true, player has a 33% chance of not consuming the thrown item. Projectiles spawned this way will set <see cref="Projectile.noDropItem"/> to prevent duplication
-		/// <br/>Only applies to consumable items and projectiles counted as the <see cref="DamageClass.Throwing"/> damage type
+		/// If true, player has a 33% chance of not consuming the thrown item.
+		/// <br/>Only applies to consumable items and projectiles counted as the <see cref="DamageClass.Throwing"/> damage type.
+		/// <br/>Projectiles spawned from a player who holds such item will set <see cref="Projectile.noDropItem"/> to prevent duplication.
 		/// <br/>Stacks with <see cref="ThrownCost50"/> multiplicatively
 		/// </summary>
 		public bool ThrownCost33 { get; set; }
 
 		/// <summary>
-		/// If true, player has a 50% chance of not consuming the thrown item. Projectiles spawned this way will set <see cref="Projectile.noDropItem"/> to prevent duplication
-		/// <br/>Only applies to consumable items counted as the <see cref="DamageClass.Throwing"/> damage type
+		/// If true, player has a 50% chance of not consuming the thrown item.
+		/// <br/>Only applies to consumable items counted as the <see cref="DamageClass.Throwing"/> damage type.
+		/// <br/>Projectiles spawned from a player who holds such item will set <see cref="Projectile.noDropItem"/> to prevent duplication.
 		/// <br/>Stacks with <see cref="ThrownCost33"/> multiplicatively
 		/// </summary>
 		public bool ThrownCost50 { get; set; }
