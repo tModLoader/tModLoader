@@ -286,6 +286,10 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateTranslation",	ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader",			"CreateTranslation",	targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddBackgroundTexture",ToStaticMethodCall("Terraria.ModLoader.BackgroundTextureLoader",	"AddBackgroundTexture",	targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetBackgroundSlot",	ToStaticMethodCall("Terraria.ModLoader.BackgroundTextureLoader",	"GetBackgroundSlot",	targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetEquipTexture",		ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipTexture",		targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetEquipSlot",		ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipSlot",			targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetAccessorySlot",	ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipSlot",			targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddEquipTexture",		ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"AddEquipTexture",			targetBecomesFirstArg: true));
 
 		RenameMethod("Terraria.ModLoader.Mod",			from: "TextureExists",	to: "HasAsset");
 		RenameMethod("Terraria.ModLoader.ModContent",	from: "TextureExists",	to: "HasAsset");
