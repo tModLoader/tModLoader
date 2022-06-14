@@ -158,6 +158,9 @@ public static partial class Config
 		RenameInstanceField("Terraria.Player",	from: "doubleJumpSail",		to: "hasJumpOption_Sail");
 		RenameInstanceField("Terraria.Player",	from: "doubleJumpSandstorm",to: "hasJumpOption_Sandstorm");
 		RenameInstanceField("Terraria.Player",	from: "doubleJumpUnicorn",	to: "hasJumpOption_Unicorn");
+		RenameInstanceField("Terraria.Player",	from: "thrownCost33",		to: "ThrownCost33");
+		RenameInstanceField("Terraria.Player",	from: "thrownCost50",		to: "ThrownCost50");
+		RenameInstanceField("Terraria.Player",	from: "thrownVelocity",		to: "ThrownVelocity");
 
 		RenameMethod("Terraria.Item",		from: "IsNotTheSameAs",			to: "IsNotSameTypePrefixAndStack");
 		RenameMethod("Terraria.Lighting",	from: "BlackOut",				to: "Clear");

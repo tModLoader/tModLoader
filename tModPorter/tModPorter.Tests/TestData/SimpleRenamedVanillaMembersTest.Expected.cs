@@ -95,6 +95,9 @@ public class SimpleRenamedVanillaMembersTest
 		var hasBanner = Main.SceneMetrics.hasBanner;
 		var bannerBuff = Main.SceneMetrics.NPCBannerBuff;
 		var extraAccessorySlots = player.GetAmountOfExtraAccessorySlotsToShow();
+		var thrownCost33 = player.ThrownCost33;
+		var thrownCost50 = player.ThrownCost50;
+		var thrownVelocity = player.ThrownVelocity;
 
 		Main.PlayerRenderer.DrawPlayer(Main.Camera, player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 

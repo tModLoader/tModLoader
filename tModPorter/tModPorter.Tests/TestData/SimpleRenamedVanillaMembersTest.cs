@@ -94,6 +94,9 @@ public class SimpleRenamedVanillaMembersTest
 		var hasBanner = player.hasBanner;
 		var bannerBuff = player.NPCBannerBuff;
 		var extraAccessorySlots = player.extraAccessorySlots;
+		var thrownCost33 = player.thrownCost33;
+		var thrownCost50 = player.thrownCost50;
+		var thrownVelocity = player.thrownVelocity;
 
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 
