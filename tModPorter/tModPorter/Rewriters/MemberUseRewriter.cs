@@ -57,4 +57,19 @@ public class MemberUseRewriter : BaseRewriter {
 			return memberName.WithIdentifier(memberName.Identifier.WithText("CountsAsClass"));
 		}
 	};
+
+	public static RewriteMemberUse DamageModifier(string className, string methodName, string subMember = null) => (rw, op, memberName) => {
+		var damageClassExpr = MemberAccessExpression(rw.UseType("Terraria.ModLoader.DamageClass"), className);
+
+		var rootExpr = (ExpressionSyntax)op.Syntax;
+		rw.RegisterAction<ExpressionSyntax>(rootExpr, n => {
+			n = InvocationExpression(n.WithoutTrivia(), damageClassExpr).WithTriviaFrom(n);
+			if (subMember != null)
+				n = MemberAccessExpression(n.WithoutTrivia(), subMember).WithTriviaFrom(n);
+
+			return n;
+		});
+
+		return memberName.WithIdentifier(memberName.Identifier.WithText(methodName));
+	};
 }
