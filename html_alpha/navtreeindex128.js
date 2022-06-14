@@ -1,5 +1,9 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a15b40dc101e35c3ccf7e14db67edffc3":[2,0,2,4,67,120],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a1c0cd68dbda2646f5ed4ad0ff10aebe6":[2,0,2,4,67,71],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a1f4a8a162201ad502cbff311b694ba4c":[2,0,2,4,67,48],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a20da8dcf83c21695d985dffe01624d57":[2,0,2,4,67,63],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a228ce3092fc919c1ff401c4c19c2ddee":[2,0,2,4,67,33],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a22c22f7319a50261890b38e0d7357519":[2,0,2,4,67,4],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a23669779d908503f83d151342119b2ec":[2,0,2,4,67,116],
@@ -245,9 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#a79ec0495862140bd841ef32954caab19":[2,0,2,5,5,0,1],
 "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#ab5711265dbe11f32480c1ef4d6e8a098":[2,0,2,5,5,0,3],
 "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#ab6ba162f4f053eedfcbcd56462c816e2":[2,0,2,5,5,0,6],
-"struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#aeb55e337d8036656899faec51cba48af":[2,0,2,5,5,0,0],
-"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html":[2,0,2,5,9,2,0],
-"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html#a43202634af80938b60cedf9f979dfd8b":[2,0,2,5,9,2,0,0],
-"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html#a5c994e1452e7f11afdc2f1b6b5db2a84":[2,0,2,5,9,2,0,3],
-"struct_terraria_1_1_game_content_1_1_golf_1_1_golf_helper_1_1_club_properties.html#a70118a7349e763ca334767f5bc5c4de1":[2,0,2,5,9,2,0,2]
+"struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html#aeb55e337d8036656899faec51cba48af":[2,0,2,5,5,0,0]
 };

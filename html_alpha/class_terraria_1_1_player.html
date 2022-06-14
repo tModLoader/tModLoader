@@ -4222,6 +4222,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a4c507ccbf2003c262d95dbf39e63fca4"><td class="memItemLeft" align="right" valign="top"><a id="a4c507ccbf2003c262d95dbf39e63fca4"></a>
 bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>adjTile</b><code> [get, set]</code></td></tr>
 <tr class="separator:a4c507ccbf2003c262d95dbf39e63fca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a810aba496ed0a58606fe1ec11ff2dfa2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a810aba496ed0a58606fe1ec11ff2dfa2">AnyThrownCostReduction</a><code> [get]</code></td></tr>
+<tr class="memdesc:a810aba496ed0a58606fe1ec11ff2dfa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if either <a class="el" href="class_terraria_1_1_player.html#a89269f1842a8b39d3d26e853db953b5e" title="If true, player has a 33% chance of not consuming the thrown item.  Only applies to consumable items ...">ThrownCost33</a> or <a class="el" href="class_terraria_1_1_player.html#a664d23e97aba1bd2ae04fe7cc548153a" title="If true, player has a 50% chance of not consuming the thrown item.  Only applies to consumable items ...">ThrownCost50</a> are true  <a href="class_terraria_1_1_player.html#a810aba496ed0a58606fe1ec11ff2dfa2">More...</a><br /></td></tr>
+<tr class="separator:a810aba496ed0a58606fe1ec11ff2dfa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5bfd61d4c784a6ae609864d7f59526f"><td class="memItemLeft" align="right" valign="top"><a id="ad5bfd61d4c784a6ae609864d7f59526f"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>BlehOldPositionFixer</b><code> [get]</code></td></tr>
 <tr class="separator:ad5bfd61d4c784a6ae609864d7f59526f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4342,6 +4345,22 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>SlimeDontHyperJump</b
 <tr class="memitem:a181f526486cd19d1afa8f77d9178e3f0"><td class="memItemLeft" align="right" valign="top"><a id="a181f526486cd19d1afa8f77d9178e3f0"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>talkNPC</b><code> [get]</code></td></tr>
 <tr class="separator:a181f526486cd19d1afa8f77d9178e3f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89269f1842a8b39d3d26e853db953b5e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a89269f1842a8b39d3d26e853db953b5e">ThrownCost33</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a89269f1842a8b39d3d26e853db953b5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, player has a 33% chance of not consuming the thrown item. <br  />
+Only applies to consumable items and projectiles counted as the DamageClass.Throwing damage type. <br  />
+Projectiles spawned from a player who holds such item will set Projectile.noDropItem to prevent duplication. <br  />
+Stacks with <a class="el" href="class_terraria_1_1_player.html#a664d23e97aba1bd2ae04fe7cc548153a" title="If true, player has a 50% chance of not consuming the thrown item.  Only applies to consumable items ...">ThrownCost50</a> multiplicatively  <a href="class_terraria_1_1_player.html#a89269f1842a8b39d3d26e853db953b5e">More...</a><br /></td></tr>
+<tr class="separator:a89269f1842a8b39d3d26e853db953b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a664d23e97aba1bd2ae04fe7cc548153a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a664d23e97aba1bd2ae04fe7cc548153a">ThrownCost50</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a664d23e97aba1bd2ae04fe7cc548153a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, player has a 50% chance of not consuming the thrown item. <br  />
+Only applies to consumable items counted as the DamageClass.Throwing damage type. <br  />
+Projectiles spawned from a player who holds such item will set Projectile.noDropItem to prevent duplication. <br  />
+Stacks with <a class="el" href="class_terraria_1_1_player.html#a89269f1842a8b39d3d26e853db953b5e" title="If true, player has a 33% chance of not consuming the thrown item.  Only applies to consumable items ...">ThrownCost33</a> multiplicatively  <a href="class_terraria_1_1_player.html#a664d23e97aba1bd2ae04fe7cc548153a">More...</a><br /></td></tr>
+<tr class="separator:a664d23e97aba1bd2ae04fe7cc548153a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2387b132a6781f209eac5d2308b212eb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a2387b132a6781f209eac5d2308b212eb">ThrownVelocity</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a2387b132a6781f209eac5d2308b212eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Multiplier to shot projectile velocity before throwing. Result will be capped to 16f. <br  />
+Only applies to items counted as the DamageClass.Throwing damage type  <a href="class_terraria_1_1_player.html#a2387b132a6781f209eac5d2308b212eb">More...</a><br /></td></tr>
+<tr class="separator:a2387b132a6781f209eac5d2308b212eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83e35f521cbcf94228d213338b8a5815"><td class="memItemLeft" align="right" valign="top"><a id="a83e35f521cbcf94228d213338b8a5815"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>TileReplacementEnabled</b><code> [get]</code></td></tr>
 <tr class="separator:a83e35f521cbcf94228d213338b8a5815"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5534,6 +5553,30 @@ Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a810aba496ed0a58606fe1ec11ff2dfa2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a810aba496ed0a58606fe1ec11ff2dfa2">&#9670;&nbsp;</a></span>AnyThrownCostReduction</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Player.AnyThrownCostReduction</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if either <a class="el" href="class_terraria_1_1_player.html#a89269f1842a8b39d3d26e853db953b5e" title="If true, player has a 33% chance of not consuming the thrown item.  Only applies to consumable items ...">ThrownCost33</a> or <a class="el" href="class_terraria_1_1_player.html#a664d23e97aba1bd2ae04fe7cc548153a" title="If true, player has a 50% chance of not consuming the thrown item.  Only applies to consumable items ...">ThrownCost50</a> are true </p>
+
+</div>
+</div>
 <a id="a4a663f33b5851989fc728abbc47144aa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4a663f33b5851989fc728abbc47144aa">&#9670;&nbsp;</a></span>CurrentSceneEffect</h2>
 
@@ -5654,6 +5697,85 @@ Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates
 </div><div class="memdoc">
 
 <p>The number of times the item has been used/fired this animation (swing) </p>
+
+</div>
+</div>
+<a id="a89269f1842a8b39d3d26e853db953b5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89269f1842a8b39d3d26e853db953b5e">&#9670;&nbsp;</a></span>ThrownCost33</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Player.ThrownCost33</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If true, player has a 33% chance of not consuming the thrown item. <br  />
+Only applies to consumable items and projectiles counted as the DamageClass.Throwing damage type. <br  />
+Projectiles spawned from a player who holds such item will set Projectile.noDropItem to prevent duplication. <br  />
+Stacks with <a class="el" href="class_terraria_1_1_player.html#a664d23e97aba1bd2ae04fe7cc548153a" title="If true, player has a 50% chance of not consuming the thrown item.  Only applies to consumable items ...">ThrownCost50</a> multiplicatively </p>
+
+</div>
+</div>
+<a id="a664d23e97aba1bd2ae04fe7cc548153a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a664d23e97aba1bd2ae04fe7cc548153a">&#9670;&nbsp;</a></span>ThrownCost50</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Player.ThrownCost50</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If true, player has a 50% chance of not consuming the thrown item. <br  />
+Only applies to consumable items counted as the DamageClass.Throwing damage type. <br  />
+Projectiles spawned from a player who holds such item will set Projectile.noDropItem to prevent duplication. <br  />
+Stacks with <a class="el" href="class_terraria_1_1_player.html#a89269f1842a8b39d3d26e853db953b5e" title="If true, player has a 33% chance of not consuming the thrown item.  Only applies to consumable items ...">ThrownCost33</a> multiplicatively </p>
+
+</div>
+</div>
+<a id="a2387b132a6781f209eac5d2308b212eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2387b132a6781f209eac5d2308b212eb">&#9670;&nbsp;</a></span>ThrownVelocity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Terraria.Player.ThrownVelocity</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Multiplier to shot projectile velocity before throwing. Result will be capped to 16f. <br  />
+Only applies to items counted as the DamageClass.Throwing damage type </p>
 
 </div>
 </div>
