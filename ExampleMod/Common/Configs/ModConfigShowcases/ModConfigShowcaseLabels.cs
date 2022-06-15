@@ -46,7 +46,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[Header("$Mods.ExampleMod.Common.LocalizedHeader")]
 		public int LocalizedHeader;
 
-		[Header("[i:19][c/00FF00:Green Text]")]
+		[Header("[i:19][c/00FF00:Green Text][i:ExampleMod/ExampleItem]")]
 		public int CoolHeader;
 
 		// The class declaration of SimpleData specifies [BackgroundColor(255, 7, 7)]. Field and data structure field annotations override class annotations.
