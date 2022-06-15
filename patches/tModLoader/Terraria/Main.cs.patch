@@ -233,6 +233,18 @@
  		private static float _minWind = 0.34f;
  		private static float _maxWind = 0.4f;
  		private static float _minRain = 0.4f;
+@@ -1987,8 +_,11 @@
+ 		public static float ambientLavaY = -1f;
+ 		public static float ambientLavaStrength;
+ 		public static int ambientCounter;
++		//TML: No longer of use due to changes in Main.Ambience().
++		/*
+ 		private static bool _isWaterfallMusicPlaying = false;
+ 		private static bool _isLavafallMusicPlaying = false;
++		*/
+ 		public static IChatMonitor chatMonitor = new RemadeChatMonitor();
+ 		public static int ProjectileUpdateLoopIndex = -1;
+ 		public static GameTipsDisplay gameTips;
 @@ -2009,16 +_,16 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
@@ -1224,7 +1236,7 @@
 +			float usedWaterVolume = MathHelper.Clamp(ambientWaterfallStrength / 50f, 0f, 1f);
 +
 +			HandleAmbientSound(in SoundID.Waterfall, ref waterfallSoundSlot, ambientWaterfallStrength, new Vector2(ambientWaterfallX, ambientWaterfallY));
-+			
++
 +			/*
  			if (ambientWaterfallStrength > 0f) {
  				SoundEngine.PlaySound(34, (int)ambientWaterfallX, (int)ambientWaterfallY, (int)ambientWaterfallStrength);
@@ -1237,12 +1249,9 @@
  
  			float num = Math.Abs(ambientLavaX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavaY - (screenPosition.Y + (float)(screenHeight / 2)));
  			float num2 = Math.Abs(ambientLavafallX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavafallY - (screenPosition.Y + (float)(screenHeight / 2)));
-@@ -10210,8 +_,16 @@
- 				num3 = ambientLavafallX;
- 				num4 = ambientLavafallY;
+@@ -10212,6 +_,14 @@
  			}
--
-+			
+ 
  			float num5 = ambientLavafallStrength + ambientLavaStrength;
 +			// Weird: Vanilla uses the above local for adjusting lava sounds' volume, but doesn't consider it when checking if the sound should be playing at all.
 +			float usedLavaVolume = ambientLavaStrength > 0f
