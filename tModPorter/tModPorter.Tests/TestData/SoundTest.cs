@@ -31,6 +31,7 @@ public class SoundTest : ModProjectile
 		Main.PlaySound(SoundID.Splash, -1, -1, 0);
 		Main.PlaySound(SoundID.Splash, -1, -1, 1);
 		Main.PlaySound(SoundID.Splash);
+		Main.PlaySound(SoundID.Mech, style: 0); // mech previously needed style 0
 		Main.PlaySound(SoundID.Roar);
 		Main.PlaySound(SoundID.Roar, style: 0);
 		Main.PlaySound(SoundID.Roar, style: 1);

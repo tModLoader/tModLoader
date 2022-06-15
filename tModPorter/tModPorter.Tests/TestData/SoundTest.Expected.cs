@@ -20,10 +20,10 @@ public class SoundTest : ModProjectile
 		SoundEngine.PlaySound(SoundID.MenuTick);
 
 		// named pitch variance or volume
-		SoundEngine.PlaySound(SoundID.MenuTick with { Volume = 2f });
-		SoundEngine.PlaySound(SoundID.MenuTick with { Pitch = 0.1f });
-		SoundEngine.PlaySound(SoundID.MenuTick with { Volume = 2f, Pitch = 0.1f });
-		SoundEngine.PlaySound(SoundID.MenuTick with { Pitch = 0.1f }, player.position);
+		SoundEngine.PlaySound(SoundID.MenuTick with { Volume = SoundID.MenuTick.Volume * 2f });
+		SoundEngine.PlaySound(SoundID.MenuTick with { Pitch = SoundID.MenuTick.Pitch + 0.1f });
+		SoundEngine.PlaySound(SoundID.MenuTick with { Volume = SoundID.MenuTick.Volume * 2f, Pitch = SoundID.MenuTick.Pitch + 0.1f });
+		SoundEngine.PlaySound(SoundID.MenuTick with { Pitch = SoundID.MenuTick.Pitch + 0.1f }, player.position);
 
 		SoundEngine.PlaySound(SoundID.MenuTick, new Vector2(420, 421)); // Convert x/y into Vector2
 		SoundEngine.PlaySound(SoundID.MenuTick, player.position); // Simplify manual x/y int conversion into Vector2
@@ -32,6 +32,7 @@ public class SoundTest : ModProjectile
 		SoundEngine.PlaySound(SoundID.Splash);
 		SoundEngine.PlaySound(SoundID.SplashWeak);
 		SoundEngine.PlaySound(SoundID.SplashWeak);
+		SoundEngine.PlaySound(SoundID.Mech);
 		SoundEngine.PlaySound(SoundID.WormDig);
 		SoundEngine.PlaySound(SoundID.Roar);
 		SoundEngine.PlaySound(SoundID.WormDig);
