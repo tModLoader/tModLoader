@@ -52,6 +52,9 @@ public class EquipTextureModTest : Mod
 		slot = EquipLoader.AddEquipTexture(this, pathToTexture, equipType, item, equipName, equipTexture);
 		slot = EquipLoader.AddEquipTexture(this, pathToTexture, equipType, name: equipName, equipTexture: equipTexture);
 
+		slot = EquipLoader.AddEquipTexture(mod, pathToTexture, equipType, name: equipName)/* tModPorter Note: armTexture and femaleTexture now part of new spritesheet. https://github.com/tModLoader/tModLoader/wiki/Armor-Texture-Migration-Guide */;
+		slot = EquipLoader.AddEquipTexture(this, pathToTexture, equipType, name: equipName, equipTexture: equipTexture)/* tModPorter Note: armTexture and femaleTexture now part of new spritesheet. https://github.com/tModLoader/tModLoader/wiki/Armor-Texture-Migration-Guide */;
+
 		// 1.3 EquipTexture Mod.GetEquipTexture(string name, EquipType type)
 		// 1.4 EquipTexture EquipLoader.GetEquipTexture(Mod mod, string name, EquipType type)
 		equipTexture = EquipLoader.GetEquipTexture(mod, equipName, equipType);

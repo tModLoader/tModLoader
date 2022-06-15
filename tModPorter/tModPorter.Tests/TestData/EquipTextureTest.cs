@@ -52,6 +52,9 @@ public class EquipTextureModTest : Mod
 		slot = AddEquipTexture(equipTexture, item, equipType, equipName, pathToTexture);
 		slot = AddEquipTexture(equipTexture, null, equipType, equipName, pathToTexture);
 
+		slot = mod.AddEquipTexture(null, equipType, equipName, pathToTexture, "arms", "female");
+		slot = AddEquipTexture(equipTexture, null, equipType, equipName, pathToTexture, femaleTexture: "female");
+
 		// 1.3 EquipTexture Mod.GetEquipTexture(string name, EquipType type)
 		// 1.4 EquipTexture EquipLoader.GetEquipTexture(Mod mod, string name, EquipType type)
 		equipTexture = mod.GetEquipTexture(equipName, equipType);

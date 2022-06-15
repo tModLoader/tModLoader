@@ -11,3 +11,12 @@ public class ModTranslationTest : Mod
 		CreateTranslation("");
 	}
 }
+
+public class SideEffectTest : ModItem
+{
+	Mod GetModMightHaveSideEffects() => Mod;
+
+	void Method() {
+		GetModMightHaveSideEffects().AddTranslation(null);
+	}
+}

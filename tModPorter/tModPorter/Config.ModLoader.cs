@@ -3,6 +3,7 @@ using static tModPorter.Rewriters.InvokeRewriter;
 using static tModPorter.Rewriters.MemberUseRewriter;
 using static tModPorter.Rewriters.HookRewriter;
 using static tModPorter.Rewriters.AddComment;
+using System;
 
 namespace tModPorter;
 
@@ -280,8 +281,20 @@ public static partial class Config
 
 		//RefactorStaticMethodCall("Terraria.ModLoader.ModGore", "GetGoreSlot",	ToFindTypeCall("Terraria.ModLoader.ModGore")); //todo, OnType ModContent, and same as Mod.GetGoreSlot
 
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "RegisterHotKey",		ToStaticMethodCall("Terraria.ModLoader.KeybindLoader",				"RegisterKeybind",		targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddTranslation",		ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader",			"AddTranslation",		targetBecomesFirstArg: false));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateTranslation",	ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader",			"CreateTranslation",	targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddBackgroundTexture",ToStaticMethodCall("Terraria.ModLoader.BackgroundTextureLoader",	"AddBackgroundTexture",	targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetBackgroundSlot",	ToStaticMethodCall("Terraria.ModLoader.BackgroundTextureLoader",	"GetBackgroundSlot",	targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetEquipTexture",		ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipTexture",		targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetEquipSlot",		ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipSlot",			targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetAccessorySlot",	ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipSlot",			targetBecomesFirstArg: true));
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddEquipTexture",		ConvertAddEquipTexture);
+
 		RenameMethod("Terraria.ModLoader.Mod",			from: "TextureExists",	to: "HasAsset");
 		RenameMethod("Terraria.ModLoader.ModContent",	from: "TextureExists",	to: "HasAsset");
+
+		RenameMethod("Terraria.ModLoader.ModPrefix", from: "GetPrefix", to: "GetPrefix", newType: "Terraria.ModLoader.PrefixLoader");
 
 		RenameType(from: "Terraria.ModLoader.PlayerHooks",			to: "Terraria.ModLoader.PlayerLoader");
 		RenameType(from: "Terraria.ModLoader.MusicPriority",		to: "Terraria.ModLoader.SceneEffectPriority");

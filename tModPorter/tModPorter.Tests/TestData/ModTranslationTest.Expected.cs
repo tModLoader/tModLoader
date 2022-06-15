@@ -11,3 +11,12 @@ public class ModTranslationTest : Mod
 		LocalizationLoader.CreateTranslation(this, "");
 	}
 }
+
+public class SideEffectTest : ModItem
+{
+	Mod GetModMightHaveSideEffects() => Mod;
+
+	void Method() {
+		/* GetModMightHaveSideEffects() */LocalizationLoader.AddTranslation(null);
+	}
+}

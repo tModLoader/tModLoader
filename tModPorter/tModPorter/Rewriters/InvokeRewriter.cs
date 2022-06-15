@@ -139,7 +139,7 @@ public class InvokeRewriter : BaseRewriter
 	};
 
 	public static RewriteInvoke ComparisonFunctionToPropertyEquality(string propName) => (_, invoke, methodName) => {
-		return invoke;
+		return invoke; // TODO
 	};
 
 	public static RewriteInvoke ToFindTypeCall(string type) => (rw, invoke, methodName) => {
@@ -148,6 +148,75 @@ public class InvokeRewriter : BaseRewriter
 
 		invoke = invoke.ReplaceNode(nameSyntax, GenericName("Find", rw.UseType(type)));
 		return MemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
+	};
+
+	private static bool SuspectSideEffects(ExpressionSyntax expr, out ExpressionSyntax concern) {
+		switch (expr) {
+			case MemberAccessExpressionSyntax memberAccess: return SuspectSideEffects(memberAccess.Expression, out concern);
+			case NameSyntax: concern = null; return false;
+			default: concern = expr; return true;
+		};
+	}
+
+	public static RewriteInvoke ToStaticMethodCall(string onType, string newName, bool targetBecomesFirstArg = false) => (rw, invoke, _) => {
+		var targetExpr = invoke.Expression switch {
+			MemberAccessExpressionSyntax memberAccess => memberAccess.Expression,
+			NameSyntax _ => ThisExpression(),
+			_ => throw new ArgumentException("Strange invoke target")
+		};
+
+		var args = invoke.ArgumentList;
+		if (targetBecomesFirstArg) {
+			args = ArgumentList(new[] { targetExpr.WithoutTrivia() }).Concat(args);
+		}
+		else if (SuspectSideEffects(invoke.Expression, out var concern)) {
+			invoke = invoke.WithLeadingTrivia(invoke.GetLeadingTrivia().Add(Comment($"/* {concern} */")));
+		}
+
+		var member = MemberAccessExpression(rw.UseType(onType), newName);
+		return InvocationExpression(member, args).WithTriviaFrom(invoke);
+	};
+
+	public static RewriteInvoke ConvertAddEquipTexture => (rw, invoke, methodName) => {
+		var paramOps = invoke.ArgumentList.Arguments.Select(arg => rw.model.GetOperation(arg.Expression)).ToArray();
+		var method = rw.model.Compilation.GetTypeByMetadataName("Terraria.ModLoader.EquipLoader").LookupMethod("AddEquipTexture");
+		if (method == null)
+			return invoke;
+
+		invoke = (InvocationExpressionSyntax)ToStaticMethodCall(method.ContainingType.ToString(), method.Name, targetBecomesFirstArg: true)(rw, invoke, methodName);
+		if (paramOps.Any(op => op == null || op is IInvalidOperation) || paramOps.Length < 4)
+			return invoke;
+
+		var args = invoke.ArgumentList.Arguments;
+		int offset = 0;
+		ExpressionSyntax equipTexture = null;
+		if (paramOps[2].Type.ToString() == "Terraria.ModLoader.EquipType") {
+			offset++;
+			equipTexture = args[1].Expression;
+		}
+
+		static ExpressionSyntax ReplaceNullLiteral(ExpressionSyntax expr) => expr.IsKind(SyntaxKind.NullLiteralExpression) ? null : expr;
+
+		// arg map (ModItem variant)
+		// 0 -> 0 (mod)
+		// 1 -> 3 (item)
+		// 2 -> 2 (type)
+		// 3 -> 4 (name)
+		// 4 -> 1 (texture)
+		// optional overload 1 -> 5 (equipTexture)
+		var newArgs = new ExpressionSyntax[6] {
+			args[0].Expression,			// mod
+			args[offset+4].Expression,	// texture
+			args[offset+2].Expression,	// type
+			ReplaceNullLiteral(args[offset+1].Expression),	// item
+			ReplaceNullLiteral(args[offset+3].Expression),	// name
+			equipTexture
+		};
+
+		if (paramOps.Length > offset + 4)
+			invoke = invoke.WithBlockComment("Note: armTexture and femaleTexture now part of new spritesheet. https://github.com/tModLoader/tModLoader/wiki/Armor-Texture-Migration-Guide");
+
+		return invoke.WithArgumentList(ArgumentList(method, newArgs).WithTriviaFrom(invoke.ArgumentList));
 	};
 	#endregion
 }
