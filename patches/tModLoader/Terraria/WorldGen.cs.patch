@@ -150,9 +150,19 @@
  			CaptureInterface.ResetFocus();
  			Main.ActivePlayerFileData.StopPlayTimer();
  			Main.fastForwardTime = false;
-@@ -2371,13 +_,6 @@
+@@ -2370,14 +_,16 @@
+ 		}
  
  		public static void SaveAndQuitCallBack(object threadContext) {
++			/*
++			try {
++				SoundEngine.PlaySound(34, -1, -1, 0);
++				SoundEngine.PlaySound(35, -1, -1, 0);
++			}
++			catch {
++			}
++			*/
++
  			int netMode = Main.netMode;
 -			try {
 -				SoundEngine.PlaySound(34, -1, -1, 0);
