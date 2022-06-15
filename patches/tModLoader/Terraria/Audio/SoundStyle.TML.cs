@@ -249,6 +249,12 @@ namespace Terraria.Audio
 		internal SoundStyle WithPitchVariance(float pitchVariance)
 			=> this with { PitchVariance = pitchVariance };
 
+		public SoundStyle WithVolumeScale(float scale)
+			=> this with { Volume = Volume * scale };
+
+		public SoundStyle WithPitchOffset(float offset)
+			=> this with { Pitch = Pitch + offset };
+
 		private int GetRandomVariantIndex() {
 			if (variantsWeights == null) {
 				// Simple random.
