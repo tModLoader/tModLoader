@@ -432,12 +432,13 @@
  								break;
  							case 4:
  								if (num29 == -1) {
-@@ -1776,6 +_,9 @@
+@@ -1776,6 +_,10 @@
  						obj8.zone2 = reader.ReadByte();
  						obj8.zone3 = reader.ReadByte();
  						obj8.zone4 = reader.ReadByte();
 +						if (!ModNet.AllowVanillaClients)
 +							BiomeLoader.ReceiveCustomBiomes(obj8, reader);
++						obj8.ZonePurity = obj8.InZonePurity();
 +
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(36, -1, whoAmI, null, num228);
