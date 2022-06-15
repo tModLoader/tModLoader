@@ -1235,7 +1235,7 @@
 +
 +			float usedWaterVolume = MathHelper.Clamp(ambientWaterfallStrength / 50f, 0f, 1f);
 +
-+			HandleAmbientSound(in SoundID.Waterfall, ref waterfallSoundSlot, ambientWaterfallStrength, new Vector2(ambientWaterfallX, ambientWaterfallY));
++			HandleAmbientSound(in SoundID.Waterfall, ref waterfallSoundSlot, usedWaterVolume, new Vector2(ambientWaterfallX, ambientWaterfallY));
 +
 +			/*
  			if (ambientWaterfallStrength > 0f) {
@@ -1258,7 +1258,7 @@
 +				? MathHelper.Clamp(num5 / 50f, 0f, 1f)
 +				: 0f;
 +
-+			HandleAmbientSound(in SoundID.Lavafall, ref lavafallSoundSlot, num5, new Vector2(num3, num4));
++			HandleAmbientSound(in SoundID.Lavafall, ref lavafallSoundSlot, usedLavaVolume, new Vector2(num3, num4));
 +
 +			/*
  			if (ambientLavafallStrength > 0f) {
