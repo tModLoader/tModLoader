@@ -1247,9 +1247,11 @@
  
  			float num = Math.Abs(ambientLavaX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavaY - (screenPosition.Y + (float)(screenHeight / 2)));
  			float num2 = Math.Abs(ambientLavafallX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavafallY - (screenPosition.Y + (float)(screenHeight / 2)));
-@@ -10212,6 +_,10 @@
+@@ -10211,7 +_,12 @@
+ 				num4 = ambientLavafallY;
  			}
  
++			// Weird: Vanilla uses this for adjusting lava sounds' volume, but doesn't consider it when checking if the sound should be playing, using the expression seen below.
  			float num5 = ambientLavafallStrength + ambientLavaStrength;
 +
 +			HandleAmbientSound(in SoundID.Lavafall, ref lavafallSoundSlot, ref _isLavafallMusicPlaying, ambientLavafallStrength > 0f, num3, num4, num5);
