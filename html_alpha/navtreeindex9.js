@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#ac135577cde0a02e5ad9e27f1839b190a":[2,0,2,5,4,14,12],
 "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#ac7044e1d690e7d155cbd9b730983a30d":[2,0,2,5,4,14,8],
 "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#ae3d8ade25748bc0a9684ab9086264ccb":[2,0,2,5,4,14,4],
 "class_terraria_1_1_game_content_1_1_creative_1_1_sorting_steps.html":[2,0,2,5,4,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "class_terraria_1_1_game_content_1_1_font_assets.html#a12e1209fd649b21489bbadf9706caff2":[2,0,2,5,36,2],
 "class_terraria_1_1_game_content_1_1_font_assets.html#a559d328d6aeff906ec7b39c207d68631":[2,0,2,5,36,1],
 "class_terraria_1_1_game_content_1_1_font_assets.html#ac38ce39b3aedbe6f190681f931faccbe":[2,0,2,5,36,0],
-"class_terraria_1_1_game_content_1_1_font_assets.html#ae4b975931540c8f4272e7054537910d0":[2,0,2,5,36,3],
-"class_terraria_1_1_game_content_1_1_generation_1_1_action_grass.html":[2,0,2,5,8,0]
+"class_terraria_1_1_game_content_1_1_font_assets.html#ae4b975931540c8f4272e7054537910d0":[2,0,2,5,36,3]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_terraria_1_1_data_structures_1_1_entity_source___world_gen.html#a53c2b0cf68746d6965f43a889e5ad96c":[2,0,2,4,42,1],
 "class_terraria_1_1_data_structures_1_1_entity_source___world_gen.html#ab14a5f4afd0a111e78bbb590fdb88158":[2,0,2,4,42,0],
 "class_terraria_1_1_data_structures_1_1_entry_filterer.html":[2,0,2,4,43],
 "class_terraria_1_1_data_structures_1_1_entry_filterer.html#a04c358669ffdf0b1dda50745a568c2a0":[2,0,2,4,43,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#a15e9d38245d5d304d24eb6f76e25a532":[2,0,2,4,79,3],
 "class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#a39dbb57c6c3e029a53337cd462bed0fa":[2,0,2,4,79,0],
 "class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#a7b7f40de2d4f4f359d9ca760b0966b11":[2,0,2,4,79,5],
-"class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#a8b810b95d355524b2afc6692e4736772":[2,0,2,4,79,1],
-"class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#aaf7ee9e3852b293ad6487cbdb3922eb6":[2,0,2,4,79,7]
+"class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#a8b810b95d355524b2afc6692e4736772":[2,0,2,4,79,1]
 };

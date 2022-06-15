@@ -1,5 +1,6 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html#a74822db5a0d4df24bbe8b1943773aaea":[2,0,2,5,10,5,27,5],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html#add3ce54084c894d084b216f52f33bf6e":[2,0,2,5,10,5,27,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_jungle_key_condition.html":[2,0,2,5,10,5,28],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_jungle_key_condition.html#a24a776ed006ac5e181f3a26b34b3bf0c":[2,0,2,5,10,5,28,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html#aee211724b134e56ab66f7bef99a67d4d":[2,0,2,5,42,1],
 "class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html":[2,0,2,5,11,0],
 "class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#a10b7e9a02bad09e243a8dc7f6cdb2716":[2,0,2,5,11,0,3],
-"class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#a4d40485117fb1dce551b744f8a33f689":[2,0,2,5,11,0,11],
-"class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#a5d86247b195996cc7e1d0df834dd9b1d":[2,0,2,5,11,0,9]
+"class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#a4d40485117fb1dce551b744f8a33f689":[2,0,2,5,11,0,11]
 };

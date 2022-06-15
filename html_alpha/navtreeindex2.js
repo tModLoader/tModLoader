@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"class_terraria_1_1_cloud.html#afb852d001e9e1dd5afe05193ce98546d":[2,0,2,28,17],
 "class_terraria_1_1_collision.html":[2,0,2,29],
 "class_terraria_1_1_collision.html#a034b07537f9fbe3ac9b208ce884d2d16":[2,0,2,29,4],
 "class_terraria_1_1_collision.html#a1104a0d74088cc50a62ea175d882bafa":[2,0,2,29,29],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "class_terraria_1_1_data_structures_1_1_entity_source___world_event.html":[2,0,2,4,41],
 "class_terraria_1_1_data_structures_1_1_entity_source___world_event.html#a1598a8b3c1c428af78bca8cbf2e77063":[2,0,2,4,41,0],
 "class_terraria_1_1_data_structures_1_1_entity_source___world_event.html#acffefb504d91a40a2dd3e5ac61d60e76":[2,0,2,4,41,1],
-"class_terraria_1_1_data_structures_1_1_entity_source___world_gen.html":[2,0,2,4,42],
-"class_terraria_1_1_data_structures_1_1_entity_source___world_gen.html#a53c2b0cf68746d6965f43a889e5ad96c":[2,0,2,4,42,1]
+"class_terraria_1_1_data_structures_1_1_entity_source___world_gen.html":[2,0,2,4,42]
 };
