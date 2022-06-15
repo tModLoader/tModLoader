@@ -233,6 +233,18 @@
  		private static float _minWind = 0.34f;
  		private static float _maxWind = 0.4f;
  		private static float _minRain = 0.4f;
+@@ -1987,8 +_,11 @@
+ 		public static float ambientLavaY = -1f;
+ 		public static float ambientLavaStrength;
+ 		public static int ambientCounter;
++		//TML: No longer of use due to changes in Main.Ambience().
++		/*
+ 		private static bool _isWaterfallMusicPlaying = false;
+ 		private static bool _isLavafallMusicPlaying = false;
++		*/
+ 		public static IChatMonitor chatMonitor = new RemadeChatMonitor();
+ 		public static int ProjectileUpdateLoopIndex = -1;
+ 		public static GameTipsDisplay gameTips;
 @@ -2009,16 +_,16 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
@@ -1183,6 +1195,84 @@
  				cloudBGActive = rand.Next(num2 * 3, num * 2);
  				if (netMode == 2)
  					NetMessage.SendData(7);
+@@ -10184,6 +_,9 @@
+ 			}
+ 		}
+ 
++		// Added by TML, used below.
++		private static SlotId waterfallSoundSlot, lavafallSoundSlot;
++
+ 		public static void Ambience() {
+ 			ambientCounter++;
+ 			if (ambientCounter < 15)
+@@ -10191,6 +_,35 @@
+ 
+ 			ambientCounter = 0;
+ 			Microsoft.Xna.Framework.Point point = LocalPlayer.Center.ToPoint();
++
++			// Added by TML. Improves handling of waterfall and lavafall sounds for the new unified audio system.
++			static void HandleAmbientSound(in SoundStyle soundStyle, ref SlotId slot, float volume, Vector2 position) {
++				SoundEngine.TryGetActiveSound(slot, out var activeSound);
++
++				if (volume > 0f) {
++					if (activeSound == null) {
++						slot = SoundEngine.PlaySound(soundStyle, position);
++
++						if (!SoundEngine.TryGetActiveSound(slot, out activeSound)) {
++							return;
++						}
++					}
++
++					activeSound.Volume = volume;
++					activeSound.Position = position;
++				}
++				else if (activeSound != null) {
++					activeSound.Stop();
++
++					slot = SlotId.Invalid;
++				}
++			}
++
++			float usedWaterVolume = MathHelper.Clamp(ambientWaterfallStrength / 50f, 0f, 1f);
++
++			HandleAmbientSound(in SoundID.Waterfall, ref waterfallSoundSlot, usedWaterVolume, new Vector2(ambientWaterfallX, ambientWaterfallY));
++
++			/*
+ 			if (ambientWaterfallStrength > 0f) {
+ 				SoundEngine.PlaySound(34, (int)ambientWaterfallX, (int)ambientWaterfallY, (int)ambientWaterfallStrength);
+ 				_isWaterfallMusicPlaying = true;
+@@ -10201,6 +_,7 @@
+ 
+ 				_isWaterfallMusicPlaying = false;
+ 			}
++			*/
+ 
+ 			float num = Math.Abs(ambientLavaX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavaY - (screenPosition.Y + (float)(screenHeight / 2)));
+ 			float num2 = Math.Abs(ambientLavafallX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavafallY - (screenPosition.Y + (float)(screenHeight / 2)));
+@@ -10212,6 +_,15 @@
+ 			}
+ 
+ 			float num5 = ambientLavafallStrength + ambientLavaStrength;
++			// Vanilla uses the above local for adjusting lava sounds' volume, but only uses lavafall strength when checking if the sound should be playing at all.
++			// This has been confirmed as intentional.
++			float usedLavaVolume = ambientLavaStrength > 0f
++				? MathHelper.Clamp(num5 / 50f, 0f, 1f)
++				: 0f;
++
++			HandleAmbientSound(in SoundID.Lavafall, ref lavafallSoundSlot, usedLavaVolume, new Vector2(num3, num4));
++
++			/*
+ 			if (ambientLavafallStrength > 0f) {
+ 				SoundEngine.PlaySound(35, (int)num3, (int)num4, (int)num5);
+ 				_isLavafallMusicPlaying = true;
+@@ -10222,6 +_,7 @@
+ 				SoundEngine.PlaySound(35, point.X, point.Y, 0);
+ 
+ 			_isLavafallMusicPlaying = false;
++			*/
+ 		}
+ 
+ 		public static void AnimateTiles_CritterCages() {
 @@ -12355,11 +_,16 @@
  		}
  

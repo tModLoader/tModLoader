@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.Chat;
 using Terraria.ID;
+using Terraria.ObjectData;
 using Microsoft.Xna.Framework;
 
 public class SimpleRenamedVanillaMembersTest
@@ -41,21 +42,43 @@ public class SimpleRenamedVanillaMembersTest
 		var heartLantern = Main.SceneMetrics.HasHeartLantern;
 		var sunflower = Main.SceneMetrics.HasSunflower;
 
+		var expertDebuffTime = Main.GameModeInfo.DebuffTimeMultiplier;
+		var expertNPCDamage = Main.GameModeInfo.TownNPCDamageMultiplier;
+		var expertLife = Main.GameModeInfo.EnemyMaxLifeMultiplier;
+		var expertDamage = Main.GameModeInfo.EnemyDamageMultiplier;
+		var expertKnockBack = Main.GameModeInfo.KnockbackToEnemiesMultiplier;
+		var knockBackMultiplier = Main.GameModeInfo.KnockbackToEnemiesMultiplier;
+		var damageMultiplier = Main.GameModeInfo.EnemyDamageMultiplier;
+
+		int copperTierOreInt = WorldGen.SavedOreTiers.Copper;
+		ushort copperTierOre = (ushort)WorldGen.SavedOreTiers.Copper;
+		ushort ironTierOre = (ushort)WorldGen.SavedOreTiers.Iron;
+		ushort silverTierOre = (ushort)WorldGen.SavedOreTiers.Silver;
+		ushort goldTierOre = (ushort)WorldGen.SavedOreTiers.Gold;
+		int oreTier1 = WorldGen.SavedOreTiers.Cobalt;
+		int oreTier2 = WorldGen.SavedOreTiers.Mythril;
+		int oreTier3 = WorldGen.SavedOreTiers.Adamantite;
+
 		float inverseLerp = Utils.GetLerpValue(0f, 1f, 0.1f, false);
 		Lighting.Clear();
 		ChatHelper.BroadcastChatMessage(null, Color.White, -1);
+
+		int dustFire = DustID.Torch;
 
 		int water = LiquidID.Water;
 		int honey = LiquidID.Honey;
 		int lava = LiquidID.Lava;
 
-		// Yes. The variables are named with opposing sides, the underlying values are the same
+		// Yes. The variables are named with opposing sides in 1.3, the underlying values are the same
 		int type_Solid = (int)BlockType.Solid;
 		int type_Halfbrick = (int)BlockType.HalfBlock;
 		int type_SlopeDownRight = (int)BlockType.SlopeDownLeft;
 		int type_SlopeDownLeft = (int)BlockType.SlopeDownRight;
 		int type_SlopeUpRight = (int)BlockType.SlopeUpLeft;
 		int type_SlopeUpLeft = (int)BlockType.SlopeUpRight;
+
+		var tileObjectData = new TileObjectData();
+		var hookCheck = tileObjectData.HookCheckIfCanPlace;
 
 		var player = new Player();
 		var hideVisual = player.hideVisibleAccessory;
@@ -70,7 +93,11 @@ public class SimpleRenamedVanillaMembersTest
 		var doubleJumpSandstorm = player.hasJumpOption_Sandstorm;
 		var doubleJumpUnicorn = player.hasJumpOption_Unicorn;
 		var hasBanner = Main.SceneMetrics.hasBanner;
+		var bannerBuff = Main.SceneMetrics.NPCBannerBuff;
 		var extraAccessorySlots = player.GetAmountOfExtraAccessorySlotsToShow();
+		var thrownCost33 = player.ThrownCost33;
+		var thrownCost50 = player.ThrownCost50;
+		var thrownVelocity = player.ThrownVelocity;
 
 		Main.PlayerRenderer.DrawPlayer(Main.Camera, player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 
@@ -79,8 +106,14 @@ public class SimpleRenamedVanillaMembersTest
 
 		var item2 = new Item();
 		var isTheSameAs = item.type == item2.type;
+		var isTheSameAsExpression = (1 > 2 ? item : item2).type == (1 > 2 ? item2 : item).type;
 		var isTheSameAsNegated = item.type != item2.type;
 		var isTheSameAsNegatedVariant = item.type != item2.type;
 		var isNotTheSameAs = item.IsNotSameTypePrefixAndStack(item2);
+
+		NPC npc = new NPC();
+		npc.damage = npc.GetAttackDamage_ScaledByStrength(80f); // int cast matches return type
+
+		Utils.TileActionAttempt cut = DelegateMethods.CutTiles;
 	}
 }

@@ -13,16 +13,25 @@ public static class SimpleSyntaxFactory
 	public static SyntaxToken OperatorToken(SyntaxKind kind) =>
 		Token(new(Space), kind, new(Space));
 
-	public static MemberAccessExpressionSyntax SimpleMemberAccessExpression(ExpressionSyntax expression, string memberName) =>
-		MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, IdentifierName(memberName));
+	public static MemberAccessExpressionSyntax MemberAccessExpression(ExpressionSyntax expression, string memberName) =>
+		MemberAccessExpression(expression, IdentifierName(memberName));
 
-	public static AssignmentExpressionSyntax SimpleAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right) =>
-		AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, OperatorToken(SyntaxKind.EqualsToken), right);
+	public static MemberAccessExpressionSyntax MemberAccessExpression(ExpressionSyntax expression, SimpleNameSyntax memberName) =>
+		SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, expression, memberName);
 
-	public static BinaryExpressionSyntax SimpleBinaryExpression(SyntaxKind kind, ExpressionSyntax left, ExpressionSyntax right) {
-		var expr = BinaryExpression(kind, left, right);
+	public static AssignmentExpressionSyntax AssignmentExpression(ExpressionSyntax left, ExpressionSyntax right) =>
+		SyntaxFactory.AssignmentExpression(SyntaxKind.SimpleAssignmentExpression, left, OperatorToken(SyntaxKind.EqualsToken), right);
+
+	public static BinaryExpressionSyntax BinaryExpression(SyntaxKind kind, ExpressionSyntax left, ExpressionSyntax right) {
+		var expr = SyntaxFactory.BinaryExpression(kind, left, right);
 		return expr.WithOperatorToken(expr.OperatorToken.WithLeadingTrivia(Space).WithTrailingTrivia(Space));
 	}
+
+	public static InvocationExpressionSyntax InvocationExpression(ExpressionSyntax target, string methodName, params ExpressionSyntax[] args) =>
+		InvocationExpression(MemberAccessExpression(target, methodName), args);
+
+	public static InvocationExpressionSyntax InvocationExpression(ExpressionSyntax target, params ExpressionSyntax[] args) =>
+		SyntaxFactory.InvocationExpression(target, ArgumentList(args));
 
 	public static NameSyntax Name(string s) {
 		int l = s.LastIndexOf('.');
@@ -52,6 +61,8 @@ public static class SimpleSyntaxFactory
 
 	public static ParameterListSyntax ParameterList(IEnumerable<ParameterSyntax> items) => SyntaxFactory.ParameterList(SeparatedList(items));
 	public static TypeArgumentListSyntax TypeArgumentList(IEnumerable<TypeSyntax> items) => SyntaxFactory.TypeArgumentList(SeparatedList(items));
+	public static ArgumentListSyntax ArgumentList(IEnumerable<ArgumentSyntax> items) => SyntaxFactory.ArgumentList(SeparatedList(items));
+	public static ArgumentListSyntax ArgumentList(IEnumerable<ExpressionSyntax> items) => ArgumentList(items.Select(Argument));
 	public static GenericNameSyntax GenericName(string name, params TypeSyntax[] args) => SyntaxFactory.GenericName(Identifier(name), TypeArgumentList(args));
 
 	public static SyntaxToken ModifierToken(RefKind refKind) => refKind switch {
@@ -62,7 +73,7 @@ public static class SimpleSyntaxFactory
 		_ => throw new Exception("Unreachable")
 	};
 
-	public static ArgumentListSyntax WithAdditionalArguments(this ArgumentListSyntax args, ArgumentListSyntax other) {
+	public static ArgumentListSyntax Concat(this ArgumentListSyntax args, ArgumentListSyntax other) {
 		if (other.Arguments.Count == 0)
 			return args;
 
@@ -75,5 +86,26 @@ public static class SimpleSyntaxFactory
 			.AddRange(other.Arguments.GetWithSeparators());
 
 		return args.WithArguments(SyntaxFactory.SeparatedList<ArgumentSyntax>(l));
+	}
+
+	public static ArgumentListSyntax ArgumentList(IMethodSymbol method, params ExpressionSyntax[] newArgs) {
+		var argSyntaxes = new List<ArgumentSyntax>();
+
+		bool useNamedArgs = false;
+		for (int i = 0; i < newArgs.Length; i++) {
+			var arg = newArgs[i];
+			if (arg == null) {
+				useNamedArgs = true;
+				continue;
+			}
+
+			var param = method.Parameters[i];
+			if (useNamedArgs)
+				argSyntaxes.Add(Argument(NameColon(param.Name).WithTrailingTrivia(Space), default, arg));
+			else
+				argSyntaxes.Add(Argument(arg));
+		}
+
+		return ArgumentList(argSyntaxes);
 	}
 }

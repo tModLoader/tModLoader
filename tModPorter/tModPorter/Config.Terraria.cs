@@ -1,5 +1,7 @@
 ﻿using static tModPorter.Rewriters.RenameRewriter;
 using static tModPorter.Rewriters.InvokeRewriter;
+using static tModPorter.Rewriters.MemberUseRewriter;
+using static tModPorter.Rewriters.AddComment;
 using System;
 
 namespace tModPorter;
@@ -44,7 +46,9 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.Tile", "leftSlope",		GetterToProperty("LeftSlope"));
 		RefactorInstanceMethodCall("Terraria.Tile", "rightSlope",		GetterToProperty("RightSlope"));
 		RefactorInstanceMethodCall("Terraria.Tile", "HasSameSlope",		ComparisonFunctionToPropertyEquality("BlockType"));
-		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		AddComment("https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
+		RefactorInstanceMethodCall("Terraria.Tile", "isTheSameAs",		Comment("Suggestion: Read https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles"));
+
+		RenameStaticField("Terraria.ID.DustID", from: "Fire", to: "Torch");
 
 		RenameStaticField("Terraria.Tile", from: "Liquid_Water",		to: "Water",			newType: "Terraria.ID.LiquidID");
 		RenameStaticField("Terraria.Tile", from: "Liquid_Honey",		to: "Honey",			newType: "Terraria.ID.LiquidID");
@@ -56,10 +60,40 @@ public static partial class Config
 		RenameStaticField("Terraria.Tile", from: "Type_SlopeUpRight",	to: "SlopeUpLeft",		newType: "Terraria.ID.BlockType");
 		RenameStaticField("Terraria.Tile", from: "Type_SlopeUpLeft",	to: "SlopeUpRight",		newType: "Terraria.ID.BlockType");
 
+		RefactorInstanceMember("Terraria.Item",			"melee",			DamageTypeField("Melee", "Suggestion: Consider MeleeNoSpeed for no attack speed scaling"));
+		RefactorInstanceMember("Terraria.Item",			"ranged",			DamageTypeField("Ranged"));
+		RefactorInstanceMember("Terraria.Item",			"magic",			DamageTypeField("Magic"));
+		RefactorInstanceMember("Terraria.Item",			"summon",			DamageTypeField("Summon"));
+		RefactorInstanceMember("Terraria.Item",			"thrown",			DamageTypeField("Throwing"));
+		RefactorInstanceMember("Terraria.Projectile",	"melee",			DamageTypeField("Melee"));
+		RefactorInstanceMember("Terraria.Projectile",	"ranged",			DamageTypeField("Ranged"));
+		RefactorInstanceMember("Terraria.Projectile",	"magic",			DamageTypeField("Magic"));
+		RefactorInstanceMember("Terraria.Projectile",	"thrown",			DamageTypeField("Throwing"));
+		RefactorInstanceMember("Terraria.Player",		"allDamage",		DamageModifier("Generic",	"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"meleeDamage",		DamageModifier("Melee",		"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"rangedDamage",		DamageModifier("Ranged",	"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"magicDamage",		DamageModifier("Magic",		"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"minionDamage",		DamageModifier("Summon",	"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"thrownDamage",		DamageModifier("Throwing",	"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"allDamageMult",	DamageModifier("Generic",	"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"meleeDamageMult",	DamageModifier("Melee",		"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"rangedDamageMult",	DamageModifier("Ranged",	"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"magicDamageMult",	DamageModifier("Magic",		"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"minionDamageMult",	DamageModifier("Summon",	"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"thrownDamageMult",	DamageModifier("Throwing",	"GetDamage"));
+		RefactorInstanceMember("Terraria.Player",		"meleeCrit",		DamageModifier("Generic",	"GetCritChance"));
+		RefactorInstanceMember("Terraria.Player",		"rangedCrit",		DamageModifier("Ranged",	"GetCritChance"));
+		RefactorInstanceMember("Terraria.Player",		"magicCrit",		DamageModifier("Magic",		"GetCritChance"));
+		RefactorInstanceMember("Terraria.Player",		"thrownCrit",		DamageModifier("Throwing",	"GetCritChance"));
+		RefactorInstanceMember("Terraria.Player",		"meleeSpeed",		DamageModifier("Melee",		"GetAttackSpeed"));
+		RefactorInstanceMember("Terraria.Player",		"minionKB",			DamageModifier("Summon",	"GetKnockback", "Base"));
+		RefactorInstanceMember("Terraria.Player",		"armorPenetration",	DamageModifier("Generic",	"GetArmorPenetration"));
+		RefactorInstanceMember("Terraria.Player",		"whipUseTimeMultiplier",	DamageModifier("SummonMeleeSpeed",	"GetAttackSpeed"));
+
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "HoldingUp",	to: "HoldUp");
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "HoldingOut",	to: "Shoot");
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "SwingThrow",	to: "Swing");
-		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "EatingUsing", to: "EatFood");
+		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "EatingUsing",to: "EatFood");
 		RenameStaticField("Terraria.ID.ItemUseStyleID", from: "Stabbing",	to: "Thrust");
 
 		RenameStaticField("Terraria.ID.NPCID.Sets",			from: "TechnicallyABoss",	to: "ShouldBeCountedAsBoss");
@@ -93,8 +127,24 @@ public static partial class Config
 		RenameStaticField("Terraria.Main",		from: "starInBottle",		to: "SceneMetrics.HasStarInBottle");
 		RenameStaticField("Terraria.Main",		from: "heartLantern",		to: "SceneMetrics.HasHeartLantern");
 		RenameStaticField("Terraria.Main",		from: "sunflower",			to: "SceneMetrics.HasSunflower");
+		RenameStaticField("Terraria.Main",		from: "expertDebuffTime",	to: "GameModeInfo.DebuffTimeMultiplier");
+		RenameStaticField("Terraria.Main",		from: "expertNPCDamage",	to: "GameModeInfo.TownNPCDamageMultiplier");
+		RenameStaticField("Terraria.Main",		from: "expertLife",			to: "GameModeInfo.EnemyMaxLifeMultiplier");
+		RenameStaticField("Terraria.Main",		from: "expertDamage",		to: "GameModeInfo.EnemyDamageMultiplier");
+		RenameStaticField("Terraria.Main",		from: "expertKnockBack",	to: "GameModeInfo.KnockbackToEnemiesMultiplier");
+		RenameStaticField("Terraria.Main",		from: "knockBackMultiplier",to: "GameModeInfo.KnockbackToEnemiesMultiplier");
+		RenameStaticField("Terraria.Main",		from: "damageMultiplier",	to: "GameModeInfo.EnemyDamageMultiplier");
+		RenameStaticField("Terraria.WorldGen",	from: "CopperTierOre",		to: "SavedOreTiers.Copper");
+		RenameStaticField("Terraria.WorldGen",	from: "IronTierOre",		to: "SavedOreTiers.Iron");
+		RenameStaticField("Terraria.WorldGen",	from: "SilverTierOre",		to: "SavedOreTiers.Silver");
+		RenameStaticField("Terraria.WorldGen",	from: "GoldTierOre",		to: "SavedOreTiers.Gold");
+		RenameStaticField("Terraria.WorldGen",	from: "oreTier1",			to: "SavedOreTiers.Cobalt");
+		RenameStaticField("Terraria.WorldGen",	from: "oreTier2",			to: "SavedOreTiers.Mythril");
+		RenameStaticField("Terraria.WorldGen",	from: "oreTier3",			to: "SavedOreTiers.Adamantite");
 
 		RenameStaticField("Terraria.Lighting",	from: "lightMode",			to: "LegacyEngine.Mode");
+
+		RenameInstanceField("Terraria.ObjectData.TileObjectData", from: "HookCheck", to: "HookCheckIfCanPlace");
 
 		RenameInstanceField("Terraria.Item",	from: "owner",				to: "playerIndexTheItemIsReservedFor");
 		RenameInstanceField("Terraria.Player",	from: "hideVisual",			to: "hideVisibleAccessory");
@@ -108,12 +158,16 @@ public static partial class Config
 		RenameInstanceField("Terraria.Player",	from: "doubleJumpSail",		to: "hasJumpOption_Sail");
 		RenameInstanceField("Terraria.Player",	from: "doubleJumpSandstorm",to: "hasJumpOption_Sandstorm");
 		RenameInstanceField("Terraria.Player",	from: "doubleJumpUnicorn",	to: "hasJumpOption_Unicorn");
+		RenameInstanceField("Terraria.Player",	from: "thrownCost33",		to: "ThrownCost33");
+		RenameInstanceField("Terraria.Player",	from: "thrownCost50",		to: "ThrownCost50");
+		RenameInstanceField("Terraria.Player",	from: "thrownVelocity",		to: "ThrownVelocity");
 
 		RenameMethod("Terraria.Item",		from: "IsNotTheSameAs",			to: "IsNotSameTypePrefixAndStack");
 		RenameMethod("Terraria.Lighting",	from: "BlackOut",				to: "Clear");
 		RenameMethod("Terraria.Utils",		from: "InverseLerp",			to: "GetLerpValue");
 
 		RenameMethod("Terraria.Main",		from: "PlaySound",				to: "PlaySound",				newType: "Terraria.Audio.SoundEngine");
+		RenameMethod("Terraria.Main",		from: "PlayTrackedSound",		to: "PlaySound",				newType: "Terraria.Audio.SoundEngine");
 		RenameMethod("Terraria.NetMessage",	from: "BroadcastChatMessage",	to: "BroadcastChatMessage",		newType: "Terraria.Chat.ChatHelper");
 	}
 
@@ -142,7 +196,9 @@ public static partial class Config
 		RenameTextureAsset(from: "chainsTexture",		to: "Chains");
 		RenameTextureAsset(from: "blackTileTexture",	to: "BlackTile");
 		RenameTextureAsset(from: "magicPixel",			to: "MagicPixel");
+		RenameTextureAsset(from: "fishingLineTexture",	to: "FishingLine");
 		RenameTextureAsset(from: "wireUITexture",		to: "WireUi");
+		RenameTextureAsset(from: "gemTexture",			to: "Gem");
 
 		void RenameMultipleTextures(int n, Func<string, string> from, Func<string, string> to) {
 			for (int i = 0; i <= n; i++) {

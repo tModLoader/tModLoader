@@ -12,6 +12,18 @@ public class EquipTextureTest : EquipTexture
 	}
 
 	public override void UpdateVanity(Player player, EquipType type) { /* Empty */ }
+
+#if COMPILE_ERROR
+	public override bool DrawHead() { return true; /* Empty */ }
+
+	public override bool DrawBody() { return true; /* Empty */ }
+
+	public override bool DrawLegs() { return true; /* Empty */ }
+
+	public override void DrawHands(ref bool drawHands, ref bool drawArms) { /* Empty */ }
+
+	public override void DrawHair(ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
+#endif
 }
 
 public class EquipTextureModTest : Mod
@@ -39,6 +51,9 @@ public class EquipTextureModTest : Mod
 
 		slot = AddEquipTexture(equipTexture, item, equipType, equipName, pathToTexture);
 		slot = AddEquipTexture(equipTexture, null, equipType, equipName, pathToTexture);
+
+		slot = mod.AddEquipTexture(null, equipType, equipName, pathToTexture, "arms", "female");
+		slot = AddEquipTexture(equipTexture, null, equipType, equipName, pathToTexture, femaleTexture: "female");
 
 		// 1.3 EquipTexture Mod.GetEquipTexture(string name, EquipType type)
 		// 1.4 EquipTexture EquipLoader.GetEquipTexture(Mod mod, string name, EquipType type)

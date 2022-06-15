@@ -3,7 +3,6 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
 // Misc moved tml classes that don't fit in any self-contained test
-// TODO PlayerDrawInfo -> PlayerDrawSet? Handled in ModPlayerTest
 public class SimpleMovedRenamedTMLClassesTest
 {
 	void Method() {

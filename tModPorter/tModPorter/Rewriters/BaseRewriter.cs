@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Operations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -83,7 +84,7 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 	public ParameterSyntax Parameter(IParameterSymbol p) =>
 		SyntaxFactory.Parameter(default, new(ModifierToken(p.RefKind)), UseType(p.Type).WithTrailingTrivia(Space), Identifier(p.Name), default);
 
-	public void RegisterAction<T>(SyntaxNode node, Func<T, T> rewrite) where T : SyntaxNode => RegisterAction(node, (n) => rewrite((T)n));
+	public void RegisterAction<T>(SyntaxNode node, Func<T, SyntaxNode> rewrite) where T : SyntaxNode => RegisterAction(node, (n) => rewrite((T)n));
 
 	public void RegisterAction(SyntaxNode node, Func<SyntaxNode, SyntaxNode> rewrite) {
 
@@ -91,5 +92,47 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 			extraNodeVisitors[node] = list = new();
 
 		list.AddLast(rewrite);
+	}
+
+	protected bool IdentifierNameInvalid(IdentifierNameSyntax node, out IInvalidOperation op, out ITypeSymbol targetType, out bool isInvoke) {
+		switch (node.Parent) {
+			case MemberAccessExpressionSyntax memberAccess when node == memberAccess.Name && MemberReferenceInvalid(memberAccess, out op, out isInvoke):
+				targetType = model.GetTypeInfo(memberAccess.Expression).Type;
+				return true;
+
+			case MemberBindingExpressionSyntax memberBinding when MemberReferenceInvalid(memberBinding, out op, out isInvoke) && op.ChildOperations.First() is IConditionalAccessInstanceOperation target:
+				targetType = target.Type;
+				return true;
+
+			// getting the operation for errored identifiers as part of the lhs of an initializer expression is difficult directly, need to go via the assignment
+			case AssignmentExpressionSyntax assignment when assignment.Parent is InitializerExpressionSyntax && model.GetOperation(assignment) is IAssignmentOperation { Target: IInvalidOperation targetOp, Parent: var parent }:
+				op = targetOp;
+				targetType = parent.Type;
+				isInvoke = false;
+				return true;
+		};
+
+		targetType = null;
+		isInvoke = false;
+		if ((op = model.GetOperation(node) as IInvalidOperation) != null) {
+			return true;
+		}
+
+		op = null;
+		return model.GetSymbolInfo(node).Symbol == null;
+	}
+
+	protected bool MemberReferenceInvalid(SyntaxNode memberRefExpr, out IInvalidOperation op, out bool isInvoke) {
+		// for MemberAccessExpressionSyntax and MemberBindingExpressionSyntax which are the target of InvocationExpressionSyntax, there is no operation for the member access, only the invocation
+		// We check that all the arguments for the invocation are valid as a way of determining that it's the member access which is causing the failure (though this may fail if they rely on generic type inference I guess?)
+		// If only there was a way to get 'member not found diagnostics...'
+		// A different option would be to find the target type of the invoke/member access and see if the named member is missing
+		if (memberRefExpr.Parent is InvocationExpressionSyntax invoke && memberRefExpr == invoke.Expression) {
+			isInvoke = true;
+			return (op = model.GetOperation(invoke) as IInvalidOperation) != null && invoke.ArgumentList.Arguments.All(arg => model.GetOperation(arg) is not IInvalidOperation);
+		}
+
+		isInvoke = false;
+		return (op = model.GetOperation(memberRefExpr) as IInvalidOperation) != null;
 	}
 }

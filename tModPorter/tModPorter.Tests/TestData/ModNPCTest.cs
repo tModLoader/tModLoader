@@ -27,9 +27,18 @@ public class ModNPCTest : ModNPC
 
 	public override bool SpecialNPCLoot() { return true; /* Empty */ }
 
-	public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor) { return true; }
+	public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor) {
+		Vector2 screen = Main.screenPosition - Vector2.One * 6f;
+		return true;
+	}
 
 	public override void PostDraw(SpriteBatch spriteBatch, Color drawColor) {
 		Vector2 screen = Main.screenPosition - Vector2.One * 6f;
 	}
+
+#if COMPILE_ERROR
+	public override string[] AltTextures => new string[0];
+
+	public override string TownNPCName() { return "Name"; }
+#endif
 }

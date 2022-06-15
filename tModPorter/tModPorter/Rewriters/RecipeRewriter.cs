@@ -33,9 +33,8 @@ namespace tModPorter.Rewriters
 			public override void VisitInvocationExpression(InvocationExpressionSyntax node) {
 				if (node.Parent is ExpressionStatementSyntax &&
 					node.Expression is MemberAccessExpressionSyntax { Expression: IdentifierNameSyntax target, Name.Identifier.Text: "SetResult" } &&
-					model.GetOperation(target) is ILocalReferenceOperation local && local.Type?.ToString() == "Terraria.Recipe") {
-
-					references.Add(local);
+					model.GetOperation(target) is ILocalReferenceOperation local && IsRecipe(local.Type)) {
+						references.Add(local);
 				}
 
 				base.VisitInvocationExpression(node);
@@ -45,8 +44,28 @@ namespace tModPorter.Rewriters
 			public override void VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node) { }
 			public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node) { }
 			public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node) { }
-		}
 
+			private bool IsRecipe(ITypeSymbol type) {
+				if (type.ToString() == "Terraria.Recipe")
+					return true;
+
+				if (type.BaseType == null)
+					return false;
+
+				// the BaseType in the SemanticModel for classes extending Recipe is object because Recipe is sealed
+				if (type.BaseType.ToString() != "object")
+					return IsRecipe(type.BaseType);
+
+				if (type.DeclaringSyntaxReferences.Length != 1 || type.DeclaringSyntaxReferences[0].GetSyntax() is not ClassDeclarationSyntax decl ||
+					decl.BaseList is not BaseListSyntax baseList || baseList.Types.Count == 0)
+					return false;
+
+				var baseTypeSyntax = baseList.Types[0].Type;
+				var sm = model.Compilation.GetSemanticModel(decl.SyntaxTree);
+				var t = sm.GetTypeInfo(baseTypeSyntax);
+				return t.Type != null && IsRecipe(t.Type);
+			}
+		}
 
 		public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node) {
 			var refs = RecipeSetResultVisitor.GetReferences(model, node);
@@ -86,7 +105,7 @@ namespace tModPorter.Rewriters
 
 			var itemExpr = resultArgs.Arguments[0].Expression;
 			if (model.GetOperation(itemExpr) is IOperation op && op.Type.InheritsFrom("Terraria.ModLoader.ModItem")) {
-				resultArgs = resultArgs.ReplaceNode(itemExpr, SimpleMemberAccessExpression(itemExpr, "Type"));
+				resultArgs = resultArgs.ReplaceNode(itemExpr, MemberAccessExpression(itemExpr, "Type"));
 			}
 
 			return AppendArgs(node, resultArgs);
@@ -102,7 +121,7 @@ namespace tModPorter.Rewriters
 				args = args.RemoveAt(0);
 
 				bool isCallOnThis = target is ThisExpressionSyntax && model.GetEnclosingSymbol(origNode.SpanStart) is IMethodSymbol mSym && !mSym.IsStatic && mSym.ContainingType.InheritsFrom("Terraria.ModLoader.Mod");
-				var expr = SimpleMemberAccessExpression(target, "CreateRecipe");
+				var expr = MemberAccessExpression(target, "CreateRecipe");
 				return InvocationExpression(isCallOnThis ? expr.Name : expr, node.ArgumentList.WithArguments(args));
 			}
 
@@ -111,8 +130,8 @@ namespace tModPorter.Rewriters
 
 		private static SyntaxNode AppendArgs(SyntaxNode n, ArgumentListSyntax extraArgs) {
 			return n switch {
-				ObjectCreationExpressionSyntax newObj => newObj.WithArgumentList(newObj.ArgumentList.WithAdditionalArguments(extraArgs)),
-				InvocationExpressionSyntax invoke => invoke.WithArgumentList(invoke.ArgumentList.WithAdditionalArguments(extraArgs)),
+				ObjectCreationExpressionSyntax newObj => newObj.WithArgumentList(newObj.ArgumentList.Concat(extraArgs)),
+				InvocationExpressionSyntax invoke => invoke.WithArgumentList(invoke.ArgumentList.Concat(extraArgs)),
 				_ => n
 			};
 		}

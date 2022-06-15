@@ -13,24 +13,33 @@ public class ModTileTest : ModTile
 		soundStyle = 0;
 #endif
 
-#if COMPILE_ERROR
-		sapling = true;
-		torch = true;
-		bed = true;
 		dresserDrop = 0;
-		dresser = "";
 		chestDrop = 0;
-		chest = "";
 		closeDoorID = 0;
 		openDoorID = 0;
-		disableSmartInteract = true;
-		disableSmartCursor = true;
 		minPick = 0;
 		mineResist = 0;
 		animationFrameHeight = 0;
 		adjTiles = new int[0];
+
+#if COMPILE_ERROR
+		sapling = true;
+		torch = true;
+		bed = true;
+		dresser = "";
+		chest = "";
+		disableSmartInteract = true;
+		disableSmartCursor = true;
+
+		SetModTree(new ExampleTree());
+		SetModCactus(new ExampleCactus());
+		SetModPalmTree(new ExamplePalmTree());
 #endif
 	}
+
+#if COMPILE_ERROR
+	public override int SaplingGrowthType(ref int style) { return -1; }
+#endif
 
 	public override bool Dangersense(int i, int j, Player player) {
 		return false;
@@ -48,4 +57,6 @@ public class ModTileTest : ModTile
 		Main.specY[nextSpecialDrawIndex] = j;
 		nextSpecialDrawIndex++;
 	}
+
+	public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height) { /* comment */ }
 }
