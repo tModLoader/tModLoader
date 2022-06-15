@@ -643,7 +643,7 @@ namespace Terraria.ID
 			LegacySoundIDs.Critter => Critter,
 			LegacySoundIDs.Waterfall => Waterfall,
 			LegacySoundIDs.Lavafall => Lavafall,
-			LegacySoundIDs.ForceRoar => ForceRoar,
+			LegacySoundIDs.ForceRoar => style switch { -1 => ForceRoarPitched, _ => ForceRoar },
 			LegacySoundIDs.Meowmere => Meowmere,
 			LegacySoundIDs.CoinPickup => CoinPickup,
 			LegacySoundIDs.Drip => Drip,
