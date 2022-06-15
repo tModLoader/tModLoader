@@ -164,6 +164,7 @@ public static partial class Config
 		RenameMethod("Terraria.Utils",		from: "InverseLerp",			to: "GetLerpValue");
 
 		RenameMethod("Terraria.Main",		from: "PlaySound",				to: "PlaySound",				newType: "Terraria.Audio.SoundEngine");
+		RenameMethod("Terraria.Main",		from: "PlayTrackedSound",		to: "PlaySound",				newType: "Terraria.Audio.SoundEngine");
 		RenameMethod("Terraria.NetMessage",	from: "BroadcastChatMessage",	to: "BroadcastChatMessage",		newType: "Terraria.Chat.ChatHelper");
 	}
 
