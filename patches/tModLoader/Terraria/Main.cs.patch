@@ -1249,11 +1249,12 @@
  
  			float num = Math.Abs(ambientLavaX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavaY - (screenPosition.Y + (float)(screenHeight / 2)));
  			float num2 = Math.Abs(ambientLavafallX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavafallY - (screenPosition.Y + (float)(screenHeight / 2)));
-@@ -10212,6 +_,14 @@
+@@ -10212,6 +_,15 @@
  			}
  
  			float num5 = ambientLavafallStrength + ambientLavaStrength;
-+			// Weird: Vanilla uses the above local for adjusting lava sounds' volume, but doesn't consider it when checking if the sound should be playing at all.
++			// Vanilla uses the above local for adjusting lava sounds' volume, but only uses lavafall strength when checking if the sound should be playing at all.
++			// This has been confirmed as intentional.
 +			float usedLavaVolume = ambientLavaStrength > 0f
 +				? MathHelper.Clamp(num5 / 50f, 0f, 1f)
 +				: 0f;
