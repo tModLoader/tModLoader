@@ -8,6 +8,8 @@ var struct_terraria_1_1_audio_1_1_sound_style =
     [ "GetRandomPitch", "struct_terraria_1_1_audio_1_1_sound_style.html#a839c77c149702ea14fe711a6b47da46a", null ],
     [ "GetRandomSound", "struct_terraria_1_1_audio_1_1_sound_style.html#a9145b05e122997f0c881d2f5b53b5df9", null ],
     [ "IsTheSameAs", "struct_terraria_1_1_audio_1_1_sound_style.html#ada84196754b06906085af8f40bad7f50", null ],
+    [ "WithPitchOffset", "struct_terraria_1_1_audio_1_1_sound_style.html#a2b471740f959a75abd40d050d938f131", null ],
+    [ "WithVolumeScale", "struct_terraria_1_1_audio_1_1_sound_style.html#ae065eaccd4b513c18e233b961bb071fb", null ],
     [ "minPitch", "struct_terraria_1_1_audio_1_1_sound_style.html#a0948df68cbe238e6759b7b3610885287", null ],
     [ "Identifier", "struct_terraria_1_1_audio_1_1_sound_style.html#a4c0abf4bfa5a470768846713d042828c", null ],
     [ "IsLooped", "struct_terraria_1_1_audio_1_1_sound_style.html#a6bc0eebaef6fb223e430e9f15cf627d3", null ],
