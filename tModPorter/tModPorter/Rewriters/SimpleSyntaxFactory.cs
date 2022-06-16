@@ -13,6 +13,9 @@ public static class SimpleSyntaxFactory
 	public static SyntaxToken OperatorToken(SyntaxKind kind) =>
 		Token(new(Space), kind, new(Space));
 
+	public static SyntaxToken TokenSpace(SyntaxKind kind) =>
+		Token(default, kind, new(Space));
+
 	public static MemberAccessExpressionSyntax MemberAccessExpression(ExpressionSyntax expression, string memberName) =>
 		MemberAccessExpression(expression, IdentifierName(memberName));
 
@@ -32,6 +35,9 @@ public static class SimpleSyntaxFactory
 
 	public static InvocationExpressionSyntax InvocationExpression(ExpressionSyntax target, params ExpressionSyntax[] args) =>
 		SyntaxFactory.InvocationExpression(target, ArgumentList(args));
+
+	public static ObjectCreationExpressionSyntax ObjectCreationExpression(TypeSyntax type, params ExpressionSyntax[] args) =>
+		SyntaxFactory.ObjectCreationExpression(Token(SyntaxKind.NewKeyword).WithTrailingTrivia(Space), type, ArgumentList(args), null);
 
 	public static NameSyntax Name(string s) {
 		int l = s.LastIndexOf('.');

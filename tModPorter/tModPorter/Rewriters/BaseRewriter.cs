@@ -135,4 +135,48 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 		isInvoke = false;
 		return (op = model.GetOperation(memberRefExpr) as IInvalidOperation) != null;
 	}
+
+	public static bool SuspectSideEffects(ExpressionSyntax expr, out ExpressionSyntax concern) {
+		switch (expr) {
+			case MemberAccessExpressionSyntax memberAccess:
+				return SuspectSideEffects(memberAccess.Expression, out concern);
+			case NameSyntax:
+				concern = null;
+				return false;
+			default:
+				concern = expr;
+				return true;
+		};
+	}
+
+	public static bool EqualWithNoSuspectedSideEffects(ExpressionSyntax x, ExpressionSyntax y) =>
+		x.ToString() == y.ToString() && !SuspectSideEffects(x, out _) && !SuspectSideEffects(y, out _);
+
+	public static (ExpressionSyntax[] positional, ArgumentSyntax[] named) ParseArgs(SeparatedSyntaxList<ArgumentSyntax> arguments) {
+		var positional = new List<ArgumentSyntax>();
+		var named = new List<ArgumentSyntax>();
+
+		foreach (var arg in arguments) {
+			if (arg.NameColon != null) {
+				named.Add(arg);
+			} else {
+				positional.AddRange(named);
+				named.Clear();
+				positional.Add(arg);
+			}
+		}
+
+		return (positional.Select(arg => arg.Expression).ToArray(), named.ToArray());
+	}
+
+	public static void ArrangeArgs(ref ExpressionSyntax[] positional, ArgumentSyntax[] named, ReadOnlySpan<string> span) {
+		Array.Resize(ref positional, span.Length);
+		foreach (var n in named) {
+			int i = span.IndexOf(n.NameColon.Name.Identifier.Text);
+			positional[i] = n.Expression;
+		}
+	}
+
+	public static ExpressionSyntax UnwrapPredefinedCast(ExpressionSyntax x, string typeName) =>
+		x is CastExpressionSyntax { Expression: var expr, Type: PredefinedTypeSyntax { Keyword.Text: var t } } && t == typeName ? expr : x;
 }

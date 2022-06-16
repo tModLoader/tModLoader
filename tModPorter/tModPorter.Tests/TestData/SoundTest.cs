@@ -16,28 +16,42 @@ public class SoundTest : ModProjectile
 		Main.PlaySound(SoundID.MenuTick, -1, -1);
 		Main.PlaySound(SoundID.MenuTick, -1, -1, 1);
 		Main.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f);
-		Main.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
+		Main.PlaySound(SoundID.MenuTick, -1, -1, 1, 1, 0);
+
+		Main.PlaySound(SoundID.MenuTick, 420, 421); // Convert x/y into Vector2
+		Main.PlaySound(SoundID.MenuTick, (int)player.position.X, (int)player.position.Y); // Simplify manual x/y int conversion into Vector2
+		Main.PlaySound(SoundID.MenuTick, -1, -1, 1, 1.1f);
+		Main.PlaySound(SoundID.MenuTick, -1, -1, 0, 1, 0.2f);
+		Main.PlaySound(SoundID.MenuTick, 1, 2, 0, 1.1f, 0.2f);
 
 		// named pitch variance or volume
 		Main.PlaySound(SoundID.MenuTick, volumeScale: 2f);
 		Main.PlaySound(SoundID.MenuTick, pitchOffset: 0.1f);
 		Main.PlaySound(SoundID.MenuTick, volumeScale: 2f, pitchOffset: 0.1f);
-		Main.PlaySound(SoundID.MenuTick, player.position, pitchOffset: 0.1f);
-
-		Main.PlaySound(SoundID.MenuTick, 420, 421); // Convert x/y into Vector2
-		Main.PlaySound(SoundID.MenuTick, (int)player.position.X, (int)player.position.Y); // Simplify manual x/y int conversion into Vector2
 
 		// sounds with styles
-		Main.PlaySound(SoundID.Splash, -1, -1, 0);
-		Main.PlaySound(SoundID.Splash, -1, -1, 1);
-		Main.PlaySound(SoundID.Splash);
-		Main.PlaySound(SoundID.Mech, style: 0); // mech previously needed style 0
-		Main.PlaySound(SoundID.Roar);
-		Main.PlaySound(SoundID.Roar, style: 0);
-		Main.PlaySound(SoundID.Roar, style: 1);
-		Main.PlaySound(SoundID.Roar, style: 2);
-		Main.PlaySound(SoundID.Roar, style: 4);
+		Main.PlaySound(SoundID.Splash); // change to SplashWeak
+		Main.PlaySound(SoundID.Splash, -1, -1, 0); // splash needs style 0
+		Main.PlaySound(SoundID.Splash, -1, -1, 1); // this is SplashWeak
+		Main.PlaySound(SoundID.Mech, Style: 0); // mech previously needed style 0
+		Main.PlaySound(SoundID.Roar); // change to WormDig
+		Main.PlaySound(SoundID.Roar, Style: 0);
+		Main.PlaySound(SoundID.Roar, Style: 1);
+		Main.PlaySound(SoundID.Roar, Style: 2);
+		Main.PlaySound(SoundID.Roar, Style: 4);
 		Main.PlaySound(new LegacySoundStyle(SoundID.Roar, 4), player.position);
+		Main.PlaySound(SoundID.ForceRoar);
+		Main.PlaySound(SoundID.ForceRoar, Style: -1);
+
+		// some of these can't be refactored properly (for the SoundID int -> style change) because the default style sound has changed name
+		SoundEngine.PlaySound(SoundID.Splash); // can't tell if the modder is aware of the new SoundStyle, or was previously using the int const
+		SoundEngine.PlaySound(19);
+		SoundEngine.PlaySound(SoundID.Splash, Style: 0);
+		SoundEngine.PlaySound(SoundID.Splash, Style: 1);
+		SoundEngine.PlaySound(SoundID.Roar); // can't tell if the modder is aware of the new SoundStyle, or was previously using the int const
+		SoundEngine.PlaySound(15);
+		SoundEngine.PlaySound(SoundID.Roar, Style: 0);
+		SoundEngine.PlaySound(SoundID.Roar, Style: 1);
 
 		// sounds with styles that map to `Style{n}`
 		Main.PlaySound(SoundID.Item, player.position, 172);
@@ -63,5 +77,7 @@ public class SoundTest : ModProjectile
 		
 		projectile.localAI[0] = Main.PlayTrackedSound(SoundID.DD2_PhantomPhoenixShot, projectile.Center).ToFloat();
 		sound = Main.GetActiveSound(SlotId.FromFloat(projectile.localAI[0]));
+
+		Main.GetActiveSound(slotId);
 	}
 }
