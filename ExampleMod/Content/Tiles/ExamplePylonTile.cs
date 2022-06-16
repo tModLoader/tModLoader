@@ -92,7 +92,7 @@ namespace ExampleMod.Content.Tiles
 			//We need to clean up after ourselves, since this is still a "unique" tile, separate from Vanilla Pylons, so we must kill the TileEntity.
 			TETeleportationPylon.Kill(i, j);
 
-			//Also, like other pylons, allow the 
+			//Also, like other pylons, breaking it simply drops the item once again. Pretty straight-forward.
 			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 3, 4, ModContent.ItemType<ExamplePylonItem>());
 		}
 
