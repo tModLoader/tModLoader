@@ -280,7 +280,7 @@ namespace Terraria.ModLoader.UI
 				var modFile = _builtMod.modFile;
 				var bp = _builtMod.properties;
 
-				PublishModInner(modFile, bp, Path.Combine(_mod, "icon.png"));
+				PublishModInner(modFile, bp, Path.Combine(_mod, "workshop_icon.png"));
 			}
 			catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);
@@ -317,7 +317,7 @@ namespace Terraria.ModLoader.UI
 				using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
 					localMod = new LocalMod(modFile);
 
-				PublishModInner(modFile, localMod.properties, Path.Combine(ModCompile.ModSourcePath, modName, "icon.png"), true);
+				PublishModInner(modFile, localMod.properties, Path.Combine(ModCompile.ModSourcePath, modName, "workshop_icon.png"), true);
 			}
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
