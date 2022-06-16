@@ -33,7 +33,7 @@
  			TeleportPylonType pylonTypeFromPylonTileStyle = GetPylonTypeFromPylonTileStyle(style);
  			if (Main.PylonSystem.HasPylonOfType(pylonTypeFromPylonTileStyle))
  				return 1;
-@@ -157,8 +_,13 @@
+@@ -157,7 +_,11 @@
  		private bool TryGetPylonTypeFromTileCoords(int x, int y, out TeleportPylonType pylonType) {
  			pylonType = TeleportPylonType.SurfacePurity;
  			Tile tile = Main.tile[x, y];
@@ -42,9 +42,7 @@
 +				return true;
 +			}
 -			if (tile == null || !tile.active() || tile.type != 597)
-+			else if (tile == null || !tile.active() || tile.type != 597) {
++			if (tile == null || !tile.active() || tile.type != 597) 
  				return false;
-+			}
  
  			int pylonStyle = tile.frameX / 54;
- 			pylonType = GetPylonTypeFromPylonTileStyle(pylonStyle);

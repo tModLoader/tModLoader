@@ -120,31 +120,5 @@ namespace Terraria.ModLoader
 		public virtual bool DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, Color drawColor, float deselectedScale, float selectedScale) {
 			return false;
 		}
-
-		/// <summary>
-		/// Sets all tile values (Main.tileLights, TileObjectData, TileID.Sets, AddMapEntry, etc.) to the *exact*
-		/// defaults that a Vanilla Pylon uses.
-		/// </summary>
-		public void SetToPylonDefaults() {
-			Main.tileLighted[Type] = true;
-			Main.tileFrameImportant[Type] = true;
-
-			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);
-			TileObjectData.newTile.LavaDeath = false;
-			TileObjectData.newTile.DrawYOffset = 2;
-			TileObjectData.newTile.StyleHorizontal = true;
-			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(TETeleportationPylon.PlacementPreviewHook_CheckIfCanPlace, 1, 0, true);
-			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(TETeleportationPylon.PlacementPreviewHook_AfterPlacement, -1, 0, false);
-
-			TileObjectData.addTile(Type);
-
-			TileID.Sets.InteractibleByNPCs[Type] = true;
-			TileID.Sets.PreventsSandfall[Type] = true;
-
-			AddToArray(ref TileID.Sets.CountsAsPylon);
-
-			ModTranslation pylonName = CreateMapEntryName(); //Name is in the localization file
-			AddMapEntry(Color.White, pylonName);
-		}
 	}
 }

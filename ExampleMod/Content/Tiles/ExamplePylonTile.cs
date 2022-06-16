@@ -13,6 +13,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader;
+using Terraria.ObjectData;
 using Terraria.UI;
 
 namespace ExampleMod.Content.Tiles
@@ -41,8 +42,27 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void SetStaticDefaults() {
-			//This method is a nice shorthand to set all your defaults to exactly what vanilla uses for its Pylon tiles.
-			SetToPylonDefaults();
+			Main.tileLighted[Type] = true;
+			Main.tileFrameImportant[Type] = true;
+
+			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);
+			TileObjectData.newTile.LavaDeath = false;
+			TileObjectData.newTile.DrawYOffset = 2;
+			TileObjectData.newTile.StyleHorizontal = true;
+			//These definitons allow for vanilla's pylon TileEntities to be placed. If you want to use your own TileEntities, do NOT add these lines!
+			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(TETeleportationPylon.PlacementPreviewHook_CheckIfCanPlace, 1, 0, true);
+			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(TETeleportationPylon.PlacementPreviewHook_AfterPlacement, -1, 0, false);
+
+			TileObjectData.addTile(Type);
+
+			TileID.Sets.InteractibleByNPCs[Type] = true;
+			TileID.Sets.PreventsSandfall[Type] = true;
+
+			//Adds functionality for proximity of pylons; if this is true, then being near this tile will count as being near a pylon for the teleportation process.
+			AddToArray(ref TileID.Sets.CountsAsPylon);
+
+			ModTranslation pylonName = CreateMapEntryName(); //Name is in the localization file
+			AddMapEntry(Color.White, pylonName);
 		}
 
 		//Let's say that our pylon is for sale no matter what for any NPC under all circumstances.
