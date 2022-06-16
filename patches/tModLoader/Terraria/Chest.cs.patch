@@ -146,9 +146,19 @@
  		}
  
  		public void SetupShop(int type) {
-@@ -2611,6 +_,7 @@
+@@ -2610,7 +_,17 @@
+ 				if (Main.player[Main.myPlayer].ZoneGlowshroom && num < 39)
  					array[num++].SetDefaults(4921);
  			}
++			foreach (ModPylon pylon in ModContent.GetContent<ModPylon>()) {
++				int? pylonReturn = pylon.IsPylonForSale(type, Main.LocalPlayer, flag);
++				if (pylonReturn.HasValue && num < 39) {
++					array[num++].SetDefaults(pylonReturn.Value);
++				}
++				else if (pylonReturn.HasValue && num >= 39) {
++					Logging.tML.Warn($"Ran out of NPC shop space for {pylon.Mod.Name}'s pylon item {pylon.Name}");
++				}
++			}
  
 +			NPCLoader.SetupShop(type, this, ref num);
  			for (int num13 = 0; num13 < num; num13++) {

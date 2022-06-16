@@ -45,6 +45,11 @@ namespace ExampleMod.Content.Tiles
 			SetToPylonDefaults();
 		}
 
+		//Let's say that our pylon is for sale no matter what for any NPC under all circumstances.
+		public override int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
+			return ModContent.ItemType<ExamplePylonItem>();
+		}
+
 		//Must be true in order for our highlight texture to work.
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
 			return true;

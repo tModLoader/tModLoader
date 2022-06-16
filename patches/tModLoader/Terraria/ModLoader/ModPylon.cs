@@ -20,12 +20,31 @@ namespace Terraria.ModLoader
 		/// Whether or not this Pylon can even be placed.
 		/// By default, it returns false if a Pylon of this type already exists in the world,
 		/// otherwise true.
-		/// <remarks>
-		/// If you want an infinite amount of these pylons to be placed, simply always return true.
-		/// </remarks>
 		/// </summary>
+		/// <remarks>
+		/// If you want to allow an infinite amount of these pylons to be placed, simply always return true.
+		/// </remarks>
 		public virtual bool CanPlacePylon() {
 			return !Main.PylonSystem.HasPylonOfType(TeleportPylonType.Modded, Type);
+		}
+
+		/// <summary>
+		/// Whether or not this Pylon should be sold by the specified NPC type and with the given player.
+		/// This should return the ITEM TYPE of the item that places this ModPylon, if one exists. If you don't
+		/// want anything to be put up for sale, return null.
+		/// <br>
+		/// Returns null by default.
+		/// </br>
+		/// </summary>
+		/// <param name="npcType"> The type of the NPC currently being spoken to to determine the shop of. </param>
+		/// <param name="player"> The current player asking said NPC type what they have for sale. </param>
+		/// <param name="isNPCHappyEnough">
+		/// Whether or not this NPC is "happy enough", by vanilla standards. You can ignore this if you don't care about happiness.
+		/// For reference, Vanilla defines "happy enough" as the player earning a 10% discount or more, or in code:
+		/// <code>Main.LocalPlayer.currentShoppingSettings.PriceAdjustment &lt;= 0.8999999761581421;</code> 
+		/// </param>
+		public virtual int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
+			return null;
 		}
 
 		/// <summary>
@@ -72,7 +91,7 @@ namespace Terraria.ModLoader
 		/// as whatever one returns false (if any) will determine the error message sent to the player.
 		/// </remarks>
 		/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
-		/// <param name="sceneData"> The scene metrics data AT THE LOCATION of this parameter, NOT the player. </param>
+		/// <param name="sceneData"> The scene metrics data AT THE LOCATION of the destination pylon, NOT the player. </param>
 		public virtual bool ValidTeleportCheck_BiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData) {
 			return true;
 		}
