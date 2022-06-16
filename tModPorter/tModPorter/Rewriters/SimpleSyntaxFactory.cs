@@ -79,6 +79,16 @@ public static class SimpleSyntaxFactory
 		_ => throw new Exception("Unreachable")
 	};
 
+	public static SyntaxTokenList ModifierList(Accessibility access) => access switch {
+		Accessibility.Private => new(Token(SyntaxKind.PrivateKeyword)),
+		Accessibility.ProtectedAndInternal => new(TokenSpace(SyntaxKind.ProtectedKeyword), Token(SyntaxKind.InternalKeyword)),
+		Accessibility.Protected => new(Token(SyntaxKind.ProtectedKeyword)),
+		Accessibility.Internal => new(Token(SyntaxKind.InternalKeyword)),
+		Accessibility.ProtectedOrInternal => default,
+		Accessibility.Public => new(Token(SyntaxKind.PublicKeyword)),
+		_ => default,
+	};
+
 	public static ArgumentListSyntax Concat(this ArgumentListSyntax args, ArgumentListSyntax other) {
 		if (other.Arguments.Count == 0)
 			return args;
