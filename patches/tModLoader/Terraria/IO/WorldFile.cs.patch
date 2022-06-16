@@ -235,17 +235,12 @@
  					TileEntity.Write(writer, item.Value);
  				}
  			}
-@@ -2262,8 +_,12 @@
+@@ -2262,7 +_,7 @@
  			foreach (KeyValuePair<Point16, TileEntity> item in TileEntity.ByPosition) {
  				if (!WorldGen.InWorld(item.Value.Position.X, item.Value.Position.Y, 1))
  					list.Add(item.Value.Position);
 -				else if (!TileEntity.manager.CheckValidTile(item.Value.type, item.Value.Position.X, item.Value.Position.Y))
-+				else if (!TileEntity.manager.CheckValidTile(item.Value.type, item.Value.Position.X, item.Value.Position.Y)) {
-+					if (item.Value is TETeleportationPylon) {
-+						continue;
-+					}
++				else if (!TileEntity.manager.CheckValidTile(item.Value.type, item.Value.Position.X, item.Value.Position.Y) && item.Value is not TETeleportationPylon)
  					list.Add(item.Value.Position);
-+				}
  			}
  
- 			try {
