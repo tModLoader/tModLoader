@@ -39,7 +39,7 @@ public class MemberUseRewriter : BaseRewriter {
 
 		if (op.Parent is IAssignmentOperation assign && assign.Target == op) {
 			var expr = assign.Syntax;
-			if (assign.Value is not ILiteralOperation { ConstantValue: { Value: bool constantValue } })
+			if (assign.Value is not ILiteralOperation { ConstantValue.Value: bool constantValue })
 				return memberName.WithBlockComment("Suggestion: DamageType = ..."); // some other literal assignment
 
 			if (!constantValue) { // = false

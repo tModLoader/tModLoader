@@ -55,7 +55,7 @@ partial class InvokeRewriter
 			}
 		}
 
-		if (type is ObjectCreationExpressionSyntax { Type: IdentifierNameSyntax { Identifier: { Text: "LegacySoundStyle"} }, ArgumentList.Arguments: var legacyStyleArgs }) {
+		if (type is ObjectCreationExpressionSyntax { Type: IdentifierNameSyntax { Identifier.Text: "LegacySoundStyle" }, ArgumentList.Arguments: var legacyStyleArgs }) {
 			// assume positional, min 2 args
 			type = legacyStyleArgs[0].Expression;
 			style = legacyStyleArgs[1].Expression;

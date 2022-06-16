@@ -113,7 +113,7 @@ public partial class InvokeRewriter : BaseRewriter
 			case 1:
 				var arg = invoke.ArgumentList.Arguments[0].Expression;
 				if (constantType != null) {
-					if (rw.model.GetOperation(arg) is ILiteralOperation { ConstantValue: { Value: true } }) {
+					if (rw.model.GetOperation(arg) is ILiteralOperation { ConstantValue.Value: true }) {
 						invoke = invoke.ReplaceNode(arg, constantExpression);
 					}
 					else {

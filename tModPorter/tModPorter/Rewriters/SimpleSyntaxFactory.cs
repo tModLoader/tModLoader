@@ -27,7 +27,7 @@ public static class SimpleSyntaxFactory
 
 	public static BinaryExpressionSyntax BinaryExpression(SyntaxKind kind, ExpressionSyntax left, ExpressionSyntax right) {
 		var expr = SyntaxFactory.BinaryExpression(kind, left, right);
-		return expr.WithOperatorToken(expr.OperatorToken.WithLeadingTrivia(Space).WithTrailingTrivia(Space));
+		return expr.WithOperatorToken(OperatorToken(expr.OperatorToken.Kind()));
 	}
 
 	public static InvocationExpressionSyntax InvocationExpression(ExpressionSyntax target, string methodName, params ExpressionSyntax[] args) =>
@@ -37,7 +37,7 @@ public static class SimpleSyntaxFactory
 		SyntaxFactory.InvocationExpression(target, ArgumentList(args));
 
 	public static ObjectCreationExpressionSyntax ObjectCreationExpression(TypeSyntax type, params ExpressionSyntax[] args) =>
-		SyntaxFactory.ObjectCreationExpression(Token(SyntaxKind.NewKeyword).WithTrailingTrivia(Space), type, ArgumentList(args), null);
+		SyntaxFactory.ObjectCreationExpression(TokenSpace(SyntaxKind.NewKeyword), type, ArgumentList(args), null);
 
 	public static NameSyntax Name(string s) {
 		int l = s.LastIndexOf('.');
@@ -49,7 +49,7 @@ public static class SimpleSyntaxFactory
 
 	public static UsingDirectiveSyntax SimpleUsing(string ns) {
 		var u = UsingDirective(Name(ns));
-		return u.WithUsingKeyword(u.UsingKeyword.WithTrailingTrivia(Space)).WithTrailingTrivia(CarriageReturnLineFeed);
+		return u.WithUsingKeyword(TokenSpace(SyntaxKind.UsingKeyword)).WithTrailingTrivia(CarriageReturnLineFeed);
 	}
 
 	public static ExpressionSyntax Parens(ExpressionSyntax expr) {
@@ -62,7 +62,7 @@ public static class SimpleSyntaxFactory
 		if (arr.Length == 0)
 			return SyntaxFactory.SeparatedList<T>();
 
-		return SyntaxFactory.SeparatedList(arr, Enumerable.Repeat(Token(SyntaxKind.CommaToken).WithTrailingTrivia(Space), arr.Length - 1));
+		return SyntaxFactory.SeparatedList(arr, Enumerable.Repeat(TokenSpace(SyntaxKind.CommaToken), arr.Length - 1));
 	}
 
 	public static ParameterListSyntax ParameterList(IEnumerable<ParameterSyntax> items) => SyntaxFactory.ParameterList(SeparatedList(items));
@@ -73,9 +73,9 @@ public static class SimpleSyntaxFactory
 
 	public static SyntaxToken ModifierToken(RefKind refKind) => refKind switch {
 		RefKind.None => default,
-		RefKind.Ref => Token(SyntaxKind.RefKeyword).WithTrailingTrivia(Space),
-		RefKind.Out => Token(SyntaxKind.OutKeyword).WithTrailingTrivia(Space),
-		RefKind.In => Token(SyntaxKind.InKeyword).WithTrailingTrivia(Space),
+		RefKind.Ref => TokenSpace(SyntaxKind.RefKeyword),
+		RefKind.Out => TokenSpace(SyntaxKind.OutKeyword),
+		RefKind.In => TokenSpace(SyntaxKind.InKeyword),
 		_ => throw new Exception("Unreachable")
 	};
 
@@ -88,7 +88,7 @@ public static class SimpleSyntaxFactory
 			return other;
 
 		var l = argList.GetWithSeparators()
-			.Add(Token(SyntaxKind.CommaToken).WithTrailingTrivia(Space))
+			.Add(TokenSpace(SyntaxKind.CommaToken))
 			.AddRange(other.Arguments.GetWithSeparators());
 
 		return args.WithArguments(SyntaxFactory.SeparatedList<ArgumentSyntax>(l));
