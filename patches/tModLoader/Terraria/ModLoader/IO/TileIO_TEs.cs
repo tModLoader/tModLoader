@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 
@@ -65,7 +66,19 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 				//Otherwise, if the TE is vanilla, try to find its existing instance for the current coordinate.
-				else if (!TileEntity.ByPosition.TryGetValue(point, out tileEntity)) {
+				else if (TileEntity.ByPosition.TryGetValue(point, out tileEntity)) {
+					//For ModPylon functionality, we had to change some Vanilla loading, since when Vanilla TileEntities load,
+					//modded tiles have not yet loaded yet, so we wait until tML TileEntity loading happens (right here) and double check.
+					if (tileEntity is TETeleportationPylon pylon && !pylon.IsTileValidForEntity(point.X, point.Y)) {
+						if (TileEntity.ByID.ContainsKey(pylon.ID)) {
+							TileEntity.ByID.Remove(pylon.ID);
+						}
+						if (TileEntity.ByPosition.ContainsKey(pylon.Position)) {
+							TileEntity.ByPosition.Remove(pylon.Position);
+						}
+					}
+				}
+				else {
 					//Do not create an PendingTileEntity on failure to do so.
 					continue;
 				}
