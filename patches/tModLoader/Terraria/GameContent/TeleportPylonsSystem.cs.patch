@@ -1,5 +1,15 @@
 --- src/TerrariaNetCore/Terraria/GameContent/TeleportPylonsSystem.cs
 +++ src/tModLoader/Terraria/GameContent/TeleportPylonsSystem.cs
+@@ -5,7 +_,9 @@
+ using Terraria.DataStructures;
+ using Terraria.GameContent.NetModules;
+ using Terraria.GameContent.Tile_Entities;
++using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Net;
+ 
+ namespace Terraria.GameContent
 @@ -16,7 +_,7 @@
  		private List<TeleportPylonInfo> _pylonsOld = new List<TeleportPylonInfo>();
  		private int _cooldownForUpdatingPylonsList;
@@ -9,3 +19,78 @@
  
  		public List<TeleportPylonInfo> Pylons => _pylons;
  
+@@ -32,7 +_,12 @@
+ 			}
+ 		}
+ 
+-		public bool HasPylonOfType(TeleportPylonType pylonType) => _pylons.Any((TeleportPylonInfo x) => x.TypeOfPylon == pylonType);
++		public bool HasPylonOfType(TeleportPylonType pylonType, int tileType = TileID.TeleportationPylon) {
++			if (pylonType == TeleportPylonType.Modded && tileType >= TileID.Count) {
++				return _pylons.Any(x => !string.IsNullOrEmpty(x.ModName) && ModContent.Find<ModPylon>(x.ModName, x.ModPylonName).Type == tileType);
++			}
++			return _pylons.Any(x => x.TypeOfPylon == pylonType);
++		}
+ 		public bool HasAnyPylon() => _pylons.Count > 0;
+ 
+ 		public void RequestImmediateUpdate() {
+@@ -48,9 +_,15 @@
+ 			foreach (TileEntity value in TileEntity.ByPosition.Values) {
+ 				TETeleportationPylon tETeleportationPylon = value as TETeleportationPylon;
+ 				if (tETeleportationPylon != null && tETeleportationPylon.TryGetPylonType(out TeleportPylonType pylonType)) {
+-					TeleportPylonInfo teleportPylonInfo = default(TeleportPylonInfo);
++					TeleportPylonInfo teleportPylonInfo = new TeleportPylonInfo();
+ 					teleportPylonInfo.PositionInTiles = tETeleportationPylon.Position;
+ 					teleportPylonInfo.TypeOfPylon = pylonType;
++					if (pylonType == TeleportPylonType.Modded) {
++						Tile tile = Framing.GetTileSafely(tETeleportationPylon.Position);
++						ModPylon pylon = TileLoader.GetTile(tile.type) as ModPylon;
++						teleportPylonInfo.ModName = pylon!.Mod.Name;
++						teleportPylonInfo.ModPylonName = pylon!.Name;
++					}
+ 					TeleportPylonInfo item = teleportPylonInfo;
+ 					_pylons.Add(item);
+ 				}
+@@ -93,7 +_,9 @@
+ 			}
+ 
+ 			if (flag) {
++				flag &= info.TypeOfPylon == TeleportPylonType.Modded
++					? ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon) && pylon.ValidTeleportCheck_AnyDanger(info)
+-				flag &= !NPC.AnyDanger(quickBossNPCCheck: false, ignorePillars: true);
++					: !NPC.AnyDanger(quickBossNPCCheck: false, ignorePillars: true);
+ 				if (!flag)
+ 					key = "Net.CannotTeleportToPylonBecauseThereIsDanger";
+ 			}
+@@ -167,6 +_,9 @@
+ 					}
+ 				}
+ 			}
++			if (info.TypeOfPylon == TeleportPylonType.Modded && ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon destinationPylon)) {
++				 destinationPylon.ValidTeleportCheck_PostCheck(info, ref flag, ref key);
++			}
+ 
+ 			if (flag) {
+ 				Vector2 newPos = info.PositionInTiles.ToWorldCoordinates() - new Vector2(0f, player.HeightOffsetBoost);
+@@ -185,9 +_,12 @@
+ 			}
+ 		}
+ 
+-		public static bool IsPlayerNearAPylon(Player player) => player.IsTileTypeInInteractionRange(597);
++		public static bool IsPlayerNearAPylon(Player player) => TileID.Sets.CountsAsPylon.Any(player.IsTileTypeInInteractionRange);
+ 
+ 		private bool DoesPylonHaveEnoughNPCsAroundIt(TeleportPylonInfo info, int necessaryNPCCount) {
++			if (info.TypeOfPylon == TeleportPylonType.Modded) {
++				return ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon) && pylon.ValidTeleportCheck_NPCCount(info, necessaryNPCCount);
++			}
+ 			if (necessaryNPCCount <= 0)
+ 				return true;
+ 
+@@ -250,6 +_,8 @@
+ 					return (double)info.PositionInTiles.Y >= Main.worldSurface;
+ 				case TeleportPylonType.Victory:
+ 					return true;
++				case TeleportPylonType.Modded:
++					return ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon) && pylon.ValidTeleportCheck_BiomeRequirements(info, _sceneMetrics);
+ 				default:
+ 					return true;
+ 			}

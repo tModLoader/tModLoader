@@ -113,6 +113,10 @@ namespace Terraria.ModLoader
 			ContainerName = LocalizationLoader.GetOrCreateTranslation(Mod, $"Containers.{Name}", true);
 
 			ModTypeLookup<ModTile>.Register(this);
+			//The sealed modifier is the reason this is here, sorry! -Mutant
+			if (this is ModPylon pylon) {
+				ModTypeLookup<ModPylon>.Register(pylon);
+			}
 
 			Type = (ushort)TileLoader.ReserveTileID();
 

@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/TeleportPylonType.cs
++++ src/tModLoader/Terraria/GameContent/TeleportPylonType.cs
+@@ -11,6 +_,7 @@
+ 		Snow,
+ 		GlowingMushroom,
+ 		Victory,
+-		Count
++		VanillaCount,
++		Modded
+ 	}
+ }

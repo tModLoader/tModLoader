@@ -1,0 +1,22 @@
+--- src/TerrariaNetCore/Terraria/GameContent/TeleportPylonInfo.cs
++++ src/tModLoader/Terraria/GameContent/TeleportPylonInfo.cs
+@@ -7,10 +_,18 @@
+ 	{
+ 		public Point16 PositionInTiles;
+ 		public TeleportPylonType TypeOfPylon;
++		public string ModName;
++		public string ModPylonName;
++
++		public TeleportPylonInfo() {
++			PositionInTiles = default;
++			TypeOfPylon = default;
++			ModName = ModPylonName = "";
++		}
+ 
+ 		public bool Equals(TeleportPylonInfo other) {
+ 			if (PositionInTiles == other.PositionInTiles)
+-				return TypeOfPylon == other.TypeOfPylon;
++				return TypeOfPylon == other.TypeOfPylon && ModName == other.ModName && ModPylonName == other.ModPylonName;
+ 
+ 			return false;
+ 		}

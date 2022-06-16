@@ -1,50 +1,83 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Items.Placeable;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
+using Terraria.Localization;
+using Terraria.Map;
 using Terraria.ModLoader;
-using Terraria.ObjectData;
+using Terraria.UI;
 
 namespace ExampleMod.Content.Tiles
 {
-	public class ExamplePylonTile : ModTile
+	/// <summary>
+	/// An example for creating a Pylon, identical to how they function in Vanilla. Shows off <seealso cref="ModPylon"/>, an abstract
+	/// extension of <seealso cref="ModTile"/> that has additional functionality for Pylon specific tiles.
+	/// <br>
+	/// If you are going to make multiple pylons that all act the same (like in Vanilla), it is recommended you make a base class
+	/// with override functionality in order to prevent writing boilerplate. (For example, making a "CrystalTexture" property that you can
+	/// override in order to streamline that process.)
+	/// </br>
+	/// </summary>
+	public class ExamplePylonTile : ModPylon
 	{
 		public const int CrystalHorizontalFrameCount = 2;
 		public const int CrystalVerticalFrameCount = 8;
 
 		public Asset<Texture2D> crystalTexture;
+		public Asset<Texture2D> mapIcon;
 
 		public override void Load() {
+			//We'll need these textures for later, it's best practice to cache them on load instead of continually requesting every draw call.
 			crystalTexture = ModContent.Request<Texture2D>(Texture + "_Crystal");
+			mapIcon = ModContent.Request<Texture2D>(Texture + "_MapIcon");
 		}
 
 		public override void SetStaticDefaults() {
-			Main.tileLighted[Type] = true;
-			Main.tileFrameImportant[Type] = true;
-
-			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);
-			TileObjectData.newTile.LavaDeath = false;
-			TileObjectData.newTile.DrawYOffset = 2;
-			TileObjectData.newTile.StyleHorizontal = true;
-			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(TETeleportationPylon.PlacementPreviewHook_CheckIfCanPlace, 1, 0, true);
-			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(TETeleportationPylon.PlacementPreviewHook_AfterPlacement, -1, 0, false);
-
-			TileObjectData.addTile(Type);
-
-			TileID.Sets.InteractibleByNPCs[Type] = true;
-
-			ModTranslation pylonName = CreateMapEntryName(); //Name is in the localization file
-			AddMapEntry(Color.White, pylonName);
+			//This method is a nice shorthand to set all your defaults to exactly what vanilla uses for its Pylon tiles.
+			SetToPylonDefaults();
 		}
 
 		//Must be true in order for our highlight texture to work.
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
+			return true;
+		}
+
+		public override bool RightClick(int i, int j) {
+			//Just like vanilla pylons, upon right click, open the map and play a sound.
+			Main.mapFullscreen = true;
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+			return true;
+		}
+
+		public override void MouseOver(int i, int j) {
+			//Show a little pylon icon on the mouse indicating we are hovering over it.
+			Main.LocalPlayer.cursorItemIconEnabled = true;
+			Main.LocalPlayer.cursorItemIconID = ModContent.ItemType<ExamplePylonItem>();
+		}
+
+		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
+			//We need to clean up after ourselves, since this is still a "unique" tile, separate from Vanilla Pylons, so we must kill the TileEntity.
+			TETeleportationPylon.Kill(i, j);
+
+			//Also, like other pylons, allow the 
+			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 3, 4, ModContent.ItemType<ExamplePylonItem>());
+		}
+
+		//Let's make it possible to teleport to this Pylon any time we want, as long as we're standing next to valid Pylon!
+		public override bool ValidTeleportCheck_NPCCount(TeleportPylonInfo pylonInfo, int defaultNecessaryNPCCount) {
+			return true;
+		}
+
+		//These two methods are the only ones we need to override, since they have default functionality that could potentially prevent teleportation.
+		public override bool ValidTeleportCheck_AnyDanger(TeleportPylonInfo nearbyPylonInfo) {
 			return true;
 		}
 
@@ -130,6 +163,26 @@ namespace ExampleMod.Content.Tiles
 				Color selectionGlowColor = Colors.GetSelectionGlowColor(selectionType == 2, colorPotency);
 				Main.spriteBatch.Draw(crystalTexture.Value, drawPos - Main.screenPosition, highlightFrame, selectionGlowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
 			}
+		}
+
+		public override bool DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, Color drawColor, float deselectedScale, float selectedScale) {
+			bool isMouseOver = context.Draw(
+				                          mapIcon.Value,
+				                          pylonInfo.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f),
+				                          drawColor,
+				                          new SpriteFrame(1, 1, 0, 0),
+				                          deselectedScale,
+				                          selectedScale,
+				                          Alignment.Center
+			                          )
+			                          .IsMouseOver;
+
+			//Only change the text if we are mousing over; we don't want the text to always be displaying.
+			if (isMouseOver) {
+				mouseOverText = Language.GetTextValue("Mods.ExampleMod.ItemName.ExamplePylonItem");
+			}
+
+			return isMouseOver;
 		}
 	}
 }

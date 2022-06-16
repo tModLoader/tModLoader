@@ -74,6 +74,7 @@ Mods: {
 				The last shot has a 36% chance to not consume bullets
 				Shots that consume ammunition have their damage boosted by 20%
 				'''
+			ExamplePylonItem: "Can be teleported to without any restrictions!"
 		}
 		
 		ItemName: {

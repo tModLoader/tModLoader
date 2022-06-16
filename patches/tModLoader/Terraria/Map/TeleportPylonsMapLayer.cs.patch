@@ -1,6 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Map/TeleportPylonsMapLayer.cs
 +++ src/tModLoader/Terraria/Map/TeleportPylonsMapLayer.cs
-@@ -12,6 +_,8 @@
+@@ -6,12 +_,15 @@
+ using Terraria.GameContent;
+ using Terraria.GameContent.Tile_Entities;
+ using Terraria.GameInput;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.Map
  {
  	public class TeleportPylonsMapLayer : IMapLayer
  	{
@@ -9,3 +16,23 @@
  		public void Draw(ref MapOverlayDrawContext context, ref string text) {
  			List<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
  			float num = 1f;
+@@ -24,11 +_,17 @@
+ 
+ 			for (int i = 0; i < pylons.Count; i++) {
+ 				TeleportPylonInfo info = pylons[i];
++				bool mouseOverModded = false;
++				if (info.TypeOfPylon == TeleportPylonType.Modded) {
++					if (ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon)) {
++						mouseOverModded = pylon.DrawMapIcon(ref context, ref text, info, color, num, scaleIfSelected);
++					}
++				}
+-				if (context.Draw(value, info.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(9, 1, (byte)info.TypeOfPylon, 0) {
++				if (mouseOverModded || context.Draw(value, info.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(9, 1, (byte)info.TypeOfPylon, 0) {
+ 					PaddingY = 0
+ 				}, num, scaleIfSelected, Alignment.Center).IsMouseOver) {
+ 					Main.cancelWormHole = true;
+-					string text2 = text = Lang.GetItemNameValue(TETeleportationPylon.GetPylonItemTypeFromTileStyle((int)info.TypeOfPylon));
++					text = mouseOverModded ? text : Lang.GetItemNameValue(TETeleportationPylon.GetPylonItemTypeFromTileStyle((int)info.TypeOfPylon));
+ 					if (Main.mouseLeft && Main.mouseLeftRelease) {
+ 						Main.mouseLeftRelease = false;
+ 						Main.mapFullscreen = false;
