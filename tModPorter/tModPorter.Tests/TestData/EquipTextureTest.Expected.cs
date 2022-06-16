@@ -66,8 +66,10 @@ public class EquipTextureModTest : Mod
 		slot = EquipLoader.GetEquipSlot(this, equipName, equipType);
 
 		// 1.3 sbyte Mod.GetAccessorySlot(string name, EquipType type)
-		// 1.4 int EquipLoader.GetEquipSlot(Mod mod, string name, EquipType type) cast to sbyte
-		sbyte sSlot = (sbyte)EquipLoader.GetEquipSlot(mod, equipName, equipType);
-		sSlot = (sbyte)EquipLoader.GetEquipSlot(this, equipName, equipType);
+		// 1.4 int EquipLoader.GetEquipSlot(Mod mod, string name, EquipType type)
+#if COMPILE_ERROR // sbyte -> int
+		sbyte sSlot = EquipLoader.GetEquipSlot(mod, equipName, equipType);
+		sSlot = EquipLoader.GetEquipSlot(this, equipName, equipType);
+#endif
 	}
 }

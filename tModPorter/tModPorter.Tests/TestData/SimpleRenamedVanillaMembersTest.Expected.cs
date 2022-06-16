@@ -51,10 +51,12 @@ public class SimpleRenamedVanillaMembersTest
 		var damageMultiplier = Main.GameModeInfo.EnemyDamageMultiplier;
 
 		int copperTierOreInt = WorldGen.SavedOreTiers.Copper;
-		ushort copperTierOre = (ushort)WorldGen.SavedOreTiers.Copper;
-		ushort ironTierOre = (ushort)WorldGen.SavedOreTiers.Iron;
-		ushort silverTierOre = (ushort)WorldGen.SavedOreTiers.Silver;
-		ushort goldTierOre = (ushort)WorldGen.SavedOreTiers.Gold;
+#if COMPILE_ERROR // ushort -> int
+		ushort copperTierOre = WorldGen.SavedOreTiers.Copper;
+		ushort ironTierOre = WorldGen.SavedOreTiers.Iron;
+		ushort silverTierOre = WorldGen.SavedOreTiers.Silver;
+		ushort goldTierOre = WorldGen.SavedOreTiers.Gold;
+#endif
 		int oreTier1 = WorldGen.SavedOreTiers.Cobalt;
 		int oreTier2 = WorldGen.SavedOreTiers.Mythril;
 		int oreTier3 = WorldGen.SavedOreTiers.Adamantite;
@@ -70,12 +72,14 @@ public class SimpleRenamedVanillaMembersTest
 		int lava = LiquidID.Lava;
 
 		// Yes. The variables are named with opposing sides in 1.3, the underlying values are the same
-		int type_Solid = (int)BlockType.Solid;
-		int type_Halfbrick = (int)BlockType.HalfBlock;
-		int type_SlopeDownRight = (int)BlockType.SlopeDownLeft;
-		int type_SlopeDownLeft = (int)BlockType.SlopeDownRight;
-		int type_SlopeUpRight = (int)BlockType.SlopeUpLeft;
-		int type_SlopeUpLeft = (int)BlockType.SlopeUpRight;
+#if COMPILE_ERROR // int -> BlockType
+		int type_Solid = BlockType.Solid;
+		int type_Halfbrick = BlockType.HalfBlock;
+		int type_SlopeDownRight = BlockType.SlopeDownLeft;
+		int type_SlopeDownLeft = BlockType.SlopeDownRight;
+		int type_SlopeUpRight = BlockType.SlopeUpLeft;
+		int type_SlopeUpLeft = BlockType.SlopeUpRight;
+#endif
 
 		var tileObjectData = new TileObjectData();
 		var hookCheck = tileObjectData.HookCheckIfCanPlace;

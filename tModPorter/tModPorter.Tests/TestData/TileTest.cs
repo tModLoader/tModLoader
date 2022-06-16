@@ -23,8 +23,11 @@ public class TileTest
 		tile.inActive(!tile.inActive());
 		tile.actuator(!tile.actuator());
 
+#if COMPILE_ERROR // byte -> SlopeType, byte -> BlockType
 		byte b = tile.slope();
 		tile.slope(b);
+		byte blockType = tile.blockType();
+#endif
 		tile.slope(tile.slope() == 2 ? 1 : 0);
 
 		tile.halfBrick(!tile.halfBrick());
@@ -42,7 +45,6 @@ public class TileTest
 		tile.skipLiquid(!tile.skipLiquid());
 
 		bool slopey = tile.topSlope() && tile.leftSlope() || tile.rightSlope() && tile.bottomSlope();
-		byte blockType = tile.blockType();
 		bool compBlockTypeWithConstant = tile.blockType() == 0 || tile.blockType() == 1 || tile.blockType() == 2 || tile.blockType() == 3 || tile.blockType() == 4 || tile.blockType() == 5;
 		compBlockTypeWithConstant = tile.blockType() > 1 || tile.blockType() <= 4;
 
@@ -60,7 +62,9 @@ public class TileTest
 		tile.liquidType(liquidType);
 
 		tile.liquid = 255;
+#if COMPILE_ERROR // byte -> int
 		liquidType = tile.liquidType();
+#endif
 		tile.lava(true);
 		tile.honey(true);
 
