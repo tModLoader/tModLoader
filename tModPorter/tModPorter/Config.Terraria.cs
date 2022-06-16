@@ -165,10 +165,15 @@ public static partial class Config
 		RenameMethod("Terraria.Item",		from: "IsNotTheSameAs",			to: "IsNotSameTypePrefixAndStack");
 		RenameMethod("Terraria.Lighting",	from: "BlackOut",				to: "Clear");
 		RenameMethod("Terraria.Utils",		from: "InverseLerp",			to: "GetLerpValue");
-
-		RenameMethod("Terraria.Main",		from: "PlaySound",				to: "PlaySound",				newType: "Terraria.Audio.SoundEngine");
-		RenameMethod("Terraria.Main",		from: "PlayTrackedSound",		to: "PlaySound",				newType: "Terraria.Audio.SoundEngine");
 		RenameMethod("Terraria.NetMessage",	from: "BroadcastChatMessage",	to: "BroadcastChatMessage",		newType: "Terraria.Chat.ChatHelper");
+
+		RenameMethod("Terraria.Main",		from: "PlayTrackedSound",		to: "PlaySound");
+		// sound refactors don't rename to SoundEngine because the fact that it's on Main lets us handle SoundID.Roar -> WormDig and SoundID.Splash -> SplashWeak properly (style 1 default)
+		RefactorStaticMethodCall("Terraria.Main",				"PlaySound", ConvertPlaySound(onMain: true));
+		RefactorStaticMethodCall("Terraria.Audio.SoundEngine",	"PlaySound", ConvertPlaySound(onMain: false));
+
+		RenameMethod("Terraria.Main", from: "GetActiveSound", to: "GetActiveSound", newType: "Terraria.Audio.SoundEngine");
+		RefactorStaticMethodCall("Terraria.Audio.SoundEngine", "GetActiveSound", ToTryGet("TryGetActiveSound"));
 	}
 
 	private static void AddTextureRenames() {

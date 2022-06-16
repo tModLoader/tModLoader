@@ -10,7 +10,7 @@ using static tModPorter.Rewriters.SimpleSyntaxFactory;
 
 namespace tModPorter.Rewriters;
 
-public class InvokeRewriter : BaseRewriter
+public partial class InvokeRewriter : BaseRewriter
 {
 	public delegate SyntaxNode RewriteInvoke(InvokeRewriter rw, InvocationExpressionSyntax invoke, NameSyntax methodName);
 
@@ -113,7 +113,7 @@ public class InvokeRewriter : BaseRewriter
 			case 1:
 				var arg = invoke.ArgumentList.Arguments[0].Expression;
 				if (constantType != null) {
-					if (rw.model.GetOperation(arg) is ILiteralOperation { ConstantValue: { Value: true } }) {
+					if (rw.model.GetOperation(arg) is ILiteralOperation { ConstantValue.Value: true }) {
 						invoke = invoke.ReplaceNode(arg, constantExpression);
 					}
 					else {
@@ -149,14 +149,6 @@ public class InvokeRewriter : BaseRewriter
 		invoke = invoke.ReplaceNode(nameSyntax, GenericName("Find", rw.UseType(type)));
 		return MemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
 	};
-
-	private static bool SuspectSideEffects(ExpressionSyntax expr, out ExpressionSyntax concern) {
-		switch (expr) {
-			case MemberAccessExpressionSyntax memberAccess: return SuspectSideEffects(memberAccess.Expression, out concern);
-			case NameSyntax: concern = null; return false;
-			default: concern = expr; return true;
-		};
-	}
 
 	public static RewriteInvoke ToStaticMethodCall(string onType, string newName, bool targetBecomesFirstArg = false) => (rw, invoke, _) => {
 		var targetExpr = invoke.Expression switch {
@@ -217,6 +209,33 @@ public class InvokeRewriter : BaseRewriter
 			invoke = invoke.WithBlockComment("Note: armTexture and femaleTexture now part of new spritesheet. https://github.com/tModLoader/tModLoader/wiki/Armor-Texture-Migration-Guide");
 
 		return invoke.WithArgumentList(ArgumentList(method, newArgs).WithTriviaFrom(invoke.ArgumentList));
+	};
+
+	public static RewriteInvoke ToTryGet(string newName) => (rw, invoke, methodName) => {
+		var op = rw.model.GetOperation(invoke);
+
+		ExpressionSyntax outExpr;
+		if (invoke.Parent is AssignmentExpressionSyntax assignmentExpr && assignmentExpr.Right == invoke) {
+			outExpr = assignmentExpr.Left.WithoutLeadingTrivia().TrimTrailingSpace();
+			rw.RegisterAction(assignmentExpr, n => invoke.WithTriviaFrom(n));
+		}
+		else if (invoke.Parent is EqualsValueClauseSyntax { Parent: VariableDeclaratorSyntax {
+				Identifier: var varIdentifier, Parent: VariableDeclarationSyntax { Variables.Count: 1, Type: var varType, Parent: LocalDeclarationStatementSyntax localDecl } } }) {
+
+			outExpr = DeclarationExpression(varType.WithoutLeadingTrivia(), SingleVariableDesignation(varIdentifier).TrimTrailingSpace());
+			rw.RegisterAction(localDecl, n => ExpressionStatement(invoke).WithTriviaFrom(n));
+		}
+		else {
+			outExpr = IdentifierName("_");
+		}
+
+		invoke = invoke.ReplaceNode(methodName, IdentifierName(newName).WithTriviaFrom(methodName));
+
+		invoke = invoke.WithArgumentList(
+			invoke.ArgumentList.Concat(
+				ArgumentList(new[] { Argument(null, TokenSpace(SyntaxKind.OutKeyword), outExpr) })));
+
+		return invoke;
 	};
 	#endregion
 }

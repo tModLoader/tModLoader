@@ -97,7 +97,7 @@ namespace tModPorter.Rewriters
 		private SyntaxNode AddResultToCreateRecipe(SyntaxNode node, ArgumentListSyntax resultArgs, bool isModItem) {
 			if (isModItem &&
 				!(node is not InvocationExpressionSyntax invoke || invoke.ArgumentList.Arguments.Count > 0) &&
-				!(invoke.Expression is not MemberAccessExpressionSyntax { Expression: IdentifierNameSyntax { Identifier: { Text: "Mod" } }, Name: IdentifierNameSyntax { Identifier: { Text: "CreateRecipe" } } }) &&
+				!(invoke.Expression is not MemberAccessExpressionSyntax { Expression: IdentifierNameSyntax { Identifier.Text: "Mod" }, Name: IdentifierNameSyntax { Identifier.Text: "CreateRecipe" } }) &&
 				resultArgs.Arguments[0].Expression is ThisExpressionSyntax) {
 
 				return invoke.WithExpression(IdentifierName("CreateRecipe")).WithArgumentList(invoke.ArgumentList.WithArguments(resultArgs.Arguments.RemoveAt(0)));

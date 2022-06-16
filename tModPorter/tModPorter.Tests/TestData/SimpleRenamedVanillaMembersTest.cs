@@ -50,10 +50,12 @@ public class SimpleRenamedVanillaMembersTest
 		var damageMultiplier = Main.damageMultiplier;
 
 		int copperTierOreInt = WorldGen.CopperTierOre;
+#if COMPILE_ERROR // ushort -> int
 		ushort copperTierOre = WorldGen.CopperTierOre;
 		ushort ironTierOre = WorldGen.IronTierOre;
 		ushort silverTierOre = WorldGen.SilverTierOre;
 		ushort goldTierOre = WorldGen.GoldTierOre;
+#endif
 		int oreTier1 = WorldGen.oreTier1;
 		int oreTier2 = WorldGen.oreTier2;
 		int oreTier3 = WorldGen.oreTier3;
@@ -69,12 +71,14 @@ public class SimpleRenamedVanillaMembersTest
 		int lava = Tile.Liquid_Lava;
 
 		// Yes. The variables are named with opposing sides in 1.3, the underlying values are the same
+#if COMPILE_ERROR // int -> BlockType
 		int type_Solid = Tile.Type_Solid;
 		int type_Halfbrick = Tile.Type_Halfbrick;
 		int type_SlopeDownRight = Tile.Type_SlopeDownRight;
 		int type_SlopeDownLeft = Tile.Type_SlopeDownLeft;
 		int type_SlopeUpRight = Tile.Type_SlopeUpRight;
 		int type_SlopeUpLeft = Tile.Type_SlopeUpLeft;
+#endif
 
 		var tileObjectData = new TileObjectData();
 		var hookCheck = tileObjectData.HookCheck;

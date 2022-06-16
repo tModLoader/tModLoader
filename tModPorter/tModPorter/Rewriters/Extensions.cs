@@ -13,6 +13,11 @@ public static class Extensions
 	public static T WithTriviaFrom<T>(this T node, SyntaxNode other) where T : SyntaxNode =>
 		node.WithLeadingTrivia(other.GetLeadingTrivia()).WithTrailingTrivia(other.GetTrailingTrivia());
 
+	public static T TrimTrailingSpace<T>(this T node) where T : SyntaxNode {
+		var trivia = node.GetTrailingTrivia();
+		return trivia.Count == 1 && trivia[0].IsKind(SyntaxKind.WhitespaceTrivia) ? node.WithoutTrailingTrivia() : node;
+	}
+
 	public static SyntaxToken WithText(this SyntaxToken token, string text) => text == token.Text ? token : Identifier(text).WithTriviaFrom(token);
 
 	public static IdentifierNameSyntax WithIdentifier(this IdentifierNameSyntax name, string text) => text == name.Identifier.Text ? name : name.WithIdentifier(name.Identifier.WithText(text));
@@ -89,5 +94,7 @@ public static class Extensions
 		SpecialType.System_Object => SyntaxKind.ObjectKeyword,
 		_ => SyntaxKind.None
 	};
+
+	public static bool NonDefault(this SemanticModel model, ExpressionSyntax x, object defaultValue) => x != null && (dynamic)model.GetOperation(x).ConstantValue.Value != (dynamic)defaultValue;
 }
 
