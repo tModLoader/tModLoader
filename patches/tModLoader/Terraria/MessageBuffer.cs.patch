@@ -235,6 +235,15 @@
  							obj6.playerIndexTheItemIsReservedFor = Main.myPlayer;
  							if (flag9) {
  								NetMessage.TrySendData(21, -1, -1, null, num181);
+@@ -1319,7 +_,7 @@
+ 						if (num120 <= 0)
+ 							nPC4.active = false;
+ 
+-						nPC4.SpawnedFromStatue = bitsByte11[0];
++						nPC4.SpawnedFromStatue = bitsByte11[1]; // 0 -> 1, vanilla bugfix, remove in 1.4.4
+ 						if (nPC4.SpawnedFromStatue)
+ 							nPC4.value = 0f;
+ 
 @@ -1336,9 +_,13 @@
  						if (num119 == 245)
  							NPC.golemBoss = num116;
