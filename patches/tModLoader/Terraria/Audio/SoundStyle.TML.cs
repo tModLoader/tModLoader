@@ -17,6 +17,7 @@ public enum SoundLimitBehavior
 {
 	IgnoreNew,
 	ReplaceOldest,
+	Unlimited,
 }
 
 /// <summary>

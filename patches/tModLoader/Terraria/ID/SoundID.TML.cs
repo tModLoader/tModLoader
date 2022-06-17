@@ -70,16 +70,22 @@ partial class SoundID
 		PitchRange = (-0.7f, 0.0f)
 	};
 	public static readonly SoundStyle Frog = new($"{Prefix}Zombie_13", SoundType.Ambient) { Volume = 0.35f, PitchRange = (-0.4f, 0.2f) };
-	//TODO: Inaccurate variants, search & analyze "PlaySound(32," in vanilla src.
 	public static readonly SoundStyle Bird = new($"{Prefix}Zombie_", 14, 5, SoundType.Ambient) { Volume = 0.15f, PitchRange = (-0.7f, 0.26f), SoundLimitBehavior = IgnoreNew };
+	public static readonly SoundStyle Bird14 = Bird with { SoundPath = $"{Prefix}Zombie_14" };
+	public static readonly SoundStyle Bird15 = Bird with { SoundPath = $"{Prefix}Zombie_15" };
+	public static readonly SoundStyle Bird16 = Bird with { SoundPath = $"{Prefix}Zombie_16" };
+	public static readonly SoundStyle Bird17 = Bird with { SoundPath = $"{Prefix}Zombie_17" };
+	public static readonly SoundStyle Bird18 = Bird with { SoundPath = $"{Prefix}Zombie_18" };
+	public static readonly SoundStyle Bird19 = Bird with { SoundPath = $"{Prefix}Zombie_19" };
 	public static readonly SoundStyle Critter = new($"{Prefix}Zombie_15", SoundType.Ambient) { Volume = 0.2f, PitchRange = (-0.1f, 0.3f), SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle Waterfall = new($"{Prefix}Liquid_0", SoundType.Ambient) { Volume = 0.2f, SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle Lavafall = new($"{Prefix}Liquid_1", SoundType.Ambient) { Volume = 0.65f, SoundLimitBehavior = IgnoreNew };
-	public static readonly SoundStyle ForceRoar = new($"{Prefix}Roar_0") { Identifier = "Terraria/Roar" };
-	public static readonly SoundStyle ForceRoarPitched = new($"{Prefix}Roar_0") { Pitch = 0.6f, Identifier = "Terraria/Roar" };
+	public static readonly SoundStyle ForceRoar = new($"{Prefix}Roar_0");
+	public static readonly SoundStyle ForceRoarPitched = new($"{Prefix}Roar_0") { Pitch = 0.6f };
 	public static readonly SoundStyle Meowmere = new($"{Prefix}Item_", 57, 2) { PitchVariance = 0.8f };
 	public static readonly SoundStyle CoinPickup = new($"{Prefix}Coin_", 0, 5) { PitchVariance = 0.16f };
-	public static readonly SoundStyle Drip = new($"{Prefix}Drip_", 0, 3, SoundType.Ambient) { Volume = 0.5f, PitchVariance = 0.6f };
+	public static readonly SoundStyle Drip = new($"{Prefix}Drip_", 0, 2, SoundType.Ambient) { Volume = 0.5f, PitchVariance = 0.6f };
+	public static readonly SoundStyle DripSplash = new($"{Prefix}Drip_2", SoundType.Ambient) { Volume = 0.5f, PitchVariance = 0.6f };
 	public static readonly SoundStyle Camera = new($"{Prefix}Camera");
 	//TODO: Might need special distance falloff rules.
 	public static readonly SoundStyle MoonLord = new($"{Prefix}NPC_Killed_10") { PitchVariance = 0.2f };
@@ -108,7 +114,7 @@ partial class SoundID
 	public static readonly SoundStyle DrumFloorTom = new($"{Prefix}Item_148") { Volume = 0.7f, Identifier = "Terraria/Drums" };
 	public static readonly SoundStyle Research = new($"{Prefix}Research_", 1, 3);
 	public static readonly SoundStyle ResearchComplete = new($"{Prefix}Research_0");
-	public static readonly SoundStyle QueenSlime = new($"{Prefix}Zombie_", 115, 3) { Volume = 0.5f, SoundLimitBehavior = IgnoreNew };
+	public static readonly SoundStyle QueenSlime = new($"{Prefix}Zombie_", 115, 3) { Volume = 0.5f, SoundLimitBehavior = IgnoreNew, Identifier = "Terraria/QueenSlime" };
 	public static readonly SoundStyle Clown = new($"{Prefix}Zombie_", 121, 3) { Volume = 0.45f, PitchVariance = 0.15f, SoundLimitBehavior = IgnoreNew };
 	public static readonly SoundStyle Cockatiel = new($"{Prefix}Zombie_", 118, 3) { Volume = 0.3f, PitchVariance = 0.05f };
 	public static readonly SoundStyle Macaw = new($"{Prefix}Zombie_", 126, 3) { Volume = 0.22f, PitchVariance = 0.05f };
@@ -594,6 +600,7 @@ partial class SoundID
 		AddNumberedStyles(LegacySoundIDs.NPCHit, nameof(LegacySoundIDs.NPCHit), 0, 65);
 		AddNumberedStyles(LegacySoundIDs.NPCKilled, "NPCDeath", 0, 57);
 		AddNumberedStyles(LegacySoundIDs.Zombie, nameof(LegacySoundIDs.Zombie), 0, 118);
+		AddNumberedStyles(LegacySoundIDs.Bird, nameof(LegacySoundIDs.Bird), 14, 6);
 	}
 
 	// Helper methods
@@ -636,7 +643,8 @@ partial class SoundID
 		LegacySoundIDs.Zombie or
 		LegacySoundIDs.Item or
 		LegacySoundIDs.NPCHit or
-		LegacySoundIDs.NPCKilled
+		LegacySoundIDs.NPCKilled or
+		LegacySoundIDs.Bird
 			=> style >= 1 && style < legacyArrayedStylesMapping[type].Length ? legacyArrayedStylesMapping[type][style] : null,
 		// Everything else
 		LegacySoundIDs.Dig => Dig,
@@ -650,7 +658,11 @@ partial class SoundID
 		LegacySoundIDs.MenuClose => MenuClose,
 		LegacySoundIDs.MenuTick => MenuTick,
 		LegacySoundIDs.Shatter => Shatter,
-		LegacySoundIDs.ZombieMoan => ZombieMoan,
+		LegacySoundIDs.ZombieMoan => style switch {
+			NPCID.SandShark => SandShark,
+			NPCID.BloodZombie or NPCID.ZombieMerman => BloodZombie,
+			_ => ZombieMoan,
+		},
 		LegacySoundIDs.Roar => style switch {
 			0 => Roar,
 			1 => WormDig,
@@ -680,18 +692,17 @@ partial class SoundID
 		LegacySoundIDs.Mech => Mech,
 		LegacySoundIDs.Duck => Duck,
 		LegacySoundIDs.Frog => Frog,
-		LegacySoundIDs.Bird => Bird,
 		LegacySoundIDs.Critter => Critter,
 		LegacySoundIDs.Waterfall => Waterfall,
 		LegacySoundIDs.Lavafall => Lavafall,
 		LegacySoundIDs.ForceRoar => style switch { -1 => ForceRoarPitched, _ => ForceRoar },
-		LegacySoundIDs.Meowmere => Meowmere,
+		LegacySoundIDs.Meowmere => Meowmere with { Volume = style * 0.05f },
 		LegacySoundIDs.CoinPickup => CoinPickup,
-		LegacySoundIDs.Drip => Drip,
+		LegacySoundIDs.Drip => style switch { 2 => DripSplash, _ => Drip },
 		LegacySoundIDs.Camera => Camera,
 		LegacySoundIDs.MoonLord => MoonLord,
 		//LegacySoundIDs.Trackable => Trackable,
-		LegacySoundIDs.Thunder => Thunder,
+		LegacySoundIDs.Thunder => Thunder, // TODO, reroll SoundThunder.Length times to try and find an empty slot, then replace
 		LegacySoundIDs.Seagull => Seagull,
 		LegacySoundIDs.Dolphin => Dolphin,
 		LegacySoundIDs.Owl => Owl,
