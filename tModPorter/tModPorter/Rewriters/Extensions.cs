@@ -13,6 +13,19 @@ public static class Extensions
 	public static T WithTriviaFrom<T>(this T node, SyntaxNode other) where T : SyntaxNode =>
 		node.WithLeadingTrivia(other.GetLeadingTrivia()).WithTrailingTrivia(other.GetTrailingTrivia());
 
+	public static SyntaxTokenList WithTriviaFrom(this SyntaxTokenList node, SyntaxTokenList other) {
+		if (!node.Any() || !other.Any())
+			return node;
+
+		if (other.First().HasLeadingTrivia)
+			node = node.Replace(node.First(), node.First().WithLeadingTrivia(other.First().LeadingTrivia));
+
+		if (other.Last().HasTrailingTrivia)
+			node = node.Replace(node.Last(), node.Last().WithTrailingTrivia(other.Last().TrailingTrivia));
+
+		return node;
+	}
+
 	public static T TrimTrailingSpace<T>(this T node) where T : SyntaxNode {
 		var trivia = node.GetTrailingTrivia();
 		return trivia.Count == 1 && trivia[0].IsKind(SyntaxKind.WhitespaceTrivia) ? node.WithoutTrailingTrivia() : node;
@@ -27,6 +40,17 @@ public static class Extensions
 			return node;
 
 		var trivia = node.GetTrailingTrivia();
+		if (trivia.Any(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia) && t.ToString().Contains("tModPorter")))
+			return node;
+
+		return node.WithTrailingTrivia(trivia.Insert(0, Comment($"/* tModPorter {comment} */")));
+	}
+
+	public static SyntaxToken WithBlockComment(this SyntaxToken node, string comment) {
+		if (comment == null)
+			return node;
+
+		var trivia = node.TrailingTrivia;
 		if (trivia.Any(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia) && t.ToString().Contains("tModPorter")))
 			return node;
 
@@ -64,15 +88,15 @@ public static class Extensions
 		type.BaseType != null && InheritsFrom(type.BaseType, fromTypeName) ||
 		type.Interfaces.Any(i => InheritsFrom(i, fromTypeName));
 
-	public static IMethodSymbol LookupMethod(this ITypeSymbol type, string name) {
-		var members = type.GetMembers(name).OfType<IMethodSymbol>().ToArray();
+	public static T LookupMember<T>(this ITypeSymbol type, string name) where T : class, ISymbol {
+		var members = type.GetMembers(name).OfType<T>().ToArray();
 		if (members.Length == 1)
 			return members[0];
 
 		if (members.Length > 1 || type.BaseType == null)
 			return null;
 
-		return LookupMethod(type.BaseType, name);
+		return LookupMember<T>(type.BaseType, name);
 	}
 
 	public static SyntaxKind SpecialTypeKind(this SpecialType t) => t switch {

@@ -171,7 +171,7 @@ public partial class InvokeRewriter : BaseRewriter
 
 	public static RewriteInvoke ConvertAddEquipTexture => (rw, invoke, methodName) => {
 		var paramOps = invoke.ArgumentList.Arguments.Select(arg => rw.model.GetOperation(arg.Expression)).ToArray();
-		var method = rw.model.Compilation.GetTypeByMetadataName("Terraria.ModLoader.EquipLoader").LookupMethod("AddEquipTexture");
+		var method = rw.model.Compilation.GetTypeByMetadataName("Terraria.ModLoader.EquipLoader").LookupMember<IMethodSymbol>("AddEquipTexture");
 		if (method == null)
 			return invoke;
 

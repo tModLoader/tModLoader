@@ -153,6 +153,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModMount",			"JumpHeight");
 		ChangeHookSignature("Terraria.ModLoader.ModMount",			"JumpSpeed");
 		ChangeHookSignature("Terraria.ModLoader.ModType",			"IsLoadingEnabled");
+		ChangeHookSignature("Terraria.ModLoader.ModType",			"CloneNewInstances"); // public -> protected
 
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false if you returned false");
@@ -170,13 +171,15 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[head] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[head] = true if you had drawAltHair set to true");
 
+		HookRemoved("Terraria.ModLoader.ModItem",	"IgnoreDamageModifiers","If you returned true, consider leaving Item.DamageType as DamageClass.Default, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance");
+		HookRemoved("Terraria.ModLoader.ModItem",	"OnlyShootOnSwing",		"If you returned true, set Item.useTime to a multiple of Item.useAnimation");
 		HookRemoved("Terraria.ModLoader.ModGore",	"DrawBehind",			"Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults");
-		HookRemoved("Terraria.ModLoader.Mod",		"HotKeyPressed",		"Use ModPlayer.ProcessTriggers");
 		HookRemoved("Terraria.ModLoader.ModTile",	"SaplingGrowthType",	"Use ModTree.SaplingGrowthType");
 
 		HookRemoved("Terraria.ModLoader.ModSurfaceBackgroundStyle",		"ChooseBgStyle", "Create a ModBiome (or ModSceneEffect) class and override SurfaceBackgroundStyle property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive)");
 		HookRemoved("Terraria.ModLoader.ModUndergroundBackgroundStyle",	"ChooseBgStyle", "Create a ModBiome (or ModSceneEffect) class and override UndergroundBackgroundStyle property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive)");
 
+		HookRemoved("Terraria.ModLoader.Mod","HotKeyPressed",				"Use ModPlayer.ProcessTriggers");
 		HookRemoved("Terraria.ModLoader.Mod", "UpdateMusic",				"Use ModSceneEffect.Music and .Priority, aswell as ModSceneEffect.IsSceneEffectActive");
 		HookRemoved("Terraria.ModLoader.Mod", "ModifyTransformMatrix",		"Use ModSystem.ModifyTransformMatrix");
 		HookRemoved("Terraria.ModLoader.Mod", "UpdateUI",					"Use ModSystem.UpdateUI");
