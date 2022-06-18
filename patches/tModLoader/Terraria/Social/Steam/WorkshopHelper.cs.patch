@@ -236,7 +236,7 @@
  					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  						_endAction(this);
-@@ -224,18 +_,17 @@
+@@ -224,25 +_,24 @@
  						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
  						_endAction(this);
  					}
@@ -260,10 +260,20 @@
  
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
-@@ -253,21 +_,63 @@
+ 					if (_entryData.Title != null)
+ 						SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
+ 
+-					if (_entryData.Description != null)
++					if (!string.IsNullOrEmpty(_entryData.Description))
+ 						SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
+ 
+ 					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
+@@ -253,21 +_,65 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
++					SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
++
 +					string patchNotes = "";
 +
 +					if (_entryData.BuildData != null) {
