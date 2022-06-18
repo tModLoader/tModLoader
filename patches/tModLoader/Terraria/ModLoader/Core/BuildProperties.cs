@@ -62,7 +62,6 @@ namespace Terraria.ModLoader.Core
 		internal Version buildVersion = BuildInfo.tMLVersion;
 		internal string homepage = "";
 		internal string description = "";
-		internal string workshopDescription = "";
 		internal ModSide side;
 
 		public IEnumerable<ModReference> Refs(bool includeWeak) =>
@@ -91,16 +90,12 @@ namespace Terraria.ModLoader.Core
 		internal static BuildProperties ReadBuildFile(string modDir) {
 			string propertiesFile = modDir + Path.DirectorySeparatorChar + "build.txt";
 			string descriptionfile = modDir + Path.DirectorySeparatorChar + "description.txt";
-			string workshopDescriptionFile = modDir + Path.DirectorySeparatorChar + "workshop_description.txt";
 			BuildProperties properties = new BuildProperties();
 			if (!File.Exists(propertiesFile)) {
 				return properties;
 			}
 			if (File.Exists(descriptionfile)) {
 				properties.description = File.ReadAllText(descriptionfile);
-			}
-			if (File.Exists(workshopDescriptionFile)) {
-				properties.workshopDescription = File.ReadAllText(workshopDescriptionFile);
 			}
 			foreach (string line in File.ReadAllLines(propertiesFile)) {
 				if (string.IsNullOrWhiteSpace(line)) {

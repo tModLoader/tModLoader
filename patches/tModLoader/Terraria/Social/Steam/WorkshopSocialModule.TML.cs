@@ -45,7 +45,7 @@ namespace Terraria.Social.Steam
 				return false;
 			}
 
-			if (BuildInfo.IsDev) {
+			if (!BuildInfo.IsDev) {
 				IssueReporter.ReportInstantUploadProblem("tModLoader.BetaModCantPublishError");
 				return false;
 			}
@@ -213,8 +213,14 @@ namespace Terraria.Social.Steam
 			using (sModFile.Open())
 				sMod = new LocalMod(sModFile);
 
+			string workshopDescFile = Path.Combine(modFolder, "workshop_description.txt");
+			if (!File.Exists(workshopDescFile))
+				throw new Exception("Missing workshop_description.txt. Abandoning update");
+
+			string workshopDesc = File.ReadAllText(workshopDescFile);
+
 			string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version {sMod.properties.version} built for tModLoader v{sMod.properties.buildVersion}[/quote]" +
-				$"{sMod.properties.description}";
+				$"{workshopDesc}";
 			Console.WriteLine($"Built Mod Version is: {newMod.properties.version}. tMod Version is: {BuildInfo.tMLVersion}");
 
 			// Make the publish.vdf file

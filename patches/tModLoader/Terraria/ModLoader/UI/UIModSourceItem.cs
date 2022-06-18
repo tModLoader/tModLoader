@@ -349,6 +349,14 @@ namespace Terraria.ModLoader.UI
 			else
 				changeLog = "";
 
+			var workshopDescFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "workshop_description.txt");
+			string workshopDesc;
+			if (File.Exists(workshopDescFile))
+				workshopDesc = File.ReadAllText(workshopDescFile);
+			else
+				workshopDesc = "";
+
+
 			var values = new NameValueCollection
 			{
 				{ "displayname", bp.displayName },
@@ -357,7 +365,7 @@ namespace Terraria.ModLoader.UI
 				{ "version", $"v{bp.version}" },
 				{ "author", bp.author },
 				{ "homepage", bp.homepage },
-				{ "description", bp.workshopDescription },
+				{ "description", workshopDesc },
 				{ "iconpath", iconPath },
 				{ "sourcesfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
 				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
