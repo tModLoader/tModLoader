@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
 
 namespace Terraria.ModLoader
@@ -81,12 +82,50 @@ namespace Terraria.ModLoader
 			fileHandle = File?.Open();
 			RootContentSource = CreateDefaultContentSource();
 			Assets = new AssetRepository(Main.instance.Services.Get<AssetReaderCollection>(), new[] { RootContentSource }) {
-				AssetLoadFailHandler = Main.OnceFailedLoadingAnAsset
+				AssetLoadFailHandler = OnceFailedLoadingAnAsset
 			};
 		}
 
 		internal void TransferAllAssets() {
+			initialTransferComplete = false;
 			Assets.TransferAllAssets();
+			initialTransferComplete = true;
+			if (AssetExceptions.Count > 0) {
+				if (AssetExceptions.Count == 1)
+					throw AssetExceptions[0];
+
+				if (AssetExceptions.Count > 0)
+					throw new MultipleException(AssetExceptions);
+			}
+		}
+
+		internal bool initialTransferComplete;
+		internal List<Exception> AssetExceptions = new List<Exception>();
+		internal void OnceFailedLoadingAnAsset(string assetPath, Exception e) {
+			if (initialTransferComplete) {
+				// TODO: Add a user friendly indicator/inbox for viewing these errors that happen in-game
+				Logging.Terraria.Error($"Failed to load asset: \"{assetPath}\"", e);
+				Terraria.UI.FancyErrorPrinter.ShowFailedToLoadAssetError(e, assetPath);
+			}
+			else {
+				if (e is AssetLoadException AssetLoadException) {
+					// Fix this once ContenSources are sane with extensions
+					ICollection<string> keys = RootContentSource.EnumerateAssets().ToList();
+					var cleanKeys = new List<string>();
+					foreach (var key in keys) {
+						string keyWithoutExtension = key.Substring(0, key.LastIndexOf("."));
+						string extension = RootContentSource.GetExtension(keyWithoutExtension);
+						if (extension != null) {
+							cleanKeys.Add(key.Substring(0, key.LastIndexOf(extension)));
+						}
+					}
+					var MissingResourceException = new Exceptions.MissingResourceException(assetPath.Replace("\\", "/"), cleanKeys);
+					AssetExceptions.Add(MissingResourceException);
+				}
+				else {
+					AssetExceptions.Add(e);
+				}
+			}
 		}
 	}
 }

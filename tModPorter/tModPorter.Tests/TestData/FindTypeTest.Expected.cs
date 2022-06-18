@@ -17,7 +17,10 @@ public abstract class FindTypeTest : Mod
 		int k = mod.Find<ModGore>("GoreTextureOrClass").Type;
 		int l = ModContent.Find<ModGore>("ModName/GoreTextureOrClass").Type;
 #if COMPILE_ERROR
-		int m = ModContent.GoreType<GoreClass>();
+		int m = mod.GetGoreSlot("DoesNotStartWith'Gores/'String")/* tModPorter Note: Removed. Replacement is Mod.Find<ModGore>("NameWithout'Gores/'").Type */;
+		int n = ModGore.GetGoreSlot("DoesNotStartWith'ModName/Gores/'String")/* tModPorter Note: Removed. Replacement is ModContent.Find<ModGore>("ModName/NameWithout'Gores/'").Type */;
+
+		int o = ModContent.GoreType<GoreClass>();
 #endif
 	}
 

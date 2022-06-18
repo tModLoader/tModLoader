@@ -21,6 +21,7 @@ public class TexturesTest : Mod
 
 		texture = TextureAssets.Chains[index].Value;
 		texture = TextureAssets.WireUi[index].Value;
+		texture = TextureAssets.Gem[index].Value;
 
 		texture = TextureAssets.Dust.Value;
 		texture = TextureAssets.Sun.Value;
@@ -41,5 +42,6 @@ public class TexturesTest : Mod
 
 		texture = TextureAssets.BlackTile.Value;
 		texture = TextureAssets.MagicPixel.Value;
+		texture = TextureAssets.FishingLine.Value;
 	}
 }

@@ -259,7 +259,34 @@ namespace Terraria
 			return attackSpeed;
 		}
 
+		// Legacy Thrower properties (uppercase+property in TML)
 
+		/// <summary>
+		/// Multiplier to shot projectile velocity before throwing. Result will be capped to 16f.
+		/// <br/>Only applies to items counted as the <see cref="DamageClass.Throwing"/> damage type
+		/// </summary>
+		public float ThrownVelocity { get; set; }
+
+		/// <summary>
+		/// If true, player has a 33% chance of not consuming the thrown item.
+		/// <br/>Only applies to consumable items and projectiles counted as the <see cref="DamageClass.Throwing"/> damage type.
+		/// <br/>Projectiles spawned from a player who holds such item will set <see cref="Projectile.noDropItem"/> to prevent duplication.
+		/// <br/>Stacks with <see cref="ThrownCost50"/> multiplicatively
+		/// </summary>
+		public bool ThrownCost33 { get; set; }
+
+		/// <summary>
+		/// If true, player has a 50% chance of not consuming the thrown item.
+		/// <br/>Only applies to consumable items counted as the <see cref="DamageClass.Throwing"/> damage type.
+		/// <br/>Projectiles spawned from a player who holds such item will set <see cref="Projectile.noDropItem"/> to prevent duplication.
+		/// <br/>Stacks with <see cref="ThrownCost33"/> multiplicatively
+		/// </summary>
+		public bool ThrownCost50 { get; set; }
+
+		/// <summary>
+		/// Returns true if either <see cref="ThrownCost33"/> or <see cref="ThrownCost50"/> are true
+		/// </summary>
+		public bool AnyThrownCostReduction => ThrownCost33 || ThrownCost50;
 
 		/// <summary>
 		/// Container for current SceneEffect client properties such as: Backgrounds, music, and water styling

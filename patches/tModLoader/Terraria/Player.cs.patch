@@ -2347,8 +2347,13 @@
  			hasFootball = false;
  			drawingFootball = false;
  			minionKB = 0f;
-@@ -13118,9 +_,14 @@
+@@ -13116,11 +_,19 @@
+ 			huntressAmmoCost90 = false;
+ 			ammoCost80 = false;
  			ammoCost75 = false;
++			ThrownCost50 = false;
++			ThrownCost33 = false;
++			ThrownVelocity = 1f;
  			manaRegenBuff = false;
  			hasCreditsSceneMusicBox = false;
 +			arrowDamage = StatModifier.Default;
@@ -3270,6 +3275,22 @@
  			short frameX = Main.tile[myX, myY].frameX;
  			bool flag = frameX / 72 == 1;
  			bool flag2 = frameX % 72 < 36;
+@@ -23248,7 +_,14 @@
+ 				StopPettingAnimal();
+ 		}
+ 
++		/// <summary>
++		/// Handles boilerplate for gamepad and UI when opening or closing a container.
++		/// <br/>Sets <see cref="Player.chestX"/>, and <see cref="Player.chestY"/>, and <see cref="Player.chest"/> to the given coordinates.
++		/// </summary>
++		/// <param name="x">The top-left X coordinate of the container.</param>
++		/// <param name="y">The top-left Y coordinate of the container.</param>
++		/// <param name="newChest">The container index in <see cref="Main.chest"/> if opening, or -1 if closing.</param>
+-		private void OpenChest(int x, int y, int newChest) {
++		public void OpenChest(int x, int y, int newChest) {
+ 			if (chest != -1 && Main.myPlayer == whoAmI) {
+ 				for (int i = 0; i < 40; i++) {
+ 					ItemSlot.SetGlow(i, -1f, chest: true);
 @@ -24067,7 +_,7 @@
  				cursorItemIconID = 3747;
  			}
@@ -4576,7 +4597,7 @@
  				if (sItem.stack <= 0)
  					sItem.SetDefaults();
  			}
-@@ -33081,16 +_,21 @@
+@@ -33081,16 +_,28 @@
  		}
  
  		private void ItemCheck_Shoot(int i, Item sItem, int weaponDamage) {
@@ -4589,6 +4610,13 @@
  			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
 -				speed /= meleeSpeed;
 +				speed /= inverseMeleeSpeed;
++
++			// Copied as-is from 1.3
++			if (sItem.CountsAsClass(DamageClass.Throwing) && speed < 16f) {
++				speed *= ThrownVelocity;
++				if (speed > 16f)
++					speed = 16f;
++			}
  
  			bool canShoot = false;
  			int Damage = weaponDamage;
@@ -5184,10 +5212,19 @@
  
  			if (huntressAmmoCost90 && Main.rand.Next(10) == 0)
  				flag2 = true;
-@@ -37226,6 +_,7 @@
+@@ -37226,6 +_,16 @@
  			if (ammoCost75 && Main.rand.Next(4) == 0)
  				flag2 = true;
  
++			// Copied as-is from 1.3
++			if (item.CountsAsClass(DamageClass.Throwing)) {
++				if (ThrownCost50 && Main.rand.Next(100) < 50)
++					flag2 = true;
++
++				if (ThrownCost33 && Main.rand.Next(100) < 33)
++					flag2 = true;
++			}
++
 +			/* Flamethrower + Elf Melter (handled by consumeAmmoOnFirstShotOnly) + Clentaminator (handled by consumeAmmoOnFirstShotOnly)
  			if (projToShoot == 85 && itemAnimation < itemAnimationMax - 2)
  				flag2 = true;

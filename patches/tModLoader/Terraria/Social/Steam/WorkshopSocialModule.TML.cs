@@ -72,9 +72,15 @@ namespace Terraria.Social.Steam
 				workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{existing.PublishId}");
 
 				// This eliminates uploaded mod source files that occured prior to the fix of #2263
-				if (Directory.Exists(Path.Combine(workshopFolderPath, "bin")))
+				if (Directory.Exists(Path.Combine(workshopFolderPath, "bin"))) {
 					foreach (var sourceFile in Directory.EnumerateFiles(workshopFolderPath))
 						File.Delete(sourceFile);
+
+					foreach (var sourceFolder in Directory.EnumerateDirectories(workshopFolderPath)) {
+						if (!sourceFolder.Contains("2022.0"))
+							Directory.Delete(sourceFolder, true);
+					}
+				}
 
 				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
