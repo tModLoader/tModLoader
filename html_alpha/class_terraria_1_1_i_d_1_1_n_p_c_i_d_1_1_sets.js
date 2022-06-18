@@ -4,6 +4,7 @@ var class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets =
     [ "NPCBestiaryDrawOffsetCreation", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a7d0864eb6b84322852ee42f86807d72e", null ],
     [ "ActsLikeTownNPC", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a0ce8bd6d411d2c6a4de6486b490f74d6", null ],
     [ "AllNPCs", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a039692c149b0fa62ec4cf06d0cdf13a6", null ],
+    [ "AllowDoorInteraction", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#ac583e276b792455de7dc24cb5b4cf283", null ],
     [ "AttackAverageChance", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#ac3d3ad9c426721b88f4d2e68220ddf39", null ],
     [ "AttackFrameCount", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a37df31d8e67c1be5113157174d92eab6", null ],
     [ "AttackTime", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a7de6b7108c70bfa071ac90176882fbb7", null ],

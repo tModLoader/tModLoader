@@ -1,5 +1,6 @@
 var NAVTREEINDEX110 =
 {
+"class_terraria_1_1_remote_client.html#ade5c6c71e97047425d00be26356da515":[2,0,2,63,22],
 "class_terraria_1_1_remote_client.html#ae041cf70a50a345440382af193e43e1f":[2,0,2,63,21],
 "class_terraria_1_1_remote_client.html#ae7f346a22173688ac89ebea42f444676":[2,0,2,63,16],
 "class_terraria_1_1_remote_client.html#aebb8708aa8069d1d39469cdd397d40fb":[2,0,2,63,27],
@@ -248,6 +249,5 @@ var NAVTREEINDEX110 =
 "class_terraria_1_1_social_1_1_base_1_1_user_join_to_server_request.html#acd58286705ae3da8a51f733db1e055a5":[2,0,2,19,0,14,4],
 "class_terraria_1_1_social_1_1_base_1_1_user_join_to_server_request.html#ad920a73b4ffb7d509362427639408f8c":[2,0,2,19,0,14,6],
 "class_terraria_1_1_social_1_1_base_1_1_workshop_branding.html":[2,0,2,19,0,15],
-"class_terraria_1_1_social_1_1_base_1_1_workshop_branding.html#aeb18dc3ec346cc2d413cf14267fa62c7":[2,0,2,19,0,15,0],
-"class_terraria_1_1_social_1_1_base_1_1_workshop_issue_reporter.html":[2,0,2,19,0,16]
+"class_terraria_1_1_social_1_1_base_1_1_workshop_branding.html#aeb18dc3ec346cc2d413cf14267fa62c7":[2,0,2,19,0,15,0]
 };

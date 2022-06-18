@@ -113,6 +113,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a039692c149b0fa62ec4cf06d0cdf13a6"><td class="memItemLeft" align="right" valign="top"><a id="a039692c149b0fa62ec4cf06d0cdf13a6"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>AllNPCs</b> = Factory.CreateBoolSet(true)</td></tr>
 <tr class="separator:a039692c149b0fa62ec4cf06d0cdf13a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac583e276b792455de7dc24cb5b4cf283"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#ac583e276b792455de7dc24cb5b4cf283">AllowDoorInteraction</a> = Factory.CreateBoolSet()</td></tr>
+<tr class="memdesc:ac583e276b792455de7dc24cb5b4cf283"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can still interact with doors if they use the Vanilla TownNPC aiStyle (AKA aiStyle == 7) but are not actually marked as Town NPCs (AKA npc.townNPC == true).  <a href="class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#ac583e276b792455de7dc24cb5b4cf283">More...</a><br /></td></tr>
+<tr class="separator:ac583e276b792455de7dc24cb5b4cf283"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3d3ad9c426721b88f4d2e68220ddf39"><td class="memItemLeft" align="right" valign="top"><a id="ac3d3ad9c426721b88f4d2e68220ddf39"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>AttackAverageChance</b> = Factory.CreateIntSet(1, 38, 40, 17, 30, 107, 60, 19, 30, 22, 30, 124, 30, 228, 50, 178, 50, 18, 60, 229, 40, 209, 30, 54, 30, 108, 30, 160, 60, 20, 60, 369, 50, 453, 30, 368, 40, 207, 1, 227, 30, 208, 50, 142, 50, 441, 1, 353, 1, 633, 1, 550, 40, 588, 20, 663, 1, 638, 1, 637, 1, 656, 1)</td></tr>
 <tr class="separator:ac3d3ad9c426721b88f4d2e68220ddf39"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -308,6 +311,31 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Zombies</b> 
 </div><div class="memdoc">
 
 <p>Whether or not a given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will act like a town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> in terms of AI, animations, and attacks, but not in other regards, such as having a happiness button or appearing on the minimap, like the bone merchant in vanilla. </p>
+
+</div>
+</div>
+<a id="ac583e276b792455de7dc24cb5b4cf283"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac583e276b792455de7dc24cb5b4cf283">&#9670;&nbsp;</a></span>AllowDoorInteraction</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.ID.NPCID.Sets.AllowDoorInteraction = Factory.CreateBoolSet()</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether or not this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can still interact with doors if they use the Vanilla TownNPC aiStyle (AKA aiStyle == 7) but are not actually marked as Town NPCs (AKA npc.townNPC == true). </p>
+<p>Note: This set DOES NOT DO ANYTHING if your <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> doesn't use the Vanilla TownNPC aiStyle (aiStyle == 7). </p>
 
 </div>
 </div>
