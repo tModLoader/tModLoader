@@ -342,6 +342,13 @@ namespace Terraria.ModLoader.UI
 			if (bp.buildVersion != modFile.TModLoaderVersion)
 				throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
 
+			var changeLogFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "changelog.txt");
+			string changeLog;
+			if (File.Exists(changeLogFile))
+				changeLog = File.ReadAllText(changeLogFile);
+			else
+				changeLog = "";
+
 			var values = new NameValueCollection
 			{
 				{ "displayname", bp.displayName },
@@ -356,6 +363,7 @@ namespace Terraria.ModLoader.UI
 				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
 				{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
 				{ "modside", bp.side.ToFriendlyString() },
+				{ "changelog" , changeLog }
 			};
 
 			if (string.IsNullOrWhiteSpace(values["author"]))

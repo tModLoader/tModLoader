@@ -148,7 +148,7 @@ namespace Terraria.Social.Steam
 
 				_publisherInstances.Add(modPublisherInstance);
 
-				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList, buildData, currPublishID);
+				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList, buildData, currPublishID, settings.ChangeNotes);
 
 				return true;
 			}
