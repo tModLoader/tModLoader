@@ -45,6 +45,7 @@ Mods: {
 		MapObject: {
 			ExampleClock: Example Clock
 			ExamplePylonTile: "{$Mods.ExampleMod.ItemName.ExamplePylonItem}"
+			ExamplePylonTileAdvanced: "{$Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced}"
 		}
 		
 		ItemTooltip: {
@@ -79,12 +80,14 @@ Mods: {
 			Must be within the Example Surface or Underground Biome in order to function.
 			Has no NPC requirements!
 			'''
+			ExamplePylonItemAdvanced: "Will randomly turn on and off, but otherwise can be teleported to without NPCs and in any biome!"
 		}
 		
 		ItemName: {
 			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
 			ExampleSpecificAmmoGun: '''Example Rifle'''
 			ExamplePylonItem: "Example Pylon"
+			ExamplePylonItemAdvanced: "Unstable Pylon"
 		}
 		
 		ProjectileName: {
@@ -135,6 +138,10 @@ Mods: {
 				DislikeNPC: '''"{NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is."'''
 				HateNPC: "I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet."
 			}
+		}
+
+		MessageInfo: {
+			UnstablePylonIsOff: "That Unstable Pylon is currently inactive."
 		}
 	}
 }
