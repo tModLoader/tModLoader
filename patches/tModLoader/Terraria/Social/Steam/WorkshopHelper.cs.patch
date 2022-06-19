@@ -23,12 +23,13 @@
  		public class UGCBased
  		{
  			public struct SteamWorkshopItem
-@@ -20,6 +_,8 @@
+@@ -20,6 +_,9 @@
  				public string[] Tags;
  				public string Title;
  				public ERemoteStoragePublishedFileVisibility? Visibility;
 +				// Added by TML.
 +				public NameValueCollection BuildData;
++				public string ChangeNotes;
  			}
  
  			public class Downloader
@@ -128,7 +129,7 @@
 +				protected EResult _updateCallback;
  
 -				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags) {
-+				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0) {
++				public void PublishContent(PublishedItemsFinder finder, WorkshopIssueReporter issueReporter, FinishedPublishingAction endAction, string itemTitle, string itemDescription, string contentFolderPath, string previewImagePath, WorkshopItemPublicSettingId publicity, string[] tags, NameValueCollection buildData = null, ulong existingID = 0, string changeNotes = null) {
 +					Utils.LogAndConsoleInfoMessage(Language.GetTextValueWith("tModLoader.PublishItem", _entryData.Title));
  					_issueReporter = issueReporter;
  					_endAction = endAction;
@@ -138,13 +139,14 @@
  					ERemoteStoragePublishedFileVisibility visibility = GetVisibility(publicity);
  					_entryData = new SteamWorkshopItem {
  						Title = itemTitle,
-@@ -171,16 +_,32 @@
+@@ -171,16 +_,33 @@
  						ContentFolderPath = contentFolderPath,
  						Tags = tags,
  						PreviewImagePath = previewImagePath,
 -						Visibility = visibility
 +						Visibility = visibility,
-+						BuildData = buildData
++						BuildData = buildData,
++						ChangeNotes = changeNotes
  					};
  
 -					ulong? num = null;
@@ -236,7 +238,7 @@
  					if (param.m_bUserNeedsToAcceptWorkshopLegalAgreement) {
  						_issueReporter.ReportDelayedUploadProblem("Workshop.ReportIssue_FailedToPublish_UserDidNotAcceptWorkshopTermsOfService");
  						_endAction(this);
-@@ -224,18 +_,17 @@
+@@ -224,25 +_,24 @@
  						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
  						_endAction(this);
  					}
@@ -260,10 +262,20 @@
  
  					PrepareContentForUpdate();
  					UGCUpdateHandle_t uGCUpdateHandle_t = SteamUGC.StartItemUpdate(SteamUtils.GetAppID(), _publishedFileID);
-@@ -253,21 +_,63 @@
+ 					if (_entryData.Title != null)
+ 						SteamUGC.SetItemTitle(uGCUpdateHandle_t, _entryData.Title);
+ 
+-					if (_entryData.Description != null)
++					if (!string.IsNullOrEmpty(_entryData.Description))
+ 						SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
+ 
+ 					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
+@@ -253,21 +_,65 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
++					SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
++
 +					string patchNotes = "";
 +
 +					if (_entryData.BuildData != null) {
@@ -272,7 +284,7 @@
 +							SteamUGC.AddItemKeyValueTag(uGCUpdateHandle_t, key, _entryData.BuildData[key]);
 +						}
 +
-+						patchNotes = $"Version {_entryData.BuildData["trueversion"]} has been published to {BuildInfo.Purpose} learn more @ {_entryData.BuildData["homepage"]}";
++						patchNotes = $"Version {_entryData.BuildData["trueversion"]} has been published to {BuildInfo.Purpose} learn more @ {_entryData.BuildData["homepage"]}\n{_entryData.ChangeNotes}";
 +
 +						string refs = _entryData.BuildData["workshopdeps"];
 +
