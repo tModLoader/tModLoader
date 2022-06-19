@@ -1716,7 +1716,7 @@
 +					default:
 +						var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
 +						if (tree != null) {
-+							tree.SetTreeFoliageSettings(tile, xoffset, ref treeFrame, ref floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
++							tree.SetTreeFoliageSettings(tile, ref xoffset, ref treeFrame, ref floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
 +							treeStyle = tile.type + ModTree.VanillaTopTextureCount;
 +							return true;
 +						}

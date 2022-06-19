@@ -163,7 +163,7 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public abstract int DropWood();
 
-		public abstract void SetTreeFoliageSettings(Tile tile, int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight);
+		public abstract void SetTreeFoliageSettings(Tile tile, ref int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight);
 
 		/// <summary>
 		/// Return the texture containing the possible tree tops that can be drawn above this tree.
