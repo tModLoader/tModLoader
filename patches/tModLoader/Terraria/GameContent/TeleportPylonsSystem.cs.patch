@@ -146,7 +146,7 @@
 +			if (info.TypeOfPylon == TeleportPylonType.Modded && ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon destinationPylon)) {
 +				 destinationPylon.ValidTeleportCheck_PostCheck(info, ref flag, ref key);
  			}
-+			PylonLoader.PostValidTeleportCheck(info, ref flag, flag2, ref key);
++			PylonLoader.PostValidTeleportCheck(info, ref flag, ref flag2, ref key);
  
 -			if (flag) {
 +			if (flag && flag2) {

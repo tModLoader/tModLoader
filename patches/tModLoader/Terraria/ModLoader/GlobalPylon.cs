@@ -91,7 +91,7 @@ namespace Terraria.ModLoader
 		/// The localization key that will be used to sent text to the player when destinationPylonValid is false.
 		/// Note that this parameter will already have a value if the method is called with destinationPylonValid being false.
 		/// </param>
-		public virtual void PostValidTeleportCheck(TeleportPylonInfo destinationPylonInfo, ref bool destinationPylonValid, bool validNearbyPylonFound, ref string errorKey) { }
+		public virtual void PostValidTeleportCheck(TeleportPylonInfo destinationPylonInfo, ref bool destinationPylonValid, ref bool validNearbyPylonFound, ref string errorKey) { }
 
 		protected sealed override void Register() => PylonLoader.AddGlobalPylon(this);
 
