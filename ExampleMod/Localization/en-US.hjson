@@ -142,6 +142,7 @@ Mods: {
 
 		MessageInfo: {
 			UnstablePylonIsOff: "That Unstable Pylon is currently inactive."
+			NearbyUnstablePylonIsOff: "The nearby Unstable Pylon is currently inactive."
 		}
 	}
 }

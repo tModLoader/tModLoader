@@ -82,16 +82,20 @@ namespace Terraria.ModLoader
 		/// met, or vice versa; to do this, change destinationPylonValid to true or false respectively (for the given example).
 		/// </summary>
 		/// <param name="destinationPylonInfo"> The pylon information for the DESTINATION pylon. </param>
+		/// <param name="nearbyPylonInfo">
+		/// The pylon information of the pylon the player in question is standing NEAR. This value is at its defaults if
+		/// validNearbyPylonFound is false, but otherwise, will give information on the nearby pylon.
+		/// </param>
 		/// <param name="destinationPylonValid">
 		/// Whether or not the normal requirements were satisfied for the DESTINATION pylon.
 		/// Set this to true if you want the teleportation request to succeed, false if not.
 		/// </param>
-		/// <param name="validNearbyPylonFound"> Whether or not a valid pylon near the pylon satisfied its normal requirements. </param>
+		/// <param name="validNearbyPylonFound"> Whether or not a valid pylon near the player satisfied its normal requirements. </param>
 		/// <param name="errorKey">
 		/// The localization key that will be used to sent text to the player when destinationPylonValid is false.
 		/// Note that this parameter will already have a value if the method is called with destinationPylonValid being false.
 		/// </param>
-		public virtual void PostValidTeleportCheck(TeleportPylonInfo destinationPylonInfo, ref bool destinationPylonValid, ref bool validNearbyPylonFound, ref string errorKey) { }
+		public virtual void PostValidTeleportCheck(TeleportPylonInfo destinationPylonInfo, TeleportPylonInfo nearbyPylonInfo, ref bool destinationPylonValid, ref bool validNearbyPylonFound, ref string errorKey) { }
 
 		protected sealed override void Register() => PylonLoader.AddGlobalPylon(this);
 

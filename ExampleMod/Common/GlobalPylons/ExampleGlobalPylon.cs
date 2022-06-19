@@ -50,7 +50,7 @@ namespace ExampleMod.Common.GlobalPylons
 			return base.ValidTeleportCheck_PreBiomeRequirements(pylonInfo, sceneData);
 		}
 
-		public override void PostValidTeleportCheck(TeleportPylonInfo destinationPylonInfo, ref bool destinationPylonValid, ref bool validNearbyPylonFound, ref string errorKey) {
+		public override void PostValidTeleportCheck(TeleportPylonInfo destinationPylonInfo, TeleportPylonInfo nearbyPylonInfo, ref bool destinationPylonValid, ref bool validNearbyPylonFound, ref string errorKey) {
 			//Since there is not an explicit hook for it (since it's too specific), what if we wanted to nullify vanilla's check to prevent accessing the Lihzahrd Temple early with a pylon?
 
 			//We just need to check that to see if the Lihzahrd Temple check is the actual error we got (not some other error) which in this case is done by checking the error key.

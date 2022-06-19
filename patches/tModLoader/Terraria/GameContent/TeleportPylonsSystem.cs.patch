@@ -121,17 +121,28 @@
  				if (!flag)
  					key = "Net.CannotTeleportToPylonBecauseThereIsDanger";
  			}
-@@ -121,8 +_,7 @@
+@@ -120,9 +_,11 @@
+ 				if (!flag)
  					key = "Net.CannotTeleportToPylonBecauseNotMeetingBiomeRequirements";
  			}
++			if (info.TypeOfPylon == TeleportPylonType.Modded && ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon destinationPylon))
++				destinationPylon.ValidTeleportCheck_DestinationPostCheck(info, ref flag, ref key);
  
 -			if (flag) {
 -				bool flag2 = false;
++			TeleportPylonInfo nearbyInfo = new TeleportPylonInfo();
 +			bool flag2 = false;
  				int num = 0;
  				for (int i = 0; i < _pylons.Count; i++) {
  					TeleportPylonInfo info2 = _pylons[i];
-@@ -153,7 +_,6 @@
+@@ -147,13 +_,13 @@
+ 						sceneMetrics2.ScanAndExportToMain(settings);
+ 						if (DoesPylonAcceptTeleportation(info2, player)) {
+ 							flag2 = true;
++							nearbyInfo = info2;
+ 							break;
+ 						}
+ 					}
  				}
  
  				if (!flag2) {
@@ -139,14 +150,14 @@
  					switch (num) {
  						default:
  							key = "Net.CannotTeleportToPylonBecausePlayerIsNotNearAPylon";
-@@ -166,9 +_,12 @@
+@@ -166,9 +_,11 @@
  							break;
  					}
  				}
-+			if (info.TypeOfPylon == TeleportPylonType.Modded && ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon destinationPylon)) {
-+				 destinationPylon.ValidTeleportCheck_PostCheck(info, ref flag, ref key);
- 			}
-+			PylonLoader.PostValidTeleportCheck(info, ref flag, ref flag2, ref key);
+-			}
++			if (info.TypeOfPylon == TeleportPylonType.Modded && ModContent.TryFind(nearbyInfo.ModName, nearbyInfo.ModPylonName, out ModPylon nearbyPylon))
++				nearbyPylon.ValidTeleportCheck_NearbyPostCheck(nearbyInfo, ref flag, ref key);
++			PylonLoader.PostValidTeleportCheck(info, nearbyInfo, ref flag, ref flag2, ref key);
  
 -			if (flag) {
 +			if (flag && flag2) {

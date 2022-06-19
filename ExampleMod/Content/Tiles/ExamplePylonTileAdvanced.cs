@@ -107,7 +107,11 @@ namespace ExampleMod.Content.Tiles
 			return true;
 		}
 
-		public override void ValidTeleportCheck_PostCheck(TeleportPylonInfo destinationPylonInfo, ref bool destinationPylonValid, ref string errorKey) {
+		//These two steps below are simply determining whether or not either side of the coin is valid, which is to say:
+		//Is the destination pylon (the pylon clicked on the map) a valid pylon, and is the pylon the player standing near (the nearby pylon)
+		//a valid pylon? If either one of these checks fail, a errorKey wil be set to a custom localization key and a message will go to the player with
+		//said text (after its been localized, of course).
+		public override void ValidTeleportCheck_DestinationPostCheck(TeleportPylonInfo destinationPylonInfo, ref bool destinationPylonValid, ref string errorKey) {
 			//If you are unfamiliar with pattern matching notation, all this is asking is:
 			//1) The Tile Entity at the given position is an AdvancedPylonTileEntity (AKA not null or something else)
 			//2) The Tile Entity's isActive value is false
@@ -115,6 +119,14 @@ namespace ExampleMod.Content.Tiles
 				//Given that both of these things are true, set the error key to our own special message (check the localization file), and make the destination value invalid (false)
 				destinationPylonValid = false;
 				errorKey = "Mods.ExampleMod.MessageInfo.UnstablePylonIsOff";
+			}
+		}
+
+		public override void ValidTeleportCheck_NearbyPostCheck(TeleportPylonInfo nearbyPylonInfo, ref bool destinationPylonValid, ref string errorKey) {
+			//The next check is determining whether or not the nearby pylon is potentially unstable, and if so, if it's not active, we also prevent teleportation.
+			if (TileEntity.ByPosition[nearbyPylonInfo.PositionInTiles] is AdvancedPylonTileEntity { isActive: false }) {
+				destinationPylonValid = false;
+				errorKey = "Mods.ExampleMod.MessageInfo.NearbyUnstablePylonIsOff";
 			}
 		}
 
@@ -196,7 +208,7 @@ namespace ExampleMod.Content.Tiles
 
 			//Depending on the whether or not the pylon is active, the color of the icon will change;
 			//otherwise, it acts as normal.
-			drawColor = entity.isActive ? Color.Green : Color.Yellow;
+			drawColor = entity.isActive ? Color.Green : Color.Red;
 
 			bool isMouseOver = context.Draw(
 				                          mapIcon.Value,

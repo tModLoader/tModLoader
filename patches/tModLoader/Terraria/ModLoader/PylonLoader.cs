@@ -81,9 +81,9 @@ namespace Terraria.ModLoader
 			return returnValue;
 		}
 
-		public static void PostValidTeleportCheck(TeleportPylonInfo destinationPylonInfo, ref bool destinationPylonValid, ref bool validNearbyPylonFound, ref string errorKey) {
+		public static void PostValidTeleportCheck(TeleportPylonInfo destinationPylonInfo, TeleportPylonInfo nearbyPylonInfo, ref bool destinationPylonValid, ref bool validNearbyPylonFound, ref string errorKey) {
 			foreach (GlobalPylon globalPylon in globalPylons) {
-				globalPylon.PostValidTeleportCheck(destinationPylonInfo, ref destinationPylonValid, ref validNearbyPylonFound, ref errorKey);
+				globalPylon.PostValidTeleportCheck(destinationPylonInfo, nearbyPylonInfo, ref destinationPylonValid, ref validNearbyPylonFound, ref errorKey);
 			}
 		}
 	}
