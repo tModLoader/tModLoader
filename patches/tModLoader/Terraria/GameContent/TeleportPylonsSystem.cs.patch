@@ -121,27 +121,38 @@
  				if (!flag)
  					key = "Net.CannotTeleportToPylonBecauseThereIsDanger";
  			}
-@@ -121,8 +_,8 @@
+@@ -121,8 +_,7 @@
  					key = "Net.CannotTeleportToPylonBecauseNotMeetingBiomeRequirements";
  			}
  
-+			bool flag2 = false;
- 			if (flag) {
+-			if (flag) {
 -				bool flag2 = false;
++			bool flag2 = false;
  				int num = 0;
  				for (int i = 0; i < _pylons.Count; i++) {
  					TeleportPylonInfo info2 = _pylons[i];
-@@ -167,6 +_,10 @@
+@@ -153,7 +_,6 @@
+ 				}
+ 
+ 				if (!flag2) {
+-					flag = false;
+ 					switch (num) {
+ 						default:
+ 							key = "Net.CannotTeleportToPylonBecausePlayerIsNotNearAPylon";
+@@ -166,9 +_,12 @@
+ 							break;
  					}
  				}
- 			}
 +			if (info.TypeOfPylon == TeleportPylonType.Modded && ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon destinationPylon)) {
 +				 destinationPylon.ValidTeleportCheck_PostCheck(info, ref flag, ref key);
-+			}
+ 			}
 +			PylonLoader.PostValidTeleportCheck(info, ref flag, flag2, ref key);
  
- 			if (flag) {
+-			if (flag) {
++			if (flag && flag2) {
  				Vector2 newPos = info.PositionInTiles.ToWorldCoordinates() - new Vector2(0f, player.HeightOffsetBoost);
+ 				int num2 = 9;
+ 				int typeOfPylon = (int)info.TypeOfPylon;
 @@ -185,9 +_,14 @@
  			}
  		}
