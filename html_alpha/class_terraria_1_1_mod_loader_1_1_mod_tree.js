@@ -9,7 +9,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_tree =
     [ "GrowthFXGore", "class_terraria_1_1_mod_loader_1_1_mod_tree.html#aef79b722138aa6bfbd3452b4cf0a92b4", null ],
     [ "SaplingGrowthType", "class_terraria_1_1_mod_loader_1_1_mod_tree.html#a4b4d3e504c4840664781826435b511bb", null ],
     [ "SetStaticDefaults", "class_terraria_1_1_mod_loader_1_1_mod_tree.html#ad3a9af64e2ab07bf20be867804e9ce87", null ],
-    [ "SetTreeFoliageSettings", "class_terraria_1_1_mod_loader_1_1_mod_tree.html#a18774986873b8255bd4d57759d5071c0", null ],
+    [ "SetTreeFoliageSettings", "class_terraria_1_1_mod_loader_1_1_mod_tree.html#ae7996a189b6f8dcc787b80801b71eda7", null ],
     [ "VanillaStyleCount", "class_terraria_1_1_mod_loader_1_1_mod_tree.html#a3e3f0f4086f60836035aa3c9f02b1cdc", null ],
     [ "VanillaTopTextureCount", "class_terraria_1_1_mod_loader_1_1_mod_tree.html#a151b0a65759c8c422c67fef7a30b066a", null ],
     [ "GrowsOnTileId", "class_terraria_1_1_mod_loader_1_1_mod_tree.html#a480d158e2af9f809e4540153eaf97e2c", null ],
