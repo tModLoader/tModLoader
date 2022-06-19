@@ -280,7 +280,11 @@ namespace Terraria.ModLoader.UI
 				var modFile = _builtMod.modFile;
 				var bp = _builtMod.properties;
 
-				PublishModInner(modFile, bp, Path.Combine(_mod, "icon.png"));
+				string icon = Path.Combine(_mod, "icon_workshop.png");
+				if (!File.Exists(icon))
+					icon = Path.Combine(_mod, "icon.png");
+
+				PublishModInner(modFile, bp, icon);
 			}
 			catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);
@@ -317,7 +321,11 @@ namespace Terraria.ModLoader.UI
 				using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
 					localMod = new LocalMod(modFile);
 
-				PublishModInner(modFile, localMod.properties, Path.Combine(ModCompile.ModSourcePath, modName, "icon.png"), true);
+				string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
+				if (!File.Exists(icon))
+					icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
+
+				PublishModInner(modFile, localMod.properties, icon, true);
 			}
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
@@ -334,6 +342,20 @@ namespace Terraria.ModLoader.UI
 			if (bp.buildVersion != modFile.TModLoaderVersion)
 				throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
 
+			var changeLogFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "changelog.txt");
+			string changeLog;
+			if (File.Exists(changeLogFile))
+				changeLog = File.ReadAllText(changeLogFile);
+			else
+				changeLog = "";
+
+			var workshopDescFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "description_workshop.txt");
+			string workshopDesc;
+			if (File.Exists(workshopDescFile))
+				workshopDesc = File.ReadAllText(workshopDescFile);
+			else
+				workshopDesc = bp.description;
+
 			var values = new NameValueCollection
 			{
 				{ "displayname", bp.displayName },
@@ -342,12 +364,13 @@ namespace Terraria.ModLoader.UI
 				{ "version", $"v{bp.version}" },
 				{ "author", bp.author },
 				{ "homepage", bp.homepage },
-				{ "description", bp.description },
+				{ "description", workshopDesc },
 				{ "iconpath", iconPath },
 				{ "sourcesfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
 				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
 				{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
 				{ "modside", bp.side.ToFriendlyString() },
+				{ "changelog" , changeLog }
 			};
 
 			if (string.IsNullOrWhiteSpace(values["author"]))

@@ -124,6 +124,19 @@
  					num = 1f - num2 / ((float)Main.screenWidth * 1.5f);
  				}
  
+@@ -95,6 +_,12 @@
+ 						break;
+ 					case SoundType.Ambient:
+ 						num *= Main.ambientVolume;
++
++						// Added by TML to mimic the behavior of the LegacySoundPlayer code.
++						if (Main.gameInactive) {
++							num = 0f;
++						}
++
+ 						break;
+ 					case SoundType.Music:
+ 						num *= Main.musicVolume;
 @@ -104,6 +_,19 @@
  				num = MathHelper.Clamp(num, 0f, 1f);
  				Sound.Volume = num;

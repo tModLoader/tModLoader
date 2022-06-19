@@ -72,9 +72,15 @@ namespace Terraria.Social.Steam
 				workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{existing.PublishId}");
 
 				// This eliminates uploaded mod source files that occured prior to the fix of #2263
-				if (Directory.Exists(Path.Combine(workshopFolderPath, "bin")))
+				if (Directory.Exists(Path.Combine(workshopFolderPath, "bin"))) {
 					foreach (var sourceFile in Directory.EnumerateFiles(workshopFolderPath))
 						File.Delete(sourceFile);
+
+					foreach (var sourceFolder in Directory.EnumerateDirectories(workshopFolderPath)) {
+						if (!sourceFolder.Contains("2022.0"))
+							Directory.Delete(sourceFolder, true);
+					}
+				}
 
 				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
@@ -142,7 +148,7 @@ namespace Terraria.Social.Steam
 
 				_publisherInstances.Add(modPublisherInstance);
 
-				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList, buildData, currPublishID);
+				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList, buildData, currPublishID, settings.ChangeNotes);
 
 				return true;
 			}
@@ -207,8 +213,15 @@ namespace Terraria.Social.Steam
 			using (sModFile.Open())
 				sMod = new LocalMod(sModFile);
 
+			string workshopDescFile = Path.Combine(modFolder, "description_workshop.txt");
+			string workshopDesc;
+			if (!File.Exists(workshopDescFile))
+				workshopDesc = newMod.properties.description;
+			else
+				workshopDesc = File.ReadAllText(workshopDescFile);
+
 			string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version {sMod.properties.version} built for tModLoader v{sMod.properties.buildVersion}[/quote]" +
-				$"{sMod.properties.description}";
+				$"{workshopDesc}";
 			Console.WriteLine($"Built Mod Version is: {newMod.properties.version}. tMod Version is: {BuildInfo.tMLVersion}");
 
 			// Make the publish.vdf file

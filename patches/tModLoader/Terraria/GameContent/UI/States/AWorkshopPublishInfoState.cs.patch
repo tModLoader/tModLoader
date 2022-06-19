@@ -109,6 +109,16 @@
  			uIText.IsWrapped = true;
  			uISlicedImage.Append(uIText);
  			_descriptionText = uIText;
+@@ -625,7 +_,8 @@
+ 				UsedTags = (from x in _tagOptions
+ 							where x.IsSelected
+ 							select x.OptionValue).ToArray(),
+-				PreviewImagePath = _previewImagePath
++				PreviewImagePath = _previewImagePath,
++				ChangeNotes = (this as WorkshopPublishInfoStateForMods).changeNotes,
+ 			};
+ 		}
+ 
 @@ -634,6 +_,7 @@
  				new ExtensionFilter("Image files", "png", "jpg", "jpeg")
  			};

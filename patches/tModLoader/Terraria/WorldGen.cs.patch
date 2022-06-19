@@ -115,6 +115,76 @@
  			if (Main.menuMode == 10 || Main.menuMode == 888)
  				Main.menuMode = 6;
  
+@@ -2340,12 +_,19 @@
+ 		}
+ 
+ 		public static void JustQuit() {
++			/*
+ 			try {
+ 				SoundEngine.PlaySound(34, -1, -1, 0);
+ 				SoundEngine.PlaySound(35, -1, -1, 0);
+ 			}
+ 			catch {
+ 			}
++			*/
++			
++			// Properly stop waterfall/lava(fall) sounds
++			Main.ambientWaterfallStrength = 0f;
++			Main.ambientLavafallStrength = 0f;
++			Main.ambientLavaStrength = 0f;
+ 
+ 			Main.invasionProgress = -1;
+ 			Main.invasionProgressDisplayLeft = 0;
+@@ -2354,6 +_,14 @@
+ 			Main.menuMode = 10;
+ 			Main.gameMenu = true;
+ 			SoundEngine.StopTrackedSounds();
++
++			try {
++				// This has been moved here out of WorldGen.SaveAndQuit, so that the "menu close" sound plays AFTER all sounds have stopped
++				SoundEngine.PlaySound(11);
++			}
++			catch {
++			}
++
+ 			CaptureInterface.ResetFocus();
+ 			Main.ActivePlayerFileData.StopPlayTimer();
+ 			Main.fastForwardTime = false;
+@@ -2371,12 +_,15 @@
+ 
+ 		public static void SaveAndQuitCallBack(object threadContext) {
+ 			int netMode = Main.netMode;
++
++			/*
+ 			try {
+ 				SoundEngine.PlaySound(34, -1, -1, 0);
+ 				SoundEngine.PlaySound(35, -1, -1, 0);
+ 			}
+ 			catch {
+ 			}
++			*/
+ 
+ 			if (netMode == 0)
+ 				WorldFile.CacheSaveTime();
+@@ -2388,6 +_,18 @@
+ 			Main.menuMode = 10;
+ 			Main.gameMenu = true;
+ 			SoundEngine.StopTrackedSounds();
++
++			try {
++				// Delay playing the "menu close" sound until AFTER all sounds have stopped
++				SoundEngine.PlaySound(11);
++			}
++			catch {
++			}
++			
++			// Properly stop waterfall/lavafall sounds
++			Main.ambientWaterfallStrength = 0f;
++			Main.ambientLavafallStrength = 0f;
++			
+ 			CaptureInterface.ResetFocus();
+ 			Main.ActivePlayerFileData.StopPlayTimer();
+ 			Player.SavePlayer(Main.ActivePlayerFileData);
 @@ -2402,6 +_,11 @@
  				Main.netMode = 0;
  			}
@@ -127,6 +197,17 @@
  			Main.fastForwardTime = false;
  			Main.UpdateTimeRate();
  			Main.menuMode = 0;
+@@ -2410,7 +_,10 @@
+ 		}
+ 
+ 		public static void SaveAndQuit(Action callback = null) {
++			//TML: Moved to WorldGen.JustQuit(), see the comment there.
++			/*
+ 			SoundEngine.PlaySound(11);
++			*/
+ 			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
+ 		}
+ 
 @@ -2484,13 +_,20 @@
  					}
  
@@ -1493,7 +1574,8 @@
  
  			fail = KillWall_CheckFailure(fail, tile);
 +			WallLoader.KillWall(i, j, tile.wall, ref fail);
- 			KillWall_PlaySounds(i, j, tile);
+-			KillWall_PlaySounds(i, j, tile);
++			KillWall_PlaySounds(i, j, tile, fail);
  			int num = 10;
  			if (fail)
  				num = 3;
@@ -1511,11 +1593,13 @@
  				TileFrame(i, j);
  		}
  
-@@ -38346,6 +_,9 @@
+@@ -38345,7 +_,10 @@
+ 			return fail;
  		}
  
- 		private static void KillWall_PlaySounds(int i, int j, Tile tileCache) {
-+			if (!WallLoader.KillSound(i,j,tileCache.wall))
+-		private static void KillWall_PlaySounds(int i, int j, Tile tileCache) {
++		private static void KillWall_PlaySounds(int i, int j, Tile tileCache, bool fail = false) {
++			if (!WallLoader.KillSound(i,j,tileCache.wall,fail))
 +				return;
 +
  			if (tileCache.wall == 241 || (tileCache.wall >= 88 && tileCache.wall <= 93) || tileCache.wall == 21 || tileCache.wall == 186 || tileCache.wall == 136 || tileCache.wall == 137 || tileCache.wall == 168 || tileCache.wall == 169 || tileCache.wall == 172 || tileCache.wall == 226 || tileCache.wall == 227 || tileCache.wall == 242 || tileCache.wall == 243)
@@ -1632,7 +1716,7 @@
 +					default:
 +						var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
 +						if (tree != null) {
-+							tree.SetTreeFoliageSettings(tile, xoffset, ref treeFrame, ref floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
++							tree.SetTreeFoliageSettings(tile, ref xoffset, ref treeFrame, ref floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
 +							treeStyle = tile.type + ModTree.VanillaTopTextureCount;
 +							return true;
 +						}
@@ -1718,7 +1802,7 @@
  
  			int type = tileCache.type;
 +
-+			if(!TileLoader.KillSound(i,j,type))
++			if(!TileLoader.KillSound(i,j,type,fail))
 +				return;
 +
  			if (type == 127 || type == 623) {

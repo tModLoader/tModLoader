@@ -56,11 +56,17 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addTile(Type);
 		}
 
-		public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].TileFrameX / 36);
+		public override ushort GetMapOption(int i, int j) {
+			return (ushort)(Main.tile[i, j].TileFrameX / 36);
+		}
 
-		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) => true;
+		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
+			return true;
+		}
 
-		public override bool IsLockedChest(int i, int j) => Main.tile[i, j].TileFrameX / 36 == 1;
+		public override bool IsLockedChest(int i, int j) {
+			return Main.tile[i, j].TileFrameX / 36 == 1;
+		}
 
 		public override bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) {
 			if (Main.dayTime) {
@@ -119,17 +125,14 @@ namespace ExampleMod.Content.Tiles.Furniture
 				top--;
 			}
 
-			if (player.sign >= 0) {
-				SoundEngine.PlaySound(SoundID.MenuClose);
-				player.sign = -1;
-				Main.editSign = false;
-				Main.npcChatText = "";
-			}
-
+			player.CloseSign();
+			player.SetTalkNPC(-1);
+			Main.npcChatCornerItem = 0;
+			Main.npcChatText = "";
 			if (Main.editChest) {
 				SoundEngine.PlaySound(SoundID.MenuTick);
 				Main.editChest = false;
-				Main.npcChatText = "";
+				Main.npcChatText = string.Empty;
 			}
 
 			if (player.editedChestName) {
@@ -137,7 +140,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 				player.editedChestName = false;
 			}
 
-			bool isLocked = IsLockedChest(left, top);
+			bool isLocked = Chest.IsLocked(left, top);
 			if (Main.netMode == NetmodeID.MultiplayerClient && !isLocked) {
 				if (left == player.chestX && top == player.chestY && player.chest >= 0) {
 					player.chest = -1;
@@ -169,11 +172,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 						}
 						else {
 							SoundEngine.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
-							player.chest = chest;
-							Main.playerInventory = true;
-							Main.recBigList = false;
-							player.chestX = left;
-							player.chestY = top;
+							player.OpenChest(left, top, chest);
 						}
 
 						Recipe.FindRecipes();
@@ -198,12 +197,14 @@ namespace ExampleMod.Content.Tiles.Furniture
 			}
 
 			int chest = Chest.FindChest(left, top);
+			player.cursorItemIconID = -1;
 			if (chest < 0) {
 				player.cursorItemIconText = Language.GetTextValue("LegacyChestType.0");
 			}
 			else {
-				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : "Example Chest";
-				if (player.cursorItemIconText == "Example Chest") {
+				string defaultName = TileLoader.ContainerName(tile.TileType); // This gets the ContainerName text for the currently selected language
+				player.cursorItemIconText = Main.chest[chest].name.Length > 0 ? Main.chest[chest].name : defaultName;
+				if (player.cursorItemIconText == defaultName) {
 					player.cursorItemIconID = ModContent.ItemType<Items.Placeable.Furniture.ExampleChest>();
 					if (Main.tile[left, top].TileFrameX / 36 == 1) {
 						player.cursorItemIconID = ModContent.ItemType<ExampleChestKey>();

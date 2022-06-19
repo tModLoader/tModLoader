@@ -52,7 +52,8 @@ public class Program {
 		switch (update) {
 			case ProgressUpdate.Progress(int Pass, int CurrentFile, int FileCount):
 				string bar = new string('#', CurrentFile* BarWidth / FileCount).PadRight(BarWidth, '-');
-				Write($"\r[{bar}] Pass {Pass}, {CurrentFile}/{FileCount}");
+				var s = $"[{bar}] Pass {Pass}, {CurrentFile}/{FileCount}";
+				Write($"\r{s,-ConsoleWidth}");
 				break;
 			default:
 				WriteLine($"\r{update,-ConsoleWidth}");

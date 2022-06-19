@@ -10,14 +10,19 @@ using static tModPorter.Rewriters.SimpleSyntaxFactory;
 
 namespace tModPorter.Rewriters;
 
-public class InvokeRewriter : BaseRewriter {
-	public delegate SyntaxNode RewriteInvoke(InvokeRewriter rw, InvocationExpressionSyntax invoke, SyntaxToken methodName);
+public partial class InvokeRewriter : BaseRewriter
+{
+	public delegate SyntaxNode RewriteInvoke(InvokeRewriter rw, InvocationExpressionSyntax invoke, NameSyntax methodName);
 
 	private static List<(string type, string name, bool isStatic, RewriteInvoke handler)> handlers = new();
 
-	public static void RefactorInstanceMethodCall(string type, string name, RewriteInvoke handler) => handlers.Add((type, name, isStatic: false, handler));
 
+	public static void RefactorInstanceMethodCall(string type, string name, RewriteInvoke handler) => handlers.Add((type, name, isStatic: false, handler));
 	public static void RefactorStaticMethodCall(string type, string name, RewriteInvoke handler) => handlers.Add((type, name, isStatic: true, handler));
+
+	private static RewriteInvoke ToApplicator(AddComment comment) => (_, invoke, _) => invoke.ReplaceNode(invoke.ArgumentList, comment.Apply(invoke.ArgumentList));
+	public static void RefactorInstanceMethodCall(string type, string name, AddComment comment) => RefactorInstanceMethodCall(type, name, ToApplicator(comment));
+	public static void RefactorStaticMethodCall(string type, string name, AddComment comment) => RefactorStaticMethodCall(type, name, ToApplicator(comment));
 
 	public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node) {
 		if (base.VisitInvocationExpression(node) is SyntaxNode newNode && newNode != node) // fix arguments and expression first
@@ -45,7 +50,7 @@ public class InvokeRewriter : BaseRewriter {
 			if (name != nameToken.Text || !targetType.InheritsFrom(type))
 				continue;
 
-			return handler(this, node, nameToken);
+			return handler(this, node, nameSyntax);
 		}
 
 		return node;
@@ -73,23 +78,16 @@ public class InvokeRewriter : BaseRewriter {
 			if (isStatic ? !GetStaticallyLocalTypes().Any(t => t.InheritsFrom(type)) : enclosingMethod.IsStatic || !enclosingType.InheritsFrom(type))
 				continue;
 
-			return handler(this, node, nameToken);
+			return handler(this, node, nameSyntax);
 		}
 
 		return node;
 	}
 
 	#region Handlers
-	public static RewriteInvoke AddComment(string comment) => (_, invoke, methodName) => {
-		if (methodName.TrailingTrivia.Any(SyntaxKind.MultiLineCommentTrivia))
-			return invoke;
-
-		return invoke.ReplaceToken(methodName, methodName.WithBlockComment(comment));
-	};
-
 	private static ExpressionSyntax ConvertInvokeToMemberReference(InvocationExpressionSyntax invoke, string memberName) =>
 		invoke.Expression switch {
-			MemberAccessExpressionSyntax memberAccess => SimpleMemberAccessExpression(memberAccess.Expression, memberName).WithTriviaFrom(memberAccess),
+			MemberAccessExpressionSyntax memberAccess => MemberAccessExpression(memberAccess.Expression, memberName).WithTriviaFrom(memberAccess),
 			IdentifierNameSyntax identifierName => IdentifierName(memberName).WithTriviaFrom(identifierName),
 			_ => throw new Exception($"Cannot convert {invoke.Expression.GetType()} to member access")
 		};
@@ -101,29 +99,29 @@ public class InvokeRewriter : BaseRewriter {
 
 		ExpressionSyntax constantExpression = null;
 		if (constantType != null) {
-			constantExpression = SimpleMemberAccessExpression(IdentifierName(rw.UseTypeName(constantType)), constantName);
+			constantExpression = MemberAccessExpression(rw.UseType(constantType), constantName);
 		}
 
 		switch (invoke.ArgumentList.Arguments.Count) {
 			case 0:
 				var result = ConvertInvokeToMemberReference(invoke, propName);
 				if (constantType != null)
-					result = Parens(SimpleBinaryExpression(SyntaxKind.EqualsExpression, result, constantExpression));
+					result = Parens(SimpleSyntaxFactory.BinaryExpression(SyntaxKind.EqualsExpression, result, constantExpression));
 
 				return result.WithTriviaFrom(invoke);
 
 			case 1:
 				var arg = invoke.ArgumentList.Arguments[0].Expression;
 				if (constantType != null) {
-					if (rw.model.GetOperation(arg) is ILiteralOperation { ConstantValue: { Value: true } }) {
+					if (rw.model.GetOperation(arg) is ILiteralOperation { ConstantValue.Value: true }) {
 						invoke = invoke.ReplaceNode(arg, constantExpression);
 					}
 					else {
-						return AddComment($"Suggestion: {propName} = ...")(rw, invoke, methodName);
+						return invoke.ReplaceNode(methodName, methodName.WithBlockComment($"Suggestion: {propName} = ..."));
 					}
 				}
 
-				return SimpleAssignmentExpression(
+				return AssignmentExpression(
 					ConvertInvokeToMemberReference(invoke, propName),
 					invoke.ArgumentList.Arguments[0].Expression
 				).WithTriviaFrom(invoke);
@@ -141,14 +139,103 @@ public class InvokeRewriter : BaseRewriter {
 	};
 
 	public static RewriteInvoke ComparisonFunctionToPropertyEquality(string propName) => (_, invoke, methodName) => {
-		return invoke;
+		return invoke; // TODO
 	};
 
 	public static RewriteInvoke ToFindTypeCall(string type) => (rw, invoke, methodName) => {
-		// TODO: we should replace the entire NameSyntax with a GenericName, to avoid breaking the tree, rather than making an invalid IdentifierNameSyntax
-		// might be a problem for recursive calls
-		invoke = invoke.ReplaceToken(methodName, methodName.WithText($"Find<{rw.UseTypeName(type)}>"));
-		return SimpleMemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
+		if (methodName is not IdentifierNameSyntax nameSyntax)
+			return invoke;
+
+		invoke = invoke.ReplaceNode(nameSyntax, GenericName("Find", rw.UseType(type)));
+		return MemberAccessExpression(invoke.WithoutTrivia(), "Type").WithTriviaFrom(invoke);
+	};
+
+	public static RewriteInvoke ToStaticMethodCall(string onType, string newName, bool targetBecomesFirstArg = false) => (rw, invoke, _) => {
+		var targetExpr = invoke.Expression switch {
+			MemberAccessExpressionSyntax memberAccess => memberAccess.Expression,
+			NameSyntax _ => ThisExpression(),
+			_ => throw new ArgumentException("Strange invoke target")
+		};
+
+		var args = invoke.ArgumentList;
+		if (targetBecomesFirstArg) {
+			args = ArgumentList(new[] { targetExpr.WithoutTrivia() }).Concat(args);
+		}
+		else if (SuspectSideEffects(invoke.Expression, out var concern)) {
+			invoke = invoke.WithLeadingTrivia(invoke.GetLeadingTrivia().Add(Comment($"/* {concern} */")));
+		}
+
+		var member = MemberAccessExpression(rw.UseType(onType), newName);
+		return InvocationExpression(member, args).WithTriviaFrom(invoke);
+	};
+
+	public static RewriteInvoke ConvertAddEquipTexture => (rw, invoke, methodName) => {
+		var paramOps = invoke.ArgumentList.Arguments.Select(arg => rw.model.GetOperation(arg.Expression)).ToArray();
+		var method = rw.model.Compilation.GetTypeByMetadataName("Terraria.ModLoader.EquipLoader").LookupMember<IMethodSymbol>("AddEquipTexture");
+		if (method == null)
+			return invoke;
+
+		invoke = (InvocationExpressionSyntax)ToStaticMethodCall(method.ContainingType.ToString(), method.Name, targetBecomesFirstArg: true)(rw, invoke, methodName);
+		if (paramOps.Any(op => op == null || op is IInvalidOperation) || paramOps.Length < 4)
+			return invoke;
+
+		var args = invoke.ArgumentList.Arguments;
+		int offset = 0;
+		ExpressionSyntax equipTexture = null;
+		if (paramOps[2].Type.ToString() == "Terraria.ModLoader.EquipType") {
+			offset++;
+			equipTexture = args[1].Expression;
+		}
+
+		static ExpressionSyntax ReplaceNullLiteral(ExpressionSyntax expr) => expr.IsKind(SyntaxKind.NullLiteralExpression) ? null : expr;
+
+		// arg map (ModItem variant)
+		// 0 -> 0 (mod)
+		// 1 -> 3 (item)
+		// 2 -> 2 (type)
+		// 3 -> 4 (name)
+		// 4 -> 1 (texture)
+		// optional overload 1 -> 5 (equipTexture)
+		var newArgs = new ExpressionSyntax[6] {
+			args[0].Expression,			// mod
+			args[offset+4].Expression,	// texture
+			args[offset+2].Expression,	// type
+			ReplaceNullLiteral(args[offset+1].Expression),	// item
+			ReplaceNullLiteral(args[offset+3].Expression),	// name
+			equipTexture
+		};
+
+		if (paramOps.Length > offset + 4)
+			invoke = invoke.WithBlockComment("Note: armTexture and femaleTexture now part of new spritesheet. https://github.com/tModLoader/tModLoader/wiki/Armor-Texture-Migration-Guide");
+
+		return invoke.WithArgumentList(ArgumentList(method, newArgs).WithTriviaFrom(invoke.ArgumentList));
+	};
+
+	public static RewriteInvoke ToTryGet(string newName) => (rw, invoke, methodName) => {
+		var op = rw.model.GetOperation(invoke);
+
+		ExpressionSyntax outExpr;
+		if (invoke.Parent is AssignmentExpressionSyntax assignmentExpr && assignmentExpr.Right == invoke) {
+			outExpr = assignmentExpr.Left.WithoutLeadingTrivia().TrimTrailingSpace();
+			rw.RegisterAction(assignmentExpr, n => invoke.WithTriviaFrom(n));
+		}
+		else if (invoke.Parent is EqualsValueClauseSyntax { Parent: VariableDeclaratorSyntax {
+				Identifier: var varIdentifier, Parent: VariableDeclarationSyntax { Variables.Count: 1, Type: var varType, Parent: LocalDeclarationStatementSyntax localDecl } } }) {
+
+			outExpr = DeclarationExpression(varType.WithoutLeadingTrivia(), SingleVariableDesignation(varIdentifier).TrimTrailingSpace());
+			rw.RegisterAction(localDecl, n => ExpressionStatement(invoke).WithTriviaFrom(n));
+		}
+		else {
+			outExpr = IdentifierName("_");
+		}
+
+		invoke = invoke.ReplaceNode(methodName, IdentifierName(newName).WithTriviaFrom(methodName));
+
+		invoke = invoke.WithArgumentList(
+			invoke.ArgumentList.Concat(
+				ArgumentList(new[] { Argument(null, TokenSpace(SyntaxKind.OutKeyword), outExpr) })));
+
+		return invoke;
 	};
 	#endregion
 }

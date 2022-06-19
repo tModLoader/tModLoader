@@ -13,6 +13,15 @@ public abstract class FindTypeTest : Mod
 		int h = mod.TileEntityType("TileEntityClass");
 		int i = mod.TileType("TileClass");
 		int j = mod.WallType("WallClass");
+
+		int k = mod.GetGoreSlot("Gores/GoreTextureOrClass");
+		int l = ModGore.GetGoreSlot("ModName/Gores/GoreTextureOrClass");
+#if COMPILE_ERROR
+		int m = mod.GetGoreSlot("DoesNotStartWith'Gores/'String");
+		int n = ModGore.GetGoreSlot("DoesNotStartWith'ModName/Gores/'String");
+
+		int o = mod.GetGoreSlot<GoreClass>();
+#endif
 	}
 
 	int ViaIdentifier() => BuffType("BuffClass");
