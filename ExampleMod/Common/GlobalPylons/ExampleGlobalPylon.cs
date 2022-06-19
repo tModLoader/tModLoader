@@ -34,6 +34,16 @@ namespace ExampleMod.Common.GlobalPylons
 			return base.PreDrawMapIcon(ref context, ref mouseOverText, ref pylonInfo, ref isNearPylon, ref drawColor, ref deselectedScale, ref selectedScale);
 		}
 
+		public override bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType) {
+			//What if we want to override the functionality for pylon placement?
+			//For example, let's always allow the players to place universal pylons, even if they already exist in the world:
+			if (pylonType == TeleportPylonType.Victory) {
+				return true;
+			}
+
+			return base.PreCanPlacePylon(x, y, tileType, pylonType);
+		}
+
 		public override bool? ValidTeleportCheck_PreBiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData) {
 			//What if we want to do something based on the type of pylon in particular? Well all we have to do is check the pylon's type!
 			//Let's swap around the biome requirements for the Jungle Pylon and Snow Pylon, for example:

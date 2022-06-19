@@ -22,10 +22,12 @@
  				return false;
  
  			return true;
-@@ -147,6 +_,10 @@
+@@ -147,6 +_,12 @@
  		}
  
  		public static int PlacementPreviewHook_CheckIfCanPlace(int x, int y, int type = 597, int style = 0, int direction = 1, int alternate = 0) {
++			if (PylonLoader.PreCanPlacePylon(x, y, type, type >= TileID.Count ? TeleportPylonType.Modded : GetPylonTypeFromPylonTileStyle(style)) is { } value)
++				return value ? 0 : 1;
 +			if (type >= TileID.Count) {
 +				ModPylon pylon = TileLoader.GetTile(type) as ModPylon;
 +				return (pylon?.CanPlacePylon() ?? false) ? 0 : 1;

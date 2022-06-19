@@ -27,6 +27,20 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Called right before both modded and vanilla pylons determine whether or not they can be placed. Returning false will prevent vanilla checks from taking place,
+		/// forcefully preventing the pylon from being placed. Returning null will enact vanilla behavior, and returning true will make the check forcefully succeed,
+		/// regardless of vanilla behavior. Returns null by default.
+		/// </summary>
+		/// <param name="x"> The current X position of where the tile in question is asking it can be placed. </param>
+		/// <param name="y"> The current Y position of where the tile in question is asking it can be placed. </param>
+		/// <param name="tileType"> The actual type of tile currently asking if it can be placed. </param>
+		/// <param name="pylonType"> The type of pylon belonging to this tile. </param>
+		/// <returns></returns>
+		public virtual bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType) {
+			return null;
+		}
+
+		/// <summary>
 		/// Called before Step 1 of the ValidTeleportCheck process. This is the first vanilla check that is called when
 		/// the player attempts to teleport FROM or TO a Pylon. This method is called before both vanilla
 		/// and modded pylons check their NPC requirements, and returning false will prevent those checks from taking place,

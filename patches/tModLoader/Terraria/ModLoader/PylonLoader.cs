@@ -27,6 +27,24 @@ namespace Terraria.ModLoader
 			return returnValue;
 		}
 
+		public static bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType) {
+			bool? returnValue = null;
+
+			foreach (GlobalPylon globalPylon in globalPylons) {
+				bool? shouldSucceed = globalPylon.PreCanPlacePylon(x, y, tileType, pylonType);
+
+				if (shouldSucceed.HasValue) {
+					if (!shouldSucceed.Value) {
+						return false;
+					}
+
+					returnValue = true;
+				}
+			}
+
+			return returnValue;
+		}
+
 		public static bool? ValidTeleportCheck_PreNPCCount(TeleportPylonInfo pylonInfo, ref int defaultNecessaryNPCCount) {
 			bool? returnValue = null;
 
