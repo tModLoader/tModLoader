@@ -75,8 +75,8 @@ namespace Terraria.ModLoader
 		/// Note that it's important you put the right checks in the right ValidTeleportCheck step,
 		/// as whatever one returns false (if any) will determine the error message sent to the player.
 		/// </remarks>
-		/// <param name="nearbyPylonInfo"> The internal information pertaining to the current pylon being teleported FROM. </param>
-		public virtual bool ValidTeleportCheck_AnyDanger(TeleportPylonInfo nearbyPylonInfo) {
+		/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported TO. </param>
+		public virtual bool ValidTeleportCheck_AnyDanger(TeleportPylonInfo pylonInfo) {
 			return !NPC.AnyDanger(false, true);
 		}
 
@@ -108,17 +108,18 @@ namespace Terraria.ModLoader
 		public virtual void ValidTeleportCheck_PostCheck(TeleportPylonInfo destinationPylonInfo, ref bool destinationPylonValid, ref string errorKey) { }
 
 		/// <summary>
-		/// Called when the map is visible, in order to draw the passed in Pylon on the map, and returns whether or not the mouse is hovering over the icon.
-		/// In order to draw on the map, you must use <seealso cref="MapOverlayDrawContext"/>'s Draw Method. By default, doesn't draw anything and returns false.
+		/// Called when the map is visible, in order to draw the passed in Pylon on the map.
+		/// In order to draw on the map, you must use <seealso cref="MapOverlayDrawContext"/>'s Draw Method. By default, doesn't draw anything.
 		/// </summary>
 		/// <param name="context"> The current map context on which you can draw. </param>
 		/// <param name="mouseOverText"> The text that will overlay on the mouse when the icon is being hovered over. </param>
 		/// <param name="pylonInfo"> The pylon that is currently needing its icon to be drawn. </param>
+		/// <param name="isNearPylon"> Whether or not the player is currently near a pylon. </param>
 		/// <param name="drawColor"> The draw color of the icon. This is bright white when the player is near a Pylon, but gray and translucent otherwise. </param>
 		/// <param name="deselectedScale"> The scale of the icon if it is NOT currently being hovered over. In vanilla, this is 1f, or 100%. </param>
 		/// <param name="selectedScale"> The scale of the icon if it IS currently being over. In vanilla, this is 2f, or 200%. </param>
-		public virtual bool DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, Color drawColor, float deselectedScale, float selectedScale) {
-			return false;
+		public virtual void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
+			
 		}
 	}
 }

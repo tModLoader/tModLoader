@@ -1,6 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/TeleportPylonsSystem.cs
 +++ src/tModLoader/Terraria/GameContent/TeleportPylonsSystem.cs
-@@ -5,7 +_,9 @@
+@@ -1,11 +_,15 @@
+ using Microsoft.Xna.Framework;
++using System;
+ using System.Collections.Generic;
+ using System.Linq;
++using System.Reflection;
+ using Terraria.Chat;
  using Terraria.DataStructures;
  using Terraria.GameContent.NetModules;
  using Terraria.GameContent.Tile_Entities;
@@ -10,15 +16,24 @@
  using Terraria.Net;
  
  namespace Terraria.GameContent
-@@ -16,7 +_,7 @@
+@@ -14,11 +_,15 @@
+ 	{
+ 		private List<TeleportPylonInfo> _pylons = new List<TeleportPylonInfo>();
  		private List<TeleportPylonInfo> _pylonsOld = new List<TeleportPylonInfo>();
++		private List<TeleportPylonInfo> _vanillaPylons = new List<TeleportPylonInfo>();
++		private List<TeleportPylonInfo> _moddedPylons = new List<TeleportPylonInfo>();
  		private int _cooldownForUpdatingPylonsList;
  		private const int CooldownTimePerPylonsListUpdate = int.MaxValue;
 -		private SceneMetrics _sceneMetrics = new SceneMetrics();
 +		internal SceneMetrics _sceneMetrics = new SceneMetrics();
  
- 		public List<TeleportPylonInfo> Pylons => _pylons;
+-		public List<TeleportPylonInfo> Pylons => _pylons;
++		public List<TeleportPylonInfo> AllPylons => _pylons;
++		public List<TeleportPylonInfo> VanillaPylons => _vanillaPylons;
++		public List<TeleportPylonInfo> ModdedPylons => _moddedPylons;
  
+ 		public void Update() {
+ 			if (Main.netMode != 1) {
 @@ -32,7 +_,12 @@
  			}
  		}
@@ -33,27 +48,69 @@
  		public bool HasAnyPylon() => _pylons.Count > 0;
  
  		public void RequestImmediateUpdate() {
-@@ -48,9 +_,15 @@
+@@ -42,17 +_,33 @@
+ 			}
+ 		}
+ 
++		private void AddNewPylon(TeleportPylonInfo info) {
++			if (info.TypeOfPylon == TeleportPylonType.Modded)
++				_moddedPylons.Add(info);
++			else
++				_vanillaPylons.Add(info);
++			_pylons.Add(info);
++		}
++
+ 		private void UpdatePylonsListAndBroadcastChanges() {
+ 			Utils.Swap(ref _pylons, ref _pylonsOld);
+ 			_pylons.Clear();
++			_vanillaPylons.Clear();
++			_moddedPylons.Clear();
  			foreach (TileEntity value in TileEntity.ByPosition.Values) {
- 				TETeleportationPylon tETeleportationPylon = value as TETeleportationPylon;
- 				if (tETeleportationPylon != null && tETeleportationPylon.TryGetPylonType(out TeleportPylonType pylonType)) {
+-				TETeleportationPylon tETeleportationPylon = value as TETeleportationPylon;
+-				if (tETeleportationPylon != null && tETeleportationPylon.TryGetPylonType(out TeleportPylonType pylonType)) {
 -					TeleportPylonInfo teleportPylonInfo = default(TeleportPylonInfo);
+-					teleportPylonInfo.PositionInTiles = tETeleportationPylon.Position;
++				TeleportPylonType pylonType = TeleportPylonType.Modded;
++				if (value.GetType().IsDefined(typeof(IsPylonEntityAttribute), true) || (value is TETeleportationPylon tETeleportationPylon && tETeleportationPylon.TryGetPylonType(out pylonType)))  {
 +					TeleportPylonInfo teleportPylonInfo = new TeleportPylonInfo();
- 					teleportPylonInfo.PositionInTiles = tETeleportationPylon.Position;
++					teleportPylonInfo.PositionInTiles = value.Position;
  					teleportPylonInfo.TypeOfPylon = pylonType;
 +					if (pylonType == TeleportPylonType.Modded) {
-+						Tile tile = Framing.GetTileSafely(tETeleportationPylon.Position);
++						Tile tile = Framing.GetTileSafely(value.Position);
 +						ModPylon pylon = TileLoader.GetTile(tile.type) as ModPylon;
 +						teleportPylonInfo.ModName = pylon!.Mod.Name;
 +						teleportPylonInfo.ModPylonName = pylon!.Name;
 +					}
  					TeleportPylonInfo item = teleportPylonInfo;
- 					_pylons.Add(item);
+-					_pylons.Add(item);
++					AddNewPylon(item);
  				}
-@@ -93,7 +_,9 @@
+ 			}
+ 
+@@ -67,12 +_,14 @@
+ 		}
+ 
+ 		public void AddForClient(TeleportPylonInfo info) {
+-			if (!_pylons.Contains(info))
+-				_pylons.Add(info);
++			if (!_pylons.Contains(info)) 
++				AddNewPylon(info);
+ 		}
+ 
+ 		public void RemoveForClient(TeleportPylonInfo info) {
+-			_pylons.RemoveAll((TeleportPylonInfo x) => x.Equals(info));
++			_pylons.RemoveAll(x => x.Equals(info));
++			_vanillaPylons.RemoveAll(x => x.Equals(info));
++			_moddedPylons.RemoveAll(x => x.Equals(info));
+ 		}
+ 
+ 		public void HandleTeleportRequest(TeleportPylonInfo info, int playerIndex) {
+@@ -93,7 +_,11 @@
  			}
  
  			if (flag) {
++				if (!PylonLoader.ValidTeleportCheck_PreAnyDanger(info))
++					flag = false;
 +				flag &= info.TypeOfPylon == TeleportPylonType.Modded
 +					? ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon) && pylon.ValidTeleportCheck_AnyDanger(info)
 -				flag &= !NPC.AnyDanger(quickBossNPCCheck: false, ignorePillars: true);
@@ -61,17 +118,28 @@
  				if (!flag)
  					key = "Net.CannotTeleportToPylonBecauseThereIsDanger";
  			}
-@@ -167,6 +_,9 @@
+@@ -121,8 +_,8 @@
+ 					key = "Net.CannotTeleportToPylonBecauseNotMeetingBiomeRequirements";
+ 			}
+ 
++			bool flag2 = false;
+ 			if (flag) {
+-				bool flag2 = false;
+ 				int num = 0;
+ 				for (int i = 0; i < _pylons.Count; i++) {
+ 					TeleportPylonInfo info2 = _pylons[i];
+@@ -167,6 +_,10 @@
  					}
  				}
  			}
 +			if (info.TypeOfPylon == TeleportPylonType.Modded && ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon destinationPylon)) {
 +				 destinationPylon.ValidTeleportCheck_PostCheck(info, ref flag, ref key);
 +			}
++			PylonLoader.PostValidTeleportCheck(info, ref flag, flag2, ref key);
  
  			if (flag) {
  				Vector2 newPos = info.PositionInTiles.ToWorldCoordinates() - new Vector2(0f, player.HeightOffsetBoost);
-@@ -185,9 +_,12 @@
+@@ -185,9 +_,14 @@
  			}
  		}
  
@@ -79,12 +147,23 @@
 +		public static bool IsPlayerNearAPylon(Player player) => TileID.Sets.CountsAsPylon.Any(player.IsTileTypeInInteractionRange);
  
  		private bool DoesPylonHaveEnoughNPCsAroundIt(TeleportPylonInfo info, int necessaryNPCCount) {
++			if (!PylonLoader.ValidTeleportCheck_PreNPCCount(info, ref necessaryNPCCount))
++				return false;
 +			if (info.TypeOfPylon == TeleportPylonType.Modded) {
 +				return ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon) && pylon.ValidTeleportCheck_NPCCount(info, necessaryNPCCount);
 +			}
  			if (necessaryNPCCount <= 0)
  				return true;
  
+@@ -220,6 +_,8 @@
+ 		}
+ 
+ 		private bool DoesPylonAcceptTeleportation(TeleportPylonInfo info, Player player) {
++			if (!PylonLoader.ValidTeleportCheck_PreBiomeRequirements(info, _sceneMetrics))
++				return false;
+ 			switch (info.TypeOfPylon) {
+ 				case TeleportPylonType.SurfacePurity: {
+ 						bool num = (double)info.PositionInTiles.Y <= Main.worldSurface;
 @@ -250,6 +_,8 @@
  					return (double)info.PositionInTiles.Y >= Main.worldSurface;
  				case TeleportPylonType.Victory:
@@ -94,3 +173,12 @@
  				default:
  					return true;
  			}
+@@ -264,6 +_,8 @@
+ 
+ 		public void Reset() {
+ 			_pylons.Clear();
++			_vanillaPylons.Clear();
++			_moddedPylons.Clear();
+ 			_cooldownForUpdatingPylonsList = 0;
+ 		}
+ 

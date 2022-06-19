@@ -9,6 +9,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.GameContent.Tile_Entities;
+using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Map;
@@ -102,7 +103,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		//These two methods are the only ones we need to override, since they have default functionality that could potentially prevent teleportation.
-		public override bool ValidTeleportCheck_AnyDanger(TeleportPylonInfo nearbyPylonInfo) {
+		public override bool ValidTeleportCheck_AnyDanger(TeleportPylonInfo pylonInfo) {
 			return true;
 		}
 
@@ -190,7 +191,7 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
-		public override bool DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, Color drawColor, float deselectedScale, float selectedScale) {
+		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
 			bool isMouseOver = context.Draw(
 				                          mapIcon.Value,
 				                          pylonInfo.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f),
@@ -202,12 +203,22 @@ namespace ExampleMod.Content.Tiles
 			                          )
 			                          .IsMouseOver;
 
-			//Only change the text if we are mousing over; we don't want the text to always be displaying.
-			if (isMouseOver) {
-				mouseOverText = Language.GetTextValue("Mods.ExampleMod.ItemName.ExamplePylonItem");
+			//We only want these things to happen if the mouse is hovering, thus the check:
+			if (!isMouseOver) {
+				return;
 			}
 
-			return isMouseOver;
+			Main.cancelWormHole = true;
+			mouseOverText = Language.GetTextValue("Mods.ExampleMod.ItemName.ExamplePylonItem");
+
+			//If clicking, then teleport!
+			if (Main.mouseLeft && Main.mouseLeftRelease) {
+				Main.mouseLeftRelease = false;
+				Main.mapFullscreen = false;
+				PlayerInput.LockGamepadButtons("MouseLeft");
+				Main.PylonSystem.RequestTeleportation(pylonInfo, Main.LocalPlayer);
+				SoundEngine.PlaySound(SoundID.Item6);
+			}
 		}
 	}
 }
