@@ -1,5 +1,6 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_player_1_1_composite_arm_data.html":[2,0,2,55,1],
 "struct_terraria_1_1_player_1_1_composite_arm_data.html#a48cceb3b2d532a9a19ddba07eea719bc":[2,0,2,55,1,0],
 "struct_terraria_1_1_player_1_1_composite_arm_data.html#a4d642c6175ca2a98dab8b6f30070f8d4":[2,0,2,55,1,2],
 "struct_terraria_1_1_player_1_1_composite_arm_data.html#a8c6c98b9c19d3d5ea487e34140fe19f4":[2,0,2,55,1,1],
@@ -44,13 +45,14 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_item_install_info.html#a6a8ae94ac3fd1b23f62544195b626210":[2,0,2,19,1,13,0,0],
 "struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_item_install_info.html#ac8798fc4eb5e6e81d5f8c53488c34a2f":[2,0,2,19,1,13,0,1],
 "struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html":[2,0,2,19,1,13,2,4],
-"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a2cc1323283a569c49700bfc9794111d3":[2,0,2,19,1,13,2,4,5],
-"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a3e26fc6272fdc2a35c8422423a985050":[2,0,2,19,1,13,2,4,3],
-"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a535fb375688bf638a8766a33397e6d9e":[2,0,2,19,1,13,2,4,2],
-"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a7bf8846372f11a210cdf2d001f9de660":[2,0,2,19,1,13,2,4,4],
-"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a7c17c2b918b167135c4b01642ce4b229":[2,0,2,19,1,13,2,4,6],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a11d17d0e804119c6e068e90820932eef":[2,0,2,19,1,13,2,4,1],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a2cc1323283a569c49700bfc9794111d3":[2,0,2,19,1,13,2,4,6],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a3e26fc6272fdc2a35c8422423a985050":[2,0,2,19,1,13,2,4,4],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a535fb375688bf638a8766a33397e6d9e":[2,0,2,19,1,13,2,4,3],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a7bf8846372f11a210cdf2d001f9de660":[2,0,2,19,1,13,2,4,5],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a7c17c2b918b167135c4b01642ce4b229":[2,0,2,19,1,13,2,4,7],
 "struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#ab8b7ac33397297128614db8b3dbe5930":[2,0,2,19,1,13,2,4,0],
-"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#abbe0f6946df52b976ad8f17abc15e05e":[2,0,2,19,1,13,2,4,1],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#abbe0f6946df52b976ad8f17abc15e05e":[2,0,2,19,1,13,2,4,2],
 "struct_terraria_1_1_tile.html":[2,0,2,72],
 "struct_terraria_1_1_tile.html#a00dbc6ca178a8419b4b618d5dbcd7617":[2,0,2,72,35],
 "struct_terraria_1_1_tile.html#a0931e87671e81c16e69b7c00ccfd093a":[2,0,2,72,32],
@@ -247,7 +249,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html":[2,0,2,23,21,0],
 "struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a1da714dc024676b4585afbca7befbb94":[2,0,2,23,21,0,2],
 "struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a35bf379104318f6fdb58620195287f07":[2,0,2,23,21,0,4],
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a922e4d491ac0f7c5f62d5c9f6bc0b3b7":[2,0,2,23,21,0,3],
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#aec06f0daf512b69bab704c010957de1d":[2,0,2,23,21,0,0],
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#af26f829f761cd60ebc3684f43c4ecc9e":[2,0,2,23,21,0,1]
+"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a922e4d491ac0f7c5f62d5c9f6bc0b3b7":[2,0,2,23,21,0,3]
 };
