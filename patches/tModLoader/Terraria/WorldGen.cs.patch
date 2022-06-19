@@ -547,7 +547,7 @@
  					}
  			}
 +
-+			TileLoader.GetTreeLeaf(t.type, ref passStyle);
++			PlantLoader.GetTreeLeaf(t.type, ref passStyle);
  		}
  
  		public static void TreeGrowFX(int x, int y, int height, int treeGore, bool hitTree = false) {
@@ -1723,7 +1723,7 @@
  
  		public static TreeTypes GetTreeType(int tileType) {
 +
-+			TreeTypes modType = TileLoader.GetModTreeType(tileType);
++			TreeTypes modType = PlantLoader.GetModTreeType(tileType);
 +			if (modType != TreeTypes.None)
 +				return modType;
 +
@@ -1744,7 +1744,7 @@
  				return;
  
  			bool flag = false;
-+			if (!TileLoader.ShakeTree(x, y, tileType, ref flag)) {
++			if (!PlantLoader.ShakeTree(x, y, tileType, ref flag)) {
 +			}
 -			if (Main.getGoodWorld && genRand.Next(15) == 0) {
 +			else if (Main.getGoodWorld && genRand.Next(15) == 0) {

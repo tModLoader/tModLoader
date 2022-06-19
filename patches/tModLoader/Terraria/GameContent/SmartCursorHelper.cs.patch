@@ -33,7 +33,7 @@
  						case 2:
  						case 23:
  						case 53:
-@@ -1567,35 +_,45 @@
+@@ -1567,19 +_,31 @@
  						case 234:
  						case 477:
  						case 492:
@@ -59,44 +59,14 @@
  				for (int l = -1; l < 2; l += 2) {
  					Tile tile10 = Main.tile[_targets[k].Item1 + l, _targets[k].Item2 + 1];
  					if (tile10.active()) {
-+						if (TileLoader.CanGrowModTree(tile10.type) || TileLoader.CanGrowModPalmTree(tile10.type))
++						if (TileLoader.CanGrowModTree(tile10.type) || TileLoader.CanGrowModPalmTree(tile10.type)) {
 +							flag = true;
-+						else
--						switch (tile10.type) {
-+							switch (tile10.type) {
--							case 2:
-+								case 2:
--							case 23:
-+								case 23:
--							case 53:
-+								case 53:
--							case 60:
-+								case 60:
--							case 109:
-+								case 109:
--							case 112:
-+								case 112:
--							case 116:
-+								case 116:
--							case 147:
-+								case 147:
--							case 199:
-+								case 199:
--							case 234:
-+								case 234:
--							case 477:
-+								case 477:
--							case 492:
-+								case 492:
--								flag = true;
-+									flag = true;
--								break;
-+									break;
--						}
-+							}
- 					}
- 				}
- 
++							continue;
++						}
++						
+ 						switch (tile10.type) {
+ 							case 2:
+ 							case 23:
 @@ -2149,7 +_,7 @@
  			int reachableEndY = providedInfo.reachableEndY;
  			_ = providedInfo.screenTargetX;

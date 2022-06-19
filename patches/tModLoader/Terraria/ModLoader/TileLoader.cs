@@ -856,18 +856,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static TreeTypes GetModTreeType(int type) {
-			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
-			if (tree is not null)
-				return tree.CountsAsTreeType;
-
-			var palm = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
-			if (palm is not null)
-				return palm.CountsAsTreeType;
-
-			return TreeTypes.None;
-		}
-
 		public static bool SaplingGrowthType(int soilType, ref int saplingType, ref int style) {
 			int originalType = saplingType;
 			int originalStyle = style;
@@ -893,18 +881,6 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
-		public static bool ShakeTree(int x, int y, int type, ref bool createLeaves) {
-			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
-			if (tree is not null)
-				return tree.Shake(x, y, ref createLeaves);
-
-			var palm = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
-			if (palm is not null)
-				return palm.Shake(x, y, ref createLeaves);
-
-			return true;
-		}
-
 		public static bool CanGrowModTree(int type) {
 			return PlantLoader.Exists(TileID.Trees, type);
 		}
@@ -916,18 +892,6 @@ namespace Terraria.ModLoader
 			var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
 			if (tree != null)
 				dust = tree.CreateDust();
-		}
-
-		public static void GetTreeLeaf(int type, ref int leafGoreType) {
-			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
-			if (tree is not null)
-				leafGoreType = tree.TreeLeaf();
-			if (leafGoreType > -1)
-				return;
-
-			var palm = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
-			if (palm is not null)
-				leafGoreType = palm.TreeLeaf();
 		}
 
 		public static bool CanDropAcorn(int type) {

@@ -80,6 +80,42 @@ namespace Terraria.ModLoader
 
 			return plant.GetTexture();
 		}
+
+		public static TreeTypes GetModTreeType(int type) {
+			var tree = Get<ModTree>(TileID.Trees, type);
+			if (tree is not null)
+				return tree.CountsAsTreeType;
+
+			var palm = Get<ModPalmTree>(TileID.PalmTree, type);
+			if (palm is not null)
+				return palm.CountsAsTreeType;
+
+			return TreeTypes.None;
+		}
+
+		public static bool ShakeTree(int x, int y, int type, ref bool createLeaves) {
+			var tree = Get<ModTree>(TileID.Trees, type);
+			if (tree is not null)
+				return tree.Shake(x, y, ref createLeaves);
+
+			var palm = Get<ModPalmTree>(TileID.PalmTree, type);
+			if (palm is not null)
+				return palm.Shake(x, y, ref createLeaves);
+
+			return true;
+		}
+
+		public static void GetTreeLeaf(int type, ref int leafGoreType) {
+			var tree = Get<ModTree>(TileID.Trees, type);
+			if (tree is not null)
+				leafGoreType = tree.TreeLeaf();
+			if (leafGoreType > -1)
+				return;
+
+			var palm = Get<ModPalmTree>(TileID.PalmTree, type);
+			if (palm is not null)
+				leafGoreType = palm.TreeLeaf();
+		}
 	}
 
 	/// <summary>

@@ -62,7 +62,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override int TreeLeaf() {
-			return GoreID.TreeLeaf_Normal;
+			return ModContent.GoreType<ExampleTreeLeaf>();
 		}
 	}
 }
