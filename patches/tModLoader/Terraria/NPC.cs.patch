@@ -515,7 +515,7 @@
  						Tile tileSafely5 = Framing.GetTileSafely(num18, num19 - 2);
  						bool flag18 = height / 16 < 3;
 -						if (townNPC && tileSafely5.nactive() && (tileSafely5.type == 10 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
-+						if (townNPC && tileSafely5.nactive() && (TileLoader.OpenDoorID(tileSafely5) >= 0 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
++						if ((townNPC || NPCID.Sets.AllowDoorInteraction[type]) && tileSafely5.nactive() && (TileLoader.OpenDoorID(tileSafely5) >= 0 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
  							if (Main.netMode != 1) {
  								if (WorldGen.OpenDoor(num18, num19 - 2, base.direction)) {
  									closeDoor = true;
