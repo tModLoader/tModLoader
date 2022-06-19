@@ -22,6 +22,7 @@ namespace ExampleMod.Content.Biomes
 		public override string BestiaryIcon => base.BestiaryIcon;
 		public override string BackgroundPath => base.BackgroundPath;
 		public override Color? BackgroundColor => base.BackgroundColor;
+		public override string MapBackground => BackgroundPath; // Re-uses Bestiary Background for Map Background
 
 		// Use SetStaticDefaults to assign the display name
 		public override void SetStaticDefaults() {

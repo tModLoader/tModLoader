@@ -15,6 +15,7 @@ namespace Terraria.ModLoader
 		public virtual ModSurfaceBackgroundStyle SurfaceBackgroundStyle => null;
 		public virtual ModUndergroundBackgroundStyle UndergroundBackgroundStyle => null;
 		public virtual int Music => -1;
+		public virtual string MapBackground => null;
 
 		/// <summary>
 		/// The <see cref="SceneEffectPriority"/> of this SceneEffect layer. Determines the relative postion compared to vanilla SceneEffect.
