@@ -35,7 +35,7 @@ namespace ExampleMod.Content.Tiles
 			return ModContent.TileType<Plants.ExampleSapling>();
 		}
 
-		public override void SetTreeFoliageSettings(Tile tile, int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight) {
+		public override void SetTreeFoliageSettings(Tile tile, ref int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight) {
 			// This is where fancy code could go, but let's save that for an advanced example
 		}
 
