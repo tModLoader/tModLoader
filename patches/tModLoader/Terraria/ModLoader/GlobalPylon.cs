@@ -91,5 +91,7 @@ namespace Terraria.ModLoader
 		public virtual void PostValidTeleportCheck(TeleportPylonInfo destinationPylonInfo, ref bool destinationPylonValid, bool validNearbyPylonFound, ref string errorKey) { }
 
 		protected sealed override void Register() => PylonLoader.AddGlobalPylon(this);
+
+		public sealed override void SetupContent() => SetStaticDefaults();
 	}
 }

@@ -17,12 +17,10 @@ namespace Terraria.ModLoader
 			Color drawColor = isNearPylon ? Color.White : Color.Gray * 0.5f;
 
 			foreach (TeleportPylonInfo info in moddedPylons) {
-				if (!PylonLoader.PreDrawMapIcon(ref context, ref text, info, isNearPylon, drawColor, deselectedScale, selectedScale)) {
+				if (!PylonLoader.PreDrawMapIcon(ref context, ref text, info, isNearPylon, drawColor, deselectedScale, selectedScale))
 					continue;
-				}
-				if (ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon)) {
+				if (ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon)) 
 					pylon.DrawMapIcon(ref context, ref text, info, isNearPylon, drawColor, deselectedScale, selectedScale);
-				}
 			}
 		}
 	}
