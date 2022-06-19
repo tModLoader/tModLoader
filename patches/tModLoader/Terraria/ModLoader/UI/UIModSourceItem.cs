@@ -349,13 +349,12 @@ namespace Terraria.ModLoader.UI
 			else
 				changeLog = "";
 
-			var workshopDescFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "workshop_description.txt");
+			var workshopDescFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "description_workshop.txt");
 			string workshopDesc;
 			if (File.Exists(workshopDescFile))
 				workshopDesc = File.ReadAllText(workshopDescFile);
 			else
-				workshopDesc = "";
-
+				workshopDesc = bp.description;
 
 			var values = new NameValueCollection
 			{

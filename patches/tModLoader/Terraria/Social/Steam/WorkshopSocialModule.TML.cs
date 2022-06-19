@@ -213,11 +213,12 @@ namespace Terraria.Social.Steam
 			using (sModFile.Open())
 				sMod = new LocalMod(sModFile);
 
-			string workshopDescFile = Path.Combine(modFolder, "workshop_description.txt");
+			string workshopDescFile = Path.Combine(modFolder, "description_workshop.txt");
+			string workshopDesc;
 			if (!File.Exists(workshopDescFile))
-				throw new Exception("Missing workshop_description.txt. Abandoning update");
-
-			string workshopDesc = File.ReadAllText(workshopDescFile);
+				workshopDesc = newMod.properties.description;
+			else
+				workshopDesc = File.ReadAllText(workshopDescFile);
 
 			string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version {sMod.properties.version} built for tModLoader v{sMod.properties.buildVersion}[/quote]" +
 				$"{workshopDesc}";
