@@ -18,37 +18,64 @@ namespace Terraria.ModLoader
 			ModTypeLookup<GlobalPylon>.Register(pylon);
 		}
 
-		public static bool PreDrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
+		public static bool PreDrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, ref TeleportPylonInfo pylonInfo, ref bool isNearPylon, ref Color drawColor, ref float deselectedScale, ref float selectedScale) {
 			bool returnValue = true;
 			foreach (GlobalPylon globalPylon in globalPylons) {
-				returnValue &= globalPylon.PreDrawMapIcon(ref context, ref mouseOverText, pylonInfo, isNearPylon, drawColor, deselectedScale, selectedScale);
+				returnValue &= globalPylon.PreDrawMapIcon(ref context, ref mouseOverText, ref pylonInfo, ref isNearPylon, ref drawColor, ref deselectedScale, ref selectedScale);
 			}
 
 			return returnValue;
 		}
 
-		public static bool ValidTeleportCheck_PreNPCCount(TeleportPylonInfo pylonInfo, ref int defaultNecessaryNPCCount) {
-			bool returnValue = true;
+		public static bool? ValidTeleportCheck_PreNPCCount(TeleportPylonInfo pylonInfo, ref int defaultNecessaryNPCCount) {
+			bool? returnValue = null;
+
 			foreach (GlobalPylon globalPylon in globalPylons) {
-				returnValue &= globalPylon.ValidTeleportCheck_PreNPCCount(pylonInfo, ref defaultNecessaryNPCCount);
+				bool? shouldSucceed = globalPylon.ValidTeleportCheck_PreNPCCount(pylonInfo, ref defaultNecessaryNPCCount);
+
+				if (shouldSucceed.HasValue) {
+					if (!shouldSucceed.Value) {
+						return false;
+					}
+
+					returnValue = true;
+				}
 			}
 
 			return returnValue;
 		}
 
-		public static bool ValidTeleportCheck_PreAnyDanger(TeleportPylonInfo pylonInfo) {
-			bool returnValue = true;
+		public static bool? ValidTeleportCheck_PreAnyDanger(TeleportPylonInfo pylonInfo) {
+			bool? returnValue = null;
+
 			foreach (GlobalPylon globalPylon in globalPylons) {
-				returnValue &= globalPylon.ValidTeleportCheck_PreAnyDanger(pylonInfo);
+				bool? shouldSucceed = globalPylon.ValidTeleportCheck_PreAnyDanger(pylonInfo);
+
+				if (shouldSucceed.HasValue) {
+					if (!shouldSucceed.Value) {
+						return false;
+					}
+
+					returnValue = true;
+				}
 			}
 
 			return returnValue;
 		}
 
-		public static bool ValidTeleportCheck_PreBiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData) {
-			bool returnValue = true;
+		public static bool? ValidTeleportCheck_PreBiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData) {
+			bool? returnValue = null;
+
 			foreach (GlobalPylon globalPylon in globalPylons) {
-				returnValue &= globalPylon.ValidTeleportCheck_PreBiomeRequirements(pylonInfo, sceneData);
+				bool? shouldSucceed = globalPylon.ValidTeleportCheck_PreBiomeRequirements(pylonInfo, sceneData);
+
+				if (shouldSucceed.HasValue) {
+					if (!shouldSucceed.Value) {
+						return false;
+					}
+
+					returnValue = true;
+				}
 			}
 
 			return returnValue;

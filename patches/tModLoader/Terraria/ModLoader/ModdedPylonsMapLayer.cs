@@ -16,8 +16,9 @@ namespace Terraria.ModLoader
 			bool isNearPylon = TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer);
 			Color drawColor = isNearPylon ? Color.White : Color.Gray * 0.5f;
 
-			foreach (TeleportPylonInfo info in moddedPylons) {
-				if (!PylonLoader.PreDrawMapIcon(ref context, ref text, info, isNearPylon, drawColor, deselectedScale, selectedScale))
+			for (int i = 0; i < moddedPylons.Count; i++) {
+				TeleportPylonInfo info = moddedPylons[i];
+				if (!PylonLoader.PreDrawMapIcon(ref context, ref text, ref info, ref isNearPylon, ref drawColor, ref deselectedScale, ref selectedScale))
 					continue;
 				if (ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon)) 
 					pylon.DrawMapIcon(ref context, ref text, info, isNearPylon, drawColor, deselectedScale, selectedScale);

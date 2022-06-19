@@ -105,16 +105,19 @@
  		}
  
  		public void HandleTeleportRequest(TeleportPylonInfo info, int playerIndex) {
-@@ -93,7 +_,11 @@
+@@ -93,7 +_,14 @@
  			}
  
  			if (flag) {
-+				if (!PylonLoader.ValidTeleportCheck_PreAnyDanger(info))
-+					flag = false;
-+				flag &= info.TypeOfPylon == TeleportPylonType.Modded
-+					? ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon) && pylon.ValidTeleportCheck_AnyDanger(info)
 -				flag &= !NPC.AnyDanger(quickBossNPCCheck: false, ignorePillars: true);
-+					: !NPC.AnyDanger(quickBossNPCCheck: false, ignorePillars: true);
++				bool forceSucceed = false;
++				if (PylonLoader.ValidTeleportCheck_PreAnyDanger(info) is { } value) {
++					forceSucceed = value;
++					flag &= value;
++				}
++				flag &= (info.TypeOfPylon == TeleportPylonType.Modded
++					? ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon) && pylon.ValidTeleportCheck_AnyDanger(info)
++					: !NPC.AnyDanger(quickBossNPCCheck: false, ignorePillars: true)) || forceSucceed;
  				if (!flag)
  					key = "Net.CannotTeleportToPylonBecauseThereIsDanger";
  			}
@@ -147,8 +150,8 @@
 +		public static bool IsPlayerNearAPylon(Player player) => TileID.Sets.CountsAsPylon.Any(player.IsTileTypeInInteractionRange);
  
  		private bool DoesPylonHaveEnoughNPCsAroundIt(TeleportPylonInfo info, int necessaryNPCCount) {
-+			if (!PylonLoader.ValidTeleportCheck_PreNPCCount(info, ref necessaryNPCCount))
-+				return false;
++			if (PylonLoader.ValidTeleportCheck_PreNPCCount(info, ref necessaryNPCCount) is { } value)
++				return value;
 +			if (info.TypeOfPylon == TeleportPylonType.Modded) {
 +				return ModContent.TryFind(info.ModName, info.ModPylonName, out ModPylon pylon) && pylon.ValidTeleportCheck_NPCCount(info, necessaryNPCCount);
 +			}
@@ -159,8 +162,8 @@
  		}
  
  		private bool DoesPylonAcceptTeleportation(TeleportPylonInfo info, Player player) {
-+			if (!PylonLoader.ValidTeleportCheck_PreBiomeRequirements(info, _sceneMetrics))
-+				return false;
++			if (PylonLoader.ValidTeleportCheck_PreBiomeRequirements(info, _sceneMetrics) is { } value)
++				return value;
  			switch (info.TypeOfPylon) {
  				case TeleportPylonType.SurfacePurity: {
  						bool num = (double)info.PositionInTiles.Y <= Main.worldSurface;

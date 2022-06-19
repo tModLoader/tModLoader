@@ -1,4 +1,6 @@
-﻿using ExampleMod.Content.Items.Placeable;
+﻿using ExampleMod.Common.Systems;
+using ExampleMod.Content.Biomes;
+using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -66,9 +68,12 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(Color.White, pylonName);
 		}
 
-		//Let's say that our pylon is for sale no matter what for any NPC under all circumstances.
 		public override int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
-			return ModContent.ItemType<ExamplePylonItem>();
+			//Let's say that our pylon is for sale no matter what for any NPC under all circumstances, granted that the NPC
+			//is in the Example Surface/Underground Biome.
+			return ModContent.GetInstance<ExampleSurfaceBiome>().IsBiomeActive(player) || ModContent.GetInstance<ExampleUndergroundBiome>().IsBiomeActive(player)
+				? ModContent.ItemType<ExamplePylonItem>()
+				: null;
 		}
 
 		//Must be true in order for our highlight texture to work.
@@ -97,14 +102,19 @@ namespace ExampleMod.Content.Tiles
 			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 3, 4, ModContent.ItemType<ExamplePylonItem>());
 		}
 
-		//Let's make it possible to teleport to this Pylon any time we want, as long as we're standing next to valid Pylon!
 		public override bool ValidTeleportCheck_NPCCount(TeleportPylonInfo pylonInfo, int defaultNecessaryNPCCount) {
+			//Let's say for fun sake that no NPCs need to be nearby in order for this pylon to function. If you want your pylon to function just like vanilla,
+			//you don't need to override this method at all.
 			return true;
 		}
 
-		//These two methods are the only ones we need to override, since they have default functionality that could potentially prevent teleportation.
-		public override bool ValidTeleportCheck_AnyDanger(TeleportPylonInfo pylonInfo) {
-			return true;
+		public override bool ValidTeleportCheck_BiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData) {
+			//Right before this hook is called, the sceneData parameter exports its information based on wherever the destination pylon is,
+			//and by extension, it will call ALL ModSystems that use the TileCountsAvailable method. This means, that if you determine biomes
+			//based off of tile count, when this hook is called, you can simply check the tile threshold, like we do here. In the context of ExampleMod,
+			//something is considered within the Example Surface/Underground biome if there are 40 or more example blocks at that location.
+
+			return ModContent.GetInstance<ExampleBiomeTileCount>().exampleBlockCount >= 40;
 		}
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {

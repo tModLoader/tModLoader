@@ -22,7 +22,7 @@ namespace Terraria.ModLoader
 		/// <param name="drawColor"> The draw color of the icon. This is bright white when the player is near a Pylon, but gray and translucent otherwise. </param>
 		/// <param name="deselectedScale"> The scale of the icon if it is NOT currently being hovered over. In vanilla, this is 1f, or 100%. </param>
 		/// <param name="selectedScale"> The scale of the icon if it IS currently being over. In vanilla, this is 2f, or 200%. </param>
-		public virtual bool PreDrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
+		public virtual bool PreDrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, ref TeleportPylonInfo pylonInfo, ref bool isNearPylon, ref Color drawColor, ref float deselectedScale, ref float selectedScale) {
 			return true;
 		}
 
@@ -30,7 +30,8 @@ namespace Terraria.ModLoader
 		/// Called before Step 1 of the ValidTeleportCheck process. This is the first vanilla check that is called when
 		/// the player attempts to teleport FROM or TO a Pylon. This method is called before both vanilla
 		/// and modded pylons check their NPC requirements, and returning false will prevent those checks from taking place,
-		/// forcefully failing the NPCCount step. Returns true by default.
+		/// forcefully failing the NPCCount step. Returning null will enact vanilla behavior, and returning true will make the
+		/// step succeed regardless. Returns null by default.
 		/// </summary>
 		/// <remarks>
 		/// Note that you may also change the the default npc count value if for some reason you wish to change the default
@@ -38,30 +39,32 @@ namespace Terraria.ModLoader
 		/// </remarks>
 		/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
 		/// <param name="defaultNecessaryNPCCount"> The default amount of NPCs nearby required to satisfy a VANILLA pylon. </param>
-		public virtual bool ValidTeleportCheck_PreNPCCount(TeleportPylonInfo pylonInfo, ref int defaultNecessaryNPCCount) {
-			return true;
+		public virtual bool? ValidTeleportCheck_PreNPCCount(TeleportPylonInfo pylonInfo, ref int defaultNecessaryNPCCount) {
+			return null;
 		}
 
 		/// <summary>
 		/// Called before Step 2 of the ValidTeleportCheck process. This is the second vanilla check that is called when
 		/// the player attempts to teleport TO a Pylon. This method is called before both vanilla and
 		/// modded pylons check their Danger requirements, and returning false will prevent those checks from taking place,
-		/// forcefully failing the AnyDanger step. Returns true by default.
+		/// forcefully failing the AnyDanger step. Returning null will enact vanilla behavior, and returning true will make the
+		/// step succeed regardless. Returns null by default.
 		/// </summary>
 		/// <remarks>
 		/// Note that it's important you put the right checks in the right ValidTeleportCheck step,
 		/// as whatever one returns false (if any) will determine the error message sent to the player.
 		/// </remarks>
 		/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported TO. </param>
-		public virtual bool ValidTeleportCheck_PreAnyDanger(TeleportPylonInfo pylonInfo) {
-			return true;
+		public virtual bool? ValidTeleportCheck_PreAnyDanger(TeleportPylonInfo pylonInfo) {
+			return null;
 		}
 
 		/// <summary>
 		/// Called before Step 3 of the ValidTeleportCheck process. This is the fourth vanilla check that is called when
 		/// the player attempts to teleport FROM or TO a Pylon. This method is called before both vanilla and
 		/// modded pylons check their Biome requirements, and returning false will prevent those checks from taking place,
-		/// forcefully failing the BiomeRequirements step. Returns true by default.
+		/// forcefully failing the BiomeRequirements step. Returning null will enact vanilla behavior, and returning true will make the
+		/// step succeed regardless. Returns null by default.
 		/// </summary>
 		/// <remarks>
 		/// Note that it's important you put the right checks in the right ValidTeleportCheck step,
@@ -69,8 +72,8 @@ namespace Terraria.ModLoader
 		/// </remarks>
 		/// <param name="pylonInfo"> The internal information pertaining to the current pylon being teleported to or from. </param>
 		/// <param name="sceneData"> The scene metrics data AT THE LOCATION of the destination pylon, NOT the player. </param>
-		public virtual bool ValidTeleportCheck_PreBiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData) {
-			return true;
+		public virtual bool? ValidTeleportCheck_PreBiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData) {
+			return null;
 		}
 
 		/// <summary>
