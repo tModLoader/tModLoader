@@ -723,12 +723,15 @@
  			if (myRect.Intersects(targetRect))
  				return true;
  
-@@ -11397,7 +_,7 @@
+@@ -11395,9 +_,9 @@
+ 				if (!noEnchantmentVisuals)
+ 					UpdateEnchantmentVisuals();
  
- 				if (numUpdates == -1 && (minion || sentry)) {
+-				if (numUpdates == -1 && (minion || sentry)) {
++				if ((minion || sentry || ContinuouslyUpdateDamage)) {
  					Player player = Main.player[owner];
 -					damage = (int)((float)originalDamage * player.minionDamage + (float)player.minionAddDamage + 5E-06f);
-+					damage = (int)player.GetTotalDamage(DamageClass.Summon).ApplyTo(originalDamage);
++					damage = (int)player.GetTotalDamage(DamageType).ApplyTo(originalDamage);
  				}
  
  				if (minion && numUpdates == -1 && type != 625 && type != 628) {

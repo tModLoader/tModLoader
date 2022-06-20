@@ -54,6 +54,12 @@ namespace Terraria
 			set => _crit = Math.Max(0, value);
 		}
 
+		/// <summary>
+		/// If set, Projectile.damage will be recalculated based on Projectile.originalDamage, Projectile.DamageType and the owning player, just like minions and sentries.
+		/// This has no effect if Projectile.minion or Projectile.sentry is set.
+		/// </summary>
+		public bool ContinuouslyUpdateDamage { get; set; }
+
 		/* tML:
 		this method is used to set the critical strike chance of a projectile based on the environment in which it was fired
 		this critical strike chance is then stored on the projectile and checked against for all critical strike calculations
@@ -64,11 +70,13 @@ namespace Terraria
 		private static void HandlePlayerStatModifiers(IEntitySource spawnSource, Projectile projectile) {
 			// to-do: make this less ugly and more easily extensible to modded sources
 			// (requires substantial changes, at minimum, to how entity sources are handled)
-			if (spawnSource is EntitySource_ItemUse itemUseSource && itemUseSource.Entity is Player player) {
-				projectile.CritChance += player.GetWeaponCrit(itemUseSource.Item);
-				projectile.ArmorPenetration += player.GetWeaponArmorPenetration(itemUseSource.Item);
+			if (spawnSource is EntitySource_ItemUse { Entity: Player player, Item: Item item }) {
+				projectile.originalDamage = item.damage;
+				projectile.CritChance += player.GetWeaponCrit(item);
+				projectile.ArmorPenetration += player.GetWeaponArmorPenetration(item);
 			}
-			else if (spawnSource is EntitySource_Parent parentSource && parentSource.Entity is Projectile parentProjectile) {
+			else if (spawnSource is EntitySource_Parent { Entity: Projectile parentProjectile }) {
+				projectile.originalDamage = parentProjectile.originalDamage;
 				projectile.CritChance += parentProjectile.CritChance;
 				projectile.ArmorPenetration += parentProjectile.ArmorPenetration;
 			}
@@ -100,5 +108,7 @@ namespace Terraria
 
 		public bool CountsAsClass(DamageClass damageClass)
 			=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
+
+		
 	}
 }
