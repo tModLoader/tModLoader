@@ -16,8 +16,8 @@
 		"MenuEnableDeveloperMode": "Włącz Tryb Dewelopera",
 		"WelcomeMessageBeta": "Witamy w tModLoader 1.4 Alpha\n\nUdało Ci się zainstalować niestabilny tModLoader, który może zawierać błędy psujące rozgrywkę. \n\nSkorzystaj z menu Warsztatu, aby uzyskać dostęp do funkcji związanych z modem tModLoader.\n\nDołącz do Discorda tModLoader the tModLoader aby dowiedzieć się więcej o modach testowych i/lub narzędziach dostępnych dla tModLoader 1.4 w ramach jego reorganizacji do 1.4",
 		"MonthlyFreezeNotification": "Comiesięczny okres przejściowy dla autorów Modów (tzw. \"alpha freeze\") właśnie się rozpoczął. W ramach przypomnienia, od 21 dnia każdego miesiąca rozpoczyna się okres, w którym zachęca się autorów Modów do aktualizacji swoich Modów oraz ich publikacji na kanale (beta) 1.4-preview, żeby zapewnić kompatybilność Modów z nową wersją tModLoadera. Nowa wersja tModLoadera zostanie oficjalnie opublikowana 1 dnia następnego miesiąca.\n\nNiezaktualizowane przez autorów Mody pod kątem nowej wersji tModLoadera mogą przestać działać po opublikowaniu nowej wersji tModLoadera (od 1 dnia następnego miesiąca).\n\nDołącz do serwera Discord tModLoadera, żeby uzyskać więcej informacji o zmianach w kodzie/API tModLoadera oraz o instrukcjach migracji kodu do nowej wersji. Kliknij \"Więcej informacji\", żeby uzyskać więcej informacji odnośnie naszego cyklu wydawania nowych wersji tModLoadera.",
-		"FirstLaunchWelcomeMessage": "Witaj w tModLoaderze.\n\nPomyślnie zainstalowałeś tModLoadera. Użyj Przeglądarki Modów, aby znaleźć mody, które chcesz pobrać. Użyj zakładki mody, aby zmienić, które mody są aktualnie aktywne. Po zmianie modów upewnij się, że klikniesz przycisk Przeładuj mody, aby je załadować.",
-		"WhatsNewMessage": "Poniżej znajdują się podstawowe zmiany w stosunku do ostatniego uruchomienia Alphy. Może się okazać, że mody, które odnoszą się do tych zmian, wymagają przebudowy przez autora. Odwiedź GitHub, aby zobaczyć więcej szczegółów:\n",
+		"FirstLaunchWelcomeMessage": "Witaj w tModLoader 1.4.\n\nPomyślnie zainstalowałeś tModLoadera. Użyj Przeglądarki Modów, aby znaleźć mody, które chcesz pobrać. Użyj zakładki Mody, aby zmienić, które mody są aktualnie aktywne. Po zmianie modów upewnij się, że klikniesz przycisk Przeładuj mody, aby je załadować.\n\nJeżeli używałeś do tej pory wersji 1.3 tModLoadera, możesz przywrócić wersję 1.3 poprzez zmianę bety w ustawieniach Steam na 1.3-legacy. Jeżeli w wersji 1.4 nie możesz znaleźć interesujących Ciebie modów, może to oznaczać że nie zostały jeszcze przystosowane do nowej wersji tModLoadera i są na ten moment dostępne tylko w wersji 1.3 tModLoadera.",
+		"WhatsNewMessage": "Poniżej znajdują się podstawowe zmiany w stosunku do ostatniego uruchomienia tModLoadera 1.4. Może się okazać, że mody, które odnoszą się do tych zmian, wymagają przebudowy przez autora. Odwiedź GitHub, aby zobaczyć więcej szczegółów:\n",
 		"ShowNewUpdatedModsInfoMessage": "Poniższe Mody zostały zaktualizowane lub dodane do Steam Workshop od czasu ostatniego uruchomienia gry (możesz wyłączyć to powiadomienie w ustawieniach):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNowe Mody:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nZaktualizowane Mody:",
@@ -271,6 +271,9 @@
 		"ExperimentalFeaturesNo": "Eksperymentalne funkcje: Wyłączone",
 		"RemoveForcedMinimumZoomYes": "Usuń wymuszony minimalny zoom: Włączone",
 		"RemoveForcedMinimumZoomNo": "Usuń wymuszony minimalny zoomm: Wyłączone",
+		"AttackSpeedScalingTooltipVisibility0": "Widoczność wpływu bonusów szybkości ataku w opisie broni: Wszystko",
+		"AttackSpeedScalingTooltipVisibility1": "Widoczność wpływu bonusów szybkości ataku w opisie broni: Tylko gdy może wpływać na broń",
+		"AttackSpeedScalingTooltipVisibility2": "Widoczność wpływu bonusów szybkości ataku w opisie broni: Ukryte",
 		"AllowGreaterResolutionsYes": "Zezwalaj na większe rozdzielczości: Włączone",
 		"AllowGreaterResolutionsNo": "Zezwalaj na większe rozdzielczości: Wyłączone",
 		"ShowMemoryEstimatesYes": "Pokaż szacowane żużycie pamięci przez mody: Włączone",
@@ -326,7 +329,7 @@
 		"MSCreateMod": "Stwórz Moda",
 		"VersionUpgrade": "LINK: Dowiedz się więcej o przygotowaniu Modów do nowej wersji tML",
 		"MSPortToLatest": "Uruchom program tModPorter",
-		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
+		"MSFirstLaunchModderWelcomeMessage": "Od wersji 1.4 tModLoadera, do tworzenia modów w Visual Studio potrzebny jest zainstalowany .NET 6 SDK. Najłatwiej można go zainstalować wraz z instalacją Visual Studio 2022.\n\nStrona wiki na GitHub projektu odnośnie migracji modów do nowej wersji tModLoadera (\"Update Migration Guide\") zawiera informacje niezbędne do przystosowania modów z wersji 1.3 do poprawnego działania na wersji 1.4.\n\nStrona zawiera również informacje o tym, jak używać programu tModPorter, który jest w stanie automatycznie przystosować większość kodu modyfikacji do wersji 1.4 tModLoadera.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Do budowania modów wymagane są dodatkowe biblioteki. (Brak folderu ModCompile)",
@@ -392,6 +395,12 @@
 		"DefaultTownNPCName": "Bez nazwy",
 		"DefaultTownNPCChat": "Mój modder zapomniał dać mi dialog.",
 		"DefaultNurseCantHealChat": "Nie wiem dlaczego, ale nie mogę cię wyleczyć. Najwyraźniej modder zapomniał dać mi dialog.",
+
+		// Tooltip lines
+		"NoAttackSpeedScaling": "Bonusy do prędkości ataku nie wpływają na broń",
+		"SpecialAttackSpeedScaling": "Bonusy do prędkości ataku wpływają na broń w {0}%",
+		"ModifiedByModsHoldSHIFT": "Zmodyfikowany przez mody (przytrzymaj SHIFT aby wyświetlić więcej informacji)",
+		"ModifiedByMods": "Zmodyfikowany przez ",
 
 		// Memory bar
 		"LastLoadRamUsage": "Szacowane użycie pamięci RAM (przy ostatnio aktywnych Modach): {0}",
