@@ -335,7 +335,7 @@
  						}
  					}
 -					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5125 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
-+					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < ItemLoader.ItemCount && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
++					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < ItemID.Count && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
  						if (Main.mouseRightRelease) {
  							player.OpenFishingCrate(inv[slot].type);
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
@@ -588,6 +588,15 @@
  				if (ItemID.Sets.TrapSigned[item.type])
  					spriteBatch.Draw(TextureAssets.Wire.Value, position + new Vector2(40f, 40f) * inventoryScale, new Rectangle(4, 58, 8, 8), color, 0f, new Vector2(4f), 1f, SpriteEffects.None, 0f);
  
+@@ -1627,7 +_,7 @@
+ 						int useAmmo = item.useAmmo;
+ 						num9 = 0;
+ 						for (int j = 0; j < 58; j++) {
+-							if (inv[j].ammo == useAmmo)
++							if (inv[j].stack > 0 && ItemLoader.CanChooseAmmo(item, inv[j], player))
+ 								num9 += inv[j].stack;
+ 						}
+ 					}
 @@ -1673,13 +_,17 @@
  					Vector2 position3 = position + value.Size() * inventoryScale / 2f - TextureAssets.Cd.Value.Size() * inventoryScale / 2f;
  					Color color3 = item.GetAlpha(color) * ((float)player.potionDelay / (float)player.potionDelayTime);

@@ -534,7 +534,7 @@
  			bool flag = false;
  			Form form = (Form)Control.FromHandle(instance.Window.Handle);
  			screenMaximized = (form.WindowState == FormWindowState.Maximized);
-@@ -50918,14 +_,19 @@
+@@ -50918,14 +_,24 @@
  				screenMaximized = false;
  				form.WindowState = FormWindowState.Normal;
  			}
@@ -550,8 +550,12 @@
  			int num4;
  			if (screenBorderless || screenMaximized || graphics.IsFullScreen || fullscreen) {
  				bool flag3 = false;
--				if (PlayerInput.SteamDeckIsUsed) {
-+				if(width > maxScreenW) {
++
++				// Weird 'Terraria' step patch. Document?
++				/*
+ 				if (PlayerInput.SteamDeckIsUsed) {
++				*/
++				if (width > maxScreenW) {
  					flag3 = true;
  					if (!fullscreen && !graphics.IsFullScreen) {
  						width = 1280;

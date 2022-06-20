@@ -1,11 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
@@ -13,36 +12,35 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 	/// </summary>
-	public abstract class ModPlayer : ModType
+	public abstract class ModPlayer : ModType<Player, ModPlayer>
 	{
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
-		public Player Player { get; internal set; }
+		public Player Player => Entity;
 
-		internal int index;
+		internal ushort index;
 
-		internal ModPlayer CreateFor(Player newPlayer) {
-			ModPlayer modPlayer = (ModPlayer)(CloneNewInstances ? MemberwiseClone() : Activator.CreateInstance(GetType()));
-			modPlayer.Mod = Mod;
-			modPlayer.Player = newPlayer;
-			modPlayer.index = index;
-			modPlayer.Initialize();
-			return modPlayer;
+		protected override Player CreateTemplateEntity() => null;
+
+		public override ModPlayer NewInstance(Player entity) {
+			var inst = base.NewInstance(entity);
+			inst.index = index;
+			return inst;
 		}
 
 		public bool TypeEquals(ModPlayer other) {
 			return Mod == other.Mod && Name == other.Name;
 		}
 
-		/// <summary>
-		/// Whether each player gets a ModPlayer by cloning the ModPlayer added to the Mod or by creating a new ModPlayer object with the same type as the ModPlayer added to the Mod. The accessor returns true by default. Return false if you want to assign fields through the constructor.
-		/// </summary>
-		public virtual bool CloneNewInstances => true;
+		protected override void ValidateType() {
+			base.ValidateType();
+			
+			LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
+			LoaderUtils.MustOverrideTogether(this, p => p.clientClone, p => p.SendClientChanges);
+		}
 
 		protected sealed override void Register() {
-			PlayerLoader.VerifyModPlayer(this);
-
 			ModTypeLookup<ModPlayer>.Register(this);
 			PlayerLoader.Add(this);
 		}
@@ -437,23 +435,23 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Whether or not ammo will be consumed upon usage. Return false to stop the ammo from being depleted. Returns true by default.
-		/// <br>If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.</br>
+		/// Whether or not the given ammo item will be consumed by this weapon.<br></br>
+		/// By default, returns true; return false to prevent ammo consumption. <br></br>
+		/// If false is returned, the <see cref="OnConsumeAmmo"/> hook is never called.
 		/// </summary>
-		/// <param name="weapon">The item that is using this ammo</param>
-		/// <param name="ammo">The ammo item</param>
+		/// <param name="weapon">The weapon that this player is attempting to use.</param>
+		/// <param name="ammo">The ammo that the give nweapon is attempting to consume.</param>
 		/// <returns></returns>
 		public virtual bool CanConsumeAmmo(Item weapon, Item ammo) {
 			return true;
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when ammo is consumed.
-		/// <br>Called before the ammo stack is reduced.</br>
+		/// Allows you to make things happen when the given ammo is consumed by the given weapon.<br></br>
+		/// Called before the ammo stack is reduced, and is never called if the ammo isn't consumed in the first place.
 		/// </summary>
-		/// <param name="weapon">The item that is using this ammo</param>
-		/// <param name="ammo">The ammo item</param>
-		/// <returns></returns>
+		/// <param name="weapon">The weapon that is currently using the given ammo.</param>
+		/// <param name="ammo">The ammo that the given weapon is currently using.</param>
 		public virtual void OnConsumeAmmo(Item weapon, Item ammo) {
 		}
 
@@ -498,6 +496,29 @@ namespace Terraria.ModLoader
 		/// <param name="item"></param>
 		/// <param name="hitbox"></param>
 		public virtual void MeleeEffects(Item item, Rectangle hitbox) {
+		}
+
+		/// <summary>
+		/// Allows you to determine whether the given item can catch the given NPC.<br></br>
+		/// Return true or false to say the target can or cannot be caught, respectively, regardless of vanilla rules.<br></br>
+		/// Returns null by default, which allows vanilla's NPC catching rules to decide the target's fate.<br></br>
+		/// If this returns false, <see cref="CombinedHooks.OnCatchNPC"/> is never called.<br></br><br></br>
+		/// NOTE: this does not classify the given item as a catch tool, which is necessary for catching NPCs in the first place.<br></br>
+		/// To do that, you will need to use the "CatchingTool" set in ItemID.Sets.
+		/// </summary>
+		/// <param name="target">The NPC the player is trying to catch.</param>
+		/// <param name="item">The item with which the player is trying to catch the target NPC.</param>
+		public virtual bool? CanCatchNPC(NPC target, Item item) {
+			return null;
+		}
+
+		/// <summary>
+		/// Allows you to make things happen when the given item attempts to catch the given NPC.
+		/// </summary>
+		/// <param name="npc">The NPC which the player attempted to catch.</param>
+		/// <param name="item">The item used to catch the given NPC.</param>
+		/// <param name="failed">Whether or not the given NPC has been successfully caught.</param>
+		public virtual void OnCatchNPC(NPC npc, Item item, bool failed) {
 		}
 
 		/// <summary>

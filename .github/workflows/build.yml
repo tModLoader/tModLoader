@@ -442,7 +442,18 @@ jobs:
         env:
           STEAM_SENTRY_PASSPHRASE: ${{ secrets.STEAM_SENTRY_PASSPHRASE }}
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
-          
+      
+      - name: Get Version tag for Release
+        id: version2
+        shell: bash
+        run: |
+          echo "Attempting get current version id"
+          version=$(git describe --tags --abbrev=0)
+          echo "Current Version is: $version"
+          echo "::set-output name=new_version::$version"
+        env:
+          branch: ${{github.ref}}
+      
       - name: Attempt run_app_build_http 
         shell: bash
         run: |
@@ -458,11 +469,14 @@ jobs:
             manifesto=$manifesto/preview.vdf
           fi
           
+          sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto
           steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http $manifesto +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
+        env:
+          version: ${{ steps.version2.outputs.new_version }}
           
       - name: Download ExampleMod build artifact from build job
         # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
@@ -494,19 +508,7 @@ jobs:
           cat publish.vdf
           echo Done
         working-directory: artifacts/ExampleMod
-      
-      - name: Get Version tag for Release
-        id: version2
-        if: github.ref == 'refs/heads/1.4-stable'
-        shell: bash
-        run: |
-          echo "Attempting get current version id"
-          version=$(git describe --tags --abbrev=0)
-          echo "Current Version is: $version"
-          echo "::set-output name=new_version::$version"
-        env:
-          branch: ${{github.ref}}
-          
+
       - name: Install Zip
         if: github.ref == 'refs/heads/1.4-stable'
         uses: montudor/action-zip@v1

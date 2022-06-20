@@ -123,7 +123,11 @@ namespace Terraria.ModLoader
 		}
 
 		public static float TotalUseTimeMultiplier(Player player, Item item) {
-			return PlayerLoader.UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player) / TotalUseSpeedMultiplier(player, item);
+			float useTimeMult = PlayerLoader.UseTimeMultiplier(player, item) * ItemLoader.UseTimeMultiplier(item, player);
+			if (!item.attackSpeedOnlyAffectsWeaponAnimation)
+				useTimeMult /= TotalUseSpeedMultiplier(player, item);
+
+			return useTimeMult;
 		}
 
 		public static int TotalUseTime(float useTime, Player player, Item item) {
@@ -132,6 +136,7 @@ namespace Terraria.ModLoader
 			return result;
 		}
 
+		// TO-DO: should this be affected by item.attackSpeedOnlyAffectsWeaponAnimation?
 		public static float TotalUseAnimationMultiplier(Player player, Item item) {
 			float result = PlayerLoader.UseAnimationMultiplier(player, item) * ItemLoader.UseAnimationMultiplier(item, player);
 
@@ -158,6 +163,38 @@ namespace Terraria.ModLoader
 				ret = (ret ?? true) && b;
 			}
 			return ret;
+		}
+
+		public static bool? CanCatchNPC(Player player, NPC npc, Item item) {
+			bool? canCatchOverall = null;
+			bool? canCatchOnPlayer = PlayerLoader.CanCatchNPC(player, npc, item);
+			if (canCatchOnPlayer.HasValue) {
+				if (!canCatchOnPlayer.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			bool? canCatchOnItem = ItemLoader.CanCatchNPC(item, npc, player);
+			if (canCatchOnItem.HasValue) {
+				if (!canCatchOnItem.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			bool? canCatchOnNPC = NPCLoader.CanBeCaughtBy(npc, item, player);
+			if (canCatchOnNPC.HasValue) {
+				if (!canCatchOnNPC.Value)
+					return false;
+
+				canCatchOverall = true;
+			}
+			return canCatchOverall;
+		}
+
+		public static void OnCatchNPC(Player player, NPC npc, Item item, bool failed) {
+			PlayerLoader.OnCatchNPC(player, npc, item, failed);
+			ItemLoader.OnCatchNPC(item, npc, player, failed);
+			NPCLoader.OnCaughtBy(npc, player, item, failed);
 		}
 	}
 }

@@ -33,6 +33,20 @@ namespace Terraria.ModLoader
 		protected override string LangKey => "LegacyTooltip.2";
 	}
 
+	public class MeleeNoSpeedDamageClass : VanillaDamageClass
+	{
+		protected override string LangKey => "LegacyTooltip.2";
+
+		public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {
+			if (damageClass == Generic || damageClass == Melee)
+				return StatInheritanceData.Full with { attackSpeedInheritance = 0 };
+
+			return StatInheritanceData.None;
+		}
+
+		public override bool GetEffectInheritance(DamageClass damageClass) => damageClass == Melee;
+	}
+
 	public class RangedDamageClass : VanillaDamageClass
 	{
 		protected override string LangKey => "LegacyTooltip.3";
@@ -66,6 +80,8 @@ namespace Terraria.ModLoader
 			return StatInheritanceData.None;
 		}
 
+		public override bool GetEffectInheritance(DamageClass damageClass) => damageClass == Summon;
+
 		public override bool UseStandardCritCalcs => false;
 
 		public override bool ShowStatTooltipLine(Player player, string lineName) => lineName != "CritChance";
@@ -81,6 +97,8 @@ namespace Terraria.ModLoader
 
 			return StatInheritanceData.None;
 		}
+
+		public override bool GetEffectInheritance(DamageClass damageClass) => damageClass == Magic || damageClass == Summon;
 	}
 
 	public class ThrowingDamageClass : VanillaDamageClass

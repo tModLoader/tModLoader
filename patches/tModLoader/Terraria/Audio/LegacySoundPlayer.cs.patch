@@ -1,13 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Audio/LegacySoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/LegacySoundPlayer.cs
-@@ -6,6 +_,7 @@
+@@ -5,6 +_,7 @@
+ using System;
  using System.Collections.Generic;
  using System.IO;
++using System.Linq;
  using Terraria.ID;
-+using Terraria.ModLoader;
  
  namespace Terraria.Audio
- {
 @@ -41,8 +_,8 @@
  		public SoundEffectInstance SoundInstancePixie;
  		public Asset<SoundEffect>[] SoundItem = new Asset<SoundEffect>[SoundID.ItemSoundCount];
@@ -19,22 +19,44 @@
  		public Asset<SoundEffect>[] SoundNpcKilled = new Asset<SoundEffect>[SoundID.NPCDeathCount];
  		public SoundEffectInstance[] SoundInstanceNpcKilled = new SoundEffectInstance[SoundID.NPCDeathCount];
  		public SoundEffectInstance SoundInstanceMoonlordCry;
-@@ -1036,6 +_,18 @@
- 												soundEffectInstance = SoundInstanceZombie[num8];
- 												break;
- 											}
-+										default: {
-+											// TODO, trackable sounds? verify working. return soundEffectInstance
-+											if (type == SoundLoader.CustomSoundType) {
-+												SoundLoader.customSoundInstances[num].Stop();
-+												SoundLoader.customSoundInstances[num] = SoundLoader.customSounds[num].Value.CreateInstance();
-+												SoundLoader.customSoundInstances[num].Volume = num2;
-+												SoundLoader.customSoundInstances[num].Pan = num3;
-+												//Main.PlaySoundInstance(SoundLoader.customSoundInstances[num]);
-+												soundEffectInstance = SoundLoader.customSoundInstances[num];
-+											}
-+											break;
-+										}
- 									}
- 									break;
- 							}
+@@ -96,6 +_,7 @@
+ 		}
+ 
+ 		private void LoadAll() {
++			/*
+ 			SoundMech[0] = Load("Sounds/Mech_0");
+ 			SoundGrab = Load("Sounds/Grab");
+ 			SoundPixie = Load("Sounds/Pixie");
+@@ -177,6 +_,7 @@
+ 			for (int num3 = 0; num3 < TrackableSounds.Length; num3++) {
+ 				TrackableSounds[num3] = Load("Sounds/Custom" + Path.DirectorySeparatorChar + SoundID.GetTrackableLegacySoundPath(num3));
+ 			}
++			*/
+ 		}
+ 
+ 		public void CreateAllSoundInstances() {
+@@ -185,6 +_,8 @@
+ 			}
+ 
+ 			_trackedInstances.Clear();
++
++			/*
+ 			SoundInstanceMech[0] = CreateInstance(SoundMech[0]);
+ 			SoundInstanceGrab = CreateInstance(SoundGrab);
+ 			SoundInstancePixie = CreateInstance(SoundGrab);
+@@ -262,6 +_,7 @@
+ 			for (int num5 = 0; num5 < TrackableSounds.Length; num5++) {
+ 				TrackableSoundInstances[num5] = CreateInstance(TrackableSounds[num5]);
+ 			}
++			*/
+ 		}
+ 
+ 		private SoundEffectInstance CreateInstance(Asset<SoundEffect> asset) {
+@@ -825,6 +_,7 @@
+ 							break;
+ 						default:
+ 							switch (type) {
++								// funni. This may be a decompilation artifact, but this case seems unreachable.
+ 								case 45:
+ 									num = 109;
+ 									SoundInstanceZombie[num] = SoundZombie[num].Value.CreateInstance();

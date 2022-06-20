@@ -3,11 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Terraria.Graphics;
+using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
+using Terraria.ModLoader.Core;
 using Terraria.UI;
 using Terraria.WorldBuilding;
 
@@ -30,8 +33,8 @@ namespace Terraria.ModLoader
 
 		private static readonly List<HookList> hooks = new List<HookList>();
 
-		private static HookList AddHook<F>(Expression<Func<ModSystem, F>> func) {
-			var hook = new HookList(ModLoader.Method(func));
+		private static HookList AddHook<F>(Expression<Func<ModSystem, F>> func) where F : Delegate {
+			var hook = new HookList(func.ToMethodInfo());
 
 			hooks.Add(hook);
 
@@ -40,7 +43,7 @@ namespace Terraria.ModLoader
 
 		private static void RebuildHooks() {
 			foreach (var hook in hooks) {
-				hook.arr = ModLoader.BuildGlobalHook(Systems, hook.method);
+				hook.arr = Systems.WhereMethodIsOverridden(hook.method).ToArray();
 			}
 		}
 
@@ -75,6 +78,8 @@ namespace Terraria.ModLoader
 		private static HookList HookOnWorldLoad = AddHook<Action>(s => s.OnWorldLoad);
 
 		private static HookList HookOnWorldUnload = AddHook<Action>(s => s.OnWorldUnload);
+
+		private static HookList HookCanWorldBePlayed = AddHook<Func<PlayerFileData, WorldFileData, bool>>(s => s.CanWorldBePlayed);
 
 		private static HookList HookModifyScreenPosition = AddHook<Action>(s => s.ModifyScreenPosition);
 

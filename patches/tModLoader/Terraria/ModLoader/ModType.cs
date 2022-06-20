@@ -1,4 +1,7 @@
-﻿namespace Terraria.ModLoader
+﻿using System;
+using Terraria.ModLoader.Core;
+
+namespace Terraria.ModLoader
 {
 	/// <summary>
 	/// The base type for most modded things.
@@ -21,7 +24,11 @@
 		public string FullName => $"{Mod?.Name ?? "Terraria"}/{Name}";
 
 		void ILoadable.Load(Mod mod) {
+			if (!LoaderUtils.IsValidated(GetType()))
+				ValidateType();
+
 			Mod = mod;
+			InitTemplateInstance();
 			Load();
 			Register();
 		}
@@ -57,5 +64,71 @@
 		/// Allows you to safely unload things you added in <see cref="Load"/>.
 		/// </summary>
 		public virtual void Unload() { }
+
+		/// <summary>
+		/// Create dummy objects for instanced mod-types
+		/// </summary>
+		protected virtual void InitTemplateInstance() { }
+
+		/// <summary>
+		/// Check for the correct overrides of different hook methods and fields and properties
+		/// </summary>
+		protected virtual void ValidateType() { }
+	}
+
+	public abstract class ModType<TEntity> : ModType
+	{
+		public TEntity Entity { get; internal set; }
+
+		protected override void InitTemplateInstance() {
+			Entity = CreateTemplateEntity();
+		}
+
+		protected abstract TEntity CreateTemplateEntity();
+	}
+
+	public abstract class ModType<TEntity, TModType> : ModType<TEntity> where TModType : ModType<TEntity, TModType>
+	{
+		private bool? _isCloneable;
+		/// <summary>
+		/// Whether or not this type is cloneable. Cloning is supported if<br/>
+		/// all reference typed fields in each sub-class which doesn't override Clone are marked with [CloneByReference]
+		/// </summary>
+		public virtual bool IsCloneable => _isCloneable ??= Cloning.IsCloneable<ModType<TEntity, TModType>, Func<TEntity, TModType>>(this, m => m.Clone);
+
+		/// <summary>
+		/// Whether to create new instances of this mod type via <see cref="Clone(TEntity)"/> or via the default constructor
+		/// Defaults to false (default constructor).
+		/// </summary>
+		protected virtual bool CloneNewInstances => false;
+
+		/// <summary>
+		/// Create a copy of this instanced global. Called when an entity is cloned.
+		/// </summary>
+		/// <param name="newEntity">The new clone of the entity</param>
+		/// <returns>A clone of this mod type</returns>
+		public virtual TModType Clone(TEntity newEntity) {
+			if (!IsCloneable)
+				Cloning.WarnNotCloneable(GetType());
+
+			var inst = (TModType)MemberwiseClone();
+			inst.Entity = newEntity;
+			return inst;
+		}
+
+		/// <summary>
+		/// Create a new instance of this ModType for a specific entity
+		/// </summary>
+		/// <param name="entity">The entity instance the mod type is being instantiated for</param>
+		/// <returns></returns>
+		public virtual TModType NewInstance(TEntity entity) {
+			if (CloneNewInstances)
+				return Clone(entity);
+
+			var inst = (TModType)Activator.CreateInstance(GetType());
+			inst.Mod = Mod;
+			inst.Entity = entity;
+			return inst;
+		}
 	}
 }

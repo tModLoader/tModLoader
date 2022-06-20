@@ -31,11 +31,11 @@ If you do not want to use a Patreon subscription, you should contact one of the 
 
 ## Get in touch
 
-If you would like to contact us or TML users, it's best to join our [Discord server](https://discord.me/tmodloader). To use Discord you will need to register a new account on [their website](https://discordapp.com/).
+If you would like to contact us or TML users, it's best to join our [Discord server](https://tmodloader.net/discord). To use Discord you will need to register a new account on [their website](https://discordapp.com/).
 
 ## Contributors
 ### Core team
-TML is largely created and maintained by a core team of contributors: **Blushiemagic**, **Chicken-Bones**, **Jopojelly**, **Jofairden** and **Mirsario**
+TML is largely created and maintained by a core team of contributors: **Blushiemagic**, **Chicken-Bones**, **Jopojelly**, **Jofairden**, **Mirsario** and **Solxanich**
 
 This project exists in its current state thanks to all the people who have contributed:
 

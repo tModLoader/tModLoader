@@ -8,12 +8,13 @@
  using System.Reflection;
  using System.Runtime.CompilerServices;
  using System.Text;
-@@ -11,12 +_,15 @@
+@@ -11,12 +_,16 @@
  using System.Windows.Forms;
  using Terraria.Initializers;
  using Terraria.Localization;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.Core;
++using Terraria.ModLoader.Engine;
 +using Terraria.ModLoader.Exceptions;
  using Terraria.Social;
  using Terraria.Utilities;
@@ -25,6 +26,17 @@
  	{
  		/* hide unused consts
  		public const bool IsServer = false;
+@@ -30,6 +_,10 @@
+ 		public static bool LoadedEverything;
+ 		public static IntPtr JitForcedMethodCache;
+ 
++		public static Thread MainThread { get; private set; }
++
++		public static bool IsMainThread => Thread.CurrentThread == MainThread;
++
+ 		public static float LoadedPercentage {
+ 			get {
+ 				if (ThingsToLoad == 0)
 @@ -55,21 +_,15 @@
  			LoadedEverything = true;
  		}
@@ -87,7 +99,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,32 +_,74 @@
+@@ -138,30 +_,80 @@
  			}
  		}
  
@@ -99,15 +111,23 @@
 +		// Moving all calls to Main to LaunchGame_() mitigates this risk
  		public static void LaunchGame(string[] args, bool monoArgs = false) {
 +			// It's not the Entry Thread anymore, but it still is the base thread of FNA and Main
- 			Thread.CurrentThread.Name = "Main Thread";
++			MainThread = Thread.CurrentThread;
+-			Thread.CurrentThread.Name = "Main Thread";
++			MainThread.Name = "Main Thread";
++
  			if (monoArgs)
  				args = Utils.ConvertMonoArgsToDotNet(args);
  
 +			LaunchParameters = Utils.ParseArguements(args);
 +
++			if (LaunchParameters.ContainsKey("-terrariasteamclient")) {
++				TerrariaSteamClient.Run();
++				Environment.Exit(1);
++			}
++			
 +			bool isServer = LaunchParameters.ContainsKey("-server");
 +			try {
-+				Logging.Init(isServer);
++				Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
 +				if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
 +					throw new Exception("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
 +			}
@@ -162,16 +182,15 @@
  			Platform.Get<IWindowService>().SetQuickEditEnabled(enabled: false);
 -			using (Main main = new Main()) {
 -				try {
++
++			InstallVerifier.Startup();
 +			try {
 +				ModLoader.ModLoader.EngineInit();
 +				using (Main main = new Main()) {
  					Lang.InitializeLegacyLocalization();
  					SocialAPI.Initialize();
-+					main.PostSocialInitialize();
  					LaunchInitializer.LoadParameters(main);
- 					Main.OnEnginePreload += StartForceLoad;
- 					if (!Main.dedServ)
-@@ -171,9 +_,10 @@
+@@ -171,9 +_,11 @@
  					else
  						main.DedServ();
  				}
@@ -182,9 +201,19 @@
 +			catch (Exception e) {
 +				Logging.Terraria.Fatal("Main engine crash", e);
 +				DisplayException(e);
++				Environment.Exit(1);
  			}
  		}
  
+@@ -201,6 +_,8 @@
+ 					}
+ 				}
+ 
++				TerrariaSteamClient.Shutdown();
++
+ 				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
+ 					streamWriter.WriteLine(DateTime.Now);
+ 					streamWriter.WriteLine(text);
 @@ -208,9 +_,22 @@
  				}
  

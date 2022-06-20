@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Microsoft.Xna.Framework;
 
 namespace Terraria
 {
@@ -27,6 +28,8 @@ namespace Terraria
 				throw new InvalidOperationException("Cannot set Tilemap tiles. Only used to init null tiles in Vanilla (which don't exist anymore)");
 			}
 		}
+		
+		public Tile this[Point pos] => this[pos.X, pos.Y];
 
 		internal Tilemap(ushort width, ushort height) {
 			Width = width;

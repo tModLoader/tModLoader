@@ -69,12 +69,21 @@ if [[ "$_uname" == *"_NT"* ]]; then
 	# Replace / with \\ in WINDIR env var to not confuse MonoMod about the current platform
 	# somehow busybox-w64 replaces paths in envs with normalized paths (no clue why..., maybe open an issue there?)
 	export WINDIR=${WINDIR////\\}
+
+	clear
+	sleep 1 # wait a little extra time for steam to realise that our parent process has exited
+else
+	# Kill the Steam reaper process on Linux/Mac?
+	# Sed replace all null bytes(and spaces) with spaces, grep for reaper marker.
+	if $(sed 's/\x0/ /g' /proc/$PPID/cmdline | grep -q "reaper SteamLaunch AppId=1281930"); then
+		echo "Running under Steam reaper process. Killing.." 2>&1 | tee -a "$LogFile"
+		kill -9 $PPID # _yeet_
+	fi
 fi
 
-clear
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
 	echo "Launched Using Local Dotnet"  2>&1 | tee -a "$LogFile"
-	chmod a+x "$install_dir/dotnet"
+	[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
 	exec "$install_dir/dotnet" tModLoader.dll "$@" 2>"$NativeLog"
 else
 	echo "Launched Using System Dotnet"  2>&1 | tee -a "$LogFile"

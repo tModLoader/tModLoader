@@ -17,6 +17,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static DamageClass Generic { get; private set; } = new GenericDamageClass();
 		public static DamageClass Melee { get; private set; } = new MeleeDamageClass();
+
+		/// <summary>
+		/// This is a damage class used by various projectile-only vanilla melee weapons. Attack speed has no effect on items with this damage class.
+		/// </summary>
+		public static DamageClass MeleeNoSpeed { get; private set; } = new MeleeNoSpeedDamageClass();
 		public static DamageClass Ranged { get; private set; } = new RangedDamageClass();
 		public static DamageClass Magic { get; private set; } = new MagicDamageClass();
 		public static DamageClass Summon { get; private set; } = new SummonDamageClass();
@@ -105,5 +110,11 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() => SetStaticDefaults();
+
+		public bool CountsAsClass<T>() where T : DamageClass
+			=> CountsAsClass(ModContent.GetInstance<T>());
+
+		public bool CountsAsClass(DamageClass damageClass)
+			=> DamageClassLoader.effectInheritanceCache[Type, damageClass.Type];
 	}
 }

@@ -4,8 +4,8 @@
  		}
  
  		public override bool Deserialize(BinaryReader reader, int userId) {
-+			if(Main.dedServ)
-+			return false;
++			if (Main.dedServ) // #if SERVER
++				return false;
 +
  			byte playerId = reader.ReadByte();
  			int seed = reader.ReadInt32();

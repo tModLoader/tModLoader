@@ -6,21 +6,34 @@
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
-@@ -21,16 +_,21 @@
+@@ -21,21 +_,33 @@
  		public static SocialMode Mode => _mode;
  
  		public static void Initialize(SocialMode? mode = null) {
 +			_modules = new List<ISocialModule>();
  			if (!mode.HasValue) {
  				mode = SocialMode.None;
- 				if(!Main.dedServ)
-+#if DEBUG
-+					if (!Program.LaunchParameters.ContainsKey("-nosteam"))
-+#endif
-+						if (InstallVerifier.IsValid && InstallVerifier.IsSteam)
--				mode = SocialMode.Steam;
-+							mode = SocialMode.Steam;
+ 
+ 				/*
+ 				mode = SocialMode.Steam;
+ 				*/
+-				if (!Main.dedServ) // #if !SERVER
+-					mode = SocialMode.Steam;
 +
++				if (!Main.dedServ) { // #if !SERVER
++#if DEBUG
++					if (!Program.LaunchParameters.ContainsKey("-nosteam")) {
++#endif
++						if (InstallVerifier.DistributionPlatform == DistributionPlatform.Steam) {
++							mode = SocialMode.Steam;
++						}
++#if DEBUG
++					}
++#endif
++				}
++
++				// ^^^ Confusing
+ 
  				if (Main.dedServ && Program.LaunchParameters.ContainsKey("-steam"))
  					mode = SocialMode.Steam;
  			}
@@ -30,7 +43,7 @@
  			JoinRequests = new ServerJoinRequestsManager();
  			Main.OnTickForInternalCodeOnly += JoinRequests.Update;
  			switch (Mode) {
-@@ -41,10 +_,9 @@
+@@ -46,10 +_,9 @@
  					LoadWeGame();
  					break;
  			}
@@ -43,7 +56,7 @@
  		}
  
  		public static void Shutdown() {
-@@ -68,10 +_,15 @@
+@@ -73,25 +_,45 @@
  		private static void LoadDiscord() {
  		}
  
@@ -61,29 +74,31 @@
  			Cloud = LoadModule<Terraria.Social.Steam.CloudSocialModule>();
  			Overlay = LoadModule<Terraria.Social.Steam.OverlaySocialModule>();
  			Workshop = LoadModule<Terraria.Social.Steam.WorkshopSocialModule>();
-@@ -79,14 +_,28 @@
- 			
- 			if (Main.dedServ) {
+ 			Platform = LoadModule<Terraria.Social.Steam.PlatformSocialModule>();
+ 
+-			if (Main.dedServ) {
++			if (Main.dedServ) { // #if SERVER
  				Network = LoadModule<Terraria.Social.Steam.NetServerSocialModule>();
 -				return;
 +				goto SkipClientCode;
  			}
- 			
+ 
  			Network = LoadModule<Terraria.Social.Steam.NetClientSocialModule>();
-+			
-+			SkipClientCode:
-+			
++
  			WeGameHelper.WriteDebugString("LoadSteam modules");
++
++			SkipClientCode:
 +
 +			foreach (ISocialModule module in _modules) {
 +				module.Initialize();
 +			}
 +
 +			_steamAPILoaded = true;
++			ModLoader.Engine.Steam.PostInit();
  		}
- 
++
 +		private static bool _wegameAPILoaded = false;
-+		
+ 
  		private static void LoadWeGame() {
 +			if (_wegameAPILoaded)
 +				return;
@@ -91,10 +106,21 @@
  			LoadModule<Terraria.Social.WeGame.CoreSocialModule>();
  			Cloud = LoadModule<Terraria.Social.WeGame.CloudSocialModule>();
  			Friends = LoadModule<Terraria.Social.WeGame.FriendsSocialModule>();
-@@ -96,6 +_,10 @@
+@@ -99,11 +_,19 @@
+ 
+ 			if (Main.dedServ) { // #if SERVER
+ 				Network = LoadModule<Terraria.Social.WeGame.NetServerSocialModule>();
+-				return;
++				goto SkipClientCode;
+ 			}
+-
++			
+ 			Network = LoadModule<Terraria.Social.WeGame.NetClientSocialModule>();
++
  			WeGameHelper.WriteDebugString("LoadWeGame modules");
- 			} else
- 			Network = LoadModule<Terraria.Social.WeGame.NetServerSocialModule>();
++
++			SkipClientCode:
++
 +			foreach (ISocialModule module in _modules) {
 +				module.Initialize();
 +			}

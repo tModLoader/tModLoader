@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -14,10 +13,13 @@ namespace Terraria.ModLoader
 	/// This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of ModProjectile (preferably overriding this class) to pass as parameters to Mod.AddProjectile.<br/>
 	/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile">Basic Projectile Guide</see> teaches the basics of making a modded projectile.
 	/// </summary>
-	public abstract class ModProjectile : ModTexturedType
+	public abstract class ModProjectile : ModType<Projectile, ModProjectile>
 	{
 		/// <summary> The projectile object that this ModProjectile controls. </summary>
-		public Projectile Projectile { get; internal set; }
+		public Projectile Projectile => Entity;
+
+		/// <summary>  Shorthand for Projectile.type; </summary>
+		public int Type => Projectile.type;
 
 		/// <summary> The translations for the display name of this projectile. </summary>
 		public ModTranslation DisplayName { get; internal set; }
@@ -40,15 +42,15 @@ namespace Terraria.ModLoader
 		/// <summary> If this projectile is held by the player, determines whether it is drawn in front of or behind the player's arms. Defaults to false. </summary>
 		public bool DrawHeldProjInFrontOfHeldItemAndArms { get; set; }
 
+		/// <summary>
+		/// The file name of this type's texture file in the mod loader's file space.
+		/// </summary>
+		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
+
 		/// <summary> The file name of this projectile's glow texture file in the mod loader's file space. If it does not exist it is ignored. </summary>
 		public virtual string GlowTexture => Texture + "_Glow"; //TODO: this is wasteful. We should consider AutoStaticDefaults or something... requesting assets regularly is bad perf
 
-		/// <summary>  Shorthand for Projectile.type; </summary>
-		public int Type => Projectile.type;
-
-		public ModProjectile() {
-			Projectile = new Projectile { ModProjectile = this };
-		}
+		protected override Projectile CreateTemplateEntity() => new() { ModProjectile = this };
 
 		protected sealed override void Register() {
 			ModTypeLookup<ModProjectile>.Register(this);
@@ -65,17 +67,6 @@ namespace Terraria.ModLoader
 			SetStaticDefaults();
 
 			ProjectileID.Search.Add(FullName, Type);
-		}
-
-		/// <summary>
-		/// Returns a clone of this ModProjectile. 
-		/// Allows you to decide which fields of your ModProjectile class are copied over when a new Projectile is created. 
-		/// By default this will return a memberwise clone; you will want to override this if your ModProjectile contains object references. 
-		/// </summary>
-		public virtual ModProjectile Clone(Projectile projectile) {
-			ModProjectile clone = (ModProjectile)MemberwiseClone();
-			clone.Projectile = projectile;
-			return clone;
 		}
 
 		/// <summary>
@@ -219,6 +210,13 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="hitbox"></param>
 		public virtual void ModifyDamageHitbox(ref Rectangle hitbox) {
+		}
+
+		/// <summary>
+		/// Allows you to implement dynamic damage scaling for this projectile. For example, flails do more damage when in flight and Jousting Lance does more damage the faster the player is moving. This hook runs on the owner only.
+		/// </summary>
+		/// <param name="damageScale">The damage scaling</param>
+		public virtual void ModifyDamageScaling(ref float damageScale) {
 		}
 
 		/// <summary>

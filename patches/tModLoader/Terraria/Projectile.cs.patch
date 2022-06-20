@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Projectile.cs
 +++ src/tModLoader/Terraria/Projectile.cs
-@@ -20,12 +_,13 @@
+@@ -20,12 +_,14 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Physics;
 +using Terraria.ModLoader;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
++using LegacySoundStyle = Terraria.Audio.SoundStyle;
  
  namespace Terraria
  {
@@ -45,7 +46,7 @@
 +				if (value)
 +					DamageType = DamageClass.Melee;
 +				else if (DamageType == DamageClass.Melee)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		internal bool magic {
@@ -54,7 +55,7 @@
 +				if (value)
 +					DamageType = DamageClass.Magic;
 +				else if (DamageType == DamageClass.Magic)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		internal bool ranged {
@@ -63,7 +64,7 @@
 +				if (value)
 +					DamageType = DamageClass.Ranged;
 +				else if (DamageType == DamageClass.Ranged)
-+					DamageType = DamageClass.Generic;
++					DamageType = DamageClass.Default;
 +			}
 +		}
 +		public bool minion;
@@ -93,16 +94,19 @@
  				for (int j = 0; j < 200; j++) {
  					perIDStaticNPCImmunity[i][j] = 0u;
  				}
-@@ -221,7 +_,35 @@
+@@ -221,7 +_,38 @@
  			}
  		}
  
 +		public void CloneDefaults(int TypeToClone) {
 +			int originalType = type;
-+			ModProjectile originalModProjectile = ModProjectile;
++			var originalModProjectile = ModProjectile;
++			var originalGlobals = globalProjectiles;
 +			SetDefaults(TypeToClone);
 +			type = originalType;
 +			ModProjectile = originalModProjectile;
++			globalProjectiles = originalGlobals;
++
 +			int num = ProjectileID.Sets.TrailCacheLength[type];
 +			if (num != oldPos.Length) {
 +				Array.Resize(ref oldPos, num);
@@ -121,7 +125,7 @@
  		public void SetDefaults(int Type) {
 +			ModProjectile = null;
 +			globalProjectiles = new Instanced<GlobalProjectile>[0];
-+			DamageType = DamageClass.Generic;
++			DamageType = DamageClass.Default;
 +			ArmorPenetration = 0;
 +			CritChance = 0;
 +			WhipSettings = default;
@@ -129,6 +133,18 @@
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
  			sentry = false;
+@@ -269,9 +_,11 @@
+ 			minionSlots = 0f;
+ 			soundDelay = 0;
+ 			spriteDirection = 1;
++			/*
+ 			melee = false;
+ 			ranged = false;
+ 			magic = false;
++			*/
+ 			ownerHitCheck = false;
+ 			hide = false;
+ 			lavaWet = false;
 @@ -1806,6 +_,7 @@
  				ignoreWater = true;
  			}
@@ -252,6 +268,42 @@
  		}
  
  		public static int GetNextSlot() {
+@@ -8123,6 +_,10 @@
+ 			return result;
+ 		}
+ 
++		/// <summary>
++		/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float)"/>
++		/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity.
++		/// </summary>
+ 		public static int NewProjectile(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int Type, int Damage, float KnockBack, int Owner = 255, float ai0 = 0f, float ai1 = 0f) => NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, Type, Damage, KnockBack, Owner, ai0, ai1);
+ 
+ 		public static int FindOldestProjectile() {
+@@ -8138,6 +_,24 @@
+ 			return result;
+ 		}
+ 
++		/// <summary>
++		/// Spawns a projectile into the game world with the given type. The spawn position is given in world coordinates by the X and Y parameters. SpeedX and SpeedY dictate the initial velocity. Damage and KnockBack are self explanitory. Owner is the player who spawned the projectile, almost always Main.myPlayer. ai0 and ai1 will initialize the Projectile.ai[] array with the supplied values. This can be used to pass in information to the Projectile. The Projectile AI code will have to be written to utilize those values. The return value is the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
++		/// <br/> Make sure that this method is called only by the client in charge of the source causing this projectile to spawn. Failure to do this will result in the projectile spawning once for each player in the world. For example, if Player code uses this method, make sure to first check <code>if(Main.myPlayer == Player.whoAmI)</code> to ensure that only the local player spawns the projectile.
++		/// <br/> Projectiles spawning other projectiles should check <code>if(Main.myPlayer == Projectile.owner)</code>
++		/// <br/> If the source is an NPC or non-player owned projectile, checking <code>if (Main.netMode != NetmodeID.MultiplayerClient)</code> will ensure that clients don't attempt to spawn the projectile.
++		/// </summary>
++		/// <param name="spawnSource"></param>
++		/// <param name="X"></param>
++		/// <param name="Y"></param>
++		/// <param name="SpeedX"></param>
++		/// <param name="SpeedY"></param>
++		/// <param name="Type">Either an <see cref="ProjectileID"/> entry or <see cref="ModContent.ProjectileType{T}"/>, for example <see cref="ProjectileID.FireArrow"/> or ModContent.ProjectileType&lt;MyModProjectile&gt;()</param>
++		/// <param name="Damage"></param>
++		/// <param name="KnockBack"></param>
++		/// <param name="Owner"></param>
++		/// <param name="ai0"></param>
++		/// <param name="ai1"></param>
++		/// <returns></returns>
+ 		public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = 255, float ai0 = 0f, float ai1 = 0f) {
+ 			int num = 1000;
+ 			for (int i = 0; i < 1000; i++) {
 @@ -8169,6 +_,7 @@
  			projectile.honeyWet = Collision.honey;
  			Main.projectileIdentity[Owner, num] = num;
@@ -281,7 +333,19 @@
  
  			if (Owner == Main.myPlayer) {
  				if (ProjectileID.Sets.IsAGolfBall[Type] && Damage <= 0) {
-@@ -8330,6 +_,11 @@
+@@ -8325,11 +_,23 @@
+ 
+ 				if (Type == 777 || Type == 781 || Type == 794 || Type == 797 || Type == 800 || Type == 785 || Type == 788 || Type == 791 || Type == 903 || Type == 904 || Type == 905 || Type == 906 || Type == 910 || Type == 911)
+ 					projectile.timeLeft = 180;
++
++				// Copied from 1.3, adjusted to check for actual player (servers never shoot thrower projectiles)
++				if (Main.netMode != NetmodeID.Server) {
++					Player throwingPlayer = Main.player[Owner];
++					if (throwingPlayer.AnyThrownCostReduction && throwingPlayer.HeldItem.CountsAsClass(DamageClass.Throwing))
++						projectile.noDropItem = true;
++				}
+ 			}
+ 
  			if (Type == 249)
  				projectile.frame = Main.rand.Next(5);
  
@@ -321,6 +385,16 @@
  			if (friendly && owner == Main.myPlayer && !npcProj) {
  				if ((aiStyle == 16 && !ProjectileID.Sets.RocketsSkipDamageForPlayers[type] && (timeLeft <= 1 || type == 108 || type == 164)) || (type == 286 && localAI[1] == -1f)) {
  					int myPlayer = Main.myPlayer;
+@@ -9211,7 +_,9 @@
+ 							num5 = 1.9f;
+ 							break;
+ 					}
++
+ 				}
++				ProjectileLoader.ModifyDamageScaling(this, ref num5);
+ 
+ 				if (damage > 0) {
+ 					int[] array = localNPCImmunity;
 @@ -9221,11 +_,26 @@
  							array = projectile.localNPCImmunity;
  					}
@@ -840,6 +914,15 @@
  				localAI[0] = 1f;
  			}
  		}
+@@ -27325,7 +_,7 @@
+ 				wetVelocity = base.velocity;
+ 		}
+ 
+-		private void ResetLocalNPCHitImmunity() {
++		public void ResetLocalNPCHitImmunity() {
+ 			for (int i = 0; i < 200; i++) {
+ 				localNPCImmunity[i] = 0;
+ 			}
 @@ -27419,8 +_,7 @@
  					break;
  			}
@@ -1039,6 +1122,15 @@
  					for (int k = 0; k < num5; k++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num4 * 1.5f;
+@@ -45576,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private void CreateImpactExplosion(int dustAmountMultiplier, Vector2 explosionOrigin, ref Point scanAreaStart, ref Point scanAreaEnd, int explosionRange, out bool causedShockwaves) {
++		public void CreateImpactExplosion(int dustAmountMultiplier, Vector2 explosionOrigin, ref Point scanAreaStart, ref Point scanAreaEnd, int explosionRange, out bool causedShockwaves) {
+ 			causedShockwaves = false;
+ 			int num = 4;
+ 			for (int i = scanAreaStart.X; i <= scanAreaEnd.X; i++) {
 @@ -45592,7 +_,7 @@
  					if (tileSafely2.active() && Main.tileSolid[tileSafely2.type] && !Main.tileSolidTop[tileSafely2.type])
  						continue;
@@ -1048,6 +1140,15 @@
  					for (int k = 0; k < num2; k++) {
  						Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  						obj.velocity.Y -= 3f + (float)num * 1.5f;
+@@ -45648,7 +_,7 @@
+ 			}
+ 		}
+ 
+-		private void CreateImpactExplosion2_FlailTileCollision(Vector2 explosionOrigin, bool causedShockwaves, Vector2 velocityBeforeCollision) {
++		public void CreateImpactExplosion2_FlailTileCollision(Vector2 explosionOrigin, bool causedShockwaves, Vector2 velocityBeforeCollision) {
+ 			Vector2 spinningpoint = new Vector2(7f, 0f);
+ 			Vector2 value = new Vector2(1f, 0.7f);
+ 			Color color = Color.White * 0.5f;
 @@ -46241,6 +_,11 @@
  			int num = timeLeft;
  			timeLeft = 0;

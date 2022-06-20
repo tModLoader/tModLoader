@@ -14,7 +14,7 @@ namespace ExampleMod.Content.NPCs
 	/// <summary>
 	/// The main focus of this NPC is to show how to make something similar to the vanilla bone merchant;
 	/// which means that the NPC will act like any other town NPC but won't have a happiness button, won't appear on the minimap,
-	/// and will spawn like an enemy NPC. If you want a traditional town NPC instead, <see cref="ExamplePerson"/>.
+	/// and will spawn like an enemy NPC. If you want a traditional town NPC instead, see <see cref="ExamplePerson"/>.
 	/// </summary>
 	public class ExampleBoneMerchant : ModNPC
 	{
@@ -37,6 +37,10 @@ namespace ExampleMod.Content.NPCs
 			//To reiterate, since this NPC isn't technically a town NPC, we need to tell the game that we still want this NPC to have a custom/randomized name when they spawn.
 			//In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
 			NPCID.Sets.SpawnsWithCustomName[Type] = true;
+
+			//The vanilla Bone Merchant cannot interact with doors (open or close them, specifically), but if you want your NPC to be able to interact with them despite this,
+			//uncomment this line below.
+			//NPCID.Sets.AllowDoorInteraction[Type] = true;
 
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {

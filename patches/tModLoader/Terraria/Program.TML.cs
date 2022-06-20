@@ -2,13 +2,12 @@ using ReLogic.OS;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Xml.Linq;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace Terraria
 {
@@ -128,6 +127,13 @@ namespace Terraria
 		private static void AttemptSupportHighDPI(bool isServer) {
 			if (isServer)
 				return;
+
+			if (Platform.IsWindows) {
+				[System.Runtime.InteropServices.DllImport("user32.dll")]
+				static extern bool SetProcessDPIAware();
+
+				SetProcessDPIAware();
+			}
 
 			SDL2.SDL.SDL_VideoInit(null);
 			SDL2.SDL.SDL_GetDisplayDPI(0, out var ddpi, out float hdpi, out float vdpi);

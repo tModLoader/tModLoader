@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria.Graphics;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -20,13 +20,6 @@ namespace Terraria.ModLoader
 	public abstract partial class ModSystem : ModType
 	{
 		protected override void Register() {
-			// @TODO: Remove on release
-			var type = GetType();
-
-			if (!LoaderUtils.HasMethod(type, typeof(ModSystem), nameof(SaveWorldData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModSystem), "SaveWorldData"))
-				throw new Exception($"{type} has old SaveData callback with no arguments but not new SaveData with TagCompound, not loading the mod to avoid wiping mod data");
-			// @TODO: END Remove on release
-
 			SystemLoader.Add(this);
 			ModTypeLookup<ModSystem>.Register(this);
 		}
@@ -45,6 +38,11 @@ namespace Terraria.ModLoader
 		public virtual void OnModLoad() { }
 
 		/// <summary>
+		/// This hook is called right before Mod.UnLoad()
+		/// </summary>
+		public virtual void OnModUnload() { }
+
+		/// <summary>
 		/// Allows you to load things in your system after the mod's content has been setup (arrays have been resized to fit the content, etc).
 		/// </summary>
 		public virtual void PostSetupContent() { }
@@ -60,6 +58,12 @@ namespace Terraria.ModLoader
 		/// <br/> You can use this to edit recipes added by other mods.
 		/// </summary>
 		public virtual void PostAddRecipes() { }
+
+		/// <summary>
+		/// Override this method to do treatment about recipes once they have been setup. You shouldn't edit any recipe here.
+		/// </summary>
+		public virtual void PostSetupRecipes() {
+		}
 
 		/// <summary>
 		/// Override this method to add recipe groups to the game.
@@ -245,7 +249,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it.
 		/// All fields are measured in in-game minutes per real-life second (min/sec).
-		/// You may want to consider <see cref="Main.fastForwardTime"/> and <see cref="CreativePowerManager.Instance.GetPower{CreativePowers.FreezeTime}().Enabled"/> here.
+		/// You may want to consider <see cref="Main.fastForwardTime"/> and CreativePowerManager.Instance.GetPower&lt;CreativePowers.FreezeTime&gt;().Enabled here.
 		/// </summary>
 		/// <param name="timeRate">The speed at which time flows in min/sec.</param>
 		/// <param name="tileUpdateRate">The speed at which tiles in the world update in min/sec.</param>
@@ -268,6 +272,18 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="tag"> The TagCompound to load data from. </param>
 		public virtual void LoadWorldData(TagCompound tag) { }
+
+		/// <summary>
+		/// Allows you to prevent the world and player from being loaded/selected as a valid combination, similar to Journey Mode pairing.
+		/// </summary>
+		public virtual bool CanWorldBePlayed(PlayerFileData playerData, WorldFileData worldFileData) {
+			return true;
+		}
+
+		public virtual string WorldCanBePlayedRejectionMessage(PlayerFileData playerData, WorldFileData worldData) {
+			return $"The selected character {playerData.Name} can not be used with the selected world {worldData.Name}.\n" +
+							$"This could be due to mismatched Journey Mode or other mod specific changes.";
+		}
 
 		/// <summary>
 		/// Allows you to send custom data between clients and server, which will be handled in <see cref="NetReceive"/>. This is useful for syncing information such as bosses that have been defeated.

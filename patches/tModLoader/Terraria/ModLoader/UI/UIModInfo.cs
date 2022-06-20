@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
@@ -182,9 +183,9 @@ namespace Terraria.ModLoader.UI
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(SoundID.MenuClose);
 
-			ModOrganizer.DeleteMod(_localMod.modFile.path);
+			ModOrganizer.DeleteMod(_localMod);
 
-			Interface.modBrowser.ModifyUIModDownloadItemInstalled(_localMod.Name, null);
+			Task.Run(() => { Interface.modBrowser.InnerPopulateModBrowser(); });
 
 			Main.menuMode = _gotoMenu;
 		}
@@ -196,15 +197,17 @@ namespace Terraria.ModLoader.UI
 
 		private void VisitModSteamPage(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
+			VisitModSteamPageInner();
+		}
 
+		private void VisitModSteamPageInner() {
 			string url = $"http://steamcommunity.com/sharedfiles/filedetails/?id={_publishedFileId}";
 
-			if (Social.Steam.WorkshopHelper.ModManager.SteamUser && Steamworks.SteamUtils.IsOverlayEnabled())
+			if (WorkshopHelper.ModManager.SteamUser && Steamworks.SteamUtils.IsOverlayEnabled())
 				Steamworks.SteamFriends.ActivateGameOverlayToWebPage(url, Steamworks.EActivateGameOverlayToWebPageMode.k_EActivateGameOverlayToWebPageMode_Modal);
 			else
 				Utils.OpenToURL(url);
 		}
-
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			base.Draw(spriteBatch);
@@ -229,7 +232,8 @@ namespace Terraria.ModLoader.UI
 				_loading = true;
 				_ready = false;
 
-				_info = Social.Steam.WorkshopHelper.QueryHelper.GetDescription(ulong.Parse(_publishedFileId));
+				_info = "Steam";
+				VisitModSteamPageInner();
 
 				if (string.IsNullOrWhiteSpace(_info)) {
 					_info = Language.GetTextValue("tModLoader.ModInfoNoDescriptionAvailable");

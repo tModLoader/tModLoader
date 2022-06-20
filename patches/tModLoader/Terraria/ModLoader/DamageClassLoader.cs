@@ -13,6 +13,7 @@ namespace Terraria.ModLoader
 			DamageClass.Default,
 			DamageClass.Generic,
 			DamageClass.Melee,
+			DamageClass.MeleeNoSpeed,
 			DamageClass.Ranged,
 			DamageClass.Magic,
 			DamageClass.Summon,

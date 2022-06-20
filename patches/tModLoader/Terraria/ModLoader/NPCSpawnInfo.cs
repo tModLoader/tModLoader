@@ -20,10 +20,11 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The player that this NPC is spawning around.
 		/// For convenience, here are the player zones, which are also useful for determining NPC spawn:
+		/// (ZoneGranite, ZoneMarble, ZoneHive, ZoneGemCave are not actually proper spawning related checks, they are for visuals only (RGB), determined by the backwall type)
 		/// <list type="bullet">
 		/// <item><description>ZoneDungeon</description></item>
 		/// <item><description>ZoneCorrupt</description></item>
-		/// <item><description>ZoneHoly</description></item>
+		/// <item><description>ZoneHallow</description></item>
 		/// <item><description>ZoneMeteor</description></item>
 		/// <item><description>ZoneJungle</description></item>
 		/// <item><description>ZoneSnow</description></item>
@@ -45,6 +46,8 @@ namespace Terraria.ModLoader
 		/// <item><description>ZoneBeach</description></item>
 		/// <item><description>ZoneRain</description></item>
 		/// <item><description>ZoneSandstorm</description></item>
+		/// <item><description>ZoneOldOneArmy</description></item>
+		/// <item><description>ZoneGraveyard</description></item>
 		/// </list>
 		/// </summary>
 		public Player Player;

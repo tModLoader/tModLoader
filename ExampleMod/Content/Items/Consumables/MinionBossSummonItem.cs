@@ -46,7 +46,7 @@ namespace ExampleMod.Content.Items.Consumables
 			if (player.whoAmI == Main.myPlayer) {
 				// If the player using the item is the client
 				// (explicitely excluded serverside here)
-				SoundEngine.PlaySound(SoundID.Roar, player.position, 0);
+				SoundEngine.PlaySound(SoundID.Roar, player.position);
 
 				int type = ModContent.NPCType<MinionBossBody>();
 

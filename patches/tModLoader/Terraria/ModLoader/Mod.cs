@@ -25,7 +25,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal TmodFile File { get; set; }
 		/// <summary>
-		/// The assembly code this is loaded when tModLoader loads this mod.
+		/// The assembly code this is loaded when tModLoader loads this mod. <br/>
+		/// Do NOT call <see cref="Assembly.GetTypes"/> on this as it will error out if the mod uses the <see cref="ExtendsFromModAttribute"/> attribute to inherit from weakly referenced mods. Use <see cref="AssemblyManager.GetLoadableTypes(Assembly)"/> instead.
 		/// </summary>
 		public Assembly Code { get; internal set; }
 		/// <summary>
@@ -54,10 +55,6 @@ namespace Terraria.ModLoader
 		/// Whether or not this mod will automatically add images in the Gores folder as gores to the game, along with any ModGore classes that share names with the images. This means you do not need to manually call Mod.AddGore.
 		/// </summary>
 		public bool GoreAutoloadingEnabled { get; init; } = true;
-		/// <summary>
-		/// Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, and Sounds/NPCKilled to add them as npcKilled sounds. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any ModSound classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.
-		/// </summary>
-		public bool SoundAutoloadingEnabled { get; init; } = true;
 		/// <summary>
 		/// Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them.
 		/// </summary>
@@ -89,13 +86,15 @@ namespace Terraria.ModLoader
 
 		public GameContent.Bestiary.ModSourceBestiaryInfoElement ModSourceBestiaryInfoElement;
 
+		public PreJITFilter PreJITFilter { get; protected set; } = new PreJITFilter();
+
 		internal void AutoloadConfig()
 		{
 			if (Code == null)
 				return;
 
 			// TODO: Attribute to specify ordering of ModConfigs
-			foreach (Type type in Code.GetTypes().OrderBy(type => type.FullName))
+			foreach (Type type in AssemblyManager.GetLoadableTypes(Code).OrderBy(type => type.FullName))
 			{
 				if (type.IsAbstract)
 				{

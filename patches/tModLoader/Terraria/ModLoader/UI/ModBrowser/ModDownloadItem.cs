@@ -16,6 +16,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 		public readonly string PublishId;
 		public readonly bool HasUpdate;
 		public readonly bool UpdateIsDowngrade;
+
+		internal bool NeedsGameRestart;
 		public LocalMod Installed { get; internal set; }
 		public readonly string Version;
 
@@ -32,7 +34,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 
 		private bool IsInstalled => Installed != null;
 
-		public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion, string homepage) {
+		public ModDownloadItem(string displayName, string name, string version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, bool hasUpdate, bool updateIsDowngrade, LocalMod installed, string modloaderversion, string homepage, bool needsRestart) {
 			ModName = name;
 			DisplayName = displayName;
 			DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
@@ -48,6 +50,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			TimeStamp = timeStamp;
 			HasUpdate = hasUpdate;
 			UpdateIsDowngrade = updateIsDowngrade;
+			NeedsGameRestart = needsRestart;
 			Installed = installed;
 			Version = version;
 			ModloaderVersion = modloaderversion;
