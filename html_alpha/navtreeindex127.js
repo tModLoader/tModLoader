@@ -1,5 +1,15 @@
 var NAVTREEINDEX127 =
 {
+"namespace_terraria_1_1_physics.html#abfac8d9670e4352b70d1bd6c2fe56887adefe967ad0373b2274fc298f19125ca7":[1,0,2,18,7,1],
+"namespace_terraria_1_1_server.html":[1,0,2,19],
+"namespace_terraria_1_1_social.html":[1,0,2,20],
+"namespace_terraria_1_1_social.html#a266edd606831aa4890a0869ce1660a49":[1,0,2,20,5],
+"namespace_terraria_1_1_social.html#a266edd606831aa4890a0869ce1660a49a4db4563826bad0eb2f60ee6e42d0ea4b":[1,0,2,20,5,1],
+"namespace_terraria_1_1_social.html#a266edd606831aa4890a0869ce1660a49a69b4cc6897c381da5d64c9bff7c19c85":[1,0,2,20,5,2],
+"namespace_terraria_1_1_social.html#a266edd606831aa4890a0869ce1660a49a6adf97f83acf6453d4a6a4b1070f3754":[1,0,2,20,5,0],
+"namespace_terraria_1_1_social_1_1_base.html":[1,0,2,20,0],
+"namespace_terraria_1_1_social_1_1_base.html#a58bca1bdff7c4ffb58fe4fd388c40440":[1,0,2,20,0,22],
+"namespace_terraria_1_1_social_1_1_base.html#a6edb177570a11bee6c1a8d76d8a67eed":[1,0,2,20,0,21],
 "namespace_terraria_1_1_social_1_1_base.html#a6edb177570a11bee6c1a8d76d8a67eeda3d067bedfe2f4677470dd6ccf64d05ed":[1,0,2,20,0,21,2],
 "namespace_terraria_1_1_social_1_1_base.html#a6edb177570a11bee6c1a8d76d8a67eeda47f9082fc380ca62d531096aa1d110f1":[1,0,2,20,0,21,0],
 "namespace_terraria_1_1_social_1_1_base.html#a6edb177570a11bee6c1a8d76d8a67eedaf98de2598c00a8e10bdce048fa0c4604":[1,0,2,20,0,21,1],
@@ -239,15 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a23b6ccf3902796d61cb83f8f059b6e1d":[2,0,2,4,61,2],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a3d5a809d563f965fba299d813a9e854b":[2,0,2,4,61,4],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a4baf470250dcd9bad267adbecb5b9d46":[2,0,2,4,61,3],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a86ab3dc84a692425f87ced1dbefe9ac6":[2,0,2,4,61,0],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#ad0c15e7f3bb576b2516f7ef49ed93be4":[2,0,2,4,61,5],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html":[2,0,2,4,62],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html#a1f252b16c4a3223ceff58c1204b35c44":[2,0,2,4,62,2],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html#a6883a5166c14de2d969cd5e0009aa82d":[2,0,2,4,62,0],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html#aaefd9f75613e3afe65b35747c98af8be":[2,0,2,4,62,1],
-"struct_terraria_1_1_data_structures_1_1_placement_hook.html":[2,0,2,4,63],
-"struct_terraria_1_1_data_structures_1_1_placement_hook.html#a076d26085aa1c74c7b06b7551c893477":[2,0,2,4,63,1],
-"struct_terraria_1_1_data_structures_1_1_placement_hook.html#a1349c234da941ca31270506b3beee2c1":[2,0,2,4,63,10],
-"struct_terraria_1_1_data_structures_1_1_placement_hook.html#a2f3c228cd0b330d4912c96fcffe6bacb":[2,0,2,4,63,9],
-"struct_terraria_1_1_data_structures_1_1_placement_hook.html#a31f4b9e2e4176e0988a8572d4c04f773":[2,0,2,4,63,6]
+"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a86ab3dc84a692425f87ced1dbefe9ac6":[2,0,2,4,61,0]
 };

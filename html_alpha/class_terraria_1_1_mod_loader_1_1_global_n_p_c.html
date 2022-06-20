@@ -97,6 +97,8 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_glob
  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#details">More...</a></p>
 
 <p>Inherits <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_type.html">Terraria.ModLoader.GlobalType&lt; NPC, GlobalNPC &gt;</a>.</p>
+
+<p>Inherited by <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_n_p_c.html">Terraria.ModLoader.Default.UnloadedGlobalNPC</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -192,6 +194,9 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 <tr class="memitem:a864f48a10f6273f77c6a089b9baa8e4c"><td class="memItemLeft" align="right" valign="top"><a id="a864f48a10f6273f77c6a089b9baa8e4c"></a>
 <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html">GlobalNPC</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Instance</b> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="separator:a864f48a10f6273f77c6a089b9baa8e4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a368930d51e9aed4ca04782c8d46f216e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a368930d51e9aed4ca04782c8d46f216e">LoadData</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:a368930d51e9aed4ca04782c8d46f216e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to load custom data that you have saved for the given npc.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a368930d51e9aed4ca04782c8d46f216e">More...</a><br /></td></tr>
+<tr class="separator:a368930d51e9aed4ca04782c8d46f216e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa29e95cbf9f6176b105bd314401b49a8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aa29e95cbf9f6176b105bd314401b49a8">ModifyGlobalLoot</a> (<a class="el" href="struct_terraria_1_1_mod_loader_1_1_global_loot.html">GlobalLoot</a> globalLoot)</td></tr>
 <tr class="memdesc:aa29e95cbf9f6176b105bd314401b49a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to add and modify global loot rules that are conditional, i.e. vanilla's biome keys and souls.<br  />
  The Basic <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> Drops and Loot 1.4 Guideexplains how to use this hook to modify npc loot.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#aa29e95cbf9f6176b105bd314401b49a8">More...</a><br /></td></tr>
@@ -224,6 +229,11 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 <tr class="memitem:abe8525d289c7727bf35050635fbf8a10"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#abe8525d289c7727bf35050635fbf8a10">ModifyTypeName</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, ref string typeName)</td></tr>
 <tr class="memdesc:abe8525d289c7727bf35050635fbf8a10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the type name of this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> dynamically.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#abe8525d289c7727bf35050635fbf8a10">More...</a><br /></td></tr>
 <tr class="separator:abe8525d289c7727bf35050635fbf8a10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ec08a02bb42d8439580c39e3827e059"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5ec08a02bb42d8439580c39e3827e059">NeedSaving</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc)</td></tr>
+<tr class="memdesc:a5ec08a02bb42d8439580c39e3827e059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make a npc be saved even if it's not a townNPC and NPCID.Sets.SavesAndLoads[npc.type] is false. <br  />
+<b>NOTE:</b> A town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will always be saved (except the Travelling Merchant that never will). <br  />
+<b>NOTE:</b> A <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> that needs saving will not despawn naturally.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a5ec08a02bb42d8439580c39e3827e059">More...</a><br /></td></tr>
+<tr class="separator:a5ec08a02bb42d8439580c39e3827e059"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af868081d4d53a7bbb258b5552098bfb0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af868081d4d53a7bbb258b5552098bfb0">OnCaughtBy</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_item.html">Item</a> item, bool failed)</td></tr>
 <tr class="memdesc:af868081d4d53a7bbb258b5552098bfb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when the given item attempts to catch the given <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#af868081d4d53a7bbb258b5552098bfb0">More...</a><br /></td></tr>
 <tr class="separator:af868081d4d53a7bbb258b5552098bfb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -272,6 +282,13 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 <tr class="memitem:a7a39ccf9f8d102eee9f274dc291bfb24"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7a39ccf9f8d102eee9f274dc291bfb24">ResetEffects</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc)</td></tr>
 <tr class="memdesc:a7a39ccf9f8d102eee9f274dc291bfb24"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is where you reset any fields you add to your subclass to their default states. This is necessary in order to reset your fields if they are conditionally set by a tick update but the condition is no longer satisfied.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7a39ccf9f8d102eee9f274dc291bfb24">More...</a><br /></td></tr>
 <tr class="separator:a7a39ccf9f8d102eee9f274dc291bfb24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a813f82ac6e7befc15273bf5f652672"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a8a813f82ac6e7befc15273bf5f652672">SaveData</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, <a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a> tag)</td></tr>
+<tr class="memdesc:a8a813f82ac6e7befc15273bf5f652672"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to save custom data for the given npc. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values. <br  />
+<b>NOTE:</b> The npc may be saved even if NeedSaving returns false and npc is not a townNPC, if another mod returns true on NeedSaving.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a8a813f82ac6e7befc15273bf5f652672">More...</a><br /></td></tr>
+<tr class="separator:a8a813f82ac6e7befc15273bf5f652672"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5786ddd3abbbc08e6fe6987e06afd45"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ab5786ddd3abbbc08e6fe6987e06afd45">ScaleExpertStats</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, int numPlayers, float bossLifeScale)</td></tr>
 <tr class="memdesc:ab5786ddd3abbbc08e6fe6987e06afd45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to customize an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>'s stats in expert mode.  <a href="class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#ab5786ddd3abbbc08e6fe6987e06afd45">More...</a><br /></td></tr>
 <tr class="separator:ab5786ddd3abbbc08e6fe6987e06afd45"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1704,6 +1721,51 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 
 </div>
 </div>
+<a id="a368930d51e9aed4ca04782c8d46f216e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a368930d51e9aed4ca04782c8d46f216e">&#9670;&nbsp;</a></span>LoadData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalNPC.LoadData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td>
+          <td class="paramname"><em>tag</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to load custom data that you have saved for the given npc. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td></td></tr>
+    <tr><td class="paramname">tag</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aa29e95cbf9f6176b105bd314401b49a8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa29e95cbf9f6176b105bd314401b49a8">&#9670;&nbsp;</a></span>ModifyGlobalLoot()</h2>
 
@@ -2211,6 +2273,45 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 </div><div class="memdoc">
 
 <p>Allows you to modify the type name of this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> dynamically. </p>
+
+</div>
+</div>
+<a id="a5ec08a02bb42d8439580c39e3827e059"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ec08a02bb42d8439580c39e3827e059">&#9670;&nbsp;</a></span>NeedSaving()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.GlobalNPC.NeedSaving </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to make a npc be saved even if it's not a townNPC and NPCID.Sets.SavesAndLoads[npc.type] is false. <br  />
+<b>NOTE:</b> A town <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> will always be saved (except the Travelling Merchant that never will). <br  />
+<b>NOTE:</b> A <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> that needs saving will not despawn naturally. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_n_p_c.html#afe199e6d962fecbd85724b8aab8365fc">Terraria.ModLoader.Default.UnloadedGlobalNPC</a>.</p>
 
 </div>
 </div>
@@ -3025,6 +3126,55 @@ Return true to allow an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">npc</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8a813f82ac6e7befc15273bf5f652672"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a813f82ac6e7befc15273bf5f652672">&#9670;&nbsp;</a></span>SaveData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.GlobalNPC.SaveData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td>
+          <td class="paramname"><em>npc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_compound.html">TagCompound</a>&#160;</td>
+          <td class="paramname"><em>tag</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to save custom data for the given npc. <br  />
+ <br  />
+<b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
+<b>NOTE:</b> Try to only save data that isn't default values. <br  />
+<b>NOTE:</b> The npc may be saved even if NeedSaving returns false and npc is not a townNPC, if another mod returns true on NeedSaving. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">npc</td><td></td></tr>
+    <tr><td class="paramname">tag</td><td>The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument</td></tr>
   </table>
   </dd>
 </dl>

@@ -1,5 +1,15 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html":[2,0,2,7,9],
+"struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html#ade2fe4607873b6bd3040c095c0f8d7a8":[2,0,2,7,9,0],
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html":[2,0,2,7,3,1,0],
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#a17645c51337d8b86baacfc7450ddced0":[2,0,2,7,3,1,0,1],
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#aa4883b4580fad391a92ffdf11cf092b9":[2,0,2,7,3,1,0,4],
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#ac4d3d362dc2f9dcdf633d2ea74a120aa":[2,0,2,7,3,1,0,3],
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#ac70d106579e16454e9e0d66a346653e6":[2,0,2,7,3,1,0,0],
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#af5965cf3be36f63b793098547da2c3f3":[2,0,2,7,3,1,0,2],
+"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html":[2,0,2,7,10],
+"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html#ad78d3c58251d7cfb17cb43040944587b":[2,0,2,7,10,0],
 "struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html":[2,0,2,7,11],
 "struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html#a5ef515cd2a076fbb5eef1f6c4e64525b":[2,0,2,7,11,0],
 "struct_terraria_1_1_graphics_1_1_renderers_1_1_particle_renderer_settings.html":[2,0,2,7,4,12],
@@ -239,15 +249,5 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_net_message_1_1_net_sound_info.html#a53f81fe7f517340144536b7bf63844a7":[2,0,2,51,0,3],
 "struct_terraria_1_1_net_message_1_1_net_sound_info.html#aa3fbaddabacaad9df15391c42dd3bdb1":[2,0,2,51,0,0],
 "struct_terraria_1_1_net_message_1_1_net_sound_info.html#ab8f4648322651a0c71bf6805596bf43d":[2,0,2,51,0,6],
-"struct_terraria_1_1_net_message_1_1_net_sound_info.html#acc565e82a88f05bfef5a9e1f75c4bd45":[2,0,2,51,0,4],
-"struct_terraria_1_1_net_message_1_1_net_sound_info.html#af889fad520169e3b3b5c9196f2698060":[2,0,2,51,0,1],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html":[2,0,2,17,1],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html#a00f6210c628523d02300193278e09678":[2,0,2,17,1,2],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html#a1346bc5acd51b5f34abcc97ba2646643":[2,0,2,17,1,4],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html#a4d457fed41315c5cf4e2fcb7e58da23f":[2,0,2,17,1,1],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html#a69806ed029e3f0ae4b8b733906c61b5d":[2,0,2,17,1,0],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html#ab4a5ca8792cc7cea7a8c8426aee4b08a":[2,0,2,17,1,3],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html#ad3a2add2bfcb23905026a8211a98254b":[2,0,2,17,1,5],
-"struct_terraria_1_1_physics_1_1_ball_pass_through_event.html":[2,0,2,17,2],
-"struct_terraria_1_1_physics_1_1_ball_pass_through_event.html#a3d470c9ebf7a6a23624ba736a002f532":[2,0,2,17,2,0]
+"struct_terraria_1_1_net_message_1_1_net_sound_info.html#acc565e82a88f05bfef5a9e1f75c4bd45":[2,0,2,51,0,4]
 };

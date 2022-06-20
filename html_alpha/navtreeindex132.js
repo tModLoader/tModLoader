@@ -1,5 +1,15 @@
 var NAVTREEINDEX132 =
 {
+"struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#aacad7d5216477108f14967de7cdcccb1":[2,0,2,22,1,0,0,6],
+"struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#ac80737c586a6bcbf70db33b05ab47c8f":[2,0,2,22,1,0,0,4],
+"struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#aeb968b7a48cec069c8549c1286c5b056":[2,0,2,22,1,0,0,1],
+"struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#afaf0cb4676d5a15622a05c08f9bec972":[2,0,2,22,1,0,0,3],
+"struct_terraria_1_1_wall_type_data.html":[2,0,2,80],
+"struct_terraria_1_1_wall_type_data.html#a6b7b7139abf9651bc39c851546c48840":[2,0,2,80,0],
+"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html":[2,0,2,81,0],
+"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#a3585492e96a7ea9e100fe283e21d3761":[2,0,2,81,0,0],
+"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#aa6fbcb750bdd0bd7a7937f1d34692e33":[2,0,2,81,0,2],
+"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#af6ed87933efa40a3fc12f8313da4903f":[2,0,2,81,0,3],
 "struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#afbf2c9dfdb376ac34d2aa55ae426a1f4":[2,0,2,81,0,1],
 "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html":[2,0,2,23,10],
 "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#ab83da6d68a7168365ec414b95123af88":[2,0,2,23,10,1],

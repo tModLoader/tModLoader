@@ -1225,7 +1225,9 @@ var hierarchy =
               [ "Terraria.ModLoader.GlobalProjectile", "class_terraria_1_1_mod_loader_1_1_global_projectile.html", null ]
             ] ],
             [ "Terraria.ModLoader.GlobalType< NPC, GlobalNPC >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
-              [ "Terraria.ModLoader.GlobalNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html", null ]
+              [ "Terraria.ModLoader.GlobalNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html", [
+                [ "Terraria.ModLoader.Default.UnloadedGlobalNPC", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_n_p_c.html", null ]
+              ] ]
             ] ],
             [ "Terraria.ModLoader.IO.TagSerializer< Point16, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
               [ "Terraria.ModLoader.IO.Point16Serializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html", null ]

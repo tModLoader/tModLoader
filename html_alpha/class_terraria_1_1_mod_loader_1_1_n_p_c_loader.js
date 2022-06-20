@@ -59,6 +59,7 @@ var class_terraria_1_1_mod_loader_1_1_n_p_c_loader =
     [ "ReadExtraAI", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a6f16a5e9d056d3a1ad79c7fae6d04c94", null ],
     [ "ReceiveExtraAI", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ac96ad549e49eea56fdc7cae72bad8376", null ],
     [ "ResetEffects", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a34f627c957c08c92fd787ff56ba8a24c", null ],
+    [ "SavesAndLoads", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a2cadeec333785db4c3b3bb264c4aee9d", null ],
     [ "ScaleExpertStats", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ad2ff73bdde7c90ef233017993c111805", null ],
     [ "SendExtraAI", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#ad20200fbeb8230fb9fa1026ab0e76aa0", null ],
     [ "SetBestiary", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a3d7568b4bb923f327edc50faf935c7f4", null ],

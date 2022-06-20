@@ -1091,6 +1091,7 @@ var annotated_dup =
           [ "UnloadedChest", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_chest.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_chest" ],
           [ "UnloadedDresser", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_dresser.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_dresser" ],
           [ "UnloadedGlobalItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_item.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_item" ],
+          [ "UnloadedGlobalNPC", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_n_p_c.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_n_p_c" ],
           [ "UnloadedItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_item" ],
           [ "UnloadedNonSolidTile", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_non_solid_tile.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_non_solid_tile" ],
           [ "UnloadedPlayer", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_player.html", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_player" ],

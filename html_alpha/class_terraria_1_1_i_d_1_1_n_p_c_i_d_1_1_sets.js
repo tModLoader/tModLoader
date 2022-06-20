@@ -46,7 +46,6 @@ var class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets =
     [ "PrettySafe", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a212e20ccbd598feaa14a04a1bb2a3f70", null ],
     [ "ProjectileNPC", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#ad1f748aae4b3a3e71721c6e758f6d5ea", null ],
     [ "RespawnEnemyID", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#aa27335d0510164ea1d52a3e4c630b094", null ],
-    [ "SavesAndLoads", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#ac95ccbf8991fd2d687f83a682c7aa541", null ],
     [ "ShouldBeCountedAsBoss", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#ae0993420dfb7274cc4d4e52dcf6f15ab", null ],
     [ "Skeletons", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a33dd8411a4a6843425c75d487c565836", null ],
     [ "SpawnFromLastEmptySlot", "class_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets.html#a879731020ef688a3964917b7de50e6c1", null ],

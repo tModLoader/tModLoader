@@ -1,5 +1,10 @@
 var NAVTREEINDEX91 =
 {
+"class_terraria_1_1_mod_loader_1_1_info_display.html#ae285fde494d659bdefb7f750f6268e06":[2,0,2,13,57,1],
+"class_terraria_1_1_mod_loader_1_1_info_display_loader.html":[2,0,2,13,58],
+"class_terraria_1_1_mod_loader_1_1_info_display_loader.html#a551082f32fc6fc18e810f31f2bac6c0f":[2,0,2,13,58,2],
+"class_terraria_1_1_mod_loader_1_1_info_display_loader.html#a558778446e3bbe26b6e9ab0ccfb32d59":[2,0,2,13,58,3],
+"class_terraria_1_1_mod_loader_1_1_info_display_loader.html#a8f52f8e8467f3d48bc150e56d0fa1b5b":[2,0,2,13,58,6],
 "class_terraria_1_1_mod_loader_1_1_info_display_loader.html#aa8bedd5b198cbbd9a3b9f77cc3ab10eb":[2,0,2,13,58,0],
 "class_terraria_1_1_mod_loader_1_1_info_display_loader.html#aceb3cdb2b69afe301fd2b8dac850f910":[2,0,2,13,58,5],
 "class_terraria_1_1_mod_loader_1_1_info_display_loader.html#ad8ac690ba02571a9124a43e5f1bb2b8e":[2,0,2,13,58,7],
@@ -244,10 +249,5 @@ var NAVTREEINDEX91 =
 "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a481cad51c128042f747deb419ffc2c2c":[2,0,2,13,81,1],
 "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a4fe4bbea784e22795ee90064294e0db4":[2,0,2,13,81,5],
 "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a5e003c65afe802f577b3cb23358a9714":[2,0,2,13,81,7],
-"class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a66f5e242de09cf179a78f3e539740e9b":[2,0,2,13,81,8],
-"class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a7367946fefa191eb4d75cac029f9df62":[2,0,2,13,81,10],
-"class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a85a519a95aea0a57f446f5c793601a8b":[2,0,2,13,81,0],
-"class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a8786b20d6be9a7d52167982f3d00aaea":[2,0,2,13,81,27],
-"class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a88309fabd8ebfa0797002b300bd68239":[2,0,2,13,81,6],
-"class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a8a4117f5c634097ece7c1823c32223c3":[2,0,2,13,81,19]
+"class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html#a66f5e242de09cf179a78f3e539740e9b":[2,0,2,13,81,8]
 };

@@ -28,6 +28,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "GetAlpha", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a03fca19017e6e5def07a9b80d014b415", null ],
     [ "GetChat", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa63ef2a98431cd3ffe9f74e198141a28", null ],
     [ "HitEffect", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a22d1c3de35a14161c20c5544a35b5420", null ],
+    [ "LoadData", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aef1d173cc2af87234d7c00b96ff82ddb", null ],
     [ "ModifyHitByItem", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aadf9eeffd3975257af64313a257b5295", null ],
     [ "ModifyHitByProjectile", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a95122e1a8db39a14617a8d93c187efc8", null ],
     [ "ModifyHitNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a10bb42e54445d397e5a28277ed9c0d12", null ],
@@ -35,6 +36,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "ModifyHoverBoundingBox", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ac140a1c20c1b11509616bdf9ae2d7823", null ],
     [ "ModifyNPCLoot", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a0cd9c8aa8696ed906faee74df121ee9c", null ],
     [ "ModifyTypeName", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2e0fc1bbed2762481b009f47dd318ee5", null ],
+    [ "NeedSaving", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a140be03c204e3f5e7713dff8b07f69b1", null ],
     [ "OnCaughtBy", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a936a7b0eb2a2d555ef7bd6a48dd24ea3", null ],
     [ "OnChatButtonClicked", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1ee36b9bb95769ce0c242ee45fdf73d2", null ],
     [ "OnGoToStatue", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#af12874ea363df07665bc18c3dbd34ee8", null ],
@@ -52,6 +54,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "ReceiveExtraAI", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a3ff34ad5598cdf5e664eaa32d687d1c0", null ],
     [ "Register", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a841922b04a80c736dcb1c55e3818533a", null ],
     [ "ResetEffects", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a624976764e51f1707683f4b69b50e2ff", null ],
+    [ "SaveData", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a406729f8909be6e5e803476431a46983", null ],
     [ "ScaleExpertStats", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#afd6ce9e29cd8c49d912d63a6774c662f", null ],
     [ "SendExtraAI", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ad091edf8203519c61a7f7c903880dd60", null ],
     [ "SetBestiary", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a1c45c56aecd7edb2347d63ed4b1b609d", null ],
@@ -87,5 +90,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_n_p_c =
     [ "SceneEffectPriority", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a8edfef4b01670b0e19667262727464a3", null ],
     [ "SpawnModBiomes", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ae8f56182cf5a6356cc184c6e69ea54a4", null ],
     [ "Texture", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a528e19d143fb36a926e7097809c5681d", null ],
+    [ "TownNPCStayingHomeless", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a2953997f30164ffefe4bf283307af3a8", null ],
     [ "Type", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a19743677e861579560d728a62bae575f", null ]
 ];
