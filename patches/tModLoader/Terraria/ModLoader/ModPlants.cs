@@ -25,6 +25,14 @@ namespace Terraria.ModLoader
 		void ILoadable.Unload() { }
 	}
 
+	public interface ITree : IPlant
+	{
+		TreeTypes CountsAsTreeType { get; }
+
+		int TreeLeaf();
+		bool Shake(int x, int y, ref bool createLeaves);
+	}
+
 	public static class PlantLoader
 	{
 		internal static Dictionary<Vector2, IPlant> plantLookup = new Dictionary<Vector2, IPlant>();
@@ -81,40 +89,30 @@ namespace Terraria.ModLoader
 			return plant.GetTexture();
 		}
 
-		public static TreeTypes GetModTreeType(int type) {
+		public static ITree GetTree(int type) {
 			var tree = Get<ModTree>(TileID.Trees, type);
 			if (tree is not null)
-				return tree.CountsAsTreeType;
+				return tree;
 
 			var palm = Get<ModPalmTree>(TileID.PalmTree, type);
 			if (palm is not null)
-				return palm.CountsAsTreeType;
+				return palm;
 
-			return TreeTypes.None;
+			return null;
+		}
+
+		public static TreeTypes GetModTreeType(int type) {
+			return GetTree(type)?.CountsAsTreeType ?? TreeTypes.None;
 		}
 
 		public static bool ShakeTree(int x, int y, int type, ref bool createLeaves) {
-			var tree = Get<ModTree>(TileID.Trees, type);
-			if (tree is not null)
-				return tree.Shake(x, y, ref createLeaves);
-
-			var palm = Get<ModPalmTree>(TileID.PalmTree, type);
-			if (palm is not null)
-				return palm.Shake(x, y, ref createLeaves);
-
-			return true;
+			return GetTree(type)?.Shake(x, y, ref createLeaves) ?? true;
 		}
 
 		public static void GetTreeLeaf(int type, ref int leafGoreType) {
-			var tree = Get<ModTree>(TileID.Trees, type);
+			var tree = GetTree(type);
 			if (tree is not null)
 				leafGoreType = tree.TreeLeaf();
-			if (leafGoreType > -1)
-				return;
-
-			var palm = Get<ModPalmTree>(TileID.PalmTree, type);
-			if (palm is not null)
-				leafGoreType = palm.TreeLeaf();
 		}
 	}
 
@@ -140,7 +138,7 @@ namespace Terraria.ModLoader
 	/// The tree will share a tile ID with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted.
 	/// This class encapsulates several functions that distinguish each type of tree from each other.
 	/// </summary>
-	public abstract class ModTree : IPlant
+	public abstract class ModTree : ITree
 	{
 		/// <summary>
 		/// The tree will share a tile ID with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted.
@@ -232,7 +230,7 @@ namespace Terraria.ModLoader
 	/// The palm tree will share a tile ID with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted.
 	/// This class encapsulates several functions that distinguish each type of palm tree from each other.
 	/// </summary>
-	public abstract class ModPalmTree : IPlant
+	public abstract class ModPalmTree : ITree
 	{
 		/// <summary>
 		/// The tree will share a tile ID with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted.
@@ -261,7 +259,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Return the type of gore created when this palm tree grow, being shook and falling leaves on windy days, returns -1 by default
+		/// Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default
 		/// </summary>
 		/// <returns></returns>
 		public virtual int TreeLeaf() {
