@@ -9,6 +9,9 @@
 			public static bool[] Grass = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492);
 			public static bool[] CanBeClearedDuringOreRunner = Factory.CreateBoolSet(0, 1, 23, 25, 40, 53, 57, 59, 60, 70, 109, 112, 116, 117, 147, 161, 163, 164, 199, 200, 203, 234);
 
+			/// <summary> Allows non-solid tiles to be sloped (solid tiles can always be sloped, regardless of this set). </summary>
+			public static bool[] CanBeSloped = Factory.CreateBoolSet();
+
 			/// <summary>
 			/// Whether or not the tile will be ignored for automatic step up regarding town NPC collision.
 			/// <br>Only checked when <see cref="Collision.StepUp"/> with specialChecksMode set to 1 is called</br>
