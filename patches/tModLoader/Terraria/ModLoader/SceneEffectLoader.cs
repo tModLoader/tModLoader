@@ -64,14 +64,15 @@ namespace Terraria.ModLoader
 			for (int i = 0; i < list.Count; i++) {
 				ModSceneEffect sceneEffect = list[i];
 
-				if (!sceneEffect.IsSceneEffectActive(player))
+				bool isActive = sceneEffect.IsSceneEffectActive(player);
+
+				sceneEffect.SpecialVisuals(player, isActive);
+				if (!isActive)
 					continue;
 
 				shortList.Add(
 					new AtmosWeight(sceneEffect.GetCorrWeight(player), sceneEffect)
 				);
-
-				sceneEffect.SpecialVisuals(player);
 			}
 
 			if (shortList.Count == 0) {
