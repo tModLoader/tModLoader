@@ -233,7 +233,7 @@ namespace ExampleMod.NPCs
 
 					int distance = randomWormLength - 2;
 
-					IEntitySource source = NPC.GetSpawnSourceForNPCFromNPCAI();
+					IEntitySource source = NPC.GetSource_FromAI();
 
 					if (HasCustomBodySegments) {
 						// Call the method that'll handle spawning the body segments
@@ -436,8 +436,7 @@ namespace ExampleMod.NPCs
 
 				NPC.soundDelay = (int)num1;
 
-				// Dig sound = Roar sound ID, Style 1
-				SoundEngine.PlaySound(SoundID.Roar, (int)NPC.position.X, (int)NPC.position.Y, 1);
+				SoundEngine.PlaySound(SoundID.WormDig, NPC.position);
 			}
 		}
 
