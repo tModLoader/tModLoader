@@ -108,11 +108,14 @@ namespace Terraria.ModLoader.UI
 					ModLoader.ShowFirstLaunchWelcomeMessage = false;
 					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 				}
+
+				/*
 				else if (!ModLoader.AlphaWelcomed) {
 					ModLoader.AlphaWelcomed = true;
 					infoMessage.Show(Language.GetTextValue("tModLoader.WelcomeMessageBeta"), Main.menuMode);
 					Main.SaveSettings();
 				}
+				*/
 				else if (ModLoader.ShowWhatsNew) {
 					ModLoader.ShowWhatsNew = false;
 					if (File.Exists("RecentGitHubCommits.txt")) {
@@ -146,7 +149,7 @@ namespace Terraria.ModLoader.UI
 					infoMessage.Show(Language.GetTextValue("tModLoader.MonthlyFreezeNotification"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
 						() => {
 							SoundEngine.PlaySound(SoundID.MenuOpen);
-							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14-alpha");
+							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/tModLoader-Release-Cycle#14");
 						});
 					Main.SaveSettings();
 				}
@@ -156,6 +159,17 @@ namespace Terraria.ModLoader.UI
 					string info = ModOrganizer.DetectModChangesForInfoMessage();
 					if (info != null)
 						infoMessage.Show(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessage") + info, Main.menuMode);
+				}
+			}
+			if (Main.MenuUI.CurrentState == modSources) {
+				if (!ModLoader.SeenFirstLaunchModderWelcomeMessage) {
+					ModLoader.SeenFirstLaunchModderWelcomeMessage = true;
+					infoMessage.Show(Language.GetTextValue("tModLoader.MSFirstLaunchModderWelcomeMessage"), modSourcesID, null, Language.GetTextValue("tModLoader.ViewOnGitHub"),
+						() => {
+							SoundEngine.PlaySound(SoundID.MenuOpen);
+							Utils.OpenToURL($"https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide");
+						});
+					Main.SaveSettings();
 				}
 			}
 			if (Main.menuMode == modsMenuID) {
@@ -224,7 +238,7 @@ namespace Terraria.ModLoader.UI
 			else if (Main.menuMode == tModLoaderSettingsID) {
 				offY = 210;
 				spacing = 42;
-				numButtons = 9;
+				numButtons = 10;
 				buttonVerticalSpacing[numButtons - 1] = 18;
 				for (int i = 0; i < numButtons; i++) {
 					buttonScales[i] = 0.75f;
@@ -272,6 +286,13 @@ namespace Terraria.ModLoader.UI
 				if (selectedMenu == buttonIndex) {
 					SoundEngine.PlaySound(SoundID.MenuTick);
 					ModLoader.removeForcedMinimumZoom = !ModLoader.removeForcedMinimumZoom;
+				}
+
+				buttonIndex++;
+				buttonNames[buttonIndex] = Language.GetTextValue($"tModLoader.AttackSpeedScalingTooltipVisibility{ModLoader.attackSpeedScalingTooltipVisibility}");
+				if (selectedMenu == buttonIndex) {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					ModLoader.attackSpeedScalingTooltipVisibility = (ModLoader.attackSpeedScalingTooltipVisibility + 1) % 3;
 				}
 
 				buttonIndex++;

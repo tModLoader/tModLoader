@@ -43,6 +43,15 @@ namespace Terraria.ModLoader.UI
 			};
 			area.Append(messageBox);
 
+			var uIScrollbar = new UIScrollbar {
+				Height = { Pixels = -115, Percent = 1f },
+				//VAlign = 0.5f,
+				HAlign = 1f
+			}.WithView(100f, 1000f);
+			area.Append(uIScrollbar);
+
+			messageBox.SetScrollbar(uIScrollbar);
+
 			continueButton = new UITextPanel<string>("", 0.7f, true) {
 				Width = { Pixels = -10, Percent = 0.5f },
 				Height = { Pixels = 50 },

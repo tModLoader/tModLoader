@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="../../../src/WorkspaceInfo.targets" />
+  <Import Project="$(tModLoaderSteamPath)/tMLMod.targets" />
+  <PropertyGroup>
+    <AssemblyName>TestData</AssemblyName>
+    <TargetFramework>net6.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <DefineConstants>COMPILE_ERROR</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="**/*.Expected.cs" />
+    <Compile Remove="**/*.Out.cs" />
+  </ItemGroup>
+</Project>

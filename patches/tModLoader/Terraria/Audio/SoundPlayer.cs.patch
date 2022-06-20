@@ -119,6 +119,28 @@
  
  		public void PauseAll() {
  			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
+@@ -61,6 +_,21 @@
+ 			_trackedSounds.Clear();
+ 		}
+ 
++		public void StopAll(in SoundStyle style) {
++			List<SlotVector<ActiveSound>.ItemPair> stopped = new();
++
++			foreach (SlotVector<ActiveSound>.ItemPair item in (IEnumerable<SlotVector<ActiveSound>.ItemPair>)_trackedSounds) {
++				if (style.IsTheSameAs(item.Value.Style)) {
++					item.Value.Stop();
++					stopped.Add(item);
++				}
++			}
++
++			foreach (var item in stopped) {
++				_trackedSounds.Remove(item.Id);
++			}
++		}
++
+ 		public void Update() {
+ #if FNA
+ 			Monitor.Enter(SoundEngine.AudioLock);
 @@ -80,7 +_,7 @@
  #endif
  		}

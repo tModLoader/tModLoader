@@ -82,7 +82,7 @@ namespace Terraria.ID
 		public static readonly SoundStyle Seagull = new($"{Prefix}Zombie_", 106, 3) { Volume = 0.2f, PitchRange = (-0.7f, 0f) };
 		public static readonly SoundStyle Dolphin = new($"{Prefix}Zombie_109") { Volume = 0.3f, PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 		// Explanation: There is a 1 in 300 chance for an owl to play a 'funni' easter egg sound variant.
-		public static readonly SoundStyle Owl = new($"{Prefix}Zombie_", stackalloc (int, float)[] { (110, 300f), (2, 300f), (112, 1f), (113, 1f), (114, 1f), }) {
+		public static readonly SoundStyle Owl = new($"{Prefix}Zombie_", stackalloc (int, float)[] { (110, 300f), (111, 300f), (112, 1f), (113, 1f), (114, 1f), }) {
 			PitchVariance = 0.2f
 		};
 		public static readonly SoundStyle GuitarC = new($"{Prefix}Item_133") { Volume = 0.45f, Identifier = "Terraria/Guitar" };
@@ -643,7 +643,7 @@ namespace Terraria.ID
 			LegacySoundIDs.Critter => Critter,
 			LegacySoundIDs.Waterfall => Waterfall,
 			LegacySoundIDs.Lavafall => Lavafall,
-			LegacySoundIDs.ForceRoar => ForceRoar,
+			LegacySoundIDs.ForceRoar => style switch { -1 => ForceRoarPitched, _ => ForceRoar },
 			LegacySoundIDs.Meowmere => Meowmere,
 			LegacySoundIDs.CoinPickup => CoinPickup,
 			LegacySoundIDs.Drip => Drip,

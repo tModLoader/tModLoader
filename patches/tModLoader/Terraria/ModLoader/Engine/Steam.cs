@@ -12,8 +12,8 @@ namespace Terraria.ModLoader.Engine
 		public const uint TMLAppID = 1281930;
 		public const uint TerrariaAppID = 105600;
 
-		public static AppId_t TMLAppID_t = new AppId_t(TMLAppID);
-		public static AppId_t TerrariaAppId_t = new AppId_t(TerrariaAppID);
+		public static AppId_t TMLAppID_t => new AppId_t(TMLAppID);
+		public static AppId_t TerrariaAppId_t => new AppId_t(TerrariaAppID);
 
 		public static ulong lastAvailableSteamCloudStorage = ulong.MaxValue;
 
@@ -36,6 +36,10 @@ namespace Terraria.ModLoader.Engine
 
 		public static string GetSteamTerrariaInstallDir() {
 			SteamApps.GetAppInstallDir(TerrariaAppId_t, out string terrariaInstallLocation, 1000);
+			if (terrariaInstallLocation == null) {
+				terrariaInstallLocation = "../Terraria"; // fallback for #2491
+				Logging.Terraria.Warn($"Steam reports no terraria install directory. Falling back to {terrariaInstallLocation}");
+			}
 			if (Platform.IsOSX) {
 				terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app", "Contents", "Resources");
 			}
