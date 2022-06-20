@@ -118,4 +118,27 @@ public class ModAddRecipes : Mod
 		recipe.SetResult(ModContent.ItemType<ModItemAddRecipes>());
 		recipe.AddRecipe();
 	};
+
+	public void PortModCreateRecipe(ModItem modItem) {
+		var recipe = CreateRecipe(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.Register();
+
+		var recipe = modItem.Mod.CreateRecipe(modItem.Type);
+		recipe.Register();
+	}
+
+	public Mod GetMod() => Mod;
+
+	public void GetModMayHaveSideEffects() {
+		var recipe = new ModRecipe(GetMod());
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.SetResult(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.AddRecipe();
+
+		recipe = GetMod().CreateRecipe(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.AddRecipe();
+	}
 }

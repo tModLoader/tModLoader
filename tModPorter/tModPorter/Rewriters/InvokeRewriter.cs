@@ -28,7 +28,8 @@ public partial class InvokeRewriter : BaseRewriter
 		if (base.VisitInvocationExpression(node) is SyntaxNode newNode && newNode != node) // fix arguments and expression first
 			return newNode;
 
-		if (model.GetOperation(node) is not IInvalidOperation op || node.ArgumentList.Arguments.Any(arg => model.GetOperation(arg) is IInvalidOperation))
+		IOperation op = model.GetOperation(node);
+		if (op is not IInvalidOperation && (op is not IInvocationOperation invocation|| !invocation.TargetMethod.IsObsolete()))
 			return node;
 
 		return node.Expression switch {

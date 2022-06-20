@@ -97,7 +97,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual void SetDefaults() {
 		}
-		
+
 		/// <summary>
 		/// Gets called when your item spawns in world
 		/// </summary>
@@ -290,7 +290,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create custom behaviour when an item is accepted by the Research function 
+		/// Allows you to create custom behaviour when an item is accepted by the Research function
 		/// </summary>
 		/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
 		public virtual void OnResearched(bool fullyResearched) {
@@ -429,7 +429,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to modify this item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.<br/>
-		/// This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters. 
+		/// This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters.
 		/// </summary>
 		/// <param name="player"> The player using the item. </param>
 		/// <param name="source"> The projectile source's information. </param>
@@ -1155,6 +1155,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyTooltips(List<TooltipLine> tooltips) {
 		}
 
-		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Mod, Item.type, amount);
+		public Recipe CreateRecipe(int amount = 1) => Recipe.Create(Type, amount);
 	}
 }

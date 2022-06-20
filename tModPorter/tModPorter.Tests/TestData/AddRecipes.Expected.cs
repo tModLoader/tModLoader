@@ -53,9 +53,9 @@ public class ModItemAddRecipes : ModItem
 
 	public void UnableToFindAssignment(bool setting) {
 #if COMPILE_ERROR
-		var recipe = Mod.CreateRecipe();
+		var recipe = Recipe.Create();
 		if (setting) {
-			recipe = Mod.CreateRecipe();
+			recipe = Recipe.Create();
 			recipe.AddIngredient(ItemID.StoneBlock);
 		}
 		recipe.SetResult(this);/* tModPorter Pass result to CreateRecipe. */
@@ -67,21 +67,21 @@ public class ModItemAddRecipes : ModItem
 public class ModAddRecipes : Mod
 {
 	public override void AddRecipes() {
-		var recipe = CreateRecipe(ModContent.ItemType<ModItemAddRecipes>());
+		var recipe = Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
 		recipe.AddIngredient(ItemID.Wood, 10);
 		recipe.AddTile(TileID.WorkBenches);
 		recipe.Register();
 	}
 
 	public void AddRecipes(Mod mod, ModItem item) {
-		var recipe = mod.CreateRecipe(item.Type, 5);
+		var recipe = Recipe.Create(item.Type, 5);
 		recipe.AddIngredient(ItemID.Wood, 10);
 		recipe.AddTile(TileID.WorkBenches);
 		recipe.Register();
 	}
 
 #if COMPILE_ERROR
-	public Recipe MakeRecipe() => CreateRecipe();
+	public Recipe MakeRecipe() => Recipe.Create();
 
 	public void AddRecipeViaAnotherCall(ModItem item) {
 		var recipe = MakeRecipe(item.Type);
@@ -94,16 +94,38 @@ public class ModAddRecipes : Mod
 #endif
 
 	public Action InLambda() => () => {
-		var recipe = CreateRecipe(ModContent.ItemType<ModItemAddRecipes>());
+		var recipe = Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
 		recipe.AddIngredient(ItemID.Wood, 10);
 		recipe.AddTile(TileID.WorkBenches);
 		recipe.Register();
 	};
 
 	public Action InDelegate() => delegate() {
-		var recipe = CreateRecipe(ModContent.ItemType<ModItemAddRecipes>());
+		var recipe = Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
 		recipe.AddIngredient(ItemID.Wood, 10);
 		recipe.AddTile(TileID.WorkBenches);
 		recipe.Register();
 	};
+
+	public void PortModCreateRecipe(ModItem modItem) {
+		var recipe = Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.Register();
+
+		var recipe = Recipe.Create(modItem.Type);
+		recipe.Register();
+	}
+
+	public Mod GetMod() => Mod;
+
+	public void GetModMayHaveSideEffects() {
+		var recipe = /* GetMod() */Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.Register();
+
+		recipe = /* GetMod() */Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.Register();
+	}
 }

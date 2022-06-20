@@ -20,6 +20,11 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal static bool setupRecipes = false;
 
+		/// <summary>
+		/// The mod currently adding recipes.
+		/// </summary>
+		internal static Mod CurrentMod { get; private set; }
+
 		internal static void Add(GlobalRecipe globalRecipe) {
 			globalRecipes.Add(globalRecipe);
 		}
@@ -32,6 +37,7 @@ namespace Terraria.ModLoader
 
 		internal static void AddRecipes() {
 			foreach (Mod mod in ModLoader.Mods) {
+				CurrentMod = mod;
 				try {
 					mod.AddRecipes();
 					SystemLoader.AddRecipes(mod);
@@ -42,11 +48,15 @@ namespace Terraria.ModLoader
 					e.Data["mod"] = mod.Name;
 					throw;
 				}
+				finally {
+					CurrentMod = null;
+				}
 			}
 		}
 
 		internal static void PostAddRecipes() {
 			foreach (Mod mod in ModLoader.Mods) {
+				CurrentMod = mod;
 				try {
 					mod.PostAddRecipes();
 					SystemLoader.PostAddRecipes(mod);
@@ -55,17 +65,24 @@ namespace Terraria.ModLoader
 					e.Data["mod"] = mod.Name;
 					throw;
 				}
+				finally {
+					CurrentMod = null;
+				}
 			}
 		}
 
 		internal static void PostSetupRecipes() {
 			foreach (Mod mod in ModLoader.Mods) {
+				CurrentMod = mod;
 				try {
 					SystemLoader.PostSetupRecipes(mod);
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;
 					throw;
+				}
+				finally {
+					CurrentMod = null;
 				}
 			}
 		}
