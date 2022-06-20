@@ -94,7 +94,7 @@
  				for (int j = 0; j < 200; j++) {
  					perIDStaticNPCImmunity[i][j] = 0u;
  				}
-@@ -221,7 +_,37 @@
+@@ -221,7 +_,38 @@
  			}
  		}
  
@@ -128,6 +128,7 @@
 +			DamageType = DamageClass.Default;
 +			ArmorPenetration = 0;
 +			CritChance = 0;
++			WhipSettings = default;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
@@ -259,6 +260,14 @@
  			penetrate = -1;
  			tileCollide = false;
  			scale = 1f;
+@@ -8109,6 +_,7 @@
+ 			extraUpdates = 1;
+ 			usesLocalNPCImmunity = true;
+ 			localNPCHitCooldown = -1;
++			VanillaWhipSettings(this, out WhipSettings.Segments, out WhipSettings.RangeMultiplier);
+ 		}
+ 
+ 		public static int GetNextSlot() {
 @@ -8123,6 +_,10 @@
  			return result;
  		}
@@ -974,6 +983,18 @@
  			if (ai[0] == (float)(int)(timeToFlyOut / 2f)) {
  				WhipPointsForCollision.Clear();
  				FillWhipControlPoints(this, WhipPointsForCollision);
+@@ -30632,6 +_,11 @@
+ 
+ 		public static void GetWhipSettings(Projectile proj, out float timeToFlyOut, out int segments, out float rangeMultiplier) {
+ 			timeToFlyOut = Main.player[proj.owner].itemAnimationMax * proj.MaxUpdates;
++			segments = proj.WhipSettings.Segments;
++			rangeMultiplier = proj.WhipSettings.RangeMultiplier;
++		}
++
++		private static void VanillaWhipSettings(Projectile proj, out int segments, out float rangeMultiplier) {
+ 			segments = 20;
+ 			rangeMultiplier = 1f;
+ 			switch (proj.type) {
 @@ -33091,6 +_,9 @@
  					if (num3 > (float)num9)
  						ai[0] = 1f;
