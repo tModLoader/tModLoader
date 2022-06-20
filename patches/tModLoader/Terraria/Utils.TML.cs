@@ -121,18 +121,19 @@ namespace Terraria
 		// Common Blocks
 
 		public static void OpenToURL(string url) {
-			var startInfo = new ProcessStartInfo(url) {
-				UseShellExecute = true,
-			};
-
-			// Without this, some browsers, at the very least Firefox, show an error popup.
-			// Additionally, this may solve issues that may occur when running with administrator priviliges.
+			// Do not attempt to shorten this, no universal works-everywhere call exists.
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-				startInfo.Arguments = startInfo.FileName;
-				startInfo.FileName = "explorer.exe";
+				// Windows
+				Process.Start("explorer.exe", $@"""{url}""");
 			}
-
-			Process.Start(startInfo);
+			else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+				// MacOS
+				Process.Start("open", $@"""{url}""");
+			}
+			else {
+				// Linux & FreeBSD
+				Process.Start("xdg-open", $@"""{url}""");
+			}
 		}
 
 		public static void ShowFancyErrorMessage(string message, int returnToMenu) {
