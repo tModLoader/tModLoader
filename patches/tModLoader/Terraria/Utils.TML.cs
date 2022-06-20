@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -120,9 +121,18 @@ namespace Terraria
 		// Common Blocks
 
 		public static void OpenToURL(string url) {
-			Process.Start(new ProcessStartInfo(url) {
+			var startInfo = new ProcessStartInfo(url) {
 				UseShellExecute = true,
-			});
+			};
+
+			// Without this, some browsers, at the very least Firefox, show an error popup.
+			// Additionally, this may solve issues that may occur when running with administrator priviliges.
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+				startInfo.Arguments = startInfo.FileName;
+				startInfo.FileName = "explorer.exe";
+			}
+
+			Process.Start(startInfo);
 		}
 
 		public static void ShowFancyErrorMessage(string message, int returnToMenu) {
