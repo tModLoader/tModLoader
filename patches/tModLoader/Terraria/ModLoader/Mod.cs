@@ -268,5 +268,11 @@ namespace Terraria.ModLoader
 			}
 			return null;
 		}
+
+		[Obsolete("Use Recipe.Create", true)]
+		public Recipe CreateRecipe(int result, int amount = 1) => Recipe.Create(result, amount);
+
+		[Obsolete("Use Recipe.Clone", true)]
+		public Recipe CloneRecipe(Recipe recipe) => recipe.Clone();
 	}
 }

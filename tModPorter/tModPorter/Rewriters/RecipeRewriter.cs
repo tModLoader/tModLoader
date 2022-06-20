@@ -120,12 +120,10 @@ namespace tModPorter.Rewriters
 				var target = args[0].Expression;
 				args = args.RemoveAt(0);
 
-				bool isCallInModItem = target is IdentifierNameSyntax { Identifier.Text: "Mod" or "mod" } && model.GetEnclosingSymbol(origNode.SpanStart) is IMethodSymbol { IsStatic: false } mSym2 && mSym2.ContainingType.InheritsFrom("Terraria.ModLoader.ModItem");
-
-				return InvocationExpression(isCallInModItem
-						? MemberAccessExpression(target, "CreateRecipe")
-						: MemberAccessExpression(IdentifierName("Recipe"), "Create"),
-					node.ArgumentList.WithArguments(args));
+				// this converts to the old `mod.CreateRecipe` style, it gets factored to Recipe.Create or ModItem.CreateRecipe later
+				bool isCallOnThis = target is ThisExpressionSyntax && model.GetEnclosingSymbol(origNode.SpanStart) is IMethodSymbol mSym && !mSym.IsStatic && mSym.ContainingType.InheritsFrom("Terraria.ModLoader.Mod");
+				var expr = MemberAccessExpression(target, "CreateRecipe");
+				return InvocationExpression(isCallOnThis ? expr.Name : expr, node.ArgumentList.WithArguments(args));
 			}
 
 			return node;

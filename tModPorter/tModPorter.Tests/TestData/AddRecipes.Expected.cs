@@ -53,9 +53,9 @@ public class ModItemAddRecipes : ModItem
 
 	public void UnableToFindAssignment(bool setting) {
 #if COMPILE_ERROR
-		var recipe = Mod.CreateRecipe();
+		var recipe = Recipe.Create();
 		if (setting) {
-			recipe = Mod.CreateRecipe();
+			recipe = Recipe.Create();
 			recipe.AddIngredient(ItemID.StoneBlock);
 		}
 		recipe.SetResult(this);/* tModPorter Pass result to CreateRecipe. */
@@ -106,4 +106,26 @@ public class ModAddRecipes : Mod
 		recipe.AddTile(TileID.WorkBenches);
 		recipe.Register();
 	};
+
+	public void PortModCreateRecipe(ModItem modItem) {
+		var recipe = Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.Register();
+
+		var recipe = Recipe.Create(modItem.Type);
+		recipe.Register();
+	}
+
+	public Mod GetMod() => Mod;
+
+	public void GetModMayHaveSideEffects() {
+		var recipe = /* GetMod() */Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.Register();
+
+		recipe = /* GetMod() */Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
+		recipe.AddIngredient(ItemID.Wood, 10);
+		recipe.AddTile(TileID.WorkBenches);
+		recipe.Register();
+	}
 }
