@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
 using Terraria.GameContent.ObjectInteractions;
@@ -893,12 +894,6 @@ namespace Terraria.ModLoader
 				dust = tree.CreateDust();
 		}
 
-		public static void TreeGrowthFXGore(int type, ref int gore) {
-			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
-			if (tree != null)
-				gore = tree.GrowthFXGore();
-		}
-
 		public static bool CanDropAcorn(int type) {
 			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
 			if (tree == null)
@@ -924,12 +919,6 @@ namespace Terraria.ModLoader
 			var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, tile.type);
 			if (tree != null)
 				dust = tree.CreateDust();
-		}
-
-		public static void PalmTreeGrowthFXGore(int type, ref int gore) {
-			var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
-			if (tree != null)
-				gore = tree.GrowthFXGore();
 		}
 
 		public static void DropPalmTreeWood(int type, ref int wood) {

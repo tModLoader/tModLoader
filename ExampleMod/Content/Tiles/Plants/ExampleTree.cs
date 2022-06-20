@@ -1,9 +1,12 @@
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Tiles
@@ -51,6 +54,15 @@ namespace ExampleMod.Content.Tiles
 
 		public override int DropWood() {
 			return ModContent.ItemType<ExampleDye>();
+		}
+
+		public override bool Shake(int x, int y, ref bool createLeaves) {
+			Item.NewItem(WorldGen.GetItemSource_FromTreeShake(x, y), new Vector2(x, y) * 16, ModContent.ItemType<Items.Placeable.ExampleBlock>());
+			return false;
+		}
+
+		public override int TreeLeaf() {
+			return ModContent.GoreType<ExampleTreeLeaf>();
 		}
 	}
 }

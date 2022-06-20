@@ -542,21 +542,15 @@
  			for (int num = -1; num > -100; num--) {
  				Tile tile = Main.tile[x, y + num];
  				if (!tile.active() || !TileID.Sets.GetsCheckedForLeaves[tile.type])
-@@ -15213,6 +_,14 @@
- 					continue;
- 				}
- 
-+				TileLoader.TreeGrowthFXGore(tile2.type,ref passStyle);
-+				if(passStyle > 0)
-+					break;
-+
-+				TileLoader.PalmTreeGrowthFXGore(tile2.type,ref passStyle);
-+				if(passStyle > 0)
-+					break;
-+
- 				GetTreeLeaf(x, topTile, tile2, ref treeHeight, out int _, out passStyle);
- 				break;
+@@ -15408,6 +_,8 @@
+ 						break;
+ 					}
  			}
++
++			PlantLoader.GetTreeLeaf(t.type, ref passStyle);
+ 		}
+ 
+ 		public static void TreeGrowFX(int x, int y, int height, int treeGore, bool hitTree = false) {
 @@ -15465,13 +_,13 @@
  				case 492:
  					return true;
@@ -1724,6 +1718,39 @@
  				}
  			}
  
+@@ -40131,6 +_,11 @@
+ 		}
+ 
+ 		public static TreeTypes GetTreeType(int tileType) {
++
++			TreeTypes modType = PlantLoader.GetModTreeType(tileType);
++			if (modType != TreeTypes.None)
++				return modType;
++
+ 			switch (tileType) {
+ 				case 2:
+ 				case 477:
+@@ -40175,7 +_,8 @@
+ 
+ 			GetTreeBottom(i, j, out int x, out int y);
+ 			int num = y;
+-			TreeTypes treeType = GetTreeType(Main.tile[x, y].type);
++			int tileType = Main.tile[x, y].type;
++			TreeTypes treeType = GetTreeType(tileType);
+ 			if (treeType == TreeTypes.None)
+ 				return;
+ 
+@@ -40197,7 +_,9 @@
+ 				return;
+ 
+ 			bool flag = false;
++			if (!PlantLoader.ShakeTree(x, y, tileType, ref flag)) {
++			}
+-			if (Main.getGoodWorld && genRand.Next(15) == 0) {
++			else if (Main.getGoodWorld && genRand.Next(15) == 0) {
+ 				Projectile.NewProjectile(GetProjectileSource_ShakeTree(x, y), x * 16, y * 16, (float)Main.rand.Next(-100, 101) * 0.002f, 0f, 28, 0, 0f, Player.FindClosest(new Vector2(x * 16, y * 16), 16, 16));
+ 			}
+ 			else if (genRand.Next(300) == 0 && treeType == TreeTypes.Forest) {
 @@ -40523,6 +_,8 @@
  			if (num == 2)
  				return;
