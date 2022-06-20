@@ -925,9 +925,9 @@
 +
 +			if (!TileLoader.Drop(i, j, TileID.Womannequin))
 +				goto SkipDrop;
-+			
++
  			Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 1989);
-+			
++
 +			SkipDrop:
 +
  			for (int m = 0; m <= 1; m++) {
@@ -1084,7 +1084,7 @@
  			_ = Main.tile[i, j].frameX;
  			destroyObject = true;
 -			if (type == 235)
-+		
++
 +			if (TileLoader.Drop(i, j, type) && type == 235)
  				Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 1263);
  
@@ -1918,6 +1918,15 @@
  			if (worldUpdateRate == 0)
  				return;
  
+@@ -46478,7 +_,7 @@
+ 				spawnDelay = 0;
+ 				if (prioritizedTownNPCType != 37) {
+ 					for (int i = 0; i < 200; i++) {
+-						if (Main.npc[i].active && Main.npc[i].homeless && Main.npc[i].townNPC && Main.npc[i].type != 368) {
++						if (Main.npc[i].active && Main.npc[i].homeless && Main.npc[i].townNPC && Main.npc[i].type != 368 && Main.npc[i].ModNPC?.TownNPCStayingHomeless != true) {
+ 							prioritizedTownNPCType = Main.npc[i].type;
+ 							break;
+ 						}
 @@ -46507,8 +_,15 @@
  			if (Main.dayTime)
  				return;

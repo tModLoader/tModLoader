@@ -177,12 +177,12 @@ namespace Terraria.ModLoader
 				g.SetDefaults(npc);
 			}
 		}
-		
+
 		private static HookList HookOnSpawn = AddHook<Action<NPC, IEntitySource>>(g => g.OnSpawn);
 
 		internal static void OnSpawn(NPC npc, IEntitySource source) {
 			npc.ModNPC?.OnSpawn(source);
-			
+
 			foreach (GlobalNPC g in HookOnSpawn.Enumerate(npc.globalNPCs)) {
 				g.OnSpawn(npc, source);
 			}
@@ -1244,6 +1244,24 @@ namespace Terraria.ModLoader
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
 				}
 			}
+		}
+
+		private delegate bool DelegateNeedSaving(NPC npc);
+		private static HookList HookNeedSaving = AddHook<DelegateNeedSaving>(g => g.NeedSaving);
+
+		public static bool SavesAndLoads(NPC npc) {
+			if (npc.townNPC && npc.type != NPCID.TravellingMerchant)
+				return true;
+
+			if (NPCID.Sets.SavesAndLoads[npc.type] || (npc.ModNPC?.NeedSaving() == true))
+				return true;
+
+			foreach (GlobalNPC globalNPC in HookNeedSaving.Enumerate(npc.globalNPCs)) {
+				if (globalNPC.NeedSaving(npc))
+					return true;
+			}
+
+			return false;
 		}
 	}
 }

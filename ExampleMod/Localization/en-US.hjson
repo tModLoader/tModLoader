@@ -40,6 +40,7 @@ Mods: {
 			ExampleCustomAISlimeNPC: Flutter Slime
 			# Here we see that spaces in translation keys are not allowed. Any space will be replaced with an underscore.
 			Example_Person: Example Person
+			ExampleTravellingMerchant: Example Traveler
 		}
 		
 		MapObject: {
@@ -127,6 +128,31 @@ Mods: {
 				LoveNPC: "Do you think {NPCName} notices me?"
 				DislikeNPC: '''"{NPCName} keeps rambling on about "payed mods"... Wish I could convince him how terrible of an idea that is."'''
 				HateNPC: "I hate all the loud noises caused by {NPCName} and his explosives! I just want peace and quiet."
+			}
+		}
+
+		#This is used to display the NPC's dialogues.
+		Dialogue: {
+			ExamplePerson: {
+				PartyGirlDialogue : "Can you please tell {0} to stop decorating my house with colors?"
+				StandardDialogue1 : "Sometimes I feel like I'm different from everyone else here."
+				StandardDialogue2 : "What's your favorite color? My favorite colors are white and black."
+				StandardDialogue3 : "What? I don't have any arms or legs? Oh, don't be ridiculous!"
+				CommonDialogue : "This message has a weight of 5, meaning it appears 5 times more often."
+				RareDialogue : "This message has a weight of 0.1, meaning it appears 10 times as rare."
+				TalkALot : "I'm getting tired of talking to you. I have to go."
+			}
+			ExampleBoneMerchant: {
+				StandardDialogue1 : "It's relaxing down here in the underground."
+				StandardDialogue2 : "What am I doing down here you may ask? I'm not sure, but leave me be!"
+				StandardDialogue3 : "Huh? What wares do I have? I have no idea! How about you ask?"
+			}
+			ExampleTravelingMerchant: {
+				PartyGirlDialogue : "Can you please tell {0} to stop decorating my cousin's house with colors?"
+				StandardDialogue1 : "Sometimes my cousin feels like they're different from everyone else here."
+				StandardDialogue2 : "What's your favorite color? My cousin's favorite colors are white and black."
+				StandardDialogue3 : "I'm a traveling merchant, and I sell things."
+				HiveBackpackDialogue : "Hey, if you find a {$ItemName.HiveBackpack}, my cousin can upgrade it for you."
 			}
 		}
 	}
