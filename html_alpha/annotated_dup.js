@@ -1653,6 +1653,7 @@ var annotated_dup =
       [ "Utils", "class_terraria_1_1_utils.html", "class_terraria_1_1_utils" ],
       [ "WallTypeData", "struct_terraria_1_1_wall_type_data.html", "struct_terraria_1_1_wall_type_data" ],
       [ "WaterfallManager", "class_terraria_1_1_waterfall_manager.html", "class_terraria_1_1_waterfall_manager" ],
+      [ "WhipSettings", "struct_terraria_1_1_whip_settings.html", "struct_terraria_1_1_whip_settings" ],
       [ "Wiring", "class_terraria_1_1_wiring.html", "class_terraria_1_1_wiring" ],
       [ "WorldGen", "class_terraria_1_1_world_gen.html", "class_terraria_1_1_world_gen" ],
       [ "WorldSections", "class_terraria_1_1_world_sections.html", "class_terraria_1_1_world_sections" ]

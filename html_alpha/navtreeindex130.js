@@ -1,5 +1,6 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#ae8ece1535cf781557c83c4a4f0b8f18b":[2,0,2,7,8,0,1],
 "struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html":[2,0,2,7,9],
 "struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html#ade2fe4607873b6bd3040c095c0f8d7a8":[2,0,2,7,9,0],
 "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html":[2,0,2,7,3,1,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_net_message_1_1_net_sound_info.html#a260b8617c2e1e26cb9ce3c485fb905c0":[2,0,2,51,0,2],
 "struct_terraria_1_1_net_message_1_1_net_sound_info.html#a53f81fe7f517340144536b7bf63844a7":[2,0,2,51,0,3],
 "struct_terraria_1_1_net_message_1_1_net_sound_info.html#aa3fbaddabacaad9df15391c42dd3bdb1":[2,0,2,51,0,0],
-"struct_terraria_1_1_net_message_1_1_net_sound_info.html#ab8f4648322651a0c71bf6805596bf43d":[2,0,2,51,0,6],
-"struct_terraria_1_1_net_message_1_1_net_sound_info.html#acc565e82a88f05bfef5a9e1f75c4bd45":[2,0,2,51,0,4]
+"struct_terraria_1_1_net_message_1_1_net_sound_info.html#ab8f4648322651a0c71bf6805596bf43d":[2,0,2,51,0,6]
 };

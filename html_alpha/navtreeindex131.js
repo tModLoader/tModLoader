@@ -1,5 +1,6 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_net_message_1_1_net_sound_info.html#acc565e82a88f05bfef5a9e1f75c4bd45":[2,0,2,51,0,4],
 "struct_terraria_1_1_net_message_1_1_net_sound_info.html#af889fad520169e3b3b5c9196f2698060":[2,0,2,51,0,1],
 "struct_terraria_1_1_physics_1_1_ball_collision_event.html":[2,0,2,17,1],
 "struct_terraria_1_1_physics_1_1_ball_collision_event.html#a00f6210c628523d02300193278e09678":[2,0,2,17,1,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#aeaa4066a5680dff845078a70c1c44d2b":[2,0,2,22,8,1,12],
 "struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html":[2,0,2,22,1,0,0],
 "struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#a1ec03b47a7cd9c4b25737a8d8f31807b":[2,0,2,22,1,0,0,5],
-"struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#a32a84f7b788e4f175e53ec3a239e49ea":[2,0,2,22,1,0,0,0],
-"struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#a77237cb92d24e563ecacced616acefdf":[2,0,2,22,1,0,0,2]
+"struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#a32a84f7b788e4f175e53ec3a239e49ea":[2,0,2,22,1,0,0,0]
 };

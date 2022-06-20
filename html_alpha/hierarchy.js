@@ -1038,14 +1038,12 @@ var hierarchy =
       [ "Terraria.DataStructures.EntitySource_WorldGen", "class_terraria_1_1_data_structures_1_1_entity_source___world_gen.html", null ]
     ] ],
     [ "IEntityWithGlobals", "class_i_entity_with_globals.html", [
-      [ "Terraria.NPC", "class_terraria_1_1_n_p_c.html", null ]
+      [ "Terraria.NPC", "class_terraria_1_1_n_p_c.html", null ],
+      [ "Terraria.Projectile", "class_terraria_1_1_projectile.html", null ]
     ] ],
     [ "Terraria.ModLoader.IEntityWithGlobals< T >", "interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals.html", null ],
     [ "Terraria.ModLoader.IEntityWithGlobals< GlobalItem >", "interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals.html", [
       [ "Terraria.Item", "class_terraria_1_1_item.html", null ]
-    ] ],
-    [ "Terraria.ModLoader.IEntityWithGlobals< GlobalProjectile >", "interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals.html", [
-      [ "Terraria.Projectile", "class_terraria_1_1_projectile.html", null ]
     ] ],
     [ "Terraria.DataStructures.IEntryFilter< T >", "interface_terraria_1_1_data_structures_1_1_i_entry_filter.html", [
       [ "Terraria.DataStructures.ISearchFilter< T >", "interface_terraria_1_1_data_structures_1_1_i_search_filter.html", null ]
@@ -1442,7 +1440,6 @@ var hierarchy =
     [ "Terraria.UI.InGamePopups", "class_terraria_1_1_u_i_1_1_in_game_popups.html", null ],
     [ "Terraria.ModLoader.Instanced< T >", "struct_terraria_1_1_mod_loader_1_1_instanced.html", null ],
     [ "Terraria.ModLoader.Instanced< GlobalItem >", "struct_terraria_1_1_mod_loader_1_1_instanced.html", null ],
-    [ "Terraria.ModLoader.Instanced< GlobalProjectile >", "struct_terraria_1_1_mod_loader_1_1_instanced.html", null ],
     [ "Terraria.ModLoader.Core.HookList< T >.InstanceEnumerator", "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html", null ],
     [ "Terraria.Utilities.IntRange", "struct_terraria_1_1_utilities_1_1_int_range.html", null ],
     [ "Terraria.ID.InvasionID", "class_terraria_1_1_i_d_1_1_invasion_i_d.html", null ],
@@ -2307,6 +2304,7 @@ var hierarchy =
     [ "Terraria.Social.WeGame.WeGameP2PWriter", "class_terraria_1_1_social_1_1_we_game_1_1_we_game_p2_p_writer.html", null ],
     [ "Terraria.Utilities.WeightedRandom< T >", "class_terraria_1_1_utilities_1_1_weighted_random.html", null ],
     [ "Terraria.GameContent.WellFedHelper", "struct_terraria_1_1_game_content_1_1_well_fed_helper.html", null ],
+    [ "Terraria.WhipSettings", "struct_terraria_1_1_whip_settings.html", null ],
     [ "Terraria.GameContent.Drawing.WindGrid", "class_terraria_1_1_game_content_1_1_drawing_1_1_wind_grid.html", null ],
     [ "Terraria.Graphics.WindowStateController", "class_terraria_1_1_graphics_1_1_window_state_controller.html", null ],
     [ "Terraria.ID.ArmorIDs.Wing", "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_wing.html", null ],
