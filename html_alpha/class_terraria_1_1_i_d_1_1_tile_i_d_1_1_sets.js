@@ -23,6 +23,7 @@ var class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets =
     [ "CanBeSatOnForNPCs", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a3e2520b7de1cb9a689f63622800ae4cc", null ],
     [ "CanBeSatOnForPlayers", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a67578dd4ab848c80ace3a4379d63b7c2", null ],
     [ "CanBeSleptIn", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a40c1618e30fb5ac06f623189fa0b92e9", null ],
+    [ "CanBeSloped", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a6cfc1404f43691224f04a44d8dc027e9", null ],
     [ "CanDropFromRightClick", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#aa9014779ba4dc856acb0f38c13164ef0", null ],
     [ "ChecksForMerge", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a66efa15ae3b568229ba0c63c25229624", null ],
     [ "Clock", "class_terraria_1_1_i_d_1_1_tile_i_d_1_1_sets.html#a76997db750e6f6c357ca3a74ba57d8bd", null ],

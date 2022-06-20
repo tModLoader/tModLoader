@@ -1,5 +1,6 @@
 var NAVTREEINDEX132 =
 {
+"struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#a32a84f7b788e4f175e53ec3a239e49ea":[2,0,2,22,1,0,0,0],
 "struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#a77237cb92d24e563ecacced616acefdf":[2,0,2,22,1,0,0,2],
 "struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#aacad7d5216477108f14967de7cdcccb1":[2,0,2,22,1,0,0,6],
 "struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#ac80737c586a6bcbf70db33b05ab47c8f":[2,0,2,22,1,0,0,4],
