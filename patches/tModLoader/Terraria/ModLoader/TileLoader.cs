@@ -832,14 +832,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static bool CanBeSloped(int i, int j, int type) {
-			foreach (var hook in HookCanBeSloped) {
-				if (hook(i, j, type))
-					return true;
-			}
-			return GetTile(type)?.CanBeSloped(i, j) ?? false;
-		}
-
 		public static bool Slope(int i, int j, int type) {
 			foreach (var hook in HookSlope) {
 				if (!hook(i, j, type)) {
