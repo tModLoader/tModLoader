@@ -131,7 +131,7 @@ namespace Terraria.ModLoader.IO
 			for (int index = 0; index < Main.maxNPCs; index++) {
 				NPC npc = Main.npc[index];
 
-				if (!npc.active || (!npc.townNPC || npc.type == NPCID.TravellingMerchant) && !NPCLoader.SavesAndLoads(npc)) {
+				if (!npc.active || !NPCLoader.SavesAndLoads(npc)) {
 					continue;
 				}
 

@@ -1251,7 +1251,8 @@ namespace Terraria.ModLoader
 
 		public static bool SavesAndLoads(NPC npc) {
 			if (npc.townNPC && npc.type != NPCID.TravellingMerchant)
-				return false;
+				return true;
+
 			if (NPCID.Sets.SavesAndLoads[npc.type] || (npc.ModNPC?.NeedSaving() == true))
 				return true;
 
