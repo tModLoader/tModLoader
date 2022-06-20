@@ -44,8 +44,10 @@ namespace Terraria.ModLoader
 
 			if (translations.TryGetValue(key, out var translation))
 				return translation;
-
-			return new ModTranslation(key, defaultEmpty);
+			
+			var newTranslation = new ModTranslation(key, defaultEmpty);
+			translations[key] = newTranslation;
+			return newTranslation;
 		}
 
 		internal static void Autoload(Mod mod) {

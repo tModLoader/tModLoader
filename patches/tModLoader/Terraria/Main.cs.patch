@@ -4190,13 +4190,12 @@
  				DrawCursor(DrawThickCursor());
  			}
  
-@@ -43448,6 +_,11 @@
+@@ -43448,6 +_,10 @@
  		}
  
  		private static void DrawMapFullscreenBackground(Vector2 screenPosition, int screenWidth, int screenHeight) {
-+			Texture2D modTexture = PlayerLoader.GetMapBackgroundImage(LocalPlayer);
-+			if (modTexture != null) {
-+				spriteBatch.Draw(modTexture, new Microsoft.Xna.Framework.Rectangle(0, 0, screenWidth, screenHeight), Microsoft.Xna.Framework.Color.White);
++			if (ModContent.RequestIfExists<Texture2D>(LocalPlayer.CurrentSceneEffect.mapBackground, out var modTexture, AssetRequestMode.ImmediateLoad)) {
++				spriteBatch.Draw(modTexture.Value, new Microsoft.Xna.Framework.Rectangle(0, 0, screenWidth, screenHeight), Microsoft.Xna.Framework.Color.White);
 +				return;
 +			}
  			Asset<Texture2D> asset = TextureAssets.MapBGs[0];

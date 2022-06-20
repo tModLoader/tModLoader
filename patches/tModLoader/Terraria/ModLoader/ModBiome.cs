@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Text.RegularExpressions;
 using Terraria.GameContent.Personalities;
 
 namespace Terraria.ModLoader
@@ -21,13 +22,14 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public ModTranslation DisplayName { get; private set; }
 		/// <summary>
-		/// The path to the 30x30 texture that will appear for this biome in the bestiary.
+		/// The path to the 30x30 texture that will appear for this biome in the bestiary. Defaults to adding "_Icon" onto the usual namespace+classname derived texture path.
+		/// <br/> Vanilla icons use a drop shadow at 40 percent opacity and the texture will be offset 1 pixel left and up from centered in the bestiary filter grid.
 		/// </summary>
-		public virtual string BestiaryIcon => null;
+		public virtual string BestiaryIcon => (GetType().Namespace + "." + Name + "_Icon").Replace('.', '/');
 		/// <summary>
-		/// The path to the background texture that will appear for this biome behind npcs in the bestiary.
+		/// The path to the background texture that will appear for this biome behind npcs in the bestiary. Defaults to adding "_Background" onto the usual namespace+classname derived texture path.</summary>
 		/// </summary>
-		public virtual string BackgroundPath => null;
+		public virtual string BackgroundPath => (GetType().Namespace + "." + Name + "_Background").Replace('.', '/');
 		/// <summary>
 		/// The color of the bestary background.
 		/// </summary>
@@ -42,12 +44,15 @@ namespace Terraria.ModLoader
 			RegisterSceneEffect(this);
 
 			DisplayName = LocalizationLoader.GetOrCreateTranslation(Mod, $"BiomeName.{Name}");
-
-			ModBiomeBestiaryInfoElement = new GameContent.Bestiary.ModBiomeBestiaryInfoElement(Mod, DisplayName.Key, BestiaryIcon, BackgroundPath, BackgroundColor);
 		}
 
 		public sealed override void SetupContent() {
+			if (DisplayName.IsDefault())
+				DisplayName.SetDefault(Regex.Replace(Name, "([A-Z])", " $1").Trim());
+
 			SetStaticDefaults();
+			
+			ModBiomeBestiaryInfoElement = new GameContent.Bestiary.ModBiomeBestiaryInfoElement(Mod, DisplayName.Key, BestiaryIcon, BackgroundPath, BackgroundColor);
 		}
 
 		/// <summary>

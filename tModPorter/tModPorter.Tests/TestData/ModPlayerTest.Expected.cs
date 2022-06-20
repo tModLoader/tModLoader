@@ -38,6 +38,12 @@ public class ModPlayerTest : ModPlayer
 	}
 #endif
 
+#if COMPILE_ERROR
+	public override Texture2D SetMapBackgroundImage()/* tModPorter Suggestion: Create a ModBiome (or ModSceneEffect) class and override MapBackground property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive) */ {
+		return null
+	}
+#endif
+
 	public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) { /* Empty */ }
 
 	public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {

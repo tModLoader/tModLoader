@@ -123,14 +123,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the background that displays when viewing the map. Return null if you do not want to change the background. Returns null by default.
-		/// </summary>
-		/// <returns></returns>
-		public virtual Texture2D GetMapBackgroundImage() {
-			return null;
-		}
-
-		/// <summary>
 		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting Player.lifeRegen to 0 if it is positive, setting Player.lifeRegenTime to 0, and subtracting a number from Player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
 		/// </summary>
 		public virtual void UpdateBadLifeRegen() {

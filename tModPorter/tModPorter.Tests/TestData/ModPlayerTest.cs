@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.XNA.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -35,6 +36,10 @@ public class ModPlayerTest : ModPlayer
 		items.Add(9);
 	}
 #endif
+
+	public override Texture2D SetMapBackgroundImage() {
+		return null
+	}
 
 	public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) { /* Empty */ }
 

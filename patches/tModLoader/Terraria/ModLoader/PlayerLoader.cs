@@ -139,19 +139,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookGetMapBackgroundImage = AddHook<Func<Texture2D>>(p => p.GetMapBackgroundImage);
-
-		public static Texture2D GetMapBackgroundImage(Player player) {
-			Texture2D texture = null;
-			foreach (int index in HookGetMapBackgroundImage.arr) {
-				texture = player.modPlayers[index].GetMapBackgroundImage();
-				if (texture != null) {
-					return texture;
-				}
-			}
-			return texture;
-		}
-
 		private static HookList HookUpdateBadLifeRegen = AddHook<Action>(p => p.UpdateBadLifeRegen);
 
 		public static void UpdateBadLifeRegen(Player player) {
