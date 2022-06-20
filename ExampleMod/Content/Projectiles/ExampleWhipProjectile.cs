@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,6 +19,10 @@ namespace ExampleMod.Content.Projectiles
 		public override void SetDefaults() {
 			// This method quickly sets the whip's properties.
 			Projectile.DefaultToWhip();
+
+			// use these to change from the vanilla defaults
+			// Projectile.WhipSettings.Segments = 20;
+			// Projectile.WhipSettings.RangeMultiplier = 1f;
 		}
 
 		private float Timer {
