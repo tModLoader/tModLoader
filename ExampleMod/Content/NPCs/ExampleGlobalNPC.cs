@@ -6,9 +6,14 @@ namespace ExampleMod.Content.NPCs
 {
 	public class ExampleGlobalNPC : GlobalNPC
 	{
+		public bool HasBeenHitByPlayer = false;
+
 		public override bool InstancePerEntity => true;
 
-		public bool HasBeenHitByPlayer = false;
+		public override bool AppliesToEntity(NPC entity, bool lateInstantiation) {
+			// after ModNPC has run (lateInstantiation), check if the entity is a townNPC
+			return lateInstantiation && entity.townNPC;
+		}
 
 		public override void OnHitByProjectile(NPC npc, Projectile projectile, int damage, float knockback, bool crit) {
 			if (projectile.owner != 255) {
@@ -32,11 +37,8 @@ namespace ExampleMod.Content.NPCs
 			}
 		}
 
-		// The data can't be shared on multiplayer for now
-
 		public override void SaveData(NPC npc, TagCompound tag) {
-			if (HasBeenHitByPlayer && npc.townNPC) {
-				// No need to save if a non-town NPC has been hit by a player
+			if (HasBeenHitByPlayer) {
 				tag.Add("HasBeenHitByPlayer", true);
 			}
 		}
