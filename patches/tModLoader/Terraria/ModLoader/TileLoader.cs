@@ -83,7 +83,6 @@ namespace Terraria.ModLoader
 		private static Func<int, int, int, Item, bool>[] HookAutoSelect;
 		private static Func<int, int, int, bool>[] HookPreHitWire;
 		private static Action<int, int, int>[] HookHitWire;
-		private static Func<int, int, int, bool>[] HookCanBeSloped;
 		private static Func<int, int, int, bool>[] HookSlope;
 		private static Action<int, Player>[] HookFloorVisuals;
 		private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
@@ -225,7 +224,6 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookAutoSelect, globalTiles, g => g.AutoSelect);
 			ModLoader.BuildGlobalHook(ref HookPreHitWire, globalTiles, g => g.PreHitWire);
 			ModLoader.BuildGlobalHook(ref HookHitWire, globalTiles, g => g.HitWire);
-			ModLoader.BuildGlobalHook(ref HookCanBeSloped, globalTiles, g => g.CanBeSloped);
 			ModLoader.BuildGlobalHook(ref HookSlope, globalTiles, g => g.Slope);
 			ModLoader.BuildGlobalHook(ref HookFloorVisuals, globalTiles, g => g.FloorVisuals);
 			ModLoader.BuildGlobalHook<GlobalTile, DelegateChangeWaterfallStyle>(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);

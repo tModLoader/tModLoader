@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,12 +9,9 @@ namespace ExampleMod.Content.Tiles
 	{
 		public override void SetStaticDefaults() {
 			Main.tileFrameImportant[Type] = true;
+			TileID.Sets.CanBeSloped[Type] = true; // allow this tile to be sloped, because it isn't solid
 
 			ItemDrop = ModContent.ItemType<Items.Placeable.ExampleSlopedTile>();
-		}
-
-		public override bool CanBeSloped(int i, int j) {
-			return true;
 		}
 
 		public override bool Slope(int i, int j) {

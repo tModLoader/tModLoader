@@ -413,16 +413,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to modify whether this tile can be sloped.
-		/// This check only happens for non-solid tiles.
-		/// </summary>
-		/// <param name="i">The x position in tile coordinates.</param>
-		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool CanBeSloped(int i, int j) {
-			return false;
-		}
-
-		/// <summary>
 		/// Allows you to control how hammers slope this tile. Return true to allow it to slope normally. Returns true by default. Called on the local Client and Single Player.
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>

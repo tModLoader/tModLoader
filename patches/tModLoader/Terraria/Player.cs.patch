@@ -4510,7 +4510,7 @@
  			if (toolTime == 0 && itemAnimation > 0 && controlUseItem) {
  				Tile tile = Main.tile[tileTargetX, tileTargetY];
 -				if (!tile.active() || IsTilePoundable(tile))
-+				if (!tile.active() || IsTilePoundable(tile) && !TileLoader.CanBeSloped(tileTargetX, tileTargetY, tile.type))
++				if (!tile.active() || IsTilePoundable(tile) && !TileID.Sets.CanBeSloped[tile.type])
  					poundRelease = false;
  			}
  
@@ -4544,7 +4544,7 @@
 +			bool canTrySloping = sItem.hammer > 0 && tile.active() && poundRelease;
 +			bool vanillaSloping = Main.tileSolid[tile.type] || tile.type == 314 || tile.type == 351 || tile.type == 424 || tile.type == 442;
 +
-+			if (canTrySloping && (vanillaSloping || TileLoader.CanBeSloped(x, y, tile.type))) {
++			if (canTrySloping && (vanillaSloping || TileID.Sets.CanBeSloped[tile.type])) {
  				hitWall = false;
  				ApplyItemTime(sItem);
  				int damageAmount = 100;
