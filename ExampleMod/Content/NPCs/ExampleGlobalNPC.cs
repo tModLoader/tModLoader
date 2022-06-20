@@ -6,7 +6,8 @@ namespace ExampleMod.Content.NPCs
 {
 	public class ExampleGlobalNPC : GlobalNPC
 	{
-		public bool HasBeenHitByPlayer = false;
+		// TODO, npc.netUpdate when this changes, and GlobalNPC gets a SendExtraAI hook
+		public bool HasBeenHitByPlayer;
 
 		public override bool InstancePerEntity => true;
 
