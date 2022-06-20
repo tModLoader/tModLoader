@@ -515,7 +515,7 @@
  						Tile tileSafely5 = Framing.GetTileSafely(num18, num19 - 2);
  						bool flag18 = height / 16 < 3;
 -						if (townNPC && tileSafely5.nactive() && (tileSafely5.type == 10 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
-+						if (townNPC && tileSafely5.nactive() && (TileLoader.OpenDoorID(tileSafely5) >= 0 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
++						if ((townNPC || NPCID.Sets.AllowDoorInteraction[type]) && tileSafely5.nactive() && (TileLoader.OpenDoorID(tileSafely5) >= 0 || tileSafely5.type == 388) && (Main.rand.Next(10) == 0 || flag)) {
  							if (Main.netMode != 1) {
  								if (WorldGen.OpenDoor(num18, num19 - 2, base.direction)) {
  									closeDoor = true;
@@ -1106,6 +1106,27 @@
  			if (Main.npc[newNPC].type == 1 && Main.player[num7].RollLuck(180) == 0)
  				Main.npc[newNPC].SetDefaults(-4);
  
+@@ -60918,6 +_,20 @@
+ 				ChatHelper.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[num].GetTypeNetName()), new Color(175, 75, 255));
+ 		}
+ 
++		/// <summary>
++		/// Spawns an NPC into the game world with the given type. This method should not be called on multiplayer clients. The X and Y parameters dictate the centered spawn position. ai0, ai1, ai2, and ai3 will initialize the NPC.ai[] array with the supplied values. This can be used to pass in information to the NPC. The NPC AI code will have to be written to utilize those values. Target can be set to a Player.whoAmI to have the NPC targetting a specific Player immediately on spawn. Start can be used to ensure that an NPC spawns in a slot after an existing NPC. This can be used to ensure that the spawned NPC draws behind an existing NPC. This is useful for bosses that spawn minions. The return value is the index of the spawned NPC within the <see cref="Main.npc"/> array. 
++		/// </summary>
++		/// <param name="source"></param>
++		/// <param name="X"></param>
++		/// <param name="Y"></param>
++		/// <param name="Type">Either an <see cref="NPCID"/> entry or <see cref="ModContent.NPCType{T}"/>, for example <see cref="NPCID.BabySlime"/> or ModContent.NPCType&lt;MyModNPC&gt;()</param>
++		/// <param name="Start"></param>
++		/// <param name="ai0"></param>
++		/// <param name="ai1"></param>
++		/// <param name="ai2"></param>
++		/// <param name="ai3"></param>
++		/// <param name="Target"></param>
++		/// <returns></returns>
+ 		public static int NewNPC(IEntitySource source, int X, int Y, int Type, int Start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int Target = 255) {
+ 			if (Main.getGoodWorld) {
+ 				if (Type == 46)
 @@ -60928,7 +_,9 @@
  			}
  

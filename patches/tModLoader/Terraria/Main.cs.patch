@@ -72,6 +72,16 @@
  		public static FileMetadata WorldFileMetadata;
  		public static FileMetadata MapFileMetadata;
  		public static PingMapLayer Pings = new PingMapLayer();
+@@ -501,7 +_,8 @@
+ 		public static float gFader;
+ 		public static byte gFadeDir = 1;
+ 		public static bool shouldDrawNetDiagnosticsUI;
++		private static INetDiagnosticsUI activeNetDiagnosticsUI;
+-		public static INetDiagnosticsUI ActiveNetDiagnosticsUI => dedServ ? new EmptyDiagnosticsUI() : new NetDiagnosticsUI();
++		public static INetDiagnosticsUI ActiveNetDiagnosticsUI => activeNetDiagnosticsUI ??= dedServ ? new EmptyDiagnosticsUI() : new NetDiagnosticsUI();
+ 		public static IMultiplayerClosePlayersOverlay ActiveClosePlayersTeamOverlay = new NewMultiplayerClosePlayersOverlay();
+ 		public static double UpdateTimeAccumulator;
+ 		public static bool drawSkip;
 @@ -513,12 +_,12 @@
  		public static bool showSplash = true;
  		public static bool ignoreErrors = true;
@@ -207,10 +217,10 @@
  		public static WorldFileData ActiveWorldFileData = new WorldFileData();
  		public static string WorldPath = Path.Combine(SavePath, "Worlds");
 -		public static string CloudWorldPath = "worlds";
-+		public static string CloudWorldPath = "ModLoader/worlds";
++		public static string CloudWorldPath = (BuildInfo.IsStable ? Program.ReleaseFolder : BuildInfo.IsPreview ? Program.PreviewFolder : Program.DevFolder) + "/worlds";
  		public static string PlayerPath = Path.Combine(SavePath, "Players");
 -		public static string CloudPlayerPath = "players";
-+		public static string CloudPlayerPath = "ModLoader/players";
++		public static string CloudPlayerPath = (BuildInfo.IsStable ? Program.ReleaseFolder : BuildInfo.IsPreview ? Program.PreviewFolder : Program.DevFolder) + "/players";
  		public static Preferences Configuration = new Preferences(SavePath + Path.DirectorySeparatorChar + "config.json");
  		public static Preferences InputProfiles = new Preferences(SavePath + Path.DirectorySeparatorChar + "input profiles.json");
  		public static KeyboardState inputText;
@@ -223,6 +233,18 @@
  		private static float _minWind = 0.34f;
  		private static float _maxWind = 0.4f;
  		private static float _minRain = 0.4f;
+@@ -1987,8 +_,11 @@
+ 		public static float ambientLavaY = -1f;
+ 		public static float ambientLavaStrength;
+ 		public static int ambientCounter;
++		//TML: No longer of use due to changes in Main.Ambience().
++		/*
+ 		private static bool _isWaterfallMusicPlaying = false;
+ 		private static bool _isLavafallMusicPlaying = false;
++		*/
+ 		public static IChatMonitor chatMonitor = new RemadeChatMonitor();
+ 		public static int ProjectileUpdateLoopIndex = -1;
+ 		public static GameTipsDisplay gameTips;
 @@ -2009,16 +_,16 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
@@ -1173,6 +1195,84 @@
  				cloudBGActive = rand.Next(num2 * 3, num * 2);
  				if (netMode == 2)
  					NetMessage.SendData(7);
+@@ -10184,6 +_,9 @@
+ 			}
+ 		}
+ 
++		// Added by TML, used below.
++		private static SlotId waterfallSoundSlot, lavafallSoundSlot;
++
+ 		public static void Ambience() {
+ 			ambientCounter++;
+ 			if (ambientCounter < 15)
+@@ -10191,6 +_,35 @@
+ 
+ 			ambientCounter = 0;
+ 			Microsoft.Xna.Framework.Point point = LocalPlayer.Center.ToPoint();
++
++			// Added by TML. Improves handling of waterfall and lavafall sounds for the new unified audio system.
++			static void HandleAmbientSound(in SoundStyle soundStyle, ref SlotId slot, float volume, Vector2 position) {
++				SoundEngine.TryGetActiveSound(slot, out var activeSound);
++
++				if (volume > 0f) {
++					if (activeSound == null) {
++						slot = SoundEngine.PlaySound(soundStyle, position);
++
++						if (!SoundEngine.TryGetActiveSound(slot, out activeSound)) {
++							return;
++						}
++					}
++
++					activeSound.Volume = volume;
++					activeSound.Position = position;
++				}
++				else if (activeSound != null) {
++					activeSound.Stop();
++
++					slot = SlotId.Invalid;
++				}
++			}
++
++			float usedWaterVolume = MathHelper.Clamp(ambientWaterfallStrength / 50f, 0f, 1f);
++
++			HandleAmbientSound(in SoundID.Waterfall, ref waterfallSoundSlot, usedWaterVolume, new Vector2(ambientWaterfallX, ambientWaterfallY));
++
++			/*
+ 			if (ambientWaterfallStrength > 0f) {
+ 				SoundEngine.PlaySound(34, (int)ambientWaterfallX, (int)ambientWaterfallY, (int)ambientWaterfallStrength);
+ 				_isWaterfallMusicPlaying = true;
+@@ -10201,6 +_,7 @@
+ 
+ 				_isWaterfallMusicPlaying = false;
+ 			}
++			*/
+ 
+ 			float num = Math.Abs(ambientLavaX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavaY - (screenPosition.Y + (float)(screenHeight / 2)));
+ 			float num2 = Math.Abs(ambientLavafallX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavafallY - (screenPosition.Y + (float)(screenHeight / 2)));
+@@ -10212,6 +_,15 @@
+ 			}
+ 
+ 			float num5 = ambientLavafallStrength + ambientLavaStrength;
++			// Vanilla uses the above local for adjusting lava sounds' volume, but only uses lavafall strength when checking if the sound should be playing at all.
++			// This has been confirmed as intentional.
++			float usedLavaVolume = ambientLavaStrength > 0f
++				? MathHelper.Clamp(num5 / 50f, 0f, 1f)
++				: 0f;
++
++			HandleAmbientSound(in SoundID.Lavafall, ref lavafallSoundSlot, usedLavaVolume, new Vector2(num3, num4));
++
++			/*
+ 			if (ambientLavafallStrength > 0f) {
+ 				SoundEngine.PlaySound(35, (int)num3, (int)num4, (int)num5);
+ 				_isLavafallMusicPlaying = true;
+@@ -10222,6 +_,7 @@
+ 				SoundEngine.PlaySound(35, point.X, point.Y, 0);
+ 
+ 			_isLavafallMusicPlaying = false;
++			*/
+ 		}
+ 
+ 		public static void AnimateTiles_CritterCages() {
 @@ -12355,11 +_,16 @@
  		}
  
@@ -1454,6 +1554,26 @@
  			UpdateViewZoomKeys();
  			PlayerInput.SetZoom_Unscaled();
  			UILinkPointNavigator.Update();
+@@ -13596,7 +_,18 @@
+ 			if (keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F8) && !drawingPlayerChat && !editSign && !editChest) {
+ 				if (netRelease) {
+ 					SoundEngine.PlaySound(12);
++					// TML: Logic changed to cycle modes
+-					shouldDrawNetDiagnosticsUI = !shouldDrawNetDiagnosticsUI;
++					//shouldDrawNetDiagnosticsUI = !shouldDrawNetDiagnosticsUI;
++					if (!shouldDrawNetDiagnosticsUI && !ModNet.ShouldDrawModNetDiagnosticsUI)
++						shouldDrawNetDiagnosticsUI = true; // From off to on (vanilla)
++					else {
++						if (shouldDrawNetDiagnosticsUI && !ModNet.ShouldDrawModNetDiagnosticsUI) {
++							shouldDrawNetDiagnosticsUI = false; // From on (vanilla) to off (vanilla)
++							ModNet.ShouldDrawModNetDiagnosticsUI = true; // +on (modded)
++						}
++						else if (ModNet.ShouldDrawModNetDiagnosticsUI)
++							ModNet.ShouldDrawModNetDiagnosticsUI = false; // From on (modded) to off (all)
++					}
+ 				}
+ 
+ 				netRelease = false;
 @@ -14180,6 +_,7 @@
  			if (tileFrameCounter[493] < 0)
  				tileFrameCounter[493] += 120;
@@ -1744,12 +1864,37 @@
  						if (item.useAnimation <= 8)
  							toolTipLine[numLines] = Lang.tip[6].Value;
  						else if (item.useAnimation <= 20)
-@@ -15283,10 +_,16 @@
+@@ -15283,10 +_,41 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
  
 +						toolTipNames[numLines] = "Speed";
  						numLines++;
++
++						/*
++						tML:
++						these lines add a degree of transparency which vanilla doesn't provide by tellin' the player what
++						does and doesn't get affected by attack speed bonuses, as well as if the item in question has any
++						special scalin' rules. they're tML-specific, and can be messed with at the will of the modder
++
++						as for why they're differently named: prep for when that tooltip rework comes out
++						-thomas
++						*/
++						if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
++							if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility == 0) {
++								toolTipLine[numLines] = Language.GetTextValue("tModLoader.NoAttackSpeedScaling");
++								toolTipNames[numLines] = "NoSpeedScaling";
++								numLines++;
++							}
++						}
++						else if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] != 1f) {
++							if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility <= 1) {
++								int attackSpeedScaling = (int)(ItemID.Sets.BonusAttackSpeedMultiplier[item.type] * 100);
++								toolTipLine[numLines] = Language.GetTextValue("tModLoader.SpecialAttackSpeedScaling", attackSpeedScaling);
++								toolTipNames[numLines] = "SpecialSpeedScaling";
++								numLines++;
++							}
++						}
  					}
 +
 +					if (!item.DamageType.ShowStatTooltipLine(player[myPlayer], "Knockback"))
@@ -2156,14 +2301,34 @@
  				numLines++;
  			}
  
-@@ -15718,6 +_,7 @@
+@@ -15718,8 +_,27 @@
  				if (amountNeeded - sacrificeCount > 0) {
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.CreativeSacrificeNeeded", amountNeeded - sacrificeCount);
  					researchLine = numLines;
 +					toolTipNames[numLines] = "JourneyResearch";
  					numLines++;
  				}
++			}
++
++			if (item.StatsModifiedBy.Count > 0)
++			{
++				if (keyState.PressingShift()) {
++					toolTipLine[numLines] = Language.GetTextValue("tModLoader.ModifiedByMods");
++					for (int i = 0; i < item.StatsModifiedBy.Count; i++) {
++						Mod mod = item.StatsModifiedBy[i];
++						if (i > 0)
++							toolTipLine[numLines] += ", ";
++						toolTipLine[numLines] += mod.DisplayName;
++					}
++				}
++				else {
++					toolTipLine[numLines] = Language.GetTextValue("tModLoader.ModifiedByModsHoldSHIFT");
++				}
++				toolTipNames[numLines] = "ModifiedByMods";
++				numLines++;
  			}
+ 
+ 			string bestiaryNotes = item.BestiaryNotes;
 @@ -15727,11 +_,12 @@
  				string[] array = bestiaryNotes.Split('\n');
  				foreach (string text2 in array) {
@@ -3203,6 +3368,17 @@
  					num -= 140;
  					num2 -= PlayerInput.SettingsForUI.PushEquipmentAreaUp.ToInt() * 30;
  					_settingsButtonIsPushedToSide = true;
+@@ -34281,7 +_,9 @@
+ 		}
+ 
+ 		private static void DrawInterface_17_DiagnoseNet() {
+-			if (shouldDrawNetDiagnosticsUI)
++			if (ModNet.ShouldDrawModNetDiagnosticsUI)
++				ModNet.ModNetDiagnosticsUI.Draw(spriteBatch);
++			else if (shouldDrawNetDiagnosticsUI)
+ 				ActiveNetDiagnosticsUI.Draw(spriteBatch);
+ 		}
+ 
 @@ -34402,6 +_,11 @@
  						if (HealthBarDrawSettings == 2)
  							num3 -= 34f;
@@ -3817,33 +3993,35 @@
  			Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);
  			origin.X *= 0.5f;
  			origin.Y *= 0.5f;
-@@ -39702,7 +_,47 @@
+@@ -39702,7 +_,49 @@
  					num2 = 2;
  
  				spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(origin.X + (float)num + 10f, (float)screenHeight - origin.Y + (float)num2 - 2f - upBump), color, 0f, origin, 1f, SpriteEffects.None, 0f);
 +
 +				// Developer mode button.
-+				if (menuMode == 0 && !ModCompile.DeveloperMode) {
-+					const string DeveloperModeText = "Enable Developer Mode";
++				if (menuMode == 0 /*&& !ModCompile.DeveloperMode*/) {
++					string DeveloperModeText = Language.GetTextValue("tModLoader.13InfoButton");
 +
 +					// measure and draw text from bottom right
 +					var textSize = FontAssets.MouseText.Value.MeasureString(DeveloperModeText);
 +					var pos = new Vector2(screenWidth - 10f + num, screenHeight - 2f + num2);
 +					var d_color = color;
 +
++					float scale = 1.2f;
++
 +					// final draw
 +					if (i == 4) {
-+						var rect = new Rectangle((int)(pos.X - textSize.X), (int)(pos.Y - textSize.Y), (int)textSize.X, (int)textSize.Y);
++						var rect = new Rectangle((int)(pos.X - textSize.X * scale), (int)(pos.Y - textSize.Y * scale), (int)(textSize.X * scale), (int)(textSize.Y * scale));
 +						bool mouseover = rect.Contains(mouseX, mouseY);
-+						d_color = mouseover ? highVersionColor : new Color(120, 120, 120, 76);
++						d_color = mouseover ? highVersionColor : d_color;
 +
 +						if (mouseover && mouseLeftRelease && mouseLeft) {
 +							SoundEngine.PlaySound(SoundID.MenuOpen);
-+							menuMode = Interface.modSourcesID;
++							Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/tModLoader-guide-for-players");
 +						}
 +					}
 +
-+					spriteBatch.DrawString(FontAssets.MouseText.Value, DeveloperModeText, pos, d_color, 0f, textSize, 1f, SpriteEffects.None, 0f);
++					spriteBatch.DrawString(FontAssets.MouseText.Value, DeveloperModeText, pos, d_color, 0f, textSize, 1.2f, SpriteEffects.None, 0f);
 +				}
 +
 +				// TML Patreon.

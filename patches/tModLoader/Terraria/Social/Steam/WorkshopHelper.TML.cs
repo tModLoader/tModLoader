@@ -95,11 +95,18 @@ namespace Terraria.Social.Steam
 			private PublishedFileId_t itemID;
 
 			internal static void Initialize() {
+				string apptxt = "steam_appid.txt";
+
 				// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
 				if (SocialMode.Steam == SocialAPI.Mode) {
 					SteamUser = true;
+					if (File.Exists(apptxt))
+						File.Delete(apptxt);
+
 					return;
 				}
+
+				File.WriteAllText(apptxt, thisApp.ToString());
 
 				if (GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0")) {
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
@@ -441,7 +448,7 @@ namespace Terraria.Social.Steam
 				Items.Clear();
 				ErrorState = EResult.k_EResultNone;
 
-				AQueryInstance.InstalledMods = ModOrganizer.FindMods();
+				AQueryInstance.InstalledMods = ModOrganizer.FindMods(true, false);
 
 				if (!ModManager.SteamAvailable) {
 					//TODO: Replace with a localization text

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -120,9 +121,19 @@ namespace Terraria
 		// Common Blocks
 
 		public static void OpenToURL(string url) {
-			Process.Start(new ProcessStartInfo(url) {
-				UseShellExecute = true,
-			});
+			// Do not attempt to shorten this, no universal works-everywhere call exists.
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+				// Windows
+				Process.Start("explorer.exe", $@"""{url}""");
+			}
+			else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+				// MacOS
+				Process.Start("open", $@"""{url}""");
+			}
+			else {
+				// Linux & FreeBSD
+				Process.Start("xdg-open", $@"""{url}""");
+			}
 		}
 
 		public static void ShowFancyErrorMessage(string message, int returnToMenu) {

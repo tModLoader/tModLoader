@@ -15,14 +15,6 @@
  #endif
  using NATUPNPLib;
  
-@@ -78,6 +_,7 @@
- 
- 		private static void ResetNetDiag() {
- 			Main.ActiveNetDiagnosticsUI.Reset();
-+			ModNet.ResetNetDiag();
- 		}
- 
- 		public static void ResetSections() {
 @@ -283,6 +_,8 @@
  				Main.netMode = 0;
  				Main.menuMode = 10;

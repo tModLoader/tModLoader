@@ -23,7 +23,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.width = 32;
 			Item.height = 32;
 			Item.UseSound = SoundID.Item1;
-			Item.DamageType = DamageClass.Melee;
+			Item.DamageType = DamageClass.MeleeNoSpeed;
 			Item.autoReuse = false;
 			Item.noUseGraphic = true; // The sword is actually a "projectile", so the item should not be visible when used
 			Item.noMelee = true; // The projectile will do the damage and not the item

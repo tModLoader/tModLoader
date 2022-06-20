@@ -300,7 +300,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			ModDownload.ModIconStatus = ModIconStatus.APPENDED;
 			_modName.Left.Pixels -= ModIconAdjust;
 			_moreInfoButton.Left.Pixels -= ModIconAdjust;
-			_updateButton.Left.Pixels -= ModIconAdjust;
+			if(_updateButton != null)
+				_updateButton.Left.Pixels -= ModIconAdjust;
 			if (_updateWithDepsButton != null)
 				_updateWithDepsButton.Left.Pixels -= ModIconAdjust;
 		}

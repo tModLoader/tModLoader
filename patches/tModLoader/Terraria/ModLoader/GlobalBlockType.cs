@@ -10,19 +10,14 @@ namespace Terraria.ModLoader
 		internal GlobalBlockType() { }
 
 		/// <summary>
-		/// Allows you to modify the properties of any tile/wall in the game. Most properties are stored as arrays throughout the Terraria code.
-		/// </summary>
-		public virtual void SetDefaults() {
-		}
-
-		/// <summary>
 		/// Allows you to customize which sound you want to play when the tile/wall at the given coordinates is hit. Return false to stop the game from playing its default sound for the tile/wall. Returns true by default.
 		/// </summary>
 		/// <param name="i"></param>
 		/// <param name="j"></param>
 		/// <param name="type"></param>
+		/// <param name="fail">If true, the tile/wall is only partially damaged. If false, the tile/wall is fully destroyed.</param>
 		/// <returns></returns>
-		public virtual bool KillSound(int i, int j, int type) {
+		public virtual bool KillSound(int i, int j, int type, bool fail) {
 			return true;
 		}
 

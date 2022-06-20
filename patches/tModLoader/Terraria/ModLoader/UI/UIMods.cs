@@ -232,7 +232,7 @@ namespace Terraria.ModLoader.UI
 			buttonMP.HAlign = 1f;
 			buttonMP.WithFadedMouseOver();
 			buttonMP.OnClick += null;
-			uIElement.Append(buttonMP);
+			//uIElement.Append(buttonMP);
 
 			uIPanel.Append(upperMenuContainer);
 			Append(uIElement);

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
 using Terraria.GameContent.ObjectInteractions;
@@ -45,7 +46,7 @@ namespace Terraria.ModLoader
 		private static readonly int vanillaTorchCount = TileID.Sets.RoomNeeds.CountsAsTorch.Length;
 		private static readonly int vanillaDoorCount = TileID.Sets.RoomNeeds.CountsAsDoor.Length;
 
-		private static Func<int, int, int, bool>[] HookKillSound;
+		private static Func<int, int, int, bool, bool>[] HookKillSound;
 		private delegate void DelegateNumDust(int i, int j, int type, bool fail, ref int num);
 		private static DelegateNumDust[] HookNumDust;
 		private delegate bool DelegateCreateDust(int i, int j, int type, ref int dustType);
@@ -174,6 +175,7 @@ namespace Terraria.ModLoader
 			Array.Resize(ref WorldGen.houseTile, nextTile);
 			//Array.Resize(ref GameContent.Biomes.CaveHouseBiome._blacklistedTiles, nextTile);
 			Array.Resize(ref GameContent.Biomes.CorruptionPitBiome.ValidTiles, nextTile);
+			Array.Resize(ref GameContent.Metadata.TileMaterials.MaterialsByTileId, nextTile);
 			Array.Resize(ref HouseUtils.BlacklistedTiles, nextTile);
 			Array.Resize(ref HouseUtils.BeelistedTiles, nextTile);
 
@@ -183,6 +185,7 @@ namespace Terraria.ModLoader
 
 			for (int i = TileID.Count; i < nextTile; i++) {
 				Main.tileGlowMask[i] = -1; //If we don't this, every modded tile will have a glowmask by default.
+				GameContent.Metadata.TileMaterials.MaterialsByTileId[i] = GameContent.Metadata.TileMaterials._materialsByName["Default"]; //Set this so golf balls know how to interact with modded tiles physics-wise. If not set, then golf balls vanish when touching modded tiles.
 			}
 
 			while (TileObjectData._data.Count < nextTile) {
@@ -416,16 +419,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static bool KillSound(int i, int j, int type) {
+		public static bool KillSound(int i, int j, int type, bool fail) {
 			foreach (var hook in HookKillSound) {
-				if (!hook(i, j, type))
+				if (!hook(i, j, type, fail))
 					return false;
 			}
 			
 			var modTile = GetTile(type);
 
 			if (modTile != null) {
-				if (!modTile.KillSound(i, j))
+				if (!modTile.KillSound(i, j, fail))
 					return false;
 				
 				SoundEngine.PlaySound(modTile.HitSound, new Vector2(i * 16, j * 16));
@@ -891,12 +894,6 @@ namespace Terraria.ModLoader
 				dust = tree.CreateDust();
 		}
 
-		public static void TreeGrowthFXGore(int type, ref int gore) {
-			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
-			if (tree != null)
-				gore = tree.GrowthFXGore();
-		}
-
 		public static bool CanDropAcorn(int type) {
 			var tree = PlantLoader.Get<ModTree>(TileID.Trees, type);
 			if (tree == null)
@@ -922,12 +919,6 @@ namespace Terraria.ModLoader
 			var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, tile.type);
 			if (tree != null)
 				dust = tree.CreateDust();
-		}
-
-		public static void PalmTreeGrowthFXGore(int type, ref int gore) {
-			var tree = PlantLoader.Get<ModPalmTree>(TileID.PalmTree, type);
-			if (tree != null)
-				gore = tree.GrowthFXGore();
 		}
 
 		public static void DropPalmTreeWood(int type, ref int wood) {

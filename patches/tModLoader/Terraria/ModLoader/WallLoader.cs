@@ -21,7 +21,7 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalWall> globalWalls = new List<GlobalWall>();
 		private static bool loaded = false;
 
-		private static Func<int, int, int, bool>[] HookKillSound;
+		private static Func<int, int, int, bool, bool>[] HookKillSound;
 		private delegate void DelegateNumDust(int i, int j, int type, bool fail, ref int num);
 		private static DelegateNumDust[] HookNumDust;
 		private delegate bool DelegateCreateDust(int i, int j, int type, ref int dustType);
@@ -136,16 +136,16 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		public static bool KillSound(int i, int j, int type) {
+		public static bool KillSound(int i, int j, int type, bool fail) {
 			foreach (var hook in HookKillSound) {
-				if (!hook(i, j, type))
+				if (!hook(i, j, type, fail))
 					return false;
 			}
 			
 			var modWall = GetWall(type);
 
 			if (modWall != null) {
-				if (!modWall.KillSound(i, j))
+				if (!modWall.KillSound(i, j, fail))
 					return false;
 				
 				SoundEngine.PlaySound(modWall.HitSound, new Vector2(i * 16, j * 16));

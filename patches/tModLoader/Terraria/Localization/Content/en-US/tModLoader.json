@@ -15,9 +15,9 @@
 		"MenuModPackDescription": "Manage Mod Packs, for features like saving your current list of mods & config, and Import & Export Mod Packs. Experimental.",
 		"MenuEnableDeveloperMode": "Enable Developer Mode",
 		"WelcomeMessageBeta": "Welcome to tModLoader 1.4 Alpha.\n\nYou have successfully installed an unstable version of tModLoader that may contain game-breaking bugs. \n\nUse the Workshop menu to access tModLoader Mod related functions.\n\nJoin the tModLoader Discord to learn more about which testing mods and/or tools are available for 1.4 tModLoader as part of its 1.4 overhaul.",
-		"MonthlyFreezeNotification": "The monthly alpha freeze has started. As a reminder, on the 21st of each month, there is a period of time where modders are expected to publish an update for their mods on the 1.4-preview branch in anticipation for all of the code and API changes to tModLoader that were made over the last month. The current 1.4-preview will become the new 1.4-stable on the 1st of next month.\n\nFailure to do so will mean that mods you've made will likely fail to load starting on the 1st of next month.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes. Click \"More Info\" to learn more about the alpha release cycle.",
-		"FirstLaunchWelcomeMessage": "Welcome to tModLoader.\n\nYou have successfully installed tModLoader. Use the Mod Browser menu to find mods you wish to download. Use the Mods menu to change which mods are currently active. After changing mods, make sure you click the Reload Mods button to reload them.",
-		"WhatsNewMessage": "The following are basic change notes from the last time you launched the Alpha. You may find that mods that relate to these changes need to be rebuilt by the author. Visit GitHub to see more details:\n",
+		"MonthlyFreezeNotification": "The monthly freeze has started. As a reminder, on the 21st of each month, there is a period of time where modders are expected to publish an update for their mods on the 1.4-preview branch in anticipation for all of the code and API changes to tModLoader that were made over the last month. The current 1.4-preview will become the new 1.4-stable (default) on the 1st of next month.\n\nFailure to do so will mean that mods you've made will likely fail to load starting on the 1st of next month.\n\nJoin the tModLoader Discord to learn more about the changes from this month and view migration notes. Click \"More Info\" to learn more about the continous release cycle.",
+		"FirstLaunchWelcomeMessage": "Welcome to tModLoader 1.4.\n\nYou have successfully installed tModLoader. Use the Workshop menu to access tModLoader Mod related functions.\n\nIf you were playing through 1.3 prior to today you can revert back by switching to the 1.3-legacy beta branch in Steam. If you can't find the mods you were planning to play with, they might only exist on 1.3 for now.",
+		"WhatsNewMessage": "The following are basic change notes from the last time you launched 1.4. You may find that mods that relate to these changes need to be rebuilt by the author. Visit GitHub to see more details:\n",
 		"ShowNewUpdatedModsInfoMessage": "The following mods were added or updated from the workshop since last launch (you can disable this message in the settings):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
@@ -271,6 +271,9 @@
 		"ExperimentalFeaturesNo": "Experimental Features: Off",
 		"RemoveForcedMinimumZoomYes": "Remove Forced Minimum Zoom: On",
 		"RemoveForcedMinimumZoomNo": "Remove Forced Minimum Zoom: Off",
+		"AttackSpeedScalingTooltipVisibility0": "Attack Speed Effect Tooltips: Show All",
+		"AttackSpeedScalingTooltipVisibility1": "Attack Speed Effect Tooltips: Show Adjusted Effectiveness",
+		"AttackSpeedScalingTooltipVisibility2": "Attack Speed Effect Tooltips: Hidden",
 		"AllowGreaterResolutionsYes": "Allow Greater Resolutions: On",
 		"AllowGreaterResolutionsNo": "Allow Greater Resolutions: Off",
 		"ShowMemoryEstimatesYes": "Show Mod Memory Estimates: On",
@@ -325,6 +328,8 @@
 		"MSModSourcesCantHaveSpaces": "(Mod Sources folders can't have spaces)",
 		"MSCreateMod": "Create Mod",
 		"VersionUpgrade": "LINK: Learn about Mod Migration for Latest Update",
+		"MSPortToLatest": "Run tModPorter",
+		"MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Extra libraries are required to build mods. (ModCompile folder missing)",
@@ -391,6 +396,12 @@
 		"DefaultTownNPCChat": "My modder forgot to give me a chat message.",
 		"DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
+		// Tooltip lines
+		"NoAttackSpeedScaling": "Does not scale with attack speed",
+		"SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
+		"ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
+		"ModifiedByMods": "Is modified by ",
+
 		// Memory bar
 		"LastLoadRamUsage": "Estimated last load RAM usage: {0}",
 		"AvailableMemory": "Available Memory: {0}",
@@ -438,24 +449,25 @@
 		"OneDriveHint": "\n\nTip: Try installing/enabling OneDrive. Right click your Documents folder and enable \"Always save on this device\"",
 		"AntivirusHint": "\n\nTip: If you have an antivirus, try adding Terraria to its whitelist/exclusion list",
 		"TypeInitializationHint": "\n\nTip: Restart the game. If this issue persists, try uninstalling Terraria completely, then reinstalling through Steam, and then reinstalling tModLoader",
+		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "New Content",
-		"TagsContentDescription": "This is a placeholder description. Don't Translate!",
+		"TagsContentDescription": "Adds new content (i.e. items, weapons, npcs, etc.) to the game",
 		"TagsUtility": "Utilities",
-		"TagsUtilityDescription": "This is a placeholder description. Don't Translate!",
+		"TagsUtilityDescription": "Adds utility-oriented content or features",
 		"TagsLibrary": "Library",
-		"TagsLibraryDescription": "This is a placeholder description. Don't Translate!",
+		"TagsLibraryDescription": "Provides additional API & features useful to modders",
 		"TagsQoL": "Quality Of Life",
-		"TagsQoLDescription": "This is a placeholder description. Don't Translate!",
+		"TagsQoLDescription": "Features or changes that reduce time spent on typically less fun tasks.",
 		"TagsGameplay": "Gameplay Tweaks",
-		"TagsGameplayDescription": "This is a placeholder description. Don't Translate!",
+		"TagsGameplayDescription": "Tweaks that change or improve vanilla gameplay",
 		"TagsAudio": "Audio Tweaks",
-		"TagsAudioDescription": "This is a placeholder description. Don't Translate!",
+		"TagsAudioDescription": "Tweaks that change existing audio (i.e. new boss themes, etc.)",
 		"TagsVisual": "Visual Tweaks",
-		"TagsVisualDescription": "This is a placeholder description. Don't Translate!",
+		"TagsVisualDescription": "Tweaks that change existing visualization (i.e. particle effects, etc.)",
 		"TagsLang": "Localization Support",
-		"TagsLangDescription": "This is a placeholder description. Don't Translate!",
+		"TagsLangDescription": "This mod supports multiple languages",
 		"TagsGen": "Custom World Gen",
-		"TagsGenDescription": "This is a placeholder description. Don't Translate!"
+		"TagsGenDescription": "Changes the way the world is generated (i.e. ores, new structures, etc.)"
 	},
 	"CommonItemTooltip": {
 		"PercentIncreasedDamage": "{0}% increased damage"

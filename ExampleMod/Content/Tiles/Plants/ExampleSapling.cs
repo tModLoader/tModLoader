@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
+using Terraria.GameContent.Metadata;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -47,6 +48,7 @@ namespace ExampleMod.Content.Tiles.Plants
 			TileID.Sets.TreeSapling[Type] = true;
 			TileID.Sets.CommonSapling[Type] = true;
 			TileID.Sets.SwaysInWindBasic[Type] = true;
+			TileMaterials.SetForTileId(Type, TileMaterials._materialsByName["Plant"]); // Make this tile interact with golf balls in the same way other plants do
 
 			DustType = ModContent.DustType<Sparkle>();
 

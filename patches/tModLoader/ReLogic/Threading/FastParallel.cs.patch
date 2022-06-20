@@ -1,7 +1,31 @@
 --- src/TerrariaNetCore/ReLogic/Threading/FastParallel.cs
 +++ src/tModLoader/ReLogic/Threading/FastParallel.cs
-@@ -28,6 +_,8 @@
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Threading;
++using System.Threading.Tasks;
+ 
+ namespace ReLogic.Threading
+ {
+@@ -22,12 +_,25 @@
+ 			}
+ 
+ 			public void Invoke() {
++				/*
+ 				if (_fromInclusive != _toExclusive)
+ 					_action(_fromInclusive, _toExclusive, _context);
+ 
  				_countdown.Signal();
++				*/
++				
++				//TML: Included this try finally block to prevent barely debuggable freezes.
++				try {
++					if (_fromInclusive != _toExclusive)
++						_action(_fromInclusive, _toExclusive, _context);
++				}
++				finally {
++					_countdown.Signal();
++				}
  			}
  		}
 +		
@@ -9,13 +33,15 @@
  
  		public static bool ForceTasksOnCallingThread {
  			get;
-@@ -48,7 +_,11 @@
+@@ -48,7 +_,13 @@
  				num2 = 1;
  
  			ThreadPriority priority = Thread.CurrentThread.Priority;
++			
 +			/*
  			Thread.CurrentThread.Priority = ThreadPriority.Highest;
 +			*/
++			
 +			TrySetThreadPriority(Thread.CurrentThread, ThreadPriority.Highest);
 +			
  			int num3 = num / num2;

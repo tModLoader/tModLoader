@@ -1,0 +1,3 @@
+Learn how to mod with tModLoader by exploring the source code for this mod.
+
+You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4/ExampleMod

@@ -14,6 +14,7 @@ body:
     value: |
       ## Is there an existing suggestion for this?
       Please search to see if an issue already exists for the feature you wish to propose. If there is, please add to that issue instead of making a new issue.
+      Please note if your proposal already exists either by you or someone else that it is highly likely yours will be closed.
 - type: dropdown
   id: contribute
   attributes:
@@ -42,7 +43,7 @@ body:
   attributes:
     label: Description
     description: |
-      Describe your proposal briefly. 
+      Describe your proposal. 
     placeholder: |
       A new hook called HookName could allow modders to...
 - type: textarea
@@ -50,7 +51,7 @@ body:
   attributes:
     label: What does this proposal attempt to solve or improve?
     description: |
-      Describe how your ideas are beneficial for the tModLoader software. Please list an example use case for the new feature, such as describing an example of how a mod would use the new feature. 
+      Describe how your proposal is beneficial for the tModLoader software. Please list an example use case for the new feature, such as describing an example of how a mod would use the new feature. 
     placeholder: |
       It is currently impossible to program a mod to do...
       This new feature would allow a mod to implement...
@@ -59,4 +60,4 @@ body:
   attributes:
     label: Which (other) solutions should be considered?
     description: |
-      Are there alternatives to your proposal? Please list them here.
+      Are there alternatives to your proposal? Please list them here. It is okay to leave this empty if none are applicable.
