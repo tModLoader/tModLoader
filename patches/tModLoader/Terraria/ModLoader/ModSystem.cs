@@ -74,6 +74,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Called whenever a world is loaded. This can be used to initialize data structures, etc.
+		/// <br/>If you need to access your data during worldgen, initialize it in <see cref="PreWorldGen"/> instead, unless you also save it on the world, then you need both.
 		/// </summary>
 		public virtual void OnWorldLoad() { }
 
@@ -318,6 +319,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows a mod to run code before a world is generated.
+		/// <br/>If you use this to initialize data used during worldgen, which you save on the world, also initialize it in <see cref="OnWorldLoad"/>.
 		/// </summary>
 		public virtual void PreWorldGen() { }
 

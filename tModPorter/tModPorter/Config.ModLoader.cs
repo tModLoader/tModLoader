@@ -213,7 +213,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "Save",		to: "SaveData");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Load",		to: "LoadWorldData");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Save",		to: "SaveWorldData");
-		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Initialize", to: "OnWorldLoad").FollowBy(AddCommentToOverride("Suggestion: Also override OnWorldUnload"));
+		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Initialize", to: "OnWorldLoad").FollowBy(AddCommentToOverride("Suggestion: Also override OnWorldUnload, and mirror your worldgen-sensitive data initialization in PreWorldGen"));
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "PreUpdate",	to: "PreUpdateWorld");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "PostUpdate", to: "PostUpdateWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"CanEquipAccessory",comment: "Suggestion: Consider using new hook CanAccessoryBeEquippedWith");
