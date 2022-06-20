@@ -1,5 +1,10 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_physics_1_1_ball_step_result.html":[2,0,2,17,3],
+"struct_terraria_1_1_physics_1_1_ball_step_result.html#aaf059ddf7668d551eb03c95d86320f66":[2,0,2,17,3,0],
+"struct_terraria_1_1_physics_1_1_ball_step_result.html#ad1d79260ada3ad7a82905933a9568759":[2,0,2,17,3,3],
+"struct_terraria_1_1_physics_1_1_ball_step_result.html#af7809926ed94e0f287a5a0bc83cf6447":[2,0,2,17,3,1],
+"struct_terraria_1_1_physics_1_1_ball_step_result.html#afcb24bc12f6b3229452788c4163293c8":[2,0,2,17,3,2],
 "struct_terraria_1_1_player_1_1_composite_arm_data.html":[2,0,2,55,1],
 "struct_terraria_1_1_player_1_1_composite_arm_data.html#a48cceb3b2d532a9a19ddba07eea719bc":[2,0,2,55,1,0],
 "struct_terraria_1_1_player_1_1_composite_arm_data.html#a4d642c6175ca2a98dab8b6f30070f8d4":[2,0,2,55,1,2],
@@ -244,10 +249,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#afbf2c9dfdb376ac34d2aa55ae426a1f4":[2,0,2,81,0,1],
 "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html":[2,0,2,23,10],
 "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#ab83da6d68a7168365ec414b95123af88":[2,0,2,23,10,1],
-"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#adda784998fb4d1e2284281f6b2d6e7aa":[2,0,2,23,10,0],
-"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#aebbffc4fe26f1653e7b5effe581adcff":[2,0,2,23,10,2],
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html":[2,0,2,23,21,0],
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a1da714dc024676b4585afbca7befbb94":[2,0,2,23,21,0,2],
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a35bf379104318f6fdb58620195287f07":[2,0,2,23,21,0,4],
-"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a922e4d491ac0f7c5f62d5c9f6bc0b3b7":[2,0,2,23,21,0,3]
+"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#adda784998fb4d1e2284281f6b2d6e7aa":[2,0,2,23,10,0]
 };

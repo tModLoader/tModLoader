@@ -1,5 +1,10 @@
 var NAVTREEINDEX98 =
 {
+"class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_bestiary_bar.html":[2,0,2,13,6,5],
+"class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_bestiary_bar.html#a5fd4f740b9527c9bd1730c38c3b2ab12":[2,0,2,13,6,5,2],
+"class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_bestiary_bar.html#a6c3aa87ca611ea55dda8275408e8fecb":[2,0,2,13,6,5,0],
+"class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_bestiary_bar.html#a945b901f47d0c7ef320e178f6565dc6e":[2,0,2,13,6,5,1],
+"class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html":[2,0,2,13,6,6],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#a0d776cc10b4e71978c26251eb887b125":[2,0,2,13,6,6,3],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#a15d85bef57b3abf4ee3f0e97589c5948":[2,0,2,13,6,6,9],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#a26f96074fad995cb77947e715e4058f8":[2,0,2,13,6,6,6],
@@ -244,10 +249,5 @@ var NAVTREEINDEX98 =
 "class_terraria_1_1_modules_1_1_tile_object_coordinates_module.html#a5dff7eeb43c5177b12cd01f342946780":[2,0,2,14,6,6],
 "class_terraria_1_1_modules_1_1_tile_object_coordinates_module.html#a6d48fe7897c8e2336f88f890de239300":[2,0,2,14,6,4],
 "class_terraria_1_1_modules_1_1_tile_object_coordinates_module.html#a9422737ee35b2fc6ba2eb0d51f24efed":[2,0,2,14,6,7],
-"class_terraria_1_1_modules_1_1_tile_object_coordinates_module.html#adbaba6d85be6f4f989f8dfaf9a1b8270":[2,0,2,14,6,8],
-"class_terraria_1_1_modules_1_1_tile_object_coordinates_module.html#ae53b8b7cdfbdefeadfef023443b58a25":[2,0,2,14,6,3],
-"class_terraria_1_1_modules_1_1_tile_object_draw_module.html":[2,0,2,14,7],
-"class_terraria_1_1_modules_1_1_tile_object_draw_module.html#a5ba632a0d2a1e2122bdb77b5c0c9c7ee":[2,0,2,14,7,2],
-"class_terraria_1_1_modules_1_1_tile_object_draw_module.html#a680c4ceef41f48a3b8680eb6bb7c4e72":[2,0,2,14,7,1],
-"class_terraria_1_1_modules_1_1_tile_object_draw_module.html#a88b76f29771e8bebed63d94de8d9bf18":[2,0,2,14,7,0]
+"class_terraria_1_1_modules_1_1_tile_object_coordinates_module.html#adbaba6d85be6f4f989f8dfaf9a1b8270":[2,0,2,14,6,8]
 };

@@ -1,5 +1,10 @@
 var NAVTREEINDEX111 =
 {
+"class_terraria_1_1_social_1_1_base_1_1_user_join_to_server_request.html#ac2490506e49311eb7f6d128836e2b60d":[2,0,2,19,0,14,2],
+"class_terraria_1_1_social_1_1_base_1_1_user_join_to_server_request.html#acd58286705ae3da8a51f733db1e055a5":[2,0,2,19,0,14,4],
+"class_terraria_1_1_social_1_1_base_1_1_user_join_to_server_request.html#ad920a73b4ffb7d509362427639408f8c":[2,0,2,19,0,14,6],
+"class_terraria_1_1_social_1_1_base_1_1_workshop_branding.html":[2,0,2,19,0,15],
+"class_terraria_1_1_social_1_1_base_1_1_workshop_branding.html#aeb18dc3ec346cc2d413cf14267fa62c7":[2,0,2,19,0,15,0],
 "class_terraria_1_1_social_1_1_base_1_1_workshop_issue_reporter.html":[2,0,2,19,0,16],
 "class_terraria_1_1_social_1_1_base_1_1_workshop_issue_reporter.html#a13b09290496f4ce68f2ad8e4fbab2691":[2,0,2,19,0,16,1],
 "class_terraria_1_1_social_1_1_base_1_1_workshop_issue_reporter.html#a1ee07e88af7119355dfb00f6a65a50eb":[2,0,2,19,0,16,6],
@@ -244,10 +249,5 @@ var NAVTREEINDEX111 =
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#a71cd32f39183cf548a1849e95bf16470":[2,0,2,19,1,15,4],
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#a8af13617feab1b800a9fc88aa77ba288":[2,0,2,19,1,15,5],
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#a9e3dc6936edecca82b8fe3c79a355f11":[2,0,2,19,1,15,0],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#aa20f4a6b500664ce0ea66d37244e9b97":[2,0,2,19,1,15,8],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#aa7aaa9b7eea3edc480e84f5dc680e771":[2,0,2,19,1,15,9],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#ab02ab6379bdc98d5e1b76436149e5fa3":[2,0,2,19,1,15,2],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#acda930202621d30a4e457a271d0b6f80":[2,0,2,19,1,15,10],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#adc2d8820bbe2996c246364127461d962":[2,0,2,19,1,15,14],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#af2ce7d3439d4f49f8f990b036c2262b8":[2,0,2,19,1,15,7]
+"class_terraria_1_1_social_1_1_steam_1_1_workshop_social_module.html#aa20f4a6b500664ce0ea66d37244e9b97":[2,0,2,19,1,15,8]
 };

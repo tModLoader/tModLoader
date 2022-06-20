@@ -1,5 +1,10 @@
 var NAVTREEINDEX122 =
 {
+"functions_func_m.html":[2,3,1,12],
+"functions_func_n.html":[2,3,1,13],
+"functions_func_o.html":[2,3,1,14],
+"functions_func_p.html":[2,3,1,15],
+"functions_func_q.html":[2,3,1,16],
 "functions_func_r.html":[2,3,1,17],
 "functions_func_s.html":[2,3,1,18],
 "functions_func_t.html":[2,3,1,19],
@@ -23,8 +28,8 @@ var NAVTREEINDEX122 =
 "functions_t.html":[2,3,0,19],
 "functions_u.html":[2,3,0,20],
 "functions_v.html":[2,3,0,21],
-"functions_vars.html":[2,3,2,0],
 "functions_vars.html":[2,3,2],
+"functions_vars.html":[2,3,2,0],
 "functions_vars_b.html":[2,3,2,1],
 "functions_vars_c.html":[2,3,2,2],
 "functions_vars_d.html":[2,3,2,3],
@@ -244,10 +249,5 @@ var NAVTREEINDEX122 =
 "interface_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i_1_1_i_builder_acc_toggle.html#a34cbe233aa9fc9a6b7a9ead562620b52":[2,0,2,5,21,6,0,1],
 "interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html":[2,0,2,5,21,1,3],
 "interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a1056a32e6c3ade9aa0a01831e4b30d61":[2,0,2,5,21,1,3,0],
-"interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a106a092490a34f8436b133e0ebc21eea":[2,0,2,5,21,1,3,6],
-"interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a1d0d58f7c054755bb6e3a850611abc57":[2,0,2,5,21,1,3,1],
-"interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a38805300297edfac20a1d6f8c2bc4bf1":[2,0,2,5,21,1,3,3],
-"interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a46ad06460d48d28fe16244fb82405a66":[2,0,2,5,21,1,3,7],
-"interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a6059604d70ada1946931a261918243b3":[2,0,2,5,21,1,3,4],
-"interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#af535711447082ecc89d173d47d37d510":[2,0,2,5,21,1,3,5]
+"interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a106a092490a34f8436b133e0ebc21eea":[2,0,2,5,21,1,3,6]
 };

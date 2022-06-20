@@ -119,9 +119,6 @@ abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bot
 <tr class="memitem:a7abf82027c00ae3c38e2a64001fcf624"><td class="memItemLeft" align="right" valign="top">abstract Asset&lt; Texture2D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#a7abf82027c00ae3c38e2a64001fcf624">GetTopTextures</a> ()</td></tr>
 <tr class="memdesc:a7abf82027c00ae3c38e2a64001fcf624"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the texture containing the possible tree tops that can be drawn above this tree. The framing was determined under &lt;cref&gt;SetTreeFoliageSettings&lt;/cref&gt;  <a href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#a7abf82027c00ae3c38e2a64001fcf624">More...</a><br /></td></tr>
 <tr class="separator:a7abf82027c00ae3c38e2a64001fcf624"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aef79b722138aa6bfbd3452b4cf0a92b4"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#aef79b722138aa6bfbd3452b4cf0a92b4">GrowthFXGore</a> ()</td></tr>
-<tr class="memdesc:aef79b722138aa6bfbd3452b4cf0a92b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of gore created to represent leaves when this tree grows on-screen. Returns -1 by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#aef79b722138aa6bfbd3452b4cf0a92b4">More...</a><br /></td></tr>
-<tr class="separator:aef79b722138aa6bfbd3452b4cf0a92b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b4d3e504c4840664781826435b511bb"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#a4b4d3e504c4840664781826435b511bb">SaplingGrowthType</a> (ref int style)</td></tr>
 <tr class="memdesc:a4b4d3e504c4840664781826435b511bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the sapling that can eventually grow into a tree. The type of the sapling should be returned here. Returns 20 and style 0 by default. The style parameter will determine which sapling is chosen if multiple sapling types share the same <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>; even if you only have a single sapling in an <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>, you must still set this to 0.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#a4b4d3e504c4840664781826435b511bb">More...</a><br /></td></tr>
 <tr class="separator:a4b4d3e504c4840664781826435b511bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,6 +128,12 @@ abstract void&#160;</td><td class="memItemRight" valign="bottom"><b>SetStaticDef
 <tr class="memitem:ae7996a189b6f8dcc787b80801b71eda7"><td class="memItemLeft" align="right" valign="top"><a id="ae7996a189b6f8dcc787b80801b71eda7"></a>
 abstract void&#160;</td><td class="memItemRight" valign="bottom"><b>SetTreeFoliageSettings</b> (<a class="el" href="struct_terraria_1_1_tile.html">Tile</a> tile, ref int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight)</td></tr>
 <tr class="separator:ae7996a189b6f8dcc787b80801b71eda7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc8ce9c81653635985d6cea479f72c03"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#afc8ce9c81653635985d6cea479f72c03">Shake</a> (int x, int y, ref bool createLeaves)</td></tr>
+<tr class="memdesc:afc8ce9c81653635985d6cea479f72c03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executed on tree shake, return false to skip vanilla tree shake drops  <a href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#afc8ce9c81653635985d6cea479f72c03">More...</a><br /></td></tr>
+<tr class="separator:afc8ce9c81653635985d6cea479f72c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56e6721c2653d9902147142e60d66f37"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#a56e6721c2653d9902147142e60d66f37">TreeLeaf</a> ()</td></tr>
+<tr class="memdesc:a56e6721c2653d9902147142e60d66f37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default  <a href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#a56e6721c2653d9902147142e60d66f37">More...</a><br /></td></tr>
+<tr class="separator:a56e6721c2653d9902147142e60d66f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a></td></tr>
 <tr class="memitem:a6fad86b0f61ef043fd5cb05fc64e7d2a inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top">void ILoadable.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html#a6fad86b0f61ef043fd5cb05fc64e7d2a">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
 <tr class="memdesc:a6fad86b0f61ef043fd5cb05fc64e7d2a inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when loading the type.  <a href="interface_terraria_1_1_mod_loader_1_1_i_plant.html#a6fad86b0f61ef043fd5cb05fc64e7d2a">More...</a><br /></td></tr>
@@ -154,6 +157,9 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaTopTextur
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:aeb64320d181e91830d40ff4d089b4a0d"><td class="memItemLeft" align="right" valign="top">virtual TreeTypes&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#aeb64320d181e91830d40ff4d089b4a0d">CountsAsTreeType</a><code> [get]</code></td></tr>
+<tr class="memdesc:aeb64320d181e91830d40ff4d089b4a0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used mostly for vanilla tree shake loot tables  <a href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#aeb64320d181e91830d40ff4d089b4a0d">More...</a><br /></td></tr>
+<tr class="separator:aeb64320d181e91830d40ff4d089b4a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a480d158e2af9f809e4540153eaf97e2c"><td class="memItemLeft" align="right" valign="top"><a id="a480d158e2af9f809e4540153eaf97e2c"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>GrowsOnTileId</b><code> [get, set]</code></td></tr>
 <tr class="separator:a480d158e2af9f809e4540153eaf97e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -318,34 +324,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 
 </div>
 </div>
-<a id="aef79b722138aa6bfbd3452b4cf0a92b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef79b722138aa6bfbd3452b4cf0a92b4">&#9670;&nbsp;</a></span>GrowthFXGore()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual int Terraria.ModLoader.ModTree.GrowthFXGore </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Return the type of gore created to represent leaves when this tree grows on-screen. Returns -1 by default. </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
 <a id="a4b4d3e504c4840664781826435b511bb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4b4d3e504c4840664781826435b511bb">&#9670;&nbsp;</a></span>SaplingGrowthType()</h2>
 
@@ -381,7 +359,104 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 
 </div>
 </div>
+<a id="afc8ce9c81653635985d6cea479f72c03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc8ce9c81653635985d6cea479f72c03">&#9670;&nbsp;</a></span>Shake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool Terraria.ModLoader.ModTree.Shake </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool&#160;</td>
+          <td class="paramname"><em>createLeaves</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Executed on tree shake, return false to skip vanilla tree shake drops </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a56e6721c2653d9902147142e60d66f37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56e6721c2653d9902147142e60d66f37">&#9670;&nbsp;</a></span>TreeLeaf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int Terraria.ModLoader.ModTree.TreeLeaf </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="aeb64320d181e91830d40ff4d089b4a0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb64320d181e91830d40ff4d089b4a0d">&#9670;&nbsp;</a></span>CountsAsTreeType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual TreeTypes Terraria.ModLoader.ModTree.CountsAsTreeType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Used mostly for vanilla tree shake loot tables </p>
+
+</div>
+</div>
 <a id="ada0dfbac5d6f94a45f509238a007d404"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ada0dfbac5d6f94a45f509238a007d404">&#9670;&nbsp;</a></span>PlantTileId</h2>
 

@@ -46,7 +46,6 @@ var class_terraria_1_1_mod_loader_1_1_tile_loader =
     [ "NumDust", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a4986970a2eaf50fc3a2a4974c7609b38", null ],
     [ "OpenDoorID", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a9e16060039b7bb467e8e025ac42627d7", null ],
     [ "PalmTreeDust", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a4d0c6dff9d1fa78c183d3fe532922580", null ],
-    [ "PalmTreeGrowthFXGore", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a004006756d98c5ddffc29306b57860dd", null ],
     [ "PickPowerCheck", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad3969b766d46d9c70709064648e57052", null ],
     [ "PlaceInWorld", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ac18565a116359a55d1010f2a08507ddf", null ],
     [ "PostDraw", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ad7d1ce7ed339a655772520f5f62100d4", null ],
@@ -62,7 +61,6 @@ var class_terraria_1_1_mod_loader_1_1_tile_loader =
     [ "SpecialDraw", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#ae19d58678be7b9e2280c528d4ff04a9e", null ],
     [ "TileFrame", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#adc978e3eefdcca3f9346b8ceea23bb40", null ],
     [ "TreeDust", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a2aece9441db7b674f14908b63307fe93", null ],
-    [ "TreeGrowthFXGore", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a0b6f41e241e1de3aeb410d858c7cba4c", null ],
     [ "UnlockChest", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a094fb9b89204dd4e17f056fbf92d0bbf", null ],
     [ "WalkDust", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a0ee8573b61cc8354d605a2855de5e765", null ],
     [ "TileCount", "class_terraria_1_1_mod_loader_1_1_tile_loader.html#a95649a5da592f38e1d542acc3901dc03", null ]
