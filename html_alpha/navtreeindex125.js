@@ -1,5 +1,9 @@
 var NAVTREEINDEX125 =
 {
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaa9880b90a1b375eb2ea2520e243bddf2":[1,0,2,5,8,82],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaaab3b94c08add2b5650de8b340afe716":[1,0,2,5,8,244],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaaac9a63596f76a62bb9f61a5dd7c0d25":[1,0,2,5,8,2],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaaae44179fda7ddcbf8916aff53846128":[1,0,2,5,8,54],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaab8fcc07ce4bd33cb3069fd171eceeca":[1,0,2,5,8,131],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaac5773e7e9a858698ac161f97bf1f2ec":[1,0,2,5,8,181],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaada936a2dedf31046e45443d94adeed4":[1,0,2,5,8,308],
@@ -245,9 +249,5 @@ var NAVTREEINDEX125 =
 "namespace_terraria_1_1_game_content_1_1_skies.html":[1,0,2,6,19],
 "namespace_terraria_1_1_game_content_1_1_skies_1_1_credits_roll.html":[1,0,2,6,19,0],
 "namespace_terraria_1_1_game_content_1_1_tile___entities.html":[1,0,2,6,20],
-"namespace_terraria_1_1_game_content_1_1_u_i.html":[1,0,2,6,21],
-"namespace_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar.html":[1,0,2,6,21,0],
-"namespace_terraria_1_1_game_content_1_1_u_i_1_1_chat.html":[1,0,2,6,21,1],
-"namespace_terraria_1_1_game_content_1_1_u_i_1_1_elements.html":[1,0,2,6,21,2],
-"namespace_terraria_1_1_game_content_1_1_u_i_1_1_minimap.html":[1,0,2,6,21,3]
+"namespace_terraria_1_1_game_content_1_1_u_i.html":[1,0,2,6,21]
 };

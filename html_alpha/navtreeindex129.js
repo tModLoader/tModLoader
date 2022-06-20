@@ -1,5 +1,9 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_game_content_1_1_bestiary_1_1_entry_icon_draw_settings.html#a37e4936f7f16bfe69691e18c65d81ea4":[2,0,2,5,2,12,2],
+"struct_terraria_1_1_game_content_1_1_bestiary_1_1_entry_icon_draw_settings.html#ac01037c2b73ad78e91ee74dc8a6799be":[2,0,2,5,2,12,0],
+"struct_terraria_1_1_game_content_1_1_bestiary_1_1_entry_icon_draw_settings.html#acab8654efd41174213cb953504d70d61":[2,0,2,5,2,12,1],
+"struct_terraria_1_1_game_content_1_1_creative_1_1_creative_power_u_i_element_request_info.html":[2,0,2,5,4,5],
 "struct_terraria_1_1_game_content_1_1_creative_1_1_creative_power_u_i_element_request_info.html#a2d1b1f9277ebf37f8b8c1ec30cb95e7b":[2,0,2,5,4,5,1],
 "struct_terraria_1_1_game_content_1_1_creative_1_1_creative_power_u_i_element_request_info.html#a986e06c8f34185722d1adabfcb709943":[2,0,2,5,4,5,0],
 "struct_terraria_1_1_game_content_1_1_drawing_1_1_particle_orchestra_settings.html":[2,0,2,5,5,0],
@@ -245,9 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#ac70d106579e16454e9e0d66a346653e6":[2,0,2,7,3,1,0,0],
 "struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html#af5965cf3be36f63b793098547da2c3f3":[2,0,2,7,3,1,0,2],
 "struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html":[2,0,2,7,10],
-"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html#ad78d3c58251d7cfb17cb43040944587b":[2,0,2,7,10,0],
-"struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html":[2,0,2,7,11],
-"struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html#a5ef515cd2a076fbb5eef1f6c4e64525b":[2,0,2,7,11,0],
-"struct_terraria_1_1_graphics_1_1_renderers_1_1_particle_renderer_settings.html":[2,0,2,7,4,12],
-"struct_terraria_1_1_graphics_1_1_renderers_1_1_particle_renderer_settings.html#a4fb59131c7abf26c5ae1dc02a0f074e3":[2,0,2,7,4,12,0]
+"struct_terraria_1_1_graphics_1_1_magic_missile_drawer.html#ad78d3c58251d7cfb17cb43040944587b":[2,0,2,7,10,0]
 };

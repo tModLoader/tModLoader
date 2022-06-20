@@ -1,5 +1,9 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_data_structures_1_1_placement_hook.html#a52cb51f9889054b8187546f739141dc7":[2,0,2,4,63,7],
+"struct_terraria_1_1_data_structures_1_1_placement_hook.html#a53c18ca8463cd9f120500c8d67212e34":[2,0,2,4,63,5],
+"struct_terraria_1_1_data_structures_1_1_placement_hook.html#a5c174d4ce94933ed2927de9929d5cdbe":[2,0,2,4,63,8],
+"struct_terraria_1_1_data_structures_1_1_placement_hook.html#a6e0d3e6080aba09ae3560654cc9bbe9e":[2,0,2,4,63,0],
 "struct_terraria_1_1_data_structures_1_1_placement_hook.html#aaf569c9ae4d62d6a1e6496db0dd49c13":[2,0,2,4,63,2],
 "struct_terraria_1_1_data_structures_1_1_placement_hook.html#ac4f56240bdf647472f87570cf2ce2bea":[2,0,2,4,63,4],
 "struct_terraria_1_1_data_structures_1_1_placement_hook.html#afa170fd740c05f6081ef62684d4905cd":[2,0,2,4,63,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlock_progress_report.html#a20154a833e4b087c6cbef15607b1aa13":[2,0,2,5,2,6,1],
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlock_progress_report.html#aadb773aac92477d0f3baced8e1268f86":[2,0,2,5,2,6,2],
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlock_progress_report.html#af2c9e145367389a23270ac1e7741ab09":[2,0,2,5,2,6,0],
-"struct_terraria_1_1_game_content_1_1_bestiary_1_1_entry_icon_draw_settings.html":[2,0,2,5,2,12],
-"struct_terraria_1_1_game_content_1_1_bestiary_1_1_entry_icon_draw_settings.html#a37e4936f7f16bfe69691e18c65d81ea4":[2,0,2,5,2,12,2],
-"struct_terraria_1_1_game_content_1_1_bestiary_1_1_entry_icon_draw_settings.html#ac01037c2b73ad78e91ee74dc8a6799be":[2,0,2,5,2,12,0],
-"struct_terraria_1_1_game_content_1_1_bestiary_1_1_entry_icon_draw_settings.html#acab8654efd41174213cb953504d70d61":[2,0,2,5,2,12,1],
-"struct_terraria_1_1_game_content_1_1_creative_1_1_creative_power_u_i_element_request_info.html":[2,0,2,5,4,5]
+"struct_terraria_1_1_game_content_1_1_bestiary_1_1_entry_icon_draw_settings.html":[2,0,2,5,2,12]
 };

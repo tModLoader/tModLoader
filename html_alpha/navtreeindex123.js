@@ -1,5 +1,9 @@
 var NAVTREEINDEX123 =
 {
+"interface_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i_1_1_i_builder_acc_toggle.html#a34cbe233aa9fc9a6b7a9ead562620b52":[2,0,2,5,21,6,0,1],
+"interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html":[2,0,2,5,21,1,3],
+"interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a1056a32e6c3ade9aa0a01831e4b30d61":[2,0,2,5,21,1,3,0],
+"interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a106a092490a34f8436b133e0ebc21eea":[2,0,2,5,21,1,3,6],
 "interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a1d0d58f7c054755bb6e3a850611abc57":[2,0,2,5,21,1,3,1],
 "interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a38805300297edfac20a1d6f8c2bc4bf1":[2,0,2,5,21,1,3,3],
 "interface_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_i_chat_monitor.html#a46ad06460d48d28fe16244fb82405a66":[2,0,2,5,21,1,3,7],
@@ -245,9 +249,5 @@ var NAVTREEINDEX123 =
 "namespace_terraria_1_1_enums.html#a6c54425ca68a0ebe759a2fffd7f07ae4afa89fcc81e9dcfd52671c968fe4e6ddf":[1,0,2,5,3,1],
 "namespace_terraria_1_1_enums.html#a72b9560e2a61775a8ba875a49e2ca1b0":[1,0,2,5,13],
 "namespace_terraria_1_1_enums.html#a72b9560e2a61775a8ba875a49e2ca1b0a0ab1ca89d3d5e308145971e56b302b0a":[1,0,2,5,13,11],
-"namespace_terraria_1_1_enums.html#a72b9560e2a61775a8ba875a49e2ca1b0a2607e2f996117735ca0ce25ebaa083e7":[1,0,2,5,13,10],
-"namespace_terraria_1_1_enums.html#a72b9560e2a61775a8ba875a49e2ca1b0a2e24b6a6dcc7ea9356fb274402296a06":[1,0,2,5,13,4],
-"namespace_terraria_1_1_enums.html#a72b9560e2a61775a8ba875a49e2ca1b0a4ddf4cb005260f1c5b21adca4d27c4ab":[1,0,2,5,13,5],
-"namespace_terraria_1_1_enums.html#a72b9560e2a61775a8ba875a49e2ca1b0a5ff7107fd0d193e37b4d64f2bfc11be7":[1,0,2,5,13,8],
-"namespace_terraria_1_1_enums.html#a72b9560e2a61775a8ba875a49e2ca1b0a6adf97f83acf6453d4a6a4b1070f3754":[1,0,2,5,13,0]
+"namespace_terraria_1_1_enums.html#a72b9560e2a61775a8ba875a49e2ca1b0a2607e2f996117735ca0ce25ebaa083e7":[1,0,2,5,13,10]
 };

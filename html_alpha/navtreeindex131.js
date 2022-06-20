@@ -1,5 +1,9 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_physics_1_1_ball_pass_through_event.html#a6e81bb559b368f0589c31cb45cd85330":[2,0,2,17,2,3],
+"struct_terraria_1_1_physics_1_1_ball_pass_through_event.html#a75fc2446fc355a27b0ac26b0af42763d":[2,0,2,17,2,2],
+"struct_terraria_1_1_physics_1_1_ball_pass_through_event.html#a7a5d584b9036c66d87df34e644dde4d0":[2,0,2,17,2,4],
+"struct_terraria_1_1_physics_1_1_ball_pass_through_event.html#aab124df8227c7d1faee7c67a3a08a33f":[2,0,2,17,2,1],
 "struct_terraria_1_1_physics_1_1_ball_step_result.html":[2,0,2,17,3],
 "struct_terraria_1_1_physics_1_1_ball_step_result.html#aaf059ddf7668d551eb03c95d86320f66":[2,0,2,17,3,0],
 "struct_terraria_1_1_physics_1_1_ball_step_result.html#ad1d79260ada3ad7a82905933a9568759":[2,0,2,17,3,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html":[2,0,2,81,0],
 "struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#a3585492e96a7ea9e100fe283e21d3761":[2,0,2,81,0,0],
 "struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#aa6fbcb750bdd0bd7a7937f1d34692e33":[2,0,2,81,0,2],
-"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#af6ed87933efa40a3fc12f8313da4903f":[2,0,2,81,0,3],
-"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#afbf2c9dfdb376ac34d2aa55ae426a1f4":[2,0,2,81,0,1],
-"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html":[2,0,2,23,10],
-"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#ab83da6d68a7168365ec414b95123af88":[2,0,2,23,10,1],
-"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#adda784998fb4d1e2284281f6b2d6e7aa":[2,0,2,23,10,0]
+"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#af6ed87933efa40a3fc12f8313da4903f":[2,0,2,81,0,3]
 };

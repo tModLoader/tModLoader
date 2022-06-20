@@ -1,5 +1,9 @@
 var NAVTREEINDEX114 =
 {
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a41ed00ad1d4cd738dcba99d45c0c18f7":[2,0,2,21,1,2,102],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a45d2d5a42c78235a77c53b9df0ac83e4":[2,0,2,21,1,2,195],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a470d55329cc8f177647903c011afa066":[2,0,2,21,1,2,152],
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a4737555891cb0753d221b93756f6951e":[2,0,2,21,1,2,99],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a48271ec6a02d5aa68c7bcdeb63ffe3dc":[2,0,2,21,1,2,89],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a4874d5acf133e2d5cd49d9ba7cc829f5":[2,0,2,21,1,2,224],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_gamepad_point_i_d.html#a4876c198922c883dc78e21d178b18969":[2,0,2,21,1,2,45],
@@ -245,9 +249,5 @@ var NAVTREEINDEX114 =
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#a99eb2af4bab3d1de6c6a805507c833ab":[2,0,2,21,1,5,0,5],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#a9c00677c60f121709b9236af3fb53b73":[2,0,2,21,1,5,0,2],
 "class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#aad06f9035e2342a7ec906e98b120c9b2":[2,0,2,21,1,5,0,15],
-"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#ab92ffe8db89e87245eea7c62a46816e9":[2,0,2,21,1,5,0,10],
-"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#ac09df1e32b760e7c196aa3a780522a62":[2,0,2,21,1,5,0,17],
-"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#ac6c2a8c011c51f002a486ccbcfba7f05":[2,0,2,21,1,5,0,14],
-"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#ac749f17604a3dcd8c0f266186f06e4e2":[2,0,2,21,1,5,0,23],
-"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#ac8541bf8c1bd8fde66906e769433714e":[2,0,2,21,1,5,0,25]
+"class_terraria_1_1_u_i_1_1_gamepad_1_1_u_i_link_point_navigator_1_1_shortcuts.html#ab92ffe8db89e87245eea7c62a46816e9":[2,0,2,21,1,5,0,10]
 };

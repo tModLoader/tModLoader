@@ -1,5 +1,9 @@
 var NAVTREEINDEX132 =
 {
+"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html#afbf2c9dfdb376ac34d2aa55ae426a1f4":[2,0,2,81,0,1],
+"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html":[2,0,2,23,10],
+"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#ab83da6d68a7168365ec414b95123af88":[2,0,2,23,10,1],
+"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#adda784998fb4d1e2284281f6b2d6e7aa":[2,0,2,23,10,0],
 "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html#aebbffc4fe26f1653e7b5effe581adcff":[2,0,2,23,10,2],
 "struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html":[2,0,2,23,21,0],
 "struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html#a1da714dc024676b4585afbca7befbb94":[2,0,2,23,21,0,2],

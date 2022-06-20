@@ -111,6 +111,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a19ee9388f4e74b037b276a3c130497b0"><td class="memItemLeft" align="right" valign="top"><a id="a19ee9388f4e74b037b276a3c130497b0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptedByItemGroups</b> (int invType, int reqType)</td></tr>
 <tr class="separator:a19ee9388f4e74b037b276a3c130497b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2570dae0d8d348615f53d45cfbe7e385"><td class="memItemLeft" align="right" valign="top"><a id="a2570dae0d8d348615f53d45cfbe7e385"></a>
+<a class="el" href="class_terraria_1_1_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AddCondition</b> (<a class="el" href="class_terraria_1_1_recipe_1_1_condition.html">Condition</a> condition)</td></tr>
+<tr class="separator:a2570dae0d8d348615f53d45cfbe7e385"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a680852ed6ba1a493c57be253a90fe66f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_recipe.html#a680852ed6ba1a493c57be253a90fe66f">AddCondition</a> (<a class="el" href="class_i_enumerable.html">IEnumerable</a>&lt; <a class="el" href="class_terraria_1_1_recipe_1_1_condition.html">Condition</a> &gt; conditions)</td></tr>
 <tr class="memdesc:a680852ed6ba1a493c57be253a90fe66f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a collectiom of conditions that will determine whether or not the recipe will be to be available for the player to use. The conditions can be unrelated to items or tiles (for example, biome or time).  <a href="class_terraria_1_1_recipe.html#a680852ed6ba1a493c57be253a90fe66f">More...</a><br /></td></tr>
 <tr class="separator:a680852ed6ba1a493c57be253a90fe66f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,6 +162,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>AcceptedByItemGroups<
 <tr class="memitem:aa9fbd54670e959d7c4857282430c7ac7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_recipe.html#aa9fbd54670e959d7c4857282430c7ac7">AddTile&lt; T &gt;</a> ()</td></tr>
 <tr class="memdesc:aa9fbd54670e959d7c4857282430c7ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a required crafting station to this recipe of the given type of tile.  <a href="class_terraria_1_1_recipe.html#aa9fbd54670e959d7c4857282430c7ac7">More...</a><br /></td></tr>
 <tr class="separator:aa9fbd54670e959d7c4857282430c7ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4fb84e00c87d4452978f2337f55a787"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_recipe.html#ae4fb84e00c87d4452978f2337f55a787">Clone</a> ()</td></tr>
+<tr class="memdesc:ae4fb84e00c87d4452978f2337f55a787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a clone of this recipe except the source mod of the <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a> will the currently loading mod. <br  />
+ The clone will have to be registered after being tweaked.  <a href="class_terraria_1_1_recipe.html#ae4fb84e00c87d4452978f2337f55a787">More...</a><br /></td></tr>
+<tr class="separator:ae4fb84e00c87d4452978f2337f55a787"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c096d8839025861613eadecfe614b2f"><td class="memItemLeft" align="right" valign="top"><a id="a2c096d8839025861613eadecfe614b2f"></a>
 delegate void&#160;</td><td class="memItemRight" valign="bottom"><b>ConsumeItemCallback</b> (<a class="el" href="class_terraria_1_1_recipe.html">Recipe</a> recipe, int type, ref int amount)</td></tr>
 <tr class="separator:a2c096d8839025861613eadecfe614b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,6 +298,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryGetResult&lt; T &g
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a9aa662cabe9152c39fc6d6d94bd6398b"><td class="memItemLeft" align="right" valign="top"><a id="a9aa662cabe9152c39fc6d6d94bd6398b"></a>
+static <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Create</b> (int result, int amount=1)</td></tr>
+<tr class="separator:a9aa662cabe9152c39fc6d6d94bd6398b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae41569d5e6adbe1a2eff6cfac7391480"><td class="memItemLeft" align="right" valign="top"><a id="ae41569d5e6adbe1a2eff6cfac7391480"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>FindRecipes</b> (bool canDelayCheck=false)</td></tr>
 <tr class="separator:ae41569d5e6adbe1a2eff6cfac7391480"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -893,6 +903,26 @@ Properties</h2></td></tr>
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="ae4fb84e00c87d4452978f2337f55a787"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4fb84e00c87d4452978f2337f55a787">&#9670;&nbsp;</a></span>Clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_terraria_1_1_recipe.html">Recipe</a> Terraria.Recipe.Clone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a clone of this recipe except the source mod of the <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a> will the currently loading mod. <br  />
+ The clone will have to be registered after being tweaked. </p>
 
 </div>
 </div>
