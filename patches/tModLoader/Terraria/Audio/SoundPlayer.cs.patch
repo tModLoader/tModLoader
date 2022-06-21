@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/SoundPlayer.cs
 +++ src/tModLoader/Terraria/Audio/SoundPlayer.cs
-@@ -1,24 +_,83 @@
+@@ -1,24 +_,77 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Utilities;
  using System.Collections.Generic;
@@ -39,14 +39,8 @@
 +
 +			// If not on the main thread - queue a main thread action, and wait for it to complete
 +			if (!Program.IsMainThread) {
-+				var taskCompletionSource = new TaskCompletionSource<SlotId>();
 +				var styleCopy = style;
-+
-+				Main.QueueMainThreadAction(() => taskCompletionSource.SetResult(Play_Inner(styleCopy, position)));
-+
-+				taskCompletionSource.Task.Wait();
-+
-+				return taskCompletionSource.Task.Result;
++				return Main.RunOnMainThread(() => Play_Inner(styleCopy, position)).GetAwaiter().GetResult();
 +			}
 +			
 +			return Play_Inner(in style, position);

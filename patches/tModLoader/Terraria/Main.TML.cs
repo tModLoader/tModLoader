@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -204,6 +205,31 @@ namespace Terraria
 				titleLinks[i].Draw(spriteBatch, anchorPosition);
 				anchorPosition.X += 30f;
 			}
+		}
+
+		/// <summary>
+		/// Wait for an action to be performed on the main thread.
+		/// </summary>
+		/// <param name="action"></param>
+		public static Task RunOnMainThread(Action action) {
+			var tcs = new TaskCompletionSource();
+
+			QueueMainThreadAction(() => {
+				action();
+				tcs.SetResult();
+			});
+
+			return tcs.Task;
+		}
+
+		/// <summary>
+		/// Wait for an action to be performed on the main thread.
+		/// </summary>
+		/// <param name="func"></param>
+		public static Task<T> RunOnMainThread<T>(Func<T> func) {
+			var tcs = new TaskCompletionSource<T>();
+			QueueMainThreadAction(() => tcs.SetResult(func()));
+			return tcs.Task;
 		}
 	}
 }
