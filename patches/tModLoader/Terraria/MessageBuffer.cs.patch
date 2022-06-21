@@ -75,6 +75,14 @@
  						}
  					}
  					break;
+@@ -154,6 +_,7 @@
+ 					if (Main.netMode == 1) {
+ 						Netplay.Disconnect = true;
+ 						Main.statusText = NetworkText.Deserialize(reader).ToString();
++						Main.menuMode = 14; // Added by TML.
+ 					}
+ 					break;
+ 				case 3:
 @@ -214,6 +_,7 @@
  							NetMessage.TrySendData(5, -1, -1, null, num236, 220 + num245, (int)player12.bank4.item[num245].prefix);
  						}
