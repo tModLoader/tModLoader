@@ -320,6 +320,10 @@ namespace Terraria.ModLoader
 			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
 				mod.SetupContent();
+			});
+
+			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
+			LoadModContent(token, mod => {
 				mod.PostSetupContent();
 				SystemLoader.PostSetupContent(mod);
 				mod.TransferAllAssets();
