@@ -1,5 +1,6 @@
 var NAVTREEINDEX125 =
 {
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaa3a77296cc85eb0c3175a09c0f7c3e60":[1,0,2,5,8,213],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaa4090ffabdfba53d76b0748a0d87ce21":[1,0,2,5,8,7],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaa42fdfc1d9efe7d0f40d0e97bf07e093":[1,0,2,5,8,252],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaa45478a2cc67c137a1a8c0359e9759cd":[1,0,2,5,8,98],
@@ -248,6 +249,5 @@ var NAVTREEINDEX125 =
 "namespace_terraria_1_1_game_content_1_1_object_interactions.html":[1,0,2,6,15],
 "namespace_terraria_1_1_game_content_1_1_personalities.html":[1,0,2,6,16],
 "namespace_terraria_1_1_game_content_1_1_personalities.html#acb56d1a42f410e08baed000b6e7c05d2":[1,0,2,6,16,21],
-"namespace_terraria_1_1_game_content_1_1_personalities.html#acb56d1a42f410e08baed000b6e7c05d2a4ad6c928711328d1cf0167bc87079a14":[1,0,2,6,16,21,3],
-"namespace_terraria_1_1_game_content_1_1_personalities.html#acb56d1a42f410e08baed000b6e7c05d2a8bd7a1153a88761ad9d37e2f2394c947":[1,0,2,6,16,21,0]
+"namespace_terraria_1_1_game_content_1_1_personalities.html#acb56d1a42f410e08baed000b6e7c05d2a4ad6c928711328d1cf0167bc87079a14":[1,0,2,6,16,21,3]
 };

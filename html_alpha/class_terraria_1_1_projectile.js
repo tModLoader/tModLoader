@@ -155,6 +155,7 @@ var class_terraria_1_1_projectile =
     [ "WhipPointsForCollision", "class_terraria_1_1_projectile.html#abcef73e58de6c5421a53b92bc3f4d093", null ],
     [ "WhipSettings", "class_terraria_1_1_projectile.html#a626a195f17487fcf2431e3f3c4b5cd3b", null ],
     [ "ArmorPenetration", "class_terraria_1_1_projectile.html#a334d3a25853855b61895ad9de680eaed", null ],
+    [ "ContinuouslyUpdateDamage", "class_terraria_1_1_projectile.html#af7cb54588b6da6e55a19a5c997836d6e", null ],
     [ "CritChance", "class_terraria_1_1_projectile.html#ab5c3e395c80059ae076ea62911494c38", null ],
     [ "DamageType", "class_terraria_1_1_projectile.html#a0d02e0c321caf48136a22b27b50ebb09", null ],
     [ "Globals", "class_terraria_1_1_projectile.html#ac2a63711e4078358202380e577c65fc8", null ],

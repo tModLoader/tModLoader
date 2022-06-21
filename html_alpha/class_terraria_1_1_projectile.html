@@ -712,6 +712,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a334d3a25853855b61895ad9de680eaed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_projectile.html#a334d3a25853855b61895ad9de680eaed">ArmorPenetration</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a334d3a25853855b61895ad9de680eaed"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of defense points that this projectile can ignore on its own. Cannot be set to negative values. Defaults to 0. On spawn, if this projectile was fired from a weapon, this value has the total armor penetration of the weapon that made the projectile added to itself.  <a href="class_terraria_1_1_projectile.html#a334d3a25853855b61895ad9de680eaed">More...</a><br /></td></tr>
 <tr class="separator:a334d3a25853855b61895ad9de680eaed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7cb54588b6da6e55a19a5c997836d6e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_projectile.html#af7cb54588b6da6e55a19a5c997836d6e">ContinuouslyUpdateDamage</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:af7cb54588b6da6e55a19a5c997836d6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">If set, Projectile.damage will be recalculated based on Projectile.originalDamage, <a class="el" href="class_terraria_1_1_projectile.html#a0d02e0c321caf48136a22b27b50ebb09" title="The damage type assigned to this projectile, represented as a DamageClass. Leave blank or use DamageC...">Projectile.DamageType</a> and the owning player, just like minions and sentries. This has no effect if Projectile.minion or Projectile.sentry is set.  <a href="class_terraria_1_1_projectile.html#af7cb54588b6da6e55a19a5c997836d6e">More...</a><br /></td></tr>
+<tr class="separator:af7cb54588b6da6e55a19a5c997836d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5c3e395c80059ae076ea62911494c38"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_projectile.html#ab5c3e395c80059ae076ea62911494c38">CritChance</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ab5c3e395c80059ae076ea62911494c38"><td class="mdescLeft">&#160;</td><td class="mdescRight">The critical strike chance modifier of this projectile. Cannot be set to negative values. Defaults to 0. On spawn, if this projectile was fired from a weapon, this value has the total critical strike chance of the weapon that made the projectile added to itself.  <a href="class_terraria_1_1_projectile.html#ab5c3e395c80059ae076ea62911494c38">More...</a><br /></td></tr>
 <tr class="separator:ab5c3e395c80059ae076ea62911494c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1262,6 +1265,30 @@ This particular overload uses a Vector2 instead of X and Y to determine the actu
 </div><div class="memdoc">
 
 <p>The number of defense points that this projectile can ignore on its own. Cannot be set to negative values. Defaults to 0. On spawn, if this projectile was fired from a weapon, this value has the total armor penetration of the weapon that made the projectile added to itself. </p>
+
+</div>
+</div>
+<a id="af7cb54588b6da6e55a19a5c997836d6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7cb54588b6da6e55a19a5c997836d6e">&#9670;&nbsp;</a></span>ContinuouslyUpdateDamage</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Projectile.ContinuouslyUpdateDamage</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If set, Projectile.damage will be recalculated based on Projectile.originalDamage, <a class="el" href="class_terraria_1_1_projectile.html#a0d02e0c321caf48136a22b27b50ebb09" title="The damage type assigned to this projectile, represented as a DamageClass. Leave blank or use DamageC...">Projectile.DamageType</a> and the owning player, just like minions and sentries. This has no effect if Projectile.minion or Projectile.sentry is set. </p>
 
 </div>
 </div>

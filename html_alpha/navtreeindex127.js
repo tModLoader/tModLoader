@@ -1,5 +1,6 @@
 var NAVTREEINDEX127 =
 {
+"namespace_terraria_1_1_physics.html#abfac8d9670e4352b70d1bd6c2fe56887":[1,0,2,18,7],
 "namespace_terraria_1_1_physics.html#abfac8d9670e4352b70d1bd6c2fe56887a04ef591d0f3f79dfafcae27152a0424d":[1,0,2,18,7,0],
 "namespace_terraria_1_1_physics.html#abfac8d9670e4352b70d1bd6c2fe56887a46dc1018ac1d8fca7c2752a61ce2fd0f":[1,0,2,18,7,2],
 "namespace_terraria_1_1_physics.html#abfac8d9670e4352b70d1bd6c2fe56887adefe967ad0373b2274fc298f19125ca7":[1,0,2,18,7,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#ae562940625478180f240b5de67319e28":[2,0,2,4,59,6],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html":[2,0,2,4,61],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a12a2bcba57c00260cc4e31adbe08a4a6":[2,0,2,4,61,1],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a23b6ccf3902796d61cb83f8f059b6e1d":[2,0,2,4,61,2],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a3d5a809d563f965fba299d813a9e854b":[2,0,2,4,61,4]
+"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a23b6ccf3902796d61cb83f8f059b6e1d":[2,0,2,4,61,2]
 };

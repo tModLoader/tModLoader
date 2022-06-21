@@ -1,5 +1,6 @@
 var NAVTREEINDEX126 =
 {
+"namespace_terraria_1_1_game_content_1_1_personalities.html#acb56d1a42f410e08baed000b6e7c05d2a8bd7a1153a88761ad9d37e2f2394c947":[1,0,2,6,16,21,0],
 "namespace_terraria_1_1_game_content_1_1_personalities.html#acb56d1a42f410e08baed000b6e7c05d2a98b82c200a2e309b24cb481970f3fcc4":[1,0,2,6,16,21,1],
 "namespace_terraria_1_1_game_content_1_1_personalities.html#acb56d1a42f410e08baed000b6e7c05d2aea04e7ef514a25e465197a31c71f52f0":[1,0,2,6,16,21,2],
 "namespace_terraria_1_1_game_content_1_1_r_g_b.html":[1,0,2,6,17],
@@ -248,6 +249,5 @@ var NAVTREEINDEX126 =
 "namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda27634ff8002b12e75d98e07ccd005d18":[1,0,2,18,6,1],
 "namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda6adf97f83acf6453d4a6a4b1070f3754":[1,0,2,18,6,0],
 "namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda8dc0611245a871ac51bbeebb85f33a58":[1,0,2,18,6,2],
-"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35ddac5457c5f3cfb4da8638ce7190f8e5152":[1,0,2,18,6,4],
-"namespace_terraria_1_1_physics.html#abfac8d9670e4352b70d1bd6c2fe56887":[1,0,2,18,7]
+"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35ddac5457c5f3cfb4da8638ce7190f8e5152":[1,0,2,18,6,4]
 };
