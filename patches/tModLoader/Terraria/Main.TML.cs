@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -32,6 +33,7 @@ namespace Terraria
 		public static double timePass; // used to account for more precise time rates when deciding when to update weather
 
 		internal static TMLContentManager AlternateContentManager;
+		public static List<TitleLinkButton> tModLoaderTitleLinks = new List<TitleLinkButton>();
 
 		public static Color DiscoColor => new Color(DiscoR, DiscoG, DiscoB);
 		public static Color MouseTextColorReal => new Color(mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f, mouseTextColor / 255f);
@@ -193,6 +195,15 @@ namespace Terraria
 				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
 
 			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
+		}
+		
+		private static void DrawtModLoaderSocialMediaButtons(Microsoft.Xna.Framework.Color menuColor, float upBump) {
+			List<TitleLinkButton> titleLinks = tModLoaderTitleLinks;
+			Vector2 anchorPosition = new Vector2(18f, (float)(screenHeight - 26 - 22) - upBump);
+			for (int i = 0; i < titleLinks.Count; i++) {
+				titleLinks[i].Draw(spriteBatch, anchorPosition);
+				anchorPosition.X += 30f;
+			}
 		}
 	}
 }

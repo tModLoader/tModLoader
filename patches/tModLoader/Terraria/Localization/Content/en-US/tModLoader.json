@@ -509,5 +509,8 @@
 		"InGemCave": "Needs to be in Gem Cave",
 		"InLihzardTemple": "Needs to be in Lihzard Temple",
 		"InGraveyardBiome": "Needs to be in Graveyard Biome"
+	},
+	"TitleLinks": {
+		"Patreon": "Patreon"
 	}
 }
