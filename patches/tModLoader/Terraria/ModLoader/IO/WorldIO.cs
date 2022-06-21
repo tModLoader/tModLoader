@@ -267,7 +267,7 @@ namespace Terraria.ModLoader.IO
 					}
 				}
 
-				List<TagCompound> globalData = (List<TagCompound>)tag["globalData"];
+				IList<TagCompound> globalData = tag.GetList<TagCompound>("globalData");
 
 				foreach (TagCompound tagCompound in globalData) {
 					string modName = (string)tagCompound["mod"];
