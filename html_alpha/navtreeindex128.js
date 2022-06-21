@@ -1,5 +1,7 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a12a2bcba57c00260cc4e31adbe08a4a6":[2,0,2,4,61,1],
+"struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a23b6ccf3902796d61cb83f8f059b6e1d":[2,0,2,4,61,2],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a3d5a809d563f965fba299d813a9e854b":[2,0,2,4,61,4],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a4baf470250dcd9bad267adbecb5b9d46":[2,0,2,4,61,3],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a86ab3dc84a692425f87ced1dbefe9ac6":[2,0,2,4,61,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_data_structures_1_1_wing_stats.html#abe667d1be5291a9516b72d984716f875":[2,0,2,4,85,6],
 "struct_terraria_1_1_data_structures_1_1_wing_stats.html#ace86f58a6ffa660668d367d113190ef7":[2,0,2,4,85,7],
 "struct_terraria_1_1_data_structures_1_1_wing_stats.html#afbe04494d80a8d3ab639382d705ff79f":[2,0,2,4,85,4],
-"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambience_server_1_1_ambience_spawn_info.html":[2,0,2,5,1,0,0],
-"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambience_server_1_1_ambience_spawn_info.html#a1932fef3601c9d2512478dc932a2358d":[2,0,2,5,1,0,0,1],
-"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambience_server_1_1_ambience_spawn_info.html#aee746c631f8dc7d183c1e56831b79a38":[2,0,2,5,1,0,0,0]
+"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambience_server_1_1_ambience_spawn_info.html":[2,0,2,5,1,0,0]
 };

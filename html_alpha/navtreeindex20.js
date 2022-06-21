@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_workshop_import_world_list_item.html#a60dc81a49aeb1c57cffe5560e17ca637":[2,0,2,5,21,2,63,2],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_workshop_import_world_list_item.html#a6dbafff3d61bcae831dd12a786798da2":[2,0,2,5,21,2,63,3],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_workshop_import_world_list_item.html#ab9db07e63c7e3b4d3622c2864fb28ebd":[2,0,2,5,21,2,63,4],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_workshop_import_world_list_item.html#ad95ff4305b89294e344de502b1573079":[2,0,2,5,21,2,63,5],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_workshop_publish_resource_pack_list_item.html":[2,0,2,5,21,2,64],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_classic_player_resources_display_set.html#a280035c084cf69bf34aa8a06e371b650":[2,0,2,5,21,4,0,4],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_classic_player_resources_display_set.html#a6a75e9665613368e7ba828724126ac72":[2,0,2,5,21,4,0,1],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_classic_player_resources_display_set.html#a731eb84dbe18929c05819cf373135522":[2,0,2,5,21,4,0,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_classic_player_resources_display_set.html#ac01683aa005ca6c67ac9eff8d420be18":[2,0,2,5,21,4,0,3],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_classic_player_resources_display_set.html#af5f6c8b5d1243e96f9bd94a634eb84b3":[2,0,2,5,21,4,0,2],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_common_resource_bar_methods.html":[2,0,2,5,21,4,1]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_resource_sets_1_1_classic_player_resources_display_set.html#ac01683aa005ca6c67ac9eff8d420be18":[2,0,2,5,21,4,0,3]
 };

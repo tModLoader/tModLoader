@@ -1,5 +1,7 @@
 var NAVTREEINDEX122 =
 {
+"functions.html":[2,3,0,0],
+"functions_b.html":[2,3,0,1],
 "functions_c.html":[2,3,0,2],
 "functions_d.html":[2,3,0,3],
 "functions_e.html":[2,3,0,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX122 =
 "interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_i_credits_roll_segment.html":[2,0,2,5,19,0,3],
 "interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_i_credits_roll_segment.html#a02ba75b8f7a97ab064faca3c8e842203":[2,0,2,5,19,0,3,0],
 "interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_i_credits_roll_segment.html#abea572cf2a5a65b67dcbcab428ad9b40":[2,0,2,5,19,0,3,1],
-"interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_i_credits_roll_segment_action.html":[2,0,2,5,19,0,4],
-"interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_i_credits_roll_segment_action.html#a1bf27d7783f7c9523664e9883d9b2ea1":[2,0,2,5,19,0,4,3],
-"interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_i_credits_roll_segment_action.html#a3f2808cdcbcadebdf230c52ebd7855bd":[2,0,2,5,19,0,4,2]
+"interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_i_credits_roll_segment_action.html":[2,0,2,5,19,0,4]
 };

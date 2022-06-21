@@ -1676,6 +1676,7 @@ var annotated_dup =
     [ "DeviceParam", "class_device_param.html", null ],
     [ "Exception", "class_exception.html", null ],
     [ "Game", "class_game.html", null ],
+    [ "GameCulture", "class_game_culture.html", "class_game_culture" ],
     [ "GlobalType", "class_global_type.html", null ],
     [ "GoreID", "class_gore_i_d.html", [
       [ "Sets", "class_gore_i_d_1_1_sets.html", "class_gore_i_d_1_1_sets" ]

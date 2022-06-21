@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a3a72101f317c185eac73eba1d3c6397b":[2,0,2,5,20,6,15],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a3dccb16ed3d84fc09c5188a3a3f5a18d":[2,0,2,5,20,6,10],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a41171ba66e5e2b5f6a53f6cab47029d4":[2,0,2,5,20,6,11],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a44b2f0d60ce840d349f97bd1c0ae52e6":[2,0,2,5,20,6,0],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a44b2f0d60ce840d349f97bd1c0ae52e6a03727ac48595a24daed975559c944a44":[2,0,2,5,20,6,0,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i.html#af9063786f0b6f246ffacbc50e3d0ed60":[2,0,2,5,21,6,4],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_achievement_tag_handler.html":[2,0,2,5,21,1,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_achievement_tag_handler.html#ad2ca61a3bda480159cd489a574032c45":[2,0,2,5,21,1,0,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_color_tag_handler.html":[2,0,2,5,21,1,1],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_glyph_tag_handler.html":[2,0,2,5,21,1,2],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_glyph_tag_handler.html#a511708739227699872d3403ed39db655":[2,0,2,5,21,1,2,0]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_color_tag_handler.html":[2,0,2,5,21,1,1]
 };

@@ -2,7 +2,7 @@ var searchData=
 [
   ['game_3672',['Game',['../class_game.html',1,'Game'],['../class_terraria_1_1_server_1_1_game.html',1,'Terraria.Server.Game']]],
   ['gameconfiguration_3673',['GameConfiguration',['../class_terraria_1_1_i_o_1_1_game_configuration.html',1,'Terraria::IO']]],
-  ['gameculture_3674',['GameCulture',['../class_terraria_1_1_localization_1_1_game_culture.html',1,'Terraria::Localization']]],
+  ['gameculture_3674',['GameCulture',['../class_game_culture.html',1,'GameCulture'],['../class_terraria_1_1_localization_1_1_game_culture.html',1,'Terraria.Localization.GameCulture']]],
   ['gameeffect_3675',['GameEffect',['../class_terraria_1_1_graphics_1_1_effects_1_1_game_effect.html',1,'Terraria::Graphics::Effects']]],
   ['gameeventclearedid_3676',['GameEventClearedID',['../class_terraria_1_1_i_d_1_1_game_event_cleared_i_d.html',1,'Terraria::ID']]],
   ['gameinterfacelayer_3677',['GameInterfaceLayer',['../class_terraria_1_1_u_i_1_1_game_interface_layer.html',1,'Terraria::UI']]],

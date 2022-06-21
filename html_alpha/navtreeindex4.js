@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#a7b7f40de2d4f4f359d9ca760b0966b11":[2,0,2,4,79,5],
+"class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#a8b810b95d355524b2afc6692e4736772":[2,0,2,4,79,1],
 "class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#aaf7ee9e3852b293ad6487cbdb3922eb6":[2,0,2,4,79,7],
 "class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#ab5fa175d3ac3b400e9381ac5149e0431":[2,0,2,4,79,6],
 "class_terraria_1_1_data_structures_1_1_tile_entities_manager.html#ac89898bb2ba94fa921d0a89ffa56096a":[2,0,2,4,79,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#aab988c6408b4b8d70969a0e32c9c8cc3":[2,0,2,5,0,0,24],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ab7008be6cb6276bca31aae7da8efb9c2":[2,0,2,5,0,0,18],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ab9a20c518937f41d79e455e9f51b3345":[2,0,2,5,0,0,11],
-"class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ac540940e178110405059e118d974495b":[2,0,2,5,0,0,4],
-"class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ade93191bde8e96b8b86c99d8310162fd":[2,0,2,5,0,0,8],
-"class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ae8f2cbd4d0d08d35b69443f243c63c1f":[2,0,2,5,0,0,14]
+"class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ac540940e178110405059e118d974495b":[2,0,2,5,0,0,4]
 };

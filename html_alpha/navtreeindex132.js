@@ -1,5 +1,7 @@
 var NAVTREEINDEX132 =
 {
+"struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#aeaa4066a5680dff845078a70c1c44d2b":[2,0,2,22,8,1,12],
+"struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html":[2,0,2,22,1,0,0],
 "struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#a1ec03b47a7cd9c4b25737a8d8f31807b":[2,0,2,22,1,0,0,5],
 "struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#a32a84f7b788e4f175e53ec3a239e49ea":[2,0,2,22,1,0,0,0],
 "struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html#a77237cb92d24e563ecacced616acefdf":[2,0,2,22,1,0,0,2],
@@ -40,5 +42,5 @@ var NAVTREEINDEX132 =
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ab4a41891b488a8e30e51e30da3da83e6":[2,0,2,84,1,4],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ac026067dd86556b03343af3accafb339":[2,0,2,84,1,9],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#af29be99c6e7eeb85d0fd385f07a3ebd6":[2,0,2,84,1,5],
-"structnativefiledialog_1_1nfdpathset__t.html":[2,0,37,0]
+"structnativefiledialog_1_1nfdpathset__t.html":[2,0,38,0]
 };

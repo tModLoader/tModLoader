@@ -446,6 +446,7 @@ var hierarchy =
     [ "Terraria.IO.GameConfiguration", "class_terraria_1_1_i_o_1_1_game_configuration.html", [
       [ "Terraria.WorldBuilding.WorldGenConfiguration", "class_terraria_1_1_world_building_1_1_world_gen_configuration.html", null ]
     ] ],
+    [ "GameCulture", "class_game_culture.html", null ],
     [ "Terraria.Localization.GameCulture", "class_terraria_1_1_localization_1_1_game_culture.html", null ],
     [ "Terraria.Graphics.Effects.GameEffect", "class_terraria_1_1_graphics_1_1_effects_1_1_game_effect.html", [
       [ "Terraria.Graphics.Effects.CustomSky", "class_terraria_1_1_graphics_1_1_effects_1_1_custom_sky.html", [
