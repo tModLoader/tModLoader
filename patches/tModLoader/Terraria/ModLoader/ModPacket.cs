@@ -31,13 +31,8 @@ namespace Terraria.ModLoader
 			if (Main.netMode == 1) {
 				Netplay.Connection.Socket.AsyncSend(buf, 0, len, SendCallback);
 
-				LegacyNetDiagnosticsUI.txMsg++;
-				LegacyNetDiagnosticsUI.txData += len;
-
-				if (netID > 0) {
-					ModNet.txMsgType[netID]++;
-					ModNet.txDataType[netID] += len;
-				}
+				if (netID >= 0)
+					ModNet.ModNetDiagnosticsUI.CountSentMessage(netID, len);
 			}
 			else if (toClient != -1) {
 				Netplay.Clients[toClient].Socket.AsyncSend(buf, 0, len, SendCallback);

@@ -12,12 +12,12 @@ namespace Terraria.ModLoader
 	/// Only one instance of ModMount will exist for each mount, so storing player specific data on the ModMount is not good.
 	/// Modders can use player.mount._mountSpecificData or a ModPlayer class to store player specific data relating to a mount. Use SetMount to assign these fields.
 	/// </summary>
-	public abstract class ModMount : ModTexturedType
+	public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	{
 		/// <summary>
 		/// The vanilla MountData object that is controlled by this ModMount.
 		/// </summary>
-		public Mount.MountData MountData { get; internal set; }
+		public Mount.MountData MountData => Entity;
 
 		/// <summary>
 		/// The index of this ModMount in the Mount.mounts array.
@@ -25,11 +25,11 @@ namespace Terraria.ModLoader
 		public int Type { get; internal set; }
 
 		/// <summary>
-		/// Constructor
+		/// The file name of this type's texture file in the mod loader's file space.
 		/// </summary>
-		public ModMount() {
-			MountData = new Mount.MountData();
-		}
+		public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
+
+		protected override Mount.MountData CreateTemplateEntity() => new() { ModMount = this };
 
 		protected sealed override void Register() {
 			if (Mount.mounts == null || Mount.mounts.Length == MountID.Count)
@@ -77,19 +77,16 @@ namespace Terraria.ModLoader
 		}
 
 		public sealed override void SetupContent() {
-			MountData.ModMount = this;
-			MountLoader.SetupMount(MountData);
 			Mount.mounts[Type] = MountData;
+			SetStaticDefaults();
 		}
 
 		protected virtual string GetExtraTexture(MountTextureType textureType) => Texture + "_" + textureType;
 
-		internal void SetupMount(Mount.MountData mountData) {
-			ModMount newMountData = (ModMount)MemberwiseClone();
-			newMountData.MountData = mountData;
-			mountData.ModMount = newMountData;
-			newMountData.Mod = Mod;
-			newMountData.SetStaticDefaults();
+		public override ModMount NewInstance(Mount.MountData entity) {
+			ModMount inst = base.NewInstance(entity);
+			inst.Type = Type;
+			return inst;
 		}
 
 		/// <summary>

@@ -29,7 +29,7 @@ namespace Terraria
 		public static bool hidePlayerCraftingMenu;
 		public static bool showServerConsole;
 		public static bool Support8K = true; // provides an option to disable 8k (but leave 4k)
-		public static double desiredWorldEventsUpdateRate; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
+		public static double desiredWorldEventsUpdateRate = 1; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
 		public static double timePass; // used to account for more precise time rates when deciding when to update weather
 
 		internal static TMLContentManager AlternateContentManager;
@@ -167,46 +167,32 @@ namespace Terraria
 			}
 		}
 
-		internal void PostSocialInitialize() {
+		internal void InitTMLContentManager() {
 			if (dedServ) {
 				return;
 			}
 
-			string vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
-
-			if (!Directory.Exists(vanillaContentFolder)) {
-				vanillaContentFolder = "../Content"; // Nested Manual Install
+			string vanillaContentFolder;
+			if (SocialAPI.Mode == SocialMode.Steam) {
+				vanillaContentFolder = Path.Combine(Steam.GetSteamTerrariaInstallDir(), "Content");
 			}
+			else {
+				vanillaContentFolder = "../Terraria/Content"; // Side-by-Side Manual Install
 
-#if MAC
-			vanillaContentFolder = "../../../../Terraria/Terraria.app/Contents/Resources/Content";
-#endif
-
-			if (SocialAPI.Mode == SocialMode.Steam && Steamworks.SteamAPI.Init()) {
-				var appID = ModLoader.Engine.Steam.TerrariaAppId_t;
-				bool appInstalled = Steamworks.SteamApps.BIsAppInstalled(appID);
-
-				if (appInstalled) {
-					Steamworks.SteamApps.GetAppInstallDir(appID, out var steamInstallFolder, 1000);
-					Logging.Terraria.Info("Found Terraria steamapp install at: " + steamInstallFolder);
-
-					vanillaContentFolder = Path.Combine(steamInstallFolder, "Content");
-
-					if (!Directory.Exists(vanillaContentFolder))
-						vanillaContentFolder = Path.Combine(steamInstallFolder, "Terraria.app/Contents/Resources/Content");
+				if (!Directory.Exists(vanillaContentFolder)) {
+					vanillaContentFolder = "../Content"; // Nested Manual Install
 				}
-
-				ModLoader.Engine.Steam.RecalculateAvailableSteamCloudStorage();
-				Logging.Terraria.Info($"Steam Cloud Quota: {UIMemoryBar.SizeSuffix((long)ModLoader.Engine.Steam.lastAvailableSteamCloudStorage)} available");
 			}
 
 			if (!Directory.Exists(vanillaContentFolder)) {
-				Interface.MessageBoxShow(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
+				string message = Language.GetTextValue("tModLoader.ContentFolderNotFound");
+				Logging.tML.Fatal(message);
+				Interface.MessageBoxShow(message);
 				Environment.Exit(1);
 			}
 
-			if (Directory.Exists(Path.Combine(InstallVerifier.TmlContentDirectory, "Images")))
-				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, InstallVerifier.TmlContentDirectory, null);
+			if (Directory.Exists(Path.Combine("Content", "Images")))
+				AlternateContentManager = new TMLContentManager(Content.ServiceProvider, "Content", null);
 
 			base.Content = new TMLContentManager(Content.ServiceProvider, vanillaContentFolder, AlternateContentManager);
 		}

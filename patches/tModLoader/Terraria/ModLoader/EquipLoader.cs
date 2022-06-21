@@ -313,7 +313,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Hook Player.PlayerFrame
-		/// Calls each of the item's equipment texture's UpdateVanity hook.
+		/// Calls each of the item's equipment texture's FrameEffects hook.
 		/// </summary>
 		public static void EquipFrameEffects(Player player) {
 			foreach (EquipType type in EquipTypes) {

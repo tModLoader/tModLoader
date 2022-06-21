@@ -17,6 +17,8 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override void SetDefaults(Item item) {
+			item.StatsModifiedBy.Add(Mod); // Notify the game that we've made a functional change to this item.
+
 			item.damage = 50; // Change damage to 50!
 		}
 

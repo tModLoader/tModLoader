@@ -56,10 +56,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public bool GoreAutoloadingEnabled { get; init; } = true;
 		/// <summary>
-		/// Whether or not this mod will automatically add sounds in the Sounds folder to the game. Place sounds in Sounds/Item to autoload them as item sounds, Sounds/NPCHit to add them as npcHit sounds, and Sounds/NPCKilled to add them as npcKilled sounds. Sounds placed anywhere else in the Sounds folder will be added as custom sounds. Any ModSound classes that share the same name as the sound files will be bound to them. Setting this field to true means that you do not need to manually call AddSound.
-		/// </summary>
-		public bool SoundAutoloadingEnabled { get; init; } = true;
-		/// <summary>
 		/// Whether or not this mod will automatically add music in the Sounds folder to the game. Place music tracks in Sounds/Music to autoload them.
 		/// </summary>
 		public bool MusicAutoloadingEnabled { get; init; } = true;
@@ -273,13 +269,10 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		public Recipe CreateRecipe(int result, int amount = 1) => Recipe.Create(this, result, amount);
+		[Obsolete("Use Recipe.Create", true)]
+		public Recipe CreateRecipe(int result, int amount = 1) => Recipe.Create(result, amount);
 
-		/// <summary>
-		/// Creates a clone of the provided recipe except the source mod of the Recipe will be this Mod. The clone will have to registered after being tweaked.
-		/// </summary>
-		/// <param name="recipe"></param>
-		/// <returns></returns>
-		public Recipe CloneRecipe(Recipe recipe) => Recipe.Create(this, recipe.createItem.type, recipe.createItem.stack).Clone(recipe);
+		[Obsolete("Use Recipe.Clone", true)]
+		public Recipe CloneRecipe(Recipe recipe) => recipe.Clone();
 	}
 }

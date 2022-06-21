@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using ReLogic.Content;
+using ReLogic.OS;
 using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
@@ -123,6 +125,7 @@ namespace Terraria.ModLoader.UI
 
 				int leftPixels = -26;
 
+				bool projNeedsUpdate = false;
 				if (!File.Exists(csprojFile) || Interface.createMod.CsprojUpdateNeeded(File.ReadAllText(csprojFile))) {
 					var icon = UICommon.ButtonExclamationTexture;
 					var upgradeCSProjButton = new UIHoverImage(icon, Language.GetTextValue("tModLoader.MSUpgradeCSProj")) {
@@ -153,10 +156,12 @@ namespace Terraria.ModLoader.UI
 						Main.menuMode = Interface.modSourcesID;
 
 						upgradeCSProjButton.Remove();
+						_upgradePotentialChecked = false;
 					};
 					Append(upgradeCSProjButton);
 
 					leftPixels -= 26;
+					projNeedsUpdate = true;
 				}
 
 				// Display upgrade .lang files button if any .lang files present
@@ -179,6 +184,39 @@ namespace Terraria.ModLoader.UI
 					};
 
 					Append(upgradeLangFilesButton);
+
+					leftPixels -= 26;
+				}
+
+
+				// Display Run tModPorter for Windows when csproj is valid
+				if (Platform.IsWindows && !projNeedsUpdate) {
+					var pIcon = UICommon.ButtonExclamationTexture;
+					var portModButton = new UIHoverImage(pIcon, Language.GetTextValue("tModLoader.MSPortToLatest")) {
+						Left = { Pixels = leftPixels, Percent = 1f },
+						Top = { Pixels = 4 }
+					};
+
+					portModButton.OnClick += (s, e) => {
+						string modFolderName = Path.GetFileName(_mod);
+						string csprojFile = Path.Combine(_mod, $"{modFolderName}.csproj");
+
+						string args = $"\"{csprojFile}\"";
+						var tMLPath = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
+						var porterPath =  Path.Combine(Path.GetDirectoryName(tMLPath), "tModPorter", "tModPorter.bat");
+
+						var porterInfo = new ProcessStartInfo() {
+							FileName = porterPath,
+							Arguments = args,
+							UseShellExecute = true
+						};
+
+						var porter = Process.Start(porterInfo);
+					};
+
+					Append(portModButton);
+
+					leftPixels -= 26;
 				}
 			}
 		}
@@ -242,7 +280,11 @@ namespace Terraria.ModLoader.UI
 				var modFile = _builtMod.modFile;
 				var bp = _builtMod.properties;
 
-				PublishModInner(modFile, bp, Path.Combine(_mod, "icon.png"));
+				string icon = Path.Combine(_mod, "icon_workshop.png");
+				if (!File.Exists(icon))
+					icon = Path.Combine(_mod, "icon.png");
+
+				PublishModInner(modFile, bp, icon);
 			}
 			catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);
@@ -279,7 +321,11 @@ namespace Terraria.ModLoader.UI
 				using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
 					localMod = new LocalMod(modFile);
 
-				PublishModInner(modFile, localMod.properties, Path.Combine(ModCompile.ModSourcePath, modName, "icon.png"), true);
+				string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
+				if (!File.Exists(icon))
+					icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
+
+				PublishModInner(modFile, localMod.properties, icon, true);
 			}
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
@@ -296,6 +342,20 @@ namespace Terraria.ModLoader.UI
 			if (bp.buildVersion != modFile.TModLoaderVersion)
 				throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
 
+			var changeLogFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "changelog.txt");
+			string changeLog;
+			if (File.Exists(changeLogFile))
+				changeLog = File.ReadAllText(changeLogFile);
+			else
+				changeLog = "";
+
+			var workshopDescFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "description_workshop.txt");
+			string workshopDesc;
+			if (File.Exists(workshopDescFile))
+				workshopDesc = File.ReadAllText(workshopDescFile);
+			else
+				workshopDesc = bp.description;
+
 			var values = new NameValueCollection
 			{
 				{ "displayname", bp.displayName },
@@ -304,12 +364,13 @@ namespace Terraria.ModLoader.UI
 				{ "version", $"v{bp.version}" },
 				{ "author", bp.author },
 				{ "homepage", bp.homepage },
-				{ "description", bp.description },
+				{ "description", workshopDesc },
 				{ "iconpath", iconPath },
 				{ "sourcesfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
 				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
 				{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
 				{ "modside", bp.side.ToFriendlyString() },
+				{ "changelog" , changeLog }
 			};
 
 			if (string.IsNullOrWhiteSpace(values["author"]))

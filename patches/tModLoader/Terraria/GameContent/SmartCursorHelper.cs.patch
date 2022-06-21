@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/SmartCursorHelper.cs
 +++ src/tModLoader/Terraria/GameContent/SmartCursorHelper.cs
+@@ -5,6 +_,7 @@
+ using Terraria.GameContent.UI;
+ using Terraria.GameInput;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent
+ {
 @@ -201,7 +_,8 @@
  					case 511:
  					case 573:
@@ -10,6 +18,55 @@
  						break;
  					case 314:
  						if (providedInfo.player.gravDir == 1f)
+@@ -1551,11 +_,13 @@
+ 					if ((tile.active() && !Main.tileCut[tile.type] && !TileID.Sets.BreakableWhenPlacing[tile.type]) || (tile2.active() && !Main.tileCut[tile2.type] && !TileID.Sets.BreakableWhenPlacing[tile2.type]) || (tile4.active() && TileID.Sets.CommonSapling[tile4.type]) || (tile5.active() && TileID.Sets.CommonSapling[tile5.type]) || (tile6.active() && TileID.Sets.CommonSapling[tile6.type]) || (tile7.active() && TileID.Sets.CommonSapling[tile7.type]) || (tile8.active() && TileID.Sets.CommonSapling[tile8.type]) || (tile9.active() && TileID.Sets.CommonSapling[tile9.type]) || !tile3.active() || !WorldGen.SolidTile2(tile3))
+ 						continue;
+ 
++					bool tileTypeValid = false;
++
+ 					switch (tile3.type) {
+ 						case 60:
+ 							if (WorldGen.EmptyTileCheck(i - 2, i + 2, j - 20, j, 20))
+ 								_targets.Add(new Tuple<int, int>(i, j));
+-							break;
++							continue;
+ 						case 2:
+ 						case 23:
+ 						case 53:
+@@ -1567,19 +_,31 @@
+ 						case 234:
+ 						case 477:
+ 						case 492:
+-							if (tile4.liquid == 0 && tile.liquid == 0 && tile5.liquid == 0 && WorldGen.EmptyTileCheck(i - 2, i + 2, j - 20, j, 20))
+-								_targets.Add(new Tuple<int, int>(i, j));
++							tileTypeValid = true;
+ 							break;
+ 					}
++
++					if (!tileTypeValid)
++						tileTypeValid = TileLoader.CanGrowModTree(tile3.type) || TileLoader.CanGrowModPalmTree(tile3.type);
++
++					if (tileTypeValid && tile4.liquid == 0 && tile.liquid == 0 && tile5.liquid == 0 && WorldGen.EmptyTileCheck(i - 2, i + 2, j - 20, j, 20))
++						_targets.Add(new Tuple<int, int>(i, j));
++
+ 				}
+ 			}
+ 
+ 			_toRemove.Clear();
+ 			for (int k = 0; k < _targets.Count; k++) {
+ 				bool flag = false;
++
+ 				for (int l = -1; l < 2; l += 2) {
+ 					Tile tile10 = Main.tile[_targets[k].Item1 + l, _targets[k].Item2 + 1];
+ 					if (tile10.active()) {
++						if (TileLoader.CanGrowModTree(tile10.type) || TileLoader.CanGrowModPalmTree(tile10.type)) {
++							flag = true;
++							continue;
++						}
++						
+ 						switch (tile10.type) {
+ 							case 2:
+ 							case 23:
 @@ -2149,7 +_,7 @@
  			int reachableEndY = providedInfo.reachableEndY;
  			_ = providedInfo.screenTargetX;

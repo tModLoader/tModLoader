@@ -21,6 +21,8 @@ namespace Terraria
 		/// <summary> Provides access to (static) happiness data associated with this NPC's type. </summary>
 		public NPCHappiness Happiness => NPCHappiness.Get(type);
 
+		public bool ShowNameOnHover { get; set; }
+
 		/// <summary>
 		/// Assign a special boss bar, vanilla or modded. Not used by vanilla.
 		/// <para>To assign a modded boss bar, use NPC.BossBar = ModContent.GetInstance&lt;ExampleBossBar&gt;(); where ExampleBossBar is a ModBossBar</para>
@@ -62,11 +64,19 @@ namespace Terraria
 		public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
 			=> GlobalType.TryGetGlobal<GlobalNPC, T>(globalNPCs, baseInstance, out result);
 
-		/// <summary> A short-hand for <code> Main.npc[Main.NewNPC(...)] </code> </summary>
+		/// <summary>
+		/// <inheritdoc cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/>
+		/// <br/><br/>This particular overload returns the actual NPC instance rather than the index of the spawned NPC within the <see cref="Main.npc"/> array.
+		/// <br/> A short-hand for <code> Main.npc[NPC.NewNPC(...)] </code>
+		/// </summary>
 		public static NPC NewNPCDirect(IEntitySource source, int x, int y, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
 			=> Main.npc[NewNPC(source, x, y, type, start, ai0, ai1, ai2, ai3, target)];
 
-		/// <inheritdoc cref="NewNPCDirect(IEntitySource, int, int, int, int, float, float, float, float, int)"/>
+		/// <summary>
+		/// <inheritdoc cref="NPC.NewNPC(IEntitySource, int, int, int, int, float, float, float, float, int)"/>
+		/// <br/><br/>This particular overload returns the actual NPC instance rather than the index of the spawned NPC within the <see cref="Main.npc"/> array. It also uses a Vector2 for the spawn position instead of X and Y.
+		/// <br/> A short-hand for <code> Main.npc[NPC.NewNPC(...)] </code>
+		/// </summary>
 		public static NPC NewNPCDirect(IEntitySource source, Vector2 position, int type, int start = 0, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, float ai3 = 0f, int target = 255)
 			=> NewNPCDirect(source, (int)position.X, (int)position.Y, type, start, ai0, ai1, ai2, ai3, target);
 
@@ -89,6 +99,51 @@ namespace Terraria
 			bottom = new Point(anchorX, anchorY).ToWorldCoordinates(8f, 16f);
 			bottom.X += direction * directionOffset; // Added to match PlayerSittingHelper
 			bottom += finalOffset; // Added to match PlayerSittingHelper
+		}
+
+		/// <summary>
+		/// Runs most code related to the process of checking whether or not an NPC can be caught.<br></br>
+		/// After that, <see cref="CombinedHooks.OnCatchNPC"/> is run, followed by the code responsible for catching the NPC if applicable.<br></br>
+		/// You will need to call this manually if you want to make an NPC-catching tool which acts differently from vanilla's, such as one that uses a projectile instead of an item.<br></br>
+		/// As a note, if calling this manually, you will need to check <c>npc.active &amp;&amp; npc.catchItem &gt; 0</c> yourself.
+		/// </summary>
+		/// <param name="npc">The NPC which can potentially be caught.</param>
+		/// <param name="catchToolRectangle">The hitbox of the tool being used to catch the NPC --- be it an item, a projectile, or something else entirely.</param>
+		/// <param name="item">The item to be used as a reference for the purposes of <see cref="CombinedHooks.CanCatchNPC"/> and <see cref="CombinedHooks.OnCatchNPC"/>.</param>
+		/// <param name="player">The player that owns the referenced item.</param>
+		/// <param name="lavaProofTool">Whether or not the tool is lavaproof for the purposes of catching vanilla's Underworld critters. Defaults to false.</param>
+		/// <returns>Whether or not the NPC was successfully caught.</returns>
+		public static bool CheckCatchNPC(NPC npc, Rectangle catchToolRectangle, Item item, Player player, bool lavaProofTool = false) {
+			Rectangle value = new Rectangle((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height);
+			if (!catchToolRectangle.Intersects(value))
+				return false;
+
+			bool? canCatch = CombinedHooks.CanCatchNPC(player, npc, item);
+			if (canCatch.HasValue) {
+				CombinedHooks.OnCatchNPC(player, npc, item, !canCatch.Value);
+				if (canCatch.Value)
+					CatchNPC(npc.whoAmI, player.whoAmI);
+
+				return canCatch.Value;
+			}
+			else if (!lavaProofTool && ItemID.Sets.IsLavaBait[npc.catchItem]) {
+				CombinedHooks.OnCatchNPC(player, npc, item, true);
+				if (Main.myPlayer == player.whoAmI && player.Hurt(PlayerDeathReason.ByNPC(npc.whoAmI), 1, (npc.Center.X < player.Center.X) ? 1 : (-1), pvp: false, quiet: false, Crit: false, 3) > 0.0 && !player.dead)
+					player.AddBuff(24, 300, quiet: false);
+				return false;
+			}
+			else if (npc.type == NPCID.FairyCritterBlue || npc.type == NPCID.FairyCritterPink || npc.type == NPCID.FairyCritterGreen) {
+				bool canCatchFairy = npc.ai[2] <= 1f;
+				CombinedHooks.OnCatchNPC(player, npc, item, !canCatchFairy);
+				if (canCatchFairy)
+					CatchNPC(npc.whoAmI, player.whoAmI);
+				return canCatchFairy;
+			}
+			else {
+				CombinedHooks.OnCatchNPC(player, npc, item, false);
+				CatchNPC(npc.whoAmI, player.whoAmI);
+				return true;
+			}
 		}
 	}
 }

@@ -8,7 +8,6 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.Map;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
@@ -21,13 +20,6 @@ namespace Terraria.ModLoader
 	public abstract partial class ModSystem : ModType
 	{
 		protected override void Register() {
-			// @TODO: Remove on release
-			var type = GetType();
-
-			if (!LoaderUtils.HasMethod(type, typeof(ModSystem), nameof(SaveWorldData), typeof(TagCompound)) && LoaderUtils.HasMethod(type, typeof(ModSystem), "SaveWorldData"))
-				throw new Exception($"{type} has old SaveData callback with no arguments but not new SaveData with TagCompound, not loading the mod to avoid wiping mod data");
-			// @TODO: END Remove on release
-
 			SystemLoader.Add(this);
 			ModTypeLookup<ModSystem>.Register(this);
 		}
@@ -44,6 +36,11 @@ namespace Terraria.ModLoader
 		/// This hook is called right after Mod.Load(), which is guaranteed to be called after all content has been autoloaded.
 		/// </summary>
 		public virtual void OnModLoad() { }
+
+		/// <summary>
+		/// This hook is called right before Mod.UnLoad()
+		/// </summary>
+		public virtual void OnModUnload() { }
 
 		/// <summary>
 		/// Allows you to load things in your system after the mod's content has been setup (arrays have been resized to fit the content, etc).
@@ -63,6 +60,12 @@ namespace Terraria.ModLoader
 		public virtual void PostAddRecipes() { }
 
 		/// <summary>
+		/// Override this method to do treatment about recipes once they have been setup. You shouldn't edit any recipe here.
+		/// </summary>
+		public virtual void PostSetupRecipes() {
+		}
+
+		/// <summary>
 		/// Override this method to add recipe groups to the game.
 		/// <br/> You must add recipe groups by calling the <see cref="RecipeGroup.RegisterGroup"/> method here.
 		/// <br/> A recipe group is a set of items that can be used interchangeably in the same recipe.
@@ -71,6 +74,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Called whenever a world is loaded. This can be used to initialize data structures, etc.
+		/// <br/>If you need to access your data during worldgen, initialize it in <see cref="PreWorldGen"/> instead, unless you also save it on the world, then you need both.
 		/// </summary>
 		public virtual void OnWorldLoad() { }
 
@@ -246,7 +250,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it.
 		/// All fields are measured in in-game minutes per real-life second (min/sec).
-		/// You may want to consider <see cref="Main.fastForwardTime"/> and <see cref="CreativePowerManager.Instance.GetPower{CreativePowers.FreezeTime}().Enabled"/> here.
+		/// You may want to consider <see cref="Main.fastForwardTime"/> and CreativePowerManager.Instance.GetPower&lt;CreativePowers.FreezeTime&gt;().Enabled here.
 		/// </summary>
 		/// <param name="timeRate">The speed at which time flows in min/sec.</param>
 		/// <param name="tileUpdateRate">The speed at which tiles in the world update in min/sec.</param>
@@ -315,6 +319,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows a mod to run code before a world is generated.
+		/// <br/>If you use this to initialize data used during worldgen, which you save on the world, also initialize it in <see cref="OnWorldLoad"/>.
 		/// </summary>
 		public virtual void PreWorldGen() { }
 

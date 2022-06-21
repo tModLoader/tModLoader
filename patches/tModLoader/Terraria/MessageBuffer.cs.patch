@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/MessageBuffer.cs
 +++ src/tModLoader/Terraria/MessageBuffer.cs
-@@ -19,6 +_,9 @@
+@@ -19,6 +_,10 @@
  using Terraria.Net;
  using Terraria.Testing;
  using Terraria.UI;
 +using Terraria.ModLoader;
 +using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
++using LegacySoundStyle = Terraria.Audio.SoundStyle;
  
  namespace Terraria
  {
@@ -19,7 +20,7 @@
  				return;
 +			*/
  
-+			if (b < LegacyNetDiagnosticsUI.maxMsg) // Check added by TML.
++			if (b < NetDiagnosticsUI.MaxMessages) // Check added by TML. Ignores TML MessageIDs and ModPackets
 -			Main.ActiveNetDiagnosticsUI.CountReadMessage(b, length);
 +				Main.ActiveNetDiagnosticsUI.CountReadMessage(b, length);
 +
@@ -234,6 +235,15 @@
  							obj6.playerIndexTheItemIsReservedFor = Main.myPlayer;
  							if (flag9) {
  								NetMessage.TrySendData(21, -1, -1, null, num181);
+@@ -1319,7 +_,7 @@
+ 						if (num120 <= 0)
+ 							nPC4.active = false;
+ 
+-						nPC4.SpawnedFromStatue = bitsByte11[0];
++						nPC4.SpawnedFromStatue = bitsByte11[1]; // 0 -> 1, vanilla bugfix, remove in 1.4.4
+ 						if (nPC4.SpawnedFromStatue)
+ 							nPC4.value = 0f;
+ 
 @@ -1336,9 +_,13 @@
  						if (num119 == 245)
  							NPC.golemBoss = num116;
@@ -431,12 +441,13 @@
  								break;
  							case 4:
  								if (num29 == -1) {
-@@ -1776,6 +_,9 @@
+@@ -1776,6 +_,10 @@
  						obj8.zone2 = reader.ReadByte();
  						obj8.zone3 = reader.ReadByte();
  						obj8.zone4 = reader.ReadByte();
 +						if (!ModNet.AllowVanillaClients)
 +							BiomeLoader.ReceiveCustomBiomes(obj8, reader);
++						obj8.ZonePurity = obj8.InZonePurity();
 +
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(36, -1, whoAmI, null, num228);
@@ -600,7 +611,30 @@
  					}
  					break;
  				case 124: {
-@@ -3292,10 +_,22 @@
+@@ -3282,20 +_,45 @@
+ 						ushort key = reader.ReadUInt16();
+ 						LegacySoundStyle legacySoundStyle = SoundID.SoundByIndex[key];
+ 						BitsByte bitsByte2 = reader.ReadByte();
++						/*
+ 						int num33 = -1;
+ 						float num34 = 1f;
+ 						float num35 = 0f;
+ 						SoundEngine.PlaySound(Style: (!bitsByte2[0]) ? legacySoundStyle.Style : reader.ReadInt32(), volumeScale: (!bitsByte2[1]) ? legacySoundStyle.Volume : MathHelper.Clamp(reader.ReadSingle(), 0f, 1f), pitchOffset: (!bitsByte2[2]) ? legacySoundStyle.GetRandomPitch() : MathHelper.Clamp(reader.ReadSingle(), -1f, 1f), type: legacySoundStyle.SoundId, x: point.X, y: point.Y);
++						*/
++
++						if (bitsByte2[0])
++							legacySoundStyle.Variants = new int[] { reader.ReadInt32() };
++
++						if (bitsByte2[1])
++							legacySoundStyle.Volume = MathHelper.Clamp(reader.ReadSingle(), 0f, 1f);
++
++						if (bitsByte2[2])
++							legacySoundStyle.Pitch = MathHelper.Clamp(reader.ReadSingle(), 0f, 1f);
++
++						SoundEngine.PlaySound(legacySoundStyle, point.ToVector2());
+ 					}
+ 					break;
+ 				case 133:
  					if (Main.netMode == 2) {
  						short x5 = reader.ReadInt16();
  						int y5 = reader.ReadInt16();

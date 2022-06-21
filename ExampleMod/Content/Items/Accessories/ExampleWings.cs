@@ -1,4 +1,5 @@
 using ExampleMod.Common.Configs;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
@@ -49,6 +50,7 @@ namespace ExampleMod.Content.Items.Accessories
 			CreateRecipe()
 				.AddIngredient<ExampleItem>()
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
+				.SortBefore(Main.recipe.First(recipe => recipe.createItem.wingSlot != -1)) // Places this recipe before any wing so every wing stays together in the crafting menu.
 				.Register();
 		}
 	}

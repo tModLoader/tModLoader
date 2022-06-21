@@ -7,7 +7,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Audio;
  
-@@ -22,11 +_,17 @@
+@@ -22,19 +_,31 @@
  		public bool IsPlaying => Sound.State == SoundState.Playing;
  
  		public ActiveSound(SoundStyle style, Vector2 position) {
@@ -25,3 +25,17 @@
  		}
  
  		public ActiveSound(SoundStyle style) {
++#if FNA
++			Monitor.Enter(SoundEngine.AudioLock);
++#endif
+ 			Position = Vector2.Zero;
+ 			Volume = 1f;
+ 			IsGlobal = true;
+ 			Style = style;
+ 			Play();
++#if FNA
++			Monitor.Exit(SoundEngine.AudioLock);
++#endif
+ 		}
+ 
+ 		private void Play() {

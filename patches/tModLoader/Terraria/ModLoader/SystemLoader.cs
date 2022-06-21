@@ -70,6 +70,14 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		internal static void OnModUnload(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.OnModUnload();
+				}
+			}
+		}
+
 		internal static void PostSetupContent(Mod mod) {
 			if (SystemsByMod.TryGetValue(mod, out var systems)) {
 				foreach (var system in systems) {
@@ -90,6 +98,14 @@ namespace Terraria.ModLoader
 			if (SystemsByMod.TryGetValue(mod, out var systems)) {
 				foreach (var system in systems) {
 					system.PostAddRecipes();
+				}
+			}
+		}
+
+		internal static void PostSetupRecipes(Mod mod) {
+			if (SystemsByMod.TryGetValue(mod, out var systems)) {
+				foreach (var system in systems) {
+					system.PostSetupRecipes();
 				}
 			}
 		}

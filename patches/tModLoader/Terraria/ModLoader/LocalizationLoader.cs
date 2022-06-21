@@ -36,16 +36,18 @@ namespace Terraria.ModLoader
 			translations[translation.Key] = translation;
 		}
 
-		internal static ModTranslation GetOrCreateTranslation(Mod mod, string key, bool defaultEmpty = false)
+		public static ModTranslation GetOrCreateTranslation(Mod mod, string key, bool defaultEmpty = false)
 			=> GetOrCreateTranslation($"Mods.{mod.Name}.{key}", defaultEmpty);
 
-		internal static ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false) {
+		public static ModTranslation GetOrCreateTranslation(string key, bool defaultEmpty = false) {
 			key = key.Replace(" ", "_");
 
 			if (translations.TryGetValue(key, out var translation))
 				return translation;
-
-			return new ModTranslation(key, defaultEmpty);
+			
+			var newTranslation = new ModTranslation(key, defaultEmpty);
+			translations[key] = newTranslation;
+			return newTranslation;
 		}
 
 		internal static void Autoload(Mod mod) {
@@ -215,7 +217,7 @@ namespace Terraria.ModLoader
 
 				string translationFileContents = streamReader.ReadToEnd();
 
-				var culture = GameCulture.FromName(Path.GetFileNameWithoutExtension(translationFile.Name));
+				var culture = GameCulture.FromPath(translationFile.Name);
 
 				// Parse HJSON and convert to standard JSON
 				string jsonString = HjsonValue.Parse(translationFileContents).ToString();

@@ -61,7 +61,7 @@ namespace ExampleMod.Common.Players
 			if ((BlockyPower || BlockyForceVanity) && !BlockyHideVanity) {
 				Player.headRotation = Player.velocity.Y * Player.direction * 0.1f;
 				Player.headRotation = Utils.Clamp(Player.headRotation, -0.3f, 0.3f);
-				if (Player.InModBiome(ModContent.GetInstance<ExampleSurfaceBiome>())) {
+				if (Player.InModBiome<ExampleSurfaceBiome>()) {
 					Player.headRotation = (float)Main.time * 0.1f * Player.direction;
 				}
 			}
@@ -78,7 +78,7 @@ namespace ExampleMod.Common.Players
 
 		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
 			if (BlockyAccessory) {
-				SoundEngine.PlaySound(SoundID.Zombie, Player.position, 13);
+				SoundEngine.PlaySound(SoundID.Frog, Player.position);
 			}
 		}
 	}

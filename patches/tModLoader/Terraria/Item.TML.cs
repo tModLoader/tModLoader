@@ -20,11 +20,49 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalItem>> Globals => new(globalItems);
 
+		public List<Mod> StatsModifiedBy { get; private set; } = new();
+
+		/// <summary>
+		/// Dictates whether or not attack speed modifiers on this weapon will actually affect its use time.<br/>
+		/// Defaults to false, which allows attack speed modifiers to affect use time. Set this to true to prevent this from happening.<br/>
+		/// Used in vanilla by all melee weapons which shoot a projectile and have <see cref="noMelee"/> set to false.
+		/// </summary>
+		public bool attackSpeedOnlyAffectsWeaponAnimation { get; set; }
+
 		/// <summary>
 		/// Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1.
 		/// <br>This prevents it from receiving a prefix on craft.</br>
 		/// </summary>
 		public bool AllowReforgeForStackableItem { get; set; }
+
+		/// <summary>
+		/// Dictates the amount of times a weapon can be used (shot, etc) each time it animates (is swung, clicked, etc).<br/>
+		/// Defaults to null.<br/>
+		/// Used in vanilla by the following:<br/>
+		/// - BookStaff<br/>
+		/// - FairyQueenMagicItem<br/>
+		/// - FairyQueenRangedItem<br/>
+		/// </summary>
+		public int? useLimitPerAnimation { get; set; }
+
+		/// <summary>
+		/// Dictates whether or not this item should only consume ammo on its first shot of each use.<br/>
+		/// Defaults to false.<br/>
+		/// Used in vanilla by the following:<br/>
+		/// - Flamethrower<br/>
+		/// - Elf Melter<br/>
+		/// </summary>
+		public bool consumeAmmoOnFirstShotOnly { get; set; }
+
+		/// <summary>
+		/// Dictates whether or not this item should only consume ammo on its last shot of each use.<br/>
+		/// Defaults to false. <br/>
+		/// Used in vanilla by the following:<br/>
+		/// - ClockworkAssaultRifle<br/>
+		/// - Clentaminator<br/>
+		/// - FairyQueenRangedItem<br/>
+		/// </summary>
+		public bool consumeAmmoOnLastShotOnly { get; set; }
 
 		/// <summary>
 		/// Used to make stackable items reforgeable
@@ -63,12 +101,12 @@ namespace Terraria
 
 		/// <summary> Gets the instance of the specified GlobalItem type. </summary>
 		public bool TryGetGlobalItem<T>(out T result, bool exactType = true) where T : GlobalItem
-			=> GlobalType.TryGetGlobal<GlobalItem, T>(globalItems, exactType, out result);
+			=> GlobalType.TryGetGlobal(globalItems, exactType, out result);
 
 		/// <summary> Safely attempts to get the local instance of the type of the specified GlobalItem instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
-			=> GlobalType.TryGetGlobal<GlobalItem, T>(globalItems, baseInstance, out result);
+			=> GlobalType.TryGetGlobal(globalItems, baseInstance, out result);
 
 		public TagCompound SerializeData() => ItemIO.Save(this);
 
@@ -108,13 +146,21 @@ namespace Terraria
 			ItemID.Sets.IsAMaterial[74] = false;
 		}
 
+		/// <summary>
+		/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
+		/// <br/><br/>This particular overload uses a Rectangle instead of X, Y, Width, and Height to determine the actual spawn position.
+		/// </summary>
 		public static int NewItem(IEntitySource source, Rectangle rectangle, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 			=> NewItem(source, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
+		/// <summary>
+		/// <inheritdoc cref="Item.NewItem(IEntitySource, int, int, int, int, int, int, bool, int, bool, bool)"/>
+		/// <br/><br/>This particular overload uses a Vector2 instead of X, Y, Width, and Height to determine the actual spawn position.
+		/// </summary>
 		public static int NewItem(IEntitySource source, Vector2 position, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
 			=> NewItem(source, (int)position.X, (int)position.Y, 0, 0, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
 
-		private void ApplyItemAnimationCompensations() {
+		private void ApplyItemAnimationCompensationsToVanillaItems() {
 			// #2351
 			// Compensate for the change of itemAnimation getting reset at 0 instead of vanilla's 1.
 			// all items with autoReuse in vanilla are affected, but the animation only has a physical effect for !noMelee items
@@ -131,6 +177,15 @@ namespace Terraria
 		private void UndoItemAnimationCompensations() {
 			useAnimation -= currentUseAnimationCompensation;
 			currentUseAnimationCompensation = 0;
+		}
+
+		private void RestoreMeleeSpeedBehaviorOnVanillaItems() {
+			if (type < ItemID.Count && melee && shoot > 0) {
+				if (noMelee)
+					DamageType = DamageClass.MeleeNoSpeed;
+				else
+					attackSpeedOnlyAffectsWeaponAnimation = true;
+			}
 		}
 
 		// Internal utility method. Move somewhere, if there's a better place.

@@ -11,6 +11,7 @@ using Terraria.ModLoader.UI;
 using System.Runtime.Loader;
 using System.Runtime.CompilerServices;
 using Terraria.Localization;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ModLoader.Core
 {
@@ -174,6 +175,9 @@ namespace Terraria.ModLoader.Core
 			var name = new AssemblyName(args.Name).Name;
 			if (name.Contains("tModLoader") || name == "Terraria")
 				return Assembly.GetExecutingAssembly();
+
+			if (name == "FNA")
+				return typeof(Vector2).Assembly;
 
 			return null;
 		}
@@ -343,7 +347,7 @@ namespace Terraria.ModLoader.Core
 							.Where(m => !m.IsSpecialName) // exclude property accessors, collect them below after checking ShouldJIT on the PropertyInfo
 							.Concat<MethodBase>(type.GetConstructors(ALL))
 							.Concat(type.GetProperties(ALL).Where(filter.ShouldJIT).SelectMany(p => p.GetAccessors()))
-							.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.GetMethodBody() != null)
+							.Where(m => !m.IsAbstract && !m.ContainsGenericParameters && m.GetMethodBody() != null && m.DeclaringType == type)
 							.Where(filter.ShouldJIT)
 					)
 					.ToArray();
@@ -377,6 +381,17 @@ namespace Terraria.ModLoader.Core
 		
 		private static void ForceJITOnMethod(MethodBase method) {
 			RuntimeHelpers.PrepareMethod(method.MethodHandle);
+
+			// Here we check for overrides that override methods that no longer exist.
+			// tModLoader contributors should consult https://github.com/tModLoader/tModLoader/wiki/tModLoader-Style-Guide#be-aware-of-breaking-changes to properly handle breaking changes, especially once 1.4 is stable.
+			if (method is MethodInfo methodInfo) {
+				// This logic checks if the method is not an override.
+				bool isNewSlot = (methodInfo.Attributes & MethodAttributes.VtableLayoutMask) == MethodAttributes.NewSlot;
+
+				// By combining the logic of the method being virtual and also an override, by checking if GetBaseDefinition returns itself, we can determine that the original base definition is gone now.
+				if (methodInfo.IsVirtual && !isNewSlot && methodInfo.GetBaseDefinition() == methodInfo)
+					throw new Exception($"{method} overrides a method which doesn't exist in any base class");
+			}
 		}
 	}
 }

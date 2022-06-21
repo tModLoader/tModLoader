@@ -8,11 +8,11 @@
  		public static LegacySoundPlayer LegacySoundPlayer;
  		public static SoundPlayer SoundPlayer;
  		public static bool AreSoundsPaused;
-@@ -69,31 +_,52 @@
+@@ -69,13 +_,23 @@
  		}
  
  		public static SoundEffectInstance PlaySound(int type, int x = -1, int y = -1, int Style = 1, float volumeScale = 1f, float pitchOffset = 0f) {
-+			if (Main.dedServ)
++			if (Main.dedServ) // #if SERVER
 +				return null;
 +
  			if (!IsAudioSupported)
@@ -27,48 +27,37 @@
  		}
  
  		public static ActiveSound GetActiveSound(SlotId id) {
-+			if (Main.dedServ)
++			if (Main.dedServ) // #if SERVER
 +				return null;
 +
  			if (!IsAudioSupported)
  				return null;
  
- 			return SoundPlayer.GetActiveSound(id);
-+
+@@ -83,6 +_,9 @@
  		}
  
--		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position) {
-+		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position)
-+		{
-+			if(Main.dedServ)
+ 		public static SlotId PlayTrackedSound(SoundStyle style, Vector2 position) {
++			if (Main.dedServ) // #if SERVER
 +				return SlotId.Invalid;
 +
  			if (!IsAudioSupported)
  				return SlotId.Invalid;
  
- 			return SoundPlayer.Play(style, position);
-+
+@@ -90,6 +_,9 @@
  		}
  
--		public static SlotId PlayTrackedSound(SoundStyle style) {
-+		public static SlotId PlayTrackedSound(SoundStyle style)
-+		{
-+			if(Main.dedServ)
+ 		public static SlotId PlayTrackedSound(SoundStyle style) {
++			if (Main.dedServ) // #if SERVER
 +				return SlotId.Invalid;
 +
  			if (!IsAudioSupported)
  				return SlotId.Invalid;
  
- 			return SoundPlayer.Play(style);
-+
- 		}
- 
- 		public static void StopTrackedSounds() {
 @@ -102,6 +_,9 @@
  		}
  
  		public static SoundEffect GetTrackableSoundByStyleId(int id) {
-+			if(Main.dedServ)
++			if (Main.dedServ) // #if SERVER
 +				return null;
 +
  			if (!IsAudioSupported)
@@ -78,7 +67,7 @@
  		}
  
  		public static ActiveSound FindActiveSound(SoundStyle style) {
-+			if(Main.dedServ)
++			if (Main.dedServ) // #if SERVER
 +				return null;
 +
  			if (!IsAudioSupported)

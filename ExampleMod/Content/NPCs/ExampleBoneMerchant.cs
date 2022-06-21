@@ -38,6 +38,10 @@ namespace ExampleMod.Content.NPCs
 			//In order to do this, we simply make this hook return true, which will make the game call the TownNPCName method when spawning the NPC to determine the NPC's name.
 			NPCID.Sets.SpawnsWithCustomName[Type] = true;
 
+			//The vanilla Bone Merchant cannot interact with doors (open or close them, specifically), but if you want your NPC to be able to interact with them despite this,
+			//uncomment this line below.
+			//NPCID.Sets.AllowDoorInteraction[Type] = true;
+
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
@@ -115,9 +119,9 @@ namespace ExampleMod.Content.NPCs
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add("It's relaxing down here in the underground.");
-			chat.Add("What am I doing down here you may ask? I'm not sure, but leave me be!");
-			chat.Add("Huh? What wares do I have? I have no idea! How about you ask?");
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue1"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue2"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue3"));
 			return chat; // chat is implicitly cast to a string.
 		}
 

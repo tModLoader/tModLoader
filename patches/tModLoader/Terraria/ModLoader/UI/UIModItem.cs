@@ -25,6 +25,7 @@ namespace Terraria.ModLoader.UI
 
 		private UIImage _moreInfoButton;
 		private UIImage _modIcon;
+		private UIImageFramed updatedModDot;
 		private UIHoverImage _keyImage;
 		private UIImage _configButton;
 		private UIText _modName;
@@ -49,6 +50,7 @@ namespace Terraria.ModLoader.UI
 		private string ToggleModStateText => _mod.Enabled ? Language.GetTextValue("tModLoader.ModsDisable") : Language.GetTextValue("tModLoader.ModsEnable");
 
 		public string ModName => _mod.Name;
+		public bool NeedsReload => _mod.properties.side != ModSide.Server && (_mod.Enabled != _loaded || _configChangesRequireReload);
 
 		public UIModItem(LocalMod mod) {
 			_mod = mod;
@@ -63,13 +65,6 @@ namespace Terraria.ModLoader.UI
 			base.OnInitialize();
 
 			string text = _mod.DisplayName + " v" + _mod.modFile.Version;
-			if (_mod.tModLoaderVersion <= new Version(0, 12)) {
-				text += $" [c/FF0000:({"ALPHA BUILT: " + Language.GetTextValue("tModLoader.ModOldWarning")})]";
-			}
-			else if (!BuildInfo.IsDev && _mod.tModLoaderVersion < new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor)) {
-				text += $" [c/FF0000:({"STABLE BUILT: " + Language.GetTextValue("tModLoader.ModOldWarning")})]";
-			}
-
 			if (_mod.modFile.HasFile("icon.png")) {
 				try {
 					using (_mod.modFile.Open())
@@ -151,7 +146,8 @@ namespace Terraria.ModLoader.UI
 			}
 			*/
 
-			if (ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
+			// TODO: Keep this feature locked to Dev for now until we are sure modders are at fault for this warning.
+			if (BuildInfo.IsDev && ModCompile.DeveloperMode && ModLoader.IsUnloadedModStillAlive(ModName)) {
 				_keyImage = new UIHoverImage(UICommon.ButtonErrorTexture, Language.GetTextValue("tModLoader.ModDidNotFullyUnloadWarning")) {
 					Left = { Pixels = _modIconAdjust + PADDING },
 					Top = { Pixels = 3 }
@@ -160,6 +156,7 @@ namespace Terraria.ModLoader.UI
 				Append(_keyImage);
 
 				_modName.Left.Pixels += _keyImage.Width.Pixels + PADDING * 2f;
+				_modName.Recalculate();
 			}
 
 			/*
@@ -217,6 +214,18 @@ namespace Terraria.ModLoader.UI
 				};
 				_deleteModButton.OnClick += QuickModDelete;
 				Append(_deleteModButton);
+			}
+
+			if (ModOrganizer.modsThatUpdatedSinceLastLaunch.Contains(ModName)) {
+				var toggleImage = Main.Assets.Request<Texture2D>("Images/UI/Settings_Toggle");
+				updatedModDot = new UIImageFramed(toggleImage, toggleImage.Frame(2, 1, 1, 0)) {
+					Left = { Pixels = _modName.GetInnerDimensions().ToRectangle().Right + 8 /* _modIconAdjust*/, Percent = 0f },
+					Top = { Pixels = 5, Percent = 0f },
+					Color = new Color(6, 95, 212)
+				};
+				//_modName.Left.Pixels += 18; // use these 2 for left of the modname
+
+				Append(updatedModDot);
 			}
 		}
 
@@ -288,6 +297,9 @@ namespace Terraria.ModLoader.UI
 			}
 			else if (_configButton?.IsMouseHovering == true) {
 				_tooltip = Language.GetTextValue("tModLoader.ModsOpenConfig");
+			}
+			else if (updatedModDot?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.ModUpdatedSinceLastLaunchMessage");
 			}
 		}
 
@@ -487,9 +499,9 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DeleteMod(UIMouseEvent evt, UIElement listeningElement) {
-			ModOrganizer.DeleteMod(_mod.modFile.path);
+			ModOrganizer.DeleteMod(_mod);
 
-			Interface.modBrowser.ModifyUIModDownloadItemInstalled(_mod.Name, null);
+			Interface.modsMenu.needsMBRefresh = true;
 
 			CloseDialog(evt, listeningElement);
 			Interface.modsMenu.Activate();

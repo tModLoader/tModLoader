@@ -1,0 +1,159 @@
+--- src/TerrariaNetCore/Terraria/Audio/ActiveSound.cs
++++ src/tModLoader/Terraria/Audio/ActiveSound.cs
+@@ -1,15 +_,14 @@
+-#if FNA
+-using System.Threading;
+-#endif
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Audio;
++using System;
++using System.Threading.Tasks;
+ 
+ namespace Terraria.Audio
+ {
+ 	public class ActiveSound
+ 	{
+-		public readonly bool IsGlobal;
+-		public Vector2 Position;
++		//public readonly bool IsGlobal;
++		public Vector2? Position; //TML: Made nullable
+ 		public float Volume;
+ 
+ 		public SoundEffectInstance Sound {
+@@ -22,22 +_,20 @@
+ 			private set;
+ 		}
+ 
+-		public bool IsPlaying => Sound.State == SoundState.Playing;
++		public bool IsPlaying => Sound?.IsDisposed == false && Sound.State == SoundState.Playing;
+ 
+-		public ActiveSound(SoundStyle style, Vector2 position) {
+-#if FNA
+-			Monitor.Enter(SoundEngine.AudioLock);
+-#endif
++		//TML: Position parameter made nullable.
++		public ActiveSound(SoundStyle style, Vector2? position = null) {
+ 			Position = position;
+ 			Volume = 1f;
+-			IsGlobal = false;
++			//IsGlobal = false;
+ 			Style = style;
++			
+ 			Play();
+-#if FNA
+-			Monitor.Exit(SoundEngine.AudioLock);
+-#endif
+ 		}
+ 
++		//TML: Merged with the above constructor.
++		/*
+ 		public ActiveSound(SoundStyle style) {
+ #if FNA
+ 			Monitor.Enter(SoundEngine.AudioLock);
+@@ -51,10 +_,17 @@
+ 			Monitor.Exit(SoundEngine.AudioLock);
+ #endif
+ 		}
++		*/
+ 
+ 		private void Play() {
++			if (!Program.IsMainThread) {
++				RunOnMainThreadAndWait(Play);
++				return;
++			}
++
+ 			SoundEffectInstance soundEffectInstance = Style.GetRandomSound().CreateInstance();
+ 			soundEffectInstance.Pitch += Style.GetRandomPitch();
++			soundEffectInstance.IsLooped = Style.IsLooped;
+ 			soundEffectInstance.Play();
+ 			SoundInstanceGarbageCollector.Track(soundEffectInstance);
+ 			Sound = soundEffectInstance;
+@@ -62,29 +_,52 @@
+ 		}
+ 
+ 		public void Stop() {
++			if (!Program.IsMainThread) {
++				RunOnMainThreadAndWait(Stop);
++				return;
++			}
++			
+ 			if (Sound != null)
+ 				Sound.Stop();
+ 		}
+ 
+ 		public void Pause() {
++			if (!Program.IsMainThread) {
++				RunOnMainThreadAndWait(Pause);
++				return;
++			}
++			
+ 			if (Sound != null && Sound.State == SoundState.Playing)
+ 				Sound.Pause();
+ 		}
+ 
+ 		public void Resume() {
++			if (!Program.IsMainThread) {
++				RunOnMainThreadAndWait(Resume);
++				return;
++			}
++			
+ 			if (Sound != null && Sound.State == SoundState.Paused)
+ 				Sound.Resume();
+ 		}
+ 
+ 		public void Update() {
+-			if (Sound != null) {
++			if (!Program.IsMainThread) {
++				RunOnMainThreadAndWait(Update);
++				return;
++			}
++			
++			if (Sound != null && !Sound.IsDisposed) {
+ 				Vector2 value = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+ 				float num = 1f;
++				/*
+ 				if (!IsGlobal) {
++				*/
++				if (Position.HasValue) {
+-					float value2 = (Position.X - value.X) / ((float)Main.screenWidth * 0.5f);
++					float value2 = (Position.Value.X - value.X) / ((float)Main.screenWidth * 0.5f);
+ 					value2 = MathHelper.Clamp(value2, -1f, 1f);
+ 					Sound.Pan = value2;
+-					float num2 = Vector2.Distance(Position, value);
++					float num2 = Vector2.Distance(Position.Value, value);
+ 					num = 1f - num2 / ((float)Main.screenWidth * 1.5f);
+ 				}
+ 
+@@ -95,6 +_,12 @@
+ 						break;
+ 					case SoundType.Ambient:
+ 						num *= Main.ambientVolume;
++
++						// Added by TML to mimic the behavior of the LegacySoundPlayer code.
++						if (Main.gameInactive) {
++							num = 0f;
++						}
++
+ 						break;
+ 					case SoundType.Music:
+ 						num *= Main.musicVolume;
+@@ -104,6 +_,19 @@
+ 				num = MathHelper.Clamp(num, 0f, 1f);
+ 				Sound.Volume = num;
+ 			}
++		}
++
++		// Added by TML.
++		// As the name states, runs code on the main thread and waits for it to finish.
++		private static void RunOnMainThreadAndWait(Action action) {
++			var tcs = new TaskCompletionSource<bool>();
++
++			Main.QueueMainThreadAction(() => {
++				action();
++				tcs.SetResult(true);
++			});
++
++			tcs.Task.Wait();
+ 		}
+ 	}
+ }

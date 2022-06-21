@@ -98,6 +98,13 @@ namespace Terraria.ModLoader.UI.ModBrowser
 				};
 				Append(tMLUpdateRequired);
 			}
+			else if (ModDownload.NeedsGameRestart) {
+				_updateButton = new UIImage(UICommon.ButtonExclamationTexture);
+				_updateButton.CopyStyle(_moreInfoButton);
+				_updateButton.Left.Pixels += 36 + PADDING;
+				_updateButton.OnClick += ShowGameNeedsRestart;
+				Append(_updateButton);
+			}
 			else if (ModDownload.HasUpdate || ModDownload.Installed == null) {
 				_updateWithDepsButton = new UIImage(UICommon.ButtonDownloadMultipleTexture);
 				_updateWithDepsButton.CopyStyle(_moreInfoButton);
@@ -127,6 +134,9 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 		}
 
+		private void ShowGameNeedsRestart(UIMouseEvent evt, UIElement element) {
+			Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", ModDownload.DisplayName), Interface.modBrowserID);
+		}
 		public override int CompareTo(object obj) {
 			var item = obj as UIModDownloadItem;
 			switch (Interface.modBrowser.SortMode) {
@@ -196,7 +206,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			DrawTimeText(spriteBatch, drawPos);
 
 			if (_updateButton?.IsMouseHovering == true) {
-				tooltip = UpdateText;
+				tooltip = Language.GetTextValue("tModLoader.BrowserRejectWarning");
 			}
 			else if (_updateWithDepsButton?.IsMouseHovering == true) {
 				tooltip = UpdateWithDepsText;
@@ -290,7 +300,8 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			ModDownload.ModIconStatus = ModIconStatus.APPENDED;
 			_modName.Left.Pixels -= ModIconAdjust;
 			_moreInfoButton.Left.Pixels -= ModIconAdjust;
-			_updateButton.Left.Pixels -= ModIconAdjust;
+			if(_updateButton != null)
+				_updateButton.Left.Pixels -= ModIconAdjust;
 			if (_updateWithDepsButton != null)
 				_updateWithDepsButton.Left.Pixels -= ModIconAdjust;
 		}

@@ -1,4 +1,6 @@
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.Audio;
+using Terraria.ID;
 
 namespace Terraria.ModLoader
 {
@@ -10,11 +12,11 @@ namespace Terraria.ModLoader
 		/// <summary> The internal ID of this type of tile/wall. </summary>
 		public ushort Type { get; internal set; }
 
-		/// <summary> The default type of sound made when this tile/wall is hit. Defaults to 0. </summary>
-		public int SoundType { get; set; }
-
-		/// <summary> The default style of sound made when this tile/wall is hit. Defaults to 1. </summary>
-		public int SoundStyle { get; set; } = 1;
+		/// <summary>
+		/// The default style of sound made when this tile/wall is hit.<br/>
+		/// Defaults to SoundID.Dig, which is the sound used for tiles such as dirt and sand.
+		/// </summary>
+		public SoundStyle? HitSound { get; set; } = SoundID.Dig;
 
 		/// <summary> The default type of dust made when this tile/wall is hit. Defaults to 0. </summary>
 		public int DustType { get; set; }
@@ -64,7 +66,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool KillSound(int i, int j) {
+		/// <param name="fail">If true, the tile/wall is only partially damaged. If false, the tile/wall is fully destroyed.</param>
+		public virtual bool KillSound(int i, int j, bool fail) {
 			return true;
 		}
 
