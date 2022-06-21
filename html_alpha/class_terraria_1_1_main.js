@@ -1227,6 +1227,7 @@ var class_terraria_1_1_main =
     [ "timeItemSlotCannotBeReusedFor", "class_terraria_1_1_main.html#ac61941829b52d295474fb8650899285e", null ],
     [ "timePass", "class_terraria_1_1_main.html#a0e3ba51d005d04ffbfcc9422f992fe02", null ],
     [ "TitleLinks", "class_terraria_1_1_main.html#ac7dca13397f004596bbe0a306c1dbd84", null ],
+    [ "tModLoaderTitleLinks", "class_terraria_1_1_main.html#abc7fce74dc931282dc346aff60b3d674", null ],
     [ "toggleFullscreen", "class_terraria_1_1_main.html#a0d343763a4f5cca9293c9264e9ceaaf3", null ],
     [ "tooltipPrefixComparisonItem", "class_terraria_1_1_main.html#a83c91a83c58c2df892bf1ce83fdd32d6", null ],
     [ "topWorld", "class_terraria_1_1_main.html#a876fb60684ce287eb0f81ced089df458", null ],

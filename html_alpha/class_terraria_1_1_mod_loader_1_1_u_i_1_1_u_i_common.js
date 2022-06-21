@@ -28,5 +28,6 @@ var class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common =
     [ "InnerPanelTexture", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#ad7bc008547c8862cab789fcadcd4fdb1", null ],
     [ "LoaderBgTexture", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#ad8ccc52a10c12f23d3c3f5e975fb7e81", null ],
     [ "LoaderTexture", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#aaef90a9e44d2fdcdbbce5be46304cad2", null ],
-    [ "ModBrowserIconsTexture", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#af39d0be5d549983b29b7527eb13904de", null ]
+    [ "ModBrowserIconsTexture", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#af39d0be5d549983b29b7527eb13904de", null ],
+    [ "tModLoaderTitleLinkButtonsTexture", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#a5cbaefacce0c004e3f3b5aa7bdf5b592", null ]
 ];

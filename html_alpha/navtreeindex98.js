@@ -1,5 +1,6 @@
 var NAVTREEINDEX98 =
 {
+"class_terraria_1_1_mod_loader_1_1_u_i_1_1_mods_menu_sort_modes_extensions.html":[2,0,2,13,6,3],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_mods_menu_sort_modes_extensions.html#a825e27cd39a7db4b2ae026ebdd055cfb":[2,0,2,13,6,3,0],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_auto_scale_text_text_panel.html":[2,0,2,13,6,4],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_auto_scale_text_text_panel.html#a1c9482fa06ec1c6765e8e54bdc8b320d":[2,0,2,13,6,4,6],
@@ -28,6 +29,7 @@ var NAVTREEINDEX98 =
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#a3cd3bb04bddbe0d09a3d2d6788708f60":[2,0,2,13,6,6,11],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#a57181e949dcf3eb7d1275220d9961955":[2,0,2,13,6,6,20],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#a5bc5f2a5b71371bcc1257770706748b4":[2,0,2,13,6,6,22],
+"class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#a5cbaefacce0c004e3f3b5aa7bdf5b592":[2,0,2,13,6,6,29],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#a7820644409c50d9cee2986a78a707870":[2,0,2,13,6,6,23],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#a79fcaf1ebc54154e18b4c3f96ab216d8":[2,0,2,13,6,6,2],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_common.html#a7ca3b2813f0c00cf0f7f15bdcd663057":[2,0,2,13,6,6,7],
@@ -247,7 +249,5 @@ var NAVTREEINDEX98 =
 "class_terraria_1_1_modules_1_1_tile_object_alternates_module.html":[2,0,2,14,4],
 "class_terraria_1_1_modules_1_1_tile_object_alternates_module.html#a6e509ad70b9100db51912b1e3a85b06f":[2,0,2,14,4,0],
 "class_terraria_1_1_modules_1_1_tile_object_alternates_module.html#a986065da31a44bfe746cf84e305b56a3":[2,0,2,14,4,1],
-"class_terraria_1_1_modules_1_1_tile_object_base_module.html":[2,0,2,14,5],
-"class_terraria_1_1_modules_1_1_tile_object_base_module.html#a21358fcba08f40905a2c875e468de3f1":[2,0,2,14,5,0],
-"class_terraria_1_1_modules_1_1_tile_object_base_module.html#a2ddf8122cf965269036ea177b4d103b4":[2,0,2,14,5,1]
+"class_terraria_1_1_modules_1_1_tile_object_base_module.html":[2,0,2,14,5]
 };

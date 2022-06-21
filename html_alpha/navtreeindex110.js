@@ -1,5 +1,7 @@
 var NAVTREEINDEX110 =
 {
+"class_terraria_1_1_remote_client.html#a0e7bcda93bd15a5fae7733da853ae0c8":[2,0,2,63,6],
+"class_terraria_1_1_remote_client.html#a15e52d37e7952928c2a660123a22482f":[2,0,2,63,15],
 "class_terraria_1_1_remote_client.html#a179108531eaa2a41b6b42964ee6f056d":[2,0,2,63,11],
 "class_terraria_1_1_remote_client.html#a2bc02cdbe3733ba8abed13bda3a94d48":[2,0,2,63,5],
 "class_terraria_1_1_remote_client.html#a3d78bd7a932e1c30d3d949bd99ed0e58":[2,0,2,63,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX110 =
 "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#a00f50bab0dfea61fb9bc96e06c482974":[2,0,2,19,0,11,3],
 "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#a14881cf7544fc918627d6287c0c3f35a":[2,0,2,19,0,11,2],
 "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#a3860bf8452f130bcd3c507866baa6574":[2,0,2,19,0,11,1],
-"class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#aa30b4246539e900ebaad30292045d0a0":[2,0,2,19,0,11,0],
-"class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#aa30b4246539e900ebaad30292045d0a0a41f96452fc6f44ab50e2b03757f5767c":[2,0,2,19,0,11,0,4],
-"class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#aa30b4246539e900ebaad30292045d0a0a4d71fd84fb5ef760642f7857edb0515b":[2,0,2,19,0,11,0,2]
+"class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#aa30b4246539e900ebaad30292045d0a0":[2,0,2,19,0,11,0]
 };

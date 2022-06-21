@@ -1,5 +1,7 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_data_structures_1_1_wing_stats.html#afbe04494d80a8d3ab639382d705ff79f":[2,0,2,4,85,4],
+"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambience_server_1_1_ambience_spawn_info.html":[2,0,2,5,1,0,0],
 "struct_terraria_1_1_game_content_1_1_ambience_1_1_ambience_server_1_1_ambience_spawn_info.html#a1932fef3601c9d2512478dc932a2358d":[2,0,2,5,1,0,0,1],
 "struct_terraria_1_1_game_content_1_1_ambience_1_1_ambience_server_1_1_ambience_spawn_info.html#aee746c631f8dc7d183c1e56831b79a38":[2,0,2,5,1,0,0,0],
 "struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_ocean_line_cache.html":[2,0,2,5,1,1,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#a3b6e475b5e06cb38785d474052d62f5b":[2,0,2,7,8,3],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#a6792459bf154473cf05183dcd99e8e1b":[2,0,2,7,8,6],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#a9329d0e19a2df813c1beb67e54e93b55":[2,0,2,7,8,1],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#adfa39fa01ab7163d2ccc4c77df5ff78c":[2,0,2,7,8,2],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html":[2,0,2,7,8,0],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a3c6023aa287280104070c81fa158245f":[2,0,2,7,8,0,5]
+"struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#adfa39fa01ab7163d2ccc4c77df5ff78c":[2,0,2,7,8,2]
 };

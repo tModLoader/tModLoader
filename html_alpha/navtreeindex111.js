@@ -1,5 +1,7 @@
 var NAVTREEINDEX111 =
 {
+"class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#aa30b4246539e900ebaad30292045d0a0a41f96452fc6f44ab50e2b03757f5767c":[2,0,2,19,0,11,0,4],
+"class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#aa30b4246539e900ebaad30292045d0a0a4d71fd84fb5ef760642f7857edb0515b":[2,0,2,19,0,11,0,2],
 "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#aa30b4246539e900ebaad30292045d0a0a839571488dd2b6532ceb3403fb9ab91e":[2,0,2,19,0,11,0,0],
 "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#aa30b4246539e900ebaad30292045d0a0abeed1cba036a60ad717d7598c62b081f":[2,0,2,19,0,11,0,1],
 "class_terraria_1_1_social_1_1_base_1_1_rich_presence_state.html#aa30b4246539e900ebaad30292045d0a0afd475082b1f15ff2d4d7330a63bd21c9":[2,0,2,19,0,11,0,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX111 =
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_published_items_finder.html#a102b587c2d990143b7fc9dd4bf9d1199":[2,0,2,19,1,13,2,2,2],
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_published_items_finder.html#a89c861746dc910ebae3ee72223ecf3d0":[2,0,2,19,1,13,2,2,1],
 "class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_published_items_finder.html#aafbba340bbab609d53361499e2a89901":[2,0,2,19,1,13,2,2,3],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_resource_pack_publisher_instance.html":[2,0,2,19,1,13,2,3],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_resource_pack_publisher_instance.html#a34f2eef0918249ce8679367ad41d3c32":[2,0,2,19,1,13,2,3,2],
-"class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_resource_pack_publisher_instance.html#ab4c235353fcdf11e2c35f29a431b5278":[2,0,2,19,1,13,2,3,1]
+"class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_resource_pack_publisher_instance.html":[2,0,2,19,1,13,2,3]
 };
