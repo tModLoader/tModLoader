@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -11,506 +13,577 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.NPCs
 {
-	internal class ExampleWormHead : ExampleWorm
+	public enum WormSegmentType
 	{
-		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerHead;
-
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Worm");
-
-			var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { // Influences how the NPC looks in the Bestiary
-				CustomTexturePath = "ExampleMod/Content/NPCs/ExampleWorm_Bestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
-				Position = new Vector2(40f, 24f),
-				PortraitPositionXOverride = 0f,
-				PortraitPositionYOverride = 12f
-			};
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
-		}
-
-		public override void SetDefaults() {
-			// Head is 10 defence, body 20, tail 30.
-			NPC.CloneDefaults(NPCID.DiggerHead);
-			NPC.aiStyle = -1;
-			NPC.color = Color.Aqua;
-		}
-
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				// Sets the spawning conditions of this NPC that is listed in the bestiary.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Underground,
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns,
-
-				// Sets the description of this NPC that is listed in the bestiary.
-				new FlavorTextBestiaryInfoElement("Looks like a Digger fell into some aqua-colored paint. Oh well.")
-			});
-		}
-
-		public override void Init() {
-			base.Init();
-			head = true;
-		}
-
-		private int attackCounter;
-		public override void SendExtraAI(BinaryWriter writer) {
-			writer.Write(attackCounter);
-		}
-
-		public override void ReceiveExtraAI(BinaryReader reader) {
-			attackCounter = reader.ReadInt32();
-		}
-
-		public override void CustomBehavior() {
-			if (Main.netMode != NetmodeID.MultiplayerClient) {
-				if (attackCounter > 0) {
-					attackCounter--; // tick down the attack counter.
-				}
-
-				Player target = Main.player[NPC.target];
-
-				// If the attack counter is 0, this NPC is less than 12.5 tiles away from its target, and has a path to the target unobstructed by blocks, summon a projectile.
-				if (attackCounter <= 0 && Vector2.Distance(NPC.Center, target.Center) < 200 && Collision.CanHit(NPC.Center, 1, 1, target.Center, 1, 1)) {
-					Vector2 direction = (target.Center - NPC.Center).SafeNormalize(Vector2.UnitX);
-					direction = direction.RotatedByRandom(MathHelper.ToRadians(10));
-
-					var entitySource = NPC.GetSource_FromAI();
-					var projectile = Projectile.NewProjectileDirect(entitySource, NPC.Center, direction * 1, ProjectileID.ShadowBeamHostile, 5, 0, Main.myPlayer);
-
-					projectile.timeLeft = 300;
-
-					attackCounter = 500;
-					NPC.netUpdate = true;
-				}
-			}
-		}
+		/// <summary>
+		/// The head segment for the worm.  Only one "head" is considered to be active for any given worm
+		/// </summary>
+		Head,
+		/// <summary>
+		/// The body segment.  Follows the segment in front of it
+		/// </summary>
+		Body,
+		/// <summary>
+		/// The tail segment.  Has the same AI as the body segments.  Only one "tail" is considered to be active for any given worm
+		/// </summary>
+		Tail
 	}
 
-	internal class ExampleWormBody : ExampleWorm
-	{
-		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerBody;
-
-		public override void SetStaticDefaults() {
-			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
-				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
-			};
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
-		}
-
-		public override void SetDefaults() {
-			NPC.CloneDefaults(NPCID.DiggerBody);
-			NPC.aiStyle = -1;
-			NPC.color = Color.Aqua;
-		}
-	}
-
-	internal class ExampleWormTail : ExampleWorm
-	{
-		public override string Texture => "Terraria/Images/NPC_" + NPCID.DiggerTail;
-
-		public override void SetStaticDefaults() {
-			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) {
-				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
-			};
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
-		}
-
-		public override void SetDefaults() {
-			NPC.CloneDefaults(NPCID.DiggerTail);
-			NPC.aiStyle = -1;
-			NPC.color = Color.Aqua;
-		}
-
-		public override void Init() {
-			base.Init();
-			tail = true;
-		}
-	}
-
-	// I made this 2nd base class to limit code repetition.
-	public abstract class ExampleWorm : Worm
-	{
-		public override void SetStaticDefaults() {
-			DisplayName.SetDefault("Example Worm");
-		}
-
-		public override void Init() {
-			minLength = 6;
-			maxLength = 12;
-			tailType = ModContent.NPCType<ExampleWormTail>();
-			bodyType = ModContent.NPCType<ExampleWormBody>();
-			headType = ModContent.NPCType<ExampleWormHead>();
-			speed = 5.5f;
-			turnSpeed = 0.045f;
-		}
-	}
-
-	// ported from my tAPI mod because I'm lazy
-	// This abstract class can be used for non splitting worm type NPC.
+	/// <summary>
+	/// The base class for non-separating Worm enemies.
+	/// </summary>
 	public abstract class Worm : ModNPC
 	{
-		/* ai[0] = follower
-		* ai[1] = following
-		* ai[2] = distanceFromTail
-		* ai[3] = head
-		*/
-		public bool head;
-		public bool tail;
-		public int minLength;
-		public int maxLength;
-		public int headType;
-		public int bodyType;
-		public int tailType;
-		public bool flies = false;
-		public bool directional = false;
-		public float speed;
-		public float turnSpeed;
+		/*  ai[] usage:
+		 *  
+		 *  ai[0] = "follower" segment, the segment that's following this segment
+		 *  ai[1] = "following" segment, the segment that this segment is following
+		 *  
+		 *  localAI[0] = used when syncing changes to collision detection
+		 *  localAI[1] = checking if Init() was called
+		 */
 
-		public override void AI() {
-			if (NPC.localAI[1] == 0f) {
+		/// <summary>
+		/// Which type of segment this NPC is considered to be
+		/// </summary>
+		public abstract WormSegmentType SegmentType { get; }
+
+		/// <summary>
+		/// The maximum velocity for the NPC
+		/// </summary>
+		public float MoveSpeed { get; set; }
+
+		/// <summary>
+		/// The rate at which the NPC gains velocity
+		/// </summary>
+		public float Acceleration { get; set; }
+
+		/// <summary>
+		/// The NPC instance of the head segment for this worm.
+		/// </summary>
+		public NPC HeadSegment => Main.npc[NPC.realLife];
+
+		/// <summary>
+		/// The NPC instance of the segment that this segment is following (ai[1]).  For head segments, this property always returns <see langword="null"/>.
+		/// </summary>
+		public NPC FollowingNPC => SegmentType == WormSegmentType.Head ? null : Main.npc[(int)NPC.ai[1]];
+
+		/// <summary>
+		/// The NPC instance of the segment that is following this segment (ai[0]).  For tail segment, this property always returns <see langword="null"/>.
+		/// </summary>
+		public NPC FollowerNPC => SegmentType == WormSegmentType.Tail ? null : Main.npc[(int)NPC.ai[0]];
+
+		public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) {
+			return SegmentType == WormSegmentType.Head ? null : false;
+		}
+
+		private bool startDespawning;
+
+		public sealed override bool PreAI() {
+			if (NPC.localAI[1] == 0) {
 				NPC.localAI[1] = 1f;
 				Init();
 			}
 
-			if (NPC.ai[3] > 0f) {
-				NPC.realLife = (int)NPC.ai[3];
-			}
+			if (SegmentType == WormSegmentType.Head) {
+				HeadAI();
 
-			if (!head && NPC.timeLeft < 300) {
-				NPC.timeLeft = 300;
-			}
-
-			if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead) {
-				NPC.TargetClosest(true);
-			}
-
-			if (Main.player[NPC.target].dead && NPC.timeLeft > 300) {
-				NPC.timeLeft = 300;
-			}
-
-			if (Main.netMode != NetmodeID.MultiplayerClient) {
-				var entitySource = NPC.GetSource_FromAI();
-
-				if (!tail && NPC.ai[0] == 0f) {
-					if (head) {
-						NPC.ai[3] = NPC.whoAmI;
-						NPC.realLife = NPC.whoAmI;
-						NPC.ai[2] = Main.rand.Next(minLength, maxLength + 1);
-						NPC.ai[0] = NPC.NewNPC(entitySource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), bodyType, NPC.whoAmI);
-					}
-					else if (NPC.ai[2] > 0f) {
-						NPC.ai[0] = NPC.NewNPC(entitySource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), NPC.type, NPC.whoAmI);
-					}
-					else {
-						NPC.ai[0] = NPC.NewNPC(entitySource, (int)(NPC.position.X + (float)(NPC.width / 2)), (int)(NPC.position.Y + (float)NPC.height), tailType, NPC.whoAmI);
-					}
-
-					Main.npc[(int)NPC.ai[0]].ai[3] = NPC.ai[3];
-					Main.npc[(int)NPC.ai[0]].realLife = NPC.realLife;
-					Main.npc[(int)NPC.ai[0]].ai[1] = (float)NPC.whoAmI;
-					Main.npc[(int)NPC.ai[0]].ai[2] = NPC.ai[2] - 1f;
-					NPC.netUpdate = true;
-				}
-				if (!head && (!Main.npc[(int)NPC.ai[1]].active || Main.npc[(int)NPC.ai[1]].type != headType && Main.npc[(int)NPC.ai[1]].type != bodyType)) {
-					NPC.life = 0;
-					NPC.HitEffect(0, 10.0);
-					NPC.active = false;
-				}
-				if (!tail && (!Main.npc[(int)NPC.ai[0]].active || Main.npc[(int)NPC.ai[0]].type != bodyType && Main.npc[(int)NPC.ai[0]].type != tailType)) {
-					NPC.life = 0;
-					NPC.HitEffect(0, 10.0);
-					NPC.active = false;
-				}
-				if (!NPC.active && Main.netMode == NetmodeID.Server) {
-					NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, NPC.whoAmI, -1f, 0f, 0f, 0, 0, 0);
-				}
-			}
-			int num180 = (int)(NPC.position.X / 16f) - 1;
-			int num181 = (int)((NPC.position.X + (float)NPC.width) / 16f) + 2;
-			int num182 = (int)(NPC.position.Y / 16f) - 1;
-			int num183 = (int)((NPC.position.Y + (float)NPC.height) / 16f) + 2;
-			if (num180 < 0) {
-				num180 = 0;
-			}
-			if (num181 > Main.maxTilesX) {
-				num181 = Main.maxTilesX;
-			}
-			if (num182 < 0) {
-				num182 = 0;
-			}
-			if (num183 > Main.maxTilesY) {
-				num183 = Main.maxTilesY;
-			}
-			bool flag18 = flies;
-			if (!flag18) {
-				for (int num184 = num180; num184 < num181; num184++) {
-					for (int num185 = num182; num185 < num183; num185++) {
-						if (Main.tile[num184, num185] != null && (Main.tile[num184, num185].HasUnactuatedTile && (Main.tileSolid[(int)Main.tile[num184, num185].TileType] || Main.tileSolidTop[(int)Main.tile[num184, num185].TileType] && Main.tile[num184, num185].TileFrameY == 0) || Main.tile[num184, num185].LiquidAmount > 64)) {
-							Vector2 vector17;
-							vector17.X = (float)(num184 * 16);
-							vector17.Y = (float)(num185 * 16);
-							if (NPC.position.X + (float)NPC.width > vector17.X && NPC.position.X < vector17.X + 16f && NPC.position.Y + (float)NPC.height > vector17.Y && NPC.position.Y < vector17.Y + 16f) {
-								flag18 = true;
-								if (Main.rand.NextBool(100) && NPC.behindTiles && Main.tile[num184, num185].HasUnactuatedTile) {
-									WorldGen.KillTile(num184, num185, true, true, false);
-								}
-								if (Main.netMode != NetmodeID.MultiplayerClient && Main.tile[num184, num185].TileType == 2) {
-									ushort arg_BFCA_0 = Main.tile[num184, num185 - 1].TileType;
-								}
-							}
-						}
-					}
-				}
-			}
-			if (!flag18 && head) {
-				Rectangle rectangle = new Rectangle((int)NPC.position.X, (int)NPC.position.Y, NPC.width, NPC.height);
-				int num186 = 1000;
-				bool flag19 = true;
-				for (int num187 = 0; num187 < 255; num187++) {
-					if (Main.player[num187].active) {
-						Rectangle rectangle2 = new Rectangle((int)Main.player[num187].position.X - num186, (int)Main.player[num187].position.Y - num186, num186 * 2, num186 * 2);
-						if (rectangle.Intersects(rectangle2)) {
-							flag19 = false;
-							break;
-						}
-					}
-				}
-				if (flag19) {
-					flag18 = true;
-				}
-			}
-			if (directional) {
-				if (NPC.velocity.X < 0f) {
-					NPC.spriteDirection = 1;
-				}
-				else if (NPC.velocity.X > 0f) {
-					NPC.spriteDirection = -1;
-				}
-			}
-			float num188 = speed;
-			float num189 = turnSpeed;
-			Vector2 vector18 = new Vector2(NPC.position.X + (float)NPC.width * 0.5f, NPC.position.Y + (float)NPC.height * 0.5f);
-			float num191 = Main.player[NPC.target].position.X + (float)(Main.player[NPC.target].width / 2);
-			float num192 = Main.player[NPC.target].position.Y + (float)(Main.player[NPC.target].height / 2);
-			num191 = (float)((int)(num191 / 16f) * 16);
-			num192 = (float)((int)(num192 / 16f) * 16);
-			vector18.X = (float)((int)(vector18.X / 16f) * 16);
-			vector18.Y = (float)((int)(vector18.Y / 16f) * 16);
-			num191 -= vector18.X;
-			num192 -= vector18.Y;
-			float num193 = (float)System.Math.Sqrt((double)(num191 * num191 + num192 * num192));
-			if (NPC.ai[1] > 0f && NPC.ai[1] < (float)Main.npc.Length) {
-				try {
-					vector18 = new Vector2(NPC.position.X + (float)NPC.width * 0.5f, NPC.position.Y + (float)NPC.height * 0.5f);
-					num191 = Main.npc[(int)NPC.ai[1]].position.X + (float)(Main.npc[(int)NPC.ai[1]].width / 2) - vector18.X;
-					num192 = Main.npc[(int)NPC.ai[1]].position.Y + (float)(Main.npc[(int)NPC.ai[1]].height / 2) - vector18.Y;
-				}
-				catch {
-				}
-				NPC.rotation = (float)System.Math.Atan2((double)num192, (double)num191) + 1.57f;
-				num193 = (float)System.Math.Sqrt((double)(num191 * num191 + num192 * num192));
-				int num194 = NPC.width;
-				num193 = (num193 - (float)num194) / num193;
-				num191 *= num193;
-				num192 *= num193;
-				NPC.velocity = Vector2.Zero;
-				NPC.position.X = NPC.position.X + num191;
-				NPC.position.Y = NPC.position.Y + num192;
-				if (directional) {
-					if (num191 < 0f) {
-						NPC.spriteDirection = 1;
-					}
-					if (num191 > 0f) {
-						NPC.spriteDirection = -1;
-					}
-				}
-			}
-			else {
-				if (!flag18) {
+				if (!NPC.HasValidTarget) {
 					NPC.TargetClosest(true);
-					NPC.velocity.Y = NPC.velocity.Y + 0.11f;
-					if (NPC.velocity.Y > num188) {
-						NPC.velocity.Y = num188;
-					}
-					if ((double)(System.Math.Abs(NPC.velocity.X) + System.Math.Abs(NPC.velocity.Y)) < (double)num188 * 0.4) {
-						if (NPC.velocity.X < 0f) {
-							NPC.velocity.X = NPC.velocity.X - num189 * 1.1f;
-						}
-						else {
-							NPC.velocity.X = NPC.velocity.X + num189 * 1.1f;
-						}
-					}
-					else if (NPC.velocity.Y == num188) {
-						if (NPC.velocity.X < num191) {
-							NPC.velocity.X = NPC.velocity.X + num189;
-						}
-						else if (NPC.velocity.X > num191) {
-							NPC.velocity.X = NPC.velocity.X - num189;
-						}
-					}
-					else if (NPC.velocity.Y > 4f) {
-						if (NPC.velocity.X < 0f) {
-							NPC.velocity.X = NPC.velocity.X + num189 * 0.9f;
-						}
-						else {
-							NPC.velocity.X = NPC.velocity.X - num189 * 0.9f;
+
+					// If the NPC is a boss and it has no target, force it to fall to the underworld quickly
+					if (!NPC.HasValidTarget && NPC.boss) {
+						NPC.velocity.Y += 8f;
+
+						MoveSpeed = 1000f;
+
+						if (!startDespawning) {
+							startDespawning = true;
+
+							// Despawn after 90 ticks (1.5 seconds) if the NPC gets far enough away
+							NPC.timeLeft = 90;
 						}
 					}
 				}
-				else {
-					if (!flies && NPC.behindTiles && NPC.soundDelay == 0) {
-						float num195 = num193 / 40f;
-						if (num195 < 10f) {
-							num195 = 10f;
-						}
-						if (num195 > 20f) {
-							num195 = 20f;
-						}
-						NPC.soundDelay = (int)num195;
-						SoundEngine.PlaySound(SoundID.WormDig, NPC.position);
-					}
-					num193 = (float)System.Math.Sqrt((double)(num191 * num191 + num192 * num192));
-					float num196 = System.Math.Abs(num191);
-					float num197 = System.Math.Abs(num192);
-					float num198 = num188 / num193;
-					num191 *= num198;
-					num192 *= num198;
-					if (ShouldRun()) {
-						bool flag20 = true;
-						for (int num199 = 0; num199 < 255; num199++) {
-							if (Main.player[num199].active && !Main.player[num199].dead && Main.player[num199].ZoneCorrupt) {
-								flag20 = false;
-							}
-						}
-						if (flag20) {
-							if (Main.netMode != NetmodeID.MultiplayerClient && (double)(NPC.position.Y / 16f) > (Main.rockLayer + (double)Main.maxTilesY) / 2.0) {
-								NPC.active = false;
-								int num200 = (int)NPC.ai[0];
-								while (num200 > 0 && num200 < 200 && Main.npc[num200].active && Main.npc[num200].aiStyle == NPC.aiStyle) {
-									int num201 = (int)Main.npc[num200].ai[0];
-									Main.npc[num200].active = false;
-									NPC.life = 0;
-									if (Main.netMode == NetmodeID.Server) {
-										NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num200, 0f, 0f, 0f, 0, 0, 0);
-									}
-									num200 = num201;
-								}
-								if (Main.netMode == NetmodeID.Server) {
-									NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, NPC.whoAmI, 0f, 0f, 0f, 0, 0, 0);
-								}
-							}
-							num191 = 0f;
-							num192 = num188;
+			} else
+				BodyTailAI();
+
+			return true;
+		}
+
+		// Not visible to public API, but is used to indicate what AI to run
+		internal virtual void HeadAI() { }
+
+		internal virtual void BodyTailAI() { }
+
+		public abstract void Init();
+	}
+
+	/// <summary>
+	/// The base class for head segment NPCs of Worm enemies
+	/// </summary>
+	public abstract class WormHead : Worm
+	{
+		public sealed override WormSegmentType SegmentType => WormSegmentType.Head;
+
+		/// <summary>
+		/// The NPCID or ModContent.NPCType for the body segment NPCs.<br/>
+		/// This property is only used if <see cref="HasCustomBodySegments"/> returns <see langword="false"/>.
+		/// </summary>
+		public abstract int BodyType { get; }
+
+		/// <summary>
+		/// The NPCID or ModContent.NPCType for the tail segment NPC.<br/>
+		/// This property is only used if <see cref="HasCustomBodySegments"/> returns <see langword="false"/>.
+		/// </summary>
+		public abstract int TailType { get; }
+
+		/// <summary>
+		/// The minimum amount of segments expected, including the head and tail segments
+		/// </summary>
+		public int MinSegmentLength { get; set; }
+
+		/// <summary>
+		/// The maximum amount of segments expected, including the head and tail segments
+		/// </summary>
+		public int MaxSegmentLength { get; set; }
+
+		/// <summary>
+		/// Whether the NPC ignores tile collision when attempting to "dig" through tiles, like how Wyverns work.
+		/// </summary>
+		public bool CanFly { get; set; }
+
+		/// <summary>
+		/// The maximum distance in <b>pixels</b> within which the NPC will use tile collision, if <see cref="CanFly"/> returns <see langword="false"/>.<br/>
+		/// Defaults to 1000 pixels, which is equivalent to 62.5 tiles.
+		/// </summary>
+		public virtual int MaxDistanceForUsingTileCollision => 1000;
+
+		/// <summary>
+		/// Whether the NPC uses 
+		/// </summary>
+		public virtual bool HasCustomBodySegments => false;
+
+		/// <summary>
+		/// If not <see langword="null"/>, this NPC will target the given world position instead of its player target
+		/// </summary>
+		public Vector2? ForcedTargetPosition { get; set; }
+
+		/// <summary>
+		/// Override this method to use custom body-spawning code.<br/>
+		/// This method only runs if <see cref="HasCustomBodySegments"/> returns <see langword="true"/>.
+		/// </summary>
+		/// <param name="segmentCount">How many body segements are expected to be spawned</param>
+		/// <returns>The whoAmI of the most-recently spawned NPC, which is the result of calling <see cref="NPC.NewNPC(Terraria.DataStructures.IEntitySource, int, int, int, int, float, float, float, float, int)"/></returns>
+		public virtual int SpawnBodySegments(int segmentCount) {
+			// Defaults to just returning this NPC's whoAmI, since the tail segment uses the return value as its "following" NPC index
+			return NPC.whoAmI;
+		}
+
+		/// <summary>
+		/// Spawns a body or tail segment of the worm.
+		/// </summary>
+		/// <param name="source">The spawn source</param>
+		/// <param name="type">The ID of the segment NPC to spawn</param>
+		/// <param name="latestNPC">The whoAmI of the most-recently spawned segment NPC in the worm, including the head</param>
+		/// <returns></returns>
+		protected int SpawnSegment(IEntitySource source, int type, int latestNPC) {
+			// We spawn a new NPC, setting latestNPC to the newer NPC, whilst also using that same variable
+			// to set the parent of this new NPC. The parent of the new NPC (may it be a tail or body part)
+			// will determine the movement of this new NPC.
+			// Under there, we also set the realLife value of the new NPC, because of what is explained above.
+			int oldLatest = latestNPC;
+			latestNPC = NPC.NewNPC(source, (int)NPC.Center.X, (int)NPC.Center.Y, type, NPC.whoAmI, 0, latestNPC);
+
+			Main.npc[oldLatest].ai[0] = latestNPC;
+
+			NPC latest = Main.npc[latestNPC];
+			// NPC.realLife is the whoAmI of the NPC that the spawned NPC will share its health with
+			latest.realLife = NPC.whoAmI;
+
+			return latestNPC;
+		}
+
+		internal sealed override void HeadAI() {
+			HeadAI_SpawnSegments();
+
+			bool collision = HeadAI_CheckCollisionForDustSpawns();
+
+			HeadAI_CheckTargetDistance(ref collision);
+
+			HeadAI_Movement(collision);
+		}
+
+		private void HeadAI_SpawnSegments() {
+			if (Main.netMode != NetmodeID.MultiplayerClient) {
+				// So, we start the AI off by checking if NPC.ai[0] (the following NPC's whoAmI) is 0.
+				// This is practically ALWAYS the case with a freshly spawned NPC, so this means this is the first update.
+				// Since this is the first update, we can safely assume we need to spawn the rest of the worm (bodies + tail).
+				bool hasFollower = NPC.ai[0] > 0;
+				if (!hasFollower) {
+					// So, here we assign the NPC.realLife value.
+					// The NPC.realLife value is mainly used to determine which NPC loses life when we hit this NPC.
+					// We don't want every single piece of the worm to have its own HP pool, so this is a neat way to fix that.
+					NPC.realLife = NPC.whoAmI;
+					// latestNPC is going to be used in SpawnSegment() and I'll explain it there.
+					int latestNPC = NPC.whoAmI;
+
+					// Here we determine the length of the worm.
+					int randomWormLength = Main.rand.Next(MinSegmentLength, MaxSegmentLength + 1);
+
+					int distance = randomWormLength - 2;
+
+					IEntitySource source = NPC.GetSource_FromAI();
+
+					if (HasCustomBodySegments) {
+						// Call the method that'll handle spawning the body segments
+						latestNPC = SpawnBodySegments(distance);
+					} else {
+						// Spawn the body segments like usual
+						while (distance > 0) {
+							latestNPC = SpawnSegment(source, BodyType, latestNPC);
+							distance--;
 						}
 					}
 
-					bool flag21 = false;
+					// Spawn the tail segment
+					SpawnSegment(source, TailType, latestNPC);
 
-					if (!flag21) {
-						if (NPC.velocity.X > 0f && num191 > 0f || NPC.velocity.X < 0f && num191 < 0f || NPC.velocity.Y > 0f && num192 > 0f || NPC.velocity.Y < 0f && num192 < 0f) {
-							if (NPC.velocity.X < num191) {
-								NPC.velocity.X = NPC.velocity.X + num189;
-							}
-							else {
-								if (NPC.velocity.X > num191) {
-									NPC.velocity.X = NPC.velocity.X - num189;
-								}
-							}
-							if (NPC.velocity.Y < num192) {
-								NPC.velocity.Y = NPC.velocity.Y + num189;
-							}
-							else {
-								if (NPC.velocity.Y > num192) {
-									NPC.velocity.Y = NPC.velocity.Y - num189;
-								}
-							}
-							if ((double)System.Math.Abs(num192) < (double)num188 * 0.2 && (NPC.velocity.X > 0f && num191 < 0f || NPC.velocity.X < 0f && num191 > 0f)) {
-								if (NPC.velocity.Y > 0f) {
-									NPC.velocity.Y = NPC.velocity.Y + num189 * 2f;
-								}
-								else {
-									NPC.velocity.Y = NPC.velocity.Y - num189 * 2f;
-								}
-							}
-							if ((double)System.Math.Abs(num191) < (double)num188 * 0.2 && (NPC.velocity.Y > 0f && num192 < 0f || NPC.velocity.Y < 0f && num192 > 0f)) {
-								if (NPC.velocity.X > 0f) {
-									NPC.velocity.X = NPC.velocity.X + num189 * 2f;
-								}
-								else {
-									NPC.velocity.X = NPC.velocity.X - num189 * 2f;
-								}
-							}
-						}
-						else {
-							if (num196 > num197) {
-								if (NPC.velocity.X < num191) {
-									NPC.velocity.X = NPC.velocity.X + num189 * 1.1f;
-								}
-								else if (NPC.velocity.X > num191) {
-									NPC.velocity.X = NPC.velocity.X - num189 * 1.1f;
-								}
-								if ((double)(System.Math.Abs(NPC.velocity.X) + System.Math.Abs(NPC.velocity.Y)) < (double)num188 * 0.5) {
-									if (NPC.velocity.Y > 0f) {
-										NPC.velocity.Y = NPC.velocity.Y + num189;
-									}
-									else {
-										NPC.velocity.Y = NPC.velocity.Y - num189;
-									}
-								}
-							}
-							else {
-								if (NPC.velocity.Y < num192) {
-									NPC.velocity.Y = NPC.velocity.Y + num189 * 1.1f;
-								}
-								else if (NPC.velocity.Y > num192) {
-									NPC.velocity.Y = NPC.velocity.Y - num189 * 1.1f;
-								}
-								if ((double)(System.Math.Abs(NPC.velocity.X) + System.Math.Abs(NPC.velocity.Y)) < (double)num188 * 0.5) {
-									if (NPC.velocity.X > 0f) {
-										NPC.velocity.X = NPC.velocity.X + num189;
-									}
-									else {
-										NPC.velocity.X = NPC.velocity.X - num189;
-									}
-								}
+					NPC.netUpdate = true;
+
+					// Ensure that all of the segments could spawn.  If they could not, despawn the worm entirely
+					int count = 0;
+					for (int i = 0; i < Main.maxNPCs; i++) {
+						NPC n = Main.npc[i];
+
+						if (n.active && (n.type == Type || n.type == BodyType || n.type == TailType) && n.realLife == NPC.whoAmI)
+							count++;
+					}
+
+					if (count != randomWormLength) {
+						// Unable to spawn all of the segments... kill the worm
+						for (int i = 0; i < Main.maxNPCs; i++) {
+							NPC n = Main.npc[i];
+
+							if (n.active && (n.type == Type || n.type == BodyType || n.type == TailType) && n.realLife == NPC.whoAmI) {
+								n.active = false;
+								n.netUpdate = true;
 							}
 						}
 					}
+
+					// Set the player target for good measure
+					NPC.TargetClosest(true);
 				}
-				NPC.rotation = (float)System.Math.Atan2((double)NPC.velocity.Y, (double)NPC.velocity.X) + 1.57f;
-				if (head) {
-					if (flag18) {
-						if (NPC.localAI[0] != 1f) {
-							NPC.netUpdate = true;
+			}
+		}
+
+		private bool HeadAI_CheckCollisionForDustSpawns() {
+			int minTilePosX = (int)(NPC.Left.X / 16) - 1;
+			int maxTilePosX = (int)(NPC.Right.X / 16) + 2;
+			int minTilePosY = (int)(NPC.Top.Y / 16) - 1;
+			int maxTilePosY = (int)(NPC.Bottom.Y / 16) + 2;
+
+			// Ensure that the tile range is within the world bounds
+			if (minTilePosX < 0)
+				minTilePosX = 0;
+			if (maxTilePosX > Main.maxTilesX)
+				maxTilePosX = Main.maxTilesX;
+			if (minTilePosY < 0)
+				minTilePosY = 0;
+			if (maxTilePosY > Main.maxTilesY)
+				maxTilePosY = Main.maxTilesY;
+ 
+			bool collision = false;
+
+			// This is the initial check for collision with tiles.
+			for (int i = minTilePosX; i < maxTilePosX; ++i) {
+				for (int j = minTilePosY; j < maxTilePosY; ++j) {
+					Tile tile = Main.tile[i, j];
+
+					// If the tile is solid or is considered a platform, then there's valid collision
+					if (tile.HasUnactuatedTile && (Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType] && tile.TileFrameY == 0) || tile.LiquidAmount > 64) {
+						Vector2 tileWorld = new Point16(i, j).ToWorldCoordinates(0, 0);
+
+						if (NPC.Right.X > tileWorld.X && NPC.Left.X < tileWorld.X + 16 && NPC.Bottom.Y > tileWorld.Y && NPC.Top.Y < tileWorld.Y + 16) {
+							// Collision found
+							collision = true;
+
+							if (Main.rand.NextBool(100))
+								WorldGen.KillTile(i, j, fail: true, effectOnly: true, noItem: false);
 						}
-						NPC.localAI[0] = 1f;
-					}
-					else {
-						if (NPC.localAI[0] != 0f) {
-							NPC.netUpdate = true;
-						}
-						NPC.localAI[0] = 0f;
-					}
-					if ((NPC.velocity.X > 0f && NPC.oldVelocity.X < 0f || NPC.velocity.X < 0f && NPC.oldVelocity.X > 0f || NPC.velocity.Y > 0f && NPC.oldVelocity.Y < 0f || NPC.velocity.Y < 0f && NPC.oldVelocity.Y > 0f) && !NPC.justHit) {
-						NPC.netUpdate = true;
-						return;
 					}
 				}
 			}
-			CustomBehavior();
+
+			return collision;
 		}
 
-		public virtual void Init() {
+		private void HeadAI_CheckTargetDistance(ref bool collision) {
+			// If there is no collision with tiles, we check if the distance between this NPC and its target is too large, so that we can still trigger "collision".
+			if (!collision) {
+				Rectangle hitbox = NPC.Hitbox;
+
+				int maxDistance = MaxDistanceForUsingTileCollision;
+
+				bool tooFar = true;
+
+				for (int i = 0; i < Main.maxPlayers; i++) {
+					Rectangle areaCheck;
+
+					Player player = Main.player[i];
+
+					if (ForcedTargetPosition is Vector2 target)
+						areaCheck = new Rectangle((int)target.X - maxDistance, (int)target.Y - maxDistance, maxDistance * 2, maxDistance * 2);
+					else if (player.active && !player.dead && !player.ghost)
+						areaCheck = new Rectangle((int)player.position.X - maxDistance, (int)player.position.Y - maxDistance, maxDistance * 2, maxDistance * 2);
+					else
+						continue;  // Not a valid player
+
+					if (hitbox.Intersects(areaCheck)) {
+						tooFar = false;
+						break;
+					}
+				}
+
+				if (tooFar)
+					collision = true;
+			}
 		}
 
-		public virtual bool ShouldRun() {
-			return false;
+		private void HeadAI_Movement(bool collision) {
+			// MoveSpeed determines the max speed at which this NPC can move.
+			// Higher value = faster speed.
+			float speed = MoveSpeed;
+			// acceleration is exactly what it sounds like. The speed at which this NPC accelerates.
+			float acceleration = Acceleration;
+
+			float targetXPos, targetYPos;
+
+			Player playerTarget = Main.player[NPC.target];
+
+			Vector2 forcedTarget = ForcedTargetPosition ?? playerTarget.Center;
+			// Using a ValueTuple like this allows for easy assignment of multiple values
+			(targetXPos, targetYPos) = (forcedTarget.X, forcedTarget.Y);
+
+			// Copy the value, since it will be clobbered later
+			Vector2 npcCenter = NPC.Center;
+
+			float targetRoundedPosX = (float)((int)(targetXPos / 16f) * 16);
+			float targetRoundedPosY = (float)((int)(targetYPos / 16f) * 16);
+			npcCenter.X = (float)((int)(npcCenter.X / 16f) * 16);
+			npcCenter.Y = (float)((int)(npcCenter.Y / 16f) * 16);
+			float dirX = targetRoundedPosX - npcCenter.X;
+			float dirY = targetRoundedPosY - npcCenter.Y;
+
+			float length = (float)Math.Sqrt(dirX * dirX + dirY * dirY);
+
+			// If we do not have any type of collision, we want the NPC to fall down and de-accelerate along the X axis.
+			if (!collision && !CanFly)
+				HeadAI_Movement_HandleFallingFromNoCollision(dirX, speed, acceleration);
+			else {
+				// Else we want to play some audio (soundDelay) and move towards our target.
+				HeadAI_Movement_PlayDigSounds(length);
+
+				HeadAI_Movement_HandleMovement(dirX, dirY, length, speed, acceleration);
+			}
+
+			HeadAI_Movement_SetRotation(collision);
 		}
 
-		public virtual void CustomBehavior() {
+		private void HeadAI_Movement_HandleFallingFromNoCollision(float dirX, float speed, float acceleration) {
+			// Keep searching for a new target
+			NPC.TargetClosest(true);
+
+			// Constant gravity of 0.11 pixels/tick
+			NPC.velocity.Y += 0.11f;
+
+			// Ensure that the NPC does not fall too quickly
+			if (NPC.velocity.Y > speed)
+				NPC.velocity.Y = speed;
+
+			// The following behaviour mimicks vanilla worm movement
+			if (Math.Abs(NPC.velocity.X) + Math.Abs(NPC.velocity.Y) < speed * 0.4f) {
+				// Velocity is sufficiently fast, but not too fast
+				if (NPC.velocity.X < 0.0f)
+					NPC.velocity.X -= acceleration * 1.1f;
+				else
+					NPC.velocity.X += acceleration * 1.1f;
+			} else if (NPC.velocity.Y == speed) {
+				// NPC has reached terminal velocity
+				if (NPC.velocity.X < dirX)
+					NPC.velocity.X += acceleration;
+				else if (NPC.velocity.X > dirX)
+					NPC.velocity.X -= acceleration;
+			} else if (NPC.velocity.Y > 4) {
+				if (NPC.velocity.X < 0)
+					NPC.velocity.X += acceleration * 0.9f;
+				else
+					NPC.velocity.X -= acceleration * 0.9f;
+			}
 		}
 
-		public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) {
-			return head ? (bool?)null : false;
+		private void HeadAI_Movement_PlayDigSounds(float length) {
+			if (NPC.soundDelay == 0) {
+				// Play sounds quicker the closer the NPC is to the target location
+				float num1 = length / 40f;
+
+				if (num1 < 10)
+					num1 = 10f;
+
+				if (num1 > 20)
+					num1 = 20f;
+
+				NPC.soundDelay = (int)num1;
+
+				SoundEngine.PlaySound(SoundID.WormDig, NPC.position);
+			}
+		}
+
+		private void HeadAI_Movement_HandleMovement(float dirX, float dirY, float length, float speed, float acceleration) {
+			float absDirX = Math.Abs(dirX);
+			float absDirY = Math.Abs(dirY);
+			float newSpeed = speed / length;
+			dirX *= newSpeed;
+			dirY *= newSpeed;
+
+			if ((NPC.velocity.X > 0 && dirX > 0) || (NPC.velocity.X < 0 && dirX < 0 )|| (NPC.velocity.Y > 0 && dirY > 0) || (NPC.velocity.Y < 0 && dirY < 0)) {
+				// The NPC is moving towards the target location
+				if (NPC.velocity.X < dirX)
+					NPC.velocity.X += acceleration;
+				else if (NPC.velocity.X > dirX)
+					NPC.velocity.X -= acceleration;
+
+				if (NPC.velocity.Y < dirY)
+					NPC.velocity.Y += acceleration;
+				else if (NPC.velocity.Y > dirY)
+					NPC.velocity.Y -= acceleration;
+
+				// The intended Y-velocity is small AND the NPC is moving to the left and the target is to the right of the NPC or vice versa
+				if (Math.Abs(dirY) < speed * 0.2 && ((NPC.velocity.X > 0 && dirX < 0) || (NPC.velocity.X < 0 && dirX > 0))) {
+					if (NPC.velocity.Y > 0)
+						NPC.velocity.Y += acceleration * 2f;
+					else
+						NPC.velocity.Y -= acceleration * 2f;
+				}
+
+				// The intended X-velocity is small AND the NPC is moving up/down and the target is below/above the NPC
+				if (Math.Abs(dirX) < speed * 0.2 && ((NPC.velocity.Y > 0 && dirY < 0) || (NPC.velocity.Y < 0 && dirY > 0))) {
+					if (NPC.velocity.X > 0)
+						NPC.velocity.X = NPC.velocity.X + acceleration * 2f;
+					else
+						NPC.velocity.X = NPC.velocity.X - acceleration * 2f;
+				}
+			} else if (absDirX > absDirY) {
+				// The X distance is larger than the Y distance.  Force movement along the X-axis to be stronger
+				if (NPC.velocity.X < dirX)
+					NPC.velocity.X += acceleration * 1.1f;
+				else if (NPC.velocity.X > dirX)
+					NPC.velocity.X -= acceleration * 1.1f;
+
+				if (Math.Abs(NPC.velocity.X) + Math.Abs(NPC.velocity.Y) < speed * 0.5) {
+					if (NPC.velocity.Y > 0)
+						NPC.velocity.Y += acceleration;
+					else
+						NPC.velocity.Y -= acceleration;
+				}
+			} else {
+				// The X distance is larger than the Y distance.  Force movement along the X-axis to be stronger
+				if (NPC.velocity.Y < dirY)
+					NPC.velocity.Y += acceleration * 1.1f;
+				else if (NPC.velocity.Y > dirY)
+					NPC.velocity.Y -= acceleration * 1.1f;
+
+				if (Math.Abs(NPC.velocity.X) + Math.Abs(NPC.velocity.Y) < speed * 0.5) {
+					if (NPC.velocity.X > 0)
+						NPC.velocity.X += acceleration;
+					else
+						NPC.velocity.X -= acceleration;
+				}
+			}
+		}
+
+		private void HeadAI_Movement_SetRotation(bool collision) {
+			// Set the correct rotation for this NPC.
+			// Assumes the sprite for the NPC points upward.  You might have to modify this line to properly account for your NPC's orientation
+			NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+		   
+			// Some netupdate stuff (multiplayer compatibility).
+			if (collision) {
+				if(NPC.localAI[0] != 1)
+					NPC.netUpdate = true;
+
+				NPC.localAI[0] = 1f;
+			} else {
+				if(NPC.localAI[0] != 0)
+					NPC.netUpdate = true;
+
+				NPC.localAI[0] = 0f;
+			}
+
+			// Force a netupdate if the NPC's velocity changed sign and it was not "just hit" by a player
+			if (((NPC.velocity.X > 0 && NPC.oldVelocity.X < 0) || (NPC.velocity.X < 0 && NPC.oldVelocity.X > 0) || (NPC.velocity.Y > 0 && NPC.oldVelocity.Y < 0) || (NPC.velocity.Y < 0 && NPC.oldVelocity.Y > 0)) && !NPC.justHit)
+				NPC.netUpdate = true;
+		}
+	}
+
+	public abstract class WormBody : Worm
+	{
+		public sealed override WormSegmentType SegmentType => WormSegmentType.Body;
+
+		internal override void BodyTailAI() {
+			CommonAI_BodyTail(this);
+		}
+
+		internal static void CommonAI_BodyTail(Worm worm) {
+			if (!worm.NPC.HasValidTarget)
+				worm.NPC.TargetClosest(true);
+
+			if (Main.player[worm.NPC.target].dead && worm.NPC.timeLeft > 30000)
+				worm.NPC.timeLeft = 10;
+
+			NPC following = worm.NPC.ai[1] >= Main.maxNPCs ? null : worm.FollowingNPC;
+			if (Main.netMode != NetmodeID.MultiplayerClient) {
+				// Some of these conditions are possble if the body/tail segment was spawned individually
+				// Kill the segment if the segment NPC it's following is no longer valid
+				if (following is null || !following.active || following.friendly || following.townNPC || following.lifeMax <= 5) {
+					worm.NPC.life = 0;
+					worm.NPC.HitEffect(0, 10);
+					worm.NPC.active = false;
+				}
+			}
+
+			if (following is not null) {
+				// Follow behind the segment "in front" of this NPC
+				// Use the current NPC.Center to calculate the direction towards the "parent NPC" of this NPC.
+				float dirX = following.Center.X - worm.NPC.Center.X;
+				float dirY = following.Center.Y - worm.NPC.Center.Y;
+				// We then use Atan2 to get a correct rotation towards that parent NPC.
+				// Assumes the sprite for the NPC points upward.  You might have to modify this line to properly account for your NPC's orientation
+				worm.NPC.rotation = (float)Math.Atan2(dirY, dirX) + MathHelper.PiOver2;
+				// We also get the length of the direction vector.
+				float length = (float)Math.Sqrt(dirX * dirX + dirY * dirY);
+				// We calculate a new, correct distance.
+				float dist = (length - worm.NPC.width) / length;
+				float posX = dirX * dist;
+				float posY = dirY * dist;
+ 
+				// Reset the velocity of this NPC, because we don't want it to move on its own
+				worm.NPC.velocity = Vector2.Zero;
+				// And set this NPCs position accordingly to that of this NPCs parent NPC.
+				worm.NPC.position.X += posX;
+				worm.NPC.position.Y += posY;
+			}
+		}
+	}
+
+	// Since the body and tail segments share the same AI
+	public abstract class WormTail : Worm
+	{
+		public sealed override WormSegmentType SegmentType => WormSegmentType.Tail;
+
+		internal override void BodyTailAI() {
+			WormBody.CommonAI_BodyTail(this);
 		}
 	}
 }
