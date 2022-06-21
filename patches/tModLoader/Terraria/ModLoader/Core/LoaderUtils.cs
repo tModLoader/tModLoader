@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.Core
@@ -51,7 +52,7 @@ namespace Terraria.ModLoader.Core
 			}
 
 			if (exceptions.Count == 1)
-				throw exceptions[0];
+				ExceptionDispatchInfo.Capture(exceptions[0]).Throw();
 
 			if (exceptions.Count > 0)
 				throw new MultipleException(exceptions);
