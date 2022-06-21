@@ -370,7 +370,7 @@ namespace Terraria.ModLoader
 			int num = 0;
 			foreach (var mod in ModLoader.Mods) {
 				token.ThrowIfCancellationRequested();
-				Interface.loadMods.SetCurrentMod(num++, $"{mod.Name} ({mod.DisplayName}) v{mod.Version}");
+				Interface.loadMods.SetCurrentMod(num++, mod);
 				try {
 					LoadingMod = mod;
 					loadAction(mod);
@@ -431,10 +431,7 @@ namespace Terraria.ModLoader
 
 			int i = 0;
 			foreach (var mod in ModLoader.Mods.Reverse()) {
-				if (Main.dedServ)
-					Console.WriteLine($"Unloading {mod.DisplayName}...");
-				else
-					Interface.loadMods.SetCurrentMod(i++, $"{mod.Name} ({mod.DisplayName}) v{mod.Version}");
+				Interface.loadMods.SetCurrentMod(i++, mod);
 
 				try {
 					MonoModHooks.RemoveAll(mod);
