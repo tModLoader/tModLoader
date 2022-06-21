@@ -200,7 +200,7 @@
 +			if (NPCNameList != null && NPCNameList.Count > 0)
 +				return NPCNameList[WorldGen.genRand.Next(NPCNameList.Count)];
 +			else
-+				return TypeName;
++				return "";
 +		}
 +
 +		/*
