@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Localization/GameCulture.cs
++++ src/tModLoader/Terraria/Localization/GameCulture.cs
+@@ -4,7 +_,7 @@
+ 
+ namespace Terraria.Localization
+ {
+-	public class GameCulture
++	public partial class GameCulture
+ 	{
+ 		public enum CultureName
+ 		{
