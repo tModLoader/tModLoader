@@ -8,7 +8,7 @@
 -    <PlatformTarget>x86</PlatformTarget>
 +    <TargetFramework>net6.0</TargetFramework>
 +    <!-- Defines the Minimum patch version that is required to play. -->
-+    <RuntimeFrameworkVersion>6.0.3</RuntimeFrameworkVersion>
++    <RuntimeFrameworkVersion>6.0.6</RuntimeFrameworkVersion>
 +    <!-- Eliminates the Refs folder from output-->
 +    <ProduceReferenceAssembly>false</ProduceReferenceAssembly> 
 +    <Configurations>Debug;Release</Configurations>
