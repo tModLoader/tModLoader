@@ -51,16 +51,13 @@ namespace ExampleMod.Content.Projectiles
 			// Increase range up to 2x for full charge.
 			Projectile.WhipSettings.RangeMultiplier += 1 / 120f;
 
-			// Reset the animation and item timer while charging.
-			owner.itemAnimation = owner.itemAnimationMax;
-			owner.itemTime = owner.itemTimeMax;
-
 			return false; // Prevent the vanilla whip AI from running.
 		}
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
 			target.AddBuff(ModContent.BuffType<ExampleWhipDebuff>(), 240);
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
+			Projectile.damage = (int)(damage * 0.7f); // Multihit penalty. Decrease the damage the more enemies the whip hits.
 		}
 
 		// This method draws a line between all points of the whip, in case there's empty space between the sprites.
