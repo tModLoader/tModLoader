@@ -1,5 +1,7 @@
 var NAVTREEINDEX126 =
 {
+"namespace_terraria_1_1_game_content_1_1_metadata.html":[1,0,2,6,13],
+"namespace_terraria_1_1_game_content_1_1_net_modules.html":[1,0,2,6,14],
 "namespace_terraria_1_1_game_content_1_1_object_interactions.html":[1,0,2,6,15],
 "namespace_terraria_1_1_game_content_1_1_personalities.html":[1,0,2,6,16],
 "namespace_terraria_1_1_game_content_1_1_personalities.html#acb56d1a42f410e08baed000b6e7c05d2":[1,0,2,6,16,21],
@@ -247,7 +249,5 @@ var NAVTREEINDEX126 =
 "namespace_terraria_1_1_net_1_1_sockets.html#a5fe7c604b7d9264be93d7d92b1046aa3":[1,0,2,16,0,5],
 "namespace_terraria_1_1_net_1_1_sockets.html#a84f79dd856d0d35432df3e97ce89334d":[1,0,2,16,0,3],
 "namespace_terraria_1_1_object_data.html":[1,0,2,17],
-"namespace_terraria_1_1_physics.html":[1,0,2,18],
-"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dd":[1,0,2,18,6],
-"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda1d18fe2cdd43a72d46421ecfe81b599e":[1,0,2,18,6,3]
+"namespace_terraria_1_1_physics.html":[1,0,2,18]
 };

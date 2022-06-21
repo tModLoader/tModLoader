@@ -1,5 +1,7 @@
 var NAVTREEINDEX127 =
 {
+"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dd":[1,0,2,18,6],
+"namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda1d18fe2cdd43a72d46421ecfe81b599e":[1,0,2,18,6,3],
 "namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda27634ff8002b12e75d98e07ccd005d18":[1,0,2,18,6,1],
 "namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda6adf97f83acf6453d4a6a4b1070f3754":[1,0,2,18,6,0],
 "namespace_terraria_1_1_physics.html#a460df4cd5b42416923caafb1b24d35dda8dc0611245a871ac51bbeebb85f33a58":[1,0,2,18,6,2],
@@ -247,7 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#a78d8b5cab6e2522d3a5db9cd8a4def4b":[2,0,2,4,59,9],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#a7fe0164b99e9ea4ffae3cacdba0e068d":[2,0,2,4,59,8],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#a96b920c45105c73cda86966261a4f96e":[2,0,2,4,59,5],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#ac041ff94a54bc8921fa31ed1ea2a6fd8":[2,0,2,4,59,1],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#ada729b2f4017831aef9e59ffbc4216cd":[2,0,2,4,59,7],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#ade95acbb937ba96f6db070d9b4011faa":[2,0,2,4,59,3]
+"struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#ac041ff94a54bc8921fa31ed1ea2a6fd8":[2,0,2,4,59,1]
 };

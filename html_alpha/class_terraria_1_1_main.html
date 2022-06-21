@@ -723,6 +723,12 @@ static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>ReverseGrav
 <tr class="memitem:aba54d6a437cb7ecd12fdd4aa36cb45d2"><td class="memItemLeft" align="right" valign="top"><a id="aba54d6a437cb7ecd12fdd4aa36cb45d2"></a>
 static Vector3&#160;</td><td class="memItemRight" valign="bottom"><b>rgbToHsl</b> (Microsoft.Xna.Framework.Color newColor)</td></tr>
 <tr class="separator:aba54d6a437cb7ecd12fdd4aa36cb45d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afeee22599a3b062900fd2282a834953d"><td class="memItemLeft" align="right" valign="top">static Task&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#afeee22599a3b062900fd2282a834953d">RunOnMainThread</a> (Action action)</td></tr>
+<tr class="memdesc:afeee22599a3b062900fd2282a834953d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for an action to be performed on the main thread.  <a href="class_terraria_1_1_main.html#afeee22599a3b062900fd2282a834953d">More...</a><br /></td></tr>
+<tr class="separator:afeee22599a3b062900fd2282a834953d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98aecbb900c567dbc004e05679bf1119"><td class="memItemLeft" align="right" valign="top">static Task&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a98aecbb900c567dbc004e05679bf1119">RunOnMainThread&lt; T &gt;</a> (Func&lt; T &gt; func)</td></tr>
+<tr class="memdesc:a98aecbb900c567dbc004e05679bf1119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for an action to be performed on the main thread.  <a href="class_terraria_1_1_main.html#a98aecbb900c567dbc004e05679bf1119">More...</a><br /></td></tr>
+<tr class="separator:a98aecbb900c567dbc004e05679bf1119"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a803661d41b6f45273d799370335b2233"><td class="memItemLeft" align="right" valign="top"><a id="a803661d41b6f45273d799370335b2233"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveClothesWindow</b> ()</td></tr>
 <tr class="separator:a803661d41b6f45273d799370335b2233"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4368,6 +4374,74 @@ static Action&#160;</td><td class="memItemRight" valign="bottom"><b>OnTickForThi
   <table class="params">
     <tr><td class="paramname">index</td><td><a class="el" href="class_terraria_1_1_item.html">Item</a> type</td></tr>
     <tr><td class="paramname">animation</td><td>Draw animation</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afeee22599a3b062900fd2282a834953d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afeee22599a3b062900fd2282a834953d">&#9670;&nbsp;</a></span>RunOnMainThread()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Task Terraria.Main.RunOnMainThread </td>
+          <td>(</td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Wait for an action to be performed on the main thread. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a98aecbb900c567dbc004e05679bf1119"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98aecbb900c567dbc004e05679bf1119">&#9670;&nbsp;</a></span>RunOnMainThread&lt; T &gt;()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Task&lt;T&gt; <a class="el" href="class_terraria_1_1_main.html#afeee22599a3b062900fd2282a834953d">Terraria.Main.RunOnMainThread</a>&lt; T &gt; </td>
+          <td>(</td>
+          <td class="paramtype">Func&lt; T &gt;&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Wait for an action to be performed on the main thread. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td></td></tr>
   </table>
   </dd>
 </dl>

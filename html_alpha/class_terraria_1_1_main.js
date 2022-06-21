@@ -260,6 +260,8 @@ var class_terraria_1_1_main =
     [ "ReverseGravitySupport", "class_terraria_1_1_main.html#a03359943b02555bcd901f3ba071d0ed5", null ],
     [ "ReverseGravitySupport", "class_terraria_1_1_main.html#a433873fe233ad6228260abd07c38edbe", null ],
     [ "rgbToHsl", "class_terraria_1_1_main.html#aba54d6a437cb7ecd12fdd4aa36cb45d2", null ],
+    [ "RunOnMainThread", "class_terraria_1_1_main.html#afeee22599a3b062900fd2282a834953d", null ],
+    [ "RunOnMainThread< T >", "class_terraria_1_1_main.html#a98aecbb900c567dbc004e05679bf1119", null ],
     [ "SaveClothesWindow", "class_terraria_1_1_main.html#a803661d41b6f45273d799370335b2233", null ],
     [ "SaveRecent", "class_terraria_1_1_main.html#a7b168349d5146eeb04124f6f470f8da3", null ],
     [ "SaveSettings", "class_terraria_1_1_main.html#aea573aaed742ac0ab4d1779ec7885b75", null ],
