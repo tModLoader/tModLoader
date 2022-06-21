@@ -23,7 +23,6 @@ var class_terraria_1_1_mod_loader_1_1_player_loader =
     [ "GetFishingLevel", "class_terraria_1_1_mod_loader_1_1_player_loader.html#aeb4bfa350c3ee886434191106d1e8669", null ],
     [ "GetHealLife", "class_terraria_1_1_mod_loader_1_1_player_loader.html#af13bca8307ff9b05cb5584c8db7d50cb", null ],
     [ "GetHealMana", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a10c4a0e32f2f5bf95371420c9d2f868c", null ],
-    [ "GetMapBackgroundImage", "class_terraria_1_1_mod_loader_1_1_player_loader.html#ab3487926da4642251f6a0f3291cb37fe", null ],
     [ "GetStartingItems", "class_terraria_1_1_mod_loader_1_1_player_loader.html#aecf18edd76d4b22e58024fa584276577", null ],
     [ "HideDrawLayers", "class_terraria_1_1_mod_loader_1_1_player_loader.html#abdf63631f7ad272683b5269ea0204dd1", null ],
     [ "Hurt", "class_terraria_1_1_mod_loader_1_1_player_loader.html#af31c3144bf48dc40fc3cb76c8729c98d", null ],

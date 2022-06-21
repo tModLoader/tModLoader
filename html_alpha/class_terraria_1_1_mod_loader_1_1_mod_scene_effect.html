@@ -109,9 +109,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1a0bf8ddc06fcb1d8fe2ab272c1234a2"><td class="memItemLeft" align="right" valign="top"><a id="a1a0bf8ddc06fcb1d8fe2ab272c1234a2"></a>
 virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsSceneEffectActive</b> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
 <tr class="separator:a1a0bf8ddc06fcb1d8fe2ab272c1234a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b4df4adfdab472267423c48e1e455c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#a7b4df4adfdab472267423c48e1e455c6">SpecialVisuals</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player)</td></tr>
-<tr class="memdesc:a7b4df4adfdab472267423c48e1e455c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override <a class="el" href="class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html">Terraria.Graphics.Shaders.ScreenShaderData</a> or <a class="el" href="class_terraria_1_1_graphics_1_1_effects_1_1_custom_sky.html">Terraria.Graphics.Effects.CustomSky</a>, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.  <a href="class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#a7b4df4adfdab472267423c48e1e455c6">More...</a><br /></td></tr>
-<tr class="separator:a7b4df4adfdab472267423c48e1e455c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a265268ac9166eeecda6824334a5f98cb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#a265268ac9166eeecda6824334a5f98cb">SpecialVisuals</a> (<a class="el" href="class_terraria_1_1_player.html">Player</a> player, bool isActive)</td></tr>
+<tr class="memdesc:a265268ac9166eeecda6824334a5f98cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to create special visual effects in the area around the player. For example, the blood moon's red filter on the screen or the slime rain's falling slime in the background. You must create classes that override <a class="el" href="class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html">Terraria.Graphics.Shaders.ScreenShaderData</a> or <a class="el" href="class_terraria_1_1_graphics_1_1_effects_1_1_custom_sky.html">Terraria.Graphics.Effects.CustomSky</a>, add them in your mod's Load hook, then call Player.ManageSpecialBiomeVisuals. See the ExampleMod if you do not have access to the source code.  <a href="class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html#a265268ac9166eeecda6824334a5f98cb">More...</a><br /></td></tr>
+<tr class="separator:a265268ac9166eeecda6824334a5f98cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -129,6 +129,9 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:af29c25e64010e5e7aa1eed3851f1d46f"><td class="memItemLeft" align="right" valign="top"><a id="af29c25e64010e5e7aa1eed3851f1d46f"></a>
+virtual string&#160;</td><td class="memItemRight" valign="bottom"><b>MapBackground</b><code> [get]</code></td></tr>
+<tr class="separator:af29c25e64010e5e7aa1eed3851f1d46f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a705942d570318d22186c2920d5ae0c64"><td class="memItemLeft" align="right" valign="top"><a id="a705942d570318d22186c2920d5ae0c64"></a>
 virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>Music</b><code> [get]</code></td></tr>
 <tr class="separator:a705942d570318d22186c2920d5ae0c64"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -261,8 +264,8 @@ TEntity&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [
 
 </div>
 </div>
-<a id="a7b4df4adfdab472267423c48e1e455c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b4df4adfdab472267423c48e1e455c6">&#9670;&nbsp;</a></span>SpecialVisuals()</h2>
+<a id="a265268ac9166eeecda6824334a5f98cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a265268ac9166eeecda6824334a5f98cb">&#9670;&nbsp;</a></span>SpecialVisuals()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -274,8 +277,18 @@ TEntity&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [
           <td class="memname">virtual void Terraria.ModLoader.ModSceneEffect.SpecialVisuals </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
-          <td class="paramname"><em>player</em></td><td>)</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isActive</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>

@@ -3,6 +3,7 @@ var class_terraria_1_1_mod_loader_1_1_scene_effect_loader_1_1_scene_effect_insta
     [ "PrioritizedPair", "struct_terraria_1_1_mod_loader_1_1_scene_effect_loader_1_1_scene_effect_instance_1_1_prioritized_pair.html", "struct_terraria_1_1_mod_loader_1_1_scene_effect_loader_1_1_scene_effect_instance_1_1_prioritized_pair" ],
     [ "SceneEffectInstance", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader_1_1_scene_effect_instance.html#ac490fff9f5265be1faa021b942e36a8a", null ],
     [ "anyActive", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader_1_1_scene_effect_instance.html#a7943215913f11af206a1d4220eff0c51", null ],
+    [ "mapBackground", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader_1_1_scene_effect_instance.html#acd9c04ef0a18a5341b5a4dc0495c9e25", null ],
     [ "music", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader_1_1_scene_effect_instance.html#ab38f77b29e717246f6b965249eae7bd8", null ],
     [ "surfaceBackground", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader_1_1_scene_effect_instance.html#a970d93ba716e53ab886ab983d02db81c", null ],
     [ "tileColorStyle", "class_terraria_1_1_mod_loader_1_1_scene_effect_loader_1_1_scene_effect_instance.html#a2f18a42c82a8235049106103c6993030", null ],
