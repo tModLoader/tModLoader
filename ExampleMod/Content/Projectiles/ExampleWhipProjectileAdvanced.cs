@@ -53,23 +53,20 @@ namespace ExampleMod.Content.Projectiles
 			// However, the use of UnitX basically turns it into a more complicated way of checking if the projectile's velocity is above or equal to zero on the X axis.
 			Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
 
-			if (Charge(owner.channel)) { // timer doesn't update while charging, freezing the animation at the start.
-				Timer++; // make sure you keep this line if you remove the charging mechanic.
+			// remove these 3 lines if you don't want the charging mechanic
+			if (!Charge(owner)) { 
+				return; // timer doesn't update while charging, freezing the animation at the start.
 			}
 
-			float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates;
+			Timer++;
 
+			float swingTime = owner.itemAnimationMax * Projectile.MaxUpdates;
 			if (Timer >= swingTime || owner.itemAnimation <= 0) {
 				Projectile.Kill();
 				return;
 			}
 
 			owner.heldProj = Projectile.whoAmI;
-
-			// These two lines ensure that the timing of the owner's use animation is correct.
-			owner.itemAnimation = owner.itemAnimationMax - (int)(Timer / Projectile.MaxUpdates);
-			owner.itemTime = owner.itemAnimation;
-
 			if (Timer == swingTime / 2) {
 				// Plays a whipcrack sound at the tip of the whip.
 				List<Vector2> points = Projectile.WhipPointsForCollision;
@@ -81,9 +78,9 @@ namespace ExampleMod.Content.Projectiles
 		// This method handles a charging mechanic.
 		// If you remove this, also remove Item.channel = true from the item's SetDefaults.
 		// Returns true if fully charged
-		private bool Charge(bool channeling) {
+		private bool Charge(Player owner) {
 			// Like other whips, this whip updates twice per frame (Projectile.extraUpdates = 1), so 120 is equal to 1 second.
-			if (!channeling || ChargeTime >= 120) {
+			if (!owner.channel || ChargeTime >= 120) {
 				return true; // finished charging
 			}
 
@@ -95,12 +92,17 @@ namespace ExampleMod.Content.Projectiles
 			// Increase range up to 2x for full charge.
 			Projectile.WhipSettings.RangeMultiplier += 1 / 120f;
 
+			// Reset the animation and item timer while charging.
+			owner.itemAnimation = owner.itemAnimationMax;
+			owner.itemTime = owner.itemTimeMax;
+
 			return false; // still charging
 		}
 
 		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
 			target.AddBuff(ModContent.BuffType<ExampleWhipDebuff>(), 240);
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
+			Projectile.damage = (int)(damage * 0.7f); // Multihit penalty. Decrease the damage the more enemies the whip hits.
 		}
 
 		// This method draws a line between all points of the whip, in case there's empty space between the sprites.
