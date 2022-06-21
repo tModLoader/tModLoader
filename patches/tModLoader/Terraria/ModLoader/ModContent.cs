@@ -322,6 +322,8 @@ namespace Terraria.ModLoader
 				mod.SetupContent();
 			});
 
+			ContentSamples.Initialize();
+
 			Interface.loadMods.SetLoadStage("tModLoader.MSLoading", ModLoader.Mods.Length);
 			LoadModContent(token, mod => {
 				mod.PostSetupContent();
@@ -344,7 +346,6 @@ namespace Terraria.ModLoader
 			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
 
-			ContentSamples.Initialize();
 			PlayerInput.reinitialize = true;
 			SetupBestiary();
 			SetupRecipes(token);
