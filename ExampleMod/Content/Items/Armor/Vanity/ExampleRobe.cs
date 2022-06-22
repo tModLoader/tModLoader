@@ -29,6 +29,7 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 			// We're changing the leg slot so we set this to true
 			robes = true;
 			// Here we can get the equip slot by name since we referenced the item when adding the texture
+			// You can also cache the equip slot in a variable when you add it so this way you don't have to call GetEquipSlot
 			equipSlot = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs);
 		}
 	}
