@@ -4,6 +4,7 @@ using Terraria.ID;
 
 namespace ExampleMod.Content.Items.Armor.Vanity
 {
+	// See also: ExampleCostume
 	[AutoloadEquip(EquipType.Body)]
 	internal class ExampleRobe : ModItem
 	{
@@ -12,7 +13,7 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 			if (Main.netMode == NetmodeID.Server)
 				return;
 
-			// Add this so we can reference it in SetMatch
+			// By passing this (the ModItem) into the item parameter we can reference it later in GetEquipSlot with just the item's name
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
 		}
 
@@ -24,7 +25,10 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 		}
 
 		public override void SetMatch(bool male, ref int equipSlot, ref bool robes) {
+			// By changing the equipSlot to the leg equip texture slot, the leg texture will now be drawn on the player
+			// We're changing the leg slot so we set this to true
 			robes = true;
+			// Here we can get the equip slot by name since we referenced the item when adding the texture
 			equipSlot = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs);
 		}
 	}
