@@ -146,9 +146,10 @@ namespace Terraria.ModLoader
 		/// Returns whether or not the conditions are met for this recipe to be available for the player to use.
 		/// </summary>
 		/// <param name="recipe">The recipe to check.</param>
+		/// <param name="player">The player trying to use this recipe.</param>
 		/// <returns>Whether or not the conditions are met for this recipe.</returns>
-		public static bool RecipeAvailable(Recipe recipe) {
-			return recipe.Conditions.All(c => c.RecipeAvailable(recipe)) && globalRecipes.All(globalRecipe => globalRecipe.RecipeAvailable(recipe));
+		public static bool RecipeAvailable(Recipe recipe, Player player) {
+			return recipe.Conditions.All(c => c.RecipeAvailable(recipe, player)) && globalRecipes.All(globalRecipe => globalRecipe.RecipeAvailable(recipe, player));
 		}
 
 		/// <summary>

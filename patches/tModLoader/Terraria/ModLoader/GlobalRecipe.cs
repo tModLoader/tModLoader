@@ -15,7 +15,7 @@
 		/// <summary>
 		/// Whether or not the conditions are met for the given recipe to be available for the player to use. This hook can be used for conditions unrelated to items or tiles (for example, biome or time).
 		/// </summary>
-		public virtual bool RecipeAvailable(Recipe recipe) {
+		public virtual bool RecipeAvailable(Recipe recipe, Player player) {
 			return true;
 		}
 

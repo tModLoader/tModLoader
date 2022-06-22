@@ -247,7 +247,7 @@
  					}
  
 -					if (flag) {
-+					if (flag && RecipeLoader.RecipeAvailable(Main.recipe[n])) {
++					if (flag && RecipeLoader.RecipeAvailable(Main.recipe[n], Main.LocalPlayer)) {
  						Main.availableRecipe[Main.numAvailableRecipes] = n;
  						Main.numAvailableRecipes++;
  					}
