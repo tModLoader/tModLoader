@@ -12,6 +12,7 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 			if (Main.netMode == NetmodeID.Server)
 				return;
 
+			// Add this so we can reference it in SetMatch
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
 		}
 
