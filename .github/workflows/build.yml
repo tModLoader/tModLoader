@@ -138,13 +138,13 @@ jobs:
           echo CI setup for Terraria v$TERRARIA_VERSION
           
           echo Default .NET version:
-          dotnet --version
+          dotnet --version --nologo
           echo Default .NET 'build' version:
-          dotnet build --version
+          dotnet build --version --nologo
           echo Listing installed .NET SDKs:
-          dotnet --list-sdks
+          dotnet --list-sdks --nologo
           echo Listing installed .NET Runtimes:
-          dotnet --list-runtimes
+          dotnet --list-runtimes --nologo
           
           echo Downloading Terraria Server zip
           curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-$TERRARIA_VERSION.zip -o terrariaserver.zip
