@@ -123,11 +123,11 @@ public class ModAddRecipes : Mod
 		var recipe = CreateRecipe(ModContent.ItemType<ModItemAddRecipes>());
 		recipe.Register();
 
-		var recipe = modItem.Mod.CreateRecipe(modItem.Type);
+		recipe = modItem.Mod.CreateRecipe(modItem.Type);
 		recipe.Register();
 	}
 
-	public Mod GetMod() => Mod;
+	public Mod GetMod() => this;
 
 	public void GetModMayHaveSideEffects() {
 		var recipe = new ModRecipe(GetMod());
