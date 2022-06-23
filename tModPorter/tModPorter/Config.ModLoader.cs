@@ -156,6 +156,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModMount",			"JumpSpeed");
 		ChangeHookSignature("Terraria.ModLoader.ModType",			"IsLoadingEnabled");
 		ChangeHookSignature("Terraria.ModLoader.ModType",			"CloneNewInstances"); // public -> protected
+		ChangeHookSignature("Terraria.ModLoader.GlobalRecipe",		"RecipeAvailable");
 
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false if you returned false");
