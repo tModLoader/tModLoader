@@ -10,8 +10,9 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 	{
 		public override void Load() {
 			// The code below runs only if we're not loading on a server
-			if (Main.netMode == NetmodeID.Server)
+			if (Main.netMode == NetmodeID.Server) {
 				return;
+			}
 
 			// By passing this (the ModItem) into the item parameter we can reference it later in GetEquipSlot with just the item's name
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
