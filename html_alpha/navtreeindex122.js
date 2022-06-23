@@ -1,17 +1,18 @@
 var NAVTREEINDEX122 =
 {
+"classnativefiledialog.html#acb46121037d493af00e9e86f7b4e480e":[2,0,38,7],
 "classnativefiledialog.html#ad015f810ae97b11cebc345376a7dc842":[2,0,38,9],
 "classnativefiledialog.html#aeadaef3670dc3de9281eb92c4df871e7":[2,0,38,3],
 "classnativefiledialog.html#af0422ad594b56553df0ff318fd9a3ac0":[2,0,38,2],
-"functions.html":[2,3,0],
 "functions.html":[2,3,0,0],
+"functions.html":[2,3,0],
 "functions_b.html":[2,3,0,1],
 "functions_c.html":[2,3,0,2],
 "functions_d.html":[2,3,0,3],
 "functions_e.html":[2,3,0,4],
 "functions_f.html":[2,3,0,5],
-"functions_func.html":[2,3,1,0],
 "functions_func.html":[2,3,1],
+"functions_func.html":[2,3,1,0],
 "functions_func_b.html":[2,3,1,1],
 "functions_func_c.html":[2,3,1,2],
 "functions_func_d.html":[2,3,1,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX122 =
 "interface_terraria_1_1_game_content_1_1_personalities_1_1_i_shopping_biome.html#a1be72b65f364ba31056238de9d0de613":[2,0,2,5,16,11,0],
 "interface_terraria_1_1_game_content_1_1_personalities_1_1_i_shopping_biome.html#a721999b98e5246b17e6d8d6e7ba7191a":[2,0,2,5,16,11,1],
 "interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs_1_1_i_n_p_c_action.html":[2,0,2,5,19,0,0,0,4],
-"interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_players_1_1_i_player_action.html":[2,0,2,5,19,0,0,1,1],
-"interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_i_sprite_action.html":[2,0,2,5,19,0,0,2,1]
+"interface_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_players_1_1_i_player_action.html":[2,0,2,5,19,0,0,1,1]
 };

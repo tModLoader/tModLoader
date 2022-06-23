@@ -1,5 +1,10 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_net_1_1_net_packet.html#a22335ad9a27fdcda6d3c1952eeb6d308":[2,0,2,15,5,2],
+"struct_terraria_1_1_net_1_1_net_packet.html#a23229000d7f7e0ecf4169b01f6743eef":[2,0,2,15,5,0],
+"struct_terraria_1_1_net_1_1_net_packet.html#a52ce8d4acb50bab704347b939be7c9c4":[2,0,2,15,5,3],
+"struct_terraria_1_1_net_1_1_net_packet.html#a681595878921fb86ad626b9617ecd4e6":[2,0,2,15,5,7],
+"struct_terraria_1_1_net_1_1_net_packet.html#a8c7d9e2145efa58ad7752c6110d7409c":[2,0,2,15,5,5],
 "struct_terraria_1_1_net_1_1_net_packet.html#ac49113419626238926c208da7bfe43bf":[2,0,2,15,5,4],
 "struct_terraria_1_1_net_1_1_net_packet.html#af1ec0add8073741447b22422adbe3a3a":[2,0,2,15,5,1],
 "struct_terraria_1_1_net_message_1_1_net_sound_info.html":[2,0,2,51,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#a186a96a8a0fcee8769aea1cc2b6d326b":[2,0,2,22,8,1,4],
 "struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#a25c9f5dfdcd6cd6fb4dd6a8e9fa81842":[2,0,2,22,8,1,9],
 "struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#a488af514231812897fba29f661e3ade8":[2,0,2,22,8,1,6],
-"struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#a4b1953d554f86ff48a6b0aeb3992ab58":[2,0,2,22,8,1,13],
-"struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#a549776095f29fbb9c33892aaa2119973":[2,0,2,22,8,1,5],
-"struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#a687cb22671cea105fbee7a5da3e54a66":[2,0,2,22,8,1,3],
-"struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#a6888954d11c79cdf2f0d7f1e3ff0450b":[2,0,2,22,8,1,11],
-"struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#a7a0140e97514fa975ee8b7f03f7aeb45":[2,0,2,22,8,1,10],
-"struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#a93d2d6935ab3622f7e7d364d2167f523":[2,0,2,22,8,1,8]
+"struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html#a4b1953d554f86ff48a6b0aeb3992ab58":[2,0,2,22,8,1,13]
 };

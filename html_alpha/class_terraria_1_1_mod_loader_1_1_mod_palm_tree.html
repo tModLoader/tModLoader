@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <p>This class represents a type of modded palm tree. The palm tree will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted. This class encapsulates several functions that distinguish each type of palm tree from each other.  
  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#details">More...</a></p>
 
-<p>Inherits <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a>.</p>
+<p>Inherits <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_tree.html">Terraria.ModLoader.ITree</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -126,7 +126,7 @@ abstract void&#160;</td><td class="memItemRight" valign="bottom"><b>SetStaticDef
 <tr class="memdesc:ace9ec42ce8360f60e6c8f455aa0edef9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executed on tree shake, return false to skip vanilla tree shake drops  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#ace9ec42ce8360f60e6c8f455aa0edef9">More...</a><br /></td></tr>
 <tr class="separator:ace9ec42ce8360f60e6c8f455aa0edef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a361c88312eac1ea4e18e25a988ed35a5"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a361c88312eac1ea4e18e25a988ed35a5">TreeLeaf</a> ()</td></tr>
-<tr class="memdesc:a361c88312eac1ea4e18e25a988ed35a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of gore created when this palm tree grow, being shook and falling leaves on windy days, returns -1 by default  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a361c88312eac1ea4e18e25a988ed35a5">More...</a><br /></td></tr>
+<tr class="memdesc:a361c88312eac1ea4e18e25a988ed35a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default  <a href="class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html#a361c88312eac1ea4e18e25a988ed35a5">More...</a><br /></td></tr>
 <tr class="separator:a361c88312eac1ea4e18e25a988ed35a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a></td></tr>
 <tr class="memitem:a6fad86b0f61ef043fd5cb05fc64e7d2a inherit pub_methods_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top">void ILoadable.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html#a6fad86b0f61ef043fd5cb05fc64e7d2a">Load</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod.html">Mod</a> mod)</td></tr>
@@ -163,6 +163,10 @@ abstract <a class="el" href="class_terraria_1_1_game_content_1_1_tree_painting_s
 <tr class="memitem:a974fc13b8eed6da5b194536abd379547"><td class="memItemLeft" align="right" valign="top"><a id="a974fc13b8eed6da5b194536abd379547"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code> [get]</code></td></tr>
 <tr class="separator:a974fc13b8eed6da5b194536abd379547"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interface_terraria_1_1_mod_loader_1_1_i_tree"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_terraria_1_1_mod_loader_1_1_i_tree')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_tree.html">Terraria.ModLoader.ITree</a></td></tr>
+<tr class="memitem:a3fec7d6ac7aaa9e5f7039619edc17945 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_tree"><td class="memItemLeft" align="right" valign="top"><a id="a3fec7d6ac7aaa9e5f7039619edc17945"></a>
+TreeTypes&#160;</td><td class="memItemRight" valign="bottom"><b>CountsAsTreeType</b><code> [get]</code></td></tr>
+<tr class="separator:a3fec7d6ac7aaa9e5f7039619edc17945 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_tree"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_terraria_1_1_mod_loader_1_1_i_plant')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a></td></tr>
 <tr class="memitem:a08a772f5b47797b8ecc77e4e9fe4b967 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top"><a id="a08a772f5b47797b8ecc77e4e9fe4b967"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>GrowsOnTileId</b><code> [get, set]</code></td></tr>
@@ -367,6 +371,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 <p>Executed on tree shake, return false to skip vanilla tree shake drops </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
+<p>Implements <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_tree.html">Terraria.ModLoader.ITree</a>.</p>
+
 </div>
 </div>
 <a id="a361c88312eac1ea4e18e25a988ed35a5"></a>
@@ -392,8 +398,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 </table>
 </div><div class="memdoc">
 
-<p>Return the type of gore created when this palm tree grow, being shook and falling leaves on windy days, returns -1 by default </p>
+<p>Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Implements <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_tree.html">Terraria.ModLoader.ITree</a>.</p>
 
 </div>
 </div>

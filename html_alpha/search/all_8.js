@@ -174,7 +174,7 @@ var searchData=
   ['ismartinteractcandidateprovider_1333',['ISmartInteractCandidateProvider',['../interface_terraria_1_1_game_content_1_1_object_interactions_1_1_i_smart_interact_candidate_provider.html',1,'Terraria::GameContent::ObjectInteractions']]],
   ['ismastermode_1334',['IsMasterMode',['../class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_master_mode.html',1,'Terraria::GameContent::ItemDropRules::Conditions']]],
   ['ismodbossbag_1335',['IsModBossBag',['../class_terraria_1_1_mod_loader_1_1_item_loader.html#a61113f728375a71ca5714b354fa3873e',1,'Terraria::ModLoader::ItemLoader']]],
-  ['ismodifier_1336',['IsModifier',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#abb64fb134ca8bf5bb3087e822945b75e',1,'Terraria.ModLoader.TooltipLine.IsModifier()'],['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a5b10605b6674a8790b831ac56db7880e',1,'Terraria.ModLoader.DrawableTooltipLine.IsModifier()']]],
+  ['ismodifier_1336',['IsModifier',['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#a5b10605b6674a8790b831ac56db7880e',1,'Terraria.ModLoader.DrawableTooltipLine.IsModifier()'],['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#abb64fb134ca8bf5bb3087e822945b75e',1,'Terraria.ModLoader.TooltipLine.IsModifier()']]],
   ['ismodifierbad_1337',['IsModifierBad',['../class_terraria_1_1_mod_loader_1_1_tooltip_line.html#a129c9510a448891e3a7e38f443581ab4',1,'Terraria.ModLoader.TooltipLine.IsModifierBad()'],['../class_terraria_1_1_mod_loader_1_1_drawable_tooltip_line.html#aa9b5a57cb07e6cef8f5b8e8ff3d9e2c6',1,'Terraria.ModLoader.DrawableTooltipLine.IsModifierBad()']]],
   ['isnotsametypeprefixandstack_1338',['IsNotSameTypePrefixAndStack',['../class_terraria_1_1_item.html#a5ca29661b18506f4e1268e97f33b7934',1,'Terraria::Item']]],
   ['isnotsolid_1339',['IsNotSolid',['../class_terraria_1_1_world_building_1_1_modifiers_1_1_is_not_solid.html',1,'Terraria::WorldBuilding::Modifiers']]],
@@ -242,7 +242,8 @@ var searchData=
   ['itemusestyleid_1401',['ItemUseStyleID',['../class_terraria_1_1_i_d_1_1_item_use_style_i_d.html',1,'Terraria::ID']]],
   ['itiledata_1402',['ITileData',['../interface_terraria_1_1_i_tile_data.html',1,'Terraria']]],
   ['itownnpcprofile_1403',['ITownNPCProfile',['../interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html',1,'Terraria::GameContent']]],
-  ['iupnpnat_1404',['IUPnPNAT',['../interface_n_a_t_u_p_n_p_lib_1_1_i_u_pn_p_n_a_t.html',1,'NATUPNPLib']]],
-  ['ivalueprovider_1405',['IValueProvider',['../class_i_value_provider.html',1,'']]],
-  ['ivertextype_1406',['IVertexType',['../class_i_vertex_type.html',1,'']]]
+  ['itree_1404',['ITree',['../interface_terraria_1_1_mod_loader_1_1_i_tree.html',1,'Terraria::ModLoader']]],
+  ['iupnpnat_1405',['IUPnPNAT',['../interface_n_a_t_u_p_n_p_lib_1_1_i_u_pn_p_n_a_t.html',1,'NATUPNPLib']]],
+  ['ivalueprovider_1406',['IValueProvider',['../class_i_value_provider.html',1,'']]],
+  ['ivertextype_1407',['IVertexType',['../class_i_vertex_type.html',1,'']]]
 ];

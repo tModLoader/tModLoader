@@ -1,5 +1,10 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#a60ec845c3b32f5024cf642504ab057cf":[2,0,2,4,59,0],
+"struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#a78d8b5cab6e2522d3a5db9cd8a4def4b":[2,0,2,4,59,9],
+"struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#a7fe0164b99e9ea4ffae3cacdba0e068d":[2,0,2,4,59,8],
+"struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#a96b920c45105c73cda86966261a4f96e":[2,0,2,4,59,5],
+"struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#ac041ff94a54bc8921fa31ed1ea2a6fd8":[2,0,2,4,59,1],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#ada729b2f4017831aef9e59ffbc4216cd":[2,0,2,4,59,7],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#ade95acbb937ba96f6db070d9b4011faa":[2,0,2,4,59,3],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html#ae562940625478180f240b5de67319e28":[2,0,2,4,59,6],
@@ -244,10 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#adae977ccd025e908b2c7d50a5539ddac":[2,0,2,4,84,5],
 "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#af0b23db57b022d809599c60cc454863c":[2,0,2,4,84,0],
 "struct_terraria_1_1_data_structures_1_1_wing_stats.html":[2,0,2,4,85],
-"struct_terraria_1_1_data_structures_1_1_wing_stats.html#a220164dd6817b6a8346a0a60d6ea56cf":[2,0,2,4,85,2],
-"struct_terraria_1_1_data_structures_1_1_wing_stats.html#a2aca1b9c71d6a3a9ee28e4d7d087e76f":[2,0,2,4,85,8],
-"struct_terraria_1_1_data_structures_1_1_wing_stats.html#a5a4988d5c7dc44a4b886e4513c61fdca":[2,0,2,4,85,0],
-"struct_terraria_1_1_data_structures_1_1_wing_stats.html#a6669c7df93001f7db688988a17ea9a59":[2,0,2,4,85,3],
-"struct_terraria_1_1_data_structures_1_1_wing_stats.html#a71c3202f9542cbe14739debea75fc1c2":[2,0,2,4,85,5],
-"struct_terraria_1_1_data_structures_1_1_wing_stats.html#a8f817a27ee1384ee972a18b8c7074333":[2,0,2,4,85,1]
+"struct_terraria_1_1_data_structures_1_1_wing_stats.html#a220164dd6817b6a8346a0a60d6ea56cf":[2,0,2,4,85,2]
 };

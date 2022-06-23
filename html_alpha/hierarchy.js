@@ -1359,9 +1359,11 @@ var hierarchy =
         [ "Terraria.ModLoader.ModType< TEntity, TModType >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", null ]
       ] ],
       [ "Terraria.ModLoader.IPlant", "interface_terraria_1_1_mod_loader_1_1_i_plant.html", [
-        [ "Terraria.ModLoader.ModCactus", "class_terraria_1_1_mod_loader_1_1_mod_cactus.html", null ],
-        [ "Terraria.ModLoader.ModPalmTree", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html", null ],
-        [ "Terraria.ModLoader.ModTree", "class_terraria_1_1_mod_loader_1_1_mod_tree.html", null ]
+        [ "Terraria.ModLoader.ITree", "interface_terraria_1_1_mod_loader_1_1_i_tree.html", [
+          [ "Terraria.ModLoader.ModPalmTree", "class_terraria_1_1_mod_loader_1_1_mod_palm_tree.html", null ],
+          [ "Terraria.ModLoader.ModTree", "class_terraria_1_1_mod_loader_1_1_mod_tree.html", null ]
+        ] ],
+        [ "Terraria.ModLoader.ModCactus", "class_terraria_1_1_mod_loader_1_1_mod_cactus.html", null ]
       ] ]
     ] ],
     [ "Terraria.ModLoader.ILoader", "interface_terraria_1_1_mod_loader_1_1_i_loader.html", [

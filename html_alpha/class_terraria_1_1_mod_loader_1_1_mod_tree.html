@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_mod_loader_1_1_mod_
 <p>This class represents a type of modded tree. The tree will share a tile <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted. This class encapsulates several functions that distinguish each type of tree from each other.  
  <a href="class_terraria_1_1_mod_loader_1_1_mod_tree.html#details">More...</a></p>
 
-<p>Inherits <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a>.</p>
+<p>Inherits <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_tree.html">Terraria.ModLoader.ITree</a>.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -172,6 +172,10 @@ abstract <a class="el" href="class_terraria_1_1_game_content_1_1_tree_painting_s
 <tr class="memitem:ac02507391be46fadc0c0dd6341e78303"><td class="memItemLeft" align="right" valign="top"><a id="ac02507391be46fadc0c0dd6341e78303"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code> [get]</code></td></tr>
 <tr class="separator:ac02507391be46fadc0c0dd6341e78303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_interface_terraria_1_1_mod_loader_1_1_i_tree"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_terraria_1_1_mod_loader_1_1_i_tree')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_tree.html">Terraria.ModLoader.ITree</a></td></tr>
+<tr class="memitem:a3fec7d6ac7aaa9e5f7039619edc17945 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_tree"><td class="memItemLeft" align="right" valign="top"><a id="a3fec7d6ac7aaa9e5f7039619edc17945"></a>
+TreeTypes&#160;</td><td class="memItemRight" valign="bottom"><b>CountsAsTreeType</b><code> [get]</code></td></tr>
+<tr class="separator:a3fec7d6ac7aaa9e5f7039619edc17945 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_tree"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_terraria_1_1_mod_loader_1_1_i_plant')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">Terraria.ModLoader.IPlant</a></td></tr>
 <tr class="memitem:a08a772f5b47797b8ecc77e4e9fe4b967 inherit properties_interface_terraria_1_1_mod_loader_1_1_i_plant"><td class="memItemLeft" align="right" valign="top"><a id="a08a772f5b47797b8ecc77e4e9fe4b967"></a>
 int[]&#160;</td><td class="memItemRight" valign="bottom"><b>GrowsOnTileId</b><code> [get, set]</code></td></tr>
@@ -402,6 +406,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 <p>Executed on tree shake, return false to skip vanilla tree shake drops </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
+<p>Implements <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_tree.html">Terraria.ModLoader.ITree</a>.</p>
+
 </div>
 </div>
 <a id="a56e6721c2653d9902147142e60d66f37"></a>
@@ -429,6 +435,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>VanillaCount</b><code>
 
 <p>Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default </p>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Implements <a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_tree.html">Terraria.ModLoader.ITree</a>.</p>
 
 </div>
 </div>

@@ -71,6 +71,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "IPlant", "interface_terraria_1_1_mod_loader_1_1_i_plant.html", "interface_terraria_1_1_mod_loader_1_1_i_plant" ],
     [ "ItemCreationContext", "class_terraria_1_1_mod_loader_1_1_item_creation_context.html", null ],
     [ "ItemLoader", "class_terraria_1_1_mod_loader_1_1_item_loader.html", "class_terraria_1_1_mod_loader_1_1_item_loader" ],
+    [ "ITree", "interface_terraria_1_1_mod_loader_1_1_i_tree.html", "interface_terraria_1_1_mod_loader_1_1_i_tree" ],
     [ "JITWhenModsEnabledAttribute", "class_terraria_1_1_mod_loader_1_1_j_i_t_when_mods_enabled_attribute.html", "class_terraria_1_1_mod_loader_1_1_j_i_t_when_mods_enabled_attribute" ],
     [ "KeybindLoader", "class_terraria_1_1_mod_loader_1_1_keybind_loader.html", "class_terraria_1_1_mod_loader_1_1_keybind_loader" ],
     [ "LegacyNameAttribute", "class_terraria_1_1_mod_loader_1_1_legacy_name_attribute.html", "class_terraria_1_1_mod_loader_1_1_legacy_name_attribute" ],
