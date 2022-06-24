@@ -412,6 +412,9 @@ namespace Terraria
 			if (createItem == null || createItem.type == 0)
 				throw new RecipeException("A recipe without any result has been added.");
 
+			if (RecipeIndex >= 0)
+				throw new RecipeException("There was an attempt to register an already registered recipe.");
+
 			if (requiredTile.Contains(TileID.Bottles))
 				AddConsumeItemCallback(ConsumptionRules.Alchemy);
 
