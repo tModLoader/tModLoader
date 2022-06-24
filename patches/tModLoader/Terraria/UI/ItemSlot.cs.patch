@@ -251,7 +251,15 @@
  					flag = (Main.player[Main.myPlayer].chest == -1);
  
  				if (ShiftInUse && flag) {
-@@ -761,20 +_,22 @@
+@@ -754,27 +_,29 @@
+ 			return result;
+ 		}
+ 
+-		private static void SellOrTrash(Item[] inv, int context, int slot) {
++		public static void SellOrTrash(Item[] inv, int context, int slot) {
+ 			Player player = Main.player[Main.myPlayer];
+ 			if (inv[slot].type <= 0)
+ 				return;
  
  			if (Main.npcShop > 0 && !inv[slot].favorited) {
  				Chest chest = Main.instance.shop[Main.npcShop];
