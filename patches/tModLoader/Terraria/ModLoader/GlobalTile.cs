@@ -249,5 +249,15 @@ namespace Terraria.ModLoader
 		/// <param name="style"></param>
 		public virtual void ChangeWaterfallStyle(int type, ref int style) {
 		}
+
+		/// <summary>
+		/// Allows you to determine whether this tile has solid top collision.
+		/// Return true to indicate that this tile has solid top collision, false for no collision and null to use the vanilla code for whether this tile has solid top collsion.
+		/// This hook does not run if the <see cref="Main.tileSolidTop"/> index for this tile is false.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		/// <param name="type"></param>
+		public virtual bool? HasSolidTopCollision(int i, int j, int type) => null;
 	}
 }

@@ -1,5 +1,58 @@
 --- src/TerrariaNetCore/Terraria/Collision.cs
 +++ src/tModLoader/Terraria/Collision.cs
+@@ -3,6 +_,7 @@
+ using System.Collections.Generic;
+ using Terraria.DataStructures;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ 
+ namespace Terraria
+ {
+@@ -1296,7 +_,7 @@
+ 			Vector2 vector4 = default(Vector2);
+ 			for (int i = num; i < value2; i++) {
+ 				for (int j = value3; j < value4; j++) {
+-					if (Main.tile[i, j] == null || !Main.tile[i, j].active() || Main.tile[i, j].inActive() || (!Main.tileSolid[Main.tile[i, j].type] && (!Main.tileSolidTop[Main.tile[i, j].type] || Main.tile[i, j].frameY != 0)))
++					if (Main.tile[i, j] == null || !Main.tile[i, j].active() || Main.tile[i, j].inActive() || (!Main.tileSolid[Main.tile[i, j].type] && !TileLoader.HasSolidTopCollision(i, j, Main.tile[i, j].type)))
+ 						continue;
+ 
+ 					vector4.X = i * 16;
+@@ -1484,7 +_,7 @@
+ 			Vector2 vector4 = default(Vector2);
+ 			for (int i = num5; i < value2; i++) {
+ 				for (int j = value3; j < value4; j++) {
+-					if (Main.tile[i, j] == null || !Main.tile[i, j].active() || (!Main.tileSolid[Main.tile[i, j].type] && (!Main.tileSolidTop[Main.tile[i, j].type] || Main.tile[i, j].frameY != 0)))
++					if (Main.tile[i, j] == null || !Main.tile[i, j].active() || (!Main.tileSolid[Main.tile[i, j].type] && !TileLoader.HasSolidTopCollision(i, j, Main.tile[i, j].type)))
+ 						continue;
+ 
+ 					vector4.X = i * 16;
+@@ -1567,7 +_,7 @@
+ 			Vector2 vector4 = default(Vector2);
+ 			for (int i = num5; i < value2; i++) {
+ 				for (int j = value3; j < value4; j++) {
+-					if (Main.tile[i, j] == null || !Main.tile[i, j].active() || Main.tile[i, j].inActive() || (!Main.tileSolid[Main.tile[i, j].type] && (!Main.tileSolidTop[Main.tile[i, j].type] || Main.tile[i, j].frameY != 0)))
++					if (Main.tile[i, j] == null || !Main.tile[i, j].active() || Main.tile[i, j].inActive() || (!Main.tileSolid[Main.tile[i, j].type] && !TileLoader.HasSolidTopCollision(i, j, Main.tile[i, j].type)))
+ 						continue;
+ 
+ 					vector4.X = i * 16;
+@@ -1835,7 +_,7 @@
+ 
+ 					bool flag = Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type];
+ 					if (acceptTopSurfaces)
+-						flag |= (Main.tileSolidTop[tile.type] && tile.frameY == 0);
++						flag |= TileLoader.HasSolidTopCollision(i, j, tile.type);
+ 
+ 					if (flag) {
+ 						vector.X = i * 16;
+@@ -2063,7 +_,7 @@
+ 			Vector2 vector2 = default(Vector2);
+ 			for (int i = num; i < num2; i++) {
+ 				for (int j = num3; j < num4; j++) {
+-					if (Main.tile[i, j] != null && !Main.tile[i, j].inActive() && Main.tile[i, j].active() && (Main.tileSolid[Main.tile[i, j].type] || (Main.tileSolidTop[Main.tile[i, j].type] && Main.tile[i, j].frameY == 0))) {
++					if (Main.tile[i, j] != null && !Main.tile[i, j].inActive() && Main.tile[i, j].active() && (Main.tileSolid[Main.tile[i, j].type] || TileLoader.HasSolidTopCollision(i, j, Main.tile[i, j].type))) {
+ 						vector2.X = i * 16;
+ 						vector2.Y = j * 16;
+ 						int num5 = 16;
 @@ -2100,7 +_,7 @@
  			Vector2 vector2 = default(Vector2);
  			for (int i = num; i < num2; i++) {
@@ -84,7 +137,16 @@
  				}
  			}
  
-@@ -2564,7 +_,8 @@
+@@ -2448,7 +_,7 @@
+ 						ushort type = tile.type;
+ 						bool flag = Main.tileSolid[type] && !Main.tileSolidTop[type];
+ 						if (allowTopSurfaces)
+-							flag |= (Main.tileSolidTop[type] && tile.frameY == 0);
++							flag |= TileLoader.HasSolidTopCollision(i, j, Main.tile[i, j].type);
+ 
+ 						if (flag)
+ 							return true;
+@@ -2564,9 +_,10 @@
  				tile = Main.tile[num2, num3];
  				tile2 = Main.tile[num2, num3 - 1];
  				if (specialChecksMode == 1)
@@ -92,8 +154,20 @@
 +					//flag5 = (tile.type != 16 && tile.type != 18 && tile.type != 14 && tile.type != 469 && tile.type != 134);
 +					flag5 = !TileID.Sets.IgnoredByNpcStepUp[tile.type];
  
- 				flag4 = (flag4 && ((tile.nactive() && (!tile.topSlope() || (tile.slope() == 1 && position.X + (float)(width / 2) < (float)(num2 * 16)) || (tile.slope() == 2 && position.X + (float)(width / 2) > (float)(num2 * 16 + 16))) && (!tile.topSlope() || position.Y + (float)height > (float)(num3 * 16)) && ((Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) || (holdsMatching && ((Main.tileSolidTop[tile.type] && tile.frameY == 0) || TileID.Sets.Platforms[tile.type]) && (!Main.tileSolid[tile2.type] || !tile2.nactive()) && flag5))) || (tile2.halfBrick() && tile2.nactive())));
+-				flag4 = (flag4 && ((tile.nactive() && (!tile.topSlope() || (tile.slope() == 1 && position.X + (float)(width / 2) < (float)(num2 * 16)) || (tile.slope() == 2 && position.X + (float)(width / 2) > (float)(num2 * 16 + 16))) && (!tile.topSlope() || position.Y + (float)height > (float)(num3 * 16)) && ((Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) || (holdsMatching && ((Main.tileSolidTop[tile.type] && tile.frameY == 0) || TileID.Sets.Platforms[tile.type]) && (!Main.tileSolid[tile2.type] || !tile2.nactive()) && flag5))) || (tile2.halfBrick() && tile2.nactive())));
++				flag4 = (flag4 && ((tile.nactive() && (!tile.topSlope() || (tile.slope() == 1 && position.X + (float)(width / 2) < (float)(num2 * 16)) || (tile.slope() == 2 && position.X + (float)(width / 2) > (float)(num2 * 16 + 16))) && (!tile.topSlope() || position.Y + (float)height > (float)(num3 * 16)) && ((Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) || (holdsMatching && (TileLoader.HasSolidTopCollision(num2, num3, tile.type) || TileID.Sets.Platforms[tile.type]) && (!Main.tileSolid[tile2.type] || !tile2.nactive()) && flag5))) || (tile2.halfBrick() && tile2.nactive())));
  				flag4 &= (!Main.tileSolidTop[tile.type] || !Main.tileSolidTop[tile2.type]);
+ 			}
+ 			else {
+@@ -2575,7 +_,7 @@
+ 				flag3 = (flag3 && (!tile.nactive() || !Main.tileSolid[tile.type] || Main.tileSolidTop[tile.type] || tile.slope() != 0 || (tile.halfBrick() && (!tile2.nactive() || !Main.tileSolid[tile2.type] || Main.tileSolidTop[tile2.type]))));
+ 				tile = Main.tile[num2, num3];
+ 				tile2 = Main.tile[num2, num3 + 1];
+-				flag4 = (flag4 && ((tile.nactive() && ((Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) || (holdsMatching && Main.tileSolidTop[tile.type] && tile.frameY == 0 && (!Main.tileSolid[tile2.type] || !tile2.nactive())))) || (tile2.halfBrick() && tile2.nactive())));
++				flag4 = (flag4 && ((tile.nactive() && ((Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) || (holdsMatching && TileLoader.HasSolidTopCollision(num2, num3, tile.type) && (!Main.tileSolid[tile2.type] || !tile2.nactive())))) || (tile2.halfBrick() && tile2.nactive())));
+ 			}
+ 
+ 			if (!((float)(num2 * 16) < vector.X + (float)width) || !((float)(num2 * 16 + 16) > vector.X))
 @@ -2642,7 +_,7 @@
  				if (tile.active()) {
  					if (Main.tileSolid[tile.type]) {
@@ -103,3 +177,21 @@
  							switch (num5) {
  								case 1:
  									return 0f;
+@@ -2685,7 +_,7 @@
+ 								return 0f;
+ 						}
+ 					}
+-					else if (Main.tileSolidTop[tile.type] && tile.frameY == 0 && flag) {
++					else if (TileLoader.HasSolidTopCollision(num2, num3, tile.type) && flag) {
+ 						return 0f;
+ 					}
+ 				}
+@@ -2922,7 +_,7 @@
+ 			for (int i = num5; i < value2; i++) {
+ 				for (int j = value3; j < value4; j++) {
+ 					Tile tile = Main.tile[i, j];
+-					if (tile == null || !tile.active() || tile.inActive() || forcedIgnoredTiles[tile.type] || (!Main.tileSolid[tile.type] && (!Main.tileSolidTop[tile.type] || tile.frameY != 0)))
++					if (tile == null || !tile.active() || tile.inActive() || forcedIgnoredTiles[tile.type] || (!Main.tileSolid[tile.type] && !TileLoader.HasSolidTopCollision(i, j, tile.type)))
+ 						continue;
+ 
+ 					vector4.X = i * 16;

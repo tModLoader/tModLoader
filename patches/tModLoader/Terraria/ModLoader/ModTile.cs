@@ -472,5 +472,14 @@ namespace Terraria.ModLoader
 		/// <param name="manual">Set this to true to bypass the code playing the unlock sound, adjusting the tile frame, and spawning dust. Network syncing will still happen.</param>
 		/// <returns>Return true if this tile truly is a locked chest and the chest can be unlocked</returns>
 		public virtual bool UnlockChest(int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual) => false;
+
+		/// <summary>
+		/// Allows you to determine whether this tile has solid top collision.
+		/// Return true to indicate that this tile has solid top collision, false for no collision and null to use the vanilla code for whether this tile has solid top collsion.
+		/// This hook does not run if the <see cref="Main.tileSolidTop"/> index for this tile is false.
+		/// </summary>
+		/// <param name="i">The x position in tile coordinates.</param>
+		/// <param name="j">The y position in tile coordinates.</param>
+		public virtual bool? HasSolidTopCollision(int i, int j) => null;
 	}
 }

@@ -88,6 +88,7 @@ namespace Terraria.ModLoader
 		private delegate void DelegateChangeWaterfallStyle(int type, ref int style);
 		private static DelegateChangeWaterfallStyle[] HookChangeWaterfallStyle;
 		private static Action<int, int, int, Item>[] HookPlaceInWorld;
+		private static Func<int, int, int, bool?>[] HookHasSolidTopCollision;
 
 		internal static int ReserveTileID() {
 			if (ModNet.AllowVanillaClients) throw new Exception("Adding tiles breaks vanilla client compatibility");
@@ -228,6 +229,7 @@ namespace Terraria.ModLoader
 			ModLoader.BuildGlobalHook(ref HookFloorVisuals, globalTiles, g => g.FloorVisuals);
 			ModLoader.BuildGlobalHook<GlobalTile, DelegateChangeWaterfallStyle>(ref HookChangeWaterfallStyle, globalTiles, g => g.ChangeWaterfallStyle);
 			ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalTiles, g => g.PlaceInWorld);
+			ModLoader.BuildGlobalHook(ref HookHasSolidTopCollision, globalTiles, g => g.HasSolidTopCollision);
 
 			if (!unloading) {
 				loaded = true;
@@ -957,6 +959,29 @@ namespace Terraria.ModLoader
 
 		public static bool UnlockChest(int i, int j, int type, ref short frameXAdjustment, ref int dustType, ref bool manual) {
 			return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
+		}
+
+		public static bool HasSolidTopCollision(int i, int j, int type) {
+			if (!Main.tileSolidTop[type])
+				return false;
+
+			bool? collision = GetTile(type)?.HasSolidTopCollision(i, j);
+
+			if (collision.HasValue && !collision.Value)
+				return false;
+
+			foreach (var hook in HookHasSolidTopCollision) {
+				bool? globalCollision = hook(i, j, type);
+
+				if (globalCollision.HasValue) {
+					if (!globalCollision.Value)
+						return false;
+
+					collision = true;
+				}
+			}
+
+			return collision ?? Main.tile[i, j].frameY == 0;
 		}
 	}
 }
