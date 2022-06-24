@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
 using Terraria.ModLoader.Exceptions;
 
 namespace Terraria.ModLoader.Core
@@ -58,24 +60,48 @@ namespace Terraria.ModLoader.Core
 				throw new MultipleException(exceptions);
 		}
 
-		public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, IEnumerable<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal> {
-			entityGlobals = globals
-				.Where(g => g.AppliesToEntity(entity, false))
-				.Select(g => new Instanced<TGlobal>(g.index, g.InstancePerEntity ? g.NewInstance(entity) : g))
-				.ToArray();
+		[Obsolete("Use ReadOnlySpan or List variant variant", true)]
+		public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, IEnumerable<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
+			=> InstantiateGlobals(entity, globals.ToArray().AsSpan(), ref entityGlobals, midInstantiationAction);
 
-			midInstantiationAction();
+		public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, List<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
+			=> InstantiateGlobals(entity, CollectionsMarshal.AsSpan(globals), ref entityGlobals, midInstantiationAction);
 
-			//Could potentially be sped up.
-			var entityGlobalsCopy = entityGlobals;
-			var lateInitGlobals = globals
-				.Where(g => !entityGlobalsCopy.Any(i => i.Index == g.index) && g.AppliesToEntity(entity, true))
-				.Select(g => new Instanced<TGlobal>(g.index, g.InstancePerEntity ? g.NewInstance(entity) : g));
+		public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal> {
+			var mem = GlobalInstantiationArrayPool<TGlobal>.Pool.Rent(globals.Length);
+			try {
+				var set = mem.AsSpan(0, globals.Length);
+				entityGlobals = null;
+				InstantiateGlobals(entity, globals, ref entityGlobals, set, late: false);
+				midInstantiationAction();
+				InstantiateGlobals(entity, globals, ref entityGlobals, set, late: true);
+			}
+			finally {
+				GlobalInstantiationArrayPool<TGlobal>.Pool.Return(mem, clearArray: true);
+			}
+		}
 
-			entityGlobals = entityGlobals
-				.Union(lateInitGlobals)
-				.OrderBy(i => i.Index)
-				.ToArray();
+		private static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, ReadOnlySpan<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Span<TGlobal> set, bool late) where TGlobal : GlobalType<TEntity, TGlobal> {
+			int n = 0;
+			for (int i = 0; i < globals.Length; i++) {
+				var g = globals[i];
+				if (set[i] == null && g.AppliesToEntity(entity, late)) {
+					set[i] = g.InstancePerEntity ? g.NewInstance(entity) : g;
+					n++;
+				}
+			}
+
+			if (n > 0) {
+				entityGlobals = new Instanced<TGlobal>[(entityGlobals?.Length ?? 0) + n];
+				int j = 0;
+				foreach (var g in set) {
+					if (g != null)
+						entityGlobals[j++] = new(g.index, g);
+				}
+			}
+			else {
+				entityGlobals ??= Array.Empty<Instanced<TGlobal>>();
+			}
 		}
 
 		public static bool HasMethod(Type type, Type declaringType, string method, params Type[] args) {
@@ -141,6 +167,15 @@ namespace Terraria.ModLoader.Core
 
 		static LoaderUtils() {
 			TypeCaching.OnClear += validatedTypes.Clear;
+		}
+	}
+
+	internal class GlobalInstantiationArrayPool<T> {
+		public static ArrayPool<T> Pool = ArrayPool<T>.Create();
+
+		static GlobalInstantiationArrayPool() {
+			// honestly, this should go in 'OnResizeArrays'
+			TypeCaching.OnClear += () => LoaderUtils.ResetStaticMembers(typeof(GlobalInstantiationArrayPool<T>), false);
 		}
 	}
 }
