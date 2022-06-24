@@ -28,7 +28,7 @@ namespace Terraria.ModLoader
 		internal static bool loaded = false;
 		private static int nextNPC = NPCID.Count;
 		internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
-		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
+		internal static readonly List<GlobalNPC> globalNPCs = new();
 		internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
 		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		/// <summary>
