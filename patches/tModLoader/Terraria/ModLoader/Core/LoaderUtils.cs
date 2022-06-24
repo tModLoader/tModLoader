@@ -60,7 +60,7 @@ namespace Terraria.ModLoader.Core
 				throw new MultipleException(exceptions);
 		}
 
-		[Obsolete("Use ReadOnlySpan or List variant variant", true)]
+		[Obsolete("Use ReadOnlySpan or List variant", true)]
 		public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, IEnumerable<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
 			=> InstantiateGlobals(entity, globals.ToArray().AsSpan(), ref entityGlobals, midInstantiationAction);
 
