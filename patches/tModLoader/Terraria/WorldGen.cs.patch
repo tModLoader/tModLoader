@@ -1089,6 +1089,15 @@
  				Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 1263);
  
  			for (int l = num; l < num + 3; l++) {
+@@ -30130,7 +_,7 @@
+ 						break;
+ 				}
+ 
+-				if (!SolidTileAllowBottomSlope(k, num8) && (Main.tile[k, num8] == null || !Main.tile[k, num8].nactive() || !Main.tileSolidTop[Main.tile[k, num8].type] || Main.tile[k, num8].frameY != 0) && (Main.tile[k, num8] == null || !Main.tile[k, num8].active() || !TileID.Sets.Platforms[Main.tile[k, num8].type]))
++				if (!SolidTileAllowBottomSlope(k, num8) && (Main.tile[k, num8] == null || !Main.tile[k, num8].nactive() || !TileLoader.HasSolidTopCollision(k, num8, Main.tile[k, num8].type)) && (Main.tile[k, num8] == null || !Main.tile[k, num8].active() || !TileID.Sets.Platforms[Main.tile[k, num8].type]))
+ 					flag = true;
+ 			}
+ 
 @@ -30186,6 +_,9 @@
  				}
  			}
@@ -1161,6 +1170,15 @@
  			destroyObject = false;
  			for (int num5 = num - 1; num5 < num + 6; num5++) {
  				for (int num6 = num2 - 1; num6 < num2 + 5; num6++) {
+@@ -30998,7 +_,7 @@
+ 				if (Main.tile[k, num2 + 3] == null)
+ 					Main.tile[k, num2 + 3] = new Tile();
+ 
+-				if (!SolidTileAllowBottomSlope(k, num2 + 3) && (!Main.tile[k, num2 + 3].nactive() || !Main.tileSolidTop[Main.tile[k, num2 + 3].type] || Main.tile[k, num2 + 3].frameY != 0))
++				if (!SolidTileAllowBottomSlope(k, num2 + 3) && (!Main.tile[k, num2 + 3].nactive() || !TileLoader.HasSolidTopCollision(k, num2 + 3, Main.tile[k, num2 + 3].type)))
+ 					flag = true;
+ 			}
+ 
 @@ -31013,6 +_,9 @@
  				}
  			}
@@ -1184,6 +1202,15 @@
  					TileFrame(num4, num5);
  				}
  			}
+@@ -31143,7 +_,7 @@
+ 				if (Main.tile[i, y + 1] == null)
+ 					Main.tile[i, y + 1] = new Tile();
+ 
+-				if (!SolidTile2(i, y + 1) && (!Main.tile[i, y + 1].nactive() || !Main.tileSolidTop[Main.tile[i, y + 1].type] || Main.tile[i, y + 1].frameY != 0))
++				if (!SolidTile2(i, y + 1) && (!Main.tile[i, y + 1].nactive() || !TileLoader.HasSolidTopCollision(i, y + 1, Main.tile[i, y + 1].type)))
+ 					flag = false;
+ 			}
+ 
 @@ -31442,6 +_,9 @@
  				}
  			}
@@ -1278,7 +1305,14 @@
  			for (int m = x - 1; m < x + width + 1; m++) {
  				for (int n = y - 1; n < y + height + 1; n++) {
  					TileFrame(m, n);
-@@ -32542,7 +_,7 @@
+@@ -32536,13 +_,13 @@
+ 					case 362:
+ 					case 363:
+ 					case 364:
+-						if (!SolidTile2(i, y + 1) && (!Main.tile[i, y + 1].nactive() || !Main.tileSolidTop[Main.tile[i, y + 1].type] || Main.tile[i, y + 1].frameY != 0))
++						if (!SolidTile2(i, y + 1) && (!Main.tile[i, y + 1].nactive() || !TileLoader.HasSolidTopCollision(i, y + 1, Main.tile[i, y + 1].type)))
+ 							flag2 = false;
+ 						break;
  				}
  			}
  

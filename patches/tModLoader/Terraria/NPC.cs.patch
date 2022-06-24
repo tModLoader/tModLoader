@@ -401,6 +401,24 @@
  			if (timeLeft < 0)
  				timeLeft = 0;
  
+@@ -35052,7 +_,7 @@
+ 				Vector2 vector2 = default(Vector2);
+ 				for (int k = num11; k < num12; k++) {
+ 					for (int l = num13; l < num14; l++) {
+-						if (Main.tile[k, l] != null && ((Main.tile[k, l].nactive() && (Main.tileSolid[Main.tile[k, l].type] || (Main.tileSolidTop[Main.tile[k, l].type] && Main.tile[k, l].frameY == 0))) || Main.tile[k, l].liquid > 64)) {
++						if (Main.tile[k, l] != null && ((Main.tile[k, l].nactive() && (Main.tileSolid[Main.tile[k, l].type] || TileLoader.HasSolidTopCollision(k, l, Main.tile[k, l].type))) || Main.tile[k, l].liquid > 64)) {
+ 							vector2.X = k * 16;
+ 							vector2.Y = l * 16;
+ 							if (position.X + (float)width > vector2.X && position.X < vector2.X + 16f && position.Y + (float)height > vector2.Y && position.Y < vector2.Y + 16f) {
+@@ -36265,7 +_,7 @@
+ 				Vector2 vector = default(Vector2);
+ 				for (int num40 = num36; num40 < num37; num40++) {
+ 					for (int num41 = num38; num41 < num39; num41++) {
+-						if (Main.tile[num40, num41] == null || ((!Main.tile[num40, num41].nactive() || (!Main.tileSolid[Main.tile[num40, num41].type] && (!Main.tileSolidTop[Main.tile[num40, num41].type] || Main.tile[num40, num41].frameY != 0))) && Main.tile[num40, num41].liquid <= 64))
++						if (Main.tile[num40, num41] == null || ((!Main.tile[num40, num41].nactive() || (!Main.tileSolid[Main.tile[num40, num41].type] && !TileLoader.HasSolidTopCollision(num40, num41, Main.tile[num40, num41].type))) && Main.tile[num40, num41].liquid <= 64))
+ 							continue;
+ 
+ 						vector.X = num40 * 16;
 @@ -37185,13 +_,14 @@
  			int num = -1;
  			int num2 = 7;

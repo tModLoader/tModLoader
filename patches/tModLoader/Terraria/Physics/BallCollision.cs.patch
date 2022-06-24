@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Physics/BallCollision.cs
 +++ src/tModLoader/Terraria/Physics/BallCollision.cs
+@@ -2,6 +_,7 @@
+ using System;
+ using System.Diagnostics;
+ using Terraria.DataStructures;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.Physics
+ {
 @@ -151,7 +_,7 @@
  			tileEdges = ((!(velocity.Y > velocity.X)) ? (tileEdges | TileEdges.TopRightSlope) : (tileEdges | TileEdges.BottomLeftSlope));
  			tileEdges = ((!(velocity.Y > 0f - velocity.X)) ? (tileEdges | TileEdges.TopLeftSlope) : (tileEdges | TileEdges.BottomRightSlope));
@@ -9,3 +17,12 @@
  			float num = float.MaxValue;
  			Vector2 closestPointOut = default(Vector2);
  			float distanceSquaredOut = 0f;
+@@ -174,7 +_,7 @@
+ 			if (tile == null || !tile.nactive() || (!Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]))
+ 				return false;
+ 
+-			if (!Main.tileSolid[tile.type] && Main.tileSolidTop[tile.type] && tile.frameY != 0)
++			if (!Main.tileSolid[tile.type] && TileLoader.HasSolidTopCollision(x, y, tile.type))
+ 				return false;
+ 
+ 			if (Main.tileSolidTop[tile.type])
