@@ -1,5 +1,17 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_get_item_settings.html#adcbc21751ff29fba94377f7f1813f1e6":[2,0,2,36,5],
+"struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html":[2,0,2,7,0,0],
+"struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html#a2038afc5416fdafe2210b31c3a004d86":[2,0,2,7,0,0,2],
+"struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html#a3df255a10f783238d89fb1f33c82903b":[2,0,2,7,0,0,3],
+"struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html#a7d7531d14b086a9ed405783045f5390a":[2,0,2,7,0,0,1],
+"struct_terraria_1_1_graphics_1_1_camera_modifiers_1_1_camera_info.html#ae68101e9b9fbf4e153d48dbf551e704a":[2,0,2,7,0,0,0],
+"struct_terraria_1_1_graphics_1_1_empress_blade_drawer.html":[2,0,2,7,7],
+"struct_terraria_1_1_graphics_1_1_empress_blade_drawer.html#a62019d89d009971148256fd871b3bb6b":[2,0,2,7,7,2],
+"struct_terraria_1_1_graphics_1_1_empress_blade_drawer.html#a632a9336f003e4666d0577692abad040":[2,0,2,7,7,3],
+"struct_terraria_1_1_graphics_1_1_empress_blade_drawer.html#a7cdcf8fbb5b26a2de132abfe302e5ac5":[2,0,2,7,7,1],
+"struct_terraria_1_1_graphics_1_1_empress_blade_drawer.html#a8d9709369b8688313a9af5460e84a7b1":[2,0,2,7,7,4],
+"struct_terraria_1_1_graphics_1_1_empress_blade_drawer.html#afd30f6a6c03cf05c5898af03ab884c6b":[2,0,2,7,7,0],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html":[2,0,2,7,8],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#a26940bbd3d87bcd8bb9a79040f4eb769":[2,0,2,7,8,5],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#a34997be84259190742230e92dd81926c":[2,0,2,7,8,4],
@@ -237,17 +249,5 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#a81bba81dcc47a8c3a75ac155371db7f5":[2,0,2,13,151,10],
 "struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#a86073bf1813e921a1d32234791241ffe":[2,0,2,13,151,3],
 "struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#aa5d530a7bf5e9d69e6199fccc909ecaf":[2,0,2,13,151,17],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#aab2a8cbedeaaad62c3dfe3f998d3bc1e":[2,0,2,13,151,14],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#aba7b80ca1a8a301839cef2107186846e":[2,0,2,13,151,7],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#abefc6793905b37c529355420e6293695":[2,0,2,13,151,18],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#ad36d0d06c6bea37b7e12a6d4429ff147":[2,0,2,13,151,0],
-"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#ae07ea87f123df97caf6aabee209ccdf9":[2,0,2,13,151,6],
-"struct_terraria_1_1_n_p_c_spawn_params.html":[2,0,2,54],
-"struct_terraria_1_1_n_p_c_spawn_params.html#a05b7adab302685ca04674210e78bd12c":[2,0,2,54,3],
-"struct_terraria_1_1_n_p_c_spawn_params.html#a4866b1f5a642bb88d20590b026b9a401":[2,0,2,54,4],
-"struct_terraria_1_1_n_p_c_spawn_params.html#a5afa4f5ab8474dc391dbae100042e1cc":[2,0,2,54,2],
-"struct_terraria_1_1_n_p_c_spawn_params.html#ac34d2e5ac1e78218fbde4a02a1cf8965":[2,0,2,54,0],
-"struct_terraria_1_1_n_p_c_spawn_params.html#af6a39108e471a3b7cee11725416d8676":[2,0,2,54,1],
-"struct_terraria_1_1_net_1_1_net_packet.html":[2,0,2,15,5],
-"struct_terraria_1_1_net_1_1_net_packet.html#a1b89af9972b6aca6e3f13da32bc702f7":[2,0,2,15,5,6]
+"struct_terraria_1_1_mod_loader_1_1_stat_modifier.html#aab2a8cbedeaaad62c3dfe3f998d3bc1e":[2,0,2,13,151,14]
 };

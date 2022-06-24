@@ -1810,6 +1810,7 @@ var hierarchy =
       [ "Terraria.ModLoader.Loader< T >", "class_terraria_1_1_mod_loader_1_1_loader.html", null ]
     ] ],
     [ "Terraria.ModLoader.LoaderManager", "class_terraria_1_1_mod_loader_1_1_loader_manager.html", null ],
+    [ "Terraria.ModLoader.Core.LoaderUtils", "class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html", null ],
     [ "Terraria.Social.Steam.Lobby", "class_terraria_1_1_social_1_1_steam_1_1_lobby.html", null ],
     [ "Terraria.Social.WeGame.Lobby", "class_terraria_1_1_social_1_1_we_game_1_1_lobby.html", null ],
     [ "Terraria.ModLoader.LocalizationLoader", "class_terraria_1_1_mod_loader_1_1_localization_loader.html", null ],
