@@ -302,7 +302,7 @@ namespace ExampleMod.NPCs
 					Tile tile = Main.tile[i, j];
 
 					// If the tile is solid or is considered a platform, then there's valid collision
-					if (tile.HasUnactuatedTile && (Main.tileSolid[tile.TileType] || Main.tileSolidTop[tile.TileType] && tile.TileFrameY == 0) || tile.LiquidAmount > 64) {
+					if (tile.HasUnactuatedTile && (Main.tileSolid[tile.TileType] || TileLoader.HasSolidTopCollision(i, j, tile.TileType)) || tile.LiquidAmount > 64) {
 						Vector2 tileWorld = new Point16(i, j).ToWorldCoordinates(0, 0);
 
 						if (NPC.Right.X > tileWorld.X && NPC.Left.X < tileWorld.X + 16 && NPC.Bottom.Y > tileWorld.Y && NPC.Top.Y < tileWorld.Y + 16) {
