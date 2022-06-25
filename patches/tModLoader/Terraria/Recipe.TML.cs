@@ -321,7 +321,7 @@ namespace Terraria
 			} while (target != null);
 
 
-			return recipe;
+			return this;
 		}
 
 		/// <summary>
