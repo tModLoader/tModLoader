@@ -47,7 +47,7 @@
  				UILinkPointNavigator.SuggestUsage(GetGamepadPointForSlot(inv, context, slot));
  
 +			if (PlayerLoader.HoverSlot(Main.player[Main.myPlayer], inv, context, slot)) {
-+				return true;
++				return;
 +			}
 +
  			bool shiftForcedOn = ShiftForcedOn;

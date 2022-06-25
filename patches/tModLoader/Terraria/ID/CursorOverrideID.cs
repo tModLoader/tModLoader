@@ -21,11 +21,13 @@ namespace Terraria.ID
 		/// </summary>
 		public const short FavoriteStar = 3;
 		/// <summary>
-		/// The first in-game  camera point
+		/// The first in-game camera point
+		/// <br>If <see cref="Main.cursorOverride"/> is set to this, the color will be the same as the cursor color</br>
 		/// </summary>
 		public const short CameraLight = 4;
 		/// <summary>
 		/// The second in-game camera point
+		/// <br>If <see cref="Main.cursorOverride"/> is set to this, the color will be the same as the cursor color</br>
 		/// </summary>
 		public const short CameraDark = 5;
 		/// <summary>
