@@ -82,6 +82,12 @@ namespace Terraria.Social.Steam
 					}
 				}
 
+				// This eliminates version 9999 in case someone bypasses the IsDev Check for testing or whatever
+				string devRemnant = Path.Combine(workshopFolderPath, "9999.0");
+				if (Directory.Exists(devRemnant)) {
+					Directory.Delete(devRemnant);
+				}
+
 				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
 					return false;

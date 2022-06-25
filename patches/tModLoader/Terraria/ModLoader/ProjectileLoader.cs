@@ -22,7 +22,7 @@ namespace Terraria.ModLoader
 	public static class ProjectileLoader
 	{
 		internal static readonly IList<ModProjectile> projectiles = new List<ModProjectile>();
-		internal static readonly IList<GlobalProjectile> globalProjectiles = new List<GlobalProjectile>();
+		internal static readonly List<GlobalProjectile> globalProjectiles = new();
 
 		private static int nextProjectile = ProjectileID.Count;
 		private static readonly List<HookList> hooks = new List<HookList>();
