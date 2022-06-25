@@ -7,7 +7,7 @@
  
  namespace ReLogic.Content.Sources;
  
-@@ -7,17 +_,48 @@
+@@ -7,17 +_,53 @@
  {
  	IContentValidator ContentValidator { get; set; }
  
@@ -54,6 +54,11 @@
 +		!Rejections.IsRejected(assetName) && GetExtension(assetName) != null;
 +
 +	// Added by TML.
-+	IEnumerable<string> GetAllAssetsStartingWith(string assetNameStart) =>
-+		EnumerateAssets().Where(s => s.StartsWith(assetNameStart));
++	IEnumerable<string> GetAllAssetsStartingWith(string assetNameStart, bool lower = false)
++	{
++		if (lower)
++			return EnumerateAssets().Where(s => s.ToLower().StartsWith(assetNameStart));
++
++		return EnumerateAssets().Where(s => s.StartsWith(assetNameStart));
++	}
  }

@@ -84,7 +84,7 @@
  	private void ProcessCopyCommandsInTexts()
  	{
  		Regex regex = new Regex("{\\$(\\w+\\.\\w+)}", RegexOptions.Compiled);
-@@ -155,15 +_,30 @@
+@@ -155,18 +_,33 @@
  					break;
  
  				value.SetValue(text);
@@ -113,8 +113,13 @@
  		LoadLanguage(ActiveCulture, processCopyCommands: false);
 +		*/
  		foreach (IContentSource item in sourcesFromLowestToHighest) {
- 			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart)) {
- 				string extension = item.GetExtension(item2);
+-			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart)) {
++			foreach (string item2 in item.GetAllAssetsStartingWith(assetNameStart, true)) {
+-				string extension = item.GetExtension(item2);
++				string extension = item.GetExtension(item2) ?? "";
+ 				if (!(extension == ".json") && !(extension == ".csv"))
+ 					continue;
+ 
 @@ -181,8 +_,10 @@
  			}
  		}
