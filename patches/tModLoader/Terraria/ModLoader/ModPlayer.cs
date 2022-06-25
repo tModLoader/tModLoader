@@ -714,7 +714,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the item or enemy the player gets when sucessfully catching a "fish". The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+		/// Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered.
+		/// <br/>Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those.
+		/// <br/>Setting <see cref="FishingAttempt.rolledItemDrop"/> or <see cref="FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="CatchFish"/> for that.
+		/// </summary>
+		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
+		public virtual void ModifyFishingAttempt(ref FishingAttempt attempt) {
+		}
+
+		/// <summary>
+		/// Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
 		/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 		/// </summary>
 		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
