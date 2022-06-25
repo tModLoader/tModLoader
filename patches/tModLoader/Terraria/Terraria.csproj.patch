@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -7,26 +_,27 @@
+@@ -7,36 +_,40 @@
      <Company>Re-Logic</Company>
      <Copyright>Copyright © 2022 Re-Logic</Copyright>
      <RootNamespace>Terraria</RootNamespace>
@@ -40,9 +40,10 @@
      <ProjectReference Include="../../../FNA/FNA.Core.csproj" />
      <Reference Include="MP3Sharp" />
      <Reference Include="Newtonsoft.Json" />
-@@ -35,8 +_,12 @@
+     <Reference Include="NVorbis" />
+     <Reference Include="RailSDK.Net" />
      <ProjectReference Include="../ReLogic/ReLogic.csproj" />
-     <Reference Include="Steamworks.NET" />
+-    <Reference Include="Steamworks.NET" />
      <Reference Include="SteelSeriesEngineWrapper" />
 +    <Reference Include="log4net" />
 +    <Reference Include="TerrariaHooks" />
@@ -53,7 +54,7 @@
      <EmbeddedResource Include="GameContent/Creative/Content/*" />
      <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
      <EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -47,15 +_,31 @@
+@@ -47,15 +_,32 @@
    <ItemGroup>
      <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
      <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
@@ -70,6 +71,7 @@
 +    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.2.0" />
 +    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 +    <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
++    <PackageReference Include="Steamworks.NET" Version="20.1.0" />
 +    <PackageReference Include="System.CodeDom" Version="6.0.0" />
 +    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0" />
 +    <PackageReference Include="Hjson" Version="3.0.0" />
@@ -81,7 +83,7 @@
    </PropertyGroup>
    <Target Name="CopyToSteamDir" AfterTargets="Build">
 +    <!-- Deal with Abnormal Managed Libaries that require deployment assembly replacements for varying architectures-->
-+    <Copy SourceFiles="Libraries\Common\UNIX.Steamworks.NET.dll" DestinationFolder="$(TargetDir)\PlatformVariantLibs" SkipUnchangedFiles="True" />
++	  <!--Copy SourceFiles="Libraries\Common\UNIX.Steamworks.NET.dll" DestinationFolder="$(TargetDir)\PlatformVariantLibs" SkipUnchangedFiles="True" /-->
 +	<Delete Files="$(TargetDir)\tModPorter.runtimeconfig.json" />
 +	<Delete Files="$(TargetDir)\tModPorter.deps.json" />
      <!-- copy files systematically to output folder -->

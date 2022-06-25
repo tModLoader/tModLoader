@@ -44,7 +44,6 @@ if [[ "$_uname" == *"_NT"* ]]; then
 fi
 
 . ./UnixLinkerFix.sh
-run_script ./PlatformLibsDeploy.sh  2>&1 | tee -a "$LogFile"
 
 #Parse version from runtimeconfig, jq would be a better solution here, but its not installed by default on all distros.
 echo "Parsing .NET version requirements from runtimeconfig.json"  2>&1 | tee -a "$LogFile"
