@@ -42,6 +42,17 @@
  		private static bool[] canFavoriteAt;
  		private static bool[] canShareAt;
  		private static float[] inventoryGlowHue;
+@@ -226,6 +_,10 @@
+ 			if (!PlayerInput.UsingGamepad)
+ 				UILinkPointNavigator.SuggestUsage(GetGamepadPointForSlot(inv, context, slot));
+ 
++			if (PlayerLoader.HoverSlot(Main.player[Main.myPlayer], inv, context, slot)) {
++				return true;
++			}
++
+ 			bool shiftForcedOn = ShiftForcedOn;
+ 			if (NotUsingGamepad && Options.DisableLeftShiftTrashCan && !shiftForcedOn) {
+ 				if (ControlInUse) {
 @@ -264,7 +_,10 @@
  							case 1:
  							case 2:
