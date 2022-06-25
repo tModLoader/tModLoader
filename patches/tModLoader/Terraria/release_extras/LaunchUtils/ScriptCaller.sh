@@ -35,6 +35,13 @@ if [ -f "$NativeLog" ]; then
 fi
 touch "$NativeLog"
 
+if [[ "$_uname" == *"_NT"* ]]; then
+	echo "Windows Version $WINDOWS_MAJOR.$WINDOWS_MINOR" 2>&1 | tee -a "$LogFile"
+	if [[ $WINDOWS_MAJOR -ge 10 ]]; then 
+		./QuickEditDisable.exe 2>&1 | tee -a "$LogFile"
+	fi
+fi
+
 echo "Verifying .NET...."  2>&1 | tee -a "$LogFile"
 echo "This may take a few moments."
 echo "Logging to $LogFile"  2>&1 | tee -a "$LogFile"
