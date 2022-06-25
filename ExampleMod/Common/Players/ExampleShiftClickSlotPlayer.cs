@@ -6,7 +6,8 @@ using Terraria.UI;
 
 namespace ExampleMod.Common.Players
 {
-	// If we shift-click a gel, it changes its color and rarity.
+	// If we hover the cursor over a gel, the cursor style will change.
+	// If we shift-click it, it changes its color and rarity.
 	public class ExampleShiftClickSlotPlayer : ModPlayer
 	{
 		public override bool ShiftClickSlot(Item[] inventory, int context, int slot) {
