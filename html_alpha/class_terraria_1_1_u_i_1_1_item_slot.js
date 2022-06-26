@@ -38,6 +38,7 @@ var class_terraria_1_1_u_i_1_1_item_slot =
     [ "RightClick", "class_terraria_1_1_u_i_1_1_item_slot.html#a98bc424277619fb6826fcabb8607e3bc", null ],
     [ "RightClick", "class_terraria_1_1_u_i_1_1_item_slot.html#a66e2de36e035c82a1695f7f9a2385812", null ],
     [ "SelectEquipPage", "class_terraria_1_1_u_i_1_1_item_slot.html#a8bcbfd2e8c5efe1f72e5a10d46fa2e73", null ],
+    [ "SellOrTrash", "class_terraria_1_1_u_i_1_1_item_slot.html#a2473f9c285a8090cde9266695364b5a5", null ],
     [ "SetGlow", "class_terraria_1_1_u_i_1_1_item_slot.html#a15ad5ba58d85ce17549c8c462b166ee5", null ],
     [ "SwapEquip", "class_terraria_1_1_u_i_1_1_item_slot.html#acfbcce7e7e8fdee5c69d9e17ffc79c8d", null ],
     [ "SwapEquip", "class_terraria_1_1_u_i_1_1_item_slot.html#a4714e5fa7fbf49a7b222a99bb0291b5b", null ],
