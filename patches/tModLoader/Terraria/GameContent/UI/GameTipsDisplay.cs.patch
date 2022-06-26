@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/GameTipsDisplay.cs
 +++ src/tModLoader/Terraria/GameContent/UI/GameTipsDisplay.cs
-@@ -2,9 +_,12 @@
+@@ -2,8 +_,10 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
  using System.Collections.Generic;
@@ -9,10 +9,8 @@
  using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.UI.Chat;
-+using Game = IL.Terraria.Server.Game;
  
  namespace Terraria.GameContent.UI
- {
 @@ -56,6 +_,8 @@
  			}
  		}

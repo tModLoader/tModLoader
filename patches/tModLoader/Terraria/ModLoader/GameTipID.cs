@@ -349,7 +349,7 @@
 		/// <summary>
 		/// "Riding Minecarts is one of the best ways of getting around. You can build your own tracks, or find them Underground."
 		/// </summary>
-		public static readonly int MinecartCratingAndLocation = 68;
+		public static readonly int MinecartCraftingAndLocation = 68;
 
 		/// <summary>
 		/// "Life Crystals not enough for you? Eventually, Life Fruit will grow in the Jungle, and can give you an extra boost to your health."
@@ -384,7 +384,7 @@
 		/// <summary>
 		/// "Sometimes, enemies may even invade from other dimensions . . ."
 		/// </summary>
-		public static readonly int InterdimensionalInvasionWarning = 75;
+		public static readonly int OldOnesArmyInvasion = 75;
 
 		/// <summary>
 		/// "A Pumpkin Medallion can be used to summon the Pumpkin Moon. Spooky!"
@@ -429,7 +429,7 @@
 		/// <summary>
 		/// "If you need a new haircut, go check out a nearby Spider Biome. Stylists always end up lost in them!"
 		/// </summary>
-		public static readonly int StylistLocatio = 84;
+		public static readonly int StylistLocation = 84;
 
 		/// <summary>
 		/// "Regular Wood and Stone not vibrant enough for you? A Painter will move in and sell paints if enough townsfolk move in."
@@ -444,7 +444,7 @@
 		/// <summary>
 		/// "You could get a Witch Doctor to come to your World if you defeat the Queen Bee."
 		/// </summary>
-		public static readonly int WitchDoctorNeedsQUeenBeeToMoveIn = 87;
+		public static readonly int WitchDoctorNeedsQueenBeeToMoveIn = 87;
 
 		/// <summary>
 		/// "The Party Girl won't move in unless your World is full of other townsfolk. Afterall, what's a party without lots of guests?"
