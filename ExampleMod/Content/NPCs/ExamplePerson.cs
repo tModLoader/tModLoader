@@ -302,15 +302,10 @@ namespace ExampleMod.Content.NPCs
 
 		// Make something happen when the npc teleports to a statue. Since this method only runs server side, any visual effects like dusts or gores have to be synced across all clients manually.
 		public override void OnGoToStatue(bool toKingStatue) {
-			if (Main.netMode == NetmodeID.Server) {
-				ModPacket packet = Mod.GetPacket();
-				packet.Write((byte)ExampleMod.MessageType.ExampleTeleportToStatue);
-				packet.Write((byte)NPC.whoAmI);
-				packet.Send();
-			}
-			else {
-				StatueTeleport();
-			}
+			// HandleForAll will ensure the effects of the packet will be applied to all clients and the server, whether playing singleplayer or multiplayer
+			new ExampleTeleportToStatuePacket {
+				NPC = this
+			}.HandleForAll();
 		}
 
 		// Create a square of pixels around the NPC on teleport.
@@ -374,5 +369,14 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public int GetHeadTextureIndex(NPC npc) => ModContent.GetModHeadSlot("ExampleMod/Content/NPCs/ExamplePerson_Head");
+	}
+
+	public class ExampleTeleportToStatuePacket : ModCustomPacket
+	{
+		public ExamplePerson NPC { get; init; }
+
+		public override void HandlePacket() {
+			NPC.StatueTeleport();
+		}
 	}
 }
