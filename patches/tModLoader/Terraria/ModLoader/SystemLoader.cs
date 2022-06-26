@@ -336,13 +336,12 @@ namespace Terraria.ModLoader
 		}
 
 		public static List<GameTipData> ModifyGameTips(List<GameTipData> gameTips) {
-			List<GameTipData> tips = gameTips.Select(gameTipData => gameTipData.Clone()).ToList();
+			IReadOnlyList<GameTipData> tips = gameTips.Select(gameTipData => gameTipData.Clone()).ToList().AsReadOnly();
 			foreach (var system in HookModifyGameTips.arr) {
-				system.ModifyGameTips(tips.AsReadOnly(), out List<LocalizedText> newTips);
-				tips.AddRange(newTips.Select(localizedText => new GameTipData(localizedText)));
+				system.ModifyGameTips(tips);
 			}
 
-			return tips;
+			return tips.ToList();
 		}
 
 		public static void PostDrawInterface(SpriteBatch spriteBatch) {

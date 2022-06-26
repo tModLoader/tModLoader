@@ -1,37 +1,24 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/GameTipsDisplay.cs
 +++ src/tModLoader/Terraria/GameContent/UI/GameTipsDisplay.cs
-@@ -2,8 +_,10 @@
- using Microsoft.Xna.Framework.Graphics;
- using ReLogic.Graphics;
+@@ -4,11 +_,12 @@
  using System.Collections.Generic;
-+using System.Linq;
  using Terraria.GameInput;
  using Terraria.Localization;
 +using Terraria.ModLoader;
  using Terraria.UI.Chat;
  
  namespace Terraria.GameContent.UI
-@@ -56,6 +_,8 @@
- 			}
- 		}
- 
-+		internal readonly List<GameTipData> vanillaTips;
-+		internal List<GameTipData> allTips;
- 		private LocalizedText[] _tipsDefault;
- 		private LocalizedText[] _tipsGamepad;
- 		private LocalizedText[] _tipsKeyboard;
-@@ -67,6 +_,14 @@
+ {
+-	public class GameTipsDisplay
++	public partial class GameTipsDisplay
+ 	{
+ 		private class GameTip
+ 		{
+@@ -67,6 +_,7 @@
  			_tipsGamepad = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_GamePad."));
  			_tipsKeyboard = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_Keyboard."));
  			_lastTip = null;
-+			vanillaTips = _tipsDefault.Concat(_tipsKeyboard).Concat(_tipsGamepad).Select(localizedText => new GameTipData(localizedText)).ToList();
-+			allTips = new List<GameTipData>();
-+		}
-+
-+		internal void Reset() {
-+			ClearTips();
-+			allTips = new List<GameTipData>();
-+			_lastTip = null;
++			Initialize();
  		}
  
  		public void Update() {

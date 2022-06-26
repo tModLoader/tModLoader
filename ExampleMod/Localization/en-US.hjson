@@ -160,6 +160,7 @@ Mods: {
 			ExampleTip0: "Woah! Example Tip!"
 			ExampleTip1: "This tip was added by Example Mod!"
 			ExampleTip2: "This is yet another tip added by Example Mod!"
+			DisabledExampleTip: "This tip will be added but then disabled by Example Mod."
 		}
 	}
 }

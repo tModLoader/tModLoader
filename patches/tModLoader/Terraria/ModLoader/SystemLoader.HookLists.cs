@@ -55,8 +55,6 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateModifyLightingBrightness(ref float scale);
 
-		private delegate void DelegateModifyGameTips(IReadOnlyList<GameTipData> gameTips, out List<LocalizedText> newTips);
-
 		private delegate void DelegatePreDrawMapIconOverlay(IReadOnlyList<IMapLayer> layers, MapOverlayDrawContext mapOverlayDrawContext);
 
 		private delegate void DelegatePostDrawFullscreenMap(ref string mouseText);
@@ -139,7 +137,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookModifyInterfaceLayers = AddHook<Action<List<GameInterfaceLayer>>> (s => s.ModifyInterfaceLayers);
 
-		private static HookList HookModifyGameTips = AddHook<DelegateModifyGameTips>(s => s.ModifyGameTips);
+		private static HookList HookModifyGameTips = AddHook<Action<IReadOnlyList<GameTipData>>>(s => s.ModifyGameTips);
 
 		private static HookList HookPostDrawInterface = AddHook<Action<SpriteBatch>>(s => s.PostDrawInterface);
 

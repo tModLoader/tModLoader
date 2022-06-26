@@ -22,16 +22,30 @@ namespace Terraria.ModLoader
 			internal set;
 		}
 
+		/// <summary>
+		/// Retrieves the "short" key of this GameTip, excluding the beginning Mods.ModName.GameTip portion.
+		/// For example, if the key was "Mods.ExampleMod.GameTip.ExampleTip", this would return
+		/// "ExampleTip".
+		/// </summary>
+		public string ShortKey {
+			get;
+			internal set;
+		}
+
 		internal bool isVisible = true;
 
 		public GameTipData(LocalizedText text, Mod mod) {
-			TipText = text;
-			Mod = mod.Name;
+			SetTipData(text, mod.Name);
+		}
+
+		internal GameTipData(LocalizedText text, string mod) {
+			SetTipData(text, mod);
 		}
 
 		internal GameTipData(LocalizedText text) {
 			TipText = text;
 			Mod = "Terraria";
+			ShortKey = text.Key;
 		}
 
 		/// <summary>
@@ -45,7 +59,13 @@ namespace Terraria.ModLoader
 		/// Returns a new copy which is a clone of this object.
 		/// </summary>
 		public GameTipData Clone() {
-			return new GameTipData(new LocalizedText(TipText.Key, TipText.Value));
+			return new GameTipData(new LocalizedText(TipText.Key, TipText.Value), Mod);
+		}
+
+		internal void SetTipData(LocalizedText text, string mod) {
+			TipText = text;
+			Mod = mod;
+			ShortKey = text.Key.Replace($"Mods.{mod}.GameTips.", "");
 		}
 	}
 }
