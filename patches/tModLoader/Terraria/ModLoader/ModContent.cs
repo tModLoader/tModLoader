@@ -334,6 +334,7 @@ namespace Terraria.ModLoader
 
 			Main.player[255] = new Player();
 
+			Main.gameTips.allTips = SystemLoader.ModifyGameTips(Main.gameTips.vanillaTips);
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
 
 			MapLoader.SetupModMap();
@@ -492,6 +493,7 @@ namespace Terraria.ModLoader
 			CustomCurrencyManager.Initialize();
 			EffectsTracker.RemoveModEffects();
 			Main.MapIcons = new MapIconOverlay().AddLayer(new SpawnMapLayer()).AddLayer(new TeleportPylonsMapLayer()).AddLayer(Main.Pings);
+			Main.gameTips.Reset();
 
 			// ItemID.Search = IdDictionary.Create<ItemID, short>();
 			// NPCID.Search = IdDictionary.Create<NPCID, short>();

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -332,6 +333,16 @@ namespace Terraria.ModLoader
 			foreach (var system in HookModifyInterfaceLayers.arr) {
 				system.ModifyInterfaceLayers(layers);
 			}
+		}
+
+		public static List<GameTipData> ModifyGameTips(List<GameTipData> gameTips) {
+			List<GameTipData> tips = gameTips.Select(gameTipData => gameTipData.Clone()).ToList();
+			foreach (var system in HookModifyGameTips.arr) {
+				system.ModifyGameTips(tips.AsReadOnly(), out List<LocalizedText> newTips);
+				tips.AddRange(newTips.Select(localizedText => new GameTipData(localizedText)));
+			}
+
+			return tips;
 		}
 
 		public static void PostDrawInterface(SpriteBatch spriteBatch) {

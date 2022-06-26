@@ -1,0 +1,69 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/GameTipsDisplay.cs
++++ src/tModLoader/Terraria/GameContent/UI/GameTipsDisplay.cs
+@@ -2,9 +_,12 @@
+ using Microsoft.Xna.Framework.Graphics;
+ using ReLogic.Graphics;
+ using System.Collections.Generic;
++using System.Linq;
+ using Terraria.GameInput;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI.Chat;
++using Game = IL.Terraria.Server.Game;
+ 
+ namespace Terraria.GameContent.UI
+ {
+@@ -56,6 +_,8 @@
+ 			}
+ 		}
+ 
++		internal readonly List<GameTipData> vanillaTips;
++		internal List<GameTipData> allTips;
+ 		private LocalizedText[] _tipsDefault;
+ 		private LocalizedText[] _tipsGamepad;
+ 		private LocalizedText[] _tipsKeyboard;
+@@ -67,6 +_,14 @@
+ 			_tipsGamepad = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_GamePad."));
+ 			_tipsKeyboard = Language.FindAll(Lang.CreateDialogFilter("LoadingTips_Keyboard."));
+ 			_lastTip = null;
++			vanillaTips = _tipsDefault.Concat(_tipsKeyboard).Concat(_tipsGamepad).Select(localizedText => new GameTipData(localizedText)).ToList();
++			allTips = new List<GameTipData>();
++		}
++
++		internal void Reset() {
++			ClearTips();
++			allTips = new List<GameTipData>();
++			_lastTip = null;
+ 		}
+ 
+ 		public void Update() {
+@@ -137,6 +_,7 @@
+ 
+ 		private void AddNewTip(double currentTime) {
+ 			string textKey = "UI.Back";
++			/*
+ 			List<LocalizedText> list = new List<LocalizedText>();
+ 			list.AddRange(_tipsDefault);
+ 			if (PlayerInput.UsingGamepad)
+@@ -146,8 +_,20 @@
+ 
+ 			if (_lastTip != null)
+ 				list.Remove(_lastTip);
++			*/
++			List<GameTipData> list = new List<GameTipData>();
++			list.AddRange(allTips);
++			if (PlayerInput.UsingGamepad)
++				list.RemoveAll(tip => tip.Mod == "Terraria" && tip.TipText.Key.StartsWith("LoadingTips_Keyboard"));
++			else
++				list.RemoveAll(tip => tip.Mod == "Terraria" && tip.TipText.Key.StartsWith("LoadingTips_GamePad"));
++
++			if (_lastTip != null)
++				list.RemoveAll(tip => tip.TipText == _lastTip);
++
++			list.RemoveAll(tip => !tip.isVisible);
+ 
+-			string key = (_lastTip = ((list.Count != 0) ? list[Main.rand.Next(list.Count)] : LocalizedText.Empty)).Key;
++			string key = (_lastTip = ((list.Count != 0) ? list[Main.rand.Next(list.Count)].TipText : LocalizedText.Empty)).Key;
+ 			if (Language.Exists(key))
+ 				textKey = key;
+ 
