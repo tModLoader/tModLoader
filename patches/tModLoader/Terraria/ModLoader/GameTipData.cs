@@ -23,8 +23,8 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Retrieves the "short" key of this GameTip, excluding the beginning Mods.ModName.GameTip portion.
-		/// For example, if the key was "Mods.ExampleMod.GameTip.ExampleTip", this would return
+		/// Retrieves the "short" key of this GameTip, excluding the beginning Mods.ModName.GameTips portion.
+		/// For example, if the key was "Mods.ExampleMod.GameTips.ExampleTip", this would return
 		/// "ExampleTip".
 		/// </summary>
 		public string ShortKey {
