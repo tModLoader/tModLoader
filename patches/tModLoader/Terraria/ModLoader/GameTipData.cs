@@ -56,7 +56,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Returns a new copy which is a clone of this object.
+		/// Returns a new object which is a clone of this object.
 		/// </summary>
 		public GameTipData Clone() {
 			return new GameTipData(new LocalizedText(TipText.Key, TipText.Value), Mod);
