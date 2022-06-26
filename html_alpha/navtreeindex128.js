@@ -1,5 +1,7 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_data_structures_1_1_game_mode_data.html#ab45be118bfc3f1025a5a7d9e2d0a0516":[2,0,2,4,47,9],
+"struct_terraria_1_1_data_structures_1_1_game_mode_data.html#adcc10bab85f2a8bb82adb661f16f17ae":[2,0,2,4,47,12],
 "struct_terraria_1_1_data_structures_1_1_game_mode_data.html#ae908ae0a1cba4cfb14c59fdda401e215":[2,0,2,4,47,4],
 "struct_terraria_1_1_data_structures_1_1_game_mode_data.html#aebb555a1842420128ac98ca84a910c47":[2,0,2,4,47,7],
 "struct_terraria_1_1_data_structures_1_1_game_mode_data.html#afe93decaabf725373da027cac38bb4cc":[2,0,2,4,47,14],
@@ -247,7 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#adb394bf022ccd023bd48b3e1b0115a09":[2,0,2,4,82,1],
 "struct_terraria_1_1_data_structures_1_1_tile_resting_info.html#af3f848fbe8a29fdebf22a3817f0a51c7":[2,0,2,4,82,3],
 "struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html":[2,0,2,4,84],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a17a292bf399f507faa01bf187aee012d":[2,0,2,4,84,12],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a249890fa79f7ee328b43454d3a15f093":[2,0,2,4,84,7],
-"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a27f844c8effc36d374817a9995553f86":[2,0,2,4,84,1]
+"struct_terraria_1_1_data_structures_1_1_tracked_projectile_reference.html#a17a292bf399f507faa01bf187aee012d":[2,0,2,4,84,12]
 };
