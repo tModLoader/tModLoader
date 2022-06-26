@@ -242,6 +242,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Used for strongly-typed or duck-typed inter-mod communication. This allows you to interact with other mods without having to reference their types or namespaces, provided that they have implemented this method.<br/>
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Expert-Cross-Mod-Content">Expert Cross Mod Content Guide</see> explains how to use this hook to implement and utilize cross-mod capabilities.
+		/// </summary>
+		protected internal virtual object GetAPI()
+		{
+			return null;
+		}
+
+		/// <summary>
 		/// Creates a ModPacket object that you can write to and then send between servers and clients.
 		/// </summary>
 		/// <param name="capacity">The capacity.</param>
