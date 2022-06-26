@@ -65,19 +65,24 @@
  				get;
  				private set;
  			}
-@@ -155,13 +_,14 @@
+@@ -155,13 +_,23 @@
  				private set;
  			}
  
--			public void PrepareCache(string text) {
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			/*
+ 			public void PrepareCache(string text) {
+ 				if ((0 | ((screenWidth != _lastScreenWidth) ? 1 : 0) | ((screenHeight != _lastScreenHeight) ? 1 : 0) | ((_originalText != text) ? 1 : 0)) != 0) {
++			*/
 +			public void PrepareCache(string text, Color baseColor) {
--				if ((0 | ((screenWidth != _lastScreenWidth) ? 1 : 0) | ((screenHeight != _lastScreenHeight) ? 1 : 0) | ((_originalText != text) ? 1 : 0)) != 0) {
 +				if ((0 | ((screenWidth != _lastScreenWidth) ? 1 : 0) | ((screenHeight != _lastScreenHeight) ? 1 : 0) | ((_originalText != text) ? 1 : 0) | ((originalColor != baseColor) ? 1 : 0)) != 0) {
  					_lastScreenWidth = screenWidth;
  					_lastScreenHeight = screenHeight;
  					_originalText = text;
--					TextLines = Utils.WordwrapString(npcChatText, FontAssets.MouseText.Value, 460, 10, out int lineAmount);
--					AmountOfLines = lineAmount;
++					/*
+ 					TextLines = Utils.WordwrapString(npcChatText, FontAssets.MouseText.Value, 460, 10, out int lineAmount);
+ 					AmountOfLines = lineAmount;
++					*/
 +					originalColor = baseColor;
 +					TextLines = Utils.WordwrapStringSmart(npcChatText, baseColor, FontAssets.MouseText.Value, 460, 10);
 +					AmountOfLines = TextLines.Count;
@@ -2807,7 +2812,7 @@
  			int amountOfLines = _textDisplayCache.AmountOfLines;
  			bool flag2 = false;
  			if (editSign) {
-@@ -29221,23 +_,40 @@
+@@ -29221,23 +_,41 @@
  					textBlinkerCount = 0;
  				}
  
@@ -2825,6 +2830,7 @@
 +			//amountOfLines++;
  			spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.ChatBack.Width(), (amountOfLines + 1) * 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  			spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100 + (amountOfLines + 1) * 30), new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.ChatBack.Height() - 30, TextureAssets.ChatBack.Width(), 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
 +			TextSnippet hoveredSnippet = null;
  			for (int i = 0; i < amountOfLines; i++) {
 -				string text = textLines[i];
@@ -2971,7 +2977,7 @@
  				npcChatFocus2 = false;
  			}
  
-+			//Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
 +			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus2) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
 +			/*
  			ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus2) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
@@ -2980,10 +2986,11 @@
  			if (text.Length > 0) {
  				UILinkPointNavigator.SetPosition(2500, vector2 + stringSize * 0.5f);
  				UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsLeft = true;
-@@ -29898,8 +_,11 @@
+@@ -29898,8 +_,12 @@
  				npcChatFocus1 = false;
  			}
  
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
 +			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus1) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
 +			/*
  			ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus1) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
@@ -2992,10 +2999,11 @@
  			if (text.Length > 0) {
  				UILinkPointNavigator.SetPosition(2501, vector2 + stringSize * 0.5f);
  				UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsMiddle = true;
-@@ -29935,8 +_,11 @@
+@@ -29935,8 +_,12 @@
  					npcChatFocus3 = false;
  				}
  
++				// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
 +				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus3) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
 +				/*
  				ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus3) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
@@ -3004,10 +3012,11 @@
  				UILinkPointNavigator.SetPosition(2502, vector2 + stringSize * 0.5f);
  				UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight = true;
  			}
-@@ -29972,8 +_,11 @@
+@@ -29972,8 +_,12 @@
  				npcChatFocus4 = false;
  			}
  
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
 +			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus4) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
 +			/*
  			ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus4) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
