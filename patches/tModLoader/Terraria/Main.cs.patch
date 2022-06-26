@@ -1,13 +1,5 @@
 --- src/TerrariaNetCore/Terraria/Main.cs
 +++ src/tModLoader/Terraria/Main.cs
-@@ -3,6 +_,7 @@
- using Microsoft.Xna.Framework.Content;
- using Microsoft.Xna.Framework.Graphics;
- using Microsoft.Xna.Framework.Input;
-+using Newtonsoft.Json;
- using ReLogic.Content;
- using ReLogic.Content.Sources;
- #if MAC
 @@ -19,7 +_,7 @@
  using System.Collections.Generic;
  using System.Diagnostics;
@@ -17,14 +9,6 @@
  #endif
  using System.IO;
  using System.Linq;
-@@ -35,6 +_,7 @@
- #if WINDOWS
- using System.Windows.Forms;
- #endif
-+using Steamworks;
- using Terraria.Achievements;
- using Terraria.Audio;
- using Terraria.Chat;
 @@ -72,9 +_,16 @@
  using Terraria.IO;
  using Terraria.Localization;
@@ -4587,14 +4571,6 @@
  					spriteBatch.Draw(TextureAssets.SmileyMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.SmileyMoon.Width(), TextureAssets.SmileyMoon.Height()), moonColor, num9 / 2f + (float)Math.PI, new Vector2(TextureAssets.SmileyMoon.Width() / 2, TextureAssets.SmileyMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  				else if (pumpkinMoon)
  					spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
-@@ -48593,7 +_,6 @@
- 				else
- 					spriteBatch.Draw(TextureAssets.Moon[num].Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.Moon[num].Width() * moonPhase, TextureAssets.Moon[num].Width(), TextureAssets.Moon[num].Width()), moonColor, num9, new Vector2(TextureAssets.Moon[num].Width() / 2, TextureAssets.Moon[num].Width() / 2), num8, SpriteEffects.None, 0f);
- 			}
--
- 			Microsoft.Xna.Framework.Rectangle value3 = dayTime ? new Microsoft.Xna.Framework.Rectangle((int)((double)num3 - (double)TextureAssets.Sun.Width() * 0.5 * (double)num5), (int)((double)num4 - (double)TextureAssets.Sun.Height() * 0.5 * (double)num5 + (double)sunModY), (int)((float)TextureAssets.Sun.Width() * num5), (int)((float)TextureAssets.Sun.Width() * num5)) : new Microsoft.Xna.Framework.Rectangle((int)((double)num6 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8), (int)((double)num7 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8 + (double)moonModY), (int)((float)TextureAssets.Moon[num].Width() * num8), (int)((float)TextureAssets.Moon[num].Width() * num8));
- 			value3.Offset((int)sceneArea.SceneLocalScreenPositionOffset.X, (int)sceneArea.SceneLocalScreenPositionOffset.Y);
- 			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(mouseX, mouseY, 1, 1);
 @@ -48678,7 +_,7 @@
  				Vector2 origin = value.Size() / 2f;
  				if (star.falling) {
