@@ -120,14 +120,14 @@ public class ModAddRecipes : Mod
 	};
 
 	public void PortModCreateRecipe(ModItem modItem) {
-		var recipe = CreateRecipe(ModContent.ItemType<ModItemAddRecipes>());
-		recipe.Register();
+		var recipe1 = CreateRecipe(ModContent.ItemType<ModItemAddRecipes>());
+		recipe1.Register();
 
-		var recipe = modItem.Mod.CreateRecipe(modItem.Type);
-		recipe.Register();
+		var recipe2 = modItem.Mod.CreateRecipe(modItem.Type);
+		recipe2.Register();
 	}
 
-	public Mod GetMod() => Mod;
+	public Mod GetMod() => this;
 
 	public void GetModMayHaveSideEffects() {
 		var recipe = new ModRecipe(GetMod());

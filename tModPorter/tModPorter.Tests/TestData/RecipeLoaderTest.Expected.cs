@@ -7,12 +7,12 @@ namespace tModPorter.Tests.TestData
 	{
 		public void Method1(Recipe recipe)
 		{
-			RecipeLoader.RecipeAvailable(recipe, Main.LocalRecipe);
+			RecipeLoader.RecipeAvailable(recipe, Main.LocalPlayer);
 		}
 
 		public bool Method2(Recipe recipe)
 		{
-			return RecipeLoader.RecipeAvailable(recipe, Main.LocalRecipe);
+			return RecipeLoader.RecipeAvailable(recipe, Main.LocalPlayer);
 		}
 
 		public void Method3(Recipe recipe, Player player)
