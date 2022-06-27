@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
 
-namespace Terraria.ModLoader.IO;
+namespace Terraria.ModLoader;
 
 /// <summary>
 /// A definable ModType for a specific set of information that's send-able in multiplayer via packets, and the effect
@@ -19,7 +20,6 @@ public abstract class ModCustomPacket : ModType
 	public sealed override void Load() {
 		packetSerializers ??= new Dictionary<Type, CustomPacketSerializer>();
 		packets ??= new Dictionary<Mod, List<ModCustomPacket>>();
-		base.Load();
 	}
 
 	public sealed override void Unload() {
@@ -34,8 +34,7 @@ public abstract class ModCustomPacket : ModType
 	public abstract void HandlePacket();
 
 	/// <summary>
-	/// If you have optional properties, initialize their default values here to avoid packets accidentally using the
-	/// values from previously received packets
+	/// If you want to alter the default values of the packet before the deserialized data is written to it
 	/// </summary>
 	protected virtual void SetDefaults() {
 	}
@@ -46,7 +45,7 @@ public abstract class ModCustomPacket : ModType
 		}
 
 		packets[Mod].Add(this);
-		type = -packets[Mod].Count;
+		type = -packets[Mod].Count; // Using negative types counting downwards to allow for 0+ to easily come from Enums
 		ModTypeLookup<ModCustomPacket>.Register(this);
 	}
 
@@ -63,12 +62,13 @@ public abstract class ModCustomPacket : ModType
 	}
 
 	public sealed override void SetStaticDefaults() {
-		// No static defaults need to be set for custom packets?
+		// TODO No one would need to set static defaults for their custom packets?
 	}
 
 	private void Receive(BinaryReader reader, int sender) {
 		if (packetSerializers.TryGetValue(GetType(), out var serializer)) {
-			if (ModCompile.DeveloperMode) { // TODO remove these debug comments
+			if (ModCompile.DeveloperMode) {
+				// TODO remove these debug comments?
 				Mod.Logger.Info($"Receiving packet {GetType().Name} on netMode {Main.netMode}");
 			}
 

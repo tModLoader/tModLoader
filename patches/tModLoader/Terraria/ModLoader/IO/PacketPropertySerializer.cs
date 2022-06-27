@@ -17,9 +17,9 @@ internal abstract class PacketPropertySerializer
 	/// <summary>
 	/// Creates a new PacketPropertySerializer for a given property
 	/// </summary>
-	/// <param name="info"></param>
-	/// <typeparam name="T"></typeparam>
-	/// <returns></returns>
+	/// <param name="info">The property info</param>
+	/// <typeparam name="T">The custom packet type</typeparam>
+	/// <returns>A serializer for the property within the packet</returns>
 	public static PacketPropertySerializer<T> Create<T>(PropertyInfo info) where T : ModCustomPacket {
 		var propertyType = info.PropertyType;
 		if (!ModPropertySerializer.propertySerializers.TryGetValue(propertyType, out var propertySerializer)) {
@@ -39,6 +39,9 @@ internal abstract class PacketPropertySerializer
 		return serializer;
 	}
 
+	/// <summary>
+	/// Creates the getter/setter for the property and specifies that it use the given ModPropertySerializer
+	/// </summary>
 	protected abstract void Init(PropertyInfo property, ModPropertySerializer serializer);
 }
 
@@ -49,16 +52,12 @@ internal abstract class PacketPropertySerializer<T> : PacketPropertySerializer w
 	/// <summary>
 	/// Reads information from the binary reader and stores it in the packet
 	/// </summary>
-	/// <param name="reader"></param>
-	/// <param name="customPacket"></param>
 	public virtual void Deserialize(BinaryReader reader, T customPacket) {
 	}
 
 	/// <summary>
-	/// Gets the information from the packet and writes it into the ModPacket
+	/// Gets the information from the custom packet and writes it into the ModPacket
 	/// </summary>
-	/// <param name="packet"></param>
-	/// <param name="customPacket"></param>
 	public virtual void Serialize(ModPacket packet, T customPacket) {
 	}
 }

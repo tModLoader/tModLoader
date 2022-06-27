@@ -14,6 +14,9 @@ public abstract class ModPropertySerializer : ModType
 {
 	internal static Dictionary<Type, ModPropertySerializer> propertySerializers;
 
+	/// <summary>
+	/// The type of the property
+	/// </summary>
 	public abstract Type Type { get; }
 
 	public sealed override void Load() {
@@ -38,14 +41,21 @@ public abstract class ModPropertySerializer : ModType
 
 	protected sealed override void Register() {
 		if (propertySerializers.ContainsKey(Type)) {
-			Mod.Logger.Warn($"A ModPropertySerializer for type {Type.FullName}, not overwriting");
+			Mod.Logger.Warn($"A ModPropertySerializer for type {Type.Name} already exists, not overwriting");
 		}
 		else {
 			propertySerializers[Type] = this;
 		}
 	}
 
+	/// <summary>
+	/// Reads/parses the desired type from the BinaryReader
+	/// </summary>
 	public abstract T Read<T>(BinaryReader reader);
+
+	/// <summary>
+	/// Parses/writes the desired type to the ModPacket
+	/// </summary>
 	public abstract void Write<T>(ModPacket packet, T value);
 
 	/// <summary>
@@ -82,7 +92,9 @@ public abstract class ModPropertySerializer<TType> : ModPropertySerializer
 		}
 	}
 
+	/// <inheritdoc cref="Read{T}"/>
 	protected abstract TType Read(BinaryReader reader);
+	/// <inheritdoc cref="Write{T}"/>
 	protected abstract void Write(ModPacket packet, TType value);
 }
 
@@ -153,6 +165,9 @@ public class ProjectilePropertySerializer : ModPropertySerializer<Projectile>
 	protected override void Write(ModPacket packet, Projectile value) => packet.Write(value?.whoAmI ?? -1);
 }
 
+/// <summary>
+/// This is maybe a little overkill for ease of serialization, but there's no harm to it
+/// </summary>
 public class ModPlayerPropertySerializer : ModPropertySerializer<ModPlayer>
 {
 	public override bool AffectSubClasses => true;

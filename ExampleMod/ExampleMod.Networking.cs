@@ -1,5 +1,6 @@
 using ExampleMod.Content.Items.Consumables;
 using System.IO;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace ExampleMod

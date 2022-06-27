@@ -7,7 +7,7 @@ using System.Reflection;
 namespace Terraria.ModLoader.IO;
 
 /// <summary>
-/// A class that holds the required info to serialize a custom packet type
+/// A class that holds the required info to serialize all the properties of a custom packet type
 /// </summary>
 internal abstract class CustomPacketSerializer
 {

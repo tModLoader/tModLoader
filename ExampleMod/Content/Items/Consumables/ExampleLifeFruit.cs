@@ -74,8 +74,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer) {
 			new ExampleSyncPlayerPacket {
-				ExampleLifeFruitPlayer = this,
-				ExampleLifeFruits = exampleLifeFruits
+				ExampleLifeFruitPlayer = this, ExampleLifeFruits = exampleLifeFruits
 			}.Send(toWho, fromWho);
 		}
 
@@ -86,21 +85,19 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void LoadData(TagCompound tag) {
-			exampleLifeFruits = (int) tag["exampleLifeFruits"];
+			exampleLifeFruits = (int)tag["exampleLifeFruits"];
 		}
 	}
 
 	public class ExampleSyncPlayerPacket : ModCustomPacket
 	{
-		// This type is automatically correctly serialized!
+		/// <summary>
+		/// This type is automatically correctly serialized! <see cref="ModPlayerPropertySerializer"/>
+		/// </summary>
 		public ExampleLifeFruitPlayer ExampleLifeFruitPlayer { get; init; }
-		public int ExampleLifeFruits { get; init; }
 
-		protected override void SetDefaults() {
-			// Here we don't need to set any defaults because we're including all properties in every call
-			// If we weren't, we'd want to set their default values here to make sure that no old values were mistakenly
-			// used from previously received packets
-		}
+		// "init" just means that your code can only set this when creating the object and not afterward
+		public int ExampleLifeFruits { get; init; }
 
 		public override void HandlePacket() {
 			ExampleLifeFruitPlayer.exampleLifeFruits = ExampleLifeFruits;
