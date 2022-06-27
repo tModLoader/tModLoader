@@ -8,6 +8,7 @@ namespace ExampleMod.Common.Players
 {
 	// If we hover the cursor over a gel, the cursor style will change.
 	// If we shift-click it, it changes its color and rarity.
+	// See GelGlobalItem.cs as well, we add a tooltip line for gel to indicate what will happen
 	public class ExampleShiftClickSlotPlayer : ModPlayer
 	{
 		public override bool ShiftClickSlot(Item[] inventory, int context, int slot) {
