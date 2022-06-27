@@ -2426,6 +2426,19 @@
  		}
  
  		protected void DrawFPS() {
+@@ -15890,10 +_,10 @@
+ 				float num2 = 1f;
+ 				Vector2 baseScale = new Vector2(num2);
+ 				if (gameMenu)
+-					num = 55f;
++					num = 90f;
+ 
+ 				if (menuMode == 0)
+-					num += 32f;
++					num += 55f;
+ 
+ 				Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, text, new Vector2(1f));
+ 				float t = num2;
 @@ -16070,9 +_,14 @@
  			TilesRenderer.ClearCachedTileDraws(solidLayer: true);
  		}
