@@ -111,11 +111,11 @@ public class ModAddRecipes : Mod
 		var recipe = Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
 		recipe.Register();
 
-		var recipe = Recipe.Create(modItem.Type);
+		recipe = Recipe.Create(modItem.Type);
 		recipe.Register();
 	}
 
-	public Mod GetMod() => Mod;
+	public Mod GetMod() => this;
 
 	public void GetModMayHaveSideEffects() {
 		var recipe = /* GetMod() */Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
