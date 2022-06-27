@@ -162,7 +162,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="memdesc:acc076dcae6e7254a706130119bad26d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return false to prevent an item from being used. By default returns true.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#acc076dcae6e7254a706130119bad26d1">More...</a><br /></td></tr>
 <tr class="separator:acc076dcae6e7254a706130119bad26d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f9e0d6317cbbb755100c790cc5e0376"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a2f9e0d6317cbbb755100c790cc5e0376">CatchFish</a> (<a class="el" href="struct_terraria_1_1_data_structures_1_1_fishing_attempt.html">FishingAttempt</a> attempt, ref int itemDrop, ref int npcSpawn, ref <a class="el" href="struct_terraria_1_1_advanced_popup_request.html">AdvancedPopupRequest</a> sonar, ref Vector2 sonarPosition)</td></tr>
-<tr class="memdesc:a2f9e0d6317cbbb755100c790cc5e0376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the item or enemy the player gets when sucessfully catching a "fish". The Fishing Attempt structure contains most information about the vanilla event, including the <a class="el" href="class_terraria_1_1_item.html">Item</a> Rod and Bait used by the player, the liquid it is being fished on, and so on. The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>) freely  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a2f9e0d6317cbbb755100c790cc5e0376">More...</a><br /></td></tr>
+<tr class="memdesc:a2f9e0d6317cbbb755100c790cc5e0376"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change the item or enemy the player gets when sucessfully catching an item or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. The Fishing Attempt structure contains most information about the vanilla event, including the <a class="el" href="class_terraria_1_1_item.html">Item</a> Rod and Bait used by the player, the liquid it is being fished on, and so on. The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>) freely  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a2f9e0d6317cbbb755100c790cc5e0376">More...</a><br /></td></tr>
 <tr class="separator:a2f9e0d6317cbbb755100c790cc5e0376"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8df0879f930e49f6d4b81b4d8decd4be"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a8df0879f930e49f6d4b81b4d8decd4be">clientClone</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html">ModPlayer</a> clientClone)</td></tr>
 <tr class="memdesc:a8df0879f930e49f6d4b81b4d8decd4be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to copy information about this player to the clientClone parameter. You should copy information that you intend to sync between server and client. This hook is called in the Player.clientClone method. See SendClientChanges for more info.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a8df0879f930e49f6d4b81b4d8decd4be">More...</a><br /></td></tr>
@@ -213,6 +213,11 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="memitem:aa1cb4495483569aec189ab5feba489cc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa1cb4495483569aec189ab5feba489cc">ModifyDrawLayerOrdering</a> (IDictionary&lt; <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html">PlayerDrawLayer</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_1_1_position.html">PlayerDrawLayer.Position</a> &gt; positions)</td></tr>
 <tr class="memdesc:aa1cb4495483569aec189ab5feba489cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to reorder the player draw layers. This is called once at the end of mod loading, not during the game. Use with extreme caution, or risk breaking other mods.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aa1cb4495483569aec189ab5feba489cc">More...</a><br /></td></tr>
 <tr class="separator:aa1cb4495483569aec189ab5feba489cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23c9023a0dc17e5749d625f7f2978531"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a23c9023a0dc17e5749d625f7f2978531">ModifyFishingAttempt</a> (ref <a class="el" href="struct_terraria_1_1_data_structures_1_1_fishing_attempt.html">FishingAttempt</a> attempt)</td></tr>
+<tr class="memdesc:a23c9023a0dc17e5749d625f7f2978531"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered. <br  />
+Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those. <br  />
+Setting FishingAttempt.rolledItemDrop or FishingAttempt.rolledEnemySpawn is not allowed and will be reset, use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a2f9e0d6317cbbb755100c790cc5e0376" title="Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC....">CatchFish</a> for that.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a23c9023a0dc17e5749d625f7f2978531">More...</a><br /></td></tr>
+<tr class="separator:a23c9023a0dc17e5749d625f7f2978531"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42197e724e0dc2ae7f81d1cd2313381e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a42197e724e0dc2ae7f81d1cd2313381e">ModifyHitByNPC</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> npc, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:a42197e724e0dc2ae7f81d1cd2313381e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> does to this player.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a42197e724e0dc2ae7f81d1cd2313381e">More...</a><br /></td></tr>
 <tr class="separator:a42197e724e0dc2ae7f81d1cd2313381e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1269,7 +1274,7 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to change the item or enemy the player gets when sucessfully catching a "fish". The Fishing Attempt structure contains most information about the vanilla event, including the <a class="el" href="class_terraria_1_1_item.html">Item</a> Rod and Bait used by the player, the liquid it is being fished on, and so on. The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>) freely </p>
+<p>Allows you to change the item or enemy the player gets when sucessfully catching an item or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>. The Fishing Attempt structure contains most information about the vanilla event, including the <a class="el" href="class_terraria_1_1_item.html">Item</a> Rod and Bait used by the player, the liquid it is being fished on, and so on. The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>) freely </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">attempt</td><td>The structure containing most data from the vanilla fishing attempt</td></tr>
@@ -1975,6 +1980,42 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">positions</td><td>Add/remove/change the positions applied to each layer here</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a23c9023a0dc17e5749d625f7f2978531"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23c9023a0dc17e5749d625f7f2978531">&#9670;&nbsp;</a></span>ModifyFishingAttempt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModPlayer.ModifyFishingAttempt </td>
+          <td>(</td>
+          <td class="paramtype">ref <a class="el" href="struct_terraria_1_1_data_structures_1_1_fishing_attempt.html">FishingAttempt</a>&#160;</td>
+          <td class="paramname"><em>attempt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered. <br  />
+Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those. <br  />
+Setting FishingAttempt.rolledItemDrop or FishingAttempt.rolledEnemySpawn is not allowed and will be reset, use <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a2f9e0d6317cbbb755100c790cc5e0376" title="Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC....">CatchFish</a> for that. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">attempt</td><td>The structure containing most data from the vanilla fishing attempt</td></tr>
   </table>
   </dd>
 </dl>

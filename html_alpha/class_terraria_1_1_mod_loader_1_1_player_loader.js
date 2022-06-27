@@ -31,6 +31,7 @@ var class_terraria_1_1_mod_loader_1_1_player_loader =
     [ "ModifyCaughtFish", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a24e7a5c1872fa1c4756be5f09aad47cc", null ],
     [ "ModifyDrawInfo", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a6325d283b0301c46043544b10ab73852", null ],
     [ "ModifyDrawLayerOrdering", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a8856b67c4d7c9ecf8816c7b69c361681", null ],
+    [ "ModifyFishingAttempt", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a79346f7a3d43a0315e68f599347089a8", null ],
     [ "ModifyHitByNPC", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a35bb5a8dfd273f01f2de8fe32721f12d", null ],
     [ "ModifyHitByProjectile", "class_terraria_1_1_mod_loader_1_1_player_loader.html#addd203e2d9c9163fa4232500b1fc789a", null ],
     [ "ModifyHitNPC", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a83373f79d99c940293d18234adcb178d", null ],
