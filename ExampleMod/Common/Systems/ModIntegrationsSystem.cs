@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Systems
@@ -24,7 +25,8 @@ namespace ExampleMod.Common.Systems
 
 			// Boss Checklist shows comprehensive information about bosses in its own UI. We can customize it:
 			// https://forums.terraria.org/index.php?threads/.50668/
-			DoBossChecklistIntegration();
+			//DoBossChecklistIntegration();
+			DoBossChecklistIntegrationViaAPI();
 
 			// We can integrate with other mods here by following the same pattern. Some modders may prefer a ModSystem for each mod they integrate with, or some other design.
 		}
@@ -124,5 +126,56 @@ namespace ExampleMod.Common.Systems
 
 			// Other bosses or additional Mod.Call can be made here.
 		}
+
+		private void DoBossChecklistIntegrationViaAPI() {
+			if (!ModLoader.TryGetMod("BossChecklist", out Mod bossChecklistMod) || bossChecklistMod.Version < new Version(1, 3, 1))
+				return;
+			var api = ModLoader.GetAPI<IBossChecklistAPI>("BossChecklist");
+			if (api is null)
+				return;
+
+			string bossName = "Minion Boss";
+			int bossType = ModContent.NPCType<Content.NPCs.MinionBoss.MinionBossBody>();
+			float weight = 0.7f;
+
+			// the compiler knows the exact delegate types `AddBoss` requires, so we can turn those into local functions
+			static bool IsDowned() => DownedBossSystem.downedMinionBoss;
+			static bool IsAvailable() => true;
+
+			List<int> collection = new List<int>()
+			{
+				ModContent.ItemType<Content.Items.Placeable.Furniture.MinionBossRelic>(),
+				ModContent.ItemType<Content.Pets.MinionBossPet.MinionBossPetItem>(),
+				ModContent.ItemType<Content.Items.Placeable.Furniture.MinionBossTrophy>(),
+				ModContent.ItemType<Content.Items.Armor.Vanity.MinionBossMask>()
+			};
+
+			int summonItem = ModContent.ItemType<Content.Items.Consumables.MinionBossSummonItem>();
+			string spawnInfo = $"Use a [i:{summonItem}]";
+
+			var customBossPortrait = (SpriteBatch sb, Rectangle rect, Color color) => {
+				Texture2D texture = ModContent.Request<Texture2D>("ExampleMod/Assets/Textures/Bestiary/MinionBoss_Preview").Value;
+				Vector2 centered = new Vector2(rect.X + (rect.Width / 2) - (texture.Width / 2), rect.Y + (rect.Height / 2) - (texture.Height / 2));
+				sb.Draw(texture, centered, color);
+			};
+
+			api.AddBoss(Mod, bossName,
+				new List<int> { bossType },
+				weight,
+				IsDowned,
+				IsAvailable,
+				collection,
+				new List<int> { summonItem },
+				spawnInfo,
+				despawn: null,
+				customBossPortrait
+			);
+		}
+	}
+
+	// an interface copy-pasted from Boss Checklist
+	public interface IBossChecklistAPI
+	{
+		void AddBoss(Mod source, string name, List<int> ids, float progress, Func<bool> down, Func<bool> available, List<int> collect, List<int> spawn, string info, Func<NPC, string> despawn = null, Action<SpriteBatch, Rectangle, Color> drawing = null);
 	}
 }

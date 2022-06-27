@@ -51,7 +51,7 @@ namespace Terraria.ModLoader
 
 		private static readonly IDictionary<string, Mod> modsByName = new Dictionary<string, Mod>(StringComparer.OrdinalIgnoreCase);
 		private static readonly Lazy<IProxyManager<string>> proxyManager = new(() => {
-			AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName($"Terraria.ModLoader.Proxies, Version={typeof(ModLoader).Assembly.GetName().Version}, Culture=neutral"), AssemblyBuilderAccess.Run);
+			AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName($"Terraria.ModLoader.Proxies, Version={typeof(ModLoader).Assembly.GetName().Version}, Culture=neutral"), AssemblyBuilderAccess.RunAndCollect);
 			ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("Terraria.ModLoader.Proxies");
 			return new ProxyManager<string>(moduleBuilder, new ProxyManagerConfiguration<string>(
 				proxyPrepareBehavior: ProxyManagerProxyPrepareBehavior.Eager,
@@ -107,19 +107,33 @@ namespace Terraria.ModLoader
 			// validate mapping
 			if (!typeof(TInterface).IsInterface)
 			{
-				Logging.tML.Error($"Tried to map a mod-provided API to class '{typeof(TInterface).FullName}'; must be a public interface.");
+				Logging.tML.Error($"Tried to map a mod-provided API to class `{typeof(TInterface).FullName}`; must be a public interface.");
 				return null;
 			}
 			if (!typeof(TInterface).IsPublic)
 			{
-				Logging.tML.Error($"Tried to map a mod-provided API to non-public interface '{typeof(TInterface).FullName}'; must be a public interface.");
+				Logging.tML.Error($"Tried to map a mod-provided API to non-public interface `{typeof(TInterface).FullName}`; must be a public interface.");
 				return null;
 			}
 
 			// get API of type
-			return api is TInterface castApi
-				? castApi
-				: proxyManager.Value.ObtainProxy<string, TInterface>(api, targetContext: mod.GetType().Assembly.GetName().FullName, proxyContext: typeof(TInterface).Assembly.GetName().FullName);
+			if (api is TInterface castApi)
+				return castApi;
+
+			try {
+				// these two are used as part of the resulting type name - useful when reading stack traces
+				// might want to use something shorter (like mod names), as the generated names are omega long though
+				// i didn't have access to the consuming mod's name here though, so i did this instead
+				string targetContext = mod.GetType().Assembly.GetName().FullName;
+				string proxyContext = typeof(TInterface).Assembly.GetName().FullName;
+
+				TInterface proxy = proxyManager.Value.ObtainProxy<string, TInterface>(api, targetContext: targetContext, proxyContext: proxyContext);
+				return proxy;
+			}
+			catch (Exception ex) {
+				Logging.tML.Error($"There was a problem retrieving `{typeof(TInterface).FullName}` API for mod `{name}`:\n{ex}");
+				return null;
+			}
 		}
 
 		internal static void EngineInit()
