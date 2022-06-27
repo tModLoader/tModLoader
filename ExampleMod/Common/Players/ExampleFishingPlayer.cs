@@ -9,8 +9,25 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
 {
+	// This class showcases things you can do with fishing
 	public class ExampleFishingPlayer : ModPlayer
 	{
+		public bool hasExampleCrateBuff;
+
+		public override void ResetEffects() {
+			hasExampleCrateBuff = false;
+		}
+
+		public override void ModifyFishingAttempt(ref FishingAttempt attempt) {
+			// If the player has the Example Crate buff (given by Example Crate Potion), 10% additional chance that the catch will be a crate
+			// The "tier" of the crate depends on the rarity, which we don't modify here, see the comments in CatchFish for details
+			if (hasExampleCrateBuff && !attempt.crate) {
+				if (Main.rand.Next(100) < 10) {
+					attempt.crate = true;
+				}
+			}
+		}
+
 		public override void CatchFish(FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition) {
 			bool inWater = !attempt.inLava && !attempt.inHoney;
 			bool inExampleSurfaceBiome = Player.InModBiome<ExampleSurfaceBiome>();
@@ -43,7 +60,8 @@ namespace ExampleMod.Common.Players
 				// We don't want to replace golden/titanium crates (the highest tier crates), as they take highest priority in crate catches
 				// Their drop conditions are "veryrare" or "legendary"
 				// (After that come biome crates ("rare"), then iron/mythril ("uncommon"), then wood/pearl (none of the previous))
-				if (!attempt.veryrare && !attempt.legendary && attempt.rare) {
+				// Let's replace biome crates 50% of the time (player could be in multiple (modded) biomes, we should respect that)
+				if (!attempt.veryrare && !attempt.legendary && attempt.rare && Main.rand.NextBool()) {
 					itemDrop = ModContent.ItemType<Content.Items.Consumables.ExampleFishingCrate>();
 				}
 			}
