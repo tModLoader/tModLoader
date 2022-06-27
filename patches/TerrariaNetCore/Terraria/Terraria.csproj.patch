@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/TerrariaNetCore/Terraria/Terraria.csproj
-@@ -2,89 +_,130 @@
+@@ -2,89 +_,132 @@
    <Import Project="../Configuration.targets" />
    <Import Project="../../WorkspaceInfo.targets" />
    <PropertyGroup>
@@ -54,7 +54,6 @@
 -      <LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
 -    </EmbeddedResource>
 -    <Reference Include="Steamworks.NET">
-+    <Reference Include="Steamworks.NET" />
 -      <HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
 -      <HintPath Condition="$(DefineConstants.Contains('MONO'))">Libraries/Mono/Steamworks.NET.dll</HintPath>
 -    </Reference>
@@ -89,6 +88,9 @@
 +    <None Remove="Libraries/Windows/**" />
 +    <None Remove="Libraries/XNA/**" />
 +    <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
++  </ItemGroup>
++  <ItemGroup>
++    <PackageReference Include="Steamworks.NET" Version="20.1.0" />
 +  </ItemGroup>
 +  <PropertyGroup>
 +    <_ActualOutputDirectory>$(TerrariaSteamPath)</_ActualOutputDirectory>

@@ -1,0 +1,33 @@
+--- src/TerrariaNetCore/Terraria/UI/Chat/ChatManager.cs
++++ src/tModLoader/Terraria/UI/Chat/ChatManager.cs
+@@ -253,7 +_,13 @@
+ 
+ 		public static Vector2 DrawColorCodedStringWithShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, float rotation, Color color, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth = -1f, float spread = 2f) {
+ 			DrawColorCodedStringShadow(spriteBatch, font, snippets, position, Color.Black, rotation, origin, baseScale, maxWidth, spread);
+-			return DrawColorCodedString(spriteBatch, font, snippets, position, color, rotation, origin, baseScale, out hoveredSnippet, maxWidth, ignoreColors: true);
++			return DrawColorCodedString(spriteBatch, font, snippets, position, color, rotation, origin, baseScale, out hoveredSnippet, maxWidth);
++		}
++
++		// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++		public static Vector2 DrawColorCodedStringWithShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, float rotation, Color color, Color shadowColor, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth = -1f, float spread = 2f) {
++			DrawColorCodedStringShadow(spriteBatch, font, snippets, position, shadowColor, rotation, origin, baseScale, maxWidth, spread);
++			return DrawColorCodedString(spriteBatch, font, snippets, position, color, rotation, origin, baseScale, out hoveredSnippet, maxWidth);
+ 		}
+ 
+ 		public static void DrawColorCodedStringShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, string text, Vector2 position, Color baseColor, float rotation, Vector2 origin, Vector2 baseScale, float maxWidth = -1f, float spread = 2f) {
+@@ -327,6 +_,15 @@
+ 			TextSnippet[] snippets = ParseMessage(text, baseColor).ToArray();
+ 			ConvertNormalSnippets(snippets);
+ 			DrawColorCodedStringShadow(spriteBatch, font, snippets, position, new Color(0, 0, 0, baseColor.A), rotation, origin, baseScale, maxWidth, spread);
++			int hoveredSnippet;
++			return DrawColorCodedString(spriteBatch, font, snippets, position, Color.White, rotation, origin, baseScale, out hoveredSnippet, maxWidth);
++		}
++
++		// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++		public static Vector2 DrawColorCodedStringWithShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, string text, Vector2 position, Color baseColor, Color shadowColor, float rotation, Vector2 origin, Vector2 baseScale, float maxWidth = -1f, float spread = 2f) {
++			TextSnippet[] snippets = ParseMessage(text, baseColor).ToArray();
++			ConvertNormalSnippets(snippets);
++			DrawColorCodedStringShadow(spriteBatch, font, snippets, position, shadowColor, rotation, origin, baseScale, maxWidth, spread);
+ 			int hoveredSnippet;
+ 			return DrawColorCodedString(spriteBatch, font, snippets, position, Color.White, rotation, origin, baseScale, out hoveredSnippet, maxWidth);
+ 		}
