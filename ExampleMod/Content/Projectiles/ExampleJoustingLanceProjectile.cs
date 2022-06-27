@@ -16,7 +16,6 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		public override void SetDefaults() {
-
 			Projectile.netImportant = true; // Sync this projectile if a player joins mid game.
 
 			// The width and height do not affect the collision of the Jousting Lance because we calculate that separately (see Colliding() below)
@@ -31,12 +30,13 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.friendly = true; // Player shot projectile. Does damage to enemies but not to friendly Town NPCs.
 			Projectile.penetrate = -1; // Infinite penetration. The projectile can hit an infinite number of enemies.
 			Projectile.tileCollide = false; // Don't kill the projectile if it hits a tile.
-			Projectile.scale = 1f; // The scale of the projectile. This only effects the drawing.
+			Projectile.scale = 1f; // The scale of the projectile. This only effects the drawing and the width of the collision.
 			Projectile.hide = true; // We are drawing the projectile ourself. See PreDraw() below.
 			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
 			Projectile.DamageType = DamageClass.Melee; // Set the damage to melee damage.
 
-			// AIType = ProjectileID.JoustingLance; // Act like the normal Jousting Lance. Use this if you set the aiStyle to 19.
+			// Act like the normal Jousting Lance. Use this if you set the aiStyle to 19.
+			// AIType = ProjectileID.JoustingLance; 
 		}
 
 		// This is the behavior of the Jousting Lances.
@@ -46,7 +46,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.direction = owner.direction; // Set the direction of the projectile to the same direction as the owner.
 			owner.heldProj = Projectile.whoAmI; // Set the owner's held projectile to this projectile.
 			owner.itemTime = owner.itemAnimation; // Set the time left on this item to the animation time.
-			Projectile.Center = center; // Set the center of the projectile to the center of the owner.
+			Projectile.Center = center; // Set the center of the projectile to the center of the owner. Projectile.Center is now actually the tip of the Jousting Lance.
 
 			int itemAnimationMax = owner.itemAnimationMax;
 			int itemAnimation = owner.itemAnimation;
@@ -134,17 +134,24 @@ namespace ExampleMod.Content.Projectiles
 			damageScale *= 0.1f + Main.player[Projectile.owner].velocity.Length() / 7f * 0.9f;
 		}
 
-		// This Rectangle is the width and height of the Jousting Lance's hitbox. Modify these numbers if you have a bigger or smaller Jousting Lance.
-		private static Rectangle lanceHitboxBounds = new Rectangle(0, 0, 300, 300);
-
 		// This is the custom collision that Jousting Lances uses. 
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
-			float rotationFactor = Projectile.rotation - (float)Math.PI / 4f - (float)Math.PI / 2f - (float)Math.PI;
-			float collisionPoint = 0f;
-			float scaleFactor = 95f;
+			float rotationFactor = Projectile.rotation + (float)Math.PI / 4f; // The rotation of the Jousting Lance.
+			float scaleFactor = 95f; // How far back the hit-line will be from the tip of the Jousting Lance. You may need to modify this if you have a bigger or smaller Jousting Lance. Vanilla uses 95f
+			float widthMultiplier = 23f; // How thick the hit-line is. Increase or decrease this value if your Jousting Lance is thicker or thinner. Vanilla uses 23f
+			float collisionPoint = 0f; // collisionPoint is needed for CheckAABBvLineCollision(), but it isn't used for our collision here. Keep it at 0f.
+
+			// This Rectangle is the width and height of the Jousting Lance's hitbox which is used for the first step of collision.
+			// You may need to modify the last two numbers if you have a bigger or smaller Jousting Lance. Vanilla uses (0, 0, 300, 300).
+			Rectangle lanceHitboxBounds = new Rectangle(0, 0, 300, 300);
+
+			// Set the position of the large rectangle.
 			lanceHitboxBounds.X = (int)Projectile.position.X - lanceHitboxBounds.Width / 2;
 			lanceHitboxBounds.Y = (int)Projectile.position.Y - lanceHitboxBounds.Height / 2;
-			if (lanceHitboxBounds.Intersects(targetHitbox) && Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, Projectile.Center + rotationFactor.ToRotationVector2() * scaleFactor, 23f * Projectile.scale, ref collisionPoint)) {
+
+			// First check that our large rectangle intersects with the target hitbox. Then we check to see if a line from the tip of the Jousting Lance to the "end" of the lance intersects with the target hitbox.
+			// Projectile.Center is the tip of the Jousting Lance.
+			if (lanceHitboxBounds.Intersects(targetHitbox) && Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, Projectile.Center + rotationFactor.ToRotationVector2() * scaleFactor, widthMultiplier * Projectile.scale, ref collisionPoint)) {
 				return true;
 			}
 			return false;
@@ -153,6 +160,7 @@ namespace ExampleMod.Content.Projectiles
 		// We need to draw the projectile manually. If you don't include this, the Jousting Lance will not be aligned with the player.
 		public override bool PreDraw(ref Color lightColor) {
 
+			// SpriteEffects change which direction the sprite is drawn.
 			SpriteEffects spriteEffects = SpriteEffects.None;
 
 			// Get texture of projectile
@@ -161,12 +169,14 @@ namespace ExampleMod.Content.Projectiles
 			// Get the currently selected frame on the texture.
 			Rectangle sourceRectangle = texture.Frame(1, Main.projFrames[Type], frameY: Projectile.frame);
 
+			// The origin in this case is (0, 0) of our projectile because Projectile.Center is the tip of our Jousting Lance.
 			Vector2 origin = Vector2.Zero;
 
+			// The rotation of the projectile.
 			float rotation = Projectile.rotation;
 
 			// If the projectile is facing right, we need to rotate it by -90 degrees, move the origin, and flip the sprite horizontally.
-			// This will make it so the bottom of the sprite is correctly facing down with shot to the right.
+			// This will make it so the bottom of the sprite is correctly facing down when shot to the right.
 			if (Projectile.direction > 0) {
 				rotation -= (float)Math.PI / 2f;
 				origin.X += sourceRectangle.Width;
@@ -176,7 +186,7 @@ namespace ExampleMod.Content.Projectiles
 			// The position of the sprite. Not subtracting Main.player[Projectile.owner].gfxOffY will cause the sprite to bounce when walking up blocks.
 			Vector2 position = new(Projectile.Center.X, Projectile.Center.Y - Main.player[Projectile.owner].gfxOffY);
 
-			// Applying lighting and draw our projectile
+			// Apply lighting and draw our projectile
 			Color drawColor = Projectile.GetAlpha(lightColor);
 
 			Main.EntitySpriteDraw(texture,
