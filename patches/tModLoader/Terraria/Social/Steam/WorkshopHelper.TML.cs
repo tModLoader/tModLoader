@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -108,7 +109,11 @@ namespace Terraria.Social.Steam
 
 				File.WriteAllText(apptxt, thisApp.ToString());
 
-				if (GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0")) {
+				if (RuntimeInformation.ProcessArchitecture is Architecture.Arm or Architecture.Arm64) {
+					Logging.tML.Warn("Steam Game Server currently unsupported on ARM");
+					SteamAvailable = false;
+				}
+				else if (GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0")) {
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
 					SteamGameServer.LogOnAnonymous();
