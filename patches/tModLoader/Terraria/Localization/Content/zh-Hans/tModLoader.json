@@ -22,7 +22,8 @@
 		"ShowNewUpdatedModsInfoMessage": "自从上一次启动以来，以下模组被添加或更新（你可以在设置中关掉这个提示）：\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\n新增模组：",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\n更新模组：",
-		"ModUpdatedSinceLastLaunchMessage": "自上一次启动以来此模组已更新",
+		"ModUpdatedSinceLastLaunchMessage": "自上一次启动以来此模组已更新 {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "在 GitHub 上查看",
 		"tModLoaderSettings": "tModLoader设置",
 		"ModMenuSwap": "切换背景主题",
@@ -396,7 +397,7 @@
 		"DefaultTownNPCName": "无名氏",
 		"DefaultTownNPCChat": "模组作者忘记给我一个聊天信息了.",
 		"DefaultNurseCantHealChat": "我也不知道为什么我无法治愈你,模组作者忘记给我一个聊天信息了.",
-		
+
 		// Tooltip lines
 		"NoAttackSpeedScaling": "攻击频率不受攻击速度加成影响",
 		"SpecialAttackSpeedScaling": "受到全局攻速加成的效果为原有的{0}%",
@@ -509,5 +510,8 @@
 		"InGemCave": "需要位于宝石洞内",
 		"InLihzardTemple": "需要位于丛林神庙内",
 		"InGraveyardBiome": "需要位于墓地环境"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }
