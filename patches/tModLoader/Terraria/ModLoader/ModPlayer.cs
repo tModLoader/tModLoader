@@ -20,12 +20,20 @@ namespace Terraria.ModLoader
 		public Player Player => Entity;
 
 		public ushort Index { get; internal set; }
+		
+		protected override Player CreateTemplateEntity() => null;
+
+		public override ModPlayer NewInstance(Player entity) {
+			var inst = base.NewInstance(entity);
+			
+			inst.Index = Index;
+
+			return inst;
+		}
 
 		public bool TypeEquals(ModPlayer other) {
 			return Mod == other.Mod && Name == other.Name;
 		}
-
-		protected override Player CreateTemplateEntity() => null;
 
 		protected override void ValidateType() {
 			base.ValidateType();
