@@ -52,6 +52,7 @@ namespace Terraria.ModLoader
 
 		internal static void Unload() {
 			players.Clear();
+			modHooks.Clear();
 		}
 
 		private static HookList HookInitialize = AddHook<Action>(p => p.Initialize);
