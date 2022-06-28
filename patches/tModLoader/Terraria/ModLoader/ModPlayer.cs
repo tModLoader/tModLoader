@@ -14,13 +14,13 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	{
+		public ushort Index { get; internal set; }
+
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
 		public Player Player => Entity;
 
-		public ushort Index { get; internal set; }
-		
 		protected override Player CreateTemplateEntity() => null;
 
 		public override ModPlayer NewInstance(Player entity) {
