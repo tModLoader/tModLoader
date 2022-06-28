@@ -21,11 +21,20 @@ namespace Terraria.ModLoader
 	{
 		private static readonly List<ModPlayer> players = new();
 		private static readonly List<HookList> hooks = new();
+		private static readonly List<HookList> modHooks = new();
 
 		private static HookList AddHook<F>(Expression<Func<ModPlayer, F>> func) where F : Delegate {
 			var hook = HookList.Create(func);
 
 			hooks.Add(hook);
+
+			return hook;
+		}
+
+		public static T AddModHook<T>(T hook) where T : HookList {
+			hook.Update(players);
+
+			modHooks.Add(hook);
 
 			return hook;
 		}
@@ -36,7 +45,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void RebuildHooks() {
-			foreach (var hook in hooks) {
+			foreach (var hook in hooks.Union(modHooks)) {
 				hook.Update(players);
 			}
 		}
