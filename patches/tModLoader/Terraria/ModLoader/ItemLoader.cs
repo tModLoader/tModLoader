@@ -123,7 +123,7 @@ namespace Terraria.ModLoader
 			FindVanillaWings();
 
 			globalItemsArray = globalItems
-				.Select(g => new Instanced<GlobalItem>(g.index, g))
+				.Select(g => new Instanced<GlobalItem>(g.Index, g))
 				.ToArray();
 
 			NetGlobals = globalItems.WhereMethodIsOverridden<GlobalItem, Action<Item, BinaryWriter>>(g => g.NetSend).ToArray();

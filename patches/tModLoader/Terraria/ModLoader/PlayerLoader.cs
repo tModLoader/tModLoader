@@ -40,7 +40,7 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void Add(ModPlayer player) {
-			player.index = (ushort)players.Count;
+			player.Index = (ushort)players.Count;
 			players.Add(player);
 		}
 
@@ -57,7 +57,7 @@ namespace Terraria.ModLoader
 		private static HookList HookInitialize = AddHook<Action>(p => p.Initialize);
 
 		internal static void SetupPlayer(Player player) {
-			LoaderUtils.InstantiateGlobals(player, players, ref player.modPlayers, () => { });
+			player.modPlayers = players.Select(modPlayer => new Instanced<ModPlayer>(modPlayer.Index, modPlayer.NewInstance(player))).ToArray();
 
 			foreach (var modPlayer in HookInitialize.Enumerate(player.ModPlayers.array)) {
 				modPlayer.Initialize();
@@ -121,7 +121,7 @@ namespace Terraria.ModLoader
 
 		public static void clientClone(Player player, Player clientClone) {
 			foreach (var modPlayer in HookClientClone.Enumerate(player.modPlayers)) {
-				modPlayer.clientClone(clientClone.modPlayers[modPlayer.index].Instance);
+				modPlayer.clientClone(clientClone.modPlayers[modPlayer.Index].Instance);
 			}
 		}
 
@@ -137,7 +137,7 @@ namespace Terraria.ModLoader
 
 		public static void SendClientChanges(Player player, Player clientPlayer) {
 			foreach (var modPlayer in HookSendClientChanges.Enumerate(player.modPlayers)) {
-				modPlayer.SendClientChanges(clientPlayer.modPlayers[modPlayer.index].Instance);
+				modPlayer.SendClientChanges(clientPlayer.modPlayers[modPlayer.Index].Instance);
 			}
 		}
 

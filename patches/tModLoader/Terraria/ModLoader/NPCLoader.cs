@@ -131,7 +131,7 @@ namespace Terraria.ModLoader
 			}
 
 			globalNPCsArray = globalNPCs
-				.Select(g => new Instanced<GlobalNPC>(g.index, g))
+				.Select(g => new Instanced<GlobalNPC>(g.Index, g))
 				.ToArray();
 
 			foreach (var hook in hooks.Union(modHooks)) {

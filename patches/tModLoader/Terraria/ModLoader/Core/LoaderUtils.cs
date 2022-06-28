@@ -96,7 +96,7 @@ namespace Terraria.ModLoader.Core
 				int j = 0;
 				foreach (var g in set) {
 					if (g != null)
-						entityGlobals[j++] = new(g.index, g);
+						entityGlobals[j++] = new(g.Index, g);
 				}
 			}
 			else {

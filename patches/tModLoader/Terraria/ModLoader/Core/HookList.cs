@@ -79,8 +79,8 @@ namespace Terraria.ModLoader.Core
 		public InstanceEnumerator Enumerate(Instanced<T>[] instances)
 			=> new(instances, indices);
 
-		public void Update<U>(IList<U> instances) where U : GlobalType {
-			indices = instances.WhereMethodIsOverridden(method).Select(g => (int)g.index).ToArray();
+		public void Update<U>(IList<U> instances) where U : IIndexed {
+			indices = instances.WhereMethodIsOverridden(method).Select(g => (int)g.Index).ToArray();
 		}
 
 		public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate

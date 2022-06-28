@@ -30,14 +30,14 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalItem>.Register(this);
 
-			index = (ushort)ItemLoader.globalItems.Count;
+			Index = (ushort)ItemLoader.globalItems.Count;
 
 			ItemLoader.globalItems.Add(this);
 		}
 
 		public sealed override void SetupContent() => SetStaticDefaults();
 
-		public GlobalItem Instance(Item item) => Instance(item.globalItems, index);
+		public GlobalItem Instance(Item item) => Instance(item.globalItems, Index);
 
 		/// <summary>
 		/// Allows you to set the properties of any and every item that gets created.

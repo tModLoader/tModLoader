@@ -89,7 +89,7 @@ namespace Terraria.ModLoader
 			}
 
 			globalProjectilesArray = globalProjectiles
-				.Select(g => new Instanced<GlobalProjectile>(g.index, g))
+				.Select(g => new Instanced<GlobalProjectile>(g.Index, g))
 				.ToArray();
 
 			foreach (var hook in hooks.Union(modHooks)) {
