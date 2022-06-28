@@ -59,7 +59,7 @@ namespace Terraria.ModLoader
 		internal static void SetupPlayer(Player player) {
 			player.modPlayers = players.Select(modPlayer => new Instanced<ModPlayer>(modPlayer.Index, modPlayer.NewInstance(player))).ToArray();
 
-			foreach (var modPlayer in HookInitialize.Enumerate(player.ModPlayers.array)) {
+			foreach (var modPlayer in HookInitialize.Enumerate(player.modPlayers)) {
 				modPlayer.Initialize();
 			}
 		}
