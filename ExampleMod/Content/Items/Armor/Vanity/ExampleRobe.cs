@@ -6,7 +6,7 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 {
 	// See also: ExampleCostume
 	[AutoloadEquip(EquipType.Body)]
-	internal class ExampleRobe : ModItem
+	public class ExampleRobe : ModItem
 	{
 		public override void Load() {
 			// The code below runs only if we're not loading on a server
