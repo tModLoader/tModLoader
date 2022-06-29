@@ -153,6 +153,68 @@
  				if (num <= 0)
  					continue;
  
+@@ -138,13 +_,16 @@
+ 						break;
+ 
+ 					if (item.IsTheSameAs(item2) || useWood(item.type, item2.type) || useSand(item.type, item2.type) || useFragment(item.type, item2.type) || useIronBar(item.type, item2.type) || usePressurePlate(item.type, item2.type) || AcceptedByItemGroups(item.type, item2.type)) {
++						bool doVanillaConsumeItem = RecipeLoader.OnConsumeItem(this, item, ref num);
++						if (doVanillaConsumeItem) {
+-						if (item.stack > num) {
++							if (item.stack > num) {
+-							item.stack -= num;
++								item.stack -= num;
+-							num = 0;
++								num = 0;
+-						}
++							}
+-						else {
++							else {
+-							num -= item.stack;
++								num -= item.stack;
+-							array[k] = new Item();
++								array[k] = new Item();
++							}
+ 						}
+ 					}
+ 				}
+@@ -170,20 +_,23 @@
+ 
+ 					if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
+ 						continue;
+-
+-					if (item.stack > num) {
+-						item.stack -= num;
+-						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
+-							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
+-
+-						num = 0;
+-					}
+-					else {
+-						num -= item.stack;
+-						array[l] = new Item();
+-						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
+-							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
+-					}
++					int stack = item.stack;
++					bool doVanillaConsumeItem = RecipeLoader.OnConsumeItem(this, item, ref num);
++					
++					if (doVanillaConsumeItem) {
++						if (item.stack > num) {
++							item.stack -= num;
++
++							num = 0;
++						}
++						else {
++							num -= item.stack;
++							array[l] = new Item();
++						}
++					}
++
++					if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
++						NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
+ 				}
+ 			}
+ 
 @@ -192,7 +_,7 @@
  			FindRecipes();
  		}

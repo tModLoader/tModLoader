@@ -100,9 +100,11 @@ namespace Terraria
 
 		public delegate void OnCraftCallback(Recipe recipe, Item item);
 		public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
+		public delegate bool OnConsumeItemCallback(Recipe recipe, Item item, ref int ammountRemaining);
 
 		internal OnCraftCallback OnCraftHooks { get; private set; }
 		internal ConsumeItemCallback ConsumeItemHooks { get; private set; }
+		internal OnConsumeItemCallback OnConsumeItemHooks { get; private set; }
 
 		private void AddGroup(int id) {
 			acceptedGroups.Add(id);
@@ -298,6 +300,17 @@ namespace Terraria
 			return this;
 		}
 
+		/// <summary>
+		/// Sets a callback that will allow you to make anything happen when the recipe is used to consume an item.
+		/// </summary>
+		public Recipe AddOnConsumeItemCallback(OnConsumeItemCallback callback) {
+			OnConsumeItemHooks += callback;
+			
+			return this;
+		}
+
+
+
 		#region Ordering
 
 		/// <summary>
@@ -392,6 +405,7 @@ namespace Terraria
 
 			clone.OnCraftHooks = OnCraftHooks;
 			clone.ConsumeItemHooks = ConsumeItemHooks;
+			clone.OnConsumeItemHooks = OnConsumeItemHooks;
 			foreach (Condition condition in Conditions) {
 				clone.AddCondition(condition);
 			}
