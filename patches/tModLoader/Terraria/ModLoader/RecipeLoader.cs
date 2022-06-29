@@ -12,7 +12,6 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class RecipeLoader
 	{
-		internal static readonly IList<GlobalRecipe> globalRecipes = new List<GlobalRecipe>();
 		internal static Recipe[] FirstRecipeForItem = new Recipe[ItemID.Count];
 
 		/// <summary>
@@ -25,12 +24,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal static Mod CurrentMod { get; private set; }
 
-		internal static void Add(GlobalRecipe globalRecipe) {
-			globalRecipes.Add(globalRecipe);
-		}
-
 		internal static void Unload() {
-			globalRecipes.Clear();
 			setupRecipes = false;
 			FirstRecipeForItem = new Recipe[Recipe.maxRecipes];
 		}
@@ -148,7 +142,7 @@ namespace Terraria.ModLoader
 		/// <param name="recipe">The recipe to check.</param>
 		/// <returns>Whether or not the conditions are met for this recipe.</returns>
 		public static bool RecipeAvailable(Recipe recipe) {
-			return recipe.Conditions.All(c => c.RecipeAvailable(recipe)) && globalRecipes.All(globalRecipe => globalRecipe.RecipeAvailable(recipe));
+			return recipe.Conditions.All(c => c.RecipeAvailable(recipe));
 		}
 
 		/// <summary>
@@ -158,10 +152,6 @@ namespace Terraria.ModLoader
 		/// <param name="recipe">The recipe used to craft the item.</param>
 		public static void OnCraft(Item item, Recipe recipe) {
 			recipe.OnCraftHooks?.Invoke(recipe, item);
-
-			foreach (GlobalRecipe globalRecipe in globalRecipes) {
-				globalRecipe.OnCraft(item, recipe);
-			}
 		}
 
 		/// <summary>
@@ -172,10 +162,6 @@ namespace Terraria.ModLoader
 		/// <param name="amount">Modifiable amount of the item consumed.</param>
 		public static void ConsumeItem(Recipe recipe, int type, ref int amount) {
 			recipe.ConsumeItemHooks?.Invoke(recipe, type, ref amount);
-
-			foreach (GlobalRecipe globalRecipe in globalRecipes) {
-				globalRecipe.ConsumeItem(recipe, type, ref amount);
-			}
 		}
 	}
 }
