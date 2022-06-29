@@ -104,23 +104,23 @@ namespace Terraria.ModLoader
 						return;
 				}
 
-				previousException = args.Exception;
-				string msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
+				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
 
-				if (!Main.dedServ && ModCompile.activelyModding && !Main.gameMenu) {
-					AddChatMessage(msg);
-				}
-				else {
+				previousException = args.Exception;
+
+				string msg = args.Exception.Message + " " + Language.GetTextValue("tModLoader.RuntimeErrorSeeLogsForFullTrace", Path.GetFileName(LogPath));
+				if (Main.dedServ) { // TODO, sometimes console write fails on unix clients. Hopefully it doesn't happen on servers? System.IO.IOException: Input/output error at System.ConsolePal.Write
 					Console.ForegroundColor = ConsoleColor.DarkMagenta;
 					Console.WriteLine(msg);
 					Console.ResetColor();
 				}
-
-				tML.Warn(Language.GetTextValue("tModLoader.RuntimeErrorSilentlyCaughtException") + '\n' + exString);
+				else if (ModCompile.activelyModding && !Main.gameMenu) {
+					AddChatMessage(msg);
+				}
 
 				if (oom) {
 					string error = Language.GetTextValue("tModLoader.OutOfMemory");
-					Logging.tML.Fatal(error);
+					tML.Fatal(error);
 					Interface.MessageBoxShow(error);
 					Environment.Exit(1);
 				}

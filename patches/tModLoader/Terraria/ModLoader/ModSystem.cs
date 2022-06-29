@@ -74,6 +74,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Called whenever a world is loaded. This can be used to initialize data structures, etc.
+		/// <br/>If you need to access your data during worldgen, initialize it in <see cref="PreWorldGen"/> instead, unless you also save it on the world, then you need both.
 		/// </summary>
 		public virtual void OnWorldLoad() { }
 
@@ -249,7 +250,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Called after all other time calculations. Can be used to modify the speed at which time should progress per tick in seconds, along with the rate at which the tiles in the world and the events in the world should update with it.
 		/// All fields are measured in in-game minutes per real-life second (min/sec).
-		/// You may want to consider <see cref="Main.fastForwardTime"/> and <see cref="CreativePowerManager.Instance.GetPower{CreativePowers.FreezeTime}().Enabled"/> here.
+		/// You may want to consider <see cref="Main.fastForwardTime"/> and CreativePowerManager.Instance.GetPower&lt;CreativePowers.FreezeTime&gt;().Enabled here.
 		/// </summary>
 		/// <param name="timeRate">The speed at which time flows in min/sec.</param>
 		/// <param name="tileUpdateRate">The speed at which tiles in the world update in min/sec.</param>
@@ -318,6 +319,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows a mod to run code before a world is generated.
+		/// <br/>If you use this to initialize data used during worldgen, which you save on the world, also initialize it in <see cref="OnWorldLoad"/>.
 		/// </summary>
 		public virtual void PreWorldGen() { }
 

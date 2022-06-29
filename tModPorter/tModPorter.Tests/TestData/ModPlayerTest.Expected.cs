@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -15,13 +16,31 @@ public class ModPlayerTest : ModPlayer
 
 	public override void ModifyWeaponCrit(Item item, ref float crit) { /* Empty */ }
 
-	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) { /* Empty */ }
+	public override void ModifyWeaponDamage(Item item, ref StatModifier damage) {
+		damage += 0.1f;
+		damage *= 0.2f;
+		damage.Flat += 4;
+	}
 
 	public override void LoadData(TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR
-	public override void SaveData(TagCompound tag)/* Edit tag parameter rather than returning new TagCompound */ {
+	public override void SaveData(TagCompound tag)/* tModPorter Suggestion: Edit tag parameter instead of returning new TagCompound */ {
 		return new TagCompound();
+	}
+
+	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)/* tModPorter Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed */ {
+		items.Add(9);
+	}
+
+	public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)/* tModPorter Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed */ {
+		items.Add(9);
+	}
+#endif
+
+#if COMPILE_ERROR
+	public override Texture2D SetMapBackgroundImage()/* tModPorter Suggestion: Create a ModBiome (or ModSceneEffect) class and override MapBackground property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive) */ {
+		return null
 	}
 #endif
 

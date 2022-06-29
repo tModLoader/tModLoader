@@ -18,4 +18,6 @@ public class GlobalTileTest : GlobalTile {
 		Main.specY[nextSpecialDrawIndex] = j;
 		nextSpecialDrawIndex++;
 	}
+
+	public override void PlaceInWorld(int i, int j, Item item) { /* Empty */ }
 }

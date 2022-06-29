@@ -1,6 +1,32 @@
+using System;
+using Terraria;
 using Terraria.ModLoader;
 
-public class EquipTextureTest : Mod
+public class EquipTextureTest : EquipTexture
+{
+	void Method() {
+#if COMPILE_ERROR
+		Console.WriteLine(mod);
+#endif
+		Console.WriteLine(item);
+	}
+
+	public override void UpdateVanity(Player player, EquipType type) { /* Empty */ }
+
+#if COMPILE_ERROR
+	public override bool DrawHead() { return true; /* Empty */ }
+
+	public override bool DrawBody() { return true; /* Empty */ }
+
+	public override bool DrawLegs() { return true; /* Empty */ }
+
+	public override void DrawHands(ref bool drawHands, ref bool drawArms) { /* Empty */ }
+
+	public override void DrawHair(ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
+#endif
+}
+
+public class EquipTextureModTest : Mod
 {
 	void Method() {
 		Mod mod = this;
@@ -26,6 +52,9 @@ public class EquipTextureTest : Mod
 		slot = AddEquipTexture(equipTexture, item, equipType, equipName, pathToTexture);
 		slot = AddEquipTexture(equipTexture, null, equipType, equipName, pathToTexture);
 
+		slot = mod.AddEquipTexture(null, equipType, equipName, pathToTexture, "arms", "female");
+		slot = AddEquipTexture(equipTexture, null, equipType, equipName, pathToTexture, femaleTexture: "female");
+
 		// 1.3 EquipTexture Mod.GetEquipTexture(string name, EquipType type)
 		// 1.4 EquipTexture EquipLoader.GetEquipTexture(Mod mod, string name, EquipType type)
 		equipTexture = mod.GetEquipTexture(equipName, equipType);
@@ -37,8 +66,10 @@ public class EquipTextureTest : Mod
 		slot = GetEquipSlot(equipName, equipType);
 
 		// 1.3 sbyte Mod.GetAccessorySlot(string name, EquipType type)
-		// 1.4 int EquipLoader.GetEquipSlot(Mod mod, string name, EquipType type) cast to sbyte
+		// 1.4 int EquipLoader.GetEquipSlot(Mod mod, string name, EquipType type)
+#if COMPILE_ERROR // sbyte -> int
 		sbyte sSlot = mod.GetAccessorySlot(equipName, equipType);
 		sSlot = GetAccessorySlot(equipName, equipType);
+#endif
 	}
 }

@@ -11,6 +11,8 @@
 		"MenuModSources": "Fontes de Mods",
 		"MenuDevelopMods": "Desenvolver Mods",
 		"MenuDevelopModsDescription": "Desenvolva e publique Mods para outros usarem, usando seu código em Fontes de Mods",
+		"ModsModPacks": "Pacotes de Mods",
+		// "MenuModPackDescription": "Manage Mod Packs, for features like saving your current list of mods & config, and Import & Export Mod Packs. Experimental.",
 		"MenuEnableDeveloperMode": "Habilitar Modo Desenvolvedor",
 		"WelcomeMessageBeta": "Bem-vindo à Alpha do tModLoader 1.4.\n\nVocê instalou com sucesso um tModLoader instável que pode conter bugs que quebram o jogo. \n\nUse o menu Oficina para acessar as funções do tModLoader relacionadas aos Mods.\n\nJunte-se ao Discord do tModLoader para saber mais sobre quais mods e/ou ferramentas de teste estão disponíveis para o tModLoader 1.4 como parte de sua revisão da 1.4.",
 		"MonthlyFreezeNotification": "O congelamento mensal da alpha começou. Relembrando que, no 21° dia de cada mês, há um período de tempo em que se espera que os desenvolvedores de mods publiquem seus mods no branch 1.4-preview em anticipação a todas as alterações de código e API no tModLoader que foram feitas no último mês. O atual 1.4-preview se tornará o novo 1.4-stable no 1° dia do próximo mês.\n\nJunte-se ao Discord do tModLoader para saber mais sobre as mudanças deste mês e ver as notas de migração. Clique em \"Mais Informações\" para saber mais sobre o ciclo de lançamento da alpha.",
@@ -19,13 +21,15 @@
 		"ShowNewUpdatedModsInfoMessage": "Os mods a seguir foram adicionados ou atualizados desde o último lançamento (você pode desativar esta mensagem nas configurações):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNovos Mods:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nMods atualizados:",
-		"ModUpdatedSinceLastLaunchMessage": "Este mod foi atualizado desde o último lançamento",
+		"ModUpdatedSinceLastLaunchMessage": "Este mod foi atualizado desde o último lançamento {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "Ver no GitHub",
 		"tModLoaderSettings": "Configurações do tModLoader",
 		"ModMenuSwap": "Alterar o Tema do Menu",
 		"MenuModsEnabled": "{0} {^0:Mod;Mods} habilitados",
 		"MenuModUpdatesAvailable": "({0} {^0:atualização;atualizações} {^0:disponível;disponíveis}!)",
 		"AudioNotSupported": "Nenhum hardware de áudio encontrado. Desativando todo o áudio.",
+		// "13InfoButton": "How to Access 1.3 tModLoader",
 
 		// Mods Menu
 		"ModsModsList": "Lista de Mods",
@@ -33,8 +37,11 @@
 		"ModsDisableAll": "Desativar Todos",
 		"ModsReloadMods": "Recarregar Mods",
 		"ModsForceReload": "Forçar Recarregamento",
-		"ModsOpenModsFolder": "Abrir Pasta de Mods",
-		"ModsModPacks": "Pacotes de Mods",
+		"ModsOpenModsFolders": "Abrir Pasta de Mods",
+		// "OpenModPackFolder": "Open Mod Pack Folder",
+		// "DeactivateModPack": "Unload Mod Pack",
+		// "ActivateModPack": "Load Mod Pack",
+		// "DownloadMissingMods": "Download Missing Mods",
 		"ModsDisable": "Desativar",
 		"ModsEnable": "Ativar",
 		"ModConfiguration": "Configuração de Mods",
@@ -87,6 +94,7 @@
 		"ModVersionInfoUnchanged": "Erro: Informações da versão do mod devem ser incrementadas antes de atualizar.",
 		"ConsultSteamLogs": "Consulte Steam workshop_log.txt (Local padrão: {0}) para mais informações.",
 		"SteamRejectUpdate": "O item já está/foi instalado: {0}. Se você está tentando re-instalar, feche a instância atual e re-inicie.",
+		// "BrowserRejectWarning": "Can't Download. Click For Info",
 		"BeginDownload": "Tentando fazer o download do item: {0}",
 		"EndDownload": "Download do item concluído",
 		"CreateItem": "Criando item {0}",
@@ -264,6 +272,9 @@
 		"ExperimentalFeaturesNo": "Funções Experimentais: Desligado",
 		"RemoveForcedMinimumZoomYes": "Remover o Zoom Mínimo Forçado: Ligado",
 		"RemoveForcedMinimumZoomNo": "Remover o Zoom Mínimo Forçado: Desligado",
+		// "AttackSpeedScalingTooltipVisibility0": "Attack Speed Effect Tooltips: Show All",
+		// "AttackSpeedScalingTooltipVisibility1": "Attack Speed Effect Tooltips: Show Adjusted Effectiveness",
+		// "AttackSpeedScalingTooltipVisibility2": "Attack Speed Effect Tooltips: Hidden",
 		"AllowGreaterResolutionsYes": "Permitir Resoluções Maiores: Ligado",
 		"AllowGreaterResolutionsNo": "Permitir Resoluções Maiores: Desligado",
 		"ShowMemoryEstimatesYes": "Mostrar Estimativas de Memória de Mods: Ligado",
@@ -318,6 +329,8 @@
 		"MSModSourcesCantHaveSpaces": "(Pastas de Fontes de Mod não podem ter espaços)",
 		"MSCreateMod": "Criar Mod",
 		"VersionUpgrade": "LINK: Aprenda sobre a Migração de Mods para a atualização mais recente",
+		// "MSPortToLatest": "Run tModPorter",
+		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Bibliotecas extras são necessárias para construir mods. (Pasta ModCompile não encontrada)",
@@ -384,6 +397,12 @@
 		"DefaultTownNPCChat": "Meu desenvolvedor de mod se esqueceu de me dar uma mensagem de bate-papo.",
 		"DefaultNurseCantHealChat": "Eu não sei por que não posso curar você, o meu desenvolvedor de mod esqueceu de me dar uma mensagem de bate-papo.",
 
+		// Tooltip lines
+		// "NoAttackSpeedScaling": "Does not scale with attack speed",
+		// "SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
+		// "ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
+		// "ModifiedByMods": "Is modified by ",
+
 		// Memory bar
 		"LastLoadRamUsage": "Uso estimado de RAM no último carregamento: {0}",
 		"AvailableMemory": "Memória Disponível: {0}",
@@ -431,6 +450,7 @@
 		"OneDriveHint": "\n\nDica: Tente instalar/ativar o OneDrive. Clique com o botão direito na pasta Documentos e ative \"Manter sempre neste dispositivo\"",
 		"AntivirusHint": "\n\nDica: Se você tiver um antivírus, tente adicionar Terraria à sua lista de permissão/lista de exclusão",
 		"TypeInitializationHint": "\n\nDica: Reinicie o jogo. Se o problema persistir, tente desinstalar o Terraria completamente, reinstalar por meio do Steam e, em seguida, reinstalar o tModLoader"
+		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		// "TagsContent": "New Content",
 		// "TagsContentDescription": "Adds new content (i.e. items, weapons, npcs, etc.) to the game",
 		// "TagsUtility": "Utilities",
@@ -490,5 +510,8 @@
 		"InGemCave": "Precisa estar na Caverna de Joias",
 		"InLihzardTemple": "Precisa estar no Templo Lagharto",
 		"InGraveyardBiome": "Precisa estar no bioma de Cemitério"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

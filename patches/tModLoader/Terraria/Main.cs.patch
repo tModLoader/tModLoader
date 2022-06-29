@@ -1,13 +1,5 @@
 --- src/TerrariaNetCore/Terraria/Main.cs
 +++ src/tModLoader/Terraria/Main.cs
-@@ -3,6 +_,7 @@
- using Microsoft.Xna.Framework.Content;
- using Microsoft.Xna.Framework.Graphics;
- using Microsoft.Xna.Framework.Input;
-+using Newtonsoft.Json;
- using ReLogic.Content;
- using ReLogic.Content.Sources;
- #if MAC
 @@ -19,7 +_,7 @@
  using System.Collections.Generic;
  using System.Diagnostics;
@@ -17,14 +9,6 @@
  #endif
  using System.IO;
  using System.Linq;
-@@ -35,6 +_,7 @@
- #if WINDOWS
- using System.Windows.Forms;
- #endif
-+using Steamworks;
- using Terraria.Achievements;
- using Terraria.Audio;
- using Terraria.Chat;
 @@ -72,9 +_,16 @@
  using Terraria.IO;
  using Terraria.Localization;
@@ -54,6 +38,41 @@
  #endif
  	{
  		public delegate void OnPlayerSelected(PlayerFileData player);
+@@ -144,8 +_,9 @@
+ 			private string _originalText;
+ 			private int _lastScreenWidth;
+ 			private int _lastScreenHeight;
++			private Color originalColor;
+ 
+-			public string[] TextLines {
++			public List<List<TextSnippet>> TextLines {
+ 				get;
+ 				private set;
+ 			}
+@@ -155,13 +_,23 @@
+ 				private set;
+ 			}
+ 
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			/*
+ 			public void PrepareCache(string text) {
+ 				if ((0 | ((screenWidth != _lastScreenWidth) ? 1 : 0) | ((screenHeight != _lastScreenHeight) ? 1 : 0) | ((_originalText != text) ? 1 : 0)) != 0) {
++			*/
++			public void PrepareCache(string text, Color baseColor) {
++				if ((0 | ((screenWidth != _lastScreenWidth) ? 1 : 0) | ((screenHeight != _lastScreenHeight) ? 1 : 0) | ((_originalText != text) ? 1 : 0) | ((originalColor != baseColor) ? 1 : 0)) != 0) {
+ 					_lastScreenWidth = screenWidth;
+ 					_lastScreenHeight = screenHeight;
+ 					_originalText = text;
++					/*
+ 					TextLines = Utils.WordwrapString(npcChatText, FontAssets.MouseText.Value, 460, 10, out int lineAmount);
+ 					AmountOfLines = lineAmount;
++					*/
++					originalColor = baseColor;
++					TextLines = Utils.WordwrapStringSmart(npcChatText, baseColor, FontAssets.MouseText.Value, 460, 10);
++					AmountOfLines = TextLines.Count;
+ 				}
+ 			}
+ 		}
 @@ -241,7 +_,7 @@
  		public static List<TitleLinkButton> TitleLinks = new List<TitleLinkButton>();
  		public static string versionNumber = "v1.4.3.6";
@@ -233,6 +252,18 @@
  		private static float _minWind = 0.34f;
  		private static float _maxWind = 0.4f;
  		private static float _minRain = 0.4f;
+@@ -1987,8 +_,11 @@
+ 		public static float ambientLavaY = -1f;
+ 		public static float ambientLavaStrength;
+ 		public static int ambientCounter;
++		//TML: No longer of use due to changes in Main.Ambience().
++		/*
+ 		private static bool _isWaterfallMusicPlaying = false;
+ 		private static bool _isLavafallMusicPlaying = false;
++		*/
+ 		public static IChatMonitor chatMonitor = new RemadeChatMonitor();
+ 		public static int ProjectileUpdateLoopIndex = -1;
+ 		public static GameTipsDisplay gameTips;
 @@ -2009,16 +_,16 @@
  		private int selectedMenu2 = -1;
  		public static int selectedPlayer = 0;
@@ -480,10 +511,10 @@
 -			if (currentValue != 248)
 +
 +			DateTime now = DateTime.UtcNow;
-+			// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this month, then show the notification.
-+			if (!BuildInfo.IsDev && ModCompile.DeveloperMode && now.Day >= 21 && (now.Year != ModLoader.ModLoader.LastPreviewFreezeNotificationSeen.Major || now.Month != ModLoader.ModLoader.LastPreviewFreezeNotificationSeen.Minor)) {
++			// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this major.minor, then show the notification.
++			if (BuildInfo.IsStable && ModCompile.DeveloperMode && now.Day >= 21 && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != new System.Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor)) {
 +				ModLoader.ModLoader.PreviewFreezeNotification = true;
-+			}			
++			}
 +			if (currentValue != Main.curRelease || ModLoader.ModLoader.LastLaunchedTModLoaderVersion != BuildInfo.tMLVersion || (BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && ModLoader.ModLoader.LastLaunchedTModLoaderAlphaSha != BuildInfo.CommitSHA)) {
 +				ModLoader.ModLoader.MigrateSettings();
  				SaveSettings();
@@ -1183,6 +1214,84 @@
  				cloudBGActive = rand.Next(num2 * 3, num * 2);
  				if (netMode == 2)
  					NetMessage.SendData(7);
+@@ -10184,6 +_,9 @@
+ 			}
+ 		}
+ 
++		// Added by TML, used below.
++		private static SlotId waterfallSoundSlot, lavafallSoundSlot;
++
+ 		public static void Ambience() {
+ 			ambientCounter++;
+ 			if (ambientCounter < 15)
+@@ -10191,6 +_,35 @@
+ 
+ 			ambientCounter = 0;
+ 			Microsoft.Xna.Framework.Point point = LocalPlayer.Center.ToPoint();
++
++			// Added by TML. Improves handling of waterfall and lavafall sounds for the new unified audio system.
++			static void HandleAmbientSound(in SoundStyle soundStyle, ref SlotId slot, float volume, Vector2 position) {
++				SoundEngine.TryGetActiveSound(slot, out var activeSound);
++
++				if (volume > 0f) {
++					if (activeSound == null) {
++						slot = SoundEngine.PlaySound(soundStyle, position);
++
++						if (!SoundEngine.TryGetActiveSound(slot, out activeSound)) {
++							return;
++						}
++					}
++
++					activeSound.Volume = volume;
++					activeSound.Position = position;
++				}
++				else if (activeSound != null) {
++					activeSound.Stop();
++
++					slot = SlotId.Invalid;
++				}
++			}
++
++			float usedWaterVolume = MathHelper.Clamp(ambientWaterfallStrength / 50f, 0f, 1f);
++
++			HandleAmbientSound(in SoundID.Waterfall, ref waterfallSoundSlot, usedWaterVolume, new Vector2(ambientWaterfallX, ambientWaterfallY));
++
++			/*
+ 			if (ambientWaterfallStrength > 0f) {
+ 				SoundEngine.PlaySound(34, (int)ambientWaterfallX, (int)ambientWaterfallY, (int)ambientWaterfallStrength);
+ 				_isWaterfallMusicPlaying = true;
+@@ -10201,6 +_,7 @@
+ 
+ 				_isWaterfallMusicPlaying = false;
+ 			}
++			*/
+ 
+ 			float num = Math.Abs(ambientLavaX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavaY - (screenPosition.Y + (float)(screenHeight / 2)));
+ 			float num2 = Math.Abs(ambientLavafallX - (screenPosition.X + (float)(screenWidth / 2))) + Math.Abs(ambientLavafallY - (screenPosition.Y + (float)(screenHeight / 2)));
+@@ -10212,6 +_,15 @@
+ 			}
+ 
+ 			float num5 = ambientLavafallStrength + ambientLavaStrength;
++			// Vanilla uses the above local for adjusting lava sounds' volume, but only uses lavafall strength when checking if the sound should be playing at all.
++			// This has been confirmed as intentional.
++			float usedLavaVolume = ambientLavaStrength > 0f
++				? MathHelper.Clamp(num5 / 50f, 0f, 1f)
++				: 0f;
++
++			HandleAmbientSound(in SoundID.Lavafall, ref lavafallSoundSlot, usedLavaVolume, new Vector2(num3, num4));
++
++			/*
+ 			if (ambientLavafallStrength > 0f) {
+ 				SoundEngine.PlaySound(35, (int)num3, (int)num4, (int)num5);
+ 				_isLavafallMusicPlaying = true;
+@@ -10222,6 +_,7 @@
+ 				SoundEngine.PlaySound(35, point.X, point.Y, 0);
+ 
+ 			_isLavafallMusicPlaying = false;
++			*/
+ 		}
+ 
+ 		public static void AnimateTiles_CritterCages() {
 @@ -12355,11 +_,16 @@
  		}
  
@@ -1774,12 +1883,37 @@
  						if (item.useAnimation <= 8)
  							toolTipLine[numLines] = Lang.tip[6].Value;
  						else if (item.useAnimation <= 20)
-@@ -15283,10 +_,16 @@
+@@ -15283,10 +_,41 @@
  						else
  							toolTipLine[numLines] = Lang.tip[13].Value;
  
 +						toolTipNames[numLines] = "Speed";
  						numLines++;
++
++						/*
++						tML:
++						these lines add a degree of transparency which vanilla doesn't provide by tellin' the player what
++						does and doesn't get affected by attack speed bonuses, as well as if the item in question has any
++						special scalin' rules. they're tML-specific, and can be messed with at the will of the modder
++
++						as for why they're differently named: prep for when that tooltip rework comes out
++						-thomas
++						*/
++						if (item.DamageType == DamageClass.MeleeNoSpeed || ItemID.Sets.BonusAttackSpeedMultiplier[item.type] == 0f) {
++							if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility == 0) {
++								toolTipLine[numLines] = Language.GetTextValue("tModLoader.NoAttackSpeedScaling");
++								toolTipNames[numLines] = "NoSpeedScaling";
++								numLines++;
++							}
++						}
++						else if (ItemID.Sets.BonusAttackSpeedMultiplier[item.type] != 1f) {
++							if (ModLoader.ModLoader.attackSpeedScalingTooltipVisibility <= 1) {
++								int attackSpeedScaling = (int)(ItemID.Sets.BonusAttackSpeedMultiplier[item.type] * 100);
++								toolTipLine[numLines] = Language.GetTextValue("tModLoader.SpecialAttackSpeedScaling", attackSpeedScaling);
++								toolTipNames[numLines] = "SpecialSpeedScaling";
++								numLines++;
++							}
++						}
  					}
 +
 +					if (!item.DamageType.ShowStatTooltipLine(player[myPlayer], "Knockback"))
@@ -2186,14 +2320,34 @@
  				numLines++;
  			}
  
-@@ -15718,6 +_,7 @@
+@@ -15718,8 +_,27 @@
  				if (amountNeeded - sacrificeCount > 0) {
  					toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.CreativeSacrificeNeeded", amountNeeded - sacrificeCount);
  					researchLine = numLines;
 +					toolTipNames[numLines] = "JourneyResearch";
  					numLines++;
  				}
++			}
++
++			if (item.StatsModifiedBy.Count > 0)
++			{
++				if (keyState.PressingShift()) {
++					toolTipLine[numLines] = Language.GetTextValue("tModLoader.ModifiedByMods");
++					for (int i = 0; i < item.StatsModifiedBy.Count; i++) {
++						Mod mod = item.StatsModifiedBy[i];
++						if (i > 0)
++							toolTipLine[numLines] += ", ";
++						toolTipLine[numLines] += mod.DisplayName;
++					}
++				}
++				else {
++					toolTipLine[numLines] = Language.GetTextValue("tModLoader.ModifiedByModsHoldSHIFT");
++				}
++				toolTipNames[numLines] = "ModifiedByMods";
++				numLines++;
  			}
+ 
+ 			string bestiaryNotes = item.BestiaryNotes;
 @@ -15727,11 +_,12 @@
  				string[] array = bestiaryNotes.Split('\n');
  				foreach (string text2 in array) {
@@ -2256,6 +2410,19 @@
  		}
  
  		protected void DrawFPS() {
+@@ -15890,10 +_,10 @@
+ 				float num2 = 1f;
+ 				Vector2 baseScale = new Vector2(num2);
+ 				if (gameMenu)
+-					num = 55f;
++					num = 90f;
+ 
+ 				if (menuMode == 0)
+-					num += 32f;
++					num += 55f;
+ 
+ 				Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, text, new Vector2(1f));
+ 				float t = num2;
 @@ -16070,9 +_,14 @@
  			TilesRenderer.ClearCachedTileDraws(solidLayer: true);
  		}
@@ -2631,6 +2798,62 @@
  					spriteBatch.Draw(TextureAssets.Dust.Value, dust.position - screenPosition, dust.frame, newColor, dust.GetVisualRotation(), new Vector2(4f, 4f), scale, SpriteEffects.None, 0f);
  					if (dust.color.PackedValue != 0) {
  						Microsoft.Xna.Framework.Color color6 = dust.GetColor(newColor);
+@@ -29206,8 +_,8 @@
+ 			int num = (mouseTextColor * 2 + 255) / 3;
+ 			Microsoft.Xna.Framework.Color textColor = new Microsoft.Xna.Framework.Color(num, num, num, num);
+ 			bool flag = InGameUI.CurrentState is UIVirtualKeyboard && PlayerInput.UsingGamepad;
+-			_textDisplayCache.PrepareCache(npcChatText);
+-			string[] textLines = _textDisplayCache.TextLines;
++			_textDisplayCache.PrepareCache(npcChatText, textColor);
++			List<List<TextSnippet>> textLines = _textDisplayCache.TextLines;
+ 			int amountOfLines = _textDisplayCache.AmountOfLines;
+ 			bool flag2 = false;
+ 			if (editSign) {
+@@ -29221,23 +_,41 @@
+ 					textBlinkerCount = 0;
+ 				}
+ 
+-				if (textBlinkerState == 1)
++				if (textBlinkerState == 1) {
+ 					flag2 = true;
++
++					textLines[amountOfLines - 1].Add(new TextSnippet("|", Microsoft.Xna.Framework.Color.White, 1f));
++				}
+ 
+ 				instance.DrawWindowsIMEPanel(new Vector2(screenWidth / 2, 90f), 0.5f);
+ 			}
+ 
+-			amountOfLines++;
++			//amountOfLines++;
+ 			spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100f), new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.ChatBack.Width(), (amountOfLines + 1) * 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 			spriteBatch.Draw(TextureAssets.ChatBack.Value, new Vector2(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100 + (amountOfLines + 1) * 30), new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.ChatBack.Height() - 30, TextureAssets.ChatBack.Width(), 30), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			TextSnippet hoveredSnippet = null;
+ 			for (int i = 0; i < amountOfLines; i++) {
+-				string text = textLines[i];
++				List<TextSnippet> text = textLines[i];
++				/*
+ 				if (text != null) {
+ 					if (i == amountOfLines - 1 && flag2)
+ 						text += "|";
+ 
+ 					Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, text, 170 + (screenWidth - 800) / 2, 120 + i * 30, textColor, Microsoft.Xna.Framework.Color.Black, Vector2.Zero);
+ 				}
++				*/
++				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, text.ToArray(), new Vector2(170 + (screenWidth - 800) / 2, 120 + i * 30), 0f, textColor, Color.Black, Vector2.Zero, Vector2.One, out int hoveredSnippetNum);
++
++				if (hoveredSnippetNum > -1)
++					hoveredSnippet = text[hoveredSnippetNum];
++			}
++
++			if (hoveredSnippet is not null) {
++				hoveredSnippet.OnHover();
++
++				if (Main.mouseLeft && Main.mouseLeftRelease)
++					hoveredSnippet.OnClick();
+ 			}
+ 
+ 			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(screenWidth / 2 - TextureAssets.ChatBack.Width() / 2, 100, TextureAssets.ChatBack.Width(), (amountOfLines + 2) * 30);
 @@ -29272,12 +_,16 @@
  			string focusText = "";
  			string focusText2 = "";
@@ -2747,6 +2970,58 @@
  				if (npc[player[myPlayer].talkNPC].type == 20) {
  					SoundEngine.PlaySound(12);
  					npcChatText = Lang.GetDryadWorldStatusDialog();
+@@ -29867,8 +_,12 @@
+ 				npcChatFocus2 = false;
+ 			}
+ 
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus2) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
++			/*
+ 			ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus2) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
+ 			ChatManager.DrawColorCodedString(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, 0f, stringSize * 0.5f, vector3 * value2);
++			*/
+ 			if (text.Length > 0) {
+ 				UILinkPointNavigator.SetPosition(2500, vector2 + stringSize * 0.5f);
+ 				UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsLeft = true;
+@@ -29898,8 +_,12 @@
+ 				npcChatFocus1 = false;
+ 			}
+ 
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus1) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
++			/*
+ 			ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus1) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
+ 			ChatManager.DrawColorCodedString(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, 0f, stringSize * 0.5f, vector3 * value2);
++			*/
+ 			if (text.Length > 0) {
+ 				UILinkPointNavigator.SetPosition(2501, vector2 + stringSize * 0.5f);
+ 				UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsMiddle = true;
+@@ -29935,8 +_,12 @@
+ 					npcChatFocus3 = false;
+ 				}
+ 
++				// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus3) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
++				/*
+ 				ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus3) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
+ 				ChatManager.DrawColorCodedString(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, 0f, stringSize * 0.5f, vector3 * value2);
++				*/
+ 				UILinkPointNavigator.SetPosition(2502, vector2 + stringSize * 0.5f);
+ 				UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight = true;
+ 			}
+@@ -29972,8 +_,12 @@
+ 				npcChatFocus4 = false;
+ 			}
+ 
++			// Fix all instances of drawing text to use TextSnippets instead of strings (#FixNPCChat)
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, (!npcChatFocus4) ? Microsoft.Xna.Framework.Color.Black : brown, 0f, stringSize * 0.5f, vector3 * value2);
++			/*
+ 			ChatManager.DrawColorCodedStringShadow(baseColor: (!npcChatFocus4) ? Microsoft.Xna.Framework.Color.Black : brown, spriteBatch: spriteBatch, font: value, text: text, position: vector2 + stringSize * value2 * 0.5f, rotation: 0f, origin: stringSize * 0.5f, baseScale: vector3 * value2);
+ 			ChatManager.DrawColorCodedString(spriteBatch, value, text, vector2 + stringSize * value2 * 0.5f, baseColor, 0f, stringSize * 0.5f, vector3 * value2);
++			*/
+ 			UILinkPointNavigator.SetPosition(2503, vector2 + stringSize * 0.5f);
+ 			UILinkPointNavigator.Shortcuts.NPCCHAT_ButtonsRight2 = true;
+ 		}
 @@ -30076,7 +_,7 @@
  
  				spriteBatch.Draw(value, new Vector2(homeTileX * 16 - (int)screenPosition.X + num8, num11 - (float)(int)screenPosition.Y + (float)num9 + (float)num10), value2, Lighting.GetColor(homeTileX, num3), 0f, new Vector2(value2.Width / 2, value2.Height / 2), 1f, effects, 0f);
@@ -2947,9 +3222,12 @@
  
  			if (recBigList && !flag9) {
  				UILinkPointNavigator.Shortcuts.CRAFT_CurrentRecipeBig = -1;
-@@ -31306,8 +_,8 @@
+@@ -31304,10 +_,10 @@
+ 			}
+ 
  			for (int j = 0; j < 200; j++) {
- 				if (npc[j].active && !_npcTypesThatAlreadyDrewAHead.Contains(npc[j].type)) {
+-				if (npc[j].active && !_npcTypesThatAlreadyDrewAHead.Contains(npc[j].type)) {
++				if (npc[j].active && !_npcTypesThatAlreadyDrewAHead.Contains(npc[j].type) && npc[j].ModNPC?.TownNPCStayingHomeless != true) {
  					ITownNPCProfile profile;
 -					int num4 = (!TownNPCProfiles.Instance.GetProfile(npc[j].type, out profile)) ? NPC.TypeToDefaultHeadIndex(npc[j].type) : profile.GetHeadTextureIndex(npc[j]);
 +					int num4 = (!TownNPCProfiles.Instance.GetProfile(npc[j], out profile)) ? NPC.TypeToDefaultHeadIndex(npc[j].type) : profile.GetHeadTextureIndex(npc[j]);
@@ -3772,6 +4050,14 @@
  
  			if (menuMode == 888) {
  				if (!_blockFancyUIWhileLoading)
+@@ -39523,6 +_,7 @@
+ 			if (!WorldGen.drunkWorldGen && menuMode == 0) {
+ 				DrawSocialMediaButtons(color, num109);
+ 				num109 += 32f;
++				DrawtModLoaderSocialMediaButtons(color, num109);
+ 			}
+ 
+ 			if (!WorldGen.drunkWorldGen) {
 @@ -39560,6 +_,21 @@
  			else
  				mouseRightRelease = true;
@@ -3850,7 +4136,7 @@
 +				modsMessage += " " + Language.GetTextValue("tModLoader.MenuModUpdatesAvailable", ModLoader.Core.GOGModUpdateChecker.ModUpdatesAvailable);
 +			}
 +			*/
-+			string text = versionNumber + Environment.NewLine + ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "");
++			string text = ModLoader.ModLoader.versionedName + (showPatreon ? Environment.NewLine + supportMessage : "") + (Main.menuMode == 0 ? Environment.NewLine : "") + Environment.NewLine + "Terraria " + versionNumber;
 +
  			Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);
  			origin.X *= 0.5f;
@@ -4052,13 +4338,12 @@
  				DrawCursor(DrawThickCursor());
  			}
  
-@@ -43448,6 +_,11 @@
+@@ -43448,6 +_,10 @@
  		}
  
  		private static void DrawMapFullscreenBackground(Vector2 screenPosition, int screenWidth, int screenHeight) {
-+			Texture2D modTexture = PlayerLoader.GetMapBackgroundImage(LocalPlayer);
-+			if (modTexture != null) {
-+				spriteBatch.Draw(modTexture, new Microsoft.Xna.Framework.Rectangle(0, 0, screenWidth, screenHeight), Microsoft.Xna.Framework.Color.White);
++			if (ModContent.RequestIfExists<Texture2D>(LocalPlayer.CurrentSceneEffect.mapBackground, out var modTexture, AssetRequestMode.ImmediateLoad)) {
++				spriteBatch.Draw(modTexture.Value, new Microsoft.Xna.Framework.Rectangle(0, 0, screenWidth, screenHeight), Microsoft.Xna.Framework.Color.White);
 +				return;
 +			}
  			Asset<Texture2D> asset = TextureAssets.MapBGs[0];
@@ -4442,14 +4727,6 @@
  					spriteBatch.Draw(TextureAssets.SmileyMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.SmileyMoon.Width(), TextureAssets.SmileyMoon.Height()), moonColor, num9 / 2f + (float)Math.PI, new Vector2(TextureAssets.SmileyMoon.Width() / 2, TextureAssets.SmileyMoon.Width() / 2), num8, SpriteEffects.None, 0f);
  				else if (pumpkinMoon)
  					spriteBatch.Draw(TextureAssets.PumpkinMoon.Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.PumpkinMoon.Width() * moonPhase, TextureAssets.PumpkinMoon.Width(), TextureAssets.PumpkinMoon.Width()), moonColor, num9, new Vector2(TextureAssets.PumpkinMoon.Width() / 2, TextureAssets.PumpkinMoon.Width() / 2), num8, SpriteEffects.None, 0f);
-@@ -48593,7 +_,6 @@
- 				else
- 					spriteBatch.Draw(TextureAssets.Moon[num].Value, position2, new Microsoft.Xna.Framework.Rectangle(0, TextureAssets.Moon[num].Width() * moonPhase, TextureAssets.Moon[num].Width(), TextureAssets.Moon[num].Width()), moonColor, num9, new Vector2(TextureAssets.Moon[num].Width() / 2, TextureAssets.Moon[num].Width() / 2), num8, SpriteEffects.None, 0f);
- 			}
--
- 			Microsoft.Xna.Framework.Rectangle value3 = dayTime ? new Microsoft.Xna.Framework.Rectangle((int)((double)num3 - (double)TextureAssets.Sun.Width() * 0.5 * (double)num5), (int)((double)num4 - (double)TextureAssets.Sun.Height() * 0.5 * (double)num5 + (double)sunModY), (int)((float)TextureAssets.Sun.Width() * num5), (int)((float)TextureAssets.Sun.Width() * num5)) : new Microsoft.Xna.Framework.Rectangle((int)((double)num6 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8), (int)((double)num7 - (double)TextureAssets.Moon[num].Width() * 0.5 * (double)num8 + (double)moonModY), (int)((float)TextureAssets.Moon[num].Width() * num8), (int)((float)TextureAssets.Moon[num].Width() * num8));
- 			value3.Offset((int)sceneArea.SceneLocalScreenPositionOffset.X, (int)sceneArea.SceneLocalScreenPositionOffset.Y);
- 			Microsoft.Xna.Framework.Rectangle rectangle = new Microsoft.Xna.Framework.Rectangle(mouseX, mouseY, 1, 1);
 @@ -48678,7 +_,7 @@
  				Vector2 origin = value.Size() / 2f;
  				if (star.falling) {
@@ -4464,7 +4741,7 @@
  			tileColor.B = (byte)((colorOfTheSkies.R + colorOfTheSkies.G + colorOfTheSkies.B + colorOfTheSkies.B * 7) / 10);
  			tileColor = SkyManager.Instance.ProcessTileColor(tileColor);
 +			// TODO: Add in white and white2 as sunColor and moonColor
-+			SystemLoader.ModifySunLightColor(ref tileColor, ref colorOfTheSkies);
++			SystemLoader.ModifySunLightColor(ref tileColor, ref ColorOfTheSkies);
  		}
  
  		private static void UpdateAtmosphereTransparencyToSkyColor() {

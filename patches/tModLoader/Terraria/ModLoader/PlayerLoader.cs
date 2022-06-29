@@ -139,19 +139,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookGetMapBackgroundImage = AddHook<Func<Texture2D>>(p => p.GetMapBackgroundImage);
-
-		public static Texture2D GetMapBackgroundImage(Player player) {
-			Texture2D texture = null;
-			foreach (int index in HookGetMapBackgroundImage.arr) {
-				texture = player.modPlayers[index].GetMapBackgroundImage();
-				if (texture != null) {
-					return texture;
-				}
-			}
-			return texture;
-		}
-
 		private static HookList HookUpdateBadLifeRegen = AddHook<Action>(p => p.UpdateBadLifeRegen);
 
 		public static void UpdateBadLifeRegen(Player player) {
@@ -835,6 +822,17 @@ namespace Terraria.ModLoader
 			foreach (int index in HookOnHitByProjectile.arr) {
 				player.modPlayers[index].OnHitByProjectile(proj, damage, crit);
 			}
+		}
+
+		private delegate void DelegateModifyFishingAttempt(ref FishingAttempt attempt);
+		private static HookList HookModifyFishingAttempt = AddHook<DelegateModifyFishingAttempt>(p => p.ModifyFishingAttempt);
+
+		public static void ModifyFishingAttempt(Player player, ref FishingAttempt attempt) {
+			foreach (int index in HookModifyFishingAttempt.arr) {
+				player.modPlayers[index].ModifyFishingAttempt(ref attempt);
+			}
+
+			attempt.rolledItemDrop = attempt.rolledEnemySpawn = 0; // Reset, modders need to use CatchFish for this 
 		}
 
 		private delegate void DelegateCatchFish(FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);

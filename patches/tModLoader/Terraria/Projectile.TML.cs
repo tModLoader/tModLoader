@@ -14,6 +14,11 @@ namespace Terraria
 
 		public RefReadOnlyArray<Instanced<GlobalProjectile>> Globals => new RefReadOnlyArray<Instanced<GlobalProjectile>>(globalProjectiles);
 
+		/// <summary>
+		/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float)"/>
+		/// <br/><br/>This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position and a Vector2 to dictate the initial velocity. The return value is the actual Projectile instance rather than the index of the spawned Projectile within the <see cref="Main.projectile"/> array.
+		/// <br/> A short-hand for <code> Main.projectile[Projectile.NewProjectile(...)] </code>
+		/// </summary>
 		public static Projectile NewProjectileDirect(IEntitySource spawnSource, Vector2 position, Vector2 velocity, int type, int damage, float knockback, int owner = 255, float ai0 = 0f, float ai1 = 0f)
 			=> Main.projectile[NewProjectile(spawnSource, position.X, position.Y, velocity.X, velocity.Y, type, damage, knockback, owner, ai0, ai1)];
 
@@ -49,6 +54,12 @@ namespace Terraria
 			set => _crit = Math.Max(0, value);
 		}
 
+		/// <summary>
+		/// If set, Projectile.damage will be recalculated based on Projectile.originalDamage, Projectile.DamageType and the owning player, just like minions and sentries.
+		/// This has no effect if Projectile.minion or Projectile.sentry is set.
+		/// </summary>
+		public bool ContinuouslyUpdateDamage { get; set; }
+
 		/* tML:
 		this method is used to set the critical strike chance of a projectile based on the environment in which it was fired
 		this critical strike chance is then stored on the projectile and checked against for all critical strike calculations
@@ -59,11 +70,13 @@ namespace Terraria
 		private static void HandlePlayerStatModifiers(IEntitySource spawnSource, Projectile projectile) {
 			// to-do: make this less ugly and more easily extensible to modded sources
 			// (requires substantial changes, at minimum, to how entity sources are handled)
-			if (spawnSource is EntitySource_ItemUse itemUseSource && itemUseSource.Entity is Player player) {
-				projectile.CritChance += player.GetWeaponCrit(itemUseSource.Item);
-				projectile.ArmorPenetration += player.GetWeaponArmorPenetration(itemUseSource.Item);
+			if (spawnSource is EntitySource_ItemUse { Entity: Player player, Item: Item item }) {
+				projectile.originalDamage = item.damage;
+				projectile.CritChance += player.GetWeaponCrit(item);
+				projectile.ArmorPenetration += player.GetWeaponArmorPenetration(item);
 			}
-			else if (spawnSource is EntitySource_Parent parentSource && parentSource.Entity is Projectile parentProjectile) {
+			else if (spawnSource is EntitySource_Parent { Entity: Projectile parentProjectile }) {
+				projectile.originalDamage = parentProjectile.originalDamage;
 				projectile.CritChance += parentProjectile.CritChance;
 				projectile.ArmorPenetration += parentProjectile.ArmorPenetration;
 			}
@@ -95,5 +108,7 @@ namespace Terraria
 
 		public bool CountsAsClass(DamageClass damageClass)
 			=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
+
+		
 	}
 }

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace Terraria.GameContent.Bestiary
@@ -17,8 +18,7 @@ namespace Terraria.GameContent.Bestiary
 
 		public virtual UIElement GetFilterImage() {
 			Asset<Texture2D> asset;
-			if (_iconPath != null && _mod.HasAsset(_iconPath)) {
-				asset = _mod.Assets.Request<Texture2D>(_iconPath);
+			if (_iconPath != null && ModContent.RequestIfExists<Texture2D>(_iconPath, out asset)) {
 				if (asset.Size() == new Vector2(30)) {
 					return new UIImage(asset) {
 						HAlign = 0.5f,

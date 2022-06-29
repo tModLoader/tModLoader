@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader.Default;
@@ -125,33 +126,75 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<TagCompound> SaveNPCs() {
 			var list = new List<TagCompound>();
-			for (int k = 0; k < Main.npc.Length; k++) {
-				NPC npc = Main.npc[k];
-				if (npc.active && NPCLoader.IsModNPC(npc)) {
-					if (npc.townNPC) {
-						TagCompound tag = new TagCompound {
-							["mod"] = npc.ModNPC.Mod.Name,
-							["name"] = npc.ModNPC.Name,
-							["displayName"] = npc.GivenName,
-							["x"] = npc.position.X,
-							["y"] = npc.position.Y,
-							["homeless"] = npc.homeless,
-							["homeTileX"] = npc.homeTileX,
-							["homeTileY"] = npc.homeTileY
-						};
-						list.Add(tag);
+			var data = new TagCompound();
+
+			for (int index = 0; index < Main.maxNPCs; index++) {
+				NPC npc = Main.npc[index];
+
+				if (!npc.active || !NPCLoader.SavesAndLoads(npc)) {
+					continue;
+				}
+
+				var globalData = new List<TagCompound>();
+
+				foreach (GlobalNPC globalNPC in npc.globalNPCs.Select(instancedGlobalNPC => instancedGlobalNPC.Instance)) {
+					if (globalNPC is UnloadedGlobalNPC unloadedGlobalNPC) {
+						globalData.AddRange(unloadedGlobalNPC.data);
+						continue;
 					}
-					else if (NPCID.Sets.SavesAndLoads[npc.type]) {
-						TagCompound tag = new TagCompound {
-							["mod"] = npc.ModNPC.Mod.Name,
-							["name"] = npc.ModNPC.Name,
-							["x"] = npc.position.X,
-							["y"] = npc.position.Y
-						};
-						list.Add(tag);
+
+					globalNPC.SaveData(npc, data);
+
+					if (data.Count != 0) {
+						globalData.Add(new TagCompound {
+							["mod"] = globalNPC.Mod.Name,
+							["name"] = globalNPC.Name,
+							["data"] = data
+						});
+
+						data = new TagCompound();
 					}
 				}
+
+				TagCompound tag;
+
+				if (NPCLoader.IsModNPC(npc)) {
+					npc.ModNPC.SaveData(data);
+
+					tag = new TagCompound {
+						["mod"] = npc.ModNPC.Mod.Name,
+						["name"] = npc.ModNPC.Name
+					};
+
+					if (data.Count != 0) {
+						tag["data"] = data;
+						data = new TagCompound();
+					}
+
+					if (npc.townNPC) {
+						tag["displayName"] = npc.GivenName;
+						tag["homeless"] = npc.homeless;
+						tag["homeTileX"] = npc.homeTileX;
+						tag["homeTileY"] = npc.homeTileY;
+					}
+				}
+				else if (globalData.Count != 0) {
+					tag = new TagCompound {
+						["mod"] = "Terraria",
+						["name"] = NPCID.Search.GetName(npc.type)
+					};
+				}
+				else {
+					continue;
+				}
+
+				tag["x"] = npc.position.X;
+				tag["y"] = npc.position.Y;
+				tag["globalData"] = globalData;
+
+				list.Add(tag);
 			}
+
 			return list;
 		}
 
@@ -159,28 +202,89 @@ namespace Terraria.ModLoader.IO
 			if (list == null) {
 				return;
 			}
+
 			int nextFreeNPC = 0;
+
 			foreach (TagCompound tag in list) {
-				if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
-					while (nextFreeNPC < 200 && Main.npc[nextFreeNPC].active) {
-						nextFreeNPC++;
+				NPC npc = null;
+
+				while (nextFreeNPC < Main.maxNPCs && Main.npc[nextFreeNPC].active) {
+					nextFreeNPC++;
+				}
+
+				if ((string)tag["mod"] == "Terraria") {
+					int npcId = NPCID.Search.GetId((string)tag["name"]);
+					float x = (float)tag["x"];
+					float y = (float)tag["y"];
+
+					int index;
+
+					for (index = 0; index < Main.maxNPCs; index++) {
+						npc = Main.npc[index];
+
+						if (npc.active) {
+							if (npc.type == npcId && npc.position.X == x && npc.position.Y == y) break;
+						}
 					}
-					if (nextFreeNPC >= 200) {
-						break;
-					}
-					NPC npc = Main.npc[nextFreeNPC];
-					npc.SetDefaults(modNpc.Type);
-					npc.position.X = tag.GetFloat("x");
-					npc.position.Y = tag.GetFloat("y");
-					if (npc.townNPC) {
-						npc.GivenName = tag.GetString("displayName");
-						npc.homeless = tag.GetBool("homeless");
-						npc.homeTileX = tag.GetInt("homeTileX");
-						npc.homeTileY = tag.GetInt("homeTileY");
+
+					if (index == Main.maxNPCs) {
+						if (nextFreeNPC == Main.maxNPCs) {
+							ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
+							continue;
+						}
+						else {
+							npc = Main.npc[nextFreeNPC];
+							npc.SetDefaults(npc.type);
+							npc.position = new Vector2(x, y);
+						}
 					}
 				}
 				else {
-					ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
+					if (!ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModNPC modNpc)) {
+						ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
+						continue;
+					}
+
+					if (nextFreeNPC == Main.maxNPCs) {
+						ModContent.GetInstance<UnloadedSystem>().unloadedNPCs.Add(tag);
+						continue;
+					}
+
+					npc = Main.npc[nextFreeNPC];
+					npc.SetDefaults(modNpc.Type);
+					npc.position.X = (float)tag["x"];
+					npc.position.Y = (float)tag["y"];
+
+					if (npc.townNPC) {
+						npc.GivenName = (string)tag["displayName"];
+						npc.homeless = tag.GetBool("homeless");
+						npc.homeTileX = (int)tag["homeTileX"];
+						npc.homeTileY = (int)tag["homeTileY"];
+					}
+
+					if (tag.ContainsKey("data")) {
+						npc.ModNPC.LoadData((TagCompound)tag["data"]);
+					}
+				}
+
+				IList<TagCompound> globalData = tag.GetList<TagCompound>("globalData");
+
+				foreach (TagCompound tagCompound in globalData) {
+					string modName = (string)tagCompound["mod"];
+
+					if (ModContent.TryFind(modName, (string)tagCompound["name"], out GlobalNPC globalNPC)) {
+						GlobalNPC globalNPC2 = globalNPC.Instance(npc);
+
+						try {
+							globalNPC2.LoadData(npc, (TagCompound)tagCompound["data"]);
+						}
+						catch (Exception inner) {
+							throw new CustomModDataException(ModLoader.GetMod(modName), $"Error in reading custom player data for {modName}", inner);
+						}
+					}
+					else {
+						npc.GetGlobalNPC<UnloadedGlobalNPC>().data.Add(tagCompound);
+					}
 				}
 			}
 		}

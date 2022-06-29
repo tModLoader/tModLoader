@@ -75,6 +75,14 @@
  						}
  					}
  					break;
+@@ -154,6 +_,7 @@
+ 					if (Main.netMode == 1) {
+ 						Netplay.Disconnect = true;
+ 						Main.statusText = NetworkText.Deserialize(reader).ToString();
++						Main.menuMode = 14; // Added by TML.
+ 					}
+ 					break;
+ 				case 3:
 @@ -214,6 +_,7 @@
  							NetMessage.TrySendData(5, -1, -1, null, num236, 220 + num245, (int)player12.bank4.item[num245].prefix);
  						}
@@ -235,6 +243,15 @@
  							obj6.playerIndexTheItemIsReservedFor = Main.myPlayer;
  							if (flag9) {
  								NetMessage.TrySendData(21, -1, -1, null, num181);
+@@ -1319,7 +_,7 @@
+ 						if (num120 <= 0)
+ 							nPC4.active = false;
+ 
+-						nPC4.SpawnedFromStatue = bitsByte11[0];
++						nPC4.SpawnedFromStatue = bitsByte11[1]; // 0 -> 1, vanilla bugfix, remove in 1.4.4
+ 						if (nPC4.SpawnedFromStatue)
+ 							nPC4.value = 0f;
+ 
 @@ -1336,9 +_,13 @@
  						if (num119 == 245)
  							NPC.golemBoss = num116;
@@ -432,12 +449,13 @@
  								break;
  							case 4:
  								if (num29 == -1) {
-@@ -1776,6 +_,9 @@
+@@ -1776,6 +_,10 @@
  						obj8.zone2 = reader.ReadByte();
  						obj8.zone3 = reader.ReadByte();
  						obj8.zone4 = reader.ReadByte();
 +						if (!ModNet.AllowVanillaClients)
 +							BiomeLoader.ReceiveCustomBiomes(obj8, reader);
++						obj8.ZonePurity = obj8.InZonePurity();
 +
  						if (Main.netMode == 2)
  							NetMessage.TrySendData(36, -1, whoAmI, null, num228);

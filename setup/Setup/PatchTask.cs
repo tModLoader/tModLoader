@@ -96,13 +96,17 @@ namespace Terraria.ModLoader.Setup
 
 			//Remove files and directories that weren't in patches and original src.
 
-			taskInterface.SetStatus("Deleting Old Src");
+			taskInterface.SetStatus("Deleting Old Src Files");
 
 			foreach (var (file, relPath) in EnumerateSrcFiles(patchedDir))
 				if (!newFiles.Contains(file))
 					File.Delete(file);
 
+			taskInterface.SetStatus("Deleting Old Src's Empty Directories");
+
 			DeleteEmptyDirs(patchedDir);
+
+			taskInterface.SetStatus("Old Src Removed");
 
 			//Show patch reviewer if there were any fuzzy patches.
 

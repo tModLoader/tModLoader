@@ -23,7 +23,7 @@ Click the text that applies to you.
 
 ## Support us
 
-First and foremost, TML is largely a community endeavour: built by the community; used by the community. Without all the contributions people in the community have made over the years, TML would not be in the state it is in. TML is a free-to-use modification of the game and will stay that way. However, if you would like to buy us a coffee, or maybe even multiple, you can choose to pledge some money to support us financially. We'd like to kindly express once again that TML was not created to create a profit. All of the core team members continue their best efforts to improve and maintain TML despite their real-life obligations, free of charge or any request from the community.
+First and foremost, TML is largely a community endeavor: built by the community; used by the community. Without all the contributions people in the community have made over the years, TML would not be in the state it is in. TML is a free-to-use modification of the game and will stay that way. However, if you would like to buy us a coffee, or maybe even multiple, you can choose to pledge some money to support us financially. We'd like to kindly express once again that TML was not created to create a profit. All of the core team members continue their best efforts to improve and maintain TML despite their real-life obligations, free of charge or any request from the community.
 
 The preferred method of supporting the core team is by [choosing a pledge through Patreon](https://www.patreon.com/tmodloader). All of the money donated this way is equally shared amongst the core members to those who wish to receive part of it. This truly is the right way to support us financially if you want to do so. By becoming a patron you can receive a special role on our Discord server if desired. You should be able to couple your Discord account to your Patreon account and automatically receive your role.
 
@@ -35,12 +35,12 @@ If you would like to contact us or TML users, it's best to join our [Discord ser
 
 ## Contributors
 ### Core team
-TML is largely created and maintained by a core team of contributors: **Blushiemagic**, **Chicken-Bones**, **Jopojelly**, **Jofairden** and **Mirsario**
+TML is largely created and maintained by a core team of contributors: **Blushiemagic**, **Chicken-Bones**, **Jopojelly**, **Jofairden**, **Mirsario** and **Solxanich**
 
 This project exists in its current state thanks to all the people who have contributed:
 
 <a href="https://github.com/tModLoader/tModLoader/graphs/contributors">
-<img src="https://opencollective.com/tModLoader/contributors.svg?width=890&button=false" />
+  <img src="https://contrib.rocks/image?repo=tModLoader/tModLoader&max=900&columns=20" />
 </a>
 
 ## License

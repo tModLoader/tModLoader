@@ -24,8 +24,11 @@ public class TileTest
 		tile.IsActuated = !tile.IsActuated;
 		tile.HasActuator = !tile.HasActuator;
 
-		byte b = (byte)tile.Slope;
-		tile.Slope = (SlopeType)b;
+#if COMPILE_ERROR // byte -> SlopeType, byte -> BlockType
+		byte b = tile.Slope;
+		tile.Slope = b;
+		byte blockType = tile.BlockType;
+#endif
 		tile.Slope = (SlopeType)(tile.Slope == (SlopeType)2 ? 1 : 0);
 
 		tile.IsHalfBlock = !tile.IsHalfBlock;
@@ -43,24 +46,26 @@ public class TileTest
 		tile.SkipLiquid = !tile.SkipLiquid;
 
 		bool slopey = tile.TopSlope && tile.LeftSlope || tile.RightSlope && tile.BottomSlope;
-		byte blockType = (byte)tile.BlockType;
 		bool compBlockTypeWithConstant = tile.BlockType == 0 || tile.BlockType == (BlockType)1 || tile.BlockType == (BlockType)2 || tile.BlockType == (BlockType)3 || tile.BlockType == (BlockType)4 || tile.BlockType == (BlockType)5;
 		compBlockTypeWithConstant = tile.BlockType > (BlockType)1 || tile.BlockType <= (BlockType)4;
 
 		if (tile.HasUnactuatedTile) { }
 		if (tile.BlockType == tile.BlockType) { }
 #if COMPILE_ERROR
-		if (tile.isTheSameAs/* https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles */(tile)) { }
+		if (tile.isTheSameAs(tile)/* tModPorter Suggestion: Read https://github.com/tModLoader/tModLoader/wiki/Update-Migration-Guide#tiles */) { }
 #endif
 	}
 
-	void TileLiquid(Tile tile, Tile tile2, byte liquid) {
+	void TileLiquid(Tile tile, Tile tile2, byte liquidType) {
 		tile.LiquidType = 0;
 		tile.LiquidType = 1;
 		tile.LiquidType = 2;
-		tile.LiquidType = liquid;
+		tile.LiquidType = liquidType;
 
-		liquid = (byte)tile.LiquidType;
+		tile.LiquidAmount = 255;
+#if COMPILE_ERROR // byte -> int
+		liquidType = tile.LiquidType;
+#endif
 		tile.LiquidType = LiquidID.Lava;
 		tile.LiquidType = LiquidID.Honey;
 
@@ -69,9 +74,9 @@ public class TileTest
 		if (!(tile.LiquidType == LiquidID.Lava)) { }
 
 #if COMPILE_ERROR
-		tile.lava/* Suggestion: LiquidType = ... */(false);
-		tile.honey/* Suggestion: LiquidType = ... */(false);
-		tile.lava/* Suggestion: LiquidType = ... */(liquid > 0);
+		tile.lava/* tModPorter Suggestion: LiquidType = ... */(false);
+		tile.honey/* tModPorter Suggestion: LiquidType = ... */(false);
+		tile.lava/* tModPorter Suggestion: LiquidType = ... */(liquid > 0);
 #endif
 	}
 }

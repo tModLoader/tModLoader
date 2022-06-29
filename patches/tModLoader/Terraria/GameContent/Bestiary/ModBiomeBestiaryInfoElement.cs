@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace Terraria.GameContent.Bestiary
@@ -18,8 +19,7 @@ namespace Terraria.GameContent.Bestiary
 
 		public override UIElement GetFilterImage() {
 			Asset<Texture2D> asset;
-			if (_iconPath != null && _mod.HasAsset(_iconPath)) {
-				asset = _mod.Assets.Request<Texture2D>(_iconPath);
+			if (_iconPath != null && ModContent.RequestIfExists<Texture2D>(_iconPath, out asset, AssetRequestMode.ImmediateLoad)) {
 				if (asset.Size() == new Vector2(30)) {
 					return new UIImage(asset) {
 						HAlign = 0.5f,
@@ -36,10 +36,9 @@ namespace Terraria.GameContent.Bestiary
 		}
 
 		public Asset<Texture2D> GetBackgroundImage() {
-			if (_backgroundPath == null)
+			if (_backgroundPath == null || !ModContent.RequestIfExists<Texture2D>(_backgroundPath, out Asset<Texture2D> asset, AssetRequestMode.ImmediateLoad))
 				return null;
 
-			Asset<Texture2D> asset = _mod.Assets.Request<Texture2D>(_backgroundPath);
 			if (asset.Size() == new Vector2(115, 65)) {
 				return asset;
 			}
