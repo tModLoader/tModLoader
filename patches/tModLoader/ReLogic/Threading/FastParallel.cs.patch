@@ -1,30 +1,71 @@
 --- src/TerrariaNetCore/ReLogic/Threading/FastParallel.cs
 +++ src/tModLoader/ReLogic/Threading/FastParallel.cs
-@@ -1,5 +_,6 @@
+@@ -1,10 +_,27 @@
  using System;
++using System.Collections.Concurrent;
++using System.Collections.Generic;
++using System.Linq;
  using System.Threading;
 +using System.Threading.Tasks;
  
  namespace ReLogic.Threading
  {
-@@ -22,12 +_,25 @@
+ 	public static class FastParallel
+ 	{
++		private class DebugCtx
++		{
++			public int n = 0;
++			public int constructed = 0;
++			public int started = 0;
++			public int finishednormally = 0;
++			public ConcurrentBag<RangeTask> signalled = new ();
++
++			public override string ToString() {
++				return $"n: {n}, constructed: {constructed}, started: {started}, finished: {finishednormally}, signalled: [{string.Join(", ", signalled.ToArray().Select(t => t._i))}]";
++			}
++		}
++
+ 		private class RangeTask
+ 		{
+ 			private readonly ParallelForAction _action;
+@@ -12,22 +_,44 @@
+ 			private readonly int _toExclusive;
+ 			private readonly object _context;
+ 			private readonly CountdownEvent _countdown;
++			private readonly DebugCtx _debug;
++			public readonly int _i;
+ 
+-			public RangeTask(ParallelForAction action, int fromInclusive, int toExclusive, object context, CountdownEvent countdown) {
++			public RangeTask(ParallelForAction action, int fromInclusive, int toExclusive, object context, CountdownEvent countdown, DebugCtx debug, int i) {
+ 				_action = action;
+ 				_fromInclusive = fromInclusive;
+ 				_toExclusive = toExclusive;
+ 				_context = context;
+ 				_countdown = countdown;
++				_debug = debug;
++				_i = i;
++				Interlocked.Increment(ref _debug.constructed);
  			}
  
  			public void Invoke() {
++				Interlocked.Increment(ref _debug.started);
++
 +				/*
  				if (_fromInclusive != _toExclusive)
  					_action(_fromInclusive, _toExclusive, _context);
  
  				_countdown.Signal();
 +				*/
-+				
++
 +				//TML: Included this try finally block to prevent barely debuggable freezes.
 +				try {
 +					if (_fromInclusive != _toExclusive)
 +						_action(_fromInclusive, _toExclusive, _context);
++					Interlocked.Increment(ref _debug.finishednormally);
 +				}
 +				finally {
 +					_countdown.Signal();
++					_debug.signalled.Add(this);
 +				}
  			}
  		}
@@ -33,7 +74,7 @@
  
  		public static bool ForceTasksOnCallingThread {
  			get;
-@@ -48,7 +_,13 @@
+@@ -48,10 +_,17 @@
  				num2 = 1;
  
  			ThreadPriority priority = Thread.CurrentThread.Priority;
@@ -47,8 +88,27 @@
  			int num3 = num / num2;
  			int num4 = num % num2;
  			CountdownEvent countdownEvent = new CountdownEvent(num2);
-@@ -71,11 +_,29 @@
++			var debug = new DebugCtx { n = num2 };
+ 			int num5 = toExclusive;
+ 			for (int num6 = num2 - 1; num6 >= 0; num6--) {
+ 				int num7 = num3;
+@@ -61,21 +_,43 @@
+ 				num5 -= num7;
+ 				int num8 = num5;
+ 				int toExclusive2 = num8 + num7;
+-				RangeTask rangeTask = new RangeTask(callback, num8, toExclusive2, context, countdownEvent);
++				RangeTask rangeTask = new RangeTask(callback, num8, toExclusive2, context, countdownEvent, debug, num6);
+ 				if (num6 < 1)
+ 					InvokeTask(rangeTask);
+ 				else
+ 					ThreadPool.QueueUserWorkItem(InvokeTask, rangeTask);
+ 			}
+ 
++			var start = DateTime.Now;
  			while (countdownEvent.CurrentCount != 0) {
++				if ((DateTime.Now - start) > TimeSpan.FromSeconds(10)) {
++					throw new Exception($"Fatal Deadlock in FastParallelFor. {debug}");
++				}
  			}
  
 +			/*
