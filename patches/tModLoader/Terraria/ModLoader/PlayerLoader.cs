@@ -824,6 +824,17 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		private delegate void DelegateModifyFishingAttempt(ref FishingAttempt attempt);
+		private static HookList HookModifyFishingAttempt = AddHook<DelegateModifyFishingAttempt>(p => p.ModifyFishingAttempt);
+
+		public static void ModifyFishingAttempt(Player player, ref FishingAttempt attempt) {
+			foreach (int index in HookModifyFishingAttempt.arr) {
+				player.modPlayers[index].ModifyFishingAttempt(ref attempt);
+			}
+
+			attempt.rolledItemDrop = attempt.rolledEnemySpawn = 0; // Reset, modders need to use CatchFish for this 
+		}
+
 		private delegate void DelegateCatchFish(FishingAttempt attempt, ref int itemDrop, ref int enemySpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
 		private static HookList HookCatchFish = AddHook<DelegateCatchFish>(p => p.CatchFish);
 

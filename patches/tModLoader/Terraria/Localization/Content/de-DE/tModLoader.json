@@ -21,7 +21,8 @@
 		// "ShowNewUpdatedModsInfoMessage": "The following mods were added or updated from the workshop since last launch (you can disable this message in the settings):\n",
 		// "ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
 		// "ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
-		// "ModUpdatedSinceLastLaunchMessage": "This mod updated since last launch",
+		// "ModUpdatedSinceLastLaunchMessage": "This mod has been automatically updated\nsince last launch from version {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "Auf GitHub ansehen",
 		"tModLoaderSettings": "tModLoader-Einstellungen",
 		"ModMenuSwap": "Hauptmenü-Theme wechseln",
@@ -36,7 +37,7 @@
 		"ModsDisableAll": "Alle deaktivieren",
 		"ModsReloadMods": "Mods neu laden",
 		// "ModsForceReload": "Force Reload",
-		"ModsOpenModsFolder": "Mod-Ordner öffnen",
+		"ModsOpenModsFolders": "Mod-Ordner öffnen",
 		// "OpenModPackFolder": "Open Mod Pack Folder",
 		// "DeactivateModPack": "Unload Mod Pack",
 		// "ActivateModPack": "Load Mod Pack",
@@ -271,6 +272,9 @@
 		"ExperimentalFeaturesNo": "Experimentelle Funktionen: Aus",
 		"RemoveForcedMinimumZoomYes": "Lösche erzwungenen maximalen Zoom: An",
 		"RemoveForcedMinimumZoomNo": "Lösche erzwungenen maximalen Zoom: Aus",
+		// "AttackSpeedScalingTooltipVisibility0": "Attack Speed Effect Tooltips: Show All",
+		// "AttackSpeedScalingTooltipVisibility1": "Attack Speed Effect Tooltips: Show Adjusted Effectiveness",
+		// "AttackSpeedScalingTooltipVisibility2": "Attack Speed Effect Tooltips: Hidden",
 		"AllowGreaterResolutionsYes": "Erlaube höhere Auflösungen: An",
 		"AllowGreaterResolutionsNo": "Erlaube höhere Auflösungen: Aus",
 		"ShowMemoryEstimatesYes": "Schätzungen des Mod-Speichers zeigen: An",
@@ -393,6 +397,12 @@
 		"DefaultTownNPCChat": "Mein Modder hat vergessen mir einen Dialog zu geben.",
 		"DefaultNurseCantHealChat": "Ich weiß nicht warum, aber ich kann dich nicht Heilen. Anscheinend hat der Modder vergessen, mir einen Dialog zu geben.",
 
+		// Tooltip lines
+		// "NoAttackSpeedScaling": "Does not scale with attack speed",
+		// "SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
+		// "ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
+		// "ModifiedByMods": "Is modified by ",
+
 		// Memory bar
 		"LastLoadRamUsage": "Geschätzte RAM-Nutzung beim letzten Laden: {0}",
 		"AvailableMemory": "Verfügbarer Arbeitsspeicher: {0}",
@@ -500,5 +510,8 @@
 		"InGemCave": "Muss in einer Edelsteinhöhle sein",
 		"InLihzardTemple": "Muss im Lihzahrdtempel sein",
 		"InGraveyardBiome": "Muss im Friedhof-Biom sein"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

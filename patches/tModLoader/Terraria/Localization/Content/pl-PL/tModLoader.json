@@ -21,7 +21,8 @@
 		"ShowNewUpdatedModsInfoMessage": "Poniższe Mody zostały zaktualizowane lub dodane do Steam Workshop od czasu ostatniego uruchomienia gry (możesz wyłączyć to powiadomienie w ustawieniach):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNowe Mody:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nZaktualizowane Mody:",
-		"ModUpdatedSinceLastLaunchMessage": "Ten mod został zaktualizowany od czasu ostatniego uruchomienia gry",
+		"ModUpdatedSinceLastLaunchMessage": "Ten mod został zaktualizowany od czasu ostatniego uruchomienia gry {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "Zobacz na GitHub",
 		"tModLoaderSettings": "Ustawienia tModLoadera",
 		"ModMenuSwap": "Przełącz Motyw Menu",
@@ -36,7 +37,7 @@
 		"ModsDisableAll": "Wyłącz wszystkie",
 		"ModsReloadMods": "Przeładuj mody",
 		"ModsForceReload": "Wymuś przeładowanie modów",
-		"ModsOpenModsFolder": "Otwórz folder z modami",
+		"ModsOpenModsFolders": "Otwórz folder z modami",
 		"OpenModPackFolder": "Otwórz folder z paczkami Modów",
 		"DeactivateModPack": "Wyłącz paczkę Modów",
 		"ActivateModPack": "Załaduj paczkę Modów",
@@ -509,5 +510,8 @@
 		"InGemCave": "Musi być w jaskini kamieni szlachetnych",
 		"InLihzardTemple": "Musi być w Świątyni Jaszczura",
 		"InGraveyardBiome": "Musi być na cmentarzu"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

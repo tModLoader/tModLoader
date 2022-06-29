@@ -17,6 +17,17 @@ if [ "$_uname" = Darwin ]; then
 	export DYLD_LIBRARY_PATH="$library_dir"
 	export VK_ICD_FILENAMES="$libary_dir/MoltenVK_icd.json"
 	ln -sf "$library_dir/libSDL2-2.0.0.dylib" "$library_dir/libSDL2.dylib"
+
+	# El Capitan is a total idiot and wipes this variable out, making the
+    # Steam overlay disappear. This sidesteps "System Integrity Protection"
+    # and resets the variable with Valve's own variable (they provided this
+    # fix by the way, thanks Valve!). Note that you will need to update your
+    # launch configuration to the script location, NOT just the app location
+    # (i.e. Kick.app/Contents/MacOS/Kick, not just Kick.app).
+    # -flibit
+    if [ "$STEAM_DYLD_INSERT_LIBRARIES" != "" ] && [ "$DYLD_INSERT_LIBRARIES" == "" ]; then
+        export DYLD_INSERT_LIBRARIES="$STEAM_DYLD_INSERT_LIBRARIES"
+    fi
 elif [[ "$_uname" == *"_NT"* ]]; then
 	export PATH="$root_dir/Libraries/Native/Windows;$PATH"
 else

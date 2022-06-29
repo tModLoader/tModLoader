@@ -23,7 +23,8 @@
 		// "ShowNewUpdatedModsInfoMessage": "The following mods were added or updated from the workshop since last launch (you can disable this message in the settings):\n",
 		// "ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
 		// "ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
-		// "ModUpdatedSinceLastLaunchMessage": "This mod updated since last launch",
+		// "ModUpdatedSinceLastLaunchMessage": "This mod has been automatically updated\nsince last launch from version {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		// "ViewOnGitHub": "View on GitHub",
 		// "tModLoaderSettings": "tModLoader Settings",
 		// "ModMenuSwap": "Switch Menu Theme",
@@ -38,7 +39,7 @@
 		// "ModsDisableAll": "Disable All",
 		// "ModsReloadMods": "Reload Mods",
 		// "ModsForceReload": "Force Reload",
-		// "ModsOpenModsFolder": "Open Mods Folder",
+		// "ModsOpenModsFolders": "Open Mods Folders",
 		// "OpenModPackFolder": "Open Mod Pack Folder",
 		// "DeactivateModPack": "Unload Mod Pack",
 		// "ActivateModPack": "Load Mod Pack",
@@ -273,6 +274,9 @@
 		// "ExperimentalFeaturesNo": "Experimental Features: Off",
 		// "RemoveForcedMinimumZoomYes": "Remove Forced Minimum Zoom: On",
 		// "RemoveForcedMinimumZoomNo": "Remove Forced Minimum Zoom: Off",
+		// "AttackSpeedScalingTooltipVisibility0": "Attack Speed Effect Tooltips: Show All",
+		// "AttackSpeedScalingTooltipVisibility1": "Attack Speed Effect Tooltips: Show Adjusted Effectiveness",
+		// "AttackSpeedScalingTooltipVisibility2": "Attack Speed Effect Tooltips: Hidden",
 		// "AllowGreaterResolutionsYes": "Allow Greater Resolutions: On",
 		// "AllowGreaterResolutionsNo": "Allow Greater Resolutions: Off",
 		// "ShowMemoryEstimatesYes": "Show Mod Memory Estimates: On",
@@ -395,6 +399,12 @@
 		// "DefaultTownNPCChat": "My modder forgot to give me a chat message.",
 		// "DefaultNurseCantHealChat": "I don't know why I can't heal you, the modder forgot to give me a chat message.",
 
+		// Tooltip lines
+		// "NoAttackSpeedScaling": "Does not scale with attack speed",
+		// "SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
+		// "ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
+		// "ModifiedByMods": "Is modified by ",
+
 		// Memory bar
 		// "LastLoadRamUsage": "Estimated last load RAM usage: {0}",
 		// "AvailableMemory": "Available Memory: {0}",
@@ -502,5 +512,8 @@
 		// "InGemCave": "Needs to be in Gem Cave",
 		// "InLihzardTemple": "Needs to be in Lihzard Temple",
 		// "InGraveyardBiome": "Needs to be in Graveyard Biome"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

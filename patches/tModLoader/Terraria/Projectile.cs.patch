@@ -797,7 +797,12 @@
  			if (wet)
  				position += wetVelocity;
  			else
-@@ -13443,8 +_,17 @@
+@@ -13439,12 +_,22 @@
+ 				fisher.heightLevel = 4;
+ 
+ 			FishingCheck_RollDropLevels(fisher.fishingLevel, out fisher.common, out fisher.uncommon, out fisher.rare, out fisher.veryrare, out fisher.legendary, out fisher.crate);
++			PlayerLoader.ModifyFishingAttempt(Main.player[owner], ref fisher);
+ 			FishingCheck_ProbeForQuestFish(ref fisher);
  			FishingCheck_RollEnemySpawns(ref fisher);
  			FishingCheck_RollItemDrop(ref fisher);
  			bool flag = false;

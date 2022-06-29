@@ -27,7 +27,7 @@ namespace Terraria.ModLoader.Core
 		private static List<string> readFailures = new List<string>(); // TODO: Reflect these skipped Mods in the UI somehow.
 
 		internal static string lastLaunchedModsFilePath = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
-		internal static List<string> modsThatUpdatedSinceLastLaunch = new List<string>();
+		internal static List<(string ModName, Version previousVersion)> modsThatUpdatedSinceLastLaunch = new List<(string ModName, Version previousVersion)>();
 
 		internal static WorkshopHelper.UGCBased.Downloader WorkshopFileFinder = new WorkshopHelper.UGCBased.Downloader();
 
@@ -134,11 +134,11 @@ namespace Terraria.ModLoader.Core
 
 						if (!lastMods.ContainsKey(name)) {
 							newMods.Add(name);
-							modsThatUpdatedSinceLastLaunch.Add(name);
+							modsThatUpdatedSinceLastLaunch.Add((name, null));
 						}
 						else if (lastMods.TryGetValue(name, out var lastVersion) && lastVersion < version) {
 							updatedMods.Add(name);
-							modsThatUpdatedSinceLastLaunch.Add(name);
+							modsThatUpdatedSinceLastLaunch.Add((name, lastVersion));
 						}
 					}
 
