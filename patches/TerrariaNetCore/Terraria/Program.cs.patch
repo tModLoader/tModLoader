@@ -1,0 +1,14 @@
+--- src/Terraria/Terraria/Program.cs
++++ src/TerrariaNetCore/Terraria/Program.cs
+@@ -155,6 +_,11 @@
+ #else
+ 			Main.dedServ = LaunchParameters.ContainsKey("-server");
+ #endif
++
++			if (Main.dedServ) {
++				Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
++			}
++
+ 			ThreadPool.SetMinThreads(8, 8);
+ 			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
+ 			InitializeConsoleOutput();
