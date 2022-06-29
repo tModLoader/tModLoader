@@ -55,7 +55,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "GlobalLoot", "struct_terraria_1_1_mod_loader_1_1_global_loot.html", "struct_terraria_1_1_mod_loader_1_1_global_loot" ],
     [ "GlobalNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html", "class_terraria_1_1_mod_loader_1_1_global_n_p_c" ],
     [ "GlobalProjectile", "class_terraria_1_1_mod_loader_1_1_global_projectile.html", "class_terraria_1_1_mod_loader_1_1_global_projectile" ],
-    [ "GlobalRecipe", "class_terraria_1_1_mod_loader_1_1_global_recipe.html", "class_terraria_1_1_mod_loader_1_1_global_recipe" ],
+    [ "GlobalRecipe", "class_terraria_1_1_mod_loader_1_1_global_recipe.html", null ],
     [ "GlobalTile", "class_terraria_1_1_mod_loader_1_1_global_tile.html", "class_terraria_1_1_mod_loader_1_1_global_tile" ],
     [ "GlobalType", "class_terraria_1_1_mod_loader_1_1_global_type.html", "class_terraria_1_1_mod_loader_1_1_global_type" ],
     [ "GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", "class_terraria_1_1_mod_loader_1_1_global_wall" ],

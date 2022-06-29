@@ -1,10 +1,5 @@
 var NAVTREEINDEX96 =
 {
-"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a48ae756b1ae7cce5dcbbbf655d135b62":[2,0,2,13,129,38],
-"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4d42f1287620918ddde638bd9e30b2e6":[2,0,2,13,129,23],
-"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4d7e5eeea530b3e0ae7b47fb5e414bf8":[2,0,2,13,129,79],
-"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a4e924258dc1bf73ef0687984fce6b231":[2,0,2,13,129,40],
-"class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a5075fa0ca2bdcf3208edfbcc6c567a74":[2,0,2,13,129,41],
 "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a526fc0a42931cb2713fab4d7bf9b11c2":[2,0,2,13,129,16],
 "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a565173225e95b50d3da24188af7fb453":[2,0,2,13,129,65],
 "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html#a5bcc2cf38a97e5ba87005b39428d8d5c":[2,0,2,13,129,19],
@@ -249,5 +244,10 @@ var NAVTREEINDEX96 =
 "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a0f953a98635cfa79f9383e473a8f8363":[2,0,2,13,140,10],
 "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a103beb6edc1cdeac945aec035f3d74d5":[2,0,2,13,140,35],
 "class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a1335b4cbee54240607b58040cb47c209":[2,0,2,13,140,12],
-"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a1367d806fe025ee2b27c5f0aa945b46d":[2,0,2,13,140,13]
+"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a1367d806fe025ee2b27c5f0aa945b46d":[2,0,2,13,140,13],
+"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a152e38a15969bfe2bbe9319afc2a6794":[2,0,2,13,140,21],
+"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a166a1b70d4ec522e11e2a40d887ab150":[2,0,2,13,140,29],
+"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a1ffabaa80c7cda90b239eea42da44563":[2,0,2,13,140,17],
+"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a283a070b3d26c90ab809ef4f87a50a8b":[2,0,2,13,140,46],
+"class_terraria_1_1_mod_loader_1_1_projectile_loader.html#a28c28c596494e184c723e8a79824bde0":[2,0,2,13,140,32]
 };

@@ -1,10 +1,5 @@
 var NAVTREEINDEX98 =
 {
-"class_terraria_1_1_mod_loader_1_1_u_i_1_1_elements_1_1_u_i_grid.html#a8eb4bbf1e1be4658918aea0fecd73074":[2,0,2,13,6,0,2,5],
-"class_terraria_1_1_mod_loader_1_1_u_i_1_1_elements_1_1_u_i_grid.html#a97483dc903371f83444ad2ede8a1aec0":[2,0,2,13,6,0,2,2],
-"class_terraria_1_1_mod_loader_1_1_u_i_1_1_elements_1_1_u_i_grid.html#a98b1db9263f63e5203c63057c9ffdf00":[2,0,2,13,6,0,2,20],
-"class_terraria_1_1_mod_loader_1_1_u_i_1_1_elements_1_1_u_i_grid.html#a9b2c6f76620710bcb2eb6960bdb5de04":[2,0,2,13,6,0,2,19],
-"class_terraria_1_1_mod_loader_1_1_u_i_1_1_elements_1_1_u_i_grid.html#aa0fff3300c76149be82616a3d60f8a21":[2,0,2,13,6,0,2,11],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_elements_1_1_u_i_grid.html#ac2c41d2c4bbb9a46f673bb75e3ec369f":[2,0,2,13,6,0,2,0],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_elements_1_1_u_i_grid.html#ac502fda3e0415dbf90274ef9ced6dba8":[2,0,2,13,6,0,2,6],
 "class_terraria_1_1_mod_loader_1_1_u_i_1_1_elements_1_1_u_i_grid.html#acbfe32c0530fab49418e8929ae9a6e8e":[2,0,2,13,6,0,2,1],
@@ -249,5 +244,10 @@ var NAVTREEINDEX98 =
 "class_terraria_1_1_modules_1_1_anchor_data_module.html#a55b8a5c2912dc174259129fda1b08380":[2,0,2,14,0,0],
 "class_terraria_1_1_modules_1_1_anchor_data_module.html#a6e7b1b5a3dcdaec5ca04db05ce37f05d":[2,0,2,14,0,2],
 "class_terraria_1_1_modules_1_1_anchor_data_module.html#aa9b478554542d1218509a09cd779bc75":[2,0,2,14,0,3],
-"class_terraria_1_1_modules_1_1_anchor_data_module.html#ab6f1a98d745609b03324592d5b83b7f2":[2,0,2,14,0,4]
+"class_terraria_1_1_modules_1_1_anchor_data_module.html#ab6f1a98d745609b03324592d5b83b7f2":[2,0,2,14,0,4],
+"class_terraria_1_1_modules_1_1_anchor_data_module.html#af38a29170f08d475510cc29bfd5155f9":[2,0,2,14,0,1],
+"class_terraria_1_1_modules_1_1_anchor_types_module.html":[2,0,2,14,1],
+"class_terraria_1_1_modules_1_1_anchor_types_module.html#a0c5f250045bb40577d002e73d4f00ee8":[2,0,2,14,1,4],
+"class_terraria_1_1_modules_1_1_anchor_types_module.html#a8df05624110a90f653ef4f1d44b7e7bc":[2,0,2,14,1,0],
+"class_terraria_1_1_modules_1_1_anchor_types_module.html#aade785b2d713a1f977fec3b07e1445da":[2,0,2,14,1,3]
 };

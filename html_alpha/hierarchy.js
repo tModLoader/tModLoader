@@ -596,6 +596,7 @@ var hierarchy =
     [ "Terraria.WorldBuilding.GenShapeActionPair", "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html", null ],
     [ "Terraria.GetItemSettings", "struct_terraria_1_1_get_item_settings.html", null ],
     [ "Terraria.ModLoader.GlobalLoot", "struct_terraria_1_1_mod_loader_1_1_global_loot.html", null ],
+    [ "Terraria.ModLoader.GlobalRecipe", "class_terraria_1_1_mod_loader_1_1_global_recipe.html", null ],
     [ "GlobalType", "class_global_type.html", [
       [ "Terraria.ModLoader.GlobalType< TEntity, TGlobal >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ]
     ] ],
@@ -1278,7 +1279,6 @@ var hierarchy =
             [ "Terraria.ModLoader.GlobalBossBar", "class_terraria_1_1_mod_loader_1_1_global_boss_bar.html", null ],
             [ "Terraria.ModLoader.GlobalBuff", "class_terraria_1_1_mod_loader_1_1_global_buff.html", null ],
             [ "Terraria.ModLoader.GlobalInfoDisplay", "class_terraria_1_1_mod_loader_1_1_global_info_display.html", null ],
-            [ "Terraria.ModLoader.GlobalRecipe", "class_terraria_1_1_mod_loader_1_1_global_recipe.html", null ],
             [ "Terraria.ModLoader.GlobalType< TEntity, TGlobal >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ],
             [ "Terraria.ModLoader.IO.TagSerializer< T, S >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
             [ "Terraria.ModLoader.ModAccessorySlot", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html", [

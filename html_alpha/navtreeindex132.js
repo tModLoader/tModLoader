@@ -1,10 +1,5 @@
 var NAVTREEINDEX132 =
 {
-"struct_terraria_1_1_utilities_1_1_fast_random.html#aee2307eda4c2550e43b07cad6ef90054":[2,0,2,22,4,0],
-"struct_terraria_1_1_utilities_1_1_file_browser_1_1_extension_filter.html":[2,0,2,22,0,0],
-"struct_terraria_1_1_utilities_1_1_file_browser_1_1_extension_filter.html#a892f3dd5c1db1d05f807898bedc40352":[2,0,2,22,0,0,2],
-"struct_terraria_1_1_utilities_1_1_file_browser_1_1_extension_filter.html#a99ae36285007437632feb0e8cc3cdfad":[2,0,2,22,0,0,0],
-"struct_terraria_1_1_utilities_1_1_file_browser_1_1_extension_filter.html#acac77ca3a0e611bfd546b167c8fc7eb4":[2,0,2,22,0,0,1],
 "struct_terraria_1_1_utilities_1_1_int_range.html":[2,0,2,22,7],
 "struct_terraria_1_1_utilities_1_1_int_range.html#a31b212ecfae3bc6e32cbbd33ef43b406":[2,0,2,22,7,2],
 "struct_terraria_1_1_utilities_1_1_int_range.html#a69cc9a9b4c7ed3b78d9c8347797d791e":[2,0,2,22,7,3],
