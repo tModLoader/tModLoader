@@ -128,7 +128,7 @@
 +			bool isServer = LaunchParameters.ContainsKey("-server");
 +
 +			try {
-+				ontrolledFolderAccessSupport.CheckFileSystemAccess();
++				ControlledFolderAccessSupport.CheckFileSystemAccess();
 +				Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
 +				if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
 +					throw new Exception("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
