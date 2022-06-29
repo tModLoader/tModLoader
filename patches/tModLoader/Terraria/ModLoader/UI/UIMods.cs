@@ -137,7 +137,7 @@ namespace Terraria.ModLoader.UI
 			buttonB.OnClick += BackClick;
 
 			uIElement.Append(buttonB);
-			buttonOMF = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"));
+			buttonOMF = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolders"));
 			buttonOMF.CopyStyle(buttonB);
 			buttonOMF.HAlign = 0.5f;
 			buttonOMF.WithFadedMouseOver();
@@ -284,6 +284,11 @@ namespace Terraria.ModLoader.UI
 			SoundEngine.PlaySound(10, -1, -1, 1);
 			Directory.CreateDirectory(ModLoader.ModPath);
 			Utils.OpenFolder(ModLoader.ModPath);
+
+			if (ModOrganizer.WorkshopFileFinder.ModPaths.Any()) {
+				string workshopFolderPath = Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString();
+				Utils.OpenFolder(workshopFolderPath);
+			}
 		}
 
 		private void EnableAll(UIMouseEvent evt, UIElement listeningElement) {
