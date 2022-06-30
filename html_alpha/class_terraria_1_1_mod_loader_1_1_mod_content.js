@@ -40,6 +40,5 @@ var class_terraria_1_1_mod_loader_1_1_mod_content =
     [ "TileType< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a9ca8d1daa4123e6b2e30745b27cc4b2e", null ],
     [ "TryFind< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#ad747715f472db21f01a513fc8bafe39b", null ],
     [ "TryFind< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#af3c675cdf9249d956d956b5e10c34347", null ],
-    [ "WallType< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a812f70cb584d2a682cfd75e58ce3d397", null ],
-    [ "LoadingMod", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a15134988c7ce8c032332c3844be12703", null ]
+    [ "WallType< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a812f70cb584d2a682cfd75e58ce3d397", null ]
 ];
