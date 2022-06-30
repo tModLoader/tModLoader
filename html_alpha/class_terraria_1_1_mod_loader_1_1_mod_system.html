@@ -276,12 +276,9 @@ For example, if your mod adds a boss and you want certain <a class="el" href="cl
 <b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization. <br  />
 <b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ae2235964e908330e4a004aeec3a839f2">More...</a><br /></td></tr>
 <tr class="separator:ae2235964e908330e4a004aeec3a839f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a8b974e0c1e765e72e0025a7a8aef78"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a8a8b974e0c1e765e72e0025a7a8aef78">SetStaticDefaults</a> ()</td></tr>
-<tr class="memdesc:a8a8b974e0c1e765e72e0025a7a8aef78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the properties after initial loading has completed.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a8a8b974e0c1e765e72e0025a7a8aef78">More...</a><br /></td></tr>
-<tr class="separator:a8a8b974e0c1e765e72e0025a7a8aef78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9037968777fbe16075d29207779299fb"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a9037968777fbe16075d29207779299fb">SetupContent</a> ()</td></tr>
-<tr class="memdesc:a9037968777fbe16075d29207779299fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a8a8b974e0c1e765e72e0025a7a8aef78" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a9037968777fbe16075d29207779299fb">More...</a><br /></td></tr>
-<tr class="separator:a9037968777fbe16075d29207779299fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3610f96fdd6aa047a3777e32a1e0faa"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ab3610f96fdd6aa047a3777e32a1e0faa">SetupContent</a> ()</td></tr>
+<tr class="memdesc:ab3610f96fdd6aa047a3777e32a1e0faa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need (like setting up static defaults) This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ab3610f96fdd6aa047a3777e32a1e0faa">More...</a><br /></td></tr>
+<tr class="separator:ab3610f96fdd6aa047a3777e32a1e0faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a742ae1402c0449d5da76de883472d740"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a742ae1402c0449d5da76de883472d740">TileCountsAvailable</a> (ReadOnlySpan&lt; int &gt; tileCounts)</td></tr>
 <tr class="memdesc:a742ae1402c0449d5da76de883472d740"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are. <br  />
  The <em>tileCounts</em>  parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a742ae1402c0449d5da76de883472d740">More...</a><br /></td></tr>
@@ -2083,8 +2080,8 @@ For example, if your mod adds a boss and you want certain <a class="el" href="cl
 
 </div>
 </div>
-<a id="a8a8b974e0c1e765e72e0025a7a8aef78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a8b974e0c1e765e72e0025a7a8aef78">&#9670;&nbsp;</a></span>SetStaticDefaults()</h2>
+<a id="ab3610f96fdd6aa047a3777e32a1e0faa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3610f96fdd6aa047a3777e32a1e0faa">&#9670;&nbsp;</a></span>SetupContent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2093,7 +2090,7 @@ For example, if your mod adds a boss and you want certain <a class="el" href="cl
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">sealed override void Terraria.ModLoader.ModSystem.SetStaticDefaults </td>
+          <td class="memname">override void Terraria.ModLoader.ModSystem.SetupContent </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -2106,36 +2103,7 @@ For example, if your mod adds a boss and you want certain <a class="el" href="cl
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to modify the properties after initial loading has completed. </p>
-
-<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aede25175050860ec8ea5e2d33c352437">Terraria.ModLoader.ModType&lt; TEntity, TModType &gt;</a>.</p>
-
-</div>
-</div>
-<a id="a9037968777fbe16075d29207779299fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9037968777fbe16075d29207779299fb">&#9670;&nbsp;</a></span>SetupContent()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">sealed override void Terraria.ModLoader.ModSystem.SetupContent </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>If you make a new <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html" title="The base type for most modded things.">ModType</a>, seal this override, and call <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a8a8b974e0c1e765e72e0025a7a8aef78" title="Allows you to modify the properties after initial loading has completed.">SetStaticDefaults</a> in it. </p>
+<p>Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need (like setting up static defaults) This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent </p>
 
 <p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aa6bc19d977556b547b409540892163ee">Terraria.ModLoader.ModType&lt; TEntity, TModType &gt;</a>.</p>
 
