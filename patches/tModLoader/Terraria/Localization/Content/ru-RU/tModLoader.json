@@ -21,7 +21,8 @@
 		"ShowNewUpdatedModsInfoMessage": "Следующие моды были добавлены или обновлены с предыдущего запуска (это сообщение можно отключить в настройках):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nНовые моды:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nОбновлённые моды:",
-		"ModUpdatedSinceLastLaunchMessage": "Мод был обновлён с предыдущего запуска",
+		"ModUpdatedSinceLastLaunchMessage": "Мод был обновлён с предыдущего запуска {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "Просмотреть на GitHub",
 		"tModLoaderSettings": "Настройки tModLoader",
 		"ModMenuSwap": "Переключить тему меню",
@@ -36,7 +37,7 @@
 		"ModsDisableAll": "Отключить все",
 		"ModsReloadMods": "Перезагрузить моды",
 		"ModsForceReload": "Принудительная перезагрузка",
-		"ModsOpenModsFolder": "Открыть папку модов",
+		"ModsOpenModsFolders": "Открыть папку модов",
 		// "OpenModPackFolder": "Open Mod Pack Folder",
 		// "DeactivateModPack": "Unload Mod Pack",
 		// "ActivateModPack": "Load Mod Pack",
@@ -271,6 +272,9 @@
 		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
 		"RemoveForcedMinimumZoomYes": "Убрать принудительное минимальное приближение: Да",
 		"RemoveForcedMinimumZoomNo": "Убрать принудительное минимальное приближение: Нет",
+		// "AttackSpeedScalingTooltipVisibility0": "Attack Speed Effect Tooltips: Show All",
+		// "AttackSpeedScalingTooltipVisibility1": "Attack Speed Effect Tooltips: Show Adjusted Effectiveness",
+		// "AttackSpeedScalingTooltipVisibility2": "Attack Speed Effect Tooltips: Hidden",
 		"AllowGreaterResolutionsYes": "Разрешить большие разрешения: Да",
 		"AllowGreaterResolutionsNo": "Разрешить большие разрешения: Нет",
 		"ShowMemoryEstimatesYes": "Показывать приблизительное использование памяти: Да",
@@ -393,6 +397,12 @@
 		"DefaultTownNPCChat": "Мой моддер совсем забыл дать мне сообщение.",
 		"DefaultNurseCantHealChat": "Я не знаю почему я не могу тебя полечить, моддер ответственный за это забыл дать мне сообщение, объясняющее это.",
 
+		// Tooltip lines
+		// "NoAttackSpeedScaling": "Does not scale with attack speed",
+		// "SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
+		// "ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
+		// "ModifiedByMods": "Is modified by ",
+
 		// Memory bar
 		"LastLoadRamUsage": "Среднее использование памяти при последнем запуске: {0}",
 		"AvailableMemory": "Доступно памяти: {0}",
@@ -500,5 +510,8 @@
 		"InGemCave": "Нужна самоцветная пещера",
 		"InLihzardTemple": "Нужен Храм Джунглей",
 		"InGraveyardBiome": "Нужно кладбище"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

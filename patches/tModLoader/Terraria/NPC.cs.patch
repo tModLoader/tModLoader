@@ -200,7 +200,7 @@
 +			if (NPCNameList != null && NPCNameList.Count > 0)
 +				return NPCNameList[WorldGen.genRand.Next(NPCNameList.Count)];
 +			else
-+				return TypeName;
++				return "";
 +		}
 +
 +		/*
@@ -788,6 +788,15 @@
  			if (townNPC) {
  				AddIntoPlayersTownNPCSlots();
  				return;
+@@ -55790,7 +_,7 @@
+ 			if (timeLeft <= 0)
+ 				flag = false;
+ 
+-			if (!flag && Main.netMode != 1) {
++			if (!flag && Main.netMode != 1 && !NPCLoader.SavesAndLoads(this)) {
+ 				noSpawnCycle = true;
+ 				active = false;
+ 				if (Main.netMode == 2) {
 @@ -55886,6 +_,9 @@
  				return;
  			}

@@ -137,23 +137,13 @@
  						break;
  					case SoundType.Music:
  						num *= Main.musicVolume;
-@@ -104,6 +_,19 @@
- 				num = MathHelper.Clamp(num, 0f, 1f);
+@@ -105,5 +_,9 @@
  				Sound.Volume = num;
  			}
-+		}
+ 		}
 +
 +		// Added by TML.
 +		// As the name states, runs code on the main thread and waits for it to finish.
-+		private static void RunOnMainThreadAndWait(Action action) {
-+			var tcs = new TaskCompletionSource<bool>();
-+
-+			Main.QueueMainThreadAction(() => {
-+				action();
-+				tcs.SetResult(true);
-+			});
-+
-+			tcs.Task.Wait();
- 		}
++		private static void RunOnMainThreadAndWait(Action action) => Main.RunOnMainThread(action).GetAwaiter().GetResult();
  	}
  }

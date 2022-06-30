@@ -120,5 +120,7 @@ public static class Extensions
 	};
 
 	public static bool NonDefault(this SemanticModel model, ExpressionSyntax x, object defaultValue) => x != null && (dynamic)model.GetOperation(x).ConstantValue.Value != (dynamic)defaultValue;
+
+	public static bool IsObsolete(this ISymbol sym) => sym.GetAttributes().Any(a => a.AttributeClass?.Name == "ObsoleteAttribute");
 }
 

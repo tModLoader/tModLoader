@@ -21,7 +21,8 @@
 		// "ShowNewUpdatedModsInfoMessage": "The following mods were added or updated from the workshop since last launch (you can disable this message in the settings):\n",
 		// "ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
 		// "ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
-		// "ModUpdatedSinceLastLaunchMessage": "This mod updated since last launch",
+		// "ModUpdatedSinceLastLaunchMessage": "This mod has been automatically updated\nsince last launch from version {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "Voir sur GitHub",
 		"tModLoaderSettings": "Paramètres de tModLoader",
 		"ModMenuSwap": "Changer de Thème de Menu",
@@ -36,7 +37,7 @@
 		"ModsDisableAll": "Tout désactiver",
 		"ModsReloadMods": "Relancer les Mods",
 		// "ModsForceReload": "Force Reload",
-		"ModsOpenModsFolder": "Dossier des Mods",
+		"ModsOpenModsFolders": "Dossier des Mods",
 		// "OpenModPackFolder": "Open Mod Pack Folder",
 		// "DeactivateModPack": "Unload Mod Pack",
 		// "ActivateModPack": "Load Mod Pack",
@@ -271,6 +272,9 @@
 		"ExperimentalFeaturesNo": "Mode expérimental : Non",
 		"RemoveForcedMinimumZoomYes": "Enlever la limite forcée de Zoom Minimum : Oui",
 		"RemoveForcedMinimumZoomNo": "Enlever la limite forcée de Zoom Minimum : Non",
+		// "AttackSpeedScalingTooltipVisibility0": "Attack Speed Effect Tooltips: Show All",
+		// "AttackSpeedScalingTooltipVisibility1": "Attack Speed Effect Tooltips: Show Adjusted Effectiveness",
+		// "AttackSpeedScalingTooltipVisibility2": "Attack Speed Effect Tooltips: Hidden",
 		"AllowGreaterResolutionsYes": "Autoriser de plus grandes Résolutions : Oui",
 		"AllowGreaterResolutionsNo": "Autoriser de plus grandes Résolutions : Non",
 		"ShowMemoryEstimatesYes": "Montrer les estimations de mémoire par Mod : Oui",
@@ -393,6 +397,12 @@
 		"DefaultTownNPCChat": "Mon Moddeur a oublié de me donner un message de dialogue.",
 		"DefaultNurseCantHealChat": "Je ne sais pas pourquoi je ne peux pas vous soigner, le Moddeur a oublié de me donner un message de dialogue.",
 
+		// Tooltip lines
+		// "NoAttackSpeedScaling": "Does not scale with attack speed",
+		// "SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
+		// "ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
+		// "ModifiedByMods": "Is modified by ",
+
 		// Memory bar
 		// "LastLoadRamUsage": "Estimated last load RAM usage: {0}",
 		// "AvailableMemory": "Available Memory: {0}",
@@ -500,5 +510,8 @@
 		"InGemCave": "Doit être dans la Grotte des Gemmes",
 		"InLihzardTemple": "Doit être dans le Temple de Lihzahrd",
 		"InGraveyardBiome": "Doit être dans le Biome du Cimetière"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

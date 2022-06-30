@@ -178,7 +178,7 @@ namespace Terraria.ModLoader
 		}
 
 		public void DrawFarTexture() {
-			if (!GlobalBackgroundStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 				return;
 			}
 
@@ -223,7 +223,7 @@ namespace Terraria.ModLoader
 		}
 
 		public void DrawMiddleTexture() {
-			if (!GlobalBackgroundStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 				return;
 			}
 
@@ -262,7 +262,7 @@ namespace Terraria.ModLoader
 		}
 
 		public void DrawCloseBackground(int style) {
-			if (!GlobalBackgroundStyleLoader.loaded) {
+			if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 				return;
 			}
 

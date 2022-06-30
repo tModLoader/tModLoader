@@ -104,7 +104,10 @@ namespace Terraria.ModLoader.Engine
 				using var clientPipe = new AnonymousPipeClientStream(PipeDirection.In, Program.LaunchParameters["-terrariasteamclient"]);
 				using var sr = new StreamReader(clientPipe, leaveOpen: true);
 				var Recv = () => {
-					var s = sr.ReadLine().Trim();
+					var s = sr.ReadLine()?.Trim();
+					if (s == null)
+						throw new EndOfStreamException();
+
 					Logger.Debug("Recv: " + s);
 					return s;
 				};
@@ -141,6 +144,9 @@ namespace Terraria.ModLoader.Engine
 							SteamUserStats.SetAchievement(achievement);
 					}
 				}
+			}
+			catch (EndOfStreamException) {
+				Logger.Info("The connection to tML was closed unexpectedly. Look in client.log or server.log for details");
 			}
 			catch (Exception ex) {
 				Logger.Fatal("Unhandled error", ex);

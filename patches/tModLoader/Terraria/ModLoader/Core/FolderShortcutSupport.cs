@@ -13,8 +13,18 @@ namespace Terraria.ModLoader.Core
 	internal class FolderShortcutSupport
 	{
 		internal static void UpdateFolderShortcuts() {
-			if (OperatingSystem.IsWindows())
-				CreateLogsFolderShortcut();
+			if (OperatingSystem.IsWindows()) {
+				try {
+					// This is the first file system writing we attempt in the usual documents folder.
+					CreateLogsFolderShortcut();
+				}
+				catch (COMException) {
+					if (ControlledFolderAccessSupport.ControlledFolderAccessDetected) {
+						Utils.OpenToURL("https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Usage-FAQ#controlled-folder-access");
+						throw new Exception($"\n\nControlled Folder Access feature detected.\n\nIf game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu.\n\nMore instructions can be found in the website that just opened.\n\n");  // Before language is loaded, no need to localize
+					}
+				}
+			}
 		}
 
 		// Implementation below adapted from https://stackoverflow.com/a/14632782

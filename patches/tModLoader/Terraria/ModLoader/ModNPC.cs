@@ -10,6 +10,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
@@ -69,6 +70,9 @@ namespace Terraria.ModLoader
 		//TODO: Find a better solution in the future.
 		/// <summary> The ModBiome Types associated with this NPC spawning, if applicable. Used in Bestiary </summary>
 		public int[] SpawnModBiomes { get; set; } = new int[0];
+		
+		/// <summary> Setting this to true will make the NPC not appear in the housing menu nor make it find an house. </summary>
+		public bool TownNPCStayingHomeless { get; set; }
 
 		protected override NPC CreateTemplateEntity() => new() { ModNPC = this };
 
@@ -732,6 +736,34 @@ namespace Terraria.ModLoader
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
 		public virtual void DrawTownAttackSwing(ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
+		}
+
+		/// <summary>
+		/// Makes this ModNPC save along the world even if it's not a townNPC. Defaults to false.
+		/// <br/><b>NOTE:</b> A town NPC will always be saved.
+		/// <br/><b>NOTE:</b> A NPC that needs saving will not despawn naturally.
+		/// </summary>
+		public virtual bool NeedSaving() {
+			return false;
+		}
+
+		/// <summary>
+		/// Allows you to save custom data for the given item.
+		/// Allows you to save custom data for the given npc.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
+		/// <br/><b>NOTE:</b> The npc may be saved even if NeedSaving returns false and this is not a townNPC, if another mod returns true on NeedSaving.
+		/// </summary>
+		/// <param name="tag">The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument</param>
+		public virtual void SaveData(TagCompound tag) {
+		}
+
+		/// <summary>
+		/// Allows you to load custom data that you have saved for this npc.
+		/// </summary>
+		/// <param name="tag">The tag.</param>
+		public virtual void LoadData(TagCompound tag) {
 		}
 	}
 }

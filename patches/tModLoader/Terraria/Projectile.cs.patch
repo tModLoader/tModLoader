@@ -94,7 +94,7 @@
  				for (int j = 0; j < 200; j++) {
  					perIDStaticNPCImmunity[i][j] = 0u;
  				}
-@@ -221,7 +_,37 @@
+@@ -221,7 +_,38 @@
  			}
  		}
  
@@ -128,6 +128,7 @@
 +			DamageType = DamageClass.Default;
 +			ArmorPenetration = 0;
 +			CritChance = 0;
++			WhipSettings = default;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
@@ -259,6 +260,14 @@
  			penetrate = -1;
  			tileCollide = false;
  			scale = 1f;
+@@ -8109,6 +_,7 @@
+ 			extraUpdates = 1;
+ 			usesLocalNPCImmunity = true;
+ 			localNPCHitCooldown = -1;
++			VanillaWhipSettings(this, out WhipSettings.Segments, out WhipSettings.RangeMultiplier);
+ 		}
+ 
+ 		public static int GetNextSlot() {
 @@ -8123,6 +_,10 @@
  			return result;
  		}
@@ -714,12 +723,15 @@
  			if (myRect.Intersects(targetRect))
  				return true;
  
-@@ -11397,7 +_,7 @@
+@@ -11395,9 +_,9 @@
+ 				if (!noEnchantmentVisuals)
+ 					UpdateEnchantmentVisuals();
  
- 				if (numUpdates == -1 && (minion || sentry)) {
+-				if (numUpdates == -1 && (minion || sentry)) {
++				if ((minion || sentry || ContinuouslyUpdateDamage)) {
  					Player player = Main.player[owner];
 -					damage = (int)((float)originalDamage * player.minionDamage + (float)player.minionAddDamage + 5E-06f);
-+					damage = (int)player.GetTotalDamage(DamageClass.Summon).ApplyTo(originalDamage);
++					damage = (int)player.GetTotalDamage(DamageType).ApplyTo(originalDamage);
  				}
  
  				if (minion && numUpdates == -1 && type != 625 && type != 628) {
@@ -785,7 +797,12 @@
  			if (wet)
  				position += wetVelocity;
  			else
-@@ -13443,8 +_,17 @@
+@@ -13439,12 +_,22 @@
+ 				fisher.heightLevel = 4;
+ 
+ 			FishingCheck_RollDropLevels(fisher.fishingLevel, out fisher.common, out fisher.uncommon, out fisher.rare, out fisher.veryrare, out fisher.legendary, out fisher.crate);
++			PlayerLoader.ModifyFishingAttempt(Main.player[owner], ref fisher);
+ 			FishingCheck_ProbeForQuestFish(ref fisher);
  			FishingCheck_RollEnemySpawns(ref fisher);
  			FishingCheck_RollItemDrop(ref fisher);
  			bool flag = false;
@@ -974,6 +991,18 @@
  			if (ai[0] == (float)(int)(timeToFlyOut / 2f)) {
  				WhipPointsForCollision.Clear();
  				FillWhipControlPoints(this, WhipPointsForCollision);
+@@ -30632,6 +_,11 @@
+ 
+ 		public static void GetWhipSettings(Projectile proj, out float timeToFlyOut, out int segments, out float rangeMultiplier) {
+ 			timeToFlyOut = Main.player[proj.owner].itemAnimationMax * proj.MaxUpdates;
++			segments = proj.WhipSettings.Segments;
++			rangeMultiplier = proj.WhipSettings.RangeMultiplier;
++		}
++
++		private static void VanillaWhipSettings(Projectile proj, out int segments, out float rangeMultiplier) {
+ 			segments = 20;
+ 			rangeMultiplier = 1f;
+ 			switch (proj.type) {
 @@ -33091,6 +_,9 @@
  					if (num3 > (float)num9)
  						ai[0] = 1f;

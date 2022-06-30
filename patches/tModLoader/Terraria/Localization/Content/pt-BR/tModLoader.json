@@ -21,7 +21,8 @@
 		"ShowNewUpdatedModsInfoMessage": "Os mods a seguir foram adicionados ou atualizados desde o último lançamento (você pode desativar esta mensagem nas configurações):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNovos Mods:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nMods atualizados:",
-		"ModUpdatedSinceLastLaunchMessage": "Este mod foi atualizado desde o último lançamento",
+		"ModUpdatedSinceLastLaunchMessage": "Este mod foi atualizado desde o último lançamento {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "Ver no GitHub",
 		"tModLoaderSettings": "Configurações do tModLoader",
 		"ModMenuSwap": "Alterar o Tema do Menu",
@@ -36,7 +37,7 @@
 		"ModsDisableAll": "Desativar Todos",
 		"ModsReloadMods": "Recarregar Mods",
 		"ModsForceReload": "Forçar Recarregamento",
-		"ModsOpenModsFolder": "Abrir Pasta de Mods",
+		"ModsOpenModsFolders": "Abrir Pasta de Mods",
 		// "OpenModPackFolder": "Open Mod Pack Folder",
 		// "DeactivateModPack": "Unload Mod Pack",
 		// "ActivateModPack": "Load Mod Pack",
@@ -271,6 +272,9 @@
 		"ExperimentalFeaturesNo": "Funções Experimentais: Desligado",
 		"RemoveForcedMinimumZoomYes": "Remover o Zoom Mínimo Forçado: Ligado",
 		"RemoveForcedMinimumZoomNo": "Remover o Zoom Mínimo Forçado: Desligado",
+		// "AttackSpeedScalingTooltipVisibility0": "Attack Speed Effect Tooltips: Show All",
+		// "AttackSpeedScalingTooltipVisibility1": "Attack Speed Effect Tooltips: Show Adjusted Effectiveness",
+		// "AttackSpeedScalingTooltipVisibility2": "Attack Speed Effect Tooltips: Hidden",
 		"AllowGreaterResolutionsYes": "Permitir Resoluções Maiores: Ligado",
 		"AllowGreaterResolutionsNo": "Permitir Resoluções Maiores: Desligado",
 		"ShowMemoryEstimatesYes": "Mostrar Estimativas de Memória de Mods: Ligado",
@@ -393,6 +397,12 @@
 		"DefaultTownNPCChat": "Meu desenvolvedor de mod se esqueceu de me dar uma mensagem de bate-papo.",
 		"DefaultNurseCantHealChat": "Eu não sei por que não posso curar você, o meu desenvolvedor de mod esqueceu de me dar uma mensagem de bate-papo.",
 
+		// Tooltip lines
+		// "NoAttackSpeedScaling": "Does not scale with attack speed",
+		// "SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
+		// "ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
+		// "ModifiedByMods": "Is modified by ",
+
 		// Memory bar
 		"LastLoadRamUsage": "Uso estimado de RAM no último carregamento: {0}",
 		"AvailableMemory": "Memória Disponível: {0}",
@@ -500,5 +510,8 @@
 		"InGemCave": "Precisa estar na Caverna de Joias",
 		"InLihzardTemple": "Precisa estar no Templo Lagharto",
 		"InGraveyardBiome": "Precisa estar no bioma de Cemitério"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

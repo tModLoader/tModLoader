@@ -82,6 +82,12 @@ namespace Terraria.Social.Steam
 					}
 				}
 
+				// This eliminates version 9999 in case someone bypasses the IsDev Check for testing or whatever
+				string devRemnant = Path.Combine(workshopFolderPath, "9999.0");
+				if (Directory.Exists(devRemnant)) {
+					Directory.Delete(devRemnant);
+				}
+
 				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
 					return false;
@@ -148,7 +154,7 @@ namespace Terraria.Social.Steam
 
 				_publisherInstances.Add(modPublisherInstance);
 
-				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList, buildData, currPublishID);
+				modPublisherInstance.PublishContent(_publishedItems, base.IssueReporter, Forget, name, description, workshopFolderPath, settings.PreviewImagePath, settings.Publicity, tagsList, buildData, currPublishID, settings.ChangeNotes);
 
 				return true;
 			}
@@ -213,8 +219,15 @@ namespace Terraria.Social.Steam
 			using (sModFile.Open())
 				sMod = new LocalMod(sModFile);
 
+			string workshopDescFile = Path.Combine(modFolder, "description_workshop.txt");
+			string workshopDesc;
+			if (!File.Exists(workshopDescFile))
+				workshopDesc = newMod.properties.description;
+			else
+				workshopDesc = File.ReadAllText(workshopDescFile);
+
 			string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version {sMod.properties.version} built for tModLoader v{sMod.properties.buildVersion}[/quote]" +
-				$"{sMod.properties.description}";
+				$"{workshopDesc}";
 			Console.WriteLine($"Built Mod Version is: {newMod.properties.version}. tMod Version is: {BuildInfo.tMLVersion}");
 
 			// Make the publish.vdf file

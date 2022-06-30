@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader
 {
@@ -673,6 +674,37 @@ namespace Terraria.ModLoader
 		/// <param name="scale"></param>
 		/// <param name="offset"></param>
 		public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
+		}
+
+		/// <summary>
+		/// Allows you to make a npc be saved even if it's not a townNPC and NPCID.Sets.SavesAndLoads[npc.type] is false.
+		/// <br/><b>NOTE:</b> A town NPC will always be saved (except the Travelling Merchant that never will).
+		/// <br/><b>NOTE:</b> A NPC that needs saving will not despawn naturally.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <returns></returns>
+		public virtual bool NeedSaving(NPC npc) {
+			return false;
+		}
+
+		/// <summary>
+		/// Allows you to save custom data for the given npc.
+		/// <br/>
+		/// <br/><b>NOTE:</b> The provided tag is always empty by default, and is provided as an argument only for the sake of convenience and optimization.
+		/// <br/><b>NOTE:</b> Try to only save data that isn't default values.
+		/// <br/><b>NOTE:</b> The npc may be saved even if NeedSaving returns false and npc is not a townNPC, if another mod returns true on NeedSaving.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="tag">The TagCompound to save data into. Note that this is always empty by default, and is provided as an argument</param>
+		public virtual void SaveData(NPC npc, TagCompound tag) {
+		}
+
+		/// <summary>
+		/// Allows you to load custom data that you have saved for the given npc.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="tag"></param>
+		public virtual void LoadData(NPC npc, TagCompound tag) {
 		}
 	}
 }

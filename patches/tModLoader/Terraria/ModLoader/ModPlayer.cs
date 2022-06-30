@@ -123,14 +123,6 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the background that displays when viewing the map. Return null if you do not want to change the background. Returns null by default.
-		/// </summary>
-		/// <returns></returns>
-		public virtual Texture2D GetMapBackgroundImage() {
-			return null;
-		}
-
-		/// <summary>
 		/// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time). This is typically done by setting Player.lifeRegen to 0 if it is positive, setting Player.lifeRegenTime to 0, and subtracting a number from Player.lifeRegen. The player will take damage at a rate of half the number you subtract per second.
 		/// </summary>
 		public virtual void UpdateBadLifeRegen() {
@@ -722,7 +714,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to change the item or enemy the player gets when sucessfully catching a "fish". The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
+		/// Allows you to change information about the ongoing fishing attempt before cought items/NPCs are decided, after all vanilla information has been gathered.
+		/// <br/>Will not be called if various conditions for getting a catch aren't met, meaning you can't modify those.
+		/// <br/>Setting <see cref="FishingAttempt.rolledItemDrop"/> or <see cref="FishingAttempt.rolledEnemySpawn"/> is not allowed and will be reset, use <see cref="CatchFish"/> for that.
+		/// </summary>
+		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>
+		public virtual void ModifyFishingAttempt(ref FishingAttempt attempt) {
+		}
+
+		/// <summary>
+		/// Allows you to change the item or enemy the player gets when sucessfully catching an item or NPC. The Fishing Attempt structure contains most information about the vanilla event, including the Item Rod and Bait used by the player, the liquid it is being fished on, and so on.
 		/// The Sonar and Sonar position fields allow you to change the text, color, velocity and position of the catch's name (be it item or NPC) freely
 		/// </summary>
 		/// <param name="attempt">The structure containing most data from the vanilla fishing attempt</param>

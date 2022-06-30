@@ -34,11 +34,13 @@ namespace Terraria.ModLoader
 			public PrioritizedPair undergroundBackground;
 			public PrioritizedPair surfaceBackground;
 			public PrioritizedPair music;
+			public string mapBackground;
 			public CaptureBiome.TileColorStyle tileColorStyle;
 
 			public SceneEffectInstance() {
 				waterStyle = undergroundBackground = surfaceBackground = music = PrioritizedPair.Default;
 				tileColorStyle = CaptureBiome.TileColorStyle.Normal;
+				mapBackground = null;
 			}
 		}
 
@@ -62,7 +64,10 @@ namespace Terraria.ModLoader
 			for (int i = 0; i < list.Count; i++) {
 				ModSceneEffect sceneEffect = list[i];
 
-				if (!sceneEffect.IsSceneEffectActive(player))
+				bool isActive = sceneEffect.IsSceneEffectActive(player);
+
+				sceneEffect.SpecialVisuals(player, isActive);
+				if (!isActive)
 					continue;
 
 				shortList.Add(
@@ -80,7 +85,7 @@ namespace Terraria.ModLoader
 			shortList.Sort(AtmosWeight.InvertedCompare);
 			int sceneEffectFields = 0;
 
-			for (int i = 0; sceneEffectFields < 5 && i < shortList.Count; i++) {
+			for (int i = 0; sceneEffectFields < 6 && i < shortList.Count; i++) {
 				ModSceneEffect sceneEffect = shortList[i].type;
 
 				if (result.waterStyle.priority == 0 && sceneEffect.WaterStyle != null) {
@@ -112,7 +117,10 @@ namespace Terraria.ModLoader
 					sceneEffectFields++;
 				}
 
-				sceneEffect.SpecialVisuals(player);
+				if (result.mapBackground == null && sceneEffect.MapBackground != null) {
+					result.mapBackground = sceneEffect.MapBackground;
+					sceneEffectFields++;
+				}
 			}
 
 			player.CurrentSceneEffect = result;

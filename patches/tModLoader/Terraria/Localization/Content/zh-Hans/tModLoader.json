@@ -22,7 +22,8 @@
 		"ShowNewUpdatedModsInfoMessage": "自从上一次启动以来，以下模组被添加或更新（你可以在设置中关掉这个提示）：\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\n新增模组：",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\n更新模组：",
-		"ModUpdatedSinceLastLaunchMessage": "自上一次启动以来此模组已更新",
+		"ModUpdatedSinceLastLaunchMessage": "自上一次启动以来此模组已更新 {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "在 GitHub 上查看",
 		"tModLoaderSettings": "tModLoader设置",
 		"ModMenuSwap": "切换背景主题",
@@ -37,7 +38,7 @@
 		"ModsDisableAll": "禁用全部",
 		"ModsReloadMods": "重新加载模组",
 		"ModsForceReload": "强制重新加载模组",
-		"ModsOpenModsFolder": "打开模组文件夹",
+		"ModsOpenModsFolders": "打开模组文件夹",
 		"OpenModPackFolder": "打开模组整合包文件夹",
 		"DeactivateModPack": "禁用模组整合包",
 		"ActivateModPack": "加载模组整合包",
@@ -396,7 +397,7 @@
 		"DefaultTownNPCName": "无名氏",
 		"DefaultTownNPCChat": "模组作者忘记给我一个聊天信息了.",
 		"DefaultNurseCantHealChat": "我也不知道为什么我无法治愈你,模组作者忘记给我一个聊天信息了.",
-		
+
 		// Tooltip lines
 		"NoAttackSpeedScaling": "攻击频率不受攻击速度加成影响",
 		"SpecialAttackSpeedScaling": "受到全局攻速加成的效果为原有的{0}%",
@@ -450,6 +451,7 @@
 		"OneDriveHint": "\n\n提示：建议安装或启动OneDrive，并将“我的文档”设置为始终本地可用。",
 		"AntivirusHint": "\n\n提示：如果你开启了杀毒软件，请尝试将Terraria和tModLoader加入白名单。",
 		"TypeInitializationHint": "\n\n提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader",
+		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "新增内容",
 		"TagsContentDescription": "添加了新的内容, 例如物品、武器、NPC等",
 		"TagsUtility": "实用辅助",
@@ -509,5 +511,8 @@
 		"InGemCave": "需要位于宝石洞内",
 		"InLihzardTemple": "需要位于丛林神庙内",
 		"InGraveyardBiome": "需要位于墓地环境"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

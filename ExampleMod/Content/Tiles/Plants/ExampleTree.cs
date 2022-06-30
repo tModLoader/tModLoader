@@ -1,9 +1,12 @@
 using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Items;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Tiles
@@ -35,7 +38,7 @@ namespace ExampleMod.Content.Tiles
 			return ModContent.TileType<Plants.ExampleSapling>();
 		}
 
-		public override void SetTreeFoliageSettings(Tile tile, int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight) {
+		public override void SetTreeFoliageSettings(Tile tile, ref int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight) {
 			// This is where fancy code could go, but let's save that for an advanced example
 		}
 
@@ -51,6 +54,15 @@ namespace ExampleMod.Content.Tiles
 
 		public override int DropWood() {
 			return ModContent.ItemType<ExampleDye>();
+		}
+
+		public override bool Shake(int x, int y, ref bool createLeaves) {
+			Item.NewItem(WorldGen.GetItemSource_FromTreeShake(x, y), new Vector2(x, y) * 16, ModContent.ItemType<Items.Placeable.ExampleBlock>());
+			return false;
+		}
+
+		public override int TreeLeaf() {
+			return ModContent.GoreType<ExampleTreeLeaf>();
 		}
 	}
 }

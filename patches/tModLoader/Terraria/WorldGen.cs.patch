@@ -542,21 +542,15 @@
  			for (int num = -1; num > -100; num--) {
  				Tile tile = Main.tile[x, y + num];
  				if (!tile.active() || !TileID.Sets.GetsCheckedForLeaves[tile.type])
-@@ -15213,6 +_,14 @@
- 					continue;
- 				}
- 
-+				TileLoader.TreeGrowthFXGore(tile2.type,ref passStyle);
-+				if(passStyle > 0)
-+					break;
-+
-+				TileLoader.PalmTreeGrowthFXGore(tile2.type,ref passStyle);
-+				if(passStyle > 0)
-+					break;
-+
- 				GetTreeLeaf(x, topTile, tile2, ref treeHeight, out int _, out passStyle);
- 				break;
+@@ -15408,6 +_,8 @@
+ 						break;
+ 					}
  			}
++
++			PlantLoader.GetTreeLeaf(t.type, ref passStyle);
+ 		}
+ 
+ 		public static void TreeGrowFX(int x, int y, int height, int treeGore, bool hitTree = false) {
 @@ -15465,13 +_,13 @@
  				case 492:
  					return true;
@@ -931,9 +925,9 @@
 +
 +			if (!TileLoader.Drop(i, j, TileID.Womannequin))
 +				goto SkipDrop;
-+			
++
  			Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 1989);
-+			
++
 +			SkipDrop:
 +
  			for (int m = 0; m <= 1; m++) {
@@ -1090,7 +1084,7 @@
  			_ = Main.tile[i, j].frameX;
  			destroyObject = true;
 -			if (type == 235)
-+		
++
 +			if (TileLoader.Drop(i, j, type) && type == 235)
  				Item.NewItem(GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 32, 32, 1263);
  
@@ -1716,7 +1710,7 @@
 +					default:
 +						var tree = PlantLoader.Get<ModTree>(TileID.Trees, tile.type);
 +						if (tree != null) {
-+							tree.SetTreeFoliageSettings(tile, xoffset, ref treeFrame, ref floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
++							tree.SetTreeFoliageSettings(tile, ref xoffset, ref treeFrame, ref floorY, ref topTextureFrameWidth, ref topTextureFrameHeight);
 +							treeStyle = tile.type + ModTree.VanillaTopTextureCount;
 +							return true;
 +						}
@@ -1724,6 +1718,39 @@
  				}
  			}
  
+@@ -40131,6 +_,11 @@
+ 		}
+ 
+ 		public static TreeTypes GetTreeType(int tileType) {
++
++			TreeTypes modType = PlantLoader.GetModTreeType(tileType);
++			if (modType != TreeTypes.None)
++				return modType;
++
+ 			switch (tileType) {
+ 				case 2:
+ 				case 477:
+@@ -40175,7 +_,8 @@
+ 
+ 			GetTreeBottom(i, j, out int x, out int y);
+ 			int num = y;
+-			TreeTypes treeType = GetTreeType(Main.tile[x, y].type);
++			int tileType = Main.tile[x, y].type;
++			TreeTypes treeType = GetTreeType(tileType);
+ 			if (treeType == TreeTypes.None)
+ 				return;
+ 
+@@ -40197,7 +_,9 @@
+ 				return;
+ 
+ 			bool flag = false;
++			if (!PlantLoader.ShakeTree(x, y, tileType, ref flag)) {
++			}
+-			if (Main.getGoodWorld && genRand.Next(15) == 0) {
++			else if (Main.getGoodWorld && genRand.Next(15) == 0) {
+ 				Projectile.NewProjectile(GetProjectileSource_ShakeTree(x, y), x * 16, y * 16, (float)Main.rand.Next(-100, 101) * 0.002f, 0f, 28, 0, 0f, Player.FindClosest(new Vector2(x * 16, y * 16), 16, 16));
+ 			}
+ 			else if (genRand.Next(300) == 0 && treeType == TreeTypes.Forest) {
 @@ -40523,6 +_,8 @@
  			if (num == 2)
  				return;
@@ -1891,6 +1918,15 @@
  			if (worldUpdateRate == 0)
  				return;
  
+@@ -46478,7 +_,7 @@
+ 				spawnDelay = 0;
+ 				if (prioritizedTownNPCType != 37) {
+ 					for (int i = 0; i < 200; i++) {
+-						if (Main.npc[i].active && Main.npc[i].homeless && Main.npc[i].townNPC && Main.npc[i].type != 368) {
++						if (Main.npc[i].active && Main.npc[i].homeless && Main.npc[i].townNPC && Main.npc[i].type != 368 && Main.npc[i].ModNPC?.TownNPCStayingHomeless != true) {
+ 							prioritizedTownNPCType = Main.npc[i].type;
+ 							break;
+ 						}
 @@ -46507,8 +_,15 @@
  			if (Main.dayTime)
  				return;

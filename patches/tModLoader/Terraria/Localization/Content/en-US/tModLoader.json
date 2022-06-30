@@ -21,7 +21,8 @@
 		"ShowNewUpdatedModsInfoMessage": "The following mods were added or updated from the workshop since last launch (you can disable this message in the settings):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
-		"ModUpdatedSinceLastLaunchMessage": "This mod updated since last launch",
+		"ModUpdatedSinceLastLaunchMessage": "This mod has been automatically updated\nsince last launch from version {0}",
+		"ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "View on GitHub",
 		"tModLoaderSettings": "tModLoader Settings",
 		"ModMenuSwap": "Switch Menu Theme",
@@ -36,7 +37,7 @@
 		"ModsDisableAll": "Disable All",
 		"ModsReloadMods": "Reload Mods",
 		"ModsForceReload": "Force Reload",
-		"ModsOpenModsFolder": "Open Mods Folder",
+		"ModsOpenModsFolders": "Open Mods Folders",
 		"OpenModPackFolder": "Open Mod Pack Folder",
 		"DeactivateModPack": "Unload Mod Pack",
 		"ActivateModPack": "Load Mod Pack",
@@ -92,7 +93,7 @@
 		"ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
 		"ModVersionInfoUnchanged": "Error: Mod Version information must be incremented prior to updating.",
 		"ConsultSteamLogs": "Consult Steam workshop_log.txt (Default Location: {0}) for more information.",
-		"SteamRejectUpdate": "Item is/was already installed: {0}. \nIf attempting to re-install, restart your game first because Steam is weird",
+		"SteamRejectUpdate": "Item is/was already installed: {0}. \nIf attempting to re-install, restart your game first because Steam is weird\nIf restarting your game does not work, apply the following steps:\n1) Open Steam Client\n2)Find the Mod on tModLoader Workshop\n3)Unsubscribe and Resubscribe on the actual Workshop.\nThese steps are required if Steam fails to handle unsubscribing you properly.",
 		"BrowserRejectWarning": "Can't Download. Click For Info",
 		"BeginDownload": "Attempting Download Item: {0}",
 		"EndDownload": "Item Download Completed",
@@ -375,15 +376,15 @@
 		"Packaging": "Packaging: {0}",
 		// There should be ModName after ':'
 		"MSFinding": "Finding Mods...",
-		"MSInstantiating": "Instantiating Mods...",
+		"MSInstantiating": "Constructing Mods...",
 		"MSSandboxing": "Sandboxing: {0}",
-		"MSIntializing": "Initializing: {0}",
-		"MSLoading": "Loading: {0}",
+		"MSLoading": "Adding Content: {0}",
+		"MSResizing": "Resizing...",
+		"MSSetupContent": "Configuring Content: {0}",
+		"MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "Unloading: {0}",
 		"MSFinishingResourceLoading": "Finishing Resource Loading",
-		"MSSettingUp": "Setting up...",
 		"MSAddingRecipes": "Adding Recipes...",
-		"AddingModContent": "Adding mod content...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Some starting items couldn't fit in your inventory",
@@ -509,5 +510,8 @@
 		"InGemCave": "Needs to be in Gem Cave",
 		"InLihzardTemple": "Needs to be in Lihzard Temple",
 		"InGraveyardBiome": "Needs to be in Graveyard Biome"
+	},
+	"TitleLinks": {
+		"Patreon": "Patreon"
 	}
 }

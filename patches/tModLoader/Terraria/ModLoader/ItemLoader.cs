@@ -24,7 +24,7 @@ namespace Terraria.ModLoader
 	public static class ItemLoader
 	{
 		internal static readonly IList<ModItem> items = new List<ModItem>();
-		internal static readonly IList<GlobalItem> globalItems = new List<GlobalItem>();
+		internal static readonly List<GlobalItem> globalItems = new();
 		internal static GlobalItem[] NetGlobals;
 		internal static readonly int vanillaQuestFishCount = 41;
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];

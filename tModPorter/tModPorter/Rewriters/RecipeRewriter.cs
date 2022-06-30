@@ -115,11 +115,12 @@ namespace tModPorter.Rewriters
 			var origNode = node;
 
 			node = (ObjectCreationExpressionSyntax)base.VisitObjectCreationExpression(node);
-			if (node.Type is IdentifierNameSyntax { Identifier: { Text: "Recipe" } } && node.ArgumentList.Arguments.Count > 0) {
+			if (node.Type is IdentifierNameSyntax { Identifier.Text: "Recipe" } && node.ArgumentList.Arguments.Count > 0) {
 				var args = node.ArgumentList.Arguments;
 				var target = args[0].Expression;
 				args = args.RemoveAt(0);
 
+				// this converts to the old `mod.CreateRecipe` style, it gets factored to Recipe.Create or ModItem.CreateRecipe later
 				bool isCallOnThis = target is ThisExpressionSyntax && model.GetEnclosingSymbol(origNode.SpanStart) is IMethodSymbol mSym && !mSym.IsStatic && mSym.ContainingType.InheritsFrom("Terraria.ModLoader.Mod");
 				var expr = MemberAccessExpression(target, "CreateRecipe");
 				return InvocationExpression(isCallOnThis ? expr.Name : expr, node.ArgumentList.WithArguments(args));

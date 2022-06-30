@@ -23,6 +23,7 @@ using Terraria.GameContent.Personalities;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using ReLogic.Content;
+using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Content.NPCs
 {
@@ -30,6 +31,8 @@ namespace ExampleMod.Content.NPCs
 	[AutoloadHead]
 	public class ExamplePerson : ModNPC
 	{
+		public int NumberOfTimesTalkedTo = 0;
+
 		public override void SetStaticDefaults() {
 			// DisplayName automatically assigned from localization files, but the commented line below is the normal approach.
 			// DisplayName.SetDefault("Example Person");
@@ -187,14 +190,21 @@ namespace ExampleMod.Content.NPCs
 
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
 			if (partyGirl >= 0 && Main.rand.NextBool(4)) {
-				chat.Add("Can you please tell " + Main.npc[partyGirl].GivenName + " to stop decorating my house with colors?");
+				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.PartyGirlDialogue", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add("Sometimes I feel like I'm different from everyone else here.");
-			chat.Add("What's your favorite color? My favorite colors are white and black.");
-			chat.Add("What? I don't have any arms or legs? Oh, don't be ridiculous!");
-			chat.Add("This message has a weight of 5, meaning it appears 5 times more often.", 5.0);
-			chat.Add("This message has a weight of 0.1, meaning it appears 10 times as rare.", 0.1);
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue1"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue2"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.StandardDialogue3"));
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.CommonDialogue"), 5.0);
+			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.RareDialogue"), 0.1);
+
+			NumberOfTimesTalkedTo++;
+			if (NumberOfTimesTalkedTo >= 10) {
+				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
+				chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExamplePerson.TalkALot"));
+			}
+
 			return chat; // chat is implicitly cast to a string.
 		}
 
@@ -337,6 +347,14 @@ namespace ExampleMod.Content.NPCs
 		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset) {
 			multiplier = 12f;
 			randomOffset = 2f;
+		}
+
+		public override void LoadData(TagCompound tag) {
+			NumberOfTimesTalkedTo = tag.GetInt("numberOfTimesTalkedTo");
+		}
+
+		public override void SaveData(TagCompound tag) {
+			tag["numberOfTimesTalkedTo"] = NumberOfTimesTalkedTo;
 		}
 	}
 

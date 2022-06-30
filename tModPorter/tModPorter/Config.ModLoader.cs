@@ -100,6 +100,8 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModPlayer",	from: "SetupStartInventory",to: "AddStartingItems");
 		RenameMethod("Terraria.ModLoader.ModPrefix",	from: "AutoDefaults",		to: "AutoStaticDefaults");
 		RenameMethod("Terraria.ModLoader.ModType",		from: "Autoload",			to: "IsLoadingEnabled").FollowBy(AddCommentToOverride("Suggestion: If you return false for the purposes of manual loading, use the [Autoload(false)] attribute on your class instead"));
+		RenameMethod("Terraria.ModLoader.ModTree",		from: "GrowthFXGore",		to: "TreeLeaf");
+		RenameMethod("Terraria.ModLoader.ModPalmTree",	from: "GrowthFXGore",		to: "TreeLeaf");
 
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"HoldStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"HoldStyle");
@@ -171,13 +173,17 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true if you had drawAltHair set to true");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHair",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawFullHair[head] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[head] = true if you had drawAltHair set to true");
 
-		HookRemoved("Terraria.ModLoader.ModItem",	"IgnoreDamageModifiers","If you returned true, consider leaving Item.DamageType as DamageClass.Default, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance");
-		HookRemoved("Terraria.ModLoader.ModItem",	"OnlyShootOnSwing",		"If you returned true, set Item.useTime to a multiple of Item.useAnimation");
-		HookRemoved("Terraria.ModLoader.ModGore",	"DrawBehind",			"Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults");
-		HookRemoved("Terraria.ModLoader.ModTile",	"SaplingGrowthType",	"Use ModTree.SaplingGrowthType");
+		HookRemoved("Terraria.ModLoader.ModItem",		"IgnoreDamageModifiers","If you returned true, consider leaving Item.DamageType as DamageClass.Default, or make a custom DamageClass which returns StatInheritanceData.None in GetModifierInheritance");
+		HookRemoved("Terraria.ModLoader.ModItem",		"OnlyShootOnSwing",		"If you returned true, set Item.useTime to a multiple of Item.useAnimation");
+		HookRemoved("Terraria.ModLoader.ModGore",		"DrawBehind",			"Use GoreID.Sets.DrawBehind[Type] in SetStaticDefaults");
+		HookRemoved("Terraria.ModLoader.ModTile",		"SaplingGrowthType",	"Use ModTree.SaplingGrowthType");
+		HookRemoved("Terraria.ModLoader.GlobalRecipe",	"RecipeAvailable",		"Use Recipe.AddCondition");
+		HookRemoved("Terraria.ModLoader.GlobalRecipe",	"OnCraft",				"Use Recipe.AddOnCraftCallback or GlobalItem.OnCreate");
+		HookRemoved("Terraria.ModLoader.GlobalRecipe",	"ConsumeItem",			"Use Recipe.AddConsumeItemCallback");
 
 		HookRemoved("Terraria.ModLoader.ModSurfaceBackgroundStyle",		"ChooseBgStyle", "Create a ModBiome (or ModSceneEffect) class and override SurfaceBackgroundStyle property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive)");
 		HookRemoved("Terraria.ModLoader.ModUndergroundBackgroundStyle",	"ChooseBgStyle", "Create a ModBiome (or ModSceneEffect) class and override UndergroundBackgroundStyle property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive)");
+		HookRemoved("Terraria.ModLoader.ModPlayer", "SetMapBackgroundImage", "Create a ModBiome (or ModSceneEffect) class and override MapBackground property to return this object through Mod/ModContent.Find, then move this code into IsBiomeActive (or IsSceneEffectActive)");
 
 		HookRemoved("Terraria.ModLoader.Mod","HotKeyPressed",				"Use ModPlayer.ProcessTriggers");
 		HookRemoved("Terraria.ModLoader.Mod", "UpdateMusic",				"Use ModSceneEffect.Music and .Priority, aswell as ModSceneEffect.IsSceneEffectActive");
@@ -211,7 +217,7 @@ public static partial class Config
 		RenameMethod("Terraria.ModLoader.ModTileEntity",from: "Save",		to: "SaveData");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Load",		to: "LoadWorldData");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Save",		to: "SaveWorldData");
-		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Initialize", to: "OnWorldLoad").FollowBy(AddCommentToOverride("Suggestion: Also override OnWorldUnload"));
+		RenameMethod("Terraria.ModLoader.ModSystem",	from: "Initialize", to: "OnWorldLoad").FollowBy(AddCommentToOverride("Suggestion: Also override OnWorldUnload, and mirror your worldgen-sensitive data initialization in PreWorldGen"));
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "PreUpdate",	to: "PreUpdateWorld");
 		RenameMethod("Terraria.ModLoader.ModSystem",	from: "PostUpdate", to: "PostUpdateWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",		"CanEquipAccessory",comment: "Suggestion: Consider using new hook CanAccessoryBeEquippedWith");
@@ -293,6 +299,7 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetEquipSlot",		ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipSlot",			targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "GetAccessorySlot",	ToStaticMethodCall("Terraria.ModLoader.EquipLoader",				"GetEquipSlot",			targetBecomesFirstArg: true));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddEquipTexture",		ConvertAddEquipTexture);
+		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateRecipe",		ToStaticMethodCall("Terraria.Recipe",								"Create",				targetBecomesFirstArg: false));
 
 		RenameMethod("Terraria.ModLoader.Mod",			from: "TextureExists",	to: "HasAsset");
 		RenameMethod("Terraria.ModLoader.ModContent",	from: "TextureExists",	to: "HasAsset");

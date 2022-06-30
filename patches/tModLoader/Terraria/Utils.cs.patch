@@ -40,6 +40,17 @@
  							if (num3 < 0)
  								num3 = 0;
  
+@@ -306,8 +_,8 @@
+ 			}
+ 
+ 			if (maxLines != -1) {
+-				while (list.Count > 10) {
++				while (list.Count > maxLines) {
+-					list.RemoveAt(10);
++					list.RemoveAt(maxLines);
+ 				}
+ 			}
+ 
 @@ -529,18 +_,22 @@
  
  		public static void OpenFolder(string folderPath) {

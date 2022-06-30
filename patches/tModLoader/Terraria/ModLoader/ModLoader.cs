@@ -220,13 +220,7 @@ namespace Terraria.ModLoader
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private static void Mods_Unload()
 		{
-			Logging.tML.Info("Unloading mods");
-			if (Main.dedServ) {
-				Console.WriteLine("Unloading mods...");
-			}
-			else {
-				Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
-			}
+			Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
 
 			ModContent.UnloadModContent();
 

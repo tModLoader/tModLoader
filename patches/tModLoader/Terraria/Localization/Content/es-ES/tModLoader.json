@@ -21,7 +21,8 @@
 		"ShowNewUpdatedModsInfoMessage": "Los siguientes mods se han añadido o actualizado desde el último inicio (puedes desactivar este mensaje en la configuración):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nMods nuevos:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nMods actualizados:",
-		"ModUpdatedSinceLastLaunchMessage": "Este mod se ha actualizado desde el último inicio",
+		"ModUpdatedSinceLastLaunchMessage": "Este mod se ha actualizado desde el último inicio {0}",
+		"ModAddedSinceLastLaunchMessage": "Este mod se ha añadido desde el último inicio",
 		"ViewOnGitHub": "Ver en GitHub",
 		"tModLoaderSettings": "Configuración de tModLoader",
 		"ModMenuSwap": "Cambiar tema del menú",
@@ -36,7 +37,7 @@
 		"ModsDisableAll": "Desactivar todos",
 		"ModsReloadMods": "Recargar mods",
 		"ModsForceReload": "Forzar recarga",
-		"ModsOpenModsFolder": "Carpeta de mods",
+		"ModsOpenModsFolders": "Carpeta de mods",
 		"OpenModPackFolder": "Carpeta de paquetes de mods",
 		"DeactivateModPack": "Desactivar paquete de mods",
 		"ActivateModPack": "Cargar paquete de mods",
@@ -271,6 +272,9 @@
 		"ExperimentalFeaturesNo": "Contenido experimental: Desactivado",
 		"RemoveForcedMinimumZoomYes": "Eliminar zoom mínimo forzado: Activado",
 		"RemoveForcedMinimumZoomNo": "Eliminar zoom mínimo forzado: Desactivado",
+		"AttackSpeedScalingTooltipVisibility0": "Información sobre efecto de la velocidad de ataque: Mostrar todo",
+		"AttackSpeedScalingTooltipVisibility1": "Información sobre efecto de la velocidad de ataque: Mostrar eficacia ajustada",
+		"AttackSpeedScalingTooltipVisibility2": "Información sobre efecto de la velocidad de ataque: Ocultar",
 		"AllowGreaterResolutionsYes": "Permitir resoluciones mayores: Activado",
 		"AllowGreaterResolutionsNo": "Permitir resoluciones mayores: Desactivado",
 		"ShowMemoryEstimatesYes": "Mostrar estimaciones de memoria de mods: Activado",
@@ -393,6 +397,12 @@
 		"DefaultTownNPCChat": "A mi modder se le olvidó darme un mensaje que decir.",
 		"DefaultNurseCantHealChat": "No sé por qué no puedo curarte, a mi modder se le olvidó darme un mensaje que decir.",
 
+		// Tooltip lines
+		"NoAttackSpeedScaling": "No escala con la velocidad de ataque",
+		"SpecialAttackSpeedScaling": "{0}% de mejora en la velocidad de ataque",
+		"ModifiedByModsHoldSHIFT": "Se modifica (pulsa SHIFT para más info)",
+		"ModifiedByMods": "Es modificada por ",
+
 		// Memory bar
 		"LastLoadRamUsage": "Uso de RAM estimado en la última carga: {0}",
 		"AvailableMemory": "Memoria disponible: {0}",
@@ -439,7 +449,7 @@
 		"ModExceptionHint": "\n\nSugerencia: Esto es probablemente culpa de un mod. Desactiva los mods uno por uno y comprueba si el problema persiste.",
 		"OneDriveHint": "\n\nSugerencia: Intenta instalar y activar OneDrive. Haz clic con el botón derecho del ratón en tu carpeta de Documentos y activa \"Guardar siempre en este dispositivo\".",
 		"AntivirusHint": "\n\nSugerencia: Si tienes antivirus, prueba a añadir Terraria a tu lista de exclusiones.",
-		"TypeInitializationHint": "\n\nSugerencia: Reinicia el juego. Si el problema persiste, prueba a desinstalar Terraria completamente, reinstálalo a través de Steam y vuelve a instalar tModLoader."
+		"TypeInitializationHint": "\n\nSugerencia: Reinicia el juego. Si el problema persiste, prueba a desinstalar Terraria completamente, reinstálalo a través de Steam y vuelve a instalar tModLoader.",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Nuevo contenido",
 		"TagsContentDescription": "Añaden nuevo contenido al juego (como objetos, armas, NPCs, etc.)",
@@ -500,5 +510,8 @@
 		"InGemCave": "Debe crearse en una cueva de gemas",
 		"InLihzardTemple": "Debe crearse en el templo de la selva",
 		"InGraveyardBiome": "Debe crearse en el bioma de cementerio"
+	},
+	"TitleLinks": {
+	"Patreon": "Patreon"
 	}
 }
