@@ -13,11 +13,11 @@ namespace Terraria
 	public partial class Player
 	{
 		internal IList<string> usedMods;
-		internal Instanced<ModPlayer>[] modPlayers = Array.Empty<Instanced<ModPlayer>>();
+		internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 
 		public Item equippedWings = null;
 
-		public RefReadOnlyArray<Instanced<ModPlayer>> ModPlayers => new(modPlayers);
+		public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
 
 		public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
 

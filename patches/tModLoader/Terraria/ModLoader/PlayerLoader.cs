@@ -1,19 +1,16 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
+using System.Runtime.InteropServices;
 using Terraria.DataStructures;
 using Terraria.GameInput;
-using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using HookList = Terraria.ModLoader.Core.HookList<Terraria.ModLoader.ModPlayer>;
 
 namespace Terraria.ModLoader
 {
-	//todo: further documentation
 	/// <summary>
 	/// This is where all ModPlayer hooks are gathered and called.
 	/// </summary>
@@ -58,11 +55,19 @@ namespace Terraria.ModLoader
 		private static HookList HookInitialize = AddHook<Action>(p => p.Initialize);
 
 		internal static void SetupPlayer(Player player) {
-			player.modPlayers = players.Select(modPlayer => new Instanced<ModPlayer>(modPlayer.Index, modPlayer.NewInstance(player))).ToArray();
+			player.modPlayers = NewInstances(player, CollectionsMarshal.AsSpan(players));
 
 			foreach (var modPlayer in HookInitialize.Enumerate(player.modPlayers)) {
 				modPlayer.Initialize();
 			}
+		}
+
+		private static ModPlayer[] NewInstances(Player player, Span<ModPlayer> modPlayers) {
+			var arr = new ModPlayer[modPlayers.Length];
+			for (int i = 0; i < modPlayers.Length; i++)
+				arr[i] = modPlayers[i].NewInstance(player);
+
+			return arr;
 		}
 
 		private static HookList HookResetEffects = AddHook<Action>(p => p.ResetEffects);
@@ -122,7 +127,7 @@ namespace Terraria.ModLoader
 
 		public static void clientClone(Player player, Player clientClone) {
 			foreach (var modPlayer in HookClientClone.Enumerate(player.modPlayers)) {
-				modPlayer.clientClone(clientClone.modPlayers[modPlayer.Index].Instance);
+				modPlayer.clientClone(clientClone.modPlayers[modPlayer.Index]);
 			}
 		}
 
@@ -138,7 +143,7 @@ namespace Terraria.ModLoader
 
 		public static void SendClientChanges(Player player, Player clientPlayer) {
 			foreach (var modPlayer in HookSendClientChanges.Enumerate(player.modPlayers)) {
-				modPlayer.SendClientChanges(clientPlayer.modPlayers[modPlayer.Index].Instance);
+				modPlayer.SendClientChanges(clientPlayer.modPlayers[modPlayer.Index]);
 			}
 		}
 

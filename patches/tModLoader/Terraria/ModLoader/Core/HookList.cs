@@ -68,6 +68,36 @@ namespace Terraria.ModLoader.Core
 			public InstanceEnumerator GetEnumerator() => this;
 		}
 
+		public ref struct FilteredEnumerator
+		{
+			private readonly T[] arr;
+			private readonly int[] inds;
+
+			private T current;
+			private int i;
+
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			public FilteredEnumerator(T[] arr, int[] inds) {
+				this.arr = arr;
+				this.inds = inds;
+				current = default;
+				i = 0;
+			}
+
+			public T Current => current;
+
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			public bool MoveNext() {
+				if (i >= inds.Length)
+					return false;
+
+				current = arr[inds[i++]];
+				return true;
+			}
+
+			public FilteredEnumerator GetEnumerator() => this;
+		}
+
 		public readonly MethodInfo method;
 
 		private int[] indices = Array.Empty<int>();
@@ -77,6 +107,9 @@ namespace Terraria.ModLoader.Core
 		}
 		
 		public InstanceEnumerator Enumerate(Instanced<T>[] instances)
+			=> new(instances, indices);
+
+		public FilteredEnumerator Enumerate(T[] instances)
 			=> new(instances, indices);
 
 		public void Update<U>(IList<U> instances) where U : IIndexed {
