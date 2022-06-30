@@ -172,17 +172,12 @@ namespace Terraria.ModLoader
 		/// <param name="amountRemaining">Modifiable remaining amount of the item to be consumed.</param>
 		/// <returns>Return false to prevent vanilla code from consuming this item and reducing the ammountRemaining.  Returns true by default.</returns>
 		public static bool OnConsumeItem(Recipe recipe, Item item, ref int amountRemaining) {
-			recipe.OnConsumeItemHooks?.Invoke(recipe, item, ref amountRemaining);
-			/* Doesn't work
-
-			Recipe.OnConsumeItemCallback hooks = recipe.OnConsumeItemHooks;
 			bool returnValue = true;
-			foreach (var hook in hooks) {
-				if (!hook(recipe, item, ref amountRemaining))
+			foreach(Recipe.OnConsumeItemCallback onConsumeItemCallback in recipe.OnConsumeItemHooks.GetInvocationList()) {
+				if (onConsumeItemCallback?.Invoke(recipe, item, ref amountRemaining) == false)
 					returnValue = false;
 			}
 			return returnValue;
-			*/
 		}
 	}
 }

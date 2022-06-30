@@ -195,7 +195,7 @@
 -						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
 -							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
 -					}
-+					int stack = item.stack;
++					
 +					bool doVanillaConsumeItem = RecipeLoader.OnConsumeItem(this, item, ref num);
 +					
 +					if (doVanillaConsumeItem) {
