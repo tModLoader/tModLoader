@@ -376,15 +376,15 @@
 		"Packaging": "Packaging: {0}",
 		// There should be ModName after ':'
 		"MSFinding": "Finding Mods...",
-		"MSInstantiating": "Instantiating Mods...",
+		"MSInstantiating": "Constructing Mods...",
 		"MSSandboxing": "Sandboxing: {0}",
-		"MSIntializing": "Initializing: {0}",
-		"MSLoading": "Loading: {0}",
+		"MSLoading": "Adding Content: {0}",
+		"MSResizing": "Resizing...",
+		"MSSetupContent": "Configuring Content: {0}",
+		"MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "Unloading: {0}",
 		"MSFinishingResourceLoading": "Finishing Resource Loading",
-		"MSSettingUp": "Setting up...",
 		"MSAddingRecipes": "Adding Recipes...",
-		"AddingModContent": "Adding mod content...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Some starting items couldn't fit in your inventory",

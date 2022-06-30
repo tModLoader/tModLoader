@@ -245,7 +245,7 @@ namespace Terraria.ModLoader.Core
 				int i = 0;
 				foreach (var mod in modList) {
 					token.ThrowIfCancellationRequested();
-					Interface.loadMods.SetCurrentMod(i++, mod.Name);
+					Interface.loadMods.SetCurrentMod(i++, mod.Name, mod.properties?.displayName ?? "", mod.modFile.Version);
 					mod.LoadAssemblies();
 				}
 

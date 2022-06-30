@@ -24,11 +24,11 @@ namespace Terraria.ModLoader
 			ModTypeLookup<ModSystem>.Register(this);
 		}
 
-		//ModSystem provides its own PostSetupContent hook which runs in a different context, closer to Mod
-		public sealed override void SetStaticDefaults() { }
-
-		//Per above comment, SetStaticDefaults is unused
-		public sealed override void SetupContent() { }
+		/// <summary>
+		/// Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need (like setting up static defaults)
+		/// This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent
+		/// </summary>
+		public override void SetupContent() { }
 
 		//Hooks
 
