@@ -1,5 +1,12 @@
 var NAVTREEINDEX110 =
 {
+"class_terraria_1_1_recipe_1_1_consumption_rules.html":[2,0,2,60,1],
+"class_terraria_1_1_recipe_1_1_consumption_rules.html#a86832cfb12d41851b0e67947612b71b0":[2,0,2,60,1,0],
+"class_terraria_1_1_recipe_group.html":[2,0,2,61],
+"class_terraria_1_1_recipe_group.html#a0371ff913d4ee51e47191ef017bb181c":[2,0,2,61,6],
+"class_terraria_1_1_recipe_group.html#a0ca560a8e9334087dddc1352748857c1":[2,0,2,61,5],
+"class_terraria_1_1_recipe_group.html#a63640ba5722a1699eb43057caae87d70":[2,0,2,61,1],
+"class_terraria_1_1_recipe_group.html#a70950ebcd319a9d84172b98cb03906ad":[2,0,2,61,4],
 "class_terraria_1_1_recipe_group.html#a8337619685e72018b374b381c92da16a":[2,0,2,61,9],
 "class_terraria_1_1_recipe_group.html#a9ed39636f30dc0473197fa386ecf036c":[2,0,2,61,8],
 "class_terraria_1_1_recipe_group.html#abacb75e1e87f196959f2d4d4c760970b":[2,0,2,61,7],
@@ -242,12 +249,5 @@ var NAVTREEINDEX110 =
 "class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#a8334a5e39bb21a903569495ef3b32a39":[2,0,2,19,0,8,3],
 "class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#a84f02ea08996d03d2d5d8444457cbb5b":[2,0,2,19,0,8,10],
 "class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#a9b74393ac5404ef98a2fcf0891207aaa":[2,0,2,19,0,8,4],
-"class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#aba24c578625f6e9118bd43f30d3e8fc5":[2,0,2,19,0,8,2],
-"class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#abf50f42c8e2862e2e57981f075d4cfc9":[2,0,2,19,0,8,9],
-"class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#abff0f802221c1bbd76049192f668546a":[2,0,2,19,0,8,12],
-"class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#ac0b947ccb005a3706eeda459db042365":[2,0,2,19,0,8,5],
-"class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#acb77ffe3888924cb7b798ad9c02b5f25":[2,0,2,19,0,8,8],
-"class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#ae4053e850f0163533cd2007e63bb3de0":[2,0,2,19,0,8,11],
-"class_terraria_1_1_social_1_1_base_1_1_overlay_social_module.html":[2,0,2,19,0,9],
-"class_terraria_1_1_social_1_1_base_1_1_overlay_social_module.html#a110c70697b55ee1174a8cf5705403ad6":[2,0,2,19,0,9,1]
+"class_terraria_1_1_social_1_1_base_1_1_net_social_module.html#aba24c578625f6e9118bd43f30d3e8fc5":[2,0,2,19,0,8,2]
 };

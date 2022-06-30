@@ -1372,6 +1372,7 @@ var class_terraria_1_1_player =
     [ "minionDamage", "class_terraria_1_1_player.html#ab2fe4db27cbdd3cdaaf22300dd89a145", null ],
     [ "minionKB", "class_terraria_1_1_player.html#ae29ef5f76907b7a8fa76495d830bd4a8", null ],
     [ "miscCounterNormalized", "class_terraria_1_1_player.html#abb42a0a38aeffc95371fa40ddc44183c", null ],
+    [ "ModPlayers", "class_terraria_1_1_player.html#ad74adcc2f69cf9ff4b07b9ef41fc0b7f", null ],
     [ "MountedCenter", "class_terraria_1_1_player.html#a6334845df797462c030f12272454ed5c", null ],
     [ "MountFishronSpecial", "class_terraria_1_1_player.html#af255c5af741a56271296783626cae2ee", null ],
     [ "NearbyModTorch", "class_terraria_1_1_player.html#ae0064e8c607765e9aacfdbd294bc1b54", null ],

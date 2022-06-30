@@ -1,5 +1,6 @@
 var class_terraria_1_1_mod_loader_1_1_player_loader =
 [
+    [ "AddModHook< T >", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a71bb5c90394b3b0074466319ef1aad13", null ],
     [ "AnglerQuestReward", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a75aab222d21339d1ea4e94cf3bb314d7", null ],
     [ "CanAutoReuseItem", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a3714dc19f9367dc7786331a6cfd706a3", null ],
     [ "CanBeHitByNPC", "class_terraria_1_1_mod_loader_1_1_player_loader.html#ad8366fa9c10543c894746bb863990ab5", null ],
@@ -41,8 +42,8 @@ var class_terraria_1_1_mod_loader_1_1_player_loader =
     [ "ModifyItemScale", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a15b5828de0b3376a2b4e58c9425f3da2", null ],
     [ "ModifyLuck", "class_terraria_1_1_mod_loader_1_1_player_loader.html#afb805fe41a39e6c899d59d17b5b7d753", null ],
     [ "ModifyManaCost", "class_terraria_1_1_mod_loader_1_1_player_loader.html#ae0dc359162d7826b4c2c89ec4bed0819", null ],
-    [ "ModifyNurseHeal", "class_terraria_1_1_mod_loader_1_1_player_loader.html#afe136a2c9a831164bb159dca30e32d2d", null ],
-    [ "ModifyNursePrice", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a79f2c0f8149b252f003788dc485ded0d", null ],
+    [ "ModifyNurseHeal", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a6d37e6ec52ac3b6409197bdbf2deaf43", null ],
+    [ "ModifyNursePrice", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a53b0ed4f2d5a57a00b3716d8eef4b0ce", null ],
     [ "ModifyScreenPosition", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a38b4fb4a2500730390861d439e526527", null ],
     [ "ModifyShootStats", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a29becdda6037264dbc18f0aefecf639c", null ],
     [ "ModifyWeaponCrit", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a2f67fb03ef438ab43e7d2461cc8b078c", null ],

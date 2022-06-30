@@ -1079,6 +1079,8 @@ var annotated_dup =
         ] ],
         [ "Core", "namespace_terraria_1_1_mod_loader_1_1_core.html", [
           [ "Cloning", "class_terraria_1_1_mod_loader_1_1_core_1_1_cloning.html", "class_terraria_1_1_mod_loader_1_1_core_1_1_cloning" ],
+          [ "FilteredArrayEnumerator", "struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_array_enumerator.html", "struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_array_enumerator" ],
+          [ "FilteredSpanEnumerator", "struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_span_enumerator.html", "struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_span_enumerator" ],
           [ "HookList", "class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html", "class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list" ],
           [ "LoaderUtils", "class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html", "class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils" ],
           [ "TmodFile", "class_terraria_1_1_mod_loader_1_1_core_1_1_tmod_file.html", "class_terraria_1_1_mod_loader_1_1_core_1_1_tmod_file" ]
@@ -1213,6 +1215,7 @@ var annotated_dup =
         [ "GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", "class_terraria_1_1_mod_loader_1_1_global_wall" ],
         [ "GoreLoader", "class_terraria_1_1_mod_loader_1_1_gore_loader.html", "class_terraria_1_1_mod_loader_1_1_gore_loader" ],
         [ "IEntityWithGlobals", "interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals.html", "interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals" ],
+        [ "IIndexed", "interface_terraria_1_1_mod_loader_1_1_i_indexed.html", "interface_terraria_1_1_mod_loader_1_1_i_indexed" ],
         [ "ILoadable", "interface_terraria_1_1_mod_loader_1_1_i_loadable.html", "interface_terraria_1_1_mod_loader_1_1_i_loadable" ],
         [ "ILoader", "interface_terraria_1_1_mod_loader_1_1_i_loader.html", null ],
         [ "IModType", "interface_terraria_1_1_mod_loader_1_1_i_mod_type.html", "interface_terraria_1_1_mod_loader_1_1_i_mod_type" ],

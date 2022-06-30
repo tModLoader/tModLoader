@@ -423,6 +423,8 @@ var hierarchy =
       [ "Terraria.Cinematics.DD2Film", "class_terraria_1_1_cinematics_1_1_d_d2_film.html", null ],
       [ "Terraria.Cinematics.DSTFilm", "class_terraria_1_1_cinematics_1_1_d_s_t_film.html", null ]
     ] ],
+    [ "Terraria.ModLoader.Core.FilteredArrayEnumerator< T >", "struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_array_enumerator.html", null ],
+    [ "Terraria.ModLoader.Core.FilteredSpanEnumerator< T >", "struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_span_enumerator.html", null ],
     [ "Terraria.GameContent.Bestiary.Filters", "class_terraria_1_1_game_content_1_1_bestiary_1_1_filters.html", null ],
     [ "Terraria.Graphics.Effects.Filters", "class_terraria_1_1_graphics_1_1_effects_1_1_filters.html", null ],
     [ "Terraria.Graphics.FinalFractalHelper", "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html", null ],
@@ -1149,6 +1151,26 @@ var hierarchy =
       [ "Terraria.GameContent.UI.States.UIWorkshopSelectWorldToPublish", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_select_world_to_publish.html", null ],
       [ "Terraria.GameContent.UI.States.UIWorkshopWorldImport", "class_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_workshop_world_import.html", null ]
     ] ],
+    [ "Terraria.ModLoader.IIndexed", "interface_terraria_1_1_mod_loader_1_1_i_indexed.html", [
+      [ "Terraria.ModLoader.GlobalType< Item, GlobalItem >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
+        [ "Terraria.ModLoader.GlobalItem", "class_terraria_1_1_mod_loader_1_1_global_item.html", [
+          [ "Terraria.ModLoader.Default.UnloadedGlobalItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_item.html", null ]
+        ] ]
+      ] ],
+      [ "Terraria.ModLoader.GlobalType< Projectile, GlobalProjectile >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
+        [ "Terraria.ModLoader.GlobalProjectile", "class_terraria_1_1_mod_loader_1_1_global_projectile.html", null ]
+      ] ],
+      [ "Terraria.ModLoader.GlobalType< NPC, GlobalNPC >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
+        [ "Terraria.ModLoader.GlobalNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html", [
+          [ "Terraria.ModLoader.Default.UnloadedGlobalNPC", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_n_p_c.html", null ]
+        ] ]
+      ] ],
+      [ "Terraria.ModLoader.GlobalType< TEntity, TGlobal >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ],
+      [ "Terraria.ModLoader.ModPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html", [
+        [ "Terraria.ModLoader.Default.ModAccessorySlotPlayer", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html", null ],
+        [ "Terraria.ModLoader.Default.UnloadedPlayer", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_player.html", null ]
+      ] ]
+    ] ],
     [ "Terraria.UI.IInGameNotification", "interface_terraria_1_1_u_i_1_1_i_in_game_notification.html", [
       [ "Terraria.UI.InGamePopups.AchievementUnlockedPopup", "class_terraria_1_1_u_i_1_1_in_game_popups_1_1_achievement_unlocked_popup.html", null ],
       [ "Terraria.UI.InGamePopups.PlayerWantsToJoinGamePopup", "class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html", null ]
@@ -1209,26 +1231,13 @@ var hierarchy =
           ] ]
         ] ],
         [ "Terraria.ModLoader.ModType< Player, ModPlayer >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", [
-          [ "Terraria.ModLoader.ModPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html", [
-            [ "Terraria.ModLoader.Default.ModAccessorySlotPlayer", "class_terraria_1_1_mod_loader_1_1_default_1_1_mod_accessory_slot_player.html", null ],
-            [ "Terraria.ModLoader.Default.UnloadedPlayer", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_player.html", null ]
-          ] ]
+          [ "Terraria.ModLoader.ModPlayer", "class_terraria_1_1_mod_loader_1_1_mod_player.html", null ]
         ] ],
         [ "Terraria.ModLoader.ModType< TEntity >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", [
           [ "Terraria.ModLoader.ModType< TEntity, TModType >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", [
-            [ "Terraria.ModLoader.GlobalType< Item, GlobalItem >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
-              [ "Terraria.ModLoader.GlobalItem", "class_terraria_1_1_mod_loader_1_1_global_item.html", [
-                [ "Terraria.ModLoader.Default.UnloadedGlobalItem", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_item.html", null ]
-              ] ]
-            ] ],
-            [ "Terraria.ModLoader.GlobalType< Projectile, GlobalProjectile >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
-              [ "Terraria.ModLoader.GlobalProjectile", "class_terraria_1_1_mod_loader_1_1_global_projectile.html", null ]
-            ] ],
-            [ "Terraria.ModLoader.GlobalType< NPC, GlobalNPC >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
-              [ "Terraria.ModLoader.GlobalNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html", [
-                [ "Terraria.ModLoader.Default.UnloadedGlobalNPC", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_n_p_c.html", null ]
-              ] ]
-            ] ],
+            [ "Terraria.ModLoader.GlobalType< Item, GlobalItem >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ],
+            [ "Terraria.ModLoader.GlobalType< Projectile, GlobalProjectile >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ],
+            [ "Terraria.ModLoader.GlobalType< NPC, GlobalNPC >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ],
             [ "Terraria.ModLoader.IO.TagSerializer< Point16, TagCompound >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", [
               [ "Terraria.ModLoader.IO.Point16Serializer", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_point16_serializer.html", null ]
             ] ],

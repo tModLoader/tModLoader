@@ -113,5 +113,6 @@ var class_terraria_1_1_mod_loader_1_1_mod_player =
     [ "UseSpeedMultiplier", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aacfc3d8bbfe282add43d9a0d784675fb", null ],
     [ "UseTimeMultiplier", "class_terraria_1_1_mod_loader_1_1_mod_player.html#abb5e4c7ee1acbfc31227fed71446a0a7", null ],
     [ "ValidateType", "class_terraria_1_1_mod_loader_1_1_mod_player.html#afc5824d3c261669434f2816659e5f9fd", null ],
+    [ "Index", "class_terraria_1_1_mod_loader_1_1_mod_player.html#ace04ebb5cf85168ae48f674e7d5fab97", null ],
     [ "Player", "class_terraria_1_1_mod_loader_1_1_mod_player.html#aef06e9e920e0ada60349621b53566c04", null ]
 ];

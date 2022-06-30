@@ -11,6 +11,7 @@ var class_terraria_1_1_mod_loader_1_1_global_type =
     [ "ValidateType", "class_terraria_1_1_mod_loader_1_1_global_type.html#a86341cc846c03d9939900c4deb07a501", null ],
     [ "CloneNewInstances", "class_terraria_1_1_mod_loader_1_1_global_type.html#a150adacbef1c6b86315ad29dc553928d", null ],
     [ "current", "class_terraria_1_1_mod_loader_1_1_global_type.html#aaae0c7095826ae7025473b7a2d1727ab", null ],
+    [ "Index", "class_terraria_1_1_mod_loader_1_1_global_type.html#a20fa456a0291b06d0ac754858b2a20f5", null ],
     [ "InstancePerEntity", "class_terraria_1_1_mod_loader_1_1_global_type.html#a9613244267e46bbd80b7657dfa7ad0b4", null ],
     [ "IsCloneable", "class_terraria_1_1_mod_loader_1_1_global_type.html#a9658ccdb699db30ba7f15aff011dc214", null ]
 ];
