@@ -364,7 +364,6 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.RegisterDefaultDisplays();
 		}
 
-		internal static Mod LoadingMod { get; private set; }
 		private static void LoadModContent(CancellationToken token, Action<Mod> loadAction) {
 			MemoryTracking.Checkpoint();
 			int num = 0;
@@ -372,7 +371,6 @@ namespace Terraria.ModLoader
 				token.ThrowIfCancellationRequested();
 				Interface.loadMods.SetCurrentMod(num++, mod);
 				try {
-					LoadingMod = mod;
 					loadAction(mod);
 				}
 				catch (Exception e) {
@@ -380,7 +378,6 @@ namespace Terraria.ModLoader
 					throw;
 				}
 				finally {
-					LoadingMod = null;
 					MemoryTracking.Update(mod.Name);
 				}
 			}
