@@ -303,20 +303,21 @@ namespace Terraria.Social.Steam
 			}
 
 			internal void Uninstall(string installPath = null) {
-				if (String.IsNullOrEmpty(installPath))
+				if (string.IsNullOrEmpty(installPath))
 					installPath = GetInstallInfo().installPath;
 
 				if (!Directory.Exists(installPath))
 					return;
 
-				// Remove the files
-				Directory.Delete(installPath, true);
-
 				// Unsubscribe
 				if (SteamUser)
 					SteamUGC.UnsubscribeItem(itemID);
 
-				UninstallACF();
+				// Remove the files
+				Directory.Delete(installPath, true);
+
+				if (!SteamUser)
+					UninstallACF();
 			}
 
 			private void UninstallACF() {
