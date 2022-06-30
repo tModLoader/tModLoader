@@ -529,7 +529,7 @@ namespace Terraria.ModLoader.Core
 
 		internal static string GetParentDir(string tmodPath) {
 			string parentDir = Directory.GetParent(tmodPath).ToString();
-			if (!tmodPath.Contains(Path.Combine("steamapps", "workshop")))
+			if (!tmodPath.Contains("workshop", StringComparison.InvariantCultureIgnoreCase))
 				return parentDir;
 
 			var match = PublishFolderMetadata.Match(parentDir + Path.DirectorySeparatorChar);
