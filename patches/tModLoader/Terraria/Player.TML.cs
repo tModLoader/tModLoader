@@ -14,7 +14,10 @@ namespace Terraria
 	{
 		internal IList<string> usedMods;
 		internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
+
 		public Item equippedWings = null;
+
+		public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
 
 		public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
 
@@ -31,7 +34,7 @@ namespace Terraria
 		/// <exception cref="IndexOutOfRangeException"/>
 		/// <exception cref="NullReferenceException"/>
 		public T GetModPlayer<T>(T baseInstance) where T : ModPlayer
-			=> modPlayers[baseInstance.index] as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current player.");
+			=> modPlayers[baseInstance.Index] as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current player.");
 
 		// TryGet
 
@@ -42,13 +45,13 @@ namespace Terraria
 		/// <summary> Safely attempts to get the local instance of the type of the specified ModPlayer instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetModPlayer<T>(T baseInstance, out T result) where T : ModPlayer {
-			if (baseInstance == null || baseInstance.index < 0 || baseInstance.index >= modPlayers.Length) {
+			if (baseInstance == null || baseInstance.Index < 0 || baseInstance.Index >= modPlayers.Length) {
 				result = default;
 
 				return false;
 			}
 
-			result = modPlayers[baseInstance.index] as T;
+			result = modPlayers[baseInstance.Index] as T;
 
 			return result != null;
 		}

@@ -6,9 +6,9 @@ using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader
 {
-	public abstract class GlobalType : ModType
+	public abstract class GlobalType : ModType, IIndexed
 	{
-		internal ushort index;
+		public ushort Index { get; internal set; }
 
 		/// <summary>
 		/// Whether to create a new instance of this Global for every entity that exists.
@@ -54,7 +54,7 @@ namespace Terraria.ModLoader
 				return false;
 			}
 
-			result = Instance(globals, baseInstance.index) as TResult;
+			result = Instance(globals, baseInstance.Index) as TResult;
 			return result != null;
 		}
 
@@ -125,7 +125,7 @@ namespace Terraria.ModLoader
 
 			var inst = (TGlobal)Activator.CreateInstance(GetType());
 			inst.Mod = Mod;
-			inst.index = index;
+			inst.Index = Index;
 			return inst;
 		}
 	}
