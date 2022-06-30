@@ -923,12 +923,7 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyDrawLayerOrdering = AddHook<Action<IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position>>>(p => p.ModifyDrawLayerOrdering);
 
 		public static void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions) {
-			//TODO: Make Enumerate(players) work?
-			/*foreach (var modPlayer in HookModifyDrawLayerOrdering.Enumerate(players)) {
-				modPlayer.ModifyDrawLayerOrdering(positions);
-			}*/
-
-			foreach (var modPlayer in players) {
+			foreach (var modPlayer in HookModifyDrawLayerOrdering.Enumerate(players)) {
 				modPlayer.ModifyDrawLayerOrdering(positions);
 			}
 		}
@@ -955,7 +950,7 @@ namespace Terraria.ModLoader
 		private static HookList HookModifyZoom = AddHook<DelegateModifyZoom>(p => p.ModifyZoom);
 
 		public static void ModifyZoom(Player player, ref float zoom) {
-			foreach (var modPlayer in HookModifyZoom.Enumerate(player.modPlayers)) {
+			foreach (var modPlayer in HookModifyZoom.Enumerate(player.modPlayers.ToList())) {
 				modPlayer.ModifyZoom(ref zoom);
 			}
 		}

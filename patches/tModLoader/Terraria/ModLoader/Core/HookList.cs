@@ -4,12 +4,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Terraria.ModLoader.Core
 {
 	public class HookList<T> where T : class
 	{
-		// Don't change a single line without performance testing and checking the disassembly. As of NET 5.0.0, this implementation is on par with hand-coding
+		// Don't change a single line without performance testing and checking the disassembly. As of NET 6.0.0, this implementation is on par with hand-coding C#
 		// Disassembly checked using Relyze Desktop 3.3.0
 		public ref struct InstanceEnumerator
 		{
@@ -68,36 +69,6 @@ namespace Terraria.ModLoader.Core
 			public InstanceEnumerator GetEnumerator() => this;
 		}
 
-		public ref struct FilteredEnumerator
-		{
-			private readonly T[] arr;
-			private readonly int[] inds;
-
-			private T current;
-			private int i;
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public FilteredEnumerator(T[] arr, int[] inds) {
-				this.arr = arr;
-				this.inds = inds;
-				current = default;
-				i = 0;
-			}
-
-			public T Current => current;
-
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			public bool MoveNext() {
-				if (i >= inds.Length)
-					return false;
-
-				current = arr[inds[i++]];
-				return true;
-			}
-
-			public FilteredEnumerator GetEnumerator() => this;
-		}
-
 		public readonly MethodInfo method;
 
 		private int[] indices = Array.Empty<int>();
@@ -109,8 +80,14 @@ namespace Terraria.ModLoader.Core
 		public InstanceEnumerator Enumerate(Instanced<T>[] instances)
 			=> new(instances, indices);
 
-		public FilteredEnumerator Enumerate(T[] instances)
+		public FilteredArrayEnumerator<T> Enumerate(T[] instances)
 			=> new(instances, indices);
+
+		public FilteredSpanEnumerator<T> Enumerate(ReadOnlySpan<T> instances)
+			=> new(instances, indices);
+
+		public FilteredSpanEnumerator<T> Enumerate(List<T> instances) =>
+			Enumerate(CollectionsMarshal.AsSpan(instances));
 
 		public void Update<U>(IList<U> instances) where U : IIndexed {
 			indices = instances.WhereMethodIsOverridden(method).Select(g => (int)g.Index).ToArray();
