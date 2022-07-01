@@ -43,7 +43,7 @@ namespace Terraria.ModLoader.Core
 			// Prioritize loading Mods from Mods folder for Dev/Beta simplicity.
 			if (!ignoreModsFolder) {
 				foreach (string mod in Directory.GetFiles(ModLoader.ModPath, "*.tmod", SearchOption.TopDirectoryOnly))
-					AttemptLoadMod(mod, ref mods, ref names, logDuplicates);
+					AttemptLoadMod(mod, ref mods, ref names, logDuplicates, true);
 			}
 
 			// Load Mods from Workshop downloads
@@ -52,13 +52,13 @@ namespace Terraria.ModLoader.Core
 				if (fileName == null)
 					continue;
 
-				AttemptLoadMod(fileName, ref mods, ref names, logDuplicates);
+				AttemptLoadMod(fileName, ref mods, ref names, logDuplicates, false);
 			}
 
 			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
 		}
 
-		private static bool AttemptLoadMod(string fileName, ref List<LocalMod> mods, ref HashSet<string> names, bool logDuplicates) {
+		private static bool AttemptLoadMod(string fileName, ref List<LocalMod> mods, ref HashSet<string> names, bool logDuplicates, bool devLocation) {
 			var lastModified = File.GetLastWriteTime(fileName);
 
 			if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
@@ -69,6 +69,11 @@ namespace Terraria.ModLoader.Core
 						mod = new LocalMod(modFile) {
 							lastModified = lastModified
 						};
+					}
+
+					if (BuildInfo.IsPreview && !devLocation && !mod.properties.playableOnPreview) {
+						Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. Mod not available on Preview");
+						return false;
 					}
 				}
 				catch (Exception e) {

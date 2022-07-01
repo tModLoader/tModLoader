@@ -63,6 +63,7 @@ namespace Terraria.ModLoader.Core
 		internal string homepage = "";
 		internal string description = "";
 		internal ModSide side;
+		internal bool playableOnPreview = true;
 
 		public IEnumerable<ModReference> Refs(bool includeWeak) =>
 			includeWeak ? modReferences.Concat(weakReferences) : modReferences;
@@ -137,6 +138,9 @@ namespace Terraria.ModLoader.Core
 						break;
 					case "noCompile":
 						properties.noCompile = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+						break;
+					case "playableOnPreview":
+						properties.playableOnPreview = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 						break;
 					case "hideCode":
 						properties.hideCode = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
@@ -213,6 +217,9 @@ namespace Terraria.ModLoader.Core
 					if (noCompile) {
 						writer.Write("noCompile");
 					}
+					if (!playableOnPreview) {
+						writer.Write("!playableOnPreview");
+					}
 					if (!hideCode) {
 						writer.Write("!hideCode");
 					}
@@ -285,6 +292,9 @@ namespace Terraria.ModLoader.Core
 					if (tag == "noCompile") {
 						properties.noCompile = true;
 					}
+					if (tag == "!playableOnPreview") {
+						properties.playableOnPreview = false;
+					}
 					if (tag == "!hideCode") {
 						properties.hideCode = false;
 					}
@@ -332,6 +342,8 @@ namespace Terraria.ModLoader.Core
 				sb.AppendLine($"hideResources = true");
 			if (properties.includeSource)
 				sb.AppendLine($"includeSource = true");
+			if (!properties.playableOnPreview)
+				sb.AppendLine($"playableOnPreview = false");
 			// buildIgnores isn't preserved in Info, but it doesn't matter with extraction since the ignored files won't be present anyway.
 			// if (properties.buildIgnores.Length > 0)
 			//	sb.AppendLine($"buildIgnores = {string.Join(", ", properties.buildIgnores)}");
