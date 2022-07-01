@@ -13,8 +13,15 @@ namespace Terraria.ModLoader.Core
 	internal class FolderShortcutSupport
 	{
 		internal static void UpdateFolderShortcuts() {
-			if (OperatingSystem.IsWindows())
-				CreateLogsFolderShortcut();
+			if (OperatingSystem.IsWindows()) {
+				try {
+					// This is the first file system writing we attempt in the usual documents folder.
+					CreateLogsFolderShortcut();
+				}
+				catch (Exception e) {
+					Logging.tML.Warn($"Unable to create logs folder shortcuts - an exception of type {e.GetType().Name} was thrown:\r\n'{e.Message}'.");
+				}
+			}
 		}
 
 		// Implementation below adapted from https://stackoverflow.com/a/14632782
@@ -29,9 +36,11 @@ namespace Terraria.ModLoader.Core
 
 			// save it
 			IPersistFile file = (IPersistFile)link;
-			string shortcutPath = Path.GetFullPath(Program.SavePath);
-			Directory.CreateDirectory(Program.SavePath);
-			file.Save(Path.Combine(shortcutPath, "Logs.lnk"), false);
+			string fullSavePath = Path.GetFullPath(Program.SavePath);
+			
+			Directory.CreateDirectory(fullSavePath);
+
+			file.Save(Path.Combine(fullSavePath, "Logs.lnk"), false);
 		}
 
 		[ComImport]
