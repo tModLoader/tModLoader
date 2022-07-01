@@ -51,8 +51,12 @@ namespace Terraria.ModLoader.IO
 
 				//If the TE is modded
 				if (modName != "Terraria") {
-					//Find its type, defaulting to pending.
-					if (!ModContent.TryFind(modName, name, out baseModTileEntity)) {
+					//Since modded pylons use a native tML TE, we have to do manual checking since mods don't "add" the TE themselves.
+					if (name == nameof(TEModdedPylon) && ModLoader.IsEnabled(modName)) {
+						baseModTileEntity = ModContent.GetInstance<TEModdedPylon>();
+					}
+					//Otherwise, trying finding its type, defaulting to pending.
+					else if (!ModContent.TryFind(modName, name, out baseModTileEntity)) {
 						foundTE = false;
 						baseModTileEntity = ModContent.GetInstance<UnloadedTileEntity>();
 					}
