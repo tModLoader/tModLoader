@@ -24,6 +24,9 @@ namespace Terraria.ModLoader.Core
 						throw new Exception($"\n\nControlled Folder Access feature detected.\n\nIf game fails to launch make sure to add \"{Environment.ProcessPath}\" to the \"Allow an app through Controlled folder access\" menu found in the \"Ransomware protection\" menu.\n\nMore instructions can be found in the website that just opened.\n\n");  // Before language is loaded, no need to localize
 					}
 				}
+				catch (Exception e) {
+					Logging.tML.Warn($"Unable to create logs folder shortcuts - an exception of type {e.GetType().Name} was thrown:\r\n'{e.Message}'.");
+				}
 			}
 		}
 
@@ -39,9 +42,11 @@ namespace Terraria.ModLoader.Core
 
 			// save it
 			IPersistFile file = (IPersistFile)link;
-			string shortcutPath = Path.GetFullPath(Program.SavePath);
-			Directory.CreateDirectory(Program.SavePath);
-			file.Save(Path.Combine(shortcutPath, "Logs.lnk"), false);
+			string fullSavePath = Path.GetFullPath(Program.SavePath);
+			
+			Directory.CreateDirectory(fullSavePath);
+
+			file.Save(Path.Combine(fullSavePath, "Logs.lnk"), false);
 		}
 
 		[ComImport]
