@@ -20,6 +20,7 @@ public class TexturesTest : Mod
 
 		texture = Main.chainsTexture[index];
 		texture = Main.wireUITexture[index];
+		texture = Main.gemTexture[index];
 
 		texture = Main.dustTexture;
 		texture = Main.sunTexture;
@@ -40,5 +41,6 @@ public class TexturesTest : Mod
 
 		texture = Main.blackTileTexture;
 		texture = Main.magicPixel;
+		texture = Main.fishingLineTexture;
 	}
 }

@@ -55,9 +55,8 @@ namespace ExampleMod.Content.Items.Consumables
 
 		// If you want multiple buffs, you can apply the remainder of buffs with this method.
 		// Make sure the primary buff is set in SetDefaults so that the QuickBuff hotkey can work properly.
-		public override bool ConsumeItem(Player player) {
+		public override void OnConsumeItem(Player player) {
 			player.AddBuff(BuffID.SugarRush, 3600);
-			return true;
 		}
 
 		//Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

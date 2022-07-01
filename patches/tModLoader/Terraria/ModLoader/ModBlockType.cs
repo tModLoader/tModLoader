@@ -66,7 +66,8 @@ namespace Terraria.ModLoader
 		/// </summary>
 		/// <param name="i">The x position in tile coordinates.</param>
 		/// <param name="j">The y position in tile coordinates.</param>
-		public virtual bool KillSound(int i, int j) {
+		/// <param name="fail">If true, the tile/wall is only partially damaged. If false, the tile/wall is fully destroyed.</param>
+		public virtual bool KillSound(int i, int j, bool fail) {
 			return true;
 		}
 

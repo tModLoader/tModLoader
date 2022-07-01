@@ -1,6 +1,32 @@
+using System;
+using Terraria;
 using Terraria.ModLoader;
 
-public class EquipTextureTest : Mod
+public class EquipTextureTest : EquipTexture
+{
+	void Method() {
+#if COMPILE_ERROR
+		Console.WriteLine(mod/* tModPorter Note: Removed. */);
+#endif
+		Console.WriteLine(Item);
+	}
+
+	public override void FrameEffects(Player player, EquipType type) { /* Empty */ }
+
+#if COMPILE_ERROR
+	public override bool DrawHead()/* tModPorter Note: Removed. After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false */ { return true; /* Empty */ }
+
+	public override bool DrawBody()/* tModPorter Note: Removed. After registering this as EquipType.Body, use ArmorIDs.Body.Sets.HidesTopSkin[slot] = true if you returned false */ { return true; /* Empty */ }
+
+	public override bool DrawLegs()/* tModPorter Note: Removed. After registering this as EquipType.Legs or Shoes, use ArmorIDs.Legs.Sets.HidesBottomSkin[slot] = true if you returned false for EquipType.Legs, and ArmorIDs.Shoe.Sets.OverridesLegs[slot] = true if you returned false for EquipType.Shoes */ { return true; /* Empty */ }
+
+	public override void DrawHands(ref bool drawHands, ref bool drawArms)/* tModPorter Note: Removed. After registering this as EquipType.Body, use ArmorIDs.Body.Sets.HidesHands[slot] = false if you had drawHands set to true. If you had drawArms set to true, you don't need to do anything */ { /* Empty */ }
+
+	public override void DrawHair(ref bool drawHair, ref bool drawAltHair)/* tModPorter Note: Removed. After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawFullHair[slot] = true if you had drawHair set to true, and ArmorIDs.Head.Sets.DrawHatHair[slot] = true if you had drawAltHair set to true */ { /* Empty */ }
+#endif
+}
+
+public class EquipTextureModTest : Mod
 {
 	void Method() {
 		Mod mod = this;
@@ -26,6 +52,9 @@ public class EquipTextureTest : Mod
 		slot = EquipLoader.AddEquipTexture(this, pathToTexture, equipType, item, equipName, equipTexture);
 		slot = EquipLoader.AddEquipTexture(this, pathToTexture, equipType, name: equipName, equipTexture: equipTexture);
 
+		slot = EquipLoader.AddEquipTexture(mod, pathToTexture, equipType, name: equipName)/* tModPorter Note: armTexture and femaleTexture now part of new spritesheet. https://github.com/tModLoader/tModLoader/wiki/Armor-Texture-Migration-Guide */;
+		slot = EquipLoader.AddEquipTexture(this, pathToTexture, equipType, name: equipName, equipTexture: equipTexture)/* tModPorter Note: armTexture and femaleTexture now part of new spritesheet. https://github.com/tModLoader/tModLoader/wiki/Armor-Texture-Migration-Guide */;
+
 		// 1.3 EquipTexture Mod.GetEquipTexture(string name, EquipType type)
 		// 1.4 EquipTexture EquipLoader.GetEquipTexture(Mod mod, string name, EquipType type)
 		equipTexture = EquipLoader.GetEquipTexture(mod, equipName, equipType);
@@ -37,8 +66,10 @@ public class EquipTextureTest : Mod
 		slot = EquipLoader.GetEquipSlot(this, equipName, equipType);
 
 		// 1.3 sbyte Mod.GetAccessorySlot(string name, EquipType type)
-		// 1.4 int EquipLoader.GetEquipSlot(Mod mod, string name, EquipType type) cast to sbyte
-		sbyte sSlot = (sbyte)EquipLoader.GetEquipSlot(mod, equipName, equipType);
-		sSlot = (sbyte)EquipLoader.GetEquipSlot(this, equipName, equipType);
+		// 1.4 int EquipLoader.GetEquipSlot(Mod mod, string name, EquipType type)
+#if COMPILE_ERROR // sbyte -> int
+		sbyte sSlot = EquipLoader.GetEquipSlot(mod, equipName, equipType);
+		sSlot = EquipLoader.GetEquipSlot(this, equipName, equipType);
+#endif
 	}
 }

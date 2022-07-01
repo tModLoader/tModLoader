@@ -18,12 +18,16 @@
  			public override bool UniqueDraw(bool justCheckingString, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default(Vector2), Color color = default(Color), float scale = 1f) {
  				float num = 1f;
  				float num2 = 1f;
-@@ -55,20 +_,26 @@
+@@ -55,20 +_,30 @@
  
  		TextSnippet ITagHandler.Parse(string text, Color baseColor, string options) {
  			Item item = new Item();
 -			if (int.TryParse(text, out int result))
 +			if (int.TryParse(text, out int result) && result < ItemLoader.ItemCount)
++				item.netDefaults(result);
++
++			// Add support for [i:ModItem.FullName] ([i:ExampleMod/ExampleItem]). Coincidentally support [i:ItemID.FieldName] ([i:GoldBar])
++			if(ID.ItemID.Search.TryGetId(text, out result))
  				item.netDefaults(result);
  
  			if (item.type <= 0)

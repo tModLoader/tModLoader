@@ -269,13 +269,10 @@ namespace Terraria.ModLoader
 			return null;
 		}
 
-		public Recipe CreateRecipe(int result, int amount = 1) => Recipe.Create(this, result, amount);
+		[Obsolete("Use Recipe.Create", true)]
+		public Recipe CreateRecipe(int result, int amount = 1) => Recipe.Create(result, amount);
 
-		/// <summary>
-		/// Creates a clone of the provided recipe except the source mod of the Recipe will be this Mod. The clone will have to registered after being tweaked.
-		/// </summary>
-		/// <param name="recipe"></param>
-		/// <returns></returns>
-		public Recipe CloneRecipe(Recipe recipe) => Recipe.Create(this, recipe.createItem.type, recipe.createItem.stack).Clone(recipe);
+		[Obsolete("Use Recipe.Clone", true)]
+		public Recipe CloneRecipe(Recipe recipe) => recipe.Clone();
 	}
 }

@@ -14,7 +14,10 @@ namespace Terraria
 	{
 		internal IList<string> usedMods;
 		internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
+
 		public Item equippedWings = null;
+
+		public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
 
 		public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
 
@@ -31,7 +34,7 @@ namespace Terraria
 		/// <exception cref="IndexOutOfRangeException"/>
 		/// <exception cref="NullReferenceException"/>
 		public T GetModPlayer<T>(T baseInstance) where T : ModPlayer
-			=> modPlayers[baseInstance.index] as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current player.");
+			=> modPlayers[baseInstance.Index] as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current player.");
 
 		// TryGet
 
@@ -42,13 +45,13 @@ namespace Terraria
 		/// <summary> Safely attempts to get the local instance of the type of the specified ModPlayer instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetModPlayer<T>(T baseInstance, out T result) where T : ModPlayer {
-			if (baseInstance == null || baseInstance.index < 0 || baseInstance.index >= modPlayers.Length) {
+			if (baseInstance == null || baseInstance.Index < 0 || baseInstance.Index >= modPlayers.Length) {
 				result = default;
 
 				return false;
 			}
 
-			result = modPlayers[baseInstance.index] as T;
+			result = modPlayers[baseInstance.Index] as T;
 
 			return result != null;
 		}
@@ -259,7 +262,34 @@ namespace Terraria
 			return attackSpeed;
 		}
 
+		// Legacy Thrower properties (uppercase+property in TML)
 
+		/// <summary>
+		/// Multiplier to shot projectile velocity before throwing. Result will be capped to 16f.
+		/// <br/>Only applies to items counted as the <see cref="DamageClass.Throwing"/> damage type
+		/// </summary>
+		public float ThrownVelocity { get; set; }
+
+		/// <summary>
+		/// If true, player has a 33% chance of not consuming the thrown item.
+		/// <br/>Only applies to consumable items and projectiles counted as the <see cref="DamageClass.Throwing"/> damage type.
+		/// <br/>Projectiles spawned from a player who holds such item will set <see cref="Projectile.noDropItem"/> to prevent duplication.
+		/// <br/>Stacks with <see cref="ThrownCost50"/> multiplicatively
+		/// </summary>
+		public bool ThrownCost33 { get; set; }
+
+		/// <summary>
+		/// If true, player has a 50% chance of not consuming the thrown item.
+		/// <br/>Only applies to consumable items counted as the <see cref="DamageClass.Throwing"/> damage type.
+		/// <br/>Projectiles spawned from a player who holds such item will set <see cref="Projectile.noDropItem"/> to prevent duplication.
+		/// <br/>Stacks with <see cref="ThrownCost33"/> multiplicatively
+		/// </summary>
+		public bool ThrownCost50 { get; set; }
+
+		/// <summary>
+		/// Returns true if either <see cref="ThrownCost33"/> or <see cref="ThrownCost50"/> are true
+		/// </summary>
+		public bool AnyThrownCostReduction => ThrownCost33 || ThrownCost50;
 
 		/// <summary>
 		/// Container for current SceneEffect client properties such as: Backgrounds, music, and water styling
@@ -277,6 +307,9 @@ namespace Terraria
 		/// <exception cref="IndexOutOfRangeException"/>
 		/// <exception cref="NullReferenceException"/>
 		public bool InModBiome(ModBiome baseInstance) => modBiomeFlags[baseInstance.ZeroIndexType];
+
+		/// <inheritdoc cref="InModBiome"/>
+		public bool InModBiome<T>() where T : ModBiome => InModBiome(ModContent.GetInstance<T>());
 
 		/// <summary>
 		/// The zone property storing if the player is not in any particular biome. Updated in <see cref="UpdateBiomes"/>

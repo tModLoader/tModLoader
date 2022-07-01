@@ -4,6 +4,7 @@ using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.GameContent;
+using Terraria.Enums;
 
 namespace Terraria.ModLoader
 {
@@ -22,6 +23,14 @@ namespace Terraria.ModLoader
 		}
 
 		void ILoadable.Unload() { }
+	}
+
+	public interface ITree : IPlant
+	{
+		TreeTypes CountsAsTreeType { get; }
+
+		int TreeLeaf();
+		bool Shake(int x, int y, ref bool createLeaves);
 	}
 
 	public static class PlantLoader
@@ -79,6 +88,32 @@ namespace Terraria.ModLoader
 
 			return plant.GetTexture();
 		}
+
+		public static ITree GetTree(int type) {
+			var tree = Get<ModTree>(TileID.Trees, type);
+			if (tree is not null)
+				return tree;
+
+			var palm = Get<ModPalmTree>(TileID.PalmTree, type);
+			if (palm is not null)
+				return palm;
+
+			return null;
+		}
+
+		public static TreeTypes GetModTreeType(int type) {
+			return GetTree(type)?.CountsAsTreeType ?? TreeTypes.None;
+		}
+
+		public static bool ShakeTree(int x, int y, int type, ref bool createLeaves) {
+			return GetTree(type)?.Shake(x, y, ref createLeaves) ?? true;
+		}
+
+		public static void GetTreeLeaf(int type, ref int leafGoreType) {
+			var tree = GetTree(type);
+			if (tree is not null)
+				leafGoreType = tree.TreeLeaf();
+		}
 	}
 
 	/// <summary>
@@ -103,7 +138,7 @@ namespace Terraria.ModLoader
 	/// The tree will share a tile ID with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted.
 	/// This class encapsulates several functions that distinguish each type of tree from each other.
 	/// </summary>
-	public abstract class ModTree : IPlant
+	public abstract class ModTree : ITree
 	{
 		/// <summary>
 		/// The tree will share a tile ID with the vanilla trees (5), so that the trees can freely convert between each other if the soil below is converted.
@@ -120,6 +155,10 @@ namespace Terraria.ModLoader
 		public abstract void SetStaticDefaults();
 		public abstract Asset<Texture2D> GetTexture();
 
+		/// <summary>
+		/// Used mostly for vanilla tree shake loot tables
+		/// </summary>
+		public virtual TreeTypes CountsAsTreeType => TreeTypes.Forest;
 
 		/// <summary>
 		/// Return the type of dust created when this tree is destroyed. Returns 7 by default.
@@ -130,11 +169,19 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Return the type of gore created to represent leaves when this tree grows on-screen. Returns -1 by default.
+		/// Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default
 		/// </summary>
 		/// <returns></returns>
-		public virtual int GrowthFXGore() {
+		public virtual int TreeLeaf() {
 			return -1;
+		}
+
+		/// <summary>
+		/// Executed on tree shake, return false to skip vanilla tree shake drops
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool Shake(int x, int y, ref bool createLeaves) {
+			return true;
 		}
 
 		/// <summary>
@@ -163,7 +210,7 @@ namespace Terraria.ModLoader
 		/// <returns></returns>
 		public abstract int DropWood();
 
-		public abstract void SetTreeFoliageSettings(Tile tile, int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight);
+		public abstract void SetTreeFoliageSettings(Tile tile, ref int xoffset, ref int treeFrame, ref int floorY, ref int topTextureFrameWidth, ref int topTextureFrameHeight);
 
 		/// <summary>
 		/// Return the texture containing the possible tree tops that can be drawn above this tree.
@@ -183,7 +230,7 @@ namespace Terraria.ModLoader
 	/// The palm tree will share a tile ID with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted.
 	/// This class encapsulates several functions that distinguish each type of palm tree from each other.
 	/// </summary>
-	public abstract class ModPalmTree : IPlant
+	public abstract class ModPalmTree : ITree
 	{
 		/// <summary>
 		/// The tree will share a tile ID with the vanilla palm trees (323), so that the trees can freely convert between each other if the sand below is converted.
@@ -199,6 +246,11 @@ namespace Terraria.ModLoader
 		public abstract Asset<Texture2D> GetTexture();
 
 		/// <summary>
+		/// Used mostly for vanilla tree shake loot tables
+		/// </summary>
+		public virtual TreeTypes CountsAsTreeType => TreeTypes.Palm;
+
+		/// <summary>
 		/// Return the type of dust created when this palm tree is destroyed. Returns 215 by default.
 		/// </summary>
 		/// <returns></returns>
@@ -207,11 +259,19 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Return the type of gore created to represent leaves when this palm tree grows on-screen. Returns -1 by default.
+		/// Return the type of gore created when the tree grow, being shook and falling leaves on windy days, returns -1 by default
 		/// </summary>
 		/// <returns></returns>
-		public virtual int GrowthFXGore() {
+		public virtual int TreeLeaf() {
 			return -1;
+		}
+
+		/// <summary>
+		/// Executed on tree shake, return false to skip vanilla tree shake drops
+		/// </summary>
+		/// <returns></returns>
+		public virtual bool Shake(int x, int y, ref bool createLeaves) {
+			return true;
 		}
 
 		/// <summary>

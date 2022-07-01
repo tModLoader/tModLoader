@@ -31,7 +31,7 @@ namespace Terraria.ModLoader
 
 		private static ModMenu switchToMenu = null;
 
-		private static bool loading = true;
+		internal static bool loading = true;
 
 		internal static string LastSelectedModMenu = MenutML.FullName;
 		internal static string KnownMenuSaveString = string.Join(",", menus.Select(m => m.FullName));

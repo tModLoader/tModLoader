@@ -29,7 +29,7 @@ namespace ExampleMod.Content
 			// The following basic recipe makes 999 ExampleItems out of 1 stone block. //
 			////////////////////////////////////////////////////////////////////////////////////
 
-			Recipe recipe = Mod.CreateRecipe(ModContent.ItemType<Items.ExampleItem>(), 999);
+			Recipe recipe = Recipe.Create(ModContent.ItemType<Items.ExampleItem>(), 999);
 			// This adds a requirement of 1 dirt block to the recipe.
 			recipe.AddIngredient(ItemID.StoneBlock);
 			// When you're done, call this to register the recipe.
@@ -98,10 +98,10 @@ namespace ExampleMod.Content
 			// If you want to make a copy of an existing recipe with a slight difference, you can use Mod.CloneRecipe to create a clone of that recipe.
 			// The clone will inherit all of the original recipe's properties except the owner mod will be this mod. You can change the clone as you see fit.
 			// If you want to make multiple variations of a recipe in your mod, it may be easier to use a helper method instead of cloning.
-			// Make sure to not use recipe cloning for situations that are better served by properly using AdjTiles, Recipe Groups, or faking various recipe conditions. 
+			// Make sure to not use recipe cloning for situations that are better served by properly using AdjTiles, Recipe Groups, or faking various recipe conditions.
 
 			// Start by creating a recipe you want to copy.
-			Recipe baseRecipe = Mod.CreateRecipe(ModContent.ItemType<Items.ExampleItem>(), 10);
+			Recipe baseRecipe = Recipe.Create(ModContent.ItemType<Items.ExampleItem>(), 10);
 			baseRecipe.AddIngredient(ItemID.Wood, 10)
 				.AddIngredient(ItemID.CopperCoin)
 				.AddCondition(Recipe.Condition.InBeach)
@@ -109,7 +109,7 @@ namespace ExampleMod.Content
 				.Register();
 
 			// Start a new Recipe by cloning another recipe.
-			Recipe clonedRecipe = Mod.CloneRecipe(baseRecipe)
+			Recipe clonedRecipe = baseRecipe.Clone()
 				// We can new properties to this recipe without affecting the one we cloned from.
 				.AddIngredient(ItemID.SilverCoin)
 				.AddTile(TileID.Anvils);

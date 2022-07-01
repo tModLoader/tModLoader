@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.XNA.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -13,7 +15,11 @@ public class ModPlayerTest : ModPlayer
 
 	public override void GetWeaponCrit(Item item, ref int crit) { /* Empty */ }
 
-	public override void ModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat) { /* Empty */ }
+	public override void ModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat) {
+		add += 0.1f;
+		mult *= 0.2f;
+		flat += 4;
+	}
 
 	public override void Load(TagCompound tag) { /* Empty */ }
 
@@ -21,7 +27,19 @@ public class ModPlayerTest : ModPlayer
 	public override TagCompound Save() {
 		return new TagCompound();
 	}
+
+	public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath) {
+		items.Add(9);
+	}
+
+	public override void SetupStartInventory(IList<Item> items) {
+		items.Add(9);
+	}
 #endif
+
+	public override Texture2D SetMapBackgroundImage() {
+		return null
+	}
 
 	public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright) { /* Empty */ }
 

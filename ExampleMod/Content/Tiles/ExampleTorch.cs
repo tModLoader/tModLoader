@@ -76,7 +76,7 @@ namespace ExampleMod.Content.Tiles
 
 			// The influence positive torch luck can have overall is 0.1 (if positive luck is any number less than 1) or 0.2 (if positive luck is greater than or equal to 1)
 
-			bool inExampleUndergroundBiome = Main.LocalPlayer.InModBiome(ModContent.GetInstance<ExampleUndergroundBiome>());
+			bool inExampleUndergroundBiome = player.InModBiome<ExampleUndergroundBiome>();
 			return inExampleUndergroundBiome ? 1f : -0.1f; // ExampleTorch gives maximum positive luck when in example biome, otherwise a small negative luck
 		}
 

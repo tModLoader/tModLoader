@@ -99,7 +99,7 @@
  
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
-@@ -138,30 +_,80 @@
+@@ -138,24 +_,72 @@
  			}
  		}
  
@@ -126,7 +126,9 @@
 +			}
 +			
 +			bool isServer = LaunchParameters.ContainsKey("-server");
++
 +			try {
++				ControlledFolderAccessSupport.CheckFileSystemAccess();
 +				Logging.Init(isServer ? Logging.LogFile.Server : Logging.LogFile.Client);
 +				if (Platform.Current.Type == PlatformType.Windows && System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture != System.Runtime.InteropServices.Architecture.X64)
 +					throw new Exception("The current Windows Architecture of your System is CURRENTLY unsupported. Aborting...");
@@ -174,6 +176,11 @@
 -#else
 -			Main.dedServ = LaunchParameters.ContainsKey("-server");
 -#endif
+-
+ 			if (Main.dedServ) {
+ 				Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
+ 			}
+@@ -163,10 +_,13 @@
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
@@ -190,7 +197,7 @@
  					Lang.InitializeLegacyLocalization();
  					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
-@@ -171,9 +_,11 @@
+@@ -176,9 +_,11 @@
  					else
  						main.DedServ();
  				}
@@ -205,7 +212,7 @@
  			}
  		}
  
-@@ -201,6 +_,8 @@
+@@ -206,6 +_,8 @@
  					}
  				}
  
@@ -214,7 +221,7 @@
  				using (StreamWriter streamWriter = new StreamWriter("client-crashlog.txt", append: true)) {
  					streamWriter.WriteLine(DateTime.Now);
  					streamWriter.WriteLine(text);
-@@ -208,9 +_,22 @@
+@@ -213,9 +_,22 @@
  				}
  
  				if (Main.dedServ)

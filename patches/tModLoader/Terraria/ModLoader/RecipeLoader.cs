@@ -12,7 +12,6 @@ namespace Terraria.ModLoader
 	/// </summary>
 	public static class RecipeLoader
 	{
-		internal static readonly IList<GlobalRecipe> globalRecipes = new List<GlobalRecipe>();
 		internal static Recipe[] FirstRecipeForItem = new Recipe[ItemID.Count];
 
 		/// <summary>
@@ -20,18 +19,19 @@ namespace Terraria.ModLoader
 		/// </summary>
 		internal static bool setupRecipes = false;
 
-		internal static void Add(GlobalRecipe globalRecipe) {
-			globalRecipes.Add(globalRecipe);
-		}
+		/// <summary>
+		/// The mod currently adding recipes.
+		/// </summary>
+		internal static Mod CurrentMod { get; private set; }
 
 		internal static void Unload() {
-			globalRecipes.Clear();
 			setupRecipes = false;
 			FirstRecipeForItem = new Recipe[Recipe.maxRecipes];
 		}
 
 		internal static void AddRecipes() {
 			foreach (Mod mod in ModLoader.Mods) {
+				CurrentMod = mod;
 				try {
 					SystemLoader.AddRecipes(mod);
 					LoaderUtils.ForEachAndAggregateExceptions(mod.GetContent<ModItem>(), item => item.AddRecipes());
@@ -41,11 +41,15 @@ namespace Terraria.ModLoader
 					e.Data["mod"] = mod.Name;
 					throw;
 				}
+				finally {
+					CurrentMod = null;
+				}
 			}
 		}
 
 		internal static void PostAddRecipes() {
 			foreach (Mod mod in ModLoader.Mods) {
+				CurrentMod = mod;
 				try {
 					SystemLoader.PostAddRecipes(mod);
 				}
@@ -53,17 +57,24 @@ namespace Terraria.ModLoader
 					e.Data["mod"] = mod.Name;
 					throw;
 				}
+				finally {
+					CurrentMod = null;
+				}
 			}
 		}
 
 		internal static void PostSetupRecipes() {
 			foreach (Mod mod in ModLoader.Mods) {
+				CurrentMod = mod;
 				try {
 					SystemLoader.PostSetupRecipes(mod);
 				}
 				catch (Exception e) {
 					e.Data["mod"] = mod.Name;
 					throw;
+				}
+				finally {
+					CurrentMod = null;
 				}
 			}
 		}
@@ -129,7 +140,7 @@ namespace Terraria.ModLoader
 		/// <param name="recipe">The recipe to check.</param>
 		/// <returns>Whether or not the conditions are met for this recipe.</returns>
 		public static bool RecipeAvailable(Recipe recipe) {
-			return recipe.Conditions.All(c => c.RecipeAvailable(recipe)) && globalRecipes.All(globalRecipe => globalRecipe.RecipeAvailable(recipe));
+			return recipe.Conditions.All(c => c.RecipeAvailable(recipe));
 		}
 
 		/// <summary>
@@ -139,10 +150,6 @@ namespace Terraria.ModLoader
 		/// <param name="recipe">The recipe used to craft the item.</param>
 		public static void OnCraft(Item item, Recipe recipe) {
 			recipe.OnCraftHooks?.Invoke(recipe, item);
-
-			foreach (GlobalRecipe globalRecipe in globalRecipes) {
-				globalRecipe.OnCraft(item, recipe);
-			}
 		}
 
 		/// <summary>
@@ -153,10 +160,6 @@ namespace Terraria.ModLoader
 		/// <param name="amount">Modifiable amount of the item consumed.</param>
 		public static void ConsumeItem(Recipe recipe, int type, ref int amount) {
 			recipe.ConsumeItemHooks?.Invoke(recipe, type, ref amount);
-
-			foreach (GlobalRecipe globalRecipe in globalRecipes) {
-				globalRecipe.ConsumeItem(recipe, type, ref amount);
-			}
 		}
 	}
 }

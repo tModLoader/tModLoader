@@ -15,11 +15,25 @@ public class ModItemTest : ModItem
 		item.useTime += 2;
 	}
 
+#if COMPILE_ERROR
+	public override bool IgnoreDamageModifiers => false;
+
+	public override bool OnlyShootOnSwing => false;
+#endif
+
+	public override bool CloneNewInstances => false;
+
+	public override ModItem Clone() { return null; }
+
 	public override bool NewPreReforge() { return false; /* comment */ }
 
 	public override bool UseItem(Player player) { return true; /* comment */ }
 
+	public override void HoldStyle(Player player) { /* comment */ }
+
 	public override void UseStyle(Player player) { /* comment */ }
+
+	public override bool CanEquipAccessory(Player player, int slot) { return true; /* comment */ }
 
 	public override void NetRecieve(BinaryReader reader) { /* Empty */ }
 
@@ -27,7 +41,23 @@ public class ModItemTest : ModItem
 
 	public override void GetWeaponCrit(Player player, ref int crit) { /* Empty */ }
 
-	public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat) { /* Empty */ }
+	public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat) {
+		add += 0.1f;
+		mult *= 0.2f;
+		flat += 4;
+	}
+
+#if COMPILE_ERROR
+	public override bool DrawHead() { return true; /* Empty */ }
+
+	public override bool DrawBody() { return true; /* Empty */ }
+
+	public override bool DrawLegs() { return true; /* Empty */ }
+
+	public override void DrawHands(ref bool drawHands, ref bool drawArms) { /* Empty */ }
+
+	public override void DrawHair(ref bool drawHair, ref bool drawAltHair) { /* Empty */ }
+#endif
 
 	public override void Load(TagCompound tag) { /* Empty */ }
 

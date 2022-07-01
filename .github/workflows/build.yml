@@ -107,7 +107,7 @@ jobs:
         with:
           path: decompiled.zip.gpg
           # update key with new Terraria releases and when ilspy or ilspy decompile settings are updated
-          key: 1436-B
+          key: 1436-D
 
       - name: Restore decompiled folder from cache
         if: steps.cache-decompiled.outputs.cache-hit == 'true'
@@ -128,7 +128,7 @@ jobs:
       - name: Install .NET SDKs
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0.201'
+          dotnet-version: '6.0.301'
 
       # Runs a set of commands using the runners shell
       - name: Build script
@@ -137,10 +137,14 @@ jobs:
         run: |
           echo CI setup for Terraria v$TERRARIA_VERSION
           
-          echo Listing installed .NET SDKs:
-          dotnet --list-sdks
           echo Default .NET version:
           dotnet --version
+          echo Default .NET 'build' version:
+          dotnet build --version --nologo
+          echo Listing installed .NET SDKs:
+          dotnet --list-sdks
+          echo Listing installed .NET Runtimes:
+          dotnet --list-runtimes
           
           echo Downloading Terraria Server zip
           curl -s -L https://terraria.org/api/download/pc-dedicated-server/terraria-server-$TERRARIA_VERSION.zip -o terrariaserver.zip
@@ -442,7 +446,18 @@ jobs:
         env:
           STEAM_SENTRY_PASSPHRASE: ${{ secrets.STEAM_SENTRY_PASSPHRASE }}
           STEAMCMDDIR: ${{ steps.setupsteam.outputs.directory }}
-          
+      
+      - name: Get Version tag for Release
+        id: version2
+        shell: bash
+        run: |
+          echo "Attempting get current version id"
+          version=$(git describe --tags --abbrev=0)
+          echo "Current Version is: $version"
+          echo "::set-output name=new_version::$version"
+        env:
+          branch: ${{github.ref}}
+      
       - name: Attempt run_app_build_http 
         shell: bash
         run: |
@@ -458,11 +473,14 @@ jobs:
             manifesto=$manifesto/preview.vdf
           fi
           
+          sed -i -e "s/Auto-Release/Auto-Release ($version)/g" $manifesto
           steamcmd +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" +run_app_build_http $manifesto +quit
           echo "Listing BuildOutput directory"
           ls -alhR ./BuildOutput
           echo "cat BuildOutput directory contents"
           cat BuildOutput/*.log
+        env:
+          version: ${{ steps.version2.outputs.new_version }}
           
       - name: Download ExampleMod build artifact from build job
         # This should hopefully always work since this job shouldn't even run if the build job failed due to ExampleMod not compiling.
@@ -494,19 +512,7 @@ jobs:
           cat publish.vdf
           echo Done
         working-directory: artifacts/ExampleMod
-      
-      - name: Get Version tag for Release
-        id: version2
-        if: github.ref == 'refs/heads/1.4-stable'
-        shell: bash
-        run: |
-          echo "Attempting get current version id"
-          version=$(git describe --tags --abbrev=0)
-          echo "Current Version is: $version"
-          echo "::set-output name=new_version::$version"
-        env:
-          branch: ${{github.ref}}
-          
+
       - name: Install Zip
         if: github.ref == 'refs/heads/1.4-stable'
         uses: montudor/action-zip@v1

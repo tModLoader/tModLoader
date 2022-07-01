@@ -28,7 +28,7 @@ namespace Terraria.ModLoader
 		internal static bool loaded = false;
 		private static int nextNPC = NPCID.Count;
 		internal static readonly IList<ModNPC> npcs = new List<ModNPC>();
-		internal static readonly IList<GlobalNPC> globalNPCs = new List<GlobalNPC>();
+		internal static readonly List<GlobalNPC> globalNPCs = new();
 		internal static readonly IDictionary<int, int> bannerToItem = new Dictionary<int, int>();
 		private static readonly int[] shopToNPC = new int[Main.MaxShopIDs - 1];
 		/// <summary>
@@ -36,7 +36,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public static readonly IList<int> blockLoot = new List<int>();
 
-		private static Instanced<GlobalNPC>[] globalNPCsArray = new Instanced<GlobalNPC>[0];
 		private static readonly List<HookList> hooks = new List<HookList>();
 		private static readonly List<HookList> modHooks = new List<HookList>();
 
@@ -130,10 +129,6 @@ namespace Terraria.ModLoader
 				Lang._npcNameCache[k] = LocalizedText.Empty;
 			}
 
-			globalNPCsArray = globalNPCs
-				.Select(g => new Instanced<GlobalNPC>(g.index, g))
-				.ToArray();
-
 			foreach (var hook in hooks.Union(modHooks)) {
 				hook.Update(globalNPCs);
 			}
@@ -177,12 +172,12 @@ namespace Terraria.ModLoader
 				g.SetDefaults(npc);
 			}
 		}
-		
+
 		private static HookList HookOnSpawn = AddHook<Action<NPC, IEntitySource>>(g => g.OnSpawn);
 
 		internal static void OnSpawn(NPC npc, IEntitySource source) {
 			npc.ModNPC?.OnSpawn(source);
-			
+
 			foreach (GlobalNPC g in HookOnSpawn.Enumerate(npc.globalNPCs)) {
 				g.OnSpawn(npc, source);
 			}
@@ -441,7 +436,7 @@ namespace Terraria.ModLoader
 
 		private static HookList HookModifyGlobalLoot = AddHook<Action<GlobalLoot>>(g => g.ModifyGlobalLoot);
 		public static void ModifyGlobalLoot(GlobalLoot globalLoot) {
-			foreach (GlobalNPC g in HookModifyGlobalLoot.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookModifyGlobalLoot.Enumerate(globalNPCs)) {
 				g.ModifyGlobalLoot(globalLoot);
 			}
 		}
@@ -839,7 +834,7 @@ namespace Terraria.ModLoader
 		private static HookList HookEditSpawnRate = AddHook<DelegateEditSpawnRate>(g => g.EditSpawnRate);
 
 		public static void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns) {
-			foreach (GlobalNPC g in HookEditSpawnRate.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookEditSpawnRate.Enumerate(globalNPCs)) {
 				g.EditSpawnRate(player, ref spawnRate, ref maxSpawns);
 			}
 		}
@@ -850,7 +845,7 @@ namespace Terraria.ModLoader
 
 		public static void EditSpawnRange(Player player, ref int spawnRangeX, ref int spawnRangeY,
 			ref int safeRangeX, ref int safeRangeY) {
-			foreach (GlobalNPC g in HookEditSpawnRange.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookEditSpawnRange.Enumerate(globalNPCs)) {
 				g.EditSpawnRange(player, ref spawnRangeX, ref spawnRangeY, ref safeRangeX, ref safeRangeY);
 			}
 		}
@@ -869,7 +864,7 @@ namespace Terraria.ModLoader
 					pool[npc.NPC.type] = weight;
 				}
 			}
-			foreach (GlobalNPC g in HookEditSpawnPool.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookEditSpawnPool.Enumerate(globalNPCs)) {
 				g.EditSpawnPool(pool, spawnInfo);
 			}
 			float totalWeight = 0f;
@@ -926,7 +921,7 @@ namespace Terraria.ModLoader
 		public static void ModifyNPCHappiness(NPC npc, int primaryPlayerBiome, ShopHelper shopHelperInstance, bool[] nearbyNPCsByType) {
 			npc.ModNPC?.ModifyNPCHappiness(primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
 
-			foreach (GlobalNPC g in HookModifyNPCHappiness.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookModifyNPCHappiness.Enumerate(globalNPCs)) {
 				g.Instance(npc).ModifyNPCHappiness(npc, primaryPlayerBiome, shopHelperInstance, nearbyNPCsByType);
 			}
 		}
@@ -1066,7 +1061,7 @@ namespace Terraria.ModLoader
 			else {
 				GetNPC(type)?.SetupShop(shop, ref nextSlot);
 			}
-			foreach (GlobalNPC g in HookSetupShop.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookSetupShop.Enumerate(globalNPCs)) {
 				g.SetupShop(type, shop, ref nextSlot);
 			}
 		}
@@ -1075,7 +1070,7 @@ namespace Terraria.ModLoader
 		private static HookList HookSetupTravelShop = AddHook<DelegateSetupTravelShop>(g => g.SetupTravelShop);
 
 		public static void SetupTravelShop(int[] shop, ref int nextSlot) {
-			foreach (GlobalNPC g in HookSetupTravelShop.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookSetupTravelShop.Enumerate(globalNPCs)) {
 				g.SetupTravelShop(shop, ref nextSlot);
 			}
 		}
@@ -1112,7 +1107,7 @@ namespace Terraria.ModLoader
 		private static HookList HookBuffTownNPC = AddHook<DelegateBuffTownNPC>(g => g.BuffTownNPC);
 
 		public static void BuffTownNPC(ref float damageMult, ref int defense) {
-			foreach (GlobalNPC g in HookBuffTownNPC.Enumerate(globalNPCsArray)) {
+			foreach (GlobalNPC g in HookBuffTownNPC.Enumerate(globalNPCs)) {
 				g.BuffTownNPC(ref damageMult, ref defense);
 			}
 		}
@@ -1244,6 +1239,24 @@ namespace Terraria.ModLoader
 					throw new Exception(type + " has instance fields but does not set InstancePerEntity to true. Either use static fields, or per instance globals");
 				}
 			}
+		}
+
+		private delegate bool DelegateNeedSaving(NPC npc);
+		private static HookList HookNeedSaving = AddHook<DelegateNeedSaving>(g => g.NeedSaving);
+
+		public static bool SavesAndLoads(NPC npc) {
+			if (npc.townNPC && npc.type != NPCID.TravellingMerchant)
+				return true;
+
+			if (NPCID.Sets.SavesAndLoads[npc.type] || (npc.ModNPC?.NeedSaving() == true))
+				return true;
+
+			foreach (GlobalNPC globalNPC in HookNeedSaving.Enumerate(npc.globalNPCs)) {
+				if (globalNPC.NeedSaving(npc))
+					return true;
+			}
+
+			return false;
 		}
 	}
 }

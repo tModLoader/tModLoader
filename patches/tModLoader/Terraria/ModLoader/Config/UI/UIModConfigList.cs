@@ -71,7 +71,7 @@ namespace Terraria.ModLoader.Config.UI
 			uIElement.Append(buttonB);
 
 			/*
-			buttonOMF = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolder"), 1f, false);
+			buttonOMF = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModsOpenModsFolders"), 1f, false);
 			buttonOMF.CopyStyle(buttonB);
 			buttonOMF.HAlign = 0.5f;
 			buttonOMF.OnMouseOver += UICommon.FadedMouseOver;

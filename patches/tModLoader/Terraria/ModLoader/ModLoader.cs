@@ -34,6 +34,7 @@ namespace Terraria.ModLoader
 		public static bool PreviewFreezeNotification;
 		public static bool DetectedModChangesForInfoMessage;
 		public static bool ShowFirstLaunchWelcomeMessage;
+		public static bool SeenFirstLaunchModderWelcomeMessage;
 		public static Version LastPreviewFreezeNotificationSeen;
 
 		public static string versionedName => (BuildInfo.Purpose != BuildInfo.BuildPurpose.Stable) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;
@@ -56,6 +57,7 @@ namespace Terraria.ModLoader
 		internal static bool dontRemindModBrowserUpdateReload;
 		internal static bool dontRemindModBrowserDownloadEnable;
 		internal static bool removeForcedMinimumZoom;
+		internal static int attackSpeedScalingTooltipVisibility = 1; // Shown, WhenNonZero, Hidden
 		internal static bool showMemoryEstimates = true;
 		internal static bool notifyNewMainMenuThemes = true;
 		internal static bool showNewUpdatedModsInfo = true;
@@ -148,6 +150,8 @@ namespace Terraria.ModLoader
 				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
 				if (responsibleMods.Count == 1) {
 					var mod = ModOrganizer.FindMods().FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
+					if (mod != null)
+						msg += $" v{mod.properties.version}";
 					if (mod != null && mod.tModLoaderVersion != BuildInfo.tMLVersion)
 						msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
 					if (e is Exceptions.JITException)
@@ -216,13 +220,7 @@ namespace Terraria.ModLoader
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		private static void Mods_Unload()
 		{
-			Logging.tML.Info("Unloading mods");
-			if (Main.dedServ) {
-				Console.WriteLine("Unloading mods...");
-			}
-			else {
-				Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
-			}
+			Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
 
 			ModContent.UnloadModContent();
 
@@ -332,6 +330,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("DontRemindModBrowserUpdateReload", dontRemindModBrowserUpdateReload);
 			Main.Configuration.Put("DontRemindModBrowserDownloadEnable", dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Put("RemoveForcedMinimumZoom", removeForcedMinimumZoom);
+			Main.Configuration.Put(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), attackSpeedScalingTooltipVisibility);
 			Main.Configuration.Put("ShowMemoryEstimates", showMemoryEstimates);
 			Main.Configuration.Put("AvoidGithub", UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Put("AvoidImgur", UI.ModBrowser.UIModBrowser.AvoidImgur);
@@ -341,6 +340,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put("LastSelectedModMenu", MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Put("KnownMenuThemes", MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Put("BossBarStyle", BossBarLoader.lastSelectedStyle);
+			Main.Configuration.Put("SeenFirstLaunchModderWelcomeMessage", SeenFirstLaunchModderWelcomeMessage);
 
 			Main.Configuration.Put("LastLaunchedTModLoaderVersion", BuildInfo.tMLVersion.ToString());
 			Main.Configuration.Put(nameof(AlphaWelcomed), AlphaWelcomed);
@@ -358,6 +358,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("DontRemindModBrowserUpdateReload", ref dontRemindModBrowserUpdateReload);
 			Main.Configuration.Get("DontRemindModBrowserDownloadEnable", ref dontRemindModBrowserDownloadEnable);
 			Main.Configuration.Get("RemoveForcedMinimumZoom", ref removeForcedMinimumZoom);
+			Main.Configuration.Get(nameof(attackSpeedScalingTooltipVisibility).ToUpperInvariant(), ref attackSpeedScalingTooltipVisibility);
 			Main.Configuration.Get("ShowMemoryEstimates", ref showMemoryEstimates);
 			Main.Configuration.Get("AvoidGithub", ref UI.ModBrowser.UIModBrowser.AvoidGithub);
 			Main.Configuration.Get("AvoidImgur", ref UI.ModBrowser.UIModBrowser.AvoidImgur);
@@ -367,6 +368,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("LastSelectedModMenu", ref MenuLoader.LastSelectedModMenu);
 			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
+			Main.Configuration.Get("SeenFirstLaunchModderWelcomeMessage", ref SeenFirstLaunchModderWelcomeMessage);
 
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get(nameof(LastLaunchedTModLoaderVersion), "0.0"));
 			Main.Configuration.Get(nameof(AlphaWelcomed), ref AlphaWelcomed);
