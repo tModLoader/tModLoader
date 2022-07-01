@@ -10,12 +10,12 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
-using Terraria.GameContent.Tile_Entities;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Default;
 using Terraria.ObjectData;
 using Terraria.UI;
 
@@ -53,8 +53,10 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.newTile.StyleHorizontal = true;
 			//These definitons allow for vanilla's pylon TileEntities to be placed. If you want to use your own TileEntities, do NOT add these lines!
-			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(TETeleportationPylon.PlacementPreviewHook_CheckIfCanPlace, 1, 0, true);
-			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(TETeleportationPylon.PlacementPreviewHook_AfterPlacement, -1, 0, false);
+			//tModLoader has a built in Tile Entity specifically for modded pylons, which we will be using here:
+			TEModdedPylon moddedPylon = ModContent.GetInstance<TEModdedPylon>();
+			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(moddedPylon.PlacementPreviewHook_CheckIfCanPlace, 1, 0, true);
+			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(moddedPylon.PlacementPreviewHook_AfterPlacement, -1, 0, false);
 
 			TileObjectData.addTile(Type);
 
@@ -96,7 +98,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			//We need to clean up after ourselves, since this is still a "unique" tile, separate from Vanilla Pylons, so we must kill the TileEntity.
-			TETeleportationPylon.Kill(i, j);
+			ModContent.GetInstance<TEModdedPylon>().Kill(i, j);
 
 			//Also, like other pylons, breaking it simply drops the item once again. Pretty straight-forward.
 			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 2, 3, ModContent.ItemType<ExamplePylonItem>());

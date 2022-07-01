@@ -1,16 +1,11 @@
 --- src/TerrariaNetCore/Terraria/NetMessage.cs
 +++ src/tModLoader/Terraria/NetMessage.cs
-@@ -1,8 +_,10 @@
+@@ -1,4 +_,5 @@
  using Ionic.Zlib;
 +using log4net.Core;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics.PackedVector;
  using System;
- using System.IO;
-+using System.Linq;
- using Terraria.Chat;
- using Terraria.DataStructures;
- using Terraria.GameContent;
 @@ -11,6 +_,8 @@
  using Terraria.ID;
  using Terraria.IO;
@@ -377,15 +372,6 @@
  							short num11 = (short)Sign.ReadSign(j, i);
  							if (num11 != -1)
  								array2[num2++] = num11;
-@@ -1738,7 +_,7 @@
- 								array3[num3++] = (short)num18;
- 						}
- 
--						if (tile2.type == 597 && tile2.frameX % 54 == 0 && tile2.frameY % 72 == 0) {
-+						if (TileID.Sets.CountsAsPylon.Contains(tile2.type) && tile2.frameX % 54 == 0 && tile2.frameY % 72 == 0) {
- 							int num19 = TETeleportationPylon.Find(j, i);
- 							if (num19 != -1)
- 								array3[num3++] = (short)num19;
 @@ -1855,9 +_,17 @@
  				writer.Write(sign.text);
  			}

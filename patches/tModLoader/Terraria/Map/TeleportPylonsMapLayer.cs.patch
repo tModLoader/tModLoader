@@ -15,15 +15,18 @@
 +
  		public void Draw(ref MapOverlayDrawContext context, ref string text) {
 -			List<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
-+			List<TeleportPylonInfo> pylons = Main.PylonSystem.VanillaPylons;
++			IReadOnlyList<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
  			float num = 1f;
  			float scaleIfSelected = num * 2f;
  			Texture2D value = TextureAssets.Extra[182].Value;
-@@ -24,6 +_,9 @@
+@@ -24,6 +_,12 @@
  
  			for (int i = 0; i < pylons.Count; i++) {
  				TeleportPylonInfo info = pylons[i];
-+				if (!PylonLoader.PreDrawMapIcon(ref context, ref text, ref info, ref num2, ref color, ref num, ref scaleIfSelected)) {
++				if (!PylonLoader.PreDrawMapIcon(ref context, ref text, ref info, ref num2, ref color, ref num, ref scaleIfSelected))
++					continue;
++				if (info.ModPylon is ModPylon pylon) {
++					pylon.DrawMapIcon(ref context, ref text, info, num2, color, num, scaleIfSelected);
 +					continue;
 +				}
  				if (context.Draw(value, info.PositionInTiles.ToVector2() + new Vector2(1.5f, 2f), color, new SpriteFrame(9, 1, (byte)info.TypeOfPylon, 0) {

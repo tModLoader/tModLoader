@@ -1,50 +1,22 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TETeleportationPylon.cs
 +++ src/tModLoader/Terraria/GameContent/Tile_Entities/TETeleportationPylon.cs
-@@ -1,8 +_,11 @@
-+using System.Linq;
+@@ -1,8 +_,9 @@
  using Terraria.DataStructures;
-+using Terraria.ID;
 +using Terraria.ModLoader;
  
  namespace Terraria.GameContent.Tile_Entities
  {
 -	public class TETeleportationPylon : TileEntity
-+	public sealed class TETeleportationPylon : TileEntity
++	public sealed class TETeleportationPylon : TileEntity, IPylonTileEntity
  	{
  		private static byte _myEntityID;
  		private const int MyTileID = 597;
-@@ -130,7 +_,7 @@
- 		}
- 
- 		public override bool IsTileValidForEntity(int x, int y) {
--			if (!Main.tile[x, y].active() || Main.tile[x, y].type != 597 || Main.tile[x, y].frameY != 0 || Main.tile[x, y].frameX % 54 != 0)
-+			if (!Main.tile[x, y].active() || !TileID.Sets.CountsAsPylon.Contains(Main.tile[x, y].type) || Main.tile[x, y].frameY != 0 || Main.tile[x, y].frameX % 54 != 0)
- 				return false;
- 
- 			return true;
-@@ -147,6 +_,12 @@
+@@ -147,6 +_,8 @@
  		}
  
  		public static int PlacementPreviewHook_CheckIfCanPlace(int x, int y, int type = 597, int style = 0, int direction = 1, int alternate = 0) {
-+			if (PylonLoader.PreCanPlacePylon(x, y, type, type >= TileID.Count ? TeleportPylonType.Modded : GetPylonTypeFromPylonTileStyle(style)) is { } value)
++			if (PylonLoader.PreCanPlacePylon(x, y, type, (byte)GetPylonTypeFromPylonTileStyle(style)) is bool value)
 +				return value ? 0 : 1;
-+			if (type >= TileID.Count) {
-+				ModPylon pylon = TileLoader.GetTile(type) as ModPylon;
-+				return (pylon?.CanPlacePylon() ?? false) ? 0 : 1;
-+			}
  			TeleportPylonType pylonTypeFromPylonTileStyle = GetPylonTypeFromPylonTileStyle(style);
  			if (Main.PylonSystem.HasPylonOfType(pylonTypeFromPylonTileStyle))
  				return 1;
-@@ -157,7 +_,11 @@
- 		private bool TryGetPylonTypeFromTileCoords(int x, int y, out TeleportPylonType pylonType) {
- 			pylonType = TeleportPylonType.SurfacePurity;
- 			Tile tile = Main.tile[x, y];
-+			if (tile != null && tile.active() && tile.type >= TileID.Count) {
-+				pylonType = TeleportPylonType.Modded;
-+				return true;
-+			}
--			if (tile == null || !tile.active() || tile.type != 597)
-+			if (tile == null || !tile.active() || tile.type != 597) 
- 				return false;
- 
- 			int pylonStyle = tile.frameX / 54;

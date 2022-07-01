@@ -10,14 +10,13 @@ namespace ExampleMod.Content.TileEntities
 {
 	/// <summary>
 	/// This TileEntity is used in direct tandem with <seealso cref="ExamplePylonTileAdvanced"/> in order to grant more flexibility than
-	/// vanilla's normal pylon TileEntity (AKA <seealso cref="TETeleportationPylon"/>) using the <seealso cref="IsPylonEntityAttribute"/>
+	/// vanilla's normal pylon TileEntity (AKA <seealso cref="TETeleportationPylon"/>) using the <seealso cref="IPylonTileEntity"/> interface
 	/// along-side other tile functions.
 	/// <para>
 	/// The main example shown here is having a Pylon that is only active at completely random intervals.
 	/// </para>
 	/// </summary>
-	[IsPylonEntity] //This attribute is EXTREMELY important! It allows these tile entities to be included with the TETeleportationPylon entities, do not forget it!
-	public class AdvancedPylonTileEntity : ModTileEntity
+	public class AdvancedPylonTileEntity : ModTileEntity, IPylonTileEntity //This interface is EXTREMELY important! It allows these tile entities to be included with the TETeleportationPylon entities, do not forget it!
 	{
 		//This is the main crux of this TileEntity; its pylon functionality will only work when this boolean is true.
 		public bool isActive;
@@ -34,7 +33,7 @@ namespace ExampleMod.Content.TileEntities
 		public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
 			//This hook is called on the CLIENT of whoever placed the tile; thus we need to sync the data with the server and inform everyone this entity was placed
 			if (Main.netMode == NetmodeID.MultiplayerClient) {
-				NetMessage.SendTileSquare(Main.myPlayer, i, j, 4, 5);
+				NetMessage.SendTileSquare(Main.myPlayer, i, j, 2, 3);
 
 				NetMessage.SendData(MessageID.TileEntityPlacement, -1, -1, null, i, j, Type);
 			}

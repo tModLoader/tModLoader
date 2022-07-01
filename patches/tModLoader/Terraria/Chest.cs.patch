@@ -150,7 +150,7 @@
  				if (Main.player[Main.myPlayer].ZoneGlowshroom && num < 39)
  					array[num++].SetDefaults(4921);
  			}
-+			foreach (ModPylon pylon in ModContent.GetContent<ModPylon>()) {
++			foreach (ModPylon pylon in PylonLoader.modPylons) {
 +				int? pylonReturn = pylon.IsPylonForSale(type, Main.LocalPlayer, flag);
 +				if (pylonReturn.HasValue && num < 39) {
 +					array[num++].SetDefaults(pylonReturn.Value);

@@ -7,15 +7,30 @@ namespace Terraria.ModLoader
 {
 	public static class PylonLoader
 	{
+		public static readonly byte VanillaPylonCount =  (byte)TeleportPylonType.Victory + 1;
+
 		internal static readonly IList<GlobalPylon> globalPylons = new List<GlobalPylon>();
+		internal static readonly IList<ModPylon> modPylons = new List<ModPylon>();
+		internal static byte nextPylonID = VanillaPylonCount;
 
 		internal static void Unload() {
 			globalPylons.Clear();
+			modPylons.Clear();
+			nextPylonID = VanillaPylonCount;
 		}
 
-		public static void AddGlobalPylon(GlobalPylon pylon) {
-			globalPylons.Add(pylon);
-			ModTypeLookup<GlobalPylon>.Register(pylon);
+		internal static byte ReservePylonID() {
+			byte nextID = nextPylonID;
+			nextPylonID++;
+
+			return nextID;
+		}
+
+		/// <summary>
+		/// Returns the ModPylon associated with the passed in type. Returns null on failure.
+		/// </summary>
+		public static ModPylon GetModPylon(byte pylonType) {
+			return pylonType >= VanillaPylonCount ? modPylons[pylonType - VanillaPylonCount] : null;
 		}
 
 		public static bool PreDrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, ref TeleportPylonInfo pylonInfo, ref bool isNearPylon, ref Color drawColor, ref float deselectedScale, ref float selectedScale) {
@@ -27,7 +42,7 @@ namespace Terraria.ModLoader
 			return returnValue;
 		}
 
-		public static bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType) {
+		public static bool? PreCanPlacePylon(int x, int y, int tileType, byte pylonType) {
 			bool? returnValue = null;
 
 			foreach (GlobalPylon globalPylon in globalPylons) {

@@ -34,10 +34,10 @@ namespace ExampleMod.Common.GlobalPylons
 			return base.PreDrawMapIcon(ref context, ref mouseOverText, ref pylonInfo, ref isNearPylon, ref drawColor, ref deselectedScale, ref selectedScale);
 		}
 
-		public override bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType) {
+		public override bool? PreCanPlacePylon(int x, int y, int tileType, byte pylonType) {
 			//What if we want to override the functionality for pylon placement?
 			//For example, let's always allow the players to place universal pylons, even if they already exist in the world:
-			if (pylonType == TeleportPylonType.Victory) {
+			if (pylonType == (byte)TeleportPylonType.Victory) {
 				return true;
 			}
 

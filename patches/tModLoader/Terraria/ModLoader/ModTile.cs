@@ -117,6 +117,8 @@ namespace Terraria.ModLoader
 			//If anyone has a better way to go about this, that would be appreciated -Mutant
 			if (this is ModPylon pylon) {
 				ModTypeLookup<ModPylon>.Register(pylon);
+				pylon.PylonType = PylonLoader.ReservePylonID();
+				PylonLoader.modPylons.Add(pylon);
 			}
 
 			Type = (ushort)TileLoader.ReserveTileID();

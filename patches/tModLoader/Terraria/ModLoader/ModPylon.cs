@@ -35,6 +35,14 @@ namespace Terraria.ModLoader
 	{
 
 		/// <summary>
+		/// What type of Pylon this ModPylon represents.
+		/// </summary>
+		public byte PylonType {
+			get;
+			internal set;
+		}
+
+		/// <summary>
 		/// Whether or not this Pylon can even be placed.
 		/// By default, it returns false if a Pylon of this type already exists in the world,
 		/// otherwise true.
@@ -43,7 +51,7 @@ namespace Terraria.ModLoader
 		/// If you want to allow an infinite amount of these pylons to be placed, simply always return true.
 		/// </remarks>
 		public virtual bool CanPlacePylon() {
-			return !Main.PylonSystem.HasPylonOfType(TeleportPylonType.Modded, Type);
+			return !Main.PylonSystem.HasPylonOfType((TeleportPylonType)PylonType);
 		}
 
 		/// <summary>
@@ -150,8 +158,9 @@ namespace Terraria.ModLoader
 		/// The pylon information of the pylon the player in question is standing NEAR. This always has a value.
 		/// </param>
 		/// <param name="destinationPylonValid"> Whether or not after all of the checks, the destination Pylon is valid. </param>
+		/// <param name="anyNearbyValidPylon"> Whether or not after all of the checks, there is a Pylon nearby to the player that is valid. </param>
 		/// <param name="errorKey"> The localization key for the message sent to the player if destinationPylonValid is false. </param>
-		public virtual void ValidTeleportCheck_NearbyPostCheck(TeleportPylonInfo nearbyPylonInfo, ref bool destinationPylonValid, ref string errorKey) { }
+		public virtual void ValidTeleportCheck_NearbyPostCheck(TeleportPylonInfo nearbyPylonInfo, ref bool destinationPylonValid, ref bool anyNearbyValidPylon, ref string errorKey) { }
 
 		/// <summary>
 		/// Called when the map is visible, in order to draw the passed in Pylon on the map.

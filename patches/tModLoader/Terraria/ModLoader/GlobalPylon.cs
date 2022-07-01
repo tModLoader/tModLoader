@@ -36,7 +36,7 @@ namespace Terraria.ModLoader
 		/// <param name="tileType"> The actual type of tile currently asking if it can be placed. </param>
 		/// <param name="pylonType"> The type of pylon belonging to this tile. </param>
 		/// <returns></returns>
-		public virtual bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType) {
+		public virtual bool? PreCanPlacePylon(int x, int y, int tileType, byte pylonType) {
 			return null;
 		}
 
@@ -111,7 +111,7 @@ namespace Terraria.ModLoader
 		/// </param>
 		public virtual void PostValidTeleportCheck(TeleportPylonInfo destinationPylonInfo, TeleportPylonInfo nearbyPylonInfo, ref bool destinationPylonValid, ref bool validNearbyPylonFound, ref string errorKey) { }
 
-		protected sealed override void Register() => PylonLoader.AddGlobalPylon(this);
+		protected sealed override void Register() => PylonLoader.globalPylons.Add(this);
 
 		public sealed override void SetupContent() => SetStaticDefaults();
 	}
