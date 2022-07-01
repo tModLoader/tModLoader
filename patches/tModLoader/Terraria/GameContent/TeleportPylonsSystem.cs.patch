@@ -1,12 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/TeleportPylonsSystem.cs
 +++ src/tModLoader/Terraria/GameContent/TeleportPylonsSystem.cs
-@@ -1,11 +_,16 @@
- using Microsoft.Xna.Framework;
-+using System;
- using System.Collections.Generic;
- using System.Linq;
-+using System.Reflection;
- using Terraria.Chat;
+@@ -5,7 +_,10 @@
  using Terraria.DataStructures;
  using Terraria.GameContent.NetModules;
  using Terraria.GameContent.Tile_Entities;

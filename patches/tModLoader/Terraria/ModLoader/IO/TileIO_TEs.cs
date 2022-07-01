@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
-using Terraria.GameContent.Tile_Entities;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Exceptions;
 
