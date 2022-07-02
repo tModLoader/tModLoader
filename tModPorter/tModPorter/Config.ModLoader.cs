@@ -206,6 +206,9 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.Mod", "PostDrawFullscreenMap",		"Use ModSystem.PostDrawFullscreenMap or a ModMapLayer");
 		HookRemoved("Terraria.ModLoader.Mod", "PostUpdateInput",			"Use ModSystem.PostUpdateInput");
 		HookRemoved("Terraria.ModLoader.Mod", "PreSaveAndQuit",				"Use ModSystem.PreSaveAndQuit");
+		HookRemoved("Terraria.ModLoader.Mod", "AddRecipeGroups",			"Use ModSystem.AddRecipeGroups");
+		HookRemoved("Terraria.ModLoader.Mod", "AddRecipes",					"Use ModSystem.AddRecipes");
+		HookRemoved("Terraria.ModLoader.Mod", "PostAddRecipes",				"Use ModSystem.PostAddRecipes");
 
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Load",		to: "LoadData");
 		RenameMethod("Terraria.ModLoader.ModItem",		from: "Save",		to: "SaveData");

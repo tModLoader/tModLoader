@@ -1,4 +1,5 @@
 using ReLogic.Content.Sources;
+using System;
 using System.IO;
 using System.Linq;
 using Terraria.ModLoader.Assets;
@@ -33,6 +34,27 @@ namespace Terraria.ModLoader
 		/// The amount of extra buff slots this mod desires for Players. This value is checked after Mod.Load but before Mod.PostSetupContent. The actual number of buffs the player can use will be 22 plus the max value of all enabled mods. In-game use Player.MaxBuffs to check the maximum number of buffs.
 		/// </summary>
 		public virtual uint ExtraPlayerBuffSlots { get; }
+
+		/// <summary>
+		/// Override this method to add recipe groups to this mod. You must add recipe groups by calling the RecipeGroup.RegisterGroup method here. A recipe group is a set of items that can be used interchangeably in the same recipe.
+		/// </summary>
+		[Obsolete("Use ModSystem.AddRecipeGroups", true)]
+		public virtual void AddRecipeGroups() {
+		}
+
+		/// <summary>
+		/// Override this method to add recipes to the game. It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
+		/// </summary>
+		[Obsolete("Use ModSystem.AddRecipes", true)]
+		public virtual void AddRecipes() {
+		}
+
+		/// <summary>
+		/// This provides a hook into the mod-loading process immediately after recipes have been added. You can use this to edit recipes added by other mods.
+		/// </summary>
+		[Obsolete("Use ModSystem.PostAddRecipes", true)]
+		public virtual void PostAddRecipes() {
+		}
 
 		/// <summary>
 		/// Close is called before Unload, and may be called at any time when mod unloading is imminent (such as when downloading an update, or recompiling)
