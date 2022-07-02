@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Reflection;
 using Terraria.ID;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.Core;
@@ -30,9 +31,11 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void AddRecipes() {
+			var addRecipesMethod = typeof(Mod).GetMethod(nameof(Mod.AddRecipes), BindingFlags.Instance | BindingFlags.Public)!;
 			foreach (Mod mod in ModLoader.Mods) {
 				CurrentMod = mod;
 				try {
+					addRecipesMethod.Invoke(mod, Array.Empty<object>());
 					SystemLoader.AddRecipes(mod);
 					LoaderUtils.ForEachAndAggregateExceptions(mod.GetContent<ModItem>(), item => item.AddRecipes());
 					LoaderUtils.ForEachAndAggregateExceptions(mod.GetContent<GlobalItem>(), global => global.AddRecipes());
@@ -48,9 +51,11 @@ namespace Terraria.ModLoader
 		}
 
 		internal static void PostAddRecipes() {
+			var postAddRecipesMethod = typeof(Mod).GetMethod(nameof(Mod.PostAddRecipes), BindingFlags.Instance | BindingFlags.Public)!;
 			foreach (Mod mod in ModLoader.Mods) {
 				CurrentMod = mod;
 				try {
+					postAddRecipesMethod.Invoke(mod, Array.Empty<object>());
 					SystemLoader.PostAddRecipes(mod);
 				}
 				catch (Exception e) {
