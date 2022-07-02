@@ -36,7 +36,7 @@ public class HookRewriter : BaseRewriter
 	public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node) {
 		var sym = model.GetDeclaredSymbol(node);
 		node = (PropertyDeclarationSyntax)base.VisitPropertyDeclaration(node);
-		if (!sym.IsOverride || sym.OverriddenProperty != null && !TypeMismatch(sym.Type, sym.OverriddenProperty.Type) && !AccessibilityMismatch(sym, sym.OverriddenProperty))
+		if (!sym.IsOverride || sym.OverriddenProperty != null && !TypeMismatch(sym.Type, sym.OverriddenProperty.Type) && !AccessibilityMismatch(sym, sym.OverriddenProperty) && !sym.OverriddenProperty.GetAttributes().Any(attr => attr.AttributeClass.Name == "ObsoleteAttribute"))
 			return node;
 
 		var refactor = refactors.SingleOrDefault(refactor => sym.Name == refactor.method && sym.ContainingType.InheritsFrom(refactor.type));
@@ -53,7 +53,7 @@ public class HookRewriter : BaseRewriter
 	public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node) {
 		var sym = model.GetDeclaredSymbol(node);
 		node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
-		if (!sym.IsOverride || sym.OverriddenMethod != null && !TypeMismatch(sym.ReturnType, sym.OverriddenMethod.ReturnType) && !AccessibilityMismatch(sym, sym.OverriddenMethod))
+		if (!sym.IsOverride || sym.OverriddenMethod != null && !TypeMismatch(sym.ReturnType, sym.OverriddenMethod.ReturnType) && !AccessibilityMismatch(sym, sym.OverriddenMethod) && !sym.OverriddenMethod.GetAttributes().Any(attr => attr.AttributeClass.Name == "ObsoleteAttribute"))
 			return node;
 
 		var refactor = refactors.SingleOrDefault(refactor => sym.Name == refactor.method && sym.ContainingType.InheritsFrom(refactor.type));

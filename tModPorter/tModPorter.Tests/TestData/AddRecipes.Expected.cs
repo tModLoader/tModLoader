@@ -66,7 +66,7 @@ public class ModItemAddRecipes : ModItem
 
 public class ModAddRecipes : Mod
 {
-	public override void AddRecipes() {
+	public override void AddRecipes()/* tModPorter Note: Removed. Use ModSystem.AddRecipes */ {
 		var recipe = Recipe.Create(ModContent.ItemType<ModItemAddRecipes>());
 		recipe.AddIngredient(ItemID.Wood, 10);
 		recipe.AddTile(TileID.WorkBenches);
