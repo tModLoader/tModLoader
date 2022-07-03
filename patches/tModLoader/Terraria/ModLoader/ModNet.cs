@@ -399,12 +399,12 @@ namespace Terraria.ModLoader
 
 				list.Add(mod);
 
-				if (mod != null) //nosync mod that doesn't exist on the client
+				if (mod != null) // NoSync mod that doesn't exist on the client
 					mod.netID = i;
 			}
 
 			netMods = list.ToArray();
-			SetModNetDiagnosticsUI(netMods); // When client receives netMods, assign a new UI
+			SetModNetDiagnosticsUI(netMods.Where(mod => mod != null)); // When client receives netMods, exclude NoSync mods that aren't on the client, and assign a new UI
 
 			ItemLoader.ReadNetGlobalOrder(reader);
 			SystemLoader.ReadNetSystemOrder(reader);
