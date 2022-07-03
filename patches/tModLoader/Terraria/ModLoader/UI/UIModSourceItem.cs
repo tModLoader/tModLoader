@@ -11,6 +11,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Text;
+using System.Threading;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
@@ -349,6 +351,8 @@ namespace Terraria.ModLoader.UI
 			else
 				changeLog = "";
 
+			AutoPopulateChangeLog(modFile, ref changeLog);
+
 			var workshopDescFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "description_workshop.txt");
 			string workshopDesc;
 			if (File.Exists(workshopDescFile))
@@ -394,6 +398,111 @@ namespace Terraria.ModLoader.UI
 					WorkshopHelper.ModManager.SteamUser = true;
 					SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
 				}
+			}
+		}
+
+		private static void AutoPopulateChangeLog(TmodFile modFile, ref string changeLog) {
+			if (!string.IsNullOrWhiteSpace(changeLog)) {
+				return;
+			}
+
+			// TODO: This doesn't work unless the workshop has been visited, fix
+			var existing = WorkshopHelper.QueryHelper.FindModDownloadItem(modFile.Name);
+			ulong existingID = 0;
+			if (existing != null) {
+				existingID = ulong.Parse(existing.PublishId);
+			}
+
+			if (existingID == 0 && AWorkshopEntry.TryReadingManifest(Path.Combine(ModCompile.ModSourcePath, modFile.Name, "workshop.json"), out FoundWorkshopEntryInfo info))
+				existingID = info.workshopEntryId;
+
+			// return if 0, or assume 1st publish?
+
+			var pDetails = new WorkshopHelper.QueryHelper.AQueryInstance().FastQueryItem(existingID);
+			DateTime lastUpdatedOnWorkshop = Utils.UnixTimeStampToDateTime((long)pDetails.m_rtimeUpdated);
+
+			string commandOutput = null;
+			int result = RunCmd("", "where", "git", s => commandOutput = s.Trim());
+			if (result != 0) {
+				return;
+			}
+			// Output recent commits in the format of: unixtime message
+			result = RunCmd(Path.Combine(ModCompile.ModSourcePath, modFile.Name), "git", "log --pretty=format:\"%at %s\"", s => commandOutput = s.Trim());
+			if (result != 0 || commandOutput == null) {
+				return;
+			}
+			string[] gitLogLines = commandOutput.Split(
+				new string[] { "\r\n", "\r", "\n" },
+				StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries
+			);
+			StringBuilder sb = new StringBuilder();
+			foreach (var gitLogLine in gitLogLines) {
+				string[] parts = gitLogLine.Split(' ', 2);
+				if (parts.Length != 2) {
+					continue;
+				}
+				string date = parts[0];
+				string message = parts[1];
+				if (long.TryParse(date, out long dateLong)) {
+					var time = Utils.UnixTimeStampToDateTime(dateLong);
+					if (time > lastUpdatedOnWorkshop) {
+						sb.AppendLine(message);
+					}
+					else {
+						break;
+					}
+				}
+			}
+			changeLog = sb.ToString();
+		}
+
+		public static int RunCmd(string dir, string cmd, string args,
+				Action<string> output = null,
+				Action<string> error = null,
+				string input = null,
+				CancellationToken cancel = default(CancellationToken)) {
+
+			using (var process = new Process()) {
+				process.StartInfo = new ProcessStartInfo {
+					FileName = cmd,
+					Arguments = args,
+					WorkingDirectory = dir,
+					UseShellExecute = false,
+					RedirectStandardInput = input != null,
+					CreateNoWindow = true
+				};
+
+				if (output != null) {
+					process.StartInfo.RedirectStandardOutput = true;
+					process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
+				}
+
+				if (error != null) {
+					process.StartInfo.RedirectStandardError = true;
+					process.StartInfo.StandardErrorEncoding = Encoding.UTF8;
+				}
+
+				if (!process.Start())
+					throw new Exception($"Failed to start process: \"{cmd} {args}\"");
+
+				if (input != null) {
+					var w = new StreamWriter(process.StandardInput.BaseStream, new UTF8Encoding(false));
+					w.Write(input);
+					w.Close();
+				}
+
+				while (!process.HasExited) {
+					if (cancel.IsCancellationRequested) {
+						process.Kill();
+						throw new OperationCanceledException(cancel);
+					}
+					process.WaitForExit(100);
+
+					output?.Invoke(process.StandardOutput.ReadToEnd());
+					error?.Invoke(process.StandardError.ReadToEnd());
+				}
+
+				return process.ExitCode;
 			}
 		}
 	}

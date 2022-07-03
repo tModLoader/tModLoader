@@ -5,6 +5,7 @@ using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.UI;
 using Terraria.Social;
 using Terraria.Social.Base;
 using Terraria.UI;
@@ -115,5 +116,30 @@ namespace Terraria.GameContent.UI.States
 		}
 
 		private void TmlDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) =>	Utils.OpenToURL(TmlRules);
+
+		internal UIElement CreateChangeLog(string tagGroup) {
+			float height = 350;
+			CreateStylizedCategoryPanel(height, "Workshop.ChangeLog", out UIElement entirePanel, out UIElement innerPanel);
+
+			// TODO: Implement a multiline editable text field one day.
+			string messageContents = string.IsNullOrWhiteSpace(changeNotes) ? "No changenotes.txt or automatic changenotes found" : changeNotes;
+
+			var _messageBox = new UIMessageBox(messageContents) {
+				Width = { Pixels = -25, Percent = 1f },
+				Height = { Percent = 1f }
+			};
+			innerPanel.Append(_messageBox);
+
+			var uIScrollbar = new UIScrollbar {
+				Height = { Pixels = -20, Percent = 1f },
+				VAlign = 0.5f,
+				HAlign = 1f
+			}.WithView(100f, 1000f);
+			innerPanel.Append(uIScrollbar);
+
+			_messageBox.SetScrollbar(uIScrollbar);
+
+			return entirePanel;
+		}
 	}
 }

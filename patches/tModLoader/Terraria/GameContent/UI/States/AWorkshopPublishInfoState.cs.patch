@@ -59,7 +59,7 @@
  			UpdateImagePreview();
  		}
  
-@@ -96,6 +_,11 @@
+@@ -96,9 +_,17 @@
  			uIElement.SetPadding(0f);
  			uiList.Add(uIElement);
  			uiList.Add(CreateSteamDisclaimer("disclaimer"));
@@ -71,6 +71,12 @@
  			uiList.Add(CreatePreviewImageSelectionPanel("image"));
  			uiList.Add(CreatePublicSettingsRow(0f, 44f, "public"));
  			uiList.Add(CreateTagOptionsPanel(0f, 44, "tags"));
++
++			if (_isMod)
++				uiList.Add((this as WorkshopPublishInfoStateForMods).CreateChangeLog("changeLog"));
+ 		}
+ 
+ 		private UIElement CreatePreviewImageSelectionPanel(string tagGroup) {
 @@ -163,10 +_,7 @@
  				}
  			}
@@ -92,6 +98,15 @@
  		}
  
  		public static void ProcessStart(string path) {
+@@ -404,7 +_,7 @@
+ 			return entirePanel;
+ 		}
+ 
+-		private void CreateStylizedCategoryPanel(float height, string titleTextKey, out UIElement entirePanel, out UIElement innerPanel) {
++		internal void CreateStylizedCategoryPanel(float height, string titleTextKey, out UIElement entirePanel, out UIElement innerPanel) {
+ 			float num = 44f;
+ 			UISlicedImage uISlicedImage = new UISlicedImage(Main.Assets.Request<Texture2D>("Images/UI/CharCreation/CategoryPanel")) {
+ 				HAlign = 0.5f,
 @@ -529,14 +_,14 @@
  			container.Append(uISlicedImage);
  			UIText uIText = new UIText(Language.GetText("Workshop.InfoDescriptionDefault"), 0.85f) {
