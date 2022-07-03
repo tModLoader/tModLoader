@@ -58,7 +58,7 @@
 +								PlayerIO.WriteByteVanillaHairDye(player5.hairDye, writer);
 +							else
 -							writer.Write(player5.hairDye);
-+								writer.WriteVarInt(player5.hairDye);
++								writer.Write7BitEncodedInt(player5.hairDye);
 +
  							BitsByte bb6 = (byte)0;
  							for (int num14 = 0; num14 < 8; num14++) {
@@ -114,8 +114,8 @@
 +								ItemIO.WriteByteVanillaPrefix(item7, writer);
 +							}
 +							else {
-+								writer.WriteVarInt(item7.stack);
-+								writer.WriteVarInt(item7.prefix);
++								writer.Write7BitEncodedInt(item7.stack);
++								writer.Write7BitEncodedInt(item7.prefix);
 +							}
 +
  							writer.Write((byte)number2);
@@ -259,7 +259,7 @@
 +							}
 +							else {
 +								ItemIO.Send(item3, writer);
-+								writer.WriteVarInt(number5);
++								writer.Write7BitEncodedInt(number5);
 +							}
 +
  							break;
@@ -292,7 +292,7 @@
 +							}
 +							else {
 +								ItemIO.Send(item2, writer);
-+								writer.WriteVarInt(number5);
++								writer.Write7BitEncodedInt(number5);
 +							}
 +
  							break;
@@ -313,7 +313,7 @@
 +							}
 +							else {
 +								ItemIO.Send(item, writer);
-+								writer.WriteVarInt(number5);
++								writer.Write7BitEncodedInt(number5);
 +							}
 +
  							break;

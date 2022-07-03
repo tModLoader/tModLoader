@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.IO
 		public int BitsRead { get; private set; }
 
 		public BitReader(BinaryReader reader) {
-			MaxBits = reader.ReadVarInt();
+			MaxBits = reader.Read7BitEncodedInt();
 
 			int byteCount = MaxBits / 8;
 			if (MaxBits % 8 != 0)
