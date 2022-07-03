@@ -4,6 +4,7 @@ using static tModPorter.Rewriters.MemberUseRewriter;
 using static tModPorter.Rewriters.HookRewriter;
 using static tModPorter.Rewriters.AddComment;
 using System;
+using System.IO;
 
 namespace tModPorter;
 
@@ -304,6 +305,8 @@ public static partial class Config
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "AddEquipTexture",		ConvertAddEquipTexture);
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateRecipe",		ToStaticMethodCall("Terraria.Recipe",								"Create",				targetBecomesFirstArg: false));
 
+		RenameMethod("System.IO.BinaryReader",			from: "ReadVarInt",		to: "Read7BitEncodedInt");
+		RenameMethod("System.IO.BinaryWriter",			from: "WriteVarInt",	to: "Write7BitEncodedInt");
 		RenameMethod("Terraria.ModLoader.Mod",			from: "TextureExists",	to: "HasAsset");
 		RenameMethod("Terraria.ModLoader.ModContent",	from: "TextureExists",	to: "HasAsset");
 
