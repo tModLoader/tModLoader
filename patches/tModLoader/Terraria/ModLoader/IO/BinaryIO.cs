@@ -5,6 +5,12 @@ namespace Terraria.ModLoader.IO
 {
 	public static class BinaryIO
 	{
+		[Obsolete("Use Write7BitEncodedInt", true)]
+		public static void WriteVarInt(this BinaryWriter writer, int value) => writer.Write7BitEncodedInt(value);
+
+		[Obsolete("Use Read7BitEncodedInt", true)]
+		public static int ReadVarInt(this BinaryReader reader) => reader.Read7BitEncodedInt();
+
 		public static void SafeWrite(this BinaryWriter writer, Action<BinaryWriter> write) {
 			var ms = new MemoryStream();//memory thrash should be fine here
 			write(new BinaryWriter(ms));
