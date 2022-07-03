@@ -1,0 +1,20 @@
+--- src/TerrariaNetCore/Terraria/Utilities/FileBrowser/FileBrowser.cs
++++ src/tModLoader/Terraria/Utilities/FileBrowser/FileBrowser.cs
+@@ -8,14 +_,14 @@
+ 			_platformWrapper = new NativeFileDialog();
+ 		}
+ 
+-		public static string OpenFilePanel(string title, string extension) {
++		public static string OpenFilePanel(string title, string extension, string path = null) {
+ 			ExtensionFilter[] extensions = string.IsNullOrEmpty(extension) ? null : new ExtensionFilter[1] {
+ 				new ExtensionFilter("", extension)
+ 			};
+ 
+-			return OpenFilePanel(title, extensions);
++			return OpenFilePanel(title, extensions, path);
+ 		}
+ 
+-		public static string OpenFilePanel(string title, ExtensionFilter[] extensions) => _platformWrapper.OpenFilePanel(title, extensions);
++		public static string OpenFilePanel(string title, ExtensionFilter[] extensions, string path = null) => _platformWrapper.OpenFilePanel(title, extensions, path);
+ 	}
+ }
