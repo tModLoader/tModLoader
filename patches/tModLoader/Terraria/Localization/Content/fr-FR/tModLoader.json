@@ -82,6 +82,17 @@
 		"AskForModIndex": "Tapez un nombre pour basculer entre activé/désactivé",
 		"AskForCommand": "Tapez une commande: ",
 
+		//Mod Config
+		"ModConfigFilterOptions": "Filter Options",
+		"ModConfigNotification": "Notification: ",
+		"ModConfigModConfig": "Mod Config",
+		"ModConfigSaveConfig": "Save Config",
+		"ModConfigBack": "Back",
+		"ModConfigRevertChanges": "Revert Changes",
+		"ModConfigRestoreDefaults": "Restore Defaults",
+		"ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
+		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+
 		// Interface
 		"BossBarStyle": "Style de Barre de Patron: {0}",
 		"BossBarStyleNoOptions": "Pas D'Options",

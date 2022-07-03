@@ -82,6 +82,17 @@
 		"AskForModIndex": "Введите номер для переключения Вкл/Выкл",
 		"AskForCommand": "Введите команду: ",
 
+		//Mod Config
+		"ModConfigFilterOptions": "Filter Options",
+		"ModConfigNotification": "Notification: ",
+		"ModConfigModConfig": "Mod Config",
+		"ModConfigSaveConfig": "Save Config",
+		"ModConfigBack": "Back",
+		"ModConfigRevertChanges": "Revert Changes",
+		"ModConfigRestoreDefaults": "Restore Defaults",
+		"ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
+		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+
 		// Interface
 		"BossBarStyle": "Стиль полоски здоровья босса: {0}",
 		"BossBarStyleNoOptions": "Нет настроек",

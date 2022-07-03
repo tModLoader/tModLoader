@@ -82,6 +82,17 @@
 		"AskForModIndex": "Wpisz liczbę, aby przełączać między włączonymi/wyłączonymi modami",
 		"AskForCommand": "Wpisz komendę: ",
 
+		//Mod Config
+		"ModConfigFilterOptions": "Filter Options",
+		"ModConfigNotification": "Notification: ",
+		"ModConfigModConfig": "Mod Config",
+		"ModConfigSaveConfig": "Save Config",
+		"ModConfigBack": "Back",
+		"ModConfigRevertChanges": "Revert Changes",
+		"ModConfigRestoreDefaults": "Restore Defaults",
+		"ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
+		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+
 		// Interface
 		"BossBarStyle": "Styl Paska Bossa: {0}",
 		"BossBarStyleNoOptions": "Bez Opcji",
