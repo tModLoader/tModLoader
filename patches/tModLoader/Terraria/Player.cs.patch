@@ -3309,7 +3309,7 @@
  		}
  
  		public Color ChatColor() {
-@@ -24778,11 +_,22 @@
+@@ -24778,11 +_,21 @@
  				if (!item.active || item.noGrabDelay != 0 || item.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(item))
  					continue;
  
@@ -3317,7 +3317,6 @@
 +					continue;
 +
  				int itemGrabRange = GetItemGrabRange(item);
-+				ItemLoader.GrabRange(Main.item[j], this, ref itemGrabRange);
  				Rectangle hitbox = item.Hitbox;
  				if (base.Hitbox.Intersects(hitbox)) {
 -					if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
@@ -3358,6 +3357,29 @@
  			statLife += amount;
  			if (Main.myPlayer == whoAmI)
  				HealEffect(amount);
+@@ -24914,7 +_,13 @@
+ 				statLife = statLifeMax2;
+ 		}
+ 
++		/// <summary>
++		/// Fetches the range at which the given item begins to gravitate towards the player.<br/>
++		/// This range, referred to as item grab range, is measured in pixels.
++		/// </summary>
++		/// <param name="item">The item whose grab range is being evaluated.</param>
++		/// <returns>The item grab range of the player, in pixels.</returns>
+-		private int GetItemGrabRange(Item item) {
++		public int GetItemGrabRange(Item item) {
+ 			int num = defaultItemGrabRange;
+ 			if (goldRing && item.IsACoin)
+ 				num += Item.coinGrabRange;
+@@ -24937,6 +_,7 @@
+ 			if (ItemID.Sets.NebulaPickup[item.type])
+ 				num += 100;
+ 
++			ItemLoader.GrabRange(item, this, ref num);
+ 			return num;
+ 		}
+ 
 @@ -25347,7 +_,7 @@
  		public void AdjTiles() {
  			int num = 4;
