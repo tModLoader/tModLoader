@@ -77,6 +77,27 @@
  		public static int crystalLeafDamage = 100;
  		public static int crystalLeafKB = 10;
  		public float basiliskCharge;
+@@ -528,6 +_,20 @@
+ 		public int gem = -1;
+ 		public int gemCount;
+ 		public BitsByte ownedLargeGems;
++		/// <summary>
++		/// The vanilla flask effect which the player currently has active; these affect all melee weapons and whips.<br/>
++		/// Defaults to 0, which denotes that the player does not currently have a flask active.<br/>
++		/// The following values correspond to vanilla flasks:<br/>
++		/// 1 => Flask of Venom (affected weapons proc Acid Venom on hit)<br/>
++		/// 2 => Flask of Cursed Flames (affected weapons proc Cursed Inferno on hit)<br/>
++		/// 3 => Flask of Fire (affected weapons proc On Fire! on hit)<br/>
++		/// 4 => Flask of Gold (affected weapons proc Midas on hit)<br/>
++		/// 5 => Flask of Ichor (affected weapons proc Ichor on hit)<br/>
++		/// 6 => Flask of Nanites (affected weapons proc Confused on hit)<br/>
++		/// 7 => Flask of Party (affected weapons sometimes release confetti explosions on hit)<br/>
++		/// 8 => Flask of Poison (affected weapons proc Poisoned on hit)<br/>
++		/// </summary>
++		// TO-DO: transform to int later, make proper flask effect system maybe?
+ 		public byte meleeEnchant;
+ 		public byte pulleyDir;
+ 		public bool pulley;
 @@ -539,7 +_,13 @@
  		public int snowBallLauncherInteractionCooldown;
  		public bool iceSkate;
