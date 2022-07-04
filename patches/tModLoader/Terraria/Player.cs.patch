@@ -77,6 +77,21 @@
  		public static int crystalLeafDamage = 100;
  		public static int crystalLeafKB = 10;
  		public float basiliskCharge;
+@@ -539,7 +_,13 @@
+ 		public int snowBallLauncherInteractionCooldown;
+ 		public bool iceSkate;
+ 		public bool carpet;
+-		public int spikedBoots;
++		/// <summary>
++		/// Used by the Shoe Spikes and Climbing Claws to allow for holding onto walls (of tiles, not to be confused with actual walls).<br/>
++		/// Defaults to 0. Any value higher than 0 allows the player to wall-jump.<br/>
++		/// A value of 1 causes the player to slowly slide down them while holding onto them.<br/>
++		/// A value of 2 or more doesn't give this limitation, allowing the player to stay holding onto a wall indefinitely.
++		/// </summary>
++		public int spikedBoots; // tML: documentation added because this field can be a little tricky to understand at first glance
+ 		public int carpetFrame = -1;
+ 		public float carpetFrameCounter;
+ 		public bool canCarpet;
 @@ -564,7 +_,7 @@
  		public byte oldLuckPotion;
  		public float endurance;
