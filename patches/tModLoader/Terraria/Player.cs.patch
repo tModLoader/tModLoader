@@ -3344,6 +3344,20 @@
  							PullItem_Pickup(item, 12f, 5);
  						else if (lifeMagnet && (item.type == 58 || item.type == 1734 || item.type == 1867))
  							PullItem_Pickup(item, 15f, 5);
+@@ -24905,7 +_,12 @@
+ 			return itemToPickUp;
+ 		}
+ 
++		/// <summary>
++		/// Heals the player for a certain amount.
++		/// </summary>
++		/// <param name="player">The player to heal.</param>
++		/// <param name="amount">The amount to heal the player by.</param>
+-		private void Heal(int amount) {
++		public void Heal(int amount) {
+ 			statLife += amount;
+ 			if (Main.myPlayer == whoAmI)
+ 				HealEffect(amount);
 @@ -25347,7 +_,7 @@
  		public void AdjTiles() {
  			int num = 4;
