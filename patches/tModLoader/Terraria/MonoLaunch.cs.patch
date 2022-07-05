@@ -10,7 +10,7 @@
  
  internal static class MonoLaunch
  {
-@@ -17,6 +_,12 @@
+@@ -14,6 +_,12 @@
  	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
  
  	private static void Main(string[] args) {
@@ -21,9 +21,9 @@
 +
 +		Thread.CurrentThread.Name = "Entry Thread";
  		/*
- 		// FNA is requested by both Terraria and ReLogic.dll
- 		var loaded = new Dictionary<string, Assembly>();
-@@ -47,7 +_,22 @@
+ 		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
+ 			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
+@@ -34,7 +_,22 @@
  #endif
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
@@ -46,7 +46,7 @@
  	}
  
  #if NETCORE
-@@ -58,11 +_,23 @@
+@@ -49,7 +_,7 @@
  					return handle;
  				}
  
@@ -55,19 +55,15 @@
  
  				var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
  				var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
- 				var match = files.FirstOrDefault();
-+
-+				if (match is null) {
-+					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(dir, name + ".dll")}");
-+				}
-+
+@@ -59,9 +_,9 @@
+ 					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(dir, name + ".dll")}");
+ 				}
+ 
+-				Console.WriteLine($"\tattempting load {match}");
 +				Logging.tML.Debug($"\tattempting load {match}");
-+
-+				handle = NativeLibrary.Load(match);
-+
+ 				handle = NativeLibrary.Load(match);
+-				Console.WriteLine("\tsuccess");
 +				Logging.tML.Debug("\tsuccess");
-+
-+				return assemblies[name] = handle;
- 
- 				Console.WriteLine(match == null ? "\tnot found in Libraries/Native" : $"\tattempting load {match}");
- 
+ 				return assemblies[name] = handle;
+ 			}
+ 			catch (DirectoryNotFoundException e) {
