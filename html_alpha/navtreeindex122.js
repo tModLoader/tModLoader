@@ -1,5 +1,6 @@
 var NAVTREEINDEX122 =
 {
+"class_terraria_1_1_world_gen_1_1_tenth_anniversary_world_info.html#a4a1d9225e508c42ee1a9c8a465503a23":[2,0,2,84,5,0],
 "class_terraria_1_1_world_gen_1_1_tenth_anniversary_world_info.html#a5185dddd29d3187dd409509dbbc54b3d":[2,0,2,84,5,3],
 "class_terraria_1_1_world_gen_1_1_tenth_anniversary_world_info.html#aacd62fa6977f938fd0104e93977c1f51":[2,0,2,84,5,1],
 "class_terraria_1_1_world_gen_1_1_tenth_anniversary_world_info.html#af4c837963e089c936e9088c7971f95fd":[2,0,2,84,5,4],
@@ -44,15 +45,15 @@ var NAVTREEINDEX122 =
 "classnativefiledialog.html#ad015f810ae97b11cebc345376a7dc842":[2,0,38,9],
 "classnativefiledialog.html#aeadaef3670dc3de9281eb92c4df871e7":[2,0,38,3],
 "classnativefiledialog.html#af0422ad594b56553df0ff318fd9a3ac0":[2,0,38,2],
-"functions.html":[2,3,0],
 "functions.html":[2,3,0,0],
+"functions.html":[2,3,0],
 "functions_b.html":[2,3,0,1],
 "functions_c.html":[2,3,0,2],
 "functions_d.html":[2,3,0,3],
 "functions_e.html":[2,3,0,4],
 "functions_f.html":[2,3,0,5],
-"functions_func.html":[2,3,1,0],
 "functions_func.html":[2,3,1],
+"functions_func.html":[2,3,1,0],
 "functions_func_b.html":[2,3,1,1],
 "functions_func_c.html":[2,3,1,2],
 "functions_func_d.html":[2,3,1,3],
@@ -92,8 +93,8 @@ var NAVTREEINDEX122 =
 "functions_t.html":[2,3,0,19],
 "functions_u.html":[2,3,0,20],
 "functions_v.html":[2,3,0,21],
-"functions_vars.html":[2,3,2,0],
 "functions_vars.html":[2,3,2],
+"functions_vars.html":[2,3,2,0],
 "functions_vars_b.html":[2,3,2,1],
 "functions_vars_c.html":[2,3,2,2],
 "functions_vars_d.html":[2,3,2,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX122 =
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html":[2,0,2,5,41],
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html#a4e87664614431793fb2ee6001b57e9fd":[2,0,2,5,41,0],
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html#a7a8dc6266c17c9273d95dabe08094b05":[2,0,2,5,41,2],
-"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html#ad439b155cb1c0fb50b26f1f390733806":[2,0,2,5,41,1],
-"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html#afe40c01c2b44dcf33787bb7a775a74f1":[2,0,2,5,41,3]
+"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html#ad439b155cb1c0fb50b26f1f390733806":[2,0,2,5,41,1]
 };

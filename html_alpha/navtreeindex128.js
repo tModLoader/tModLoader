@@ -1,5 +1,6 @@
 var NAVTREEINDEX128 =
 {
+"struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a2654a65d9d7abea4eac012d0745ef5f6":[2,0,2,4,45,7],
 "struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a36b60c80dab25f0c066663240b4525a1":[2,0,2,4,45,18],
 "struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a39dbc409da60fe7707311483a1f95e8f":[2,0,2,4,45,19],
 "struct_terraria_1_1_data_structures_1_1_fishing_attempt.html#a3b70a11c0c3d2e3c8e905f0685ff1efa":[2,0,2,4,45,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#a90471ada5cc587ab585d9b900be576c1":[2,0,2,4,72,6],
 "struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#a956807cb78d75bb700a418b09afe5a8a":[2,0,2,4,72,0],
 "struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#ab88b85965eef3d1ecc1e25bfb0dc9467":[2,0,2,4,72,1],
-"struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#ad4ee1ad5b1fa61b95ca2a67ab81a3d5f":[2,0,2,4,72,2],
-"struct_terraria_1_1_data_structures_1_1_sprite_frame.html":[2,0,2,4,76]
+"struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#ad4ee1ad5b1fa61b95ca2a67ab81a3d5f":[2,0,2,4,72,2]
 };
