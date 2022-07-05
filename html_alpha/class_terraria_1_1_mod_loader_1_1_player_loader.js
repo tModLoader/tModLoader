@@ -26,6 +26,7 @@ var class_terraria_1_1_mod_loader_1_1_player_loader =
     [ "GetHealMana", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a10c4a0e32f2f5bf95371420c9d2f868c", null ],
     [ "GetStartingItems", "class_terraria_1_1_mod_loader_1_1_player_loader.html#aecf18edd76d4b22e58024fa584276577", null ],
     [ "HideDrawLayers", "class_terraria_1_1_mod_loader_1_1_player_loader.html#abdf63631f7ad272683b5269ea0204dd1", null ],
+    [ "HoverSlot", "class_terraria_1_1_mod_loader_1_1_player_loader.html#a2726a5111b58ff1c1612bda1aca8173a", null ],
     [ "Hurt", "class_terraria_1_1_mod_loader_1_1_player_loader.html#af31c3144bf48dc40fc3cb76c8729c98d", null ],
     [ "Kill", "class_terraria_1_1_mod_loader_1_1_player_loader.html#affc3633782c91646dbaf39efadd2c1d7", null ],
     [ "MeleeEffects", "class_terraria_1_1_mod_loader_1_1_player_loader.html#ab710299d552e4975094cd755754aa5d7", null ],

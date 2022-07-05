@@ -939,6 +939,7 @@ var annotated_dup =
         [ "CloudID", "class_terraria_1_1_i_d_1_1_cloud_i_d.html", "class_terraria_1_1_i_d_1_1_cloud_i_d" ],
         [ "Colors", "class_terraria_1_1_i_d_1_1_colors.html", "class_terraria_1_1_i_d_1_1_colors" ],
         [ "ContentSamples", "class_terraria_1_1_i_d_1_1_content_samples.html", "class_terraria_1_1_i_d_1_1_content_samples" ],
+        [ "CursorOverrideID", "class_terraria_1_1_i_d_1_1_cursor_override_i_d.html", "class_terraria_1_1_i_d_1_1_cursor_override_i_d" ],
         [ "CustomCurrencyID", "class_terraria_1_1_i_d_1_1_custom_currency_i_d.html", "class_terraria_1_1_i_d_1_1_custom_currency_i_d" ],
         [ "DustID", "class_terraria_1_1_i_d_1_1_dust_i_d.html", "class_terraria_1_1_i_d_1_1_dust_i_d" ],
         [ "ExtrasID", "class_terraria_1_1_i_d_1_1_extras_i_d.html", "class_terraria_1_1_i_d_1_1_extras_i_d" ],

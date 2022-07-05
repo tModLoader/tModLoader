@@ -322,6 +322,7 @@ var hierarchy =
     [ "Terraria.Main.CurrentFrameFlags", "class_terraria_1_1_main_1_1_current_frame_flags.html", null ],
     [ "Terraria.Main.CurrentPlayerOverride", "struct_terraria_1_1_main_1_1_current_player_override.html", null ],
     [ "Terraria.Social.WeGame.CurrentThreadRunner", "class_terraria_1_1_social_1_1_we_game_1_1_current_thread_runner.html", null ],
+    [ "Terraria.ID.CursorOverrideID", "class_terraria_1_1_i_d_1_1_cursor_override_i_d.html", null ],
     [ "Terraria.ID.CustomCurrencyID", "class_terraria_1_1_i_d_1_1_custom_currency_i_d.html", null ],
     [ "Terraria.GameContent.UI.CustomCurrencyManager", "class_terraria_1_1_game_content_1_1_u_i_1_1_custom_currency_manager.html", null ],
     [ "Terraria.GameContent.UI.CustomCurrencySystem", "class_terraria_1_1_game_content_1_1_u_i_1_1_custom_currency_system.html", [
