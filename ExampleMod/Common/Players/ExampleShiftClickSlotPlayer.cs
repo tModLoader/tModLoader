@@ -31,8 +31,8 @@ namespace ExampleMod.Common.Players
 				// If player is holding shift, use FavoriteStar texture, otherwise use CameraLight texture.
 				Main.cursorOverride = ItemSlot.ShiftInUse ? CursorOverrideID.FavoriteStar : CursorOverrideID.CameraLight;
 
-				// Block vanilla overriding.
-				return true;
+				// Block vanilla overriding when holding shift.
+				return ItemSlot.ShiftInUse;
 			}
 			return base.HoverSlot(inventory, context, slot);
 		}
