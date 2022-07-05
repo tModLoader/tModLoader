@@ -29,10 +29,10 @@ namespace ExampleMod.Common.Players
 			// Apply our changes if this item is in inventory and is gel
 			if (context == ItemSlot.Context.InventoryItem && inventory[slot].type == ItemID.Gel) {
 				// If player is holding shift, use FavoriteStar texture, otherwise use CameraLight texture.
-				Main.cursorOverride = ItemSlot.ShiftInUse ? CursorOverrideID.FavoriteStar : CursorOverrideID.CameraLight;
-
-				// Block vanilla overriding when holding shift.
-				return ItemSlot.ShiftInUse;
+				if (ItemSlot.ShiftInUse) {
+					Main.cursorOverride = CursorOverrideID.FavoriteStar;
+					return true; // return true to prevent other things from overriding cursor
+				}
 			}
 			return base.HoverSlot(inventory, context, slot);
 		}
