@@ -935,7 +935,7 @@
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
-+			GraphicsChangeTracker.Init();
++			FNALogging.GraphicsInit(graphics);
  		}
  
  		private static void SetDisplayMonitor() {

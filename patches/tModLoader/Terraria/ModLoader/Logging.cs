@@ -42,6 +42,7 @@ namespace Terraria.ModLoader
 
 		internal static ILog Terraria { get; } = LogManager.GetLogger("Terraria");
 		internal static ILog tML { get; } = LogManager.GetLogger("tML");
+		internal static ILog FNA { get; } = LogManager.GetLogger("FNA");
 
 		internal static void Init(LogFile logFile) {
 			if (Program.LaunchParameters.ContainsKey("-build"))
@@ -84,7 +85,7 @@ namespace Terraria.ModLoader
 			LogArchiver.ArchiveLogs();
 			
 			if (!dedServ)
-				GraphicsChangeTracker.RedirectLogs();
+				FNALogging.RedirectLogs();
 		}
 
 		private static void ConfigureAppenders(LogFile logFile) {
