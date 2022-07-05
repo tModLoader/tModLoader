@@ -28,7 +28,7 @@ namespace ExampleMod.Common.Players
 		public override bool HoverSlot(Item[] inventory, int context, int slot) {
 			// Apply our changes if this item is in inventory and is gel
 			if (context == ItemSlot.Context.InventoryItem && inventory[slot].type == ItemID.Gel) {
-				// If player is holding shift, use FavoriteStar texture, otherwise use CameraLight texture.
+				// If player is holding shift, use FavoriteStar texture to indicate that a special action will be performed
 				if (ItemSlot.ShiftInUse) {
 					Main.cursorOverride = CursorOverrideID.FavoriteStar;
 					return true; // return true to prevent other things from overriding cursor
