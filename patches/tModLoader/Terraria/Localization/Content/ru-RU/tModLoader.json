@@ -83,15 +83,15 @@
 		"AskForCommand": "Введите команду: ",
 
 		//Mod Config
-		"ModConfigFilterOptions": "Filter Options",
-		"ModConfigNotification": "Notification: ",
-		"ModConfigModConfig": "Mod Config",
-		"ModConfigSaveConfig": "Save Config",
-		"ModConfigBack": "Back",
-		"ModConfigRevertChanges": "Revert Changes",
-		"ModConfigRestoreDefaults": "Restore Defaults",
-		"ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
-		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		"ModConfigFilterOptions": "Параметры фильтрации",
+		"ModConfigNotification": "Уведомление: ",
+		"ModConfigModConfig": "Конфигурация мода",
+		"ModConfigSaveConfig": "Сохранение конфигурации",
+		"ModConfigBack": "Назад",
+		"ModConfigRevertChanges": "Отменить Изменения",
+		"ModConfigRestoreDefaults": "Восстановление значений по умолчанию",
+		"ModConfigAskingServerToAcceptChanges": "Запрос сервера на принятие изменений...",
+		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Не удается сохранить, потому что изменения потребуют перезагрузки",
 
 		// Interface
 		"BossBarStyle": "Стиль полоски здоровья босса: {0}",
