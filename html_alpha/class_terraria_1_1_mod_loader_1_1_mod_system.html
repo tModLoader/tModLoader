@@ -277,7 +277,7 @@ For example, if your mod adds a boss and you want certain <a class="el" href="cl
 <b>NOTE:</b> Try to only save data that isn't default values.  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ae2235964e908330e4a004aeec3a839f2">More...</a><br /></td></tr>
 <tr class="separator:ae2235964e908330e4a004aeec3a839f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3610f96fdd6aa047a3777e32a1e0faa"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ab3610f96fdd6aa047a3777e32a1e0faa">SetupContent</a> ()</td></tr>
-<tr class="memdesc:ab3610f96fdd6aa047a3777e32a1e0faa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need (like setting up static defaults) This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ab3610f96fdd6aa047a3777e32a1e0faa">More...</a><br /></td></tr>
+<tr class="memdesc:ab3610f96fdd6aa047a3777e32a1e0faa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need. By default it just calls SetStaticDefaults. This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent  <a href="class_terraria_1_1_mod_loader_1_1_mod_system.html#ab3610f96fdd6aa047a3777e32a1e0faa">More...</a><br /></td></tr>
 <tr class="separator:ab3610f96fdd6aa047a3777e32a1e0faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a742ae1402c0449d5da76de883472d740"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_system.html#a742ae1402c0449d5da76de883472d740">TileCountsAvailable</a> (ReadOnlySpan&lt; int &gt; tileCounts)</td></tr>
 <tr class="memdesc:a742ae1402c0449d5da76de883472d740"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are. <br  />
@@ -2103,7 +2103,7 @@ For example, if your mod adds a boss and you want certain <a class="el" href="cl
 </table>
 </div><div class="memdoc">
 
-<p>Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need (like setting up static defaults) This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent </p>
+<p>Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need. By default it just calls SetStaticDefaults. This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent </p>
 
 <p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_type.html#aa6bc19d977556b547b409540892163ee">Terraria.ModLoader.ModType&lt; TEntity, TModType &gt;</a>.</p>
 
