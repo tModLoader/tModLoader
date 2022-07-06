@@ -208,6 +208,15 @@
  			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
  		}
  
+@@ -2454,6 +_,8 @@
+ 		}
+ 
+ 		public static void playWorldCallBack(object threadContext) {
++			Logging.Terraria.Info($"Loading World: {Main.ActiveWorldFileData.Name}, IsCloud={Main.ActiveWorldFileData.IsCloudSave}");
++
+ 			if (Main.rand == null)
+ 				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+ 
 @@ -2484,13 +_,20 @@
  					}
  
