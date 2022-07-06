@@ -20,6 +20,15 @@ namespace UwUPnP
 		private readonly string serviceType = null;
 		private readonly string controlURL = null;
 
+		//   Allow user to set this env var in case they have some weird
+		// hardware that only accepts LF-seperated SSDP header lines (this
+		// breaks the spec, but it may well happen still).
+		private static readonly string ssdpLineSep = Environment.GetEnvironmentVariable("SSDP_HEADER_USE_LF") == "1" ? "\n" : "\r\n";
+
+		static Gateway() {
+			Logging.tML.Debug($"SSDP search line seperator: {(ssdpLineSep == "\n" ? "LF" : "CRLF")}");
+		}
+
 		private Gateway(IPAddress ip, string data)
 		{
 			InternalClient = ip;
@@ -51,31 +60,55 @@ namespace UwUPnP
 			foreach (string type in searchMessageTypes) {
 				string request = string.Join
 				(
-					"\n",
+					ssdpLineSep,
 
 					"M-SEARCH * HTTP/1.1",
-					$"HOST: {endPoint}",
+					"HOST: 239.255.255.250:1900",
 					$"ST: {type}",
 					"MAN: \"ssdp:discover\"",
 					"MX: 2",
-					"", ""//End with double newlines
+					"", "" // End with double newlines
 				);
 				byte[] req = Encoding.ASCII.GetBytes(request);
 
 				try {
 					socket.SendTo(req, endPoint);
-
-					int recievedCount = socket.Receive(buffer);
-
-					gateway = new Gateway(ip, Encoding.ASCII.GetString(buffer, 0, recievedCount));
-					return true;
+				} catch (SocketException) {
+					gateway = null;
+					return false;
 				}
-				catch(SocketException) {
-					// Expected error if no gateway is present
-					// (should be SocketException all the time if the error is expected)
-					// Errors on SendTo for bad address or Receive for timeout most of the time
+
+				const int maxReceives = 20;
+				int receivedCount = 0;
+
+				//   Naughty devices on the network may respond to all SSDP
+				// discover requests, even though they don't match the
+				// requested ST! (Philips Hue does this, which is diabolical).
+				//
+				//   We may receive a lot of responses, and it's worth reading
+				// them all to try and find a useful one - set a limit in
+				// case they don't stop coming to prevent infinite looping.
+				for (int i = 0; i < maxReceives; i++) {
+					try {
+						receivedCount = socket.Receive(buffer);
+					} catch (SocketException e) {
+						// Timeout, so probably no more responses to wait for
+						//  - proceed to next ST to try.
+						break;
+					}
+
+					try {
+						gateway = new Gateway(ip, Encoding.ASCII.GetString(buffer, 0, receivedCount));
+						return true;
+					} catch {
+						//   Invalid gateway, keep reading further responses
+						// (or go to next ST to try).
+						gateway = null;
+						continue;
+					}
 				}
 			}
+
 			gateway = null;
 			return false;
 		}
