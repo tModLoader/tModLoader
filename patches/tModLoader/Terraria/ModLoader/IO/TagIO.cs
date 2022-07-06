@@ -245,8 +245,8 @@ namespace Terraria.ModLoader.IO
 			var array = Array.CreateInstance(elemType, arrayRanks);
 
 			int[] rank = new int[arrayRanks.Length];
-			for (int i = 0; i < list.Count; i++) {
-				var o = list[i];
+			foreach (object e in list) {
+				var elem = e;
 				for (int r = rank.Length - 1; r >= 0; r--) {
 					if (rank[r] < arrayRanks[r])
 						break;
@@ -259,9 +259,9 @@ namespace Terraria.ModLoader.IO
 				}
 
 				if (converter != null)
-					o = converter(o);
+					elem = converter(elem);
 
-				array.SetValue(o, rank);
+				array.SetValue(elem, rank);
 				rank[^1]++;
 			}
 
@@ -372,24 +372,39 @@ namespace Terraria.ModLoader.IO
 			}
 
 			//list conversion required
-			if ((tag == null || tag is IList) &&
-				type.GetGenericArguments().Length == 1) {
-				var elemType = type.GetGenericArguments()[0];
-				var newListType = typeof(List<>).MakeGenericType(elemType);
-				if (type.IsAssignableFrom(newListType)) {//if the desired type is a superclass of List<elemType>
+			if (tag == null || tag is IList) {
+				if (type.IsArray) {
+					var elemType = type.GetElementType()!;
+
 					if (tag == null)
-						return newListType.GetConstructor(new Type[0]).Invoke(new object[0]);
+						return Array.CreateInstance(elemType, new int[elemType.GetArrayRank()]);
 
+					var array = (Array)tag;
 					if (TagSerializer.TryGetSerializer(elemType, out serializer))
-						return serializer.DeserializeList((IList)tag);
+						return ConvertArray(array, serializer.Type, elem => serializer.Deserialize(elem));
 
-					//create a strongly typed nested list
-					var oldList = (IList)tag;
-					var newList = (IList)newListType.GetConstructor(new[] { typeof(int) }).Invoke(new object[] { oldList.Count });
-					foreach (var elem in oldList)
-						newList.Add(Deserialize(elemType, elem));
+					// create a strongly typed nested array
+					return ConvertArray(array, elemType, elem => Deserialize(elemType, elem));
+				}
 
-					return newList;
+				if (type.GetGenericArguments().Length == 1) {
+					var elemType = type.GetGenericArguments()[0];
+					var newListType = typeof(List<>).MakeGenericType(elemType);
+					if (type.IsAssignableFrom(newListType)) { //if the desired type is a superclass of List<elemType>
+						if (tag == null)
+							return Activator.CreateInstance(newListType)!;
+
+						if (TagSerializer.TryGetSerializer(elemType, out serializer))
+							return serializer.DeserializeList((IList)tag);
+
+						//create a strongly typed nested list
+						var oldList = (IList)tag;
+						var newList = (IList)Activator.CreateInstance(newListType, oldList.Count)!;
+						foreach (var elem in oldList)
+							newList.Add(Deserialize(elemType, elem));
+
+						return newList;
+					}
 				}
 			}
 
