@@ -83,6 +83,17 @@
 		"AskForModIndex": "输入模组序号以启用/禁用模组",
 		"AskForCommand": "请输入命令: ",
 
+		//Mod Config
+		"ModConfigFilterOptions": "筛选选项",
+		"ModConfigNotification": "通知：",
+		"ModConfigModConfig": "模组设置",
+		"ModConfigSaveConfig": "保存设置",
+		"ModConfigBack": "返回",
+		"ModConfigRevertChanges": "撤销改动",
+		"ModConfigRestoreDefaults": "重设为默认",
+		"ModConfigAskingServerToAcceptChanges": "正在请求服务器接受改动……",
+		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "由于需要重载模组而无法保存改动（请从主菜单进入模组列表以调整配置）",
+
 		// Interface
 		"BossBarStyle": "Boss血条样式: {0}",
 		"BossBarStyleNoOptions": "无",
