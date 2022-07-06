@@ -393,6 +393,23 @@
  		private static bool _canShowMeteorFall;
  		private static bool _isResizingAndRemakingTargets = false;
  
+@@ -2250,8 +_,16 @@
+ 		[Old("Transform is deprecated. Please use GameViewMatrix & GUIViewMatrix")]
+ 		public static Matrix Transform => GameViewMatrix.TransformationMatrix;
+ 
++		/// <summary>
++		/// Fetches the position of the mouse cursor on the screen.
++		/// Useful for making things visually happen near the cursor.
++		/// </summary>
+ 		public static Vector2 MouseScreen => new Vector2(mouseX, mouseY);
+ 
++		/// <summary>
++		/// Fetches the position of the mouse cursor in the world.
++		/// Useful for making things functionally happen near the cursor, such as projectile or NPC spawns.
++		/// </summary>
+ 		public static Vector2 MouseWorld {
+ 			get {
+ 				Vector2 result = MouseScreen + screenPosition;
 @@ -2283,7 +_,7 @@
  
  		public static int npcShop {
