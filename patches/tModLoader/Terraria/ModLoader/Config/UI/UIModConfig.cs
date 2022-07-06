@@ -65,7 +65,7 @@ namespace Terraria.ModLoader.Config.UI
 
 			UIPanel textBoxBackground = new UIPanel();
 			textBoxBackground.SetPadding(0);
-			filterTextField = new UIFocusInputTextField(Language.GetText("tModLoader.ModConfigFilterOptions"));//"Filter Options"
+			filterTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterOptions"));//"Filter Options"
 			textBoxBackground.Top.Set(2f, 0f);
 			textBoxBackground.Left.Set(-190, 1f);
 			textBoxBackground.Width.Set(180, 0f);
@@ -86,7 +86,7 @@ namespace Terraria.ModLoader.Config.UI
 			textBoxBackground.Append(filterTextField);
 
 			// TODO: ModConfig Localization support
-			message = new UITextPanel<string>(Language.GetText("tModLoader.ModConfigNotification"));//"Notification: "
+			message = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigNotification"));//"Notification: "
 			message.Width.Set(-80f, 1f);
 			message.Height.Set(20f, 0f);
 			message.HAlign = 0.5f;
@@ -110,7 +110,7 @@ namespace Terraria.ModLoader.Config.UI
 			uIPanel.Append(uIScrollbar);
 			mainConfigList.SetScrollbar(uIScrollbar);
 
-			headerTextPanel = new UITextPanel<string>(Language.GetText("tModLoader.ModConfigModConfig"), 0.8f, true);//"Mod Config"
+			headerTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigModConfig"), 0.8f, true);//"Mod Config"
 			headerTextPanel.HAlign = 0.5f;
 			headerTextPanel.Top.Set(-50f, 0f);
 			headerTextPanel.SetPadding(15f);
@@ -134,7 +134,7 @@ namespace Terraria.ModLoader.Config.UI
 			nextConfigButton.OnClick += NextConfig;
 			//uIElement.Append(nextConfigButton);
 
-			saveConfigButton = new UITextPanel<string>(Language.GetText("tModLoader.ModConfigSaveConfig"), 1f, false);//"Save Config"
+			saveConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigSaveConfig"), 1f, false);//"Save Config"
 			saveConfigButton.Width.Set(-10f, 1f / 4f);
 			saveConfigButton.Height.Set(25f, 0f);
 			saveConfigButton.Top.Set(-20f, 0f);
@@ -144,7 +144,7 @@ namespace Terraria.ModLoader.Config.UI
 			saveConfigButton.OnClick += SaveConfig;
 			//uIElement.Append(saveConfigButton);
 
-			backButton = new UITextPanel<string>(Language.GetText("tModLoader.ModConfigBack"), 1f, false);//"Back"
+			backButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigBack"), 1f, false);//"Back"
 			backButton.CopyStyle(saveConfigButton);
 			backButton.HAlign = 0;
 			backButton.WithFadedMouseOver();
@@ -159,7 +159,7 @@ namespace Terraria.ModLoader.Config.UI
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
-			revertConfigButton = new UITextPanel<string>(Language.GetText("tModLoader.ModConfigRevertChanges"), 1f, false);//"Revert Changes"
+			revertConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigRevertChanges"), 1f, false);//"Revert Changes"
 			revertConfigButton.CopyStyle(saveConfigButton);
 			revertConfigButton.WithFadedMouseOver();
 			revertConfigButton.HAlign = 0.66f;
@@ -167,7 +167,7 @@ namespace Terraria.ModLoader.Config.UI
 			//uIElement.Append(revertConfigButton);
 
 			//float scale = Math.Min(1f, 130f/FontAssets.MouseText.Value.MeasureString("Restore Defaults").X);
-			restoreDefaultsConfigButton = new UITextPanel<string>(Language.GetText("tModLoader.ModConfigRestoreDefaults"), 1f, false);//"Restore Defaults"
+			restoreDefaultsConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigRestoreDefaults"), 1f, false);//"Restore Defaults"
 			restoreDefaultsConfigButton.CopyStyle(saveConfigButton);
 			restoreDefaultsConfigButton.WithFadedMouseOver();
 			restoreDefaultsConfigButton.HAlign = 1f;
@@ -261,7 +261,7 @@ namespace Terraria.ModLoader.Config.UI
 				// If we are in game...
 				if (pendingConfig.Mode == ConfigScope.ServerSide && Main.netMode == NetmodeID.MultiplayerClient) {
 					// TODO: Too
-					SetMessage(Language.GetText("tModLoader.ModConfigAskingServerToAcceptChanges"), Color.Yellow); //"Asking server to accept changes..."
+					SetMessage(Language.GetTextValue("tModLoader.ModConfigAskingServerToAcceptChanges"), Color.Yellow); //"Asking server to accept changes..."
 
 					var requestChanges = new ModPacket(MessageID.InGameChangeConfig);
 					requestChanges.Write(pendingConfig.Mod.Name);
@@ -280,7 +280,7 @@ namespace Terraria.ModLoader.Config.UI
 
 				if (loadTimeConfig.NeedsReload(pendingConfig)) {
 					SoundEngine.PlaySound(SoundID.MenuClose);
-					SetMessage(Language.GetText("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Color.Red);//"Can't save because changes would require a reload."
+					SetMessage(Language.GetTextValue("tModLoader.ModConfigCantSaveBecauseChangesWouldRequireAReload"), Color.Red);//"Can't save because changes would require a reload."
 					return;
 				}
 				else {
@@ -705,7 +705,7 @@ namespace Terraria.ModLoader.Config.UI
 			//uIPanel.Append(headingText);
 			//top += 40;
 
-			UITextPanel<string> back = new UITextPanel<string>(Language.GetText("tModLoader.ModConfigBack")) {
+			UITextPanel<string> back = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigBack")) {
 				HAlign = 1f
 			};
 

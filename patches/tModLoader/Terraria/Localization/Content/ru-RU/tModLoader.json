@@ -389,13 +389,13 @@
 		"MSFinding": "Поиск модов...",
 		"MSInstantiating": "Инстанция модов...",
 		"MSSandboxing": "Загрузка сборки: {0}",
-		"MSIntializing": "Инициализация мода: {0}",
 		"MSLoading": "Загрузка мода: {0}",
+		// "MSResizing": "Resizing...",
+		// "MSSetupContent": "Configuring Content: {0}",
+		// "MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "Выгрузка мода: {0}",
 		"MSFinishingResourceLoading": "Завершение загрузки ресурсов",
-		"MSSettingUp": "Настройка...",
 		"MSAddingRecipes": "Загрузка рецептов модов...",
-		"AddingModContent": "Загрузка контента модов...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Некоторые стартовые предметы не поместились в ваш инвентарь",
