@@ -13,7 +13,9 @@ var class_terraria_1_1_world_sections =
     [ "SetAllFramesLoaded", "class_terraria_1_1_world_sections.html#aff556edfd0f3f55c2631226b5e6e9fbb", null ],
     [ "SetSectionFramed", "class_terraria_1_1_world_sections.html#a067d3eefd53ea33dd35bd3c9303dc8a2", null ],
     [ "SetSectionLoaded", "class_terraria_1_1_world_sections.html#af0e7e7f994d30a5cb36b2899f7ece6d3", null ],
-    [ "SetSectionsLoaded", "class_terraria_1_1_world_sections.html#a66f9e952827050da63ea75b90075d3ba", null ],
+    [ "SetTilesLoaded", "class_terraria_1_1_world_sections.html#a13389328001fd13abd0ab6d306cf912d", null ],
+    [ "TileLoaded", "class_terraria_1_1_world_sections.html#a4c7d6ab85515db9899484cb38170e407", null ],
+    [ "TilesLoaded", "class_terraria_1_1_world_sections.html#a2c5d7df7977baeaf5f1abe8b0ad7daf5", null ],
     [ "FrameSectionsLeft", "class_terraria_1_1_world_sections.html#a4fd2abb6c3b485dd4ae5b42898de2f7a", null ],
     [ "MapSectionsLeft", "class_terraria_1_1_world_sections.html#a184504baeb2d22e808ff1dff652fba96", null ]
 ];
