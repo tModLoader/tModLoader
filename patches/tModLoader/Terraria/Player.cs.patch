@@ -77,6 +77,42 @@
  		public static int crystalLeafDamage = 100;
  		public static int crystalLeafKB = 10;
  		public float basiliskCharge;
+@@ -516,10 +_,35 @@
+ 		public int ropeCount;
+ 		public int manaRegenBonus;
+ 		public int manaRegenDelayBonus;
++		/// <summary>
++		/// The current vanilla dash that the player is using.<br/>
++		/// The following values correspond to vanilla dashes:<br/>
++		/// 1 => Tabi / Master Ninja Gear<br/>
++		/// 2 => Shield of Cthulhu<br/>
++		/// 3 => Solar Flare armor set bonus<br/>
++		/// 4 => Unused, though a dash for this value DOES exist<br/>
++		/// 5 => Crystal Assassin set bonus<br/>
++		/// </summary>
+ 		public int dashType;
++		/// <summary>
++		/// The current vanilla dash that the player is VISIBLY using.<br/>
++		/// Unlike <see cref="dashType"/>, this does not update if a dash cannot currently be input.<br/>
++		/// </summary>
+ 		public int dash;
++		/// <summary>
++		/// The amount of time this player has left, in ticks, to input the second keystroke of a standard dash input (double-tap left/right).<br/>
++		/// For vanilla dashes, this window is 15 ticks, or a quarter of a second, in total.<br/>
++		/// </summary>
+ 		public int dashTime;
++		/// <summary>
++		/// The amount of time that has passed, in ticks, since this player last performed a dash.
++		/// </summary>
+ 		public int timeSinceLastDashStarted;
++		/// <summary>
++		/// The amount of time that has to pass, in ticks, before a new dash input will be registered.<br/>
++		/// For the first frame of any given dash, this is set to -1. After that frame has passsed, it is set to 20 ticks, or 1/3 of a second.<br/>
++		/// For the Tabi dash, and when dashing into an enemy with the Shield of Cthulhu, this is set to 30 ticks, or 1/2 of a second, instead.<br/>
++		/// </summary>
+ 		public int dashDelay;
+ 		public int eocDash;
+ 		public int eocHit;
 @@ -528,6 +_,23 @@
  		public int gem = -1;
  		public int gemCount;
@@ -2619,6 +2655,22 @@
  							crit2 = true;
  
  						int direction = base.direction;
+@@ -15361,6 +_,15 @@
+ 			solarDashConsumedFlare = false;
+ 		}
+ 
++		/*
++		TO-DO:
++		- make public, as it has little reason to be private and could be of great help to those makin' modded dashes
++		- properly explain how to use this in the context of programmin' a modded dash (use ExampleShield for this; see below)
++		- make ExampleShield use this, and simplify it accordingly (it currently has way too many movin' parts that require extra upkeep, for way too little payoff)
++
++		I'll do all this in an upcomin' PR if nobody else does
++		-thomas
++		*/
+ 		private void DoCommonDashHandle(out int dir, out bool dashing, DashStartAction dashStartAction = null) {
+ 			dir = 0;
+ 			dashing = false;
 @@ -15654,8 +_,10 @@
  				float num5 = 0.1f;
  				if (wingsLogic == 26) {
