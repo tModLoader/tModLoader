@@ -55,6 +55,148 @@
  		public bool midas;
  		public bool ichor;
  		public bool onFire;
+@@ -153,33 +_,119 @@
+ 		public static bool boughtCat = false;
+ 		public static bool boughtDog = false;
+ 		public static bool boughtBunny = false;
++		/// <summary>
++		/// Denotes whether or not Advanced Combat Techniques has been used in the current world.
++		/// </summary>
+ 		public static bool combatBookWasUsed = false;
++		/// <summary>
++		/// Denotes whether or not the Eye of Cthulhu has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedBoss1 = false;
++		/// <summary>
++		/// Denotes whether or not the Eater of Worlds OR the Brain of Cthulhu have been defeated at least once in the current world.<br/>
++		/// This does NOT track the two of them separately; you will need to establish your own fields in a <see cref="ModSystem"/> for that.<br/>
++		/// </summary>
+ 		public static bool downedBoss2 = false;
++		/// <summary>
++		/// Denotes whether or not Skeletron has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedBoss3 = false;
++		/// <summary>
++		/// Denotes whether or not at least one Queen Bee has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedQueenBee = false;
++		/// <summary>
++		/// Denotes whether or not King Slime has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedSlimeKing = false;
++		/// <summary>
++		/// Denotes whether or not at least one Goblin Army has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedGoblins = false;
++		/// <summary>
++		/// Denotes whether or not the Frost Legion has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedFrost = false;
++		/// <summary>
++		/// Denotes whether or not at least one Pirate Invasion has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedPirates = false;
++		/// <summary>
++		/// Denotes whether or not at least one Clown has been killed in the current world.<br/>
++		/// Only used to make the Clothier sell the Clown set once at least one has been killed.
++		/// </summary>
+ 		public static bool downedClown = false;
++		/// <summary>
++		/// Denotes whether or not Plantera has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedPlantBoss = false;
++		/// <summary>
++		/// Denotes whether or not Golem has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedGolemBoss = false;
++		/// <summary>
++		/// Denotes whether or not at least one Martian Madness event has been cleared in the current world.
++		/// </summary>
+ 		public static bool downedMartians = false;
++		/// <summary>
++		/// Denotes whether or not Duke Fishron has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedFishron = false;
++		/// <summary>
++		/// Denotes whether or not at least one Mourning Wood has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedHalloweenTree = false;
++		/// <summary>
++		/// Denotes whether or not at least one Pumpking has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedHalloweenKing = false;
++		/// <summary>
++		/// Denotes whether or not at least one Ice Queen has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedChristmasIceQueen = false;
++		/// <summary>
++		/// Denotes whether or not at least one Everscream has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedChristmasTree = false;
++		/// <summary>
++		/// Denotes whether or not at least one Santa-NK1 has been defeated in the current world.
++		/// </summary>
+ 		public static bool downedChristmasSantank = false;
++		/// <summary>
++		/// Denotes whether or not the Lunatic Cultist has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedAncientCultist = false;
++		/// <summary>
++		/// Denotes whether or not the Moon Lord has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedMoonlord = false;
++		/// <summary>
++		/// Denotes whether or not the Solar Pillar has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedTowerSolar = false;
++		/// <summary>
++		/// Denotes whether or not the Vortex Pillar has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedTowerVortex = false;
++		/// <summary>
++		/// Denotes whether or not the Nebula Pillar has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedTowerNebula = false;
++		/// <summary>
++		/// Denotes whether or not the Stardust Pillar has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedTowerStardust = false;
++		/// <summary>
++		/// Denotes whether or not the Empress of Light has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedEmpressOfLight = false;
++		/// <summary>
++		/// Denotes whether or not Queen Slime has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedQueenSlime = false;
++		/// <summary>
++		/// Denotes whether or not the Deerclops has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedDeerclops = false;
+ 		public static int ShieldStrengthTowerSolar = 0;
+ 		public static int ShieldStrengthTowerVortex = 0;
+@@ -192,9 +_,21 @@
+ 		public static bool TowerActiveNebula = false;
+ 		public static bool TowerActiveStardust = false;
+ 		public static bool LunarApocalypseIsUp = false;
++		/// <summary>
++		/// Denotes whether or not ANY Mechanical Boss has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedMechBossAny = false;
++		/// <summary>
++		/// Denotes whether or not the Destroyer has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedMechBoss1 = false;
++		/// <summary>
++		/// Denotes whether or not the Twins have been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedMechBoss2 = false;
++		/// <summary>
++		/// Denotes whether or not Skeletron Prime has been defeated at least once in the current world.
++		/// </summary>
+ 		public static bool downedMechBoss3 = false;
+ 		public static bool[] npcsFoundForCheckActive = new bool[670];
+ 		public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
 @@ -218,8 +_,8 @@
  		public int defDefense;
  		public bool coldDamage;
