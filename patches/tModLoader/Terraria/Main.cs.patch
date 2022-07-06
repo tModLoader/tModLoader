@@ -263,6 +263,18 @@
  		public static bool allChestStackHover;
  		public static bool inventorySortMouseOver;
  		public static float GraveyardVisualIntensity;
+@@ -961,6 +_,11 @@
+ 		public static int[] grasshopperCageFrameCounter = new int[cageFrames];
+ 		public static bool[] tileSand = new bool[625];
+ 		public static bool[] tileFlame = new bool[625];
++		/// <summary>
++		/// Used to denote an NPC as being catchable by bug nets and similar.<br/>
++		/// Contrary to its name, this array isn't actually used for catching logic at all.<br/>
++		/// It is instead used to determine if an NPC can be released back into the world after being caught.<br/>
++		/// </summary>
+ 		public static bool[] npcCatchable = new bool[670];
+ 		public static int[] tileFrame = new int[625];
+ 		public static int[] tileFrameCounter = new int[625];
 @@ -971,7 +_,7 @@
  		public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  		public static bool tilesLoaded = false;
