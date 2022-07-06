@@ -423,7 +423,7 @@
  				TileEntity.ByPosition[tileEntity.Position] = tileEntity;
  			}
 +
-+			Main.sectionManager.SetSectionsLoaded(xStart, yStart, xStart + width - 1, yStart + height - 1);
++			Main.sectionManager.SetTilesLoaded(xStart, yStart, xStart + width - 1, yStart + height - 1);
  		}
  
  		public static void ReceiveBytes(byte[] bytes, int streamLength, int i = 256) {
