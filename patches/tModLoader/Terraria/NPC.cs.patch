@@ -197,8 +197,22 @@
  		public static bool downedMechBoss3 = false;
  		public static bool[] npcsFoundForCheckActive = new bool[670];
  		public static int[] lazyNPCOwnedProjectileSearchArray = new int[200];
-@@ -218,8 +_,8 @@
+@@ -212,14 +_,22 @@
+ 		public bool justHit;
+ 		public int timeLeft;
+ 		public int target = -1;
++		/// <summary>
++		/// The amount of contact damage this NPC deals.<br/>
++		/// Changing this WILL NOT change the amount of damage done by projectiles.<br/>
++		/// </summary>
+ 		public int damage;
+ 		public int defense;
+ 		public int defDamage;
  		public int defDefense;
++		/// <summary>
++		/// Denotes whether or not this NPC counts as dealing cold damage for the purposes of the Warmth Potion.<br/>
++		/// Defaults to false.
++		/// </summary>
  		public bool coldDamage;
  		public bool trapImmune;
 -		public LegacySoundStyle HitSound;
@@ -208,11 +222,16 @@
  		public int life;
  		public int lifeMax;
  		public Rectangle targetRect;
-@@ -389,7 +_,13 @@
+@@ -389,8 +_,26 @@
  
  		public int WhoAmIToTargettingIndex => whoAmI + 300;
  
 -		public string TypeName => Lang.GetNPCNameValue(netID);
++		/// <summary>
++		/// The TYPE name of this NPC.<br/>
++		/// Type names are the base titles given to any NPC, and are typically shared amongst all instances of an NPC. For example, the Stylist's type name will always be "Stylist".<br/>
++		/// To modify the type name of a specific NPC, make use of the ModifyTypeName hooks in <see cref="GlobalNPC"/> and <see cref="ModLoader.ModNPC"/>, according to your needs.<br/>
++		/// </summary>
 +		public string TypeName {
 +			get {
 +				string typeName = Lang.GetNPCNameValue(netID);
@@ -221,8 +240,43 @@
 +			}
 +		}
  
++		/// <summary>
++		/// The FULL name of this NPC.<br/>
++		/// If the NPC doesn't have a given name, this will just return the type name. A Stylist without a given name will always return "Stylist" here.<br/>
++		/// If the NPC does have a given name, this will return the NPC's full name; given name first, then type name.<br/>
++		/// Full name with a given name is given in the format of "X the Y", where X is their given name and Y is their type name.<br/>
++		/// For example, a Stylist might return "Scarlett the Stylist" here; with Scarlett being her given name, and Stylist being her type name.<br/>
++		/// </summary>
  		public string FullName {
  			get {
+ 				if (!HasGivenName)
+@@ -400,8 +_,14 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// Whether or not this NPC has a given name.<br/>
++		/// </summary>
+ 		public bool HasGivenName => _givenName.Length != 0;
+ 
++		/// <summary>
++		/// If this NPC has a given name, returns their given name; otherwise, returns their type name.<br/>
++		/// </summary>
+ 		public string GivenOrTypeName {
+ 			get {
+ 				if (!HasGivenName)
+@@ -411,6 +_,11 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// The GIVEN name of this NPC. Can be set directly.<br/>
++		/// Given names are unique to each NPC, though two NPCs can have the same given name.<br/>
++		/// Some vanilla examples of given names are Andrew (for the Guide), Yorai (for the Princess), Whitney (for the Steampunker), or Scarlett (for the Stylist).<br/>
++		/// </summary>
+ 		public string GivenName {
+ 			get {
+ 				return _givenName;
 @@ -458,7 +_,7 @@
  
  		public bool isLikeATownNPC {
