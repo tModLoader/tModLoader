@@ -1,5 +1,6 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_data_structures_1_1_portable_stool_usage.html#ad4ee1ad5b1fa61b95ca2a67ab81a3d5f":[2,0,2,4,72,2],
 "struct_terraria_1_1_data_structures_1_1_sprite_frame.html":[2,0,2,4,76],
 "struct_terraria_1_1_data_structures_1_1_sprite_frame.html#a0093136cd0e1eb2174b30cdfe8dd671b":[2,0,2,4,76,3],
 "struct_terraria_1_1_data_structures_1_1_sprite_frame.html#a0ce3cba987c4e0f7649452d01f618cc4":[2,0,2,4,76,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a823e8ce594b06d63d35ba5b75f896e15":[2,0,2,5,21,5,7,9],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a834f78814c7b854086bbdbd533623c00":[2,0,2,5,21,5,7,10],
 "struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#a95d82f5db62a67594d1bb04d320d3d6d":[2,0,2,5,21,5,7,4],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#ac743c1bbce4f01e8d586f61264980201":[2,0,2,5,21,5,7,6],
-"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#ad30c1e1afbab79b4155145b0237f2857":[2,0,2,5,21,5,7,7]
+"struct_terraria_1_1_game_content_1_1_u_i_1_1_states_1_1_u_i_gamepad_helper.html#ac743c1bbce4f01e8d586f61264980201":[2,0,2,5,21,5,7,6]
 };

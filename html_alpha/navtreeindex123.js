@@ -1,5 +1,6 @@
 var NAVTREEINDEX123 =
 {
+"interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html#ad439b155cb1c0fb50b26f1f390733806":[2,0,2,5,41,1],
 "interface_terraria_1_1_game_content_1_1_i_persistent_per_world_content.html#afe40c01c2b44dcf33787bb7a775a74f1":[2,0,2,5,41,3],
 "interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html":[2,0,2,5,43],
 "interface_terraria_1_1_game_content_1_1_i_town_n_p_c_profile.html#a062a0f884cf3fd73e8fdcce24658f0f4":[2,0,2,5,43,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX123 =
 "namespace_terraria_1_1_data_structures.html#a07f76c43e1e486afbc0918c156dc4485a774cd89393130f26399571df38d2c4e4":[1,0,2,4,87,3],
 "namespace_terraria_1_1_data_structures.html#a07f76c43e1e486afbc0918c156dc4485a94e8a499539d1a472f3b5dbbb85508c0":[1,0,2,4,87,2],
 "namespace_terraria_1_1_data_structures.html#a07f76c43e1e486afbc0918c156dc4485aa2ec2ef7ebb614cf7dd5d78b9bbf59b3":[1,0,2,4,87,6],
-"namespace_terraria_1_1_data_structures.html#a07f76c43e1e486afbc0918c156dc4485aaa58fc85a7991b35905acfeb79a3bdee":[1,0,2,4,87,1],
-"namespace_terraria_1_1_data_structures.html#a07f76c43e1e486afbc0918c156dc4485ab1c94ca2fbc3e78fc30069c8d0f01680":[1,0,2,4,87,8]
+"namespace_terraria_1_1_data_structures.html#a07f76c43e1e486afbc0918c156dc4485aaa58fc85a7991b35905acfeb79a3bdee":[1,0,2,4,87,1]
 };
