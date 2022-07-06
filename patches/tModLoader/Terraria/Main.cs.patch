@@ -561,6 +561,15 @@
  				LoadWorlds();
  			}
  			catch {
+@@ -3835,7 +_,7 @@
+ 					try {
+ 						if (text.Length > 6 && text.Substring(0, 6).ToLower() == "world=") {
+ 							string path = autoGenFileLocation = text.Substring(6);
+-							ActiveWorldFileData = WorldFile.GetAllMetadata(Platform.Get<IPathService>().ExpandPathVariables(path), cloudSave: false);
++							ActiveWorldFileData = WorldFile.GetAllMetadata(Platform.Get<IPathService>().ExpandPathVariables(path), cloudSave: false) ?? new();
+ 						}
+ 
+ 						if (text.Length > 5 && text.Substring(0, 5).ToLower() == "port=") {
 @@ -3923,6 +_,12 @@
  						if (text.Length >= 10 && text.Substring(0, 10).ToLower() == "worldname=")
  							worldName = text.Substring(10);
@@ -574,6 +583,15 @@
  						if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							AutogenSeedName = text.Substring(5);
  
+@@ -3985,7 +_,7 @@
+ 		}
+ 
+ 		public void SetWorld(string world, bool cloud) {
+-			ActiveWorldFileData = WorldFile.GetAllMetadata(world, cloud);
++			ActiveWorldFileData = WorldFile.GetAllMetadata(world, cloud) ?? new();
+ 		}
+ 
+ 		public void SetWorldName(string world) {
 @@ -4032,6 +_,8 @@
  		}
  
