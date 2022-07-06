@@ -413,7 +413,7 @@
  
  						continue;
  					}
-@@ -2053,7 +_,7 @@
+@@ -2053,10 +_,12 @@
  
  			num3 = reader.ReadInt16();
  			for (int m = 0; m < num3; m++) {
@@ -422,6 +422,11 @@
  				TileEntity.ByID[tileEntity.ID] = tileEntity;
  				TileEntity.ByPosition[tileEntity.Position] = tileEntity;
  			}
++
++			Main.sectionManager.SetSectionsLoaded(xStart, yStart, xStart + width - 1, yStart + height - 1);
+ 		}
+ 
+ 		public static void ReceiveBytes(byte[] bytes, int streamLength, int i = 256) {
 @@ -2066,10 +_,11 @@
  					buffer[i].totalData += streamLength;
  					buffer[i].checkBytes = true;

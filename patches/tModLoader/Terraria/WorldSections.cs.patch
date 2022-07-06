@@ -1,0 +1,31 @@
+--- src/TerrariaNetCore/Terraria/WorldSections.cs
++++ src/tModLoader/Terraria/WorldSections.cs
+@@ -126,7 +_,7 @@
+ 		}
+ 
+ 		public void SetSectionFramed(int x, int y) {
+-			if (x >= 0 && x < width && y >= 0 && y < height && !data[y * width + x][1]) {
++			if (x >= 0 && x < width && y >= 0 && y < height && data[y * width + x][0] && !data[y * width + x][1]) {
+ 				data[y * width + x][1] = true;
+ 				frameSectionsLeft--;
+ 			}
+@@ -139,6 +_,19 @@
+ 					frameSectionsLeft++;
+ 				}
+ 			}
++		}
++
++		public void SetSectionsLoaded(int startX, int startY, int endX, int endY) {
++			int sX, sY, eX, eY;
++
++			sX = Netplay.GetSectionX(startX);
++			sY = Netplay.GetSectionY(startY);
++			eX = Netplay.GetSectionX(endX);
++			eY = Netplay.GetSectionY(endY);
++
++			for (int x = sX; x <= eX; x++)
++				for (int y = sY; y <= eY; y++)
++					SetSectionLoaded(x, y);
+ 		}
+ 
+ 		public bool GetNextMapDraw(Vector2 playerPos, out int x, out int y) {
