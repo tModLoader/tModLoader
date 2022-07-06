@@ -27,6 +27,17 @@
  		public short releaseOwner = 255;
  		public int rarity;
  		public static bool taxCollector = false;
+@@ -90,6 +_,10 @@
+ 		public static int crimsonBoss = -1;
+ 		public int netSkip;
+ 		public bool netAlways;
++		/// <summary>
++		/// Stores the index of a single NPC. This NPC will then share a health pool with that NPC.<br/>
++		/// Used for the Destroyer's various segments and the Wall of Flesh's eyes and mouth.<br/>
++		/// </summary>
+ 		public int realLife = -1;
+ 		private string _givenName = "";
+ 		public static int sWidth = 1920;
 @@ -104,14 +_,14 @@
  		private static int townRangeY = sHeight;
  		public float npcSlots = 1f;

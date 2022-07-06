@@ -153,7 +153,7 @@
  		public static bool[] buffNoSave = new bool[338];
 +		/// <summary>
 +		/// Prevents status effects which have their entries set to true from displaying the amount of time they have left.<br/>
-+		/// Defaults to false; most, if not all, status effects which have their entries set to true here are related to mounts, pets, and summons.
++		/// Defaults to false; most, if not all, status effects which have their entries set to true here are related to mounts, pets, and summons.<br/>
 +		/// </summary>
  		public static bool[] buffNoTimeDisplay = new bool[338];
  		public static bool[] buffDoubleApply = new bool[338];
@@ -398,14 +398,14 @@
  		public static Matrix Transform => GameViewMatrix.TransformationMatrix;
  
 +		/// <summary>
-+		/// Fetches the position of the mouse cursor on the screen.
-+		/// Useful for making things visually happen near the cursor.
++		/// Fetches the position of the mouse cursor on the screen.<br/>
++		/// Useful for making things visually happen near the cursor.<br/>
 +		/// </summary>
  		public static Vector2 MouseScreen => new Vector2(mouseX, mouseY);
  
 +		/// <summary>
-+		/// Fetches the position of the mouse cursor in the world.
-+		/// Useful for making things functionally happen near the cursor, such as projectile or NPC spawns.
++		/// Fetches the position of the mouse cursor in the world.<br/>
++		/// Useful for making things functionally happen near the cursor, such as projectile or NPC spawns.<br/>
 +		/// </summary>
  		public static Vector2 MouseWorld {
  			get {
