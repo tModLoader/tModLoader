@@ -31,7 +31,7 @@ namespace Terraria.ModLoader.IO
 				return list;
 			}
 
-			public static Array ToArray(IList list, int[] arrayRanks, Type targetType = null, Converter converter = null) {
+			public static Array FromList(IList list, int[] arrayRanks, Type targetType = null, Converter converter = null) {
 				ArgumentNullException.ThrowIfNull(list);
 				ArgumentNullException.ThrowIfNull(arrayRanks);
 
@@ -107,7 +107,7 @@ namespace Terraria.ModLoader.IO
 				var tagCompoundGetList = TagCompoundGetListMethodInfo.MakeGenericMethod(sourceType ?? elemType);
 				var list = (IList)tagCompoundGetList.Invoke(tag, new object[] { "list" });
 
-				return ToArray(list, arrayRanks, elemType, converter);
+				return FromList(list, arrayRanks, elemType, converter);
 			}
 		}
 
