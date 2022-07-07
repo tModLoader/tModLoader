@@ -11,14 +11,14 @@ namespace Terraria.ModLoader.IO
 {
 	public static class TagIO
 	{
-		private static class ArrayIO
+		public static class ArrayIO
 		{
 			public delegate object Converter(object elem);
 
 			private static readonly MethodInfo TagCompoundGetListMethodInfo =
 				typeof(TagCompound).GetMethod(nameof(TagCompound.GetList), BindingFlags.Instance | BindingFlags.Public)!;
 
-			private static IList ToList(Array array, Type targetType = null, Converter converter = null) {
+			public static IList ToList(Array array, Type targetType = null, Converter converter = null) {
 				ArgumentNullException.ThrowIfNull(array);
 
 				var arrayType = array.GetType();
@@ -31,7 +31,7 @@ namespace Terraria.ModLoader.IO
 				return list;
 			}
 
-			private static Array ToArray(IList list, int[] arrayRanks, Type targetType = null, Converter converter = null) {
+			public static Array ToArray(IList list, int[] arrayRanks, Type targetType = null, Converter converter = null) {
 				ArgumentNullException.ThrowIfNull(list);
 				ArgumentNullException.ThrowIfNull(arrayRanks);
 
