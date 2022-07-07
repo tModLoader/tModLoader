@@ -11,6 +11,106 @@ namespace Terraria.ModLoader.IO
 {
 	public static class TagIO
 	{
+		private static class ArrayIO
+		{
+			public delegate object Converter(object elem);
+
+			private static readonly MethodInfo TagCompoundGetListMethodInfo =
+				typeof(TagCompound).GetMethod(nameof(TagCompound.GetList), BindingFlags.Instance | BindingFlags.Public)!;
+
+			private static IList ToList(Array array, Type targetType = null, Converter converter = null) {
+				ArgumentNullException.ThrowIfNull(array);
+
+				var arrayType = array.GetType();
+				var listType = typeof(List<>).MakeGenericType(targetType ?? arrayType.GetElementType()!);
+
+				var list = (IList)Activator.CreateInstance(listType, array.Length)!;
+				foreach (var o in array)
+					list.Add(converter != null ? converter(o) : o);
+
+				return list;
+			}
+
+			private static Array ToArray(IList list, int[] arrayRanks, Type targetType = null, Converter converter = null) {
+				ArgumentNullException.ThrowIfNull(list);
+				ArgumentNullException.ThrowIfNull(arrayRanks);
+
+				if (arrayRanks.Length == 0)
+					throw new ArgumentException("Array rank must be greater than 0");
+
+				if (list.Count != arrayRanks.Aggregate(1, (current, length) => current * length))
+					throw new ArgumentException("List length does not match array length");
+
+				if (list is Array arr && arr.Rank == arrayRanks.Length && converter is null)
+					return arr;
+
+				var type = list.GetType();
+				var elemType = targetType ?? type.GetElementType();
+				if (elemType is null) {
+					var genericArguments = type.GetGenericArguments();
+					if (genericArguments.Length != 1)
+						throw new ArgumentException("IList type must have exactly one generic argument");
+
+					elemType = genericArguments[0];
+				}
+
+				var array = Array.CreateInstance(elemType, arrayRanks);
+
+				int[] rank = new int[arrayRanks.Length];
+				foreach (object e in list) {
+					var elem = e;
+					for (int r = rank.Length - 1; r >= 0; r--) {
+						if (rank[r] < arrayRanks[r])
+							break;
+
+						if (r == 0)
+							goto end;
+
+						rank[r] = 0;
+						rank[r - 1]++;
+					}
+
+					if (converter != null)
+						elem = converter(elem);
+
+					array.SetValue(elem, rank);
+					rank[^1]++;
+				}
+
+				end:
+				return array;
+			}
+
+			public static TagCompound ToTagCompound(Array array, Type targetType = null, Converter converter = null) {
+				ArgumentNullException.ThrowIfNull(array);
+
+				TagCompound tag = new();
+
+				byte rank = (byte)array.Rank;
+				tag["rank"] = rank;
+				for (int i = 0; i < rank; i++)
+					tag["rank" + i] = array.GetLength(i);
+
+				var list = ToList(array, targetType, converter);
+
+				tag["list"] = list;
+
+				return tag;
+			}
+
+			public static Array FromTagCompound(TagCompound tag, Type elemType, Converter converter, Type sourceType = null) {
+				byte rank = tag.GetByte("rank");
+				int[] arrayRanks = new int[rank];
+				for (int i = 0; i < rank; i++)
+					arrayRanks[i] = tag.GetInt("rank" + i);
+
+				var tagCompoundGetList = TagCompoundGetListMethodInfo.MakeGenericMethod(sourceType ?? elemType);
+				var list = (IList)tagCompoundGetList.Invoke(tag, new object[] { "list" });
+
+				return ToArray(list, arrayRanks, elemType, converter);
+			}
+		}
+
 		private abstract class PayloadHandler
 		{
 			public abstract Type PayloadType { get; }
@@ -165,113 +265,6 @@ namespace Terraria.ModLoader.IO
 
 		private static readonly PayloadHandler<string> StringHandler = (PayloadHandler<string>)PayloadHandlers[8];
 
-		private static int[] GetArrayRanks(Array array) {
-			ArgumentNullException.ThrowIfNull(array);
-
-			int[] arrayRanks = new int[array.Rank];
-			for (int i = 0; i < arrayRanks.Length; i++)
-				arrayRanks[i] = array.GetLength(i);
-
-			return arrayRanks;
-		}
-
-		private delegate object Converter(object elem);
-
-		private static readonly MethodInfo TagCompoundGetListMethodInfo =
-			typeof(TagCompound).GetMethod(nameof(TagCompound.GetList), BindingFlags.Instance | BindingFlags.Public)!;
-
-		private static IList ArrayToList(Array array, Type targetType = null, Converter converter = null) {
-			ArgumentNullException.ThrowIfNull(array);
-
-			var arrayType = array.GetType();
-			var listType = typeof(List<>).MakeGenericType(targetType ?? arrayType.GetElementType()!);
-
-			var list = (IList)Activator.CreateInstance(listType, array.Length)!;
-			foreach (var o in array)
-				list.Add(converter != null ? converter(o) : o);
-
-			return list;
-		}
-
-		private static Array ListToArray(IList list, int[] arrayRanks, Type targetType = null, Converter converter = null) {
-			ArgumentNullException.ThrowIfNull(list);
-			ArgumentNullException.ThrowIfNull(arrayRanks);
-
-			if (arrayRanks.Length == 0)
-				throw new ArgumentException("Array rank must be greater than 0");
-
-			if (list.Count != arrayRanks.Aggregate(1, (current, length) => current * length))
-				throw new ArgumentException("List length does not match array length");
-
-			if (list is Array arr && arr.Rank == arrayRanks.Length && converter is null)
-				return arr;
-
-			var type = list.GetType();
-			var elemType = targetType ?? type.GetElementType();
-			if (elemType is null) {
-				var genericArguments = type.GetGenericArguments();
-				if (genericArguments.Length != 1)
-					throw new ArgumentException("IList type must have exactly one generic argument");
-
-				elemType = genericArguments[0];
-			}
-
-			var array = Array.CreateInstance(elemType, arrayRanks);
-
-			int[] rank = new int[arrayRanks.Length];
-			foreach (object e in list) {
-				var elem = e;
-				for (int r = rank.Length - 1; r >= 0; r--) {
-					if (rank[r] < arrayRanks[r])
-						break;
-
-					if (r == 0)
-						goto end;
-
-					rank[r] = 0;
-					rank[r - 1]++;
-				}
-
-				if (converter != null)
-					elem = converter(elem);
-
-				array.SetValue(elem, rank);
-				rank[^1]++;
-			}
-
-			end:
-			return array;
-		}
-
-		private static TagCompound ArrayToTagCompound(Array array, Type targetType = null, Converter converter = null) {
-			ArgumentNullException.ThrowIfNull(array);
-
-			TagCompound tag = new();
-
-			byte rank = (byte)array.Rank;
-			tag["rank"] = rank;
-			for (int i = 0; i < rank; i++)
-				tag["rank" + i] = array.GetLength(i);
-
-			var list = ArrayToList(array, targetType, converter);
-
-			tag["list"] = list;
-
-			return tag;
-		}
-
-		private static Array TagCompoundToArray(TagCompound tag, Type elemType, Converter converter, Type sourceType = null) {
-			byte rank = tag.GetByte("rank");
-			int[] arrayRanks = new int[rank];
-			for (int i = 0; i < rank; i++)
-				arrayRanks[i] = tag.GetInt("rank" + i);
-
-			var tagCompoundGetList = TagCompoundGetListMethodInfo.MakeGenericMethod(sourceType ?? elemType);
-			var list = (IList)tagCompoundGetList.Invoke(tag, new object[] { "list" });
-
-			return ListToArray(list, arrayRanks, elemType, converter);
-		}
-
 		private static PayloadHandler GetHandler(int id) {
 			if (id < 1 || id >= PayloadHandlers.Length)
 				throw new IOException("Invalid NBT payload id: " + id);
@@ -304,10 +297,10 @@ namespace Terraria.ModLoader.IO
 				var array = (Array)value;
 				elemType = type.GetElementType()!;
 				if (TagSerializer.TryGetSerializer(elemType, out serializer))
-					return ArrayToTagCompound(array, serializer.TagType, elem => serializer.Serialize(elem));
+					return ArrayIO.ToTagCompound(array, serializer.TagType, elem => serializer.Serialize(elem));
 
 				if (GetPayloadId(elemType) != 9)
-					return ArrayToTagCompound(array);
+					return ArrayIO.ToTagCompound(array);
 
 				// array of lists conversion
 				Type arrayTargetType;
@@ -316,7 +309,7 @@ namespace Terraria.ModLoader.IO
 				else
 					arrayTargetType = elemType.GetElementType() ?? elemType.GetGenericArguments()[0];
 
-				return ArrayToTagCompound(array, arrayTargetType, Serialize);
+				return ArrayIO.ToTagCompound(array, arrayTargetType, Serialize);
 			}
 
 			var list = (IList)value;
@@ -378,10 +371,10 @@ namespace Terraria.ModLoader.IO
 					var tagCompound = (TagCompound)tag;
 
 					if (TagSerializer.TryGetSerializer(elemType, out serializer))
-						return TagCompoundToArray(tagCompound, serializer.Type, elem => serializer.Deserialize(elem), serializer.TagType);
+						return ArrayIO.FromTagCompound(tagCompound, serializer.Type, elem => serializer.Deserialize(elem), serializer.TagType);
 
 					// create a strongly typed nested array
-					return TagCompoundToArray(tagCompound, elemType, elem => Deserialize(elemType, elem));
+					return ArrayIO.FromTagCompound(tagCompound, elemType, elem => Deserialize(elemType, elem));
 				}
 
 				if (type.GetGenericArguments().Length == 1) {
