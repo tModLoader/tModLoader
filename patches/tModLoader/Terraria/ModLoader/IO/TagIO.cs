@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Terraria.ModLoader.IO
@@ -157,49 +158,6 @@ namespace Terraria.ModLoader.IO
 				},
 				v => (int[]) v.Clone(),
 				() => Array.Empty<int>()),
-			new ClassPayloadHandler<Array>(
-				r => {
-					var handler = GetHandler(r.ReadByte());
-
-					int[] arrayRanks = new int[r.ReadByte()];
-					int totalLength = 1;
-					for (int i = 0; i < arrayRanks.Length; i++)
-						totalLength *= arrayRanks[i] = r.ReadInt32();
-
-					return ListToArray(handler.ReadList(r, totalLength), arrayRanks);
-				},
-				(w, array) => {
-					int id;
-					var type = array.GetType();
-					var elemType = type.GetElementType()!;
-					try {
-						id = GetPayloadId(elemType);
-					}
-					catch (IOException) {
-						throw new IOException("Invalid NBT array type: " + type);
-					}
-					w.Write((byte)id);
-
-					byte arrayRank = (byte)array.Rank;
-					w.Write(arrayRank);
-					for (int i = 0; i < arrayRank; i++)
-						w.Write(array.GetLength(i));
-
-					var handler = PayloadHandlers[id];
-					foreach (var o in array)
-						handler.Write(w, o);
-				},
-				v => {
-					try {
-						var elementType = v.GetType().GetElementType()!;
-						var handler = GetHandler(GetPayloadId(elementType));
-
-						return ConvertArray(v, handler.PayloadType, elem => handler.Clone(elem));
-					}
-					catch (IOException) {
-						throw new IOException("Invalid NBT list type: " + v.GetType());
-					}
-				}),
 		};
 
 		private static readonly Dictionary<Type, int> PayloadIDs =
@@ -217,9 +175,25 @@ namespace Terraria.ModLoader.IO
 			return arrayRanks;
 		}
 
-		private static Array ConvertArray(Array array, Type targetType, Func<object, object> converter) => ListToArray(array, GetArrayRanks(array), targetType, converter);
+		private delegate object Converter(object elem);
 
-		private static Array ListToArray(IList list, int[] arrayRanks, Type targetType = null, Func<object, object> converter = null) {
+		private static readonly MethodInfo TagCompoundGetListMethodInfo =
+			typeof(TagCompound).GetMethod(nameof(TagCompound.GetList), BindingFlags.Instance | BindingFlags.Public)!;
+
+		private static IList ArrayToList(Array array, Type targetType = null, Converter converter = null) {
+			ArgumentNullException.ThrowIfNull(array);
+
+			var arrayType = array.GetType();
+			var listType = typeof(List<>).MakeGenericType(targetType ?? arrayType.GetElementType()!);
+
+			var list = (IList)Activator.CreateInstance(listType, array.Length)!;
+			foreach (var o in array)
+				list.Add(converter != null ? converter(o) : o);
+
+			return list;
+		}
+
+		private static Array ListToArray(IList list, int[] arrayRanks, Type targetType = null, Converter converter = null) {
 			ArgumentNullException.ThrowIfNull(list);
 			ArgumentNullException.ThrowIfNull(arrayRanks);
 
@@ -269,6 +243,35 @@ namespace Terraria.ModLoader.IO
 			return array;
 		}
 
+		private static TagCompound ArrayToTagCompound(Array array, Type targetType = null, Converter converter = null) {
+			ArgumentNullException.ThrowIfNull(array);
+
+			TagCompound tag = new();
+
+			byte rank = (byte)array.Rank;
+			tag["rank"] = rank;
+			for (int i = 0; i < rank; i++)
+				tag["rank" + i] = array.GetLength(i);
+
+			var list = ArrayToList(array, targetType, converter);
+
+			tag["list"] = list;
+
+			return tag;
+		}
+
+		private static Array TagCompoundToArray(TagCompound tag, Type elemType, Converter converter, Type sourceType = null) {
+			byte rank = tag.GetByte("rank");
+			int[] arrayRanks = new int[rank];
+			for (int i = 0; i < rank; i++)
+				arrayRanks[i] = tag.GetInt("rank" + i);
+
+			var tagCompoundGetList = TagCompoundGetListMethodInfo.MakeGenericMethod(sourceType ?? elemType);
+			var list = (IList)tagCompoundGetList.Invoke(tag, new object[] { "list" });
+
+			return ListToArray(list, arrayRanks, elemType, converter);
+		}
+
 		private static PayloadHandler GetHandler(int id) {
 			if (id < 1 || id >= PayloadHandlers.Length)
 				throw new IOException("Invalid NBT payload id: " + id);
@@ -279,9 +282,6 @@ namespace Terraria.ModLoader.IO
 		private static int GetPayloadId(Type t) {
 			if (PayloadIDs.TryGetValue(t, out int id))
 				return id;
-
-			if (t.IsArray)
-				return 12;
 
 			if (typeof(IList).IsAssignableFrom(t))
 				return 9;
@@ -296,7 +296,7 @@ namespace Terraria.ModLoader.IO
 				return serializer.Serialize(value);
 
 			// does a base level typecheck with throw
-			if (GetPayloadId(type) is not (9 or 12))
+			if (GetPayloadId(type) != 9)
 				return value;
 
 			Type elemType;
@@ -304,21 +304,19 @@ namespace Terraria.ModLoader.IO
 				var array = (Array)value;
 				elemType = type.GetElementType()!;
 				if (TagSerializer.TryGetSerializer(elemType, out serializer))
-					return ConvertArray(array, serializer.TagType, elem => serializer.Serialize(elem));
+					return ArrayToTagCompound(array, serializer.TagType, elem => serializer.Serialize(elem));
 
-				if (GetPayloadId(elemType) is not (9 or 12))
-					return array;
+				if (GetPayloadId(elemType) != 9)
+					return ArrayToTagCompound(array);
 
 				// array of lists conversion
 				Type arrayTargetType;
-				if (array.Cast<object>().FirstOrDefault(elem => elem != default) is { } obj) {
+				if (array.Cast<object>().FirstOrDefault(elem => elem != default) is { } obj)
 					arrayTargetType = Serialize(obj).GetType();
-				}
-				else {
+				else
 					arrayTargetType = elemType.GetElementType() ?? elemType.GetGenericArguments()[0];
-				}
 
-				return ConvertArray(array, arrayTargetType, Serialize);
+				return ArrayToTagCompound(array, arrayTargetType, Serialize);
 			}
 
 			var list = (IList)value;
@@ -326,22 +324,20 @@ namespace Terraria.ModLoader.IO
 			if (TagSerializer.TryGetSerializer(elemType, out serializer))
 				return serializer.SerializeList(list);
 
-			if (GetPayloadId(elemType) is not (9 or 12))
+			if (GetPayloadId(elemType) != 9)
 				return list; // already a valid NBT list type
 
 			// list of lists conversion
 			Type listTargetType;
-			if (list.Cast<object>().FirstOrDefault(elem => elem != default) is { } e) {
+			if (list.Cast<object>().FirstOrDefault(elem => elem != default) is { } e)
 				listTargetType = Serialize(e).GetType();
-			}
-			else {
+			else
 				listTargetType = elemType.GetElementType() ?? elemType.GetGenericArguments()[0];
-			}
 
 			var targetList = typeof(List<>).MakeGenericType(listTargetType)!;
 			var serializedList = (IList)Activator.CreateInstance(targetList, list.Count)!;
 			foreach (var elem in list)
-				serializedList.Add((IList)Serialize(elem));
+				serializedList.Add(Serialize(elem));
 
 			return serializedList;
 		}
@@ -372,19 +368,20 @@ namespace Terraria.ModLoader.IO
 			}
 
 			//list conversion required
-			if (tag == null || tag is IList) {
+			if (tag == null || tag is IList || type.IsArray) {
 				if (type.IsArray) {
 					var elemType = type.GetElementType()!;
 
 					if (tag == null)
 						return Array.CreateInstance(elemType, new int[elemType.GetArrayRank()]);
 
-					var array = (Array)tag;
+					var tagCompound = (TagCompound)tag;
+
 					if (TagSerializer.TryGetSerializer(elemType, out serializer))
-						return ConvertArray(array, serializer.Type, elem => serializer.Deserialize(elem));
+						return TagCompoundToArray(tagCompound, serializer.Type, elem => serializer.Deserialize(elem), serializer.TagType);
 
 					// create a strongly typed nested array
-					return ConvertArray(array, elemType, elem => Deserialize(elemType, elem));
+					return TagCompoundToArray(tagCompound, elemType, elem => Deserialize(elemType, elem));
 				}
 
 				if (type.GetGenericArguments().Length == 1) {
