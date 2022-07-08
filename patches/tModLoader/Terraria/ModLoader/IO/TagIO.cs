@@ -41,9 +41,6 @@ namespace Terraria.ModLoader.IO
 				if (list.Count != arrayRanks.Aggregate(1, (current, length) => current * length))
 					throw new ArgumentException("List length does not match array length");
 
-				if (list is Array arr && arr.Rank == arrayRanks.Length && converter is null)
-					return arr;
-
 				var type = list.GetType();
 				var elemType = targetType ?? type.GetElementType();
 				if (elemType is null) {
