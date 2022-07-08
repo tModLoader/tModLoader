@@ -99,6 +99,9 @@ namespace Terraria.ModLoader.IO
 			}
 
 			public static Array FromTagCompound(TagCompound tag, Type elemType, Converter converter, Type sourceType = null) {
+				ArgumentNullException.ThrowIfNull(tag);
+				ArgumentNullException.ThrowIfNull(elemType);
+
 				byte rank = tag.GetByte("rank");
 				int[] arrayRanks = new int[rank];
 				for (int i = 0; i < rank; i++)
