@@ -95,7 +95,7 @@ namespace Terraria.ModLoader.IO
 				return tag;
 			}
 
-			public static Array FromTagCompound(TagCompound tag, Type elemType, Converter converter, Type sourceType = null) {
+			public static Array FromTagCompound(TagCompound tag, Type elemType, Converter converter = null, Type sourceType = null) {
 				ArgumentNullException.ThrowIfNull(tag);
 				ArgumentNullException.ThrowIfNull(elemType);
 
