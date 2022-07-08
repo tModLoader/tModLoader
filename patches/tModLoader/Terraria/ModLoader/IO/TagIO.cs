@@ -86,7 +86,7 @@ namespace Terraria.ModLoader.IO
 				byte rank = (byte)array.Rank;
 				tag["rank"] = rank;
 				for (int i = 0; i < rank; i++)
-					tag["rank" + i] = array.GetLength(i);
+					tag["rank-" + i] = array.GetLength(i);
 
 				var list = ToList(array, targetType, converter);
 
@@ -102,7 +102,7 @@ namespace Terraria.ModLoader.IO
 				byte rank = tag.GetByte("rank");
 				int[] arrayRanks = new int[rank];
 				for (int i = 0; i < rank; i++)
-					arrayRanks[i] = tag.GetInt("rank" + i);
+					arrayRanks[i] = tag.GetInt("rank-" + i);
 
 				var tagCompoundGetList = TagCompoundGetListMethodInfo.MakeGenericMethod(sourceType ?? elemType);
 				var list = (IList)tagCompoundGetList.Invoke(tag, new object[] { "list" });
