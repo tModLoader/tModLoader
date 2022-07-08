@@ -366,7 +366,7 @@ namespace Terraria.ModLoader.IO
 					var elemType = type.GetElementType()!;
 
 					if (tag == null)
-						return Array.CreateInstance(elemType, new int[elemType.GetArrayRank()]);
+						return Array.CreateInstance(elemType, new int[type.GetArrayRank()]);
 
 					var tagCompound = (TagCompound)tag;
 
