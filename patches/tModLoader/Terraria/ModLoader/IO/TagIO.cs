@@ -18,11 +18,11 @@ namespace Terraria.ModLoader.IO
 			private static readonly MethodInfo TagCompoundGetListMethodInfo =
 				typeof(TagCompound).GetMethod(nameof(TagCompound.GetList), BindingFlags.Instance | BindingFlags.Public)!;
 
-			public static IList ToList(Array array, Type targetType = null, Converter converter = null) {
+			public static IList ToList(Array array, Type elemType = null, Converter converter = null) {
 				ArgumentNullException.ThrowIfNull(array);
 
 				var arrayType = array.GetType();
-				var listType = typeof(List<>).MakeGenericType(targetType ?? arrayType.GetElementType()!);
+				var listType = typeof(List<>).MakeGenericType(elemType ?? arrayType.GetElementType()!);
 
 				var list = (IList)Activator.CreateInstance(listType, array.Length)!;
 				foreach (var o in array)
@@ -31,7 +31,7 @@ namespace Terraria.ModLoader.IO
 				return list;
 			}
 
-			public static Array FromList(IList list, int[] arrayRanks, Type targetType = null, Converter converter = null) {
+			public static Array FromList(IList list, int[] arrayRanks, Type elemType = null, Converter converter = null) {
 				ArgumentNullException.ThrowIfNull(list);
 				ArgumentNullException.ThrowIfNull(arrayRanks);
 
@@ -42,10 +42,9 @@ namespace Terraria.ModLoader.IO
 					throw new ArgumentException("List length does not match array length");
 
 				var type = list.GetType();
-				var elemType = targetType ?? type.GetElementType();
+				elemType ??= type.GetElementType();
 				if (elemType is null) {
-					var genericArguments = type.GetGenericArguments();
-					if (genericArguments.Length != 1)
+					if (type.GetGenericArguments() is not { Length: 1 } genericArguments)
 						throw new ArgumentException("IList type must have exactly one generic argument");
 
 					elemType = genericArguments[0];
@@ -53,32 +52,32 @@ namespace Terraria.ModLoader.IO
 
 				var array = Array.CreateInstance(elemType, arrayRanks);
 
-				int[] rank = new int[arrayRanks.Length];
-				foreach (object e in list) {
-					var elem = e;
-					for (int r = rank.Length - 1; r >= 0; r--) {
-						if (rank[r] < arrayRanks[r])
+				int[] indices = new int[arrayRanks.Length];
+				foreach (var e in list) {
+					var value = e;
+					for (int r = indices.Length - 1; r >= 0; r--) {
+						if (indices[r] < arrayRanks[r])
 							break;
 
 						if (r == 0)
 							goto end;
 
-						rank[r] = 0;
-						rank[r - 1]++;
+						indices[r] = 0;
+						indices[r - 1]++;
 					}
 
 					if (converter != null)
-						elem = converter(elem);
+						value = converter(value);
 
-					array.SetValue(elem, rank);
-					rank[^1]++;
+					array.SetValue(value, indices);
+					indices[^1]++;
 				}
 
 				end:
 				return array;
 			}
 
-			public static TagCompound ToTagCompound(Array array, Type targetType = null, Converter converter = null) {
+			public static TagCompound ToTagCompound(Array array, Type elemType = null, Converter converter = null) {
 				ArgumentNullException.ThrowIfNull(array);
 
 				TagCompound tag = new();
@@ -88,7 +87,7 @@ namespace Terraria.ModLoader.IO
 				for (int i = 0; i < rank; i++)
 					tag["rank-" + i] = array.GetLength(i);
 
-				var list = ToList(array, targetType, converter);
+				var list = ToList(array, elemType, converter);
 
 				tag["list"] = list;
 
