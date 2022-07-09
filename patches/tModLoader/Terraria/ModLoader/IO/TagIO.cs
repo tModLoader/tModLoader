@@ -351,7 +351,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			// normal nbt type with missing value
-			if (tag == null) {
+			if (tag == null && !type.IsArray) {
 				if (type.GetGenericArguments().Length == 0)
 					return GetHandler(GetPayloadId(type)).Default();
 
