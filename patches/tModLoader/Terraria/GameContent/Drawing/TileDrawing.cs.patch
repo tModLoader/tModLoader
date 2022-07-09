@@ -536,27 +536,40 @@
  				if (tileLight.R < 200)
  					tileLight.R = 200;
  
-@@ -5755,7 +_,15 @@
+@@ -5755,7 +_,17 @@
  			}
  		}
  
 +		/// <summary>
-+		/// Determines how much wind should affect a theoretical tile at the given location on the current update tick.
++		/// Determines how much wind should affect a theoretical tile at the target location on the current update tick.
 +		/// </summary>
 +		/// <param name="i">The X coordinate of the theoretical target tile.</param>
 +		/// <param name="j">The Y coordinate of the theoretical target tile.</param>
 +		/// <param name="pushAnimationTimeTotal">The total amount of time, in ticks, that a wind push cycle for the theoretical target tile should last for.</param>
 +		/// <param name="pushForcePerFrame">The amount which wind should affect the theoretical target tile per frame.</param>
-+		/// <returns></returns>
++		/// <returns>
++		/// The degree to which wind should affect the theoretical target tile, represented as a float.
++		/// </returns>
 -		private float GetWindGridPush(int i, int j, int pushAnimationTimeTotal, float pushForcePerFrame) {
 +		public float GetWindGridPush(int i, int j, int pushAnimationTimeTotal, float pushForcePerFrame) {
  			_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out int windTimeLeft, out int direction);
  			if (windTimeLeft >= pushAnimationTimeTotal / 2)
  				return (float)(pushAnimationTimeTotal - windTimeLeft) * pushForcePerFrame * (float)direction;
-@@ -5763,7 +_,7 @@
+@@ -5763,7 +_,18 @@
  			return (float)windTimeLeft * pushForcePerFrame * (float)direction;
  		}
  
++		/// <summary>
++		/// Determines how much wind should affect a theoretical tile at the target location on the current update tick.<br/>
++		/// More complex version of <see cref="GetWindGridPush"/>.
++		/// </summary>
++		/// <param name="i">The X coordinate of the theoretical target tile.</param>
++		/// <param name="j">The Y coordinate of the theoretical target tile.</param>
++		/// <param name="pushAnimationTimeTotal">The total amount of time, in ticks, that a wind push cycle for the theoretical target tile should last for.</param>
++		/// <param name="totalPushForce"></param>
++		/// <param name="loops"></param>
++		/// <param name="flipDirectionPerLoop"></param>
++		/// <returns></returns>
 -		private float GetWindGridPushComplex(int i, int j, int pushAnimationTimeTotal, float totalPushForce, int loops, bool flipDirectionPerLoop) {
 +		public float GetWindGridPushComplex(int i, int j, int pushAnimationTimeTotal, float totalPushForce, int loops, bool flipDirectionPerLoop) {
  			_windGrid.GetWindTime(i, j, pushAnimationTimeTotal, out int windTimeLeft, out int direction);
