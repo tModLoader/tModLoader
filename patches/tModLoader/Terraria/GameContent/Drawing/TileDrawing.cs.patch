@@ -16,15 +16,6 @@
  	{
  		private enum TileCounterType
  		{
-@@ -70,7 +_,7 @@
- 		private double _grassWindCounter;
- 		private double _sunflowerWindCounter;
- 		private double _vineWindCounter;
--		private WindGrid _windGrid = new WindGrid();
-+		public WindGrid _windGrid = new WindGrid();
- 		private bool _shouldShowInvisibleBlocks;
- 		private List<Point> _vineRootsPositions = new List<Point>();
- 		private List<Point> _reverseVineRootsPositions = new List<Point>();
 @@ -142,11 +_,11 @@
  					if (tile == null)
  						continue;
