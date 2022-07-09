@@ -94,7 +94,7 @@
  				for (int j = 0; j < 200; j++) {
  					perIDStaticNPCImmunity[i][j] = 0u;
  				}
-@@ -221,7 +_,38 @@
+@@ -221,7 +_,39 @@
  			}
  		}
  
@@ -129,6 +129,7 @@
 +			ArmorPenetration = 0;
 +			CritChance = 0;
 +			WhipSettings = default;
++			ContinuouslyUpdateDamage = false;
 +			nameOverride = null;
  			ownerHitCheckDistance = 1000f;
  			counterweight = false;
