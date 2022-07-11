@@ -5,8 +5,8 @@
  		private InputMode _inputmode;
  		private Color _color;
 -		private string _keybind;
-+		private string _modName;
-+		private string _bindName;
++		private readonly string _modName;
++		private readonly string _bindName;
 +		private string _keybind => _modName == "Terraria" ? _bindName : $"{_modName}: {_bindName}";
  
 -		public UIKeybindingListItem(string bind, InputMode mode, Color color) {
@@ -22,7 +22,7 @@
  			switch (_keybind) {
  				default:
 +					if (_modName != "Terraria" && _bindName.StartsWith('$'))
-+						return $"{_modName}: {Language.GetTextValue(_bindName.Remove(0, 1))}";
++						return $"{_modName}: {Language.GetTextValue(_bindName[1..])}";
  					return _keybind;
  				case "MouseLeft":
  					return Lang.menu[162].Value;
