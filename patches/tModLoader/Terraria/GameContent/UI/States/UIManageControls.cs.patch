@@ -150,14 +150,15 @@
  				case "sp14": {
  						UIKeybindingToggleListItem uIKeybindingToggleListItem = new UIKeybindingToggleListItem(() => Lang.menu[205].Value, () => PlayerInput.CurrentProfile.LeftThumbstickInvertX, color);
  						uIKeybindingToggleListItem.OnClick += delegate {
-@@ -602,11 +_,39 @@
+@@ -602,11 +_,40 @@
  						}
  					}, 1008, color);
  				default:
 +					if (_ModBindings.Contains(bind)) {
-+						string defaultKey = KeybindLoader.modKeybinds[bind].defaultBinding;
++						var keybind = KeybindLoader.modKeybinds[bind];
++						string defaultKey = keybind.defaultBinding;
 +						UIElement container = new UIElement();
-+						var left = new UIKeybindingListItem(bind, currentInputMode, color);
++						var left = new UIKeybindingListItem(keybind.mod.Name, keybind.name, currentInputMode, color);
 +						left.Width.Precent = 0.68f;
 +						left.Height.Precent = 1f;
 +						container.Append(left);
@@ -175,7 +176,8 @@
 +						return container;
 +					}
 +
- 					return new UIKeybindingListItem(bind, currentInputMode, color);
+-					return new UIKeybindingListItem(bind, currentInputMode, color);
++					return new UIKeybindingListItem("Terraria", bind, currentInputMode, color);
  			}
  		}
  

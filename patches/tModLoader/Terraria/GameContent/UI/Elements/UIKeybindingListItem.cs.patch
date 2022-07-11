@@ -1,6 +1,30 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIKeybindingListItem.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIKeybindingListItem.cs
-@@ -104,6 +_,12 @@
+@@ -13,10 +_,13 @@
+ 	{
+ 		private InputMode _inputmode;
+ 		private Color _color;
+-		private string _keybind;
++		private string _modName;
++		private string _bindName;
++		private string _keybind => _modName == "Terraria" ? _bindName : $"{_modName}: {_bindName}";
+ 
+-		public UIKeybindingListItem(string bind, InputMode mode, Color color) {
++		public UIKeybindingListItem(string modName, string bindName, InputMode mode, Color color) {
+-			_keybind = bind;
++			_modName = modName;
++			_bindName = bindName;
+ 			_inputmode = mode;
+ 			_color = color;
+ 			base.OnClick += OnClickMethod;
+@@ -99,11 +_,19 @@
+ 		private string GetFriendlyName() {
+ 			switch (_keybind) {
+ 				default:
++					if (_modName != "Terraria" && _bindName.StartsWith('$'))
++						return $"{_modName}: {Language.GetTextValue(_bindName.Remove(0, 1))}";
+ 					return _keybind;
+ 				case "MouseLeft":
  					return Lang.menu[162].Value;
  				case "MouseRight":
  					return Lang.menu[163].Value;
