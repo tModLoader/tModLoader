@@ -33,7 +33,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.scale = 1f; // The scale of the projectile. This only effects the drawing and the width of the collision.
 			Projectile.hide = true; // We are drawing the projectile ourself. See PreDraw() below.
 			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
-			Projectile.DamageType = DamageClass.Melee; // Set the damage to melee damage.
+			Projectile.DamageType = DamageClass.MeleeNoSpeed; // Set the damage to melee damage.
 
 			// Act like the normal Jousting Lance. Use this if you set the aiStyle to 19.
 			// AIType = ProjectileID.JoustingLance; 
