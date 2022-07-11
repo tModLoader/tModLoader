@@ -10,7 +10,7 @@ namespace ExampleMod.Common.Systems
 
 		public override void Load() {
 			// Registers a new keybind
-			RandomBuffKeybind = KeybindLoader.RegisterKeybind(Mod, "Random Buff", "P");
+			RandomBuffKeybind = KeybindLoader.RegisterKeybind(Mod, "$Mods.ExampleMod.Keybind.RandomBuff", "P");
 		}
 
 		// Please see ExampleMod.cs' Unload() method for a detailed explanation of the unloading process.

@@ -35,6 +35,10 @@ Mods: {
 		DamageClassName: {
 			ExampleDamageClass: example damage
 		}
+
+		Keybind: {
+			RandomBuff: Random Buff
+		}
 		
 		NPCName: {
 			ExampleCustomAISlimeNPC: Flutter Slime
