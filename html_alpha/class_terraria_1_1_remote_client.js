@@ -13,7 +13,6 @@ var class_terraria_1_1_remote_client =
     [ "IsActive", "class_terraria_1_1_remote_client.html#a637b34ca20cc481ecc9d0fb885d6fd8c", null ],
     [ "IsAnnouncementCompleted", "class_terraria_1_1_remote_client.html#a179108531eaa2a41b6b42964ee6f056d", null ],
     [ "Name", "class_terraria_1_1_remote_client.html#a9d1a050f417188dd45e0f2076a8ec8ec", null ],
-    [ "PendingTermination", "class_terraria_1_1_remote_client.html#a935da17ed3735765e148b45b33f7421e", null ],
     [ "PendingTerminationApproved", "class_terraria_1_1_remote_client.html#a8b5474e75266c00bb66680c39d32fee5", null ],
     [ "ReadBuffer", "class_terraria_1_1_remote_client.html#a15e52d37e7952928c2a660123a22482f", null ],
     [ "Socket", "class_terraria_1_1_remote_client.html#ae7f346a22173688ac89ebea42f444676", null ],
@@ -31,5 +30,6 @@ var class_terraria_1_1_remote_client =
     [ "StatusText", "class_terraria_1_1_remote_client.html#a0d8394fdfd3b0fa3676f0b9487d5f2f4", null ],
     [ "StatusText2", "class_terraria_1_1_remote_client.html#ad58f6ccdaefb75aa88b50b72bc88039e", null ],
     [ "TileSections", "class_terraria_1_1_remote_client.html#afc0ffd0dc9bad8c0b12bf8a6200e781e", null ],
-    [ "TimeOutTimer", "class_terraria_1_1_remote_client.html#a5f17fb30e8a5d4d6566695431b563a5a", null ]
+    [ "TimeOutTimer", "class_terraria_1_1_remote_client.html#a5f17fb30e8a5d4d6566695431b563a5a", null ],
+    [ "PendingTermination", "class_terraria_1_1_remote_client.html#a935da17ed3735765e148b45b33f7421e", null ]
 ];
