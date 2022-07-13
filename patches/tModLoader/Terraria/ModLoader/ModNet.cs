@@ -378,8 +378,16 @@ namespace Terraria.ModLoader
 				Main.player[Main.myPlayer].hostile = false;
 				Main.clientPlayer = (Player)Main.player[Main.myPlayer].clientClone();
 
-				Main.menuMode = 10;
-				OnModsDownloaded(false);
+				if (!Netplay.Connection.Socket.IsConnected()) {
+					Main.menuMode = MenuID.Error;
+					Logging.tML.Error("Disconnected from server during reload.");
+					Main.statusText = "Disconnected from server during reload.";
+				}
+				else {
+					Main.menuMode = MenuID.Status;
+					Main.statusText = "Reload complete, joining...";
+					OnModsDownloaded(false);
+				}
 			};
 		}
 
