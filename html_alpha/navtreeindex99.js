@@ -1,5 +1,6 @@
 var NAVTREEINDEX99 =
 {
+"class_terraria_1_1_mod_loader_1_1_watches_info_display.html#a5f0c551da53016fe9bc549ba5a0754ef":[2,0,2,13,168,0],
 "class_terraria_1_1_mod_loader_1_1_watches_info_display.html#a87ccacc9750ed013710abe1c2cdb85d7":[2,0,2,13,168,2],
 "class_terraria_1_1_mod_loader_1_1_watches_info_display.html#ab6db5b9c1502c0cc59530c257ca92370":[2,0,2,13,168,1],
 "class_terraria_1_1_mod_loader_1_1_water_fall_styles_loader.html":[2,0,2,13,169],
@@ -248,6 +249,5 @@ var NAVTREEINDEX99 =
 "class_terraria_1_1_mount_1_1_mount_data.html#aea2d40db4bd05d251f60e94174912565":[2,0,2,50,0,11],
 "class_terraria_1_1_mount_1_1_mount_data.html#aee45a93ef44247fdc82935f9baf3815f":[2,0,2,50,0,9],
 "class_terraria_1_1_mount_1_1_mount_data.html#aee5a802e483d5cfc209dc66a519df49d":[2,0,2,50,0,61],
-"class_terraria_1_1_mount_1_1_mount_data.html#aef48141c9d3f9a5fbd5bc2af4a3583cb":[2,0,2,50,0,27],
-"class_terraria_1_1_mount_1_1_mount_data.html#af636fc34fb0e1c0779356705e35b1e56":[2,0,2,50,0,59]
+"class_terraria_1_1_mount_1_1_mount_data.html#aef48141c9d3f9a5fbd5bc2af4a3583cb":[2,0,2,50,0,27]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX110 =
 {
+"class_terraria_1_1_recipe_1_1_condition.html#a833876009d5e5036fe2937c8aa9c9358":[2,0,2,60,0,18],
 "class_terraria_1_1_recipe_1_1_condition.html#a837cea70424d9d9c7cc19bf0235c1534":[2,0,2,60,0,6],
 "class_terraria_1_1_recipe_1_1_condition.html#a89149debb142822b64fab8dda329adb1":[2,0,2,60,0,29],
 "class_terraria_1_1_recipe_1_1_condition.html#a8e6acb409496b7702c8e0522963fb526":[2,0,2,60,0,30],
@@ -248,6 +249,5 @@ var NAVTREEINDEX110 =
 "class_terraria_1_1_social_1_1_base_1_1_cloud_social_module.html#ac5c61905f6338c129126d9c8dee8842d":[2,0,2,19,0,4,2],
 "class_terraria_1_1_social_1_1_base_1_1_cloud_social_module.html#afafc2ab22bf6fdd5fc1e8137d2114935":[2,0,2,19,0,4,11],
 "class_terraria_1_1_social_1_1_base_1_1_cloud_social_module.html#afd6088b1ec33dd06eba043c48c7ef3d8":[2,0,2,19,0,4,12],
-"class_terraria_1_1_social_1_1_base_1_1_found_workshop_entry_info.html":[2,0,2,19,0,5],
-"class_terraria_1_1_social_1_1_base_1_1_found_workshop_entry_info.html#a222cd279fef8de52f89144baaf17d8df":[2,0,2,19,0,5,3]
+"class_terraria_1_1_social_1_1_base_1_1_found_workshop_entry_info.html":[2,0,2,19,0,5]
 };
