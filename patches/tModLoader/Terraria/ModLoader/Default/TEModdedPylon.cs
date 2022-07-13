@@ -93,13 +93,13 @@ namespace Terraria.ModLoader.Default
 		}
 
 		public static bool GetModPylonFromCoords(int x, int y, out ModPylon modPylon) {
-			modPylon = null;
 			Tile tile = Main.tile[x, y];
-			if (tile != null && tile.active() && tile.type >= TileID.Count) {
-				modPylon = TileLoader.GetTile(tile.type) as ModPylon;
+			if (tile.active() && TileLoader.GetTile(tile.type) is ModPylon p) {
+				modPylon = p;
 				return true;
 			}
 
+			modPylon = null;
 			return false;
 		}
 	}

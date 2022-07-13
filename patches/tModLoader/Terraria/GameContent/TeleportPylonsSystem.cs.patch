@@ -23,7 +23,7 @@
  
  		public void Update() {
  			if (Main.netMode != 1) {
-@@ -46,11 +_,16 @@
+@@ -46,11 +_,18 @@
  			Utils.Swap(ref _pylons, ref _pylonsOld);
  			_pylons.Clear();
  			foreach (TileEntity value in TileEntity.ByPosition.Values) {
@@ -34,12 +34,14 @@
 -					teleportPylonInfo.PositionInTiles = tETeleportationPylon.Position;
 -					teleportPylonInfo.TypeOfPylon = pylonType;
 +					teleportPylonInfo.PositionInTiles = value.Position;
-+					if (value is TETeleportationPylon vanillaPylon) {
-+						vanillaPylon.TryGetPylonType(out TeleportPylonType vanillaType);
++					if (value is TETeleportationPylon vanillaPylon && vanillaPylon.TryGetPylonType(out TeleportPylonType vanillaType)) {
 +						teleportPylonInfo.TypeOfPylon = vanillaType;
 +					}
 +					else if (TEModdedPylon.GetModPylonFromCoords(value.Position.X, value.Position.Y, out ModPylon modPylon)) {
 +						teleportPylonInfo.TypeOfPylon = (TeleportPylonType)modPylon.PylonType;
++					}
++					else {
++						continue;
 +					}
  					TeleportPylonInfo item = teleportPylonInfo;
  					_pylons.Add(item);
