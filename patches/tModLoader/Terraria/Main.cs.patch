@@ -4870,6 +4870,15 @@
  
  			if (invasionX > (double)spawnTileX) {
  				invasionX -= num;
+@@ -49871,7 +_,7 @@
+ 						Netplay.Clients[k].TimeOutTimer += 3;
+ 
+ 					if (!stopTimeOuts && Netplay.Clients[k].TimeOutTimer > 7200) {
+-						Netplay.Clients[k].PendingTermination = true;
++						Netplay.Clients[k].SetPendingTermination("Timeout");
+ 						Netplay.Clients[k].PendingTerminationApproved = true;
+ 					}
+ 				}
 @@ -49881,6 +_,11 @@
  			}
  		}

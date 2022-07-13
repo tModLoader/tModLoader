@@ -339,6 +339,15 @@
  				writer.BaseStream.Position = num26;
  				if (Main.netMode == 1) {
  					if (Netplay.Connection.Socket.IsConnected()) {
+@@ -1564,7 +_,7 @@
+ 
+ 				buffer[num].writeLocked = false;
+ 				if (msgType == 2 && Main.netMode == 2) {
+-					Netplay.Clients[num].PendingTermination = true;
++					Netplay.Clients[num].SetPendingTermination("Kicked");
+ 					Netplay.Clients[num].PendingTerminationApproved = true;
+ 				}
+ 			}
 @@ -1578,9 +_,11 @@
  					binaryWriter.Write(width);
  					binaryWriter.Write(height);
@@ -433,7 +442,7 @@
  
  						continue;
  					}
-@@ -2053,23 +_,47 @@
+@@ -2053,27 +_,51 @@
  
  			num3 = reader.ReadInt16();
  			for (int m = 0; m < num3; m++) {
@@ -483,6 +492,11 @@
  						Netplay.Disconnect = true;
  					}
  					else {
+-						Netplay.Clients[i].PendingTermination = true;
++						Netplay.Clients[i].SetPendingTermination($"Exception in ReceiveBytes {e.Message}");
+ 					}
+ 				}
+ 			}
 @@ -2089,12 +_,16 @@
  
  				int num = 0;
@@ -514,7 +528,7 @@
 +					*/
 +
 +					if (Main.dedServ) {
-+						Logging.Terraria.Error($"Error on message id:{msgId}, client:{Netplay.Clients[bufferIndex].Socket.GetRemoteAddress()} ({Netplay.Clients[bufferIndex].Name}).", e);
++						Logging.Terraria.Error($"Error on message id:{msgId}, client:{Netplay.Clients[bufferIndex].Socket.GetRemoteAddress().GetFriendlyName()} ({Netplay.Clients[bufferIndex].Name}).", e);
 +					}
  
  					num2 = 0;

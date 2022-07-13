@@ -8,11 +8,13 @@
  
  namespace Terraria.Net.Sockets
  {
-@@ -34,6 +_,7 @@
+@@ -34,6 +_,9 @@
  		}
  
  		void ISocket.Close() {
-+			Logging.Terraria.Debug($"Closing TcpSocket: {_remoteAddress.GetFriendlyName()}");
++			if (_remoteAddress != null)
++				Logging.Terraria.Debug($"Closing TcpSocket: {_remoteAddress.GetFriendlyName()}");
++
  			_remoteAddress = null;
  			_connection.Close();
  		}
@@ -52,12 +54,13 @@
  			_connection.GetStream().BeginWrite(data, 0, size, SendCallback, new Tuple<SocketSendCallback, object>(callback, state));
  #else
  			byte[] array = LegacyNetBufferPool.RequestBuffer(data, offset, size);
-@@ -134,7 +_,7 @@
+@@ -134,7 +_,8 @@
  			while (_isListening && !Netplay.Disconnect) {
  				try {
  					ISocket socket = new TcpSocket(_listener.AcceptTcpClient());
++					// moved to Netplay.OnConnectionAccepted to report steam connections as well
 -					Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
-+					Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
++					// Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
  					_listenerCallback(socket);
  				}
  				catch (Exception) {
