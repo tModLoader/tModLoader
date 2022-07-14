@@ -3285,7 +3285,7 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31830,15 +_,19 @@
+@@ -31830,15 +_,20 @@
  			int stack = mouseItem.stack;
  			mouseItem = r.createItem.Clone();
  			mouseItem.stack += stack;
@@ -3300,8 +3300,9 @@
  			r.Create();
 -			if (mouseItem.type > 0 || r.createItem.type > 0)
 +			if (mouseItem.type > 0 || r.createItem.type > 0) {
-+				ItemLoader.OnCreate(mouseItem, new RecipeCreationContext {recipe = r});
-+				RecipeLoader.OnCraft(mouseItem, r);
++				ItemLoader.OnCreate(mouseItem, new RecipeCreationContext {recipe = r}, RecipeLoader.ConsumedItems);
++				RecipeLoader.OnCraft(mouseItem, r, RecipeLoader.ConsumedItems);
++				RecipeLoader.ConsumedItems.Clear();
  				SoundEngine.PlaySound(7);
 +			}
  		}
