@@ -2699,6 +2699,24 @@
  			if (i == Main.myPlayer && Main.netMode != 2)
  				LockOnHelper.Update();
  
+@@ -17289,6 +_,7 @@
+ 			if (whoAmI != Main.myPlayer) {
+ 				int num2 = (int)(base.position.X + (float)(width / 2)) / 16;
+ 				int num3 = (int)(base.position.Y + (float)(height / 2)) / 16;
++				/*
+ 				if (!WorldGen.InWorld(num2, num3, 4))
+ 					flag = true;
+ 				else if (Main.tile[num2, num3] == null)
+@@ -17301,6 +_,9 @@
+ 					flag = true;
+ 				else if (Main.tile[num2, num3 + 3] == null)
+ 					flag = true;
++				*/
++				if (Main.netMode == 1 && !Main.sectionManager.TilesLoaded(num2 - 3, num3 - 3, num2 + 3, num3 + 3))
++					flag = true;
+ 
+ 				if (flag) {
+ 					outOfRange = true;
 @@ -17334,6 +_,7 @@
  
  			UpdateHairDyeDust();

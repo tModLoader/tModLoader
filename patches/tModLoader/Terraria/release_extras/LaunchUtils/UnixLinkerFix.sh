@@ -12,6 +12,15 @@
 
 echo "Fixing .NET SDL PATH issues" 2>&1 | tee -a "$LogFile"
 
+unixSteamworks="$root_dir/Libraries/Steamworks.NET/20.1.0.0/Steamworks.NET.dll"
+if [ -f "$unixSteamworks" ]; then
+	rm $unixSteamworks
+fi
+steamworksRename="$root_dir/Libraries/Steamworks.NET"
+if [ -d "$steamworksRename" ]; then
+	mv -v "$steamworksRename" "$root_dir/Libraries/steamworks.net" 2>&1 | tee -a "$LogFile"
+fi
+
 if [ "$_uname" = Darwin ]; then
 	library_dir="$root_dir/Libraries/Native/OSX"
 	export DYLD_LIBRARY_PATH="$library_dir"

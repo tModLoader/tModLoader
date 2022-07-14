@@ -12,20 +12,22 @@ namespace Terraria.ModLoader
 	/// <summary>
 	/// A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPlayer classes, much like how the Player class abuses field usage, to keep track of mod-specific information on the player that a ModPlayer instance represents. It also contains hooks to insert your code into the Player class.
 	/// </summary>
-	public abstract class ModPlayer : ModType<Player, ModPlayer>
+	public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	{
+		public ushort Index { get; internal set; }
+
 		/// <summary>
 		/// The Player instance that this ModPlayer instance is attached to.
 		/// </summary>
 		public Player Player => Entity;
 
-		internal ushort index;
-
 		protected override Player CreateTemplateEntity() => null;
 
 		public override ModPlayer NewInstance(Player entity) {
 			var inst = base.NewInstance(entity);
-			inst.index = index;
+			
+			inst.Index = Index;
+
 			return inst;
 		}
 
@@ -858,6 +860,18 @@ namespace Terraria.ModLoader
 		/// <param name="slot">The index in the inventory of the clicked slot.</param>
 		/// <returns>Whether or not to block the default code (sell, trash, move, etc) from running. Returns false by default.</returns>
 		public virtual bool ShiftClickSlot(Item[] inventory, int context, int slot) {
+			return false;
+		}
+
+		/// <summary>
+		/// Called whenever the player hovers over an item slot. This can be used to override <see cref="Main.cursorOverride"/>
+		/// <br>See <see cref="ID.CursorOverrideID"/> for cursor override style IDs</br>
+		/// </summary>
+		/// <param name="inventory">The array of items the slot is part of.</param>
+		/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
+		/// <param name="slot">The index in the inventory of the hover slot.</param>
+		/// <returns>Whether or not to block the default code that modifies <see cref="Main.cursorOverride"/> from running. Returns false by default.</returns>
+		public virtual bool HoverSlot(Item[] inventory, int context, int slot) {
 			return false;
 		}
 

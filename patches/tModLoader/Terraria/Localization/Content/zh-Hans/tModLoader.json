@@ -83,6 +83,17 @@
 		"AskForModIndex": "输入模组序号以启用/禁用模组",
 		"AskForCommand": "请输入命令: ",
 
+		//Mod Config
+		"ModConfigFilterOptions": "筛选选项",
+		"ModConfigNotification": "通知：",
+		"ModConfigModConfig": "模组设置",
+		"ModConfigSaveConfig": "保存设置",
+		"ModConfigBack": "返回",
+		"ModConfigRevertChanges": "撤销改动",
+		"ModConfigRestoreDefaults": "重设为默认",
+		"ModConfigAskingServerToAcceptChanges": "正在请求服务器接受改动……",
+		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "由于需要重载模组而无法保存改动（请从主菜单进入模组列表以调整配置）",
+
 		// Interface
 		"BossBarStyle": "Boss血条样式: {0}",
 		"BossBarStyleNoOptions": "无",
@@ -379,13 +390,13 @@
 		"MSFinding": "查找模组...",
 		"MSInstantiating": "初始化...",
 		"MSSandboxing": "增容中: {0}",
-		"MSIntializing": "初始化：{0}",
 		"MSLoading": "加载中：{0}",
+		// "MSResizing": "Resizing...",
+		// "MSSetupContent": "Configuring Content: {0}",
+		// "MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "卸载中: {0}",
 		"MSFinishingResourceLoading": "资源加载完成",
-		"MSSettingUp": "安装中...",
 		"MSAddingRecipes": "添加合成配方...",
-		"AddingModContent": "添加模组内容...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "部分起始物品无法正常放入背包",

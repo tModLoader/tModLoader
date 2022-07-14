@@ -8,12 +8,59 @@
  
  namespace Terraria.Net.Sockets
  {
-@@ -134,7 +_,7 @@
+@@ -34,6 +_,9 @@
+ 		}
+ 
+ 		void ISocket.Close() {
++			if (_remoteAddress != null)
++				Logging.Terraria.Debug($"Closing TcpSocket: {_remoteAddress.GetFriendlyName()}");
++
+ 			_remoteAddress = null;
+ 			_connection.Close();
+ 		}
+@@ -57,7 +_,7 @@
+ 		}
+ 
+ 		private void SendCallback(IAsyncResult result) {
+-#if WINDOWS
++#if WINDOWS || NETCORE
+ 			Tuple<SocketSendCallback, object> tuple = (Tuple<SocketSendCallback, object>)result.AsyncState;
+ #else
+ 			object[] expr_0B = (object[])result.AsyncState;
+@@ -65,6 +_,9 @@
+ 			Tuple<SocketSendCallback, object> tuple = (Tuple<SocketSendCallback, object>)expr_0B[0];
+ #endif
+ 			try {
++				if (!_connection.Connected)
++					return; // reduce exception spam, because `GetStream` is invalid on a closed/disposed connection
++
+ 				_connection.GetStream().EndWrite(result);
+ 				tuple.Item1(tuple.Item2);
+ 			}
+@@ -77,7 +_,15 @@
+ 		}
+ 
+ 		void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state) {
+-#if WINDOWS
++#if WINDOWS || NETCORE
++			if (!_connection.Connected) { // replace first chance exception with a cleaner log message, because GetStream fails on a closed _connection
++				Logging.Terraria.Debug("TcpSocket, AsyncSend after connection closed.");
++				return;
++			}
++
++			if (ModNet.DetailedLogging)
++				Logging.tML.Debug($"send {size}bytes");
++
+ 			_connection.GetStream().BeginWrite(data, 0, size, SendCallback, new Tuple<SocketSendCallback, object>(callback, state));
+ #else
+ 			byte[] array = LegacyNetBufferPool.RequestBuffer(data, offset, size);
+@@ -134,7 +_,8 @@
  			while (_isListening && !Netplay.Disconnect) {
  				try {
  					ISocket socket = new TcpSocket(_listener.AcceptTcpClient());
++					// moved to Netplay.OnConnectionAccepted to report steam connections as well
 -					Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
-+					Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
++					// Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", socket.GetRemoteAddress()));
  					_listenerCallback(socket);
  				}
  				catch (Exception) {

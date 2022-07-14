@@ -82,6 +82,17 @@
 		"AskForModIndex": "Wpisz liczbę, aby przełączać między włączonymi/wyłączonymi modami",
 		"AskForCommand": "Wpisz komendę: ",
 
+		//Mod Config
+		// "ModConfigFilterOptions": "Filter Options",
+		// "ModConfigNotification": "Notification: ",
+		// "ModConfigModConfig": "Mod Config",
+		// "ModConfigSaveConfig": "Save Config",
+		// "ModConfigBack": "Back",
+		// "ModConfigRevertChanges": "Revert Changes",
+		// "ModConfigRestoreDefaults": "Restore Defaults",
+		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
+		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+
 		// Interface
 		"BossBarStyle": "Styl Paska Bossa: {0}",
 		"BossBarStyleNoOptions": "Bez Opcji",
@@ -378,13 +389,13 @@
 		"MSFinding": "Szukanie Modów...",
 		"MSInstantiating": "Inicjalizowanie Modów...",
 		"MSSandboxing": "Kompatybilizowanie: {0}",
-		"MSIntializing": "Inicjalizowanie: {0}",
 		"MSLoading": "Ładowanie Moda: {0}",
+		// "MSResizing": "Resizing...",
+		// "MSSetupContent": "Configuring Content: {0}",
+		// "MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "Rozładowywanie: {0}",
 		"MSFinishingResourceLoading": "Kończenie ładowania zasobów",
-		"MSSettingUp": "Konfigurowanie...",
 		"MSAddingRecipes": "Dodawanie przepisów...",
-		"AddingModContent": "Dodawanie zawartości modów...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",

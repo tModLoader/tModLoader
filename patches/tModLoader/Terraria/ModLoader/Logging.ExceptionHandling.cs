@@ -23,6 +23,8 @@ namespace Terraria.ModLoader
 			"Terraria.ModLoader.Core.ModCompile",
 			"Delegate.CreateDelegateNoSecurityCheck",
 			"MethodBase.GetMethodBody",
+			"System.Int32.Parse..Terraria.Main.DedServ_PostModLoad", // bad user input in ded-serv console
+			"Convert.ToInt32..Terraria.Main.DedServ_PostModLoad", // bad user input in ded-serv console
 			"Terraria.Net.Sockets.TcpSocket.Terraria.Net.Sockets.ISocket.AsyncSend", // client disconnects from server
 			"System.Diagnostics.Process.Kill", // attempt to kill non-started process when joining server
 			"Terraria.ModLoader.Core.AssemblyManager.CecilAssemblyResolver.Resolve",
@@ -40,7 +42,8 @@ namespace Terraria.ModLoader
 			"Unable to load DLL 'Microsoft.DiaSymReader.Native.x86.dll'", // Roslyn
 		};
 		private static readonly List<string> ignoreThrowingMethods = new() {
-			"at Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
+			"System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException", // connection lost during socket operation
+			"Terraria.Lighting.doColors_Mode", // vanilla lighting which bug randomly happens
 			"System.Threading.CancellationToken.Throw", // an operation (task) was deliberately cancelled
 		};
 		
@@ -87,15 +90,14 @@ namespace Terraria.ModLoader
 				}
 
 				var stackTrace = new StackTrace(true);
+				var traceString = stackTrace.ToString();
 
-				PrettifyStackTraceSources(stackTrace.GetFrames());
-
-				string traceString = stackTrace.ToString();
-
-				if (!oom && ignoreContents.Any(traceString.Contains))
+				if (!oom && ignoreContents.Any(s => MatchContents(traceString, s)))
 					return;
 
-				traceString = traceString.Substring(traceString.IndexOf('\n'));
+				PrettifyStackTraceSources(stackTrace.GetFrames());
+				traceString = stackTrace.ToString();
+				traceString = traceString[traceString.IndexOf('\n')..];
 
 				string exString = args.Exception.GetType() + ": " + args.Exception.Message + traceString;
 
@@ -130,6 +132,22 @@ namespace Terraria.ModLoader
 			}
 			finally {
 				handlerActive.Value = false;
+			}
+		}
+
+		private static bool MatchContents(ReadOnlySpan<char> traceString, ReadOnlySpan<char> contentPattern) {
+			while (true) {
+				int sep = contentPattern.IndexOf("..");
+				var m = sep >= 0 ? contentPattern[..sep] : contentPattern;
+				int f = traceString.IndexOf(m);
+				if (f < 0)
+					return false;
+
+				if (sep < 0)
+					return true;
+
+				traceString = traceString[(f+m.Length)..];
+				contentPattern = contentPattern[(sep+2)..];
 			}
 		}
 	}

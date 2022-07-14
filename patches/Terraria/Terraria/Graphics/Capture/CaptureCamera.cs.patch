@@ -1,20 +1,12 @@
 --- src/decompiled/Terraria/Graphics/Capture/CaptureCamera.cs
 +++ src/Terraria/Terraria/Graphics/Capture/CaptureCamera.cs
-@@ -2,8 +_,13 @@
- using Microsoft.Xna.Framework.Graphics;
- using System;
- using System.Collections.Generic;
-+#if NETCORE
-+using SixLabors.ImageSharp;
-+using SixLabors.ImageSharp.PixelFormats;
-+#else
- using System.Drawing;
- using System.Drawing.Imaging;
-+#endif
- using System.IO;
- using System.Runtime.InteropServices;
+@@ -9,11 +_,17 @@
  using System.Threading;
-@@ -14,6 +_,11 @@
+ using Terraria.Graphics.Effects;
+ using Terraria.Localization;
++using Terraria.Utilities;
+ 
+ namespace Terraria.Graphics.Capture
  {
  	internal class CaptureCamera : IDisposable
  	{
@@ -63,40 +55,19 @@
  				using (Bitmap bitmap = new Bitmap(width, height)) {
  					System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  					BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
-@@ -204,6 +_,9 @@
+@@ -204,6 +_,11 @@
  					bitmap.Save(filename, imageFormat);
  					bitmap.Dispose();
  				}
 +#else
-+				SavePng(width, height, filename);
++				using (FileStream stream = File.Create(filename)) {
++					PlatformUtilities.SavePng(stream, width, height, width, height, _outputData);
++				}
 +#endif
  
  				return true;
  			}
-@@ -213,25 +_,53 @@
- 			}
- 		}
- 
-+#if FNA
-+		private void SavePng(int width, int height, string filename) {
-+			using (FileStream fileStream = File.Create(filename)) {
-+#if !NETCORE
-+				PlatformUtilities.SavePng(fileStream, width, height, width, height, _outputData);
-+#endif
-+				if (!Main.dedServ) {
-+					//var tex = new Texture2D(Main.graphics.GraphicsDevice, width, height);
-+					//tex.SetData(_outputData);
-+					//tex.SaveAsPng(fileStream, width, height);
-+					var image = Image.LoadPixelData<Rgba32>(_outputData, width, height);
-+					image.SaveAsPng(fileStream);
-+				}
-+			}
-+		}
-+#endif
-+
- 		private void SaveImage(Texture2D texture, int width, int height, ImageFormat imageFormat, string foldername, string filename) {
- 			string text = Main.SavePath + Path.DirectorySeparatorChar + "Captures" + Path.DirectorySeparatorChar + foldername;
- 			string filename2 = Path.Combine(text, filename);
+@@ -219,19 +_,30 @@
  			if (!Utils.TryCreatingDirectory(text))
  				return;
  
@@ -127,7 +98,7 @@
  						num += 4;
  						num2 += 4;
  					}
-@@ -239,12 +_,18 @@
+@@ -239,12 +_,20 @@
  					num += texture.Width - width << 2;
  				}
  
@@ -141,7 +112,9 @@
 +#else
 +			}
 +
-+			SavePng(width, height, filename);
++			using (FileStream stream = File.Create(filename2)) {
++				PlatformUtilities.SavePng(stream, width, height, width, height, _outputData);
++			}
 +#endif
  		}
  

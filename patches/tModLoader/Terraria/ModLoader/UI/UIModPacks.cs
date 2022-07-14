@@ -141,7 +141,8 @@ namespace Terraria.ModLoader.UI
 					if (!config.Contains(enabled))
 						continue;
 
-					File.Copy(config, Path.Combine(configsPath, Path.GetFileName(config)));
+					// Overwrite existing config file to fix config collisions (#2661)
+					File.Copy(config, Path.Combine(configsPath, Path.GetFileName(config)), true);
 				}
 
 				// Prep work for export workshop mods to a download manager list

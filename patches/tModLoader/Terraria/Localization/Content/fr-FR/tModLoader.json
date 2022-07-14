@@ -82,6 +82,17 @@
 		"AskForModIndex": "Tapez un nombre pour basculer entre activé/désactivé",
 		"AskForCommand": "Tapez une commande: ",
 
+		//Mod Config
+		// "ModConfigFilterOptions": "Filter Options",
+		// "ModConfigNotification": "Notification: ",
+		// "ModConfigModConfig": "Mod Config",
+		// "ModConfigSaveConfig": "Save Config",
+		// "ModConfigBack": "Back",
+		// "ModConfigRevertChanges": "Revert Changes",
+		// "ModConfigRestoreDefaults": "Restore Defaults",
+		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
+		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+
 		// Interface
 		"BossBarStyle": "Style de Barre de Patron: {0}",
 		"BossBarStyleNoOptions": "Pas D'Options",
@@ -378,13 +389,13 @@
 		"MSFinding": "Listage des Mods...",
 		"MSInstantiating": "Instanciation des Mods...",
 		"MSSandboxing": "Compatibilisation : {0}",
-		"MSIntializing": "Initialisation : {0}",
 		"MSLoading": "Lancement du Mod : {0}",
+		// "MSResizing": "Resizing...",
+		// "MSSetupContent": "Configuring Content: {0}",
+		// "MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "Unloading: {0}",
 		"MSFinishingResourceLoading": "Finalisation du chargement des ressources",
-		"MSSettingUp": "Installation...",
 		"MSAddingRecipes": "Ajout des recettes d'artisanat...",
-		"AddingModContent": "Ajout de contenu de mod...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Votre inventaire ne contenait pas assez de place pour certains objets de départ",
