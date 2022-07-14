@@ -36,7 +36,7 @@ namespace Terraria.ModLoader
 		/// <param name="tileType"> The actual type of tile currently asking if it can be placed. </param>
 		/// <param name="pylonType"> The type of pylon belonging to this tile. </param>
 		/// <returns></returns>
-		public virtual bool? PreCanPlacePylon(int x, int y, int tileType, byte pylonType) {
+		public virtual bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType) {
 			return null;
 		}
 

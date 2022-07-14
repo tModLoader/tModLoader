@@ -11,7 +11,7 @@
  	{
  		public Point16 PositionInTiles;
  		public TeleportPylonType TypeOfPylon;
-+		public ModPylon ModPylon => PylonLoader.GetModPylon((byte)TypeOfPylon);
++		public ModPylon ModPylon => PylonLoader.GetModPylon(TypeOfPylon);
  
  		public bool Equals(TeleportPylonInfo other) {
  			if (PositionInTiles == other.PositionInTiles)

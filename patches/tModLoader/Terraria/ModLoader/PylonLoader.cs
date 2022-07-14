@@ -7,11 +7,11 @@ namespace Terraria.ModLoader
 {
 	public static class PylonLoader
 	{
-		public static readonly byte VanillaPylonCount =  (byte)TeleportPylonType.Victory + 1;
+		public static readonly TeleportPylonType VanillaPylonCount =  TeleportPylonType.Count;
 
 		internal static readonly IList<GlobalPylon> globalPylons = new List<GlobalPylon>();
 		internal static readonly IList<ModPylon> modPylons = new List<ModPylon>();
-		internal static byte nextPylonID = VanillaPylonCount;
+		internal static TeleportPylonType nextPylonID = VanillaPylonCount;
 
 		internal static void Unload() {
 			globalPylons.Clear();
@@ -19,8 +19,8 @@ namespace Terraria.ModLoader
 			nextPylonID = VanillaPylonCount;
 		}
 
-		internal static byte ReservePylonID() {
-			byte nextID = nextPylonID;
+		internal static TeleportPylonType ReservePylonID() {
+			TeleportPylonType nextID = nextPylonID;
 			nextPylonID++;
 
 			return nextID;
@@ -29,7 +29,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns the ModPylon associated with the passed in type. Returns null on failure.
 		/// </summary>
-		public static ModPylon GetModPylon(byte pylonType) {
+		public static ModPylon GetModPylon(TeleportPylonType pylonType) {
 			return pylonType >= VanillaPylonCount ? modPylons[pylonType - VanillaPylonCount] : null;
 		}
 
@@ -42,7 +42,7 @@ namespace Terraria.ModLoader
 			return returnValue;
 		}
 
-		public static bool? PreCanPlacePylon(int x, int y, int tileType, byte pylonType) {
+		public static bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType) {
 			bool? returnValue = null;
 
 			foreach (GlobalPylon globalPylon in globalPylons) {

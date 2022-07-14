@@ -37,7 +37,13 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// What type of Pylon this ModPylon represents.
 		/// </summary>
-		public byte PylonType {
+		/// <remarks>
+		/// The TeleportPylonType enum only has string names up until Count (9). The very first modded pylon to be added will
+		/// technically be accessible with the enum type of "Count" since that value isn't an actual "type" of pylon, and modded
+		/// pylons are assigned IDs starting with the Count value (9). All other modded pylons added after 9 (i.e 10+) will have no
+		/// enum name, and will only every be referred to by their number values.
+		/// </remarks>
+		public TeleportPylonType PylonType {
 			get;
 			internal set;
 		}
@@ -51,7 +57,7 @@ namespace Terraria.ModLoader
 		/// If you want to allow an infinite amount of these pylons to be placed, simply always return true.
 		/// </remarks>
 		public virtual bool CanPlacePylon() {
-			return !Main.PylonSystem.HasPylonOfType((TeleportPylonType)PylonType);
+			return !Main.PylonSystem.HasPylonOfType(PylonType);
 		}
 
 		/// <summary>
@@ -75,7 +81,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Step 1 of the ValidTeleportCheck process. This is the first vanilla check that is called when
-		/// the player attempts to teleport FROM or TO a Pylon. This check should be where you check
+		/// checking both the destination pylon and any possible nearby pylons. This check should be where you check
 		/// how many NPCs are nearby, returning false if the Pylon does not satisfy the conditions.
 		/// By default, returns true if there are 2 or more (not-unhappy) NPCs nearby.
 		/// </summary>
@@ -94,7 +100,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Step 2 of the ValidTeleportCheck process. This is the second vanilla check that is called when
-		/// the player attempts to teleport TO a Pylon. This check should be where you check
+		/// checking the destination pylon. This check should be where you check
 		/// if there is any "Danger" nearby, such as bosses or if there is an event happening.
 		/// It is unlikely you will need to use this.
 		/// By default, returns true if there are not any events happening (Lunar Pillars do not count)
@@ -114,7 +120,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Step 3 of the ValidTeleportCheck process. This is the fourth vanilla check that is called when
-		/// the player attempts to teleport FROM or TO a Pylon. This check should be where you check biome related
+		/// checking both the destination pylon and any possible nearby pylons. This check should be where you check biome related
 		/// things, such as the simple check of whether or not the Pylon is in the proper biome.
 		/// By default, returns true.
 		/// </summary>

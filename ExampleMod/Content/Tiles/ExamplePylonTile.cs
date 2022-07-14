@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Common.Systems;
 using ExampleMod.Content.Biomes;
 using ExampleMod.Content.Items.Placeable;
+using ExampleMod.Content.TileEntities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -52,11 +53,11 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.newTile.StyleHorizontal = true;
-			//These definitons allow for vanilla's pylon TileEntities to be placed. If you want to use your own TileEntities, do NOT add these lines!
-			//tModLoader has a built in Tile Entity specifically for modded pylons, which we will be using here:
-			TEModdedPylon moddedPylon = ModContent.GetInstance<TEModdedPylon>();
+			//These definitions allow for vanilla's pylon TileEntities to be placed. If you want to use your own TileEntities, do NOT add these lines!
+			//tModLoader has a built in Tile Entity specifically for modded pylons, which we must extend (see SimplePylonTileEntity)
+			TEModdedPylon moddedPylon = ModContent.GetInstance<SimplePylonTileEntity>();
 			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(moddedPylon.PlacementPreviewHook_CheckIfCanPlace, 1, 0, true);
-			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(moddedPylon.PlacementPreviewHook_AfterPlacement, -1, 0, false);
+			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(moddedPylon.Hook_AfterPlacement, -1, 0, false);
 
 			TileObjectData.addTile(Type);
 
@@ -98,7 +99,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY) {
 			//We need to clean up after ourselves, since this is still a "unique" tile, separate from Vanilla Pylons, so we must kill the TileEntity.
-			ModContent.GetInstance<TEModdedPylon>().Kill(i, j);
+			ModContent.GetInstance<SimplePylonTileEntity>().Kill(i, j);
 
 			//Also, like other pylons, breaking it simply drops the item once again. Pretty straight-forward.
 			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 2, 3, ModContent.ItemType<ExamplePylonItem>());

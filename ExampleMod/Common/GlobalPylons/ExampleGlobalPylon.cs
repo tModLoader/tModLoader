@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Tiles;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Map;
@@ -34,11 +35,17 @@ namespace ExampleMod.Common.GlobalPylons
 			return base.PreDrawMapIcon(ref context, ref mouseOverText, ref pylonInfo, ref isNearPylon, ref drawColor, ref deselectedScale, ref selectedScale);
 		}
 
-		public override bool? PreCanPlacePylon(int x, int y, int tileType, byte pylonType) {
+		public override bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType) {
 			//What if we want to override the functionality for pylon placement?
 			//For example, let's always allow the players to place universal pylons, even if they already exist in the world:
-			if (pylonType == (byte)TeleportPylonType.Victory) {
+			if (pylonType == TeleportPylonType.Victory) {
 				return true;
+			}
+			//What if we wanted to change something for a modded type? If you have strong reference to the modded pylon in question,
+			//you can simply use the class:
+			if (pylonType == ModContent.PylonType<ExamplePylonTileAdvanced>()) {
+				return null; //We don't want to *actually* change any functionality of the advanced pylon, so we return null.
+				//Obviously, if you wanted to actually change something about the modded pylon, you'd return something other than null here.
 			}
 
 			return base.PreCanPlacePylon(x, y, tileType, pylonType);
@@ -46,15 +53,12 @@ namespace ExampleMod.Common.GlobalPylons
 
 		public override bool? ValidTeleportCheck_PreBiomeRequirements(TeleportPylonInfo pylonInfo, SceneMetrics sceneData) {
 			//What if we want to do something based on the type of pylon in particular? Well all we have to do is check the pylon's type!
-			//Let's swap around the biome requirements for the Jungle Pylon and Snow Pylon, for example:
-			TeleportPylonType pylonType = pylonInfo.TypeOfPylon;
-
-			if (pylonType == TeleportPylonType.Jungle) {
-				return sceneData.EnoughTilesForSnow;
-			}
-
-			if (pylonType == TeleportPylonType.Snow) {
-				return sceneData.EnoughTilesForJungle;
+			//Let's allow the Jungle Pylon to work in the snow, for example:
+			if (pylonInfo.TypeOfPylon == TeleportPylonType.Jungle) {
+				//If another mod tries to mess with Jungle pylons, we don't want to return a forceful false, if applicable. If Jungle AND snow
+				//are both false, we will return null to allow for other mods to try and change things based on the Jungle pylon.
+				//Granted that no other mod does anything to change the null value, the teleportation process will fail, under the above circumstances.
+				return sceneData.EnoughTilesForJungle || sceneData.EnoughTilesForSnow ? true : null;
 			}
 
 			return base.ValidTeleportCheck_PreBiomeRequirements(pylonInfo, sceneData);

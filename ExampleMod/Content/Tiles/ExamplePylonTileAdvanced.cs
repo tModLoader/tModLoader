@@ -38,7 +38,9 @@ namespace ExampleMod.Content.Tiles
 		public Asset<Texture2D> crystalTexture;
 		public Asset<Texture2D> mapIcon;
 
-		public readonly Point16 tileOrigin = new Point16(0, 2);
+		//Here for proper syncing/placement of the coupled TE.
+		public static readonly Point16 TileOrigin = new Point16(0, 2);
+		public static readonly Point16 TileDimensions = new Point16(2, 3);
 
 		public override void Load() {
 			//We'll still use the other Example Pylon's sprites, but we need to adjust the texture values first to do so.
@@ -52,14 +54,15 @@ namespace ExampleMod.Content.Tiles
 
 			//This time around, we'll have a tile that is 2x3 instead of 3x4.
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
-			TileObjectData.newTile.Height = 3;
-			TileObjectData.newTile.Origin = tileOrigin;
+			TileObjectData.newTile.Height = TileDimensions.Y;
+			TileObjectData.newTile.Origin = TileOrigin;
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.newTile.StyleHorizontal = true;
-			//Since we are going to need more in-depth functionality, we can't use vanilla's Pylon TE's OnPlace, but we can still use it to check for CanPlace:
-			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(TETeleportationPylon.PlacementPreviewHook_CheckIfCanPlace, 1, 0, true);
-			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<AdvancedPylonTileEntity>().Hook_AfterPlacement, -1, 0, false);
+			//Since we are going to need more in-depth functionality, we can't use vanilla's Pylon TE's OnPlace or CanPlace:
+			AdvancedPylonTileEntity advancedEntity = ModContent.GetInstance<AdvancedPylonTileEntity>();
+			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(advancedEntity.PlacementPreviewHook_CheckIfCanPlace, 1, 0, true);
+			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(advancedEntity.Hook_AfterPlacement, -1, 0, false);
 
 			TileObjectData.addTile(Type);
 
