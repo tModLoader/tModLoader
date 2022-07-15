@@ -35,7 +35,9 @@ namespace Terraria.ModLoader
 		/// <param name="y"> The current Y position of where the tile in question is asking it can be placed. </param>
 		/// <param name="tileType"> The actual type of tile currently asking if it can be placed. </param>
 		/// <param name="pylonType"> The type of pylon belonging to this tile. </param>
-		/// <returns></returns>
+		/// <remarks>
+		/// Note that in Multiplayer environments, this is called first on the client, and then is subsequently called &amp; double checked on the server.
+		/// </remarks>
 		public virtual bool? PreCanPlacePylon(int x, int y, int tileType, TeleportPylonType pylonType) {
 			return null;
 		}

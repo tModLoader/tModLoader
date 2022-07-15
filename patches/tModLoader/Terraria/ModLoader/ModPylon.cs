@@ -62,10 +62,12 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Whether or not this Pylon can even be placed.
 		/// By default, it returns false if a Pylon of this type already exists in the world,
-		/// otherwise true.
+		/// otherwise true. If you want to allow an infinite amount of these pylons to be placed,
+		/// simply always return true.
 		/// </summary>
 		/// <remarks>
-		/// If you want to allow an infinite amount of these pylons to be placed, simply always return true.
+		/// Note that in Multiplayer environments, granted that any GlobalPylon instances do not return false in <seealso cref="GlobalPylon.PreCanPlacePylon"/>,
+		/// this is called first on the client, and then is subsequently called &amp; double checked on the server.
 		/// </remarks>
 		public virtual bool CanPlacePylon() {
 			return !Main.PylonSystem.HasPylonOfType(PylonType);
@@ -206,7 +208,7 @@ namespace Terraria.ModLoader
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 			//Basically, we only want the crystal to be drawn once, based off the top left corner, which is what this check is.
-			//The top left corner of a Pylon will have its FrameX divisible by 54 (since it's 3 tiles wide, and each tile on the tile sheet takes up 18x18 pixels),
+			//The top left corner of a Pylon will have its FrameX divisible by its full pixel width,
 			//and its FrameY will be 0, since it's at the top of the tile sheet.
 			if (drawData.tileFrameX % TileObjectData.GetTileData(drawData.tileCache).CoordinateFullWidth == 0 && drawData.tileFrameY == 0) {
 				//This method call basically says "Run SpecialDraw once at this position"
@@ -307,8 +309,8 @@ namespace Terraria.ModLoader
 		/// <param name="mapIcon"> The icon that is to be drawn on the map. </param>
 		/// <param name="drawCenter"> The position in TILE coordinates for where the CENTER of the map icon should be. </param>
 		/// <param name="drawColor"> The color to draw the icon as. </param>
-		/// <param name="deselectedScale"> The scale to draw the map icon when it is not selected (not being hovered over) </param>
-		/// <param name="selectedScale"> The scale to draw the map icon when it IS selected (being hovered over)</param>
+		/// <param name="deselectedScale"> The scale to draw the map icon when it is not selected (not being hovered over). </param>
+		/// <param name="selectedScale"> The scale to draw the map icon when it IS selected (being hovered over). </param>
 		/// <returns></returns>
 		public bool DefaultDrawMapIcon(ref MapOverlayDrawContext context, Asset<Texture2D> mapIcon, Vector2 drawCenter, Color drawColor, float deselectedScale, float selectedScale) {
 			return context.Draw(
