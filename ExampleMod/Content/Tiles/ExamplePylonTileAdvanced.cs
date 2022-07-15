@@ -29,6 +29,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		public const int CrystalHorizontalFrameCount = 2;
 		public const int CrystalVerticalFrameCount = 8;
+		public const int CrystalFrameHeight = 64;
 
 		public Asset<Texture2D> crystalTexture;
 		public Asset<Texture2D> mapIcon;
@@ -133,7 +134,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
 			//This code is essentially identical to how it is in the basic example, but this time the crystal color is the disco (rainbow) color instead.
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, Main.DiscoColor, CrystalHorizontalFrameCount, CrystalVerticalFrameCount);
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, Main.DiscoColor, CrystalFrameHeight, CrystalHorizontalFrameCount, CrystalVerticalFrameCount);
 		}
 
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {

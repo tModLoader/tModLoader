@@ -223,9 +223,10 @@ namespace Terraria.ModLoader
 		/// <param name="j"> The Y tile coordinate to star drawing from. </param>
 		/// <param name="crystalTexture"> The texture of the crystal that will actually be drawn. </param>
 		/// <param name="crystalDrawColor"> The color to draw the crystal as. </param>
+		/// <param name="frameHeight"> The height of a singular frame of the crystal. 64 for a normal pylon crystal in vanilla.</param>
 		/// <param name="crystalHorizontalFrameCount">The total frames wide the crystal texture has. </param>
 		/// <param name="crystalVerticalFrameCount"> The total frames high the crystal texture has. </param>
-		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Color crystalDrawColor, int crystalHorizontalFrameCount, int crystalVerticalFrameCount) {
+		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount) {
 			//This is lighting-mode specific, always include this if you draw tiles manually
 			Vector2 offScreen = new Vector2(Main.offScreenRange);
 			if (Main.drawToScreen) {
@@ -238,17 +239,18 @@ namespace Terraria.ModLoader
 			if (tile == null || !tile.HasTile) {
 				return;
 			}
+			TileObjectData tileData = TileObjectData.GetTileData(tile);
 
 			//Here, lots of framing takes place. 
 			Texture2D vanillaPylonCrystals = TextureAssets.Extra[181].Value; //The default textures for vanilla pylons, containing a "sheen" texture we need
-			int frameY = (Main.tileFrameCounter[TileID.TeleportationPylon] + pos.X + pos.Y) % 64 / crystalVerticalFrameCount; //Get the current frameY. All pylons share the same frameCounter
+			int frameY = (Main.tileFrameCounter[TileID.TeleportationPylon] + pos.X + pos.Y) % frameHeight / crystalVerticalFrameCount; //Get the current frameY. All pylons share the same frameCounter
 			//Next, frame the actual crystal texture, it's highlight texture, and the sheen texture, in that order.
 			Rectangle crystalFrame = crystalTexture.Frame(crystalHorizontalFrameCount, crystalVerticalFrameCount, 0, frameY); 
 			Rectangle highlightFrame = crystalTexture.Frame(crystalHorizontalFrameCount, crystalVerticalFrameCount, 1, frameY);
 			vanillaPylonCrystals.Frame(crystalHorizontalFrameCount, crystalVerticalFrameCount, 0, frameY);
 			//Calculate positional values in order to determine where to actually draw the pylon
 			Vector2 origin = crystalFrame.Size() / 2f;
-			Vector2 centerPos = pos.ToWorldCoordinates(24f, 64f);
+			Vector2 centerPos = pos.ToWorldCoordinates(0f, 0f) + new Vector2(tileData.Width / 2f * 16f, (tileData.Height / 2f + 1.5f) * 16f);
 			float centerDisplacement = (float)Math.Sin(Main.GlobalTimeWrappedHourly * ((float)Math.PI * 2f) / 5f);
 			Vector2 drawPos = centerPos + offScreen + new Vector2(0f, -40f) + new Vector2(0f, centerDisplacement * 4f);
 			//Randomly spawn dust, granted that the game is open an active

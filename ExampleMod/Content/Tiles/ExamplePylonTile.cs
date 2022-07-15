@@ -35,6 +35,7 @@ namespace ExampleMod.Content.Tiles
 	{
 		public const int CrystalHorizontalFrameCount = 2;
 		public const int CrystalVerticalFrameCount = 8;
+		public const int CrystalFrameHeight = 64;
 
 		public Asset<Texture2D> crystalTexture;
 		public Asset<Texture2D> mapIcon;
@@ -111,7 +112,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
 			//We want to draw the pylon crystal the exact same way vanilla does, so we can use this built in method in ModPylon for default crystal drawing:
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, Color.White, CrystalHorizontalFrameCount, CrystalVerticalFrameCount);
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, Color.White, CrystalFrameHeight, CrystalHorizontalFrameCount, CrystalVerticalFrameCount);
 		}
 
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
