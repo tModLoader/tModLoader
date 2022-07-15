@@ -17,7 +17,7 @@ namespace Terraria.ModLoader.Default
 				return;
 			}
 
-			if (pylon.CanPlacePylon()) {
+			if (!pylon.CanPlacePylon()) {
 				RejectPlacementFromNet(x, y);
 				return;
 			}
