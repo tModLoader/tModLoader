@@ -127,8 +127,8 @@ namespace ExampleMod.Content.Tiles
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 			//This time, we'll ONLY draw the crystal if the pylon is active.
-			if (drawData.tileFrameX % 36 == 0 && drawData.tileFrameY == 0 && TileEntity.ByPosition[new Point16(i, j)] is AdvancedPylonTileEntity { isActive: true }) {
-				Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
+			if (TileEntity.ByPosition[new Point16(i, j)] is AdvancedPylonTileEntity { isActive: true }) {
+				base.DrawEffects(i, j, spriteBatch, ref drawData);
 			}
 		}
 
