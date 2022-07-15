@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.ObjectData;
 
 namespace Terraria.ModLoader.Default
 {
@@ -10,27 +10,6 @@ namespace Terraria.ModLoader.Default
 	/// </summary>
 	public abstract class TEModdedPylon : ModTileEntity, IPylonTileEntity
 	{
-
-		/// <summary>
-		/// This is the displacement from the top left of the tile that is used for actual placing of the tile.
-		/// This property exists in order for automatic displacement when placing the tile entity, making sure it
-		/// is actually in the top left of the tile. If your pylon tile is the exact same size a vanilla pylon tile
-		/// (3x4 tiles) and uses the same tile origin (1, 3), then you will not need to change this.
-		/// </summary>
-		public Point16 TileOrigin {
-			get;
-			protected set;
-		} = new Point16(1, 3);
-
-		/// <summary>
-		/// This is the actual dimensions of the tile that this entity is attributed to. This exists so that multiplayer
-		/// syncing properly works, as sending the tile square requires a defined area to actually send to the clients.
-		/// If you are simply making a pylon that is the same size as a vanilla pylon (3x4 tiles), you will not need to change this.
-		/// </summary>
-		public Point16 TileDimensions {
-			get;
-			protected set;
-		} = new Point16(3, 4);
 
 		public override void NetPlaceEntityAttempt(int x, int y) {
 			if (!GetModPylonFromCoords(x, y, out ModPylon pylon)) {
@@ -75,15 +54,17 @@ namespace Terraria.ModLoader.Default
 
 		public override bool IsTileValidForEntity(int x, int y) {
 			//This is the default check that vanilla does for vanilla pylons. Feel free to override this if you use a differently sized pylon, or use a multi-framed pylon.
-			return Main.tile[x, y].active() && TileID.Sets.CountsAsPylon.Contains(Main.tile[x, y].type) && Main.tile[x, y].frameY == 0 && Main.tile[x, y].frameX % 54 == 0;
+			TileObjectData tileData = TileObjectData.GetTileData(Main.tile[x, y]);
+			return Main.tile[x, y].active() && TileID.Sets.CountsAsPylon.Contains(Main.tile[x, y].type) && Main.tile[x, y].frameY == 0 && Main.tile[x, y].frameX % tileData.CoordinateFullWidth == 0;
 		}
 
 		public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate) {
-			int topLeftX = i - TileOrigin.X;
-			int topLeftY = j - TileOrigin.Y;
+			TileObjectData tileData = TileObjectData.GetTileData(type, style, alternate);
+			int topLeftX = i - tileData.Origin.X;
+			int topLeftY = j - tileData.Origin.Y;
 
 			if (Main.netMode == NetmodeID.MultiplayerClient) {
-				NetMessage.SendTileSquare(Main.myPlayer, topLeftX, topLeftY, TileDimensions.X, TileDimensions.Y);
+				NetMessage.SendTileSquare(Main.myPlayer, topLeftX, topLeftY, tileData.Width, tileData.Height);
 				NetMessage.SendData(MessageID.TileEntityPlacement, number: topLeftX, number2: topLeftY, number3: Type);
 				return -1;
 			}

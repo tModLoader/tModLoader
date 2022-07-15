@@ -337,6 +337,8 @@ namespace Terraria.ModLoader
 				mod.TransferAllAssets();
 			});
 
+			PylonLoader.Load();
+
 			MemoryTracking.Finish();
 
 			if (Main.dedServ)
@@ -456,6 +458,7 @@ namespace Terraria.ModLoader
 			PrefixLoader.Unload();
 			DustLoader.Unload();
 			TileLoader.Unload();
+			PylonLoader.Unload();
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
 
@@ -473,7 +476,6 @@ namespace Terraria.ModLoader
 			InfoDisplayLoader.Unload();
 			GoreLoader.Unload();
 			PlantLoader.UnloadPlants();
-			PylonLoader.Unload();
 
 			LoaderManager.Unload();
 

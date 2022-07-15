@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.GameContent;
 using Terraria.Map;
 
@@ -12,6 +13,14 @@ namespace Terraria.ModLoader
 		internal static readonly IList<GlobalPylon> globalPylons = new List<GlobalPylon>();
 		internal static readonly IList<ModPylon> modPylons = new List<ModPylon>();
 		internal static TeleportPylonType nextPylonID = VanillaPylonCount;
+
+		internal static void Load() {
+			foreach (ModPylon pylon in TileLoader.tiles.OfType<ModPylon>()) {
+				ModTypeLookup<ModPylon>.Register(pylon);
+				pylon.PylonType = ReservePylonID();
+				modPylons.Add(pylon);
+			}
+		}
 
 		internal static void Unload() {
 			globalPylons.Clear();

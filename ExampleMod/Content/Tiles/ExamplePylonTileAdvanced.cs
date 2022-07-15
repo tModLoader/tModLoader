@@ -3,20 +3,15 @@ using ExampleMod.Content.TileEntities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
-using Terraria.GameContent.Tile_Entities;
-using Terraria.GameInput;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.Map;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using Terraria.UI;
 
 namespace ExampleMod.Content.Tiles
 {
@@ -38,10 +33,6 @@ namespace ExampleMod.Content.Tiles
 		public Asset<Texture2D> crystalTexture;
 		public Asset<Texture2D> mapIcon;
 
-		//Here for proper syncing/placement of the coupled TE.
-		public static readonly Point16 TileOrigin = new Point16(0, 2);
-		public static readonly Point16 TileDimensions = new Point16(2, 3);
-
 		public override void Load() {
 			//We'll still use the other Example Pylon's sprites, but we need to adjust the texture values first to do so.
 			crystalTexture = ModContent.Request<Texture2D>(Texture.Replace("Advanced", "") + "_Crystal");
@@ -54,8 +45,8 @@ namespace ExampleMod.Content.Tiles
 
 			//This time around, we'll have a tile that is 2x3 instead of 3x4.
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
-			TileObjectData.newTile.Height = TileDimensions.Y;
-			TileObjectData.newTile.Origin = TileOrigin;
+			TileObjectData.newTile.Height = 3;
+			TileObjectData.newTile.Origin = new Point16(0, 2);
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.newTile.StyleHorizontal = true;
@@ -141,66 +132,8 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
-			//This code is effectively identical to how it is in ExamplePylonTile, so there will be significantly less comments. If you need more info, check out ExamplePylonTile's SpecialDraw.
-
-			Vector2 offScreen = new Vector2(Main.offScreenRange);
-			if (Main.drawToScreen) {
-				offScreen = Vector2.Zero;
-			}
-
-			Point pos = new Point(i, j);
-			Tile tile = Main.tile[pos.X, pos.Y];
-			if (tile == null || !tile.HasTile) {
-				return;
-			}
-
-			Texture2D vanillaPylonCrystals = TextureAssets.Extra[181].Value;
-			int frameY = (Main.tileFrameCounter[TileID.TeleportationPylon] + pos.X + pos.Y) % 64 / CrystalVerticalFrameCount;
-
-			Rectangle crystalFrame = crystalTexture.Frame(CrystalHorizontalFrameCount, CrystalVerticalFrameCount, 0, frameY); 
-			Rectangle highlightFrame = crystalTexture.Frame(CrystalHorizontalFrameCount, CrystalVerticalFrameCount, 1, frameY);
-			vanillaPylonCrystals.Frame(CrystalHorizontalFrameCount, CrystalVerticalFrameCount, 0, frameY);
-			
-			Vector2 origin = crystalFrame.Size() / 2f;
-			Vector2 centerPos = pos.ToWorldCoordinates(16f, 24f); //Different displacement on the crystal, since the tile itself is smaller
-			float centerDisplacement = (float)Math.Sin(Main.GlobalTimeWrappedHourly * ((float)Math.PI * 2f) / 5f);
-			Vector2 drawPos = centerPos + offScreen + new Vector2(0f, -28f) + new Vector2(0f, centerDisplacement * 4f); //Different displacement, once again
-			
-			if (!Main.gamePaused && Main.instance.IsActive && Main.rand.NextBool(40)) {
-				Rectangle dustBox = Utils.CenteredRectangle(drawPos, crystalFrame.Size());
-
-				int dustIndex = Dust.NewDust(dustBox.TopLeft(), dustBox.Width, dustBox.Height, DustID.TintableDustLighted, 0f, 0f, 254, Color.Gray, 0.5f);
-				Main.dust[dustIndex].velocity *= 0.1f;
-				Main.dust[dustIndex].velocity.Y -= 0.2f;
-			}
-
-			Color crystalColor = Color.Lerp(Lighting.GetColor(pos.X, pos.Y), Color.Black, 0.8f) ;
-			Main.spriteBatch.Draw(crystalTexture.Value, drawPos - Main.screenPosition, crystalFrame, crystalColor * 0.7f, 0f, origin, 1f, SpriteEffects.None, 0f);
-
-			float scale = (float)Math.Sin(Main.GlobalTimeWrappedHourly * (Math.PI * 2f) / 1f) * 0.2f + 0.8f;
-			Color sheenColor = Main.DiscoColor * 0.1f * scale; //This time, however, we'll make the color a disco color instead of white.
-			for (float displacement = 0f; displacement < 1f; displacement += 355f / (678f * (float)Math.PI)) {
-				Main.spriteBatch.Draw(crystalTexture.Value, drawPos - Main.screenPosition + ((float)Math.PI * 2f * displacement).ToRotationVector2() * (6f + centerDisplacement * 2f), crystalFrame, sheenColor, 0f, origin, 1f, SpriteEffects.None, 0f);
-			}
-
-			int selectionType = 0;
-			if (Main.InSmartCursorHighlightArea(pos.X, pos.Y, out bool actuallySelected)) {
-				selectionType = 1;
-
-				if (actuallySelected) {
-					selectionType = 2;
-				}
-			}
-
-			if (selectionType == 0) {
-				return;
-			}
-
-			int colorPotency = (crystalColor.R + crystalColor.G + crystalColor.B) / 3;
-			if (colorPotency > 10) {
-				Color selectionGlowColor = Colors.GetSelectionGlowColor(selectionType == 2, colorPotency);
-				Main.spriteBatch.Draw(crystalTexture.Value, drawPos - Main.screenPosition, highlightFrame, selectionGlowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
-			}
+			//This code is essentially identical to how it is in the basic example, but this time the crystal color is the disco (rainbow) color instead.
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, Main.DiscoColor, CrystalHorizontalFrameCount, CrystalVerticalFrameCount);
 		}
 
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
@@ -212,32 +145,8 @@ namespace ExampleMod.Content.Tiles
 			//Depending on the whether or not the pylon is active, the color of the icon will change;
 			//otherwise, it acts as normal.
 			drawColor = entity.isActive ? Color.Green : Color.Red;
-
-			bool isMouseOver = context.Draw(
-				                          mapIcon.Value,
-				                          pylonInfo.PositionInTiles.ToVector2() + new Vector2(1f, 1.5f),
-				                          drawColor,
-				                          new SpriteFrame(1, 1, 0, 0),
-				                          deselectedScale,
-				                          selectedScale,
-				                          Alignment.Center
-			                          )
-			                          .IsMouseOver;
-
-			if (!isMouseOver) {
-				return;
-			}
-
-			Main.cancelWormHole = true;
-			mouseOverText = Language.GetTextValue("Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced");
-
-			if (Main.mouseLeft && Main.mouseLeftRelease) {
-				Main.mouseLeftRelease = false;
-				Main.mapFullscreen = false;
-				PlayerInput.LockGamepadButtons("MouseLeft");
-				Main.PylonSystem.RequestTeleportation(pylonInfo, Main.LocalPlayer);
-				SoundEngine.PlaySound(SoundID.Item6);
-			}
+			bool mouseOver = DefaultDrawMapIcon(ref context, mapIcon, pylonInfo.PositionInTiles.ToVector2() + new Vector2(1, 1.5f), drawColor, deselectedScale, selectedScale);
+			DefaultMapClickHandle(mouseOver, pylonInfo, "Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced", ref mouseOverText);
 		}
 	}
 }

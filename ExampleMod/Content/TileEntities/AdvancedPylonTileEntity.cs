@@ -3,7 +3,6 @@ using System.IO;
 using Terraria;
 using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Default;
 
 namespace ExampleMod.Content.TileEntities
@@ -20,23 +19,6 @@ namespace ExampleMod.Content.TileEntities
 	{
 		//This is the main crux of this TileEntity; its pylon functionality will only work when this boolean is true.
 		public bool isActive;
-
-		public override void Load(Mod mod) {
-			//Make sure you also run the base Load so that the Mod property is set!
-			base.Load(mod);
-			//In this scenario, our pylon is a different size (2x3 tiles) from normal vanilla pylons (3x4 tiles), so we need to tweak
-			//the TileDimensions & TileOrigin property from the TEModdedPylon class.
-			TileOrigin = ExamplePylonTileAdvanced.TileOrigin;
-			TileDimensions = ExamplePylonTileAdvanced.TileDimensions;
-		}
-
-		public override bool IsTileValidForEntity(int x, int y) {
-			Tile tile = Framing.GetTileSafely(x, y);
-
-			//This check is only if your tile has ONE style. If you plan on adding more styles, make sure to use modular arithmetic to ensure things are valid.
-			//For example, if your pylon tile has two styles and is 2 tiles wide, you should make sure tile.TileFrameX % 36 == 0. (assuming 18 pixels per tile)
-			return tile.HasTile && tile.TileFrameX == 0 && tile.TileFrameY == 0;
-		}
 
 		public override void OnNetPlace() {
 			//This hook is only ever called on the server; its purpose is to give more freedom in terms of syncing FROM the server to clients, which we take advantage of
