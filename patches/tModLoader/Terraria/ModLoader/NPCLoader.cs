@@ -434,8 +434,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookModifyGlobalLoot = AddHook<Action<GlobalLoot>>(g => g.ModifyGlobalLoot);
-		public static void ModifyGlobalLoot(GlobalLoot globalLoot) {
+		private static HookList HookModifyGlobalLoot = AddHook<Action<GlobalNPCLoot>>(g => g.ModifyGlobalLoot);
+		public static void ModifyGlobalLoot(GlobalNPCLoot globalLoot) {
 			foreach (GlobalNPC g in HookModifyGlobalLoot.Enumerate(globalNPCs)) {
 				g.ModifyGlobalLoot(globalLoot);
 			}

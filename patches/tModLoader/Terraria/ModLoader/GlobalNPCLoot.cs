@@ -5,11 +5,11 @@ using Terraria.GameContent.ItemDropRules;
 namespace Terraria.ModLoader
 {
 	/// <summary> This readonly struct is a simple shortcut for modifying global drop rules in an <see cref="ItemDropDatabase"/>. </summary>
-	public readonly struct GlobalLoot
+	public readonly struct GlobalNPCLoot
 	{
 		private readonly ItemDropDatabase itemDropDatabase;
 
-		public GlobalLoot(ItemDropDatabase itemDropDatabase) {
+		public GlobalNPCLoot(ItemDropDatabase itemDropDatabase) {
 			this.itemDropDatabase = itemDropDatabase;
 		}
 

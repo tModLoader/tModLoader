@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
-@@ -34,10 +_,16 @@
+@@ -34,10 +_,17 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -10,6 +10,7 @@
 +using Terraria.ModLoader.UI;
 +using System.Linq;
 +using LegacySoundStyle = Terraria.Audio.SoundStyle;
++using Terraria.GameContent.ItemDropRules;
  
  namespace Terraria
  {
@@ -749,7 +750,7 @@
  			}
  
  			petalTimer = 50;
-@@ -3788,10 +_,20 @@
+@@ -3788,10 +_,29 @@
  			num6 *= num8;
  			num7 *= num8;
  			Projectile.NewProjectile(GetProjectileSource_SetBonus(6), Main.projectile[num5].Center.X - 4f, Main.projectile[num5].Center.Y, num6, num7, 227, crystalLeafDamage, crystalLeafKB, whoAmI);
@@ -760,7 +761,17 @@
  		}
  
  		public void OpenPresent(int itemType) {
- 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
++			DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
++			dropAttemptInfo.player = this;
++			dropAttemptInfo.item = itemType;
++			dropAttemptInfo.IsExpertMode = Main.expertMode;
++			dropAttemptInfo.IsMasterMode = Main.masterMode;
++			dropAttemptInfo.IsInSimulation = false;
++			dropAttemptInfo.rng = Main.rand;
++			DropAttemptInfo info = dropAttemptInfo;
++			Main.ItemDropSolver.TryDropping(info);
+-			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
++			/*IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
 +
 +			if (!ItemLoader.PreOpenVanillaBag("present", this, 0))
 +				return;
@@ -770,12 +781,12 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 602);
  				if (Main.netMode == 1)
-@@ -4015,16 +_,40 @@
+@@ -4015,16 +_,52 @@
  						break;
  					}
  			}
 +
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			NPCLoader.blockLoot.Clear(); // Clear blockloot*/
 +
 +			//TODO: return statements above probably break this.
  		}
@@ -792,7 +803,20 @@
  		}
  
  		public void OpenBossBag(int type) {
- 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(type);
++			DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
++			dropAttemptInfo.player = this;
++			dropAttemptInfo.item = type;
++			dropAttemptInfo.IsExpertMode = Main.expertMode;
++			dropAttemptInfo.IsMasterMode = Main.masterMode;
++			dropAttemptInfo.IsInSimulation = false;
++			dropAttemptInfo.rng = Main.rand;
++			DropAttemptInfo info = dropAttemptInfo;
++			Main.ItemDropSolver.TryDropping(info);
++
++			TryGettingDevArmor(GetItemSource_OpenItem(type));
++
+-			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(type);
++			/*IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(type);
 +
 +			if (!ItemLoader.PreOpenVanillaBag("bossBag", this, type))
 +				return;
@@ -812,7 +836,7 @@
  			switch (type) {
  				case 3318: {
  						if (Main.tenthAnniversaryWorld)
-@@ -4518,12 +_,22 @@
+@@ -4518,12 +_,21 @@
  			if (type == 5111)
  				num11 = 668;
  
@@ -824,10 +848,9 @@
  				return;
 +			}
  
-+			/*
  			NPC nPC = new NPC();
  			nPC.SetDefaults(num11);
-+			*/
++			
 +			// Slight optimization patch, since we're nearby anyway.
 +			NPC nPC = ContentSamples.NpcsByNetId[num11];
 +
@@ -841,7 +864,7 @@
  				QuickSpawnItem(itemSource_OpenItem, 71, num15);
  			}
 +
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			NPCLoader.blockLoot.Clear(); // Clear blockloot*/
  		}
  
 -		private void TryGettingDevArmor(IEntitySource source) {
@@ -851,10 +874,21 @@
  			if (Main.rand.Next(Main.tenthAnniversaryWorld ? 10 : 20) == 0) {
  				switch (Main.rand.Next(18)) {
  					case 0:
-@@ -4690,6 +_,12 @@
+@@ -4689,7 +_,22 @@
+ 		}
  
  		public void OpenFishingCrate(int crateItemID) {
- 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
++			DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
++			dropAttemptInfo.player = this;
++			dropAttemptInfo.item = crateItemID;
++			dropAttemptInfo.IsExpertMode = Main.expertMode;
++			dropAttemptInfo.IsMasterMode = Main.masterMode;
++			dropAttemptInfo.IsInSimulation = false;
++			dropAttemptInfo.rng = Main.rand;
++			DropAttemptInfo info = dropAttemptInfo;
++			Main.ItemDropSolver.TryDropping(info);
+-			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
++			/*IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
 +
 +			if (!ItemLoader.PreOpenVanillaBag("crate", this, crateItemID))
 +				return;
@@ -869,7 +903,7 @@
  					NetMessage.SendData(21, -1, -1, null, number66, 1f);
  			}
 +
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			NPCLoader.blockLoot.Clear(); // Clear blockloot*/
  		}
  
  		public int CountItem(int type, int stopCountingAt = 0) {
@@ -884,11 +918,20 @@
  					if (inventory[i].stack <= 0)
  						inventory[i].SetDefaults();
  
-@@ -6017,6 +_,11 @@
+@@ -6017,6 +_,20 @@
  		}
  
  		public void OpenShadowLockbox(int boxType) {
-+			if (!ItemLoader.PreOpenVanillaBag("obsidianLockBox", this, 0))
++			DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
++			dropAttemptInfo.player = this;
++			dropAttemptInfo.item = boxType;
++			dropAttemptInfo.IsExpertMode = Main.expertMode;
++			dropAttemptInfo.IsMasterMode = Main.masterMode;
++			dropAttemptInfo.IsInSimulation = false;
++			dropAttemptInfo.rng = Main.rand;
++			DropAttemptInfo info = dropAttemptInfo;
++			Main.ItemDropSolver.TryDropping(info);
++			/*if (!ItemLoader.PreOpenVanillaBag("obsidianLockBox", this, 0))
 +				return;
 +
 +			ItemLoader.OpenVanillaBag("obsidianLockBox", this, 0);
@@ -896,16 +939,25 @@
  			bool flag = true;
  			while (flag) {
  				flag = false;
-@@ -6046,9 +_,16 @@
+@@ -6046,9 +_,25 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
 +
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			NPCLoader.blockLoot.Clear(); // Clear blockloot*/
  		}
  
  		public void OpenLockBox(int lockboxItemType) {
-+			if (!ItemLoader.PreOpenVanillaBag("lockBox", this, 0))
++			DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
++			dropAttemptInfo.player = this;
++			dropAttemptInfo.item = lockboxItemType;
++			dropAttemptInfo.IsExpertMode = Main.expertMode;
++			dropAttemptInfo.IsMasterMode = Main.masterMode;
++			dropAttemptInfo.IsInSimulation = false;
++			dropAttemptInfo.rng = Main.rand;
++			DropAttemptInfo info = dropAttemptInfo;
++			Main.ItemDropSolver.TryDropping(info);
++			/*if (!ItemLoader.PreOpenVanillaBag("lockBox", this, 0))
 +				return;
 +
 +			ItemLoader.OpenVanillaBag("lockBox", this, 0);
@@ -913,16 +965,26 @@
  			bool flag = true;
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(lockboxItemType);
  			while (flag) {
-@@ -6088,10 +_,18 @@
+@@ -6088,10 +_,27 @@
  						NetMessage.SendData(21, -1, -1, null, number2, 1f);
  				}
  			}
 +
-+			NPCLoader.blockLoot.Clear(); // clear blockloot
++			NPCLoader.blockLoot.Clear(); // clear blockloot*/
  		}
  
  		public void OpenHerbBag(int bagType) {
- 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(bagType);
++			DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
++			dropAttemptInfo.player = this;
++			dropAttemptInfo.item = bagType;
++			dropAttemptInfo.IsExpertMode = Main.expertMode;
++			dropAttemptInfo.IsMasterMode = Main.masterMode;
++			dropAttemptInfo.IsInSimulation = false;
++			dropAttemptInfo.rng = Main.rand;
++			DropAttemptInfo info = dropAttemptInfo;
++			Main.ItemDropSolver.TryDropping(info);
+-			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(bagType);
++			/*IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(bagType);
 +
 +			if (!ItemLoader.PreOpenVanillaBag("herbBag", this, 0))
 +				return;
@@ -936,15 +998,26 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			
++			NPCLoader.blockLoot.Clear(); // Clear blockloot*/
  		}
  
  		public void OpenCanofWorms(int sourceItemType) {
-@@ -6184,6 +_,12 @@
+@@ -6183,7 +_,22 @@
+ 		}
  
  		public void OpenGoodieBag(int itemType) {
- 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
++			DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
++			dropAttemptInfo.player = this;
++			dropAttemptInfo.item = itemType;
++			dropAttemptInfo.IsExpertMode = Main.expertMode;
++			dropAttemptInfo.IsMasterMode = Main.masterMode;
++			dropAttemptInfo.IsInSimulation = false;
++			dropAttemptInfo.rng = Main.rand;
++			DropAttemptInfo info = dropAttemptInfo;
++			Main.ItemDropSolver.TryDropping(info);
+-			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
++			/*IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
 +
 +			if (!ItemLoader.PreOpenVanillaBag("goodieBag", this, 0))
 +				return;
@@ -973,7 +1046,7 @@
  					}
  			}
 +
-+			NPCLoader.blockLoot.Clear(); // clear blockloot
++			NPCLoader.blockLoot.Clear(); // clear blockloot*/
  		}
  
  		public void UpdateDyes() {
@@ -4716,6 +4789,15 @@
  
  				if (projToShoot == 76) {
  					projToShoot += Main.rand.Next(3);
+@@ -33718,7 +_,7 @@
+ 						if (num56 < 0)
+ 							return;
+ 
+-						if (Collision.CanHitLine(base.Center, 1, 1, base.Center + new Vector2(16 * num56 * direction, 0f), 1, 1) && WorldUtils.Find(new Point(point.X + direction * num56, point.Y), Searches.Chain(new Searches.Down(maxDistance), new Conditions.MysticSnake()), out result)) {
++						if (Collision.CanHitLine(base.Center, 1, 1, base.Center + new Vector2(16 * num56 * direction, 0f), 1, 1) && WorldUtils.Find(new Point(point.X + direction * num56, point.Y), Searches.Chain(new Searches.Down(maxDistance), new Terraria.WorldBuilding.Conditions.MysticSnake()), out result)) {
+ 							num57 = result.Y;
+ 							while (Main.tile[result.X, num57 - 1].active()) {
+ 								num57--;
 @@ -34526,6 +_,10 @@
  				}
  			}

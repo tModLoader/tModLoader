@@ -231,7 +231,7 @@ namespace Terraria.ModLoader
 		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use this hook to modify npc loot.
 		/// </summary>
 		/// <param name="globalLoot"></param>
-		public virtual void ModifyGlobalLoot(GlobalLoot globalLoot) {
+		public virtual void ModifyGlobalLoot(GlobalNPCLoot globalLoot) {
 		}
 
 		/// <summary>
