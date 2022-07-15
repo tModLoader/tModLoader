@@ -188,7 +188,7 @@
  		}
  
  		private void RegisterBoss_PumpkinMoon() {
-@@ -347,6 +_,16 @@
+@@ -347,6 +_,17 @@
  			leadingConditionRule.OnSuccess(ItemDropRule.OneFromOptions(1, 256, 257, 258));
  			leadingConditionRule.OnSuccess(ItemDropRule.NotScalingWithLuck(2585, 3)).OnFailedRoll(ItemDropRule.Common(2610));
  			leadingConditionRule.OnSuccess(ItemDropRule.Common(998));
@@ -202,10 +202,11 @@
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeGun, 2));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeHook, 2));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.Solidifier));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin));
  		}
  
  		private void RegisterBoss_Plantera() {
-@@ -368,6 +_,18 @@
+@@ -368,6 +_,19 @@
  			itemDropRule.OnSuccess(ItemDropRule.Common(771, 1, 50, 150), hideLootReport: true);
  			leadingConditionRule2.OnSuccess(itemDropRule, hideLootReport: true);
  			leadingConditionRule2.OnFailedConditions(new OneFromRulesRule(1, itemDropRule, ItemDropRule.Common(1255), ItemDropRule.Common(788), ItemDropRule.Common(1178), ItemDropRule.Common(1259), ItemDropRule.Common(1155), ItemDropRule.Common(3018)));
@@ -221,10 +222,11 @@
 +			IItemDropRule itemDropRule2 = ItemDropRule.Common(758);
 +			itemDropRule2.OnSuccess(ItemDropRule.Common(771, 1, 50, 150), hideLootReport: true);
 +			RegisterToItem(item, new OneFromRulesRule(1, itemDropRule2, ItemDropRule.Common(1255), ItemDropRule.Common(788), ItemDropRule.Common(1178), ItemDropRule.Common(1259), ItemDropRule.Common(1155), ItemDropRule.Common(3018)));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 15, 15));
  		}
  
  		private void RegisterBoss_SkeletronPrime() {
-@@ -379,6 +_,13 @@
+@@ -379,6 +_,14 @@
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 2107, 7));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 1225, 1, 15, 30));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 547, 1, 25, 40));
@@ -235,10 +237,11 @@
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SkeletronPrimeMask, 7));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.SoulofFright, 1, 25, 40));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.HallowedBar, 1, 20, 35));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 12, 12));
  		}
  
  		private void RegisterBoss_TheDestroyer() {
-@@ -390,6 +_,13 @@
+@@ -390,6 +_,14 @@
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 2113, 7));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 1225, 1, 15, 30));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 548, 1, 25, 40));
@@ -249,10 +252,11 @@
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SkeletronPrimeMask, 7));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.SoulofMight, 1, 25, 40));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.HallowedBar, 1, 20, 35));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 12, 12));
  		}
  
  		private void RegisterBoss_Twins() {
-@@ -403,6 +_,13 @@
+@@ -403,6 +_,14 @@
  			leadingConditionRule.OnSuccess(ItemDropRule.MasterModeCommonDrop(4931));
  			leadingConditionRule.OnSuccess(ItemDropRule.MasterModeDropOnAllPlayers(4804, _masterModeDropRng));
  			RegisterToMultipleNPCs(leadingConditionRule, 126, 125);
@@ -263,10 +267,11 @@
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.TwinMask, 7));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.SoulofSight, 1, 25, 40));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.HallowedBar, 1, 20, 35));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 12, 12));
  		}
  
  		private void RegisterBoss_EOC() {
-@@ -421,6 +_,19 @@
+@@ -421,6 +_,20 @@
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition3, 47, 1, 20, 50));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition3, 56, 1, 30, 90));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition3, 59, 1, 1, 3));
@@ -283,10 +288,11 @@
 +			RegisterToItem(item, ItemDropRule.ByCondition(condition5, 47, 1, 20, 50));
 +			RegisterToItem(item, ItemDropRule.ByCondition(condition5, 56, 1, 30, 87));
 +			RegisterToItem(item, ItemDropRule.ByCondition(condition5, 59, 1, 1, 3));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 3, 3));
  		}
  
  		private void RegisterBoss_BOC() {
-@@ -435,6 +_,12 @@
+@@ -435,6 +_,15 @@
  			short type2 = 267;
  			RegisterToNPC(type2, new DropBasedOnExpertMode(new CommonDrop(1329, 3, 2, 5, 2), new CommonDrop(1329, 3, 4, 10, 2)));
  			RegisterToNPC(type2, new DropBasedOnExpertMode(new CommonDrop(880, 3, 5, 12, 2), new CommonDrop(880, 3, 11, 25, 2)));
@@ -295,11 +301,14 @@
 +			const short item = ItemID.BrainOfCthulhuBossBag;
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.BrainOfConfusion));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.BrainMask, 7));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.CrimtaneOre, 1, 40, 90));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.TissueSample, 1, 10, 19));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.BoneRattle, 20));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin));
  		}
  
  		private void RegisterBoss_EOW() {
-@@ -455,6 +_,12 @@
+@@ -455,6 +_,15 @@
  			RegisterToMultipleNPCs(ItemDropRule.ByCondition(condition2, 56, 1, 20, 60), npcNetIds);
  			RegisterToMultipleNPCs(ItemDropRule.ByCondition(condition2, 994, 20), npcNetIds);
  			RegisterToMultipleNPCs(ItemDropRule.ByCondition(condition2, 2111, 7), npcNetIds);
@@ -308,11 +317,14 @@
 +			const short item = ItemID.EaterOfWorldsBossBag;
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.WormScarf));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.EaterMask, 7));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.DemoniteOre, 1, 30, 59));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.ShadowScale, 1, 10, 19));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.EatersBone, 20));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 3, 3));
  		}
  
  		private void RegisterBoss_Deerclops() {
-@@ -468,6 +_,14 @@
+@@ -468,6 +_,15 @@
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 5101, 3));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 5113, 3));
  			RegisterToNPC(type, new LeadingConditionRule(condition)).OnSuccess(new OneFromRulesRule(1, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 5117, 5118, 5119, 5095)));
@@ -324,10 +336,11 @@
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 5098, ItemID.Eyebrella, ItemID.DontStarveShaderItem));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.PewMaticHorn, 4));
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 5117, 5118, 5119, 5095));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 10, 10));
  		}
  
  		private void RegisterBoss_QueenBee() {
-@@ -484,6 +_,19 @@
+@@ -484,6 +_,20 @@
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 1129, 3)).OnFailedRoll(ItemDropRule.OneFromOptionsNotScalingWithLuck(2, 842, 843, 844));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 1130, 4, 10, 30, 3));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 2431, 1, 16, 26));
@@ -344,10 +357,11 @@
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.BeeHat, ItemID.BeeShirt, ItemID.BeePants));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.Beenade, 1, 10, 30));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.BeeWax, 1, 17, 30));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 10, 10));
  		}
  
  		private void RegisterBoss_Skeletron() {
-@@ -494,6 +_,11 @@
+@@ -494,6 +_,12 @@
  			RegisterToNPC(type, ItemDropRule.MasterModeDropOnAllPlayers(4801, _masterModeDropRng));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 1281, 7)).OnFailedRoll(ItemDropRule.Common(1273, 7)).OnFailedRoll(ItemDropRule.Common(1313, 7));
  			RegisterToNPC(type, ItemDropRule.Common(4993, 7));
@@ -356,10 +370,11 @@
 +			const short item = ItemID.SkeletronBossBag;
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.BoneGlove));
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.SkeletronMask, ItemID.SkeletronHand, ItemID.BookofSkulls));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 5, 5));
  		}
  
  		private void RegisterBoss_WOF() {
-@@ -506,6 +_,14 @@
+@@ -506,6 +_,15 @@
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 367));
  			RegisterToNPC(type, new LeadingConditionRule(condition)).OnSuccess(ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 490, 491, 489, 2998));
  			RegisterToNPC(type, new LeadingConditionRule(condition)).OnSuccess(ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 426, 434, 514, 4912));
@@ -371,10 +386,11 @@
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.Pwnhammer));
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.SummonerEmblem, ItemID.SorcererEmblem, ItemID.WarriorEmblem, ItemID.RangerEmblem));
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.LaserRifle, ItemID.BreakerBlade, ItemID.ClockworkAssaultRifle, ItemID.FireWhip));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 8, 8));
  		}
  
  		private void RegisterBoss_AncientCultist() {
-@@ -514,6 +_,10 @@
+@@ -514,6 +_,11 @@
  			RegisterToNPC(type, ItemDropRule.MasterModeDropOnAllPlayers(4809, _masterModeDropRng));
  			RegisterToNPC(type, ItemDropRule.Common(3372, 7));
  			RegisterToNPC(type, ItemDropRule.Common(3549));
@@ -382,6 +398,7 @@
 +			// boss bag
 +			const short item = ItemID.CultistBossBag;
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.BossMaskCultist, 7));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.SilverCoin, 1, 20, 20));
  		}
  
  		private void RegisterBoss_MoonLord() {
@@ -417,7 +434,7 @@
  		}
  
  		private void RegisterBoss_Golem() {
-@@ -574,6 +_,16 @@
+@@ -574,6 +_,17 @@
  			itemDropRule.OnSuccess(ItemDropRule.Common(1261, 1, 60, 180), hideLootReport: true);
  			RegisterToNPC(type, new LeadingConditionRule(condition)).OnSuccess(new OneFromRulesRule(1, itemDropRule, ItemDropRule.Common(1122), ItemDropRule.Common(899), ItemDropRule.Common(1248), ItemDropRule.Common(1295), ItemDropRule.Common(1296), ItemDropRule.Common(1297)));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 2218, 1, 4, 8));
@@ -431,10 +448,11 @@
 +			itemDropRule2.OnSuccess(ItemDropRule.Common(1261, 1, 60, 180), hideLootReport: true);
 +			RegisterToItem(item, new OneFromRulesRule(1, itemDropRule2, ItemDropRule.Common(1122), ItemDropRule.Common(899), ItemDropRule.Common(1248), ItemDropRule.Common(1295), ItemDropRule.Common(1296), ItemDropRule.Common(1297)));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.BeetleHusk, 1, 18, 23));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 12, 12));
  		}
  
  		private void RegisterBoss_DukeFishron() {
-@@ -585,6 +_,13 @@
+@@ -585,6 +_,14 @@
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 2588, 7));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 2609, 15));
  			RegisterToNPC(type, new LeadingConditionRule(condition)).OnSuccess(ItemDropRule.OneFromOptions(1, 2611, 2624, 2622, 2621, 2623));
@@ -445,6 +463,7 @@
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.DukeFishronMask, 7));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.FishronWings, 10));
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 2611, 2624, 2622, 2621, 2623));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.SilverCoin, 1, 20, 20));
  		}
  
  		private void RegisterWeirdRules() {
@@ -748,21 +767,21 @@
 +		// not works
 +		private void RegisterHerbBag() {
 +			IItemDropRule[] itemDropRule = new IItemDropRule[14];
-+			itemDropRule[0] = new CommonDropNotScalingWithLuck(ItemID.Daybloom, 100000, 2, 40);
-+			itemDropRule[1] = new CommonDropNotScalingWithLuck(ItemID.Moonglow, 100000, 2, 40);
-+			itemDropRule[2] = new CommonDropNotScalingWithLuck(ItemID.Blinkroot, 100000, 2, 40);
-+			itemDropRule[3] = new CommonDropNotScalingWithLuck(ItemID.Waterleaf, 100000, 2, 40);
-+			itemDropRule[4] = new CommonDropNotScalingWithLuck(ItemID.Deathweed, 100000, 2, 40);
-+			itemDropRule[5] = new CommonDropNotScalingWithLuck(ItemID.Fireblossom, 100000, 2, 40);
-+			itemDropRule[6] = new CommonDropNotScalingWithLuck(ItemID.Shiverthorn, 100000, 2, 40);
-+			itemDropRule[7] = new CommonDropNotScalingWithLuck(ItemID.DaybloomSeeds, 100000, 2, 40);
-+			itemDropRule[8] = new CommonDropNotScalingWithLuck(ItemID.MoonglowSeeds, 100000, 2, 40);
-+			itemDropRule[9] = new CommonDropNotScalingWithLuck(ItemID.BlinkrootSeeds, 100000, 2, 40);
-+			itemDropRule[10] = new CommonDropNotScalingWithLuck(ItemID.WaterleafSeeds, 100000, 2, 40);
-+			itemDropRule[11] = new CommonDropNotScalingWithLuck(ItemID.DeathweedSeeds, 100000, 2, 40);
-+			itemDropRule[12] = new CommonDropNotScalingWithLuck(ItemID.FireblossomSeeds, 100000, 2, 40);
-+			itemDropRule[13] = new CommonDropNotScalingWithLuck(ItemID.ShiverthornSeeds, 100000, 2, 40);
-+			RegisterToItem(ItemID.HerbBag, new OneFromRulesRule(21698, itemDropRule));
++			itemDropRule[0] = new CommonDrop(ItemID.Daybloom, 100000, 2, 40, 21698);
++			itemDropRule[1] = new CommonDrop(ItemID.Moonglow, 100000, 2, 40, 21698);
++			itemDropRule[2] = new CommonDrop(ItemID.Blinkroot, 100000, 2, 40, 21698);
++			itemDropRule[3] = new CommonDrop(ItemID.Waterleaf, 100000, 2, 40, 21698);
++			itemDropRule[4] = new CommonDrop(ItemID.Deathweed, 100000, 2, 40, 21698);
++			itemDropRule[5] = new CommonDrop(ItemID.Fireblossom, 100000, 2, 40, 21698);
++			itemDropRule[6] = new CommonDrop(ItemID.Shiverthorn, 100000, 2, 40, 21698);
++			itemDropRule[7] = new CommonDrop(ItemID.DaybloomSeeds, 100000, 2, 40, 21698);
++			itemDropRule[8] = new CommonDrop(ItemID.MoonglowSeeds, 100000, 2, 40, 21698);
++			itemDropRule[9] = new CommonDrop(ItemID.BlinkrootSeeds, 100000, 2, 40, 21698);
++			itemDropRule[10] = new CommonDrop(ItemID.WaterleafSeeds, 100000, 2, 40, 21698);
++			itemDropRule[11] = new CommonDrop(ItemID.DeathweedSeeds, 100000, 2, 40, 21698);
++			itemDropRule[12] = new CommonDrop(ItemID.FireblossomSeeds, 100000, 2, 40, 21698);
++			itemDropRule[13] = new CommonDrop(ItemID.ShiverthornSeeds, 100000, 2, 40, 21698);
++			RegisterToItem(ItemID.HerbBag, new OneFromRulesRule(1, itemDropRule));
 +		}
 +
 +		// not works
