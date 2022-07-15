@@ -14,7 +14,7 @@ namespace Terraria.ModLoader
 		internal static readonly IList<ModPylon> modPylons = new List<ModPylon>();
 		internal static TeleportPylonType nextPylonID = VanillaPylonCount;
 
-		internal static void Load() {
+		internal static void Setup() {
 			foreach (ModPylon pylon in TileLoader.tiles.OfType<ModPylon>()) {
 				ModTypeLookup<ModPylon>.Register(pylon);
 				pylon.PylonType = ReservePylonID();

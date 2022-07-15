@@ -337,7 +337,6 @@ namespace Terraria.ModLoader
 				mod.TransferAllAssets();
 			});
 
-			PylonLoader.Load();
 
 			MemoryTracking.Finish();
 
@@ -350,6 +349,7 @@ namespace Terraria.ModLoader
 
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
 
+			PylonLoader.Setup();
 			MapLoader.SetupModMap();
 			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
