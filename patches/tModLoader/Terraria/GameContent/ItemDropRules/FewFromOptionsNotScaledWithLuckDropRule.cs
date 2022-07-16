@@ -52,7 +52,7 @@ namespace Terraria.GameContent.ItemDropRules
 		public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
 			float num = (float)chanceNumerator / (float)chanceDenominator;
 			float num2 = num * ratesInfo.parentDroprateChance;
-			float dropRate = 1f / (float)dropIds.Length * num2;
+			float dropRate = 1f / (float)(dropIds.Length - amount + 1) * num2;
 			for (int i = 0; i < dropIds.Length; i++) {
 				drops.Add(new DropRateInfo(dropIds[i], 1, 1, dropRate, ratesInfo.conditions));
 			}
