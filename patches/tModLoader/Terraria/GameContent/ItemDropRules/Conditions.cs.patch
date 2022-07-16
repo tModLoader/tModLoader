@@ -1,27 +1,34 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/Conditions.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/Conditions.cs
-@@ -4,6 +_,24 @@
+@@ -1,9 +_,31 @@
++using Terraria.ID;
+ using Terraria.Localization;
+ 
+ namespace Terraria.GameContent.ItemDropRules
  {
  	public class Conditions
  	{
-+		public class NoExtraAccessory : IItemDropRuleCondition, IProvideItemConditionDescription // TML
++		public class NotUsedDemonHeart : IItemDropRuleCondition, IProvideItemConditionDescription // TML
 +		{
 +			public bool CanDrop(DropAttemptInfo info) => !info.player.extraAccessory;
 +			public bool CanShowItemDropInUI() => true;
 +			public string GetConditionDescription() => null;
 +		}
++
 +		public class NoPortalGun : IItemDropRuleCondition, IProvideItemConditionDescription // TML
 +		{
-+			public bool CanDrop(DropAttemptInfo info) => !info.player.HasItem(3384);
++			public bool CanDrop(DropAttemptInfo info) => !info.player.HasItem(ItemID.PortalGun);
 +			public bool CanShowItemDropInUI() => true;
 +			public string GetConditionDescription() => null;
 +		}
++
 +		public class IsPreHardmode : IItemDropRuleCondition, IProvideItemConditionDescription // TML
 +		{
 +			public bool CanDrop(DropAttemptInfo info) => !Main.hardMode;
 +			public bool CanShowItemDropInUI() => true;
 +			public string GetConditionDescription() => null;
 +		}
++
  		public class NeverTrue : IItemDropRuleCondition, IProvideItemConditionDescription
  		{
  			public bool CanDrop(DropAttemptInfo info) => false;

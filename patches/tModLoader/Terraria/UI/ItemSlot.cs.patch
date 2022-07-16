@@ -429,14 +429,14 @@
  					}
 +					else if (ItemLoader.CanRightClick(inv[slot])) {
 +						if (ItemLoader.IsModItem(inv[slot].type)) {
-+							DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
-+							dropAttemptInfo.player = player;
-+							dropAttemptInfo.item = inv[slot].type;
-+							dropAttemptInfo.IsExpertMode = Main.expertMode;
-+							dropAttemptInfo.IsMasterMode = Main.masterMode;
-+							dropAttemptInfo.IsInSimulation = false;
-+							dropAttemptInfo.rng = Main.rand;
-+							DropAttemptInfo info = dropAttemptInfo;
++							DropAttemptInfo info = new() {
++								player = player,
++								item = inv[slot].type,
++								IsExpertMode = Main.expertMode,
++								IsMasterMode = Main.masterMode,
++								IsInSimulation = false,
++								rng = Main.rand,
++							};
 +							Main.ItemDropSolver.TryDropping(info);
 +						}
 +
