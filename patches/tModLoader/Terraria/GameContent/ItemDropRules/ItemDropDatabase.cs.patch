@@ -164,10 +164,10 @@
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.VolatileGelatin));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4986, 1, 25, 75));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.QueenSlimeMask, 7));
-+			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4758, 2));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4981, 2));
-+			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4980, 3));
-+			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuckWithX(3, 2, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings));
++			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4980, 2));
++			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4758, 3));
++			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuckWithX(3, 1, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings));
  		}
  
  		private void RegisterBoss_HallowBoss() {
@@ -206,7 +206,7 @@
  		}
  
  		private void RegisterBoss_Plantera() {
-@@ -368,6 +_,19 @@
+@@ -368,6 +_,20 @@
  			itemDropRule.OnSuccess(ItemDropRule.Common(771, 1, 50, 150), hideLootReport: true);
  			leadingConditionRule2.OnSuccess(itemDropRule, hideLootReport: true);
  			leadingConditionRule2.OnFailedConditions(new OneFromRulesRule(1, itemDropRule, ItemDropRule.Common(1255), ItemDropRule.Common(788), ItemDropRule.Common(1178), ItemDropRule.Common(1259), ItemDropRule.Common(1155), ItemDropRule.Common(3018)));
@@ -218,7 +218,8 @@
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.TempleKey));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Seedling, 15));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.TheAxe, 20));
-+			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Seedling, 2));
++			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.PygmyStaff, 2));
++			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.ThornHook, 10));
 +			IItemDropRule itemDropRule2 = ItemDropRule.Common(758);
 +			itemDropRule2.OnSuccess(ItemDropRule.Common(771, 1, 50, 150), hideLootReport: true);
 +			RegisterToItem(item, new OneFromRulesRule(1, itemDropRule2, ItemDropRule.Common(1255), ItemDropRule.Common(788), ItemDropRule.Common(1178), ItemDropRule.Common(1259), ItemDropRule.Common(1155), ItemDropRule.Common(3018)));
@@ -282,10 +283,10 @@
 +			Conditions.IsCorruption condition5 = new Conditions.IsCorruption();
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.EoCShield));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.EyeMask, 7));
-+			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Binoculars, 40));
++			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Binoculars, 30));
 +			RegisterToItem(item, ItemDropRule.ByCondition(condition4, ItemID.CrimtaneOre, 1, 30, 87));
 +			RegisterToItem(item, ItemDropRule.ByCondition(condition4, ItemID.CrimsonSeeds, 1, 1, 3));
-+			RegisterToItem(item, ItemDropRule.ByCondition(condition5, 47, 1, 20, 50));
++			RegisterToItem(item, ItemDropRule.ByCondition(condition5, 47, 1, 20, 49));
 +			RegisterToItem(item, ItemDropRule.ByCondition(condition5, 56, 1, 30, 87));
 +			RegisterToItem(item, ItemDropRule.ByCondition(condition5, 59, 1, 1, 3));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 3, 3));
@@ -324,7 +325,7 @@
  		}
  
  		private void RegisterBoss_Deerclops() {
-@@ -468,6 +_,15 @@
+@@ -468,6 +_,14 @@
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 5101, 3));
  			RegisterToNPC(type, ItemDropRule.ByCondition(condition, 5113, 3));
  			RegisterToNPC(type, new LeadingConditionRule(condition)).OnSuccess(new OneFromRulesRule(1, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 5117, 5118, 5119, 5095)));
@@ -334,7 +335,6 @@
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.BoneHelm));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.DeerclopsMask, 7));
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 5098, ItemID.Eyebrella, ItemID.DontStarveShaderItem));
-+			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.PewMaticHorn, 4));
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 5117, 5118, 5119, 5095));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 10, 10));
  		}
@@ -351,9 +351,9 @@
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.BeeMask, 7));
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.BeeGun, ItemID.BeeKeeper, ItemID.BeesKnees));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.HoneyComb, 3));
-+			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Nectar, 15));
-+			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.HoneyedGoggles, 20));
-+			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.HiveWand, 3));
++			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Nectar, 11));
++			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.HoneyedGoggles, 9));
++			RegisterToItem(item, ItemDropRule.Common(ItemID.HiveWand));
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.BeeHat, ItemID.BeeShirt, ItemID.BeePants));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.Beenade, 1, 10, 30));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.BeeWax, 1, 17, 30));
@@ -627,10 +627,10 @@
 +			preHmOres5[3] = ItemDropRule.NotScalingWithLuck(ItemID.PlatinumOre, 5, 30, 44);
 +			RegisterToItem(ItemID.GoldenCrate, new OneFromRulesRule(1, preHmOres5));
 +			IItemDropRule[] preHmBars5 = new IItemDropRule[4];
-+			preHmBars5[0] = ItemDropRule.NotScalingWithLuck(ItemID.SilverOre, 15, 10, 14);
-+			preHmBars5[1] = ItemDropRule.NotScalingWithLuck(ItemID.TungstenOre, 15, 10, 14);
-+			preHmBars5[2] = ItemDropRule.NotScalingWithLuck(ItemID.GoldOre, 15, 10, 14);
-+			preHmBars5[3] = ItemDropRule.NotScalingWithLuck(ItemID.PlatinumOre, 15, 10, 14);
++			preHmBars5[0] = ItemDropRule.NotScalingWithLuck(ItemID.SilverBar, 15, 10, 14);
++			preHmBars5[1] = ItemDropRule.NotScalingWithLuck(ItemID.TungstenBar, 15, 10, 14);
++			preHmBars5[2] = ItemDropRule.NotScalingWithLuck(ItemID.GoldBar, 15, 10, 14);
++			preHmBars5[3] = ItemDropRule.NotScalingWithLuck(ItemID.PlatinumBar, 15, 10, 14);
 +			RegisterToItem(ItemID.GoldenCrate, new OneFromRulesRule(4, preHmBars5));
 +			IItemDropRule[] classicPotions3 = new IItemDropRule[5];
 +			classicPotions3[0] = ItemDropRule.NotScalingWithLuck(ItemID.ObsidianSkinPotion, 3, 2, 5);
@@ -661,7 +661,7 @@
 +			preHmBars6[1] = ItemDropRule.NotScalingWithLuck(ItemID.TungstenBar, 45, 10, 14);
 +			preHmBars6[2] = ItemDropRule.NotScalingWithLuck(ItemID.GoldBar, 45, 10, 14);
 +			preHmBars6[3] = ItemDropRule.NotScalingWithLuck(ItemID.PlatinumBar, 45, 10, 14);
-+			RegisterToItem(ItemID.GoldenCrateHard, new OneFromRulesRule(4, preHmOres6));
++			RegisterToItem(ItemID.GoldenCrateHard, new OneFromRulesRule(4, preHmBars6));
 +			IItemDropRule[] hmBars3 = new IItemDropRule[4];
 +			hmBars3[0] = ItemDropRule.NotScalingWithLuck(ItemID.MythrilBar, 45, 10, 14);
 +			hmBars3[1] = ItemDropRule.NotScalingWithLuck(ItemID.OrichalcumBar, 45, 10, 14);
