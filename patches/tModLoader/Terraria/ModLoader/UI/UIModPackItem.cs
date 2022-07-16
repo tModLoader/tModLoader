@@ -42,6 +42,11 @@ namespace Terraria.ModLoader.UI
 		private readonly UIAutoScaleTextTextPanel<string> _enableListOnlyButton;
 		private readonly UIAutoScaleTextTextPanel<string> _viewInModBrowserButton;
 		private readonly UIAutoScaleTextTextPanel<string> _updateListWithEnabledButton;
+		private readonly UIAutoScaleTextTextPanel<string> _updatePackWithInstanceButton;
+		private readonly UIAutoScaleTextTextPanel<string> _exportPackInstanceButton;
+		private readonly UIAutoScaleTextTextPanel<string> _removePackInstanceButton;
+		private readonly UIAutoScaleTextTextPanel<string> _importFromPackLocalButton;
+		private readonly UIAutoScaleTextTextPanel<string> _removePackLocalButton;
 		private readonly UIImageButton _deleteButton;
 		private readonly string _filename;
 		private readonly string _filepath;
@@ -91,6 +96,7 @@ namespace Terraria.ModLoader.UI
 			};
 			Append(_modName);
 
+			// View Pack (1-R)
 			var viewListButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackViewList")) {
 				Width = { Pixels = 100 },
 				Height = { Pixels = 36 },
@@ -102,8 +108,9 @@ namespace Terraria.ModLoader.UI
 			viewListButton.OnClick += ViewListInfo;
 			Append(viewListButton);
 
+			// Enable (1-L)
 			_enableListButton = new UIAutoScaleTextTextPanel<string>(
-				Language.GetTextValue(_legacy ? "tModLoader.ModPackEnableThisList" : "tModLoader.DeactivateModPack")) {
+				Language.GetTextValue("tModLoader.ModPackEnableThisList")) {
 				Width = { Pixels = 151 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = 248 },
@@ -114,8 +121,9 @@ namespace Terraria.ModLoader.UI
 			_enableListButton.OnClick += _legacy ? EnableList : DeactivateModPack;
 			Append(_enableListButton);
 
+			// Enable List Only (2-L)
 			_enableListOnlyButton = new UIAutoScaleTextTextPanel<string>(
-				Language.GetTextValue(_legacy ? "tModLoader.ModPackEnableOnlyThisList": "tModLoader.ActivateModPack")) {
+				Language.GetTextValue("tModLoader.ModPackEnableOnlyThisList")) {
 				Width = { Pixels = 190 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = 50 },
@@ -123,11 +131,12 @@ namespace Terraria.ModLoader.UI
 			}.WithFadedMouseOver();
 			_enableListOnlyButton.PaddingTop -= 2f;
 			_enableListOnlyButton.PaddingBottom -= 2f;
-			_enableListOnlyButton.OnClick += ActivateModPack;
+			_enableListOnlyButton.OnClick += EnabledListOnly;
 			Append(_enableListOnlyButton);
 
+			// View on Browser (2-R)
 			_viewInModBrowserButton = new UIAutoScaleTextTextPanel<string>(
-				Language.GetTextValue(_legacy ? "tModLoader.ModPackViewModsInModBrowser" : "tModLoader.DownloadMissingMods")) {
+				Language.GetTextValue("tModLoader.ModPackViewModsInModBrowser")) {
 				Width = { Pixels = 246 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = 50 },
@@ -138,6 +147,7 @@ namespace Terraria.ModLoader.UI
 			_viewInModBrowserButton.OnClick += DownloadMissingMods;
 			Append(_viewInModBrowserButton);
 
+			// Update From Local (3-L)
 			_updateListWithEnabledButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabled")) {
 				Width = { Pixels = 225 },
 				Height = { Pixels = 36 },
@@ -149,6 +159,75 @@ namespace Terraria.ModLoader.UI
 			_updateListWithEnabledButton.OnClick += (a, b) => UIModPacks.SaveModPack(_filename);
 			Append(_updateListWithEnabledButton);
 
+			// Delete Instance (3-R)
+			/*
+			_updatePackWithInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Delete Instance")) {
+				Width = { Pixels = 225 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 304 },
+				Top = { Pixels = 80 }
+			}.WithFadedMouseOver();
+			_updatePackWithInstanceButton.PaddingTop -= 2f;
+			_updatePackWithInstanceButton.PaddingBottom -= 2f;
+			_updatePackWithInstanceButton.OnClick += (a, b) => Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), _filename), true);
+			Append(_updatePackWithInstanceButton);
+			*/
+
+			// Import From Pack (Local) (4-L)
+			/*
+			_importFromPackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Import Pack (Local)")) {
+				Width = { Pixels = 225 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 304 },
+				Top = { Pixels = 80 }
+			}.WithFadedMouseOver();
+			_importFromPackLocalButton.PaddingTop -= 2f;
+			_importFromPackLocalButton.PaddingBottom -= 2f;
+			_importFromPackLocalButton.OnClick += ActivateModPack;
+			Append(_importFromPackLocalButton);
+			*/
+
+			// Remove Pack (Local) (4-R)
+			/*
+			_removePackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Remove Pack (Local)")) {
+				Width = { Pixels = 225 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 304 },
+				Top = { Pixels = 80 }
+			}.WithFadedMouseOver();
+			_removePackLocalButton.PaddingTop -= 2f;
+			_removePackLocalButton.PaddingBottom -= 2f;
+			_removePackLocalButton.OnClick += DeactivateModPack;
+			Append(_removePackLocalButton);
+			*/
+
+			// Export Pack Instance (5-L)
+			_exportPackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Export Pack Instance")) {
+				Width = { Pixels = 225 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 304 },
+				Top = { Pixels = 80 }
+			}.WithFadedMouseOver();
+			_exportPackInstanceButton.PaddingTop -= 2f;
+			_exportPackInstanceButton.PaddingBottom -= 2f;
+			_exportPackInstanceButton.OnClick += (a, b) => UIModPacks.ExportSnapshot(_filename);
+			Append(_exportPackInstanceButton);
+
+			// Play Instance (5-R)
+			/*
+			_removePackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Play Pack Instance")) {
+				Width = { Pixels = 225 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 304 },
+				Top = { Pixels = 80 }
+			}.WithFadedMouseOver();
+			_removePackInstanceButton.PaddingTop -= 2f;
+			_removePackInstanceButton.PaddingBottom -= 2f;
+			_removePackInstanceButton.OnClick += (a, b) => 
+			Append(_removePackInstanceButton);
+			*/
+
+			// Delete button
 			_deleteButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete")) {
 				Top = { Pixels = 40 }
 			};
@@ -242,38 +321,27 @@ namespace Terraria.ModLoader.UI
 
 		private static void DownloadMissingMods(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
-
-			if (modpack._legacy) {
-				Interface.modBrowser.Activate();
-				Interface.modBrowser.FilterTextBox.Text = "";
-				Interface.modBrowser.SpecialModPackFilter = modpack._mods.ToList();
-				Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
-				Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
-				Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
-				Interface.modBrowser.UpdateFilterToggle.SetCurrentState((int)Interface.modBrowser.UpdateFilterMode);
-				Interface.modBrowser.ModSideFilterToggle.SetCurrentState((int)Interface.modBrowser.ModSideFilterMode);
-				Interface.modBrowser.UpdateNeeded = true;
-				SoundEngine.PlaySound(SoundID.MenuOpen);
-				Main.menuMode = Interface.modBrowserID;
-				return;
-			}
-
-			string modpackMods = Path.Combine(modpack._filepath, "mods");
-			int offset = 0;
-			foreach (var mod in Directory.EnumerateFiles(modpackMods, "*.tmod")) {
-				File.Copy(mod, Path.Combine(ModLoader.ModPath, Path.GetFileName(mod)));
-				offset++;
-			}
-
-			if (modpack._numModsMissing - offset > 0) {
-				string steamInstall = Path.Combine(modpack._filepath, "mods", "install.txt");
-				string[] workshopIds = File.ReadAllLines(steamInstall);
-
-				Social.Steam.WorkshopHelper.ModManager.DownloadBatch(workshopIds, Interface.modPacksMenu);
-			}
-
-			UIModPacks.Mods = Core.ModOrganizer.FindMods().Select(m => m.Name).ToArray();
+			Interface.modBrowser.Activate();
+			Interface.modBrowser.FilterTextBox.Text = "";
+			Interface.modBrowser.SpecialModPackFilter = modpack._mods.ToList();
+			Interface.modBrowser.SpecialModPackFilterTitle = Language.GetTextValue("tModLoader.MBFilterModlist");// Too long: " + modListItem.modName.Text;
+			Interface.modBrowser.UpdateFilterMode = UpdateFilter.All; // Set to 'All' so all mods from ModPack are visible
+			Interface.modBrowser.ModSideFilterMode = ModSideFilter.All;
+			Interface.modBrowser.UpdateFilterToggle.SetCurrentState((int)Interface.modBrowser.UpdateFilterMode);
+			Interface.modBrowser.ModSideFilterToggle.SetCurrentState((int)Interface.modBrowser.ModSideFilterMode);
+			Interface.modBrowser.UpdateNeeded = true;
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+			Main.menuMode = Interface.modBrowserID;
 		}
+
+		private static void EnabledListOnly(UIMouseEvent evt, UIElement listeningElement) {
+			foreach (var item in UIModPacks.Mods) {
+				ModLoader.DisableMod(item);
+			}
+
+			EnableList(evt, listeningElement);
+		}
+
 
 		private static void ActivateModPack(UIMouseEvent evt, UIElement listeningElement) {
 			foreach (var item in UIModPacks.Mods) {
@@ -281,11 +349,6 @@ namespace Terraria.ModLoader.UI
 			}
 
 			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
-
-			if (modpack._legacy) {
-				EnableList(evt, listeningElement);
-				return;
-			}
 
 			// Deploy Configs
 			string deployedConfigs = Config.ConfigManager.ModConfigPath;
