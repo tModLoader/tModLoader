@@ -167,7 +167,7 @@
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4981, 2));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4980, 2));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4758, 3));
-+			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuckWithX(3, 1, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings));
++			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuckWithX(1, 2, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings));
  		}
  
  		private void RegisterBoss_HallowBoss() {
@@ -198,7 +198,7 @@
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.RoyalGel));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.KingSlimeMask, 7));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimySaddle, 2));
-+			RegisterToItem(item, ItemDropRule.OneFromOptionsWithNumerator(3, 2, ItemID.NinjaHood, ItemID.NinjaShirt, ItemID.NinjaPants));
++			RegisterToItem(item, ItemDropRule.OneFromOptionsWithNumerator(1, 2, ItemID.NinjaHood, ItemID.NinjaShirt, ItemID.NinjaPants));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeGun, 2));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeHook, 2));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.Solidifier));
@@ -764,27 +764,27 @@
 +			RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.ShadowKey, 3));
 +		}
 +
-+		// not works
++		// kinda works (drops one item instead of multiple and also because of all that has just ~15% to drop??)
 +		private void RegisterHerbBag() {
 +			IItemDropRule[] itemDropRule = new IItemDropRule[14];
-+			itemDropRule[0] = new CommonDrop(ItemID.Daybloom, 100000, 2, 40, 21698);
-+			itemDropRule[1] = new CommonDrop(ItemID.Moonglow, 100000, 2, 40, 21698);
-+			itemDropRule[2] = new CommonDrop(ItemID.Blinkroot, 100000, 2, 40, 21698);
-+			itemDropRule[3] = new CommonDrop(ItemID.Waterleaf, 100000, 2, 40, 21698);
-+			itemDropRule[4] = new CommonDrop(ItemID.Deathweed, 100000, 2, 40, 21698);
-+			itemDropRule[5] = new CommonDrop(ItemID.Fireblossom, 100000, 2, 40, 21698);
-+			itemDropRule[6] = new CommonDrop(ItemID.Shiverthorn, 100000, 2, 40, 21698);
-+			itemDropRule[7] = new CommonDrop(ItemID.DaybloomSeeds, 100000, 2, 40, 21698);
-+			itemDropRule[8] = new CommonDrop(ItemID.MoonglowSeeds, 100000, 2, 40, 21698);
-+			itemDropRule[9] = new CommonDrop(ItemID.BlinkrootSeeds, 100000, 2, 40, 21698);
-+			itemDropRule[10] = new CommonDrop(ItemID.WaterleafSeeds, 100000, 2, 40, 21698);
-+			itemDropRule[11] = new CommonDrop(ItemID.DeathweedSeeds, 100000, 2, 40, 21698);
-+			itemDropRule[12] = new CommonDrop(ItemID.FireblossomSeeds, 100000, 2, 40, 21698);
-+			itemDropRule[13] = new CommonDrop(ItemID.ShiverthornSeeds, 100000, 2, 40, 21698);
++			itemDropRule[0] = new CommonDrop(ItemID.Daybloom, 10000, 2, 40, 21698);
++			itemDropRule[1] = new CommonDrop(ItemID.Moonglow, 10000, 2, 40, 21698);
++			itemDropRule[2] = new CommonDrop(ItemID.Blinkroot, 10000, 2, 40, 21698);
++			itemDropRule[3] = new CommonDrop(ItemID.Waterleaf, 10000, 2, 40, 21698);
++			itemDropRule[4] = new CommonDrop(ItemID.Deathweed, 10000, 2, 40, 21698);
++			itemDropRule[5] = new CommonDrop(ItemID.Fireblossom, 10000, 2, 40, 21698);
++			itemDropRule[6] = new CommonDrop(ItemID.Shiverthorn, 10000, 2, 40, 21698);
++			itemDropRule[7] = new CommonDrop(ItemID.DaybloomSeeds, 10000, 2, 40, 21698);
++			itemDropRule[8] = new CommonDrop(ItemID.MoonglowSeeds, 10000, 2, 40, 21698);
++			itemDropRule[9] = new CommonDrop(ItemID.BlinkrootSeeds, 10000, 2, 40, 21698);
++			itemDropRule[10] = new CommonDrop(ItemID.WaterleafSeeds, 10000, 2, 40, 21698);
++			itemDropRule[11] = new CommonDrop(ItemID.DeathweedSeeds, 10000, 2, 40, 21698);
++			itemDropRule[12] = new CommonDrop(ItemID.FireblossomSeeds, 10000, 2, 40, 21698);
++			itemDropRule[13] = new CommonDrop(ItemID.ShiverthornSeeds, 10000, 2, 40, 21698);
 +			RegisterToItem(ItemID.HerbBag, new OneFromRulesRule(1, itemDropRule));
 +		}
 +
-+		// not works
++		// not works (cursed)
 +		private void RegisterGoodieBag() {
 +			RegisterToItem(ItemID.GoodieBag, ItemDropRule.NotScalingWithLuck(ItemID.UnluckyYarn, 150));
 +			RegisterToItem(ItemID.GoodieBag, new CommonDrop(ItemID.BatHook, 22500, chanceNumerator: 149));
@@ -819,7 +819,7 @@
 +			RegisterToItem(ItemID.GoodieBag, new OneFromRulesRule(2, vanitySets));
 +		}
 +
-+		// not owkrs
++		// not owkrs (cusresd)
 +		private void RegisterPresent() {
 +			LeadingConditionRule preHardmode = new LeadingConditionRule(new Conditions.IsPreHardmode());
 +			LeadingConditionRule hardmode = new LeadingConditionRule(new Conditions.IsHardmode());
