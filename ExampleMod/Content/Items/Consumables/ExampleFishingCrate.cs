@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.Creative;
+using Terraria.GameContent.ItemDropRules;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -39,81 +40,59 @@ namespace ExampleMod.Content.Items.Consumables
 			return true;
 		}
 
-		public override void RightClick(Player player) {
-			// Drop the items here. Drops mirrored from pre-hm crates, with ExampleMod additions to the drop table
-			var entitySource = player.GetSource_OpenItem(Type);
-
+		public override void ModifyItemLoot(ItemLoot itemLoot) {
 			// Drop a special weapon/accessory etc. specific to this crate's theme (i.e. Sky Crate dropping Fledgling Wings or Starfury)
-			int guaranteedType = Main.rand.Next(new int[] {
-				ModContent.ItemType<Accessories.ExampleBeard>(),
-				ModContent.ItemType<Accessories.ExampleStatBonusAccessory>()
-			});
-
-			player.QuickSpawnItem(entitySource, guaranteedType);
+			itemLoot.Add(ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ModContent.ItemType<Accessories.ExampleBeard>(), ModContent.ItemType<Accessories.ExampleStatBonusAccessory>()));
 
 			// Drop coins
-			if (Main.rand.NextBool(4)) {
-				player.QuickSpawnItem(entitySource, ItemID.GoldCoin, Main.rand.Next(5, 13));
-			}
+			itemLoot.Add(ItemDropRule.Common(ItemID.GoldCoin, 4, 5, 13));
 
 			// Drop pre-hm ores, with the addition of one from ExampleMod
-			if (Main.rand.NextBool(7)) {
-				int oreType = Main.rand.Next(new int[] {
-					ItemID.CopperOre,
-					ItemID.TinOre,
-					ItemID.IronOre,
-					ItemID.LeadOre,
-					ItemID.SilverOre,
-					ItemID.TungstenOre,
-					ItemID.GoldOre,
-					ItemID.PlatinumOre,
-					ModContent.ItemType<Placeable.ExampleOre>()
-				});
-
-				player.QuickSpawnItem(entitySource, oreType, Main.rand.Next(30, 50));
-			}
+			IItemDropRule[] oreTypes = new IItemDropRule[9];
+			oreTypes[0] = new CommonDrop(ItemID.CopperOre, 1, 30, 50);
+			oreTypes[1] = new CommonDrop(ItemID.TinOre, 1, 30, 50);
+			oreTypes[2] = new CommonDrop(ItemID.IronOre, 1, 30, 50);
+			oreTypes[3] = new CommonDrop(ItemID.LeadOre, 1, 30, 50);
+			oreTypes[4] = new CommonDrop(ItemID.SilverOre, 1, 30, 50);
+			oreTypes[5] = new CommonDrop(ItemID.TungstenOre, 1, 30, 50);
+			oreTypes[6] = new CommonDrop(ItemID.GoldOre, 1, 30, 50);
+			oreTypes[7] = new CommonDrop(ItemID.PlatinumOre, 1, 30, 50);
+			oreTypes[8] = new CommonDrop(ModContent.ItemType<Placeable.ExampleOre>(), 1, 30, 50);
+			itemLoot.Add(new OneFromRulesRule(7, oreTypes));
 
 			// Drop pre-hm bars (except copper/tin), with the addition of one from ExampleMod
-			if (Main.rand.NextBool(4)) {
-				int barType = Main.rand.Next(new int[] {
-					ItemID.IronBar,
-					ItemID.LeadBar,
-					ItemID.SilverBar,
-					ItemID.TungstenBar,
-					ItemID.GoldBar,
-					ItemID.PlatinumBar,
-					ModContent.ItemType<Placeable.ExampleBar>()
-				});
-
-				player.QuickSpawnItem(entitySource, barType, Main.rand.Next(10, 21));
-			}
+			IItemDropRule[] oreBars = new IItemDropRule[7];
+			oreBars[0] = new CommonDrop(ItemID.IronBar, 1, 10, 21);
+			oreBars[1] = new CommonDrop(ItemID.LeadBar, 1, 10, 21);
+			oreBars[2] = new CommonDrop(ItemID.SilverBar, 1, 10, 21);
+			oreBars[3] = new CommonDrop(ItemID.TungstenBar, 1, 10, 21);
+			oreBars[4] = new CommonDrop(ItemID.GoldBar, 1, 10, 21);
+			oreBars[5] = new CommonDrop(ItemID.PlatinumBar, 1, 10, 21);
+			oreBars[6] = new CommonDrop(ModContent.ItemType<Placeable.ExampleBar>(), 1, 10, 21);
+			itemLoot.Add(new OneFromRulesRule(4, oreBars));
 
 			// Drop an "exploration utility" potion, with the addition of one from ExampleMod
-			if (Main.rand.NextBool(4)) {
-				int potionType = Main.rand.Next(new int[] {
-					ItemID.ObsidianSkinPotion,
-					ItemID.SpelunkerPotion,
-					ItemID.HunterPotion,
-					ItemID.GravitationPotion,
-					ItemID.MiningPotion,
-					ItemID.HeartreachPotion,
-					ModContent.ItemType<Consumables.ExampleBuffPotion>()
-				});
-
-				player.QuickSpawnItem(entitySource, potionType, Main.rand.Next(2, 5));
-			}
+			IItemDropRule[] explorationPotions = new IItemDropRule[7];
+			explorationPotions[0] = new CommonDrop(ItemID.ObsidianSkinPotion, 1, 2, 5);
+			explorationPotions[1] = new CommonDrop(ItemID.SpelunkerPotion, 1, 2, 5);
+			explorationPotions[2] = new CommonDrop(ItemID.HunterPotion, 1, 2, 5);
+			explorationPotions[3] = new CommonDrop(ItemID.GravitationPotion, 1, 2, 5);
+			explorationPotions[4] = new CommonDrop(ItemID.MiningPotion, 1, 2, 5);
+			explorationPotions[5] = new CommonDrop(ItemID.HeartreachPotion, 1, 2, 5);
+			explorationPotions[6] = new CommonDrop(ModContent.ItemType<Consumables.ExampleBuffPotion>(), 1, 2, 5);
+			itemLoot.Add(new OneFromRulesRule(4, explorationPotions));
 
 			// Drop (pre-hm) resource potion
-			if (Main.rand.NextBool(2)) {
-				int resourcePotionType = Main.rand.NextBool() ? ItemID.HealingPotion : ItemID.ManaPotion;
-				player.QuickSpawnItem(entitySource, resourcePotionType, Main.rand.Next(5, 18));
-			}
+			IItemDropRule[] resourcePotions = new IItemDropRule[2];
+			resourcePotions[0] = new CommonDrop(ItemID.HealingPotion, 1, 5, 18);
+			resourcePotions[1] = new CommonDrop(ItemID.ManaPotion, 1, 5, 18);
+			itemLoot.Add(new OneFromRulesRule(2, resourcePotions));
 
 			// Drop (high-end) bait
-			if (Main.rand.NextBool(2)) {
-				int baitType = Main.rand.NextBool() ? ItemID.JourneymanBait : ItemID.MasterBait;
-				player.QuickSpawnItem(entitySource, baitType, Main.rand.Next(2, 7));
-			}
+			IItemDropRule[] highendBait = new IItemDropRule[2];
+			highendBait[0] = new CommonDrop(ItemID.HealingPotion, 1, 2, 7);
+			highendBait[1] = new CommonDrop(ItemID.ManaPotion, 1, 2, 7);
+			itemLoot.Add(new OneFromRulesRule(2, highendBait));
 		}
 	}
 }
