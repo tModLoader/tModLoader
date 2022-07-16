@@ -467,7 +467,7 @@
  		}
  
  		private void RegisterWeirdRules() {
-@@ -1259,6 +_,410 @@
+@@ -1259,6 +_,334 @@
  			rule.OnSuccess(new CommonDrop(4343, chanceDenominator, 2, 5));
  			rule.OnSuccess(new CommonDrop(4344, chanceDenominator, 2, 5));
  			RegisterToMultipleNPCs(leadingConditionRule, npcNetIds21);
@@ -764,7 +764,7 @@
 +			RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.ShadowKey, 3));
 +		}
 +
-+		// kinda works (drops one item instead of multiple and also because of all that has just ~15% to drop??)
++		// kinda works, but amount of stacks is not the same as vanilla... FIX?
 +		private void RegisterHerbBag() {
 +			IItemDropRule[] itemDropRule = new IItemDropRule[14];
 +			itemDropRule[0] = new CommonDrop(ItemID.Daybloom, 10000, 2, 40, 21698);
@@ -781,97 +781,21 @@
 +			itemDropRule[11] = new CommonDrop(ItemID.DeathweedSeeds, 10000, 2, 40, 21698);
 +			itemDropRule[12] = new CommonDrop(ItemID.FireblossomSeeds, 10000, 2, 40, 21698);
 +			itemDropRule[13] = new CommonDrop(ItemID.ShiverthornSeeds, 10000, 2, 40, 21698);
-+			RegisterToItem(ItemID.HerbBag, new FewFromRulesRule(4, 1, itemDropRule));
++			RegisterToItem(ItemID.HerbBag, new OneFromRulesRule(1, new FewFromRulesRule(2, 1, itemDropRule), new FewFromRulesRule(3, 1, itemDropRule), new FewFromRulesRule(4, 1, itemDropRule), new FewFromRulesRule(5, 1, itemDropRule)));
 +		}
 +
-+		// not works (cursed)
++		// SOMEONE EXPERIENCE PLEASE
 +		private void RegisterGoodieBag() {
 +			RegisterToItem(ItemID.GoodieBag, ItemDropRule.NotScalingWithLuck(ItemID.UnluckyYarn, 150));
 +			RegisterToItem(ItemID.GoodieBag, new CommonDrop(ItemID.BatHook, 22500, chanceNumerator: 149));
 +			RegisterToItem(ItemID.GoodieBag, new CommonDrop(ItemID.RottenEgg, 10000, chanceNumerator: 2467));
-+			IItemDropRule[] paintings = new IItemDropRule[5];
-+			paintings[0] = ItemDropRule.Common(ItemID.JackingSkeletron, 1000);
-+			paintings[1] = ItemDropRule.Common(ItemID.BitterHarvest, 1000);
-+			paintings[2] = ItemDropRule.Common(ItemID.BloodMoonCountess, 1000);
-+			paintings[3] = ItemDropRule.Common(ItemID.HallowsEve, 1000);
-+			paintings[4] = ItemDropRule.Common(ItemID.MorbidCuriosity, 1000);
-+			RegisterToItem(ItemID.GoodieBag, new OneFromRulesRule(74, paintings));
-+			IItemDropRule[] vanitySets = new IItemDropRule[19];
-+			vanitySets[0] = ItemDropRule.NotScalingWithLuck(ItemID.CatMask).OnSuccess(ItemDropRule.Common(ItemID.CatShirt)).OnSuccess(ItemDropRule.Common(ItemID.CatPants));
-+			vanitySets[1] = ItemDropRule.NotScalingWithLuck(ItemID.CreeperMask).OnSuccess(ItemDropRule.Common(ItemID.CreeperShirt)).OnSuccess(ItemDropRule.Common(ItemID.CreeperPants));
-+			vanitySets[2] = ItemDropRule.NotScalingWithLuck(ItemID.GhostMask).OnSuccess(ItemDropRule.Common(ItemID.GhostShirt));
-+			vanitySets[3] = ItemDropRule.NotScalingWithLuck(ItemID.LeprechaunHat).OnSuccess(ItemDropRule.Common(ItemID.LeprechaunShirt)).OnSuccess(ItemDropRule.Common(ItemID.LeprechaunPants));
-+			vanitySets[4] = ItemDropRule.NotScalingWithLuck(ItemID.PixieShirt).OnSuccess(ItemDropRule.Common(ItemID.PixiePants));
-+			vanitySets[5] = ItemDropRule.NotScalingWithLuck(ItemID.PrincessHat).OnSuccess(ItemDropRule.Common(ItemID.PrincessDressNew));
-+			vanitySets[6] = ItemDropRule.NotScalingWithLuck(ItemID.PumpkinMask).OnSuccess(ItemDropRule.Common(ItemID.PumpkinShirt)).OnSuccess(ItemDropRule.Common(ItemID.PumpkinPants));
-+			vanitySets[7] = ItemDropRule.NotScalingWithLuck(ItemID.RobotMask).OnSuccess(ItemDropRule.Common(ItemID.RobotShirt)).OnSuccess(ItemDropRule.Common(ItemID.RobotPants));
-+			vanitySets[8] = ItemDropRule.NotScalingWithLuck(ItemID.UnicornMask).OnSuccess(ItemDropRule.Common(ItemID.UnicornShirt)).OnSuccess(ItemDropRule.Common(ItemID.UnicornPants));
-+			vanitySets[9] = ItemDropRule.NotScalingWithLuck(ItemID.VampireMask).OnSuccess(ItemDropRule.Common(ItemID.VampireShirt)).OnSuccess(ItemDropRule.Common(ItemID.VampirePants));
-+			vanitySets[10] = ItemDropRule.NotScalingWithLuck(ItemID.WitchHat).OnSuccess(ItemDropRule.Common(ItemID.WitchDress)).OnSuccess(ItemDropRule.Common(ItemID.WitchBoots));
-+			vanitySets[11] = ItemDropRule.NotScalingWithLuck(ItemID.BrideofFrankensteinMask).OnSuccess(ItemDropRule.Common(ItemID.BrideofFrankensteinDress));
-+			vanitySets[12] = ItemDropRule.NotScalingWithLuck(ItemID.KarateTortoiseMask).OnSuccess(ItemDropRule.Common(ItemID.KarateTortoiseShirt)).OnSuccess(ItemDropRule.Common(ItemID.KarateTortoisePants));
-+			vanitySets[13] = ItemDropRule.NotScalingWithLuck(ItemID.ReaperHood).OnSuccess(ItemDropRule.Common(ItemID.ReaperRobe));
-+			vanitySets[14] = ItemDropRule.NotScalingWithLuck(ItemID.FoxMask).OnSuccess(ItemDropRule.Common(ItemID.FoxShirt)).OnSuccess(ItemDropRule.Common(ItemID.FoxPants));
-+			vanitySets[15] = ItemDropRule.NotScalingWithLuck(ItemID.CatEars);
-+			vanitySets[16] = ItemDropRule.NotScalingWithLuck(ItemID.SpaceCreatureMask).OnSuccess(ItemDropRule.Common(ItemID.SpaceCreatureShirt)).OnSuccess(ItemDropRule.Common(ItemID.SpaceCreaturePants));
-+			vanitySets[17] = ItemDropRule.NotScalingWithLuck(ItemID.WolfMask).OnSuccess(ItemDropRule.Common(ItemID.WolfShirt)).OnSuccess(ItemDropRule.Common(ItemID.WolfMask));
-+			vanitySets[18] = ItemDropRule.NotScalingWithLuck(ItemID.TreasureHunterShirt).OnSuccess(ItemDropRule.Common(ItemID.TreasureHunterPants));
-+			RegisterToItem(ItemID.GoodieBag, new OneFromRulesRule(2, vanitySets));
 +		}
 +
-+		// not owkrs (cusresd)
++		// SOMEONE EXPERIENCED PLEASE
 +		private void RegisterPresent() {
 +			LeadingConditionRule preHardmode = new LeadingConditionRule(new Conditions.IsPreHardmode());
 +			LeadingConditionRule hardmode = new LeadingConditionRule(new Conditions.IsHardmode());
 +			hardmode.OnSuccess(new CommonDrop(ItemID.SnowGlobe, 10000, chanceNumerator: 667));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.Coal, 10000, chanceNumerator: 333));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.Coal, 10000, chanceNumerator: 311));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.DogWhistle, 10000, chanceNumerator: 24));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.DogWhistle, 10000, chanceNumerator: 23));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.RedRyder, 10000, chanceNumerator: 64).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.MusketBall, 1, 30, 60)));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.RedRyder, 10000, chanceNumerator: 60).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.MusketBall, 1, 30, 60)));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.CandyCaneSword, 10000, chanceNumerator: 64));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.CandyCaneSword, 10000, chanceNumerator: 60));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.CnadyCanePickaxe, 10000, chanceNumerator: 63));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.CnadyCanePickaxe, 10000, chanceNumerator: 59));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.CandyCaneHook, 10000, chanceNumerator: 63));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.CandyCaneHook, 10000, chanceNumerator: 59));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.FruitcakeChakram, 10000, chanceNumerator: 63));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.FruitcakeChakram, 10000, chanceNumerator: 58));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.HandWarmer, 10000, chanceNumerator: 62));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.HandWarmer, 10000, chanceNumerator: 58));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.Toolbox, 10000, chanceNumerator: 31));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.Toolbox, 10000, chanceNumerator: 29));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.ReindeerAntlers, 10000, chanceNumerator: 231));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.ReindeerAntlers, 10000, chanceNumerator: 215));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.Holly, 100, chanceNumerator: 9));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.Holly, 1000, chanceNumerator: 84));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.MrsClauseHat, 10000, chanceNumerator: 108).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.MrsClauseShirt)).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.MrsClauseHeels)));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.MrsClauseHat, 10000, chanceNumerator: 101).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.MrsClauseShirt)).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.MrsClauseHeels)));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.ParkaHood, 10000, chanceNumerator: 108).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.ParkaCoat)).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.ParkaPants)));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.ParkaHood, 10000, chanceNumerator: 101).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.ParkaCoat)).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.ParkaPants)));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.TreeMask, 10000, chanceNumerator: 108).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.TreeShirt)).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.TreeTrunks)));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.TreeMask, 10000, chanceNumerator: 101).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.TreeShirt)).OnSuccess(ItemDropRule.NotScalingWithLuck(ItemID.TreeTrunks)));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.SnowHat, 10000, chanceNumerator: 108));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.SnowHat, 10000, chanceNumerator: 101));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.UglySweater, 10000, chanceNumerator: 108));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.UglySweater, 10000, chanceNumerator: 101));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.ChristmasPudding, 1000, chanceNumerator: 36));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.ChristmasPudding, 10000, chanceNumerator: 336));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.SugarCookie, 1000, chanceNumerator: 36));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.SugarCookie, 10000, chanceNumerator: 336));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.GingerbreadCookie, 1000, chanceNumerator: 36));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.GingerbreadCookie, 10000, chanceNumerator: 336));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.Eggnog, 1000, 1, 3, 81));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.Eggnog, 10000, 1, 3, 756));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.StarAnise, 1000, 20, 40, 63));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.StarAnise, 10000, 20, 40, 588));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.PineTreeBlock, 1000, 20, 49, 168));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.PineTreeBlock, 10000, 20, 49, 1568));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.CandyCaneBlock, 1000, 20, 49, 168));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.CandyCaneBlock, 10000, 20, 49, 1568));
-+			preHardmode.OnSuccess(new CommonDrop(ItemID.GreenCandyCaneBlock, 1000, 20, 49, 168));
-+			hardmode.OnSuccess(new CommonDrop(ItemID.GreenCandyCaneBlock, 10000, 20, 49, 1568));
 +
 +			RegisterToItem(ItemID.Present, preHardmode);
 +			RegisterToItem(ItemID.Present, hardmode);
