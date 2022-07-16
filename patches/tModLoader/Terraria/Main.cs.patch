@@ -3300,7 +3300,7 @@
  			r.Create();
 -			if (mouseItem.type > 0 || r.createItem.type > 0)
 +			if (mouseItem.type > 0 || r.createItem.type > 0) {
-+				ItemLoader.OnCreate(mouseItem, new RecipeCreationContext {recipe = r}, RecipeLoader.ConsumedItems);
++				ItemLoader.OnCreate(mouseItem, new RecipeCreationContext {recipe = r, ConsumedItems = RecipeLoader.ConsumedItems});
 +				RecipeLoader.OnCraft(mouseItem, r, RecipeLoader.ConsumedItems);
 +				RecipeLoader.ConsumedItems.Clear();
  				SoundEngine.PlaySound(7);

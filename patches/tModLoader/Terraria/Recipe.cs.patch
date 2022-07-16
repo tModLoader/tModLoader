@@ -153,22 +153,51 @@
  				if (num <= 0)
  					continue;
  
-@@ -138,6 +_,7 @@
+@@ -138,14 +_,19 @@
  						break;
  
  					if (item.IsTheSameAs(item2) || useWood(item.type, item2.type) || useSand(item.type, item2.type) || useFragment(item.type, item2.type) || useIronBar(item.type, item2.type) || usePressurePlate(item.type, item2.type) || AcceptedByItemGroups(item.type, item2.type)) {
 +						RecipeLoader.ConsumedItems.Add(item.Clone());
++						int numItemsConsumed;
  						if (item.stack > num) {
++							numItemsConsumed = num;
  							item.stack -= num;
  							num = 0;
-@@ -171,6 +_,7 @@
+ 						}
+ 						else {
++							numItemsConsumed = item.stack;
+ 							num -= item.stack;
+ 							array[k] = new Item();
+ 						}
++						RecipeLoader.ConsumedItems[^1].stack = numItemsConsumed;
+ 					}
+ 				}
+ 
+@@ -171,7 +_,10 @@
  					if (!item.IsTheSameAs(item2) && !useWood(item.type, item2.type) && !useSand(item.type, item2.type) && !useIronBar(item.type, item2.type) && !usePressurePlate(item.type, item2.type) && !useFragment(item.type, item2.type) && !AcceptedByItemGroups(item.type, item2.type))
  						continue;
  
 +					RecipeLoader.ConsumedItems.Add(item.Clone());
++					int numItemsConsumed;
  					if (item.stack > num) {
++						numItemsConsumed = num;
  						item.stack -= num;
  						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
+ 							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
+@@ -179,11 +_,13 @@
+ 						num = 0;
+ 					}
+ 					else {
++						numItemsConsumed = item.stack;
+ 						num -= item.stack;
+ 						array[l] = new Item();
+ 						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
+ 							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
+ 					}
++					RecipeLoader.ConsumedItems[^1].stack = numItemsConsumed;
+ 				}
+ 			}
+ 
 @@ -192,7 +_,7 @@
  			FindRecipes();
  		}

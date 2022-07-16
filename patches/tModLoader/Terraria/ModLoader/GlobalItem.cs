@@ -45,7 +45,7 @@ namespace Terraria.ModLoader
 		public virtual void SetDefaults(Item item) {
 		}
 
-		public virtual void OnCreate(Item item, ItemCreationContext context, List<Item> consumedItems) {
+		public virtual void OnCreate(Item item, ItemCreationContext context) {
 		}
 
 		/// <summary>
