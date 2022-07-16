@@ -167,7 +167,7 @@
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4981, 2));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4980, 2));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4758, 3));
-+			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuckWithX(1, 2, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings));
++			RegisterToItem(item, ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 3, 2, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings));
  		}
  
  		private void RegisterBoss_HallowBoss() {
@@ -198,7 +198,7 @@
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.RoyalGel));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.KingSlimeMask, 7));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimySaddle, 2));
-+			RegisterToItem(item, ItemDropRule.OneFromOptionsWithNumerator(1, 2, ItemID.NinjaHood, ItemID.NinjaShirt, ItemID.NinjaPants));
++			RegisterToItem(item, ItemDropRule.FewFromOptionsWithNumerator(2, 3, 2, ItemID.NinjaHood, ItemID.NinjaShirt, ItemID.NinjaPants));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeGun, 2));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeHook, 2));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.Solidifier));
@@ -781,7 +781,7 @@
 +			itemDropRule[11] = new CommonDrop(ItemID.DeathweedSeeds, 10000, 2, 40, 21698);
 +			itemDropRule[12] = new CommonDrop(ItemID.FireblossomSeeds, 10000, 2, 40, 21698);
 +			itemDropRule[13] = new CommonDrop(ItemID.ShiverthornSeeds, 10000, 2, 40, 21698);
-+			RegisterToItem(ItemID.HerbBag, new OneFromRulesRule(1, itemDropRule));
++			RegisterToItem(ItemID.HerbBag, new FewFromRulesRule(4, 1, itemDropRule));
 +		}
 +
 +		// not works (cursed)

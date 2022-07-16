@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/ItemDropRule.cs
++++ src/tModLoader/Terraria/GameContent/ItemDropRules/ItemDropRule.cs
+@@ -15,6 +_,10 @@
+ 		public static IItemDropRule OneFromOptionsNotScalingWithLuckWithX(int chanceDenominator, int chanceNumerator, params int[] options) => new OneFromOptionsNotScaledWithLuckDropRule(chanceDenominator, chanceNumerator, options);
+ 		public static IItemDropRule OneFromOptions(int chanceDenominator, params int[] options) => new OneFromOptionsDropRule(chanceDenominator, 1, options);
+ 		public static IItemDropRule OneFromOptionsWithNumerator(int chanceDenominator, int chanceNumerator, params int[] options) => new OneFromOptionsDropRule(chanceDenominator, chanceNumerator, options);
++		public static IItemDropRule FewFromOptionsNotScalingWithLuck(int amount, int chanceDenominator, params int[] options) => new FewFromOptionsNotScaledWithLuckDropRule(amount, chanceDenominator, 1, options);
++		public static IItemDropRule FewFromOptionsNotScalingWithLuckWithX(int amount, int chanceDenominator, int chanceNumerator, params int[] options) => new FewFromOptionsNotScaledWithLuckDropRule(amount, chanceDenominator, chanceNumerator, options);
++		public static IItemDropRule FewFromOptions(int amount, int chanceDenominator, params int[] options) => new FewFromOptionsDropRule(amount, chanceDenominator, 1, options);
++		public static IItemDropRule FewFromOptionsWithNumerator(int amount, int chanceDenominator, int chanceNumerator, params int[] options) => new FewFromOptionsDropRule(amount, chanceDenominator, chanceNumerator, options);
+ 		public static IItemDropRule DropNothing() => new DropNothing();
+ 		public static IItemDropRule NormalvsExpert(int itemId, int chanceDenominatorInNormal, int chanceDenominatorInExpert) => new DropBasedOnExpertMode(Common(itemId, chanceDenominatorInNormal), Common(itemId, chanceDenominatorInExpert));
+ 		public static IItemDropRule NormalvsExpertNotScalingWithLuck(int itemId, int chanceDenominatorInNormal, int chanceDenominatorInExpert) => new DropBasedOnExpertMode(NotScalingWithLuck(itemId, chanceDenominatorInNormal), NotScalingWithLuck(itemId, chanceDenominatorInExpert));
