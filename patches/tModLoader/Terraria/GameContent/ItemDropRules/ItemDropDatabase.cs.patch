@@ -734,10 +734,10 @@
 +			IItemDropRule[] classicPotions4 = new IItemDropRule[6];
 +			classicPotions4[0] = ItemDropRule.NotScalingWithLuck(ItemID.ObsidianSkinPotion, 4, 2, 4);
 +			classicPotions4[1] = ItemDropRule.NotScalingWithLuck(ItemID.SpelunkerPotion, 4, 2, 4);
-+			classicPotions4[3] = ItemDropRule.NotScalingWithLuck(ItemID.HunterPotion, 4, 2, 4);
-+			classicPotions4[2] = ItemDropRule.NotScalingWithLuck(ItemID.GravitationPotion, 4, 2, 4);
-+			classicPotions4[3] = ItemDropRule.NotScalingWithLuck(ItemID.MiningPotion, 4, 2, 4);
-+			classicPotions4[4] = ItemDropRule.NotScalingWithLuck(ItemID.HeartreachPotion, 4, 2, 4);
++			classicPotions4[2] = ItemDropRule.NotScalingWithLuck(ItemID.HunterPotion, 4, 2, 4);
++			classicPotions4[3] = ItemDropRule.NotScalingWithLuck(ItemID.GravitationPotion, 4, 2, 4);
++			classicPotions4[4] = ItemDropRule.NotScalingWithLuck(ItemID.MiningPotion, 4, 2, 4);
++			classicPotions4[5] = ItemDropRule.NotScalingWithLuck(ItemID.HeartreachPotion, 4, 2, 4);
 +			RegisterToMultipleItems(new OneFromRulesRule(1, classicPotions4), ItemID.FloatingIslandFishingCrate, ItemID.CorruptFishingCrate, ItemID.CrimsonFishingCrate, ItemID.HallowedFishingCrate, ItemID.DungeonFishingCrate, ItemID.FrozenCrate, ItemID.OasisCrate, ItemID.LavaCrate, ItemID.OceanCrate, ItemID.FloatingIslandFishingCrateHard, ItemID.CorruptFishingCrateHard, ItemID.CrimsonFishingCrateHard, ItemID.HallowedFishingCrateHard, ItemID.DungeonFishingCrateHard, ItemID.FrozenCrateHard, ItemID.OasisCrateHard, ItemID.LavaCrateHard, ItemID.OceanCrateHard);
 +			RegisterToMultipleItems(new OneFromRulesRule(1, ItemDropRule.NotScalingWithLuck(ItemID.HealingPotion, 2, 5, 17), ItemDropRule.NotScalingWithLuck(ItemID.ManaPotion, 2, 5, 17)), ItemID.FloatingIslandFishingCrate, ItemID.CorruptFishingCrate, ItemID.CrimsonFishingCrate, ItemID.HallowedFishingCrate, ItemID.DungeonFishingCrate, ItemID.FrozenCrate, ItemID.OasisCrate, ItemID.LavaCrate, ItemID.OceanCrate, ItemID.FloatingIslandFishingCrateHard, ItemID.CorruptFishingCrateHard, ItemID.CrimsonFishingCrateHard, ItemID.HallowedFishingCrateHard, ItemID.DungeonFishingCrateHard, ItemID.FrozenCrateHard, ItemID.OasisCrateHard, ItemID.LavaCrateHard, ItemID.OceanCrateHard);
 +			RegisterToMultipleItems(new OneFromRulesRule(1, ItemDropRule.NotScalingWithLuck(ItemID.JourneymanBait, 2, 2, 6), ItemDropRule.NotScalingWithLuck(ItemID.MasterBait, 2, 2, 6)), ItemID.FloatingIslandFishingCrate, ItemID.CorruptFishingCrate, ItemID.CrimsonFishingCrate, ItemID.HallowedFishingCrate, ItemID.DungeonFishingCrate, ItemID.FrozenCrate, ItemID.OasisCrate, ItemID.LavaCrate, ItemID.OceanCrate, ItemID.FloatingIslandFishingCrateHard, ItemID.CorruptFishingCrateHard, ItemID.CrimsonFishingCrateHard, ItemID.HallowedFishingCrateHard, ItemID.DungeonFishingCrateHard, ItemID.FrozenCrateHard, ItemID.OasisCrateHard, ItemID.LavaCrateHard, ItemID.OceanCrateHard);
