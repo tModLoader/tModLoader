@@ -32,6 +32,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_content =
     [ "OpenRead", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a7d35872c47802050843cea0404e40112", null ],
     [ "PrefixType< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a6af3606bb7be89b7a15d5d53b4b57f59", null ],
     [ "ProjectileType< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a36684089f153d4d72d0b181cb5a3cbe6", null ],
+    [ "PylonType< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a570af07628675dd7abe71d63336e9dab", null ],
     [ "RarityType< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a907dedaf91919a2b97a46c840c003344", null ],
     [ "Request< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#ab8c8e8f069f58a29f5778ad668ad76a4", null ],
     [ "RequestIfExists< T >", "class_terraria_1_1_mod_loader_1_1_mod_content.html#a87c1992a092f5a6fb1bad7d838548044", null ],

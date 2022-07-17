@@ -1163,6 +1163,7 @@ var hierarchy =
       ] ],
       [ "Terraria.ModLoader.GlobalType< NPC, GlobalNPC >", "class_terraria_1_1_mod_loader_1_1_global_type.html", [
         [ "Terraria.ModLoader.GlobalNPC", "class_terraria_1_1_mod_loader_1_1_global_n_p_c.html", [
+          [ "Terraria.ModLoader.Default.PylonShopNPC", "class_terraria_1_1_mod_loader_1_1_default_1_1_pylon_shop_n_p_c.html", null ],
           [ "Terraria.ModLoader.Default.UnloadedGlobalNPC", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_global_n_p_c.html", null ]
         ] ]
       ] ],
@@ -1289,6 +1290,7 @@ var hierarchy =
             [ "Terraria.ModLoader.GlobalBossBar", "class_terraria_1_1_mod_loader_1_1_global_boss_bar.html", null ],
             [ "Terraria.ModLoader.GlobalBuff", "class_terraria_1_1_mod_loader_1_1_global_buff.html", null ],
             [ "Terraria.ModLoader.GlobalInfoDisplay", "class_terraria_1_1_mod_loader_1_1_global_info_display.html", null ],
+            [ "Terraria.ModLoader.GlobalPylon", "class_terraria_1_1_mod_loader_1_1_global_pylon.html", null ],
             [ "Terraria.ModLoader.GlobalType< TEntity, TGlobal >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ],
             [ "Terraria.ModLoader.IO.TagSerializer< T, S >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ],
             [ "Terraria.ModLoader.ModAccessorySlot", "class_terraria_1_1_mod_loader_1_1_mod_accessory_slot.html", [
@@ -1337,7 +1339,8 @@ var hierarchy =
                     [ "Terraria.ModLoader.Default.UnloadedSemiSolidTile", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_semi_solid_tile.html", null ],
                     [ "Terraria.ModLoader.Default.UnloadedSolidTile", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_solid_tile.html", null ],
                     [ "Terraria.ModLoader.Default.UnloadedSupremeFurniture", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_supreme_furniture.html", null ]
-                  ] ]
+                  ] ],
+                  [ "Terraria.ModLoader.ModPylon", "class_terraria_1_1_mod_loader_1_1_mod_pylon.html", null ]
                 ] ],
                 [ "Terraria.ModLoader.ModWall", "class_terraria_1_1_mod_loader_1_1_mod_wall.html", [
                   [ "Terraria.ModLoader.Default.UnloadedWall", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_wall.html", null ]
@@ -1364,6 +1367,7 @@ var hierarchy =
           [ "Terraria.ModLoader.ModNPC", "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html", null ]
         ] ],
         [ "Terraria.ModLoader.ModTileEntity", "class_terraria_1_1_mod_loader_1_1_mod_tile_entity.html", [
+          [ "Terraria.ModLoader.Default.TEModdedPylon", "class_terraria_1_1_mod_loader_1_1_default_1_1_t_e_modded_pylon.html", null ],
           [ "Terraria.ModLoader.Default.UnloadedTileEntity", "class_terraria_1_1_mod_loader_1_1_default_1_1_unloaded_tile_entity.html", null ]
         ] ],
         [ "Terraria.ModLoader.ModType< TEntity, TModType >", "class_terraria_1_1_mod_loader_1_1_mod_type.html", null ]
@@ -1655,6 +1659,10 @@ var hierarchy =
       [ "Terraria.GameContent.Bestiary.NamePlateInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_name_plate_info_element.html", null ],
       [ "Terraria.GameContent.Bestiary.RareSpawnBestiaryInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_rare_spawn_bestiary_info_element.html", null ],
       [ "Terraria.GameContent.Bestiary.SearchAliasInfoElement", "class_terraria_1_1_game_content_1_1_bestiary_1_1_search_alias_info_element.html", null ]
+    ] ],
+    [ "Terraria.ModLoader.IPylonTileEntity", "interface_terraria_1_1_mod_loader_1_1_i_pylon_tile_entity.html", [
+      [ "Terraria.GameContent.Tile_Entities.TETeleportationPylon", "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_teleportation_pylon.html", null ],
+      [ "Terraria.ModLoader.Default.TEModdedPylon", "class_terraria_1_1_mod_loader_1_1_default_1_1_t_e_modded_pylon.html", null ]
     ] ],
     [ "IRejectionReason", "class_i_rejection_reason.html", [
       [ "Terraria.GameContent.ContentRejectionFromSize", "class_terraria_1_1_game_content_1_1_content_rejection_from_size.html", null ]
@@ -2003,6 +2011,7 @@ var hierarchy =
     [ "Terraria.ModLoader.ProjectileLoader", "class_terraria_1_1_mod_loader_1_1_projectile_loader.html", null ],
     [ "Terraria.ModLoader.Config.UI.PropertyFieldWrapper", "class_terraria_1_1_mod_loader_1_1_config_1_1_u_i_1_1_property_field_wrapper.html", null ],
     [ "Terraria.Social.Steam.WorkshopHelper.UGCBased.PublishedItemsFinder", "class_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_published_items_finder.html", null ],
+    [ "Terraria.ModLoader.PylonLoader", "class_terraria_1_1_mod_loader_1_1_pylon_loader.html", null ],
     [ "Terraria.Player.RabbitOrderFrameHelper", "struct_terraria_1_1_player_1_1_rabbit_order_frame_helper.html", null ],
     [ "Terraria.Rain", "class_terraria_1_1_rain.html", null ],
     [ "Terraria.Graphics.RainbowRodDrawer", "struct_terraria_1_1_graphics_1_1_rainbow_rod_drawer.html", null ],

@@ -201,6 +201,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_projectile.html">GlobalProjectile</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class allows you to modify and use hooks for all projectiles, including vanilla projectiles. Create an instance of an overriding class then call Mod.AddGlobalProjectile to use this.  <a href="class_terraria_1_1_mod_loader_1_1_global_projectile.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_pylon.html">GlobalPylon</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global Type that exists for pylons that allows for modification of teleportation steps, map drawing, and other functionality for any pylon that exists, whether it be vanilla or modded.  <a href="class_terraria_1_1_mod_loader_1_1_global_pylon.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_recipe.html">GlobalRecipe</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_tile.html">GlobalTile</a></td></tr>
@@ -234,6 +237,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The purpose of this struct is to micro-optimize lookups of GlobalX indices by providing these associations without additional retrievals from the heap.  <a href="struct_terraria_1_1_mod_loader_1_1_instanced.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_plant.html">IPlant</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_terraria_1_1_mod_loader_1_1_i_pylon_tile_entity.html">IPylonTileEntity</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows <a class="el" href="struct_terraria_1_1_tile.html">Tile</a> Entities that you want to be included in vanilla's pylon list to actually be added to the list when said TE is extended by this interface. What this means, in short, is that whenever all of the pylons are refreshed by vanilla, <a class="el" href="struct_terraria_1_1_tile.html">Tile</a> Entities that extend this interface will get their own </p><dl class="section see"><dt>See also</dt><dd>TeleportPylonInfo</dd></dl>
+<p>instance and it will be included along-side all of vanilla's pylons and any other modded pylons.  <a href="interface_terraria_1_1_mod_loader_1_1_i_pylon_tile_entity.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_creation_context.html">ItemCreationContext</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -357,6 +364,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class serves as a place for you to place all your properties and hooks for each projectile. Create instances of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html" title="This class serves as a place for you to place all your properties and hooks for each projectile....">ModProjectile</a> (preferably overriding this class) to pass as parameters to Mod.AddProjectile.<br  />
  The Basic <a class="el" href="class_terraria_1_1_projectile.html">Projectile</a> Guideteaches the basics of making a modded projectile.  <a href="class_terraria_1_1_mod_loader_1_1_mod_projectile.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html">ModPylon</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extension to </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a></dd></dl>
+<p>that streamlines the process of creating a modded Pylon. Has all of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a>'s hooks for customization, but additional hooks for Pylon functionality.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_rarity.html">ModRarity</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_scene_effect.html">ModSceneEffect</a></td></tr>
@@ -448,6 +459,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html">ProjectileLoader</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This serves as the central class from which projectile-related functions are carried out. It also stores a list of mod projectiles by <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a>.  <a href="class_terraria_1_1_mod_loader_1_1_projectile_loader.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_pylon_loader.html">PylonLoader</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_radar_info_display.html">RadarInfoDisplay</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>

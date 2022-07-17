@@ -13,5 +13,5 @@ var class_terraria_1_1_game_content_1_1_teleport_pylons_system =
     [ "Reset", "class_terraria_1_1_game_content_1_1_teleport_pylons_system.html#a53b3cedaf9dadc911dda61b620741536", null ],
     [ "SpawnInWorldDust", "class_terraria_1_1_game_content_1_1_teleport_pylons_system.html#add4f1fd36fd6f4c38a9fbdfbf3a6937b", null ],
     [ "Update", "class_terraria_1_1_game_content_1_1_teleport_pylons_system.html#a281a5d88a0ab2714a03581ef89e5eeb3", null ],
-    [ "Pylons", "class_terraria_1_1_game_content_1_1_teleport_pylons_system.html#ad9f818f88f7f3e8992b3d793a6275f83", null ]
+    [ "Pylons", "class_terraria_1_1_game_content_1_1_teleport_pylons_system.html#a030cf0b954b8d2e0bc4681c0ce43a5ec", null ]
 ];
