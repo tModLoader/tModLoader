@@ -36,7 +36,7 @@ namespace Terraria.ModLoader.Default
 			}
 		}
 
-		//Acts exactly like vanilla's TE does the placing process, except we tack on updating the pylon system.
+		// Acts exactly like vanilla's TE does the placing process, except we tack on updating the pylon system.
 		public new int Place(int i, int j) {
 			int ID = base.Place(i, j);
 
@@ -44,7 +44,7 @@ namespace Terraria.ModLoader.Default
 			return ID;
 		}
 
-		//Acts exactly like vanilla's TE does the killing process, except we tack on updating the pylon system.
+		// Acts exactly like vanilla's TE does the killing process, except we tack on updating the pylon system.
 		public new void Kill(int x, int y) {
 			base.Kill(x, y);
 
@@ -54,7 +54,7 @@ namespace Terraria.ModLoader.Default
 		public override string ToString() => Position.X + "x  " + Position.Y + "y";
 
 		public override bool IsTileValidForEntity(int x, int y) {
-			//This is the default check that vanilla does for vanilla pylons. Feel free to override this if you use a differently sized pylon, or use a multi-framed pylon.
+			// This is the default check that vanilla does for vanilla pylons. Feel free to override this if you use a differently sized pylon, or use a multi-framed pylon.
 			TileObjectData tileData = TileObjectData.GetTileData(Main.tile[x, y]);
 			return Main.tile[x, y].active() && TileID.Sets.CountsAsPylon.Contains(Main.tile[x, y].type) && Main.tile[x, y].frameY == 0 && Main.tile[x, y].frameX % tileData.CoordinateFullWidth == 0;
 		}

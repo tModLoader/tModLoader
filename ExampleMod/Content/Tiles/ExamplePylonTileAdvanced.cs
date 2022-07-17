@@ -35,7 +35,7 @@ namespace ExampleMod.Content.Tiles
 		public Asset<Texture2D> mapIcon;
 
 		public override void Load() {
-			//We'll still use the other Example Pylon's sprites, but we need to adjust the texture values first to do so.
+			// We'll still use the other Example Pylon's sprites, but we need to adjust the texture values first to do so.
 			crystalTexture = ModContent.Request<Texture2D>(Texture.Replace("Advanced", "") + "_Crystal");
 			mapIcon = ModContent.Request<Texture2D>(Texture.Replace("Advanced", "") + "_MapIcon");
 		}
@@ -44,14 +44,14 @@ namespace ExampleMod.Content.Tiles
 			Main.tileLighted[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 
-			//This time around, we'll have a tile that is 2x3 instead of 3x4.
+			// This time around, we'll have a tile that is 2x3 instead of 3x4.
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2xX);
 			TileObjectData.newTile.Height = 3;
 			TileObjectData.newTile.Origin = new Point16(0, 2);
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.newTile.StyleHorizontal = true;
-			//Since we are going to need more in-depth functionality, we can't use vanilla's Pylon TE's OnPlace or CanPlace:
+			// Since we are going to need more in-depth functionality, we can't use vanilla's Pylon TE's OnPlace or CanPlace:
 			AdvancedPylonTileEntity advancedEntity = ModContent.GetInstance<AdvancedPylonTileEntity>();
 			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(advancedEntity.PlacementPreviewHook_CheckIfCanPlace, 1, 0, true);
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(advancedEntity.Hook_AfterPlacement, -1, 0, false);
@@ -68,7 +68,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
-			//Let's say that our pylon is for sale no matter what for any NPC under all circumstances.
+			// Let's say that our pylon is for sale no matter what for any NPC under all circumstances.
 			return ModContent.ItemType<ExamplePylonItemAdvanced>();
 		}
 
@@ -93,7 +93,7 @@ namespace ExampleMod.Content.Tiles
 			Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 3, 4, ModContent.ItemType<ExamplePylonItemAdvanced>());
 		}
 
-		//For the sake of example, we will allow this pylon to always be teleported to as long as it is on, so we make sure these two checks return true.
+		// For the sake of example, we will allow this pylon to always be teleported to as long as it is on, so we make sure these two checks return true.
 		public override bool ValidTeleportCheck_NPCCount(TeleportPylonInfo pylonInfo, int defaultNecessaryNPCCount) {
 			return true;
 		}
@@ -102,14 +102,14 @@ namespace ExampleMod.Content.Tiles
 			return true;
 		}
 
-		//These two steps below are simply determining whether or not either side of the coin is valid, which is to say:
-		//Is the destination pylon (the pylon clicked on the map) a valid pylon, and is the pylon the player standing near (the nearby pylon)
-		//a valid pylon? If either one of these checks fail, a errorKey wil be set to a custom localization key and a message will go to the player with
-		//said text (after its been localized, of course).
+		// These two steps below are simply determining whether or not either side of the coin is valid, which is to say:
+		// Is the destination pylon (the pylon clicked on the map) a valid pylon, and is the pylon the player standing near (the nearby pylon)
+		// a valid pylon? If either one of these checks fail, a errorKey wil be set to a custom localization key and a message will go to the player with
+		// said text (after its been localized, of course).
 		public override void ValidTeleportCheck_DestinationPostCheck(TeleportPylonInfo destinationPylonInfo, ref bool destinationPylonValid, ref string errorKey) {
-			//If you are unfamiliar with pattern matching notation, all this is asking is:
-			//1) The Tile Entity at the given position is an AdvancedPylonTileEntity (AKA not null or something else)
-			//2) The Tile Entity's isActive value is false
+			// If you are unfamiliar with pattern matching notation, all this is asking is:
+			// 1) The Tile Entity at the given position is an AdvancedPylonTileEntity (AKA not null or something else)
+			// 2) The Tile Entity's isActive value is false
 			if (TileEntity.ByPosition[destinationPylonInfo.PositionInTiles] is AdvancedPylonTileEntity { isActive: false }) {
 				//Given that both of these things are true, set the error key to our own special message (check the localization file), and make the destination value invalid (false)
 				destinationPylonValid = false;
@@ -118,7 +118,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void ValidTeleportCheck_NearbyPostCheck(TeleportPylonInfo nearbyPylonInfo, ref bool destinationPylonValid, ref bool anyNearbyValidPylon, ref string errorKey) {
-			//The next check is determining whether or not the nearby pylon is potentially unstable, and if so, if it's not active, we also prevent teleportation.
+			// The next check is determining whether or not the nearby pylon is potentially unstable, and if so, if it's not active, we also prevent teleportation.
 			if (TileEntity.ByPosition[nearbyPylonInfo.PositionInTiles] is AdvancedPylonTileEntity { isActive: false }) {
 				destinationPylonValid = false;
 				errorKey = "Mods.ExampleMod.MessageInfo.NearbyUnstablePylonIsOff";
@@ -126,28 +126,28 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
-			//This time, we'll ONLY draw the crystal if the pylon is active
-			//We need to check the framing here in order to guarantee we that we are trying to grab the TE ONLY when in the top left corner, where it is
-			//located. If we don't do this check, we will be attempting to grab the TE in position where it doesn't exist, throwing errors and causing
-			//loads of visual bugs.
+			// This time, we'll ONLY draw the crystal if the pylon is active
+			// We need to check the framing here in order to guarantee we that we are trying to grab the TE ONLY when in the top left corner, where it is
+			// located. If we don't do this check, we will be attempting to grab the TE in position where it doesn't exist, throwing errors and causing
+			// loads of visual bugs.
 			if (drawData.tileFrameX % 36 == 0 && drawData.tileFrameY == 0 && TileEntity.ByPosition[new Point16(i, j)] is AdvancedPylonTileEntity { isActive: true }) {
 				Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
 			}
 		}
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
-			//This code is essentially identical to how it is in the basic example, but this time the crystal color is the disco (rainbow) color instead.
+			// This code is essentially identical to how it is in the basic example, but this time the crystal color is the disco (rainbow) color instead.
 			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, Main.DiscoColor, CrystalFrameHeight, CrystalHorizontalFrameCount, CrystalVerticalFrameCount);
 		}
 
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
 			if (!TileEntity.ByPosition.TryGetValue(pylonInfo.PositionInTiles, out var te) || te is not AdvancedPylonTileEntity entity) {
-				//If for some reason we don't find the tile entity, we won't draw anything.
+				// If for some reason we don't find the tile entity, we won't draw anything.
 				return;
 			}
 
-			//Depending on the whether or not the pylon is active, the color of the icon will change;
-			//otherwise, it acts as normal.
+			// Depending on the whether or not the pylon is active, the color of the icon will change;
+			// otherwise, it acts as normal.
 			drawColor = !entity.isActive ? Color.Gray * 0.5f : drawColor;
 			bool mouseOver = DefaultDrawMapIcon(ref context, mapIcon, pylonInfo.PositionInTiles.ToVector2() + new Vector2(1, 1.5f), drawColor, deselectedScale, selectedScale);
 			DefaultMapClickHandle(mouseOver, pylonInfo, "Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced", ref mouseOverText);
