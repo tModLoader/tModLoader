@@ -1,18 +1,17 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Terraria.GameContent.UI.Elements;
-using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
-using Terraria.Utilities;
 using Terraria.Audio;
 using ReLogic.Content;
+using ReLogic.OS;
 
 namespace Terraria.ModLoader.UI
 {
@@ -42,7 +41,7 @@ namespace Terraria.ModLoader.UI
 		private readonly UIAutoScaleTextTextPanel<string> _enableListOnlyButton;
 		private readonly UIAutoScaleTextTextPanel<string> _viewInModBrowserButton;
 		private readonly UIAutoScaleTextTextPanel<string> _updateListWithEnabledButton;
-		private readonly UIAutoScaleTextTextPanel<string> _updatePackWithInstanceButton;
+		private readonly UIAutoScaleTextTextPanel<string> _playInstanceButton;
 		private readonly UIAutoScaleTextTextPanel<string> _exportPackInstanceButton;
 		private readonly UIAutoScaleTextTextPanel<string> _removePackInstanceButton;
 		private readonly UIAutoScaleTextTextPanel<string> _importFromPackLocalButton;
@@ -51,8 +50,6 @@ namespace Terraria.ModLoader.UI
 		private readonly string _filename;
 		private readonly string _filepath;
 		private readonly bool _legacy;
-
-		private static string ConfigBackups => Path.Combine(Main.SavePath, "ModConfigsBackups");
 
 		public UIModPackItem(string name, string[] mods, bool legacy) {
 			_legacy = legacy;
@@ -85,7 +82,7 @@ namespace Terraria.ModLoader.UI
 			BorderColor = new Color(89, 116, 213) * 0.7f;
 			_dividerTexture = UICommon.DividerTexture;
 			_innerPanelTexture = UICommon.InnerPanelTexture;
-			Height.Pixels = 126;
+			Height.Pixels = _legacy ? 126 : 210;
 			Width.Percent = 1f;
 			SetPadding(6f);
 
@@ -118,7 +115,7 @@ namespace Terraria.ModLoader.UI
 			}.WithFadedMouseOver();
 			_enableListButton.PaddingTop -= 2f;
 			_enableListButton.PaddingBottom -= 2f;
-			_enableListButton.OnClick += _legacy ? EnableList : DeactivateModPack;
+			_enableListButton.OnClick += EnableList;
 			Append(_enableListButton);
 
 			// Enable List Only (2-L)
@@ -159,80 +156,82 @@ namespace Terraria.ModLoader.UI
 			_updateListWithEnabledButton.OnClick += (a, b) => UIModPacks.SaveModPack(_filename);
 			Append(_updateListWithEnabledButton);
 
-			// Delete Instance (3-R)
-			/*
-			_updatePackWithInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Delete Instance")) {
-				Width = { Pixels = 225 },
-				Height = { Pixels = 36 },
-				Left = { Pixels = 304 },
-				Top = { Pixels = 80 }
-			}.WithFadedMouseOver();
-			_updatePackWithInstanceButton.PaddingTop -= 2f;
-			_updatePackWithInstanceButton.PaddingBottom -= 2f;
-			_updatePackWithInstanceButton.OnClick += (a, b) => Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), _filename), true);
-			Append(_updatePackWithInstanceButton);
-			*/
-
-			// Import From Pack (Local) (4-L)
-			/*
-			_importFromPackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Import Pack (Local)")) {
-				Width = { Pixels = 225 },
-				Height = { Pixels = 36 },
-				Left = { Pixels = 304 },
-				Top = { Pixels = 80 }
-			}.WithFadedMouseOver();
-			_importFromPackLocalButton.PaddingTop -= 2f;
-			_importFromPackLocalButton.PaddingBottom -= 2f;
-			_importFromPackLocalButton.OnClick += ActivateModPack;
-			Append(_importFromPackLocalButton);
-			*/
-
-			// Remove Pack (Local) (4-R)
-			/*
-			_removePackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Remove Pack (Local)")) {
-				Width = { Pixels = 225 },
-				Height = { Pixels = 36 },
-				Left = { Pixels = 304 },
-				Top = { Pixels = 80 }
-			}.WithFadedMouseOver();
-			_removePackLocalButton.PaddingTop -= 2f;
-			_removePackLocalButton.PaddingBottom -= 2f;
-			_removePackLocalButton.OnClick += DeactivateModPack;
-			Append(_removePackLocalButton);
-			*/
-
-			// Export Pack Instance (5-L)
-			_exportPackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Export Pack Instance")) {
-				Width = { Pixels = 225 },
-				Height = { Pixels = 36 },
-				Left = { Pixels = 304 },
-				Top = { Pixels = 80 }
-			}.WithFadedMouseOver();
-			_exportPackInstanceButton.PaddingTop -= 2f;
-			_exportPackInstanceButton.PaddingBottom -= 2f;
-			_exportPackInstanceButton.OnClick += (a, b) => UIModPacks.ExportSnapshot(_filename);
-			Append(_exportPackInstanceButton);
-
-			// Play Instance (5-R)
-			/*
-			_removePackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Play Pack Instance")) {
-				Width = { Pixels = 225 },
-				Height = { Pixels = 36 },
-				Left = { Pixels = 304 },
-				Top = { Pixels = 80 }
-			}.WithFadedMouseOver();
-			_removePackInstanceButton.PaddingTop -= 2f;
-			_removePackInstanceButton.PaddingBottom -= 2f;
-			_removePackInstanceButton.OnClick += (a, b) => 
-			Append(_removePackInstanceButton);
-			*/
-
 			// Delete button
 			_deleteButton = new UIImageButton(Main.Assets.Request<Texture2D>("Images/UI/ButtonDelete")) {
 				Top = { Pixels = 40 }
 			};
 			_deleteButton.OnClick += DeleteButtonClick;
 			Append(_deleteButton);
+
+			if (_legacy)
+				return;
+
+			// The new stuff
+
+			// Import From Pack (Local) (3-L)
+			_importFromPackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Import Pack (Local)")) {
+				Width = { Pixels = 225 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 50 },
+				Top = { Pixels = 120 }
+			}.WithFadedMouseOver();
+			_importFromPackLocalButton.PaddingTop -= 2f;
+			_importFromPackLocalButton.PaddingBottom -= 2f;
+			_importFromPackLocalButton.OnClick += ImportModPackLocal;
+			Append(_importFromPackLocalButton);
+
+			// Remove Pack (Local) (3-R)
+			_removePackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Remove Pack (Local)")) {
+				Width = { Pixels = 225 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 280 },
+				Top = { Pixels = 120 }
+			}.WithFadedMouseOver();
+			_removePackLocalButton.PaddingTop -= 2f;
+			_removePackLocalButton.PaddingBottom -= 2f;
+			_removePackLocalButton.OnClick += RemoveModPackLocal;
+			Append(_removePackLocalButton);
+
+			// Export Pack Instance (4-L)
+			_exportPackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Export Pack Instance")) {
+				Width = { Pixels = 200 },
+				Height = { Pixels = 36 },
+				Left = { Pixels = 10 },
+				Top = { Pixels = 160 }
+			}.WithFadedMouseOver();
+			_exportPackInstanceButton.PaddingTop -= 2f;
+			_exportPackInstanceButton.PaddingBottom -= 2f;
+			_exportPackInstanceButton.OnClick += (a, b) => UIModPacks.ExportSnapshot(_filename);
+			Append(_exportPackInstanceButton);
+
+			string instancePath = Path.Combine(Directory.GetCurrentDirectory(), _filename);
+			if (Directory.Exists(instancePath)) {
+				// Delete Instance (4-R)
+				_removePackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Delete Instance")) {
+					Width = { Pixels = 140 },
+					Height = { Pixels = 36 },
+					Left = { Pixels = 370 },
+					Top = { Pixels = 160 }
+				}.WithFadedMouseOver();
+				_removePackInstanceButton.PaddingTop -= 2f;
+				_removePackInstanceButton.PaddingBottom -= 2f;
+				_removePackInstanceButton.OnClick += (a, b) => Directory.Delete(instancePath, true);
+				Append(_removePackInstanceButton);
+
+				//TODO: Play Instance (4-M)
+				/*
+				_playInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Play Instance")) {
+					Width = { Pixels = 140 },
+					Height = { Pixels = 36 },
+					Left = { Pixels = 220 },
+					Top = { Pixels = 160 }
+				}.WithFadedMouseOver();
+				_playInstanceButton.PaddingTop -= 2f;
+				_playInstanceButton.PaddingBottom -= 2f;
+				_playInstanceButton.OnClick += PlayInstance;
+				Append(_playInstanceButton);
+				*/
+			}
 		}
 
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width) {
@@ -343,66 +342,38 @@ namespace Terraria.ModLoader.UI
 		}
 
 
-		private static void ActivateModPack(UIMouseEvent evt, UIElement listeningElement) {
-			foreach (var item in UIModPacks.Mods) {
-				ModLoader.DisableMod(item);
-			}
-
+		private static void ImportModPackLocal(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
+			Core.ModOrganizer.ModPackActive = modpack._filepath;
 
-			// Deploy Configs
-			string deployedConfigs = Config.ConfigManager.ModConfigPath;
-			string modpackConfigs = Path.Combine(modpack._filepath, "configs");
-
-			if (!Directory.Exists(ConfigBackups))
-				Directory.CreateDirectory(ConfigBackups);
-
-			foreach (var file in Directory.EnumerateFiles(ConfigBackups))
-				File.Delete(file);
-
-			FileUtilities.CopyFolder(deployedConfigs, ConfigBackups);
-
-			foreach (var file in Directory.EnumerateFiles(deployedConfigs))
-				File.Delete(file);
-
-			FileUtilities.CopyFolder(modpackConfigs, deployedConfigs);
-
-			// Deploy Mods
-			DownloadMissingMods(evt, listeningElement);
-
-			// Enable Mods
-			EnableList(evt, listeningElement);
-		}
-
-		private static void DeactivateModPack(UIMouseEvent evt, UIElement listeningElement) {
-			foreach (var item in ModLoader.EnabledMods) {
-				ModLoader.DisableMod(item);
-			}
-
-			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
-
-			// Restore configs
-			string deployedConfigs = Config.ConfigManager.ModConfigPath;
-
-			foreach (var file in Directory.EnumerateFiles(deployedConfigs))
-				File.Delete(file);
-			
-			if (!Directory.Exists(ConfigBackups))
-				Directory.CreateDirectory(ConfigBackups);
-			
-			FileUtilities.CopyFolder(ConfigBackups, deployedConfigs);
-
-			foreach (var file in Directory.EnumerateFiles(ConfigBackups))
-				File.Delete(file);
-
-			// Delete non-workshop mods
-			string modpackMods = Path.Combine(modpack._filepath, "mods");
-			foreach (var mod in Directory.EnumerateFiles(modpackMods, "*.tmod")) {
-				File.Copy(mod, Path.Combine(ModLoader.ModPath, Path.GetFileName(mod)));
-			}
+			//TODO: Add code to utilize the saved configs
 
 			Interface.modPacksMenu.OnDeactivate(); // should reload
 			Interface.modPacksMenu.OnActivate(); // should reload
+		}
+
+		private static void RemoveModPackLocal(UIMouseEvent evt, UIElement listeningElement) {
+			// Clear active Mod Pack 
+			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
+			Core.ModOrganizer.ModPackActive = null;
+
+			//TODO: Add code to utilize the saved configs
+
+			Interface.modPacksMenu.OnDeactivate(); // should reload
+			Interface.modPacksMenu.OnActivate(); // should reload
+		}
+
+		private static void PlayInstance(UIMouseEvent evt, UIElement listeningElement) {
+			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
+
+			string instancePath = Path.Combine(Directory.GetCurrentDirectory(), modpack._filename);
+
+			string launchScript = Path.Combine(instancePath, Platform.IsWindows ? "start-tModLoader.bat" : "start-tModLoader.sh");
+
+			Process.Start(new ProcessStartInfo() {
+				FileName = launchScript,
+				UseShellExecute = true
+			});
 		}
 
 		private static void ViewListInfo(UIMouseEvent evt, UIElement listeningElement) {

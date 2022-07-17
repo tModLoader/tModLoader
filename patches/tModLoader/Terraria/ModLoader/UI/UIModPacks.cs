@@ -251,7 +251,7 @@ namespace Terraria.ModLoader.UI
 					if (!config.Contains(enabled))
 						continue;
 
-					File.Copy(config, Path.Combine(configsPath, Path.GetFileName(config)));
+					File.Copy(config, Path.Combine(configsPath, Path.GetFileName(config)), true);
 				}
 
 				// Prep work for export workshop mods to a download manager list
@@ -264,7 +264,7 @@ namespace Terraria.ModLoader.UI
 						continue;
 
 					workshopIds.Add(info.workshopEntryId.ToString());
-					File.Copy(mod.modFile.path, Path.Combine(modsPath, Path.GetFileName(mod.modFile.path)));
+					File.Copy(mod.modFile.path, Path.Combine(modsPath, Path.GetFileName(mod.modFile.path)), true);
 
 					break;
 				}
@@ -274,7 +274,7 @@ namespace Terraria.ModLoader.UI
 					if (!mod.Contains(enabled))
 						continue;
 
-					File.Copy(mod, Path.Combine(modsPath, Path.GetFileName(mod)));
+					File.Copy(mod, Path.Combine(modsPath, Path.GetFileName(mod)), true);
 					break;
 				}
 			}
@@ -305,15 +305,15 @@ namespace Terraria.ModLoader.UI
 			// Customize the instance to look at the correct folder
 			File.WriteAllText(Path.Combine(instancePath, "cli-argsConfig.txt"), $"-tmlsavedirectory {Path.Combine(instancePath, "SaveData")}");
 
-			// Install the correct tModLoader version
+			//TODO: Install the correct tModLoader version
+			/*
 			string tmlVersion = File.ReadAllText(Path.Combine(modsPath, "tmlversion.txt"));
 			string downloadFrom = $"https://github.com/tModLoader/tModLoader/releases/download/v{tmlVersion}/tModLoader.zip";
 			var downloadFile = new DownloadManager.DownloadFile(downloadFrom, Path.Combine(instancePath, "tModLoader.zip"), $"Installing tModLoader {tmlVersion}");
 
 			downloadFile.OnComplete += () => ExtractTmlInstall(instancePath);
-
-			Interface.downloadProgress.gotoMenu = Interface.modBrowserID;
 			Interface.downloadProgress.HandleDownloads(downloadFile);
+			*/
 		}
 
 		public static void ExtractTmlInstall(string instancePath) {

@@ -66,7 +66,7 @@ echo "Success!"  2>&1 | tee -a "$LogFile"
 run_script ./InstallNetFramework.sh  2>&1 | tee -a "$LogFile"
 
 # Gather CommandLine arguments from config
-customargs=`cat $install_dir/cli-argsConfig.txt`
+customargs=$(cat $root_dir/cli-argsConfig.txt)
 echo "Loaded Custom Arguments: $customargs"  2>&1 | tee -a "$LogFile"
 
 echo "Attempting Launch..."
@@ -94,8 +94,8 @@ fi
 if [[ -f "$install_dir/dotnet" || -f "$install_dir/dotnet.exe" ]]; then
 	echo "Launched Using Local Dotnet"  2>&1 | tee -a "$LogFile"
 	[[ -f "$install_dir/dotnet" ]] && chmod a+x "$install_dir/dotnet"
-	exec "$install_dir/dotnet" tModLoader.dll "$@" 2>"$NativeLog"
+	exec "$install_dir/dotnet" tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
 else
 	echo "Launched Using System Dotnet"  2>&1 | tee -a "$LogFile"
-	exec dotnet tModLoader.dll "$@" 2>"$NativeLog"
+	exec dotnet tModLoader.dll "$customargs" "$@" 2>"$NativeLog"
 fi
