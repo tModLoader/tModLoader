@@ -57,6 +57,15 @@ namespace Terraria
 		}
 
 		public void DropFromItem(int itemType) {
+DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
+			dropAttemptInfo.player = this;
+			dropAttemptInfo.item = itemType;
+			dropAttemptInfo.IsExpertMode = Main.expertMode;
+			dropAttemptInfo.IsMasterMode = Main.masterMode;
+			dropAttemptInfo.IsInSimulation = false;
+			dropAttemptInfo.rng = Main.rand;
+			DropAttemptInfo info = dropAttemptInfo;
+			Main.ItemDropSolver.TryDropping(info);
 		}
 
 		/// <summary>

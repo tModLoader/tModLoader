@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonCode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
-@@ -1,12 +_,28 @@
+@@ -1,12 +_,29 @@
  using Microsoft.Xna.Framework;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
@@ -20,8 +20,9 @@
 +
 +				Item.NewItem(info.player.GetItemSource_OpenItem(info.item), x, y, 0, 0, item, stack, noBroadcast: false, -1);
 +			}
-+			else
++			else {
 +				DropItemFromNPC(info.npc, item, 1, false);
++			}
 +		}
 +
  		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
