@@ -485,6 +485,15 @@
  				TargetClosest();
  				if (position.X < Main.player[target].position.X) {
  					base.direction = 1;
+@@ -37495,7 +_,7 @@
+ 					base.direction = -1;
+ 			}
+ 
+-			if (!WorldGen.InWorld(num4, num5) || Main.tile[num4, num5] == null)
++			if (!WorldGen.InWorld(num4, num5) || Main.netMode == 1 && !Main.sectionManager.TileLoaded(num4, num5))
+ 				return;
+ 
+ 			if (!homeless && Main.netMode != 1 && townNPC && (flag || Main.tileDungeon[Main.tile[num4, num5].type]) && !AI_007_TownEntities_IsInAGoodRestingSpot(num4, num5, floorX, floorY)) {
 @@ -37539,7 +_,14 @@
  			int num11 = -1;
  			if (!flag6 && Main.netMode != 1 && !flag3) {
@@ -1248,7 +1257,23 @@
  					netOffset *= 0f;
  				}
  				else {
-@@ -68860,6 +_,7 @@
+@@ -68837,6 +_,7 @@
+ 				bool flag = false;
+ 				int num4 = (int)(position.X + (float)(width / 2)) / 16;
+ 				int num5 = (int)(position.Y + (float)(height / 2)) / 16;
++				/*
+ 				try {
+ 					if (num4 >= 4 && num4 <= Main.maxTilesX - 4 && num5 >= 4 && num5 <= Main.maxTilesY - 4) {
+ 						if (Main.tile[num4, num5] == null)
+@@ -68854,12 +_,14 @@
+ 				catch {
+ 					flag = true;
+ 				}
++				*/
+ 
+-				if (flag)
++				if (!Main.sectionManager.TilesLoaded(num4 - 3, num5 - 3, num4 + 3, num5 + 3))
+ 					return;
  			}
  
  			UpdateNPC_BuffFlagsReset();

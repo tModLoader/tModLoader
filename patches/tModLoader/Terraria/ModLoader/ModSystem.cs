@@ -25,10 +25,10 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need (like setting up static defaults)
+		/// Unlike other ModTypes, SetupContent is unsealed for you to do whatever you need. By default it just calls SetStaticDefaults.
 		/// This is the place to finish initializing your mod's content. For content from other mods, and lookup tables, consider PostSetupContent
 		/// </summary>
-		public override void SetupContent() { }
+		public override void SetupContent() => SetStaticDefaults();
 
 		//Hooks
 

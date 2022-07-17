@@ -15,6 +15,15 @@
  #endif
  using NATUPNPLib;
  
+@@ -160,6 +_,8 @@
+ 		}
+ 
+ 		private static void OnConnectionAccepted(ISocket client) {
++			Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress().GetFriendlyName()));
++
+ 			int num = FindNextOpenClientSlot();
+ 			if (num != -1) {
+ 				Clients[num].Reset();
 @@ -283,6 +_,8 @@
  				Main.netMode = 0;
  				Main.menuMode = 10;
@@ -24,6 +33,15 @@
  				Main.menuMode = 0;
  			}
  			else {
+@@ -327,7 +_,7 @@
+ 				}
+ 
+ 				if (Clients[i].IsActive) {
+-					Clients[i].PendingTermination = true;
++					Clients[i].SetPendingTermination("Connection lost");
+ 					Clients[i].PendingTerminationApproved = true;
+ 					continue;
+ 				}
 @@ -421,6 +_,12 @@
  		}
  

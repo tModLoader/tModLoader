@@ -82,6 +82,17 @@
 		"AskForModIndex": "Escribe un número para cambiar entre activado/desactivado",
 		"AskForCommand": "Escribe un comando: ",
 
+		//Mod Config
+		// "ModConfigFilterOptions": "Filter Options",
+		// "ModConfigNotification": "Notification: ",
+		// "ModConfigModConfig": "Mod Config",
+		// "ModConfigSaveConfig": "Save Config",
+		// "ModConfigBack": "Back",
+		// "ModConfigRevertChanges": "Revert Changes",
+		// "ModConfigRestoreDefaults": "Restore Defaults",
+		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
+		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+
 		// Interface
 		"BossBarStyle": "Estilo de barra de jefes: {0}",
 		"BossBarStyleNoOptions": "Sin opciones",
@@ -143,7 +154,7 @@
 		"LoadErrorNotLoading": "Solo puede llamarse a Mod.AddContent durante la carga",
 		"LoadErrorDuplicateName": "No se pueden sumar dos {0} con el mismo nombre: {1}. Tal vez 2 clases compartan un nombre de clase, pero en diferentes espacios de nombres mientras se cargan automáticamente, o quizá has llamado a AddContent con 2 {0} del mismo nombre.",
 
-		"LoadErrorResourceNotFoundPathHint": "Recurso esperado no encontrado: \n	{0}\nSuposición más probable: ¿Hay un error de ortografía o de colocación de la carpeta?\n	{1}",
+		"LoadErrorResourceNotFoundPathHint": "Recurso esperado no encontrado: \n\t{0}\nSuposición más probable: ¿Hay un error de ortografía o de colocación de la carpeta?\n\t{1}",
 		"RuntimeErrorSilentlyCaughtException": "Excepción silenciosa: ",
 		"RuntimeErrorSeeLogsForFullTrace": "(abre {0} para ver el registro completo)",
 		"OpenLogs": "Abrir registros",
@@ -378,13 +389,13 @@
 		"MSFinding": "Buscando mods...",
 		"MSInstantiating": "Instanciando mods...",
 		"MSSandboxing": "Aislando: {0}",
-		"MSIntializing": "Inicializando: {0}",
 		"MSLoading": "Cargando mod: {0}",
+		// "MSResizing": "Resizing...",
+		// "MSSetupContent": "Configuring Content: {0}",
+		// "MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "Desactivando: {0}",
 		"MSFinishingResourceLoading": "Finalizando carga de recursos",
-		"MSSettingUp": "Preparando...",
 		"MSAddingRecipes": "Añadiendo recetas...",
-		"AddingModContent": "Añadiendo contenidos del mod...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Algunos objetos de partida no cabían en tu inventario",
@@ -512,6 +523,6 @@
 		"InGraveyardBiome": "Debe crearse en el bioma de cementerio"
 	},
 	"TitleLinks": {
-	"Patreon": "Patreon"
+		"Patreon": "Patreon"
 	}
 }

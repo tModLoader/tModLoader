@@ -1,0 +1,32 @@
+--- src/TerrariaNetCore/Terraria/Net/Sockets/SocialSocket.cs
++++ src/tModLoader/Terraria/Net/Sockets/SocialSocket.cs
+@@ -1,5 +_,6 @@
+ using System.Threading;
+ using System.Threading.Tasks;
++using Terraria.ModLoader;
+ using Terraria.Social;
+ 
+ namespace Terraria.Net.Sockets
+@@ -19,6 +_,7 @@
+ 
+ 		void ISocket.Close() {
+ 			if (_remoteAddress != null) {
++				Logging.Terraria.Debug($"Closing SocialSocket: {_remoteAddress.GetFriendlyName()}");
+ 				SocialAPI.Network.Close(_remoteAddress);
+ 				_remoteAddress = null;
+ 			}
+@@ -32,6 +_,14 @@
+ 		}
+ 
+ 		void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state) {
++			if (_remoteAddress == null) { // replace first chance exception with a cleaner log message, because Send fails on a null _remoteAddress
++				Logging.Terraria.Debug("SocialSocket, AsyncSend after connection closed.");
++				return;
++			}
++
++			if (ModNet.DetailedLogging)
++				Logging.tML.Debug($"send {size}bytes");
++
+ 			SocialAPI.Network.Send(_remoteAddress, data, size);
+ #if NETCORE
+ 			Task.Run(() => callback.Invoke(state));

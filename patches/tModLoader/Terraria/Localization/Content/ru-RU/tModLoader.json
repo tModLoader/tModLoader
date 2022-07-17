@@ -12,7 +12,7 @@
 		"MenuDevelopMods": "Разработка модов",
 		"MenuDevelopModsDescription": "Разработка и публикация модов из исходного кода.",
 		"ModsModPacks": "Сборки модов",
-		// "MenuModPackDescription": "Manage Mod Packs, for features like saving your current list of mods & config, and Import & Export Mod Packs. Experimental.",
+		"MenuModPackDescription": "Управление сборками модов, сохранение списка модов и настроек, импорт/экспорт сборок. Экспериментальная функция.",
 		"MenuEnableDeveloperMode": "Включить режим разработчика",
 		"WelcomeMessageBeta": "Добро пожаловать в альфа версию tModLoader для Террарии 1.4.\n\nВы установили нестабильную версию tModLoader которая может содержать баги, ломающие игру. \n\nИспользуйте меню мастерской для доступа к функционалу модов и tModLoader.\n\nПрисоединитесь к серверу tModLoader в Discord (Примечание: сервер англоязычный) чтобы узнать больше о том какие моды и/или инструменты доступны для альфа версии tModLoader в данный момент.",
 		"MonthlyFreezeNotification": "Ежемесячная заморозка альфа-версии началась. Напоминаем, с 21 числа каждого месяца начинается период времени, когда разработчикам модов следует обновить свои моды до версии 1.4-preview в следствии с изменениями кода и API которые были сделаны за месяц. Текущая версия 1.4-preview станет новой 1.4-stable 1-го числа следующего месяца.\n\nНе обновлённые моды возможно перестанут корректно работать 1-го числа.\n\nПрисоединяйтесь к Discord-серверу tModLoader что бы узнать больше об изменениях этого месяца и заметках об обновлении модов. Нажмите \"Больше информации\" что бы узнать больше о цикле релиза альфа-версии.",
@@ -21,15 +21,15 @@
 		"ShowNewUpdatedModsInfoMessage": "Следующие моды были добавлены или обновлены с предыдущего запуска (это сообщение можно отключить в настройках):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nНовые моды:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nОбновлённые моды:",
-		"ModUpdatedSinceLastLaunchMessage": "Мод был обновлён с предыдущего запуска {0}",
-		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
+		"ModUpdatedSinceLastLaunchMessage": "Мод был обновлён с предыдущего запуска с версии {0}",
+		"ModAddedSinceLastLaunchMessage": "Мод был добавлен с предыдущего запуска",
 		"ViewOnGitHub": "Просмотреть на GitHub",
 		"tModLoaderSettings": "Настройки tModLoader",
 		"ModMenuSwap": "Переключить тему меню",
 		"MenuModsEnabled": "{^0:Включён;Включено;Включены} {0} {^0:мод;мода;модов}",
 		"MenuModUpdatesAvailable": "(доступно {0} {^0:обновление;обновления;обновлений}!)",
 		"AudioNotSupported": "Не найдены устройства вывода звука, всё аудио будет отключено.",
-		// "13InfoButton": "How to Access 1.3 tModLoader",
+		"13InfoButton": "Как установить tModLoader 1.3",
 
 		// Mods Menu
 		"ModsModsList": "Список модов",
@@ -38,10 +38,10 @@
 		"ModsReloadMods": "Перезагрузить моды",
 		"ModsForceReload": "Принудительная перезагрузка",
 		"ModsOpenModsFolders": "Открыть папку модов",
-		// "OpenModPackFolder": "Open Mod Pack Folder",
-		// "DeactivateModPack": "Unload Mod Pack",
-		// "ActivateModPack": "Load Mod Pack",
-		// "DownloadMissingMods": "Download Missing Mods",
+		"OpenModPackFolder": "Открыть папку сборок модов",
+		"DeactivateModPack": "Отключить сборку модов",
+		"ActivateModPack": "Включить сборку модов",
+		"DownloadMissingMods": "Загрузить недостающие моды",
 		"ModsDisable": "Выключить",
 		"ModsEnable": "Включить",
 		"ModConfiguration": "Настройки модов",
@@ -82,6 +82,17 @@
 		"AskForModIndex": "Введите номер для переключения Вкл/Выкл",
 		"AskForCommand": "Введите команду: ",
 
+		//Mod Config
+		"ModConfigFilterOptions": "Параметры фильтрации",
+		"ModConfigNotification": "Уведомление: ",
+		"ModConfigModConfig": "Конфигурация мода",
+		"ModConfigSaveConfig": "Сохранение конфигурации",
+		"ModConfigBack": "Назад",
+		"ModConfigRevertChanges": "Отменить Изменения",
+		"ModConfigRestoreDefaults": "Восстановление значений по умолчанию",
+		"ModConfigAskingServerToAcceptChanges": "Запрос сервера на принятие изменений...",
+		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "Не удается сохранить, потому что изменения потребуют перезагрузки",
+
 		// Interface
 		"BossBarStyle": "Стиль полоски здоровья босса: {0}",
 		"BossBarStyleNoOptions": "Нет настроек",
@@ -94,7 +105,7 @@
 		"ModVersionInfoUnchanged": "Ошибка: Версия мода должна быть увеличена для обновления.",
 		"ConsultSteamLogs": "См. workshop_log.txt (Обычное расположение: {0}) для большей информации.",
 		"SteamRejectUpdate": "Уже установлено: {0}. Если это попытка переустановки, перезапустите tModLoader.",
-		// "BrowserRejectWarning": "Can't Download. Click For Info",
+		"BrowserRejectWarning": "Невозможно загрузить. Нажмите для информации",
 		"BeginDownload": "Попытка загрузки: {0}",
 		"EndDownload": "Загружено",
 		"CreateItem": "Создание {0}",
@@ -272,9 +283,9 @@
 		"ExperimentalFeaturesNo": "Экспериментальные функции: Нет",
 		"RemoveForcedMinimumZoomYes": "Убрать принудительное минимальное приближение: Да",
 		"RemoveForcedMinimumZoomNo": "Убрать принудительное минимальное приближение: Нет",
-		// "AttackSpeedScalingTooltipVisibility0": "Attack Speed Effect Tooltips: Show All",
-		// "AttackSpeedScalingTooltipVisibility1": "Attack Speed Effect Tooltips: Show Adjusted Effectiveness",
-		// "AttackSpeedScalingTooltipVisibility2": "Attack Speed Effect Tooltips: Hidden",
+		"AttackSpeedScalingTooltipVisibility0": "Подсказки скорости атаки: Все",
+		"AttackSpeedScalingTooltipVisibility1": "Подсказки скорости атаки: Только изменения",
+		"AttackSpeedScalingTooltipVisibility2": "Подсказки скорости атаки: Нет",
 		"AllowGreaterResolutionsYes": "Разрешить большие разрешения: Да",
 		"AllowGreaterResolutionsNo": "Разрешить большие разрешения: Нет",
 		"ShowMemoryEstimatesYes": "Показывать приблизительное использование памяти: Да",
@@ -329,8 +340,8 @@
 		"MSModSourcesCantHaveSpaces": "(Папки исходников модов не могут содержать пробелы)",
 		"MSCreateMod": "Создать мод",
 		"VersionUpgrade": "Ссылка: Узнайте больше о переносе модов на новую версию",
-		// "MSPortToLatest": "Run tModPorter",
-		// "MSFirstLaunchModderWelcomeMessage": "Making mods for tModLoader in Visual Studio now requires the .NET 6 SDK to be installed. This is most easily installed by installing Visual Studio 2022.\n\nThe Migration Guide found on Github will teach the code changes necessary to port mods to 1.4. The guide also teaches how to use tModPorter to migrate a large portion of the mod for you.",
+		"MSPortToLatest": "Запустить tModPorter",
+		"MSFirstLaunchModderWelcomeMessage": "Разработка модов для tModLoader в Visual Studio теперь требует установки the .NET 6 SDK. Легче всего это сделать, установив Visual Studio 2022.\n\nГайд по переносу модов на новую версию на Github описывает необходимые изменения в коде для переноса на 1.4. Гайд так же описывает как пользоваться tModPorter для автоматического переноса большей части мода.",
 
 		// Developer Mode UI
 		"DMModCompileMissing": "Дополнительные библиотеки требуются для сборки модов. (Папка ModCompile отсутствует)",
@@ -378,13 +389,13 @@
 		"MSFinding": "Поиск модов...",
 		"MSInstantiating": "Инстанция модов...",
 		"MSSandboxing": "Загрузка сборки: {0}",
-		"MSIntializing": "Инициализация мода: {0}",
 		"MSLoading": "Загрузка мода: {0}",
+		"MSResizing": "Установка размеров...",
+		"MSSetupContent": "Настройка контента: {0}",
+		"MSPostSetupContent": "Завершение настройки: {0}",
 		"MSUnloading": "Выгрузка мода: {0}",
 		"MSFinishingResourceLoading": "Завершение загрузки ресурсов",
-		"MSSettingUp": "Настройка...",
 		"MSAddingRecipes": "Загрузка рецептов модов...",
-		"AddingModContent": "Загрузка контента модов...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Некоторые стартовые предметы не поместились в ваш инвентарь",
@@ -398,10 +409,10 @@
 		"DefaultNurseCantHealChat": "Я не знаю почему я не могу тебя полечить, моддер ответственный за это забыл дать мне сообщение, объясняющее это.",
 
 		// Tooltip lines
-		// "NoAttackSpeedScaling": "Does not scale with attack speed",
-		// "SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
-		// "ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
-		// "ModifiedByMods": "Is modified by ",
+		"NoAttackSpeedScaling": "Не зависит от скорости атаки",
+		"SpecialAttackSpeedScaling": "{0}% изменение скорости атаки",
+		"ModifiedByModsHoldSHIFT": "Изменено модом (удерж. SHIFT для информации)",
+		"ModifiedByMods": "Изменено модами: ",
 
 		// Memory bar
 		"LastLoadRamUsage": "Среднее использование памяти при последнем запуске: {0}",
@@ -512,6 +523,6 @@
 		"InGraveyardBiome": "Нужно кладбище"
 	},
 	"TitleLinks": {
-		// "Patreon": "Patreon"
+		"Patreon": "Patreon"
 	}
 }

@@ -1002,6 +1002,17 @@ namespace Terraria.ModLoader
 			return false;
 		}
 
+		private static HookList HookHoverSlot = AddHook<Func<Item[], int, int, bool>>(p => p.HoverSlot);
+
+		public static bool HoverSlot(Player player, Item[] inventory, int context, int slot) {
+			foreach (var modPlayer in HookHoverSlot.Enumerate(player.ModPlayers)) {
+				if (modPlayer.HoverSlot(inventory, context, slot)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 		private static HookList HookPostSellItem = AddHook<Action<NPC, Item[], Item>>(p => p.PostSellItem);
 
 		public static void PostSellItem(Player player, NPC npc, Item[] shopInventory, Item item) {

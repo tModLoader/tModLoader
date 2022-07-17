@@ -268,6 +268,12 @@ namespace Terraria.ModLoader
 		public static int TileType<T>() where T : ModTile => GetInstance<T>()?.Type ?? 0;
 
 		/// <summary>
+		/// Get the id (type) of a ModPylon by class. Assumes one instance per class.
+		/// If nothing is found, returns 0, or the "Forest Pylon" type.
+		/// </summary>
+		public static TeleportPylonType PylonType<T>() where T : ModPylon => GetInstance<T>()?.PylonType ?? 0;
+
+		/// <summary>
 		/// Get the id (type) of a ModTileEntity by class. Assumes one instance per class.
 		/// </summary>
 		public static int TileEntityType<T>() where T : ModTileEntity => GetInstance<T>()?.Type ?? 0;
@@ -331,6 +337,7 @@ namespace Terraria.ModLoader
 				mod.TransferAllAssets();
 			});
 
+
 			MemoryTracking.Finish();
 
 			if (Main.dedServ)
@@ -342,6 +349,7 @@ namespace Terraria.ModLoader
 
 			LocalizationLoader.RefreshModLanguage(Language.ActiveCulture);
 
+			PylonLoader.Setup();
 			MapLoader.SetupModMap();
 			PlantLoader.SetupPlants();
 			RarityLoader.Initialize();
@@ -450,6 +458,7 @@ namespace Terraria.ModLoader
 			PrefixLoader.Unload();
 			DustLoader.Unload();
 			TileLoader.Unload();
+			PylonLoader.Unload();
 			WallLoader.Unload();
 			ProjectileLoader.Unload();
 

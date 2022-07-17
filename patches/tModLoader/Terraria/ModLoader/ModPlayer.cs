@@ -864,6 +864,18 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Called whenever the player hovers over an item slot. This can be used to override <see cref="Main.cursorOverride"/>
+		/// <br>See <see cref="ID.CursorOverrideID"/> for cursor override style IDs</br>
+		/// </summary>
+		/// <param name="inventory">The array of items the slot is part of.</param>
+		/// <param name="context">The Terraria.UI.ItemSlot.Context of the inventory.</param>
+		/// <param name="slot">The index in the inventory of the hover slot.</param>
+		/// <returns>Whether or not to block the default code that modifies <see cref="Main.cursorOverride"/> from running. Returns false by default.</returns>
+		public virtual bool HoverSlot(Item[] inventory, int context, int slot) {
+			return false;
+		}
+
+		/// <summary>
 		/// Called whenever the player sells an item to an NPC.
 		/// </summary>
 		/// <param name="vendor">The NPC vendor.</param>

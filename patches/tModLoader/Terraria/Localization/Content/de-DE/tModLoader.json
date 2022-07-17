@@ -82,6 +82,17 @@
 		"AskForModIndex": "Gib eine Zahl ein, um zwischen aktiviert/deaktiviert zu wechseln",
 		"AskForCommand": "Gib einen Befehl ein: ",
 
+		//Mod Config
+		// "ModConfigFilterOptions": "Filter Options",
+		// "ModConfigNotification": "Notification: ",
+		// "ModConfigModConfig": "Mod Config",
+		// "ModConfigSaveConfig": "Save Config",
+		// "ModConfigBack": "Back",
+		// "ModConfigRevertChanges": "Revert Changes",
+		// "ModConfigRestoreDefaults": "Restore Defaults",
+		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
+		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+
 		// Interface
 		"BossBarStyle": "Bossleisten-Stil: {0}",
 		"BossBarStyleNoOptions": "Keine Einstellungen",
@@ -378,13 +389,13 @@
 		"MSFinding": "Mods finden... ",
 		"MSInstantiating": "Mods instanziieren...",
 		"MSSandboxing": "Sandboxing: {0}",
-		"MSIntializing": "Initialisiere: {0}",
 		"MSLoading": "Lade Mod: {0}",
+		// "MSResizing": "Resizing...",
+		// "MSSetupContent": "Configuring Content: {0}",
+		// "MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "Entlade Mod: {0}",
 		"MSFinishingResourceLoading": "Stelle Ressourcen-Ladevorgang fertig",
-		"MSSettingUp": "Erstelle...",
 		"MSAddingRecipes": "Füge Rezepte hinzu...",
-		"AddingModContent": "Füge Mod-Inhalte hinzu...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Einige Starter-Items haben nicht in dein Inventar gepasst",

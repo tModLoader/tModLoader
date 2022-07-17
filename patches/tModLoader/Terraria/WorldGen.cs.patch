@@ -208,6 +208,15 @@
  			ThreadPool.QueueUserWorkItem(SaveAndQuitCallBack, callback);
  		}
  
+@@ -2454,6 +_,8 @@
+ 		}
+ 
+ 		public static void playWorldCallBack(object threadContext) {
++			Logging.Terraria.Info($"Loading World: {Main.ActiveWorldFileData.Name}, IsCloud={Main.ActiveWorldFileData.IsCloudSave}");
++
+ 			if (Main.rand == null)
+ 				Main.rand = new UnifiedRandom((int)DateTime.Now.Ticks);
+ 
 @@ -2484,13 +_,20 @@
  					}
  
@@ -2204,7 +2213,7 @@
  		public static bool AllowsSandfall(Tile tileTopCache) {
  			bool result = true;
 -			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || tileTopCache.type == 88 || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
-+			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || TileID.Sets.BasicDresser[tileTopCache.type] || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
++			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || TileID.Sets.BasicDresser[tileTopCache.type] || TileID.Sets.PreventsSandfall[tileTopCache.type]))
  				result = false;
  
  			return result;

@@ -561,6 +561,15 @@
  				LoadWorlds();
  			}
  			catch {
+@@ -3835,7 +_,7 @@
+ 					try {
+ 						if (text.Length > 6 && text.Substring(0, 6).ToLower() == "world=") {
+ 							string path = autoGenFileLocation = text.Substring(6);
+-							ActiveWorldFileData = WorldFile.GetAllMetadata(Platform.Get<IPathService>().ExpandPathVariables(path), cloudSave: false);
++							ActiveWorldFileData = WorldFile.GetAllMetadata(Platform.Get<IPathService>().ExpandPathVariables(path), cloudSave: false) ?? new();
+ 						}
+ 
+ 						if (text.Length > 5 && text.Substring(0, 5).ToLower() == "port=") {
 @@ -3923,6 +_,12 @@
  						if (text.Length >= 10 && text.Substring(0, 10).ToLower() == "worldname=")
  							worldName = text.Substring(10);
@@ -574,6 +583,15 @@
  						if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							AutogenSeedName = text.Substring(5);
  
+@@ -3985,7 +_,7 @@
+ 		}
+ 
+ 		public void SetWorld(string world, bool cloud) {
+-			ActiveWorldFileData = WorldFile.GetAllMetadata(world, cloud);
++			ActiveWorldFileData = WorldFile.GetAllMetadata(world, cloud) ?? new();
+ 		}
+ 
+ 		public void SetWorldName(string world) {
 @@ -4032,6 +_,8 @@
  		}
  
@@ -831,13 +849,14 @@
  			}
  
  			YouCanSleepNow();
-@@ -4538,8 +_,14 @@
+@@ -4538,8 +_,15 @@
  
  		public static void startDedInputCallBack() {
  			while (!Netplay.Disconnect) {
 -				Console.Write(": ");
  				string text = Console.ReadLine();
-+				ExecuteCommand(text, new ConsoleCommandCaller());
++				if (text != null) // Fix for #2644 where Docker would steal lines from the active console.
++					ExecuteCommand(text, new ConsoleCommandCaller());
 +			}
 +		}
 +
@@ -934,7 +953,7 @@
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
-+			GraphicsChangeTracker.Init();
++			FNALogging.GraphicsInit(graphics);
  		}
  
  		private static void SetDisplayMonitor() {
@@ -4851,6 +4870,15 @@
  
  			if (invasionX > (double)spawnTileX) {
  				invasionX -= num;
+@@ -49871,7 +_,7 @@
+ 						Netplay.Clients[k].TimeOutTimer += 3;
+ 
+ 					if (!stopTimeOuts && Netplay.Clients[k].TimeOutTimer > 7200) {
+-						Netplay.Clients[k].PendingTermination = true;
++						Netplay.Clients[k].SetPendingTermination("Timeout");
+ 						Netplay.Clients[k].PendingTerminationApproved = true;
+ 					}
+ 				}
 @@ -49881,6 +_,11 @@
  			}
  		}

@@ -1,12 +1,10 @@
 using log4net;
+using log4net.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 
 namespace Terraria.ModLoader.Engine
 {
@@ -14,7 +12,7 @@ namespace Terraria.ModLoader.Engine
 	/// Attempt to track spurious device resets, backbuffer flickers and resizes
 	/// Also setup some FNA logging
 	/// </summary>
-	internal static class GraphicsChangeTracker
+	internal static class FNALogging
 	{
 		private abstract class DeviceParam
 		{
@@ -70,20 +68,31 @@ namespace Terraria.ModLoader.Engine
 				if (DriverIdentifier == null && s.StartsWith("FNA3D Driver: "))
 					DriverIdentifier = s.Substring("FNA3D Driver: ".Length);
 
-				LogManager.GetLogger("FNA").Info(s);
+				Logging.FNA.Info(s);
 			};
 
 			// in 2 lines so you can breakpoint it
 			FNALoggerEXT.LogWarn = (string s) =>
-				LogManager.GetLogger("FNA").Warn(s);
+				Logging.FNA.Warn(s);
 			FNALoggerEXT.LogError = (string s) =>
-				LogManager.GetLogger("FNA").Error(s);
+				Logging.FNA.Error(s);
+
+			Logging.FNA.Debug("Querying linked library versions...");
+
+			SDL2.SDL.SDL_GetVersion(out var sdl_version);
+			Logging.FNA.Debug($"SDL v{sdl_version.major}.{sdl_version.minor}.{sdl_version.patch}");
+
+			uint fna3d_version = FNA3D.FNA3D_LinkedVersion();
+			Logging.FNA.Debug($"FNA3D v{fna3d_version / 10000}.{fna3d_version / 100 % 100}.{fna3d_version % 100}");
+
+			uint faudio_version = FAudio.FAudioLinkedVersion();
+			Logging.FNA.Debug($"FAudio v{faudio_version / 10000}.{faudio_version / 100 % 100}.{faudio_version % 100}");
 		}
 
-		public static void Init() {
-			Main.graphics.DeviceReset += LogDeviceReset;
+		public static void GraphicsInit(GraphicsDeviceManager graphics) {
+			graphics.DeviceReset += LogDeviceReset;
 			//Main.graphics.DeviceReset += UpdateBackbufferSizes;
-			Main.graphics.DeviceCreated += (s, e) => creating = true;
+			graphics.DeviceCreated += (s, e) => creating = true;
 
 			//var clientSizeChangedEventInfo = typeof(GameWindow).GetField("ClientSizeChanged", BindingFlags.NonPublic | BindingFlags.Instance);
 			//clientSizeChangedEventInfo.SetValue(Main.instance.Window, null);

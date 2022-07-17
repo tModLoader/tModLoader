@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/GameContent/TeleportPylonInfo.cs
++++ src/tModLoader/Terraria/GameContent/TeleportPylonInfo.cs
+@@ -1,5 +_,6 @@
+ using System;
+ using Terraria.DataStructures;
++using Terraria.ModLoader;
+ 
+ namespace Terraria.GameContent
+ {
+@@ -7,6 +_,7 @@
+ 	{
+ 		public Point16 PositionInTiles;
+ 		public TeleportPylonType TypeOfPylon;
++		public ModPylon ModPylon => PylonLoader.GetModPylon(TypeOfPylon);
+ 
+ 		public bool Equals(TeleportPylonInfo other) {
+ 			if (PositionInTiles == other.PositionInTiles)
