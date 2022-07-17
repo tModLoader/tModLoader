@@ -17,12 +17,8 @@ namespace Terraria.ModLoader.Default
 				return;
 			}
 
-			bool? prePlace = PylonLoader.PreCanPlacePylon(x, y, pylon.Type, pylon.PylonType);
-			if (prePlace is false) {
-				RejectPlacementFromNet(x, y);
-				return;
-			}
-			if (prePlace is null && !pylon.CanPlacePylon()) {
+			bool canPlace = PylonLoader.PreCanPlacePylon(x, y, pylon.Type, pylon.PylonType) ?? pylon.CanPlacePylon();
+			if (!canPlace) {
 				RejectPlacementFromNet(x, y);
 				return;
 			}

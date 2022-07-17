@@ -68,6 +68,8 @@ namespace Terraria.ModLoader
 		/// <remarks>
 		/// Note that in Multiplayer environments, granted that any GlobalPylon instances do not return false in <seealso cref="GlobalPylon.PreCanPlacePylon"/>,
 		/// this is called first on the client, and then is subsequently called &amp; double checked on the server.
+		/// <br>If the server disagrees with the client that the given pylon CANNOT be placed for any given reason, the server will reject the placement
+		/// and subsequently break the associated tile.</br>
 		/// </remarks>
 		public virtual bool CanPlacePylon() {
 			return !Main.PylonSystem.HasPylonOfType(PylonType);

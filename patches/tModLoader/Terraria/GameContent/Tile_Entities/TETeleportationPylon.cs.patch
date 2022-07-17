@@ -11,17 +11,13 @@
  	{
  		private static byte _myEntityID;
  		private const int MyTileID = 597;
-@@ -21,7 +_,12 @@
+@@ -21,7 +_,8 @@
  				return;
  			}
  
 -			if (Main.PylonSystem.HasPylonOfType(pylonType)) {
-+			bool? prePlace = PylonLoader.PreCanPlacePylon(x, y, MyTileID, pylonType);
-+			if (prePlace is false) {
-+				RejectPlacementFromNet(x, y);
-+				return;
-+			}
-+			if (prePlace is null && Main.PylonSystem.HasPylonOfType(pylonType)) {
++			bool canPlace = PylonLoader.PreCanPlacePylon(x, y, MyTileID, pylonType) ?? Main.PylonSystem.HasPylonOfType(pylonType);
++			if (!canPlace) {
  				RejectPlacementFromNet(x, y);
  				return;
  			}
