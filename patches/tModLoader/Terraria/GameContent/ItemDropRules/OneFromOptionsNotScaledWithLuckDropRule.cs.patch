@@ -5,7 +5,7 @@
  			ItemDropAttemptResult result;
  			if (info.rng.Next(chanceDenominator) < chanceNumerator) {
 -				CommonCode.DropItemFromNPC(info.npc, dropIds[info.rng.Next(dropIds.Length)], 1);
-+				CommonCode.DropItemFromNPC(info.npc, dropIds[info.rng.Next(dropIds.Length)], 1, false, info.player, info.item);
++				CommonCode.DropItem(info, dropIds[info.rng.Next(dropIds.Length)], 1, false);
  				result = default(ItemDropAttemptResult);
  				result.State = ItemDropAttemptResultState.Success;
  				return result;

@@ -31,11 +31,11 @@ namespace Terraria.GameContent.ItemDropRules
 			if (info.rng.Next(chanceDenominator) < chanceNumerator) {
 				List<int> savedDropIds = dropIds.ToList();
 				int index = info.rng.Next(savedDropIds.Count);
-				CommonCode.DropItemFromNPC(info.npc, savedDropIds[index], 1, false, info.player, info.item);
+				CommonCode.DropItem(info, savedDropIds[index], 1, false);
 				savedDropIds.RemoveAt(index);
 				while (++count <= amount) {
 					int index2 = info.rng.Next(savedDropIds.Count);
-					CommonCode.DropItemFromNPC(info.npc, savedDropIds[index2], 1, false, info.player, info.item);
+					CommonCode.DropItem(info, savedDropIds[index2], 1, false);
 					savedDropIds.RemoveAt(index2);
 				}
 

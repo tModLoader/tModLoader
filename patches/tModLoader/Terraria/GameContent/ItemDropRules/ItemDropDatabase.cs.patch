@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/ItemDropDatabase.cs
-@@ -1,18 +_,33 @@
+@@ -1,18 +_,22 @@
  using System.Collections.Generic;
  using System.Linq;
  using Terraria.ID;
@@ -14,17 +14,6 @@
 +		internal List<IItemDropRule> _globalEntries = new List<IItemDropRule>();
  		private Dictionary<int, List<IItemDropRule>> _entriesByNpcNetId = new Dictionary<int, List<IItemDropRule>>();
  		private Dictionary<int, List<int>> _npcNetIdsByType = new Dictionary<int, List<int>>();
-+		internal List<IItemDropRule> _globalEntriesItem = new List<IItemDropRule>();
-+		internal List<IItemDropRule> _globalEntriesItem_BossBag = new List<IItemDropRule>();
-+		internal List<IItemDropRule> _globalEntriesItem_Present = new List<IItemDropRule>();
-+		internal List<IItemDropRule> _globalEntriesItem_GoodieBag = new List<IItemDropRule>();
-+		internal List<IItemDropRule> _globalEntriesItem_HerbBag = new List<IItemDropRule>();
-+		internal List<IItemDropRule> _globalEntriesItem_Oyster = new List<IItemDropRule>();
-+		internal List<IItemDropRule> _globalEntriesItem_CanOfWorms = new List<IItemDropRule>();
-+		internal List<IItemDropRule> _globalEntriesItem_Crate = new List<IItemDropRule>(); // maybe separate global entries for hardmode?
-+																						   // not necessary?? or maybe merge in a single
-+																						   //internal List<IItemDropRule> _globalEntriesItem_Lockbox = new List<IItemDropRule>();
-+																						   //internal List<IItemDropRule> _globalEntriesItem_ObsidianLockbox = new List<IItemDropRule>();
 +		private Dictionary<int, List<IItemDropRule>> _entriesByItemId = new Dictionary<int, List<IItemDropRule>>();
 +		private Dictionary<int, List<int>> _itemIdsByType = new Dictionary<int, List<int>>();
  		private int _masterModeDropRng = 4;
@@ -35,30 +24,12 @@
  			foreach (KeyValuePair<int, NPC> item in ContentSamples.NpcsByNetId.Where((KeyValuePair<int, NPC> x) => x.Key < 0)) {
  				if (!_npcNetIdsByType.ContainsKey(item.Value.type))
  					_npcNetIdsByType[item.Value.type] = new List<int>();
-@@ -39,11 +_,78 @@
+@@ -39,6 +_,15 @@
  			return list;
  		}
  
 +		public List<IItemDropRule> GetRulesForItemID(int itemID, bool includeGlobalDrops = true) {
 +			List<IItemDropRule> list = new List<IItemDropRule>();
-+			if (includeGlobalDrops) {
-+				list.AddRange(_globalEntriesItem);
-+
-+				if (ItemID.Sets.BossBag[itemID])
-+					list.AddRange(_globalEntriesItem_BossBag);
-+				if (itemID == ItemID.Present)
-+					list.AddRange(_globalEntriesItem_Present);
-+				if (itemID == ItemID.GoodieBag)
-+					list.AddRange(_globalEntriesItem_GoodieBag);
-+				if (itemID == ItemID.HerbBag)
-+					list.AddRange(_globalEntriesItem_HerbBag);
-+				if (ItemID.Sets.IsFishingCrate[itemID])
-+					list.AddRange(_globalEntriesItem_Crate);
-+				if (itemID == ItemID.CanOfWorms)
-+					list.AddRange(_globalEntriesItem_CanOfWorms);
-+				if (itemID == ItemID.Oyster)
-+					list.AddRange(_globalEntriesItem_Oyster);
-+			}
 +
 +			if (_entriesByItemId.TryGetValue(itemID, out List<IItemDropRule> value))
 +				list.AddRange(value);
@@ -69,51 +40,6 @@
  		public IItemDropRule RegisterToGlobal(IItemDropRule entry) {
  			_globalEntries.Add(entry);
  			return entry;
- 		}
- 
-+		public IItemDropRule RegisterToGlobalItem(IItemDropRule entry) {
-+			_globalEntriesItem.Add(entry);
-+			return entry;
-+		}
-+
-+		public IItemDropRule RegisterToGlobalItem_BossBag(IItemDropRule entry) {
-+			_globalEntriesItem_BossBag.Add(entry);
-+			return entry;
-+		}
-+
-+		public IItemDropRule RegisterToGlobalItem_Present(IItemDropRule entry) {
-+			_globalEntriesItem_Present.Add(entry);
-+			return entry;
-+		}
-+
-+		public IItemDropRule RegisterToGlobalItem_GoodieBag(IItemDropRule entry) {
-+			_globalEntriesItem_GoodieBag.Add(entry);
-+			return entry;
-+		}
-+
-+		public IItemDropRule RegisterToGlobalItem_HerbBag(IItemDropRule entry) {
-+			_globalEntriesItem_HerbBag.Add(entry);
-+			return entry;
-+		}
-+
-+		public IItemDropRule RegisterToGlobalItem_Crate(IItemDropRule entry) {
-+			_globalEntriesItem_Crate.Add(entry);
-+			return entry;
-+		}
-+
-+		public IItemDropRule RegisterToGlobalItem_Oyster(IItemDropRule entry) {
-+			_globalEntriesItem_Crate.Add(entry);
-+			return entry;
-+		}
-+
-+		public IItemDropRule RegisterToGlobalItem_CanOfWorms(IItemDropRule entry) {
-+			_globalEntriesItem_Crate.Add(entry);
-+			return entry;
-+		}
-+
- 		public IItemDropRule RegisterToNPC(int type, IItemDropRule entry) {
- 			RegisterToNPCNetId(type, entry);
- 			if (type > 0 && _npcNetIdsByType.TryGetValue(type, out List<int> value)) {
 @@ -55,13 +_,31 @@
  			return entry;
  		}
@@ -190,7 +116,7 @@
  		public IItemDropRule RemoveFromMultipleNPCs(IItemDropRule entry, params int[] npcNetIds) {
  			for (int i = 0; i < npcNetIds.Length; i++) {
  				RemoveFromNPC(npcNetIds[i], entry);
-@@ -114,6 +_,26 @@
+@@ -114,6 +_,25 @@
  			RegisterMimic();
  			RegisterEclipse();
  			RegisterBloodMoonFishing();
@@ -204,8 +130,7 @@
 +			RegisterCanOfWorms();
 +			RegisterOyster();
 +
-+			ItemLoader.ModifyGlobalLoot(new GlobalItemLoot(this));
-+			NPCLoader.ModifyGlobalLoot(new GlobalNPCLoot(this));
++			NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
 +
 +			foreach (KeyValuePair<int, Item> pair in ContentSamples.ItemsByType) {
 +				ItemLoader.ModifyItemLoot(pair.Value, new ItemLoot(pair.Key, this));

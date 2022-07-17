@@ -99,7 +99,7 @@ namespace ExampleMod.Common.GlobalNPCs
 		// ModifyGlobalLoot allows you to modify loot that every NPC should be able to drop, preferably with a condition.
 		// Vanilla uses this for the biome keys, souls of night/light, as well as the holiday drops.
 		// Any drop rules in ModifyGlobalLoot should only run once. Everything else should go in ModifyNPCLoot.
-		public override void ModifyGlobalLoot(GlobalNPCLoot globalLoot) {
+		public override void ModifyGlobalLoot(GlobalLoot globalLoot) {
 			// If the ExampleSoulCondition is true, drop ExampleSoul 20% of the time. See Common/ItemDropRules/DropConditions/ExampleSoulCondition.cs for how it's determined
 			globalLoot.Add(ItemDropRule.ByCondition(new ExampleSoulCondition(), ModContent.ItemType<ExampleSoul>(), 5, 1, 1));
 		}

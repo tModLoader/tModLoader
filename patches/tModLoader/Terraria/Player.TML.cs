@@ -56,6 +56,9 @@ namespace Terraria
 			return result != null;
 		}
 
+		public void DropFromItem(int itemType) {
+		}
+
 		/// <summary>
 		/// Will spawn an item like QuickSpawnItem, but clones it (handy when you need to retain item infos)
 		/// </summary>
