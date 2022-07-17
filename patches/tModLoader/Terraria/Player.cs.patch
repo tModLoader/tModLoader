@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Player.cs
 +++ src/tModLoader/Terraria/Player.cs
-@@ -34,10 +_,17 @@
+@@ -34,10 +_,16 @@
  using Terraria.UI.Gamepad;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -10,7 +10,6 @@
 +using Terraria.ModLoader.UI;
 +using System.Linq;
 +using LegacySoundStyle = Terraria.Audio.SoundStyle;
-+using Terraria.GameContent.ItemDropRules;
  
  namespace Terraria
  {
@@ -750,7 +749,7 @@
  			}
  
  			petalTimer = 50;
-@@ -3788,10 +_,18 @@
+@@ -3788,9 +_,16 @@
  			num6 *= num8;
  			num7 *= num8;
  			Projectile.NewProjectile(GetProjectileSource_SetBonus(6), Main.projectile[num5].Center.X - 4f, Main.projectile[num5].Center.Y, num6, num7, 227, crystalLeafDamage, crystalLeafKB, whoAmI);
@@ -765,18 +764,20 @@
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
-+
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 602);
- 				if (Main.netMode == 1)
-@@ -4015,16 +_,43 @@
+@@ -4009,21 +_,34 @@
+ 					}
+ 				default: {
+ 						int number21 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 591, Main.rand.Next(20, 50));
++						// Extra patch context for the below.
+ 						if (Main.netMode == 1)
+ 							NetMessage.SendData(21, -1, -1, null, number21, 1f);
+ 
  						break;
  					}
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot*/
-+
-+			//TODO: return statements above probably break this.
++			*/
  		}
  
 +		// Return value added by TML.
@@ -792,57 +793,26 @@
  
  		public void OpenBossBag(int type) {
 +			DropFromItem(type);
++
 +			if (ItemID.Sets.BossBag[type] && (!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
 +				TryGettingDevArmor(GetItemSource_OpenItem(type));
 +			}
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(type);
-+
-+			if (ItemID.Sets.BossBag[type] && (!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
-+				this.TryGettingDevArmor(itemSource_OpenItem);
-+			}
-+
-+			// comment from different guy: should i also remove these?
-+
-+			// In the following switch, some TryGettingDevArmor lines have been made useless in favor of expanding the TML-added ItemID.BossBag & ItemID.PreHardmodeLikeBossBag sets.
-+
-+			static void TryGettingDevArmor(IEntitySource source) {
-+				// A whole lot of nothing!
-+			}
-+
  			switch (type) {
  				case 3318: {
- 						if (Main.tenthAnniversaryWorld)
-@@ -4518,12 +_,21 @@
- 			if (type == 5111)
- 				num11 = 668;
+@@ -4560,15 +_,19 @@
+ 				}
  
-+			ItemLoader.OpenBossBag(type, this, ref num11);
-+
--			if (num11 <= 0)
-+			if (num11 <= 0) {
-+				NPCLoader.blockLoot.Clear(); // Clear blockloot
- 				return;
-+			}
+ 				int num15 = (int)value;
++				// Extra patch context for the below.
+ 				if (num15 < 1)
+ 					num15 = 1;
  
- 			NPC nPC = new NPC();
- 			nPC.SetDefaults(num11);
-+			
-+			// Slight optimization patch, since we're nearby anyway.
-+			NPC nPC = ContentSamples.NpcsByNetId[num11];
-+
- 			float value = nPC.value;
-+
- 			value *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
- 			if (Main.rand.Next(5) == 0)
- 				value *= 1f + (float)Main.rand.Next(5, 11) * 0.01f;
-@@ -4566,9 +_,14 @@
  				value -= (float)num15;
  				QuickSpawnItem(itemSource_OpenItem, 71, num15);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
 +			*/
  		}
  
@@ -853,7 +823,7 @@
  			if (Main.rand.Next(Main.tenthAnniversaryWorld ? 10 : 20) == 0) {
  				switch (Main.rand.Next(18)) {
  					case 0:
-@@ -4689,7 +_,11 @@
+@@ -4689,6 +_,9 @@
  		}
  
  		public void OpenFishingCrate(int crateItemID) {
@@ -861,20 +831,25 @@
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
-+
  			bool flag = ItemID.Sets.IsFishingCrateHardmode[crateItemID];
  			switch (crateItemID) {
- 				case 2334:
-@@ -5978,6 +_,9 @@
+@@ -5974,13 +_,16 @@
+ 						break;
+ 				}
+ 
++				// Extra patch context for the below.
+ 				int number66 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, type44, stack41);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number66, 1f);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
 +			*/
  		}
  
  		public int CountItem(int type, int stopCountingAt = 0) {
++			// Extra patch context for the above.
+ 			int num = 0;
+ 			for (int i = 0; i != 58; i++) {
+ 				if (inventory[i].stack > 0 && inventory[i].type == type) {
 @@ -6005,7 +_,9 @@
  
  			for (int i = num; i != num2; i += num3) {
@@ -896,12 +871,15 @@
  			bool flag = true;
  			while (flag) {
  				flag = false;
-@@ -6046,9 +_,15 @@
+@@ -6042,13 +_,18 @@
+ 						break;
+ 				}
+ 
++				// Extra patch context for the below.
+ 				int number = Item.NewItem(GetItemSource_OpenItem(boxType), (int)position.X, (int)position.Y, width, height, num, 1, noBroadcast: false, -1);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
 +			*/
  		}
  
@@ -912,12 +890,18 @@
  			bool flag = true;
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(lockboxItemType);
  			while (flag) {
-@@ -6088,10 +_,16 @@
+@@ -6082,15 +_,20 @@
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 
++				// Extra patch context for the below.
+ 				if (Main.rand.Next(3) == 0) {
+ 					int number2 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 329, 1, noBroadcast: false, -1);
+ 					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number2, 1f);
  				}
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // clear blockloot*/
++			*/
  		}
  
  		public void OpenHerbBag(int bagType) {
@@ -925,16 +909,17 @@
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(bagType);
-+
  			int num = Main.rand.Next(2, 5);
  			if (Main.rand.Next(3) == 0)
- 				num++;
-@@ -6148,9 +_,15 @@
+@@ -6144,31 +_,42 @@
+ 				if (Main.rand.Next(3) == 0)
+ 					num3 += Main.rand.Next(1, 5);
+ 
++				// Extra patch context for the below.
+ 				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, num2, num3);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
-+			
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
 +			*/
  		}
  
@@ -945,15 +930,21 @@
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
  			QuickSpawnItem(itemSource_OpenItem, 2002, Main.rand.Next(5, 9));
  			if (Main.rand.Next(10) < 3)
-@@ -6158,6 +_,7 @@
+ 				QuickSpawnItem(itemSource_OpenItem, 3191, Main.rand.Next(1, 3));
  
++			// Extra patch context.
  			if (Main.rand.Next(20) == 0)
  				QuickSpawnItem(itemSource_OpenItem, 2895);
 +			*/
  		}
  
  		public void OpenCapricornTail(int sourceItemType) {
-@@ -6169,6 +_,9 @@
+ 			QuickSpawnItem(GetItemSource_OpenItem(sourceItemType), 5059);
+ 		}
+ 
++		// Extra patch context.
+ 		public void OpenCapricornLegs(int sourceItemType) {
+ 			QuickSpawnItem(GetItemSource_OpenItem(sourceItemType), 5060);
  		}
  
  		public void OpenOyster(int sourceItemType) {
@@ -963,7 +954,11 @@
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
  			if (Main.rand.Next(5) == 0) {
  				if (Main.rand.Next(15) == 0)
-@@ -6180,10 +_,15 @@
+@@ -6177,12 +_,17 @@
+ 					QuickSpawnItem(itemSource_OpenItem, 4413);
+ 				else
+ 					QuickSpawnItem(itemSource_OpenItem, 4412);
++				// Extra patch context for the below.
  			}
  
  			QuickSpawnItem(itemSource_OpenItem, 4411);
@@ -975,35 +970,27 @@
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
-+
  			if (Main.rand.Next(150) == 0) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 1810);
- 				if (Main.netMode == 1)
-@@ -6460,6 +_,8 @@
- 						break;
- 					}
- 				case 18: {
-+						// Extra patch context for the below.
-+
+@@ -6463,17 +_,21 @@
  						int number5 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 1851);
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, number5, 1f);
-@@ -6468,12 +_,18 @@
++						// Extra patch context for the below.
+ 
+ 						number5 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 1852);
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, number5, 1f);
  
 +						// Extra patch context for the below.
-+
  						break;
  					}
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // clear blockloot*/
++			*/
  		}
  
  		public void UpdateDyes() {
 +			// Extra patch context for the above.
-+
  			cShieldFallback = -1;
  			cHead = (cBody = (cLegs = (cHandOn = (cHandOff = (cBack = (cFront = (cShoe = (cWaist = (cShield = (cNeck = (cFace = (cFaceHead = (cFaceFlower = (cBalloon = (cBalloon = (cWings = (cCarpet = (cFloatingTube = (cBackpack = (cTail = 0))))))))))))))))))));
  			cGrapple = (cMount = (cMinecart = (cPet = (cLight = (cYorai = (cPortalbeStool = (cUnicornHorn = (cAngelHalo = (cBeard = (cMinion = (cLeinShampoo = 0)))))))))));
@@ -1088,7 +1075,7 @@
  				cWings = dyeItem.dye;
  
  			if (armorItem.type == 934)
-@@ -6598,11 +_,13 @@
+@@ -6598,6 +_,8 @@
  			}
  		}
  
@@ -1097,12 +1084,6 @@
  		public IEntitySource GetProjectileSource_Buff(int buffIndex) {
  			int buffId = buffType[buffIndex];
  			return new EntitySource_Buff(this, buffId, buffIndex);
- 		}
--
-+		
- 		public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
- 		public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
- 		public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
 @@ -6617,21 +_,51 @@
  		public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  		public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
@@ -4741,15 +4722,6 @@
  
  				if (projToShoot == 76) {
  					projToShoot += Main.rand.Next(3);
-@@ -33718,7 +_,7 @@
- 						if (num56 < 0)
- 							return;
- 
--						if (Collision.CanHitLine(base.Center, 1, 1, base.Center + new Vector2(16 * num56 * direction, 0f), 1, 1) && WorldUtils.Find(new Point(point.X + direction * num56, point.Y), Searches.Chain(new Searches.Down(maxDistance), new Conditions.MysticSnake()), out result)) {
-+						if (Collision.CanHitLine(base.Center, 1, 1, base.Center + new Vector2(16 * num56 * direction, 0f), 1, 1) && WorldUtils.Find(new Point(point.X + direction * num56, point.Y), Searches.Chain(new Searches.Down(maxDistance), new Terraria.WorldBuilding.Conditions.MysticSnake()), out result)) {
- 							num57 = result.Y;
- 							while (Main.tile[result.X, num57 - 1].active()) {
- 								num57--;
 @@ -34526,6 +_,10 @@
  				}
  			}

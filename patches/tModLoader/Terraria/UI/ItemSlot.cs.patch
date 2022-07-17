@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/ItemSlot.cs
 +++ src/tModLoader/Terraria/UI/ItemSlot.cs
-@@ -1,21 +_,24 @@
+@@ -1,6 +_,7 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using System;
@@ -8,10 +8,7 @@
  using Terraria.Audio;
  using Terraria.DataStructures;
  using Terraria.GameContent;
- using Terraria.GameContent.Achievements;
-+using Terraria.GameContent.ItemDropRules;
- using Terraria.GameContent.UI;
- using Terraria.GameContent.UI.Chat;
+@@ -10,12 +_,13 @@
  using Terraria.GameInput;
  using Terraria.ID;
  using Terraria.Localization;
@@ -423,21 +420,20 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1214,11 +_,27 @@
+@@ -1214,11 +_,26 @@
  
  						Recipe.FindRecipes();
  					}
 +					else if (ItemLoader.CanRightClick(inv[slot])) {
 +						if (ItemLoader.IsModItem(inv[slot].type)) {
-+							DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
-+							dropAttemptInfo.player = player;
-+							dropAttemptInfo.item = inv[slot].type;
-+							dropAttemptInfo.IsExpertMode = Main.expertMode;
-+							dropAttemptInfo.IsMasterMode = Main.masterMode;
-+							dropAttemptInfo.IsInSimulation = false;
-+							dropAttemptInfo.rng = Main.rand;
-+							DropAttemptInfo info = dropAttemptInfo;
-+							Main.ItemDropSolver.TryDropping(info);
++							Main.ItemDropSolver.TryDropping(new() {
++								player = player,
++								item = inv[slot].type,
++								IsExpertMode = Main.expertMode,
++								IsMasterMode = Main.masterMode,
++								IsInSimulation = false,
++								rng = Main.rand,
++							});
 +						}
 +
 +						ItemLoader.RightClick(inv[slot], player);

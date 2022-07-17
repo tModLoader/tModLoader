@@ -369,7 +369,7 @@
 +
 +			// boss bag
 +			const short item = ItemID.WallOfFleshBossBag;
-+			RegisterToItem(item, ItemDropRule.ByCondition(new Conditions.NoExtraAccessory(), ItemID.DemonHeart));
++			RegisterToItem(item, ItemDropRule.ByCondition(new Conditions.NotUsedDemonHeart(), ItemID.DemonHeart));
 +			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.FleshMask, 7));
 +			RegisterToItem(item, ItemDropRule.Common(ItemID.Pwnhammer));
 +			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.SummonerEmblem, ItemID.SorcererEmblem, ItemID.WarriorEmblem, ItemID.RangerEmblem));
