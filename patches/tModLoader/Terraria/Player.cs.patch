@@ -781,7 +781,7 @@
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 602);
  				if (Main.netMode == 1)
-@@ -4015,16 +_,52 @@
+@@ -4015,16 +_,54 @@
  						break;
  					}
  			}
@@ -813,7 +813,9 @@
 +			DropAttemptInfo info = dropAttemptInfo;
 +			Main.ItemDropSolver.TryDropping(info);
 +
-+			TryGettingDevArmor(GetItemSource_OpenItem(type));
++			if (ItemID.Sets.BossBag[type] && (!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
++				this.TryGettingDevArmor(GetItemSource_OpenItem(type));
++			}
 +
 -			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(type);
 +			/*IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(type);

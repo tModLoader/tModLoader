@@ -20,9 +20,9 @@
 +		internal List<IItemDropRule> _globalEntriesItem_GoodieBag = new List<IItemDropRule>();
 +		internal List<IItemDropRule> _globalEntriesItem_HerbBag = new List<IItemDropRule>();
 +		internal List<IItemDropRule> _globalEntriesItem_Crate = new List<IItemDropRule>(); // maybe separate global entries for hardmode?
-+		// not necessary?? or maybe merge in a single
-+		//internal List<IItemDropRule> _globalEntriesItem_Lockbox = new List<IItemDropRule>();
-+		//internal List<IItemDropRule> _globalEntriesItem_ObsidianLockbox = new List<IItemDropRule>();
++																						   // not necessary?? or maybe merge in a single
++																						   //internal List<IItemDropRule> _globalEntriesItem_Lockbox = new List<IItemDropRule>();
++																						   //internal List<IItemDropRule> _globalEntriesItem_ObsidianLockbox = new List<IItemDropRule>();
 +		private Dictionary<int, List<IItemDropRule>> _entriesByItemId = new Dictionary<int, List<IItemDropRule>>();
 +		private Dictionary<int, List<int>> _itemIdsByType = new Dictionary<int, List<int>>();
  		private int _masterModeDropRng = 4;
@@ -512,7 +512,7 @@
  		}
  
  		private void RegisterWeirdRules() {
-@@ -1259,6 +_,484 @@
+@@ -1259,6 +_,486 @@
  			rule.OnSuccess(new CommonDrop(4343, chanceDenominator, 2, 5));
  			rule.OnSuccess(new CommonDrop(4344, chanceDenominator, 2, 5));
  			RegisterToMultipleNPCs(leadingConditionRule, npcNetIds21);
@@ -830,6 +830,7 @@
 +		}
 +
 +		// testing maybe??
++		// works
 +		private void RegisterGoodieBag() {
 +			IItemDropRule[] paintings = new IItemDropRule[] {
 +				ItemDropRule.NotScalingWithLuck(ItemID.JackingSkeletron),
@@ -939,6 +940,7 @@
 +		}
 +
 +		// code by Snek
++		// works
 +		private void RegisterPresent() {
 +			IItemDropRule snowGlobeRule = ItemDropRule.ByCondition(new Conditions.IsHardmode(), ItemID.SnowGlobe, chanceDenominator: 15);
 +
