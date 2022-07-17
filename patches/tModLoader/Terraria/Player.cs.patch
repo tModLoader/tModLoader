@@ -996,7 +996,7 @@
  			int num = Main.rand.Next(2, 5);
  			if (Main.rand.Next(3) == 0)
  				num++;
-@@ -6148,6 +_,8 @@
+@@ -6148,16 +_,28 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
@@ -1005,7 +1005,52 @@
  		}
  
  		public void OpenCanofWorms(int sourceItemType) {
-@@ -6183,7 +_,22 @@
++			DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
++			dropAttemptInfo.player = this;
++			dropAttemptInfo.item = sourceItemType;
++			dropAttemptInfo.IsExpertMode = Main.expertMode;
++			dropAttemptInfo.IsMasterMode = Main.masterMode;
++			dropAttemptInfo.IsInSimulation = false;
++			dropAttemptInfo.rng = Main.rand;
++			DropAttemptInfo info = dropAttemptInfo;
++			Main.ItemDropSolver.TryDropping(info);
++
+-			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
++			/*IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
+ 			QuickSpawnItem(itemSource_OpenItem, 2002, Main.rand.Next(5, 9));
+ 			if (Main.rand.Next(10) < 3)
+ 				QuickSpawnItem(itemSource_OpenItem, 3191, Main.rand.Next(1, 3));
+ 
+ 			if (Main.rand.Next(20) == 0)
+-				QuickSpawnItem(itemSource_OpenItem, 2895);
++				QuickSpawnItem(itemSource_OpenItem, 2895);*/
+ 		}
+ 
+ 		public void OpenCapricornTail(int sourceItemType) {
+@@ -6169,7 +_,16 @@
+ 		}
+ 
+ 		public void OpenOyster(int sourceItemType) {
++			DropAttemptInfo dropAttemptInfo = default(DropAttemptInfo);
++			dropAttemptInfo.player = this;
++			dropAttemptInfo.item = sourceItemType;
++			dropAttemptInfo.IsExpertMode = Main.expertMode;
++			dropAttemptInfo.IsMasterMode = Main.masterMode;
++			dropAttemptInfo.IsInSimulation = false;
++			dropAttemptInfo.rng = Main.rand;
++			DropAttemptInfo info = dropAttemptInfo;
++			Main.ItemDropSolver.TryDropping(info);
+-			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
++			/*IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
+ 			if (Main.rand.Next(5) == 0) {
+ 				if (Main.rand.Next(15) == 0)
+ 					QuickSpawnItem(itemSource_OpenItem, 4414);
+@@ -6179,11 +_,26 @@
+ 					QuickSpawnItem(itemSource_OpenItem, 4412);
+ 			}
+ 
+-			QuickSpawnItem(itemSource_OpenItem, 4411);
++			QuickSpawnItem(itemSource_OpenItem, 4411);*/
  		}
  
  		public void OpenGoodieBag(int itemType) {

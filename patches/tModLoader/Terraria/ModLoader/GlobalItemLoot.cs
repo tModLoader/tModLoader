@@ -32,6 +32,10 @@ namespace Terraria.ModLoader
 
 		public List<IItemDropRule> GetCrate() => new List<IItemDropRule>(itemDropDatabase._globalEntriesItem_Crate);
 
+		public List<IItemDropRule> GetOyster() => new List<IItemDropRule>(itemDropDatabase._globalEntriesItem_Oyster);
+
+		public List<IItemDropRule> GetCanOfWorms() => new List<IItemDropRule>(itemDropDatabase._globalEntriesItem_CanOfWorms);
+
 		/// <summary>
 		/// Not recomended for use. Use AddX instead, unless you want every bag-type items to have this drop rule.
 		/// </summary>
@@ -48,6 +52,10 @@ namespace Terraria.ModLoader
 		public IItemDropRule AddHerbBag(IItemDropRule entry) => itemDropDatabase.RegisterToGlobalItem_HerbBag(entry);
 
 		public IItemDropRule AddCrate(IItemDropRule entry) => itemDropDatabase.RegisterToGlobalItem_Crate(entry);
+
+		public IItemDropRule AddOyster(IItemDropRule entry) => itemDropDatabase.RegisterToGlobalItem_Oyster(entry);
+
+		public IItemDropRule AddCanOfWorms(IItemDropRule entry) => itemDropDatabase.RegisterToGlobalItem_CanOfWorms(entry);
 
 		/// <summary>
 		/// Not recomended for use. Use RemoveX instead, unless you want every bag-type items to remove this drop rule.
@@ -81,6 +89,16 @@ namespace Terraria.ModLoader
 
 		public IItemDropRule RemoveCrate(IItemDropRule entry) {
 			itemDropDatabase._globalEntriesItem_Crate.Remove(entry);
+			return entry;
+		}
+
+		public IItemDropRule RemoveCanOfWorms(IItemDropRule entry) {
+			itemDropDatabase._globalEntriesItem_CanOfWorms.Remove(entry);
+			return entry;
+		}
+
+		public IItemDropRule RemoveOyster(IItemDropRule entry) {
+			itemDropDatabase._globalEntriesItem_Oyster.Remove(entry);
 			return entry;
 		}
 
@@ -151,6 +169,30 @@ namespace Terraria.ModLoader
 
 		public void RemoveWhereCrate(Predicate<IItemDropRule> predicate) {
 			var list = itemDropDatabase._globalEntriesItem_Crate;
+
+			for (int i = 0; i < list.Count; i++) {
+				var entry = list[i];
+
+				if (predicate(entry)) {
+					list.RemoveAt(i--);
+				}
+			}
+		}
+
+		public void RemoveWhereOyster(Predicate<IItemDropRule> predicate) {
+			var list = itemDropDatabase._globalEntriesItem_Oyster;
+
+			for (int i = 0; i < list.Count; i++) {
+				var entry = list[i];
+
+				if (predicate(entry)) {
+					list.RemoveAt(i--);
+				}
+			}
+		}
+
+		public void RemoveWhereCanOfWorms(Predicate<IItemDropRule> predicate) {
+			var list = itemDropDatabase._globalEntriesItem_CanOfWorms;
 
 			for (int i = 0; i < list.Count; i++) {
 				var entry = list[i];
