@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonCode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
-@@ -1,12 +_,25 @@
+@@ -1,12 +_,29 @@
  using Microsoft.Xna.Framework;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
@@ -9,21 +9,24 @@
  {
  	public static class CommonCode
  	{
--		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
--			if (itemId > 0 && itemId < 5125) {
-+		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false, Player player = null, int openedItem = 0) {
-+			if (npc == null && player != null && openedItem > 0) {
-+				int x = (int)player.position.X + player.width / 2;
-+				int y = (int)player.position.Y + player.height / 2;
++		public static void DropItem(DropAttemptInfo info, int item, int stack, bool scattered = false) {
++			if (info.npc == null) {
++				int x = (int)info.player.position.X + info.player.width / 2;
++				int y = (int)info.player.position.Y + info.player.height / 2;
 +				if (scattered) {
-+					x = (int)player.position.X + Main.rand.Next(player.width + 1);
-+					y = (int)player.position.Y + Main.rand.Next(player.height + 1);
++					x = (int)info.player.position.X + Main.rand.Next(info.player.width + 1);
++					y = (int)info.player.position.Y + Main.rand.Next(info.player.height + 1);
 +				}
 +
-+				Item.NewItem(player.GetItemSource_OpenItem(openedItem), x, y, 0, 0, itemId, stack, noBroadcast: false, -1);
-+				return;
++				Item.NewItem(info.player.GetItemSource_OpenItem(info.item), x, y, 0, 0, item, stack, noBroadcast: false, -1);
 +			}
++			else {
++				DropItemFromNPC(info.npc, item, 1, false);
++			}
++		}
 +
+ 		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
+-			if (itemId > 0 && itemId < 5125) {
 +			if (itemId > 0 && itemId < ItemLoader.ItemCount) {
  				int x = (int)npc.position.X + npc.width / 2;
  				int y = (int)npc.position.Y + npc.height / 2;

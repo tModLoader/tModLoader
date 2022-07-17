@@ -657,9 +657,6 @@ namespace Terraria.ModLoader
 		public virtual void ModifyItemLoot(Item item, ItemLoot itemLoot) {
 		}
 
-		public virtual void ModifyGlobalLoot(GlobalItemLoot globalLoot) {
-		}
-
 		/// <summary>
 		/// Allows you to prevent items from stacking.
 		/// <br/>This is only called when two items of the same type attempt to stack.

@@ -1304,17 +1304,6 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		private static HookList HookModifyGlobalLoot = AddHook<Action<GlobalItemLoot>>(g => g.ModifyGlobalLoot);
-		
-		/// <summary>
-		/// Calls all GlobalItem.ModifyGlobalLoot hooks.
-		/// </summary>
-		public static void ModifyGlobalLoot(GlobalItemLoot globalLoot) {
-			foreach (var g in HookModifyGlobalLoot.Enumerate(globalItems)) {
-				g.ModifyGlobalLoot(globalLoot);
-			}
-		}
-
 		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 
 		// For organizational consistency, item1 *should* be the item that is attempting to increase its stack (Unclear in Player.ItemSpace yet)

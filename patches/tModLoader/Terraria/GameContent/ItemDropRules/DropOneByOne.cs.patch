@@ -40,7 +40,7 @@
  				int num2 = parameters.MaximumStackPerChunkBase + activePlayersCount * parameters.BonusMaxDropsPerChunkPerPlayer;
  				for (int i = 0; i < num; i++) {
 -					CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(minValue, num2 + 1), scattered: true);
-+					CommonCode.DropItemFromNPC(info.npc, itemId, info.rng.Next(minValue, num2 + 1), scattered: true, info.player, info.item);
++					CommonCode.DropItem(info, itemId, info.rng.Next(minValue, num2 + 1), scattered: true);
  				}
  
  				result = default(ItemDropAttemptResult);

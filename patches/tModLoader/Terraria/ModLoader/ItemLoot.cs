@@ -5,7 +5,7 @@ using Terraria.GameContent.ItemDropRules;
 namespace Terraria.ModLoader
 {
 	/// <summary> This readonly struct is a simple shortcut to <see cref="ItemDropDatabase"/>'s methods. </summary>
-	public readonly struct ItemLoot
+	public readonly struct ItemLoot : ILoot
 	{
 		private readonly int itemType;
 		private readonly ItemDropDatabase itemDropDatabase;
@@ -15,14 +15,14 @@ namespace Terraria.ModLoader
 			this.itemDropDatabase = itemDropDatabase;
 		}
 
-		public List<IItemDropRule> Get(bool includeGlobalDrops = true) => itemDropDatabase.GetRulesForItemID(itemType, includeGlobalDrops);
+		public List<IItemDropRule> Get(bool unusedParam = true) => itemDropDatabase.GetRulesForItemID(itemType);
 
 		public IItemDropRule Add(IItemDropRule entry) => itemDropDatabase.RegisterToItem(itemType, entry);
 
 		public IItemDropRule Remove(IItemDropRule entry) => itemDropDatabase.RemoveFromItem(itemType, entry);
 
-		public void RemoveWhere(Predicate<IItemDropRule> predicate, bool includeGlobalDrops = true) {
-			foreach (var entry in Get(includeGlobalDrops)) {
+		public void RemoveWhere(Predicate<IItemDropRule> predicate, bool unusedParam = true) {
+			foreach (var entry in Get()) {
 				if (predicate(entry)) {
 					Remove(entry);
 				}

@@ -98,8 +98,8 @@ namespace ExampleMod.Content.Items.Consumables
 
 			// Drop (high-end) bait
 			IItemDropRule[] highendBait = new IItemDropRule[] {
-				ItemDropRule.Common(ItemID.HealingPotion, 1, 2, 7),
-				ItemDropRule.Common(ItemID.ManaPotion, 1, 2, 7),
+				ItemDropRule.Common(ItemID.JourneymanBait, 1, 2, 7),
+				ItemDropRule.Common(ItemID.MasterBait, 1, 2, 7),
 			};
 			itemLoot.Add(new OneFromRulesRule(2, highendBait));
 		}

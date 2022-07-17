@@ -5,6 +5,7 @@ using Terraria.GameContent.Creative;
 using Terraria.ModLoader.IO;
 using System.IO;
 using System.Collections.Generic;
+using Terraria.GameContent.ItemDropRules;
 
 namespace ExampleMod.Content.Items.Consumables
 {
@@ -51,15 +52,11 @@ namespace ExampleMod.Content.Items.Consumables
 			return craftedPlayerName == otherItem.craftedPlayerName;
 		}
 
-		public override void RightClick(Player player) {
-			var entitySource = player.GetSource_OpenItem(Type);
-
-			if (Main.hardMode) {
-				player.QuickSpawnItem(entitySource, ItemID.ChocolateChipCookie);
-			}
-			else {
-				player.QuickSpawnItem(entitySource, ItemID.Coconut);
-			}
+		public override void ModifyItemLoot(ItemLoot itemLoot) {
+			LeadingConditionRule hardmodeCondition = new(new Conditions.IsHardmode());
+			hardmodeCondition.OnSuccess(ItemDropRule.Common(ItemID.ChocolateChipCookie));
+			hardmodeCondition.OnFailedConditions(ItemDropRule.Common(ItemID.Coconut));
+			itemLoot.Add(hardmodeCondition);
 		}
 
 		// The following 4 hooks are needed if your item data should be persistent between saves, and work in multiplayer
