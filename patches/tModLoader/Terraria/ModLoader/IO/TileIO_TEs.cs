@@ -50,7 +50,7 @@ namespace Terraria.ModLoader.IO
 
 				//If the TE is modded
 				if (modName != "Terraria") {
-					//Find its type, defaulting to pending.
+					//Try finding its type, defaulting to pending.
 					if (!ModContent.TryFind(modName, name, out baseModTileEntity)) {
 						foundTE = false;
 						baseModTileEntity = ModContent.GetInstance<UnloadedTileEntity>();

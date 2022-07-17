@@ -2213,7 +2213,7 @@
  		public static bool AllowsSandfall(Tile tileTopCache) {
  			bool result = true;
 -			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || tileTopCache.type == 88 || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
-+			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || tileTopCache.type == 323 || TileID.Sets.BasicDresser[tileTopCache.type] || tileTopCache.type == 80 || tileTopCache.type == 77 || tileTopCache.type == 26 || tileTopCache.type == 475 || tileTopCache.type == 470 || tileTopCache.type == 597))
++			if (tileTopCache.active() && (TileID.Sets.BasicChest[tileTopCache.type] || TileID.Sets.BasicChestFake[tileTopCache.type] || TileID.Sets.BasicDresser[tileTopCache.type] || TileID.Sets.PreventsSandfall[tileTopCache.type]))
  				result = false;
  
  			return result;
