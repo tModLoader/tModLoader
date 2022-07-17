@@ -15,6 +15,9 @@ namespace Terraria.ModLoader
 		/// Called right before both modded and vanilla pylons draw their icons on the map. Returning false will prevent the passed in icon from being drawn on the map. Returns
 		/// true by default.
 		/// </summary>
+		/// <remarks>
+		/// Note that if you change the value of the isNearPylon parameter, the change will cascade and all pylons following this will be affected by the change.
+		/// </remarks>
 		/// <param name="context"> The current map context on which you can draw. </param>
 		/// <param name="mouseOverText"> The text that will overlay on the mouse when the icon is being hovered over. </param>
 		/// <param name="pylonInfo"> The pylon that is currently needing its icon to be drawn. </param>

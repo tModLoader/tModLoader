@@ -197,9 +197,8 @@ namespace Terraria.ModLoader
 		public virtual void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) { }
 
 		public override bool RightClick(int i, int j) {
-			//Just like vanilla pylons, upon right click, open the map and play a sound.
-			Main.mapFullscreen = true;
-			SoundEngine.PlaySound(SoundID.MenuOpen);
+			//Vanilla has a very handy function we can use that automatically opens the map, closes the inventory, plays a sound, etc:
+			Main.LocalPlayer.TryOpeningFullscreenMap();
 			return true;
 		}
 

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Map/TeleportPylonsMapLayer.cs
 +++ src/tModLoader/Terraria/Map/TeleportPylonsMapLayer.cs
-@@ -6,14 +_,17 @@
+@@ -6,24 +_,33 @@
  using Terraria.GameContent;
  using Terraria.GameContent.Tile_Entities;
  using Terraria.GameInput;
@@ -16,13 +16,21 @@
  		public void Draw(ref MapOverlayDrawContext context, ref string text) {
 -			List<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
 +			IReadOnlyList<TeleportPylonInfo> pylons = Main.PylonSystem.Pylons;
- 			float num = 1f;
- 			float scaleIfSelected = num * 2f;
+-			float num = 1f;
+-			float scaleIfSelected = num * 2f;
  			Texture2D value = TextureAssets.Extra[182].Value;
-@@ -24,6 +_,12 @@
+ 			bool num2 = TeleportPylonsSystem.IsPlayerNearAPylon(Main.LocalPlayer);
+-			Color color = Color.White;
+-			if (!num2)
+-				color = Color.Gray * 0.5f;
  
  			for (int i = 0; i < pylons.Count; i++) {
  				TeleportPylonInfo info = pylons[i];
++				float num = 1f;
++				float scaleIfSelected = num * 2f;
++				Color color = Color.White;
++				if (!num2)
++					color = Color.Gray * 0.5f;
 +				if (!PylonLoader.PreDrawMapIcon(ref context, ref text, ref info, ref num2, ref color, ref num, ref scaleIfSelected))
 +					continue;
 +				if (info.ModPylon is ModPylon pylon) {
