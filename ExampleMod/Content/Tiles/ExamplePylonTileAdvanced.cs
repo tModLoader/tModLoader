@@ -141,7 +141,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
-			if (TileEntity.ByPosition[pylonInfo.PositionInTiles] is not AdvancedPylonTileEntity entity) {
+			if (!TileEntity.ByPosition.TryGetValue(pylonInfo.PositionInTiles, out var te) || te is not AdvancedPylonTileEntity entity) {
 				//If for some reason we don't find the tile entity, we won't draw anything.
 				return;
 			}
