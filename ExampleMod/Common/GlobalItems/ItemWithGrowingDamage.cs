@@ -16,8 +16,8 @@ namespace ExampleMod.Common.GlobalItems
 	internal class ItemWithGrowingDamage : GlobalItem
 	{
 		public int experience;
-		public int level;
 		public static int experiencePerLevel = 100;
+		public int level => experience / experiencePerLevel;
 
 		public override bool InstancePerEntity => true;
 
@@ -27,9 +27,8 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override void LoadData(Item item, TagCompound tag) {
-			experience = tag.Get<int>("experience");//Load experience tag
-			item.value += experience * 5;
-			UpdateLevel();
+			int xp = tag.Get<int>("experience");//Load experience tag
+			GainExperience(item, xp);
 		}
 
 		public override void SaveData(Item item, TagCompound tag) {
@@ -41,15 +40,19 @@ namespace ExampleMod.Common.GlobalItems
 		}
 
 		public override void NetReceive(Item item, BinaryReader reader) {
-			experience = reader.ReadInt32();
+			int xp = reader.ReadInt32();
+			GainExperience(item, xp);
 		}
 
 		public override void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit) {
 			//The sword gains experience when damaging an npc.
 			int xp = damage;
+			GainExperience(item, xp);
+		}
+
+		public void GainExperience(Item item, int xp) {
 			experience += xp;
 			item.value += xp * 5;
-			UpdateLevel();
 		}
 
 		public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage) {
@@ -57,13 +60,8 @@ namespace ExampleMod.Common.GlobalItems
 			damage *= 1f + (float)level / 100f;
 		}
 
-		public void UpdateLevel() {
-			level = experience / experiencePerLevel;
-		}
-
 		public override void ModifyTooltips(Item item, List<TooltipLine> tooltips) {
 			if (experience > 0) {
-				UpdateLevel();
 				tooltips.Add(new TooltipLine(Mod, "level", $"Level: {level}") { OverrideColor = Color.LightGreen });
 				string levelString = $" ({(level + 1) * experiencePerLevel - experience} to next level)";
 				tooltips.Add(new TooltipLine(Mod, "experience", $"Experience: {experience}{levelString}") { OverrideColor = Color.White });
@@ -75,10 +73,8 @@ namespace ExampleMod.Common.GlobalItems
 				foreach (Item ingredient in rContext.ConsumedItems) {
 					if (ingredient.TryGetGlobalItem(out ItemWithGrowingDamage ingredientGlobal)) {
 						//Transfer all experience from consumed items to the crafted item.
-						experience += ingredientGlobal.experience;
-						UpdateLevel();
+						GainExperience(item, ingredientGlobal.experience);
 					}
-					item.value += experience * 5;
 				}
 			}
 		}
