@@ -1,5 +1,7 @@
 var NAVTREEINDEX127 =
 {
+"namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a0557fa923dcee4d0f86b1409f5c2167f":[1,0,2,14,179,5],
+"namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a48423a9049b3065103ef1026a5fa08e5":[1,0,2,14,179,2],
 "namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a502dd302b6d8d3c24b20ee49e2d51bd1":[1,0,2,14,179,13],
 "namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a5835bab1ade0060909e31a06af2e2cde":[1,0,2,14,179,6],
 "namespace_terraria_1_1_mod_loader.html#ab5632221fbbd1ad7f37983e2b9400282a5ba4819d417294c8f4de41f1401efa81":[1,0,2,14,179,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX127 =
 "struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#a207fed1023e3048f47ee52971a4256ad":[2,0,2,4,4,3],
 "struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#a997d0dac948eeac8a32158cb17d88bc6":[2,0,2,4,4,9],
 "struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#ab01d9564117ff3f671ad2a98ec46739b":[2,0,2,4,4,4],
-"struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#ab44bbe6bd5c7dfd902e2ebf01c8ea1ec":[2,0,2,4,4,6],
-"struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#ac4b5b6f81fe463f9bda5b1f05d605447":[2,0,2,4,4,0],
-"struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#ad6a5fa1ebd1986be15342a176c0f4154":[2,0,2,4,4,2]
+"struct_terraria_1_1_data_structures_1_1_boss_bar_draw_params.html#ab44bbe6bd5c7dfd902e2ebf01c8ea1ec":[2,0,2,4,4,6]
 };

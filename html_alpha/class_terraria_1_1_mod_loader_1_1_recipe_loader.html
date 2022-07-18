@@ -101,8 +101,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a367b1382a4eff56f74ab18f87c697e16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows to edit the amount of item the player uses in a recipe.  <a href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a367b1382a4eff56f74ab18f87c697e16">More...</a><br /></td></tr>
 <tr class="separator:a367b1382a4eff56f74ab18f87c697e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09f4753217082592c954b56f53d89204"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a09f4753217082592c954b56f53d89204">OnCraft</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a> recipe)</td></tr>
-<tr class="memdesc:a09f4753217082592c954b56f53d89204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make anything happen when a player uses this recipe.  <a href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a09f4753217082592c954b56f53d89204">More...</a><br /></td></tr>
+<tr class="memdesc:a09f4753217082592c954b56f53d89204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper version of OnCraft, used in combination with Recipe.Create and the internal ConsumedItems list  <a href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a09f4753217082592c954b56f53d89204">More...</a><br /></td></tr>
 <tr class="separator:a09f4753217082592c954b56f53d89204"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25649799319737936448fb640f795efe"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a25649799319737936448fb640f795efe">OnCraft</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_recipe.html">Recipe</a> recipe, <a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_terraria_1_1_item.html">Item</a> &gt; consumedItems)</td></tr>
+<tr class="memdesc:a25649799319737936448fb640f795efe"><td class="mdescLeft">&#160;</td><td class="mdescRight">recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a <a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_creation_context.html">RecipeCreationContext</a>  <a href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a25649799319737936448fb640f795efe">More...</a><br /></td></tr>
+<tr class="separator:a25649799319737936448fb640f795efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06642b406e343349cf4e3e6cf2b434d4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a06642b406e343349cf4e3e6cf2b434d4">RecipeAvailable</a> (<a class="el" href="class_terraria_1_1_recipe.html">Recipe</a> recipe)</td></tr>
 <tr class="memdesc:a06642b406e343349cf4e3e6cf2b434d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not the conditions are met for this recipe to be available for the player to use.  <a href="class_terraria_1_1_mod_loader_1_1_recipe_loader.html#a06642b406e343349cf4e3e6cf2b434d4">More...</a><br /></td></tr>
 <tr class="separator:a06642b406e343349cf4e3e6cf2b434d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -163,7 +166,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a09f4753217082592c954b56f53d89204"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09f4753217082592c954b56f53d89204">&#9670;&nbsp;</a></span>OnCraft()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a09f4753217082592c954b56f53d89204">&#9670;&nbsp;</a></span>OnCraft() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -196,11 +199,56 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Allows you to make anything happen when a player uses this recipe. </p>
+<p>Helper version of OnCraft, used in combination with Recipe.Create and the internal ConsumedItems list </p>
+
+</div>
+</div>
+<a id="a25649799319737936448fb640f795efe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25649799319737936448fb640f795efe">&#9670;&nbsp;</a></span>OnCraft() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.RecipeLoader.OnCraft </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_recipe.html">Recipe</a>&#160;</td>
+          <td class="paramname"><em>recipe</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_list.html">List</a>&lt; <a class="el" href="class_terraria_1_1_item.html">Item</a> &gt;&#160;</td>
+          <td class="paramname"><em>consumedItems</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a <a class="el" href="class_terraria_1_1_mod_loader_1_1_recipe_creation_context.html">RecipeCreationContext</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">item</td><td>The item crafted.</td></tr>
     <tr><td class="paramname">recipe</td><td>The recipe used to craft the item.</td></tr>
+    <tr><td class="paramname">consumedItems</td><td>Materials used to craft the item.</td></tr>
   </table>
   </dd>
 </dl>

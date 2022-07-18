@@ -1,5 +1,7 @@
 var NAVTREEINDEX132 =
 {
+"struct_terraria_1_1_tile_object.html#a446da925743337e24880cd7a797d318c":[2,0,2,75,0],
+"struct_terraria_1_1_tile_object.html#a5fe3bf9f30fccd98c8f68617dd8a6250":[2,0,2,75,7],
 "struct_terraria_1_1_tile_object.html#a732e3ee5ed80db35eb1fc89f1a470a7b":[2,0,2,75,10],
 "struct_terraria_1_1_tile_object.html#a77265083a90b07a944e00fac2b532a79":[2,0,2,75,9],
 "struct_terraria_1_1_tile_object.html#abf741ca5897eba98390a45479c12a517":[2,0,2,75,8],

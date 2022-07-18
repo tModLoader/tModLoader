@@ -1,5 +1,7 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html#a0d0c5b08128b2f5b8399b8674def248f":[2,0,2,5,65,4,6],
+"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html#a20dac1c8aad8550c149fa69996357749":[2,0,2,5,65,4,3],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html#a5b686601490e3b9ef9a039427c466cd4":[2,0,2,5,65,4,1],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html#a5dac376a340d21f6bf67fb286f8fed3c":[2,0,2,5,65,4,2],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html#adc4462bbadf3089b0d0db7de5c754959":[2,0,2,5,65,4,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html":[2,0,2,13,2,3,0],
 "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#a2e60a8de91219bf1e0a5bb5f09ed2914":[2,0,2,13,2,3,0,3],
 "struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#a329620b30628fd8b9ac6782844d1661c":[2,0,2,13,2,3,0,0],
-"struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#a8ef87230391829ee5f9ae831d80f4b12":[2,0,2,13,2,3,0,1],
-"struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#abee0a889b77e8640d806019607a9c0c1":[2,0,2,13,2,3,0,2],
-"struct_terraria_1_1_mod_loader_1_1_global_loot.html":[2,0,2,13,45]
+"struct_terraria_1_1_mod_loader_1_1_core_1_1_hook_list_1_1_instance_enumerator.html#a8ef87230391829ee5f9ae831d80f4b12":[2,0,2,13,2,3,0,1]
 };

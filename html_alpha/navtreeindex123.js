@@ -1,5 +1,7 @@
 var NAVTREEINDEX123 =
 {
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_display_index.html#af6c0cb26524b94b827e07203812f1d72":[2,0,2,5,2,20,0],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_filter.html":[2,0,2,5,2,21],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_filter.html#af030498c3c0c82e56e489f39d348e47f":[2,0,2,5,2,21,0],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_info_element.html":[2,0,2,5,2,22],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_info_element.html#af49ac912143ac240caac6a8684b62ed2":[2,0,2,5,2,22,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX123 =
 "namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913a6adf97f83acf6453d4a6a4b1070f3754":[1,0,2,88,0],
 "namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913a8dc5344bc0746e1cc5abf896ca03bbdf":[1,0,2,88,2],
 "namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913a9594eec95be70e7b1710f730fdda33d9":[1,0,2,88,1],
-"namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913ab9ba865fec061c9706d2fd7ce49c0cc7":[1,0,2,88,4],
-"namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913ae93f994f01c537c4e2f7d8528c3eb5e9":[1,0,2,88,6],
-"namespace_terraria.html#a614884dfa7ad171cd327ec5eddd2ef17":[1,0,2,90]
+"namespace_terraria.html#a58f92b1129c9c0e9137c6f7869e89913ab9ba865fec061c9706d2fd7ce49c0cc7":[1,0,2,88,4]
 };

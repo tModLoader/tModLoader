@@ -45,7 +45,7 @@ var class_terraria_1_1_recipe =
     [ "HasTile", "class_terraria_1_1_recipe.html#a1632046c69022e066c74424609552cf8", null ],
     [ "HasTile", "class_terraria_1_1_recipe.html#a57c7b9cb1d82e7f9c923cb0c14fafdaf", null ],
     [ "HasTile< T >", "class_terraria_1_1_recipe.html#aaff848428cb3043605e7192f5c2942e2", null ],
-    [ "OnCraftCallback", "class_terraria_1_1_recipe.html#a527c4b796145888c59981fff0cc82cb4", null ],
+    [ "OnCraftCallback", "class_terraria_1_1_recipe.html#a2b07512ca960b431f244d4e7b4e84dfd", null ],
     [ "ProcessGroupsForText", "class_terraria_1_1_recipe.html#adbb9fdfb5d588ec7d9a60ab4124dacaa", null ],
     [ "Register", "class_terraria_1_1_recipe.html#a763ef9b7f01a3a9ae10352eed7a8ad63", null ],
     [ "RemoveCondition", "class_terraria_1_1_recipe.html#abfefb19ea6645cbb8b574837d78e26f4", null ],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX125 =
 {
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa567cd56340b4bf68bf05cdc02a5ffd83":[1,0,2,5,8,62],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa5770542a7dd2dfebc47ba56fe2605858":[1,0,2,5,8,285],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa57def18d4fc45a6b3f50a17b9f5236ae":[1,0,2,5,8,63],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa595595b7d39cedea57537a17fca41f52":[1,0,2,5,8,245],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aa59da4ae967a0c34897a8adae89dec0a6":[1,0,2,5,8,319],
@@ -247,7 +249,5 @@ var NAVTREEINDEX125 =
 "namespace_terraria_1_1_enums.html#a8798fd0ec71d0de065d3a3646cd238bfa4ecc0d90eec1cea3e9db96583a1bb9c2":[1,0,2,5,12,0],
 "namespace_terraria_1_1_enums.html#a8798fd0ec71d0de065d3a3646cd238bfa8eaa0ee4418644852b8765d35fa5acd2":[1,0,2,5,12,3],
 "namespace_terraria_1_1_enums.html#a8798fd0ec71d0de065d3a3646cd238bfaff438292fb40f93b680a0f9afee5db4e":[1,0,2,5,12,2],
-"namespace_terraria_1_1_enums.html#a9cc65d6d6d502a57bb2651809e8c1307":[1,0,2,5,10],
-"namespace_terraria_1_1_enums.html#a9cc65d6d6d502a57bb2651809e8c1307a2e24b6a6dcc7ea9356fb274402296a06":[1,0,2,5,10,2],
-"namespace_terraria_1_1_enums.html#a9cc65d6d6d502a57bb2651809e8c1307a658a15d633ea9338b06e40a410629dd8":[1,0,2,5,10,1]
+"namespace_terraria_1_1_enums.html#a9cc65d6d6d502a57bb2651809e8c1307":[1,0,2,5,10]
 };

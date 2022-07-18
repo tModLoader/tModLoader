@@ -1,5 +1,7 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#afe37f77c5cf555890332e4efbf32a923":[2,0,2,4,67,80],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#afe559a1a821af8a63ab42373f7669d68":[2,0,2,4,67,3],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#aff2c9e5091f31e82618595dbdfb679d7":[2,0,2,4,67,55],
 "struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html":[2,0,2,4,68],
 "struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html#a157eb7ff47217c419f81fddff306df38":[2,0,2,4,68,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tile_variationkey.html#a7ff1909cbf6c0b3bfb9977c7c2bdbdf0":[2,0,2,5,65,2,7],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tile_variationkey.html#a8f8bd8385e8a12d3a6188437f02739ae":[2,0,2,5,65,2,5],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tile_variationkey.html#ae0089251ae94a8cf979eb3c024081773":[2,0,2,5,65,2,6],
-"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html":[2,0,2,5,65,4],
-"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html#a0d0c5b08128b2f5b8399b8674def248f":[2,0,2,5,65,4,6],
-"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html#a20dac1c8aad8550c149fa69996357749":[2,0,2,5,65,4,3]
+"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tree_foliage_variant_key.html":[2,0,2,5,65,4]
 };
