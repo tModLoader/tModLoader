@@ -9,6 +9,7 @@ using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.IO;
 using Terraria.Utilities;
+using System.IO;
 
 namespace ExampleMod.Common.GlobalItems
 {
@@ -33,6 +34,14 @@ namespace ExampleMod.Common.GlobalItems
 
 		public override void SaveData(Item item, TagCompound tag) {
 			tag["experience"] = experience;//Save experience tag
+		}
+
+		public override void NetSend(Item item, BinaryWriter writer) {
+			writer.Write(experience);
+		}
+
+		public override void NetReceive(Item item, BinaryReader reader) {
+			experience = reader.ReadInt32();
 		}
 
 		public override void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit) {
