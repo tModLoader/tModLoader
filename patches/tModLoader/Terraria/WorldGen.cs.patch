@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/WorldGen.cs
 +++ src/tModLoader/Terraria/WorldGen.cs
-@@ -24,6 +_,8 @@
+@@ -24,10 +_,12 @@
  using Terraria.ObjectData;
  using Terraria.Utilities;
  using Terraria.WorldBuilding;
@@ -9,6 +9,11 @@
  
  namespace Terraria
  {
+-	public class WorldGen
++	public partial class WorldGen
+ 	{
+ 		public static class SavedOreTiers
+ 		{
 @@ -695,7 +_,13 @@
  		private static Queue<Action<StructureMap>> _postGenActions = new Queue<Action<StructureMap>>();
  		public static int tileReframeCount;
@@ -361,10 +366,44 @@
  			int copper = 7;
  			int iron = 6;
  			int silver = 9;
-@@ -5731,6 +_,9 @@
+@@ -5731,6 +_,43 @@
  			int logX = -1;
  			int logY = -1;
  			int dungeonLocation = 0;
++
++			GenLocalValues = new WorldGenLocals();
++			void SyncLocals() {
++				if (GenLocalValues is null) {
++					return;
++				}
++
++				GenLocalValues.DungeonSide = dungeonSide;
++				GenLocalValues.JungleHutType = jungleHut;
++				GenLocalValues.LeftBeachShellStartX = shellStartXLeft;
++				GenLocalValues.LeftBeachShellStartY = shellStartYLeft;
++				GenLocalValues.RightBeachShellStartX = shellStartXRight;
++				GenLocalValues.RightBeachShellStartY = shellStartYRight;
++				GenLocalValues.HowFar = howFar;
++				GenLocalValues.PyramidXLocations = PyrX;
++				GenLocalValues.PyramidYLocations = PyrY;
++				GenLocalValues.NumberOfPyramids = numPyr;
++				GenLocalValues.JungleMinX = jungleMinX;
++				GenLocalValues.JungleMaxX = jungleMaxX;
++				GenLocalValues.SnowMinX = snowMinX;
++				GenLocalValues.SnowMaxX = snowMaxX;
++				GenLocalValues.SnowTop = snowTop;
++				GenLocalValues.SnowBottom = snowBottom;
++				GenLocalValues.SkyLakeCount = skyLakes;
++				GenLocalValues.LeftBeachEnd = leftBeachEnd;
++				GenLocalValues.RightBeachStart = rightBeachStart;
++				GenLocalValues.JungleOriginX = jungleOriginX;
++				GenLocalValues.SnowOriginLeft = snowOriginLeft;
++				GenLocalValues.SnowOriginRight = snowOriginRight;
++				GenLocalValues.FallenLogX = logX;
++				GenLocalValues.FallenLogY = logY;
++				GenLocalValues.DungeonLocation = dungeonLocation;
++			}
++			UpdateGenLocals += SyncLocals;
 +
 +			SystemLoader.PreWorldGen();
 +
@@ -470,7 +509,7 @@
  				progress.Set(9f / num30);
  				if (!notTheBees) {
  					double num48 = (double)Main.maxTilesX * 0.02;
-@@ -12248,11 +_,18 @@
+@@ -12248,11 +_,20 @@
  				progress.Message = Lang.gen[87].Value;
  			});
  
@@ -478,6 +517,8 @@
  			_generator.GenerateWorld(customProgressObject);
  			ConsumePostGenActions(structures);
 +			SystemLoader.PostWorldGen();
++			UpdateGenLocals -= SyncLocals;
++			GenLocalValues = null;
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
  			Main.NotifyOfEvent(GameNotificationType.WorldGen);
  			drunkWorldGenText = false;
