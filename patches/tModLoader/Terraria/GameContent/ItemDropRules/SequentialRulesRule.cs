@@ -2,10 +2,11 @@
 
 namespace Terraria.GameContent.ItemDropRules
 {
+	// added by TML
+	// code by Snek
 	/// <summary>
 	/// Runs the provided rules in order, stopping after a rule succeeds.<br/>
 	/// </summary>
-	// code by Snek
 	public class SequentialRulesRule : IItemDropRule, INestedItemDropRule
 	{
 		public IItemDropRule[] rules;

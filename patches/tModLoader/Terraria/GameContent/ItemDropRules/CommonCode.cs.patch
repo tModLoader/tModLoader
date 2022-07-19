@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonCode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
-@@ -1,12 +_,29 @@
+@@ -1,26 +_,50 @@
  using Microsoft.Xna.Framework;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
@@ -9,29 +9,49 @@
  {
  	public static class CommonCode
  	{
+-		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
+-			if (itemId > 0 && itemId < 5125) {
+-				int x = (int)npc.position.X + npc.width / 2;
+-				int y = (int)npc.position.Y + npc.height / 2;
 +		public static void DropItem(DropAttemptInfo info, int item, int stack, bool scattered = false) {
 +			if (info.npc == null) {
 +				int x = (int)info.player.position.X + info.player.width / 2;
 +				int y = (int)info.player.position.Y + info.player.height / 2;
-+				if (scattered) {
+ 				if (scattered) {
+-					x = (int)npc.position.X + Main.rand.Next(npc.width + 1);
 +					x = (int)info.player.position.X + Main.rand.Next(info.player.width + 1);
+-					y = (int)npc.position.Y + Main.rand.Next(npc.height + 1);
 +					y = (int)info.player.position.Y + Main.rand.Next(info.player.height + 1);
-+				}
-+
+ 				}
+ 
+-				int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), x, y, 0, 0, itemId, stack, noBroadcast: false, -1);
 +				Item.NewItem(info.player.GetItemSource_OpenItem(info.item), x, y, 0, 0, item, stack, noBroadcast: false, -1);
-+			}
+-				ModifyItemDropFromNPC(npc, itemIndex);
+ 			}
 +			else {
-+				DropItemFromNPC(info.npc, item, 1, false);
++				if (item > 0 && item < ItemLoader.ItemCount) {
++					int x = (int)info.npc.position.X + info.npc.width / 2;
++					int y = (int)info.npc.position.Y + info.npc.height / 2;
++					if (scattered) {
++						x = (int)info.npc.position.X + Main.rand.Next(info.npc.width + 1);
++						y = (int)info.npc.position.Y + Main.rand.Next(info.npc.height + 1);
++					}
++
++					int itemIndex = Item.NewItem(info.npc.GetItemSource_Loot(), x, y, 0, 0, item, stack, noBroadcast: false, -1);
++					ModifyItemDropFromNPC(info.npc, itemIndex);
++				}
 +			}
 +		}
 +
- 		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
--			if (itemId > 0 && itemId < 5125) {
-+			if (itemId > 0 && itemId < ItemLoader.ItemCount) {
- 				int x = (int)npc.position.X + npc.width / 2;
- 				int y = (int)npc.position.Y + npc.height / 2;
- 				if (scattered) {
-@@ -20,7 +_,7 @@
++		internal static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
++			DropAttemptInfo info = new() {
++				IsExpertMode = Main.expertMode,
++				IsMasterMode = Main.masterMode,
++				IsInSimulation = false,
++				item = itemId,
++				npc = npc
++			};
++			DropItem(info, itemId, stack, scattered);
  		}
  
  		public static void DropItemLocalPerClientAndSetNPCMoneyTo0(NPC npc, int itemId, int stack, bool interactionRequired = true) {

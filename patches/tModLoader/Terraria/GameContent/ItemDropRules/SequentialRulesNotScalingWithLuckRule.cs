@@ -2,11 +2,12 @@
 
 namespace Terraria.GameContent.ItemDropRules
 {
+	// added by TML
+	// code by Snek
 	/// <summary>
 	/// Runs the provided rules in order, stopping after a rule succeeds.<br/>
 	/// Does not use player luck.<br/>
 	/// </summary>
-	// code by Snek
 	public class SequentialRulesNotScalingWithLuckRule : IItemDropRule, INestedItemDropRule
 	{
 		public IItemDropRule[] rules;
