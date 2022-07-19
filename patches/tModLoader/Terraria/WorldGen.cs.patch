@@ -14,7 +14,14 @@
  	{
  		public static class SavedOreTiers
  		{
-@@ -695,7 +_,13 @@
+@@ -690,12 +_,18 @@
+ 		public delegate bool GetTreeFoliageDataMethod(int i, int j, int xoffset, ref int treeFrame, ref int treeStyle, out int floorY, out int topTextureFrameWidth, out int topTextureFrameHeight);
+ 
+ 		public static TownRoomManager TownManager = new TownRoomManager();
+-		private static int lAltarX;
++		public static int lAltarX;
+-		private static int lAltarY;
++		public static int lAltarY;
  		private static Queue<Action<StructureMap>> _postGenActions = new Queue<Action<StructureMap>>();
  		public static int tileReframeCount;
  		public static bool noMapUpdate;
@@ -28,10 +35,220 @@
  		public static int tLeft;
  		public static int tRight;
  		public static int tTop;
-@@ -932,6 +_,7 @@
+@@ -746,8 +_,8 @@
+ 		public static int totalX;
+ 		public static int totalD;
+ 		public static bool IsGeneratingHardMode;
+-		private static Vector2[] heartPos = new Vector2[100];
++		public static Vector2[] heartPos = new Vector2[100];
+-		private static int heartCount;
++		public static int heartCount;
+ 		public static int maxTreeShakes = 500;
+ 		public static int numTreeShakes = 0;
+ 		public static int[] treeShakeX = new int[maxTreeShakes];
+@@ -770,15 +_,15 @@
+ 		public static bool worldCleared;
+ 		public static bool worldBackup;
+ 		public static bool loadBackup = false;
+-		private static int lastMaxTilesX;
++		public static int lastMaxTilesX;
+-		private static int lastMaxTilesY;
++		public static int lastMaxTilesY;
+-		private static bool mergeUp;
++		public static bool mergeUp;
+-		private static bool mergeDown;
++		public static bool mergeDown;
+-		private static bool mergeLeft;
++		public static bool mergeLeft;
+-		private static bool mergeRight;
++		public static bool mergeRight;
+-		private static bool stopDrops;
++		public static bool stopDrops;
+ 		public static bool mudWall;
+-		private static int grassSpread;
++		public static int grassSpread;
+ 		public static bool noLiquidCheck;
+ 		public static bool AllowedToSpreadInfections = true;
+ 		[ThreadStatic]
+@@ -822,75 +_,75 @@
+ 		public static int[] dRoomX = new int[maxDRooms];
+ 		public static int[] dRoomY = new int[maxDRooms];
+ 		public static int[] dRoomSize = new int[maxDRooms];
+-		private static bool[] dRoomTreasure = new bool[maxDRooms];
++		public static bool[] dRoomTreasure = new bool[maxDRooms];
+-		private static int[] dRoomL = new int[maxDRooms];
++		public static int[] dRoomL = new int[maxDRooms];
+-		private static int[] dRoomR = new int[maxDRooms];
++		public static int[] dRoomR = new int[maxDRooms];
+-		private static int[] dRoomT = new int[maxDRooms];
++		public static int[] dRoomT = new int[maxDRooms];
+-		private static int[] dRoomB = new int[maxDRooms];
++		public static int[] dRoomB = new int[maxDRooms];
+-		private static int numDDoors;
++		public static int numDDoors;
+-		private static int[] DDoorX = new int[500];
++		public static int[] DDoorX = new int[500];
+-		private static int[] DDoorY = new int[500];
++		public static int[] DDoorY = new int[500];
+-		private static int[] DDoorPos = new int[500];
++		public static int[] DDoorPos = new int[500];
+-		private static int numDungeonPlatforms;
++		public static int numDungeonPlatforms;
+-		private static int[] dungeonPlatformX = new int[500];
++		public static int[] dungeonPlatformX = new int[500];
+-		private static int[] dungeonPlatformY = new int[500];
++		public static int[] dungeonPlatformY = new int[500];
+-		private static bool generatedShadowKey;
++		public static bool generatedShadowKey;
+-		private static int JungleItemCount;
++		public static int JungleItemCount;
+-		private static int[] JChestX = new int[100];
++		public static int[] JChestX = new int[100];
+-		private static int[] JChestY = new int[100];
++		public static int[] JChestY = new int[100];
+-		private static int numJChests;
++		public static int numJChests;
+ 		public static int dEnteranceX;
+ 		public static bool dSurface;
+-		private static double dxStrength1;
++		public static double dxStrength1;
+-		private static double dyStrength1;
++		public static double dyStrength1;
+-		private static double dxStrength2;
++		public static double dxStrength2;
+-		private static double dyStrength2;
++		public static double dyStrength2;
+-		private static int dMinX;
++		public static int dMinX;
+-		private static int dMaxX;
++		public static int dMaxX;
+-		private static int dMinY;
++		public static int dMinY;
+-		private static int dMaxY;
++		public static int dMaxY;
+-		private static int numIslandHouses;
++		public static int numIslandHouses;
+-		private static int houseCount;
++		public static int houseCount;
+-		private static bool[] skyLake = new bool[30];
++		public static bool[] skyLake = new bool[30];
+-		private static int[] floatingIslandHouseX = new int[30];
++		public static int[] floatingIslandHouseX = new int[30];
+-		private static int[] floatingIslandHouseY = new int[30];
++		public static int[] floatingIslandHouseY = new int[30];
+-		private static int[] floatingIslandStyle = new int[30];
++		public static int[] floatingIslandStyle = new int[30];
+-		private static int numMCaves;
++		public static int numMCaves;
+-		private static int[] mCaveX = new int[30];
++		public static int[] mCaveX = new int[30];
+-		private static int[] mCaveY = new int[30];
++		public static int[] mCaveY = new int[30];
+ 		public static int WorldGenParam_Evil = -1;
+-		private static int maxTunnels = 50;
++		public static int maxTunnels = 50;
+-		private static int numTunnels;
++		public static int numTunnels;
+-		private static int[] tunnelX = new int[maxTunnels];
++		public static int[] tunnelX = new int[maxTunnels];
+-		private static int maxOrePatch = 50;
++		public static int maxOrePatch = 50;
+-		private static int numOrePatch;
++		public static int numOrePatch;
+-		private static int[] orePatchX = new int[maxOrePatch];
++		public static int[] orePatchX = new int[maxOrePatch];
+-		private static int maxOasis = 20;
++		public static int maxOasis = 20;
+-		private static int numOasis = 0;
++		public static int numOasis = 0;
+-		private static Vector2[] oasisPosition = new Vector2[maxOasis];
++		public static Vector2[] oasisPosition = new Vector2[maxOasis];
+-		private static int[] oasisWidth = new int[maxOasis];
++		public static int[] oasisWidth = new int[maxOasis];
+-		private static int oasisHeight = 20;
++		public static int oasisHeight = 20;
+-		private static int maxMushroomBiomes = 50;
++		public static int maxMushroomBiomes = 50;
+-		private static int numMushroomBiomes = 0;
++		public static int numMushroomBiomes = 0;
+-		private static Vector2[] mushroomBiomesPosition = new Vector2[maxMushroomBiomes];
++		public static Vector2[] mushroomBiomesPosition = new Vector2[maxMushroomBiomes];
+-		private static int maxLakes = 50;
++		public static int maxLakes = 50;
+-		private static int numLakes = 0;
++		public static int numLakes = 0;
+-		private static int[] LakeX = new int[maxLakes];
++		public static int[] LakeX = new int[maxLakes];
+-		private static int maxOceanCaveTreasure = 2;
++		public static int maxOceanCaveTreasure = 2;
+-		private static int numOceanCaveTreasure = 0;
++		public static int numOceanCaveTreasure = 0;
+-		private static Point[] oceanCaveTreasure = new Point[maxOceanCaveTreasure];
++		public static Point[] oceanCaveTreasure = new Point[maxOceanCaveTreasure];
+-		private static int cactusWaterWidth = 50;
++		public static int cactusWaterWidth = 50;
+-		private static int cactusWaterHeight = 25;
++		public static int cactusWaterHeight = 25;
+-		private static int cactusWaterLimit = 25;
++		public static int cactusWaterLimit = 25;
+-		private static int JungleX;
++		public static int JungleX;
+-		private static int hellChest;
++		public static int hellChest;
+-		private static int[] hellChestItem = new int[7];
++		public static int[] hellChestItem = new int[7];
+-		private static bool roomTorch;
++		public static bool roomTorch;
+-		private static bool roomDoor;
++		public static bool roomDoor;
+-		private static bool roomChair;
++		public static bool roomChair;
+-		private static bool roomTable;
++		public static bool roomTable;
+-		private static bool roomOccupied;
++		public static bool roomOccupied;
+-		private static bool roomEvil;
++		public static bool roomEvil;
+ 		public static Point16[] statueList;
+ 		public static List<int> StatuesWithTraps = new List<int>(new int[4] {
+ 			4,
+@@ -901,15 +_,15 @@
+ 		public static Rectangle UndergroundDesertLocation = Rectangle.Empty;
+ 		public static Rectangle UndergroundDesertHiveLocation = Rectangle.Empty;
+ 		public static MysticLogFairiesEvent mysticLogsEvent = new MysticLogFairiesEvent();
+-		private static bool currentlyTryingToUseAlternateHousingSpot;
++		public static bool currentlyTryingToUseAlternateHousingSpot;
+-		private static int sharedRoomX;
++		public static int sharedRoomX;
+ 		public static TownNPCRoomCheckFailureReason roomCheckFailureReason = TownNPCRoomCheckFailureReason.None;
+ 		public static bool generatingWorld = false;
+-		private static int[,] trapDiag = new int[4, 2];
++		public static int[,] trapDiag = new int[4, 2];
+-		private static int tileCounterNum;
++		public static int tileCounterNum;
+-		private static int tileCounterMax = 20;
++		public static int tileCounterMax = 20;
+-		private static int[] tileCounterX = new int[tileCounterMax];
++		public static int[] tileCounterX = new int[tileCounterMax];
+-		private static int[] tileCounterY = new int[tileCounterMax];
++		public static int[] tileCounterY = new int[tileCounterMax];
+ 		private static WorldGenerator _generator;
+ 		public static int SmallConsecutivesFound = 0;
+ 		public static int SmallConsecutivesEliminated = 0;
+@@ -925,13 +_,14 @@
+ 		public static int desertHiveRight = 0;
+ 		public const bool USE_FRAMING_SKIP_FOR_UNIMPORTANT_TILES_IN_WORLDGEN = false;
+ 		public static bool notTheBees = false;
+-		private static int catTailDistance = 8;
++		public static int catTailDistance = 8;
+ 		public static TreeTopsInfo TreeTops = new TreeTopsInfo();
+ 		public static BackgroundChangeFlashInfo BackgroundsCache = new BackgroundChangeFlashInfo();
+-		private static bool fossilBreak = false;
++		public static bool fossilBreak = false;
  		public static Queue<Point> ExploitDestroyQueue = new Queue<Point>();
  		public const bool BUBBLES_SOLID_STATE_FOR_HOUSING = true;
- 		private static bool skipFramingDuringGen = false;
+-		private static bool skipFramingDuringGen = false;
++		public static bool skipFramingDuringGen = false;
 +		private static double _timePass = 0.0; // Added by TML; used to account for more precise time rates.
  
  		public static UnifiedRandom genRand {
@@ -329,7 +546,7 @@
  			drunkWorldGen = false;
  			drunkWorldGenText = false;
  			switch (seed) {
-@@ -5665,21 +_,35 @@
+@@ -5665,21 +_,36 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
  			Hooks.ProcessWorldGenConfig(ref configuration);
@@ -363,47 +580,67 @@
 +			rockLayer = 0.0;
 +			rockLayerHigh = 0.0;
 +
++			/*
  			int copper = 7;
  			int iron = 6;
  			int silver = 9;
-@@ -5731,6 +_,43 @@
+@@ -5731,6 +_,62 @@
  			int logX = -1;
  			int logY = -1;
  			int dungeonLocation = 0;
++			*/
 +
-+			GenLocalValues = new WorldGenLocals();
-+			void SyncLocals() {
-+				if (GenLocalValues is null) {
-+					return;
-+				}
++			copper = 7;
++			iron = 6;
++			silver = 9;
++			gold = 8;
++			dungeonSide = 0;
++			jungleHut = (ushort)genRand.Next(5);
++			shellStartXLeft = 0;
++			shellStartYLeft = 0;
++			shellStartXRight = 0;
++			shellStartYRight = 0;
++			howFar = 0;
++			PyrX = null;
++			PyrY = null;
++			numPyr = 0;
++			jungleMinX = -1;
++			jungleMaxX = -1;
++			snowMinX = new int[Main.maxTilesY];
++			snowMaxX = new int[Main.maxTilesY];
++			snowTop = 0;
++			snowBottom = 0;
++			dub2 = 0f;
++			skyLakes = 1;
++			if (Main.maxTilesX > 8000)
++				skyLakes++;
 +
-+				GenLocalValues.DungeonSide = dungeonSide;
-+				GenLocalValues.JungleHutType = jungleHut;
-+				GenLocalValues.LeftBeachShellStartX = shellStartXLeft;
-+				GenLocalValues.LeftBeachShellStartY = shellStartYLeft;
-+				GenLocalValues.RightBeachShellStartX = shellStartXRight;
-+				GenLocalValues.RightBeachShellStartY = shellStartYRight;
-+				GenLocalValues.HowFar = howFar;
-+				GenLocalValues.PyramidXLocations = PyrX;
-+				GenLocalValues.PyramidYLocations = PyrY;
-+				GenLocalValues.NumberOfPyramids = numPyr;
-+				GenLocalValues.JungleMinX = jungleMinX;
-+				GenLocalValues.JungleMaxX = jungleMaxX;
-+				GenLocalValues.SnowMinX = snowMinX;
-+				GenLocalValues.SnowMaxX = snowMaxX;
-+				GenLocalValues.SnowTop = snowTop;
-+				GenLocalValues.SnowBottom = snowBottom;
-+				GenLocalValues.SkyLakeCount = skyLakes;
-+				GenLocalValues.LeftBeachEnd = leftBeachEnd;
-+				GenLocalValues.RightBeachStart = rightBeachStart;
-+				GenLocalValues.JungleOriginX = jungleOriginX;
-+				GenLocalValues.SnowOriginLeft = snowOriginLeft;
-+				GenLocalValues.SnowOriginRight = snowOriginRight;
-+				GenLocalValues.FallenLogX = logX;
-+				GenLocalValues.FallenLogY = logY;
-+				GenLocalValues.DungeonLocation = dungeonLocation;
-+			}
-+			UpdateGenLocals += SyncLocals;
++			if (Main.maxTilesX > 6000)
++				skyLakes++;
++
++			beachBordersWidth = 275;
++			beachSandRandomCenter = beachBordersWidth + 5 + 40;
++			beachSandRandomWidthRange = 20;
++			beachSandDungeonExtraWidth = 40;
++			beachSandJungleExtraWidth = 20;
++			oceanWaterStartRandomMin = 220;
++			oceanWaterStartRandomMax = oceanWaterStartRandomMin + 40;
++			oceanWaterForcedJungleLength = 275;
++			leftBeachEnd = 0;
++			rightBeachStart = 0;
++			minSsandBeforeWater = 50;
++			evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
++			evilBiomeAvoidanceMidFixer = 50;
++			lakesBeachAvoidance = beachSandRandomCenter + 20;
++			smallHolesBeachAvoidance = beachSandRandomCenter + 20;
++			_ = beachSandRandomCenter;
++			surfaceCavesBeachAvoidance2 = beachSandRandomCenter + 20;
++			jungleOriginX = 0;
++			snowOriginLeft = 0;
++			snowOriginRight = 0;
++			logX = -1;
++			logY = -1;
++			dungeonLocation = 0;
 +
 +			SystemLoader.PreWorldGen();
 +
@@ -509,7 +746,7 @@
  				progress.Set(9f / num30);
  				if (!notTheBees) {
  					double num48 = (double)Main.maxTilesX * 0.02;
-@@ -12248,11 +_,20 @@
+@@ -12248,11 +_,18 @@
  				progress.Message = Lang.gen[87].Value;
  			});
  
@@ -517,8 +754,6 @@
  			_generator.GenerateWorld(customProgressObject);
  			ConsumePostGenActions(structures);
 +			SystemLoader.PostWorldGen();
-+			UpdateGenLocals -= SyncLocals;
-+			GenLocalValues = null;
  			Main.WorldFileMetadata = FileMetadata.FromCurrentSettings(FileType.World);
  			Main.NotifyOfEvent(GameNotificationType.WorldGen);
  			drunkWorldGenText = false;
