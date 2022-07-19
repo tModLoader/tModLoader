@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,6 +22,10 @@ namespace Terraria.GameContent.ItemDropRules
 		}
 
 		public FewFromOptionsNotScaledWithLuckDropRule(int amount, int chanceDenominator, int chanceNumerator, params int[] options) {
+			if (amount > options.Length) {
+				throw new ArgumentOutOfRangeException(nameof(amount), $"{nameof(amount)} must be less than the number of {nameof(options)}");
+			}
+
 			this.amount = amount;
 			this.chanceDenominator = chanceDenominator;
 			dropIds = options;
@@ -31,38 +36,35 @@ namespace Terraria.GameContent.ItemDropRules
 		public bool CanDrop(DropAttemptInfo info) => true;
 
 		public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
-			ItemDropAttemptResult result;
-			int count = 0;
 			if (info.rng.Next(chanceDenominator) < chanceNumerator) {
 				List<int> savedDropIds = dropIds.ToList();
+				int count = 0;
+
 				int index = info.rng.Next(savedDropIds.Count);
 				CommonCode.DropItemFromNPC(info.npc, savedDropIds[index], 1, false);
 				savedDropIds.RemoveAt(index);
-				while (++count <= amount) {
+
+				while (count++ <= amount) {
 					int index2 = info.rng.Next(savedDropIds.Count);
 					CommonCode.DropItemFromNPC(info.npc, savedDropIds[index2], 1, false);
 					savedDropIds.RemoveAt(index2);
 				}
 
-				result = default(ItemDropAttemptResult);
-				result.State = ItemDropAttemptResultState.Success;
-				return result;
+				return new() { State = ItemDropAttemptResultState.Success };
 			}
 
-			result = default(ItemDropAttemptResult);
-			result.State = ItemDropAttemptResultState.FailedRandomRoll;
-			return result;
+			return new() { State = ItemDropAttemptResultState.FailedRandomRoll };
 		}
 
 		public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
-			float num = (float)chanceNumerator / (float)chanceDenominator;
-			float num2 = num * ratesInfo.parentDroprateChance;
-			float dropRate = 1f / (float)(dropIds.Length - amount + 1) * num2;
+			float pesonalDroprate = (float)chanceNumerator / (float)chanceDenominator;
+			float num2 = pesonalDroprate * ratesInfo.parentDroprateChance;
+			float dropRate = 1f / (float)(dropIds.Length - amount) * num2;
 			for (int i = 0; i < dropIds.Length; i++) {
 				drops.Add(new DropRateInfo(dropIds[i], 1, 1, dropRate, ratesInfo.conditions));
 			}
 
-			Chains.ReportDroprates(ChainedRules, num, drops, ratesInfo);
+			Chains.ReportDroprates(ChainedRules, pesonalDroprate, drops, ratesInfo);
 		}
 	}
 }

@@ -2,7 +2,7 @@
 {
 	partial class Conditions
 	{
-		public class NoExtraAccessory : IItemDropRuleCondition, IProvideItemConditionDescription
+		public class NotUsedDemonHeart : IItemDropRuleCondition, IProvideItemConditionDescription
 		{
 			public bool CanDrop(DropAttemptInfo info) => !info.player.extraAccessory;
 			public bool CanShowItemDropInUI() => true;
@@ -10,7 +10,7 @@
 		}
 		public class NoPortalGun : IItemDropRuleCondition, IProvideItemConditionDescription
 		{
-			public bool CanDrop(DropAttemptInfo info) => !info.player.HasItem(3384);
+			public bool CanDrop(DropAttemptInfo info) => !info.player.HasItem(ID.ItemID.PortalGun);
 			public bool CanShowItemDropInUI() => true;
 			public string GetConditionDescription() => null;
 		}
