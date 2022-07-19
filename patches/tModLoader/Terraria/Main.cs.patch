@@ -849,14 +849,18 @@
  			}
  
  			YouCanSleepNow();
-@@ -4538,8 +_,15 @@
+@@ -4538,8 +_,19 @@
  
  		public static void startDedInputCallBack() {
  			while (!Netplay.Disconnect) {
 -				Console.Write(": ");
  				string text = Console.ReadLine();
-+				if (text != null) // Fix for #2644 where Docker would steal lines from the active console.
-+					ExecuteCommand(text, new ConsoleCommandCaller());
++				if (text == null) { // Fix for #2644 where Docker would steal lines from the active console.
++					Logging.tML.Warn("Console input not connected, ignoring...");
++					break;
++				}
++
++				ExecuteCommand(text, new ConsoleCommandCaller());
 +			}
 +		}
 +
