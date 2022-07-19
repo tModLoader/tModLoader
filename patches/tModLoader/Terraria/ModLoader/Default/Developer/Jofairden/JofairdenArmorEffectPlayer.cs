@@ -56,7 +56,7 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden
 			}
 		}
 
-		public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 			if (_lastLife <= -1) {
 				_lastLife = Player.statLife;
 			}

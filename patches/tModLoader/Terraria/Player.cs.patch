@@ -3606,7 +3606,7 @@
 +				bool customDamage = false;
 +				bool playSound = true;
 +				bool genGore = true;
-+				if (!PlayerLoader.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource))
++				if (!PlayerLoader.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter))
 +					return 0.0;
 +
  				if (whoAmI == Main.myPlayer && panic)
@@ -3644,7 +3644,7 @@
  					}
  
 +					//TODO: Is 'num2' correct? Ensure and add patch context.
-+					PlayerLoader.Hurt(this, pvp, quiet, num2, hitDirection, Crit);
++					PlayerLoader.Hurt(this, pvp, quiet, num2, hitDirection, Crit, cooldownCounter);
  					if (Main.netMode == 1 && whoAmI == Main.myPlayer && !quiet) {
  						if (!noKnockback && hitDirection != 0 && (!mount.Active || !mount.Cart))
  							NetMessage.SendData(13, -1, -1, null, whoAmI);
@@ -3680,7 +3680,7 @@
 +
 +						PostGore:
 +
-+						PlayerLoader.PostHurt(this, pvp, quiet, num2, hitDirection, Crit);
++						PlayerLoader.PostHurt(this, pvp, quiet, num2, hitDirection, Crit, cooldownCounter);
  					}
  					else {
  						statLife = 0;
