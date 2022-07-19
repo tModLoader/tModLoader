@@ -41,12 +41,12 @@ namespace Terraria.GameContent.ItemDropRules
 				int count = 0;
 
 				int index = info.rng.Next(savedDropIds.Count);
-				CommonCode.DropItemFromNPC(info.npc, savedDropIds[index], 1);
+				CommonCode.DropItemFromNPC(info.npc, savedDropIds[index], 1, player: info.player);
 				savedDropIds.RemoveAt(index);
 
 				while (count++ < amount) {
 					int index2 = info.rng.Next(savedDropIds.Count);
-					CommonCode.DropItemFromNPC(info.npc, savedDropIds[index2], 1);
+					CommonCode.DropItemFromNPC(info.npc, savedDropIds[index2], 1, player: info.player);
 					savedDropIds.RemoveAt(index2);
 				}
 

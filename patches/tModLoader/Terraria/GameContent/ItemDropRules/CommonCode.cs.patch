@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonCode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
-@@ -1,26 +_,50 @@
+@@ -1,26 +_,52 @@
  using Microsoft.Xna.Framework;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
@@ -43,13 +43,15 @@
 +			}
 +		}
 +
-+		internal static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
++		// last param ('player') added by TML
++		internal static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false, Player player = null) {
 +			DropAttemptInfo info = new() {
 +				IsExpertMode = Main.expertMode,
 +				IsMasterMode = Main.masterMode,
 +				IsInSimulation = false,
 +				item = itemId,
-+				npc = npc
++				npc = npc,
++				player = player,
 +			};
 +			DropItem(info, itemId, stack, scattered);
  		}
