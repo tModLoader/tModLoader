@@ -47,7 +47,7 @@ namespace Terraria.GameContent.ItemDropRules
 				resolveAction(savedDropIds[num], info);
 				savedDropIds.RemoveAt(num);
 
-				while (count++ < amount) {
+				while (++count < amount) {
 					num = info.rng.Next(savedDropIds.Count);
 					resolveAction(savedDropIds[num], info);
 					savedDropIds.RemoveAt(num);

@@ -67,7 +67,7 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4981, 2));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4980, 2));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4758, 3));
-			RegisterToItem(item, ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 3, 2, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings));
+			RegisterToItem(item, ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 1, 2, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings));
 
 			item = ItemID.FairyQueenBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.EmpressFlightBooster));
@@ -82,7 +82,7 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.Common(ItemID.RoyalGel));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.KingSlimeMask, 7));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimySaddle, 2));
-			RegisterToItem(item, ItemDropRule.FewFromOptionsWithNumerator(2, 3, 2, ItemID.NinjaHood, ItemID.NinjaShirt, ItemID.NinjaPants));
+			RegisterToItem(item, ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 1, 2, ItemID.NinjaHood, ItemID.NinjaShirt, ItemID.NinjaPants));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeGun, 2));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeHook, 2));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.Solidifier));
