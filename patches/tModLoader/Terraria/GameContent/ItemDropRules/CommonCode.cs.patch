@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonCode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
-@@ -1,26 +_,52 @@
+@@ -1,26 +_,64 @@
  using Microsoft.Xna.Framework;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
@@ -54,6 +54,18 @@
 +				player = player,
 +			};
 +			DropItem(info, itemId, stack, scattered);
++
++			/*
++			int x = (int)npc.position.X + npc.width / 2;
++			int y = (int)npc.position.Y + npc.height / 2;
++			if (scattered) {
++				x = (int)npc.position.X + Main.rand.Next(npc.width + 1);
++				y = (int)npc.position.Y + Main.rand.Next(npc.height + 1);
++			}
++
++			int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), x, y, 0, 0, item, stack, noBroadcast: false, -1);
++			ModifyItemDropFromNPC(npc, itemIndex);
++			 */
  		}
  
  		public static void DropItemLocalPerClientAndSetNPCMoneyTo0(NPC npc, int itemId, int stack, bool interactionRequired = true) {
