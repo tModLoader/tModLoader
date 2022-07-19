@@ -546,7 +546,7 @@
  			drunkWorldGen = false;
  			drunkWorldGenText = false;
  			switch (seed) {
-@@ -5665,21 +_,36 @@
+@@ -5665,72 +_,89 @@
  			Main.lockMenuBGChange = true;
  			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
  			Hooks.ProcessWorldGenConfig(ref configuration);
@@ -580,66 +580,100 @@
 +			rockLayer = 0.0;
 +			rockLayerHigh = 0.0;
 +
-+			/*
- 			int copper = 7;
- 			int iron = 6;
- 			int silver = 9;
-@@ -5731,6 +_,62 @@
- 			int logX = -1;
- 			int logY = -1;
- 			int dungeonLocation = 0;
-+			*/
-+
+-			int copper = 7;
 +			copper = 7;
+-			int iron = 6;
 +			iron = 6;
+-			int silver = 9;
 +			silver = 9;
+-			int gold = 8;
 +			gold = 8;
+-			int dungeonSide = 0;
 +			dungeonSide = 0;
+-			ushort jungleHut = (ushort)genRand.Next(5);
 +			jungleHut = (ushort)genRand.Next(5);
+-			int shellStartXLeft = 0;
 +			shellStartXLeft = 0;
+-			int shellStartYLeft = 0;
 +			shellStartYLeft = 0;
+-			int shellStartXRight = 0;
 +			shellStartXRight = 0;
+-			int shellStartYRight = 0;
 +			shellStartYRight = 0;
+-			int howFar = 0;
 +			howFar = 0;
+-			int[] PyrX = null;
 +			PyrX = null;
+-			int[] PyrY = null;
 +			PyrY = null;
+-			int numPyr = 0;
 +			numPyr = 0;
+-			int jungleMinX = -1;
 +			jungleMinX = -1;
+-			int jungleMaxX = -1;
 +			jungleMaxX = -1;
+-			int[] snowMinX = new int[Main.maxTilesY];
 +			snowMinX = new int[Main.maxTilesY];
+-			int[] snowMaxX = new int[Main.maxTilesY];
 +			snowMaxX = new int[Main.maxTilesY];
+-			int snowTop = 0;
 +			snowTop = 0;
+-			int snowBottom = 0;
 +			snowBottom = 0;
+-			float dub2 = 0f;
 +			dub2 = 0f;
+-			int skyLakes = 1;
 +			skyLakes = 1;
-+			if (Main.maxTilesX > 8000)
-+				skyLakes++;
-+
-+			if (Main.maxTilesX > 6000)
-+				skyLakes++;
-+
+ 			if (Main.maxTilesX > 8000)
+ 				skyLakes++;
+ 
+ 			if (Main.maxTilesX > 6000)
+ 				skyLakes++;
+ 
+-			int beachBordersWidth = 275;
 +			beachBordersWidth = 275;
+-			int beachSandRandomCenter = beachBordersWidth + 5 + 40;
 +			beachSandRandomCenter = beachBordersWidth + 5 + 40;
+-			int beachSandRandomWidthRange = 20;
 +			beachSandRandomWidthRange = 20;
+-			int beachSandDungeonExtraWidth = 40;
 +			beachSandDungeonExtraWidth = 40;
+-			int beachSandJungleExtraWidth = 20;
 +			beachSandJungleExtraWidth = 20;
+-			int oceanWaterStartRandomMin = 220;
 +			oceanWaterStartRandomMin = 220;
+-			int oceanWaterStartRandomMax = oceanWaterStartRandomMin + 40;
 +			oceanWaterStartRandomMax = oceanWaterStartRandomMin + 40;
+-			int oceanWaterForcedJungleLength = 275;
 +			oceanWaterForcedJungleLength = 275;
+-			int leftBeachEnd = 0;
 +			leftBeachEnd = 0;
+-			int rightBeachStart = 0;
 +			rightBeachStart = 0;
+-			int minSsandBeforeWater = 50;
 +			minSsandBeforeWater = 50;
+-			int evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
 +			evilBiomeBeachAvoidance = beachSandRandomCenter + 60;
+-			int evilBiomeAvoidanceMidFixer = 50;
 +			evilBiomeAvoidanceMidFixer = 50;
+-			int lakesBeachAvoidance = beachSandRandomCenter + 20;
 +			lakesBeachAvoidance = beachSandRandomCenter + 20;
+-			int smallHolesBeachAvoidance = beachSandRandomCenter + 20;
 +			smallHolesBeachAvoidance = beachSandRandomCenter + 20;
-+			_ = beachSandRandomCenter;
+ 			_ = beachSandRandomCenter;
+-			int surfaceCavesBeachAvoidance2 = beachSandRandomCenter + 20;
 +			surfaceCavesBeachAvoidance2 = beachSandRandomCenter + 20;
+-			int jungleOriginX = 0;
 +			jungleOriginX = 0;
+-			int snowOriginLeft = 0;
 +			snowOriginLeft = 0;
+-			int snowOriginRight = 0;
 +			snowOriginRight = 0;
+-			int logX = -1;
 +			logX = -1;
+-			int logY = -1;
 +			logY = -1;
+-			int dungeonLocation = 0;
 +			dungeonLocation = 0;
 +
 +			SystemLoader.PreWorldGen();
