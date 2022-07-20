@@ -33,6 +33,11 @@ namespace Terraria.ModLoader.IO
 			if (serializers.TryGetValue(type, out serializer))
 				return true;
 
+			if (type.IsArray && type.GetArrayRank() > 1) {
+				serializers[type] = serializer = new MultiDimArraySerializer(type);
+				return true;
+			}
+
 			if (typeof(TagSerializable).IsAssignableFrom(type)) {
 				var sType = typeof(TagSerializableSerializer<>).MakeGenericType(type);
 				serializers[type] = serializer = (TagSerializer)sType.GetConstructor(Type.EmptyTypes)!.Invoke(Array.Empty<object>());
