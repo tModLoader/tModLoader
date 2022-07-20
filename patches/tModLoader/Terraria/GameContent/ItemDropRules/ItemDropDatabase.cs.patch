@@ -8,7 +8,8 @@
  
  namespace Terraria.GameContent.ItemDropRules
  {
- 	public class ItemDropDatabase
+-	public class ItemDropDatabase
++	public partial class ItemDropDatabase
  	{
 -		private List<IItemDropRule> _globalEntries = new List<IItemDropRule>();
 +		internal List<IItemDropRule> _globalEntries = new List<IItemDropRule>();
@@ -24,13 +25,26 @@
  			if (!_entriesByNpcNetId.ContainsKey(npcNetId))
  				_entriesByNpcNetId[npcNetId] = new List<IItemDropRule>();
  
-@@ -114,6 +_,13 @@
+@@ -114,6 +_,26 @@
  			RegisterMimic();
  			RegisterEclipse();
  			RegisterBloodMoonFishing();
 +
++			RegisterBossBags();
++			RegisterCrateDrops();
++			RegisterObsidianLockbox();
++			RegisterLockbox();
++			RegisterHerbBag();
++			RegisterGoodieBag();
++			RegisterPresent();
++			RegisterCanOfWorms();
++			RegisterOyster();
++
 +			NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
 +
++			foreach (KeyValuePair<int, Item> pair in ContentSamples.ItemsByType) {
++				ItemLoader.ModifyItemLoot(pair.Value, new ItemLoot(pair.Key, this));
++			}
 +			foreach (KeyValuePair<int, NPC> pair in ContentSamples.NpcsByNetId) {
 +				NPCLoader.ModifyNPCLoot(pair.Value, new NPCLoot(pair.Key, this));
 +			}

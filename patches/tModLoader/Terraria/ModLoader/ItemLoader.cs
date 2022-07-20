@@ -1290,44 +1290,17 @@ namespace Terraria.ModLoader
 			return item.ModItem != null && item.ModItem.BossBagNPC > 0;
 		}
 
-		/// <summary>
-		/// If the item is a modded item and ModItem.BossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.BossBagNPC.
-		/// </summary>
-		public static void OpenBossBag(int type, Player player, ref int npc) {
-			ModItem modItem = GetItem(type);
-			if (modItem != null && modItem.BossBagNPC > 0) {
-				modItem.OpenBossBag(player);
-				npc = modItem.BossBagNPC;
-			}
-		}
 
-		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
+		private static HookList HookModifyItemLoot = AddHook<Action<Item, ItemLoot>>(g => g.ModifyItemLoot);
 		
 		/// <summary>
-		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
+		/// Calls each GlobalItem.ModifyItemLoot hooks.
 		/// </summary>
-		public static bool PreOpenVanillaBag(string context, Player player, int arg) {
-			bool result = true;
-			foreach (var g in HookPreOpenVanillaBag.Enumerate(globalItems)) {
-				result &= g.PreOpenVanillaBag(context, player, arg);
-			}
+		public static void ModifyItemLoot(Item item, ItemLoot itemLoot) {
+			item.ModItem?.ModifyItemLoot(itemLoot);
 
-			if (!result) {
-				NPCLoader.blockLoot.Clear(); // clear blockloot
-				return false;
-			}
-
-			return true;
-		}
-
-		private static HookList HookOpenVanillaBag = AddHook<Action<string, Player, int>>(g => g.OpenVanillaBag);
-		
-		/// <summary>
-		/// Calls all GlobalItem.OpenVanillaBag hooks.
-		/// </summary>
-		public static void OpenVanillaBag(string context, Player player, int arg) {
-			foreach (var g in HookOpenVanillaBag.Enumerate(globalItems)) {
-				g.OpenVanillaBag(context, player, arg);
+			foreach (var g in HookModifyItemLoot.Enumerate(globalItems)) {
+				g.ModifyItemLoot(item, itemLoot);
 			}
 		}
 
