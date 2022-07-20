@@ -100,6 +100,7 @@ var class_terraria_1_1_player =
     [ "DoubleJumpVisuals", "class_terraria_1_1_player.html#a93345fa8fb616b3b3ea6bef542f0e938", null ],
     [ "DropAnglerAccByMissing", "class_terraria_1_1_player.html#a28ddcc414b7359848a12b3d7a6b1e129", null ],
     [ "DropCoins", "class_terraria_1_1_player.html#aad70ed70c40a41f6b29939b04b0bf076", null ],
+    [ "DropFromItem", "class_terraria_1_1_player.html#a7551a4df875e67e59a55881d12184b85", null ],
     [ "DropItem", "class_terraria_1_1_player.html#a9a9678802fe01f22543cf2b8562999d6", null ],
     [ "dropItemCheck", "class_terraria_1_1_player.html#ab30c53bfe9ce3fa492a047726c4bee4d", null ],
     [ "DropItems", "class_terraria_1_1_player.html#a1d0ac1cfc22f4d80cacfe52cfcf44d99", null ],

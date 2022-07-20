@@ -273,6 +273,9 @@ This is only called when two items of the same type attempt to stack.  <a href="
 <tr class="memitem:a896355b7a4061e20bc21d3a9e7c10a93"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a896355b7a4061e20bc21d3a9e7c10a93">ModifyHitPvp</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, <a class="el" href="class_terraria_1_1_player.html">Player</a> target, ref int damage, ref bool crit)</td></tr>
 <tr class="memdesc:a896355b7a4061e20bc21d3a9e7c10a93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify the damage, etc., that a melee weapon does to a player.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a896355b7a4061e20bc21d3a9e7c10a93">More...</a><br /></td></tr>
 <tr class="separator:a896355b7a4061e20bc21d3a9e7c10a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae47304276a960c7362f28785e5a98da2"><td class="memItemLeft" align="right" valign="top"><a id="ae47304276a960c7362f28785e5a98da2"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ModifyItemLoot</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="struct_terraria_1_1_mod_loader_1_1_item_loot.html">ItemLoot</a> itemLoot)</td></tr>
+<tr class="separator:ae47304276a960c7362f28785e5a98da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56082e75c7be47f81d6e272415ebaee8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a56082e75c7be47f81d6e272415ebaee8">ModifyItemScale</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref float scale)</td></tr>
 <tr class="memdesc:a56082e75c7be47f81d6e272415ebaee8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to dynamically modify the given item's size for the given player, similarly to the effect of the Titan Glove.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a56082e75c7be47f81d6e272415ebaee8">More...</a><br /></td></tr>
 <tr class="separator:a56082e75c7be47f81d6e272415ebaee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -345,8 +348,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCreate</b> 
 <tr class="memitem:a4ad1fbdabaf6e7f0a03bb3f8729bae74"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a4ad1fbdabaf6e7f0a03bb3f8729bae74">OnSpawn</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, <a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source)</td></tr>
 <tr class="memdesc:a4ad1fbdabaf6e7f0a03bb3f8729bae74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called when any item spawns in world  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a4ad1fbdabaf6e7f0a03bb3f8729bae74">More...</a><br /></td></tr>
 <tr class="separator:a4ad1fbdabaf6e7f0a03bb3f8729bae74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0eb343631d8090fa5bb7a85fcc9a784f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a0eb343631d8090fa5bb7a85fcc9a784f">OpenVanillaBag</a> (string context, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, int arg)</td></tr>
-<tr class="memdesc:a0eb343631d8090fa5bb7a85fcc9a784f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make vanilla bags drop your own items in addition to the default items. This method will not be called if any other <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a> returns false for PreOpenVanillaBag. Context will either be "present", "bossBag", "crate", "lockBox", "obsidianLockBox", "herbBag", or "goodieBag". For boss bags and crates, arg will be set to the type of the item being opened. This method is also called for modded bossBags that are properly implemented.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a0eb343631d8090fa5bb7a85fcc9a784f">More...</a><br /></td></tr>
+<tr class="memitem:a0eb343631d8090fa5bb7a85fcc9a784f"><td class="memItemLeft" align="right" valign="top"><a id="a0eb343631d8090fa5bb7a85fcc9a784f"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenVanillaBag</b> (string context, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, int arg)</td></tr>
 <tr class="separator:a0eb343631d8090fa5bb7a85fcc9a784f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87f0e41457d59545921387622017ece1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a87f0e41457d59545921387622017ece1">PickAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref int type, ref float speed, ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> damage, ref float knockback)</td></tr>
 <tr class="memdesc:a87f0e41457d59545921387622017ece1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a87f0e41457d59545921387622017ece1">More...</a><br /></td></tr>
@@ -384,8 +387,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCreate</b> 
 <tr class="memitem:a3fee99852a3bd38a8ab927912b5319a2"><td class="memItemLeft" align="right" valign="top">virtual ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a3fee99852a3bd38a8ab927912b5319a2">PrefixChance</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, int pre, <a class="el" href="class_terraria_1_1_utilities_1_1_unified_random.html">UnifiedRandom</a> rand)</td></tr>
 <tr class="memdesc:a3fee99852a3bd38a8ab927912b5319a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">To prevent putting the item in the tinkerer slot, return false when pre is -3. To prevent rolling of a prefix on spawn, return false when pre is -1. To force rolling of a prefix on spawn, return true when pre is -1.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a3fee99852a3bd38a8ab927912b5319a2">More...</a><br /></td></tr>
 <tr class="separator:a3fee99852a3bd38a8ab927912b5319a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ef23cc204f2c238cb3b016bbde72d33"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a7ef23cc204f2c238cb3b016bbde72d33">PreOpenVanillaBag</a> (string context, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, int arg)</td></tr>
-<tr class="memdesc:a7ef23cc204f2c238cb3b016bbde72d33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make vanilla bags drop your own items and stop the default items from being dropped. Return false to stop the default items from being dropped; returns true by default. Context will either be "present", "bossBag", "crate", "lockBox", "obsidianLockBox", "herbBag", or "goodieBag". For boss bags and crates, arg will be set to the type of the item being opened. This method is also called for modded bossBags that are properly implemented.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a7ef23cc204f2c238cb3b016bbde72d33">More...</a><br /></td></tr>
+<tr class="memitem:a7ef23cc204f2c238cb3b016bbde72d33"><td class="memItemLeft" align="right" valign="top"><a id="a7ef23cc204f2c238cb3b016bbde72d33"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>PreOpenVanillaBag</b> (string context, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, int arg)</td></tr>
 <tr class="separator:a7ef23cc204f2c238cb3b016bbde72d33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a206468fa292ceda71c21f06b543110f7"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a206468fa292ceda71c21f06b543110f7">PreReforge</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:a206468fa292ceda71c21f06b543110f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook gets called when the player clicks on the reforge button and can afford the reforge. Returns whether the reforge will take place. If false is returned, the PostReforge hook is never called. Reforging preserves modded data on the item.  <a href="class_terraria_1_1_mod_loader_1_1_global_item.html#a206468fa292ceda71c21f06b543110f7">More...</a><br /></td></tr>
@@ -3785,51 +3788,6 @@ This is only called when two items of the same type attempt to stack. </p>
 
 </div>
 </div>
-<a id="a0eb343631d8090fa5bb7a85fcc9a784f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0eb343631d8090fa5bb7a85fcc9a784f">&#9670;&nbsp;</a></span>OpenVanillaBag()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void Terraria.ModLoader.GlobalItem.OpenVanillaBag </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>context</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
-          <td class="paramname"><em>player</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>arg</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to make vanilla bags drop your own items in addition to the default items. This method will not be called if any other <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html" title="This class allows you to modify and use hooks for all items, including vanilla items....">GlobalItem</a> returns false for PreOpenVanillaBag. Context will either be "present", "bossBag", "crate", "lockBox", "obsidianLockBox", "herbBag", or "goodieBag". For boss bags and crates, arg will be set to the type of the item being opened. This method is also called for modded bossBags that are properly implemented. </p>
-<p>This method is not instanced.</p>
-
-</div>
-</div>
 <a id="a87f0e41457d59545921387622017ece1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a87f0e41457d59545921387622017ece1">&#9670;&nbsp;</a></span>PickAmmo()</h2>
 
@@ -4507,51 +4465,6 @@ This is only called when two items of the same type attempt to stack. </p>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="a7ef23cc204f2c238cb3b016bbde72d33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ef23cc204f2c238cb3b016bbde72d33">&#9670;&nbsp;</a></span>PreOpenVanillaBag()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual bool Terraria.ModLoader.GlobalItem.PreOpenVanillaBag </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>context</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
-          <td class="paramname"><em>player</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>arg</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Allows you to make vanilla bags drop your own items and stop the default items from being dropped. Return false to stop the default items from being dropped; returns true by default. Context will either be "present", "bossBag", "crate", "lockBox", "obsidianLockBox", "herbBag", or "goodieBag". For boss bags and crates, arg will be set to the type of the item being opened. This method is also called for modded bossBags that are properly implemented. </p>
-<p>This method is not instanced.</p>
 
 </div>
 </div>

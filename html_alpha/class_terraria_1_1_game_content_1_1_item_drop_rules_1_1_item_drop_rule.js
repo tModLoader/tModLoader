@@ -6,6 +6,10 @@ var class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule =
     [ "Common", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a4df3c7e080e2fb7067afa61851e995c4", null ],
     [ "DropNothing", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a2426386fe0c349655a3c9b9268d2a19c", null ],
     [ "ExpertGetsRerolls", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a458e96a019230d1827bd742fc4456100", null ],
+    [ "FewFromOptions", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a36e4d67b340c45d4afa7465a86daf690", null ],
+    [ "FewFromOptionsNotScalingWithLuck", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a8b226585e4b3de64b80b85424d417b0d", null ],
+    [ "FewFromOptionsNotScalingWithLuckWithX", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a78b9d87640ccadcb1cca8263b5430ca9", null ],
+    [ "FewFromOptionsWithNumerator", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a8f9620d46a6b4cb8f4e82e59b089c505", null ],
     [ "Food", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a518fcd2aa7692f5ac95e20e40a45844a", null ],
     [ "MasterModeCommonDrop", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a5393da7f8abe8b903005e8a574b13a4f", null ],
     [ "MasterModeDropOnAllPlayers", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#aec1f46193e33f64ccf56ffbf5ae7375e", null ],
@@ -18,6 +22,8 @@ var class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule =
     [ "OneFromOptionsNotScalingWithLuck", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a1b1311f20612c24389c4c49741967c27", null ],
     [ "OneFromOptionsNotScalingWithLuckWithX", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a8b462fdbd427f962bdd8b4c619e119b7", null ],
     [ "OneFromOptionsWithNumerator", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a7845cd871949acf470fed3dbd22ab5a8", null ],
+    [ "SequentialRules", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#ad544ed90b03b648ad9658296d6f5f0cc", null ],
+    [ "SequentialRulesNotScalingWithLuck", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a9f51361f90c2144dd92431c4b1374854", null ],
     [ "StatusImmunityItem", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a11d568d9a8ead239dd5813a44ab5000a", null ],
     [ "WithRerolls", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#aa880697647d3069b99ac65d001fb37f1", null ]
 ];

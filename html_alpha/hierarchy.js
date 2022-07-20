@@ -598,7 +598,6 @@ var hierarchy =
     [ "Terraria.WorldBuilding.GenerationProgress", "class_terraria_1_1_world_building_1_1_generation_progress.html", null ],
     [ "Terraria.WorldBuilding.GenShapeActionPair", "struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html", null ],
     [ "Terraria.GetItemSettings", "struct_terraria_1_1_get_item_settings.html", null ],
-    [ "Terraria.ModLoader.GlobalLoot", "struct_terraria_1_1_mod_loader_1_1_global_loot.html", null ],
     [ "Terraria.ModLoader.GlobalRecipe", "class_terraria_1_1_mod_loader_1_1_global_recipe.html", null ],
     [ "GlobalType", "class_global_type.html", [
       [ "Terraria.ModLoader.GlobalType< TEntity, TGlobal >", "class_terraria_1_1_mod_loader_1_1_global_type.html", null ]
@@ -1189,11 +1188,17 @@ var hierarchy =
       [ "Terraria.GameContent.ItemDropRules.DropBasedOnMasterMode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_based_on_master_mode.html", null ],
       [ "Terraria.GameContent.ItemDropRules.DropNothing", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_nothing.html", null ],
       [ "Terraria.GameContent.ItemDropRules.DropOneByOne", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.FewFromOptionsDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_few_from_options_drop_rule.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.FewFromOptionsNotScaledWithLuckDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_few_from_options_not_scaled_with_luck_drop_rule.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.FewFromRulesRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_few_from_rules_rule.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.HerbBagDropsItemDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_herb_bag_drops_item_drop_rule.html", null ],
       [ "Terraria.GameContent.ItemDropRules.LeadingConditionRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_leading_condition_rule.html", null ],
       [ "Terraria.GameContent.ItemDropRules.MechBossSpawnersDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_mech_boss_spawners_drop_rule.html", null ],
       [ "Terraria.GameContent.ItemDropRules.OneFromOptionsDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_drop_rule.html", null ],
       [ "Terraria.GameContent.ItemDropRules.OneFromOptionsNotScaledWithLuckDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_options_not_scaled_with_luck_drop_rule.html", null ],
       [ "Terraria.GameContent.ItemDropRules.OneFromRulesRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_rules_rule.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.SequentialRulesNotScalingWithLuckRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_sequential_rules_not_scaling_with_luck_rule.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.SequentialRulesRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_sequential_rules_rule.html", null ],
       [ "Terraria.GameContent.ItemDropRules.SlimeBodyItemDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_slime_body_item_drop_rule.html", null ]
     ] ],
     [ "Terraria.GameContent.ItemDropRules.IItemDropRuleChainAttempt", "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule_chain_attempt.html", [
@@ -1409,6 +1414,11 @@ var hierarchy =
       ] ],
       [ "Terraria.ModLoader.MusicLoader", "class_terraria_1_1_mod_loader_1_1_music_loader.html", null ]
     ] ],
+    [ "Terraria.ModLoader.ILoot", "interface_terraria_1_1_mod_loader_1_1_i_loot.html", [
+      [ "Terraria.ModLoader.GlobalLoot", "struct_terraria_1_1_mod_loader_1_1_global_loot.html", null ],
+      [ "Terraria.ModLoader.ItemLoot", "struct_terraria_1_1_mod_loader_1_1_item_loot.html", null ],
+      [ "Terraria.ModLoader.NPCLoot", "struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html", null ]
+    ] ],
     [ "Terraria.ModLoader.IO.ImageIO", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_image_i_o.html", null ],
     [ "Terraria.GameContent.UI.Elements.IManuallyOrderedUIElement", "interface_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_i_manually_ordered_u_i_element.html", [
       [ "Terraria.GameContent.UI.Elements.UIBestiaryInfoItemLine", "class_terraria_1_1_game_content_1_1_u_i_1_1_elements_1_1_u_i_bestiary_info_item_line.html", null ],
@@ -1442,7 +1452,10 @@ var hierarchy =
     [ "Terraria.GameContent.ItemDropRules.INestedItemDropRule", "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_nested_item_drop_rule.html", [
       [ "Terraria.GameContent.ItemDropRules.DropBasedOnExpertMode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_based_on_expert_mode.html", null ],
       [ "Terraria.GameContent.ItemDropRules.DropBasedOnMasterMode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_based_on_master_mode.html", null ],
-      [ "Terraria.GameContent.ItemDropRules.OneFromRulesRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_rules_rule.html", null ]
+      [ "Terraria.GameContent.ItemDropRules.FewFromRulesRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_few_from_rules_rule.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.OneFromRulesRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_one_from_rules_rule.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.SequentialRulesNotScalingWithLuckRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_sequential_rules_not_scaling_with_luck_rule.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.SequentialRulesRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_sequential_rules_rule.html", null ]
     ] ],
     [ "Terraria.UI.INetDiagnosticsUI", "interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html", [
       [ "Terraria.ModLoader.UI.UIModNetDiagnostics", "class_terraria_1_1_mod_loader_1_1_u_i_1_1_u_i_mod_net_diagnostics.html", null ],
@@ -1560,6 +1573,7 @@ var hierarchy =
       [ "Terraria.GameContent.ItemDropRules.Conditions.IsExpert", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_expert.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.IsHardmode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_hardmode.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.IsMasterMode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_master_mode.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.Conditions.IsPreHardmode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pre_hardmode.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.IsPumpkinMoon", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.IsUsingSpecificAIValues", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.JungleKeyCondition", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_jungle_key_condition.html", null ],
@@ -1572,9 +1586,11 @@ var hierarchy =
       [ "Terraria.GameContent.ItemDropRules.Conditions.MissingTwin", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.NamedNPC", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.NeverTrue", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_never_true.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.Conditions.NoPortalGun", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_no_portal_gun.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.NotExpert", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_not_expert.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.NotFromStatue", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_not_from_statue.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.NotMasterMode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_not_master_mode.html", null ],
+      [ "Terraria.GameContent.ItemDropRules.Conditions.NotUsedDemonHeart", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_not_used_demon_heart.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.PirateMap", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_pirate_map.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.PlayerNeedsHealing", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_player_needs_healing.html", null ],
       [ "Terraria.GameContent.ItemDropRules.Conditions.PumpkinMoonDropGatingChance", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_pumpkin_moon_drop_gating_chance.html", null ],
@@ -1616,6 +1632,7 @@ var hierarchy =
         [ "Terraria.GameContent.ItemDropRules.Conditions.IsExpert", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_expert.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.IsHardmode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_hardmode.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.IsMasterMode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_master_mode.html", null ],
+        [ "Terraria.GameContent.ItemDropRules.Conditions.IsPreHardmode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pre_hardmode.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.IsPumpkinMoon", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.IsUsingSpecificAIValues", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.JungleKeyCondition", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_jungle_key_condition.html", null ],
@@ -1628,9 +1645,11 @@ var hierarchy =
         [ "Terraria.GameContent.ItemDropRules.Conditions.MissingTwin", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_missing_twin.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.NamedNPC", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_named_n_p_c.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.NeverTrue", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_never_true.html", null ],
+        [ "Terraria.GameContent.ItemDropRules.Conditions.NoPortalGun", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_no_portal_gun.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.NotExpert", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_not_expert.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.NotFromStatue", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_not_from_statue.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.NotMasterMode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_not_master_mode.html", null ],
+        [ "Terraria.GameContent.ItemDropRules.Conditions.NotUsedDemonHeart", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_not_used_demon_heart.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.PirateMap", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_pirate_map.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.PlayerNeedsHealing", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_player_needs_healing.html", null ],
         [ "Terraria.GameContent.ItemDropRules.Conditions.PumpkinMoonDropGatingChance", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_pumpkin_moon_drop_gating_chance.html", null ],
@@ -1925,7 +1944,6 @@ var hierarchy =
     [ "Terraria.ID.NPCID", "class_terraria_1_1_i_d_1_1_n_p_c_i_d.html", null ],
     [ "Terraria.DataStructures.NPCKillAttempt", "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html", null ],
     [ "Terraria.ModLoader.NPCLoader", "class_terraria_1_1_mod_loader_1_1_n_p_c_loader.html", null ],
-    [ "Terraria.ModLoader.NPCLoot", "struct_terraria_1_1_mod_loader_1_1_n_p_c_loot.html", null ],
     [ "Terraria.GameContent.Skies.CreditsRoll.Actions.NPCs", "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_n_p_cs.html", null ],
     [ "Terraria.ModLoader.NPCSpawnInfo", "struct_terraria_1_1_mod_loader_1_1_n_p_c_spawn_info.html", null ],
     [ "Terraria.NPCSpawnParams", "struct_terraria_1_1_n_p_c_spawn_params.html", null ],
