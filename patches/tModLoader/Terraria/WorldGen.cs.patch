@@ -693,15 +693,6 @@
  			AddGenerationPass("Reset", delegate (GenerationProgress progress, GameConfiguration passConfig) {
  				numOceanCaveTreasure = 0;
  				skipDesertTileCheck = false;
-@@ -6232,7 +_,7 @@
- 				}
- 			});
- 
--			int i2;
-+			i2 = 0;
- 			AddGenerationPass("Small Holes", delegate (GenerationProgress progress, GameConfiguration passConfig) {
- 				i2 = 0;
- 				progress.Message = Lang.gen[7].Value;
 @@ -8402,10 +_,11 @@
  							int num557 = 0;
  							while (!flag36 && num557 < 100) {

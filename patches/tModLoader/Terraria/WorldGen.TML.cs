@@ -50,7 +50,6 @@ namespace Terraria
 		public static int logX;
 		public static int logY;
 		public static int dungeonLocation;
-		public static int i2;
 		#endregion
 
 	}
