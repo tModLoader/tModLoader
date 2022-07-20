@@ -294,34 +294,34 @@ namespace Terraria.ModLoader
 		}
 
 		private delegate bool DelegatePreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection,
-			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
+			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter);
 		private static HookList HookPreHurt = AddHook<DelegatePreHurt>(p => p.PreHurt);
 
 		public static bool PreHurt(Player player, bool pvp, bool quiet, ref int damage, ref int hitDirection,
-			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
+			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) {
 			bool flag = true;
 			foreach (var modPlayer in HookPreHurt.Enumerate(player.modPlayers)) {
 				if (!modPlayer.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
-						ref playSound, ref genGore, ref damageSource)) {
+						ref playSound, ref genGore, ref damageSource, ref cooldownCounter)) {
 					flag = false;
 				}
 			}
 			return flag;
 		}
 
-		private static HookList HookHurt = AddHook<Action<bool, bool, double, int, bool>>(p => p.Hurt);
+		private static HookList HookHurt = AddHook<Action<bool, bool, double, int, bool, int>>(p => p.Hurt);
 
-		public static void Hurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		public static void Hurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 			foreach (var modPlayer in HookHurt.Enumerate(player.modPlayers)) {
-				modPlayer.Hurt(pvp, quiet, damage, hitDirection, crit);
+				modPlayer.Hurt(pvp, quiet, damage, hitDirection, crit, cooldownCounter);
 			}
 		}
 
-		private static HookList HookPostHurt = AddHook<Action<bool, bool, double, int, bool>>(p => p.PostHurt);
+		private static HookList HookPostHurt = AddHook<Action<bool, bool, double, int, bool, int>>(p => p.PostHurt);
 
-		public static void PostHurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		public static void PostHurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 			foreach (var modPlayer in HookPostHurt.Enumerate(player.modPlayers)) {
-				modPlayer.PostHurt(pvp, quiet, damage, hitDirection, crit);
+				modPlayer.PostHurt(pvp, quiet, damage, hitDirection, crit, cooldownCounter);
 			}
 		}
 
