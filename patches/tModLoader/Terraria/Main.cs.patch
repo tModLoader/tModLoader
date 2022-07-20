@@ -117,6 +117,47 @@
  		public static float iS = 1f;
  		public static bool render;
  		public static int qaStyle;
+@@ -528,12 +_,40 @@
+ 		public static bool[] projHostile = new bool[972];
+ 		public static bool[] projHook = new bool[972];
+ 		public static bool[] pvpBuff = new bool[338];
++		/// <summary>
++		/// Allows status effects for which this is set to true to persist after the afflicted player's death.<br/>
++		/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] persistentBuff = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br/>
++		/// Defaults to false; all vanilla vanity pets have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] vanityPet = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br/>
++		/// Defaults to false; all vanilla light pets have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] lightPet = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being from flasks, preventing them from overlapping with other flask status effects.<br/>
++		/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] meleeBuff = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being debuffs instead of buffs.<br/>
++		/// This has multiple effects on gameplay:<br/>
++		/// - the Nurse can remove the status effect when healing the afflicted player (to prevent this, refer to <see cref="BuffID.Sets.NurseCannotRemoveDebuff"/>)<br/>
++		/// - the status effect cannot be cleared from overflowing the status effect cap (buffs will be cleared instead)<br/>
++		/// - the status effect cannot be cleared by right-clicking it (which can be done for all other status effect types)<br/>
++		/// Defaults to false; all vanilla debuffs have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] debuff = new bool[338];
+ 		public static bool[] buffNoSave = new bool[338];
++		/// <summary>
++		/// Prevents status effects which have their entries set to true from displaying the amount of time they have left.<br/>
++		/// Defaults to false; most, if not all, status effects which have their entries set to true here are related to mounts, pets, and summons.<br/>
++		/// </summary>
+ 		public static bool[] buffNoTimeDisplay = new bool[338];
+ 		public static bool[] buffDoubleApply = new bool[338];
+ 		public static int maxMP = 10;
 @@ -545,7 +_,7 @@
  		public static int instantBGTransitionCounter = 2;
  		public static int bgDelay;
@@ -222,6 +263,18 @@
  		public static bool allChestStackHover;
  		public static bool inventorySortMouseOver;
  		public static float GraveyardVisualIntensity;
+@@ -961,6 +_,11 @@
+ 		public static int[] grasshopperCageFrameCounter = new int[cageFrames];
+ 		public static bool[] tileSand = new bool[625];
+ 		public static bool[] tileFlame = new bool[625];
++		/// <summary>
++		/// Used to denote an NPC as being catchable by bug nets and similar.<br/>
++		/// Contrary to its name, this array isn't actually used for catching logic at all.<br/>
++		/// It is instead used to determine if an NPC can be released back into the world after being caught.<br/>
++		/// </summary>
+ 		public static bool[] npcCatchable = new bool[670];
+ 		public static int[] tileFrame = new int[625];
+ 		public static int[] tileFrameCounter = new int[625];
 @@ -971,7 +_,7 @@
  		public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  		public static bool tilesLoaded = false;
@@ -340,6 +393,23 @@
  		private static bool _canShowMeteorFall;
  		private static bool _isResizingAndRemakingTargets = false;
  
+@@ -2250,8 +_,16 @@
+ 		[Old("Transform is deprecated. Please use GameViewMatrix & GUIViewMatrix")]
+ 		public static Matrix Transform => GameViewMatrix.TransformationMatrix;
+ 
++		/// <summary>
++		/// Fetches the position of the mouse cursor on the screen.<br/>
++		/// Useful for making things visually happen near the cursor.<br/>
++		/// </summary>
+ 		public static Vector2 MouseScreen => new Vector2(mouseX, mouseY);
+ 
++		/// <summary>
++		/// Fetches the position of the mouse cursor in the world.<br/>
++		/// Useful for making things functionally happen near the cursor, such as projectile or NPC spawns.<br/>
++		/// </summary>
+ 		public static Vector2 MouseWorld {
+ 			get {
+ 				Vector2 result = MouseScreen + screenPosition;
 @@ -2283,7 +_,7 @@
  
  		public static int npcShop {
@@ -3391,7 +3461,7 @@
  			}
  		}
  
-@@ -32294,6 +_,13 @@
+@@ -32294,6 +_,14 @@
  			return text;
  		}
  
@@ -3402,6 +3472,7 @@
 +		/// <param name="buffSlotOnPlayer">The index for buffType and buffTime</param>
 +		/// <param name="buffTimeValue">The "remaining time" in ticks</param>
 +		/// <returns><see langword="true"/> if <paramref name="buffTimeValue"/> is set, otherwise <see langword="false"/></returns>
++		// TO-DO: add a hook for drawing time left probably?
  		public static bool TryGetBuffTime(int buffSlotOnPlayer, out int buffTimeValue) {
  			int num = player[myPlayer].buffType[buffSlotOnPlayer];
  			buffTimeValue = 0;
