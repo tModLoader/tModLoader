@@ -45,6 +45,8 @@ Mods: {
 		
 		MapObject: {
 			ExampleClock: Example Clock
+			ExamplePylonTile: "{$Mods.ExampleMod.ItemName.ExamplePylonItem}"
+			ExamplePylonTileAdvanced: "{$Mods.ExampleMod.ItemName.ExamplePylonItemAdvanced}"
 		}
 		
 		ItemTooltip: {
@@ -74,11 +76,19 @@ Mods: {
 				The last shot has a 36% chance to not consume bullets
 				Shots that consume ammunition have their damage boosted by 20%
 				'''
+			ExamplePylonItem: 
+			'''
+			Must be within the Example Surface or Underground Biome in order to function.
+			Has no NPC requirements!
+			'''
+			ExamplePylonItemAdvanced: "Will randomly turn on and off, but otherwise can be teleported to without NPCs and in any biome!"
 		}
 		
 		ItemName: {
 			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
 			ExampleSpecificAmmoGun: '''Example Rifle'''
+			ExamplePylonItem: "Example Pylon"
+			ExamplePylonItemAdvanced: "Unstable Pylon"
 		}
 		
 		ProjectileName: {
@@ -131,6 +141,11 @@ Mods: {
 			}
 		}
 
+		MessageInfo: {
+			UnstablePylonIsOff: "That Unstable Pylon is currently inactive."
+			NearbyUnstablePylonIsOff: "The nearby Unstable Pylon is currently inactive."
+		}
+		
 		#This is used to display the NPC's dialogues.
 		Dialogue: {
 			ExamplePerson: {

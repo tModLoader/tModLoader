@@ -48,6 +48,22 @@
 
 			/// <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
 			public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 201, 233, 352, 485, 529, 530);
+
+			/// <summary>
+			/// Whether or not this tile will prevent sand/slush from falling beneath it.
+			/// </summary>
+			/// <remarks>
+			///	Note: This Set does not include the values within the Sets <seealso cref="BasicChest"/>, <seealso cref="BasicChestFake"/>,
+			/// and <seealso cref="BasicDresser"/>, but Tile IDs within those sets will also prevent sandfall.
+			/// </remarks>
+			public static bool[] PreventsSandfall = Factory.CreateBoolSet(26, 77, 80, 323, 470, 475, 597);
+
+			/// <summary>
+			/// What tiles count as Pylons, which allow the player to teleport to any other valid Pylons on the map.
+			/// </summary>
+			public static int[] CountsAsPylon = new int[] {
+				597
+			};
 		}
 	}
 }

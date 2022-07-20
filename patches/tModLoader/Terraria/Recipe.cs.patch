@@ -93,7 +93,7 @@
  					theText = RecipeGroup.recipeGroups[num].GetText();
  					return true;
  				}
-@@ -83,35 +_,32 @@
+@@ -83,35 +_,34 @@
  		}
  
  		public bool AcceptedByItemGroups(int invType, int reqType) {
@@ -132,6 +132,8 @@
  		}
  
  		public void Create() {
++			RecipeLoader.ConsumedItems.Clear(); // just in case something throws or breaks and the 'clear after craft' doesn't run
++
  			Item[] array = null;
  			Item item = null;
 -			Item item2 = null;
@@ -153,6 +155,37 @@
  				if (num <= 0)
  					continue;
  
+@@ -139,10 +_,13 @@
+ 
+ 					if (item.IsTheSameAs(item2) || useWood(item.type, item2.type) || useSand(item.type, item2.type) || useFragment(item.type, item2.type) || useIronBar(item.type, item2.type) || usePressurePlate(item.type, item2.type) || AcceptedByItemGroups(item.type, item2.type)) {
+ 						if (item.stack > num) {
++							RecipeLoader.ConsumedItems.Add(item.Clone());
++							RecipeLoader.ConsumedItems[^1].stack = num;
+ 							item.stack -= num;
+ 							num = 0;
+ 						}
+ 						else {
++							RecipeLoader.ConsumedItems.Add(item);
+ 							num -= item.stack;
+ 							array[k] = new Item();
+ 						}
+@@ -172,6 +_,8 @@
+ 						continue;
+ 
+ 					if (item.stack > num) {
++						RecipeLoader.ConsumedItems.Add(item.Clone());
++						RecipeLoader.ConsumedItems[^1].stack = num;
+ 						item.stack -= num;
+ 						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
+ 							NetMessage.SendData(32, -1, -1, null, Main.player[Main.myPlayer].chest, l);
+@@ -179,6 +_,7 @@
+ 						num = 0;
+ 					}
+ 					else {
++						RecipeLoader.ConsumedItems.Add(item);
+ 						num -= item.stack;
+ 						array[l] = new Item();
+ 						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest >= 0)
 @@ -192,7 +_,7 @@
  			FindRecipes();
  		}

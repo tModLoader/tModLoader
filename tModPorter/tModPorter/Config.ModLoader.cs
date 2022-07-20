@@ -144,6 +144,9 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"CanDamage", comment: "Suggestion: Return null instead of true");
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile",		"TileCollideStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile",	"TileCollideStyle");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PreHurt");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"Hurt");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"PostHurt");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"CatchFish");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"AddStartingItems", comment: "Suggestion: Return an Item array to add to the players starting items. Use ModifyStartingInventory for modifying them if needed");
 		ChangeHookSignature("Terraria.ModLoader.ModTile",			"SetDrawPositions");

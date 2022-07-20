@@ -90,7 +90,7 @@ namespace Terraria.ModLoader
 
 		private static void ConfigureAppenders(LogFile logFile) {
 			var layout = new PatternLayout {
-				ConversionPattern = "[%d{HH:mm:ss}] [%t/%level] [%logger]: %m%n"
+				ConversionPattern = "[%d{HH:mm:ss.fff}] [%t/%level] [%logger]: %m%n"
 			};
 			
 			layout.ActivateOptions();

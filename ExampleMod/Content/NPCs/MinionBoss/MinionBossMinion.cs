@@ -103,6 +103,11 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 			return Color.White * NPC.Opacity;
 		}
 
+		public override bool CanHitPlayer(Player target, ref int cooldownSlot) {
+			cooldownSlot = ImmunityCooldownID.Bosses; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
+			return true;
+		}
+
 		public override void HitEffect(int hitDirection, double damage) {
 			if (NPC.life <= 0) {
 				// If this NPC dies, spawn some visuals

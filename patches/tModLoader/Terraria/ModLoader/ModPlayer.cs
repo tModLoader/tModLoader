@@ -253,9 +253,10 @@ namespace Terraria.ModLoader
 		/// <param name="playSound"></param>
 		/// <param name="genGore"></param>
 		/// <param name="damageSource"></param>
+		/// <param name="cooldownCounter"></param>
 		/// <returns></returns>
 		public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
-			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
+			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) {
 			return true;
 		}
 
@@ -267,7 +268,8 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="hitDirection"></param>
 		/// <param name="crit"></param>
-		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		/// <param name="cooldownCounter"></param>
+		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 		}
 
 		/// <summary>
@@ -278,7 +280,8 @@ namespace Terraria.ModLoader
 		/// <param name="damage"></param>
 		/// <param name="hitDirection"></param>
 		/// <param name="crit"></param>
-		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		/// <param name="cooldownCounter"></param>
+		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 		}
 
 		/// <summary>

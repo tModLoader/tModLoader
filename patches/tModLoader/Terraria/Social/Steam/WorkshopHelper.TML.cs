@@ -119,9 +119,9 @@ namespace Terraria.Social.Steam
 				}
 			}
 
-			internal static bool GetPublishIdLocal(LocalMod mod, out ulong publishId) {
+			internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId) {
 				publishId = 0;
-				if (!ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(mod.modFile.path), out var info))
+				if (modFile == null || !ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(modFile.path), out var info))
 					return false;
 
 				publishId = info.workshopEntryId;
@@ -386,13 +386,13 @@ namespace Terraria.Social.Steam
 
 			private const int PlaytimePagingConst = 100; //https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking
 
-			public static void BeginPlaytimeTracking(LocalMod[] localMods) {
-				if (localMods.Length == 0 || !SteamAvailable)
+			public static void BeginPlaytimeTracking() {
+				if (!SteamAvailable)
 					return;
 
 				List<PublishedFileId_t> list = new List<PublishedFileId_t>();
-				foreach (var item in localMods) {
-					if (item.Enabled && GetPublishIdLocal(item, out ulong publishId))
+				foreach (var mod in ModLoader.ModLoader.Mods) {
+					if (GetPublishIdLocal(mod.File, out ulong publishId))
 						list.Add(new PublishedFileId_t(publishId));
 				}
 
@@ -449,7 +449,7 @@ namespace Terraria.Social.Steam
 				Items.Clear();
 				ErrorState = EResult.k_EResultNone;
 
-				AQueryInstance.InstalledMods = ModOrganizer.FindMods(true, false);
+				AQueryInstance.InstalledMods = ModOrganizer.FindWorkshopMods();
 
 				if (!ModManager.SteamAvailable) {
 					//TODO: Replace with a localization text
@@ -492,7 +492,7 @@ namespace Terraria.Social.Steam
 				protected uint _queryReturnCount;
 				protected string _nextCursor;
 
-				internal static LocalMod[] InstalledMods;
+				internal static IReadOnlyList<LocalMod> InstalledMods;
 
 				internal AQueryInstance() {
 					_queryHook = CallResult<SteamUGCQueryCompleted_t>.Create(OnWorkshopQueryCompleted);
@@ -617,6 +617,12 @@ namespace Terraria.Social.Steam
 
 						if (missingKeys.Length != 0) {
 							Logging.tML.Warn($"Mod '{displayname}' is missing required metadata: {string.Join(',', missingKeys.Select(k => $"'{k}'"))}.");
+							IncompleteModCount++;
+							continue;
+						}
+
+						if (string.IsNullOrWhiteSpace(metadata["name"])) {
+							Logging.tML.Warn($"Mod has no name: {id}"); // Somehow this happened before and broke mod downloads
 							IncompleteModCount++;
 							continue;
 						}

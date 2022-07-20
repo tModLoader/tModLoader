@@ -105,15 +105,17 @@ namespace Terraria.ModLoader
 
 		private static void Load(CancellationToken token = default)
 		{
+			if (isLoading)
+				throw new Exception("Load called twice");
+			isLoading = true;
+
+			if (!Unload())
+				return;
+
+			var availableMods = ModOrganizer.FindMods(logDuplicates: true);
 			try {
-				if (isLoading)
-					throw new Exception("Load called twice");
-				isLoading = true;
-
-				if (!Unload())
-					return;
-
-				var modInstances = ModOrganizer.LoadMods(token);
+				var modsToLoad = ModOrganizer.SelectAndSortMods(availableMods, token);
+				var modInstances = AssemblyManager.InstantiateMods(modsToLoad, token);
 				modInstances.Insert(0, new ModLoaderMod());
 				Mods = modInstances.ToArray();
 				foreach (var mod in Mods)
@@ -149,7 +151,7 @@ namespace Terraria.ModLoader
 
 				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
 				if (responsibleMods.Count == 1) {
-					var mod = ModOrganizer.FindMods().FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
+					var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
 					if (mod != null)
 						msg += $" v{mod.properties.version}";
 					if (mod != null && mod.tModLoaderVersion != BuildInfo.tMLVersion)
@@ -282,42 +284,30 @@ namespace Terraria.ModLoader
 			return f.VerifySignature(mod.Hash, mod.Signature);
 		}
 
-		private static bool _pauseSavingEnabledMods;
-		private static bool _needsSavingEnabledMods;
-		internal static bool PauseSavingEnabledMods {
-			get => _pauseSavingEnabledMods;
-			set {
-				if (_pauseSavingEnabledMods == value) { return; }
-				if (!value && _needsSavingEnabledMods) {
-					ModOrganizer.SaveEnabledMods();
-					_needsSavingEnabledMods = false;
-				}
-				_pauseSavingEnabledMods = value;
-			}
-		}
 		/// <summary>A cached list of enabled mods (not necessarily currently loaded or even installed), mirroring the enabled.json file.</summary>
 		private static HashSet<string> _enabledMods;
-		internal static HashSet<string> EnabledMods => _enabledMods ?? (_enabledMods = ModOrganizer.LoadEnabledMods());
+		internal static HashSet<string> EnabledMods => _enabledMods ??= ModOrganizer.LoadEnabledMods();
 
 		internal static bool IsEnabled(string modName) => EnabledMods.Contains(modName);
 		internal static void EnableMod(string modName) => SetModEnabled(modName, true);
 		internal static void DisableMod(string modName) => SetModEnabled(modName, false);
-		internal static void SetModEnabled(string modName, bool active)
-		{
-			if (active) {
+		internal static void SetModEnabled(string modName, bool active) {
+			if (active == IsEnabled(modName))
+				return;
+
+			Logging.tML.Info($"{(active ? "Enabling" : "Disabling")} Mod: {modName}");
+			if (active)
 				EnabledMods.Add(modName);
-				Logging.tML.InfoFormat("Enabling Mod: {0}", modName);
-			}
-			else {
+			else
 				EnabledMods.Remove(modName);
-				Logging.tML.InfoFormat("Disabling Mod: {0}", modName);
-			}
-			if (PauseSavingEnabledMods) {
-				_needsSavingEnabledMods = true;
-			}
-			else {
-				ModOrganizer.SaveEnabledMods();
-			}
+
+			ModOrganizer.SaveEnabledMods();
+		}
+
+		internal static void DisableAllMods() {
+			Logging.tML.InfoFormat($"Disabling All Mods: {string.Join(", ", EnabledMods)}");
+			EnabledMods.Clear();
+			ModOrganizer.SaveEnabledMods();
 		}
 
 		internal static void SaveConfiguration()

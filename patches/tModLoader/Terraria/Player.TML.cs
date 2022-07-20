@@ -520,5 +520,19 @@ namespace Terraria
 		/// The number of times the item has been used/fired this animation (swing)
 		/// </summary>
 		public int ItemUsesThisAnimation { get; private set; }
+
+		/// <summary>
+		/// Adds to either Player.immuneTime or Player.hurtCooldowns based on the cooldownCounterId
+		/// </summary>
+		/// <param name="cooldownCounterId">See <see cref="ImmunityCooldownID"/> for valid ids.</param>
+		/// <param name="immuneTime">Extra immunity time to add</param>
+		public void AddImmuneTime(int cooldownCounterId, int immuneTime) {
+			if (cooldownCounterId < 0) {
+				this.immuneTime += immuneTime;
+			}
+			else {
+				hurtCooldowns[cooldownCounterId] += immuneTime;
+			}
+		}
 	}
 }

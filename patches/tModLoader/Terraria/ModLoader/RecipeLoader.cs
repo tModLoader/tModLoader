@@ -14,6 +14,10 @@ namespace Terraria.ModLoader
 	public static class RecipeLoader
 	{
 		internal static Recipe[] FirstRecipeForItem = new Recipe[ItemID.Count];
+		/// <summary>
+		/// Cloned list of Items consumed when crafting.  Cleared after the OnCreate and OnCraft hooks.
+		/// </summary>
+		internal static List<Item> ConsumedItems = new List<Item>();
 
 		/// <summary>
 		/// Set when tML sets up modded recipes. Used to detect misuse of CreateRecipe
@@ -149,12 +153,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make anything happen when a player uses this recipe.
+		/// recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a RecipeCreationContext
 		/// </summary>
 		/// <param name="item">The item crafted.</param>
 		/// <param name="recipe">The recipe used to craft the item.</param>
+		/// <param name="consumedItems">Materials used to craft the item.</param>
+		public static void OnCraft(Item item, Recipe recipe, List<Item> consumedItems) {
+			recipe.OnCraftHooks?.Invoke(recipe, item, consumedItems);
+			ItemLoader.OnCreate(item, new RecipeCreationContext { recipe = recipe, ConsumedItems = consumedItems });
+		}
+
+		/// <summary>
+		/// Helper version of OnCraft, used in combination with Recipe.Create and the internal ConsumedItems list
+		/// </summary>
 		public static void OnCraft(Item item, Recipe recipe) {
-			recipe.OnCraftHooks?.Invoke(recipe, item);
+			OnCraft(item, recipe, ConsumedItems);
+			ConsumedItems.Clear();
 		}
 
 		/// <summary>
