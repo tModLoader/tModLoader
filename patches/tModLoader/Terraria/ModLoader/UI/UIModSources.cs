@@ -219,21 +219,15 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void Populate() {
-			Task.Factory.StartNew(
-				delegate {
-					var modSources = ModCompile.FindModSources();
-					var modFiles = ModOrganizer.FindMods();
-					return Tuple.Create(modSources, modFiles);
-				}, _cts.Token)
-				.ContinueWith(task => {
-					var modSources = task.Result.Item1;
-					var modFiles = task.Result.Item2;
-					foreach (string sourcePath in modSources) {
-						var builtMod = modFiles.SingleOrDefault(m => m.Name == Path.GetFileName(sourcePath));
-						_items.Add(new UIModSourceItem(sourcePath, builtMod));
-					}
-					_updateNeeded = true;
-				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.Current);
+			Task.Run(() => {
+				var modSources = ModCompile.FindModSources();
+				var modFiles = ModOrganizer.FindDevFolderMods();
+				foreach (string sourcePath in modSources) {
+					var builtMod = modFiles.SingleOrDefault(m => m.Name == Path.GetFileName(sourcePath));
+					_items.Add(new UIModSourceItem(sourcePath, builtMod));
+				}
+				_updateNeeded = true;
+			});
 		}
 
 		public override void Update(GameTime gameTime) {

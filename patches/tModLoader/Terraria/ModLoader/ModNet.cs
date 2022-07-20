@@ -153,7 +153,7 @@ namespace Terraria.ModLoader
 
 			Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 			Mod[] clientMods = ModLoader.Mods;
-			LocalMod[] modFiles = ModOrganizer.FindMods();
+			LocalMod[] modFiles = ModOrganizer.FindMods(); // TODO: find all versions of mods, regardless of if a local is present
 			needsReload = false;
 			downloadQueue.Clear();
 			pendingConfigs.Clear();

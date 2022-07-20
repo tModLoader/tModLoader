@@ -13,6 +13,7 @@ using Terraria.UI;
 using Terraria.Utilities;
 using Terraria.Audio;
 using ReLogic.Content;
+using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader.UI
 {
@@ -33,11 +34,10 @@ namespace Terraria.ModLoader.UI
 		private readonly Asset<Texture2D> _innerPanelTexture;
 		private readonly UIText _modName;
 		private readonly string[] _mods;
-		private readonly bool[] _modMissing;
+		private readonly List<string> _missing = new();
 		private readonly int _numMods;
 		private readonly int _numModsEnabled;
 		private readonly int _numModsDisabled;
-		private readonly int _numModsMissing;
 		private readonly UIAutoScaleTextTextPanel<string> _enableListButton;
 		private readonly UIAutoScaleTextTextPanel<string> _enableListOnlyButton;
 		private readonly UIAutoScaleTextTextPanel<string> _viewInModBrowserButton;
@@ -49,22 +49,20 @@ namespace Terraria.ModLoader.UI
 
 		private static string ConfigBackups => Path.Combine(Main.SavePath, "ModConfigsBackups");
 
-		public UIModPackItem(string name, string[] mods, bool legacy) {
+		public UIModPackItem(string name, string[] mods, bool legacy, IEnumerable<LocalMod> localMods) {
 			_legacy = legacy;
 			_filename = _legacy ? name : Path.GetFileNameWithoutExtension(name);
 			_filepath = name;
 
 			_numModsEnabled = 0;
 			_numModsDisabled = 0;
-			_numModsMissing = 0;
 
 			_mods = mods;
 			_numMods = mods.Length;
-			_modMissing = new bool[mods.Length];
 
-			for (int i = 0; i < mods.Length; i++) {
-				if (UIModPacks.Mods.Contains(mods[i])) {
-					if (ModLoader.IsEnabled(mods[i])) {
+			foreach (string mod in mods) {
+				if (localMods.SingleOrDefault(m => m.Name == mod) is LocalMod localMod) {
+					if (localMod.Enabled) {
 						_numModsEnabled++;
 					}
 					else {
@@ -72,8 +70,7 @@ namespace Terraria.ModLoader.UI
 					}
 				}
 				else {
-					_modMissing[i] = true;
-					_numModsMissing++;
+					_missing.Add(mod);
 				}
 			}
 
@@ -163,8 +160,8 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void DrawEnabledText(SpriteBatch spriteBatch, Vector2 drawPos) {
-			string text = Language.GetTextValue("tModLoader.ModPackModsAvailableStatus", _numMods, _numModsEnabled, _numModsDisabled, _numModsMissing);
-			Color color = (_numModsMissing > 0 ? Color.Red : (_numModsDisabled > 0 ? Color.Yellow : Color.Green));
+			string text = Language.GetTextValue("tModLoader.ModPackModsAvailableStatus", _numMods, _numModsEnabled, _numModsDisabled, _missing.Count);
+			Color color = (_missing.Count > 0 ? Color.Red : (_numModsDisabled > 0 ? Color.Yellow : Color.Green));
 
 			Utils.DrawBorderString(spriteBatch, text, drawPos, color);
 		}
@@ -221,27 +218,23 @@ namespace Terraria.ModLoader.UI
 
 		private static void EnableList(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
-			foreach (string modname in modListItem._mods) {
-				if (UIModPacks.Mods.Contains(modname))
-					ModLoader.EnableMod(modname);
+			foreach (var mod in ModOrganizer.FindMods()) {
+				mod.Enabled = modListItem._mods.Contains(mod.Name);
 			}
 
-			if (modListItem._numModsMissing > 0) {
-				string missing = "";
-				for (int i = 0; i < modListItem._mods.Length; i++) {
-					if (modListItem._modMissing[i]) {
-						missing += modListItem._mods[i] + "\n";
-					}
-				}
-				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsMissing", missing), Interface.modPacksMenuID);
+			if (modListItem._missing.Count > 0) {
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsMissing", string.Join("\n", modListItem._missing)), Interface.modPacksMenuID);
 			}
 
-			Interface.modPacksMenu.OnDeactivate(); // should reload
-			Interface.modPacksMenu.OnActivate(); // should reload
+			ModLoader.OnSuccessfulLoad += () => Main.menuMode = Interface.modPacksMenuID;
+			ModLoader.Reload();
 		}
 
 		private static void DownloadMissingMods(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
+
+			if (modpack._missing.Count == 0)
+				return;
 
 			if (modpack._legacy) {
 				Interface.modBrowser.Activate();
@@ -258,28 +251,26 @@ namespace Terraria.ModLoader.UI
 				return;
 			}
 
-			string modpackMods = Path.Combine(modpack._filepath, "mods");
-			int offset = 0;
-			foreach (var mod in Directory.EnumerateFiles(modpackMods, "*.tmod")) {
-				File.Copy(mod, Path.Combine(ModLoader.ModPath, Path.GetFileName(mod)));
-				offset++;
+			// TODO: what do we do if a different version of the mod is present (compared to the copy in the modpack)?
+			// What if it's loaded from the dev path? You can't always close the file handle without unloading it.
+			int missingModsLocallyRestored = 0;
+			foreach (var missing in modpack._missing) {
+				var copyPath = Path.Combine(modpack._filepath, "mods", missing + ".tmod");
+				if (File.Exists(copyPath)) {
+					File.Copy(copyPath, Path.Combine(ModLoader.ModPath, Path.GetFileName(copyPath)));
+					missingModsLocallyRestored++;
+				}
 			}
 
-			if (modpack._numModsMissing - offset > 0) {
+			if (missingModsLocallyRestored < modpack._missing.Count) {
 				string steamInstall = Path.Combine(modpack._filepath, "mods", "install.txt");
 				string[] workshopIds = File.ReadAllLines(steamInstall);
 
 				Social.Steam.WorkshopHelper.ModManager.DownloadBatch(workshopIds, Interface.modPacksMenu);
 			}
-
-			UIModPacks.Mods = Core.ModOrganizer.FindMods().Select(m => m.Name).ToArray();
 		}
 
 		private static void ActivateModPack(UIMouseEvent evt, UIElement listeningElement) {
-			foreach (var item in UIModPacks.Mods) {
-				ModLoader.DisableMod(item);
-			}
-
 			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 
 			if (modpack._legacy) {
@@ -312,9 +303,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private static void DeactivateModPack(UIMouseEvent evt, UIElement listeningElement) {
-			foreach (var item in ModLoader.EnabledMods) {
-				ModLoader.DisableMod(item);
-			}
+			ModLoader.DisableAllMods();
 
 			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 
@@ -346,8 +335,8 @@ namespace Terraria.ModLoader.UI
 			UIModPackItem modListItem = ((UIModPackItem)listeningElement.Parent);
 			SoundEngine.PlaySound(10);
 			string message = "";
-			for (int i = 0; i < modListItem._mods.Length; i++) {
-				message += modListItem._mods[i] + (modListItem._modMissing[i] ? Language.GetTextValue("tModLoader.ModPackMissing") : ModLoader.IsEnabled(modListItem._mods[i]) ? "" : Language.GetTextValue("tModLoader.ModPackDisabled")) + "\n";
+			foreach (string mod in modListItem._mods) {
+				message += mod + (modListItem._missing.Contains(mod) ? Language.GetTextValue("tModLoader.ModPackMissing") : ModLoader.IsEnabled(mod) ? "" : Language.GetTextValue("tModLoader.ModPackDisabled")) + "\n";
 			}
 			//Interface.infoMessage.SetMessage($"This list contains the following mods:\n{String.Join("\n", ((UIModListItem)listeningElement.Parent).mods)}");
 			Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsContained", message), Interface.modPacksMenuID);
