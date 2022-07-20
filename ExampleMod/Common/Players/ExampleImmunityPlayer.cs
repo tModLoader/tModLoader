@@ -24,8 +24,9 @@ namespace ExampleMod.Common.Players
 			// Slot 4: Damages from lava
 
 			// Here we increase the player's immunity time by 1 second when Example Immunity Accessory is equipped
-			if (!HasExampleImmunityAcc)
+			if (!HasExampleImmunityAcc) {
 				return;
+			}
 
 			// If the cooldownCounter is -1, simply set Player.immuneTime
 			if (cooldownCounter == -1) {
