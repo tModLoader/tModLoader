@@ -463,8 +463,10 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>CloudLake</b> 
 <tr class="memitem:a7cf8255b16b5b0630b2bd18040cce93d"><td class="memItemLeft" align="right" valign="top"><a id="a7cf8255b16b5b0630b2bd18040cce93d"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>ConsumePostGenActions</b> (<a class="el" href="class_terraria_1_1_world_building_1_1_structure_map.html">StructureMap</a> structures)</td></tr>
 <tr class="separator:a7cf8255b16b5b0630b2bd18040cce93d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dd1cad32ab58a33948256189d70d4a1"><td class="memItemLeft" align="right" valign="top"><a id="a8dd1cad32ab58a33948256189d70d4a1"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>Convert</b> (int i, int j, int conversionType, int size=4)</td></tr>
+<tr class="memitem:a8dd1cad32ab58a33948256189d70d4a1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_world_gen.html#a8dd1cad32ab58a33948256189d70d4a1">Convert</a> (int i, int j, int conversionType, int size=4)</td></tr>
+<tr class="memdesc:a8dd1cad32ab58a33948256189d70d4a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows easy conversion of eligible tiles to and from their variants for vanilla spreading biomes.<br  />
+ Please view the <em>conversionType</em>  parameter's description for more details on what biomes are supported.<br  />
+ This method, by default, converts a 9x9 square. Please view the <em>size</em>  parameter's description for info on how to adjust this behavior.  <a href="class_terraria_1_1_world_gen.html#a8dd1cad32ab58a33948256189d70d4a1">More...</a><br /></td></tr>
 <tr class="separator:a8dd1cad32ab58a33948256189d70d4a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac796e5f93a21522f59a3ff5e9b5696ec"><td class="memItemLeft" align="right" valign="top"><a id="ac796e5f93a21522f59a3ff5e9b5696ec"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>countDirtTiles</b> (int x, int y)</td></tr>
@@ -2392,6 +2394,113 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>oceanLevel</
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>SkipFramingBecauseOfGen</b><code> [get]</code></td></tr>
 <tr class="separator:a9a8152f85e3a94150ca8e077503206a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8dd1cad32ab58a33948256189d70d4a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dd1cad32ab58a33948256189d70d4a1">&#9670;&nbsp;</a></span>Convert()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.WorldGen.Convert </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>conversionType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size</em> = <code>4</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows easy conversion of eligible tiles to and from their variants for vanilla spreading biomes.<br  />
+ Please view the <em>conversionType</em>  parameter's description for more details on what biomes are supported.<br  />
+ This method, by default, converts a 9x9 square. Please view the <em>size</em>  parameter's description for info on how to adjust this behavior. </p>
+<p>For an easily-viewable example of the method's usage, you may refer to the code for projectile AI style 31 (the AI style used for the Clentaminator's solutions).<br  />
+ <br  />
+ The following tile and wall types can be converted by this method.<br  />
+ <br  />
+ For Corruption, Crimson, and Hallow conversions:<br  />
+</p><ul>
+<li>Grass (+ wall)<br  />
+</li>
+<li>Stone (+ wall, also clears moss on stone tiles)<br  />
+</li>
+<li>Ice<br  />
+</li>
+<li>Sand<br  />
+</li>
+<li>Hardened Sand (+ wall)<br  />
+</li>
+<li>Sandstone (+ wall)<br  />
+</li>
+<li>Various cave wall types, which will not be listed off individually on account of there simply being too goddamn many of them<br  />
+ <br  />
+ For Corruption and Crimson conversions specifically, thorns, should they exist, will be converted to their evil counterparts<br  />
+ For Hallow conversions specifically:<br  />
+</li>
+<li>Thorns are removed entirely<br  />
+</li>
+<li>Conversion of grass tiles can also safely convert mowed grass<br  />
+ <br  />
+ For Mushroom biome conversions:<br  />
+</li>
+<li>Jungle Grass (+ wall)<br  />
+</li>
+<li>Mud Wall<br  />
+</li>
+<li>Thorns are removed entirely<br  />
+ <br  />
+ "Cleansing" conversions (conversion type 0) affect all listed tile and wall types. </li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The X coordinate of the target tile.</td></tr>
+    <tr><td class="paramname">j</td><td>The Y coordinate of the target tile.</td></tr>
+    <tr><td class="paramname">conversionType</td><td>Denotes the biome that you wish to convert to. The following biomes are supported:<br  />
+ 1 =&gt; The Corruption.<br  />
+ 2 =&gt; The Hallow.<br  />
+ 3 =&gt; Mushroom biome.<br  />
+ 4 =&gt; The Crimson.<br  />
+ Setting this to 0 returns affected tiles to their default states (e.g. Ebonstone, Crimstone, and Pearlstone will be converted back into normal Stone Blocks).<br  />
+ </td></tr>
+    <tr><td class="paramname">size</td><td>When using this method to convert tiles, a square centered on the target tile is converted into those of the target biome.<br  />
+ This optional parameter, which defaults to 4, determines the "radius" of that square in tiles, counting outward from the central tile.<br  />
+ Set to 0 if you only want to convert a single tile. In other cases, use this parameter wisely. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="a71b027b2e216c786cf51f3b8f14b698f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a71b027b2e216c786cf51f3b8f14b698f">&#9670;&nbsp;</a></span>StatuesWithTraps</h2>

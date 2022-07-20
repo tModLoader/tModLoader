@@ -1,5 +1,11 @@
 var NAVTREEINDEX24 =
 {
+"class_terraria_1_1_graphics_1_1_effects_1_1_game_effect.html#a44296408e4c0d81ecd1783883e5707c7":[2,0,2,7,2,5,1],
+"class_terraria_1_1_graphics_1_1_effects_1_1_game_effect.html#a5ac60f11d3c8cd00a308f597c099bc94":[2,0,2,7,2,5,2],
+"class_terraria_1_1_graphics_1_1_effects_1_1_game_effect.html#a96017d518c5e0fd2a01776e263bd8460":[2,0,2,7,2,5,4],
+"class_terraria_1_1_graphics_1_1_effects_1_1_game_effect.html#abe14fd7997240378347e73438e71517e":[2,0,2,7,2,5,8],
+"class_terraria_1_1_graphics_1_1_effects_1_1_game_effect.html#ac2c3545fc138f8bb2f81c3373a788570":[2,0,2,7,2,5,3],
+"class_terraria_1_1_graphics_1_1_effects_1_1_game_effect.html#ad87e515d34d0e191480777fdf7ae7a04":[2,0,2,7,2,5,7],
 "class_terraria_1_1_graphics_1_1_effects_1_1_game_effect.html#af800b0ebaa0d932ca9d1d28845120599":[2,0,2,7,2,5,9],
 "class_terraria_1_1_graphics_1_1_effects_1_1_missing_effect_exception.html":[2,0,2,7,2,6],
 "class_terraria_1_1_graphics_1_1_effects_1_1_missing_effect_exception.html#a6b71bc3e5fa890198a84a63339e35c9a":[2,0,2,7,2,6,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX24 =
 "class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html#a535f9bc951126f7de1fd0f6f2a528855":[2,0,2,7,5,6,14],
 "class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html#a61306b2175faf45decf8ad32db81fb65":[2,0,2,7,5,6,18],
 "class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html#a6a1079bcf27ab3be4d8ab86951b0566a":[2,0,2,7,5,6,3],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html#a76a33f70522fcab519a7edb84f756eee":[2,0,2,7,5,6,21],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html#a7acb4737b8bac8564691b5ee5bd164f3":[2,0,2,7,5,6,20],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html#a87d655f151a0658307724ce68f336a5a":[2,0,2,7,5,6,17],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html#a8d1f1f5b08f3977af8845a4258e9af20":[2,0,2,7,5,6,10],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html#a96080f2f7dd5a8d11f8533804c68a057":[2,0,2,7,5,6,12],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html#a9a55a319a16cc53f596ee6144a10e050":[2,0,2,7,5,6,2],
-"class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html#aa405b0bd951383fb45c4d8af78b0ce6f":[2,0,2,7,5,6,11]
+"class_terraria_1_1_graphics_1_1_shaders_1_1_screen_shader_data.html#a76a33f70522fcab519a7edb84f756eee":[2,0,2,7,5,6,21]
 };

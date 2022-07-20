@@ -1,5 +1,11 @@
 var NAVTREEINDEX91 =
 {
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html":[2,0,2,13,5,14],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#a30c151f78a08fe392821a049d8c78fde":[2,0,2,13,5,14,0],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#a4a791c916b376533c07640ea329fe869":[2,0,2,13,5,14,1],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_printer.html#acfec77bae1fb664acadb848a91afaadc":[2,0,2,13,5,14,2],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html":[2,0,2,13,5,16],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a02a2c190f6618c46a9598a73b0e4edda":[2,0,2,13,5,16,7],
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a03cdeffc1f3073c859999427da29f346":[2,0,2,13,5,16,4],
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a0585248af0c253db2a914a612cf70ed0":[2,0,2,13,5,16,11],
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a17cb63f7354d5f372397ed5141fc8f00":[2,0,2,13,5,16,6],
@@ -243,11 +249,5 @@ var NAVTREEINDEX91 =
 "class_terraria_1_1_mod_loader_1_1_map_legend.html#a86d221a6db267f150b9a6c31fb1d9823":[2,0,2,13,78,4],
 "class_terraria_1_1_mod_loader_1_1_map_legend.html#a86f5d3202ae0e1b0c1e77ff1e6d7aad0":[2,0,2,13,78,2],
 "class_terraria_1_1_mod_loader_1_1_map_legend.html#ac5c1ca626f14d925984650a6d3952cb6":[2,0,2,13,78,3],
-"class_terraria_1_1_mod_loader_1_1_map_legend.html#adac24a887bf8f87339a3b47521e379fa":[2,0,2,13,78,1],
-"class_terraria_1_1_mod_loader_1_1_melee_damage_class.html":[2,0,2,13,79],
-"class_terraria_1_1_mod_loader_1_1_melee_damage_class.html#a30c0358b303955fc4f353e9ea057fcd2":[2,0,2,13,79,0],
-"class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class.html":[2,0,2,13,80],
-"class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class.html#a333c0baa8db35f93f7f6c1fdaa3bf688":[2,0,2,13,80,1],
-"class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class.html#a5b0744cc11c28e40af30ce86800fc5d7":[2,0,2,13,80,2],
-"class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class.html#aff193c74da88164b8b061351fe89e946":[2,0,2,13,80,0]
+"class_terraria_1_1_mod_loader_1_1_map_legend.html#adac24a887bf8f87339a3b47521e379fa":[2,0,2,13,78,1]
 };

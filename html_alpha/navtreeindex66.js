@@ -1,5 +1,11 @@
 var NAVTREEINDEX66 =
 {
+"class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a5f20a7df748a84480270ddeb790fdbdf":[2,0,2,8,41,5],
+"class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a60b635ae3a5886f6827fc68bd4fbdc56":[2,0,2,8,41,28],
+"class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a638e37cdcde7e96d0d4923f6382917e5":[2,0,2,8,41,124],
+"class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a63fa4149457627689cee0d6f944de447":[2,0,2,8,41,127],
+"class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a66f387b1f10f513daadec037d53ba7e5":[2,0,2,8,41,90],
+"class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a678df3b570e9f590395c514df7a882cd":[2,0,2,8,41,73],
 "class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a6a900e6621e0437f72f05b12f564fbdc":[2,0,2,8,41,10],
 "class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a6bfbbb4704228cd9e46dd47d4bc8c136":[2,0,2,8,41,2],
 "class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#a6e89da6aaf217618c97b9f7cae71288b":[2,0,2,8,41,61],
@@ -243,11 +249,5 @@ var NAVTREEINDEX66 =
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a2512fc8e8dea6bcd82b5f45f2f882ca2":[2,0,2,8,42,526],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a252df9b1cace236fb4210103a2ea17d7":[2,0,2,8,42,284],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a2532c88514cc4a0eff06b54a9772008e":[2,0,2,8,42,16],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a25d2ee7af38a489633b9a199f817fca8":[2,0,2,8,42,22],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a25d5fa2f92c7c441081ccfd6251cd347":[2,0,2,8,42,895],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a2600f079e2cba5e8f7f744119ceab88f":[2,0,2,8,42,78],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a2652c5b9b8710cb6c6b6ef05e568be74":[2,0,2,8,42,579],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a266c831cefd9c18ed246cbdfa9caaaf7":[2,0,2,8,42,214],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a268380660f6baa27919e0e2e6d957ca7":[2,0,2,8,42,237],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a26a42e91956804f9f14220c3f7f51e18":[2,0,2,8,42,807]
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a25d2ee7af38a489633b9a199f817fca8":[2,0,2,8,42,22]
 };

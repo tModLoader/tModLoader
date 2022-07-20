@@ -1,5 +1,11 @@
 var NAVTREEINDEX26 =
 {
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a1121aadc28271279705302d9726cbf39":[2,0,2,8,3,3,143],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a113e29ce8ec1b5c27335391c95064913":[2,0,2,8,3,3,1],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a11a1b1775f15ec6f8715d683dc7a0a0a":[2,0,2,8,3,3,107],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a11db6eb5e4a2e44d2d055648ddd3a94c":[2,0,2,8,3,3,49],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a17cc28656ed47458c7cbbb357969c38e":[2,0,2,8,3,3,24],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a1800ea530690f7498ec145c99426a066":[2,0,2,8,3,3,122],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a1853d5f8af8d6ccc4b3f70882acec9a1":[2,0,2,8,3,3,43],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a18574a4e3b2eba088acaccc39c31f577":[2,0,2,8,3,3,179],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_body.html#a194a23501fe98835887c41eb3d3c8951":[2,0,2,8,3,3,29],
@@ -243,11 +249,5 @@ var NAVTREEINDEX26 =
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_off.html#a82844270f07e501a171d1a77ecc4da8b":[2,0,2,8,3,6,2],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_off.html#a8d4064d304c6bb12a780752629ed7c30":[2,0,2,8,3,6,5],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_off.html#aad2b90d2a792f0f1bc978f672d44ba80":[2,0,2,8,3,6,3],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_off.html#abc52ccd45c41b8f20c169c503382c1f4":[2,0,2,8,3,6,12],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_off.html#acbf6d6d6d318619c5380209939806c59":[2,0,2,8,3,6,11],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_off.html#ad5dd95aaea8666b47e0e08ca5e038bd9":[2,0,2,8,3,6,7],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_off.html#add84cca2237fd166d988f6c36ca64bbd":[2,0,2,8,3,6,15],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_off.html#aef71164b48703d15dad122cab1ddef1f":[2,0,2,8,3,6,10],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_off_1_1_sets.html":[2,0,2,8,3,6,0],
-"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_off_1_1_sets.html#a47457b8f1c0c2e1584f67e089a1e38fc":[2,0,2,8,3,6,0,0]
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_hand_off.html#abc52ccd45c41b8f20c169c503382c1f4":[2,0,2,8,3,6,12]
 };

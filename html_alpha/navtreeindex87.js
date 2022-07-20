@@ -1,5 +1,11 @@
 var NAVTREEINDEX87 =
 {
+"class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ad20dd90ccb41c714cdadf19e6c3ab80e":[2,0,2,13,19,17],
+"class_terraria_1_1_mod_loader_1_1_combined_hooks.html#ad480b598a51a8cd0289390a06eed227d":[2,0,2,13,19,11],
+"class_terraria_1_1_mod_loader_1_1_combined_hooks.html#aec25e61a656166c17d73aa54cc2a7156":[2,0,2,13,19,12],
+"class_terraria_1_1_mod_loader_1_1_combined_hooks.html#aed08c96b21424f0c63b222f9d80db16f":[2,0,2,13,19,19],
+"class_terraria_1_1_mod_loader_1_1_command_loader.html":[2,0,2,13,21],
+"class_terraria_1_1_mod_loader_1_1_command_loader.html#a4127efa9617ac0715c4c73c0c023e4db":[2,0,2,13,21,1],
 "class_terraria_1_1_mod_loader_1_1_command_loader.html#a933f56a7fec2032ded92a5a27d59e2f3":[2,0,2,13,21,0],
 "class_terraria_1_1_mod_loader_1_1_compass_info_display.html":[2,0,2,13,22],
 "class_terraria_1_1_mod_loader_1_1_compass_info_display.html#a699e0cc5b08bdc4c680f51c52c1b934b":[2,0,2,13,22,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX87 =
 "class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#a255a596e75fb311f5073f9874475d808":[2,0,2,13,2,3,3],
 "class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#a4a4fa284fb2ec74b57991de24bec4638":[2,0,2,13,2,3,9],
 "class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#a519aedb694286099d27af316846546bf":[2,0,2,13,2,3,2],
-"class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#a6045f3323b619f4981e1c5262c355b13":[2,0,2,13,2,3,6],
-"class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#a7338126a6feb2a7e105d6b0b7653ca46":[2,0,2,13,2,3,8],
-"class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#a7e98154599a06f45713f3c331ca4e403":[2,0,2,13,2,3,4],
-"class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#a8fa3ba7aab3a99654b10a3d078452d2d":[2,0,2,13,2,3,5],
-"class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#ad3625aa97ec407db530265f2a285af92":[2,0,2,13,2,3,7],
-"class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html":[2,0,2,13,2,4],
-"class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a06b4e6dc50ff8d80667f6156309691a4":[2,0,2,13,2,4,2]
+"class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#a6045f3323b619f4981e1c5262c355b13":[2,0,2,13,2,3,6]
 };

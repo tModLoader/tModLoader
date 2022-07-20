@@ -1,5 +1,11 @@
 var NAVTREEINDEX34 =
 {
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ab18ebfcec47c3f0d6e9b95ccd54543e8":[2,0,2,8,12,70],
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ab22a6f67bca071be95182dac3edce1fe":[2,0,2,8,12,82],
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ab2f63c2abc0378e8a62bc6b3b9ee2f62":[2,0,2,8,12,4],
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ab35322698ab6c9d599b3d01037e741de":[2,0,2,8,12,66],
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ab540eda9a61de7a5956ce7fcbe63fad0":[2,0,2,8,12,16],
+"class_terraria_1_1_i_d_1_1_extras_i_d.html#ab6a6043a1c70b0f5a4acc7263a843908":[2,0,2,8,12,153],
 "class_terraria_1_1_i_d_1_1_extras_i_d.html#ab7b65ac1668f41adb2f1c67c4fdbd94a":[2,0,2,8,12,52],
 "class_terraria_1_1_i_d_1_1_extras_i_d.html#ab8c8f3306902838a16e1853d5a900c45":[2,0,2,8,12,11],
 "class_terraria_1_1_i_d_1_1_extras_i_d.html#ab8ef5fe6ee7d1ca6e7433e356535ba25":[2,0,2,8,12,195],
@@ -243,11 +249,5 @@ var NAVTREEINDEX34 =
 "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a66838e2ce8cebbee26b51cf95a432e38":[2,0,2,8,15,14],
 "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a6686a01aabba65b29a0f393122601f93":[2,0,2,8,15,175],
 "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a66fad3bd158ff146ba3d0a7b79429ef9":[2,0,2,8,15,131],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a6a9fb4c2e216b6668e8c7c7e3d830552":[2,0,2,8,15,186],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a6b452a816c64d8ce9b82e2b144997d23":[2,0,2,8,15,10],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a6bd65dc373d753c7f46f582b53bd6db5":[2,0,2,8,15,12],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a6c70c71ebfc061b80202848a56d3bfad":[2,0,2,8,15,31],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a6c9992befd96bd20ba841b4574199ed7":[2,0,2,8,15,258],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a6caa493e58961ade1591c3dc9aec02bf":[2,0,2,8,15,155],
-"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a6e91c9f1a7f0b2fa0d5fa2cc2857c047":[2,0,2,8,15,213]
+"class_terraria_1_1_i_d_1_1_glow_mask_i_d.html#a6a9fb4c2e216b6668e8c7c7e3d830552":[2,0,2,8,15,186]
 };

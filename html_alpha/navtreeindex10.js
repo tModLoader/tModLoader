@@ -1,5 +1,11 @@
 var NAVTREEINDEX10 =
 {
+"class_terraria_1_1_game_content_1_1_fix_exploit_man_eaters.html":[2,0,2,5,35],
+"class_terraria_1_1_game_content_1_1_fix_exploit_man_eaters.html#a213db1c2e33ee24fba43b319e15c0113":[2,0,2,5,35,0],
+"class_terraria_1_1_game_content_1_1_fix_exploit_man_eaters.html#a79b03c6ff4417690305996e6ee04b253":[2,0,2,5,35,2],
+"class_terraria_1_1_game_content_1_1_fix_exploit_man_eaters.html#a9759ebffa29f6ab8ac84a3be31620870":[2,0,2,5,35,1],
+"class_terraria_1_1_game_content_1_1_font_assets.html":[2,0,2,5,36],
+"class_terraria_1_1_game_content_1_1_font_assets.html#a12e1209fd649b21489bbadf9706caff2":[2,0,2,5,36,2],
 "class_terraria_1_1_game_content_1_1_font_assets.html#a559d328d6aeff906ec7b39c207d68631":[2,0,2,5,36,1],
 "class_terraria_1_1_game_content_1_1_font_assets.html#ac38ce39b3aedbe6f190681f931faccbe":[2,0,2,5,36,0],
 "class_terraria_1_1_game_content_1_1_font_assets.html#ae4b975931540c8f4272e7054537910d0":[2,0,2,5,36,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX10 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_master_mode.html":[2,0,2,5,10,5,25],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_master_mode.html#a2876564f3d738a346441002581b468c5":[2,0,2,5,10,5,25,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_master_mode.html#a8bf45302a72aec5bcce668f3205767ff":[2,0,2,5,10,5,25,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_master_mode.html#acc01e748755b17999c5bba41ecee345d":[2,0,2,5,10,5,25,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html":[2,0,2,5,10,5,26],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html#a00d9374fcf0207ed54fbcf8b5df86f23":[2,0,2,5,10,5,26,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html#a71b242e4e5d6c15c9e54ef64f61abbe2":[2,0,2,5,10,5,26,0],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html#acdeadb3560e99d07b324233eb018195e":[2,0,2,5,10,5,26,1],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html":[2,0,2,5,10,5,27],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html#a0ff0369752b17e167baf4573bca01fab":[2,0,2,5,10,5,27,2]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_master_mode.html#acc01e748755b17999c5bba41ecee345d":[2,0,2,5,10,5,25,1]
 };

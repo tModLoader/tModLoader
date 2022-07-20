@@ -1,5 +1,13 @@
 var NAVTREEINDEX109 =
 {
+"class_terraria_1_1_popup_text.html#a8ae5d180279d89d4629dfc96c25e12cd":[2,0,2,56,0],
+"class_terraria_1_1_popup_text.html#a8d3c48f0136ffda690a1f4fbe151082a":[2,0,2,56,7],
+"class_terraria_1_1_popup_text.html#a8e7d4b64c22cd0c485f20e1affb459ab":[2,0,2,56,20],
+"class_terraria_1_1_popup_text.html#a917812f7bac6167d2dc91b8ba24e3d3b":[2,0,2,56,6],
+"class_terraria_1_1_popup_text.html#a98848b7bfd176b3243a1a7a771cf39ed":[2,0,2,56,22],
+"class_terraria_1_1_popup_text.html#a9ae6ea9e6f96a81faa63d66bfb61e241":[2,0,2,56,3],
+"class_terraria_1_1_popup_text.html#aa55c78205f178d6e3a281128b13b6e4f":[2,0,2,56,8],
+"class_terraria_1_1_popup_text.html#aabe8f6f1c743ea2bccee2c2e47c6a261":[2,0,2,56,12],
 "class_terraria_1_1_popup_text.html#ab5abe928e59d9075bdcd639c87a9b311":[2,0,2,56,27],
 "class_terraria_1_1_popup_text.html#ac4e583e27a86488743d1e3ecc376512b":[2,0,2,56,31],
 "class_terraria_1_1_popup_text.html#ac9f53d9044ea2c4241f9fcd06baea7d2":[2,0,2,56,19],
@@ -241,13 +249,5 @@ var NAVTREEINDEX109 =
 "class_terraria_1_1_recipe.html#a589165cddef92b6aeadee13587b3ab67":[2,0,2,60,11],
 "class_terraria_1_1_recipe.html#a5a842569633767e786eb927dde67ed30":[2,0,2,60,65],
 "class_terraria_1_1_recipe.html#a5e27815a1ad14d9dc3c37d3233ef1ce0":[2,0,2,60,32],
-"class_terraria_1_1_recipe.html#a63996f71d87e68667cfb163004fda2fc":[2,0,2,60,27],
-"class_terraria_1_1_recipe.html#a680852ed6ba1a493c57be253a90fe66f":[2,0,2,60,5],
-"class_terraria_1_1_recipe.html#a687658c86dce509787f23335ce2307db":[2,0,2,60,10],
-"class_terraria_1_1_recipe.html#a6cd33d820be0ba44e5b2811f53a42a2c":[2,0,2,60,34],
-"class_terraria_1_1_recipe.html#a763ef9b7f01a3a9ae10352eed7a8ad63":[2,0,2,60,47],
-"class_terraria_1_1_recipe.html#a7faec4b30f8ac9d802f3a371fb58e680":[2,0,2,60,60],
-"class_terraria_1_1_recipe.html#a84330c5b0bca8006c6ccfec770bb86f6":[2,0,2,60,14],
-"class_terraria_1_1_recipe.html#a856701f9a8418905d092147165436a4d":[2,0,2,60,41],
-"class_terraria_1_1_recipe.html#a894ea73b6543796fbda3e5a0aa4a1773":[2,0,2,60,16]
+"class_terraria_1_1_recipe.html#a63996f71d87e68667cfb163004fda2fc":[2,0,2,60,27]
 };

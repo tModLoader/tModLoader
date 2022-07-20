@@ -1,5 +1,11 @@
 var NAVTREEINDEX94 =
 {
+"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a83e3f3b8c2643881a6f01981821353bb":[2,0,2,13,104,75],
+"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a841922b04a80c736dcb1c55e3818533a":[2,0,2,13,104,52],
+"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a8edfef4b01670b0e19667262727464a3":[2,0,2,13,104,87],
+"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a90c57527bfca0ed7f14d88e09f3e498a":[2,0,2,13,104,59],
+"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a936a7b0eb2a2d555ef7bd6a48dd24ea3":[2,0,2,13,104,37],
+"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a942333fc831a20cfb1f77c1309259040":[2,0,2,13,104,0],
 "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a95122e1a8db39a14617a8d93c187efc8":[2,0,2,13,104,30],
 "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a9cbc291c05d73364db26755d05493898":[2,0,2,13,104,41],
 "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a9d4fc85399e79e131165f57a2026aee9":[2,0,2,13,104,12],
@@ -243,11 +249,5 @@ var NAVTREEINDEX94 =
 "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aed26fa088b36cecaa12c02fc7cdb7867":[2,0,2,13,109,56],
 "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#aee1c4a53672774e625d44843ab7f1d05":[2,0,2,13,109,35],
 "class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af23880ffebcd72fc659f5edf165ff4ad":[2,0,2,13,109,39],
-"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af39b1741d8cea78ed88982db426c5887":[2,0,2,13,109,44],
-"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af7da8640cb6aaceb66187fcf62f9d018":[2,0,2,13,109,16],
-"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afa10ef5ad8b25baf604390edc5d0d8a5":[2,0,2,13,109,8],
-"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afeb145b64c1a15770296428a3a76be80":[2,0,2,13,109,11],
-"class_terraria_1_1_mod_loader_1_1_mod_pylon.html":[2,0,2,13,110],
-"class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a023778d6d0e01299b686ffd294b6d263":[2,0,2,13,110,9],
-"class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a0ae946e087c038f4877a13703d174405":[2,0,2,13,110,6]
+"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af39b1741d8cea78ed88982db426c5887":[2,0,2,13,109,44]
 };

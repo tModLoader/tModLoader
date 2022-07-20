@@ -1,5 +1,11 @@
 var NAVTREEINDEX88 =
 {
+"class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#a7338126a6feb2a7e105d6b0b7653ca46":[2,0,2,13,2,3,8],
+"class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#a7e98154599a06f45713f3c331ca4e403":[2,0,2,13,2,3,4],
+"class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#a8fa3ba7aab3a99654b10a3d078452d2d":[2,0,2,13,2,3,5],
+"class_terraria_1_1_mod_loader_1_1_core_1_1_hook_list.html#ad3625aa97ec407db530265f2a285af92":[2,0,2,13,2,3,7],
+"class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html":[2,0,2,13,2,4],
+"class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a06b4e6dc50ff8d80667f6156309691a4":[2,0,2,13,2,4,2],
 "class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a159029ebd18f9bb919db53b17477df88":[2,0,2,13,2,4,8],
 "class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a204ab94466ccdf8a77bc0e900a3a9310":[2,0,2,13,2,4,12],
 "class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a3477df0e6f226fe85e026f18d5790ac3":[2,0,2,13,2,4,9],
@@ -243,11 +249,5 @@ var NAVTREEINDEX88 =
 "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_folder_creation_failed_exception.html#a0ea738aadd143e56b5f45051be6b92a0":[2,0,2,13,4,1,0],
 "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_folder_creation_failed_exception.html#a3b82baf071e09cf5d95827dbdbd3a363":[2,0,2,13,4,1,1],
 "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_get_loadable_types_exception.html":[2,0,2,13,4,2],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_get_loadable_types_exception.html#aad95c70e9141025950a1f21097426f95":[2,0,2,13,4,2,1],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_get_loadable_types_exception.html#ae5a673054bc6847a53435fa372587305":[2,0,2,13,4,2,0],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_j_i_t_exception.html":[2,0,2,13,4,3],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_j_i_t_exception.html#a81e8ada128b24946a5fc13e031031fa4":[2,0,2,13,4,3,1],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_j_i_t_exception.html#aeec03f73cb50dc0d74fec0ea962263f1":[2,0,2,13,4,3,0],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html":[2,0,2,13,4,4],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html#a82677a7066870dfd1bf639689ad5581e":[2,0,2,13,4,4,0]
+"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_get_loadable_types_exception.html#aad95c70e9141025950a1f21097426f95":[2,0,2,13,4,2,1]
 };

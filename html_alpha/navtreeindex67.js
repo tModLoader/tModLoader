@@ -1,5 +1,11 @@
 var NAVTREEINDEX67 =
 {
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a25d5fa2f92c7c441081ccfd6251cd347":[2,0,2,8,42,895],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a2600f079e2cba5e8f7f744119ceab88f":[2,0,2,8,42,78],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a2652c5b9b8710cb6c6b6ef05e568be74":[2,0,2,8,42,579],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a266c831cefd9c18ed246cbdfa9caaaf7":[2,0,2,8,42,214],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a268380660f6baa27919e0e2e6d957ca7":[2,0,2,8,42,237],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a26a42e91956804f9f14220c3f7f51e18":[2,0,2,8,42,807],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a2720f06e72d9610b581011379c1871ae":[2,0,2,8,42,584],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a275c82a960a76cc5c53f302bfa12f316":[2,0,2,8,42,770],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a275fcd52f27446457c9a205380d88f77":[2,0,2,8,42,780],
@@ -243,11 +249,5 @@ var NAVTREEINDEX67 =
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6973d7057778d34edfad8bf7cebb747a":[2,0,2,8,42,474],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a69a93d43d8213e5a045586a653564102":[2,0,2,8,42,572],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a69e6767097bddfdd2f1975d8c79d06dd":[2,0,2,8,42,868],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a69eaa8303d627e18d645b636dcaf30d9":[2,0,2,8,42,972],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6a92073761eb7e8689b6e7e36889c149":[2,0,2,8,42,481],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6ac50e785bb45644650a4b027186d246":[2,0,2,8,42,898],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6b963fe386ecdb34738c42d8dca5a821":[2,0,2,8,42,244],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6b9a2df7e2140e2d09ff87cc7b357d6c":[2,0,2,8,42,189],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6c25d8e3c0d9e47077be550937e541e7":[2,0,2,8,42,19],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6c517a1ae91e603176d7f867b075fbf6":[2,0,2,8,42,465]
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a69eaa8303d627e18d645b636dcaf30d9":[2,0,2,8,42,972]
 };

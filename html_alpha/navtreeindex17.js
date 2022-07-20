@@ -1,5 +1,11 @@
 var NAVTREEINDEX17 =
 {
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_item_frame.html#af0dde5e979a29e360110c8571d8872b3":[2,0,2,5,20,5,0],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_item_frame.html#af2b8f1dec0cb54fab7d64f228213dffa":[2,0,2,5,20,5,12],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_item_frame.html#af7e25b5268357b1a5809676f3877f833":[2,0,2,5,20,5,5],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html":[2,0,2,5,20,6],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a07dbc0d2e45d1f10e34a8ef09626b453":[2,0,2,5,20,6,22],
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a1fbaa68a59167f421f0ebd9075731028":[2,0,2,5,20,6,24],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a2a779a331841e5b9ffe0fee03f065f03":[2,0,2,5,20,6,21],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a3a72101f317c185eac73eba1d3c6397b":[2,0,2,5,20,6,15],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a3dccb16ed3d84fc09c5188a3a3f5a18d":[2,0,2,5,20,6,10],
@@ -243,11 +249,5 @@ var NAVTREEINDEX17 =
 "class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i.html#a0eb021b9b1b6836463a93a5233d89cfa":[2,0,2,5,21,6,2],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i.html#a1af471ea90ca88260583106ba52bfb80":[2,0,2,5,21,6,1],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i.html#a1af471ea90ca88260583106ba52bfb80a2716c1e477a70de6b2508c5ccd8c2588":[2,0,2,5,21,6,1,2],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i.html#a1af471ea90ca88260583106ba52bfb80a45c1428dbdf63826b7b1a999e012df3b":[2,0,2,5,21,6,1,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i.html#a1af471ea90ca88260583106ba52bfb80a960b44c579bc2f6818d2daaf9e4c16f0":[2,0,2,5,21,6,1,1],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i.html#a1af471ea90ca88260583106ba52bfb80ae93f994f01c537c4e2f7d8528c3eb5e9":[2,0,2,5,21,6,1,3],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i.html#a9ff7efb93462524052c6599034c47738":[2,0,2,5,21,6,3],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i.html#af9063786f0b6f246ffacbc50e3d0ed60":[2,0,2,5,21,6,4],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_achievement_tag_handler.html":[2,0,2,5,21,1,0],
-"class_terraria_1_1_game_content_1_1_u_i_1_1_chat_1_1_achievement_tag_handler.html#ad2ca61a3bda480159cd489a574032c45":[2,0,2,5,21,1,0,0]
+"class_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i.html#a1af471ea90ca88260583106ba52bfb80a45c1428dbdf63826b7b1a999e012df3b":[2,0,2,5,21,6,1,0]
 };

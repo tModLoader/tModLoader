@@ -1,5 +1,11 @@
 var NAVTREEINDEX95 =
 {
+"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#af7da8640cb6aaceb66187fcf62f9d018":[2,0,2,13,109,16],
+"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afa10ef5ad8b25baf604390edc5d0d8a5":[2,0,2,13,109,8],
+"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#afeb145b64c1a15770296428a3a76be80":[2,0,2,13,109,11],
+"class_terraria_1_1_mod_loader_1_1_mod_pylon.html":[2,0,2,13,110],
+"class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a023778d6d0e01299b686ffd294b6d263":[2,0,2,13,110,9],
+"class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a0ae946e087c038f4877a13703d174405":[2,0,2,13,110,6],
 "class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a1f1f86153492bfc80e87084ff40ef8ad":[2,0,2,13,110,4],
 "class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a25b0e7d965755343246b3ef6370e9fc2":[2,0,2,13,110,8],
 "class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a4c4bdb43bda8dbccfb4b146ccdf0ac8f":[2,0,2,13,110,11],
@@ -243,11 +249,5 @@ var NAVTREEINDEX95 =
 "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a248364d7c9c768b8245c022c3dee952c":[2,0,2,13,124,8],
 "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a42769bab16038542fd4369a016b00724":[2,0,2,13,124,7],
 "class_terraria_1_1_mod_loader_1_1_mod_wall.html#a59aded4edfc771d731cbb2a621d9d165":[2,0,2,13,124,3],
-"class_terraria_1_1_mod_loader_1_1_mod_wall.html#a5b9855075312c5bd2859e6a1e169789d":[2,0,2,13,124,4],
-"class_terraria_1_1_mod_loader_1_1_mod_wall.html#a8e154201c19225ab3992d2d75f87bfe4":[2,0,2,13,124,6],
-"class_terraria_1_1_mod_loader_1_1_mod_wall.html#a97e76ecd00a24c452c905a3faa2f5b35":[2,0,2,13,124,1],
-"class_terraria_1_1_mod_loader_1_1_mod_wall.html#ae7b471cf1d37035d959a4fbb00818e5d":[2,0,2,13,124,0],
-"class_terraria_1_1_mod_loader_1_1_mod_wall.html#af4060d05de1bdfb5549d20b2204f04dc":[2,0,2,13,124,5],
-"class_terraria_1_1_mod_loader_1_1_mod_wall.html#afddd9194f68f46329b6119e2ab95a512":[2,0,2,13,124,2],
-"class_terraria_1_1_mod_loader_1_1_mod_water_style.html":[2,0,2,13,126]
+"class_terraria_1_1_mod_loader_1_1_mod_wall.html#a5b9855075312c5bd2859e6a1e169789d":[2,0,2,13,124,4]
 };

@@ -1,5 +1,11 @@
 var NAVTREEINDEX12 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_slime_body_item_drop_rule.html#af83cafc2b8fd05b9d750ad7d9b9454c8":[2,0,2,5,10,30,3],
+"class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html":[2,0,2,5,42],
+"class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html#a19822a1b37981d2affa5a3c3096c170a":[2,0,2,5,42,2],
+"class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html#a7a042a79e7b55aa931aa9f160d7f33d8":[2,0,2,5,42,0],
+"class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html#aa8165a29bbd09193b260a1cdbe47f505":[2,0,2,5,42,3],
+"class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html#aee211724b134e56ab66f7bef99a67d4d":[2,0,2,5,42,1],
 "class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html":[2,0,2,5,11,0],
 "class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#a10b7e9a02bad09e243a8dc7f6cdb2716":[2,0,2,5,11,0,3],
 "class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#a4d40485117fb1dce551b744f8a33f689":[2,0,2,5,11,0,11],
@@ -243,11 +249,5 @@ var NAVTREEINDEX12 =
 "class_terraria_1_1_game_content_1_1_portal_helper.html#a14283105f7fc3b42a679e0ab188e78f2":[2,0,2,5,54,8],
 "class_terraria_1_1_game_content_1_1_portal_helper.html#a1592ed61f2c28e12d4c8be5e613cfaa7":[2,0,2,5,54,1],
 "class_terraria_1_1_game_content_1_1_portal_helper.html#a2154335bd0b63efd16690f4160b1a2f2":[2,0,2,5,54,0],
-"class_terraria_1_1_game_content_1_1_portal_helper.html#a5202af883f396bbb318aa71dc9b22273":[2,0,2,5,54,6],
-"class_terraria_1_1_game_content_1_1_portal_helper.html#a63a9c3f7d971401e9d02b865ace57b51":[2,0,2,5,54,7],
-"class_terraria_1_1_game_content_1_1_portal_helper.html#aa8504516d91e4c52325e8f0356be38de":[2,0,2,5,54,4],
-"class_terraria_1_1_game_content_1_1_portal_helper.html#ab2e8d5eeca6cae8b4c0c907744bdee5b":[2,0,2,5,54,3],
-"class_terraria_1_1_game_content_1_1_portal_helper.html#ab311e4127189f0fcb0e8dcc57a39e62c":[2,0,2,5,54,5],
-"class_terraria_1_1_game_content_1_1_portal_helper.html#aca3e5c6b076acaf39bae43c67e979968":[2,0,2,5,54,2],
-"class_terraria_1_1_game_content_1_1_pressure_plate_helper.html":[2,0,2,5,56]
+"class_terraria_1_1_game_content_1_1_portal_helper.html#a5202af883f396bbb318aa71dc9b22273":[2,0,2,5,54,6]
 };

@@ -848,7 +848,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>TriggerPing</b
 <tr class="memdesc:ab691f95842bf8419e83e458fe0e03a73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the buff at index <em>buffSlotOnPlayer</em>  is allowed to draw a "remaining time" text, and sets <em>buffTimeValue</em>  to it.  <a href="class_terraria_1_1_main.html#ab691f95842bf8419e83e458fe0e03a73">More...</a><br /></td></tr>
 <tr class="separator:ab691f95842bf8419e83e458fe0e03a73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a904f4ba4002225d9e9b0d6ca46ea3059">TryRemovingBuff</a> (int i, int b)</td></tr>
-<tr class="memdesc:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_player.html#ae95973d4b5efa07894c3344d5734f16e" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">Player.DelBuff</a> with index i after checking Main.debuff of buff type b. Will toggle Player.hideMisc for pet and light pet.  <a href="class_terraria_1_1_main.html#a904f4ba4002225d9e9b0d6ca46ea3059">More...</a><br /></td></tr>
+<tr class="memdesc:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_player.html#ae95973d4b5efa07894c3344d5734f16e" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">Player.DelBuff</a> with index i after checking <a class="el" href="class_terraria_1_1_main.html#afa7bbe6d454e59a71e09db5c9857ef83" title="Categorizes status effects for which this is set to true as being debuffs instead of buffs....">Main.debuff</a> of buff type b. Will toggle Player.hideMisc for pet and light pet.  <a href="class_terraria_1_1_main.html#a904f4ba4002225d9e9b0d6ca46ea3059">More...</a><br /></td></tr>
 <tr class="separator:a904f4ba4002225d9e9b0d6ca46ea3059"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74038da99ec7caea4a91e67885320432"><td class="memItemLeft" align="right" valign="top"><a id="a74038da99ec7caea4a91e67885320432"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>TryRemovingBuff_CheckBuffHideMisc</b> (int slot, int buffID)</td></tr>
@@ -1270,8 +1270,10 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffDoubleAp
 <tr class="memitem:a9dfffb1129b1b83b9d88db54499b9abe"><td class="memItemLeft" align="right" valign="top"><a id="a9dfffb1129b1b83b9d88db54499b9abe"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffNoSave</b> = new bool[338]</td></tr>
 <tr class="separator:a9dfffb1129b1b83b9d88db54499b9abe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a486a209d2203196389c53a0e76e79d"><td class="memItemLeft" align="right" valign="top"><a id="a3a486a209d2203196389c53a0e76e79d"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>buffNoTimeDisplay</b> = new bool[338]</td></tr>
+<tr class="memitem:a3a486a209d2203196389c53a0e76e79d"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a3a486a209d2203196389c53a0e76e79d">buffNoTimeDisplay</a> = new bool[338]</td></tr>
+<tr class="memdesc:a3a486a209d2203196389c53a0e76e79d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prevents status effects which have their entries set to true from displaying the amount of time they have left.<br  />
+ Defaults to false; most, if not all, status effects which have their entries set to true here are related to mounts, pets, and summons.<br  />
+  <a href="class_terraria_1_1_main.html#a3a486a209d2203196389c53a0e76e79d">More...</a><br /></td></tr>
 <tr class="separator:a3a486a209d2203196389c53a0e76e79d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0037388ef0e1e3e5ae36ad35974db27"><td class="memItemLeft" align="right" valign="top"><a id="af0037388ef0e1e3e5ae36ad35974db27"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>buffScanAreaHeight</b> = (maxScreenH + 800) / 16 - 1</td></tr>
@@ -1545,8 +1547,10 @@ static double&#160;</td><td class="memItemRight" valign="bottom"><b>dayRate</b> 
 <tr class="memitem:a4f4af435dee0f1d60c14e3e4f07b7d2b"><td class="memItemLeft" align="right" valign="top"><a id="a4f4af435dee0f1d60c14e3e4f07b7d2b"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>dayTime</b> = true</td></tr>
 <tr class="separator:a4f4af435dee0f1d60c14e3e4f07b7d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa7bbe6d454e59a71e09db5c9857ef83"><td class="memItemLeft" align="right" valign="top"><a id="afa7bbe6d454e59a71e09db5c9857ef83"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>debuff</b> = new bool[338]</td></tr>
+<tr class="memitem:afa7bbe6d454e59a71e09db5c9857ef83"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#afa7bbe6d454e59a71e09db5c9857ef83">debuff</a> = new bool[338]</td></tr>
+<tr class="memdesc:afa7bbe6d454e59a71e09db5c9857ef83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Categorizes status effects for which this is set to true as being debuffs instead of buffs.<br  />
+ This has multiple effects on gameplay:<br  />
+  <a href="class_terraria_1_1_main.html#afa7bbe6d454e59a71e09db5c9857ef83">More...</a><br /></td></tr>
 <tr class="separator:afa7bbe6d454e59a71e09db5c9857ef83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57f44ffb4b03a1aaed6d6013bd93d3bc"><td class="memItemLeft" align="right" valign="top"><a id="a57f44ffb4b03a1aaed6d6013bd93d3bc"></a>
 static BasicDebugDrawer&#160;</td><td class="memItemRight" valign="bottom"><b>DebugDrawer</b></td></tr>
@@ -2159,8 +2163,10 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>LightingEveryF
 <tr class="memitem:a43c306690f640dd5e22e4834750336d8"><td class="memItemLeft" align="right" valign="top"><a id="a43c306690f640dd5e22e4834750336d8"></a>
 static float&#160;</td><td class="memItemRight" valign="bottom"><b>lightning</b></td></tr>
 <tr class="separator:a43c306690f640dd5e22e4834750336d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9423daba60141506759a88bb8f90a577"><td class="memItemLeft" align="right" valign="top"><a id="a9423daba60141506759a88bb8f90a577"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>lightPet</b> = new bool[338]</td></tr>
+<tr class="memitem:a9423daba60141506759a88bb8f90a577"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a9423daba60141506759a88bb8f90a577">lightPet</a> = new bool[338]</td></tr>
+<tr class="memdesc:a9423daba60141506759a88bb8f90a577"><td class="mdescLeft">&#160;</td><td class="mdescRight">Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br  />
+ Defaults to false; all vanilla light pets have their entries here set to true.<br  />
+  <a href="class_terraria_1_1_main.html#a9423daba60141506759a88bb8f90a577">More...</a><br /></td></tr>
 <tr class="separator:a9423daba60141506759a88bb8f90a577"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad232feb7bb358e9c3c2ba5c98bf05c7c"><td class="memItemLeft" align="right" valign="top"><a id="ad232feb7bb358e9c3c2ba5c98bf05c7c"></a>
 static <a class="el" href="class_terraria_1_1_liquid.html">Liquid</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>liquid</b> = new <a class="el" href="class_terraria_1_1_liquid.html">Liquid</a>[Liquid.maxLiquid]</td></tr>
@@ -2471,8 +2477,10 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>maxWings</b> = 4
 <tr class="memitem:a624f729f30f9da69671d7ead826fb9bd"><td class="memItemLeft" align="right" valign="top"><a id="a624f729f30f9da69671d7ead826fb9bd"></a>
 static Microsoft.Xna.Framework.Color&#160;</td><td class="memItemRight" valign="bottom"><b>mcColor</b> = new Microsoft.Xna.Framework.Color(1f, 0.6f, 0f)</td></tr>
 <tr class="separator:a624f729f30f9da69671d7ead826fb9bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39d07412195237edd6283ee874d330c0"><td class="memItemLeft" align="right" valign="top"><a id="a39d07412195237edd6283ee874d330c0"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>meleeBuff</b> = new bool[338]</td></tr>
+<tr class="memitem:a39d07412195237edd6283ee874d330c0"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a39d07412195237edd6283ee874d330c0">meleeBuff</a> = new bool[338]</td></tr>
+<tr class="memdesc:a39d07412195237edd6283ee874d330c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Categorizes status effects for which this is set to true as being from flasks, preventing them from overlapping with other flask status effects.<br  />
+ Defaults to false; all vanilla flask effects have their entries here set to true.<br  />
+  <a href="class_terraria_1_1_main.html#a39d07412195237edd6283ee874d330c0">More...</a><br /></td></tr>
 <tr class="separator:a39d07412195237edd6283ee874d330c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3019c962ae7a505d69e63c5a82e436d0"><td class="memItemLeft" align="right" valign="top"><a id="a3019c962ae7a505d69e63c5a82e436d0"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>menuBGChangedDay</b> = false</td></tr>
@@ -2678,8 +2686,11 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>noWindowBorder
 <tr class="memitem:ab6c98cf245bb2db337fe609d6096626e"><td class="memItemLeft" align="right" valign="top"><a id="ab6c98cf245bb2db337fe609d6096626e"></a>
 static <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>[]&#160;</td><td class="memItemRight" valign="bottom"><b>npc</b> = new <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>[201]</td></tr>
 <tr class="separator:ab6c98cf245bb2db337fe609d6096626e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25e42dc142bfa3a2bd5ccba4a7b5d6f2"><td class="memItemLeft" align="right" valign="top"><a id="a25e42dc142bfa3a2bd5ccba4a7b5d6f2"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>npcCatchable</b> = new bool[670]</td></tr>
+<tr class="memitem:a25e42dc142bfa3a2bd5ccba4a7b5d6f2"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a25e42dc142bfa3a2bd5ccba4a7b5d6f2">npcCatchable</a> = new bool[670]</td></tr>
+<tr class="memdesc:a25e42dc142bfa3a2bd5ccba4a7b5d6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to denote an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> as being catchable by bug nets and similar.<br  />
+ Contrary to its name, this array isn't actually used for catching logic at all.<br  />
+ It is instead used to determine if an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be released back into the world after being caught.<br  />
+  <a href="class_terraria_1_1_main.html#a25e42dc142bfa3a2bd5ccba4a7b5d6f2">More...</a><br /></td></tr>
 <tr class="separator:a25e42dc142bfa3a2bd5ccba4a7b5d6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a27ab0bb546bd971d4c12bb9fe0a8fdde"><td class="memItemLeft" align="right" valign="top"><a id="a27ab0bb546bd971d4c12bb9fe0a8fdde"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>npcChatCornerItem</b></td></tr>
@@ -2848,8 +2859,10 @@ static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>penguinCageFr
 <tr class="memitem:ad41feac222cd6ea520c6bad3e7208454"><td class="memItemLeft" align="right" valign="top"><a id="ad41feac222cd6ea520c6bad3e7208454"></a>
 static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>penguinCageFrameCounter</b> = new int[cageFrames]</td></tr>
 <tr class="separator:ad41feac222cd6ea520c6bad3e7208454"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb27cacc30d8d86cc492fb06b6413c26"><td class="memItemLeft" align="right" valign="top"><a id="aeb27cacc30d8d86cc492fb06b6413c26"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>persistentBuff</b> = new bool[338]</td></tr>
+<tr class="memitem:aeb27cacc30d8d86cc492fb06b6413c26"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#aeb27cacc30d8d86cc492fb06b6413c26">persistentBuff</a> = new bool[338]</td></tr>
+<tr class="memdesc:aeb27cacc30d8d86cc492fb06b6413c26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows status effects for which this is set to true to persist after the afflicted player's death.<br  />
+ Defaults to false; all vanilla flask effects have their entries here set to true.<br  />
+  <a href="class_terraria_1_1_main.html#aeb27cacc30d8d86cc492fb06b6413c26">More...</a><br /></td></tr>
 <tr class="separator:aeb27cacc30d8d86cc492fb06b6413c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a178d5dc4eea303671c1b210a99a131d2"><td class="memItemLeft" align="right" valign="top"><a id="a178d5dc4eea303671c1b210a99a131d2"></a>
 static <a class="el" href="class_terraria_1_1_map_1_1_ping_map_layer.html">PingMapLayer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Pings</b> = new <a class="el" href="class_terraria_1_1_map_1_1_ping_map_layer.html">PingMapLayer</a>()</td></tr>
@@ -3696,8 +3709,10 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>UseStormEffect
 <tr class="memitem:a858032a555ce2daab45426c7bd0d2e73"><td class="memItemLeft" align="right" valign="top"><a id="a858032a555ce2daab45426c7bd0d2e73"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>validateSaves</b> = true</td></tr>
 <tr class="separator:a858032a555ce2daab45426c7bd0d2e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0af01de3bcea11395fb1d8df66a5aafb"><td class="memItemLeft" align="right" valign="top"><a id="a0af01de3bcea11395fb1d8df66a5aafb"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>vanityPet</b> = new bool[338]</td></tr>
+<tr class="memitem:a0af01de3bcea11395fb1d8df66a5aafb"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a0af01de3bcea11395fb1d8df66a5aafb">vanityPet</a> = new bool[338]</td></tr>
+<tr class="memdesc:a0af01de3bcea11395fb1d8df66a5aafb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br  />
+ Defaults to false; all vanilla vanity pets have their entries here set to true.<br  />
+  <a href="class_terraria_1_1_main.html#a0af01de3bcea11395fb1d8df66a5aafb">More...</a><br /></td></tr>
 <tr class="separator:a0af01de3bcea11395fb1d8df66a5aafb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a111bd36487ea0b376c687405b6da1fe1"><td class="memItemLeft" align="right" valign="top"><a id="a111bd36487ea0b376c687405b6da1fe1"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>verboseNetplay</b> = false</td></tr>
@@ -4107,14 +4122,18 @@ static <a class="el" href="class_terraria_1_1_game_content_1_1_creative_1_1_crea
 <tr class="memitem:a4edb0efc2b7d80177e1a88fc73c14fa7"><td class="memItemLeft" align="right" valign="top"><a id="a4edb0efc2b7d80177e1a88fc73c14fa7"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>masterMode</b><code> [get]</code></td></tr>
 <tr class="separator:a4edb0efc2b7d80177e1a88fc73c14fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a722d85d94fd4ea0c1c641c58c85736f6"><td class="memItemLeft" align="right" valign="top"><a id="a722d85d94fd4ea0c1c641c58c85736f6"></a>
-static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>MouseScreen</b><code> [get]</code></td></tr>
+<tr class="memitem:a722d85d94fd4ea0c1c641c58c85736f6"><td class="memItemLeft" align="right" valign="top">static Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a722d85d94fd4ea0c1c641c58c85736f6">MouseScreen</a><code> [get]</code></td></tr>
+<tr class="memdesc:a722d85d94fd4ea0c1c641c58c85736f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches the position of the mouse cursor on the screen.<br  />
+ Useful for making things visually happen near the cursor.<br  />
+  <a href="class_terraria_1_1_main.html#a722d85d94fd4ea0c1c641c58c85736f6">More...</a><br /></td></tr>
 <tr class="separator:a722d85d94fd4ea0c1c641c58c85736f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afed50b8a476c47102f7d7d21495c05ec"><td class="memItemLeft" align="right" valign="top"><a id="afed50b8a476c47102f7d7d21495c05ec"></a>
 static Color&#160;</td><td class="memItemRight" valign="bottom"><b>MouseTextColorReal</b><code> [get]</code></td></tr>
 <tr class="separator:afed50b8a476c47102f7d7d21495c05ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65fc0249c83ece95c7dec05bbb1bd0aa"><td class="memItemLeft" align="right" valign="top"><a id="a65fc0249c83ece95c7dec05bbb1bd0aa"></a>
-static Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>MouseWorld</b><code> [get]</code></td></tr>
+<tr class="memitem:a65fc0249c83ece95c7dec05bbb1bd0aa"><td class="memItemLeft" align="right" valign="top">static Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_main.html#a65fc0249c83ece95c7dec05bbb1bd0aa">MouseWorld</a><code> [get]</code></td></tr>
+<tr class="memdesc:a65fc0249c83ece95c7dec05bbb1bd0aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches the position of the mouse cursor in the world.<br  />
+ Useful for making things functionally happen near the cursor, such as projectile or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> spawns.<br  />
+  <a href="class_terraria_1_1_main.html#a65fc0249c83ece95c7dec05bbb1bd0aa">More...</a><br /></td></tr>
 <tr class="separator:a65fc0249c83ece95c7dec05bbb1bd0aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1220dd1dfd6bb05571b40806a32177c"><td class="memItemLeft" align="right" valign="top"><a id="aa1220dd1dfd6bb05571b40806a32177c"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>npcShop</b><code> [get, set]</code></td></tr>
@@ -4614,7 +4633,7 @@ Can be called on any side, but only the server will actually sync it. </p>
 </table>
 </div><div class="memdoc">
 
-<p>Calls <a class="el" href="class_terraria_1_1_player.html#ae95973d4b5efa07894c3344d5734f16e" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">Player.DelBuff</a> with index i after checking Main.debuff of buff type b. Will toggle Player.hideMisc for pet and light pet. </p>
+<p>Calls <a class="el" href="class_terraria_1_1_player.html#ae95973d4b5efa07894c3344d5734f16e" title="Removes the buff at the provided index and shuffles the remaining buff indexes down to fill the gap....">Player.DelBuff</a> with index i after checking <a class="el" href="class_terraria_1_1_main.html#afa7bbe6d454e59a71e09db5c9857ef83" title="Categorizes status effects for which this is set to true as being debuffs instead of buffs....">Main.debuff</a> of buff type b. Will toggle Player.hideMisc for pet and light pet. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td>The index for buffType and buffTime</td></tr>
@@ -4626,6 +4645,32 @@ Can be called on any side, but only the server will actually sync it. </p>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a3a486a209d2203196389c53a0e76e79d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a486a209d2203196389c53a0e76e79d">&#9670;&nbsp;</a></span>buffNoTimeDisplay</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.Main.buffNoTimeDisplay = new bool[338]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Prevents status effects which have their entries set to true from displaying the amount of time they have left.<br  />
+ Defaults to false; most, if not all, status effects which have their entries set to true here are related to mounts, pets, and summons.<br  />
+ </p>
+
+</div>
+</div>
 <a id="ad79ef5090a4aafc80bd882a82c5c170b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad79ef5090a4aafc80bd882a82c5c170b">&#9670;&nbsp;</a></span>cloudBG</h2>
 
@@ -4650,6 +4695,41 @@ Can be called on any side, but only the server will actually sync it. </p>
 <div class="line">            113</div>
 <div class="line">        }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="afa7bbe6d454e59a71e09db5c9857ef83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa7bbe6d454e59a71e09db5c9857ef83">&#9670;&nbsp;</a></span>debuff</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.Main.debuff = new bool[338]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Categorizes status effects for which this is set to true as being debuffs instead of buffs.<br  />
+ This has multiple effects on gameplay:<br  />
+ </p>
+<ul>
+<li>the Nurse can remove the status effect when healing the afflicted player (to prevent this, refer to BuffID.Sets.NurseCannotRemoveDebuff)<br  />
+</li>
+<li>the status effect cannot be cleared from overflowing the status effect cap (buffs will be cleared instead)<br  />
+</li>
+<li>the status effect cannot be cleared by right-clicking it (which can be done for all other status effect types)<br  />
+ Defaults to false; all vanilla debuffs have their entries here set to true.<br  />
+</li>
+</ul>
+
 </div>
 </div>
 <a id="ae58823ac40721d5a848ddd4a503b1067"></a>
@@ -4684,6 +4764,85 @@ Can be called on any side, but only the server will actually sync it. </p>
 <div class="line">            0.75f</div>
 <div class="line">        }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a9423daba60141506759a88bb8f90a577"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9423daba60141506759a88bb8f90a577">&#9670;&nbsp;</a></span>lightPet</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.Main.lightPet = new bool[338]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br  />
+ Defaults to false; all vanilla light pets have their entries here set to true.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a39d07412195237edd6283ee874d330c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39d07412195237edd6283ee874d330c0">&#9670;&nbsp;</a></span>meleeBuff</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.Main.meleeBuff = new bool[338]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Categorizes status effects for which this is set to true as being from flasks, preventing them from overlapping with other flask status effects.<br  />
+ Defaults to false; all vanilla flask effects have their entries here set to true.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a25e42dc142bfa3a2bd5ccba4a7b5d6f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25e42dc142bfa3a2bd5ccba4a7b5d6f2">&#9670;&nbsp;</a></span>npcCatchable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.Main.npcCatchable = new bool[670]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Used to denote an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> as being catchable by bug nets and similar.<br  />
+ Contrary to its name, this array isn't actually used for catching logic at all.<br  />
+ It is instead used to determine if an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> can be released back into the world after being caught.<br  />
+ </p>
+
 </div>
 </div>
 <a id="a20dbccb19f47fc9b54ba0243ffe02964"></a>
@@ -4847,6 +5006,32 @@ Can be called on any side, but only the server will actually sync it. </p>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="aeb27cacc30d8d86cc492fb06b6413c26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb27cacc30d8d86cc492fb06b6413c26">&#9670;&nbsp;</a></span>persistentBuff</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.Main.persistentBuff = new bool[338]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows status effects for which this is set to true to persist after the afflicted player's death.<br  />
+ Defaults to false; all vanilla flask effects have their entries here set to true.<br  />
+ </p>
+
+</div>
+</div>
 <a id="afecb4b7ce5f840a225bc3aea58d339ec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afecb4b7ce5f840a225bc3aea58d339ec">&#9670;&nbsp;</a></span>RegisteredGameModes</h2>
 
@@ -4874,6 +5059,32 @@ Can be called on any side, but only the server will actually sync it. </p>
 </div><!-- fragment -->
 </div>
 </div>
+<a id="a0af01de3bcea11395fb1d8df66a5aafb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0af01de3bcea11395fb1d8df66a5aafb">&#9670;&nbsp;</a></span>vanityPet</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.Main.vanityPet = new bool[338]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br  />
+ Defaults to false; all vanilla vanity pets have their entries here set to true.<br  />
+ </p>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="a9ba54c609043ceb412361cc110912db2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ba54c609043ceb412361cc110912db2">&#9670;&nbsp;</a></span>CurrentPlayer</h2>
@@ -4896,6 +5107,58 @@ Can be called on any side, but only the server will actually sync it. </p>
 </div><div class="memdoc">
 
 <p>A replacement for <code>Main.LocalPlayer</code> which respects whichever player is currently running hooks on the main thread. This works in the player select screen, and in multiplayer (when other players are updating) </p>
+
+</div>
+</div>
+<a id="a722d85d94fd4ea0c1c641c58c85736f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a722d85d94fd4ea0c1c641c58c85736f6">&#9670;&nbsp;</a></span>MouseScreen</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector2 Terraria.Main.MouseScreen</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fetches the position of the mouse cursor on the screen.<br  />
+ Useful for making things visually happen near the cursor.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a65fc0249c83ece95c7dec05bbb1bd0aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65fc0249c83ece95c7dec05bbb1bd0aa">&#9670;&nbsp;</a></span>MouseWorld</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector2 Terraria.Main.MouseWorld</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Fetches the position of the mouse cursor in the world.<br  />
+ Useful for making things functionally happen near the cursor, such as projectile or <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> spawns.<br  />
+ </p>
 
 </div>
 </div>

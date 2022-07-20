@@ -175,8 +175,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ExplodeTiles</b> (Vec
 <tr class="memitem:a54c881bb287a74596163bebab566bfb6"><td class="memItemLeft" align="right" valign="top"><a id="a54c881bb287a74596163bebab566bfb6"></a>
 <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>&#160;</td><td class="memItemRight" valign="bottom"><b>FindTargetWithinRange</b> (float maxRange, bool checkCanHit=false)</td></tr>
 <tr class="separator:a54c881bb287a74596163bebab566bfb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a482530eaedf1939800352d0547a9684a"><td class="memItemLeft" align="right" valign="top"><a id="a482530eaedf1939800352d0547a9684a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>FindTargetWithLineOfSight</b> (float maxRange=800f)</td></tr>
+<tr class="memitem:a482530eaedf1939800352d0547a9684a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_projectile.html#a482530eaedf1939800352d0547a9684a">FindTargetWithLineOfSight</a> (float maxRange=800f)</td></tr>
+<tr class="memdesc:a482530eaedf1939800352d0547a9684a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the closest <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to this projectile which can be targeted and which it has line of sight to.  <a href="class_terraria_1_1_projectile.html#a482530eaedf1939800352d0547a9684a">More...</a><br /></td></tr>
 <tr class="separator:a482530eaedf1939800352d0547a9684a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1bb055358762c3106e9d5949da4dfd1"><td class="memItemLeft" align="right" valign="top"><a id="aa1bb055358762c3106e9d5949da4dfd1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>FishingCheck</b> ()</td></tr>
@@ -781,6 +781,34 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 <tr class="separator:af3dfef58afad89d424164f1e9392e752 inherit properties_class_terraria_1_1_entity"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a482530eaedf1939800352d0547a9684a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a482530eaedf1939800352d0547a9684a">&#9670;&nbsp;</a></span>FindTargetWithLineOfSight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Projectile.FindTargetWithLineOfSight </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>maxRange</em> = <code>800f</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finds the closest <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> to this projectile which can be targeted and which it has line of sight to. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">maxRange</td><td>The maximum range at which this projectile should search out a target, measured in pixels.<br  />
+ Defaults to 800 (50 tiles). Each tile, for reference, measures out to be 16x16 pixels. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The index, in Main.npc, of the closest targetable <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.</dd></dl>
+
+</div>
+</div>
 <a id="a00626028646ac8c64466a70f72e92cfa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a00626028646ac8c64466a70f72e92cfa">&#9670;&nbsp;</a></span>GetGlobalProjectile&lt; T &gt;() <span class="overload">[1/2]</span></h2>
 

@@ -1,5 +1,11 @@
 var NAVTREEINDEX11 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html":[2,0,2,5,10,5,26],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html#a00d9374fcf0207ed54fbcf8b5df86f23":[2,0,2,5,10,5,26,2],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html#a71b242e4e5d6c15c9e54ef64f61abbe2":[2,0,2,5,10,5,26,0],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html#acdeadb3560e99d07b324233eb018195e":[2,0,2,5,10,5,26,1],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html":[2,0,2,5,10,5,27],
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html#a0ff0369752b17e167baf4573bca01fab":[2,0,2,5,10,5,27,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html#a100804bd650b0dc267ea2f1098a6e979":[2,0,2,5,10,5,27,4],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html#a30031d4625b7dd53e7fa89c19612377f":[2,0,2,5,10,5,27,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html#a4fddeb266829184eb8d783e15c0352b7":[2,0,2,5,10,5,27,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX11 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_slime_body_item_drop_rule.html#a8706e1bdb932c2ef725ba40304265c93":[2,0,2,5,10,30,5],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_slime_body_item_drop_rule.html#ac65f86c47b9be58f426f814d6efae2e8":[2,0,2,5,10,30,4],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_slime_body_item_drop_rule.html#adc2a3a5efa4aa10e69c224bf419ac1aa":[2,0,2,5,10,30,0],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_slime_body_item_drop_rule.html#adfbda997fd12f8e6624b138d5d56caa7":[2,0,2,5,10,30,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_slime_body_item_drop_rule.html#af83cafc2b8fd05b9d750ad7d9b9454c8":[2,0,2,5,10,30,3],
-"class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html":[2,0,2,5,42],
-"class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html#a19822a1b37981d2affa5a3c3096c170a":[2,0,2,5,42,2],
-"class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html#a7a042a79e7b55aa931aa9f160d7f33d8":[2,0,2,5,42,0],
-"class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html#aa8165a29bbd09193b260a1cdbe47f505":[2,0,2,5,42,3],
-"class_terraria_1_1_game_content_1_1_item_shop_sellback_helper.html#aee211724b134e56ab66f7bef99a67d4d":[2,0,2,5,42,1]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_slime_body_item_drop_rule.html#adfbda997fd12f8e6624b138d5d56caa7":[2,0,2,5,10,30,2]
 };

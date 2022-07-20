@@ -1,5 +1,11 @@
 var NAVTREEINDEX22 =
 {
+"class_terraria_1_1_game_content_1_1_u_i_1_1_world_u_i_anchor.html":[2,0,2,5,21,20],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_world_u_i_anchor.html#a0030d6adc0054c8bc757526191124e80":[2,0,2,5,21,20,7],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_world_u_i_anchor.html#a097c5f59e321185a1120dffebd1578d9":[2,0,2,5,21,20,5],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_world_u_i_anchor.html#a2bf5176e7a3c3cca67259f0852ca9430":[2,0,2,5,21,20,8],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_world_u_i_anchor.html#a497756e15b6f2c5e1b66ec4c2022a033":[2,0,2,5,21,20,2],
+"class_terraria_1_1_game_content_1_1_u_i_1_1_world_u_i_anchor.html#a57bd46b4dee762d3d44a3334d60d3eef":[2,0,2,5,21,20,6],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_world_u_i_anchor.html#a8362cab6888b96c337dea328d938c699":[2,0,2,5,21,20,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_world_u_i_anchor.html#a8362cab6888b96c337dea328d938c699a1a434befae3f49ae09347ded52032f6f":[2,0,2,5,21,20,0,0],
 "class_terraria_1_1_game_content_1_1_u_i_1_1_world_u_i_anchor.html#a8362cab6888b96c337dea328d938c699a6adf97f83acf6453d4a6a4b1070f3754":[2,0,2,5,21,20,0,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX22 =
 "class_terraria_1_1_game_input_1_1_trigger_names.html#af0a9dde99aaf3c2ba65fdecf2989172a":[2,0,2,6,5,48],
 "class_terraria_1_1_game_input_1_1_trigger_names.html#af6cb7c362e74c308602c46261cbc6880":[2,0,2,6,5,39],
 "class_terraria_1_1_game_input_1_1_trigger_names.html#af9b17e923b06f1f672d97ffe5e20e1b1":[2,0,2,6,5,44],
-"class_terraria_1_1_game_input_1_1_triggers_pack.html":[2,0,2,6,6],
-"class_terraria_1_1_game_input_1_1_triggers_pack.html#a048504f7c3bd7ec0a5787c264c2f5e16":[2,0,2,6,6,6],
-"class_terraria_1_1_game_input_1_1_triggers_pack.html#a0a574ffffe8ac9ab81ca9226cae240f4":[2,0,2,6,6,1],
-"class_terraria_1_1_game_input_1_1_triggers_pack.html#a1d32ac7805aadd0c8aabbe58db4802c5":[2,0,2,6,6,7],
-"class_terraria_1_1_game_input_1_1_triggers_pack.html#a1f283d414fc3825b834e992c4ee61ca6":[2,0,2,6,6,3],
-"class_terraria_1_1_game_input_1_1_triggers_pack.html#a506441674d08735eb366dea477fa9aab":[2,0,2,6,6,2],
-"class_terraria_1_1_game_input_1_1_triggers_pack.html#a651d511b58f6832ae9fc41cdeb89adff":[2,0,2,6,6,5]
+"class_terraria_1_1_game_input_1_1_triggers_pack.html":[2,0,2,6,6]
 };

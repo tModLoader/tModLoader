@@ -1,5 +1,11 @@
 var NAVTREEINDEX70 =
 {
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aeb35ef006f076814c0f5e2282567ba93":[2,0,2,8,42,42],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aeb7cbd60558c5ad97aca5582968d9a5d":[2,0,2,8,42,175],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aec1d68fe86682b3e904cd1981486848d":[2,0,2,8,42,126],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aec34b25312713cc37e5d581a9b0b7ab5":[2,0,2,8,42,146],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aec9c83e9fa8502fb7c5b113e9c446f52":[2,0,2,8,42,289],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aeccb584b5f5394de10608201f333218d":[2,0,2,8,42,692],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#aed0754b44a66eea3ef5804a408abda54":[2,0,2,8,42,782],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#aed663e8ca8b6bf9a0d9a115ebc50a731":[2,0,2,8,42,506],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#aed684947c531c653817d3fb8fc3f2a17":[2,0,2,8,42,874],
@@ -243,11 +249,5 @@ var NAVTREEINDEX70 =
 "class_terraria_1_1_i_d_1_1_sound_i_d.html#a23946d5a030a8727616911e6d67f5c66":[2,0,2,8,45,91],
 "class_terraria_1_1_i_d_1_1_sound_i_d.html#a23c764c47e40b51068895ec6cf44849e":[2,0,2,8,45,321],
 "class_terraria_1_1_i_d_1_1_sound_i_d.html#a23e55086719fffa4f7d821f7dfc7de14":[2,0,2,8,45,305],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#a2486ac4955b58eff4a63e1627eaa7b89":[2,0,2,8,45,369],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#a24bff7615b9bb3b5c262f23d462692ce":[2,0,2,8,45,384],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#a24fb23ff7c7b79c5fb50ac71b538184b":[2,0,2,8,45,435],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#a253424047424b69f21f6b599783956e2":[2,0,2,8,45,360],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#a25b61208e0d281b9f776f702f86fb03b":[2,0,2,8,45,143],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#a261fcdcf929a08536409e95699f7caa1":[2,0,2,8,45,280],
-"class_terraria_1_1_i_d_1_1_sound_i_d.html#a262ab8ea271ab2bf081426b8e2dbcc83":[2,0,2,8,45,427]
+"class_terraria_1_1_i_d_1_1_sound_i_d.html#a2486ac4955b58eff4a63e1627eaa7b89":[2,0,2,8,45,369]
 };

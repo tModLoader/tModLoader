@@ -1,5 +1,11 @@
 var NAVTREEINDEX68 =
 {
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6a92073761eb7e8689b6e7e36889c149":[2,0,2,8,42,481],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6ac50e785bb45644650a4b027186d246":[2,0,2,8,42,898],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6b963fe386ecdb34738c42d8dca5a821":[2,0,2,8,42,244],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6b9a2df7e2140e2d09ff87cc7b357d6c":[2,0,2,8,42,189],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6c25d8e3c0d9e47077be550937e541e7":[2,0,2,8,42,19],
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6c517a1ae91e603176d7f867b075fbf6":[2,0,2,8,42,465],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6c621619055d535d4adc77ab19ab11e7":[2,0,2,8,42,56],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6ccede89deb4da7651c7dbc23a1f2b02":[2,0,2,8,42,454],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#a6ccf7bff728247302746442543c55dfb":[2,0,2,8,42,220],
@@ -243,11 +249,5 @@ var NAVTREEINDEX68 =
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#aa761236f93400c80b80bf65c89985944":[2,0,2,8,42,198],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#aa78ed9be6c8c930f8a5759c80e9446dc":[2,0,2,8,42,556],
 "class_terraria_1_1_i_d_1_1_projectile_i_d.html#aa7c7833b8aa1f6c8b06bcf584f3ec83f":[2,0,2,8,42,277],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aa7d6d22897f1e9937b99bb8cb99fdf56":[2,0,2,8,42,112],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aa7e01410c36a8c16920ce3d6517f94ef":[2,0,2,8,42,433],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aa88aacc844cdad849bbc94b8844ba1dd":[2,0,2,8,42,508],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aa88b3c2eeac21b4e56ac796329f72c49":[2,0,2,8,42,14],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aa8f79258eb238df3bdd0410d8ef289ba":[2,0,2,8,42,657],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aa9ed9d7d1e59e646184c57caab63fe49":[2,0,2,8,42,159],
-"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aaa1cb62162814414a875f7762b7f5f63":[2,0,2,8,42,343]
+"class_terraria_1_1_i_d_1_1_projectile_i_d.html#aa7d6d22897f1e9937b99bb8cb99fdf56":[2,0,2,8,42,112]
 };

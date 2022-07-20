@@ -1,5 +1,11 @@
 var NAVTREEINDEX29 =
 {
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#ad3e1285f07d4f9bafb1568380667fb25":[2,0,2,8,3,9,90],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#ad481da2d4a3e5d0d42cb345c78c00c42":[2,0,2,8,3,9,9],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#ad6301320e8fc7fba5ababa101ee96db9":[2,0,2,8,3,9,117],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#ad750026e570298c38a142752ef92c50b":[2,0,2,8,3,9,35],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#ad7de171e513aa9479ca6b3a1ac3458eb":[2,0,2,8,3,9,23],
+"class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#adba555364e999f5969c50c26ef295548":[2,0,2,8,3,9,191],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#adbc28814495b7ac0e79f0ac4dda1a0d0":[2,0,2,8,3,9,182],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#adbed52210f4c4adf0c71621cad544ba4":[2,0,2,8,3,9,42],
 "class_terraria_1_1_i_d_1_1_armor_i_ds_1_1_legs.html#ae19ec019f994ced892a5ad967255cde0":[2,0,2,8,3,9,204],
@@ -243,11 +249,5 @@ var NAVTREEINDEX29 =
 "class_terraria_1_1_i_d_1_1_buff_i_d.html#a385fc0799c07163a3f133995dbbd4ec4":[2,0,2,8,4,73],
 "class_terraria_1_1_i_d_1_1_buff_i_d.html#a38bd3087a9d2d92db9cf3dd521137119":[2,0,2,8,4,291],
 "class_terraria_1_1_i_d_1_1_buff_i_d.html#a397a55eecc9ff91ddba88a86b1cc0bea":[2,0,2,8,4,38],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a3b3ced271bfa85bd431e4b46f73467cf":[2,0,2,8,4,92],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a3b6b831bdb58600c68bc0d0da9dccddd":[2,0,2,8,4,243],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a3bbab871d12d3ef5b16b564f92f51035":[2,0,2,8,4,130],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a3bd8aa1d7440d32dbf0b12e0ee9084f8":[2,0,2,8,4,31],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a3c2a45870098d32f7a805b75d1af5456":[2,0,2,8,4,135],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a3f0669c8a72ae8daeeab7142b127522d":[2,0,2,8,4,83],
-"class_terraria_1_1_i_d_1_1_buff_i_d.html#a3f0dfcba884b4fb70dd46a17745d6d3b":[2,0,2,8,4,315]
+"class_terraria_1_1_i_d_1_1_buff_i_d.html#a3b3ced271bfa85bd431e4b46f73467cf":[2,0,2,8,4,92]
 };

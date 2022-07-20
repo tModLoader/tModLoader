@@ -416,25 +416,25 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsAGolfingItem
 <tr class="memitem:a522d09db654ebcedd242ec8ce6a31546"><td class="memItemLeft" align="right" valign="top"><a id="a522d09db654ebcedd242ec8ce6a31546"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>MechSpawn</b> (float x, float y, int type)</td></tr>
 <tr class="separator:a522d09db654ebcedd242ec8ce6a31546"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a438e2f4a4ef1ebb47daca7d30bc055"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a7a438e2f4a4ef1ebb47daca7d30bc055">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, int X, int Y, int Width, int Height, int Type, int Stack=1, bool noBroadcast=false, int pfix=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memitem:a7a438e2f4a4ef1ebb47daca7d30bc055"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a7a438e2f4a4ef1ebb47daca7d30bc055">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, int X, int Y, int Width, int Height, int Type, int Stack=1, bool noBroadcast=false, int pfix=0, bool <a class="el" href="class_terraria_1_1_item.html#aabb6c84e7dd6488ca5beb7630995db0d">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:a7a438e2f4a4ef1ebb47daca7d30bc055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Spawns an item into the game world with the given type and stack size. The X, Y, Width, and Height parameters dictate a rectangle, the item will be spawned centered within that rectangle. Other overloads support passing in a position directly, or just use 0 for Width and Height if the center is passed in a X and Y. This method should not be called on multiplayer clients. If you need to spawn items from client code, use <a class="el" href="">Player.QuickSpawnItem(IEntitySource, int, int)</a> instead, it handles the multiplayer syncing code needed. The source represents the entity causing this item to spawn. The return value is the index of the spawned <a class="el" href="class_terraria_1_1_item.html">Item</a> within the Main.item array.  <a href="class_terraria_1_1_item.html#a7a438e2f4a4ef1ebb47daca7d30bc055">More...</a><br /></td></tr>
 <tr class="separator:a7a438e2f4a4ef1ebb47daca7d30bc055"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7d47fb02ce484b22f8d2eef0cfbf87e"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#af7d47fb02ce484b22f8d2eef0cfbf87e">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Rectangle rectangle, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memitem:af7d47fb02ce484b22f8d2eef0cfbf87e"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#af7d47fb02ce484b22f8d2eef0cfbf87e">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Rectangle rectangle, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool <a class="el" href="class_terraria_1_1_item.html#aabb6c84e7dd6488ca5beb7630995db0d">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:af7d47fb02ce484b22f8d2eef0cfbf87e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
 <br  />
 This particular overload uses a Rectangle instead of X, Y, Width, and Height to determine the actual spawn position.  <a href="class_terraria_1_1_item.html#af7d47fb02ce484b22f8d2eef0cfbf87e">More...</a><br /></td></tr>
 <tr class="separator:af7d47fb02ce484b22f8d2eef0cfbf87e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70cf762c48813cbeef8b677656bfb054"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a70cf762c48813cbeef8b677656bfb054">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 pos, int Width, int Height, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memitem:a70cf762c48813cbeef8b677656bfb054"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a70cf762c48813cbeef8b677656bfb054">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 pos, int Width, int Height, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool <a class="el" href="class_terraria_1_1_item.html#aabb6c84e7dd6488ca5beb7630995db0d">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:a70cf762c48813cbeef8b677656bfb054"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
 <br  />
 This particular overload uses a Vector2 instead of X and Y to determine the actual spawn position.  <a href="class_terraria_1_1_item.html#a70cf762c48813cbeef8b677656bfb054">More...</a><br /></td></tr>
 <tr class="separator:a70cf762c48813cbeef8b677656bfb054"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0f057a4ed207ce83cd3141063371604"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#ae0f057a4ed207ce83cd3141063371604">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 pos, Vector2 randomBox, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memitem:ae0f057a4ed207ce83cd3141063371604"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#ae0f057a4ed207ce83cd3141063371604">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 pos, Vector2 randomBox, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool <a class="el" href="class_terraria_1_1_item.html#aabb6c84e7dd6488ca5beb7630995db0d">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:ae0f057a4ed207ce83cd3141063371604"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
 <br  />
 This particular overload uses two Vector2 to determine the actual spawn position.  <a href="class_terraria_1_1_item.html#ae0f057a4ed207ce83cd3141063371604">More...</a><br /></td></tr>
 <tr class="separator:ae0f057a4ed207ce83cd3141063371604"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71f7ee3fbdcb676cc15bb9edd558b9cd"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a71f7ee3fbdcb676cc15bb9edd558b9cd">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 position, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool noGrabDelay=false, bool reverseLookup=false)</td></tr>
+<tr class="memitem:a71f7ee3fbdcb676cc15bb9edd558b9cd"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a71f7ee3fbdcb676cc15bb9edd558b9cd">NewItem</a> (<a class="el" href="interface_terraria_1_1_data_structures_1_1_i_entity_source.html">IEntitySource</a> source, Vector2 position, int Type, int Stack=1, bool noBroadcast=false, int prefixGiven=0, bool <a class="el" href="class_terraria_1_1_item.html#aabb6c84e7dd6488ca5beb7630995db0d">noGrabDelay</a>=false, bool reverseLookup=false)</td></tr>
 <tr class="memdesc:a71f7ee3fbdcb676cc15bb9edd558b9cd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><br  />
 <br  />
 This particular overload uses a Vector2 instead of X, Y, Width, and Height to determine the actual spawn position.  <a href="class_terraria_1_1_item.html#a71f7ee3fbdcb676cc15bb9edd558b9cd">More...</a><br /></td></tr>
@@ -482,8 +482,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>axe</b></td></tr>
 <tr class="memitem:a68b3b23ac460181bbe4be4c352aca710"><td class="memItemLeft" align="right" valign="top"><a id="a68b3b23ac460181bbe4be4c352aca710"></a>
 sbyte&#160;</td><td class="memItemRight" valign="bottom"><b>backSlot</b> = -1</td></tr>
 <tr class="separator:a68b3b23ac460181bbe4be4c352aca710"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9bed95eb0c53b72bf4211435beb5e84"><td class="memItemLeft" align="right" valign="top"><a id="ae9bed95eb0c53b72bf4211435beb5e84"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>bait</b></td></tr>
+<tr class="memitem:ae9bed95eb0c53b72bf4211435beb5e84"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#ae9bed95eb0c53b72bf4211435beb5e84">bait</a></td></tr>
+<tr class="memdesc:ae9bed95eb0c53b72bf4211435beb5e84"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numerical value this item adds to a player's fishing skill when used as bait.<br  />
+ If greater than 0, categorizes this item as bait.<br  />
+ Bait can be put into ammo slots and is consumed when fishing.<br  />
+ The higher the value of <code>bait</code>, the lower the chance the bait is consumed.<br  />
+ Defaults to 0.<br  />
+  <a href="class_terraria_1_1_item.html#ae9bed95eb0c53b72bf4211435beb5e84">More...</a><br /></td></tr>
 <tr class="separator:ae9bed95eb0c53b72bf4211435beb5e84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a117cf7cea5c833f7570ebb9ce4d009b6"><td class="memItemLeft" align="right" valign="top"><a id="a117cf7cea5c833f7570ebb9ce4d009b6"></a>
 sbyte&#160;</td><td class="memItemRight" valign="bottom"><b>balloonSlot</b> = -1</td></tr>
@@ -491,8 +496,10 @@ sbyte&#160;</td><td class="memItemRight" valign="bottom"><b>balloonSlot</b> = -1
 <tr class="memitem:a725bab163c2b1df46a0c68fa451d6f88"><td class="memItemLeft" align="right" valign="top"><a id="a725bab163c2b1df46a0c68fa451d6f88"></a>
 sbyte&#160;</td><td class="memItemRight" valign="bottom"><b>beardSlot</b> = -1</td></tr>
 <tr class="separator:a725bab163c2b1df46a0c68fa451d6f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefb35ecb4368cd2dc21ed52ea36135c8"><td class="memItemLeft" align="right" valign="top"><a id="aefb35ecb4368cd2dc21ed52ea36135c8"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>beingGrabbed</b></td></tr>
+<tr class="memitem:aefb35ecb4368cd2dc21ed52ea36135c8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#aefb35ecb4368cd2dc21ed52ea36135c8">beingGrabbed</a></td></tr>
+<tr class="memdesc:aefb35ecb4368cd2dc21ed52ea36135c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then this item is currently being grabbed by a player.<br  />
+ Items being grabbed by the player cannot combine with nearby items, be picked up by enemies, burn in lava, or despawn.<br  />
+  <a href="class_terraria_1_1_item.html#aefb35ecb4368cd2dc21ed52ea36135c8">More...</a><br /></td></tr>
 <tr class="separator:aefb35ecb4368cd2dc21ed52ea36135c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f6ec3dcf3320492ec7d44caa892c838"><td class="memItemLeft" align="right" valign="top"><a id="a2f6ec3dcf3320492ec7d44caa892c838"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>BestiaryNotes</b></td></tr>
@@ -539,29 +546,50 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>crit</b></td></tr>
 <tr class="memitem:a5034e0c5baa4e6af22a0c13a2fe32101"><td class="memItemLeft" align="right" valign="top"><a id="a5034e0c5baa4e6af22a0c13a2fe32101"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>damage</b></td></tr>
 <tr class="separator:a5034e0c5baa4e6af22a0c13a2fe32101"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f0d6429929991912841fb8f886c0b0c"><td class="memItemLeft" align="right" valign="top"><a id="a4f0d6429929991912841fb8f886c0b0c"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>DD2Summon</b></td></tr>
+<tr class="memitem:a4f0d6429929991912841fb8f886c0b0c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a4f0d6429929991912841fb8f886c0b0c">DD2Summon</a></td></tr>
+<tr class="memdesc:a4f0d6429929991912841fb8f886c0b0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the given item is categorized as a Dungeon Defenders 2 summon item.<br  />
+ DD2 summon items get a counter for how much Etherian Mana is in the player's inventory.<br  />
+ <b>This field being set does not make the item consume Etherian Mana.</b> Etherian Mana consumption is handled manually per-type.<br  />
+ Defaults to <code>false</code>.<br  />
+  <a href="class_terraria_1_1_item.html#a4f0d6429929991912841fb8f886c0b0c">More...</a><br /></td></tr>
 <tr class="separator:a4f0d6429929991912841fb8f886c0b0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aca6ba0af843692263ee72cbd4d5fbb84"><td class="memItemLeft" align="right" valign="top"><a id="aca6ba0af843692263ee72cbd4d5fbb84"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>defense</b></td></tr>
 <tr class="separator:aca6ba0af843692263ee72cbd4d5fbb84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a190dff4cc91d18866e60c2e7bc571a8f"><td class="memItemLeft" align="right" valign="top"><a id="a190dff4cc91d18866e60c2e7bc571a8f"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>dye</b></td></tr>
+<tr class="memitem:a190dff4cc91d18866e60c2e7bc571a8f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a190dff4cc91d18866e60c2e7bc571a8f">dye</a></td></tr>
+<tr class="memdesc:a190dff4cc91d18866e60c2e7bc571a8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the armor shader in GameShaders.Armor this item activates when worn in a dye slot.<br  />
+ If greater than 0, then this item can be equipped into dye slots.<br  />
+ Defaults to -1.<br  />
+  <a href="class_terraria_1_1_item.html#a190dff4cc91d18866e60c2e7bc571a8f">More...</a><br /></td></tr>
 <tr class="separator:a190dff4cc91d18866e60c2e7bc571a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05dfaeec8f9a10fc7ac6218dcfc3f6fe"><td class="memItemLeft" align="right" valign="top"><a id="a05dfaeec8f9a10fc7ac6218dcfc3f6fe"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>expert</b></td></tr>
+<tr class="memitem:a05dfaeec8f9a10fc7ac6218dcfc3f6fe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a05dfaeec8f9a10fc7ac6218dcfc3f6fe">expert</a></td></tr>
+<tr class="memdesc:a05dfaeec8f9a10fc7ac6218dcfc3f6fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then the given item is automatically given the Expert rarity, causing its name to be drawn in rainbow text.<br  />
+ It also adds the "Expert" tooltip. To use the Expert rarity without adding this tooltip, see ItemRarityID.Expert.<br  />
+  <a href="class_terraria_1_1_item.html#a05dfaeec8f9a10fc7ac6218dcfc3f6fe">More...</a><br /></td></tr>
 <tr class="separator:a05dfaeec8f9a10fc7ac6218dcfc3f6fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdaa3df8ddaef1011268dacd195f4d1b"><td class="memItemLeft" align="right" valign="top"><a id="acdaa3df8ddaef1011268dacd195f4d1b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>expertOnly</b></td></tr>
+<tr class="memitem:acdaa3df8ddaef1011268dacd195f4d1b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#acdaa3df8ddaef1011268dacd195f4d1b">expertOnly</a></td></tr>
+<tr class="memdesc:acdaa3df8ddaef1011268dacd195f4d1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then the given item's effects only function in Expert Mode or higher (Main.expertMode).<br  />
+ Specifically, any equipped, Expert-only accessory will not update, any Expert-only minecart will not be used when riding minecart tracks, and an 'X' will be drawn over the item when equipped.<br  />
+ Unused in vanilla.<br  />
+  <a href="class_terraria_1_1_item.html#acdaa3df8ddaef1011268dacd195f4d1b">More...</a><br /></td></tr>
 <tr class="separator:acdaa3df8ddaef1011268dacd195f4d1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acea6d4057104300ce0283cc4cb9002eb"><td class="memItemLeft" align="right" valign="top"><a id="acea6d4057104300ce0283cc4cb9002eb"></a>
 sbyte&#160;</td><td class="memItemRight" valign="bottom"><b>faceSlot</b> = -1</td></tr>
 <tr class="separator:acea6d4057104300ce0283cc4cb9002eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6fca7ce5ad9961010659dca6692ce791"><td class="memItemLeft" align="right" valign="top"><a id="a6fca7ce5ad9961010659dca6692ce791"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>favorited</b></td></tr>
+<tr class="memitem:a6fca7ce5ad9961010659dca6692ce791"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a6fca7ce5ad9961010659dca6692ce791">favorited</a></td></tr>
+<tr class="memdesc:a6fca7ce5ad9961010659dca6692ce791"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then the given item is favorited.<br  />
+ Favorited items cannot be dropped, automatically moved into chests, placed in any kind of item rack, sold, trashed, or sorted.<br  />
+ Favorited items can still be dropped if the player has no inventory space and will still drop on death on Mediumcore or higher difficulties.<br  />
+ An item becomes unfavorited if removed from the player's inventory, including if the item is move to any equipment slot.<br  />
+ Defaults to <code>false</code>.<br  />
+  <a href="class_terraria_1_1_item.html#a6fca7ce5ad9961010659dca6692ce791">More...</a><br /></td></tr>
 <tr class="separator:a6fca7ce5ad9961010659dca6692ce791"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f3649dd565fedfcee59e06d0b0b7f5a"><td class="memItemLeft" align="right" valign="top"><a id="a1f3649dd565fedfcee59e06d0b0b7f5a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>fishingPole</b> = 1</td></tr>
+<tr class="memitem:a1f3649dd565fedfcee59e06d0b0b7f5a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a1f3649dd565fedfcee59e06d0b0b7f5a">fishingPole</a> = 1</td></tr>
+<tr class="memdesc:a1f3649dd565fedfcee59e06d0b0b7f5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numerical value this item adds to a player's fishing skill when held.<br  />
+ If greater than 0, categorizes this item as a fishing pole.<br  />
+ Fishing poles can be placed into weapon racks, have a counter for the bait the player is carrying, and are held out when a bobber is active.<br  />
+ Defaults to 0.<br  />
+  <a href="class_terraria_1_1_item.html#a1f3649dd565fedfcee59e06d0b0b7f5a">More...</a><br /></td></tr>
 <tr class="separator:a1f3649dd565fedfcee59e06d0b0b7f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace3c10b8cad75d48e34d6d06c9286f46"><td class="memItemLeft" align="right" valign="top"><a id="ace3c10b8cad75d48e34d6d06c9286f46"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>flame</b></td></tr>
@@ -596,11 +624,18 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>healMana</b></td></tr>
 <tr class="memitem:ab1e69e206ba0e1e4bd0da2c82b593c14"><td class="memItemLeft" align="right" valign="top"><a id="ab1e69e206ba0e1e4bd0da2c82b593c14"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>holdStyle</b></td></tr>
 <tr class="separator:ab1e69e206ba0e1e4bd0da2c82b593c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e8ff63f241304e30c8d374f314108be"><td class="memItemLeft" align="right" valign="top"><a id="a6e8ff63f241304e30c8d374f314108be"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>instanced</b></td></tr>
+<tr class="memitem:a6e8ff63f241304e30c8d374f314108be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a6e8ff63f241304e30c8d374f314108be">instanced</a></td></tr>
+<tr class="memdesc:a6e8ff63f241304e30c8d374f314108be"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then the given item is instanced per-client.<br  />
+ Instanced items only appear on the client they were spawned on and are less likely to be replaced if a new item is spawned.<br  />
+ Instanced items do not exist on servers.<br  />
+ Vanilla uses this field for treasure bags and Defender Medals. tModLoader automatically handles this for modded treasure bags.<br  />
+ If you would like to make an instanced item, see any one of the following for examples:<br  />
+  <a href="class_terraria_1_1_item.html#a6e8ff63f241304e30c8d374f314108be">More...</a><br /></td></tr>
 <tr class="separator:a6e8ff63f241304e30c8d374f314108be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0aa14c05e13989949ad892e6b35b71e7"><td class="memItemLeft" align="right" valign="top"><a id="a0aa14c05e13989949ad892e6b35b71e7"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isAShopItem</b></td></tr>
+<tr class="memitem:a0aa14c05e13989949ad892e6b35b71e7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a0aa14c05e13989949ad892e6b35b71e7">isAShopItem</a></td></tr>
+<tr class="memdesc:a0aa14c05e13989949ad892e6b35b71e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then the given item is being sold in a shop.<br  />
+ Shop items display their price. See value.<br  />
+  <a href="class_terraria_1_1_item.html#a0aa14c05e13989949ad892e6b35b71e7">More...</a><br /></td></tr>
 <tr class="separator:a0aa14c05e13989949ad892e6b35b71e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0c9345dd04ddf28fb9ce711c9c767b9"><td class="memItemLeft" align="right" valign="top"><a id="ae0c9345dd04ddf28fb9ce711c9c767b9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>keepTime</b></td></tr>
@@ -624,11 +659,16 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>mana</b></td></tr>
 <tr class="memitem:a420dc5259bca87ab29225bd5ba36097e"><td class="memItemLeft" align="right" valign="top"><a id="a420dc5259bca87ab29225bd5ba36097e"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>manaIncrease</b></td></tr>
 <tr class="separator:a420dc5259bca87ab29225bd5ba36097e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af21d2db83fd02e584a11b27d736f1211"><td class="memItemLeft" align="right" valign="top"><a id="af21d2db83fd02e584a11b27d736f1211"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>master</b></td></tr>
+<tr class="memitem:af21d2db83fd02e584a11b27d736f1211"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#af21d2db83fd02e584a11b27d736f1211">master</a></td></tr>
+<tr class="memdesc:af21d2db83fd02e584a11b27d736f1211"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then the given item is automatically given the Master rarity, causing its name to be drawn in red-orange text.<br  />
+ It also adds the "Master" tooltip. To use the Master rarity without adding this tooltip, see ItemRarityID.Master.<br  />
+  <a href="class_terraria_1_1_item.html#af21d2db83fd02e584a11b27d736f1211">More...</a><br /></td></tr>
 <tr class="separator:af21d2db83fd02e584a11b27d736f1211"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af92966ffac7e90ffef7a84a7ed5d061a"><td class="memItemLeft" align="right" valign="top"><a id="af92966ffac7e90ffef7a84a7ed5d061a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>masterOnly</b></td></tr>
+<tr class="memitem:af92966ffac7e90ffef7a84a7ed5d061a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#af92966ffac7e90ffef7a84a7ed5d061a">masterOnly</a></td></tr>
+<tr class="memdesc:af92966ffac7e90ffef7a84a7ed5d061a"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then the given item's effects only function in Master Mode or higher (Main.masterMode).<br  />
+ Specifically, any equipped, Master-only accessory will not update, any Master-only minecart will not be used when riding minecart tracks, and an 'X' will be drawn over the item when equipped.<br  />
+ Unused in vanilla.<br  />
+  <a href="class_terraria_1_1_item.html#af92966ffac7e90ffef7a84a7ed5d061a">More...</a><br /></td></tr>
 <tr class="separator:af92966ffac7e90ffef7a84a7ed5d061a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a4cdaeb02884a2241a6d830250a8d12"><td class="memItemLeft" align="right" valign="top"><a id="a1a4cdaeb02884a2241a6d830250a8d12"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>material</b></td></tr>
@@ -636,8 +676,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>material</b></td></tr
 <tr class="memitem:a43f51e33be93f066916198e4804b5008"><td class="memItemLeft" align="right" valign="top"><a id="a43f51e33be93f066916198e4804b5008"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>maxStack</b></td></tr>
 <tr class="separator:a43f51e33be93f066916198e4804b5008"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d9fb1727b448f845e7581611a51e117"><td class="memItemLeft" align="right" valign="top"><a id="a0d9fb1727b448f845e7581611a51e117"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>mech</b></td></tr>
+<tr class="memitem:a0d9fb1727b448f845e7581611a51e117"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a0d9fb1727b448f845e7581611a51e117">mech</a></td></tr>
+<tr class="memdesc:a0d9fb1727b448f845e7581611a51e117"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then the given item will show all placed wires and actuators when held.<br  />
+ This item will also be grouped with other items with <code>mech</code> set to <code>true</code> when the inventory is sorted.<br  />
+ Defaults to <code>false</code>.<br  />
+  <a href="class_terraria_1_1_item.html#a0d9fb1727b448f845e7581611a51e117">More...</a><br /></td></tr>
 <tr class="separator:a0d9fb1727b448f845e7581611a51e117"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc28a402734aa53712bd2b9be2b614a1"><td class="memItemLeft" align="right" valign="top"><a id="adc28a402734aa53712bd2b9be2b614a1"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>mountType</b> = -1</td></tr>
@@ -651,8 +694,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>netID</b></td></tr>
 <tr class="memitem:afb2e411e2b941fa1860696e3d2d93ed0"><td class="memItemLeft" align="right" valign="top"><a id="afb2e411e2b941fa1860696e3d2d93ed0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>newAndShiny</b></td></tr>
 <tr class="separator:afb2e411e2b941fa1860696e3d2d93ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabb6c84e7dd6488ca5beb7630995db0d"><td class="memItemLeft" align="right" valign="top"><a id="aabb6c84e7dd6488ca5beb7630995db0d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>noGrabDelay</b></td></tr>
+<tr class="memitem:aabb6c84e7dd6488ca5beb7630995db0d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#aabb6c84e7dd6488ca5beb7630995db0d">noGrabDelay</a></td></tr>
+<tr class="memdesc:aabb6c84e7dd6488ca5beb7630995db0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The delay, in ticks, before players can pick up this item.<br  />
+ Usually set to 100 (approximately 1.666... seconds) whenever an item is dropped.<br  />
+ Set to 0 whenever an item drops from a projectile.<br  />
+  <a href="class_terraria_1_1_item.html#aabb6c84e7dd6488ca5beb7630995db0d">More...</a><br /></td></tr>
 <tr class="separator:aabb6c84e7dd6488ca5beb7630995db0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f377953a883de36604aa85f36f26565"><td class="memItemLeft" align="right" valign="top"><a id="a2f377953a883de36604aa85f36f26565"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>noMelee</b></td></tr>
@@ -672,8 +718,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ownIgnore</b> = -1</td
 <tr class="memitem:a8776761b98a68a6dab90e8779480b8e3"><td class="memItemLeft" align="right" valign="top"><a id="a8776761b98a68a6dab90e8779480b8e3"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>ownTime</b></td></tr>
 <tr class="separator:a8776761b98a68a6dab90e8779480b8e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f1018595ae7d8cab4a9e946bf541a22"><td class="memItemLeft" align="right" valign="top"><a id="a3f1018595ae7d8cab4a9e946bf541a22"></a>
-byte&#160;</td><td class="memItemRight" valign="bottom"><b>paint</b></td></tr>
+<tr class="memitem:a3f1018595ae7d8cab4a9e946bf541a22"><td class="memItemLeft" align="right" valign="top">byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a3f1018595ae7d8cab4a9e946bf541a22">paint</a></td></tr>
+<tr class="memdesc:a3f1018595ae7d8cab4a9e946bf541a22"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the paint applied by this item when used with a paint brush or paint roller.<br  />
+ For conversion into a shader index, see Main.ConvertPaintIdToTileShaderIndex.<br  />
+ For more details regarding paint, see Tile.TileColor and Tile.WallColor.<br  />
+ Defaults to 0.<br  />
+  <a href="class_terraria_1_1_item.html#a3f1018595ae7d8cab4a9e946bf541a22">More...</a><br /></td></tr>
 <tr class="separator:a3f1018595ae7d8cab4a9e946bf541a22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34f9d232f104cb910192e8f770267e3c"><td class="memItemLeft" align="right" valign="top"><a id="a34f9d232f104cb910192e8f770267e3c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>pick</b></td></tr>
@@ -690,8 +740,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>potion</b></td></tr>
 <tr class="memitem:acb82dee36478b45df269bcee2e75804c"><td class="memItemLeft" align="right" valign="top"><a id="acb82dee36478b45df269bcee2e75804c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>prefix</b></td></tr>
 <tr class="separator:acb82dee36478b45df269bcee2e75804c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f039b7d7f195b52baa8798d5b66416d"><td class="memItemLeft" align="right" valign="top"><a id="a1f039b7d7f195b52baa8798d5b66416d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>questItem</b></td></tr>
+<tr class="memitem:a1f039b7d7f195b52baa8798d5b66416d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a1f039b7d7f195b52baa8798d5b66416d">questItem</a></td></tr>
+<tr class="memdesc:a1f039b7d7f195b52baa8798d5b66416d"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, categorizes the given item as a quest fish.<br  />
+ Quest fish get a special tooltip, their own category in the Research Menu, and cannot be auto-moved to the Void Vault when picked up.<br  />
+ If you'd like to make a quest fish, see DefaultToQuestFish.<br  />
+ If you'd just like to emulate the one-per-inventory behavior of quest fish, see <a class="el" href="class_terraria_1_1_item.html#aa19576a9b9e5f3f4f27fed26d9796948" title="Players cannot pick up a uniqueStack item if they have an item with the same type in their inventory....">uniqueStack</a>.<br  />
+ Defaults to <code>false</code>.<br  />
+  <a href="class_terraria_1_1_item.html#a1f039b7d7f195b52baa8798d5b66416d">More...</a><br /></td></tr>
 <tr class="separator:a1f039b7d7f195b52baa8798d5b66416d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4298ce75f8fc2a75f19804ca2acd4fb6"><td class="memItemLeft" align="right" valign="top"><a id="a4298ce75f8fc2a75f19804ca2acd4fb6"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>rare</b></td></tr>
@@ -717,11 +772,19 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>shoot</b></td></tr>
 <tr class="memitem:a76b236d7468593bdf84f54fe4494b327"><td class="memItemLeft" align="right" valign="top"><a id="a76b236d7468593bdf84f54fe4494b327"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>shootSpeed</b></td></tr>
 <tr class="separator:a76b236d7468593bdf84f54fe4494b327"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2b45f2a9df0a3002e8d06093bbf1411"><td class="memItemLeft" align="right" valign="top"><a id="ac2b45f2a9df0a3002e8d06093bbf1411"></a>
-int?&#160;</td><td class="memItemRight" valign="bottom"><b>shopCustomPrice</b></td></tr>
+<tr class="memitem:ac2b45f2a9df0a3002e8d06093bbf1411"><td class="memItemLeft" align="right" valign="top">int?&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#ac2b45f2a9df0a3002e8d06093bbf1411">shopCustomPrice</a></td></tr>
+<tr class="memdesc:ac2b45f2a9df0a3002e8d06093bbf1411"><td class="mdescLeft">&#160;</td><td class="mdescRight">If not <code>null</code>, the custom value of the given item when being bought from a shop.<br  />
+ Used for assigning a non-default price to an item in shops.<br  />
+ To get the raw price of an item, use GetStoreValue.<br  />
+ To get the price of an item after discounts, use Player.GetItemExpectedPrice.<br  />
+ Defaults to <code>null</code>.<br  />
+  <a href="class_terraria_1_1_item.html#ac2b45f2a9df0a3002e8d06093bbf1411">More...</a><br /></td></tr>
 <tr class="separator:ac2b45f2a9df0a3002e8d06093bbf1411"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c96916cc11ee0c75bab467c0b229222"><td class="memItemLeft" align="right" valign="top"><a id="a6c96916cc11ee0c75bab467c0b229222"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>shopSpecialCurrency</b> = -1</td></tr>
+<tr class="memitem:a6c96916cc11ee0c75bab467c0b229222"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a6c96916cc11ee0c75bab467c0b229222">shopSpecialCurrency</a> = -1</td></tr>
+<tr class="memdesc:a6c96916cc11ee0c75bab467c0b229222"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the special currency this item is bought using.<br  />
+ To make an item bought using Defender Medals, set this to CustomCurrencyID.DefenderMedals.<br  />
+ Defaults to -1, which means an item is bought using coins.<br  />
+  <a href="class_terraria_1_1_item.html#a6c96916cc11ee0c75bab467c0b229222">More...</a><br /></td></tr>
 <tr class="separator:a6c96916cc11ee0c75bab467c0b229222"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a137e26af3e8d6468cca30361fb9c6d"><td class="memItemLeft" align="right" valign="top"><a id="a5a137e26af3e8d6468cca30361fb9c6d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>social</b></td></tr>
@@ -735,14 +798,20 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>stringColor</b></td></
 <tr class="memitem:a7cf2f8b9017c9ba9e060e5df1ced47fe"><td class="memItemLeft" align="right" valign="top"><a id="a7cf2f8b9017c9ba9e060e5df1ced47fe"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>tileBoost</b></td></tr>
 <tr class="separator:a7cf2f8b9017c9ba9e060e5df1ced47fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c4a9da1ca69633ec5f9a1d05409d541"><td class="memItemLeft" align="right" valign="top"><a id="a2c4a9da1ca69633ec5f9a1d05409d541"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>tileWand</b> = -1</td></tr>
+<tr class="memitem:a2c4a9da1ca69633ec5f9a1d05409d541"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a2c4a9da1ca69633ec5f9a1d05409d541">tileWand</a> = -1</td></tr>
+<tr class="memdesc:a2c4a9da1ca69633ec5f9a1d05409d541"><td class="mdescLeft">&#160;</td><td class="mdescRight">The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the item this item consumes when used.<br  />
+ If greater than 0, this item cannot be used unless the player has the item type <code>tileWand</code> is set to. The item also gains a counter for said item type.<br  />
+ Defaults to -1.<br  />
+  <a href="class_terraria_1_1_item.html#a2c4a9da1ca69633ec5f9a1d05409d541">More...</a><br /></td></tr>
 <tr class="separator:a2c4a9da1ca69633ec5f9a1d05409d541"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d18c27fe8651048b2b3f4a04ff5faba"><td class="memItemLeft" align="right" valign="top"><a id="a8d18c27fe8651048b2b3f4a04ff5faba"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>timeLeftInWhichTheItemCannotBeTakenByEnemies</b></td></tr>
 <tr class="separator:a8d18c27fe8651048b2b3f4a04ff5faba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8630cc7c87f284f86768c327944466d"><td class="memItemLeft" align="right" valign="top"><a id="af8630cc7c87f284f86768c327944466d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>timeSinceItemSpawned</b></td></tr>
+<tr class="memitem:af8630cc7c87f284f86768c327944466d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#af8630cc7c87f284f86768c327944466d">timeSinceItemSpawned</a></td></tr>
+<tr class="memdesc:af8630cc7c87f284f86768c327944466d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A value that increases every tick an item is in the world.<br  />
+ Defaults to the value in ItemID.Sets.NewItemSpawnPriority when an item is created, and increases by ItemID.Sets.ItemSpawnDecaySpeed every tick.<br  />
+ When creating new items, items with a high <code>timeSinceItemSpawned</code> value will be replaced if no empty item slots are available.<br  />
+  <a href="class_terraria_1_1_item.html#af8630cc7c87f284f86768c327944466d">More...</a><br /></td></tr>
 <tr class="separator:af8630cc7c87f284f86768c327944466d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01bf8f8958734ba184bdf9eca4b59c69"><td class="memItemLeft" align="right" valign="top"><a id="a01bf8f8958734ba184bdf9eca4b59c69"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>timeSinceTheItemHasBeenReservedForSomeone</b></td></tr>
@@ -750,14 +819,21 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>timeSinceTheItemHasBee
 <tr class="memitem:a2b7eeaf232c82687cb99e0967f2f2b6f"><td class="memItemLeft" align="right" valign="top"><a id="a2b7eeaf232c82687cb99e0967f2f2b6f"></a>
 <a class="el" href="class_terraria_1_1_u_i_1_1_item_tooltip.html">ItemTooltip</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ToolTip</b></td></tr>
 <tr class="separator:a2b7eeaf232c82687cb99e0967f2f2b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa77c11cbd53c799d669c86b0a8587177"><td class="memItemLeft" align="right" valign="top"><a id="aa77c11cbd53c799d669c86b0a8587177"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>tooltipContext</b> = -1</td></tr>
+<tr class="memitem:aa77c11cbd53c799d669c86b0a8587177"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#aa77c11cbd53c799d669c86b0a8587177">tooltipContext</a> = -1</td></tr>
+<tr class="memdesc:aa77c11cbd53c799d669c86b0a8587177"><td class="mdescLeft">&#160;</td><td class="mdescRight">The context in which this item's tooltip is being drawn.<br  />
+ See ItemSlot.Context for more details.<br  />
+ Defaults to -1.<br  />
+  <a href="class_terraria_1_1_item.html#aa77c11cbd53c799d669c86b0a8587177">More...</a><br /></td></tr>
 <tr class="separator:aa77c11cbd53c799d669c86b0a8587177"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af899f98d7e57032a26aada65e7e0168a"><td class="memItemLeft" align="right" valign="top"><a id="af899f98d7e57032a26aada65e7e0168a"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>type</b></td></tr>
 <tr class="separator:af899f98d7e57032a26aada65e7e0168a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa19576a9b9e5f3f4f27fed26d9796948"><td class="memItemLeft" align="right" valign="top"><a id="aa19576a9b9e5f3f4f27fed26d9796948"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>uniqueStack</b></td></tr>
+<tr class="memitem:aa19576a9b9e5f3f4f27fed26d9796948"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#aa19576a9b9e5f3f4f27fed26d9796948">uniqueStack</a></td></tr>
+<tr class="memdesc:aa19576a9b9e5f3f4f27fed26d9796948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Players cannot pick up a <code>uniqueStack</code> item if they have an item with the same type in their inventory.<br  />
+ This does not apply to equipped items, nor does it apply to items held with the mouse (Main.mouseItem).<br  />
+ This field only prevents picking items up: Multiple <code>uniqueStack</code> items may still be transferred into the player's inventory from chests.<br  />
+ Defaults to <code>false</code>.<br  />
+  <a href="class_terraria_1_1_item.html#aa19576a9b9e5f3f4f27fed26d9796948">More...</a><br /></td></tr>
 <tr class="separator:aa19576a9b9e5f3f4f27fed26d9796948"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a2d2e112c23a20ad5da25a4c9d0b788"><td class="memItemLeft" align="right" valign="top"><a id="a3a2d2e112c23a20ad5da25a4c9d0b788"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>useAmmo</b> = AmmoID.None</td></tr>
@@ -789,8 +865,11 @@ sbyte&#160;</td><td class="memItemRight" valign="bottom"><b>waistSlot</b> = -1</
 <tr class="memitem:ac2d58bdd5856de732c8c408f0095b298"><td class="memItemLeft" align="right" valign="top"><a id="ac2d58bdd5856de732c8c408f0095b298"></a>
 sbyte&#160;</td><td class="memItemRight" valign="bottom"><b>wingSlot</b> = -1</td></tr>
 <tr class="separator:ac2d58bdd5856de732c8c408f0095b298"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abed9b1df378dc470c3b3d3a553c05c27"><td class="memItemLeft" align="right" valign="top"><a id="abed9b1df378dc470c3b3d3a553c05c27"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>wornArmor</b></td></tr>
+<tr class="memitem:abed9b1df378dc470c3b3d3a553c05c27"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#abed9b1df378dc470c3b3d3a553c05c27">wornArmor</a></td></tr>
+<tr class="memdesc:abed9b1df378dc470c3b3d3a553c05c27"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, then this item is in the local player's armor slots.<br  />
+ This causes the item to gain the set bonus tooltip if Player.setBonus isn't an empty string.<br  />
+ Defaults to <code>false</code>.<br  />
+  <a href="class_terraria_1_1_item.html#abed9b1df378dc470c3b3d3a553c05c27">More...</a><br /></td></tr>
 <tr class="separator:abed9b1df378dc470c3b3d3a553c05c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_terraria_1_1_entity"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_terraria_1_1_entity')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_terraria_1_1_entity.html">Terraria.Entity</a></td></tr>
 <tr class="memitem:afb9077785deba0c2b9de1691369cee84 inherit pub_attribs_class_terraria_1_1_entity"><td class="memItemLeft" align="right" valign="top"><a id="afb9077785deba0c2b9de1691369cee84"></a>
@@ -838,17 +917,29 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>width</b></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:ab41d30c98e350fdae27096f9b59f585d"><td class="memItemLeft" align="right" valign="top"><a id="ab41d30c98e350fdae27096f9b59f585d"></a>
-static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>bodyType</b> = new int[246]</td></tr>
+<tr class="memitem:ab41d30c98e350fdae27096f9b59f585d"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#ab41d30c98e350fdae27096f9b59f585d">bodyType</a> = new int[246]</td></tr>
+<tr class="memdesc:ab41d30c98e350fdae27096f9b59f585d"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array for converting an bodySlot value into a type value.<br  />
+ Indexed by bodySlot. Defaults to 0.<br  />
+  <a href="class_terraria_1_1_item.html#ab41d30c98e350fdae27096f9b59f585d">More...</a><br /></td></tr>
 <tr class="separator:ab41d30c98e350fdae27096f9b59f585d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e726c2ed4adbc5957b1c413589f272f"><td class="memItemLeft" align="right" valign="top"><a id="a4e726c2ed4adbc5957b1c413589f272f"></a>
-static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>cachedItemSpawnsByType</b> = ItemID.Sets.Factory.CreateIntSet(-1)</td></tr>
+<tr class="memitem:a4e726c2ed4adbc5957b1c413589f272f"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a4e726c2ed4adbc5957b1c413589f272f">cachedItemSpawnsByType</a> = ItemID.Sets.Factory.CreateIntSet(-1)</td></tr>
+<tr class="memdesc:a4e726c2ed4adbc5957b1c413589f272f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of cached item spawns by type.<br  />
+ A value of -1 means that an item type is not being cached.<br  />
+ See StartCachingType and DropCache for more info.<br  />
+ Indexed by type.Defaults to -1.<br  />
+  <a href="class_terraria_1_1_item.html#a4e726c2ed4adbc5957b1c413589f272f">More...</a><br /></td></tr>
 <tr class="separator:a4e726c2ed4adbc5957b1c413589f272f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69e0a36f9a1559660d9e89b288ace8c4"><td class="memItemLeft" align="right" valign="top"><a id="a69e0a36f9a1559660d9e89b288ace8c4"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>claw</b> = new bool[5125]</td></tr>
+<tr class="memitem:a69e0a36f9a1559660d9e89b288ace8c4"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a69e0a36f9a1559660d9e89b288ace8c4">claw</a> = new bool[5125]</td></tr>
+<tr class="memdesc:a69e0a36f9a1559660d9e89b288ace8c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, categorizes the given item type as a claw.<br  />
+ Claws are held differently when their useStyle is ItemUseStyleID.Swing, but are otherwise no different than any other item.<br  />
+ Used exclusively by the Bladed Glove in vanilla.<br  />
+ Indexed by type. Defaults to <code>false</code>.<br  />
+  <a href="class_terraria_1_1_item.html#a69e0a36f9a1559660d9e89b288ace8c4">More...</a><br /></td></tr>
 <tr class="separator:a69e0a36f9a1559660d9e89b288ace8c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a295f309c5f320394e2748f55908f8930"><td class="memItemLeft" align="right" valign="top"><a id="a295f309c5f320394e2748f55908f8930"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>coinGrabRange</b> = 350</td></tr>
+<tr class="memitem:a295f309c5f320394e2748f55908f8930"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a295f309c5f320394e2748f55908f8930">coinGrabRange</a> = 350</td></tr>
+<tr class="memdesc:a295f309c5f320394e2748f55908f8930"><td class="mdescLeft">&#160;</td><td class="mdescRight">The additional distance, in pixels, that coins may be grabbed from if the player has the Gold Ring or its upgrades (Player.goldRing).<br  />
+ Applies to ItemID.CopperCoin, ItemID.SilverCoin, ItemID.GoldCoin, and ItemID.PlatinumCoin.<br  />
+  <a href="class_terraria_1_1_item.html#a295f309c5f320394e2748f55908f8930">More...</a><br /></td></tr>
 <tr class="separator:a295f309c5f320394e2748f55908f8930"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7db463a672156c046ad725331db6da90"><td class="memItemLeft" align="right" valign="top"><a id="a7db463a672156c046ad725331db6da90"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>copper</b> = 1</td></tr>
@@ -865,14 +956,20 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>gold</b> = 10000
 <tr class="memitem:ab5c0c507a5f931be23bf0fb4314b82ea"><td class="memItemLeft" align="right" valign="top"><a id="ab5c0c507a5f931be23bf0fb4314b82ea"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>goldCritterRarityColor</b> = 3</td></tr>
 <tr class="separator:ab5c0c507a5f931be23bf0fb4314b82ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97c4db3b25e59c5fafc596a6c45d1e9d"><td class="memItemLeft" align="right" valign="top"><a id="a97c4db3b25e59c5fafc596a6c45d1e9d"></a>
-static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>headType</b> = new int[277]</td></tr>
+<tr class="memitem:a97c4db3b25e59c5fafc596a6c45d1e9d"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a97c4db3b25e59c5fafc596a6c45d1e9d">headType</a> = new int[277]</td></tr>
+<tr class="memdesc:a97c4db3b25e59c5fafc596a6c45d1e9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array for converting an headSlot value into a type value.<br  />
+ Indexed by headSlot. Defaults to 0.<br  />
+  <a href="class_terraria_1_1_item.html#a97c4db3b25e59c5fafc596a6c45d1e9d">More...</a><br /></td></tr>
 <tr class="separator:a97c4db3b25e59c5fafc596a6c45d1e9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a910dcb5c2496b056a400a8b0ae838228"><td class="memItemLeft" align="right" valign="top"><a id="a910dcb5c2496b056a400a8b0ae838228"></a>
-static int[]&#160;</td><td class="memItemRight" valign="bottom"><b>legType</b> = new int[234]</td></tr>
+<tr class="memitem:a910dcb5c2496b056a400a8b0ae838228"><td class="memItemLeft" align="right" valign="top">static int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a910dcb5c2496b056a400a8b0ae838228">legType</a> = new int[234]</td></tr>
+<tr class="memdesc:a910dcb5c2496b056a400a8b0ae838228"><td class="mdescLeft">&#160;</td><td class="mdescRight">An array for converting an legSlot value into a type value.<br  />
+ Indexed by legSlot. Defaults to 0.<br  />
+  <a href="class_terraria_1_1_item.html#a910dcb5c2496b056a400a8b0ae838228">More...</a><br /></td></tr>
 <tr class="separator:a910dcb5c2496b056a400a8b0ae838228"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ea3e6a796344cf7f7bb1073e3b9da40"><td class="memItemLeft" align="right" valign="top"><a id="a5ea3e6a796344cf7f7bb1073e3b9da40"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>lifeGrabRange</b> = 250</td></tr>
+<tr class="memitem:a5ea3e6a796344cf7f7bb1073e3b9da40"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a5ea3e6a796344cf7f7bb1073e3b9da40">lifeGrabRange</a> = 250</td></tr>
+<tr class="memdesc:a5ea3e6a796344cf7f7bb1073e3b9da40"><td class="mdescLeft">&#160;</td><td class="mdescRight">The additional distance, in pixels, that mana stars may be grabbed from if the player has consumed a Heartreach Potion (Player.lifeMagnet).<br  />
+ Applies to ItemID.Heart, ItemID.CandyApple, and ItemID.CandyCane.<br  />
+  <a href="class_terraria_1_1_item.html#a5ea3e6a796344cf7f7bb1073e3b9da40">More...</a><br /></td></tr>
 <tr class="separator:a5ea3e6a796344cf7f7bb1073e3b9da40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abcc1da2a8c191b209921a0382df2a7cd"><td class="memItemLeft" align="right" valign="top"><a id="abcc1da2a8c191b209921a0382df2a7cd"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>luckPotionDuration1</b> = 10800</td></tr>
@@ -883,11 +980,15 @@ const int&#160;</td><td class="memItemRight" valign="bottom"><b>luckPotionDurati
 <tr class="memitem:ac850af9382bf7caf0ae71db4c6a05355"><td class="memItemLeft" align="right" valign="top"><a id="ac850af9382bf7caf0ae71db4c6a05355"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>luckPotionDuration3</b> = 36000</td></tr>
 <tr class="separator:ac850af9382bf7caf0ae71db4c6a05355"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31d966d38a5c0988ac3edd2d1d46103f"><td class="memItemLeft" align="right" valign="top"><a id="a31d966d38a5c0988ac3edd2d1d46103f"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>manaGrabRange</b> = 300</td></tr>
+<tr class="memitem:a31d966d38a5c0988ac3edd2d1d46103f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a31d966d38a5c0988ac3edd2d1d46103f">manaGrabRange</a> = 300</td></tr>
+<tr class="memdesc:a31d966d38a5c0988ac3edd2d1d46103f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The additional distance, in pixels, that mana stars may be grabbed from if the player has the Celestial Magnet or its upgrades (Player.manaMagnet).<br  />
+ Applies to ItemID.Star, ItemID.SoulCake, and ItemID.SugarPlum.<br  />
+  <a href="class_terraria_1_1_item.html#a31d966d38a5c0988ac3edd2d1d46103f">More...</a><br /></td></tr>
 <tr class="separator:a31d966d38a5c0988ac3edd2d1d46103f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bd9e5554e0fe178bf48071e8c48a7ec"><td class="memItemLeft" align="right" valign="top"><a id="a4bd9e5554e0fe178bf48071e8c48a7ec"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>mushroomDelay</b> = 1800</td></tr>
+<tr class="memitem:a4bd9e5554e0fe178bf48071e8c48a7ec"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a4bd9e5554e0fe178bf48071e8c48a7ec">mushroomDelay</a> = 1800</td></tr>
+<tr class="memdesc:a4bd9e5554e0fe178bf48071e8c48a7ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default cooldown, in ticks, of Mushrooms.<br  />
+ This value is never changed. For creating a Philosopher's Stone-like item, see Player.pStone or Player.mushroomDelayTime.<br  />
+  <a href="class_terraria_1_1_item.html#a4bd9e5554e0fe178bf48071e8c48a7ec">More...</a><br /></td></tr>
 <tr class="separator:a4bd9e5554e0fe178bf48071e8c48a7ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c61764c1331e03b12b8b03462f56096"><td class="memItemLeft" align="right" valign="top"><a id="a0c61764c1331e03b12b8b03462f56096"></a>
 static int&#160;</td><td class="memItemRight" valign="bottom"><b>numberOfNewItems</b> = 0</td></tr>
@@ -895,20 +996,28 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>numberOfNewItem
 <tr class="memitem:aa86570fd7d731bcddc789dde60b6962f"><td class="memItemLeft" align="right" valign="top"><a id="aa86570fd7d731bcddc789dde60b6962f"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>platinum</b> = 1000000</td></tr>
 <tr class="separator:aa86570fd7d731bcddc789dde60b6962f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a612896ca99024b046be660de70e8f5a8"><td class="memItemLeft" align="right" valign="top"><a id="a612896ca99024b046be660de70e8f5a8"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>potionDelay</b> = 3600</td></tr>
+<tr class="memitem:a612896ca99024b046be660de70e8f5a8"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a612896ca99024b046be660de70e8f5a8">potionDelay</a> = 3600</td></tr>
+<tr class="memdesc:a612896ca99024b046be660de70e8f5a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default cooldown, in ticks, of most healing items.<br  />
+ This value is never changed. For creating a Philosopher's Stone-like item, see Player.pStone or Player.potionDelayTime.<br  />
+  <a href="class_terraria_1_1_item.html#a612896ca99024b046be660de70e8f5a8">More...</a><br /></td></tr>
 <tr class="separator:a612896ca99024b046be660de70e8f5a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6cf1a6d386398662e5f5bbbf34c56ce5"><td class="memItemLeft" align="right" valign="top"><a id="a6cf1a6d386398662e5f5bbbf34c56ce5"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>restorationDelay</b> = 2700</td></tr>
+<tr class="memitem:a6cf1a6d386398662e5f5bbbf34c56ce5"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a6cf1a6d386398662e5f5bbbf34c56ce5">restorationDelay</a> = 2700</td></tr>
+<tr class="memdesc:a6cf1a6d386398662e5f5bbbf34c56ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default cooldown, in ticks, of Restoration Potions.<br  />
+ This value is never changed. For creating a Philosopher's Stone-like item, see Player.pStone or Player.restorationDelayTime.<br  />
+  <a href="class_terraria_1_1_item.html#a6cf1a6d386398662e5f5bbbf34c56ce5">More...</a><br /></td></tr>
 <tr class="separator:a6cf1a6d386398662e5f5bbbf34c56ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ac8f2d02b6968aa751b4d090655329e"><td class="memItemLeft" align="right" valign="top"><a id="a2ac8f2d02b6968aa751b4d090655329e"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>silver</b> = 100</td></tr>
 <tr class="separator:a2ac8f2d02b6968aa751b4d090655329e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b0a4414ce3df2c0a7ddc3b7a8867f58"><td class="memItemLeft" align="right" valign="top"><a id="a5b0a4414ce3df2c0a7ddc3b7a8867f58"></a>
-static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>staff</b> = new bool[5125]</td></tr>
+<tr class="memitem:a5b0a4414ce3df2c0a7ddc3b7a8867f58"><td class="memItemLeft" align="right" valign="top">static bool[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#a5b0a4414ce3df2c0a7ddc3b7a8867f58">staff</a> = new bool[5125]</td></tr>
+<tr class="memdesc:a5b0a4414ce3df2c0a7ddc3b7a8867f58"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, categorizes the given item type as a staff.<br  />
+ Staffs are held differently when their useStyle is ItemUseStyleID.Shoot, but are otherwise no different than any other item.<br  />
+ Indexed by type. Defaults to <code>false</code>.<br  />
+  <a href="class_terraria_1_1_item.html#a5b0a4414ce3df2c0a7ddc3b7a8867f58">More...</a><br /></td></tr>
 <tr class="separator:a5b0a4414ce3df2c0a7ddc3b7a8867f58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbab21b7d945d8c60fb2771ecb728506"><td class="memItemLeft" align="right" valign="top"><a id="afbab21b7d945d8c60fb2771ecb728506"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>treasureGrabRange</b> = 150</td></tr>
+<tr class="memitem:afbab21b7d945d8c60fb2771ecb728506"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_item.html#afbab21b7d945d8c60fb2771ecb728506">treasureGrabRange</a> = 150</td></tr>
+<tr class="memdesc:afbab21b7d945d8c60fb2771ecb728506"><td class="mdescLeft">&#160;</td><td class="mdescRight">The additional distance, in pixels, that items may be grabbed from if the player has equipped a Treasure Magnet (Player.treasureMagnet).<br  />
+  <a href="class_terraria_1_1_item.html#afbab21b7d945d8c60fb2771ecb728506">More...</a><br /></td></tr>
 <tr class="separator:afbab21b7d945d8c60fb2771ecb728506"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2a1bfe813412532809acbdaabe6ace3"><td class="memItemLeft" align="right" valign="top"><a id="ab2a1bfe813412532809acbdaabe6ace3"></a>
 const int&#160;</td><td class="memItemRight" valign="bottom"><b>WALL_PLACEMENT_USETIME</b> = 7</td></tr>
@@ -1867,6 +1976,396 @@ This particular overload uses a Vector2 instead of X, Y, Width, and Height to de
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="ae9bed95eb0c53b72bf4211435beb5e84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9bed95eb0c53b72bf4211435beb5e84">&#9670;&nbsp;</a></span>bait</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.bait</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The numerical value this item adds to a player's fishing skill when used as bait.<br  />
+ If greater than 0, categorizes this item as bait.<br  />
+ Bait can be put into ammo slots and is consumed when fishing.<br  />
+ The higher the value of <code>bait</code>, the lower the chance the bait is consumed.<br  />
+ Defaults to 0.<br  />
+ </p>
+
+</div>
+</div>
+<a id="aefb35ecb4368cd2dc21ed52ea36135c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefb35ecb4368cd2dc21ed52ea36135c8">&#9670;&nbsp;</a></span>beingGrabbed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.beingGrabbed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, then this item is currently being grabbed by a player.<br  />
+ Items being grabbed by the player cannot combine with nearby items, be picked up by enemies, burn in lava, or despawn.<br  />
+ </p>
+
+</div>
+</div>
+<a id="ab41d30c98e350fdae27096f9b59f585d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab41d30c98e350fdae27096f9b59f585d">&#9670;&nbsp;</a></span>bodyType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int [] Terraria.Item.bodyType = new int[246]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>An array for converting an bodySlot value into a type value.<br  />
+ Indexed by bodySlot. Defaults to 0.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a4e726c2ed4adbc5957b1c413589f272f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e726c2ed4adbc5957b1c413589f272f">&#9670;&nbsp;</a></span>cachedItemSpawnsByType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int [] Terraria.Item.cachedItemSpawnsByType = ItemID.Sets.Factory.CreateIntSet(-1)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The number of cached item spawns by type.<br  />
+ A value of -1 means that an item type is not being cached.<br  />
+ See StartCachingType and DropCache for more info.<br  />
+ Indexed by type.Defaults to -1.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a69e0a36f9a1559660d9e89b288ace8c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69e0a36f9a1559660d9e89b288ace8c4">&#9670;&nbsp;</a></span>claw</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.Item.claw = new bool[5125]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If true, categorizes the given item type as a claw.<br  />
+ Claws are held differently when their useStyle is ItemUseStyleID.Swing, but are otherwise no different than any other item.<br  />
+ Used exclusively by the Bladed Glove in vanilla.<br  />
+ Indexed by type. Defaults to <code>false</code>.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a295f309c5f320394e2748f55908f8930"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a295f309c5f320394e2748f55908f8930">&#9670;&nbsp;</a></span>coinGrabRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.coinGrabRange = 350</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The additional distance, in pixels, that coins may be grabbed from if the player has the Gold Ring or its upgrades (Player.goldRing).<br  />
+ Applies to ItemID.CopperCoin, ItemID.SilverCoin, ItemID.GoldCoin, and ItemID.PlatinumCoin.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a4f0d6429929991912841fb8f886c0b0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f0d6429929991912841fb8f886c0b0c">&#9670;&nbsp;</a></span>DD2Summon</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.DD2Summon</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, the given item is categorized as a Dungeon Defenders 2 summon item.<br  />
+ DD2 summon items get a counter for how much Etherian Mana is in the player's inventory.<br  />
+ <b>This field being set does not make the item consume Etherian Mana.</b> Etherian Mana consumption is handled manually per-type.<br  />
+ Defaults to <code>false</code>.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a190dff4cc91d18866e60c2e7bc571a8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a190dff4cc91d18866e60c2e7bc571a8f">&#9670;&nbsp;</a></span>dye</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.dye</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the armor shader in GameShaders.Armor this item activates when worn in a dye slot.<br  />
+ If greater than 0, then this item can be equipped into dye slots.<br  />
+ Defaults to -1.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a05dfaeec8f9a10fc7ac6218dcfc3f6fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05dfaeec8f9a10fc7ac6218dcfc3f6fe">&#9670;&nbsp;</a></span>expert</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.expert</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, then the given item is automatically given the Expert rarity, causing its name to be drawn in rainbow text.<br  />
+ It also adds the "Expert" tooltip. To use the Expert rarity without adding this tooltip, see ItemRarityID.Expert.<br  />
+ </p>
+
+</div>
+</div>
+<a id="acdaa3df8ddaef1011268dacd195f4d1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdaa3df8ddaef1011268dacd195f4d1b">&#9670;&nbsp;</a></span>expertOnly</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.expertOnly</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, then the given item's effects only function in Expert Mode or higher (Main.expertMode).<br  />
+ Specifically, any equipped, Expert-only accessory will not update, any Expert-only minecart will not be used when riding minecart tracks, and an 'X' will be drawn over the item when equipped.<br  />
+ Unused in vanilla.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a6fca7ce5ad9961010659dca6692ce791"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fca7ce5ad9961010659dca6692ce791">&#9670;&nbsp;</a></span>favorited</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.favorited</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, then the given item is favorited.<br  />
+ Favorited items cannot be dropped, automatically moved into chests, placed in any kind of item rack, sold, trashed, or sorted.<br  />
+ Favorited items can still be dropped if the player has no inventory space and will still drop on death on Mediumcore or higher difficulties.<br  />
+ An item becomes unfavorited if removed from the player's inventory, including if the item is move to any equipment slot.<br  />
+ Defaults to <code>false</code>.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a1f3649dd565fedfcee59e06d0b0b7f5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f3649dd565fedfcee59e06d0b0b7f5a">&#9670;&nbsp;</a></span>fishingPole</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.fishingPole = 1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The numerical value this item adds to a player's fishing skill when held.<br  />
+ If greater than 0, categorizes this item as a fishing pole.<br  />
+ Fishing poles can be placed into weapon racks, have a counter for the bait the player is carrying, and are held out when a bobber is active.<br  />
+ Defaults to 0.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a97c4db3b25e59c5fafc596a6c45d1e9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97c4db3b25e59c5fafc596a6c45d1e9d">&#9670;&nbsp;</a></span>headType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int [] Terraria.Item.headType = new int[277]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>An array for converting an headSlot value into a type value.<br  />
+ Indexed by headSlot. Defaults to 0.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a6e8ff63f241304e30c8d374f314108be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e8ff63f241304e30c8d374f314108be">&#9670;&nbsp;</a></span>instanced</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.instanced</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, then the given item is instanced per-client.<br  />
+ Instanced items only appear on the client they were spawned on and are less likely to be replaced if a new item is spawned.<br  />
+ Instanced items do not exist on servers.<br  />
+ Vanilla uses this field for treasure bags and Defender Medals. tModLoader automatically handles this for modded treasure bags.<br  />
+ If you would like to make an instanced item, see any one of the following for examples:<br  />
+ </p>
+<ul>
+<li>NPC.DropItemInstanced<br  />
+</li>
+<li>GameContent.ItemDropRules.CommonCode.DropItemLocalPerClientAndSetNPCMoneyTo0<br  />
+</li>
+<li>MessageID.InstancedItem<br  />
+ Defaults to false.<br  />
+</li>
+</ul>
+
+</div>
+</div>
+<a id="a0aa14c05e13989949ad892e6b35b71e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0aa14c05e13989949ad892e6b35b71e7">&#9670;&nbsp;</a></span>isAShopItem</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.isAShopItem</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, then the given item is being sold in a shop.<br  />
+ Shop items display their price. See value.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a910dcb5c2496b056a400a8b0ae838228"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a910dcb5c2496b056a400a8b0ae838228">&#9670;&nbsp;</a></span>legType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int [] Terraria.Item.legType = new int[234]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>An array for converting an legSlot value into a type value.<br  />
+ Indexed by legSlot. Defaults to 0.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a5ea3e6a796344cf7f7bb1073e3b9da40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ea3e6a796344cf7f7bb1073e3b9da40">&#9670;&nbsp;</a></span>lifeGrabRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.lifeGrabRange = 250</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The additional distance, in pixels, that mana stars may be grabbed from if the player has consumed a Heartreach Potion (Player.lifeMagnet).<br  />
+ Applies to ItemID.Heart, ItemID.CandyApple, and ItemID.CandyCane.<br  />
+ </p>
+
+</div>
+</div>
 <a id="a46d5ad711725f6c3dd761daaee47a8c0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46d5ad711725f6c3dd761daaee47a8c0">&#9670;&nbsp;</a></span>makeNPC</h2>
 
@@ -1881,6 +2380,414 @@ This particular overload uses a Vector2 instead of X, Y, Width, and Height to de
 
 <p>The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> that this item creates when used.<br  />
  Mainly used for caught critters as items so that they can be released into the world. </p>
+
+</div>
+</div>
+<a id="a31d966d38a5c0988ac3edd2d1d46103f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31d966d38a5c0988ac3edd2d1d46103f">&#9670;&nbsp;</a></span>manaGrabRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.manaGrabRange = 300</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The additional distance, in pixels, that mana stars may be grabbed from if the player has the Celestial Magnet or its upgrades (Player.manaMagnet).<br  />
+ Applies to ItemID.Star, ItemID.SoulCake, and ItemID.SugarPlum.<br  />
+ </p>
+
+</div>
+</div>
+<a id="af21d2db83fd02e584a11b27d736f1211"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af21d2db83fd02e584a11b27d736f1211">&#9670;&nbsp;</a></span>master</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.master</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, then the given item is automatically given the Master rarity, causing its name to be drawn in red-orange text.<br  />
+ It also adds the "Master" tooltip. To use the Master rarity without adding this tooltip, see ItemRarityID.Master.<br  />
+ </p>
+
+</div>
+</div>
+<a id="af92966ffac7e90ffef7a84a7ed5d061a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af92966ffac7e90ffef7a84a7ed5d061a">&#9670;&nbsp;</a></span>masterOnly</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.masterOnly</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, then the given item's effects only function in Master Mode or higher (Main.masterMode).<br  />
+ Specifically, any equipped, Master-only accessory will not update, any Master-only minecart will not be used when riding minecart tracks, and an 'X' will be drawn over the item when equipped.<br  />
+ Unused in vanilla.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a0d9fb1727b448f845e7581611a51e117"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d9fb1727b448f845e7581611a51e117">&#9670;&nbsp;</a></span>mech</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.mech</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, then the given item will show all placed wires and actuators when held.<br  />
+ This item will also be grouped with other items with <code>mech</code> set to <code>true</code> when the inventory is sorted.<br  />
+ Defaults to <code>false</code>.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a4bd9e5554e0fe178bf48071e8c48a7ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bd9e5554e0fe178bf48071e8c48a7ec">&#9670;&nbsp;</a></span>mushroomDelay</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.mushroomDelay = 1800</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The default cooldown, in ticks, of Mushrooms.<br  />
+ This value is never changed. For creating a Philosopher's Stone-like item, see Player.pStone or Player.mushroomDelayTime.<br  />
+ </p>
+
+</div>
+</div>
+<a id="aabb6c84e7dd6488ca5beb7630995db0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aabb6c84e7dd6488ca5beb7630995db0d">&#9670;&nbsp;</a></span>noGrabDelay</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.noGrabDelay</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The delay, in ticks, before players can pick up this item.<br  />
+ Usually set to 100 (approximately 1.666... seconds) whenever an item is dropped.<br  />
+ Set to 0 whenever an item drops from a projectile.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a3f1018595ae7d8cab4a9e946bf541a22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f1018595ae7d8cab4a9e946bf541a22">&#9670;&nbsp;</a></span>paint</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte Terraria.Item.paint</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the paint applied by this item when used with a paint brush or paint roller.<br  />
+ For conversion into a shader index, see Main.ConvertPaintIdToTileShaderIndex.<br  />
+ For more details regarding paint, see Tile.TileColor and Tile.WallColor.<br  />
+ Defaults to 0.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a612896ca99024b046be660de70e8f5a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a612896ca99024b046be660de70e8f5a8">&#9670;&nbsp;</a></span>potionDelay</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.potionDelay = 3600</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The default cooldown, in ticks, of most healing items.<br  />
+ This value is never changed. For creating a Philosopher's Stone-like item, see Player.pStone or Player.potionDelayTime.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a1f039b7d7f195b52baa8798d5b66416d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f039b7d7f195b52baa8798d5b66416d">&#9670;&nbsp;</a></span>questItem</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.questItem</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, categorizes the given item as a quest fish.<br  />
+ Quest fish get a special tooltip, their own category in the Research Menu, and cannot be auto-moved to the Void Vault when picked up.<br  />
+ If you'd like to make a quest fish, see DefaultToQuestFish.<br  />
+ If you'd just like to emulate the one-per-inventory behavior of quest fish, see <a class="el" href="class_terraria_1_1_item.html#aa19576a9b9e5f3f4f27fed26d9796948" title="Players cannot pick up a uniqueStack item if they have an item with the same type in their inventory....">uniqueStack</a>.<br  />
+ Defaults to <code>false</code>.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a6cf1a6d386398662e5f5bbbf34c56ce5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cf1a6d386398662e5f5bbbf34c56ce5">&#9670;&nbsp;</a></span>restorationDelay</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.restorationDelay = 2700</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The default cooldown, in ticks, of Restoration Potions.<br  />
+ This value is never changed. For creating a Philosopher's Stone-like item, see Player.pStone or Player.restorationDelayTime.<br  />
+ </p>
+
+</div>
+</div>
+<a id="ac2b45f2a9df0a3002e8d06093bbf1411"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2b45f2a9df0a3002e8d06093bbf1411">&#9670;&nbsp;</a></span>shopCustomPrice</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int? Terraria.Item.shopCustomPrice</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If not <code>null</code>, the custom value of the given item when being bought from a shop.<br  />
+ Used for assigning a non-default price to an item in shops.<br  />
+ To get the raw price of an item, use GetStoreValue.<br  />
+ To get the price of an item after discounts, use Player.GetItemExpectedPrice.<br  />
+ Defaults to <code>null</code>.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a6c96916cc11ee0c75bab467c0b229222"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c96916cc11ee0c75bab467c0b229222">&#9670;&nbsp;</a></span>shopSpecialCurrency</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.shopSpecialCurrency = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the special currency this item is bought using.<br  />
+ To make an item bought using Defender Medals, set this to CustomCurrencyID.DefenderMedals.<br  />
+ Defaults to -1, which means an item is bought using coins.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a5b0a4414ce3df2c0a7ddc3b7a8867f58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b0a4414ce3df2c0a7ddc3b7a8867f58">&#9670;&nbsp;</a></span>staff</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool [] Terraria.Item.staff = new bool[5125]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If true, categorizes the given item type as a staff.<br  />
+ Staffs are held differently when their useStyle is ItemUseStyleID.Shoot, but are otherwise no different than any other item.<br  />
+ Indexed by type. Defaults to <code>false</code>.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a2c4a9da1ca69633ec5f9a1d05409d541"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c4a9da1ca69633ec5f9a1d05409d541">&#9670;&nbsp;</a></span>tileWand</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.tileWand = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the item this item consumes when used.<br  />
+ If greater than 0, this item cannot be used unless the player has the item type <code>tileWand</code> is set to. The item also gains a counter for said item type.<br  />
+ Defaults to -1.<br  />
+ </p>
+
+</div>
+</div>
+<a id="af8630cc7c87f284f86768c327944466d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8630cc7c87f284f86768c327944466d">&#9670;&nbsp;</a></span>timeSinceItemSpawned</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.timeSinceItemSpawned</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A value that increases every tick an item is in the world.<br  />
+ Defaults to the value in ItemID.Sets.NewItemSpawnPriority when an item is created, and increases by ItemID.Sets.ItemSpawnDecaySpeed every tick.<br  />
+ When creating new items, items with a high <code>timeSinceItemSpawned</code> value will be replaced if no empty item slots are available.<br  />
+ </p>
+
+</div>
+</div>
+<a id="aa77c11cbd53c799d669c86b0a8587177"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa77c11cbd53c799d669c86b0a8587177">&#9670;&nbsp;</a></span>tooltipContext</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.tooltipContext = -1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The context in which this item's tooltip is being drawn.<br  />
+ See ItemSlot.Context for more details.<br  />
+ Defaults to -1.<br  />
+ </p>
+
+</div>
+</div>
+<a id="afbab21b7d945d8c60fb2771ecb728506"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbab21b7d945d8c60fb2771ecb728506">&#9670;&nbsp;</a></span>treasureGrabRange</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Item.treasureGrabRange = 150</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The additional distance, in pixels, that items may be grabbed from if the player has equipped a Treasure Magnet (Player.treasureMagnet).<br  />
+ </p>
+
+</div>
+</div>
+<a id="aa19576a9b9e5f3f4f27fed26d9796948"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa19576a9b9e5f3f4f27fed26d9796948">&#9670;&nbsp;</a></span>uniqueStack</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.uniqueStack</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Players cannot pick up a <code>uniqueStack</code> item if they have an item with the same type in their inventory.<br  />
+ This does not apply to equipped items, nor does it apply to items held with the mouse (Main.mouseItem).<br  />
+ This field only prevents picking items up: Multiple <code>uniqueStack</code> items may still be transferred into the player's inventory from chests.<br  />
+ Defaults to <code>false</code>.<br  />
+ </p>
+
+</div>
+</div>
+<a id="abed9b1df378dc470c3b3d3a553c05c27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abed9b1df378dc470c3b3d3a553c05c27">&#9670;&nbsp;</a></span>wornArmor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.Item.wornArmor</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>If true, then this item is in the local player's armor slots.<br  />
+ This causes the item to gain the set bonus tooltip if Player.setBonus isn't an empty string.<br  />
+ Defaults to <code>false</code>.<br  />
+ </p>
 
 </div>
 </div>

@@ -530,6 +530,10 @@ Rectangle&#160;</td><td class="memItemRight" valign="bottom"><b>GetItemDrawFrame
 <tr class="memitem:aa496798f1eaf7b1649d98b346b006de4"><td class="memItemLeft" align="right" valign="top"><a id="aa496798f1eaf7b1649d98b346b006de4"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetItemExpectedPrice</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, out int calcForSelling, out int calcForBuying)</td></tr>
 <tr class="separator:aa496798f1eaf7b1649d98b346b006de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c21acc2e6aa3df3f184c27207454f28"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a6c21acc2e6aa3df3f184c27207454f28">GetItemGrabRange</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
+<tr class="memdesc:a6c21acc2e6aa3df3f184c27207454f28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches the range at which the given item begins to gravitate towards the player.<br  />
+ This range, referred to as item grab range, is measured in pixels.  <a href="class_terraria_1_1_player.html#a6c21acc2e6aa3df3f184c27207454f28">More...</a><br /></td></tr>
+<tr class="separator:a6c21acc2e6aa3df3f184c27207454f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3cee61b648d2eb9596bff80c110e2087"><td class="memItemLeft" align="right" valign="top">ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a3cee61b648d2eb9596bff80c110e2087">GetKnockback</a> (<a class="el" href="class_terraria_1_1_mod_loader_1_1_damage_class.html">DamageClass</a> damageClass)</td></tr>
 <tr class="memdesc:a3cee61b648d2eb9596bff80c110e2087"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the knockback modifier for this damage type on this player. This returns a reference, and as such, you can freely modify this method's return value with operators.  <a href="class_terraria_1_1_player.html#a3cee61b648d2eb9596bff80c110e2087">More...</a><br /></td></tr>
 <tr class="separator:a3cee61b648d2eb9596bff80c110e2087"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -650,6 +654,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasNPCBannerBuff</b> 
 <tr class="memitem:ad38e5338c442618d5d3f44e4ed205934"><td class="memItemLeft" align="right" valign="top"><a id="ad38e5338c442618d5d3f44e4ed205934"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>HasUnityPotion</b> ()</td></tr>
 <tr class="separator:ad38e5338c442618d5d3f44e4ed205934"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f187e4af663a0ec6610fe0992cd19b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a4f187e4af663a0ec6610fe0992cd19b6">Heal</a> (int amount)</td></tr>
+<tr class="memdesc:a4f187e4af663a0ec6610fe0992cd19b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Heals the player for a certain amount.  <a href="class_terraria_1_1_player.html#a4f187e4af663a0ec6610fe0992cd19b6">More...</a><br /></td></tr>
+<tr class="separator:a4f187e4af663a0ec6610fe0992cd19b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a463cb21a9d823fdd122d5a681731b444"><td class="memItemLeft" align="right" valign="top"><a id="a463cb21a9d823fdd122d5a681731b444"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>HealEffect</b> (int healAmount, bool broadcast=true)</td></tr>
 <tr class="separator:a463cb21a9d823fdd122d5a681731b444"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2025,17 +2032,31 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>cYorai</b></td></tr>
 <tr class="memitem:a217bcfb3de70957e30ec646a86389062"><td class="memItemLeft" align="right" valign="top"><a id="a217bcfb3de70957e30ec646a86389062"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>dangerSense</b></td></tr>
 <tr class="separator:a217bcfb3de70957e30ec646a86389062"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84791b1cf66b82a219fb3885c198ce43"><td class="memItemLeft" align="right" valign="top"><a id="a84791b1cf66b82a219fb3885c198ce43"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>dash</b></td></tr>
+<tr class="memitem:a84791b1cf66b82a219fb3885c198ce43"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a84791b1cf66b82a219fb3885c198ce43">dash</a></td></tr>
+<tr class="memdesc:a84791b1cf66b82a219fb3885c198ce43"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current vanilla dash that the player is VISIBLY using.<br  />
+ Unlike <a class="el" href="class_terraria_1_1_player.html#a095cf2b349c09556d9524dda7addb29d" title="The current vanilla dash that the player is using.  The following values correspond to vanilla dashes...">dashType</a>, this does not update if a dash cannot currently be input.<br  />
+  <a href="class_terraria_1_1_player.html#a84791b1cf66b82a219fb3885c198ce43">More...</a><br /></td></tr>
 <tr class="separator:a84791b1cf66b82a219fb3885c198ce43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8fd992fa8fae687e5f1a1f5aed1be62"><td class="memItemLeft" align="right" valign="top"><a id="ad8fd992fa8fae687e5f1a1f5aed1be62"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>dashDelay</b></td></tr>
+<tr class="memitem:ad8fd992fa8fae687e5f1a1f5aed1be62"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#ad8fd992fa8fae687e5f1a1f5aed1be62">dashDelay</a></td></tr>
+<tr class="memdesc:ad8fd992fa8fae687e5f1a1f5aed1be62"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of time that has to pass, in ticks, before a new dash input will be registered.<br  />
+ For the first frame of any given dash, this is set to -1. After that frame has passsed, it is set to 20 ticks, or 1/3 of a second.<br  />
+ For the Tabi dash, and when dashing into an enemy with the Shield of Cthulhu, this is set to 30 ticks, or 1/2 of a second, instead.<br  />
+  <a href="class_terraria_1_1_player.html#ad8fd992fa8fae687e5f1a1f5aed1be62">More...</a><br /></td></tr>
 <tr class="separator:ad8fd992fa8fae687e5f1a1f5aed1be62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22ddc0fd5fde7298bef46c4b20bca2a0"><td class="memItemLeft" align="right" valign="top"><a id="a22ddc0fd5fde7298bef46c4b20bca2a0"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>dashTime</b></td></tr>
+<tr class="memitem:a22ddc0fd5fde7298bef46c4b20bca2a0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a22ddc0fd5fde7298bef46c4b20bca2a0">dashTime</a></td></tr>
+<tr class="memdesc:a22ddc0fd5fde7298bef46c4b20bca2a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of time this player has left, in ticks, to input the second keystroke of a standard dash input (double-tap left/right).<br  />
+ For vanilla dashes, this window is 15 ticks, or a quarter of a second, in total.<br  />
+  <a href="class_terraria_1_1_player.html#a22ddc0fd5fde7298bef46c4b20bca2a0">More...</a><br /></td></tr>
 <tr class="separator:a22ddc0fd5fde7298bef46c4b20bca2a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a095cf2b349c09556d9524dda7addb29d"><td class="memItemLeft" align="right" valign="top"><a id="a095cf2b349c09556d9524dda7addb29d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>dashType</b></td></tr>
+<tr class="memitem:a095cf2b349c09556d9524dda7addb29d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a095cf2b349c09556d9524dda7addb29d">dashType</a></td></tr>
+<tr class="memdesc:a095cf2b349c09556d9524dda7addb29d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current vanilla dash that the player is using.<br  />
+ The following values correspond to vanilla dashes:<br  />
+ 1 =&gt; Tabi / Master Ninja Gear<br  />
+ 2 =&gt; Shield of Cthulhu<br  />
+ 3 =&gt; Solar Flare armor set bonus<br  />
+ 4 =&gt; Unused, though a dash for this value DOES exist<br  />
+ 5 =&gt; Crystal Assassin set bonus<br  />
+  <a href="class_terraria_1_1_player.html#a095cf2b349c09556d9524dda7addb29d">More...</a><br /></td></tr>
 <tr class="separator:a095cf2b349c09556d9524dda7addb29d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30bd986da0ee8e96ec67129ff134adfc"><td class="memItemLeft" align="right" valign="top"><a id="a30bd986da0ee8e96ec67129ff134adfc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>dazed</b></td></tr>
@@ -2913,8 +2934,19 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>maxTurrets</b> = 1</td
 <tr class="memitem:a2d6b77c4c76ef274d75651a40cc4582c"><td class="memItemLeft" align="right" valign="top"><a id="a2d6b77c4c76ef274d75651a40cc4582c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>maxTurretsOld</b> = 1</td></tr>
 <tr class="separator:a2d6b77c4c76ef274d75651a40cc4582c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9aac896c2860a005a9bf70b0cea30872"><td class="memItemLeft" align="right" valign="top"><a id="a9aac896c2860a005a9bf70b0cea30872"></a>
-byte&#160;</td><td class="memItemRight" valign="bottom"><b>meleeEnchant</b></td></tr>
+<tr class="memitem:a9aac896c2860a005a9bf70b0cea30872"><td class="memItemLeft" align="right" valign="top">byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a9aac896c2860a005a9bf70b0cea30872">meleeEnchant</a></td></tr>
+<tr class="memdesc:a9aac896c2860a005a9bf70b0cea30872"><td class="mdescLeft">&#160;</td><td class="mdescRight">The vanilla flask effect which the player currently has active; these affect all melee weapons and whips.<br  />
+ Defaults to 0, which denotes that the player does not currently have a flask active.<br  />
+ The following values correspond to vanilla flasks:<br  />
+ 1 =&gt; Flask of Venom (affected weapons proc Acid Venom on hit)<br  />
+ 2 =&gt; Flask of Cursed Flames (affected weapons proc Cursed Inferno on hit)<br  />
+ 3 =&gt; Flask of Fire (affected weapons proc On Fire! on hit)<br  />
+ 4 =&gt; Flask of Gold (affected weapons proc Midas on hit)<br  />
+ 5 =&gt; Flask of Ichor (affected weapons proc Ichor on hit)<br  />
+ 6 =&gt; Flask of Nanites (affected weapons proc Confused on hit)<br  />
+ 7 =&gt; Flask of Party (affected weapons sometimes release confetti explosions on hit)<br  />
+ 8 =&gt; Flask of Poison (affected weapons proc Poisoned on hit)<br  />
+  <a href="class_terraria_1_1_player.html#a9aac896c2860a005a9bf70b0cea30872">More...</a><br /></td></tr>
 <tr class="separator:a9aac896c2860a005a9bf70b0cea30872"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad35eaaad5ac02b1319a2f1dae52df6ac"><td class="memItemLeft" align="right" valign="top"><a id="ad35eaaad5ac02b1319a2f1dae52df6ac"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>meleeScaleGlove</b></td></tr>
@@ -2968,7 +3000,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>mouseInterface</b></t
 float&#160;</td><td class="memItemRight" valign="bottom"><b>moveSpeed</b> = 1f</td></tr>
 <tr class="separator:a0051dae1c77c3e288adfbca659f436f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af50536c9e9b0130885ad5544aef5e8a6"><td class="memItemLeft" align="right" valign="top"><a id="af50536c9e9b0130885ad5544aef5e8a6"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>mushroomDelayTime</b> = Item.mushroomDelay</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>mushroomDelayTime</b> = <a class="el" href="class_terraria_1_1_item.html#a4bd9e5554e0fe178bf48071e8c48a7ec">Item.mushroomDelay</a></td></tr>
 <tr class="separator:af50536c9e9b0130885ad5544aef5e8a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d3c51710cd1629940eb7743f3e83b09"><td class="memItemLeft" align="right" valign="top"><a id="a0d3c51710cd1629940eb7743f3e83b09"></a>
 string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b> = &quot;&quot;</td></tr>
@@ -3277,7 +3309,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>portalPhysicsFlag</b>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>potionDelay</b></td></tr>
 <tr class="separator:a6ea76a71fddccc549898c0c06cb4694c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad089eb6f6b48d9caa7b9e8b888048fdd"><td class="memItemLeft" align="right" valign="top"><a id="ad089eb6f6b48d9caa7b9e8b888048fdd"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>potionDelayTime</b> = Item.potionDelay</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>potionDelayTime</b> = <a class="el" href="class_terraria_1_1_item.html#a612896ca99024b046be660de70e8f5a8">Item.potionDelay</a></td></tr>
 <tr class="separator:ad089eb6f6b48d9caa7b9e8b888048fdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26ea31af56d8b82f51fbcbfd4e9a70bf"><td class="memItemLeft" align="right" valign="top"><a id="a26ea31af56d8b82f51fbcbfd4e9a70bf"></a>
 Vector2?&#160;</td><td class="memItemRight" valign="bottom"><b>PotionOfReturnHomePosition</b></td></tr>
@@ -3391,7 +3423,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>resistCold</b></td></
 int&#160;</td><td class="memItemRight" valign="bottom"><b>respawnTimer</b></td></tr>
 <tr class="separator:a6efa498ddde2bebeccf2f952343e7ea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00321848bd2302766c3cb6a98ec081ef"><td class="memItemLeft" align="right" valign="top"><a id="a00321848bd2302766c3cb6a98ec081ef"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>restorationDelayTime</b> = Item.restorationDelay</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>restorationDelayTime</b> = <a class="el" href="class_terraria_1_1_item.html#a6cf1a6d386398662e5f5bbbf34c56ce5">Item.restorationDelay</a></td></tr>
 <tr class="separator:a00321848bd2302766c3cb6a98ec081ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a93d0136f4918b32ba2cc576c3e91679b"><td class="memItemLeft" align="right" valign="top"><a id="a93d0136f4918b32ba2cc576c3e91679b"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>reuseDelay</b></td></tr>
@@ -3699,8 +3731,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>spiderArmor</b></td><
 <tr class="memitem:aa7fbe1b1848bca33b1f9c47ec8ec399f"><td class="memItemLeft" align="right" valign="top"><a id="aa7fbe1b1848bca33b1f9c47ec8ec399f"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>spiderMinion</b></td></tr>
 <tr class="separator:aa7fbe1b1848bca33b1f9c47ec8ec399f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85d8480df2b9f87541df236d4659cb75"><td class="memItemLeft" align="right" valign="top"><a id="a85d8480df2b9f87541df236d4659cb75"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>spikedBoots</b></td></tr>
+<tr class="memitem:a85d8480df2b9f87541df236d4659cb75"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#a85d8480df2b9f87541df236d4659cb75">spikedBoots</a></td></tr>
+<tr class="memdesc:a85d8480df2b9f87541df236d4659cb75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used by the Shoe Spikes and Climbing Claws to allow for holding onto walls (of tiles, not to be confused with actual walls).<br  />
+ Defaults to 0. Any value higher than 0 allows the player to wall-jump.<br  />
+ A value of 1 causes the player to slowly slide down them while holding onto them.<br  />
+ A value of 2 or more doesn't give this limitation, allowing the player to stay holding onto a wall indefinitely.  <a href="class_terraria_1_1_player.html#a85d8480df2b9f87541df236d4659cb75">More...</a><br /></td></tr>
 <tr class="separator:a85d8480df2b9f87541df236d4659cb75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b260f215ccf2b9ace72b9982c0c309e"><td class="memItemLeft" align="right" valign="top"><a id="a2b260f215ccf2b9ace72b9982c0c309e"></a>
 string[]&#160;</td><td class="memItemRight" valign="bottom"><b>spN</b> = new string[200]</td></tr>
@@ -3861,8 +3896,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>tileInteractionHappen
 <tr class="memitem:a501039e681c4328e8fba85c803b7f790"><td class="memItemLeft" align="right" valign="top"><a id="a501039e681c4328e8fba85c803b7f790"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>tileSpeed</b> = 1f</td></tr>
 <tr class="separator:a501039e681c4328e8fba85c803b7f790"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1d8be54c7ce6cbdff5be446ec14e2cc"><td class="memItemLeft" align="right" valign="top"><a id="ac1d8be54c7ce6cbdff5be446ec14e2cc"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>timeSinceLastDashStarted</b></td></tr>
+<tr class="memitem:ac1d8be54c7ce6cbdff5be446ec14e2cc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#ac1d8be54c7ce6cbdff5be446ec14e2cc">timeSinceLastDashStarted</a></td></tr>
+<tr class="memdesc:ac1d8be54c7ce6cbdff5be446ec14e2cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of time that has passed, in ticks, since this player last performed a dash.  <a href="class_terraria_1_1_player.html#ac1d8be54c7ce6cbdff5be446ec14e2cc">More...</a><br /></td></tr>
 <tr class="separator:ac1d8be54c7ce6cbdff5be446ec14e2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7c2ef586a706bbcfbe0373f4f87636b"><td class="memItemLeft" align="right" valign="top"><a id="ac7c2ef586a706bbcfbe0373f4f87636b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>tipsy</b></td></tr>
@@ -4960,6 +4995,34 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 
 </div>
 </div>
+<a id="a6c21acc2e6aa3df3f184c27207454f28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c21acc2e6aa3df3f184c27207454f28">&#9670;&nbsp;</a></span>GetItemGrabRange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Player.GetItemGrabRange </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_item.html">Item</a>&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fetches the range at which the given item begins to gravitate towards the player.<br  />
+ This range, referred to as item grab range, is measured in pixels. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">item</td><td>The item whose grab range is being evaluated.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The item grab range of the player, in pixels.</dd></dl>
+
+</div>
+</div>
 <a id="a3cee61b648d2eb9596bff80c110e2087"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3cee61b648d2eb9596bff80c110e2087">&#9670;&nbsp;</a></span>GetKnockback()</h2>
 
@@ -5150,6 +5213,33 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
 </div><div class="memdoc">
 
 <p>Returns whether or not this <a class="el" href="class_terraria_1_1_player.html">Player</a> currently has a (de)buff of the provided type. </p>
+
+</div>
+</div>
+<a id="a4f187e4af663a0ec6610fe0992cd19b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f187e4af663a0ec6610fe0992cd19b6">&#9670;&nbsp;</a></span>Heal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Terraria.Player.Heal </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>amount</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Heals the player for a certain amount. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">player</td><td>The player to heal.</td></tr>
+    <tr><td class="paramname">amount</td><td>The amount to heal the player by.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -5593,6 +5683,146 @@ Sets Player.chestX, and Player.chestY, and Player.chest to the given coordinates
 <div class="line">            0</div>
 <div class="line">        }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="a84791b1cf66b82a219fb3885c198ce43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84791b1cf66b82a219fb3885c198ce43">&#9670;&nbsp;</a></span>dash</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Player.dash</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The current vanilla dash that the player is VISIBLY using.<br  />
+ Unlike <a class="el" href="class_terraria_1_1_player.html#a095cf2b349c09556d9524dda7addb29d" title="The current vanilla dash that the player is using.  The following values correspond to vanilla dashes...">dashType</a>, this does not update if a dash cannot currently be input.<br  />
+ </p>
+
+</div>
+</div>
+<a id="ad8fd992fa8fae687e5f1a1f5aed1be62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8fd992fa8fae687e5f1a1f5aed1be62">&#9670;&nbsp;</a></span>dashDelay</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Player.dashDelay</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The amount of time that has to pass, in ticks, before a new dash input will be registered.<br  />
+ For the first frame of any given dash, this is set to -1. After that frame has passsed, it is set to 20 ticks, or 1/3 of a second.<br  />
+ For the Tabi dash, and when dashing into an enemy with the Shield of Cthulhu, this is set to 30 ticks, or 1/2 of a second, instead.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a22ddc0fd5fde7298bef46c4b20bca2a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22ddc0fd5fde7298bef46c4b20bca2a0">&#9670;&nbsp;</a></span>dashTime</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Player.dashTime</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The amount of time this player has left, in ticks, to input the second keystroke of a standard dash input (double-tap left/right).<br  />
+ For vanilla dashes, this window is 15 ticks, or a quarter of a second, in total.<br  />
+ </p>
+
+</div>
+</div>
+<a id="a095cf2b349c09556d9524dda7addb29d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a095cf2b349c09556d9524dda7addb29d">&#9670;&nbsp;</a></span>dashType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Player.dashType</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The current vanilla dash that the player is using.<br  />
+ The following values correspond to vanilla dashes:<br  />
+ 1 =&gt; Tabi / Master Ninja Gear<br  />
+ 2 =&gt; Shield of Cthulhu<br  />
+ 3 =&gt; Solar Flare armor set bonus<br  />
+ 4 =&gt; Unused, though a dash for this value DOES exist<br  />
+ 5 =&gt; Crystal Assassin set bonus<br  />
+ </p>
+
+</div>
+</div>
+<a id="a9aac896c2860a005a9bf70b0cea30872"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9aac896c2860a005a9bf70b0cea30872">&#9670;&nbsp;</a></span>meleeEnchant</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">byte Terraria.Player.meleeEnchant</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The vanilla flask effect which the player currently has active; these affect all melee weapons and whips.<br  />
+ Defaults to 0, which denotes that the player does not currently have a flask active.<br  />
+ The following values correspond to vanilla flasks:<br  />
+ 1 =&gt; Flask of Venom (affected weapons proc Acid Venom on hit)<br  />
+ 2 =&gt; Flask of Cursed Flames (affected weapons proc Cursed Inferno on hit)<br  />
+ 3 =&gt; Flask of Fire (affected weapons proc On Fire! on hit)<br  />
+ 4 =&gt; Flask of Gold (affected weapons proc Midas on hit)<br  />
+ 5 =&gt; Flask of Ichor (affected weapons proc Ichor on hit)<br  />
+ 6 =&gt; Flask of Nanites (affected weapons proc Confused on hit)<br  />
+ 7 =&gt; Flask of Party (affected weapons sometimes release confetti explosions on hit)<br  />
+ 8 =&gt; Flask of Poison (affected weapons proc Poisoned on hit)<br  />
+ </p>
+
+</div>
+</div>
+<a id="a85d8480df2b9f87541df236d4659cb75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85d8480df2b9f87541df236d4659cb75">&#9670;&nbsp;</a></span>spikedBoots</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Player.spikedBoots</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Used by the Shoe Spikes and Climbing Claws to allow for holding onto walls (of tiles, not to be confused with actual walls).<br  />
+ Defaults to 0. Any value higher than 0 allows the player to wall-jump.<br  />
+ A value of 1 causes the player to slowly slide down them while holding onto them.<br  />
+ A value of 2 or more doesn't give this limitation, allowing the player to stay holding onto a wall indefinitely. </p>
+
+</div>
+</div>
+<a id="ac1d8be54c7ce6cbdff5be446ec14e2cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1d8be54c7ce6cbdff5be446ec14e2cc">&#9670;&nbsp;</a></span>timeSinceLastDashStarted</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Terraria.Player.timeSinceLastDashStarted</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The amount of time that has passed, in ticks, since this player last performed a dash. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>

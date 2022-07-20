@@ -88,6 +88,7 @@ $(document).ready(function(){initNavTree('class_terraria_1_1_game_content_1_1_dr
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Terraria.GameContent.Drawing.TileDrawing Class Reference</div>  </div>
@@ -111,6 +112,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ClearCachedTileDraws<
 <tr class="memitem:a171f1036f347bbe9e7b7c0fbe5acc795"><td class="memItemLeft" align="right" valign="top"><a id="a171f1036f347bbe9e7b7c0fbe5acc795"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Draw</b> (bool solidLayer, bool forRenderTargets, bool intoRenderTargets, int waterStyleOverride=-1)</td></tr>
 <tr class="separator:a171f1036f347bbe9e7b7c0fbe5acc795"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ee3781da0e74782b4b3448a0cb9d33f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a7ee3781da0e74782b4b3448a0cb9d33f">EmitLivingTreeLeaf</a> (int i, int j, int leafGoreType)</td></tr>
+<tr class="memdesc:a7ee3781da0e74782b4b3448a0cb9d33f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Emits a single living tree leaf or other gore instance directly below the target tile.<br  />
+ With a 50% chance, also emits a second leaf or other gore instance directly to the side of the target tile, dependent on wind direction.<br  />
+ Used by vanilla's two types of Living Trees, from which this method and its two submethods get their collective name.<br  />
+  <a href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a7ee3781da0e74782b4b3448a0cb9d33f">More...</a><br /></td></tr>
+<tr class="separator:a7ee3781da0e74782b4b3448a0cb9d33f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7aacc94fcd521219b289beb3bdd41a3"><td class="memItemLeft" align="right" valign="top"><a id="ac7aacc94fcd521219b289beb3bdd41a3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetTileDrawData</b> (int x, int y, <a class="el" href="struct_terraria_1_1_tile.html">Tile</a> tileCache, ushort typeCache, ref short tileFrameX, ref short tileFrameY, out int tileWidth, out int tileHeight, out int tileTop, out int halfBrickHeight, out int addFrX, out int addFrY, out SpriteEffects tileSpriteEffect, out Texture2D glowTexture, out Rectangle glowSourceRect, out Color glowColor)</td></tr>
 <tr class="separator:ac7aacc94fcd521219b289beb3bdd41a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,6 +130,16 @@ Texture2D&#160;</td><td class="memItemRight" valign="bottom"><b>GetTileDrawTextu
 <tr class="memitem:aed5cc01678bb1c0f54dcf48a0b3ef7dc"><td class="memItemLeft" align="right" valign="top"><a id="aed5cc01678bb1c0f54dcf48a0b3ef7dc"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetTileOutlineInfo</b> (int x, int y, ushort typeCache, ref Color tileLight, ref Texture2D highlightTexture, ref Color highlightColor)</td></tr>
 <tr class="separator:aed5cc01678bb1c0f54dcf48a0b3ef7dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad954deb2a8e95c844fc85a77198824e4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#ad954deb2a8e95c844fc85a77198824e4">GetWindCycle</a> (int x, int y, double windCounter)</td></tr>
+<tr class="memdesc:ad954deb2a8e95c844fc85a77198824e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fetches the degree to which wind would/should affect a tile at the given location.  <a href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#ad954deb2a8e95c844fc85a77198824e4">More...</a><br /></td></tr>
+<tr class="separator:ad954deb2a8e95c844fc85a77198824e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17c89f8eb163459bf7811e7abc1f129a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a17c89f8eb163459bf7811e7abc1f129a">GetWindGridPush</a> (int i, int j, int pushAnimationTimeTotal, float pushForcePerFrame)</td></tr>
+<tr class="memdesc:a17c89f8eb163459bf7811e7abc1f129a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines how much wind should affect a theoretical tile at the target location on the current update tick.  <a href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a17c89f8eb163459bf7811e7abc1f129a">More...</a><br /></td></tr>
+<tr class="separator:a17c89f8eb163459bf7811e7abc1f129a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a669ce55ac5cd6b9d6e927dfb0fb50034"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a669ce55ac5cd6b9d6e927dfb0fb50034">GetWindGridPushComplex</a> (int i, int j, int pushAnimationTimeTotal, float totalPushForce, int loops, bool flipDirectionPerLoop)</td></tr>
+<tr class="memdesc:a669ce55ac5cd6b9d6e927dfb0fb50034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines how much wind should affect a theoretical tile at the target location on the current update tick.<br  />
+ More complex version of <a class="el" href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a17c89f8eb163459bf7811e7abc1f129a" title="Determines how much wind should affect a theoretical tile at the target location on the current updat...">GetWindGridPush</a>.  <a href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a669ce55ac5cd6b9d6e927dfb0fb50034">More...</a><br /></td></tr>
+<tr class="separator:a669ce55ac5cd6b9d6e927dfb0fb50034"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a195bc3275a5fbd6fe52452a5a2251e49"><td class="memItemLeft" align="right" valign="top"><a id="a195bc3275a5fbd6fe52452a5a2251e49"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>PostDrawTiles</b> (bool solidLayer, bool forRenderTargets, bool intoRenderTargets)</td></tr>
 <tr class="separator:a195bc3275a5fbd6fe52452a5a2251e49"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,6 +152,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>PrepareForAreaDrawing
 <tr class="memitem:ae504ebb4286d64715d678732f1a4277d"><td class="memItemLeft" align="right" valign="top"><a id="ae504ebb4286d64715d678732f1a4277d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>PreparePaintForTilesOnScreen</b> ()</td></tr>
 <tr class="separator:ae504ebb4286d64715d678732f1a4277d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a368b2c6a7aeff63c9b9b1d7e1e1e40ec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a368b2c6a7aeff63c9b9b1d7e1e1e40ec">ShouldSwayInWind</a> (int x, int y, <a class="el" href="struct_terraria_1_1_tile.html">Tile</a> tileCache)</td></tr>
+<tr class="memdesc:a368b2c6a7aeff63c9b9b1d7e1e1e40ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines whether or not the tile at the given location should be able to sway in the wind.  <a href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a368b2c6a7aeff63c9b9b1d7e1e1e40ec">More...</a><br /></td></tr>
+<tr class="separator:a368b2c6a7aeff63c9b9b1d7e1e1e40ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa0b4a513bbe8041e9f3558ade290e60"><td class="memItemLeft" align="right" valign="top"><a id="afa0b4a513bbe8041e9f3558ade290e60"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Update</b> ()</td></tr>
 <tr class="separator:afa0b4a513bbe8041e9f3558ade290e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,8 +168,226 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetTreeVariant<
 <tr class="memdesc:afed98c14ea9335053404fe2dd5a88130"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if a tile at the given coordinates counts towards tile coloring from the Dangersense buff. <br  />
 Vanilla only uses Main.LocalPlayer for <em>player</em>   <a href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#afed98c14ea9335053404fe2dd5a88130">More...</a><br /></td></tr>
 <tr class="separator:afed98c14ea9335053404fe2dd5a88130"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a6da90ab0429a363bf4c9c4ae728165ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_terraria_1_1_game_content_1_1_drawing_1_1_wind_grid.html">WindGrid</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a6da90ab0429a363bf4c9c4ae728165ac">Wind</a><code> [get]</code></td></tr>
+<tr class="memdesc:a6da90ab0429a363bf4c9c4ae728165ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">The wind grid used to exert wind effects on tiles.  <a href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a6da90ab0429a363bf4c9c4ae728165ac">More...</a><br /></td></tr>
+<tr class="separator:a6da90ab0429a363bf4c9c4ae728165ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7ee3781da0e74782b4b3448a0cb9d33f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ee3781da0e74782b4b3448a0cb9d33f">&#9670;&nbsp;</a></span>EmitLivingTreeLeaf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Terraria.GameContent.Drawing.TileDrawing.EmitLivingTreeLeaf </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>leafGoreType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Emits a single living tree leaf or other gore instance directly below the target tile.<br  />
+ With a 50% chance, also emits a second leaf or other gore instance directly to the side of the target tile, dependent on wind direction.<br  />
+ Used by vanilla's two types of Living Trees, from which this method and its two submethods get their collective name.<br  />
+ </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The X coordinate of the target tile.</td></tr>
+    <tr><td class="paramname">j</td><td>The Y coordinate of the target tile.</td></tr>
+    <tr><td class="paramname">leafGoreType</td><td>The numerical <a class="el" href="namespace_terraria_1_1_i_d.html">ID</a> of the leaf or other gore instance that should be spawned.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad954deb2a8e95c844fc85a77198824e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad954deb2a8e95c844fc85a77198824e4">&#9670;&nbsp;</a></span>GetWindCycle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Terraria.GameContent.Drawing.TileDrawing.GetWindCycle </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>windCounter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fetches the degree to which wind would/should affect a tile at the given location. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The X coordinate of the theoretical target tile.</td></tr>
+    <tr><td class="paramname">y</td><td>The Y coordinate of the theoretical target tile.</td></tr>
+    <tr><td class="paramname">windCounter</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If Main.SettingsEnabled_TilesSwayInWind is false or the tile is below surface level, 0.<br  />
+ Otherwise, returns a value from 0.08f to 0.18f. </dd></dl>
+
+</div>
+</div>
+<a id="a17c89f8eb163459bf7811e7abc1f129a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17c89f8eb163459bf7811e7abc1f129a">&#9670;&nbsp;</a></span>GetWindGridPush()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Terraria.GameContent.Drawing.TileDrawing.GetWindGridPush </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pushAnimationTimeTotal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>pushForcePerFrame</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines how much wind should affect a theoretical tile at the target location on the current update tick. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The X coordinate of the theoretical target tile.</td></tr>
+    <tr><td class="paramname">j</td><td>The Y coordinate of the theoretical target tile.</td></tr>
+    <tr><td class="paramname">pushAnimationTimeTotal</td><td>The total amount of time, in ticks, that a wind push cycle for the theoretical target tile should last for.</td></tr>
+    <tr><td class="paramname">pushForcePerFrame</td><td>The amount which wind should affect the theoretical target tile per frame.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The degree to which wind should affect the theoretical target tile, represented as a float. </dd></dl>
+
+</div>
+</div>
+<a id="a669ce55ac5cd6b9d6e927dfb0fb50034"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a669ce55ac5cd6b9d6e927dfb0fb50034">&#9670;&nbsp;</a></span>GetWindGridPushComplex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Terraria.GameContent.Drawing.TileDrawing.GetWindGridPushComplex </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pushAnimationTimeTotal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>totalPushForce</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>loops</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>flipDirectionPerLoop</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines how much wind should affect a theoretical tile at the target location on the current update tick.<br  />
+ More complex version of <a class="el" href="class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a17c89f8eb163459bf7811e7abc1f129a" title="Determines how much wind should affect a theoretical tile at the target location on the current updat...">GetWindGridPush</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The X coordinate of the theoretical target tile.</td></tr>
+    <tr><td class="paramname">j</td><td>The Y coordinate of the theoretical target tile.</td></tr>
+    <tr><td class="paramname">pushAnimationTimeTotal</td><td>The total amount of time, in ticks, that a wind push cycle for the theoretical target tile should last for.</td></tr>
+    <tr><td class="paramname">totalPushForce</td><td></td></tr>
+    <tr><td class="paramname">loops</td><td></td></tr>
+    <tr><td class="paramname">flipDirectionPerLoop</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="afed98c14ea9335053404fe2dd5a88130"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afed98c14ea9335053404fe2dd5a88130">&#9670;&nbsp;</a></span>IsTileDangerous()</h2>
 
@@ -192,6 +430,86 @@ Vanilla only uses Main.LocalPlayer for <em>player</em>   <a href="class_terraria
 
 <p>Checks if a tile at the given coordinates counts towards tile coloring from the Dangersense buff. <br  />
 Vanilla only uses Main.LocalPlayer for <em>player</em>  </p>
+
+</div>
+</div>
+<a id="a368b2c6a7aeff63c9b9b1d7e1e1e40ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a368b2c6a7aeff63c9b9b1d7e1e1e40ec">&#9670;&nbsp;</a></span>ShouldSwayInWind()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Terraria.GameContent.Drawing.TileDrawing.ShouldSwayInWind </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_terraria_1_1_tile.html">Tile</a>&#160;</td>
+          <td class="paramname"><em>tileCache</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Determines whether or not the tile at the given location should be able to sway in the wind. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The X coordinate of the given tile.</td></tr>
+    <tr><td class="paramname">y</td><td>The Y coordinate of the given tile.</td></tr>
+    <tr><td class="paramname">tileCache</td><td>The tile to determine the sway-in-wind-ability of.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>False if something dictates that the tile should NOT be able to sway in the wind; returns true by default.<br  />
+ Vanilla conditions that prevent wind sway are, in this order:<br  />
+<ul>
+<li>if Main.SettingsEnabled_TilesSwayInWind is false<br  />
+</li>
+<li>if TileID.Sets.SwaysInWindBasic is false for the tile type of <em>tileCache</em> <br  />
+</li>
+<li>if the tile is an Orange Bloodroot</li>
+<li>if the tile is a Pink Prickly Pear on any vanilla cactus variant </li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a6da90ab0429a363bf4c9c4ae728165ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6da90ab0429a363bf4c9c4ae728165ac">&#9670;&nbsp;</a></span>Wind</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_terraria_1_1_game_content_1_1_drawing_1_1_wind_grid.html">WindGrid</a> Terraria.GameContent.Drawing.TileDrawing.Wind</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The wind grid used to exert wind effects on tiles. </p>
 
 </div>
 </div>

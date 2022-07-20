@@ -1,8 +1,4 @@
 var searchData=
 [
-  ['zoneforest_6485',['ZoneForest',['../class_terraria_1_1_player.html#a9b0b27dcacde440ada026d0283efa701',1,'Terraria::Player']]],
-  ['zonenormalcaverns_6486',['ZoneNormalCaverns',['../class_terraria_1_1_player.html#a5b499563f41712ba99be78a06fa443e9',1,'Terraria::Player']]],
-  ['zonenormalspace_6487',['ZoneNormalSpace',['../class_terraria_1_1_player.html#a43d50d17a3103ca1dce09ee268347d36',1,'Terraria::Player']]],
-  ['zonenormalunderground_6488',['ZoneNormalUnderground',['../class_terraria_1_1_player.html#aacdaa543d2fd44e80323c667f38617ce',1,'Terraria::Player']]],
-  ['zonepurity_6489',['ZonePurity',['../class_terraria_1_1_player.html#a1d4a244573ad6fbcd513891e416e18ad',1,'Terraria::Player']]]
+  ['wind_6685',['Wind',['../class_terraria_1_1_game_content_1_1_drawing_1_1_tile_drawing.html#a6da90ab0429a363bf4c9c4ae728165ac',1,'Terraria::GameContent::Drawing::TileDrawing']]]
 ];

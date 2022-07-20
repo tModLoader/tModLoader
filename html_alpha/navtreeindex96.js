@@ -1,5 +1,11 @@
 var NAVTREEINDEX96 =
 {
+"class_terraria_1_1_mod_loader_1_1_mod_wall.html#a8e154201c19225ab3992d2d75f87bfe4":[2,0,2,13,124,6],
+"class_terraria_1_1_mod_loader_1_1_mod_wall.html#a97e76ecd00a24c452c905a3faa2f5b35":[2,0,2,13,124,1],
+"class_terraria_1_1_mod_loader_1_1_mod_wall.html#ae7b471cf1d37035d959a4fbb00818e5d":[2,0,2,13,124,0],
+"class_terraria_1_1_mod_loader_1_1_mod_wall.html#af4060d05de1bdfb5549d20b2204f04dc":[2,0,2,13,124,5],
+"class_terraria_1_1_mod_loader_1_1_mod_wall.html#afddd9194f68f46329b6119e2ab95a512":[2,0,2,13,124,2],
+"class_terraria_1_1_mod_loader_1_1_mod_water_style.html":[2,0,2,13,126],
 "class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a39969f6b16e974379d8ff2d9d994d0b9":[2,0,2,13,126,0],
 "class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a3fea4cbe63a75a41128ca1ccfd8785c2":[2,0,2,13,126,7],
 "class_terraria_1_1_mod_loader_1_1_mod_water_style.html#a51592d920537ede237a9ea791255dda1":[2,0,2,13,126,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX96 =
 "class_terraria_1_1_mod_loader_1_1_player_loader.html#a884b651152fe192f69503c9df1a7783f":[2,0,2,13,140,51],
 "class_terraria_1_1_mod_loader_1_1_player_loader.html#a8856b67c4d7c9ecf8816c7b69c361681":[2,0,2,13,140,32],
 "class_terraria_1_1_mod_loader_1_1_player_loader.html#a88ea448ee425c0b61d2a8b6b545a10aa":[2,0,2,13,140,57],
-"class_terraria_1_1_mod_loader_1_1_player_loader.html#a8a7e6ede28427f1e76ac8875ed721090":[2,0,2,13,140,49],
-"class_terraria_1_1_mod_loader_1_1_player_loader.html#a8b522cafb15b34cce10a1b2b07ae811c":[2,0,2,13,140,19],
-"class_terraria_1_1_mod_loader_1_1_player_loader.html#a8d0de897cdf0409b81df720544357a90":[2,0,2,13,140,16],
-"class_terraria_1_1_mod_loader_1_1_player_loader.html#a8d9ff82c3cb567ef44d544b473abbd5b":[2,0,2,13,140,98],
-"class_terraria_1_1_mod_loader_1_1_player_loader.html#a8de7f4aa149a6cec52b8d3aac8a8a929":[2,0,2,13,140,101],
-"class_terraria_1_1_mod_loader_1_1_player_loader.html#a933458f50e81953ee45782ab4eee38bb":[2,0,2,13,140,73],
-"class_terraria_1_1_mod_loader_1_1_player_loader.html#a942f1e821d380410cc09b9f4f3ee98c6":[2,0,2,13,140,55]
+"class_terraria_1_1_mod_loader_1_1_player_loader.html#a8a7e6ede28427f1e76ac8875ed721090":[2,0,2,13,140,49]
 };
