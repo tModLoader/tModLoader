@@ -21,6 +21,11 @@ public class ModPlayerTest : ModPlayer
 		flat += 4;
 	}
 
+	public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
+			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) => true;
+	public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
+	public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
+
 	public override void Load(TagCompound tag) { /* Empty */ }
 
 #if COMPILE_ERROR

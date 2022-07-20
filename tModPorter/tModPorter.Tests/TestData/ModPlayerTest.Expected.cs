@@ -1,10 +1,11 @@
+using Microsoft.Xna.Framework;
+using Microsoft.XNA.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Microsoft.Xna.Framework;
 
 public class ModPlayerTest : ModPlayer
 {
@@ -21,6 +22,10 @@ public class ModPlayerTest : ModPlayer
 		damage *= 0.2f;
 		damage.Flat += 4;
 	}
+
+	public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) => true;
+	public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) { }
+	public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) { }
 
 	public override void LoadData(TagCompound tag) { /* Empty */ }
 
