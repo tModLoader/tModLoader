@@ -3736,7 +3736,7 @@
  							flag14 = true;
  							player[myPlayer].mouseInterface = true;
  							if (mouseLeft && mouseLeftRelease) {
-@@ -35424,14 +_,17 @@
+@@ -35424,14 +_,18 @@
  						if (player[myPlayer].hideInfo[num27])
  							color = new Microsoft.Xna.Framework.Color(80, 80, 80, 70);
  					}
@@ -3752,8 +3752,9 @@
  					}
  
 -					UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + TextureAssets.InfoIcon[num].Value.Size() * 0.75f);
-+					UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + icon.Size() * 0.75f);
 -					spriteBatch.Draw(TextureAssets.InfoIcon[num].Value, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.InfoIcon[num].Width(), TextureAssets.InfoIcon[num].Height()), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					if(num3 < 14) // This is a quick fix until someone works on controller support
++						UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + icon.Size() * 0.75f);
 +					spriteBatch.Draw(icon, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, icon.Width, icon.Height), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  					if (flag14)
  						spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
