@@ -621,6 +621,12 @@ namespace Terraria.Social.Steam
 							continue;
 						}
 
+						if (string.IsNullOrWhiteSpace(metadata["name"])) {
+							Logging.tML.Warn($"Mod has no name: {id}"); // Somehow this happened before and broke mod downloads
+							IncompleteModCount++;
+							continue;
+						}
+
 						// Calculate the Mod Browser Version
 						System.Version cVersion = new System.Version(metadata["version"].Replace("v", ""));
 
