@@ -1,6 +1,5 @@
 var NAVTREEINDEX130 =
 {
-"struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_u_i_collection_info.html#a6303aa8cdd028db48b995d74f95e7878":[2,0,2,5,2,5,1],
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_u_i_collection_info.html#acf6d7c9a155471f03941e638bca0870e":[2,0,2,5,2,5,0],
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlock_progress_report.html":[2,0,2,5,2,6],
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlock_progress_report.html#a20154a833e4b087c6cbef15607b1aa13":[2,0,2,5,2,6,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#aaa43bf3ecc2ccc8f544e5d3d9602db8d":[2,0,2,7,8,0,4],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#ae8ece1535cf781557c83c4a4f0b8f18b":[2,0,2,7,8,0,1],
 "struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html":[2,0,2,7,9],
-"struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html#ade2fe4607873b6bd3040c095c0f8d7a8":[2,0,2,7,9,0]
+"struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html#ade2fe4607873b6bd3040c095c0f8d7a8":[2,0,2,7,9,0],
+"struct_terraria_1_1_graphics_1_1_light_1_1_legacy_lighting_1_1_rect_area.html":[2,0,2,7,3,1,0]
 };

@@ -122,13 +122,12 @@ var NAVTREEINDEX93 =
 "class_terraria_1_1_mod_loader_1_1_mod_keybind.html#a862483b175da370bf55b8d6133045a4f":[2,0,2,13,98,4],
 "class_terraria_1_1_mod_loader_1_1_mod_keybind.html#ad49cbace9287214ec09a35756243328e":[2,0,2,13,98,5],
 "class_terraria_1_1_mod_loader_1_1_mod_loader.html":[2,0,2,13,99],
-"class_terraria_1_1_mod_loader_1_1_mod_loader.html#a0d6cd94e1efcb73482ac141e9cc5d23e":[2,0,2,13,99,19],
 "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a18cb9779b2c2fe7709b67d08c5836c4f":[2,0,2,13,99,17],
 "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a263513b76dcdfedb67534a729c678efb":[2,0,2,13,99,13],
 "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3917fc1d9ce95943c100637389bdff95":[2,0,2,13,99,16],
 "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a3b339ad844fba7e6a301712eef16a072":[2,0,2,13,99,8],
 "class_terraria_1_1_mod_loader_1_1_mod_loader.html#a4b98985aeaad07319d1a512b8a37778f":[2,0,2,13,99,14],
-"class_terraria_1_1_mod_loader_1_1_mod_loader.html#a698f72b29411baac599ed3d09fe0d065":[2,0,2,13,99,20],
+"class_terraria_1_1_mod_loader_1_1_mod_loader.html#a698f72b29411baac599ed3d09fe0d065":[2,0,2,13,99,19],
 "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aa5e45b91da361a28991e56b4fceb29d5":[2,0,2,13,99,18],
 "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aabfba5b93f06954e8b05ec358b8653f7":[2,0,2,13,99,12],
 "class_terraria_1_1_mod_loader_1_1_mod_loader.html#aaefa5fb2877269a328c423c91f825f8a":[2,0,2,13,99,9],
@@ -249,5 +248,6 @@ var NAVTREEINDEX93 =
 "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa63ef2a98431cd3ffe9f74e198141a28":[2,0,2,13,104,26],
 "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aa8668dfc55443c75e42eca56b9fd6fea":[2,0,2,13,104,58],
 "class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#aadf9eeffd3975257af64313a257b5295":[2,0,2,13,104,29],
-"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab05ed99bdd7e825b252d185f30a4e3d5":[2,0,2,13,104,10]
+"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab05ed99bdd7e825b252d185f30a4e3d5":[2,0,2,13,104,10],
+"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#ab3571f511237283f0d54765c5e485448":[2,0,2,13,104,82]
 };

@@ -1,6 +1,5 @@
 var NAVTREEINDEX123 =
 {
-"functions_func_i.html":[2,3,1,8],
 "functions_func_j.html":[2,3,1,9],
 "functions_func_k.html":[2,3,1,10],
 "functions_func_l.html":[2,3,1,11],
@@ -32,8 +31,8 @@ var NAVTREEINDEX123 =
 "functions_t.html":[2,3,0,19],
 "functions_u.html":[2,3,0,20],
 "functions_v.html":[2,3,0,21],
-"functions_vars.html":[2,3,2,0],
 "functions_vars.html":[2,3,2],
+"functions_vars.html":[2,3,2,0],
 "functions_vars_b.html":[2,3,2,1],
 "functions_vars_c.html":[2,3,2,2],
 "functions_vars_d.html":[2,3,2,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX123 =
 "interface_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_i_big_progress_bar.html#a9f1ed07e4ba3cde927b35dd6e6408c3c":[2,0,2,5,21,0,8,0],
 "interface_terraria_1_1_game_content_1_1_u_i_1_1_big_progress_bar_1_1_i_big_progress_bar.html#aeea129a4bf90741370e77b42673a513e":[2,0,2,5,21,0,8,1],
 "interface_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i_1_1_i_builder_acc_toggle.html":[2,0,2,5,21,6,0],
-"interface_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i_1_1_i_builder_acc_toggle.html#a0e73f813ba7f114f13ee30cca2b7a29d":[2,0,2,5,21,6,0,0]
+"interface_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i_1_1_i_builder_acc_toggle.html#a0e73f813ba7f114f13ee30cca2b7a29d":[2,0,2,5,21,6,0,0],
+"interface_terraria_1_1_game_content_1_1_u_i_1_1_builder_acc_toggles_u_i_1_1_i_builder_acc_toggle.html#a34cbe233aa9fc9a6b7a9ead562620b52":[2,0,2,5,21,6,0,1]
 };
