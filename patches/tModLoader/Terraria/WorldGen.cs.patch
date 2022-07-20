@@ -706,15 +706,15 @@
  									flag36 = true;
  							}
  
-@@ -11551,7 +_,7 @@
- 							}
- 						}
+@@ -11559,6 +_,8 @@
+ 							int num89 = num58 - Main.tile[num57, num58].frameY / 18;
+ 							if (Main.tile[num57, num58].type == 467)
+ 								type2 = 467;
++							if (TileID.Sets.BasicChest[Main.tile[num57, num58].type]) // Added to allow automatic fixing of modded chests
++								type2 = Main.tile[num57, num58].type;
  
--						if (TileID.Sets.BasicChest[Main.tile[num57, num58].type]) {
-+						if (TileID.Sets.BasicChest[Main.tile[num57, num58].type] && Main.tile[num57, num58].type < TileID.Count) {
- 							int num86 = Main.tile[num57, num58].frameX / 18;
- 							int num87 = 0;
- 							ushort type2 = 21;
+ 							while (num86 >= 2) {
+ 								num87++;
 @@ -11744,7 +_,7 @@
  			});
  
