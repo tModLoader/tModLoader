@@ -149,11 +149,6 @@ namespace Terraria.ModLoader.IO
 					writer(w, t);
 			}
 
-			public void WriteList(BinaryWriter w, IList<T> list) {
-				foreach (T t in list)
-					writer(w, t);
-			}
-
 			public override object Clone(object o) => o;
 			public override IList CloneList(IList list) => CloneList((IList<T>)list);
 			public virtual IList CloneList(IList<T> list) => new List<T>(list);
