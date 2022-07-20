@@ -420,20 +420,13 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1214,11 +_,26 @@
+@@ -1214,11 +_,19 @@
  
  						Recipe.FindRecipes();
  					}
 +					else if (ItemLoader.CanRightClick(inv[slot])) {
 +						if (ItemLoader.IsModItem(inv[slot].type)) {
-+							Main.ItemDropSolver.TryDropping(new() {
-+								player = player,
-+								item = inv[slot].type,
-+								IsExpertMode = Main.expertMode,
-+								IsMasterMode = Main.masterMode,
-+								IsInSimulation = false,
-+								rng = Main.rand,
-+							});
++							player.DropFromItem(inv[slot].type);
 +						}
 +
 +						ItemLoader.RightClick(inv[slot], player);

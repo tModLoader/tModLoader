@@ -15,13 +15,13 @@ namespace Terraria.ModLoader
 			this.itemDropDatabase = itemDropDatabase;
 		}
 
-		public List<IItemDropRule> Get(bool unusedParam = true) => itemDropDatabase.GetRulesForItemID(itemType);
+		public List<IItemDropRule> Get(bool includeGlobalDrops = true) => itemDropDatabase.GetRulesForItemID(itemType);
 
 		public IItemDropRule Add(IItemDropRule entry) => itemDropDatabase.RegisterToItem(itemType, entry);
 
 		public IItemDropRule Remove(IItemDropRule entry) => itemDropDatabase.RemoveFromItem(itemType, entry);
 
-		public void RemoveWhere(Predicate<IItemDropRule> predicate, bool unusedParam = true) {
+		public void RemoveWhere(Predicate<IItemDropRule> predicate, bool includeGlobalDrops = true) {
 			foreach (var entry in Get()) {
 				if (predicate(entry)) {
 					Remove(entry);
