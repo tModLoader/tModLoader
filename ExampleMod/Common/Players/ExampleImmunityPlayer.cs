@@ -19,7 +19,7 @@ namespace ExampleMod.Common.Players
 			// Slot -1: Most damages from all other sources not mentioned below
 			// Slot 0: Contacting with tiles that deals damage, such as spikes and cactus in don't starve world
 			// Slot 1: Special enemies (Vanilla for Moon Lord, Empress of Light and their minions and projectiles)
-			// Slot 2: Unused in vanilla
+			// Slot 2: Ogre knockback
 			// Slot 3: Trying to catch lava critters with regular bug net
 			// Slot 4: Damages from lava
 
