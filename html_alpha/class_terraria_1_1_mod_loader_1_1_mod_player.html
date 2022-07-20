@@ -192,9 +192,9 @@ Return true to enable autoswing (if not already enabled through autoReuse), retu
 <tr class="memdesc:a8b0a8d4be7e7bbe69bb5a93fbeef6a3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player hovers over an item slot. This can be used to override Main.cursorOverride <br  />
 See <a class="el" href="class_terraria_1_1_i_d_1_1_cursor_override_i_d.html">ID.CursorOverrideID</a> for cursor override style IDs  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a8b0a8d4be7e7bbe69bb5a93fbeef6a3c">More...</a><br /></td></tr>
 <tr class="separator:a8b0a8d4be7e7bbe69bb5a93fbeef6a3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad786d90b187737eeba3b23020f2167a0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ad786d90b187737eeba3b23020f2167a0">Hurt</a> (bool pvp, bool quiet, double damage, int hitDirection, bool crit)</td></tr>
-<tr class="memdesc:ad786d90b187737eeba3b23020f2167a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make anything happen right before damage is subtracted from the player's health.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ad786d90b187737eeba3b23020f2167a0">More...</a><br /></td></tr>
-<tr class="separator:ad786d90b187737eeba3b23020f2167a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb0920c266fba22ec5eba838146b0178"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aeb0920c266fba22ec5eba838146b0178">Hurt</a> (bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)</td></tr>
+<tr class="memdesc:aeb0920c266fba22ec5eba838146b0178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make anything happen right before damage is subtracted from the player's health.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#aeb0920c266fba22ec5eba838146b0178">More...</a><br /></td></tr>
+<tr class="separator:aeb0920c266fba22ec5eba838146b0178"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b06737bb45ee8fae87eb4c989b40da6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a7b06737bb45ee8fae87eb4c989b40da6">Initialize</a> ()</td></tr>
 <tr class="memdesc:a7b06737bb45ee8fae87eb4c989b40da6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player is loaded (on the player selection screen). This can be used to initialize data structures, etc.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a7b06737bb45ee8fae87eb4c989b40da6">More...</a><br /></td></tr>
 <tr class="separator:a7b06737bb45ee8fae87eb4c989b40da6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -331,9 +331,9 @@ override <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html">
 <tr class="memitem:ad2265d288014df8fdb4e13ba4dcac027"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ad2265d288014df8fdb4e13ba4dcac027">PostBuyItem</a> (<a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> vendor, <a class="el" href="class_terraria_1_1_item.html">Item</a>[] shopInventory, <a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:ad2265d288014df8fdb4e13ba4dcac027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever the player buys an item from an <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a>.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ad2265d288014df8fdb4e13ba4dcac027">More...</a><br /></td></tr>
 <tr class="separator:ad2265d288014df8fdb4e13ba4dcac027"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a229ce725992fed1702e8f48865dfd024"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a229ce725992fed1702e8f48865dfd024">PostHurt</a> (bool pvp, bool quiet, double damage, int hitDirection, bool crit)</td></tr>
-<tr class="memdesc:a229ce725992fed1702e8f48865dfd024"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make anything happen when the player takes damage.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a229ce725992fed1702e8f48865dfd024">More...</a><br /></td></tr>
-<tr class="separator:a229ce725992fed1702e8f48865dfd024"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52c48520d53a9d34e2295b03ffaaa713"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a52c48520d53a9d34e2295b03ffaaa713">PostHurt</a> (bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter)</td></tr>
+<tr class="memdesc:a52c48520d53a9d34e2295b03ffaaa713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make anything happen when the player takes damage.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a52c48520d53a9d34e2295b03ffaaa713">More...</a><br /></td></tr>
+<tr class="separator:a52c48520d53a9d34e2295b03ffaaa713"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a377f8c0e0cf75d64942715bc8c1d8984"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a377f8c0e0cf75d64942715bc8c1d8984">PostItemCheck</a> ()</td></tr>
 <tr class="memdesc:a377f8c0e0cf75d64942715bc8c1d8984"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do anything after the update code for the player's held item is run. Hooks for the middle of the held item update code have more specific names in <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html" title="This class serves as a place for you to place all your properties and hooks for each item....">ModItem</a> and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html" title="A ModPlayer instance represents an extension of a Player instance. You can store fields in the ModPla...">ModPlayer</a>.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a377f8c0e0cf75d64942715bc8c1d8984">More...</a><br /></td></tr>
 <tr class="separator:a377f8c0e0cf75d64942715bc8c1d8984"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -361,9 +361,9 @@ override <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html">
 <tr class="memitem:ac23993294ff99fecb13eae6549b0f37e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ac23993294ff99fecb13eae6549b0f37e">PostUpdateRunSpeeds</a> ()</td></tr>
 <tr class="memdesc:ac23993294ff99fecb13eae6549b0f37e"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is called after the player's horizontal speeds are modified, which is sometime after PostUpdateMiscEffects is called, and right before the player's horizontal position is updated. Use this to modify maxRunSpeed, accRunSpeed, runAcceleration, and similar variables before the player moves forwards/backwards.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#ac23993294ff99fecb13eae6549b0f37e">More...</a><br /></td></tr>
 <tr class="separator:ac23993294ff99fecb13eae6549b0f37e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9899cb16acb61790649916155b253935"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a9899cb16acb61790649916155b253935">PreHurt</a> (bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref <a class="el" href="class_terraria_1_1_data_structures_1_1_player_death_reason.html">PlayerDeathReason</a> damageSource)</td></tr>
-<tr class="memdesc:a9899cb16acb61790649916155b253935"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook is called before every time the player takes damage. The pvp parameter is whether the damage was from another player. The quiet parameter determines whether the damage will be communicated to the server. The damage, hitDirection, and crit parameters can be modified. Set the customDamage parameter to true if you want to use your own damage formula (this parameter will disable automatically subtracting the player's defense from the damage). Set the playSound parameter to false to disable the player's hurt sound, and the genGore parameter to false to disable the dust particles that spawn. (These are useful for creating your own sound or gore.) The deathText parameter can be modified to change the player's death message if the player dies. Return false to stop the player from taking damage. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a9899cb16acb61790649916155b253935">More...</a><br /></td></tr>
-<tr class="separator:a9899cb16acb61790649916155b253935"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33fa665234add003d4dc0a70bc2a9c62"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a33fa665234add003d4dc0a70bc2a9c62">PreHurt</a> (bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref <a class="el" href="class_terraria_1_1_data_structures_1_1_player_death_reason.html">PlayerDeathReason</a> damageSource, ref int cooldownCounter)</td></tr>
+<tr class="memdesc:a33fa665234add003d4dc0a70bc2a9c62"><td class="mdescLeft">&#160;</td><td class="mdescRight">This hook is called before every time the player takes damage. The pvp parameter is whether the damage was from another player. The quiet parameter determines whether the damage will be communicated to the server. The damage, hitDirection, and crit parameters can be modified. Set the customDamage parameter to true if you want to use your own damage formula (this parameter will disable automatically subtracting the player's defense from the damage). Set the playSound parameter to false to disable the player's hurt sound, and the genGore parameter to false to disable the dust particles that spawn. (These are useful for creating your own sound or gore.) The deathText parameter can be modified to change the player's death message if the player dies. Return false to stop the player from taking damage. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#a33fa665234add003d4dc0a70bc2a9c62">More...</a><br /></td></tr>
+<tr class="separator:a33fa665234add003d4dc0a70bc2a9c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afad2f1f641434d74394d8424a2f30a1a"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_player.html#afad2f1f641434d74394d8424a2f30a1a">PreItemCheck</a> ()</td></tr>
 <tr class="memdesc:afad2f1f641434d74394d8424a2f30a1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to do anything before the update code for the player's held item is run. Return false to stop the held item update code from being run (for example, if the player is frozen). Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_player.html#afad2f1f641434d74394d8424a2f30a1a">More...</a><br /></td></tr>
 <tr class="separator:afad2f1f641434d74394d8424a2f30a1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1713,8 +1713,8 @@ See <a class="el" href="class_terraria_1_1_i_d_1_1_cursor_override_i_d.html">ID.
 
 </div>
 </div>
-<a id="ad786d90b187737eeba3b23020f2167a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad786d90b187737eeba3b23020f2167a0">&#9670;&nbsp;</a></span>Hurt()</h2>
+<a id="aeb0920c266fba22ec5eba838146b0178"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb0920c266fba22ec5eba838146b0178">&#9670;&nbsp;</a></span>Hurt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1750,7 +1750,13 @@ See <a class="el" href="class_terraria_1_1_i_d_1_1_cursor_override_i_d.html">ID.
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramname"><em>crit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cooldownCounter</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1773,6 +1779,7 @@ See <a class="el" href="class_terraria_1_1_i_d_1_1_cursor_override_i_d.html">ID.
     <tr><td class="paramname">damage</td><td></td></tr>
     <tr><td class="paramname">hitDirection</td><td></td></tr>
     <tr><td class="paramname">crit</td><td></td></tr>
+    <tr><td class="paramname">cooldownCounter</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -3829,8 +3836,8 @@ Setting FishingAttempt.rolledItemDrop or FishingAttempt.rolledEnemySpawn is not 
 
 </div>
 </div>
-<a id="a229ce725992fed1702e8f48865dfd024"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a229ce725992fed1702e8f48865dfd024">&#9670;&nbsp;</a></span>PostHurt()</h2>
+<a id="a52c48520d53a9d34e2295b03ffaaa713"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52c48520d53a9d34e2295b03ffaaa713">&#9670;&nbsp;</a></span>PostHurt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3866,7 +3873,13 @@ Setting FishingAttempt.rolledItemDrop or FishingAttempt.rolledEnemySpawn is not 
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>crit</em>&#160;</td>
+          <td class="paramname"><em>crit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cooldownCounter</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -3889,6 +3902,7 @@ Setting FishingAttempt.rolledItemDrop or FishingAttempt.rolledEnemySpawn is not 
     <tr><td class="paramname">damage</td><td></td></tr>
     <tr><td class="paramname">hitDirection</td><td></td></tr>
     <tr><td class="paramname">crit</td><td></td></tr>
+    <tr><td class="paramname">cooldownCounter</td><td></td></tr>
   </table>
   </dd>
 </dl>
@@ -4200,8 +4214,8 @@ Setting FishingAttempt.rolledItemDrop or FishingAttempt.rolledEnemySpawn is not 
 
 </div>
 </div>
-<a id="a9899cb16acb61790649916155b253935"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9899cb16acb61790649916155b253935">&#9670;&nbsp;</a></span>PreHurt()</h2>
+<a id="a33fa665234add003d4dc0a70bc2a9c62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33fa665234add003d4dc0a70bc2a9c62">&#9670;&nbsp;</a></span>PreHurt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4261,7 +4275,13 @@ Setting FishingAttempt.rolledItemDrop or FishingAttempt.rolledEnemySpawn is not 
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">ref <a class="el" href="class_terraria_1_1_data_structures_1_1_player_death_reason.html">PlayerDeathReason</a>&#160;</td>
-          <td class="paramname"><em>damageSource</em>&#160;</td>
+          <td class="paramname"><em>damageSource</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>cooldownCounter</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -4288,6 +4308,7 @@ Setting FishingAttempt.rolledItemDrop or FishingAttempt.rolledEnemySpawn is not 
     <tr><td class="paramname">playSound</td><td></td></tr>
     <tr><td class="paramname">genGore</td><td></td></tr>
     <tr><td class="paramname">damageSource</td><td></td></tr>
+    <tr><td class="paramname">cooldownCounter</td><td></td></tr>
   </table>
   </dd>
 </dl>

@@ -1420,6 +1420,7 @@ var hierarchy =
       [ "Terraria.Map.TeleportPylonsMapLayer", "class_terraria_1_1_map_1_1_teleport_pylons_map_layer.html", null ],
       [ "Terraria.ModLoader.ModMapLayer", "class_terraria_1_1_mod_loader_1_1_mod_map_layer.html", null ]
     ] ],
+    [ "Terraria.ID.ImmunityCooldownID", "class_terraria_1_1_i_d_1_1_immunity_cooldown_i_d.html", null ],
     [ "Terraria.GameContent.UI.IMultiplayerClosePlayersOverlay", "interface_terraria_1_1_game_content_1_1_u_i_1_1_i_multiplayer_close_players_overlay.html", [
       [ "Terraria.GameContent.UI.LegacyMultiplayerClosePlayersOverlay", "class_terraria_1_1_game_content_1_1_u_i_1_1_legacy_multiplayer_close_players_overlay.html", null ],
       [ "Terraria.GameContent.UI.NewMultiplayerClosePlayersOverlay", "class_terraria_1_1_game_content_1_1_u_i_1_1_new_multiplayer_close_players_overlay.html", null ]

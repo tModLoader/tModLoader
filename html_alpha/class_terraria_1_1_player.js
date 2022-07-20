@@ -21,6 +21,7 @@ var class_terraria_1_1_player =
     [ "AccumulateGolfingScore", "class_terraria_1_1_player.html#ad0c1344feedf42a09160c0b626b5c8e0", null ],
     [ "AddBuff", "class_terraria_1_1_player.html#acb4e91497854fdaf3957abc8098e4f81", null ],
     [ "addDPS", "class_terraria_1_1_player.html#a489821fbdda77cce7bb290983eb9954c", null ],
+    [ "AddImmuneTime", "class_terraria_1_1_player.html#aae94af473fd9f5a24085876be353457f", null ],
     [ "AdjTiles", "class_terraria_1_1_player.html#a8a004ad753363d8a66d9b3e7c8d59cf0", null ],
     [ "ApplyArmorSoundAndDustChanges", "class_terraria_1_1_player.html#a2ff17a1714232ad9d4d8226d08e7f416", null ],
     [ "ApplyDamageToNPC", "class_terraria_1_1_player.html#a8dfd06a1e34b02989e56433ce49ba15a", null ],

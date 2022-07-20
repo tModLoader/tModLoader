@@ -1,5 +1,12 @@
 var NAVTREEINDEX88 =
 {
+"class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a159029ebd18f9bb919db53b17477df88":[2,0,2,13,2,4,8],
+"class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a204ab94466ccdf8a77bc0e900a3a9310":[2,0,2,13,2,4,12],
+"class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a3477df0e6f226fe85e026f18d5790ac3":[2,0,2,13,2,4,9],
+"class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a6abbaa06ee3eddf61f9c1cc5f5b24f68":[2,0,2,13,2,4,5],
+"class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a7262e71d5fd9374fc713c3b811bc8920":[2,0,2,13,2,4,3],
+"class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a73c2fb72f21b8324b04314fe4f1eca5a":[2,0,2,13,2,4,0],
+"class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#a778dd46e86090715856e1b9df09f34ac":[2,0,2,13,2,4,4],
 "class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#ad7523b76761f7a332f67d2dff88b1738":[2,0,2,13,2,4,11],
 "class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#ad758e525c3a5d11cb4458038b6486a4c":[2,0,2,13,2,4,6],
 "class_terraria_1_1_mod_loader_1_1_core_1_1_loader_utils.html#adcec9be04eae8e1eb240a2c95aa434ad":[2,0,2,13,2,4,10],
@@ -242,12 +249,5 @@ var NAVTREEINDEX88 =
 "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_j_i_t_exception.html#a81e8ada128b24946a5fc13e031031fa4":[2,0,2,13,4,3,1],
 "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_j_i_t_exception.html#aeec03f73cb50dc0d74fec0ea962263f1":[2,0,2,13,4,3,0],
 "class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html":[2,0,2,13,4,4],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html#a82677a7066870dfd1bf639689ad5581e":[2,0,2,13,4,4,0],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html#ac3a827089dc064a7f4f50a21e7e46c51":[2,0,2,13,4,4,1],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html":[2,0,2,13,4,5],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html#a56b250f016773f795e8f129c86740881":[2,0,2,13,4,5,1],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html#a6dc02df8f187e72cc84891dc7af7fe49":[2,0,2,13,4,5,5],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html#a86021bbb9e3ac647d6c3d99e2c3c382f":[2,0,2,13,4,5,2],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html#a8b52eef4e0d3928f82a17053b2ce263e":[2,0,2,13,4,5,0],
-"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_missing_resource_exception.html#a8c5556ffeb78244d3a2bba58dfbafa5d":[2,0,2,13,4,5,4]
+"class_terraria_1_1_mod_loader_1_1_exceptions_1_1_levenshtein_distance.html#a82677a7066870dfd1bf639689ad5581e":[2,0,2,13,4,4,0]
 };

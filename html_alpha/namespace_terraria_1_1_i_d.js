@@ -38,6 +38,7 @@ var namespace_terraria_1_1_i_d =
     [ "GlowMaskID", "class_terraria_1_1_i_d_1_1_glow_mask_i_d.html", "class_terraria_1_1_i_d_1_1_glow_mask_i_d" ],
     [ "GoreID", "class_terraria_1_1_i_d_1_1_gore_i_d.html", "class_terraria_1_1_i_d_1_1_gore_i_d" ],
     [ "HousingCategoryID", "class_terraria_1_1_i_d_1_1_housing_category_i_d.html", "class_terraria_1_1_i_d_1_1_housing_category_i_d" ],
+    [ "ImmunityCooldownID", "class_terraria_1_1_i_d_1_1_immunity_cooldown_i_d.html", "class_terraria_1_1_i_d_1_1_immunity_cooldown_i_d" ],
     [ "InvasionID", "class_terraria_1_1_i_d_1_1_invasion_i_d.html", "class_terraria_1_1_i_d_1_1_invasion_i_d" ],
     [ "ItemAlternativeFunctionID", "class_terraria_1_1_i_d_1_1_item_alternative_function_i_d.html", "class_terraria_1_1_i_d_1_1_item_alternative_function_i_d" ],
     [ "ItemHoldStyleID", "class_terraria_1_1_i_d_1_1_item_hold_style_i_d.html", "class_terraria_1_1_i_d_1_1_item_hold_style_i_d" ],

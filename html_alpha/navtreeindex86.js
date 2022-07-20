@@ -1,5 +1,12 @@
 var NAVTREEINDEX86 =
 {
+"class_terraria_1_1_main.html#affa606630dcb968a1b54e7bae61b4458":[2,0,2,47,300],
+"class_terraria_1_1_main.html#affccfb3536bd7ac4636d8e964d54a617":[2,0,2,47,157],
+"class_terraria_1_1_main.html#affebde6084fe1ad13d22b33f0c6864cd":[2,0,2,47,161],
+"class_terraria_1_1_main.html#afffa84efb4d51ed7311d2cb70821d7b4":[2,0,2,47,1182],
+"class_terraria_1_1_main.html#afffb1921e4e9ffc15df1bf3a083466ac":[2,0,2,47,507],
+"class_terraria_1_1_main_1_1_current_frame_flags.html":[2,0,2,47,0],
+"class_terraria_1_1_main_1_1_current_frame_flags.html#a51647178149db05cc643a5a4b0c3458c":[2,0,2,47,0,3],
 "class_terraria_1_1_main_1_1_current_frame_flags.html#a76ca1b8a6b064f74300b6805a62da116":[2,0,2,47,0,4],
 "class_terraria_1_1_main_1_1_current_frame_flags.html#aa41c59d16ef6818425c9c7f1ec381b7f":[2,0,2,47,0,1],
 "class_terraria_1_1_main_1_1_current_frame_flags.html#afab89737db3c597ddce31f03b4b71de7":[2,0,2,47,0,2],
@@ -242,12 +249,5 @@ var NAVTREEINDEX86 =
 "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#aec25e61a656166c17d73aa54cc2a7156":[2,0,2,13,19,12],
 "class_terraria_1_1_mod_loader_1_1_combined_hooks.html#aed08c96b21424f0c63b222f9d80db16f":[2,0,2,13,19,19],
 "class_terraria_1_1_mod_loader_1_1_command_loader.html":[2,0,2,13,21],
-"class_terraria_1_1_mod_loader_1_1_command_loader.html#a4127efa9617ac0715c4c73c0c023e4db":[2,0,2,13,21,1],
-"class_terraria_1_1_mod_loader_1_1_command_loader.html#a933f56a7fec2032ded92a5a27d59e2f3":[2,0,2,13,21,0],
-"class_terraria_1_1_mod_loader_1_1_compass_info_display.html":[2,0,2,13,22],
-"class_terraria_1_1_mod_loader_1_1_compass_info_display.html#a699e0cc5b08bdc4c680f51c52c1b934b":[2,0,2,13,22,2],
-"class_terraria_1_1_mod_loader_1_1_compass_info_display.html#aa041e3de88f11cbacdbaff7f4dc77e91":[2,0,2,13,22,0],
-"class_terraria_1_1_mod_loader_1_1_compass_info_display.html#aea8198264c92398362b8291eb073db38":[2,0,2,13,22,1],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html":[2,0,2,13,1,1],
-"class_terraria_1_1_mod_loader_1_1_config_1_1_background_color_attribute.html#aade06b617c8f2aff897a20f21abb0c7f":[2,0,2,13,1,1,0]
+"class_terraria_1_1_mod_loader_1_1_command_loader.html#a4127efa9617ac0715c4c73c0c023e4db":[2,0,2,13,21,1]
 };

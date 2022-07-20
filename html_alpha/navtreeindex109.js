@@ -1,5 +1,13 @@
 var NAVTREEINDEX109 =
 {
+"class_terraria_1_1_popup_text.html#ab5abe928e59d9075bdcd639c87a9b311":[2,0,2,56,27],
+"class_terraria_1_1_popup_text.html#ac4e583e27a86488743d1e3ecc376512b":[2,0,2,56,31],
+"class_terraria_1_1_popup_text.html#ac9f53d9044ea2c4241f9fcd06baea7d2":[2,0,2,56,19],
+"class_terraria_1_1_popup_text.html#ade95f3de4af84098d20ba2b1b32b78a7":[2,0,2,56,10],
+"class_terraria_1_1_popup_text.html#ae0e8000f62461c760e18289458c0c4d7":[2,0,2,56,21],
+"class_terraria_1_1_popup_text.html#ae8ee97b44488d1cdcb7cfee105009a77":[2,0,2,56,25],
+"class_terraria_1_1_popup_text.html#aeb766313282685398660454bff8c3ff4":[2,0,2,56,16],
+"class_terraria_1_1_popup_text.html#af7dbc9a9f14ec2a92b96fe8561ac2e86":[2,0,2,56,14],
 "class_terraria_1_1_popup_text.html#afa19975842d6e8b4dca39ddf04d8b02b":[2,0,2,56,32],
 "class_terraria_1_1_popup_text.html#afc2444d4618787e6beb44cdd11f48c64":[2,0,2,56,1],
 "class_terraria_1_1_program.html":[2,0,2,57],
@@ -241,13 +249,5 @@ var NAVTREEINDEX109 =
 "class_terraria_1_1_recipe.html#a7faec4b30f8ac9d802f3a371fb58e680":[2,0,2,60,60],
 "class_terraria_1_1_recipe.html#a84330c5b0bca8006c6ccfec770bb86f6":[2,0,2,60,14],
 "class_terraria_1_1_recipe.html#a856701f9a8418905d092147165436a4d":[2,0,2,60,41],
-"class_terraria_1_1_recipe.html#a894ea73b6543796fbda3e5a0aa4a1773":[2,0,2,60,16],
-"class_terraria_1_1_recipe.html#a8a662bcaac40280998e962584b68b20e":[2,0,2,60,7],
-"class_terraria_1_1_recipe.html#a8ca3d78d6207ab7f1c0a61fa06ca8a2d":[2,0,2,60,55],
-"class_terraria_1_1_recipe.html#a8d29dd73b574c3a36b6152ab3f82311a":[2,0,2,60,58],
-"class_terraria_1_1_recipe.html#a8d7f3a99b22240679d72ffd24f539f3b":[2,0,2,60,62],
-"class_terraria_1_1_recipe.html#a8e91488a600dbfdf0aa520c32c91ce1a":[2,0,2,60,50],
-"class_terraria_1_1_recipe.html#a91598a9eb72bff76ddd2b39af372aabb":[2,0,2,60,38],
-"class_terraria_1_1_recipe.html#a9587a0631a6139060de62174863cf797":[2,0,2,60,63],
-"class_terraria_1_1_recipe.html#a9aa662cabe9152c39fc6d6d94bd6398b":[2,0,2,60,24]
+"class_terraria_1_1_recipe.html#a894ea73b6543796fbda3e5a0aa4a1773":[2,0,2,60,16]
 };

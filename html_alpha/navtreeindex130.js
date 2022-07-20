@@ -1,5 +1,13 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambience_server_1_1_ambience_spawn_info.html#a1932fef3601c9d2512478dc932a2358d":[2,0,2,5,1,0,0,1],
+"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambience_server_1_1_ambience_spawn_info.html#aee746c631f8dc7d183c1e56831b79a38":[2,0,2,5,1,0,0,0],
+"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_ocean_line_cache.html":[2,0,2,5,1,1,0],
+"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_ocean_line_cache.html#a128f1fb0352f248a38ad72a9c656047d":[2,0,2,5,1,1,0,0],
+"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_ocean_line_cache.html#a7a3a87cd71fae2d37d5d2dd9c961297d":[2,0,2,5,1,1,0,1],
+"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_underworld_cache.html":[2,0,2,5,1,1,1],
+"struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_underworld_cache.html#afcc76b35256d6cd9e8aa4a311b133fea":[2,0,2,5,1,1,1,0],
+"struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_u_i_collection_info.html":[2,0,2,5,2,5],
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_u_i_collection_info.html#a6303aa8cdd028db48b995d74f95e7878":[2,0,2,5,2,5,1],
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_u_i_collection_info.html#acf6d7c9a155471f03941e638bca0870e":[2,0,2,5,2,5,0],
 "struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlock_progress_report.html":[2,0,2,5,2,6],
@@ -241,13 +249,5 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#a6792459bf154473cf05183dcd99e8e1b":[2,0,2,7,8,6],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#a9329d0e19a2df813c1beb67e54e93b55":[2,0,2,7,8,1],
 "struct_terraria_1_1_graphics_1_1_final_fractal_helper.html#adfa39fa01ab7163d2ccc4c77df5ff78c":[2,0,2,7,8,2],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html":[2,0,2,7,8,0],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a3c6023aa287280104070c81fa158245f":[2,0,2,7,8,0,5],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a44f88e8fbc3951d7b7c3e727e3163b27":[2,0,2,7,8,0,2],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a776a3bc8cc9f97a5d5cac410d804a317":[2,0,2,7,8,0,0],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#a82a72045086f3e71e2eb25496fbf5ddc":[2,0,2,7,8,0,3],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#aaa43bf3ecc2ccc8f544e5d3d9602db8d":[2,0,2,7,8,0,4],
-"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html#ae8ece1535cf781557c83c4a4f0b8f18b":[2,0,2,7,8,0,1],
-"struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html":[2,0,2,7,9],
-"struct_terraria_1_1_graphics_1_1_flame_lash_drawer.html#ade2fe4607873b6bd3040c095c0f8d7a8":[2,0,2,7,9,0]
+"struct_terraria_1_1_graphics_1_1_final_fractal_helper_1_1_final_fractal_profile.html":[2,0,2,7,8,0]
 };

@@ -145,6 +145,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>AccumulateGolfingScor
 <tr class="memitem:a489821fbdda77cce7bb290983eb9954c"><td class="memItemLeft" align="right" valign="top"><a id="a489821fbdda77cce7bb290983eb9954c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addDPS</b> (int dmg)</td></tr>
 <tr class="separator:a489821fbdda77cce7bb290983eb9954c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae94af473fd9f5a24085876be353457f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_player.html#aae94af473fd9f5a24085876be353457f">AddImmuneTime</a> (int cooldownCounterId, int immuneTime)</td></tr>
+<tr class="memdesc:aae94af473fd9f5a24085876be353457f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds to either Player.immuneTime or Player.hurtCooldowns based on the cooldownCounterId  <a href="class_terraria_1_1_player.html#aae94af473fd9f5a24085876be353457f">More...</a><br /></td></tr>
+<tr class="separator:aae94af473fd9f5a24085876be353457f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a004ad753363d8a66d9b3e7c8d59cf0"><td class="memItemLeft" align="right" valign="top"><a id="a8a004ad753363d8a66d9b3e7c8d59cf0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AdjTiles</b> ()</td></tr>
 <tr class="separator:a8a004ad753363d8a66d9b3e7c8d59cf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -4571,6 +4574,43 @@ virtual Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>VisualPosi
     <tr><td class="paramname">timeToAdd</td><td>The desired buff time in ticks. 60 ticks is 1 second</td></tr>
     <tr><td class="paramname">quiet</td><td>If true, the network sync message is skipped.</td></tr>
     <tr><td class="paramname">foodHack</td><td>unused</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aae94af473fd9f5a24085876be353457f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae94af473fd9f5a24085876be353457f">&#9670;&nbsp;</a></span>AddImmuneTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Terraria.Player.AddImmuneTime </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cooldownCounterId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>immuneTime</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds to either Player.immuneTime or Player.hurtCooldowns based on the cooldownCounterId </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cooldownCounterId</td><td>See ImmunityCooldownID for valid ids.</td></tr>
+    <tr><td class="paramname">immuneTime</td><td>Extra immunity time to add</td></tr>
   </table>
   </dd>
 </dl>

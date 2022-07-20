@@ -1,5 +1,12 @@
 var NAVTREEINDEX91 =
 {
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a03cdeffc1f3073c859999427da29f346":[2,0,2,13,5,16,4],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a0585248af0c253db2a914a612cf70ed0":[2,0,2,13,5,16,11],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a17cb63f7354d5f372397ed5141fc8f00":[2,0,2,13,5,16,6],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a3061717681b12b6372493701c8118feb":[2,0,2,13,5,16,1],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a3eab3fe45c60c32c83c584d8ead62835":[2,0,2,13,5,16,14],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a56151c1d5fdbcae7737a30943eb1afad":[2,0,2,13,5,16,13],
+"class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a6057c2ba2f7f1f235fe8bc058b819034":[2,0,2,13,5,16,10],
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a7fb0f0fe7741c799b95d674397c645ec":[2,0,2,13,5,16,17],
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a849324c7dcec5eca5ad782f0bca19b68":[2,0,2,13,5,16,16],
 "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html#a84d1ace15a68519f1309ce20dfa1c12d":[2,0,2,13,5,16,2],
@@ -242,12 +249,5 @@ var NAVTREEINDEX91 =
 "class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class.html":[2,0,2,13,80],
 "class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class.html#a333c0baa8db35f93f7f6c1fdaa3bf688":[2,0,2,13,80,1],
 "class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class.html#a5b0744cc11c28e40af30ce86800fc5d7":[2,0,2,13,80,2],
-"class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class.html#aff193c74da88164b8b061351fe89e946":[2,0,2,13,80,0],
-"class_terraria_1_1_mod_loader_1_1_member_jit_attribute.html":[2,0,2,13,81],
-"class_terraria_1_1_mod_loader_1_1_member_jit_attribute.html#a806ab86a34b077f1fd4043878178ec98":[2,0,2,13,81,0],
-"class_terraria_1_1_mod_loader_1_1_menu_loader.html":[2,0,2,13,82],
-"class_terraria_1_1_mod_loader_1_1_menu_loader.html#a0564219815bc85f5133311ad2fdf14b1":[2,0,2,13,82,0],
-"class_terraria_1_1_mod_loader_1_1_menu_loader.html#a1076697283a13536a6fa6bf8b191408b":[2,0,2,13,82,2],
-"class_terraria_1_1_mod_loader_1_1_menu_loader.html#a43e522c1a0c1bddd5eb42a60c4afc887":[2,0,2,13,82,1],
-"class_terraria_1_1_mod_loader_1_1_metal_detector_info_display.html":[2,0,2,13,83]
+"class_terraria_1_1_mod_loader_1_1_melee_no_speed_damage_class.html#aff193c74da88164b8b061351fe89e946":[2,0,2,13,80,0]
 };
