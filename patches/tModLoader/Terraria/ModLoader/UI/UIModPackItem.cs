@@ -2,11 +2,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.UI;
 using Terraria.Audio;
@@ -50,7 +52,7 @@ namespace Terraria.ModLoader.UI
 		private readonly string _filepath;
 		private readonly bool _legacy;
 
-		public UIModPackItem(string name, string[] mods, bool legacy) {
+		public UIModPackItem(string name, string[] mods, bool legacy, IEnumerable<LocalMod> localMods) {
 			_legacy = legacy;
 			_filename = _legacy ? name : Path.GetFileNameWithoutExtension(name);
 			_filepath = name;
@@ -323,9 +325,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private static void EnabledListOnly(UIMouseEvent evt, UIElement listeningElement) {
-			foreach (var item in UIModPacks.Mods) {
-				ModLoader.DisableMod(item);
-			}
+			ModLoader.DisableAllMods();
 
 			EnableList(evt, listeningElement);
 		}
@@ -333,7 +333,7 @@ namespace Terraria.ModLoader.UI
 
 		private static void ImportModPackLocal(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
-			Core.ModOrganizer.ModPackActive = modpack._filepath;
+			ModOrganizer.ModPackActive = modpack._filepath;
 
 			//TODO: Add code to utilize the saved configs
 
@@ -344,7 +344,7 @@ namespace Terraria.ModLoader.UI
 		private static void RemoveModPackLocal(UIMouseEvent evt, UIElement listeningElement) {
 			// Clear active Mod Pack 
 			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
-			Core.ModOrganizer.ModPackActive = null;
+			ModOrganizer.ModPackActive = null;
 
 			//TODO: Add code to utilize the saved configs
 
