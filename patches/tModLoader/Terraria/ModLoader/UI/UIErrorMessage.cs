@@ -136,9 +136,7 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private void ExitAndDisableAll(UIMouseEvent evt, UIElement listeningElement) {
-			foreach (var mod in ModLoader.EnabledMods)
-				ModLoader.DisableMod(mod);
-
+			ModLoader.DisableAllMods();
 			Main.instance.Exit();
 		}
 

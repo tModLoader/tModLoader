@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -293,24 +292,20 @@ namespace Terraria.ModLoader.UI
 
 		private void EnableAll(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(12, -1, -1, 1);
-			ModLoader.PauseSavingEnabledMods = true;
 			foreach (UIModItem modItem in items) {
 				modItem.Enable();
 			}
-			ModLoader.PauseSavingEnabledMods = false;
 		}
 
 		private void DisableAll(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(12, -1, -1, 1);
-			ModLoader.PauseSavingEnabledMods = true;
 			foreach (UIModItem modItem in items) {
 				modItem.Disable();
 			}
-			ModLoader.PauseSavingEnabledMods = false;
 		}
 
 		public UIModItem FindUIModItem(string modName) {
-			return items.FirstOrDefault(m => m.ModName == modName);
+			return items.SingleOrDefault(m => m.ModName == modName);
 		}
 
 		public override void Update(GameTime gameTime) {
@@ -400,19 +395,17 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void Populate() {
-			Task.Factory
-				.StartNew(() => ModOrganizer.FindMods(), _cts.Token)
-				.ContinueWith(task => {
-					var mods = task.Result;
-					foreach (var mod in mods) {
-						UIModItem modItem = new UIModItem(mod);
-						modItem.Activate();
-						items.Add(modItem);
-					}
-					needToRemoveLoading = true;
-					updateNeeded = true;
-					loading = false;
-				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.Current);
+			Task.Run(() => {
+				var mods = ModOrganizer.FindMods(logDuplicates: true);
+				foreach (var mod in mods) {
+					UIModItem modItem = new UIModItem(mod);
+					modItem.Activate();
+					items.Add(modItem);
+				}
+				needToRemoveLoading = true;
+				updateNeeded = true;
+				loading = false;
+			});
 		}
 	}
 
