@@ -10,6 +10,8 @@ namespace ExampleMod.Common.Systems
 
 		public override void Load() {
 			// Registers a new keybind
+			// The "$" character before a name means it should interpret the name as a translation key and use the loaded translation with the same key
+			// The actual text displayed is in en-US.hjson
 			RandomBuffKeybind = KeybindLoader.RegisterKeybind(Mod, "$Mods.ExampleMod.Keybind.RandomBuff", "P");
 		}
 
