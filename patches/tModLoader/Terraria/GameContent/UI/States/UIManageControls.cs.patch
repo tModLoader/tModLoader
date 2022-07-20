@@ -176,8 +176,7 @@
 +						return container;
 +					}
 +
--					return new UIKeybindingListItem(bind, currentInputMode, color);
-+					return new UIKeybindingListItem("Terraria", bind, currentInputMode, color);
+ 					return new UIKeybindingListItem(bind, currentInputMode, color);
  			}
  		}
  
