@@ -24,7 +24,6 @@ namespace Terraria.ModLoader.UI
 	{
 		internal const string MODPACK_REGEX = "[^a-zA-Z0-9_.-]+";
 		internal static string ModPacksDirectory = Path.Combine(ModLoader.ModPath, "ModPacks");
-		internal static string[] Mods;
 
 		private UIList _modPacks;
 		private UILoaderAnimatedImage _uiLoader;
@@ -177,21 +176,16 @@ namespace Terraria.ModLoader.UI
 			_scrollPanel.Append(_uiLoader);
 			_modPacks.Clear();
 
-			Task.Factory
-				.StartNew(delegate {
-					Mods = ModOrganizer.FindMods().Select(m => m.Name).ToArray();
-					Directory.CreateDirectory(ModPacksDirectory);
-					var dirs = Directory.GetDirectories(ModPacksDirectory, "*", SearchOption.TopDirectoryOnly);
-					var files = Directory.GetFiles(ModPacksDirectory, "*.json", SearchOption.TopDirectoryOnly);
-					return files.Concat(dirs);
-				}, _cts.Token)
-
-				.ContinueWith(task => {
-					foreach (string modPackPath in task.Result) {
-						try {
-							if (!IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath))) {
-								throw new Exception();
-							}
+			Task.Run(() => {
+				var localMods = ModOrganizer.FindMods();
+				Directory.CreateDirectory(ModPacksDirectory);
+				var dirs = Directory.GetDirectories(ModPacksDirectory, "*", SearchOption.TopDirectoryOnly);
+				var files = Directory.GetFiles(ModPacksDirectory, "*.json", SearchOption.TopDirectoryOnly);
+				foreach (string modPackPath in files.Concat(dirs)) {
+					try {
+						if (!IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath))) {
+							throw new Exception();
+						}
 
 							if (Directory.Exists(modPackPath)) {
 								LoadModernModPack(modPackPath);

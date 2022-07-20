@@ -277,14 +277,11 @@ namespace Terraria.ModLoader.UI
 					return;
 				}
 
-				var modFile = _builtMod.modFile;
-				var bp = _builtMod.properties;
-
 				string icon = Path.Combine(_mod, "icon_workshop.png");
 				if (!File.Exists(icon))
 					icon = Path.Combine(_mod, "icon.png");
 
-				PublishModInner(modFile, bp, icon);
+				PublishModInner(_builtMod, icon);
 			}
 			catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);
@@ -325,7 +322,7 @@ namespace Terraria.ModLoader.UI
 				if (!File.Exists(icon))
 					icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
 
-				PublishModInner(modFile, localMod.properties, icon, true);
+				PublishModInner(localMod, icon);
 			}
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
@@ -338,7 +335,10 @@ namespace Terraria.ModLoader.UI
 			Environment.Exit(0);
 		}
 
-		private static void PublishModInner(TmodFile modFile, BuildProperties bp, string iconPath, bool commandLine = false) {
+		private static void PublishModInner(LocalMod mod, string iconPath) {
+			var modFile = mod.modFile;
+			var bp = mod.properties;
+
 			if (bp.buildVersion != modFile.TModLoaderVersion)
 				throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
 
@@ -385,15 +385,13 @@ namespace Terraria.ModLoader.UI
 			else {
 				SocialAPI.LoadSteam();
 
-				if ( /*SocialAPI.Workshop != null && */ modFile != null) {
-					var publishSetttings = new WorkshopItemPublishSettings {
-						Publicity = WorkshopItemPublicSettingId.Public,
-						UsedTags = Array.Empty<WorkshopTagOption>(),
-						PreviewImagePath = iconPath
-					};
-					WorkshopHelper.ModManager.SteamUser = true;
-					SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
-				}
+				var publishSetttings = new WorkshopItemPublishSettings {
+					Publicity = WorkshopItemPublicSettingId.Public,
+					UsedTags = Array.Empty<WorkshopTagOption>(),
+					PreviewImagePath = iconPath
+				};
+				WorkshopHelper.ModManager.SteamUser = true;
+				SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
 			}
 		}
 	}

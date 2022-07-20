@@ -352,10 +352,10 @@ namespace Terraria.ModLoader.UI
 			while (!exit) {
 				Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.versionedName);
 				Console.WriteLine();
-				var mods = ModOrganizer.FindMods();
+				var mods = ModOrganizer.FindMods(logDuplicates: true);
 				for (int k = 0; k < mods.Length; k++) {
 					Console.Write((k + 1) + "\t\t" + mods[k].DisplayName);
-					Console.WriteLine(" (" + (ModLoader.IsEnabled(mods[k].Name) ? "enabled" : "disabled") + ")");
+					Console.WriteLine(" (" + (mods[k].Enabled ? "enabled" : "disabled") + ")");
 				}
 				if (mods.Length == 0) {
 					Console.ForegroundColor = ConsoleColor.Yellow;

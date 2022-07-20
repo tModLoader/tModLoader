@@ -849,14 +849,18 @@
  			}
  
  			YouCanSleepNow();
-@@ -4538,8 +_,15 @@
+@@ -4538,8 +_,19 @@
  
  		public static void startDedInputCallBack() {
  			while (!Netplay.Disconnect) {
 -				Console.Write(": ");
  				string text = Console.ReadLine();
-+				if (text != null) // Fix for #2644 where Docker would steal lines from the active console.
-+					ExecuteCommand(text, new ConsoleCommandCaller());
++				if (text == null) { // Fix for #2644 where Docker would steal lines from the active console.
++					Logging.tML.Warn("Console input not connected, ignoring...");
++					break;
++				}
++
++				ExecuteCommand(text, new ConsoleCommandCaller());
 +			}
 +		}
 +
@@ -3304,7 +3308,7 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31830,15 +_,19 @@
+@@ -31830,13 +_,15 @@
  			int stack = mouseItem.stack;
  			mouseItem = r.createItem.Clone();
  			mouseItem.stack += stack;
@@ -3317,15 +3321,10 @@
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
  			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
  			r.Create();
--			if (mouseItem.type > 0 || r.createItem.type > 0)
-+			if (mouseItem.type > 0 || r.createItem.type > 0) {
-+				ItemLoader.OnCreate(mouseItem, new RecipeCreationContext {recipe = r});
-+				RecipeLoader.OnCraft(mouseItem, r);
++			RecipeLoader.OnCraft(mouseItem, r);
+ 			if (mouseItem.type > 0 || r.createItem.type > 0)
  				SoundEngine.PlaySound(7);
-+			}
  		}
- 
- 		private static void DrawPVPIcons() {
 @@ -32016,6 +_,8 @@
  						rare = item[i].rare;
  						if (item[i].expert)

@@ -43,7 +43,7 @@
  					Main.ToggleGameplayUpdates(state: true);
 +
 +					// Added by TML.
-+					Social.Steam.WorkshopHelper.ModManager.BeginPlaytimeTracking(ModLoader.Core.ModOrganizer.FindMods());
++					Social.Steam.WorkshopHelper.ModManager.BeginPlaytimeTracking();
 +				}
  			}
  		}

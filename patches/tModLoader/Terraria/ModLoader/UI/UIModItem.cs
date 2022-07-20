@@ -345,34 +345,24 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal void EnableDependencies(UIMouseEvent evt, UIElement listeningElement) {
-			var modList = ModOrganizer.FindMods();
 			var missingRefs = new List<string>();
-
-			EnableDepsRecursive(modList, _modReferences, missingRefs);
+			EnableDepsRecursive(missingRefs);
 
 			if (missingRefs.Any()) {
 				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDependencyModsNotFound", string.Join(",", missingRefs)), Interface.modsMenuID);
 			}
 		}
 
-		private void EnableDepsRecursive(LocalMod[] modList, string[] modRefs, List<string> missingRefs) {
-			ModLoader.PauseSavingEnabledMods = true;
-			foreach (var modRef in modRefs) {
-				// To enable the ref, its own refs must also be enabled
-				var refLocalMod = modList.FirstOrDefault(m => m.Name == modRef);
-				if (refLocalMod != null) {
-					// Enable refs recursively
-					// This might trigger multiple "Enabling mod X" logs, but the enabled is a hash set so there will be no problems
-					var modRefsOfModRef = refLocalMod.properties.modReferences.Select(x => x.mod).ToArray();
-					EnableDepsRecursive(modList, modRefsOfModRef, missingRefs);
+		private void EnableDepsRecursive(List<string> missingRefs) {
+			foreach (var name in _modReferences) {
+				var dep = Interface.modsMenu.FindUIModItem(name);
+				if (dep == null) {
+					missingRefs.Add(name);
+					continue;
 				}
-				else {
-					missingRefs.Add(modRef);
-				}
-				ModLoader.EnableMod(modRef);
-				Interface.modsMenu.FindUIModItem(modRef)?.Enable();
+				dep.EnableDepsRecursive(missingRefs);
+				dep.Enable();
 			}
-			ModLoader.PauseSavingEnabledMods = false;
 		}
 
 		internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement) {
