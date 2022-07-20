@@ -282,6 +282,8 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static object Serialize(object value) {
+			ArgumentNullException.ThrowIfNull(value);
+
 			var type = value.GetType();
 
 			if (TagSerializer.TryGetSerializer(type, out TagSerializer serializer))
@@ -292,7 +294,7 @@ namespace Terraria.ModLoader.IO
 				return value;
 
 			Type elemType;
-			if (type.IsArray) {
+			if (type.IsArray && type.GetArrayRank() > 1) {
 				var array = (Array)value;
 				elemType = type.GetElementType()!;
 				if (TagSerializer.TryGetSerializer(elemType, out serializer))
@@ -312,7 +314,7 @@ namespace Terraria.ModLoader.IO
 			}
 
 			var list = (IList)value;
-			elemType = type.GetGenericArguments()[0];
+			elemType = type.GetElementType() ?? type.GetGenericArguments()[0];
 			if (TagSerializer.TryGetSerializer(elemType, out serializer))
 				return serializer.SerializeList(list);
 
@@ -364,8 +366,28 @@ namespace Terraria.ModLoader.IO
 				if (type.IsArray) {
 					var elemType = type.GetElementType()!;
 
+					int arrayRank = type.GetArrayRank();
 					if (tag == null)
-						return Array.CreateInstance(elemType, new int[type.GetArrayRank()]);
+						return Array.CreateInstance(elemType, new int[arrayRank]);
+
+					if (arrayRank == 1) {
+						var serializedList = (IList)tag;
+
+						if (TagSerializer.TryGetSerializer(elemType, out serializer)) {
+							var array = Array.CreateInstance(serializer.Type, serializedList.Count);
+							for (int i = 0; i < serializedList.Count; i++)
+								array.SetValue(serializer.Deserialize(serializedList[i]), i);
+
+							return array;
+						}
+
+						//create a strongly typed nested array
+						var deserializedArray = Array.CreateInstance(elemType, serializedList.Count);
+						for (int i = 0; i < serializedList.Count; i++)
+							deserializedArray.SetValue(Deserialize(elemType, serializedList[i]), i);
+
+						return deserializedArray;
+					}
 
 					var tagCompound = (TagCompound)tag;
 
