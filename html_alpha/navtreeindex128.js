@@ -1,5 +1,6 @@
 var NAVTREEINDEX128 =
 {
+"namespace_terraria_1_1_social.html#a266edd606831aa4890a0869ce1660a49":[1,0,2,20,5],
 "namespace_terraria_1_1_social.html#a266edd606831aa4890a0869ce1660a49a4db4563826bad0eb2f60ee6e42d0ea4b":[1,0,2,20,5,1],
 "namespace_terraria_1_1_social.html#a266edd606831aa4890a0869ce1660a49a69b4cc6897c381da5d64c9bff7c19c85":[1,0,2,20,5,2],
 "namespace_terraria_1_1_social.html#a266edd606831aa4890a0869ce1660a49a6adf97f83acf6453d4a6a4b1070f3754":[1,0,2,20,5,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#a86ab3dc84a692425f87ced1dbefe9ac6":[2,0,2,4,61,0],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html#ad0c15e7f3bb576b2516f7ef49ed93be4":[2,0,2,4,61,5],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html":[2,0,2,4,62],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html#a1f252b16c4a3223ceff58c1204b35c44":[2,0,2,4,62,2],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html#a6883a5166c14de2d969cd5e0009aa82d":[2,0,2,4,62,0]
+"struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html#a1f252b16c4a3223ceff58c1204b35c44":[2,0,2,4,62,2]
 };

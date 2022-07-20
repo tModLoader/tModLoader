@@ -1,5 +1,6 @@
 var NAVTREEINDEX129 =
 {
+"struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html#a6883a5166c14de2d969cd5e0009aa82d":[2,0,2,4,62,0],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html#aaefd9f75613e3afe65b35747c98af8be":[2,0,2,4,62,1],
 "struct_terraria_1_1_data_structures_1_1_placement_hook.html":[2,0,2,4,63],
 "struct_terraria_1_1_data_structures_1_1_placement_hook.html#a076d26085aa1c74c7b06b7551c893477":[2,0,2,4,63,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX129 =
 "struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_ocean_line_cache.html#a7a3a87cd71fae2d37d5d2dd9c961297d":[2,0,2,5,1,1,0,1],
 "struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_underworld_cache.html":[2,0,2,5,1,1,1],
 "struct_terraria_1_1_game_content_1_1_ambience_1_1_ambient_sky_draw_cache_1_1_underworld_cache.html#afcc76b35256d6cd9e8aa4a311b133fea":[2,0,2,5,1,1,1,0],
-"struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_u_i_collection_info.html":[2,0,2,5,2,5],
-"struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_u_i_collection_info.html#a6303aa8cdd028db48b995d74f95e7878":[2,0,2,5,2,5,1]
+"struct_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_u_i_collection_info.html":[2,0,2,5,2,5]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX126 =
 {
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaa54f98b0e23e6925c855760cdabd7168":[1,0,2,5,8,91],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaa5f6f8626940f7d2fd1ba1719149ac78":[1,0,2,5,8,282],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaa5fdb6a6d5adb66935b9bb7255298a08":[1,0,2,5,8,115],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaa73d89f7c1eda031f0f76c0217ac8330":[1,0,2,5,8,215],
@@ -248,6 +249,5 @@ var NAVTREEINDEX126 =
 "namespace_terraria_1_1_game_content_1_1_personalities.html#acb56d1a42f410e08baed000b6e7c05d2aea04e7ef514a25e465197a31c71f52f0":[1,0,2,6,16,21,2],
 "namespace_terraria_1_1_game_content_1_1_r_g_b.html":[1,0,2,6,17],
 "namespace_terraria_1_1_game_content_1_1_shaders.html":[1,0,2,6,18],
-"namespace_terraria_1_1_game_content_1_1_shaders.html#aca69d5a48ee61fb354fd02411d6c80b7":[1,0,2,6,18,6],
-"namespace_terraria_1_1_game_content_1_1_shaders.html#aca69d5a48ee61fb354fd02411d6c80b7a30954d90085f6eaaf5817917fc5fecb3":[1,0,2,6,18,6,2]
+"namespace_terraria_1_1_game_content_1_1_shaders.html#aca69d5a48ee61fb354fd02411d6c80b7":[1,0,2,6,18,6]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"class_terraria_1_1_game_content_1_1_font_assets.html#a559d328d6aeff906ec7b39c207d68631":[2,0,2,5,36,1],
 "class_terraria_1_1_game_content_1_1_font_assets.html#ac38ce39b3aedbe6f190681f931faccbe":[2,0,2,5,36,0],
 "class_terraria_1_1_game_content_1_1_font_assets.html#ae4b975931540c8f4272e7054537910d0":[2,0,2,5,36,3],
 "class_terraria_1_1_game_content_1_1_generation_1_1_action_grass.html":[2,0,2,5,8,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html#a71b242e4e5d6c15c9e54ef64f61abbe2":[2,0,2,5,10,5,26,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_pumpkin_moon.html#acdeadb3560e99d07b324233eb018195e":[2,0,2,5,10,5,26,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html":[2,0,2,5,10,5,27],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html#a0ff0369752b17e167baf4573bca01fab":[2,0,2,5,10,5,27,2],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html#a100804bd650b0dc267ea2f1098a6e979":[2,0,2,5,10,5,27,4]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_using_specific_a_i_values.html#a0ff0369752b17e167baf4573bca01fab":[2,0,2,5,10,5,27,2]
 };

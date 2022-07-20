@@ -1,5 +1,6 @@
 var NAVTREEINDEX127 =
 {
+"namespace_terraria_1_1_game_content_1_1_shaders.html#aca69d5a48ee61fb354fd02411d6c80b7a30954d90085f6eaaf5817917fc5fecb3":[1,0,2,6,18,6,2],
 "namespace_terraria_1_1_game_content_1_1_shaders.html#aca69d5a48ee61fb354fd02411d6c80b7a6adf97f83acf6453d4a6a4b1070f3754":[1,0,2,6,18,6,0],
 "namespace_terraria_1_1_game_content_1_1_shaders.html#aca69d5a48ee61fb354fd02411d6c80b7aceb46ca115d05c51aa5a16a8867c3304":[1,0,2,6,18,6,1],
 "namespace_terraria_1_1_game_content_1_1_skies.html":[1,0,2,6,19],
@@ -248,6 +249,5 @@ var NAVTREEINDEX127 =
 "namespace_terraria_1_1_physics.html#abfac8d9670e4352b70d1bd6c2fe56887a46dc1018ac1d8fca7c2752a61ce2fd0f":[1,0,2,18,7,2],
 "namespace_terraria_1_1_physics.html#abfac8d9670e4352b70d1bd6c2fe56887adefe967ad0373b2274fc298f19125ca7":[1,0,2,18,7,1],
 "namespace_terraria_1_1_server.html":[1,0,2,19],
-"namespace_terraria_1_1_social.html":[1,0,2,20],
-"namespace_terraria_1_1_social.html#a266edd606831aa4890a0869ce1660a49":[1,0,2,20,5]
+"namespace_terraria_1_1_social.html":[1,0,2,20]
 };

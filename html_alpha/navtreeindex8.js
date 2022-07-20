@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_shared_slider_power.html#a06def33cbfc23c1c7c886ee4f2b7c663":[2,0,2,5,4,2,3,6],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_shared_slider_power.html#a097f8ab9e139e5a4dc55ddc95747490c":[2,0,2,5,4,2,3,3],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_shared_slider_power.html#a09acd076995bda76eb41a6c7abbac337":[2,0,2,5,4,2,3,11],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_shared_slider_power.html#a37a265f42210c900e14dc28572125cf8":[2,0,2,5,4,2,3,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#a4ae42d979a47ab7517788924cd4bcd12":[2,0,2,5,4,14,0],
 "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#a6b465ea53f34466a9bd0447859dbd1b9":[2,0,2,5,4,14,1],
 "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#a983363be0c8c211cc17c57d8afb98abc":[2,0,2,5,4,14,10],
-"class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#a9a38a869ff1d77cfae3a6ac3893c8e37":[2,0,2,5,4,14,7],
-"class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#aa38fded3379b1bad005cbeec7724f622":[2,0,2,5,4,14,11]
+"class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#a9a38a869ff1d77cfae3a6ac3893c8e37":[2,0,2,5,4,14,7]
 };

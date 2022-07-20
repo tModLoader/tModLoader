@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#aa38fded3379b1bad005cbeec7724f622":[2,0,2,5,4,14,11],
 "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#aacdadf4da21fea8ed85a3a06d4dd1318":[2,0,2,5,4,14,5],
 "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#abe9a7d55ea85bc601fb84f0e532f6a4f":[2,0,2,5,4,14,3],
 "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#ac135577cde0a02e5ad9e27f1839b190a":[2,0,2,5,4,14,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "class_terraria_1_1_game_content_1_1_fix_exploit_man_eaters.html#a79b03c6ff4417690305996e6ee04b253":[2,0,2,5,35,2],
 "class_terraria_1_1_game_content_1_1_fix_exploit_man_eaters.html#a9759ebffa29f6ab8ac84a3be31620870":[2,0,2,5,35,1],
 "class_terraria_1_1_game_content_1_1_font_assets.html":[2,0,2,5,36],
-"class_terraria_1_1_game_content_1_1_font_assets.html#a12e1209fd649b21489bbadf9706caff2":[2,0,2,5,36,2],
-"class_terraria_1_1_game_content_1_1_font_assets.html#a559d328d6aeff906ec7b39c207d68631":[2,0,2,5,36,1]
+"class_terraria_1_1_game_content_1_1_font_assets.html#a12e1209fd649b21489bbadf9706caff2":[2,0,2,5,36,2]
 };

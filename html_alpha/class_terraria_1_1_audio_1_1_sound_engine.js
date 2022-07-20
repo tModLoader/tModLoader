@@ -4,6 +4,7 @@ var class_terraria_1_1_audio_1_1_sound_engine =
     [ "Initialize", "class_terraria_1_1_audio_1_1_sound_engine.html#a20e71ac13e78865f7d66bbd66d47af3a", null ],
     [ "Load", "class_terraria_1_1_audio_1_1_sound_engine.html#a5781898c653b70da622963d3106c2b4d", null ],
     [ "PlaySound", "class_terraria_1_1_audio_1_1_sound_engine.html#aa3302d515d26fcce9092ffa938539e9c", null ],
+    [ "PlaySound", "class_terraria_1_1_audio_1_1_sound_engine.html#a16cbb41fa6c88e811163c9ffaf1d9325", null ],
     [ "Reload", "class_terraria_1_1_audio_1_1_sound_engine.html#ac39cfa59a02dbd31643ace619c391161", null ],
     [ "StopAmbientSounds", "class_terraria_1_1_audio_1_1_sound_engine.html#a94ad1836876e6dcdb6870ee867684655", null ],
     [ "StopTrackedSounds", "class_terraria_1_1_audio_1_1_sound_engine.html#ae933413e66144394de53bdefdcf70da9", null ],

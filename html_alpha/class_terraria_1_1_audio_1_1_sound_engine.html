@@ -106,8 +106,11 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Initialize</b>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Load</b> (IServiceProvider services)</td></tr>
 <tr class="separator:a5781898c653b70da622963d3106c2b4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3302d515d26fcce9092ffa938539e9c"><td class="memItemLeft" align="right" valign="top">static SlotId&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_sound_engine.html#aa3302d515d26fcce9092ffa938539e9c">PlaySound</a> (in <a class="el" href="struct_terraria_1_1_audio_1_1_sound_style.html">SoundStyle</a> style, Vector2? position=null)</td></tr>
-<tr class="memdesc:aa3302d515d26fcce9092ffa938539e9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to play a sound, and returns a valid SlotId handle to it on success.  <a href="class_terraria_1_1_audio_1_1_sound_engine.html#aa3302d515d26fcce9092ffa938539e9c">More...</a><br /></td></tr>
+<tr class="memdesc:aa3302d515d26fcce9092ffa938539e9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to play a sound with the provided sound style, and returns a valid SlotId handle to it on success.  <a href="class_terraria_1_1_audio_1_1_sound_engine.html#aa3302d515d26fcce9092ffa938539e9c">More...</a><br /></td></tr>
 <tr class="separator:aa3302d515d26fcce9092ffa938539e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16cbb41fa6c88e811163c9ffaf1d9325"><td class="memItemLeft" align="right" valign="top">static SlotId&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_audio_1_1_sound_engine.html#a16cbb41fa6c88e811163c9ffaf1d9325">PlaySound</a> (in <a class="el" href="struct_terraria_1_1_audio_1_1_sound_style.html">SoundStyle</a>? style, Vector2? position=null)</td></tr>
+<tr class="memdesc:a16cbb41fa6c88e811163c9ffaf1d9325"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to play a sound style with the provided sound style (if it's not null), and returns a valid SlotId handle to it on success.  <a href="class_terraria_1_1_audio_1_1_sound_engine.html#a16cbb41fa6c88e811163c9ffaf1d9325">More...</a><br /></td></tr>
+<tr class="separator:a16cbb41fa6c88e811163c9ffaf1d9325"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac39cfa59a02dbd31643ace619c391161"><td class="memItemLeft" align="right" valign="top"><a id="ac39cfa59a02dbd31643ace619c391161"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>Reload</b> ()</td></tr>
 <tr class="separator:ac39cfa59a02dbd31643ace619c391161"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,7 +147,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsAudioSupport
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="aa3302d515d26fcce9092ffa938539e9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3302d515d26fcce9092ffa938539e9c">&#9670;&nbsp;</a></span>PlaySound()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3302d515d26fcce9092ffa938539e9c">&#9670;&nbsp;</a></span>PlaySound() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,7 +180,7 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsAudioSupport
 </table>
 </div><div class="memdoc">
 
-<p>Attempts to play a sound, and returns a valid SlotId handle to it on success. </p>
+<p>Attempts to play a sound with the provided sound style, and returns a valid SlotId handle to it on success. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">style</td><td>The sound style that describes everything about the played sound. </td></tr>
@@ -185,6 +188,44 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsAudioSupport
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a16cbb41fa6c88e811163c9ffaf1d9325"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16cbb41fa6c88e811163c9ffaf1d9325">&#9670;&nbsp;</a></span>PlaySound() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static SlotId Terraria.Audio.SoundEngine.PlaySound </td>
+          <td>(</td>
+          <td class="paramtype">in <a class="el" href="struct_terraria_1_1_audio_1_1_sound_style.html">SoundStyle</a>?&#160;</td>
+          <td class="paramname"><em>style</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2?&#160;</td>
+          <td class="paramname"><em>position</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Attempts to play a sound style with the provided sound style (if it's not null), and returns a valid SlotId handle to it on success. </p>
 
 </div>
 </div>

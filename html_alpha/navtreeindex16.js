@@ -1,5 +1,6 @@
 var NAVTREEINDEX16 =
 {
+"class_terraria_1_1_game_content_1_1_texture_assets.html#aa6e65173b89104069d45c87b3d9e480c":[2,0,2,5,64,175],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#aa877c9d7b5a03121c52fd512f0b1122e":[2,0,2,5,64,190],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#aa895821cec729600066ba14927a30d85":[2,0,2,5,64,93],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#aa8d65d0520622156048078eb47af40df":[2,0,2,5,64,217],
@@ -248,6 +249,5 @@ var NAVTREEINDEX16 =
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_item_frame.html#af7e25b5268357b1a5809676f3877f833":[2,0,2,5,20,5,5],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html":[2,0,2,5,20,6],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a07dbc0d2e45d1f10e34a8ef09626b453":[2,0,2,5,20,6,22],
-"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a1fbaa68a59167f421f0ebd9075731028":[2,0,2,5,20,6,24],
-"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a2a779a331841e5b9ffe0fee03f065f03":[2,0,2,5,20,6,21]
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_logic_sensor.html#a1fbaa68a59167f421f0ebd9075731028":[2,0,2,5,20,6,24]
 };

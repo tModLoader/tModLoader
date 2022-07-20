@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html":[2,0,2,5,11,0],
 "class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#a10b7e9a02bad09e243a8dc7f6cdb2716":[2,0,2,5,11,0,3],
 "class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#a4d40485117fb1dce551b744f8a33f689":[2,0,2,5,11,0,11],
 "class_terraria_1_1_game_content_1_1_liquid_1_1_liquid_renderer.html#a5d86247b195996cc7e1d0df834dd9b1d":[2,0,2,5,11,0,9],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "class_terraria_1_1_game_content_1_1_portal_helper.html#ab2e8d5eeca6cae8b4c0c907744bdee5b":[2,0,2,5,54,3],
 "class_terraria_1_1_game_content_1_1_portal_helper.html#ab311e4127189f0fcb0e8dcc57a39e62c":[2,0,2,5,54,5],
 "class_terraria_1_1_game_content_1_1_portal_helper.html#aca3e5c6b076acaf39bae43c67e979968":[2,0,2,5,54,2],
-"class_terraria_1_1_game_content_1_1_pressure_plate_helper.html":[2,0,2,5,56],
-"class_terraria_1_1_game_content_1_1_pressure_plate_helper.html#a1bc02b547e7f2f960615937835f2be0c":[2,0,2,5,56,2]
+"class_terraria_1_1_game_content_1_1_pressure_plate_helper.html":[2,0,2,5,56]
 };

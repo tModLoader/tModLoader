@@ -1,5 +1,6 @@
 var NAVTREEINDEX58 =
 {
+"class_terraria_1_1_i_d_1_1_item_i_d.html#af1eb59f2a2aadb8b0d95ff3937b1e582":[2,0,2,8,21,736],
 "class_terraria_1_1_i_d_1_1_item_i_d.html#af1ef0013a601936696882e148cc6d073":[2,0,2,8,21,4109],
 "class_terraria_1_1_i_d_1_1_item_i_d.html#af203dc1137b146389592866ef2e6d120":[2,0,2,8,21,986],
 "class_terraria_1_1_i_d_1_1_item_i_d.html#af20e15ccd743a3a141ef5febc56eeb09":[2,0,2,8,21,2379],
@@ -248,6 +249,5 @@ var NAVTREEINDEX58 =
 "class_terraria_1_1_i_d_1_1_item_i_d.html#aff0c56bf477a35542d27c99c24339576":[2,0,2,8,21,4756],
 "class_terraria_1_1_i_d_1_1_item_i_d.html#aff17111c486cf52b19fb5789b65b0fd6":[2,0,2,8,21,1408],
 "class_terraria_1_1_i_d_1_1_item_i_d.html#aff189362eaf7538e7f23c26a3c67ad76":[2,0,2,8,21,13],
-"class_terraria_1_1_i_d_1_1_item_i_d.html#aff28a28246e480c552b0386a061884b6":[2,0,2,8,21,2767],
-"class_terraria_1_1_i_d_1_1_item_i_d.html#aff497c2c147cf8a96ad197aaaafeebf3":[2,0,2,8,21,3960]
+"class_terraria_1_1_i_d_1_1_item_i_d.html#aff28a28246e480c552b0386a061884b6":[2,0,2,8,21,2767]
 };
