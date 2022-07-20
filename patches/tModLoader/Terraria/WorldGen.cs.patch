@@ -35,6 +35,15 @@
  		public static int tLeft;
  		public static int tRight;
  		public static int tTop;
+@@ -721,7 +_,7 @@
+ 		public static int oceanBG;
+ 		public static int mushroomBG;
+ 		public static int underworldBG;
+-		private static ushort crackedType = 481;
++		public static ushort crackedType = 481;
+ 		public static int oceanDistance = 250;
+ 		public static int beachDistance = 380;
+ 		public static bool skipDesertTileCheck = false;
 @@ -746,8 +_,8 @@
  		public static int totalX;
  		public static int totalD;
@@ -546,9 +555,12 @@
  			drunkWorldGen = false;
  			drunkWorldGenText = false;
  			switch (seed) {
-@@ -5665,72 +_,89 @@
+@@ -5663,74 +_,91 @@
+ 
+ 			Console.WriteLine("Creating world - Seed: {0} Width: {1}, Height: {2}, Evil: {3}, IsExpert: {4}", seed, Main.maxTilesX, Main.maxTilesY, WorldGenParam_Evil, Main.expertMode);
  			Main.lockMenuBGChange = true;
- 			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
+-			WorldGenConfiguration configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
++			configuration = WorldGenConfiguration.FromEmbeddedPath("Terraria.GameContent.WorldBuilding.Configuration.json");
  			Hooks.ProcessWorldGenConfig(ref configuration);
 +
 +			Logging.Terraria.InfoFormat("Generating World: {0}", Main.ActiveWorldFileData.Name);

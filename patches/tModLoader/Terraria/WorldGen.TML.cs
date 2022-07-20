@@ -1,11 +1,11 @@
-﻿using System;
-using Terraria.ModLoader;
+﻿using Terraria.WorldBuilding;
 
 namespace Terraria
 {
 	public partial class WorldGen
 	{
 		#region WorldGen.GenerateWorld Values
+		public static WorldGenConfiguration configuration;
 		public static int copper;
 		public static int iron;
 		public static int silver;
