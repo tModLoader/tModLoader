@@ -656,6 +656,15 @@ namespace Terraria.ModLoader
 
 		public virtual void ModifyItemLoot(Item item, ItemLoot itemLoot) {
 		}
+		
+		[Obsolete("Use ModifyItemLoot instead", true)]
+		public virtual bool PreOpenVanillaBag(string context, Player player, int arg) {
+			return true;
+		}
+		
+		[Obsolete("Use ModifyItemLoot instead", true)]
+		public virtual void OpenVanillaBag(string context, Player player, int arg) {
+		}
 
 		/// <summary>
 		/// Allows you to prevent items from stacking.

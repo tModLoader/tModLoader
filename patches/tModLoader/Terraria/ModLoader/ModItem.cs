@@ -744,6 +744,10 @@ namespace Terraria.ModLoader
 		/// <param name="player">The player.</param>
 		public virtual void RightClick(Player player) {
 		}
+		
+		[Obsolete("Use ModifyItemLoot instead", true)]
+		public virtual void OpenBossBag(Player player) {
+		}
 
 		public virtual void ModifyItemLoot(ItemLoot itemLoot) {
 		}
