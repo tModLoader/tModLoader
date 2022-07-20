@@ -1410,7 +1410,7 @@
  			if (num4 != 2 && num4 != type && ((Main.tile[i, j].frameX == 0 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 22 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 44 && Main.tile[i, j].frameY <= 130)))
  				KillTile(i, j);
  
-@@ -35125,6 +_,52 @@
+@@ -35125,6 +_,57 @@
  			}
  		}
  
@@ -1460,6 +1460,11 @@
 +		/// This optional parameter, which defaults to 4, determines the "radius" of that square in tiles, counting outward from the central tile.<br/>
 +		/// Set to 0 if you only want to convert a single tile. In other cases, use this parameter wisely.
 +		/// </param>
++		/*
++		TO-DO:
++		- ConvertTIle utility method which consolidates the three lines used for most conversions into a single call
++		- modder-friendliness extension; see #2738
++		*/
  		public static void Convert(int i, int j, int conversionType, int size = 4) {
  			for (int k = i - size; k <= i + size; k++) {
  				for (int l = j - size; l <= j + size; l++) {
@@ -1492,31 +1497,6 @@
  								if (WallID.Sets.Conversion.Grass[wall] && wall != 69) {
  									Main.tile[k, l].wall = 69;
  									SquareWallFrame(k, l);
-@@ -35532,6 +_,24 @@
- 						if (Main.netMode == 1)
- 							NetMessage.SendData(17, -1, -1, null, 0, k, l);
- 					}
-+
-+					/*
-+					tML:
-+					I'm writin' this at the end of the method here as opposed to the top so I don't separate the method header and body too badly
-+					(the documentation for this method is already supremo fat and I really don't wanna keep people from the code at hand further)
-+
-+					this seriously needs updates to be extensible for additional conversion types. approaches to this are...more than a bit limited
-+					without core changes, unfortunately. in the future, I may consider the implementation of a hook or something similar to allow
-+					for more extensive conversion definitions. this way, modders could not only register their tile types effectively for conversion
-+					to vanilla biomes, but also allow conversions to and from their own biomes easily and in a way that supports vanilla stuff.
-+					alternatives are quite welcome, but...at the moment, this isn't significant enough to warrant makin' an issue (and it'll never
-+					be addressed in a reasonable timeframe regardless), so it's really just a note to myself
-+
-+					tl;dr this is way too hardcoded and I hate it.
-+					can (and, more importantly, should) we see about improvin' it at some point?
-+					and, if we do end up lookin' for a better way, what'll it be?
-+					-thomas
-+					*/
- 				}
- 			}
- 		}
 @@ -35730,7 +_,7 @@
  			if (num3 / 255 > cactusWaterLimit)
  				return;
