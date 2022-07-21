@@ -676,6 +676,20 @@ namespace Terraria.ModLoader
 		public virtual void DrawTownAttackSwing(NPC npc, ref Texture2D item, ref int itemSize, ref float scale, ref Vector2 offset) {
 		}
 
+
+		/// <summary>
+		/// Allows you to modify the npc's <seealso cref="ID.ImmunityCooldownID"/>, damage multiplier, and hitbox. Returns false to prevent vanilla code from running. Returns true by default.
+		/// </summary>
+		/// <param name="npc"></param>
+		/// <param name="victimHitbox"></param>
+		/// <param name="immunityCooldownSlot"></param>
+		/// <param name="damageMultiplier"></param>
+		/// <param name="npcHitbox"></param>
+		/// <returns></returns>
+		public virtual bool ModifyCollisionData(NPC npc, Rectangle victimHitbox, ref int immunityCooldownSlot, ref float damageMultiplier, ref Rectangle npcHitbox) {
+			return true;
+		}
+
 		/// <summary>
 		/// Allows you to make a npc be saved even if it's not a townNPC and NPCID.Sets.SavesAndLoads[npc.type] is false.
 		/// <br/><b>NOTE:</b> A town NPC will always be saved (except the Travelling Merchant that never will).
