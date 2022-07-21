@@ -1268,6 +1268,7 @@ namespace Terraria.ModLoader
 			if (!Main.mouseRightRelease)
 				return;
 
+			player.DropFromItem(item.type);
 			item.ModItem?.RightClick(player);
 
 			foreach (var g in HookRightClick.Enumerate(item.globalItems)) {
@@ -1286,8 +1287,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns whether ModItem.BossBagNPC is greater than 0. Returns false if item is not a modded item.
 		/// </summary>
+		[Obsolete("Use ItemID.Sets.BossBag", true)]
 		public static bool IsModBossBag(Item item) {
 			return item.ModItem != null && item.ModItem.BossBagNPC > 0;
+		}
+
+		[Obsolete]
+		internal static bool IsModBossBag_Obsolete(Item item) {
+			return IsModBossBag(item);
 		}
 
 
@@ -1316,6 +1323,15 @@ namespace Terraria.ModLoader
 			{
 				modItem.OpenBossBag(player);
 				npc = modItem.BossBagNPC;
+			}
+		}
+
+		[Obsolete]
+		internal static void OpenBossBag_Obsolete(int type, Player player) {
+			int npc = 0;
+			OpenBossBag(type, player, ref npc);
+			if (npc > 0) {
+				// TODO
 			}
 		}
 

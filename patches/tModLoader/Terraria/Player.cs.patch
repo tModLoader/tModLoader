@@ -847,7 +847,7 @@
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 602);
-@@ -4009,21 +_,40 @@
+@@ -4009,21 +_,41 @@
  					}
  				default: {
  						int number21 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 591, Main.rand.Next(20, 50));
@@ -877,6 +877,7 @@
 +				return;
 +
 +			DropFromItem(type);
++			ItemLoader.OpenBossBag_Obsolete(type, this);
 +
 +			ItemLoader.OpenVanillaBag_Obsolete("bossBag", this, type);
 +			NPCLoader.blockLoot.Clear();
