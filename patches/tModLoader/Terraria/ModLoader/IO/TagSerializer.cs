@@ -40,7 +40,7 @@ namespace Terraria.ModLoader.IO
 
 			if (typeof(TagSerializable).IsAssignableFrom(type)) {
 				var sType = typeof(TagSerializableSerializer<>).MakeGenericType(type);
-				serializers[type] = serializer = (TagSerializer)sType.GetConstructor(Type.EmptyTypes)!.Invoke(Array.Empty<object>());
+				serializers[type] = serializer = (TagSerializer)Activator.CreateInstance(sType);
 				return true;
 			}
 
