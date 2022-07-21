@@ -42,11 +42,11 @@
 +
 +			NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
 +
-+			foreach (KeyValuePair<int, Item> pair in ContentSamples.ItemsByType) {
-+				ItemLoader.ModifyItemLoot(pair.Value, new ItemLoot(pair.Key, this));
-+			}
 +			foreach (KeyValuePair<int, NPC> pair in ContentSamples.NpcsByNetId) {
 +				NPCLoader.ModifyNPCLoot(pair.Value, new NPCLoot(pair.Key, this));
++			}
++			foreach (KeyValuePair<int, Item> pair in ContentSamples.ItemsByType) {
++				ItemLoader.ModifyItemLoot(pair.Value, new ItemLoot(pair.Key, this));
 +			}
 +
  			TrimDuplicateRulesForNegativeIDs();

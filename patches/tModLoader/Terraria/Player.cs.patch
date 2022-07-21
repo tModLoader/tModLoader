@@ -824,7 +824,7 @@
  			}
  
  			petalTimer = 50;
-@@ -3788,9 +_,16 @@
+@@ -3788,9 +_,22 @@
  			num6 *= num8;
  			num7 *= num8;
  			Projectile.NewProjectile(GetProjectileSource_SetBonus(6), Main.projectile[num5].Center.X - 4f, Main.projectile[num5].Center.Y, num6, num7, 227, crystalLeafDamage, crystalLeafKB, whoAmI);
@@ -835,13 +835,19 @@
  		}
  
  		public void OpenPresent(int itemType) {
++			if (!ItemLoader.PreOpenVanillaBag("present", this, itemType))
++				return;
++
 +			DropFromItem(itemType);
++
++			ItemLoader.OpenVanillaBag("present", this, itemType);
++			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 602);
-@@ -4009,21 +_,34 @@
+@@ -4009,21 +_,40 @@
  					}
  				default: {
  						int number21 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 591, Main.rand.Next(20, 50));
@@ -867,7 +873,13 @@
  		}
  
  		public void OpenBossBag(int type) {
++			if (!ItemLoader.PreOpenVanillaBag("bossBag", this, type))
++				return;
++
 +			DropFromItem(type);
++
++			ItemLoader.OpenVanillaBag("bossBag", this, type);
++			NPCLoader.blockLoot.Clear();
 +
 +			if (ItemID.Sets.BossBag[type] && (!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
 +				TryGettingDevArmor(GetItemSource_OpenItem(type));
@@ -898,11 +910,17 @@
  			if (Main.rand.Next(Main.tenthAnniversaryWorld ? 10 : 20) == 0) {
  				switch (Main.rand.Next(18)) {
  					case 0:
-@@ -4689,6 +_,9 @@
+@@ -4689,6 +_,15 @@
  		}
  
  		public void OpenFishingCrate(int crateItemID) {
-+			DropFromItem(crateItemID);
++			if (!ItemLoader.PreOpenVanillaBag("crate", this, crateItemID))
++				return;
++
++			DropFromItem(itemType);
++
++			ItemLoader.OpenVanillaBag("crate", this, crateItemID);
++			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
@@ -932,17 +950,23 @@
  					if (inventory[i].stack <= 0)
  						inventory[i].SetDefaults();
  
-@@ -6017,6 +_,9 @@
+@@ -6017,6 +_,15 @@
  		}
  
  		public void OpenShadowLockbox(int boxType) {
-+			DropFromItem(boxType);
++			if (!ItemLoader.PreOpenVanillaBag("obsidianLockBox", this, boxType))
++				return;
++
++			DropFromItem(itemType);
++
++			ItemLoader.OpenVanillaBag("obsidianLockBox", this, boxType);
++			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			bool flag = true;
  			while (flag) {
  				flag = false;
-@@ -6042,13 +_,18 @@
+@@ -6042,13 +_,25 @@
  						break;
  				}
  
@@ -954,14 +978,22 @@
 +			*/
  		}
  
- 		public void OpenLockBox(int lockboxItemType) {
-+			DropFromItem(lockboxItemType);
+-		public void OpenLockBox(int lockboxItemType) {
++		public void OpenLockBox(int lockboxItemType)
++		{
++			if (!ItemLoader.PreOpenVanillaBag("lockBox", this, lockboxItemType))
++				return;
++
++			DropFromItem(itemType);
++
++			ItemLoader.OpenVanillaBag("lockBox", this, lockboxItemType);
++			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			bool flag = true;
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(lockboxItemType);
  			while (flag) {
-@@ -6082,15 +_,20 @@
+@@ -6082,15 +_,27 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  
@@ -975,8 +1007,16 @@
 +			*/
  		}
  
- 		public void OpenHerbBag(int bagType) {
-+			DropFromItem(bagType);
+-		public void OpenHerbBag(int bagType) {
++		public void OpenHerbBag(int bagType)
++		{
++			if (!ItemLoader.PreOpenVanillaBag("herbBag", this, bagType))
++				return;
++
++			DropFromItem(itemType);
++
++			ItemLoader.OpenVanillaBag("herbBag", this, bagType);
++			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(bagType);
@@ -1020,7 +1060,7 @@
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
  			if (Main.rand.Next(5) == 0) {
  				if (Main.rand.Next(15) == 0)
-@@ -6177,12 +_,17 @@
+@@ -6177,12 +_,24 @@
  					QuickSpawnItem(itemSource_OpenItem, 4413);
  				else
  					QuickSpawnItem(itemSource_OpenItem, 4412);
@@ -1031,8 +1071,16 @@
 +			*/
  		}
  
- 		public void OpenGoodieBag(int itemType) {
+-		public void OpenGoodieBag(int itemType) {
++		public void OpenGoodieBag(int itemType)
++		{
++			if (!ItemLoader.PreOpenVanillaBag("goodieBag", this, itemType))
++				return;
++
 +			DropFromItem(itemType);
++
++			ItemLoader.OpenVanillaBag("goodieBag", this, itemType);
++			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);

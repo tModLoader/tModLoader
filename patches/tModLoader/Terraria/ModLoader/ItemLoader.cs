@@ -1304,6 +1304,60 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		// Remove After 1st September 2022
+		/// <summary>
+		/// If the item is a modded item and ModItem.BossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.BossBagNPC.
+		/// </summary>
+		[Obsolete("Use player.DropFromItem instead.", true)]
+		public static void OpenBossBag(int type, Player player, ref int npc)
+		{
+			ModItem modItem = GetItem(type);
+			if (modItem != null && modItem.BossBagNPC > 0)
+			{
+				modItem.OpenBossBag(player);
+				npc = modItem.BossBagNPC;
+			}
+		}
+
+		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
+
+		// Remove After 1st September 2022
+		/// <summary>
+		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
+		/// </summary>
+		[Obsolete("Use player.DropFromItem instead.", true)]
+		public static bool PreOpenVanillaBag(string context, Player player, int arg)
+		{
+			bool result = true;
+			foreach (var g in HookPreOpenVanillaBag.Enumerate(globalItems))
+			{
+				result &= g.PreOpenVanillaBag(context, player, arg);
+			}
+
+			if (!result)
+			{
+				NPCLoader.blockLoot.Clear(); // clear blockloot
+				return false;
+			}
+
+			return true;
+		}
+
+		private static HookList HookOpenVanillaBag = AddHook<Action<string, Player, int>>(g => g.OpenVanillaBag);
+
+		// Remove After 1st September 2022
+		/// <summary>
+		/// Calls all GlobalItem.OpenVanillaBag hooks.
+		/// </summary>
+		[Obsolete("Use player.DropFromItem instead.", true)]
+		public static void OpenVanillaBag(string context, Player player, int arg)
+		{
+			foreach (var g in HookOpenVanillaBag.Enumerate(globalItems))
+			{
+				g.OpenVanillaBag(context, player, arg);
+			}
+		}
+
 		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 
 		// For organizational consistency, item1 *should* be the item that is attempting to increase its stack (Unclear in Player.ItemSpace yet)
