@@ -167,7 +167,7 @@ namespace Terraria.ModLoader.UI
 			// The new stuff
 
 			// Import From Pack (Local) (3-L)
-			_importFromPackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Import Pack (Local)")) {
+			_importFromPackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.InstallPackLocal")) {
 				Width = { Pixels = 225 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = 50 },
@@ -179,7 +179,7 @@ namespace Terraria.ModLoader.UI
 			Append(_importFromPackLocalButton);
 
 			// Remove Pack (Local) (3-R)
-			_removePackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Remove Pack (Local)")) {
+			_removePackLocalButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.RemovePackLocal")) {
 				Width = { Pixels = 225 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = 280 },
@@ -191,7 +191,7 @@ namespace Terraria.ModLoader.UI
 			Append(_removePackLocalButton);
 
 			// Export Pack Instance (4-L)
-			_exportPackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Export Pack Instance")) {
+			_exportPackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ExportPackInstance")) {
 				Width = { Pixels = 200 },
 				Height = { Pixels = 36 },
 				Left = { Pixels = 10 },
@@ -205,7 +205,7 @@ namespace Terraria.ModLoader.UI
 			string instancePath = Path.Combine(Directory.GetCurrentDirectory(), _filename);
 			if (Directory.Exists(instancePath)) {
 				// Delete Instance (4-R)
-				_removePackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("Delete Instance")) {
+				_removePackInstanceButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.DeletePackInstance")) {
 					Width = { Pixels = 140 },
 					Height = { Pixels = 36 },
 					Left = { Pixels = 370 },
@@ -291,6 +291,7 @@ namespace Terraria.ModLoader.UI
 					Directory.Delete(path, true);
 			}
 
+			Logging.tML.Info($"Deleted Mod Pack {modPackItem._filename}");
 			Interface.modPacksMenu.OnDeactivate(); // should reload
 			Interface.modPacksMenu.OnActivate(); // should reload
 		}
@@ -305,6 +306,7 @@ namespace Terraria.ModLoader.UI
 				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModPackModsMissing", string.Join("\n", modListItem._missing)), Interface.modPacksMenuID);
 			}
 
+			Logging.tML.Info($"Enabled Collection of mods defined in  Mod Pack {modListItem._filename}");
 			ModLoader.OnSuccessfulLoad += () => Main.menuMode = Interface.modPacksMenuID;
 			ModLoader.Reload();
 		}
@@ -325,11 +327,12 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private static void EnabledListOnly(UIMouseEvent evt, UIElement listeningElement) {
+			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 			ModLoader.DisableAllMods();
-
 			EnableList(evt, listeningElement);
-		}
 
+			Logging.tML.Info($"Enabled only mods defined in Collection {modpack._filename}");
+		}
 
 		private static void ImportModPackLocal(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
@@ -337,8 +340,8 @@ namespace Terraria.ModLoader.UI
 
 			//TODO: Add code to utilize the saved configs
 
-			Interface.modPacksMenu.OnDeactivate(); // should reload
-			Interface.modPacksMenu.OnActivate(); // should reload
+			Logging.tML.Info($"Enabled Frozen Mod Pack {modpack._filename}");
+			EnabledListOnly(evt, listeningElement);
 		}
 
 		private static void RemoveModPackLocal(UIMouseEvent evt, UIElement listeningElement) {
@@ -348,8 +351,9 @@ namespace Terraria.ModLoader.UI
 
 			//TODO: Add code to utilize the saved configs
 
-			Interface.modPacksMenu.OnDeactivate(); // should reload
-			Interface.modPacksMenu.OnActivate(); // should reload
+			Logging.tML.Info($"Disabled Frozen Mod Pack {modpack._filename}");
+			ModLoader.OnSuccessfulLoad += () => Main.menuMode = Interface.modPacksMenuID;
+			ModLoader.Reload();
 		}
 
 		private static void PlayInstance(UIMouseEvent evt, UIElement listeningElement) {

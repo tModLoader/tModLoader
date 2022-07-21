@@ -13,6 +13,7 @@ namespace Terraria
 	public partial class Player
 	{
 		internal IList<string> usedMods;
+		internal string modPack;
 		internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
 
 		public Item equippedWings = null;

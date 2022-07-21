@@ -53,15 +53,15 @@ namespace Terraria.ModLoader.Core
 
 			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
 
-			// Prioritize loading Mods from Mods folder for Dev/Beta simplicity.
-			if (!ignoreModsFolder) {
-				foreach (string mod in Directory.GetFiles(modPath, "*.tmod", SearchOption.TopDirectoryOnly))
+			// load all mods from an active ModPack 
+			if (!ignoreModsFolder && !string.IsNullOrEmpty(ModPackActive)) {
+				foreach (string mod in Directory.GetFiles(ModPackActive, "*.tmod", SearchOption.AllDirectories))
 					AttemptLoadMod(mod, ref mods, ref names, logDuplicates, true);
 			}
 
-			// Mext load all mods from an active ModPack 
-			if (!ignoreModsFolder && !string.IsNullOrEmpty(ModPackActive)) {
-				foreach (string mod in Directory.GetFiles(ModPackActive, "*.tmod", SearchOption.AllDirectories))
+			// Prioritize loading Mods from Mods folder for Dev/Beta simplicity.
+			if (!ignoreModsFolder) {
+				foreach (string mod in Directory.GetFiles(modPath, "*.tmod", SearchOption.TopDirectoryOnly))
 					AttemptLoadMod(mod, ref mods, ref names, logDuplicates, true);
 			}
 
