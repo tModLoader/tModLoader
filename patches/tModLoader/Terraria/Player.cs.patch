@@ -835,12 +835,12 @@
  		}
  
  		public void OpenPresent(int itemType) {
-+			if (!ItemLoader.PreOpenVanillaBag("present", this, itemType))
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("present", this, itemType))
 +				return;
 +
 +			DropFromItem(itemType);
 +
-+			ItemLoader.OpenVanillaBag("present", this, itemType);
++			ItemLoader.OpenVanillaBag_Obsolete("present", this, itemType);
 +			NPCLoader.blockLoot.Clear();
 +
 +			/*
@@ -873,12 +873,12 @@
  		}
  
  		public void OpenBossBag(int type) {
-+			if (!ItemLoader.PreOpenVanillaBag("bossBag", this, type))
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("bossBag", this, type))
 +				return;
 +
 +			DropFromItem(type);
 +
-+			ItemLoader.OpenVanillaBag("bossBag", this, type);
++			ItemLoader.OpenVanillaBag_Obsolete("bossBag", this, type);
 +			NPCLoader.blockLoot.Clear();
 +
 +			if (ItemID.Sets.BossBag[type] && (!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
@@ -914,12 +914,12 @@
  		}
  
  		public void OpenFishingCrate(int crateItemID) {
-+			if (!ItemLoader.PreOpenVanillaBag("crate", this, crateItemID))
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("crate", this, crateItemID))
 +				return;
 +
-+			DropFromItem(itemType);
++			DropFromItem(crateItemID);
 +
-+			ItemLoader.OpenVanillaBag("crate", this, crateItemID);
++			ItemLoader.OpenVanillaBag_Obsolete("crate", this, crateItemID);
 +			NPCLoader.blockLoot.Clear();
 +
 +			/*
@@ -954,19 +954,19 @@
  		}
  
  		public void OpenShadowLockbox(int boxType) {
-+			if (!ItemLoader.PreOpenVanillaBag("obsidianLockBox", this, boxType))
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("obsidianLockBox", this, boxType))
 +				return;
 +
-+			DropFromItem(itemType);
++			DropFromItem(boxType);
 +
-+			ItemLoader.OpenVanillaBag("obsidianLockBox", this, boxType);
++			ItemLoader.OpenVanillaBag_Obsolete("obsidianLockBox", this, boxType);
 +			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			bool flag = true;
  			while (flag) {
  				flag = false;
-@@ -6042,13 +_,25 @@
+@@ -6042,13 +_,24 @@
  						break;
  				}
  
@@ -978,22 +978,20 @@
 +			*/
  		}
  
--		public void OpenLockBox(int lockboxItemType) {
-+		public void OpenLockBox(int lockboxItemType)
-+		{
-+			if (!ItemLoader.PreOpenVanillaBag("lockBox", this, lockboxItemType))
+ 		public void OpenLockBox(int lockboxItemType) {
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("lockBox", this, lockboxItemType))
 +				return;
 +
-+			DropFromItem(itemType);
++			DropFromItem(lockboxItemType);
 +
-+			ItemLoader.OpenVanillaBag("lockBox", this, lockboxItemType);
++			ItemLoader.OpenVanillaBag_Obsolete("lockBox", this, lockboxItemType);
 +			NPCLoader.blockLoot.Clear();
 +
 +			/*
  			bool flag = true;
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(lockboxItemType);
  			while (flag) {
-@@ -6082,15 +_,27 @@
+@@ -6082,15 +_,26 @@
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  
@@ -1007,15 +1005,13 @@
 +			*/
  		}
  
--		public void OpenHerbBag(int bagType) {
-+		public void OpenHerbBag(int bagType)
-+		{
-+			if (!ItemLoader.PreOpenVanillaBag("herbBag", this, bagType))
+ 		public void OpenHerbBag(int bagType) {
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("herbBag", this, bagType))
 +				return;
 +
-+			DropFromItem(itemType);
++			DropFromItem(bagType);
 +
-+			ItemLoader.OpenVanillaBag("herbBag", this, bagType);
++			ItemLoader.OpenVanillaBag_Obsolete("herbBag", this, bagType);
 +			NPCLoader.blockLoot.Clear();
 +
 +			/*
@@ -1060,7 +1056,7 @@
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
  			if (Main.rand.Next(5) == 0) {
  				if (Main.rand.Next(15) == 0)
-@@ -6177,12 +_,24 @@
+@@ -6177,12 +_,23 @@
  					QuickSpawnItem(itemSource_OpenItem, 4413);
  				else
  					QuickSpawnItem(itemSource_OpenItem, 4412);
@@ -1071,15 +1067,13 @@
 +			*/
  		}
  
--		public void OpenGoodieBag(int itemType) {
-+		public void OpenGoodieBag(int itemType)
-+		{
-+			if (!ItemLoader.PreOpenVanillaBag("goodieBag", this, itemType))
+ 		public void OpenGoodieBag(int itemType) {
++			if (!ItemLoader.PreOpenVanillaBag_Obsolete("goodieBag", this, itemType))
 +				return;
 +
 +			DropFromItem(itemType);
 +
-+			ItemLoader.OpenVanillaBag("goodieBag", this, itemType);
++			ItemLoader.OpenVanillaBag_Obsolete("goodieBag", this, itemType);
 +			NPCLoader.blockLoot.Clear();
 +
 +			/*

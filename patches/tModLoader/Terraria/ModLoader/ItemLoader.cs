@@ -1319,6 +1319,7 @@ namespace Terraria.ModLoader
 			}
 		}
 
+		[Obsolete]
 		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
 
 		// Remove After 1st September 2022
@@ -1343,6 +1344,10 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		[Obsolete]
+		internal static bool PreOpenVanillaBag_Obsolete(string context, Player player, int arg) => PreOpenVanillaBag(context, player, arg);
+
+		[Obsolete]
 		private static HookList HookOpenVanillaBag = AddHook<Action<string, Player, int>>(g => g.OpenVanillaBag);
 
 		// Remove After 1st September 2022
@@ -1357,6 +1362,9 @@ namespace Terraria.ModLoader
 				g.OpenVanillaBag(context, player, arg);
 			}
 		}
+
+		[Obsolete]
+		internal static bool OpenVanillaBag_Obsolete(string context, Player player, int arg) => PreOpenVanillaBag(context, player, arg);
 
 		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 
