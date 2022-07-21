@@ -24,13 +24,24 @@ namespace Terraria.ModLoader
 
 		[ClassInitialize]
 		public static void ClassInit(TestContext context) {
-			//initialize a server context for Item IO
+			//initialize a server context for ItemIO
+			typeof(Program).GetProperty(nameof(Program.SavePath), BindingFlags.Static | BindingFlags.Public).SetValue(null, ".");
 			Main.dedServ = true;
-			var main = new Main();
-			typeof(Main).GetMethod("Initialize", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(main, new object[0]);
 
-			//add a mock mod for TagSerializable type resolving
-			typeof(ModLoader).GetField("loadedMods", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, new Mod[] {new MockMod() });
+			// autoload the TagSerializers
+			var loadableTypes = typeof(Main).Assembly.GetTypes()
+				.Where(t => !t.IsAbstract && !t.ContainsGenericParameters)
+				.Where(t => t.IsAssignableTo(typeof(TagSerializer)))
+				.Where(t => t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null) != null) // has default constructor
+				.Where(t => AutoloadAttribute.GetValue(t).NeedsAutoloading)
+				.OrderBy(type => type.FullName, StringComparer.InvariantCulture);
+
+			foreach (var t in loadableTypes) {
+				((ILoadable)Activator.CreateInstance(t, true)).Load(null);
+			}
+
+			// Add a mod for resolving TagSerializable types
+			typeof(ModLoader).GetProperty(nameof(ModLoader.Mods), BindingFlags.Public | BindingFlags.Static).SetValue(null, new Mod[] {new MockMod()});
 		}
 
 		private void AssertEqual(object o1, object o2) {
@@ -273,15 +284,8 @@ namespace Terraria.ModLoader
 			}
 
 			//get a missing tag as an invalid NBT type
-			try {
-				var tag = new TagCompound();
-				tag.Get<char>("key1");
-				Assert.Fail("Test method did not throw expected exception System.IO.IOException.");
-			}
-			catch (IOException e) {
-				Assert.AreEqual(e.Message, "NBT Deserialization (type=System.Char,entry=\"key1\" = null)");
-				Assert.AreEqual(e.InnerException.Message, "Invalid NBT payload type 'System.Char'");
-			}
+			// now permitted, returns default
+			Assert.AreEqual(default, new TagCompound().Get<char>("key1"));
 
 			//get a list tag as an invalid generic type
 			try {
@@ -423,12 +427,12 @@ namespace Terraria.ModLoader
   int ""intMax"" = 2147483647,
   long ""longMin"" = -9223372036854775808,
   long ""longMax"" = 9223372036854775807,
-  float ""floatMin"" = -3.402823E+38,
-  float ""floatMax"" = 3.402823E+38,
+  float ""floatMin"" = -3.4028235E+38,
+  float ""floatMax"" = 3.4028235E+38,
   float ""floatNaN"" = NaN,
   float ""float"" = 1.525,
-  double ""doubleMin"" = -1.79769313486232E+308,
-  double ""doubleMax"" = 1.79769313486232E+308,
+  double ""doubleMin"" = -1.7976931348623157E+308,
+  double ""doubleMax"" = 1.7976931348623157E+308,
   double ""doubleNaN"" = NaN,
   double ""double"" = 1.525,
   string ""string1"" = """",
@@ -623,16 +627,10 @@ namespace Terraria.ModLoader
 		[TestMethod]
 		public void TestItemSerializable() {
 			//unfortunately can't test modded items or global data
-			
-			var item1 = new Item();
-			item1.SetDefaults(ItemID.LastPrism, true);
-			item1.favorited = true;
-			var item2 = new Item();
-			item2.SetDefaults(ItemID.IronBar, true);
-			item2.stack = 25;
-			var item3 = new Item();
-			item3.SetDefaults(ItemID.Meowmere, true);
-			item3.prefix = 4;
+
+			var item1 = new Item(ItemID.LastPrism) { favorited = true };
+			var item2 = new Item(ItemID.IronBar) { stack = 25 };
+			var item3 = new Item(ItemID.Meowmere) { prefix = 4 };
 
 			var list = new List<Item> {item1, item2, item3};
 			var tag = new TagCompound {

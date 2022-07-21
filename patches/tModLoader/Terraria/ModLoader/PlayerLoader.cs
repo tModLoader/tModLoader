@@ -299,6 +299,7 @@ namespace Terraria.ModLoader
 
 		public static bool PreHurt(Player player, bool pvp, bool quiet, ref int damage, ref int hitDirection,
 			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) {
+			PreHurt_Obsolete(player, pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource);
 			bool flag = true;
 			foreach (var modPlayer in HookPreHurt.Enumerate(player.modPlayers)) {
 				if (!modPlayer.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
@@ -312,6 +313,7 @@ namespace Terraria.ModLoader
 		private static HookList HookHurt = AddHook<Action<bool, bool, double, int, bool, int>>(p => p.Hurt);
 
 		public static void Hurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
+			Hurt_Obsolete(player, pvp, quiet, damage, hitDirection, crit);
 			foreach (var modPlayer in HookHurt.Enumerate(player.modPlayers)) {
 				modPlayer.Hurt(pvp, quiet, damage, hitDirection, crit, cooldownCounter);
 			}
@@ -320,10 +322,51 @@ namespace Terraria.ModLoader
 		private static HookList HookPostHurt = AddHook<Action<bool, bool, double, int, bool, int>>(p => p.PostHurt);
 
 		public static void PostHurt(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
+			PostHurt_Obsolete(player, pvp, quiet, damage, hitDirection, crit);
 			foreach (var modPlayer in HookPostHurt.Enumerate(player.modPlayers)) {
 				modPlayer.PostHurt(pvp, quiet, damage, hitDirection, crit, cooldownCounter);
 			}
 		}
+
+#region Legacy
+		private delegate bool DelegatePreHurt_Obsolete(bool pvp, bool quiet, ref int damage, ref int hitDirection,
+			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
+		[Obsolete]
+		private static HookList HookPreHurt_Obsolete = AddHook<DelegatePreHurt_Obsolete>(p => p.PreHurt);
+
+		[Obsolete]
+		private static bool PreHurt_Obsolete(Player player, bool pvp, bool quiet, ref int damage, ref int hitDirection,
+			ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
+			bool flag = true;
+			foreach (var modPlayer in HookPreHurt_Obsolete.Enumerate(player.modPlayers)) {
+				if (!modPlayer.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage,
+						ref playSound, ref genGore, ref damageSource)) {
+					flag = false;
+				}
+			}
+			return flag;
+		}
+
+		[Obsolete]
+		private static HookList HookHurt_Obsolete = AddHook<Action<bool, bool, double, int, bool>>(p => p.Hurt);
+
+		[Obsolete]
+		private static void Hurt_Obsolete(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+			foreach (var modPlayer in HookHurt_Obsolete.Enumerate(player.modPlayers)) {
+				modPlayer.Hurt(pvp, quiet, damage, hitDirection, crit);
+			}
+		}
+
+		[Obsolete]
+		private static HookList HookPostHurt_Obsolete = AddHook<Action<bool, bool, double, int, bool>>(p => p.PostHurt);
+
+		[Obsolete]
+		private static void PostHurt_Obsolete(Player player, bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+			foreach (var modPlayer in HookPostHurt_Obsolete.Enumerate(player.modPlayers)) {
+				modPlayer.PostHurt(pvp, quiet, damage, hitDirection, crit);
+			}
+		}
+#endregion
 
 		private delegate bool DelegatePreKill(double damage, int hitDirection, bool pvp, ref bool playSound,
 			ref bool genGore, ref PlayerDeathReason damageSource);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 
@@ -10,6 +11,12 @@ namespace Terraria.ModLoader
 	[TestClass]
 	public class SortingTests
 	{
+
+		[ClassInitialize]
+		public static void ClassInit(TestContext context) {
+			LanguageManager.Instance.SetLanguage("en-US");
+		}
+
 		private static LocalMod Make(string name, 
 			ModSide side = ModSide.Both, string version = null,
 			IEnumerable<string> refs = null, IEnumerable<string> weakRefs = null,
@@ -38,7 +45,7 @@ namespace Terraria.ModLoader
 			}
 			catch (ModSortingException e) {
 				AssertSetsEqual(e.errored.Select(m => m.Name).ToList(), mods);
-				Assert.AreEqual(e.Message.Trim(), msg);
+				Assert.AreEqual(msg, e.Message.Trim());
 			}
 		}
 
@@ -226,20 +233,30 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => ModOrganizer.EnsureTargetVersionsMet(list3),
 				new[] { "A" },
-				"A requires version 1.2+ of B but version 1.0.0.0 is installed");
+				"A requires B version 1.2 or greater but version 1.0.0.0 is installed");
+
+			// test major version mismatch
+			var list3B = new List<LocalMod> {
+				Make("A", refs: new[] {"B@0.9"}),
+				Make("B")
+			};
+			AssertModException(
+				() => ModOrganizer.EnsureTargetVersionsMet(list3B),
+				new[] { "A" },
+				"A targets B version 0.9 but you have a newer major version (1.0.0.0) which may not be compatible. A must be updated.");
 
 			//test one pass, two fail version check
 			var list4 = new List<LocalMod> {
-				Make("A"),
-				Make("B", refs: new[] {"A@0.9"}),
-				Make("C", refs: new[] {"A@1.1"}),
-				Make("D", refs: new[] {"A@1.0.0.1"})
+				Make("A", version: "1.1"),
+				Make("B", refs: new[] {"A@1.0"}),
+				Make("C", refs: new[] {"A@1.2"}),
+				Make("D", refs: new[] {"A@1.1.0.1"})
 			};
 			AssertModException(
 				() => ModOrganizer.EnsureTargetVersionsMet(list4),
 				new[] { "C", "D" },
-				"C requires version 1.1+ of A but version 1.0.0.0 is installed\r\n" +
-				"D requires version 1.0.0.1+ of A but version 1.0.0.0 is installed");
+				"C requires A version 1.2 or greater but version 1.1 is installed\r\n" +
+				"D requires A version 1.1.0.1 or greater but version 1.1 is installed");
 			
 			//test weak version check (missing)
 			var list5 = new List<LocalMod> {
@@ -256,7 +273,7 @@ namespace Terraria.ModLoader
 			AssertModException(
 				() => ModOrganizer.EnsureTargetVersionsMet(list6),
 				new[] { "A" },
-				"A requires version 1.1+ of B but version 1.0.0.0 is installed");
+				"A requires B version 1.1 or greater but version 1.0.0.0 is installed");
 		}
 
 		[TestMethod]
