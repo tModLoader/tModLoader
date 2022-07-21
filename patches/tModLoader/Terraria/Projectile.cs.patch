@@ -960,6 +960,21 @@
  								int num = damage;
  								position = base.Center;
  								int num2 = 0;
+@@ -28874,6 +_,14 @@
+ 			return result;
+ 		}
+ 
++		/// <summary>
++		/// Finds the closest NPC to this projectile which can be targeted and which it has line of sight to.
++		/// </summary>
++		/// <param name="maxRange">
++		/// The maximum range at which this projectile should search out a target, measured in pixels.<br/>
++		/// Defaults to 800 (50 tiles). Each tile, for reference, measures out to be 16x16 pixels.
++		/// </param>
++		/// <returns>The index, in <see cref="Main.npc"/>, of the closest targetable NPC.</returns>
+ 		public int FindTargetWithLineOfSight(float maxRange = 800f) {
+ 			float num = maxRange;
+ 			int result = -1;
 @@ -29210,7 +_,7 @@
  			if (flag2 && player.channel && player.itemAnimation < num)
  				player.SetDummyItemTime(num);

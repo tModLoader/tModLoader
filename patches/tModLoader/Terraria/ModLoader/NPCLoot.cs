@@ -5,7 +5,7 @@ using Terraria.GameContent.ItemDropRules;
 namespace Terraria.ModLoader
 {
 	/// <summary> This readonly struct is a simple shortcut to <see cref="ItemDropDatabase"/>'s methods. </summary>
-	public readonly struct NPCLoot
+	public readonly struct NPCLoot : ILoot
 	{
 		private readonly int npcType;
 		private readonly ItemDropDatabase itemDropDatabase;

@@ -1741,6 +1741,64 @@
  			if (num4 != 2 && num4 != type && ((Main.tile[i, j].frameX == 0 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 22 && Main.tile[i, j].frameY <= 130) || (Main.tile[i, j].frameX == 44 && Main.tile[i, j].frameY <= 130)))
  				KillTile(i, j);
  
+@@ -35125,6 +_,57 @@
+ 			}
+ 		}
+ 
++		/// <summary>
++		/// Allows easy conversion of eligible tiles to and from their variants for vanilla spreading biomes.<br/>
++		/// Please view the <paramref name="conversionType"/> parameter's description for more details on what biomes are supported.<br/>
++		/// This method, by default, converts a 9x9 square. Please view the <paramref name="size"/> parameter's description for info on how to adjust this behavior.
++		/// </summary>
++		/// <remarks>
++		/// For an easily-viewable example of the method's usage, you may refer to the code for projectile AI style 31 (the AI style used for the Clentaminator's solutions).<br/>
++		/// <br/>
++		/// The following tile and wall types can be converted by this method.<br/>
++		/// <br/>
++		/// For Corruption, Crimson, and Hallow conversions:<br/>
++		/// - Grass (+ wall)<br/>
++		/// - Stone (+ wall, also clears moss on stone tiles)<br/>
++		/// - Ice<br/>
++		/// - Sand<br/>
++		/// - Hardened Sand (+ wall)<br/>
++		/// - Sandstone (+ wall)<br/>
++		/// - Various cave wall types, which will not be listed off individually on account of there simply being too goddamn many of them<br/>
++		/// <br/>
++		/// For Corruption and Crimson conversions specifically, thorns, should they exist, will be converted to their evil counterparts<br/>
++		/// For Hallow conversions specifically:<br/>
++		/// - Thorns are removed entirely<br/>
++		/// - Conversion of grass tiles can also safely convert mowed grass<br/>
++		/// <br/>
++		/// For Mushroom biome conversions:<br/>
++		/// - Jungle Grass (+ wall)<br/>
++		/// - Mud Wall<br/>
++		/// - Thorns are removed entirely<br/>
++		/// <br/>
++		/// "Cleansing" conversions (conversion type 0) affect all listed tile and wall types.
++		/// </remarks>
++		/// <param name="i">The X coordinate of the target tile.</param>
++		/// <param name="j">The Y coordinate of the target tile.</param>
++		/// <param name="conversionType">
++		/// Denotes the biome that you wish to convert to. The following biomes are supported:<br/>
++		/// 1 => The Corruption.<br/>
++		/// 2 => The Hallow.<br/>
++		/// 3 => Mushroom biome.<br/>
++		/// 4 => The Crimson.<br/>
++		/// Setting this to 0 returns affected tiles to their default states (e.g. Ebonstone, Crimstone, and Pearlstone will be converted back into normal Stone Blocks).<br/>
++		/// </param>
++		/// <param name="size">
++		/// When using this method to convert tiles, a square centered on the target tile is converted into those of the target biome.<br/>
++		/// This optional parameter, which defaults to 4, determines the "radius" of that square in tiles, counting outward from the central tile.<br/>
++		/// Set to 0 if you only want to convert a single tile. In other cases, use this parameter wisely.
++		/// </param>
++		/*
++		TO-DO:
++		- ConvertTIle utility method which consolidates the three lines used for most conversions into a single call
++		- modder-friendliness extension; see #2738
++		*/
+ 		public static void Convert(int i, int j, int conversionType, int size = 4) {
+ 			for (int k = i - size; k <= i + size; k++) {
+ 				for (int l = j - size; l <= j + size; l++) {
 @@ -35135,7 +_,7 @@
  					int wall = Main.tile[k, l].wall;
  					switch (conversionType) {

@@ -182,6 +182,8 @@ namespace Terraria.ModLoader.Engine
 			if (Main.dedServ)
 				return;
 
+			// TODO: This will fake install terraria, leading to errors. We need to check if Terraria is actually installed.
+			// We can't check Steamworks.SteamApps.BIsAppInstalled here because steam isn't initailized, we'll need to do that in TerrariaSteamClient.Run later.
 			var result = TerrariaSteamClient.Launch();
 			switch (result) {
 				case TerrariaSteamClient.LaunchResult.Ok:

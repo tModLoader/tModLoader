@@ -739,17 +739,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to make things happen when this item is right-clicked in the inventory. Useful for goodie bags.
+		/// Allows you to make things happen when this item is right-clicked in the inventory.
 		/// </summary>
 		/// <param name="player">The player.</param>
 		public virtual void RightClick(Player player) {
 		}
-
-		/// <summary>
-		/// Allows you to give items to the given player when this item is right-clicked in the inventory if the bossBagNPC field has been set to a positive number. This ignores the CanRightClick and RightClick hooks.
-		/// </summary>
-		/// <param name="player">The player.</param>
+		
+		[Obsolete("Use ModifyItemLoot instead", true)]
 		public virtual void OpenBossBag(Player player) {
+		}
+
+		public virtual void ModifyItemLoot(ItemLoot itemLoot) {
 		}
 
 		/// <summary>

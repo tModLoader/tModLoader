@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -54,6 +55,18 @@ namespace Terraria
 			result = modPlayers[baseInstance.Index] as T;
 
 			return result != null;
+		}
+
+		public void DropFromItem(int itemType) {
+			DropAttemptInfo info = new() {
+				player = this,
+				item = itemType,
+				IsExpertMode = Main.expertMode,
+				IsMasterMode = Main.masterMode,
+				IsInSimulation = false,
+				rng = Main.rand,
+			};
+			Main.ItemDropSolver.TryDropping(info);
 		}
 
 		/// <summary>
@@ -329,16 +342,16 @@ namespace Terraria
 		}
 
 		// Convenience Zone properties for Modders
-		
+
 		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneOverworldHeight</code></summary>
 		public bool ZoneForest => ZonePurity && ZoneOverworldHeight;
-		
+
 		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneRockLayerHeight</code></summary>
 		public bool ZoneNormalCaverns => ZonePurity && ZoneRockLayerHeight;
-		
+
 		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneDirtLayerHeight</code></summary>
 		public bool ZoneNormalUnderground => ZonePurity && ZoneDirtLayerHeight;
-		
+
 		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneSkyHeight</code></summary>
 		public bool ZoneNormalSpace => ZonePurity && ZoneSkyHeight;
 
