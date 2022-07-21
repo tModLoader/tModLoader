@@ -470,8 +470,8 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(ItemID.GoldenCrate, ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop1));
 			RegisterToItem(ItemID.GoldenCrateHard, ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop2));
 			RegisterToMultipleItems(ItemDropRule.NotScalingWithLuck(ItemID.GoldCoin, 3, 8, 21), ItemID.GoldenCrate, ItemID.GoldenCrateHard);
-			RegisterToItem(ItemID.GoldenCrate, ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromOptionsNotScaledWithLuckDropRule(3, 2, oneDrop3)));
-			RegisterToItem(ItemID.GoldenCrateHard, ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromOptionsNotScaledWithLuckDropRule(3, 2, oneDrop4)));
+			RegisterToItem(ItemID.GoldenCrate, ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)));
+			RegisterToItem(ItemID.GoldenCrateHard, ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)));
 			RegisterToMultipleItems(new OneFromRulesRule(3, oneDrop5), ItemID.GoldenCrate, ItemID.GoldenCrateHard);
 			RegisterToMultipleItems(new OneFromRulesRule(2, oneDrop6), ItemID.GoldenCrate, ItemID.GoldenCrateHard);
 			RegisterToMultipleItems(new CommonDrop(ItemID.MasterBait, 3, 3, 8, 2), ItemID.GoldenCrate, ItemID.GoldenCrateHard);
@@ -630,8 +630,8 @@ namespace Terraria.GameContent.ItemDropRules
 
 			RegisterToMultipleItems(bc_goldCoin, allCrates);
 			RegisterToMultipleItems(bc_fossil, ItemID.OasisCrate, ItemID.OasisCrateHard);
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromOptionsNotScaledWithLuckDropRule(3, 2, oneDrop3)), phmCrate);
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromOptionsNotScaledWithLuckDropRule(3, 2, oneDrop4)), hmCrate);
+			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)), phmCrate);
+			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)), hmCrate);
 			RegisterToMultipleItems(new OneFromRulesRule(3, oneDrop5), allCrates);
 			RegisterToMultipleItems(new OneFromRulesRule(2, oneDrop6), allCrates);
 			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4), allCrates);
@@ -800,7 +800,7 @@ namespace Terraria.GameContent.ItemDropRules
 				ItemDropRule.NotScalingWithLuck(ItemID.UglySweater)
 			};
 
-			IItemDropRule vanityRule = new OneFromRulesRule(chanceNumerator: 15, vanityRules);
+			IItemDropRule vanityRule = new OneFromRulesRule(chanceDenominator: 15, vanityRules);
 
 			IItemDropRule foodRule = ItemDropRule.OneFromOptionsNotScalingWithLuck(chanceDenominator: 7, ItemID.ChristmasPudding, ItemID.SugarCookie, ItemID.GingerbreadCookie);
 
