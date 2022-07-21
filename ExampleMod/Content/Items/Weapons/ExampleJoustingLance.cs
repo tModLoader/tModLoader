@@ -86,7 +86,7 @@ namespace ExampleMod.Content.Items.Weapons
 	// This will cause the Jousting Lance to become inactive if the player is hit with it out. Make sure to change the itemType to your item.
 	public class ExampleJoustingLancePlayer : ModPlayer
 	{
-		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 
 			int itemType = ModContent.ItemType<ExampleJoustingLance>(); // Change this to your item
 			double damageTaken = Main.CalculateDamagePlayersTake((int)damage, Player.statDefense);
