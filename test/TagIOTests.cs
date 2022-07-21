@@ -181,7 +181,7 @@ namespace Terraria.ModLoader
 			var tag = GetGeneralTestTag();
 			AssertEqual(tag, AfterIO(tag));
 		}
-		
+
 		[TestMethod]
 		[ExpectedException(typeof(System.ArgumentException))]
 		public void TestDuplicate() {
@@ -224,7 +224,7 @@ namespace Terraria.ModLoader
 			tag.Add("key1", null);
 			AssertEqual(tag, new TagCompound {{"key2", 5}});
 		}
-		
+
 		[TestMethod]
 		public void TestInvalidType() {
 			try {
@@ -370,7 +370,7 @@ namespace Terraria.ModLoader
 			Assert.AreEqual(tag.Get<int?>(""), null);
 			Assert.AreEqual(tag.Get<float?>("f"), 3f);
 			Assert.AreEqual(tag.Get<float?>(""), null);
-			
+
 			try {
 				tag.Get<byte?>("i");
 				Assert.Fail("Test method did not throw expected exception System.IO.IOException.");
@@ -840,12 +840,47 @@ namespace Terraria.ModLoader
 		public void TestSerializableRefactoring() {
 			var tag = new TagCompound {
 				["c"] = new C(15),
-				["list"] = new List<C> { new C(17) }
+				["list"] = new List<C> { new(17) },
+				["2darr"] = new C[1,1] { { new(19) } },
 			};
 			//can get C as C2 because their deserializers are compatible
 			Assert.AreEqual(tag.Get<C2>("c").value, 15);
 			Assert.AreEqual(tag.GetList<C2>("list")[0].value, 17);
+			Assert.AreEqual(tag.Get<C2[]>("list")[0].value, 17);
+			Assert.AreEqual(tag.Get<C2[,]>("2darr")[0,0].value, 19);
 			//note that inheritance won't work unless the C2 deserializer deliberately looks at the <type> field
+		}
+
+		[TestMethod]
+		public void TestArrayListInterchangeability() {
+			var stringArray = new string[]      { "one", "two", "three" };
+			var stringList  = new List<string>  { "one", "two", "three" };
+			var vectorArray = new Vector2[]     { new(1, 2), new(3, 4), new(5, 6) };
+			var vectorList  = new List<Vector2> { new(1, 2), new(3, 4), new(5, 6) };
+			var cArray      = new C[]           { new(1), new(2), new(3) };
+			var cList       = new List<C>       { new(1), new(2), new(3) };
+			var c2Array     = new C2[]          { new(1), new(2), new(3) };
+			var c2List      = new List<C2>      { new(1), new(2), new(3) };
+
+			TagCompound tag = new() {
+				["stringArray"] = stringArray,
+				["stringList"] = stringList,
+				["vectorArray"] = vectorArray,
+				["vectorList"] = vectorList,
+				["cArray"] = cArray,
+				["cList"] = cList,
+				["c2Array"] = c2Array,
+				["c2List"] = c2List,
+			};
+
+			Assert.IsTrue(stringList .Zip(tag.Get<List<string>> ("stringArray")).All(t => t.First == t.Second));
+			Assert.IsTrue(stringArray.Zip(tag.Get<string[]>     ("stringList")) .All(t => t.First == t.Second));
+			Assert.IsTrue(vectorList .Zip(tag.Get<List<Vector2>>("vectorArray")).All(t => t.First == t.Second));
+			Assert.IsTrue(vectorArray.Zip(tag.Get<Vector2[]>    ("vectorList")) .All(t => t.First == t.Second));
+			Assert.IsTrue(cList      .Zip(tag.Get<List<C>>      ("cArray"))     .All(t => t.First.value == t.Second.value));
+			Assert.IsTrue(cArray     .Zip(tag.Get<C[]>          ("cList"))      .All(t => t.First.value == t.Second.value));
+			Assert.IsTrue(c2List     .Zip(tag.Get<List<C2>>     ("c2Array"))    .All(t => t.First.value == t.Second.value));
+			Assert.IsTrue(c2Array    .Zip(tag.Get<C2[]>         ("c2List"))     .All(t => t.First.value == t.Second.value));
 		}
 	}
 }
