@@ -1,5 +1,8 @@
 var NAVTREEINDEX97 =
 {
+"class_terraria_1_1_mod_loader_1_1_player_draw_layer_1_1_between.html#ae5e7cc46ff0908973d6cbd94f057eb0c":[2,0,2,13,139,2,3],
+"class_terraria_1_1_mod_loader_1_1_player_draw_layer_1_1_between.html#af0b05041e049a793f5e54177e5ebe26d":[2,0,2,13,139,2,1],
+"class_terraria_1_1_mod_loader_1_1_player_draw_layer_1_1_multiple.html":[2,0,2,13,139,3],
 "class_terraria_1_1_mod_loader_1_1_player_draw_layer_1_1_multiple.html#a0142640a7acd4b9c5c80e055950a45eb":[2,0,2,13,139,3,2],
 "class_terraria_1_1_mod_loader_1_1_player_draw_layer_1_1_multiple.html#a15f180c431f0a17a9513b8ff73f2d83b":[2,0,2,13,139,3,0],
 "class_terraria_1_1_mod_loader_1_1_player_draw_layer_1_1_multiple.html#a50aec6bc713df0e1337d056dd6bb4590":[2,0,2,13,139,3,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX97 =
 "class_terraria_1_1_mod_loader_1_1_summon_damage_class.html#a2862aa267b6ed853ae1b98e3b4a93b41":[2,0,2,13,160,0],
 "class_terraria_1_1_mod_loader_1_1_summon_damage_class.html#aa352faa9939df69debeec711ee8e21ab":[2,0,2,13,160,1],
 "class_terraria_1_1_mod_loader_1_1_summon_damage_class.html#ad2e4a4afc91a8ace1b9176317014b42a":[2,0,2,13,160,2],
-"class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html":[2,0,2,13,161],
-"class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html#a0b0ad615a2b1294505aca4435914ccbb":[2,0,2,13,161,3],
-"class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html#a2ba6f1f1f06ef0142763131c05df6808":[2,0,2,13,161,4],
-"class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html#a450f9b638a40a4d2302cef42170374ef":[2,0,2,13,161,2]
+"class_terraria_1_1_mod_loader_1_1_summon_melee_speed_damage_class.html":[2,0,2,13,161]
 };

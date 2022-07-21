@@ -1,5 +1,8 @@
 var NAVTREEINDEX124 =
 {
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_image_path_and_color_provider.html#ae730358c043fd499bf9024f245e3a595":[2,0,2,5,2,18,1],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_overlay_and_color_provider.html":[2,0,2,5,2,19],
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_overlay_and_color_provider.html#a1bb4d6510f446d1c91e60b36a587d4a7":[2,0,2,5,2,19,2],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_overlay_and_color_provider.html#a1d98c60b92d14c5cc536a4b0e8ead470":[2,0,2,5,2,19,1],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_overlay_and_color_provider.html#a942fbeb240bc9772b38d61da80b58f52":[2,0,2,5,2,19,0],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_entry_display_index.html":[2,0,2,5,2,20],
@@ -246,8 +249,5 @@ var NAVTREEINDEX124 =
 "interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html#ac160a9f18d8eefa5ef9df8f0d95a2e78":[2,0,2,21,12,5],
 "interface_terraria_1_1_utilities_1_1_file_browser_1_1_i_file_browser.html":[2,0,2,22,0,2],
 "interface_terraria_1_1_utilities_1_1_file_browser_1_1_i_file_browser.html#affb920faf65dde721e82a1f569892943":[2,0,2,22,0,2,0],
-"md__github_workspace_src_t_mod_loader__terraria_release_extras_t_mod_porter__r_e_a_d_m_e.html":[0],
-"namespace_extensions.html":[1,0,0],
-"namespace_n_a_t_u_p_n_p_lib.html":[1,0,1],
-"namespace_terraria.html":[1,0,2]
+"md__github_workspace_src_t_mod_loader__terraria_release_extras_t_mod_porter__r_e_a_d_m_e.html":[0]
 };

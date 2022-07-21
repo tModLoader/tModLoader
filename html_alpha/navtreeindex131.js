@@ -1,5 +1,8 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html#a4581ac5514991b4cbea19f02f56d7c18":[2,0,2,5,62,0],
+"struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html#aa3aa2a08303f072f1169ca96403f2a9a":[2,0,2,5,62,3],
+"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tile_variationkey.html":[2,0,2,5,65,2],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tile_variationkey.html#a142660db8aba598384e92aedf5dc5160":[2,0,2,5,65,2,4],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tile_variationkey.html#a268cdb1d24286aac18fbfc31b2509fbb":[2,0,2,5,65,2,0],
 "struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tile_variationkey.html#a2feecbbab5b409e6b36c600f9ba930ca":[2,0,2,5,65,2,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_map_1_1_map_tile.html#ac3498cbc6a422ff0e84c7f630bc38b15":[2,0,2,12,4,1],
 "struct_terraria_1_1_map_1_1_map_tile.html#ac79ac2b23f897237e7caa453fc48f798":[2,0,2,12,4,3],
 "struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_array_enumerator.html":[2,0,2,13,2,1],
-"struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_array_enumerator.html#a38583732b35d895e077763da7e64f9c5":[2,0,2,13,2,1,0],
-"struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_array_enumerator.html#a85d1dbc8c5dc04a83cfe5465949bc5e7":[2,0,2,13,2,1,1],
-"struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_array_enumerator.html#aab0af261989d5d4df2a9b3fa085c703e":[2,0,2,13,2,1,3],
-"struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_array_enumerator.html#ac70c09a61454119ea8c170fa37a489d6":[2,0,2,13,2,1,2]
+"struct_terraria_1_1_mod_loader_1_1_core_1_1_filtered_array_enumerator.html#a38583732b35d895e077763da7e64f9c5":[2,0,2,13,2,1,0]
 };

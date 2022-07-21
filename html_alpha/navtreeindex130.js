@@ -1,5 +1,8 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ae5d1bbaf0c31276ffa55056739d08b0a":[2,0,2,4,67,26],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ae6ff0360eb85094863ed2f00c98d58e5":[2,0,2,4,67,1],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#aeb483fb41a0da603ed75468e6e8464a0":[2,0,2,4,67,61],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#aec72a38d3e22bbc435e7656854f9b8cb":[2,0,2,4,67,0],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#aeff944c53182d657d4707329d5b78e5e":[2,0,2,4,67,2],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#af179971d8cd03b573cefa545710ca6be":[2,0,2,4,67,28],
@@ -246,8 +249,5 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_credits_roll_info.html#ac434ac4b45d331ae2dd380938fe7b480":[2,0,2,5,19,0,2,3],
 "struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html":[2,0,2,5,62],
 "struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html#a10f1f54226e0771a21c7287278816637":[2,0,2,5,62,1],
-"struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html#a3e3c4d4bc86777d328562d41227bd61d":[2,0,2,5,62,2],
-"struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html#a4581ac5514991b4cbea19f02f56d7c18":[2,0,2,5,62,0],
-"struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html#aa3aa2a08303f072f1169ca96403f2a9a":[2,0,2,5,62,3],
-"struct_terraria_1_1_game_content_1_1_tile_paint_system_v2_1_1_tile_variationkey.html":[2,0,2,5,65,2]
+"struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html#a3e3c4d4bc86777d328562d41227bd61d":[2,0,2,5,62,2]
 };

@@ -1,5 +1,8 @@
 var NAVTREEINDEX123 =
 {
+"class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles.html":[2,0,2,84,1,0],
+"class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles.html#a07f3e47eb4d7f34b48bfbbe561eae967":[2,0,2,84,1,0,4],
+"class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles.html#a7ba7b6d3b2af092d2b432abe6eb8cda8":[2,0,2,84,1,0,6],
 "class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles.html#a7de58664885de762894359073682f31f":[2,0,2,84,1,0,9],
 "class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles.html#a864c23c819b37badb016c2e01cd838ff":[2,0,2,84,1,0,5],
 "class_terraria_1_1_world_gen_1_1_grow_tree_settings_1_1_profiles.html#a98bc55f97aeabcc2697fd41edc992a0f":[2,0,2,84,1,0,3],
@@ -151,8 +154,8 @@ var NAVTREEINDEX123 =
 "functions_t.html":[2,3,0,19],
 "functions_u.html":[2,3,0,20],
 "functions_v.html":[2,3,0,21],
-"functions_vars.html":[2,3,2],
 "functions_vars.html":[2,3,2,0],
+"functions_vars.html":[2,3,2],
 "functions_vars_b.html":[2,3,2,1],
 "functions_vars_c.html":[2,3,2,2],
 "functions_vars_d.html":[2,3,2,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX123 =
 "interface_terraria_1_1_data_structures_1_1_i_search_filter.html":[2,0,2,4,54],
 "interface_terraria_1_1_data_structures_1_1_i_search_filter.html#a0654791b53673b017873862b7fc8204d":[2,0,2,4,54,0],
 "interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_image_path_and_color_provider.html":[2,0,2,5,2,18],
-"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_image_path_and_color_provider.html#a9cc91c3c07c1d21ed600a8630981dd83":[2,0,2,5,2,18,0],
-"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_image_path_and_color_provider.html#ae730358c043fd499bf9024f245e3a595":[2,0,2,5,2,18,1],
-"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_overlay_and_color_provider.html":[2,0,2,5,2,19],
-"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_overlay_and_color_provider.html#a1bb4d6510f446d1c91e60b36a587d4a7":[2,0,2,5,2,19,2]
+"interface_terraria_1_1_game_content_1_1_bestiary_1_1_i_bestiary_background_image_path_and_color_provider.html#a9cc91c3c07c1d21ed600a8630981dd83":[2,0,2,5,2,18,0]
 };
