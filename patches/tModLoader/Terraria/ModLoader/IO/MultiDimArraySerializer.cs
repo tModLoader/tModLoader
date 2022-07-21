@@ -18,6 +18,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 
 	public Type ArrayType { get; }
 	public Type ElementType { get; }
+	public int ArrayRank { get; }
 
 	public MultiDimArraySerializer(Type arrayType) {
 		ArgumentNullException.ThrowIfNull(arrayType);
@@ -28,6 +29,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 
 		ArrayType = arrayType;
 		ElementType = arrayType.GetElementType()!;
+		ArrayRank = arrayType.GetArrayRank();
 	}
 
 	public override TagCompound Serialize(Array array) {
@@ -50,6 +52,10 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		ArgumentNullException.ThrowIfNull(tag);
 
 		var serializedTypeFullName = tag.Get<string>("serializedType");
+		if (serializedTypeFullName == string.Empty) {
+			return Array.CreateInstance(ElementType, new int[ArrayRank]);
+		}
+
 		Type? serializedType = null;
 		if (!string.IsNullOrEmpty(serializedTypeFullName)) {
 			serializedType = GetType(serializedTypeFullName);

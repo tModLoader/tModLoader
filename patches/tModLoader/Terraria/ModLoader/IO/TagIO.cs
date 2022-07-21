@@ -197,16 +197,9 @@ namespace Terraria.ModLoader.IO
 				return list; // already a valid NBT list type
 
 			// list of lists conversion
-			Type listTargetType;
-			if (list.Cast<object>().FirstOrDefault(elem => elem != default) is { } e)
-				listTargetType = Serialize(e).GetType();
-			else
-				listTargetType = elemType.GetElementType() ?? elemType.GetGenericArguments()[0];
-
-			var targetList = typeof(List<>).MakeGenericType(listTargetType)!;
-			var serializedList = (IList)Activator.CreateInstance(targetList, list.Count)!;
+			var serializedList = new List<IList>(list.Count);
 			foreach (var elem in list)
-				serializedList.Add(Serialize(elem));
+				serializedList.Add((IList)Serialize(elem));
 
 			return serializedList;
 		}
@@ -223,14 +216,8 @@ namespace Terraria.ModLoader.IO
 				return tag;
 
 			if (TagSerializer.TryGetSerializer(type, out TagSerializer serializer)) {
-				if (tag != null)
-					return serializer.Deserialize(tag);
-
-				// Empty multi dim array
-				if (type.IsArray)
-					return Array.CreateInstance(type.GetElementType()!, new int[type.GetArrayRank()]);
-
-				tag = Deserialize(serializer.TagType, null);
+				if (tag == null)
+					tag = Deserialize(serializer.TagType, null);
 
 				return serializer.Deserialize(tag);
 			}
