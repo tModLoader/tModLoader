@@ -990,20 +990,20 @@ namespace Terraria.ModLoader
 				 ["s4"] = s4, ["v4"] = v4, ["c4"] = c4,
 			};
 
-			Assert.IsTrue(s1[0][0]    == tag.Get<string[,]>   ("s1")[0,0]);
-			Assert.IsTrue(s2[0][0]    == tag.Get<string[][]>  ("s2")[0][0]);
-			Assert.IsTrue(s3[0][0, 0] == tag.Get<string[][,]> ("s3")[0][0, 0]);
-			Assert.IsTrue(s4[0, 0][0] == tag.Get<string[,][]> ("s4")[0, 0][0]);
+			Assert.IsTrue(s1[0][0]    == tag.Get<List<string>[]>  ("s1")[0][0]);
+			Assert.IsTrue(s2[0][0]    == tag.Get<List<string[]>>  ("s2")[0][0]);
+			Assert.IsTrue(s3[0][0, 0] == tag.Get<List<string[,]>> ("s3")[0][0, 0]);
+			Assert.IsTrue(s4[0, 0][0] == tag.Get<List<string>[,]> ("s4")[0, 0][0]);
 
-			Assert.IsTrue(v1[0][0]    == tag.Get<Vector2[,]>   ("v1")[0,0]);
-			Assert.IsTrue(v2[0][0]    == tag.Get<Vector2[][]>  ("v2")[0][0]);
-			Assert.IsTrue(v3[0][0, 0] == tag.Get<Vector2[][,]> ("v3")[0][0, 0]);
-			Assert.IsTrue(v4[0, 0][0] == tag.Get<Vector2[,][]> ("v4")[0, 0][0]);
+			Assert.IsTrue(v1[0][0]    == tag.Get<List<Vector2>[]>  ("v1")[0][0]);
+			Assert.IsTrue(v2[0][0]    == tag.Get<List<Vector2[]>>  ("v2")[0][0]);
+			Assert.IsTrue(v3[0][0, 0] == tag.Get<List<Vector2[,]>> ("v3")[0][0, 0]);
+			Assert.IsTrue(v4[0, 0][0] == tag.Get<List<Vector2>[,]> ("v4")[0, 0][0]);
 
-			Assert.IsTrue(c1[0][0].value    == tag.Get<C[,]>   ("c1")[0,0].value);
-			Assert.IsTrue(c2[0][0].value    == tag.Get<C[][]>  ("c2")[0][0].value);
-			Assert.IsTrue(c3[0][0, 0].value == tag.Get<C[][,]> ("c3")[0][0, 0].value);
-			Assert.IsTrue(c4[0, 0][0].value == tag.Get<C[,][]> ("c4")[0, 0][0].value);
+			Assert.IsTrue(c1[0][0].value    == tag.Get<List<C>[]>  ("c1")[0][0].value);
+			Assert.IsTrue(c2[0][0].value    == tag.Get<List<C[]>>  ("c2")[0][0].value);
+			Assert.IsTrue(c3[0][0, 0].value == tag.Get<List<C[,]>> ("c3")[0][0, 0].value);
+			Assert.IsTrue(c4[0, 0][0].value == tag.Get<List<C>[,]> ("c4")[0, 0][0].value);
 		}
 	}
 }
