@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# 0.0.0.0 for testing purposes. Will be bumped to 1.0.0.0 before the pr
-scriptVersion="0.0.0.0"
+# 0.0.0.1 for testing purposes. Will be bumped to 1.0.0.0 before the pr
+scriptVersion="0.0.0.1"
 
 # Define functions used in script
 
@@ -22,8 +22,25 @@ function popd {
 	fi
 }
 
+# Version string comparison
+function verlte {
+	[  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
+}
+
+
 function updateScript {
-	# throw new System.NotImplementedException()
+	local latestScriptVersion=`curl --silent "https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh" | grep "scriptVersion=" | cut -d '"' -f2`
+
+	if ! verlte $scriptVersion $latestScriptVersion
+	then
+		echo "Updating from version v$scriptVersion to v$latestScriptVersion"
+		wget https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh
+		mv Setup_tModLoaderServer.sh.1 Setup_tModLoaderServer.sh
+	else
+		echo "No new script updates"
+	fi
+
+	exit 0
 }
 
 function getLatestRelease {
@@ -256,6 +273,7 @@ Options:
  -m|--modspath       The path to your mods folder. Any .tmod files and enabled.json are sent here.
  --username          The steam username to login with. Only applies when using steamcmd.
  --tmlversion        The version of tML to download. Only applies when using Github. This should be the exact tag off of Github (ex. v2022.06.96.4).
+ --updatescript      Update the script to the latest version on Github.
 
 When running --install and --update, enabled.json, install.txt, and any .tmod files will be checked for in the location of the script."
 	exit
@@ -309,6 +327,9 @@ do
 		-v|--version)
 			printVersion
 			;;
+		--updatescript)
+			updateScript
+			;;
 		*)
 			echo "Argument not recognized: $1"
 			printHelp
@@ -346,5 +367,4 @@ if $update
 then
 	updatetML
 	installMods
-	updateScript
 fi
