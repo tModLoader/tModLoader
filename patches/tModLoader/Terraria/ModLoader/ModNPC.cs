@@ -739,6 +739,17 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify the npc's <seealso cref="ImmunityCooldownID"/>, damage multiplier, and hitbox. Returns false to prevent vanilla code from running. Returns true by default.
+		/// </summary>
+		/// <param name="victimHitbox"></param>
+		/// <param name="damageMultiplier"></param>
+		/// <param name="npcHitbox"></param>
+		/// <returns></returns>
+		public virtual bool ModifyCollisionData(Rectangle victimHitbox, ref float damageMultiplier, ref Rectangle npcHitbox) {
+			return true;
+		}
+
+		/// <summary>
 		/// Makes this ModNPC save along the world even if it's not a townNPC. Defaults to false.
 		/// <br/><b>NOTE:</b> A town NPC will always be saved.
 		/// <br/><b>NOTE:</b> A NPC that needs saving will not despawn naturally.
