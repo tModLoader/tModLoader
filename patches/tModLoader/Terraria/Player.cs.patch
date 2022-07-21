@@ -43,7 +43,7 @@
  					Main.ToggleGameplayUpdates(state: true);
 +
 +					// Added by TML.
-+					Social.Steam.WorkshopHelper.ModManager.BeginPlaytimeTracking(ModLoader.Core.ModOrganizer.FindMods());
++					Social.Steam.WorkshopHelper.ModManager.BeginPlaytimeTracking();
 +				}
  			}
  		}
@@ -77,6 +77,81 @@
  		public static int crystalLeafDamage = 100;
  		public static int crystalLeafKB = 10;
  		public float basiliskCharge;
+@@ -516,10 +_,35 @@
+ 		public int ropeCount;
+ 		public int manaRegenBonus;
+ 		public int manaRegenDelayBonus;
++		/// <summary>
++		/// The current vanilla dash that the player is using.<br/>
++		/// The following values correspond to vanilla dashes:<br/>
++		/// 1 => Tabi / Master Ninja Gear<br/>
++		/// 2 => Shield of Cthulhu<br/>
++		/// 3 => Solar Flare armor set bonus<br/>
++		/// 4 => Unused, though a dash for this value DOES exist<br/>
++		/// 5 => Crystal Assassin set bonus<br/>
++		/// </summary>
+ 		public int dashType;
++		/// <summary>
++		/// The current vanilla dash that the player is VISIBLY using.<br/>
++		/// Unlike <see cref="dashType"/>, this does not update if a dash cannot currently be input.<br/>
++		/// </summary>
+ 		public int dash;
++		/// <summary>
++		/// The amount of time this player has left, in ticks, to input the second keystroke of a standard dash input (double-tap left/right).<br/>
++		/// For vanilla dashes, this window is 15 ticks, or a quarter of a second, in total.<br/>
++		/// </summary>
+ 		public int dashTime;
++		/// <summary>
++		/// The amount of time that has passed, in ticks, since this player last performed a dash.
++		/// </summary>
+ 		public int timeSinceLastDashStarted;
++		/// <summary>
++		/// The amount of time that has to pass, in ticks, before a new dash input will be registered.<br/>
++		/// For the first frame of any given dash, this is set to -1. After that frame has passsed, it is set to 20 ticks, or 1/3 of a second.<br/>
++		/// For the Tabi dash, and when dashing into an enemy with the Shield of Cthulhu, this is set to 30 ticks, or 1/2 of a second, instead.<br/>
++		/// </summary>
+ 		public int dashDelay;
+ 		public int eocDash;
+ 		public int eocHit;
+@@ -528,6 +_,23 @@
+ 		public int gem = -1;
+ 		public int gemCount;
+ 		public BitsByte ownedLargeGems;
++		/// <summary>
++		/// The vanilla flask effect which the player currently has active; these affect all melee weapons and whips.<br/>
++		/// Defaults to 0, which denotes that the player does not currently have a flask active.<br/>
++		/// The following values correspond to vanilla flasks:<br/>
++		/// 1 => Flask of Venom (affected weapons proc Acid Venom on hit)<br/>
++		/// 2 => Flask of Cursed Flames (affected weapons proc Cursed Inferno on hit)<br/>
++		/// 3 => Flask of Fire (affected weapons proc On Fire! on hit)<br/>
++		/// 4 => Flask of Gold (affected weapons proc Midas on hit)<br/>
++		/// 5 => Flask of Ichor (affected weapons proc Ichor on hit)<br/>
++		/// 6 => Flask of Nanites (affected weapons proc Confused on hit)<br/>
++		/// 7 => Flask of Party (affected weapons sometimes release confetti explosions on hit)<br/>
++		/// 8 => Flask of Poison (affected weapons proc Poisoned on hit)<br/>
++		/// </summary>
++		// TO-DO:
++		// transform to int later, make proper flask effect system maybe?
++		// concrete use cases exist. just gotta find a way to make a system for 'em intuitive
++		// -thomas
+ 		public byte meleeEnchant;
+ 		public byte pulleyDir;
+ 		public bool pulley;
+@@ -539,7 +_,13 @@
+ 		public int snowBallLauncherInteractionCooldown;
+ 		public bool iceSkate;
+ 		public bool carpet;
+-		public int spikedBoots;
++		/// <summary>
++		/// Used by the Shoe Spikes and Climbing Claws to allow for holding onto walls (of tiles, not to be confused with actual walls).<br/>
++		/// Defaults to 0. Any value higher than 0 allows the player to wall-jump.<br/>
++		/// A value of 1 causes the player to slowly slide down them while holding onto them.<br/>
++		/// A value of 2 or more doesn't give this limitation, allowing the player to stay holding onto a wall indefinitely.
++		/// </summary>
++		public int spikedBoots; // tML: documentation added because this field can be a little tricky to understand at first glance
+ 		public int carpetFrame = -1;
+ 		public float carpetFrameCounter;
+ 		public bool canCarpet;
 @@ -564,7 +_,7 @@
  		public byte oldLuckPotion;
  		public float endurance;
@@ -749,7 +824,7 @@
  			}
  
  			petalTimer = 50;
-@@ -3788,10 +_,20 @@
+@@ -3788,9 +_,16 @@
  			num6 *= num8;
  			num7 *= num8;
  			Projectile.NewProjectile(GetProjectileSource_SetBonus(6), Main.projectile[num5].Center.X - 4f, Main.projectile[num5].Center.Y, num6, num7, 227, crystalLeafDamage, crystalLeafKB, whoAmI);
@@ -760,24 +835,24 @@
  		}
  
  		public void OpenPresent(int itemType) {
++			DropFromItem(itemType);
++
++			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
-+
-+			if (!ItemLoader.PreOpenVanillaBag("present", this, 0))
-+				return;
-+
-+			ItemLoader.OpenVanillaBag("present", this, 0);
-+
  			if (Main.rand.Next(15) == 0 && Main.hardMode) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 602);
- 				if (Main.netMode == 1)
-@@ -4015,16 +_,40 @@
+@@ -4009,21 +_,34 @@
+ 					}
+ 				default: {
+ 						int number21 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 591, Main.rand.Next(20, 50));
++						// Extra patch context for the below.
+ 						if (Main.netMode == 1)
+ 							NetMessage.SendData(21, -1, -1, null, number21, 1f);
+ 
  						break;
  					}
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
-+
-+			//TODO: return statements above probably break this.
++			*/
  		}
  
 +		// Return value added by TML.
@@ -792,56 +867,28 @@
  		}
  
  		public void OpenBossBag(int type) {
- 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(type);
-+
-+			if (!ItemLoader.PreOpenVanillaBag("bossBag", this, type))
-+				return;
-+
-+			ItemLoader.OpenVanillaBag("bossBag", this, type);
++			DropFromItem(type);
 +
 +			if (ItemID.Sets.BossBag[type] && (!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
-+				this.TryGettingDevArmor(itemSource_OpenItem);
++				TryGettingDevArmor(GetItemSource_OpenItem(type));
 +			}
 +
-+			// In the following switch, some TryGettingDevArmor lines have been made useless in favor of expanding the TML-added ItemID.BossBag & ItemID.PreHardmodeLikeBossBag sets.
-+
-+			static void TryGettingDevArmor(IEntitySource source) {
-+				// A whole lot of nothing!
-+			}
-+
++			/*
+ 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(type);
  			switch (type) {
  				case 3318: {
- 						if (Main.tenthAnniversaryWorld)
-@@ -4518,12 +_,22 @@
- 			if (type == 5111)
- 				num11 = 668;
+@@ -4560,15 +_,19 @@
+ 				}
  
-+			ItemLoader.OpenBossBag(type, this, ref num11);
-+
--			if (num11 <= 0)
-+			if (num11 <= 0) {
-+				NPCLoader.blockLoot.Clear(); // Clear blockloot
- 				return;
-+			}
+ 				int num15 = (int)value;
++				// Extra patch context for the below.
+ 				if (num15 < 1)
+ 					num15 = 1;
  
-+			/*
- 			NPC nPC = new NPC();
- 			nPC.SetDefaults(num11);
-+			*/
-+			// Slight optimization patch, since we're nearby anyway.
-+			NPC nPC = ContentSamples.NpcsByNetId[num11];
-+
- 			float value = nPC.value;
-+
- 			value *= 1f + (float)Main.rand.Next(-20, 21) * 0.01f;
- 			if (Main.rand.Next(5) == 0)
- 				value *= 1f + (float)Main.rand.Next(5, 11) * 0.01f;
-@@ -4566,9 +_,13 @@
  				value -= (float)num15;
  				QuickSpawnItem(itemSource_OpenItem, 71, num15);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			*/
  		}
  
 -		private void TryGettingDevArmor(IEntitySource source) {
@@ -851,25 +898,26 @@
  			if (Main.rand.Next(Main.tenthAnniversaryWorld ? 10 : 20) == 0) {
  				switch (Main.rand.Next(18)) {
  					case 0:
-@@ -4690,6 +_,12 @@
+@@ -4689,6 +_,9 @@
+ 		}
  
  		public void OpenFishingCrate(int crateItemID) {
++			DropFromItem(crateItemID);
++
++			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(crateItemID);
-+
-+			if (!ItemLoader.PreOpenVanillaBag("crate", this, crateItemID))
-+				return;
-+
-+			ItemLoader.OpenVanillaBag("crate", this, crateItemID);
-+
  			bool flag = ItemID.Sets.IsFishingCrateHardmode[crateItemID];
  			switch (crateItemID) {
- 				case 2334:
-@@ -5978,6 +_,8 @@
+@@ -5974,10 +_,12 @@
+ 						break;
+ 				}
+ 
++				// Extra patch context for the below.
+ 				int number66 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, type44, stack41);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number66, 1f);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			*/
  		}
  
  		public int CountItem(int type, int stopCountingAt = 0) {
@@ -884,96 +932,127 @@
  					if (inventory[i].stack <= 0)
  						inventory[i].SetDefaults();
  
-@@ -6017,6 +_,11 @@
+@@ -6017,6 +_,9 @@
  		}
  
  		public void OpenShadowLockbox(int boxType) {
-+			if (!ItemLoader.PreOpenVanillaBag("obsidianLockBox", this, 0))
-+				return;
++			DropFromItem(boxType);
 +
-+			ItemLoader.OpenVanillaBag("obsidianLockBox", this, 0);
-+
++			/*
  			bool flag = true;
  			while (flag) {
  				flag = false;
-@@ -6046,9 +_,16 @@
+@@ -6042,13 +_,18 @@
+ 						break;
+ 				}
+ 
++				// Extra patch context for the below.
+ 				int number = Item.NewItem(GetItemSource_OpenItem(boxType), (int)position.X, (int)position.Y, width, height, num, 1, noBroadcast: false, -1);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			*/
  		}
  
  		public void OpenLockBox(int lockboxItemType) {
-+			if (!ItemLoader.PreOpenVanillaBag("lockBox", this, 0))
-+				return;
++			DropFromItem(lockboxItemType);
 +
-+			ItemLoader.OpenVanillaBag("lockBox", this, 0);
-+
++			/*
  			bool flag = true;
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(lockboxItemType);
  			while (flag) {
-@@ -6088,10 +_,18 @@
+@@ -6082,15 +_,20 @@
+ 				if (Main.netMode == 1)
+ 					NetMessage.SendData(21, -1, -1, null, number, 1f);
+ 
++				// Extra patch context for the below.
+ 				if (Main.rand.Next(3) == 0) {
+ 					int number2 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 329, 1, noBroadcast: false, -1);
+ 					if (Main.netMode == 1)
  						NetMessage.SendData(21, -1, -1, null, number2, 1f);
  				}
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // clear blockloot
++			*/
  		}
  
  		public void OpenHerbBag(int bagType) {
++			DropFromItem(bagType);
++
++			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(bagType);
-+
-+			if (!ItemLoader.PreOpenVanillaBag("herbBag", this, 0))
-+				return;
-+
-+			ItemLoader.OpenVanillaBag("herbBag", this, 0);
-+
  			int num = Main.rand.Next(2, 5);
  			if (Main.rand.Next(3) == 0)
- 				num++;
-@@ -6148,6 +_,8 @@
+@@ -6144,20 +_,27 @@
+ 				if (Main.rand.Next(3) == 0)
+ 					num3 += Main.rand.Next(1, 5);
+ 
++				// Extra patch context for the below.
+ 				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, num2, num3);
  				if (Main.netMode == 1)
  					NetMessage.SendData(21, -1, -1, null, number, 1f);
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // Clear blockloot
++			*/
  		}
  
  		public void OpenCanofWorms(int sourceItemType) {
-@@ -6184,6 +_,12 @@
++			DropFromItem(sourceItemType);
++
++			/*
+ 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
+ 			QuickSpawnItem(itemSource_OpenItem, 2002, Main.rand.Next(5, 9));
+ 			if (Main.rand.Next(10) < 3)
+ 				QuickSpawnItem(itemSource_OpenItem, 3191, Main.rand.Next(1, 3));
+ 
++			// Extra patch context.
+ 			if (Main.rand.Next(20) == 0)
+ 				QuickSpawnItem(itemSource_OpenItem, 2895);
++			*/
+ 		}
+ 
+ 		public void OpenCapricornTail(int sourceItemType) {
+@@ -6169,6 +_,9 @@
+ 		}
+ 
+ 		public void OpenOyster(int sourceItemType) {
++			DropFromItem(sourceItemType);
++
++			/*
+ 			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(sourceItemType);
+ 			if (Main.rand.Next(5) == 0) {
+ 				if (Main.rand.Next(15) == 0)
+@@ -6177,12 +_,17 @@
+ 					QuickSpawnItem(itemSource_OpenItem, 4413);
+ 				else
+ 					QuickSpawnItem(itemSource_OpenItem, 4412);
++				// Extra patch context for the below.
+ 			}
+ 
+ 			QuickSpawnItem(itemSource_OpenItem, 4411);
++			*/
+ 		}
  
  		public void OpenGoodieBag(int itemType) {
++			DropFromItem(itemType);
++
++			/*
  			IEntitySource itemSource_OpenItem = GetItemSource_OpenItem(itemType);
-+
-+			if (!ItemLoader.PreOpenVanillaBag("goodieBag", this, 0))
-+				return;
-+
-+			ItemLoader.OpenVanillaBag("goodieBag", this, 0);
-+
  			if (Main.rand.Next(150) == 0) {
  				int number = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 1810);
- 				if (Main.netMode == 1)
-@@ -6460,6 +_,8 @@
- 						break;
- 					}
- 				case 18: {
-+						// Extra patch context for the below.
-+
+@@ -6463,17 +_,22 @@
  						int number5 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 1851);
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, number5, 1f);
-@@ -6468,12 +_,18 @@
++						// Extra patch context for the below.
+ 
+ 						number5 = Item.NewItem(itemSource_OpenItem, (int)position.X, (int)position.Y, width, height, 1852);
  						if (Main.netMode == 1)
  							NetMessage.SendData(21, -1, -1, null, number5, 1f);
  
 +						// Extra patch context for the below.
-+
  						break;
  					}
  			}
-+
-+			NPCLoader.blockLoot.Clear(); // clear blockloot
++			*/
  		}
  
  		public void UpdateDyes() {
@@ -1063,7 +1142,7 @@
  				cWings = dyeItem.dye;
  
  			if (armorItem.type == 934)
-@@ -6598,11 +_,13 @@
+@@ -6598,6 +_,8 @@
  			}
  		}
  
@@ -1072,12 +1151,6 @@
  		public IEntitySource GetProjectileSource_Buff(int buffIndex) {
  			int buffId = buffType[buffIndex];
  			return new EntitySource_Buff(this, buffId, buffIndex);
- 		}
--
-+		
- 		public IEntitySource GetProjectileSource_Item(Item item) => new EntitySource_ItemUse(this, item);
- 		public IEntitySource GetItemSource_OpenItem(int itemType) => new EntitySource_ItemOpen(this, itemType);
- 		public IEntitySource GetItemSource_Death() => new EntitySource_ByItemSourceId(this, 3);
 @@ -6617,21 +_,51 @@
  		public IEntitySource GetItemSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
  		public IEntitySource GetNPCSource_TileInteraction(int tileCoordsX, int tileCoordsY) => new EntitySource_TileInteraction(this, tileCoordsX, tileCoordsY);
@@ -2580,6 +2653,22 @@
  							crit2 = true;
  
  						int direction = base.direction;
+@@ -15361,6 +_,15 @@
+ 			solarDashConsumedFlare = false;
+ 		}
+ 
++		/*
++		TO-DO:
++		- make public, as it has little reason to be private and could be of great help to those makin' modded dashes
++		- properly explain how to use this in the context of programmin' a modded dash (use ExampleShield for this; see below)
++		- make ExampleShield use this, and simplify it accordingly (it currently has way too many movin' parts that require extra upkeep, for way too little payoff)
++
++		I'll do all this in an upcomin' PR if nobody else does
++		-thomas
++		*/
+ 		private void DoCommonDashHandle(out int dir, out bool dashing, DashStartAction dashStartAction = null) {
+ 			dir = 0;
+ 			dashing = false;
 @@ -15654,8 +_,10 @@
  				float num5 = 0.1f;
  				if (wingsLogic == 26) {
@@ -2699,6 +2788,24 @@
  			if (i == Main.myPlayer && Main.netMode != 2)
  				LockOnHelper.Update();
  
+@@ -17289,6 +_,7 @@
+ 			if (whoAmI != Main.myPlayer) {
+ 				int num2 = (int)(base.position.X + (float)(width / 2)) / 16;
+ 				int num3 = (int)(base.position.Y + (float)(height / 2)) / 16;
++				/*
+ 				if (!WorldGen.InWorld(num2, num3, 4))
+ 					flag = true;
+ 				else if (Main.tile[num2, num3] == null)
+@@ -17301,6 +_,9 @@
+ 					flag = true;
+ 				else if (Main.tile[num2, num3 + 3] == null)
+ 					flag = true;
++				*/
++				if (Main.netMode == 1 && !Main.sectionManager.TilesLoaded(num2 - 3, num3 - 3, num2 + 3, num3 + 3))
++					flag = true;
+ 
+ 				if (flag) {
+ 					outOfRange = true;
 @@ -17334,6 +_,7 @@
  
  			UpdateHairDyeDust();
@@ -3309,7 +3416,7 @@
  		}
  
  		public Color ChatColor() {
-@@ -24778,11 +_,22 @@
+@@ -24778,11 +_,21 @@
  				if (!item.active || item.noGrabDelay != 0 || item.playerIndexTheItemIsReservedFor != i || !CanAcceptItemIntoInventory(item))
  					continue;
  
@@ -3317,7 +3424,6 @@
 +					continue;
 +
  				int itemGrabRange = GetItemGrabRange(item);
-+				ItemLoader.GrabRange(Main.item[j], this, ref itemGrabRange);
  				Rectangle hitbox = item.Hitbox;
  				if (base.Hitbox.Intersects(hitbox)) {
 -					if (i == Main.myPlayer && (inventory[selectedItem].type != 0 || itemAnimation <= 0))
@@ -3344,6 +3450,43 @@
  							PullItem_Pickup(item, 12f, 5);
  						else if (lifeMagnet && (item.type == 58 || item.type == 1734 || item.type == 1867))
  							PullItem_Pickup(item, 15f, 5);
+@@ -24905,7 +_,12 @@
+ 			return itemToPickUp;
+ 		}
+ 
++		/// <summary>
++		/// Heals the player for a certain amount.
++		/// </summary>
++		/// <param name="player">The player to heal.</param>
++		/// <param name="amount">The amount to heal the player by.</param>
+-		private void Heal(int amount) {
++		public void Heal(int amount) {
+ 			statLife += amount;
+ 			if (Main.myPlayer == whoAmI)
+ 				HealEffect(amount);
+@@ -24914,7 +_,13 @@
+ 				statLife = statLifeMax2;
+ 		}
+ 
++		/// <summary>
++		/// Fetches the range at which the given item begins to gravitate towards the player.<br/>
++		/// This range, referred to as item grab range, is measured in pixels.
++		/// </summary>
++		/// <param name="item">The item whose grab range is being evaluated.</param>
++		/// <returns>The item grab range of the player, in pixels.</returns>
+-		private int GetItemGrabRange(Item item) {
++		public int GetItemGrabRange(Item item) {
+ 			int num = defaultItemGrabRange;
+ 			if (goldRing && item.IsACoin)
+ 				num += Item.coinGrabRange;
+@@ -24937,6 +_,7 @@
+ 			if (ItemID.Sets.NebulaPickup[item.type])
+ 				num += 100;
+ 
++			ItemLoader.GrabRange(item, this, ref num);
+ 			return num;
+ 		}
+ 
 @@ -25347,7 +_,7 @@
  		public void AdjTiles() {
  			int num = 4;
@@ -3588,7 +3731,7 @@
 +				bool customDamage = false;
 +				bool playSound = true;
 +				bool genGore = true;
-+				if (!PlayerLoader.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource))
++				if (!PlayerLoader.PreHurt(this, pvp, quiet, ref Damage, ref hitDirection, ref Crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter))
 +					return 0.0;
 +
  				if (whoAmI == Main.myPlayer && panic)
@@ -3626,7 +3769,7 @@
  					}
  
 +					//TODO: Is 'num2' correct? Ensure and add patch context.
-+					PlayerLoader.Hurt(this, pvp, quiet, num2, hitDirection, Crit);
++					PlayerLoader.Hurt(this, pvp, quiet, num2, hitDirection, Crit, cooldownCounter);
  					if (Main.netMode == 1 && whoAmI == Main.myPlayer && !quiet) {
  						if (!noKnockback && hitDirection != 0 && (!mount.Active || !mount.Cart))
  							NetMessage.SendData(13, -1, -1, null, whoAmI);
@@ -3662,7 +3805,7 @@
 +
 +						PostGore:
 +
-+						PlayerLoader.PostHurt(this, pvp, quiet, num2, hitDirection, Crit);
++						PlayerLoader.PostHurt(this, pvp, quiet, num2, hitDirection, Crit, cooldownCounter);
  					}
  					else {
  						statLife = 0;

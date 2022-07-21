@@ -16,14 +16,14 @@ namespace Terraria.ModLoader
 
 			ModTypeLookup<GlobalProjectile>.Register(this);
 
-			index = (ushort)ProjectileLoader.globalProjectiles.Count;
+			Index = (ushort)ProjectileLoader.globalProjectiles.Count;
 
 			ProjectileLoader.globalProjectiles.Add(this);
 		}
 
 		public sealed override void SetupContent() => SetStaticDefaults();
 
-		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, index);
+		public GlobalProjectile Instance(Projectile projectile) => Instance(projectile.globalProjectiles, Index);
 
 		/// <summary>
 		/// Allows you to set the properties of any and every projectile that gets created.

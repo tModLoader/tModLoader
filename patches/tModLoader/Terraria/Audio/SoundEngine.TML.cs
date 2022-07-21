@@ -13,8 +13,20 @@ namespace Terraria.Audio
 	{
 		// Public API methods
 
+		/// <inheritdoc cref="PlaySound(in SoundStyle, Vector2?)" />
 		/// <summary>
-		/// Attempts to play a sound, and returns a valid <see cref="SlotId"/> handle to it on success.
+		/// Attempts to play a sound style with the provided sound style (if it's not null), and returns a valid <see cref="SlotId"/> handle to it on success.
+		/// </summary>
+		public static SlotId PlaySound(in SoundStyle? style, Vector2? position = null) {
+			if (!style.HasValue) {
+				return SlotId.Invalid;
+			}
+
+			return PlaySound(style.Value, position);
+		}
+
+		/// <summary>
+		/// Attempts to play a sound with the provided sound style, and returns a valid <see cref="SlotId"/> handle to it on success.
 		/// </summary>
 		/// <param name="style"> The sound style that describes everything about the played sound. </param>
 		/// <param name="position"> An optional 2D position to play the sound at. When null, this sound will be heard everywhere. </param>
@@ -39,10 +51,7 @@ namespace Terraria.Audio
 		// Internal redirects
 
 		internal static SoundEffectInstance? PlaySound(SoundStyle? style, Vector2? position = null) {
-			if (style == null)
-				return null;
-			
-			var slotId = PlaySound(style.Value, position);
+			var slotId = PlaySound(in style, position);
 
 			return slotId.IsValid ? GetActiveSound(slotId)?.Sound : null;
 		}

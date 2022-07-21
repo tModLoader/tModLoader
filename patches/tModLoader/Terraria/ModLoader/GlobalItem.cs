@@ -30,14 +30,14 @@ namespace Terraria.ModLoader
 		protected sealed override void Register() {
 			ModTypeLookup<GlobalItem>.Register(this);
 
-			index = (ushort)ItemLoader.globalItems.Count;
+			Index = (ushort)ItemLoader.globalItems.Count;
 
 			ItemLoader.globalItems.Add(this);
 		}
 
 		public sealed override void SetupContent() => SetStaticDefaults();
 
-		public GlobalItem Instance(Item item) => Instance(item.globalItems, index);
+		public GlobalItem Instance(Item item) => Instance(item.globalItems, Index);
 
 		/// <summary>
 		/// Allows you to set the properties of any and every item that gets created.
@@ -654,28 +654,15 @@ namespace Terraria.ModLoader
 		public virtual void RightClick(Item item, Player player) {
 		}
 
-		/// <summary>
-		/// Allows you to make vanilla bags drop your own items and stop the default items from being dropped.
-		/// Return false to stop the default items from being dropped; returns true by default.
-		/// Context will either be "present", "bossBag", "crate", "lockBox", "obsidianLockBox", "herbBag", or "goodieBag".
-		/// For boss bags and crates, arg will be set to the type of the item being opened.
-		/// This method is also called for modded bossBags that are properly implemented.
-		///
-		/// This method is not instanced.
-		/// </summary>
+		public virtual void ModifyItemLoot(Item item, ItemLoot itemLoot) {
+		}
+		
+		[Obsolete("Use ModifyItemLoot instead", true)]
 		public virtual bool PreOpenVanillaBag(string context, Player player, int arg) {
 			return true;
 		}
-
-		/// <summary>
-		/// Allows you to make vanilla bags drop your own items in addition to the default items.
-		/// This method will not be called if any other GlobalItem returns false for PreOpenVanillaBag.
-		/// Context will either be "present", "bossBag", "crate", "lockBox", "obsidianLockBox", "herbBag", or "goodieBag".
-		/// For boss bags and crates, arg will be set to the type of the item being opened.
-		/// This method is also called for modded bossBags that are properly implemented.
-		///
-		/// This method is not instanced.
-		/// </summary>
+		
+		[Obsolete("Use ModifyItemLoot instead", true)]
 		public virtual void OpenVanillaBag(string context, Player player, int arg) {
 		}
 

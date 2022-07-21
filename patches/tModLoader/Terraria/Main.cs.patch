@@ -117,6 +117,47 @@
  		public static float iS = 1f;
  		public static bool render;
  		public static int qaStyle;
+@@ -528,12 +_,40 @@
+ 		public static bool[] projHostile = new bool[972];
+ 		public static bool[] projHook = new bool[972];
+ 		public static bool[] pvpBuff = new bool[338];
++		/// <summary>
++		/// Allows status effects for which this is set to true to persist after the afflicted player's death.<br/>
++		/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] persistentBuff = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being from vanity pets, preventing them from overlapping with other vanity pet status effects.<br/>
++		/// Defaults to false; all vanilla vanity pets have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] vanityPet = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being tied to a light pet, preventing them from overlapping with other light pet status effects.<br/>
++		/// Defaults to false; all vanilla light pets have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] lightPet = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being from flasks, preventing them from overlapping with other flask status effects.<br/>
++		/// Defaults to false; all vanilla flask effects have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] meleeBuff = new bool[338];
++		/// <summary>
++		/// Categorizes status effects for which this is set to true as being debuffs instead of buffs.<br/>
++		/// This has multiple effects on gameplay:<br/>
++		/// - the Nurse can remove the status effect when healing the afflicted player (to prevent this, refer to <see cref="BuffID.Sets.NurseCannotRemoveDebuff"/>)<br/>
++		/// - the status effect cannot be cleared from overflowing the status effect cap (buffs will be cleared instead)<br/>
++		/// - the status effect cannot be cleared by right-clicking it (which can be done for all other status effect types)<br/>
++		/// Defaults to false; all vanilla debuffs have their entries here set to true.<br/>
++		/// </summary>
+ 		public static bool[] debuff = new bool[338];
+ 		public static bool[] buffNoSave = new bool[338];
++		/// <summary>
++		/// Prevents status effects which have their entries set to true from displaying the amount of time they have left.<br/>
++		/// Defaults to false; most, if not all, status effects which have their entries set to true here are related to mounts, pets, and summons.<br/>
++		/// </summary>
+ 		public static bool[] buffNoTimeDisplay = new bool[338];
+ 		public static bool[] buffDoubleApply = new bool[338];
+ 		public static int maxMP = 10;
 @@ -545,7 +_,7 @@
  		public static int instantBGTransitionCounter = 2;
  		public static int bgDelay;
@@ -222,6 +263,18 @@
  		public static bool allChestStackHover;
  		public static bool inventorySortMouseOver;
  		public static float GraveyardVisualIntensity;
+@@ -961,6 +_,11 @@
+ 		public static int[] grasshopperCageFrameCounter = new int[cageFrames];
+ 		public static bool[] tileSand = new bool[625];
+ 		public static bool[] tileFlame = new bool[625];
++		/// <summary>
++		/// Used to denote an NPC as being catchable by bug nets and similar.<br/>
++		/// Contrary to its name, this array isn't actually used for catching logic at all.<br/>
++		/// It is instead used to determine if an NPC can be released back into the world after being caught.<br/>
++		/// </summary>
+ 		public static bool[] npcCatchable = new bool[670];
+ 		public static int[] tileFrame = new int[625];
+ 		public static int[] tileFrameCounter = new int[625];
 @@ -971,7 +_,7 @@
  		public static HairstyleUnlocksHelper Hairstyles = new HairstyleUnlocksHelper();
  		public static bool tilesLoaded = false;
@@ -340,6 +393,23 @@
  		private static bool _canShowMeteorFall;
  		private static bool _isResizingAndRemakingTargets = false;
  
+@@ -2250,8 +_,16 @@
+ 		[Old("Transform is deprecated. Please use GameViewMatrix & GUIViewMatrix")]
+ 		public static Matrix Transform => GameViewMatrix.TransformationMatrix;
+ 
++		/// <summary>
++		/// Fetches the position of the mouse cursor on the screen.<br/>
++		/// Useful for making things visually happen near the cursor.<br/>
++		/// </summary>
+ 		public static Vector2 MouseScreen => new Vector2(mouseX, mouseY);
+ 
++		/// <summary>
++		/// Fetches the position of the mouse cursor in the world.<br/>
++		/// Useful for making things functionally happen near the cursor, such as projectile or NPC spawns.<br/>
++		/// </summary>
+ 		public static Vector2 MouseWorld {
+ 			get {
+ 				Vector2 result = MouseScreen + screenPosition;
 @@ -2283,7 +_,7 @@
  
  		public static int npcShop {
@@ -511,7 +581,7 @@
 -			if (currentValue != 248)
 +
 +			DateTime now = DateTime.UtcNow;
-+			// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this version, then show the notification.
++			// If you are a modder, and the current date is during the preview freeze, and the last notification wasn't this major.minor, then show the notification.
 +			if (BuildInfo.IsStable && ModCompile.DeveloperMode && now.Day >= 21 && ModLoader.ModLoader.LastPreviewFreezeNotificationSeen != new System.Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor)) {
 +				ModLoader.ModLoader.PreviewFreezeNotification = true;
 +			}
@@ -561,6 +631,15 @@
  				LoadWorlds();
  			}
  			catch {
+@@ -3835,7 +_,7 @@
+ 					try {
+ 						if (text.Length > 6 && text.Substring(0, 6).ToLower() == "world=") {
+ 							string path = autoGenFileLocation = text.Substring(6);
+-							ActiveWorldFileData = WorldFile.GetAllMetadata(Platform.Get<IPathService>().ExpandPathVariables(path), cloudSave: false);
++							ActiveWorldFileData = WorldFile.GetAllMetadata(Platform.Get<IPathService>().ExpandPathVariables(path), cloudSave: false) ?? new();
+ 						}
+ 
+ 						if (text.Length > 5 && text.Substring(0, 5).ToLower() == "port=") {
 @@ -3923,6 +_,12 @@
  						if (text.Length >= 10 && text.Substring(0, 10).ToLower() == "worldname=")
  							worldName = text.Substring(10);
@@ -574,6 +653,15 @@
  						if (text.Length >= 5 && text.Substring(0, 5).ToLower() == "seed=")
  							AutogenSeedName = text.Substring(5);
  
+@@ -3985,7 +_,7 @@
+ 		}
+ 
+ 		public void SetWorld(string world, bool cloud) {
+-			ActiveWorldFileData = WorldFile.GetAllMetadata(world, cloud);
++			ActiveWorldFileData = WorldFile.GetAllMetadata(world, cloud) ?? new();
+ 		}
+ 
+ 		public void SetWorldName(string world) {
 @@ -4032,6 +_,8 @@
  		}
  
@@ -831,12 +919,17 @@
  			}
  
  			YouCanSleepNow();
-@@ -4538,8 +_,14 @@
+@@ -4538,8 +_,19 @@
  
  		public static void startDedInputCallBack() {
  			while (!Netplay.Disconnect) {
 -				Console.Write(": ");
  				string text = Console.ReadLine();
++				if (text == null) { // Fix for #2644 where Docker would steal lines from the active console.
++					Logging.tML.Warn("Console input not connected, ignoring...");
++					break;
++				}
++
 +				ExecuteCommand(text, new ConsoleCommandCaller());
 +			}
 +		}
@@ -934,7 +1027,7 @@
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
-+			GraphicsChangeTracker.Init();
++			FNALogging.GraphicsInit(graphics);
  		}
  
  		private static void SetDisplayMonitor() {
@@ -2410,6 +2503,19 @@
  		}
  
  		protected void DrawFPS() {
+@@ -15890,10 +_,10 @@
+ 				float num2 = 1f;
+ 				Vector2 baseScale = new Vector2(num2);
+ 				if (gameMenu)
+-					num = 55f;
++					num = 90f;
+ 
+ 				if (menuMode == 0)
+-					num += 32f;
++					num += 55f;
+ 
+ 				Vector2 stringSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, text, new Vector2(1f));
+ 				float t = num2;
 @@ -16070,9 +_,14 @@
  			TilesRenderer.ClearCachedTileDraws(solidLayer: true);
  		}
@@ -3272,7 +3378,7 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31830,15 +_,19 @@
+@@ -31830,13 +_,15 @@
  			int stack = mouseItem.stack;
  			mouseItem = r.createItem.Clone();
  			mouseItem.stack += stack;
@@ -3285,15 +3391,10 @@
  			mouseItem.position.Y = player[myPlayer].position.Y + (float)(player[myPlayer].height / 2) - (float)(mouseItem.height / 2);
  			PopupText.NewText(PopupTextContext.ItemCraft, mouseItem, r.createItem.stack);
  			r.Create();
--			if (mouseItem.type > 0 || r.createItem.type > 0)
-+			if (mouseItem.type > 0 || r.createItem.type > 0) {
-+				ItemLoader.OnCreate(mouseItem, new RecipeCreationContext {recipe = r});
-+				RecipeLoader.OnCraft(mouseItem, r);
++			RecipeLoader.OnCraft(mouseItem, r);
+ 			if (mouseItem.type > 0 || r.createItem.type > 0)
  				SoundEngine.PlaySound(7);
-+			}
  		}
- 
- 		private static void DrawPVPIcons() {
 @@ -32016,6 +_,8 @@
  						rare = item[i].rare;
  						if (item[i].expert)
@@ -3360,7 +3461,7 @@
  			}
  		}
  
-@@ -32294,6 +_,13 @@
+@@ -32294,6 +_,14 @@
  			return text;
  		}
  
@@ -3371,6 +3472,7 @@
 +		/// <param name="buffSlotOnPlayer">The index for buffType and buffTime</param>
 +		/// <param name="buffTimeValue">The "remaining time" in ticks</param>
 +		/// <returns><see langword="true"/> if <paramref name="buffTimeValue"/> is set, otherwise <see langword="false"/></returns>
++		// TO-DO: add a hook for drawing time left probably?
  		public static bool TryGetBuffTime(int buffSlotOnPlayer, out int buffTimeValue) {
  			int num = player[myPlayer].buffType[buffSlotOnPlayer];
  			buffTimeValue = 0;
@@ -3705,7 +3807,7 @@
  							flag14 = true;
  							player[myPlayer].mouseInterface = true;
  							if (mouseLeft && mouseLeftRelease) {
-@@ -35424,14 +_,17 @@
+@@ -35424,14 +_,18 @@
  						if (player[myPlayer].hideInfo[num27])
  							color = new Microsoft.Xna.Framework.Color(80, 80, 80, 70);
  					}
@@ -3721,8 +3823,9 @@
  					}
  
 -					UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + TextureAssets.InfoIcon[num].Value.Size() * 0.75f);
-+					UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + icon.Size() * 0.75f);
 -					spriteBatch.Draw(TextureAssets.InfoIcon[num].Value, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, TextureAssets.InfoIcon[num].Width(), TextureAssets.InfoIcon[num].Height()), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					if(num3 < 14) // This is a quick fix until someone works on controller support
++						UILinkPointNavigator.SetPosition(1558 + num3 - 1, vector2 + icon.Size() * 0.75f);
 +					spriteBatch.Draw(icon, vector2, new Microsoft.Xna.Framework.Rectangle(0, 0, icon.Width, icon.Height), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  					if (flag14)
  						spriteBatch.Draw(TextureAssets.InfoIcon[13].Value, vector2 - Vector2.One * 2f, null, OurFavoriteColor, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
@@ -4838,6 +4941,15 @@
  
  			if (invasionX > (double)spawnTileX) {
  				invasionX -= num;
+@@ -49871,7 +_,7 @@
+ 						Netplay.Clients[k].TimeOutTimer += 3;
+ 
+ 					if (!stopTimeOuts && Netplay.Clients[k].TimeOutTimer > 7200) {
+-						Netplay.Clients[k].PendingTermination = true;
++						Netplay.Clients[k].SetPendingTermination("Timeout");
+ 						Netplay.Clients[k].PendingTerminationApproved = true;
+ 					}
+ 				}
 @@ -49881,6 +_,11 @@
  			}
  		}

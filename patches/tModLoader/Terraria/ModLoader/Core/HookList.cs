@@ -4,12 +4,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace Terraria.ModLoader.Core
 {
 	public class HookList<T> where T : class
 	{
-		// Don't change a single line without performance testing and checking the disassembly. As of NET 5.0.0, this implementation is on par with hand-coding
+		// Don't change a single line without performance testing and checking the disassembly. As of NET 6.0.0, this implementation is on par with hand-coding C#
 		// Disassembly checked using Relyze Desktop 3.3.0
 		public ref struct InstanceEnumerator
 		{
@@ -79,8 +80,17 @@ namespace Terraria.ModLoader.Core
 		public InstanceEnumerator Enumerate(Instanced<T>[] instances)
 			=> new(instances, indices);
 
-		public void Update<U>(IList<U> instances) where U : GlobalType {
-			indices = instances.WhereMethodIsOverridden(method).Select(g => (int)g.index).ToArray();
+		public FilteredArrayEnumerator<T> Enumerate(T[] instances)
+			=> new(instances, indices);
+
+		public FilteredSpanEnumerator<T> Enumerate(ReadOnlySpan<T> instances)
+			=> new(instances, indices);
+
+		public FilteredSpanEnumerator<T> Enumerate(List<T> instances) =>
+			Enumerate(CollectionsMarshal.AsSpan(instances));
+
+		public void Update<U>(IList<U> instances) where U : IIndexed {
+			indices = instances.WhereMethodIsOverridden(method).Select(g => (int)g.Index).ToArray();
 		}
 
 		public static HookList<T> Create<F>(Expression<Func<T, F>> expr) where F : Delegate

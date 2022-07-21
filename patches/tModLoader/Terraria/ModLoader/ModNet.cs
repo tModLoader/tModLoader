@@ -1,7 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,9 +7,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Core;
-using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI;
-using Terraria.GameContent;
 using Terraria.UI;
 
 namespace Terraria.ModLoader
@@ -36,7 +31,7 @@ namespace Terraria.ModLoader
 			}
 
 			public bool Matches(TmodFile mod) => name == mod.Name && version == mod.Version && hash.SequenceEqual(mod.Hash);
-			public override string ToString() => name + " v" + version;
+			public override string ToString() => $"{name} v{version}[{string.Concat(hash[..4].Select(b => b.ToString("x2")))}]";
 		}
 
 		internal class NetConfig
@@ -50,7 +45,11 @@ namespace Terraria.ModLoader
 				this.configname = configname;
 				this.json = json;
 			}
+
+			public override string ToString() => $"{modname}:{configname} {json}";
 		}
+
+		public static bool DetailedLogging = Program.LaunchParameters.ContainsKey("-detailednetlog");
 
 		public static bool AllowVanillaClients { get; internal set; }
 		internal static bool downloadModsFromServers = true;
@@ -129,7 +128,7 @@ namespace Terraria.ModLoader
 			p.Write(serverConfigs.Length);
 			foreach (ModConfig config in serverConfigs) {
 				string json = JsonConvert.SerializeObject(config, ConfigManager.serializerSettingsCompact);
-				Logging.Terraria.Info($"Sending Server Config {config.Mod.Name} {config.Name}: {json}");
+				Logging.tML.Debug($"Sending Server Config {config.Mod.Name}:{config.Name} {json}");
 
 				p.Write(config.Name);
 				p.Write(json);
@@ -153,16 +152,18 @@ namespace Terraria.ModLoader
 
 			Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
 			Mod[] clientMods = ModLoader.Mods;
-			LocalMod[] modFiles = ModOrganizer.FindMods();
+			LocalMod[] modFiles = ModOrganizer.FindMods(); // TODO: find all versions of mods, regardless of if a local is present
 			needsReload = false;
 			downloadQueue.Clear();
 			pendingConfigs.Clear();
+			var syncList = new List<ModHeader>();
 			var syncSet = new HashSet<string>();
 			var blockedList = new List<ModHeader>();
 
 			int n = reader.ReadInt32();
 			for (int i = 0; i < n; i++) {
 				var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
+				syncList.Add(header);
 				syncSet.Add(header.name);
 
 				int configCount = reader.ReadInt32();
@@ -191,6 +192,12 @@ namespace Terraria.ModLoader
 				else
 					blockedList.Add(header);
 			}
+
+			Logging.tML.Debug($"Server mods: "+string.Join(", ", syncList));
+			Logging.tML.Debug($"Download queue: "+string.Join(", ", downloadQueue));
+			if (pendingConfigs.Any())
+				Logging.tML.Debug($"Configs:\n\t\t" + string.Join("\n\t\t", pendingConfigs));
+
 
 			foreach (Mod mod in clientMods)
 				if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name)) {
@@ -281,6 +288,7 @@ namespace Terraria.ModLoader
 						mod.Close();
 
 					downloadingLength = reader.ReadInt64();
+					Logging.tML.Debug($"Downloading: {downloadingMod.name} {downloadingLength}bytes");
 					downloadingFile = new FileStream(downloadingMod.path, FileMode.Create);
 					return;
 				}
@@ -370,8 +378,16 @@ namespace Terraria.ModLoader
 				Main.player[Main.myPlayer].hostile = false;
 				Main.clientPlayer = (Player)Main.player[Main.myPlayer].clientClone();
 
-				Main.menuMode = 10;
-				OnModsDownloaded(false);
+				if (!Netplay.Connection.Socket.IsConnected()) {
+					Main.menuMode = MenuID.Error;
+					Logging.tML.Error("Disconnected from server during reload.");
+					Main.statusText = "Disconnected from server during reload.";
+				}
+				else {
+					Main.menuMode = MenuID.Status;
+					Main.statusText = "Reload complete, joining...";
+					OnModsDownloaded(false);
+				}
 			};
 		}
 
@@ -399,12 +415,12 @@ namespace Terraria.ModLoader
 
 				list.Add(mod);
 
-				if (mod != null) //nosync mod that doesn't exist on the client
+				if (mod != null) // NoSync mod that doesn't exist on the client
 					mod.netID = i;
 			}
 
 			netMods = list.ToArray();
-			SetModNetDiagnosticsUI(netMods); // When client receives netMods, assign a new UI
+			SetModNetDiagnosticsUI(netMods.Where(mod => mod != null)); // When client receives netMods, exclude NoSync mods that aren't on the client, and assign a new UI
 
 			ItemLoader.ReadNetGlobalOrder(reader);
 			SystemLoader.ReadNetSystemOrder(reader);

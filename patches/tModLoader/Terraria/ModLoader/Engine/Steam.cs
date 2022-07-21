@@ -43,6 +43,7 @@ namespace Terraria.ModLoader.Engine
 			if (Platform.IsOSX) {
 				terrariaInstallLocation = Path.Combine(terrariaInstallLocation, "Terraria.app", "Contents", "Resources");
 			}
+			Logging.tML.Info("Terraria Steam Install Location assumed to be: " + terrariaInstallLocation);
 
 			return terrariaInstallLocation;
 		}

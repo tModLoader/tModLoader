@@ -1,23 +1,59 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonCode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
-@@ -1,12 +_,13 @@
+@@ -1,12 +_,20 @@
  using Microsoft.Xna.Framework;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
++using System;
++using Terraria.DataStructures;
  
  namespace Terraria.GameContent.ItemDropRules
  {
  	public static class CommonCode
  	{
- 		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
++		internal static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
++			_DropItemFromNPC(npc, itemId, stack, scattered);
++		}
++
+-		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
++		private static void _DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
 -			if (itemId > 0 && itemId < 5125) {
 +			if (itemId > 0 && itemId < ItemLoader.ItemCount) {
++				/*
  				int x = (int)npc.position.X + npc.width / 2;
  				int y = (int)npc.position.Y + npc.height / 2;
  				if (scattered) {
-@@ -20,7 +_,7 @@
+@@ -15,12 +_,35 @@
+ 				}
+ 
+ 				int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), x, y, 0, 0, itemId, stack, noBroadcast: false, -1);
++				*/
++				int itemIndex = DropItem(npc.Hitbox, npc.GetItemSource_Loot(), itemId, stack, scattered);
+ 				ModifyItemDropFromNPC(npc, itemIndex);
+ 			}
  		}
  
++		public static void DropItem(DropAttemptInfo info, int item, int stack, bool scattered = false) {
++			if (info.npc != null) {
++				_DropItemFromNPC(info.npc, item, stack, scattered);
++			}
++			else {
++				DropItem(info.player.Hitbox, info.player.GetItemSource_OpenItem(info.item), item, stack, scattered);
++			}
++		}
++
++		public static int DropItem(Rectangle rectangle, IEntitySource entitySource, int itemId, int stack, bool scattered) {
++			Vector2 pos = scattered ?
++				new Vector2(rectangle.X + Main.rand.Next(rectangle.Width + 1), rectangle.Y + Main.rand.Next(rectangle.Height + 1)) :
++				new Vector2(rectangle.X + rectangle.Width / 2f, rectangle.Y + rectangle.Height / 2f);
++
++			return DropItem(pos, entitySource, itemId, stack);
++		}
++
++		public static int DropItem(Vector2 position, IEntitySource entitySource, int itemId, int stack) {
++			return Item.NewItem(entitySource, position, itemId, stack, noBroadcast: false, -1);
++		}
++
  		public static void DropItemLocalPerClientAndSetNPCMoneyTo0(NPC npc, int itemId, int stack, bool interactionRequired = true) {
 -			if (itemId <= 0 || itemId >= 5125)
 +			if (itemId <= 0 || itemId >= ItemLoader.ItemCount)

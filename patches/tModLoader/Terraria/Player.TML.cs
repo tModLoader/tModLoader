@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,7 +15,10 @@ namespace Terraria
 	{
 		internal IList<string> usedMods;
 		internal ModPlayer[] modPlayers = Array.Empty<ModPlayer>();
+
 		public Item equippedWings = null;
+
+		public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
 
 		public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
 
@@ -31,7 +35,7 @@ namespace Terraria
 		/// <exception cref="IndexOutOfRangeException"/>
 		/// <exception cref="NullReferenceException"/>
 		public T GetModPlayer<T>(T baseInstance) where T : ModPlayer
-			=> modPlayers[baseInstance.index] as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current player.");
+			=> modPlayers[baseInstance.Index] as T ?? throw new KeyNotFoundException($"Instance of '{typeof(T).Name}' does not exist on the current player.");
 
 		// TryGet
 
@@ -42,15 +46,27 @@ namespace Terraria
 		/// <summary> Safely attempts to get the local instance of the type of the specified ModPlayer instance. </summary>
 		/// <returns> Whether or not the requested instance has been found. </returns>
 		public bool TryGetModPlayer<T>(T baseInstance, out T result) where T : ModPlayer {
-			if (baseInstance == null || baseInstance.index < 0 || baseInstance.index >= modPlayers.Length) {
+			if (baseInstance == null || baseInstance.Index < 0 || baseInstance.Index >= modPlayers.Length) {
 				result = default;
 
 				return false;
 			}
 
-			result = modPlayers[baseInstance.index] as T;
+			result = modPlayers[baseInstance.Index] as T;
 
 			return result != null;
+		}
+
+		public void DropFromItem(int itemType) {
+			DropAttemptInfo info = new() {
+				player = this,
+				item = itemType,
+				IsExpertMode = Main.expertMode,
+				IsMasterMode = Main.masterMode,
+				IsInSimulation = false,
+				rng = Main.rand,
+			};
+			Main.ItemDropSolver.TryDropping(info);
 		}
 
 		/// <summary>
@@ -326,16 +342,16 @@ namespace Terraria
 		}
 
 		// Convenience Zone properties for Modders
-		
+
 		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneOverworldHeight</code></summary>
 		public bool ZoneForest => ZonePurity && ZoneOverworldHeight;
-		
+
 		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneRockLayerHeight</code></summary>
 		public bool ZoneNormalCaverns => ZonePurity && ZoneRockLayerHeight;
-		
+
 		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneDirtLayerHeight</code></summary>
 		public bool ZoneNormalUnderground => ZonePurity && ZoneDirtLayerHeight;
-		
+
 		/// <summary> Shorthand for <code>ZonePurity &amp;&amp; ZoneSkyHeight</code></summary>
 		public bool ZoneNormalSpace => ZonePurity && ZoneSkyHeight;
 
@@ -517,5 +533,19 @@ namespace Terraria
 		/// The number of times the item has been used/fired this animation (swing)
 		/// </summary>
 		public int ItemUsesThisAnimation { get; private set; }
+
+		/// <summary>
+		/// Adds to either Player.immuneTime or Player.hurtCooldowns based on the cooldownCounterId
+		/// </summary>
+		/// <param name="cooldownCounterId">See <see cref="ImmunityCooldownID"/> for valid ids.</param>
+		/// <param name="immuneTime">Extra immunity time to add</param>
+		public void AddImmuneTime(int cooldownCounterId, int immuneTime) {
+			if (cooldownCounterId < 0) {
+				this.immuneTime += immuneTime;
+			}
+			else {
+				hurtCooldowns[cooldownCounterId] += immuneTime;
+			}
+		}
 	}
 }

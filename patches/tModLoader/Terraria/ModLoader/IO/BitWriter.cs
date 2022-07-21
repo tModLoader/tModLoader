@@ -22,7 +22,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public void Flush(BinaryWriter w) {
-			w.WriteVarInt(bytes.Count * 8 + i);
+			w.Write7BitEncodedInt(bytes.Count * 8 + i);
 
 			if (i > 0) {
 				bytes.Add(cur);

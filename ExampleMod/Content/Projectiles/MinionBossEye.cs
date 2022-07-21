@@ -34,6 +34,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ignoreWater = true;
 			Projectile.netImportant = true;
 			Projectile.aiStyle = -1;
+			CooldownSlot = ImmunityCooldownID.Bosses; // use the boss immunity cooldown counter, to prevent ignoring boss attacks by taking damage from other sources
 		}
 
 		public override Color? GetAlpha(Color lightColor) {

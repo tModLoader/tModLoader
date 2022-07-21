@@ -42,6 +42,17 @@
  		private static bool[] canFavoriteAt;
  		private static bool[] canShareAt;
  		private static float[] inventoryGlowHue;
+@@ -226,6 +_,10 @@
+ 			if (!PlayerInput.UsingGamepad)
+ 				UILinkPointNavigator.SuggestUsage(GetGamepadPointForSlot(inv, context, slot));
+ 
++			if (PlayerLoader.HoverSlot(Main.player[Main.myPlayer], inv, context, slot)) {
++				return;
++			}
++
+ 			bool shiftForcedOn = ShiftForcedOn;
+ 			if (NotUsingGamepad && Options.DisableLeftShiftTrashCan && !shiftForcedOn) {
+ 				if (ControlInUse) {
 @@ -264,7 +_,10 @@
  							case 1:
  							case 2:
@@ -409,11 +420,15 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1214,11 +_,15 @@
+@@ -1214,11 +_,19 @@
  
  						Recipe.FindRecipes();
  					}
 +					else if (ItemLoader.CanRightClick(inv[slot])) {
++						if (ItemLoader.IsModItem(inv[slot].type)) {
++							player.DropFromItem(inv[slot].type);
++						}
++
 +						ItemLoader.RightClick(inv[slot], player);
 +					}
  					else {

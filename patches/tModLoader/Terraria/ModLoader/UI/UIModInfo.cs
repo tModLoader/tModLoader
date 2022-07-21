@@ -145,7 +145,7 @@ namespace Terraria.ModLoader.UI
 			}
 			_url = url;
 			_loadFromWeb = loadFromWeb;
-			if (localMod != null && string.IsNullOrEmpty(publishedFileId) && Social.Steam.WorkshopHelper.ModManager.GetPublishIdLocal(localMod, out ulong publishId))
+			if (localMod != null && string.IsNullOrEmpty(publishedFileId) && Social.Steam.WorkshopHelper.ModManager.GetPublishIdLocal(localMod.modFile, out ulong publishId))
 				_publishedFileId = publishId.ToString();
 			else
 				_publishedFileId = publishedFileId;

@@ -68,15 +68,15 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit,
-			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
+			ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) {
 			if (BlockyAccessory) {
 				playSound = false;
 			}
 
-			return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource);
+			return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter);
 		}
 
-		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
+		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 			if (BlockyAccessory) {
 				SoundEngine.PlaySound(SoundID.Frog, Player.position);
 			}

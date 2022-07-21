@@ -21,7 +21,8 @@
 		"ShowNewUpdatedModsInfoMessage": "Poniższe Mody zostały zaktualizowane lub dodane do Steam Workshop od czasu ostatniego uruchomienia gry (możesz wyłączyć to powiadomienie w ustawieniach):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNowe Mody:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nZaktualizowane Mody:",
-		"ModUpdatedSinceLastLaunchMessage": "Ten mod został zaktualizowany od czasu ostatniego uruchomienia gry",
+		"ModUpdatedSinceLastLaunchMessage": "Ten mod został zaktualizowany od czasu ostatniego uruchomienia gry {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "Zobacz na GitHub",
 		"tModLoaderSettings": "Ustawienia tModLoadera",
 		"ModMenuSwap": "Przełącz Motyw Menu",
@@ -36,7 +37,7 @@
 		"ModsDisableAll": "Wyłącz wszystkie",
 		"ModsReloadMods": "Przeładuj mody",
 		"ModsForceReload": "Wymuś przeładowanie modów",
-		"ModsOpenModsFolder": "Otwórz folder z modami",
+		"ModsOpenModsFolders": "Otwórz folder z modami",
 		"OpenModPackFolder": "Otwórz folder z paczkami Modów",
 		"DeactivateModPack": "Wyłącz paczkę Modów",
 		"ActivateModPack": "Załaduj paczkę Modów",
@@ -80,6 +81,17 @@
 		"ModsNotFoundServer": "Nie znaleziono modów w: \"{0}\"\nJeśli korzystasz z serwera dedykowanego, możesz chcieć skorzystać z 'modpath' w wierszu polecenia lub z konfiguracji serwera w celu określenia niestandardowego katalogu modów.\n",
 		"AskForModIndex": "Wpisz liczbę, aby przełączać między włączonymi/wyłączonymi modami",
 		"AskForCommand": "Wpisz komendę: ",
+
+		//Mod Config
+		// "ModConfigFilterOptions": "Filter Options",
+		// "ModConfigNotification": "Notification: ",
+		// "ModConfigModConfig": "Mod Config",
+		// "ModConfigSaveConfig": "Save Config",
+		// "ModConfigBack": "Back",
+		// "ModConfigRevertChanges": "Revert Changes",
+		// "ModConfigRestoreDefaults": "Restore Defaults",
+		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
+		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
 
 		// Interface
 		"BossBarStyle": "Styl Paska Bossa: {0}",
@@ -377,13 +389,13 @@
 		"MSFinding": "Szukanie Modów...",
 		"MSInstantiating": "Inicjalizowanie Modów...",
 		"MSSandboxing": "Kompatybilizowanie: {0}",
-		"MSIntializing": "Inicjalizowanie: {0}",
 		"MSLoading": "Ładowanie Moda: {0}",
+		// "MSResizing": "Resizing...",
+		// "MSSetupContent": "Configuring Content: {0}",
+		// "MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "Rozładowywanie: {0}",
 		"MSFinishingResourceLoading": "Kończenie ładowania zasobów",
-		"MSSettingUp": "Konfigurowanie...",
 		"MSAddingRecipes": "Dodawanie przepisów...",
-		"AddingModContent": "Dodawanie zawartości modów...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Niektóre początkowe przedmioty nie zmieściły się w twoim ekwipunku.",
@@ -509,5 +521,8 @@
 		"InGemCave": "Musi być w jaskini kamieni szlachetnych",
 		"InLihzardTemple": "Musi być w Świątyni Jaszczura",
 		"InGraveyardBiome": "Musi być na cmentarzu"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

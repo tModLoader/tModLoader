@@ -18,14 +18,14 @@ namespace Terraria.ModLoader
 
 			ModTypeLookup<GlobalNPC>.Register(this);
 
-			index = (ushort)NPCLoader.globalNPCs.Count;
+			Index = (ushort)NPCLoader.globalNPCs.Count;
 
 			NPCLoader.globalNPCs.Add(this);
 		}
 
 		public sealed override void SetupContent() => SetStaticDefaults();
 
-		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, index);
+		public GlobalNPC Instance(NPC npc) => Instance(npc.globalNPCs, Index);
 
 		/// <summary>
 		/// Allows you to set the properties of any and every NPC that gets created.

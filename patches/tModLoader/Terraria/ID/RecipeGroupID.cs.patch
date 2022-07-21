@@ -1,7 +1,15 @@
 --- src/TerrariaNetCore/Terraria/ID/RecipeGroupID.cs
 +++ src/tModLoader/Terraria/ID/RecipeGroupID.cs
-@@ -15,5 +_,10 @@
- 		public static int Dragonflies = 10;
+@@ -10,10 +_,15 @@
+ 		public static int Butterflies = 5;
+ 		public static int Fireflies = 6;
+ 		public static int Snails = 7;
+-		public static int FishForDinner = 8;
+-		public static int GoldenCritter = 9;
+-		public static int Dragonflies = 10;
++		public static int FishForDinner = 8; // Unused
++		public static int GoldenCritter = 9; // Unused
++		public static int Dragonflies = 10; // This will likely actually be 8, and so on, but don't use magic numbers anyway.
  		public static int Turtles = 11;
  		public static int Fruit = 12;
 +		public static int Wood = 13;

@@ -21,7 +21,8 @@
 		// "ShowNewUpdatedModsInfoMessage": "The following mods were added or updated from the workshop since last launch (you can disable this message in the settings):\n",
 		// "ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
 		// "ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
-		// "ModUpdatedSinceLastLaunchMessage": "This mod updated since last launch",
+		// "ModUpdatedSinceLastLaunchMessage": "This mod has been automatically updated\nsince last launch from version {0}",
+		// "ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "Auf GitHub ansehen",
 		"tModLoaderSettings": "tModLoader-Einstellungen",
 		"ModMenuSwap": "Hauptmenü-Theme wechseln",
@@ -36,7 +37,7 @@
 		"ModsDisableAll": "Alle deaktivieren",
 		"ModsReloadMods": "Mods neu laden",
 		// "ModsForceReload": "Force Reload",
-		"ModsOpenModsFolder": "Mod-Ordner öffnen",
+		"ModsOpenModsFolders": "Mod-Ordner öffnen",
 		// "OpenModPackFolder": "Open Mod Pack Folder",
 		// "DeactivateModPack": "Unload Mod Pack",
 		// "ActivateModPack": "Load Mod Pack",
@@ -80,6 +81,17 @@
 		"ModsNotFoundServer": "In \"{0}\" wurden keine Mods gefunden\nWenn du einen eigenen Server betreibst, möchtest du vielleicht den Befehlszeilenschalter 'modpath' oder die Serverkonfigurationseinstellung benutzen, um ein benutzerdefiniertes Mod-Verzeichnis festzulegen.\n",
 		"AskForModIndex": "Gib eine Zahl ein, um zwischen aktiviert/deaktiviert zu wechseln",
 		"AskForCommand": "Gib einen Befehl ein: ",
+
+		//Mod Config
+		// "ModConfigFilterOptions": "Filter Options",
+		// "ModConfigNotification": "Notification: ",
+		// "ModConfigModConfig": "Mod Config",
+		// "ModConfigSaveConfig": "Save Config",
+		// "ModConfigBack": "Back",
+		// "ModConfigRevertChanges": "Revert Changes",
+		// "ModConfigRestoreDefaults": "Restore Defaults",
+		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
+		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
 
 		// Interface
 		"BossBarStyle": "Bossleisten-Stil: {0}",
@@ -271,6 +283,9 @@
 		"ExperimentalFeaturesNo": "Experimentelle Funktionen: Aus",
 		"RemoveForcedMinimumZoomYes": "Lösche erzwungenen maximalen Zoom: An",
 		"RemoveForcedMinimumZoomNo": "Lösche erzwungenen maximalen Zoom: Aus",
+		// "AttackSpeedScalingTooltipVisibility0": "Attack Speed Effect Tooltips: Show All",
+		// "AttackSpeedScalingTooltipVisibility1": "Attack Speed Effect Tooltips: Show Adjusted Effectiveness",
+		// "AttackSpeedScalingTooltipVisibility2": "Attack Speed Effect Tooltips: Hidden",
 		"AllowGreaterResolutionsYes": "Erlaube höhere Auflösungen: An",
 		"AllowGreaterResolutionsNo": "Erlaube höhere Auflösungen: Aus",
 		"ShowMemoryEstimatesYes": "Schätzungen des Mod-Speichers zeigen: An",
@@ -374,13 +389,13 @@
 		"MSFinding": "Mods finden... ",
 		"MSInstantiating": "Mods instanziieren...",
 		"MSSandboxing": "Sandboxing: {0}",
-		"MSIntializing": "Initialisiere: {0}",
 		"MSLoading": "Lade Mod: {0}",
+		// "MSResizing": "Resizing...",
+		// "MSSetupContent": "Configuring Content: {0}",
+		// "MSPostSetupContent": "Finalizing Content: {0}",
 		"MSUnloading": "Entlade Mod: {0}",
 		"MSFinishingResourceLoading": "Stelle Ressourcen-Ladevorgang fertig",
-		"MSSettingUp": "Erstelle...",
 		"MSAddingRecipes": "Füge Rezepte hinzu...",
-		"AddingModContent": "Füge Mod-Inhalte hinzu...",
 
 		// Mod Loader Mod
 		"StartBagTooltip": "Einige Starter-Items haben nicht in dein Inventar gepasst",
@@ -392,6 +407,12 @@
 		"DefaultTownNPCName": "Kein Name",
 		"DefaultTownNPCChat": "Mein Modder hat vergessen mir einen Dialog zu geben.",
 		"DefaultNurseCantHealChat": "Ich weiß nicht warum, aber ich kann dich nicht Heilen. Anscheinend hat der Modder vergessen, mir einen Dialog zu geben.",
+
+		// Tooltip lines
+		// "NoAttackSpeedScaling": "Does not scale with attack speed",
+		// "SpecialAttackSpeedScaling": "{0}% benefit from attack speed boosts",
+		// "ModifiedByModsHoldSHIFT": "Is modified (hold SHIFT for more info)",
+		// "ModifiedByMods": "Is modified by ",
 
 		// Memory bar
 		"LastLoadRamUsage": "Geschätzte RAM-Nutzung beim letzten Laden: {0}",
@@ -500,5 +521,8 @@
 		"InGemCave": "Muss in einer Edelsteinhöhle sein",
 		"InLihzardTemple": "Muss im Lihzahrdtempel sein",
 		"InGraveyardBiome": "Muss im Friedhof-Biom sein"
+	},
+	"TitleLinks": {
+		// "Patreon": "Patreon"
 	}
 }

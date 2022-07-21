@@ -22,7 +22,6 @@ namespace Terraria.ModLoader.UI
 	{
 		internal const string MODPACK_REGEX = "[^a-zA-Z0-9_.-]+";
 		internal static string ModPacksDirectory = Path.Combine(ModLoader.ModPath, "ModPacks");
-		internal static string[] Mods;
 
 		private UIList _modPacks;
 		private UILoaderAnimatedImage _uiLoader;
@@ -130,40 +129,25 @@ namespace Terraria.ModLoader.UI
 			string modsPath = Path.Combine(ModPacksDirectory, filename, "mods");
 			Directory.CreateDirectory(modsPath);
 
-			var modsSteamAll = ModOrganizer.FindMods(true);
 			var workshopIds = new List<string>();
+			foreach (var mod in ModLoader.Mods) {
+				if (mod.File == null)
+					continue; // internal ModLoader mod
 
-			var modsManualAll = Directory.EnumerateFiles(ModOrganizer.modPath, "*.tmod");
-
-			foreach (var enabled in ModLoader.EnabledMods) {
 				// Export Config Files
-				foreach (var config in configsAll) {
-					if (!config.Contains(enabled))
-						continue;
-
-					File.Copy(config, Path.Combine(configsPath, Path.GetFileName(config)));
+				foreach (var config in configsAll.Where(c => Path.GetFileName(c).StartsWith(mod.Name + '_'))) {
+					// Overwrite existing config file to fix config collisions (#2661)
+					File.Copy(config, Path.Combine(configsPath, Path.GetFileName(config)), true);
 				}
 
-				// Prep work for export workshop mods to a download manager list
-				foreach (var mod in modsSteamAll) {
-					if (mod.Name != enabled)
-						continue;
-
-					string parentDir = ModOrganizer.GetParentDir(mod.modFile.path);
-					if (!ModOrganizer.TryReadManifest(parentDir, out var info))
-						continue;
-
+				// we only install a workshop mod if it's the workshop subscribed version which is loaded
+				// if the user has a local mod overriding their workshop subscription, then we won't force other users of the modpack to subscribe to the workshop item, we'll give them the local copy instead
+				if (ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(mod.File.path), out var info)) {
 					workshopIds.Add(info.workshopEntryId.ToString());
-					break;
 				}
-
-				// Export non-workshop mods to the modpack
-				foreach (var mod in modsManualAll) {
-					if (!mod.Contains(enabled))
-						continue;
-
-					File.Copy(mod, Path.Combine(modsPath, Path.GetFileName(mod)));
-					break;
+				else {
+					// Export non-workshop mods to the modpack
+					File.Copy(mod.File.path, Path.Combine(modsPath, mod.Name + ".tmod"));
 				}
 			}
 
@@ -174,17 +158,6 @@ namespace Terraria.ModLoader.UI
 			// Write the required workshop mods to install.txt
 			File.Delete(Path.Combine(modsPath, "install.txt"));
 			File.WriteAllLines(Path.Combine(modsPath, "install.txt"), workshopIds);
-
-
-			// Legacy code we need to port forward???
-			/*
-			Directory.CreateDirectory(ModPacksDirectory);
-
-			string path = Path.Combine(ModPacksDirectory, filename + ".json");
-			var foundMods = ModOrganizer.FindMods().Select(x => x.Name).Intersect(ModLoader.EnabledMods).ToList();
-			string json = JsonConvert.SerializeObject(foundMods, Formatting.Indented);
-			File.WriteAllText(path, json);
-			*/
 
 			Main.menuMode = Interface.modPacksMenuID; // should reload
 		}
@@ -221,43 +194,38 @@ namespace Terraria.ModLoader.UI
 			_scrollPanel.Append(_uiLoader);
 			_modPacks.Clear();
 
-			Task.Factory
-				.StartNew(delegate {
-					Mods = ModOrganizer.FindMods().Select(m => m.Name).ToArray();
-					Directory.CreateDirectory(ModPacksDirectory);
-					var dirs = Directory.GetDirectories(ModPacksDirectory, "*", SearchOption.TopDirectoryOnly);
-					var files = Directory.GetFiles(ModPacksDirectory, "*.json", SearchOption.TopDirectoryOnly);
-					return files.Concat(dirs);
-				}, _cts.Token)
-
-				.ContinueWith(task => {
-					foreach (string modPackPath in task.Result) {
-						try {
-							if (!IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath))) {
-								throw new Exception();
-							}
-
-							if (Directory.Exists(modPackPath)) {
-								string enabledJson = Path.Combine(modPackPath, "mods", "enabled.json");
-								string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(enabledJson));
-								_modPacks.Add(new UIModPackItem(modPackPath, modPackMods, false));
-							}
-								
-							else {
-								string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(modPackPath));
-								_modPacks.Add(new UIModPackItem(Path.GetFileNameWithoutExtension(modPackPath), modPackMods, true));
-							}
+			Task.Run(() => {
+				var localMods = ModOrganizer.FindMods();
+				Directory.CreateDirectory(ModPacksDirectory);
+				var dirs = Directory.GetDirectories(ModPacksDirectory, "*", SearchOption.TopDirectoryOnly);
+				var files = Directory.GetFiles(ModPacksDirectory, "*.json", SearchOption.TopDirectoryOnly);
+				foreach (string modPackPath in files.Concat(dirs)) {
+					try {
+						if (!IsValidModpackName(Path.GetFileNameWithoutExtension(modPackPath))) {
+							throw new Exception();
 						}
-						catch {
-							var badModPackMessage = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackMalformed", Path.GetFileName(modPackPath))) {
-								Width = { Percent = 1 },
-								Height = { Pixels = 50, Percent = 0 }
-							};
-							_modPacks.Add(badModPackMessage);
+
+						if (Directory.Exists(modPackPath)) {
+							string enabledJson = Path.Combine(modPackPath, "mods", "enabled.json");
+							string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(enabledJson));
+							_modPacks.Add(new UIModPackItem(modPackPath, modPackMods, false, localMods));
+						}
+								
+						else {
+							string[] modPackMods = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(modPackPath));
+							_modPacks.Add(new UIModPackItem(Path.GetFileNameWithoutExtension(modPackPath), modPackMods, true, localMods));
 						}
 					}
-					_scrollPanel.RemoveChild(_uiLoader);
-				}, _cts.Token, TaskContinuationOptions.None, TaskScheduler.Current);
+					catch {
+						var badModPackMessage = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPackMalformed", Path.GetFileName(modPackPath))) {
+							Width = { Percent = 1 },
+							Height = { Pixels = 50, Percent = 0 }
+						};
+						_modPacks.Add(badModPackMessage);
+					}
+				}
+				_scrollPanel.RemoveChild(_uiLoader);
+			});
 		}
 	}
 }

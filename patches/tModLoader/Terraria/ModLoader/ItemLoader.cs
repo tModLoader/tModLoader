@@ -30,7 +30,6 @@ namespace Terraria.ModLoader
 		internal static readonly int[] vanillaWings = new int[Main.maxWings];
 
 		private static int nextItem = ItemID.Count;
-		private static Instanced<GlobalItem>[] globalItemsArray = new Instanced<GlobalItem>[0];
 
 		private static readonly List<HookList> hooks = new List<HookList>();
 		private static readonly List<HookList> modHooks = new List<HookList>();
@@ -121,10 +120,6 @@ namespace Terraria.ModLoader
 					.ToArray();
 
 			FindVanillaWings();
-
-			globalItemsArray = globalItems
-				.Select(g => new Instanced<GlobalItem>(g.index, g))
-				.ToArray();
 
 			NetGlobals = globalItems.WhereMethodIsOverridden<GlobalItem, Action<Item, BinaryWriter>>(g => g.NetSend).ToArray();
 
@@ -1135,7 +1130,7 @@ namespace Terraria.ModLoader
 			if (legs.ModItem != null && legs.ModItem.IsArmorSet(head, body, legs))
 				legs.ModItem.UpdateArmorSet(player);
 
-			foreach (GlobalItem globalItem in HookUpdateArmorSet.Enumerate(globalItemsArray)) {
+			foreach (GlobalItem globalItem in HookUpdateArmorSet.Enumerate(globalItems)) {
 				string set = globalItem.IsArmorSet(head, body, legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.UpdateArmorSet(player, set);
@@ -1161,7 +1156,7 @@ namespace Terraria.ModLoader
 			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 				legTexture.PreUpdateVanitySet(player);
 
-			foreach (GlobalItem globalItem in HookPreUpdateVanitySet.Enumerate(globalItemsArray)) {
+			foreach (GlobalItem globalItem in HookPreUpdateVanitySet.Enumerate(globalItems)) {
 				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.PreUpdateVanitySet(player, set);
@@ -1187,7 +1182,7 @@ namespace Terraria.ModLoader
 			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 				legTexture.UpdateVanitySet(player);
 
-			foreach (GlobalItem globalItem in HookUpdateVanitySet.Enumerate(globalItemsArray)) {
+			foreach (GlobalItem globalItem in HookUpdateVanitySet.Enumerate(globalItems)) {
 				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.UpdateVanitySet(player, set);
@@ -1213,7 +1208,7 @@ namespace Terraria.ModLoader
 			if (legTexture != null && legTexture.IsVanitySet(player.head, player.body, player.legs))
 				legTexture.ArmorSetShadows(player);
 
-			foreach (GlobalItem globalItem in HookArmorSetShadows.Enumerate(globalItemsArray)) {
+			foreach (GlobalItem globalItem in HookArmorSetShadows.Enumerate(globalItems)) {
 				string set = globalItem.IsVanitySet(player.head, player.body, player.legs);
 				if (!string.IsNullOrEmpty(set))
 					globalItem.ArmorSetShadows(player, set);
@@ -1231,7 +1226,7 @@ namespace Terraria.ModLoader
 
 			texture?.SetMatch(male, ref equipSlot, ref robes);
 
-			foreach (var g in HookSetMatch.Enumerate(globalItemsArray)) {
+			foreach (var g in HookSetMatch.Enumerate(globalItems)) {
 				g.SetMatch(armorSlot, type, male, ref equipSlot, ref robes);
 			}
 		}
@@ -1295,44 +1290,17 @@ namespace Terraria.ModLoader
 			return item.ModItem != null && item.ModItem.BossBagNPC > 0;
 		}
 
-		/// <summary>
-		/// If the item is a modded item and ModItem.BossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.BossBagNPC.
-		/// </summary>
-		public static void OpenBossBag(int type, Player player, ref int npc) {
-			ModItem modItem = GetItem(type);
-			if (modItem != null && modItem.BossBagNPC > 0) {
-				modItem.OpenBossBag(player);
-				npc = modItem.BossBagNPC;
-			}
-		}
 
-		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
+		private static HookList HookModifyItemLoot = AddHook<Action<Item, ItemLoot>>(g => g.ModifyItemLoot);
 		
 		/// <summary>
-		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
+		/// Calls each GlobalItem.ModifyItemLoot hooks.
 		/// </summary>
-		public static bool PreOpenVanillaBag(string context, Player player, int arg) {
-			bool result = true;
-			foreach (var g in HookPreOpenVanillaBag.Enumerate(globalItemsArray)) {
-				result &= g.PreOpenVanillaBag(context, player, arg);
-			}
+		public static void ModifyItemLoot(Item item, ItemLoot itemLoot) {
+			item.ModItem?.ModifyItemLoot(itemLoot);
 
-			if (!result) {
-				NPCLoader.blockLoot.Clear(); // clear blockloot
-				return false;
-			}
-
-			return true;
-		}
-
-		private static HookList HookOpenVanillaBag = AddHook<Action<string, Player, int>>(g => g.OpenVanillaBag);
-		
-		/// <summary>
-		/// Calls all GlobalItem.OpenVanillaBag hooks.
-		/// </summary>
-		public static void OpenVanillaBag(string context, Player player, int arg) {
-			foreach (var g in HookOpenVanillaBag.Enumerate(globalItemsArray)) {
-				g.OpenVanillaBag(context, player, arg);
+			foreach (var g in HookModifyItemLoot.Enumerate(globalItems)) {
+				g.ModifyItemLoot(item, itemLoot);
 			}
 		}
 
@@ -1346,7 +1314,7 @@ namespace Terraria.ModLoader
 			if (item1.prefix != item2.prefix) // TML: #StackablePrefixWeapons
 				return false;
 
-			foreach (var g in HookCanStack.Enumerate(globalItemsArray)) {
+			foreach (var g in HookCanStack.Enumerate(globalItems)) {
 				if (!g.CanStack(item1, item2))
 					return false;
 			}
@@ -1360,7 +1328,7 @@ namespace Terraria.ModLoader
 		/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 		/// </summary>
 		public static bool CanStackInWorld(Item item1, Item item2) {
-			foreach (var g in HookCanStackInWorld.Enumerate(globalItemsArray)) {
+			foreach (var g in HookCanStackInWorld.Enumerate(globalItems)) {
 				if (!g.CanStackInWorld(item1, item2))
 					return false;
 			}
@@ -1428,7 +1396,7 @@ namespace Terraria.ModLoader
 			EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
 			texture?.DrawArmorColor(drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
 
-			foreach (var g in HookDrawArmorColor.Enumerate(globalItemsArray)) {
+			foreach (var g in HookDrawArmorColor.Enumerate(globalItems)) {
 				g.DrawArmorColor(type, slot, drawPlayer, shadow, ref color, ref glowMask, ref glowMaskColor);
 			}
 		}
@@ -1444,7 +1412,7 @@ namespace Terraria.ModLoader
 
 			texture?.ArmorArmGlowMask(drawPlayer, shadow, ref glowMask, ref color);
 
-			foreach (var g in HookArmorArmGlowMask.Enumerate(globalItemsArray)) {
+			foreach (var g in HookArmorArmGlowMask.Enumerate(globalItems)) {
 				g.ArmorArmGlowMask(slot, drawPlayer, shadow, ref glowMask, ref color);
 			}
 		}
@@ -1537,7 +1505,7 @@ namespace Terraria.ModLoader
 			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wings);
 			bool? retVal = texture?.WingUpdate(player, inUse);
 
-			foreach (var g in HookWingUpdate.Enumerate(globalItemsArray)) {
+			foreach (var g in HookWingUpdate.Enumerate(globalItems)) {
 				retVal |= g.WingUpdate(player.wings, player, inUse);
 			}
 
@@ -1753,7 +1721,7 @@ namespace Terraria.ModLoader
 				}
 			}
 
-			foreach (var g in HookHoldoutOffset.Enumerate(globalItemsArray)) {
+			foreach (var g in HookHoldoutOffset.Enumerate(globalItems)) {
 				Vector2? modOffset = g.HoldoutOffset(type);
 
 				if (modOffset.HasValue) {
@@ -1828,7 +1796,7 @@ namespace Terraria.ModLoader
 		public static void ExtractinatorUse(ref int resultType, ref int resultStack, int extractType) {
 			GetItem(extractType)?.ExtractinatorUse(ref resultType, ref resultStack);
 
-			foreach (var g in HookExtractinatorUse.Enumerate(globalItemsArray)) {
+			foreach (var g in HookExtractinatorUse.Enumerate(globalItems)) {
 				g.ExtractinatorUse(extractType, ref resultType, ref resultStack);
 			}
 		}
@@ -1851,7 +1819,7 @@ namespace Terraria.ModLoader
 			if (modItem != null)
 				notAvailable |= !modItem.IsAnglerQuestAvailable();
 
-			foreach (var g in HookIsAnglerQuestAvailable.Enumerate(globalItemsArray)) {
+			foreach (var g in HookIsAnglerQuestAvailable.Enumerate(globalItems)) {
 				notAvailable |= !g.IsAnglerQuestAvailable(itemID);
 			}
 		}
@@ -1864,7 +1832,7 @@ namespace Terraria.ModLoader
 			string catchLocation = "";
 			GetItem(type)?.AnglerQuestChat(ref chat, ref catchLocation);
 
-			foreach (var g in HookAnglerChat.Enumerate(globalItemsArray)) {
+			foreach (var g in HookAnglerChat.Enumerate(globalItems)) {
 				g.AnglerChat(type, ref chat, ref catchLocation);
 			}
 
