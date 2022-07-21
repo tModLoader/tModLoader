@@ -58,12 +58,12 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return FromTagCompound(tag, ElementType, e => TagIO.Deserialize(ElementType, e), serializedType);
 	}
 
-	public override IList SerializeList(IList value) {
+	public override IList SerializeList(IList list) {
 		ArgumentNullException.ThrowIfNull(list);
 
 		var serializedList = new List<TagCompound>();
 
-		foreach (Array array in value) {
+		foreach (Array array in list) {
 			serializedList.Add(Serialize(array));
 		}
 
