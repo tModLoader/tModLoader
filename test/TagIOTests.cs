@@ -965,5 +965,45 @@ namespace Terraria.ModLoader
 			Assert.IsTrue(c4[0, 0][0].value    == tag.Get<C[,][]> ("c4")[0, 0][0].value);
 			Assert.IsTrue(c5[0, 0][0, 0].value == tag.Get<C[,][,]>("c5")[0, 0][0, 0].value);
 		}
+
+		[TestMethod]
+		public void TestMultiDimensionalArrays2() {
+			List<string>[]   s1 = new List<string>[]    {   new List<string> { "one" } };
+			List<string[]>   s2 = new List<string[]>    {   new string[]     { "one" } };
+			List<string[,]>  s3 = new List<string[,]>   {   new string[,]  { { "one" } } };
+			List<string>[,]  s4 = new List<string>[1,1] { { new List<string> { "one" } } };
+
+			List<Vector2>[]  v1 = new List<Vector2>[]    {   new List<Vector2> { Vector2.One } };
+			List<Vector2[]>  v2 = new List<Vector2[]>    {   new Vector2[]     { Vector2.One } };
+			List<Vector2[,]> v3 = new List<Vector2[,]>   {   new Vector2[,]  { { Vector2.One } } };
+			List<Vector2>[,] v4 = new List<Vector2>[1,1] { { new List<Vector2> { Vector2.One } } };
+
+			List<C>[]        c1 = new List<C>[]    {   new List<C> { new C(1) } };
+			List<C[]>        c2 = new List<C[]>    {   new C[]     { new C(1) } };
+			List<C[,]>       c3 = new List<C[,]>   {   new C[,]  { { new C(1) } } };
+			List<C>[,]       c4 = new List<C>[1,1] { { new List<C> { new C(1) } } };
+
+			TagCompound tag = new() {
+				 ["s1"] = s1, ["v1"] = v1, ["c1"] = c1,
+				 ["s2"] = s2, ["v2"] = v2, ["c2"] = c2,
+				 ["s3"] = s3, ["v3"] = v3, ["c3"] = c3,
+				 ["s4"] = s4, ["v4"] = v4, ["c4"] = c4,
+			};
+
+			Assert.IsTrue(s1[0][0]    == tag.Get<string[,]>   ("s1")[0,0]);
+			Assert.IsTrue(s2[0][0]    == tag.Get<string[][]>  ("s2")[0][0]);
+			Assert.IsTrue(s3[0][0, 0] == tag.Get<string[][,]> ("s3")[0][0, 0]);
+			Assert.IsTrue(s4[0, 0][0] == tag.Get<string[,][]> ("s4")[0, 0][0]);
+
+			Assert.IsTrue(v1[0][0]    == tag.Get<Vector2[,]>   ("v1")[0,0]);
+			Assert.IsTrue(v2[0][0]    == tag.Get<Vector2[][]>  ("v2")[0][0]);
+			Assert.IsTrue(v3[0][0, 0] == tag.Get<Vector2[][,]> ("v3")[0][0, 0]);
+			Assert.IsTrue(v4[0, 0][0] == tag.Get<Vector2[,][]> ("v4")[0, 0][0]);
+
+			Assert.IsTrue(c1[0][0].value    == tag.Get<C[,]>   ("c1")[0,0].value);
+			Assert.IsTrue(c2[0][0].value    == tag.Get<C[][]>  ("c2")[0][0].value);
+			Assert.IsTrue(c3[0][0, 0].value == tag.Get<C[][,]> ("c3")[0][0, 0].value);
+			Assert.IsTrue(c4[0, 0][0].value == tag.Get<C[,][]> ("c4")[0, 0][0].value);
+		}
 	}
 }
