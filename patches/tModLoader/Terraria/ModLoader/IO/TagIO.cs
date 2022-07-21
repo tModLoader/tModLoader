@@ -205,7 +205,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static T Deserialize<T>(object tag) {
-			if (tag is T) return (T)tag;
+			if (tag is T t) return t;
 			return (T)Deserialize(typeof(T), tag);
 		}
 
@@ -245,7 +245,7 @@ namespace Terraria.ModLoader.IO
 					if (TagSerializer.TryGetSerializer(elemType, out serializer)) {
 						IList array = Array.CreateInstance(serializer.Type, serializedList.Count);
 						for (int i = 0; i < serializedList.Count; i++)
-							array[i] = serializer.Deserialize(serializedList[i]);
+							array[i] = serializer.Deserialize(serializedList[i]!);
 
 						return array;
 					}
@@ -322,10 +322,10 @@ namespace Terraria.ModLoader.IO
 
 		public static TagCompound Read(BinaryReader reader) {
 			var tag = ReadTag(reader, out string name);
-			if (!(tag is TagCompound))
+			if (tag is not TagCompound compound)
 				throw new IOException("Root tag not a TagCompound");
 
-			return (TagCompound)tag;
+			return compound;
 		}
 
 		public static void ToFile(TagCompound root, string path, bool compress = true) {
