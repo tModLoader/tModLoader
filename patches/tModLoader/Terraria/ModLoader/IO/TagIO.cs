@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+#nullable enable
+
 namespace Terraria.ModLoader.IO
 {
 	public static class TagIO
@@ -23,6 +25,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		private class PayloadHandler<T> : PayloadHandler
+			where T : notnull
 		{
 			internal Func<BinaryReader, T> reader;
 			internal Action<BinaryWriter, T> writer;
@@ -53,16 +56,16 @@ namespace Terraria.ModLoader.IO
 			public override IList CloneList(IList list) => CloneList((IList<T>)list);
 			public virtual IList CloneList(IList<T> list) => new List<T>(list);
 
-			public override object Default() => default(T);
+			public override object Default() => default(T)!;
 		}
 
 		private class ClassPayloadHandler<T> : PayloadHandler<T> where T : class
 		{
 			private Func<T, T> clone;
-			private Func<T> makeDefault;
+			private Func<T>? makeDefault;
 
 			public ClassPayloadHandler(Func<BinaryReader, T> reader, Action<BinaryWriter, T> writer,
-					Func<T, T> clone, Func<T> makeDefault = null) :
+					Func<T, T> clone, Func<T>? makeDefault = null) :
 					base(reader, writer) {
 				this.clone = clone;
 				this.makeDefault = makeDefault;
@@ -70,11 +73,11 @@ namespace Terraria.ModLoader.IO
 
 			public override object Clone(object o) => clone((T)o);
 			public override IList CloneList(IList<T> list) => list.Select(clone).ToList();
-			public override object Default() => makeDefault();
+			public override object Default() => makeDefault!(); // If makeDefault is null, it's our job to handle default values to ensure this is never called
 		}
 
 		private static readonly PayloadHandler[] PayloadHandlers = {
-			null,
+			null!, // Unused
 			new PayloadHandler<byte>(r => r.ReadByte(), (w, v) => w.Write(v)),
 			new PayloadHandler<short>(r => r.ReadInt16(), (w, v) => w.Write(v)),
 			new PayloadHandler<int>(r => r.ReadInt32(), (w, v) => w.Write(v)),
@@ -110,7 +113,7 @@ namespace Terraria.ModLoader.IO
 					}
 					w.Write((byte)id);
 					w.Write(v.Count);
-					PayloadHandlers[id].WriteList(w, v);
+					PayloadHandlers![id].WriteList(w, v);
 				},
 				v => {
 					try {
@@ -123,8 +126,8 @@ namespace Terraria.ModLoader.IO
 			new ClassPayloadHandler<TagCompound>(
 				r => {
 					var compound = new TagCompound();
-					object tag;
-					while ((tag = ReadTag(r, out string name)) != null)
+					object? tag;
+					while ((tag = ReadTag(r, out string? name)) != null)
 						compound.Set(name, tag);
 
 					return compound;
@@ -181,7 +184,7 @@ namespace Terraria.ModLoader.IO
 
 			var type = value.GetType();
 
-			if (TagSerializer.TryGetSerializer(type, out TagSerializer serializer))
+			if (TagSerializer.TryGetSerializer(type, out TagSerializer? serializer))
 				return serializer.Serialize(value);
 
 			// does a base level typecheck with throw
@@ -204,18 +207,18 @@ namespace Terraria.ModLoader.IO
 			return serializedList;
 		}
 
-		public static T Deserialize<T>(object tag) {
+		public static T Deserialize<T>(object? tag) {
 			if (tag is T t) return t;
 			return (T)Deserialize(typeof(T), tag);
 		}
 
-		public static object Deserialize(Type type, object tag) {
+		public static object Deserialize(Type type, object? tag) {
 			ArgumentNullException.ThrowIfNull(type);
 
 			if (type.IsInstanceOfType(tag))
 				return tag;
 
-			if (TagSerializer.TryGetSerializer(type, out TagSerializer serializer)) {
+			if (TagSerializer.TryGetSerializer(type, out TagSerializer? serializer)) {
 				if (tag == null)
 					tag = Deserialize(serializer.TagType, null);
 
@@ -228,7 +231,7 @@ namespace Terraria.ModLoader.IO
 					return GetHandler(GetPayloadId(type)).Default();
 
 				if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
-					return null;
+					return Activator.CreateInstance(type)!;
 			}
 
 			//list conversion required
@@ -285,9 +288,9 @@ namespace Terraria.ModLoader.IO
 			throw new InvalidCastException($"Unable to cast object of type '{tag.GetType()}' to type '{type}'");
 		}
 
-		public static T Clone<T>(T o) => (T)GetHandler(GetPayloadId(o.GetType())).Clone(o);
+		public static T Clone<T>(T o) where T : notnull => (T)GetHandler(GetPayloadId(o.GetType())).Clone(o);
 
-		public static object ReadTag(BinaryReader r, out string name) {
+		public static object? ReadTag(BinaryReader r, out string? name) {
 			int id = r.ReadByte();
 			if (id == 0) {
 				name = null;
@@ -321,7 +324,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static TagCompound Read(BinaryReader reader) {
-			var tag = ReadTag(reader, out string name);
+			var tag = ReadTag(reader, out string? name);
 			if (tag is not TagCompound compound)
 				throw new IOException("Root tag not a TagCompound");
 
