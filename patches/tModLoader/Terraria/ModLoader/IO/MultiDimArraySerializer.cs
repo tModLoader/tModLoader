@@ -31,6 +31,8 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 	}
 
 	public override TagCompound Serialize(Array array) {
+		ArgumentNullException.ThrowIfNull(array);
+
 		if (array.Length == 0) {
 			return ToTagCompound(array);
 		}
@@ -45,6 +47,8 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 	}
 
 	public override Array Deserialize(TagCompound tag) {
+		ArgumentNullException.ThrowIfNull(tag);
+
 		var serializedTypeFullName = tag.Get<string>("serializedType");
 		Type? serializedType = null;
 		if (!string.IsNullOrEmpty(serializedTypeFullName)) {
@@ -55,6 +59,8 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 	}
 
 	public override IList SerializeList(IList value) {
+		ArgumentNullException.ThrowIfNull(list);
+
 		var serializedList = new List<TagCompound>();
 
 		foreach (Array array in value) {
@@ -64,11 +70,13 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return serializedList;
 	}
 
-	public override IList DeserializeList(IList value) {
-		var list = (IList<TagCompound>)value;
-		var deserializedList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(ArrayType), list.Count)!;
+	public override IList DeserializeList(IList list) {
+		ArgumentNullException.ThrowIfNull(list);
 
-		foreach (var tagCompound in list) {
+		var listT = (IList<TagCompound>)list;
+		var deserializedList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(ArrayType), listT.Count)!;
+
+		foreach (var tagCompound in listT) {
 			deserializedList.Add(Deserialize(tagCompound));
 		}
 
