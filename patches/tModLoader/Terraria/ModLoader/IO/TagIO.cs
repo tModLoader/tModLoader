@@ -246,7 +246,7 @@ namespace Terraria.ModLoader.IO
 					var serializedList = (IList)tag;
 
 					if (TagSerializer.TryGetSerializer(elemType, out serializer)) {
-						IList array = Array.CreateInstance(serializer.Type, serializedList.Count);
+						IList array = Array.CreateInstance(elemType, serializedList.Count);
 						for (int i = 0; i < serializedList.Count; i++)
 							array[i] = serializer.Deserialize(serializedList[i]!);
 
