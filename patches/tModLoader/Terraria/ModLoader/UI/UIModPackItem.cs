@@ -199,7 +199,7 @@ namespace Terraria.ModLoader.UI
 			}.WithFadedMouseOver();
 			_exportPackInstanceButton.PaddingTop -= 2f;
 			_exportPackInstanceButton.PaddingBottom -= 2f;
-			_exportPackInstanceButton.OnClick += (a, b) => UIModPacks.ExportSnapshot(_filename);
+			_exportPackInstanceButton.OnClick += ExportInstance;
 			Append(_exportPackInstanceButton);
 
 			string instancePath = Path.Combine(Directory.GetCurrentDirectory(), _filename);
@@ -213,7 +213,7 @@ namespace Terraria.ModLoader.UI
 				}.WithFadedMouseOver();
 				_removePackInstanceButton.PaddingTop -= 2f;
 				_removePackInstanceButton.PaddingBottom -= 2f;
-				_removePackInstanceButton.OnClick += (a, b) => Directory.Delete(instancePath, true);
+				_removePackInstanceButton.OnClick += DeleteInstance;
 				Append(_removePackInstanceButton);
 
 				//TODO: Play Instance (4-M)
@@ -323,6 +323,8 @@ namespace Terraria.ModLoader.UI
 			Interface.modBrowser.ModSideFilterToggle.SetCurrentState((int)Interface.modBrowser.ModSideFilterMode);
 			Interface.modBrowser.UpdateNeeded = true;
 			SoundEngine.PlaySound(SoundID.MenuOpen);
+
+			Interface.modBrowser.PreviousUIState = Interface.modPacksMenu;
 			Main.menuMode = Interface.modBrowserID;
 		}
 
@@ -356,6 +358,14 @@ namespace Terraria.ModLoader.UI
 			ModLoader.Reload();
 		}
 
+		private static void ExportInstance(UIMouseEvent evt, UIElement listeningElement) {
+			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
+
+			UIModPacks.ExportSnapshot(modpack._filename);
+			Interface.modPacksMenu.OnDeactivate(); // should reload
+			Interface.modPacksMenu.OnActivate(); // should reload
+		}
+
 		private static void PlayInstance(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 
@@ -367,6 +377,15 @@ namespace Terraria.ModLoader.UI
 				FileName = launchScript,
 				UseShellExecute = true
 			});
+		}
+
+		private static void DeleteInstance(UIMouseEvent evt, UIElement listeningElement) {
+			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
+			string instancePath = Path.Combine(Directory.GetCurrentDirectory(),modpack._filename);
+
+			Directory.Delete(instancePath, true);
+			Interface.modPacksMenu.OnDeactivate(); // should reload
+			Interface.modPacksMenu.OnActivate(); // should reload
 		}
 
 		private static void ViewListInfo(UIMouseEvent evt, UIElement listeningElement) {

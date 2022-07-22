@@ -33,7 +33,7 @@ namespace Terraria.ModLoader.Core
 
 		private enum SearchFolders { }
 
-		internal static string ModPackActive = null; //TODO: Save this value between play sessions
+		internal static string ModPackActive = null;
 
 		/// <summary>Mods in workshop folders, not in dev folder or modpacks</summary>
 		internal static IReadOnlyList<LocalMod> FindWorkshopMods() => _FindMods(ignoreModsFolder: true);

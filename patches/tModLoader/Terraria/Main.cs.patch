@@ -479,23 +479,19 @@
  			int currentValue = 0;
  			Configuration.Get("LastLaunchedVersion", ref currentValue);
  			bool flag = false;
-@@ -3272,7 +_,15 @@
+@@ -3272,8 +_,11 @@
  					screenBorderlessPendingResizes = 1;
  
  				SetDisplayMode(currentValue2, currentValue3, fullscreen: false);
--				TryPickingDefaultUIScale(currentValue3);
 +			}
 +			else {
+-				TryPickingDefaultUIScale(currentValue3);
 +				FullscreenStartup();
-+			}
-+			TryPickingDefaultUIScale(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
-+
-+			if (Main.dedServ) {
-+				ModLoader.ModLoader.LoadConfiguration();
-+				return;
  			}
++			TryPickingDefaultUIScale(graphics.GraphicsDevice.Adapter.CurrentDisplayMode.Height);
  
  			Configuration.Get("SmartCursorToggle", ref cSmartCursorModeIsToggleAndNotHold);
+ 			Configuration.Get("MapEnabled", ref mapEnabled);
 @@ -3562,6 +_,7 @@
  				};
  			}
@@ -988,6 +984,16 @@
  
  			musicFade[50] = 1f;
  			for (int i = 0; i < 10; i++) {
+@@ -4955,6 +_,9 @@
+ 
+ 			if (dedServ) {
+ 				Initialize_AlmostEverything();
++				// Allow keeping tml configs on/for server
++				Configuration.Load();
++				ModLoader.ModLoader.LoadConfiguration();
+ 				return;
+ 			}
+ 
 @@ -8372,11 +_,17 @@
  		public static void LoadTestLog(string logname) {
  		}
