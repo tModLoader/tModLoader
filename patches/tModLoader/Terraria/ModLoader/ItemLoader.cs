@@ -1268,6 +1268,7 @@ namespace Terraria.ModLoader
 			if (!Main.mouseRightRelease)
 				return;
 
+			player.DropFromItem(item.type);
 			item.ModItem?.RightClick(player);
 
 			foreach (var g in HookRightClick.Enumerate(item.globalItems)) {
@@ -1286,8 +1287,14 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// Returns whether ModItem.BossBagNPC is greater than 0. Returns false if item is not a modded item.
 		/// </summary>
+		[Obsolete("Use ItemID.Sets.BossBag", true)]
 		public static bool IsModBossBag(Item item) {
 			return item.ModItem != null && item.ModItem.BossBagNPC > 0;
+		}
+
+		[Obsolete]
+		internal static bool IsModBossBag_Obsolete(Item item) {
+			return IsModBossBag(item);
 		}
 
 
@@ -1303,6 +1310,77 @@ namespace Terraria.ModLoader
 				g.ModifyItemLoot(item, itemLoot);
 			}
 		}
+
+		// Remove After 1st September 2022
+		/// <summary>
+		/// If the item is a modded item and ModItem.BossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.BossBagNPC.
+		/// </summary>
+		[Obsolete("Use player.DropFromItem instead.", true)]
+		public static void OpenBossBag(int type, Player player, ref int npc)
+		{
+			ModItem modItem = GetItem(type);
+			if (modItem != null && modItem.BossBagNPC > 0)
+			{
+				modItem.OpenBossBag(player);
+				npc = modItem.BossBagNPC;
+			}
+		}
+
+		[Obsolete]
+		internal static void OpenBossBag_Obsolete(int type, Player player) {
+			int npc = 0;
+			OpenBossBag(type, player, ref npc);
+			if (npc > 0) {
+				// TODO
+			}
+		}
+
+		[Obsolete]
+		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
+
+		// Remove After 1st September 2022
+		/// <summary>
+		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
+		/// </summary>
+		[Obsolete("Use player.DropFromItem instead.", true)]
+		public static bool PreOpenVanillaBag(string context, Player player, int arg)
+		{
+			bool result = true;
+			foreach (var g in HookPreOpenVanillaBag.Enumerate(globalItems))
+			{
+				result &= g.PreOpenVanillaBag(context, player, arg);
+			}
+
+			if (!result)
+			{
+				NPCLoader.blockLoot.Clear(); // clear blockloot
+				return false;
+			}
+
+			return true;
+		}
+
+		[Obsolete]
+		internal static bool PreOpenVanillaBag_Obsolete(string context, Player player, int arg) => PreOpenVanillaBag(context, player, arg);
+
+		[Obsolete]
+		private static HookList HookOpenVanillaBag = AddHook<Action<string, Player, int>>(g => g.OpenVanillaBag);
+
+		// Remove After 1st September 2022
+		/// <summary>
+		/// Calls all GlobalItem.OpenVanillaBag hooks.
+		/// </summary>
+		[Obsolete("Use player.DropFromItem instead.", true)]
+		public static void OpenVanillaBag(string context, Player player, int arg)
+		{
+			foreach (var g in HookOpenVanillaBag.Enumerate(globalItems))
+			{
+				g.OpenVanillaBag(context, player, arg);
+			}
+		}
+
+		[Obsolete]
+		internal static bool OpenVanillaBag_Obsolete(string context, Player player, int arg) => PreOpenVanillaBag(context, player, arg);
 
 		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 

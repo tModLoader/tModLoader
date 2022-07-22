@@ -339,7 +339,7 @@
  				case 0:
  					result = true;
 -					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957 || inv[slot].type == 5111)) {
-+					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957 || inv[slot].type == 5111 || ItemLoader.IsModBossBag(inv[slot]))) {
++					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957 || inv[slot].type == 5111 || ItemLoader.IsModBossBag_Obsolete(inv[slot]))) {
  						if (Main.mouseRightRelease) {
  							player.OpenBossBag(inv[slot].type);
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
@@ -420,15 +420,11 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1214,11 +_,19 @@
+@@ -1214,11 +_,15 @@
  
  						Recipe.FindRecipes();
  					}
 +					else if (ItemLoader.CanRightClick(inv[slot])) {
-+						if (ItemLoader.IsModItem(inv[slot].type)) {
-+							player.DropFromItem(inv[slot].type);
-+						}
-+
 +						ItemLoader.RightClick(inv[slot], player);
 +					}
  					else {

@@ -1062,6 +1062,7 @@ namespace Terraria.ModLoader
 		/// <summary>
 		/// The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains. Defaults to 0, which means this isn't a boss bag.
 		/// </summary>
+		[Obsolete("Use ModifyItemLoot to set drops. Set ItemID.Sets.BossBag[Type] in SetStaticDefaults", true)]
 		public virtual int BossBagNPC => 0;
 
 		/// <summary>

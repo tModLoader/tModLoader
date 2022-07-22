@@ -14,9 +14,6 @@ namespace ExampleMod.Content.Items.Consumables
 	// Basic code for a boss treasure bag
 	public class MinionBossBag : ModItem
 	{
-		// Sets the associated NPC this treasure bag is dropped from
-		public override int BossBagNPC => ModContent.NPCType<MinionBossBody>();
-
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Treasure Bag");
 			Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}"); // References a language key that says "Right Click To Open" in the language of the game
@@ -45,6 +42,7 @@ namespace ExampleMod.Content.Items.Consumables
 
 			itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<MinionBossMask>(), 7));
 			itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1, 12, 16));
+			itemLoot.Add(ItemDropRule.CoinsBasedOnNPCValue(ModContent.NPCType<MinionBossBody>()));
 		}
 
 		// Below is code for the visuals
