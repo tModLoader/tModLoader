@@ -79,7 +79,7 @@ function steamcmdtML {
 			steamcmd +login $username +app_update 1281930 +quit # tMod goes into ~/Steam/steamapps/common/tModLoader
 		fi
 
-		if [[ $? == "5" ]]
+		if [[ $? == "5" ]] && ! [[ -f /.dockerenv ]] # Only recurse when not being used in the docker container.
 		then
 			echo "Try entering password/2fa code again"
 			steamcmdtML
@@ -206,8 +206,10 @@ function updateWorkshopMods {
 }
 
 function installMods {
-	if $steamcmd
+	if ! command -v steamcmd &> /dev/null
 	then
+		echo "steamcmd not found on path, no workshop mods will be installed or updated"
+	else
 		updateWorkshopMods
 	fi
 
