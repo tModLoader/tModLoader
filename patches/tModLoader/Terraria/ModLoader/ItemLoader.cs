@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -1331,7 +1332,13 @@ namespace Terraria.ModLoader
 			int npc = 0;
 			OpenBossBag(type, player, ref npc);
 			if (npc > 0) {
-				// TODO
+				ItemDropRule.CoinsBasedOnNPCValue(npc).TryDroppingItem(new() {
+					player = player,
+					item = type,
+					rng = Main.rand,
+					IsExpertMode = Main.expertMode,
+					IsMasterMode = Main.masterMode,
+				});
 			}
 		}
 
