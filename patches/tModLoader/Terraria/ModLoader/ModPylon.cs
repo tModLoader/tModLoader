@@ -36,9 +36,10 @@ namespace Terraria.ModLoader
 	/// <br></br>
 	/// 6) Regardless of all the past checks, if the DESTINATION PYLON is a modded one, <seealso cref="ValidTeleportCheck_DestinationPostCheck"/> is called on it.
 	/// <br></br>
-	/// 7) The game queries all pylons on the map and checks if any of them are in interaction distance with the player, and if so, checks Step 2 and 5 on them (NPCCount &amp; BiomeRequirements step)
+	/// 7) The game queries all pylons on the map and checks if any of them are in interaction distance with the player (<seealso cref="Player.InInteractionRange"/>), and if so, checks Step 2 on it. If Step 2 passes, Step 5 is then called on it as well (NPCCount &amp; BiomeRequirements step).
+	/// If Step 5 also passes, the loop breaks and no further pylons are checked, and for the next steps, the pylon that succeeded will be the designated NEARBY PYLON.
 	/// <br></br>
-	/// 8) Given that Step 7 finds a valid nearby pylon that satisfied the conditions, if that nearby pylon is a modded one, <seealso cref="ValidTeleportCheck_NearbyPostCheck"/> is called on it.
+	/// 8) Regardless of all the past checks, if the designated NEARBY PYLON is a modded one, <seealso cref="ValidTeleportCheck_NearbyPostCheck"/> is called on it.
 	/// <br></br>
 	/// 9) Any <seealso cref="GlobalPylon"/> instances run <seealso cref="GlobalPylon.PostValidTeleportCheck"/>.
 	/// </remarks>
