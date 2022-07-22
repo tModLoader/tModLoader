@@ -350,7 +350,6 @@ namespace Terraria.ModLoader
 				Main.mapFullscreen = false;
 				PlayerInput.LockGamepadButtons("MouseLeft");
 				Main.PylonSystem.RequestTeleportation(pylonInfo, Main.LocalPlayer);
-				SoundEngine.PlaySound(SoundID.Item6);
 			}
 		}
 	}
