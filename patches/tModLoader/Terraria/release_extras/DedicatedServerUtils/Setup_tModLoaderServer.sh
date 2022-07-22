@@ -34,7 +34,7 @@ function updateScript {
 	if ! verlte $scriptVersion $latestScriptVersion
 	then
 		echo "Updating from version v$scriptVersion to v$latestScriptVersion"
-		wget https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh
+		curl --silent -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh
 		mv Setup_tModLoaderServer.sh.1 Setup_tModLoaderServer.sh
 	else
 		echo "No new script updates"
@@ -55,7 +55,7 @@ function downRelease {
 		$1=$version
 	fi
 	echo "Downloading version $1"
-	wget --quiet "https://github.com/tModLoader/tModLoader/releases/download/$1/tModLoader.zip"
+	curl --silent -LJO "https://github.com/tModLoader/tModLoader/releases/download/$1/tModLoader.zip"
 }
 
 # Check $username is defined, exit if not
