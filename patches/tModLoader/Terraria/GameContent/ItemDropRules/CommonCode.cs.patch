@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonCode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
-@@ -1,12 +_,20 @@
+@@ -1,12 +_,21 @@
  using Microsoft.Xna.Framework;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
@@ -11,11 +11,11 @@
  {
  	public static class CommonCode
  	{
-+		internal static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
++		[Obsolete("Use DropItem(DropAttemptInfo, ...)", true)]
+ 		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
 +			_DropItemFromNPC(npc, itemId, stack, scattered);
 +		}
 +
--		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
 +		private static void _DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
 -			if (itemId > 0 && itemId < 5125) {
 +			if (itemId > 0 && itemId < ItemLoader.ItemCount) {
@@ -60,7 +60,15 @@
  				return;
  
  			if (Main.netMode == 2) {
-@@ -41,7 +_,7 @@
+@@ -34,14 +_,14 @@
+ 				Main.item[num].active = false;
+ 			}
+ 			else {
+-				DropItemFromNPC(npc, itemId, stack);
++				_DropItemFromNPC(npc, itemId, stack);
+ 			}
+ 
+ 			npc.value = 0f;
  		}
  
  		public static void DropItemForEachInteractingPlayerOnThePlayer(NPC npc, int itemId, UnifiedRandom rng, int chanceNumerator, int chanceDenominator, int stack = 1, bool interactionRequired = true) {
@@ -69,3 +77,12 @@
  				return;
  
  			if (Main.netMode == 2) {
+@@ -54,7 +_,7 @@
+ 				}
+ 			}
+ 			else if (rng.Next(chanceDenominator) < chanceNumerator) {
+-				DropItemFromNPC(npc, itemId, stack);
++				_DropItemFromNPC(npc, itemId, stack);
+ 			}
+ 
+ 			npc.value = 0f;

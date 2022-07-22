@@ -882,7 +882,7 @@
 +			ItemLoader.OpenVanillaBag_Obsolete("bossBag", this, type);
 +			NPCLoader.blockLoot.Clear();
 +
-+			if (ItemID.Sets.BossBag[type] && (!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
++			if ((!ItemID.Sets.PreHardmodeLikeBossBag[type] || Main.tenthAnniversaryWorld)) {
 +				TryGettingDevArmor(GetItemSource_OpenItem(type));
 +			}
 +

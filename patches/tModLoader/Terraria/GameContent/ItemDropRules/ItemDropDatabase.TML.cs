@@ -68,6 +68,7 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4980, 2));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4758, 3));
 			RegisterToItem(item, ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 1, 2, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.QueenSlimeBoss));
 
 			item = ItemID.FairyQueenBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.EmpressFlightBooster));
@@ -77,6 +78,7 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4778, 4));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(4715, 20));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.RainbowCursor, 20));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.HallowBoss));
 
 			item = ItemID.KingSlimeBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.RoyalGel));
@@ -86,7 +88,7 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeGun, 2));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SlimeHook, 2));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.Solidifier));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.KingSlime));
 
 			item = ItemID.PlanteraBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.SporeSac));
@@ -99,28 +101,28 @@ namespace Terraria.GameContent.ItemDropRules
 			IItemDropRule itemDropRule2 = ItemDropRule.Common(758);
 			itemDropRule2.OnSuccess(ItemDropRule.Common(771, 1, 50, 150), hideLootReport: true);
 			RegisterToItem(item, new OneFromRulesRule(1, itemDropRule2, ItemDropRule.Common(1255), ItemDropRule.Common(788), ItemDropRule.Common(1178), ItemDropRule.Common(1259), ItemDropRule.Common(1155), ItemDropRule.Common(3018)));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 15, 15));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.Plantera));
 
 			item = ItemID.SkeletronPrimeBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.MechanicalBatteryPiece));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SkeletronPrimeMask, 7));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.SoulofFright, 1, 25, 40));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.HallowedBar, 1, 20, 35));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 12, 12));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.SkeletronPrime));
 
 			item = ItemID.DestroyerBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.MechanicalWagonPiece));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SkeletronPrimeMask, 7));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.SoulofMight, 1, 25, 40));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.HallowedBar, 1, 20, 35));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 12, 12));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.TheDestroyer));
 
 			item = ItemID.TwinsBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.MechanicalWheelPiece));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.TwinMask, 7));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.SoulofSight, 1, 25, 40));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.HallowedBar, 1, 20, 35));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 12, 12));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.Retinazer));
 
 			item = ItemID.EyeOfCthulhuBossBag;
 			Conditions.IsCrimson condition4 = new Conditions.IsCrimson();
@@ -133,7 +135,7 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.ByCondition(condition5, 47, 1, 20, 49));
 			RegisterToItem(item, ItemDropRule.ByCondition(condition5, 56, 1, 30, 87));
 			RegisterToItem(item, ItemDropRule.ByCondition(condition5, 59, 1, 1, 3));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 3, 3));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.EyeofCthulhu));
 
 			item = ItemID.BrainOfCthulhuBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.BrainOfConfusion));
@@ -141,7 +143,7 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.Common(ItemID.CrimtaneOre, 1, 40, 90));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.TissueSample, 1, 10, 19));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.BoneRattle, 20));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.BrainofCthulhu));
 
 			item = ItemID.EaterOfWorldsBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.WormScarf));
@@ -149,14 +151,14 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.Common(ItemID.DemoniteOre, 1, 30, 59));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.ShadowScale, 1, 10, 19));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.EatersBone, 20));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 3, 3));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.EaterofWorldsHead));
 
 			item = ItemID.DeerclopsBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.BoneHelm));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.DeerclopsMask, 7));
 			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 5098, ItemID.Eyebrella, ItemID.DontStarveShaderItem));
 			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 5117, 5118, 5119, 5095));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 10, 10));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.Deerclops));
 
 			item = ItemID.QueenBeeBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.HiveBackpack));
@@ -169,12 +171,12 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.BeeHat, ItemID.BeeShirt, ItemID.BeePants));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.Beenade, 1, 10, 30));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.BeeWax, 1, 17, 30));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 10, 10));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.QueenBee));
 
 			item = ItemID.SkeletronBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.BoneGlove));
 			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.SkeletronMask, ItemID.SkeletronHand, ItemID.BookofSkulls));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 5, 5));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.SkeletronHead));
 
 			item = ItemID.WallOfFleshBossBag;
 			RegisterToItem(item, ItemDropRule.ByCondition(new Conditions.NotUsedDemonHeart(), ItemID.DemonHeart));
@@ -182,11 +184,11 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.Common(ItemID.Pwnhammer));
 			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.SummonerEmblem, ItemID.SorcererEmblem, ItemID.WarriorEmblem, ItemID.RangerEmblem));
 			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.LaserRifle, ItemID.BreakerBlade, ItemID.ClockworkAssaultRifle, ItemID.FireWhip));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 8, 8));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.WallofFlesh));
 
 			item = ItemID.CultistBossBag;
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.BossMaskCultist, 7));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.SilverCoin, 1, 20, 20));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.CultistBoss));
 
 			item = ItemID.MoonLordBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.GravityGlobe));
@@ -197,12 +199,14 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.MeowmereMinecart, 10));
 			RegisterToItem(item, ItemDropRule.ByCondition(new Conditions.NoPortalGun(), ItemID.PortalGun));
 			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, ItemID.Meowmere, ItemID.Terrarian, ItemID.StarWrath, ItemID.SDMG, ItemID.Celeb2, ItemID.LastPrism, ItemID.LunarFlareBook, ItemID.RainbowCrystalStaff, 3569));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.MoonLordCore));
 
 			item = ItemID.BossBagBetsy;
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.BossMaskBetsy, 7));
 			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 3827, 3859, 3870, 3858));
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.BetsyWings, 4));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.DefenderMedal, 1, 30, 49));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.DD2Betsy));
 
 			item = ItemID.GolemBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.ShinyStone));
@@ -212,7 +216,7 @@ namespace Terraria.GameContent.ItemDropRules
 			itemDropRule3.OnSuccess(ItemDropRule.Common(1261, 1, 60, 180), hideLootReport: true);
 			RegisterToItem(item, new OneFromRulesRule(1, itemDropRule3, ItemDropRule.Common(1122), ItemDropRule.Common(899), ItemDropRule.Common(1248), ItemDropRule.Common(1295), ItemDropRule.Common(1296), ItemDropRule.Common(1297)));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.BeetleHusk, 1, 18, 23));
-			RegisterToItem(item, ItemDropRule.Common(ItemID.GoldCoin, 1, 12, 12));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.Golem));
 
 			item = ItemID.FishronBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.ShrimpyTruffle));
@@ -220,6 +224,7 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.FishronWings, 10));
 			RegisterToItem(item, ItemDropRule.OneFromOptionsNotScalingWithLuck(1, 2611, 2624, 2622, 2621, 2623));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.SilverCoin, 1, 20, 20));
+			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.DukeFishron));
 		}
 
 		private void RegisterCrateDrops()
