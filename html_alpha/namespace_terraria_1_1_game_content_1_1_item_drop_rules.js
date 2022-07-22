@@ -1,6 +1,7 @@
 var namespace_terraria_1_1_game_content_1_1_item_drop_rules =
 [
     [ "Chains", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains" ],
+    [ "CoinsRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_coins_rule.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_coins_rule" ],
     [ "CommonCode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_code.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_code" ],
     [ "CommonDrop", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop" ],
     [ "CommonDropNotScalingWithLuck", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop_not_scaling_with_luck.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop_not_scaling_with_luck" ],

@@ -305,6 +305,12 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnCreate</b> (
 <tr class="memitem:a74b7e6b56d2c047bd44bf6048df298a6"><td class="memItemLeft" align="right" valign="top"><a id="a74b7e6b56d2c047bd44bf6048df298a6"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>OnResearched</b> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, bool fullyResearched)</td></tr>
 <tr class="separator:a74b7e6b56d2c047bd44bf6048df298a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26a04e0f6b5c69e8e50f020b6b83b5b6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a26a04e0f6b5c69e8e50f020b6b83b5b6">OpenBossBag</a> (int type, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref int npc)</td></tr>
+<tr class="memdesc:a26a04e0f6b5c69e8e50f020b6b83b5b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the item is a modded item and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a" title="The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains....">ModItem.BossBagNPC</a> is greater than 0, calls ModItem.OpenBossBag and sets npc to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a" title="The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains....">ModItem.BossBagNPC</a>.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a26a04e0f6b5c69e8e50f020b6b83b5b6">More...</a><br /></td></tr>
+<tr class="separator:a26a04e0f6b5c69e8e50f020b6b83b5b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade1e4bae9c5338483c565e66b63ad332"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ade1e4bae9c5338483c565e66b63ad332">OpenVanillaBag</a> (string context, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, int arg)</td></tr>
+<tr class="memdesc:ade1e4bae9c5338483c565e66b63ad332"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls all GlobalItem.OpenVanillaBag hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ade1e4bae9c5338483c565e66b63ad332">More...</a><br /></td></tr>
+<tr class="separator:ade1e4bae9c5338483c565e66b63ad332"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86bcf883f52900835ad19c83e289d080"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a86bcf883f52900835ad19c83e289d080">PickAmmo</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> weapon, <a class="el" href="class_terraria_1_1_item.html">Item</a> ammo, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, ref int type, ref float speed, ref <a class="el" href="struct_terraria_1_1_mod_loader_1_1_stat_modifier.html">StatModifier</a> damage, ref float knockback)</td></tr>
 <tr class="memdesc:a86bcf883f52900835ad19c83e289d080"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#afccf8f0da83d45d098a0560d832bf779" title="Allows you to modify various properties of the projectile created by a weapon based on the ammo it is...">ModItem.PickAmmo</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a87f0e41457d59545921387622017ece1" title="Allows you to modify various properties of the projectile created by a weapon based on the ammo it is...">GlobalItem.PickAmmo</a> hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a86bcf883f52900835ad19c83e289d080">More...</a><br /></td></tr>
 <tr class="separator:a86bcf883f52900835ad19c83e289d080"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -341,6 +347,9 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>PreDrawTooltip
 <tr class="memitem:a1e4d9aac17cd087ce704c421a8b72a8f"><td class="memItemLeft" align="right" valign="top">static ? bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a1e4d9aac17cd087ce704c421a8b72a8f">PrefixChance</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item, int pre, <a class="el" href="class_terraria_1_1_utilities_1_1_unified_random.html">UnifiedRandom</a> rand)</td></tr>
 <tr class="memdesc:a1e4d9aac17cd087ce704c421a8b72a8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows for blocking, forcing and altering chance of prefix rolling. False (block) takes precedence over True (force). Null gives vanilla behaviour  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#a1e4d9aac17cd087ce704c421a8b72a8f">More...</a><br /></td></tr>
 <tr class="separator:a1e4d9aac17cd087ce704c421a8b72a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3548d7820ab759b7ad5ba0d09784469"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ae3548d7820ab759b7ad5ba0d09784469">PreOpenVanillaBag</a> (string context, <a class="el" href="class_terraria_1_1_player.html">Player</a> player, int arg)</td></tr>
+<tr class="memdesc:ae3548d7820ab759b7ad5ba0d09784469"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ae3548d7820ab759b7ad5ba0d09784469">More...</a><br /></td></tr>
+<tr class="separator:ae3548d7820ab759b7ad5ba0d09784469"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae74362e1bc04c9782c89480a7f16e754"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ae74362e1bc04c9782c89480a7f16e754">PreReforge</a> (<a class="el" href="class_terraria_1_1_item.html">Item</a> item)</td></tr>
 <tr class="memdesc:ae74362e1bc04c9782c89480a7f16e754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#a1e614981cbcb53ca9d3a48f05c0bad84" title="This hook gets called when the player clicks on the reforge button and can afford the reforge....">ModItem.PreReforge</a>, then all <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_item.html#a206468fa292ceda71c21f06b543110f7" title="This hook gets called when the player clicks on the reforge button and can afford the reforge....">GlobalItem.PreReforge</a> hooks.  <a href="class_terraria_1_1_mod_loader_1_1_item_loader.html#ae74362e1bc04c9782c89480a7f16e754">More...</a><br /></td></tr>
 <tr class="separator:ae74362e1bc04c9782c89480a7f16e754"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2363,6 +2372,94 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 
 </div>
 </div>
+<a id="a26a04e0f6b5c69e8e50f020b6b83b5b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26a04e0f6b5c69e8e50f020b6b83b5b6">&#9670;&nbsp;</a></span>OpenBossBag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.ItemLoader.OpenBossBag </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>npc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If the item is a modded item and <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a" title="The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains....">ModItem.BossBagNPC</a> is greater than 0, calls ModItem.OpenBossBag and sets npc to <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_item.html#abfdf070cf5034f34597c9c120e42144a" title="The type of NPC that drops this boss bag. Used to determine how many coins this boss bag contains....">ModItem.BossBagNPC</a>. </p>
+
+</div>
+</div>
+<a id="ade1e4bae9c5338483c565e66b63ad332"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade1e4bae9c5338483c565e66b63ad332">&#9670;&nbsp;</a></span>OpenVanillaBag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Terraria.ModLoader.ItemLoader.OpenVanillaBag </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>arg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls all GlobalItem.OpenVanillaBag hooks. </p>
+
+</div>
+</div>
 <a id="a86bcf883f52900835ad19c83e289d080"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a86bcf883f52900835ad19c83e289d080">&#9670;&nbsp;</a></span>PickAmmo()</h2>
 
@@ -2812,6 +2909,50 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>ItemCount</b><c
 </div><div class="memdoc">
 
 <p>Allows for blocking, forcing and altering chance of prefix rolling. False (block) takes precedence over True (force). Null gives vanilla behaviour </p>
+
+</div>
+</div>
+<a id="ae3548d7820ab759b7ad5ba0d09784469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3548d7820ab759b7ad5ba0d09784469">&#9670;&nbsp;</a></span>PreOpenVanillaBag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Terraria.ModLoader.ItemLoader.PreOpenVanillaBag </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>context</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_terraria_1_1_player.html">Player</a>&#160;</td>
+          <td class="paramname"><em>player</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>arg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true. </p>
 
 </div>
 </div>

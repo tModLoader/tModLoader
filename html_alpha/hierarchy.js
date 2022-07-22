@@ -1177,6 +1177,7 @@ var hierarchy =
       [ "Terraria.UI.InGamePopups.PlayerWantsToJoinGamePopup", "class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html", null ]
     ] ],
     [ "Terraria.GameContent.ItemDropRules.IItemDropRule", "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html", [
+      [ "Terraria.GameContent.ItemDropRules.CoinsRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_coins_rule.html", null ],
       [ "Terraria.GameContent.ItemDropRules.CommonDrop", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop.html", [
         [ "Terraria.GameContent.ItemDropRules.CommonDropNotScalingWithLuck", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop_not_scaling_with_luck.html", null ],
         [ "Terraria.GameContent.ItemDropRules.CommonDropWithRerolls", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop_with_rerolls.html", null ],

@@ -3,6 +3,8 @@ var class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule =
     [ "BossBag", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#ae23d2bdf46c9aae088c63d1afe913717", null ],
     [ "BossBagByCondition", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a2787ee5c13fdf2f4b055d94cc0bdcc7a", null ],
     [ "ByCondition", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a26d6b3a49d544d96a55e566a1d03426a", null ],
+    [ "Coins", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a40d98f487b2a205086b623c6947c8d5e", null ],
+    [ "CoinsBasedOnNPCValue", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a05bc28e0cec8f1e1c176f94d5853249b", null ],
     [ "Common", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a4df3c7e080e2fb7067afa61851e995c4", null ],
     [ "DropNothing", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a2426386fe0c349655a3c9b9268d2a19c", null ],
     [ "ExpertGetsRerolls", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html#a458e96a019230d1827bd742fc4456100", null ],
