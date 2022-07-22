@@ -79,10 +79,15 @@ function steamcmdtML {
 			steamcmd +login $username +app_update 1281930 +quit # tMod goes into ~/Steam/steamapps/common/tModLoader
 		fi
 
-		if [[ $? == "5" ]] && ! [[ -f /.dockerenv ]] # Only recurse when not being used in the docker container.
+		if [[ $? == "5" ]] # Only recurse when not being used in the docker container.
 		then
-			echo "Try entering password/2fa code again"
-			steamcmdtML
+			 if ! [[ -f /.dockerenv ]]
+			 then
+				echo "Try entering password/2fa code again"
+				steamcmdtML
+			else
+				exit 5
+			fi
 		fi
 }
 
