@@ -36,9 +36,10 @@ namespace Terraria.ModLoader
 	/// <br></br>
 	/// 6) Regardless of all the past checks, if the DESTINATION PYLON is a modded one, <seealso cref="ValidTeleportCheck_DestinationPostCheck"/> is called on it.
 	/// <br></br>
-	/// 7) The game queries all pylons on the map and checks if any of them are in interaction distance with the player, and if so, checks Step 2 and 5 on them (NPCCount &amp; BiomeRequirements step)
+	/// 7) The game queries all pylons on the map and checks if any of them are in interaction distance with the player (<seealso cref="Player.InInteractionRange"/>), and if so, checks Step 2 on it. If Step 2 passes, Step 5 is then called on it as well (NPCCount &amp; BiomeRequirements step).
+	/// If Step 5 also passes, the loop breaks and no further pylons are checked, and for the next steps, the pylon that succeeded will be the designated NEARBY PYLON.
 	/// <br></br>
-	/// 8) Given that Step 7 finds a valid nearby pylon that satisfied the conditions, if that nearby pylon is a modded one, <seealso cref="ValidTeleportCheck_NearbyPostCheck"/> is called on it.
+	/// 8) Regardless of all the past checks, if the designated NEARBY PYLON is a modded one, <seealso cref="ValidTeleportCheck_NearbyPostCheck"/> is called on it.
 	/// <br></br>
 	/// 9) Any <seealso cref="GlobalPylon"/> instances run <seealso cref="GlobalPylon.PostValidTeleportCheck"/>.
 	/// </remarks>
@@ -196,6 +197,59 @@ namespace Terraria.ModLoader
 		/// <param name="selectedScale"> The scale of the icon if it IS currently being over. In vanilla, this is 2f, or 200%. </param>
 		public virtual void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) { }
 
+		public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
+			// Adapted vanilla code from TETeleportationPylon in order to line up with vanilla's functionality.
+			if (WorldGen.destroyObject)
+				return false;
+
+			int topLeftX = i;
+			int topLeftY = j;
+			Tile tileSafely = Framing.GetTileSafely(i, j);
+			TileObjectData tileData = TileObjectData.GetTileData(tileSafely);
+			bool shouldBreak = false;
+
+			topLeftX -= tileSafely.frameX / tileData.CoordinateWidth % tileData.Width;
+			topLeftY -= tileSafely.frameY / 18 % tileData.Height;
+
+			int rightX = topLeftX + tileData.Width;
+			int bottomY = topLeftY + tileData.Height;
+
+			for (int x = topLeftX; x < rightX; x++) {
+				for (int y = topLeftY; y < bottomY; y++) {
+					Tile tile = Main.tile[x, y];
+					if (!tile.HasTile || tile.type != Type) {
+						shouldBreak = true;
+						break;
+					}
+				}
+			}
+
+			for (int x = topLeftX; x < rightX; x++) {
+				if (!WorldGen.SolidTileAllowBottomSlope(x, bottomY)) {
+					shouldBreak = true;
+					break;
+				}
+			}
+
+			if (!shouldBreak) {
+				noBreak = true;
+				return true;
+			}
+
+			KillMultiTile(topLeftX, topLeftY, tileSafely.TileFrameX, tileSafely.TileFrameY);
+			WorldGen.destroyObject = true;
+			for (int x = topLeftX; x < rightX; x++) {
+				for (int y = topLeftY; y < bottomY; y++) {
+					Tile tile = Main.tile[x, y];
+					if (tile.HasTile && tile.TileType == Type)
+						WorldGen.KillTile(x, y);
+				}
+			}
+			WorldGen.destroyObject = false;
+
+			return true;
+		}
+
 		public override bool RightClick(int i, int j) {
 			// Vanilla has a very handy function we can use that automatically opens the map, closes the inventory, plays a sound, etc:
 			Main.LocalPlayer.TryOpeningFullscreenMap();
@@ -350,7 +404,6 @@ namespace Terraria.ModLoader
 				Main.mapFullscreen = false;
 				PlayerInput.LockGamepadButtons("MouseLeft");
 				Main.PylonSystem.RequestTeleportation(pylonInfo, Main.LocalPlayer);
-				SoundEngine.PlaySound(SoundID.Item6);
 			}
 		}
 	}
