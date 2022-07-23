@@ -1005,5 +1005,43 @@ namespace Terraria.ModLoader
 			Assert.IsTrue(c3[0][0, 0].value == tag.Get<List<C[,]>> ("c3")[0][0, 0].value);
 			Assert.IsTrue(c4[0, 0][0].value == tag.Get<List<C>[,]> ("c4")[0, 0][0].value);
 		}
+
+		[TestMethod]
+		public void TestMultiDimensionalArrayDuckTyping() {
+
+			C[,]       c1 = new C[1,1]       {             {   new C(1) } };
+			C[][]      c2 = new C[1][]       {   new C[]   {   new C(1) } };
+			C[][,]     c3 = new C[1][,]      {   new C[,]  { { new C(1) } } };
+			C[,][]     c4 = new C[1,1][]     { { new C[]   {   new C(1) } } };
+			C[,][,]    c5 = new C[1,1][,]    { { new C[,]  { { new C(1) } } } };
+
+			List<C>[]  c6 = new List<C>[]    {   new List<C> { new C(1) } };
+			List<C[]>  c7 = new List<C[]>    {   new C[]     { new C(1) } };
+			List<C[,]> c8 = new List<C[,]>   {   new C[,]  { { new C(1) } } };
+			List<C>[,] c9 = new List<C>[1,1] { { new List<C> { new C(1) } } };
+
+			TagCompound tag = new() {
+				["c1"] = c1,
+				["c2"] = c2,
+				["c3"] = c3,
+				["c4"] = c4,
+				["c5"] = c5,
+				["c6"] = c6,
+				["c7"] = c7,
+				["c8"] = c8,
+				["c9"] = c9,
+			};
+
+			Assert.IsTrue(c1[0,0].value        == tag.Get<C2[,]>       ("c1")[0,0].value);
+			Assert.IsTrue(c2[0][0].value       == tag.Get<C2[][]>      ("c2")[0][0].value);
+			Assert.IsTrue(c3[0][0, 0].value    == tag.Get<C2[][,]>     ("c3")[0][0, 0].value);
+			Assert.IsTrue(c4[0, 0][0].value    == tag.Get<C2[,][]>     ("c4")[0, 0][0].value);
+			Assert.IsTrue(c5[0, 0][0, 0].value == tag.Get<C2[,][,]>    ("c5")[0, 0][0, 0].value);
+
+			Assert.IsTrue(c6[0][0].value       == tag.Get<List<C2>[]>  ("c6")[0][0].value);
+			Assert.IsTrue(c7[0][0].value       == tag.Get<List<C2[]>>  ("c7")[0][0].value);
+			Assert.IsTrue(c8[0][0, 0].value    == tag.Get<List<C2[,]>> ("c8")[0][0, 0].value);
+			Assert.IsTrue(c9[0, 0][0].value    == tag.Get<List<C2>[,]> ("c9")[0, 0][0].value);
+		}
 	}
 }
