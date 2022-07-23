@@ -1,5 +1,6 @@
 var NAVTREEINDEX124 =
 {
+"interface_terraria_1_1_chat_1_1_i_chat_processor.html#a74c313628a8d45f6de37021c03616540":[2,0,2,2,5,0],
 "interface_terraria_1_1_data_structures_1_1_i_config_key_holder.html":[2,0,2,4,49],
 "interface_terraria_1_1_data_structures_1_1_i_config_key_holder.html#a8057e68df457c934f623ee6cd7d97b0d":[2,0,2,4,49,1],
 "interface_terraria_1_1_data_structures_1_1_i_config_key_holder.html#aa598d179207b8693ce3f630b60c5996f":[2,0,2,4,49,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX124 =
 "interface_terraria_1_1_u_i_1_1_chat_1_1_i_tag_handler.html":[2,0,2,21,0,3],
 "interface_terraria_1_1_u_i_1_1_chat_1_1_i_tag_handler.html#aa5a15f340434dc9990b2b10b306642a6":[2,0,2,21,0,3,0],
 "interface_terraria_1_1_u_i_1_1_i_have_back_button_command.html":[2,0,2,21,10],
-"interface_terraria_1_1_u_i_1_1_i_have_back_button_command.html#a7ab961b4a44ae49de735fb0803ba0d4c":[2,0,2,21,10,0],
-"interface_terraria_1_1_u_i_1_1_i_have_back_button_command.html#af1744639da7964d2a8145b1d6675accc":[2,0,2,21,10,1]
+"interface_terraria_1_1_u_i_1_1_i_have_back_button_command.html#a7ab961b4a44ae49de735fb0803ba0d4c":[2,0,2,21,10,0]
 };

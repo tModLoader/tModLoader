@@ -1,5 +1,6 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_game_content_1_1_player_sleeping_helper.html#af2f0f479ca5a622a0b457d38b1bde77b":[2,0,2,5,52,12],
 "struct_terraria_1_1_game_content_1_1_player_sleeping_helper.html#af42474b2d26f9866f0f0c28f0df6f918":[2,0,2,5,52,0],
 "struct_terraria_1_1_game_content_1_1_potion_of_return_gate_helper.html":[2,0,2,5,55],
 "struct_terraria_1_1_game_content_1_1_potion_of_return_gate_helper.html#a2d759b886f0622d24a139c4c9448134f":[2,0,2,5,55,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_main_1_1_scene_area.html#abb901a61a2f6864d7dbcd1c54c3df2e2":[2,0,2,47,3,2],
 "struct_terraria_1_1_map_1_1_map_overlay_draw_context.html":[2,0,2,12,3],
 "struct_terraria_1_1_map_1_1_map_overlay_draw_context.html#a000e502c8918f06524b74e19596a2b9c":[2,0,2,12,3,2],
-"struct_terraria_1_1_map_1_1_map_overlay_draw_context.html#a1b987403f826110f4dad7847bf7721f8":[2,0,2,12,3,1],
-"struct_terraria_1_1_map_1_1_map_overlay_draw_context.html#a838571cc8f13c874a24cfbe9adb73074":[2,0,2,12,3,3]
+"struct_terraria_1_1_map_1_1_map_overlay_draw_context.html#a1b987403f826110f4dad7847bf7721f8":[2,0,2,12,3,1]
 };

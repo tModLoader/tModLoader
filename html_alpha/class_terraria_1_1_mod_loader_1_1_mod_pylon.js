@@ -9,6 +9,7 @@ var class_terraria_1_1_mod_loader_1_1_mod_pylon =
     [ "HasSmartInteract", "class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a0ae946e087c038f4877a13703d174405", null ],
     [ "IsPylonForSale", "class_terraria_1_1_mod_loader_1_1_mod_pylon.html#aa2abc46bce56efbc22dff29fef10adcc", null ],
     [ "RightClick", "class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a25b0e7d965755343246b3ef6370e9fc2", null ],
+    [ "TileFrame", "class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a48bbc71514f01f45a65aed8b1a25628b", null ],
     [ "ValidTeleportCheck_AnyDanger", "class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a023778d6d0e01299b686ffd294b6d263", null ],
     [ "ValidTeleportCheck_BiomeRequirements", "class_terraria_1_1_mod_loader_1_1_mod_pylon.html#aba4ceab0607da6b4c8df580bb4e3d323", null ],
     [ "ValidTeleportCheck_DestinationPostCheck", "class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a4c4bdb43bda8dbccfb4b146ccdf0ac8f", null ],

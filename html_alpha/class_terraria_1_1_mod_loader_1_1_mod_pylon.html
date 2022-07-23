@@ -130,6 +130,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a25b0e7d965755343246b3ef6370e9fc2"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a25b0e7d965755343246b3ef6370e9fc2">RightClick</a> (int i, int j)</td></tr>
 <tr class="memdesc:a25b0e7d965755343246b3ef6370e9fc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when this tile is right-clicked by the player. Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a25b0e7d965755343246b3ef6370e9fc2">More...</a><br /></td></tr>
 <tr class="separator:a25b0e7d965755343246b3ef6370e9fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48bbc71514f01f45a65aed8b1a25628b"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a48bbc71514f01f45a65aed8b1a25628b">TileFrame</a> (int i, int j, ref bool resetFrame, ref bool noBreak)</td></tr>
+<tr class="memdesc:a48bbc71514f01f45a65aed8b1a25628b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever this tile updates due to being placed or being next to a tile that is changed. Return false to stop the game from carrying out its default TileFrame operations. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a48bbc71514f01f45a65aed8b1a25628b">More...</a><br /></td></tr>
+<tr class="separator:a48bbc71514f01f45a65aed8b1a25628b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a023778d6d0e01299b686ffd294b6d263"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a023778d6d0e01299b686ffd294b6d263">ValidTeleportCheck_AnyDanger</a> (<a class="el" href="struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html">TeleportPylonInfo</a> pylonInfo)</td></tr>
 <tr class="memdesc:a023778d6d0e01299b686ffd294b6d263"><td class="mdescLeft">&#160;</td><td class="mdescRight">Step 2 of the ValidTeleportCheck process. This is the second vanilla check that is called when checking the destination pylon. This check should be where you check if there is any "Danger" nearby, such as bosses or if there is an event happening. It is unlikely you will need to use this. By default, returns true if there are not any events happening (Lunar Pillars do not count) and there are no bosses currently alive.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a023778d6d0e01299b686ffd294b6d263">More...</a><br /></td></tr>
 <tr class="separator:a023778d6d0e01299b686ffd294b6d263"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,9 +258,6 @@ Example usage: Beds/Dressers which have separate interactions based on where to 
 <tr class="memitem:abdf7ca5d6ee7408deb454291acd2e984 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#abdf7ca5d6ee7408deb454291acd2e984">SpecialDraw</a> (int i, int j, SpriteBatch spriteBatch)</td></tr>
 <tr class="memdesc:abdf7ca5d6ee7408deb454291acd2e984 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special Draw. Only called if coordinates are added using Main.instance.TilesRenderer.AddSpecialLegacyPoint during DrawEffects. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#abdf7ca5d6ee7408deb454291acd2e984">More...</a><br /></td></tr>
 <tr class="separator:abdf7ca5d6ee7408deb454291acd2e984 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec237f34a1022d26cae044deccb2abbf inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#aec237f34a1022d26cae044deccb2abbf">TileFrame</a> (int i, int j, ref bool resetFrame, ref bool noBreak)</td></tr>
-<tr class="memdesc:aec237f34a1022d26cae044deccb2abbf inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called whenever this tile updates due to being placed or being next to a tile that is changed. Return false to stop the game from carrying out its default TileFrame operations. Returns true by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#aec237f34a1022d26cae044deccb2abbf">More...</a><br /></td></tr>
-<tr class="separator:aec237f34a1022d26cae044deccb2abbf inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a120164cf1f14b2efd5cbbc723a4d1b50 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a120164cf1f14b2efd5cbbc723a4d1b50">UnlockChest</a> (int i, int j, ref short frameXAdjustment, ref int dustType, ref bool manual)</td></tr>
 <tr class="memdesc:a120164cf1f14b2efd5cbbc723a4d1b50 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows customization of how a chest unlock is accomplished. By default, frameXAdjustment will be -36, shifting the frameX over to the left by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly. This hook is called on the client, and if successful will be called on the server and other clients as the action is synced. Make sure that the logic is consistent and not dependent on local player data.  <a href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#a120164cf1f14b2efd5cbbc723a4d1b50">More...</a><br /></td></tr>
 <tr class="separator:a120164cf1f14b2efd5cbbc723a4d1b50 inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -451,15 +451,15 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Extension to </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a></dd></dl>
 <p>that streamlines the process of creating a modded Pylon. Has all of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a>'s hooks for customization, but additional hooks for Pylon functionality. </p>
 <p>One of the key features of this class is the <b>ValidTeleportCheck</b> process. At first glance it can look a bit messy, however here is a rough break-down of the call process to help you if you're lost: <br  />
- 1) <a class="el" href="class_game.html">Game</a> queries if the specified player is near a Pylon (</p><dl class="section see"><dt>See also</dt><dd>TeleportPylonsSystem.IsPlayerNearAPylon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a4c4bdb43bda8dbccfb4b146ccdf0ac8f" title="The 4th check of the ValidTeleportCheck process. This check is for modded Pylons only,...">ValidTeleportCheck_DestinationPostCheck</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ae25704d06ba66e69797fa0e97deff382" title="The 5th and final check of the ValidTeleportCheck process. This check is for modded Pylons only,...">ValidTeleportCheck_NearbyPostCheck</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_pylon.html" title="Global Type that exists for pylons that allows for modification of teleportation steps,...">GlobalPylon</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_pylon.html#abae1b1666e908d052b9fbc5bd565a465" title="Called after all checks have taken place for all vanilla and modded pylons when a teleportation reque...">GlobalPylon.PostValidTeleportCheck</a></dd></dl>
+ 1) <a class="el" href="class_game.html">Game</a> queries if the specified player is near a Pylon (</p><dl class="section see"><dt>See also</dt><dd>TeleportPylonsSystem.IsPlayerNearAPylon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a4c4bdb43bda8dbccfb4b146ccdf0ac8f" title="The 4th check of the ValidTeleportCheck process. This check is for modded Pylons only,...">ValidTeleportCheck_DestinationPostCheck</a>, Player.InInteractionRange, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ae25704d06ba66e69797fa0e97deff382" title="The 5th and final check of the ValidTeleportCheck process. This check is for modded Pylons only,...">ValidTeleportCheck_NearbyPostCheck</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_pylon.html" title="Global Type that exists for pylons that allows for modification of teleportation steps,...">GlobalPylon</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_pylon.html#abae1b1666e908d052b9fbc5bd565a465" title="Called after all checks have taken place for all vanilla and modded pylons when a teleportation reque...">GlobalPylon.PostValidTeleportCheck</a></dd></dl>
 <p>) <br  />
  2) Assuming Step 1 has passed, game queries if the DESTINATION PYLON (the pylon the player CLICKED on the map) has enough NPCs nearby (NPCCount step) <br  />
  3) Assuming Step 2 has passed, game queries if there is ANY DANGER at ALL across the entire map, ignoring the lunar pillar event (AnyDanger step) <br  />
  4) Assuming Step 3 has passed, game queries if the DESTINATION PYLON is in the Lihzahrd Temple before Plantera is defeated. <br  />
  5) Assuming Step 4 has passed, game queries if the DESTINATION PYLON meets its biome specifications for whatever type of pylon it is (BiomeRequirements step) <br  />
  6) Regardless of all the past checks, if the DESTINATION PYLON is a modded one,  is called on it. <br  />
- 7) The game queries all pylons on the map and checks if any of them are in interaction distance with the player, and if so, checks Step 2 and 5 on them (NPCCount &amp; BiomeRequirements step) <br  />
- 8) Given that Step 7 finds a valid nearby pylon that satisfied the conditions, if that nearby pylon is a modded one,  is called on it. <br  />
+ 7) The game queries all pylons on the map and checks if any of them are in interaction distance with the player (), and if so, checks Step 2 on it. If Step 2 passes, Step 5 is then called on it as well (NPCCount &amp; BiomeRequirements step). If Step 5 also passes, the loop breaks and no further pylons are checked, and for the next steps, the pylon that succeeded will be the designated NEARBY PYLON. <br  />
+ 8) Regardless of all the past checks, if the designated NEARBY PYLON is a modded one,  is called on it. <br  />
  9) Any  instances run . </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac686ab0c3183a36d59fabf84f9f678f5"></a>
@@ -983,6 +983,67 @@ If the server disagrees with the client that the given pylon CANNOT be placed fo
 <dl class="section return"><dt>Returns</dt><dd>Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.</dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#ae9ab77e6249c1e08ab661ab4edeba1fc">Terraria.ModLoader.ModTile</a>.</p>
+
+</div>
+</div>
+<a id="a48bbc71514f01f45a65aed8b1a25628b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48bbc71514f01f45a65aed8b1a25628b">&#9670;&nbsp;</a></span>TileFrame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override bool Terraria.ModLoader.ModPylon.TileFrame </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool&#160;</td>
+          <td class="paramname"><em>resetFrame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool&#160;</td>
+          <td class="paramname"><em>noBreak</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called whenever this tile updates due to being placed or being next to a tile that is changed. Return false to stop the game from carrying out its default TileFrame operations. Returns true by default. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">resetFrame</td><td></td></tr>
+    <tr><td class="paramname">noBreak</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#aec237f34a1022d26cae044deccb2abbf">Terraria.ModLoader.ModTile</a>.</p>
 
 </div>
 </div>

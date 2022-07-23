@@ -1,5 +1,6 @@
 var NAVTREEINDEX128 =
 {
+"namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fa90589c47f06eb971d548591f23c285af":[1,0,2,14,185,5],
 "namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4faafdf68e7bb331d324d2135699c3aa39e":[1,0,2,14,185,4],
 "namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fac2f329a17c18a701dbe1e96e03858728":[1,0,2,14,185,1],
 "namespace_terraria_1_1_mod_loader.html#a0e0175fdeec3ed0e547292cea0718e4fafcbd772e48c4b07d7d3be13b37a82f5e":[1,0,2,14,185,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX128 =
 "struct_terraria_1_1_chat_1_1_chat_command_id.html#a87e7d0d6c93a25168bc596afc0fde77f":[2,0,2,2,1,0],
 "struct_terraria_1_1_chat_1_1_chat_command_id.html#ab2cc569667f06ad119d69a043d0d279e":[2,0,2,2,1,2],
 "struct_terraria_1_1_chat_1_1_chat_command_id.html#afaaf9e4f6318ffe6f806bfee2cbc5d52":[2,0,2,2,1,1],
-"struct_terraria_1_1_cinematics_1_1_frame_event_data.html":[2,0,2,3,4],
-"struct_terraria_1_1_cinematics_1_1_frame_event_data.html#a1bd92ef6ac65284d52d74c61f5b5d446":[2,0,2,3,4,4]
+"struct_terraria_1_1_cinematics_1_1_frame_event_data.html":[2,0,2,3,4]
 };
