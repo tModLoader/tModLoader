@@ -151,7 +151,7 @@ namespace Terraria.ModLoader.UI
 			}.WithFadedMouseOver();
 			_updateListWithEnabledButton.PaddingTop -= 2f;
 			_updateListWithEnabledButton.PaddingBottom -= 2f;
-			_updateListWithEnabledButton.OnClick += (a, b) => UIModPacks.SaveModPack(_filename);
+			_updateListWithEnabledButton.OnClick += UpdateModPack;
 			Append(_updateListWithEnabledButton);
 
 			// Delete button
@@ -336,6 +336,29 @@ namespace Terraria.ModLoader.UI
 			Logging.tML.Info($"Enabled only mods defined in Collection {modpack._filename}");
 		}
 
+		private static void UpdateModPack(UIMouseEvent evt, UIElement listeningElement) {
+			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
+			UIModPacks.SaveModPack(modpack._filename);
+
+			if (modpack._filepath == ModOrganizer.ModPackActive) {
+				ModLoader.DisableAllMods();
+				Logging.tML.Info($"Cleaning up removed tmods {modpack._filename}");
+				ModLoader.OnSuccessfulLoad += () => {
+					foreach (var file in Directory.EnumerateFiles(UIModPacks.ModPackModsPath(modpack._filename), "*.tmod"))
+						if (!modpack._mods.Contains(Path.GetFileNameWithoutExtension(file)))
+							File.Delete(file);
+
+					EnableList(evt, listeningElement);
+				};
+				ModLoader.Reload();
+			}
+			else {
+				foreach (var file in Directory.EnumerateFiles(UIModPacks.ModPackModsPath(modpack._filename), "*.tmod"))
+					if (!modpack._mods.Contains(Path.GetFileNameWithoutExtension(file)))
+						File.Delete(file);
+			}
+		}
+
 		private static void ImportModPackLocal(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
 			ModOrganizer.ModPackActive = modpack._filepath;
@@ -353,6 +376,7 @@ namespace Terraria.ModLoader.UI
 
 			//TODO: Add code to utilize the saved configs
 
+			ModLoader.DisableAllMods();
 			Logging.tML.Info($"Disabled Frozen Mod Pack {modpack._filename}");
 			ModLoader.OnSuccessfulLoad += () => Main.menuMode = Interface.modPacksMenuID;
 			ModLoader.Reload();

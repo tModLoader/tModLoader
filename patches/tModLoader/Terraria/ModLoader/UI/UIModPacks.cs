@@ -141,7 +141,8 @@ namespace Terraria.ModLoader.UI
 
 			SaveSnapshot(configsPath, modsPath);
 
-			Main.menuMode = Interface.modPacksMenuID; // should reload
+			Interface.modPacksMenu.OnDeactivate(); // should reload
+			Interface.modPacksMenu.OnActivate(); // should reload
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -220,16 +221,12 @@ namespace Terraria.ModLoader.UI
 			_modPacks.Add(new UIModPackItem(Path.GetFileNameWithoutExtension(jsonPath), modPackMods, true, localMods));
 		}
 
-
 		public static void SaveSnapshot(string configsPath, string modsPath) {
-			if(!Directory.Exists(Config.ConfigManager.ModConfigPath))
+			if (!Directory.Exists(Config.ConfigManager.ModConfigPath))
 				Directory.CreateDirectory(Config.ConfigManager.ModConfigPath);
 
-			if (!Directory.Exists(configsPath))
-				Directory.CreateDirectory(configsPath);
-
-			if (!Directory.Exists(modsPath))
-				Directory.CreateDirectory(modsPath);
+			Directory.CreateDirectory(configsPath);
+			Directory.CreateDirectory(modsPath);
 
 			var configsAll = Directory.EnumerateFiles(Config.ConfigManager.ModConfigPath);
 
@@ -249,8 +246,9 @@ namespace Terraria.ModLoader.UI
 					workshopIds.Add(info.workshopEntryId.ToString());
 				}
 
-				// Copy the frozen mod to the Mod Pack
-				File.Copy(mod.File.path, Path.Combine(modsPath, mod.Name + ".tmod"));
+				// Copy the frozen mod to the Mod Pack if its different/new
+				if (mod.File.path != Path.Combine(modsPath, mod.Name + ".tmod"))
+					File.Copy(mod.File.path, Path.Combine(modsPath, mod.Name + ".tmod"), true);
 			}
 
 			// Write the required workshop mods to install.txt
