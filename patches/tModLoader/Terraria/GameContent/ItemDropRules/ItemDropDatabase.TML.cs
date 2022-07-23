@@ -626,7 +626,7 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToMultipleItems(bc_scarab, ItemID.OasisCrate, ItemID.OasisCrateHard);
 			RegisterToMultipleItems(bc_bomb, ItemID.OasisCrate, ItemID.OasisCrateHard);
 			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_lava), ItemID.LavaCrate, ItemID.LavaCrateHard);
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_sea), ItemID.OasisCrate, ItemID.OasisCrateHard);
+			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_sea), ItemID.OceanCrate, ItemID.OceanCrateHard);
 
 			RegisterToMultipleItems(bc_pot, ItemID.LavaCrate, ItemID.LavaCrateHard);
 			RegisterToMultipleItems(bc_obsi, ItemID.LavaCrate, ItemID.LavaCrateHard);
@@ -651,8 +651,8 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToMultipleItems(bc_fish, ItemID.FrozenCrate, ItemID.FrozenCrateHard);
 			RegisterToMultipleItems(bc_ornate, ItemID.LavaCrate, ItemID.LavaCrateHard);
 			RegisterToMultipleItems(bc_cake, ItemID.LavaCrate, ItemID.LavaCrateHard);
-			RegisterToMultipleItems(bc_pile, ItemID.OasisCrate, ItemID.OasisCrateHard);
-			RegisterToMultipleItems(bc_sand, ItemID.OasisCrate, ItemID.OasisCrateHard);
+			RegisterToMultipleItems(bc_pile, ItemID.OceanCrate, ItemID.OceanCrateHard);
+			RegisterToMultipleItems(bc_sand, ItemID.OceanCrate, ItemID.OceanCrateHard);
 			#endregion
 		}
 

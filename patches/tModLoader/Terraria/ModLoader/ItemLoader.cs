@@ -1307,7 +1307,7 @@ namespace Terraria.ModLoader
 		public static void ModifyItemLoot(Item item, ItemLoot itemLoot) {
 			item.ModItem?.ModifyItemLoot(itemLoot);
 
-			foreach (var g in HookModifyItemLoot.Enumerate(globalItems)) {
+			foreach (var g in HookModifyItemLoot.Enumerate(item.globalItems)) {
 				g.ModifyItemLoot(item, itemLoot);
 			}
 		}
