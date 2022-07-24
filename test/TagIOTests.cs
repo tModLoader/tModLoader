@@ -1020,16 +1020,38 @@ namespace Terraria.ModLoader
 			List<C[,]> c8 = new List<C[,]>   {   new C[,]  { { new C(1) } } };
 			List<C>[,] c9 = new List<C>[1,1] { { new List<C> { new C(1) } } };
 
+			Vector2[,]    v1 = new Vector2[1,1]    {                    { Vector2.One } };
+			Vector2[][]   v2 = new Vector2[1][]    {   new Vector2[]    { Vector2.One } };
+			Vector2[][,]  v3 = new Vector2[1][,]   {   new Vector2[,] { { Vector2.One } } };
+			Vector2[,][]  v4 = new Vector2[1,1][]  { { new Vector2[]    { Vector2.One } } };
+			Vector2[,][,] v5 = new Vector2[1,1][,] { { new Vector2[,] { { Vector2.One } } } };
+
+			List<Vector2>[]  v6 = new List<Vector2>[]    {   new List<Vector2> { Vector2.One } };
+			List<Vector2[]>  v7 = new List<Vector2[]>    {   new Vector2[]     { Vector2.One } };
+			List<Vector2[,]> v8 = new List<Vector2[,]>   {   new Vector2[,]  { { Vector2.One } } };
+			List<Vector2>[,] v9 = new List<Vector2>[1,1] { { new List<Vector2> { Vector2.One } } };
+
+			bool[,]    b1 = new bool[,]          {                  { true } };
+			bool[][]   b2 = new bool[][]         {   new bool[]     { true } };
+			bool[][,]  b3 = new bool[][,]        {   new bool[,]  { { true } } };
+			bool[,][]  b4 = new bool[,][]        { { new bool[]     { true } } };
+			bool[,][,] b5 = new bool[,][,]       { { new bool[,]  { { true } } } };
+
+			List<bool>[]  b6 = new List<bool>[]  {   new List<bool> { true } };
+			List<bool[]>  b7 = new List<bool[]>  {   new bool[]     { true } };
+			List<bool[,]> b8 = new List<bool[,]> {   new bool[,]  { { true } } };
+			List<bool>[,] b9 = new List<bool>[,] { { new List<bool> { true } } };
+
 			TagCompound tag = new() {
-				["c1"] = c1,
-				["c2"] = c2,
-				["c3"] = c3,
-				["c4"] = c4,
-				["c5"] = c5,
-				["c6"] = c6,
-				["c7"] = c7,
-				["c8"] = c8,
-				["c9"] = c9,
+				["c1"] = c1, ["v1"] = v1, ["b1"] = b1,
+				["c2"] = c2, ["v2"] = v2, ["b2"] = b2,
+				["c3"] = c3, ["v3"] = v3, ["b3"] = b3,
+				["c4"] = c4, ["v4"] = v4, ["b4"] = b4,
+				["c5"] = c5, ["v5"] = v5, ["b5"] = b5,
+				["c6"] = c6, ["v6"] = v6, ["b6"] = b6,
+				["c7"] = c7, ["v7"] = v7, ["b7"] = b7,
+				["c8"] = c8, ["v8"] = v8, ["b8"] = b8,
+				["c9"] = c9, ["v9"] = v9, ["b9"] = b9,
 			};
 
 			Assert.IsTrue(c1[0, 0].value       == tag.Get<C2[,]>       ("c1")[0, 0].value);
@@ -1042,6 +1064,28 @@ namespace Terraria.ModLoader
 			Assert.IsTrue(c7[0][0].value       == tag.Get<List<C2[]>>  ("c7")[0][0].value);
 			Assert.IsTrue(c8[0][0, 0].value    == tag.Get<List<C2[,]>> ("c8")[0][0, 0].value);
 			Assert.IsTrue(c9[0, 0][0].value    == tag.Get<List<C2>[,]> ("c9")[0, 0][0].value);
+
+			Assert.IsTrue(new Vector3(v1[0, 0], 0)       == tag.Get<Vector3[,]>      ("v1")[0, 0]);
+			Assert.IsTrue(new Vector3(v2[0][0], 0)       == tag.Get<Vector3[][]>     ("v2")[0][0]);
+			Assert.IsTrue(new Vector3(v3[0][0, 0], 0)    == tag.Get<Vector3[][,]>    ("v3")[0][0, 0]);
+			Assert.IsTrue(new Vector3(v4[0, 0][0], 0)    == tag.Get<Vector3[,][]>    ("v4")[0, 0][0]);
+			Assert.IsTrue(new Vector3(v5[0, 0][0, 0], 0) == tag.Get<Vector3[,][,]>   ("v5")[0, 0][0, 0]);
+
+			Assert.IsTrue(new Vector3(v6[0][0], 0)       == tag.Get<List<Vector3>[]> ("v6")[0][0]);
+			Assert.IsTrue(new Vector3(v7[0][0], 0)       == tag.Get<List<Vector3[]>> ("v7")[0][0]);
+			Assert.IsTrue(new Vector3(v8[0][0, 0], 0)    == tag.Get<List<Vector3[,]>>("v8")[0][0, 0]);
+			Assert.IsTrue(new Vector3(v9[0, 0][0], 0)    == tag.Get<List<Vector3>[,]>("v9")[0, 0][0]);
+
+			Assert.IsTrue((byte)(b1[0, 0]       ? 1 : 0) == tag.Get<byte[,]>      ("b1")[0, 0]);
+			Assert.IsTrue((byte)(b2[0][0]       ? 1 : 0) == tag.Get<byte[][]>     ("b2")[0][0]);
+			Assert.IsTrue((byte)(b3[0][0, 0]    ? 1 : 0) == tag.Get<byte[][,]>    ("b3")[0][0, 0]);
+			Assert.IsTrue((byte)(b4[0, 0][0]    ? 1 : 0) == tag.Get<byte[,][]>    ("b4")[0, 0][0]);
+			Assert.IsTrue((byte)(b5[0, 0][0, 0] ? 1 : 0) == tag.Get<byte[,][,]>   ("b5")[0, 0][0, 0]);
+
+			Assert.IsTrue((byte)(b6[0][0]       ? 1 : 0) == tag.Get<List<byte>[]> ("b6")[0][0]);
+			Assert.IsTrue((byte)(b7[0][0]       ? 1 : 0) == tag.Get<List<byte[]>> ("b7")[0][0]);
+			Assert.IsTrue((byte)(b8[0][0, 0]    ? 1 : 0) == tag.Get<List<byte[,]>>("b8")[0][0, 0]);
+			Assert.IsTrue((byte)(b9[0, 0][0]    ? 1 : 0) == tag.Get<List<byte>[,]>("b9")[0, 0][0]);
 		}
 	}
 }
