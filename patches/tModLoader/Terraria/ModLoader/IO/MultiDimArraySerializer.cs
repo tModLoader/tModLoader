@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.IO;
 [Autoload(false)]
 public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 {
-	public delegate object Converter(object elem);
+	public delegate object Converter(object element);
 
 	public Type ArrayType { get; }
 	public Type ElementType { get; }
@@ -74,7 +74,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return deserializedList;
 	}
 
-	public static TagCompound ToTagCompound(Array array, Type? elemType = null, Converter? converter = null) {
+	public static TagCompound ToTagCompound(Array array, Type? elementType = null, Converter? converter = null) {
 		ArgumentNullException.ThrowIfNull(array);
 
 		TagCompound tag = new();
@@ -85,7 +85,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 			tag["rank-" + i] = array.GetLength(i);
 		}
 
-		tag["list"] = ToList(array, elemType, converter);
+		tag["list"] = ToList(array, elementType, converter);
 
 		return tag;
 	}
@@ -112,11 +112,11 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return FromList(list, arrayRanks, elementType, converter);
 	}
 
-	public static IList ToList(Array array, Type? elemType = null, Converter? converter = null) {
+	public static IList ToList(Array array, Type? elementType = null, Converter? converter = null) {
 		ArgumentNullException.ThrowIfNull(array);
 
 		var arrayType = array.GetType();
-		var listType = typeof(List<>).MakeGenericType(elemType ?? arrayType.GetElementType()!);
+		var listType = typeof(List<>).MakeGenericType(elementType ?? arrayType.GetElementType()!);
 
 		var list = (IList)Activator.CreateInstance(listType, array.Length)!;
 		foreach (var o in array) {
@@ -126,7 +126,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return list;
 	}
 
-	public static Array FromList(IList list, int[] arrayRanks, Type? elemType = null, Converter? converter = null) {
+	public static Array FromList(IList list, int[] arrayRanks, Type? elementType = null, Converter? converter = null) {
 		ArgumentNullException.ThrowIfNull(list);
 		ArgumentNullException.ThrowIfNull(arrayRanks);
 
@@ -139,16 +139,16 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		}
 
 		var type = list.GetType();
-		elemType ??= type.GetElementType();
-		if (elemType is null) {
+		elementType ??= type.GetElementType();
+		if (elementType is null) {
 			if (type.GetGenericArguments() is not { Length: 1 } genericArguments) {
 				throw new ArgumentException("IList type must have exactly one generic argument");
 			}
 
-			elemType = genericArguments[0];
+			elementType = genericArguments[0];
 		}
 
-		var array = Array.CreateInstance(elemType, arrayRanks);
+		var array = Array.CreateInstance(elementType, arrayRanks);
 
 		int[] indices = new int[arrayRanks.Length];
 		foreach (var e in list) {
