@@ -107,14 +107,16 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 	public static Array FromTagCompound(TagCompound tag, Type arrayType, Converter? converter = null) {
 		ArgumentNullException.ThrowIfNull(tag);
 		ArgumentNullException.ThrowIfNull(arrayType);
-		if (!arrayType.IsArray)
+		if (!arrayType.IsArray) {
 			throw new ArgumentException(nameof(arrayType) + " must be an array type", nameof(arrayType));
+		}
 
 		var elementType = arrayType.GetElementType()!;
 
 		byte rank = tag.GetByte("rank");
-		if (rank == 0)
+		if (rank == 0) {
 			return Array.CreateInstance(elementType, new int[arrayType.GetArrayRank()]);
+		}
 
 		int[] arrayRanks = new int[rank];
 		for (int i = 0; i < rank; i++) {
