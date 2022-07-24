@@ -46,7 +46,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 	public override Array Deserialize(TagCompound tag) {
 		ArgumentNullException.ThrowIfNull(tag);
 
-		return FromTagCompound(tag, ElementType, e => TagIO.Deserialize(ElementType, e));
+		return FromTagCompound(tag, ArrayType, e => TagIO.Deserialize(ElementType, e));
 	}
 
 	public override IList SerializeList(IList list) {
@@ -90,11 +90,18 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return tag;
 	}
 
-	public static Array FromTagCompound(TagCompound tag, Type elemType, Converter? converter = null) {
+	public static Array FromTagCompound(TagCompound tag, Type arrayType, Converter? converter = null) {
 		ArgumentNullException.ThrowIfNull(tag);
-		ArgumentNullException.ThrowIfNull(elemType);
+		ArgumentNullException.ThrowIfNull(arrayType);
+		if (!arrayType.IsArray)
+			throw new ArgumentException(nameof(arrayType) + " must be an array type", nameof(arrayType));
+
+		var elementType = arrayType.GetElementType()!;
 
 		byte rank = tag.GetByte("rank");
+		if (rank == 0)
+			return Array.CreateInstance(elementType, new int[arrayType.GetArrayRank()]);
+
 		int[] arrayRanks = new int[rank];
 		for (int i = 0; i < rank; i++) {
 			arrayRanks[i] = tag.GetInt("rank-" + i);
@@ -102,7 +109,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 
 		var list = tag.Get<List<object>>("list"); // We don't care what our serialized type is, the converter will handle it
 
-		return FromList(list, arrayRanks, elemType, converter);
+		return FromList(list, arrayRanks, elementType, converter);
 	}
 
 	public static IList ToList(Array array, Type? elemType = null, Converter? converter = null) {
