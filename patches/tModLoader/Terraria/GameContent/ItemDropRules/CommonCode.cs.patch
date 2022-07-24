@@ -23,7 +23,7 @@
  				int x = (int)npc.position.X + npc.width / 2;
  				int y = (int)npc.position.Y + npc.height / 2;
  				if (scattered) {
-@@ -15,12 +_,35 @@
+@@ -15,12 +_,40 @@
  				}
  
  				int itemIndex = Item.NewItem(npc.GetItemSource_Loot(), x, y, 0, 0, itemId, stack, noBroadcast: false, -1);
@@ -51,7 +51,12 @@
 +		}
 +
 +		public static int DropItem(Vector2 position, IEntitySource entitySource, int itemId, int stack) {
-+			return Item.NewItem(entitySource, position, itemId, stack, noBroadcast: false, -1);
++			int number = Item.NewItem(entitySource, position, itemId, stack, noBroadcast: false, -1);
++
++			if (entitySource is EntitySource_ItemOpen && Main.netMode == 1)
++				NetMessage.SendData(21, -1, -1, null, number, 1f);
++
++			return number;
 +		}
 +
  		public static void DropItemLocalPerClientAndSetNPCMoneyTo0(NPC npc, int itemId, int stack, bool interactionRequired = true) {
