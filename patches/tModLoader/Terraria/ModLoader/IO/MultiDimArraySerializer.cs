@@ -90,6 +90,20 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return tag;
 	}
 
+	public static IList ToList(Array array, Type? elementType = null, Converter? converter = null) {
+		ArgumentNullException.ThrowIfNull(array);
+
+		var arrayType = array.GetType();
+		var listType = typeof(List<>).MakeGenericType(elementType ?? arrayType.GetElementType()!);
+
+		var list = (IList)Activator.CreateInstance(listType, array.Length)!;
+		foreach (var o in array) {
+			list.Add(converter != null ? converter(o) : o);
+		}
+
+		return list;
+	}
+
 	public static Array FromTagCompound(TagCompound tag, Type arrayType, Converter? converter = null) {
 		ArgumentNullException.ThrowIfNull(tag);
 		ArgumentNullException.ThrowIfNull(arrayType);
@@ -110,20 +124,6 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		var list = tag.Get<List<object>>("list"); // We don't care what our serialized type is, the converter will handle it
 
 		return FromList(list, arrayRanks, elementType, converter);
-	}
-
-	public static IList ToList(Array array, Type? elementType = null, Converter? converter = null) {
-		ArgumentNullException.ThrowIfNull(array);
-
-		var arrayType = array.GetType();
-		var listType = typeof(List<>).MakeGenericType(elementType ?? arrayType.GetElementType()!);
-
-		var list = (IList)Activator.CreateInstance(listType, array.Length)!;
-		foreach (var o in array) {
-			list.Add(converter != null ? converter(o) : o);
-		}
-
-		return list;
 	}
 
 	public static Array FromList(IList list, int[] arrayRanks, Type? elementType = null, Converter? converter = null) {
