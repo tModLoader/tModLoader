@@ -20,7 +20,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		ArgumentNullException.ThrowIfNull(arrayType);
 
 		if (!arrayType.IsArray) {
-			throw new ArgumentException("Type must be an array type", nameof(arrayType));
+			throw new ArgumentException("Must be an array type", nameof(arrayType));
 		}
 
 		ArrayType = arrayType;
@@ -108,7 +108,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		ArgumentNullException.ThrowIfNull(tag);
 		ArgumentNullException.ThrowIfNull(arrayType);
 		if (!arrayType.IsArray) {
-			throw new ArgumentException(nameof(arrayType) + " must be an array type", nameof(arrayType));
+			throw new ArgumentException("Must be an array type", nameof(arrayType));
 		}
 
 		var elementType = arrayType.GetElementType()!;
