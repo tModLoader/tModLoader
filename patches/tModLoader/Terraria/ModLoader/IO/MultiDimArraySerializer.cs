@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Terraria.ModLoader.IO;
 
@@ -12,9 +11,6 @@ namespace Terraria.ModLoader.IO;
 public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 {
 	public delegate object Converter(object elem);
-
-	private static readonly MethodInfo TagCompoundGetListMethodInfo =
-		typeof(TagCompound).GetMethod(nameof(TagCompound.GetList), BindingFlags.Instance | BindingFlags.Public)!;
 
 	public Type ArrayType { get; }
 	public Type ElementType { get; }
@@ -43,7 +39,6 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		var serializedType = TagIO.Serialize(first).GetType();
 
 		var tagCompound = ToTagCompound(array, serializedType, TagIO.Serialize);
-		tagCompound["serializedType"] = serializedType.FullName;
 
 		return tagCompound;
 	}
@@ -51,17 +46,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 	public override Array Deserialize(TagCompound tag) {
 		ArgumentNullException.ThrowIfNull(tag);
 
-		var serializedTypeFullName = tag.Get<string>("serializedType");
-		if (serializedTypeFullName == string.Empty) {
-			return Array.CreateInstance(ElementType, new int[ArrayRank]);
-		}
-
-		Type? serializedType = null;
-		if (!string.IsNullOrEmpty(serializedTypeFullName)) {
-			serializedType = GetType(serializedTypeFullName);
-		}
-
-		return FromTagCompound(tag, ElementType, e => TagIO.Deserialize(ElementType, e), serializedType);
+		return FromTagCompound(tag, ElementType, e => TagIO.Deserialize(ElementType, e));
 	}
 
 	public override IList SerializeList(IList list) {
@@ -94,7 +79,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 
 		TagCompound tag = new();
 
-		byte rank = (byte)array.Rank;
+		byte rank = (byte)array.Rank; // We can safely cast to byte since the largest supported rank is 32
 		tag["rank"] = rank;
 		for (int i = 0; i < rank; i++) {
 			tag["rank-" + i] = array.GetLength(i);
@@ -105,7 +90,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		return tag;
 	}
 
-	public static Array FromTagCompound(TagCompound tag, Type elemType, Converter? converter = null, Type? sourceType = null) {
+	public static Array FromTagCompound(TagCompound tag, Type elemType, Converter? converter = null) {
 		ArgumentNullException.ThrowIfNull(tag);
 		ArgumentNullException.ThrowIfNull(elemType);
 
@@ -115,8 +100,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 			arrayRanks[i] = tag.GetInt("rank-" + i);
 		}
 
-		var tagCompoundGetList = TagCompoundGetListMethodInfo.MakeGenericMethod(sourceType ?? elemType);
-		var list = (IList)tagCompoundGetList.Invoke(tag, new object[] { "list" })!;
+		var list = tag.Get<List<object>>("list"); // We don't care what our serialized type is, the converter will handle it
 
 		return FromList(list, arrayRanks, elemType, converter);
 	}
