@@ -5,7 +5,7 @@ namespace Terraria.GameContent.ItemDropRules
 	/// <summary>
 	/// Re-runs all drop rules if none succeded.
 	/// </summary>
-	public class AlwaysAtleastOneSuccessDropRule : IItemDropRule
+	public class AlwaysAtleastOneSuccessDropRule : IItemDropRule, INestedItemDropRule
 	{
 		public IItemDropRule[] rules;
 
@@ -21,7 +21,9 @@ namespace Terraria.GameContent.ItemDropRules
 
 		public bool CanDrop(DropAttemptInfo info) => true;
 
-		public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) => new() { State = ItemDropAttemptResultState.DidNotRunCode };
+		public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info) {
+			return new() { State = ItemDropAttemptResultState.DidNotRunCode };
+		}
 
 		public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction) {
 			ItemDropAttemptResult result = default;
@@ -45,9 +47,9 @@ namespace Terraria.GameContent.ItemDropRules
 		}
 
 		public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
-			float baseChance = ratesInfo.parentDroprateChance;
-			rules[0].ReportDroprates(drops, ratesInfo.With(baseChance));
-
+			foreach (var rule in rules) {
+				rule.ReportDroprates(drops, ratesInfo);
+			}
 			Chains.ReportDroprates(ChainedRules, 1f, drops, ratesInfo);
 		}
 	}
