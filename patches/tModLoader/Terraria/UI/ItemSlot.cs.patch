@@ -339,9 +339,8 @@
  				case 0:
  					result = true;
 -					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957 || inv[slot].type == 5111)) {
--						if (Main.mouseRightRelease) {
 +					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957 || inv[slot].type == 5111 || ItemLoader.IsModBossBag_Obsolete(inv[slot]))) {
-+						if (ItemLoader.CanRightClick(inv[slot]) && Main.mouseRightRelease) {
+ 						if (Main.mouseRightRelease) {
  							player.OpenBossBag(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
@@ -356,9 +355,8 @@
  						}
  					}
 -					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5125 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
--						if (Main.mouseRightRelease) {
 +					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < ItemID.Count && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
-+						if (ItemLoader.CanRightClick(inv[slot]) && Main.mouseRightRelease) {
+ 						if (Main.mouseRightRelease) {
  							player.OpenFishingCrate(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
@@ -368,12 +366,9 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1079,9 +_,13 @@
- 						}
- 					}
+@@ -1081,7 +_,11 @@
  					else if (Main.mouseRight && inv[slot].type == 3093) {
--						if (Main.mouseRightRelease) {
-+						if (ItemLoader.CanRightClick(inv[slot]) && Main.mouseRightRelease) {
+ 						if (Main.mouseRightRelease) {
  							player.OpenHerbBag(3093);
 +							ItemLoader.RightClick(inv[slot], player);
 +
@@ -384,58 +379,44 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1092,8 +_,9 @@
- 						}
- 					}
+@@ -1094,6 +_,7 @@
  					else if (Main.mouseRight && inv[slot].type == 4345) {
--						if (Main.mouseRightRelease) {
-+						if (ItemLoader.CanRightClick(inv[slot]) && Main.mouseRightRelease) {
+ 						if (Main.mouseRightRelease) {
  							player.OpenCanofWorms(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
  							inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
-@@ -1105,8 +_,9 @@
- 						}
- 					}
+@@ -1107,6 +_,7 @@
  					else if (Main.mouseRight && inv[slot].type == 4410) {
--						if (Main.mouseRightRelease) {
-+						if (ItemLoader.CanRightClick(inv[slot]) && Main.mouseRightRelease) {
+ 						if (Main.mouseRightRelease) {
  							player.OpenOyster(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
  							inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
-@@ -1118,8 +_,9 @@
- 						}
- 					}
+@@ -1120,6 +_,7 @@
  					else if (Main.mouseRight && inv[slot].type == 5059) {
--						if (Main.mouseRightRelease) {
-+						if (ItemLoader.CanRightClick(inv[slot]) && Main.mouseRightRelease) {
+ 						if (Main.mouseRightRelease) {
  							player.OpenCapricornLegs(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
  							inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
-@@ -1131,8 +_,9 @@
- 						}
- 					}
+@@ -1133,6 +_,7 @@
  					else if (Main.mouseRight && inv[slot].type == 5060) {
--						if (Main.mouseRightRelease) {
-+						if (ItemLoader.CanRightClick(inv[slot]) && Main.mouseRightRelease) {
+ 						if (Main.mouseRightRelease) {
  							player.OpenCapricornTail(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
  							inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
-@@ -1144,8 +_,10 @@
- 						}
+@@ -1145,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1774) {
--						if (Main.mouseRightRelease) {
--							inv[slot].stack--;
-+						if (ItemLoader.CanRightClick(inv[slot]) && Main.mouseRightRelease) {
+ 						if (Main.mouseRightRelease) {
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
+-							inv[slot].stack--;
 +								inv[slot].stack--;
 +
  							if (inv[slot].stack == 0)

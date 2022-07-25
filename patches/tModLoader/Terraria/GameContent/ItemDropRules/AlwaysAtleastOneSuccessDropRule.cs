@@ -45,18 +45,10 @@ namespace Terraria.GameContent.ItemDropRules
 		}
 
 		public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
-			for (int i = rules.Length - 1; i >= 1; i--) {
-				rules[i - 1].OnFailedRoll(rules[i]);
-			}
-
 			float baseChance = ratesInfo.parentDroprateChance;
 			rules[0].ReportDroprates(drops, ratesInfo.With(baseChance));
 
 			Chains.ReportDroprates(ChainedRules, 1f, drops, ratesInfo);
-
-			for (int i = 0; i < rules.Length - 1; i++) {
-				rules[i].ChainedRules.RemoveAt(rules[i].ChainedRules.Count - 1);
-			}
 		}
 	}
 }
