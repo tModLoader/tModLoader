@@ -305,15 +305,29 @@ namespace Terraria.GameContent.ItemDropRules
 				ItemDropRule.NotScalingWithLuck(ItemID.ApprenticeBait, 1, 1, 5)
 			};
 
-			RegisterToItem(ItemID.WoodenCrate, ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop1));
-			RegisterToItem(ItemID.WoodenCrateHard, ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop2));
-			RegisterToMultipleItems(ItemDropRule.OneFromOptionsNotScalingWithLuck(45, ItemID.Aglet, ItemID.ClimbingClaws, ItemID.Umbrella, 3068, ItemID.Radar), ItemID.WoodenCrate, ItemID.WoodenCrateHard);
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(7, seqDrop3), ItemID.WoodenCrate, ItemID.WoodenCrateHard);
-			RegisterToItem(ItemID.WoodenCrate, ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(7, oneDrop1), new OneFromRulesRule(8, oneDrop3)));
-			RegisterToItem(ItemID.WoodenCrateHard, ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(7, oneDrop2), new OneFromRulesRule(8, oneDrop4)));
-			RegisterToMultipleItems(new OneFromRulesRule(7, oneDrop5), ItemID.WoodenCrate, ItemID.WoodenCrateHard);
-			RegisterToMultipleItems(new OneFromRulesRule(3, oneDrop6), ItemID.WoodenCrate, ItemID.WoodenCrateHard);
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(3, seqDrop4), ItemID.WoodenCrate, ItemID.WoodenCrateHard);
+			IItemDropRule[] woodenCrateDrop = new IItemDropRule[]
+			{
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop1),
+				ItemDropRule.OneFromOptionsNotScalingWithLuck(45, ItemID.Aglet, ItemID.ClimbingClaws, ItemID.Umbrella, 3068, ItemID.Radar),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(7, seqDrop3),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(7, oneDrop1), new OneFromRulesRule(8, oneDrop3)),
+				new OneFromRulesRule(7, oneDrop5),
+				new OneFromRulesRule(3, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(3, seqDrop4),
+			};
+			IItemDropRule[] pearlwoodCrateDrop = new IItemDropRule[]
+			{
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop2),
+				ItemDropRule.OneFromOptionsNotScalingWithLuck(45, ItemID.Aglet, ItemID.ClimbingClaws, ItemID.Umbrella, 3068, ItemID.Radar),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(7, seqDrop3),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(7, oneDrop2), new OneFromRulesRule(8, oneDrop4)),
+				new OneFromRulesRule(7, oneDrop5),
+				new OneFromRulesRule(3, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(3, seqDrop4),
+			};
+
+			RegisterToItem(ItemID.WoodenCrate, ItemDropRule.AlwaysAtleastOneSuccess(woodenCrateDrop));
+			RegisterToItem(ItemID.WoodenCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(pearlwoodCrateDrop));
 			#endregion
 
 			#region Iron Crate and Mythril Crate
@@ -400,14 +414,27 @@ namespace Terraria.GameContent.ItemDropRules
 				ItemDropRule.NotScalingWithLuck(ItemID.JourneymanBait, 1, 2, 5)
 			};
 
-			RegisterToItem(ItemID.IronCrate, ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop1));
-			RegisterToItem(ItemID.IronCrateHard, ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop2));
-			RegisterToMultipleItems(ItemDropRule.NotScalingWithLuck(ItemID.GoldCoin, 4, 5, 11), ItemID.IronCrate, ItemID.IronCrateHard);
-			RegisterToItem(ItemID.IronCrate, ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(6, oneDrop1), new OneFromRulesRule(4, oneDrop3)));
-			RegisterToItem(ItemID.IronCrateHard, ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(6, oneDrop2), new OneFromRulesRule(4, oneDrop4)));
-			RegisterToMultipleItems(new OneFromRulesRule(4, oneDrop5), ItemID.IronCrate, ItemID.IronCrateHard);
-			RegisterToMultipleItems(new OneFromRulesRule(2, oneDrop6), ItemID.IronCrate, ItemID.IronCrateHard);
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4), ItemID.IronCrate, ItemID.IronCrateHard);
+			IItemDropRule[] ironCrate = new IItemDropRule[]
+			{
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop1),
+				ItemDropRule.NotScalingWithLuck(ItemID.GoldCoin, 4, 5, 11),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(6, oneDrop1), new OneFromRulesRule(4, oneDrop3)),
+				new OneFromRulesRule(4, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+			};
+			IItemDropRule[] mythrilCrate = new IItemDropRule[]
+			{
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop2),
+				ItemDropRule.NotScalingWithLuck(ItemID.GoldCoin, 4, 5, 11),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(6, oneDrop2), new OneFromRulesRule(4, oneDrop4)),
+				new OneFromRulesRule(4, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+			};
+
+			RegisterToItem(ItemID.IronCrate, ItemDropRule.AlwaysAtleastOneSuccess(ironCrate));
+			RegisterToItem(ItemID.IronCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(mythrilCrate));
 			#endregion
 
 			#region Gold Crate and Titanium Crate
@@ -472,22 +499,30 @@ namespace Terraria.GameContent.ItemDropRules
 				ItemDropRule.NotScalingWithLuck(ItemID.ManaPotion, 1, 5, 21)
 			};
 
-			RegisterToItem(ItemID.GoldenCrate, ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop1));
-			RegisterToItem(ItemID.GoldenCrateHard, ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop2));
-			RegisterToMultipleItems(ItemDropRule.NotScalingWithLuck(ItemID.GoldCoin, 3, 8, 21), ItemID.GoldenCrate, ItemID.GoldenCrateHard);
-			RegisterToItem(ItemID.GoldenCrate, ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)));
-			RegisterToItem(ItemID.GoldenCrateHard, ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)));
-			RegisterToMultipleItems(new OneFromRulesRule(3, oneDrop5), ItemID.GoldenCrate, ItemID.GoldenCrateHard);
-			RegisterToMultipleItems(new OneFromRulesRule(2, oneDrop6), ItemID.GoldenCrate, ItemID.GoldenCrateHard);
-			RegisterToMultipleItems(new CommonDrop(ItemID.MasterBait, 3, 3, 8, 2), ItemID.GoldenCrate, ItemID.GoldenCrateHard);
-			RegisterToMultipleItems(ItemDropRule.NotScalingWithLuck(ItemID.EnchantedSword, 50), ItemID.GoldenCrate, ItemID.GoldenCrateHard);
+			IItemDropRule[] goldCrate = new IItemDropRule[] {
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop1),
+				ItemDropRule.NotScalingWithLuck(ItemID.GoldCoin, 3, 8, 21),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				new CommonDrop(ItemID.MasterBait, 3, 3, 8, 2),
+				ItemDropRule.NotScalingWithLuck(ItemID.EnchantedSword, 50),
+			};
+			IItemDropRule[] titaniumCrate = new IItemDropRule[] {
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, seqDrop2),
+				ItemDropRule.NotScalingWithLuck(ItemID.GoldCoin, 3, 8, 21),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				new CommonDrop(ItemID.MasterBait, 3, 3, 8, 2),
+				ItemDropRule.NotScalingWithLuck(ItemID.EnchantedSword, 50),
+			};
+
+			RegisterToItem(ItemID.GoldenCrate, ItemDropRule.AlwaysAtleastOneSuccess(goldCrate));
+			RegisterToItem(ItemID.GoldenCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(titaniumCrate));
 			#endregion
 
 			#region Biome Crates
-			int[] phmCrate = new int[] { ItemID.JungleFishingCrate, ItemID.FloatingIslandFishingCrate, ItemID.CorruptFishingCrate, ItemID.CrimsonFishingCrate, ItemID.HallowedFishingCrate, ItemID.DungeonFishingCrate, ItemID.FrozenCrate, ItemID.OasisCrate, ItemID.LavaCrate, ItemID.OceanCrate };
-			int[] hmCrate = new int[] { ItemID.JungleFishingCrateHard, ItemID.FloatingIslandFishingCrateHard, ItemID.CorruptFishingCrateHard, ItemID.CrimsonFishingCrateHard, ItemID.HallowedFishingCrateHard, ItemID.DungeonFishingCrateHard, ItemID.FrozenCrateHard, ItemID.OasisCrateHard, ItemID.LavaCrateHard, ItemID.OceanCrateHard };
-			int[] allCrates = new int[] { ItemID.JungleFishingCrate, ItemID.JungleFishingCrateHard, ItemID.FloatingIslandFishingCrate, ItemID.FloatingIslandFishingCrateHard, ItemID.CorruptFishingCrate, ItemID.CorruptFishingCrateHard, ItemID.CrimsonFishingCrate, ItemID.CrimsonFishingCrateHard, ItemID.HallowedFishingCrate, ItemID.HallowedFishingCrateHard, ItemID.DungeonFishingCrate, ItemID.DungeonFishingCrateHard, ItemID.FrozenCrate, ItemID.FrozenCrateHard, ItemID.OasisCrate, ItemID.OasisCrateHard, ItemID.LavaCrate, ItemID.LavaCrateHard, ItemID.OceanCrate, ItemID.OceanCrateHard };
-
 			#region Biome related
 			IItemDropRule[] bc_jungle = new IItemDropRule[]
 			{
@@ -616,43 +651,254 @@ namespace Terraria.GameContent.ItemDropRules
 			};
 			#endregion
 
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_jungle), ItemID.JungleFishingCrate, ItemID.JungleFishingCrateHard);
-			RegisterToMultipleItems(bc_sky, ItemID.FloatingIslandFishingCrate, ItemID.FloatingIslandFishingCrateHard);
-			RegisterToMultipleItems(bc_corrupt, ItemID.CorruptFishingCrate, ItemID.CorruptFishingCrateHard);
-			RegisterToMultipleItems(bc_crimson, ItemID.CrimsonFishingCrate, ItemID.CrimsonFishingCrateHard);
-			RegisterToMultipleItems(bc_lockbox, ItemID.DungeonFishingCrate, ItemID.DungeonFishingCrateHard);
-			RegisterToMultipleItems(bc_book, ItemID.DungeonFishingCrate, ItemID.DungeonFishingCrateHard);
-			RegisterToMultipleItems(bc_ice, ItemID.FrozenCrate, ItemID.FrozenCrateHard);
-			RegisterToMultipleItems(bc_scarab, ItemID.OasisCrate, ItemID.OasisCrateHard);
-			RegisterToMultipleItems(bc_bomb, ItemID.OasisCrate, ItemID.OasisCrateHard);
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_lava), ItemID.LavaCrate, ItemID.LavaCrateHard);
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_sea), ItemID.OceanCrate, ItemID.OceanCrateHard);
+			IItemDropRule[] jungle = new IItemDropRule[]
+			{
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_jungle),
 
-			RegisterToMultipleItems(bc_pot, ItemID.LavaCrate, ItemID.LavaCrateHard);
-			RegisterToMultipleItems(bc_obsi, ItemID.LavaCrate, ItemID.LavaCrateHard);
-			RegisterToMultipleItems(bc_wet, ItemID.LavaCrate, ItemID.LavaCrateHard);
-			RegisterToMultipleItems(bc_plant, ItemID.LavaCrate, ItemID.LavaCrateHard);
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
 
-			RegisterToMultipleItems(bc_goldCoin, allCrates);
-			RegisterToMultipleItems(bc_fossil, ItemID.OasisCrate, ItemID.OasisCrateHard);
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)), phmCrate);
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)), hmCrate);
-			RegisterToMultipleItems(new OneFromRulesRule(3, oneDrop5), allCrates);
-			RegisterToMultipleItems(new OneFromRulesRule(2, oneDrop6), allCrates);
-			RegisterToMultipleItems(ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4), allCrates);
+				bc_bamboo,
+				bc_seaweed,
+			};
+			IItemDropRule[] bramble = new IItemDropRule[]
+			{
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_jungle),
 
-			RegisterToMultipleItems(bc_bamboo, ItemID.JungleFishingCrate, ItemID.JungleFishingCrateHard);
-			RegisterToMultipleItems(bc_seaweed, ItemID.JungleFishingCrate, ItemID.JungleFishingCrateHard);
-			RegisterToMultipleItems(bc_son, ItemID.CorruptFishingCrateHard, ItemID.CrimsonFishingCrateHard);
-			RegisterToItem(ItemID.CorruptFishingCrateHard, bc_cursed);
-			RegisterToItem(ItemID.CrimsonFishingCrateHard, bc_ichor);
-			RegisterToItem(ItemID.HallowedFishingCrateHard, bc_sol);
-			RegisterToItem(ItemID.HallowedFishingCrateHard, bc_shard);
-			RegisterToMultipleItems(bc_fish, ItemID.FrozenCrate, ItemID.FrozenCrateHard);
-			RegisterToMultipleItems(bc_ornate, ItemID.LavaCrate, ItemID.LavaCrateHard);
-			RegisterToMultipleItems(bc_cake, ItemID.LavaCrate, ItemID.LavaCrateHard);
-			RegisterToMultipleItems(bc_pile, ItemID.OceanCrate, ItemID.OceanCrateHard);
-			RegisterToMultipleItems(bc_sand, ItemID.OceanCrate, ItemID.OceanCrateHard);
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+
+				bc_bamboo,
+				bc_seaweed,
+			};
+			IItemDropRule[] sky = new IItemDropRule[]
+			{
+				bc_sky,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+			};
+			IItemDropRule[] azure = new IItemDropRule[]
+			{
+				bc_sky,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+			};
+			IItemDropRule[] corrupt = new IItemDropRule[] {
+				bc_corrupt,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+			};
+			IItemDropRule[] defiled = new IItemDropRule[] {
+				bc_corrupt,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+
+				bc_son,
+				bc_cursed,
+			};
+			IItemDropRule[] crimson = new IItemDropRule[] {
+				bc_crimson,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+			};
+			IItemDropRule[] hematic = new IItemDropRule[] {
+				bc_crimson,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+
+				bc_son,
+				bc_ichor,
+			};
+			IItemDropRule[] hallowed = new IItemDropRule[] {
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+			};
+			IItemDropRule[] divine = new IItemDropRule[] {
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+
+				bc_sol,
+				bc_shard,
+			};
+			IItemDropRule[] dungeon = new IItemDropRule[] {
+				bc_lockbox,
+				bc_book,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+			};
+			IItemDropRule[] stockade = new IItemDropRule[] {
+				bc_lockbox,
+				bc_book,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+			};
+			IItemDropRule[] frozen = new IItemDropRule[] {
+				bc_ice,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+
+				bc_fish,
+			};
+			IItemDropRule[] boreal = new IItemDropRule[] {
+				bc_ice,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+
+				bc_fish,
+			};
+			IItemDropRule[] oasis = new IItemDropRule[] {
+				bc_scarab,
+				bc_bomb,
+
+				bc_goldCoin,
+				bc_fossil,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+			};
+			IItemDropRule[] mirage = new IItemDropRule[] {
+				bc_scarab,
+				bc_bomb,
+
+				bc_goldCoin,
+				bc_fossil,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+			};
+			IItemDropRule[] obsidian = new IItemDropRule[] {
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_lava),
+
+				bc_pot,
+				bc_obsi,
+				bc_wet,
+				bc_plant,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop1), new OneFromRulesRule(3, 2, oneDrop3)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+
+				bc_ornate,
+				bc_cake,
+			};
+			IItemDropRule[] hellstone = new IItemDropRule[] {
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_lava),
+
+				bc_pot,
+				bc_obsi,
+				bc_wet,
+				bc_plant,
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+
+				bc_ornate,
+				bc_cake,
+			};
+			IItemDropRule[] ocean = new IItemDropRule[] {
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_sea),
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+
+				bc_pile,
+				bc_sand,
+			};
+			IItemDropRule[] seaside = new IItemDropRule[] {
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_sea),
+
+				bc_goldCoin,
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oneDrop2), new OneFromRulesRule(3, 2, oneDrop4)),
+				new OneFromRulesRule(3, oneDrop5),
+				new OneFromRulesRule(2, oneDrop6),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(2, seqDrop4),
+
+				bc_pile,
+				bc_sand,
+			};
+
+			RegisterToItem(ItemID.JungleFishingCrate, ItemDropRule.AlwaysAtleastOneSuccess(jungle));
+			RegisterToItem(ItemID.JungleFishingCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(bramble));
+			RegisterToItem(ItemID.FloatingIslandFishingCrate, ItemDropRule.AlwaysAtleastOneSuccess(sky));
+			RegisterToItem(ItemID.FloatingIslandFishingCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(azure));
+			RegisterToItem(ItemID.CorruptFishingCrate, ItemDropRule.AlwaysAtleastOneSuccess(corrupt));
+			RegisterToItem(ItemID.CorruptFishingCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(defiled));
+			RegisterToItem(ItemID.CrimsonFishingCrate, ItemDropRule.AlwaysAtleastOneSuccess(crimson));
+			RegisterToItem(ItemID.CrimsonFishingCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(hematic));
+			RegisterToItem(ItemID.HallowedFishingCrate, ItemDropRule.AlwaysAtleastOneSuccess(hallowed));
+			RegisterToItem(ItemID.HallowedFishingCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(divine));
+			RegisterToItem(ItemID.DungeonFishingCrate, ItemDropRule.AlwaysAtleastOneSuccess(dungeon));
+			RegisterToItem(ItemID.DungeonFishingCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(stockade));
+			RegisterToItem(ItemID.FrozenCrate, ItemDropRule.AlwaysAtleastOneSuccess(frozen));
+			RegisterToItem(ItemID.FrozenCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(boreal));
+			RegisterToItem(ItemID.OasisCrate, ItemDropRule.AlwaysAtleastOneSuccess(oasis));
+			RegisterToItem(ItemID.OasisCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(mirage));
+			RegisterToItem(ItemID.LavaCrate, ItemDropRule.AlwaysAtleastOneSuccess(obsidian));
+			RegisterToItem(ItemID.LavaCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(hellstone));
+			RegisterToItem(ItemID.OceanCrate, ItemDropRule.AlwaysAtleastOneSuccess(ocean));
+			RegisterToItem(ItemID.OceanCrateHard, ItemDropRule.AlwaysAtleastOneSuccess(seaside));
 			#endregion
 		}
 
