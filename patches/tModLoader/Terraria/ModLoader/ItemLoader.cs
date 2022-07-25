@@ -1276,6 +1276,10 @@ namespace Terraria.ModLoader
 				g.RightClick(item, player);
 			}
 
+			if (ItemID.Sets.BossBag[item.type] && (!ItemID.Sets.PreHardmodeLikeBossBag[item.type] || Main.tenthAnniversaryWorld)) {
+				player.TryGettingDevArmor(player.GetItemSource_OpenItem(item.type));
+			}
+
 			if (ConsumeItem(item, player) && --item.stack == 0)
 				item.SetDefaults();
 
@@ -1307,7 +1311,7 @@ namespace Terraria.ModLoader
 		public static void ModifyItemLoot(Item item, ItemLoot itemLoot) {
 			item.ModItem?.ModifyItemLoot(itemLoot);
 
-			foreach (var g in HookModifyItemLoot.Enumerate(globalItems)) {
+			foreach (var g in HookModifyItemLoot.Enumerate(item.globalItems)) {
 				g.ModifyItemLoot(item, itemLoot);
 			}
 		}
