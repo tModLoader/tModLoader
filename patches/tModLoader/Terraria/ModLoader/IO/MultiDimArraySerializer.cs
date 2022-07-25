@@ -113,8 +113,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 
 		var elementType = arrayType.GetElementType()!;
 
-		byte rank = tag.GetByte("rank");
-		if (rank == 0) {
+		if (!tag.TryGet("rank", out byte rank)) {
 			return Array.CreateInstance(elementType, new int[arrayType.GetArrayRank()]);
 		}
 
