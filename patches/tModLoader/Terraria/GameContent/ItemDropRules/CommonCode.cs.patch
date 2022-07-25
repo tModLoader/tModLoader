@@ -53,7 +53,7 @@
 +		public static int DropItem(Vector2 position, IEntitySource entitySource, int itemId, int stack) {
 +			int number = Item.NewItem(entitySource, position, itemId, stack, noBroadcast: false, -1);
 +
-+			if (entitySource is EntitySource_ItemOpen && Main.netMode == 1)
++			if (Main.netMode == 1)
 +				NetMessage.SendData(21, -1, -1, null, number, 1f);
 +
 +			return number;
