@@ -1,5 +1,15 @@
 var NAVTREEINDEX132 =
 {
+"struct_terraria_1_1_main_1_1_info_to_set_back_color.html#ab86851c882cca383e4013e97b66486b9":[2,0,2,47,2,4],
+"struct_terraria_1_1_main_1_1_info_to_set_back_color.html#aeb7e70075a3d591a7e3c5cfc678c08f8":[2,0,2,47,2,2],
+"struct_terraria_1_1_main_1_1_scene_area.html":[2,0,2,47,3],
+"struct_terraria_1_1_main_1_1_scene_area.html#a067985235b64d77b21c38f5c0f878c2b":[2,0,2,47,3,1],
+"struct_terraria_1_1_main_1_1_scene_area.html#a8ee296bec025e2b308b44ec520d747fc":[2,0,2,47,3,3],
+"struct_terraria_1_1_main_1_1_scene_area.html#ab3907fcfc089791fbd8fdb8522464cda":[2,0,2,47,3,0],
+"struct_terraria_1_1_main_1_1_scene_area.html#abb901a61a2f6864d7dbcd1c54c3df2e2":[2,0,2,47,3,2],
+"struct_terraria_1_1_map_1_1_map_overlay_draw_context.html":[2,0,2,12,3],
+"struct_terraria_1_1_map_1_1_map_overlay_draw_context.html#a000e502c8918f06524b74e19596a2b9c":[2,0,2,12,3,2],
+"struct_terraria_1_1_map_1_1_map_overlay_draw_context.html#a1b987403f826110f4dad7847bf7721f8":[2,0,2,12,3,1],
 "struct_terraria_1_1_map_1_1_map_overlay_draw_context.html#a838571cc8f13c874a24cfbe9adb73074":[2,0,2,12,3,3],
 "struct_terraria_1_1_map_1_1_map_overlay_draw_context.html#acba0ce0520424eaca0b8e40586afd8fe":[2,0,2,12,3,4],
 "struct_terraria_1_1_map_1_1_map_overlay_draw_context_1_1_draw_result.html":[2,0,2,12,3,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX132 =
 "struct_terraria_1_1_tile.html#a0bd56c040daf761823c6ecf897557762":[2,0,2,72,9],
 "struct_terraria_1_1_tile.html#a0efce55ac5b8cb781bde5e7acafc45b5":[2,0,2,72,14],
 "struct_terraria_1_1_tile.html#a0f00630c1475128096179c12dcd29fff":[2,0,2,72,10],
-"struct_terraria_1_1_tile.html#a0fca7d73d5d8d585686034e460d88fd3":[2,0,2,72,12],
-"struct_terraria_1_1_tile.html#a17c89a87e7b0d7c794950a7da703feed":[2,0,2,72,30],
-"struct_terraria_1_1_tile.html#a24b19a15bcbc8d24a24983b4f22c9a9e":[2,0,2,72,17],
-"struct_terraria_1_1_tile.html#a26527a50a8050378ef4854ac3639df6c":[2,0,2,72,46],
-"struct_terraria_1_1_tile.html#a294e3ab362b2fe71ea7a58b2e37ebd31":[2,0,2,72,7],
-"struct_terraria_1_1_tile.html#a29535a733eabd1d8ea058db178d43bb4":[2,0,2,72,15],
-"struct_terraria_1_1_tile.html#a370533c7edbe4bee7a75ee72a02f3c8c":[2,0,2,72,19],
-"struct_terraria_1_1_tile.html#a3763b51a4ca523666360ad06e0250dfb":[2,0,2,72,31],
-"struct_terraria_1_1_tile.html#a37acfa918e979eef38b317a8a68623aa":[2,0,2,72,44],
-"struct_terraria_1_1_tile.html#a406a6eee010148c03ede8db0ee12d6af":[2,0,2,72,43],
-"struct_terraria_1_1_tile.html#a5562a90c01a3a9decc8e8414c1da1ba4":[2,0,2,72,24]
+"struct_terraria_1_1_tile.html#a0fca7d73d5d8d585686034e460d88fd3":[2,0,2,72,12]
 };

@@ -1,5 +1,15 @@
 var NAVTREEINDEX86 =
 {
+"class_terraria_1_1_main.html#aed4b6a8ad3e867bdb2bdcab2ab6ab0f9":[2,0,2,47,155],
+"class_terraria_1_1_main.html#aed8b5d4419e5b084035b6b275318a9db":[2,0,2,47,1311],
+"class_terraria_1_1_main.html#aedd1d171045b23f0ac25f4141c752b77":[2,0,2,47,1252],
+"class_terraria_1_1_main.html#aedda15507afba27edc5cd27f54a4b882":[2,0,2,47,36],
+"class_terraria_1_1_main.html#aee10486654d3b16ff1777c5c20a1b14f":[2,0,2,47,1127],
+"class_terraria_1_1_main.html#aee61eda63cc408e592f0e770aca2aea7":[2,0,2,47,233],
+"class_terraria_1_1_main.html#aee73474c7805b1ea345a38caf0124a35":[2,0,2,47,605],
+"class_terraria_1_1_main.html#aee8844685ec31d3295959557d164459b":[2,0,2,47,31],
+"class_terraria_1_1_main.html#aeed5095ffc8ffdb8ca63b2596ca87d63":[2,0,2,47,630],
+"class_terraria_1_1_main.html#aeef7a240c63c4e7b67fd3a526739d803":[2,0,2,47,1086],
 "class_terraria_1_1_main.html#aef0d90b8a0bb56a2fb945600c4df9671":[2,0,2,47,373],
 "class_terraria_1_1_main.html#aef3a53f2b3ac1309c7560e32cfea0cde":[2,0,2,47,41],
 "class_terraria_1_1_main.html#aef502cd86ab13fff4c56fa2754238e58":[2,0,2,47,1296],
@@ -239,15 +249,5 @@ var NAVTREEINDEX86 =
 "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a632a79772b593ef03362670b2f896e8e":[2,0,2,13,8,16],
 "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a729e3724ff85993acc5aaca0613ee5b6":[2,0,2,13,8,2],
 "class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a73f749e5cdd9a170804cd930be504717":[2,0,2,13,8,15],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a9d66ad924a1946cb23e2761b5f21ccde":[2,0,2,13,8,3],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#aa41c284136e72e011745076fb2790844":[2,0,2,13,8,12],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#aa83f6da0564c1b217ff3baacabc2dd38":[2,0,2,13,8,6],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#ae1123e6083f56cff9a4f7f8512d9820c":[2,0,2,13,8,9],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#af70f6b611dfe624e149384e385c3c342":[2,0,2,13,8,13],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#afbec1aa8ff7e3433d400d52679518abe":[2,0,2,13,8,18],
-"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#afee7c7e57354010186bc9c73398d117a":[2,0,2,13,8,0],
-"class_terraria_1_1_mod_loader_1_1_assets_1_1_assembly_resources_content_source.html":[2,0,2,13,0,0],
-"class_terraria_1_1_mod_loader_1_1_assets_1_1_assembly_resources_content_source.html#a338d30f535e99a4b46c5cb1660647443":[2,0,2,13,0,0,1],
-"class_terraria_1_1_mod_loader_1_1_assets_1_1_assembly_resources_content_source.html#aca0efbd6b97399c547a3c5a1e8cecc7c":[2,0,2,13,0,0,0],
-"class_terraria_1_1_mod_loader_1_1_assets_1_1_m_p3_reader.html":[2,0,2,13,0,1]
+"class_terraria_1_1_mod_loader_1_1_accessory_slot_loader.html#a9d66ad924a1946cb23e2761b5f21ccde":[2,0,2,13,8,3]
 };

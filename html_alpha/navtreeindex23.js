@@ -1,5 +1,15 @@
 var NAVTREEINDEX23 =
 {
+"class_terraria_1_1_game_input_1_1_player_input_1_1_settings_for_u_i.html#a594f4af69bb5d3716a01a79eba18fe1e":[2,0,2,6,2,1,4],
+"class_terraria_1_1_game_input_1_1_player_input_1_1_settings_for_u_i.html#a5f77057ad7a27798dfa38a00b609546a":[2,0,2,6,2,1,7],
+"class_terraria_1_1_game_input_1_1_player_input_1_1_settings_for_u_i.html#a722b995fff37299dacf6a9bf45a14471":[2,0,2,6,2,1,2],
+"class_terraria_1_1_game_input_1_1_player_input_1_1_settings_for_u_i.html#a7829435c988a9c039274a3d4bde5ead7":[2,0,2,6,2,1,6],
+"class_terraria_1_1_game_input_1_1_player_input_1_1_settings_for_u_i.html#aa34d7fbc332953d77c15ab054c1c4c00":[2,0,2,6,2,1,3],
+"class_terraria_1_1_game_input_1_1_player_input_1_1_settings_for_u_i.html#ac40af2b01029f16f41ac5398550310d8":[2,0,2,6,2,1,9],
+"class_terraria_1_1_game_input_1_1_player_input_1_1_settings_for_u_i.html#aecedc6e81df482cfe5c68b5f63636bce":[2,0,2,6,2,1,1],
+"class_terraria_1_1_game_input_1_1_player_input_1_1_settings_for_u_i.html#af6d3fcffb08e9eebc991247282e06f7e":[2,0,2,6,2,1,10],
+"class_terraria_1_1_game_input_1_1_player_input_profile.html":[2,0,2,6,3],
+"class_terraria_1_1_game_input_1_1_player_input_profile.html#a0a705060947df2c3a7b2cdcbc1b5bd60":[2,0,2,6,3,31],
 "class_terraria_1_1_game_input_1_1_player_input_profile.html#a2c92faffbebaa637210d47bd796caac0":[2,0,2,6,3,22],
 "class_terraria_1_1_game_input_1_1_player_input_profile.html#a2f4d664b2a4ddd13987254f074aec44a":[2,0,2,6,3,28],
 "class_terraria_1_1_game_input_1_1_player_input_profile.html#a3540458e756fc3a81173354831ec04c1":[2,0,2,6,3,12],
@@ -239,15 +249,5 @@ var NAVTREEINDEX23 =
 "class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#a39803b3371fb944c8a9cb3c46122cdec":[2,0,2,7,1,0,1,6],
 "class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#a3b300d86bfafce6e37a125f4fa3dd5c6":[2,0,2,7,1,0,1,7],
 "class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#a3cb4029e364358fbc4dd43d6e01d1dfc":[2,0,2,7,1,0,1,13],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#a3f6b23df60e2d0f7bdfa8e84df7373f2":[2,0,2,7,1,0,1,1],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#a532777be63e0bb3c10f748d1c9a9bd47":[2,0,2,7,1,0,1,2],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#a5ce636709a55c590cb1ba53d1da07b59":[2,0,2,7,1,0,1,4],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#a70c55827499cb1f079923fbc189c2a85":[2,0,2,7,1,0,1,14],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#a7af31c49445a253cca32622db0cf3ca3":[2,0,2,7,1,0,1,15],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#a7b2d28bf6dbbde5678f43d1ed8f69c10":[2,0,2,7,1,0,1,12],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#ab6a694e5496523e07578716fcc0c5cc0":[2,0,2,7,1,0,1,11],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#ac9e970aeab63d4244565c415b8a7be6c":[2,0,2,7,1,0,1,5],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#add3028c600acb06fb022e852ab8152a7":[2,0,2,7,1,0,1,8],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#aff90c9576e4978d1d138f7c801dce777":[2,0,2,7,1,0,1,0],
-"class_terraria_1_1_graphics_1_1_capture_1_1_capture_interface.html":[2,0,2,7,1,1]
+"class_terraria_1_1_graphics_1_1_capture_1_1_capture_biome_1_1_styles.html#a3f6b23df60e2d0f7bdfa8e84df7373f2":[2,0,2,7,1,0,1,1]
 };

@@ -373,6 +373,7 @@ var annotated_dup =
           [ "GolfState", "class_terraria_1_1_game_content_1_1_golf_1_1_golf_state.html", "class_terraria_1_1_game_content_1_1_golf_1_1_golf_state" ]
         ] ],
         [ "ItemDropRules", "namespace_terraria_1_1_game_content_1_1_item_drop_rules.html", [
+          [ "AlwaysAtleastOneSuccessDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_always_atleast_one_success_drop_rule.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_always_atleast_one_success_drop_rule" ],
           [ "Chains", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_chains" ],
           [ "CoinsRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_coins_rule.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_coins_rule" ],
           [ "CommonCode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_code.html", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_code" ],

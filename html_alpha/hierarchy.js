@@ -1177,6 +1177,7 @@ var hierarchy =
       [ "Terraria.UI.InGamePopups.PlayerWantsToJoinGamePopup", "class_terraria_1_1_u_i_1_1_in_game_popups_1_1_player_wants_to_join_game_popup.html", null ]
     ] ],
     [ "Terraria.GameContent.ItemDropRules.IItemDropRule", "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_item_drop_rule.html", [
+      [ "Terraria.GameContent.ItemDropRules.AlwaysAtleastOneSuccessDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_always_atleast_one_success_drop_rule.html", null ],
       [ "Terraria.GameContent.ItemDropRules.CoinsRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_coins_rule.html", null ],
       [ "Terraria.GameContent.ItemDropRules.CommonDrop", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop.html", [
         [ "Terraria.GameContent.ItemDropRules.CommonDropNotScalingWithLuck", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_common_drop_not_scaling_with_luck.html", null ],
@@ -1451,6 +1452,7 @@ var hierarchy =
       [ "Terraria.Graphics.Renderers.NPCHeadRenderer", "class_terraria_1_1_graphics_1_1_renderers_1_1_n_p_c_head_renderer.html", null ]
     ] ],
     [ "Terraria.GameContent.ItemDropRules.INestedItemDropRule", "interface_terraria_1_1_game_content_1_1_item_drop_rules_1_1_i_nested_item_drop_rule.html", [
+      [ "Terraria.GameContent.ItemDropRules.AlwaysAtleastOneSuccessDropRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_always_atleast_one_success_drop_rule.html", null ],
       [ "Terraria.GameContent.ItemDropRules.DropBasedOnExpertMode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_based_on_expert_mode.html", null ],
       [ "Terraria.GameContent.ItemDropRules.DropBasedOnMasterMode", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_based_on_master_mode.html", null ],
       [ "Terraria.GameContent.ItemDropRules.FewFromRulesRule", "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_few_from_rules_rule.html", null ],

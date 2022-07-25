@@ -1,5 +1,15 @@
 var NAVTREEINDEX15 =
 {
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html#a1119e4520e9e1cd8194afb5ad2818a3a":[2,0,2,5,19,0,0,2,2,0],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html#a47fb0c35a129bae81bb7b3a6047bbbb8":[2,0,2,5,19,0,0,2,2,4],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html#a6d42428647c600ca994d7df30c0da058":[2,0,2,5,19,0,0,2,2,2],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html#adcc07e16a266b50aa494fbbee6b86548":[2,0,2,5,19,0,0,2,2,3],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html#aefc408438c94b1d709f0ad07f1f3e548":[2,0,2,5,19,0,0,2,2,1],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html":[2,0,2,5,19,0,0,2,3],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html#a0536435116b475d112217964908601fa":[2,0,2,5,19,0,0,2,3,1],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html#a0d140d483a2efe11c977192906950910":[2,0,2,5,19,0,0,2,3,5],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html#a1dd3a3333cb82f865bba4768b0b8d5ba":[2,0,2,5,19,0,0,2,3,0],
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html#a356b3a270ac548724193ffdd265112de":[2,0,2,5,19,0,0,2,3,4],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html#ad82971794303aa3ab65e74c64b617b3f":[2,0,2,5,19,0,0,2,3,2],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html#ae158bafef161e6ad5943ac8bf9048e95":[2,0,2,5,19,0,0,2,3,3],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_simulate_gravity.html":[2,0,2,5,19,0,0,2,4],
@@ -239,15 +249,5 @@ var NAVTREEINDEX15 =
 "class_terraria_1_1_game_content_1_1_texture_assets.html#a364d564ef1862a7d8871eb3475a6764e":[2,0,2,5,64,153],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#a37474c56f230f38ffdb30526ac2f63b8":[2,0,2,5,64,116],
 "class_terraria_1_1_game_content_1_1_texture_assets.html#a37e19c863a51d8868cc7e4e53c095929":[2,0,2,5,64,280],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a38997e13d4078da425ee9d785a22361f":[2,0,2,5,64,11],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a39f3b07f37db61a134ff5dfac97a797b":[2,0,2,5,64,205],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a3a5983e6ded79ad88cf6ca130d3f0a28":[2,0,2,5,64,146],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a3c3faced17583dd9328399a340cd312c":[2,0,2,5,64,18],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a3cb8a7e8de9be20cecb813c661d48f07":[2,0,2,5,64,245],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a3d74cfb0ff8877e0a0373645ced05050":[2,0,2,5,64,250],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a3e40fe644288bad25186f49759cf3e52":[2,0,2,5,64,107],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a3eaa225ac8589fc0ccd1cfe72ea686ab":[2,0,2,5,64,212],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a3ef5ff68d0a597631deaa91ec6abae55":[2,0,2,5,64,234],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a3fa4cf45e06da804ad5adf84b3a527f2":[2,0,2,5,64,261],
-"class_terraria_1_1_game_content_1_1_texture_assets.html#a3fb7229ded3b04dcc3b276738d258feb":[2,0,2,5,64,149]
+"class_terraria_1_1_game_content_1_1_texture_assets.html#a38997e13d4078da425ee9d785a22361f":[2,0,2,5,64,11]
 };

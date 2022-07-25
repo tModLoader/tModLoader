@@ -1,5 +1,15 @@
 var NAVTREEINDEX13 =
 {
+"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_text_module.html#a223e408577eeac746e67d47b5fe2c641":[2,0,2,5,14,10,1],
+"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_text_module.html#a28460a5547d6c3387515dd8a0ad90033":[2,0,2,5,14,10,3],
+"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_text_module.html#a2e269105bb050a83c32bd6ea8033de4b":[2,0,2,5,14,10,0],
+"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_text_module.html#abf4d290dbfbc7f24435098c0b79e3883":[2,0,2,5,14,10,2],
+"class_terraria_1_1_game_content_1_1_object_interactions_1_1_a_hover_interaction_checker.html":[2,0,2,5,15,0],
+"class_terraria_1_1_game_content_1_1_object_interactions_1_1_block_because_you_are_over_an_important_tile.html":[2,0,2,5,15,1],
+"class_terraria_1_1_game_content_1_1_object_interactions_1_1_block_because_you_are_over_an_important_tile.html#acf842a672cebc654c04c30dcbbbf4405":[2,0,2,5,15,1,0],
+"class_terraria_1_1_game_content_1_1_object_interactions_1_1_n_p_c_smart_interact_candidate_provider.html":[2,0,2,5,15,5],
+"class_terraria_1_1_game_content_1_1_object_interactions_1_1_n_p_c_smart_interact_candidate_provider.html#a88116f0291c8a28eaad759a3ec63aaa1":[2,0,2,5,15,5,1],
+"class_terraria_1_1_game_content_1_1_object_interactions_1_1_n_p_c_smart_interact_candidate_provider.html#a8ec9eab9f06e7d0f638bf0e509ed2498":[2,0,2,5,15,5,0],
 "class_terraria_1_1_game_content_1_1_object_interactions_1_1_potion_of_return_gate_interaction_checker.html":[2,0,2,5,15,6],
 "class_terraria_1_1_game_content_1_1_object_interactions_1_1_potion_of_return_helper.html":[2,0,2,5,15,7],
 "class_terraria_1_1_game_content_1_1_object_interactions_1_1_potion_of_return_helper.html#a216c6b01642a83409316ea83a454fdc0":[2,0,2,5,15,7,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX13 =
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_death_shader.html#a3c2e32e4a7e25c6b105290b35bd7c277":[2,0,2,5,17,7,0],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_desert_shader.html":[2,0,2,5,17,8],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_desert_shader.html#a7aa38159427ec33f64207b63d2298f0b":[2,0,2,5,17,8,0],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_dripping_shader.html":[2,0,2,5,17,9],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_dripping_shader.html#aab5cf815ecd5b96097609ebfd23cbfe0":[2,0,2,5,17,9,0],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_drowning_shader.html":[2,0,2,5,17,10],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_drowning_shader.html#a4d72f0ea6dedb5b0473dbfc563d6e365":[2,0,2,5,17,10,0],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_duke_fishron_shader.html":[2,0,2,5,17,11],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_duke_fishron_shader.html#a40d0475a146b5143d2a44399917ae0c6":[2,0,2,5,17,11,0],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_dungeon_shader.html":[2,0,2,5,17,12],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_empress_shader.html":[2,0,2,5,17,13],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_eye_of_cthulhu_shader.html":[2,0,2,5,17,15],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_eye_of_cthulhu_shader.html#ab566ac8d307f9b0528436e0f53f964d5":[2,0,2,5,17,15,0],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_eyeball_shader.html":[2,0,2,5,17,14]
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_dripping_shader.html":[2,0,2,5,17,9]
 };

@@ -1,5 +1,15 @@
 var NAVTREEINDEX14 =
 {
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_dripping_shader.html#aab5cf815ecd5b96097609ebfd23cbfe0":[2,0,2,5,17,9,0],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_drowning_shader.html":[2,0,2,5,17,10],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_drowning_shader.html#a4d72f0ea6dedb5b0473dbfc563d6e365":[2,0,2,5,17,10,0],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_duke_fishron_shader.html":[2,0,2,5,17,11],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_duke_fishron_shader.html#a40d0475a146b5143d2a44399917ae0c6":[2,0,2,5,17,11,0],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_dungeon_shader.html":[2,0,2,5,17,12],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_empress_shader.html":[2,0,2,5,17,13],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_eye_of_cthulhu_shader.html":[2,0,2,5,17,15],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_eye_of_cthulhu_shader.html#ab566ac8d307f9b0528436e0f53f964d5":[2,0,2,5,17,15,0],
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_eyeball_shader.html":[2,0,2,5,17,14],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_eyeball_shader.html#a07e2a27ea5110b4904434b85b7174e03":[2,0,2,5,17,14,0],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_eyeball_shader.html#aa9a60f06ed65d8ced4691a220278bf2d":[2,0,2,5,17,14,1],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_frost_legion_shader.html":[2,0,2,5,17,16],
@@ -239,15 +249,5 @@ var NAVTREEINDEX14 =
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_fade.html#aa322f9b9c9d8aa8d197cff356a6e0fe2":[2,0,2,5,19,0,0,2,0,3],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_fade.html#ad1b73af21a3f63cf76890181bde8d311":[2,0,2,5,19,0,0,2,0,4],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_fade.html#ad7f52ecedcd66231e1834be967685b0c":[2,0,2,5,19,0,0,2,0,1],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html":[2,0,2,5,19,0,0,2,2],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html#a1119e4520e9e1cd8194afb5ad2818a3a":[2,0,2,5,19,0,0,2,2,0],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html#a47fb0c35a129bae81bb7b3a6047bbbb8":[2,0,2,5,19,0,0,2,2,4],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html#a6d42428647c600ca994d7df30c0da058":[2,0,2,5,19,0,0,2,2,2],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html#adcc07e16a266b50aa494fbbee6b86548":[2,0,2,5,19,0,0,2,2,3],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html#aefc408438c94b1d709f0ad07f1f3e548":[2,0,2,5,19,0,0,2,2,1],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html":[2,0,2,5,19,0,0,2,3],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html#a0536435116b475d112217964908601fa":[2,0,2,5,19,0,0,2,3,1],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html#a0d140d483a2efe11c977192906950910":[2,0,2,5,19,0,0,2,3,5],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html#a1dd3a3333cb82f865bba4768b0b8d5ba":[2,0,2,5,19,0,0,2,3,0],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame_sequence.html#a356b3a270ac548724193ffdd265112de":[2,0,2,5,19,0,0,2,3,4]
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html":[2,0,2,5,19,0,0,2,2]
 };
