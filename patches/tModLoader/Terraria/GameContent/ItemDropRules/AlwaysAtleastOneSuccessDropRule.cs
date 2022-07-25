@@ -26,24 +26,16 @@ namespace Terraria.GameContent.ItemDropRules
 		}
 
 		public ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info, ItemDropRuleResolveAction resolveAction) {
-			ItemDropAttemptResult result = default;
-
-			bool fail = true;
-			bool wasAtleastOneSoCanStop = false;
-			while (fail) {
-				for (int i = 0; i < rules.Length; i++) {
-					IItemDropRule rule = rules[i];
-					result = resolveAction(rule, info);
-					if (result.State == ItemDropAttemptResultState.Success) {
-						wasAtleastOneSoCanStop = true;
-					}
+			while (true) {
+				bool anyDropped = false;
+				foreach (var rule in rules) {
+					if (resolveAction(rule, info).State == ItemDropAttemptResultState.Success)
+						anyDropped = true;
 				}
-				if (wasAtleastOneSoCanStop)
-					fail = false;
-			}
 
-			result.State = ItemDropAttemptResultState.FailedRandomRoll;
-			return result;
+				if (anyDropped)
+					return new() { State = ItemDropAttemptResultState.Success };
+			}
 		}
 
 		public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo) {
