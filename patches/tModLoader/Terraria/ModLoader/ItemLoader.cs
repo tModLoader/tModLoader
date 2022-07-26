@@ -1270,11 +1270,7 @@ namespace Terraria.ModLoader
 				return;
 
 			player.DropFromItem(item.type);
-			item.ModItem?.RightClick(player);
-
-			foreach (var g in HookRightClick.Enumerate(item.globalItems)) {
-				g.RightClick(item, player);
-			}
+			RightClickCallHooks(item, player);
 
 			if (ItemID.Sets.BossBag[item.type] && (!ItemID.Sets.PreHardmodeLikeBossBag[item.type] || Main.tenthAnniversaryWorld)) {
 				player.TryGettingDevArmor(player.GetItemSource_OpenItem(item.type));
@@ -1287,6 +1283,14 @@ namespace Terraria.ModLoader
 			Main.stackSplit = 30;
 			Main.mouseRightRelease = false;
 			Recipe.FindRecipes();
+		}
+
+		internal static void RightClickCallHooks(Item item, Player player) {
+			item.ModItem?.RightClick(player);
+
+			foreach (var g in HookRightClick.Enumerate(item.globalItems)) {
+				g.RightClick(item, player);
+			}
 		}
 
 		/// <summary>
