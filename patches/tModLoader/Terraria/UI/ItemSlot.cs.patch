@@ -334,100 +334,130 @@
  					PickupItemIntoMouse(inv, context, slot, player);
  					SoundEngine.PlaySound(12);
  					RefreshStackSplitCooldown();
-@@ -1052,10 +_,16 @@
+@@ -1052,12 +_,18 @@
  			switch (context) {
  				case 0:
  					result = true;
 -					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957 || inv[slot].type == 5111)) {
 +					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957 || inv[slot].type == 5111 || ItemLoader.IsModBossBag_Obsolete(inv[slot]))) {
  						if (Main.mouseRightRelease) {
- 							player.OpenBossBag(inv[slot].type);
+-							player.OpenBossBag(inv[slot].type);
+-							inv[slot].stack--;
++							//player.OpenBossBag(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
 +
 +							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
--							inv[slot].stack--;
 +								inv[slot].stack--;
-+							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
++							*/
  
-@@ -1065,10 +_,16 @@
+ 							SoundEngine.PlaySound(7);
+ 							Main.stackSplit = 30;
+@@ -1065,12 +_,18 @@
  							Recipe.FindRecipes();
  						}
  					}
 -					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < 5125 && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
 +					else if (Main.mouseRight && inv[slot].type > 0 && inv[slot].type < ItemID.Count && ItemID.Sets.IsFishingCrate[inv[slot].type]) {
  						if (Main.mouseRightRelease) {
- 							player.OpenFishingCrate(inv[slot].type);
+-							player.OpenFishingCrate(inv[slot].type);
+-							inv[slot].stack--;
++							//player.OpenFishingCrate(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
 +
 +							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
--							inv[slot].stack--;
 +								inv[slot].stack--;
-+							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
++							*/
  
-@@ -1081,7 +_,13 @@
+ 							SoundEngine.PlaySound(7);
+ 							Main.stackSplit = 30;
+@@ -1080,10 +_,16 @@
+ 					}
  					else if (Main.mouseRight && inv[slot].type == 3093) {
  						if (Main.mouseRightRelease) {
- 							player.OpenHerbBag(3093);
+-							player.OpenHerbBag(3093);
+-							inv[slot].stack--;
++							//player.OpenHerbBag(3093);
 +							ItemLoader.RightClick(inv[slot], player);
 +
 +							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
--							inv[slot].stack--;
 +								inv[slot].stack--;
-+							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
++							*/
  
-@@ -1094,7 +_,8 @@
+ 							SoundEngine.PlaySound(7);
+ 							Main.stackSplit = 30;
+@@ -1093,10 +_,12 @@
+ 					}
  					else if (Main.mouseRight && inv[slot].type == 4345) {
  						if (Main.mouseRightRelease) {
- 							player.OpenCanofWorms(inv[slot].type);
-+							ItemLoader.RightClick(inv[slot], player);
+-							player.OpenCanofWorms(inv[slot].type);
 -							inv[slot].stack--;
-+							//inv[slot].stack--;
++							//player.OpenCanofWorms(inv[slot].type);
++							ItemLoader.RightClick(inv[slot], player);
++							/*inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
++							*/
  
-@@ -1107,7 +_,8 @@
+ 							SoundEngine.PlaySound(7);
+ 							Main.stackSplit = 30;
+@@ -1106,10 +_,12 @@
+ 					}
  					else if (Main.mouseRight && inv[slot].type == 4410) {
  						if (Main.mouseRightRelease) {
- 							player.OpenOyster(inv[slot].type);
-+							ItemLoader.RightClick(inv[slot], player);
+-							player.OpenOyster(inv[slot].type);
 -							inv[slot].stack--;
-+							//inv[slot].stack--;
++							//player.OpenOyster(inv[slot].type);
++							ItemLoader.RightClick(inv[slot], player);
++							/*inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
++							*/
  
-@@ -1120,7 +_,8 @@
+ 							SoundEngine.PlaySound(7);
+ 							Main.stackSplit = 30;
+@@ -1119,10 +_,12 @@
+ 					}
  					else if (Main.mouseRight && inv[slot].type == 5059) {
  						if (Main.mouseRightRelease) {
- 							player.OpenCapricornLegs(inv[slot].type);
-+							ItemLoader.RightClick(inv[slot], player);
+-							player.OpenCapricornLegs(inv[slot].type);
 -							inv[slot].stack--;
-+							//inv[slot].stack--;
++							//player.OpenCapricornLegs(inv[slot].type);
++							ItemLoader.RightClick(inv[slot], player);
++							/*inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
++							*/
  
-@@ -1133,7 +_,8 @@
+ 							SoundEngine.PlaySound(7);
+ 							Main.stackSplit = 30;
+@@ -1132,10 +_,12 @@
+ 					}
  					else if (Main.mouseRight && inv[slot].type == 5060) {
  						if (Main.mouseRightRelease) {
- 							player.OpenCapricornTail(inv[slot].type);
-+							ItemLoader.RightClick(inv[slot], player);
+-							player.OpenCapricornTail(inv[slot].type);
 -							inv[slot].stack--;
-+							//inv[slot].stack--;
++							//player.OpenCapricornTail(inv[slot].type);
++							ItemLoader.RightClick(inv[slot], player);
++							/*inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
++							*/
  
-@@ -1145,7 +_,11 @@
+ 							SoundEngine.PlaySound(7);
+ 							Main.stackSplit = 30;
+@@ -1145,53 +_,73 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1774) {
  						if (Main.mouseRightRelease) {
@@ -435,15 +465,16 @@
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 -							inv[slot].stack--;
 +								inv[slot].stack--;
-+							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
++							*/
  
-@@ -1153,12 +_,17 @@
+ 							SoundEngine.PlaySound(7);
  							Main.stackSplit = 30;
  							Main.mouseRightRelease = false;
- 							player.OpenGoodieBag(1774);
+-							player.OpenGoodieBag(1774);
++							//player.OpenGoodieBag(1774);
 +							ItemLoader.RightClick(inv[slot], player);
  							Recipe.FindRecipes();
  						}
@@ -455,15 +486,16 @@
 +							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 +								inv[slot].stack--;
-+							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
++							*/
  
-@@ -1166,12 +_,17 @@
+ 							SoundEngine.PlaySound(7);
  							Main.stackSplit = 30;
  							Main.mouseRightRelease = false;
- 							player.OpenLockBox(3085);
+-							player.OpenLockBox(3085);
++							//player.OpenLockBox(3085);
 +							ItemLoader.RightClick(inv[slot], player);
  							Recipe.FindRecipes();
  						}
@@ -475,15 +507,16 @@
 +							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 +								inv[slot].stack--;
-+							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
++							*/
  
-@@ -1179,12 +_,17 @@
+ 							SoundEngine.PlaySound(7);
  							Main.stackSplit = 30;
  							Main.mouseRightRelease = false;
- 							player.OpenShadowLockbox(4879);
+-							player.OpenShadowLockbox(4879);
++							//player.OpenShadowLockbox(4879);
 +							ItemLoader.RightClick(inv[slot], player);
  							Recipe.FindRecipes();
  						}
@@ -494,15 +527,16 @@
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 -							inv[slot].stack--;
 +								inv[slot].stack--;
-+							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
++							*/
  
-@@ -1192,6 +_,7 @@
+ 							SoundEngine.PlaySound(7);
  							Main.stackSplit = 30;
  							Main.mouseRightRelease = false;
- 							player.OpenPresent(1869);
+-							player.OpenPresent(1869);
++							//player.OpenPresent(1869);
 +							ItemLoader.RightClick(inv[slot], player);
  							Recipe.FindRecipes();
  						}

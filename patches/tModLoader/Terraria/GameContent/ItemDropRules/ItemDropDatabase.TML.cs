@@ -1048,5 +1048,10 @@ namespace Terraria.GameContent.ItemDropRules
 			RegisterToItem(ItemID.Oyster, ItemDropRule.SequentialRulesNotScalingWithLuck(5, rules));
 			RegisterToItem(ItemID.Oyster, ItemDropRule.Common(4411));
 		}
+
+		private void RegisterCapricorns() {
+			RegisterToItem(ItemID.CapricornLegs, ItemDropRule.Common(ItemID.CapricornTail));
+			RegisterToItem(ItemID.CapricornTail, ItemDropRule.Common(ItemID.CapricornLegs));
+		}
 	}
 }
