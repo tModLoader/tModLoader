@@ -334,7 +334,7 @@
  					PickupItemIntoMouse(inv, context, slot, player);
  					SoundEngine.PlaySound(12);
  					RefreshStackSplitCooldown();
-@@ -1052,10 +_,13 @@
+@@ -1052,10 +_,16 @@
  			switch (context) {
  				case 0:
  					result = true;
@@ -343,14 +343,17 @@
  						if (Main.mouseRightRelease) {
  							player.OpenBossBag(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
++
++							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 -							inv[slot].stack--;
 +								inv[slot].stack--;
++							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1065,10 +_,13 @@
+@@ -1065,10 +_,16 @@
  							Recipe.FindRecipes();
  						}
  					}
@@ -359,70 +362,85 @@
  						if (Main.mouseRightRelease) {
  							player.OpenFishingCrate(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
++
++							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 -							inv[slot].stack--;
 +								inv[slot].stack--;
++							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1081,7 +_,11 @@
+@@ -1081,7 +_,13 @@
  					else if (Main.mouseRight && inv[slot].type == 3093) {
  						if (Main.mouseRightRelease) {
  							player.OpenHerbBag(3093);
 +							ItemLoader.RightClick(inv[slot], player);
 +
++							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 -							inv[slot].stack--;
 +								inv[slot].stack--;
++							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1094,6 +_,7 @@
+@@ -1094,7 +_,8 @@
  					else if (Main.mouseRight && inv[slot].type == 4345) {
  						if (Main.mouseRightRelease) {
  							player.OpenCanofWorms(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
- 							inv[slot].stack--;
+-							inv[slot].stack--;
++							//inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
-@@ -1107,6 +_,7 @@
+ 
+@@ -1107,7 +_,8 @@
  					else if (Main.mouseRight && inv[slot].type == 4410) {
  						if (Main.mouseRightRelease) {
  							player.OpenOyster(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
- 							inv[slot].stack--;
+-							inv[slot].stack--;
++							//inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
-@@ -1120,6 +_,7 @@
+ 
+@@ -1120,7 +_,8 @@
  					else if (Main.mouseRight && inv[slot].type == 5059) {
  						if (Main.mouseRightRelease) {
  							player.OpenCapricornLegs(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
- 							inv[slot].stack--;
+-							inv[slot].stack--;
++							//inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
-@@ -1133,6 +_,7 @@
+ 
+@@ -1133,7 +_,8 @@
  					else if (Main.mouseRight && inv[slot].type == 5060) {
  						if (Main.mouseRightRelease) {
  							player.OpenCapricornTail(inv[slot].type);
 +							ItemLoader.RightClick(inv[slot], player);
- 							inv[slot].stack--;
+-							inv[slot].stack--;
++							//inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
-@@ -1145,7 +_,9 @@
+ 
+@@ -1145,7 +_,11 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1774) {
  						if (Main.mouseRightRelease) {
++							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 -							inv[slot].stack--;
 +								inv[slot].stack--;
++							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1153,12 +_,15 @@
+@@ -1153,12 +_,17 @@
  							Main.stackSplit = 30;
  							Main.mouseRightRelease = false;
  							player.OpenGoodieBag(1774);
@@ -434,13 +452,15 @@
 -						if (Main.mouseRightRelease && player.ConsumeItem(327)) {
 -							inv[slot].stack--;
 +						if (ItemLoader.CanRightClick(inv[slot]) && Main.mouseRightRelease && player.ConsumeItem(327)) {
++							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 +								inv[slot].stack--;
++							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1166,12 +_,15 @@
+@@ -1166,12 +_,17 @@
  							Main.stackSplit = 30;
  							Main.mouseRightRelease = false;
  							player.OpenLockBox(3085);
@@ -452,13 +472,15 @@
 -						if (Main.mouseRightRelease && player.HasItem(329)) {
 -							inv[slot].stack--;
 +						if (ItemLoader.CanRightClick(inv[slot]) && Main.mouseRightRelease && player.HasItem(329)) {
++							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 +								inv[slot].stack--;
++							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1179,12 +_,15 @@
+@@ -1179,12 +_,17 @@
  							Main.stackSplit = 30;
  							Main.mouseRightRelease = false;
  							player.OpenShadowLockbox(4879);
@@ -468,9 +490,11 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1869) {
  						if (Main.mouseRightRelease) {
++							/*
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
 -							inv[slot].stack--;
 +								inv[slot].stack--;
++							*/
 +
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
