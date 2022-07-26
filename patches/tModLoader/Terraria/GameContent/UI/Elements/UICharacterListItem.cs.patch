@@ -31,7 +31,7 @@
  			Height.Set(96f, 0f);
  			Width.Set(0f, 1f);
  			SetPadding(6f);
-@@ -102,6 +_,80 @@
+@@ -102,6 +_,84 @@
  			_deleteButton = uIImageButton5;
  			Append(uIImageButton5);
  			num += 4f;
@@ -70,8 +70,12 @@
 +					System.Text.StringBuilder fullSB = new System.Text.StringBuilder(Language.GetTextValue("tModLoader.ModsDifferentSinceLastPlay"));
 +					System.Text.StringBuilder shortSB = new System.Text.StringBuilder();
 +					if (checkModPack) {
++						string pack = data.Player.modPack;
++						if (pack == null)
++							pack = "None";
++
 +						shortSB.Append(Language.GetTextValue("tModLoader.ModPackMismatch"));
-+						fullSB.Append("\n" + Language.GetTextValue("tModLoader.ModPackMismatch", data.Player.modPack));
++						fullSB.Append("\n" + Language.GetTextValue("tModLoader.ModPackMismatch", pack));
 +					}
 +
 +					if (missingMods.Count > 0) {
