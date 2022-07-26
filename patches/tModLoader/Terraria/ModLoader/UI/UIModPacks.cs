@@ -141,8 +141,7 @@ namespace Terraria.ModLoader.UI
 
 			SaveSnapshot(configsPath, modsPath);
 
-			Interface.modPacksMenu.OnDeactivate(); // should reload
-			Interface.modPacksMenu.OnActivate(); // should reload
+			Main.menuMode = Interface.modPacksMenuID;
 		}
 
 		private void BackClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -236,10 +235,12 @@ namespace Terraria.ModLoader.UI
 					continue; // internal ModLoader mod
 
 				// Export Config Files
+				/*
 				foreach (var config in configsAll.Where(c => Path.GetFileName(c).StartsWith(mod.Name + '_'))) {
 					// Overwrite existing config file to fix config collisions (#2661)
 					File.Copy(config, Path.Combine(configsPath, Path.GetFileName(config)), true);
 				}
+				*/
 
 				// Export Publish ID information from Steam Workshop mods for easy re-downloading/downloading
 				if (ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(mod.File.path), out var info)) {
@@ -265,9 +266,10 @@ namespace Terraria.ModLoader.UI
 
 			Directory.CreateDirectory(instancePath);
 			Directory.CreateDirectory(Path.Combine(instancePath, "SaveData"));
-						
-			string modsPath = ModPackModsPath(modPackName);
-			string configPath = ModPackConfigPath(modPackName);
+
+			//TODO: When implementing ModConfig as part of Mod Pack, update
+			string modsPath =  ModPackModsPath(modPackName); 
+			string configPath = Config.ConfigManager.ModConfigPath; //ModPackConfigPath(modPackName);
 
 			// Deploy Mods, Configs to instance
 			FileUtilities.CopyFolder(modsPath, Path.Combine(instancePath, "SaveData", "Mods"));

@@ -357,6 +357,9 @@ namespace Terraria.ModLoader.UI
 					if (!modpack._mods.Contains(Path.GetFileNameWithoutExtension(file)))
 						File.Delete(file);
 			}
+
+			Interface.modPacksMenu.OnDeactivate(); // should reload
+			Interface.modPacksMenu.OnActivate(); // should reload
 		}
 
 		private static void ImportModPackLocal(UIMouseEvent evt, UIElement listeningElement) {
