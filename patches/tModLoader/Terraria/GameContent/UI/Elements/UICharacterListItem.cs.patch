@@ -71,10 +71,10 @@
 +					System.Text.StringBuilder shortSB = new System.Text.StringBuilder();
 +					if (checkModPack) {
 +						string pack = data.Player.modPack;
-+						if (pack == null)
++						if (string.IsNullOrEmpty(pack))
 +							pack = "None";
 +
-+						shortSB.Append(Language.GetTextValue("tModLoader.ModPackMismatch"));
++						shortSB.Append(Language.GetTextValue("tModLoader.ModPackMismatch", pack));
 +						fullSB.Append("\n" + Language.GetTextValue("tModLoader.ModPackMismatch", pack));
 +					}
 +

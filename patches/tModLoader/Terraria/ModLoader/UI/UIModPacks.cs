@@ -29,7 +29,6 @@ namespace Terraria.ModLoader.UI
 		private UILoaderAnimatedImage _uiLoader;
 		private UIPanel _scrollPanel;
 		private CancellationTokenSource _cts;
-		private UIAutoScaleTextTextPanel<string> _modPackCurrent;
 		public UIState PreviousUIState { get; set; }
 
 		public static string ModPackModsPath(string packName) => Path.Combine(ModPacksDirectory, packName, "Mods");
@@ -94,15 +93,6 @@ namespace Terraria.ModLoader.UI
 			backButton.OnClick += BackClick;
 			uIElement.Append(backButton);
 
-			string modPackCurrentName = Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive);
-			_modPackCurrent = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.CurrentModPack", modPackCurrentName)) {
-				Width = new StyleDimension(20f, 1f / 4f),
-				Height = { Pixels = 40 },
-				VAlign = 0.1f,
-				HAlign = 1f
-			};
-			Append(_modPackCurrent);
-
 			var saveNewButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModPacksSaveEnabledAsNewPack"));
 			saveNewButton.CopyStyle(backButton);
 			saveNewButton.TextColor = Color.Green;
@@ -157,9 +147,6 @@ namespace Terraria.ModLoader.UI
 			base.Draw(spriteBatch);
 			UILinkPointNavigator.Shortcuts.BackButtonCommand = 100;
 			UILinkPointNavigator.Shortcuts.BackButtonGoto = Interface.modsMenuID;
-
-			string modPackCurrentName = Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive);
-			_modPackCurrent.SetText(Language.GetTextValue("tModLoader.CurrentModPack", modPackCurrentName));
 		}
 
 		internal static string SanitizeModpackName(string name)
@@ -289,6 +276,7 @@ namespace Terraria.ModLoader.UI
 			*/
 
 			Logging.tML.Info($"Exported instance of Frozen Mod Pack {modPackName} to {instancePath}");
+			Utils.OpenFolder(instancePath);
 		}
 
 		public static void ExtractTmlInstall(string instancePath) {

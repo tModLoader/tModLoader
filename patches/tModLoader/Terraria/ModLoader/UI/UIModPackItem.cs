@@ -51,6 +51,7 @@ namespace Terraria.ModLoader.UI
 		private readonly string _filename;
 		private readonly string _filepath;
 		private readonly bool _legacy;
+		private string _tooltip;
 
 		public UIModPackItem(string name, string[] mods, bool legacy, IEnumerable<LocalMod> localMods) {
 			_legacy = legacy;
@@ -232,6 +233,19 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
+		public override void Draw(SpriteBatch spriteBatch) {
+			_tooltip = null;
+			base.Draw(spriteBatch);
+			if (!string.IsNullOrEmpty(_tooltip)) {
+				byte temp = Main.mouseTextColor;
+				Main.mouseTextColor = 160;
+				var bounds = GetOuterDimensions().ToRectangle();
+				bounds.Height += 16;
+				UICommon.DrawHoverStringInBounds(spriteBatch, _tooltip, bounds);
+				Main.mouseTextColor = temp;
+			}
+		}
+
 		private void DrawPanel(SpriteBatch spriteBatch, Vector2 position, float width) {
 			spriteBatch.Draw(_innerPanelTexture.Value, position, new Rectangle(0, 0, 8, _innerPanelTexture.Height()), Color.White);
 			spriteBatch.Draw(_innerPanelTexture.Value, new Vector2(position.X + 8f, position.Y), new Rectangle(8, 0, 8, _innerPanelTexture.Height()), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
@@ -262,17 +276,53 @@ namespace Terraria.ModLoader.UI
 			//string text = this.enabled ? "Click to Disable" : "Click to Enable";
 			//drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 150f, innerDimensions.Y + 50f);
 			//Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White, 1f, 0f, 0f, -1);
+
+			if (_enableListOnlyButton?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.ModPackEnableOnlyThisListDesc");
+			}
+			else if (_enableListButton?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.ModPackEnableThisListDesc");
+			}
+			else if (_exportPackInstanceButton?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.ExportPackInstanceDesc");
+			}
+			else if (_removePackInstanceButton?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.DeletePackInstanceDesc");
+			}
+			else if (_playInstanceButton?.IsMouseHovering == true) {
+				_tooltip = "Play tModLoader using InstallDirectory/<ModPackName>";
+			}
+			else if (_importFromPackLocalButton?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.InstallPackLocalDesc");
+			}
+			else if (_removePackLocalButton?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.RemovePackLocalDesc");
+			}
+			else if (_viewInModBrowserButton?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.ModPackViewModsInModBrowserDesc");
+			}
+			else if (_updateListWithEnabledButton?.IsMouseHovering == true) {
+				_tooltip = Language.GetTextValue("tModLoader.ModPackUpdateListWithEnabledDesc");
+			}
 		}
 
 		public override void MouseOver(UIMouseEvent evt) {
 			base.MouseOver(evt);
-			BackgroundColor = UICommon.DefaultUIBlue;
+			if (Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive) == _filename)
+				BackgroundColor = Color.MediumPurple * 0.4f;
+			else
+				BackgroundColor = UICommon.DefaultUIBlue;
+
 			BorderColor = new Color(89, 116, 213);
 		}
 
 		public override void MouseOut(UIMouseEvent evt) {
 			base.MouseOut(evt);
-			BackgroundColor = new Color(63, 82, 151) * 0.7f;
+			if (Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive) == _filename)
+				BackgroundColor = Color.MediumPurple * 0.7f;
+			else
+				BackgroundColor = new Color(63, 82, 151) * 0.7f;
+
 			BorderColor = new Color(89, 116, 213) * 0.7f;
 		}
 

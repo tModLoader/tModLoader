@@ -4165,7 +4165,7 @@
  			Vector2 origin = FontAssets.MouseText.Value.MeasureString(text);
  			origin.X *= 0.5f;
  			origin.Y *= 0.5f;
-@@ -39702,7 +_,49 @@
+@@ -39702,7 +_,59 @@
  					num2 = 2;
  
  				spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(origin.X + (float)num + 10f, (float)screenHeight - origin.Y + (float)num2 - 2f - upBump), color, 0f, origin, 1f, SpriteEffects.None, 0f);
@@ -4208,6 +4208,16 @@
 +						SoundEngine.PlaySound(SoundID.MenuOpen);
 +						Utils.OpenToURL("https://www.patreon.com/tModLoader");
 +					}
++				}
++
++				// ModPack
++				if (ModOrganizer.ModPackActive != null) {
++					var font = FontAssets.MouseText.Value;
++					string modpackText = Language.GetTextValue("tModLoader.CurrentModPack", Path.GetFileNameWithoutExtension(ModOrganizer.ModPackActive));
++					var packOrigin = font.MeasureString(modpackText);
++
++					spriteBatch.DrawString(font, modpackText, new Vector2(packOrigin.X + num + 10f, screenHeight - packOrigin.Y + num2 - 2f - (int)upBump), color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
++
 +				}
  			}
 +

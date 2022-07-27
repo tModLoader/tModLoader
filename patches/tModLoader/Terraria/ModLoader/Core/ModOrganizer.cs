@@ -55,9 +55,11 @@ namespace Terraria.ModLoader.Core
 
 			// load all mods from an active ModPack 
 			if (!ignoreModsFolder && !string.IsNullOrEmpty(ModPackActive)) {
-				if (Directory.Exists(ModPackActive))
+				if (Directory.Exists(ModPackActive)) {
+					Logging.tML.Info($"Loaded Mods from Active Mod Pack: {ModPackActive}");
 					foreach (string mod in Directory.GetFiles(ModPackActive, "*.tmod", SearchOption.AllDirectories))
 						AttemptLoadMod(mod, ref mods, ref names, logDuplicates, true);
+				}
 				else
 					ModPackActive = null;
 			}
