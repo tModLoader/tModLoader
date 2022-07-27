@@ -381,7 +381,7 @@
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
  
-@@ -1094,9 +_,12 @@
+@@ -1094,6 +_,8 @@
  					else if (Main.mouseRight && inv[slot].type == 4345) {
  						if (Main.mouseRightRelease) {
  							player.OpenCanofWorms(inv[slot].type);
@@ -390,10 +390,6 @@
  							inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
-+							
- 
- 							SoundEngine.PlaySound(7);
- 							Main.stackSplit = 30;
 @@ -1107,6 +_,8 @@
  					else if (Main.mouseRight && inv[slot].type == 4410) {
  						if (Main.mouseRightRelease) {
@@ -412,7 +408,7 @@
  							inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
-@@ -1133,10 +_,12 @@
+@@ -1133,6 +_,8 @@
  					else if (Main.mouseRight && inv[slot].type == 5060) {
  						if (Main.mouseRightRelease) {
  							player.OpenCapricornTail(inv[slot].type);
@@ -421,11 +417,6 @@
  							inv[slot].stack--;
  							if (inv[slot].stack == 0)
  								inv[slot].SetDefaults();
--
-+							
- 							SoundEngine.PlaySound(7);
- 							Main.stackSplit = 30;
- 							Main.mouseRightRelease = false;
 @@ -1145,7 +_,9 @@
  					}
  					else if (Main.mouseRight && inv[slot].type == 1774) {
