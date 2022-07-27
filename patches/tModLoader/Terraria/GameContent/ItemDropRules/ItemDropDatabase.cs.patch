@@ -25,7 +25,7 @@
  			if (!_entriesByNpcNetId.ContainsKey(npcNetId))
  				_entriesByNpcNetId[npcNetId] = new List<IItemDropRule>();
  
-@@ -114,6 +_,26 @@
+@@ -114,6 +_,27 @@
  			RegisterMimic();
  			RegisterEclipse();
  			RegisterBloodMoonFishing();
@@ -39,6 +39,7 @@
 +			RegisterPresent();
 +			RegisterCanOfWorms();
 +			RegisterOyster();
++			RegisterCapricorns();
 +
 +			NPCLoader.ModifyGlobalLoot(new GlobalLoot(this));
 +
