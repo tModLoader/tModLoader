@@ -13,6 +13,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 {
 	public class ExampleBed : ModTile
 	{
+		public const int NextStyleHeight = 38; //Calculated by adding all CoordinateHeights + CoordinatePaddingFix.Y applied to all of them + 2
+
 		public override void SetStaticDefaults() {
 			// Properties
 			Main.tileFrameImportant[Type] = true;
@@ -71,7 +73,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			int spawnX = (i - (tile.TileFrameX / 18)) + (tile.TileFrameX >= 72 ? 5 : 2);
 			int spawnY = j + 2;
 
-			if (tile.TileFrameY % 38 != 0) {
+			if (tile.TileFrameY % NextStyleHeight != 0) {
 				spawnY--;
 			}
 
