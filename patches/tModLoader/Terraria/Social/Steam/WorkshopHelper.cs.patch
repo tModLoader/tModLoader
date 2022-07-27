@@ -54,7 +54,14 @@
  				public List<string> GetListOfSubscribedItemsPaths() {
 +					List<string> list = new List<string>();
 +
-+					if (ModManager.SteamUser) {
++					string gogDirectory = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "content", ModManager.thisApp.ToString());
++					if (Program.LaunchParameters.TryGetValue("-steamworkshopfolder", out string workshopLocCustom)) {
++						workshopLocCustom = Path.Combine(workshopLocCustom, "content", ModManager.thisApp.ToString());
++						if (Directory.Exists(workshopLocCustom)) {
++							list.AddRange(Directory.EnumerateDirectories(workshopLocCustom));
++						}
++					}
++					else if (ModManager.SteamUser) {
 +						var array = new AppId_t[] { ModLoader.Engine.Steam.TerrariaAppId_t, ModLoader.Engine.Steam.TMLAppID_t };
 +						foreach (var app in array) {
 +							SteamApps.GetAppInstallDir(app, out string installLoc, 1000);
@@ -67,22 +74,15 @@
 +							}
 +						}
 +					}
-+					else if (Main.dedServ) {
-+						string workshopLoc;
-+						if (!Program.LaunchParameters.TryGetValue("-steamworkshopfolder", out workshopLoc))
-+							// Try to load mods that are installed by Steam users when server launches without Steam. No guarantees if Steam not installed in standard location.
-+							workshopLoc = "../../workshop";
-+
-+						workshopLoc = Path.Combine(workshopLoc, "content", ModManager.thisApp.ToString());
-+
++					else if (Main.dedServ) { // Steam Folder Dedicated Server
++						string workshopLoc = "../../workshop";
++						
 +						if (Directory.Exists(workshopLoc)) {
 +							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
 +						}
 +					}
-+
 +					// Load mods installed by GoG / Manually copied steamapps\workshop directories.
-+					string gogDirectory = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "content", ModManager.thisApp.ToString());
-+					if (Directory.Exists(gogDirectory)) {
++					else if (Directory.Exists(gogDirectory)) {
 +						list.AddRange(Directory.EnumerateDirectories(gogDirectory));
 +					}
 +
