@@ -58,7 +58,7 @@ namespace Terraria.ModLoader.Core
 				if (Directory.Exists(ModPackActive)) {
 					Logging.tML.Info($"Loaded Mods from Active Mod Pack: {ModPackActive}");
 					foreach (string mod in Directory.GetFiles(ModPackActive, "*.tmod", SearchOption.AllDirectories))
-						AttemptLoadMod(mod, ref mods, ref names, logDuplicates, true);
+						AttemptLoadMod(mod, ref mods, ref names, logDuplicates);
 				}
 				else
 					ModPackActive = null;
@@ -67,7 +67,7 @@ namespace Terraria.ModLoader.Core
 			// Prioritize loading Mods from Mods folder for Dev/Beta simplicity.
 			if (!ignoreModsFolder) {
 				foreach (string mod in Directory.GetFiles(modPath, "*.tmod", SearchOption.TopDirectoryOnly))
-					AttemptLoadMod(mod, ref mods, ref names, logDuplicates, true);
+					AttemptLoadMod(mod, ref mods, ref names, logDuplicates);
 			}
 
 			// Load Mods from Workshop downloads
@@ -77,7 +77,7 @@ namespace Terraria.ModLoader.Core
 					if (fileName == null)
 						continue;
 
-					AttemptLoadMod(fileName, ref mods, ref names, logDuplicates, false);
+					AttemptLoadMod(fileName, ref mods, ref names, logDuplicates);
 				}
 			}
 
