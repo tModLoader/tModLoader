@@ -63,12 +63,11 @@ namespace ExampleMod.Content.Projectiles
 				drawColor.A = 127;
 				drawColor *= 0.5f;
 				int launchTimer = (int)Projectile.ai[1];
-				if (launchTimer > 5)
+				if (launchTimer > 5) {
 					launchTimer = 5;
+				}
 
-				SpriteEffects spriteEffects = SpriteEffects.None;
-				if (Projectile.spriteDirection == -1)
-					spriteEffects = SpriteEffects.FlipHorizontally;
+				SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
 				for (float transparancy = 1f; transparancy >= 0f; transparancy -= 0.125f) {
 					float opacity = 1f - transparancy;

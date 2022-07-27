@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.UseSound = SoundID.Item1; // The sound that this item makes when used
 			Item.rare = ItemRarityID.Green; // The color of the name of your item
 			Item.value = Item.sellPrice(gold: 1, silver: 50); // Sells for 1 gold 50 silver
-			Item.DamageType = DamageClass.Melee; // Deals melee damage
+			Item.DamageType = DamageClass.MeleeNoSpeed; // Deals melee damage
 			Item.channel = true;
 			Item.noMelee = true; // This makes sure the item does not deal damage from the swinging animation
 		}
