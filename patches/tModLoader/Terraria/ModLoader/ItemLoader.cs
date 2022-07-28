@@ -1737,6 +1737,32 @@ namespace Terraria.ModLoader
 			return item.ModItem?.GetAlpha(lightColor);
 		}
 
+		private delegate bool DelegatePreDrawHeldItem(Item item, ref PlayerDrawSet drawSet);
+		private static HookList HookPreDrawHeldItem = AddHook<DelegatePreDrawHeldItem>(item => item.PreDrawHeldItem);
+
+		public static bool PreDrawHeldItem(Item item, ref PlayerDrawSet drawInfo) {
+			bool doDraw = item.ModItem?.PreDrawHeldItem(ref drawInfo) ?? true;
+
+			foreach (GlobalItem g in HookPreDrawHeldItem.Enumerate(item.globalItems))
+			{
+				doDraw &= g.PreDrawHeldItem(item, ref drawInfo);
+			}
+
+			return doDraw;
+		}
+
+		private delegate void DelegatePostDrawHeldItem(Item item, ref PlayerDrawSet drawSet, List<DrawData> holdItemDrawData);
+		private static HookList HookPostDrawHeldItem = AddHook<DelegatePostDrawHeldItem>(item => item.PostDrawHeldItem);
+
+		public static void PostDrawHeldItem(Item item, ref PlayerDrawSet drawSet, List<DrawData> holdItemDrawData) {
+			item.ModItem?.PostDrawHeldItem(ref drawSet, holdItemDrawData);
+
+			foreach (GlobalItem g in HookPostDrawHeldItem.Enumerate(item.globalItems))
+			{
+				g.PostDrawHeldItem(item, ref drawSet, holdItemDrawData);
+			}
+		}
+
 		private delegate bool DelegatePreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI);
 		private static HookList HookPreDrawInWorld = AddHook<DelegatePreDrawInWorld>(g => g.PreDrawInWorld);
 

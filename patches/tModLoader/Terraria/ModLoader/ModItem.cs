@@ -924,6 +924,26 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to draw things behind this held item.
+		///
+		/// Return false to prevent vanilla from drawing the held item. Useful if you are manually drawing the item.
+		/// </summary>
+		/// <param name="drawInfo">The PlayerDrawSet for the player holding the item. Contains no vanilla drawing data for the held item.</param>
+		/// <returns>Whether to use vanilla drawing for this held item. Returns true by default.</returns>
+		public virtual bool PreDrawHeldItem(ref PlayerDrawSet drawInfo) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you draw on top of the held item, or change the way vanilla draws the held item.
+		///
+		/// Called even if PreDrawHeldItem returns false.
+		/// </summary>
+		/// <param name="drawInfo">The draw data for the player.</param>
+		/// <param name="heldItemDrawData">All the draw data for to the held item. Added to <see cref="PlayerDrawSet.DrawDataCache"/> when this method returns. Do not add draw data directly to <see cref="PlayerDrawSet.DrawDataCache"/></param>
+		public virtual void PostDrawHeldItem(ref PlayerDrawSet drawInfo, List<DrawData> heldItemDrawData) { }
+
+		/// <summary>
 		/// Allows you to draw things behind this item, or to modify the way this item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default.
 		/// </summary>
 		/// <param name="spriteBatch">The sprite batch.</param>

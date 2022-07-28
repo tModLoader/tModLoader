@@ -814,6 +814,22 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to draw things behind this held item.
+		///
+		/// Return false to prevent vanilla from drawing the held item. Useful if you are manually drawing the item.
+		/// </summary>
+		public virtual bool PreDrawHeldItem(Item item, ref PlayerDrawSet drawInfo) {
+			return true;
+		}
+
+		/// <summary>
+		/// Allows you draw on top of the held item, or change the way vanilla draws the held item.
+		///
+		/// Called even if PreDrawHeldItem returns false.
+		/// </summary>
+		public virtual void PostDrawHeldItem(Item item, ref PlayerDrawSet drawInfo, List<DrawData> heldItemDrawData) { }
+
+		/// <summary>
 		/// Allows you to draw things behind an item, or to modify the way an item is drawn in the world. Return false to stop the game from drawing the item (useful if you're manually drawing the item). Returns true by default.
 		/// </summary>
 		public virtual bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI) {

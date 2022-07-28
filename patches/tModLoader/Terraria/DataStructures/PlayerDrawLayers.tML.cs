@@ -159,7 +159,7 @@ namespace Terraria.DataStructures
 			});
 
 		/// <summary> Draws the player's held item. </summary>
-		public static readonly PlayerDrawLayer HeldItem = new VanillaPlayerDrawLayer(nameof(HeldItem), DrawPlayer_27_HeldItem,
+		public static readonly PlayerDrawLayer HeldItem = new VanillaPlayerDrawLayer(nameof(HeldItem), Hack_DrawPlayer_27_HeldItem,
 			position: new Multiple() {
 				{ new Between(BalloonAcc, Skin), drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindBackArm },
 				{ new Between(SolarShield, ArmOverItem), drawinfo => drawinfo.weaponDrawOrder == WeaponDrawOrder.BehindFrontArm },

@@ -1,0 +1,10 @@
+--- src/TerrariaNetCore/Terraria/ID/ItemUseStyleID.cs
++++ src/tModLoader/Terraria/ID/ItemUseStyleID.cs
+@@ -2,6 +_,7 @@
+ {
+ 	public class ItemUseStyleID
+ 	{
++		public const int Custom = -1;
+ 		public const int None = 0;
+ 		public const int Swing = 1;
+ 		public const int DrinkOld = 7;
