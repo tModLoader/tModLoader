@@ -83,15 +83,15 @@
 		"AskForCommand": "Escribe un comando: ",
 
 		//Mod Config
-		// "ModConfigFilterOptions": "Filter Options",
-		// "ModConfigNotification": "Notification: ",
-		// "ModConfigModConfig": "Mod Config",
-		// "ModConfigSaveConfig": "Save Config",
-		// "ModConfigBack": "Back",
-		// "ModConfigRevertChanges": "Revert Changes",
-		// "ModConfigRestoreDefaults": "Restore Defaults",
-		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
-		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		"ModConfigFilterOptions": "Opciones de filtro",
+		"ModConfigNotification": "Notificación: ",
+		"ModConfigModConfig": "Config. del mod",
+		"ModConfigSaveConfig": "Guardar config.",
+		"ModConfigBack": "Volver",
+		"ModConfigRevertChanges": "Revertir cambios",
+		"ModConfigRestoreDefaults": "Restablecer valores",
+		"ModConfigAskingServerToAcceptChanges": "Solicitando al servidor aceptar los cambios...",
+		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "No se puede guardar porque los cambios requieren recargar el mod",
 
 		// Interface
 		"BossBarStyle": "Estilo de barra de jefes: {0}",
