@@ -68,45 +68,8 @@ namespace Terraria.GameContent.UI.States
 			Main.MenuUI.SetState(Interface.modPacksMenu);
 		}
 
-		private UIElement MakeFancyButtonMod(string iconImagePath, string textKey) {
-			UIPanel uIPanel = new UIPanel();
-			int num = -3;
-			int num2 = -3;
-			uIPanel.Width = StyleDimension.FromPixelsAndPercent(num, 0.5f);
-			uIPanel.Height = StyleDimension.FromPixelsAndPercent(num2, 0.33f);
-			uIPanel.OnMouseOver += SetColorsToHovered;
-			uIPanel.OnMouseOut += SetColorsToNotHovered;
-			uIPanel.BackgroundColor = new Color(63, 82, 151) * 0.7f;
-			uIPanel.BorderColor = new Color(89, 116, 213) * 0.7f;
-			uIPanel.SetPadding(6f);
-			UIImage uIImage = new UIImage(ModLoader.ModLoader.ManifestAssets.Request<Texture2D>(iconImagePath)) {
-				IgnoresMouseInteraction = true,
-				VAlign = 0.5f
-			};
-
-			uIImage.Left.Set(2f, 0f);
-			uIPanel.Append(uIImage);
-			uIPanel.OnMouseOver += ShowOptionDescription;
-			uIPanel.OnMouseOut += ClearOptionDescription;
-			UIText uIText = new UIText(Language.GetText(textKey), 0.45f, large: true) {
-				HAlign = 0f,
-				VAlign = 0.5f,
-				Width = StyleDimension.FromPixelsAndPercent(-80f, 1f),
-				Height = StyleDimension.FromPixelsAndPercent(0f, 1f),
-				Top = StyleDimension.FromPixelsAndPercent(5f, 0f),
-				Left = StyleDimension.FromPixels(80f),
-				IgnoresMouseInteraction = true,
-				TextOriginX = 0f,
-				TextOriginY = 0f
-			};
-
-			uIText.PaddingLeft = 0f;
-			uIText.PaddingRight = 20f;
-			uIText.PaddingTop = 10f;
-			uIText.IsWrapped = true;
-			uIPanel.Append(uIText);
-			uIPanel.SetSnapPoint("Button", 0);
-			return uIPanel;
+		private UIElement MakeFancyButtonMod(string path, string textKey) {
+			return MakeFancyButtonInner(ModLoader.ModLoader.ManifestAssets.Request<Texture2D>(path), textKey);
 		}
 	}
 }
