@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['paint_6330',['paint',['../class_terraria_1_1_item.html#a3f1018595ae7d8cab4a9e946bf541a22',1,'Terraria::Item']]],
-  ['paint_6331',['Paint',['../class_terraria_1_1_i_d_1_1_dust_i_d.html#a6d11902faf4d01fee0ab91bd5836722c',1,'Terraria::ID::DustID']]],
+  ['paint_6330',['Paint',['../class_terraria_1_1_i_d_1_1_dust_i_d.html#a6d11902faf4d01fee0ab91bd5836722c',1,'Terraria::ID::DustID']]],
+  ['paint_6331',['paint',['../class_terraria_1_1_item.html#a3f1018595ae7d8cab4a9e946bf541a22',1,'Terraria::Item']]],
   ['paperplane_6332',['PaperPlane',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#aeeaea8b9a20262b6bcfea075691fd27d',1,'Terraria::ID::ProjAIStyleID']]],
   ['passive_6333',['Passive',['../class_terraria_1_1_i_d_1_1_n_p_c_a_i_style_i_d.html#a9280fe83479d6aa7cc6358ab15d952cf',1,'Terraria::ID::NPCAIStyleID']]],
   ['persistentbuff_6334',['persistentBuff',['../class_terraria_1_1_main.html#aeb27cacc30d8d86cc492fb06b6413c26',1,'Terraria::Main']]],
