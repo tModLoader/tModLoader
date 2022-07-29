@@ -40,6 +40,12 @@ done
 
 trap stop SIGTERM SIGINT
 
+if [[ $lobbyType != "friends" ]] && [[ $lobbyType != "private" ]]
+then
+	echo "Select a lobby type using docker run args"
+	exit 1
+fi
+
 scriptdir=/home/tml/.local/share/Terraria/scripdir
 
 echo "Checking updates"
@@ -54,6 +60,6 @@ fi
 
 echo "Launching tModLoader..."
 cd "$location"
-tmux new-session -d "./start-tModLoaderServer.sh -config $HOME/.local/share/Terraria/scriptdir/serverconfig.txt"
+tmux new-session -d "./start-tModLoaderServer.sh -config $HOME/.local/share/Terraria/scriptdir/serverconfig.txt -lobby $lobbyType"
 
 wait ${!}
