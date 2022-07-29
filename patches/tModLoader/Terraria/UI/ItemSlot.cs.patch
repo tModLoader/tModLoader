@@ -437,10 +437,9 @@
  						}
  					}
  					else if (Main.mouseRight && inv[slot].type == 3085) {
--						if (Main.mouseRightRelease && player.ConsumeItem(327)) {
--							inv[slot].stack--;
-+						if (ItemLoader.CanRightClick(inv[slot]) && Main.mouseRightRelease && player.ConsumeItem(327)) {
+ 						if (Main.mouseRightRelease && player.ConsumeItem(327)) {
 +							if (ItemLoader.ConsumeItem(inv[slot], player))
+-							inv[slot].stack--;
 +								inv[slot].stack--;
 +
  							if (inv[slot].stack == 0)
