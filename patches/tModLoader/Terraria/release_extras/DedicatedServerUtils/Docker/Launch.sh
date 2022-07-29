@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # NOTE: Only for use within the docker container.
 
 function pseudoStdin {

@@ -63,22 +63,23 @@ ARG username
 ARG password
 ARG guardcode
 
-WORKDIR $HOME/.local/share/Terraria/scriptdir
-RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh \
+RUN mkdir -p $HOME/.local/share/Terraria/scriptdir \
+ && cd $HOME/.local/share/Terraria/scriptdir \
+ && curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh \
  && chmod u+x Setup_tModLoaderServer.sh \
  && ./Setup_tModLoaderServer.sh -i --username "${username} ${password} ${guardcode}" --folder ~/tModLoader
 # For some reason despite setting --folder in the above command it installs to ~/.steam/steamapps/common/tModLoader
 
 # Prepare launch utils
-WORKDIR $HOME
-EXPOSE 7777
 RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils//Docker/Launch.sh \
  && chmod u+x Launch.sh
 
 # Replace start-tModLoaderServer.sh
 RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/start-tModLoaderServer.sh \
  && chmod u+x start-tModLoaderServer.sh \
- && mv start-tModLoader.sh $HOME/.steam/steamapps/common/tModLoader
+ && mv start-tModLoaderServer.sh $HOME/.steam/steamapps/common/tModLoader
+
+EXPOSE 7777
 
 # --nosteamserver because for some reason running with steam doesn't work with steamcmd
 ENTRYPOINT [ "./Launch.sh", "--username" , "${username}", "--location", "~/.steam/steamapps/common/tModLoader", "--nosteamserver" ]

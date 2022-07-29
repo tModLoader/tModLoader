@@ -12,20 +12,21 @@ ENV HOME /home/tml
 WORKDIR $HOME
 
 # Install tModLoader
-WORKDIR $HOME/.local/share/Terraria/scriptdir
-RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh \
+RUN mkdir -p $HOME/.local/share/Terraria/scriptdir \
+ && cd $HOME/.local/share/Terraria/scriptdir \
+ && curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh \
  && chmod u+x Setup_tModLoaderServer.sh \
  && ./Setup_tModLoaderServer.sh -i -g
 
 # Prepare launch utils
-WORKDIR $HOME
-EXPOSE 7777
 RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils//Docker/Launch.sh \
  && chmod u+x Launch.sh
 
 # Replace start-tModLoaderServer.sh
 RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/start-tModLoaderServer.sh \
  && chmod u+x start-tModLoaderServer.sh \
- && mv start-tModLoader.sh $HOME/tModLoader
+ && mv start-tModLoaderServer.sh $HOME/tModLoader
+
+EXPOSE 7777
 
 ENTRYPOINT [ "./Launch.sh", "-g", "--location", "~/tModLoader", "--nosteamserver" ]
