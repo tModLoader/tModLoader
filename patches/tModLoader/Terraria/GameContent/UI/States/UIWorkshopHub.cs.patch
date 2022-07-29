@@ -1,5 +1,12 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorkshopHub.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorkshopHub.cs
+@@ -1,5 +_,6 @@
+ using Microsoft.Xna.Framework;
+ using Microsoft.Xna.Framework.Graphics;
++using ReLogic.Content;
+ using System;
+ using Terraria.Audio;
+ using Terraria.GameContent.UI.Elements;
 @@ -10,7 +_,7 @@
  
  namespace Terraria.GameContent.UI.States
@@ -106,7 +113,17 @@
  			if (listeningElement == _buttonUseResourcePacks)
  				localizedText = Language.GetText("Workshop.HubDescriptionUseResourcePacks");
  
-@@ -221,7 +_,7 @@
+@@ -216,18 +_,22 @@
+ 			_descriptionText = uIText;
+ 		}
+ 
+-		private UIElement MakeFancyButton(string iconImagePath, string textKey) {
++		private UIElement MakeFancyButton(string path, string textKey) {
++			return MakeFancyButtonInner(Main.Assets.Request<Texture2D>(path), textKey);
++		}
++
++		private UIElement MakeFancyButtonInner(Asset<Texture2D> iconImage, string textKey) {
+ 			UIPanel uIPanel = new UIPanel();
  			int num = -3;
  			int num2 = -3;
  			uIPanel.Width = StyleDimension.FromPixelsAndPercent(num, 0.5f);
@@ -115,6 +132,13 @@
  			uIPanel.OnMouseOver += SetColorsToHovered;
  			uIPanel.OnMouseOut += SetColorsToNotHovered;
  			uIPanel.BackgroundColor = new Color(63, 82, 151) * 0.7f;
+ 			uIPanel.BorderColor = new Color(89, 116, 213) * 0.7f;
+ 			uIPanel.SetPadding(6f);
+-			UIImage uIImage = new UIImage(Main.Assets.Request<Texture2D>(iconImagePath)) {
++			UIImage uIImage = new UIImage(iconImage) {
+ 				IgnoresMouseInteraction = true,
+ 				VAlign = 0.5f
+ 			};
 @@ -292,13 +_,13 @@
  		}
  
