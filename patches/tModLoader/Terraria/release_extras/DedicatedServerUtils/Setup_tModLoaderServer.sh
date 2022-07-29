@@ -27,7 +27,6 @@ function verlte {
 	[  "$1" = "`echo -e "$1\n$2" | sort -V | head -n1`" ]
 }
 
-
 function updateScript {
 	local latestScriptVersion=`curl --silent "https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh" | grep "scriptVersion=" | cut -d '"' -f2`
 
@@ -69,7 +68,7 @@ function checkUsername {
 	fi
 }
 
-# Installs or updates tML
+# Installs or updates tML via steamcmd
 function steamcmdtML {
 		checkUsername
 		if [[ -v folder ]]
@@ -238,15 +237,15 @@ function installMods {
 	# If someone has .tmod files this will install them
 	if [[ -f "*.tmod" ]]
 	then
-		echo "Moving .tmod files to the Mods directory"
-		mv *.tmod $modsPath
+		echo "Copying .tmod files to the Mods directory"
+		cp *.tmod $modsPath
 	fi
 
 	# Move enabled.json to the right place
 	if [[ -f "enabled.json" ]]
 	then
-		echo "Moving enabled.json to the Mods directory"
-		mv enabled.json $modsPath
+		echo "Copying enabled.json to the Mods directory"
+		cp enabled.json $modsPath
 	fi
 
 	popd
