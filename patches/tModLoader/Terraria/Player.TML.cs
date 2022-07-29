@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace Terraria
 {
-	public partial class Player
+	public partial class Player : IEntityWithInstances<ModPlayer>
 	{
 		internal IList<string> usedMods;
 		internal string modPack;
@@ -20,6 +20,8 @@ namespace Terraria
 		public Item equippedWings = null;
 
 		public RefReadOnlyArray<ModPlayer> ModPlayers => new(modPlayers);
+
+		RefReadOnlyArray<ModPlayer> IEntityWithInstances<ModPlayer>.Instances => new(modPlayers);
 
 		public HashSet<int> NearbyModTorch { get; private set; } = new HashSet<int>();
 
