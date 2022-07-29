@@ -1395,7 +1395,7 @@ namespace Terraria.ModLoader
 		}
 
 		[Obsolete]
-		internal static bool OpenVanillaBag_Obsolete(string context, Player player, int arg) => PreOpenVanillaBag(context, player, arg);
+		internal static void OpenVanillaBag_Obsolete(string context, Player player, int arg) => OpenVanillaBag(context, player, arg);
 
 		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 
