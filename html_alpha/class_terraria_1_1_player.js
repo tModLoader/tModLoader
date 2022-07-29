@@ -1358,6 +1358,7 @@ var class_terraria_1_1_player =
     [ "HeightOffsetVisual", "class_terraria_1_1_player.html#a4ebfb62791cf6f1540a1260a60f217f2", null ],
     [ "HeldItem", "class_terraria_1_1_player.html#a4105e6088bb18bd6afd3fc07dd537f6c", null ],
     [ "HitboxForBestiaryNearbyCheck", "class_terraria_1_1_player.html#a8f12e35ae053c2afc79ccd4722b9ea38", null ],
+    [ "Instances", "class_terraria_1_1_player.html#a548e6a5c0c719c743506d2f9db1f0fb9", null ],
     [ "inverseMeleeSpeed", "class_terraria_1_1_player.html#a9fe89536ccdb818fdf164713a170c048", null ],
     [ "isLockedToATile", "class_terraria_1_1_player.html#acfb027d3113977ebd0367a0af0b45a6e", null ],
     [ "IsVoidVaultEnabled", "class_terraria_1_1_player.html#a0d91629cffc33858034ae67258754186", null ],

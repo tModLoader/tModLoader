@@ -1,5 +1,6 @@
 var NAVTREEINDEX17 =
 {
+"class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a120fb01c73c0680c2d7b623d1e466184":[2,0,2,5,20,2,5],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a124bddbba67a717e385671088f1eb605":[2,0,2,5,20,2,25],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a2cf2f6a72d74f00d3631bd9aca6c790a":[2,0,2,5,20,2,17],
 "class_terraria_1_1_game_content_1_1_tile___entities_1_1_t_e_display_doll.html#a37e80e037d73e93f6c595dfbc010cc35":[2,0,2,5,20,2,23],
@@ -248,6 +249,5 @@ var NAVTREEINDEX17 =
 "class_terraria_1_1_game_content_1_1_town_room_manager.html#a3370502b81d9447d0c8331a9af623637":[2,0,2,5,67,6],
 "class_terraria_1_1_game_content_1_1_town_room_manager.html#a499ca08ca72ce3cd185f80c3cefd8e85":[2,0,2,5,67,1],
 "class_terraria_1_1_game_content_1_1_town_room_manager.html#a5fce3ff1ecd455e3be87e21346139157":[2,0,2,5,67,15],
-"class_terraria_1_1_game_content_1_1_town_room_manager.html#a68262118e6a51a18704e3140dc6933a7":[2,0,2,5,67,12],
-"class_terraria_1_1_game_content_1_1_town_room_manager.html#a6e04a29ea744d245e309e2f96555ed0a":[2,0,2,5,67,2]
+"class_terraria_1_1_game_content_1_1_town_room_manager.html#a68262118e6a51a18704e3140dc6933a7":[2,0,2,5,67,12]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX14 =
 {
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_dripping_shader.html":[2,0,2,5,17,9],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_dripping_shader.html#aab5cf815ecd5b96097609ebfd23cbfe0":[2,0,2,5,17,9,0],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_drowning_shader.html":[2,0,2,5,17,10],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_drowning_shader.html#a4d72f0ea6dedb5b0473dbfc563d6e365":[2,0,2,5,17,10,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX14 =
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_fade.html#a8cda80e9000f8316acefab41bb5216c3":[2,0,2,5,19,0,0,2,0,0],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_fade.html#aa322f9b9c9d8aa8d197cff356a6e0fe2":[2,0,2,5,19,0,0,2,0,3],
 "class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_fade.html#ad1b73af21a3f63cf76890181bde8d311":[2,0,2,5,19,0,0,2,0,4],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_fade.html#ad7f52ecedcd66231e1834be967685b0c":[2,0,2,5,19,0,0,2,0,1],
-"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_set_frame.html":[2,0,2,5,19,0,0,2,2]
+"class_terraria_1_1_game_content_1_1_skies_1_1_credits_roll_1_1_actions_1_1_sprites_1_1_fade.html#ad7f52ecedcd66231e1834be967685b0c":[2,0,2,5,19,0,0,2,0,1]
 };

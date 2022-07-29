@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ab9a20c518937f41d79e455e9f51b3345":[2,0,2,5,0,0,11],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ac540940e178110405059e118d974495b":[2,0,2,5,0,0,4],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ade93191bde8e96b8b86c99d8310162fd":[2,0,2,5,0,0,8],
 "class_terraria_1_1_game_content_1_1_achievements_1_1_achievements_helper.html#ae8f2cbd4d0d08d35b69443f243c63c1f":[2,0,2,5,0,0,14],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_portrait_background_provider_preference_info_element.html#a16669f92e06320d0e1fe2703cc7f52ed":[2,0,2,5,2,4,0],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_portrait_background_provider_preference_info_element.html#a4465b0412ddc89663f139207e96ab112":[2,0,2,5,2,4,1],
 "class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_portrait_background_provider_preference_info_element.html#a78f1532df36b8e6a409c042efbfcf5de":[2,0,2,5,2,4,3],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlocks_tracker.html":[2,0,2,5,2,7],
-"class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlocks_tracker.html#a11149674027dd45fea620ee7f3bed570":[2,0,2,5,2,7,8]
+"class_terraria_1_1_game_content_1_1_bestiary_1_1_bestiary_unlocks_tracker.html":[2,0,2,5,2,7]
 };

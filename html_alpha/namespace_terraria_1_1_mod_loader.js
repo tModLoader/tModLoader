@@ -62,6 +62,7 @@ var namespace_terraria_1_1_mod_loader =
     [ "GlobalWall", "class_terraria_1_1_mod_loader_1_1_global_wall.html", "class_terraria_1_1_mod_loader_1_1_global_wall" ],
     [ "GoreLoader", "class_terraria_1_1_mod_loader_1_1_gore_loader.html", "class_terraria_1_1_mod_loader_1_1_gore_loader" ],
     [ "IEntityWithGlobals", "interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals.html", "interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals" ],
+    [ "IEntityWithInstances", "interface_terraria_1_1_mod_loader_1_1_i_entity_with_instances.html", "interface_terraria_1_1_mod_loader_1_1_i_entity_with_instances" ],
     [ "IIndexed", "interface_terraria_1_1_mod_loader_1_1_i_indexed.html", "interface_terraria_1_1_mod_loader_1_1_i_indexed" ],
     [ "ILoadable", "interface_terraria_1_1_mod_loader_1_1_i_loadable.html", "interface_terraria_1_1_mod_loader_1_1_i_loadable" ],
     [ "ILoader", "interface_terraria_1_1_mod_loader_1_1_i_loader.html", null ],

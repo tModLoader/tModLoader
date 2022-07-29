@@ -1,5 +1,10 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#aa7914ee1c9714e102f27ee95b7b5c3d0":[2,0,2,4,67,68],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#aac377eac10a2017f73c50b61984ec452":[2,0,2,4,67,84],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#aadd88470c20194a0f1c10ab74312d6da":[2,0,2,4,67,43],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ab0b4c12c402c9527ddfcfbed9ca0be6b":[2,0,2,4,67,12],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ab0d8f8895271ae8809bbc6a2afabd87f":[2,0,2,4,67,42],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ab21f038e070932aebb0cd6f3d1f7a07d":[2,0,2,4,67,40],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ab388d85fd78a3b0c03fafaea28babad9":[2,0,2,4,67,70],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#ab76a2dbcd4d4da74375a637150e7df53":[2,0,2,4,67,57],
@@ -244,10 +249,5 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#a7033d8d348143933744d07414f183dea":[2,0,2,5,51,0],
 "struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#a7a8c3254756fda6a8cf648502b45ff41":[2,0,2,5,51,6],
 "struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#a8259b73650de675f1e4251db7bcc45fe":[2,0,2,5,51,8],
-"struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#ab37aee7785c20e3c0d67254aea32bb85":[2,0,2,5,51,5],
-"struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#acd60bd4255d324690fc5ca320d7387f5":[2,0,2,5,51,3],
-"struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#ad28e913c6a667e6d5253d9c0915729a5":[2,0,2,5,51,2],
-"struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#ae6d6f071057c26e18766f684f18e1ee3":[2,0,2,5,51,4],
-"struct_terraria_1_1_game_content_1_1_player_sleeping_helper.html":[2,0,2,5,52],
-"struct_terraria_1_1_game_content_1_1_player_sleeping_helper.html#a0a733c79e643f6a6c236129c38409219":[2,0,2,5,52,8]
+"struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#ab37aee7785c20e3c0d67254aea32bb85":[2,0,2,5,51,5]
 };

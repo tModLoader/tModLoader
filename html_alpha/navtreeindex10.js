@@ -1,5 +1,6 @@
 var NAVTREEINDEX10 =
 {
+"class_terraria_1_1_game_content_1_1_events_1_1_screen_obstruction.html#a9f4cd8e825b9557f070177f0e4fc74cb":[2,0,2,5,7,9,1],
 "class_terraria_1_1_game_content_1_1_fix_exploit_man_eaters.html":[2,0,2,5,35],
 "class_terraria_1_1_game_content_1_1_fix_exploit_man_eaters.html#a213db1c2e33ee24fba43b319e15c0113":[2,0,2,5,35,0],
 "class_terraria_1_1_game_content_1_1_fix_exploit_man_eaters.html#a79b03c6ff4417690305996e6ee04b253":[2,0,2,5,35,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX10 =
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption.html#a6511f6dc04f0d7eec8bb45e9aa6c4653":[2,0,2,5,10,7,19,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption.html#aa8854f03cdabdd7f2da5abfafbd102fa":[2,0,2,5,10,7,19,2],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption_and_not_expert.html":[2,0,2,5,10,7,20],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption_and_not_expert.html#af49f99204dbd58d5c2edee75b829b829":[2,0,2,5,10,7,20,0],
-"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption_and_not_expert.html#af6645e6ff1e6f2138e37cb0a160570df":[2,0,2,5,10,7,20,2]
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_conditions_1_1_is_corruption_and_not_expert.html#af49f99204dbd58d5c2edee75b829b829":[2,0,2,5,10,7,20,0]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX13 =
 {
+"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_text_module.html":[2,0,2,5,14,10],
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_text_module.html#a223e408577eeac746e67d47b5fe2c641":[2,0,2,5,14,10,1],
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_text_module.html#a28460a5547d6c3387515dd8a0ad90033":[2,0,2,5,14,10,3],
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_text_module.html#a2e269105bb050a83c32bd6ea8033de4b":[2,0,2,5,14,10,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX13 =
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_death_shader.html":[2,0,2,5,17,7],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_death_shader.html#a3c2e32e4a7e25c6b105290b35bd7c277":[2,0,2,5,17,7,0],
 "class_terraria_1_1_game_content_1_1_r_g_b_1_1_desert_shader.html":[2,0,2,5,17,8],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_desert_shader.html#a7aa38159427ec33f64207b63d2298f0b":[2,0,2,5,17,8,0],
-"class_terraria_1_1_game_content_1_1_r_g_b_1_1_dripping_shader.html":[2,0,2,5,17,9]
+"class_terraria_1_1_game_content_1_1_r_g_b_1_1_desert_shader.html#a7aa38159427ec33f64207b63d2298f0b":[2,0,2,5,17,8,0]
 };

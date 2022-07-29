@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a05fbdabd71b7e6ab9e25a788aec628ba":[2,0,2,5,3,0,2,20],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a0b8955ff373ad03f8a975c366fed437f":[2,0,2,5,3,0,2,14],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a0f3893b126182050f7b897939762a230":[2,0,2,5,3,0,2,5],
 "class_terraria_1_1_game_content_1_1_biomes_1_1_cave_house_1_1_house_builder.html#a13fcc50cc5eff9f4e3185fea2453ebb2":[2,0,2,5,3,0,2,16],
@@ -248,6 +249,5 @@ var NAVTREEINDEX7 =
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_shared_button_power.html#aaeabd776bb48edda2f462a4139ce11f6":[2,0,2,5,4,2,2,8],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_shared_button_power.html#abbc529330ae3951069391c63a407ebc6":[2,0,2,5,4,2,2,3],
 "class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_shared_button_power.html#ac4a3cd1727a297ebf9b77a884790f780":[2,0,2,5,4,2,2,6],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_shared_button_power.html#aee11215508c24e04a5870505243371bd":[2,0,2,5,4,2,2,1],
-"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_shared_slider_power.html":[2,0,2,5,4,2,3]
+"class_terraria_1_1_game_content_1_1_creative_1_1_creative_powers_1_1_a_shared_button_power.html#aee11215508c24e04a5870505243371bd":[2,0,2,5,4,2,2,1]
 };

@@ -1,5 +1,6 @@
 var NAVTREEINDEX79 =
 {
+"class_terraria_1_1_ingame_options.html#ae821c72007e209bfeb54ce479cef8c04":[2,0,2,39,17],
 "class_terraria_1_1_ingame_options.html#af6a5c92f93e87403e6c43fdad46c3426":[2,0,2,39,22],
 "class_terraria_1_1_ingame_options.html#afada9be76b07ca613e57f33d4180c326":[2,0,2,39,13],
 "class_terraria_1_1_ingame_options.html#afb834049555e1e0257fb0de25ef89196":[2,0,2,39,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX79 =
 "class_terraria_1_1_item.html#ac2d58bdd5856de732c8c408f0095b298":[2,0,2,40,219],
 "class_terraria_1_1_item.html#ac3ecbf6d256f17db4ab74baa6efba9bf":[2,0,2,40,229],
 "class_terraria_1_1_item.html#ac729edd6cfd78042452386c6dde8b7a2":[2,0,2,40,90],
-"class_terraria_1_1_item.html#ac850af9382bf7caf0ae71db4c6a05355":[2,0,2,40,151],
-"class_terraria_1_1_item.html#aca6ba0af843692263ee72cbd4d5fbb84":[2,0,2,40,118]
+"class_terraria_1_1_item.html#ac850af9382bf7caf0ae71db4c6a05355":[2,0,2,40,151]
 };

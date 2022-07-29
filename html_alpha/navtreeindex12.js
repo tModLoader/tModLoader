@@ -1,5 +1,6 @@
 var NAVTREEINDEX12 =
 {
+"class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_resolver.html":[2,0,2,5,10,28],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_resolver.html#a03e1b023e2b28f7ede59ac9e1fc0c624":[2,0,2,5,10,28,1],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_resolver.html#abc10acaf125fd12588753e93efccc907":[2,0,2,5,10,28,0],
 "class_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_rule.html":[2,0,2,5,10,29],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_teleport_pylon_module.html#a22c392f7d1aecd7ce48936b7e578897ca6c3e52b6de03bad503669c7b6b998b65":[2,0,2,5,14,9,0,0],
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_teleport_pylon_module.html#a22c392f7d1aecd7ce48936b7e578897caf542a5a028a2aa40b0e4c8081447e910":[2,0,2,5,14,9,0,2],
 "class_terraria_1_1_game_content_1_1_net_modules_1_1_net_teleport_pylon_module.html#a39b802bf9fa13334b6472d495c5617cc":[2,0,2,5,14,9,3],
-"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_teleport_pylon_module.html#a881bccc2a9493b769a65cc4e24d3cc08":[2,0,2,5,14,9,1],
-"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_text_module.html":[2,0,2,5,14,10]
+"class_terraria_1_1_game_content_1_1_net_modules_1_1_net_teleport_pylon_module.html#a881bccc2a9493b769a65cc4e24d3cc08":[2,0,2,5,14,9,1]
 };

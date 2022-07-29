@@ -1,5 +1,6 @@
 var NAVTREEINDEX9 =
 {
+"class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#a9a38a869ff1d77cfae3a6ac3893c8e37":[2,0,2,5,4,14,7],
 "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#aa38fded3379b1bad005cbeec7724f622":[2,0,2,5,4,14,11],
 "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#aacdadf4da21fea8ed85a3a06d4dd1318":[2,0,2,5,4,14,5],
 "class_terraria_1_1_game_content_1_1_creative_1_1_items_sacrificed_unlocks_tracker.html#abe9a7d55ea85bc601fb84f0e532f6a4f":[2,0,2,5,4,14,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX9 =
 "class_terraria_1_1_game_content_1_1_events_1_1_screen_darkness.html#ae733095c7f13af22f1b278e6a129fefb":[2,0,2,5,7,8,4],
 "class_terraria_1_1_game_content_1_1_events_1_1_screen_obstruction.html":[2,0,2,5,7,9],
 "class_terraria_1_1_game_content_1_1_events_1_1_screen_obstruction.html#a10a3e1c7302474a0cdfa83ba8b8fb626":[2,0,2,5,7,9,2],
-"class_terraria_1_1_game_content_1_1_events_1_1_screen_obstruction.html#a4ed6678a31233cadad351fdd33a8b0da":[2,0,2,5,7,9,0],
-"class_terraria_1_1_game_content_1_1_events_1_1_screen_obstruction.html#a9f4cd8e825b9557f070177f0e4fc74cb":[2,0,2,5,7,9,1]
+"class_terraria_1_1_game_content_1_1_events_1_1_screen_obstruction.html#a4ed6678a31233cadad351fdd33a8b0da":[2,0,2,5,7,9,0]
 };

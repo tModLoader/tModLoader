@@ -1049,6 +1049,10 @@ var hierarchy =
     [ "Terraria.ModLoader.IEntityWithGlobals< GlobalItem >", "interface_terraria_1_1_mod_loader_1_1_i_entity_with_globals.html", [
       [ "Terraria.Item", "class_terraria_1_1_item.html", null ]
     ] ],
+    [ "IEntityWithInstances", "class_i_entity_with_instances.html", [
+      [ "Terraria.Player", "class_terraria_1_1_player.html", null ]
+    ] ],
+    [ "Terraria.ModLoader.IEntityWithInstances< T >", "interface_terraria_1_1_mod_loader_1_1_i_entity_with_instances.html", null ],
     [ "Terraria.DataStructures.IEntryFilter< T >", "interface_terraria_1_1_data_structures_1_1_i_entry_filter.html", [
       [ "Terraria.DataStructures.ISearchFilter< T >", "interface_terraria_1_1_data_structures_1_1_i_search_filter.html", null ]
     ] ],

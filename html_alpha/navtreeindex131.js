@@ -1,5 +1,10 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#acd60bd4255d324690fc5ca320d7387f5":[2,0,2,5,51,3],
+"struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#ad28e913c6a667e6d5253d9c0915729a5":[2,0,2,5,51,2],
+"struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#ae6d6f071057c26e18766f684f18e1ee3":[2,0,2,5,51,4],
+"struct_terraria_1_1_game_content_1_1_player_sleeping_helper.html":[2,0,2,5,52],
+"struct_terraria_1_1_game_content_1_1_player_sleeping_helper.html#a0a733c79e643f6a6c236129c38409219":[2,0,2,5,52,8],
 "struct_terraria_1_1_game_content_1_1_player_sleeping_helper.html#a31b12b16c8118e1a79cb36eb400780ea":[2,0,2,5,52,3],
 "struct_terraria_1_1_game_content_1_1_player_sleeping_helper.html#a3b24f22af1cd2bf62b7fb16541a7409c":[2,0,2,5,52,1],
 "struct_terraria_1_1_game_content_1_1_player_sleeping_helper.html#a4f4be5a898c8296188d6a5e75f3c1e16":[2,0,2,5,52,7],
@@ -244,10 +249,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_main_1_1_current_player_override.html#a29876698d3f62e338896a88c96e5ad4c":[2,0,2,47,1,1],
 "struct_terraria_1_1_main_1_1_current_player_override.html#aa66afc79fade6c33133193a39238c781":[2,0,2,47,1,0],
 "struct_terraria_1_1_main_1_1_info_to_set_back_color.html":[2,0,2,47,2],
-"struct_terraria_1_1_main_1_1_info_to_set_back_color.html#a238ae408366dd880db85807e6cebb481":[2,0,2,47,2,1],
-"struct_terraria_1_1_main_1_1_info_to_set_back_color.html#a48a3d003eb252d1f2c0a54b825a88011":[2,0,2,47,2,5],
-"struct_terraria_1_1_main_1_1_info_to_set_back_color.html#a56b479afbcbf8c2dc2c512564e785c55":[2,0,2,47,2,0],
-"struct_terraria_1_1_main_1_1_info_to_set_back_color.html#a607371b23304c35871994854eacbc75f":[2,0,2,47,2,3],
-"struct_terraria_1_1_main_1_1_info_to_set_back_color.html#a65965503cfdf159c7327c52ff338eb23":[2,0,2,47,2,7],
-"struct_terraria_1_1_main_1_1_info_to_set_back_color.html#aad8cd514e8b6de1ea6fa8afc10ea3cac":[2,0,2,47,2,6]
+"struct_terraria_1_1_main_1_1_info_to_set_back_color.html#a238ae408366dd880db85807e6cebb481":[2,0,2,47,2,1]
 };

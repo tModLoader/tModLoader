@@ -1,5 +1,10 @@
 var NAVTREEINDEX127 =
 {
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aae89cd4caa58b2a8e53487840ead52327":[1,0,2,5,8,155],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aae93f994f01c537c4e2f7d8528c3eb5e9":[1,0,2,5,8,350],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aae9765ad0c9e5ea992d36a4f0e022f865":[1,0,2,5,8,118],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aae9a1ae49e47b5199de245be70df84ecc":[1,0,2,5,8,221],
+"namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaea0928cb890a46d1bf1f5e1ab5247bf9":[1,0,2,5,8,30],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaead69b6818f4e98ffae8a81e3996671b":[1,0,2,5,8,286],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaeb51ddcab4f5b0a2531a7f810bdccb38":[1,0,2,5,8,61],
 "namespace_terraria_1_1_enums.html#a83e06fff16db2736c40efd7adb8e9e0aaec489c5ae083edb814e89a1b3afbcad1":[1,0,2,5,8,107],
@@ -244,10 +249,5 @@ var NAVTREEINDEX127 =
 "namespace_terraria_1_1_i_d.html#a570f3361eed6503973f36dcfa113fc01ab81d2eb0ab13b40ec1728b800be095df":[1,0,2,9,55,4],
 "namespace_terraria_1_1_i_d.html#a570f3361eed6503973f36dcfa113fc01abcf1fc088fbcb56f1dd49a1e0c1d9ed7":[1,0,2,9,55,2],
 "namespace_terraria_1_1_i_d.html#a570f3361eed6503973f36dcfa113fc01ad2cf32fa44b3bf07a5a273efbd0d4015":[1,0,2,9,55,5],
-"namespace_terraria_1_1_i_d.html#a570f3361eed6503973f36dcfa113fc01ae41480b6bbfbf7407974a88d3d34f4fa":[1,0,2,9,55,0],
-"namespace_terraria_1_1_i_o.html":[1,0,2,11],
-"namespace_terraria_1_1_i_o.html#a42d0aebce01dbe74958da7a85b26acbf":[1,0,2,11,12],
-"namespace_terraria_1_1_i_o.html#a42d0aebce01dbe74958da7a85b26acbfa46f3ea056caa3126b91f3f70beea068c":[1,0,2,11,12,1],
-"namespace_terraria_1_1_i_o.html#a42d0aebce01dbe74958da7a85b26acbfa636da1d35e805b00eae0fcd8333f9234":[1,0,2,11,12,3],
-"namespace_terraria_1_1_i_o.html#a42d0aebce01dbe74958da7a85b26acbfa6adf97f83acf6453d4a6a4b1070f3754":[1,0,2,11,12,0]
+"namespace_terraria_1_1_i_d.html#a570f3361eed6503973f36dcfa113fc01ae41480b6bbfbf7407974a88d3d34f4fa":[1,0,2,9,55,0]
 };
