@@ -54,7 +54,7 @@ Mods: {
 			# Note that the translation files for other languages don't need to define ItemTooltip.OctopusBanner, they would only need to define NPCName.Octopus, as seen in zh-Hans.hjson file. 
 			OctopusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Octopus}"
 			SarcophagusBanner: "{$CommonItemTooltip.BannerBonus}{$Mods.ExampleMod.NPCName.Sarcophagus}"
-			ExamplePet:
+			ExamplePetItem:
 				'''
 				Summons a {$Mods.ExampleMod.Common.PaperAirplane} to follow aimlessly behind you
 				Second Line!
@@ -85,22 +85,22 @@ Mods: {
 		}
 		
 		ItemName: {
-			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+			ExamplePetItem: "{$Mods.ExampleMod.Common.PaperAirplane}"
 			ExampleSpecificAmmoGun: '''Example Rifle'''
 			ExamplePylonItem: "Example Pylon"
 			ExamplePylonItemAdvanced: "Unstable Pylon"
 		}
 		
 		ProjectileName: {
-			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+			ExamplePetProjectile: "{$Mods.ExampleMod.Common.PaperAirplane}"
 		}
 		
 		BuffName: {
-			ExamplePet: "{$Mods.ExampleMod.Common.PaperAirplane}"
+			ExamplePetBuff: "{$Mods.ExampleMod.Common.PaperAirplane}"
 		}
 		
 		BuffDescription: {
-			ExamplePet: '''"Let this pet be an example to you!"'''
+			ExamplePetBuff: '''"Let this pet be an example to you!"'''
 		}
 		
 		RecipeConditions: {

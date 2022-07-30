@@ -1270,10 +1270,10 @@ namespace Terraria.ModLoader
 				return;
 
 			player.DropFromItem(item.type);
-			item.ModItem?.RightClick(player);
+			RightClickCallHooks(item, player);
 
-			foreach (var g in HookRightClick.Enumerate(item.globalItems)) {
-				g.RightClick(item, player);
+			if (ItemID.Sets.BossBag[item.type] && (!ItemID.Sets.PreHardmodeLikeBossBag[item.type] || Main.tenthAnniversaryWorld)) {
+				player.TryGettingDevArmor(player.GetItemSource_OpenItem(item.type));
 			}
 
 			if (ConsumeItem(item, player) && --item.stack == 0)
@@ -1283,6 +1283,14 @@ namespace Terraria.ModLoader
 			Main.stackSplit = 30;
 			Main.mouseRightRelease = false;
 			Recipe.FindRecipes();
+		}
+
+		internal static void RightClickCallHooks(Item item, Player player) {
+			item.ModItem?.RightClick(player);
+
+			foreach (var g in HookRightClick.Enumerate(item.globalItems)) {
+				g.RightClick(item, player);
+			}
 		}
 
 		/// <summary>
@@ -1307,7 +1315,7 @@ namespace Terraria.ModLoader
 		public static void ModifyItemLoot(Item item, ItemLoot itemLoot) {
 			item.ModItem?.ModifyItemLoot(itemLoot);
 
-			foreach (var g in HookModifyItemLoot.Enumerate(globalItems)) {
+			foreach (var g in HookModifyItemLoot.Enumerate(item.globalItems)) {
 				g.ModifyItemLoot(item, itemLoot);
 			}
 		}
@@ -1387,7 +1395,7 @@ namespace Terraria.ModLoader
 		}
 
 		[Obsolete]
-		internal static bool OpenVanillaBag_Obsolete(string context, Player player, int arg) => PreOpenVanillaBag(context, player, arg);
+		internal static void OpenVanillaBag_Obsolete(string context, Player player, int arg) => OpenVanillaBag(context, player, arg);
 
 		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 

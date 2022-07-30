@@ -91,9 +91,8 @@ namespace ExampleMod.Content.Projectiles
 			int movingHitCooldown = 10; // How often your flail hits when moving
 			int ricochetTimeLimit = launchTimeLimit + 5;
 
-			// Scaling these speeds and accelerations by the players meleeSpeed make the weapon more responsive if the player boosts their meleeSpeed
-			float meleeSpeed = player.GetAttackSpeed(DamageClass.Melee);
-			float meleeSpeedMultiplier = 1f / meleeSpeed;
+			// Scaling these speeds and accelerations by the players melee speed makes the weapon more responsive if the player boosts it or general weapon speed
+			float meleeSpeedMultiplier = player.GetTotalAttackSpeed(DamageClass.Melee);
 			launchSpeed *= meleeSpeedMultiplier;
 			unusedRetractAcceleration *= meleeSpeedMultiplier;
 			unusedMaxRetractSpeed *= meleeSpeedMultiplier;
@@ -110,7 +109,7 @@ namespace ExampleMod.Content.Projectiles
 						shouldOwnerHitCheck = true;
 						if (Projectile.owner == Main.myPlayer) {
 							Vector2 unitVectorTowardsMouse = mountedCenter.DirectionTo(Main.MouseWorld).SafeNormalize(Vector2.UnitX * player.direction);
-							player.ChangeDir((unitVectorTowardsMouse.X > 0f) ? 1 : (-1));
+							player.ChangeDir((unitVectorTowardsMouse.X > 0f).ToDirectionInt());
 							if (!player.channel) // If the player releases then change to moving forward mode
 							{
 								CurrentAIState = AIState.LaunchingForward;
@@ -161,7 +160,7 @@ namespace ExampleMod.Content.Projectiles
 							Projectile.velocity *= 0.3f;
 							// This is also where Drippler Crippler spawns its projectile, see above code.
 						}
-						player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+						player.ChangeDir((player.Center.X < Projectile.Center.X).ToDirectionInt());
 						Projectile.localNPCHitCooldown = movingHitCooldown;
 						break;
 					}
@@ -181,7 +180,7 @@ namespace ExampleMod.Content.Projectiles
 						else {
 							Projectile.velocity *= 0.98f;
 							Projectile.velocity = Projectile.velocity.MoveTowards(unitVectorTowardsPlayer * maxRetractSpeed, retractAcceleration);
-							player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+							player.ChangeDir((player.Center.X < Projectile.Center.X).ToDirectionInt());
 						}
 						break;
 					}
@@ -219,7 +218,7 @@ namespace ExampleMod.Content.Projectiles
 								Projectile.velocity.X *= 0.96f;
 							}
 						}
-						player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+						player.ChangeDir((player.Center.X < Projectile.Center.X).ToDirectionInt());
 						break;
 					}
 				case AIState.ForcedRetracting:
@@ -238,7 +237,7 @@ namespace ExampleMod.Content.Projectiles
 							Projectile.Kill(); // Kill projectile if it will pass the player
 							return;
 						}
-						player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+						player.ChangeDir((player.Center.X < Projectile.Center.X).ToDirectionInt());
 						break;
 					}
 				case AIState.Ricochet:
@@ -251,7 +250,7 @@ namespace ExampleMod.Content.Projectiles
 						Projectile.localNPCHitCooldown = movingHitCooldown;
 						Projectile.velocity.Y += 0.6f;
 						Projectile.velocity.X *= 0.95f;
-						player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+						player.ChangeDir((player.Center.X < Projectile.Center.X).ToDirectionInt());
 					}
 					break;
 				case AIState.Dropping:
@@ -263,14 +262,14 @@ namespace ExampleMod.Content.Projectiles
 					else {
 						Projectile.velocity.Y += 0.8f;
 						Projectile.velocity.X *= 0.95f;
-						player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
+						player.ChangeDir((player.Center.X < Projectile.Center.X).ToDirectionInt());
 					}
 					break;
 			}
 
 			// This is where Flower Pow launches projectiles. Decompile Terraria to view that code.
 
-			Projectile.direction = (Projectile.velocity.X > 0f) ? 1 : -1;
+			Projectile.direction = (Projectile.velocity.X > 0f).ToDirectionInt();
 			Projectile.spriteDirection = Projectile.direction;
 			Projectile.ownerHitCheck = shouldOwnerHitCheck; // This prevents attempting to damage enemies without line of sight to the player. The custom Colliding code for spinning makes this necessary.
 
@@ -318,23 +317,27 @@ namespace ExampleMod.Content.Projectiles
 			int impactIntensity = 0;
 			Vector2 velocity = Projectile.velocity;
 			float bounceFactor = 0.2f;
-			if (CurrentAIState == AIState.LaunchingForward || CurrentAIState == AIState.Ricochet)
+			if (CurrentAIState == AIState.LaunchingForward || CurrentAIState == AIState.Ricochet) {
 				bounceFactor = 0.4f;
+			}
 
-			if (CurrentAIState == AIState.Dropping)
+			if (CurrentAIState == AIState.Dropping) {
 				bounceFactor = 0f;
+			}
 
 			if (oldVelocity.X != Projectile.velocity.X) {
-				if (Math.Abs(oldVelocity.X) > 4f)
+				if (Math.Abs(oldVelocity.X) > 4f) {
 					impactIntensity = 1;
+				}
 
 				Projectile.velocity.X = (0f - oldVelocity.X) * bounceFactor;
 				CollisionCounter += 1f;
 			}
 
 			if (oldVelocity.Y != Projectile.velocity.Y) {
-				if (Math.Abs(oldVelocity.Y) > 4f)
+				if (Math.Abs(oldVelocity.Y) > 4f) {
 					impactIntensity = 1;
+				}
 
 				Projectile.velocity.Y = (0f - oldVelocity.Y) * bounceFactor;
 				CollisionCounter += 1f;
@@ -378,8 +381,9 @@ namespace ExampleMod.Content.Projectiles
 
 		public override bool? CanDamage() {
 			// Flails in spin mode won't damage enemies within the first 12 ticks. Visually this delays the first hit until the player swings the flail around for a full spin before damaging anything.
-			if (CurrentAIState == AIState.Spinning && SpinningStateTimer <= 12f)
+			if (CurrentAIState == AIState.Spinning && SpinningStateTimer <= 12f) {
 				return false;
+			}
 			return base.CanDamage();
 		}
 
@@ -398,26 +402,29 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void ModifyDamageScaling(ref float damageScale) {
 			// Flails do 20% more damage while spinning
-			if (CurrentAIState == AIState.Spinning)
+			if (CurrentAIState == AIState.Spinning) {
 				damageScale *= 1.2f;
-
+			}
 			// Flails do 100% more damage while launched or retracting. This is the damage the item tooltip for flails aim to match, as this is the most common mode of attack. This is why the item has ItemID.Sets.ToolTipDamageMultiplier[Type] = 2f;
-			if (CurrentAIState == AIState.LaunchingForward || CurrentAIState == AIState.Retracting)
+			else if (CurrentAIState == AIState.LaunchingForward || CurrentAIState == AIState.Retracting) {
 				damageScale *= 2f;
+			}
 		}
 
 		public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
 			// Flails do a few custom things, you'll want to keep these to have the same feel as vanilla flails.
 
 			// The hitDirection is always set to hit away from the player, even if the flail damages the npc while returning
-			hitDirection = (Main.player[Projectile.owner].Center.X < target.Center.X) ? 1 : (-1);
+			hitDirection = (Main.player[Projectile.owner].Center.X < target.Center.X).ToDirectionInt();
 
 			// Knockback is only 25% as powerful when in spin mode
-			if (CurrentAIState == AIState.Spinning)
+			if (CurrentAIState == AIState.Spinning) {
 				knockback *= 0.25f;
+			}
 			// Knockback is only 50% as powerful when in drop down mode
-			if (CurrentAIState == AIState.Dropping)
+			else if (CurrentAIState == AIState.Dropping) {
 				knockback *= 0.5f;
+			}
 
 			base.ModifyHitNPC(target, ref damage, ref knockback, ref crit, ref hitDirection);
 		}
@@ -441,8 +448,9 @@ namespace ExampleMod.Content.Projectiles
 			Vector2 vectorFromProjectileToPlayerArms = playerArmPosition.MoveTowards(chainDrawPosition, 4f) - chainDrawPosition;
 			Vector2 unitVectorFromProjectileToPlayerArms = vectorFromProjectileToPlayerArms.SafeNormalize(Vector2.Zero);
 			float chainSegmentLength = (chainSourceRectangle.HasValue ? chainSourceRectangle.Value.Height : chainTexture.Height()) + chainHeightAdjustment;
-			if (chainSegmentLength == 0)
+			if (chainSegmentLength == 0) {
 				chainSegmentLength = 10; // When the chain texture is being loaded, the height is 0 which would cause infinite loops.
+			}
 			float chainRotation = unitVectorFromProjectileToPlayerArms.ToRotation() + MathHelper.PiOver2;
 			int chainCount = 0;
 			float chainLengthRemainingToDraw = vectorFromProjectileToPlayerArms.Length() + chainSegmentLength / 2f;
@@ -493,9 +501,7 @@ namespace ExampleMod.Content.Projectiles
 			{
 				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 				Vector2 drawOrigin = new Vector2(projectileTexture.Width * 0.5f, Projectile.height * 0.5f);
-				SpriteEffects spriteEffects = SpriteEffects.None;
-				if (Projectile.spriteDirection == -1)
-					spriteEffects = SpriteEffects.FlipHorizontally;
+				SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 				for (int k = 0; k < Projectile.oldPos.Length && k < StateTimer; k++) {
 					Vector2 drawPos = Projectile.oldPos[k] - Main.screenPosition + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
 					Color color = Projectile.GetAlpha(lightColor) * ((float)(Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
