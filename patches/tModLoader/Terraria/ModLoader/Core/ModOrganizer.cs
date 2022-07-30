@@ -145,7 +145,7 @@ namespace Terraria.ModLoader.Core
 				return false;
 
 			// Initiate a batch download of all known dependencies.
-			WorkshopHelper.ModManager.DownloadBatch(deps.Select(x => x.ToString()).ToArray(), Interface.loadMods);
+			WorkshopHelper.ModManager.DownloadBatch(deps.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
 			return true;
 		}
 

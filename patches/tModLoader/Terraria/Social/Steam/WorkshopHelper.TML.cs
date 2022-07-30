@@ -164,12 +164,12 @@ namespace Terraria.Social.Steam
 				Task.Run(() => TaskDownload(counter, uiProgress, items));
 			}
 
-			internal static void DownloadBatch(string[] workshopIds, UI.UIState returnMenu) {
+			internal static void DownloadBatch(string[] workshopIds, int previousMenuMode) {
 				//Set UIWorkshopDownload
 				UIWorkshopDownload uiProgress = null;
 
 				if (!Main.dedServ) {
-					uiProgress = new UIWorkshopDownload(returnMenu);
+					uiProgress = new UIWorkshopDownload(previousMenuMode);
 					Main.MenuUI.SetState(uiProgress);
 				}
 
