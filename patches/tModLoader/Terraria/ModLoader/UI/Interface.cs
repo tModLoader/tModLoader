@@ -66,7 +66,7 @@ namespace Terraria.ModLoader.UI
 		// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
-			/* 
+			/*
 			 * string legacyInfoButton = Language.GetTextValue("tModLoader.13InfoButton");
 			buttonNames[buttonIndex] = legacyInfoButton;
 			if (selectedMenu == buttonIndex) {
@@ -104,6 +104,14 @@ namespace Terraria.ModLoader.UI
 		//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
 		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown) {
 			if (Main.menuMode == loadModsID) {
+				static void DisplayModChangesInfoMessage() {
+					ModLoader.DetectedModChangesForInfoMessage = true;
+
+					string info = ModOrganizer.DetectModChangesForInfoMessage();
+					if (info != null)
+						infoMessage.Show(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessage") + info, Main.menuMode);
+				}
+
 				if (ModLoader.ShowFirstLaunchWelcomeMessage) {
 					ModLoader.ShowFirstLaunchWelcomeMessage = false;
 					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
@@ -153,12 +161,15 @@ namespace Terraria.ModLoader.UI
 						});
 					Main.SaveSettings();
 				}
-				else if (!ModLoader.DetectedModChangesForInfoMessage) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
-					ModLoader.DetectedModChangesForInfoMessage = true;
+				else if (!ModLoader.DownloadedDependenciesOnStartup) {
+					ModLoader.DownloadedDependenciesOnStartup = true;
 
-					string info = ModOrganizer.DetectModChangesForInfoMessage();
-					if (info != null)
-						infoMessage.Show(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessage") + info, Main.menuMode);
+					// If there were no workshops to download, display the mod changes info message as expected.
+					if (!ModOrganizer.DownloadWorkshopDependencies() && !ModLoader.DetectedModChangesForInfoMessage)
+						DisplayModChangesInfoMessage();
+				}
+				else if (!ModLoader.DetectedModChangesForInfoMessage) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
+					DisplayModChangesInfoMessage();
 				}
 			}
 			if (Main.MenuUI.CurrentState == modSources) {
@@ -264,7 +275,7 @@ namespace Terraria.ModLoader.UI
 					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 				}
 
-				
+
 				buttonIndex++;
 				buttonNames[buttonIndex] = (ModLoader.autoReloadRequiredModsLeavingModsScreen ? Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenNo"));
 				if (selectedMenu == buttonIndex) {

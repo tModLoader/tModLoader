@@ -53,7 +53,7 @@ namespace Terraria.ModLoader.Core
 
 			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
 
-			// load all mods from an active ModPack 
+			// load all mods from an active ModPack
 			if (!ignoreModsFolder && !string.IsNullOrEmpty(ModPackActive)) {
 				if (Directory.Exists(ModPackActive)) {
 					Logging.tML.Info($"Loaded Mods from Active Mod Pack: {ModPackActive}");
@@ -123,6 +123,32 @@ namespace Terraria.ModLoader.Core
 			else if (logDuplicates) {
 				Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
 			}
+			return true;
+		}
+
+		internal static bool DownloadWorkshopDependencies() {
+			List<ulong> dependencies = new List<ulong>();
+
+			foreach (LocalMod mod in FindWorkshopMods()) {
+				// This shouldn't really ever fail, but better safe than sorry.
+				if (!TryReadManifest(GetParentDir(mod.modFile.path), out var manifest))
+					continue;
+
+				dependencies.AddRange(WorkshopHelper.QueryHelper.GetDependencies(manifest.workshopEntryId));
+			}
+
+			// Flatten to unique items.
+			dependencies = dependencies.Distinct().ToList();
+
+			// Cull out any dependencies that are already installed.
+			dependencies = dependencies.Where(x => !new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(x)).IsInstalled()).ToList();
+
+			// Nothing left for us to do.
+			if (dependencies.Count == 0)
+				return false;
+
+			// Initiate a batch download of all known dependencies.
+			WorkshopHelper.ModManager.DownloadBatch(dependencies.Select(x => x.ToString()).ToArray(), Interface.loadMods);
 			return true;
 		}
 

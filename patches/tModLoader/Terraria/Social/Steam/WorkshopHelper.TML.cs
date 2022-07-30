@@ -166,10 +166,10 @@ namespace Terraria.Social.Steam
 
 			internal static void DownloadBatch(string[] workshopIds, UI.UIState returnMenu) {
 				//Set UIWorkshopDownload
-				UIWorkshopDownload uiProgress = null;		
+				UIWorkshopDownload uiProgress = null;
 
 				if (!Main.dedServ) {
-					uiProgress = new UIWorkshopDownload(Interface.modPacksMenu);
+					uiProgress = new UIWorkshopDownload(returnMenu);
 					Main.MenuUI.SetState(uiProgress);
 				}
 
@@ -491,6 +491,7 @@ namespace Terraria.Social.Steam
 				protected EResult _primaryQueryResult;
 				protected uint _queryReturnCount;
 				protected string _nextCursor;
+				internal List<ulong> ugcChildren = new List<ulong>();
 
 				internal static IReadOnlyList<LocalMod> InstalledMods;
 
@@ -718,7 +719,9 @@ namespace Terraria.Social.Steam
 					ReleaseWorkshopQuery();
 				}
 
-				internal SteamUGCDetails_t FastQueryItem(ulong publishedId) {
+				// if dependencyCount > 0 then query, otherwise ignore
+				// default calls will ignore dependencies
+				internal SteamUGCDetails_t FastQueryItem(ulong publishedId, uint dependencyCount = 0) {
 					_primaryQueryResult = EResult.k_EResultNone;
 
 					SteamAPICall_t call;
@@ -728,6 +731,7 @@ namespace Terraria.Social.Steam
 						SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 						SteamUGC.SetReturnLongDescription(qHandle, true);
 						SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
+						SteamUGC.SetReturnChildren(qHandle, true);
 
 						call = SteamUGC.SendQueryUGCRequest(qHandle);
 					}
@@ -737,6 +741,7 @@ namespace Terraria.Social.Steam
 						SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 						SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
 						SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
+						SteamGameServerUGC.SetReturnChildren(qHandle, true);
 
 						call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 					}
@@ -754,10 +759,22 @@ namespace Terraria.Social.Steam
 					while (_primaryQueryResult == EResult.k_EResultNone);
 
 					SteamUGCDetails_t pDetails;
-					if (ModManager.SteamUser)
+					PublishedFileId_t[] deps = new PublishedFileId_t[dependencyCount];
+					if (ModManager.SteamUser) {
 						SteamUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
-					else
+
+						if (dependencyCount != 0)
+							SteamUGC.GetQueryUGCChildren(_primaryUGCHandle, 0, deps, dependencyCount);
+					}
+					else {
 						SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
+
+						if (dependencyCount != 0)
+							SteamGameServerUGC.GetQueryUGCChildren(_primaryUGCHandle, 0, deps, dependencyCount);
+					}
+
+					if (dependencyCount != 0)
+						ugcChildren = deps.Select(x => x.m_PublishedFileId).ToList();
 
 					ReleaseWorkshopQuery();
 					return pDetails;
@@ -792,6 +809,15 @@ namespace Terraria.Social.Steam
 			internal static ulong GetSteamOwner(ulong publishedId) {
 				var pDetails = new AQueryInstance().FastQueryItem(publishedId);
 				return pDetails.m_ulSteamIDOwner;
+			}
+
+			internal static List<ulong> GetDependencies(ulong publishedId) {
+				// TODO: Can we do this more efficiently? Calling FastQueryItem twice probably isn't the best?
+				// ^ We would still need to query twice regardless since the dependency count (m_unNumChildren) needs to be known.
+				var query = new AQueryInstance();
+				var pDetails = query.FastQueryItem(publishedId);
+				query.FastQueryItem(publishedId, pDetails.m_unNumChildren);
+				return query.ugcChildren;
 			}
 
 			internal static bool CheckWorkshopConnection() {

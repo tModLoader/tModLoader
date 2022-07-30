@@ -32,6 +32,7 @@ namespace Terraria.ModLoader
 		public static bool ShowWhatsNew;
 		public static bool AlphaWelcomed;
 		public static bool PreviewFreezeNotification;
+		public static bool DownloadedDependenciesOnStartup;
 		public static bool DetectedModChangesForInfoMessage;
 		public static bool ShowFirstLaunchWelcomeMessage;
 		public static bool SeenFirstLaunchModderWelcomeMessage;
