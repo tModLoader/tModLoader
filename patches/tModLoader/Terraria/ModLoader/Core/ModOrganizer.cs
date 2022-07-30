@@ -127,28 +127,25 @@ namespace Terraria.ModLoader.Core
 		}
 
 		internal static bool DownloadWorkshopDependencies() {
-			List<ulong> dependencies = new List<ulong>();
+			HashSet<ulong> dependencies = new HashSet<ulong>();
 
 			foreach (LocalMod mod in FindWorkshopMods()) {
 				// This shouldn't really ever fail, but better safe than sorry.
 				if (!TryReadManifest(GetParentDir(mod.modFile.path), out var manifest))
 					continue;
 
-				dependencies.AddRange(WorkshopHelper.QueryHelper.GetDependencies(manifest.workshopEntryId));
+				WorkshopHelper.QueryHelper.GetDependenciesRecursive(manifest.workshopEntryId, ref dependencies);
 			}
 
-			// Flatten to unique items.
-			dependencies = dependencies.Distinct().ToList();
-
 			// Cull out any dependencies that are already installed.
-			dependencies = dependencies.Where(x => !new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(x)).IsInstalled()).ToList();
+			var deps = dependencies.Where(x => !new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(x)).IsInstalled()).ToList();
 
 			// Nothing left for us to do.
-			if (dependencies.Count == 0)
+			if (deps.Count == 0)
 				return false;
 
 			// Initiate a batch download of all known dependencies.
-			WorkshopHelper.ModManager.DownloadBatch(dependencies.Select(x => x.ToString()).ToArray(), Interface.loadMods);
+			WorkshopHelper.ModManager.DownloadBatch(deps.Select(x => x.ToString()).ToArray(), Interface.loadMods);
 			return true;
 		}
 

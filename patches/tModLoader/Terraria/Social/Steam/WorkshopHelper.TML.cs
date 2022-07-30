@@ -811,13 +811,21 @@ namespace Terraria.Social.Steam
 				return pDetails.m_ulSteamIDOwner;
 			}
 
-			internal static List<ulong> GetDependencies(ulong publishedId) {
+			private static List<ulong> GetDependencies(ulong publishedId) {
 				// TODO: Can we do this more efficiently? Calling FastQueryItem twice probably isn't the best?
 				// ^ We would still need to query twice regardless since the dependency count (m_unNumChildren) needs to be known.
 				var query = new AQueryInstance();
 				var pDetails = query.FastQueryItem(publishedId);
 				query.FastQueryItem(publishedId, pDetails.m_unNumChildren);
 				return query.ugcChildren;
+			}
+
+			internal static void GetDependenciesRecursive(ulong publishedId, ref HashSet<ulong> set) {
+				var deps = GetDependencies(publishedId);
+				set.UnionWith(deps);
+
+				foreach (ulong dep in deps)
+					GetDependenciesRecursive(dep, ref set);
 			}
 
 			internal static bool CheckWorkshopConnection() {
