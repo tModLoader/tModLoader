@@ -1005,7 +1005,7 @@ namespace Terraria.GameContent.ItemDropRules
 
 			IItemDropRule foodRule = ItemDropRule.OneFromOptionsNotScalingWithLuck(chanceDenominator: 7, ItemID.ChristmasPudding, ItemID.SugarCookie, ItemID.GingerbreadCookie);
 
-			IItemDropRule blockRule = ItemDropRule.OneFromOptionsNotScalingWithLuck(chanceDenominator: 1, ItemID.PineTreeBlock, ItemID.CandyCaneBlock, ItemID.GreenCandyCaneBlock);
+			IItemDropRule blockRule = new OneFromRulesRule(1, ItemDropRule.Common(ItemID.PineTreeBlock, 1, 20, 49), ItemDropRule.Common(ItemID.CandyCaneBlock, 1, 20, 49), ItemDropRule.Common(ItemID.GreenCandyCaneBlock, 1, 20, 49));
 
 			IItemDropRule[] rules = new IItemDropRule[]
 			{
