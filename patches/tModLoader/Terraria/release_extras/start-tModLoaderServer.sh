@@ -3,34 +3,30 @@ cd "$(dirname "$0")"
 
 launchArgs="-server"
 
-# Use serverconfig.txt as config if not already specified
-if ! [[ "$@" == *"-config"* ]]
-then
-	launchArgs="$launchArgs -config serverconfig.txt"
-fi
-
 # Parse parameters, passing through everything else to ScriptCaller.sh
 while [[ $# -gt 0 ]]
 do
 	case $1 in
-		--steamserver)
+		-steam)
 			steamServer=true
 			shift
 			;;
-		--nosteamserver)
+		-nosteam)
 			steamServer=false
 			shift
 			;;
-		--lobbytype)
-			lobbyType="$2"
-			shift; shift
-			;;
 		*) # If it's not one of the args above, then pass it to ScriptCaller.sh
-			launchArgs="$launchArgs $2"
+			launchArgs="$launchArgs $1"
 			shift
 			;;
 	esac
 done
+
+# Use serverconfig.txt as config if not already specified
+if ! [[ "$launchArgs" == *"-config"* ]]
+then
+	launchArgs="$launchArgs -config serverconfig.txt"
+fi
 
 # Prompt user for lobby type and steam server if not specified in args
 if ! [[ -v steamServer ]]
@@ -44,16 +40,21 @@ then
 	fi
 fi
 
-if ! [[ -v lobbyType ]]
+if $steamServer
+then
+	launchArgs="$launchArgs -steam"
+fi
+
+if ! [[ "$launchArgs" == *"-lobby"* ]]
 then
 	read -p "Select lobby type ([f]riends/[p]rivate): " lobbyTypeResponse
 	if [[ $lobbyTypeResponse == f* ]]
 	then
-		lobbyType="friends"
+		launchArgs="$launchArgs -lobby friends"
 	else
-		lobbyType="private"
+		launchArgs="$launchArgs -lobby private"
 	fi
 fi
 
 chmod +x ./LaunchUtils/ScriptCaller.sh
-./LaunchUtils/ScriptCaller.sh $launchArgs -lobby $lobbyType
+./LaunchUtils/ScriptCaller.sh $launchArgs

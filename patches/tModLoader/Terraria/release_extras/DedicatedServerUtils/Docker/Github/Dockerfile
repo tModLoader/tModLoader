@@ -19,7 +19,7 @@ RUN mkdir -p $HOME/.local/share/Terraria/scriptdir \
  && ./Setup_tModLoaderServer.sh -i -g
 
 # Prepare launch utils
-RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils//Docker/Launch.sh \
+RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Launch.sh \
  && chmod u+x Launch.sh
 
 # Replace start-tModLoaderServer.sh
@@ -29,4 +29,5 @@ RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/pa
 
 EXPOSE 7777
 
-ENTRYPOINT [ "./Launch.sh", "-g", "--location", "~/tModLoader", "--nosteamserver" ]
+#ENTRYPOINT [ "./Launch.sh", "-g", "--location", "~/tModLoader", "--nosteamserver" ]
+ENTRYPOINT [ "/bin/bash" ]
