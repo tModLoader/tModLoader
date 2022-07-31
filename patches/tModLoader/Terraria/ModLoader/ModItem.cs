@@ -136,12 +136,14 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should receive melee prefixes and false if it should not.
+		/// Takes priority over WeaponPrefix, RangedPrefix, and MagicPrefix
 		/// </summary>
 		public virtual bool MeleePrefix()
 			=> Item.melee && !Item.noUseGraphic;
 
 		/// <summary>
 		/// Allows you to change whether or not a weapon only receives generic prefixes. Return true if the item should only receive generic prefixes and false if it should not.
+		/// Takes priority over RangedPrefix and MagicPrefix
 		/// Ignored if MeleePrefix returns true
 		/// </summary>
 		public virtual bool WeaponPrefix()
@@ -149,6 +151,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to change whether or not a weapon receives ranged prefixes. Return true if the item should receive ranged prefixes and false if it should not.
+		/// Takes priority over MagicPrefix
 		/// </summary>
 		public virtual bool RangedPrefix()
 			=> Item.ranged;
