@@ -15,7 +15,6 @@ function stop {
 	pkill tmux
 }
 
-echo guh
 steamcmd=true
 while [[ $# -gt 0 ]];
 do
@@ -33,8 +32,12 @@ do
 			shift; shift
 			;;
 		--lobbytype)
-			lobbyType="2"
+			lobbyType="$2"
 			shift; shift
+			;;
+		*)
+			echo "Bad arg $1"
+			exit 1
 			;;
 	esac
 done
@@ -47,7 +50,7 @@ then
 	exit 1
 fi
 
-scriptdir=/home/tml/.local/share/Terraria/scripdir
+scriptdir=/home/tml/.local/share/Terraria/scriptdir
 
 echo "Checking updates"
 $scriptdir/Setup_tModLoaderServer.sh --updatescript
@@ -59,9 +62,14 @@ else
 	$scriptdir/Setup_tModLoaderServer.sh -u -g
 fi
 
+if ! [ $? -eq 0 ]
+then
+	echo "Setup_tModLoaderServer.sh failed"
+	exit 1
+fi
+
 echo "Launching tModLoader..."
 cd "$location"
-# -nosteam to never launch with steam server since steamcmd won't let you
-tmux new-session -d "./start-tModLoaderServer.sh -config $HOME/.local/share/Terraria/scriptdir/serverconfig.txt -lobby $lobbyType -nosteam"
+tmux new-session -d "./start-tModLoaderServer.sh -config $HOME/.local/share/Terraria/scriptdir/serverconfig.txt -lobby $lobbyType"
 
-wait ${!}
+wait $(pgrep tmux)
