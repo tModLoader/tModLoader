@@ -14,8 +14,8 @@
  	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
  
  	private static void Main(string[] args) {
-+		if (args.Length > 0 && args[0] == "-tModPorter") {
-+			tModPorter.Program.Main(args.Skip(1).ToArray()).GetAwaiter().GetResult();
++		if (Array.IndexOf(args, "-tModPorter") is int i && i >= 0) {
++			tModPorter.Program.Main(args.Skip(i + 1).ToArray()).GetAwaiter().GetResult();
 +			return;
 +		}
 +
