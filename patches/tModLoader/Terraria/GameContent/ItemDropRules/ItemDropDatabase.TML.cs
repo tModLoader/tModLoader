@@ -796,7 +796,7 @@ namespace Terraria.GameContent.ItemDropRules
 				ItemDropRule.SequentialRulesNotScalingWithLuck(1, bc_sea),
 
 				bc_goldCoin,
-				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, hardmodeOresTier1), new OneFromRulesRule(3, 2, hardmodeBarsTier1)),
+				ItemDropRule.SequentialRulesNotScalingWithLuck(1, new OneFromRulesRule(5, oresTier1), new OneFromRulesRule(3, 2, barsTier1)),
 				new OneFromRulesRule(3, potions),
 
 				bc_pile,
