@@ -88,8 +88,8 @@ public static class Extensions
 		type.BaseType != null && InheritsFrom(type.BaseType, fromTypeName) ||
 		type.Interfaces.Any(i => InheritsFrom(i, fromTypeName));
 
-	public static T LookupMember<T>(this ITypeSymbol type, string name) where T : class, ISymbol {
-		var members = type.GetMembers(name).OfType<T>().ToArray();
+	public static T LookupMember<T>(this ITypeSymbol type, string name, bool includeObsolete = false) where T : class, ISymbol {
+		var members = type.GetMembers(name).OfType<T>().Where(m => includeObsolete || !m.IsObsolete()).ToArray();
 		if (members.Length == 1)
 			return members[0];
 

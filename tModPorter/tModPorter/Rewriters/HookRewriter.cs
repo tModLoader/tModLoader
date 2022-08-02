@@ -19,7 +19,7 @@ public class HookRewriter : BaseRewriter
 		public string method { get; init; }
 		public string comment { get; init; }
 
-		public bool signatureChanged;
+		public bool removed;
 	}
 
 	private static List<RefactorEntry> refactors = new();
@@ -30,21 +30,33 @@ public class HookRewriter : BaseRewriter
 		return entry;
 	}
 
-	public static void ChangeHookSignature(string type, string member, string comment = null) => AddRefactor(type, member, comment).signatureChanged = true;
-	public static void HookRemoved(string type, string member, string comment) => AddRefactor(type, member, "Note: Removed. " + comment);
+	public static void ChangeHookSignature(string type, string member, string comment = null) => AddRefactor(type, member, comment);
+	public static void HookRemoved(string type, string member, string comment) => AddRefactor(type, member, "Note: Removed. " + comment).removed = true;
+
+	private static bool SelectRefactor(ISymbol sym, out RefactorEntry refactor) {
+		refactor = null;
+		if (!sym.IsOverride)
+			return false;
+
+		refactor = refactors.SingleOrDefault(refactor => sym.Name == refactor.method && sym.ContainingType.InheritsFrom(refactor.type));
+		return refactor != null;
+	}
+
+	private static bool SelectBaseSym<T>(T sym, T overriddenSym, out T baseSym) where T : class, ISymbol {
+		baseSym = overriddenSym;
+		if (baseSym == null || baseSym.IsObsolete())
+			baseSym = sym.ContainingType.BaseType.LookupMember<T>(sym.Name);
+
+		return baseSym != null;
+	}
 
 	public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node) {
 		var sym = model.GetDeclaredSymbol(node);
 		node = (PropertyDeclarationSyntax)base.VisitPropertyDeclaration(node);
-		if (!sym.IsOverride || sym.OverriddenProperty != null && !TypeMismatch(sym.Type, sym.OverriddenProperty.Type) && !AccessibilityMismatch(sym, sym.OverriddenProperty) && !sym.OverriddenProperty.GetAttributes().Any(attr => attr.AttributeClass.Name == "ObsoleteAttribute"))
+		if (!SelectRefactor(sym, out var refactor))
 			return node;
 
-		var refactor = refactors.SingleOrDefault(refactor => sym.Name == refactor.method && sym.ContainingType.InheritsFrom(refactor.type));
-		if (refactor == null)
-			return node;
-
-		var baseSym = sym.OverriddenProperty ?? sym.ContainingType.BaseType.LookupMember<IPropertySymbol>(refactor.method);
-		if (Apply(refactor, ref node, sym, baseSym) && refactor.comment != null)
+		if ((refactor.removed || RewriteSignature(ref node, sym)) && refactor.comment != null)
 			node = node.WithIdentifier(node.Identifier.WithBlockComment(refactor.comment));
 
 		return node;
@@ -53,15 +65,10 @@ public class HookRewriter : BaseRewriter
 	public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node) {
 		var sym = model.GetDeclaredSymbol(node);
 		node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
-		if (!sym.IsOverride || sym.OverriddenMethod != null && !TypeMismatch(sym.ReturnType, sym.OverriddenMethod.ReturnType) && !AccessibilityMismatch(sym, sym.OverriddenMethod) && !sym.OverriddenMethod.GetAttributes().Any(attr => attr.AttributeClass.Name == "ObsoleteAttribute"))
+		if (!SelectRefactor(sym, out var refactor))
 			return node;
 
-		var refactor = refactors.SingleOrDefault(refactor => sym.Name == refactor.method && sym.ContainingType.InheritsFrom(refactor.type));
-		if (refactor == null)
-			return node;
-
-		var baseSym = sym.OverriddenMethod ?? sym.ContainingType.BaseType.LookupMember<IMethodSymbol>(refactor.method);
-		if (Apply(refactor, ref node, sym, baseSym) && refactor.comment != null)
+		if ((refactor.removed || RewriteSignature(ref node, sym)) && refactor.comment != null)
 			node = node.WithParameterList(node.ParameterList.WithBlockComment(refactor.comment));
 
 		return node;
@@ -75,20 +82,6 @@ public class HookRewriter : BaseRewriter
 
 	private static bool ParametersEqual(IMethodSymbol sym1, IMethodSymbol sym2) =>
 		sym1.Parameters.SequenceEqual(sym2.Parameters, (p1, p2) => SymbolEqualityComparer.Default.Equals(p1.Type, p2.Type) && p1.RefKind == p2.RefKind);
-
-	private bool Apply(RefactorEntry refactor, ref MethodDeclarationSyntax node, IMethodSymbol sym, IMethodSymbol baseSym) {
-		if (refactor.signatureChanged)
-			return RewriteSignature(ref node, sym, baseSym);
-
-		return true;
-	}
-
-	private bool Apply(RefactorEntry refactor, ref PropertyDeclarationSyntax node, IPropertySymbol sym, IPropertySymbol baseSym) {
-		if (refactor.signatureChanged)
-			return RewriteSignature(ref node, sym, baseSym);
-
-		return true;
-	}
 
 	private bool RewriteModifiers(ISymbol sym, ISymbol baseSym, SyntaxTokenList modifiers, out SyntaxTokenList newModifiers) {
 		if (!AccessibilityMismatch(sym, baseSym)) {
@@ -107,8 +100,8 @@ public class HookRewriter : BaseRewriter
 		return true;
 	}
 
-	private bool RewriteSignature(ref MethodDeclarationSyntax node, IMethodSymbol sym, IMethodSymbol baseSym) {
-		if (baseSym == null)
+	private bool RewriteSignature(ref MethodDeclarationSyntax node, IMethodSymbol sym) {
+		if (!SelectBaseSym(sym, sym.OverriddenMethod, out var baseSym))
 			return false;
 
 		var origNode = node;
@@ -124,10 +117,9 @@ public class HookRewriter : BaseRewriter
 		return node != origNode;
 	}
 
-	private bool RewriteSignature(ref PropertyDeclarationSyntax node, IPropertySymbol sym, IPropertySymbol baseSym) {
-		if (baseSym == null)
+	private bool RewriteSignature(ref PropertyDeclarationSyntax node, IPropertySymbol sym) {
+		if (!SelectBaseSym(sym, sym.OverriddenProperty, out var baseSym))
 			return false;
-
 
 		var origNode = node;
 		if (TypeMismatch(sym.Type, baseSym.Type))
