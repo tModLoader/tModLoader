@@ -1,88 +1,233 @@
 --- src/TerrariaNetCore/Terraria/Terraria.csproj
 +++ src/tModLoader/Terraria/Terraria.csproj
-@@ -7,26 +_,27 @@
-     <Company>Re-Logic</Company>
-     <Copyright>Copyright © 2022 Re-Logic</Copyright>
-     <RootNamespace>Terraria</RootNamespace>
--    <AssemblyName>Terraria</AssemblyName>
-+    <AssemblyName>tModLoader</AssemblyName>
-+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-+    <UseAppHost>false</UseAppHost>
-     <GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
-   </PropertyGroup>
--  <PropertyGroup Condition="$(Configuration.Contains('Server'))">
--    <AssemblyName>$(AssemblyName)Server</AssemblyName>
--  </PropertyGroup>
--  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
--    <AssemblyName>$(AssemblyName)Debug</AssemblyName>
--  </PropertyGroup>
--  <!-- Avoid overwriting Terraria(Server).exe (if it's not Debug it's release) -->
--  <PropertyGroup Condition="!$(Configuration.Contains('Debug'))">
--    <AssemblyName>$(AssemblyName)Release</AssemblyName>
-+  <PropertyGroup>
-+    <tMLVersion Condition="'$(TmlVersion)' == ''">9999.0</tMLVersion>
-+    <BuildPurpose Condition="'$(BuildPurpose)' == ''">dev</BuildPurpose>
-+    <BranchName Condition="'$(BranchName)' == ''">unknown</BranchName>
-+    <BranchName>$(BranchName.Replace("|","-"))</BranchName>
-+    <CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
-+    <BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
-+    <SourceRevisionId>$(tMLVersion)|$(BranchName)|$(BuildPurpose)|$(CommitSHA)|$(BuildDate)</SourceRevisionId>
-   </PropertyGroup>
-   <PropertyGroup>
-     <OutputName>$(AssemblyName)</OutputName>
--    <ApplicationIcon>Icon.ico</ApplicationIcon>
-+    <ApplicationIcon>tModLoader.ico</ApplicationIcon>
-   </PropertyGroup>
-   <ItemGroup>
-     <Reference Include="CsvHelper" />
--    <Reference Include="Ionic.Zip.CF" />
-+    <Reference Include="Ionic.Zip.Reduced" />
-     <ProjectReference Include="../../../FNA/FNA.Core.csproj" />
-     <Reference Include="MP3Sharp" />
-     <Reference Include="Newtonsoft.Json" />
-@@ -34,8 +_,12 @@
-     <Reference Include="RailSDK.Net" />
-     <ProjectReference Include="../ReLogic/ReLogic.csproj" />
-     <Reference Include="SteelSeriesEngineWrapper" />
-+    <Reference Include="log4net" />
-+    <Reference Include="TerrariaHooks" />
-+    <ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
-   </ItemGroup>
-   <ItemGroup>
-+    <EmbeddedResource Include="**\*.png" />
-     <EmbeddedResource Include="GameContent/Creative/Content/*" />
-     <EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
-     <EmbeddedResource Include="GameContent/WorldBuilding/*" />
-@@ -46,18 +_,30 @@
-   <ItemGroup>
-     <Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
-     <Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
--    <None Remove="Libraries/Mono/**" />
-+    <Compile Remove="Libraries/Common/TerrariaHooks.dll" />
-     <None Remove="Libraries/Windows/**" />
-     <None Remove="Libraries/XNA/**" />
-     <Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
-+    <Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
-   </ItemGroup>
-   <ItemGroup>
-+    <PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
-+    <PackageReference Include="MonoMod.RuntimeDetour" Version="22.5.31.2" />
-+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.2.0" />
-+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
-+    <PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
-     <PackageReference Include="Steamworks.NET" Version="20.1.0" />
-+    <PackageReference Include="System.CodeDom" Version="6.0.0" />
-+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0" />
-+    <PackageReference Include="Hjson" Version="3.0.0" />
-+    <PackageReference Include="System.Reflection.MetadataLoadContext" Version="6.0.0" />
-   </ItemGroup>
-   <PropertyGroup>
--    <_ActualOutputDirectory>$(TerrariaSteamPath)</_ActualOutputDirectory>
-+    <_ActualOutputDirectory>$(tModLoaderSteamPath)</_ActualOutputDirectory>
-   </PropertyGroup>
-   <Target Name="CopyToSteamDir" AfterTargets="Build">
+@@ -1,49 +_,46 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+-
+ 	<Import Project="../Configuration.targets" />
+ 	<Import Project="../../WorkspaceInfo.targets" />
+-
+ 	<PropertyGroup>
+ 		<OutputType>Exe</OutputType>
+ 		<Version>1.4.3.6</Version>
+ 		<Company>Re-Logic</Company>
+ 		<Copyright>Copyright © 2022 Re-Logic</Copyright>
+ 		<RootNamespace>Terraria</RootNamespace>
+-		<AssemblyName>Terraria</AssemblyName>
+-	</PropertyGroup>
+-
+-	<PropertyGroup Condition="$(Configuration.Contains('Server'))">
+-		<AssemblyName>$(AssemblyName)Server</AssemblyName>
+-	</PropertyGroup>
+-
+-	<PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+-		<AssemblyName>$(AssemblyName)Debug</AssemblyName>
+-	</PropertyGroup>
+-
+-	<!-- Avoid overwriting Terraria(Server).exe (if it's not Debug it's release) -->
+-	<PropertyGroup Condition="!$(Configuration.Contains('Debug'))">
+-		<AssemblyName>$(AssemblyName)Release</AssemblyName>
+-	</PropertyGroup>
+-
++		<AssemblyName>tModLoader</AssemblyName>
++		<GenerateDocumentationFile>true</GenerateDocumentationFile>
++		<UseAppHost>false</UseAppHost>
++		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
++	</PropertyGroup>
++	<PropertyGroup>
++		<tMLVersion Condition="'$(TmlVersion)' == ''">9999.0</tMLVersion>
++		<BuildPurpose Condition="'$(BuildPurpose)' == ''">dev</BuildPurpose>
++		<BranchName Condition="'$(BranchName)' == ''">unknown</BranchName>
++		<BranchName>$(BranchName.Replace("|","-"))</BranchName>
++		<CommitSHA Condition="'$(CommitSHA)' == ''">unknown</CommitSHA>
++		<BuildDate>$([System.DateTime]::UtcNow.ToBinary())</BuildDate>
++		<SourceRevisionId>$(tMLVersion)|$(BranchName)|$(BuildPurpose)|$(CommitSHA)|$(BuildDate)</SourceRevisionId>
++	</PropertyGroup>
+ 	<PropertyGroup>
+ 		<OutputName>$(AssemblyName)</OutputName>
+-		<ApplicationIcon>Icon.ico</ApplicationIcon>
++		<ApplicationIcon>tModLoader.ico</ApplicationIcon>
+ 	</PropertyGroup>
+-
+ 	<ItemGroup>
+-		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
+-		<ProjectReference Include="../ReLogic/ReLogic.csproj" />
+ 		<Reference Include="CsvHelper" />
+-		<Reference Include="Ionic.Zip.CF" />
++		<Reference Include="Ionic.Zip.Reduced" />
++		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
+ 		<Reference Include="MP3Sharp" />
+ 		<Reference Include="Newtonsoft.Json" />
+ 		<Reference Include="NVorbis" />
+ 		<Reference Include="RailSDK.Net" />
++		<ProjectReference Include="../ReLogic/ReLogic.csproj" />
+ 		<Reference Include="SteelSeriesEngineWrapper" />
+-		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
++		<Reference Include="log4net" />
++		<Reference Include="TerrariaHooks" />
++		<ProjectReference Include="../../../tModPorter/tModPorter/tModPorter.csproj" />
+ 	</ItemGroup>
+-
+ 	<ItemGroup>
++		<EmbeddedResource Include="**\*.png" />
+ 		<EmbeddedResource Include="GameContent/Creative/Content/*" />
+ 		<EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
+ 		<EmbeddedResource Include="GameContent/WorldBuilding/*" />
+@@ -51,67 +_,103 @@
+ 		<EmbeddedResource Include="Localization/Content/**" />
+ 		<EmbeddedResource Include="Microsoft/**" />
+ 	</ItemGroup>
+-
+ 	<ItemGroup>
+ 		<Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
+ 		<Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
+-		<None Remove="Libraries/Mono/**" />
++		<Compile Remove="Libraries/Common/TerrariaHooks.dll" />
+ 		<None Remove="Libraries/Windows/**" />
+ 		<None Remove="Libraries/XNA/**" />
+ 		<Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
+-	</ItemGroup>
+-
++		<Content Include="release_extras/**" CopyToOutputDirectory="PreserveNewest" Link="%(RecursiveDir)%(Filename)%(Extension)" />
++	</ItemGroup>
++	<ItemGroup>
++		<PackageReference Include="Basic.Reference.Assemblies.Net60" Version="1.2.4" />
++		<PackageReference Include="MonoMod.RuntimeDetour" Version="22.5.31.2" />
++		<PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.2.0" />
++		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
++		<PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
++		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
++		<PackageReference Include="System.CodeDom" Version="6.0.0" />
++		<PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0" />
++		<PackageReference Include="Hjson" Version="3.0.0" />
++		<PackageReference Include="System.Reflection.MetadataLoadContext" Version="6.0.0" />
++	</ItemGroup>
+ 	<PropertyGroup>
+-		<_ActualOutputDirectory>$(TerrariaSteamPath)</_ActualOutputDirectory>
++		<_ActualOutputDirectory>$(tModLoaderSteamPath)</_ActualOutputDirectory>
+ 	</PropertyGroup>
+-
+-	<!-- Manage libraries -->
+-	
+-	<UsingTask TaskName="OrganizeDependencies" AssemblyFile="$(DependencyOrganizerAssemblyFile)" />
+-	<UsingTask TaskName="InjectAdditionalRuntimeTarget" AssemblyFile="$(DependencyOrganizerAssemblyFile)" />
+-
+-	<!-- This task moves all dependencies to the Libraries folder, while modifying the runtimeconfig json path to point to the new locations. -->
+-	<Target Name="ConfigureDependencies" AfterTargets="GenerateBuildDependencyFile">
+-		<Message Text="Adding additional dependencies..." Importance="high" />
+-		
+-		<!-- Make FNA be able to find SDL2 -->
+-		<InjectAdditionalRuntimeTarget DepsFile="$(ProjectDepsFilePath)" TargetLibrary="FNA/1.0.0" AssetType="native" FilePath="Libraries/Native/win-x64/SDL2.dll" RuntimeIdentifier="win-x64" />
+-		<InjectAdditionalRuntimeTarget DepsFile="$(ProjectDepsFilePath)" TargetLibrary="FNA/1.0.0" AssetType="native" FilePath="Libraries/Native/win-x86/SDL2.dll" RuntimeIdentifier="win-x86" />
+-		<InjectAdditionalRuntimeTarget DepsFile="$(ProjectDepsFilePath)" TargetLibrary="FNA/1.0.0" AssetType="native" FilePath="Libraries/Native/linux-x64/libSDL2-2.0.so.0" RuntimeIdentifier="linux-x64" />
+-		<InjectAdditionalRuntimeTarget DepsFile="$(ProjectDepsFilePath)" TargetLibrary="FNA/1.0.0" AssetType="native" FilePath="Libraries/Native/osx-x64/libSDL2-2.0.0.dylib" RuntimeIdentifier="osx-x64" />
+-		
+-		<Message Text="Organizing dependencies..." Importance="high" />
+-
+-		<OrganizeDependencies
+-			OutputPath="$(OutputPath)"
+-			AssemblyName="$(AssemblyName)"
+-			LibrariesDir="Libraries"
+-			ProjectDepsFilePath="$(ProjectDepsFilePath)"
+-			ProjectRuntimeConfigFilePath="$(ProjectRuntimeConfigFilePath)"
+-		/>
+-	</Target>
+-	
+-	<!-- This task copies all the Native libraries to Libraries/Native directory in output. -->
+-	<Target Name="CopyNatives" AfterTargets="ConfigureDependencies">
+-		<ItemGroup>
+-			<NativeFiles Include="$(MSBuildThisFileDirectory)\References\Native\**" />
+-		</ItemGroup>
+-		
+-		<Message Text="Copying natives from '$(MSBuildThisFileDirectory)\References\Native' to '$(TargetDir)\Libraries\Native'" Importance="High" />
+-	
+-		<Copy SourceFiles="@(NativeFiles)" DestinationFolder="$(TargetDir)\Libraries\Native\%(RecursiveDir)" SkipUnchangedFiles="False" />
+-	</Target>
+-	
+-	<!-- Final output cleanups -->
+-	
+-	<UsingTask TaskName="DeleteEmptyDirectories" AssemblyFile="$(DependencyOrganizerAssemblyFile)" />
+-	
+-	<Target Name="DeleteEmptyDirectories" AfterTargets="CopyNatives" >
+-		<DeleteEmptyDirectories Path="$(OutputPath)" />
+-	</Target>
+-	
+-	<!-- Output copying -->
+-	
+-	<!-- TODO -->
+-
++	<Target Name="CopyToSteamDir" AfterTargets="Build">
 +	<Delete Files="$(TargetDir)\tModPorter.runtimeconfig.json" />
 +	<Delete Files="$(TargetDir)\tModPorter.deps.json" />
-     <!-- copy files systematically to output folder -->
-     <ItemGroup>
-       <BinFiles Include="$(TargetDir)**" />
++		<!-- copy files systematically to output folder -->
++		<ItemGroup>
++			<BinFiles Include="$(TargetDir)**" />
++		</ItemGroup>
++		<Message Text="Copying $(AssemblyName) to '$(_ActualOutputDirectory)'..." Importance="high" />
++		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(_ActualOutputDirectory)/%(RecursiveDir)" SkipUnchangedFiles="True" />
++		<!-- todo, purge old libraries on other platforms -->
++		<Exec Command="robocopy &quot;$(TargetDir)Libraries&quot; &quot;$(_ActualOutputDirectory)\Libraries&quot; /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
++			<Output TaskParameter="ExitCode" PropertyName="PurgeExitCode" />
++		</Exec>
++		<Warning Text="\Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
++	</Target>
++	<!--See first answer in https://stackoverflow.com/questions/55946010/how-to-specify-output-folder-for-the-referenced-nuget-packages for how this was created-->
++	<!--Dotnet Core 3.0 and later don't support subdirectory searching; so we use workaround https://github.com/dotnet/sdk/issues/10366#issuecomment-508854737 -->
++	<Target Name="BuildRedirectNugetFilesToLib" AfterTargets="ResolveLockFileCopyLocalFiles">
++		<ItemGroup>
++			<ReferenceCopyLocalPaths>
++				<DirectoryInPackage>$([System.String]::Copy('%(PathInPackage)').Remove($([System.String]::Copy('%(PathInPackage)').LastIndexOf('/'))).Replace('/', '\'))</DirectoryInPackage>
++			</ReferenceCopyLocalPaths>
++		</ItemGroup>
++		<ItemGroup>
++			<ReferenceCopyLocalPaths>
++				<DestinationSubDirectory>Libraries\$([System.String]::Copy('%(NuGetPackageID)').ToLower())\%(NuGetPackageVersion)\%(DirectoryInPackage)\</DestinationSubDirectory>
++			</ReferenceCopyLocalPaths>
++		</ItemGroup>
++	</Target>
++	<!-- In order to get pdbs/xmls while waiting for NET6, we use https://github.com/dotnet/sdk/issues/1458#issuecomment-420456386 -->
++	<Target Name="_ResolveCopyLocalNuGetPackagePdbsAndXml" Condition="$(CopyLocalLockFileAssemblies) == true" AfterTargets="ResolveReferences">
++		<ItemGroup>
++			<ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).pdb')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
++			<ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).xml')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != '' and Exists('%(RootDir)%(Directory)%(Filename).xml')" />
++		</ItemGroup>
++	</Target>
++	<Target Name="RedirectAssemblyReferencesToLib" AfterTargets="ResolveAssemblyReferences">
++		<ItemGroup>
++			<!--To match deps.json for runtime resolving, paths must be of the form Libraries/<name>/<version>-->
++			<!--Note that associated files, like pdbs/xmls won't be resolved properly here. Prefer nuget packages for that-->
++			<ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
++				<DirectoryVersion>$([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(", C"))).Substring($([System.String]::Copy('%(ReferenceCopyLocalPaths.FusionName)').IndexOf(","))).Substring(10))</DirectoryVersion>
++			</ReferenceCopyLocalPaths>
++			<ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ResolveAssemblyReference'">
++				<DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.OriginalItemSpec)\%(ReferenceCopyLocalPaths.DirectoryVersion)\</DestinationSubDirectory>
++			</ReferenceCopyLocalPaths>
++		</ItemGroup>
++	</Target>
++	<Target Name="RedirectProjectReferencesToLib" AfterTargets="ResolveAssemblyReferences">
++		<ItemGroup>
++			<!--Version is bugged in deps.json for ProjectReferences, doesn't reflect AssemblyVersion for whatever reason. Uses 1.0.0-->
++			<!--As well, FusionName isn't available, so alternate string manipulation to get Name-->
++			<ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ProjectReference'">
++				<VersionHack>1.0.0</VersionHack>
++				<DllName>$([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').Remove($([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').IndexOf(".dll"))).SubString($([System.String]::Copy('%(ReferenceCopyLocalPaths.ResolvedFrom)').LastIndexOf("\"))).Substring(1))</DllName>
++			</ReferenceCopyLocalPaths>
++			<ReferenceCopyLocalPaths Condition="%(ReferenceCopyLocalPaths.ReferenceSourceTarget) == 'ProjectReference'">
++				<DestinationSubDirectory>Libraries\%(ReferenceCopyLocalPaths.DllName)\%(ReferenceCopyLocalPaths.VersionHack)\</DestinationSubDirectory>
++			</ReferenceCopyLocalPaths>
++		</ItemGroup>
++	</Target>
++	<Target Name="OverwriteDevRuntimeTargets" AfterTargets="GenerateBuildRuntimeConfigurationFiles" Condition="$(GenerateRuntimeConfigDevFile) == 'true'">
++		<PropertyGroup>
++			<DevRuntimeConfig>
++{
++	"runtimeOptions": {
++		"additionalProbingPaths": [
++			"Libraries"
++		]
++	}
++}
++			</DevRuntimeConfig>
++		</PropertyGroup>
++		<WriteLinesToFile File="$(ProjectRuntimeConfigDevFilePath)" Lines="$(DevRuntimeConfig)" Overwrite="true" Encoding="UTF-8" />
++	</Target>
+ </Project>

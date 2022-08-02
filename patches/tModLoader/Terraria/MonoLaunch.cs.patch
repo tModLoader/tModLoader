@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/MonoLaunch.cs
 +++ src/tModLoader/Terraria/MonoLaunch.cs
-@@ -6,7 +_,9 @@
+@@ -6,13 +_,21 @@
  using System.Reflection;
  using System.Runtime.InteropServices;
  using System.Runtime.Loader;
@@ -10,7 +10,6 @@
  
  internal static class MonoLaunch
  {
-@@ -14,6 +_,12 @@
  	private static readonly Dictionary<string, IntPtr> assemblies = new Dictionary<string, IntPtr>();
  
  	private static void Main(string[] args) {
@@ -23,8 +22,8 @@
  		/*
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
  			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
-@@ -34,7 +_,22 @@
- #endif
+@@ -29,7 +_,22 @@
+ 		*/
  
  		Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
 +		// Spawn a thread to use configured default stack size instead of the one reported in the binary
@@ -44,26 +43,5 @@
 +			LocalLaunchGame();
 +		}
  	}
+ }
  
- #if NETCORE
-@@ -49,7 +_,7 @@
- 					return handle;
- 				}
- 
--				Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
-+				Logging.tML.Debug($"Native Resolve: {assembly.FullName} -> {name}");
- 
- 				var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
- 				var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
-@@ -59,9 +_,9 @@
- 					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(dir, name + ".dll")}");
- 				}
- 
--				Console.WriteLine($"\tattempting load {match}");
-+				Logging.tML.Debug($"\tattempting load {match}");
- 				handle = NativeLibrary.Load(match);
--				Console.WriteLine("\tsuccess");
-+				Logging.tML.Debug("\tsuccess");
- 				return assemblies[name] = handle;
- 			}
- 			catch (DirectoryNotFoundException e) {
