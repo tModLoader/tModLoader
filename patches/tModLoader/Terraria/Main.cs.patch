@@ -1064,7 +1064,7 @@
  				return;
  			}
  
-@@ -8372,11 +_,17 @@
+@@ -8372,11 +_,18 @@
  		public static void LoadTestLog(string logname) {
  		}
  
@@ -1079,6 +1079,7 @@
 +			Asset<Texture2D>.DefaultValue = new Texture2D(base.GraphicsDevice, 1, 1) {
 +				Name = "Asynchronously-loaded Asset Dummy Texture (do not dispose or modify!)"
 +			};
++			Asset<Texture2D>.DefaultValue.SetData(new Color[] { Color.Transparent }); // AMD graphics cards on Linux/Mac don't initialize textures to transparent by default (#1918)
 +
  			SoundEngine.Initialize();
  			if (base.Services.Get<IAssetRepository>() == null)
