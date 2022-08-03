@@ -21,6 +21,7 @@
 		"ShowNewUpdatedModsInfoMessage": "The following mods were added or updated from the workshop since last launch (you can disable this message in the settings):\n",
 		"ShowNewUpdatedModsInfoMessageNewMods": "\nNew Mods:",
 		"ShowNewUpdatedModsInfoMessageUpdatedMods": "\nUpdated Mods:",
+		"DependenciesNeededForOtherMods": "Some downloaded mods require dependencies that are not installed. Some mods may not work correctly until these dependencies are installed.\nYou may choose to install these dependencies or skip them to install later:",
 		"ModUpdatedSinceLastLaunchMessage": "This mod has been automatically updated\nsince last launch from version {0}",
 		"ModAddedSinceLastLaunchMessage": "This mod has been added since last launch",
 		"ViewOnGitHub": "View on GitHub",

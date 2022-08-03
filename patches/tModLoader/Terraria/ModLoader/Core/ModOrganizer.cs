@@ -126,7 +126,7 @@ namespace Terraria.ModLoader.Core
 			return true;
 		}
 
-		internal static bool DownloadWorkshopDependencies() {
+		internal static IEnumerable<ulong> DownloadWorkshopDependencies() {
 			HashSet<ulong> dependencies = new HashSet<ulong>();
 
 			foreach (LocalMod mod in FindWorkshopMods()) {
@@ -138,15 +138,22 @@ namespace Terraria.ModLoader.Core
 			}
 
 			// Cull out any dependencies that are already installed.
-			var deps = dependencies.Where(x => !new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(x)).IsInstalled()).ToList();
+			return dependencies.Where(x => !new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(x)).IsInstalled()).ToList();
+		}
 
-			// Nothing left for us to do.
-			if (deps.Count == 0)
-				return false;
+		internal static string ListDependenciesToDownload(List<ulong> deps) {
+			if (deps.Count == 0) return null;
 
-			// Initiate a batch download of all known dependencies.
-			WorkshopHelper.ModManager.DownloadBatch(deps.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
-			return true;
+			var message = new StringBuilder();
+
+			message.Append(Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods"));
+			foreach (ulong dep in deps) {
+				// TODO: No way to really show the internal name, just display name. How to fix? Does it *need* fixing?
+				var details = new WorkshopHelper.QueryHelper.AQueryInstance().FastQueryItem(dep);
+				message.Append($"\n  {details.m_rgchTitle}");
+			}
+
+			return message.ToString();
 		}
 
 		/// <summary>

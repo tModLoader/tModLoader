@@ -14,6 +14,7 @@ using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
 using Terraria.Social.Steam;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
@@ -104,14 +105,6 @@ namespace Terraria.ModLoader.UI
 		//Interface.ModLoaderMenus(this, this.selectedMenu, array9, array7, array4, ref num2, ref num4, ref num5, ref flag5);
 		internal static void ModLoaderMenus(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, int[] buttonVerticalSpacing, ref int offY, ref int spacing, ref int numButtons, ref bool backButtonDown) {
 			if (Main.menuMode == loadModsID) {
-				static void DisplayModChangesInfoMessage() {
-					ModLoader.DetectedModChangesForInfoMessage = true;
-
-					string info = ModOrganizer.DetectModChangesForInfoMessage();
-					if (info != null)
-						infoMessage.Show(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessage") + info, Main.menuMode);
-				}
-
 				if (ModLoader.ShowFirstLaunchWelcomeMessage) {
 					ModLoader.ShowFirstLaunchWelcomeMessage = false;
 					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
@@ -161,15 +154,31 @@ namespace Terraria.ModLoader.UI
 						});
 					Main.SaveSettings();
 				}
-				else if (!ModLoader.DownloadedDependenciesOnStartup) {
-					ModLoader.DownloadedDependenciesOnStartup = true;
+				else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
+					// Find dependencies that need to be downloaded.
+					var deps = ModOrganizer.DownloadWorkshopDependencies().ToList();
+					bool showModChanges = !ModLoader.DetectedModChangesForInfoMessage;
+					bool promptDepDownloads = deps.Count != 0;
+					bool skip = !showModChanges && !promptDepDownloads;
 
-					// If there were no workshops to download, display the mod changes info message as expected.
-					if (!ModOrganizer.DownloadWorkshopDependencies() && !ModLoader.DetectedModChangesForInfoMessage)
-						DisplayModChangesInfoMessage();
-				}
-				else if (!ModLoader.DetectedModChangesForInfoMessage) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
-					DisplayModChangesInfoMessage();
+					ModLoader.DownloadedDependenciesOnStartup = true;
+					ModLoader.DetectedModChangesForInfoMessage = true;
+
+					if (!skip) {
+						string newDownloads = showModChanges ? ModOrganizer.DetectModChangesForInfoMessage() : null;
+						string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
+
+						if (promptDepDownloads)
+							ModLoader.DependenciesToDownload = deps;
+
+						string message = $"{newDownloads}\n\n{dependencies}";
+						string cancelButton = promptDepDownloads ? Language.GetTextValue("UI.Cancel") : null;
+						string continueButton = Language.GetTextValue("tModLoader.Continue");
+						Action downloadAction = () => {
+							WorkshopHelper.ModManager.DownloadBatch(ModLoader.DependenciesToDownload.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
+						};
+						infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: promptDepDownloads ? downloadAction : () => { }, okButtonText: cancelButton);
+					}
 				}
 			}
 			if (Main.MenuUI.CurrentState == modSources) {

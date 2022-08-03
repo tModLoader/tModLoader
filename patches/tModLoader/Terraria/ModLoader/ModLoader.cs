@@ -64,6 +64,7 @@ namespace Terraria.ModLoader
 		internal static bool showNewUpdatedModsInfo = true;
 		internal static bool skipLoad;
 		internal static Action OnSuccessfulLoad;
+		internal static List<ulong> DependenciesToDownload = new List<ulong>();
 
 		private static bool isLoading;
 
