@@ -130,6 +130,10 @@ namespace Terraria.ModLoader.Core
 			HashSet<ulong> dependencies = new HashSet<ulong>();
 
 			foreach (LocalMod mod in FindWorkshopMods()) {
+				// Skip if the mod has no dependencies according to the build information.
+				if (mod.properties.modReferences.Length == 0)
+					continue;
+
 				// This shouldn't really ever fail, but better safe than sorry.
 				if (!TryReadManifest(GetParentDir(mod.modFile.path), out var manifest))
 					continue;
