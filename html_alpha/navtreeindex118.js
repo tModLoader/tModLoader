@@ -1,5 +1,6 @@
 var NAVTREEINDEX118 =
 {
+"class_terraria_1_1_utils.html#a50cb18e65feeff567cfcece97a715d1c":[2,0,2,79,102],
 "class_terraria_1_1_utils.html#a5117aed623abd8bd6c3c669ca516f33a":[2,0,2,79,109],
 "class_terraria_1_1_utils.html#a5141c7ec86f6b254b2b5c51fb095f543":[2,0,2,79,116],
 "class_terraria_1_1_utils.html#a51a7b92eb38b9c051ad95f18edf87189":[2,0,2,79,108],
@@ -248,6 +249,5 @@ var NAVTREEINDEX118 =
 "class_terraria_1_1_world_building_1_1_actions_1_1_set_tile.html#a2cdf2451cb05a37d5b1d39ab136a639d":[2,0,2,23,0,18,0],
 "class_terraria_1_1_world_building_1_1_actions_1_1_set_tile.html#a9f441c805126a97b2fcc8fefae9d8b66":[2,0,2,23,0,18,1],
 "class_terraria_1_1_world_building_1_1_actions_1_1_set_tile_and_wall_rainbow_paint.html":[2,0,2,23,0,19],
-"class_terraria_1_1_world_building_1_1_actions_1_1_set_tile_and_wall_rainbow_paint.html#a140bff3986d57f63f6cda1ffea709242":[2,0,2,23,0,19,0],
-"class_terraria_1_1_world_building_1_1_actions_1_1_set_tile_keep_wall.html":[2,0,2,23,0,20]
+"class_terraria_1_1_world_building_1_1_actions_1_1_set_tile_and_wall_rainbow_paint.html#a140bff3986d57f63f6cda1ffea709242":[2,0,2,23,0,19,0]
 };

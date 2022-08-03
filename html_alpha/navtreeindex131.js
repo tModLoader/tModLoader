@@ -1,5 +1,6 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#a58fc3af5064a3b1bb9f0a50431002ce1":[2,0,2,5,51,1],
 "struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#a7033d8d348143933744d07414f183dea":[2,0,2,5,51,0],
 "struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#a7a8c3254756fda6a8cf648502b45ff41":[2,0,2,5,51,6],
 "struct_terraria_1_1_game_content_1_1_player_sitting_helper.html#a8259b73650de675f1e4251db7bcc45fe":[2,0,2,5,51,8],
@@ -248,6 +249,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_liquid_data.html#a0e0cae2b7c9872c534f77977ce48c06f":[2,0,2,46,2],
 "struct_terraria_1_1_liquid_data.html#a282e96c1afa15e50c2e16029723c6ef3":[2,0,2,46,0],
 "struct_terraria_1_1_liquid_data.html#a6118c655bf29515f429bcec237748ebf":[2,0,2,46,3],
-"struct_terraria_1_1_liquid_data.html#aa39c607293cc23951cc6b02cc9f08b73":[2,0,2,46,1],
-"struct_terraria_1_1_main_1_1_current_player_override.html":[2,0,2,47,1]
+"struct_terraria_1_1_liquid_data.html#aa39c607293cc23951cc6b02cc9f08b73":[2,0,2,46,1]
 };

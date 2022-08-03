@@ -1,5 +1,6 @@
 var NAVTREEINDEX124 =
 {
+"interface_terraria_1_1_audio_1_1_i_audio_system.html#af0f4fb6b62e6fc370e9bd012ff25db5c":[2,0,2,1,4,5],
 "interface_terraria_1_1_audio_1_1_i_audio_system.html#af2af32e5fb96d5bca781b0524ffb0e2d":[2,0,2,1,4,8],
 "interface_terraria_1_1_audio_1_1_i_audio_track.html":[2,0,2,1,5],
 "interface_terraria_1_1_audio_1_1_i_audio_track.html#a18b69e526636e47df16ddd7747a7a538":[2,0,2,1,5,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX124 =
 "interface_terraria_1_1_net_1_1_sockets_1_1_i_socket.html":[2,0,2,15,0,0],
 "interface_terraria_1_1_net_1_1_sockets_1_1_i_socket.html#a4ff5418049a9f685b66eec3c17758381":[2,0,2,15,0,0,2],
 "interface_terraria_1_1_net_1_1_sockets_1_1_i_socket.html#a7148918709f1fbc785ee65e08ee5217c":[2,0,2,15,0,0,1],
-"interface_terraria_1_1_net_1_1_sockets_1_1_i_socket.html#a77accbbfc6ae303ea3ad7ebad916cf8b":[2,0,2,15,0,0,6],
-"interface_terraria_1_1_net_1_1_sockets_1_1_i_socket.html#a9754ade0c7f705c00353bc3d38dc6b1f":[2,0,2,15,0,0,3]
+"interface_terraria_1_1_net_1_1_sockets_1_1_i_socket.html#a77accbbfc6ae303ea3ad7ebad916cf8b":[2,0,2,15,0,0,6]
 };
