@@ -721,7 +721,7 @@ namespace Terraria.Social.Steam
 
 				// if dependencyCount > 0 then query, otherwise ignore
 				// default calls will ignore dependencies
-				internal SteamUGCDetails_t FastQueryItem(ulong publishedId, uint dependencyCount = 0) {
+				internal SteamUGCDetails_t FastQueryItem(ulong publishedId, bool queryChildren = false) {
 					_primaryQueryResult = EResult.k_EResultNone;
 
 					SteamAPICall_t call;
@@ -759,21 +759,25 @@ namespace Terraria.Social.Steam
 					while (_primaryQueryResult == EResult.k_EResultNone);
 
 					SteamUGCDetails_t pDetails;
-					PublishedFileId_t[] deps = new PublishedFileId_t[dependencyCount];
+					PublishedFileId_t[] deps = null;
 					if (ModManager.SteamUser) {
 						SteamUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
 
-						if (dependencyCount != 0)
-							SteamUGC.GetQueryUGCChildren(_primaryUGCHandle, 0, deps, dependencyCount);
+						if (queryChildren) {
+							deps = new PublishedFileId_t[pDetails.m_unNumChildren];
+							SteamUGC.GetQueryUGCChildren(_primaryUGCHandle, 0, deps, pDetails.m_unNumChildren);
+						}
 					}
 					else {
 						SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
 
-						if (dependencyCount != 0)
-							SteamGameServerUGC.GetQueryUGCChildren(_primaryUGCHandle, 0, deps, dependencyCount);
+						if (queryChildren) {
+							deps = new PublishedFileId_t[pDetails.m_unNumChildren];
+							SteamGameServerUGC.GetQueryUGCChildren(_primaryUGCHandle, 0, deps, pDetails.m_unNumChildren);
+						}
 					}
 
-					if (dependencyCount != 0)
+					if (queryChildren)
 						ugcChildren = deps.Select(x => x.m_PublishedFileId).ToList();
 
 					ReleaseWorkshopQuery();
@@ -812,11 +816,8 @@ namespace Terraria.Social.Steam
 			}
 
 			private static List<ulong> GetDependencies(ulong publishedId) {
-				// TODO: Can we do this more efficiently? Calling FastQueryItem twice probably isn't the best?
-				// ^ We would still need to query twice regardless since the dependency count (m_unNumChildren) needs to be known.
 				var query = new AQueryInstance();
-				var pDetails = query.FastQueryItem(publishedId);
-				query.FastQueryItem(publishedId, pDetails.m_unNumChildren);
+				query.FastQueryItem(publishedId, true);
 				return query.ugcChildren;
 			}
 

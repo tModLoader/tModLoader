@@ -156,29 +156,24 @@ namespace Terraria.ModLoader.UI
 					Main.SaveSettings();
 				}
 				else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
+					ModLoader.DownloadedDependenciesOnStartup = true;
+
 					// Find dependencies that need to be downloaded.
 					var deps = ModOrganizer.IdentifyWorkshopDependencies().ToList();
-					bool showModChanges = !ModLoader.DetectedModChangesForInfoMessage;
 					bool promptDepDownloads = deps.Count != 0;
-					bool skip = !showModChanges && !promptDepDownloads;
 
-					ModLoader.DownloadedDependenciesOnStartup = true;
-					ModLoader.DetectedModChangesForInfoMessage = true;
+					string newDownloads = ModOrganizer.DetectModChangesForInfoMessage();
+                    string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
+                    string message = $"{newDownloads}\n{dependencies}".Trim('\n');
+                    string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
+                    string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
+                    Action downloadAction = () => {
+	                    if (promptDepDownloads)
+		                    WorkshopHelper.ModManager.DownloadBatch(deps.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
+                    };
 
-					if (!skip) {
-						string newDownloads = showModChanges ? ModOrganizer.DetectModChangesForInfoMessage() : null;
-						string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
-
-						if (newDownloads != null || dependencies != null) {
-							string message = $"{newDownloads}\n{dependencies}".Trim('\n');
-							string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
-							string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
-							Action downloadAction = () => {
-								WorkshopHelper.ModManager.DownloadBatch(deps.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
-							};
-							infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: promptDepDownloads ? downloadAction : () => { }, okButtonText: cancelButton);
-						}
-					}
+                    if (!string.IsNullOrWhiteSpace(message))
+	                    infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
 				}
 			}
 			if (Main.MenuUI.CurrentState == modSources) {
