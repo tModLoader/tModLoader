@@ -75,6 +75,42 @@ namespace Terraria.ModLoader
 		private static FileStream downloadingFile;
 		private static long downloadingLength;
 
+		/// <summary>
+		/// Update every time a change is pushed to stable which is incompatible between server and clients. Ignored if not updated each month.
+		/// </summary>
+		private static Version IncompatiblePatchVersion = new(2022, 1, 1, 1);
+		private static Version? StableNetVersion { get; } = !BuildInfo.IsStable ? null : IncompatiblePatchVersion.MajorMinor() == BuildInfo.tMLVersion.MajorMinor() ? IncompatiblePatchVersion : BuildInfo.tMLVersion.MajorMinorBuild();
+		internal static string NetVersionString { get; } = BuildInfo.versionedName + (StableNetVersion != null ? "!" + StableNetVersion : "");
+		static ModNet() {
+			if (Main.dedServ && StableNetVersion != null)
+				Logging.tML.Debug($"Network compatibility version is {StableNetVersion}");
+		}
+
+		internal static bool IsClientCompatible(string clientVersion, out bool isModded, out string kickMsg) {
+			kickMsg = null;
+			isModded = clientVersion.StartsWith("tModLoader");
+			if (AllowVanillaClients && clientVersion == "Terraria" + Main.curRelease)
+				return true;
+
+			if (clientVersion == NetVersionString)
+				return true;
+
+			var split = clientVersion.Split('!');
+			if (StableNetVersion != null
+					&& split.Length == 2
+					&& Version.TryParse(split[1], out var netVer)
+					&& netVer == StableNetVersion) {
+
+				Logging.tML.Debug($"Client has {split[0]}, assuming net compatibility");
+				return true;
+			}
+
+			kickMsg = isModded
+				? $"You are on {split[0]}, server is on {BuildInfo.versionedName}"
+				: "You cannot connect to a tModLoader Server with an unmodded client";
+			return false;
+		}
+
 		internal static void AssignNetIDs() {
 			netMods = ModLoader.Mods.Where(mod => mod.Side != ModSide.Server).ToArray();
 			for (short i = 0; i < netMods.Length; i++)
