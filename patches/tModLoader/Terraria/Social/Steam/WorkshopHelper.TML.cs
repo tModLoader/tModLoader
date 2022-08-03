@@ -83,6 +83,28 @@ namespace Terraria.Social.Steam
 			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.ConsultSteamLogs", workshopLogLoc));
 		}
 
+		public static string GetWorkshopFolder(AppId_t app) {
+			if (Program.LaunchParameters.TryGetValue("-steamworkshopfolder", out string workshopLocCustom)) {
+				if (Directory.Exists(workshopLocCustom))
+					return workshopLocCustom;
+
+				Logging.tML.Warn("-steamworkshopfolder path not found: " + workshopLocCustom);
+			}
+
+			string installLoc = null;
+			if (ModManager.SteamUser) // get app install dir if possible
+				SteamApps.GetAppInstallDir(app, out installLoc, 1000);
+
+			installLoc ??= "."; // GetAppInstallDir may return null (#2491). Also the default location for dedicated servers and such
+
+			var workshopLoc = Path.Combine(installLoc, "..", "..", "workshop");
+			if (Directory.Exists(workshopLoc))
+				return workshopLoc;
+
+			// Load mods installed by GoG / Manually copied steamapps\workshop directories.
+			return Path.Combine("steamapps", "workshop");
+		}
+
 		internal class ModManager
 		{
 			internal const uint thisApp = ModLoader.Engine.Steam.TMLAppID;

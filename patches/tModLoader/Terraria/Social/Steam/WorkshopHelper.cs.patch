@@ -1,11 +1,12 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/WorkshopHelper.cs
 +++ src/tModLoader/Terraria/Social/Steam/WorkshopHelper.cs
-@@ -1,15 +_,21 @@
+@@ -1,15 +_,22 @@
  using Steamworks;
  using System;
  using System.Collections.Generic;
 +using System.Collections.Specialized;
  using System.IO;
++using System.Linq;
  using Terraria.IO;
 +using Terraria.Localization;
 +using Terraria.ModLoader;
@@ -33,7 +34,7 @@
  			}
  
  			public class Downloader
-@@ -34,26 +_,68 @@
+@@ -34,14 +_,28 @@
  					private set;
  				}
  
@@ -52,58 +53,24 @@
  				public static Downloader Create() => new Downloader();
  
  				public List<string> GetListOfSubscribedItemsPaths() {
-+					List<string> list = new List<string>();
-+
-+					string gogDirectory = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "content", ModManager.thisApp.ToString());
-+					if (Program.LaunchParameters.TryGetValue("-steamworkshopfolder", out string workshopLocCustom)) {
-+						workshopLocCustom = Path.Combine(workshopLocCustom, "content", ModManager.thisApp.ToString());
-+						if (Directory.Exists(workshopLocCustom)) {
-+							list.AddRange(Directory.EnumerateDirectories(workshopLocCustom));
-+						}
-+					}
-+					else if (ModManager.SteamUser) {
-+						var array = new AppId_t[] { ModLoader.Engine.Steam.TerrariaAppId_t, ModLoader.Engine.Steam.TMLAppID_t };
-+						foreach (var app in array) {
-+							SteamApps.GetAppInstallDir(app, out string installLoc, 1000);
-+							if (installLoc == null)
-+								installLoc = "."; // fallback for #2491
-+
-+							var workshopLoc = Path.Combine(installLoc, "..", "..", "workshop", "content", app.m_AppId.ToString());
-+							if (Directory.Exists(workshopLoc)) {
-+								list.AddRange(Directory.EnumerateDirectories(workshopLoc));
-+							}
-+						}
-+					}
-+					else if (Main.dedServ) { // Steam Folder Dedicated Server
-+						string workshopLoc = "../../workshop";
-+						
-+						if (Directory.Exists(workshopLoc)) {
-+							list.AddRange(Directory.EnumerateDirectories(workshopLoc));
-+						}
-+					}
-+					// Load mods installed by GoG / Manually copied steamapps\workshop directories.
-+					else if (Directory.Exists(gogDirectory)) {
-+						list.AddRange(Directory.EnumerateDirectories(gogDirectory));
-+					}
++					return new AppId_t[] { ModLoader.Engine.Steam.TerrariaAppId_t, ModLoader.Engine.Steam.TMLAppID_t }
++						.Select(app => Path.Combine(GetWorkshopFolder(app), "content", app.ToString()))
++						.Where(Directory.Exists)
++						.SelectMany(Directory.EnumerateDirectories)
++						.ToList();
 +
 +					/*
  					PublishedFileId_t[] array = new PublishedFileId_t[SteamUGC.GetNumSubscribedItems()];
  					SteamUGC.GetSubscribedItems(array, (uint)array.Length);
  					ulong punSizeOnDisk = 0uL;
- 					string pchFolder = string.Empty;
- 					uint punTimeStamp = 0u;
--					List<string> list = new List<string>();
-+
- 					PublishedFileId_t[] array2 = array;
- 					for (int i = 0; i < array2.Length; i++) {
- 						if (SteamUGC.GetItemInstallInfo(array2[i], out punSizeOnDisk, out pchFolder, 1024u, out punTimeStamp))
- 							list.Add(pchFolder);
+@@ -55,6 +_,7 @@
  					}
--
-+					*/
+ 
  					return list;
++					*/
  				}
  
+ 				public bool Prepare(WorkshopIssueReporter issueReporter) => Refresh(issueReporter);
 @@ -62,6 +_,7 @@
  				public bool Refresh(WorkshopIssueReporter issueReporter) {
  					ResourcePackPaths.Clear();
