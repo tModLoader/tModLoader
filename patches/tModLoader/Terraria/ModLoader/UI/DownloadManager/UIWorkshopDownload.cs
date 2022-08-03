@@ -6,7 +6,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.DownloadManager
 {
-	internal class UIWorkshopDownload : UIProgress, IHaveBackButtonCommand
+	internal class UIWorkshopDownload : UIProgress
 	{
 		private Stopwatch downloadTimer;
 
@@ -54,10 +54,10 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			}
 
 			// Exit
-			HandleBackButtonUsage();
+			ReturnToPreviousMenu();
 		}
 
-		public void HandleBackButtonUsage() {
+		public void ReturnToPreviousMenu() {
 			if (PreviousMenuMode == -1 && PreviousUIState == null) {
 				Main.menuMode = 0;
 				return;
