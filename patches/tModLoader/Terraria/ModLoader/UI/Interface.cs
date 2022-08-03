@@ -157,7 +157,7 @@ namespace Terraria.ModLoader.UI
 				}
 				else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
 					// Find dependencies that need to be downloaded.
-					var deps = ModOrganizer.DownloadWorkshopDependencies().ToList();
+					var deps = ModOrganizer.IdentifyWorkshopDependencies().ToList();
 					bool showModChanges = !ModLoader.DetectedModChangesForInfoMessage;
 					bool promptDepDownloads = deps.Count != 0;
 					bool skip = !showModChanges && !promptDepDownloads;

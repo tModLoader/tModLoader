@@ -126,7 +126,7 @@ namespace Terraria.ModLoader.Core
 			return true;
 		}
 
-		internal static IEnumerable<ulong> DownloadWorkshopDependencies() {
+		internal static IEnumerable<ulong> IdentifyWorkshopDependencies() {
 			HashSet<ulong> dependencies = new HashSet<ulong>();
 
 			foreach (LocalMod mod in FindWorkshopMods()) {
