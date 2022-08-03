@@ -169,15 +169,12 @@ namespace Terraria.ModLoader.UI
 						string newDownloads = showModChanges ? ModOrganizer.DetectModChangesForInfoMessage() : null;
 						string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
 
-						if (promptDepDownloads)
-							ModLoader.DependenciesToDownload = deps;
-
 						if (newDownloads != null || dependencies != null) {
 							string message = $"{newDownloads}\n{dependencies}".Trim('\n');
 							string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
 							string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
 							Action downloadAction = () => {
-								WorkshopHelper.ModManager.DownloadBatch(ModLoader.DependenciesToDownload.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
+								WorkshopHelper.ModManager.DownloadBatch(deps.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
 							};
 							infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: promptDepDownloads ? downloadAction : () => { }, okButtonText: cancelButton);
 						}
