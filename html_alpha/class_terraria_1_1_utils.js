@@ -70,6 +70,8 @@ var class_terraria_1_1_utils =
     [ "Left", "class_terraria_1_1_utils.html#a61775e09bf25ecfe2a4e8971761bf5e1", null ],
     [ "LogAndConsoleErrorMessage", "class_terraria_1_1_utils.html#ac3fa6a22866a70bb9e3181201c14ec07", null ],
     [ "LogAndConsoleInfoMessage", "class_terraria_1_1_utils.html#a29ba291156952f0339deb91b104573b9", null ],
+    [ "MajorMinor", "class_terraria_1_1_utils.html#aed4fbd2deed2a3dbe9eec46afd8b3eb0", null ],
+    [ "MajorMinorBuild", "class_terraria_1_1_utils.html#a4410bdb1f675512fbbb89af86d7a2477", null ],
     [ "Max< T >", "class_terraria_1_1_utils.html#ab315e6db79528c65f1e4c00f5f044ac9", null ],
     [ "Modified", "class_terraria_1_1_utils.html#a3464bc873903bccc47b26be9f0e05221", null ],
     [ "ModulusPositive", "class_terraria_1_1_utils.html#aa33adf1011f10b41848b0e4e2c1725d7", null ],
