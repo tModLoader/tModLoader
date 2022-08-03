@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
@@ -171,13 +172,15 @@ namespace Terraria.ModLoader.UI
 						if (promptDepDownloads)
 							ModLoader.DependenciesToDownload = deps;
 
-						string message = $"{newDownloads}\n\n{dependencies}";
-						string cancelButton = promptDepDownloads ? Language.GetTextValue("UI.Cancel") : null;
-						string continueButton = Language.GetTextValue("tModLoader.Continue");
-						Action downloadAction = () => {
-							WorkshopHelper.ModManager.DownloadBatch(ModLoader.DependenciesToDownload.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
-						};
-						infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: promptDepDownloads ? downloadAction : () => { }, okButtonText: cancelButton);
+						if (newDownloads != null || dependencies != null) {
+							string message = $"{newDownloads}\n{dependencies}".Trim('\n');
+							string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
+							string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
+							Action downloadAction = () => {
+								WorkshopHelper.ModManager.DownloadBatch(ModLoader.DependenciesToDownload.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
+							};
+							infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: promptDepDownloads ? downloadAction : () => { }, okButtonText: cancelButton);
+						}
 					}
 				}
 			}
