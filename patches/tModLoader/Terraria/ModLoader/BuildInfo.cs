@@ -60,7 +60,7 @@ namespace Terraria.ModLoader
 			versionedName = $"tModLoader v{tMLVersion}";
 
 			if (!string.IsNullOrEmpty(BranchName) && BranchName != "unknown"
-				&& BranchName != "1.4-stable" && BranchName != "1.4-preview" && BranchName != "1.4-dev")
+				&& BranchName != "1.4-stable" && BranchName != "1.4-preview" && BranchName != "1.4")
 				versionedName += $" {BranchName}";
 
 			if (Purpose != BuildPurpose.Stable)

@@ -63,6 +63,10 @@ namespace Terraria
 			return j < 0 ? Arr[Arr.Length - 1] : Arr[j];
 		}
 
+		public static Version MajorMinor(this Version v) => new(v.Major, v.Minor);
+
+		public static Version MajorMinorBuild(this Version v) => v.Build < 0 ? v.MajorMinor() : new(v.Major, v.Minor, v.Build);
+
 		//Random extensions
 
 		public static T Next<T>(this UnifiedRandom r, T[] array)
