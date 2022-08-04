@@ -53,12 +53,15 @@ namespace Terraria.ModLoader.Engine
 
 			if (Environment.GetEnvironmentVariable("SteamClientLaunch") != "1") {
 				File.WriteAllText(steam_appid_path, appId.ToString());
+				return;
 			}
-			else if (Environment.GetEnvironmentVariable("SteamAppId") != appId.ToString()) {
-				try {
-					File.Delete(steam_appid_path);
-				} catch (IOException) {}
 
+			try {
+				File.Delete(steam_appid_path);
+			}
+			catch (IOException) { }
+
+			if (Environment.GetEnvironmentVariable("SteamAppId") != appId.ToString()) {
 				throw new Exception("Cannot overwrite steam env. SteamAppId=" + Environment.GetEnvironmentVariable("SteamAppId"));
 			}
 		}

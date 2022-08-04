@@ -168,7 +168,7 @@ namespace Terraria.Social.Steam
 			/// <summary>
 			/// Downloads all UIModDownloadItems provided.
 			/// </summary>
-			public static void Download(List<ModDownloadItem> items) {
+			public static Task Download(List<ModDownloadItem> items) {
 				//Set UIWorkshopDownload
 				UIWorkshopDownload uiProgress = null;
 
@@ -192,7 +192,7 @@ namespace Terraria.Social.Steam
 
 				int counter = 0;
 
-				Task.Run(() => TaskDownload(counter, uiProgress, items));
+				return Task.Run(() => TaskDownload(counter, uiProgress, items));
 			}
 
 			internal static void DownloadBatch(string[] workshopIds, UI.UIState returnMenu) {
@@ -245,11 +245,11 @@ namespace Terraria.Social.Steam
 						foreach (var localMod in enabledItems) {
 							localMod.Enabled = true;
 						}
-					ModLoader.ModLoader.Reload();
-			}
+						ModLoader.ModLoader.Reload();
+					}
 				}
 				else
-					Task.Run(() => TaskDownload(counter, uiProgress, items, ids));
+					TaskDownload(counter, uiProgress, items, ids);
 			}
 
 			private EResult downloadResult;
