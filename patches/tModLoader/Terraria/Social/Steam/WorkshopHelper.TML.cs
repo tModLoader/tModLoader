@@ -115,7 +115,6 @@ namespace Terraria.Social.Steam
 			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
 
 			private PublishedFileId_t itemID;
-			private string name;
 
 			internal static void Initialize() {
 				if (SocialAPI.Mode == SocialMode.Steam) {
@@ -160,21 +159,29 @@ namespace Terraria.Social.Steam
 				return true;
 			}
 
-			internal ModManager(PublishedFileId_t itemID, string name = null) {
+			internal ModManager(PublishedFileId_t itemID) {
 				this.itemID = itemID;
-				this.name = name ?? itemID.ToString();
 			}
+
+			private static List<LocalMod> enabledItems;
 
 			/// <summary>
 			/// Downloads all UIModDownloadItems provided.
 			/// </summary>
-			public static Task Download(List<ModDownloadItem> items) {
+			public static void Download(List<ModDownloadItem> items) {
 				//Set UIWorkshopDownload
 				UIWorkshopDownload uiProgress = null;
 
 				// Can't update enabled items due to in-use file access constraints
-				var needsReload = items.Any(item => item.Installed != null && item.Installed.Enabled);
-				if (needsReload) {
+				enabledItems = new List<LocalMod>();
+				foreach (var item in items) {
+					if (item.Installed != null && item.Installed.Enabled) {
+						enabledItems.Add(item.Installed);
+						item.Installed.Enabled = false;
+					}
+				}
+
+				if (enabledItems.Count > 0) {
 					ModLoader.ModLoader.Unload();
 				}
 
@@ -183,19 +190,66 @@ namespace Terraria.Social.Steam
 					Main.MenuUI.SetState(uiProgress);
 				}
 
-				return Task.Run(() => TaskDownload(uiProgress, items, needsReload));
+				int counter = 0;
+
+				Task.Run(() => TaskDownload(counter, uiProgress, items));
 			}
 
-			private static void TaskDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, bool needsReload) {
-				foreach (var item in items) {
-					var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)), item.DisplayName);
-					mod.InnerDownload(uiProgress, item.HasUpdate);
+			internal static void DownloadBatch(string[] workshopIds, UI.UIState returnMenu) {
+				//Set UIWorkshopDownload
+				UIWorkshopDownload uiProgress = null;		
+
+				if (!Main.dedServ) {
+					uiProgress = new UIWorkshopDownload(Interface.modPacksMenu);
+					Main.MenuUI.SetState(uiProgress);
 				}
 
-				uiProgress?.Leave(refreshBrowser: true);
+				int counter = 0;
 
-				if (needsReload)
+				Task.Run(() => TaskDownload(counter, uiProgress, ids: workshopIds));
+			}
+
+			private static void TaskDownload(int counter, UIWorkshopDownload uiProgress, List<ModDownloadItem> items = null, string[] ids = null) {
+				string name = "";
+				bool hasUpdate = false;
+				ModManager mod = null;
+				int endCount = 0;
+
+				if (items == null) {
+					var id = ids[counter++];
+					mod = new ModManager(new PublishedFileId_t(ulong.Parse(id)));
+
+					hasUpdate = mod.NeedsUpdate() || !mod.IsInstalled();
+					name = id;
+					endCount = ids.Length;
+				}
+
+				if (ids == null) {
+					var item = items[counter++];
+					mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
+
+					hasUpdate = item.HasUpdate;
+					name = item.DisplayName;
+					endCount = items.Count;
+				}
+
+				uiProgress?.PrepUIForDownload(name);
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", name));
+				mod.InnerDownload(uiProgress, hasUpdate);
+
+				if (counter == endCount) {
+					uiProgress?.Leave(items != null);
+
+					// Restore Enabled items.
+					if (enabledItems?.Count > 0) {
+						foreach (var localMod in enabledItems) {
+							localMod.Enabled = true;
+						}
 					ModLoader.ModLoader.Reload();
+			}
+				}
+				else
+					Task.Run(() => TaskDownload(counter, uiProgress, items, ids));
 			}
 
 			private EResult downloadResult;
@@ -205,8 +259,6 @@ namespace Terraria.Social.Steam
 			/// </summary>
 			internal bool InnerDownload(UIWorkshopDownload uiProgress, bool mbHasUpdate) {
 				downloadResult = EResult.k_EResultOK;
-				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", name));
-				uiProgress?.PrepUIForDownload(name);
 
 				if (NeedsUpdate() || mbHasUpdate) {
 					downloadResult = EResult.k_EResultNone;
@@ -221,7 +273,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-					Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", name));
+					Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate"));
 				}
 
 				return downloadResult == EResult.k_EResultOK;
@@ -412,10 +464,17 @@ namespace Terraria.Social.Steam
 
 			internal static List<ModDownloadItem> Items = new List<ModDownloadItem>();
 
+			internal static bool FetchDownloadItems() {
+				if (!QueryWorkshop())
+					return false;
+
+				return true;
+			}
+
 			internal static ModDownloadItem FindModDownloadItem(string modName)
 			=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
-			internal static bool FetchDownloadItems() {
+			internal static bool QueryWorkshop() {
 				HiddenModCount = IncompleteModCount = 0;
 				TotalItemsQueried = 0;
 				Items.Clear();
