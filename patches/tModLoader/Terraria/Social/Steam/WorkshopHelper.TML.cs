@@ -173,11 +173,8 @@ namespace Terraria.Social.Steam
 				UIWorkshopDownload uiProgress = null;
 
 				// Can't update enabled items due to in-use file access constraints
-				var enabledItems = items.Where(item => item.Installed?.Enabled ?? false).Select(item => item.Installed).ToList();
-				if (enabledItems.Any()) {
-					foreach (var item in enabledItems)
-						item.Enabled = false;
-
+				var needsReload = items.Any(item => item.Installed != null && item.Installed.Enabled);
+				if (needsReload) {
 					ModLoader.ModLoader.Unload();
 				}
 
@@ -186,10 +183,10 @@ namespace Terraria.Social.Steam
 					Main.MenuUI.SetState(uiProgress);
 				}
 
-				return Task.Run(() => TaskDownload(uiProgress, items, enabledItems));
+				return Task.Run(() => TaskDownload(uiProgress, items, needsReload));
 			}
 
-			private static void TaskDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, List<LocalMod> enabledItems) {
+			private static void TaskDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, bool needsReload) {
 				foreach (var item in items) {
 					var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)), item.DisplayName);
 					mod.InnerDownload(uiProgress, item.HasUpdate);
@@ -197,13 +194,8 @@ namespace Terraria.Social.Steam
 
 				uiProgress?.Leave(refreshBrowser: true);
 
-				// Restore Enabled items.
-				if (enabledItems.Any()) {
-					foreach (var localMod in enabledItems) {
-						localMod.Enabled = true;
-					}
+				if (needsReload)
 					ModLoader.ModLoader.Reload();
-				}
 			}
 
 			private EResult downloadResult;
