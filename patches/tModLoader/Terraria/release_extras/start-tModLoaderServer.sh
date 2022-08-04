@@ -43,16 +43,16 @@ fi
 if $steamServer
 then
 	launchArgs="$launchArgs -steam"
-fi
 
-if ! [[ "$launchArgs" == *"-lobby"* ]]
-then
-	read -p "Select lobby type ([f]riends/[p]rivate): " lobbyTypeResponse
-	if [[ $lobbyTypeResponse == f* ]]
+	if ! [[ "$launchArgs" == *"-lobby"* ]]
 	then
-		launchArgs="$launchArgs -lobby friends"
-	else
-		launchArgs="$launchArgs -lobby private"
+		read -p "Select lobby type ([f]riends/[p]rivate): " lobbyTypeResponse
+		if [[ $lobbyTypeResponse == f* ]]
+		then
+			launchArgs="$launchArgs -lobby friends"
+		else
+			launchArgs="$launchArgs -lobby private"
+		fi
 	fi
 fi
 

@@ -2,8 +2,10 @@ FROM alpine:3.16.1
 
 # Install prerequisites
 RUN apk update \
- && apk add --no-cache bash curl tmux \
+ && apk add --no-cache bash curl tmux libstdc++ libgcc icu-libs libc6-compat glib \
  && rm -rf /var/cache/apk/*
+
+RUN cp /lib64/ld-linux-x86-64.so.2 /usr/lib/ld-linux-x86-64.so.2
 
 # Create tml user and drop root permissions
 RUN adduser tml -h /home/tml -D

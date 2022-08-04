@@ -67,7 +67,7 @@ RUN mkdir -p $HOME/.local/share/Terraria/scriptdir \
  && cd $HOME/.local/share/Terraria/scriptdir \
  && curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh \
  && chmod u+x Setup_tModLoaderServer.sh \
- && ./Setup_tModLoaderServer.sh -i --username "${username} ${password} ${guardcode}" --folder ~/tModLoader
+ && ./Setup_tModLoaderServer.sh -i --username "${username} ${password} ${guardcode}" --folder /home/tml/tModLoader
 # For some reason despite setting --folder in the above command it installs to ~/.steam/steamapps/common/tModLoader
 
 # Prepare launch utils
