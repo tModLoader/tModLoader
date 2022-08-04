@@ -100,11 +100,11 @@
 		// Workshop
 		"WorkshopDisclaimer": "By submitting this item, you agree to the tModLoader Terms of Service",
 		"SteamPublishingLimit": "Error: Only Steam tModLoader owners can publish to Workshop in-game.",
-		"NoWorkshopAccess": "Error: Unable to access Steam Workshop",
+		"NoWorkshopAccess": "Error: Unable to access Steam Workshop.\n\nYou must have a valid Steam install on your system in order to use the in-game Mod Browser.\n\nNOTE: GoG users - once Steam is installed, you can use the ingame mod browser to download mods",
 		"ModAlreadyUploaded": "Error: Mod already exists on Workshop!",
 		"ModVersionInfoUnchanged": "Error: Mod Version information must be incremented prior to updating.",
 		"ConsultSteamLogs": "Consult Steam workshop_log.txt (Default Location: {0}) for more information.",
-		"SteamRejectUpdate": "Item is/was already installed: {0}. \nIf attempting to re-install, restart your game first because Steam is weird\nIf restarting your game does not work, apply the following steps:\n1) Open Steam Client\n2)Find the Mod on tModLoader Workshop\n3)Unsubscribe and Resubscribe on the actual Workshop.\nThese steps are required if Steam fails to handle unsubscribing you properly.",
+		"SteamRejectUpdate": "Item is/was already installed: {0}. \nIf attempting to re-install, restart your game first because Steam is weird\nIf restarting your game does not work, apply the following steps:\n1) Open Steam Client\n2) Find the Mod on tModLoader Workshop\n3) Unsubscribe and Resubscribe on the actual Workshop.\nThese steps are required if Steam fails to handle unsubscribing you properly.",
 		"BrowserRejectWarning": "Can't Download. Click For Info",
 		"BeginDownload": "Attempting Download Item: {0}",
 		"EndDownload": "Item Download Completed",

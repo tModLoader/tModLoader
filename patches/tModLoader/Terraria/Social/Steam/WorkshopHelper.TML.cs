@@ -109,36 +109,46 @@ namespace Terraria.Social.Steam
 		{
 			internal const uint thisApp = ModLoader.Engine.Steam.TMLAppID;
 
-			internal static bool SteamUser { get; set; } = false;
-			internal static bool SteamAvailable { get; set; } = true;
+			internal static bool SteamUser { get; set; }
+			internal static bool SteamAvailable { get; set; }
 
 			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
 
 			private PublishedFileId_t itemID;
+			private string name;
 
 			internal static void Initialize() {
-				string apptxt = "steam_appid.txt";
-
-				// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-				if (SocialMode.Steam == SocialAPI.Mode) {
+				if (SocialAPI.Mode == SocialMode.Steam) {
+					SteamAvailable = true;
 					SteamUser = true;
-					if (File.Exists(apptxt))
-						File.Delete(apptxt);
-
 					return;
 				}
 
-				File.WriteAllText(apptxt, thisApp.ToString());
+				// On some systems without steam, the native dependencies required for steam fail to load (eg docker without requisite glibc)
+				// Thus, for dedicated servers we delay game-server init until someone tries to use steam features (eg mod browser)
 
-				if (GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0")) {
+				// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
+				if (!Main.dedServ && !TryInitViaGameServer())
+					Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
+			}
+
+			public static bool TryInitViaGameServer() {
+				ModLoader.Engine.Steam.SetAppId(ModLoader.Engine.Steam.TMLAppID_t);
+				try {
+					if (!GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
+						return false;
+				
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
 					SteamGameServer.LogOnAnonymous();
 				}
-				else {
-					Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
-					SteamAvailable = false;
+				catch (DllNotFoundException e) {
+					Logging.tML.Error(e);
+					return false;
 				}
+
+				SteamAvailable = true;
+				return true;
 			}
 
 			internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId) {
@@ -150,29 +160,24 @@ namespace Terraria.Social.Steam
 				return true;
 			}
 
-			internal ModManager(PublishedFileId_t itemID) {
+			internal ModManager(PublishedFileId_t itemID, string name = null) {
 				this.itemID = itemID;
+				this.name = name ?? itemID.ToString();
 			}
-
-			private static List<LocalMod> enabledItems;
 
 			/// <summary>
 			/// Downloads all UIModDownloadItems provided.
 			/// </summary>
-			public static void Download(List<ModDownloadItem> items) {
+			public static Task Download(List<ModDownloadItem> items) {
 				//Set UIWorkshopDownload
 				UIWorkshopDownload uiProgress = null;
 
 				// Can't update enabled items due to in-use file access constraints
-				enabledItems = new List<LocalMod>();
-				foreach (var item in items) {
-					if (item.Installed != null && item.Installed.Enabled) {
-						enabledItems.Add(item.Installed);
-						item.Installed.Enabled = false;
-					}
-				}
+				var enabledItems = items.Where(item => item.Installed?.Enabled ?? false).Select(item => item.Installed).ToList();
+				if (enabledItems.Any()) {
+					foreach (var item in enabledItems)
+						item.Enabled = false;
 
-				if (enabledItems.Count > 0) {
 					ModLoader.ModLoader.Unload();
 				}
 
@@ -181,66 +186,24 @@ namespace Terraria.Social.Steam
 					Main.MenuUI.SetState(uiProgress);
 				}
 
-				int counter = 0;
-
-				Task.Run(() => TaskDownload(counter, uiProgress, items));
+				return Task.Run(() => TaskDownload(uiProgress, items, enabledItems));
 			}
 
-			internal static void DownloadBatch(string[] workshopIds, UI.UIState returnMenu) {
-				//Set UIWorkshopDownload
-				UIWorkshopDownload uiProgress = null;		
-
-				if (!Main.dedServ) {
-					uiProgress = new UIWorkshopDownload(Interface.modPacksMenu);
-					Main.MenuUI.SetState(uiProgress);
+			private static void TaskDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, List<LocalMod> enabledItems) {
+				foreach (var item in items) {
+					var mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)), item.DisplayName);
+					mod.InnerDownload(uiProgress, item.HasUpdate);
 				}
 
-				int counter = 0;
+				uiProgress?.Leave(refreshBrowser: true);
 
-				Task.Run(() => TaskDownload(counter, uiProgress, ids: workshopIds));
-			}
-
-			private static void TaskDownload(int counter, UIWorkshopDownload uiProgress, List<ModDownloadItem> items = null, string[] ids = null) {
-				string name = "";
-				bool hasUpdate = false;
-				ModManager mod = null;
-				int endCount = 0;
-
-				if (items == null) {
-					var id = ids[counter++];
-					mod = new ModManager(new PublishedFileId_t(ulong.Parse(id)));
-
-					hasUpdate = mod.NeedsUpdate() || !mod.IsInstalled();
-					name = id;
-					endCount = ids.Length;
-				}
-
-				if (ids == null) {
-					var item = items[counter++];
-					mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
-
-					hasUpdate = item.HasUpdate;
-					name = item.DisplayName;
-					endCount = items.Count;
-				}
-
-				uiProgress?.PrepUIForDownload(name);
-				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", name));
-				mod.InnerDownload(uiProgress, hasUpdate);
-
-				if (counter == endCount) {
-					uiProgress?.Leave(items != null);
-
-					// Restore Enabled items.
-					if (enabledItems?.Count > 0) {
-						foreach (var localMod in enabledItems) {
-							localMod.Enabled = true;
-						}
-						ModLoader.ModLoader.Reload();
+				// Restore Enabled items.
+				if (enabledItems.Any()) {
+					foreach (var localMod in enabledItems) {
+						localMod.Enabled = true;
 					}
+					ModLoader.ModLoader.Reload();
 				}
-				else
-					Task.Run(() => TaskDownload(counter, uiProgress, items, ids));
 			}
 
 			private EResult downloadResult;
@@ -250,6 +213,8 @@ namespace Terraria.Social.Steam
 			/// </summary>
 			internal bool InnerDownload(UIWorkshopDownload uiProgress, bool mbHasUpdate) {
 				downloadResult = EResult.k_EResultOK;
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", name));
+				uiProgress?.PrepUIForDownload(name);
 
 				if (NeedsUpdate() || mbHasUpdate) {
 					downloadResult = EResult.k_EResultNone;
@@ -264,7 +229,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-					Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate"));
+					Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate", name));
 				}
 
 				return downloadResult == EResult.k_EResultOK;
@@ -455,17 +420,10 @@ namespace Terraria.Social.Steam
 
 			internal static List<ModDownloadItem> Items = new List<ModDownloadItem>();
 
-			internal static bool FetchDownloadItems() {
-				if (!QueryWorkshop())
-					return false;
-
-				return true;
-			}
-
 			internal static ModDownloadItem FindModDownloadItem(string modName)
 			=> Items.FirstOrDefault(x => x.ModName.Equals(modName, StringComparison.OrdinalIgnoreCase));
 
-			internal static bool QueryWorkshop() {
+			internal static bool FetchDownloadItems() {
 				HiddenModCount = IncompleteModCount = 0;
 				TotalItemsQueried = 0;
 				Items.Clear();
@@ -474,12 +432,15 @@ namespace Terraria.Social.Steam
 				AQueryInstance.InstalledMods = ModOrganizer.FindWorkshopMods();
 
 				if (!ModManager.SteamAvailable) {
-					//TODO: Replace with a localization text
-					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop." +
-						"\n\nYou must have a valid Steam install on your system in order to use the in-game Mod Browser. " +
-						"\n\nNOTE: GoG users - once Steam is installed, you can use the ingame mod browser to download mods", 0);
+					if (!ModManager.TryInitViaGameServer()) {
+						Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
+						return false;
+					}
 
-					return false;
+					var start = DateTime.Now; // lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
+					while (!SteamGameServer.BLoggedOn() && (DateTime.Now - start) < TimeSpan.FromSeconds(5)) {
+						ForceCallbacks();
+					}
 				}
 
 				if (!new AQueryInstance().QueryAllPagesSerial())
