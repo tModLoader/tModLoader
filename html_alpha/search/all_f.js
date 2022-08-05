@@ -1,8 +1,8 @@
 var searchData=
 [
   ['packethistory_2097',['PacketHistory',['../class_terraria_1_1_testing_1_1_packet_history.html',1,'Terraria::Testing']]],
-  ['paint_2098',['paint',['../class_terraria_1_1_item.html#a3f1018595ae7d8cab4a9e946bf541a22',1,'Terraria::Item']]],
-  ['paint_2099',['Paint',['../class_terraria_1_1_i_d_1_1_dust_i_d.html#a6d11902faf4d01fee0ab91bd5836722c',1,'Terraria::ID::DustID']]],
+  ['paint_2098',['Paint',['../class_terraria_1_1_i_d_1_1_dust_i_d.html#a6d11902faf4d01fee0ab91bd5836722c',1,'Terraria::ID::DustID']]],
+  ['paint_2099',['paint',['../class_terraria_1_1_item.html#a3f1018595ae7d8cab4a9e946bf541a22',1,'Terraria::Item']]],
   ['paintid_2100',['PaintID',['../class_terraria_1_1_i_d_1_1_paint_i_d.html',1,'Terraria::ID']]],
   ['paperplane_2101',['PaperPlane',['../class_terraria_1_1_i_d_1_1_proj_a_i_style_i_d.html#aeeaea8b9a20262b6bcfea075691fd27d',1,'Terraria::ID::ProjAIStyleID']]],
   ['parameters_2102',['Parameters',['../struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_one_by_one_1_1_parameters.html',1,'Terraria::GameContent::ItemDropRules::DropOneByOne']]],
