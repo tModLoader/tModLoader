@@ -25,10 +25,6 @@ namespace UwUPnP
 		// breaks the spec, but it may well happen still).
 		private static readonly string ssdpLineSep = Environment.GetEnvironmentVariable("SSDP_HEADER_USE_LF") == "1" ? "\n" : "\r\n";
 
-		static Gateway() {
-			Logging.tML.Debug($"SSDP search line seperator: {(ssdpLineSep == "\n" ? "LF" : "CRLF")}");
-		}
-
 		private Gateway(IPAddress ip, string data)
 		{
 			InternalClient = ip;

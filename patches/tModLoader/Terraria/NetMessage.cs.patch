@@ -44,7 +44,7 @@
  				switch (msgType) {
  					case 1:
 -						writer.Write("Terraria" + 248);
-+						writer.Write(BuildInfo.versionedName);
++						writer.Write(ModNet.NetVersionString);
  						break;
  					case 2:
  						text.Serialize(writer);

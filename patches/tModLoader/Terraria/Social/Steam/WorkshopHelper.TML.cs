@@ -83,40 +83,71 @@ namespace Terraria.Social.Steam
 			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.ConsultSteamLogs", workshopLogLoc));
 		}
 
+		public static string GetWorkshopFolder(AppId_t app) {
+			if (Program.LaunchParameters.TryGetValue("-steamworkshopfolder", out string workshopLocCustom)) {
+				if (Directory.Exists(workshopLocCustom))
+					return workshopLocCustom;
+
+				Logging.tML.Warn("-steamworkshopfolder path not found: " + workshopLocCustom);
+			}
+
+			string installLoc = null;
+			if (ModManager.SteamUser) // get app install dir if possible
+				SteamApps.GetAppInstallDir(app, out installLoc, 1000);
+
+			installLoc ??= "."; // GetAppInstallDir may return null (#2491). Also the default location for dedicated servers and such
+
+			var workshopLoc = Path.Combine(installLoc, "..", "..", "workshop");
+			if (Directory.Exists(workshopLoc))
+				return workshopLoc;
+
+			// Load mods installed by GoG / Manually copied steamapps\workshop directories.
+			return Path.Combine("steamapps", "workshop");
+		}
+
 		internal class ModManager
 		{
 			internal const uint thisApp = ModLoader.Engine.Steam.TMLAppID;
 
-			internal static bool SteamUser { get; set; } = false;
-			internal static bool SteamAvailable { get; set; } = true;
+			internal static bool SteamUser { get; set; }
+			internal static bool SteamAvailable { get; set; }
 
 			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
 
 			private PublishedFileId_t itemID;
 
 			internal static void Initialize() {
-				string apptxt = "steam_appid.txt";
-
-				// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-				if (SocialMode.Steam == SocialAPI.Mode) {
+				if (SocialAPI.Mode == SocialMode.Steam) {
+					SteamAvailable = true;
 					SteamUser = true;
-					if (File.Exists(apptxt))
-						File.Delete(apptxt);
-
 					return;
 				}
 
-				File.WriteAllText(apptxt, thisApp.ToString());
+				// On some systems without steam, the native dependencies required for steam fail to load (eg docker without requisite glibc)
+				// Thus, for dedicated servers we delay game-server init until someone tries to use steam features (eg mod browser)
 
-				if (GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0")) {
+				// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
+				if (!Main.dedServ && !TryInitViaGameServer())
+					Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
+			}
+
+			public static bool TryInitViaGameServer() {
+				ModLoader.Engine.Steam.SetAppId(ModLoader.Engine.Steam.TMLAppID_t);
+				try {
+					if (!GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
+						return false;
+				
 					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
 					SteamGameServer.SetProduct(thisApp.ToString());
 					SteamGameServer.LogOnAnonymous();
 				}
-				else {
-					Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
-					SteamAvailable = false;
+				catch (DllNotFoundException e) {
+					Logging.tML.Error(e);
+					return false;
 				}
+
+				SteamAvailable = true;
+				return true;
 			}
 
 			internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId) {
@@ -137,7 +168,7 @@ namespace Terraria.Social.Steam
 			/// <summary>
 			/// Downloads all UIModDownloadItems provided.
 			/// </summary>
-			public static void Download(List<ModDownloadItem> items) {
+			public static Task Download(List<ModDownloadItem> items) {
 				//Set UIWorkshopDownload
 				UIWorkshopDownload uiProgress = null;
 
@@ -161,7 +192,7 @@ namespace Terraria.Social.Steam
 
 				int counter = 0;
 
-				Task.Run(() => TaskDownload(counter, uiProgress, items));
+				return Task.Run(() => TaskDownload(counter, uiProgress, items));
 			}
 
 			internal static void DownloadBatch(string[] workshopIds, UI.UIState returnMenu) {
@@ -218,7 +249,7 @@ namespace Terraria.Social.Steam
 					}
 				}
 				else
-					Task.Run(() => TaskDownload(counter, uiProgress, items, ids));
+					TaskDownload(counter, uiProgress, items, ids);
 			}
 
 			private EResult downloadResult;
@@ -452,12 +483,15 @@ namespace Terraria.Social.Steam
 				AQueryInstance.InstalledMods = ModOrganizer.FindWorkshopMods();
 
 				if (!ModManager.SteamAvailable) {
-					//TODO: Replace with a localization text
-					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop." +
-						"\n\nYou must have a valid Steam install on your system in order to use the in-game Mod Browser. " +
-						"\n\nNOTE: GoG users - once Steam is installed, you can use the ingame mod browser to download mods", 0);
+					if (!ModManager.TryInitViaGameServer()) {
+						Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
+						return false;
+					}
 
-					return false;
+					var start = DateTime.Now; // lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
+					while (!SteamGameServer.BLoggedOn() && (DateTime.Now - start) < TimeSpan.FromSeconds(5)) {
+						ForceCallbacks();
+					}
 				}
 
 				if (!new AQueryInstance().QueryAllPagesSerial())

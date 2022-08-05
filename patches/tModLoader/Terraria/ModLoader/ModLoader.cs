@@ -89,7 +89,6 @@ namespace Terraria.ModLoader
 			FolderShortcutSupport.UpdateFolderShortcuts();
 			MonoModHooks.Initialize();
 			ZipExtractFix.Init();
-			XnaTitleContainerRelativePathFix.Init();
 			LoaderManager.AutoLoad();
 		}
 
@@ -336,6 +335,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Put(nameof(AlphaWelcomed), AlphaWelcomed);
 			Main.Configuration.Put(nameof(LastLaunchedTModLoaderAlphaSha), BuildInfo.Purpose == BuildInfo.BuildPurpose.Dev && BuildInfo.CommitSHA != "unknown" ? BuildInfo.CommitSHA : LastLaunchedTModLoaderAlphaSha);
 			Main.Configuration.Put(nameof(LastPreviewFreezeNotificationSeen), LastPreviewFreezeNotificationSeen.ToString());
+			Main.Configuration.Put(nameof(ModOrganizer.ModPackActive), ModOrganizer.ModPackActive);
 		}
 
 		internal static void LoadConfiguration()
@@ -359,6 +359,7 @@ namespace Terraria.ModLoader
 			Main.Configuration.Get("KnownMenuThemes", ref MenuLoader.KnownMenuSaveString);
 			Main.Configuration.Get("BossBarStyle", ref BossBarLoader.lastSelectedStyle);
 			Main.Configuration.Get("SeenFirstLaunchModderWelcomeMessage", ref SeenFirstLaunchModderWelcomeMessage);
+			Main.Configuration.Get(nameof(ModOrganizer.ModPackActive), ref ModOrganizer.ModPackActive);
 
 			LastLaunchedTModLoaderVersion = new Version(Main.Configuration.Get(nameof(LastLaunchedTModLoaderVersion), "0.0"));
 			Main.Configuration.Get(nameof(AlphaWelcomed), ref AlphaWelcomed);

@@ -41,7 +41,8 @@ namespace Terraria.ModLoader.IO
 				["modData"] = SaveModData(player),
 				["modBuffs"] = SaveModBuffs(player),
 				["infoDisplays"] = SaveInfoDisplays(player),
-				["usedMods"] = SaveUsedMods(player)
+				["usedMods"] = SaveUsedMods(player),
+				["usedModPack"] = SaveUsedModPack(player)
 			};
 
 			using (Stream stream = isCloudSave ? (Stream)new MemoryStream() : (Stream)new FileStream(path, FileMode.Create)) {
@@ -80,6 +81,7 @@ namespace Terraria.ModLoader.IO
 			LoadModBuffs(player, tag.GetList<TagCompound>("modBuffs"));
 			LoadInfoDisplays(player, tag.GetList<string>("infoDisplays"));
 			LoadUsedMods(player, tag.GetList<string>("usedMods"));
+			LoadUsedModPack(player, tag.GetString("usedModPack"));
 		}
 
 		public static List<TagCompound> SaveInventory(Item[] inv) {
@@ -296,6 +298,14 @@ namespace Terraria.ModLoader.IO
 
 		internal static List<string> SaveUsedMods(Player player) {
 			return ModLoader.Mods.Select(m => m.Name).Except(new[] { "ModLoader" }).ToList();
+		}
+
+		internal static void LoadUsedModPack(Player player, string modpack) {
+			player.modPack = modpack;
+		}
+
+		internal static string SaveUsedModPack(Player player) {
+			return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
 		}
 
 		//add to end of Terraria.IO.PlayerFileData.MoveToCloud

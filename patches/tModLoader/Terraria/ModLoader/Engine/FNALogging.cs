@@ -1,9 +1,8 @@
-using log4net;
-using log4net.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Terraria.ModLoader.Engine
@@ -85,6 +84,7 @@ namespace Terraria.ModLoader.Engine
 			uint fna3d_version = FNA3D.FNA3D_LinkedVersion();
 			Logging.FNA.Debug($"FNA3D v{fna3d_version / 10000}.{fna3d_version / 100 % 100}.{fna3d_version % 100}");
 
+			NativeLibraries.CheckNativeFAudioDependencies();
 			uint faudio_version = FAudio.FAudioLinkedVersion();
 			Logging.FNA.Debug($"FAudio v{faudio_version / 10000}.{faudio_version / 100 % 100}.{faudio_version % 100}");
 		}

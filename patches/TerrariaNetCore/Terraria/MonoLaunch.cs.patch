@@ -19,7 +19,7 @@
  		AppDomain.CurrentDomain.AssemblyResolve += delegate (object sender, ResolveEventArgs sargs) {
  			string resourceName = new AssemblyName(sargs.Name).Name + ".dll";
  			string text = Array.Find(typeof(Program).Assembly.GetManifestResourceNames(), (string element) => element.EndsWith(resourceName));
-@@ -23,9 +_,59 @@
+@@ -23,9 +_,55 @@
  				return Assembly.Load(array);
  			}
  		};
@@ -34,6 +34,13 @@
  	}
 +
 +#if NETCORE
++	public static readonly string NativesDir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", NativePlatformDir);
++	private static string NativePlatformDir =>
++		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "Windows" :
++		RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ? "Linux" :
++		RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "OSX" :
++		throw new InvalidOperationException("Unknown OS.");
++
 +	public static readonly object resolverLock = new();
 +
 +	// Note: AssemblyLoadContext.Default.ResolvingUnmanagedDll is only called if the dll is not found on PATH
@@ -47,12 +54,11 @@
 +
 +				Console.WriteLine($"Native Resolve: {assembly.FullName} -> {name}");
 +
-+				var dir = Path.Combine(Environment.CurrentDirectory, "Libraries", "Native", getNativeDir(name));
-+				var files = Directory.GetFiles(dir, $"*{name}*", SearchOption.AllDirectories);
++				var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
 +				var match = files.FirstOrDefault();
 +
 +				if (match is null) {
-+					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(dir, name + ".dll")}");
++					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(NativesDir, name + ".dll")}");
 +				}
 +
 +				Console.WriteLine($"\tattempting load {match}");
@@ -64,16 +70,6 @@
 +				throw new DirectoryNotFoundException("A needed library file was missing from the tModLoader directory. " + e.Message, e);
 +			}
 +		}
-+	}
-+
-+	private static string getNativeDir(string name) {
-+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-+			return "Windows";
-+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-+			return "Linux";
-+		if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-+			return "OSX";
-+		throw new InvalidOperationException("Unknown OS.");
 +	}
 +#endif
  }

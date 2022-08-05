@@ -83,15 +83,15 @@
 		"AskForCommand": "Escribe un comando: ",
 
 		//Mod Config
-		// "ModConfigFilterOptions": "Filter Options",
-		// "ModConfigNotification": "Notification: ",
-		// "ModConfigModConfig": "Mod Config",
-		// "ModConfigSaveConfig": "Save Config",
-		// "ModConfigBack": "Back",
-		// "ModConfigRevertChanges": "Revert Changes",
-		// "ModConfigRestoreDefaults": "Restore Defaults",
-		// "ModConfigAskingServerToAcceptChanges": "Asking server to accept changes...",
-		// "ModConfigCantSaveBecauseChangesWouldRequireAReload": "Can't save because changes would require a reload",
+		"ModConfigFilterOptions": "Opciones de filtro",
+		"ModConfigNotification": "Notificación: ",
+		"ModConfigModConfig": "Config. del mod",
+		"ModConfigSaveConfig": "Guardar config.",
+		"ModConfigBack": "Volver",
+		"ModConfigRevertChanges": "Revertir cambios",
+		"ModConfigRestoreDefaults": "Restablecer valores",
+		"ModConfigAskingServerToAcceptChanges": "Solicitando al servidor aceptar los cambios...",
+		"ModConfigCantSaveBecauseChangesWouldRequireAReload": "No se puede guardar porque los cambios requieren recargar el mod",
 
 		// Interface
 		"BossBarStyle": "Estilo de barra de jefes: {0}",
@@ -444,7 +444,6 @@
 
 		// MessageBox
 		"ContentFolderNotFound": "No se ha encontrado la carpeta de contenido de Terraria. Si instalaste tModLoader a través de Steam, asegúrate de que Terraria esté instalado. Si no, asegúrate de instalar el tModLoader en una carpeta ubicada dentro del directorio de instalación de Terraria o en una carpeta junto al directorio de instalación de Terraria.",
-		"MissingServerExecutable": "Parece que no has completado la instalación. Falta tModLoaderServer.exe. Revisa el directorio de instalación y lee las instrucciones de instalación.",
 		"GraphicsEngineFailure": "Fallo del motor de gráficos",
 		"GraphicsEngineReportUnknown": "Desconocido",
 		"GraphicsEngineReportFailure": "Fallo",
@@ -455,12 +454,12 @@
 		"VanillaGOGNotFound": "No se ha encontrado {0}. Las instalaciones de GOG deben tener el ejecutable de Terraria sin modificar para funcionar. Esta versión de tModLoader espera la versión {1} de Terraria, por lo que puede ser necesario restaurar una versión previa o actualizar Terraria a través de GOG Galaxy o esperar a que tModLoader se actualice.",
 		"GOGHashMismatch": "{0} no es el ejecutable de Terraria sin modificar.\r\n\r\nLas instalaciones de GOG deben tener el ejecutable de Terraria sin modificar para funcionar.\r\n\r\nSi has parcheado el .exe, puedes crear una copia del ejecutable original y nombrarlo \"Terraria_v<VERSIÓN>.exe\"",
 		"DefaultExtraMessage": "Restaura tu instalación de Terraria e instala tModLoader por Steam o siguiendo las instrucciones de README.txt para la instalación manual.",
-		"ClientLogHint": "Se ha generado un archivo de registro del cliente con información sobre los errores en\n{1}\n(Tendrás que compartir este archivo si pides ayuda)",
-		"OutOfMemoryHint": "\n\nSugerencia: Intenta ejecutar menos mods a la vez o determina si uno de ellos está ocupando demasiada memoria. Opcionalmente, puedes instalar tModLoader 64 bits.",
-		"ModExceptionHint": "\n\nSugerencia: Esto es probablemente culpa de un mod. Desactiva los mods uno por uno y comprueba si el problema persiste.",
-		"OneDriveHint": "\n\nSugerencia: Intenta instalar y activar OneDrive. Haz clic con el botón derecho del ratón en tu carpeta de Documentos y activa \"Guardar siempre en este dispositivo\".",
-		"AntivirusHint": "\n\nSugerencia: Si tienes antivirus, prueba a añadir Terraria a tu lista de exclusiones.",
-		"TypeInitializationHint": "\n\nSugerencia: Reinicia el juego. Si el problema persiste, prueba a desinstalar Terraria completamente, reinstálalo a través de Steam y vuelve a instalar tModLoader.",
+		"LogPathHint": "Se ha generado un archivo {0} con información sobre los errores en\n{1}\n(Tendrás que compartir este archivo si pides ayuda)",
+		"OutOfMemoryHint": "Sugerencia: Intenta ejecutar menos mods a la vez o determina si uno de ellos está ocupando demasiada memoria. Opcionalmente, puedes instalar tModLoader 64 bits.",
+		"ModExceptionHint": "Sugerencia: Esto es probablemente culpa de un mod. Desactiva los mods uno por uno y comprueba si el problema persiste.",
+		"OneDriveHint": "Sugerencia: Intenta instalar y activar OneDrive. Haz clic con el botón derecho del ratón en tu carpeta de Documentos y activa \"Guardar siempre en este dispositivo\".",
+		"AntivirusHint": "Sugerencia: Si tienes antivirus, prueba a añadir Terraria a tu lista de exclusiones.",
+		"TypeInitializationHint": "Sugerencia: Reinicia el juego. Si el problema persiste, prueba a desinstalar Terraria completamente, reinstálalo a través de Steam y vuelve a instalar tModLoader.",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Nuevo contenido",
 		"TagsContentDescription": "Añaden nuevo contenido al juego (como objetos, armas, NPCs, etc.)",

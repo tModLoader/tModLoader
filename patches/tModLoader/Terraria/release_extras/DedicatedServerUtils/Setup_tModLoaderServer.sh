@@ -1,8 +1,8 @@
-steamcmd +force_install_dir $(pwd)../tmod +login anonymous +app_update 1281930 +quit
+steamcmd +force_install_dir $(pwd)/../tmod +login anonymous +app_update 1281930 +quit
 
 input="install.txt"
 if [ -f "$input" ] ; then
-	str="+force_install_dir $(pwd)../tmod +login anonymous"
+	str="+force_install_dir $(pwd)/../tmod +login anonymous"
 	while read -r line
 	do
 		str="$str +workshop_download_item 1281930 $line"
