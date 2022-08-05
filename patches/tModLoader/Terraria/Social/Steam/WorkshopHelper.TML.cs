@@ -719,8 +719,6 @@ namespace Terraria.Social.Steam
 					ReleaseWorkshopQuery();
 				}
 
-				// if dependencyCount > 0 then query, otherwise ignore
-				// default calls will ignore dependencies
 				internal SteamUGCDetails_t FastQueryItem(ulong publishedId, bool queryChildren = false) {
 					_primaryQueryResult = EResult.k_EResultNone;
 
@@ -731,7 +729,7 @@ namespace Terraria.Social.Steam
 						SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 						SteamUGC.SetReturnLongDescription(qHandle, true);
 						SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-						SteamUGC.SetReturnChildren(qHandle, true);
+						SteamUGC.SetReturnChildren(qHandle, queryChildren);
 
 						call = SteamUGC.SendQueryUGCRequest(qHandle);
 					}
@@ -741,7 +739,7 @@ namespace Terraria.Social.Steam
 						SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 						SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
 						SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-						SteamGameServerUGC.SetReturnChildren(qHandle, true);
+						SteamGameServerUGC.SetReturnChildren(qHandle, queryChildren);
 
 						call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 					}
@@ -817,7 +815,7 @@ namespace Terraria.Social.Steam
 
 			private static List<ulong> GetDependencies(ulong publishedId) {
 				var query = new AQueryInstance();
-				query.FastQueryItem(publishedId, true);
+				query.FastQueryItem(publishedId, queryChildren: true);
 				return query.ugcChildren;
 			}
 
