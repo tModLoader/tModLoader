@@ -186,6 +186,9 @@ namespace Terraria.ModLoader.Engine
 				case TerrariaSteamClient.LaunchResult.ErrSteamInitFailed:
 					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.SteamInitFailed"));
 					break;
+				case TerrariaSteamClient.LaunchResult.ErrNotInstalled:
+					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaNotInstalled"));
+					break;
 				default:
 					throw new Exception("Unsupported result type: " + result);
 			}
