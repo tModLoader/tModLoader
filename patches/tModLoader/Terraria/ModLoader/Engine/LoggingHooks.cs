@@ -5,7 +5,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading;
 
-namespace Terraria.ModLoader.Core
+namespace Terraria.ModLoader.Engine
 {
 	internal static class LoggingHooks
 	{

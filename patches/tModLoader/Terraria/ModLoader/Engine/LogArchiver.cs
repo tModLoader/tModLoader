@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Terraria.ModLoader.Core
+namespace Terraria.ModLoader.Engine
 {
 	/// <summary>
 	/// Log archiving is performed after log initialization in a separate class to avoid loading Ionic.Zip before logging initialises and it can be patched
