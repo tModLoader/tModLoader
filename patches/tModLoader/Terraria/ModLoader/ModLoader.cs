@@ -89,7 +89,6 @@ namespace Terraria.ModLoader
 			FolderShortcutSupport.UpdateFolderShortcuts();
 			MonoModHooks.Initialize();
 			ZipExtractFix.Init();
-			XnaTitleContainerRelativePathFix.Init();
 			LoaderManager.AutoLoad();
 		}
 

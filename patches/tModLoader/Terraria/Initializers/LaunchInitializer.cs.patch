@@ -1,12 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Initializers/LaunchInitializer.cs
 +++ src/tModLoader/Terraria/Initializers/LaunchInitializer.cs
-@@ -1,6 +_,9 @@
+@@ -1,6 +_,10 @@
  using System;
  using System.Diagnostics;
 +using System.Linq;
 +using System.Text.RegularExpressions;
  using Terraria.Localization;
 +using Terraria.ModLoader.Core;
++using Terraria.ModLoader.Engine;
  using Terraria.Social;
  
  namespace Terraria.Initializers

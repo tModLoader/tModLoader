@@ -431,10 +431,8 @@ namespace Terraria.ModLoader.UI
 		}
 
 		internal static void MessageBoxShow(string text, string caption = null) {
-			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
-			caption = caption ?? "Terraria: Error" + $" ({ModLoader.versionedName})";
+			caption ??= "Terraria: Error" + $" ({ModLoader.versionedName})";
 			string logsLoc = Path.Combine(Directory.GetCurrentDirectory(), "tModLoader-Logs");
-
 			string message = Language.GetTextValue("tModLoader.ClientLogHint", text, logsLoc);
 			if(Language.ActiveCulture == null) // Simple backup approach in case error happens before localization is loaded
 				message = string.Format("{0}\n\nA client.log file containing error information has been generated in\n{1}\n(You will need to share this file if asking for help)", text, logsLoc);
@@ -442,6 +440,7 @@ namespace Terraria.ModLoader.UI
 #if !MAC
 			System.Windows.Forms.MessageBox.Show(message, caption);
 #else
+			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
 			File.WriteAllText("fake-messagebox.txt", $"{caption}\n\n{text}");
 			Process.Start("fake-messagebox.txt");
 #endif

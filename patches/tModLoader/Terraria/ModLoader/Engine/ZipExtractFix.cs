@@ -5,7 +5,7 @@ using MonoMod.Utils;
 using System;
 using System.IO;
 
-namespace Terraria.ModLoader.Core
+namespace Terraria.ModLoader.Engine
 {
 	internal static class ZipExtractFix
 	{
