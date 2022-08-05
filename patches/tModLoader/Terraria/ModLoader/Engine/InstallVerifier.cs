@@ -184,8 +184,7 @@ namespace Terraria.ModLoader.Engine
 					ErrorReporting.FatalExit("The terraria steam client process exited unexpectedly");
 					break;
 				case TerrariaSteamClient.LaunchResult.ErrSteamInitFailed:
-					Utils.OpenToURL("https://terraria.org");
-					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"));
+					ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.SteamInitFailed"));
 					break;
 				default:
 					throw new Exception("Unsupported result type: " + result);
