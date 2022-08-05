@@ -163,6 +163,10 @@ namespace Terraria.ModLoader.Engine
 			}
 		}
 
-		internal static void Shutdown() => SendCmd(MsgShutdown);
+		internal static void Shutdown() {
+			try {
+				SendCmd(MsgShutdown);
+			} catch { }
+		}
 	}
 }

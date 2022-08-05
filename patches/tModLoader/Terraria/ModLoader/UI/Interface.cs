@@ -429,45 +429,5 @@ namespace Terraria.ModLoader.UI
 			}
 			//Console.Clear();
 		}
-
-		internal static void MessageBoxShow(string text, string caption = null) {
-			caption ??= "Terraria: Error" + $" ({ModLoader.versionedName})";
-			string logsLoc = Path.Combine(Directory.GetCurrentDirectory(), "tModLoader-Logs");
-			string message = Language.GetTextValue("tModLoader.ClientLogHint", text, logsLoc);
-			if(Language.ActiveCulture == null) // Simple backup approach in case error happens before localization is loaded
-				message = string.Format("{0}\n\nA client.log file containing error information has been generated in\n{1}\n(You will need to share this file if asking for help)", text, logsLoc);
-#if !NETCORE
-#if !MAC
-			System.Windows.Forms.MessageBox.Show(message, caption);
-#else
-			// MessageBox.Show fails on Mac, this method will open a text file to show a message.
-			File.WriteAllText("fake-messagebox.txt", $"{caption}\n\n{text}");
-			Process.Start("fake-messagebox.txt");
-#endif
-#else
-			SDL2.SDL.SDL_ShowSimpleMessageBox(SDL2.SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR, caption, message, IntPtr.Zero);
-#endif
-		}
-
-		internal static void MessageBoxShow(Exception e, string caption = null, bool generateTip = false) {
-			string tip = "";
-
-			if (generateTip) {
-				if (e is OutOfMemoryException)
-					tip = Language.GetTextValue("tModLoader.OutOfMemoryHint");
-				else if (e is InvalidOperationException || e is NullReferenceException || e is IndexOutOfRangeException || e is ArgumentNullException)
-					tip = Language.GetTextValue("tModLoader.ModExceptionHint");
-				else if (e is IOException && e.Message.Contains("cloud file provider"))
-					tip = Language.GetTextValue("tModLoader.OneDriveHint");
-				else if (e is System.Threading.SynchronizationLockException)
-					tip = Language.GetTextValue("tModLoader.AntivirusHint");
-				else if (e is TypeInitializationException)
-					tip = Language.GetTextValue("tModLoader.TypeInitializationHint");
-			}
-
-			string message = e.ToString() + tip;
-
-			MessageBoxShow(message, caption);
-		}
 	}
 }

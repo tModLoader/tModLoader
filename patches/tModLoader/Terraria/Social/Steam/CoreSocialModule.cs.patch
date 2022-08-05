@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Steam/CoreSocialModule.cs
 +++ src/tModLoader/Terraria/Social/Steam/CoreSocialModule.cs
-@@ -1,6 +_,7 @@
+@@ -1,16 +_,18 @@
  using ReLogic.OS;
  using Steamworks;
  using System;
@@ -8,7 +8,10 @@
  using System.Threading;
  using System.Windows.Forms;
  using Terraria.Localization;
-@@ -10,7 +_,7 @@
++using Terraria.ModLoader.Engine;
+ 
+ namespace Terraria.Social.Steam
+ {
  	public class CoreSocialModule : ISocialModule
  	{
  		private static CoreSocialModule _instance;
@@ -17,7 +20,7 @@
  		private bool IsSteamValid;
  		private object _steamTickLock = new object();
  		private object _steamCallbackLock = new object();
-@@ -24,13 +_,16 @@
+@@ -24,14 +_,16 @@
  
  		public void Initialize() {
  			_instance = this;
@@ -31,7 +34,8 @@
 +			ModLoader.Engine.Steam.SetAppId(ModLoader.Engine.Steam.TMLAppID_t);
  			if (!SteamAPI.Init()) {
 -				MessageBox.Show(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));
-+				ModLoader.UI.Interface.MessageBoxShow(Language.GetTextValue("Error.LaunchFromSteam"), Language.GetTextValue("Error.Error"));
- 				Environment.Exit(1);
+-				Environment.Exit(1);
++				ErrorReporting.FatalExit(Language.GetTextValue("Error.LaunchFromSteam"));
  			}
  
+ 			IsSteamValid = true;
