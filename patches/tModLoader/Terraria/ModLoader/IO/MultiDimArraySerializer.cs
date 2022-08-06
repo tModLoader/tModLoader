@@ -77,17 +77,15 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 	public static TagCompound ToTagCompound(Array array, Type? elementType = null, Converter? converter = null) {
 		ArgumentNullException.ThrowIfNull(array);
 
-		TagCompound tag = new();
-
-		byte rank = (byte)array.Rank; // We can safely cast to byte since the largest supported rank is 32
-		tag["rank"] = rank;
-		for (int i = 0; i < rank; i++) {
-			tag["rank-" + i] = array.GetLength(i);
+		int[] ranks = new int[array.Rank];
+		for (int i = 0; i < ranks.Length; i++) {
+			ranks[i] = array.GetLength(i);
 		}
 
-		tag["list"] = ToList(array, elementType, converter);
-
-		return tag;
+		return new() {
+			["ranks"] = ranks,
+			["list"] = ToList(array, elementType, converter),
+		};
 	}
 
 	public static IList ToList(Array array, Type? elementType = null, Converter? converter = null) {
@@ -113,18 +111,13 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 
 		var elementType = arrayType.GetElementType()!;
 
-		if (!tag.TryGet("rank", out byte rank)) {
+		if (!tag.TryGet("ranks", out int[] ranks)) {
 			return Array.CreateInstance(elementType, new int[arrayType.GetArrayRank()]);
-		}
-
-		int[] arrayRanks = new int[rank];
-		for (int i = 0; i < rank; i++) {
-			arrayRanks[i] = tag.GetInt("rank-" + i);
 		}
 
 		var list = tag.Get<List<object>>("list"); // We don't care what our serialized type is, the converter will handle it
 
-		return FromList(list, arrayRanks, elementType, converter);
+		return FromList(list, ranks, elementType, converter);
 	}
 
 	public static Array FromList(IList list, int[] arrayRanks, Type? elementType = null, Converter? converter = null) {
