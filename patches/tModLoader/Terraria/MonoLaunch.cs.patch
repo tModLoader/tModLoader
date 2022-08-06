@@ -52,7 +52,7 @@
  	}
  
  #if NETCORE
-@@ -56,7 +_,7 @@
+@@ -56,18 +_,19 @@
  					return handle;
  				}
  
@@ -61,8 +61,11 @@
  
  				var files = Directory.GetFiles(NativesDir, $"*{name}*", SearchOption.AllDirectories);
  				var match = files.FirstOrDefault();
-@@ -65,9 +_,9 @@
- 					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(NativesDir, name + ".dll")}");
+ 
+ 				if (match is null) {
++					// must be DllNotFoundException to match what is expected from NativeLibrary.Load (see NativeLibraries.CheckNativeFAudioDependencies for eg) 
+-					throw new FileNotFoundException($"Failed to find Native Library: {Path.Combine(NativesDir, name + ".dll")}");
++					throw new DllNotFoundException($"Failed to find Native Library: {Path.Combine(NativesDir, name + ".dll")}");
  				}
  
 -				Console.WriteLine($"\tattempting load {match}");

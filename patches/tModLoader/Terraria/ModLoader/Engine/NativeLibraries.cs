@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.Engine
 			if (!OperatingSystem.IsWindows())
 				return;
 
-			try { // FAudio on windows needs vcruntime140.dll
+			try {
 				NativeLibrary.Load("vcruntime140.dll", Assembly.GetExecutingAssembly(), DllImportSearchPath.System32);
 			}
 			catch (DllNotFoundException e) {
@@ -18,7 +18,7 @@ namespace Terraria.ModLoader.Engine
 				ErrorReporting.FatalExit("Microsoft Visual C++ 2015 Redistributable Update 3 is missing. You will need to download and install it from the Microsoft website.", e);
 			}
 
-			try { // FAudio on windows needs vcruntime140.dll
+			try {
 				NativeLibrary.Load("mfplat.dll", Assembly.GetExecutingAssembly(), DllImportSearchPath.System32);
 			}
 			catch (DllNotFoundException e) {
