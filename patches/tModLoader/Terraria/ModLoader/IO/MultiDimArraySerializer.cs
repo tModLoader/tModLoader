@@ -55,7 +55,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 	public override IList SerializeList(IList list) {
 		ArgumentNullException.ThrowIfNull(list);
 
-		var serializedList = new List<TagCompound>();
+		var serializedList = new List<TagCompound>(list.Count);
 
 		foreach (Array array in list) {
 			serializedList.Add(Serialize(array));
@@ -114,6 +114,7 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 
 		var elementType = arrayType.GetElementType()!;
 
+		// If an empty TagCompound is passed, return an empty array.
 		if (!tag.TryGet(Ranks, out int[] ranks)) {
 			return Array.CreateInstance(elementType, new int[arrayType.GetArrayRank()]);
 		}
