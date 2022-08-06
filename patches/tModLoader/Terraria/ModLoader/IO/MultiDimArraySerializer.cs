@@ -12,6 +12,9 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 {
 	public delegate object Converter(object element);
 
+	private const string Ranks = "ranks";
+	private const string List = "list";
+
 	public Type ArrayType { get; }
 	public Type ElementType { get; }
 	public int ArrayRank { get; }
@@ -83,8 +86,8 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 		}
 
 		return new() {
-			["ranks"] = ranks,
-			["list"] = ToList(array, elementType, converter),
+			[Ranks] = ranks,
+			[List] = ToList(array, elementType, converter),
 		};
 	}
 
@@ -111,11 +114,11 @@ public class MultiDimArraySerializer : TagSerializer<Array, TagCompound>
 
 		var elementType = arrayType.GetElementType()!;
 
-		if (!tag.TryGet("ranks", out int[] ranks)) {
+		if (!tag.TryGet(Ranks, out int[] ranks)) {
 			return Array.CreateInstance(elementType, new int[arrayType.GetArrayRank()]);
 		}
 
-		var list = tag.Get<List<object>>("list"); // We don't care what our serialized type is, the converter will handle it
+		var list = tag.Get<List<object>>(List); // We don't care what our serialized type is, the converter will handle it
 
 		return FromList(list, ranks, elementType, converter);
 	}
