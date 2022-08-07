@@ -35,7 +35,7 @@ WORKDIR $HOME
 
 # Install prerequisites
 RUN apk update \
- && apk add --no-cache bash curl tmux \
+ && apk add --no-cache bash curl tmux libstdc++ libgcc icu-libs \
  && rm -rf /var/cache/apk/*
 
 # Copy steamcmd files from builder
@@ -58,28 +58,29 @@ WORKDIR $HOME
 # Update SteamCMD and verify latest version
 RUN steamcmd +quit
 
-# Install tModLoader
-ARG username
-ARG password
-ARG guardcode
-
 RUN mkdir -p $HOME/.local/share/Terraria/scriptdir \
  && cd $HOME/.local/share/Terraria/scriptdir \
+#NOTE: Update url before merging
  && curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh \
  && chmod u+x Setup_tModLoaderServer.sh \
- && ./Setup_tModLoaderServer.sh -i --username "${username} ${password} ${guardcode}" --folder /home/tml/tModLoader
-# For some reason despite setting --folder in the above command it installs to ~/.steam/steamapps/common/tModLoader
+ && ./Setup_tModLoaderServer.sh -i -g
 
-# Prepare launch utils
+#NOTE: Temp step to download the no steam tML build. Remove before merging.
+RUN cd $HOME/tModLoader \
+ && rm -r * \
+ && curl -O https://ppeb.me/tml/nosteam.zip \
+ && unzip nosteam.zip
+
+# Download entrypoint script
+#NOTE: Update url before merging
 RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Docker/Launch.sh \
  && chmod u+x Launch.sh
 
-# Replace start-tModLoaderServer.sh
+#NOTE: Temp step to download modified launch script. Remove before merging.
 RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/start-tModLoaderServer.sh \
  && chmod u+x start-tModLoaderServer.sh \
- && mv start-tModLoaderServer.sh $HOME/.steam/steamapps/common/tModLoader
+ && mv start-tModLoaderServer.sh $HOME/tModLoader/start-tModLoaderServer.sh
 
 EXPOSE 7777
 
-# --nosteamserver because for some reason running with steam doesn't work with steamcmd
-ENTRYPOINT [ "./Launch.sh", "--username" , "${username}", "--location", "~/.steam/steamapps/common/tModLoader", "--nosteamserver" ]
+ENTRYPOINT [ "/bin/bash" ]
