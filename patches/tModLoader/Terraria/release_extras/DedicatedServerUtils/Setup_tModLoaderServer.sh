@@ -203,26 +203,26 @@ function updateWorkshopMods {
 		do
 			steamcmdCommand="$steamcmdCommand +workshop_download_item 1281930 $line"
 		done
-		steamcmd $steamcmdCommand
+		steamcmd "$steamcmdCommand +quit"
 	else
 		echo "No workshop mods to install"
 	fi
 }
 
 function installMods {
-	if ! command -v steamcmd &> /dev/null
-	then
-		echo "steamcmd not found on path, no workshop mods will be installed or updated"
-	else
-		updateWorkshopMods
-	fi
-
 	scriptPath=$(realpath $0) # Get path to the script, in case someone launched it from another directory
 	if [[ -v checkdir ]]
 	then
 		pushd $checkdir
 	else
 		pushd $(dirname $scriptPath)
+	fi
+
+	if ! command -v steamcmd &> /dev/null
+	then
+		echo "steamcmd not found on path, no workshop mods will be installed or updated"
+	else
+		updateWorkshopMods
 	fi
 
 	if [[ -v modsPath ]]
