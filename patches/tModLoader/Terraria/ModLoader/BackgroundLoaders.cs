@@ -96,7 +96,7 @@ namespace Terraria.ModLoader
 	[Autoload(Side = ModSide.Client)]
 	public class UndergroundBackgroundStylesLoader : SceneEffectLoader<ModUndergroundBackgroundStyle>
 	{
-		public const int VanillaUndergroundBackgroundStylesCount = 18;
+		public const int VanillaUndergroundBackgroundStylesCount = 22;
 
 		public UndergroundBackgroundStylesLoader() {
 			Initialize(VanillaUndergroundBackgroundStylesCount);
