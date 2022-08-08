@@ -218,7 +218,12 @@ function installMods {
 	fi
 
 	scriptPath=$(realpath $0) # Get path to the script, in case someone launched it from another directory
-	pushd $(dirname $scriptPath)
+	if [[ -v checkdir ]]
+	then
+		pushd $checkdir
+	else
+		pushd $(dirname $scriptPath)
+	fi
 
 	if [[ -v modsPath ]]
 	then
@@ -275,14 +280,16 @@ Options:
  -i|--install        Install tModLoader and mods.
  -u|--update         Update an existing tModLoader installation and mods.
  -g|--github         Use the binary off of Github instead of using steamcmd.
- -f|--folder         Choose the folder to update/install to. When using steamcmd, make sure to use an absolute path. Defaut path is ~/tModLoader when using Github, and ~/Steam/steamapps/common/tModLoader when using steamcmd.
+ -f|--folder         Choose the folder to update/install to. When using steamcmd, make sure to use an absolute path. Default path is ~/tModLoader when using Github, and ~/Steam/steamapps/common/tModLoader when using steamcmd.
  -m|--modspath       The path to your mods folder. Any .tmod files and enabled.json are sent here.
  --username          The steam username to login with. Only applies when using steamcmd.
  --tmlversion        The version of tML to download. Only applies when using Github. This should be the exact tag off of Github (ex. v2022.06.96.4).
  --updatescript      Update the script to the latest version on Github.
+ --modsonly          Only install/update mods.
  --nomods            Don't install/update mods.
+ --checkdir          Directory to check for enabled.json, install.txt, and any .tmod files.
 
-When running --install and --update, enabled.json, install.txt, and any .tmod files will be checked for in the location of the script."
+When running --install and --update, enabled.json, install.txt, and any .tmod files will be checked for in the location of the script or in the directory specified by --checkdir."
 	exit
 }
 
@@ -291,6 +298,7 @@ install=false
 update=false
 steamcmd=true # Use steamcmd by default. If someone doesn't want to use steamcmd, they probably don't have it installed and since it'll exit, they can specify --github next time
 nomods=false
+modsonly=false
 
 if [ $# -eq 0 ] # Check for no arguments
 then
@@ -330,7 +338,7 @@ do
 			;;
 		--tmlversion)
 			version="$2"
-			shift; shift;
+			shift; shift
 			;;
 		-v|--version)
 			printVersion
@@ -338,9 +346,17 @@ do
 		--updatescript)
 			updateScript
 			;;
+		--modsonly)
+			modsonly=true
+			shift
+			;;
 		--nomods)
 			nomods=true
-			shift;
+			shift
+			;;
+		--checkdir)
+			checkdir="$2"
+			shift; shift
 			;;
 		*)
 			echo "Argument not recognized: $1"
@@ -371,18 +387,12 @@ fi
 
 if $install
 then
-	installtML
-	if ! $nomods
-	then
-		installMods
-	fi
+	if ! $modsonly; then installtML; fi
+	if ! $nomods; then installMods; fi
 fi
 
 if $update
 then
-	updatetML
-	if ! $nomods
-	then
-		installMods
-	fi
+	if ! $modsonly; then updatetML; fi
+	if ! $nomods; then installMods; fi
 fi
