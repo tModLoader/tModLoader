@@ -112,11 +112,15 @@ namespace Terraria.ModLoader
 				return;
 
 			var availableMods = ModOrganizer.FindMods(logDuplicates: true);
+
 			try {
 				var modsToLoad = ModOrganizer.SelectAndSortMods(availableMods, token);
 				var modInstances = AssemblyManager.InstantiateMods(modsToLoad, token);
+				
 				modInstances.Insert(0, new ModLoaderMod());
+
 				Mods = modInstances.ToArray();
+
 				foreach (var mod in Mods)
 					modsByName[mod.Name] = mod;
 
@@ -130,34 +134,46 @@ namespace Terraria.ModLoader
 				}
 			}
 			catch when (token.IsCancellationRequested) {
-				// cancel needs to reload with ModLoaderMod and all others skipped
+				// Cancel needs to reload with ModLoaderMod and all others skipped
 				skipLoad = true;
 				OnSuccessfulLoad += () => Main.menuMode = Interface.modsMenuID;
 
 				isLoading = false;
-				Load(); // don't provide a token, loading just ModLoaderMod should be quick
+				
+#pragma warning disable CA2016
+				Load(); // Don't provide a token, loading just ModLoaderMod should be quick
+#pragma warning restore CA2016
 			}
 			catch (Exception e) {
 				var responsibleMods = new List<string>();
+
 				if (e.Data.Contains("mod"))
 					responsibleMods.Add((string)e.Data["mod"]);
+
 				if (e.Data.Contains("mods"))
 					responsibleMods.AddRange((IEnumerable<string>)e.Data["mods"]);
+
 				responsibleMods.Remove("ModLoader");
 
 				if (responsibleMods.Count == 0 && AssemblyManager.FirstModInStackTrace(new StackTrace(e), out var stackMod))
 					responsibleMods.Add(stackMod);
 
-				var msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
+				string msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
+
 				if (responsibleMods.Count == 1) {
 					var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
-					if (mod != null)
+
+					if (mod != null) {
 						msg += $" v{mod.properties.version}";
-					if (mod != null && mod.tModLoaderVersion != BuildInfo.tMLVersion)
-						msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
+
+						if (mod.tModLoaderVersion != BuildInfo.tMLVersion)
+							msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
+					}
+
 					if (e is Exceptions.JITException)
 						msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
 				}
+
 				if (responsibleMods.Count > 0)
 					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
 				else
@@ -168,10 +184,11 @@ namespace Terraria.ModLoader
 
 				Logging.tML.Error(msg, e);
 
-				foreach (var mod in responsibleMods)
+				foreach (string mod in responsibleMods)
 					DisableMod(mod);
 
-				isLoading = false; // disable loading flag, because server will just instantly retry reload
+				isLoading = false; // Disable loading flag, because server will just instantly retry reload
+				
 				DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
 			}
 			finally {
