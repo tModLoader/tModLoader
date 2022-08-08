@@ -57,31 +57,26 @@
  		}
  
  		private static void LoadServerParameters(Main game) {
-@@ -102,6 +_,16 @@
+@@ -102,6 +_,14 @@
  			if ((s2 = TryParameter("-language")) != null)
  				LanguageManager.Instance.SetLanguage(s2);
  
-+			string publish;
-+			if ((publish = LaunchInitializer.TryParameter("-publish")) != null) {
++			if (TryParameter("-publish") is string publish) {
 +				ModLoader.UI.UIModSourceItem.PublishModCommandLine(publish);
 +				// Application Exits
 +			}
 +
-+			string install;
-+			if ((install = TryParameter("-install")) != null)
++			if (TryParameter("-install") is string install)
 +				FileAssociationSupport.HandleFileAssociation(install);
 +
  			string worldName;
  			if ((worldName = TryParameter("-worldname")) != null)
  				game.SetWorldName(worldName);
-@@ -110,6 +_,15 @@
+@@ -110,6 +_,12 @@
  			if ((newMOTD = TryParameter("-motd")) != null)
  				game.NewMOTD(newMOTD);
  
-+			string modPath;
-+			if ((modPath = TryParameter(new string[] {
-+				"-modpath"
-+			})) != null)
++			if (TryParameter("-modpath") is string modPath)
 +				ModOrganizer.modPath = modPath;
 +
 +			if (HasParameter("-showserverconsole"))
