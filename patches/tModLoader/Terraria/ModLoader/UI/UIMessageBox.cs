@@ -93,11 +93,7 @@ namespace Terraria.ModLoader.UI
 				var array = _textSnippets[y] = new TextSnippet[list.Count];
 
 				list.CopyTo(array);
-
-				// Disable blinking
-				for (int x = 0; x < array.Length; x++) {
-					array[x].NoBlinking = true;
-				}
+				ChatManager.ConvertNormalSnippets(array); // Disables blinking.
 			}
 
 			_height = _textSnippets.Length * textHeight;
