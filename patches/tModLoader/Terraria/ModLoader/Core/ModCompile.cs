@@ -45,7 +45,7 @@ namespace Terraria.ModLoader.Core
 		{
 			public string path;
 
-			public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(modFile, properties)
+			public BuildingMod(TmodFile modFile, BuildProperties properties, string path) : base(ModLocation.Dev, modFile, properties)
 			{
 				this.path = path;
 			}

@@ -21,109 +21,114 @@ namespace Terraria.ModLoader.Core
 	internal static class ModOrganizer
 	{
 		internal static string modPath = Path.Combine(Main.SavePath, "Mods");
+
 		internal static string commandLineModPack;
 
 		private static Dictionary<string, LocalMod> modsDirCache = new Dictionary<string, LocalMod>();
-		private static List<string> readFailures = new List<string>(); // TODO: Reflect these skipped Mods in the UI somehow.
+		private static HashSet<string> readFailures = new(); // TODO: Reflect these skipped Mods in the UI somehow.
 
 		internal static string lastLaunchedModsFilePath = Path.Combine(Main.SavePath, "LastLaunchedMods.txt");
 		internal static List<(string ModName, Version previousVersion)> modsThatUpdatedSinceLastLaunch = new List<(string ModName, Version previousVersion)>();
 
 		internal static WorkshopHelper.UGCBased.Downloader WorkshopFileFinder = new WorkshopHelper.UGCBased.Downloader();
 
-		private enum SearchFolders { }
-
 		internal static string ModPackActive = null;
 
-		/// <summary>Mods in workshop folders, not in dev folder or modpacks</summary>
-		internal static IReadOnlyList<LocalMod> FindWorkshopMods() => _FindMods(ignoreModsFolder: true);
-
-		/// <summary>Mods in dev folder, not in workshop or modpacks</summary>
-		internal static IReadOnlyList<LocalMod> FindDevFolderMods() => _FindMods(ignoreWorkshop: true);
-
 		/// <summary>Mods from any location, using the default internal priority logic</summary>
-		internal static LocalMod[] FindMods(bool logDuplicates = false) => _FindMods(logDuplicates: logDuplicates);
+		internal static LocalMod[] FindMods() => FoundMods = FindAllMods().GroupBy(m => m.Name).Select(SelectModVersion).Where(m => m != null).ToArray();
 
-		internal static LocalMod[] _FindMods(bool ignoreModsFolder = false, bool ignoreWorkshop = false, bool logDuplicates = false) {
+		internal static LocalMod[] FoundMods { get; private set; }
+		internal static LocalMod[] AllFoundMods { get; private set; }
+
+		internal static IReadOnlyList<LocalMod> FindAllMods() {
 			Directory.CreateDirectory(ModLoader.ModPath);
 			var mods = new List<LocalMod>();
-			var names = new HashSet<string>();
 
 			DeleteTemporaryFiles();
-
 			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
 
-			// load all mods from an active ModPack 
-			if (!ignoreModsFolder && !string.IsNullOrEmpty(ModPackActive)) {
+			mods.AddRange(ParseMods(ModLocation.Dev, Directory.GetFiles(modPath, "*.tmod", SearchOption.TopDirectoryOnly)));
+
+			foreach (string repo in WorkshopFileFinder.ModPaths) {
+				mods.AddRange(ParseMods(ModLocation.Workshop, Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories)));
+			}
+
+			if (!string.IsNullOrEmpty(ModPackActive)) {
 				if (Directory.Exists(ModPackActive)) {
-					Logging.tML.Info($"Loaded Mods from Active Mod Pack: {ModPackActive}");
-					foreach (string mod in Directory.GetFiles(ModPackActive, "*.tmod", SearchOption.AllDirectories))
-						AttemptLoadMod(mod, ref mods, ref names, logDuplicates, true);
+					mods.AddRange(ParseMods(ModLocation.ActiveModpack, Directory.GetFiles(ModPackActive, "*.tmod", SearchOption.AllDirectories)));
 				}
-				else
+				else {
+					Logging.tML.Warn($"Active modpack missing, deactivating: {ModPackActive}");
 					ModPackActive = null;
-			}
-
-			// Prioritize loading Mods from Mods folder for Dev/Beta simplicity.
-			if (!ignoreModsFolder) {
-				foreach (string mod in Directory.GetFiles(modPath, "*.tmod", SearchOption.TopDirectoryOnly))
-					AttemptLoadMod(mod, ref mods, ref names, logDuplicates, true);
-			}
-
-			// Load Mods from Workshop downloads
-			if (!ignoreWorkshop) {
-				foreach (string repo in WorkshopFileFinder.ModPaths) {
-					var fileName = GetActiveTmodInRepo(repo);
-					if (fileName == null)
-						continue;
-
-					AttemptLoadMod(fileName, ref mods, ref names, logDuplicates, false);
 				}
 			}
 
-			return mods.OrderBy(x => x.Name, StringComparer.InvariantCulture).ToArray();
+			return AllFoundMods = mods.ToArray();
 		}
 
-		private static bool AttemptLoadMod(string fileName, ref List<LocalMod> mods, ref HashSet<string> names, bool logDuplicates, bool devLocation) {
-			var lastModified = File.GetLastWriteTime(fileName);
+		private static IEnumerable<LocalMod> ParseMods(ModLocation location, IEnumerable<string> paths) {
+			foreach (var path in paths)
+				if (ParseMod(location, path, out var mod))
+					yield return mod;
+		}
 
-			if (!modsDirCache.TryGetValue(fileName, out var mod) || mod.lastModified != lastModified) {
+		private static bool ParseMod(ModLocation location, string path, out LocalMod mod) {
+			var lastModified = File.GetLastWriteTime(path);
+
+			if (!modsDirCache.TryGetValue(path, out mod) || mod.lastModified != lastModified) {
 				try {
-					var modFile = new TmodFile(fileName);
+					var modFile = new TmodFile(path);
 
 					using (modFile.Open()) {
-						mod = new LocalMod(modFile) {
+						modsDirCache[path] = mod = new LocalMod(location, modFile) {
 							lastModified = lastModified
 						};
 					}
 
-					if (BuildInfo.IsPreview && !devLocation && !mod.properties.playableOnPreview) {
-						Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. Mod not available on Preview");
-						return false;
-					}
+					if (mod.tModLoaderVersion > BuildInfo.tMLVersion)
+						throw new Exception($"Ignored {mod.Name} {mod.Version}, built for a newer tML version ({mod.tModLoaderVersion})");
 				}
 				catch (Exception e) {
-					if (!readFailures.Contains(fileName)) {
-						Logging.tML.Warn("Failed to read " + fileName, e);
-					}
-					else {
-						readFailures.Add(fileName);
-					}
+					if (readFailures.Add(path + "!" + e.Message))
+						Logging.tML.Warn("Failed to read " + path, e);
 
 					return false;
 				}
-
-				modsDirCache[fileName] = mod;
 			}
 
-			// Ignore it from Workshop if it appeared in Mods folder/already exists.
-			if (names.Add(mod.Name)) {
-				mods.Add(mod);
-			}
-			else if (logDuplicates) {
-				Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
-			}
 			return true;
+		}
+
+		private static LocalMod SelectModVersion(IEnumerable<LocalMod> versions) {
+			var list = versions.ToList();
+			void FilterOut(Predicate<LocalMod> condition, string msg) {
+				for (int i = list.Count-1; i >= 0; i--) {
+					var v = list[i];
+					if (condition(v)) {
+						Logging.tML.Warn($"Ignored {v.Name} {v.Version}, {msg}. {v.modFile.path}");
+						list.RemoveAt(i);
+					}
+				}
+			}
+
+			if (BuildInfo.IsPreview)
+				FilterOut(v => !v.properties.playableOnPreview && v.tModLoaderVersion.MajorMinor() == BuildInfo.tMLVersion.MajorMinor(),
+					"preview early-access disabled");
+
+			if (list.Any(v => v.location == ModLocation.ActiveModpack))
+				FilterOut(v => v.location != ModLocation.ActiveModpack, "the active modpack has an overriding copy");
+
+			var newestVersion = versions.Select(v => v.Version).Max();
+			FilterOut(v => v.Version != newestVersion, $"a newer version exists (newestVersion)");
+
+			if (list.Any(v => v.location == ModLocation.Workshop))
+				FilterOut(v => v.location != ModLocation.ActiveModpack, "steam workshop is preferred when versions match");
+
+			var selected = list.SingleOrDefault();
+
+			// should never be called, but could help diagnose a logic error in the future. Better than calling SingleOrDefault and throwing.
+			FilterOut(v => v != selected, "Logic Error, multiple versions remain. One was randomly selected");
+			return selected;
 		}
 
 		/// <summary>
@@ -136,7 +141,7 @@ namespace Terraria.ModLoader.Core
 			}
 
 			// For convenience, convert to dict
-			var currMods = FindWorkshopMods().ToDictionary(mod => mod.Name, mod => mod);
+			var currMods = FindAllMods().Where(m => m.location == ModLocation.Workshop).ToDictionary(mod => mod.Name, mod => mod);
 
 
 			// trycatch the read in case users manually modify the file
@@ -157,16 +162,16 @@ namespace Terraria.ModLoader.Core
 
 				// Generate diff and display if exists
 				// Only track new and updated, not deleted, maybe TODO? Would require saving the display name for deletion info
-				var newMods = new List<string>();
+				var newMods = new List<LocalMod>();
 				var updatedMods = new List<string>();
 				var messages = new StringBuilder();
 				foreach (var item in currMods) {
 					string name = item.Key;
 					var localMod = item.Value;
-					Version version = localMod.properties.version;
+					Version version = localMod.Version;
 
 					if (!lastMods.ContainsKey(name)) {
-						newMods.Add(name);
+						newMods.Add(localMod);
 						modsThatUpdatedSinceLastLaunch.Add((name, null));
 					}
 					else if (lastMods.TryGetValue(name, out var lastVersion) && lastVersion < version) {
@@ -178,7 +183,7 @@ namespace Terraria.ModLoader.Core
 				if (newMods.Count > 0) {
 					messages.Append(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessageNewMods"));
 					foreach (var newMod in newMods) {
-						messages.Append($"\n  {newMod} ({currMods[newMod].DisplayName})");
+						messages.Append($"\n  {newMod.Name} ({newMod.DisplayName})");
 					}
 				}
 
@@ -188,7 +193,7 @@ namespace Terraria.ModLoader.Core
 						string name = updatedMod;
 						string displayName = currMods[name].DisplayName;
 						Version lastVersion = lastMods[name];
-						Version currVersion = currMods[name].properties.version;
+						Version currVersion = currMods[name].Version;
 						messages.Append($"\n  {name} ({displayName}) v{lastVersion} -> v{currVersion}");
 					}
 				}
@@ -211,10 +216,9 @@ namespace Terraria.ModLoader.Core
 			if (!ModLoader.showNewUpdatedModsInfo) // Not needed if feature that uses the file is disabled
 				return;
 
-			var currMods = FindWorkshopMods();
 			var fileText = new StringBuilder();
-			foreach (var mod in currMods) {
-				fileText.Append($"{mod.Name} {mod.properties.version}\n");
+			foreach (var mod in AllFoundMods.Where(m => m.location == ModLocation.Workshop)) {
+				fileText.Append($"{mod.Name} {mod.Version}\n");
 			}
 			File.WriteAllText(lastLaunchedModsFilePath, fileText.ToString());
 		}
@@ -357,13 +361,13 @@ namespace Terraria.ModLoader.Core
 					if (dep.target == null || !nameMap.TryGetValue(dep.mod, out var inst))
 						continue;
 
-					if (inst.properties.version < dep.target) {
+					if (inst.Version < dep.target) {
 						errored.Add(mod);
-						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyVersionTooLow", mod, dep.target, dep.mod, inst.properties.version));
+						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorDependencyVersionTooLow", mod, dep.target, dep.mod, inst.Version));
 					}
-					else if (inst.properties.version.Major != dep.target.Major) {
+					else if (inst.Version.Major != dep.target.Major) {
 						errored.Add(mod);
-						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorMajorVersionMismatch", mod, dep.target, dep.mod, inst.properties.version));
+						errorLog.AppendLine(Language.GetTextValue("tModLoader.LoadErrorMajorVersionMismatch", mod, dep.target, dep.mod, inst.Version));
 					}
 				}
 
@@ -461,117 +465,77 @@ namespace Terraria.ModLoader.Core
 			}
 		}
 
-		private static readonly Regex PublishFolderMetadata = new Regex(@"[/|\\]([0-9]{4}[.][0-9]{1,2})[/|\\]");
+		internal static LocalMod GetStableModInWorkshopRepo(string repo)
+			=> ParseMods(ModLocation.Workshop, Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories))
+				.OrderByDescending(mod => mod.tModLoaderVersion)
+				.Where(mod => StableTMLVersion >= mod.tModLoaderVersion.MajorMinor())
+				.FirstOrDefault();
 
-		internal static string GetActiveTmodInRepo(string repo) {
-			Version tmodVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-			if (tmods.Length == 1)
-				return tmods[0];
-
-			string val = null;
-			Version currVersion = null;
-			foreach (string fileName in tmods) {
-				var match = PublishFolderMetadata.Match(fileName);
-
-				if (match.Success) {
-					Version testVers = new Version(match.Groups[1].Value);
-					if (testVers > tmodVersion) {
-						continue;
-					}
-					else if (testVers == currVersion) {
-						val = fileName;
-						break;
-					}
-					else if (testVers > currVersion) {
-						currVersion = testVers;
-						val = fileName;
-					}
-				}
-				else if (val == null) {
-					val = fileName;
-					currVersion = new Version(0, 12);
-				}
-			}
-			return val;
-		}
+		private static readonly Regex PublishFolderNameRegex = new(@"[0-9]{4}[.][0-9]{1,2}", RegexOptions.Compiled);
+		private static bool IsVersionedPublishFolder(string folderPath) => PublishFolderNameRegex.IsMatch(Path.GetFileName(folderPath));
 
 		internal static void CleanupOldPublish(string repo) {
-			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-			if (tmods.Length <= 3)
-				return;
 
-			string location = FindOldest(repo);
-			if (location.EndsWith(".tmod"))
-				File.Delete(location);
-			else
-				Directory.Delete(location, true);
-		}
+			var folders = new List<(Version version, string path)>();
+			foreach (var modPath in Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories)) {
+				var dir = Path.GetDirectoryName(modPath);
 
-		internal static string FindOldest(string repo) {
-			string[] tmods = Directory.GetFiles(repo, "*.tmod", SearchOption.AllDirectories);
-			if (tmods.Length == 1)
-				return tmods[0];
+				// delete old tmods which weren't in versioned publish folders
+				if (!IsVersionedPublishFolder(dir))
+					File.Delete(modPath);
 
-			string val = null;
-			Version currVersion = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
-			foreach (string fileName in tmods) {
-				var match = PublishFolderMetadata.Match(fileName);
-
-				if (match.Success) {
-					Version testVers = new Version(match.Groups[1].Value);
-					if (testVers > currVersion) {
-						continue;
-					}
-					else {
-						val = Directory.GetParent(fileName).ToString();
-						currVersion = testVers;
-					}
-				}
-				else {
-					val = fileName;
-					break;
-				}
+				folders.Add((new Version(Path.GetFileName(dir)), dir));
 			}
 
-			return val;
+			var toDelete = folders.OrderByDescending(e => e.version).Skip(2).ToList();
+			foreach (var (_, dir) in toDelete)
+				Directory.Delete(dir, true);
+		}
+
+		internal static Version PreviousMonth(Version version) {
+			return new Version(version.Minor > 1 ? version.Major : version.Major - 1, version.Minor > 1 ? version.Minor - 1 : 12);
+		}
+
+		private static Version _stableTMLVersion;
+		public static Version StableTMLVersion => _stableTMLVersion ??= ComputeStableTMLVersion();
+
+		private static Version ComputeStableTMLVersion() {
+			if (BuildInfo.IsDev)
+				throw new Exception("Cannot determine stable version from a dev build");
+
+			int year = BuildInfo.tMLVersion.Major;
+			int month = BuildInfo.tMLVersion.Minor;
+			if (BuildInfo.IsPreview) {
+				if (month == 1) { year--; month = 12; }
+				else { month --; }
+			}
+			return new Version(year, month);
 		}
 
 		internal static void DeleteMod(LocalMod tmod) {
-			string tmodPath = tmod.modFile.path;
-			string parentDir = GetParentDir(tmodPath);
-
-			if (TryReadManifest(parentDir, out var info)) {
+			if (TryReadManifest(tmod.modFile, out var info, out var workshopDir)) {
 				// Is a mod on Steam Workshop
 				var modManager = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
-				modManager.Uninstall(parentDir);
+				modManager.Uninstall(workshopDir);
 			}
 			else {
 				// Is a Mod in Mods Folder
-				File.Delete(tmodPath);
+				File.Delete(tmod.modFile.path);
 			}
 		}
 
-		internal static bool TryReadManifest(string parentDir, out FoundWorkshopEntryInfo info) {
+		// TODO, does this need to be merged with WorkshopSocialModule.TryGetInfoForMod? There's some extra checks there. Are they necessary?
+		internal static bool TryReadManifest(TmodFile mod, out FoundWorkshopEntryInfo info, out string workshopDir) {
 			info = null;
-			if (!parentDir.Contains(Path.Combine("steamapps", "workshop")))
+
+			workshopDir = Path.GetDirectoryName(mod.path);
+			if (IsVersionedPublishFolder(workshopDir))
+				workshopDir = Path.GetDirectoryName(workshopDir);
+
+			if (!workshopDir.Contains(Path.Combine("steamapps", "workshop"))) // contains path separator, not the most reliable detection method
 				return false;
 
-			string manifest = parentDir + Path.DirectorySeparatorChar + "workshop.json";
-
-			return AWorkshopEntry.TryReadingManifest(manifest, out info);
-		}
-
-		internal static string GetParentDir(string tmodPath) {
-			string parentDir = Directory.GetParent(tmodPath).ToString();
-			if (!tmodPath.Contains("workshop", StringComparison.InvariantCultureIgnoreCase))
-				return parentDir;
-
-			var match = PublishFolderMetadata.Match(parentDir + Path.DirectorySeparatorChar);
-			if (match.Success)
-				parentDir = Directory.GetParent(parentDir).ToString();
-
-			return parentDir;
+			return AWorkshopEntry.TryReadingManifest(Path.Combine(workshopDir, "workshop.json"), out info);
 		}
 	}
 }

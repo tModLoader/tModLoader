@@ -323,11 +323,6 @@ namespace Terraria.ModLoader.Core
 
 			fileStream.Position = pos;
 
-			if (TModLoaderVersion < new Version(0, 11)) {
-				Upgrade();
-				return;
-			}
-
 			// read hashed/signed mod info
 			Name = reader.ReadString();
 			Version = new Version(reader.ReadString());
@@ -388,44 +383,6 @@ namespace Terraria.ModLoader.Core
 		public void ResetCache() {
 			foreach (var f in fileTable)
 				f.cachedBytes = null;
-		}
-
-		private void Upgrade() {
-			Interface.loadMods.SubProgressText = $"Upgrading: {Path.GetFileName(path)}";
-			Logging.tML.InfoFormat("Upgrading: {0}", Path.GetFileName(path));
-
-			using (var deflateStream = new DeflateStream(fileStream, CompressionMode.Decompress, true))
-			using (var reader = new BinaryReader(deflateStream)) {
-				Name = reader.ReadString();
-				Version = new Version(reader.ReadString());
-
-				int count = reader.ReadInt32();
-				for (int i = 0; i < count; i++)
-					AddFile(reader.ReadString(), reader.ReadBytes(reader.ReadInt32()));
-			}
-
-			// update buildVersion
-			var info = BuildProperties.ReadModFile(this);
-			info.buildVersion = TModLoaderVersion;
-			// TODO should be turn this into .info? Generally files starting with . are ignored, at least on Windows (and are much harder to accidentally delete or even manually create)
-			AddFile("Info", info.ToBytes());
-
-			// make a backup
-			fileStream.Seek(0, SeekOrigin.Begin);
-			var backupFolder = Path.Combine(Path.GetDirectoryName(path), "UpgradeBackup");
-			Directory.CreateDirectory(backupFolder);
-			using (var backupStream = File.OpenWrite(Path.Combine(backupFolder, Path.GetFileName(path))))
-				fileStream.CopyTo(backupStream);
-
-			// close stream before upgrade
-			Close();
-			// write to the new format (also updates the file offset table)
-			Save();
-			// clear all the file contents from AddFile
-			ResetCache();
-			// Save closes the file so re-open it
-			Open();
-			// Read contract fulfilled
 		}
 	}
 }

@@ -145,7 +145,7 @@ namespace Terraria.ModLoader.UI
 				}
 				else if (ModLoader.PreviewFreezeNotification) {
 					ModLoader.PreviewFreezeNotification = false;
-					ModLoader.LastPreviewFreezeNotificationSeen = new Version(BuildInfo.tMLVersion.Major, BuildInfo.tMLVersion.Minor);
+					ModLoader.LastPreviewFreezeNotificationSeen = BuildInfo.tMLVersion.MajorMinor();
 					infoMessage.Show(Language.GetTextValue("tModLoader.MonthlyFreezeNotification"), Main.menuMode, null, Language.GetTextValue("tModLoader.ModsMoreInfo"),
 						() => {
 							SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -352,7 +352,7 @@ namespace Terraria.ModLoader.UI
 			while (!exit) {
 				Console.WriteLine("Terraria Server " + Main.versionNumber2 + " - " + ModLoader.versionedName);
 				Console.WriteLine();
-				var mods = ModOrganizer.FindMods(logDuplicates: true);
+				var mods = ModOrganizer.FindMods();
 				for (int k = 0; k < mods.Length; k++) {
 					Console.Write((k + 1) + "\t\t" + mods[k].DisplayName);
 					Console.WriteLine(" (" + (mods[k].Enabled ? "enabled" : "disabled") + ")");

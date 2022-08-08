@@ -16,18 +16,16 @@ namespace Terraria.ModLoader
 	{
 		internal class ModHeader
 		{
-			public string name;
-			public Version version;
-			public byte[] hash;
-			public bool signed;
-			public string path;
+			public readonly string name;
+			public readonly Version version;
+			public readonly byte[] hash;
+			public readonly ulong workshopEntryId;
 
-			public ModHeader(string name, Version version, byte[] hash, bool signed) {
+			public ModHeader(string name, Version version, byte[] hash, ulong workshopEntryId) {
 				this.name = name;
 				this.version = version;
 				this.hash = hash;
-				this.signed = signed;
-				path = Path.Combine(ModLoader.ModPath, name + ".tmod");
+				this.workshopEntryId = workshopEntryId;
 			}
 
 			public bool Matches(TmodFile mod) => name == mod.Name && version == mod.Version && hash.SequenceEqual(mod.Hash);
@@ -70,7 +68,6 @@ namespace Terraria.ModLoader
 		internal static INetDiagnosticsUI ModNetDiagnosticsUI { get; private set; }
 
 		private static Queue<ModHeader> downloadQueue = new Queue<ModHeader>();
-		internal static List<NetConfig> pendingConfigs = new List<NetConfig>();
 		private static ModHeader downloadingMod;
 		private static FileStream downloadingFile;
 		private static long downloadingLength;
@@ -135,7 +132,8 @@ namespace Terraria.ModLoader
 				p.Write(mod.Name);
 				p.Write(mod.Version.ToString());
 				p.Write(mod.File.Hash);
-				p.Write(mod.File.ValidModBrowserSignature);
+				ulong workshopEntryId = ModOrganizer.TryReadManifest(mod.File, out var info, out _) ? info.workshopEntryId : 0;
+				p.Write(workshopEntryId);
 				SendServerConfigs(p, mod);
 			}
 
@@ -183,93 +181,89 @@ namespace Terraria.ModLoader
 
 		// This method is split so that the local variables aren't held by the GC when reloading
 		internal static bool SyncClientMods(BinaryReader reader, out bool needsReload) {
+			downloadQueue.Clear();
+			needsReload = false;
+
 			AllowVanillaClients = reader.ReadBoolean();
 			Logging.tML.Info($"Server reports AllowVanillaClients set to {AllowVanillaClients}");
 
 			Main.statusText = Language.GetTextValue("tModLoader.MPSyncingMods");
-			Mod[] clientMods = ModLoader.Mods;
-			LocalMod[] modFiles = ModOrganizer.FindMods(); // TODO: find all versions of mods, regardless of if a local is present
-			needsReload = false;
-			downloadQueue.Clear();
-			pendingConfigs.Clear();
-			var syncList = new List<ModHeader>();
-			var syncSet = new HashSet<string>();
-			var blockedList = new List<ModHeader>();
+			var (syncMods, syncConfigs) = ReadSyncModList(reader);
+
+
+			var toDisable = ModLoader.Mods.Where(m => m.Side == ModSide.Both && !syncMods.Any(h => h.name == m.Name)).ToArray();
+			if (toDisable.Any()) {
+				needsReload = true;
+				ModLoader.DisableMods(toDisable.Select(m => m.Name));
+			}
+
+			// remove mods which are already loaded
+			syncMods.RemoveAll(h => ModLoader.Mods.Any(m => m.File != null && h.Matches(m.File)));
+
+			if (syncMods.Any()) {
+				needsReload = true;
+				ModLoader.EnableMods(syncMods.Select(h => h.name));
+
+				// just needed to be enabled
+				syncMods.RemoveAll(h => ModOrganizer.FoundMods.Any(m => h.Matches(m.modFile)));
+
+				var specificVersions = syncMods.ToArray();
+				// already in the dev folder
+				syncMods.RemoveAll(h => ModOrganizer.AllFoundMods.Any(m => m.location == ModLocation.Dev && h.Matches(m.modFile)));
+			}
+
+			if (syncMods.Any()) {
+				var toSubscribe = syncMods.Where(h => h.workshopEntryId != 0 && !ModOrganizer.AllFoundMods.Any(m => m.location == ModLocation.Workshop && m.Name == h.name));
+				// TODO, investigate
+				Social.Steam.WorkshopHelper.ModManager.DownloadBatch(toSubscribe.Select(h => h.workshopEntryId.ToString()).ToArray(), null);
+				// 
+
+				if (!downloadModsFromServers) {
+					// throw 
+				}
+
+				var blockedList = syncMods.Where(d => !downloadModsFromServers || onlyDownloadSignedMods && !d.signed).ToList();
+				if (blockedList.Any()) {
+					string msg = Language.GetTextValue("tModLoader.MPServerModsCantDownload");
+					msg += downloadModsFromServers
+						? Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonSigned")
+						: Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonAutomaticDownloadDisabled");
+					msg += ".\n" + Language.GetTextValue("tModLoader.MPServerModsCantDownloadChangeSettingsHint") + "\n";
+					foreach (ModHeader mod in blockedList)
+						msg += "\n    " + mod;
+
+					Logging.tML.Warn(msg);
+					Interface.errorMessage.Show(msg, 0);
+					return false;
+				}
+
+				downloadQueue = new Queue<ModHeader>(syncMods);
+				Logging.tML.Debug($"Download queue: " + string.Join(", ", downloadQueue));
+			}
+
+			ConfigManager.ApplyConfigs(syncConfigs, ref needsReload);
+			return true;
+		}
+
+		private static (List<ModHeader>, List<NetConfig>) ReadSyncModList(BinaryReader reader) {
+			var mods = new List<ModHeader>();
+			var configs = new List<NetConfig>();
 
 			int n = reader.ReadInt32();
 			for (int i = 0; i < n; i++) {
-				var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadBoolean());
-				syncList.Add(header);
-				syncSet.Add(header.name);
+				var header = new ModHeader(reader.ReadString(), new Version(reader.ReadString()), reader.ReadBytes(20), reader.ReadUInt64());
+				mods.Add(header);
 
 				int configCount = reader.ReadInt32();
 				for (int c = 0; c < configCount; c++)
-					pendingConfigs.Add(new NetConfig(header.name, reader.ReadString(), reader.ReadString()));
-
-				Mod clientMod = clientMods.SingleOrDefault(m => m.Name == header.name);
-				if (clientMod != null && header.Matches(clientMod.File))
-					continue;
-
-				needsReload = true;
-
-				LocalMod[] localVersions = modFiles.Where(m => m.Name == header.name).ToArray();
-				LocalMod matching = Array.Find(localVersions, mod => header.Matches(mod.modFile));
-				if (matching != null) {
-					matching.Enabled = true;
-					continue;
-				}
-
-				// overwrite an existing version of the mod if there is one
-				if (localVersions.Length > 0)
-					header.path = localVersions[0].modFile.path;
-
-				if (downloadModsFromServers && (header.signed || !onlyDownloadSignedMods))
-					downloadQueue.Enqueue(header);
-				else
-					blockedList.Add(header);
+					configs.Add(new NetConfig(header.name, reader.ReadString(), reader.ReadString()));
 			}
 
-			Logging.tML.Debug($"Server mods: "+string.Join(", ", syncList));
-			Logging.tML.Debug($"Download queue: "+string.Join(", ", downloadQueue));
-			if (pendingConfigs.Any())
-				Logging.tML.Debug($"Configs:\n\t\t" + string.Join("\n\t\t", pendingConfigs));
+			Logging.tML.Debug($"Server mods: " + string.Join(", ", mods));
+			if (configs.Any())
+				Logging.tML.Debug($"Configs:\n\t\t" + string.Join("\n\t\t", configs));
 
-
-			foreach (Mod mod in clientMods)
-				if (mod.Side == ModSide.Both && !syncSet.Contains(mod.Name)) {
-					ModLoader.DisableMod(mod.Name);
-					needsReload = true;
-				}
-
-			if (blockedList.Count > 0) {
-				string msg = Language.GetTextValue("tModLoader.MPServerModsCantDownload");
-				msg += downloadModsFromServers
-					? Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonSigned")
-					: Language.GetTextValue("tModLoader.MPServerModsCantDownloadReasonAutomaticDownloadDisabled");
-				msg += ".\n" + Language.GetTextValue("tModLoader.MPServerModsCantDownloadChangeSettingsHint") + "\n";
-				foreach (ModHeader mod in blockedList)
-					msg += "\n    " + mod;
-
-				Logging.tML.Warn(msg);
-				Interface.errorMessage.Show(msg, 0);
-				return false;
-			}
-
-			// ready to connect, apply configs. Config manager will apply the configs on reload automatically
-			if (!needsReload) {
-				foreach (NetConfig pendingConfig in pendingConfigs)
-					JsonConvert.PopulateObject(pendingConfig.json, ConfigManager.GetConfig(pendingConfig), ConfigManager.serializerSettingsCompact);
-
-				if (ConfigManager.AnyModNeedsReload()) {
-					needsReload = true;
-				}
-				else {
-					foreach (NetConfig pendingConfig in pendingConfigs)
-						ConfigManager.GetConfig(pendingConfig).OnChanged();
-				}
-			}
-
-			return true;
+			return (mods, configs);
 		}
 
 		private static void DownloadNextMod() {

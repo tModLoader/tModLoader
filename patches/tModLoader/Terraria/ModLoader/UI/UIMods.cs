@@ -258,7 +258,7 @@ namespace Terraria.ModLoader.UI
 			}
 
 			// If auto reloading required mods is enabled, check if any mods need reloading and reload as required
-			if (ModLoader.autoReloadRequiredModsLeavingModsScreen && items.Count(i => i.NeedsReload) > 0) {
+			if (ModLoader.autoReloadRequiredModsLeavingModsScreen && items.Any(i => i.NeedsReload)) {
 				Main.menuMode = Interface.reloadModsID;
 				return;
 			}
@@ -396,7 +396,7 @@ namespace Terraria.ModLoader.UI
 
 		internal void Populate() {
 			Task.Run(() => {
-				var mods = ModOrganizer.FindMods(logDuplicates: true);
+				var mods = ModOrganizer.FindMods();
 				foreach (var mod in mods) {
 					UIModItem modItem = new UIModItem(mod);
 					modItem.Activate();

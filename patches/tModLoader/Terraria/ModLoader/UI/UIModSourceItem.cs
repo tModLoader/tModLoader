@@ -316,7 +316,7 @@ namespace Terraria.ModLoader.UI
 				var modPath = Path.Combine(ModLoader.ModPath, modName + ".tmod");
 				var modFile = new TmodFile(modPath);
 				using (modFile.Open()) // savehere, -tmlsavedirectory, normal (test linux too)
-					localMod = new LocalMod(modFile);
+					localMod = new LocalMod(ModLocation.Dev, modFile);
 
 				string icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon_workshop.png");
 				if (!File.Exists(icon))
@@ -336,20 +336,16 @@ namespace Terraria.ModLoader.UI
 		}
 
 		private static void PublishModInner(LocalMod mod, string iconPath) {
-			var modFile = mod.modFile;
 			var bp = mod.properties;
 
-			if (bp.buildVersion != modFile.TModLoaderVersion)
-				throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
-
-			var changeLogFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "changelog.txt");
+			var changeLogFile = Path.Combine(ModCompile.ModSourcePath, mod.Name, "changelog.txt");
 			string changeLog;
 			if (File.Exists(changeLogFile))
 				changeLog = File.ReadAllText(changeLogFile);
 			else
 				changeLog = "";
 
-			var workshopDescFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "description_workshop.txt");
+			var workshopDescFile = Path.Combine(ModCompile.ModSourcePath, mod.Name, "description_workshop.txt");
 			string workshopDesc;
 			if (File.Exists(workshopDescFile))
 				workshopDesc = File.ReadAllText(workshopDescFile);
@@ -360,14 +356,14 @@ namespace Terraria.ModLoader.UI
 			{
 				{ "displayname", bp.displayName },
 				{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
-				{ "name", modFile.Name },
-				{ "version", $"v{bp.version}" },
+				{ "name", mod.Name },
+				{ "version", $"v{mod.Version}" },
 				{ "author", bp.author },
 				{ "homepage", bp.homepage },
 				{ "description", workshopDesc },
 				{ "iconpath", iconPath },
-				{ "sourcesfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
-				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
+				{ "sourcesfolder", Path.Combine(ModCompile.ModSourcePath, mod.Name) },
+				{ "modloaderversion", $"tModLoader v{mod.tModLoaderVersion}" },
 				{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
 				{ "modside", bp.side.ToFriendlyString() },
 				{ "changelog" , changeLog }
@@ -380,7 +376,7 @@ namespace Terraria.ModLoader.UI
 				throw new WebException($"You need to specify a version in build.txt");
 
 			if (!Main.dedServ) {
-				Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
+				Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, mod.modFile, values));
 			}
 			else {
 				SocialAPI.LoadSteam();
@@ -391,7 +387,7 @@ namespace Terraria.ModLoader.UI
 					PreviewImagePath = iconPath
 				};
 				WorkshopHelper.ModManager.SteamUser = true;
-				SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
+				SocialAPI.Workshop.PublishMod(mod.modFile, values, publishSetttings);
 			}
 		}
 	}

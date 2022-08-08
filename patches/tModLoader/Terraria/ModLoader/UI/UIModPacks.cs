@@ -230,9 +230,8 @@ namespace Terraria.ModLoader.UI
 				*/
 
 				// Export Publish ID information from Steam Workshop mods for easy re-downloading/downloading
-				if (ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(mod.File.path), out var info)) {
+				if (ModOrganizer.TryReadManifest(mod.File, out var info, out _))
 					workshopIds.Add(info.workshopEntryId.ToString());
-				}
 
 				// Copy the frozen mod to the Mod Pack if its different/new
 				if (mod.File.path != Path.Combine(modsPath, mod.Name + ".tmod"))

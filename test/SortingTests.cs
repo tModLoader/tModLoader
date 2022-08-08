@@ -21,7 +21,7 @@ namespace Terraria.ModLoader
 			ModSide side = ModSide.Both, string version = null,
 			IEnumerable<string> refs = null, IEnumerable<string> weakRefs = null,
 			IEnumerable<string> sortAfter = null, IEnumerable<string> sortBefore = null) {
-			return new LocalMod(new TmodFile(null, name), new BuildProperties {
+			return new LocalMod(default, new TmodFile(null, name), new BuildProperties {
 				side = side,
 				version = new Version(version ?? "1.0.0.0"),
 				modReferences = refs?.Select(BuildProperties.ModReference.Parse).ToArray() ?? new BuildProperties.ModReference[0],

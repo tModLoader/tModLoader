@@ -89,15 +89,14 @@ namespace Terraria.ModLoader.Config
 		}
 
 		internal static void Load(ModConfig config) {
-			string filename = config.Mod.Name + "_" + config.Name + ".json";
-			string path = Path.Combine(ModConfigPath, filename);
-
-			if (config.Mode == ConfigScope.ServerSide && ModNet.NetReloadActive) { // #999: Main.netMode isn't 1 at this point due to #770 fix.
-				string netJson = ModNet.pendingConfigs.Single(x => x.modname == config.Mod.Name && x.configname == config.Name).json;
+			if (config.Mode == ConfigScope.ServerSide && NetConfigs != null) { // #999: Main.netMode isn't 1 at this point due to #770 fix.
+				string netJson = NetConfigs.Single(x => x.modname == config.Mod.Name && x.configname == config.Name).json;
 				JsonConvert.PopulateObject(netJson, config, serializerSettingsCompact);
 				return;
 			}
 
+			string filename = config.Mod.Name + "_" + config.Name + ".json";
+			string path = Path.Combine(ModConfigPath, filename);
 			bool jsonFileExists = File.Exists(path);
 			string json = jsonFileExists ? File.ReadAllText(path) : "{}";
 
@@ -141,11 +140,28 @@ namespace Terraria.ModLoader.Config
 			Interface.modConfigList.Unload();
 		}
 
+		internal static void ApplyConfigs(List<ModNet.NetConfig> syncConfigs, ref bool needsReload) {
+			NetConfigs = syncConfigs;
+			if (needsReload) return;
+
+			// try applying the configs
+			foreach (var netConfig in syncConfigs)
+				JsonConvert.PopulateObject(netConfig.json, GetConfig(netConfig), serializerSettingsCompact);
+
+			if (AnyModNeedsReload()) {
+				needsReload = true;
+				return;
+			}
+
+			NetConfigs = null;
+			foreach (var netConfig in syncConfigs)
+				GetConfig(netConfig).OnChanged();
+		}
+
 		internal static bool AnyModNeedsReload() => ModLoader.Mods.Any(ModNeedsReload);
 
 		internal static bool ModNeedsReload(Mod mod) {
-			if (Configs.ContainsKey(mod)) {
-				var configs = Configs[mod];
+			if (Configs.TryGetValue(mod, out var configs)) {
 				var loadTimeConfigs = ConfigManager.loadTimeConfigs[mod];
 				for (int i = 0; i < configs.Count; i++) {
 					if (loadTimeConfigs[i].NeedsReload(configs[i])) {
@@ -157,7 +173,8 @@ namespace Terraria.ModLoader.Config
 		}
 
 		// GetConfig...returns the config instance
-		internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
+		internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
+
 		internal static ModConfig GetConfig(Mod mod, string config) {
 			if (Configs.TryGetValue(mod, out List<ModConfig> configs)) {
 				return configs.Single(x => x.Name == config);

@@ -111,7 +111,7 @@ namespace Terraria.ModLoader
 			if (!Unload())
 				return;
 
-			var availableMods = ModOrganizer.FindMods(logDuplicates: true);
+			var availableMods = ModOrganizer.FindMods();
 			try {
 				var modsToLoad = ModOrganizer.SelectAndSortMods(availableMods, token);
 				var modInstances = AssemblyManager.InstantiateMods(modsToLoad, token);
@@ -152,7 +152,7 @@ namespace Terraria.ModLoader
 				if (responsibleMods.Count == 1) {
 					var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
 					if (mod != null)
-						msg += $" v{mod.properties.version}";
+						msg += $" v{mod.Version}";
 					if (mod != null && mod.tModLoaderVersion != BuildInfo.tMLVersion)
 						msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
 					if (e is Exceptions.JITException)

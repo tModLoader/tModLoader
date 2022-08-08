@@ -348,7 +348,7 @@ namespace Terraria.ModLoader.UI
 
 		private static void EnableList(UIMouseEvent evt, UIElement listeningElement) {
 			UIModPackItem modListItem = (UIModPackItem)listeningElement.Parent;
-			foreach (var mod in ModOrganizer.FindMods()) {
+			foreach (var mod in ModOrganizer.FoundMods) {
 				mod.Enabled = modListItem._mods.Contains(mod.Name);
 			}
 

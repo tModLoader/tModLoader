@@ -152,7 +152,7 @@ namespace Terraria.Social.Steam
 
 			internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId) {
 				publishId = 0;
-				if (modFile == null || !ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(modFile.path), out var info))
+				if (modFile == null || !ModOrganizer.TryReadManifest(modFile, out var info, out _))
 					return false;
 
 				publishId = info.workshopEntryId;
@@ -480,8 +480,6 @@ namespace Terraria.Social.Steam
 				Items.Clear();
 				ErrorState = EResult.k_EResultNone;
 
-				AQueryInstance.InstalledMods = ModOrganizer.FindWorkshopMods();
-
 				if (!ModManager.SteamAvailable) {
 					if (!ModManager.TryInitViaGameServer()) {
 						Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
@@ -494,11 +492,13 @@ namespace Terraria.Social.Steam
 					}
 				}
 
-				if (!new AQueryInstance().QueryAllPagesSerial())
-					return false;
-
-				AQueryInstance.InstalledMods = null;
-				return true;
+				try {
+					AQueryInstance.InstalledMods = ModOrganizer.FindAllMods().Where(m => m.location == ModLocation.Workshop).ToArray();
+					return new AQueryInstance().QueryAllPagesSerial();
+				}
+				finally {
+					AQueryInstance.InstalledMods = null;
+				}
 			}
 
 			internal static bool HandleError(EResult eResult) {

@@ -221,7 +221,7 @@ namespace Terraria.ModLoader.UI
 		internal void Populate() {
 			Task.Run(() => {
 				var modSources = ModCompile.FindModSources();
-				var modFiles = ModOrganizer.FindDevFolderMods();
+				var modFiles = ModOrganizer.FindAllMods().Where(m => m.location == ModLocation.Dev);
 				foreach (string sourcePath in modSources) {
 					var builtMod = modFiles.SingleOrDefault(m => m.Name == Path.GetFileName(sourcePath));
 					_items.Add(new UIModSourceItem(sourcePath, builtMod));
