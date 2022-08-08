@@ -17,6 +17,8 @@ using Terraria.Initializers;
 using Terraria.ModLoader.Assets;
 using ReLogic.Content;
 using System.Runtime.CompilerServices;
+using Microsoft.Xna.Framework;
+using System.Text;
 
 namespace Terraria.ModLoader
 {
@@ -145,6 +147,7 @@ namespace Terraria.ModLoader
 #pragma warning restore CA2016
 			}
 			catch (Exception e) {
+				var errorDisplay = new ErrorDisplay();
 				var responsibleMods = new List<string>();
 
 				if (e.Data.Contains("mod"))
@@ -155,32 +158,34 @@ namespace Terraria.ModLoader
 
 				responsibleMods.Remove("ModLoader");
 
-				if (responsibleMods.Count == 0 && AssemblyManager.FirstModInStackTrace(new StackTrace(e), out var stackMod))
+				if (responsibleMods.Count == 0 && AssemblyManager.FirstModInStackTrace(new StackTrace(e), out string stackMod))
 					responsibleMods.Add(stackMod);
+				
+				var msg = new StringBuilder();
 
-				string msg = Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods));
+				msg.Append(Language.GetTextValue("tModLoader.LoadError", string.Join(", ", responsibleMods.Select(m => $"[c/{ErrorDisplay.HighlightColorHex}:{m}]"))));
 
 				if (responsibleMods.Count == 1) {
 					var mod = availableMods.FirstOrDefault(m => m.Name == responsibleMods[0]); //use First rather than Single, incase of "Two mods with the same name" error message from ModOrganizer (#639)
 
 					if (mod != null) {
-						msg += $" v{mod.properties.version}";
+						msg.Append($" [c/{ErrorDisplay.HighlightColorHex}:v{mod.properties.version}]");
 
 						if (mod.tModLoaderVersion != BuildInfo.tMLVersion)
-							msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName);
+							msg.Append($"\r\n[c/{ErrorDisplay.WarningColorHex}:{Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName)}]");
 					}
 
 					if (e is Exceptions.JITException)
-						msg += "\n" + $"The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.";
+						msg.Append($"\r\n[c/{ErrorDisplay.WarningColorHex}:The mod will need to be updated to match the current tModLoader version, or may be incompatible with the version of some of your other mods. Click the '{Language.GetTextValue("tModLoader.OpenWebHelp")}' button to learn more.]");
 				}
-
+				
 				if (responsibleMods.Count > 0)
-					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled");
+					msg.Append("\r\n" + Language.GetTextValue("tModLoader.LoadErrorDisabled"));
 				else
-					msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorCulpritUnknown");
+					msg.Append("\r\n" + Language.GetTextValue("tModLoader.LoadErrorCulpritUnknown"));
 
 				if (e is ReflectionTypeLoadException reflectionTypeLoadException)
-					msg += "\n\n" + string.Join("\n", reflectionTypeLoadException.LoaderExceptions.Select(x => x.Message));
+					msg.Append($"\r\n\r\n[c/{ErrorDisplay.ErrorColorHex}:{string.Join("\r\n", reflectionTypeLoadException.LoaderExceptions.Select(x => x.Message))}]");
 
 				Logging.tML.Error(msg, e);
 
@@ -189,7 +194,7 @@ namespace Terraria.ModLoader
 
 				isLoading = false; // Disable loading flag, because server will just instantly retry reload
 				
-				DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
+				ErrorDisplay.DisplayLoadError(msg, e, e.Data.Contains("fatal"), responsibleMods.Count == 0);
 			}
 			finally {
 				isLoading = false;
@@ -218,13 +223,15 @@ namespace Terraria.ModLoader
 				return true;
 			}
 			catch (Exception e) {
-				var msg = Language.GetTextValue("tModLoader.UnloadError");
+				var msg = new StringBuilder();
+
+				msg.Append(Language.GetTextValue("tModLoader.UnloadError"));
 
 				if (e.Data.Contains("mod"))
-					msg += "\n" + Language.GetTextValue("tModLoader.DefensiveUnload", e.Data["mod"]);
+					msg.Append($"\r\n{Language.GetTextValue("tModLoader.DefensiveUnload", e.Data["mod"])}");
 
-				Logging.tML.Fatal(msg, e);
-				DisplayLoadError(msg, e, true);
+				Logging.tML.Fatal(ErrorDisplay.RemoveTextFormatting(msg.ToString()), e);
+				ErrorDisplay.DisplayLoadError(msg, e, true);
 
 				return false;
 			}
@@ -259,33 +266,6 @@ namespace Terraria.ModLoader
 				else {
 					Logging.tML.WarnFormat($"{alcName} AssemblyLoadContext still using memory. Some classes are being held by Terraria or another mod. Use a heap dump to figure out why.");
 				}
-			}
-		}
-
-		private static void DisplayLoadError(string msg, Exception e, bool fatal, bool continueIsRetry = false)
-		{
-			msg += "\n\n" + (e.Data.Contains("hideStackTrace") ? e.Message : e.ToString());
-
-			if (Main.dedServ) {
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine(msg);
-				Console.ResetColor();
-
-				if (fatal) {
-					Console.WriteLine("Press any key to exit...");
-					Console.ReadKey();
-					Environment.Exit(-1);
-				}
-				else {
-					Reload();
-				}
-			}
-			else {
-				Interface.errorMessage.Show(msg,
-					gotoMenu: fatal ? -1 : Interface.reloadModsID,
-					webHelpURL: e.HelpLink,
-					continueIsRetry: continueIsRetry,
-					showSkip: !fatal);
 			}
 		}
 
