@@ -48,6 +48,12 @@ COPY --from=builder /etc/ssl/certs /etc/ssl/certs
 COPY --from=builder /lib/i386-linux-gnu /lib/
 COPY --from=builder /root/installer/linux32/libstdc++.so.6 /lib/
 
+# Fixes conflicting libraries between steamcmd and dotnet
+RUN mkdir /steamlib \
+ && mv /lib/libstdc++.so.6 /steamlib \
+ && mv /lib/libgcc_s.so.1 /steamlib
+ENV LD_LIBRARY_PATH /steamlib
+
 # Create tModLoader user and drop root permissions
 RUN adduser tml -h /home/tml -D
 USER tml
@@ -58,10 +64,8 @@ WORKDIR $HOME
 # Update SteamCMD and verify latest version
 RUN steamcmd +quit
 
-RUN mkdir -p $HOME/.local/share/Terraria/scriptdir \
- && cd $HOME/.local/share/Terraria/scriptdir \
 #NOTE: Update url before merging
- && curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh \
+RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/Setup_tModLoaderServer.sh \
  && chmod u+x Setup_tModLoaderServer.sh \
  && ./Setup_tModLoaderServer.sh -i -g
 
