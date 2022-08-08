@@ -72,7 +72,7 @@ internal class ErrorDisplay
 		const string StringColorHex = "d68d5c";
 		const string NumberColorHex = "a9cd9e";
 
-		sb.AppendLine($"[c/{ErrorColorHex}:{exception.GetType().FullName}]: [c/{ErrorColorHex}:{exception.Message}]");
+		sb.AppendLine($"[c/{ErrorColorHex}:{exception.GetType().FullName}]: [c/{ErrorColorHex}:{exception.Message.Trim()}]");
 
 		if (exception.Data.Contains("hideStackTrace")) {
 			return;

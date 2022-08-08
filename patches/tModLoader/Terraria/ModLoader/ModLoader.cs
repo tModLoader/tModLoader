@@ -171,8 +171,15 @@ namespace Terraria.ModLoader
 					if (mod != null) {
 						msg.Append($" [c/{ErrorDisplay.HighlightColorHex}:v{mod.properties.version}]");
 
-						if (mod.tModLoaderVersion != BuildInfo.tMLVersion)
-							msg.Append($"\r\n[c/{ErrorDisplay.WarningColorHex}:{Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName)}]");
+						if (mod.tModLoaderVersion != BuildInfo.tMLVersion) {
+							string[] split = Language.GetTextValue("tModLoader.LoadErrorVersionMessage", mod.tModLoaderVersion, versionedName).Split(new[] { "\r\n", "\n" }, 0);
+
+							msg.AppendLine();
+
+							foreach (string line in split) {
+								msg.AppendLine($"[c/{ErrorDisplay.WarningColorHex}:{line}]");
+							}
+						}
 					}
 
 					if (e is Exceptions.JITException)
@@ -185,7 +192,7 @@ namespace Terraria.ModLoader
 					msg.Append("\r\n" + Language.GetTextValue("tModLoader.LoadErrorCulpritUnknown"));
 
 				if (e is ReflectionTypeLoadException reflectionTypeLoadException)
-					msg.Append($"\r\n\r\n[c/{ErrorDisplay.ErrorColorHex}:{string.Join("\r\n", reflectionTypeLoadException.LoaderExceptions.Select(x => x.Message))}]");
+					msg.Append($"\r\n\r\n{string.Join("\r\n", reflectionTypeLoadException.LoaderExceptions.Select(x => $"[c/{ErrorDisplay.ErrorColorHex}:{x.Message}]"))}");
 
 				Logging.tML.Error(msg, e);
 
