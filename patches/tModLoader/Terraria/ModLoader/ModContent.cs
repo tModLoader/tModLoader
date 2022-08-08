@@ -591,6 +591,10 @@ namespace Terraria.ModLoader
 			}
 
 			TileEntity.Clear(); // drop all possible references to mod TEs
+
+			// clear particles
+			Main.ParticleSystem_World_BehindPlayers.Particles.Clear();
+			Main.ParticleSystem_World_OverPlayers.Particles.Clear();
 		}
 
 		public static Stream OpenRead(string assetName, bool newFileStream = false) {
