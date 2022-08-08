@@ -3,10 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameInput;
 using Terraria.UI;
+using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI
 {
@@ -17,7 +19,7 @@ namespace Terraria.ModLoader.UI
 		private string _text;
 		private float _height;
 		private bool _heightNeedsRecalculating;
-		private readonly List<Tuple<string, float>> _drawTexts = new List<Tuple<string, float>>();
+		private TextSnippet[][] _textSnippets;
 
 		public UIMessageBox(string text) {
 			SetText(text);
@@ -44,55 +46,56 @@ namespace Terraria.ModLoader.UI
 			base.DrawSelf(spriteBatch);
 			CalculatedStyle space = GetInnerDimensions();
 			DynamicSpriteFont font = FontAssets.MouseText.Value;
-			float position = 0f;
+			
+			float textHeight = font.MeasureString("A").Y;
+			var drawPosition = new Vector2(space.X, space.Y);
+
 			if (Scrollbar != null) {
-				position = -Scrollbar.GetValue();
+				drawPosition.Y -= Scrollbar.GetValue();
 			}
-			foreach (var drawText in _drawTexts) {
-				if (position + drawText.Item2 > space.Height)
-					break;
-				if (position >= 0)
-					Utils.DrawBorderString(spriteBatch, drawText.Item1, new Vector2(space.X, space.Y + position), Color.White, 1f);
-				position += drawText.Item2;
+
+			if (_textSnippets != null) {
+				for (int y = 0; y < _textSnippets.Length; y++) {
+					var lineSnippets = _textSnippets[y];
+
+					ChatManager.DrawColorCodedStringWithShadow(spriteBatch, font, lineSnippets, drawPosition, 0f, Vector2.Zero, Vector2.One, out _);
+
+					drawPosition.Y += textHeight;
+				}
 			}
+
 			Recalculate();
 		}
 
 		public override void RecalculateChildren() {
 			base.RecalculateChildren();
-			if (!_heightNeedsRecalculating) {
+
+			_textSnippets = null;
+
+			if (!_heightNeedsRecalculating && _textSnippets != null) {
 				return;
 			}
+
 			CalculatedStyle space = GetInnerDimensions();
+
 			if (space.Width <= 0 || space.Height <= 0) {
 				return;
 			}
+
 			DynamicSpriteFont font = FontAssets.MouseText.Value;
-			_drawTexts.Clear();
-			float position = 0f;
 			float textHeight = font.MeasureString("A").Y;
-			foreach (string line in _text.Split('\n')) {
-				string drawString = line;
-				do {
-					string remainder = "";
-					while (font.MeasureString(drawString).X > space.Width) {
-						remainder = drawString[drawString.Length - 1] + remainder;
-						drawString = drawString.Substring(0, drawString.Length - 1);
-					}
-					if (remainder.Length > 0) {
-						int index = drawString.LastIndexOf(' ');
-						if (index >= 0) {
-							remainder = drawString.Substring(index + 1) + remainder;
-							drawString = drawString.Substring(0, index);
-						}
-					}
-					_drawTexts.Add(new Tuple<string, float>(drawString, textHeight));
-					position += textHeight;
-					drawString = remainder;
-				}
-				while (drawString.Length > 0);
+			var wrapResult = Utils.WordwrapStringSmart(_text, Color.White, font, (int)MathF.Floor(space.Width), (int)MathF.Floor(space.Height / textHeight));
+
+			_textSnippets = new TextSnippet[wrapResult.Count][];
+
+			for (int i = 0; i < _textSnippets.Length; i++) {
+				var list = wrapResult[i];
+				var array = _textSnippets[i] = new TextSnippet[list.Count];
+
+				list.CopyTo(array);
 			}
-			_height = position;
+
+			_height = _textSnippets.Length * textHeight;
 			_heightNeedsRecalculating = false;
 		}
 
