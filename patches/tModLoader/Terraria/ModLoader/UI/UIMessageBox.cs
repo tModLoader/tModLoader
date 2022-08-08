@@ -88,11 +88,16 @@ namespace Terraria.ModLoader.UI
 
 			_textSnippets = new TextSnippet[wrapResult.Count][];
 
-			for (int i = 0; i < _textSnippets.Length; i++) {
-				var list = wrapResult[i];
-				var array = _textSnippets[i] = new TextSnippet[list.Count];
+			for (int y = 0; y < _textSnippets.Length; y++) {
+				var list = wrapResult[y];
+				var array = _textSnippets[y] = new TextSnippet[list.Count];
 
 				list.CopyTo(array);
+
+				// Disable blinking
+				for (int x = 0; x < array.Length; x++) {
+					array[x].NoBlinking = true;
+				}
 			}
 
 			_height = _textSnippets.Length * textHeight;
