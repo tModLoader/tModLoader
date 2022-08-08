@@ -156,7 +156,7 @@ function updatetML {
 					fi
 				done
 
-				echo "Taring $oldver backup"
+				echo "Compressing $oldver backup"
 				tar czf $oldver.tar.gz $oldver/*
 				rm -r $oldver
 
@@ -280,6 +280,7 @@ Options:
  --username          The steam username to login with. Only applies when using steamcmd.
  --tmlversion        The version of tML to download. Only applies when using Github. This should be the exact tag off of Github (ex. v2022.06.96.4).
  --updatescript      Update the script to the latest version on Github.
+ --nomods            Don't install/update mods.
 
 When running --install and --update, enabled.json, install.txt, and any .tmod files will be checked for in the location of the script."
 	exit
@@ -289,6 +290,7 @@ When running --install and --update, enabled.json, install.txt, and any .tmod fi
 install=false
 update=false
 steamcmd=true # Use steamcmd by default. If someone doesn't want to use steamcmd, they probably don't have it installed and since it'll exit, they can specify --github next time
+nomods=false
 
 if [ $# -eq 0 ] # Check for no arguments
 then
@@ -336,6 +338,10 @@ do
 		--updatescript)
 			updateScript
 			;;
+		--nomods)
+			nomods=true
+			shift;
+			;;
 		*)
 			echo "Argument not recognized: $1"
 			printHelp
@@ -366,11 +372,17 @@ fi
 if $install
 then
 	installtML
-	installMods
+	if ! $nomods
+	then
+		installMods
+	fi
 fi
 
 if $update
 then
 	updatetML
-	installMods
+	if ! $nomods
+	then
+		installMods
+	fi
 fi
