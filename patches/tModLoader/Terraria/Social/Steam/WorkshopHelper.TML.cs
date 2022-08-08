@@ -195,12 +195,12 @@ namespace Terraria.Social.Steam
 				return Task.Run(() => TaskDownload(counter, uiProgress, items));
 			}
 
-			internal static void DownloadBatch(string[] workshopIds, UI.UIState returnMenu) {
+			internal static void DownloadBatch(string[] workshopIds, int previousMenuMode) {
 				//Set UIWorkshopDownload
-				UIWorkshopDownload uiProgress = null;		
+				UIWorkshopDownload uiProgress = null;
 
 				if (!Main.dedServ) {
-					uiProgress = new UIWorkshopDownload(Interface.modPacksMenu);
+					uiProgress = new UIWorkshopDownload(previousMenuMode);
 					Main.MenuUI.SetState(uiProgress);
 				}
 
@@ -525,6 +525,7 @@ namespace Terraria.Social.Steam
 				protected EResult _primaryQueryResult;
 				protected uint _queryReturnCount;
 				protected string _nextCursor;
+				internal List<ulong> ugcChildren = new List<ulong>();
 
 				internal static IReadOnlyList<LocalMod> InstalledMods;
 
@@ -752,7 +753,7 @@ namespace Terraria.Social.Steam
 					ReleaseWorkshopQuery();
 				}
 
-				internal SteamUGCDetails_t FastQueryItem(ulong publishedId) {
+				internal SteamUGCDetails_t FastQueryItem(ulong publishedId, bool queryChildren = false) {
 					_primaryQueryResult = EResult.k_EResultNone;
 
 					SteamAPICall_t call;
@@ -762,6 +763,7 @@ namespace Terraria.Social.Steam
 						SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 						SteamUGC.SetReturnLongDescription(qHandle, true);
 						SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
+						SteamUGC.SetReturnChildren(qHandle, queryChildren);
 
 						call = SteamUGC.SendQueryUGCRequest(qHandle);
 					}
@@ -771,6 +773,7 @@ namespace Terraria.Social.Steam
 						SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
 						SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
 						SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
+						SteamGameServerUGC.SetReturnChildren(qHandle, queryChildren);
 
 						call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
 					}
@@ -788,10 +791,26 @@ namespace Terraria.Social.Steam
 					while (_primaryQueryResult == EResult.k_EResultNone);
 
 					SteamUGCDetails_t pDetails;
-					if (ModManager.SteamUser)
+					PublishedFileId_t[] deps = null;
+					if (ModManager.SteamUser) {
 						SteamUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
-					else
+
+						if (queryChildren) {
+							deps = new PublishedFileId_t[pDetails.m_unNumChildren];
+							SteamUGC.GetQueryUGCChildren(_primaryUGCHandle, 0, deps, pDetails.m_unNumChildren);
+						}
+					}
+					else {
 						SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
+
+						if (queryChildren) {
+							deps = new PublishedFileId_t[pDetails.m_unNumChildren];
+							SteamGameServerUGC.GetQueryUGCChildren(_primaryUGCHandle, 0, deps, pDetails.m_unNumChildren);
+						}
+					}
+
+					if (queryChildren)
+						ugcChildren = deps.Select(x => x.m_PublishedFileId).ToList();
 
 					ReleaseWorkshopQuery();
 					return pDetails;
@@ -826,6 +845,20 @@ namespace Terraria.Social.Steam
 			internal static ulong GetSteamOwner(ulong publishedId) {
 				var pDetails = new AQueryInstance().FastQueryItem(publishedId);
 				return pDetails.m_ulSteamIDOwner;
+			}
+
+			private static List<ulong> GetDependencies(ulong publishedId) {
+				var query = new AQueryInstance();
+				query.FastQueryItem(publishedId, queryChildren: true);
+				return query.ugcChildren;
+			}
+
+			internal static void GetDependenciesRecursive(ulong publishedId, ref HashSet<ulong> set) {
+				var deps = GetDependencies(publishedId);
+				set.UnionWith(deps);
+
+				foreach (ulong dep in deps)
+					GetDependenciesRecursive(dep, ref set);
 			}
 
 			internal static bool CheckWorkshopConnection() {

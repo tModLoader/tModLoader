@@ -1,18 +1,28 @@
 ﻿using System.Diagnostics;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.DownloadManager
 {
-	internal class UIWorkshopDownload : UIProgress, IHaveBackButtonCommand
+	internal class UIWorkshopDownload : UIProgress
 	{
 		private Stopwatch downloadTimer;
 
 		public UIState PreviousUIState { get; set; }
 
+		public int PreviousMenuMode { get; set; } = -1;
+
 		public UIWorkshopDownload(UIState stateToGoBackTo) {
 			downloadTimer = new Stopwatch();
 			PreviousUIState = stateToGoBackTo;
+			Main.menuMode = 888;
+		}
+
+		public UIWorkshopDownload(int previousMenuMode) {
+			downloadTimer = new Stopwatch();
+			PreviousMenuMode = previousMenuMode;
 			Main.menuMode = 888;
 		}
 
@@ -44,7 +54,25 @@ namespace Terraria.ModLoader.UI.DownloadManager
 			}
 
 			// Exit
-			(this as IHaveBackButtonCommand).HandleBackButtonUsage();
+			ReturnToPreviousMenu();
+		}
+
+		public void ReturnToPreviousMenu() {
+			if (PreviousMenuMode == -1 && PreviousUIState == null) {
+				Main.menuMode = 0;
+				return;
+			}
+
+			if (PreviousMenuMode != -1) {
+				Main.menuMode = PreviousMenuMode;
+			}
+
+			if (PreviousUIState != null) {
+				Main.menuMode = 888;
+				Main.MenuUI.SetState(PreviousUIState);
+			}
+
+			SoundEngine.PlaySound(11);
 		}
 	}
 }

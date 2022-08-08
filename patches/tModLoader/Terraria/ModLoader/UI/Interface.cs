@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Terraria.Audio;
 using Terraria.ID;
@@ -14,6 +15,7 @@ using Terraria.ModLoader.UI.DownloadManager;
 using Terraria.ModLoader.UI.ModBrowser;
 using Terraria.GameContent.UI.States;
 using Terraria.Social.Steam;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.UI
 {
@@ -66,7 +68,7 @@ namespace Terraria.ModLoader.UI
 		// adds to Terraria.Main.DrawMenu in Main.menuMode == 0, after achievements
 		//Interface.AddMenuButtons(this, this.selectedMenu, array9, array7, ref num, ref num3, ref num10, ref num5);
 		internal static void AddMenuButtons(Main main, int selectedMenu, string[] buttonNames, float[] buttonScales, ref int offY, ref int spacing, ref int buttonIndex, ref int numButtons) {
-			/* 
+			/*
 			 * string legacyInfoButton = Language.GetTextValue("tModLoader.13InfoButton");
 			buttonNames[buttonIndex] = legacyInfoButton;
 			if (selectedMenu == buttonIndex) {
@@ -153,12 +155,25 @@ namespace Terraria.ModLoader.UI
 						});
 					Main.SaveSettings();
 				}
-				else if (!ModLoader.DetectedModChangesForInfoMessage) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
-					ModLoader.DetectedModChangesForInfoMessage = true;
+				else if (!ModLoader.DownloadedDependenciesOnStartup) { // Keep this at the end of the if/else chain since it doesn't necessarily change Main.menuMode
+					ModLoader.DownloadedDependenciesOnStartup = true;
 
-					string info = ModOrganizer.DetectModChangesForInfoMessage();
-					if (info != null)
-						infoMessage.Show(Language.GetTextValue("tModLoader.ShowNewUpdatedModsInfoMessage") + info, Main.menuMode);
+					// Find dependencies that need to be downloaded.
+					var deps = ModOrganizer.IdentifyWorkshopDependencies().ToList();
+					bool promptDepDownloads = deps.Count != 0;
+
+					string newDownloads = ModOrganizer.DetectModChangesForInfoMessage();
+                    string dependencies = promptDepDownloads ? ModOrganizer.ListDependenciesToDownload(deps) : null;
+                    string message = $"{newDownloads}\n{dependencies}".Trim('\n');
+                    string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
+                    string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
+                    Action downloadAction = () => {
+	                    if (promptDepDownloads)
+		                    WorkshopHelper.ModManager.DownloadBatch(deps.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
+                    };
+
+                    if (!string.IsNullOrWhiteSpace(message))
+	                    infoMessage.Show(message, Main.menuMode, altButtonText: continueButton, altButtonAction: downloadAction, okButtonText: cancelButton);
 				}
 			}
 			if (Main.MenuUI.CurrentState == modSources) {
@@ -264,7 +279,7 @@ namespace Terraria.ModLoader.UI
 					ModLoader.autoReloadAndEnableModsLeavingModBrowser = !ModLoader.autoReloadAndEnableModsLeavingModBrowser;
 				}
 
-				
+
 				buttonIndex++;
 				buttonNames[buttonIndex] = (ModLoader.autoReloadRequiredModsLeavingModsScreen ? Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenYes") : Language.GetTextValue("tModLoader.AutomaticallyReloadRequiredModsLeavingModsScreenNo"));
 				if (selectedMenu == buttonIndex) {

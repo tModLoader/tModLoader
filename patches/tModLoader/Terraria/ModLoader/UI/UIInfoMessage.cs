@@ -17,6 +17,7 @@ namespace Terraria.ModLoader.UI
 		private int _gotoMenu;
 		private Action _altAction;
 		private string _altText;
+		private string _okText;
 
 		public override void OnInitialize() {
 			_area = new UIElement {
@@ -74,17 +75,20 @@ namespace Terraria.ModLoader.UI
 		public override void OnActivate() {
 			_messageBox.SetText(_message);
 			_buttonAlt.SetText(_altText);
+			if (_okText != null)
+				_button.SetText(_okText);
 			bool showAlt = !string.IsNullOrEmpty(_altText);
 			_button.Left.Percent = showAlt ? 0 : .25f;
 			_area.AddOrRemoveChild(_buttonAlt, showAlt);
 		}
 
-		internal void Show(string message, int gotoMenu, UIState state = null, string altButtonText = "", Action altButtonAction = null) {
+		internal void Show(string message, int gotoMenu, UIState state = null, string altButtonText = "", Action altButtonAction = null, string okButtonText = null) {
 			_message = message;
 			_gotoMenu = gotoMenu;
 			_gotoState = state;
 			_altText = altButtonText;
 			_altAction = altButtonAction;
+			_okText = okButtonText;
 			Main.menuMode = Interface.infoMessageID;
 			Main.MenuUI.SetState(null); // New SetState code ignores setting to current state, so this is necessary to ensure OnActivate is called.
 		}
