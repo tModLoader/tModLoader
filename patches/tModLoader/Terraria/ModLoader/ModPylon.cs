@@ -271,89 +271,10 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		/// <summary>
-		/// Draws the passed in pylon crystal texture the exact way that vanilla draws it. This MUST be called in SpecialDraw in order
-		/// to function properly.
-		/// </summary>
-		/// <param name="spriteBatch"> The sprite batch that will draw the crystal. </param>
-		/// <param name="i"> The X tile coordinate to start drawing from. </param>
-		/// <param name="j"> The Y tile coordinate to star drawing from. </param>
-		/// <param name="crystalTexture"> The texture of the crystal that will actually be drawn. </param>
-		/// <param name="crystalDrawColor"> The color to draw the crystal as. </param>
-		/// <param name="frameHeight"> The height of a singular frame of the crystal. 64 for a normal pylon crystal in vanilla.</param>
-		/// <param name="crystalHorizontalFrameCount">The total frames wide the crystal texture has. </param>
-		/// <param name="crystalVerticalFrameCount"> The total frames high the crystal texture has. </param>
-		[Obsolete("Parameters have changed, run tModPorter.", true)]
+		
+		[Obsolete("Parameters have changed; parameters crystalDrawColor, frameHeight, and crystalHorizontalFrameCount no longer exist. There are 4 new parameters: crystalOffset, pylonShadowColor, dustColor, and dustConsequent.", true)]
 		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount) {
-			// This is lighting-mode specific, always include this if you draw tiles manually
-			Vector2 offScreen = new Vector2(Main.offScreenRange);
-			if (Main.drawToScreen) {
-				offScreen = Vector2.Zero;
-			}
-
-			// Take the tile, check if it actually exists
-			Point pos = new Point(i, j);
-			Tile tile = Main.tile[pos.X, pos.Y];
-			if (tile == null || !tile.HasTile) {
-				return;
-			}
-			TileObjectData tileData = TileObjectData.GetTileData(tile);
-
-			// Here, lots of framing takes place. 
-			Texture2D vanillaPylonCrystals = TextureAssets.Extra[181].Value; //The default textures for vanilla pylons, containing a "sheen" texture we need
-			int frameY = (Main.tileFrameCounter[TileID.TeleportationPylon] + pos.X + pos.Y) % frameHeight / crystalVerticalFrameCount; // Get the current frameY. All pylons share the same frameCounter
-			// Next, frame the actual crystal texture, it's highlight texture, and the sheen texture, in that order.
-			Rectangle crystalFrame = crystalTexture.Frame(crystalHorizontalFrameCount, crystalVerticalFrameCount, 0, frameY); 
-			Rectangle highlightFrame = crystalTexture.Frame(crystalHorizontalFrameCount, crystalVerticalFrameCount, 1, frameY);
-			vanillaPylonCrystals.Frame(crystalHorizontalFrameCount, crystalVerticalFrameCount, 0, frameY);
-			// Calculate positional values in order to determine where to actually draw the pylon
-			Vector2 origin = crystalFrame.Size() / 2f;
-			Vector2 centerPos = pos.ToWorldCoordinates(0f, 0f) + new Vector2(tileData.Width / 2f * 16f, (tileData.Height / 2f + 1.5f) * 16f);
-			float centerDisplacement = (float)Math.Sin(Main.GlobalTimeWrappedHourly * ((float)Math.PI * 2f) / 5f);
-			Vector2 drawPos = centerPos + offScreen + new Vector2(0f, -40f) + new Vector2(0f, centerDisplacement * 4f);
-			// Randomly spawn dust, granted that the game is open an active
-			if (!Main.gamePaused && Main.instance.IsActive && Main.rand.NextBool(40)) {
-				Rectangle dustBox = Utils.CenteredRectangle(drawPos, crystalFrame.Size());
-
-				int dustIndex = Dust.NewDust(dustBox.TopLeft(), dustBox.Width, dustBox.Height, DustID.TintableDustLighted, 0f, 0f, 254, Color.Gray, 0.5f);
-				Main.dust[dustIndex].velocity *= 0.1f;
-				Main.dust[dustIndex].velocity.Y -= 0.2f;
-			}
-
-			// Next, calculate the color of the crystal and draw it. The color is determined by how lit the tile is at that position.
-			Color crystalColor = Color.Lerp(Lighting.GetColor(pos.X, pos.Y), crystalDrawColor, 0.8f) ;
-			spriteBatch.Draw(crystalTexture.Value, drawPos - Main.screenPosition, crystalFrame, crystalColor * 0.7f, 0f, origin, 1f, SpriteEffects.None, 0f);
-
-			// Next, calculate the color of the sheen texture and its scale, then draw it.
-			float scale = (float)Math.Sin(Main.GlobalTimeWrappedHourly * (Math.PI * 2f) / 1f) * 0.2f + 0.8f;
-			Color sheenColor = new Color(255, 255, 255, 0) * 0.1f * scale;
-			for (float displacement = 0f; displacement < 1f; displacement += 355f / (678f * (float)Math.PI)) {
-				spriteBatch.Draw(crystalTexture.Value, drawPos - Main.screenPosition + ((float)Math.PI * 2f * displacement).ToRotationVector2() * (6f + centerDisplacement * 2f), crystalFrame, sheenColor, 0f, origin, 1f, SpriteEffects.None, 0f);
-			}
-
-			// Finally, everything below is for the smart cursor, drawing the highlight texture depending on whether or not either:
-			// 1) Smart Cursor is off, and no highlight texture is drawn at all (selectionType = 0)
-			// 2) Smart Cursor is on, but it is not currently focusing on the Pylon (selectionType = 1)
-			// 3) Smart Cursor is on, but it IS currently focusing on the Pylon (selectionType = 2)
-			int selectionType = 0;
-			if (Main.InSmartCursorHighlightArea(pos.X, pos.Y, out bool actuallySelected)) {
-				selectionType = 1;
-
-				if (actuallySelected) {
-					selectionType = 2;
-				}
-			}
-
-			if (selectionType == 0) {
-				return;
-			}
-
-			// Finally, draw the highlight texture, if applicable.
-			int colorPotency = (crystalColor.R + crystalColor.G + crystalColor.B) / 3;
-			if (colorPotency > 10) {
-				Color selectionGlowColor = Colors.GetSelectionGlowColor(selectionType == 2, colorPotency);
-				spriteBatch.Draw(crystalTexture.Value, drawPos - Main.screenPosition, highlightFrame, selectionGlowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
-			}
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0, -14f), Color.White, Color.White, 3, crystalVerticalFrameCount);
 		}
 
 		/// <summary>
@@ -371,7 +292,7 @@ namespace Terraria.ModLoader
 		/// <param name="crystalVerticalFrameCount"> The total frames high the crystal texture has. </param>
 		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustConsequent, int crystalVerticalFrameCount)
         {
-            // Gets offscreen vector for different lighting modes
+			// Gets offscreen vector for different lighting modes
             Vector2 offscreenVector = new Vector2(Main.offScreenRange);
             if (Main.drawToScreen)
             {
