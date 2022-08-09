@@ -1,11 +1,11 @@
 #!/bin/bash
-# NOTE: Only for use within the docker container.
 
 function pseudoStdin {
 	tmux send-keys "$1" Enter
 }
 
 function stop {
+	echo Saving
 	pseudoStdin "exit"
 	pid=$(pgrep dotnet)
 	while [[ -e /proc/$pid ]]
@@ -13,63 +13,27 @@ function stop {
 		sleep .5
 	done
 	pkill tmux
+	echo Exited
+	exit 0
 }
-
-steamcmd=true
-while [[ $# -gt 0 ]];
-do
-	case $1 in
-		-l|--location)
-			location="$2" # Full path to tML folder
-			shift; shift
-			;;
-		-g|--github)
-			steamcmd=false
-			shift
-			;;
-		--username)
-			username="$2"
-			shift; shift
-			;;
-		--lobbytype)
-			lobbyType="$2"
-			shift; shift
-			;;
-		*)
-			echo "Bad arg $1"
-			exit 1
-			;;
-	esac
-done
 
 trap stop SIGTERM SIGINT
 
-if [[ $lobbyType != "friends" ]] && [[ $lobbyType != "private" ]]
-then
-	echo "Select a lobby type using docker run args"
-	exit 1
-fi
+# Installing/updating mods
+mkdir -p ~/.local/share/Terraria
+./Setup_tModLoaderServer.sh -u --modsonly --checkdir ~/.local/share/Terraria --folder ~/.local/share/Terraria/wsmods
 
-scriptdir=/home/tml/.local/share/Terraria/scriptdir
-
-echo "Checking updates"
-$scriptdir/Setup_tModLoaderServer.sh --updatescript
-
-if $steamcmd
-then
-	$scriptdir/Setup_tModLoaderServer.sh -u --username "$username"
-else
-	$scriptdir/Setup_tModLoaderServer.sh -u -g
-fi
-
-if ! [ $? -eq 0 ]
-then
-	echo "Setup_tModLoaderServer.sh failed"
-	exit 1
-fi
+# Symlink tML's local dotnet install so that it can persist through runs
+mkdir -p ~/.local/share/Terraria/dotnet
+ln -s /home/tml/.local/share/Terraria/dotnet/ /home/tml/tModLoader/dotnet
 
 echo "Launching tModLoader..."
-cd "$location"
-tmux new-session -d "./start-tModLoaderServer.sh -config $HOME/.local/share/Terraria/scriptdir/serverconfig.txt -lobby $lobbyType"
-
-wait $(pgrep tmux)
+cd ~/tModLoader
+# Maybe eventually steamcmd will allow for an actual steamserver. For now -nosteam is required.
+tmux new-session -s "tml" -n "tmlwin" -d "./start-tModLoaderServer.sh -config $HOME/.local/share/Terraria/serverconfig.txt -nosteam -steamworkshopfolder $HOME/.local/share/Terraria/wsmods"
+# Loop will just cause the script to hang forever, keeping SIGTERM and SIGINT trapped and allowing exits to happen cleanly.
+until false
+do
+	sleep 1
+	true
+done

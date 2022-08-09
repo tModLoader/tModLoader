@@ -87,4 +87,4 @@ RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/pa
 
 EXPOSE 7777
 
-ENTRYPOINT [ "/bin/bash" ]
+ENTRYPOINT [ "/bin/bash", "-c", "./Launch.sh" ]
