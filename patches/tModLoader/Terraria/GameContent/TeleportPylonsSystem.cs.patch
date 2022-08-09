@@ -85,7 +85,7 @@
  					switch (num) {
  						default:
  							key = "Net.CannotTeleportToPylonBecausePlayerIsNotNearAPylon";
-@@ -167,8 +_,11 @@
+@@ -167,9 +_,14 @@
  					}
  				}
  			}
@@ -96,8 +96,11 @@
 -			if (flag) {
 +			if (flag && flag2) {
  				Vector2 newPos = info.PositionInTiles.ToWorldCoordinates() - new Vector2(0f, player.HeightOffsetBoost);
++				if (info.ModPylon is ModPylon finalDestinationPylon)
++					finalDestinationPylon.ModifyTeleportationPosition(info, ref newPos);
  				int num2 = 9;
  				int typeOfPylon = (int)info.TypeOfPylon;
+ 				int number = 0;
 @@ -185,9 +_,13 @@
  			}
  		}

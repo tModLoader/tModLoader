@@ -185,6 +185,17 @@ namespace Terraria.ModLoader
 		public virtual void ValidTeleportCheck_NearbyPostCheck(TeleportPylonInfo nearbyPylonInfo, ref bool destinationPylonValid, ref bool anyNearbyValidPylon, ref string errorKey) { }
 
 		/// <summary>
+		/// Called right BEFORE the teleportation of the player occurs, when all checks succeed during the ValidTeleportCheck process. Allows the modification
+		/// of where the player ends up when the teleportation takes place. Remember that the teleport location is in WORLD coordinates, not tile coordinates.
+		/// </summary>
+		/// <remarks>
+		/// You shouldn't need to use this method if your pylon is the same size as a normal vanilla pylons (3x4 tiles).
+		/// </remarks>
+		/// <param name="destinationPylonInfo"> The information of the pylon the player intends to teleport to. </param>
+		/// <param name="teleportationPosition"> The position (IN WORLD COORDINATES) of where the player ends up when the teleportation occurs. </param>
+		public virtual void ModifyTeleportationPosition(TeleportPylonInfo destinationPylonInfo, ref Vector2 teleportationPosition) { }
+
+		/// <summary>
 		/// Called when the map is visible, in order to draw the passed in Pylon on the map.
 		/// In order to draw on the map, you must use <seealso cref="MapOverlayDrawContext"/>'s Draw Method. By default, doesn't draw anything.
 		/// </summary>

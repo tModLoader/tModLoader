@@ -123,6 +123,11 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
+		public override void ModifyTeleportationPosition(TeleportPylonInfo destinationPylonInfo, ref Vector2 teleportationPosition) {
+			// Now, for the fun of it and for the showcase of this hook, let's put a player a bit into the air above the pylon when they teleport.
+			teleportationPosition = destinationPylonInfo.PositionInTiles.ToWorldCoordinates(8f, -32f);
+		}
+
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
 			// Same as the basic example, but our light will be the disco color like the crystal
 			r = Main.DiscoColor.R / 255f * 0.75f;
