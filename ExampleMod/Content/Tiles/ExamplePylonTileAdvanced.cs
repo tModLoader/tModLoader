@@ -135,14 +135,15 @@ namespace ExampleMod.Content.Tiles
 			// We need to check the framing here in order to guarantee we that we are trying to grab the TE ONLY when in the top left corner, where it is
 			// located. If we don't do this check, we will be attempting to grab the TE in position where it doesn't exist, throwing errors and causing
 			// loads of visual bugs.
-			if (drawData.tileFrameX % 36 == 0 && drawData.tileFrameY == 0 && TileEntity.ByPosition[new Point16(i, j)] is AdvancedPylonTileEntity { isActive: true }) {
+			if (drawData.tileFrameX % 36 == 0 && drawData.tileFrameY == 0 && TileEntity.ByPosition.TryGetValue(new Point16(i, j), out TileEntity entity) && entity is AdvancedPylonTileEntity { isActive: true }) {
 				Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
 			}
 		}
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
-			// This code is essentially identical to how it is in the basic example, but this time the crystal color is the disco (rainbow) color instead.
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0f, -14f), Main.DiscoColor * 0.1f, Color.White, 1, CrystalVerticalFrameCount);
+			// This code is essentially identical to how it is in the basic example, but this time the crystal color is the disco (rainbow) color instead
+			// Also, since we want the pylon crystal to be drawn at the same height as vanilla (since our tile is one tile smaller), we have to move up the crystal accordingly with the crystalOffset parameter
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0f, -18f), Main.DiscoColor * 0.1f, Color.White, 1, CrystalVerticalFrameCount);
 		}
 
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {

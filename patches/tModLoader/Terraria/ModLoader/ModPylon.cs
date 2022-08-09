@@ -274,7 +274,7 @@ namespace Terraria.ModLoader
 		
 		[Obsolete("Parameters have changed; parameters crystalDrawColor, frameHeight, and crystalHorizontalFrameCount no longer exist. There are 4 new parameters: crystalOffset, pylonShadowColor, dustColor, and dustConsequent.", true)]
 		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount) {
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0, -14f), Color.White, Color.White, 3, crystalVerticalFrameCount);
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0, -12f), Color.White * 0.1f, Color.White, 3, crystalVerticalFrameCount);
 		}
 
 		/// <summary>
@@ -285,14 +285,17 @@ namespace Terraria.ModLoader
 		/// <param name="i"> The X tile coordinate to start drawing from. </param>
 		/// <param name="j"> The Y tile coordinate to start drawing from. </param>
 		/// <param name="crystalTexture"> The texture of the crystal that will actually be drawn. </param>
-		/// <param name="crystalOffset"> The offset of the actualy position of the crystal. </param>
+		/// <param name="crystalOffset">
+		/// The offset of the actual position of the crystal. Assuming that a pylon tile itself and the crystals are equivalent to
+		/// vanilla's sizes, this value should be Vector2(0, -12).
+		/// </param>
 		/// <param name="pylonShadowColor"> The color of the "shadow" that is drawn on top of the crystal texture. </param>
 		/// <param name="dustColor"> The color of the dust that emanates from the crystal. </param>
 		/// <param name="dustConsequent"> Every draw call, this is this consequent value of a Main.rand.NextBool() check for whether or not a dust particle will spawn. </param>
-		/// <param name="crystalVerticalFrameCount"> The total frames high the crystal texture has. </param>
+		/// <param name="crystalVerticalFrameCount"> How many vertical frames the crystal texture has. </param>
 		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustConsequent, int crystalVerticalFrameCount)
         {
-			// Gets offscreen vector for different lighting modes
+	        // Gets offscreen vector for different lighting modes
             Vector2 offscreenVector = new Vector2(Main.offScreenRange);
             if (Main.drawToScreen)
             {
@@ -313,8 +316,10 @@ namespace Terraria.ModLoader
             int frameY = Main.tileFrameCounter[TileID.TeleportationPylon] / crystalVerticalFrameCount;
 
             // Frame the crystal sheet accordingly for proper drawing
-            Rectangle crystalFrame = crystalTexture.Frame(2, crystalVerticalFrameCount, 0, frameY);
-            Rectangle outlineFrame = crystalTexture.Frame(2, crystalVerticalFrameCount, 1, frameY);
+            Rectangle shadowFrame = crystalTexture.Frame(3, crystalVerticalFrameCount, 0, frameY);
+            Rectangle crystalFrame = crystalTexture.Frame(3, crystalVerticalFrameCount, 1, frameY);
+            crystalFrame.Y -= 1; // I have no idea what is happening here; but it fixes the frame bleed issue. if anyone else has a clue, please do tell. - Mutant
+            Rectangle outlineFrame = crystalTexture.Frame(3, crystalVerticalFrameCount, 2, frameY);
 
             // Calculate positional variables for actually drawing the crystal
             Vector2 origin = crystalFrame.Size() / 2f;
@@ -322,7 +327,7 @@ namespace Terraria.ModLoader
             Vector2 crystalPosition = point.ToWorldCoordinates(tileOrigin.X - 2f, tileOrigin.Y) + crystalOffset;
 
             // Calculate additional drawing positions with a sine wave movement
-            float num = (float)Math.Sin(Main.GlobalTimeWrappedHourly * ((float)Math.PI * 2f) / 5f);
+            float num = (float)Math.Sin(Main.GlobalTimeWrappedHourly * (Math.PI * 2) / 5);
             Vector2 drawingPosition = crystalPosition + offscreenVector + new Vector2(0f, num * 4f);
 
             // Do dust drawing
@@ -342,10 +347,10 @@ namespace Terraria.ModLoader
 
             // Draw the shadow effect for the crystal
             float scale = (float)Math.Sin(Main.GlobalTimeWrappedHourly * ((float)Math.PI * 2f) / 1f) * 0.2f + 0.8f;
-            Color color2 = pylonShadowColor * scale;
+            Color shadowColor = pylonShadowColor * scale;
             for (float shadowPos = 0f; shadowPos < 1f; shadowPos += 1f / 6f)
             {
-                spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition + ((float)Math.PI * 2f * shadowPos).ToRotationVector2() * (6f + num * 2f), crystalFrame, color2, 0f, origin, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition + ((float)Math.PI * 2f * shadowPos).ToRotationVector2() * (6f + num * 2f), shadowFrame, shadowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
             }
 
             // Interpret smart cursor outline color & draw it

@@ -112,7 +112,7 @@ namespace ExampleMod.Content.Tiles
 			// We want to draw the pylon crystal the exact same way vanilla does, so we can use this built in method in ModPylon for default crystal drawing:
 			// For the sake of example, lets make our pylon create a bit more dust by decreasing the dustConsequent value down to 1.
 			// We also multiply the pylonShadowColor in order to decrease its opacity, so it actually looks like a "shadow"
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0f, -14f), Color.White * 0.1f, Color.White, 1, CrystalVerticalFrameCount);
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0f, -12f), Color.White * 0.1f, Color.White, 1, CrystalVerticalFrameCount);
 		}
 
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
