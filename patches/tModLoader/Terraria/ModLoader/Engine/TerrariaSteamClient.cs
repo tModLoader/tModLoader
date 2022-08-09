@@ -19,10 +19,11 @@ namespace Terraria.ModLoader.Engine
 
 		private static string MsgInitFailed = "init_failed";
 		private static string MsgInitSuccess = "init_success";
+		private static string MsgFamilyShareSuccess = "fam_share_success";
 		private static string MsgNotInstalled = "not_installed";
 		private static string MsgGrant = "grant:";
 		private static string MsgAck = "acknowledged";
-		private static string MsgShutdown = "shutdown";
+		private static string MsgShutdown = "shutdown"
 
 		public enum LaunchResult
 		{
@@ -78,6 +79,10 @@ namespace Terraria.ModLoader.Engine
 				if (line == MsgInitSuccess)
 					break;
 
+				if (line == MsgFamilyShareSuccess) {
+					Social.Steam.SteamedWraps.FamilyShared = true;
+					break;
+				}
 			}
 
 			SendCmd(MsgAck);
@@ -135,7 +140,15 @@ namespace Terraria.ModLoader.Engine
 					return;
 				}
 
-				Send(MsgInitSuccess);
+				// Unfortunately, Valve doesn't support tModLoader for Family-shared Terraria, which has lead to this workaround.
+				// Does not support Steam Overlay or Steam multiplayer as such.
+				if (SteamApps.BIsSubscribedFromFamilySharing()) {
+					Logger.Info("Terraria is installed via Family Share. Re-pathing tModLoader required");
+					Send(MsgFamilyShareSuccess);
+				}
+				else
+					Send(MsgInitSuccess);
+
 				while (Recv() != MsgAck) { }
 
 				// message loop

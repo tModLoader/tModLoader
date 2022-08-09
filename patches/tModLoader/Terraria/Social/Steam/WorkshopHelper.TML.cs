@@ -55,22 +55,6 @@ namespace Terraria.Social.Steam
 				GameServer.RunCallbacks();
 		}
 
-		// Used to get the right token for fetching/setting localized descriptions from/to Steam Workshop
-		internal static string GetCurrentSteamLangKey() {
-			//TODO: Unhardcode this whenever the language roster is unhardcoded for modding.
-			return (GameCulture.CultureName)LanguageManager.Instance.ActiveCulture.LegacyId switch {
-				GameCulture.CultureName.German => "german",
-				GameCulture.CultureName.Italian => "italian",
-				GameCulture.CultureName.French  => "french",
-				GameCulture.CultureName.Spanish  => "spanish",
-				GameCulture.CultureName.Russian => "russian",
-				GameCulture.CultureName.Chinese => "schinese",
-				GameCulture.CultureName.Portuguese => "portuguese",
-				GameCulture.CultureName.Polish => "polish",
-				_ => "english",
-			};
-		}
-
 		internal static void ReportCheckSteamLogs() {
 			string workshopLogLoc = "";
 			if (Platform.IsWindows)
@@ -107,48 +91,12 @@ namespace Terraria.Social.Steam
 
 		internal class ModManager
 		{
-			internal const uint thisApp = ModLoader.Engine.Steam.TMLAppID;
-
 			internal static bool SteamUser { get; set; }
 			internal static bool SteamAvailable { get; set; }
 
 			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
 
 			private PublishedFileId_t itemID;
-
-			internal static void Initialize() {
-				if (SocialAPI.Mode == SocialMode.Steam) {
-					SteamAvailable = true;
-					SteamUser = true;
-					return;
-				}
-
-				// On some systems without steam, the native dependencies required for steam fail to load (eg docker without requisite glibc)
-				// Thus, for dedicated servers we delay game-server init until someone tries to use steam features (eg mod browser)
-
-				// Non-steam tModLoader will use the SteamGameServer to perform Browsing & Downloading
-				if (!Main.dedServ && !TryInitViaGameServer())
-					Logging.tML.Error("Steam Game Server failed to Init. Steam Workshop downloading on GoG is unavailable. Make sure Steam is installed");
-			}
-
-			public static bool TryInitViaGameServer() {
-				ModLoader.Engine.Steam.SetAppId(ModLoader.Engine.Steam.TMLAppID_t);
-				try {
-					if (!GameServer.Init(0x7f000001, 7775, 7774, EServerMode.eServerModeNoAuthentication, "0.11.9.0"))
-						return false;
-				
-					SteamGameServer.SetGameDescription("tModLoader Mod Browser");
-					SteamGameServer.SetProduct(thisApp.ToString());
-					SteamGameServer.LogOnAnonymous();
-				}
-				catch (DllNotFoundException e) {
-					Logging.tML.Error(e);
-					return false;
-				}
-
-				SteamAvailable = true;
-				return true;
-			}
 
 			internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId) {
 				publishId = 0;
@@ -356,9 +304,9 @@ namespace Terraria.Social.Steam
 				string acfPath;
 
 				if (!SteamUser)
-					acfPath = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "appworkshop_" + thisApp.ToString() + ".acf");
+					acfPath = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "appworkshop_" + SteamedWraps.thisApp.ToString() + ".acf");
 				else
-					acfPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(GetInstallInfo().installPath).ToString()).ToString()).ToString(), "appworkshop_" + thisApp.ToString() + ".acf");
+					acfPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(GetInstallInfo().installPath).ToString()).ToString()).ToString(), "appworkshop_" + SteamedWraps.thisApp.ToString() + ".acf");
 
 				string[] acf = File.ReadAllLines(acfPath);
 				using StreamWriter w = new StreamWriter(acfPath);
@@ -549,33 +497,7 @@ namespace Terraria.Social.Steam
 
 				internal void QueryForPage() {
 					_primaryQueryResult = EResult.k_EResultNone;
-
-					SteamAPICall_t call;
-					if (ModManager.SteamUser) {
-						UGCQueryHandle_t qHandle;
-						qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), _nextCursor);
-
-						SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-						SteamUGC.SetReturnKeyValueTags(qHandle, true);
-						//SteamUGC.SetReturnLongDescription(qHandle, true);
-						SteamUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
-						SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-
-						call = SteamUGC.SendQueryUGCRequest(qHandle);
-					}
-					else {
-						UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(ModManager.thisApp), new AppId_t(ModManager.thisApp), _nextCursor);
-
-						SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-						SteamGameServerUGC.SetReturnKeyValueTags(qHandle, true);
-						//SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
-						SteamGameServerUGC.SetReturnPlaytimeStats(qHandle, 30); // Last 30 days of playtime statistics
-						SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-
-						call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
-					}
-
-					_queryHook.Set(call);
+					_queryHook.Set(SteamedWraps.GenerateFullQuery(_nextCursor));
 
 					var stopwatch = Stopwatch.StartNew();
 
@@ -599,12 +521,7 @@ namespace Terraria.Social.Steam
 				private void QueryPageResult() {
 					for (uint i = 0; i < _queryReturnCount; i++) {
 						// Item Result call data
-						SteamUGCDetails_t pDetails;
-
-						if (ModManager.SteamUser)
-							SteamUGC.GetQueryUGCResult(_primaryUGCHandle, i, out pDetails);
-						else
-							SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, i, out pDetails);
+						SteamUGCDetails_t pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, i);
 
 						PublishedFileId_t id = pDetails.m_nPublishedFileId;
 
@@ -692,26 +609,12 @@ namespace Terraria.Social.Steam
 							modside = ModSide.NoSync;
 
 						// Preview Image url
-						string modIconURL;
-
-						if (ModManager.SteamUser)
-							SteamUGC.GetQueryUGCPreviewURL(_primaryUGCHandle, i, out modIconURL, 1000);
-						else
-							SteamGameServerUGC.GetQueryUGCPreviewURL(_primaryUGCHandle, i, out modIconURL, 1000);
+						SteamedWraps.FetchPreviewImageUrl(_primaryUGCHandle, i, out string modIconURL);
 
 						// Item Statistics
-						ulong hot, downloads;
+						SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
-						if (ModManager.SteamUser) {
-							SteamUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out downloads);
-							SteamUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumSecondsPlayedDuringTimePeriod, out hot); //Temp: based on how often being played lately?
-						}
-						else {
-							SteamGameServerUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out downloads);
-							SteamGameServerUGC.GetQueryUGCStatistic(_primaryUGCHandle, i, EItemStatistic.k_EItemStatistic_NumSecondsPlayedDuringTimePeriod, out hot); //Temp: based on how often being played lately?
-						}
-
-						// Check against installed mods
+						// Check against installed mods for updates
 						bool update = false;
 						bool updateIsDowngrade = false;
 						bool needsRestart = false;
@@ -756,29 +659,7 @@ namespace Terraria.Social.Steam
 				internal SteamUGCDetails_t FastQueryItem(ulong publishedId, bool queryChildren = false) {
 					_primaryQueryResult = EResult.k_EResultNone;
 
-					SteamAPICall_t call;
-					if (ModManager.SteamUser) {
-						UGCQueryHandle_t qHandle = SteamUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishedId) }, 1);
-
-						SteamUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-						SteamUGC.SetReturnLongDescription(qHandle, true);
-						SteamUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-						SteamUGC.SetReturnChildren(qHandle, queryChildren);
-
-						call = SteamUGC.SendQueryUGCRequest(qHandle);
-					}
-					else {
-						UGCQueryHandle_t qHandle = SteamGameServerUGC.CreateQueryUGCDetailsRequest(new PublishedFileId_t[1] { new PublishedFileId_t(publishedId) }, 1);
-
-						SteamGameServerUGC.SetLanguage(qHandle, GetCurrentSteamLangKey());
-						SteamGameServerUGC.SetReturnLongDescription(qHandle, true);
-						SteamGameServerUGC.SetAllowCachedResponse(qHandle, 0); // Anything other than 0 may cause Access Denied errors.
-						SteamGameServerUGC.SetReturnChildren(qHandle, queryChildren);
-
-						call = SteamGameServerUGC.SendQueryUGCRequest(qHandle);
-					}
-
-					_queryHook.Set(call);
+					_queryHook.Set(SteamedWraps.GenerateSingleItemQuery(publishedId));
 
 					var stopwatch = Stopwatch.StartNew();
 
@@ -790,27 +671,11 @@ namespace Terraria.Social.Steam
 					}
 					while (_primaryQueryResult == EResult.k_EResultNone);
 
-					SteamUGCDetails_t pDetails;
-					PublishedFileId_t[] deps = null;
-					if (ModManager.SteamUser) {
-						SteamUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
+					var pDetails = SteamedWraps.FetchItemDetails(_primaryUGCHandle, 0);
 
-						if (queryChildren) {
-							deps = new PublishedFileId_t[pDetails.m_unNumChildren];
-							SteamUGC.GetQueryUGCChildren(_primaryUGCHandle, 0, deps, pDetails.m_unNumChildren);
-						}
+					if (queryChildren) {
+						ugcChildren = SteamedWraps.FetchItemDependencies(_primaryUGCHandle, 0, pDetails.m_unNumChildren).Select(x => x.m_PublishedFileId).ToList();
 					}
-					else {
-						SteamGameServerUGC.GetQueryUGCResult(_primaryUGCHandle, 0, out pDetails);
-
-						if (queryChildren) {
-							deps = new PublishedFileId_t[pDetails.m_unNumChildren];
-							SteamGameServerUGC.GetQueryUGCChildren(_primaryUGCHandle, 0, deps, pDetails.m_unNumChildren);
-						}
-					}
-
-					if (queryChildren)
-						ugcChildren = deps.Select(x => x.m_PublishedFileId).ToList();
 
 					ReleaseWorkshopQuery();
 					return pDetails;
@@ -830,10 +695,7 @@ namespace Terraria.Social.Steam
 				/// Ought be called to release the existing query when we are done with it. Frees memory associated with the handle.
 				/// </summary>
 				private void ReleaseWorkshopQuery() {
-					if (ModManager.SteamUser)
-						SteamUGC.ReleaseQueryUGCRequest(_primaryUGCHandle);
-					else
-						SteamGameServerUGC.ReleaseQueryUGCRequest(_primaryUGCHandle);
+					SteamedWraps.ReleaseWorkshopHandle(_primaryUGCHandle);
 				}
 			}
 
