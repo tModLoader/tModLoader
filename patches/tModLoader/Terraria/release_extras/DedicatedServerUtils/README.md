@@ -14,17 +14,22 @@ For additional information, run `./Setup_tModLoaderServer.sh --help` to view the
 
 ## Using the Docker container
 
-Before building and running the container first you need to prepare a directory to pass to the container. This directory will link to `~/.local/share/Terraria` inside of the container. Within the directory, place your [enabled.json](#install.txt-and-enabled.json), [install.txt](#install.txt-and-enabled.json), `serverconfig.txt`, and any `.tmod` files. This directory will be used in the `docker run` step. To manually add worlds, place them in `tModLoader/Worlds` inside of your directory (you may have to create the directory yourself).
+Before building and running the container first you need to prepare a directory to pass to the container. This applies to `docker` and `docker-compose` This directory will link to `~/.local/share/Terraria` inside of the container. Within the directory, place your [enabled.json](#install.txt-and-enabled.json), [install.txt](#install.txt-and-enabled.json), `serverconfig.txt`, and any `.tmod` files. This directory will be used in the `docker run` step. To manually add worlds, place them in `tModLoader/Worlds` inside of your directory (you may have to create the directory yourself).
 
 ### Building and running the container
  * `docker build .`
  * When building finishes, a 12 character UUID, such as `c7135972bd7c`, will be printed. Use this in the next step.
  * `docker run -v full_path_to_your_dir:/home/tml/.local/share/Terraria -p 7777:7777 your_uuid`
 
- Note that a human-friendly name can be given to your container by passing in `--name container_name` to your `docker-run` command. To run the container on a different port than `7777`, simply change it to be `your_port:7777` in your `docker-run` command. To allow the container to persist after closing your terminal or ssh session, add `-d` to your `docker-run` command.
+Note that a human-friendly name can be given to your container by passing in `--name container_name` to your `docker-run` command. To run the container on a different port than `7777`, simply change it to be `your_port:7777` in your `docker-run` command. To allow the container to persist after closing your terminal or ssh session, add `-d` to your `docker-run` command.
 
 ### Docker compose
- * Coming soon
+ * Copy `docker-compose.yml` and `Dockerfile` to the same directory
+ * `docker-compose build`
+ * `docker-compose up`
+
+To allow the container to persist after closing your terminal or ssh session, run with `docker-compose up -d`.
+
 
 ### serverconfig.txt
 Because the container is meant to be headless, you can't select a world or any other options using the normal interactive method. They must be specified in `serverconfig.txt`. There are only three things required in your config, but you'll likely want to add more. Additional options can be found [on the Terraria wiki](https://terraria.wiki.gg/wiki/Server#Server_config_file)

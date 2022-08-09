@@ -1,0 +1,8 @@
+version: "1.0"
+services:
+  tml:
+    build: .
+    ports:
+      - 7777:7777
+    volumes:
+      - "./Terraria:/home/tml/.local/share/Terraria"
