@@ -266,7 +266,7 @@ namespace Terraria.ModLoader
 			// The top left corner of a Pylon will have its FrameX divisible by its full pixel width,
 			// and its FrameY will be 0, since it's at the top of the tile sheet.
 			if (drawData.tileFrameX % TileObjectData.GetTileData(drawData.tileCache).CoordinateFullWidth == 0 && drawData.tileFrameY == 0) {
-				//This method call basically says "Run SpecialDraw once at this position"
+				// This method call basically says "Run SpecialDraw once at this position"
 				Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
 			}
 		}
@@ -283,6 +283,7 @@ namespace Terraria.ModLoader
 		/// <param name="frameHeight"> The height of a singular frame of the crystal. 64 for a normal pylon crystal in vanilla.</param>
 		/// <param name="crystalHorizontalFrameCount">The total frames wide the crystal texture has. </param>
 		/// <param name="crystalVerticalFrameCount"> The total frames high the crystal texture has. </param>
+		[Obsolete("Parameters have changed, run tModPorter.", true)]
 		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount) {
 			// This is lighting-mode specific, always include this if you draw tiles manually
 			Vector2 offScreen = new Vector2(Main.offScreenRange);
@@ -354,6 +355,102 @@ namespace Terraria.ModLoader
 				spriteBatch.Draw(crystalTexture.Value, drawPos - Main.screenPosition, highlightFrame, selectionGlowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
 			}
 		}
+
+		/// <summary>
+		/// Draws the passed in pylon crystal texture the exact way that vanilla draws it. This MUST be called in SpecialDraw in order
+		/// to function properly.
+		/// </summary>
+		/// <param name="spriteBatch"> The sprite batch that will draw the crystal. </param>
+		/// <param name="i"> The X tile coordinate to start drawing from. </param>
+		/// <param name="j"> The Y tile coordinate to start drawing from. </param>
+		/// <param name="crystalTexture"> The texture of the crystal that will actually be drawn. </param>
+		/// <param name="crystalOffset"> The offset of the actualy position of the crystal. </param>
+		/// <param name="pylonShadowColor"> The color of the "shadow" that is drawn on top of the crystal texture. </param>
+		/// <param name="dustColor"> The color of the dust that emanates from the crystal. </param>
+		/// <param name="dustConsequent"> Every draw call, this is this consequent value of a Main.rand.NextBool() check for whether or not a dust particle will spawn. </param>
+		/// <param name="crystalVerticalFrameCount"> The total frames high the crystal texture has. </param>
+		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustConsequent, int crystalVerticalFrameCount)
+        {
+            // Gets offscreen vector for different lighting modes
+            Vector2 offscreenVector = new Vector2(Main.offScreenRange);
+            if (Main.drawToScreen)
+            {
+                offscreenVector = Vector2.Zero;
+            }
+
+            // Double check that the tile exists
+            Point point = new Point(i, j);
+            Tile tile = Main.tile[point.X, point.Y];
+            if (tile == null || !tile.HasTile)
+            {
+                return;
+            }
+
+            TileObjectData tileData = TileObjectData.GetTileData(tile);
+
+            // Calculate frame based on vanilla counters in order to line up the animation
+            int frameY = Main.tileFrameCounter[TileID.TeleportationPylon] / crystalVerticalFrameCount;
+
+            // Frame the crystal sheet accordingly for proper drawing
+            Rectangle crystalFrame = crystalTexture.Frame(2, crystalVerticalFrameCount, 0, frameY);
+            Rectangle outlineFrame = crystalTexture.Frame(2, crystalVerticalFrameCount, 1, frameY);
+
+            // Calculate positional variables for actually drawing the crystal
+            Vector2 origin = crystalFrame.Size() / 2f;
+            Vector2 tileOrigin = new Vector2(tileData.CoordinateFullWidth / 2f, tileData.CoordinateFullHeight / 2f);
+            Vector2 crystalPosition = point.ToWorldCoordinates(tileOrigin.X - 2f, tileOrigin.Y) + crystalOffset;
+
+            // Calculate additional drawing positions with a sine wave movement
+            float num = (float)Math.Sin(Main.GlobalTimeWrappedHourly * ((float)Math.PI * 2f) / 5f);
+            Vector2 drawingPosition = crystalPosition + offscreenVector + new Vector2(0f, num * 4f);
+
+            // Do dust drawing
+            if (!Main.gamePaused && Main.instance.IsActive && Main.rand.NextBool(dustConsequent))
+            {
+                Rectangle dustBox = Utils.CenteredRectangle(crystalPosition, crystalFrame.Size());
+                int numForDust = Dust.NewDust(dustBox.TopLeft(), dustBox.Width, dustBox.Height, DustID.TintableDustLighted, 0f, 0f, 254, dustColor, 0.5f);
+                Dust obj = Main.dust[numForDust];
+                obj.velocity *= 0.1f;
+                Main.dust[numForDust].velocity.Y -= 0.2f;
+            }
+
+            // Get color value and draw the the crystal
+            Color color = Lighting.GetColor(point.X, point.Y);
+            color = Color.Lerp(color, Color.White, 0.8f);
+            spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition, crystalFrame, color * 0.7f, 0f, origin, 1f, SpriteEffects.None, 0f);
+
+            // Draw the shadow effect for the crystal
+            float scale = (float)Math.Sin(Main.GlobalTimeWrappedHourly * ((float)Math.PI * 2f) / 1f) * 0.2f + 0.8f;
+            Color color2 = pylonShadowColor * scale;
+            for (float shadowPos = 0f; shadowPos < 1f; shadowPos += 1f / 6f)
+            {
+                spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition + ((float)Math.PI * 2f * shadowPos).ToRotationVector2() * (6f + num * 2f), crystalFrame, color2, 0f, origin, 1f, SpriteEffects.None, 0f);
+            }
+
+            // Interpret smart cursor outline color & draw it
+            int selectionLevel = 0;
+            if (Main.InSmartCursorHighlightArea(point.X, point.Y, out bool actuallySelected))
+            {
+                selectionLevel = 1;
+                if (actuallySelected)
+                {
+                    selectionLevel = 2;
+                }
+            }
+
+            if (selectionLevel == 0) {
+	            return;
+            }
+
+            int selectionColor = (color.R + color.G + color.B) / 3;
+
+            if (selectionColor <= 10) {
+	            return;
+            }
+
+            Color selectionGlowColor = Colors.GetSelectionGlowColor(selectionLevel == 2, selectionColor);
+            spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition, outlineFrame, selectionGlowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
+        }
 
 		/// <summary>
 		/// Draws the passed in map icon texture for pylons the exact way that vanilla would draw it. Note that this method

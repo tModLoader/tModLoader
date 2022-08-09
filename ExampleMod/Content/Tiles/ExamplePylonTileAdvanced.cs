@@ -27,9 +27,7 @@ namespace ExampleMod.Content.Tiles
 	/// </remarks>
 	public class ExamplePylonTileAdvanced : ModPylon
 	{
-		public const int CrystalHorizontalFrameCount = 2;
 		public const int CrystalVerticalFrameCount = 8;
-		public const int CrystalFrameHeight = 64;
 
 		public Asset<Texture2D> crystalTexture;
 		public Asset<Texture2D> mapIcon;
@@ -125,6 +123,13 @@ namespace ExampleMod.Content.Tiles
 			}
 		}
 
+		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
+			// Same as the basic example, but our light will be the disco color like the crystal
+			r = Main.DiscoColor.R / 255f * 0.75f;
+			g = Main.DiscoColor.G / 255f * 0.75f;
+			b = Main.DiscoColor.B / 255f * 0.75f;
+		}
+
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 			// This time, we'll ONLY draw the crystal if the pylon is active
 			// We need to check the framing here in order to guarantee we that we are trying to grab the TE ONLY when in the top left corner, where it is
@@ -137,7 +142,7 @@ namespace ExampleMod.Content.Tiles
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
 			// This code is essentially identical to how it is in the basic example, but this time the crystal color is the disco (rainbow) color instead.
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, Main.DiscoColor, CrystalFrameHeight, CrystalHorizontalFrameCount, CrystalVerticalFrameCount);
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0f, -14f), Main.DiscoColor * 0.1f, Color.White, 1, CrystalVerticalFrameCount);
 		}
 
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
