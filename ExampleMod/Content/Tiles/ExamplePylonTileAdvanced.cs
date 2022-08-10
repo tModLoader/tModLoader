@@ -30,11 +30,13 @@ namespace ExampleMod.Content.Tiles
 		public const int CrystalVerticalFrameCount = 8;
 
 		public Asset<Texture2D> crystalTexture;
+		public Asset<Texture2D> crystalHighlightTexture;
 		public Asset<Texture2D> mapIcon;
 
 		public override void Load() {
 			// We'll still use the other Example Pylon's sprites, but we need to adjust the texture values first to do so.
 			crystalTexture = ModContent.Request<Texture2D>(Texture.Replace("Advanced", "") + "_Crystal");
+			crystalHighlightTexture = ModContent.Request<Texture2D>(Texture.Replace("Advanced", "") + "_CrystalHighlight");
 			mapIcon = ModContent.Request<Texture2D>(Texture.Replace("Advanced", "") + "_MapIcon");
 		}
 
@@ -148,7 +150,7 @@ namespace ExampleMod.Content.Tiles
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
 			// This code is essentially identical to how it is in the basic example, but this time the crystal color is the disco (rainbow) color instead
 			// Also, since we want the pylon crystal to be drawn at the same height as vanilla (since our tile is one tile smaller), we have to move up the crystal accordingly with the crystalOffset parameter
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0f, -18f), Main.DiscoColor * 0.1f, Color.White, 1, CrystalVerticalFrameCount);
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, crystalHighlightTexture, new Vector2(0f, -18f), Main.DiscoColor * 0.1f, Main.DiscoColor, 1, CrystalVerticalFrameCount);
 		}
 
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {

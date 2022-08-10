@@ -41,6 +41,8 @@ namespace Terraria.ModLoader
 	/// 8) Regardless of all the past checks, if the designated NEARBY PYLON is a modded one, <seealso cref="ValidTeleportCheck_NearbyPostCheck"/> is called on it.
 	/// <br></br>
 	/// 9) Any <seealso cref="GlobalPylon"/> instances run <seealso cref="GlobalPylon.PostValidTeleportCheck"/>.
+	/// <br></br>
+	/// 10) Finally, if all previous checks pass AND the DESTINATION pylon is a modded one, <seealso cref="ModifyTeleportationPosition"/> is called on it, right before the player is teleported.
 	/// </remarks>
 	public abstract class ModPylon : ModTile
 	{
@@ -282,9 +284,9 @@ namespace Terraria.ModLoader
 		}
 
 
-		[Obsolete("Parameters have changed; parameters crystalDrawColor, frameHeight, and crystalHorizontalFrameCount no longer exist. There are 4 new parameters: crystalOffset, pylonShadowColor, dustColor, and dustConsequent.", true)]
+		[Obsolete("Parameters have changed; parameters crystalDrawColor, frameHeight, and crystalHorizontalFrameCount no longer exist. There are 5 new parameters: crystalHighlightTexture, crystalOffset, pylonShadowColor, dustColor, and dustConsequent.", true)]
 		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount) {
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0, -12f), Color.White * 0.1f, Color.White, 4, crystalVerticalFrameCount);
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, crystalTexture, new Vector2(0, -12f), Color.White * 0.1f, Color.White, 4, crystalVerticalFrameCount);
 		}
 
 		/// <summary>
@@ -295,6 +297,7 @@ namespace Terraria.ModLoader
 		/// <param name="i"> The X tile coordinate to start drawing from. </param>
 		/// <param name="j"> The Y tile coordinate to start drawing from. </param>
 		/// <param name="crystalTexture"> The texture of the crystal that will actually be drawn. </param>
+		/// <param name="crystalHighlightTexture"> The texture of the smart cursor highlight for the corresponding crystal texture. </param>
 		/// <param name="crystalOffset">
 		/// The offset of the actual position of the crystal. Assuming that a pylon tile itself and the crystals are equivalent to
 		/// vanilla's sizes, this value should be Vector2(0, -12).
@@ -303,7 +306,7 @@ namespace Terraria.ModLoader
 		/// <param name="dustColor"> The color of the dust that emanates from the crystal. </param>
 		/// <param name="dustConsequent"> Every draw call, this is this consequent value of a Main.rand.NextBool() check for whether or not a dust particle will spawn. 4 is the value vanilla uses. </param>
 		/// <param name="crystalVerticalFrameCount"> How many vertical frames the crystal texture has. </param>
-		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustConsequent, int crystalVerticalFrameCount) {
+		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Asset<Texture2D> crystalHighlightTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustConsequent, int crystalVerticalFrameCount) {
 			// Gets offscreen vector for different lighting modes
 			Vector2 offscreenVector = new Vector2(Main.offScreenRange);
 			if (Main.drawToScreen) {
@@ -322,13 +325,13 @@ namespace Terraria.ModLoader
 			// Calculate frame based on vanilla counters in order to line up the animation
 			int frameY = Main.tileFrameCounter[TileID.TeleportationPylon] / crystalVerticalFrameCount;
 
-			// Frame the vanilla crystal sheet accordingly for proper drawing
-			Texture2D vanillaCrystalSheet = TextureAssets.Extra[181].Value;
-			Rectangle shadowFrame = vanillaCrystalSheet.Frame(12, 8, 0, frameY);
-			Rectangle smartCursorGlowFrame = vanillaCrystalSheet.Frame(12, 8, 2, frameY);
 			// Frame our modded crystal sheet accordingly for proper drawing
 			Rectangle crystalFrame = crystalTexture.Frame(1, crystalVerticalFrameCount, 0, frameY);
-			crystalFrame.Y -= 1; // I have no idea what is happening here; but it fixes the frame bleed issue. if anyone else has a clue, please do tell. - Mutant
+			Rectangle smartCursorGlowFrame = crystalHighlightTexture.Frame(1, crystalVerticalFrameCount, 0, frameY);
+			// I have no idea what is happening here; but it fixes the frame bleed issue. All I know is that the vertical sinusoidal motion has something to with it.
+			// If anyone else has a clue as to why, please do tell. - MutantWafflez
+			crystalFrame.Height -= 1;
+			smartCursorGlowFrame.Height -= 1;
 
 			// Calculate positional variables for actually drawing the crystal
 			Vector2 origin = crystalFrame.Size() / 2f;
@@ -357,7 +360,7 @@ namespace Terraria.ModLoader
 			float scale = (float)Math.Sin(Main.GlobalTimeWrappedHourly * ((float)Math.PI * 2f) / 1f) * 0.2f + 0.8f;
 			Color shadowColor = pylonShadowColor * scale;
 			for (float shadowPos = 0f; shadowPos < 1f; shadowPos += 1f / 6f) {
-				spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition + ((float)Math.PI * 2f * shadowPos).ToRotationVector2() * (6f + sinusoidalOffset * 2f), shadowFrame, shadowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
+				spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition + ((float)Math.PI * 2f * shadowPos).ToRotationVector2() * (6f + sinusoidalOffset * 2f), crystalFrame, shadowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
 			}
 
 			// Interpret smart cursor outline color & draw it
@@ -380,7 +383,7 @@ namespace Terraria.ModLoader
 			}
 
 			Color selectionGlowColor = Colors.GetSelectionGlowColor(selectionLevel == 2, averageBrightness);
-			spriteBatch.Draw(vanillaCrystalSheet, drawingPosition - Main.screenPosition, smartCursorGlowFrame, selectionGlowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
+			spriteBatch.Draw(crystalHighlightTexture.Value, drawingPosition - Main.screenPosition, smartCursorGlowFrame, selectionGlowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
 		}
 
 		/// <summary>

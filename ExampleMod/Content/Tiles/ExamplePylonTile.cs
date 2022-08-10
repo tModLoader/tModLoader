@@ -30,11 +30,13 @@ namespace ExampleMod.Content.Tiles
 		public const int CrystalVerticalFrameCount = 8;
 
 		public Asset<Texture2D> crystalTexture;
+		public Asset<Texture2D> crystalHighlightTexture;
 		public Asset<Texture2D> mapIcon;
 
 		public override void Load() {
 			// We'll need these textures for later, it's best practice to cache them on load instead of continually requesting every draw call.
 			crystalTexture = ModContent.Request<Texture2D>(Texture + "_Crystal");
+			crystalHighlightTexture = ModContent.Request<Texture2D>(Texture + "_CrystalHighlight");
 			mapIcon = ModContent.Request<Texture2D>(Texture + "_MapIcon");
 		}
 
@@ -46,7 +48,7 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.newTile.DrawYOffset = 2;
 			TileObjectData.newTile.StyleHorizontal = true;
-			// These definitions allow for vanilla's pylon TileEntities to be placed. If you want to use your own TileEntities, do NOT add these lines!
+			// These definitions allow for vanilla's pylon TileEntities to be placed.
 			// tModLoader has a built in Tile Entity specifically for modded pylons, which we must extend (see SimplePylonTileEntity)
 			TEModdedPylon moddedPylon = ModContent.GetInstance<SimplePylonTileEntity>();
 			TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(moddedPylon.PlacementPreviewHook_CheckIfCanPlace, 1, 0, true);
@@ -112,7 +114,7 @@ namespace ExampleMod.Content.Tiles
 			// We want to draw the pylon crystal the exact same way vanilla does, so we can use this built in method in ModPylon for default crystal drawing:
 			// For the sake of example, lets make our pylon create a bit more dust by decreasing the dustConsequent value down to 1. If you want your dust spawning to be identical to vanilla, set dustConsequent to 4.
 			// We also multiply the pylonShadowColor in order to decrease its opacity, so it actually looks like a "shadow"
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0f, -12f), Color.White * 0.1f, Color.White, 1, CrystalVerticalFrameCount);
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, crystalHighlightTexture, new Vector2(0f, -12f), Color.White * 0.1f, Color.White, 1, CrystalVerticalFrameCount);
 		}
 
 		public override void DrawMapIcon(ref MapOverlayDrawContext context, ref string mouseOverText, TeleportPylonInfo pylonInfo, bool isNearPylon, Color drawColor, float deselectedScale, float selectedScale) {
