@@ -21,7 +21,7 @@ trap stop SIGTERM SIGINT
 
 # Installing/updating mods
 mkdir -p ~/.local/share/Terraria
-./Setup_tModLoaderServer.sh -u --modsonly --checkdir ~/.local/share/Terraria --folder ~/.local/share/Terraria/wsmods
+./ManageServer.sh -u --modsonly --checkdir ~/.local/share/Terraria --folder ~/.local/share/Terraria/wsmods
 
 # Symlink tML's local dotnet install so that it can persist through runs
 mkdir -p ~/.local/share/Terraria/dotnet
