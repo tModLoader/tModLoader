@@ -25,7 +25,7 @@ Before building and running the container first you need to prepare a directory 
 
 Note that a human-friendly name can be given to your container by passing in `--name container_name` to your `docker-run` command. To run the container on a different port than `7777`, simply change it to be `your_port:7777` in your `docker-run` command. To allow the container to persist after closing your terminal or ssh session, add `-d` to your `docker-run` command.
 
-### Docker compose
+### Docker Compose
  * Copy `docker-compose.yml` and `Dockerfile` to the same directory
  * `docker-compose build`
  * `docker-compose up`
@@ -44,6 +44,43 @@ autocreate=1
 # Sets the name of the world when using autocreate
 worldname=YourWorld
 ```
+
+## Updating
+To update the script, run `./ManageServer.sh --updatescript`
+
+When using `ManageServer.sh`, updating can be done by running `./ManageServer.sh --update`. When using a Github install, use `--github` and `--folder` if your install is in a non-standard location.
+
+When using the Docker container, simply rebuild the container to update tModLoader. Use `docker build .` or `docker-compose build` depending on your setup.
+
+## Autostarting
+Docker: Start the container using `--restart always`. For additional options view the [documentation](https://docs.docker.com/config/containers/start-containers-automatically/).
+
+Docker Compose: Add `restart: always` within `services.tml` inside of `docker-compose.yml`.
+
+Server Management Script: This is platform dependent. You can use your system's init system to automatically start the server on launch, although you'll want to provide a [config](#serverconfig.txt) due to the headless nature of this approach. An example for a common init system, `systemd`, is below. Lines with placeholder that need to be changed are marked with a `💀`.
+
+```
+[Unit]
+Description=tML Server
+After=network-online.target
+Wants=network-online.target systemd-networkd-wait-online.service
+
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
+[Service]
+User=youruser 💀
+Group=yourgroup 💀
+Restart=on-failure
+RestartSec=5s
+
+WorkingDirectory=/home/youruser/tModLoader 💀
+ExecStart=bash -c ./start-tModLoaderServer.sh -nosteam
+
+[Install]
+WantedBy=multi-user.target
+```
+The server can then be started using `systemctl start YourServiceFile`. Autostart can be enabled by running `systemctl enable YourServiceFile`. To find out where to place the service file, refer to your distro's documentation.
 
 ## install.txt and enabled.json
 
