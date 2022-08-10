@@ -99,7 +99,7 @@ namespace Terraria.ModLoader
 		/// Step 1 of the ValidTeleportCheck process. This is the first vanilla check that is called when
 		/// checking both the destination pylon and any possible nearby pylons. This check should be where you check
 		/// how many NPCs are nearby, returning false if the Pylon does not satisfy the conditions.
-		/// By default, returns true if there are 2 or more (not-unhappy) NPCs nearby.
+		/// By default, returns true if there are 2 or more NPCs nearby.
 		/// </summary>
 		/// <remarks>
 		/// Note that it's important you put the right checks in the right ValidTeleportCheck step,
@@ -285,7 +285,7 @@ namespace Terraria.ModLoader
 		
 		[Obsolete("Parameters have changed; parameters crystalDrawColor, frameHeight, and crystalHorizontalFrameCount no longer exist. There are 4 new parameters: crystalOffset, pylonShadowColor, dustColor, and dustConsequent.", true)]
 		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount) {
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0, -12f), Color.White * 0.1f, Color.White, 3, crystalVerticalFrameCount);
+			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, new Vector2(0, -12f), Color.White * 0.1f, Color.White, 4, crystalVerticalFrameCount);
 		}
 
 		/// <summary>
@@ -302,7 +302,7 @@ namespace Terraria.ModLoader
 		/// </param>
 		/// <param name="pylonShadowColor"> The color of the "shadow" that is drawn on top of the crystal texture. </param>
 		/// <param name="dustColor"> The color of the dust that emanates from the crystal. </param>
-		/// <param name="dustConsequent"> Every draw call, this is this consequent value of a Main.rand.NextBool() check for whether or not a dust particle will spawn. </param>
+		/// <param name="dustConsequent"> Every draw call, this is this consequent value of a Main.rand.NextBool() check for whether or not a dust particle will spawn. 4 is the value vanilla uses. </param>
 		/// <param name="crystalVerticalFrameCount"> How many vertical frames the crystal texture has. </param>
 		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustConsequent, int crystalVerticalFrameCount)
         {
@@ -326,11 +326,13 @@ namespace Terraria.ModLoader
             // Calculate frame based on vanilla counters in order to line up the animation
             int frameY = Main.tileFrameCounter[TileID.TeleportationPylon] / crystalVerticalFrameCount;
 
-            // Frame the crystal sheet accordingly for proper drawing
-            Rectangle shadowFrame = crystalTexture.Frame(3, crystalVerticalFrameCount, 0, frameY);
-            Rectangle crystalFrame = crystalTexture.Frame(3, crystalVerticalFrameCount, 1, frameY);
+            // Frame the vanilla crystal sheet accordingly for proper drawing
+            Texture2D vanillaCrystalSheet = TextureAssets.Extra[181].Value;
+            Rectangle shadowFrame = vanillaCrystalSheet.Frame(12, 8, 0, frameY);
+            Rectangle smartCursorGlowFrame = vanillaCrystalSheet.Frame(12, 8, 2, frameY);
+			// Frame our modded crystal sheet accordingly for proper drawing
+            Rectangle crystalFrame = crystalTexture.Frame(1, crystalVerticalFrameCount, 0, frameY);
             crystalFrame.Y -= 1; // I have no idea what is happening here; but it fixes the frame bleed issue. if anyone else has a clue, please do tell. - Mutant
-            Rectangle outlineFrame = crystalTexture.Frame(3, crystalVerticalFrameCount, 2, frameY);
 
             // Calculate positional variables for actually drawing the crystal
             Vector2 origin = crystalFrame.Size() / 2f;
@@ -338,11 +340,11 @@ namespace Terraria.ModLoader
             Vector2 crystalPosition = point.ToWorldCoordinates(tileOrigin.X - 2f, tileOrigin.Y) + crystalOffset;
 
             // Calculate additional drawing positions with a sine wave movement
-            float num = (float)Math.Sin(Main.GlobalTimeWrappedHourly * (Math.PI * 2) / 5);
-            Vector2 drawingPosition = crystalPosition + offscreenVector + new Vector2(0f, num * 4f);
+            float sinusoidalOffset = (float)Math.Sin(Main.GlobalTimeWrappedHourly * (Math.PI * 2) / 5);
+            Vector2 drawingPosition = crystalPosition + offscreenVector + new Vector2(0f, sinusoidalOffset * 4f);
 
             // Do dust drawing
-            if (!Main.gamePaused && Main.instance.IsActive && Main.rand.NextBool(dustConsequent))
+            if (!Main.gamePaused && Main.instance.IsActive && (!Lighting.UpdateEveryFrame || Main.rand.NextBool(4)) && Main.rand.NextBool(dustConsequent))
             {
                 Rectangle dustBox = Utils.CenteredRectangle(crystalPosition, crystalFrame.Size());
                 int numForDust = Dust.NewDust(dustBox.TopLeft(), dustBox.Width, dustBox.Height, DustID.TintableDustLighted, 0f, 0f, 254, dustColor, 0.5f);
@@ -361,7 +363,7 @@ namespace Terraria.ModLoader
             Color shadowColor = pylonShadowColor * scale;
             for (float shadowPos = 0f; shadowPos < 1f; shadowPos += 1f / 6f)
             {
-                spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition + ((float)Math.PI * 2f * shadowPos).ToRotationVector2() * (6f + num * 2f), shadowFrame, shadowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition + ((float)Math.PI * 2f * shadowPos).ToRotationVector2() * (6f + sinusoidalOffset * 2f), shadowFrame, shadowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
             }
 
             // Interpret smart cursor outline color & draw it
@@ -379,14 +381,14 @@ namespace Terraria.ModLoader
 	            return;
             }
 
-            int selectionColor = (color.R + color.G + color.B) / 3;
+            int averageBrightness = (color.R + color.G + color.B) / 3;
 
-            if (selectionColor <= 10) {
+            if (averageBrightness <= 10) {
 	            return;
             }
 
-            Color selectionGlowColor = Colors.GetSelectionGlowColor(selectionLevel == 2, selectionColor);
-            spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition, outlineFrame, selectionGlowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
+            Color selectionGlowColor = Colors.GetSelectionGlowColor(selectionLevel == 2, averageBrightness);
+            spriteBatch.Draw(vanillaCrystalSheet, drawingPosition - Main.screenPosition, smartCursorGlowFrame, selectionGlowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
         }
 
 		/// <summary>

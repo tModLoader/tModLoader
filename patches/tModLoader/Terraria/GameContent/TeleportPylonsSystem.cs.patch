@@ -101,7 +101,7 @@
  				int num2 = 9;
  				int typeOfPylon = (int)info.TypeOfPylon;
  				int number = 0;
-@@ -185,9 +_,13 @@
+@@ -185,17 +_,23 @@
  			}
  		}
  
@@ -109,13 +109,25 @@
 +		public static bool IsPlayerNearAPylon(Player player) => TileID.Sets.CountsAsPylon.Any(player.IsTileTypeInInteractionRange);
  
  		private bool DoesPylonHaveEnoughNPCsAroundIt(TeleportPylonInfo info, int necessaryNPCCount) {
+-			if (necessaryNPCCount <= 0)
+-				return true;
 +			if (PylonLoader.ValidTeleportCheck_PreNPCCount(info, ref necessaryNPCCount) is bool value)
 +				return value;
 +			if (info.ModPylon is ModPylon pylon)
 +				return pylon.ValidTeleportCheck_NPCCount(info, necessaryNPCCount);
- 			if (necessaryNPCCount <= 0)
- 				return true;
++			/*if (necessaryNPCCount <= 0) // tML: Moved to DoesPositionHaveEnoughNPCs method
++				return true;*/ 
  
+ 			Point16 positionInTiles = info.PositionInTiles;
+ 			return DoesPositionHaveEnoughNPCs(necessaryNPCCount, positionInTiles);
+ 		}
+ 
+ 		public static bool DoesPositionHaveEnoughNPCs(int necessaryNPCCount, Point16 centerPoint) {
++			if (necessaryNPCCount <= 0) 
++				return true;
+ 			Rectangle rectangle = new Rectangle(centerPoint.X - Main.buffScanAreaWidth / 2, centerPoint.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
+ 			int num = necessaryNPCCount;
+ 			for (int i = 0; i < 200; i++) {
 @@ -220,6 +_,10 @@
  		}
  
