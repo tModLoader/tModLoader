@@ -121,7 +121,7 @@ override string&#160;</td><td class="memItemRight" valign="bottom"><b>ToString</
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a43b38d5256524b136154c6f15c7c39e7"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html#a43b38d5256524b136154c6f15c7c39e7">Draw</a> (ref <a class="el" href="struct_terraria_1_1_data_structures_1_1_player_draw_set.html">PlayerDrawSet</a> drawInfo)</td></tr>
-<tr class="memdesc:a43b38d5256524b136154c6f15c7c39e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws this layer.  <a href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html#a43b38d5256524b136154c6f15c7c39e7">More...</a><br /></td></tr>
+<tr class="memdesc:a43b38d5256524b136154c6f15c7c39e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws this layer. This will be called multiple times a frame if a player afterimage is being drawn. If this layer shouldn't draw with each afterimage, check  <a href="class_terraria_1_1_mod_loader_1_1_player_draw_layer_slot.html#a43b38d5256524b136154c6f15c7c39e7">More...</a><br /></td></tr>
 <tr class="separator:a43b38d5256524b136154c6f15c7c39e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_terraria_1_1_mod_loader_1_1_player_draw_layer"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_terraria_1_1_mod_loader_1_1_player_draw_layer')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html">Terraria.ModLoader.PlayerDrawLayer</a></td></tr>
 <tr class="memitem:a7fdc161ad0da15b57a1c00dae4c8ca43 inherit pro_methods_class_terraria_1_1_mod_loader_1_1_player_draw_layer"><td class="memItemLeft" align="right" valign="top">sealed override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#a7fdc161ad0da15b57a1c00dae4c8ca43">Register</a> ()</td></tr>
@@ -239,7 +239,8 @@ TEntity&#160;</td><td class="memItemRight" valign="bottom"><b>Entity</b><code> [
 </table>
 </div><div class="memdoc">
 
-<p>Draws this layer. </p>
+<p>Draws this layer. This will be called multiple times a frame if a player afterimage is being drawn. If this layer shouldn't draw with each afterimage, check </p>
+<p><code>if(drawinfo.shadow == 0f)</code> to only draw for the original player image. </p>
 
 <p>Implements <a class="el" href="class_terraria_1_1_mod_loader_1_1_player_draw_layer.html#ad923b861201f275850f0ea8563e7a45d">Terraria.ModLoader.PlayerDrawLayer</a>.</p>
 

@@ -13,6 +13,7 @@ var class_terraria_1_1_i_d_1_1_music_i_d =
     [ "Credits", "class_terraria_1_1_i_d_1_1_music_i_d.html#a5d83560b2d20d856833aa1b795372354", null ],
     [ "Crimson", "class_terraria_1_1_i_d_1_1_music_i_d.html#a036daf2e58d45cb4c256d7d42033dbfc", null ],
     [ "DayRemix", "class_terraria_1_1_i_d_1_1_music_i_d.html#a8a8b82b1ff11060c1af3e84dbdbc1e7a", null ],
+    [ "Deerclops", "class_terraria_1_1_i_d_1_1_music_i_d.html#a069703ae4fa6b3e59801710429bf0abe", null ],
     [ "Desert", "class_terraria_1_1_i_d_1_1_music_i_d.html#a3da61f82873e8a442fc26d5404a84d68", null ],
     [ "DukeFishron", "class_terraria_1_1_i_d_1_1_music_i_d.html#a7afb3efaf6ab931a00b8c1f8479e6b19", null ],
     [ "Dungeon", "class_terraria_1_1_i_d_1_1_music_i_d.html#a7c2b60d4677ecdb3b4f26a5a7c7251fc", null ],
