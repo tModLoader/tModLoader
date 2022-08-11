@@ -284,7 +284,7 @@ namespace Terraria.ModLoader
 		}
 
 
-		[Obsolete("Parameters have changed; parameters crystalDrawColor, frameHeight, and crystalHorizontalFrameCount no longer exist. There are 5 new parameters: crystalHighlightTexture, crystalOffset, pylonShadowColor, dustColor, and dustConsequent.", true)]
+		[Obsolete("Parameters have changed; parameters crystalDrawColor, frameHeight, and crystalHorizontalFrameCount no longer exist. There are 5 new parameters: crystalHighlightTexture, crystalOffset, pylonShadowColor, dustColor, and dustChanceDenominator.", true)]
 		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount) {
 			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, crystalTexture, new Vector2(0, -12f), Color.White * 0.1f, Color.White, 4, crystalVerticalFrameCount);
 		}
@@ -304,9 +304,9 @@ namespace Terraria.ModLoader
 		/// </param>
 		/// <param name="pylonShadowColor"> The color of the "shadow" that is drawn on top of the crystal texture. </param>
 		/// <param name="dustColor"> The color of the dust that emanates from the crystal. </param>
-		/// <param name="dustConsequent"> Every draw call, this is this consequent value of a Main.rand.NextBool() check for whether or not a dust particle will spawn. 4 is the value vanilla uses. </param>
+		/// <param name="dustChanceDenominator"> Every draw call, this is this the denominator value of a Main.rand.NextBool() (1/denominator chance) check for whether or not a dust particle will spawn. 4 is the value vanilla uses. </param>
 		/// <param name="crystalVerticalFrameCount"> How many vertical frames the crystal texture has. </param>
-		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Asset<Texture2D> crystalHighlightTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustConsequent, int crystalVerticalFrameCount) {
+		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Asset<Texture2D> crystalHighlightTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustChanceDenominator, int crystalVerticalFrameCount) {
 			// Gets offscreen vector for different lighting modes
 			Vector2 offscreenVector = new Vector2(Main.offScreenRange);
 			if (Main.drawToScreen) {
@@ -343,7 +343,7 @@ namespace Terraria.ModLoader
 			Vector2 drawingPosition = crystalPosition + offscreenVector + new Vector2(0f, sinusoidalOffset * 4f);
 
 			// Do dust drawing
-			if (!Main.gamePaused && Main.instance.IsActive && (!Lighting.UpdateEveryFrame || Main.rand.NextBool(4)) && Main.rand.NextBool(dustConsequent)) {
+			if (!Main.gamePaused && Main.instance.IsActive && (!Lighting.UpdateEveryFrame || Main.rand.NextBool(4)) && Main.rand.NextBool(dustChanceDenominator)) {
 				Rectangle dustBox = Utils.CenteredRectangle(crystalPosition, crystalFrame.Size());
 				int numForDust = Dust.NewDust(dustBox.TopLeft(), dustBox.Width, dustBox.Height, DustID.TintableDustLighted, 0f, 0f, 254, dustColor, 0.5f);
 				Dust obj = Main.dust[numForDust];
