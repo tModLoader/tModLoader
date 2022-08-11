@@ -1,5 +1,19 @@
 var NAVTREEINDEX133 =
 {
+"struct_terraria_1_1_scene_metrics_scan_settings.html#a91b6f2be0286f9d70e58cb83dc6cf202":[2,0,2,66,2],
+"struct_terraria_1_1_scene_metrics_scan_settings.html#ad95c8ece7c8c782a8066c73e8b9936ee":[2,0,2,66,1],
+"struct_terraria_1_1_shopping_settings.html":[2,0,2,67],
+"struct_terraria_1_1_shopping_settings.html#a0fb03ac9727fcd3edd387ae68639ffa3":[2,0,2,67,1],
+"struct_terraria_1_1_shopping_settings.html#ad545ff94cb814ef5e9a269d3e10bca55":[2,0,2,67,2],
+"struct_terraria_1_1_shopping_settings.html#aebdcadd9fdc785344ea1334fc3916378":[2,0,2,67,0],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_item_install_info.html":[2,0,2,19,1,13,0],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_item_install_info.html#a6a8ae94ac3fd1b23f62544195b626210":[2,0,2,19,1,13,0,0],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_item_install_info.html#ac8798fc4eb5e6e81d5f8c53488c34a2f":[2,0,2,19,1,13,0,1],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html":[2,0,2,19,1,13,2,4],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a11d17d0e804119c6e068e90820932eef":[2,0,2,19,1,13,2,4,1],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a2cc1323283a569c49700bfc9794111d3":[2,0,2,19,1,13,2,4,6],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a3e26fc6272fdc2a35c8422423a985050":[2,0,2,19,1,13,2,4,4],
+"struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a535fb375688bf638a8766a33397e6d9e":[2,0,2,19,1,13,2,4,3],
 "struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a7bf8846372f11a210cdf2d001f9de660":[2,0,2,19,1,13,2,4,5],
 "struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#a7c17c2b918b167135c4b01642ce4b229":[2,0,2,19,1,13,2,4,7],
 "struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_u_g_c_based_1_1_steam_workshop_item.html#ab8b7ac33397297128614db8b3dbe5930":[2,0,2,19,1,13,2,4,0],
@@ -219,5 +233,5 @@ var NAVTREEINDEX133 =
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ab4a41891b488a8e30e51e30da3da83e6":[2,0,2,84,1,4],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#ac026067dd86556b03343af3accafb339":[2,0,2,84,1,9],
 "struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html#af29be99c6e7eeb85d0fd385f07a3ebd6":[2,0,2,84,1,5],
-"structnativefiledialog_1_1nfdpathset__t.html":[2,0,39,0]
+"structnativefiledialog_1_1nfdpathset__t.html":[2,0,40,0]
 };

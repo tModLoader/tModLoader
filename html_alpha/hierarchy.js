@@ -2219,6 +2219,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "TagSerializer", "class_tag_serializer.html", [
+      [ "MultiDimArraySerializer", "class_multi_dim_array_serializer.html", null ],
       [ "Terraria.ModLoader.IO.TagSerializer< T, S >", "class_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializer.html", null ]
     ] ],
     [ "Terraria.Utilities.NPCUtils.TargetSearchResults", "struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html", null ],

@@ -1724,6 +1724,7 @@ var annotated_dup =
     [ "List", "class_list.html", null ],
     [ "Loader", "class_loader.html", null ],
     [ "ModType", "class_mod_type.html", null ],
+    [ "MultiDimArraySerializer", "class_multi_dim_array_serializer.html", "class_multi_dim_array_serializer" ],
     [ "nativefiledialog", "classnativefiledialog.html", "classnativefiledialog" ],
     [ "PayloadHandler", "class_payload_handler.html", null ],
     [ "RgbDevice", "class_rgb_device.html", null ],
