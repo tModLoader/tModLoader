@@ -13,9 +13,10 @@ namespace Terraria.GameContent.UI.Elements
 		}
 
 		public virtual void AddRange(IEnumerable<UIElement> items) {
-			foreach (var item in items)
+			foreach (var item in items) {
 				_items.Add(item);
 				_innerList.Append(item);
+			}
 
 			UpdateOrder();
 			_innerList.Recalculate();
