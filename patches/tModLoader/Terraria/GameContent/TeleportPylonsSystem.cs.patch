@@ -85,7 +85,7 @@
  					switch (num) {
  						default:
  							key = "Net.CannotTeleportToPylonBecausePlayerIsNotNearAPylon";
-@@ -167,8 +_,11 @@
+@@ -167,9 +_,14 @@
  					}
  				}
  			}
@@ -96,9 +96,12 @@
 -			if (flag) {
 +			if (flag && flag2) {
  				Vector2 newPos = info.PositionInTiles.ToWorldCoordinates() - new Vector2(0f, player.HeightOffsetBoost);
++				if (info.ModPylon is ModPylon finalDestinationPylon)
++					finalDestinationPylon.ModifyTeleportationPosition(info, ref newPos);
  				int num2 = 9;
  				int typeOfPylon = (int)info.TypeOfPylon;
-@@ -185,9 +_,13 @@
+ 				int number = 0;
+@@ -185,17 +_,25 @@
  			}
  		}
  
@@ -110,9 +113,21 @@
 +				return value;
 +			if (info.ModPylon is ModPylon pylon)
 +				return pylon.ValidTeleportCheck_NPCCount(info, necessaryNPCCount);
++			/* Moved to DoesPositionHaveEnoughNPCs method
  			if (necessaryNPCCount <= 0)
  				return true;
++			*/
  
+ 			Point16 positionInTiles = info.PositionInTiles;
+ 			return DoesPositionHaveEnoughNPCs(necessaryNPCCount, positionInTiles);
+ 		}
+ 
+ 		public static bool DoesPositionHaveEnoughNPCs(int necessaryNPCCount, Point16 centerPoint) {
++			if (necessaryNPCCount <= 0) 
++				return true;
+ 			Rectangle rectangle = new Rectangle(centerPoint.X - Main.buffScanAreaWidth / 2, centerPoint.Y - Main.buffScanAreaHeight / 2, Main.buffScanAreaWidth, Main.buffScanAreaHeight);
+ 			int num = necessaryNPCCount;
+ 			for (int i = 0; i < 200; i++) {
 @@ -220,6 +_,10 @@
  		}
  
