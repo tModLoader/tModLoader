@@ -114,8 +114,7 @@
 +			if (info.ModPylon is ModPylon pylon)
 +				return pylon.ValidTeleportCheck_NPCCount(info, necessaryNPCCount);
 +			/* Moved to DoesPositionHaveEnoughNPCs method
--			if (necessaryNPCCount <= 0)
-+			if (necessaryNPCCount <= 0)  
+ 			if (necessaryNPCCount <= 0)
  				return true;
 +			*/
  
