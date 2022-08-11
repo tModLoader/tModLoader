@@ -1,5 +1,7 @@
 var NAVTREEINDEX124 =
 {
+"interface_terraria_1_1_achievements_1_1_i_achievement_tracker.html":[2,0,2,0,7],
+"interface_terraria_1_1_achievements_1_1_i_achievement_tracker.html#a334d16b9098dfd645fc55ac03f3a874e":[2,0,2,0,7,2],
 "interface_terraria_1_1_achievements_1_1_i_achievement_tracker.html#aa5536b238836db71bd874d8785de9441":[2,0,2,0,7,3],
 "interface_terraria_1_1_achievements_1_1_i_achievement_tracker.html#ab6562fc5d36e0ecc73dcb4b3f911b442":[2,0,2,0,7,1],
 "interface_terraria_1_1_achievements_1_1_i_achievement_tracker.html#ae4e4d81c2aac03ade055bb9869379b67":[2,0,2,0,7,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX124 =
 "interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a52fd73042e4c0ddeed26c7974e9592af":[2,0,2,13,60,0],
 "interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a70f7612ca9aebec3149b51789f1b54c6":[2,0,2,13,60,2],
 "interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#ae001b098c12c404ce71f234957dcb8a4":[2,0,2,13,60,1],
-"interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html":[2,0,2,13,5,15],
-"interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html#a6cd4f6978db224e5870b3c981fe8e379":[2,0,2,13,5,15,0],
-"interface_terraria_1_1_mod_loader_1_1_i_plant.html":[2,0,2,13,65]
+"interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html":[2,0,2,13,5,15]
 };

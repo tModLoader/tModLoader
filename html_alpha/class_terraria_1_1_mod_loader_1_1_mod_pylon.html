@@ -107,8 +107,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9ebff7ff869b3c7a621a9463116c1dc8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a9ebff7ff869b3c7a621a9463116c1dc8">DefaultDrawMapIcon</a> (ref <a class="el" href="struct_terraria_1_1_map_1_1_map_overlay_draw_context.html">MapOverlayDrawContext</a> context, Asset&lt; Texture2D &gt; mapIcon, Vector2 drawCenter, Color drawColor, float deselectedScale, float selectedScale)</td></tr>
 <tr class="memdesc:a9ebff7ff869b3c7a621a9463116c1dc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the passed in map icon texture for pylons the exact way that vanilla would draw it. Note that this method assumes that the texture is NOT framed, i.e there is only a single sprite that is not animated. Returns whether or not the player is currently hovering over the icon.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a9ebff7ff869b3c7a621a9463116c1dc8">More...</a><br /></td></tr>
 <tr class="separator:a9ebff7ff869b3c7a621a9463116c1dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad15428af2f4ca87fa9c9ae0a81a073ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ad15428af2f4ca87fa9c9ae0a81a073ec">DefaultDrawPylonCrystal</a> (SpriteBatch spriteBatch, int i, int j, Asset&lt; Texture2D &gt; crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount)</td></tr>
-<tr class="memdesc:ad15428af2f4ca87fa9c9ae0a81a073ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the passed in pylon crystal texture the exact way that vanilla draws it. This MUST be called in SpecialDraw in order to function properly.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ad15428af2f4ca87fa9c9ae0a81a073ec">More...</a><br /></td></tr>
+<tr class="memitem:ae92ce5619ee5a18b0b7b9238bed6349e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ae92ce5619ee5a18b0b7b9238bed6349e">DefaultDrawPylonCrystal</a> (SpriteBatch spriteBatch, int i, int j, Asset&lt; Texture2D &gt; crystalTexture, Asset&lt; Texture2D &gt; crystalHighlightTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustChanceDenominator, int crystalVerticalFrameCount)</td></tr>
+<tr class="memdesc:ae92ce5619ee5a18b0b7b9238bed6349e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws the passed in pylon crystal texture the exact way that vanilla draws it. This MUST be called in SpecialDraw in order to function properly.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ae92ce5619ee5a18b0b7b9238bed6349e">More...</a><br /></td></tr>
+<tr class="separator:ae92ce5619ee5a18b0b7b9238bed6349e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad15428af2f4ca87fa9c9ae0a81a073ec"><td class="memItemLeft" align="right" valign="top"><a id="ad15428af2f4ca87fa9c9ae0a81a073ec"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultDrawPylonCrystal</b> (SpriteBatch spriteBatch, int i, int j, Asset&lt; Texture2D &gt; crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount)</td></tr>
 <tr class="separator:ad15428af2f4ca87fa9c9ae0a81a073ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5aee30764f87e8e6114fdb3c43784c42"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a5aee30764f87e8e6114fdb3c43784c42">DefaultMapClickHandle</a> (bool mouseIsHovering, <a class="el" href="struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html">TeleportPylonInfo</a> pylonInfo, string hoveringTextKey, ref string mouseOverText)</td></tr>
 <tr class="memdesc:a5aee30764f87e8e6114fdb3c43784c42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles mouse clicking on the map icon the exact way that vanilla handles it. In normal circumstances, this should be called directly after DefaultDrawMapIcon.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a5aee30764f87e8e6114fdb3c43784c42">More...</a><br /></td></tr>
@@ -127,6 +130,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa2abc46bce56efbc22dff29fef10adcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this Pylon should be sold by the specified <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> type and with the given player. This should return the ITEM TYPE of the item that places this <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html" title="Extension to ModTilethat streamlines the process of creating a modded Pylon. Has all of ModTile&#39;s hoo...">ModPylon</a>, if one exists. If you don't want anything to be put up for sale, return null. <br  />
  Returns null by default.   <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#aa2abc46bce56efbc22dff29fef10adcc">More...</a><br /></td></tr>
 <tr class="separator:aa2abc46bce56efbc22dff29fef10adcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addf789535df2e62a3e44c18a7cbdcb93"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#addf789535df2e62a3e44c18a7cbdcb93">ModifyTeleportationPosition</a> (<a class="el" href="struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html">TeleportPylonInfo</a> destinationPylonInfo, ref Vector2 teleportationPosition)</td></tr>
+<tr class="memdesc:addf789535df2e62a3e44c18a7cbdcb93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called right BEFORE the teleportation of the player occurs, when all checks succeed during the ValidTeleportCheck process. Allows the modification of where the player ends up when the teleportation takes place. Remember that the teleport location is in WORLD coordinates, not tile coordinates.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#addf789535df2e62a3e44c18a7cbdcb93">More...</a><br /></td></tr>
+<tr class="separator:addf789535df2e62a3e44c18a7cbdcb93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25b0e7d965755343246b3ef6370e9fc2"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a25b0e7d965755343246b3ef6370e9fc2">RightClick</a> (int i, int j)</td></tr>
 <tr class="memdesc:a25b0e7d965755343246b3ef6370e9fc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make something happen when this tile is right-clicked by the player. Return true to indicate that a tile interaction has occurred, preventing other right click actions like minion targetting from happening. Returns false by default.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a25b0e7d965755343246b3ef6370e9fc2">More...</a><br /></td></tr>
 <tr class="separator:a25b0e7d965755343246b3ef6370e9fc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,7 +154,7 @@ Public Member Functions</h2></td></tr>
  <b> If you're confused about the order of which the ValidTeleportCheck methods are called, check out the XML summary on the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html" title="Extension to ModTilethat streamlines the process of creating a modded Pylon. Has all of ModTile&#39;s hoo...">ModPylon</a> class.</b>  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ae25704d06ba66e69797fa0e97deff382">More...</a><br /></td></tr>
 <tr class="separator:ae25704d06ba66e69797fa0e97deff382"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae79b8b0a5ed24932464e0ce14ceffdb8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ae79b8b0a5ed24932464e0ce14ceffdb8">ValidTeleportCheck_NPCCount</a> (<a class="el" href="struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html">TeleportPylonInfo</a> pylonInfo, int defaultNecessaryNPCCount)</td></tr>
-<tr class="memdesc:ae79b8b0a5ed24932464e0ce14ceffdb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Step 1 of the ValidTeleportCheck process. This is the first vanilla check that is called when checking both the destination pylon and any possible nearby pylons. This check should be where you check how many NPCs are nearby, returning false if the Pylon does not satisfy the conditions. By default, returns true if there are 2 or more (not-unhappy) NPCs nearby.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ae79b8b0a5ed24932464e0ce14ceffdb8">More...</a><br /></td></tr>
+<tr class="memdesc:ae79b8b0a5ed24932464e0ce14ceffdb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Step 1 of the ValidTeleportCheck process. This is the first vanilla check that is called when checking both the destination pylon and any possible nearby pylons. This check should be where you check how many NPCs are nearby, returning false if the Pylon does not satisfy the conditions. By default, returns true if there are 2 or more NPCs nearby.  <a href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ae79b8b0a5ed24932464e0ce14ceffdb8">More...</a><br /></td></tr>
 <tr class="separator:ae79b8b0a5ed24932464e0ce14ceffdb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html">Terraria.ModLoader.ModTile</a></td></tr>
 <tr class="memitem:af4d0c554a3e122124e5f6bdf8c1dccae inherit pub_methods_class_terraria_1_1_mod_loader_1_1_mod_tile"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html#af4d0c554a3e122124e5f6bdf8c1dccae">AddMapEntry</a> (Color color, <a class="el" href="class_terraria_1_1_localization_1_1_localized_text.html">LocalizedText</a> name, Func&lt; string, int, int, string &gt; nameFunc)</td></tr>
@@ -451,7 +457,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Extension to </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a></dd></dl>
 <p>that streamlines the process of creating a modded Pylon. Has all of <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_tile.html" title="This class represents a type of tile that can be added by a mod. Only one instance of this class will...">ModTile</a>'s hooks for customization, but additional hooks for Pylon functionality. </p>
 <p>One of the key features of this class is the <b>ValidTeleportCheck</b> process. At first glance it can look a bit messy, however here is a rough break-down of the call process to help you if you're lost: <br  />
- 1) <a class="el" href="class_game.html">Game</a> queries if the specified player is near a Pylon (</p><dl class="section see"><dt>See also</dt><dd>TeleportPylonsSystem.IsPlayerNearAPylon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a4c4bdb43bda8dbccfb4b146ccdf0ac8f" title="The 4th check of the ValidTeleportCheck process. This check is for modded Pylons only,...">ValidTeleportCheck_DestinationPostCheck</a>, Player.InInteractionRange, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ae25704d06ba66e69797fa0e97deff382" title="The 5th and final check of the ValidTeleportCheck process. This check is for modded Pylons only,...">ValidTeleportCheck_NearbyPostCheck</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_pylon.html" title="Global Type that exists for pylons that allows for modification of teleportation steps,...">GlobalPylon</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_pylon.html#abae1b1666e908d052b9fbc5bd565a465" title="Called after all checks have taken place for all vanilla and modded pylons when a teleportation reque...">GlobalPylon.PostValidTeleportCheck</a></dd></dl>
+ 1) <a class="el" href="class_game.html">Game</a> queries if the specified player is near a Pylon (</p><dl class="section see"><dt>See also</dt><dd>TeleportPylonsSystem.IsPlayerNearAPylon, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a4c4bdb43bda8dbccfb4b146ccdf0ac8f" title="The 4th check of the ValidTeleportCheck process. This check is for modded Pylons only,...">ValidTeleportCheck_DestinationPostCheck</a>, Player.InInteractionRange, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ae25704d06ba66e69797fa0e97deff382" title="The 5th and final check of the ValidTeleportCheck process. This check is for modded Pylons only,...">ValidTeleportCheck_NearbyPostCheck</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_pylon.html" title="Global Type that exists for pylons that allows for modification of teleportation steps,...">GlobalPylon</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_global_pylon.html#abae1b1666e908d052b9fbc5bd565a465" title="Called after all checks have taken place for all vanilla and modded pylons when a teleportation reque...">GlobalPylon.PostValidTeleportCheck</a>, <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html#addf789535df2e62a3e44c18a7cbdcb93" title="Called right BEFORE the teleportation of the player occurs, when all checks succeed during the ValidT...">ModifyTeleportationPosition</a></dd></dl>
 <p>) <br  />
  2) Assuming Step 1 has passed, game queries if the DESTINATION PYLON (the pylon the player CLICKED on the map) has enough NPCs nearby (NPCCount step) <br  />
  3) Assuming Step 2 has passed, game queries if there is ANY DANGER at ALL across the entire map, ignoring the lunar pillar event (AnyDanger step) <br  />
@@ -460,7 +466,8 @@ Additional Inherited Members</h2></td></tr>
  6) Regardless of all the past checks, if the DESTINATION PYLON is a modded one,  is called on it. <br  />
  7) The game queries all pylons on the map and checks if any of them are in interaction distance with the player (), and if so, checks Step 2 on it. If Step 2 passes, Step 5 is then called on it as well (NPCCount &amp; BiomeRequirements step). If Step 5 also passes, the loop breaks and no further pylons are checked, and for the next steps, the pylon that succeeded will be the designated NEARBY PYLON. <br  />
  8) Regardless of all the past checks, if the designated NEARBY PYLON is a modded one,  is called on it. <br  />
- 9) Any  instances run . </p>
+ 9) Any  instances run . <br  />
+ 10) Finally, if all previous checks pass AND the DESTINATION pylon is a modded one,  is called on it, right before the player is teleported. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac686ab0c3183a36d59fabf84f9f678f5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac686ab0c3183a36d59fabf84f9f678f5">&#9670;&nbsp;</a></span>CanPlacePylon()</h2>
@@ -557,8 +564,8 @@ If the server disagrees with the client that the given pylon CANNOT be placed fo
 
 </div>
 </div>
-<a id="ad15428af2f4ca87fa9c9ae0a81a073ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad15428af2f4ca87fa9c9ae0a81a073ec">&#9670;&nbsp;</a></span>DefaultDrawPylonCrystal()</h2>
+<a id="ae92ce5619ee5a18b0b7b9238bed6349e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae92ce5619ee5a18b0b7b9238bed6349e">&#9670;&nbsp;</a></span>DefaultDrawPylonCrystal()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -590,20 +597,32 @@ If the server disagrees with the client that the given pylon CANNOT be placed fo
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">Asset&lt; Texture2D &gt;&#160;</td>
+          <td class="paramname"><em>crystalHighlightTexture</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>crystalOffset</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">Color&#160;</td>
-          <td class="paramname"><em>crystalDrawColor</em>, </td>
+          <td class="paramname"><em>pylonShadowColor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>dustColor</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>frameHeight</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>crystalHorizontalFrameCount</em>, </td>
+          <td class="paramname"><em>dustChanceDenominator</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -624,12 +643,14 @@ If the server disagrees with the client that the given pylon CANNOT be placed fo
   <table class="params">
     <tr><td class="paramname">spriteBatch</td><td>The sprite batch that will draw the crystal. </td></tr>
     <tr><td class="paramname">i</td><td>The X tile coordinate to start drawing from. </td></tr>
-    <tr><td class="paramname">j</td><td>The Y tile coordinate to star drawing from. </td></tr>
+    <tr><td class="paramname">j</td><td>The Y tile coordinate to start drawing from. </td></tr>
     <tr><td class="paramname">crystalTexture</td><td>The texture of the crystal that will actually be drawn. </td></tr>
-    <tr><td class="paramname">crystalDrawColor</td><td>The color to draw the crystal as. </td></tr>
-    <tr><td class="paramname">frameHeight</td><td>The height of a singular frame of the crystal. 64 for a normal pylon crystal in vanilla.</td></tr>
-    <tr><td class="paramname">crystalHorizontalFrameCount</td><td>The total frames wide the crystal texture has. </td></tr>
-    <tr><td class="paramname">crystalVerticalFrameCount</td><td>The total frames high the crystal texture has. </td></tr>
+    <tr><td class="paramname">crystalHighlightTexture</td><td>The texture of the smart cursor highlight for the corresponding crystal texture. </td></tr>
+    <tr><td class="paramname">crystalOffset</td><td>The offset of the actual position of the crystal. Assuming that a pylon tile itself and the crystals are equivalent to vanilla's sizes, this value should be Vector2(0, -12). </td></tr>
+    <tr><td class="paramname">pylonShadowColor</td><td>The color of the "shadow" that is drawn on top of the crystal texture. </td></tr>
+    <tr><td class="paramname">dustColor</td><td>The color of the dust that emanates from the crystal. </td></tr>
+    <tr><td class="paramname">dustChanceDenominator</td><td>Every draw call, this is this the denominator value of a Main.rand.NextBool() (1/denominator chance) check for whether or not a dust particle will spawn. 4 is the value vanilla uses. </td></tr>
+    <tr><td class="paramname">crystalVerticalFrameCount</td><td>How many vertical frames the crystal texture has. </td></tr>
   </table>
   </dd>
 </dl>
@@ -932,6 +953,52 @@ If the server disagrees with the client that the given pylon CANNOT be placed fo
     <tr><td class="paramname">player</td><td>The current player asking said <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> type what they have for sale. </td></tr>
     <tr><td class="paramname">isNPCHappyEnough</td><td>Whether or not this <a class="el" href="class_terraria_1_1_n_p_c.html">NPC</a> is "happy enough", by vanilla standards. You can ignore this if you don't care about happiness. For reference, Vanilla defines "happy enough" as the player earning a 10% discount or more, or in code: <div class="fragment"><div class="line">Main.LocalPlayer.currentShoppingSettings.PriceAdjustment &lt;= 0.8999999761581421;</div>
 </div><!-- fragment --> </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="addf789535df2e62a3e44c18a7cbdcb93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addf789535df2e62a3e44c18a7cbdcb93">&#9670;&nbsp;</a></span>ModifyTeleportationPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Terraria.ModLoader.ModPylon.ModifyTeleportationPosition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_terraria_1_1_game_content_1_1_teleport_pylon_info.html">TeleportPylonInfo</a>&#160;</td>
+          <td class="paramname"><em>destinationPylonInfo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref Vector2&#160;</td>
+          <td class="paramname"><em>teleportationPosition</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Called right BEFORE the teleportation of the player occurs, when all checks succeed during the ValidTeleportCheck process. Allows the modification of where the player ends up when the teleportation takes place. Remember that the teleport location is in WORLD coordinates, not tile coordinates. </p>
+<p>You shouldn't need to use this method if your pylon is the same size as a normal vanilla pylons (3x4 tiles). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">destinationPylonInfo</td><td>The information of the pylon the player intends to teleport to. </td></tr>
+    <tr><td class="paramname">teleportationPosition</td><td>The position (IN WORLD COORDINATES) of where the player ends up when the teleportation occurs. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1277,7 +1344,7 @@ If the server disagrees with the client that the given pylon CANNOT be placed fo
 </table>
 </div><div class="memdoc">
 
-<p>Step 1 of the ValidTeleportCheck process. This is the first vanilla check that is called when checking both the destination pylon and any possible nearby pylons. This check should be where you check how many NPCs are nearby, returning false if the Pylon does not satisfy the conditions. By default, returns true if there are 2 or more (not-unhappy) NPCs nearby. </p>
+<p>Step 1 of the ValidTeleportCheck process. This is the first vanilla check that is called when checking both the destination pylon and any possible nearby pylons. This check should be where you check how many NPCs are nearby, returning false if the Pylon does not satisfy the conditions. By default, returns true if there are 2 or more NPCs nearby. </p>
 <p>Note that it's important you put the right checks in the right ValidTeleportCheck step, as whatever one returns false (if any) will determine the error message sent to the player. <br  />
  <b> If you're confused about the order of which the ValidTeleportCheck methods are called, check out the XML summary on the <a class="el" href="class_terraria_1_1_mod_loader_1_1_mod_pylon.html" title="Extension to ModTilethat streamlines the process of creating a modded Pylon. Has all of ModTile&#39;s hoo...">ModPylon</a> class.</b> </p>
 <dl class="params"><dt>Parameters</dt><dd>

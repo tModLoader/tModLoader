@@ -42,7 +42,7 @@ var searchData=
   ['defaultdamageclass_629',['DefaultDamageClass',['../class_terraria_1_1_mod_loader_1_1_default_damage_class.html',1,'Terraria::ModLoader']]],
   ['defaultdictionarykeyvalueattribute_630',['DefaultDictionaryKeyValueAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_default_dictionary_key_value_attribute.html',1,'Terraria::ModLoader::Config']]],
   ['defaultdrawmapicon_631',['DefaultDrawMapIcon',['../class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a9ebff7ff869b3c7a621a9463116c1dc8',1,'Terraria::ModLoader::ModPylon']]],
-  ['defaultdrawpyloncrystal_632',['DefaultDrawPylonCrystal',['../class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ad15428af2f4ca87fa9c9ae0a81a073ec',1,'Terraria::ModLoader::ModPylon']]],
+  ['defaultdrawpyloncrystal_632',['DefaultDrawPylonCrystal',['../class_terraria_1_1_mod_loader_1_1_mod_pylon.html#ae92ce5619ee5a18b0b7b9238bed6349e',1,'Terraria::ModLoader::ModPylon']]],
   ['defaultlistvalueattribute_633',['DefaultListValueAttribute',['../class_terraria_1_1_mod_loader_1_1_config_1_1_default_list_value_attribute.html',1,'Terraria::ModLoader::Config']]],
   ['defaultmapclickhandle_634',['DefaultMapClickHandle',['../class_terraria_1_1_mod_loader_1_1_mod_pylon.html#a5aee30764f87e8e6114fdb3c43784c42',1,'Terraria::ModLoader::ModPylon']]],
   ['defaulttobow_635',['DefaultToBow',['../class_terraria_1_1_item.html#abb5e4820e1c454d636b1b619e53bf09c',1,'Terraria::Item']]],

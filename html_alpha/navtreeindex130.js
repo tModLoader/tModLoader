@@ -1,5 +1,7 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a7e6ae31765003d13c2bee37e5274fe6e":[2,0,2,4,67,114],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a80fbee943c0b773da53121a53aea5b04":[2,0,2,4,67,9],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a81a1037c1de8500c1c447eb68b3216b5":[2,0,2,4,67,14],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a82b3dc1cc7b8f42f3385054be3ee89db":[2,0,2,4,67,51],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a83671e86581846d2cf4a0e63e0d48ba3":[2,0,2,4,67,93],
@@ -247,7 +249,5 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_attempt_result.html":[2,0,2,5,10,26],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_attempt_result.html#abb883d9656370bfb2c204c5386ee9b27":[2,0,2,5,10,26,0],
 "struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html":[2,0,2,5,15,10],
-"struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html#a05f020c6c8814637827b03f9d7e07e97":[2,0,2,5,15,10,0],
-"struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html#a27b623d018764babcde7066f51e6a4a1":[2,0,2,5,15,10,7],
-"struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html#a3a78472d5c0f3447cea9f467aaeb9e78":[2,0,2,5,15,10,4]
+"struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html#a05f020c6c8814637827b03f9d7e07e97":[2,0,2,5,15,10,0]
 };
