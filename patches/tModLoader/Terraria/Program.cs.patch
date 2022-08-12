@@ -100,7 +100,7 @@
  			try {
  				Console.OutputEncoding = Encoding.UTF8;
  				if (Platform.IsWindows)
-@@ -138,24 +_,68 @@
+@@ -138,25 +_,68 @@
  			}
  		}
  
@@ -111,9 +111,10 @@
 +		//IMPORTANT: We really want arg parsing, logging, and monomod initialized before static Main()
 +		// Moving all calls to Main to LaunchGame_() mitigates this risk
  		public static void LaunchGame(string[] args, bool monoArgs = false) {
+-			Thread.CurrentThread.Name = "Main Thread";
+-			
 +			// It's not the Entry Thread anymore, but it still is the base thread of FNA and Main
 +			MainThread = Thread.CurrentThread;
--			Thread.CurrentThread.Name = "Main Thread";
 +			MainThread.Name = "Main Thread";
 +
  			if (monoArgs)
@@ -166,7 +167,7 @@
  					Main.instance.IsMouseVisible = false;
  				};
  			}
- 
+-
 -			LaunchParameters = Utils.ParseArguements(args);
 -#if SERVER
 -			Main.dedServ = true;
@@ -174,10 +175,11 @@
 -			Main.dedServ = LaunchParameters.ContainsKey("-server");
 -#endif
 -
++			
+ 			Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
+ 
  			if (Main.dedServ) {
- 				Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
- 			}
-@@ -163,10 +_,13 @@
+@@ -166,10 +_,13 @@
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
@@ -194,7 +196,7 @@
  					Lang.InitializeLegacyLocalization();
  					SocialAPI.Initialize();
  					LaunchInitializer.LoadParameters(main);
-@@ -176,12 +_,13 @@
+@@ -179,9 +_,9 @@
  					else
  						main.DedServ();
  				}
@@ -207,11 +209,15 @@
  			}
  		}
  
-+		/*
- 		private static void TrySettingFNAToOpenGL(string[] args) {
- 			bool flag = false;
- 			for (int i = 0; i < args.Length; i++) {
-@@ -220,5 +_,6 @@
+@@ -198,7 +_,6 @@
+ 			if (!flag)
+ 				Environment.SetEnvironmentVariable("FNA3D_FORCE_DRIVER", "OpenGL");
+ 		}
+-		*/
+ 
+ 		private static void DisplayException(Exception e) {
+ 			try {
+@@ -225,5 +_,6 @@
  			catch {
  			}
  		}

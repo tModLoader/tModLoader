@@ -1,24 +1,35 @@
 --- src/TerrariaNetCore/ReLogic/ReLogic.csproj
 +++ src/tModLoader/ReLogic/ReLogic.csproj
-@@ -6,9 +_,10 @@
-     <Company>Re-Logic</Company>
-     <Copyright>Copyright © Re-Logic 2017</Copyright>
-     <RootNamespace>ReLogic</RootNamespace>
-+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-   </PropertyGroup>
-   <ItemGroup>
--    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.CF.dll" />
-+    <Reference Include="../Terraria/Libraries/Common/Ionic.Zip.Reduced.dll" />
-     <ProjectReference Include="../../../FNA/FNA.Core.csproj" />
-     <Reference Include="../Terraria/Libraries/Common/Newtonsoft.Json.dll" />
-     <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
-@@ -19,4 +_,9 @@
-     <Compile Remove="OS/Windows/WindowsMessageHook.cs" />
-     <EmbeddedResource Include="Microsoft/**" />
-   </ItemGroup>
-+  <ItemDefinitionGroup>
-+    <ReferenceCopyLocalPaths>
-+        <DestinationSubDirectory>Libraries\NuGet\</DestinationSubDirectory>
-+    </ReferenceCopyLocalPaths>
-+  </ItemDefinitionGroup>
+@@ -9,16 +_,17 @@
+ 		<Company>Re-Logic</Company>
+ 		<Copyright>Copyright © Re-Logic 2017</Copyright>
+ 		<RootNamespace>ReLogic</RootNamespace>
++		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+ 	</PropertyGroup>
+ 
+ 	<!-- References -->
+ 	<ItemGroup>
+ 		<!-- Projects -->
+-		<ProjectReference Include="..\..\..\FNA\FNA.Core.csproj" />
++		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
+ 		<!-- NuGet Packages -->
+ 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+ 		<!-- DLLs -->
+-		<Reference Include="..\Terraria\Libraries\Common\Ionic.Zip.CF.dll" />
++		<Reference Include="..\Terraria\Libraries\Common\Ionic.Zip.Reduced.dll" />
+ 		<Reference Include="..\Terraria\Libraries\Common\SteelSeriesEngineWrapper.dll" />
+ 	</ItemGroup>
+ 
+@@ -32,5 +_,12 @@
+ 		<Compile Remove="Localization\IME\WindowsIme.cs" />
+ 		<Compile Remove="OS\Windows\WindowsMessageHook.cs" />
+ 	</ItemGroup>
++
++	<!-- What's this? Please document -->
++	<ItemDefinitionGroup>
++		<ReferenceCopyLocalPaths>
++				<DestinationSubDirectory>Libraries\NuGet\</DestinationSubDirectory>
++		</ReferenceCopyLocalPaths>
++	</ItemDefinitionGroup>
+ 
  </Project>

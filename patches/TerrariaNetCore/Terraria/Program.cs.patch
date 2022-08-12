@@ -22,23 +22,19 @@
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
-@@ -175,19 +_,6 @@
- 					DisplayException(e);
- 				}
+@@ -177,6 +_,7 @@
  			}
--		}
--
--		private static void TrySettingFNAToOpenGL(string[] args) {
--			bool flag = false;
--			for (int i = 0; i < args.Length; i++) {
--				if (args[i].Contains("gldevice")) {
--					flag = true;
--					break;
--				}
--			}
--
--			if (!flag)
--				Environment.SetEnvironmentVariable("FNA3D_FORCE_DRIVER", "OpenGL");
  		}
  
++		/*
+ 		private static void TrySettingFNAToOpenGL(string[] args) {
+ 			bool flag = false;
+ 			for (int i = 0; i < args.Length; i++) {
+@@ -189,6 +_,7 @@
+ 			if (!flag)
+ 				Environment.SetEnvironmentVariable("FNA3D_FORCE_DRIVER", "OpenGL");
+ 		}
++		*/
+ 
  		private static void DisplayException(Exception e) {
+ 			try {
