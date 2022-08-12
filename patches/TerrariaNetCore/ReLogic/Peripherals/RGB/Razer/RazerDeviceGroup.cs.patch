@@ -1,0 +1,18 @@
+--- src/Terraria/ReLogic/Peripherals/RGB/Razer/RazerDeviceGroup.cs
++++ src/TerrariaNetCore/ReLogic/Peripherals/RGB/Razer/RazerDeviceGroup.cs
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.Reflection;
+ using System.Runtime.InteropServices;
+ 
+ namespace ReLogic.Peripherals.RGB.Razer
+@@ -25,7 +_,7 @@
+ 			if (_initializationFailed)
+ 				return;
+ 
+-			if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, out _)) {
++			if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, Assembly.GetEntryAssembly(), DllImportSearchPath.SafeDirectories, out _)) {
+ 				_initializationFailed = true;
+ 
+ 				return;
