@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/Main.cs
 +++ src/tModLoader/Terraria/Main.cs
+@@ -3,6 +_,7 @@
+ using Microsoft.Xna.Framework.Content;
+ using Microsoft.Xna.Framework.Graphics;
+ using Microsoft.Xna.Framework.Input;
++using Newtonsoft.Json.Linq;
+ using ReLogic.Content;
+ using ReLogic.Content.Sources;
+ #if MAC
 @@ -19,7 +_,7 @@
  using System.Collections.Generic;
  using System.Diagnostics;
@@ -523,6 +531,15 @@
  			}
  			catch {
  			}
+@@ -3101,6 +_,8 @@
+ 		}
+ 
+ 		public static bool SaveSettings() {
++			var resourcePacksArrayBackup = Configuration.Get<JArray>("ResourcePacks", null);
++
+ 			Configuration.Clear();
+ 			Configuration.Put("ResetDefaultUIScale", false);
+ 			Configuration.Put("SmartCursorToggle", cSmartCursorModeIsToggleAndNotHold);
 @@ -3164,6 +_,7 @@
  			Configuration.Put("UseHeatDistortion", UseHeatDistortion);
  			Configuration.Put("WaveQuality", WaveQuality);
@@ -531,6 +548,24 @@
  			Configuration.Put("MouseColor", new Dictionary<string, byte> {
  				{ "R", mouseColor.R },
  				{ "G", mouseColor.G },
+@@ -3179,8 +_,17 @@
+ 			Configuration.Put("Zoom", GameZoomTarget);
+ 			Configuration.Put("UIScale", _uiScaleWanted);
+ 			Configuration.Put("MapScale", MapScale);
++
++			//TML: A fix for resource packs randomly getting reset from AssetSourceController not yet being ready.
++			var resourcePacksArray = AssetSourceController?.ActiveResourcePackList.ToJson() ?? resourcePacksArrayBackup;
++
++			if (resourcePacksArray != null)
++				Configuration.Put("ResourcePacks", resourcePacksArray);
++
++			/*
+ 			if (AssetSourceController != null)
+ 				Configuration.Put("ResourcePacks", AssetSourceController.ActiveResourcePackList.ToJson());
++			*/
+ 
+ 			Configuration.Put("FlashIconForEvents", Enum.GetName(typeof(GameNotificationType), _flashNotificationType));
+ 			Configuration.Put("Display", _windowMover.ScreenDeviceName);
 @@ -3190,6 +_,7 @@
  			Configuration.Put("HoverControlMode", Player.Settings.HoverControl);
  			Configuration.Put("WaterfallDrawLimit", instance.waterfallManager.maxWaterfallCount);
@@ -1064,7 +1099,7 @@
  				return;
  			}
  
-@@ -8372,11 +_,17 @@
+@@ -8372,11 +_,18 @@
  		public static void LoadTestLog(string logname) {
  		}
  
@@ -1079,6 +1114,7 @@
 +			Asset<Texture2D>.DefaultValue = new Texture2D(base.GraphicsDevice, 1, 1) {
 +				Name = "Asynchronously-loaded Asset Dummy Texture (do not dispose or modify!)"
 +			};
++			Asset<Texture2D>.DefaultValue.SetData(new Color[] { Color.Transparent }); // AMD graphics cards on Linux/Mac don't initialize textures to transparent by default (#1918)
 +
  			SoundEngine.Initialize();
  			if (base.Services.Get<IAssetRepository>() == null)

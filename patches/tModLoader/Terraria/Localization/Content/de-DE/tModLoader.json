@@ -444,7 +444,6 @@
 
 		// MessageBox
 		"ContentFolderNotFound": "Terraria Content-Ordner nicht gefunden. Falls du tModLoader über Steam installiert hast, stelle sicher das Terraria installiert ist. Falls nicht, stelle sicher tModLoader in einem Ordner innerhalb des Terraria-Installationsverzeichnisses oder einem Ordner neben des Terraria-Installationsverzeichnisses zu installieren.",
-		"MissingServerExecutable": "Es scheint als hättest du eine unvollständige Installation. Dir fehlt die tModLoaderServer.exe. Prüfe dein Installationsverzeichnis und lese die Installationsanleitung.",
 		"GraphicsEngineFailure": "Grafik-Engine-Ausfall",
 		"GraphicsEngineReportUnknown": "Unbekannt",
 		"GraphicsEngineReportFailure": "Ausfall",
@@ -455,12 +454,12 @@
 		"VanillaGOGNotFound": "{0} konnte nicht gefunden werden.\r\n\r\nGOG-Installationen brauchen eine unveränderte Terraria-Programmdatei zum Funktionieren. Diese Version von tModLoader erwartet die {1}-Version von Terraria, du musst vielleicht über GOG Galaxy auf eine ältere oder neuere Terraria-Version wechseln, oder warten bis tModLoader aktualisiert wird.",
 		"GOGHashMismatch": "{0} ist nicht die unveränderte Terraria-Programmdatei.\r\n\r\nGOG-Installationen brauchen eine unveränderte Terraria-Programmdatei zum Funktionieren\r\n\r\nFalls du die .exe gepatcht hast kannst du eine Kopie der originalen exe machen und sie \"Terraria_v<VERSION>.exe\" nennen.",
 		"DefaultExtraMessage": "Stelle bitte deine Terraria-Installation wieder her und installiere dann tModLoader über Steam oder folge der README.txt-Anleitung zur manuellen Installation.",
-		"ClientLogHint": "{0}\n\nEine client.log-Datei die Fehlerinformationen enthält wurde im folgenden Ordner generiert:\n{1}\n(Du musst diese Datei teilen, wenn du nach Hilfe fragst)",
-		"OutOfMemoryHint": "\n\nTipp: Versuche mit weniger Mods auf einmal zu spielen, oder stelle fest, ob ein Mod zu viel Speicher verbraucht. Wahlweise könntest du den 64-bit tModLoader installieren.",
-		"ModExceptionHint": "\n\nTipp: Da ist wahrscheinlich ein Mod schuld. Schalte Mods einen nach den anderen ab, um zu sehen, ob das Problem bestehen bleibt.",
-		"OneDriveHint": "\n\nTipp: Versuche OneDrive zu installieren/anzuschalten. Drücke die rechte Maustaste auf deinen Dokumente-Ordner und aktiviere \"Immer auf diesem Gerät speichern\"",
-		"AntivirusHint": "\n\nTipp: Falls du einen Antivirenprogramm hast, versuche Terraria zu dessen Whitelist/Ausschließungsliste hinzuzufügen.",
-		"TypeInitializationHint": "\n\nTipp: Starte das Spiel neu. Wenn das Problem bestehen bleibt, versuche Terraria vollständig zu deinstallieren, es über Steam neu zu installieren und dann tModLoader erneut zu installieren."
+		"LogPathHint": "Eine {0}-Datei die Fehlerinformationen enthält wurde im folgenden Ordner generiert:\n{1}\n(Du musst diese Datei teilen, wenn du nach Hilfe fragst)",
+		"OutOfMemoryHint": "Tipp: Versuche mit weniger Mods auf einmal zu spielen, oder stelle fest, ob ein Mod zu viel Speicher verbraucht. Wahlweise könntest du den 64-bit tModLoader installieren.",
+		"ModExceptionHint": "Tipp: Da ist wahrscheinlich ein Mod schuld. Schalte Mods einen nach den anderen ab, um zu sehen, ob das Problem bestehen bleibt.",
+		"OneDriveHint": "Tipp: Versuche OneDrive zu installieren/anzuschalten. Drücke die rechte Maustaste auf deinen Dokumente-Ordner und aktiviere \"Immer auf diesem Gerät speichern\"",
+		"AntivirusHint": "Tipp: Falls du einen Antivirenprogramm hast, versuche Terraria zu dessen Whitelist/Ausschließungsliste hinzuzufügen.",
+		"TypeInitializationHint": "Tipp: Starte das Spiel neu. Wenn das Problem bestehen bleibt, versuche Terraria vollständig zu deinstallieren, es über Steam neu zu installieren und dann tModLoader erneut zu installieren."
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "Neue Inhalte",
 		"TagsContentDescription": "Fügt neue Inhalte (z.B. Gegenstände, Waffen, NPCs, usw.) zum Spiel hinzu",

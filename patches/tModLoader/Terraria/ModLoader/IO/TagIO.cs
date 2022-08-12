@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+#nullable enable
+
 namespace Terraria.ModLoader.IO
 {
 	public static class TagIO
@@ -23,6 +25,7 @@ namespace Terraria.ModLoader.IO
 		}
 
 		private class PayloadHandler<T> : PayloadHandler
+			where T : notnull
 		{
 			internal Func<BinaryReader, T> reader;
 			internal Action<BinaryWriter, T> writer;
@@ -44,8 +47,7 @@ namespace Terraria.ModLoader.IO
 				return list;
 			}
 
-			public override void WriteList(BinaryWriter w, IList list) => WriteList(w, (IList<T>)list);
-			public void WriteList(BinaryWriter w, IList<T> list) {
+			public override void WriteList(BinaryWriter w, IList list) {
 				foreach (T t in list)
 					writer(w, t);
 			}
@@ -54,16 +56,16 @@ namespace Terraria.ModLoader.IO
 			public override IList CloneList(IList list) => CloneList((IList<T>)list);
 			public virtual IList CloneList(IList<T> list) => new List<T>(list);
 
-			public override object Default() => default(T);
+			public override object Default() => default(T)!;
 		}
 
 		private class ClassPayloadHandler<T> : PayloadHandler<T> where T : class
 		{
 			private Func<T, T> clone;
-			private Func<T> makeDefault;
+			private Func<T>? makeDefault;
 
 			public ClassPayloadHandler(Func<BinaryReader, T> reader, Action<BinaryWriter, T> writer,
-					Func<T, T> clone, Func<T> makeDefault = null) :
+					Func<T, T> clone, Func<T>? makeDefault = null) :
 					base(reader, writer) {
 				this.clone = clone;
 				this.makeDefault = makeDefault;
@@ -71,11 +73,11 @@ namespace Terraria.ModLoader.IO
 
 			public override object Clone(object o) => clone((T)o);
 			public override IList CloneList(IList<T> list) => list.Select(clone).ToList();
-			public override object Default() => makeDefault();
+			public override object Default() => makeDefault!(); // If makeDefault is null, it's our job to handle default values to ensure this is never called
 		}
 
 		private static readonly PayloadHandler[] PayloadHandlers = {
-			null,
+			null!, // Unused
 			new PayloadHandler<byte>(r => r.ReadByte(), (w, v) => w.Write(v)),
 			new PayloadHandler<short>(r => r.ReadInt16(), (w, v) => w.Write(v)),
 			new PayloadHandler<int>(r => r.ReadInt32(), (w, v) => w.Write(v)),
@@ -89,7 +91,7 @@ namespace Terraria.ModLoader.IO
 					w.Write(v);
 				},
 				v => (byte[]) v.Clone(),
-				() => new byte[0]),
+				() => Array.Empty<byte>()),
 			new ClassPayloadHandler<string>(
 				r => Encoding.UTF8.GetString(r.ReadBytes(r.ReadInt16())),
 				(w, v) => {
@@ -107,25 +109,25 @@ namespace Terraria.ModLoader.IO
 						id = GetPayloadId(v.GetType().GetGenericArguments()[0]);
 					}
 					catch (IOException) {
-						throw new IOException("Invalid NBT list type: "+v.GetType());
+						throw new IOException("Invalid NBT list type: " + v.GetType());
 					}
 					w.Write((byte)id);
 					w.Write(v.Count);
-					PayloadHandlers[id].WriteList(w, v);
+					PayloadHandlers![id].WriteList(w, v);
 				},
 				v => {
 					try {
 						return GetHandler(GetPayloadId(v.GetType().GetGenericArguments()[0])).CloneList(v);
 					}
 					catch (IOException) {
-						throw new ArgumentException("Invalid NBT list type: "+v.GetType());
+						throw new IOException("Invalid NBT list type: " + v.GetType());
 					}
 				}),
 			new ClassPayloadHandler<TagCompound>(
 				r => {
 					var compound = new TagCompound();
-					object tag;
-					while ((tag = ReadTag(r, out string name)) != null)
+					object? tag;
+					while ((tag = ReadTag(r, out string? name)) != null)
 						compound.Set(name, tag);
 
 					return compound;
@@ -152,13 +154,13 @@ namespace Terraria.ModLoader.IO
 						w.Write(i);
 				},
 				v => (int[]) v.Clone(),
-				() => new int[0])
+				() => Array.Empty<int>()),
 		};
 
 		private static readonly Dictionary<Type, int> PayloadIDs =
 			Enumerable.Range(1, PayloadHandlers.Length - 1).ToDictionary(i => PayloadHandlers[i].PayloadType);
 
-		private static PayloadHandler<string> StringHandler = (PayloadHandler<string>)PayloadHandlers[8];
+		private static readonly PayloadHandler<string> StringHandler = (PayloadHandler<string>)PayloadHandlers[8];
 
 		private static PayloadHandler GetHandler(int id) {
 			if (id < 1 || id >= PayloadHandlers.Length)
@@ -178,86 +180,117 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static object Serialize(object value) {
+			ArgumentNullException.ThrowIfNull(value);
+
 			var type = value.GetType();
 
-			if (TagSerializer.TryGetSerializer(type, out TagSerializer serializer))
+			if (TagSerializer.TryGetSerializer(type, out TagSerializer? serializer))
 				return serializer.Serialize(value);
 
-			//does a base level typecheck with throw
+			// does a base level typecheck with throw
 			if (GetPayloadId(type) != 9)
 				return value;
 
-			var elemType = type.GetGenericArguments()[0];
+			var list = (IList)value;
+			var elemType = type.GetElementType() ?? type.GetGenericArguments()[0];
 			if (TagSerializer.TryGetSerializer(elemType, out serializer))
-				return serializer.SerializeList((IList)value);
+				return serializer.SerializeList(list);
 
 			if (GetPayloadId(elemType) != 9)
-				return value;//already a valid NBT list type
+				return list; // already a valid NBT list type
 
-			//list of lists conversion
-			var list = value as IList<IList> ?? ((IList)value).Cast<IList>().ToList();
-			for (int i = 0; i < list.Count; i++)
-				list[i] = (IList)Serialize(list[i]);
+			// list of lists conversion
+			var serializedList = new List<IList>(list.Count);
+			foreach (var elem in list)
+				serializedList.Add((IList)Serialize(elem));
 
-			return list;
+			return serializedList;
 		}
 
-		public static T Deserialize<T>(object tag) {
-			if (tag is T) return (T)tag;
+		public static T Deserialize<T>(object? tag) {
+			if (tag is T t) return t;
 			return (T)Deserialize(typeof(T), tag);
 		}
 
-		public static object Deserialize(Type type, object tag) {
+		public static object Deserialize(Type type, object? tag) {
+			ArgumentNullException.ThrowIfNull(type);
+
 			if (type.IsInstanceOfType(tag))
 				return tag;
 
-			if (TagSerializer.TryGetSerializer(type, out TagSerializer serializer)) {
+			if (TagSerializer.TryGetSerializer(type, out TagSerializer? serializer)) {
 				if (tag == null)
 					tag = Deserialize(serializer.TagType, null);
 
 				return serializer.Deserialize(tag);
 			}
 
-			//normal nbt type with missing value
-			if (tag == null) {
+			// normal nbt type with missing value
+			if (tag == null && !type.IsArray) {
 				if (type.GetGenericArguments().Length == 0)
 					return GetHandler(GetPayloadId(type)).Default();
 
 				if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
-					return null;
+					return Activator.CreateInstance(type)!;
 			}
 
 			//list conversion required
-			if ((tag == null || tag is IList) &&
-				type.GetGenericArguments().Length == 1) {
-				var elemType = type.GetGenericArguments()[0];
-				var newListType = typeof(List<>).MakeGenericType(elemType);
-				if (type.IsAssignableFrom(newListType)) {//if the desired type is a superclass of List<elemType>
+			if (tag == null || tag is IList || type.IsArray) {
+				if (type.IsArray) {
+					// Only 1d arrays reach here
+					var elemType = type.GetElementType()!;
+
 					if (tag == null)
-						return newListType.GetConstructor(new Type[0]).Invoke(new object[0]);
+						return Array.CreateInstance(elemType, 0);
 
-					if (TagSerializer.TryGetSerializer(elemType, out serializer))
-						return serializer.DeserializeList((IList)tag);
+					var serializedList = (IList)tag;
 
-					//create a strongly typed nested list
-					var oldList = (IList)tag;
-					var newList = (IList)newListType.GetConstructor(new[] { typeof(int) }).Invoke(new object[] { oldList.Count });
-					foreach (var elem in oldList)
-						newList.Add(Deserialize(elemType, elem));
+					if (TagSerializer.TryGetSerializer(elemType, out serializer)) {
+						IList array = Array.CreateInstance(elemType, serializedList.Count);
+						for (int i = 0; i < serializedList.Count; i++)
+							array[i] = serializer.Deserialize(serializedList[i]!);
 
-					return newList;
+						return array;
+					}
+
+					//create a strongly typed nested array
+					IList deserializedArray = Array.CreateInstance(elemType, serializedList.Count);
+					for (int i = 0; i < serializedList.Count; i++)
+						deserializedArray[i] = Deserialize(elemType, serializedList[i]);
+
+					return deserializedArray;
+				}
+
+				if (type.GetGenericArguments().Length == 1) {
+					var elemType = type.GetGenericArguments()[0];
+					var newListType = typeof(List<>).MakeGenericType(elemType);
+					if (type.IsAssignableFrom(newListType)) { //if the desired type is a superclass of List<elemType>
+						if (tag == null)
+							return Activator.CreateInstance(newListType)!;
+
+						if (TagSerializer.TryGetSerializer(elemType, out serializer))
+							return serializer.DeserializeList((IList)tag);
+
+						//create a strongly typed nested list
+						var oldList = (IList)tag;
+						var newList = (IList)Activator.CreateInstance(newListType, oldList.Count)!;
+						foreach (var elem in oldList)
+							newList.Add(Deserialize(elemType, elem));
+
+						return newList;
+					}
 				}
 			}
 
-			if (tag == null)//unable to create an empty list subclassing the desired type
+			if (tag == null) // unable to create an empty list subclassing the desired type
 				throw new IOException($"Invalid NBT payload type '{type}'");
 
 			throw new InvalidCastException($"Unable to cast object of type '{tag.GetType()}' to type '{type}'");
 		}
 
-		public static T Clone<T>(T o) => (T)GetHandler(GetPayloadId(o.GetType())).Clone(o);
+		public static T Clone<T>(T o) where T : notnull => (T)GetHandler(GetPayloadId(o.GetType())).Clone(o);
 
-		public static object ReadTag(BinaryReader r, out string name) {
+		public static object? ReadTag(BinaryReader r, out string? name) {
 			int id = r.ReadByte();
 			if (id == 0) {
 				name = null;
@@ -291,11 +324,11 @@ namespace Terraria.ModLoader.IO
 		}
 
 		public static TagCompound Read(BinaryReader reader) {
-			var tag = ReadTag(reader, out string name);
-			if (!(tag is TagCompound))
+			var tag = ReadTag(reader, out string? name);
+			if (tag is not TagCompound compound)
 				throw new IOException("Root tag not a TagCompound");
 
-			return (TagCompound)tag;
+			return compound;
 		}
 
 		public static void ToFile(TagCompound root, string path, bool compress = true) {

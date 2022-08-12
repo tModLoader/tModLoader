@@ -445,7 +445,6 @@
 
 		// MessageBox
 		"ContentFolderNotFound": "无法检测到原版Terraria的Content资源文件夹\n如果你是通过Steam安装的tModLoader，请确保你也安装了Terraria\n否则，请确保你的tModLoader安装在原版Terraria的文件夹或与原版Terraria处于同级",
-		"MissingServerExecutable": "安装文件不完整（文件tModLoaderServer.exe缺失），无法启动服务器。请阅读教程并重新安装。",
 		"GraphicsEngineFailure": "图形引擎崩溃",
 		"GraphicsEngineReportUnknown": "未知",
 		"GraphicsEngineReportFailure": "失败",
@@ -456,12 +455,12 @@
 		"VanillaGOGNotFound": "无法检测到{0}。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。此版本的tModLoader需要安装Terraria {1}, 请使用GOG Galaxy升级或降级你的Terraria, 或等待tModLoader更新。",
 		"GOGHashMismatch": "{0}校验失败。\r\n\r\n使用GOG正版时需要有原版Terraria可执行程序。\r\n\r\n如果你打了自定义补丁，请将未补丁的原版复制并命名为\"Terraria_v<版本>.exe\"（如Terraria_v4.3.2.1.exe）",
 		"DefaultExtraMessage": "请校验Terraria的游戏完整性，然后从Steam安装tModLoader。如果你希望手动安装，请仔细阅读README.txt中的教程。",
-		"ClientLogHint": "{0}\n\n你可以在{1}中找到一个名为client.log的日志文件。\n（如果你需要寻求帮助，请附带上这个日志文件。）",
-		"OutOfMemoryHint": "\n\n提示：你可以尝试开启少一些模组，或逐步检查哪个模组占用了过多内存。\n\n你也可以尝试安装64位版tModLoader\n请注意：64位版tModLoader并不是官方的版本，也不由tModLoader或Terraria团队管理。",
-		"ModExceptionHint": "\n\n提示：很有可能是哪个模组崩溃了。你可以试着逐个禁用模组看看问题是否仍会重复出现。",
-		"OneDriveHint": "\n\n提示：建议安装或启动OneDrive，并将“我的文档”设置为始终本地可用。",
-		"AntivirusHint": "\n\n提示：如果你开启了杀毒软件，请尝试将Terraria和tModLoader加入白名单。",
-		"TypeInitializationHint": "\n\n提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader",
+		"LogPathHint": "你可以在{1}中找到一个名为{0}的日志文件。\n（如果你需要寻求帮助，请附带上这个日志文件。）",
+		"OutOfMemoryHint": "提示：你可以尝试开启少一些模组，或逐步检查哪个模组占用了过多内存。\n\n你也可以尝试安装64位版tModLoader\n请注意：64位版tModLoader并不是官方的版本，也不由tModLoader或Terraria团队管理。",
+		"ModExceptionHint": "提示：很有可能是哪个模组崩溃了。你可以试着逐个禁用模组看看问题是否仍会重复出现。",
+		"OneDriveHint": "提示：建议安装或启动OneDrive，并将“我的文档”设置为始终本地可用。",
+		"AntivirusHint": "提示：如果你开启了杀毒软件，请尝试将Terraria和tModLoader加入白名单。",
+		"TypeInitializationHint": "提示：重启游戏。如果问题仍然发生，你可以尝试以下步骤：\n\n1、卸载Terraria\n2、从Steam重新安装Terraria\n3、从Steam重新安装tModLoader",
 		// Tag descriptions by Webmilio, Tomat, Solxan, and Setnour6.
 		"TagsContent": "新增内容",
 		"TagsContentDescription": "添加了新的内容, 例如物品、武器、NPC等",

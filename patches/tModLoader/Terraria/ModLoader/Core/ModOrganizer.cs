@@ -53,7 +53,7 @@ namespace Terraria.ModLoader.Core
 
 			WorkshopFileFinder.Refresh(new WorkshopIssueReporter());
 
-			// load all mods from an active ModPack 
+			// load all mods from an active ModPack
 			if (!ignoreModsFolder && !string.IsNullOrEmpty(ModPackActive)) {
 				if (Directory.Exists(ModPackActive)) {
 					Logging.tML.Info($"Loaded Mods from Active Mod Pack: {ModPackActive}");
@@ -124,6 +124,40 @@ namespace Terraria.ModLoader.Core
 				Logging.tML.Warn($"Ignoring {mod.Name} found at: {fileName}. A mod with the same name already exists.");
 			}
 			return true;
+		}
+
+		internal static IEnumerable<ulong> IdentifyWorkshopDependencies() {
+			HashSet<ulong> dependencies = new HashSet<ulong>();
+
+			foreach (LocalMod mod in FindWorkshopMods()) {
+				// Skip if the mod has no dependencies according to the build information.
+				if (mod.properties.modReferences.Length == 0)
+					continue;
+
+				// This shouldn't really ever fail, but better safe than sorry.
+				if (!TryReadManifest(GetParentDir(mod.modFile.path), out var manifest))
+					continue;
+
+				WorkshopHelper.QueryHelper.GetDependenciesRecursive(manifest.workshopEntryId, ref dependencies);
+			}
+
+			// Cull out any dependencies that are already installed.
+			return dependencies.Where(x => !new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(x)).IsInstalled()).ToList();
+		}
+
+		internal static string ListDependenciesToDownload(List<ulong> deps) {
+			if (deps.Count == 0) return null;
+
+			var message = new StringBuilder();
+
+			message.Append(Language.GetTextValue("tModLoader.DependenciesNeededForOtherMods"));
+			foreach (ulong dep in deps) {
+				// TODO: No way to really show the internal name, just display name. How to fix? Does it *need* fixing?
+				var details = new WorkshopHelper.QueryHelper.AQueryInstance().FastQueryItem(dep);
+				message.Append($"\n  {details.m_rgchTitle}");
+			}
+
+			return message.ToString();
 		}
 
 		/// <summary>

@@ -19,6 +19,7 @@ namespace Terraria.ModLoader.Engine
 
 		private static string MsgInitFailed = "init_failed";
 		private static string MsgInitSuccess = "init_success";
+		private static string MsgNotInstalled = "not_installed";
 		private static string MsgGrant = "grant:";
 		private static string MsgAck = "acknowledged";
 		private static string MsgShutdown = "shutdown";
@@ -27,6 +28,7 @@ namespace Terraria.ModLoader.Engine
 		{
 			ErrClientProcDied,
 			ErrSteamInitFailed,
+			ErrNotInstalled,
 			Ok
 		}
 
@@ -67,13 +69,14 @@ namespace Terraria.ModLoader.Engine
 
 				Logger.Debug("Recv: " + line);
 
-				if (line == MsgInitFailed) {
+				if (line == MsgInitFailed)
 					return LaunchResult.ErrSteamInitFailed;
-				}
 
-				if (line == MsgInitSuccess) {
+				if (line == MsgNotInstalled)
+					return LaunchResult.ErrNotInstalled;
+
+				if (line == MsgInitSuccess)
 					break;
-				}
 
 			}
 
@@ -125,6 +128,13 @@ namespace Terraria.ModLoader.Engine
 					return;
 				}
 
+				if (!SteamApps.BIsAppInstalled(Steam.TerrariaAppId_t)) {
+					Logger.Fatal($"SteamApps.BIsAppInstalled({Steam.TerrariaAppId_t}): false");
+					Send(MsgNotInstalled);
+					SteamShutdown();
+					return;
+				}
+
 				Send(MsgInitSuccess);
 				while (Recv() != MsgAck) { }
 
@@ -152,17 +162,24 @@ namespace Terraria.ModLoader.Engine
 				Logger.Fatal("Unhandled error", ex);
 			}
 
+			if (steamInit)
+				SteamShutdown();
+		}
+
+		private static void SteamShutdown() {
 			try {
-				if (steamInit) {
-					Logger.Info("SteamAPI.Shutdown()");
-					SteamAPI.Shutdown();
-				}
+				Logger.Info("SteamAPI.Shutdown()");
+				SteamAPI.Shutdown();
 			}
 			catch (Exception ex) {
 				Logger.Error("Error shutting down SteamAPI", ex);
 			}
 		}
 
-		internal static void Shutdown() => SendCmd(MsgShutdown);
+		internal static void Shutdown() {
+			try {
+				SendCmd(MsgShutdown);
+			} catch { }
+		}
 	}
 }

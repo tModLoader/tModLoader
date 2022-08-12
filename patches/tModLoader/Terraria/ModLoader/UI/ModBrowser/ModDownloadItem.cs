@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader.Core;
 using Terraria.Social.Steam;
@@ -56,11 +57,11 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			ModloaderVersion = modloaderversion;
 		}
 
-		internal void InnerDownloadWithDeps() {
+		internal Task InnerDownloadWithDeps() {
 			var downloads = new HashSet<ModDownloadItem>() { this };
 			downloads.Add(this);
 			GetDependenciesRecursive(this, ref downloads);
-			WorkshopHelper.ModManager.Download(downloads.ToList());
+			return WorkshopHelper.ModManager.Download(downloads.ToList());
 		}
 
 		private IEnumerable<ModDownloadItem> GetDependencies() {

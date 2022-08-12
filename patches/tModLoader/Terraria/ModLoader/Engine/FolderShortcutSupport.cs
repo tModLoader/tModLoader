@@ -1,14 +1,11 @@
-﻿using Microsoft.Win32;
-using ReLogic.OS;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Versioning;
 using System.Text;
 
-namespace Terraria.ModLoader.Core
+namespace Terraria.ModLoader.Engine
 {
 	internal class FolderShortcutSupport
 	{

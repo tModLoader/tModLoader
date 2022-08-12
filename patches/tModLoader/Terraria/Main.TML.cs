@@ -186,10 +186,7 @@ namespace Terraria
 			}
 
 			if (!Directory.Exists(vanillaContentFolder)) {
-				string message = Language.GetTextValue("tModLoader.ContentFolderNotFound");
-				Logging.tML.Fatal(message);
-				Interface.MessageBoxShow(message);
-				Environment.Exit(1);
+				ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 			}
 
 			if (Directory.Exists(Path.Combine("Content", "Images")))
