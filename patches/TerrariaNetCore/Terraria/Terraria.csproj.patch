@@ -1,104 +1,119 @@
 --- src/Terraria/Terraria/Terraria.csproj
 +++ src/TerrariaNetCore/Terraria/Terraria.csproj
-@@ -4,59 +_,43 @@
- 	<Import Project="../../WorkspaceInfo.targets" />
+@@ -5,24 +_,19 @@
  
+ 	<!-- Build properties -->
  	<PropertyGroup>
 -		<OutputType>WinExe</OutputType>
 +		<OutputType>Exe</OutputType>
  		<Version>1.4.3.6</Version>
  		<Company>Re-Logic</Company>
  		<Copyright>Copyright © 2022 Re-Logic</Copyright>
- 		<RootNamespace>Terraria</RootNamespace>
 -		<OutputName>Terraria</OutputName>
-+		<AssemblyName>Terraria</AssemblyName>
+ 		<AssemblyName>Terraria</AssemblyName>
+ 		<RootNamespace>Terraria</RootNamespace>
+ 		<ApplicationIcon>Icon.ico</ApplicationIcon>
+-		<PdbFile>bin\$(OutputName)</PdbFile>
  	</PropertyGroup>
  
- 	<PropertyGroup Condition="$(Configuration.Contains('Server'))">
--		<OutputType>Exe</OutputType>
--		<OutputName>$(OutputName)Server</OutputName>
-+		<AssemblyName>$(AssemblyName)Server</AssemblyName>
+ 	<!-- Conditionals -->
+ 	<PropertyGroup>
+-		<!-- Make servers be normal executables. -->
+-		<OutputType Condition="$(Configuration.Contains('Server'))">Exe</OutputType>
+-
+-		<!-- Append 'Server' to AssemblyName if it's a server build. -->
++		<!-- Obsolete: Append 'Server' if it's a server build. -->
+-		<AssemblyName Condition="$(Configuration.Contains('Server'))">$(AssemblyName)Server</AssemblyName>
++		<!-- <AssemblyName Condition="$(Configuration.Contains('Server'))">$(AssemblyName)Server</AssemblyName> -->
+ 
+ 		<!-- Avoid overwriting Terraria(Server).exe (if it's not Debug - it's Release.) -->
+ 		<AssemblyName Condition="$(Configuration.Contains('Debug'))">$(AssemblyName)Debug</AssemblyName>
+@@ -32,37 +_,31 @@
+ 		<OutputName>$(AssemblyName)</OutputName>
  	</PropertyGroup>
  
- 	<PropertyGroup Condition="$(Configuration.Contains('Debug'))">
--		<OutputName>$(OutputName)Debug</OutputName>
-+		<AssemblyName>$(AssemblyName)Debug</AssemblyName>
++	<!-- Task properties -->
++	<PropertyGroup>
++		<_ActualOutputDirectory>$(TerrariaSteamPath)</_ActualOutputDirectory>
++
++		<LibraryInputDirectory>$(MSBuildThisFileDirectory)\Libraries</LibraryInputDirectory>
++		<LibraryOutputDirectory>Libraries</LibraryOutputDirectory>
++		<NativeLibraryInputDirectory>$(LibraryInputDirectory)\Native</NativeLibraryInputDirectory>
++		<NativeLibraryOutputDirectory>$(LibraryOutputDirectory)\Native</NativeLibraryOutputDirectory>
 +	</PropertyGroup>
 +
-+	<!-- Avoid overwriting Terraria(Server).exe (if it's not Debug it's release) -->
-+	<PropertyGroup Condition="!$(Configuration.Contains('Debug'))">
-+		<AssemblyName>$(AssemblyName)Release</AssemblyName>
- 	</PropertyGroup>
- 
- 	<PropertyGroup>
--		<PdbFile>bin\$(OutputName)</PdbFile>
-+		<OutputName>$(AssemblyName)</OutputName>
- 		<ApplicationIcon>Icon.ico</ApplicationIcon>
- 	</PropertyGroup>
- 
+ 	<!-- References -->
  	<ItemGroup>
-+		<ProjectReference Include="../../../FNA/FNA.Core.csproj" />
-+		<ProjectReference Include="../ReLogic/ReLogic.csproj" />
- 		<Reference Include="CsvHelper" />
--		<Reference Include="FNA" Condition="$(DefineConstants.Contains('FNA'))" />
- 		<Reference Include="Ionic.Zip.CF" />
--		<Reference Include="MP3Sharp" Condition="$(DefineConstants.Contains('CLIENT'))" />
--		<Reference Include="Microsoft.Xna.Framework" Condition="$(DefineConstants.Contains('XNA'))" />
--		<Reference Include="Microsoft.Xna.Framework.Game" Condition="$(DefineConstants.Contains('XNA'))" />
--		<Reference Include="Microsoft.Xna.Framework.Graphics" Condition="$(DefineConstants.Contains('XNA'))" />
--		<Reference Include="Microsoft.Xna.Framework.Xact" Condition="$(DefineConstants.Contains('XNA'))" />
--		<Reference Include="NVorbis.System.ValueTuple" />
-+		<Reference Include="MP3Sharp" />
- 		<Reference Include="Newtonsoft.Json" />
--		<Reference Include="NVorbis" Condition="$(DefineConstants.Contains('CLIENT'))" />
-+		<Reference Include="NVorbis" />
- 		<Reference Include="RailSDK.Net" />
--		<ProjectReference Include="../ReLogic/ReLogic.csproj" />
--		<EmbeddedResource Include="../ReLogic/bin/$(Configuration)/$(TargetFramework)/ReLogic.dll">
--			<Link>Libraries/ReLogic/ReLogic.dll</Link>
--			<LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
--		</EmbeddedResource>
+ 		<!-- Projects -->
++		<ProjectReference Include="..\..\..\FNA\FNA.Core.csproj" />
+ 		<ProjectReference Include="..\ReLogic\ReLogic.csproj" />
++		<!-- NuGet Packages -->
++		<PackageReference Include="CsvHelper" Version="2.16.3" /> <!-- Aeons old, but that's alright. -->
++		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
++		<PackageReference Include="NVorbis" Version="0.10.4" />
++		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
+ 		<!-- DLLs -->
++		<Reference Include="Libraries\Common\Ionic.Zip.CF.dll" />
++		<Reference Include="Libraries\Common\MP3Sharp.dll" />
++		<Reference Include="Libraries\Common\RailSDK.Net.dll" />
+ 		<Reference Include="Libraries\Common\SteelSeriesEngineWrapper.dll" />
+-		<Reference Include="Libraries\CsvHelper\CsvHelper.dll" />
+-		<Reference Include="Libraries\DotNetZip\Ionic.Zip.CF.dll" />
+-		<Reference Include="Libraries\FNA\FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
+-		<Reference Include="Libraries\JSON.NET\Newtonsoft.Json.dll" />
+-		<Reference Include="Libraries\MP3Sharp\MP3Sharp.dll" Condition="$(DefineConstants.Contains('CLIENT'))" />
+-		<Reference Include="Libraries\NVorbis.System.ValueTuple.dll" />
+-		<Reference Include="Libraries\NVorbis\NVorbis.dll" Condition="$(DefineConstants.Contains('CLIENT'))" />
+-		<Reference Include="Libraries\RailSDK.Windows\RailSDK.Net.dll" />
+-		<Reference Include="Libraries\XNA\Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />
+-		<Reference Include="Libraries\XNA\Microsoft.Xna.Framework.Game.dll" Condition="$(DefineConstants.Contains('XNA'))" />
+-		<Reference Include="Libraries\XNA\Microsoft.Xna.Framework.Graphics.dll" Condition="$(DefineConstants.Contains('XNA'))" />
+-		<Reference Include="Libraries\XNA\Microsoft.Xna.Framework.Xact.dll" Condition="$(DefineConstants.Contains('XNA'))" />
 -		<Reference Include="Steamworks.NET">
--			<HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries/Windows/Steamworks.NET.dll</HintPath>
--			<HintPath Condition="$(DefineConstants.Contains('MONO'))">Libraries/Mono/Steamworks.NET.dll</HintPath>
+-			<HintPath Condition="$(DefineConstants.Contains('WINDOWS'))">Libraries\Steamworks.NET.Windows\Steamworks.NET.dll</HintPath>
+-			<HintPath Condition="$(DefineConstants.Contains('LINUX'))">Libraries\Steamworks.NET.Linux\Steamworks.NET.dll</HintPath>
+-			<HintPath Condition="$(DefineConstants.Contains('MAC'))">Libraries\Steamworks.NET.OSX\Steamworks.NET.dll</HintPath>
 -		</Reference>
- 		<Reference Include="SteelSeriesEngineWrapper" />
 -		<Reference Include="System" />
 -		<Reference Include="System.Core" />
 -		<Reference Include="System.Drawing" />
 -		<Reference Include="System.Runtime.Serialization" />
 -		<Reference Include="System.Windows.Forms">
--			<HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries/Mono/System.Windows.Forms.dll</HintPath>
+-			<HintPath Condition="$(DefineConstants.Contains('Mono'))">Libraries\Mono\System.Windows.Forms.dll</HintPath>
 -		</Reference>
 -		<Reference Include="WindowsBase" />
-+		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
  	</ItemGroup>
  
- 	<ItemGroup>
-@@ -64,40 +_,70 @@
- 		<EmbeddedResource Include="GameContent/Metadata/MaterialData/*" />
- 		<EmbeddedResource Include="GameContent/WorldBuilding/*" />
- 		<EmbeddedResource Include="IO/Data/*" />
--		<EmbeddedResource Include="Libraries/**" />
--		<EmbeddedResource Remove="Libraries/FNA/**" />
--		<EmbeddedResource Remove="Libraries/XNA/**" />
--		<EmbeddedResource Remove="Libraries/Native/**" />
--		<EmbeddedResource Remove="Libraries/Windows/**" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
--		<EmbeddedResource Remove="Libraries/Mono/**" Condition="!$(DefineConstants.Contains('MONO'))" />
- 		<EmbeddedResource Include="Localization/Content/**" />
- 		<EmbeddedResource Include="Microsoft/**" />
+ 	<!-- Resources -->
+@@ -72,49 +_,68 @@
+ 		<EmbeddedResource Include="GameContent\Metadata\MaterialData\*" />
+ 		<EmbeddedResource Include="GameContent\WorldBuilding\*" />
+ 		<EmbeddedResource Include="IO\Data\*" />
+-		<EmbeddedResource Include="Libraries\**" />
+ 		<EmbeddedResource Include="Localization\Content\**" />
+ 		<EmbeddedResource Include="Microsoft\**" />
+-		<EmbeddedResource Include="..\ReLogic\bin\$(Configuration)\$(TargetFramework)\ReLogic.dll">
+-			<Link>Libraries\ReLogic\ReLogic.dll</Link>
+-			<LogicalName>Terraria.Libraries.ReLogic.ReLogic.dll</LogicalName>
+-		</EmbeddedResource>
++		<!-- Copy to output folder -->
++		<Content Include="Libraries\Native\**" CopyToOutputDirectory="PreserveNewest" />
+ 
+-		<!-- Excluded embedded resources -->
+-		<EmbeddedResource Remove="Libraries\FNA\**" />
+-		<EmbeddedResource Remove="Libraries\XNA\**" />
+-		<EmbeddedResource Remove="Libraries\Native\**" />
+-		<EmbeddedResource Remove="Libraries\Steamworks.NET.Windows\**" Condition="!$(DefineConstants.Contains('WINDOWS'))" />
+-		<EmbeddedResource Remove="Libraries\Steamworks.NET.Linux\**" Condition="!$(DefineConstants.Contains('LINUX'))" />
+-		<EmbeddedResource Remove="Libraries\Steamworks.NET.OSX\**" Condition="!$(DefineConstants.Contains('MAC'))" />
++		<!-- Excluded code files -->
++		<Compile Remove="Social\WeGame\AsyncTaskHelper.cs" />
++		<Compile Remove="Social\WeGame\CurrentThreadRunner.cs" />
+ 		<!-- Hide libraries in IDEs -->
+ 		<None Remove="Libraries\**" />
  	</ItemGroup>
  
- 	<ItemGroup>
-+		<Compile Remove="Social/WeGame/AsyncTaskHelper.cs" />
-+		<Compile Remove="Social/WeGame/CurrentThreadRunner.cs" />
--		<None Remove="Libraries/Native/**" />
-+		<None Remove="Libraries/Mono/**" />
-+		<None Remove="Libraries/Windows/**" />
-+		<None Remove="Libraries/XNA/**" />
-+		<Content Include="Libraries/Native/**" CopyToOutputDirectory="PreserveNewest" />
- 	</ItemGroup>
- 
+-	<!-- Apply 4GB patches -->
 -	<Target Name="EditBin" AfterTargets="Build">
 -		<PropertyGroup>
 -			<EditBinOpts>/largeaddressaware</EditBinOpts>
@@ -111,66 +126,64 @@
 -
 -		<Message Text="Applying editbin $(EditBinOpts)" Importance="high" />
 -		<Exec Command="..\largeaddresstool\editbin $(EditBinOpts) &quot;$(TargetPath)&quot;" />
+-
 -		<Message Text="Checking headers with dumpbin." Importance="high" />
 -		<Exec Command="..\largeaddresstool\dumpbin $(DumpBin) &quot;$(TargetPath)&quot; | findstr &quot;large&quot;" />
--	</Target>
--
--	<Target Name="CopyToStreamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
--		<Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
--		<Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
--		<Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
--	</Target>
-+	<PropertyGroup>
-+		<_ActualOutputDirectory>$(TerrariaSteamPath)</_ActualOutputDirectory>
-+	</PropertyGroup>
-+
-+	<!-- Manage libraries -->
-+	
++	<!-- Declare used tasks -->
 +	<UsingTask TaskName="OrganizeDependencies" AssemblyFile="$(DependencyOrganizerAssemblyFile)" />
 +	<UsingTask TaskName="InjectAdditionalRuntimeTarget" AssemblyFile="$(DependencyOrganizerAssemblyFile)" />
++	<UsingTask TaskName="DeleteEmptyDirectories" AssemblyFile="$(DependencyOrganizerAssemblyFile)" />
 +
-+	<!-- This task moves all dependencies to the Libraries folder, while modifying the runtimeconfig json path to point to the new locations. -->
++	<!-- This task moves all dependencies to the Libraries folder, while modifying the deps.json paths to point to the new locations. -->
 +	<Target Name="ConfigureDependencies" AfterTargets="GenerateBuildDependencyFile">
 +		<Message Text="Adding additional dependencies..." Importance="high" />
-+		
-+		<!-- Make FNA be able to find SDL2 -->
++
++		<!-- Make FNA be able to find SDL2. This is quite stinky. -->
 +		<InjectAdditionalRuntimeTarget DepsFile="$(ProjectDepsFilePath)" TargetLibrary="FNA/1.0.0" AssetType="native" FilePath="Libraries/Native/win-x64/SDL2.dll" RuntimeIdentifier="win-x64" />
 +		<InjectAdditionalRuntimeTarget DepsFile="$(ProjectDepsFilePath)" TargetLibrary="FNA/1.0.0" AssetType="native" FilePath="Libraries/Native/win-x86/SDL2.dll" RuntimeIdentifier="win-x86" />
 +		<InjectAdditionalRuntimeTarget DepsFile="$(ProjectDepsFilePath)" TargetLibrary="FNA/1.0.0" AssetType="native" FilePath="Libraries/Native/linux-x64/libSDL2-2.0.so.0" RuntimeIdentifier="linux-x64" />
 +		<InjectAdditionalRuntimeTarget DepsFile="$(ProjectDepsFilePath)" TargetLibrary="FNA/1.0.0" AssetType="native" FilePath="Libraries/Native/osx-x64/libSDL2-2.0.0.dylib" RuntimeIdentifier="osx-x64" />
-+		
++
 +		<Message Text="Organizing dependencies..." Importance="high" />
 +
 +		<OrganizeDependencies
 +			OutputPath="$(OutputPath)"
 +			AssemblyName="$(AssemblyName)"
-+			LibrariesDir="Libraries"
++			LibrariesDir="$(LibraryOutputDirectory)"
 +			ProjectDepsFilePath="$(ProjectDepsFilePath)"
 +			ProjectRuntimeConfigFilePath="$(ProjectRuntimeConfigFilePath)"
 +		/>
 +	</Target>
-+	
-+	<!-- This task copies all the Native libraries to Libraries/Native directory in output. -->
-+	<Target Name="CopyNatives" AfterTargets="ConfigureDependencies">
-+		<ItemGroup>
-+			<NativeFiles Include="$(MSBuildThisFileDirectory)\References\Native\**" />
-+		</ItemGroup>
-+		
-+		<Message Text="Copying natives from '$(MSBuildThisFileDirectory)\References\Native' to '$(TargetDir)\Libraries\Native'" Importance="High" />
-+	
-+		<Copy SourceFiles="@(NativeFiles)" DestinationFolder="$(TargetDir)\Libraries\Native\%(RecursiveDir)" SkipUnchangedFiles="False" />
-+	</Target>
-+	
-+	<!-- Final output cleanups -->
-+	
-+	<UsingTask TaskName="DeleteEmptyDirectories" AssemblyFile="$(DependencyOrganizerAssemblyFile)" />
-+	
-+	<Target Name="DeleteEmptyDirectories" AfterTargets="CopyNatives" >
++
++	<!-- Output cleanups -->
++	<Target Name="OutputCleanup" AfterTargets="Build" >
++		<Delete Files="$(TargetDir)\tModPorter.runtimeconfig.json" />
++		<Delete Files="$(TargetDir)\tModPorter.deps.json" />
++
 +		<DeleteEmptyDirectories Path="$(OutputPath)" />
-+	</Target>
-+	
-+	<!-- Output copying -->
-+	
-+	<!-- TODO -->
+ 	</Target>
+ 
+ 	<!-- Copy files systematically to output folder. -->
+-	<Target Name="CopyToSteamDir" AfterTargets="EditBin" Condition="$(Configuration.Contains('Windows'))">
+-		<Message Text="Copying $(OutputName) to Steam Dir..." Importance="high" />
+-
+-		<Copy SourceFiles="$(TargetPath)" DestinationFiles="$(TerrariaSteamPath)\$(OutputName).exe" />
+-		<Copy SourceFiles="$(TargetDir)$(OutputName).pdb" DestinationFolder="$(TerrariaSteamPath)" />
++	<Target Name="CopyToSteamDir" AfterTargets="Build" DependsOnTargets="OutputCleanup">
++		<ItemGroup>
++			<BinFiles Include="$(TargetDir)**" />
++		</ItemGroup>
++
++		<Message Text="Copying $(AssemblyName) to '$(_ActualOutputDirectory)'..." Importance="high" />
++
++		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(_ActualOutputDirectory)\%(RecursiveDir)" SkipUnchangedFiles="True" />
++
++		<!-- TODO: Purge old libraries on other platforms. -->
++		<Exec Command="robocopy &quot;$(TargetDir)Libraries&quot; &quot;$(_ActualOutputDirectory)\Libraries&quot; /MIR" ContinueOnError="true" StandardOutputImportance="low" Condition="'$(OS)' == 'Windows_NT'">
++			<Output TaskParameter="ExitCode" PropertyName="PurgeExitCode" />
++		</Exec>
++
++		<Warning Text="Libraries file purge failed (robocopy /MIR Exit Code: $(PurgeExitCode)). Old files may not be removed." Condition="'$(PurgeExitCode)' != 2 AND '$(PurgeExitCode)' != 0" />
+ 	</Target>
  
  </Project>

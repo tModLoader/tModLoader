@@ -1,26 +1,66 @@
 --- src/decompiled/ReLogic/ReLogic.csproj
 +++ src/Terraria/ReLogic/ReLogic.csproj
-@@ -6,14 +_,17 @@
-     <Company>Re-Logic</Company>
-     <Copyright>Copyright © Re-Logic 2017</Copyright>
-     <RootNamespace>ReLogic</RootNamespace>
-+	<!-- because project name is "ReLogic_LegacyNetFramework" -->
-+    <AssemblyName>ReLogic</AssemblyName>
-   </PropertyGroup>
-   <ItemGroup>
+@@ -1,25 +_,40 @@
+ <Project Sdk="Microsoft.NET.Sdk">
+-  <Import Project="../Configuration.targets" />
+-  <PropertyGroup>
+-    <OutputType>Library</OutputType>
+-    <Version>1.0.0.0</Version>
+-    <Company>Re-Logic</Company>
+-    <Copyright>Copyright © Re-Logic 2017</Copyright>
+-    <RootNamespace>ReLogic</RootNamespace>
+-  </PropertyGroup>
+-  <ItemGroup>
 -    <Reference Include="Ionic.Zip.CF" />
 -    <Reference Include="Microsoft.Xna.Framework" />
 -    <Reference Include="Microsoft.Xna.Framework.Game" />
 -    <Reference Include="Microsoft.Xna.Framework.Graphics" />
 -    <Reference Include="Newtonsoft.Json" />
 -    <Reference Include="SteelSeriesEngineWrapper" />
-+    <Reference Include="../Terraria/Libraries/DotNetZip/Ionic.Zip.CF.dll" />
-+    <Reference Include="../Terraria/Libraries/FNA/FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
-+    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />
-+    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Game.dll" Condition="$(DefineConstants.Contains('XNA'))" />
-+    <Reference Include="../Terraria/Libraries/XNA/Microsoft.Xna.Framework.Graphics.dll" Condition="$(DefineConstants.Contains('XNA'))" />
-+    <Reference Include="../Terraria/Libraries/JSON.NET/Newtonsoft.Json.dll" />
-+    <Reference Include="../Terraria/Libraries/Common/SteelSeriesEngineWrapper.dll" />
-     <Reference Include="System" />
-     <Reference Include="System.Core" />
-     <Reference Include="System.Drawing" />
+-    <Reference Include="System" />
+-    <Reference Include="System.Core" />
+-    <Reference Include="System.Drawing" />
+-    <Reference Include="System.Windows.Forms" />
+-  </ItemGroup>
+-  <ItemGroup>
+-    <EmbeddedResource Include="Microsoft/**" />
+-  </ItemGroup>
++
++	<Import Project="..\Configuration.targets" />
++
++	<PropertyGroup>
++		<OutputType>Library</OutputType>
++		<Version>1.0.0.0</Version>
++		<Company>Re-Logic</Company>
++		<Copyright>Copyright © Re-Logic 2017</Copyright>
++		<RootNamespace>ReLogic</RootNamespace>
++		<!-- Because project name is "ReLogic_LegacyNetFramework" -->
++		<AssemblyName>ReLogic</AssemblyName>
++	</PropertyGroup>
++
++	<ItemGroup>
++	</ItemGroup>
++
++	<!-- References -->
++	<ItemGroup>
++		<!-- DLLs -->
++		<Reference Include="..\Terraria\Libraries\DotNetZip\Ionic.Zip.CF.dll" />
++		<Reference Include="..\Terraria\Libraries\FNA\FNA.dll" Condition="$(DefineConstants.Contains('FNA'))" />
++		<Reference Include="..\Terraria\Libraries\XNA\Microsoft.Xna.Framework.dll" Condition="$(DefineConstants.Contains('XNA'))" />
++		<Reference Include="..\Terraria\Libraries\XNA\Microsoft.Xna.Framework.Game.dll" Condition="$(DefineConstants.Contains('XNA'))" />
++		<Reference Include="..\Terraria\Libraries\XNA\Microsoft.Xna.Framework.Graphics.dll" Condition="$(DefineConstants.Contains('XNA'))" />
++		<Reference Include="..\Terraria\Libraries\JSON.NET\Newtonsoft.Json.dll" />
++		<Reference Include="..\Terraria\Libraries\Common\SteelSeriesEngineWrapper.dll" />
++		<Reference Include="System" />
++		<Reference Include="System.Core" />
++		<Reference Include="System.Drawing" />
++		<Reference Include="System.Windows.Forms" />
++	</ItemGroup>
++
++	<!-- Resources -->
++	<ItemGroup>
++		<!-- Embedded resources -->
++		<EmbeddedResource Include="Microsoft\**" />
++	</ItemGroup>
++
+ </Project>
