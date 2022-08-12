@@ -1,0 +1,27 @@
+--- src/Terraria/ReLogic/Peripherals/RGB/Razer/RazerDeviceGroup.cs
++++ src/TerrariaNetCore/ReLogic/Peripherals/RGB/Razer/RazerDeviceGroup.cs
+@@ -1,5 +_,6 @@
+ using System;
+ using System.Collections.Generic;
++using System.Reflection;
+ using System.Runtime.InteropServices;
+ 
+ namespace ReLogic.Peripherals.RGB.Razer
+@@ -24,8 +_,15 @@
+ #if NETCORE
+ 			if (_initializationFailed)
+ 				return;
+-
+-			if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, out _)) {
++			/*
++			 *	Part of Razer Chroma SDK Windows x64 fix in NativeMethods.cs
++			 *	Try to find dll in SafeDirectories
++			 *	Change: Specify DllImportSearchPath.SafeDirectories in NativeLibrary.TryLoad() call
++			 *	Originally:
++			 *	
++			 *	if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, out _)) {
++			*/
++			if (!NativeLibrary.TryLoad(NativeMethods.DLL_NAME, Assembly.GetEntryAssembly(), DllImportSearchPath.SafeDirectories, out _)) {
+ 				_initializationFailed = true;
+ 
+ 				return;
