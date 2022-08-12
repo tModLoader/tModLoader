@@ -60,7 +60,6 @@
 +		<PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
 +		<PackageReference Include="MonoMod.RuntimeDetour" Version="22.5.31.2" />
  		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
- 		<PackageReference Include="NVorbis" Version="0.10.4" />
  		<PackageReference Include="Steamworks.NET" Version="20.1.0" />
 +		<PackageReference Include="System.CodeDom" Version="6.0.0" />
 +		<PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0" />
@@ -69,6 +68,7 @@
 -		<Reference Include="Libraries\Common\Ionic.Zip.CF.dll" />
 +		<Reference Include="Libraries\Common\Ionic.Zip.Reduced.dll" />
  		<Reference Include="Libraries\Common\MP3Sharp.dll" />
+ 		<Reference Include="Libraries\Common\NVorbis.dll" /> <!-- The NuGet package is outdated. -->
  		<Reference Include="Libraries\Common\RailSDK.Net.dll" />
  		<Reference Include="Libraries\Common\SteelSeriesEngineWrapper.dll" />
 +		<Reference Include="Libraries\Common\TerrariaHooks.dll" />
