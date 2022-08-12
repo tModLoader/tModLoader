@@ -1,9 +1,19 @@
 --- src/Terraria/Terraria/Program.cs
 +++ src/TerrariaNetCore/Terraria/Program.cs
-@@ -155,6 +_,11 @@
+@@ -140,6 +_,7 @@
+ 
+ 		public static void LaunchGame(string[] args, bool monoArgs = false) {
+ 			Thread.CurrentThread.Name = "Main Thread";
++			
+ 			if (monoArgs)
+ 				args = Utils.ConvertMonoArgsToDotNet(args);
+ 
+@@ -155,6 +_,13 @@
  #else
  			Main.dedServ = LaunchParameters.ContainsKey("-server");
  #endif
++
++			Environment.SetEnvironmentVariable("FNA_WORKAROUND_WINDOW_RESIZABLE", "1");
 +
 +			if (Main.dedServ) {
 +				Environment.SetEnvironmentVariable("FNA_PLATFORM_BACKEND", "NONE");
@@ -12,3 +22,23 @@
  			ThreadPool.SetMinThreads(8, 8);
  			LanguageManager.Instance.SetLanguage(GameCulture.DefaultCulture);
  			InitializeConsoleOutput();
+@@ -175,19 +_,6 @@
+ 					DisplayException(e);
+ 				}
+ 			}
+-		}
+-
+-		private static void TrySettingFNAToOpenGL(string[] args) {
+-			bool flag = false;
+-			for (int i = 0; i < args.Length; i++) {
+-				if (args[i].Contains("gldevice")) {
+-					flag = true;
+-					break;
+-				}
+-			}
+-
+-			if (!flag)
+-				Environment.SetEnvironmentVariable("FNA3D_FORCE_DRIVER", "OpenGL");
+ 		}
+ 
+ 		private static void DisplayException(Exception e) {
