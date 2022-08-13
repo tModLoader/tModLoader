@@ -101,11 +101,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac4ecc6320b69ab939b9c45eaf7d89000"><td class="memItemLeft" align="right" valign="top"><a id="ac4ecc6320b69ab939b9c45eaf7d89000"></a>
 virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>Next</b> ()</td></tr>
 <tr class="separator:ac4ecc6320b69ab939b9c45eaf7d89000"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb3925cc1a55c2c2fb73806592a87ccf"><td class="memItemLeft" align="right" valign="top"><a id="adb3925cc1a55c2c2fb73806592a87ccf"></a>
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>Next</b> (int maxValue)</td></tr>
+<tr class="memitem:adb3925cc1a55c2c2fb73806592a87ccf"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_utilities_1_1_unified_random.html#adb3925cc1a55c2c2fb73806592a87ccf">Next</a> (int maxValue)</td></tr>
+<tr class="memdesc:adb3925cc1a55c2c2fb73806592a87ccf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random value between 0 (inclusive) and <em>maxValue</em>  (exclusive). <br  />
+For example <code>Next(4)</code> can return one of 4 values: 0, 1, 2, or 3. It will not return 4.  <a href="class_terraria_1_1_utilities_1_1_unified_random.html#adb3925cc1a55c2c2fb73806592a87ccf">More...</a><br /></td></tr>
 <tr class="separator:adb3925cc1a55c2c2fb73806592a87ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ca364c0c5c5160d4292fd45e167bccc"><td class="memItemLeft" align="right" valign="top"><a id="a7ca364c0c5c5160d4292fd45e167bccc"></a>
-virtual int&#160;</td><td class="memItemRight" valign="bottom"><b>Next</b> (int minValue, int maxValue)</td></tr>
+<tr class="memitem:a7ca364c0c5c5160d4292fd45e167bccc"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_terraria_1_1_utilities_1_1_unified_random.html#a7ca364c0c5c5160d4292fd45e167bccc">Next</a> (int minValue, int maxValue)</td></tr>
+<tr class="memdesc:a7ca364c0c5c5160d4292fd45e167bccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a random value between <em>minValue</em>  (inclusive) and <em>maxValue</em>  (exclusive). <br  />
+For example <code>Next(4, 8)</code> can return 4, 5, 6, or 7. It will not return 8.  <a href="class_terraria_1_1_utilities_1_1_unified_random.html#a7ca364c0c5c5160d4292fd45e167bccc">More...</a><br /></td></tr>
 <tr class="separator:a7ca364c0c5c5160d4292fd45e167bccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01c8ee0933ab909d4c7b8c5ec3670645"><td class="memItemLeft" align="right" valign="top"><a id="a01c8ee0933ab909d4c7b8c5ec3670645"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>NextBytes</b> (byte[] buffer)</td></tr>
@@ -120,6 +122,102 @@ Protected Member Functions</h2></td></tr>
 virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>Sample</b> ()</td></tr>
 <tr class="separator:ac36d10cc6f1a54c3810374e9014c217c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="adb3925cc1a55c2c2fb73806592a87ccf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb3925cc1a55c2c2fb73806592a87ccf">&#9670;&nbsp;</a></span>Next() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int Terraria.Utilities.UnifiedRandom.Next </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>maxValue</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Generates a random value between 0 (inclusive) and <em>maxValue</em>  (exclusive). <br  />
+For example <code>Next(4)</code> can return one of 4 values: 0, 1, 2, or 3. It will not return 4. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">maxValue</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ArgumentOutOfRangeException</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7ca364c0c5c5160d4292fd45e167bccc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ca364c0c5c5160d4292fd45e167bccc">&#9670;&nbsp;</a></span>Next() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int Terraria.Utilities.UnifiedRandom.Next </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>minValue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>maxValue</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Generates a random value between <em>minValue</em>  (inclusive) and <em>maxValue</em>  (exclusive). <br  />
+For example <code>Next(4, 8)</code> can return 4, 5, 6, or 7. It will not return 8. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">minValue</td><td></td></tr>
+    <tr><td class="paramname">maxValue</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ArgumentOutOfRangeException</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
