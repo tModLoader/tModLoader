@@ -1,8 +1,6 @@
-using ReLogic.OS;
 using Steamworks;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -24,47 +22,11 @@ namespace Terraria.Social.Steam
 		internal static string[] MetadataKeys = new string[7] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences" };
 		private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version (.*) built for (tModLoader v.*)\[/quote\]", RegexOptions.Compiled);
 
-		public struct ItemInstallInfo
-		{
-			public string installPath;
-			public uint lastUpdatedTime;
-		}
-
 		public class ModPublisherInstance : UGCBased.APublisherInstance
 		{
 			protected override string GetHeaderText() => ModWorkshopEntry.GetHeaderTextFor(_publishedFileID.m_PublishedFileId, _entryData.Tags, _publicity, _entryData.PreviewImagePath);
 
 			protected override void PrepareContentForUpdate() { }
-		}
-
-		internal static void OnGameExitCleanup() {
-			if (ModManager.SteamUser) {
-				SteamAPI.Shutdown();
-				return;
-			}
-
-			GameServer.Shutdown();
-		}
-
-		internal static void ForceCallbacks() {
-			Thread.Sleep(5);
-
-			if (ModManager.SteamUser)
-				SteamAPI.RunCallbacks();
-			else
-				GameServer.RunCallbacks();
-		}
-
-		internal static void ReportCheckSteamLogs() {
-			string workshopLogLoc = "";
-			if (Platform.IsWindows)
-				workshopLogLoc = "C:/Program Files (x86)/Steam/logs/workshop_log.txt";
-			else if (Platform.IsOSX)
-				workshopLogLoc = "~/Library/Application Support/Steam/logs/workshop_log.txt";
-			else if (Platform.IsLinux)
-				workshopLogLoc = "/home/user/.local/share/Steam/logs/workshop_log.txt";
-
-			Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.ConsultSteamLogs", workshopLogLoc));
 		}
 
 		public static string GetWorkshopFolder(AppId_t app) {
@@ -76,7 +38,7 @@ namespace Terraria.Social.Steam
 			}
 
 			string installLoc = null;
-			if (ModManager.SteamUser) // get app install dir if possible
+			if (SteamedWraps.SteamClient) // get app install dir if possible
 				SteamApps.GetAppInstallDir(app, out installLoc, 1000);
 
 			installLoc ??= "."; // GetAppInstallDir may return null (#2491). Also the default location for dedicated servers and such
@@ -89,317 +51,47 @@ namespace Terraria.Social.Steam
 			return Path.Combine("steamapps", "workshop");
 		}
 
-		internal class ModManager
-		{
-			internal static bool SteamUser { get; set; }
-			internal static bool SteamAvailable { get; set; }
+		internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId) {
+			publishId = 0;
+			if (modFile == null || !ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(modFile.path), out var info))
+				return false;
 
-			protected Callback<DownloadItemResult_t> m_DownloadItemResult;
+			publishId = info.workshopEntryId;
+			return true;
+		}
 
-			private PublishedFileId_t itemID;
+		/// <summary>
+		/// Downloads all UIModDownloadItems provided.
+		/// </summary>
+		internal static Task SetupDownload(List<ModDownloadItem> items) {
+			//Set UIWorkshopDownload
+			UIWorkshopDownload uiProgress = null;
 
-			internal static bool GetPublishIdLocal(TmodFile modFile, out ulong publishId) {
-				publishId = 0;
-				if (modFile == null || !ModOrganizer.TryReadManifest(ModOrganizer.GetParentDir(modFile.path), out var info))
-					return false;
+			// Can't update enabled items due to in-use file access constraints
+			var needFreeInUseMods = items.Any(item => item.Installed != null && item.Installed.Enabled);
+			if (needFreeInUseMods)
+				ModLoader.ModLoader.Unload();
 
-				publishId = info.workshopEntryId;
-				return true;
+			if (!Main.dedServ) {
+				uiProgress = new UIWorkshopDownload(Interface.modBrowser);
+				Main.MenuUI.SetState(uiProgress);
 			}
 
-			internal ModManager(PublishedFileId_t itemID) {
-				this.itemID = itemID;
+			return Task.Run(() => InnerDownload(uiProgress, items, needFreeInUseMods));
+		}
+
+		private static void InnerDownload(UIWorkshopDownload uiProgress, List<ModDownloadItem> items, bool reloadWhenDone) {
+			foreach (var item in items) {
+				var publishId = new PublishedFileId_t(ulong.Parse(item.PublishId));
+				bool forceUpdate = SteamedWraps.DoesWorkshopItemNeedUpdate(publishId) || !SteamedWraps.IsWorkshopItemInstalled(publishId);
+
+				uiProgress?.PrepUIForDownload(item.DisplayName);
+				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", item.DisplayName));
+				SteamedWraps.Download(uiProgress, forceUpdate, publishId);
 			}
 
-			private static List<LocalMod> enabledItems;
-
-			/// <summary>
-			/// Downloads all UIModDownloadItems provided.
-			/// </summary>
-			public static Task Download(List<ModDownloadItem> items) {
-				//Set UIWorkshopDownload
-				UIWorkshopDownload uiProgress = null;
-
-				// Can't update enabled items due to in-use file access constraints
-				enabledItems = new List<LocalMod>();
-				foreach (var item in items) {
-					if (item.Installed != null && item.Installed.Enabled) {
-						enabledItems.Add(item.Installed);
-						item.Installed.Enabled = false;
-					}
-				}
-
-				if (enabledItems.Count > 0) {
-					ModLoader.ModLoader.Unload();
-				}
-
-				if (!Main.dedServ) {
-					uiProgress = new UIWorkshopDownload(Interface.modBrowser);
-					Main.MenuUI.SetState(uiProgress);
-				}
-
-				int counter = 0;
-
-				return Task.Run(() => TaskDownload(counter, uiProgress, items));
-			}
-
-			internal static void DownloadBatch(string[] workshopIds, int previousMenuMode) {
-				//Set UIWorkshopDownload
-				UIWorkshopDownload uiProgress = null;
-
-				if (!Main.dedServ) {
-					uiProgress = new UIWorkshopDownload(previousMenuMode);
-					Main.MenuUI.SetState(uiProgress);
-				}
-
-				int counter = 0;
-
-				Task.Run(() => TaskDownload(counter, uiProgress, ids: workshopIds));
-			}
-
-			private static void TaskDownload(int counter, UIWorkshopDownload uiProgress, List<ModDownloadItem> items = null, string[] ids = null) {
-				string name = "";
-				bool hasUpdate = false;
-				ModManager mod = null;
-				int endCount = 0;
-
-				if (items == null) {
-					var id = ids[counter++];
-					mod = new ModManager(new PublishedFileId_t(ulong.Parse(id)));
-
-					hasUpdate = mod.NeedsUpdate() || !mod.IsInstalled();
-					name = id;
-					endCount = ids.Length;
-				}
-
-				if (ids == null) {
-					var item = items[counter++];
-					mod = new ModManager(new PublishedFileId_t(ulong.Parse(item.PublishId)));
-
-					hasUpdate = item.HasUpdate;
-					name = item.DisplayName;
-					endCount = items.Count;
-				}
-
-				uiProgress?.PrepUIForDownload(name);
-				Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.BeginDownload", name));
-				mod.InnerDownload(uiProgress, hasUpdate);
-
-				if (counter == endCount) {
-					uiProgress?.Leave(items != null);
-
-					// Restore Enabled items.
-					if (enabledItems?.Count > 0) {
-						foreach (var localMod in enabledItems) {
-							localMod.Enabled = true;
-						}
-						ModLoader.ModLoader.Reload();
-					}
-				}
-				else
-					TaskDownload(counter, uiProgress, items, ids);
-			}
-
-			private EResult downloadResult;
-
-			/// <summary>
-			/// Updates and/or Downloads the Item specified when generating the ModManager Instance.
-			/// </summary>
-			internal bool InnerDownload(UIWorkshopDownload uiProgress, bool mbHasUpdate) {
-				downloadResult = EResult.k_EResultOK;
-
-				if (NeedsUpdate() || mbHasUpdate) {
-					downloadResult = EResult.k_EResultNone;
-					Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.SteamDownloader"));
-
-					if (SteamUser)
-						SteamDownload(uiProgress);
-					else
-						GoGDownload(uiProgress);
-
-					Utils.LogAndConsoleInfoMessage(Language.GetTextValue("tModLoader.EndDownload"));
-				}
-				else {
-					// A warning here that you will need to restart the game for item to be removed completely from Steam's runtime cache.
-					Utils.LogAndConsoleErrorMessage(Language.GetTextValue("tModLoader.SteamRejectUpdate"));
-				}
-
-				return downloadResult == EResult.k_EResultOK;
-			}
-
-			private void SteamDownload(UIWorkshopDownload uiProgress) {
-				if (!SteamUGC.DownloadItem(itemID, true)) {
-					ReportCheckSteamLogs();
-					throw new ArgumentException("Downloading Workshop Item failed due to unknown reasons");
-				}
-
-				InnerDownloadQueue(uiProgress);
-				SteamUGC.SubscribeItem(itemID);
-			}
-
-			private void GoGDownload(UIWorkshopDownload uiProgress) {
-				if (!SteamGameServerUGC.DownloadItem(itemID, true)) {
-					ReportCheckSteamLogs();
-					throw new ArgumentException("GoG: Downloading Workshop Item failed due to unknown reasons");
-				}
-
-				InnerDownloadQueue(uiProgress);
-			}
-
-			private void InnerDownloadQueue(UIWorkshopDownload uiProgress) {
-				ulong dlBytes, totalBytes;
-
-				const int LogEveryXPercent = 10;
-
-				int nextPercentageToLog = LogEveryXPercent;
-
-				while (!IsInstalled()) {
-					if (SteamUser)
-						SteamUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
-					else
-						SteamGameServerUGC.GetItemDownloadInfo(itemID, out dlBytes, out totalBytes);
-
-					if (uiProgress != null)
-						uiProgress.UpdateDownloadProgress((float)dlBytes / Math.Max(totalBytes, 1), (long)dlBytes, (long)totalBytes);
-
-					int percentage = (int)MathF.Round(dlBytes / (float)totalBytes * 100f);
-
-					if (percentage >= nextPercentageToLog) {
-						string str = Language.GetTextValue("tModLoader.DownloadProgress", percentage);
-
-						Utils.LogAndConsoleInfoMessage(str);
-
-						nextPercentageToLog = percentage + LogEveryXPercent;
-
-						if (nextPercentageToLog > 100 && nextPercentageToLog != 100 + LogEveryXPercent) {
-							nextPercentageToLog = 100;
-						}
-					}
-				}
-
-				// We don't receive a callback, so we manually set the success.
-				downloadResult = EResult.k_EResultOK;
-			}
-
-			internal void Uninstall(string installPath = null) {
-				if (string.IsNullOrEmpty(installPath))
-					installPath = GetInstallInfo().installPath;
-
-				if (!Directory.Exists(installPath))
-					return;
-
-				// Unsubscribe
-				if (SteamUser)
-					SteamUGC.UnsubscribeItem(itemID);
-
-				// Remove the files
-				Directory.Delete(installPath, true);
-
-				if (!SteamUser)
-					UninstallACF();
-			}
-
-			private void UninstallACF() {
-				// Cleanup acf file by removing info on this itemID
-				string acfPath;
-
-				if (!SteamUser)
-					acfPath = Path.Combine(Directory.GetCurrentDirectory(), "steamapps", "workshop", "appworkshop_" + SteamedWraps.thisApp.ToString() + ".acf");
-				else
-					acfPath = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetParent(GetInstallInfo().installPath).ToString()).ToString()).ToString(), "appworkshop_" + SteamedWraps.thisApp.ToString() + ".acf");
-
-				string[] acf = File.ReadAllLines(acfPath);
-				using StreamWriter w = new StreamWriter(acfPath);
-
-				int blockLines = 5;
-				int skip = 0;
-
-				for (int i = 0; i < acf.Length; i++) {
-					if (acf[i].Contains(itemID.ToString())) {
-						skip = blockLines;
-						continue;
-					}
-					else if (skip > 0) {
-						skip--;
-						continue;
-					}
-
-					w.WriteLine(acf[i]);
-				}
-			}
-
-			public ItemInstallInfo GetInstallInfo() {
-				string installPath;
-				uint lastUpdatedTime;
-
-				if (SteamUser)
-					SteamUGC.GetItemInstallInfo(itemID, out var installSize, out installPath, 1000, out lastUpdatedTime);
-				else
-					SteamGameServerUGC.GetItemInstallInfo(itemID, out var installSize, out installPath, 1000, out lastUpdatedTime);
-
-				return new ItemInstallInfo() { installPath = installPath, lastUpdatedTime = lastUpdatedTime };
-			}
-
-			private uint GetState() {
-				if (SteamUser)
-					return SteamUGC.GetItemState(itemID);
-				else
-					return SteamGameServerUGC.GetItemState(itemID);
-			}
-
-			public bool IsInstalled() {
-				var currState = GetState();
-
-				bool installed = (currState & (uint)(EItemState.k_EItemStateInstalled)) != 0;
-				bool downloading = (currState & ((uint)EItemState.k_EItemStateDownloading + (uint)EItemState.k_EItemStateDownloadPending)) != 0;
-				return installed && !downloading;
-			}
-
-			public bool NeedsUpdate() {
-				var currState = GetState();
-
-				return (currState & (uint)EItemState.k_EItemStateNeedsUpdate) != 0 ||
-					(currState == (uint)EItemState.k_EItemStateNone) ||
-					(currState & (uint)EItemState.k_EItemStateDownloadPending) != 0;
-			}
-
-			private const int PlaytimePagingConst = 100; //https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking
-
-			public static void BeginPlaytimeTracking() {
-				if (!SteamAvailable)
-					return;
-
-				List<PublishedFileId_t> list = new List<PublishedFileId_t>();
-				foreach (var mod in ModLoader.ModLoader.Mods) {
-					if (GetPublishIdLocal(mod.File, out ulong publishId))
-						list.Add(new PublishedFileId_t(publishId));
-				}
-
-				int count = list.Count;
-				if (count == 0)
-					return;
-
-				int pg = count / PlaytimePagingConst;
-				int rem = count % PlaytimePagingConst;
-
-				for (int i = 0; i < pg + 1; i++) {
-					var pgList = list.GetRange(i * PlaytimePagingConst, (i == pg) ? rem : PlaytimePagingConst);
-
-					// Call the appropriate variant, may need performance optimization.
-					if (SteamUser)
-						SteamUGC.StartPlaytimeTracking(pgList.ToArray(), (uint)pgList.Count);
-					else
-						SteamGameServerUGC.StartPlaytimeTracking(pgList.ToArray(), (uint)pgList.Count);
-				}
-			}
-
-			public static void StopPlaytimeTracking() {
-				// Call the appropriate variant
-				if (SteamUser)
-					SteamUGC.StopPlaytimeTrackingForAllItems();
-				else if (SteamAvailable)
-					SteamGameServerUGC.StopPlaytimeTrackingForAllItems();
-			}
+			if (reloadWhenDone)
+				ModLoader.ModLoader.Reload();
 		}
 
 		internal static class QueryHelper
@@ -430,15 +122,15 @@ namespace Terraria.Social.Steam
 
 				AQueryInstance.InstalledMods = ModOrganizer.FindWorkshopMods();
 
-				if (!ModManager.SteamAvailable) {
-					if (!ModManager.TryInitViaGameServer()) {
+				if (!SteamedWraps.SteamClient) {
+					if (!SteamedWraps.TryInitViaGameServer()) {
 						Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
 						return false;
 					}
 
 					var start = DateTime.Now; // lets wait a few seconds for steam to actually init. It if times out, then another query later will fail, oh well :|
 					while (!SteamGameServer.BLoggedOn() && (DateTime.Now - start) < TimeSpan.FromSeconds(5)) {
-						ForceCallbacks();
+						SteamedWraps.ForceCallbacks();
 					}
 				}
 
@@ -461,7 +153,7 @@ namespace Terraria.Social.Steam
 				}
 				else {
 					Utils.ShowFancyErrorMessage("Error: Unable to access Steam Workshop. " + eResult, 0);
-					ReportCheckSteamLogs();
+					SteamedWraps.ReportCheckSteamLogs();
 				}
 				return false;
 			}
@@ -487,6 +179,7 @@ namespace Terraria.Social.Steam
 						// Note: Returning the Long Description makes up appx. 2/3 of the time spent fetching mods for above.
 						//	Disabling Long Description takes ~0.14 seconds per page of 50 items. Long Description not needed right now.
 						//TODO: Review an upgrade of ModBrowser to load only 1000 items at a time (ie paging Mod Browser).
+						_primaryQueryResult = EResult.k_EResultNone;
 						QueryForPage();
 
 						if (!HandleError(ErrorState))
@@ -496,22 +189,26 @@ namespace Terraria.Social.Steam
 				}
 
 				internal void QueryForPage() {
-					_primaryQueryResult = EResult.k_EResultNone;
 					_queryHook.Set(SteamedWraps.GenerateFullQuery(_nextCursor));
-
 					var stopwatch = Stopwatch.StartNew();
 
 					do {
 						if (stopwatch.Elapsed.TotalSeconds >= 10) // 10 seconds maximum allotted time before no connection is assumed
 							_primaryQueryResult = EResult.k_EResultTimeout;
 
-						ForceCallbacks();
+						SteamedWraps.ForceCallbacks();
 					}
 					while (_primaryQueryResult == EResult.k_EResultNone);
 
 					if (_primaryQueryResult != EResult.k_EResultOK) {
+						if (ErrorState != EResult.k_EResultNone) // If failed in a previous attempt at this page
+							return;
+
 						ErrorState = _primaryQueryResult;
 						ReleaseWorkshopQuery();
+
+						Thread.Sleep(100); // If it fails, pause for 100 ms and make a second attempt
+						QueryForPage();
 						return;
 					}
 
@@ -540,30 +237,7 @@ namespace Terraria.Social.Steam
 						string displayname = pDetails.m_rgchTitle;
 
 						// Item Tagged data
-						uint keyCount;
-						var metadata = new NameValueCollection();
-
-						if (ModManager.SteamUser)
-							keyCount = SteamUGC.GetQueryUGCNumKeyValueTags(_primaryUGCHandle, i);
-						else
-							keyCount = SteamGameServerUGC.GetQueryUGCNumKeyValueTags(_primaryUGCHandle, i);
-
-						if (keyCount < MetadataKeys.Length) {
-							Logging.tML.Warn("Mod is missing required metadata: " + displayname);
-							IncompleteModCount++;
-							continue;
-						}
-
-						for (uint j = 0; j < keyCount; j++) {
-							string key, val;
-
-							if (ModManager.SteamUser)
-								SteamUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, byte.MaxValue, out val, byte.MaxValue);
-							else
-								SteamGameServerUGC.GetQueryUGCKeyValueTag(_primaryUGCHandle, i, j, out key, byte.MaxValue, out val, byte.MaxValue);
-
-							metadata[key] = val;
-						}
+						SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);
 
 						string[] missingKeys = MetadataKeys.Where(k => metadata.Get(k) == null).ToArray();
 
@@ -619,11 +293,11 @@ namespace Terraria.Social.Steam
 						bool updateIsDowngrade = false;
 						bool needsRestart = false;
 						var installed = InstalledMods.FirstOrDefault(m => m.Name == metadata["name"]);
-						var check = new ModManager(id);
 
+						//TODO: This whole below code needs to be fixed after the change to preview & since the current method is failing on GoG.
 						if (installed != null) {
 							//exists = true;
-							if (check.NeedsUpdate()) {
+							if (SteamedWraps.DoesWorkshopItemNeedUpdate(id)) {
 								update = true;
 
 								/*
@@ -647,7 +321,7 @@ namespace Terraria.Social.Steam
 								*/
 							}
 						}
-						else if (check.IsInstalled()) {
+						else if (SteamedWraps.IsWorkshopItemInstalled(id)) {
 							needsRestart = true;
 						}
 
@@ -667,7 +341,7 @@ namespace Terraria.Social.Steam
 						if (stopwatch.Elapsed.TotalSeconds >= 10) // 10 seconds maximum allotted time before no connection is assumed
 							_primaryQueryResult = EResult.k_EResultTimeout;
 
-						ForceCallbacks();
+						SteamedWraps.ForceCallbacks();
 					}
 					while (_primaryQueryResult == EResult.k_EResultNone);
 

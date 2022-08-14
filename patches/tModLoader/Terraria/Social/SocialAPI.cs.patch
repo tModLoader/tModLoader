@@ -52,7 +52,7 @@
 -			foreach (ISocialModule module in _modules) {
 -				module.Initialize();
 -			}
-+			WorkshopHelper.ModManager.Initialize();
++			SteamedWraps.Initialize();
  		}
  
  		public static void Shutdown() {

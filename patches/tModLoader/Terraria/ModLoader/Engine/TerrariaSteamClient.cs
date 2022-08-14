@@ -23,7 +23,7 @@ namespace Terraria.ModLoader.Engine
 		private static string MsgNotInstalled = "not_installed";
 		private static string MsgGrant = "grant:";
 		private static string MsgAck = "acknowledged";
-		private static string MsgShutdown = "shutdown"
+		private static string MsgShutdown = "shutdown";
 
 		public enum LaunchResult
 		{

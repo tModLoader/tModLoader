@@ -142,7 +142,7 @@ namespace Terraria.ModLoader.Core
 			}
 
 			// Cull out any dependencies that are already installed.
-			return dependencies.Where(x => !new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(x)).IsInstalled()).ToList();
+			return dependencies.Where(x => !SteamedWraps.IsWorkshopItemInstalled(new Steamworks.PublishedFileId_t(x))).ToList();
 		}
 
 		internal static string ListDependenciesToDownload(List<ulong> deps) {
@@ -577,8 +577,7 @@ namespace Terraria.ModLoader.Core
 
 			if (TryReadManifest(parentDir, out var info)) {
 				// Is a mod on Steam Workshop
-				var modManager = new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(info.workshopEntryId));
-				modManager.Uninstall(parentDir);
+				SteamedWraps.UninstallWorkshopItem(new Steamworks.PublishedFileId_t(info.workshopEntryId));
 			}
 			else {
 				// Is a Mod in Mods Folder

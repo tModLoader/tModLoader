@@ -168,8 +168,10 @@ namespace Terraria.ModLoader.UI
                     string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
                     string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
                     Action downloadAction = () => {
-	                    if (promptDepDownloads)
-		                    WorkshopHelper.ModManager.DownloadBatch(deps.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
+	                    if (promptDepDownloads) {
+							//TODO: Would be nice if this also included the names of the mods
+							WorkshopHelper.SetupDownload(deps.Select(x => new ModDownloadItem(deps.ToString(), deps.ToString(), null)).ToList());
+						}
                     };
 
                     if (!string.IsNullOrWhiteSpace(message))

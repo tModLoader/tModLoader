@@ -260,7 +260,7 @@ namespace Terraria.ModLoader.UI
 		private void PublishMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
 			try {
-				if (!WorkshopHelper.ModManager.SteamUser) {
+				if (!SteamedWraps.SteamClient) {
 					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamPublishingLimit"), Interface.modSourcesID);
 					return;
 				}
@@ -291,7 +291,7 @@ namespace Terraria.ModLoader.UI
 		private void PublishServerSideMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
 			try {
-				if (!WorkshopHelper.ModManager.SteamUser) {
+				if (!SteamedWraps.SteamClient) {
 					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamPublishingLimit"), Interface.modSourcesID);
 					return;
 				}
@@ -390,7 +390,7 @@ namespace Terraria.ModLoader.UI
 					UsedTags = Array.Empty<WorkshopTagOption>(),
 					PreviewImagePath = iconPath
 				};
-				WorkshopHelper.ModManager.SteamUser = true;
+				SteamedWraps.SteamClient = true;
 				SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
 			}
 		}

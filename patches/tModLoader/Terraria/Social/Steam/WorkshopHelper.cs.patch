@@ -166,7 +166,7 @@
 +						return;
 +
 +					do {
-+						ForceCallbacks();
++						SteamedWraps.ForceCallbacks();
 +					} while (_createCallback == EResult.k_EResultNone);
 +
 +					if (_createCallback != EResult.k_EResultOK)
@@ -174,7 +174,7 @@
 +
 +					UpdateItem(creatingItem:true);
 +					do {
-+						ForceCallbacks();
++						SteamedWraps.ForceCallbacks();
 +					} while (_createCallback == EResult.k_EResultNone);
  				}
  
@@ -183,7 +183,7 @@
 +					_createCallback = param.m_eResult;
 +					if (param.m_eResult != EResult.k_EResultOK) {
 +						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
-+						ReportCheckSteamLogs();
++						SteamedWraps.ReportCheckSteamLogs();
 +						_endAction(this);
 +						return;
 +					}
@@ -241,7 +241,7 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
-+					SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
++					SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, SteamedWraps.GetCurrentSteamLangKey());
 +
 +					string patchNotes = "";
 +
@@ -285,7 +285,7 @@
 +						return;
 +
 +					do {
-+						ForceCallbacks();
++						SteamedWraps.ForceCallbacks();
 +					} while (_updateCallback == EResult.k_EResultNone);
  				}
  
@@ -299,7 +299,7 @@
  
 -					switch (param.m_eResult) {
 +					if (_updateCallback != EResult.k_EResultOK)
-+						ReportCheckSteamLogs();
++						SteamedWraps.ReportCheckSteamLogs();
 +
 +					switch (_updateCallback) {
  						case EResult.k_EResultOK:

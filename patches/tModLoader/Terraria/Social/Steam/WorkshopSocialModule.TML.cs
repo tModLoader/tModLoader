@@ -40,7 +40,7 @@ namespace Terraria.Social.Steam
 		}
 
 		public override bool PublishMod(TmodFile modFile, NameValueCollection buildData, WorkshopItemPublishSettings settings) {
-			if (!WorkshopHelper.ModManager.SteamUser) {
+			if (!SteamedWraps.SteamClient) {
 				base.IssueReporter.ReportInstantUploadProblem("tModLoader.SteamPublishingLimit");
 				return false;
 			}
@@ -66,7 +66,7 @@ namespace Terraria.Social.Steam
 				}
 
 				// Update the subscribed mod to be the latest version published
-				new WorkshopHelper.ModManager(new Steamworks.PublishedFileId_t(currPublishID)).InnerDownload(null, true);
+				SteamedWraps.Download(null, true, new Steamworks.PublishedFileId_t(currPublishID));
 
 				// Publish by updating the files available on the current published version
 				workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{existing.PublishId}");
