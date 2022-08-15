@@ -1,5 +1,9 @@
 var NAVTREEINDEX131 =
 {
+"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_attempt_result.html":[2,0,2,5,10,26],
+"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_attempt_result.html#abb883d9656370bfb2c204c5386ee9b27":[2,0,2,5,10,26,0],
+"struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html":[2,0,2,5,15,10],
+"struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html#a05f020c6c8814637827b03f9d7e07e97":[2,0,2,5,15,10,0],
 "struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html#a27b623d018764babcde7066f51e6a4a1":[2,0,2,5,15,10,7],
 "struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html#a3a78472d5c0f3447cea9f467aaeb9e78":[2,0,2,5,15,10,4],
 "struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html#a6951f25c1dea4879eb81ba8e7ac7f862":[2,0,2,5,15,10,6],
@@ -245,9 +249,5 @@ var NAVTREEINDEX131 =
 "struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#aa6b4c487a9a5d9eebb565e16b40cf362":[2,0,2,8,34,0,0,9],
 "struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#aa8bb32c712bb8d0b61722530125b2ef3":[2,0,2,8,34,0,0,7],
 "struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#aab37e19c78f4e22f2a811ec7248f0aec":[2,0,2,8,34,0,0,10],
-"struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ac6a80c510b9c5eb844405fd7e4c77572":[2,0,2,8,34,0,0,0],
-"struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ad001fab7d5eff539f1ee9b1cd48a9eb2":[2,0,2,8,34,0,0,6],
-"struct_terraria_1_1_i_o_1_1_resource_pack_version.html":[2,0,2,10,9],
-"struct_terraria_1_1_i_o_1_1_resource_pack_version.html#a08281f507ee977c53ce7bfb544dac8ba":[2,0,2,10,9,4],
-"struct_terraria_1_1_i_o_1_1_resource_pack_version.html#a0f46de2423e9bd54aac9dc9ead01c677":[2,0,2,10,9,3]
+"struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ac6a80c510b9c5eb844405fd7e4c77572":[2,0,2,8,34,0,0,0]
 };

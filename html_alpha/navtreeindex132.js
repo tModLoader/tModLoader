@@ -1,5 +1,9 @@
 var NAVTREEINDEX132 =
 {
+"struct_terraria_1_1_i_d_1_1_n_p_c_i_d_1_1_sets_1_1_n_p_c_bestiary_draw_modifiers.html#ad001fab7d5eff539f1ee9b1cd48a9eb2":[2,0,2,8,34,0,0,6],
+"struct_terraria_1_1_i_o_1_1_resource_pack_version.html":[2,0,2,10,9],
+"struct_terraria_1_1_i_o_1_1_resource_pack_version.html#a08281f507ee977c53ce7bfb544dac8ba":[2,0,2,10,9,4],
+"struct_terraria_1_1_i_o_1_1_resource_pack_version.html#a0f46de2423e9bd54aac9dc9ead01c677":[2,0,2,10,9,3],
 "struct_terraria_1_1_i_o_1_1_resource_pack_version.html#a43b787b010eea50b64d74db15215d64a":[2,0,2,10,9,6],
 "struct_terraria_1_1_i_o_1_1_resource_pack_version.html#a49adfc00d729d1bc15bda65299cdc341":[2,0,2,10,9,8],
 "struct_terraria_1_1_i_o_1_1_resource_pack_version.html#a5a57aa5e33bf07daf6f354eb32bb204a":[2,0,2,10,9,7],
@@ -245,9 +249,5 @@ var NAVTREEINDEX132 =
 "struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a3ce79433c78a193f2258a8c0cbbcc266":[2,0,2,58,0,0],
 "struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a547ec74d7e741d95750153ca908c7e3a":[2,0,2,58,0,9],
 "struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a85d0efbd4600806ad2ec4be1cc95da7e":[2,0,2,58,0,3],
-"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a89996d1d42a95d7d38c405dd18d0b6ad":[2,0,2,58,0,2],
-"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#aa78f800edb3527f8566525cf5bc28954":[2,0,2,58,0,4],
-"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#aae3b8c8ece3d14d5181c833023798921":[2,0,2,58,0,5],
-"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#acf9abe598eb743bad365e9751a293217":[2,0,2,58,0,6],
-"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#aff89761a936b9a07b395d8357e541da8":[2,0,2,58,0,7]
+"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#a89996d1d42a95d7d38c405dd18d0b6ad":[2,0,2,58,0,2]
 };

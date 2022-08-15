@@ -1,5 +1,9 @@
 var NAVTREEINDEX130 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a79f8719182030699e18242923e953c4c":[2,0,2,4,67,8],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a7ac5d7525f819db3975046f8948cc13d":[2,0,2,4,67,106],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a7b94ce82cbfe4580e550c59f5475be5f":[2,0,2,4,67,85],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a7d4b469c4331d11cc68c64426b94591f":[2,0,2,4,67,121],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a7e6ae31765003d13c2bee37e5274fe6e":[2,0,2,4,67,114],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a80fbee943c0b773da53121a53aea5b04":[2,0,2,4,67,9],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html#a81a1037c1de8500c1c447eb68b3216b5":[2,0,2,4,67,14],
@@ -245,9 +249,5 @@ var NAVTREEINDEX130 =
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info_chain_feed.html#a51ef9824c506ac67732c0f1d43ffe8ac":[2,0,2,5,10,16,0],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info_chain_feed.html#a5e4f1118988deb702177b88ec1f9a84b":[2,0,2,5,10,16,2],
 "struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info_chain_feed.html#a81a62bda2d0473b3cc7fef719a4431fb":[2,0,2,5,10,16,1],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info_chain_feed.html#af5233c8cc8c1125728892c7a9ef4505d":[2,0,2,5,10,16,3],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_attempt_result.html":[2,0,2,5,10,26],
-"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_item_drop_attempt_result.html#abb883d9656370bfb2c204c5386ee9b27":[2,0,2,5,10,26,0],
-"struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html":[2,0,2,5,15,10],
-"struct_terraria_1_1_game_content_1_1_object_interactions_1_1_smart_interact_scan_settings.html#a05f020c6c8814637827b03f9d7e07e97":[2,0,2,5,15,10,0]
+"struct_terraria_1_1_game_content_1_1_item_drop_rules_1_1_drop_rate_info_chain_feed.html#af5233c8cc8c1125728892c7a9ef4505d":[2,0,2,5,10,16,3]
 };

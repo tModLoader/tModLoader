@@ -1,5 +1,9 @@
 var NAVTREEINDEX133 =
 {
+"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#aa78f800edb3527f8566525cf5bc28954":[2,0,2,58,0,4],
+"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#aae3b8c8ece3d14d5181c833023798921":[2,0,2,58,0,5],
+"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#acf9abe598eb743bad365e9751a293217":[2,0,2,58,0,6],
+"struct_terraria_1_1_projectile_1_1_hallow_boss_pellet_storm_info.html#aff89761a936b9a07b395d8357e541da8":[2,0,2,58,0,7],
 "struct_terraria_1_1_scene_metrics_scan_settings.html":[2,0,2,66],
 "struct_terraria_1_1_scene_metrics_scan_settings.html#a1b4de4cdc2841456d63ce0fa3a84c387":[2,0,2,66,0],
 "struct_terraria_1_1_scene_metrics_scan_settings.html#a91b6f2be0286f9d70e58cb83dc6cf202":[2,0,2,66,2],

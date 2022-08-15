@@ -1,5 +1,9 @@
 var NAVTREEINDEX124 =
 {
+"interface_n_a_t_u_p_n_p_lib_1_1_i_static_port_mapping_collection.html#a124598406e0bb53ecce03f6e391d6bc5":[2,0,1,1,0],
+"interface_n_a_t_u_p_n_p_lib_1_1_i_static_port_mapping_collection.html#abd47c85dbd832931952a599f71efd610":[2,0,1,1,1],
+"interface_n_a_t_u_p_n_p_lib_1_1_i_u_pn_p_n_a_t.html":[2,0,1,2],
+"interface_n_a_t_u_p_n_p_lib_1_1_i_u_pn_p_n_a_t.html#a47f3d326afe0a8084fcc26bde2ce159f":[2,0,1,2,0],
 "interface_terraria_1_1_achievements_1_1_i_achievement_tracker.html":[2,0,2,0,7],
 "interface_terraria_1_1_achievements_1_1_i_achievement_tracker.html#a334d16b9098dfd645fc55ac03f3a874e":[2,0,2,0,7,2],
 "interface_terraria_1_1_achievements_1_1_i_achievement_tracker.html#aa5536b238836db71bd874d8785de9441":[2,0,2,0,7,3],
@@ -245,9 +249,5 @@ var NAVTREEINDEX124 =
 "interface_terraria_1_1_mod_loader_1_1_i_loot.html#a27cf9f1827dfda524bb1a7f6b04b7d63":[2,0,2,13,59,0],
 "interface_terraria_1_1_mod_loader_1_1_i_loot.html#ae7eaa21e35b372f3592d11276bc523ca":[2,0,2,13,59,1],
 "interface_terraria_1_1_mod_loader_1_1_i_loot.html#afdb3334a2f20b68ef349f764e1498096":[2,0,2,13,59,3],
-"interface_terraria_1_1_mod_loader_1_1_i_mod_type.html":[2,0,2,13,60],
-"interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a52fd73042e4c0ddeed26c7974e9592af":[2,0,2,13,60,0],
-"interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#a70f7612ca9aebec3149b51789f1b54c6":[2,0,2,13,60,2],
-"interface_terraria_1_1_mod_loader_1_1_i_mod_type.html#ae001b098c12c404ce71f234957dcb8a4":[2,0,2,13,60,1],
-"interface_terraria_1_1_mod_loader_1_1_i_o_1_1_tag_serializable.html":[2,0,2,13,5,15]
+"interface_terraria_1_1_mod_loader_1_1_i_mod_type.html":[2,0,2,13,60]
 };
