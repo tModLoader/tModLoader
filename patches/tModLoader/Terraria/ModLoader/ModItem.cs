@@ -135,6 +135,34 @@ namespace Terraria.ModLoader
 		public virtual int ChoosePrefix(UnifiedRandom rand) => -1;
 
 		/// <summary>
+		/// Allows you to change whether or not a weapon receives melee prefixes. Return true if the item should receive melee prefixes and false if it should not.
+		/// Takes priority over WeaponPrefix, RangedPrefix, and MagicPrefix
+		/// </summary>
+		public virtual bool MeleePrefix()
+			=> Item.melee && !Item.noUseGraphic;
+
+		/// <summary>
+		/// Allows you to change whether or not a weapon only receives generic prefixes. Return true if the item should only receive generic prefixes and false if it should not.
+		/// Takes priority over RangedPrefix and MagicPrefix
+		/// Ignored if MeleePrefix returns true
+		/// </summary>
+		public virtual bool WeaponPrefix()
+			=> Item.melee && Item.noUseGraphic;
+
+		/// <summary>
+		/// Allows you to change whether or not a weapon receives ranged prefixes. Return true if the item should receive ranged prefixes and false if it should not.
+		/// Takes priority over MagicPrefix
+		/// </summary>
+		public virtual bool RangedPrefix()
+			=> Item.ranged;
+
+		/// <summary>
+		/// Allows you to change whether or not a weapon receives magic prefixes. Return true if the item should receive magic prefixes and false if it should not.
+		/// </summary>
+		public virtual bool MagicPrefix()
+			=> Item.magic || Item.summon;
+
+		/// <summary>
 		/// To prevent putting the item in the tinkerer slot, return false when pre is -3.
 		/// To prevent rolling of a prefix on spawn, return false when pre is -1.
 		/// To force rolling of a prefix on spawn, return true when pre is -1.
