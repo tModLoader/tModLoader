@@ -154,7 +154,7 @@ namespace Terraria.ModLoader
 		/// Takes priority over MagicPrefix
 		/// </summary>
 		public virtual bool RangedPrefix()
-			=> Item.ranged;
+			=> Item.ranged || Item.CountsAsClass(DamageClass.Throwing);
 
 		/// <summary>
 		/// Allows you to change whether or not a weapon receives magic prefixes. Return true if the item should receive magic prefixes and false if it should not.
