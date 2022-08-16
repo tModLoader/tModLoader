@@ -38,12 +38,12 @@ namespace ExampleMod.Content.Items.Weapons
 
 			Item.DamageType = DamageClass.MeleeNoSpeed; // We need to use MeleeNoSpeed here so that attack speed doesn't effect our held projectile.
 
-			Item.SetWeaponValues(56, 12f, 2); // A special method that sets the damage, knockback, and bonus critical strike chance.
+			Item.SetWeaponValues(56, 12f, 0); // A special method that sets the damage, knockback, and bonus critical strike chance.
 
 			// The above Item.SetWeaponValues() does the following. Uncomment these if you don't want to use the above method.
 			// Item.damage = 56;
 			// Item.knockBack = 12f;
-			// Item.crit = 2; // Even though this says 2, this is more like "bonus critical strike chance". All weapons have a base critical strike chance of 4.
+			// Item.crit = 0; // Even though this says 0, this is more like "bonus critical strike chance". All weapons have a base critical strike chance of 4.
 
 			Item.SetShopValues(ItemRarityColor.LightRed4, Item.buyPrice(0, 6)); // A special method that sets the rarity and value.
 
@@ -61,17 +61,9 @@ namespace ExampleMod.Content.Items.Weapons
 			velocity *= inverseMeleeSpeed;
 		}
 
-		// These are all of the modifiers that Jousting Lances can receive in vanilla
-		private static readonly int[] wantedPrefixes = new int[] { PrefixID.Large, PrefixID.Massive, PrefixID.Dangerous, PrefixID.Savage,
-			PrefixID.Sharp, PrefixID.Pointy, PrefixID.Tiny, PrefixID.Terrible, PrefixID.Small, PrefixID.Dull, PrefixID.Unhappy, PrefixID.Bulky,
-			PrefixID.Shameful, PrefixID.Heavy, PrefixID.Light, PrefixID.Keen, PrefixID.Superior, PrefixID.Forceful, PrefixID.Hurtful, PrefixID.Strong,
-			PrefixID.Unpleasant, PrefixID.Broken, PrefixID.Damaged, PrefixID.Weak, PrefixID.Shoddy, PrefixID.Ruthless, PrefixID.Quick,
-			PrefixID.Deadly2, PrefixID.Agile, PrefixID.Nimble, PrefixID.Murderous, PrefixID.Slow, PrefixID.Sluggish, PrefixID.Lazy, PrefixID.Annoying,
-			PrefixID.Nasty, PrefixID.Godly, PrefixID.Demonic, PrefixID.Zealous, PrefixID.Legendary};
-
-		// This will allow our Jousting Lance to receive the modifiers we specified above
-		public override int ChoosePrefix(UnifiedRandom rand) {
-			return rand.Next(wantedPrefixes);
+		// This will allow our Jousting Lance to receive the same modifiers as melee weapons.
+		public override bool MeleePrefix() {
+			return true;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -89,10 +81,11 @@ namespace ExampleMod.Content.Items.Weapons
 		public override void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 
 			int itemType = ModContent.ItemType<ExampleJoustingLance>(); // Change this to your item
+
 			double damageTaken = Main.CalculateDamagePlayersTake((int)damage, Player.statDefense);
 
 			if (!Player.immune && damageTaken >= 1.0 && Player.inventory[Player.selectedItem].type == itemType) {
-				for (int j = 0; j < 1000; j++) {
+				for (int j = 0; j < Main.maxProjectiles; j++) {
 					if (Main.projectile[j].active && Main.projectile[j].owner == Player.whoAmI) {
 						Main.projectile[j].active = false;
 					}

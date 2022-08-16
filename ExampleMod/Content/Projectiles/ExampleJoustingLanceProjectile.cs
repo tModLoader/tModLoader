@@ -12,6 +12,9 @@ namespace ExampleMod.Content.Projectiles
 	{
 		public override void SetStaticDefaults() {
 			DisplayName.SetDefault("Example Jousting Lance"); // The English name of the projectile
+
+			// This will cause the player to dismount if they are hit by another Jousting Lance.
+			// Since no enemies use Jousting Lances, this will only cause the player to dismount in PVP.
 			ProjectileID.Sets.DismountsPlayersOnHit[Type] = true;
 		}
 
@@ -57,7 +60,7 @@ namespace ExampleMod.Content.Projectiles
 
 			float smallerItemAnimation = MathHelper.Min(itemAnimation, itemAnimationMaxDiv); // Choose the smaller of the two values.
 			float minimumItemAnimation = itemAnimation - smallerItemAnimation;
-			float spawnDistance = 28f; // This changes how far out the projectile is spawned. Vanilla uses 28f
+			float spawnDistance = 28f; // This changes how far out the projectile is spawned. Change this value if your lance is longer or shorter. Vanilla uses 28f.
 			float flyOut = 0.4f; // This changes how far out the projectile flies when it spawns. Vanilla uses 0.4f
 			float flyBack = 0.4f; // This changes how far back the projectile flies when it is killed. Vanilla uses 0.4f
 
@@ -85,13 +88,18 @@ namespace ExampleMod.Content.Projectiles
 			// For reference, 0 is the top left, 180 degrees or pi radians is the bottom right.
 			Projectile.rotation = (float)Math.Atan2(Projectile.velocity.Y, Projectile.velocity.X) + (float)Math.PI / 2f + (float)Math.PI / 4f;
 
-			// The Hallowed and Shadow Jousting Lance spawn dusts when the player is moving at a certain speed.
+			// The Hallowed and Shadow Jousting Lance spawn dusts when the player is moving above a certain speed.
 			float minimumPlayerVelocity = 6f;
-			float minimumSpeedX = 0.8f;
-			float speedX = Vector2.Dot(Projectile.velocity.SafeNormalize(Vector2.UnitX * owner.direction), owner.velocity.SafeNormalize(Vector2.UnitX * owner.direction));
-			float playerVelocity = owner.velocity.Length();
-			if (playerVelocity > minimumPlayerVelocity && speedX > minimumSpeedX) {
+			float minimumSpeed = 0.8f;
 
+			// This Vector2.Dot is the dot product between the projectile's velocity and the player's velocity normalized to be between -1 and 1.
+			// What this means in this context is that the speed value will be closer to positive 1 if the player is moving in the same direction as the direction the lance was shot.
+			// Example: if the lance is shot up and to the right, the value here will be closer to 1 if the player is also moving up and to the right.
+			float speed = Vector2.Dot(Projectile.velocity.SafeNormalize(Vector2.UnitX * owner.direction), owner.velocity.SafeNormalize(Vector2.UnitX * owner.direction));
+			
+			float playerVelocity = owner.velocity.Length();
+
+			if (playerVelocity > minimumPlayerVelocity && speed > minimumSpeed) {
 				// The chance for the dust to spawn. The actual chance (see below) is 1/dustChance. We make the chance higher the faster the player is moving by making the denominator smaller.
 				int dustChance = 8;
 				if (playerVelocity > minimumPlayerVelocity + 1f) {
@@ -137,21 +145,23 @@ namespace ExampleMod.Content.Projectiles
 		// This is the custom collision that Jousting Lances uses. 
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
 			float rotationFactor = Projectile.rotation + (float)Math.PI / 4f; // The rotation of the Jousting Lance.
-			float scaleFactor = 95f; // How far back the hit-line will be from the tip of the Jousting Lance. You may need to modify this if you have a bigger or smaller Jousting Lance. Vanilla uses 95f
+			float scaleFactor = 95f; // How far back the hit-line will be from the tip of the Jousting Lance. You will need to modify this if you have a longer or shorter Jousting Lance. Vanilla uses 95f
 			float widthMultiplier = 23f; // How thick the hit-line is. Increase or decrease this value if your Jousting Lance is thicker or thinner. Vanilla uses 23f
 			float collisionPoint = 0f; // collisionPoint is needed for CheckAABBvLineCollision(), but it isn't used for our collision here. Keep it at 0f.
 
 			// This Rectangle is the width and height of the Jousting Lance's hitbox which is used for the first step of collision.
-			// You may need to modify the last two numbers if you have a bigger or smaller Jousting Lance. Vanilla uses (0, 0, 300, 300).
+			// You will need to modify the last two numbers if you have a bigger or smaller Jousting Lance. Vanilla uses (0, 0, 300, 300).
 			Rectangle lanceHitboxBounds = new Rectangle(0, 0, 300, 300);
 
 			// Set the position of the large rectangle.
 			lanceHitboxBounds.X = (int)Projectile.position.X - lanceHitboxBounds.Width / 2;
 			lanceHitboxBounds.Y = (int)Projectile.position.Y - lanceHitboxBounds.Height / 2;
 
-			// First check that our large rectangle intersects with the target hitbox. Then we check to see if a line from the tip of the Jousting Lance to the "end" of the lance intersects with the target hitbox.
+			// First check that our large rectangle intersects with the target hitbox.
+			// Then we check to see if a line from the tip of the Jousting Lance to the "end" of the lance intersects with the target hitbox.
 			// Projectile.Center is the tip of the Jousting Lance.
-			if (lanceHitboxBounds.Intersects(targetHitbox) && Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, Projectile.Center + rotationFactor.ToRotationVector2() * scaleFactor, widthMultiplier * Projectile.scale, ref collisionPoint)) {
+			if (lanceHitboxBounds.Intersects(targetHitbox)
+				&& Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, Projectile.Center + rotationFactor.ToRotationVector2() * scaleFactor, widthMultiplier * Projectile.scale, ref collisionPoint)) {
 				return true;
 			}
 			return false;
