@@ -1,6 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Net/Sockets/TcpSocket.cs
 +++ src/tModLoader/Terraria/Net/Sockets/TcpSocket.cs
-@@ -4,6 +_,7 @@
+@@ -1,9 +_,11 @@
++using Steamworks;
+ using System;
+ using System.Collections.Generic;
+ using System.Net;
  using System.Net.Sockets;
  using System.Threading;
  using Terraria.Localization;
@@ -13,48 +17,52 @@
  
  		void ISocket.Close() {
 +			if (_remoteAddress != null)
-+				Logging.Terraria.Debug($"Closing TcpSocket: {_remoteAddress.GetFriendlyName()}");
++				ModNet.Log(_remoteAddress, "Closing TcpSocket");
 +
  			_remoteAddress = null;
  			_connection.Close();
  		}
-@@ -57,7 +_,7 @@
- 		}
- 
- 		private void SendCallback(IAsyncResult result) {
--#if WINDOWS
-+#if WINDOWS || NETCORE
- 			Tuple<SocketSendCallback, object> tuple = (Tuple<SocketSendCallback, object>)result.AsyncState;
- #else
- 			object[] expr_0B = (object[])result.AsyncState;
-@@ -65,6 +_,9 @@
- 			Tuple<SocketSendCallback, object> tuple = (Tuple<SocketSendCallback, object>)expr_0B[0];
+@@ -67,11 +_,17 @@
  #endif
+ 			*/
+ 
+-			var (callback, state, loanedBuffer) = ((SocketSendCallback, object, byte[]))result.AsyncState;
++			var (callback, state, loanedBuffer, size) = ((SocketSendCallback, object, byte[], int))result.AsyncState;
+ 			if (loanedBuffer != null)
+ 				LegacyNetBufferPool.ReturnBuffer(loanedBuffer);
+ 
++			if (ModNet.DetailedLogging)
++				ModNet.Debug(_remoteAddress, $"sent {size}");
++
  			try {
 +				if (!_connection.Connected)
 +					return; // reduce exception spam, because `GetStream` is invalid on a closed/disposed connection
 +
  				_connection.GetStream().EndWrite(result);
- 				tuple.Item1(tuple.Item2);
+ 				callback(state);
  			}
-@@ -77,7 +_,15 @@
- 		}
+@@ -97,11 +_,19 @@
+ #endif
+ 			*/
  
- 		void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state) {
--#if WINDOWS
-+#if WINDOWS || NETCORE
 +			if (!_connection.Connected) { // replace first chance exception with a cleaner log message, because GetStream fails on a closed _connection
-+				Logging.Terraria.Debug("TcpSocket, AsyncSend after connection closed.");
++				ModNet.Warn("TcpSocket, AsyncSend after connection closed.");
 +				return;
 +			}
 +
 +			if (ModNet.DetailedLogging)
-+				Logging.tML.Debug($"send {size}bytes");
++				ModNet.Debug(_remoteAddress, $"send {size}");
 +
- 			_connection.GetStream().BeginWrite(data, 0, size, SendCallback, new Tuple<SocketSendCallback, object>(callback, state));
- #else
- 			byte[] array = LegacyNetBufferPool.RequestBuffer(data, offset, size);
-@@ -134,7 +_,8 @@
+ 			byte[] loanedBuffer = null;
+ 			if (!OperatingSystem.IsWindows()) // defensively copy the buffer, to prevent overruns when flow control can't keep up with the data write rate
+ 				loanedBuffer = data = LegacyNetBufferPool.RequestBuffer(data, offset, size);
+ 
+-			_connection.GetStream().BeginWrite(data, 0, size, SendCallback, (callback, state, loanedBuffer));
++			_connection.GetStream().BeginWrite(data, 0, size, SendCallback, (callback, state, loanedBuffer, size));
+ 		}
+ 
+ 		void ISocket.AsyncReceive(byte[] data, int offset, int size, SocketReceiveCallback callback, object state) {
+@@ -149,7 +_,8 @@
  			while (_isListening && !Netplay.Disconnect) {
  				try {
  					ISocket socket = new TcpSocket(_listener.AcceptTcpClient());

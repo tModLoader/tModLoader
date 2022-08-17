@@ -11,10 +11,13 @@
  
  namespace Terraria
  {
-@@ -83,10 +_,14 @@
+@@ -83,10 +_,17 @@
  			int num = 0;
  			num = start + 1;
  			b = (byte)(messageType = readBuffer[start]);
++			if (ModNet.DetailedLogging)
++				ModNet.Debug(whoAmI, $"GetData {MessageID.GetName(b)}({b}), {length+2}");
++
 +			/*
  			if (b >= 143)
  				return;

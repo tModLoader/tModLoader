@@ -11,7 +11,7 @@
  
  		void ISocket.Close() {
  			if (_remoteAddress != null) {
-+				Logging.Terraria.Debug($"Closing SocialSocket: {_remoteAddress.GetFriendlyName()}");
++				ModNet.Log(_remoteAddress, "Closing SocialSocket");
  				SocialAPI.Network.Close(_remoteAddress);
  				_remoteAddress = null;
  			}
@@ -20,12 +20,12 @@
  
  		void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state) {
 +			if (_remoteAddress == null) { // replace first chance exception with a cleaner log message, because Send fails on a null _remoteAddress
-+				Logging.Terraria.Debug("SocialSocket, AsyncSend after connection closed.");
++				ModNet.Warn("SocialSocket, AsyncSend after connection closed.");
 +				return;
 +			}
 +
 +			if (ModNet.DetailedLogging)
-+				Logging.tML.Debug($"send {size}bytes");
++				ModNet.Debug(_remoteAddress, $"send {size}");
 +
  			SocialAPI.Network.Send(_remoteAddress, data, size);
  #if NETCORE
