@@ -1,5 +1,6 @@
 var class_terraria_1_1_i_d_1_1_message_i_d =
 [
+    [ "GetName", "class_terraria_1_1_i_d_1_1_message_i_d.html#a6c38e9d557906008432494a9455e7d20", null ],
     [ "AchievementMessageEventHappened", "class_terraria_1_1_i_d_1_1_message_i_d.html#ae943487e725a7b6981586639f95ee0a7", null ],
     [ "AchievementMessageNPCKilled", "class_terraria_1_1_i_d_1_1_message_i_d.html#ae433331642b9c5c1cadc75866c4c452c", null ],
     [ "AddNPCBuff", "class_terraria_1_1_i_d_1_1_message_i_d.html#af2b3b076e2028793cce1ac3735c754fb", null ],
