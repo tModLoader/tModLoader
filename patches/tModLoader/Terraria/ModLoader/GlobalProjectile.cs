@@ -188,6 +188,15 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to modify how damage of this projectile is updated. This hook is only called wehen minion, sentry or ContinuouslyUpdateDamage is set.
+		/// </summary>
+		/// <param name="projectile"></param>
+		/// <param name="modifier">Stat modifier that will be applied to damage</param>
+		/// <param name="originalDamage">Damage to which modifier will be applied</param>
+		public virtual void UpdateDamage(Projectile projectile, ref StatModifier modifier, ref int originalDamage) {
+		}
+
+		/// <summary>
 		/// Allows you to determine whether a projectile can hit the given NPC. Return true to allow hitting the target, return false to block the projectile from hitting the target, and return null to use the vanilla code for whether the target can be hit. Returns null by default.
 		/// </summary>
 		/// <param name="projectile"></param>
