@@ -1,8 +1,11 @@
 --- src/TerrariaNetCore/Terraria/ID/MessageID.cs
 +++ src/tModLoader/Terraria/ID/MessageID.cs
-@@ -1,83 +_,335 @@
+@@ -1,83 +_,339 @@
  using Terraria.Utilities;
 +using System;
++using System.Collections.Generic;
++using System.Reflection;
++using System.Linq;
  
  namespace Terraria.ID
  {
@@ -146,6 +149,7 @@
  		public const byte SyncNPC = 23;
 +		//hit an NPC, presumably unused because it uses the item damage/knockback directly without the random variance
  		public const byte UnusedMeleeStrike = 24;
++		[Obsolete("Use MessageID.UnusedMeleeStrike")]
 +		public const byte UnusedStrikeNPC = UnusedMeleeStrike;
 +		//a line of chat text, with sender and colour information
  		[Old("Deprecated. Use NetTextModule instead.")]
@@ -363,7 +367,7 @@
  		public const byte ChestName = 69;
  		public const byte BugCatching = 70;
  		public const byte BugReleasing = 71;
-@@ -91,20 +_,33 @@
+@@ -91,20 +_,34 @@
  		public const byte PlaceObject = 79;
  		public const byte SyncPlayerChestIndex = 80;
  		public const byte CombatTextInt = 81;
@@ -394,7 +398,8 @@
 -		public const byte Deprecated1 = 94;
 +		public const byte Unused94 = 94;
  		public const byte MurderSomeoneElsesPortal = 95;
-+ 		public const byte MurderSomeoneElsesProjectile = MurderSomeoneElsesPortal;
++		[Obsolete("Use MessageID.MurderSomeoneElsesPortal")]
++		public const byte MurderSomeoneElsesProjectile = MurderSomeoneElsesPortal;
  		public const byte TeleportPlayerThroughPortal = 96;
  		public const byte AchievementMessageNPCKilled = 97;
  		public const byte AchievementMessageEventHappened = 98;
@@ -407,7 +412,7 @@
  		public const byte ShopOverride = 104;
  		public const byte GemLockToggle = 105;
  		public const byte PoofOfSmoke = 106;
-@@ -153,5 +_,28 @@
+@@ -153,5 +_,34 @@
  		public const byte RequestLucyPopup = 141;
  		public const byte SyncProjectileTrackers = 142;
  		public const byte Count = 143;
@@ -434,5 +439,11 @@
 +		//client displays the downloading mod UI when it recieves the first packet with display name and length
 +		//once the file is downloaded, the client either sends a request for the next file, or reloads and sends SyncMods
 +		public const byte ModFile = 252;
++
++		private static IDictionary<int, string> Names = typeof(MessageID).GetFields(BindingFlags.Static | BindingFlags.Public)
++			.Where(f => f.GetCustomAttribute<ObsoleteAttribute>() == null && f.FieldType == typeof(byte) && f.GetRawConstantValue() is byte)
++			.ToDictionary(f => (int)(byte)f.GetRawConstantValue(), f => f.Name);
++
++		public static string GetName(int id) => Names.TryGetValue(id, out var name) ? name : "Unknown";
  	}
  }
