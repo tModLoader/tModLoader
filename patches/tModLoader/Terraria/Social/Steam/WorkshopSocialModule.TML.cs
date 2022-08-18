@@ -53,6 +53,8 @@ namespace Terraria.Social.Steam
 			var existing = CheckIfUploaded(modFile);
 			ulong currPublishID = 0;
 			string workshopFolderPath = GetTemporaryFolderPath() + modFile.Name;
+			buildData["trueversion"] = buildData["version"];
+			buildData["version"] = $"{buildData["modloaderversion"]}:{buildData["version"]}";
 
 			if (existing != null) {
 				currPublishID = ulong.Parse(existing.PublishId);
@@ -71,44 +73,11 @@ namespace Terraria.Social.Steam
 				// Publish by updating the files available on the current published version
 				workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{existing.PublishId}");
 
-				// This eliminates uploaded mod source files that occured prior to the fix of #2263
-				if (Directory.Exists(Path.Combine(workshopFolderPath, "bin"))) {
-					foreach (var sourceFile in Directory.EnumerateFiles(workshopFolderPath))
-						File.Delete(sourceFile);
+				FixErrorsInWorkshopFolder(workshopFolderPath);
 
-					foreach (var sourceFolder in Directory.EnumerateDirectories(workshopFolderPath)) {
-						if (!sourceFolder.Contains("2022.0"))
-							Directory.Delete(sourceFolder, true);
-					}
-				}
-
-				// This eliminates version 9999 in case someone bypasses the IsDev Check for testing or whatever
-				string devRemnant = Path.Combine(workshopFolderPath, "9999.0");
-				if (Directory.Exists(devRemnant)) {
-					Directory.Delete(devRemnant, true);
-				}
-
-				if (new Version(buildData["version"].Replace("v", "")) <= new Version(existing.Version.Replace("v", ""))) {
+				if (CalculateVersionsData(workshopFolderPath, ref buildData)) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
 					return false;
-				}
-
-				buildData["trueversion"] = buildData["version"];
-				// Use the stable version of the mod for publishing metadata, not the preview version!
-				if (!BuildInfo.IsStable) {
-					string stable = ModOrganizer.FindOldest(workshopFolderPath);
-					if (!stable.Contains(".tmod"))
-						stable = Directory.GetFiles(stable, "*.tmod")[0];
-
-					LocalMod sMod;
-					var sModFile = new TmodFile(stable);
-					using (sModFile.Open())
-						sMod = new LocalMod(sModFile);
-
-					buildData["modloaderversion"] = $"tModLoader v{sMod.properties.buildVersion}";
-					buildData["version"] = sMod.properties.version.ToString();
-					buildData["modreferences"] = string.Join(", ", sMod.properties.modReferences.Select(x => x.mod));
-					buildData["modside"] = sMod.properties.side.ToFriendlyString();
 				}
 			}
 
@@ -129,18 +98,8 @@ namespace Terraria.Social.Steam
 
 			string[] tagsList = usedTagsInternalNames.Concat(modMetadata).ToArray();
 
-			string workshopDeps = "";
-
-			if (buildData["modreferences"].Length > 0) {
-				foreach (string modRef in buildData["modreferences"].Split(",")) {
-					var temp = WorkshopHelper.QueryHelper.FindModDownloadItem(modRef);
-
-					if (temp != null)
-						workshopDeps += temp.PublishId + ",";
-				}
-			}
-
-			buildData["workshopdeps"] = workshopDeps;
+			CalculateWorkshopDeps(ref buildData);
+			
 			string contentFolderPath = $"{workshopFolderPath}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
 
 			if (MakeTemporaryFolder(contentFolderPath)) {
@@ -162,6 +121,62 @@ namespace Terraria.Social.Steam
 			return false;
 		}
 
+		// Output version string: "2022.05:0.2.0;2022.06;0.2.1;2022.07:0.2.2"
+		// Return False if the mod version did not increase for the particular tml version
+		// This will have up to 1 more version than is actually relevant, but that won't break anything
+		public static bool CalculateVersionsData(string workshopPath, ref NameValueCollection buildData) {
+			foreach (var tmod in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
+				var mod = OpenModFile(tmod);
+				if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor())
+					if (mod.properties.version >= new Version(buildData["trueversion"]))
+						return false;
+
+				buildData["version"] += $";{mod.tModLoaderVersion.MajorMinor()}:{mod.properties.version}";
+			}
+
+			return true;
+		}
+
+		internal static LocalMod OpenModFile(string path) {
+			var sModFile = new TmodFile(path);
+			using (sModFile.Open())
+				return new LocalMod(sModFile);
+		}
+
+		private static void CalculateWorkshopDeps(ref NameValueCollection buildData) {
+			string workshopDeps = "";
+
+			if (buildData["modreferences"].Length > 0) {
+				foreach (string modRef in buildData["modreferences"].Split(",")) {
+					var temp = WorkshopHelper.QueryHelper.FindModDownloadItem(modRef);
+
+					if (temp != null)
+						workshopDeps += temp.PublishId + ",";
+				}
+			}
+
+			buildData["workshopdeps"] = workshopDeps;
+		}
+
+		public static void FixErrorsInWorkshopFolder(string workshopFolderPath) {
+			// This eliminates uploaded mod source files that occured prior to the fix of #2263
+			if (Directory.Exists(Path.Combine(workshopFolderPath, "bin"))) {
+				foreach (var sourceFile in Directory.EnumerateFiles(workshopFolderPath))
+					File.Delete(sourceFile);
+
+				foreach (var sourceFolder in Directory.EnumerateDirectories(workshopFolderPath)) {
+					if (!sourceFolder.Contains("2022.0"))
+						Directory.Delete(sourceFolder, true);
+				}
+			}
+
+			// This eliminates version 9999 in case someone bypasses the IsDev Check for testing or whatever
+			string devRemnant = Path.Combine(workshopFolderPath, "9999.0");
+			if (Directory.Exists(devRemnant)) {
+				Directory.Delete(devRemnant, true);
+			}
+		}
+
 		public static void CiPublish(string modFolder) {
 			if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-publishedmodfiles"))
 				return;
@@ -177,6 +192,10 @@ namespace Terraria.Social.Steam
 
 			string manifest = Path.Combine(publishedModFiles, "workshop.json");
 			AWorkshopEntry.TryReadingManifest(manifest, out var steamInfo);
+
+
+			/////
+
 
 			string modName = Directory.GetParent(modFolder).Name;
 
@@ -219,6 +238,10 @@ namespace Terraria.Social.Steam
 			using (sModFile.Open())
 				sMod = new LocalMod(sModFile);
 
+
+			//////
+
+
 			string workshopDescFile = Path.Combine(modFolder, "description_workshop.txt");
 			string workshopDesc;
 			if (!File.Exists(workshopDescFile))
@@ -226,9 +249,13 @@ namespace Terraria.Social.Steam
 			else
 				workshopDesc = File.ReadAllText(workshopDescFile);
 
-			string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version {sMod.properties.version} built for tModLoader v{sMod.properties.buildVersion}[/quote]" +
+			string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {versionSummary}[/quote]" +
 				$"{workshopDesc}";
+
+
 			Console.WriteLine($"Built Mod Version is: {newMod.properties.version}. tMod Version is: {BuildInfo.tMLVersion}");
+
+
 
 			// Make the publish.vdf file
 			string[] lines =

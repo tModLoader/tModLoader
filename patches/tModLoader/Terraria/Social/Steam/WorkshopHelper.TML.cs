@@ -20,7 +20,7 @@ namespace Terraria.Social.Steam
 	public partial class WorkshopHelper
 	{
 		internal static string[] MetadataKeys = new string[7] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences" };
-		private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version (.*) built for (tModLoader v.*)\[/quote\]", RegexOptions.Compiled);
+		private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version Summary: (.*) \[/quote\]", RegexOptions.Compiled);
 
 		public class ModPublisherInstance : UGCBased.APublisherInstance
 		{
@@ -253,22 +253,10 @@ namespace Terraria.Social.Steam
 							continue;
 						}
 
-						// Calculate the Mod Browser Version
-						System.Version cVersion = new System.Version(metadata["version"].Replace("v", ""));
-
+						// Partial Description - we don't include Long Description so this is only first handful of characters
 						string description = pDetails.m_rgchDescription;
 
-						// Handle Github Actions metadata from description
-						// Nominal string: [quote=GithubActions(Don't Modify)]Version #.#.#.# built for tModLoader v#.#.#.#[/quote]
-						Match match = MetadataInDescriptionFallbackRegex.Match(description);
-						if (match.Success) {
-							System.Version descriptionVersion = new System.Version(match.Groups[1].Value);
-							if (descriptionVersion > cVersion) {
-								cVersion = descriptionVersion;
-								metadata["version"] = "v" + match.Groups[1].Value;
-								metadata["modloaderversion"] = match.Groups[2].Value;
-							}
-						}
+						var cVersion = CalculateRelevantVersion(description, metadata["version"]);
 
 						// Assign ModSide Enum
 						ModSide modside = ModSide.Both;
@@ -289,45 +277,55 @@ namespace Terraria.Social.Steam
 						SteamedWraps.FetchPlayTimeStats(_primaryUGCHandle, i, out var hot, out var downloads);
 
 						// Check against installed mods for updates
-						bool update = false;
+						
 						bool updateIsDowngrade = false;
-						bool needsRestart = false;
+						
 						var installed = InstalledMods.FirstOrDefault(m => m.Name == metadata["name"]);
+						bool update = installed != null && DoesWorkshopItemNeedUpdate(id, installed, cVersion);
 
-						//TODO: This whole below code needs to be fixed after the change to preview & since the current method is failing on GoG.
-						if (installed != null) {
-							//exists = true;
-							if (SteamedWraps.DoesWorkshopItemNeedUpdate(id)) {
-								update = true;
-
-								/*
-								string location = installed.modFile.path;
-								string repo = ModOrganizer.GetParentDir(location);
-								string oldest = ModOrganizer.FindOldest(repo);
-
-								if (!oldest.Contains(".tmod"))
-									oldest = Directory.GetFiles(oldest, "*.tmod")[0];
-
-								var sModFile = new TmodFile(oldest);
-								LocalMod sMod;
-								using (sModFile.Open())
-									sMod = new LocalMod(sModFile);
-
-								var installedVer = sMod.properties.version;
-								if (cVersion > installedVer)
-									update = true;
-								else if (cVersion < installedVer)
-									update = updateIsDowngrade = true;
-								*/
-							}
-						}
-						else if (SteamedWraps.IsWorkshopItemInstalled(id)) {
-							needsRestart = true;
-						}
+						// The below line is to identify the transient state where it isn't installed, but Steam considers it as such
+						bool needsRestart = installed == null && SteamedWraps.IsWorkshopItemInstalled(id);
 
 						Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], needsRestart));
 					}
 					ReleaseWorkshopQuery();
+				}
+
+				internal static System.Version CalculateRelevantVersion(string mbDescription, string mbVersionSummary) {
+					System.Version selectVersion = new(0,0);
+					InnerCalculateRelevantVersion(ref selectVersion, mbVersionSummary);
+
+					// Handle Github Actions metadata from description
+					// Nominal string: [quote=GithubActions(Don't Modify)]Version Summary: YYYY.MM:#.#.#.#;YYYY.MM:#.#.#.#;... [/quote]
+					Match match = MetadataInDescriptionFallbackRegex.Match(mbDescription);
+					if (match.Success) {
+						InnerCalculateRelevantVersion(ref selectVersion,(match.Groups[1].Value));
+					}
+
+					return selectVersion;
+				}
+
+				// This and VersionSummaryToStringArray need a refactor for cleaner code. Not bad for now
+				private static void InnerCalculateRelevantVersion(ref System.Version selectVersion, string versionSummary) {
+					foreach (var item in VersionSummaryToStringArray(versionSummary)) {
+						if (selectVersion < item.Item2 && BuildInfo.tMLVersion.MajorMinor() >= item.Item1.MajorMinor()) {
+							selectVersion = item.Item2;
+						}
+					}
+				}
+
+				internal static Tuple<System.Version, System.Version>[] VersionSummaryToStringArray(string versionSummary) {
+					return versionSummary.Split(";").Select(s => new Tuple<System.Version, System.Version>(new System.Version(s.Split(":")[0]), new System.Version(s.Split(":")[1]))).ToArray();
+				}
+
+				internal bool DoesWorkshopItemNeedUpdate(PublishedFileId_t id, LocalMod installed, System.Version mbVersion) {
+					if (installed.properties.version < mbVersion)
+						return true;
+
+					if (SteamedWraps.DoesWorkshopItemNeedUpdate(id))
+						return true;
+
+					return false;
 				}
 
 				internal SteamUGCDetails_t FastQueryItem(ulong publishedId, bool queryChildren = false) {
