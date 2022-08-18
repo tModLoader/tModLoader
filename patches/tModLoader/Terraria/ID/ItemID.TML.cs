@@ -14,7 +14,7 @@
 				KingSlimeBossBag, EyeOfCthulhuBossBag, EaterOfWorldsBossBag, BrainOfCthulhuBossBag, QueenBeeBossBag,
 				SkeletronBossBag, WallOfFleshBossBag, DestroyerBossBag, TwinsBossBag, SkeletronPrimeBossBag,
 				PlanteraBossBag, GolemBossBag, FishronBossBag, CultistBossBag, MoonLordBossBag,
-				BossBagBetsy, FairyQueenBossBag, QueenSlimeBossBag
+				BossBagBetsy, FairyQueenBossBag, QueenSlimeBossBag, DeerclopsBossBag
 			);
 
 			/// <summary>
@@ -23,7 +23,7 @@
 			/// </summary>
 			public static bool[] PreHardmodeLikeBossBag = Factory.CreateBoolSet(
 				KingSlimeBossBag, EyeOfCthulhuBossBag, EaterOfWorldsBossBag, BrainOfCthulhuBossBag, QueenBeeBossBag,
-				SkeletronBossBag, WallOfFleshBossBag, QueenSlimeBossBag
+				SkeletronBossBag, WallOfFleshBossBag, QueenSlimeBossBag, DeerclopsBossBag
 			);
 
 			/// <summary>
