@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.NPCLoader.EditSpawnRate"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node145 [label="Terraria.ModLoader.NPCLoader.\lEditSpawnRate",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node145 -> Node146 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node146 [label="Terraria.ModLoader.Global\lNPC.EditSpawnRate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a63bf497418d5bbb5592355a2f44f31a5",tooltip="Allows you to modify the chance of NPCs spawning around the given player and the maximum number of NP..."];
-}

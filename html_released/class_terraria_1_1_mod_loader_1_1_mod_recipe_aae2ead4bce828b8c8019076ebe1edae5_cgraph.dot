@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.ModRecipe.SetResult"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node30 [label="Terraria.ModLoader.ModRecipe.\lSetResult",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node30 -> Node31 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node31 [label="Terraria.ModLoader.Mod.ItemType",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod.html#a709d36738b1e8639ea0d9917035cfca2",tooltip="Gets the internal ID / type of the ModItem corresponding to the name. Returns 0 if no ModItem with th..."];
-}

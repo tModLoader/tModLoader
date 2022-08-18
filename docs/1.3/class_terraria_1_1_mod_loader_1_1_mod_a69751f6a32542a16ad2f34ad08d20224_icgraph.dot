@@ -1,0 +1,10 @@
+digraph "Terraria.ModLoader.Mod.GetFileBytes"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Terraria.ModLoader.Mod.Get\lFileBytes",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Retrieve contents of files within the tmod file"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.ModContent.\lGetFileBytes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_content.html#ad1998509e1523a802aea24a0ba9ddf5d",tooltip="Gets the byte representation of the file with the specified name. The name is in the format of \"ModFo..."];
+}

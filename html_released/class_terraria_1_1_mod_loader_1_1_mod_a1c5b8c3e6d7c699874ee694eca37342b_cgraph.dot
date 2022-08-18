@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.Mod.AutoloadGlobalNPC"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node124 [label="Terraria.ModLoader.Mod.Autoload\lGlobalNPC",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node124 -> Node125 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node125 [label="Terraria.ModLoader.Global\lNPC.Autoload",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_n_p_c.html#a7152e134e1faf0fa685644c3e6f6b1f2",tooltip="Allows you to automatically load a GlobalNPC instead of using Mod.AddGlobalNPC. Return true to allow ..."];
-}

@@ -1,0 +1,14 @@
+digraph "Terraria.ModLoader.ItemLoader.DrawHead"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Terraria.ModLoader.ItemLoader.\lDrawHead",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Calls the item's head equipment texture's DrawHead hook, then all GlobalItem.DrawHead hooks,..."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Terraria.ModLoader.Equip\lTexture.DrawHead",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_equip_texture.html#a5d883ac0f403b52ffff8fb9c312c1e6e",tooltip="Return false to hide the player's head when this head equipment texture is worn. By default this will..."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Terraria.ModLoader.ModItem.\lDrawHead",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_item.html#a3cf8e1d6d927d1c4f5952e43f2883c52",tooltip="Return false to hide the player's head when this head armor is worn. Returns true by default...."];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Terraria.ModLoader.Equip\lLoader.GetEquipTexture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_equip_loader.html#a87c1e9bb37d938a07111fa76bae78575",tooltip="Gets the equipment texture for the specified equipment type and ID."];
+}

@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.ModItem.IsQuestFish"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node101 [label="Terraria.ModLoader.ModItem.\lIsQuestFish",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node101 -> Node102 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node102 [label="Terraria.ModLoader.Mod.AddItem",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod.html#acbb336d241351248fd2399ad9424d8b4",tooltip="Adds a type of item to your mod with the specified internal name. This method should be called in Loa..."];
-}

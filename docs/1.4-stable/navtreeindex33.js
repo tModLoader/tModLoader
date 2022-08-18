@@ -1,0 +1,26 @@
+var NAVTREEINDEX33 =
+{
+"struct_terraria_1_1_utilities_1_1_file_browser_1_1_extension_filter.html":[2,0,2,22,0,0],
+"struct_terraria_1_1_utilities_1_1_file_browser_1_1_extension_filter.html":[1,0,2,23,0,0],
+"struct_terraria_1_1_utilities_1_1_int_range.html":[1,0,2,23,7],
+"struct_terraria_1_1_utilities_1_1_int_range.html":[2,0,2,22,7],
+"struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html":[2,0,2,22,8,1],
+"struct_terraria_1_1_utilities_1_1_n_p_c_utils_1_1_target_search_results.html":[1,0,2,23,8,1],
+"struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html":[1,0,2,23,1,0,0],
+"struct_terraria_1_1_utilities_1_1_terraria_1_1_utilities_1_1_float_range.html":[2,0,2,22,1,0,0],
+"struct_terraria_1_1_wall_type_data.html":[2,0,2,80],
+"struct_terraria_1_1_wall_type_data.html":[1,0,2,81],
+"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html":[2,0,2,81,0],
+"struct_terraria_1_1_waterfall_manager_1_1_waterfall_data.html":[1,0,2,82,0],
+"struct_terraria_1_1_whip_settings.html":[2,0,2,82],
+"struct_terraria_1_1_whip_settings.html":[1,0,2,83],
+"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html":[1,0,2,24,10],
+"struct_terraria_1_1_world_building_1_1_gen_shape_action_pair.html":[2,0,2,23,10],
+"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html":[1,0,2,24,21,0],
+"struct_terraria_1_1_world_building_1_1_tile_font_1_1_draw_mode.html":[2,0,2,23,21,0],
+"struct_terraria_1_1_world_gen_1_1_check_tree_settings.html":[1,0,2,85,0],
+"struct_terraria_1_1_world_gen_1_1_check_tree_settings.html":[2,0,2,84,0],
+"struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html":[1,0,2,85,1],
+"struct_terraria_1_1_world_gen_1_1_grow_tree_settings.html":[2,0,2,84,1],
+"structnativefiledialog_1_1nfdpathset__t.html":[2,0,36,0]
+};

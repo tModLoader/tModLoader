@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.Mod.AutoloadSurfaceBgStyle"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node166 [label="Terraria.ModLoader.Mod.Autoload\lSurfaceBgStyle",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node166 -> Node167 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node167 [label="Terraria.ModLoader.ModSurface\lBgStyle.Autoload",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_mod_surface_bg_style.html#a1690cf5fd8b465ee59b00bec906c0f2d",tooltip="Allows you to automatically add a ModSurfaceBgStyle instead of using Mod.AddSurfaceBgStyle. Return true to allow autoloading; by default returns the mod&#39;s autoload property. Name is initialized to the overriding class name. Use this to either force or stop an autoload, or change the name that identifies this type of ModSurfaceBgStyle. "];
-}

@@ -1,9 +1,0 @@
-digraph "Terraria.ModLoader.Mod.AutoloadGlobalProjectile"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node127 [label="Terraria.ModLoader.Mod.Autoload\lGlobalProjectile",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
-  Node127 -> Node128 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
-  Node128 [label="Terraria.ModLoader.Global\lProjectile.Autoload",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_terraria_1_1_mod_loader_1_1_global_projectile.html#a0471abad2053e2634e193c409ade60f5",tooltip="Allows you to automatically load a GlobalProjectile instead of using Mod.AddGlobalProjectile. Return true to allow autoloading; by default returns the mod&#39;s autoload property. Name is initialized to the overriding class name. Use this method to either force or stop an autoload or to control the internal name. "];
-}
