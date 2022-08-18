@@ -112,7 +112,7 @@ namespace Terraria.GameContent.ItemDropRules
 
 			item = ItemID.DestroyerBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.MechanicalWagonPiece));
-			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SkeletronPrimeMask, 7));
+			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.DestroyerMask, 7));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.SoulofMight, 1, 25, 40));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.HallowedBar, 1, 20, 35));
 			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.TheDestroyer));
