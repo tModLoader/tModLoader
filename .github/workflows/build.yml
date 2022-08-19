@@ -236,7 +236,7 @@ jobs:
             ./artifacts/Release/
            
       - name: Upload temporary encrypted src artifact
-        if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
         uses: actions/upload-artifact@v2
         with:
           name: temporary-src
