@@ -15,6 +15,7 @@ namespace Terraria.Social.Steam
 	{
 		public override List<string> GetListOfMods() => _downloader.ModPaths;
 
+		//TODO: Revisit this. It feels wrong.
 		public override bool TryGetInfoForMod(TmodFile modFile, out FoundWorkshopEntryInfo info) {
 			info = null;
 			if(!WorkshopHelper.QueryHelper.CheckWorkshopConnection()) {
@@ -183,81 +184,70 @@ namespace Terraria.Social.Steam
 
 			Console.WriteLine("Preparing Files for CI...");
 			Program.LaunchParameters.TryGetValue("-ciprep", out string changeNotes);
+
+			// Folder containing all the current copies of the mod on the workshop
 			Program.LaunchParameters.TryGetValue("-publishedmodfiles", out string publishedModFiles);
-			Program.LaunchParameters.TryGetValue("-uploadfolder", out string uploadFolder);
 
-			// Prep some common file paths & info
-			string publishFolder = $"{ModOrganizer.modPath}/Workshop";
-			string vdf = $"{ModOrganizer.modPath}/publish.vdf";
+			// folder which will be used for the upload when the artifact is downloaded in post-build action. 
+			Program.LaunchParameters.TryGetValue("-uploadfolder", out string uploadFolder); 
 
-			string manifest = Path.Combine(publishedModFiles, "workshop.json");
-			AWorkshopEntry.TryReadingManifest(manifest, out var steamInfo);
-
-
-			/////
-
+			// The Folder where we will put all the files that should be included in the build artifact
+			string publishFolder = $"{ModOrganizer.modPath}/Workshop"; 
 
 			string modName = Directory.GetParent(modFolder).Name;
 
+
+			// Create a namevalue collection for checking versioning
 			string newModPath = Path.Combine(ModOrganizer.modPath, $"{modName}.tmod");
-			var newModFile = new TmodFile(newModPath);
+			LocalMod newMod = OpenModFile(newModPath);
 
-			LocalMod newMod;
-			using (newModFile.Open())
-				newMod = new LocalMod(newModFile);
+			var buildData = new NameValueCollection() {
+				["trueversion"] = newMod.properties.version.ToString(),
+				["version"] = $"{newMod.tModLoaderVersion}:{newMod.properties.version}",
+				["description"] = newMod.properties.description
+			};
 
-			string stable = ModOrganizer.FindOldest(publishedModFiles);
-			if (!stable.Contains(".tmod"))
-				stable = Directory.GetFiles(stable, "*.tmod")[0];
+			if (!CalculateVersionsData(publishedModFiles, ref buildData)) {
+				Utils.LogAndConsoleErrorMessage($"Unable to update mod. {buildData["trueversion"]} is not higher than existing version");
+				return;
+			}
 
-			LocalMod sMod;
-			var sModFile = new TmodFile(stable);
-			using (sModFile.Open())
-				sMod = new LocalMod(sModFile);
+			Console.WriteLine($"Built Mod Version is: {buildData["trueversion"]}. tMod Version is: {BuildInfo.tMLVersion}");
 
-			if (newMod.properties.version <= sMod.properties.version)
-				throw new Exception("Mod version not incremented. Publishing item blocked until mod version is incremented");
 
-			// Prep for the publishing folder
-			string contentFolder = $"{publishFolder}/{BuildInfo.tMLVersion.Major}.{BuildInfo.tMLVersion.Minor}";
+			// Create the directory that the new tmod file will be added to, if it doesn't exist
+			string contentFolder = $"{publishFolder}/{BuildInfo.tMLVersion.MajorMinor()}";
 			if (!Directory.Exists(contentFolder))
 				Directory.CreateDirectory(contentFolder);
 
+
 			// Ensure the publish folder has all published information needed.
-			FileUtilities.CopyFolder(publishedModFiles, publishFolder);
-			File.Copy(newModPath, Path.Combine(contentFolder, $"{modName}.tmod"), true);
+			FileUtilities.CopyFolder(publishedModFiles, publishFolder); // Copy all existing workshop files to output
+			File.Copy(newModPath, Path.Combine(contentFolder, $"{modName}.tmod"), true); // Copy the new file to the output
 
 			// Cleanup Old Folders
 			ModOrganizer.CleanupOldPublish(publishFolder);
 
-			stable = ModOrganizer.FindOldest(publishFolder);
-			if (!stable.Contains(".tmod"))
-				stable = Directory.GetFiles(stable, "*.tmod")[0];
 
-			sModFile = new TmodFile(stable);
-			using (sModFile.Open())
-				sMod = new LocalMod(sModFile);
-
-
-			//////
-
-
+			// Assign Workshop Description
 			string workshopDescFile = Path.Combine(modFolder, "description_workshop.txt");
 			string workshopDesc;
 			if (!File.Exists(workshopDescFile))
-				workshopDesc = newMod.properties.description;
+				workshopDesc = buildData["description"];
 			else
 				workshopDesc = File.ReadAllText(workshopDescFile);
 
-			string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {versionSummary}[/quote]" +
+			// Add version metadata override to allow CI publishing
+			string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["version"]}[/quote]" +
 				$"{workshopDesc}";
 
 
-			Console.WriteLine($"Built Mod Version is: {newMod.properties.version}. tMod Version is: {BuildInfo.tMLVersion}");
-
-
-
 			// Make the publish.vdf file
+			string manifest = Path.Combine(publishedModFiles, "workshop.json");
+			AWorkshopEntry.TryReadingManifest(manifest, out var steamInfo);
+
+			string vdf = $"{ModOrganizer.modPath}/publish.vdf";
+
 			string[] lines =
 			{
 					"\"workshopitem\"",
