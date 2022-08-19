@@ -334,9 +334,9 @@ jobs:
             Click [here](https://github.com/tModLoader/tModLoader/actions/runs/${{ github.run_id }}) to view build.
 
   documentation:
-    # Documentation generated on successful builds of pushes to 1.4 branch
+    # Documentation generated on successful builds of pushes to 1.4-stable and 1.4-preview
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/1.4'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/1.4-stable' || github.ref == 'refs/heads/1.4-preview')
     name: Documentation
     runs-on: ubuntu-latest
     steps:
@@ -361,8 +361,19 @@ jobs:
           cd ..
         env:
           SETUP_ASSETS_PASSPHRASE: ${{ secrets.SETUP_ASSETS_PASSPHRASE }}
+      - name: Update version in Doxyfile
+        shell: bash
+        run: |
+          echo "Attempting get current version id"
+          version=$(git describe --tags --abbrev=0)
+          echo "Current Version is: $version"
+          echo "::set-output name=new_version::$version"
+          sed -i -e "s/TMODLOADERVERSIONHERE/v($version)/g" Doxyfile
+        working-directory: solutions/documentation
+        env:
+          branch: ${{github.ref}}
       - name: Generate Documentation
-        uses: mattnotmitt/doxygen-action@v1.3.1
+        uses: mattnotmitt/doxygen-action@v1.9.4
         with:
           working-directory: 'solutions/documentation/'
           doxyfile-path: 'Doxyfile'
@@ -379,7 +390,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./solutions/documentation/html
-          destination_dir: html_alpha
+          destination_dir: ${{ fromJSON('{"refs/heads/1.4-stable":"docs/1.4-stable", "refs/heads/1.4-preview":"docs/1.4-preview"}')[${{ github.ref }}] }}
+          commit_message: docs for ${{ github.ref }} commit:
 
   deploy:
     needs: build

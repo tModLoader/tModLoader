@@ -777,6 +777,11 @@ namespace Terraria.ModLoader
 		public virtual void OpenBossBag(Player player) {
 		}
 
+		/// <summary>
+		/// Allows you to add and modify the loot items that spawn from bag items when opened.
+		/// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-NPC-Drops-and-Loot-1.4">Basic NPC Drops and Loot 1.4 Guide</see> explains how to use the <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> hook to modify NPC loot as well as this hook. A common usage is to use this hook and <see cref="ModNPC.ModifyNPCLoot(NPCLoot)"/> to edit non-expert exlclusive drops for bosses.
+		/// </summary>
+		/// <param name="itemLoot"></param>
 		public virtual void ModifyItemLoot(ItemLoot itemLoot) {
 		}
 
