@@ -391,7 +391,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./solutions/documentation/html
           destination_dir: ${{ fromJSON('{"refs/heads/1.4-stable":"docs/1.4-stable", "refs/heads/1.4-preview":"docs/1.4-preview"}')[${{ github.ref }}] }}
-          commit_message: docs for ${{ github.ref }} commit:
+          commit_message: "docs for ${{ github.ref }} commit:"
 
   deploy:
     needs: build
