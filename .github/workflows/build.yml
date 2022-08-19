@@ -344,6 +344,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - name: Download temporary encrypted src artifact from build job
         uses: actions/download-artifact@v2
         with:
