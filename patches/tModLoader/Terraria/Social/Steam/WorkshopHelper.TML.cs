@@ -44,7 +44,7 @@ namespace Terraria.Social.Steam
 			installLoc ??= "."; // GetAppInstallDir may return null (#2491). Also the default location for dedicated servers and such
 
 			var workshopLoc = Path.Combine(installLoc, "..", "..", "workshop");
-			if (Directory.Exists(workshopLoc))
+			if (Directory.Exists(workshopLoc) && !Program.LaunchParameters.ContainsKey("-nosteam"))
 				return workshopLoc;
 
 			// Load mods installed by GoG / Manually copied steamapps\workshop directories.
@@ -106,7 +106,7 @@ namespace Terraria.Social.Steam
 
 			internal static bool FetchDownloadItems() {
 				if (!QueryWorkshop())
-					return false;
+				return false;
 
 				return true;
 			}
@@ -122,7 +122,7 @@ namespace Terraria.Social.Steam
 
 				AQueryInstance.InstalledMods = ModOrganizer.FindWorkshopMods();
 
-				if (!SteamedWraps.SteamClient) {
+				if (!SteamedWraps.SteamAvailable) {
 					if (!SteamedWraps.TryInitViaGameServer()) {
 						Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.NoWorkshopAccess"), 0);
 						return false;
@@ -293,6 +293,9 @@ namespace Terraria.Social.Steam
 
 				internal static System.Version CalculateRelevantVersion(string mbDescription, string mbVersionSummary) {
 					System.Version selectVersion = new(0,0);
+					if (!mbVersionSummary.Contains(':'))
+						return new System.Version(mbVersionSummary.Replace("v", ""));
+
 					InnerCalculateRelevantVersion(ref selectVersion, mbVersionSummary);
 
 					// Handle Github Actions metadata from description

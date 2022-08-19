@@ -54,8 +54,7 @@ namespace Terraria.Social.Steam
 			var existing = CheckIfUploaded(modFile);
 			ulong currPublishID = 0;
 			string workshopFolderPath = GetTemporaryFolderPath() + modFile.Name;
-			buildData["trueversion"] = buildData["version"];
-			buildData["version"] = $"{buildData["modloaderversion"]}:{buildData["version"]}";
+			buildData["versionsummary"] = $"{buildData["modloaderversion"]}:{buildData["version"]}";
 
 			if (existing != null) {
 				currPublishID = ulong.Parse(existing.PublishId);
@@ -76,7 +75,7 @@ namespace Terraria.Social.Steam
 
 				FixErrorsInWorkshopFolder(workshopFolderPath);
 
-				if (CalculateVersionsData(workshopFolderPath, ref buildData)) {
+				if (!CalculateVersionsData(workshopFolderPath, ref buildData)) {
 					IssueReporter.ReportInstantUploadProblem("tModLoader.ModVersionInfoUnchanged");
 					return false;
 				}
@@ -129,10 +128,10 @@ namespace Terraria.Social.Steam
 			foreach (var tmod in Directory.EnumerateFiles(workshopPath, "*.tmod*", SearchOption.AllDirectories)) {
 				var mod = OpenModFile(tmod);
 				if (mod.tModLoaderVersion.MajorMinor() <= BuildInfo.tMLVersion.MajorMinor())
-					if (mod.properties.version >= new Version(buildData["trueversion"]))
+					if (mod.properties.version >= new Version(buildData["version"]))
 						return false;
 
-				buildData["version"] += $";{mod.tModLoaderVersion.MajorMinor()}:{mod.properties.version}";
+				buildData["versionsummary"] += $";{mod.tModLoaderVersion.MajorMinor()}:{mod.properties.version}";
 			}
 
 			return true;
@@ -202,17 +201,17 @@ namespace Terraria.Social.Steam
 			LocalMod newMod = OpenModFile(newModPath);
 
 			var buildData = new NameValueCollection() {
-				["trueversion"] = newMod.properties.version.ToString(),
-				["version"] = $"{newMod.tModLoaderVersion}:{newMod.properties.version}",
+				["version"] = newMod.properties.version.ToString(),
+				["versionsummary"] = $"{newMod.tModLoaderVersion}:{newMod.properties.version}",
 				["description"] = newMod.properties.description
 			};
 
 			if (!CalculateVersionsData(publishedModFiles, ref buildData)) {
-				Utils.LogAndConsoleErrorMessage($"Unable to update mod. {buildData["trueversion"]} is not higher than existing version");
+				Utils.LogAndConsoleErrorMessage($"Unable to update mod. {buildData["version"]} is not higher than existing version");
 				return;
 			}
 
-			Console.WriteLine($"Built Mod Version is: {buildData["trueversion"]}. tMod Version is: {BuildInfo.tMLVersion}");
+			Console.WriteLine($"Built Mod Version is: {buildData["version"]}. tMod Version is: {BuildInfo.tMLVersion}");
 
 
 			// Create the directory that the new tmod file will be added to, if it doesn't exist
@@ -238,7 +237,7 @@ namespace Terraria.Social.Steam
 				workshopDesc = File.ReadAllText(workshopDescFile);
 
 			// Add version metadata override to allow CI publishing
-			string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["version"]}[/quote]" +
+			string descriptionFinal = $"[quote=GithubActions(Don't Modify)]Version Summary {buildData["versionsummary"]}[/quote]" +
 				$"{workshopDesc}";
 
 
