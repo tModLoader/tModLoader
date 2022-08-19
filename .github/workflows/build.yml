@@ -368,8 +368,14 @@ jobs:
           echo "Attempting get current version id"
           version=$(git describe --tags --abbrev=0)
           echo "Current Version is: $version"
-          echo "::set-output name=new_version::$version"
-          sed -i -e "s/TMODLOADERVERSIONHERE/v($version)/g" Doxyfile
+          regex="^v([0-9]+).([0-9]+).([0-9]+).([0-9]+)?$"
+          if [[ $version =~ $regex ]] ; then
+            year="${BASH_REMATCH[1]}"
+            month="${BASH_REMATCH[2]}"
+          fi
+          version="v$year.$month"
+          echo "Major.Minor Version is: $version"
+          sed -i -e "s/TMODLOADERVERSIONHERE/$version/g" Doxyfile
         working-directory: solutions/documentation
         env:
           branch: ${{github.ref}}
