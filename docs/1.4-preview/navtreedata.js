@@ -25,7 +25,7 @@
 var NAVTREE =
 [
   [ "tModLoader", "index.html", [
-    [ "tModPorter", "md__d___documents__my__games__terraria__modding_t_mod_loader14_src_t_mod_loader__terraria_releas060feaf655238605faab2f858a6bc83d.html", null ],
+    [ "tModPorter", "md__github_workspace_src_t_mod_loader__terraria_release_extras_t_mod_porter__r_e_a_d_m_e.html", null ],
     [ "Packages", "namespaces.html", [
       [ "Package List", "namespaces.html", "namespaces_dup" ],
       [ "Package Members", "namespacemembers.html", [
@@ -70,19 +70,19 @@ var NAVTREEINDEX =
 "class_terraria_1_1_mod_loader_1_1_map_legend.html",
 "class_terraria_1_1_mod_loader_1_1_mod_command.html#ac807de4b57a97d5ee2c6105ceff5d4b9",
 "class_terraria_1_1_mod_loader_1_1_mod_item.html#a7f135175f22963846f738ca4d1755d5a",
-"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a22d1c3de35a14161c20c5544a35b5420",
-"class_terraria_1_1_mod_loader_1_1_mod_player.html#a64f4fae883d92393f463889d371f4123",
-"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ac9e36df5bf854f5fa06da9932f6429ac",
-"class_terraria_1_1_mod_loader_1_1_mod_tile.html#a384858f0a5eff5a1f5df8cf4c6ddb769",
-"class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html#a4ce14cde35ccc233a8566681b856b921",
-"class_terraria_1_1_mod_loader_1_1_usage_exception.html",
-"class_terraria_1_1_player.html#a89269f1842a8b39d3d26e853db953b5e",
-"class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader.html",
-"class_terraria_1_1_world_building_1_1_actions_1_1_debug_draw.html",
-"functions_prop_v.html",
-"namespace_terraria_1_1_chat.html",
-"struct_terraria_1_1_data_structures_1_1_point16.html",
-"struct_terraria_1_1_player_1_1_composite_arm_data.html"
+"class_terraria_1_1_mod_loader_1_1_mod_n_p_c.html#a21f331d5529062dd1ca5201c69586412",
+"class_terraria_1_1_mod_loader_1_1_mod_player.html#a5ea772956ff46506cbb6aea303a7d041",
+"class_terraria_1_1_mod_loader_1_1_mod_projectile.html#ac28323b0e83af00c11cad55c3d007f35",
+"class_terraria_1_1_mod_loader_1_1_mod_tile.html#a34536351a09ae478bd2700a93cc9d0e2",
+"class_terraria_1_1_mod_loader_1_1_mod_waterfall_style.html#a4027d18a89e2bbce8c48e09fa3505735",
+"class_terraria_1_1_mod_loader_1_1_underground_background_styles_loader.html",
+"class_terraria_1_1_player.html#a85d8480df2b9f87541df236d4659cb75",
+"class_terraria_1_1_social_1_1_steam_1_1_platform_social_module.html",
+"class_terraria_1_1_world_building_1_1_actions_1_1_custom.html",
+"functions_prop_t.html",
+"namespace_terraria_1_1_achievements.html",
+"struct_terraria_1_1_data_structures_1_1_player_movement_accs_cache.html",
+"struct_terraria_1_1_physics_1_1_ball_step_result.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
