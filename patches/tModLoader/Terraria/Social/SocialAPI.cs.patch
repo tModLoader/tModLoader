@@ -6,7 +6,7 @@
  using Terraria.Social.Base;
  using Terraria.Social.Steam;
  using Terraria.Social.WeGame;
-@@ -21,21 +_,33 @@
+@@ -21,21 +_,34 @@
  		public static SocialMode Mode => _mode;
  
  		public static void Initialize(SocialMode? mode = null) {
@@ -20,7 +20,8 @@
 -				if (!Main.dedServ) // #if !SERVER
 -					mode = SocialMode.Steam;
 +
-+				if (!Main.dedServ) { // #if !SERVER
++				// Added FamilyShared check as workaround for #881
++				if (!Main.dedServ && !SteamedWraps.FamilyShared) { // #if !SERVER
 +#if DEBUG
 +					if (!Program.LaunchParameters.ContainsKey("-nosteam")) {
 +#endif
@@ -52,7 +53,7 @@
 -			foreach (ISocialModule module in _modules) {
 -				module.Initialize();
 -			}
-+			WorkshopHelper.ModManager.Initialize();
++			SteamedWraps.Initialize();
  		}
  
  		public static void Shutdown() {

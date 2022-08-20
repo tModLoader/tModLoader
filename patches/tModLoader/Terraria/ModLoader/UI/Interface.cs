@@ -111,6 +111,11 @@ namespace Terraria.ModLoader.UI
 					infoMessage.Show(Language.GetTextValue("tModLoader.FirstLaunchWelcomeMessage"), Main.menuMode);
 				}
 
+				if (SteamedWraps.FamilyShared && !ModLoader.WarnedFamilyShare) {
+					ModLoader.WarnedFamilyShare = true;
+					infoMessage.Show(Language.GetTextValue("tModLoader.SteamFamilyShareWarning"), Main.menuMode);
+				}
+
 				/*
 				else if (!ModLoader.AlphaWelcomed) {
 					ModLoader.AlphaWelcomed = true;
@@ -122,7 +127,7 @@ namespace Terraria.ModLoader.UI
 					ModLoader.ShowWhatsNew = false;
 					if (File.Exists("RecentGitHubCommits.txt")) {
 						bool LastLaunchedShaInRecentGitHubCommits = false;
-						var messages = new System.Text.StringBuilder();
+						var messages = new StringBuilder();
 						var recentcommitsfilecontents = File.ReadLines("RecentGitHubCommits.txt");
 						foreach (var commitEntry in recentcommitsfilecontents) {
 							string[] parts = commitEntry.Split(' ', 2);
@@ -168,8 +173,10 @@ namespace Terraria.ModLoader.UI
                     string cancelButton = promptDepDownloads ? Language.GetTextValue("tModLoader.ContinueAnyway") : null;
                     string continueButton = promptDepDownloads ? Language.GetTextValue("tModLoader.InstallDependencies") : "";
                     Action downloadAction = () => {
-	                    if (promptDepDownloads)
-		                    WorkshopHelper.ModManager.DownloadBatch(deps.Select(x => x.ToString()).ToArray(), Interface.loadModsID);
+	                    if (promptDepDownloads) {
+							//TODO: Would be nice if this used the names of the mods to replace the second x.ToString()
+							WorkshopHelper.SetupDownload(deps.Select(x => new ModDownloadItem(x.ToString(), x.ToString(), installed:null)).ToList(), previousMenuId:0);
+						}
                     };
 
                     if (!string.IsNullOrWhiteSpace(message))

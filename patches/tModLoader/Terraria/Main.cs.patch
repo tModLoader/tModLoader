@@ -3912,7 +3912,7 @@
  		private static void TryDisposingEverything() {
  			ChromaInitializer.DisableAllDeviceGroups();
 +
-+			WorkshopHelper.OnGameExitCleanup(); // Added by TML.
++			SteamedWraps.OnGameExitCleanup(); // Added by TML.
 +			TerrariaSteamClient.Shutdown();
 +
  			CaptureManager.Instance.Dispose();

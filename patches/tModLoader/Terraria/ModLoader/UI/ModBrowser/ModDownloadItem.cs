@@ -57,11 +57,18 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			ModloaderVersion = modloaderversion;
 		}
 
+		internal ModDownloadItem(string displayName, string publishId, LocalMod installed) {
+			DisplayName = displayName;
+			DisplayNameClean = string.Join("", ChatManager.ParseMessage(displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text));
+			PublishId = publishId;
+			Installed = installed;
+		}
+
 		internal Task InnerDownloadWithDeps() {
 			var downloads = new HashSet<ModDownloadItem>() { this };
 			downloads.Add(this);
 			GetDependenciesRecursive(this, ref downloads);
-			return WorkshopHelper.ModManager.Download(downloads.ToList());
+			return WorkshopHelper.SetupDownload(downloads.ToList(), Interface.modBrowserID);
 		}
 
 		private IEnumerable<ModDownloadItem> GetDependencies() {

@@ -1,28 +1,20 @@
-using Hjson;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json.Linq;
 using ReLogic.Content;
 using ReLogic.OS;
 using System;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reflection;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
-using Terraria.GameContent.UI.States;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.UI.ModBrowser;
-using Terraria.Social;
-using Terraria.Social.Base;
 using Terraria.Social.Steam;
 using Terraria.UI;
-using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI
 {
@@ -260,7 +252,7 @@ namespace Terraria.ModLoader.UI
 		private void PublishMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
 			try {
-				if (!WorkshopHelper.ModManager.SteamUser) {
+				if (!SteamedWraps.SteamClient) {
 					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamPublishingLimit"), Interface.modSourcesID);
 					return;
 				}
@@ -281,7 +273,7 @@ namespace Terraria.ModLoader.UI
 				if (!File.Exists(icon))
 					icon = Path.Combine(_mod, "icon.png");
 
-				PublishModInner(_builtMod, icon);
+				WorkshopHelper.PublishMod(_builtMod, icon);
 			}
 			catch (WebException e) {
 				UIModBrowser.LogModBrowserException(e);
@@ -291,7 +283,7 @@ namespace Terraria.ModLoader.UI
 		private void PublishServerSideMod(UIMouseEvent evt, UIElement listeningElement) {
 			SoundEngine.PlaySound(10);
 			try {
-				if (!WorkshopHelper.ModManager.SteamUser) {
+				if (!SteamedWraps.SteamClient) {
 					Utils.ShowFancyErrorMessage(Language.GetTextValue("tModLoader.SteamPublishingLimit"), Interface.modSourcesID);
 					return;
 				}
@@ -309,7 +301,6 @@ namespace Terraria.ModLoader.UI
 			}
 		}
 
-
 		internal static void PublishModCommandLine(string modName) {
 			try {
 				LocalMod localMod;
@@ -322,7 +313,7 @@ namespace Terraria.ModLoader.UI
 				if (!File.Exists(icon))
 					icon = Path.Combine(ModCompile.ModSourcePath, modName, "icon.png");
 
-				PublishModInner(localMod, icon);
+				WorkshopHelper.PublishMod(localMod, icon);
 			}
 			catch (Exception e) {
 				Console.WriteLine("Something went wrong with command line mod publishing.");
@@ -333,66 +324,6 @@ namespace Terraria.ModLoader.UI
 			Console.WriteLine("exiting ");
 			Steamworks.SteamAPI.Shutdown();
 			Environment.Exit(0);
-		}
-
-		private static void PublishModInner(LocalMod mod, string iconPath) {
-			var modFile = mod.modFile;
-			var bp = mod.properties;
-
-			if (bp.buildVersion != modFile.TModLoaderVersion)
-				throw new WebException(Language.GetTextValue("OutdatedModCantPublishError.BetaModCantPublishError"));
-
-			var changeLogFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "changelog.txt");
-			string changeLog;
-			if (File.Exists(changeLogFile))
-				changeLog = File.ReadAllText(changeLogFile);
-			else
-				changeLog = "";
-
-			var workshopDescFile = Path.Combine(ModCompile.ModSourcePath, modFile.Name, "description_workshop.txt");
-			string workshopDesc;
-			if (File.Exists(workshopDescFile))
-				workshopDesc = File.ReadAllText(workshopDescFile);
-			else
-				workshopDesc = bp.description;
-
-			var values = new NameValueCollection
-			{
-				{ "displayname", bp.displayName },
-				{ "displaynameclean", string.Join("", ChatManager.ParseMessage(bp.displayName, Color.White).Where(x => x.GetType() == typeof(TextSnippet)).Select(x => x.Text)) },
-				{ "name", modFile.Name },
-				{ "version", $"v{bp.version}" },
-				{ "author", bp.author },
-				{ "homepage", bp.homepage },
-				{ "description", workshopDesc },
-				{ "iconpath", iconPath },
-				{ "sourcesfolder", Path.Combine(ModCompile.ModSourcePath, modFile.Name) },
-				{ "modloaderversion", $"tModLoader v{modFile.TModLoaderVersion}" },
-				{ "modreferences", string.Join(", ", bp.modReferences.Select(x => x.mod)) },
-				{ "modside", bp.side.ToFriendlyString() },
-				{ "changelog" , changeLog }
-			};
-
-			if (string.IsNullOrWhiteSpace(values["author"]))
-				throw new WebException($"You need to specify an author in build.txt");
-
-			if (string.IsNullOrWhiteSpace(values["version"]))
-				throw new WebException($"You need to specify a version in build.txt");
-
-			if (!Main.dedServ) {
-				Main.MenuUI.SetState(new WorkshopPublishInfoStateForMods(Interface.modSources, modFile, values));
-			}
-			else {
-				SocialAPI.LoadSteam();
-
-				var publishSetttings = new WorkshopItemPublishSettings {
-					Publicity = WorkshopItemPublicSettingId.Public,
-					UsedTags = Array.Empty<WorkshopTagOption>(),
-					PreviewImagePath = iconPath
-				};
-				WorkshopHelper.ModManager.SteamUser = true;
-				SocialAPI.Workshop.PublishMod(modFile, values, publishSetttings);
-			}
 		}
 	}
 }
