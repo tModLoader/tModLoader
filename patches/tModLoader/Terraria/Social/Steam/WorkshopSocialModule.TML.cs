@@ -68,7 +68,7 @@ namespace Terraria.Social.Steam
 				}
 
 				// Update the subscribed mod to be the latest version published
-				SteamedWraps.Download(null, true, new Steamworks.PublishedFileId_t(currPublishID));
+				SteamedWraps.Download(new Steamworks.PublishedFileId_t(currPublishID), forceUpdate: true);
 
 				// Publish by updating the files available on the current published version
 				workshopFolderPath = Path.Combine(Directory.GetParent(ModOrganizer.WorkshopFileFinder.ModPaths[0]).ToString(), $"{existing.PublishId}");
@@ -177,7 +177,7 @@ namespace Terraria.Social.Steam
 			}
 		}
 
-		public static void CiPublish(string modFolder) {
+		public static void SteamCMDPublishPreparer(string modFolder) {
 			if (!Program.LaunchParameters.ContainsKey("-ciprep") || !Program.LaunchParameters.ContainsKey("-publishedmodfiles"))
 				return;
 

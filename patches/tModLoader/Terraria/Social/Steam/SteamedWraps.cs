@@ -143,7 +143,7 @@ namespace Terraria.Social.Steam
 			return new();
 		}
 
-		public static SteamAPICall_t GenerateFullQuery(string queryCursor) {
+		public static SteamAPICall_t GenerateModBrowserQuery(string queryCursor) {
 			if (SteamClient) {
 				UGCQueryHandle_t qHandle = SteamUGC.CreateQueryAllUGCRequest(EUGCQuery.k_EUGCQuery_RankedByTotalUniqueSubscriptions, EUGCMatchingUGCType.k_EUGCMatchingUGCType_Items, new AppId_t(thisApp), new AppId_t(thisApp), queryCursor);
 				ModifyQueryHandle(ref qHandle, returnKeyValueTags: true, returnPlaytimeStats: true);
@@ -351,7 +351,7 @@ namespace Terraria.Social.Steam
 		/// <summary>
 		/// Updates and/or Downloads the Item specified by publishId
 		/// </summary>
-		internal static void Download(UIWorkshopDownload uiProgress, bool forceUpdate, PublishedFileId_t publishId) {
+		internal static void Download(PublishedFileId_t publishId, UIWorkshopDownload uiProgress = null, bool forceUpdate = false) {
 			if (!SteamAvailable)
 				return;
 

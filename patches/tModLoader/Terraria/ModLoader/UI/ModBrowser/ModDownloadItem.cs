@@ -68,7 +68,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			var downloads = new HashSet<ModDownloadItem>() { this };
 			downloads.Add(this);
 			GetDependenciesRecursive(this, ref downloads);
-			return WorkshopHelper.SetupDownload(downloads.ToList());
+			return WorkshopHelper.SetupDownload(downloads.ToList(), Interface.modBrowserID);
 		}
 
 		private IEnumerable<ModDownloadItem> GetDependencies() {

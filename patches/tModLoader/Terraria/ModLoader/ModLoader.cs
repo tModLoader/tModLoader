@@ -35,6 +35,7 @@ namespace Terraria.ModLoader
 		public static bool DownloadedDependenciesOnStartup;
 		public static bool ShowFirstLaunchWelcomeMessage;
 		public static bool SeenFirstLaunchModderWelcomeMessage;
+		public static bool WarnedFamilyShare;
 		public static Version LastPreviewFreezeNotificationSeen;
 
 		public static string versionedName => (BuildInfo.Purpose != BuildInfo.BuildPurpose.Stable) ? BuildInfo.versionedNameDevFriendly : BuildInfo.versionedName;

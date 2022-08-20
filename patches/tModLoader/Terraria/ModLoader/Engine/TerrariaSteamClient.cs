@@ -19,7 +19,7 @@ namespace Terraria.ModLoader.Engine
 
 		private static string MsgInitFailed = "init_failed";
 		private static string MsgInitSuccess = "init_success";
-		private static string MsgFamilyShareSuccess = "fam_share_success";
+		private static string MsgFamilyShared = "family_shared";
 		private static string MsgNotInstalled = "not_installed";
 		private static string MsgGrant = "grant:";
 		private static string MsgAck = "acknowledged";
@@ -79,9 +79,9 @@ namespace Terraria.ModLoader.Engine
 				if (line == MsgInitSuccess)
 					break;
 
-				if (line == MsgFamilyShareSuccess) {
+				// Workaround for #881 family shared
+				if (line == MsgFamilyShared) {
 					Social.Steam.SteamedWraps.FamilyShared = true;
-					break;
 				}
 			}
 
@@ -144,10 +144,10 @@ namespace Terraria.ModLoader.Engine
 				// Does not support Steam Overlay or Steam multiplayer as such.
 				if (SteamApps.BIsSubscribedFromFamilySharing()) {
 					Logger.Info("Terraria is installed via Family Share. Re-pathing tModLoader required");
-					Send(MsgFamilyShareSuccess);
+					Send(MsgFamilyShared);
 				}
-				else
-					Send(MsgInitSuccess);
+
+				Send(MsgInitSuccess);
 
 				while (Recv() != MsgAck) { }
 
