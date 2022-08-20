@@ -78,11 +78,11 @@ var NAVTREEINDEX =
 "class_terraria_1_1_mod_loader_1_1_underground_background_styles_loader.html",
 "class_terraria_1_1_player.html#a85d8480df2b9f87541df236d4659cb75",
 "class_terraria_1_1_social_1_1_steam_1_1_platform_social_module.html",
-"class_terraria_1_1_world_building_1_1_actions_1_1_custom.html",
-"functions_prop_t.html",
-"namespace_terraria_1_1_achievements.html",
-"struct_terraria_1_1_data_structures_1_1_player_movement_accs_cache.html",
-"struct_terraria_1_1_physics_1_1_ball_step_result.html"
+"class_terraria_1_1_world_building_1_1_actions_1_1_count.html",
+"functions_prop_r.html",
+"namespace_n_a_t_u_p_n_p_lib.html",
+"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html",
+"struct_terraria_1_1_physics_1_1_ball_pass_through_event.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

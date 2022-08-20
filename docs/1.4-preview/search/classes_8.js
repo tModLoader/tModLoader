@@ -170,7 +170,7 @@ var searchData=
   ['itemgroupandorderingroup_167',['ItemGroupAndOrderInGroup',['../struct_terraria_1_1_i_d_1_1_content_samples_1_1_creative_helper_1_1_item_group_and_order_in_group.html',1,'Terraria::ID::ContentSamples::CreativeHelper']]],
   ['itemholdstyleid_168',['ItemHoldStyleID',['../class_terraria_1_1_i_d_1_1_item_hold_style_i_d.html',1,'Terraria::ID']]],
   ['itemid_169',['ItemID',['../class_terraria_1_1_i_d_1_1_item_i_d.html',1,'Terraria::ID']]],
-  ['iteminstallinfo_170',['ItemInstallInfo',['../struct_terraria_1_1_social_1_1_steam_1_1_workshop_helper_1_1_item_install_info.html',1,'Terraria::Social::Steam::WorkshopHelper']]],
+  ['iteminstallinfo_170',['ItemInstallInfo',['../struct_terraria_1_1_social_1_1_steam_1_1_steamed_wraps_1_1_item_install_info.html',1,'Terraria::Social::Steam::SteamedWraps']]],
   ['itemio_171',['ItemIO',['../class_terraria_1_1_mod_loader_1_1_i_o_1_1_item_i_o.html',1,'Terraria::ModLoader::IO']]],
   ['itemloader_172',['ItemLoader',['../class_terraria_1_1_mod_loader_1_1_item_loader.html',1,'Terraria::ModLoader']]],
   ['itemloot_173',['ItemLoot',['../struct_terraria_1_1_mod_loader_1_1_item_loot.html',1,'Terraria::ModLoader']]],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX31 =
 {
+"namespace_n_a_t_u_p_n_p_lib.html":[1,0,1],
+"namespace_terraria.html":[1,0,2],
 "namespace_terraria_1_1_achievements.html":[1,0,2,0],
 "namespace_terraria_1_1_audio.html":[1,0,2,1],
 "namespace_terraria_1_1_chat.html":[1,0,2,2],
@@ -234,20 +236,18 @@ var NAVTREEINDEX31 =
 "struct_terraria_1_1_data_structures_1_1_game_mode_data.html":[1,0,2,4,47],
 "struct_terraria_1_1_data_structures_1_1_item_sync_persistent_stats.html":[1,0,2,4,56],
 "struct_terraria_1_1_data_structures_1_1_item_sync_persistent_stats.html":[2,0,2,4,56],
-"struct_terraria_1_1_data_structures_1_1_line_segment.html":[2,0,2,4,57],
 "struct_terraria_1_1_data_structures_1_1_line_segment.html":[1,0,2,4,57],
-"struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html":[2,0,2,4,59],
+"struct_terraria_1_1_data_structures_1_1_line_segment.html":[2,0,2,4,57],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html":[1,0,2,4,59],
+"struct_terraria_1_1_data_structures_1_1_n_p_c_aimed_target.html":[2,0,2,4,59],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html":[1,0,2,4,61],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_kill_attempt.html":[2,0,2,4,61],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html":[2,0,2,4,62],
 "struct_terraria_1_1_data_structures_1_1_n_p_c_strength_helper.html":[1,0,2,4,62],
 "struct_terraria_1_1_data_structures_1_1_placement_hook.html":[2,0,2,4,63],
 "struct_terraria_1_1_data_structures_1_1_placement_hook.html":[1,0,2,4,63],
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html":[2,0,2,4,67],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html":[1,0,2,4,67],
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html":[2,0,2,4,67],
 "struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html":[2,0,2,4,68],
-"struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html":[1,0,2,4,68],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html":[2,0,2,4,69],
-"struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html":[1,0,2,4,69]
+"struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html":[1,0,2,4,68]
 };
