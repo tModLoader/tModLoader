@@ -24,7 +24,7 @@ namespace Terraria.Social.Steam
 {
 	public partial class WorkshopHelper
 	{
-		internal static string[] MetadataKeys = new string[7] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences" };
+		internal static string[] MetadataKeys = new string[8] { "name", "author", "modside", "homepage", "modloaderversion", "version", "modreferences", "versionsummary" };
 		private static readonly Regex MetadataInDescriptionFallbackRegex = new Regex(@"\[quote=GithubActions\(Don't Modify\)\]Version Summary: (.*) \[/quote\]", RegexOptions.Compiled);
 
 		public class ModPublisherInstance : UGCBased.APublisherInstance
@@ -270,12 +270,13 @@ namespace Terraria.Social.Steam
 				return Items.Count + IncompleteModCount != 0;
 			}
 
-			private static System.Version CalculateRelevantVersion(string mbDescription, string mbVersionSummary) {
-				System.Version selectVersion = new(0, 0);
-				if (!mbVersionSummary.Contains(':'))
-					return new System.Version(mbVersionSummary.Replace("v", ""));
+			private static (System.Version modV, string tmlV) CalculateRelevantVersion(string mbDescription, NameValueCollection metadata) {
+				(System.Version modV, string tmlV) selectVersion = new (new System.Version(metadata["version"].Replace("v", "")), metadata["modloaderversion"]);
+				// Backwards compat after metadata version change
+				if (!metadata["versionsummary"].Contains(':'))
+					return selectVersion;
 
-				InnerCalculateRelevantVersion(ref selectVersion, mbVersionSummary);
+				InnerCalculateRelevantVersion(ref selectVersion, metadata["versionsummary"]);
 
 				// Handle Github Actions metadata from description
 				// Nominal string: [quote=GithubActions(Don't Modify)]Version Summary: YYYY.MM:#.#.#.#;YYYY.MM:#.#.#.#;... [/quote]
@@ -288,10 +289,11 @@ namespace Terraria.Social.Steam
 			}
 
 			// This and VersionSummaryToArray need a refactor for cleaner code. Not bad for now
-			private static void InnerCalculateRelevantVersion(ref System.Version selectVersion, string versionSummary) {
+			private static void InnerCalculateRelevantVersion(ref (System.Version modV, string tmlV) selectVersion, string versionSummary) {
 				foreach (var item in VersionSummaryToArray(versionSummary)) {
-					if (selectVersion < item.modVersion && BuildInfo.tMLVersion.MajorMinor() >= item.tmlVersion.MajorMinor()) {
-						selectVersion = item.modVersion;
+					if (selectVersion.modV < item.modVersion && BuildInfo.tMLVersion.MajorMinor() >= item.tmlVersion.MajorMinor()) {
+						selectVersion.modV = item.modVersion;
+						selectVersion.tmlV = item.tmlVersion.MajorMinor().ToString();
 					}
 				}
 			}
@@ -413,6 +415,10 @@ namespace Terraria.Social.Steam
 						// Item Tagged data
 						SteamedWraps.FetchMetadata(_primaryUGCHandle, i, out var metadata);
 
+						// Backwards compat code for the metadata version change
+						if (metadata["versionsumamry"] == null)
+							metadata["versionsummary"] = metadata["version"]; 
+
 						string[] missingKeys = MetadataKeys.Where(k => metadata.Get(k) == null).ToArray();
 
 						if (missingKeys.Length != 0) {
@@ -430,7 +436,7 @@ namespace Terraria.Social.Steam
 						// Partial Description - we don't include Long Description so this is only first handful of characters
 						string description = pDetails.m_rgchDescription;
 
-						var cVersion = CalculateRelevantVersion(description, metadata["version"]);
+						var cVersion = CalculateRelevantVersion(description, metadata);
 
 						// Assign ModSide Enum
 						ModSide modside = ModSide.Both;
@@ -455,12 +461,12 @@ namespace Terraria.Social.Steam
 						bool updateIsDowngrade = false;
 						
 						var installed = InstalledMods.FirstOrDefault(m => m.Name == metadata["name"]);
-						bool update = installed != null && DoesWorkshopItemNeedUpdate(id, installed, cVersion);
+						bool update = installed != null && DoesWorkshopItemNeedUpdate(id, installed, cVersion.modV);
 
 						// The below line is to identify the transient state where it isn't installed, but Steam considers it as such
 						bool needsRestart = installed == null && SteamedWraps.IsWorkshopItemInstalled(id);
 
-						Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, metadata["modloaderversion"], metadata["homepage"], needsRestart));
+						Items.Add(new ModDownloadItem(displayname, metadata["name"], cVersion.ToString(), metadata["author"], metadata["modreferences"], modside, modIconURL, id.m_PublishedFileId.ToString(), (int)downloads, (int)hot, lastUpdate, update, updateIsDowngrade, installed, cVersion.tmlV, metadata["homepage"], needsRestart));
 					}
 				}
 			}
