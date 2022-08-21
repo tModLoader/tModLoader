@@ -1019,7 +1019,7 @@ namespace Terraria.GameContent.ItemDropRules
 				ItemDropRule.NotScalingWithLuck(ItemID.FruitcakeChakram, chanceDenominator: 150),
 				ItemDropRule.NotScalingWithLuck(ItemID.HandWarmer, chanceDenominator: 150),
 				ItemDropRule.NotScalingWithLuck(ItemID.Toolbox, chanceDenominator: 300),
-				ItemDropRule.NotScalingWithLuck(ItemID.ReindeerBells, chanceDenominator: 40),
+				ItemDropRule.NotScalingWithLuck(ItemID.ReindeerAntlers, chanceDenominator: 40),
 				ItemDropRule.NotScalingWithLuck(ItemID.Holly, chanceDenominator: 10),
 				vanityRule,
 				foodRule,
