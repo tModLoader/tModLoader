@@ -1,0 +1,37 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/GenPass.cs
++++ src/tModLoader/Terraria/WorldBuilding/GenPass.cs
+@@ -10,6 +_,16 @@
+ 		private Action<GenPass> _onComplete;
+ 		private Action<GenPass> _onBegin;
+ 
++		public event Action<GenPass> OnBeginAction {
++			add => _onBegin = (Action<GenPass>)Delegate.Combine(_onBegin, value);
++			remove => _onBegin = (Action<GenPass>)Delegate.Remove(_onBegin, value);
++		}
++
++		public event Action<GenPass> OnCompleteAction {
++			add => _onComplete = (Action<GenPass>)Delegate.Combine(_onComplete, value);
++			remove => _onComplete = (Action<GenPass>)Delegate.Remove(_onComplete, value);
++		}
++
+ 		public GenPass(string name, float loadWeight) {
+ 			Name = name;
+ 			Weight = loadWeight;
+@@ -26,13 +_,13 @@
+ 				_onComplete(this);
+ 		}
+ 
+-		public GenPass OnBegin(Action<GenPass> beginAction) {
++		internal GenPass OnBegin(Action<GenPass> beginAction) {
+-			_onBegin = beginAction;
++			OnBeginAction += beginAction;
+ 			return this;
+ 		}
+ 
+-		public GenPass OnComplete(Action<GenPass> completionAction) {
++		internal GenPass OnComplete(Action<GenPass> completionAction) {
+-			_onComplete = completionAction;
++			OnCompleteAction += completionAction;
+ 			return this;
+ 		}
+ 	}
