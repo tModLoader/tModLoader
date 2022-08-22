@@ -44,6 +44,29 @@
 				GoldenBugNet,
 				FireproofBugNet
 			);
+
+			/// <summary>
+			/// Set for easily defining weapons as spears.
+			/// </summary>
+			public static bool[] Spears = Factory.CreateBoolSet(
+				Spear,
+				Trident,
+				ThunderSpear,
+				TheRottedFork,
+				DarkLance,
+				CobaltNaginata,
+				PalladiumPike,
+				MythrilHalberd,
+				OrichalcumHalberd,
+				AdamantiteGlaive,
+				TitaniumTrident,
+				ObsidianSwordfish,
+				Gungnir,
+				MushroomSpear,
+				MonkStaffT2,
+				ChlorophytePartisan,
+				NorthPole
+			);
 		}
 	}
 }

@@ -180,7 +180,7 @@ namespace Terraria
 		}
 
 		private void RestoreMeleeSpeedBehaviorOnVanillaItems() {
-			if (type < ItemID.Count && melee && shoot > 0) {
+			if (type < ItemID.Count && melee && shoot > 0 && !ItemID.Sets.Spears[type]) {
 				if (noMelee)
 					DamageType = DamageClass.MeleeNoSpeed;
 				else
