@@ -46,7 +46,8 @@
 			);
 
 			/// <summary>
-			/// Set for easily defining weapons as spears.
+			/// Set for easily defining weapons as spears.<br/>
+			/// Only used for vanilla spears to make sure they still scale with attack speed (though it's encouraged to set this for your spears as well, for cross-mod support).<br/>
 			/// </summary>
 			public static bool[] Spears = Factory.CreateBoolSet(
 				Spear,
