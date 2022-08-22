@@ -6,5 +6,6 @@ var class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets =
     [ "IsFishingCrate", "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a91e68810fcac8b4e10db76602d8e6e2e", null ],
     [ "IsFishingCrateHardmode", "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a490a89256f83f6f3dee113965dbefef1", null ],
     [ "LavaproofCatchingTool", "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a809ccecd2dcb02baca7757a6f002546c", null ],
-    [ "PreHardmodeLikeBossBag", "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a294d3e861fa0030399da7a40ef3aeacf", null ]
+    [ "PreHardmodeLikeBossBag", "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#a294d3e861fa0030399da7a40ef3aeacf", null ],
+    [ "Spears", "class_terraria_1_1_i_d_1_1_item_i_d_1_1_sets.html#adf822d6fab7d38643ba5df0cd14f10bd", null ]
 ];

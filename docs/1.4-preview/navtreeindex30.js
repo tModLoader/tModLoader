@@ -1,5 +1,7 @@
 var NAVTREEINDEX30 =
 {
+"functions_prop_o.html":[2,3,3,13],
+"functions_prop_p.html":[2,3,3,14],
 "functions_prop_r.html":[2,3,3,15],
 "functions_prop_s.html":[2,3,3,16],
 "functions_prop_t.html":[2,3,3,17],
@@ -247,7 +249,5 @@ var NAVTREEINDEX30 =
 "interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html":[2,0,2,21,12],
 "interface_terraria_1_1_u_i_1_1_i_net_diagnostics_u_i.html":[1,0,2,22,12],
 "interface_terraria_1_1_utilities_1_1_file_browser_1_1_i_file_browser.html":[2,0,2,22,0,2],
-"interface_terraria_1_1_utilities_1_1_file_browser_1_1_i_file_browser.html":[1,0,2,23,0,2],
-"md__github_workspace_src_t_mod_loader__terraria_release_extras_t_mod_porter__r_e_a_d_m_e.html":[0],
-"namespace_extensions.html":[1,0,0]
+"interface_terraria_1_1_utilities_1_1_file_browser_1_1_i_file_browser.html":[1,0,2,23,0,2]
 };

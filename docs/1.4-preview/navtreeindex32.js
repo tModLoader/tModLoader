@@ -1,5 +1,7 @@
 var NAVTREEINDEX32 =
 {
+"struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html":[2,0,2,4,68],
+"struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html":[1,0,2,4,68],
 "struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html":[2,0,2,4,69],
 "struct_terraria_1_1_data_structures_1_1_player_interaction_anchor.html":[1,0,2,4,69],
 "struct_terraria_1_1_data_structures_1_1_player_movement_accs_cache.html":[1,0,2,4,70],
@@ -247,7 +249,5 @@ var NAVTREEINDEX32 =
 "struct_terraria_1_1_net_1_1_net_packet.html":[1,0,2,16,5],
 "struct_terraria_1_1_net_1_1_net_packet.html":[2,0,2,15,5],
 "struct_terraria_1_1_net_message_1_1_net_sound_info.html":[2,0,2,51,0],
-"struct_terraria_1_1_net_message_1_1_net_sound_info.html":[1,0,2,52,0],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html":[2,0,2,17,1],
-"struct_terraria_1_1_physics_1_1_ball_collision_event.html":[1,0,2,18,1]
+"struct_terraria_1_1_net_message_1_1_net_sound_info.html":[1,0,2,52,0]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX29 =
 {
+"class_terraria_1_1_world_building_1_1_actions_1_1_continue_wrapper.html":[2,0,2,23,0,5],
+"class_terraria_1_1_world_building_1_1_actions_1_1_count.html":[1,0,2,24,0,6],
 "class_terraria_1_1_world_building_1_1_actions_1_1_count.html":[2,0,2,23,0,6],
 "class_terraria_1_1_world_building_1_1_actions_1_1_custom.html":[1,0,2,24,0,7],
 "class_terraria_1_1_world_building_1_1_actions_1_1_custom.html":[2,0,2,23,0,7],
@@ -247,7 +249,5 @@ var NAVTREEINDEX29 =
 "functions_prop_j.html":[2,3,3,9],
 "functions_prop_l.html":[2,3,3,10],
 "functions_prop_m.html":[2,3,3,11],
-"functions_prop_n.html":[2,3,3,12],
-"functions_prop_o.html":[2,3,3,13],
-"functions_prop_p.html":[2,3,3,14]
+"functions_prop_n.html":[2,3,3,12]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX31 =
 {
+"md__github_workspace_src_t_mod_loader__terraria_release_extras_t_mod_porter__r_e_a_d_m_e.html":[0],
+"namespace_extensions.html":[1,0,0],
 "namespace_n_a_t_u_p_n_p_lib.html":[1,0,1],
 "namespace_terraria.html":[1,0,2],
 "namespace_terraria_1_1_achievements.html":[1,0,2,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX31 =
 "struct_terraria_1_1_data_structures_1_1_placement_hook.html":[2,0,2,4,63],
 "struct_terraria_1_1_data_structures_1_1_placement_hook.html":[1,0,2,4,63],
 "struct_terraria_1_1_data_structures_1_1_player_draw_set.html":[1,0,2,4,67],
-"struct_terraria_1_1_data_structures_1_1_player_draw_set.html":[2,0,2,4,67],
-"struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html":[2,0,2,4,68],
-"struct_terraria_1_1_data_structures_1_1_player_fishing_conditions.html":[1,0,2,4,68]
+"struct_terraria_1_1_data_structures_1_1_player_draw_set.html":[2,0,2,4,67]
 };

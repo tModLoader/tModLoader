@@ -1,5 +1,7 @@
 var NAVTREEINDEX28 =
 {
+"class_terraria_1_1_social_1_1_steam_1_1_overlay_social_module.html":[2,0,2,19,1,8],
+"class_terraria_1_1_social_1_1_steam_1_1_platform_social_module.html":[2,0,2,19,1,9],
 "class_terraria_1_1_social_1_1_steam_1_1_platform_social_module.html":[1,0,2,20,1,9],
 "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader.html":[1,0,2,20,1,11],
 "class_terraria_1_1_social_1_1_steam_1_1_steam_p2_p_reader.html":[2,0,2,19,1,11],
@@ -247,7 +249,5 @@ var NAVTREEINDEX28 =
 "class_terraria_1_1_world_building_1_1_actions_1_1_clear_tile.html":[1,0,2,24,0,3],
 "class_terraria_1_1_world_building_1_1_actions_1_1_clear_wall.html":[2,0,2,23,0,4],
 "class_terraria_1_1_world_building_1_1_actions_1_1_clear_wall.html":[1,0,2,24,0,4],
-"class_terraria_1_1_world_building_1_1_actions_1_1_continue_wrapper.html":[1,0,2,24,0,5],
-"class_terraria_1_1_world_building_1_1_actions_1_1_continue_wrapper.html":[2,0,2,23,0,5],
-"class_terraria_1_1_world_building_1_1_actions_1_1_count.html":[1,0,2,24,0,6]
+"class_terraria_1_1_world_building_1_1_actions_1_1_continue_wrapper.html":[1,0,2,24,0,5]
 };

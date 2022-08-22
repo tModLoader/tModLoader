@@ -1,5 +1,7 @@
 var NAVTREEINDEX33 =
 {
+"struct_terraria_1_1_physics_1_1_ball_collision_event.html":[2,0,2,17,1],
+"struct_terraria_1_1_physics_1_1_ball_collision_event.html":[1,0,2,18,1],
 "struct_terraria_1_1_physics_1_1_ball_pass_through_event.html":[1,0,2,18,2],
 "struct_terraria_1_1_physics_1_1_ball_pass_through_event.html":[2,0,2,17,2],
 "struct_terraria_1_1_physics_1_1_ball_step_result.html":[1,0,2,18,3],
