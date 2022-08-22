@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ItemShopSellbackHelper.cs
++++ src/tModLoader/Terraria/GameContent/ItemShopSellbackHelper.cs
+@@ -29,7 +_,7 @@
+ 		public void Add(Item item) {
+ 			ItemMemo itemMemo = _memos.Find((ItemMemo x) => x.Matches(item));
+ 			if (itemMemo != null)
+-				itemMemo.stack += item.stack;
++				itemMemo.stack += item.stack;//Probably needs an OnStack()
+ 			else
+ 				_memos.Add(new ItemMemo(item));
+ 		}

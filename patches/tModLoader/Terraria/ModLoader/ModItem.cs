@@ -805,6 +805,10 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
+		public virtual void OnStack(Item item2) {
+
+		}
+
 		/// <summary>
 		/// Returns if the normal reforge pricing is applied.
 		/// If true or false is returned and the price is altered, the price will equal the altered price.

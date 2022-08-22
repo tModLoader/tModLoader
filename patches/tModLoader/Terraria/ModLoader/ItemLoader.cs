@@ -1428,6 +1428,31 @@ namespace Terraria.ModLoader
 
 			return item1.ModItem?.CanStackInWorld(item2) ?? true;
 		}
+		
+		private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
+
+		/// <summary>
+		/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
+		/// </summary>
+		public static void OnStack(Item item1, Item item2, int numberToBeTransfered) {
+			foreach (var g in HookOnStack.Enumerate(globalItems)) {
+				g.OnStack(item1, item2, numberToBeTransfered);
+			}
+
+			item1.ModItem?.OnStack(item2);
+			int stack1 = item1.stack;
+			int stack2 = item2.stack;
+			int maxstack = item1.maxStack;
+			int numToMaxStack = item1.maxStack - item1.stack;
+			if (numToMaxStack >= 0) {
+
+			}
+			else {
+
+			}
+			//item1.stack += numberToBeTransfered;
+			//item2.stack -= numberToBeTransfered;
+		}
 
 		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);
 		private static HookList HookReforgePrice = AddHook<DelegateReforgePrice>(g => g.ReforgePrice);

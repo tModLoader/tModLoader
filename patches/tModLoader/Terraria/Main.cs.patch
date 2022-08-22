@@ -3420,11 +3420,23 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31830,13 +_,15 @@
+@@ -31828,15 +_,25 @@
+ 
+ 		public static void CraftItem(Recipe r) {
  			int stack = mouseItem.stack;
- 			mouseItem = r.createItem.Clone();
- 			mouseItem.stack += stack;
+-			mouseItem = r.createItem.Clone();
+-			mouseItem.stack += stack;
 -			if (stack <= 0)
++			//mouseItem = r.createItem.Clone();//This is different than the normal way of item stacking and deletes the original item.
++			//mouseItem.stack += stack;
++			if (mouseItem.stack > 0) {
++				ItemLoader.OnStack(r.createItem.Clone(), mouseItem, r.createItem.stack);//Craft item.  Need to check potential issues with adding to stack instead of cloning.
++				mouseItem.stack += r.createItem.stack;//Is it possible to craft an item that is a different type than the mouseItem?  I wouldn't think so.
++			}
++			else {
++				mouseItem = r.createItem.Clone();
++			}
++			
 +			//if (stack <= 0)
 +			if (stack <= 0 && mouseItem.maxStack == 1) // TML: #StackablePrefixWeapons: Gameplay impact: stackable items will not get a prefix on craft
  				mouseItem.Prefix(-1);

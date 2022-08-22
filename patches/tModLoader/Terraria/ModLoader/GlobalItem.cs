@@ -687,6 +687,16 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
+		/// Allows you to make things happen when items stack together.
+		/// </summary>
+		/// <param name="item1">The item that will be removed or have its stack reduced.</param>
+		/// <param name="item2">The item that will have its stack increased.</param>
+		/// <param name="numberToBeTransfered">The number to be transfered from item1 to item2.</param>
+		public virtual void OnStack(Item item1, Item item2, int numberToBeTransfered) {
+			
+		}
+
+		/// <summary>
 		/// Returns if the normal reforge pricing is applied.
 		/// If true or false is returned and the price is altered, the price will equal the altered price.
 		/// The passed reforge price equals the item.value. Vanilla pricing will apply 20% discount if applicable and then price the reforge at a third of that value.

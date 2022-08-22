@@ -8,7 +8,7 @@ using System.IO;
 
 namespace ExampleMod.Common.GlobalItems
 {
-	internal class ItemWithGrowingDamage : GlobalItem
+	internal class WeaponWithGrowingDamage : GlobalItem
 	{
 		public int experience;
 		public static int experiencePerLevel = 100;
@@ -17,8 +17,21 @@ namespace ExampleMod.Common.GlobalItems
 		public override bool InstancePerEntity => true;
 
 		public override bool AppliesToEntity(Item entity, bool lateInstantiation) {
-			//Apply this GlobalItem to all swords
-			return entity.DamageType == DamageClass.Melee && entity.noMelee == false && entity.useStyle == ItemUseStyleID.Swing;
+			if (entity.accessory)
+				return false;//Exclude items like 
+
+			//Apply to all weapons
+			bool isWeapon;
+			switch (entity.type) {
+				case ItemID.CoinGun:
+					isWeapon = true;
+					break;
+				default:
+					isWeapon = entity.damage > 0 && entity.ammo == 0;
+					break;
+			}
+
+			return isWeapon;
 		}
 
 		public override void LoadData(Item item, TagCompound tag) {
@@ -66,7 +79,7 @@ namespace ExampleMod.Common.GlobalItems
 		public override void OnCreate(Item item, ItemCreationContext context) {
 			if (context is RecipeCreationContext rContext) {
 				foreach (Item ingredient in rContext.ConsumedItems) {
-					if (ingredient.TryGetGlobalItem(out ItemWithGrowingDamage ingredientGlobal)) {
+					if (ingredient.TryGetGlobalItem(out WeaponWithGrowingDamage ingredientGlobal)) {
 						//Transfer all experience from consumed items to the crafted item.
 						GainExperience(item, ingredientGlobal.experience);
 					}

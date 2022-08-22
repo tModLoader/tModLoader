@@ -1014,6 +1014,15 @@
  										flag2 = true;
  										break;
  									}
+@@ -22903,7 +_,7 @@
+ 								chest.item[num9].SetDefaults(3093);
+ 								chest.item[num9].stack = 1;
+ 								if (genRand.Next(5) == 0)
+-									chest.item[num9].stack += genRand.Next(2);
++									chest.item[num9].stack += genRand.Next(2);//Planning to ignore these
+ 
+ 								if (genRand.Next(10) == 0)
+ 									chest.item[num9].stack += genRand.Next(3);
 @@ -23753,7 +_,7 @@
  				Main.tile[i, j] = new Tile();
  
