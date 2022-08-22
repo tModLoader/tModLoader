@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.damage = 25;
 			Item.knockBack = 6.5f;
 			Item.noUseGraphic = true; // When true, the item's sprite will not be visible while the item is in use. This is true because the spear projectile is what's shown so we do not want to show the spear sprite as well.
-			Item.DamageType = DamageClass.MeleeNoSpeed;
+			Item.DamageType = DamageClass.Melee;
 			Item.noMelee = true; // Allows the item's animation to do damage. This is important because the spear is actually a projectile instead of an item. This prevents the melee hitbox of this item.
 
 			// Projectile Properties
