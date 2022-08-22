@@ -51,6 +51,7 @@
 			public static bool[] Spears = Factory.CreateBoolSet(
 				Spear,
 				Trident,
+				Swordfish,
 				ThunderSpear,
 				TheRottedFork,
 				DarkLance,
