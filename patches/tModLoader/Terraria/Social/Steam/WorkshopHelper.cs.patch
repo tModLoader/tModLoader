@@ -34,7 +34,7 @@
  			}
  
  			public class Downloader
-@@ -34,14 +_,28 @@
+@@ -34,14 +_,29 @@
  					private set;
  				}
  
@@ -53,7 +53,8 @@
  				public static Downloader Create() => new Downloader();
  
  				public List<string> GetListOfSubscribedItemsPaths() {
-+					return new AppId_t[] { ModLoader.Engine.Steam.TerrariaAppId_t, ModLoader.Engine.Steam.TMLAppID_t }
++					// Needs to read tML then Terraria to simplify obtaining tmodloader workshop folder
++					return new AppId_t[] { ModLoader.Engine.Steam.TMLAppID_t, ModLoader.Engine.Steam.TerrariaAppId_t }
 +						.Select(app => Path.Combine(GetWorkshopFolder(app), "content", app.ToString()))
 +						.Where(Directory.Exists)
 +						.SelectMany(Directory.EnumerateDirectories)
@@ -166,7 +167,7 @@
 +						return;
 +
 +					do {
-+						ForceCallbacks();
++						SteamedWraps.ForceCallbacks();
 +					} while (_createCallback == EResult.k_EResultNone);
 +
 +					if (_createCallback != EResult.k_EResultOK)
@@ -174,7 +175,7 @@
 +
 +					UpdateItem(creatingItem:true);
 +					do {
-+						ForceCallbacks();
++						SteamedWraps.ForceCallbacks();
 +					} while (_createCallback == EResult.k_EResultNone);
  				}
  
@@ -183,7 +184,7 @@
 +					_createCallback = param.m_eResult;
 +					if (param.m_eResult != EResult.k_EResultOK) {
 +						_issueReporter.ReportDelayedUploadProblemWithoutKnownReason("Workshop.ReportIssue_FailedToPublish_WithoutKnownReason", param.m_eResult.ToString());
-+						ReportCheckSteamLogs();
++						SteamedWraps.ReportCheckSteamLogs();
 +						_endAction(this);
 +						return;
 +					}
@@ -237,13 +238,16 @@
  						SteamUGC.SetItemDescription(uGCUpdateHandle_t, _entryData.Description);
  
  					SteamUGC.SetItemContent(uGCUpdateHandle_t, _entryData.ContentFolderPath);
-@@ -253,21 +_,65 @@
+@@ -253,21 +_,68 @@
  					if (_entryData.Visibility.HasValue)
  						SteamUGC.SetItemVisibility(uGCUpdateHandle_t, _entryData.Visibility.Value);
  
-+					SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, GetCurrentSteamLangKey());
++					SteamUGC.SetItemUpdateLanguage(uGCUpdateHandle_t, SteamedWraps.GetCurrentSteamLangKey());
 +
 +					string patchNotes = "";
++
++					// Needed for backwards compat on version metadata change
++					_entryData.BuildData["version"] = "0.0.0";
 +
 +					if (_entryData.BuildData != null) {
 +						foreach (var key in MetadataKeys) {
@@ -285,7 +289,7 @@
 +						return;
 +
 +					do {
-+						ForceCallbacks();
++						SteamedWraps.ForceCallbacks();
 +					} while (_updateCallback == EResult.k_EResultNone);
  				}
  
@@ -299,7 +303,7 @@
  
 -					switch (param.m_eResult) {
 +					if (_updateCallback != EResult.k_EResultOK)
-+						ReportCheckSteamLogs();
++						SteamedWraps.ReportCheckSteamLogs();
 +
 +					switch (_updateCallback) {
  						case EResult.k_EResultOK:

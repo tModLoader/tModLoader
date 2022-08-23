@@ -1523,6 +1523,15 @@
  			if (!dedServ && (double)screenPosition.Y < worldSurface * 16.0 + 16.0 && netMode != 2) {
  				Star.UpdateStars();
  				Cloud.UpdateClouds();
+@@ -12823,7 +_,7 @@
+ 			bool flag = false;
+ 			if (netMode == 0) {
+ 				flag |= ingameOptionsWindow;
+-				flag |= (InGameUI.IsVisible && (InGameUI.CurrentState == ManageControlsMenu || InGameUI.CurrentState == AchievementsMenu));
++				flag |= (InGameUI.IsVisible && (InGameUI.CurrentState == ManageControlsMenu || InGameUI.CurrentState == AchievementsMenu || InGameUI.CurrentState == Interface.modConfigList || InGameUI.CurrentState == Interface.modConfig));
+ 				if (autoPause) {
+ 					flag |= playerInventory;
+ 					flag |= (LocalPlayer.sign >= 0);
 @@ -12862,6 +_,10 @@
  
  			if (playerInventory) {
@@ -3915,7 +3924,7 @@
  		private static void TryDisposingEverything() {
  			ChromaInitializer.DisableAllDeviceGroups();
 +
-+			WorkshopHelper.OnGameExitCleanup(); // Added by TML.
++			SteamedWraps.OnGameExitCleanup(); // Added by TML.
 +			TerrariaSteamClient.Shutdown();
 +
  			CaptureManager.Instance.Dispose();

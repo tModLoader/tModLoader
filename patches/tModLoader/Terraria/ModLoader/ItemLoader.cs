@@ -143,16 +143,16 @@ namespace Terraria.ModLoader
 			=> item.IsCandidateForReforge && item.damage > 0 && item.ammo == 0 && !item.accessory;
 
 		internal static bool MeleePrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && item.melee && !item.noUseGraphic;
+			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.MeleePrefix();
 
 		internal static bool WeaponPrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && item.melee && item.noUseGraphic;
+			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.WeaponPrefix();
 
 		internal static bool RangedPrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && item.ranged; //(item.ranged || item.thrown);
+			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.RangedPrefix();
 
 		internal static bool MagicPrefix(Item item)
-			=> item.ModItem != null && GeneralPrefix(item) && (item.magic || item.summon);
+			=> item.ModItem != null && GeneralPrefix(item) && item.ModItem.MagicPrefix();
 
 		private static HookList HookSetDefaults = AddHook<Action<Item>>(g => g.SetDefaults);
 

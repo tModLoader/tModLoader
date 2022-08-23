@@ -69,18 +69,50 @@ namespace Terraria
 
 		//Random extensions
 
+		/// <summary>
+		/// Returns a random element from the provided array.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="r"></param>
+		/// <param name="array"></param>
+		/// <returns></returns>
 		public static T Next<T>(this UnifiedRandom r, T[] array)
 			=> array[r.Next(array.Length)];
 
+		/// <summary>
+		/// Returns a random element from the provided list.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="r"></param>
+		/// <param name="list"></param>
+		/// <returns></returns>
 		public static T Next<T>(this UnifiedRandom r, IList<T> list)
 			=> list[r.Next(list.Count)];
 
+		/// <summary>
+		/// Generates a random value between 0f (inclusive) and <paramref name="maxValue"/> (exclusive). <br/>It will not return <paramref name="maxValue"/>.
+		/// </summary>
+		/// <param name="r"></param>
+		/// <param name="maxValue"></param>
+		/// <returns></returns>
 		public static float NextFloat(this UnifiedRandom r, float maxValue)
 			=> (float)r.NextDouble() * maxValue;
 
+		/// <summary>
+		/// Generates a random value between <paramref name="minValue"/> (inclusive) and <paramref name="maxValue"/> (exclusive). <br/>It will not return <paramref name="maxValue"/>.
+		/// </summary>
+		/// <param name="r"></param>
+		/// <param name="minValue"></param>
+		/// <param name="maxValue"></param>
+		/// <returns></returns>
 		public static float NextFloat(this UnifiedRandom r, float minValue, float maxValue)
 			=> (float)r.NextDouble() * (maxValue - minValue) + minValue;
 
+		/// <summary>
+		/// Returns true or false randomly with equal chance.
+		/// </summary>
+		/// <param name="r"></param>
+		/// <returns></returns>
 		public static bool NextBool(this UnifiedRandom r)
 			=> r.NextDouble() < .5;
 

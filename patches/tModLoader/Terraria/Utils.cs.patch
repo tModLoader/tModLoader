@@ -85,6 +85,18 @@
  #endif
  			}
  		}
+@@ -551,6 +_,11 @@
+ 			return array;
+ 		}
+ 
++		/// <summary>
++		/// Generates a random value between 0f (inclusive) and 1f (exclusive). <br/>It will not return 1f.
++		/// </summary>
++		/// <param name="r"></param>
++		/// <returns></returns>
+ 		public static float NextFloat(this UnifiedRandom r) => (float)r.NextDouble();
+ 		public static float NextFloatDirection(this UnifiedRandom r) => (float)r.NextDouble() * 2f - 1f;
+ 		public static float NextFloat(this UnifiedRandom random, FloatRange range) => random.NextFloat() * (range.Maximum - range.Minimum) + range.Minimum;
 @@ -1140,14 +_,17 @@
  				text.Substring(0, maxCharactersDisplayed);
  

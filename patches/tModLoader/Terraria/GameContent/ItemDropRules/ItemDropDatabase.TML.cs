@@ -112,7 +112,7 @@ namespace Terraria.GameContent.ItemDropRules
 
 			item = ItemID.DestroyerBossBag;
 			RegisterToItem(item, ItemDropRule.Common(ItemID.MechanicalWagonPiece));
-			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.SkeletronPrimeMask, 7));
+			RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.DestroyerMask, 7));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.SoulofMight, 1, 25, 40));
 			RegisterToItem(item, ItemDropRule.Common(ItemID.HallowedBar, 1, 20, 35));
 			RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.TheDestroyer));
@@ -1019,7 +1019,7 @@ namespace Terraria.GameContent.ItemDropRules
 				ItemDropRule.NotScalingWithLuck(ItemID.FruitcakeChakram, chanceDenominator: 150),
 				ItemDropRule.NotScalingWithLuck(ItemID.HandWarmer, chanceDenominator: 150),
 				ItemDropRule.NotScalingWithLuck(ItemID.Toolbox, chanceDenominator: 300),
-				ItemDropRule.NotScalingWithLuck(ItemID.ReindeerBells, chanceDenominator: 40),
+				ItemDropRule.NotScalingWithLuck(ItemID.ReindeerAntlers, chanceDenominator: 40),
 				ItemDropRule.NotScalingWithLuck(ItemID.Holly, chanceDenominator: 10),
 				vanityRule,
 				foodRule,

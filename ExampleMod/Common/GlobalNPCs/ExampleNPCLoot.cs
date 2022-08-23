@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ExampleMod.Content.Items;
 using ExampleMod.Common.ItemDropRules.DropConditions;
+using System.Linq;
 
 namespace ExampleMod.Common.GlobalNPCs
 {
@@ -72,6 +73,17 @@ namespace ExampleMod.Common.GlobalNPCs
 				);
 				npcLoot.Add(ItemDropRule.NormalvsExpert(4269, 6, 1));
 				*/
+			}
+			// Editing an existing drop rule, but for a boss
+			// In addition to this code, we also do similar code in Common/GlobalItems/BossBagLoot.cs to edit the boss bag loot. Remember to do both if your edits should affect boss bags as well.
+			if (npc.type == NPCID.QueenBee) {
+				foreach (var rule in npcLoot.Get()) {
+					if (rule is DropBasedOnExpertMode dropBasedOnExpertMode && dropBasedOnExpertMode.ruleForNormalMode is OneFromOptionsNotScaledWithLuckDropRule oneFromOptionsDrop && oneFromOptionsDrop.dropIds.Contains(ItemID.BeeGun)) {
+						var original = oneFromOptionsDrop.dropIds.ToList();
+						original.Add(ModContent.ItemType<Content.Items.Accessories.WaspNest>());
+						oneFromOptionsDrop.dropIds = original.ToArray();
+					}
+				}
 			}
 
 			if (npc.type == NPCID.Crimera || npc.type == NPCID.Corruptor) {

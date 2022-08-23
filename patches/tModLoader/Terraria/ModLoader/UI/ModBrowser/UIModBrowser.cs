@@ -261,7 +261,7 @@ namespace Terraria.ModLoader.UI.ModBrowser
 			if (downloads.Count <= 0)
 				return;
 
-			WorkshopHelper.ModManager.Download(downloads);
+			WorkshopHelper.SetupDownload(downloads, Interface.modBrowserID);
 
 			if (_missingMods.Count > 0) {
 				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.MBModsNotFoundOnline", string.Join(",", _missingMods)), Interface.modBrowserID);

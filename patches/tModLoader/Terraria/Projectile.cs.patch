@@ -25,9 +25,21 @@
  		public bool usesLocalNPCImmunity;
  		public bool usesIDStaticNPCImmunity;
  		public int maxPenetrate = 1;
-@@ -100,7 +_,6 @@
+@@ -97,10 +_,18 @@
+ 		public bool netUpdate;
+ 		public bool netUpdate2;
+ 		public int netSpam;
++		/// <summary>
++		/// Holds the value of <see cref="Entity.position"/> from previous updates from newest to oldest. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailCacheLength"/> and <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly.
++		/// </summary>
  		public Vector2[] oldPos = new Vector2[10];
++		/// <summary>
++		/// Holds the value of <see cref="Projectile.rotation"/> from previous updates from newest to oldest. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailCacheLength"/> and <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly.
++		/// </summary>
  		public float[] oldRot = new float[10];
++		/// <summary>
++		/// Holds the value of <see cref="Projectile.spriteDirection"/> from previous updates from newest to oldest. Use for drawing trails. Must be used with <see cref="ProjectileID.Sets.TrailCacheLength"/> and <see cref="ProjectileID.Sets.TrailingMode"/> to be used properly.
++		/// </summary>
  		public int[] oldSpriteDirection = new int[10];
 -		public bool minion;
  		public float minionSlots;
