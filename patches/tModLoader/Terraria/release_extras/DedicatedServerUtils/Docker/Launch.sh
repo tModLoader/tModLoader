@@ -1,12 +1,14 @@
 #!/bin/bash
 
-function pseudoStdin {
+#shellcheck disable=2164
+
+function pseudo_stdin {
 	tmux send-keys "$1" Enter
 }
 
 function stop {
 	echo Saving
-	pseudoStdin "exit"
+	pseudo_stdin "exit"
 	pid=$(pgrep dotnet)
 	while [[ -e /proc/$pid ]]
 	do
@@ -21,7 +23,7 @@ trap stop SIGTERM SIGINT
 
 # Installing/updating mods
 mkdir -p ~/.local/share/Terraria
-./ManageServer.sh -u --modsonly --checkdir ~/.local/share/Terraria --folder ~/.local/share/Terraria/wsmods
+./ManageServer.sh -u --mods-only --check-dir ~/.local/share/Terraria --folder ~/.local/share/Terraria/wsmods
 
 # Symlink tML's local dotnet install so that it can persist through runs
 mkdir -p ~/.local/share/Terraria/dotnet

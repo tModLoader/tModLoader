@@ -67,7 +67,7 @@ RUN steamcmd +quit
 #NOTE: Update url before merging
 RUN curl -O https://raw.githubusercontent.com/pollen00/tModLoader/serversetup/patches/tModLoader/Terraria/release_extras/DedicatedServerUtils/ManageServer.sh \
  && chmod u+x ManageServer.sh \
- && ./ManageServer.sh -i -g --nomods
+ && ./ManageServer.sh -i -g --no-mods
 
 #NOTE: Temp step to download the no steam tML build. Remove before merging.
 RUN cd $HOME/tModLoader \
