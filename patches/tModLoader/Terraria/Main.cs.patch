@@ -8,7 +8,14 @@
  using ReLogic.Content;
  using ReLogic.Content.Sources;
  #if MAC
-@@ -19,7 +_,7 @@
+@@ -13,13 +_,14 @@
+ using ReLogic.OS;
+ using ReLogic.Peripherals.RGB;
+ using ReLogic.Utilities;
++using SDL2;
+ using System;
+ using System.Collections;
+ using System.Collections.Concurrent;
  using System.Collections.Generic;
  using System.Diagnostics;
  #if WINDOWS
@@ -1053,8 +1060,13 @@
  		}
  
  		public Main() : base(dedServ) {
-@@ -4846,7 +_,7 @@
+@@ -4844,9 +_,12 @@
+ 			if (dedServ)
+ 				return;
  
++			if (OperatingSystem.IsWindows()) // FNA sets this to "1" on Windows. Terraria does not want this. See #2020
++				SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
++
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
