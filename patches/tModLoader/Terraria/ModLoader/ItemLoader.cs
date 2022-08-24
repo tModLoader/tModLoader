@@ -1478,7 +1478,7 @@ namespace Terraria.ModLoader
 				transferingItem.favorited = false;
 			}
 
-			acceptingItem.ModItem?.OnStack(transferingItem);
+			acceptingItem.ModItem?.OnStack(transferingItem, numTransfered, firstStackSplit);
 
 			acceptingItem.stack += numTransfered;
 			if (reduceItem2Stack)

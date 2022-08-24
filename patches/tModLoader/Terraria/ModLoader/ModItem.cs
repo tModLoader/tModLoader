@@ -805,7 +805,7 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		public virtual void OnStack(Item item2) {
+		public virtual void OnStack(Item item2, int numTransfered, bool firstStackSplit) {
 
 		}
 
