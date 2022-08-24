@@ -4,7 +4,6 @@ using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.Enums;
 using Terraria.Localization;
-using Terraria.Utilities;
 using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content.Items.Weapons
@@ -20,36 +19,18 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override void SetDefaults() {
 
-			Item.DefaultToSpear(ModContent.ProjectileType<Projectiles.ExampleJoustingLanceProjectile>(), 3.5f, 24); // A special method that sets a variety of item parameters that make the item act like a spear weapon.
-
-			// The above Item.DefaultToSpear() does the following. Uncomment these if you don't want to use the above method or want to change something about it.
-			// Item.useStyle = ItemUseStyleID.Shoot;
-			// Item.useAnimation = 31;
-			// Item.useTime = 31;
-			// Item.shootSpeed = 3.5f;
-			// Item.width = 32;
-			// Item.height = 32;
-			// Item.UseSound = SoundID.Item1;
-			// Item.shoot = ModContent.ProjectileType<Projectiles.ExampleJoustingLance>();
-			// Item.noMelee = true;
-			// Item.noUseGraphic = true;
-			// Item.useAnimation = 24
-			// Item.useTime = 24;
+			// A special method that sets a variety of item parameters that make the item act like a spear weapon.
+			// To see everything DefaultToSpear() does, right click the method in Visual Studios and choose "Go To Definition" (or press F12).
+			// The shoot speed will affect how far away the projectile spawns from the player's hand.
+			// If you are using the custom AI in your projectile (and not aiStyle 19 and AIType = ProjectileID.JoustingLance), the standard value is 1f.
+			// If you are using aiStyle 19 and AIType = ProjectileID.JoustingLance, then multiply the value by about 3.5f.
+			Item.DefaultToSpear(ModContent.ProjectileType<Projectiles.ExampleJoustingLanceProjectile>(), 1f, 24);
 
 			Item.DamageType = DamageClass.MeleeNoSpeed; // We need to use MeleeNoSpeed here so that attack speed doesn't effect our held projectile.
 
 			Item.SetWeaponValues(56, 12f, 0); // A special method that sets the damage, knockback, and bonus critical strike chance.
 
-			// The above Item.SetWeaponValues() does the following. Uncomment these if you don't want to use the above method.
-			// Item.damage = 56;
-			// Item.knockBack = 12f;
-			// Item.crit = 0; // Even though this says 0, this is more like "bonus critical strike chance". All weapons have a base critical strike chance of 4.
-
 			Item.SetShopValues(ItemRarityColor.LightRed4, Item.buyPrice(0, 6)); // A special method that sets the rarity and value.
-
-			// The above Item.SetShopValues() does the following. Uncomment these if you don't want to use the above method.
-			// Item.rare = ItemRarityID.LightRed;
-			// Item.value = Item.buyPrice(0, 6); // The value of the item. In this case, 6 gold. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
 
 			Item.channel = true; // Channel is important for our projectile.
 		}
@@ -82,12 +63,11 @@ namespace ExampleMod.Content.Items.Weapons
 
 			int itemType = ModContent.ItemType<ExampleJoustingLance>(); // Change this to your item
 
-			double damageTaken = Main.CalculateDamagePlayersTake((int)damage, Player.statDefense);
-
-			if (!Player.immune && damageTaken >= 1.0 && Player.inventory[Player.selectedItem].type == itemType) {
+			if (Player.inventory[Player.selectedItem].type == itemType) {
 				for (int j = 0; j < Main.maxProjectiles; j++) {
-					if (Main.projectile[j].active && Main.projectile[j].owner == Player.whoAmI) {
-						Main.projectile[j].active = false;
+					Projectile currentProj = Main.projectile[j];
+					if (currentProj.active && currentProj.owner == Player.whoAmI && currentProj.type == ItemLoader.GetItem(itemType).Item.shoot) {
+						currentProj.active = false;
 					}
 				}
 			}
