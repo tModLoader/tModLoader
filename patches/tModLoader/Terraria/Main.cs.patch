@@ -466,51 +466,22 @@
  		public static void RegisterItemAnimation(int index, DrawAnimation animation) {
  			if (!itemAnimationsRegistered.Contains(index))
  				itemAnimationsRegistered.Add(index);
-@@ -2837,11 +_,13 @@
+@@ -2837,6 +_,7 @@
  			}
  		}
  
--		public static void SetGraphicsProfile(GraphicsProfile profile, bool forceSet) {
-+		private static bool SetGraphicsProfile(GraphicsProfile profile, bool forceSet) {
++		/* Disabled, tML only supports HiDef		
+ 		public static void SetGraphicsProfile(GraphicsProfile profile, bool forceSet) {
  			if (_currentGraphicsProfile != profile || forceSet) {
  				_selectedGraphicsProfile = profile;
- 				SetGraphicsProfileInternal();
-+				return graphics.GraphicsDevice.GraphicsProfile == profile;
+@@ -2887,6 +_,7 @@
+ 					field.SetValue(field2.GetValue(null), 8192);
  			}
-+			return false;
  		}
++		*/
  
- 		private static void SetGraphicsProfileInternal() {
-@@ -2849,10 +_,14 @@
- 			graphics.GraphicsProfile = _selectedGraphicsProfile;
- 			switch (_selectedGraphicsProfile) {
- 				case GraphicsProfile.HiDef:
-+					// update resolution related variables alongside TrySupporting8K
-+					Configuration.Get("Support8K", ref Support8K);
-+					int hiRes = Support8K ? 8192 : 4096;
--					maxScreenW = 4096;
-+					maxScreenW = hiRes;
--					maxScreenH = 4096;
-+					maxScreenH = hiRes;
--					_renderTargetMaxSize = 4096;
-+					_renderTargetMaxSize = hiRes;
-+					if (Support8K)
--					TrySupporting8K();
-+						TrySupporting8K();
- 					break;
- 				case GraphicsProfile.Reach:
- 					maxScreenW = 1920;
-@@ -2870,8 +_,8 @@
- 					SetGraphicsProfileInternal();
- 				}
- 			}
--
--			instance.EnsureRenderTargetContent();
-+			// Seems unnecessary as graphics profile is only changed very early on, before the first frame is rendered
-+			// Main.instance.EnsureRenderTargetContent();
- 		}
- 
- 		private static void TrySupporting8K() {
+ 		public static void AnglerQuestSwap() {
+ 			if (netMode == 1)
 @@ -2900,6 +_,7 @@
  				flag2 = false;
  				anglerQuest = rand.Next(anglerQuestItemNetIDs.Length);
@@ -1060,7 +1031,7 @@
  		}
  
  		public Main() : base(dedServ) {
-@@ -4844,9 +_,12 @@
+@@ -4844,9 +_,13 @@
  			if (dedServ)
  				return;
  
@@ -1070,6 +1041,7 @@
  			Configuration.Load();
  			graphics = new GraphicsDeviceManager(this as Game);
 -			base.Content.RootDirectory = "Content";
++			graphics.GraphicsProfile = GraphicsProfile.HiDef; // use HiDef by default for tML.
 +			FNALogging.GraphicsInit(graphics);
  		}
  
@@ -1101,7 +1073,7 @@
  
  			musicFade[50] = 1f;
  			for (int i = 0; i < 10; i++) {
-@@ -4955,6 +_,9 @@
+@@ -4955,11 +_,15 @@
  
  			if (dedServ) {
  				Initialize_AlmostEverything();
@@ -1111,6 +1083,13 @@
  				return;
  			}
  
+ 			TimeLogger.Initialize();
+-			LoadContent_TryEnteringHiDef();
++			// LoadContent_TryEnteringHiDef();
++			// HiDef graphics profile set in Main ctor
+ 			ClientInitialize();
+ 			base.Initialize();
+ 		}
 @@ -8372,11 +_,18 @@
  		public static void LoadTestLog(string logname) {
  		}
@@ -1140,7 +1119,7 @@
  			});
  
  			VanillaContentValidator.Instance = new VanillaContentValidator("Terraria.IO.Data.ResourcePacksDefaultInfo.tsv");
-@@ -8411,6 +_,8 @@
+@@ -8411,8 +_,11 @@
  			AssetInitializer.LoadSplashAssets(asyncLoadForSounds: true);
  			ChromaInitializer.Load();
  			_gameContentLoadProcess = LoadContent_Deferred();
@@ -1148,7 +1127,18 @@
 +			ModLoader.ModLoader.PrepareAssets();
  		}
  
++		/*
  		private void LoadContent_TryEnteringHiDef() {
+ 			Configuration.Load();
+ 			Configuration.Get("UseExperimentalFeatures", ref UseExperimentalFeatures);
+@@ -8428,6 +_,7 @@
+ 				SetGraphicsProfile(GraphicsProfile.HiDef, forceSet: false);
+ #endif
+ 		}
++		*/
+ 
+ 		protected IEnumerator LoadContent_Deferred() {
+ 			yield return null;
 @@ -8892,6 +_,8 @@
  
  					if (SceneMetrics.ActiveMusicBox == 86)
@@ -4556,17 +4546,6 @@
  							NewLightning();
  					}
  					else if ((double)GraveyardVisualIntensity >= 0.9 && rand.Next(7200) == 0) {
-@@ -45527,7 +_,9 @@
- 		}
- 
- 		public void LoadBackground(int i) {
--			if (i >= 0 && TextureAssets.Background[i].State == AssetState.NotLoaded) {
-+			// sometimes when updating GraphicsProfile from Reach to HiDef, the device is re-created rather than reset
-+			// This happens early, and the background loading texture may be disposed
-+			if (i >= 0 && (TextureAssets.Background[i].State == AssetState.NotLoaded || TextureAssets.Background[i].IsDisposed)) {
- 				Assets.Request<Texture2D>(TextureAssets.Background[i].Name);
- 				backgroundWidth[i] = TextureAssets.Background[i].Width();
- 				backgroundHeight[i] = TextureAssets.Background[i].Height();
 @@ -45745,12 +_,12 @@
  			if (!WorldGen.drunkWorldGen && !mapFullscreen && (double)(screenPosition.Y / 16f) <= worldSurface + 10.0) {
  				if (BackgroundEnabled) {
