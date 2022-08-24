@@ -1429,29 +1429,60 @@ namespace Terraria.ModLoader
 			return item1.ModItem?.CanStackInWorld(item2) ?? true;
 		}
 		
-		private static HookList HookOnStack = AddHook<Action<Item, Item, int>>(g => g.OnStack);
+		private static HookList HookOnStack = AddHook<Action<Item, Item, int, bool>>(g => g.OnStack);
 
 		/// <summary>
-		/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
+		/// Calls CanStack.  Returns false if CanStack is false.  Calls StackItems if CanStack is true<br/>
+		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.<br/>
 		/// </summary>
-		public static void OnStack(Item item1, Item item2, int numberToBeTransfered) {
-			foreach (var g in HookOnStack.Enumerate(globalItems)) {
-				g.OnStack(item1, item2, numberToBeTransfered);
-			}
+		/// <param name="item1">Item where the stack is being increased.</param>
+		/// <param name="item2">Item where the stack is being reduced.  If remaining stack is <=0, it is set to defaults.</param>
+		/// <param name="numTransfered">Amount to be transfered </param>
+		/// <param name="stack2">The final stack of item2</param>
+		public static bool TryStackItems(Item item1, Item item2, out int numTransfered, bool reduceItem2Stack = true) {
+			numTransfered = 0;
+			if (!CanStack(item1, item2))
+				return false;
 
-			item1.ModItem?.OnStack(item2);
-			int stack1 = item1.stack;
-			int stack2 = item2.stack;
-			int maxstack = item1.maxStack;
-			int numToMaxStack = item1.maxStack - item1.stack;
-			if (numToMaxStack >= 0) {
+			StackItems(item1, item2, out numTransfered, reduceItem2Stack);
 
+			return true;
+		}
+
+		/// <summary>
+		/// Stacks item1 and item2.  Calls all GlobalItem.OnStack and ModItem.OnStack hooks if item1.stack < item1.maxStack.
+		/// </summary>
+		/// <param name="acceptingItem">Item where the stack is being increased.</param>
+		/// <param name="transferingItem">Item where the stack is being reduced.  If remaining stack is <=0, it is set to defaults.</param>
+		/// <param name="numTransfered">Amount to be transfered </param>
+		/// <param name="stack2">The final stack of item2</param>
+		public static void StackItems(Item acceptingItem, Item transferingItem, out int numTransfered, bool reduceItem2Stack = true, int numToTransfer = int.MinValue, bool firstStackSplit = false) {
+			if (numToTransfer == int.MinValue) {
+				numTransfered = 0;
+				int numToMaxStack = acceptingItem.maxStack - acceptingItem.stack;
+				if (numToMaxStack <= 0)
+					return;
+
+				numTransfered = Math.Min(transferingItem.stack, numToMaxStack);
 			}
 			else {
-
+				numTransfered = numToTransfer;
 			}
-			//item1.stack += numberToBeTransfered;
-			//item2.stack -= numberToBeTransfered;
+
+			foreach (var g in HookOnStack.Enumerate(globalItems)) {
+				g.OnStack(acceptingItem, transferingItem, numTransfered, firstStackSplit);
+			}
+
+			if (transferingItem.favorited) {
+				acceptingItem.favorited = true;
+				transferingItem.favorited = false;
+			}
+
+			acceptingItem.ModItem?.OnStack(transferingItem);
+
+			acceptingItem.stack += numTransfered;
+			if (reduceItem2Stack)
+				transferingItem.stack -= numTransfered;
 		}
 
 		private delegate bool DelegateReforgePrice(Item item, ref int reforgePrice, ref bool canApplyDiscount);

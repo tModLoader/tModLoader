@@ -26,24 +26,29 @@
  			if (t.type == 21 && ((t.frameX >= 72 && t.frameX <= 106) || (t.frameX >= 144 && t.frameX <= 178) || (t.frameX >= 828 && t.frameX <= 1006) || (t.frameX >= 1296 && t.frameX <= 1330) || (t.frameX >= 1368 && t.frameX <= 1402) || (t.frameX >= 1440 && t.frameX <= 1474)))
  				return true;
  
-@@ -229,11 +_,17 @@
+@@ -229,6 +_,14 @@
  							continue;
  
  						flag = true;
-+						// flag set above means "item of same type found in chest, able to be put into an empty slot later", which means we have to respect it before CanStack
-+						if (!ItemLoader.CanStack(Main.chest[i].item[j], item))
++						// flag set above means "item of same type found in chest, able to be put into an empty slot later", which means we have to respect it before TryStackItems
++						if (!ItemLoader.TryStackItems(Main.chest[i].item[j], item, out int stack2))//Quck stack to nearby chests
 +							continue;
 +
++						if (stack2 <= 0)
++							return item;
++
++						/* TML: #OnStackHook
  						int num = Main.chest[i].item[j].maxStack - Main.chest[i].item[j].stack;
  						if (num > 0) {
  							if (num > item.stack)
- 								num = item.stack;
- 
-+							ItemLoader.OnStack(Main.chest[i].item[j], item, num);//Quck stack to nearby chests
-+
- 							item.stack -= num;
- 							Main.chest[i].item[j].stack += num;
- 							if (item.stack <= 0) {
+@@ -241,6 +_,7 @@
+ 								return item;
+ 							}
+ 						}
++						*/
+ 					}
+ 					else {
+ 						flag2 = true;
 @@ -273,6 +_,17 @@
  			Tile tileSafely = Framing.GetTileSafely(X, Y);
  			int type2 = tileSafely.type;

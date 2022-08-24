@@ -18,114 +18,130 @@
  				}
  			}
  			else if (player.chest == -2) {
-@@ -399,10 +_,15 @@
+@@ -399,12 +_,17 @@
  								if (chest.item[i].stack >= chest.item[i].maxStack || !player.inventory[num].IsTheSameAs(chest.item[i]))
  									continue;
  
-+								if (!ItemLoader.CanStack(chest.item[i], player.inventory[num]))
++								if (!ItemLoader.TryStackItems(chest.item[i], player.inventory[num], out int numTransfered))//Deposit all into chest (Deposit All button)
 +									continue;
 +
++								/* TML: #OnStackHook
  								int num2 = player.inventory[num].stack;
  								if (player.inventory[num].stack + chest.item[i].stack > chest.item[i].maxStack)
  									num2 = chest.item[i].maxStack - chest.item[i].stack;
  
-+								ItemLoader.OnStack(chest.item[i], player.inventory[num], num2);//Deposit all into chest (Deposit All button)
-+
  								player.inventory[num].stack -= num2;
  								chest.item[i].stack += num2;
++								*/
  								SoundEngine.PlaySound(7);
-@@ -423,11 +_,14 @@
+ 								if (player.inventory[num].stack <= 0) {
+ 									player.inventory[num].SetDefaults();
+@@ -423,13 +_,19 @@
  									NetMessage.SendData(32, -1, -1, null, player.chest, i);
  							}
  							else if (player.chest == -3) {
--								if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
 +								//if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
-+								if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i]) && ItemLoader.CanStack(player.bank2.item[i], player.inventory[num])) {
+ 								if (player.bank2.item[i].stack < player.bank2.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank2.item[i])) {
++									if (!ItemLoader.TryStackItems(player.bank2.item[i], player.inventory[num], out int numTransfered))//Safe deposit all button
++										continue;
++
++									/* TML: #OnStackHook
  									int num3 = player.inventory[num].stack;
  									if (player.inventory[num].stack + player.bank2.item[i].stack > player.bank2.item[i].maxStack)
  										num3 = player.bank2.item[i].maxStack - player.bank2.item[i].stack;
  
-+									ItemLoader.OnStack(player.bank2.item[i], player.inventory[num], num3);//Safe deposit all button
-+
  									player.inventory[num].stack -= num3;
  									player.bank2.item[i].stack += num3;
++									*/
  									SoundEngine.PlaySound(7);
-@@ -443,11 +_,14 @@
+ 									if (player.inventory[num].stack <= 0) {
+ 										player.inventory[num].SetDefaults();
+@@ -443,13 +_,19 @@
  								}
  							}
  							else if (player.chest == -4) {
--								if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
 +								//if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
-+								if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i]) && ItemLoader.CanStack(player.bank3.item[i], player.inventory[num])) {
+ 								if (player.bank3.item[i].stack < player.bank3.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank3.item[i])) {
++									if (!ItemLoader.TryStackItems(player.bank3.item[i], player.inventory[num], out int numTransfered))//Defender's forge deposit all button
++										continue;
++
++									/* TML: #OnStackHook
  									int num4 = player.inventory[num].stack;
  									if (player.inventory[num].stack + player.bank3.item[i].stack > player.bank3.item[i].maxStack)
  										num4 = player.bank3.item[i].maxStack - player.bank3.item[i].stack;
  
-+									ItemLoader.OnStack(player.bank3.item[i], player.inventory[num], num4);//Defender's forge deposit all button
-+
  									player.inventory[num].stack -= num4;
  									player.bank3.item[i].stack += num4;
++									*/
  									SoundEngine.PlaySound(7);
-@@ -463,11 +_,14 @@
+ 									if (player.inventory[num].stack <= 0) {
+ 										player.inventory[num].SetDefaults();
+@@ -463,13 +_,19 @@
  								}
  							}
  							else if (player.chest == -5) {
--								if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
 +								//if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
-+								if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i]) && ItemLoader.CanStack(player.bank4.item[i], player.inventory[num])) {
+ 								if (player.bank4.item[i].stack < player.bank4.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank4.item[i])) {
++									if (!ItemLoader.TryStackItems(player.bank4.item[i], player.inventory[num], out int numTransfered))//Void bank deposit all button
++										continue;
++
++									/* TML: #OnStackHook
  									int num5 = player.inventory[num].stack;
  									if (player.inventory[num].stack + player.bank4.item[i].stack > player.bank4.item[i].maxStack)
  										num5 = player.bank4.item[i].maxStack - player.bank4.item[i].stack;
  
-+									ItemLoader.OnStack(player.bank4.item[i], player.inventory[num], num5);//Void bank deposit all button
-+
  									player.inventory[num].stack -= num5;
  									player.bank4.item[i].stack += num5;
++									*/
  									SoundEngine.PlaySound(7);
-@@ -482,11 +_,14 @@
+ 									if (player.inventory[num].stack <= 0) {
+ 										player.inventory[num].SetDefaults();
+@@ -482,13 +_,19 @@
  									}
  								}
  							}
--							else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
 +							//else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
-+							else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i]) && ItemLoader.CanStack(player.bank.item[i], player.inventory[num])) {
+ 							else if (player.bank.item[i].stack < player.bank.item[i].maxStack && player.inventory[num].IsTheSameAs(player.bank.item[i])) {
++								if (!ItemLoader.TryStackItems(player.bank.item[i], player.inventory[num], out int numTransfered))//Piggy bank deposit all button
++									continue;
++
++								/* TML: #OnStackHook
  								int num6 = player.inventory[num].stack;
  								if (player.inventory[num].stack + player.bank.item[i].stack > player.bank.item[i].maxStack)
  									num6 = player.bank.item[i].maxStack - player.bank.item[i].stack;
  
-+								ItemLoader.OnStack(player.bank.item[i], player.inventory[num], num6);//Piggy bank deposit all button
-+
  								player.inventory[num].stack -= num6;
  								player.bank.item[i].stack += num6;
++								*/
  								SoundEngine.PlaySound(7);
-@@ -615,7 +_,8 @@
+ 								if (player.inventory[num].stack <= 0) {
+ 									player.inventory[num].SetDefaults();
+@@ -615,18 +_,24 @@
  				int num2 = list2[k];
  				int netID = item[num2].netID;
  				foreach (KeyValuePair<int, int> item2 in dictionary) {
--					if (item2.Value == netID && inventory[item2.Key].netID == netID) {
 +					//if (item2.Value == netID && inventory[item2.Key].netID == netID) {
-+					if (item2.Value == netID && inventory[item2.Key].netID == netID && ItemLoader.CanStack(item[num2], inventory[item2.Key])) {
+ 					if (item2.Value == netID && inventory[item2.Key].netID == netID) {
  						int num3 = inventory[item2.Key].stack;
  						int num4 = item[num2].maxStack - item[num2].stack;
  						if (num4 == 0)
-@@ -624,6 +_,8 @@
+ 							break;
+ 
++						ItemLoader.TryStackItems(item[num2], inventory[item2.Key], out int numTransfered);//Quick stack into chest (Quick stack button) 1st stack
++						SoundEngine.PlaySound(7);
++
++						/* TML: #OnStackHook
  						if (num3 > num4)
  							num3 = num4;
  
-+						ItemLoader.OnStack(item[num2], inventory[item2.Key], num3);//Quick stack into chest (Quick stack button) 1st stack
-+
  						SoundEngine.PlaySound(7);
  						item[num2].stack += num3;
  						inventory[item2.Key].stack -= num3;
-@@ -655,11 +_,15 @@
- 					if ((item5.Value != num6 || inventory[item5.Key].netID != num6) && (!flag || inventory[item5.Key].stack <= 0))
- 						continue;
++						*/
+ 						if (inventory[item2.Key].stack == 0)
+ 							inventory[item2.Key].SetDefaults();
  
-+					// Outmost for iterates over empty slots, flag not true means item was not put in yet (meaning CanStack does not have to be checked)
-+					if (!flag && !ItemLoader.CanStack(item[num5], inventory[item5.Key]))
-+						continue;
-+
- 					SoundEngine.PlaySound(7);
+@@ -659,7 +_,7 @@
  					if (flag) {
  						num6 = item5.Value;
  						item[num5] = inventory[item5.Key];
@@ -134,15 +150,23 @@
  					}
  					else {
  						int num7 = inventory[item5.Key].stack;
-@@ -670,6 +_,8 @@
+@@ -667,11 +_,16 @@
+ 						if (num8 == 0)
+ 							break;
+ 
++						// Outmost for iterates over empty slots, flag not true means item was not put in yet (meaning CanStack does not have to be checked)
++						ItemLoader.TryStackItems(item[num5], inventory[item5.Key], out int numTransfered);//stack into inventory with Quickstack (Quick stack button) subsequent stacking past the first
++
++						/* TML: #OnStackHook
  						if (num7 > num8)
  							num7 = num8;
  
-+						ItemLoader.OnStack(item[num5], inventory[item5.Key], num7);//stack into inventory with Quickstack (Quick stack button) subsequent stacking past the first
-+
  						item[num5].stack += num7;
  						inventory[item5.Key].stack -= num7;
++						*/
  						if (inventory[item5.Key].stack == 0)
+ 							inventory[item5.Key] = new Item();
+ 					}
 @@ -746,7 +_,8 @@
  			List<int> list2 = new List<int>();
  			for (int num = 57; num >= 0; num--) {
@@ -163,22 +187,24 @@
  					continue;
  
  				bool flag2 = false;
-@@ -772,10 +_,15 @@
+@@ -772,12 +_,17 @@
  					if (inventory[num2].netID != item[i].netID || ItemSlot.PickItemMovementAction(inventory, context, num2, item[i]) == -1)
  						continue;
  
-+					if (!ItemLoader.CanStack(inventory[num2], item[i])) // TML: #StackablePrefixWeapons, check moved here
-+						continue;
++					if (!ItemLoader.TryStackItems(inventory[num2], item[i], out int numTransfered)) // TML: #StackablePrefixWeapons, check moved here
++						continue;//Chest restock button
 +
++					/* TML: #OnStackHook
  					int num3 = item[i].stack;
  					if (inventory[num2].maxStack - inventory[num2].stack < num3)
  						num3 = inventory[num2].maxStack - inventory[num2].stack;
  
-+					ItemLoader.OnStack(inventory[num2], item[i], num3);//Chest restock button
-+
  					inventory[num2].stack += num3;
  					item[i].stack -= num3;
++					*/
  					flag = true;
+ 					if (inventory[num2].stack == inventory[num2].maxStack) {
+ 						if (Main.netMode == 1 && Main.player[Main.myPlayer].chest > -1)
 @@ -1002,6 +_,9 @@
  					if (chestinv[i].stack >= chestinv[i].maxStack || !I.IsTheSameAs(chestinv[i]))
  						continue;
@@ -189,12 +215,16 @@
  					int num = I.stack;
  					if (I.stack + chestinv[i].stack > chestinv[i].maxStack)
  						num = chestinv[i].maxStack - chestinv[i].stack;
-@@ -1010,6 +_,8 @@
- 						flag = (flag || num > 0);
+@@ -1011,8 +_,12 @@
  						break;
  					}
-+
-+					ItemLoader.OnStack(chestinv[i], I, num);//Shift click item from inventory to chest
  
++					ItemLoader.StackItems(chestinv[i], I, out int numTrasfered);//Shift click item from inventory to chest
++
++					/* TML: #OnStackHook
  					I.stack -= num;
  					chestinv[i].stack += num;
++					*/
+ 					SoundEngine.PlaySound(7);
+ 					if (I.stack <= 0) {
+ 						I.SetDefaults();

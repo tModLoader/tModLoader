@@ -34,22 +34,27 @@
  			for (int i = 0; i < 5; i++) {
  				if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
  					list.RemoveAt(0);
-@@ -919,11 +_,14 @@
+@@ -919,7 +_,12 @@
  						continue;
  
  					Item item3 = inv[list[k]];
--					if (item2.type == item3.type && item3.stack != item3.maxStack) {
 +					//if (item2.type == item3.type && item3.stack != item3.maxStack) {
-+					if (item2.type == item3.type && item3.stack != item3.maxStack && ItemLoader.CanStack(item2, item3)) {
+ 					if (item2.type == item3.type && item3.stack != item3.maxStack) {
++						if (!ItemLoader.TryStackItems(item2, item3, out int numTransfered))
++							continue;
++
++						/* TML: #OnStackHook
  						int num2 = item3.stack;
  						if (num < num2)
  							num2 = num;
- 
-+						ItemLoader.OnStack(item2, item3, num2);//Chest sort items button
-+
+@@ -927,6 +_,7 @@
  						item2.stack += num2;
  						item3.stack -= num2;
  						num -= num2;
++						*/
+ 						if (item3.stack == 0) {
+ 							inv[list[k]] = new Item();
+ 							list.Remove(list[k]);
 @@ -1192,7 +_,7 @@
  						num2 = num;
  

@@ -692,7 +692,8 @@ namespace Terraria.ModLoader
 		/// <param name="item1">The item that will be removed or have its stack reduced.</param>
 		/// <param name="item2">The item that will have its stack increased.</param>
 		/// <param name="numberToBeTransfered">The number to be transfered from item1 to item2.</param>
-		public virtual void OnStack(Item item1, Item item2, int numberToBeTransfered) {
+		/// <param name="firstStackSplit">Only true when right clicking an item when the mouse item is air.  The clicked item is cloned and stack set to 0.</param>
+		public virtual void OnStack(Item item1, Item item2, int numberToBeTransfered, bool firstStackSplit) {
 			
 		}
 

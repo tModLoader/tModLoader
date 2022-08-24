@@ -3420,21 +3420,24 @@
  
  			new Microsoft.Xna.Framework.Color(150, 150, 150, 150);
  			if (mouseX >= num && (float)mouseX <= (float)num + (float)TextureAssets.InventoryBack.Width() * inventoryScale && mouseY >= num2 && (float)mouseY <= (float)num2 + (float)TextureAssets.InventoryBack.Height() * inventoryScale && !PlayerInput.IgnoreMouseInterface) {
-@@ -31828,15 +_,25 @@
+@@ -31828,15 +_,28 @@
  
  		public static void CraftItem(Recipe r) {
  			int stack = mouseItem.stack;
 -			mouseItem = r.createItem.Clone();
 -			mouseItem.stack += stack;
 -			if (stack <= 0)
-+			//mouseItem = r.createItem.Clone();//This is different than the normal way of item stacking and deletes the original item.
-+			//mouseItem.stack += stack;
-+			if (mouseItem.stack > 0) {
-+				ItemLoader.OnStack(r.createItem.Clone(), mouseItem, r.createItem.stack);//Craft item.  Need to check potential issues with adding to stack instead of cloning.
-+				mouseItem.stack += r.createItem.stack;//Is it possible to craft an item that is a different type than the mouseItem?  I wouldn't think so.
++			/* TML: #OnStackHook: Gameplay impact: The mouseItem.stack will be increased instead of being replaced by a clone of the recipe item if maxStack > 1
++			mouseItem = r.createItem.Clone();//This is different than the normal way of item stacking and deletes the original item.
++			mouseItem.stack += stack;//Is it possible to craft an item that is a different type than the mouseItem?  I wouldn't think so.
++			*/
++
++			if (stack > 0 && mouseItem.type == r.createItem.type) {
++				if (!ItemLoader.TryStackItems(mouseItem, r.createItem.Clone(), out int numTransfered, false))//Craft item.  Need to check potential issues with adding to stack instead of cloning.
++					return;
 +			}
 +			else {
-+				mouseItem = r.createItem.Clone();
++				mouseItem = r.createItem.Clone();//No reason to add the stack if the stack is 0 or item types aren't the same right?
 +			}
 +			
 +			//if (stack <= 0)
