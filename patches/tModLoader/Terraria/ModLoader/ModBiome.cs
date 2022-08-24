@@ -31,7 +31,7 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual string BackgroundPath => (GetType().Namespace + "." + Name + "_Background").Replace('.', '/');
 		/// <summary>
-		/// The color of the bestary background.
+		/// The color of the bestiary background.
 		/// </summary>
 		public virtual Color? BackgroundColor => null;
 
