@@ -1565,7 +1565,7 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateGrabRange(Item item, Player player, ref int grabRange);
 		private static HookList HookGrabRange = AddHook<DelegateGrabRange>(g => g.GrabRange);
-
+		
 		/// <summary>
 		/// Calls ModItem.GrabRange, then all GlobalItem.GrabRange hooks.
 		/// </summary>
@@ -1677,7 +1677,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookPreDrawInInventory = AddHook<Func<Item, SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float, bool>>(g => g.PreDrawInInventory);
-			
+		
 		/// <summary>
 		/// Returns the "and" operator on the results of all GlobalItem.PreDrawInInventory hooks and ModItem.PreDrawInInventory.
 		/// </summary>
