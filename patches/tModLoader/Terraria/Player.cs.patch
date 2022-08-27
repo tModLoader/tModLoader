@@ -4215,7 +4215,7 @@
 +			// 7. Item logic applies item time if (itemAnimation > 0 && itemTime == 0)
 +			// 8. ItemCheck_GetMeleeHitbox/MeleeDamage/CutTiles if (itemAnimation > 0)
 +			// 9. More item logic/and effects (consumables, teleportations) if (itemAnimation > 0)
-+			//
++
 +			// TML:
 +			// 1. Item animation is reduced
 +			// 2. Item time is reduced
@@ -4226,7 +4226,7 @@
 +			// 7. Item logic applies item time if (itemAnimation > 0 && itemTime == 0)
 +			// 8. ItemCheck_GetMeleeHitbox/MeleeDamage/CutTiles if (itemAnimation > 0)
 +			// 9. More item logic/and effects (consumables, teleportations) if (itemAnimation > 0)
-+			//
++
 +			// At the end of ItemCheck:
 +			//   VANILLA: itemAnimation goes from itemAnimationMax-1 to 0, before it can restart
 +			//   TML:     itemAnimation goes from itemAnimationMax to 1, before it can restart

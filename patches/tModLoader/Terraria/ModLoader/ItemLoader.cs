@@ -1324,7 +1324,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
-
+		
 		/// <summary>
 		/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 		/// </summary>
@@ -1449,7 +1449,7 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateVerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
 		private static HookList HookVerticalWingSpeeds = AddHook<DelegateVerticalWingSpeeds>(g => g.VerticalWingSpeeds);
-
+		
 		/// <summary>
 		/// If the player is using wings, this uses the result of GetWing, and calls ModItem.VerticalWingSpeeds then all GlobalItem.VerticalWingSpeeds hooks.
 		/// </summary>
@@ -1475,7 +1475,7 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateHorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration);
 		private static HookList HookHorizontalWingSpeeds = AddHook<DelegateHorizontalWingSpeeds>(g => g.HorizontalWingSpeeds);
-
+		
 		/// <summary>
 		/// If the player is using wings, this uses the result of GetWing, and calls ModItem.HorizontalWingSpeeds then all GlobalItem.HorizontalWingSpeeds hooks.
 		/// </summary>
@@ -1515,7 +1515,7 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
 		private static HookList HookUpdate = AddHook<DelegateUpdate>(g => g.Update);
-
+		
 		/// <summary>
 		/// Calls ModItem.Update, then all GlobalItem.Update hooks.
 		/// </summary>
@@ -1578,7 +1578,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookGrabStyle = AddHook<Func<Item, Player, bool>>(g => g.GrabStyle);
-
+		
 		/// <summary>
 		/// Calls all GlobalItem.GrabStyle hooks then ModItem.GrabStyle, until one of them returns true. Returns whether any of the hooks returned true.
 		/// </summary>
@@ -1592,7 +1592,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookCanPickup = AddHook<Func<Item, Player, bool>>(g => g.CanPickup);
-
+		
 		public static bool CanPickup(Item item, Player player) {
 			foreach (var g in HookCanPickup.Enumerate(item.globalItems)) {
 				if (!g.CanPickup(item, player))
@@ -1603,7 +1603,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookOnPickup = AddHook<Func<Item, Player, bool>>(g => g.OnPickup);
-
+		
 		/// <summary>
 		/// Calls all GlobalItem.OnPickup hooks then ModItem.OnPickup, until one of the returns false. Returns true if all of the hooks return true.
 		/// </summary>
@@ -1617,7 +1617,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookItemSpace = AddHook<Func<Item, Player, bool>>(g => g.ItemSpace);
-
+		
 		public static bool ItemSpace(Item item, Player player) {
 			foreach (var g in HookItemSpace.Enumerate(item.globalItems)) {
 				if (g.ItemSpace(item, player))
@@ -1628,7 +1628,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookGetAlpha = AddHook<Func<Item, Color, Color?>>(g => g.GetAlpha);
-
+		
 		/// <summary>
 		/// Calls all GlobalItem.GetAlpha hooks then ModItem.GetAlpha, until one of them returns a color, and returns that color. Returns null if all of the hooks return null.
 		/// </summary>
@@ -1664,7 +1664,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookPostDrawInWorld = AddHook<Action<Item, SpriteBatch, Color, Color, float, float, int>>(g => g.PostDrawInWorld);
-
+		
 		/// <summary>
 		/// Calls ModItem.PostDrawInWorld, then all GlobalItem.PostDrawInWorld hooks.
 		/// </summary>
@@ -1677,7 +1677,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookPreDrawInInventory = AddHook<Func<Item, SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float, bool>>(g => g.PreDrawInInventory);
-
+			
 		/// <summary>
 		/// Returns the "and" operator on the results of all GlobalItem.PreDrawInInventory hooks and ModItem.PreDrawInInventory.
 		/// </summary>
@@ -1755,7 +1755,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookCanEquipAccessory = AddHook<Func<Item, Player, int, bool, bool>>(g => g.CanEquipAccessory);
-
+		
 		public static bool CanEquipAccessory(Item item, int slot, bool modded) {
 			Player player = Main.player[Main.myPlayer];
 			if (item.ModItem != null && !item.ModItem.CanEquipAccessory(player, slot, modded))
