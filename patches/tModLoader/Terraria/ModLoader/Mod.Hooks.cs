@@ -35,30 +35,6 @@ namespace Terraria.ModLoader
 		/// </summary>
 		public virtual uint ExtraPlayerBuffSlots { get; }
 
-		// TODO: Remove these recipe methods on August 1st, after stable release
-		/// <summary>
-		/// Override this method to add recipe groups to this mod. You must add recipe groups by calling the RecipeGroup.RegisterGroup method here. A recipe group is a set of items that can be used interchangeably in the same recipe.
-		/// </summary>
-		[Obsolete("Use ModSystem.AddRecipeGroups", true)]
-		public virtual void AddRecipeGroups() {
-		}
-
-		// TODO: Remove these recipe methods on August 1st, after stable release
-		/// <summary>
-		/// Override this method to add recipes to the game. It is recommended that you do so through instances of Recipe, since it provides methods that simplify recipe creation.
-		/// </summary>
-		[Obsolete("Use ModSystem.AddRecipes", true)]
-		public virtual void AddRecipes() {
-		}
-
-		// TODO: Remove these recipe methods on August 1st, after stable release
-		/// <summary>
-		/// This provides a hook into the mod-loading process immediately after recipes have been added. You can use this to edit recipes added by other mods.
-		/// </summary>
-		[Obsolete("Use ModSystem.PostAddRecipes", true)]
-		public virtual void PostAddRecipes() {
-		}
-
 		/// <summary>
 		/// Close is called before Unload, and may be called at any time when mod unloading is imminent (such as when downloading an update, or recompiling)
 		/// Use this to release any additional file handles, or stop streaming music.

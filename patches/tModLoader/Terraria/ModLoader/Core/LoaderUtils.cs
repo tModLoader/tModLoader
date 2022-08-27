@@ -59,11 +59,6 @@ namespace Terraria.ModLoader.Core
 			if (exceptions.Count > 0)
 				throw new MultipleException(exceptions);
 		}
-
-		[Obsolete("Use ReadOnlySpan or List variant", true)]
-		public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, IEnumerable<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
-			=> InstantiateGlobals(entity, globals.ToArray().AsSpan(), ref entityGlobals, midInstantiationAction);
-
 		public static void InstantiateGlobals<TGlobal, TEntity>(TEntity entity, List<TGlobal> globals, ref Instanced<TGlobal>[] entityGlobals, Action midInstantiationAction) where TGlobal : GlobalType<TEntity, TGlobal>
 			=> InstantiateGlobals(entity, CollectionsMarshal.AsSpan(globals), ref entityGlobals, midInstantiationAction);
 
@@ -156,7 +151,7 @@ namespace Terraria.ModLoader.Core
 
 		private static void MustOverrideTogether(Type type, params MethodInfo[] methods) {
 			int c = methods.Count(m => HasOverride(type, m));
-			
+
 			if (c > 0 && c < methods.Length)
 				throw new Exception($"{type} must override all of ({string.Join('/', methods.Select(m => m.Name))}) or none");
 		}

@@ -1,22 +1,18 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/CommonCode.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/CommonCode.cs
-@@ -1,12 +_,21 @@
+@@ -1,12 +_,16 @@
  using Microsoft.Xna.Framework;
  using Terraria.Utilities;
 +using Terraria.ModLoader;
-+using System;
 +using Terraria.DataStructures;
  
  namespace Terraria.GameContent.ItemDropRules
  {
  	public static class CommonCode
  	{
-+		[Obsolete("Use DropItem(DropAttemptInfo, ...)", true)]
- 		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
-+			_DropItemFromNPC(npc, itemId, stack, scattered);
-+		}
-+
-+		private static void _DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
++		// TML: made private
+-		public static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
++		private static void DropItemFromNPC(NPC npc, int itemId, int stack, bool scattered = false) {
 -			if (itemId > 0 && itemId < 5125) {
 +			if (itemId > 0 && itemId < ItemLoader.ItemCount) {
 +				/*
@@ -35,7 +31,7 @@
  
 +		public static void DropItem(DropAttemptInfo info, int item, int stack, bool scattered = false) {
 +			if (info.npc != null) {
-+				_DropItemFromNPC(info.npc, item, stack, scattered);
++				DropItemFromNPC(info.npc, item, stack, scattered);
 +			}
 +			else {
 +				DropItem(info.player.Hitbox, info.player.GetItemSource_OpenItem(info.item), item, stack, scattered);
@@ -65,15 +61,7 @@
  				return;
  
  			if (Main.netMode == 2) {
-@@ -34,14 +_,14 @@
- 				Main.item[num].active = false;
- 			}
- 			else {
--				DropItemFromNPC(npc, itemId, stack);
-+				_DropItemFromNPC(npc, itemId, stack);
- 			}
- 
- 			npc.value = 0f;
+@@ -41,7 +_,7 @@
  		}
  
  		public static void DropItemForEachInteractingPlayerOnThePlayer(NPC npc, int itemId, UnifiedRandom rng, int chanceNumerator, int chanceDenominator, int stack = 1, bool interactionRequired = true) {
@@ -82,12 +70,3 @@
  				return;
  
  			if (Main.netMode == 2) {
-@@ -54,7 +_,7 @@
- 				}
- 			}
- 			else if (rng.Next(chanceDenominator) < chanceNumerator) {
--				DropItemFromNPC(npc, itemId, stack);
-+				_DropItemFromNPC(npc, itemId, stack);
- 			}
- 
- 			npc.value = 0f;

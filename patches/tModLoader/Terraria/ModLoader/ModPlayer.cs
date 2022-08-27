@@ -26,7 +26,7 @@ namespace Terraria.ModLoader
 
 		public override ModPlayer NewInstance(Player entity) {
 			var inst = base.NewInstance(entity);
-			
+
 			inst.Index = Index;
 
 			return inst;
@@ -38,7 +38,7 @@ namespace Terraria.ModLoader
 
 		protected override void ValidateType() {
 			base.ValidateType();
-			
+
 			LoaderUtils.MustOverrideTogether(this, p => SaveData, p => LoadData);
 			LoaderUtils.MustOverrideTogether(this, p => p.clientClone, p => p.SendClientChanges);
 		}
@@ -261,9 +261,6 @@ namespace Terraria.ModLoader
 			return true;
 		}
 
-		[Obsolete("Parameters changed, run tModPorter", true)]
-		public virtual bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) => true;
-
 		/// <summary>
 		/// Allows you to make anything happen right before damage is subtracted from the player's health.
 		/// </summary>
@@ -276,9 +273,6 @@ namespace Terraria.ModLoader
 		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 		}
 
-		[Obsolete("Parameters changed, run tModPorter", true)]
-		public virtual void Hurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
-
 		/// <summary>
 		/// Allows you to make anything happen when the player takes damage.
 		/// </summary>
@@ -290,9 +284,6 @@ namespace Terraria.ModLoader
 		/// <param name="cooldownCounter"></param>
 		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
 		}
-
-		[Obsolete("Parameters changed, run tModPorter", true)]
-		public virtual void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) { }
 
 		/// <summary>
 		/// This hook is called whenever the player is about to be killed after reaching 0 health. Set the playSound parameter to false to stop the death sound from playing. Set the genGore parameter to false to stop the gore and dust from being created. (These are useful for creating your own sound or gore.) Return false to stop the player from being killed. Only return false if you know what you are doing! Returns true by default.

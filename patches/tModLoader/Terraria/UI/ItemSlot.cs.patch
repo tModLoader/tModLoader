@@ -334,12 +334,8 @@
  					PickupItemIntoMouse(inv, context, slot, player);
  					SoundEngine.PlaySound(12);
  					RefreshStackSplitCooldown();
-@@ -1052,10 +_,14 @@
- 			switch (context) {
- 				case 0:
- 					result = true;
--					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957 || inv[slot].type == 5111)) {
-+					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957 || inv[slot].type == 5111 || ItemLoader.IsModBossBag_Obsolete(inv[slot]))) {
+@@ -1055,7 +_,11 @@
+ 					if (Main.mouseRight && ((inv[slot].type >= 3318 && inv[slot].type <= 3332) || inv[slot].type == 3860 || inv[slot].type == 3862 || inv[slot].type == 3861 || inv[slot].type == 4782 || inv[slot].type == 4957 || inv[slot].type == 5111)) {
  						if (Main.mouseRightRelease) {
  							player.OpenBossBag(inv[slot].type);
 +							ItemLoader.RightClickCallHooks(inv[slot], player);

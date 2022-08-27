@@ -90,7 +90,7 @@ namespace Terraria.ModLoader
 		/// <param name="isNPCHappyEnough">
 		/// Whether or not this NPC is "happy enough", by vanilla standards. You can ignore this if you don't care about happiness.
 		/// For reference, Vanilla defines "happy enough" as the player earning a 10% discount or more, or in code:
-		/// <code>Main.LocalPlayer.currentShoppingSettings.PriceAdjustment &lt;= 0.8999999761581421;</code> 
+		/// <code>Main.LocalPlayer.currentShoppingSettings.PriceAdjustment &lt;= 0.8999999761581421;</code>
 		/// </param>
 		public virtual int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
 			return null;
@@ -281,12 +281,6 @@ namespace Terraria.ModLoader
 				// This method call basically says "Run SpecialDraw once at this position"
 				Main.instance.TilesRenderer.AddSpecialLegacyPoint(i, j);
 			}
-		}
-
-
-		[Obsolete("Parameters have changed; parameters crystalDrawColor, frameHeight, and crystalHorizontalFrameCount no longer exist. There are 5 new parameters: crystalHighlightTexture, crystalOffset, pylonShadowColor, dustColor, and dustChanceDenominator.", true)]
-		public void DefaultDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Color crystalDrawColor, int frameHeight, int crystalHorizontalFrameCount, int crystalVerticalFrameCount) {
-			DefaultDrawPylonCrystal(spriteBatch, i, j, crystalTexture, crystalTexture, new Vector2(0, -12f), Color.White * 0.1f, Color.White, 4, crystalVerticalFrameCount);
 		}
 
 		/// <summary>

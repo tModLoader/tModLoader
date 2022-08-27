@@ -476,7 +476,7 @@ namespace Terraria.ModLoader
 				if (g.CanConsumeBait(player, bait) is bool b)
 					ret = (ret ?? true) && b;
 			}
-			
+
 			return ret;
 		}
 
@@ -498,7 +498,7 @@ namespace Terraria.ModLoader
 		private static HookList HookCanResearch = AddHook<DelegateCanResearch>(g => g.CanResearch);
 
 		/// <summary>
-		/// Hook that determines if an item will be prevented from being consumed by the research function. 
+		/// Hook that determines if an item will be prevented from being consumed by the research function.
 		/// </summary>
 		/// <param name="item">The item to be consumed or not</param>
 		public static bool CanResearch(Item item) {
@@ -523,7 +523,7 @@ namespace Terraria.ModLoader
 			foreach (var g in HookOnResearched.Enumerate(item.globalItems))
 				g.Instance(item).OnResearched(item, fullyResearched);
 		}
-    
+
 		private delegate void DelegateModifyWeaponDamage(Item item, Player player, ref StatModifier damage);
 		private static HookList HookModifyWeaponDamage = AddHook<DelegateModifyWeaponDamage>(g => g.ModifyWeaponDamage);
 
@@ -1293,22 +1293,8 @@ namespace Terraria.ModLoader
 			}
 		}
 
-		/// <summary>
-		/// Returns whether ModItem.BossBagNPC is greater than 0. Returns false if item is not a modded item.
-		/// </summary>
-		[Obsolete("Use ItemID.Sets.BossBag", true)]
-		public static bool IsModBossBag(Item item) {
-			return item.ModItem != null && item.ModItem.BossBagNPC > 0;
-		}
-
-		[Obsolete]
-		internal static bool IsModBossBag_Obsolete(Item item) {
-			return IsModBossBag(item);
-		}
-
-
 		private static HookList HookModifyItemLoot = AddHook<Action<Item, ItemLoot>>(g => g.ModifyItemLoot);
-		
+
 		/// <summary>
 		/// Calls each GlobalItem.ModifyItemLoot hooks.
 		/// </summary>
@@ -1319,84 +1305,6 @@ namespace Terraria.ModLoader
 				g.ModifyItemLoot(item, itemLoot);
 			}
 		}
-
-		// Remove After 1st September 2022
-		/// <summary>
-		/// If the item is a modded item and ModItem.BossBagNPC is greater than 0, calls ModItem.OpenBossBag and sets npc to ModItem.BossBagNPC.
-		/// </summary>
-		[Obsolete("Use player.DropFromItem instead.", true)]
-		public static void OpenBossBag(int type, Player player, ref int npc)
-		{
-			ModItem modItem = GetItem(type);
-			if (modItem != null && modItem.BossBagNPC > 0)
-			{
-				modItem.OpenBossBag(player);
-				npc = modItem.BossBagNPC;
-			}
-		}
-
-		[Obsolete]
-		internal static void OpenBossBag_Obsolete(int type, Player player) {
-			int npc = 0;
-			OpenBossBag(type, player, ref npc);
-			if (npc > 0) {
-				ItemDropRule.CoinsBasedOnNPCValue(npc).TryDroppingItem(new() {
-					player = player,
-					item = type,
-					rng = Main.rand,
-					IsExpertMode = Main.expertMode,
-					IsMasterMode = Main.masterMode,
-				});
-			}
-		}
-
-		[Obsolete]
-		private static HookList HookPreOpenVanillaBag = AddHook<Func<string, Player, int, bool>>(g => g.PreOpenVanillaBag);
-
-		// Remove After 1st September 2022
-		/// <summary>
-		/// Calls each GlobalItem.PreOpenVanillaBag hook until one of them returns false. Returns true if all of them returned true.
-		/// </summary>
-		[Obsolete("Use player.DropFromItem instead.", true)]
-		public static bool PreOpenVanillaBag(string context, Player player, int arg)
-		{
-			bool result = true;
-			foreach (var g in HookPreOpenVanillaBag.Enumerate(globalItems))
-			{
-				result &= g.PreOpenVanillaBag(context, player, arg);
-			}
-
-			if (!result)
-			{
-				NPCLoader.blockLoot.Clear(); // clear blockloot
-				return false;
-			}
-
-			return true;
-		}
-
-		[Obsolete]
-		internal static bool PreOpenVanillaBag_Obsolete(string context, Player player, int arg) => PreOpenVanillaBag(context, player, arg);
-
-		[Obsolete]
-		private static HookList HookOpenVanillaBag = AddHook<Action<string, Player, int>>(g => g.OpenVanillaBag);
-
-		// Remove After 1st September 2022
-		/// <summary>
-		/// Calls all GlobalItem.OpenVanillaBag hooks.
-		/// </summary>
-		[Obsolete("Use player.DropFromItem instead.", true)]
-		public static void OpenVanillaBag(string context, Player player, int arg)
-		{
-			foreach (var g in HookOpenVanillaBag.Enumerate(globalItems))
-			{
-				g.OpenVanillaBag(context, player, arg);
-			}
-		}
-
-		[Obsolete]
-		internal static void OpenVanillaBag_Obsolete(string context, Player player, int arg) => OpenVanillaBag(context, player, arg);
-
 		private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 
 		// For organizational consistency, item1 *should* be the item that is attempting to increase its stack (Unclear in Player.ItemSpace yet)
@@ -1416,7 +1324,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookCanStackInWorld = AddHook<Func<Item, Item, bool>>(g => g.CanStackInWorld);
-		
+
 		/// <summary>
 		/// Calls all GlobalItem.CanStackInWorld hooks until one returns false then ModItem.CanStackInWorld. Returns whether any of the hooks returned false.
 		/// </summary>
@@ -1541,7 +1449,7 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateVerticalWingSpeeds(Item item, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
 		private static HookList HookVerticalWingSpeeds = AddHook<DelegateVerticalWingSpeeds>(g => g.VerticalWingSpeeds);
-		
+
 		/// <summary>
 		/// If the player is using wings, this uses the result of GetWing, and calls ModItem.VerticalWingSpeeds then all GlobalItem.VerticalWingSpeeds hooks.
 		/// </summary>
@@ -1567,7 +1475,7 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateHorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration);
 		private static HookList HookHorizontalWingSpeeds = AddHook<DelegateHorizontalWingSpeeds>(g => g.HorizontalWingSpeeds);
-		
+
 		/// <summary>
 		/// If the player is using wings, this uses the result of GetWing, and calls ModItem.HorizontalWingSpeeds then all GlobalItem.HorizontalWingSpeeds hooks.
 		/// </summary>
@@ -1607,7 +1515,7 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateUpdate(Item item, ref float gravity, ref float maxFallSpeed);
 		private static HookList HookUpdate = AddHook<DelegateUpdate>(g => g.Update);
-		
+
 		/// <summary>
 		/// Calls ModItem.Update, then all GlobalItem.Update hooks.
 		/// </summary>
@@ -1657,7 +1565,7 @@ namespace Terraria.ModLoader
 
 		private delegate void DelegateGrabRange(Item item, Player player, ref int grabRange);
 		private static HookList HookGrabRange = AddHook<DelegateGrabRange>(g => g.GrabRange);
-		
+
 		/// <summary>
 		/// Calls ModItem.GrabRange, then all GlobalItem.GrabRange hooks.
 		/// </summary>
@@ -1670,7 +1578,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookGrabStyle = AddHook<Func<Item, Player, bool>>(g => g.GrabStyle);
-		
+
 		/// <summary>
 		/// Calls all GlobalItem.GrabStyle hooks then ModItem.GrabStyle, until one of them returns true. Returns whether any of the hooks returned true.
 		/// </summary>
@@ -1684,7 +1592,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookCanPickup = AddHook<Func<Item, Player, bool>>(g => g.CanPickup);
-		
+
 		public static bool CanPickup(Item item, Player player) {
 			foreach (var g in HookCanPickup.Enumerate(item.globalItems)) {
 				if (!g.CanPickup(item, player))
@@ -1695,7 +1603,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookOnPickup = AddHook<Func<Item, Player, bool>>(g => g.OnPickup);
-		
+
 		/// <summary>
 		/// Calls all GlobalItem.OnPickup hooks then ModItem.OnPickup, until one of the returns false. Returns true if all of the hooks return true.
 		/// </summary>
@@ -1709,7 +1617,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookItemSpace = AddHook<Func<Item, Player, bool>>(g => g.ItemSpace);
-		
+
 		public static bool ItemSpace(Item item, Player player) {
 			foreach (var g in HookItemSpace.Enumerate(item.globalItems)) {
 				if (g.ItemSpace(item, player))
@@ -1720,7 +1628,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookGetAlpha = AddHook<Func<Item, Color, Color?>>(g => g.GetAlpha);
-		
+
 		/// <summary>
 		/// Calls all GlobalItem.GetAlpha hooks then ModItem.GetAlpha, until one of them returns a color, and returns that color. Returns null if all of the hooks return null.
 		/// </summary>
@@ -1756,7 +1664,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookPostDrawInWorld = AddHook<Action<Item, SpriteBatch, Color, Color, float, float, int>>(g => g.PostDrawInWorld);
-		
+
 		/// <summary>
 		/// Calls ModItem.PostDrawInWorld, then all GlobalItem.PostDrawInWorld hooks.
 		/// </summary>
@@ -1769,7 +1677,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookPreDrawInInventory = AddHook<Func<Item, SpriteBatch, Vector2, Rectangle, Color, Color, Vector2, float, bool>>(g => g.PreDrawInInventory);
-		
+
 		/// <summary>
 		/// Returns the "and" operator on the results of all GlobalItem.PreDrawInInventory hooks and ModItem.PreDrawInInventory.
 		/// </summary>
@@ -1847,7 +1755,7 @@ namespace Terraria.ModLoader
 		}
 
 		private static HookList HookCanEquipAccessory = AddHook<Func<Item, Player, int, bool, bool>>(g => g.CanEquipAccessory);
-		
+
 		public static bool CanEquipAccessory(Item item, int slot, bool modded) {
 			Player player = Main.player[Main.myPlayer];
 			if (item.ModItem != null && !item.ModItem.CanEquipAccessory(player, slot, modded))

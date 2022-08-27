@@ -228,7 +228,7 @@ namespace Terraria.ModLoader
 		}
 
 		/// <summary>
-		/// Allows you to create custom behaviour when an item is accepted by the Research function 
+		/// Allows you to create custom behaviour when an item is accepted by the Research function
 		/// </summary>
 		/// <param name="item">The item being researched</param>
 		/// <param name="fullyResearched">True if the item was completely researched, and is ready to be duplicated, false if only partially researched.</param>
@@ -379,7 +379,7 @@ namespace Terraria.ModLoader
 
 		/// <summary>
 		/// Allows you to modify an item's shooting mechanism. Return false to prevent vanilla's shooting code from running. Returns true by default.<br/>
-		/// This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters. 
+		/// This method is called after the <see cref="ModifyShootStats"/> hook has had a chance to adjust the spawn parameters.
 		/// </summary>
 		/// <param name="item"> The item being used. </param>
 		/// <param name="player"> The player using the item. </param>
@@ -655,15 +655,6 @@ namespace Terraria.ModLoader
 		}
 
 		public virtual void ModifyItemLoot(Item item, ItemLoot itemLoot) {
-		}
-		
-		[Obsolete("Use ModifyItemLoot instead", true)]
-		public virtual bool PreOpenVanillaBag(string context, Player player, int arg) {
-			return true;
-		}
-		
-		[Obsolete("Use ModifyItemLoot instead", true)]
-		public virtual void OpenVanillaBag(string context, Player player, int arg) {
 		}
 
 		/// <summary>

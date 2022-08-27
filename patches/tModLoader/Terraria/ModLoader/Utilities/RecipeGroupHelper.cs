@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using Terraria.ID;
 
 namespace Terraria.ModLoader.Utilities
@@ -62,10 +61,8 @@ namespace Terraria.ModLoader.Utilities
 		}
 
 		internal static void AddRecipeGroups() {
-			var addRecipeGroupsMethod = typeof(Mod).GetMethod(nameof(Mod.AddRecipeGroups), BindingFlags.Instance | BindingFlags.Public)!;
 			foreach (Mod mod in ModLoader.Mods) {
 				try {
-					addRecipeGroupsMethod.Invoke(mod, Array.Empty<object>());
 					SystemLoader.AddRecipeGroups(mod);
 				}
 				catch (Exception e) {
