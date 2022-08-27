@@ -1,13 +1,5 @@
 --- src/TerrariaNetCore/Terraria/Item.cs
 +++ src/tModLoader/Terraria/Item.cs
-@@ -1,6 +_,7 @@
- using Microsoft.Xna.Framework;
- using System;
- using System.IO;
-+using System.Linq;
- using Terraria.Audio;
- using Terraria.DataStructures;
- using Terraria.Enums;
 @@ -11,10 +_,12 @@
  using Terraria.ID;
  using Terraria.UI;
@@ -1029,7 +1021,7 @@
  						if (type == 4143)
  							num3 -= (float)manaGrabRange;
  
-@@ -46460,17 +_,34 @@
+@@ -46460,17 +_,17 @@
  			}
  		}
  
@@ -1037,23 +1029,6 @@
 -		public Item DeepClone() => (Item)MemberwiseClone();
 -
 -		public bool IsTheSameAs(Item compareItem) {
-+		public Item Clone() {
-+			Item newItem = (Item)MemberwiseClone();
-+
-+			newItem.CloneModdedDataFrom(this);
-+
-+			return newItem;
-+		}
-+
-+		public void CloneModdedDataFrom(Item dataSource) {
-+			ModItem = dataSource.ModItem?.Clone(this);
-+			globalItems = dataSource.globalItems
-+				.Select(g => new Instanced<GlobalItem>(g.Index, g.Instance?.Clone(dataSource, this)))
-+				.ToArray();
-+		}
-+
-+		internal Item DeepClone() => Clone();
-+
 +		// TML: Made internal so that modders will have to replace it with a more straightforward item.type == compareItem.type
 +		internal bool IsTheSameAs(Item compareItem) {
  			if (netID == compareItem.netID)

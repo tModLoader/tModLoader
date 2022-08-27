@@ -90,7 +90,7 @@ namespace Terraria.ModLoader
 		/// <param name="isNPCHappyEnough">
 		/// Whether or not this NPC is "happy enough", by vanilla standards. You can ignore this if you don't care about happiness.
 		/// For reference, Vanilla defines "happy enough" as the player earning a 10% discount or more, or in code:
-		/// <code>Main.LocalPlayer.currentShoppingSettings.PriceAdjustment &lt;= 0.8999999761581421;</code>
+		/// <code>Main.LocalPlayer.currentShoppingSettings.PriceAdjustment &lt;= 0.9;</code>
 		/// </param>
 		public virtual int? IsPylonForSale(int npcType, Player player, bool isNPCHappyEnough) {
 			return null;

@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -115,6 +116,23 @@ namespace Terraria
 
 		public bool CountsAsClass(DamageClass damageClass)
 			=> DamageClassLoader.effectInheritanceCache[DamageType.Type, damageClass.Type];
+
+		public Item Clone() {
+			Item newItem = (Item)MemberwiseClone();
+
+			newItem.CloneModdedDataFrom(this);
+
+			return newItem;
+		}
+
+		public void CloneModdedDataFrom(Item dataSource) {
+			ModItem = dataSource.ModItem?.Clone(this);
+			globalItems = dataSource.globalItems
+				.Select(g => new Instanced<GlobalItem>(g.Index, g.Instance?.Clone(dataSource, this)))
+				.ToArray();
+		}
+
+		internal Item DeepClone() => Clone();
 
 		// public version of IsNotTheSameAs for modders
 		/// <summary>
