@@ -38,7 +38,7 @@
  			else if (master)
  				color = new Color(255, (byte)(Main.masterColor * 200f), 0, Main.mouseTextColor);
 +
-+			if (rarity > ItemRarityID.Purple)
++			if (rarity > ItemRarityID.Purple && rarity < RarityLoader.RarityCount)
 +				color = RarityLoader.GetRarity(rarity).RarityColor;
  
  			bool flag = false;
