@@ -57,7 +57,7 @@ function down_release {
 function check_username {
 	if ! [[ -v username ]]
 	then
-		echo "Please enter a username to login with using --username"
+		echo "Please enter a Steam username to login with using --username"
 		exit 1
 	else
 		return 0
@@ -86,39 +86,101 @@ function steamcmd_install_tml {
 		fi
 }
 
+# Install from github, defaults to ~/tModLoader
+function github_install_tml {
+	if [[ -v folder ]]
+	then
+		mkdir -p "$folder"
+		pushd "$folder"
+	else
+		mkdir -p ~/tModLoader
+		pushd ~/tModLoader
+	fi
+
+	install_dir=$(shopt -s nullglob dotglob; echo ./*)
+	if (( ${#install_dir} ))
+	then
+		echo "Install directory not empty, please choose an empty directory to install tML to using --folder or update an existing installation using --update"
+		exit 1
+	fi
+
+	# Install tml from github, leave some file containing what version
+	local ver
+	ver=$(get_latest_release)
+	down_release "$ver"
+	echo "Unzipping tModLoader.zip"
+	unzip -q tModLoader.zip
+	rm tModLoader.zip
+	echo "$ver" > .ver
+
+	popd
+}
+
 function install_tml {
 	if $steamcmd
 	then
 		steamcmd_install_tml
 	else
-		# Install from github, defaults to ~/tModLoader
-		if [[ -v folder ]]
-		then
-			mkdir -p "$folder"
-			pushd "$folder"
-		else
-			mkdir -p ~/tModLoader
-			pushd ~/tModLoader
-		fi
+		github_install_tml
+	fi
+}
 
-		install_dir=$(shopt -s nullglob dotglob; echo ./*)
-		if (( ${#install_dir} ))
-		then
-			echo "Install directory not empty, please choose an empty directory to install tML to using --folder or update an existing installation using --update"
-			exit 1
-		fi
+function github_update_tml {
+	if [[ -v folder ]]
+	then
+		pushd "$folder"
+	else
+		pushd ~/tModLoader
+	fi
 
-		# Install tml from github, leave some file containing what version
+	if [[ -r ".ver" ]]
+	then
 		local ver
 		ver=$(get_latest_release)
-		down_release "$ver"
-		echo "Unzipping tModLoader.zip"
-		unzip -q tModLoader.zip
-		rm tModLoader.zip
-		echo "$ver" > .ver
+		oldver=$(cat .ver)
+		if [[ $ver == "$oldver" ]]
+		then
+			echo "No new version of tModLoader available"
+		else
+			echo "New version of tModLoader $ver is available, current ver is $oldver"
 
-		popd
+			# Backup old tML versions in case something implodes
+			mkdir "$oldver"
+			for file in ./*;
+			do
+				if ! [[ "$file" == v.* ]] && ! [[ "$file" == ManageServer.sh ]] && ! [[ "$file" == install.txt ]] && ! [[ "$file" == enabled.json ]] && ! [[ "$file" == *.tmod ]] && ! [[ "$file" == ./$oldver ]] && ! [[ "$file" == *.tar.gz ]]
+				then
+					mv "$file" "$oldver"
+				fi
+			done
+
+			echo "Compressing $oldver backup"
+			tar czf "$oldver".tar.gz "$oldver"/*
+			rm -r "$oldver"
+
+			down_release "$ver"
+			echo "Unzipping tModLoader.zip"
+			unzip -q tModLoader.zip
+			rm tModLoader.zip
+			echo "$ver" > .ver
+
+			# Delete all backups but the most recent
+			echo "Removing old backups"
+			for file in ./v*.tar.gz;
+			do
+				if ! [[ "$file" == ./$oldver.tar.gz ]]
+				then
+					rm "$file"
+					echo "Removed $file"
+				fi
+			done
+		fi
+	else
+		echo "tModLoader is not installed"
+		exit 1
 	fi
+
+	popd
 }
 
 function update_tml {
@@ -126,61 +188,7 @@ function update_tml {
 	then
 		steamcmd_install_tml
 	else
-		if [[ -v folder ]]
-		then
-			pushd "$folder"
-		else
-			pushd ~/tModLoader
-		fi
-
-		if [[ -r ".ver" ]]
-		then
-			local ver
-			ver=$(get_latest_release)
-			oldver=$(cat .ver)
-			if [[ $ver == "$oldver" ]]
-			then
-				echo "No new version of tModLoader available"
-			else
-				echo "New version of tModLoader $ver is available, current ver is $oldver"
-
-				# Backup old tML versions in case something implodes
-				mkdir "$oldver"
-				for file in ./*;
-				do
-					if ! [[ "$file" == v.* ]] && ! [[ "$file" == ManageServer.sh ]] && ! [[ "$file" == install.txt ]] && ! [[ "$file" == enabled.json ]] && ! [[ "$file" == *.tmod ]] && ! [[ "$file" == ./$oldver ]] && ! [[ "$file" == *.tar.gz ]]
-					then
-						mv "$file" "$oldver"
-					fi
-				done
-
-				echo "Compressing $oldver backup"
-				tar czf "$oldver".tar.gz "$oldver"/*
-				rm -r "$oldver"
-
-				down_release "$ver"
-				echo "Unzipping tModLoader.zip"
-				unzip -q tModLoader.zip
-				rm tModLoader.zip
-				echo "$ver" > .ver
-
-				# Delete all backups but the most recent
-				echo "Removing old backups"
-				for file in ./v*.tar.gz;
-				do
-					if ! [[ "$file" == ./$oldver.tar.gz ]]
-					then
-						rm "$file"
-						echo "Removed $file"
-					fi
-				done
-			fi
-		else
-			echo "tModLoader is not installed"
-			exit 1
-		fi
-
-		popd
+		github_update_tml
 	fi
 }
 
@@ -290,6 +298,17 @@ Options:
 When running --install and --update, enabled.json, install.txt, and any .tmod files will be checked for in the location of the script or in the directory specified by --check-dir."
 	exit
 }
+
+#
+# ______       _                          _       _
+#|  ____|     | |                        (_)     | |
+#| |__   _ __ | |_ _ __ _   _ _ __   ___  _ _ __ | |_
+#|  __| | '_ \| __| '__| | | | '_ \ / _ \| | '_ \| __|
+#| |____| | | | |_| |  | |_| | |_) | (_) | | | | | |_
+#|______|_| |_|\__|_|   \__, | .__/ \___/|_|_| |_|\__|
+#                        __/ | |
+#                       |___/|_|
+#
 
 # Parse script arguments
 install=false

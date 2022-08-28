@@ -57,4 +57,4 @@ then
 fi
 
 chmod +x ./LaunchUtils/ScriptCaller.sh
-./LaunchUtils/ScriptCaller.sh "$launch_args"
+./LaunchUtils/ScriptCaller.sh $launch_args
