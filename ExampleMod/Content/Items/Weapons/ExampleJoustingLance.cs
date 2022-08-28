@@ -38,7 +38,7 @@ namespace ExampleMod.Content.Items.Weapons
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			// If the player has increased melee speed, it will effect the shootSpeed of the Jousting Lance which will cause the projectile to spawn further away than it is supposed to.
 			// This ensures that the velocity of the projectile is always the shootSpeed.
-			float inverseMeleeSpeed = 1f / player.GetAttackSpeed(DamageClass.Melee);
+			float inverseMeleeSpeed = 1f / (player.GetAttackSpeed(DamageClass.Melee) * player.GetAttackSpeed(DamageClass.Generic));
 			velocity *= inverseMeleeSpeed;
 		}
 
