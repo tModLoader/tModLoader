@@ -1,10 +1,8 @@
 using Terraria;
-using Terraria.ID;
 using Terraria.GameContent.Creative;
 using Terraria.ModLoader;
 using Terraria.Enums;
 using Terraria.Localization;
-using Microsoft.Xna.Framework;
 
 namespace ExampleMod.Content.Items.Weapons
 {
@@ -33,13 +31,6 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.SetShopValues(ItemRarityColor.LightRed4, Item.buyPrice(0, 6)); // A special method that sets the rarity and value.
 
 			Item.channel = true; // Channel is important for our projectile.
-		}
-
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			// If the player has increased melee speed, it will effect the shootSpeed of the Jousting Lance which will cause the projectile to spawn further away than it is supposed to.
-			// This ensures that the velocity of the projectile is always the shootSpeed.
-			float inverseMeleeSpeed = 1f / (player.GetAttackSpeed(DamageClass.Melee) * player.GetAttackSpeed(DamageClass.Generic));
-			velocity *= inverseMeleeSpeed;
 		}
 
 		// This will allow our Jousting Lance to receive the same modifiers as melee weapons.

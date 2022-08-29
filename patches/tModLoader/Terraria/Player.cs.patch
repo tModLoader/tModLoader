@@ -4816,8 +4816,9 @@
  			int projToShoot = sItem.shoot;
  			float speed = sItem.shootSpeed;
  			int damage = sItem.damage;
- 			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
+-			if (sItem.melee && projToShoot != 699 && projToShoot != 707 && (uint)(projToShoot - 877) > 2u)
 -				speed /= meleeSpeed;
++			if (sItem.melee && !ProjectileID.Sets.NoMeleeSpeedVelocityScaling[projToShoot])
 +				speed /= inverseMeleeSpeed;
 +
 +			// Copied as-is from 1.3

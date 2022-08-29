@@ -16,6 +16,7 @@ namespace ExampleMod.Content.Projectiles
 			// This will cause the player to dismount if they are hit by another Jousting Lance.
 			// Since no enemies use Jousting Lances, this will only cause the player to dismount in PVP.
 			ProjectileID.Sets.DismountsPlayersOnHit[Type] = true;
+			ProjectileID.Sets.NoMeleeSpeedVelocityScaling[Type] = true;
 		}
 
 		public override void SetDefaults() {
