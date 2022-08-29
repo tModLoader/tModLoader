@@ -664,7 +664,7 @@
 +							item.stack = reader.Read7BitEncodedInt();
 +						}
 +
-+						TEWeaponsRack.TryPlacing(x5, y5, item, item.stack);
++						TEFoodPlatter.TryPlacing(x5, y5, item, item.stack);
  					}
  					break;
  				case 134: {
